@@ -2,142 +2,147 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B43FC76F1ED
-	for <lists+stable@lfdr.de>; Thu,  3 Aug 2023 20:34:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9E03176F1F0
+	for <lists+stable@lfdr.de>; Thu,  3 Aug 2023 20:36:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232848AbjHCSex (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 3 Aug 2023 14:34:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55344 "EHLO
+        id S232978AbjHCSgR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 3 Aug 2023 14:36:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55874 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231768AbjHCSew (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 3 Aug 2023 14:34:52 -0400
-Received: from mail-yb1-xb30.google.com (mail-yb1-xb30.google.com [IPv6:2607:f8b0:4864:20::b30])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08DF2273E
-        for <stable@vger.kernel.org>; Thu,  3 Aug 2023 11:34:51 -0700 (PDT)
-Received: by mail-yb1-xb30.google.com with SMTP id 3f1490d57ef6-d075a831636so1478958276.3
-        for <stable@vger.kernel.org>; Thu, 03 Aug 2023 11:34:51 -0700 (PDT)
+        with ESMTP id S231254AbjHCSgQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 3 Aug 2023 14:36:16 -0400
+Received: from mail-lf1-x12d.google.com (mail-lf1-x12d.google.com [IPv6:2a00:1450:4864:20::12d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A11C2D42
+        for <stable@vger.kernel.org>; Thu,  3 Aug 2023 11:36:15 -0700 (PDT)
+Received: by mail-lf1-x12d.google.com with SMTP id 2adb3069b0e04-4fe4f5290daso2207160e87.1
+        for <stable@vger.kernel.org>; Thu, 03 Aug 2023 11:36:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1691087690; x=1691692490;
-        h=content-transfer-encoding:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Nyc2gitI2vs2BzBPE2gM4dSf776t2Bqkap6SAX9jGgw=;
-        b=j4ZZTUw3L8tzyfQ60uIIZQLmCPW7V3COQ5bMr151BNflpDbwZu3VUq++3RPLvFn0Vp
-         cVdh6ZtsWZ5DvHoKm6S6btw6qLGyR5o/SsrLEColtzeo3VgcsyKK8EKqoA4MnRul4ruR
-         MRrzpORy5/0mmVYDFe3O4DIfyYHSNc24+AKM1AH5J/jtnYcmHeu5KYeOTtLpJCddfAqr
-         VvBVU7NFqgStEd38t6lIOJsIVydQzvdqsEA0wgQ96LZNS8pK/DKqipMT2ocQthJR/dqr
-         42hq+jAhgmkW/hMi7BukbXPppKS55KTMteXYUlRCdccI8m6cTu7cSMTsWe0hYL9nn+yv
-         D5LA==
+        d=linux-foundation.org; s=google; t=1691087773; x=1691692573;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=bjK7RUYhJ3o/ZdfV6zCLpQPvuk/yGcfZkOCyD/T1w4M=;
+        b=BrZIJzPS8/nphMMUSPTsqlcNKZIP1VxUgEbJEpWV/1dO1z8be/bQCYvXxqCITxkmpc
+         80lSPno+8k7LzCXEKfVo2bJrMsb5DXjvjjfktPML0/PhhKRuDAWk/eKBiOsEtN6Dssnw
+         PXyeq1jHoLMPHJNgNStzHa0CbGMgAm7cch/S0=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691087690; x=1691692490;
-        h=content-transfer-encoding:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Nyc2gitI2vs2BzBPE2gM4dSf776t2Bqkap6SAX9jGgw=;
-        b=R+uuGrUtQnQUt7WpKyJCDo3f8YjsCTM/dm0jhuQs8XyA14azlaFK1MuwRVD7G8Uttf
-         0AMMWySoqe2+mhfunrUfjC8O2y3mxz15SvxPufDWad433NdWmGd9f+Lq4lh8CsFlaByv
-         CeF77P3j8WM/g81nrZ9k7TRA5VUZdTmVR2mHAXT9uDLTiJ/Kbfgh0Hhl0wiZu2plCY5u
-         7TknXB0nsDY/bEjQm4N5aKIsFMtLrZB9bQ//X44rVzWic22yqMjHVPGg8r0Uzb9yXmFe
-         AXet40ezF5BoQLiD1X2Aqo5TWx8SOVaXUlpkcO0pz3rfDAxZodNs8i/0gPugk21TOcfk
-         Wvgg==
-X-Gm-Message-State: ABy/qLYnTMPcsbeXXO5qHR5wegk/WqM0gQWmYJJLZHr68GE91D/rB8x9
-        MQqIuuW07kfZHxJn2mgf75tLBlOSlc34M/sNgjV4tg==
-X-Google-Smtp-Source: APBJJlEG7Mv/Fp2FsNqC1nmgVx/mt5hF/Jf12KZxbp1VyjIkLYpf4NX3BUvGR61e0lC3QkL9nAthftAM244WYxSlgc4=
-X-Received: by 2002:a25:24d:0:b0:c60:982f:680c with SMTP id
- 74-20020a25024d000000b00c60982f680cmr18200156ybc.63.1691087689991; Thu, 03
- Aug 2023 11:34:49 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1691087773; x=1691692573;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=bjK7RUYhJ3o/ZdfV6zCLpQPvuk/yGcfZkOCyD/T1w4M=;
+        b=d3/hk0I3V56NqKUySPLS016PlEun08fiB+EByGQqXC0P/duKzDEyzFUEPFajzD6KQj
+         A0ep7jWVrlDNXUeSErpIqqYJnppOeE0rvir4uUJ67SxKDMzP5GzRrbbKoVtJxKByLEX7
+         b+Su0Ia30dBcpx0TFpe3G6nvOIxfq652ZCnXHbd3nu7ChXWCOY9YE+AekfVaGt0MiQGX
+         Pjxorx3EAMVArfyrVxOTQsIo4i2BUW1Cl9jIKESZvq4Yzu3eH7YICHmkK+Q4kqZdN1Jy
+         rdY7NkaZJrTV06fCBwNisxgWxMhYrlckWwo3d/8izN/b+1qu0QBCNQQH3R9cnHGfGhXW
+         92OQ==
+X-Gm-Message-State: ABy/qLZzyIZ+Kr+s4vaXxZ0yj/+czjgk9Ut6K3SAaN4BnIAvqS3v4NF+
+        UG1hkYjaxFL1nUCw82JCLVvRTxvg7uFCIdgEX+JIms2+
+X-Google-Smtp-Source: APBJJlGOCF7YokNrKXDXyyibchbe5nSYaNyG5fQcBHXyL2CpM/03BXwX/Y84nRYlD0nu01MmK7wv3A==
+X-Received: by 2002:a2e:86c8:0:b0:2b9:e304:5f81 with SMTP id n8-20020a2e86c8000000b002b9e3045f81mr8318175ljj.23.1691087773313;
+        Thu, 03 Aug 2023 11:36:13 -0700 (PDT)
+Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com. [209.85.208.51])
+        by smtp.gmail.com with ESMTPSA id k10-20020a1709067aca00b0099364d9f0e9sm160026ejo.102.2023.08.03.11.36.11
+        for <stable@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 03 Aug 2023 11:36:11 -0700 (PDT)
+Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-5231410ab27so573796a12.0
+        for <stable@vger.kernel.org>; Thu, 03 Aug 2023 11:36:11 -0700 (PDT)
+X-Received: by 2002:a05:6402:60e:b0:522:27c4:3865 with SMTP id
+ n14-20020a056402060e00b0052227c43865mr7594168edv.41.1691087771299; Thu, 03
+ Aug 2023 11:36:11 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230803172652.2849981-1-surenb@google.com> <20230803172652.2849981-6-surenb@google.com>
- <CAHk-=wiCrWAoEesBuoGoqqufvesicbGp3cX0LyKgEvsFaZNpDA@mail.gmail.com>
- <20230803181520.yd5ao45rm3rxnsbs@revolver> <CAJuCfpHkTNrJhmQABEvEXBJd-Y0yNz+VUPn+ZX5OKHwQiwCr5A@mail.gmail.com>
-In-Reply-To: <CAJuCfpHkTNrJhmQABEvEXBJd-Y0yNz+VUPn+ZX5OKHwQiwCr5A@mail.gmail.com>
-From:   Suren Baghdasaryan <surenb@google.com>
-Date:   Thu, 3 Aug 2023 11:34:38 -0700
-Message-ID: <CAJuCfpHbWfKTsh1Q_3=Kr1R1d8pgrnXitzGuDxDRtnG5e02y5A@mail.gmail.com>
-Subject: Re: [PATCH v3 5/6] mm: always lock new vma before inserting into vma tree
-To:     "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Suren Baghdasaryan <surenb@google.com>,
-        akpm@linux-foundation.org, jannh@google.com, willy@infradead.org,
-        david@redhat.com, peterx@redhat.com, ldufour@linux.ibm.com,
-        vbabka@suse.cz, michel@lespinasse.org, jglisse@google.com,
-        mhocko@suse.com, hannes@cmpxchg.org, dave@stgolabs.net,
-        hughd@google.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-        stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
-        autolearn=unavailable autolearn_force=no version=3.4.6
+References: <20230724-vfs-fdget_pos-v1-1-a4abfd7103f3@kernel.org>
+ <CAHk-=whfJhag+iEscftpVq=dHTeL7rQopCvH+Pcs8vJHCGNvXQ@mail.gmail.com>
+ <20230724-pyjama-papier-9e4cdf5359cb@brauner> <CAHk-=wj2XZqex6kzz7SbdVHwP9fFoOvHSzHj--0KuxyrVO+3-w@mail.gmail.com>
+ <20230803095311.ijpvhx3fyrbkasul@f> <CAHk-=whQ51+rKrnUYeuw3EgJMv2RJrwd7UO9qCgOkUdJzcirWw@mail.gmail.com>
+ <20230803-libellen-klebrig-0a9e19dfa7dd@brauner>
+In-Reply-To: <20230803-libellen-klebrig-0a9e19dfa7dd@brauner>
+From:   Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Thu, 3 Aug 2023 11:35:53 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wi97khTatMKCvJD4tBkf6rMKTP=fLQDnok7MGEEewSz9g@mail.gmail.com>
+Message-ID: <CAHk-=wi97khTatMKCvJD4tBkf6rMKTP=fLQDnok7MGEEewSz9g@mail.gmail.com>
+Subject: Re: [PATCH] file: always lock position
+To:     Christian Brauner <brauner@kernel.org>
+Cc:     Mateusz Guzik <mjguzik@gmail.com>, Jens Axboe <axboe@kernel.dk>,
+        Christoph Hellwig <hch@lst.de>,
+        Aleksa Sarai <cyphar@cyphar.com>,
+        Al Viro <viro@zeniv.linux.org.uk>,
+        Seth Forshee <sforshee@kernel.org>,
+        linux-fsdevel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: multipart/mixed; boundary="000000000000e529550602090d09"
+X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, Aug 3, 2023 at 11:26=E2=80=AFAM Suren Baghdasaryan <surenb@google.c=
-om> wrote:
->
-> On Thu, Aug 3, 2023 at 11:15=E2=80=AFAM Liam R. Howlett <Liam.Howlett@ora=
-cle.com> wrote:
-> >
-> > * Linus Torvalds <torvalds@linux-foundation.org> [230803 14:02]:
-> > > On Thu, 3 Aug 2023 at 10:27, Suren Baghdasaryan <surenb@google.com> w=
-rote:
-> > > >
-> > > > While it's not strictly necessary to lock a newly created vma befor=
-e
-> > > > adding it into the vma tree (as long as no further changes are perf=
-ormed
-> > > > to it), it seems like a good policy to lock it and prevent accident=
-al
-> > > > changes after it becomes visible to the page faults. Lock the vma b=
-efore
-> > > > adding it into the vma tree.
-> > >
-> > > So my main reaction here is that I started to wonder about the vma al=
-location.
-> > >
-> > > Why doesn't vma_init() do something like
-> > >
-> > >         mmap_assert_write_locked(mm);
-> > >         vma->vm_lock_seq =3D mm->mm_lock_seq;
-> > >
-> > > and instead we seem to expect vma_lock_alloc() to do this (and do it
-> > > very badly indeed).
-> > >
-> > > Strange.
-> > >
-> > > Anyway, this observation was just a reaction to that "not strictly
-> > > necessary to lock a newly created vma" part of the commentary. I feel
-> > > like we could/should just make sure that all newly created vma's are
-> > > always simply created write-locked.
-> > >
-> >
-> > I thought the same thing initially, but Suren pointed out that it's not
-> > necessary to hold the vma lock to allocate a vma object.  And it seems
-> > there is at least one user (arch/ia64/mm/init.c) which does allocate
-> > outside the lock during ia64_init_addr_space(), which is fine but I'm
-> > not sure it gains much to do it this way - the insert needs to take the
-> > lock anyways and it is hardly going to be contended.
->
-> Yeah, I remember discussing that. At the time of VMA creation the
-> mmap_lock might not be write-locked, so mmap_assert_write_locked()
-> would trigger and mm->mm_lock_seq is not stable. Maybe we can
-> necessitate holding mmap_lock at the time of VMA creation but that
-> sounds like an unnecessary restriction. IIRC some drivers also create
-> vm_are_structs without holding mmap_lock... I'll double-check.
+--000000000000e529550602090d09
+Content-Type: text/plain; charset="UTF-8"
 
-Yeah, there are places like an initcall gate_vma_init() which call
-vma_init(). I don't think these are called with a locked mmap_lock.
-
+On Thu, 3 Aug 2023 at 11:03, Christian Brauner <brauner@kernel.org> wrote:
 >
-> >
-> > Anywhere else besides an address space setup would probably introduce a
-> > race.
-> >
-> > Thanks,
-> > Liam
-> >
+> Only thing that's missing is exclusion with seek on directories
+> as that's the heinous part.
+
+Bah. I forgot about lseek entirely, because for some completely stupid
+reason I just thought "Oh, that will always get the lock".
+
+So I guess we'd just have to do that "unconditional fdget_dir()" thing
+in the header file after all, and make llseek() and ksys_lseek() use
+it.
+
+Bah. And then we'd still have to worry about any filesystem that
+allows 'read()' and 'write()' on the directory - which can also update
+f_pos.
+
+And yes, those exist. See at least 'adfs_dir_ops', and
+'ceph_dir_fops'. They may be broken, but people actually did do things
+like that historically, maybe there's a reason adfs and ceph allow it.
+
+End result: we can forget about fdget_dir(). We'd need to split
+FMODE_ATOMIC_POS into two instead.
+
+I don't think we have any free flags, but I didn't check. The ugly
+thing to do is to just special-case S_ISDIR. Not lovely, but whatever.
+
+So something like this instead? It's a smaller diff anyway, and it
+gets the crazy afds/ceph cases right too.
+
+And by "gets them right" I obviously mean "I didn't actually *TEST*
+any of this, so who knows..."
+
+             Linus
+
+--000000000000e529550602090d09
+Content-Type: text/x-patch; charset="US-ASCII"; name="patch.diff"
+Content-Disposition: attachment; filename="patch.diff"
+Content-Transfer-Encoding: base64
+Content-ID: <f_lkvhzg8u0>
+X-Attachment-Id: f_lkvhzg8u0
+
+IGZzL2ZpbGUuYyB8IDE4ICsrKysrKysrKysrKysrKysrLQogMSBmaWxlIGNoYW5nZWQsIDE3IGlu
+c2VydGlvbnMoKyksIDEgZGVsZXRpb24oLSkKCmRpZmYgLS1naXQgYS9mcy9maWxlLmMgYi9mcy9m
+aWxlLmMKaW5kZXggMzVjNjJiNTRjOWQ2Li5kYmNhMjZlZjdhMDEgMTAwNjQ0Ci0tLSBhL2ZzL2Zp
+bGUuYworKysgYi9mcy9maWxlLmMKQEAgLTEwMzYsMTIgKzEwMzYsMjggQEAgdW5zaWduZWQgbG9u
+ZyBfX2ZkZ2V0X3Jhdyh1bnNpZ25lZCBpbnQgZmQpCiAJcmV0dXJuIF9fZmdldF9saWdodChmZCwg
+MCk7CiB9CiAKKy8qCisgKiBUcnkgdG8gYXZvaWQgZl9wb3MgbG9ja2luZy4gV2Ugb25seSBuZWVk
+IGl0IGlmIHRoZQorICogZmlsZSBpcyBtYXJrZWQgZm9yIEZNT0RFX0FUT01JQ19QT1MsIGFuZCBp
+dCBjYW4gYmUKKyAqIGFjY2Vzc2VkIG11bHRpcGxlIHdheXMuCisgKgorICogQWx3YXlzIGRvIGl0
+IGZvciBkaXJlY3RvcmllcywgYmVjYXVzZSBwaWRmZF9nZXRmZCgpCisgKiBjYW4gbWFrZSBhIGZp
+bGUgYWNjZXNzaWJsZSBldmVuIGlmIGl0IG90aGVyd2lzZSB3b3VsZAorICogbm90IGJlLCBhbmQg
+Zm9yIGRpcmVjdG9yaWVzIHRoaXMgaXMgYSBjb3JyZWN0bmVzcworICogaXNzdWUsIG5vdCBhICJQ
+T1NJWCByZXF1aXJlbWVudCIuCisgKi8KK3N0YXRpYyBpbmxpbmUgYm9vbCBmaWxlX25lZWRzX2Zf
+cG9zX2xvY2soc3RydWN0IGZpbGUgKmZpbGUpCit7CisJcmV0dXJuIChmaWxlLT5mX21vZGUgJiBG
+TU9ERV9BVE9NSUNfUE9TKSAmJgorCQkoZmlsZV9jb3VudChmaWxlKSA+IDEgfHwgU19JU0RJUihm
+aWxlX2lub2RlKGZpbGUpLT5pX21vZGUpKTsKK30KKwogdW5zaWduZWQgbG9uZyBfX2ZkZ2V0X3Bv
+cyh1bnNpZ25lZCBpbnQgZmQpCiB7CiAJdW5zaWduZWQgbG9uZyB2ID0gX19mZGdldChmZCk7CiAJ
+c3RydWN0IGZpbGUgKmZpbGUgPSAoc3RydWN0IGZpbGUgKikodiAmIH4zKTsKIAotCWlmIChmaWxl
+ICYmIChmaWxlLT5mX21vZGUgJiBGTU9ERV9BVE9NSUNfUE9TKSkgeworCWlmIChmaWxlICYmIGZp
+bGVfbmVlZHNfZl9wb3NfbG9jayhmaWxlKSkgewogCQl2IHw9IEZEUFVUX1BPU19VTkxPQ0s7CiAJ
+CW11dGV4X2xvY2soJmZpbGUtPmZfcG9zX2xvY2spOwogCX0K
+--000000000000e529550602090d09--
