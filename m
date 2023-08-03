@@ -2,230 +2,179 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6FA7D76E6BE
-	for <lists+stable@lfdr.de>; Thu,  3 Aug 2023 13:23:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CA97D76E815
+	for <lists+stable@lfdr.de>; Thu,  3 Aug 2023 14:22:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235508AbjHCLXK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 3 Aug 2023 07:23:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58878 "EHLO
+        id S233050AbjHCMW0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 3 Aug 2023 08:22:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36600 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234686AbjHCLXJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 3 Aug 2023 07:23:09 -0400
-Received: from mail-pl1-x62d.google.com (mail-pl1-x62d.google.com [IPv6:2607:f8b0:4864:20::62d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F5D2127
-        for <stable@vger.kernel.org>; Thu,  3 Aug 2023 04:23:08 -0700 (PDT)
-Received: by mail-pl1-x62d.google.com with SMTP id d9443c01a7336-1bba54f7eefso13352985ad.1
-        for <stable@vger.kernel.org>; Thu, 03 Aug 2023 04:23:08 -0700 (PDT)
+        with ESMTP id S232809AbjHCMW0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 3 Aug 2023 08:22:26 -0400
+Received: from mail-wm1-x336.google.com (mail-wm1-x336.google.com [IPv6:2a00:1450:4864:20::336])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 74CBB30FD
+        for <stable@vger.kernel.org>; Thu,  3 Aug 2023 05:22:20 -0700 (PDT)
+Received: by mail-wm1-x336.google.com with SMTP id 5b1f17b1804b1-3fe1a17f983so8904565e9.3
+        for <stable@vger.kernel.org>; Thu, 03 Aug 2023 05:22:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20221208.gappssmtp.com; s=20221208; t=1691061787; x=1691666587;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=5ueiVRg4ytOKqJ73ZKkEwKyH1jt9uwltvMlpDvx9iew=;
-        b=rIHjFrUUnxD7xuiqROUnM1Oomzkqpi1tDfFWkIxVGnDIQlTTG+74j567qKrXhqpXZ7
-         zbgCduSFMuShm7IfZXPYP5LsyF/Vx0ZPupyyM1mgK4eP+qAJnjf9Apvy2ksCA+dOIYtz
-         m9MM0Pei8W1koWv3fTyDQMx2B52edeLEWoYeTAUsYgQpNCxVz1uKnhtn0Ecb3Gd2NAfn
-         yBdmeVgf6bseElev6A43yMFvLG+8TTaqIRQrmtQS3n4+KcDlHGRrh45ZHMoFUInCRrXW
-         ttZDNhDyDknIUiDx+PCqqrStrHlHkdKXk/wTLDgp/vUH5R/zQ97duV1h33Y+Rmaa/Bwg
-         OQ9A==
+        d=6wind.com; s=google; t=1691065339; x=1691670139;
+        h=content-transfer-encoding:in-reply-to:organization:from:references
+         :cc:to:content-language:subject:reply-to:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=hfUyjLKR9zqnE1r8gBdpyN/vaCW8ir0mogXFyginmbU=;
+        b=h45lt3W2BlkLG6VEWJQiLlu9p6Ogm1Tehn6GOJUQbKPNtw5d6t2fnLEa9f/b7scdIo
+         yAhds76OH8DGQnFeAehP6rLtgKlThoBBr+LAfuwhhqLhGXtc8QkeLneffEi7+j1uTXnU
+         TFEvJ1obyyyJbDcbG/pG94wW6AKRjBF6hclhoED6OCGTPcHycBMjemkBTEisb5QLLJIG
+         SoIqgYKjoNCYehi50wNHbGO5Z5s5T7EpYUNyol21nHqha9D/iUvsx1hNFqxFhNU5vRct
+         F7mTwtxAgdHQimjz08PrFU4XeJORlWHi1e4TmXrFCtgVMScdm81n4RRPkZoGODZWeCTc
+         WJ5w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691061787; x=1691666587;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=5ueiVRg4ytOKqJ73ZKkEwKyH1jt9uwltvMlpDvx9iew=;
-        b=btT0hRxxANs2JiqdUDfFW8e+zcXJlQv/iyn2hBsF1kFgI65wuVtyIavfybJ69kCf4Q
-         CaAzSN1x5OQzTVIwQDYJqI2A3VO8PrzVBGe4yxgPx4XD+B6WHHaluD0lVI62+DYV/l6L
-         BQSgTChuddn3vOugdsOs3n+5pt5hW3Mq/2NjCE9USOJ4BVK9ICtTD044uEnNt0a8o3ti
-         ti2rp/B74iosWfn3p3iFsJnR2W58IEHWFdbM7Upl8FRLtcKlPqy4kpkHJrql1ZzDts0M
-         n8oDL6+KCd4GIjAuy7C3NT9hRlWbOZ2JVF5hbLbKQLzA/+m23e1ZkKRviU+gS14QOoWD
-         K7sA==
-X-Gm-Message-State: ABy/qLaJsTxwRv2nWPCtEdfauGDj+tfD4pA/Jv5K3AfkVNew1LClxK6U
-        7H3aDcKXGxrMj6Qy/io9UVqVmiJnZ6tb77Ad/MTKBA==
-X-Google-Smtp-Source: APBJJlH40EMXv9Clh7l7xZmL+Jn8rLTiko8bF4odm0IYFJov6KyxhCoBg8/GIx68DdKNEqSq/VNTQg==
-X-Received: by 2002:a17:902:dacf:b0:1bb:c9e3:6d4f with SMTP id q15-20020a170902dacf00b001bbc9e36d4fmr25589616plx.10.1691061787359;
-        Thu, 03 Aug 2023 04:23:07 -0700 (PDT)
-Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id jn13-20020a170903050d00b001b895a17429sm14153183plb.280.2023.08.03.04.23.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 03 Aug 2023 04:23:06 -0700 (PDT)
-Message-ID: <64cb8e1a.170a0220.78964.c185@mx.google.com>
-Date:   Thu, 03 Aug 2023 04:23:06 -0700 (PDT)
-Content-Type: text/plain; charset="utf-8"
+        d=1e100.net; s=20221208; t=1691065339; x=1691670139;
+        h=content-transfer-encoding:in-reply-to:organization:from:references
+         :cc:to:content-language:subject:reply-to:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=hfUyjLKR9zqnE1r8gBdpyN/vaCW8ir0mogXFyginmbU=;
+        b=PCfKNer2raG+7Zmg8zoudxvgJOfE6o8mnDOr7lzi0Y8vWeAYXlWb5C1BnFrVSUqos6
+         PYpoekqw4EmaDWBsueRLFcfcLOWIQXEWrks3lzS6CMY65XKlUKntkelbPBIgVXBSjBmf
+         q2WZZrM9bPtdAEMjh5LWbUoNoIxL7Fr/igJB6Ulj5rPPZ1Qz/6IeQ2jlCrE9r0nguT+H
+         +1aRyrdhX09B5RABsmbTzpPiSr+3UBx6gvDHlAGOKRytP827cx4BbCwGAB9ZpRQfmol6
+         9R2Pws095o18Q9tCiajDZDVYQIpZPvFsUktc9lU0wyJTuVPlLnBETNnSmIJ0heAJWAdy
+         el0Q==
+X-Gm-Message-State: ABy/qLYkyKMKvgTmc8lki4BXSLPPP8nlGK2JTE4EIKTFpGWNdwSeAljV
+        6Qtq3Rlg6v4wqCMpqpj6Q1zZjA==
+X-Google-Smtp-Source: APBJJlFKXKgGDnku3ZhcHlVfR+fUHsQLPft2WmmXlYbmAMrFjvpbH0tWvSV3PKfBYevXRIuDjtN+hA==
+X-Received: by 2002:a5d:61cd:0:b0:313:f347:eea0 with SMTP id q13-20020a5d61cd000000b00313f347eea0mr6407533wrv.60.1691065338783;
+        Thu, 03 Aug 2023 05:22:18 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:b41:c160:715:a86c:f2f5:a28? ([2a01:e0a:b41:c160:715:a86c:f2f5:a28])
+        by smtp.gmail.com with ESMTPSA id h16-20020adffa90000000b0031423a8f4f7sm21715656wrr.56.2023.08.03.05.22.17
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 03 Aug 2023 05:22:18 -0700 (PDT)
+Message-ID: <62a8762c-40b4-f03f-ca8f-13d33db84f10@6wind.com>
+Date:   Thu, 3 Aug 2023 14:22:17 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Report-Type: build
-X-Kernelci-Kernel: v5.10.188
-X-Kernelci-Tree: stable-rc
-X-Kernelci-Branch: linux-5.10.y
-Subject: stable-rc/linux-5.10.y build: 19 builds: 0 failed, 19 passed,
- 5 warnings (v5.10.188)
-To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
-        kernelci-results@groups.io
-From:   "kernelci.org bot" <bot@kernelci.org>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Reply-To: nicolas.dichtel@6wind.com
+Subject: Re: [PATCH net v2] net: handle ARPHRD_PPP in dev_is_mac_header_xmit()
+Content-Language: en-US
+To:     Guillaume Nault <gnault@redhat.com>
+Cc:     "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Eric Dumazet <edumazet@google.com>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Alexei Starovoitov <ast@kernel.org>,
+        John Fastabend <john.fastabend@gmail.com>,
+        netdev@vger.kernel.org, bpf@vger.kernel.org,
+        stable@vger.kernel.org, Siwar Zitouni <siwar.zitouni@6wind.com>
+References: <20230802122106.3025277-1-nicolas.dichtel@6wind.com>
+ <ZMtpSdLUQx2A6bdx@debian> <34f246ba-3ebc-1257-fe8d-5b7e0670a4a6@6wind.com>
+ <ZMuI5mxR704O9nDq@debian>
+From:   Nicolas Dichtel <nicolas.dichtel@6wind.com>
+Organization: 6WIND
+In-Reply-To: <ZMuI5mxR704O9nDq@debian>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-stable-rc/linux-5.10.y build: 19 builds: 0 failed, 19 passed, 5 warnings (v=
-5.10.188)
+Le 03/08/2023 à 13:00, Guillaume Nault a écrit :
+> On Thu, Aug 03, 2023 at 11:37:00AM +0200, Nicolas Dichtel wrote:
+>> Le 03/08/2023 à 10:46, Guillaume Nault a écrit :
+>>> On Wed, Aug 02, 2023 at 02:21:06PM +0200, Nicolas Dichtel wrote:
+>>>> This kind of interface doesn't have a mac header.
+>>>
+>>> Well, PPP does have a link layer header.
+>> It has a link layer, but not an ethernet header.
+> 
+> This is generic code. The layer two protocol involved doesn't matter.
+> What matter is that the device requires a specific l2 header.
+Ok. Note, that addr_len is set to 0 for these devices:
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/net/ppp/ppp_generic.c#n1614
 
-Full Build Summary: https://kernelci.org/build/stable-rc/branch/linux-5.10.=
-y/kernel/v5.10.188/
+> 
+>>> Do you instead mean that PPP automatically adds it?
+>>>
+>>>> This patch fixes bpf_redirect() to a ppp interface.
+>>>
+>>> Can you give more details? Which kind of packets are you trying to
+>>> redirect to PPP interfaces?
+>> My ebpf program redirect an IP packet (eth / ip) from a physical ethernet device
+>> at ingress to a ppp device at egress.
+> 
+> So you're kind of bridging two incompatible layer two protocols.
+> I see no reason to be surprised if that doesn't work out of the box.
+I don't see the difference with a gre or ip tunnel. This kind of "bridging" is
+supported.
 
-Tree: stable-rc
-Branch: linux-5.10.y
-Git Describe: v5.10.188
-Git Commit: 3602dbc57b556eff2456715301d35a1ef8964bba
-Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
-e-rc.git
-Built: 7 unique architectures
+> 
+>> In this case, the bpf_redirect() function
+>> should remove the ethernet header from the packet before calling the xmit ppp
+>> function.
+> 
+> That's what you need for your specific use case, not necessarily what
+> the code "should" do.
+At least, it was my understanding of bpf_redirect() (:
 
-Warnings Detected:
+> 
+>> Before my patch, the ppp xmit function adds a ppp header (protocol IP
+>> / 0x0021) before the ethernet header. It results to a corrupted packet. After
+>> the patch, the ppp xmit function encapsulates the IP packet, as expected.
+> 
+> The problem is to treat the PPP link layer differently from the
+> Ethernet one.
+> 
+> Just try to redirect PPP frames to an Ethernet device. The PPP l2
+> header isn't going to be stripped, and no Ethernet header will be
+> automatically added.
+> 
+> Before your patch, bridging incompatible L2 protocols just didn't work.
+> After your patch, some combinations work, some don't, Ethernet is
+> handled in one way, PPP in another way. And these inconsistencies are
+> exposed to user space. That's the problem I have with this patch.
+> 
+>>> To me this looks like a hack to work around the fact that
+>>> ppp_start_xmit() automatically adds a PPP header. Maybe that's the
+>> It's not an hack, it works like for other kind of devices managed by the
+>> function bpf_redirect() / dev_is_mac_header_xmit().
+> 
+> I don't think the users of dev_is_mac_header_xmit() (BPF redirect and
+> TC mirred) actually work correctly with any non-Ethernet l2 devices.
+> L3 devices are a bit different because we can test if an skb has a
+> zero-length l2 header.
+> 
+>> Hope it's more clear.
+> 
+> Let me be clearer too. As I said, this patch may be the best we can do.
+> Making a proper l2 generic BPF-redirect/TC-mirred might require too
+> much work for the expected gain (how many users of non-Ethernet l2
+> devices are going to use this). But at least we should make it clear in
+> the commit message and in the code why we're finding it convenient to
+> treat PPP as an l3 device. Like
+> 
+> +	/* PPP adds its l2 header automatically in ppp_start_xmit().
+> +	 * This makes it look like an l3 device to __bpf_redirect() and
+> +	 * tcf_mirred_init().
+> +	 */
+> +	case ARPHRD_PPP:
+I better understand your point with this comment, I can add it, no problem.
+But I fail to see why it is different from a L3 device. ip, gre, etc. tunnels
+also add automatically another header (ipip.c has dev->addr_len configured to 4,
+ip6_tunnels.c to 16, etc.).
+A tcpdump on the physical output interface shows the same kind of packets (the
+outer hdr (ppp / ip / etc.) followed by the encapsulated packet and a tcpdump on
+the ppp or ip tunnel device shows only the inner packet.
 
-arc:
+Without my patch, a redirect from a ppp interface to another ppp interface would
+have the same problem.
 
-arm64:
-
-arm:
-
-i386:
-
-mips:
-    32r2el_defconfig (gcc-10): 1 warning
-
-riscv:
-    rv32_defconfig (gcc-10): 4 warnings
-
-x86_64:
-
-
-Warnings summary:
-
-    4    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [=
--Wcpp]
-    4    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemente=
-d [-Wcpp]
-    2    WARNING: modpost: Symbol info of vmlinux is missing. Unresolved sy=
-mbol check will be entirely skipped.
-
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D
-
-Detailed per-defconfig build reports:
-
----------------------------------------------------------------------------=
------
-32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sect=
-ion mismatches
-
-Warnings:
-    WARNING: modpost: Symbol info of vmlinux is missing. Unresolved symbol =
-check will be entirely skipped.
-
----------------------------------------------------------------------------=
------
-allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
-n mismatches
-
----------------------------------------------------------------------------=
------
-allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
-mismatches
-
----------------------------------------------------------------------------=
------
-defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warn=
-ings, 0 section mismatches
-
----------------------------------------------------------------------------=
------
-haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
- section mismatches
-
----------------------------------------------------------------------------=
------
-i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
-on mismatches
-
----------------------------------------------------------------------------=
------
-imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-nommu_k210_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, =
-0 section mismatches
-
----------------------------------------------------------------------------=
------
-omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-rv32_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 sect=
-ion mismatches
-
-Warnings:
-    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [-Wcpp]
-    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemented [-W=
-cpp]
-    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [-Wcpp]
-    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemented [-W=
-cpp]
-
----------------------------------------------------------------------------=
------
-tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section=
- mismatches
-
----------------------------------------------------------------------------=
------
-vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig+x86-chromebook (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, =
-0 warnings, 0 section mismatches
-
----
-For more info write to <info@kernelci.org>
+Regards,
+Nicolas
