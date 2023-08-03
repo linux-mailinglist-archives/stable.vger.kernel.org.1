@@ -2,117 +2,117 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C515D76EC25
-	for <lists+stable@lfdr.de>; Thu,  3 Aug 2023 16:16:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5419B76EC29
+	for <lists+stable@lfdr.de>; Thu,  3 Aug 2023 16:17:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235603AbjHCOQB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 3 Aug 2023 10:16:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34068 "EHLO
+        id S234788AbjHCORu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 3 Aug 2023 10:17:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35056 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235014AbjHCOP5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 3 Aug 2023 10:15:57 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E614A1723;
-        Thu,  3 Aug 2023 07:15:49 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6A58F61DBE;
-        Thu,  3 Aug 2023 14:15:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2B12C433C8;
-        Thu,  3 Aug 2023 14:15:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1691072148;
-        bh=Lm8PKJ8BsqNaM2RoQstWok5V7en/KohpIijSZJ2qF44=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=eZauymS7r7QE4V7r8ZupCG1iNiZ16l1BZ5Z6XhmTm4cEi48urCXXfb22mDNCMblz2
-         29dNYzk0V9ZVlU9gRwC/IFNgshNCJ9OMpvrYJ0UXa4S6YtxAJbdW+HO77Nw3kNbk/b
-         3pg0lo+m72U68JqNCeGmxGSm4TC2sldrdYdeQdqTZxijDEp+/H8CtgAE1ftiKHBkSR
-         4qfqNtCOhmcoGyEWSIN90pPSrzyp0U6oJJorUkzM2xh835HaiBwjd6KX6W5OHg/nhN
-         u3BXkBo9L3pjUM1292xFxayaJumr6bfsmRf9GDhV2O3uPmqfMLpgrQv7An51orfAID
-         mtgxwwfhfc6rA==
-Date:   Thu, 3 Aug 2023 16:15:43 +0200
-From:   Christian Brauner <brauner@kernel.org>
-To:     Mateusz Guzik <mjguzik@gmail.com>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        Jens Axboe <axboe@kernel.dk>, Christoph Hellwig <hch@lst.de>,
-        Aleksa Sarai <cyphar@cyphar.com>,
-        Al Viro <viro@zeniv.linux.org.uk>,
-        Seth Forshee <sforshee@kernel.org>,
-        linux-fsdevel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] file: always lock position
-Message-ID: <20230803-segeln-hemmen-34df115b4914@brauner>
-References: <20230724-vfs-fdget_pos-v1-1-a4abfd7103f3@kernel.org>
- <CAHk-=whfJhag+iEscftpVq=dHTeL7rQopCvH+Pcs8vJHCGNvXQ@mail.gmail.com>
- <20230724-pyjama-papier-9e4cdf5359cb@brauner>
- <CAHk-=wj2XZqex6kzz7SbdVHwP9fFoOvHSzHj--0KuxyrVO+3-w@mail.gmail.com>
- <20230803095311.ijpvhx3fyrbkasul@f>
+        with ESMTP id S233993AbjHCORt (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 3 Aug 2023 10:17:49 -0400
+Received: from mail-pf1-x434.google.com (mail-pf1-x434.google.com [IPv6:2607:f8b0:4864:20::434])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33D2511B;
+        Thu,  3 Aug 2023 07:17:48 -0700 (PDT)
+Received: by mail-pf1-x434.google.com with SMTP id d2e1a72fcca58-686be28e1a8so704867b3a.0;
+        Thu, 03 Aug 2023 07:17:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1691072267; x=1691677067;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=eeZ0g3Pg1jlVI4GeXZe/av2+/magkTFnYFdTEYNZShw=;
+        b=htVanGTjwP4sE0bCDPRsLOkBLUqnl0uObcuqCOyCeYEzIxdK9ArChpvAVDfMlEACMw
+         MIQGOH+S9jOZl/UK4vdHHbMBcBfwC9qUpa5YGdsUm5z4dVSPNt4xn1/1I1qDuEaYY+Uw
+         N/BgZhUYUxjpO4D3crHYPjnmhv1jj2MQPNr8QV2pUgtp6gDKSE823vimEkYe8CsRHS73
+         lby1P1hMlMMteIrdq5gfPAcdahgdRZF4c8+QFFlupLOFL/ArDtkxV8Q4AvcmC/OLdrC5
+         ZxRp8pu5fGG8I8N/W7hG7DkvjcLmiDUhRbBgdpLHV1E0ZuHJna5b7Y0/dwuryCWfhkk2
+         8KqQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1691072267; x=1691677067;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=eeZ0g3Pg1jlVI4GeXZe/av2+/magkTFnYFdTEYNZShw=;
+        b=bb5Vf25Pg89XHcfSgTk5su61XV7ehjAlVtuf1vTe1u2PcNoqkDmWWWhmxqnaLib9he
+         uPQzdasHd3w5Iz6svuKF46C0Mc7SWJcM0YdjHdeta8defwhBhQs7bOjbm+MNfKEoFXcf
+         8nkPsmSra31Va99xbNueQvJfovFECB/uVqjDYNYbw9Sjer3H6s0N5kxUSZuoqjxKz16N
+         eNNFFbNdaKW3f7lzdxkUg1CmxemR7c3tdbMuwtZxhSczBmNg4Xr/vjyuhVtGKc3hKNcA
+         gzKlnUfxQWfRqb+Sl+Mksz1djdi82Eb6XEumGUD2Fb1COnil8LbpzaIaZf0vsbl+xTmj
+         1dmw==
+X-Gm-Message-State: ABy/qLauzuxeaxG6eFo8KwfKDqAd7yhV20WJihOOSSOz9RqcZ6vsP/eo
+        WQ1ObAIpnO3LmI5EHbSIjRU=
+X-Google-Smtp-Source: APBJJlGAOe03snGL2p0G0H/z6QCt91mhrpXIvEiDb4tF/KKoByHXUoRLi2Qvsb4BXeizxgSM+5TXJw==
+X-Received: by 2002:a05:6a21:4882:b0:134:2fd0:73d6 with SMTP id av2-20020a056a21488200b001342fd073d6mr16522360pzc.31.1691072267500;
+        Thu, 03 Aug 2023 07:17:47 -0700 (PDT)
+Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id y13-20020a63ad4d000000b00564b313d526sm28827pgo.54.2023.08.03.07.17.45
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 03 Aug 2023 07:17:46 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Message-ID: <874c28aa-63da-df09-e44d-c6079771606b@roeck-us.net>
+Date:   Thu, 3 Aug 2023 07:17:45 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20230803095311.ijpvhx3fyrbkasul@f>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH 6.1 000/225] 6.1.43-rc2 review
+Content-Language: en-US
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
+References: <20230802065510.869511253@linuxfoundation.org>
+ <e5e1bccd-8e73-43c6-bc7c-052428e7c3d3@roeck-us.net>
+ <2023080308-mountain-gyration-06ff@gregkh>
+From:   Guenter Roeck <linux@roeck-us.net>
+In-Reply-To: <2023080308-mountain-gyration-06ff@gregkh>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        NICE_REPLY_A,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, Aug 03, 2023 at 11:53:11AM +0200, Mateusz Guzik wrote:
-> On Mon, Jul 24, 2023 at 09:59:15AM -0700, Linus Torvalds wrote:
-> > I really hate making the traditional unix single-threaded file
-> > descriptor case take that lock.
-> > 
-> > Maybe it doesn't matter. Obviously it can't have contention, and your
-> > patch in that sense is pretty benign.
-> > 
-> > But locking is just fundamentally expensive in the first place, and it
-> > annoys me that I never realized that pidfd_getfd() did that thing that
-> > I knew was broken for /proc.
-> > 
+On 8/3/23 00:32, Greg Kroah-Hartman wrote:
+> On Wed, Aug 02, 2023 at 04:18:19PM -0700, Guenter Roeck wrote:
+>> On Wed, Aug 02, 2023 at 09:41:55AM +0200, Greg Kroah-Hartman wrote:
+>>> This is the start of the stable review cycle for the 6.1.43 release.
+>>> There are 225 patches in this series, all will be posted as a response
+>>> to this one.  If anyone has any issues with these being applied, please
+>>> let me know.
+>>>
+>>> Responses should be made by Fri, 04 Aug 2023 06:54:28 +0000.
+>>> Anything received after that time might be too late.
+>>>
+>>
+>> Build results:
+>> 	total: 157 pass: 157 fail: 0
+>> Qemu test results:
+>> 	total: 521 pass: 519 fail: 2
+>> Failed tests:
+>> 	arm:fuji-bmc:aspeed_g5_defconfig:notests:mem1G:mtd128,0,8,1:net,nic:aspeed-bmc-facebook-fuji:rootfs
+>> 	arm:bletchley-bmc,fmc-model=mt25qu02g,spi-model=mt25qu02g:aspeed_g5_defconfig:notests:mem1G:mtd256:net,nic:aspeed-bmc-facebook-bletchley:rootfs
+>>
+>> The failed tests crash while attempting to boot from a f2fs root file
+>> system, suggesting that f2fs support may be broken.
 > 
-> So I got curious what the impact is and checked on quite a modern CPU
-> (Sapphire Rapid), so nobody can claim it's some old yeller and atomics
-> are nowhere near as expensive on modern uarchs.
+> Thanks for letting me know.  I've now dropped the f2fs patches from this
+> queue.
 > 
-> I used read1_processes from will-it-scale -- it is doing 4KB reads at a
-> time over a 1MB file and dodges refing the file, but it does not dodge
-> the lock with the patch at hand.
-> 
-> In short, I got a drop of about 5% (~5778843 -> ~5500871 ops/s).
-> 
-> The kernel was patched with a toggle to force or elide the proposed
-> mandatory locking, like so:
-> @@ -1042,8 +1044,10 @@ unsigned long __fdget_pos(unsigned int fd)
->         struct file *file = (struct file *)(v & ~3);
-> 
->         if (file && (file->f_mode & FMODE_ATOMIC_POS)) {
-> -               v |= FDPUT_POS_UNLOCK;
-> -               mutex_lock(&file->f_pos_lock);
-> +               if (file_count(file) > 1 || fdget_pos_mutex) {
-> +                       v |= FDPUT_POS_UNLOCK;
-> +                       mutex_lock(&file->f_pos_lock);
-> +               }
->         }
->         return v;
->  }
-> 
-> I got rather unstable single-threaded perf, going up and down several %
-> between runs, I don't know yet what's that about. But toggling back and
 
-We've had the whole lkp intel performance testsuite run on this for a
-long time to see whether there any performance regressions that aren't
-in the noise. This includes all of will-it-scale. Also with a focus on
-single-thread performance. So I'm a little skeptical about the
-reliability of manual performance runs in comparison.
+Confirmed that v6.1.43 does not have the problem.
 
-If Linus thinks it matters then I think we should only take the
-f_pos_lock unconditionally on directory fds as this is where it really
-matters. For read/write we're only doing it because of posix anyway and
-using pidfd_getfd() is squarely out of posix anyway. So we can document
-that using pidfd_getfd() on a regular file descriptor outside of a
-seccomp stopped task is not recommended.
+Thanks,
+Guenter
+
+
