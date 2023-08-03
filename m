@@ -2,60 +2,64 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8E85D76F369
-	for <lists+stable@lfdr.de>; Thu,  3 Aug 2023 21:30:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 58AEF76F3D2
+	for <lists+stable@lfdr.de>; Thu,  3 Aug 2023 22:05:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230082AbjHCTau (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 3 Aug 2023 15:30:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33174 "EHLO
+        id S231689AbjHCUFN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 3 Aug 2023 16:05:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42048 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229495AbjHCTat (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 3 Aug 2023 15:30:49 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 35CCE1A8
-        for <stable@vger.kernel.org>; Thu,  3 Aug 2023 12:30:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1691091048; x=1722627048;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=vkY5TWdxdxL2u8+kTBBSiCpR/KBiDNmODuJIoeh+zrQ=;
-  b=X2eHZyDwamAvBL+59RlQdvuMF/1UZIKQDHOdkRm6iA8KVW6lSJVBsqjq
-   LcekshEltQdPCkALs0YVFv4avh6Rq54YqpzmZB13sm34xn74BtGeDMohC
-   42bc8vNXc0/GCzRP3BJHuNo/Dus5ieE/MzJuI1OdD/Jrgz/tWHo7Pkc7l
-   lHGepc/sz0FXHSkhtp0Vf1GBSzayvGrFFLhnYWUDXpWLhT2MBjqRbdBQW
-   1vhe7nhH5uAyeFqFAYiEJ+lSoPkn6+xcoHSBrNxlPpfOLtg+W72RpTLeF
-   3F6iNCkZAkoTrC8p6W7aNljussTR1iuRrRWqrauJvWrq5dfdkt3AJ/WtI
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10791"; a="360032534"
-X-IronPort-AV: E=Sophos;i="6.01,252,1684825200"; 
-   d="scan'208";a="360032534"
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Aug 2023 12:30:47 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10791"; a="976250232"
-X-IronPort-AV: E=Sophos;i="6.01,252,1684825200"; 
-   d="scan'208";a="976250232"
-Received: from lkp-server01.sh.intel.com (HELO d1ccc7e87e8f) ([10.239.97.150])
-  by fmsmga006.fm.intel.com with ESMTP; 03 Aug 2023 12:30:46 -0700
-Received: from kbuild by d1ccc7e87e8f with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1qRe21-0002JX-2b;
-        Thu, 03 Aug 2023 19:30:45 +0000
-Date:   Fri, 4 Aug 2023 03:29:53 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Hardik Garg <hargar@linux.microsoft.com>
-Cc:     stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH 6.1 5.15] net/mlx5: Free irqs only on shutdown callback
-Message-ID: <ZMwAMamINBvdL4XC@11d7ca01dc46>
+        with ESMTP id S229867AbjHCUFL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 3 Aug 2023 16:05:11 -0400
+Received: from mail-il1-x129.google.com (mail-il1-x129.google.com [IPv6:2607:f8b0:4864:20::129])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3CD9F30FD
+        for <stable@vger.kernel.org>; Thu,  3 Aug 2023 13:05:10 -0700 (PDT)
+Received: by mail-il1-x129.google.com with SMTP id e9e14a558f8ab-348c6696960so4878855ab.2
+        for <stable@vger.kernel.org>; Thu, 03 Aug 2023 13:05:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1691093109; x=1691697909;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=r70XE7tntpu/9iC4HC9hoUyClzm7YEMBlDPVVBgQ5D0=;
+        b=h0875WuCpv+YXLBkdLyMBF1S1IpId9+F/SK55g4IhbqBcWvhO3A0klMWkHGYIPnjVL
+         VRBZyU/33Xx1EMFdgjzueYZ6jXKRdDI37sn2MeEgahVaAO9h/e3ZS4BHDJcrM0MVoYGa
+         d+uZHPfLSHnaAxUBgaBjHlm9jx+emEfZhQg6FXasoO8XnKG7JrZ44zDsQh145NBi8NV/
+         3pNdVWIt1WpPfnNlTxykSPypYhCTQh83kPi5/SFKrgMP25rOXe+PLREswcGs7Oxh6GPe
+         A+fP8Ag5AWaosgOPBP2rhQbqt8avFL7VZ3XNX7UjdnIhzygZHFbncXPnwtF7vWJpCAu4
+         +uhA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1691093109; x=1691697909;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=r70XE7tntpu/9iC4HC9hoUyClzm7YEMBlDPVVBgQ5D0=;
+        b=AJPT3l3dQfk4OO34+eGyn8AxRajJSM/46rMirzt/jBcavlWOqTcgXqgrnLtH9cuY3a
+         eVSkmluqmtAXe/O59uVUspHNq8xn19VXrhKREaCKnrtt8fwi1++DZG5JtuWmgKlYpXCF
+         T7UFIrcLppt4QTZ80Q8T0S8Gfb+VkWpaY/WrJFu/8B0PX8RbTzNp7qW0Uc/tmINlMPzf
+         h8uZoe9d5mOmYmGn+EtCV9XbgQgmNjRFfsx0l/YzH2aPHPr8pmew/C+qHH5GBuDtr/F1
+         h/peU/KrhHH056G2XvWHaMKyhNopO112dsl/U2fFJ0jzh2v5uPut4K6tnmtuofuG7WR2
+         xHKg==
+X-Gm-Message-State: ABy/qLYP+62259JZELftc0mxOS0I6jUovfHIO8opzDKqMqQ3lVf15Vgq
+        rxcNTEk+tdDHcZo73z0cdxHweE3mLbL+vLIcGGE=
+X-Google-Smtp-Source: APBJJlELtFtZ+xKecGRC9U+2pyUmD6ccvIppnKww+wiS1OWFzPo5+FLKdsJ9nQGY8rAXZyk6hzZ4fw==
+X-Received: by 2002:a05:6e02:1d05:b0:348:9e12:13f8 with SMTP id i5-20020a056e021d0500b003489e1213f8mr20879585ila.27.1691093109338;
+        Thu, 03 Aug 2023 13:05:09 -0700 (PDT)
+Received: from localhost.localdomain (c-98-61-227-136.hsd1.mn.comcast.net. [98.61.227.136])
+        by smtp.gmail.com with ESMTPSA id r7-20020a028807000000b0042b56b57a50sm105779jai.171.2023.08.03.13.05.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 03 Aug 2023 13:05:08 -0700 (PDT)
+From:   Alex Elder <elder@linaro.org>
+To:     stable@vger.kernel.org
+Cc:     kuba@kernel.org, dianders@chromium.org, elder@kernel.org
+Subject: [PATCH] net: ipa: only reset hashed tables when supported
+Date:   Thu,  3 Aug 2023 15:05:06 -0500
+Message-Id: <20230803200506.282159-1-elder@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230803192832.22966-1-hargar@linux.microsoft.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -63,23 +67,103 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi,
+commit e11ec2b868af2b351c6c1e2e50eb711cc5423a10 upstream.
 
-Thanks for your patch.
+Last year, the code that manages GSI channel transactions switched
+from using spinlock-protected linked lists to using indexes into the
+ring buffer used for a channel.  Recently, Google reported seeing
+transaction reference count underflows occasionally during shutdown.
 
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
+Doug Anderson found a way to reproduce the issue reliably, and
+bisected the issue to the commit that eliminated the linked lists
+and the lock.  The root cause was ultimately determined to be
+related to unused transactions being committed as part of the modem
+shutdown cleanup activity.  Unused transactions are not normally
+expected (except in error cases).
 
-Rule: 'Cc: stable@vger.kernel.org' or 'commit <sha1> upstream.'
-Subject: [PATCH 6.1 5.15] net/mlx5: Free irqs only on shutdown callback
-Link: https://lore.kernel.org/stable/20230803192832.22966-1-hargar%40linux.microsoft.com
+The modem uses some ranges of IPA-resident memory, and whenever it
+shuts down we zero those ranges.  In ipa_filter_reset_table() a
+transaction is allocated to zero modem filter table entries.  If
+hashing is not supported, hashed table memory should not be zeroed.
+But currently nothing prevents that, and the result is an unused
+transaction.  Something similar occurs when we zero routing table
+entries for the modem.
 
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
+By preventing any attempt to clear hashed tables when hashing is not
+supported, the reference count underflow is avoided in this case.
 
-Please ignore this mail if the patch is not relevant for upstream.
+Note that there likely remains an issue with properly freeing unused
+transactions (if they occur due to errors).  This patch addresses
+only the underflows that Google originally reported.
 
+Fixes: d338ae28d8a8 ("net: ipa: kill all other transaction lists")
+Cc: <stable@vger.kernel.org>    # 6.1.x
+Tested-by: Douglas Anderson <dianders@chromium.org>
+Signed-off-by: Alex Elder <elder@linaro.org>
+---
+ drivers/net/ipa/ipa_table.c | 26 ++++++++++++++------------
+ 1 file changed, 14 insertions(+), 12 deletions(-)
+
+diff --git a/drivers/net/ipa/ipa_table.c b/drivers/net/ipa/ipa_table.c
+index 510ff2dc8999a..cd81dd916c29e 100644
+--- a/drivers/net/ipa/ipa_table.c
++++ b/drivers/net/ipa/ipa_table.c
+@@ -311,16 +311,15 @@ static int ipa_filter_reset(struct ipa *ipa, bool modem)
+ 	if (ret)
+ 		return ret;
+ 
+-	ret = ipa_filter_reset_table(ipa, IPA_MEM_V4_FILTER_HASHED, modem);
+-	if (ret)
+-		return ret;
+-
+ 	ret = ipa_filter_reset_table(ipa, IPA_MEM_V6_FILTER, modem);
++	if (ret || !ipa_table_hash_support(ipa))
++		return ret;
++
++	ret = ipa_filter_reset_table(ipa, IPA_MEM_V4_FILTER_HASHED, modem);
+ 	if (ret)
+ 		return ret;
+-	ret = ipa_filter_reset_table(ipa, IPA_MEM_V6_FILTER_HASHED, modem);
+ 
+-	return ret;
++	return ipa_filter_reset_table(ipa, IPA_MEM_V6_FILTER_HASHED, modem);
+ }
+ 
+ /* The AP routes and modem routes are each contiguous within the
+@@ -329,11 +328,12 @@ static int ipa_filter_reset(struct ipa *ipa, bool modem)
+  * */
+ static int ipa_route_reset(struct ipa *ipa, bool modem)
+ {
++	bool hash_support = ipa_table_hash_support(ipa);
+ 	struct gsi_trans *trans;
+ 	u16 first;
+ 	u16 count;
+ 
+-	trans = ipa_cmd_trans_alloc(ipa, 4);
++	trans = ipa_cmd_trans_alloc(ipa, hash_support ? 4 : 2);
+ 	if (!trans) {
+ 		dev_err(&ipa->pdev->dev,
+ 			"no transaction for %s route reset\n",
+@@ -350,12 +350,14 @@ static int ipa_route_reset(struct ipa *ipa, bool modem)
+ 	}
+ 
+ 	ipa_table_reset_add(trans, false, first, count, IPA_MEM_V4_ROUTE);
+-	ipa_table_reset_add(trans, false, first, count,
+-			    IPA_MEM_V4_ROUTE_HASHED);
+-
+ 	ipa_table_reset_add(trans, false, first, count, IPA_MEM_V6_ROUTE);
+-	ipa_table_reset_add(trans, false, first, count,
+-			    IPA_MEM_V6_ROUTE_HASHED);
++
++	if (hash_support) {
++		ipa_table_reset_add(trans, false, first, count,
++				    IPA_MEM_V4_ROUTE_HASHED);
++		ipa_table_reset_add(trans, false, first, count,
++				    IPA_MEM_V6_ROUTE_HASHED);
++	}
+ 
+ 	gsi_trans_commit_wait(trans);
+ 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
-
-
+2.34.1
 
