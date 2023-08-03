@@ -2,65 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E78B476E442
-	for <lists+stable@lfdr.de>; Thu,  3 Aug 2023 11:23:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 59A1076E4D2
+	for <lists+stable@lfdr.de>; Thu,  3 Aug 2023 11:44:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233143AbjHCJX5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 3 Aug 2023 05:23:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56868 "EHLO
+        id S233125AbjHCJos (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 3 Aug 2023 05:44:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37474 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231717AbjHCJX4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 3 Aug 2023 05:23:56 -0400
-Received: from mail-lf1-x12b.google.com (mail-lf1-x12b.google.com [IPv6:2a00:1450:4864:20::12b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 06C5C212B
-        for <stable@vger.kernel.org>; Thu,  3 Aug 2023 02:23:55 -0700 (PDT)
-Received: by mail-lf1-x12b.google.com with SMTP id 2adb3069b0e04-4fe07f0636bso1262954e87.1
-        for <stable@vger.kernel.org>; Thu, 03 Aug 2023 02:23:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=semihalf.com; s=google; t=1691054633; x=1691659433;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=DKE5RPCVa4ZdeYnCra9n15ebxdPiozynuD4jWbZ/+EU=;
-        b=Fl5doOIX4WD/qvdR+ht1Wd1QHAIDUlpDjXH/YRXlTANpbCIZ8AbkIE65tOb+ZaA1ol
-         DKcZeCM5YBmjp2AmbNLj9kGa0x8UIe9hfqfvK9hCWUdoEtvCaQgogCQRWmovC5PVcF/T
-         05xE9fzq2Pqlu55FnPXJ73/YS5Cn6r46OBJdLgLvbzDz1pYSw+XVECDU8VBRsOglZ83E
-         FBlQysam9VW5iHy1N44Xrzg5965F7mlwNQ+AMGxRa2xP0qUNbWkaeOzohS+8PCqX6T5P
-         dYzJtp7QPr+foHHCIGVSUSDreQsPxO9/Zi85C6H6U5mcQFOuO7LNKVgZjy1JzXbDHkrL
-         roVg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691054633; x=1691659433;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=DKE5RPCVa4ZdeYnCra9n15ebxdPiozynuD4jWbZ/+EU=;
-        b=l8j1xvR9HAJd26oMu6LfW+TYbrrufGfJGujT1RuYqeKNzJ8p2Dj5L/qJuH0MoAVBUC
-         s8kPid7TweowOTyHIwSO7Abxp8ATq9TOKHKeaRXAlo82pOPy68yTmFvSW7PpILDGxpom
-         8iniCnEdQNUy9jeDvehUVgLapYIJvuxhGD0QF8vh+NzU0ZBA83gyvwVWtQ0a0qPFM44R
-         y+mtmVyfLgyYLsBmav/3kf6P+D8Avd9x7qCXNlKKy4vyxcAPvOtB3wZA5Lt0L6RVfk0K
-         u4QVuxdiI5NMKrlV8D9JC0v3ON9u0NNNavCqzHNt6PYZHwfskhTaVAbBnffHMRmKU9PD
-         XjRg==
-X-Gm-Message-State: ABy/qLYjWfC4B0xUNnUz/V060PPdojMl6E/DVyaKVGp1HrzT/rJN6PHy
-        ATCuNlurJlIbU9GwgfVmoevPMA==
-X-Google-Smtp-Source: APBJJlGcKEvuwsZDe77Nz1Pb30gbPEvm1CNLmx3c4bRUnw9Q3s/GD77kQYFkTGOXIxrIYkh9KPUcsg==
-X-Received: by 2002:a05:6512:546:b0:4f6:6b:a43b with SMTP id h6-20020a056512054600b004f6006ba43bmr5967812lfl.52.1691054633058;
-        Thu, 03 Aug 2023 02:23:53 -0700 (PDT)
-Received: from lmajczak1-l.roam.corp.google.com ([83.142.187.84])
-        by smtp.gmail.com with ESMTPSA id q19-20020ac25293000000b004fe0ab60530sm3306750lfm.49.2023.08.03.02.23.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 03 Aug 2023 02:23:52 -0700 (PDT)
-From:   Lukasz Majczak <lma@semihalf.com>
-To:     David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>
-Cc:     Guenter Roeck <linux@roeck-us.net>, upstream@semihalf.com,
-        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
-        Lukasz Majczak <lma@semihalf.com>, stable@vger.kernel.org
-Subject: [PATCH] drm/dp_mst: Fix NULL deref in get_mst_branch_device_by_guid_helper()
-Date:   Thu,  3 Aug 2023 11:23:08 +0200
-Message-ID: <20230803092308.79197-1-lma@semihalf.com>
-X-Mailer: git-send-email 2.41.0.640.ga95def55d0-goog
+        with ESMTP id S234058AbjHCJoY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 3 Aug 2023 05:44:24 -0400
+Received: from out-97.mta1.migadu.com (out-97.mta1.migadu.com [IPv6:2001:41d0:203:375::61])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B80353ABA
+        for <stable@vger.kernel.org>; Thu,  3 Aug 2023 02:44:17 -0700 (PDT)
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+        t=1691055426;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=RlouW3YFFaE/nLb2+Vq4gYGLf7SAMMeK3fHcOrMathc=;
+        b=Iq5BYYTzPoX7wzAGlcfAU6i8bfZ48IHNR9scX3fZ3JjZHMOVGDLBumvd+MC+vTyN2P7EX9
+        qVM+3zLRX1z5torDBVd2X+c4r387ytyCgs04uCRGU9ba7AKgGhzezjvnviBV45+H/8zvOX
+        L1Cm6MpG77U/zromeIU7zCapfMOFFYA=
+From:   Guoqing Jiang <guoqing.jiang@linux.dev>
+To:     amir73il@gmail.com, djwong@kernel.org, dchinner@redhat.com,
+        yangx.jy@fujitsu.com
+Cc:     linux-xfs@vger.kernel.org, stable@vger.kernel.org
+Subject: [PATCH 5.10 0/2] Fix xfs/179 for 5.10 stable
+Date:   Thu,  3 Aug 2023 17:36:50 +0800
+Message-Id: <20230803093652.7119-1-guoqing.jiang@linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -69,69 +44,47 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Check mgr->mst_primary, before passing it to
-the get_mst_branch_device_by_guid_helper(), otherwise NULL dereference
-may occur in the call to memcpy() and cause:
+Hi,
 
-[12579.365869] BUG: kernel NULL pointer dereference, address: 0000000000000049
-[12579.365878] #PF: supervisor read access in kernel mode
-[12579.365880] #PF: error_code(0x0000) - not-present page
-[12579.365882] PGD 0 P4D 0
-[12579.365887] Oops: 0000 [#1] PREEMPT SMP NOPTI
-...
-[12579.365895] Workqueue: events_long drm_dp_mst_up_req_work
-[12579.365899] RIP: 0010:memcmp+0xb/0x29
-[12579.365921] Call Trace:
-[12579.365927] get_mst_branch_device_by_guid_helper+0x22/0x64
-[12579.365930] drm_dp_mst_up_req_work+0x137/0x416
-[12579.365933] process_one_work+0x1d0/0x419
-[12579.365935] worker_thread+0x11a/0x289
-[12579.365938] kthread+0x13e/0x14f
-[12579.365941] ? process_one_work+0x419/0x419
-[12579.365943] ? kthread_blkcg+0x31/0x31
-[12579.365946] ret_from_fork+0x1f/0x30
+With the two patches applied, xfs/179 can pass in 5.10.188. Otherwise I got
 
-Similar check is done in e.g: drm_dp_mst_topology_get_mstb_validated().
+[root@localhost xfstests]# ./check xfs/179
+FSTYP         -- xfs (non-debug)
+PLATFORM      -- Linux/x86_64 localhost 5.10.188-default #14 SMP Thu Aug 3 15:23:19 CST 2023
+MKFS_OPTIONS  -- -f /dev/loop1
+MOUNT_OPTIONS -- -o context=system_u:object_r:root_t:s0 /dev/loop1 /mnt/scratch
 
-Fixes: 5e93b8208d3c ("drm/dp/mst: move GUID storage from mgr, port to only mst branch")
-Cc: <stable@vger.kernel.org> # 4.14+
-Signed-off-by: Lukasz Majczak <lma@semihalf.com>
----
- drivers/gpu/drm/display/drm_dp_mst_topology.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+xfs/179 1s ... [failed, exit status 1]- output mismatch (see /root/xfstests/results//xfs/179.out.bad)
+    --- tests/xfs/179.out	2023-07-13 16:12:27.000000000 +0800
+    +++ /root/xfstests/results//xfs/179.out.bad	2023-08-03 16:55:38.173787911 +0800
+    @@ -8,3 +8,5 @@
+     Check scratch fs
+     Remove reflinked files
+     Check scratch fs
+    +xfs_repair fails
+    +(see /root/xfstests/results//xfs/179.full for details)
+    ...
+    (Run 'diff -u /root/xfstests/tests/xfs/179.out /root/xfstests/results//xfs/179.out.bad'  to see the entire diff)
 
-diff --git a/drivers/gpu/drm/display/drm_dp_mst_topology.c b/drivers/gpu/drm/display/drm_dp_mst_topology.c
-index ed96cfcfa304..703cd97b1d11 100644
---- a/drivers/gpu/drm/display/drm_dp_mst_topology.c
-+++ b/drivers/gpu/drm/display/drm_dp_mst_topology.c
-@@ -2595,19 +2595,19 @@ static struct drm_dp_mst_branch *
- drm_dp_get_mst_branch_device_by_guid(struct drm_dp_mst_topology_mgr *mgr,
- 				     const uint8_t *guid)
- {
--	struct drm_dp_mst_branch *mstb;
-+	struct drm_dp_mst_branch *mstb = NULL;
- 	int ret;
- 
- 	/* find the port by iterating down */
- 	mutex_lock(&mgr->lock);
--
--	mstb = get_mst_branch_device_by_guid_helper(mgr->mst_primary, guid);
--	if (mstb) {
--		ret = drm_dp_mst_topology_try_get_mstb(mstb);
--		if (!ret)
--			mstb = NULL;
-+	if (mgr->mst_primary) {
-+		mstb = get_mst_branch_device_by_guid_helper(mgr->mst_primary, guid);
-+		if (mstb) {
-+			ret = drm_dp_mst_topology_try_get_mstb(mstb);
-+			if (!ret)
-+				mstb = NULL;
-+		}
- 	}
--
- 	mutex_unlock(&mgr->lock);
- 	return mstb;
- }
+HINT: You _MAY_ be missing kernel fix:
+      b25d1984aa88 xfs: estimate post-merge refcounts correctly
+
+Ran: xfs/179
+Failures: xfs/179
+Failed 1 of 1 tests
+
+Please review if they are approriate for 5.10 stable.
+
+Thanks,
+Guoqing
+
+Darrick J. Wong (2):
+  xfs: hoist refcount record merge predicates
+  xfs: estimate post-merge refcounts correctly
+
+ fs/xfs/libxfs/xfs_refcount.c | 146 +++++++++++++++++++++++++++++++----
+ 1 file changed, 130 insertions(+), 16 deletions(-)
+
 -- 
-2.41.0.640.ga95def55d0-goog
+2.33.0
 
