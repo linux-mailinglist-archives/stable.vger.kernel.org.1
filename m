@@ -2,131 +2,157 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C861D76E388
-	for <lists+stable@lfdr.de>; Thu,  3 Aug 2023 10:47:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 23A1D76E41C
+	for <lists+stable@lfdr.de>; Thu,  3 Aug 2023 11:16:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232850AbjHCIrg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 3 Aug 2023 04:47:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35620 "EHLO
+        id S234271AbjHCJQq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 3 Aug 2023 05:16:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53174 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233753AbjHCIre (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 3 Aug 2023 04:47:34 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E744C1982
-        for <stable@vger.kernel.org>; Thu,  3 Aug 2023 01:46:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1691052368;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=B1cxWDb2x+ndU67pctL7lnvKXmzS7BnQj9Ld7SM44cY=;
-        b=PTwA/2eittG/I5l8I9Ao5UX4pQ38dQUTYSMXHMWABxzrOplnZhWptPyFoF9y9l4I4QKdUS
-        YMvAKvVaPCtK7ksWC3xYIrfyozB2zhoSs7+1QAfxKDgYZsIN4iMc0UG1tLB3Ev8Yq3177c
-        ARyY4Bj/l2L3arNnmDDEtfsyJvMw4QI=
-Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
- [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-523-wlQqUdgpPCay5JhlbeJy_w-1; Thu, 03 Aug 2023 04:46:07 -0400
-X-MC-Unique: wlQqUdgpPCay5JhlbeJy_w-1
-Received: by mail-qv1-f72.google.com with SMTP id 6a1803df08f44-63cceb8c21aso8256426d6.0
-        for <stable@vger.kernel.org>; Thu, 03 Aug 2023 01:46:07 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691052367; x=1691657167;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=B1cxWDb2x+ndU67pctL7lnvKXmzS7BnQj9Ld7SM44cY=;
-        b=XjDhnAvyjos0WKfP5IGUzMLY8kRgPGRmQ/uYSaGw64S4Piuf9YLI/Z5L5GxKWRqqx6
-         /f1RWwxko0lOavf469tCzUpTiYnyC5Kw2r6j7hFEEBlIKQPU4toBWO/YZ+1Ew0TzNNgD
-         Fq4y+YZeKPSegD7l4jxyrPK6VqYl/RDyET2o08Za5/nxqCi2aMWDmpPYn3sN+ZdVuDdf
-         dlLCYf0X06cej4OM7waCb9bUIj/F70E0YqEl1GmEsbDJAAnBXJy/msV6tTAlGmLTXaHI
-         SrblpYIkrI9iuyyd+4e5X81CTsZHNIm7bV8s7HBRnGKbSjiDOwLYgIcuiimWSK6LtMSb
-         4miA==
-X-Gm-Message-State: ABy/qLbek417HzP8yJPDdpUu9MDKvIazk4UxGDliZARMcxM+IXHGu1OX
-        u7hZvErv8lxEBRkODk9kzLq8R49PxDtOQnUv1UI+NJzg/4t1zRrgHDl5pQD0m+GaBMMLGdxDoD9
-        DNlTS89qtxDqtgFuD2dUy4ind
-X-Received: by 2002:a05:6214:e86:b0:63d:3d8:6d8 with SMTP id hf6-20020a0562140e8600b0063d03d806d8mr24282811qvb.28.1691052366950;
-        Thu, 03 Aug 2023 01:46:06 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlH6NZmrORM9rCMWYcM6pMH3vlSil7zGmArCAmNU+w3SZpSN6MIk0SsBfNnHcf4dt7iOKP131Q==
-X-Received: by 2002:a05:6214:e86:b0:63d:3d8:6d8 with SMTP id hf6-20020a0562140e8600b0063d03d806d8mr24282802qvb.28.1691052366707;
-        Thu, 03 Aug 2023 01:46:06 -0700 (PDT)
-Received: from debian ([2001:4649:fcb8:0:b011:aa0c:688c:1589])
-        by smtp.gmail.com with ESMTPSA id b4-20020a05620a118400b0076c71c1d2f5sm5012609qkk.34.2023.08.03.01.46.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 03 Aug 2023 01:46:06 -0700 (PDT)
-Date:   Thu, 3 Aug 2023 10:46:01 +0200
-From:   Guillaume Nault <gnault@redhat.com>
-To:     Nicolas Dichtel <nicolas.dichtel@6wind.com>
-Cc:     "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Eric Dumazet <edumazet@google.com>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Alexei Starovoitov <ast@kernel.org>,
-        John Fastabend <john.fastabend@gmail.com>,
-        netdev@vger.kernel.org, bpf@vger.kernel.org,
-        stable@vger.kernel.org, Siwar Zitouni <siwar.zitouni@6wind.com>
-Subject: Re: [PATCH net v2] net: handle ARPHRD_PPP in dev_is_mac_header_xmit()
-Message-ID: <ZMtpSdLUQx2A6bdx@debian>
-References: <20230802122106.3025277-1-nicolas.dichtel@6wind.com>
+        with ESMTP id S234133AbjHCJQo (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 3 Aug 2023 05:16:44 -0400
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DDB43AC;
+        Thu,  3 Aug 2023 02:16:42 -0700 (PDT)
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 373984vI026848;
+        Thu, 3 Aug 2023 09:16:07 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : from : to : cc : references : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=AfmvGrFBo+mjbonztvfWYLDiQ0svI+wbYuTjfBmylIU=;
+ b=HlLvaeFFlCsh6j8oHtIgalex0APZ0PaX7smmmU3dJpVPQHcljM2HnbL9SIkjgv/7uhUg
+ fnzdgkvnUiBNQk7ORIwAhuKERb+ZETn2boaHqbldWNNR31j8yidAfxZK9Z7h3BtjabIT
+ wu1f1hDLogzZNvflLaI4ZC8EI/VabVUzcabIEULZU5YFExbG2rde4knIM8iW/L3I06yb
+ q9tiUr41tyQkuubQ7ofF/mWGzfUiVEKUhC2pwyyuh4VyQmd2EF/wY8AEn6TeOCDeH4+9
+ zdfffie7Tja1/HM7NsXqtsPYemg7VAkmluT2sIw+3pGFpmBRbGNhdzqSufPeLTa5Y28J eg== 
+Received: from nasanppmta02.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3s7upp1gc3-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 03 Aug 2023 09:16:07 +0000
+Received: from nasanex01a.na.qualcomm.com (nasanex01a.na.qualcomm.com [10.52.223.231])
+        by NASANPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 3739G6pD011728
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 3 Aug 2023 09:16:06 GMT
+Received: from [10.201.2.96] (10.80.80.8) by nasanex01a.na.qualcomm.com
+ (10.52.223.231) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.30; Thu, 3 Aug
+ 2023 02:16:03 -0700
+Message-ID: <45649e51-7c89-24ea-cd99-4cc0e3dad71f@quicinc.com>
+Date:   Thu, 3 Aug 2023 14:46:00 +0530
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230802122106.3025277-1-nicolas.dichtel@6wind.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.7.0
+Subject: Re: [PATCH V2] firmware: qcom_scm: use the SCM_CONVENTION based on
+ ARM / ARM64
+From:   Kathiravan T <quic_kathirav@quicinc.com>
+To:     Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Elliot Berman <eberman@codeaurora.org>,
+        <linux-arm-msm@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+CC:     <quic_eberman@quicinc.com>, <stable@vger.kernel.org>
+References: <20230607045345.25049-1-quic_kathirav@quicinc.com>
+ <2f915104-952f-3e3d-b3d5-4c0400b4f331@quicinc.com>
+ <99084f51-f156-664b-cd69-51bf224674ac@quicinc.com>
+Content-Language: en-US
+In-Reply-To: <99084f51-f156-664b-cd69-51bf224674ac@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nasanex01a.na.qualcomm.com (10.52.223.231)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: Ue6prKWo0KgweRDRDHDs3iD_x_sXmSn2
+X-Proofpoint-ORIG-GUID: Ue6prKWo0KgweRDRDHDs3iD_x_sXmSn2
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-08-03_06,2023-08-01_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 clxscore=1011
+ malwarescore=0 spamscore=0 lowpriorityscore=0 mlxlogscore=999 bulkscore=0
+ impostorscore=0 priorityscore=1501 adultscore=0 mlxscore=0 phishscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2306200000
+ definitions=main-2308030081
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, Aug 02, 2023 at 02:21:06PM +0200, Nicolas Dichtel wrote:
-> This kind of interface doesn't have a mac header.
 
-Well, PPP does have a link layer header.
-Do you instead mean that PPP automatically adds it?
+On 7/14/2023 7:28 PM, Kathiravan T wrote:
+>
+> On 6/20/2023 11:43 AM, Kathiravan T wrote:
+>>
+>> On 6/7/2023 10:23 AM, Kathiravan T wrote:
+>>> During SCM probe, to identify the SCM convention, scm call is made with
+>>> SMC_CONVENTION_ARM_64 followed by SMC_CONVENTION_ARM_32. Based on the
+>>> result what convention to be used is decided.
+>>>
+>>> IPQ chipsets starting from IPQ807x, supports both 32bit and 64bit 
+>>> kernel
+>>> variants, however TZ firmware runs in 64bit mode. When running on 32bit
+>>> kernel, scm call is made with SMC_CONVENTION_ARM_64 is causing the
+>>> system crash, due to the difference in the register sets between ARM 
+>>> and
+>>> AARCH64, which is accessed by the TZ.
+>>>
+>>> To avoid this, use SMC_CONVENTION_ARM_64 only on ARM64 builds.
+>>
+>>
+>> Gentle Reminder...
+>
+>
+> Bjorn,
+>
+> Can you share your thoughts on this patch?
+>
+>
+> Thanks, Kathiravan T.
 
-> This patch fixes bpf_redirect() to a ppp interface.
 
-Can you give more details? Which kind of packets are you trying to
-redirect to PPP interfaces?
+Gentle Reminder...
 
-To me this looks like a hack to work around the fact that
-ppp_start_xmit() automatically adds a PPP header. Maybe that's the
-best we can do given the current state of ppp_generic.c, but the
-commit message should be clear about what the real problem is and
-why the patch takes this approach to fix or work around it.
 
-> CC: stable@vger.kernel.org
-> Fixes: 27b29f63058d ("bpf: add bpf_redirect() helper")
-> Signed-off-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
-> Tested-by: Siwar Zitouni <siwar.zitouni@6wind.com>
-> ---
-> 
-> v1 -> v2:
->  - I forgot the 'Tested-by' tag in the v1 :/
-> 
->  include/linux/if_arp.h | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/include/linux/if_arp.h b/include/linux/if_arp.h
-> index 1ed52441972f..8efbe29a6f0c 100644
-> --- a/include/linux/if_arp.h
-> +++ b/include/linux/if_arp.h
-> @@ -53,6 +53,7 @@ static inline bool dev_is_mac_header_xmit(const struct net_device *dev)
->  	case ARPHRD_NONE:
->  	case ARPHRD_RAWIP:
->  	case ARPHRD_PIMREG:
-> +	case ARPHRD_PPP:
->  		return false;
->  	default:
->  		return true;
-> -- 
-> 2.39.2
-> 
-> 
-
+>
+>
+>>
+>>
+>>>
+>>> Cc: stable@vger.kernel.org
+>>> Fixes: 9a434cee773a ("firmware: qcom_scm: Dynamically support SMCCC 
+>>> and legacy conventions")
+>>> Signed-off-by: Kathiravan T <quic_kathirav@quicinc.com>
+>>> ---
+>>> Changes in V2:
+>>>     - Added the Fixes tag and cc'd stable mailing list
+>>>
+>>>   drivers/firmware/qcom_scm.c | 2 ++
+>>>   1 file changed, 2 insertions(+)
+>>>
+>>> diff --git a/drivers/firmware/qcom_scm.c b/drivers/firmware/qcom_scm.c
+>>> index fde33acd46b7..db6754db48a0 100644
+>>> --- a/drivers/firmware/qcom_scm.c
+>>> +++ b/drivers/firmware/qcom_scm.c
+>>> @@ -171,6 +171,7 @@ static enum qcom_scm_convention 
+>>> __get_convention(void)
+>>>       if (likely(qcom_scm_convention != SMC_CONVENTION_UNKNOWN))
+>>>           return qcom_scm_convention;
+>>>   +#if IS_ENABLED(CONFIG_ARM64)
+>>>       /*
+>>>        * Device isn't required as there is only one argument - no 
+>>> device
+>>>        * needed to dma_map_single to secure world
+>>> @@ -191,6 +192,7 @@ static enum qcom_scm_convention 
+>>> __get_convention(void)
+>>>           forced = true;
+>>>           goto found;
+>>>       }
+>>> +#endif
+>>>         probed_convention = SMC_CONVENTION_ARM_32;
+>>>       ret = __scm_smc_call(NULL, &desc, probed_convention, &res, true);
