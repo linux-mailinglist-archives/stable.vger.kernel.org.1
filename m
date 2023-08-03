@@ -2,129 +2,244 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 505D376E1C7
-	for <lists+stable@lfdr.de>; Thu,  3 Aug 2023 09:37:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6388B76E1CE
+	for <lists+stable@lfdr.de>; Thu,  3 Aug 2023 09:37:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232717AbjHCHhd (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 3 Aug 2023 03:37:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46934 "EHLO
+        id S232376AbjHCHhi (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 3 Aug 2023 03:37:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47216 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232802AbjHCHgS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 3 Aug 2023 03:36:18 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 41D5035B0
-        for <stable@vger.kernel.org>; Thu,  3 Aug 2023 00:32:41 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C99D461BF4
-        for <stable@vger.kernel.org>; Thu,  3 Aug 2023 07:32:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF6F5C433C7;
-        Thu,  3 Aug 2023 07:32:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691047960;
-        bh=kc5uytkJ+upaWA6Yrn9fZA5iORpmtJDY13IxBWE6I/o=;
-        h=Subject:To:Cc:From:Date:From;
-        b=wS2q1I++2ZhWvBu7YQgMLF89okYUb8ESsnJ7R/yCVwbI68cw2pU2pUnLsVKho8PpW
-         ZIfBrdvVxqT1NTVsHC56uOsSTEAuF+qdEXs9AzOaPs7iqktaX8AEuDdsElj6OQzxiw
-         Z2sALgb4mKyCEeKvzRuklnXqwgTBqHx3mRb7rsb8=
-Subject: FAILED: patch "[PATCH] f2fs: fix to set flush_merge opt and show noflush_merge" failed to apply to 6.1-stable tree
-To:     frank.li@vivo.com, chao@kernel.org, jaegeuk@kernel.org
-Cc:     <stable@vger.kernel.org>
-From:   <gregkh@linuxfoundation.org>
-Date:   Thu, 03 Aug 2023 09:32:37 +0200
-Message-ID: <2023080337-improper-headed-6f72@gregkh>
+        with ESMTP id S232835AbjHCHgT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 3 Aug 2023 03:36:19 -0400
+Received: from mail-vs1-xe34.google.com (mail-vs1-xe34.google.com [IPv6:2607:f8b0:4864:20::e34])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 07E033A8C
+        for <stable@vger.kernel.org>; Thu,  3 Aug 2023 00:32:51 -0700 (PDT)
+Received: by mail-vs1-xe34.google.com with SMTP id ada2fe7eead31-4475ae93951so281871137.0
+        for <stable@vger.kernel.org>; Thu, 03 Aug 2023 00:32:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1691047970; x=1691652770;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Snirl9fPtOln6kCaE4DKmHG/K4Dw3/dYS9eCAPAXGkw=;
+        b=dK9/veM6MSy2P+8zGBwGAjKy4pEwLiwMXv3x6kdWrVSe0lbWmJV7j6qxXeywF6+uTV
+         gIiYAtXD1t8DP0pAT7QZRC96SPF3IPPCfMngauQtwyP5Nfy4r6kXJSl5dHc5nR5dCuqm
+         60EFAjXAPOolS8PXvqKymMd8uJxWSzQZIzTio6YFg0VTa6JRdmYJTGrWAXGg8TUDdYo7
+         rmZIOOGYa1VFz/hJ4IZ8Tq5M5KFSn21NUjstUErI9zVk1pAlaID1CptbdxI35QoK39P4
+         iJKZj1/UwinptQ3z8xjuhDkf1mH4bfXTvn0oGsUxOEE4T+gQA7pvBIQo+3sw1YhTUYOf
+         xAhg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1691047970; x=1691652770;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Snirl9fPtOln6kCaE4DKmHG/K4Dw3/dYS9eCAPAXGkw=;
+        b=hgKySfxPrk+kWvig4SaKqpnBmfoeuDoZLgSyOK8HgvNYcq9Et+hl/YW2vUyuWy6V+r
+         AR9JW7eSGuJG6VpcQrhXGlDTsDFYJKRJq0XHcTzMV6b89o4vgwEGyEFCcZhjtlqYZPyH
+         GbPY7aV4Q0lmY9kas2W9ZnbSa7Q9bybnXLLErRWT+3ZudPkjkkStD73eyypaFinknOHZ
+         8TvHvGdBRZOiDmKRggEucl9xcywohfQ+MvivqcLsNh0l6oMUgTZz+M1zRJCYsZoRBgmb
+         LUTT8EzmNkptcl/i9GcArjDct/rKZsMU5RiayzZkWu97ZwFromS6K4womXrXsQdX4bQl
+         Jb4w==
+X-Gm-Message-State: ABy/qLZKsRzMUTctaldghNRbGe9nioEMaH5CXNW4vFPnctYkFCySckkI
+        TNvemU3Ft7ny5qVmXOfdj083SYKCGy0AWx5kG9c7yA==
+X-Google-Smtp-Source: APBJJlEcMuRbk7FVc8mPw9tXNWLVN3U3+vK00tlZEoPuYSdI94FWJlqUF4WLUAPi6DLOYl36BxSctmJTP9f5s1l1jk8=
+X-Received: by 2002:a05:6102:3022:b0:447:7dc0:e15 with SMTP id
+ v2-20020a056102302200b004477dc00e15mr6460166vsa.28.1691047970090; Thu, 03 Aug
+ 2023 00:32:50 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+References: <20230802065452.161574662@linuxfoundation.org>
+In-Reply-To: <20230802065452.161574662@linuxfoundation.org>
+From:   Naresh Kamboju <naresh.kamboju@linaro.org>
+Date:   Thu, 3 Aug 2023 13:02:38 +0530
+Message-ID: <CA+G9fYs0c_mac8LL1Va_RoGY8MfkipJoiTiWN2UVTthgFxXusw@mail.gmail.com>
+Subject: Re: [PATCH 5.15 000/153] 5.15.124-rc2 review
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+        jonathanh@nvidia.com, f.fainelli@gmail.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+        conor@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+On Wed, 2 Aug 2023 at 13:11, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 5.15.124 release.
+> There are 153 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Fri, 04 Aug 2023 06:54:22 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-=
+5.15.124-rc2.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-5.15.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-The patch below does not apply to the 6.1-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
 
-To reproduce the conflict and resubmit, you may use the following commands:
+Results from Linaro=E2=80=99s test farm.
+No regressions on arm64, arm, x86_64, and i386.
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
-git checkout FETCH_HEAD
-git cherry-pick -x 967eaad1fed5f6335ea97a47d45214744dc57925
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023080337-improper-headed-6f72@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
 
-Possible dependencies:
+## Build
+* kernel: 5.15.124-rc2
+* git: https://gitlab.com/Linaro/lkft/mirrors/stable/linux-stable-rc
+* git branch: linux-5.15.y
+* git commit: b261bd72eeda8af76b98809780cd6f182ec444bc
+* git describe: v5.15.123-154-gb261bd72eeda
+* test details:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-5.15.y/build/v5.15=
+.123-154-gb261bd72eeda
 
-967eaad1fed5 ("f2fs: fix to set flush_merge opt and show noflush_merge")
+## Test Regressions (compared to v5.15.123)
 
-thanks,
+## Metric Regressions (compared to v5.15.123)
 
-greg k-h
+## Test Fixes (compared to v5.15.123)
 
------------------- original commit in Linus's tree ------------------
+## Metric Fixes (compared to v5.15.123)
 
-From 967eaad1fed5f6335ea97a47d45214744dc57925 Mon Sep 17 00:00:00 2001
-From: Yangtao Li <frank.li@vivo.com>
-Date: Thu, 10 Nov 2022 17:15:01 +0800
-Subject: [PATCH] f2fs: fix to set flush_merge opt and show noflush_merge
+## Test result summary
+total: 121249, pass: 98277, fail: 3017, skip: 19841, xfail: 114
 
-Some minor modifications to flush_merge and related parameters:
+## Build Summary
+* arc: 5 total, 5 passed, 0 failed
+* arm: 114 total, 113 passed, 1 failed
+* arm64: 42 total, 40 passed, 2 failed
+* i386: 32 total, 30 passed, 2 failed
+* mips: 24 total, 24 passed, 0 failed
+* parisc: 3 total, 3 passed, 0 failed
+* powerpc: 24 total, 24 passed, 0 failed
+* riscv: 8 total, 8 passed, 0 failed
+* s390: 9 total, 9 passed, 0 failed
+* sh: 12 total, 12 passed, 0 failed
+* sparc: 6 total, 6 passed, 0 failed
+* x86_64: 35 total, 33 passed, 2 failed
 
-  1.The FLUSH_MERGE opt is set by default only in non-ro mode.
-  2.When ro and merge are set at the same time, an error is reported.
-  3.Display noflush_merge mount opt.
+## Test suites summary
+* boot
+* kselftest-android
+* kselftest-arm64
+* kselftest-breakpoints
+* kselftest-capabilities
+* kselftest-cgroup
+* kselftest-clone3
+* kselftest-core
+* kselftest-cpu-hotplug
+* kselftest-cpufreq
+* kselftest-drivers-dma-buf
+* kselftest-efivarfs
+* kselftest-exec
+* kselftest-filesystems
+* kselftest-filesystems-binderfs
+* kselftest-filesystems-epoll
+* kselftest-firmware
+* kselftest-fpu
+* kselftest-ftrace
+* kselftest-futex
+* kselftest-gpio
+* kselftest-intel_pstate
+* kselftest-ipc
+* kselftest-ir
+* kselftest-kcmp
+* kselftest-kexec
+* kselftest-kvm
+* kselftest-lib
+* kselftest-membarrier
+* kselftest-memfd
+* kselftest-memory-hotplug
+* kselftest-mincore
+* kselftest-mount
+* kselftest-mqueue
+* kselftest-net
+* kselftest-net-forwarding
+* kselftest-net-mptcp
+* kselftest-netfilter
+* kselftest-nsfs
+* kselftest-openat2
+* kselftest-pid_namespace
+* kselftest-pidfd
+* kselftest-proc
+* kselftest-pstore
+* kselftest-ptrace
+* kselftest-rseq
+* kselftest-rtc
+* kselftest-seccomp
+* kselftest-sigaltstack
+* kselftest-size
+* kselftest-splice
+* kselftest-static_keys
+* kselftest-sync
+* kselftest-sysctl
+* kselftest-tc-testing
+* kselftest-timens
+* kselftest-timers
+* kselftest-tmpfs
+* kselftest-tpm2
+* kselftest-user
+* kselftest-user_events
+* kselftest-vDSO
+* kselftest-vm
+* kselftest-watchdog
+* kselftest-x86
+* kselftest-zram
+* kunit
+* kvm-unit-tests
+* libgpiod
+* libhugetlbfs
+* log-parser-boot
+* log-parser-test
+* ltp-cap_bounds
+* ltp-commands
+* ltp-containers
+* ltp-controllers
+* ltp-cpuhotplug
+* ltp-crypto
+* ltp-cve
+* ltp-dio
+* ltp-fcntl-locktests
+* ltp-filecaps
+* ltp-fs
+* ltp-fs_bind
+* ltp-fs_perms_simple
+* ltp-fsx
+* ltp-hugetlb
+* ltp-io
+* ltp-ipc
+* ltp-math
+* ltp-mm
+* ltp-nptl
+* ltp-pty
+* ltp-sched
+* ltp-securebits
+* ltp-smoke
+* ltp-syscalls
+* ltp-tracing
+* network-basic-tests
+* rcutorture
+* v4l2-compliance
 
-Suggested-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Yangtao Li <frank.li@vivo.com>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-
-diff --git a/fs/f2fs/super.c b/fs/f2fs/super.c
-index 8f4fc3ad6765..75027ff85cd9 100644
---- a/fs/f2fs/super.c
-+++ b/fs/f2fs/super.c
-@@ -1353,6 +1353,12 @@ static int parse_options(struct super_block *sb, char *options, bool is_remount)
- 		return -EINVAL;
- 	}
- 
-+	if ((f2fs_sb_has_readonly(sbi) || f2fs_readonly(sbi->sb)) &&
-+		test_opt(sbi, FLUSH_MERGE)) {
-+		f2fs_err(sbi, "FLUSH_MERGE not compatible with readonly mode");
-+		return -EINVAL;
-+	}
-+
- 	if (f2fs_sb_has_readonly(sbi) && !f2fs_readonly(sbi->sb)) {
- 		f2fs_err(sbi, "Allow to mount readonly mode only");
- 		return -EROFS;
-@@ -1941,8 +1947,10 @@ static int f2fs_show_options(struct seq_file *seq, struct dentry *root)
- 		seq_puts(seq, ",inline_dentry");
- 	else
- 		seq_puts(seq, ",noinline_dentry");
--	if (!f2fs_readonly(sbi->sb) && test_opt(sbi, FLUSH_MERGE))
-+	if (test_opt(sbi, FLUSH_MERGE))
- 		seq_puts(seq, ",flush_merge");
-+	else
-+		seq_puts(seq, ",noflush_merge");
- 	if (test_opt(sbi, NOBARRIER))
- 		seq_puts(seq, ",nobarrier");
- 	else
-@@ -2073,7 +2081,8 @@ static void default_options(struct f2fs_sb_info *sbi)
- 	set_opt(sbi, MERGE_CHECKPOINT);
- 	F2FS_OPTION(sbi).unusable_cap = 0;
- 	sbi->sb->s_flags |= SB_LAZYTIME;
--	set_opt(sbi, FLUSH_MERGE);
-+	if (!f2fs_sb_has_readonly(sbi) && !f2fs_readonly(sbi->sb))
-+		set_opt(sbi, FLUSH_MERGE);
- 	if (f2fs_hw_support_discard(sbi) || f2fs_hw_should_discard(sbi))
- 		set_opt(sbi, DISCARD);
- 	if (f2fs_sb_has_blkzoned(sbi)) {
-
+--
+Linaro LKFT
+https://lkft.linaro.org
