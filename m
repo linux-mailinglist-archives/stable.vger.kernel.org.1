@@ -2,56 +2,56 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 78D2176E92C
-	for <lists+stable@lfdr.de>; Thu,  3 Aug 2023 15:04:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E2E1776E936
+	for <lists+stable@lfdr.de>; Thu,  3 Aug 2023 15:04:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235966AbjHCNEG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 3 Aug 2023 09:04:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53958 "EHLO
+        id S236011AbjHCNEX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 3 Aug 2023 09:04:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54006 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235904AbjHCNDx (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 3 Aug 2023 09:03:53 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC1453AAC;
-        Thu,  3 Aug 2023 06:03:43 -0700 (PDT)
+        with ESMTP id S235926AbjHCNDz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 3 Aug 2023 09:03:55 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B8793C1E;
+        Thu,  3 Aug 2023 06:03:48 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6A4C861D69;
-        Thu,  3 Aug 2023 13:03:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0A31C433CC;
-        Thu,  3 Aug 2023 13:03:41 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B6C6061D69;
+        Thu,  3 Aug 2023 13:03:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AE71C433C8;
+        Thu,  3 Aug 2023 13:03:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1691067822;
-        bh=bW2UXFUR5kcz3dpgpTv5P0nicfE7LwKzR1CEdkRsiPE=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=QnEqr4+mZSlTJ3ZRywoUAlLdHfuFseTZAAWp83z9YBCoj5W1l7DY+mrrhRLhlSiMi
-         X1QFXPCVok3QLnr69IT06kXw46IPr8fz72N35X3nE51YnYO06j/5yPGw5mPO+RU15b
-         t5se7Tg5+Jduel69O2RHzmmUtQeEs3QTcCVviKidz9Vi9BcqSrY877Xh8dhapUqB/L
-         NkgN/h7bzqKxho/mMP03mL+Ni9t9wp+joDHgx0LKMis0QEPtAt6QHDymhVEifSz8fE
-         SZyV87S7AFZU+xUtm8A7x6jvIPIFC2rnLF2MVojHzjyS9rlGFyzSiasXrzokRHMiIJ
-         fwTeTWFwiA7MQ==
+        s=k20201202; t=1691067827;
+        bh=prx1VY9vo6H7cAA/kdEiLWjnfB5K9pT0g3M+olguyNk=;
+        h=From:To:Cc:Subject:Date:From;
+        b=tnM7jREXSLfF4P1lkvkKDJu0Z1RpEmKHDXzsk1gQbAY59Oxx5hdmUZrYVAu6SckYR
+         QbR9LOSo2uwVn0pit+bhOzAM3TCrTGWgVB9cjMbziph84W9WQLb/AHjGqykU8uvMRr
+         w1vPynsxhcGbh6wXBH0d0v/xm2B/M9Bw7/rlyjOSJqW8AeqjEIXpumXtICkC3VRze9
+         zSbecPw/5bBrbkNuiX7CJ3m4iPwDu5iUEic5Og9epe3qco7bmWiaWAAe9OMLtLy9DX
+         iWSkHMWi5VElHFGGkYsalPTpAvM/alRZiy/lYFA1i8Lad0bbxS4Y1HpTCK+ibIdRPg
+         Lab739Eq1EJ7g==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Pankaj Raghav <p.raghav@samsung.com>,
-        Clemens Springsguth <cspringsguth@gmail.com>,
-        Keith Busch <kbusch@kernel.org>,
-        Sasha Levin <sashal@kernel.org>, sagi@grimberg.me,
-        linux-nvme@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.1 5/5] nvme: add BOGUS_NID quirk for Samsung SM953
-Date:   Thu,  3 Aug 2023 09:03:33 -0400
-Message-Id: <20230803130333.641625-5-sashal@kernel.org>
+Cc:     Tuo Li <islituo@gmail.com>, BassCheck <bass@buaa.edu.cn>,
+        Justin Tee <justin.tee@broadcom.com>,
+        Laurence Oberman <loberman@redhat.com>,
+        "Martin K . Petersen" <martin.petersen@oracle.com>,
+        Sasha Levin <sashal@kernel.org>, james.smart@broadcom.com,
+        dick.kennedy@broadcom.com, jejb@linux.ibm.com,
+        linux-scsi@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.15 1/2] scsi: lpfc: Fix a possible data race in lpfc_unregister_fcf_rescan()
+Date:   Thu,  3 Aug 2023 09:03:42 -0400
+Message-Id: <20230803130343.641695-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230803130333.641625-1-sashal@kernel.org>
-References: <20230803130333.641625-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.1.42
+X-stable-base: Linux 5.15.123
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -60,35 +60,51 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Pankaj Raghav <p.raghav@samsung.com>
+From: Tuo Li <islituo@gmail.com>
 
-[ Upstream commit e5bb0988a5b622f58cc53dbdc044562229284d23 ]
+[ Upstream commit 0e881c0a4b6146b7e856735226208f48251facd8 ]
 
-Add the quirk as SM953 is reporting bogus namespace ID.
+The variable phba->fcf.fcf_flag is often protected by the lock
+phba->hbalock() when is accessed. Here is an example in
+lpfc_unregister_fcf_rescan():
 
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=217593
-Reported-by: Clemens Springsguth <cspringsguth@gmail.com>
-Tested-by: Clemens Springsguth <cspringsguth@gmail.com>
-Signed-off-by: Pankaj Raghav <p.raghav@samsung.com>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+  spin_lock_irq(&phba->hbalock);
+  phba->fcf.fcf_flag |= FCF_INIT_DISC;
+  spin_unlock_irq(&phba->hbalock);
+
+However, in the same function, phba->fcf.fcf_flag is assigned with 0
+without holding the lock, and thus can cause a data race:
+
+  phba->fcf.fcf_flag = 0;
+
+To fix this possible data race, a lock and unlock pair is added when
+accessing the variable phba->fcf.fcf_flag.
+
+Reported-by: BassCheck <bass@buaa.edu.cn>
+Signed-off-by: Tuo Li <islituo@gmail.com>
+Link: https://lore.kernel.org/r/20230630024748.1035993-1-islituo@gmail.com
+Reviewed-by: Justin Tee <justin.tee@broadcom.com>
+Reviewed-by: Laurence Oberman <loberman@redhat.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/pci.c | 2 ++
+ drivers/scsi/lpfc/lpfc_hbadisc.c | 2 ++
  1 file changed, 2 insertions(+)
 
-diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
-index 145fa7ef3f740..5dd79ab9ae80b 100644
---- a/drivers/nvme/host/pci.c
-+++ b/drivers/nvme/host/pci.c
-@@ -3507,6 +3507,8 @@ static const struct pci_device_id nvme_id_table[] = {
- 		.driver_data = NVME_QUIRK_DISABLE_WRITE_ZEROES, },
- 	{ PCI_DEVICE(0x144d, 0xa809),   /* Samsung MZALQ256HBJD 256G */
- 		.driver_data = NVME_QUIRK_DISABLE_WRITE_ZEROES, },
-+	{ PCI_DEVICE(0x144d, 0xa802),   /* Samsung SM953 */
-+		.driver_data = NVME_QUIRK_BOGUS_NID, },
- 	{ PCI_DEVICE(0x1cc4, 0x6303),   /* UMIS RPJTJ512MGE1QDY 512G */
- 		.driver_data = NVME_QUIRK_DISABLE_WRITE_ZEROES, },
- 	{ PCI_DEVICE(0x1cc4, 0x6302),   /* UMIS RPJTJ256MGE1QDY 256G */
+diff --git a/drivers/scsi/lpfc/lpfc_hbadisc.c b/drivers/scsi/lpfc/lpfc_hbadisc.c
+index 4bb0a15cfcc01..54aff304cdcf4 100644
+--- a/drivers/scsi/lpfc/lpfc_hbadisc.c
++++ b/drivers/scsi/lpfc/lpfc_hbadisc.c
+@@ -6954,7 +6954,9 @@ lpfc_unregister_fcf_rescan(struct lpfc_hba *phba)
+ 	if (rc)
+ 		return;
+ 	/* Reset HBA FCF states after successful unregister FCF */
++	spin_lock_irq(&phba->hbalock);
+ 	phba->fcf.fcf_flag = 0;
++	spin_unlock_irq(&phba->hbalock);
+ 	phba->fcf.current_rec.flag = 0;
+ 
+ 	/*
 -- 
 2.40.1
 
