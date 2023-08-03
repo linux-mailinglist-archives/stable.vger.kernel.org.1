@@ -2,783 +2,312 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9486476ED32
-	for <lists+stable@lfdr.de>; Thu,  3 Aug 2023 16:52:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2306276ED7C
+	for <lists+stable@lfdr.de>; Thu,  3 Aug 2023 17:03:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234377AbjHCOwT (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 3 Aug 2023 10:52:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33168 "EHLO
+        id S234078AbjHCPDG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 3 Aug 2023 11:03:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38096 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231874AbjHCOwT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 3 Aug 2023 10:52:19 -0400
-Received: from mail-pl1-x62b.google.com (mail-pl1-x62b.google.com [IPv6:2607:f8b0:4864:20::62b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A599DA3
-        for <stable@vger.kernel.org>; Thu,  3 Aug 2023 07:52:16 -0700 (PDT)
-Received: by mail-pl1-x62b.google.com with SMTP id d9443c01a7336-1bb119be881so9136245ad.3
-        for <stable@vger.kernel.org>; Thu, 03 Aug 2023 07:52:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20221208.gappssmtp.com; s=20221208; t=1691074336; x=1691679136;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=C+Q8dL77MfKgcvfy9SRkejn0A0ETnqOUjSNbIkwHzmg=;
-        b=hrxskRWyb5HbOTJl48obxO1eILm5C3kws4skhmdrMWw7sTs4Ei0tJMzKWrPyNPDMjQ
-         /KLwQPPJ7Q0RoKNLs8B+xSUW6YvNqdl23AvvpTy/qnjaHukg4+rlDP+AdbFVuYuATvT1
-         BHJXY7BmRPd0WiVGQvmzi7nOw4uK+/zsxzMY/rokGv4oLR8fvg5XLuuYFIMBInt/N9aA
-         GVeXCnxNFflUiSvERQoCQwU/77j2TjrfSajt60cYEyhUKD8iqEjwep3JHSEu3A6+oT1a
-         9gsFJ+k5GlhRlgPBaGSrRxTPPJXv4e0nsgjz4klN1Dl/pNMG/74b38q/FATQsHVYdfqO
-         Hbrg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691074336; x=1691679136;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=C+Q8dL77MfKgcvfy9SRkejn0A0ETnqOUjSNbIkwHzmg=;
-        b=jwHNulnGXfWTjIX6aGdoxYJk6Eze9Uu8Ktr61rAmUa1f5DCPqOKexgIbMZuYFSbak1
-         oslDJhcFBJ2HCiS1to8+b+27nnBdNLAq/7/seve94X8T096FjGhtKOcKRf1yRzgjVjh5
-         oE6cRDpq4pcFHsM/ol9nF3sAP3dAyImibLqo8JqpqyMgigsqcCoSkDL01NXLeLA2FWb0
-         9PtU7bo7Raud+zaXFGu8Mf7qSiRsd//AjF33lDF83X2XFiOxd0zD7Kchpw86PuSG2slh
-         G2jRWC2BhMHhpxizhytJgV58ZBe5RxeGNKaaJOjlQJn1w1F2l/Xbc9nu/9J4BUkzMqui
-         YzxA==
-X-Gm-Message-State: ABy/qLZRYb6aY4rhXfavohJ6o0PTfCKaaT+y/40tEDnYn6PGPjj+Oke0
-        4ErsQ0fCRW8P+n19qzVkmnBUY/BQRiV00UMll1I+1w==
-X-Google-Smtp-Source: APBJJlEXOBQZZjEmFNc2gTvFKyJKcHkVrwqcG3F6lpZxFoDXkYVigOKbr7cn9HIe6R1Qtbzr8P1W+w==
-X-Received: by 2002:a17:903:1cc:b0:1bb:ed01:2d03 with SMTP id e12-20020a17090301cc00b001bbed012d03mr19980211plh.50.1691074335443;
-        Thu, 03 Aug 2023 07:52:15 -0700 (PDT)
-Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id iw14-20020a170903044e00b001bb54abfc07sm14398752plb.252.2023.08.03.07.52.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 03 Aug 2023 07:52:14 -0700 (PDT)
-Message-ID: <64cbbf1e.170a0220.366d5.cc49@mx.google.com>
-Date:   Thu, 03 Aug 2023 07:52:14 -0700 (PDT)
+        with ESMTP id S236863AbjHCPDE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 3 Aug 2023 11:03:04 -0400
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2074.outbound.protection.outlook.com [40.107.237.74])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 85322E2;
+        Thu,  3 Aug 2023 08:03:02 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=HcMQgv7VaaqytMC4eJhHlaLhoqZ2AGEUaYuPbY2r4LB5j2d1xZQ8oCAD8LOlRE5A5PYHYeys4/ZcErBqC+fRiS8wVZs1CBCmF4u2inq51RTRgfzXPgRAKPaF7rpeMvXDW7fRoQJCa9k70QePQ5L7qzkQstDwH3lcTpfSKmDVU3JUTuP1eVf3uYFj3EzAb5wjtSkjMb2rlrSsTvcruho0cwqWetcKetzor7QCmXzQEdOB7HPNXeCb1Osru3UtOtd4HSXasRJFa3X/ESLDACOd5qfOTysAYhBNxy9Hob7poD5fgJthr2gQMvDY2twqEvaarVymT/2M62w7gCUazu8uVQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=lPBt24NgYnIbm17kky74onDXQY0ba/BuPP0VgnuxbV8=;
+ b=dM4A584Ml3wbC//DW3sqUEEkNYQM6Si1bDlCUY9ozKZv4KIVkp2uuVecyBJFLLM4euGLrU4O5qNg+PZQ1X9To2Z01Xt1SfSJ3Q/NgaXMEtzXxPkMuE3X0urIo/OAOe11wlndHXRA1M/yVVLQY+/NnwDe7uOPsXIZ567WTpGX766FeAfeyfpnI6HyA6Cl7CVXSB0GIZ3nBZek8FJukq3+9TkkU9VD3PFElHyWnotUtP1w3SbTaxh/BPPs/IbSQZudv3IoSb7M20F746ncTiDjx57IGxISOoeWGFeo/KZid279TQsE90xQKdIx4hsJMvXy0nYeOGQJnDUKrGs51xyl5g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=lPBt24NgYnIbm17kky74onDXQY0ba/BuPP0VgnuxbV8=;
+ b=YnuVS0n+AEh9DH3vj42QHruiAgd8T0g0q7KZKaZlor6wGh5LHKmHkkcmTF26wFW3+5n8SwkZ12xYkkIaZx5XgReR6WLZdfpFBgLVUsZsDnU1/cKLmxmqUdhjjAMdyrexUV6LlmA/zmFZ/58zqavTYk25x+7WyLghanKeBYLXvveInvouVqk3tOQS7W/wGEteXS26JLeyicjNuoQFyb0TNOwgiNKqyX4ZagC0jLcDOxl3V0F09HK7qPIfULpfz4OFpjR96g2SCR5Qe/AIjfOv37QWs+vs14IYhesBy6pmY6ClgMlYdS1v90ZHLfjgZO3CxbMjYrAv0yiw44R9mYvS0w==
+Received: from DM6PR12MB5565.namprd12.prod.outlook.com (2603:10b6:5:1b6::13)
+ by LV3PR12MB9259.namprd12.prod.outlook.com (2603:10b6:408:1b0::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6631.47; Thu, 3 Aug
+ 2023 15:03:00 +0000
+Received: from DM6PR12MB5565.namprd12.prod.outlook.com
+ ([fe80::40dc:9f89:895c:8667]) by DM6PR12MB5565.namprd12.prod.outlook.com
+ ([fe80::40dc:9f89:895c:8667%4]) with mapi id 15.20.6631.046; Thu, 3 Aug 2023
+ 15:02:59 +0000
+From:   Dragos Tatulea <dtatulea@nvidia.com>
+To:     "jasowang@redhat.com" <jasowang@redhat.com>
+CC:     "xuanzhuo@linux.alibaba.com" <xuanzhuo@linux.alibaba.com>,
+        "virtualization@lists.linux-foundation.org" 
+        <virtualization@lists.linux-foundation.org>,
+        "eperezma@redhat.com" <eperezma@redhat.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "bhe@redhat.com" <bhe@redhat.com>,
+        "mst@redhat.com" <mst@redhat.com>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>,
+        Saeed Mahameed <saeedm@nvidia.com>,
+        "ruyang@redhat.com" <ruyang@redhat.com>
+Subject: Re: [PATCH] vdpa/mlx5: Fix crash on shutdown for when no ndev exists
+Thread-Topic: [PATCH] vdpa/mlx5: Fix crash on shutdown for when no ndev exists
+Thread-Index: AQHZv/SESZp4mdZfpESAhZmcsTYGMq/Mbh0AgAFZZYCAAAdcgIAFrswAgAAfgICAATv0gIAASDEAgAE3OACAAFU2gIACCYcA
+Date:   Thu, 3 Aug 2023 15:02:59 +0000
+Message-ID: <5eba7bc2d3f253be4b0b998dc8a7a3efc7fe08d9.camel@nvidia.com>
+References: <20230726190744.14143-1-dtatulea@nvidia.com>
+         <20230726152258-mutt-send-email-mst@kernel.org>
+         <3ae9e8919a9316d06d7bb507698c820ac6194f45.camel@nvidia.com>
+         <20230727122633-mutt-send-email-mst@kernel.org>
+         <b97484f15824c86f5cee4fe673794f17419bcb1b.camel@nvidia.com>
+         <20230731050200-mutt-send-email-mst@kernel.org>
+         <CACGkMEtiwNjq4pMVY-Yvgo3+DihMP5zO+q+HH-xAF+Xu_=gbHg@mail.gmail.com>
+         <39c3be5dd59e67e7b5dd301100e96aa9428bc332.camel@nvidia.com>
+         <CACGkMEueOXgjbr9Q0Tw5Bv-=YH9+5UR9jxttrf6hN-VRK9KtMg@mail.gmail.com>
+         <4375036868b636fa9c5a03e7fa9c4d7cdefefc5f.camel@nvidia.com>
+In-Reply-To: <4375036868b636fa9c5a03e7fa9c4d7cdefefc5f.camel@nvidia.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Evolution 3.48.4 (3.48.4-1.fc38) 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: DM6PR12MB5565:EE_|LV3PR12MB9259:EE_
+x-ms-office365-filtering-correlation-id: 52c54f23-56bb-434f-5955-08db9432ba3a
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: QWfjUlJ3Dik8FVHs9UwkhZZbe+mcN/3dw6HBNbmgw18foAJ5lRnDhfhi8l5ORiSOpcLTi4EyxqVJO0jN1OCcFRtby8G19UxR/vOMWmnSKBurxhH1Pwgz7UW8/UUJXg3y27VygXYxD50WrpqzQX/f1UpPZkR0wF10xe8efG07g2eFuSWJeuulIyqjKpEjwfstmrNslVyy3a8Eto6KpGmLoohjvBYbvI1eYRbOo9mDWcjxGJjjs6oI0id1pSnUfoq97kIPKw6P99UfuPhwckOqJ+hAeMc5Zyt0wKjCce+Nv8zsSaU/Eem+9GtU47O6cZKi0syB4xmTY9mp9NE5+SBaRr63OCQ6120aCdj4KvdFxxgGLrI7tPrgcKKuvel759P0dEGbRrSJyquuz/IhQtSoRR02I/egAETog9Nx3ttZ/y36fsFQxpnQrX07m+AMHEh23MBEDb2CatWYTF7Ep5MJNGdwnxbHFnViyMhbfH/h8QfkP5dYYl1AvF5OYnzv8td5N7QaxYeMQw2IKtigOHrkxHiUqCKxLOwwCDOsMdEp+No6A+x4F/VMK5hJhZoNTry5ZmSWgPg9ilfzZmhkehMbJ+BX4VYCyZ7kiktQbljGY+Zuz/8tJFU+BONMYZ7E7vHvF447iOdvOwmuB8atYxwiKQ==
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR12MB5565.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(396003)(376002)(346002)(366004)(136003)(39860400002)(451199021)(41300700001)(38100700002)(6486002)(966005)(6512007)(71200400001)(54906003)(91956017)(66446008)(66556008)(64756008)(6916009)(76116006)(4326008)(66476007)(66946007)(316002)(5660300002)(478600001)(38070700005)(83380400001)(186003)(53546011)(6506007)(2616005)(122000001)(36756003)(8676002)(8936002)(86362001)(2906002);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?Qy9sVm53KzNSNnlzVms0cCtHUGRXRnJyN1VEV0N5UFp6V216NU9PS1ZscWsy?=
+ =?utf-8?B?TUhlSE9jMG1BNnUrVDQ0Q0xCMGFlU0tmZWMxOGxWcktONlhtQ1EzTWVyVnR6?=
+ =?utf-8?B?QjFhQ2NSTm50VFZGQXVQajd0NFNNRXNRV09FYTlob1Q0M2FZb3NWTmZlT3dM?=
+ =?utf-8?B?b1B4SFloTFQzcDNIVUY1K21OWE03NzRmSXRZQlJUajJNcXM0bEUyWHdIVi85?=
+ =?utf-8?B?bzAydFZQdG85aSs3TG5sK2pkK3NEOTVhNWxBc1NsOXJ4N05jZkFrejVoVHRJ?=
+ =?utf-8?B?bDN0d2M4dEVVajZxUTFJNTlSZWljZGNwWmJPOU4zdWJ3dWVBaGtPSDZxQUlN?=
+ =?utf-8?B?cFowYmFWZDdyYk45c21pY25oUG96dVY1UStsTGtaMjZxQnF4dm02UUVDWkJm?=
+ =?utf-8?B?TEZNWlR0VzRzeEVHcTBkNGtXUW43WlJJWDRJdHQxSVhzK1V5WkVQZEJ1c0Vp?=
+ =?utf-8?B?RHFZcG1ZeHVscVNsTlNnaDhERkNQYWQ4QVlRZXZLQ0JqcWNRS2tMS0gvcWs2?=
+ =?utf-8?B?UG82N2kxOEpRTUU5VVZSczV0Q2FLSTlSNGNZNkpGZ3hadmhxcWZFWE96M1BD?=
+ =?utf-8?B?RnB0NitZY3VQWmhPMTlRNmcvY2dPbjdJVTNSNC91YmlNR2dKNVV6WDZaRFls?=
+ =?utf-8?B?Mk5hVHd6aW1EamNydTNMU25DMXhEMFd4NEhaT2dMRU44R0M2bDIwMkxCZHBZ?=
+ =?utf-8?B?SUoxSUxEVWt2TmRjRkxTbkF2Mk5JRTV6NDNPcDQwTis2NFdnWlJMS0pTcFlH?=
+ =?utf-8?B?MzJVNHg1Y2orVW1ENEtJbDduT2lZaVNxeW45SDdNbVdlNHpyRkN1WnVITGla?=
+ =?utf-8?B?N2p1TTBEOEdZNytGZjZvVUoxZkM2ZWNNVmNlMXFUUXFQN2xEaytvQ2hDSU1q?=
+ =?utf-8?B?eVowZWRNVGtuTFhEZzBTbkRGZDVqOG5JMnRQVVNVbjVPMENjNkRMUVFlaXE2?=
+ =?utf-8?B?TS9lY0dibUlNdXB3WDlQa20wOGovS09pMUhzR3BsVW1rbFVWbnFRQlo5eDJX?=
+ =?utf-8?B?eWtTNTNoVnN3UEFTSmRkdmNlUTd6QlZvbGQ5Y1M3MEpwa3BQek4ybk1OSm9B?=
+ =?utf-8?B?MHJMTWRjTUE2UUtQUDV3SXhSbisxMEJiL3YvVlVTNUYyNXkyZ3p4UmdzNVF0?=
+ =?utf-8?B?S2lMV2lub1dCVzFBaVdQbThFQzAxc1FEdUFQSTAvbmRpMWlzK1BmWXBFamta?=
+ =?utf-8?B?RXhsV1JuUzRWN3Aya0dQeDUzNXM3N3d2VFlXVW5CYmtvUnR2em03OGcwQ0Vr?=
+ =?utf-8?B?NlBET0drNmEzSGFhMDNNMExnQ3FLOXEyM0VYMFE3WWw5UWtHcTZoMjJHTXAv?=
+ =?utf-8?B?RWI2MDJUdmozNUllWlRneUFhN0JNZUFXa0NUMU1OemxaeVgwdGVVUUxqbnkw?=
+ =?utf-8?B?eFkyV0pDVnI5ZmdaTS9wNTE3Zk9jVkpDT24rZGZrcmhZcGk1VkhPQ0lVMWJK?=
+ =?utf-8?B?M0l0WmwzVFBXU2JYWTFUVW1YK1BXcnhBOGU0ajFndXljeUlzdllUTVh1VDhm?=
+ =?utf-8?B?N3lzamNKdmFuWXFDeTRRL3JoQ0x3aFpxNC9xeFQ4T2NjQllhSXU2OHR6NUNZ?=
+ =?utf-8?B?TVdOc3NyUXdJQVUwQzVmNGpONU9mM3poVi9zQis2Y0dqR2VmaUVwS0xJTVJ1?=
+ =?utf-8?B?a2o3NHNmWlp3dUw5SHE3ODlHeGJGaGZtQzVZY1RYSmpRdUFheHlnSUZZQ3BY?=
+ =?utf-8?B?cUdyblNsbXE1bVNiRjZXMmdTSm82SUljRTJSc25JQzZuNGsvOTRYRVNBdXNT?=
+ =?utf-8?B?T0VzeVorUkRBYmNTaGxvcFNiMHUzZzUwVmlTc1VhcXVST2dIR0dqeDNLdU5C?=
+ =?utf-8?B?WERxSDAwNWUyTjcxbytFZzQ4NEcrbnBFSEVpWGw0ZEF2MFZ3OGdEengrT21N?=
+ =?utf-8?B?QThsNWFXLzkyRXJnWnVySkQrVFRkeUJNMWF6aGl6UHF2ckpSeFdNZmVRUXdL?=
+ =?utf-8?B?dkpoYnNsOVdUTWJnTmxGQlRzRnVwVXRLYU4zTW5YUGVLalZTLzlKU0d0TDdV?=
+ =?utf-8?B?S21Rb0oybjRycFkwTlk0dVhPcEFPbFFlOWZKbGYya3V1QTJ5aTh2S0o4bWpj?=
+ =?utf-8?B?TStLdHdCQWVneEh6QTFXU3F2Y20yQ21uaFNFSkQveXRnc2pabFFFc2xGMG5V?=
+ =?utf-8?B?d3BiWW5oSDk4WmdtZWNaZUV6b293TmlmM1ZBZzVxZkxyVEgrUkhvZFJ0WGEx?=
+ =?utf-8?Q?1YRjzrw8X0PSoXcr0+abQollfNDY5IrNvjcRwhUVdc+j?=
 Content-Type: text/plain; charset="utf-8"
+Content-ID: <FA58F30621C6B24290C4088E994ADC34@namprd12.prod.outlook.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Report-Type: test
-X-Kernelci-Kernel: v5.10.188
-X-Kernelci-Tree: stable-rc
-X-Kernelci-Branch: linux-5.10.y
-Subject: stable-rc/linux-5.10.y baseline: 131 runs, 12 regressions (v5.10.188)
-To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
-        kernelci-results@groups.io
-From:   "kernelci.org bot" <bot@kernelci.org>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: DM6PR12MB5565.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 52c54f23-56bb-434f-5955-08db9432ba3a
+X-MS-Exchange-CrossTenant-originalarrivaltime: 03 Aug 2023 15:02:59.6451
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: Nk9ZLJUtBP2Q8O83uziI6VKTOgoCThqYfD9WDPmtnf3fTwMesFTb928yGlSkIG1SFQZQQo+L9vF0HdRlvVk6tQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV3PR12MB9259
+X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-stable-rc/linux-5.10.y baseline: 131 runs, 12 regressions (v5.10.188)
-
-Regressions Summary
--------------------
-
-platform                     | arch   | lab           | compiler | defconfi=
-g                    | regressions
------------------------------+--------+---------------+----------+---------=
----------------------+------------
-cubietruck                   | arm    | lab-baylibre  | gcc-10   | multi_v7=
-_defconfig           | 1          =
-
-fsl-ls2088a-rdb              | arm64  | lab-nxp       | gcc-10   | defconfi=
-g                    | 1          =
-
-fsl-lx2160a-rdb              | arm64  | lab-nxp       | gcc-10   | defconfi=
-g                    | 1          =
-
-hp-x360-12b-c...4020-octopus | x86_64 | lab-collabora | gcc-10   | x86_64_d=
-efcon...6-chromebook | 1          =
-
-hp-x360-14-G1-sona           | x86_64 | lab-collabora | gcc-10   | x86_64_d=
-efcon...6-chromebook | 1          =
-
-juno-uboot                   | arm64  | lab-broonie   | gcc-10   | defconfi=
-g                    | 1          =
-
-r8a774a1-hihope-rzg2m-ex     | arm64  | lab-cip       | gcc-10   | defconfi=
-g+arm64-chromebook   | 1          =
-
-r8a774b1-hihope-rzg2n-ex     | arm64  | lab-cip       | gcc-10   | defconfi=
-g+arm64-chromebook   | 1          =
-
-r8a774c0-ek874               | arm64  | lab-cip       | gcc-10   | defconfi=
-g                    | 1          =
-
-r8a774c0-ek874               | arm64  | lab-cip       | gcc-10   | defconfi=
-g+arm64-chromebook   | 1          =
-
-r8a77960-ulcb                | arm64  | lab-collabora | gcc-10   | defconfi=
-g                    | 1          =
-
-sun50i-h6-pine-h64           | arm64  | lab-collabora | gcc-10   | defconfi=
-g                    | 1          =
-
-
-  Details:  https://kernelci.org/test/job/stable-rc/branch/linux-5.10.y/ker=
-nel/v5.10.188/plan/baseline/
-
-  Test:     baseline
-  Tree:     stable-rc
-  Branch:   linux-5.10.y
-  Describe: v5.10.188
-  URL:      https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-st=
-able-rc.git
-  SHA:      3602dbc57b556eff2456715301d35a1ef8964bba =
-
-
-
-Test Regressions
----------------- =
-
-
-
-platform                     | arch   | lab           | compiler | defconfi=
-g                    | regressions
------------------------------+--------+---------------+----------+---------=
----------------------+------------
-cubietruck                   | arm    | lab-baylibre  | gcc-10   | multi_v7=
-_defconfig           | 1          =
-
-
-  Details:     https://kernelci.org/test/plan/id/64c23ffe07e90ad7338aceec
-
-  Results:     5 PASS, 1 FAIL, 1 SKIP
-  Full config: multi_v7_defconfig
-  Compiler:    gcc-10 (arm-linux-gnueabihf-gcc (Debian 10.2.1-6) 10.2.1 202=
-10110)
-  Plain log:   https://storage.kernelci.org//stable-rc/linux-5.10.y/v5.10.1=
-88/arm/multi_v7_defconfig/gcc-10/lab-baylibre/baseline-cubietruck.txt
-  HTML log:    https://storage.kernelci.org//stable-rc/linux-5.10.y/v5.10.1=
-88/arm/multi_v7_defconfig/gcc-10/lab-baylibre/baseline-cubietruck.html
-  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
-t-baseline/20230623.0/armel/rootfs.cpio.gz =
-
-
-
-  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
-/64c23ffe07e90ad7338acef1
-        failing since 190 days (last pass: v5.10.158-107-gd2432186ff47, fir=
-st fail: v5.10.162-852-geeaac3cf2eb3)
-
-    2023-08-03T11:18:52.953794  <8>[   10.964327] <LAVA_SIGNAL_ENDRUN 0_dme=
-sg 3728113_1.5.2.4.1>
-    2023-08-03T11:18:53.062755  / # #
-    2023-08-03T11:18:53.165871  export SHELL=3D/bin/sh
-    2023-08-03T11:18:53.166359  #
-    2023-08-03T11:18:53.166579  / # <3>[   11.132321] Bluetooth: hci0: comm=
-and 0xfc18 tx timeout
-    2023-08-03T11:18:53.267894  export SHELL=3D/bin/sh. /lava-3728113/envir=
-onment
-    2023-08-03T11:18:53.268864  =
-
-    2023-08-03T11:18:53.370916  / # . /lava-3728113/environment/lava-372811=
-3/bin/lava-test-runner /lava-3728113/1
-    2023-08-03T11:18:53.372577  =
-
-    2023-08-03T11:18:53.377430  / # /lava-3728113/bin/lava-test-runner /lav=
-a-3728113/1 =
-
-    ... (12 line(s) more)  =
-
- =
-
-
-
-platform                     | arch   | lab           | compiler | defconfi=
-g                    | regressions
------------------------------+--------+---------------+----------+---------=
----------------------+------------
-fsl-ls2088a-rdb              | arm64  | lab-nxp       | gcc-10   | defconfi=
-g                    | 1          =
-
-
-  Details:     https://kernelci.org/test/plan/id/64c23fd35d952e1d418ace40
-
-  Results:     5 PASS, 1 FAIL, 1 SKIP
-  Full config: defconfig
-  Compiler:    gcc-10 (aarch64-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210=
-110)
-  Plain log:   https://storage.kernelci.org//stable-rc/linux-5.10.y/v5.10.1=
-88/arm64/defconfig/gcc-10/lab-nxp/baseline-fsl-ls2088a-rdb.txt
-  HTML log:    https://storage.kernelci.org//stable-rc/linux-5.10.y/v5.10.1=
-88/arm64/defconfig/gcc-10/lab-nxp/baseline-fsl-ls2088a-rdb.html
-  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
-t-baseline/20230623.0/arm64/rootfs.cpio.gz =
-
-
-
-  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
-/64c23fd35d952e1d418ace43
-        failing since 9 days (last pass: v5.10.142, first fail: v5.10.186-3=
-32-gf98a4d3a5cec)
-
-    2023-08-03T11:22:34.971895  [    9.385831] <LAVA_SIGNAL_ENDRUN 0_dmesg =
-1240593_1.5.2.4.1>
-    2023-08-03T11:22:35.077197  =
-
-    2023-08-03T11:22:35.178426  / # #export SHELL=3D/bin/sh
-    2023-08-03T11:22:35.178832  =
-
-    2023-08-03T11:22:35.279780  / # export SHELL=3D/bin/sh. /lava-1240593/e=
-nvironment
-    2023-08-03T11:22:35.280196  =
-
-    2023-08-03T11:22:35.381165  / # . /lava-1240593/environment/lava-124059=
-3/bin/lava-test-runner /lava-1240593/1
-    2023-08-03T11:22:35.381830  =
-
-    2023-08-03T11:22:35.385944  / # /lava-1240593/bin/lava-test-runner /lav=
-a-1240593/1
-    2023-08-03T11:22:35.401587  + export 'TESTRUN_ID=3D1_bootrr' =
-
-    ... (11 line(s) more)  =
-
- =
-
-
-
-platform                     | arch   | lab           | compiler | defconfi=
-g                    | regressions
------------------------------+--------+---------------+----------+---------=
----------------------+------------
-fsl-lx2160a-rdb              | arm64  | lab-nxp       | gcc-10   | defconfi=
-g                    | 1          =
-
-
-  Details:     https://kernelci.org/test/plan/id/64c23fd65d952e1d418ace4e
-
-  Results:     5 PASS, 1 FAIL, 1 SKIP
-  Full config: defconfig
-  Compiler:    gcc-10 (aarch64-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210=
-110)
-  Plain log:   https://storage.kernelci.org//stable-rc/linux-5.10.y/v5.10.1=
-88/arm64/defconfig/gcc-10/lab-nxp/baseline-fsl-lx2160a-rdb.txt
-  HTML log:    https://storage.kernelci.org//stable-rc/linux-5.10.y/v5.10.1=
-88/arm64/defconfig/gcc-10/lab-nxp/baseline-fsl-lx2160a-rdb.html
-  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
-t-baseline/20230623.0/arm64/rootfs.cpio.gz =
-
-
-
-  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
-/64c23fd65d952e1d418ace51
-        failing since 145 days (last pass: v5.10.155, first fail: v5.10.172)
-
-    2023-08-03T11:22:04.642144  [   15.755699] <LAVA_SIGNAL_ENDRUN 0_dmesg =
-1240594_1.5.2.4.1>
-    2023-08-03T11:22:04.747346  =
-
-    2023-08-03T11:22:04.848549  / # #export SHELL=3D/bin/sh
-    2023-08-03T11:22:04.848958  =
-
-    2023-08-03T11:22:04.949898  / # export SHELL=3D/bin/sh. /lava-1240594/e=
-nvironment
-    2023-08-03T11:22:04.950299  =
-
-    2023-08-03T11:22:05.051254  / # . /lava-1240594/environment/lava-124059=
-4/bin/lava-test-runner /lava-1240594/1
-    2023-08-03T11:22:05.051914  =
-
-    2023-08-03T11:22:05.055955  / # /lava-1240594/bin/lava-test-runner /lav=
-a-1240594/1
-    2023-08-03T11:22:05.070001  + export 'TESTRUN_ID=3D1_bootrr' =
-
-    ... (11 line(s) more)  =
-
- =
-
-
-
-platform                     | arch   | lab           | compiler | defconfi=
-g                    | regressions
------------------------------+--------+---------------+----------+---------=
----------------------+------------
-hp-x360-12b-c...4020-octopus | x86_64 | lab-collabora | gcc-10   | x86_64_d=
-efcon...6-chromebook | 1          =
-
-
-  Details:     https://kernelci.org/test/plan/id/64c23eb666afdf8bc18ace2b
-
-  Results:     6 PASS, 1 FAIL, 0 SKIP
-  Full config: x86_64_defconfig+x86-chromebook
-  Compiler:    gcc-10 (gcc (Debian 10.2.1-6) 10.2.1 20210110)
-  Plain log:   https://storage.kernelci.org//stable-rc/linux-5.10.y/v5.10.1=
-88/x86_64/x86_64_defconfig+x86-chromebook/gcc-10/lab-collabora/baseline-hp-=
-x360-12b-ca0010nr-n4020-octopus.txt
-  HTML log:    https://storage.kernelci.org//stable-rc/linux-5.10.y/v5.10.1=
-88/x86_64/x86_64_defconfig+x86-chromebook/gcc-10/lab-collabora/baseline-hp-=
-x360-12b-ca0010nr-n4020-octopus.html
-  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
-t-baseline/20230623.0/x86/rootfs.cpio.gz =
-
-
-
-  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
-/64c23eb666afdf8bc18ace30
-        failing since 120 days (last pass: v5.10.176, first fail: v5.10.176=
--105-g18265b240021)
-
-    2023-08-03T11:14:33.035806  + set +x
-
-    2023-08-03T11:14:33.041920  <8>[   12.121203] <LAVA_SIGNAL_ENDRUN 0_dme=
-sg 11199495_1.4.2.3.1>
-
-    2023-08-03T11:14:33.146626  / # #
-
-    2023-08-03T11:14:33.249006  export SHELL=3D/bin/sh
-
-    2023-08-03T11:14:33.249856  #
-
-    2023-08-03T11:14:33.351484  / # export SHELL=3D/bin/sh. /lava-11199495/=
-environment
-
-    2023-08-03T11:14:33.352414  =
-
-
-    2023-08-03T11:14:33.453690  / # . /lava-11199495/environment/lava-11199=
-495/bin/lava-test-runner /lava-11199495/1
-
-    2023-08-03T11:14:33.454056  =
-
-
-    2023-08-03T11:14:33.458976  / # /lava-11199495/bin/lava-test-runner /la=
-va-11199495/1
- =
-
-    ... (12 line(s) more)  =
-
- =
-
-
-
-platform                     | arch   | lab           | compiler | defconfi=
-g                    | regressions
------------------------------+--------+---------------+----------+---------=
----------------------+------------
-hp-x360-14-G1-sona           | x86_64 | lab-collabora | gcc-10   | x86_64_d=
-efcon...6-chromebook | 1          =
-
-
-  Details:     https://kernelci.org/test/plan/id/64c23e8dcc4039dd348acec5
-
-  Results:     6 PASS, 1 FAIL, 0 SKIP
-  Full config: x86_64_defconfig+x86-chromebook
-  Compiler:    gcc-10 (gcc (Debian 10.2.1-6) 10.2.1 20210110)
-  Plain log:   https://storage.kernelci.org//stable-rc/linux-5.10.y/v5.10.1=
-88/x86_64/x86_64_defconfig+x86-chromebook/gcc-10/lab-collabora/baseline-hp-=
-x360-14-G1-sona.txt
-  HTML log:    https://storage.kernelci.org//stable-rc/linux-5.10.y/v5.10.1=
-88/x86_64/x86_64_defconfig+x86-chromebook/gcc-10/lab-collabora/baseline-hp-=
-x360-14-G1-sona.html
-  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
-t-baseline/20230623.0/x86/rootfs.cpio.gz =
-
-
-
-  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
-/64c23e8dcc4039dd348aceca
-        failing since 120 days (last pass: v5.10.176, first fail: v5.10.176=
--105-g18265b240021)
-
-    2023-08-03T11:12:57.434789  + set +x<8>[   10.363954] <LAVA_SIGNAL_ENDR=
-UN 0_dmesg 11199457_1.4.2.3.1>
-
-    2023-08-03T11:12:57.435227  =
-
-
-    2023-08-03T11:12:57.542143  #
-
-    2023-08-03T11:12:57.543224  =
-
-
-    2023-08-03T11:12:57.644908  / # #export SHELL=3D/bin/sh
-
-    2023-08-03T11:12:57.645666  =
-
-
-    2023-08-03T11:12:57.747253  / # export SHELL=3D/bin/sh. /lava-11199457/=
-environment
-
-    2023-08-03T11:12:57.748011  =
-
-
-    2023-08-03T11:12:57.849530  / # . /lava-11199457/environment/lava-11199=
-457/bin/lava-test-runner /lava-11199457/1
-
-    2023-08-03T11:12:57.850708  =
-
- =
-
-    ... (13 line(s) more)  =
-
- =
-
-
-
-platform                     | arch   | lab           | compiler | defconfi=
-g                    | regressions
------------------------------+--------+---------------+----------+---------=
----------------------+------------
-juno-uboot                   | arm64  | lab-broonie   | gcc-10   | defconfi=
-g                    | 1          =
-
-
-  Details:     https://kernelci.org/test/plan/id/64c240019d5b0809508ace6e
-
-  Results:     50 PASS, 11 FAIL, 1 SKIP
-  Full config: defconfig
-  Compiler:    gcc-10 (aarch64-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210=
-110)
-  Plain log:   https://storage.kernelci.org//stable-rc/linux-5.10.y/v5.10.1=
-88/arm64/defconfig/gcc-10/lab-broonie/baseline-juno-uboot.txt
-  HTML log:    https://storage.kernelci.org//stable-rc/linux-5.10.y/v5.10.1=
-88/arm64/defconfig/gcc-10/lab-broonie/baseline-juno-uboot.html
-  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
-t-baseline/20230623.0/arm64/rootfs.cpio.gz =
-
-
-
-  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
-/64c240019d5b0809508acea7
-        failing since 9 days (last pass: v5.10.186-221-gf178eace6e074, firs=
-t fail: v5.10.186-332-gf98a4d3a5cec)
-
-    2023-08-03T11:22:53.482916  / # #
-    2023-08-03T11:22:53.585948  export SHELL=3D/bin/sh
-    2023-08-03T11:22:53.586704  #
-    2023-08-03T11:22:53.688579  / # export SHELL=3D/bin/sh. /lava-26647/env=
-ironment
-    2023-08-03T11:22:53.689341  =
-
-    2023-08-03T11:22:53.791738  / # . /lava-26647/environment/lava-26647/bi=
-n/lava-test-runner /lava-26647/1
-    2023-08-03T11:22:53.793128  =
-
-    2023-08-03T11:22:53.805895  / # /lava-26647/bin/lava-test-runner /lava-=
-26647/1
-    2023-08-03T11:22:53.866769  + export 'TESTRUN_ID=3D1_bootrr'
-    2023-08-03T11:22:53.867298  + cd /lava-26647/1/tests/1_bootrr =
-
-    ... (10 line(s) more)  =
-
- =
-
-
-
-platform                     | arch   | lab           | compiler | defconfi=
-g                    | regressions
------------------------------+--------+---------------+----------+---------=
----------------------+------------
-r8a774a1-hihope-rzg2m-ex     | arm64  | lab-cip       | gcc-10   | defconfi=
-g+arm64-chromebook   | 1          =
-
-
-  Details:     https://kernelci.org/test/plan/id/64c2b07346a722ecdd8ace2a
-
-  Results:     5 PASS, 1 FAIL, 1 SKIP
-  Full config: defconfig+arm64-chromebook
-  Compiler:    gcc-10 (aarch64-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210=
-110)
-  Plain log:   https://storage.kernelci.org//stable-rc/linux-5.10.y/v5.10.1=
-88/arm64/defconfig+arm64-chromebook/gcc-10/lab-cip/baseline-r8a774a1-hihope=
--rzg2m-ex.txt
-  HTML log:    https://storage.kernelci.org//stable-rc/linux-5.10.y/v5.10.1=
-88/arm64/defconfig+arm64-chromebook/gcc-10/lab-cip/baseline-r8a774a1-hihope=
--rzg2m-ex.html
-  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
-t-baseline/20230623.0/arm64/rootfs.cpio.gz =
-
-
-
-  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
-/64c2b07346a722ecdd8ace2d
-        failing since 9 days (last pass: v5.10.186-221-gf178eace6e074, firs=
-t fail: v5.10.186-332-gf98a4d3a5cec)
-
-    2023-07-27T17:58:45.103938  + set +x
-    2023-07-27T17:58:45.104157  <8>[   83.680434] <LAVA_SIGNAL_ENDRUN 0_dme=
-sg 989717_1.5.2.4.1>
-    2023-07-27T17:58:45.210409  / # #
-    2023-07-27T17:58:46.673233  export SHELL=3D/bin/sh
-    2023-07-27T17:58:46.693877  #
-    2023-07-27T17:58:46.694127  / # export SHELL=3D/bin/sh
-    2023-07-27T17:58:48.579591  / # . /lava-989717/environment
-    2023-07-27T17:58:52.037409  /lava-989717/bin/lava-test-runner /lava-989=
-717/1
-    2023-07-27T17:58:52.058193  . /lava-989717/environment
-    2023-07-27T17:58:52.058301  / # /lava-989717/bin/lava-test-runner /lava=
--989717/1 =
-
-    ... (28 line(s) more)  =
-
- =
-
-
-
-platform                     | arch   | lab           | compiler | defconfi=
-g                    | regressions
------------------------------+--------+---------------+----------+---------=
----------------------+------------
-r8a774b1-hihope-rzg2n-ex     | arm64  | lab-cip       | gcc-10   | defconfi=
-g+arm64-chromebook   | 1          =
-
-
-  Details:     https://kernelci.org/test/plan/id/64cb904372444be19335b1d9
-
-  Results:     5 PASS, 1 FAIL, 1 SKIP
-  Full config: defconfig+arm64-chromebook
-  Compiler:    gcc-10 (aarch64-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210=
-110)
-  Plain log:   https://storage.kernelci.org//stable-rc/linux-5.10.y/v5.10.1=
-88/arm64/defconfig+arm64-chromebook/gcc-10/lab-cip/baseline-r8a774b1-hihope=
--rzg2n-ex.txt
-  HTML log:    https://storage.kernelci.org//stable-rc/linux-5.10.y/v5.10.1=
-88/arm64/defconfig+arm64-chromebook/gcc-10/lab-cip/baseline-r8a774b1-hihope=
--rzg2n-ex.html
-  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
-t-baseline/20230623.0/arm64/rootfs.cpio.gz =
-
-
-
-  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
-/64cb904372444be19335b1dc
-        failing since 16 days (last pass: v5.10.186-221-gf178eace6e074, fir=
-st fail: v5.10.186-332-gf98a4d3a5cec)
-
-    2023-08-03T11:31:52.522107  + set +x
-    2023-08-03T11:31:52.522217  <8>[   83.979073] <LAVA_SIGNAL_ENDRUN 0_dme=
-sg 992142_1.5.2.4.1>
-    2023-08-03T11:31:52.627477  / # #
-    2023-08-03T11:31:54.086511  export SHELL=3D/bin/sh
-    2023-08-03T11:31:54.106933  #
-    2023-08-03T11:31:54.107084  / # export SHELL=3D/bin/sh
-    2023-08-03T11:31:55.988352  / # . /lava-992142/environment
-    2023-08-03T11:31:59.438551  /lava-992142/bin/lava-test-runner /lava-992=
-142/1
-    2023-08-03T11:31:59.459131  . /lava-992142/environment
-    2023-08-03T11:31:59.459248  / # /lava-992142/bin/lava-test-runner /lava=
--992142/1 =
-
-    ... (15 line(s) more)  =
-
- =
-
-
-
-platform                     | arch   | lab           | compiler | defconfi=
-g                    | regressions
------------------------------+--------+---------------+----------+---------=
----------------------+------------
-r8a774c0-ek874               | arm64  | lab-cip       | gcc-10   | defconfi=
-g                    | 1          =
-
-
-  Details:     https://kernelci.org/test/plan/id/64c23ff308b37a634f8ace65
-
-  Results:     5 PASS, 1 FAIL, 1 SKIP
-  Full config: defconfig
-  Compiler:    gcc-10 (aarch64-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210=
-110)
-  Plain log:   https://storage.kernelci.org//stable-rc/linux-5.10.y/v5.10.1=
-88/arm64/defconfig/gcc-10/lab-cip/baseline-r8a774c0-ek874.txt
-  HTML log:    https://storage.kernelci.org//stable-rc/linux-5.10.y/v5.10.1=
-88/arm64/defconfig/gcc-10/lab-cip/baseline-r8a774c0-ek874.html
-  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
-t-baseline/20230623.0/arm64/rootfs.cpio.gz =
-
-
-
-  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
-/64c23ff308b37a634f8ace68
-        failing since 9 days (last pass: v5.10.186-221-gf178eace6e074, firs=
-t fail: v5.10.186-332-gf98a4d3a5cec)
-
-    2023-08-03T11:24:01.549813  / # #
-    2023-08-03T11:24:03.008971  export SHELL=3D/bin/sh
-    2023-08-03T11:24:03.029412  #
-    2023-08-03T11:24:03.029561  / # export SHELL=3D/bin/sh
-    2023-08-03T11:24:04.910706  / # . /lava-992134/environment
-    2023-08-03T11:24:08.361477  /lava-992134/bin/lava-test-runner /lava-992=
-134/1
-    2023-08-03T11:24:08.382280  . /lava-992134/environment
-    2023-08-03T11:24:08.382434  / # /lava-992134/bin/lava-test-runner /lava=
--992134/1
-    2023-08-03T11:24:08.414282  + export 'TESTRUN_ID=3D1_bootrr'
-    2023-08-03T11:24:08.463035  + cd /lava-992134/1/tests/1_bootrr =
-
-    ... (25 line(s) more)  =
-
- =
-
-
-
-platform                     | arch   | lab           | compiler | defconfi=
-g                    | regressions
------------------------------+--------+---------------+----------+---------=
----------------------+------------
-r8a774c0-ek874               | arm64  | lab-cip       | gcc-10   | defconfi=
-g+arm64-chromebook   | 1          =
-
-
-  Details:     https://kernelci.org/test/plan/id/64cb8fa54049ce3ba235b1dc
-
-  Results:     5 PASS, 1 FAIL, 1 SKIP
-  Full config: defconfig+arm64-chromebook
-  Compiler:    gcc-10 (aarch64-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210=
-110)
-  Plain log:   https://storage.kernelci.org//stable-rc/linux-5.10.y/v5.10.1=
-88/arm64/defconfig+arm64-chromebook/gcc-10/lab-cip/baseline-r8a774c0-ek874.=
-txt
-  HTML log:    https://storage.kernelci.org//stable-rc/linux-5.10.y/v5.10.1=
-88/arm64/defconfig+arm64-chromebook/gcc-10/lab-cip/baseline-r8a774c0-ek874.=
-html
-  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
-t-baseline/20230623.0/arm64/rootfs.cpio.gz =
-
-
-
-  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
-/64cb8fa54049ce3ba235b1df
-        failing since 16 days (last pass: v5.10.186-221-gf178eace6e074, fir=
-st fail: v5.10.186-332-gf98a4d3a5cec)
-
-    2023-08-03T11:29:21.612288  / # #
-    2023-08-03T11:29:23.071298  export SHELL=3D/bin/sh
-    2023-08-03T11:29:23.091751  #
-    2023-08-03T11:29:23.091928  / # export SHELL=3D/bin/sh
-    2023-08-03T11:29:24.972905  / # . /lava-992140/environment
-    2023-08-03T11:29:28.422389  /lava-992140/bin/lava-test-runner /lava-992=
-140/1
-    2023-08-03T11:29:28.443076  . /lava-992140/environment
-    2023-08-03T11:29:28.443237  / # /lava-992140/bin/lava-test-runner /lava=
--992140/1
-    2023-08-03T11:29:28.476453  + export 'TESTRUN_ID=3D1_bootrr'
-    2023-08-03T11:29:28.524590  + cd /lava-992140/1/tests/1_bootrr =
-
-    ... (25 line(s) more)  =
-
- =
-
-
-
-platform                     | arch   | lab           | compiler | defconfi=
-g                    | regressions
------------------------------+--------+---------------+----------+---------=
----------------------+------------
-r8a77960-ulcb                | arm64  | lab-collabora | gcc-10   | defconfi=
-g                    | 1          =
-
-
-  Details:     https://kernelci.org/test/plan/id/64c265cb9531ca38d98ace1e
-
-  Results:     4 PASS, 2 FAIL, 1 SKIP
-  Full config: defconfig
-  Compiler:    gcc-10 (aarch64-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210=
-110)
-  Plain log:   https://storage.kernelci.org//stable-rc/linux-5.10.y/v5.10.1=
-88/arm64/defconfig/gcc-10/lab-collabora/baseline-r8a77960-ulcb.txt
-  HTML log:    https://storage.kernelci.org//stable-rc/linux-5.10.y/v5.10.1=
-88/arm64/defconfig/gcc-10/lab-collabora/baseline-r8a77960-ulcb.html
-  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
-t-baseline/20230623.0/arm64/rootfs.cpio.gz =
-
-
-
-  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
-/64c265cb9531ca38d98ace23
-        failing since 9 days (last pass: v5.10.186-221-gf178eace6e074, firs=
-t fail: v5.10.186-332-gf98a4d3a5cec)
-
-    2023-08-03T11:22:22.043395  / # #
-
-    2023-08-03T11:22:22.145764  export SHELL=3D/bin/sh
-
-    2023-08-03T11:22:22.146493  #
-
-    2023-08-03T11:22:22.247886  / # export SHELL=3D/bin/sh. /lava-11199519/=
-environment
-
-    2023-08-03T11:22:22.248607  =
-
-
-    2023-08-03T11:22:22.350036  / # . /lava-11199519/environment/lava-11199=
-519/bin/lava-test-runner /lava-11199519/1
-
-    2023-08-03T11:22:22.351212  =
-
-
-    2023-08-03T11:22:22.368024  / # /lava-11199519/bin/lava-test-runner /la=
-va-11199519/1
-
-    2023-08-03T11:22:22.417053  + export 'TESTRUN_ID=3D1_bootrr'
-
-    2023-08-03T11:22:22.417558  + cd /lav<8>[   16.439398] <LAVA_SIGNAL_STA=
-RTRUN 1_bootrr 11199519_1.5.2.4.5>
- =
-
-    ... (28 line(s) more)  =
-
- =
-
-
-
-platform                     | arch   | lab           | compiler | defconfi=
-g                    | regressions
------------------------------+--------+---------------+----------+---------=
----------------------+------------
-sun50i-h6-pine-h64           | arm64  | lab-collabora | gcc-10   | defconfi=
-g                    | 1          =
-
-
-  Details:     https://kernelci.org/test/plan/id/64c23f57b2c6f7745f8acf6a
-
-  Results:     5 PASS, 1 FAIL, 1 SKIP
-  Full config: defconfig
-  Compiler:    gcc-10 (aarch64-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210=
-110)
-  Plain log:   https://storage.kernelci.org//stable-rc/linux-5.10.y/v5.10.1=
-88/arm64/defconfig/gcc-10/lab-collabora/baseline-sun50i-h6-pine-h64.txt
-  HTML log:    https://storage.kernelci.org//stable-rc/linux-5.10.y/v5.10.1=
-88/arm64/defconfig/gcc-10/lab-collabora/baseline-sun50i-h6-pine-h64.html
-  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
-t-baseline/20230623.0/arm64/rootfs.cpio.gz =
-
-
-
-  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
-/64c23f57b2c6f7745f8acf6f
-        failing since 9 days (last pass: v5.10.186-221-gf178eace6e074, firs=
-t fail: v5.10.186-332-gf98a4d3a5cec)
-
-    2023-08-03T11:22:36.970856  / # #
-
-    2023-08-03T11:22:37.072920  export SHELL=3D/bin/sh
-
-    2023-08-03T11:22:37.073619  #
-
-    2023-08-03T11:22:37.174968  / # export SHELL=3D/bin/sh. /lava-11199532/=
-environment
-
-    2023-08-03T11:22:37.175651  =
-
-
-    2023-08-03T11:22:37.277076  / # . /lava-11199532/environment/lava-11199=
-532/bin/lava-test-runner /lava-11199532/1
-
-    2023-08-03T11:22:37.278036  =
-
-
-    2023-08-03T11:22:37.294983  / # /lava-11199532/bin/lava-test-runner /la=
-va-11199532/1
-
-    2023-08-03T11:22:37.353008  + export 'TESTRUN_ID=3D1_bootrr'
-
-    2023-08-03T11:22:37.353510  + cd /lava-1119953<8>[   18.208894] <LAVA_S=
-IGNAL_STARTRUN 1_bootrr 11199532_1.5.2.4.5>
- =
-
-    ... (10 line(s) more)  =
-
- =20
+T24gV2VkLCAyMDIzLTA4LTAyIGF0IDA5OjU2ICswMjAwLCBEcmFnb3MgVGF0dWxlYSB3cm90ZToN
+Cj4gT24gV2VkLCAyMDIzLTA4LTAyIGF0IDEwOjUxICswODAwLCBKYXNvbiBXYW5nIHdyb3RlOg0K
+PiA+IE9uIFR1ZSwgQXVnIDEsIDIwMjMgYXQgNDoxN+KAr1BNIERyYWdvcyBUYXR1bGVhIDxkdGF0
+dWxlYUBudmlkaWEuY29tPiB3cm90ZToNCj4gPiA+IA0KPiA+ID4gT24gVHVlLCAyMDIzLTA4LTAx
+IGF0IDExOjU5ICswODAwLCBKYXNvbiBXYW5nIHdyb3RlOg0KPiA+ID4gPiBPbiBNb24sIEp1bCAz
+MSwgMjAyMyBhdCA1OjA44oCvUE0gTWljaGFlbCBTLiBUc2lya2luIDxtc3RAcmVkaGF0LmNvbT4N
+Cj4gPiA+ID4gd3JvdGU6DQo+ID4gPiA+ID4gDQo+ID4gPiA+ID4gT24gTW9uLCBKdWwgMzEsIDIw
+MjMgYXQgMDc6MTU6MzFBTSArMDAwMCwgRHJhZ29zIFRhdHVsZWEgd3JvdGU6DQo+ID4gPiA+ID4g
+PiBPbiBUaHUsIDIwMjMtMDctMjcgYXQgMTI6MjggLTA0MDAsIE1pY2hhZWwgUy4gVHNpcmtpbiB3
+cm90ZToNCj4gPiA+ID4gPiA+ID4gT24gVGh1LCBKdWwgMjcsIDIwMjMgYXQgMDQ6MDI6MTZQTSAr
+MDAwMCwgRHJhZ29zIFRhdHVsZWEgd3JvdGU6DQo+ID4gPiA+ID4gPiA+ID4gT24gV2VkLCAyMDIz
+LTA3LTI2IGF0IDE1OjI2IC0wNDAwLCBNaWNoYWVsIFMuIFRzaXJraW4gd3JvdGU6DQo+ID4gPiA+
+ID4gPiA+ID4gPiBPbiBXZWQsIEp1bCAyNiwgMjAyMyBhdCAxMDowNzozOFBNICswMzAwLCBEcmFn
+b3MgVGF0dWxlYQ0KPiA+ID4gPiA+ID4gPiA+ID4gd3JvdGU6DQo+ID4gPiA+ID4gPiA+ID4gPiA+
+IFRoZSBuZGV2IHdhcyBhY2Nlc3NlZCBvbiBzaHV0ZG93biB3aXRob3V0IGEgY2hlY2sgaWYgaXQN
+Cj4gPiA+ID4gPiA+ID4gPiA+ID4gYWN0dWFsbHkNCj4gPiA+ID4gPiA+ID4gPiA+ID4gZXhpc3Rz
+Lg0KPiA+ID4gPiA+ID4gPiA+ID4gPiBUaGlzIHRyaWdnZXJlZCB0aGUgY3Jhc2ggcGFzdGVkIGJl
+bG93LiBUaGlzIHBhdGNoIHNpbXBseQ0KPiA+ID4gPiA+ID4gPiA+ID4gPiBhZGRzDQo+ID4gPiA+
+ID4gPiA+ID4gPiA+IGENCj4gPiA+ID4gPiA+ID4gPiA+ID4gY2hlY2sNCj4gPiA+ID4gPiA+ID4g
+PiA+ID4gYmVmb3JlIHVzaW5nIG5kZXYuDQo+ID4gPiA+ID4gPiA+ID4gPiA+IA0KPiA+ID4gPiA+
+ID4gPiA+ID4gPiDCoEJVRzoga2VybmVsIE5VTEwgcG9pbnRlciBkZXJlZmVyZW5jZSwgYWRkcmVz
+czoNCj4gPiA+ID4gPiA+ID4gPiA+ID4gMDAwMDAwMDAwMDAwMDMwMA0KPiA+ID4gPiA+ID4gPiA+
+ID4gPiDCoCNQRjogc3VwZXJ2aXNvciByZWFkIGFjY2VzcyBpbiBrZXJuZWwgbW9kZQ0KPiA+ID4g
+PiA+ID4gPiA+ID4gPiDCoCNQRjogZXJyb3JfY29kZSgweDAwMDApIC0gbm90LXByZXNlbnQgcGFn
+ZQ0KPiA+ID4gPiA+ID4gPiA+ID4gPiDCoFBHRCAwIFA0RCAwDQo+ID4gPiA+ID4gPiA+ID4gPiA+
+IMKgT29wczogMDAwMCBbIzFdIFNNUA0KPiA+ID4gPiA+ID4gPiA+ID4gPiDCoENQVTogMCBQSUQ6
+IDEgQ29tbTogc3lzdGVtZC1zaHV0ZG93IE5vdCB0YWludGVkIDYuNS4wLQ0KPiA+ID4gPiA+ID4g
+PiA+ID4gPiByYzJfZm9yX3Vwc3RyZWFtX21pbl9kZWJ1Z18yMDIzXzA3XzE3XzE1XzA1ICMxDQo+
+ID4gPiA+ID4gPiA+ID4gPiA+IMKgSGFyZHdhcmUgbmFtZTogUUVNVSBTdGFuZGFyZCBQQyAoUTM1
+ICsgSUNIOSwgMjAwOSksIEJJT1MNCj4gPiA+ID4gPiA+ID4gPiA+ID4gcmVsLQ0KPiA+ID4gPiA+
+ID4gPiA+ID4gPiAxLjEzLjAtMC0NCj4gPiA+ID4gPiA+ID4gPiA+ID4gZ2YyMWI1YTRhZWIwMi1w
+cmVidWlsdC5xZW11Lm9yZyAwNC8wMS8yMDE0DQo+ID4gPiA+ID4gPiA+ID4gPiA+IMKgUklQOiAw
+MDEwOm1seDV2X3NodXRkb3duKzB4ZS8weDUwIFttbHg1X3ZkcGFdDQo+ID4gPiA+ID4gPiA+ID4g
+PiA+IMKgUlNQOiAwMDE4OmZmZmY4ODgxMDAzYmZkYzAgRUZMQUdTOiAwMDAxMDI4Ng0KPiA+ID4g
+PiA+ID4gPiA+ID4gPiDCoFJBWDogZmZmZjg4ODEwM2JlZmJhMCBSQlg6IGZmZmY4ODgxMDlkMjgw
+MDggUkNYOg0KPiA+ID4gPiA+ID4gPiA+ID4gPiAwMDAwMDAwMDAwMDAwMDE3DQo+ID4gPiA+ID4g
+PiA+ID4gPiA+IMKgUkRYOiAwMDAwMDAwMDAwMDAwMDAxIFJTSTogMDAwMDAwMDAwMDAwMDIxMiBS
+REk6DQo+ID4gPiA+ID4gPiA+ID4gPiA+IGZmZmY4ODgxMDlkMjgwMDANCj4gPiA+ID4gPiA+ID4g
+PiA+ID4gwqBSQlA6IDAwMDAwMDAwMDAwMDAwMDAgUjA4OiAwMDAwMDAwZDNhM2EzODgyIFIwOToN
+Cj4gPiA+ID4gPiA+ID4gPiA+ID4gMDAwMDAwMDAwMDAwMDAwMQ0KPiA+ID4gPiA+ID4gPiA+ID4g
+PiDCoFIxMDogMDAwMDAwMDAwMDAwMDAwMCBSMTE6IDAwMDAwMDAwMDAwMDAwMDAgUjEyOg0KPiA+
+ID4gPiA+ID4gPiA+ID4gPiBmZmZmODg4MTA5ZDI4MDAwDQo+ID4gPiA+ID4gPiA+ID4gPiA+IMKg
+UjEzOiBmZmZmODg4MTA5ZDI4MDgwIFIxNDogMDAwMDAwMDBmZWUxZGVhZCBSMTU6DQo+ID4gPiA+
+ID4gPiA+ID4gPiA+IDAwMDAwMDAwMDAwMDAwMDANCj4gPiA+ID4gPiA+ID4gPiA+ID4gwqBGUzrC
+oCAwMDAwN2Y0OTY5ZTBiZTQwKDAwMDApIEdTOmZmZmY4ODg1MmM4MDAwMDAoMDAwMCkNCj4gPiA+
+ID4gPiA+ID4gPiA+ID4ga25sR1M6MDAwMDAwMDAwMDAwMDAwMA0KPiA+ID4gPiA+ID4gPiA+ID4g
+PiDCoENTOsKgIDAwMTAgRFM6IDAwMDAgRVM6IDAwMDAgQ1IwOiAwMDAwMDAwMDgwMDUwMDMzDQo+
+ID4gPiA+ID4gPiA+ID4gPiA+IMKgQ1IyOiAwMDAwMDAwMDAwMDAwMzAwIENSMzogMDAwMDAwMDEw
+NTFjZDAwNiBDUjQ6DQo+ID4gPiA+ID4gPiA+ID4gPiA+IDAwMDAwMDAwMDAzNzBlYjANCj4gPiA+
+ID4gPiA+ID4gPiA+ID4gwqBEUjA6IDAwMDAwMDAwMDAwMDAwMDAgRFIxOiAwMDAwMDAwMDAwMDAw
+MDAwIERSMjoNCj4gPiA+ID4gPiA+ID4gPiA+ID4gMDAwMDAwMDAwMDAwMDAwMA0KPiA+ID4gPiA+
+ID4gPiA+ID4gPiDCoERSMzogMDAwMDAwMDAwMDAwMDAwMCBEUjY6IDAwMDAwMDAwZmZmZTBmZjAg
+RFI3Og0KPiA+ID4gPiA+ID4gPiA+ID4gPiAwMDAwMDAwMDAwMDAwNDAwDQo+ID4gPiA+ID4gPiA+
+ID4gPiA+IMKgQ2FsbCBUcmFjZToNCj4gPiA+ID4gPiA+ID4gPiA+ID4gwqAgPFRBU0s+DQo+ID4g
+PiA+ID4gPiA+ID4gPiA+IMKgID8gX19kaWUrMHgyMC8weDYwDQo+ID4gPiA+ID4gPiA+ID4gPiA+
+IMKgID8gcGFnZV9mYXVsdF9vb3BzKzB4MTRjLzB4M2MwDQo+ID4gPiA+ID4gPiA+ID4gPiA+IMKg
+ID8gZXhjX3BhZ2VfZmF1bHQrMHg3NS8weDE0MA0KPiA+ID4gPiA+ID4gPiA+ID4gPiDCoCA/IGFz
+bV9leGNfcGFnZV9mYXVsdCsweDIyLzB4MzANCj4gPiA+ID4gPiA+ID4gPiA+ID4gwqAgPyBtbHg1
+dl9zaHV0ZG93bisweGUvMHg1MCBbbWx4NV92ZHBhXQ0KPiA+ID4gPiA+ID4gPiA+ID4gPiDCoCBk
+ZXZpY2Vfc2h1dGRvd24rMHgxM2UvMHgxZTANCj4gPiA+ID4gPiA+ID4gPiA+ID4gwqAga2VybmVs
+X3Jlc3RhcnQrMHgzNi8weDkwDQo+ID4gPiA+ID4gPiA+ID4gPiA+IMKgIF9fZG9fc3lzX3JlYm9v
+dCsweDE0MS8weDIxMA0KPiA+ID4gPiA+ID4gPiA+ID4gPiDCoCA/IHZmc193cml0ZXYrMHhjZC8w
+eDE0MA0KPiA+ID4gPiA+ID4gPiA+ID4gPiDCoCA/IGhhbmRsZV9tbV9mYXVsdCsweDE2MS8weDI2
+MA0KPiA+ID4gPiA+ID4gPiA+ID4gPiDCoCA/IGRvX3dyaXRldisweDZiLzB4MTEwDQo+ID4gPiA+
+ID4gPiA+ID4gPiA+IMKgIGRvX3N5c2NhbGxfNjQrMHgzZC8weDkwDQo+ID4gPiA+ID4gPiA+ID4g
+PiA+IMKgIGVudHJ5X1NZU0NBTExfNjRfYWZ0ZXJfaHdmcmFtZSsweDQ2LzB4YjANCj4gPiA+ID4g
+PiA+ID4gPiA+ID4gwqBSSVA6IDAwMzM6MHg3ZjQ5Njk5MGZiNTYNCj4gPiA+ID4gPiA+ID4gPiA+
+ID4gwqBSU1A6IDAwMmI6MDAwMDdmZmZjN2JkZGU4OCBFRkxBR1M6IDAwMDAwMjA2IE9SSUdfUkFY
+Og0KPiA+ID4gPiA+ID4gPiA+ID4gPiAwMDAwMDAwMDAwMDAwMGE5DQo+ID4gPiA+ID4gPiA+ID4g
+PiA+IMKgUkFYOiBmZmZmZmZmZmZmZmZmZmRhIFJCWDogMDAwMDAwMDAwMDAwMDAwMCBSQ1g6DQo+
+ID4gPiA+ID4gPiA+ID4gPiA+IDAwMDA3ZjQ5Njk5MGZiNTYNCj4gPiA+ID4gPiA+ID4gPiA+ID4g
+wqBSRFg6IDAwMDAwMDAwMDEyMzQ1NjcgUlNJOiAwMDAwMDAwMDI4MTIxOTY5IFJESToNCj4gPiA+
+ID4gPiA+ID4gPiA+ID4gZmZmZmZmZmZmZWUxZGVhZA0KPiA+ID4gPiA+ID4gPiA+ID4gPiDCoFJC
+UDogMDAwMDdmZmZjN2JkZTFkMCBSMDg6IDAwMDAwMDAwMDAwMDAwMDAgUjA5Og0KPiA+ID4gPiA+
+ID4gPiA+ID4gPiAwMDAwMDAwMDAwMDAwMDAwDQo+ID4gPiA+ID4gPiA+ID4gPiA+IMKgUjEwOiAw
+MDAwMDAwMDAwMDAwMDAwIFIxMTogMDAwMDAwMDAwMDAwMDIwNiBSMTI6DQo+ID4gPiA+ID4gPiA+
+ID4gPiA+IDAwMDAwMDAwMDAwMDAwMDANCj4gPiA+ID4gPiA+ID4gPiA+ID4gwqBSMTM6IDAwMDA3
+ZmZmYzdiZGRmMTAgUjE0OiAwMDAwMDAwMDAwMDAwMDAwIFIxNToNCj4gPiA+ID4gPiA+ID4gPiA+
+ID4gMDAwMDdmZmZjN2JkZTJiOA0KPiA+ID4gPiA+ID4gPiA+ID4gPiDCoCA8L1RBU0s+DQo+ID4g
+PiA+ID4gPiA+ID4gPiA+IMKgQ1IyOiAwMDAwMDAwMDAwMDAwMzAwDQo+ID4gPiA+ID4gPiA+ID4g
+PiA+IMKgLS0tWyBlbmQgdHJhY2UgMDAwMDAwMDAwMDAwMDAwMCBdLS0tDQo+ID4gPiA+ID4gPiA+
+ID4gPiA+IA0KPiA+ID4gPiA+ID4gPiA+ID4gPiBGaXhlczogYmM5YTJiM2U2ODZlICgidmRwYS9t
+bHg1OiBTdXBwb3J0IGludGVycnVwdA0KPiA+ID4gPiA+ID4gPiA+ID4gPiBieXBhc3NpbmciKQ0K
+PiA+ID4gPiA+ID4gPiA+ID4gPiBTaWduZWQtb2ZmLWJ5OiBEcmFnb3MgVGF0dWxlYSA8ZHRhdHVs
+ZWFAbnZpZGlhLmNvbT4NCj4gPiA+ID4gPiA+ID4gPiA+ID4gLS0tDQo+ID4gPiA+ID4gPiA+ID4g
+PiA+IMKgZHJpdmVycy92ZHBhL21seDUvbmV0L21seDVfdm5ldC5jIHwgMyArKy0NCj4gPiA+ID4g
+PiA+ID4gPiA+ID4gwqAxIGZpbGUgY2hhbmdlZCwgMiBpbnNlcnRpb25zKCspLCAxIGRlbGV0aW9u
+KC0pDQo+ID4gPiA+ID4gPiA+ID4gPiA+IA0KPiA+ID4gPiA+ID4gPiA+ID4gPiBkaWZmIC0tZ2l0
+IGEvZHJpdmVycy92ZHBhL21seDUvbmV0L21seDVfdm5ldC5jDQo+ID4gPiA+ID4gPiA+ID4gPiA+
+IGIvZHJpdmVycy92ZHBhL21seDUvbmV0L21seDVfdm5ldC5jDQo+ID4gPiA+ID4gPiA+ID4gPiA+
+IGluZGV4IDkxMzhlZjJmYjJjOC4uZTJlN2ViZDcxNzk4IDEwMDY0NA0KPiA+ID4gPiA+ID4gPiA+
+ID4gPiAtLS0gYS9kcml2ZXJzL3ZkcGEvbWx4NS9uZXQvbWx4NV92bmV0LmMNCj4gPiA+ID4gPiA+
+ID4gPiA+ID4gKysrIGIvZHJpdmVycy92ZHBhL21seDUvbmV0L21seDVfdm5ldC5jDQo+ID4gPiA+
+ID4gPiA+ID4gPiA+IEBAIC0zNTU2LDcgKzM1NTYsOCBAQCBzdGF0aWMgdm9pZCBtbHg1dl9zaHV0
+ZG93bihzdHJ1Y3QNCj4gPiA+ID4gPiA+ID4gPiA+ID4gYXV4aWxpYXJ5X2RldmljZQ0KPiA+ID4g
+PiA+ID4gPiA+ID4gPiAqYXV4ZGV2KQ0KPiA+ID4gPiA+ID4gPiA+ID4gPiDCoMKgwqDCoMKgwqDC
+oCBtZ3RkZXYgPSBhdXhpbGlhcnlfZ2V0X2RydmRhdGEoYXV4ZGV2KTsNCj4gPiA+ID4gPiA+ID4g
+PiA+ID4gwqDCoMKgwqDCoMKgwqAgbmRldiA9IG1ndGRldi0+bmRldjsNCj4gPiA+ID4gPiA+ID4g
+PiA+ID4gDQo+ID4gPiA+ID4gPiA+ID4gPiA+IC3CoMKgwqDCoMKgwqAgZnJlZV9pcnFzKG5kZXYp
+Ow0KPiA+ID4gPiA+ID4gPiA+ID4gPiArwqDCoMKgwqDCoMKgIGlmIChuZGV2KQ0KPiA+ID4gPiA+
+ID4gPiA+ID4gPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBmcmVlX2lycXMobmRldik7
+DQo+ID4gPiA+ID4gPiA+ID4gPiA+IMKgfQ0KPiA+ID4gPiA+ID4gPiA+ID4gPiANCj4gPiA+ID4g
+PiA+ID4gPiA+IA0KPiA+ID4gPiA+ID4gPiA+ID4gc29tZXRoaW5nIEkgZG9uJ3QgZ2V0Og0KPiA+
+ID4gPiA+ID4gPiA+ID4gaXJxcyBhcmUgYWxsb2NhdGVkIGluIG1seDVfdmRwYV9kZXZfYWRkDQo+
+ID4gPiA+ID4gPiA+ID4gPiB3aHkgYXJlIHRoZXkgbm90IGZyZWVkIGluIG1seDVfdmRwYV9kZXZf
+ZGVsPw0KPiA+ID4gPiA+ID4gPiA+ID4gDQo+ID4gPiA+ID4gPiA+ID4gVGhhdCBpcyBhIGdvb2Qg
+cG9pbnQuIEkgd2lsbCB0cnkgdG8gZmluZCBvdXQuIEkgYWxzbyBkb24ndCBnZXQNCj4gPiA+ID4g
+PiA+ID4gPiB3aHkNCj4gPiA+ID4gPiA+ID4gPiBmcmVlX2lycQ0KPiA+ID4gPiA+ID4gPiA+IGlz
+DQo+ID4gPiA+ID4gPiA+ID4gY2FsbGVkIGluIHRoZSB2ZHBhIGRldiAuZnJlZSBvcCBpbnN0ZWFk
+IG9mIG1seDVfdmRwYV9kZXZfZGVsLg0KPiA+ID4gPiA+ID4gPiA+IE1heWJlIEkNCj4gPiA+ID4g
+PiA+ID4gPiBjYW4NCj4gPiA+ID4gPiA+ID4gPiBjaGFuZ2UNCj4gPiA+ID4gPiA+ID4gPiB0aGF0
+IGluIGEgZGlmZmVyZW50IHJlZmFjdG9yaW5nLg0KPiA+ID4gPiA+ID4gPiANCj4gPiA+ID4gPiA+
+ID4gYXMgaXQgaXMgSSBoYXZlIG5vIGlkZWEgd2hldGhlciBlLmcuIG5kZXYgY2FuIGNoYW5nZQ0K
+PiA+ID4gPiA+ID4gPiBiZXR3ZWVuIHRoZXNlIHR3byBjYWxsIHNpdGVzLiB0aGF0IHdvdWxkIG1h
+a2UgdGhlIGNoZWNrDQo+ID4gPiA+ID4gPiA+IHBvaW50bGVzcy4NCj4gPiA+ID4gPiA+ID4gDQo+
+ID4gPiA+ID4gPiA+ID4gPiB0aGlzIGlzIHdoYXQncyBjcmVhdGluZyBhbGwgdGhpcyBtZXNzLg0K
+PiA+ID4gPiA+ID4gPiA+ID4gDQo+ID4gPiA+ID4gPiA+ID4gPiANCj4gPiA+ID4gPiA+ID4gPiBO
+b3QgcXVpdGU6IG1seDVfdmRwYV9kZXZfZGVsICh3aGljaCBpcyBhIC5kZXZfZGVsIG9mIGZvciBz
+dHJ1Y3QNCj4gPiA+ID4gPiA+ID4gPiB2ZHBhX21nbXRkZXZfb3BzKSBkb2Vzbid0IGdldCBjYWxs
+ZWQgb24gc2h1dGRvd24uIEF0IGxlYXN0DQo+ID4gPiA+ID4gPiA+ID4gdGhhdCdzDQo+ID4gPiA+
+ID4gPiA+ID4gd2hhdA0KPiA+ID4gPiA+ID4gPiA+IEkNCj4gPiA+ID4gPiA+ID4gPiBzZWUuIE9y
+DQo+ID4gPiA+ID4gPiA+ID4gYW0gSSBtaXNzaW5nIHNvbWV0aGluZz8NCj4gPiA+ID4gPiA+ID4g
+DQo+ID4gPiA+ID4gPiA+IGFuZCB3aHkgZG8gd2UgY2FyZSB3aGV0aGVyIGlycXMgYXJlIGZyZWVk
+IG9uIHNodXRkb3duPw0KPiA+ID4gPiA+ID4gPiANCj4gPiA+ID4gPiA+IEhhZCB0byBhc2sgYXJv
+dW5kIGEgYml0IHRvIGZpbmQgb3V0IHRoZSBhbnN3ZXI6IHRoZXJlIGNhbiBiZSBpc3N1ZXMNCj4g
+PiA+ID4gPiA+IHdpdGgNCj4gPiA+ID4gPiA+IGtleGVjDQo+ID4gPiA+ID4gPiBJUlEgYWxsb2Nh
+dGlvbiBvbiBzb21lIHBsYXRmb3Jtcy4gSXQgaXMgZG9jdW1lbnRlZCBoZXJlIFswXSBmb3INCj4g
+PiA+ID4gPiA+IG1seDVfY29yZS4NCj4gPiA+ID4gPiA+IA0KPiA+ID4gPiA+ID4gaHR0cHM6Ly9n
+aXQua2VybmVsLm9yZy9wdWIvc2NtL2xpbnV4L2tlcm5lbC9naXQvdG9ydmFsZHMvbGludXguZ2l0
+L3RyZWUvZHJpdmVycy9uZXQvZXRoZXJuZXQvbWVsbGFub3gvbWx4NS9jb3JlL21haW4uYyNuMjEy
+OQ0KPiA+ID4gPiA+ID4gDQo+ID4gPiA+ID4gPiBUaGFua3MsDQo+ID4gPiA+ID4gPiBEcmFnb3MN
+Cj4gPiA+ID4gPiANCj4gPiA+ID4gPiBJdCdzIHF1aXRlIHdlaXJkLg0KPiA+ID4gPiA+IMKgwqDC
+oMKgwqDCoMKgwqAgKiBTb21lIHBsYXRmb3JtcyByZXF1aXJpbmcgZnJlZWluZyB0aGUgSVJRJ3Mg
+aW4gdGhlIHNodXRkb3duDQo+ID4gPiA+ID4gwqDCoMKgwqDCoMKgwqDCoCAqIGZsb3cuIElmIHRo
+ZXkgYXJlbid0IGZyZWVkIHRoZXkgY2FuJ3QgYmUgYWxsb2NhdGVkIGFmdGVyDQo+ID4gPiA+ID4g
+wqDCoMKgwqDCoMKgwqDCoCAqIGtleGVjLiBUaGVyZSBpcyBubyBuZWVkIHRvIGNsZWFudXAgdGhl
+IG1seDVfY29yZSBzb2Z0d2FyZQ0KPiA+ID4gPiA+IMKgwqDCoMKgwqDCoMKgwqAgKiBjb250ZXh0
+cy4NCj4gPiA+ID4gPiANCj4gPiA+ID4gPiBidXQgbW9zdCBkcml2ZXJzIGRvbid0IGhhdmUgYSBz
+aHV0ZG93biBjYWxsYmFjayBob3cgZG8gdGhleSB3b3JrIHRoZW4/DQo+ID4gPiA+ID4gZG8geW91
+IGtub3cgd2hpY2ggcGxhdGZvcm1zIHRoZXNlIGFyZT8NCj4gPiA+ID4gDQo+ID4gPiBJIGRvbid0
+LiB4ODZfNjQgaXMgbm90IG9uZSBvZiB0aGVtIHRob3VnaC4gSSB3aWxsIGRvIHNvbWUgbW9yZSBk
+aWdnaW5nIC4uLg0KPiA+ID4gDQo+IFR1cm5zIG91dCB0aGF0IHRoaXMgZml4IChyZWxlYXNpbmcg
+dGhlIGlycXMgb24gLnNodXRkb3duIG9uIG1seDVfY29yZSkgd2FzDQo+IHJlcXVpcmVkIGZvciBQ
+UEMgYXJjaCBidXQgb25seSBmb3IgY2VydGFpbiBtYWluZnJhbWUgc3lzdGVtcy4gVGhhdCdzIGFs
+bCB0aGUNCj4gaW5mbyBJIGNvdWxkIGZpbmQuDQo+IA0KSSB3aWxsIHNlbmQgYSB2MiBmb3IgdGhp
+cyBwYXRjaCB0aGF0IHJlbW92ZXMgdGhlIHNodXRkb3duIG9wLiBUaGUgaXJxcyB3aWxsIGJlDQpy
+ZWxlYXNlZCBieSB0aGUgbWx4NV9jb3JlIHNodXRkb3duIGhhbmRsZXIgd2hpY2ggaXMgcmVzcG9u
+c2libGUgZm9yIHRoZSBWRi4NCg0KVGhhbmtzLA0KRHJhZ29zDQoNCj4gPiA+ID4gVGhlcmUgdXNl
+ZCB0byBiZSBienMgdGhhdCByZXF1aXJlcyB2aXJ0aW8gZHJpdmVycyB0byBhZGQgYSBzaHV0ZG93
+biB0bw0KPiA+ID4gPiBmaXgga2V4ZWM6DQo+ID4gPiA+IA0KPiA+ID4gPiBodHRwczovL2J1Z3pp
+bGxhLnJlZGhhdC5jb20vc2hvd19idWcuY2dpP2lkPTIxMDg0MDYNCj4gPiA+ID4gDQo+ID4gPiBJ
+IGRvbid0IGhhdmUgYWNjZXNzIHRvIHRoaXMuIFdoYXQgaXMgaXQgYWJvdXQ/DQo+ID4gDQo+ID4g
+VGhpcyBidWcgbWlnaHQgYmUgbW9yZSBhY2N1cmF0ZToNCj4gPiANCj4gPiBodHRwczovL2J1Z3pp
+bGxhLnJlZGhhdC5jb20vc2hvd19idWcuY2dpP2lkPTE4MjA1MjENCj4gPiANCj4gPiBJdCdzIGFi
+b3V0IHRoZSBrZXhlYyBndXlzIChjY2VkIHJlbGV2YW50IHBlb3BsZSkgd2FudGluZyB0byBhZGQg
+YQ0KPiA+IHNodXRkb3duIG1ldGhvZCBmb3IgdmlyaXRvIHRvIGZpeCBwb3RlbnRpYWwga2V4ZWMg
+aXNzdWVzLg0KPiA+IA0KPiA+IFRoYW5rcw0KPiA+IA0KPiA+ID4gDQo+ID4gPiBUaGFua3MsDQo+
+ID4gPiBEcmFnb3MNCj4gPiA+ID4gVGhhbmtzDQo+ID4gPiA+IA0KPiA+ID4gPiA+IA0KPiA+ID4g
+PiA+IEkgZG9uJ3QgcmVhbGx5IGtub3cgbXVjaCBhYm91dCB3aHkgc2h1dGRvd24gY2FsbGJhY2sg
+aXMgZXZlbg0KPiA+ID4gPiA+IG5lY2Vzc2FyeS4NCj4gPiA+ID4gPiBJIGd1ZXNzIHRoaXMgaXMg
+dG8gZGV0ZWN0IHNodXRkb3duIGFuZCBkbyBhIGZhc3RlciBjbGVhbnVwIHRoYW4NCj4gPiA+ID4g
+PiB0aGUgc2xvdywgZ3JhY2VmdWwgcmVtb3ZhbCwganVzdCBjbGVhbmluZyBoYXJkd2FyZSByZXNv
+dXJjZXM/DQo+ID4gPiA+ID4gDQo+IC5zaHV0ZG93biBjb3VsZCBiZSByZW1vdmVkIGluIG1seDVf
+dmRwYS4gQnV0IEkgbm90aWNlIHRoYXQgbWx4NV9jb3JlJ3MNCj4gLnNodXRkb3duDQo+IGtpY2tz
+IGluIGZyb20gcGNpX2RldmljZV9zaHV0ZG93biB0byBjbGVhbiB0aGUgaXJxcy4gU28gdGhlIGly
+cXMgd2lsbCBzdGlsbCBiZQ0KPiBmcmVlZCBidXQgYXMgYSBzaWRlIGVmZmVjdC4gV2hpY2ggaXMg
+bm90IGdvb2QuDQo+IA0KPiBUaGFua3MsDQo+IERyYWdvcw0KDQo=
