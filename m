@@ -2,97 +2,90 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1F29376EAFC
-	for <lists+stable@lfdr.de>; Thu,  3 Aug 2023 15:44:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 318F976EB1A
+	for <lists+stable@lfdr.de>; Thu,  3 Aug 2023 15:48:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235894AbjHCNox (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 3 Aug 2023 09:44:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34164 "EHLO
+        id S236243AbjHCNsb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 3 Aug 2023 09:48:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33880 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236491AbjHCNoe (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 3 Aug 2023 09:44:34 -0400
+        with ESMTP id S236533AbjHCNsA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 3 Aug 2023 09:48:00 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26DEA44B5;
-        Thu,  3 Aug 2023 06:42:03 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D2CBA211F;
+        Thu,  3 Aug 2023 06:46:54 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B673761DA6;
-        Thu,  3 Aug 2023 13:42:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 132EBC433AB;
-        Thu,  3 Aug 2023 13:42:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1691070122;
-        bh=r4s3ur9QdCGpsgh3oEwBZT6hFanHdwrcpg4wERGLJmQ=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=HZ1l5Ayx8C7Zp/tulDNSVBYkZJWqK57C3x6l59CjA3yonV/xGx38ic7sMk0FEbL1I
-         7r+FAQR3CkGmag1uOdZJupMitc5su95trmpQq+hg4gOWYcLn7aG45g7fcQv9DiNlFc
-         b/VYhdSnihf/wX9znQuY2PwkJDBsdy54DsTcrExL4JSslp9PDasgfhMSyLwbO/jfRk
-         ePcLdGiZ0IFcpZvNUboF4S48ZQnvT7uP/WO4smdysBrHfDkzCnPJBWe3B77Cwiji8H
-         wADXLQkVWoPA0PcsdSlZwSD4/GXAUlgYC6snnw/FOSRpfrfiJLJMTtb9hUnPJP9VO9
-         D9UTD9IQM6Khg==
-Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-2b9b50be31aso14645251fa.3;
-        Thu, 03 Aug 2023 06:42:01 -0700 (PDT)
-X-Gm-Message-State: ABy/qLb+mjKgdeaB2aUuHDEYFqYDAzbUNF53IYhFVUcUmqSH87EXjO0C
-        aT6SjTzxlkbDXro1GdDPanuDjRMfdNUaCNW7ggI=
-X-Google-Smtp-Source: APBJJlHpRNTBRSJY8f35QI0ZpCnxRMpG0BXG7sw1yanHmNpSx4z+ia17IG/byRlJSLtHTAAVz0fbvlrffdUyAKzLM0k=
-X-Received: by 2002:a05:651c:106:b0:2b6:ded8:6fc1 with SMTP id
- a6-20020a05651c010600b002b6ded86fc1mr7321871ljb.25.1691070119999; Thu, 03 Aug
- 2023 06:41:59 -0700 (PDT)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7119661D99;
+        Thu,  3 Aug 2023 13:46:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6F63C433C8;
+        Thu,  3 Aug 2023 13:46:52 +0000 (UTC)
+Authentication-Results: smtp.kernel.org;
+        dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="OJRebfLa"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
+        t=1691070410;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=qgxmWQdd35pAiceUmGoEUjztaUSu8B0Cmt3Acw7F7f8=;
+        b=OJRebfLau7fIAA68evzbiRoZUVhvMmbsdySypqXjzHZnigR0aEcwVTuByPVsImmEMM+1Ab
+        fjcPa2l0q0qRzFZBfy2FV4cOX6rRe/HHjyVSxUb8p1HhA1xVfrmnLbsEN1vmtrdJlQKC5p
+        ss54kYjcSOFK0KgWJoQylAYL5m4/OEA=
+Received: by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id 2e35afd6 (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
+        Thu, 3 Aug 2023 13:46:49 +0000 (UTC)
+Date:   Thu, 3 Aug 2023 15:45:40 +0200
+From:   "Jason A. Donenfeld" <Jason@zx2c4.com>
+To:     Mario Limonciello <mario.limonciello@amd.com>
+Cc:     Jarkko Sakkinen <jarkko@kernel.org>, peterhuewe@gmx.de,
+        jgg@ziepe.ca, linux@dominikbrodowski.net,
+        linux-integrity@vger.kernel.org, daniil.stas@posteo.net,
+        bitlord0xff@gmail.com, stable@vger.kernel.org
+Subject: Re: [PATCH v2] tpm: Disable RNG for all AMD fTPMs
+Message-ID: <ZMuvhEwN41qEhY9r@zx2c4.com>
+References: <20230802122533.19508-1-mario.limonciello@amd.com>
 MIME-Version: 1.0
-References: <20230803055611.2343011-1-xiao.w.wang@intel.com>
-In-Reply-To: <20230803055611.2343011-1-xiao.w.wang@intel.com>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Thu, 3 Aug 2023 15:41:48 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXECv+JU-ahvWENk4XRrjxkfBmWoWHhOSdwGpfxC1LVLkg@mail.gmail.com>
-Message-ID: <CAMj1kXECv+JU-ahvWENk4XRrjxkfBmWoWHhOSdwGpfxC1LVLkg@mail.gmail.com>
-Subject: Re: [PATCH] efi/riscv: libstub: Fix comment about absolute relocation
-To:     Xiao Wang <xiao.w.wang@intel.com>
-Cc:     linux-riscv@lists.infradead.org, linux-efi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20230802122533.19508-1-mario.limonciello@amd.com>
+X-Spam-Status: No, score=-6.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, 3 Aug 2023 at 07:48, Xiao Wang <xiao.w.wang@intel.com> wrote:
->
-> We don't want absolute symbols references in the stub, so fix the double
-> negation in the comment.
->
-> Fixes: d7071743db31 ("RISC-V: Add EFI stub support.")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Xiao Wang <xiao.w.wang@intel.com>
+On Wed, Aug 02, 2023 at 07:25:33AM -0500, Mario Limonciello wrote:
+> The TPM RNG functionality is not necessary for entropy when the CPU
+> already supports the RDRAND instruction. The TPM RNG functionality
+> was previously disabled on a subset of AMD fTPM series, but reports
+> continue to show problems on some systems causing stutter root caused
+> to TPM RNG functionality.
+> 
+> Expand disabling TPM RNG use for all AMD fTPMs whether they have versions
+> that claim to have fixed or not. To accomplish this, move the detection
+> into part of the TPM CRB registration and add a flag indicating that
+> the TPM should opt-out of registration to hwrng.
+> 
+> Cc: stable@vger.kernel.org # 6.1.y+
+> Fixes: b006c439d58d ("hwrng: core - start hwrng kthread also for untrusted sources")
+> Fixes: f1324bbc4011 ("tpm: disable hwrng for fTPM on some AMD designs")
 
-Queued up in efi/next (without the cc stable)
+Users can trigger this by reading from /dev/hwrng, which some userspace
+daemons are known to do. So I think the proper fixes tag and stable@
+version range actually begins with whenever fTPM support was introduced.
 
-Thanks,
+> Reported-by: daniil.stas@posteo.net
+> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217719
+> Reported-by: bitlord0xff@gmail.com
+> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217212
+> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
 
+Hopefully future AMD hardware won't be broken and we can revisit this.
+Until then, LGTM:
 
-> ---
->  drivers/firmware/efi/libstub/Makefile | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/drivers/firmware/efi/libstub/Makefile b/drivers/firmware/efi/libstub/Makefile
-> index b0f8c495c10f..ed6e8ebd89b4 100644
-> --- a/drivers/firmware/efi/libstub/Makefile
-> +++ b/drivers/firmware/efi/libstub/Makefile
-> @@ -146,7 +146,7 @@ STUBCOPY_RELOC-$(CONFIG_ARM64)      := R_AARCH64_ABS
->
->  # For RISC-V, we don't need anything special other than arm64. Keep all the
->  # symbols in .init section and make sure that no absolute symbols references
-> -# doesn't exist.
-> +# exist.
->  STUBCOPY_FLAGS-$(CONFIG_RISCV) += --prefix-alloc-sections=.init \
->                                    --prefix-symbols=__efistub_
->  STUBCOPY_RELOC-$(CONFIG_RISCV) := R_RISCV_HI20
-> --
-> 2.25.1
->
+Reviewed-by: Jason A. Donenfeld <Jason@zx2c4.com>
