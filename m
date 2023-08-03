@@ -2,246 +2,207 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1DC4376DFF9
-	for <lists+stable@lfdr.de>; Thu,  3 Aug 2023 08:01:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B341376E1C6
+	for <lists+stable@lfdr.de>; Thu,  3 Aug 2023 09:37:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231200AbjHCGBo (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 3 Aug 2023 02:01:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34792 "EHLO
+        id S233242AbjHCHhc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 3 Aug 2023 03:37:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47200 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230150AbjHCGBn (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 3 Aug 2023 02:01:43 -0400
-Received: from mail-vs1-xe2b.google.com (mail-vs1-xe2b.google.com [IPv6:2607:f8b0:4864:20::e2b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 56EBDE6F
-        for <stable@vger.kernel.org>; Wed,  2 Aug 2023 23:01:42 -0700 (PDT)
-Received: by mail-vs1-xe2b.google.com with SMTP id ada2fe7eead31-4475df91bb1so266623137.3
-        for <stable@vger.kernel.org>; Wed, 02 Aug 2023 23:01:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1691042501; x=1691647301;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=fTAvkzB4Ruit3rntKyDlDPed3Oi9TQUtJNoUU/ZhAl8=;
-        b=PfVxs4+Xc213BkTNTnD6vTwb7WtfQmQp1O1Sh1fHubRexnp/gKMnDqrUuTCeamx+zr
-         Lg0bsOkWTmiVSp/y49iF9SDjkA8qn4rMUOLm+ikuObl7raaGHWLLp2l2+uaWhfzAC37e
-         gu8Ql+9vEuDqomrruBIEHquTXZDtYsXw0g5CifrqY8hQbGdMy39XsfnEFeY2F084/AW6
-         8rIvK888cP3pGDgtDgxk2rszGfK3b6Ww+5jSLTXcUrPGp1y60tAcuQRFam9PIv/3dv4m
-         jzH3EjzOAtdlJqLXs2/dTAXA8zaY4jei0Ne/oPLNU2LxmmBE4VMZe9NADKlft7UOTAww
-         gm6A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691042501; x=1691647301;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=fTAvkzB4Ruit3rntKyDlDPed3Oi9TQUtJNoUU/ZhAl8=;
-        b=DevU0zS3bbyrjgyCYoX9jk0iw282igPvpOANiy3qghIqNdB1TFj6sZCp6O6ys5dWLa
-         jNcapM/h0X7IPzJU+9B3RteqPedhYfaHvhMDEHqZ+1xz50kaHYilnlX5py59C41JSyx4
-         HjOzSQQyA5Z+TMwJGxSPUhFdf6k+ZiKPfxo946aeq3fR+JsMNv8OCewbrw4UxL4u5OBp
-         6EGPBp/dvKZsqjkrlc29q5ylqmksjG8Dpgr2kvHbJHDblbRbLRDD4L1C0ODcLouJQ/6P
-         afR7IPfkeVCj+JBPMO0NKCLyZoztZMVTixifLJaRLeE02ppl++pbRiEjsJCjTr6LjS1V
-         /ZUw==
-X-Gm-Message-State: ABy/qLbuDEuCKyKdNSb6D7ndOeLpGuOQnq/B1PPXLbtCmdXK4t5B5Zup
-        GUS28Id79AZEMNfPNr/9Y/QgZ31LLUgjx159b1cyIA==
-X-Google-Smtp-Source: APBJJlFpEUe3y2CjvvROKYgqXdCQz3t9w1FcmBD7CKmNTkk4zKfssSQ2asisIONnGKAmaMOfKf6vtex9VmIgbDDNmJ0=
-X-Received: by 2002:a67:fb09:0:b0:443:7bbc:e397 with SMTP id
- d9-20020a67fb09000000b004437bbce397mr5674059vsr.26.1691042501194; Wed, 02 Aug
- 2023 23:01:41 -0700 (PDT)
+        with ESMTP id S232717AbjHCHgS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 3 Aug 2023 03:36:18 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1FEA335A5
+        for <stable@vger.kernel.org>; Thu,  3 Aug 2023 00:32:37 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 96D0361C32
+        for <stable@vger.kernel.org>; Thu,  3 Aug 2023 07:32:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 807F2C433C7;
+        Thu,  3 Aug 2023 07:32:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1691047956;
+        bh=pMJ1cDIqLqOZTAPTefzSy+7NGUBqIccUMATyfws8tq4=;
+        h=Subject:To:Cc:From:Date:From;
+        b=JzbJ9EAra+xaCfe6saLNBeKFbfBCbFcSLqGwMVR+uAaYpbsuikMBzlN809riwR1tL
+         02I7nnUbssT5u1x9TCvHaxbyKwwnY4lerqm7Th+H25q2HWAN0ID/HiFn/1Zxd3dcW3
+         ztSYyT+RaPWD14V4IqNLEeJBPAO/74WiVhvnaX/8=
+Subject: FAILED: patch "[PATCH] f2fs: don't reset unchangable mount option in f2fs_remount()" failed to apply to 6.1-stable tree
+To:     chao@kernel.org, jaegeuk@kernel.org, stable@vger.kernel.org
+Cc:     <stable@vger.kernel.org>
+From:   <gregkh@linuxfoundation.org>
+Date:   Thu, 03 Aug 2023 09:32:32 +0200
+Message-ID: <2023080332-bonded-shelter-0869@gregkh>
 MIME-Version: 1.0
-References: <20230802065510.869511253@linuxfoundation.org>
-In-Reply-To: <20230802065510.869511253@linuxfoundation.org>
-From:   Naresh Kamboju <naresh.kamboju@linaro.org>
-Date:   Thu, 3 Aug 2023 11:31:30 +0530
-Message-ID: <CA+G9fYt7d3Ogj7rXZboJ5RtXVTd-K0_0y5BDyfdSg-VXL_3QbA@mail.gmail.com>
-Subject: Re: [PATCH 6.1 000/225] 6.1.43-rc2 review
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-        jonathanh@nvidia.com, f.fainelli@gmail.com,
-        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-        conor@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, 2 Aug 2023 at 13:12, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 6.1.43 release.
-> There are 225 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Fri, 04 Aug 2023 06:54:28 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
-6.1.43-rc2.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-6.1.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
 
+The patch below does not apply to the 6.1-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-Results from Linaro=E2=80=99s test farm.
-No regressions on arm64, arm, x86_64, and i386.
+To reproduce the conflict and resubmit, you may use the following commands:
 
-Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git checkout FETCH_HEAD
+git cherry-pick -x 458c15dfbce62c35fefd9ca637b20a051309c9f1
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023080332-bonded-shelter-0869@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
-## Build
-* kernel: 6.1.43-rc2
-* git: https://gitlab.com/Linaro/lkft/mirrors/stable/linux-stable-rc
-* git branch: linux-6.1.y
-* git commit: bdcf4e82a088a0bc7c5557d08d0c86c67bbda149
-* git describe: v6.1.42-226-gbdcf4e82a088
-* test details:
-https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.1.y-sanity/build=
-/v6.1.42-226-gbdcf4e82a088
+Possible dependencies:
 
-## Test Regressions (compared to v6.1.42)
+458c15dfbce6 ("f2fs: don't reset unchangable mount option in f2fs_remount()")
+12607c1ba763 ("f2fs: specify extent cache for read explicitly")
+967eaad1fed5 ("f2fs: fix to set flush_merge opt and show noflush_merge")
 
-## Metric Regressions (compared to v6.1.42)
+thanks,
 
-## Test Fixes (compared to v6.1.42)
+greg k-h
 
-## Metric Fixes (compared to v6.1.42)
+------------------ original commit in Linus's tree ------------------
 
-## Test result summary
-total: 157013, pass: 134713, fail: 2871, skip: 19242, xfail: 187
+From 458c15dfbce62c35fefd9ca637b20a051309c9f1 Mon Sep 17 00:00:00 2001
+From: Chao Yu <chao@kernel.org>
+Date: Tue, 23 May 2023 11:58:22 +0800
+Subject: [PATCH] f2fs: don't reset unchangable mount option in f2fs_remount()
 
-## Build Summary
-* arc: 5 total, 5 passed, 0 failed
-* arm: 145 total, 145 passed, 0 failed
-* arm64: 54 total, 53 passed, 1 failed
-* i386: 41 total, 41 passed, 0 failed
-* mips: 30 total, 28 passed, 2 failed
-* parisc: 4 total, 4 passed, 0 failed
-* powerpc: 38 total, 36 passed, 2 failed
-* riscv: 26 total, 25 passed, 1 failed
-* s390: 16 total, 14 passed, 2 failed
-* sh: 14 total, 12 passed, 2 failed
-* sparc: 8 total, 8 passed, 0 failed
-* x86_64: 46 total, 46 passed, 0 failed
+syzbot reports a bug as below:
 
-## Test suites summary
-* boot
-* kselftest-android
-* kselftest-arm64
-* kselftest-breakpoints
-* kselftest-capabilities
-* kselftest-cgroup
-* kselftest-clone3
-* kselftest-core
-* kselftest-cpu-hotplug
-* kselftest-cpufreq
-* kselftest-drivers-dma-buf
-* kselftest-efivarfs
-* kselftest-exec
-* kselftest-filesystems
-* kselftest-filesystems-binderfs
-* kselftest-filesystems-epoll
-* kselftest-firmware
-* kselftest-fpu
-* kselftest-ftrace
-* kselftest-futex
-* kselftest-gpio
-* kselftest-intel_pstate
-* kselftest-ipc
-* kselftest-ir
-* kselftest-kcmp
-* kselftest-kexec
-* kselftest-kvm
-* kselftest-lib
-* kselftest-livepatch
-* kselftest-membarrier
-* kselftest-memfd
-* kselftest-memory-hotplug
-* kselftest-mincore
-* kselftest-mount
-* kselftest-mqueue
-* kselftest-net
-* kselftest-net-forwarding
-* kselftest-net-mptcp
-* kselftest-netfilter
-* kselftest-nsfs
-* kselftest-openat2
-* kselftest-pid_namespace
-* kselftest-pidfd
-* kselftest-proc
-* kselftest-pstore
-* kselftest-ptrace
-* kselftest-rseq
-* kselftest-rtc
-* kselftest-seccomp
-* kselftest-sigaltstack
-* kselftest-size
-* kselftest-splice
-* kselftest-static_keys
-* kselftest-sync
-* kselftest-sysctl
-* kselftest-tc-testing
-* kselftest-timens
-* kselftest-timers
-* kselftest-tmpfs
-* kselftest-tpm2
-* kselftest-user
-* kselftest-user_events
-* kselftest-vDSO
-* kselftest-vm
-* kselftest-watchdog
-* kselftest-x86
-* kselftest-zram
-* kunit
-* kvm-unit-tests
-* libgpiod
-* libhugetlbfs
-* log-parser-boot
-* log-parser-test
-* ltp-cap_bounds
-* ltp-commands
-* ltp-containers
-* ltp-controllers
-* ltp-cpuhotplug
-* ltp-crypto
-* ltp-cve
-* ltp-dio
-* ltp-fcntl-locktests
-* ltp-filecaps
-* ltp-fs
-* ltp-fs_bind
-* ltp-fs_perms_simple
-* ltp-fsx
-* ltp-hugetlb
-* ltp-io
-* ltp-ipc
-* ltp-math
-* ltp-mm
-* ltp-nptl
-* ltp-pty
-* ltp-sched
-* ltp-securebits
-* ltp-smoke
-* ltp-syscalls
-* ltp-tracing
-* network-basic-tests
-* perf
-* rcutorture
-* v4l2-compliance
+general protection fault, probably for non-canonical address 0xdffffc0000000009: 0000 [#1] PREEMPT SMP KASAN
+RIP: 0010:__lock_acquire+0x69/0x2000 kernel/locking/lockdep.c:4942
+Call Trace:
+ lock_acquire+0x1e3/0x520 kernel/locking/lockdep.c:5691
+ __raw_write_lock include/linux/rwlock_api_smp.h:209 [inline]
+ _raw_write_lock+0x2e/0x40 kernel/locking/spinlock.c:300
+ __drop_extent_tree+0x3ac/0x660 fs/f2fs/extent_cache.c:1100
+ f2fs_drop_extent_tree+0x17/0x30 fs/f2fs/extent_cache.c:1116
+ f2fs_insert_range+0x2d5/0x3c0 fs/f2fs/file.c:1664
+ f2fs_fallocate+0x4e4/0x6d0 fs/f2fs/file.c:1838
+ vfs_fallocate+0x54b/0x6b0 fs/open.c:324
+ ksys_fallocate fs/open.c:347 [inline]
+ __do_sys_fallocate fs/open.c:355 [inline]
+ __se_sys_fallocate fs/open.c:353 [inline]
+ __x64_sys_fallocate+0xbd/0x100 fs/open.c:353
+ do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+ do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
+ entry_SYSCALL_64_after_hwframe+0x63/0xcd
 
---
-Linaro LKFT
-https://lkft.linaro.org
+The root cause is race condition as below:
+- since it tries to remount rw filesystem, so that do_remount won't
+call sb_prepare_remount_readonly to block fallocate, there may be race
+condition in between remount and fallocate.
+- in f2fs_remount(), default_options() will reset mount option to default
+one, and then update it based on result of parse_options(), so there is
+a hole which race condition can happen.
+
+Thread A			Thread B
+- f2fs_fill_super
+ - parse_options
+  - clear_opt(READ_EXTENT_CACHE)
+
+- f2fs_remount
+ - default_options
+  - set_opt(READ_EXTENT_CACHE)
+				- f2fs_fallocate
+				 - f2fs_insert_range
+				  - f2fs_drop_extent_tree
+				   - __drop_extent_tree
+				    - __may_extent_tree
+				     - test_opt(READ_EXTENT_CACHE) return true
+				    - write_lock(&et->lock) access NULL pointer
+ - parse_options
+  - clear_opt(READ_EXTENT_CACHE)
+
+Cc: <stable@vger.kernel.org>
+Reported-by: syzbot+d015b6c2fbb5c383bf08@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/linux-f2fs-devel/20230522124203.3838360-1-chao@kernel.org
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+
+diff --git a/fs/f2fs/super.c b/fs/f2fs/super.c
+index 8eb17cc73941..6e770f82d39f 100644
+--- a/fs/f2fs/super.c
++++ b/fs/f2fs/super.c
+@@ -2086,9 +2086,22 @@ static int f2fs_show_options(struct seq_file *seq, struct dentry *root)
+ 	return 0;
+ }
+ 
+-static void default_options(struct f2fs_sb_info *sbi)
++static void default_options(struct f2fs_sb_info *sbi, bool remount)
+ {
+ 	/* init some FS parameters */
++	if (!remount) {
++		set_opt(sbi, READ_EXTENT_CACHE);
++		clear_opt(sbi, DISABLE_CHECKPOINT);
++
++		if (f2fs_hw_support_discard(sbi) || f2fs_hw_should_discard(sbi))
++			set_opt(sbi, DISCARD);
++
++		if (f2fs_sb_has_blkzoned(sbi))
++			F2FS_OPTION(sbi).discard_unit = DISCARD_UNIT_SECTION;
++		else
++			F2FS_OPTION(sbi).discard_unit = DISCARD_UNIT_BLOCK;
++	}
++
+ 	if (f2fs_sb_has_readonly(sbi))
+ 		F2FS_OPTION(sbi).active_logs = NR_CURSEG_RO_TYPE;
+ 	else
+@@ -2118,23 +2131,16 @@ static void default_options(struct f2fs_sb_info *sbi)
+ 	set_opt(sbi, INLINE_XATTR);
+ 	set_opt(sbi, INLINE_DATA);
+ 	set_opt(sbi, INLINE_DENTRY);
+-	set_opt(sbi, READ_EXTENT_CACHE);
+ 	set_opt(sbi, NOHEAP);
+-	clear_opt(sbi, DISABLE_CHECKPOINT);
+ 	set_opt(sbi, MERGE_CHECKPOINT);
+ 	F2FS_OPTION(sbi).unusable_cap = 0;
+ 	sbi->sb->s_flags |= SB_LAZYTIME;
+ 	if (!f2fs_is_readonly(sbi))
+ 		set_opt(sbi, FLUSH_MERGE);
+-	if (f2fs_hw_support_discard(sbi) || f2fs_hw_should_discard(sbi))
+-		set_opt(sbi, DISCARD);
+-	if (f2fs_sb_has_blkzoned(sbi)) {
++	if (f2fs_sb_has_blkzoned(sbi))
+ 		F2FS_OPTION(sbi).fs_mode = FS_MODE_LFS;
+-		F2FS_OPTION(sbi).discard_unit = DISCARD_UNIT_SECTION;
+-	} else {
++	else
+ 		F2FS_OPTION(sbi).fs_mode = FS_MODE_ADAPTIVE;
+-		F2FS_OPTION(sbi).discard_unit = DISCARD_UNIT_BLOCK;
+-	}
+ 
+ #ifdef CONFIG_F2FS_FS_XATTR
+ 	set_opt(sbi, XATTR_USER);
+@@ -2306,7 +2312,7 @@ static int f2fs_remount(struct super_block *sb, int *flags, char *data)
+ 			clear_sbi_flag(sbi, SBI_NEED_SB_WRITE);
+ 	}
+ 
+-	default_options(sbi);
++	default_options(sbi, true);
+ 
+ 	/* parse mount options */
+ 	err = parse_options(sb, data, true);
+@@ -4346,7 +4352,7 @@ static int f2fs_fill_super(struct super_block *sb, void *data, int silent)
+ 		sbi->s_chksum_seed = f2fs_chksum(sbi, ~0, raw_super->uuid,
+ 						sizeof(raw_super->uuid));
+ 
+-	default_options(sbi);
++	default_options(sbi, false);
+ 	/* parse mount options */
+ 	options = kstrdup((const char *)data, GFP_KERNEL);
+ 	if (data && !options) {
+
