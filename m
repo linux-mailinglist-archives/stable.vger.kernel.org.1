@@ -2,196 +2,131 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6C65376E2D7
-	for <lists+stable@lfdr.de>; Thu,  3 Aug 2023 10:22:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C861D76E388
+	for <lists+stable@lfdr.de>; Thu,  3 Aug 2023 10:47:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234232AbjHCIWA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 3 Aug 2023 04:22:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45452 "EHLO
+        id S232850AbjHCIrg (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 3 Aug 2023 04:47:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35620 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234338AbjHCIVe (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 3 Aug 2023 04:21:34 -0400
-Received: from mail-ed1-x52e.google.com (mail-ed1-x52e.google.com [IPv6:2a00:1450:4864:20::52e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD26F6182
-        for <stable@vger.kernel.org>; Thu,  3 Aug 2023 01:16:25 -0700 (PDT)
-Received: by mail-ed1-x52e.google.com with SMTP id 4fb4d7f45d1cf-522c9d388d2so745479a12.3
-        for <stable@vger.kernel.org>; Thu, 03 Aug 2023 01:16:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1691050584; x=1691655384;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=zJzO2SBnzz/DsdVjq1mScHY8saUIG6aUKjD0WrITqO4=;
-        b=VSr/A6XHlYP1De9JUIhXHl9ggxcVpNa3edCkKxGeWG67gAaXjWBCrgn1nMzn1cULqr
-         BOvNumtO/sl0qPEnD7HpSo8UUVWS420KAY5Uaa+Xmk5Cv83B+ycm1Ym0cOHsXIu2qZWF
-         QDQJTbAfGcgIm8BQbINNWIMQ430ABn/qvleKM=
+        with ESMTP id S233753AbjHCIre (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 3 Aug 2023 04:47:34 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E744C1982
+        for <stable@vger.kernel.org>; Thu,  3 Aug 2023 01:46:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1691052368;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=B1cxWDb2x+ndU67pctL7lnvKXmzS7BnQj9Ld7SM44cY=;
+        b=PTwA/2eittG/I5l8I9Ao5UX4pQ38dQUTYSMXHMWABxzrOplnZhWptPyFoF9y9l4I4QKdUS
+        YMvAKvVaPCtK7ksWC3xYIrfyozB2zhoSs7+1QAfxKDgYZsIN4iMc0UG1tLB3Ev8Yq3177c
+        ARyY4Bj/l2L3arNnmDDEtfsyJvMw4QI=
+Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
+ [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-523-wlQqUdgpPCay5JhlbeJy_w-1; Thu, 03 Aug 2023 04:46:07 -0400
+X-MC-Unique: wlQqUdgpPCay5JhlbeJy_w-1
+Received: by mail-qv1-f72.google.com with SMTP id 6a1803df08f44-63cceb8c21aso8256426d6.0
+        for <stable@vger.kernel.org>; Thu, 03 Aug 2023 01:46:07 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691050584; x=1691655384;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=zJzO2SBnzz/DsdVjq1mScHY8saUIG6aUKjD0WrITqO4=;
-        b=f2sjRvUAG5GdM3Zbr7+JSlMkT5U3gKvSfW5a2kjLhisAu+rNWrH7Kz1wpRfgOeXnBd
-         qdZtLXD65MCl7wEEZy4lmjDlUtobRw9RHS0WTxruNYioHC+P9bIz0hWWj8vvHe0kZG6X
-         0MVPlUWowAY2DcT7iqb2zcCRk+EyUHF8TrbkBnxi61iB99H2eSgj3NjVxzmioDh0J9e7
-         +3GsmwpfSy/9QXMWDU27GuOxXP8BQdqi8ilwIeQsa0gN27Pss2NFDgMYTTwAKgBrTLgQ
-         TVI4UBQW5LbbDkFkzfrOs8/Yg53/GcYIx61cTSL/LcqSi4F9VwNu479IJ8kRaRGVWTnr
-         +w3A==
-X-Gm-Message-State: ABy/qLZxcnzkZSovzCEWlGW53QG9TflpXIVBwqygNBRnoiMm/P6NN3rR
-        P2zRp8Ni05vUXrJfwDG93eVQVz3L7oMYKoP9Yl1lYw==
-X-Google-Smtp-Source: APBJJlHZ5Z8Tcvg2UveRm8Hx2U19GntVqayIVHM0ZHdT7+B2McuPM6oEyMaUuvCVvOJkT7CMABHJjMBqwer4BkPvx1E=
-X-Received: by 2002:aa7:d9d2:0:b0:522:7db8:9939 with SMTP id
- v18-20020aa7d9d2000000b005227db89939mr7755383eds.29.1691050584291; Thu, 03
- Aug 2023 01:16:24 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1691052367; x=1691657167;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=B1cxWDb2x+ndU67pctL7lnvKXmzS7BnQj9Ld7SM44cY=;
+        b=XjDhnAvyjos0WKfP5IGUzMLY8kRgPGRmQ/uYSaGw64S4Piuf9YLI/Z5L5GxKWRqqx6
+         /f1RWwxko0lOavf469tCzUpTiYnyC5Kw2r6j7hFEEBlIKQPU4toBWO/YZ+1Ew0TzNNgD
+         Fq4y+YZeKPSegD7l4jxyrPK6VqYl/RDyET2o08Za5/nxqCi2aMWDmpPYn3sN+ZdVuDdf
+         dlLCYf0X06cej4OM7waCb9bUIj/F70E0YqEl1GmEsbDJAAnBXJy/msV6tTAlGmLTXaHI
+         SrblpYIkrI9iuyyd+4e5X81CTsZHNIm7bV8s7HBRnGKbSjiDOwLYgIcuiimWSK6LtMSb
+         4miA==
+X-Gm-Message-State: ABy/qLbek417HzP8yJPDdpUu9MDKvIazk4UxGDliZARMcxM+IXHGu1OX
+        u7hZvErv8lxEBRkODk9kzLq8R49PxDtOQnUv1UI+NJzg/4t1zRrgHDl5pQD0m+GaBMMLGdxDoD9
+        DNlTS89qtxDqtgFuD2dUy4ind
+X-Received: by 2002:a05:6214:e86:b0:63d:3d8:6d8 with SMTP id hf6-20020a0562140e8600b0063d03d806d8mr24282811qvb.28.1691052366950;
+        Thu, 03 Aug 2023 01:46:06 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlH6NZmrORM9rCMWYcM6pMH3vlSil7zGmArCAmNU+w3SZpSN6MIk0SsBfNnHcf4dt7iOKP131Q==
+X-Received: by 2002:a05:6214:e86:b0:63d:3d8:6d8 with SMTP id hf6-20020a0562140e8600b0063d03d806d8mr24282802qvb.28.1691052366707;
+        Thu, 03 Aug 2023 01:46:06 -0700 (PDT)
+Received: from debian ([2001:4649:fcb8:0:b011:aa0c:688c:1589])
+        by smtp.gmail.com with ESMTPSA id b4-20020a05620a118400b0076c71c1d2f5sm5012609qkk.34.2023.08.03.01.46.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 03 Aug 2023 01:46:06 -0700 (PDT)
+Date:   Thu, 3 Aug 2023 10:46:01 +0200
+From:   Guillaume Nault <gnault@redhat.com>
+To:     Nicolas Dichtel <nicolas.dichtel@6wind.com>
+Cc:     "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Eric Dumazet <edumazet@google.com>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Alexei Starovoitov <ast@kernel.org>,
+        John Fastabend <john.fastabend@gmail.com>,
+        netdev@vger.kernel.org, bpf@vger.kernel.org,
+        stable@vger.kernel.org, Siwar Zitouni <siwar.zitouni@6wind.com>
+Subject: Re: [PATCH net v2] net: handle ARPHRD_PPP in dev_is_mac_header_xmit()
+Message-ID: <ZMtpSdLUQx2A6bdx@debian>
+References: <20230802122106.3025277-1-nicolas.dichtel@6wind.com>
 MIME-Version: 1.0
-References: <20230726112527.14987-1-ranjan.kumar@broadcom.com>
- <20230726112527.14987-2-ranjan.kumar@broadcom.com> <yq1o7jsq9lq.fsf@ca-mkp.ca.oracle.com>
-In-Reply-To: <yq1o7jsq9lq.fsf@ca-mkp.ca.oracle.com>
-From:   Ranjan Kumar <ranjan.kumar@broadcom.com>
-Date:   Thu, 3 Aug 2023 13:46:12 +0530
-Message-ID: <CAMFBP8MS0hwd9-bfVrPi8yTB3Es-w7ugHwEMyxtb8R-mj8PPCg@mail.gmail.com>
-Subject: Re: [PATCH v3 1/2] Perform additional retries if Doorbell read
- returns 0
-To:     "Martin K. Petersen" <martin.petersen@oracle.com>
-Cc:     linux-scsi@vger.kernel.org, sathya.prakash@broadcom.com,
-        sreekanth.reddy@broadcom.com, stable@vger.kernel.org
-Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-        boundary="00000000000064655f0602006559"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230802122106.3025277-1-nicolas.dichtel@6wind.com>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
---00000000000064655f0602006559
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+On Wed, Aug 02, 2023 at 02:21:06PM +0200, Nicolas Dichtel wrote:
+> This kind of interface doesn't have a mac header.
 
-Hi Martin,
+Well, PPP does have a link layer header.
+Do you instead mean that PPP automatically adds it?
 
-On Mon, Jul 31, 2023 at 11:24=E2=80=AFPM Martin K. Petersen
-<martin.petersen@oracle.com> wrote:
->
->
-> Hi Ranjan!
->
-> Since this patch is a candidate for stable it should be as simple as
-> possible. I don't understand all the complexity introduced to
-> accommodate the new retry_count argument.
->
-> >  static inline u32
-> > -_base_readl_aero(const volatile void __iomem *addr)
-> > +_base_readl_aero(const volatile void __iomem *addr, u8 retry_count)
-> >  {
-> >       u32 i =3D 0, ret_val;
-> >
-> >       do {
-> >               ret_val =3D readl(addr);
-> >               i++;
-> > -     } while (ret_val =3D=3D 0 && i < 3);
-> > +     } while (ret_val =3D=3D 0 && i < retry_count);
->
-> _base_readl_aero() is going to return as soon as the register is
-> non-zero. Why is it important that some register reads are only retried
-> 3 times instead of 30? Why can't you just bump the "3" above to "30" and
-> make it a one line change?
->This HW bug impacts only a few registers. However, for code simplicity, we=
- added retry logic(of 3 retries count) for all registers exposed to the dri=
-ver.
-Now the recommendation is:
-- Increase retry count from 3 to 30 for only impacted registers.
--  We also do not want to reduce the retries from 3 to 1 for
-non-impacted registers to avoid any regression.
+> This patch fixes bpf_redirect() to a ppp interface.
 
-Hence, this patch retries upto 30 times for impacted registers and 3
-times for non-impacted registers.
+Can you give more details? Which kind of packets are you trying to
+redirect to PPP interfaces?
 
-Thanks,
-Ranjan
-> --
-> Martin K. Petersen      Oracle Linux Engineering
+To me this looks like a hack to work around the fact that
+ppp_start_xmit() automatically adds a PPP header. Maybe that's the
+best we can do given the current state of ppp_generic.c, but the
+commit message should be clear about what the real problem is and
+why the patch takes this approach to fix or work around it.
 
---00000000000064655f0602006559
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Description: S/MIME Cryptographic Signature
+> CC: stable@vger.kernel.org
+> Fixes: 27b29f63058d ("bpf: add bpf_redirect() helper")
+> Signed-off-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
+> Tested-by: Siwar Zitouni <siwar.zitouni@6wind.com>
+> ---
+> 
+> v1 -> v2:
+>  - I forgot the 'Tested-by' tag in the v1 :/
+> 
+>  include/linux/if_arp.h | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/include/linux/if_arp.h b/include/linux/if_arp.h
+> index 1ed52441972f..8efbe29a6f0c 100644
+> --- a/include/linux/if_arp.h
+> +++ b/include/linux/if_arp.h
+> @@ -53,6 +53,7 @@ static inline bool dev_is_mac_header_xmit(const struct net_device *dev)
+>  	case ARPHRD_NONE:
+>  	case ARPHRD_RAWIP:
+>  	case ARPHRD_PIMREG:
+> +	case ARPHRD_PPP:
+>  		return false;
+>  	default:
+>  		return true;
+> -- 
+> 2.39.2
+> 
+> 
 
-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
-GK2Ee6ez7fr/FL1RWbOPVHJR+deNIorOjW7U5HVwnRYhM1OR4mAkrkqcN+3kwae0KmVO3SDKFd7h
-Ok4L2e1ixyaRTo379Ur3iVTnagglDOliayMGRITBPe0CAwEAAaOCAdowggHWMA4GA1UdDwEB/wQE
-AwIFoDCBowYIKwYBBQUHAQEEgZYwgZMwTgYIKwYBBQUHMAKGQmh0dHA6Ly9zZWN1cmUuZ2xvYmFs
-c2lnbi5jb20vY2FjZXJ0L2dzZ2NjcjNwZXJzb25hbHNpZ24yY2EyMDIwLmNydDBBBggrBgEFBQcw
-AYY1aHR0cDovL29jc3AuZ2xvYmFsc2lnbi5jb20vZ3NnY2NyM3BlcnNvbmFsc2lnbjJjYTIwMjAw
-TQYDVR0gBEYwRDBCBgorBgEEAaAyASgKMDQwMgYIKwYBBQUHAgEWJmh0dHBzOi8vd3d3Lmdsb2Jh
-bHNpZ24uY29tL3JlcG9zaXRvcnkvMAkGA1UdEwQCMAAwSQYDVR0fBEIwQDA+oDygOoY4aHR0cDov
-L2NybC5nbG9iYWxzaWduLmNvbS9nc2djY3IzcGVyc29uYWxzaWduMmNhMjAyMC5jcmwwJAYDVR0R
-BB0wG4EZcmFuamFuLmt1bWFyQGJyb2FkY29tLmNvbTATBgNVHSUEDDAKBggrBgEFBQcDBDAfBgNV
-HSMEGDAWgBSWM9HmWBdbNHWKgVZk1b5I3qGPzzAdBgNVHQ4EFgQU8WuEiYXvpeCaubgLCCFoyRBc
-8QwwDQYJKoZIhvcNAQELBQADggEBAA5th3yz1fvJCBmK21x68IdDNFC0gmynT76I3fOgslLHc7ey
-lC9VXLb+vJ863blS/WxEOwf0fvc0ks7qYWl8xisInHu5AX9glaooGhLImlzE0l9rDf0tcq2kkgc4
-CXL9UGDEoqdxfRj3j9xn9fm9gpTBWSck6ufc/8RV1TLVjcZvrYkMqQwoVulGkr+HCnzaEFxBRmO/
-nWsVitGa1sKS9usFXoW1bQXgJ9TtRdy8gka8b9SaKnh4TaiEKpdl8ztXhugWp7RpFGVu/ZZ8narx
-0H1L9W/UIr3J/uYokdFr+hIrXOfOwJLB18bWOTCVWxTEo4zYC8qZ/h7UcS5aispm/rkxggJtMIIC
-aQIBATBrMFsxCzAJBgNVBAYTAkJFMRkwFwYDVQQKExBHbG9iYWxTaWduIG52LXNhMTEwLwYDVQQD
-EyhHbG9iYWxTaWduIEdDQyBSMyBQZXJzb25hbFNpZ24gMiBDQSAyMDIwAgxMV+PqteWF5WGw7jsw
-DQYJYIZIAWUDBAIBBQCggdQwLwYJKoZIhvcNAQkEMSIEIM/zHLk0PRZi2KK8tcCwN7Xj57BZz99G
-qnNqR9e63C0dMBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTIzMDgw
-MzA4MTYyNFowaQYJKoZIhvcNAQkPMVwwWjALBglghkgBZQMEASowCwYJYIZIAWUDBAEWMAsGCWCG
-SAFlAwQBAjAKBggqhkiG9w0DBzALBgkqhkiG9w0BAQowCwYJKoZIhvcNAQEHMAsGCWCGSAFlAwQC
-ATANBgkqhkiG9w0BAQEFAASCAQCJMprAk9PoKFx8UGwEKdh4hS8KI6XxB593hWYy6NuEiuM9LSST
-hRAEHybX+fHaX65x2oB4F/3TElUY/P50kFof62qWFqKHBj5Mpr7CMOUKPfWJqjFrPTc2zqGHGavK
-oLNVsXwm/xDly9A7hIJTEr/FpXtDl1lS02az+nEHHDtcwVzcOZqBhZpNUolQG2L9aUNcBE2MyhkX
-VGoN9J5XiG3gNh9DwFcWaxEnzZABqR4XClV9gkEogoTM6OP8ZiJOBlplbzeNHSyNTJe4fJ1Psx+9
-VzqPbTNLQD9i9lwczy7FPPGDWpYzYv3hL/QxVBxAxe1YnvT5NBCYGK13/ym0jIdB
---00000000000064655f0602006559--
