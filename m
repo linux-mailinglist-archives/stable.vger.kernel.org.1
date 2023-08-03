@@ -2,82 +2,74 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 403F576F3D3
-	for <lists+stable@lfdr.de>; Thu,  3 Aug 2023 22:05:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D2A5476F3E0
+	for <lists+stable@lfdr.de>; Thu,  3 Aug 2023 22:10:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231696AbjHCUFe (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 3 Aug 2023 16:05:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42136 "EHLO
+        id S231186AbjHCUKs (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 3 Aug 2023 16:10:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43532 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229867AbjHCUFd (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 3 Aug 2023 16:05:33 -0400
-Received: from mail-wm1-x330.google.com (mail-wm1-x330.google.com [IPv6:2a00:1450:4864:20::330])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6140420F
-        for <stable@vger.kernel.org>; Thu,  3 Aug 2023 13:05:27 -0700 (PDT)
-Received: by mail-wm1-x330.google.com with SMTP id 5b1f17b1804b1-3fe12baec61so13410145e9.2
-        for <stable@vger.kernel.org>; Thu, 03 Aug 2023 13:05:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=6wind.com; s=google; t=1691093126; x=1691697926;
-        h=content-transfer-encoding:in-reply-to:organization:references:cc:to
-         :from:content-language:subject:reply-to:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=ioJfYtz1TuNJRqUHEf+SsX11YoIWxHULpK24zIYE4NU=;
-        b=Qf+PuLMu1j28tdSpx7LXpcCSgC7iGSDn4Xrqd6X7Mb0v93KT04rx9uWOdkOmhQ7HNw
-         tawLyawLaqDyU0Yv9mmpks8lvYki95IIZpeURvJxSbSMCWJrxpBaNG1dTdh4J5DW7Wie
-         6+i5F6+KQEVwFQsJznNxqooN4SHnHRMdaeqG/VCxZUK3qTS+CO4m6M2wfccGKiSfpTvf
-         GtDTkU7gqB26NG7rs+lkHxOBV32Bh+8l4a5dBjC4WeFPt41HDRW+BlVkbOBIW+pxuw+M
-         DVJHsaGizweeZkv6YW4Wf7s9bY9Z3Zlt4Pkc0QbDvByOkOm691CN60ggMXaI3199Z/b4
-         MDyw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691093126; x=1691697926;
-        h=content-transfer-encoding:in-reply-to:organization:references:cc:to
-         :from:content-language:subject:reply-to:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ioJfYtz1TuNJRqUHEf+SsX11YoIWxHULpK24zIYE4NU=;
-        b=bONEJY47LB/7XESUeSCnYrULQcb03Imt/1lYIlZGVHhKhLKTAJnkz6VIQPhaV+SZ6s
-         C/KK2l41pnU0bWuieAi0U29kijycN/ZLljfw4lFbPtITudRWarLaaW/GoEbIaX9UBYQJ
-         +/JpzhDgNTi0mmTI6VsUN6lPi95M+e7LkMUvhOCStyongqdMmTengv53DZauUbFgXMqj
-         sJy8zTVVwaxoaj2nu4/JxAX57NZPjeuNoUd/M5Z+645vyo/jPnDlCGGbO42VsGMSyADF
-         zB8gtT5wLTYjQbGsETLofe0wFK9scnYH4lc2y9dyqQGJABCXrFjEnu+ml03LpvK2P+/a
-         cjDw==
-X-Gm-Message-State: ABy/qLYk14sXSU/uoWXK3G2dDJxlI4g/Cho64xinaCDKMcsXa1laxsou
-        tYbPc1I0GCAi6MWzQ0LlqQ2pgA==
-X-Google-Smtp-Source: APBJJlH7InHX0JW2pClS2HpU/xA5Wu42rvRiNdsUmUqhXlwABmSi3MmMNcnb6g4G0NGnCd0WYKq8vg==
-X-Received: by 2002:a05:600c:2a4e:b0:3fe:b78:f4b1 with SMTP id x14-20020a05600c2a4e00b003fe0b78f4b1mr8131628wme.2.1691093126109;
-        Thu, 03 Aug 2023 13:05:26 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:b41:c160:8744:d9d0:7d69:3a24? ([2a01:e0a:b41:c160:8744:d9d0:7d69:3a24])
-        by smtp.gmail.com with ESMTPSA id z10-20020a7bc7ca000000b003fbc9b9699dsm609159wmk.45.2023.08.03.13.05.25
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 03 Aug 2023 13:05:25 -0700 (PDT)
-Message-ID: <75b021a8-88cb-b44c-fd97-e34be83e702f@6wind.com>
-Date:   Thu, 3 Aug 2023 22:05:24 +0200
+        with ESMTP id S229446AbjHCUKr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 3 Aug 2023 16:10:47 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 55C33420F;
+        Thu,  3 Aug 2023 13:10:46 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DC45D61E59;
+        Thu,  3 Aug 2023 20:10:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 463E1C433C9;
+        Thu,  3 Aug 2023 20:10:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1691093445;
+        bh=rRqWLzad4aYTCLv6ApNU6Oinv4secXSUMatIH4Ddfbw=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=QjVnoLJuhpzo+LVf5FxzVfxf7yERbuR73Vpqbu8gQy3L+cf9TsrVNciOqPwf0hmm7
+         MKSs9DW/8T/MfqHNOP+6a3JfhJEYw3z1KiS12SUFQ84wcNWLaYCfLkl2GgTpitO1L0
+         D7PnYJTtjts85h5Am9c9D9JCABDKeAq+DoD9TZ8w3t0Wm2MkJj7Ic6m54LqfHgBgNg
+         oqsP38kdvLo1OO8Ib+liKFEKp+OuWZwZxndHXr1SdPyUtCoEh7mbf0vPC8XBxFYKLq
+         cQ0NOimg4T+CnfjdGg7XVapzbgXk1olWoR0gGnYZEzQG23uMqDmc5ZK6gEUeP/XrqK
+         icDmarkKOeNPw==
+Received: by mail-lj1-f181.google.com with SMTP id 38308e7fff4ca-2b9a828c920so20848161fa.1;
+        Thu, 03 Aug 2023 13:10:45 -0700 (PDT)
+X-Gm-Message-State: AOJu0Yy0l8ZS3iJbJ2LNTwRsCcUO1xlDTyUv4LOB/UbE04UoUGyD3MqC
+        oD1CuOVnLqse6y6eXd6QmSeRQ/brk8hxZLwA2g==
+X-Google-Smtp-Source: AGHT+IE8fLe5MbJV69kyUFyJY/X3Z5LLAhMuRB6XwAHzqyccpuPqPwBNAC1U7wPXbTbUefmajp7PmI0PgtW94DVwLxA=
+X-Received: by 2002:a2e:7202:0:b0:2ba:18e5:106f with SMTP id
+ n2-20020a2e7202000000b002ba18e5106fmr781135ljc.30.1691093443210; Thu, 03 Aug
+ 2023 13:10:43 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Reply-To: nicolas.dichtel@6wind.com
-Subject: Re: [PATCH net v2] net: handle ARPHRD_PPP in dev_is_mac_header_xmit()
-Content-Language: en-US
-From:   Nicolas Dichtel <nicolas.dichtel@6wind.com>
-To:     Guillaume Nault <gnault@redhat.com>
-Cc:     "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Eric Dumazet <edumazet@google.com>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Alexei Starovoitov <ast@kernel.org>,
-        John Fastabend <john.fastabend@gmail.com>,
-        netdev@vger.kernel.org, bpf@vger.kernel.org,
-        stable@vger.kernel.org, Siwar Zitouni <siwar.zitouni@6wind.com>
-References: <20230802122106.3025277-1-nicolas.dichtel@6wind.com>
- <ZMtpSdLUQx2A6bdx@debian> <34f246ba-3ebc-1257-fe8d-5b7e0670a4a6@6wind.com>
- <ZMuI5mxR704O9nDq@debian> <62a8762c-40b4-f03f-ca8f-13d33db84f10@6wind.com>
-Organization: 6WIND
-In-Reply-To: <62a8762c-40b4-f03f-ca8f-13d33db84f10@6wind.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+References: <20230721161840.1393996-1-hugo@hugovil.com> <20230721161840.1393996-7-hugo@hugovil.com>
+ <CAL_JsqJpdhtnZ8FcM7kGWnM+iuDs1fWiCVgf413evbw-o8TZGQ@mail.gmail.com>
+ <20230722104724.ef0c5896c239e721794b9fe9@hugovil.com> <2023072240-supremacy-shallot-a77f@gregkh>
+ <20230724115428.d191186852c0bd0ee0d78398@hugovil.com> <CAL_JsqL8rjwONd6UAitKik0U44BKSD6m8zbachgfq0R9oHBW8w@mail.gmail.com>
+ <20230731124600.39eb8d5c132f9338c2897543@hugovil.com> <CAL_JsqLaF70hNQndXpJfmH1TMGNbA7myQG0GK9fjyKOs63z-3w@mail.gmail.com>
+ <20230731144115.14733f0e01f586a7efb91370@hugovil.com> <20230803135401.3a11bfb7c2985c1a90a2521b@hugovil.com>
+In-Reply-To: <20230803135401.3a11bfb7c2985c1a90a2521b@hugovil.com>
+From:   Rob Herring <robh+dt@kernel.org>
+Date:   Thu, 3 Aug 2023 14:10:30 -0600
+X-Gmail-Original-Message-ID: <CAL_JsqK-qbz=w2a00EXh_e1XmY1gF1nvxih7AOYXw+VuMXhnmw@mail.gmail.com>
+Message-ID: <CAL_JsqK-qbz=w2a00EXh_e1XmY1gF1nvxih7AOYXw+VuMXhnmw@mail.gmail.com>
+Subject: Re: [RESEND PATCH v8 06/10] serial: sc16is7xx: fix regression with
+ GPIO configuration
+To:     Hugo Villeneuve <hugo@hugovil.com>
+Cc:     Greg KH <gregkh@linuxfoundation.org>,
+        krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
+        jirislaby@kernel.org, jringle@gridpoint.com,
+        isaac.true@canonical.com, jesse.sung@canonical.com,
+        tomasz.mon@camlingroup.com, l.perczak@camlintechnologies.com,
+        linux-serial@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
+        Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+        stable@vger.kernel.org,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Lech Perczak <lech.perczak@camlingroup.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -86,98 +78,166 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Le 03/08/2023 à 14:22, Nicolas Dichtel a écrit :
-> Le 03/08/2023 à 13:00, Guillaume Nault a écrit :
->> On Thu, Aug 03, 2023 at 11:37:00AM +0200, Nicolas Dichtel wrote:
->>> Le 03/08/2023 à 10:46, Guillaume Nault a écrit :
->>>> On Wed, Aug 02, 2023 at 02:21:06PM +0200, Nicolas Dichtel wrote:
->>>>> This kind of interface doesn't have a mac header.
->>>>
->>>> Well, PPP does have a link layer header.
->>> It has a link layer, but not an ethernet header.
->>
->> This is generic code. The layer two protocol involved doesn't matter.
->> What matter is that the device requires a specific l2 header.
-> Ok. Note, that addr_len is set to 0 for these devices:
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/net/ppp/ppp_generic.c#n1614
-> 
->>
->>>> Do you instead mean that PPP automatically adds it?
->>>>
->>>>> This patch fixes bpf_redirect() to a ppp interface.
->>>>
->>>> Can you give more details? Which kind of packets are you trying to
->>>> redirect to PPP interfaces?
->>> My ebpf program redirect an IP packet (eth / ip) from a physical ethernet device
->>> at ingress to a ppp device at egress.
->>
->> So you're kind of bridging two incompatible layer two protocols.
->> I see no reason to be surprised if that doesn't work out of the box.
-> I don't see the difference with a gre or ip tunnel. This kind of "bridging" is
-> supported.
-> 
->>
->>> In this case, the bpf_redirect() function
->>> should remove the ethernet header from the packet before calling the xmit ppp
->>> function.
->>
->> That's what you need for your specific use case, not necessarily what
->> the code "should" do.
-> At least, it was my understanding of bpf_redirect() (:
-> 
->>
->>> Before my patch, the ppp xmit function adds a ppp header (protocol IP
->>> / 0x0021) before the ethernet header. It results to a corrupted packet. After
->>> the patch, the ppp xmit function encapsulates the IP packet, as expected.
->>
->> The problem is to treat the PPP link layer differently from the
->> Ethernet one.
->>
->> Just try to redirect PPP frames to an Ethernet device. The PPP l2
->> header isn't going to be stripped, and no Ethernet header will be
->> automatically added.
->>
->> Before your patch, bridging incompatible L2 protocols just didn't work.
->> After your patch, some combinations work, some don't, Ethernet is
->> handled in one way, PPP in another way. And these inconsistencies are
->> exposed to user space. That's the problem I have with this patch.
->>
->>>> To me this looks like a hack to work around the fact that
->>>> ppp_start_xmit() automatically adds a PPP header. Maybe that's the
->>> It's not an hack, it works like for other kind of devices managed by the
->>> function bpf_redirect() / dev_is_mac_header_xmit().
->>
->> I don't think the users of dev_is_mac_header_xmit() (BPF redirect and
->> TC mirred) actually work correctly with any non-Ethernet l2 devices.
->> L3 devices are a bit different because we can test if an skb has a
->> zero-length l2 header.
->>
->>> Hope it's more clear.
->>
->> Let me be clearer too. As I said, this patch may be the best we can do.
->> Making a proper l2 generic BPF-redirect/TC-mirred might require too
->> much work for the expected gain (how many users of non-Ethernet l2
->> devices are going to use this). But at least we should make it clear in
->> the commit message and in the code why we're finding it convenient to
->> treat PPP as an l3 device. Like
->>
->> +	/* PPP adds its l2 header automatically in ppp_start_xmit().
->> +	 * This makes it look like an l3 device to __bpf_redirect() and
->> +	 * tcf_mirred_init().
->> +	 */
->> +	case ARPHRD_PPP:
-> I better understand your point with this comment, I can add it, no problem.
-> But I fail to see why it is different from a L3 device. ip, gre, etc. tunnels
-> also add automatically another header (ipip.c has dev->addr_len configured to 4,
-> ip6_tunnels.c to 16, etc.).
-> A tcpdump on the physical output interface shows the same kind of packets (the
-> outer hdr (ppp / ip / etc.) followed by the encapsulated packet and a tcpdump on
-> the ppp or ip tunnel device shows only the inner packet.
-> 
-> Without my patch, a redirect from a ppp interface to another ppp interface would
-> have the same problem.
-I will be off for 15 days, I will come back on this when I return.
+On Thu, Aug 3, 2023 at 11:54=E2=80=AFAM Hugo Villeneuve <hugo@hugovil.com> =
+wrote:
+>
+> On Mon, 31 Jul 2023 14:41:15 -0400
+> Hugo Villeneuve <hugo@hugovil.com> wrote:
+>
+> > On Mon, 31 Jul 2023 12:04:45 -0600
+> > Rob Herring <robh+dt@kernel.org> wrote:
+> >
+> > > On Mon, Jul 31, 2023 at 10:46=E2=80=AFAM Hugo Villeneuve <hugo@hugovi=
+l.com> wrote:
+> > > >
+> > > > On Mon, 31 Jul 2023 09:31:53 -0600
+> > > > Rob Herring <robh+dt@kernel.org> wrote:
+> > > >
+> > > > > On Mon, Jul 24, 2023 at 9:54=E2=80=AFAM Hugo Villeneuve <hugo@hug=
+ovil.com> wrote:
+> > > > > >
+> > > > > > On Sat, 22 Jul 2023 17:15:26 +0200
+> > > > > > Greg KH <gregkh@linuxfoundation.org> wrote:
+> > > > > >
+> > > > > > > On Sat, Jul 22, 2023 at 10:47:24AM -0400, Hugo Villeneuve wro=
+te:
+> > > > > > > > On Fri, 21 Jul 2023 13:24:19 -0600
+> > > > > > > > Rob Herring <robh+dt@kernel.org> wrote:
+> > > > > > > >
+> > > > > > > > > On Fri, Jul 21, 2023 at 10:19=E2=80=AFAM Hugo Villeneuve =
+<hugo@hugovil.com> wrote:
+> > > > > > > > > >
+> > > > > > > > > > From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+> > > > > > > > > >
+> > > > > > > > > > Commit 679875d1d880 ("sc16is7xx: Separate GPIOs from mo=
+dem control lines")
+> > > > > > > > > > and commit 21144bab4f11 ("sc16is7xx: Handle modem statu=
+s lines")
+> > > > > > > > > > changed the function of the GPIOs pins to act as modem =
+control
+> > > > > > > > > > lines without any possibility of selecting GPIO functio=
+n.
+> > > > > > > > >
+> > > > > > > > > Requiring a new DT property is not fixing a kernel regres=
+sion. You
+> > > > > > > > > should be returning the kernel to original behavior and t=
+hen have a
+> > > > > > > > > new DT property for new behavior.
+> > > > > > > >
+> > > > > > > > Hi Rob,
+> > > > > > > > please read the entire patch history starting from V1
+> > > > > > > >  and you will understand why this course of action was
+> > > > > > > >  not selected.
+> > > > > > >
+> > > > > > > That's not going to happen, sorry, you need to explain it her=
+e, in this
+> > > > > > > patch series, why a specific action is being taken over anoth=
+er one, as
+> > > > > > > no one has time to go dig through past history, sorry.
+> > > > > >
+> > > > > > Hi Rob,
+> > > > > > I initially submitted a patch to revert the kernel to original
+> > > > > > behavior, but it created more problems because the patch was
+> > > > > > unfortunately split in two separate patches, and mixed with oth=
+er non
+> > > > > > closely-related changes. It was also noted to me that reverting=
+ to the
+> > > > > > old behavior would break things for some users.
+> > > > > >
+> > > > > > It was suggested to me by a more experienced kernel developer t=
+o
+> > > > > > "suggest a fix, instead of hurrying a revert":
+> > > > > >
+> > > > > >     https://lkml.org/lkml/2023/5/17/758
+> > > > >
+> > > > > Do I have to go read this to decipher the justification and reaso=
+ning?
+> > > > > When Greg says "in this patch series", he means in the commit mes=
+sages
+> > > > > of the patches. You send v9 already and it doesn't have that. The
+> > > > > patchset needs to stand on its own summarizing any relevant prior
+> > > > > discussions.
+> > > > >
+> > > > > I never suggested doing a revert.
+> > > >
+> > > > Hi Rob,
+> > > > I am sorry, but this is exactly what I "deciphered" from your
+> > > > original email.
+> > > >
+> > > > I am trying very hard to understand exactly what you mean, but it i=
+s
+> > > > not that obvious for me. If something is not clear in my commit mes=
+sage,
+> > > > I will try to improve it. But before, let's try to focus on making =
+sure
+> > > > I understand more clearly what you want exactly.
+> > > >
+> > > > > Obviously, someone still wants the
+> > > > > new feature.
+> > > >
+> > > > I assume that you refer to the "new feature" as what was added in
+> > > > the commit 679875d1d880 ("sc16is7xx: Separate GPIOs from modem cont=
+rol
+> > > > lines")?
+> > >
+> > > Shrug. It's one of the 2 commits mentioned, I don't know which one
+> > > exactly. Whichever one changed default behavior from use GPIOs to use
+> > > modem ctrl lines.
+> > >
+> > > Reading it again, I *think* this patch is correct. Default behavior i=
+s
+> > > restored to use GPIOs. The DT property is needed to enable modem ctrl
+> > > lines.
+> >
+> > Hi,
+> > this is correct.
+> >
+> >
+> > > What's not okay is just saying, these platforms may or may not need a=
+n update:
+> > >
+> > >     arm64/boot/dts/freescale/fsl-ls1012a-frdm.dts
+> > >     mips/boot/dts/ingenic/cu1830-neo.dts
+> > >     mips/boot/dts/ingenic/cu1000-neo.dts
+> >
+> > Yes, my bad. I initially mentioned them and hoped to get some
+> > feedback, which I never got, and I kind of forgot about it.
+> >
+> > > You need to figure that out. Have you checked with maintainers of
+> > > these boards? When were they added and by who? At the same time or by
+> > > the same person would be a good indication the platform uses modem
+> > > ctrl lines. Or were these platforms in use before adding modem ctrl
+> > > support? Then they probably use GPIOs or nothing.
+> > >
+> > > If there are platforms which would regress if the modem ctrl feature
+> > > was just reverted, which ones are those?
+> >
+> > Ok, let me do some checks and get back to you on this.
+>
+> Hi Rob,
+> for this board:
+>     arm64/boot/dts/freescale/fsl-ls1012a-frdm.dts
+>
+> it uses a SC16IS740, which doesn't have any GPIOs nor modem
+> control lines, so no DT changes required.
+>
+> For these two Ingenic boards:
+>     mips/boot/dts/ingenic/cu1830-neo.dts
+>     mips/boot/dts/ingenic/cu1000-neo.dts
+>
+> They use a SC16IS752, which has shared modem control lines and GPIOs.
+> Unfortunately, the maintainers have not (yet) responded to my
+> inquiries. Also, I tried to search for schematics or block diagrams on
+> the net but couldn't find anything.
+>
+> These platforms were in use before the patch to add the modem control
+> lines was added. Then like you said they probably use these shared
+> lines as GPIOs or nothing, so no DT changes would be required.
 
+Okay, that's useful (please add to the commit msg).
 
-Regards,
-Nicolas
+Still, what platform(s) need the modem control feature? Presumably
+that's whatever platform Lech and Tomasz work on. I guess given the
+Reviewed-by they are fine with needing a DT change.
+
+Rob
