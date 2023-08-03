@@ -2,162 +2,137 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9777D76EF33
-	for <lists+stable@lfdr.de>; Thu,  3 Aug 2023 18:15:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8D62476EF62
+	for <lists+stable@lfdr.de>; Thu,  3 Aug 2023 18:27:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233798AbjHCQPC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 3 Aug 2023 12:15:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53604 "EHLO
+        id S236637AbjHCQ14 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 3 Aug 2023 12:27:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60320 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232465AbjHCQPB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 3 Aug 2023 12:15:01 -0400
-Received: from mail.hugovil.com (mail.hugovil.com [162.243.120.170])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A790173F;
-        Thu,  3 Aug 2023 09:15:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=hugovil.com
-        ; s=x; h=Subject:Content-Transfer-Encoding:Content-Type:Mime-Version:
-        References:In-Reply-To:Message-Id:Cc:To:From:Date:Sender:Reply-To:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-        :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-        List-Post:List-Owner:List-Archive;
-        bh=jswo9qlkLWf5K8IR24e3YaIGIMYkx7BIxRpgj01F1y4=; b=b0YMXBIZNHNd2NlA9Sq6UijP6q
-        xNsOJWNRwER7BHYGzpnNYEgrDxujdGM6Vtvox2fOsTOj3cbmUnkC7qnhAyPjMXaLnk7iCusRLHbHA
-        MEETnVICaTosKitKi+rKN13b1NwU3k1eQ2lJb0E5ksANth0rMcDBG0laQUVaQav+4vHs=;
-Received: from modemcable061.19-161-184.mc.videotron.ca ([184.161.19.61]:47720 helo=pettiford)
-        by mail.hugovil.com with esmtpa (Exim 4.92)
-        (envelope-from <hugo@hugovil.com>)
-        id 1qRayQ-0001ok-55; Thu, 03 Aug 2023 12:14:50 -0400
-Date:   Thu, 3 Aug 2023 12:14:49 -0400
-From:   Hugo Villeneuve <hugo@hugovil.com>
-To:     Greg KH <gregkh@linuxfoundation.org>
-Cc:     robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
-        conor+dt@kernel.org, jirislaby@kernel.org, jringle@gridpoint.com,
-        isaac.true@canonical.com, jesse.sung@canonical.com,
-        l.perczak@camlintechnologies.com, tomasz.mon@camlingroup.com,
-        linux-serial@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
-        Hugo Villeneuve <hvilleneuve@dimonoff.com>,
-        stable@vger.kernel.org, Lech Perczak <lech.perczak@camlingroup.com>
-Message-Id: <20230803121449.bcf74899e062ca39dfb073a3@hugovil.com>
-In-Reply-To: <2023073118-mousiness-sandlot-6258@gregkh>
-References: <20230725142343.1724130-1-hugo@hugovil.com>
-        <20230725142343.1724130-5-hugo@hugovil.com>
-        <2023073118-mousiness-sandlot-6258@gregkh>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+        with ESMTP id S236782AbjHCQ1y (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 3 Aug 2023 12:27:54 -0400
+Received: from mail-wr1-x42b.google.com (mail-wr1-x42b.google.com [IPv6:2a00:1450:4864:20::42b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D6733AA3
+        for <stable@vger.kernel.org>; Thu,  3 Aug 2023 09:27:49 -0700 (PDT)
+Received: by mail-wr1-x42b.google.com with SMTP id ffacd0b85a97d-317c1845a07so871980f8f.2
+        for <stable@vger.kernel.org>; Thu, 03 Aug 2023 09:27:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=tessares.net; s=google; t=1691080068; x=1691684868;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=oivLDNLKkbgHfQKfV5yU0mJN6s95zYt0ChN5nVAL+kg=;
+        b=iErEyWVcm5qD8UsitXkSDWAF0kha9IVb7gVXRvZ/wTty/v33XUnluYoS2Z9ksAtBds
+         gen7aj3jFAW810VdGF+aigl979PWnjEBZQEvMGT9Z+04eeI8X69bhW03SsM/ZpMICc9g
+         fISVYSz3Oj1EBkrrJLHlB49eklecv1fLYgCwVW828K4W42/y8CmVXlWQe5zZeUcqI6m3
+         +ksucjVIEVkwVIR2mvTuM7LlMvNP+OXio3RrE6u0qMtMIYy7uc93vhAFF/oohiy6J9fn
+         GXFYiejB707p9khJSjRJKas8Ks6Z1G9zlT/CIvl0T+1MJtp/oG7dBfPQbet54j0SvgMA
+         1HEA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1691080068; x=1691684868;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=oivLDNLKkbgHfQKfV5yU0mJN6s95zYt0ChN5nVAL+kg=;
+        b=P5lcJazgRU/6s2mAJ72Pd1qkFi78Q7CQjpaYFgnAzp1a34MCjktAORwSiNIfvX+hHQ
+         g8T4UcH178lOPRkvnEThzkm3uQfjWPx6qmPg8MVus7RecXrjKIFpupCX8kAGFM/n6CzF
+         Qe4Rzr/5cv6Sim85tPNqodnHQHvW/6TDqu8Wy4DoeY72e7CC4Asysiq2blIRYokyXeND
+         CSUbNEbO79zmgsZmv87+akSpdBzaQ6Ghp+qgJK9Tydtt8ZMv9xeF265h3ZZDfOssZNTG
+         GMrpeueGihOjdD3tKR2eQJUNnq9s7K18aNfK/EwkE44SkiZjFKQykzYscxG40lDH7eLj
+         bLwg==
+X-Gm-Message-State: ABy/qLbFdJ1V5vriZ44D+zmYMBP6y6Zn7rGEe2YcJ+Y+lWuQ4+ZmOqJf
+        EDvZYPFuJtJnvrxdw3thXanfHw==
+X-Google-Smtp-Source: APBJJlGiRMsmYRdqHCoU9ATM7nk/5tBK6TRxPWlfPRz0TrDPQ/mGmPFDHXr42BSQVKQLr8hpCIFfgA==
+X-Received: by 2002:a5d:4c8d:0:b0:317:51ff:c249 with SMTP id z13-20020a5d4c8d000000b0031751ffc249mr7649766wrs.13.1691080067890;
+        Thu, 03 Aug 2023 09:27:47 -0700 (PDT)
+Received: from vdi08.nix.tessares.net (static.219.156.76.144.clients.your-server.de. [144.76.156.219])
+        by smtp.gmail.com with ESMTPSA id o10-20020a5d474a000000b003141a3c4353sm253167wrs.30.2023.08.03.09.27.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 03 Aug 2023 09:27:47 -0700 (PDT)
+From:   Matthieu Baerts <matthieu.baerts@tessares.net>
+Subject: [PATCH net 0/4] mptcp: more fixes for v6.5
+Date:   Thu, 03 Aug 2023 18:27:26 +0200
+Message-Id: <20230803-upstream-net-20230803-misc-fixes-6-5-v1-0-6671b1ab11cc@tessares.net>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-SA-Exim-Connect-IP: 184.161.19.61
-X-SA-Exim-Mail-From: hugo@hugovil.com
+X-B4-Tracking: v=1; b=H4sIAG7Vy2QC/z2MSw6DMAwFr4K8xlLKx616FcQiBEO9IEVxqCoh7
+ o7FguW8p5kdlJOwwrvYIfFPVL7R4FEWED4+zowyGkPlqtq9XI3bqjmxXzByxntdRANO8mdFwhb
+ JNRQo+GczEFhqTXydVurAROiP4wQmfvYXewAAAA==
+To:     mptcp@lists.linux.dev, Mat Martineau <martineau@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, Shuah Khan <shuah@kernel.org>,
+        Geliang Tang <geliang.tang@suse.com>
+Cc:     Andrea Claudi <aclaudi@redhat.com>, netdev@vger.kernel.org,
+        linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Matthieu Baerts <matthieu.baerts@tessares.net>,
+        stable@vger.kernel.org, Christoph Paasch <cpaasch@apple.com>
+X-Mailer: b4 0.12.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1554;
+ i=matthieu.baerts@tessares.net; h=from:subject:message-id;
+ bh=hgCwEKZgy/8nY7p2tutm9i8Gq8mlRZAT01grbY/3qkY=;
+ b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBky9WCazqpy0eFdeJz/pfyJ9oT+4Y4qjuQQMuHU
+ YsGuqL+9YGJAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZMvVggAKCRD2t4JPQmmg
+ c4tpEACMT/28Wn9oxoeqlckZ63o6dknucVWGKpYJfLf4KZFUEjwqVBxmJanigxdgq9DmJ1M3gtd
+ ustvow4UL+TaqKrnvnj7Gan1MepJpoo2V8gI3YYIPUeW+lyf3CNwdlVl/5YMkk86Hqs+1uVqCGr
+ 7bPAU0WyCLVdZcFwqoNKWac68WKTLEESOjWN8jb3RSz9yjrqTnpz9JcrZMI5wqbm9ttg3JcYmlU
+ E3UPkEVI10F34ybTjGlyGq5JrZI0tqQwvK9WqgECsDD5qYG/rlgVyeH7oYY0e7uzaFdyk94iPcx
+ LZJb0T0gVqZoXExoz6QGVmg5EqACV8lYOTwmbI6/KGADcbMh/dJF4lj7ZmmNwXrbUzM2ifOwvVa
+ 5bGc7N4eIYMwLjAkPnXW0dnWMvIR4XVjo6Pbymvh0S1y4y0npMSAGAKTu8sJ9vA3D6vd2xGjc58
+ aRR5MNjy8XOT3H1gjy31HsRuF4LUfG+/au7kzZJHqSofmYXfcQNKkBf/n4qKHYQnlQ/GojCFMjZ
+ 0xhD5xemaPvg+0JqNaVr/PkDe4Zot2MWQNMKIjJdXSqsY8Ix1hPwM4uHXM5ZMcO20HkEeZkP2bd
+ HWovI9sanLv4VE/Qp+MYunVPqgMvwieY3An9iKGQJJRgVbs/pwxY1Gt1eiCBqUrKD15k496BBit
+ DMQVKnLYAJPz4EQ==
+X-Developer-Key: i=matthieu.baerts@tessares.net; a=openpgp;
+ fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
-Subject: Re: [PATCH v9 04/10] serial: sc16is7xx: refactor GPIO controller
- registration
-X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
-X-SA-Exim-Scanned: Yes (on mail.hugovil.com)
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, 31 Jul 2023 17:55:42 +0200
-Greg KH <gregkh@linuxfoundation.org> wrote:
+Here is a new batch of fixes related to MPTCP for v6.5 and older.
 
-> On Tue, Jul 25, 2023 at 10:23:36AM -0400, Hugo Villeneuve wrote:
-> > From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-> > 
-> > In preparation for upcoming patch "fix regression with GPIO
-> > configuration". To facilitate review and make code more modular.
-> 
-> I would much rather the issue be fixed _before_ the code is refactored,
-> unless it is impossible to fix it without the refactor?
+Patches 1 and 2 fix issues with MPTCP Join selftest when manually
+launched with '-i' parameter to use 'ip mptcp' tool instead of the
+dedicated one (pm_nl_ctl). The issues have been there since v5.18.
 
-Hi Greg,
-normally I would agree, but the refactor in this case helps a lot to
-address some issues raised by you and Andy in V7 of this series.
+Thank you Andrea for your first contributions to MPTCP code in the
+upstream kernel!
 
-Maybe I could merge it with the actual patch "fix regression with GPIO
-configuration"?
+Patch 3 avoids corrupting the data stream when trying to reset
+connections that have fallen back to TCP. This can happen from v6.1.
 
+Patch 4 fixes a race when doing a disconnect() and an accept() in
+parallel on a listener socket. The issue only happens in rare cases if
+the user is really unlucky since a fix that landed in v6.3 but
+backported up to v6.1.
 
-> > Cc: <stable@vger.kernel.org> # 6.1.x
-> 
-> What commit id does this fix?
+Signed-off-by: Matthieu Baerts <matthieu.baerts@tessares.net>
+---
+Andrea Claudi (2):
+      selftests: mptcp: join: fix 'delete and re-add' test
+      selftests: mptcp: join: fix 'implicit EP' test
 
-It doesn't fix anything, but I tought that I needed this tag since
-this patch is a prerequisite for the next patch in the series, which
-would be applied to stable kernels. I will remove this tag (assuming
-the patch stays as it is, depending on your answer to the above
-question).
+Paolo Abeni (2):
+      mptcp: avoid bogus reset on fallback close
+      mptcp: fix disconnect vs accept race
 
- 
-> > Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-> > Reviewed-by: Lech Perczak <lech.perczak@camlingroup.com>
-> > Tested-by: Lech Perczak <lech.perczak@camlingroup.com>
-> > ---
-> >  drivers/tty/serial/sc16is7xx.c | 40 ++++++++++++++++++++--------------
-> >  1 file changed, 24 insertions(+), 16 deletions(-)
-> > 
-> > diff --git a/drivers/tty/serial/sc16is7xx.c b/drivers/tty/serial/sc16is7xx.c
-> > index 32d43d00a583..5b0aeef9d534 100644
-> > --- a/drivers/tty/serial/sc16is7xx.c
-> > +++ b/drivers/tty/serial/sc16is7xx.c
-> > @@ -332,6 +332,7 @@ struct sc16is7xx_one {
-> >  
-> >  struct sc16is7xx_port {
-> >  	const struct sc16is7xx_devtype	*devtype;
-> > +	struct device			*dev;
-> 
-> Why is this pointer needed?
-> 
-> Why is it grabbed and yet the reference count is never incremented?  Who
-> owns the reference count and when will it go away?
-> 
-> And what device is this?  The parent?  Current device?  What type of
-> device is it?  And why is it needed?
-> 
-> Using "raw" devices is almost never something a driver should do, they
-> are only passed into functions by the driver core, but then the driver
-> should instantly turn them into the "real" structure.
+ net/mptcp/protocol.c                            |  2 +-
+ net/mptcp/protocol.h                            |  1 -
+ net/mptcp/subflow.c                             | 60 ++++++++++++-------------
+ tools/testing/selftests/net/mptcp/mptcp_join.sh |  6 ++-
+ 4 files changed, 35 insertions(+), 34 deletions(-)
+---
+base-commit: 0f71c9caf26726efea674646f566984e735cc3b9
+change-id: 20230803-upstream-net-20230803-misc-fixes-6-5-6046c6ca74b6
 
-We already discussed that a lot in previous versions (v7)... I am
-trying my best to modify the code to address your concerns, but I am
-not fully understanding what you mean about raw devices, and you didn't
-answer some of my previous questions/interrogations in v7 about that.
+Best regards,
+-- 
+Matthieu Baerts <matthieu.baerts@tessares.net>
 
-So, in the new function that I
-need to implement, sc16is7xx_setup_gpio_chip(), I absolutely need to use
-a raw device to read a device tree property and to set
-s->gpio.parent:
-
-    count = device_property_count_u32(dev, ...
-    ...
-    s->gpio.parent = dev;
-
-Do we agree on that?
-
-Then, how do I pass this raw device to the 
-device_property_count_u32() function and to the s->gpio.parent
-assignment?
-
-Should I modify sc16is7xx_setup_gpio_chip() like so:
-
-    static int sc16is7xx_setup_gpio_chip(struct sc16is7xx_port *s)
-    {
-	struct device *dev = &s->p[0].port.dev;
-
-        count = device_property_count_u32(dev, ...
-        ...
-        s->gpio.parent = dev;
-
-?
-
-If not, can you show me how you would like to do it to avoid me trying
-to guess?
-
-Thank you,
-Hugo.
