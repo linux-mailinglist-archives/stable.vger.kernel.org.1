@@ -2,147 +2,244 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9E03176F1F0
-	for <lists+stable@lfdr.de>; Thu,  3 Aug 2023 20:36:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 41E5476F345
+	for <lists+stable@lfdr.de>; Thu,  3 Aug 2023 21:15:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232978AbjHCSgR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 3 Aug 2023 14:36:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55874 "EHLO
+        id S229947AbjHCTPS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 3 Aug 2023 15:15:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54496 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231254AbjHCSgQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 3 Aug 2023 14:36:16 -0400
-Received: from mail-lf1-x12d.google.com (mail-lf1-x12d.google.com [IPv6:2a00:1450:4864:20::12d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A11C2D42
-        for <stable@vger.kernel.org>; Thu,  3 Aug 2023 11:36:15 -0700 (PDT)
-Received: by mail-lf1-x12d.google.com with SMTP id 2adb3069b0e04-4fe4f5290daso2207160e87.1
-        for <stable@vger.kernel.org>; Thu, 03 Aug 2023 11:36:15 -0700 (PDT)
+        with ESMTP id S229570AbjHCTPQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 3 Aug 2023 15:15:16 -0400
+Received: from mail-yb1-xb30.google.com (mail-yb1-xb30.google.com [IPv6:2607:f8b0:4864:20::b30])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1612730EA
+        for <stable@vger.kernel.org>; Thu,  3 Aug 2023 12:15:12 -0700 (PDT)
+Received: by mail-yb1-xb30.google.com with SMTP id 3f1490d57ef6-d439767cbdeso686276.0
+        for <stable@vger.kernel.org>; Thu, 03 Aug 2023 12:15:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1691087773; x=1691692573;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=bjK7RUYhJ3o/ZdfV6zCLpQPvuk/yGcfZkOCyD/T1w4M=;
-        b=BrZIJzPS8/nphMMUSPTsqlcNKZIP1VxUgEbJEpWV/1dO1z8be/bQCYvXxqCITxkmpc
-         80lSPno+8k7LzCXEKfVo2bJrMsb5DXjvjjfktPML0/PhhKRuDAWk/eKBiOsEtN6Dssnw
-         PXyeq1jHoLMPHJNgNStzHa0CbGMgAm7cch/S0=
+        d=google.com; s=20221208; t=1691090112; x=1691694912;
+        h=content-transfer-encoding:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=djFJX1OhEMWIt9+JtDxnjKllG6+RaJwtr30/ZUm6fls=;
+        b=vbHQutePvfDyc688KRgvZbfnElOsr7PcYYJp1WDfyRRLzMDnIBjPQLQjI8YY1zdZZI
+         RKmRVL4I9yQmuwm4KK8uj6/A1nC5/W1+ocpcRKI9/mrbO6BVHZ5jy91Ox2uzYuLUVeT9
+         XxN53hBKG/9s5KEhQM8n0dtOHhBsFaXlbCfLZONxIjRj59EMWysgWa2nBla2AHronVJL
+         0TCHmbsE5yxZfcQcZLEb04BF4/voHVVBvD2SpwUFjDsmlFPwZsd/eb1eP0ANpIXUv/Dp
+         48JziEwYKcX6wNGn8dahnJ73PhywUDwA68H7k7Ajlh9H0NTbvJYOgxCm4vFLiHqvCz51
+         E5OQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691087773; x=1691692573;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=bjK7RUYhJ3o/ZdfV6zCLpQPvuk/yGcfZkOCyD/T1w4M=;
-        b=d3/hk0I3V56NqKUySPLS016PlEun08fiB+EByGQqXC0P/duKzDEyzFUEPFajzD6KQj
-         A0ep7jWVrlDNXUeSErpIqqYJnppOeE0rvir4uUJ67SxKDMzP5GzRrbbKoVtJxKByLEX7
-         b+Su0Ia30dBcpx0TFpe3G6nvOIxfq652ZCnXHbd3nu7ChXWCOY9YE+AekfVaGt0MiQGX
-         Pjxorx3EAMVArfyrVxOTQsIo4i2BUW1Cl9jIKESZvq4Yzu3eH7YICHmkK+Q4kqZdN1Jy
-         rdY7NkaZJrTV06fCBwNisxgWxMhYrlckWwo3d/8izN/b+1qu0QBCNQQH3R9cnHGfGhXW
-         92OQ==
-X-Gm-Message-State: ABy/qLZzyIZ+Kr+s4vaXxZ0yj/+czjgk9Ut6K3SAaN4BnIAvqS3v4NF+
-        UG1hkYjaxFL1nUCw82JCLVvRTxvg7uFCIdgEX+JIms2+
-X-Google-Smtp-Source: APBJJlGOCF7YokNrKXDXyyibchbe5nSYaNyG5fQcBHXyL2CpM/03BXwX/Y84nRYlD0nu01MmK7wv3A==
-X-Received: by 2002:a2e:86c8:0:b0:2b9:e304:5f81 with SMTP id n8-20020a2e86c8000000b002b9e3045f81mr8318175ljj.23.1691087773313;
-        Thu, 03 Aug 2023 11:36:13 -0700 (PDT)
-Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com. [209.85.208.51])
-        by smtp.gmail.com with ESMTPSA id k10-20020a1709067aca00b0099364d9f0e9sm160026ejo.102.2023.08.03.11.36.11
-        for <stable@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 03 Aug 2023 11:36:11 -0700 (PDT)
-Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-5231410ab27so573796a12.0
-        for <stable@vger.kernel.org>; Thu, 03 Aug 2023 11:36:11 -0700 (PDT)
-X-Received: by 2002:a05:6402:60e:b0:522:27c4:3865 with SMTP id
- n14-20020a056402060e00b0052227c43865mr7594168edv.41.1691087771299; Thu, 03
- Aug 2023 11:36:11 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1691090112; x=1691694912;
+        h=content-transfer-encoding:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=djFJX1OhEMWIt9+JtDxnjKllG6+RaJwtr30/ZUm6fls=;
+        b=X1NZh169ba72ubadxD4vT0XGSNHJ/WCywgk2tILHRfkF42GsJCFqOP6/6APFNl73Ng
+         XJU3xihFRPr441NS/UKsUIpvm8eXObL8kHx9uE0/DUxpzjonu8TklgYnkusGu6iwGf8t
+         bYUukyA1p+NpgRXJTgB9zFGdXY22uvFJ8X4ir1Y+pKuC6FGoS89cQymbt8sCQL3JiqNj
+         azm6p/Xe/LCDKoZxS6+37ZguhcDotAducy5yClo1bp3TgShSn7j0di6J+kwwYzfzXWzO
+         ++3u/K3WiXE6WHsnxcOcyLJ/DsWRjuPBNeA2kEEfDrl8ulj8At4Fb75N0SQBhZG6Cu3l
+         K+oQ==
+X-Gm-Message-State: ABy/qLZYJKGNYRllOgmBtzOYw68e345H0BbslNdvhGEW7yTLsuerH+hJ
+        yt5gIoz6VwmWvN9zq/WObdxM5XESXcNRR/zRozN7jA==
+X-Google-Smtp-Source: APBJJlGlDnONnDU/o3MkHLp0kgBm0ml4OcPWLSX7F+2EQESh8CWjBvM5PsMGQHsHyiPP4vnpnBnGIkNFlPuPQjSLX30=
+X-Received: by 2002:a25:b28a:0:b0:d03:37fe:5ae6 with SMTP id
+ k10-20020a25b28a000000b00d0337fe5ae6mr21693483ybj.22.1691090111689; Thu, 03
+ Aug 2023 12:15:11 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230724-vfs-fdget_pos-v1-1-a4abfd7103f3@kernel.org>
- <CAHk-=whfJhag+iEscftpVq=dHTeL7rQopCvH+Pcs8vJHCGNvXQ@mail.gmail.com>
- <20230724-pyjama-papier-9e4cdf5359cb@brauner> <CAHk-=wj2XZqex6kzz7SbdVHwP9fFoOvHSzHj--0KuxyrVO+3-w@mail.gmail.com>
- <20230803095311.ijpvhx3fyrbkasul@f> <CAHk-=whQ51+rKrnUYeuw3EgJMv2RJrwd7UO9qCgOkUdJzcirWw@mail.gmail.com>
- <20230803-libellen-klebrig-0a9e19dfa7dd@brauner>
-In-Reply-To: <20230803-libellen-klebrig-0a9e19dfa7dd@brauner>
-From:   Linus Torvalds <torvalds@linux-foundation.org>
-Date:   Thu, 3 Aug 2023 11:35:53 -0700
-X-Gmail-Original-Message-ID: <CAHk-=wi97khTatMKCvJD4tBkf6rMKTP=fLQDnok7MGEEewSz9g@mail.gmail.com>
-Message-ID: <CAHk-=wi97khTatMKCvJD4tBkf6rMKTP=fLQDnok7MGEEewSz9g@mail.gmail.com>
-Subject: Re: [PATCH] file: always lock position
-To:     Christian Brauner <brauner@kernel.org>
-Cc:     Mateusz Guzik <mjguzik@gmail.com>, Jens Axboe <axboe@kernel.dk>,
-        Christoph Hellwig <hch@lst.de>,
-        Aleksa Sarai <cyphar@cyphar.com>,
-        Al Viro <viro@zeniv.linux.org.uk>,
-        Seth Forshee <sforshee@kernel.org>,
-        linux-fsdevel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: multipart/mixed; boundary="000000000000e529550602090d09"
-X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=no autolearn_force=no version=3.4.6
+References: <20230803172652.2849981-1-surenb@google.com> <20230803172652.2849981-7-surenb@google.com>
+ <20230803183228.zreczwv3g3qp4kux@revolver>
+In-Reply-To: <20230803183228.zreczwv3g3qp4kux@revolver>
+From:   Suren Baghdasaryan <surenb@google.com>
+Date:   Thu, 3 Aug 2023 12:14:58 -0700
+Message-ID: <CAJuCfpHUp5xVV-p=pKXp6javYq+GmUx_3cDKr9mmTnHYxsg0Mw@mail.gmail.com>
+Subject: Re: [PATCH v3 6/6] mm: move vma locking out of vma_prepare and dup_anon_vma
+To:     "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+        Suren Baghdasaryan <surenb@google.com>,
+        akpm@linux-foundation.org, torvalds@linux-foundation.org,
+        jannh@google.com, willy@infradead.org, david@redhat.com,
+        peterx@redhat.com, ldufour@linux.ibm.com, vbabka@suse.cz,
+        michel@lespinasse.org, jglisse@google.com, mhocko@suse.com,
+        hannes@cmpxchg.org, dave@stgolabs.net, hughd@google.com,
+        linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+        stable@vger.kernel.org,
+        Linus Torvalds <torvalds@linuxfoundation.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
---000000000000e529550602090d09
-Content-Type: text/plain; charset="UTF-8"
-
-On Thu, 3 Aug 2023 at 11:03, Christian Brauner <brauner@kernel.org> wrote:
+On Thu, Aug 3, 2023 at 11:32=E2=80=AFAM Liam R. Howlett <Liam.Howlett@oracl=
+e.com> wrote:
 >
-> Only thing that's missing is exclusion with seek on directories
-> as that's the heinous part.
+> * Suren Baghdasaryan <surenb@google.com> [230803 13:27]:
+> > vma_prepare() is currently the central place where vmas are being locke=
+d
+> > before vma_complete() applies changes to them. While this is convenient=
+,
+> > it also obscures vma locking and makes it harder to follow the locking
+> > rules. Move vma locking out of vma_prepare() and take vma locks
+> > explicitly at the locations where vmas are being modified. Move vma
+> > locking and replace it with an assertion inside dup_anon_vma() to furth=
+er
+> > clarify the locking pattern inside vma_merge().
+> >
+> > Suggested-by: Linus Torvalds <torvalds@linuxfoundation.org>
+> > Suggested-by: Liam R. Howlett <Liam.Howlett@oracle.com>
+> > Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+> > ---
+> >  mm/mmap.c | 29 ++++++++++++++++++-----------
+> >  1 file changed, 18 insertions(+), 11 deletions(-)
+> >
+> > diff --git a/mm/mmap.c b/mm/mmap.c
+> > index 850a39dee075..ae28d6f94c34 100644
+> > --- a/mm/mmap.c
+> > +++ b/mm/mmap.c
+> > @@ -476,16 +476,6 @@ static inline void init_vma_prep(struct vma_prepar=
+e *vp,
+> >   */
+> >  static inline void vma_prepare(struct vma_prepare *vp)
+> >  {
+> > -     vma_start_write(vp->vma);
+> > -     if (vp->adj_next)
+> > -             vma_start_write(vp->adj_next);
+> > -     if (vp->insert)
+> > -             vma_start_write(vp->insert);
+> > -     if (vp->remove)
+> > -             vma_start_write(vp->remove);
+> > -     if (vp->remove2)
+> > -             vma_start_write(vp->remove2);
+> > -
+> >       if (vp->file) {
+> >               uprobe_munmap(vp->vma, vp->vma->vm_start, vp->vma->vm_end=
+);
+> >
+> > @@ -618,7 +608,7 @@ static inline int dup_anon_vma(struct vm_area_struc=
+t *dst,
+> >        * anon pages imported.
+> >        */
+> >       if (src->anon_vma && !dst->anon_vma) {
+> > -             vma_start_write(dst);
+> > +             vma_assert_write_locked(dst);
+> >               dst->anon_vma =3D src->anon_vma;
+> >               return anon_vma_clone(dst, src);
+> >       }
+> > @@ -650,10 +640,12 @@ int vma_expand(struct vma_iterator *vmi, struct v=
+m_area_struct *vma,
+> >       bool remove_next =3D false;
+> >       struct vma_prepare vp;
+> >
+> > +     vma_start_write(vma);
+> >       if (next && (vma !=3D next) && (end =3D=3D next->vm_end)) {
+> >               int ret;
+> >
+> >               remove_next =3D true;
+> > +             vma_start_write(next);
+> >               ret =3D dup_anon_vma(vma, next);
+> >               if (ret)
+> >                       return ret;
+> > @@ -708,6 +700,8 @@ int vma_shrink(struct vma_iterator *vmi, struct vm_=
+area_struct *vma,
+> >       if (vma_iter_prealloc(vmi))
+> >               return -ENOMEM;
+> >
+> > +     vma_start_write(vma);
+> > +
+> >       init_vma_prep(&vp, vma);
+> >       vma_prepare(&vp);
+> >       vma_adjust_trans_huge(vma, start, end, 0);
+> > @@ -940,16 +934,21 @@ struct vm_area_struct *vma_merge(struct vma_itera=
+tor *vmi, struct mm_struct *mm,
+> >       if (!merge_prev && !merge_next)
+> >               return NULL; /* Not mergeable. */
+> >
+> > +     if (prev)
+>
+> Maybe if (merge_prev) instead of prev?  We will write lock prev if it
+> exists and won't change with the current check (case 3 and 8,
+> specifically), with this change case 4 will need to lock prev as it
+> shifts prev->vm_end lower.
 
-Bah. I forgot about lseek entirely, because for some completely stupid
-reason I just thought "Oh, that will always get the lock".
+Ah, I see. I was trying to make sure we don't miss any locks and
+over-locked it for case 3 and 8.
+Ok, I'll change the check to if (merge_prev) and will add a separate
+locking for case 4. I think that's what you meant?
 
-So I guess we'd just have to do that "unconditional fdget_dir()" thing
-in the header file after all, and make llseek() and ksys_lseek() use
-it.
-
-Bah. And then we'd still have to worry about any filesystem that
-allows 'read()' and 'write()' on the directory - which can also update
-f_pos.
-
-And yes, those exist. See at least 'adfs_dir_ops', and
-'ceph_dir_fops'. They may be broken, but people actually did do things
-like that historically, maybe there's a reason adfs and ceph allow it.
-
-End result: we can forget about fdget_dir(). We'd need to split
-FMODE_ATOMIC_POS into two instead.
-
-I don't think we have any free flags, but I didn't check. The ugly
-thing to do is to just special-case S_ISDIR. Not lovely, but whatever.
-
-So something like this instead? It's a smaller diff anyway, and it
-gets the crazy afds/ceph cases right too.
-
-And by "gets them right" I obviously mean "I didn't actually *TEST*
-any of this, so who knows..."
-
-             Linus
-
---000000000000e529550602090d09
-Content-Type: text/x-patch; charset="US-ASCII"; name="patch.diff"
-Content-Disposition: attachment; filename="patch.diff"
-Content-Transfer-Encoding: base64
-Content-ID: <f_lkvhzg8u0>
-X-Attachment-Id: f_lkvhzg8u0
-
-IGZzL2ZpbGUuYyB8IDE4ICsrKysrKysrKysrKysrKysrLQogMSBmaWxlIGNoYW5nZWQsIDE3IGlu
-c2VydGlvbnMoKyksIDEgZGVsZXRpb24oLSkKCmRpZmYgLS1naXQgYS9mcy9maWxlLmMgYi9mcy9m
-aWxlLmMKaW5kZXggMzVjNjJiNTRjOWQ2Li5kYmNhMjZlZjdhMDEgMTAwNjQ0Ci0tLSBhL2ZzL2Zp
-bGUuYworKysgYi9mcy9maWxlLmMKQEAgLTEwMzYsMTIgKzEwMzYsMjggQEAgdW5zaWduZWQgbG9u
-ZyBfX2ZkZ2V0X3Jhdyh1bnNpZ25lZCBpbnQgZmQpCiAJcmV0dXJuIF9fZmdldF9saWdodChmZCwg
-MCk7CiB9CiAKKy8qCisgKiBUcnkgdG8gYXZvaWQgZl9wb3MgbG9ja2luZy4gV2Ugb25seSBuZWVk
-IGl0IGlmIHRoZQorICogZmlsZSBpcyBtYXJrZWQgZm9yIEZNT0RFX0FUT01JQ19QT1MsIGFuZCBp
-dCBjYW4gYmUKKyAqIGFjY2Vzc2VkIG11bHRpcGxlIHdheXMuCisgKgorICogQWx3YXlzIGRvIGl0
-IGZvciBkaXJlY3RvcmllcywgYmVjYXVzZSBwaWRmZF9nZXRmZCgpCisgKiBjYW4gbWFrZSBhIGZp
-bGUgYWNjZXNzaWJsZSBldmVuIGlmIGl0IG90aGVyd2lzZSB3b3VsZAorICogbm90IGJlLCBhbmQg
-Zm9yIGRpcmVjdG9yaWVzIHRoaXMgaXMgYSBjb3JyZWN0bmVzcworICogaXNzdWUsIG5vdCBhICJQ
-T1NJWCByZXF1aXJlbWVudCIuCisgKi8KK3N0YXRpYyBpbmxpbmUgYm9vbCBmaWxlX25lZWRzX2Zf
-cG9zX2xvY2soc3RydWN0IGZpbGUgKmZpbGUpCit7CisJcmV0dXJuIChmaWxlLT5mX21vZGUgJiBG
-TU9ERV9BVE9NSUNfUE9TKSAmJgorCQkoZmlsZV9jb3VudChmaWxlKSA+IDEgfHwgU19JU0RJUihm
-aWxlX2lub2RlKGZpbGUpLT5pX21vZGUpKTsKK30KKwogdW5zaWduZWQgbG9uZyBfX2ZkZ2V0X3Bv
-cyh1bnNpZ25lZCBpbnQgZmQpCiB7CiAJdW5zaWduZWQgbG9uZyB2ID0gX19mZGdldChmZCk7CiAJ
-c3RydWN0IGZpbGUgKmZpbGUgPSAoc3RydWN0IGZpbGUgKikodiAmIH4zKTsKIAotCWlmIChmaWxl
-ICYmIChmaWxlLT5mX21vZGUgJiBGTU9ERV9BVE9NSUNfUE9TKSkgeworCWlmIChmaWxlICYmIGZp
-bGVfbmVlZHNfZl9wb3NfbG9jayhmaWxlKSkgewogCQl2IHw9IEZEUFVUX1BPU19VTkxPQ0s7CiAJ
-CW11dGV4X2xvY2soJmZpbGUtPmZfcG9zX2xvY2spOwogCX0K
---000000000000e529550602090d09--
+>
+> > +             vma_start_write(prev);
+> > +
+> >       res =3D vma =3D prev;
+> >       remove =3D remove2 =3D adjust =3D NULL;
+> >
+> >       /* Can we merge both the predecessor and the successor? */
+> >       if (merge_prev && merge_next &&
+> >           is_mergeable_anon_vma(prev->anon_vma, next->anon_vma, NULL)) =
+{
+> > +             vma_start_write(next);
+> >               remove =3D next;                          /* case 1 */
+> >               vma_end =3D next->vm_end;
+> >               err =3D dup_anon_vma(prev, next);
+> >               if (curr) {                             /* case 6 */
+> > +                     vma_start_write(curr);
+> >                       remove =3D curr;
+> >                       remove2 =3D next;
+> >                       if (!next->anon_vma)
+> > @@ -957,6 +956,7 @@ struct vm_area_struct *vma_merge(struct vma_iterato=
+r *vmi, struct mm_struct *mm,
+> >               }
+> >       } else if (merge_prev) {                        /* case 2 */
+> >               if (curr) {
+> > +                     vma_start_write(curr);
+> >                       err =3D dup_anon_vma(prev, curr);
+> >                       if (end =3D=3D curr->vm_end) {      /* case 7 */
+> >                               remove =3D curr;
+> > @@ -966,6 +966,7 @@ struct vm_area_struct *vma_merge(struct vma_iterato=
+r *vmi, struct mm_struct *mm,
+> >                       }
+> >               }
+> >       } else { /* merge_next */
+> > +             vma_start_write(next);
+> >               res =3D next;
+> >               if (prev && addr < prev->vm_end) {      /* case 4 */
+> >                       vma_end =3D addr;
+> > @@ -983,6 +984,7 @@ struct vm_area_struct *vma_merge(struct vma_iterato=
+r *vmi, struct mm_struct *mm,
+> >                       vma_pgoff =3D next->vm_pgoff - pglen;
+> >                       if (curr) {                     /* case 8 */
+> >                               vma_pgoff =3D curr->vm_pgoff;
+> > +                             vma_start_write(curr);
+> >                               remove =3D curr;
+> >                               err =3D dup_anon_vma(next, curr);
+> >                       }
+> > @@ -2373,6 +2375,9 @@ int __split_vma(struct vma_iterator *vmi, struct =
+vm_area_struct *vma,
+> >       if (new->vm_ops && new->vm_ops->open)
+> >               new->vm_ops->open(new);
+> >
+> > +     vma_start_write(vma);
+> > +     vma_start_write(new);
+> > +
+> >       init_vma_prep(&vp, vma);
+> >       vp.insert =3D new;
+> >       vma_prepare(&vp);
+> > @@ -3078,6 +3083,8 @@ static int do_brk_flags(struct vma_iterator *vmi,=
+ struct vm_area_struct *vma,
+> >               if (vma_iter_prealloc(vmi))
+> >                       goto unacct_fail;
+> >
+> > +             vma_start_write(vma);
+> > +
+> >               init_vma_prep(&vp, vma);
+> >               vma_prepare(&vp);
+> >               vma_adjust_trans_huge(vma, vma->vm_start, addr + len, 0);
+> > --
+> > 2.41.0.585.gd2178a4bd4-goog
+> >
