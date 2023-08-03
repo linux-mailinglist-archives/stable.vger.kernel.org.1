@@ -2,103 +2,142 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D210676F2EB
-	for <lists+stable@lfdr.de>; Thu,  3 Aug 2023 20:44:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B43FC76F1ED
+	for <lists+stable@lfdr.de>; Thu,  3 Aug 2023 20:34:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230078AbjHCSoX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 3 Aug 2023 14:44:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60636 "EHLO
+        id S232848AbjHCSex (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 3 Aug 2023 14:34:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55344 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234018AbjHCSnj (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 3 Aug 2023 14:43:39 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 85BC926B2;
-        Thu,  3 Aug 2023 11:43:17 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7F64A61EAA;
-        Thu,  3 Aug 2023 18:42:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E9D4C433CA;
-        Thu,  3 Aug 2023 18:42:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1691088143;
-        bh=95Dt53hR2pyBz39OJo3JRDWSs/xQPgCW4Y8m1VN2MTo=;
-        h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-        b=iKhq/fj8MaM0IEbTjBTPoJfjrkSC+hVn0SNJKfrodcO7wm+PSmBwo6mX9rS/4q+kH
-         NGkaPQn3CV9peiWVaWBwzHzetYAdlJdIl1QwgHrQZ7KwHAcVYQP6c2KiEN9joGDv+a
-         k5COH7hCFhp9SRu2HM++qTzRf6nNV9gXlOFtDmZYvYuRQv6a5x4YSpKCA3aS/5/Kdh
-         G7v/O+d/MIuFI4f+/xM2jWRLO4DnV2WOVJUyvIPcSxvKuTHJA1HBwkCEbakQeA5mea
-         ShpqaBq1fA6hXTCvv3Sn2TEJqIOFhhFNMP+9P5o/+NgSqLuVc4CKPzt0qoKNkzOzrs
-         yyg+HG9Ip8H9Q==
-From:   Mark Brown <broonie@kernel.org>
-Date:   Thu, 03 Aug 2023 19:33:23 +0100
-Subject: [PATCH 3/3] arm64/fpsimd: Sync and zero pad FPSIMD state for
- streaming SVE
+        with ESMTP id S231768AbjHCSew (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 3 Aug 2023 14:34:52 -0400
+Received: from mail-yb1-xb30.google.com (mail-yb1-xb30.google.com [IPv6:2607:f8b0:4864:20::b30])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08DF2273E
+        for <stable@vger.kernel.org>; Thu,  3 Aug 2023 11:34:51 -0700 (PDT)
+Received: by mail-yb1-xb30.google.com with SMTP id 3f1490d57ef6-d075a831636so1478958276.3
+        for <stable@vger.kernel.org>; Thu, 03 Aug 2023 11:34:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20221208; t=1691087690; x=1691692490;
+        h=content-transfer-encoding:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Nyc2gitI2vs2BzBPE2gM4dSf776t2Bqkap6SAX9jGgw=;
+        b=j4ZZTUw3L8tzyfQ60uIIZQLmCPW7V3COQ5bMr151BNflpDbwZu3VUq++3RPLvFn0Vp
+         cVdh6ZtsWZ5DvHoKm6S6btw6qLGyR5o/SsrLEColtzeo3VgcsyKK8EKqoA4MnRul4ruR
+         MRrzpORy5/0mmVYDFe3O4DIfyYHSNc24+AKM1AH5J/jtnYcmHeu5KYeOTtLpJCddfAqr
+         VvBVU7NFqgStEd38t6lIOJsIVydQzvdqsEA0wgQ96LZNS8pK/DKqipMT2ocQthJR/dqr
+         42hq+jAhgmkW/hMi7BukbXPppKS55KTMteXYUlRCdccI8m6cTu7cSMTsWe0hYL9nn+yv
+         D5LA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1691087690; x=1691692490;
+        h=content-transfer-encoding:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Nyc2gitI2vs2BzBPE2gM4dSf776t2Bqkap6SAX9jGgw=;
+        b=R+uuGrUtQnQUt7WpKyJCDo3f8YjsCTM/dm0jhuQs8XyA14azlaFK1MuwRVD7G8Uttf
+         0AMMWySoqe2+mhfunrUfjC8O2y3mxz15SvxPufDWad433NdWmGd9f+Lq4lh8CsFlaByv
+         CeF77P3j8WM/g81nrZ9k7TRA5VUZdTmVR2mHAXT9uDLTiJ/Kbfgh0Hhl0wiZu2plCY5u
+         7TknXB0nsDY/bEjQm4N5aKIsFMtLrZB9bQ//X44rVzWic22yqMjHVPGg8r0Uzb9yXmFe
+         AXet40ezF5BoQLiD1X2Aqo5TWx8SOVaXUlpkcO0pz3rfDAxZodNs8i/0gPugk21TOcfk
+         Wvgg==
+X-Gm-Message-State: ABy/qLYnTMPcsbeXXO5qHR5wegk/WqM0gQWmYJJLZHr68GE91D/rB8x9
+        MQqIuuW07kfZHxJn2mgf75tLBlOSlc34M/sNgjV4tg==
+X-Google-Smtp-Source: APBJJlEG7Mv/Fp2FsNqC1nmgVx/mt5hF/Jf12KZxbp1VyjIkLYpf4NX3BUvGR61e0lC3QkL9nAthftAM244WYxSlgc4=
+X-Received: by 2002:a25:24d:0:b0:c60:982f:680c with SMTP id
+ 74-20020a25024d000000b00c60982f680cmr18200156ybc.63.1691087689991; Thu, 03
+ Aug 2023 11:34:49 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20230803-arm64-fix-ptrace-ssve-no-sve-v1-3-49df214bfb3e@kernel.org>
-References: <20230803-arm64-fix-ptrace-ssve-no-sve-v1-0-49df214bfb3e@kernel.org>
-In-Reply-To: <20230803-arm64-fix-ptrace-ssve-no-sve-v1-0-49df214bfb3e@kernel.org>
-To:     Oleg Nesterov <oleg@redhat.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>
-Cc:     David Spickett <David.Spickett@arm.com>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        Mark Brown <broonie@kernel.org>, stable@vger.kernel.org
-X-Mailer: b4 0.13-dev-034f2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1255; i=broonie@kernel.org;
- h=from:subject:message-id; bh=95Dt53hR2pyBz39OJo3JRDWSs/xQPgCW4Y8m1VN2MTo=;
- b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBky/UG59zUDvfiprOkSFdpvtR91Bq9XADckhG2g6Sc
- jiCzcImJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCZMv1BgAKCRAk1otyXVSH0GTVB/
- 9J8/zx7cdkXvm4pbhhG5E4Heen6fPAuF/GNuXHVhmgPYd/qRn9HZz93uR4OlhvCIkfOcMDsRWZVXZT
- XBjRbHU3zKf/+1X+diJZf22raEPYoYjwJK3EeRQkYjPMHz1DZQu1aPoposJKxxDDgNkzdRqNDSfFOp
- pxF2WiEK0O7hgXtI6r4Nx3OVHgw0oDATOC60HggBmXODZWQIzOpRvvFhgmBDm/F2mpje6VduU3dS/Y
- 6mUk3H4BLWwd64hpSiQfc70nAcG4BzcIoE0JItmKd4n2CZd4tVVqSs5AEdat3g61cwd1vYIyzZ92wB
- QcpSFIZpyStyDkPGwIe0m3j4ZOkhG2
-X-Developer-Key: i=broonie@kernel.org; a=openpgp;
- fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <20230803172652.2849981-1-surenb@google.com> <20230803172652.2849981-6-surenb@google.com>
+ <CAHk-=wiCrWAoEesBuoGoqqufvesicbGp3cX0LyKgEvsFaZNpDA@mail.gmail.com>
+ <20230803181520.yd5ao45rm3rxnsbs@revolver> <CAJuCfpHkTNrJhmQABEvEXBJd-Y0yNz+VUPn+ZX5OKHwQiwCr5A@mail.gmail.com>
+In-Reply-To: <CAJuCfpHkTNrJhmQABEvEXBJd-Y0yNz+VUPn+ZX5OKHwQiwCr5A@mail.gmail.com>
+From:   Suren Baghdasaryan <surenb@google.com>
+Date:   Thu, 3 Aug 2023 11:34:38 -0700
+Message-ID: <CAJuCfpHbWfKTsh1Q_3=Kr1R1d8pgrnXitzGuDxDRtnG5e02y5A@mail.gmail.com>
+Subject: Re: [PATCH v3 5/6] mm: always lock new vma before inserting into vma tree
+To:     "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Suren Baghdasaryan <surenb@google.com>,
+        akpm@linux-foundation.org, jannh@google.com, willy@infradead.org,
+        david@redhat.com, peterx@redhat.com, ldufour@linux.ibm.com,
+        vbabka@suse.cz, michel@lespinasse.org, jglisse@google.com,
+        mhocko@suse.com, hannes@cmpxchg.org, dave@stgolabs.net,
+        hughd@google.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+        stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-We have a function sve_sync_from_fpsimd_zeropad() which is used by the
-ptrace code to update the SVE state when the user writes to the the
-FPSIMD register set.  Currently this checks that the task has SVE
-enabled but this will miss updates for tasks which have streaming SVE
-enabled if SVE has not been enabled for the thread, also do the
-conversion if the task has streaming SVE enabled.
+On Thu, Aug 3, 2023 at 11:26=E2=80=AFAM Suren Baghdasaryan <surenb@google.c=
+om> wrote:
+>
+> On Thu, Aug 3, 2023 at 11:15=E2=80=AFAM Liam R. Howlett <Liam.Howlett@ora=
+cle.com> wrote:
+> >
+> > * Linus Torvalds <torvalds@linux-foundation.org> [230803 14:02]:
+> > > On Thu, 3 Aug 2023 at 10:27, Suren Baghdasaryan <surenb@google.com> w=
+rote:
+> > > >
+> > > > While it's not strictly necessary to lock a newly created vma befor=
+e
+> > > > adding it into the vma tree (as long as no further changes are perf=
+ormed
+> > > > to it), it seems like a good policy to lock it and prevent accident=
+al
+> > > > changes after it becomes visible to the page faults. Lock the vma b=
+efore
+> > > > adding it into the vma tree.
+> > >
+> > > So my main reaction here is that I started to wonder about the vma al=
+location.
+> > >
+> > > Why doesn't vma_init() do something like
+> > >
+> > >         mmap_assert_write_locked(mm);
+> > >         vma->vm_lock_seq =3D mm->mm_lock_seq;
+> > >
+> > > and instead we seem to expect vma_lock_alloc() to do this (and do it
+> > > very badly indeed).
+> > >
+> > > Strange.
+> > >
+> > > Anyway, this observation was just a reaction to that "not strictly
+> > > necessary to lock a newly created vma" part of the commentary. I feel
+> > > like we could/should just make sure that all newly created vma's are
+> > > always simply created write-locked.
+> > >
+> >
+> > I thought the same thing initially, but Suren pointed out that it's not
+> > necessary to hold the vma lock to allocate a vma object.  And it seems
+> > there is at least one user (arch/ia64/mm/init.c) which does allocate
+> > outside the lock during ia64_init_addr_space(), which is fine but I'm
+> > not sure it gains much to do it this way - the insert needs to take the
+> > lock anyways and it is hardly going to be contended.
+>
+> Yeah, I remember discussing that. At the time of VMA creation the
+> mmap_lock might not be write-locked, so mmap_assert_write_locked()
+> would trigger and mm->mm_lock_seq is not stable. Maybe we can
+> necessitate holding mmap_lock at the time of VMA creation but that
+> sounds like an unnecessary restriction. IIRC some drivers also create
+> vm_are_structs without holding mmap_lock... I'll double-check.
 
-Fixes: e12310a0d30 ("arm64/sme: Implement ptrace support for streaming mode SVE registers")
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Cc: stable@vger.kernel.org
----
- arch/arm64/kernel/fpsimd.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+Yeah, there are places like an initcall gate_vma_init() which call
+vma_init(). I don't think these are called with a locked mmap_lock.
 
-diff --git a/arch/arm64/kernel/fpsimd.c b/arch/arm64/kernel/fpsimd.c
-index b4afa0d147cc..8e8b853da616 100644
---- a/arch/arm64/kernel/fpsimd.c
-+++ b/arch/arm64/kernel/fpsimd.c
-@@ -835,7 +835,8 @@ void sve_sync_from_fpsimd_zeropad(struct task_struct *task)
- 	void *sst = task->thread.sve_state;
- 	struct user_fpsimd_state const *fst = &task->thread.uw.fpsimd_state;
- 
--	if (!test_tsk_thread_flag(task, TIF_SVE))
-+	if (!test_tsk_thread_flag(task, TIF_SVE) &&
-+	    !thread_sm_enabled(&task->thread))
- 		return;
- 
- 	vq = sve_vq_from_vl(thread_get_cur_vl(&task->thread));
-
--- 
-2.30.2
-
+>
+> >
+> > Anywhere else besides an address space setup would probably introduce a
+> > race.
+> >
+> > Thanks,
+> > Liam
+> >
