@@ -2,168 +2,182 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 58AEF76F3D2
-	for <lists+stable@lfdr.de>; Thu,  3 Aug 2023 22:05:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 403F576F3D3
+	for <lists+stable@lfdr.de>; Thu,  3 Aug 2023 22:05:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231689AbjHCUFN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 3 Aug 2023 16:05:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42048 "EHLO
+        id S231696AbjHCUFe (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 3 Aug 2023 16:05:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42136 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229867AbjHCUFL (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 3 Aug 2023 16:05:11 -0400
-Received: from mail-il1-x129.google.com (mail-il1-x129.google.com [IPv6:2607:f8b0:4864:20::129])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3CD9F30FD
-        for <stable@vger.kernel.org>; Thu,  3 Aug 2023 13:05:10 -0700 (PDT)
-Received: by mail-il1-x129.google.com with SMTP id e9e14a558f8ab-348c6696960so4878855ab.2
-        for <stable@vger.kernel.org>; Thu, 03 Aug 2023 13:05:10 -0700 (PDT)
+        with ESMTP id S229867AbjHCUFd (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 3 Aug 2023 16:05:33 -0400
+Received: from mail-wm1-x330.google.com (mail-wm1-x330.google.com [IPv6:2a00:1450:4864:20::330])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6140420F
+        for <stable@vger.kernel.org>; Thu,  3 Aug 2023 13:05:27 -0700 (PDT)
+Received: by mail-wm1-x330.google.com with SMTP id 5b1f17b1804b1-3fe12baec61so13410145e9.2
+        for <stable@vger.kernel.org>; Thu, 03 Aug 2023 13:05:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1691093109; x=1691697909;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=r70XE7tntpu/9iC4HC9hoUyClzm7YEMBlDPVVBgQ5D0=;
-        b=h0875WuCpv+YXLBkdLyMBF1S1IpId9+F/SK55g4IhbqBcWvhO3A0klMWkHGYIPnjVL
-         VRBZyU/33Xx1EMFdgjzueYZ6jXKRdDI37sn2MeEgahVaAO9h/e3ZS4BHDJcrM0MVoYGa
-         d+uZHPfLSHnaAxUBgaBjHlm9jx+emEfZhQg6FXasoO8XnKG7JrZ44zDsQh145NBi8NV/
-         3pNdVWIt1WpPfnNlTxykSPypYhCTQh83kPi5/SFKrgMP25rOXe+PLREswcGs7Oxh6GPe
-         A+fP8Ag5AWaosgOPBP2rhQbqt8avFL7VZ3XNX7UjdnIhzygZHFbncXPnwtF7vWJpCAu4
-         +uhA==
+        d=6wind.com; s=google; t=1691093126; x=1691697926;
+        h=content-transfer-encoding:in-reply-to:organization:references:cc:to
+         :from:content-language:subject:reply-to:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=ioJfYtz1TuNJRqUHEf+SsX11YoIWxHULpK24zIYE4NU=;
+        b=Qf+PuLMu1j28tdSpx7LXpcCSgC7iGSDn4Xrqd6X7Mb0v93KT04rx9uWOdkOmhQ7HNw
+         tawLyawLaqDyU0Yv9mmpks8lvYki95IIZpeURvJxSbSMCWJrxpBaNG1dTdh4J5DW7Wie
+         6+i5F6+KQEVwFQsJznNxqooN4SHnHRMdaeqG/VCxZUK3qTS+CO4m6M2wfccGKiSfpTvf
+         GtDTkU7gqB26NG7rs+lkHxOBV32Bh+8l4a5dBjC4WeFPt41HDRW+BlVkbOBIW+pxuw+M
+         DVJHsaGizweeZkv6YW4Wf7s9bY9Z3Zlt4Pkc0QbDvByOkOm691CN60ggMXaI3199Z/b4
+         MDyw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691093109; x=1691697909;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=1e100.net; s=20221208; t=1691093126; x=1691697926;
+        h=content-transfer-encoding:in-reply-to:organization:references:cc:to
+         :from:content-language:subject:reply-to:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=r70XE7tntpu/9iC4HC9hoUyClzm7YEMBlDPVVBgQ5D0=;
-        b=AJPT3l3dQfk4OO34+eGyn8AxRajJSM/46rMirzt/jBcavlWOqTcgXqgrnLtH9cuY3a
-         eVSkmluqmtAXe/O59uVUspHNq8xn19VXrhKREaCKnrtt8fwi1++DZG5JtuWmgKlYpXCF
-         T7UFIrcLppt4QTZ80Q8T0S8Gfb+VkWpaY/WrJFu/8B0PX8RbTzNp7qW0Uc/tmINlMPzf
-         h8uZoe9d5mOmYmGn+EtCV9XbgQgmNjRFfsx0l/YzH2aPHPr8pmew/C+qHH5GBuDtr/F1
-         h/peU/KrhHH056G2XvWHaMKyhNopO112dsl/U2fFJ0jzh2v5uPut4K6tnmtuofuG7WR2
-         xHKg==
-X-Gm-Message-State: ABy/qLYP+62259JZELftc0mxOS0I6jUovfHIO8opzDKqMqQ3lVf15Vgq
-        rxcNTEk+tdDHcZo73z0cdxHweE3mLbL+vLIcGGE=
-X-Google-Smtp-Source: APBJJlELtFtZ+xKecGRC9U+2pyUmD6ccvIppnKww+wiS1OWFzPo5+FLKdsJ9nQGY8rAXZyk6hzZ4fw==
-X-Received: by 2002:a05:6e02:1d05:b0:348:9e12:13f8 with SMTP id i5-20020a056e021d0500b003489e1213f8mr20879585ila.27.1691093109338;
-        Thu, 03 Aug 2023 13:05:09 -0700 (PDT)
-Received: from localhost.localdomain (c-98-61-227-136.hsd1.mn.comcast.net. [98.61.227.136])
-        by smtp.gmail.com with ESMTPSA id r7-20020a028807000000b0042b56b57a50sm105779jai.171.2023.08.03.13.05.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 03 Aug 2023 13:05:08 -0700 (PDT)
-From:   Alex Elder <elder@linaro.org>
-To:     stable@vger.kernel.org
-Cc:     kuba@kernel.org, dianders@chromium.org, elder@kernel.org
-Subject: [PATCH] net: ipa: only reset hashed tables when supported
-Date:   Thu,  3 Aug 2023 15:05:06 -0500
-Message-Id: <20230803200506.282159-1-elder@linaro.org>
-X-Mailer: git-send-email 2.34.1
+        bh=ioJfYtz1TuNJRqUHEf+SsX11YoIWxHULpK24zIYE4NU=;
+        b=bONEJY47LB/7XESUeSCnYrULQcb03Imt/1lYIlZGVHhKhLKTAJnkz6VIQPhaV+SZ6s
+         C/KK2l41pnU0bWuieAi0U29kijycN/ZLljfw4lFbPtITudRWarLaaW/GoEbIaX9UBYQJ
+         +/JpzhDgNTi0mmTI6VsUN6lPi95M+e7LkMUvhOCStyongqdMmTengv53DZauUbFgXMqj
+         sJy8zTVVwaxoaj2nu4/JxAX57NZPjeuNoUd/M5Z+645vyo/jPnDlCGGbO42VsGMSyADF
+         zB8gtT5wLTYjQbGsETLofe0wFK9scnYH4lc2y9dyqQGJABCXrFjEnu+ml03LpvK2P+/a
+         cjDw==
+X-Gm-Message-State: ABy/qLYk14sXSU/uoWXK3G2dDJxlI4g/Cho64xinaCDKMcsXa1laxsou
+        tYbPc1I0GCAi6MWzQ0LlqQ2pgA==
+X-Google-Smtp-Source: APBJJlH7InHX0JW2pClS2HpU/xA5Wu42rvRiNdsUmUqhXlwABmSi3MmMNcnb6g4G0NGnCd0WYKq8vg==
+X-Received: by 2002:a05:600c:2a4e:b0:3fe:b78:f4b1 with SMTP id x14-20020a05600c2a4e00b003fe0b78f4b1mr8131628wme.2.1691093126109;
+        Thu, 03 Aug 2023 13:05:26 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:b41:c160:8744:d9d0:7d69:3a24? ([2a01:e0a:b41:c160:8744:d9d0:7d69:3a24])
+        by smtp.gmail.com with ESMTPSA id z10-20020a7bc7ca000000b003fbc9b9699dsm609159wmk.45.2023.08.03.13.05.25
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 03 Aug 2023 13:05:25 -0700 (PDT)
+Message-ID: <75b021a8-88cb-b44c-fd97-e34be83e702f@6wind.com>
+Date:   Thu, 3 Aug 2023 22:05:24 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Reply-To: nicolas.dichtel@6wind.com
+Subject: Re: [PATCH net v2] net: handle ARPHRD_PPP in dev_is_mac_header_xmit()
+Content-Language: en-US
+From:   Nicolas Dichtel <nicolas.dichtel@6wind.com>
+To:     Guillaume Nault <gnault@redhat.com>
+Cc:     "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Eric Dumazet <edumazet@google.com>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Alexei Starovoitov <ast@kernel.org>,
+        John Fastabend <john.fastabend@gmail.com>,
+        netdev@vger.kernel.org, bpf@vger.kernel.org,
+        stable@vger.kernel.org, Siwar Zitouni <siwar.zitouni@6wind.com>
+References: <20230802122106.3025277-1-nicolas.dichtel@6wind.com>
+ <ZMtpSdLUQx2A6bdx@debian> <34f246ba-3ebc-1257-fe8d-5b7e0670a4a6@6wind.com>
+ <ZMuI5mxR704O9nDq@debian> <62a8762c-40b4-f03f-ca8f-13d33db84f10@6wind.com>
+Organization: 6WIND
+In-Reply-To: <62a8762c-40b4-f03f-ca8f-13d33db84f10@6wind.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-commit e11ec2b868af2b351c6c1e2e50eb711cc5423a10 upstream.
+Le 03/08/2023 à 14:22, Nicolas Dichtel a écrit :
+> Le 03/08/2023 à 13:00, Guillaume Nault a écrit :
+>> On Thu, Aug 03, 2023 at 11:37:00AM +0200, Nicolas Dichtel wrote:
+>>> Le 03/08/2023 à 10:46, Guillaume Nault a écrit :
+>>>> On Wed, Aug 02, 2023 at 02:21:06PM +0200, Nicolas Dichtel wrote:
+>>>>> This kind of interface doesn't have a mac header.
+>>>>
+>>>> Well, PPP does have a link layer header.
+>>> It has a link layer, but not an ethernet header.
+>>
+>> This is generic code. The layer two protocol involved doesn't matter.
+>> What matter is that the device requires a specific l2 header.
+> Ok. Note, that addr_len is set to 0 for these devices:
+> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/net/ppp/ppp_generic.c#n1614
+> 
+>>
+>>>> Do you instead mean that PPP automatically adds it?
+>>>>
+>>>>> This patch fixes bpf_redirect() to a ppp interface.
+>>>>
+>>>> Can you give more details? Which kind of packets are you trying to
+>>>> redirect to PPP interfaces?
+>>> My ebpf program redirect an IP packet (eth / ip) from a physical ethernet device
+>>> at ingress to a ppp device at egress.
+>>
+>> So you're kind of bridging two incompatible layer two protocols.
+>> I see no reason to be surprised if that doesn't work out of the box.
+> I don't see the difference with a gre or ip tunnel. This kind of "bridging" is
+> supported.
+> 
+>>
+>>> In this case, the bpf_redirect() function
+>>> should remove the ethernet header from the packet before calling the xmit ppp
+>>> function.
+>>
+>> That's what you need for your specific use case, not necessarily what
+>> the code "should" do.
+> At least, it was my understanding of bpf_redirect() (:
+> 
+>>
+>>> Before my patch, the ppp xmit function adds a ppp header (protocol IP
+>>> / 0x0021) before the ethernet header. It results to a corrupted packet. After
+>>> the patch, the ppp xmit function encapsulates the IP packet, as expected.
+>>
+>> The problem is to treat the PPP link layer differently from the
+>> Ethernet one.
+>>
+>> Just try to redirect PPP frames to an Ethernet device. The PPP l2
+>> header isn't going to be stripped, and no Ethernet header will be
+>> automatically added.
+>>
+>> Before your patch, bridging incompatible L2 protocols just didn't work.
+>> After your patch, some combinations work, some don't, Ethernet is
+>> handled in one way, PPP in another way. And these inconsistencies are
+>> exposed to user space. That's the problem I have with this patch.
+>>
+>>>> To me this looks like a hack to work around the fact that
+>>>> ppp_start_xmit() automatically adds a PPP header. Maybe that's the
+>>> It's not an hack, it works like for other kind of devices managed by the
+>>> function bpf_redirect() / dev_is_mac_header_xmit().
+>>
+>> I don't think the users of dev_is_mac_header_xmit() (BPF redirect and
+>> TC mirred) actually work correctly with any non-Ethernet l2 devices.
+>> L3 devices are a bit different because we can test if an skb has a
+>> zero-length l2 header.
+>>
+>>> Hope it's more clear.
+>>
+>> Let me be clearer too. As I said, this patch may be the best we can do.
+>> Making a proper l2 generic BPF-redirect/TC-mirred might require too
+>> much work for the expected gain (how many users of non-Ethernet l2
+>> devices are going to use this). But at least we should make it clear in
+>> the commit message and in the code why we're finding it convenient to
+>> treat PPP as an l3 device. Like
+>>
+>> +	/* PPP adds its l2 header automatically in ppp_start_xmit().
+>> +	 * This makes it look like an l3 device to __bpf_redirect() and
+>> +	 * tcf_mirred_init().
+>> +	 */
+>> +	case ARPHRD_PPP:
+> I better understand your point with this comment, I can add it, no problem.
+> But I fail to see why it is different from a L3 device. ip, gre, etc. tunnels
+> also add automatically another header (ipip.c has dev->addr_len configured to 4,
+> ip6_tunnels.c to 16, etc.).
+> A tcpdump on the physical output interface shows the same kind of packets (the
+> outer hdr (ppp / ip / etc.) followed by the encapsulated packet and a tcpdump on
+> the ppp or ip tunnel device shows only the inner packet.
+> 
+> Without my patch, a redirect from a ppp interface to another ppp interface would
+> have the same problem.
+I will be off for 15 days, I will come back on this when I return.
 
-Last year, the code that manages GSI channel transactions switched
-from using spinlock-protected linked lists to using indexes into the
-ring buffer used for a channel.  Recently, Google reported seeing
-transaction reference count underflows occasionally during shutdown.
 
-Doug Anderson found a way to reproduce the issue reliably, and
-bisected the issue to the commit that eliminated the linked lists
-and the lock.  The root cause was ultimately determined to be
-related to unused transactions being committed as part of the modem
-shutdown cleanup activity.  Unused transactions are not normally
-expected (except in error cases).
-
-The modem uses some ranges of IPA-resident memory, and whenever it
-shuts down we zero those ranges.  In ipa_filter_reset_table() a
-transaction is allocated to zero modem filter table entries.  If
-hashing is not supported, hashed table memory should not be zeroed.
-But currently nothing prevents that, and the result is an unused
-transaction.  Something similar occurs when we zero routing table
-entries for the modem.
-
-By preventing any attempt to clear hashed tables when hashing is not
-supported, the reference count underflow is avoided in this case.
-
-Note that there likely remains an issue with properly freeing unused
-transactions (if they occur due to errors).  This patch addresses
-only the underflows that Google originally reported.
-
-Fixes: d338ae28d8a8 ("net: ipa: kill all other transaction lists")
-Cc: <stable@vger.kernel.org>    # 6.1.x
-Tested-by: Douglas Anderson <dianders@chromium.org>
-Signed-off-by: Alex Elder <elder@linaro.org>
----
- drivers/net/ipa/ipa_table.c | 26 ++++++++++++++------------
- 1 file changed, 14 insertions(+), 12 deletions(-)
-
-diff --git a/drivers/net/ipa/ipa_table.c b/drivers/net/ipa/ipa_table.c
-index 510ff2dc8999a..cd81dd916c29e 100644
---- a/drivers/net/ipa/ipa_table.c
-+++ b/drivers/net/ipa/ipa_table.c
-@@ -311,16 +311,15 @@ static int ipa_filter_reset(struct ipa *ipa, bool modem)
- 	if (ret)
- 		return ret;
- 
--	ret = ipa_filter_reset_table(ipa, IPA_MEM_V4_FILTER_HASHED, modem);
--	if (ret)
--		return ret;
--
- 	ret = ipa_filter_reset_table(ipa, IPA_MEM_V6_FILTER, modem);
-+	if (ret || !ipa_table_hash_support(ipa))
-+		return ret;
-+
-+	ret = ipa_filter_reset_table(ipa, IPA_MEM_V4_FILTER_HASHED, modem);
- 	if (ret)
- 		return ret;
--	ret = ipa_filter_reset_table(ipa, IPA_MEM_V6_FILTER_HASHED, modem);
- 
--	return ret;
-+	return ipa_filter_reset_table(ipa, IPA_MEM_V6_FILTER_HASHED, modem);
- }
- 
- /* The AP routes and modem routes are each contiguous within the
-@@ -329,11 +328,12 @@ static int ipa_filter_reset(struct ipa *ipa, bool modem)
-  * */
- static int ipa_route_reset(struct ipa *ipa, bool modem)
- {
-+	bool hash_support = ipa_table_hash_support(ipa);
- 	struct gsi_trans *trans;
- 	u16 first;
- 	u16 count;
- 
--	trans = ipa_cmd_trans_alloc(ipa, 4);
-+	trans = ipa_cmd_trans_alloc(ipa, hash_support ? 4 : 2);
- 	if (!trans) {
- 		dev_err(&ipa->pdev->dev,
- 			"no transaction for %s route reset\n",
-@@ -350,12 +350,14 @@ static int ipa_route_reset(struct ipa *ipa, bool modem)
- 	}
- 
- 	ipa_table_reset_add(trans, false, first, count, IPA_MEM_V4_ROUTE);
--	ipa_table_reset_add(trans, false, first, count,
--			    IPA_MEM_V4_ROUTE_HASHED);
--
- 	ipa_table_reset_add(trans, false, first, count, IPA_MEM_V6_ROUTE);
--	ipa_table_reset_add(trans, false, first, count,
--			    IPA_MEM_V6_ROUTE_HASHED);
-+
-+	if (hash_support) {
-+		ipa_table_reset_add(trans, false, first, count,
-+				    IPA_MEM_V4_ROUTE_HASHED);
-+		ipa_table_reset_add(trans, false, first, count,
-+				    IPA_MEM_V6_ROUTE_HASHED);
-+	}
- 
- 	gsi_trans_commit_wait(trans);
- 
--- 
-2.34.1
-
+Regards,
+Nicolas
