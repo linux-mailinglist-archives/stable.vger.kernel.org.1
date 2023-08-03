@@ -2,72 +2,73 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2542076F42B
-	for <lists+stable@lfdr.de>; Thu,  3 Aug 2023 22:47:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 897EC76F465
+	for <lists+stable@lfdr.de>; Thu,  3 Aug 2023 23:05:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232183AbjHCUrN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 3 Aug 2023 16:47:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53808 "EHLO
+        id S229767AbjHCVFI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 3 Aug 2023 17:05:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32920 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230393AbjHCUrL (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 3 Aug 2023 16:47:11 -0400
-Received: from mail-qt1-x82f.google.com (mail-qt1-x82f.google.com [IPv6:2607:f8b0:4864:20::82f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C891135BC
-        for <stable@vger.kernel.org>; Thu,  3 Aug 2023 13:47:02 -0700 (PDT)
-Received: by mail-qt1-x82f.google.com with SMTP id d75a77b69052e-407db3e9669so22561cf.1
-        for <stable@vger.kernel.org>; Thu, 03 Aug 2023 13:47:02 -0700 (PDT)
+        with ESMTP id S229446AbjHCVFH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 3 Aug 2023 17:05:07 -0400
+Received: from mail-oo1-xc2f.google.com (mail-oo1-xc2f.google.com [IPv6:2607:f8b0:4864:20::c2f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6DE962D43;
+        Thu,  3 Aug 2023 14:05:06 -0700 (PDT)
+Received: by mail-oo1-xc2f.google.com with SMTP id 006d021491bc7-56d2fe54863so726716eaf.0;
+        Thu, 03 Aug 2023 14:05:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1691095621; x=1691700421;
+        d=gmail.com; s=20221208; t=1691096705; x=1691701505;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=QBG66oV9M3i8nb1aREffuxZFPEb9Uhyo/aCShL7gQx8=;
-        b=zCDXZdoqGLts5JkBxWgjTn7HX0P9lrbxt1E+j6GydaPp/EqpJODluHyNYUe+FFwAeJ
-         EzHCj4QPdEePGFf0KC6ZwzKK45YkvBQwUjuowCS+t1wH4+nKlbknKjShxaOESs0/qRHr
-         phQu4PvmRFinykx0kJKX6MspQvg9qUGliHnJ38O60m9W//ThV8B7b9T/sjZ5IxpgBCwj
-         s66gczDYtX2fpEII7KiXVSOJnlpTwoMa2V4rtyMHvBtuahihXbiyZfObEETh1FEXTVYK
-         VFeWH7movu/EY/2clu5iPSNQGCj0BVq/CUGb03ou4isJIbohFbsjGy90F8Q1Te3MDlRd
-         ADeQ==
+        bh=3iykb0ohtHUOxu1qS/h80/ncUZA75kT5+rr0gHB5Pw8=;
+        b=bwIgCDVI7omgikbK2l7nU0xAW3OrLEslLM5tuHHsY/EsPY9eghaMPV3ZGjo9uUhbxN
+         Mg3DDSXTrUvQStc4tDr3unTcJOGYDglijWZrLog5+cBPLIZ+D4QPSHAA6JsVcD9stqyQ
+         lVGV4M5392N/TU9M/IGmkjTkuZE0hBXc12VE0d7Od1TjTPD8Th9rSJGBdDVsol6/kXpm
+         31JWHY2joKtZhI/4ubmYU4+9hHPCdBn15t+Q+wmxMWRwfkLTglNb3htRJfE9QspTsUbK
+         IxEk2RHTx6Gq5RdEmzVV99TSIY5QiqLdTTHRAzU8SwCxq8zjs26ORryAQ7cTnR1gR2c8
+         hgOQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691095621; x=1691700421;
+        d=1e100.net; s=20221208; t=1691096705; x=1691701505;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=QBG66oV9M3i8nb1aREffuxZFPEb9Uhyo/aCShL7gQx8=;
-        b=Qvi5dvUeWzyzymPbcR8w8G4PDk0V5sTpRDTB2tDBCweeY/V1Mz4k3sGdVYQwRRUjur
-         HEL9327nb+MKgqOTXtTGXxWcxsgE1JYgU6SI1ZG/wZeOxtnxoae1mmIsGOEh9Rvamb+h
-         KbSIX6bUtSvCuDhsuiWNPWGb0oWAYqAWNmrSdRNUFhhYByQmdvlghFRMrzsxFaRYQ251
-         5eQMRjWNY1Q666fCwdL5wze7tmYJ3Mrx5gxt8WeO9FIDLFW6ul1NqbjOSUs3wFxs53R0
-         JeRodMTRH+c8lkQCBFRs5gRS4TRWTeGHY7iy3VnW6qyb803zx7e7JlkZBjz48wHze3p7
-         UWEg==
-X-Gm-Message-State: AOJu0Yxq/vtDQbvwUFHNDeX3yV9Jt9mOcDorJ/DUl80GV6VoACJnwX4Z
-        9xSaCQvrT7SrX5b4XOQMVYKMGjEYJ8sHhUTSe0wC0NK/XX1Fm3yPZ4Nvfw==
-X-Google-Smtp-Source: AGHT+IEdgeMssYgkzrO6SBZ/o4UiOXS8RvE2r0xaLvZhKBjn7l5c7r2RpdmOKCQ427vYXukxwFiWZXjUggeonWTDg7I=
-X-Received: by 2002:a05:622a:55:b0:3f2:1441:3c11 with SMTP id
- y21-20020a05622a005500b003f214413c11mr46781qtw.2.1691095621340; Thu, 03 Aug
- 2023 13:47:01 -0700 (PDT)
+        bh=3iykb0ohtHUOxu1qS/h80/ncUZA75kT5+rr0gHB5Pw8=;
+        b=LMi4vhRKJQI60OV9BNQ+lkEDgAKk9d8BiILn6CIqDwt+YZ9CnCkTLQmaO65EV8wz/d
+         hOkcSV1kzONqpTNSY4iSlUceFdHv5pP8UCbelfg4o7gxKSTssY5G2xhbYWeH2QA0MY/u
+         HSA5762qYR8nG4Dsq9GILt1gdStZDqbdHvgZrweoM59TlUUj7bwRyQcOLM49d7p2Xls4
+         Wve82ORUNpxgFvbTs/+pjnwaWR19iOF0lsGTAV9zOggJEUIi/JBgiru+aiAuqmAWqub4
+         2cYcrzKqlcMJauHbtaeoE+UYS/IGAC3PIfhlhRlcaTtfvnthdyuRTVgNq8WRNN2mTSOX
+         ML4g==
+X-Gm-Message-State: ABy/qLb03MQS38FWwGqKwvuSGDco1c2v0zh3XFlvHcgLNxxM2rnk08m0
+        Ncs0SfphnAfbafj2gx2DFUuYcgVkxIF8sPEe/zQ=
+X-Google-Smtp-Source: APBJJlHWF19YdNlEw5neOPDLx2yKP0yQjc7UvVqD4DCZsuyVxs5cSaPp/BS7yKVMpY9D51X1ChhRRTjrKlyCkihMJaw=
+X-Received: by 2002:a4a:928f:0:b0:564:e465:5d5c with SMTP id
+ i15-20020a4a928f000000b00564e4655d5cmr14966931ooh.2.1691096705538; Thu, 03
+ Aug 2023 14:05:05 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230728161356.1784568-1-fengwei.yin@intel.com>
- <3bbfde16-ced1-dca8-6a3f-da893e045bc5@arm.com> <56c8f4f9-b54b-b0bb-250c-ec8643accfc7@intel.com>
- <3541d2de-5cf8-2f84-8153-277e2bfc0101@arm.com> <5f98748a-97ca-6426-1e24-a5675da75381@intel.com>
- <a590da86-0c42-7d46-d320-c661a59a46c1@arm.com> <837ba176-c97f-f81b-c044-eb6aa3d88bb7@intel.com>
-In-Reply-To: <837ba176-c97f-f81b-c044-eb6aa3d88bb7@intel.com>
-From:   Yu Zhao <yuzhao@google.com>
-Date:   Thu, 3 Aug 2023 14:46:23 -0600
-Message-ID: <CAOUHufY9EQ70Pn-n2zVa9=Gm3-WHxxphp7VHia4qv9x2domdbg@mail.gmail.com>
-Subject: Re: [PATCH 0/2] don't use mapcount() to check large folio sharing
-To:     "Yin, Fengwei" <fengwei.yin@intel.com>
-Cc:     Ryan Roberts <ryan.roberts@arm.com>, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        akpm@linux-foundation.org, willy@infradead.org,
-        vishal.moola@gmail.com, wangkefeng.wang@huawei.com,
-        minchan@kernel.org, david@redhat.com, shy828301@gmail.com
+References: <20230725142343.1724130-1-hugo@hugovil.com> <20230725142343.1724130-7-hugo@hugovil.com>
+ <2023073105-elevation-canister-2777@gregkh> <20230803101814.39a61229d81dcd3e96cbe8ee@hugovil.com>
+In-Reply-To: <20230803101814.39a61229d81dcd3e96cbe8ee@hugovil.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Fri, 4 Aug 2023 00:04:29 +0300
+Message-ID: <CAHp75VdCqqZfQXRRWUkbDTf_gd3T60Stp+m59Q34iWxddLiG5g@mail.gmail.com>
+Subject: Re: [PATCH v9 06/10] serial: sc16is7xx: fix regression with GPIO configuration
+To:     Hugo Villeneuve <hugo@hugovil.com>
+Cc:     Greg KH <gregkh@linuxfoundation.org>, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
+        jirislaby@kernel.org, jringle@gridpoint.com,
+        isaac.true@canonical.com, jesse.sung@canonical.com,
+        l.perczak@camlintechnologies.com, tomasz.mon@camlingroup.com,
+        linux-serial@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
+        Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+        stable@vger.kernel.org, Lech Perczak <lech.perczak@camlingroup.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -75,81 +76,55 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, Aug 2, 2023 at 6:56=E2=80=AFAM Yin, Fengwei <fengwei.yin@intel.com>=
- wrote:
->
->
->
-> On 8/2/2023 8:49 PM, Ryan Roberts wrote:
-> > On 02/08/2023 13:42, Yin, Fengwei wrote:
-> >>
-> >>
-> >> On 8/2/2023 8:40 PM, Ryan Roberts wrote:
-> >>> On 02/08/2023 13:35, Yin, Fengwei wrote:
-> >>>>
-> >>>>
-> >>>> On 8/2/2023 6:27 PM, Ryan Roberts wrote:
-> >>>>> On 28/07/2023 17:13, Yin Fengwei wrote:
-> >>>>>> In madvise_cold_or_pageout_pte_range() and madvise_free_pte_range(=
-),
-> >>>>>> folio_mapcount() is used to check whether the folio is shared. But=
- it's
-> >>>>>> not correct as folio_mapcount() returns total mapcount of large fo=
-lio.
-> >>>>>>
-> >>>>>> Use folio_estimated_sharers() here as the estimated number is enou=
-gh.
-> >>>>>>
-> >>>>>> Yin Fengwei (2):
-> >>>>>>   madvise: don't use mapcount() against large folio for sharing ch=
-eck
-> >>>>>>   madvise: don't use mapcount() against large folio for sharing ch=
-eck
-> >>>>>>
-> >>>>>>  mm/huge_memory.c | 2 +-
-> >>>>>>  mm/madvise.c     | 6 +++---
-> >>>>>>  2 files changed, 4 insertions(+), 4 deletions(-)
-> >>>>>>
-> >>>>>
-> >>>>> As a set of fixes, I agree this is definitely an improvement, so:
-> >>>>>
-> >>>>> Reviewed-By: Ryan Roberts
-> >>>> Thanks.
-> >>>>
-> >>>>>
-> >>>>>
-> >>>>> But I have a couple of comments around further improvements;
-> >>>>>
-> >>>>> Once we have the scheme that David is working on to be able to prov=
-ide precise
-> >>>>> exclusive vs shared info, we will probably want to move to that. Al=
-though that
-> >>>>> scheme will need access to the mm_struct of a process known to be m=
-apping the
-> >>>>> folio. We have that info, but its not passed to folio_estimated_sha=
-rers() so we
-> >>>>> can't just reimplement folio_estimated_sharers() - we will need to =
-rework these
-> >>>>> call sites again.
-> >>>> Yes. This could be extra work. Maybe should delay till David's work =
-is done.
-> >>>
-> >>> What you have is definitely an improvement over what was there before=
-. And is
-> >>> probably the best we can do without David's scheme. So I wouldn't del=
-ay this.
-> >>> Just pointing out that we will be able to make it even better later o=
-n (if
-> >>> David's stuff goes in).
-> >> Yes. I agree that we should wait for David's work ready and do fix bas=
-ed on that.
-> >
-> > I was suggesting the opposite - not waiting. Then we can do separate im=
-provement
-> > later.
-> Let's wait for David's work ready.
+On Thu, Aug 3, 2023 at 5:18=E2=80=AFPM Hugo Villeneuve <hugo@hugovil.com> w=
+rote:
+> On Mon, 31 Jul 2023 17:58:41 +0200
+> Greg KH <gregkh@linuxfoundation.org> wrote:
+> > On Tue, Jul 25, 2023 at 10:23:38AM -0400, Hugo Villeneuve wrote:
 
-Waiting is fine as long as we don't miss the next merge window -- we
-don't want these two bugs to get into another release. Also I think we
-should cc stable, since as David mentioned, they have been causing
-selftest failures.
+...
+
+> > > Fixes: 679875d1d880 ("sc16is7xx: Separate GPIOs from modem control li=
+nes")
+> > > Fixes: 21144bab4f11 ("sc16is7xx: Handle modem status lines")
+> > > Cc: <stable@vger.kernel.org> # 6.1.x: 95982fad dt-bindings: sc16is7xx=
+: Add property to change GPIO function
+> > > Cc: <stable@vger.kernel.org> # 6.1.x: 1584d572 serial: sc16is7xx: ref=
+actor GPIO controller registration
+> > > Cc: <stable@vger.kernel.org> # 6.1.x: ac2caa5a serial: sc16is7xx: rem=
+ove obsolete out_thread label
+> > > Cc: <stable@vger.kernel.org> # 6.1.x: d90961ad serial: sc16is7xx: mar=
+k IOCONTROL register as volatile
+> > > Cc: <stable@vger.kernel.org> # 6.1.x: 6dae3bad serial: sc16is7xx: fix=
+ broken port 0 uart init
+> >
+> > Where are these git commit ids from?  I don't see them in Linus's tree,
+> > how are they supposed to be picked up by the stable developers if they
+> > are not valid ones?
+> >
+> > confused,
+
+...
+
+> I wrongly assumed that, for example, this patch had, as a prerequisite,
+> all the patches before it in this series, and that is why I listed
+> them.
+
+The problem, as I understand it, is not that you listed them (how else
+will the backporter know that this patch requires something else?) but
+the format (you used wrong SHA-1 sums).
+
+...
+
+> So I will remove them all, since this patch doesn't have any other
+> requisites other than the previous patches in this series.
+>
+> Maybe it would be good to add some notes about that in
+> stable-kernel-rules.rst?
+
+This probably is a good idea. Briefly looking at it I see no examples
+like yours there.
+
+--=20
+With Best Regards,
+Andy Shevchenko
