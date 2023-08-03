@@ -2,75 +2,72 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D2A5476F3E0
-	for <lists+stable@lfdr.de>; Thu,  3 Aug 2023 22:10:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2542076F42B
+	for <lists+stable@lfdr.de>; Thu,  3 Aug 2023 22:47:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231186AbjHCUKs (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 3 Aug 2023 16:10:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43532 "EHLO
+        id S232183AbjHCUrN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 3 Aug 2023 16:47:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53808 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229446AbjHCUKr (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 3 Aug 2023 16:10:47 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 55C33420F;
-        Thu,  3 Aug 2023 13:10:46 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DC45D61E59;
-        Thu,  3 Aug 2023 20:10:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 463E1C433C9;
-        Thu,  3 Aug 2023 20:10:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1691093445;
-        bh=rRqWLzad4aYTCLv6ApNU6Oinv4secXSUMatIH4Ddfbw=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=QjVnoLJuhpzo+LVf5FxzVfxf7yERbuR73Vpqbu8gQy3L+cf9TsrVNciOqPwf0hmm7
-         MKSs9DW/8T/MfqHNOP+6a3JfhJEYw3z1KiS12SUFQ84wcNWLaYCfLkl2GgTpitO1L0
-         D7PnYJTtjts85h5Am9c9D9JCABDKeAq+DoD9TZ8w3t0Wm2MkJj7Ic6m54LqfHgBgNg
-         oqsP38kdvLo1OO8Ib+liKFEKp+OuWZwZxndHXr1SdPyUtCoEh7mbf0vPC8XBxFYKLq
-         cQ0NOimg4T+CnfjdGg7XVapzbgXk1olWoR0gGnYZEzQG23uMqDmc5ZK6gEUeP/XrqK
-         icDmarkKOeNPw==
-Received: by mail-lj1-f181.google.com with SMTP id 38308e7fff4ca-2b9a828c920so20848161fa.1;
-        Thu, 03 Aug 2023 13:10:45 -0700 (PDT)
-X-Gm-Message-State: AOJu0Yy0l8ZS3iJbJ2LNTwRsCcUO1xlDTyUv4LOB/UbE04UoUGyD3MqC
-        oD1CuOVnLqse6y6eXd6QmSeRQ/brk8hxZLwA2g==
-X-Google-Smtp-Source: AGHT+IE8fLe5MbJV69kyUFyJY/X3Z5LLAhMuRB6XwAHzqyccpuPqPwBNAC1U7wPXbTbUefmajp7PmI0PgtW94DVwLxA=
-X-Received: by 2002:a2e:7202:0:b0:2ba:18e5:106f with SMTP id
- n2-20020a2e7202000000b002ba18e5106fmr781135ljc.30.1691093443210; Thu, 03 Aug
- 2023 13:10:43 -0700 (PDT)
+        with ESMTP id S230393AbjHCUrL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 3 Aug 2023 16:47:11 -0400
+Received: from mail-qt1-x82f.google.com (mail-qt1-x82f.google.com [IPv6:2607:f8b0:4864:20::82f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C891135BC
+        for <stable@vger.kernel.org>; Thu,  3 Aug 2023 13:47:02 -0700 (PDT)
+Received: by mail-qt1-x82f.google.com with SMTP id d75a77b69052e-407db3e9669so22561cf.1
+        for <stable@vger.kernel.org>; Thu, 03 Aug 2023 13:47:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20221208; t=1691095621; x=1691700421;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=QBG66oV9M3i8nb1aREffuxZFPEb9Uhyo/aCShL7gQx8=;
+        b=zCDXZdoqGLts5JkBxWgjTn7HX0P9lrbxt1E+j6GydaPp/EqpJODluHyNYUe+FFwAeJ
+         EzHCj4QPdEePGFf0KC6ZwzKK45YkvBQwUjuowCS+t1wH4+nKlbknKjShxaOESs0/qRHr
+         phQu4PvmRFinykx0kJKX6MspQvg9qUGliHnJ38O60m9W//ThV8B7b9T/sjZ5IxpgBCwj
+         s66gczDYtX2fpEII7KiXVSOJnlpTwoMa2V4rtyMHvBtuahihXbiyZfObEETh1FEXTVYK
+         VFeWH7movu/EY/2clu5iPSNQGCj0BVq/CUGb03ou4isJIbohFbsjGy90F8Q1Te3MDlRd
+         ADeQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1691095621; x=1691700421;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=QBG66oV9M3i8nb1aREffuxZFPEb9Uhyo/aCShL7gQx8=;
+        b=Qvi5dvUeWzyzymPbcR8w8G4PDk0V5sTpRDTB2tDBCweeY/V1Mz4k3sGdVYQwRRUjur
+         HEL9327nb+MKgqOTXtTGXxWcxsgE1JYgU6SI1ZG/wZeOxtnxoae1mmIsGOEh9Rvamb+h
+         KbSIX6bUtSvCuDhsuiWNPWGb0oWAYqAWNmrSdRNUFhhYByQmdvlghFRMrzsxFaRYQ251
+         5eQMRjWNY1Q666fCwdL5wze7tmYJ3Mrx5gxt8WeO9FIDLFW6ul1NqbjOSUs3wFxs53R0
+         JeRodMTRH+c8lkQCBFRs5gRS4TRWTeGHY7iy3VnW6qyb803zx7e7JlkZBjz48wHze3p7
+         UWEg==
+X-Gm-Message-State: AOJu0Yxq/vtDQbvwUFHNDeX3yV9Jt9mOcDorJ/DUl80GV6VoACJnwX4Z
+        9xSaCQvrT7SrX5b4XOQMVYKMGjEYJ8sHhUTSe0wC0NK/XX1Fm3yPZ4Nvfw==
+X-Google-Smtp-Source: AGHT+IEdgeMssYgkzrO6SBZ/o4UiOXS8RvE2r0xaLvZhKBjn7l5c7r2RpdmOKCQ427vYXukxwFiWZXjUggeonWTDg7I=
+X-Received: by 2002:a05:622a:55:b0:3f2:1441:3c11 with SMTP id
+ y21-20020a05622a005500b003f214413c11mr46781qtw.2.1691095621340; Thu, 03 Aug
+ 2023 13:47:01 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230721161840.1393996-1-hugo@hugovil.com> <20230721161840.1393996-7-hugo@hugovil.com>
- <CAL_JsqJpdhtnZ8FcM7kGWnM+iuDs1fWiCVgf413evbw-o8TZGQ@mail.gmail.com>
- <20230722104724.ef0c5896c239e721794b9fe9@hugovil.com> <2023072240-supremacy-shallot-a77f@gregkh>
- <20230724115428.d191186852c0bd0ee0d78398@hugovil.com> <CAL_JsqL8rjwONd6UAitKik0U44BKSD6m8zbachgfq0R9oHBW8w@mail.gmail.com>
- <20230731124600.39eb8d5c132f9338c2897543@hugovil.com> <CAL_JsqLaF70hNQndXpJfmH1TMGNbA7myQG0GK9fjyKOs63z-3w@mail.gmail.com>
- <20230731144115.14733f0e01f586a7efb91370@hugovil.com> <20230803135401.3a11bfb7c2985c1a90a2521b@hugovil.com>
-In-Reply-To: <20230803135401.3a11bfb7c2985c1a90a2521b@hugovil.com>
-From:   Rob Herring <robh+dt@kernel.org>
-Date:   Thu, 3 Aug 2023 14:10:30 -0600
-X-Gmail-Original-Message-ID: <CAL_JsqK-qbz=w2a00EXh_e1XmY1gF1nvxih7AOYXw+VuMXhnmw@mail.gmail.com>
-Message-ID: <CAL_JsqK-qbz=w2a00EXh_e1XmY1gF1nvxih7AOYXw+VuMXhnmw@mail.gmail.com>
-Subject: Re: [RESEND PATCH v8 06/10] serial: sc16is7xx: fix regression with
- GPIO configuration
-To:     Hugo Villeneuve <hugo@hugovil.com>
-Cc:     Greg KH <gregkh@linuxfoundation.org>,
-        krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
-        jirislaby@kernel.org, jringle@gridpoint.com,
-        isaac.true@canonical.com, jesse.sung@canonical.com,
-        tomasz.mon@camlingroup.com, l.perczak@camlintechnologies.com,
-        linux-serial@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
-        Hugo Villeneuve <hvilleneuve@dimonoff.com>,
-        stable@vger.kernel.org,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Lech Perczak <lech.perczak@camlingroup.com>
+References: <20230728161356.1784568-1-fengwei.yin@intel.com>
+ <3bbfde16-ced1-dca8-6a3f-da893e045bc5@arm.com> <56c8f4f9-b54b-b0bb-250c-ec8643accfc7@intel.com>
+ <3541d2de-5cf8-2f84-8153-277e2bfc0101@arm.com> <5f98748a-97ca-6426-1e24-a5675da75381@intel.com>
+ <a590da86-0c42-7d46-d320-c661a59a46c1@arm.com> <837ba176-c97f-f81b-c044-eb6aa3d88bb7@intel.com>
+In-Reply-To: <837ba176-c97f-f81b-c044-eb6aa3d88bb7@intel.com>
+From:   Yu Zhao <yuzhao@google.com>
+Date:   Thu, 3 Aug 2023 14:46:23 -0600
+Message-ID: <CAOUHufY9EQ70Pn-n2zVa9=Gm3-WHxxphp7VHia4qv9x2domdbg@mail.gmail.com>
+Subject: Re: [PATCH 0/2] don't use mapcount() to check large folio sharing
+To:     "Yin, Fengwei" <fengwei.yin@intel.com>
+Cc:     Ryan Roberts <ryan.roberts@arm.com>, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        akpm@linux-foundation.org, willy@infradead.org,
+        vishal.moola@gmail.com, wangkefeng.wang@huawei.com,
+        minchan@kernel.org, david@redhat.com, shy828301@gmail.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -78,166 +75,81 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, Aug 3, 2023 at 11:54=E2=80=AFAM Hugo Villeneuve <hugo@hugovil.com> =
-wrote:
+On Wed, Aug 2, 2023 at 6:56=E2=80=AFAM Yin, Fengwei <fengwei.yin@intel.com>=
+ wrote:
 >
-> On Mon, 31 Jul 2023 14:41:15 -0400
-> Hugo Villeneuve <hugo@hugovil.com> wrote:
 >
-> > On Mon, 31 Jul 2023 12:04:45 -0600
-> > Rob Herring <robh+dt@kernel.org> wrote:
-> >
-> > > On Mon, Jul 31, 2023 at 10:46=E2=80=AFAM Hugo Villeneuve <hugo@hugovi=
-l.com> wrote:
-> > > >
-> > > > On Mon, 31 Jul 2023 09:31:53 -0600
-> > > > Rob Herring <robh+dt@kernel.org> wrote:
-> > > >
-> > > > > On Mon, Jul 24, 2023 at 9:54=E2=80=AFAM Hugo Villeneuve <hugo@hug=
-ovil.com> wrote:
-> > > > > >
-> > > > > > On Sat, 22 Jul 2023 17:15:26 +0200
-> > > > > > Greg KH <gregkh@linuxfoundation.org> wrote:
-> > > > > >
-> > > > > > > On Sat, Jul 22, 2023 at 10:47:24AM -0400, Hugo Villeneuve wro=
-te:
-> > > > > > > > On Fri, 21 Jul 2023 13:24:19 -0600
-> > > > > > > > Rob Herring <robh+dt@kernel.org> wrote:
-> > > > > > > >
-> > > > > > > > > On Fri, Jul 21, 2023 at 10:19=E2=80=AFAM Hugo Villeneuve =
-<hugo@hugovil.com> wrote:
-> > > > > > > > > >
-> > > > > > > > > > From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-> > > > > > > > > >
-> > > > > > > > > > Commit 679875d1d880 ("sc16is7xx: Separate GPIOs from mo=
-dem control lines")
-> > > > > > > > > > and commit 21144bab4f11 ("sc16is7xx: Handle modem statu=
-s lines")
-> > > > > > > > > > changed the function of the GPIOs pins to act as modem =
-control
-> > > > > > > > > > lines without any possibility of selecting GPIO functio=
-n.
-> > > > > > > > >
-> > > > > > > > > Requiring a new DT property is not fixing a kernel regres=
-sion. You
-> > > > > > > > > should be returning the kernel to original behavior and t=
-hen have a
-> > > > > > > > > new DT property for new behavior.
-> > > > > > > >
-> > > > > > > > Hi Rob,
-> > > > > > > > please read the entire patch history starting from V1
-> > > > > > > >  and you will understand why this course of action was
-> > > > > > > >  not selected.
-> > > > > > >
-> > > > > > > That's not going to happen, sorry, you need to explain it her=
-e, in this
-> > > > > > > patch series, why a specific action is being taken over anoth=
-er one, as
-> > > > > > > no one has time to go dig through past history, sorry.
-> > > > > >
-> > > > > > Hi Rob,
-> > > > > > I initially submitted a patch to revert the kernel to original
-> > > > > > behavior, but it created more problems because the patch was
-> > > > > > unfortunately split in two separate patches, and mixed with oth=
-er non
-> > > > > > closely-related changes. It was also noted to me that reverting=
- to the
-> > > > > > old behavior would break things for some users.
-> > > > > >
-> > > > > > It was suggested to me by a more experienced kernel developer t=
-o
-> > > > > > "suggest a fix, instead of hurrying a revert":
-> > > > > >
-> > > > > >     https://lkml.org/lkml/2023/5/17/758
-> > > > >
-> > > > > Do I have to go read this to decipher the justification and reaso=
-ning?
-> > > > > When Greg says "in this patch series", he means in the commit mes=
-sages
-> > > > > of the patches. You send v9 already and it doesn't have that. The
-> > > > > patchset needs to stand on its own summarizing any relevant prior
-> > > > > discussions.
-> > > > >
-> > > > > I never suggested doing a revert.
-> > > >
-> > > > Hi Rob,
-> > > > I am sorry, but this is exactly what I "deciphered" from your
-> > > > original email.
-> > > >
-> > > > I am trying very hard to understand exactly what you mean, but it i=
-s
-> > > > not that obvious for me. If something is not clear in my commit mes=
-sage,
-> > > > I will try to improve it. But before, let's try to focus on making =
-sure
-> > > > I understand more clearly what you want exactly.
-> > > >
-> > > > > Obviously, someone still wants the
-> > > > > new feature.
-> > > >
-> > > > I assume that you refer to the "new feature" as what was added in
-> > > > the commit 679875d1d880 ("sc16is7xx: Separate GPIOs from modem cont=
-rol
-> > > > lines")?
-> > >
-> > > Shrug. It's one of the 2 commits mentioned, I don't know which one
-> > > exactly. Whichever one changed default behavior from use GPIOs to use
-> > > modem ctrl lines.
-> > >
-> > > Reading it again, I *think* this patch is correct. Default behavior i=
-s
-> > > restored to use GPIOs. The DT property is needed to enable modem ctrl
-> > > lines.
-> >
-> > Hi,
-> > this is correct.
-> >
-> >
-> > > What's not okay is just saying, these platforms may or may not need a=
-n update:
-> > >
-> > >     arm64/boot/dts/freescale/fsl-ls1012a-frdm.dts
-> > >     mips/boot/dts/ingenic/cu1830-neo.dts
-> > >     mips/boot/dts/ingenic/cu1000-neo.dts
-> >
-> > Yes, my bad. I initially mentioned them and hoped to get some
-> > feedback, which I never got, and I kind of forgot about it.
-> >
-> > > You need to figure that out. Have you checked with maintainers of
-> > > these boards? When were they added and by who? At the same time or by
-> > > the same person would be a good indication the platform uses modem
-> > > ctrl lines. Or were these platforms in use before adding modem ctrl
-> > > support? Then they probably use GPIOs or nothing.
-> > >
-> > > If there are platforms which would regress if the modem ctrl feature
-> > > was just reverted, which ones are those?
-> >
-> > Ok, let me do some checks and get back to you on this.
 >
-> Hi Rob,
-> for this board:
->     arm64/boot/dts/freescale/fsl-ls1012a-frdm.dts
->
-> it uses a SC16IS740, which doesn't have any GPIOs nor modem
-> control lines, so no DT changes required.
->
-> For these two Ingenic boards:
->     mips/boot/dts/ingenic/cu1830-neo.dts
->     mips/boot/dts/ingenic/cu1000-neo.dts
->
-> They use a SC16IS752, which has shared modem control lines and GPIOs.
-> Unfortunately, the maintainers have not (yet) responded to my
-> inquiries. Also, I tried to search for schematics or block diagrams on
-> the net but couldn't find anything.
->
-> These platforms were in use before the patch to add the modem control
-> lines was added. Then like you said they probably use these shared
-> lines as GPIOs or nothing, so no DT changes would be required.
+> On 8/2/2023 8:49 PM, Ryan Roberts wrote:
+> > On 02/08/2023 13:42, Yin, Fengwei wrote:
+> >>
+> >>
+> >> On 8/2/2023 8:40 PM, Ryan Roberts wrote:
+> >>> On 02/08/2023 13:35, Yin, Fengwei wrote:
+> >>>>
+> >>>>
+> >>>> On 8/2/2023 6:27 PM, Ryan Roberts wrote:
+> >>>>> On 28/07/2023 17:13, Yin Fengwei wrote:
+> >>>>>> In madvise_cold_or_pageout_pte_range() and madvise_free_pte_range(=
+),
+> >>>>>> folio_mapcount() is used to check whether the folio is shared. But=
+ it's
+> >>>>>> not correct as folio_mapcount() returns total mapcount of large fo=
+lio.
+> >>>>>>
+> >>>>>> Use folio_estimated_sharers() here as the estimated number is enou=
+gh.
+> >>>>>>
+> >>>>>> Yin Fengwei (2):
+> >>>>>>   madvise: don't use mapcount() against large folio for sharing ch=
+eck
+> >>>>>>   madvise: don't use mapcount() against large folio for sharing ch=
+eck
+> >>>>>>
+> >>>>>>  mm/huge_memory.c | 2 +-
+> >>>>>>  mm/madvise.c     | 6 +++---
+> >>>>>>  2 files changed, 4 insertions(+), 4 deletions(-)
+> >>>>>>
+> >>>>>
+> >>>>> As a set of fixes, I agree this is definitely an improvement, so:
+> >>>>>
+> >>>>> Reviewed-By: Ryan Roberts
+> >>>> Thanks.
+> >>>>
+> >>>>>
+> >>>>>
+> >>>>> But I have a couple of comments around further improvements;
+> >>>>>
+> >>>>> Once we have the scheme that David is working on to be able to prov=
+ide precise
+> >>>>> exclusive vs shared info, we will probably want to move to that. Al=
+though that
+> >>>>> scheme will need access to the mm_struct of a process known to be m=
+apping the
+> >>>>> folio. We have that info, but its not passed to folio_estimated_sha=
+rers() so we
+> >>>>> can't just reimplement folio_estimated_sharers() - we will need to =
+rework these
+> >>>>> call sites again.
+> >>>> Yes. This could be extra work. Maybe should delay till David's work =
+is done.
+> >>>
+> >>> What you have is definitely an improvement over what was there before=
+. And is
+> >>> probably the best we can do without David's scheme. So I wouldn't del=
+ay this.
+> >>> Just pointing out that we will be able to make it even better later o=
+n (if
+> >>> David's stuff goes in).
+> >> Yes. I agree that we should wait for David's work ready and do fix bas=
+ed on that.
+> >
+> > I was suggesting the opposite - not waiting. Then we can do separate im=
+provement
+> > later.
+> Let's wait for David's work ready.
 
-Okay, that's useful (please add to the commit msg).
-
-Still, what platform(s) need the modem control feature? Presumably
-that's whatever platform Lech and Tomasz work on. I guess given the
-Reviewed-by they are fine with needing a DT change.
-
-Rob
+Waiting is fine as long as we don't miss the next merge window -- we
+don't want these two bugs to get into another release. Also I think we
+should cc stable, since as David mentioned, they have been causing
+selftest failures.
