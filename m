@@ -2,207 +2,122 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 21E5D76F0EF
-	for <lists+stable@lfdr.de>; Thu,  3 Aug 2023 19:54:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B705976F0F2
+	for <lists+stable@lfdr.de>; Thu,  3 Aug 2023 19:54:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233982AbjHCRyL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 3 Aug 2023 13:54:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56840 "EHLO
+        id S230013AbjHCRys (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 3 Aug 2023 13:54:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57324 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232439AbjHCRyK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 3 Aug 2023 13:54:10 -0400
-Received: from mail.hugovil.com (mail.hugovil.com [162.243.120.170])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 855D810B;
-        Thu,  3 Aug 2023 10:54:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=hugovil.com
-        ; s=x; h=Subject:Content-Transfer-Encoding:Content-Type:Mime-Version:
-        References:In-Reply-To:Message-Id:Cc:To:From:Date:Sender:Reply-To:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-        :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-        List-Post:List-Owner:List-Archive;
-        bh=vLgARTlyjbNGHDyn3Y334/21maDS9pB32/FVqFe4D7c=; b=CeyW8WwrfML0AMayYgmxySJPaP
-        4uaIVuOaRuPbviAOwFGxLPJkLUQ5epOe7TRAos4OLhYy6h3V32akcHBST5/1f6OgTRrBGMaeDthPP
-        QJhHc5ApKOajOCL+ur6+bEUTUK4t0EkXahzY5lpi+SGt8VXTq0LRRspHUeMTmXG6KFVA=;
-Received: from modemcable061.19-161-184.mc.videotron.ca ([184.161.19.61]:53090 helo=pettiford)
-        by mail.hugovil.com with esmtpa (Exim 4.92)
-        (envelope-from <hugo@hugovil.com>)
-        id 1qRcWQ-0002nV-1W; Thu, 03 Aug 2023 13:54:02 -0400
-Date:   Thu, 3 Aug 2023 13:54:01 -0400
-From:   Hugo Villeneuve <hugo@hugovil.com>
-To:     Hugo Villeneuve <hugo@hugovil.com>
-Cc:     Rob Herring <robh+dt@kernel.org>,
-        Greg KH <gregkh@linuxfoundation.org>,
-        krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
-        jirislaby@kernel.org, jringle@gridpoint.com,
-        isaac.true@canonical.com, jesse.sung@canonical.com,
-        tomasz.mon@camlingroup.com, l.perczak@camlintechnologies.com,
-        linux-serial@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
-        Hugo Villeneuve <hvilleneuve@dimonoff.com>,
-        stable@vger.kernel.org,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Lech Perczak <lech.perczak@camlingroup.com>
-Message-Id: <20230803135401.3a11bfb7c2985c1a90a2521b@hugovil.com>
-In-Reply-To: <20230731144115.14733f0e01f586a7efb91370@hugovil.com>
-References: <20230721161840.1393996-1-hugo@hugovil.com>
-        <20230721161840.1393996-7-hugo@hugovil.com>
-        <CAL_JsqJpdhtnZ8FcM7kGWnM+iuDs1fWiCVgf413evbw-o8TZGQ@mail.gmail.com>
-        <20230722104724.ef0c5896c239e721794b9fe9@hugovil.com>
-        <2023072240-supremacy-shallot-a77f@gregkh>
-        <20230724115428.d191186852c0bd0ee0d78398@hugovil.com>
-        <CAL_JsqL8rjwONd6UAitKik0U44BKSD6m8zbachgfq0R9oHBW8w@mail.gmail.com>
-        <20230731124600.39eb8d5c132f9338c2897543@hugovil.com>
-        <CAL_JsqLaF70hNQndXpJfmH1TMGNbA7myQG0GK9fjyKOs63z-3w@mail.gmail.com>
-        <20230731144115.14733f0e01f586a7efb91370@hugovil.com>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 184.161.19.61
-X-SA-Exim-Mail-From: hugo@hugovil.com
+        with ESMTP id S230460AbjHCRyr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 3 Aug 2023 13:54:47 -0400
+Received: from mail-ot1-x331.google.com (mail-ot1-x331.google.com [IPv6:2607:f8b0:4864:20::331])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 302A81718;
+        Thu,  3 Aug 2023 10:54:47 -0700 (PDT)
+Received: by mail-ot1-x331.google.com with SMTP id 46e09a7af769-6bb29b9044dso1187264a34.1;
+        Thu, 03 Aug 2023 10:54:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1691085286; x=1691690086;
+        h=cc:to:subject:message-id:date:from:references:in-reply-to
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=D7LTYlYje0TUsKNQaI2LboxS6Qn358z3O478ZJWdmjw=;
+        b=r/9Z6eMPIOzREx6Pvs3xpquUvT3EprftDjYwww4EnfyyPnW5aBfE0MIAZ1aDjSzvT9
+         WvW0snQ2jDtv0wx2co0Enz7OPaQQ+uP2Tc5JZZj6mOaMBMv6sMc5DqXMUtj2/OlY2m5I
+         dJNkbK/PlXasSqx5tQ0VEs7VEmO3sAk7DDPOCDPFsgIKDVOEvkQuC1VSKOCtnjHWUV+n
+         W41N2fDtZZ386PLVUyGMiH+4NFmKdqbUPt6T7vbrw8j0bITdmTVKb8imrJzk71tw75QR
+         gXGZYRAw18BVMZ6Vx5zBdt2AZlcQcpnIILp3yYQADET8bP4MNIb9cn059OweH5lOPgkY
+         xieg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1691085286; x=1691690086;
+        h=cc:to:subject:message-id:date:from:references:in-reply-to
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=D7LTYlYje0TUsKNQaI2LboxS6Qn358z3O478ZJWdmjw=;
+        b=QCeenE2bhEJ7RcIo05PoBQyCcn4SzYenKL1kxmjCjiKlHEKLMBMN9U0SGhSUeMZNAW
+         7jbNqMJXH8zqdDo383+mt0NFY0kHilfHijPhFmnIAnbfClZDwqCBeoRvaG+0FmxokgAq
+         b0IAbI8ggDIvBkSejZAQgMNbxUmrwCQmDcQdPSG+CxeCSem3qUuPat9z9kQCbV1yj2EL
+         GI5p5sBjWBx6/Ast10kSGSVDODt0OVG0feKPdO13TMvpDmB9FvPtV75EHptpjZ4oEi9I
+         s2FrIxywT+lOU9Pws7DQc9aF8seiX+RvAqtbuObJxWm4xpgMO4M4uwkk7327/UFCmCYf
+         gPCQ==
+X-Gm-Message-State: ABy/qLYRDy32hQAo+/M7+Lq0Z93TZgQQSApI+3Z2eWotaBand1VJXcN2
+        kwlgGS1Coh7mIgy7lEp/eVVLcrZq5xQyW3fMxdTaQwFCNRc=
+X-Google-Smtp-Source: APBJJlFp89+GfmjeUHYM0Ku5hGfuU07pSvxYcwrTJACnuqOchCHvn4E4mKaaLnQHg4iL8fjqbDGTUZp7vuJRWVRtgKI=
+X-Received: by 2002:a05:6830:52:b0:6b9:2e88:79cc with SMTP id
+ d18-20020a056830005200b006b92e8879ccmr22282451otp.19.1691085286435; Thu, 03
+ Aug 2023 10:54:46 -0700 (PDT)
+MIME-Version: 1.0
+Received: by 2002:a8a:1183:0:b0:4f0:1250:dd51 with HTTP; Thu, 3 Aug 2023
+ 10:54:45 -0700 (PDT)
+In-Reply-To: <CAHk-=whQ51+rKrnUYeuw3EgJMv2RJrwd7UO9qCgOkUdJzcirWw@mail.gmail.com>
+References: <20230724-vfs-fdget_pos-v1-1-a4abfd7103f3@kernel.org>
+ <CAHk-=whfJhag+iEscftpVq=dHTeL7rQopCvH+Pcs8vJHCGNvXQ@mail.gmail.com>
+ <20230724-pyjama-papier-9e4cdf5359cb@brauner> <CAHk-=wj2XZqex6kzz7SbdVHwP9fFoOvHSzHj--0KuxyrVO+3-w@mail.gmail.com>
+ <20230803095311.ijpvhx3fyrbkasul@f> <CAHk-=whQ51+rKrnUYeuw3EgJMv2RJrwd7UO9qCgOkUdJzcirWw@mail.gmail.com>
+From:   Mateusz Guzik <mjguzik@gmail.com>
+Date:   Thu, 3 Aug 2023 19:54:45 +0200
+Message-ID: <CAGudoHG8X3Uvuj2Y7H9wnk8Rm=igAUvOF2XrzqYGs0wDvTzk2w@mail.gmail.com>
+Subject: Re: [PATCH] file: always lock position
+To:     Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     Christian Brauner <brauner@kernel.org>,
+        Jens Axboe <axboe@kernel.dk>, Christoph Hellwig <hch@lst.de>,
+        Aleksa Sarai <cyphar@cyphar.com>,
+        Al Viro <viro@zeniv.linux.org.uk>,
+        Seth Forshee <sforshee@kernel.org>,
+        linux-fsdevel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
-Subject: Re: [RESEND PATCH v8 06/10] serial: sc16is7xx: fix regression with
- GPIO configuration
-X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
-X-SA-Exim-Scanned: Yes (on mail.hugovil.com)
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, 31 Jul 2023 14:41:15 -0400
-Hugo Villeneuve <hugo@hugovil.com> wrote:
+On 8/3/23, Linus Torvalds <torvalds@linux-foundation.org> wrote:
+> On Thu, 3 Aug 2023 at 02:53, Mateusz Guzik <mjguzik@gmail.com> wrote:
+>>
+>> So yes, atomics remain expensive on x86-64 even on a very moden uarch
+>> and their impact is measurable in a syscall like read.
+>
+> Well, a patch like this should fix it.
+>
+> I intentionally didn't bother with the alpha osf version of readdir,
+> because nobody cares, but I guess we could do this in the header too.
+>
+> Or we could have split the FMODE_ATOMIC_POS bit into two, and had a
+> "ALWAYS" version and a regular version, but just having a
+> "fdget_dir()" made it simpler.
+>
+> So this - together with just reverting commit 20ea1e7d13c1 ("file:
+> always lock position for FMODE_ATOMIC_POS") - *should* fix any
+> performance regression.
+>
 
-> On Mon, 31 Jul 2023 12:04:45 -0600
-> Rob Herring <robh+dt@kernel.org> wrote:
-> 
-> > On Mon, Jul 31, 2023 at 10:46 AM Hugo Villeneuve <hugo@hugovil.com> wrote:
-> > >
-> > > On Mon, 31 Jul 2023 09:31:53 -0600
-> > > Rob Herring <robh+dt@kernel.org> wrote:
-> > >
-> > > > On Mon, Jul 24, 2023 at 9:54 AM Hugo Villeneuve <hugo@hugovil.com> wrote:
-> > > > >
-> > > > > On Sat, 22 Jul 2023 17:15:26 +0200
-> > > > > Greg KH <gregkh@linuxfoundation.org> wrote:
-> > > > >
-> > > > > > On Sat, Jul 22, 2023 at 10:47:24AM -0400, Hugo Villeneuve wrote:
-> > > > > > > On Fri, 21 Jul 2023 13:24:19 -0600
-> > > > > > > Rob Herring <robh+dt@kernel.org> wrote:
-> > > > > > >
-> > > > > > > > On Fri, Jul 21, 2023 at 10:19 AM Hugo Villeneuve <hugo@hugovil.com> wrote:
-> > > > > > > > >
-> > > > > > > > > From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-> > > > > > > > >
-> > > > > > > > > Commit 679875d1d880 ("sc16is7xx: Separate GPIOs from modem control lines")
-> > > > > > > > > and commit 21144bab4f11 ("sc16is7xx: Handle modem status lines")
-> > > > > > > > > changed the function of the GPIOs pins to act as modem control
-> > > > > > > > > lines without any possibility of selecting GPIO function.
-> > > > > > > >
-> > > > > > > > Requiring a new DT property is not fixing a kernel regression. You
-> > > > > > > > should be returning the kernel to original behavior and then have a
-> > > > > > > > new DT property for new behavior.
-> > > > > > >
-> > > > > > > Hi Rob,
-> > > > > > > please read the entire patch history starting from V1
-> > > > > > >  and you will understand why this course of action was
-> > > > > > >  not selected.
-> > > > > >
-> > > > > > That's not going to happen, sorry, you need to explain it here, in this
-> > > > > > patch series, why a specific action is being taken over another one, as
-> > > > > > no one has time to go dig through past history, sorry.
-> > > > >
-> > > > > Hi Rob,
-> > > > > I initially submitted a patch to revert the kernel to original
-> > > > > behavior, but it created more problems because the patch was
-> > > > > unfortunately split in two separate patches, and mixed with other non
-> > > > > closely-related changes. It was also noted to me that reverting to the
-> > > > > old behavior would break things for some users.
-> > > > >
-> > > > > It was suggested to me by a more experienced kernel developer to
-> > > > > "suggest a fix, instead of hurrying a revert":
-> > > > >
-> > > > >     https://lkml.org/lkml/2023/5/17/758
-> > > >
-> > > > Do I have to go read this to decipher the justification and reasoning?
-> > > > When Greg says "in this patch series", he means in the commit messages
-> > > > of the patches. You send v9 already and it doesn't have that. The
-> > > > patchset needs to stand on its own summarizing any relevant prior
-> > > > discussions.
-> > > >
-> > > > I never suggested doing a revert.
-> > >
-> > > Hi Rob,
-> > > I am sorry, but this is exactly what I "deciphered" from your
-> > > original email.
-> > >
-> > > I am trying very hard to understand exactly what you mean, but it is
-> > > not that obvious for me. If something is not clear in my commit message,
-> > > I will try to improve it. But before, let's try to focus on making sure
-> > > I understand more clearly what you want exactly.
-> > >
-> > > > Obviously, someone still wants the
-> > > > new feature.
-> > >
-> > > I assume that you refer to the "new feature" as what was added in
-> > > the commit 679875d1d880 ("sc16is7xx: Separate GPIOs from modem control
-> > > lines")?
-> > 
-> > Shrug. It's one of the 2 commits mentioned, I don't know which one
-> > exactly. Whichever one changed default behavior from use GPIOs to use
-> > modem ctrl lines.
-> > 
-> > Reading it again, I *think* this patch is correct. Default behavior is
-> > restored to use GPIOs. The DT property is needed to enable modem ctrl
-> > lines.
-> 
-> Hi,
-> this is correct.
-> 
-> 
-> > What's not okay is just saying, these platforms may or may not need an update:
-> > 
-> >     arm64/boot/dts/freescale/fsl-ls1012a-frdm.dts
-> >     mips/boot/dts/ingenic/cu1830-neo.dts
-> >     mips/boot/dts/ingenic/cu1000-neo.dts
-> 
-> Yes, my bad. I initially mentioned them and hoped to get some
-> feedback, which I never got, and I kind of forgot about it.
-> 
-> > You need to figure that out. Have you checked with maintainers of
-> > these boards? When were they added and by who? At the same time or by
-> > the same person would be a good indication the platform uses modem
-> > ctrl lines. Or were these platforms in use before adding modem ctrl
-> > support? Then they probably use GPIOs or nothing.
-> > 
-> > If there are platforms which would regress if the modem ctrl feature
-> > was just reverted, which ones are those?
-> 
-> Ok, let me do some checks and get back to you on this.
+That would do it, but I'm uneasy about the partially "gimped" status
+of the fd the caller can't do anything about.
 
-Hi Rob,
-for this board:
-    arm64/boot/dts/freescale/fsl-ls1012a-frdm.dts
+I read the thread and still don't get what is the real-world use case
+for the thing, a real-world consumer to take a look at would be nice.
 
-it uses a SC16IS740, which doesn't have any GPIOs nor modem
-control lines, so no DT changes required.
+As noted in another e-mail, the entire lack of pos locking in stock
+kernel is a transient ordeal -- there is a point where the "donor" is
+guaranteed to not use it and spot the refcount > 1 for any future use,
+using pos locking going forward.
 
-For these two Ingenic boards:
-    mips/boot/dts/ingenic/cu1830-neo.dts
-    mips/boot/dts/ingenic/cu1000-neo.dts
+Perhaps, and I'm really just spitballing here, almost all expected use
+cases would be 100% fine without pos lock so it all works out as is.
+Similarly, if the target is multithreaded it already works as well.
 
-They use a SC16IS752, which has shared modem control lines and GPIOs.
-Unfortunately, the maintainers have not (yet) responded to my
-inquiries. Also, I tried to search for schematics or block diagrams on
-the net but couldn't find anything.
+Those who expect "fully qualified" semantics would pass a flag
+argument denoting it but would possibly wait indefinitely while the
+target is blocked somewhere in the kernel and it is not known if it is
+even using the fd. This very well may be a deal breaker though and may
+be too cumbersome to implement for real use.
 
-These platforms were in use before the patch to add the modem control
-lines was added. Then like you said they probably use these shared
-lines as GPIOs or nothing, so no DT changes would be required.
+All that said, personally I would either go forward with a "full fix"
+(probably not worth it) or take the L and lock for all fds.
 
-Hugo.
+-- 
+Mateusz Guzik <mjguzik gmail.com>
