@@ -2,50 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2E40076FEA1
-	for <lists+stable@lfdr.de>; Fri,  4 Aug 2023 12:41:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 62C8376FEA2
+	for <lists+stable@lfdr.de>; Fri,  4 Aug 2023 12:42:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229557AbjHDKlV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 4 Aug 2023 06:41:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45452 "EHLO
+        id S230156AbjHDKmF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 4 Aug 2023 06:42:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45538 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229725AbjHDKlU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 4 Aug 2023 06:41:20 -0400
+        with ESMTP id S229725AbjHDKmE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 4 Aug 2023 06:42:04 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F82746B5
-        for <stable@vger.kernel.org>; Fri,  4 Aug 2023 03:41:19 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C39C46B2;
+        Fri,  4 Aug 2023 03:42:04 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2DA6161F66
-        for <stable@vger.kernel.org>; Fri,  4 Aug 2023 10:41:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EB56C433C8;
-        Fri,  4 Aug 2023 10:41:18 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9E42061F8B;
+        Fri,  4 Aug 2023 10:42:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82D32C433C8;
+        Fri,  4 Aug 2023 10:42:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691145678;
-        bh=iDi1tJjznXMzCkUttpTQRlkA1u/Ffp9OKLG4wtLUlZE=;
+        s=korg; t=1691145723;
+        bh=59hgmRJD8zAuTk3rh1tJHpF7TPUjRvw1kVL7rArnwGQ=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=ij5ywbeyKt6LT+AE2K9vLiT9FbxlACvA0XtgA8HrM9/prEKX2uz7Ud3irJnXrkCeW
-         cvNENy/LllZZoJAlqQca1eImZqg8FgtkmsAkO0A/35CXPvG3ZljTUXia5+gYAfRRoZ
-         aChA3ieq4enLM+AI41tK+lOioYKU4bAxD6XgnXT4=
-Date:   Fri, 4 Aug 2023 12:41:15 +0200
+        b=Ib/jpO1V7eA3W0EcATFyIw5XWVOQES+fu5HayAcWEThHr4QaMwvffcSMQWS9Xknl0
+         kRMIRlN/gV4bS1CR9W6ZGVYksBb0tffEcSpQ6Mef0oDHQQ9z/W645gG9802NA2wqax
+         Vke1W5cmN410suItALn8vbFgiBqW6QTsnauQhsgc=
+Date:   Fri, 4 Aug 2023 12:42:00 +0200
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Brennan Lamoreaux <blamoreaux@vmware.com>
-Cc:     stable@vger.kernel.org, akaher@vmware.com, amakhalov@vmware.com,
-        vsirnapalli@vmware.com, ankitja@vmware.com,
-        Joe Perches <joe@perches.com>
-Subject: Re: [PATCH v4.19.y] drivers core: Use sysfs_emit and sysfs_emit_at
- for show(device *...) functions
-Message-ID: <2023080457-chaplain-tingle-1af5@gregkh>
-References: <86FA1210-9388-4376-B4A3-5F150E33B19F@vmware.com>
- <20230801213044.68581-1-blamoreaux@vmware.com>
- <2023080459-sprint-dreamless-eb79@gregkh>
- <2023080459-visitor-fleshy-7e05@gregkh>
+To:     Ashwin Dayanand Kamat <kashwindayan@vmware.com>
+Cc:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        Wen Gong <wgong@codeaurora.org>,
+        Jouni Malinen <jouni@codeaurora.org>,
+        Johannes Berg <johannes.berg@intel.com>, davem@davemloft.net,
+        ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, akaher@vmware.com, vsirnapalli@vmware.com,
+        tkundu@vmware.com, namit@vmware.com
+Subject: Re: [PATCH v4.19.y] ath10k: Fix TKIP Michael MIC verification for
+ PCIe
+Message-ID: <2023080431-cobweb-fidgeting-e4de@gregkh>
+References: <1690971733-22270-1-git-send-email-kashwindayan@vmware.com>
+ <2023080408-squad-pony-2638@gregkh>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <2023080459-visitor-fleshy-7e05@gregkh>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <2023080408-squad-pony-2638@gregkh>
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
@@ -56,173 +59,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Fri, Aug 04, 2023 at 12:29:16PM +0200, Greg Kroah-Hartman wrote:
-> On Fri, Aug 04, 2023 at 12:22:09PM +0200, Greg Kroah-Hartman wrote:
-> > On Tue, Aug 01, 2023 at 02:30:44PM -0700, Brennan Lamoreaux wrote:
-> > > From: Joe Perches <joe@perches.com>
-> > > 
-> > > commit aa838896d87af561a33ecefea1caa4c15a68bc47 upstream
-> > > 
-> > > Convert the various sprintf fmaily calls in sysfs device show functions
-> > > to sysfs_emit and sysfs_emit_at for PAGE_SIZE buffer safety.
-> > > 
-> > > Done with:
-> > > 
-> > > $ spatch -sp-file sysfs_emit_dev.cocci --in-place --max-width=80 .
-> > > 
-> > > And cocci script:
-> > > 
-> > > $ cat sysfs_emit_dev.cocci
-> > > @@
-> > > identifier d_show;
-> > > identifier dev, attr, buf;
-> > > @@
-> > > 
-> > > ssize_t d_show(struct device *dev, struct device_attribute *attr, char *buf)
-> > > {
-> > > 	<...
-> > > 	return
-> > > -	sprintf(buf,
-> > > +	sysfs_emit(buf,
-> > > 	...);
-> > > 	...>
-> > > }
-> > > 
-> > > @@
-> > > identifier d_show;
-> > > identifier dev, attr, buf;
-> > > @@
-> > > 
-> > > ssize_t d_show(struct device *dev, struct device_attribute *attr, char *buf)
-> > > {
-> > > 	<...
-> > > 	return
-> > > -	snprintf(buf, PAGE_SIZE,
-> > > +	sysfs_emit(buf,
-> > > 	...);
-> > > 	...>
-> > > }
-> > > 
-> > > @@
-> > > identifier d_show;
-> > > identifier dev, attr, buf;
-> > > @@
-> > > 
-> > > ssize_t d_show(struct device *dev, struct device_attribute *attr, char *buf)
-> > > {
-> > > 	<...
-> > > 	return
-> > > -	scnprintf(buf, PAGE_SIZE,
-> > > +	sysfs_emit(buf,
-> > > 	...);
-> > > 	...>
-> > > }
-> > > 
-> > > @@
-> > > identifier d_show;
-> > > identifier dev, attr, buf;
-> > > expression chr;
-> > > @@
-> > > 
-> > > ssize_t d_show(struct device *dev, struct device_attribute *attr, char *buf)
-> > > {
-> > > 	<...
-> > > 	return
-> > > -	strcpy(buf, chr);
-> > > +	sysfs_emit(buf, chr);
-> > > 	...>
-> > > }
-> > > 
-> > > @@
-> > > identifier d_show;
-> > > identifier dev, attr, buf;
-> > > identifier len;
-> > > @@
-> > > 
-> > > ssize_t d_show(struct device *dev, struct device_attribute *attr, char *buf)
-> > > {
-> > > 	<...
-> > > 	len =
-> > > -	sprintf(buf,
-> > > +	sysfs_emit(buf,
-> > > 	...);
-> > > 	...>
-> > > 	return len;
-> > > }
-> > > 
-> > > @@
-> > > identifier d_show;
-> > > identifier dev, attr, buf;
-> > > identifier len;
-> > > @@
-> > > 
-> > > ssize_t d_show(struct device *dev, struct device_attribute *attr, char *buf)
-> > > {
-> > > 	<...
-> > > 	len =
-> > > -	snprintf(buf, PAGE_SIZE,
-> > > +	sysfs_emit(buf,
-> > > 	...);
-> > > 	...>
-> > > 	return len;
-> > > }
-> > > 
-> > > @@
-> > > identifier d_show;
-> > > identifier dev, attr, buf;
-> > > identifier len;
-> > > @@
-> > > 
-> > > ssize_t d_show(struct device *dev, struct device_attribute *attr, char *buf)
-> > > {
-> > > 	<...
-> > > 	len =
-> > > -	scnprintf(buf, PAGE_SIZE,
-> > > +	sysfs_emit(buf,
-> > > 	...);
-> > > 	...>
-> > > 	return len;
-> > > }
-> > > 
-> > > @@
-> > > identifier d_show;
-> > > identifier dev, attr, buf;
-> > > identifier len;
-> > > @@
-> > > 
-> > > ssize_t d_show(struct device *dev, struct device_attribute *attr, char *buf)
-> > > {
-> > > 	<...
-> > > -	len += scnprintf(buf + len, PAGE_SIZE - len,
-> > > +	len += sysfs_emit_at(buf, len,
-> > > 	...);
-> > > 	...>
-> > > 	return len;
-> > > }
-> > > 
-> > > @@
-> > > identifier d_show;
-> > > identifier dev, attr, buf;
-> > > expression chr;
-> > > @@
-> > > 
-> > > ssize_t d_show(struct device *dev, struct device_attribute *attr, char *buf)
-> > > {
-> > > 	...
-> > > -	strcpy(buf, chr);
-> > > -	return strlen(buf);
-> > > +	return sysfs_emit(buf, chr);
-> > > }
-> > > 
-> > > Signed-off-by: Joe Perches <joe@perches.com>
-> > > Link: https://lore.kernel.org/r/3d033c33056d88bbe34d4ddb62afd05ee166ab9a.1600285923.git.joe@perches.com
-> > > Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> > > [ Brennan : Regenerated for 4.19 to fix CVE-2022-20166 ]
-> > > Signed-off-by: Brennan Lamoreaux <blamoreaux@vmware.com>
+On Fri, Aug 04, 2023 at 12:28:18PM +0200, Greg Kroah-Hartman wrote:
+> On Wed, Aug 02, 2023 at 03:52:13PM +0530, Ashwin Dayanand Kamat wrote:
+> > From: Wen Gong <wgong@codeaurora.org>
 > > 
-> > Thanks, now queued up.
+> > commit 0dc267b13f3a7e8424a898815dd357211b737330 upstream.
+> > 
+> > TKIP Michael MIC was not verified properly for PCIe cases since the
+> > validation steps in ieee80211_rx_h_michael_mic_verify() in mac80211 did
+> > not get fully executed due to unexpected flag values in
+> > ieee80211_rx_status.
+> > 
+> > Fix this by setting the flags property to meet mac80211 expectations for
+> > performing Michael MIC validation there. This fixes CVE-2020-26141. It
+> > does the same as ath10k_htt_rx_proc_rx_ind_hl() for SDIO which passed
+> > MIC verification case. This applies only to QCA6174/QCA9377 PCIe.
+> > 
+> > Tested-on: QCA6174 hw3.2 PCI WLAN.RM.4.4.1-00110-QCARMSWP-1
+> > 
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Wen Gong <wgong@codeaurora.org>
+> > Signed-off-by: Jouni Malinen <jouni@codeaurora.org>
+> > Link: https://lore.kernel.org/r/20210511200110.c3f1d42c6746.I795593fcaae941c471425b8c7d5f7bb185d29142@changeid
+> > Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+> > Signed-off-by: Ashwin Dayanand Kamat <kashwindayan@vmware.com>
+> > ---
+> >  drivers/net/wireless/ath/ath10k/htt_rx.c | 10 ++++++++++
+> >  1 file changed, 10 insertions(+)
+> > 
 > 
-> Nope, now dropped, this didn't even build.  How did you test this thing?
+> Now queued up, thanks.
 
-Sorry, it built, but had warnings.  We don't like to add new warnings if
-possible, right?
+Nope, breaks the build, how did you test this:
+
+  CC [M]  drivers/net/wireless/ath/ath10k/htt_rx.o
+drivers/net/wireless/ath/ath10k/htt_rx.c: In function ‘ath10k_htt_rx_h_mpdu’:
+drivers/net/wireless/ath/ath10k/htt_rx.c:1649:21: error: ‘frag’ undeclared (first use in this function)
+ 1649 |                 if (frag && !fill_crypt_header &&
+      |                     ^~~~
+
+> 
+> greg k-h
