@@ -2,193 +2,156 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D466C77048D
-	for <lists+stable@lfdr.de>; Fri,  4 Aug 2023 17:27:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2882C770491
+	for <lists+stable@lfdr.de>; Fri,  4 Aug 2023 17:28:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229478AbjHDP1K (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 4 Aug 2023 11:27:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56942 "EHLO
+        id S231559AbjHDP2K (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 4 Aug 2023 11:28:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57996 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232108AbjHDP0x (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 4 Aug 2023 11:26:53 -0400
-Received: from dggsgout11.his.huawei.com (unknown [45.249.212.51])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F408A59ED
-        for <stable@vger.kernel.org>; Fri,  4 Aug 2023 08:26:10 -0700 (PDT)
-Received: from mail02.huawei.com (unknown [172.30.67.143])
-        by dggsgout11.his.huawei.com (SkyGuard) with ESMTP id 4RHV0D2Tccz4f3q33
-        for <stable@vger.kernel.org>; Fri,  4 Aug 2023 23:25:32 +0800 (CST)
-Received: from localhost.localdomain (unknown [10.67.175.61])
-        by APP2 (Coremail) with SMTP id Syh0CgDn2+lsGM1k_0b1PQ--.43835S8;
-        Fri, 04 Aug 2023 23:25:32 +0800 (CST)
-From:   Pu Lehui <pulehui@huaweicloud.com>
-To:     stable@vger.kernel.org, Greg KH <greg@kroah.com>,
-        Eduard Zingerman <eddyz87@gmail.com>,
-        Luiz Capitulino <luizcap@amazon.com>
-Cc:     Alexei Starovoitov <ast@kernel.org>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Andrii Nakryiko <andrii@kernel.org>,
-        Pu Lehui <pulehui@huawei.com>,
-        Pu Lehui <pulehui@huaweicloud.com>
-Subject: [PATCH 5.15 6/6] selftests/bpf: Fix sk_assign on s390x
-Date:   Fri,  4 Aug 2023 23:24:59 +0800
-Message-Id: <20230804152459.2565673-7-pulehui@huaweicloud.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20230804152459.2565673-1-pulehui@huaweicloud.com>
-References: <20230804152459.2565673-1-pulehui@huaweicloud.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: Syh0CgDn2+lsGM1k_0b1PQ--.43835S8
-X-Coremail-Antispam: 1UD129KBjvJXoWxAFy8Cw4fWr4DWrWfJw15twb_yoWruFy3pa
-        48Aa4YkFWxtF13Gw48CrWkZF4fuwn7XF15Jr4ftr4DZa10qF1vqr1xKa4Yq3ZxG395ur9a
-        va47KFsxua1UAaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-        9KBjDU0xBIdaVrnRJUUUPY14x267AKxVWrJVCq3wAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-        rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2048vs2IY020E87I2jVAFwI0_JF0E3s1l82xGYI
-        kIc2x26xkF7I0E14v26ryj6s0DM28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8wA2
-        z4x0Y4vE2Ix0cI8IcVAFwI0_Ar0_tr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr1j6F
-        4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oVCq
-        3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7
-        IYx2IY67AKxVWUGVWUXwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4U
-        M4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwCY1x0262kKe7AKxVWUtV
-        W8ZwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v2
-        6r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2
-        Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVW8JVW5JwCI42IY6xIIjxv20xvEc7CjxVAFwI0_
-        Gr1j6F4UJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Gr0_Cr
-        1lIxAIcVC2z280aVCY1x0267AKxVW8Jr0_Cr1UYxBIdaVFxhVjvjDU0xZFpf9x0JUWMKtU
-        UUUU=
-X-CM-SenderInfo: psxovxtxl6x35dzhxuhorxvhhfrp/
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
-        autolearn_force=no version=3.4.6
+        with ESMTP id S232075AbjHDP1u (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 4 Aug 2023 11:27:50 -0400
+Received: from mail-yb1-xb49.google.com (mail-yb1-xb49.google.com [IPv6:2607:f8b0:4864:20::b49])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D45C0526A
+        for <stable@vger.kernel.org>; Fri,  4 Aug 2023 08:27:28 -0700 (PDT)
+Received: by mail-yb1-xb49.google.com with SMTP id 3f1490d57ef6-d061f324d64so2366554276.1
+        for <stable@vger.kernel.org>; Fri, 04 Aug 2023 08:27:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20221208; t=1691162848; x=1691767648;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=aKhfr50CytyPbKf+4uDwSSo7M3ThccfnnQRTLUrmmdg=;
+        b=rl5bqp6tQA+TvGmYH1sXrLGzVDzye+UxvtNuwcEIDmzJGGlknWXhoFyPeEQGbc4XD+
+         7fM9lJOnJSiZSATLTJv3lekc5ku8HZo/nf4jfPtN3Fe5WBitNR8zGCbswnEaYIUzD+7O
+         Un4sHHA5u0qnfGbDg3ILOXQ9MXQFmEoBp9lKyPtUgd0i3DALjgoR4XmoewAydqS8KwlJ
+         iTaE4JCJ61Pyd3AwuTgsGPqPMPxOvJvOeVLYm6+ZtoMhi2WJkTS6sYe7btl4ERrgaLlb
+         2a/NnBQcYIpOtEOaDknfe4XqbeBloJxtgUbI2ZhlK9wThhAOg4P/sTKROcpLCrp+NoCv
+         kLQg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1691162848; x=1691767648;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=aKhfr50CytyPbKf+4uDwSSo7M3ThccfnnQRTLUrmmdg=;
+        b=JCKv5xTqpT1JEv95mBO7AvsSzbAhCYuuRmkM7JP4nrdicZ+wCZiKAocvn8N2uAtwCO
+         kbxz1DEyvxHhnaeMT7i64az4584269Y2OekXnEtKrtDUy35L+QV80rRskmKFgd8alV8Z
+         YUwpXqETIz2lfTTzuaerRdFdI9TDQgg9WnYRDhXTTzyiH3VJmQL0CBWdL0kM7Wqv7tEm
+         Y61xKANf7uAXrzO+R9mkR0hJ717U7sHSoX8b+5HVeLnGKPDuexw55QJpJp+OSwMI/6b3
+         53Xzw3hpHREs4BI3deHjBnzilMgfJpIo/HyxKJ5htdiZtkkF8+Sg1eA7lB+lNLXWTC4w
+         AJCw==
+X-Gm-Message-State: AOJu0Yw5JKb5dlcugT7RU1jzBe1zd3QFkYaCMhy9TjwwZV9qnZ8n4eHp
+        nlYFOErQC8dswE2fzSn2XeyyQuiN+Uk=
+X-Google-Smtp-Source: AGHT+IG4f9A7dcMT8UcSpgTJBpsi+cGM1Bu1NXzOWKN5ONFOXPvmLmwOt9qFc68A9Gb/dy1voP9Rr8Da5Cw=
+X-Received: from surenb-desktop.mtv.corp.google.com ([2620:15c:211:201:43a7:a50f:b0fd:a068])
+ (user=surenb job=sendgmr) by 2002:a5b:94d:0:b0:d09:17f2:d3b0 with SMTP id
+ x13-20020a5b094d000000b00d0917f2d3b0mr12917ybq.9.1691162848092; Fri, 04 Aug
+ 2023 08:27:28 -0700 (PDT)
+Date:   Fri,  4 Aug 2023 08:27:18 -0700
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.41.0.585.gd2178a4bd4-goog
+Message-ID: <20230804152724.3090321-1-surenb@google.com>
+Subject: [PATCH v4 0/6] make vma locking more obvious
+From:   Suren Baghdasaryan <surenb@google.com>
+To:     akpm@linux-foundation.org
+Cc:     torvalds@linux-foundation.org, jannh@google.com,
+        willy@infradead.org, liam.howlett@oracle.com, david@redhat.com,
+        peterx@redhat.com, ldufour@linux.ibm.com, vbabka@suse.cz,
+        michel@lespinasse.org, jglisse@google.com, mhocko@suse.com,
+        hannes@cmpxchg.org, dave@stgolabs.net, hughd@google.com,
+        linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+        stable@vger.kernel.org, kernel-team@android.com,
+        Suren Baghdasaryan <surenb@google.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ilya Leoshkevich <iii@linux.ibm.com>
+During recent vma locking patch reviews Linus and Jann Horn noted a number
+of issues with vma locking and suggested improvements:
 
-[ Upstream commit 7ce878ca81bca7811e669db4c394b86780e0dbe4 ]
+1. walk_page_range() does not have ability to write-lock a vma during the
+walk when it's done under mmap_write_lock. For example s390_reset_cmma().
 
-sk_assign is failing on an s390x machine running Debian "bookworm" for
-2 reasons: legacy server_map definition and uninitialized addrlen in
-recvfrom() call.
+2. Vma locking is hidden inside vm_flags modifiers and is hard to follow.
+Suggestion is to change vm_flags_reset{_once} to assert that vma is
+write-locked and require an explicit locking.
 
-Fix by adding a new-style server_map definition and dropping addrlen
-(recvfrom() allows NULL values for src_addr and addrlen).
+3. Same issue with vma_prepare() hiding vma locking.
 
-Since the test should support tc built without libbpf, build the prog
-twice: with the old-style definition and with the new-style definition,
-then select the right one at runtime. This could be done at compile
-time too, but this would not be cross-compilation friendly.
+4. In userfaultfd vm_flags are modified after vma->vm_userfaultfd_ctx and
+page faults can operate on a context while it's changed.
 
-Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
-Link: https://lore.kernel.org/r/20230129190501.1624747-2-iii@linux.ibm.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Conflicts:
-	tools/testing/selftests/bpf/prog_tests/sk_assign.c
-Signed-off-by: Pu Lehui <pulehui@huawei.com>
----
- .../selftests/bpf/prog_tests/sk_assign.c      | 25 ++++++++++++++-----
- .../selftests/bpf/progs/test_sk_assign.c      | 11 ++++++++
- .../bpf/progs/test_sk_assign_libbpf.c         |  3 +++
- 3 files changed, 33 insertions(+), 6 deletions(-)
- create mode 100644 tools/testing/selftests/bpf/progs/test_sk_assign_libbpf.c
+5. do_brk_flags() and __install_special_mapping() not locking a newly
+created vma before adding it into the mm. While not strictly a problem,
+this is fragile if vma is modified after insertion, as in the
+mmap_region() case which was recently fixed. Suggestion is to always lock
+a new vma before inserting it and making it visible to page faults.
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/sk_assign.c b/tools/testing/selftests/bpf/prog_tests/sk_assign.c
-index 3a469099f30d..e09c5239a595 100644
---- a/tools/testing/selftests/bpf/prog_tests/sk_assign.c
-+++ b/tools/testing/selftests/bpf/prog_tests/sk_assign.c
-@@ -29,7 +29,23 @@ static int stop, duration;
- static bool
- configure_stack(void)
- {
-+	char tc_version[128];
- 	char tc_cmd[BUFSIZ];
-+	char *prog;
-+	FILE *tc;
-+
-+	/* Check whether tc is built with libbpf. */
-+	tc = popen("tc -V", "r");
-+	if (CHECK_FAIL(!tc))
-+		return false;
-+	if (CHECK_FAIL(!fgets(tc_version, sizeof(tc_version), tc)))
-+		return false;
-+	if (strstr(tc_version, ", libbpf "))
-+		prog = "test_sk_assign_libbpf.o";
-+	else
-+		prog = "test_sk_assign.o";
-+	if (CHECK_FAIL(pclose(tc)))
-+		return false;
- 
- 	/* Move to a new networking namespace */
- 	if (CHECK_FAIL(unshare(CLONE_NEWNET)))
-@@ -46,8 +62,8 @@ configure_stack(void)
- 	/* Load qdisc, BPF program */
- 	if (CHECK_FAIL(system("tc qdisc add dev lo clsact")))
- 		return false;
--	sprintf(tc_cmd, "%s %s %s %s", "tc filter add dev lo ingress bpf",
--		       "direct-action object-file ./test_sk_assign.o",
-+	sprintf(tc_cmd, "%s %s %s %s %s", "tc filter add dev lo ingress bpf",
-+		       "direct-action object-file", prog,
- 		       "section classifier/sk_assign_test",
- 		       (env.verbosity < VERBOSE_VERY) ? " 2>/dev/null" : "verbose");
- 	if (CHECK(system(tc_cmd), "BPF load failed;",
-@@ -129,15 +145,12 @@ get_port(int fd)
- static ssize_t
- rcv_msg(int srv_client, int type)
- {
--	struct sockaddr_storage ss;
- 	char buf[BUFSIZ];
--	socklen_t slen;
- 
- 	if (type == SOCK_STREAM)
- 		return read(srv_client, &buf, sizeof(buf));
- 	else
--		return recvfrom(srv_client, &buf, sizeof(buf), 0,
--				(struct sockaddr *)&ss, &slen);
-+		return recvfrom(srv_client, &buf, sizeof(buf), 0, NULL, NULL);
- }
- 
- static int
-diff --git a/tools/testing/selftests/bpf/progs/test_sk_assign.c b/tools/testing/selftests/bpf/progs/test_sk_assign.c
-index 1ecd987005d2..77fd42f835fc 100644
---- a/tools/testing/selftests/bpf/progs/test_sk_assign.c
-+++ b/tools/testing/selftests/bpf/progs/test_sk_assign.c
-@@ -16,6 +16,16 @@
- #include <bpf/bpf_helpers.h>
- #include <bpf/bpf_endian.h>
- 
-+#if defined(IPROUTE2_HAVE_LIBBPF)
-+/* Use a new-style map definition. */
-+struct {
-+	__uint(type, BPF_MAP_TYPE_SOCKMAP);
-+	__type(key, int);
-+	__type(value, __u64);
-+	__uint(pinning, LIBBPF_PIN_BY_NAME);
-+	__uint(max_entries, 1);
-+} server_map SEC(".maps");
-+#else
- /* Pin map under /sys/fs/bpf/tc/globals/<map name> */
- #define PIN_GLOBAL_NS 2
- 
-@@ -35,6 +45,7 @@ struct {
- 	.max_elem = 1,
- 	.pinning = PIN_GLOBAL_NS,
- };
-+#endif
- 
- int _version SEC("version") = 1;
- char _license[] SEC("license") = "GPL";
-diff --git a/tools/testing/selftests/bpf/progs/test_sk_assign_libbpf.c b/tools/testing/selftests/bpf/progs/test_sk_assign_libbpf.c
-new file mode 100644
-index 000000000000..dcf46adfda04
---- /dev/null
-+++ b/tools/testing/selftests/bpf/progs/test_sk_assign_libbpf.c
-@@ -0,0 +1,3 @@
-+// SPDX-License-Identifier: GPL-2.0
-+#define IPROUTE2_HAVE_LIBBPF
-+#include "test_sk_assign.c"
+6. vma_assert_write_locked() for CONFIG_PER_VMA_LOCK=n would benefit from
+being mmap_assert_write_locked() instead of no-op and then any place which
+operates on a vma and calls mmap_assert_write_locked() can be converted
+into vma_assert_write_locked().
+
+I CC'ed stable only on the first patch because others are cleanups and the
+bug in userfaultfd does not affect stable (lock_vma_under_rcu prevents
+uffds from being handled under vma lock protection). However I would be
+happy if the whole series is merged into stable 6.4 since it makes vma
+locking more maintainable.
+
+The patches apply cleanly over Linus' ToT and will conflict when applied
+over mm-unstable due to missing [1]. The conflict can be easily resolved
+by ignoring conflicting deletions but probably simpler to take [1] into
+mm-unstable and avoid later conflict.
+
+[1] commit 6c21e066f925 ("mm/mempolicy: Take VMA lock before replacing policy")
+
+Changes since v3:
+- changed vma locking in vma_merge to avoid locking prev when not
+necessary, per Liam
+
+Suren Baghdasaryan (6):
+  mm: enable page walking API to lock vmas during the walk
+  mm: for !CONFIG_PER_VMA_LOCK equate write lock assertion for vma and
+    mmap
+  mm: replace mmap with vma write lock assertions when operating on a
+    vma
+  mm: lock vma explicitly before doing vm_flags_reset and
+    vm_flags_reset_once
+  mm: always lock new vma before inserting into vma tree
+  mm: move vma locking out of vma_prepare and dup_anon_vma
+
+ arch/powerpc/kvm/book3s_hv_uvmem.c      |  1 +
+ arch/powerpc/mm/book3s64/subpage_prot.c |  1 +
+ arch/riscv/mm/pageattr.c                |  1 +
+ arch/s390/mm/gmap.c                     |  5 ++++
+ fs/proc/task_mmu.c                      |  5 ++++
+ fs/userfaultfd.c                        |  6 +++++
+ include/linux/mm.h                      | 13 ++++++---
+ include/linux/pagewalk.h                | 11 ++++++++
+ mm/damon/vaddr.c                        |  2 ++
+ mm/hmm.c                                |  1 +
+ mm/hugetlb.c                            |  2 +-
+ mm/khugepaged.c                         |  5 ++--
+ mm/ksm.c                                | 25 ++++++++++-------
+ mm/madvise.c                            |  8 +++---
+ mm/memcontrol.c                         |  2 ++
+ mm/memory-failure.c                     |  1 +
+ mm/memory.c                             |  2 +-
+ mm/mempolicy.c                          | 22 +++++++++------
+ mm/migrate_device.c                     |  1 +
+ mm/mincore.c                            |  1 +
+ mm/mlock.c                              |  4 ++-
+ mm/mmap.c                               | 33 +++++++++++++++--------
+ mm/mprotect.c                           |  2 ++
+ mm/pagewalk.c                           | 36 ++++++++++++++++++++++---
+ mm/vmscan.c                             |  1 +
+ 25 files changed, 148 insertions(+), 43 deletions(-)
+
 -- 
-2.25.1
+2.41.0.585.gd2178a4bd4-goog
 
