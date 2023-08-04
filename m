@@ -2,220 +2,167 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E9FC576FE55
-	for <lists+stable@lfdr.de>; Fri,  4 Aug 2023 12:22:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F261576FE5D
+	for <lists+stable@lfdr.de>; Fri,  4 Aug 2023 12:24:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230426AbjHDKWQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 4 Aug 2023 06:22:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36818 "EHLO
+        id S230014AbjHDKYW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 4 Aug 2023 06:24:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37056 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229989AbjHDKWP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 4 Aug 2023 06:22:15 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AEFAE2118
-        for <stable@vger.kernel.org>; Fri,  4 Aug 2023 03:22:12 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4BD4C61F7F
-        for <stable@vger.kernel.org>; Fri,  4 Aug 2023 10:22:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56070C433C8;
-        Fri,  4 Aug 2023 10:22:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691144531;
-        bh=a4K1wOkPkyoev8tJri5Dlk7nXz5v/Jcie69YiHeGueI=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=xkvEgwANxTPSjajN12iF0Ps3sMQxR1iwx6g6VAo7YDL5CF6KjnXRB+aCuNB/JVQpL
-         CWPRwZWKl+/SzhmJjKaCdkY/t5JyoqvEzf01GQJEmc6VquYk4SuybkRfemmHO5J7i6
-         EJs18ZQKU1T2EV7aFC9QPDN+JYEi/q3FnUMyKtPc=
-Date:   Fri, 4 Aug 2023 12:22:09 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Brennan Lamoreaux <blamoreaux@vmware.com>
-Cc:     stable@vger.kernel.org, akaher@vmware.com, amakhalov@vmware.com,
-        vsirnapalli@vmware.com, ankitja@vmware.com,
-        Joe Perches <joe@perches.com>
-Subject: Re: [PATCH v4.19.y] drivers core: Use sysfs_emit and sysfs_emit_at
- for show(device *...) functions
-Message-ID: <2023080459-sprint-dreamless-eb79@gregkh>
-References: <86FA1210-9388-4376-B4A3-5F150E33B19F@vmware.com>
- <20230801213044.68581-1-blamoreaux@vmware.com>
+        with ESMTP id S229925AbjHDKYV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 4 Aug 2023 06:24:21 -0400
+Received: from wout4-smtp.messagingengine.com (wout4-smtp.messagingengine.com [64.147.123.20])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 81E0F30F6
+        for <stable@vger.kernel.org>; Fri,  4 Aug 2023 03:24:19 -0700 (PDT)
+Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
+        by mailout.west.internal (Postfix) with ESMTP id 98A373200319;
+        Fri,  4 Aug 2023 06:24:15 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute4.internal (MEProxy); Fri, 04 Aug 2023 06:24:16 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
+        :cc:content-type:content-type:date:date:from:from:in-reply-to
+        :in-reply-to:message-id:mime-version:references:reply-to:sender
+        :subject:subject:to:to; s=fm3; t=1691144655; x=1691231055; bh=WW
+        Wx8vA3jttFz/l/kqhUdIbz1oSt+W7uK3OEb3BhEzg=; b=w3BNtQpS9re0va+arY
+        XjK3MYENksWw4URQA1vTsbH84GB/xqLdZslvAx0P3mLKTXl8JJ04Vg6HYTxTP6km
+        bKYU6BA83sDUSQ0Cbdkddk80aSoBT3xiHEUGXzEd16rFkr/DWoFasF7/+ffANOP4
+        ex2IkRbUEoqvDus4xAvzxLrCs1KhRpbf09M0e8N2PMbfyq0GMq1ZVG4EFhgsG0MU
+        meSa04hDOHNTpK8cw3ZRYPVyc5DkKtXKcwbIzE20kIa+CL8aa5GjRYBvd3BQEx8Y
+        jgAEFexC164Sb+LkrrubnedFHa5DNZpTpFHNqz5Nq8GF54VQW75DZWNfKwpcay7V
+        /aww==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-type:content-type:date:date
+        :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+        :message-id:mime-version:references:reply-to:sender:subject
+        :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+        :x-sasl-enc; s=fm3; t=1691144655; x=1691231055; bh=WWWx8vA3jttFz
+        /l/kqhUdIbz1oSt+W7uK3OEb3BhEzg=; b=08HRUFm1bsmArvwrmGtmmUpitQLFm
+        /QXsCMgV7MX1QLrFk7jPVLf3OkXa9WVWDne1PqtR6R0q+iLm9LI/67+N+EPg6A5Q
+        yzks40F+ksSy+6uCNIF+e3iR6KFxApLBd+4nVktzOqGwLBUkre8o1lcD+OXvWC2X
+        r/uKwEm/gJgr8fiPR5Xk1CeEHvqdElG9Lizmnx6Z4liU+iK++KgrhgL7PjHpycdO
+        RVwMOvuYIVcAmcmcMfGUyuIJiDGavXUO72ApkhrHiSm0lswhVb+5X1JrBDcF8jnn
+        ptUHvJOC4rCPoUnP1sSp2kc1zzzXEDudi1DFqw8LUYA9L1vsj/8JP9cDw==
+X-ME-Sender: <xms:ztHMZMzykzp1Y88OBDWaWZqLtqCQRib5FBf_XlEIi-w9TJpI9RsIkQ>
+    <xme:ztHMZATFJ-GylcxBEQ0WJFt4RGQmdyrU29GBSY28aAdjkXosB_Wdilh7ILpZFWHhL
+    sZaCOGeZpzLgw>
+X-ME-Received: <xmr:ztHMZOXSAKg_Fue-vMJT3Cjz2TIZXNGZSIVZvxJnBzmyRRaB9-CRazPBgpEaF4PSyZnGVnulR-vtbQm6Ro-Kot_g9tEw-lSoY4saxw>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrkeeggddviecutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
+    fjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpefirhgvghcu
+    mffjuceoghhrvghgsehkrhhorghhrdgtohhmqeenucggtffrrghtthgvrhhnpeegheeuhe
+    fgtdeluddtleekfeegjeetgeeikeehfeduieffvddufeefleevtddtvdenucffohhmrghi
+    nhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpe
+    hmrghilhhfrhhomhepghhrvghgsehkrhhorghhrdgtohhm
+X-ME-Proxy: <xmx:ztHMZKj10ot2g1erPEwP4EqyCpljUNzQU3oDI_AO-mLQW36X-9cyhg>
+    <xmx:ztHMZOBMq3QNkZ-k1DUvWbJumdX0v-9xarnbNQrlz5JFYDoeirxnVg>
+    <xmx:ztHMZLKXZzNOVrLpYu6hbC-inMdAPmIKgFzmTt5CRZMbJyYfxTNrKg>
+    <xmx:z9HMZK0-TlEym_xEdqtfvHscptsH0tcWXKlSDzqdEu9LUhVlC6VzlA>
+Feedback-ID: i787e41f1:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 4 Aug 2023 06:24:14 -0400 (EDT)
+Date:   Fri, 4 Aug 2023 12:24:12 +0200
+From:   Greg KH <greg@kroah.com>
+To:     ovidiu.panait@windriver.com
+Cc:     stable@vger.kernel.org,
+        D Scott Phillips <scott@os.amperecomputing.com>,
+        James Morse <james.morse@arm.com>,
+        Catalin Marinas <catalin.marinas@arm.com>
+Subject: Re: [PATCH 5.4 1/2] arm64: Add AMPERE1 to the Spectre-BHB affected
+ list
+Message-ID: <2023080406-wow-repeated-09d9@gregkh>
+References: <20230801093736.4110870-1-ovidiu.panait@windriver.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230801213044.68581-1-blamoreaux@vmware.com>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+In-Reply-To: <20230801093736.4110870-1-ovidiu.panait@windriver.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, Aug 01, 2023 at 02:30:44PM -0700, Brennan Lamoreaux wrote:
-> From: Joe Perches <joe@perches.com>
+On Tue, Aug 01, 2023 at 12:37:35PM +0300, ovidiu.panait@windriver.com wrote:
+> From: D Scott Phillips <scott@os.amperecomputing.com>
 > 
-> commit aa838896d87af561a33ecefea1caa4c15a68bc47 upstream
+> commit 0e5d5ae837c8ce04d2ddb874ec5f920118bd9d31 upstream.
 > 
-> Convert the various sprintf fmaily calls in sysfs device show functions
-> to sysfs_emit and sysfs_emit_at for PAGE_SIZE buffer safety.
+> Per AmpereOne erratum AC03_CPU_12, "Branch history may allow control of
+> speculative execution across software contexts," the AMPERE1 core needs the
+> bhb clearing loop to mitigate Spectre-BHB, with a loop iteration count of
+> 11.
 > 
-> Done with:
+> Signed-off-by: D Scott Phillips <scott@os.amperecomputing.com>
+> Link: https://lore.kernel.org/r/20221011022140.432370-1-scott@os.amperecomputing.com
+> Reviewed-by: James Morse <james.morse@arm.com>
+> Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+> Signed-off-by: Ovidiu Panait <ovidiu.panait@windriver.com>
+> ---
+>  arch/arm64/include/asm/cputype.h | 4 ++++
+>  arch/arm64/kernel/cpu_errata.c   | 6 ++++++
+>  2 files changed, 10 insertions(+)
 > 
-> $ spatch -sp-file sysfs_emit_dev.cocci --in-place --max-width=80 .
+> diff --git a/arch/arm64/include/asm/cputype.h b/arch/arm64/include/asm/cputype.h
+> index f0165df489a3..08241810cfea 100644
+> --- a/arch/arm64/include/asm/cputype.h
+> +++ b/arch/arm64/include/asm/cputype.h
+> @@ -59,6 +59,7 @@
+>  #define ARM_CPU_IMP_NVIDIA		0x4E
+>  #define ARM_CPU_IMP_FUJITSU		0x46
+>  #define ARM_CPU_IMP_HISI		0x48
+> +#define ARM_CPU_IMP_AMPERE		0xC0
+>  
+>  #define ARM_CPU_PART_AEM_V8		0xD0F
+>  #define ARM_CPU_PART_FOUNDATION		0xD00
+> @@ -101,6 +102,8 @@
+>  
+>  #define HISI_CPU_PART_TSV110		0xD01
+>  
+> +#define AMPERE_CPU_PART_AMPERE1		0xAC3
+> +
+>  #define MIDR_CORTEX_A53 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A53)
+>  #define MIDR_CORTEX_A57 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A57)
+>  #define MIDR_CORTEX_A72 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A72)
+> @@ -131,6 +134,7 @@
+>  #define MIDR_NVIDIA_CARMEL MIDR_CPU_MODEL(ARM_CPU_IMP_NVIDIA, NVIDIA_CPU_PART_CARMEL)
+>  #define MIDR_FUJITSU_A64FX MIDR_CPU_MODEL(ARM_CPU_IMP_FUJITSU, FUJITSU_CPU_PART_A64FX)
+>  #define MIDR_HISI_TSV110 MIDR_CPU_MODEL(ARM_CPU_IMP_HISI, HISI_CPU_PART_TSV110)
+> +#define MIDR_AMPERE1 MIDR_CPU_MODEL(ARM_CPU_IMP_AMPERE, AMPERE_CPU_PART_AMPERE1)
+>  
+>  /* Fujitsu Erratum 010001 affects A64FX 1.0 and 1.1, (v0r0 and v1r0) */
+>  #define MIDR_FUJITSU_ERRATUM_010001		MIDR_FUJITSU_A64FX
+> diff --git a/arch/arm64/kernel/cpu_errata.c b/arch/arm64/kernel/cpu_errata.c
+> index b18f307a3c59..342cba2ae982 100644
+> --- a/arch/arm64/kernel/cpu_errata.c
+> +++ b/arch/arm64/kernel/cpu_errata.c
+> @@ -1145,6 +1145,10 @@ u8 spectre_bhb_loop_affected(int scope)
+>  			MIDR_ALL_VERSIONS(MIDR_NEOVERSE_N1),
+>  			{},
+>  		};
+> +		static const struct midr_range spectre_bhb_k11_list[] = {
+> +			MIDR_ALL_VERSIONS(MIDR_AMPERE1),
+> +			{},
+> +		};
+>  		static const struct midr_range spectre_bhb_k8_list[] = {
+>  			MIDR_ALL_VERSIONS(MIDR_CORTEX_A72),
+>  			MIDR_ALL_VERSIONS(MIDR_CORTEX_A57),
+> @@ -1155,6 +1159,8 @@ u8 spectre_bhb_loop_affected(int scope)
+>  			k = 32;
+>  		else if (is_midr_in_range_list(read_cpuid_id(), spectre_bhb_k24_list))
+>  			k = 24;
+> +		else if (is_midr_in_range_list(read_cpuid_id(), spectre_bhb_k11_list))
+> +			k = 11;
+>  		else if (is_midr_in_range_list(read_cpuid_id(), spectre_bhb_k8_list))
+>  			k =  8;
+>  
+> -- 
+> 2.39.1
 > 
-> And cocci script:
-> 
-> $ cat sysfs_emit_dev.cocci
-> @@
-> identifier d_show;
-> identifier dev, attr, buf;
-> @@
-> 
-> ssize_t d_show(struct device *dev, struct device_attribute *attr, char *buf)
-> {
-> 	<...
-> 	return
-> -	sprintf(buf,
-> +	sysfs_emit(buf,
-> 	...);
-> 	...>
-> }
-> 
-> @@
-> identifier d_show;
-> identifier dev, attr, buf;
-> @@
-> 
-> ssize_t d_show(struct device *dev, struct device_attribute *attr, char *buf)
-> {
-> 	<...
-> 	return
-> -	snprintf(buf, PAGE_SIZE,
-> +	sysfs_emit(buf,
-> 	...);
-> 	...>
-> }
-> 
-> @@
-> identifier d_show;
-> identifier dev, attr, buf;
-> @@
-> 
-> ssize_t d_show(struct device *dev, struct device_attribute *attr, char *buf)
-> {
-> 	<...
-> 	return
-> -	scnprintf(buf, PAGE_SIZE,
-> +	sysfs_emit(buf,
-> 	...);
-> 	...>
-> }
-> 
-> @@
-> identifier d_show;
-> identifier dev, attr, buf;
-> expression chr;
-> @@
-> 
-> ssize_t d_show(struct device *dev, struct device_attribute *attr, char *buf)
-> {
-> 	<...
-> 	return
-> -	strcpy(buf, chr);
-> +	sysfs_emit(buf, chr);
-> 	...>
-> }
-> 
-> @@
-> identifier d_show;
-> identifier dev, attr, buf;
-> identifier len;
-> @@
-> 
-> ssize_t d_show(struct device *dev, struct device_attribute *attr, char *buf)
-> {
-> 	<...
-> 	len =
-> -	sprintf(buf,
-> +	sysfs_emit(buf,
-> 	...);
-> 	...>
-> 	return len;
-> }
-> 
-> @@
-> identifier d_show;
-> identifier dev, attr, buf;
-> identifier len;
-> @@
-> 
-> ssize_t d_show(struct device *dev, struct device_attribute *attr, char *buf)
-> {
-> 	<...
-> 	len =
-> -	snprintf(buf, PAGE_SIZE,
-> +	sysfs_emit(buf,
-> 	...);
-> 	...>
-> 	return len;
-> }
-> 
-> @@
-> identifier d_show;
-> identifier dev, attr, buf;
-> identifier len;
-> @@
-> 
-> ssize_t d_show(struct device *dev, struct device_attribute *attr, char *buf)
-> {
-> 	<...
-> 	len =
-> -	scnprintf(buf, PAGE_SIZE,
-> +	sysfs_emit(buf,
-> 	...);
-> 	...>
-> 	return len;
-> }
-> 
-> @@
-> identifier d_show;
-> identifier dev, attr, buf;
-> identifier len;
-> @@
-> 
-> ssize_t d_show(struct device *dev, struct device_attribute *attr, char *buf)
-> {
-> 	<...
-> -	len += scnprintf(buf + len, PAGE_SIZE - len,
-> +	len += sysfs_emit_at(buf, len,
-> 	...);
-> 	...>
-> 	return len;
-> }
-> 
-> @@
-> identifier d_show;
-> identifier dev, attr, buf;
-> expression chr;
-> @@
-> 
-> ssize_t d_show(struct device *dev, struct device_attribute *attr, char *buf)
-> {
-> 	...
-> -	strcpy(buf, chr);
-> -	return strlen(buf);
-> +	return sysfs_emit(buf, chr);
-> }
-> 
-> Signed-off-by: Joe Perches <joe@perches.com>
-> Link: https://lore.kernel.org/r/3d033c33056d88bbe34d4ddb62afd05ee166ab9a.1600285923.git.joe@perches.com
-> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> [ Brennan : Regenerated for 4.19 to fix CVE-2022-20166 ]
-> Signed-off-by: Brennan Lamoreaux <blamoreaux@vmware.com>
 
-Thanks, now queued up.
+Both now queued up, thanks.
 
 greg k-h
