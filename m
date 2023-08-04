@@ -2,103 +2,105 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 06B177704B8
-	for <lists+stable@lfdr.de>; Fri,  4 Aug 2023 17:31:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6BDB377051B
+	for <lists+stable@lfdr.de>; Fri,  4 Aug 2023 17:48:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230134AbjHDPba (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 4 Aug 2023 11:31:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34858 "EHLO
+        id S232053AbjHDPsI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 4 Aug 2023 11:48:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45380 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229974AbjHDPbQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 4 Aug 2023 11:31:16 -0400
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D03E95B94
-        for <stable@vger.kernel.org>; Fri,  4 Aug 2023 08:30:10 -0700 (PDT)
-Received: from kwepemi500020.china.huawei.com (unknown [172.30.72.57])
-        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4RHV4F0wQczrS3D;
-        Fri,  4 Aug 2023 23:29:01 +0800 (CST)
-Received: from [10.67.109.184] (10.67.109.184) by
- kwepemi500020.china.huawei.com (7.221.188.8) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.27; Fri, 4 Aug 2023 23:30:06 +0800
-Message-ID: <3288ffdc-51bb-6725-835d-a44db396f989@huawei.com>
-Date:   Fri, 4 Aug 2023 23:30:05 +0800
+        with ESMTP id S232180AbjHDPsA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 4 Aug 2023 11:48:00 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9BF552D71;
+        Fri,  4 Aug 2023 08:47:59 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3A42E6208C;
+        Fri,  4 Aug 2023 15:47:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90646C433C7;
+        Fri,  4 Aug 2023 15:47:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1691164078;
+        bh=vmYSL62gE86wbB6w4+ThrjkJq99WbHmmmtt+qKXP5ig=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=nr4GSOlggk2Oz9nBXHXo+h46NcFd/XRt8m2tXXwlhG5YlAeXfWOpPN9mGlSSFRzJj
+         5efF2T8JV8teWdU27xrpkgjTmHIeoiravkzcJqMyoYcU4/Mt5EsDUday9wN/HyS7J1
+         nxRc88/Z1+fy8xBmRuO6rupCyU93HGW+UrMxS1wWc1Q8lIHT+rTVKGpM5dZnXvbMd2
+         3AN8uwkWvchUdYh7MMWpMA1juA6uypry5mxoyjKWL0wPNsuzOwJc3b7p1SSUOQNRIA
+         J7PzhksTmRFAG0xsElJHRDCDmUC/o7NHD347m6XsNGDZeRWAOjkdmEAShUIQfuWj5H
+         rbpKgSq4CRptQ==
+Date:   Fri, 4 Aug 2023 08:47:57 -0700
+From:   "Darrick J. Wong" <djwong@kernel.org>
+To:     Guoqing Jiang <guoqing.jiang@linux.dev>
+Cc:     amir73il@gmail.com, dchinner@redhat.com, yangx.jy@fujitsu.com,
+        linux-xfs@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH 5.10 0/2] Fix xfs/179 for 5.10 stable
+Message-ID: <20230804154757.GI11352@frogsfrogsfrogs>
+References: <20230803093652.7119-1-guoqing.jiang@linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.3.0
-Subject: Re: [PATCH 5.15 0/6] Backporting for 5.15 test_verifier failed
-Content-Language: en-US
-To:     Luiz Capitulino <luizcap@amazon.com>
-CC:     <stable@vger.kernel.org>, Eduard Zingerman <eddyz87@gmail.com>,
-        Greg KH <greg@kroah.com>, Alexei Starovoitov <ast@kernel.org>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Andrii Nakryiko <andrii@kernel.org>,
-        Pu Lehui <pulehui@huaweicloud.com>
-References: <20230804152459.2565673-1-pulehui@huaweicloud.com>
-From:   Pu Lehui <pulehui@huawei.com>
-In-Reply-To: <20230804152459.2565673-1-pulehui@huaweicloud.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.67.109.184]
-X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
- kwepemi500020.china.huawei.com (7.221.188.8)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230803093652.7119-1-guoqing.jiang@linux.dev>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi Luiz,
+On Thu, Aug 03, 2023 at 05:36:50PM +0800, Guoqing Jiang wrote:
+> Hi,
+> 
+> With the two patches applied, xfs/179 can pass in 5.10.188. Otherwise I got
+> 
+> [root@localhost xfstests]# ./check xfs/179
+> FSTYP         -- xfs (non-debug)
+> PLATFORM      -- Linux/x86_64 localhost 5.10.188-default #14 SMP Thu Aug 3 15:23:19 CST 2023
+> MKFS_OPTIONS  -- -f /dev/loop1
+> MOUNT_OPTIONS -- -o context=system_u:object_r:root_t:s0 /dev/loop1 /mnt/scratch
+> 
+> xfs/179 1s ... [failed, exit status 1]- output mismatch (see /root/xfstests/results//xfs/179.out.bad)
+>     --- tests/xfs/179.out	2023-07-13 16:12:27.000000000 +0800
+>     +++ /root/xfstests/results//xfs/179.out.bad	2023-08-03 16:55:38.173787911 +0800
+>     @@ -8,3 +8,5 @@
+>      Check scratch fs
+>      Remove reflinked files
+>      Check scratch fs
+>     +xfs_repair fails
+>     +(see /root/xfstests/results//xfs/179.full for details)
+>     ...
+>     (Run 'diff -u /root/xfstests/tests/xfs/179.out /root/xfstests/results//xfs/179.out.bad'  to see the entire diff)
+> 
+> HINT: You _MAY_ be missing kernel fix:
+>       b25d1984aa88 xfs: estimate post-merge refcounts correctly
+> 
+> Ran: xfs/179
+> Failures: xfs/179
+> Failed 1 of 1 tests
+> 
+> Please review if they are approriate for 5.10 stable.
 
-My local 5.15 environment is a little bit weird, could you help me to 
-test it?
+Seems fine to me, but ... there is no maintainer for 5.10; is your
+employer willing to support this LTS kernel?
 
-On 2023/8/4 23:24, Pu Lehui wrote:
-> Luiz Capitulino reported the test_verifier test failed:
-> "precise: ST insn causing spi > allocated_stack".
-> And it was introduced by the following upstream commit:
-> ecdf985d7615 ("bpf: track immediate values written to stack by BPF_ST instruction")
+--D
+
+> Thanks,
+> Guoqing
 > 
-> Eduard's investigation [4] shows that test failure is not a bug, but a
-> difference in BPF verifier behavior between upstream, where commits
-> [1,2,3] by Andrii are present, and 5.15, where these commits are absent.
+> Darrick J. Wong (2):
+>   xfs: hoist refcount record merge predicates
+>   xfs: estimate post-merge refcounts correctly
 > 
-> Backporting strategy is consistent with Eduard in kernel version 6.1 [5],
-> but with some conflicts in patch #1, #4 and #6 due to the bpf of 5.15
-> doesn't support more features.
+>  fs/xfs/libxfs/xfs_refcount.c | 146 +++++++++++++++++++++++++++++++----
+>  1 file changed, 130 insertions(+), 16 deletions(-)
 > 
-> Commits of Andrii:
-> [1] be2ef8161572 ("bpf: allow precision tracking for programs with subprogs")
-> [2] f63181b6ae79 ("bpf: stop setting precise in current state")
-> [3] 7a830b53c17b ("bpf: aggressively forget precise markings during state checkpointing")
-> 
-> Links:
-> [4] https://lore.kernel.org/stable/c9b10a8a551edafdfec855fbd35757c6238ad258.camel@gmail.com/
-> [5] https://lore.kernel.org/all/20230724124223.1176479-2-eddyz87@gmail.com/
-> 
-> Andrii Nakryiko (4):
->    bpf: allow precision tracking for programs with subprogs
->    bpf: stop setting precise in current state
->    bpf: aggressively forget precise markings during state checkpointing
->    selftests/bpf: make test_align selftest more robust
-> 
-> Ilya Leoshkevich (1):
->    selftests/bpf: Fix sk_assign on s390x
-> 
-> Yonghong Song (1):
->    selftests/bpf: Workaround verification failure for
->      fexit_bpf2bpf/func_replace_return_code
-> 
->   kernel/bpf/verifier.c                         | 199 ++++++++++++++++--
->   .../testing/selftests/bpf/prog_tests/align.c  |  36 ++--
->   .../selftests/bpf/prog_tests/sk_assign.c      |  25 ++-
->   .../selftests/bpf/progs/connect4_prog.c       |   2 +-
->   .../selftests/bpf/progs/test_sk_assign.c      |  11 +
->   .../bpf/progs/test_sk_assign_libbpf.c         |   3 +
->   6 files changed, 243 insertions(+), 33 deletions(-)
->   create mode 100644 tools/testing/selftests/bpf/progs/test_sk_assign_libbpf.c
+> -- 
+> 2.33.0
 > 
