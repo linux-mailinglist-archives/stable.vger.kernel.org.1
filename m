@@ -2,137 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 03A3E7707CE
-	for <lists+stable@lfdr.de>; Fri,  4 Aug 2023 20:24:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8D9AD7707FF
+	for <lists+stable@lfdr.de>; Fri,  4 Aug 2023 20:31:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231167AbjHDSYr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 4 Aug 2023 14:24:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53232 "EHLO
+        id S231381AbjHDSa6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 4 Aug 2023 14:30:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57398 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231171AbjHDSYl (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 4 Aug 2023 14:24:41 -0400
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on2058.outbound.protection.outlook.com [40.107.244.58])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C9864EDD;
-        Fri,  4 Aug 2023 11:24:36 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=UF0CFC4OeLxx1VvbsrB511rlePCi54zwuef1h2PtvYbfWuRHspXydTZFrkOOXJuVjVlxwxWAfwglO61NpOYWnfcHs/fPYWnnjx5HzA09mjtz6eyVL4o06bjBQwZ9zNTwghysLyq6S8cNPqYDt4LH38GZ5wzQMAKZv8DKhZ5D7ZVv5YXZU6HArdUViwMcaUgXuSguMdO8yiBsUNGeqWdi9xOrmxRlkteTPX+Kk74n+g9m/7Xf05I3VS9n4EBJ2falErItn7AGvZqdQjvSzjYNV97sLy+0d4Pcg8dZTQ9t7iv7vUQd8MKC48W0k8Tp74sS3C168OgUifNXJqiyiLfedw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=hcAW4Nh2XMjSdF4T6qJnglHOPLH5WR5neNFSt7bL3U8=;
- b=Tfdn4PKjg2BonzH9xNAZnGhTvkmQkJHKXuSSrbwZvfysM2g31oshSMAu/2f1aEAuQ7HdtfgQhQC9QOjGq3aLUXsRX37vcIE89QPZHCsrswVRIHSPBSNUVVFrrass8jpODsdCedHo3UwuTwmAu0l/OdcQM8eCFLJxk5GLmPY8rVWsTilxTSQx2g92YeCkqNaJzzfu0ZtXd2dTZS+tTa+r5yFKbMjpd5LqjOoY6viZ449RbH8E1tsCuVPtEcIDt+9AHfemIVF8nr1O9OAaXkYfJp9JOHppBEcbjAJanKYQkxAsu9GTahK3TnpsL4xwTg8fDSVQdq5euhmnG5nc0LUk6Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=hcAW4Nh2XMjSdF4T6qJnglHOPLH5WR5neNFSt7bL3U8=;
- b=TpV2c/cFogH9N3GLC94jgz1F+CXUQuvGT9nT52msf8N9qTPFw5EmzjpmcnJIIyo9Qut/jomzbNt4YNI/4kRLVSUwAkNiZKSaXzLVmo2GaMWwUoiN7qvkn978aUzIZydRzVrYkctc9A0+OBFPrLkfI0VOPXyMKNnrsCmudqilT90=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from CO6PR12MB5427.namprd12.prod.outlook.com (2603:10b6:5:358::13)
- by DM6PR12MB4483.namprd12.prod.outlook.com (2603:10b6:5:2a2::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6652.21; Fri, 4 Aug
- 2023 18:24:33 +0000
-Received: from CO6PR12MB5427.namprd12.prod.outlook.com
- ([fe80::236b:d4e2:6fbf:6c2b]) by CO6PR12MB5427.namprd12.prod.outlook.com
- ([fe80::236b:d4e2:6fbf:6c2b%5]) with mapi id 15.20.6652.021; Fri, 4 Aug 2023
- 18:24:33 +0000
-Message-ID: <93602cd6-a03d-4124-8bb3-de21136d9589@amd.com>
-Date:   Fri, 4 Aug 2023 14:24:28 -0400
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] drm/amd/display: ensure async flips are only accepted
- for fast updates
-Content-Language: en-US
-To:     Hamza Mahfooz <hamza.mahfooz@amd.com>,
-        amd-gfx@lists.freedesktop.org
-Cc:     stable@vger.kernel.org, Leo Li <sunpeng.li@amd.com>,
-        Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
-        "Pan, Xinhui" <Xinhui.Pan@amd.com>,
-        David Airlie <airlied@gmail.com>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Qingqing Zhuo <qingqing.zhuo@amd.com>,
-        Aurabindo Pillai <aurabindo.pillai@amd.com>,
-        Hersen Wu <hersenxs.wu@amd.com>,
-        Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
-        Stylon Wang <stylon.wang@amd.com>,
-        Wayne Lin <wayne.lin@amd.com>, Alan Liu <haoping.liu@amd.com>,
-        Melissa Wen <mwen@igalia.com>, Simon Ser <contact@emersion.fr>,
-        David Tadokoro <davidbtadokoro@usp.br>,
-        =?UTF-8?Q?Andr=C3=A9_Almeida?= <andrealmeid@igalia.com>,
-        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org
-References: <20230804182054.142988-1-hamza.mahfooz@amd.com>
-From:   Harry Wentland <harry.wentland@amd.com>
-In-Reply-To: <20230804182054.142988-1-hamza.mahfooz@amd.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: YT3PR01CA0053.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:b01:82::20) To CO6PR12MB5427.namprd12.prod.outlook.com
- (2603:10b6:5:358::13)
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CO6PR12MB5427:EE_|DM6PR12MB4483:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0abcdd5f-366c-49ae-0ee4-08db95180c9c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: V1zysCtwtqj07orG1iAcHMaStvUMBUP06YvvbeTQTk5ifOpIJNxFtbCbf6OuKfAa36U+slPMe4jSPiNSkU/bn3VbeZWhU1KbYguOm0Auoymc8ZpaAS7qgDjtsw8+Ch8QLsrRTmEFaJ4sP96YNqGU9Nv8+vFMFyUALxl1+lMyEWCJ/xMTCgcXLcFtHPSROlX7YpOJvAgZymJBKVGjJP803UO/vhftrbYYI8ydO3/Lgqbmy7oe+aYnaMeWpym5S1qEHOwuYh40f8hMvwD6Cv9PwO5tU1DjnfbC7xfHFu/asvwfe0ow6Vuy0c0hbb5DjNn4nS2E3P9EiTEVGBeGLjXPX6V8TolzulwuNK+lfA2QtyRJU1iDkf0uV+4m2aAsYH8/h64ND8SYVpt8OD8q40zLemUDjrNWFoiPXgqwTZAfxAKTyKE/hvVRRUh4Z/LZButeoeWcY9RMZIfPINDu/gr5p2s7dFejoL502vMXfVpJso7j0kx/9gWDyzqyA0m95TWGrtUwbyZ3qvktoKzFk5BtKdlZUZtl5hJ8UkX88AlvB+h9NdhmvJ6bxXnZ1qR67XISzlKm1CLb/RhzUh6LI/r4JS+PMSflblww/ON0gEpFqK6mdsAmjiJImkLRq4ru8WNV
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CO6PR12MB5427.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(396003)(39860400002)(136003)(376002)(346002)(366004)(1800799003)(186006)(451199021)(8936002)(8676002)(26005)(36756003)(478600001)(966005)(31696002)(6512007)(86362001)(6486002)(6666004)(316002)(31686004)(15650500001)(41300700001)(5660300002)(4326008)(66476007)(66946007)(66556008)(44832011)(83380400001)(7416002)(54906003)(2906002)(6506007)(2616005)(38100700002)(53546011)(45980500001)(43740500002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?S0VvRDZRQ2xaOUZXblllUjV4S0J4eml0VzlsaExSdU1UVUhjalMzejlFcXc4?=
- =?utf-8?B?MzBsU3BLS1hQNDh3N2lUQnRyRk9tSjRrZjM5Smg4Z1lXaVlVUUpyL04zb3p3?=
- =?utf-8?B?TmtldnpzQVNJbFh2a1hadFhLcHdVcFJBWDRtUVliRmtneFVTS3Rlb1dNTmJj?=
- =?utf-8?B?VzlpQVZtS1FiWlo0Wm1pMGdvNGdickZocFAzWjVzamVpTUVOZDMrNWFkdDRT?=
- =?utf-8?B?d2dKZUs5RkZhYUx5V3ZNem9IenVLYmZ0Mmg4Y3ZPcVVHdEZKVWZrZW5UZ3VR?=
- =?utf-8?B?MGVvZlNSczFIM0xYRXpxcUQ1UnZ6N1B5dU14UDVTNWlyY0NWeEZiWXh4N0o2?=
- =?utf-8?B?RVlUajF1aUU2RXB1eFdSTUJVN2UrWWlGYUxzVGhNaEZySTdra1Z4RFpheis5?=
- =?utf-8?B?QUFvd1JwdFA5aGg4V0RkaER4NDVQYmNmVnBXZ3M1REoxMzNxb2doTUZjWmps?=
- =?utf-8?B?dEhocm1YQWgzdDV2NW9lN1d3WXdIRE5mUysvWFU5Y3ZkeDZ4VXdGazZnaEt0?=
- =?utf-8?B?TUpZVEdoNlk4ZCtUd1c3OUhwWWFqZ1BHaC9maWsxbzJnUS93UEd1Zk5TcFBq?=
- =?utf-8?B?blJhdk5TeFVvNmJaMkVWMWxlc3o4RTM1dXJKUmtJaVNjdk5WL3BSWkcxR24v?=
- =?utf-8?B?cjg4dkZ5S0lKUzhxMG4zMDZuVHIwU0ltQ095TnJvTzdMMzFGdzVvNVJoVUE3?=
- =?utf-8?B?MmJVUnRPQXZNbVd1QjA1ZHVVU0k0NVlOQUpiZzFpbDIrNkNaUHlrRHJYdDdi?=
- =?utf-8?B?bW9NWXBmNUozSXRqYU1Uek5pRm9KSVVUSUtMclRXMzBrRHIwRjBMWTEwTWtR?=
- =?utf-8?B?eklQQnpXdjRnaks2TFozMzkrWnFsWndPMC95TjRySWYvMGlJVEg5M28xVjRK?=
- =?utf-8?B?WDFQMkNGT1hRVGhOaTMwK2puYTdXUnltMEhNMXZEb1htbFNsMG16Q3JoTHR0?=
- =?utf-8?B?ME40dnBRYWhmU0dRWDZaay9yRlpVTG0zTE1xRmJhbDNKUUI2bGV6d0xacVNF?=
- =?utf-8?B?L2RMR2h1ek9hZkhKZkVzMTl6L0swVzRWSjVvNm5YSVVqU1NxOVpyNDFsQ0dO?=
- =?utf-8?B?ZHpMODIyMGppVUlZeTBtcmVKWkg3L1RNZzI2Z093MFZld1dkRkVHNmN4cWZq?=
- =?utf-8?B?ZjlIdVlhZGNCOU9tdklSYU4vZzU2ZW04WkZ0aVdlZ3VLL21CUTkwT1pxbjMr?=
- =?utf-8?B?TnVUeFJVQ2JPdGZkNEp5Z1ljOTZpUmswd1A4Z0dmbStaemg0eGFwWFlER1FN?=
- =?utf-8?B?Y2k2NjIvRmIwbHI5QTdQSGlYNXd4bmxYOFl1YTczS3NYZy8yd29rbjhIVG53?=
- =?utf-8?B?dkhIT016S3l2QUlhYmdvSjFzekNzcTNGU2t3aC9NeEw1UTdhckdOY0QyZkFi?=
- =?utf-8?B?Q20xbXh1OEFHQVplRVlBcHRWejJuaURKMzdwdHpobGQ2WGZhR1J0a2xuN0tZ?=
- =?utf-8?B?d0NoUjlyZmpLU3RzbS9BbGlCTmtGMXdqUjk4ZEpNQk1iUGlXcXJvM2k3dFA3?=
- =?utf-8?B?VzcxeHFPMisxZ3lzR2ZMbHBqTExzTDd0UXRWdlRmdlZ1ckVKSDNpUGVoaEY5?=
- =?utf-8?B?K1VXaGVneTdHdWgwT1VsdEJpWkRPWmpyem5QYThpZURZS1V2bU93bUlBTHNo?=
- =?utf-8?B?Qm9KRGpKVDVCQUJSY3BLc2QwWEJ4dyt4bXB4M0xDOFJteDJ5QVRKc29MRG1T?=
- =?utf-8?B?WnlDaVNOMXhSRFZoWjlOem5Ddit3b1htcGgvaTBSRXdmTTUzRGMwTEdSUTBO?=
- =?utf-8?B?N2xWYUNVaU9KMkxrT2xuRG40R1JmWVd5bU1pbkVKRzMrekxmVkFsN0NGN00v?=
- =?utf-8?B?L3l6OVN0NEIyNEkzNy83b0F3ZEpYcjkwOHU1VTVMTlQ3KzJxOUJCS3pLRW55?=
- =?utf-8?B?VVgwQUo2WmRrMGtoYW81S3dSNG9kdDFkenZHWS9Fby9zRDhESTQ1MGhLZ2E5?=
- =?utf-8?B?N2VmNGpicWR0NyttVzhqc2ZGZ2VEdnVmYm1KVFZlUnl3ckg0Z2xYSGtEU1F0?=
- =?utf-8?B?WVpDVmR6NDhFRjluT2UzajNPUXd2T2NxaUEvZ05PUkVZaTAybUNlRHlLWWl1?=
- =?utf-8?B?dHBrVXRSVTZkR0R4ak04Y2lDV3VVWVBoTjZHVWlNRkZ4dFd0Z05LMUNkUEV2?=
- =?utf-8?Q?IlCnQ7fUofQuvWEhF/UMkk+2v?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0abcdd5f-366c-49ae-0ee4-08db95180c9c
-X-MS-Exchange-CrossTenant-AuthSource: CO6PR12MB5427.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Aug 2023 18:24:32.8766
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: sfS3hLduXQb7bnIjmGylvdmEevo9UA+xB5RIbvtHCkreVhUZ2Tf4J+hG9dYgcZATi/9FDOrjmlYo6cNSOfJcYw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4483
-X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.6
+        with ESMTP id S231422AbjHDSaS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 4 Aug 2023 14:30:18 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A3EB14EFC;
+        Fri,  4 Aug 2023 11:27:33 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3E2D7620BC;
+        Fri,  4 Aug 2023 18:27:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84DCEC433C9;
+        Fri,  4 Aug 2023 18:27:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+        s=korg; t=1691173648;
+        bh=VeRRCXUVKWMhMK0/cbpCEI6Xu8uXV4N7L5A+IrJk62U=;
+        h=Date:To:From:Subject:From;
+        b=vSDeq4rOUwwFyEJ0aSzL1+5T82l1XEAg3ls6tuowkOSIQaEDDEvut/rPyDGVIRCtM
+         Tj0jf7/OCtqCThOa5FI0ufft0Il4RmA0tpPoeAvkpgqwSb2FByfvVqv5l1YLodlAjB
+         4mK3xveRQze6bssV1q2j0smPEek/piR4U1QZ5tu0=
+Date:   Fri, 04 Aug 2023 11:27:26 -0700
+To:     mm-commits@vger.kernel.org, willy@infradead.org,
+        torvalds@linux-foundation.org, stable@vger.kernel.org,
+        shuah@kernel.org, peterx@redhat.com, pbonzini@redhat.com,
+        mgorman@techsingularity.net, mgorman@suse.de, liubo254@huawei.com,
+        jhubbard@nvidia.com, jgg@ziepe.ca, hughd@google.com,
+        david@redhat.com, akpm@linux-foundation.org
+From:   Andrew Morton <akpm@linux-foundation.org>
+Subject: + mm-gup-reintroduce-foll_numa-as-foll_honor_numa_fault.patch added to mm-hotfixes-unstable branch
+Message-Id: <20230804182728.84DCEC433C9@smtp.kernel.org>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -140,105 +50,285 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
+The patch titled
+     Subject: mm/gup: reintroduce FOLL_NUMA as FOLL_HONOR_NUMA_FAULT
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     mm-gup-reintroduce-foll_numa-as-foll_honor_numa_fault.patch
 
-On 2023-08-04 14:20, Hamza Mahfooz wrote:
-> We should be checking to see if async flips are supported in
-> amdgpu_dm_atomic_check() (i.e. not dm_crtc_helper_atomic_check()). Also,
-> async flipping isn't supported if a plane's framebuffer changes memory
-> domains during an atomic commit. So, move the check from
-> dm_crtc_helper_atomic_check() to amdgpu_dm_atomic_check() and check if
-> the memory domain has changed in amdgpu_dm_atomic_check().
-> 
-> Cc: stable@vger.kernel.org
-> Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2733
-> Fixes: 3f86b60691e6 ("drm/amd/display: only accept async flips for fast updates")
-> Signed-off-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-gup-reintroduce-foll_numa-as-foll_honor_numa_fault.patch
 
-Reviewed-by: Harry Wentland <harry.wentland@amd.com>
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-Harry
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
 
-> ---
-> v2: link issue and revert back to the old way of setting update_type.
-> ---
->  .../gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 24 ++++++++++++++++---
->  .../amd/display/amdgpu_dm/amdgpu_dm_crtc.c    | 12 ----------
->  2 files changed, 21 insertions(+), 15 deletions(-)
-> 
-> diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-> index 32fb551862b0..1d3afab5bc85 100644
-> --- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-> +++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-> @@ -8086,10 +8086,12 @@ static void amdgpu_dm_commit_planes(struct drm_atomic_state *state,
->  		 * fast updates.
->  		 */
->  		if (crtc->state->async_flip &&
-> -		    acrtc_state->update_type != UPDATE_TYPE_FAST)
-> +		    (acrtc_state->update_type != UPDATE_TYPE_FAST ||
-> +		     get_mem_type(old_plane_state->fb) != get_mem_type(fb)))
->  			drm_warn_once(state->dev,
->  				      "[PLANE:%d:%s] async flip with non-fast update\n",
->  				      plane->base.id, plane->name);
-> +
->  		bundle->flip_addrs[planes_count].flip_immediate =
->  			crtc->state->async_flip &&
->  			acrtc_state->update_type == UPDATE_TYPE_FAST &&
-> @@ -10050,6 +10052,11 @@ static int amdgpu_dm_atomic_check(struct drm_device *dev,
->  
->  	/* Remove exiting planes if they are modified */
->  	for_each_oldnew_plane_in_state_reverse(state, plane, old_plane_state, new_plane_state, i) {
-> +		if (old_plane_state->fb && new_plane_state->fb &&
-> +		    get_mem_type(old_plane_state->fb) !=
-> +		    get_mem_type(new_plane_state->fb))
-> +			lock_and_validation_needed = true;
-> +
->  		ret = dm_update_plane_state(dc, state, plane,
->  					    old_plane_state,
->  					    new_plane_state,
-> @@ -10297,9 +10304,20 @@ static int amdgpu_dm_atomic_check(struct drm_device *dev,
->  		struct dm_crtc_state *dm_new_crtc_state =
->  			to_dm_crtc_state(new_crtc_state);
->  
-> +		/*
-> +		 * Only allow async flips for fast updates that don't change
-> +		 * the FB pitch, the DCC state, rotation, etc.
-> +		 */
-> +		if (new_crtc_state->async_flip && lock_and_validation_needed) {
-> +			drm_dbg_atomic(crtc->dev,
-> +				       "[CRTC:%d:%s] async flips are only supported for fast updates\n",
-> +				       crtc->base.id, crtc->name);
-> +			ret = -EINVAL;
-> +			goto fail;
-> +		}
-> +
->  		dm_new_crtc_state->update_type = lock_and_validation_needed ?
-> -							 UPDATE_TYPE_FULL :
-> -							 UPDATE_TYPE_FAST;
-> +			UPDATE_TYPE_FULL : UPDATE_TYPE_FAST;
->  	}
->  
->  	/* Must be success */
-> diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_crtc.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_crtc.c
-> index 30d4c6fd95f5..440fc0869a34 100644
-> --- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_crtc.c
-> +++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_crtc.c
-> @@ -398,18 +398,6 @@ static int dm_crtc_helper_atomic_check(struct drm_crtc *crtc,
->  		return -EINVAL;
->  	}
->  
-> -	/*
-> -	 * Only allow async flips for fast updates that don't change the FB
-> -	 * pitch, the DCC state, rotation, etc.
-> -	 */
-> -	if (crtc_state->async_flip &&
-> -	    dm_crtc_state->update_type != UPDATE_TYPE_FAST) {
-> -		drm_dbg_atomic(crtc->dev,
-> -			       "[CRTC:%d:%s] async flips are only supported for fast updates\n",
-> -			       crtc->base.id, crtc->name);
-> -		return -EINVAL;
-> -	}
-> -
->  	/* In some use cases, like reset, no stream is attached */
->  	if (!dm_crtc_state->stream)
->  		return 0;
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: David Hildenbrand <david@redhat.com>
+Subject: mm/gup: reintroduce FOLL_NUMA as FOLL_HONOR_NUMA_FAULT
+Date: Thu, 3 Aug 2023 16:32:02 +0200
+
+Unfortunately commit 474098edac26 ("mm/gup: replace FOLL_NUMA by
+gup_can_follow_protnone()") missed that follow_page() and
+follow_trans_huge_pmd() never implicitly set FOLL_NUMA because they really
+don't want to fail on PROT_NONE-mapped pages -- either due to NUMA hinting
+or due to inaccessible (PROT_NONE) VMAs.
+
+As spelled out in commit 0b9d705297b2 ("mm: numa: Support NUMA hinting
+page faults from gup/gup_fast"): "Other follow_page callers like KSM
+should not use FOLL_NUMA, or they would fail to get the pages if they use
+follow_page instead of get_user_pages."
+
+liubo reported [1] that smaps_rollup results are imprecise, because they
+miss accounting of pages that are mapped PROT_NONE.  Further, it's easy to
+reproduce that KSM no longer works on inaccessible VMAs on x86-64, because
+pte_protnone()/pmd_protnone() also indictaes "true" in inaccessible VMAs,
+and follow_page() refuses to return such pages right now.
+
+As KVM really depends on these NUMA hinting faults, removing the
+pte_protnone()/pmd_protnone() handling in GUP code completely is not
+really an option.
+
+To fix the issues at hand, let's revive FOLL_NUMA as FOLL_HONOR_NUMA_FAULT
+to restore the original behavior for now and add better comments.
+
+Set FOLL_HONOR_NUMA_FAULT independent of FOLL_FORCE in
+is_valid_gup_args(), to add that flag for all external GUP users.
+
+Note that there are three GUP-internal __get_user_pages() users that don't
+end up calling is_valid_gup_args() and consequently won't get
+FOLL_HONOR_NUMA_FAULT set.
+
+1) get_dump_page(): we really don't want to handle NUMA hinting
+   faults. It specifies FOLL_FORCE and wouldn't have honored NUMA
+   hinting faults already.
+2) populate_vma_page_range(): we really don't want to handle NUMA hinting
+   faults. It specifies FOLL_FORCE on accessible VMAs, so it wouldn't have
+   honored NUMA hinting faults already.
+3) faultin_vma_page_range(): we similarly don't want to handle NUMA
+   hinting faults.
+
+To make the combination of FOLL_FORCE and FOLL_HONOR_NUMA_FAULT work in
+inaccessible VMAs properly, we have to perform VMA accessibility checks in
+gup_can_follow_protnone().
+
+As GUP-fast should reject such pages either way in
+pte_access_permitted()/pmd_access_permitted() -- for example on x86-64 and
+arm64 that both implement pte_protnone() -- let's just always fallback to
+ordinary GUP when stumbling over pte_protnone()/pmd_protnone().
+
+As Linus notes [2], honoring NUMA faults might only make sense for
+selected GUP users.
+
+So we should really see if we can instead let relevant GUP callers specify
+it manually, and not trigger NUMA hinting faults from GUP as default. 
+Prepare for that by making FOLL_HONOR_NUMA_FAULT an external GUP flag and
+adding appropriate documenation.
+
+While at it, remove a stale comment from follow_trans_huge_pmd(): That
+comment for pmd_protnone() was added in commit 2b4847e73004 ("mm: numa:
+serialise parallel get_user_page against THP migration"), which noted:
+
+	THP does not unmap pages due to a lack of support for migration
+	entries at a PMD level.  This allows races with get_user_pages
+
+Nowadays, we do have PMD migration entries, so the comment no longer
+applies.  Let's drop it.
+
+[1] https://lore.kernel.org/r/20230726073409.631838-1-liubo254@huawei.com
+[2] https://lore.kernel.org/r/CAHk-=wgRiP_9X0rRdZKT8nhemZGNateMtb366t37d8-x7VRs=g@mail.gmail.com
+
+Link: https://lkml.kernel.org/r/20230803143208.383663-2-david@redhat.com
+Fixes: 474098edac26 ("mm/gup: replace FOLL_NUMA by gup_can_follow_protnone()")
+Signed-off-by: David Hildenbrand <david@redhat.com>
+Reported-by: liubo <liubo254@huawei.com>
+Closes: https://lore.kernel.org/r/20230726073409.631838-1-liubo254@huawei.com
+Reported-by: Peter Xu <peterx@redhat.com>
+Closes: https://lore.kernel.org/all/ZMKJjDaqZ7FW0jfe@x1n/
+Acked-by: Mel Gorman <mgorman@techsingularity.net>
+Acked-by: Peter Xu <peterx@redhat.com>
+Cc: Hugh Dickins <hughd@google.com>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: John Hubbard <jhubbard@nvidia.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Mel Gorman <mgorman@suse.de>
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Shuah Khan <shuah@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ include/linux/mm.h       |   21 +++++++++++++++------
+ include/linux/mm_types.h |    9 +++++++++
+ mm/gup.c                 |   30 ++++++++++++++++++++++++------
+ mm/huge_memory.c         |    3 +--
+ 4 files changed, 49 insertions(+), 14 deletions(-)
+
+--- a/include/linux/mm.h~mm-gup-reintroduce-foll_numa-as-foll_honor_numa_fault
++++ a/include/linux/mm.h
+@@ -3421,15 +3421,24 @@ static inline int vm_fault_to_errno(vm_f
+  * Indicates whether GUP can follow a PROT_NONE mapped page, or whether
+  * a (NUMA hinting) fault is required.
+  */
+-static inline bool gup_can_follow_protnone(unsigned int flags)
++static inline bool gup_can_follow_protnone(struct vm_area_struct *vma,
++					   unsigned int flags)
+ {
+ 	/*
+-	 * FOLL_FORCE has to be able to make progress even if the VMA is
+-	 * inaccessible. Further, FOLL_FORCE access usually does not represent
+-	 * application behaviour and we should avoid triggering NUMA hinting
+-	 * faults.
++	 * If callers don't want to honor NUMA hinting faults, no need to
++	 * determine if we would actually have to trigger a NUMA hinting fault.
+ 	 */
+-	return flags & FOLL_FORCE;
++	if (!(flags & FOLL_HONOR_NUMA_FAULT))
++		return true;
++
++	/*
++	 * NUMA hinting faults don't apply in inaccessible (PROT_NONE) VMAs.
++	 *
++	 * Requiring a fault here even for inaccessible VMAs would mean that
++	 * FOLL_FORCE cannot make any progress, because handle_mm_fault()
++	 * refuses to process NUMA hinting faults in inaccessible VMAs.
++	 */
++	return !vma_is_accessible(vma);
+ }
+ 
+ typedef int (*pte_fn_t)(pte_t *pte, unsigned long addr, void *data);
+--- a/include/linux/mm_types.h~mm-gup-reintroduce-foll_numa-as-foll_honor_numa_fault
++++ a/include/linux/mm_types.h
+@@ -1286,6 +1286,15 @@ enum {
+ 	FOLL_PCI_P2PDMA = 1 << 10,
+ 	/* allow interrupts from generic signals */
+ 	FOLL_INTERRUPTIBLE = 1 << 11,
++	/*
++	 * Always honor (trigger) NUMA hinting faults.
++	 *
++	 * FOLL_WRITE implicitly honors NUMA hinting faults because a
++	 * PROT_NONE-mapped page is not writable (exceptions with FOLL_FORCE
++	 * apply). get_user_pages_fast_only() always implicitly honors NUMA
++	 * hinting faults.
++	 */
++	FOLL_HONOR_NUMA_FAULT = 1 << 12,
+ 
+ 	/* See also internal only FOLL flags in mm/internal.h */
+ };
+--- a/mm/gup.c~mm-gup-reintroduce-foll_numa-as-foll_honor_numa_fault
++++ a/mm/gup.c
+@@ -597,7 +597,7 @@ static struct page *follow_page_pte(stru
+ 	pte = ptep_get(ptep);
+ 	if (!pte_present(pte))
+ 		goto no_page;
+-	if (pte_protnone(pte) && !gup_can_follow_protnone(flags))
++	if (pte_protnone(pte) && !gup_can_follow_protnone(vma, flags))
+ 		goto no_page;
+ 
+ 	page = vm_normal_page(vma, address, pte);
+@@ -714,7 +714,7 @@ static struct page *follow_pmd_mask(stru
+ 	if (likely(!pmd_trans_huge(pmdval)))
+ 		return follow_page_pte(vma, address, pmd, flags, &ctx->pgmap);
+ 
+-	if (pmd_protnone(pmdval) && !gup_can_follow_protnone(flags))
++	if (pmd_protnone(pmdval) && !gup_can_follow_protnone(vma, flags))
+ 		return no_page_table(vma, flags);
+ 
+ 	ptl = pmd_lock(mm, pmd);
+@@ -851,6 +851,10 @@ struct page *follow_page(struct vm_area_
+ 	if (WARN_ON_ONCE(foll_flags & FOLL_PIN))
+ 		return NULL;
+ 
++	/*
++	 * We never set FOLL_HONOR_NUMA_FAULT because callers don't expect
++	 * to fail on PROT_NONE-mapped pages.
++	 */
+ 	page = follow_page_mask(vma, address, foll_flags, &ctx);
+ 	if (ctx.pgmap)
+ 		put_dev_pagemap(ctx.pgmap);
+@@ -2227,6 +2231,13 @@ static bool is_valid_gup_args(struct pag
+ 		gup_flags |= FOLL_UNLOCKABLE;
+ 	}
+ 
++	/*
++	 * For now, always trigger NUMA hinting faults. Some GUP users like
++	 * KVM require the hint to be as the calling context of GUP is
++	 * functionally similar to a memory reference from task context.
++	 */
++	gup_flags |= FOLL_HONOR_NUMA_FAULT;
++
+ 	/* FOLL_GET and FOLL_PIN are mutually exclusive. */
+ 	if (WARN_ON_ONCE((gup_flags & (FOLL_PIN | FOLL_GET)) ==
+ 			 (FOLL_PIN | FOLL_GET)))
+@@ -2551,7 +2562,14 @@ static int gup_pte_range(pmd_t pmd, pmd_
+ 		struct page *page;
+ 		struct folio *folio;
+ 
+-		if (pte_protnone(pte) && !gup_can_follow_protnone(flags))
++		/*
++		 * Always fallback to ordinary GUP on PROT_NONE-mapped pages:
++		 * pte_access_permitted() better should reject these pages
++		 * either way: otherwise, GUP-fast might succeed in
++		 * cases where ordinary GUP would fail due to VMA access
++		 * permissions.
++		 */
++		if (pte_protnone(pte))
+ 			goto pte_unmap;
+ 
+ 		if (!pte_access_permitted(pte, flags & FOLL_WRITE))
+@@ -2970,8 +2988,8 @@ static int gup_pmd_range(pud_t *pudp, pu
+ 
+ 		if (unlikely(pmd_trans_huge(pmd) || pmd_huge(pmd) ||
+ 			     pmd_devmap(pmd))) {
+-			if (pmd_protnone(pmd) &&
+-			    !gup_can_follow_protnone(flags))
++			/* See gup_pte_range() */
++			if (pmd_protnone(pmd))
+ 				return 0;
+ 
+ 			if (!gup_huge_pmd(pmd, pmdp, addr, next, flags,
+@@ -3151,7 +3169,7 @@ static int internal_get_user_pages_fast(
+ 	if (WARN_ON_ONCE(gup_flags & ~(FOLL_WRITE | FOLL_LONGTERM |
+ 				       FOLL_FORCE | FOLL_PIN | FOLL_GET |
+ 				       FOLL_FAST_ONLY | FOLL_NOFAULT |
+-				       FOLL_PCI_P2PDMA)))
++				       FOLL_PCI_P2PDMA | FOLL_HONOR_NUMA_FAULT)))
+ 		return -EINVAL;
+ 
+ 	if (gup_flags & FOLL_PIN)
+--- a/mm/huge_memory.c~mm-gup-reintroduce-foll_numa-as-foll_honor_numa_fault
++++ a/mm/huge_memory.c
+@@ -1467,8 +1467,7 @@ struct page *follow_trans_huge_pmd(struc
+ 	if ((flags & FOLL_DUMP) && is_huge_zero_pmd(*pmd))
+ 		return ERR_PTR(-EFAULT);
+ 
+-	/* Full NUMA hinting faults to serialise migration in fault paths */
+-	if (pmd_protnone(*pmd) && !gup_can_follow_protnone(flags))
++	if (pmd_protnone(*pmd) && !gup_can_follow_protnone(vma, flags))
+ 		return NULL;
+ 
+ 	if (!pmd_write(*pmd) && gup_must_unshare(vma, flags, page))
+_
+
+Patches currently in -mm which might be from david@redhat.com are
+
+mm-gup-reintroduce-foll_numa-as-foll_honor_numa_fault.patch
+smaps-use-vm_normal_page_pmd-instead-of-follow_trans_huge_pmd.patch
+mm-memory_hotplug-document-the-signal_pending-check-in-offline_pages.patch
+kvm-explicitly-set-foll_honor_numa_fault-in-hva_to_pfn_slow.patch
+mm-gup-dont-implicitly-set-foll_honor_numa_fault.patch
+pgtable-improve-pte_protnone-comment.patch
+selftest-mm-ksm_functional_tests-test-in-mmap_and_merge_range-if-anything-got-merged.patch
+selftest-mm-ksm_functional_tests-add-prot_none-test.patch
 
