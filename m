@@ -2,213 +2,211 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 387627707A1
-	for <lists+stable@lfdr.de>; Fri,  4 Aug 2023 20:12:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6A3007707B5
+	for <lists+stable@lfdr.de>; Fri,  4 Aug 2023 20:21:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230332AbjHDSMl (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 4 Aug 2023 14:12:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47690 "EHLO
+        id S229717AbjHDSVZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 4 Aug 2023 14:21:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51634 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230355AbjHDSMV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 4 Aug 2023 14:12:21 -0400
-Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [85.215.255.51])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5567C59C4
-        for <stable@vger.kernel.org>; Fri,  4 Aug 2023 11:11:50 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1691172518; cv=none;
-    d=strato.com; s=strato-dkim-0002;
-    b=fLf+nk6TZ5/qH5xbTHujlQihJ+fdkpdlkHtvB5tAYn+mDVLQU9cQz2LGRlQWX6t7qU
-    PIsg8zwSyXA9qHaEn1pC2HmGu2soyr2QvHIxUHzwizMggUSVt8w7PRc01H6tCC/DTjb6
-    11ZVN+Kjh1jfu2Ey4Il5LU250qBWCxKZLWJ70jkBEW/gMaIwhbTSoF9HxE7jz186BQaO
-    +rsVlRE8ZMq15tFixuxz+6quYGZEyf7QLN4OiXvpi3OXbzGj22iaEwoAr7hFOiA3xNF4
-    Nia2ihmYMo4f5vpga810CpnuDsEsdvzThiUSmlvmSgdpn1bEeY5JJJ1vPogmTsV5nhBG
-    Ay/w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1691172518;
-    s=strato-dkim-0002; d=strato.com;
-    h=References:Message-ID:In-Reply-To:Subject:cc:To:From:Date:Cc:Date:
-    From:Subject:Sender;
-    bh=KbTSG9OgTKvRp1/Rflsl/+c1/jWgayXkjXruRYIH3Xw=;
-    b=Uk8PNA/duUTotcZ3Frn3wKQfOv+CgK5MVlj8aJ/OQHGQCASRaWUw7zq6iGkZG2rKPu
-    PozBVKfSX+HaCBWKfH095cp5iHAJSSc3LaBOO5zMIIPo9vLyYh0fZUQ2xTb7wRufLxW2
-    YU9lKA0F1ICmYNagjtmM3vF44n1Sn36f00tytfc3uN+64FkXXwr+iOjR1czrZKwRp1Xv
-    bn7gjANuPrTjbG6tK1cvNp3hArnRGOlqHgdKcUNh17bJA+VnAoNZ6TsRsWdYBdcB+PPn
-    HSF8a0fzrzjPA+P5GTW1boaHYWSYVLxPkE/GfR4sZwL2PZUa1Pa4p9N+dQmEp2frKFdE
-    j4+A==
-ARC-Authentication-Results: i=1; strato.com;
-    arc=none;
-    dkim=none
-X-RZG-CLASS-ID: mo01
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1691172518;
-    s=strato-dkim-0002; d=kravcenko.com;
-    h=References:Message-ID:In-Reply-To:Subject:cc:To:From:Date:Cc:Date:
-    From:Subject:Sender;
-    bh=KbTSG9OgTKvRp1/Rflsl/+c1/jWgayXkjXruRYIH3Xw=;
-    b=A0opKnKoCEgKBI3styBUJ26OhIZbUV77w1z0cXQobnxZspsnnl4IJloSs3q+pOTnis
-    TBjWAuOwWQUMoq4y7thXEPm7K6b2xpjs/dc5zPMlA/ArB2Rrlt88fIy9oPR/pp/CFIS0
-    OFY32W3WZTpFr0ETQ+gPhh4i5D9lv6xOQ1VxFPGDnFWxOqmOd632fmVt4XroIgpSvrxm
-    Zef73QJ97qvcv/9m2uBoXMSCn/GhJwbvs/pQWZSnhzVkupL5Q6JB+EA5xPhWr315CbVv
-    Sx+WcqF9lTOWZFtE/qJpasi7D1lHcdpAz/AnKAKMdsdR2nak60XvGmskeXv4H33qVSZA
-    foQw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1691172518;
-    s=strato-dkim-0003; d=kravcenko.com;
-    h=References:Message-ID:In-Reply-To:Subject:cc:To:From:Date:Cc:Date:
-    From:Subject:Sender;
-    bh=KbTSG9OgTKvRp1/Rflsl/+c1/jWgayXkjXruRYIH3Xw=;
-    b=0an8gO4fImtydXd66lp/kXKz3RH+alieDeZJc2Zln8/f9ldqZYpcQvqjsXwz7TnmmI
-    rkO5nLWsUfOL3PrF7hDw==
-X-RZG-AUTH: ":I2AFc2Cjaf5HiRB0lhnvZ9elhwku56KjVuxY6AZJWRy8C0aEhFGYVtZdsoywGOIVpSHY0o63PckPhiSO1IhQGG0mBjo18W4hBO/Ijw=="
-Received: from p200300c7f704d301468a5bfffe84f964.dip0.t-ipconnect.de
-    by smtp.strato.de (RZmta 49.6.6 AUTH)
-    with ESMTPSA id dd2654z74I8cXS7
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-        (Client did not present a certificate);
-    Fri, 4 Aug 2023 20:08:38 +0200 (CEST)
-Date:   Fri, 4 Aug 2023 20:08:30 +0200 (CEST)
-From:   Olaf Skibbe <news@kravcenko.com>
-To:     Karol Herbst <kherbst@redhat.com>
-cc:     Thorsten Leemhuis <regressions@leemhuis.info>,
-        dri-devel@lists.freedesktop.org, nouveau@lists.freedesktop.org,
-        1042753@bugs.debian.org, Ben Skeggs <bskeggs@redhat.com>,
-        Lyude Paul <lyude@redhat.com>,
-        Linux kernel regressions list <regressions@lists.linux.dev>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: nouveau bug in linux/6.1.38-2
-In-Reply-To: <CACO55ttcUEUjdVgx4y7pv26VAGeHS5q1wVKWrMw5=o9QLaJLZw@mail.gmail.com>
-Message-ID: <977ac5b0-4ab8-7782-10e1-b4bee6b58030@kravcenko.com>
-References: <20be6650-5db3-b72a-a7a8-5e817113cff5@kravcenko.com> <c27fb4dd-b2dc-22de-4425-6c7db5f543ba@leemhuis.info> <CACO55ttcUEUjdVgx4y7pv26VAGeHS5q1wVKWrMw5=o9QLaJLZw@mail.gmail.com>
-User-Agent: Alpine 2.26 (DEB 649 2022-06-02)
+        with ESMTP id S229984AbjHDSVX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 4 Aug 2023 14:21:23 -0400
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2078.outbound.protection.outlook.com [40.107.243.78])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0584949D7;
+        Fri,  4 Aug 2023 11:21:21 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=h7GRwCAP2Ue7xwuNSAX8M1v6/iXD5SH1jiA3p7WfbISOMrOGarGic1jw+zO/dZQM+pePYm4WclRGlD8rPExQ2XOzA0UvHJgHucQGaElQTRz5Bzfp+31U0ZzRxNy5J240N/KGHwM/pxC3rItXTR2WYLYkiwcP7Fg7j6wq+23WFUl5bWnoZHA8fZUwCWqZSwqxt6hYFGqImlfQJTyRdPhoB2f/TO9htPUkgkpMoFK+Mv3oCiHa8MkQLmts8g1jp/77yphULp188lguVM6BtQP79OgpxhGV5+ijCEFZJxBNWRV/VXT6h/quzMYJLl9VX85GmDGdBVfXZnu6xHiX5XWLnQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=muXktZ9uNSFJEYTOHALJGwlk4jfOOgu/fx2lKkRO+88=;
+ b=GZZMZKGGcu8Vxw7Lat8XO82wbvtdJ1KNomutrpHeQ5V63a0TJUb/Dgwu7yiLpw95C8WFDBWRfUGp/zRiDbCTskm7+vdfpi1zNShr1P2KOeMXu53lVM8Gi3nL6N6hUCw+FcPZHjJ55SnuZOi3aKswGQT6zrhGhTTCTn131wozdMmZRCoGvkxaD/n1qNpgrev4pWanSxboRIRoPy+onVpcDRx1h5EbA9nhgu6L7lwzDFSKjkdpP6c2Nz6l0Y19wA2MrIfPS3AkKEANXPNycejbz2TmOqD2QINDTDlsVc7qA5qb8Uc2qDjhYSqlWzUlFE+dwfuWRJX0g7+0+bZf1VSKyw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=muXktZ9uNSFJEYTOHALJGwlk4jfOOgu/fx2lKkRO+88=;
+ b=Xg3z8k+5gorqZ4r0uM3B+s5Hq8bML5VqczkiSK75hHtJ+WhPjlAJ9KrLWjTrsWCk9VrkRMK5tjwewEjoFbHmX93fDy21NgyU/b9XvieiKJZ+DeDGaOWhQmo6nwlJiha6/CkG9CCrsM3+hppFXVi3xuMUWimQwwtsS6PRBIQHqUQ=
+Received: from CYXPR02CA0062.namprd02.prod.outlook.com (2603:10b6:930:cd::25)
+ by SA0PR12MB4431.namprd12.prod.outlook.com (2603:10b6:806:95::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6652.21; Fri, 4 Aug
+ 2023 18:21:17 +0000
+Received: from CY4PEPF0000EE36.namprd05.prod.outlook.com
+ (2603:10b6:930:cd:cafe::c3) by CYXPR02CA0062.outlook.office365.com
+ (2603:10b6:930:cd::25) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6652.21 via Frontend
+ Transport; Fri, 4 Aug 2023 18:21:17 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ CY4PEPF0000EE36.mail.protection.outlook.com (10.167.242.42) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.6652.19 via Frontend Transport; Fri, 4 Aug 2023 18:21:16 +0000
+Received: from hamza-pc.localhost (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Fri, 4 Aug
+ 2023 13:21:14 -0500
+From:   Hamza Mahfooz <hamza.mahfooz@amd.com>
+To:     <amd-gfx@lists.freedesktop.org>
+CC:     Hamza Mahfooz <hamza.mahfooz@amd.com>, <stable@vger.kernel.org>,
+        "Harry Wentland" <harry.wentland@amd.com>,
+        Leo Li <sunpeng.li@amd.com>,
+        "Rodrigo Siqueira" <Rodrigo.Siqueira@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+        "Pan, Xinhui" <Xinhui.Pan@amd.com>,
+        David Airlie <airlied@gmail.com>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Qingqing Zhuo <qingqing.zhuo@amd.com>,
+        Aurabindo Pillai <aurabindo.pillai@amd.com>,
+        "Hersen Wu" <hersenxs.wu@amd.com>,
+        Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
+        Stylon Wang <stylon.wang@amd.com>,
+        Wayne Lin <wayne.lin@amd.com>, Alan Liu <haoping.liu@amd.com>,
+        Melissa Wen <mwen@igalia.com>, Simon Ser <contact@emersion.fr>,
+        David Tadokoro <davidbtadokoro@usp.br>,
+        =?UTF-8?q?Andr=C3=A9=20Almeida?= <andrealmeid@igalia.com>,
+        <dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>
+Subject: [PATCH v2] drm/amd/display: ensure async flips are only accepted for fast updates
+Date:   Fri, 4 Aug 2023 14:20:51 -0400
+Message-ID: <20230804182054.142988-1-hamza.mahfooz@amd.com>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="-1463786238-675451933-1691172518=:22036"
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_NONE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CY4PEPF0000EE36:EE_|SA0PR12MB4431:EE_
+X-MS-Office365-Filtering-Correlation-Id: f7751df9-05a1-43fe-a54a-08db95179805
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: FMMlEr1Bvix+4PAmdVBDN1/hv5uJy6FY6n67TKbx8UBHon+tfElMctWw8aSW/tUPbIsJJdIPgisGNO+ELR6ZidInfJKhfzCS2OH9W2xAWxfjrNLRoxbWQ2JXOlNU0FBxQcjWYIpJaWqn/EOLzGgyIGzUYrr8i7M2ItC/dsBm1MWbLYz35wcBEReRefuevr6RuvwCuQIzDSFTMgv73pib41TKyQlCOEOn64WK1WRWSJ/T6Ks96WzqcX1xom+BUVorUG482jrG/zGKKCTrz04/HecXu9D1uCi4C4noQl8C9zkjci2Uv1Gd5XZIEMpZxuSKd0TKcaNL/YBhw6HJm1FYzgo5fEb+4vI68J9eUEtyZeNEcCTsbns1SJvwE65hJBkmxDVL5yFhv0EfLoN0h+z+28gQ/4jVTpG6/vqu8uB8FkZnti1u8Gfqmo6BqfoZKLkex+W9GLh10oNQdaaB3AGqFpLmFCqfxagR7eBTg0rFlBN7P8BLBSywIKAl5VSvLYle8ZQML5366MS+2zp1mDSfTeQiuC3p/ADJA1yyjeEo5OdL+wfxCEdpggJp7cxvrzKINAmTqgTI+ZYetO7zRoPMjbym8rhmfaCzw1tzVg1Wv6atxWirxVKsSd9pkMHZoabGUnGSazR7xrMoWkF17X4/fB594QOHMjY5VepurXU9nAb4is64AFBkhwglzD5aLzmuhm+bSNcH1OxgAIPk3o+GQzZKBrT/xqLjAcPvcyDLlGY/AliZrouaGPCAiqp12uFHvDj+DEFseQeWlqjZ9TbIiu/+MXfy/oZz5JPtVK4L0Es=
+X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230028)(4636009)(346002)(136003)(376002)(39860400002)(396003)(1800799003)(451199021)(82310400008)(186006)(36840700001)(46966006)(40470700004)(41300700001)(15650500001)(4326008)(6916009)(2906002)(70586007)(8676002)(8936002)(356005)(5660300002)(478600001)(44832011)(54906003)(82740400003)(316002)(70206006)(7416002)(86362001)(40460700003)(6666004)(966005)(81166007)(26005)(36860700001)(40480700001)(1076003)(36756003)(2616005)(47076005)(83380400001)(336012)(426003)(16526019)(36900700001)(16060500005);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Aug 2023 18:21:16.9256
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: f7751df9-05a1-43fe-a54a-08db95179805
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: CY4PEPF0000EE36.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR12MB4431
+X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+We should be checking to see if async flips are supported in
+amdgpu_dm_atomic_check() (i.e. not dm_crtc_helper_atomic_check()). Also,
+async flipping isn't supported if a plane's framebuffer changes memory
+domains during an atomic commit. So, move the check from
+dm_crtc_helper_atomic_check() to amdgpu_dm_atomic_check() and check if
+the memory domain has changed in amdgpu_dm_atomic_check().
 
----1463786238-675451933-1691172518=:22036
-Content-Type: text/plain; format=flowed; charset=US-ASCII
+Cc: stable@vger.kernel.org
+Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2733
+Fixes: 3f86b60691e6 ("drm/amd/display: only accept async flips for fast updates")
+Signed-off-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
+---
+v2: link issue and revert back to the old way of setting update_type.
+---
+ .../gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 24 ++++++++++++++++---
+ .../amd/display/amdgpu_dm/amdgpu_dm_crtc.c    | 12 ----------
+ 2 files changed, 21 insertions(+), 15 deletions(-)
 
-Dear all,
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+index 32fb551862b0..1d3afab5bc85 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -8086,10 +8086,12 @@ static void amdgpu_dm_commit_planes(struct drm_atomic_state *state,
+ 		 * fast updates.
+ 		 */
+ 		if (crtc->state->async_flip &&
+-		    acrtc_state->update_type != UPDATE_TYPE_FAST)
++		    (acrtc_state->update_type != UPDATE_TYPE_FAST ||
++		     get_mem_type(old_plane_state->fb) != get_mem_type(fb)))
+ 			drm_warn_once(state->dev,
+ 				      "[PLANE:%d:%s] async flip with non-fast update\n",
+ 				      plane->base.id, plane->name);
++
+ 		bundle->flip_addrs[planes_count].flip_immediate =
+ 			crtc->state->async_flip &&
+ 			acrtc_state->update_type == UPDATE_TYPE_FAST &&
+@@ -10050,6 +10052,11 @@ static int amdgpu_dm_atomic_check(struct drm_device *dev,
+ 
+ 	/* Remove exiting planes if they are modified */
+ 	for_each_oldnew_plane_in_state_reverse(state, plane, old_plane_state, new_plane_state, i) {
++		if (old_plane_state->fb && new_plane_state->fb &&
++		    get_mem_type(old_plane_state->fb) !=
++		    get_mem_type(new_plane_state->fb))
++			lock_and_validation_needed = true;
++
+ 		ret = dm_update_plane_state(dc, state, plane,
+ 					    old_plane_state,
+ 					    new_plane_state,
+@@ -10297,9 +10304,20 @@ static int amdgpu_dm_atomic_check(struct drm_device *dev,
+ 		struct dm_crtc_state *dm_new_crtc_state =
+ 			to_dm_crtc_state(new_crtc_state);
+ 
++		/*
++		 * Only allow async flips for fast updates that don't change
++		 * the FB pitch, the DCC state, rotation, etc.
++		 */
++		if (new_crtc_state->async_flip && lock_and_validation_needed) {
++			drm_dbg_atomic(crtc->dev,
++				       "[CRTC:%d:%s] async flips are only supported for fast updates\n",
++				       crtc->base.id, crtc->name);
++			ret = -EINVAL;
++			goto fail;
++		}
++
+ 		dm_new_crtc_state->update_type = lock_and_validation_needed ?
+-							 UPDATE_TYPE_FULL :
+-							 UPDATE_TYPE_FAST;
++			UPDATE_TYPE_FULL : UPDATE_TYPE_FAST;
+ 	}
+ 
+ 	/* Must be success */
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_crtc.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_crtc.c
+index 30d4c6fd95f5..440fc0869a34 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_crtc.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_crtc.c
+@@ -398,18 +398,6 @@ static int dm_crtc_helper_atomic_check(struct drm_crtc *crtc,
+ 		return -EINVAL;
+ 	}
+ 
+-	/*
+-	 * Only allow async flips for fast updates that don't change the FB
+-	 * pitch, the DCC state, rotation, etc.
+-	 */
+-	if (crtc_state->async_flip &&
+-	    dm_crtc_state->update_type != UPDATE_TYPE_FAST) {
+-		drm_dbg_atomic(crtc->dev,
+-			       "[CRTC:%d:%s] async flips are only supported for fast updates\n",
+-			       crtc->base.id, crtc->name);
+-		return -EINVAL;
+-	}
+-
+ 	/* In some use cases, like reset, no stream is attached */
+ 	if (!dm_crtc_state->stream)
+ 		return 0;
+-- 
+2.41.0
 
-On Fri, 4 Aug 2023 at 14:15, Karol Herbst wrote:
-
->>> 62aecf23f3d1 drm/nouveau: add nv_encoder pointer check for NULL
->>> fb725beca62d drm/nouveau/dp: check for NULL nv_connector->native_mode
->>> 90748be0f4f3 drm/nouveau: don't detect DSM for non-NVIDIA device
->>> 5a144bad3e75 nouveau: fix client work fence deletion race
->
-> mind retrying with only fb725beca62d and 62aecf23f3d1 reverted? Would 
-> be weird if the other two commits are causing it. If that's the case, 
-> it's a bit worrying that reverting either of the those causes issues, 
-> but maybe there is a good reason for it. Anyway, mind figuring out 
-> which of the two you need reverted to fix your issue? Thanks!
-
-The result is:
-
-Patch with commit fb725beca62d reverted: Graphics works. I attached the 
-respective patch again to this mail.
-
-Patch with commit 62aecf23f3d1 reverted: Screen remains black, error 
-message:
-
-# dmesg | grep -A 36 "cut here"
-[    2.921358] ------------[ cut here ]------------
-[    2.921361] WARNING: CPU: 1 PID: 176 at drivers/gpu/drm/nouveau/nvkm/engine/disp/dp.c:460 nvkm_dp_acquire+0x26a/0x490 [nouveau]
-[    2.921627] Modules linked in: sd_mod(E) t10_pi(E) crc64_rocksoft(E) sr_mod(E) crc64(E) crc_t10dif(E) crct10dif_generic(E) cdrom(E) nouveau(E+) mxm_wmi(E) i2c_algo_bit(E) drm_display_helper(E) cec(E) ahci(E) rc_core(E) drm_ttm_helper(E) libahci(E) ttm(E) ehci_pci(E) crct10dif_pclmul(E) crct10dif_common(E) ehci_hcd(E) drm_kms_helper(E) crc32_pclmul(E) firewire_ohci(E) sdhci_pci(E) cqhci(E) libata(E) e1000e(E) sdhci(E) psmouse(E) crc32c_intel(E) lpc_ich(E) ptp(E) i2c_i801(E) scsi_mod(E) i2c_smbus(E) firewire_core(E) scsi_common(E) usbcore(E) crc_itu_t(E) mmc_core(E) drm(E) pps_core(E) usb_common(E) battery(E) video(E) wmi(E) button(E)
-[    2.921695] CPU: 1 PID: 176 Comm: kworker/u16:5 Tainted: G            E      6.1.0-0.a.test-amd64 #1  Debian 6.1.38-2a~test
-[    2.921701] Hardware name: Dell Inc. Latitude E6510/0N5KHN, BIOS A17 05/12/2017
-[    2.921705] Workqueue: nvkm-disp nv50_disp_super [nouveau]
-[    2.921948] RIP: 0010:nvkm_dp_acquire+0x26a/0x490 [nouveau]
-[    2.922192] Code: 48 8b 44 24 58 65 48 2b 04 25 28 00 00 00 0f 85 37 02 00 00 48 83 c4 60 44 89 e0 5b 5d 41 5c 41 5d 41 5e 41 5f c3 cc cc cc cc <0f> 0b c1 e8 03 41 88 6d 62 44 89 fe 48 89 df 48 69 c0 cf 0d d6 26
-[    2.922196] RSP: 0018:ffffc077c04dfd60 EFLAGS: 00010246
-[    2.922201] RAX: 0000000000041eb0 RBX: ffff9a8482624c00 RCX: 0000000000041eb0
-[    2.922204] RDX: ffffffffc0b47760 RSI: 0000000000000000 RDI: ffffc077c04dfcf0
-[    2.922206] RBP: 0000000000000001 R08: ffffc077c04dfc64 R09: 0000000000005b76
-[    2.922209] R10: 000000000000000d R11: ffffc077c04dfde0 R12: 00000000ffffffea
-[    2.922212] R13: ffff9a8517541e00 R14: 0000000000044d45 R15: 0000000000000000
-[    2.922215] FS:  0000000000000000(0000) GS:ffff9a85a3c40000(0000) knlGS:0000000000000000
-[    2.922219] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[    2.922222] CR2: 000055f660bcb3a8 CR3: 0000000197610000 CR4: 00000000000006e0
-[    2.922226] Call Trace:
-[    2.922231]  <TASK>
-[    2.922235]  ? __warn+0x7d/0xc0
-[    2.922244]  ? nvkm_dp_acquire+0x26a/0x490 [nouveau]
-[    2.922487]  ? report_bug+0xe6/0x170
-[    2.922494]  ? handle_bug+0x41/0x70
-[    2.922501]  ? exc_invalid_op+0x13/0x60
-[    2.922505]  ? asm_exc_invalid_op+0x16/0x20
-[    2.922512]  ? init_reset_begun+0x20/0x20 [nouveau]
-[    2.922708]  ? nvkm_dp_acquire+0x26a/0x490 [nouveau]
-[    2.922954]  nv50_disp_super_2_2+0x70/0x430 [nouveau]
-[    2.923200]  nv50_disp_super+0x113/0x210 [nouveau]
-[    2.923445]  process_one_work+0x1c7/0x380
-[    2.923456]  worker_thread+0x4d/0x380
-[    2.923463]  ? rescuer_thread+0x3a0/0x3a0
-[    2.923469]  kthread+0xe9/0x110
-[    2.923476]  ? kthread_complete_and_exit+0x20/0x20
-[    2.923482]  ret_from_fork+0x22/0x30
-[    2.923493]  </TASK>
-[    2.923494] ---[ end trace 0000000000000000 ]---
-
-(Maybe it's worth to mention that the LED back-light is on, while the 
-screen appears black.)
-
-Cheers,
-Olaf
-
-P.S.: By the way: as a linux user for more than 20 years, I am very 
-pleased to have the opportunity to contribute at least a little bit to 
-the improvement. I'd like to use the chance to thank you all very much 
-for building and developing this great operating system.
----1463786238-675451933-1691172518=:22036
-Content-Type: text/x-diff; name=0002-Revert-drm-nouveau-dp-check-for-NULL-nv_connector-na.patch
-Content-Transfer-Encoding: BASE64
-Content-ID: <6f94cf73-1a71-90ac-9374-6c19b6d5ca06@cam.uni-heidelberg.de>
-Content-Description: 
-Content-Disposition: attachment; filename=0002-Revert-drm-nouveau-dp-check-for-NULL-nv_connector-na.patch
-
-RnJvbSA0N2MwZTkzOGJlZWY3MzM1ZmZhMTc5ZjEwMDY3NTRmOTY2NGM2YzRk
-IE1vbiBTZXAgMTcgMDA6MDA6MDAgMjAwMQ0KRnJvbTogRGllZGVyaWsgZGUg
-SGFhcyA8ZGlkaS5kZWJpYW5AY2tub3cub3JnPg0KRGF0ZTogTW9uLCAzMSBK
-dWwgMjAyMyAxOTo1NTo1NCArMDIwMA0KU3ViamVjdDogW1BBVENIIDIvNF0g
-UmV2ZXJ0ICJkcm0vbm91dmVhdS9kcDogY2hlY2sgZm9yIE5VTEwNCiBudl9j
-b25uZWN0b3ItPm5hdGl2ZV9tb2RlIg0KDQpUaGlzIHJldmVydHMgY29tbWl0
-IGZiNzI1YmVjYTYyZDE3NWMwMmNhNjE5YzI3MDM3YzE0ZjdhYjhlN2MuDQot
-LS0NCiBkcml2ZXJzL2dwdS9kcm0vbm91dmVhdS9ub3V2ZWF1X2Nvbm5lY3Rv
-ci5jIHwgNCArKy0tDQogMSBmaWxlIGNoYW5nZWQsIDIgaW5zZXJ0aW9ucygr
-KSwgMiBkZWxldGlvbnMoLSkNCg0KZGlmZiAtLWdpdCBhL2RyaXZlcnMvZ3B1
-L2RybS9ub3V2ZWF1L25vdXZlYXVfY29ubmVjdG9yLmMgYi9kcml2ZXJzL2dw
-dS9kcm0vbm91dmVhdS9ub3V2ZWF1X2Nvbm5lY3Rvci5jDQppbmRleCBmZDk4
-NDczM2I4ZTYuLjE5OTFiYmIxZDA1YyAxMDA2NDQNCi0tLSBhL2RyaXZlcnMv
-Z3B1L2RybS9ub3V2ZWF1L25vdXZlYXVfY29ubmVjdG9yLmMNCisrKyBiL2Ry
-aXZlcnMvZ3B1L2RybS9ub3V2ZWF1L25vdXZlYXVfY29ubmVjdG9yLmMNCkBA
-IC05NjYsNyArOTY2LDcgQEAgbm91dmVhdV9jb25uZWN0b3JfZ2V0X21vZGVz
-KHN0cnVjdCBkcm1fY29ubmVjdG9yICpjb25uZWN0b3IpDQogCS8qIERldGVy
-bWluZSBkaXNwbGF5IGNvbG91ciBkZXB0aCBmb3IgZXZlcnl0aGluZyBleGNl
-cHQgTFZEUyBub3csDQogCSAqIERQIHJlcXVpcmVzIHRoaXMgYmVmb3JlIG1v
-ZGVfdmFsaWQoKSBpcyBjYWxsZWQuDQogCSAqLw0KLQlpZiAoY29ubmVjdG9y
-LT5jb25uZWN0b3JfdHlwZSAhPSBEUk1fTU9ERV9DT05ORUNUT1JfTFZEUyAm
-JiBudl9jb25uZWN0b3ItPm5hdGl2ZV9tb2RlKQ0KKwlpZiAoY29ubmVjdG9y
-LT5jb25uZWN0b3JfdHlwZSAhPSBEUk1fTU9ERV9DT05ORUNUT1JfTFZEUykN
-CiAJCW5vdXZlYXVfY29ubmVjdG9yX2RldGVjdF9kZXB0aChjb25uZWN0b3Ip
-Ow0KIA0KIAkvKiBGaW5kIHRoZSBuYXRpdmUgbW9kZSBpZiB0aGlzIGlzIGEg
-ZGlnaXRhbCBwYW5lbCwgaWYgd2UgZGlkbid0DQpAQCAtOTg3LDcgKzk4Nyw3
-IEBAIG5vdXZlYXVfY29ubmVjdG9yX2dldF9tb2RlcyhzdHJ1Y3QgZHJtX2Nv
-bm5lY3RvciAqY29ubmVjdG9yKQ0KIAkgKiAibmF0aXZlIiBtb2RlIGFzIHNv
-bWUgVkJJT1MgdGFibGVzIHJlcXVpcmUgdXMgdG8gdXNlIHRoZQ0KIAkgKiBw
-aXhlbCBjbG9jayBhcyBwYXJ0IG9mIHRoZSBsb29rdXAuLi4NCiAJICovDQot
-CWlmIChjb25uZWN0b3ItPmNvbm5lY3Rvcl90eXBlID09IERSTV9NT0RFX0NP
-Tk5FQ1RPUl9MVkRTICYmIG52X2Nvbm5lY3Rvci0+bmF0aXZlX21vZGUpDQor
-CWlmIChjb25uZWN0b3ItPmNvbm5lY3Rvcl90eXBlID09IERSTV9NT0RFX0NP
-Tk5FQ1RPUl9MVkRTKQ0KIAkJbm91dmVhdV9jb25uZWN0b3JfZGV0ZWN0X2Rl
-cHRoKGNvbm5lY3Rvcik7DQogDQogCWlmIChudl9lbmNvZGVyLT5kY2ItPnR5
-cGUgPT0gRENCX09VVFBVVF9UVikNCi0tIA0KMi40MC4xDQoNCg==
-
----1463786238-675451933-1691172518=:22036--
