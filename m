@@ -2,23 +2,23 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 87E2C770480
-	for <lists+stable@lfdr.de>; Fri,  4 Aug 2023 17:26:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 73293770484
+	for <lists+stable@lfdr.de>; Fri,  4 Aug 2023 17:26:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230306AbjHDP0l (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 4 Aug 2023 11:26:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58016 "EHLO
+        id S230192AbjHDP0n (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 4 Aug 2023 11:26:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58036 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231484AbjHDP0T (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 4 Aug 2023 11:26:19 -0400
-Received: from dggsgout12.his.huawei.com (unknown [45.249.212.56])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B0A0E49D8
-        for <stable@vger.kernel.org>; Fri,  4 Aug 2023 08:25:45 -0700 (PDT)
+        with ESMTP id S232138AbjHDP0V (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 4 Aug 2023 11:26:21 -0400
+Received: from dggsgout11.his.huawei.com (unknown [45.249.212.51])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 398E449E5
+        for <stable@vger.kernel.org>; Fri,  4 Aug 2023 08:25:46 -0700 (PDT)
 Received: from mail02.huawei.com (unknown [172.30.67.153])
-        by dggsgout12.his.huawei.com (SkyGuard) with ESMTP id 4RHV042Mqcz4f3mJy
-        for <stable@vger.kernel.org>; Fri,  4 Aug 2023 23:25:24 +0800 (CST)
+        by dggsgout11.his.huawei.com (SkyGuard) with ESMTP id 4RHV0610sHz4f3p1D
+        for <stable@vger.kernel.org>; Fri,  4 Aug 2023 23:25:26 +0800 (CST)
 Received: from localhost.localdomain (unknown [10.67.175.61])
-        by APP1 (Coremail) with SMTP id cCh0CgB30hxkGM1kpNz_Og--.43554S7;
+        by APP1 (Coremail) with SMTP id cCh0CgB30hxkGM1kpNz_Og--.43554S8;
         Fri, 04 Aug 2023 23:25:27 +0800 (CST)
 From:   Pu Lehui <pulehui@huaweicloud.com>
 To:     stable@vger.kernel.org, Greg KH <greg@kroah.com>,
@@ -29,18 +29,18 @@ Cc:     Alexei Starovoitov <ast@kernel.org>,
         Andrii Nakryiko <andrii@kernel.org>,
         Pu Lehui <pulehui@huawei.com>,
         Pu Lehui <pulehui@huaweicloud.com>
-Subject: [PATCH 5.10 v2 5/6] selftests/bpf: Workaround verification failure for fexit_bpf2bpf/func_replace_return_code
-Date:   Fri,  4 Aug 2023 23:24:50 +0800
-Message-Id: <20230804152451.2565608-6-pulehui@huaweicloud.com>
+Subject: [PATCH 5.10 v2 6/6] selftests/bpf: Fix sk_assign on s390x
+Date:   Fri,  4 Aug 2023 23:24:51 +0800
+Message-Id: <20230804152451.2565608-7-pulehui@huaweicloud.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20230804152451.2565608-1-pulehui@huaweicloud.com>
 References: <20230804152451.2565608-1-pulehui@huaweicloud.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: cCh0CgB30hxkGM1kpNz_Og--.43554S7
-X-Coremail-Antispam: 1UD129KBjvJXoWxCF1ktw1fCw1DCFy5WF45ZFb_yoW5tr1kpF
-        WUC34UCr18Z3W3GF17J3ySg3s3CFZ2kr43Ga4YqryUZr9xWryvq34xKrWjv3s5GrWkKrsI
-        vrnFqrWaqr4UC37anT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+X-CM-TRANSID: cCh0CgB30hxkGM1kpNz_Og--.43554S8
+X-Coremail-Antispam: 1UD129KBjvJXoWxAFy8Cw4fWr4DWrWfJw15twb_yoWrtr4Upa
+        48Aa4YkFWxtF13Jw48CrWkZF4fuwn7XF15Jr4rtr4DZa10qF1vqr1xKa4Yq3ZxG395ur9a
+        va47KFsxua1UAaUanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
         9KBjDU0xBIdaVrnRJUUU9K14x267AKxVWrJVCq3wAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
         rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2048vs2IY020E87I2jVAFwI0_JF0E3s1l82xGYI
         kIc2x26xkF7I0E14v26ryj6s0DM28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8wA2
@@ -65,95 +65,130 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Yonghong Song <yhs@fb.com>
+From: Ilya Leoshkevich <iii@linux.ibm.com>
 
-[ Upstream commit 63d78b7e8ca2d0eb8c687a355fa19d01b6fcc723 ]
+[ Upstream commit 7ce878ca81bca7811e669db4c394b86780e0dbe4 ]
 
-With latest llvm17, selftest fexit_bpf2bpf/func_replace_return_code
-has the following verification failure:
+sk_assign is failing on an s390x machine running Debian "bookworm" for
+2 reasons: legacy server_map definition and uninitialized addrlen in
+recvfrom() call.
 
-  0: R1=ctx(off=0,imm=0) R10=fp0
-  ; int connect_v4_prog(struct bpf_sock_addr *ctx)
-  0: (bf) r7 = r1                       ; R1=ctx(off=0,imm=0) R7_w=ctx(off=0,imm=0)
-  1: (b4) w6 = 0                        ; R6_w=0
-  ; memset(&tuple.ipv4.saddr, 0, sizeof(tuple.ipv4.saddr));
-  ...
-  ; return do_bind(ctx) ? 1 : 0;
-  179: (bf) r1 = r7                     ; R1=ctx(off=0,imm=0) R7=ctx(off=0,imm=0)
-  180: (85) call pc+147
-  Func#3 is global and valid. Skipping.
-  181: R0_w=scalar()
-  181: (bc) w6 = w0                     ; R0_w=scalar() R6_w=scalar(umax=4294967295,var_off=(0x0; 0xffffffff))
-  182: (05) goto pc-129
-  ; }
-  54: (bc) w0 = w6                      ; R0_w=scalar(umax=4294967295,var_off=(0x0; 0xffffffff)) R6_w=scalar(umax=4294967295,var_off=(0x0; 0xffffffff))
-  55: (95) exit
-  At program exit the register R0 has value (0x0; 0xffffffff) should have been in (0x0; 0x1)
-  processed 281 insns (limit 1000000) max_states_per_insn 1 total_states 26 peak_states 26 mark_read 13
-  -- END PROG LOAD LOG --
-  libbpf: prog 'connect_v4_prog': failed to load: -22
+Fix by adding a new-style server_map definition and dropping addrlen
+(recvfrom() allows NULL values for src_addr and addrlen).
 
-The corresponding source code:
+Since the test should support tc built without libbpf, build the prog
+twice: with the old-style definition and with the new-style definition,
+then select the right one at runtime. This could be done at compile
+time too, but this would not be cross-compilation friendly.
 
-  __attribute__ ((noinline))
-  int do_bind(struct bpf_sock_addr *ctx)
-  {
-        struct sockaddr_in sa = {};
-
-        sa.sin_family = AF_INET;
-        sa.sin_port = bpf_htons(0);
-        sa.sin_addr.s_addr = bpf_htonl(SRC_REWRITE_IP4);
-
-        if (bpf_bind(ctx, (struct sockaddr *)&sa, sizeof(sa)) != 0)
-                return 0;
-
-        return 1;
-  }
-  ...
-  SEC("cgroup/connect4")
-  int connect_v4_prog(struct bpf_sock_addr *ctx)
-  {
-  ...
-        return do_bind(ctx) ? 1 : 0;
-  }
-
-Insn 180 is a call to 'do_bind'. The call's return value is also the return value
-for the program. Since do_bind() returns 0/1, so it is legitimate for compiler to
-optimize 'return do_bind(ctx) ? 1 : 0' to 'return do_bind(ctx)'. However, such
-optimization breaks verifier as the return value of 'do_bind()' is marked as any
-scalar which violates the requirement of prog return value 0/1.
-
-There are two ways to fix this problem, (1) changing 'return 1' in do_bind() to
-e.g. 'return 10' so the compiler has to do 'do_bind(ctx) ? 1 :0', or (2)
-suggested by Andrii, marking do_bind() with __weak attribute so the compiler
-cannot make any assumption on do_bind() return value.
-
-This patch adopted adding __weak approach which is simpler and more resistant
-to potential compiler optimizations.
-
-Suggested-by: Andrii Nakryiko <andrii@kernel.org>
-Signed-off-by: Yonghong Song <yhs@fb.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20230310012410.2920570-1-yhs@fb.com
+Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
+Link: https://lore.kernel.org/r/20230129190501.1624747-2-iii@linux.ibm.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Conflicts:
+	tools/testing/selftests/bpf/prog_tests/sk_assign.c
 Signed-off-by: Pu Lehui <pulehui@huawei.com>
 Tested-by: Luiz Capitulino <luizcap@amazon.com>
 ---
- tools/testing/selftests/bpf/progs/connect4_prog.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../selftests/bpf/prog_tests/sk_assign.c      | 25 ++++++++++++++-----
+ .../selftests/bpf/progs/test_sk_assign.c      | 11 ++++++++
+ .../bpf/progs/test_sk_assign_libbpf.c         |  3 +++
+ 3 files changed, 33 insertions(+), 6 deletions(-)
+ create mode 100644 tools/testing/selftests/bpf/progs/test_sk_assign_libbpf.c
 
-diff --git a/tools/testing/selftests/bpf/progs/connect4_prog.c b/tools/testing/selftests/bpf/progs/connect4_prog.c
-index a943d394fd3a..38ab1ce32e57 100644
---- a/tools/testing/selftests/bpf/progs/connect4_prog.c
-+++ b/tools/testing/selftests/bpf/progs/connect4_prog.c
-@@ -33,7 +33,7 @@
+diff --git a/tools/testing/selftests/bpf/prog_tests/sk_assign.c b/tools/testing/selftests/bpf/prog_tests/sk_assign.c
+index 3a469099f30d..e09c5239a595 100644
+--- a/tools/testing/selftests/bpf/prog_tests/sk_assign.c
++++ b/tools/testing/selftests/bpf/prog_tests/sk_assign.c
+@@ -29,7 +29,23 @@ static int stop, duration;
+ static bool
+ configure_stack(void)
+ {
++	char tc_version[128];
+ 	char tc_cmd[BUFSIZ];
++	char *prog;
++	FILE *tc;
++
++	/* Check whether tc is built with libbpf. */
++	tc = popen("tc -V", "r");
++	if (CHECK_FAIL(!tc))
++		return false;
++	if (CHECK_FAIL(!fgets(tc_version, sizeof(tc_version), tc)))
++		return false;
++	if (strstr(tc_version, ", libbpf "))
++		prog = "test_sk_assign_libbpf.o";
++	else
++		prog = "test_sk_assign.o";
++	if (CHECK_FAIL(pclose(tc)))
++		return false;
+ 
+ 	/* Move to a new networking namespace */
+ 	if (CHECK_FAIL(unshare(CLONE_NEWNET)))
+@@ -46,8 +62,8 @@ configure_stack(void)
+ 	/* Load qdisc, BPF program */
+ 	if (CHECK_FAIL(system("tc qdisc add dev lo clsact")))
+ 		return false;
+-	sprintf(tc_cmd, "%s %s %s %s", "tc filter add dev lo ingress bpf",
+-		       "direct-action object-file ./test_sk_assign.o",
++	sprintf(tc_cmd, "%s %s %s %s %s", "tc filter add dev lo ingress bpf",
++		       "direct-action object-file", prog,
+ 		       "section classifier/sk_assign_test",
+ 		       (env.verbosity < VERBOSE_VERY) ? " 2>/dev/null" : "verbose");
+ 	if (CHECK(system(tc_cmd), "BPF load failed;",
+@@ -129,15 +145,12 @@ get_port(int fd)
+ static ssize_t
+ rcv_msg(int srv_client, int type)
+ {
+-	struct sockaddr_storage ss;
+ 	char buf[BUFSIZ];
+-	socklen_t slen;
+ 
+ 	if (type == SOCK_STREAM)
+ 		return read(srv_client, &buf, sizeof(buf));
+ 	else
+-		return recvfrom(srv_client, &buf, sizeof(buf), 0,
+-				(struct sockaddr *)&ss, &slen);
++		return recvfrom(srv_client, &buf, sizeof(buf), 0, NULL, NULL);
+ }
+ 
+ static int
+diff --git a/tools/testing/selftests/bpf/progs/test_sk_assign.c b/tools/testing/selftests/bpf/progs/test_sk_assign.c
+index 1ecd987005d2..77fd42f835fc 100644
+--- a/tools/testing/selftests/bpf/progs/test_sk_assign.c
++++ b/tools/testing/selftests/bpf/progs/test_sk_assign.c
+@@ -16,6 +16,16 @@
+ #include <bpf/bpf_helpers.h>
+ #include <bpf/bpf_endian.h>
+ 
++#if defined(IPROUTE2_HAVE_LIBBPF)
++/* Use a new-style map definition. */
++struct {
++	__uint(type, BPF_MAP_TYPE_SOCKMAP);
++	__type(key, int);
++	__type(value, __u64);
++	__uint(pinning, LIBBPF_PIN_BY_NAME);
++	__uint(max_entries, 1);
++} server_map SEC(".maps");
++#else
+ /* Pin map under /sys/fs/bpf/tc/globals/<map name> */
+ #define PIN_GLOBAL_NS 2
+ 
+@@ -35,6 +45,7 @@ struct {
+ 	.max_elem = 1,
+ 	.pinning = PIN_GLOBAL_NS,
+ };
++#endif
  
  int _version SEC("version") = 1;
- 
--__attribute__ ((noinline))
-+__attribute__ ((noinline)) __weak
- int do_bind(struct bpf_sock_addr *ctx)
- {
- 	struct sockaddr_in sa = {};
+ char _license[] SEC("license") = "GPL";
+diff --git a/tools/testing/selftests/bpf/progs/test_sk_assign_libbpf.c b/tools/testing/selftests/bpf/progs/test_sk_assign_libbpf.c
+new file mode 100644
+index 000000000000..dcf46adfda04
+--- /dev/null
++++ b/tools/testing/selftests/bpf/progs/test_sk_assign_libbpf.c
+@@ -0,0 +1,3 @@
++// SPDX-License-Identifier: GPL-2.0
++#define IPROUTE2_HAVE_LIBBPF
++#include "test_sk_assign.c"
 -- 
 2.25.1
 
