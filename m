@@ -2,23 +2,23 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4ABCF770489
-	for <lists+stable@lfdr.de>; Fri,  4 Aug 2023 17:26:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 464B177048E
+	for <lists+stable@lfdr.de>; Fri,  4 Aug 2023 17:27:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231475AbjHDP0q (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 4 Aug 2023 11:26:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57374 "EHLO
+        id S232159AbjHDP1L (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 4 Aug 2023 11:27:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57924 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230229AbjHDP02 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 4 Aug 2023 11:26:28 -0400
-Received: from dggsgout11.his.huawei.com (unknown [45.249.212.51])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B698E4C21
-        for <stable@vger.kernel.org>; Fri,  4 Aug 2023 08:25:50 -0700 (PDT)
+        with ESMTP id S229613AbjHDP0x (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 4 Aug 2023 11:26:53 -0400
+Received: from dggsgout12.his.huawei.com (unknown [45.249.212.56])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32C485241
+        for <stable@vger.kernel.org>; Fri,  4 Aug 2023 08:26:12 -0700 (PDT)
 Received: from mail02.huawei.com (unknown [172.30.67.143])
-        by dggsgout11.his.huawei.com (SkyGuard) with ESMTP id 4RHV0D2BNbz4f3q30
-        for <stable@vger.kernel.org>; Fri,  4 Aug 2023 23:25:32 +0800 (CST)
+        by dggsgout12.his.huawei.com (SkyGuard) with ESMTP id 4RHV0969zSz4f3npy
+        for <stable@vger.kernel.org>; Fri,  4 Aug 2023 23:25:29 +0800 (CST)
 Received: from localhost.localdomain (unknown [10.67.175.61])
-        by APP2 (Coremail) with SMTP id Syh0CgDn2+lsGM1k_0b1PQ--.43835S4;
+        by APP2 (Coremail) with SMTP id Syh0CgDn2+lsGM1k_0b1PQ--.43835S5;
         Fri, 04 Aug 2023 23:25:32 +0800 (CST)
 From:   Pu Lehui <pulehui@huaweicloud.com>
 To:     stable@vger.kernel.org, Greg KH <greg@kroah.com>,
@@ -29,32 +29,31 @@ Cc:     Alexei Starovoitov <ast@kernel.org>,
         Andrii Nakryiko <andrii@kernel.org>,
         Pu Lehui <pulehui@huawei.com>,
         Pu Lehui <pulehui@huaweicloud.com>
-Subject: [PATCH 5.15 2/6] bpf: stop setting precise in current state
-Date:   Fri,  4 Aug 2023 23:24:55 +0800
-Message-Id: <20230804152459.2565673-3-pulehui@huaweicloud.com>
+Subject: [PATCH 5.15 3/6] bpf: aggressively forget precise markings during state checkpointing
+Date:   Fri,  4 Aug 2023 23:24:56 +0800
+Message-Id: <20230804152459.2565673-4-pulehui@huaweicloud.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20230804152459.2565673-1-pulehui@huaweicloud.com>
 References: <20230804152459.2565673-1-pulehui@huaweicloud.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: Syh0CgDn2+lsGM1k_0b1PQ--.43835S4
-X-Coremail-Antispam: 1UD129KBjvAXoW3Kry7Kw1UKrWfAFWxuFWDCFg_yoW8JFy5Go
-        W2va1jyr4xJr13Aan2yFnrJF1aqrsxGrn5Jr45CrnxWr17XF15Xw10y343WF1fXr15KFyD
-        J347tw1kJrW8JF1fn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7v73VFW2AGmfu7bjvjm3
-        AaLaJ3UjIYCTnIWjp_UUUYE7AC8VAFwI0_Wr0E3s1l1xkIjI8I6I8E6xAIw20EY4v20xva
-        j40_Wr0E3s1l1IIY67AEw4v_Jr0_Jr4l82xGYIkIc2x26280x7IE14v26r15M28IrcIa0x
-        kI8VCY1x0267AKxVW8JVW5JwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK021l84AC
-        jcxK6xIIjxv20xvE14v26F1j6w1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4UJVWxJr
-        1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_GcCE3s1l
-        e2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI
-        8IcVAFwI0_JrI_JrylYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwAC
-        jcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lc7CjxVAaw2AFwI0_Jw0_GF
-        yl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWU
-        JVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7V
-        AKI48JMIIF0xvE2Ix0cI8IcVAFwI0_JFI_Gr1lIxAIcVC0I7IYx2IY6xkF7I0E14v26F4j
-        6r4UJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIx
-        AIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7VUjpuWJUUUUU=
-        =
+X-CM-TRANSID: Syh0CgDn2+lsGM1k_0b1PQ--.43835S5
+X-Coremail-Antispam: 1UD129KBjvJXoW3Wr4DJFW7WF18WrykJr1UKFg_yoWxWw13pF
+        13JwnxCr4UJry7GwsxAF1UAFZ0kF18Jw1UGr1xCr18JF1UAr1Dtr4jgryrAry5JrykGw1U
+        JF1qvr1jgrWUXrDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+        9KBjDU0xBIdaVrnRJUUUBC14x267AKxVWrJVCq3wAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+        rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2048vs2IY020E87I2jVAFwI0_JrWl82xGYIkIc2
+        x26xkF7I0E14v26ryj6s0DM28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8wA2z4x0
+        Y4vE2Ix0cI8IcVAFwI0_Ar0_tr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr1j6F4UJw
+        A2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oVCq3wAS
+        0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2
+        IY67AKxVWUGVWUXwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0
+        Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwCY1x0262kKe7AKxVWUtVW8Zw
+        CF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j
+        6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64
+        vIr41lIxAIcVC0I7IYx2IY67AKxVW8JVW5JwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Cr0_
+        Gr1UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVW8JVWxJwCI42
+        IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjfUF3kuDUUUU
 X-CM-SenderInfo: psxovxtxl6x35dzhxuhorxvhhfrp/
 X-CFilter-Loop: Reflected
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
@@ -68,232 +67,126 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Andrii Nakryiko <andrii@kernel.org>
 
-[ Upstream commit f63181b6ae79fd3b034cde641db774268c2c3acf ]
+[ Upstream commit 7a830b53c17bbadcf99f778f28aaaa4e6c41df5f ]
 
-Setting reg->precise to true in current state is not necessary from
-correctness standpoint, but it does pessimise the whole precision (or
-rather "imprecision", because that's what we want to keep as much as
-possible) tracking. Why is somewhat subtle and my best attempt to
-explain this is recorded in an extensive comment for __mark_chain_precise()
-function. Some more careful thinking and code reading is probably required
-still to grok this completely, unfortunately. Whiteboarding and a bunch
-of extra handwaiving in person would be even more helpful, but is deemed
-impractical in Git commit.
+Exploit the property of about-to-be-checkpointed state to be able to
+forget all precise markings up to that point even more aggressively. We
+now clear all potentially inherited precise markings right before
+checkpointing and branching off into child state. If any of children
+states require precise knowledge of any SCALAR register, those will be
+propagated backwards later on before this state is finalized, preserving
+correctness.
 
-Next patch pushes this imprecision property even further, building on top of
-the insights described in this patch.
+There is a single selftests BPF program change, but tremendous one: 25x
+reduction in number of verified instructions and states in
+trace_virtqueue_add_sgs.
 
-End results are pretty nice, we get reduction in number of total instructions
-and states verified due to a better states reuse, as some of the states are now
-more generic and permissive due to less unnecessary precise=true requirements.
+Cilium results are more modest, but happen across wider range of programs.
 
 SELFTESTS RESULTS
 =================
 
-$ ./veristat -C -e file,prog,insns,states ~/subprog-precise-results.csv ~/imprecise-early-results.csv | grep -v '+0'
-File                                     Program                 Total insns (A)  Total insns (B)  Total insns (DIFF)  Total states (A)  Total states (B)  Total states (DIFF)
----------------------------------------  ----------------------  ---------------  ---------------  ------------------  ----------------  ----------------  -------------------
-bpf_iter_ksym.bpf.linked1.o              dump_ksym                           347              285       -62 (-17.87%)                20                19          -1 (-5.00%)
-pyperf600_bpf_loop.bpf.linked1.o         on_event                           3678             3736        +58 (+1.58%)               276               285          +9 (+3.26%)
-setget_sockopt.bpf.linked1.o             skops_sockopt                      4038             3947        -91 (-2.25%)               347               343          -4 (-1.15%)
-test_l4lb.bpf.linked1.o                  balancer_ingress                   4559             2611     -1948 (-42.73%)               118               105        -13 (-11.02%)
-test_l4lb_noinline.bpf.linked1.o         balancer_ingress                   6279             6268        -11 (-0.18%)               237               236          -1 (-0.42%)
-test_misc_tcp_hdr_options.bpf.linked1.o  misc_estab                         1307             1303         -4 (-0.31%)               100                99          -1 (-1.00%)
-test_sk_lookup.bpf.linked1.o             ctx_narrow_access                   456              447         -9 (-1.97%)                39                38          -1 (-2.56%)
-test_sysctl_loop1.bpf.linked1.o          sysctl_tcp_mem                     1389             1384         -5 (-0.36%)                26                25          -1 (-3.85%)
-test_tc_dtime.bpf.linked1.o              egress_fwdns_prio101                518              485        -33 (-6.37%)                51                46          -5 (-9.80%)
-test_tc_dtime.bpf.linked1.o              egress_host                         519              468        -51 (-9.83%)                50                44         -6 (-12.00%)
-test_tc_dtime.bpf.linked1.o              ingress_fwdns_prio101               842             1000      +158 (+18.76%)                73                88        +15 (+20.55%)
-xdp_synproxy_kern.bpf.linked1.o          syncookie_tc                     405757           373173     -32584 (-8.03%)             25735             22882      -2853 (-11.09%)
-xdp_synproxy_kern.bpf.linked1.o          syncookie_xdp                    479055           371590   -107465 (-22.43%)             29145             22207      -6938 (-23.81%)
----------------------------------------  ----------------------  ---------------  ---------------  ------------------  ----------------  ----------------  -------------------
-
-Slight regression in test_tc_dtime.bpf.linked1.o/ingress_fwdns_prio101
-is left for a follow up, there might be some more precision-related bugs
-in existing BPF verifier logic.
+$ ./veristat -C -e file,prog,insns,states ~/imprecise-early-results.csv ~/imprecise-aggressive-results.csv | grep -v '+0'
+File                 Program                  Total insns (A)  Total insns (B)  Total insns (DIFF)  Total states (A)  Total states (B)  Total states (DIFF)
+-------------------  -----------------------  ---------------  ---------------  ------------------  ----------------  ----------------  -------------------
+loop6.bpf.linked1.o  trace_virtqueue_add_sgs           398057            15114   -382943 (-96.20%)              8717               336      -8381 (-96.15%)
+-------------------  -----------------------  ---------------  ---------------  ------------------  ----------------  ----------------  -------------------
 
 CILIUM RESULTS
 ==============
 
-$ ./veristat -C -e file,prog,insns,states ~/subprog-precise-results-cilium.csv ~/imprecise-early-results-cilium.csv | grep -v '+0'
-File           Program                         Total insns (A)  Total insns (B)  Total insns (DIFF)  Total states (A)  Total states (B)  Total states (DIFF)
--------------  ------------------------------  ---------------  ---------------  ------------------  ----------------  ----------------  -------------------
-bpf_host.o     cil_from_host                               762              556      -206 (-27.03%)                43                37         -6 (-13.95%)
-bpf_host.o     tail_handle_nat_fwd_ipv4                  23541            23426       -115 (-0.49%)              1538              1537          -1 (-0.07%)
-bpf_host.o     tail_nodeport_nat_egress_ipv4             33592            33566        -26 (-0.08%)              2163              2161          -2 (-0.09%)
-bpf_lxc.o      tail_handle_nat_fwd_ipv4                  23541            23426       -115 (-0.49%)              1538              1537          -1 (-0.07%)
-bpf_overlay.o  tail_nodeport_nat_egress_ipv4             33581            33543        -38 (-0.11%)              2160              2157          -3 (-0.14%)
-bpf_xdp.o      tail_handle_nat_fwd_ipv4                  21659            20920       -739 (-3.41%)              1440              1376         -64 (-4.44%)
-bpf_xdp.o      tail_handle_nat_fwd_ipv6                  17084            17039        -45 (-0.26%)               907               905          -2 (-0.22%)
-bpf_xdp.o      tail_lb_ipv4                              73442            73430        -12 (-0.02%)              4370              4369          -1 (-0.02%)
-bpf_xdp.o      tail_lb_ipv6                             152114           151895       -219 (-0.14%)              6493              6479         -14 (-0.22%)
-bpf_xdp.o      tail_nodeport_nat_egress_ipv4             17377            17200       -177 (-1.02%)              1125              1111         -14 (-1.24%)
-bpf_xdp.o      tail_nodeport_nat_ingress_ipv6             6405             6397         -8 (-0.12%)               309               308          -1 (-0.32%)
-bpf_xdp.o      tail_rev_nodeport_lb4                      7126             6934       -192 (-2.69%)               414               402         -12 (-2.90%)
-bpf_xdp.o      tail_rev_nodeport_lb6                     18059            17905       -154 (-0.85%)              1105              1096          -9 (-0.81%)
--------------  ------------------------------  ---------------  ---------------  ------------------  ----------------  ----------------  -------------------
+$ ./veristat -C -e file,prog,insns,states ~/imprecise-early-results-cilium.csv ~/imprecise-aggressive-results-cilium.csv | grep -v '+0'
+File           Program                           Total insns (A)  Total insns (B)  Total insns (DIFF)  Total states (A)  Total states (B)  Total states (DIFF)
+-------------  --------------------------------  ---------------  ---------------  ------------------  ----------------  ----------------  -------------------
+bpf_host.o     tail_handle_nat_fwd_ipv4                    23426            23221       -205 (-0.88%)              1537              1515         -22 (-1.43%)
+bpf_host.o     tail_handle_nat_fwd_ipv6                    13009            12904       -105 (-0.81%)               719               708         -11 (-1.53%)
+bpf_host.o     tail_nodeport_nat_ingress_ipv6               5261             5196        -65 (-1.24%)               247               243          -4 (-1.62%)
+bpf_host.o     tail_nodeport_nat_ipv6_egress                3446             3406        -40 (-1.16%)               203               198          -5 (-2.46%)
+bpf_lxc.o      tail_handle_nat_fwd_ipv4                    23426            23221       -205 (-0.88%)              1537              1515         -22 (-1.43%)
+bpf_lxc.o      tail_handle_nat_fwd_ipv6                    13009            12904       -105 (-0.81%)               719               708         -11 (-1.53%)
+bpf_lxc.o      tail_ipv4_ct_egress                          5074             4897       -177 (-3.49%)               255               248          -7 (-2.75%)
+bpf_lxc.o      tail_ipv4_ct_ingress                         5100             4923       -177 (-3.47%)               255               248          -7 (-2.75%)
+bpf_lxc.o      tail_ipv4_ct_ingress_policy_only             5100             4923       -177 (-3.47%)               255               248          -7 (-2.75%)
+bpf_lxc.o      tail_ipv6_ct_egress                          4558             4536        -22 (-0.48%)               188               187          -1 (-0.53%)
+bpf_lxc.o      tail_ipv6_ct_ingress                         4578             4556        -22 (-0.48%)               188               187          -1 (-0.53%)
+bpf_lxc.o      tail_ipv6_ct_ingress_policy_only             4578             4556        -22 (-0.48%)               188               187          -1 (-0.53%)
+bpf_lxc.o      tail_nodeport_nat_ingress_ipv6               5261             5196        -65 (-1.24%)               247               243          -4 (-1.62%)
+bpf_overlay.o  tail_nodeport_nat_ingress_ipv6               5261             5196        -65 (-1.24%)               247               243          -4 (-1.62%)
+bpf_overlay.o  tail_nodeport_nat_ipv6_egress                3482             3442        -40 (-1.15%)               204               201          -3 (-1.47%)
+bpf_xdp.o      tail_nodeport_nat_egress_ipv4               17200            15619      -1581 (-9.19%)              1111              1010        -101 (-9.09%)
+-------------  --------------------------------  ---------------  ---------------  ------------------  ----------------  ----------------  -------------------
 
 Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/r/20221104163649.121784-5-andrii@kernel.org
+Link: https://lore.kernel.org/r/20221104163649.121784-6-andrii@kernel.org
 Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Stable-dep-of: ecdf985d7615 ("bpf: track immediate values written to stack by BPF_ST instruction")
 Signed-off-by: Pu Lehui <pulehui@huawei.com>
 ---
- kernel/bpf/verifier.c | 103 +++++++++++++++++++++++++++++++++++++-----
- 1 file changed, 91 insertions(+), 12 deletions(-)
+ kernel/bpf/verifier.c | 37 +++++++++++++++++++++++++++++++++++++
+ 1 file changed, 37 insertions(+)
 
 diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index d61f670f279d..402afbee6972 100644
+index 402afbee6972..ecf4332ff312 100644
 --- a/kernel/bpf/verifier.c
 +++ b/kernel/bpf/verifier.c
-@@ -2382,8 +2382,11 @@ static void mark_all_scalars_precise(struct bpf_verifier_env *env,
- 
- 	/* big hammer: mark all scalars precise in this path.
- 	 * pop_stack may still get !precise scalars.
-+	 * We also skip current state and go straight to first parent state,
-+	 * because precision markings in current non-checkpointed state are
-+	 * not needed. See why in the comment in __mark_chain_precision below.
- 	 */
--	for (; st; st = st->parent)
-+	for (st = st->parent; st; st = st->parent) {
- 		for (i = 0; i <= st->curframe; i++) {
- 			func = st->frame[i];
- 			for (j = 0; j < BPF_REG_FP; j++) {
-@@ -2401,8 +2404,88 @@ static void mark_all_scalars_precise(struct bpf_verifier_env *env,
- 				reg->precise = true;
- 			}
- 		}
-+	}
+@@ -2407,6 +2407,31 @@ static void mark_all_scalars_precise(struct bpf_verifier_env *env,
+ 	}
  }
  
-+/*
-+ * __mark_chain_precision() backtracks BPF program instruction sequence and
-+ * chain of verifier states making sure that register *regno* (if regno >= 0)
-+ * and/or stack slot *spi* (if spi >= 0) are marked as precisely tracked
-+ * SCALARS, as well as any other registers and slots that contribute to
-+ * a tracked state of given registers/stack slots, depending on specific BPF
-+ * assembly instructions (see backtrack_insns() for exact instruction handling
-+ * logic). This backtracking relies on recorded jmp_history and is able to
-+ * traverse entire chain of parent states. This process ends only when all the
-+ * necessary registers/slots and their transitive dependencies are marked as
-+ * precise.
++static void mark_all_scalars_imprecise(struct bpf_verifier_env *env, struct bpf_verifier_state *st)
++{
++	struct bpf_func_state *func;
++	struct bpf_reg_state *reg;
++	int i, j;
++
++	for (i = 0; i <= st->curframe; i++) {
++		func = st->frame[i];
++		for (j = 0; j < BPF_REG_FP; j++) {
++			reg = &func->regs[j];
++			if (reg->type != SCALAR_VALUE)
++				continue;
++			reg->precise = false;
++		}
++		for (j = 0; j < func->allocated_stack / BPF_REG_SIZE; j++) {
++			if (!is_spilled_reg(&func->stack[j]))
++				continue;
++			reg = &func->stack[j].spilled_ptr;
++			if (reg->type != SCALAR_VALUE)
++				continue;
++			reg->precise = false;
++		}
++	}
++}
++
+ /*
+  * __mark_chain_precision() backtracks BPF program instruction sequence and
+  * chain of verifier states making sure that register *regno* (if regno >= 0)
+@@ -2485,6 +2510,14 @@ static void mark_all_scalars_precise(struct bpf_verifier_env *env,
+  * be imprecise. If any child state does require this register to be precise,
+  * we'll mark it precise later retroactively during precise markings
+  * propagation from child state to parent states.
 + *
-+ * One important and subtle aspect is that precise marks *do not matter* in
-+ * the currently verified state (current state). It is important to understand
-+ * why this is the case.
-+ *
-+ * First, note that current state is the state that is not yet "checkpointed",
-+ * i.e., it is not yet put into env->explored_states, and it has no children
-+ * states as well. It's ephemeral, and can end up either a) being discarded if
-+ * compatible explored state is found at some point or BPF_EXIT instruction is
-+ * reached or b) checkpointed and put into env->explored_states, branching out
-+ * into one or more children states.
-+ *
-+ * In the former case, precise markings in current state are completely
-+ * ignored by state comparison code (see regsafe() for details). Only
-+ * checkpointed ("old") state precise markings are important, and if old
-+ * state's register/slot is precise, regsafe() assumes current state's
-+ * register/slot as precise and checks value ranges exactly and precisely. If
-+ * states turn out to be compatible, current state's necessary precise
-+ * markings and any required parent states' precise markings are enforced
-+ * after the fact with propagate_precision() logic, after the fact. But it's
-+ * important to realize that in this case, even after marking current state
-+ * registers/slots as precise, we immediately discard current state. So what
-+ * actually matters is any of the precise markings propagated into current
-+ * state's parent states, which are always checkpointed (due to b) case above).
-+ * As such, for scenario a) it doesn't matter if current state has precise
-+ * markings set or not.
-+ *
-+ * Now, for the scenario b), checkpointing and forking into child(ren)
-+ * state(s). Note that before current state gets to checkpointing step, any
-+ * processed instruction always assumes precise SCALAR register/slot
-+ * knowledge: if precise value or range is useful to prune jump branch, BPF
-+ * verifier takes this opportunity enthusiastically. Similarly, when
-+ * register's value is used to calculate offset or memory address, exact
-+ * knowledge of SCALAR range is assumed, checked, and enforced. So, similar to
-+ * what we mentioned above about state comparison ignoring precise markings
-+ * during state comparison, BPF verifier ignores and also assumes precise
-+ * markings *at will* during instruction verification process. But as verifier
-+ * assumes precision, it also propagates any precision dependencies across
-+ * parent states, which are not yet finalized, so can be further restricted
-+ * based on new knowledge gained from restrictions enforced by their children
-+ * states. This is so that once those parent states are finalized, i.e., when
-+ * they have no more active children state, state comparison logic in
-+ * is_state_visited() would enforce strict and precise SCALAR ranges, if
-+ * required for correctness.
-+ *
-+ * To build a bit more intuition, note also that once a state is checkpointed,
-+ * the path we took to get to that state is not important. This is crucial
-+ * property for state pruning. When state is checkpointed and finalized at
-+ * some instruction index, it can be correctly and safely used to "short
-+ * circuit" any *compatible* state that reaches exactly the same instruction
-+ * index. I.e., if we jumped to that instruction from a completely different
-+ * code path than original finalized state was derived from, it doesn't
-+ * matter, current state can be discarded because from that instruction
-+ * forward having a compatible state will ensure we will safely reach the
-+ * exit. States describe preconditions for further exploration, but completely
-+ * forget the history of how we got here.
-+ *
-+ * This also means that even if we needed precise SCALAR range to get to
-+ * finalized state, but from that point forward *that same* SCALAR register is
-+ * never used in a precise context (i.e., it's precise value is not needed for
-+ * correctness), it's correct and safe to mark such register as "imprecise"
-+ * (i.e., precise marking set to false). This is what we rely on when we do
-+ * not set precise marking in current state. If no child state requires
-+ * precision for any given SCALAR register, it's safe to dictate that it can
-+ * be imprecise. If any child state does require this register to be precise,
-+ * we'll mark it precise later retroactively during precise markings
-+ * propagation from child state to parent states.
-+ */
++ * Skipping precise marking setting in current state is a mild version of
++ * relying on the above observation. But we can utilize this property even
++ * more aggressively by proactively forgetting any precise marking in the
++ * current state (which we inherited from the parent state), right before we
++ * checkpoint it and branch off into new child state. This is done by
++ * mark_all_scalars_imprecise() to hopefully get more permissive and generic
++ * finalized states which help in short circuiting more future states.
+  */
  static int __mark_chain_precision(struct bpf_verifier_env *env, int frame, int regno,
  				  int spi)
- {
-@@ -2420,6 +2503,10 @@ static int __mark_chain_precision(struct bpf_verifier_env *env, int frame, int r
- 	if (!env->bpf_capable)
- 		return 0;
+@@ -10984,6 +11017,10 @@ static int is_state_visited(struct bpf_verifier_env *env, int insn_idx)
+ 	env->prev_jmps_processed = env->jmps_processed;
+ 	env->prev_insn_processed = env->insn_processed;
  
-+	/* Do sanity checks against current state of register and/or stack
-+	 * slot, but don't set precise flag in current state, as precision
-+	 * tracking in the current state is unnecessary.
-+	 */
- 	func = st->frame[frame];
- 	if (regno >= 0) {
- 		reg = &func->regs[regno];
-@@ -2427,11 +2514,7 @@ static int __mark_chain_precision(struct bpf_verifier_env *env, int frame, int r
- 			WARN_ONCE(1, "backtracing misuse");
- 			return -EFAULT;
- 		}
--		if (!reg->precise)
--			new_marks = true;
--		else
--			reg_mask = 0;
--		reg->precise = true;
-+		new_marks = true;
- 	}
- 
- 	while (spi >= 0) {
-@@ -2444,11 +2527,7 @@ static int __mark_chain_precision(struct bpf_verifier_env *env, int frame, int r
- 			stack_mask = 0;
- 			break;
- 		}
--		if (!reg->precise)
--			new_marks = true;
--		else
--			stack_mask = 0;
--		reg->precise = true;
-+		new_marks = true;
- 		break;
- 	}
- 
-@@ -10356,7 +10435,7 @@ static bool regsafe(struct bpf_verifier_env *env, struct bpf_reg_state *rold,
- 		if (env->explore_alu_limits)
- 			return false;
- 		if (rcur->type == SCALAR_VALUE) {
--			if (!rold->precise && !rcur->precise)
-+			if (!rold->precise)
- 				return true;
- 			/* new val must satisfy old val knowledge */
- 			return range_within(rold, rcur) &&
++	/* forget precise markings we inherited, see __mark_chain_precision */
++	if (env->bpf_capable)
++		mark_all_scalars_imprecise(env, cur);
++
+ 	/* add new state to the head of linked list */
+ 	new = &new_sl->state;
+ 	err = copy_verifier_state(new, cur);
 -- 
 2.25.1
 
