@@ -2,43 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1A14E77094F
-	for <lists+stable@lfdr.de>; Fri,  4 Aug 2023 22:04:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 925DE770950
+	for <lists+stable@lfdr.de>; Fri,  4 Aug 2023 22:04:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229750AbjHDUEV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 4 Aug 2023 16:04:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35016 "EHLO
+        id S230045AbjHDUEe (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 4 Aug 2023 16:04:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35028 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229732AbjHDUET (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 4 Aug 2023 16:04:19 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A3C7010D4;
-        Fri,  4 Aug 2023 13:04:17 -0700 (PDT)
+        with ESMTP id S229954AbjHDUEU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 4 Aug 2023 16:04:20 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E3F1FE6E;
+        Fri,  4 Aug 2023 13:04:18 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 85DB062113;
-        Fri,  4 Aug 2023 20:04:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEC35C433C8;
-        Fri,  4 Aug 2023 20:04:16 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B57AE62120;
+        Fri,  4 Aug 2023 20:04:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16D83C433C7;
+        Fri,  4 Aug 2023 20:04:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-        s=korg; t=1691179457;
-        bh=EKWkuFGrFfqIl7eejiH4zr+Mt67Qu+U4/swrCNssib4=;
+        s=korg; t=1691179458;
+        bh=yKgc0fR6WQTIbrXdOSJA5V0U6o+15x4Ywwd1SrqGlHw=;
         h=Date:To:From:Subject:From;
-        b=yV99ElhTUdSKqxaNuHL+AMp/cP7G3Ge5R4R1gNAoP7L7IWG0OD5hNTkCd11nOY80c
-         VCGqFy8SNmT3xVGY7h3Nth1NHF/RYQDAquzlB3BxweY/F7Zo5QpeEk1KrQS8qkBr0/
-         fJ0cOsauDpYzXsrm74Lqcl1O2uhoKTU6Jn1L0z3s=
-Date:   Fri, 04 Aug 2023 13:04:16 -0700
-To:     mm-commits@vger.kernel.org, willy@infradead.org,
-        wangkefeng.wang@huawei.com, stable@vger.kernel.org,
-        naoya.horiguchi@nec.com, linmiaohe@huawei.com,
+        b=1oMVaRXuAbKdG0qjnp69S7G8GkSjPv7Mnh6WNYljldNeu54MDz1mq3QbT04Q4TzXm
+         4/ZAp0gYggDLH7aElN8G3CUMaOwH99TToC8Q1Gg1gIu4OGBefDBb2sT6coxqAlRJZY
+         Rgvscp7vXxvvJin5h2fb5L2FumpchjIiotBf8voI=
+Date:   Fri, 04 Aug 2023 13:04:17 -0700
+To:     mm-commits@vger.kernel.org, stable@vger.kernel.org,
+        songmuchun@bytedance.com, naoya.horiguchi@nec.com, mhocko@suse.com,
+        linmiaohe@huawei.com, jthoughton@google.com, jiaqiyan@google.com,
+        axelrasmussen@google.com, mike.kravetz@oracle.com,
         akpm@linux-foundation.org
 From:   Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] mm-memory-failure-avoid-false-hwpoison-page-mapped-error-info.patch removed from -mm tree
-Message-Id: <20230804200416.DEC35C433C8@smtp.kernel.org>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
+Subject: [merged mm-hotfixes-stable] hugetlb-do-not-clear-hugetlb-dtor-until-allocating-vmemmap.patch removed from -mm tree
+Message-Id: <20230804200418.16D83C433C7@smtp.kernel.org>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
         SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -48,95 +49,214 @@ X-Mailing-List: stable@vger.kernel.org
 
 
 The quilt patch titled
-     Subject: mm: memory-failure: avoid false hwpoison page mapped error info
+     Subject: hugetlb: do not clear hugetlb dtor until allocating vmemmap
 has been removed from the -mm tree.  Its filename was
-     mm-memory-failure-avoid-false-hwpoison-page-mapped-error-info.patch
+     hugetlb-do-not-clear-hugetlb-dtor-until-allocating-vmemmap.patch
 
 This patch was dropped because it was merged into the mm-hotfixes-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: Miaohe Lin <linmiaohe@huawei.com>
-Subject: mm: memory-failure: avoid false hwpoison page mapped error info
-Date: Thu, 27 Jul 2023 19:56:42 +0800
+From: Mike Kravetz <mike.kravetz@oracle.com>
+Subject: hugetlb: do not clear hugetlb dtor until allocating vmemmap
+Date: Tue, 11 Jul 2023 15:09:41 -0700
 
-folio->_mapcount is overloaded in SLAB, so folio_mapped() has to be done
-after folio_test_slab() is checked. Otherwise slab folio might be treated
-as a mapped folio leading to false 'Someone maps the hwpoison page' error
-info.
+Patch series "Fix hugetlb free path race with memory errors".
 
-Link: https://lkml.kernel.org/r/20230727115643.639741-4-linmiaohe@huawei.com
-Fixes: 230ac719c500 ("mm/hwpoison: don't try to unpoison containment-failed pages")
-Signed-off-by: Miaohe Lin <linmiaohe@huawei.com>
-Reviewed-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Acked-by: Naoya Horiguchi <naoya.horiguchi@nec.com>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+In the discussion of Jiaqi Yan's series "Improve hugetlbfs read on
+HWPOISON hugepages" the race window was discovered. 
+https://lore.kernel.org/linux-mm/20230616233447.GB7371@monkey/
+
+Freeing a hugetlb page back to low level memory allocators is performed
+in two steps.
+1) Under hugetlb lock, remove page from hugetlb lists and clear destructor
+2) Outside lock, allocate vmemmap if necessary and call low level free
+Between these two steps, the hugetlb page will appear as a normal
+compound page.  However, vmemmap for tail pages could be missing.
+If a memory error occurs at this time, we could try to update page
+flags non-existant page structs.
+
+A much more detailed description is in the first patch.
+
+The first patch addresses the race window.  However, it adds a
+hugetlb_lock lock/unlock cycle to every vmemmap optimized hugetlb page
+free operation.  This could lead to slowdowns if one is freeing a large
+number of hugetlb pages.
+
+The second path optimizes the update_and_free_pages_bulk routine to only
+take the lock once in bulk operations.
+
+The second patch is technically not a bug fix, but includes a Fixes tag
+and Cc stable to avoid a performance regression.  It can be combined with
+the first, but was done separately make reviewing easier.
+
+
+This patch (of 2):
+
+Freeing a hugetlb page and releasing base pages back to the underlying
+allocator such as buddy or cma is performed in two steps:
+- remove_hugetlb_folio() is called to remove the folio from hugetlb
+  lists, get a ref on the page and remove hugetlb destructor.  This
+  all must be done under the hugetlb lock.  After this call, the page
+  can be treated as a normal compound page or a collection of base
+  size pages.
+- update_and_free_hugetlb_folio() is called to allocate vmemmap if
+  needed and the free routine of the underlying allocator is called
+  on the resulting page.  We can not hold the hugetlb lock here.
+
+One issue with this scheme is that a memory error could occur between
+these two steps.  In this case, the memory error handling code treats
+the old hugetlb page as a normal compound page or collection of base
+pages.  It will then try to SetPageHWPoison(page) on the page with an
+error.  If the page with error is a tail page without vmemmap, a write
+error will occur when trying to set the flag.
+
+Address this issue by modifying remove_hugetlb_folio() and
+update_and_free_hugetlb_folio() such that the hugetlb destructor is not
+cleared until after allocating vmemmap.  Since clearing the destructor
+requires holding the hugetlb lock, the clearing is done in
+remove_hugetlb_folio() if the vmemmap is present.  This saves a
+lock/unlock cycle.  Otherwise, destructor is cleared in
+update_and_free_hugetlb_folio() after allocating vmemmap.
+
+Note that this will leave hugetlb pages in a state where they are marked
+free (by hugetlb specific page flag) and have a ref count.  This is not
+a normal state.  The only code that would notice is the memory error
+code, and it is set up to retry in such a case.
+
+A subsequent patch will create a routine to do bulk processing of
+vmemmap allocation.  This will eliminate a lock/unlock cycle for each
+hugetlb page in the case where we are freeing a large number of pages.
+
+Link: https://lkml.kernel.org/r/20230711220942.43706-1-mike.kravetz@oracle.com
+Link: https://lkml.kernel.org/r/20230711220942.43706-2-mike.kravetz@oracle.com
+Fixes: ad2fa3717b74 ("mm: hugetlb: alloc the vmemmap pages associated with each HugeTLB page")
+Signed-off-by: Mike Kravetz <mike.kravetz@oracle.com>
+Reviewed-by: Muchun Song <songmuchun@bytedance.com>
+Tested-by: Naoya Horiguchi <naoya.horiguchi@nec.com>
+Cc: Axel Rasmussen <axelrasmussen@google.com>
+Cc: James Houghton <jthoughton@google.com>
+Cc: Jiaqi Yan <jiaqiyan@google.com>
+Cc: Miaohe Lin <linmiaohe@huawei.com>
+Cc: Michal Hocko <mhocko@suse.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- mm/memory-failure.c |   10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ mm/hugetlb.c |   75 +++++++++++++++++++++++++++++++++----------------
+ 1 file changed, 51 insertions(+), 24 deletions(-)
 
---- a/mm/memory-failure.c~mm-memory-failure-avoid-false-hwpoison-page-mapped-error-info
-+++ a/mm/memory-failure.c
-@@ -2499,6 +2499,13 @@ int unpoison_memory(unsigned long pfn)
- 		goto unlock_mutex;
- 	}
+--- a/mm/hugetlb.c~hugetlb-do-not-clear-hugetlb-dtor-until-allocating-vmemmap
++++ a/mm/hugetlb.c
+@@ -1579,9 +1579,37 @@ static inline void destroy_compound_giga
+ 						unsigned int order) { }
+ #endif
  
-+	if (folio_test_slab(folio) || PageTable(&folio->page) || folio_test_reserved(folio))
-+		goto unlock_mutex;
++static inline void __clear_hugetlb_destructor(struct hstate *h,
++						struct folio *folio)
++{
++	lockdep_assert_held(&hugetlb_lock);
 +
 +	/*
-+	 * Note that folio->_mapcount is overloaded in SLAB, so the simple test
-+	 * in folio_mapped() has to be done after folio_test_slab() is checked.
++	 * Very subtle
++	 *
++	 * For non-gigantic pages set the destructor to the normal compound
++	 * page dtor.  This is needed in case someone takes an additional
++	 * temporary ref to the page, and freeing is delayed until they drop
++	 * their reference.
++	 *
++	 * For gigantic pages set the destructor to the null dtor.  This
++	 * destructor will never be called.  Before freeing the gigantic
++	 * page destroy_compound_gigantic_folio will turn the folio into a
++	 * simple group of pages.  After this the destructor does not
++	 * apply.
++	 *
 +	 */
- 	if (folio_mapped(folio)) {
- 		unpoison_pr_info("Unpoison: Someone maps the hwpoison page %#lx\n",
- 				 pfn, &unpoison_rs);
-@@ -2511,9 +2518,6 @@ int unpoison_memory(unsigned long pfn)
- 		goto unlock_mutex;
++	if (hstate_is_gigantic(h))
++		folio_set_compound_dtor(folio, NULL_COMPOUND_DTOR);
++	else
++		folio_set_compound_dtor(folio, COMPOUND_PAGE_DTOR);
++}
++
+ /*
+- * Remove hugetlb folio from lists, and update dtor so that the folio appears
+- * as just a compound page.
++ * Remove hugetlb folio from lists.
++ * If vmemmap exists for the folio, update dtor so that the folio appears
++ * as just a compound page.  Otherwise, wait until after allocating vmemmap
++ * to update dtor.
+  *
+  * A reference is held on the folio, except in the case of demote.
+  *
+@@ -1612,31 +1640,19 @@ static void __remove_hugetlb_folio(struc
  	}
  
--	if (folio_test_slab(folio) || PageTable(&folio->page) || folio_test_reserved(folio))
--		goto unlock_mutex;
--
- 	ghp = get_hwpoison_page(p, MF_UNPOISON);
- 	if (!ghp) {
- 		if (PageHuge(p)) {
+ 	/*
+-	 * Very subtle
+-	 *
+-	 * For non-gigantic pages set the destructor to the normal compound
+-	 * page dtor.  This is needed in case someone takes an additional
+-	 * temporary ref to the page, and freeing is delayed until they drop
+-	 * their reference.
+-	 *
+-	 * For gigantic pages set the destructor to the null dtor.  This
+-	 * destructor will never be called.  Before freeing the gigantic
+-	 * page destroy_compound_gigantic_folio will turn the folio into a
+-	 * simple group of pages.  After this the destructor does not
+-	 * apply.
+-	 *
+-	 * This handles the case where more than one ref is held when and
+-	 * after update_and_free_hugetlb_folio is called.
+-	 *
+-	 * In the case of demote we do not ref count the page as it will soon
+-	 * be turned into a page of smaller size.
++	 * We can only clear the hugetlb destructor after allocating vmemmap
++	 * pages.  Otherwise, someone (memory error handling) may try to write
++	 * to tail struct pages.
++	 */
++	if (!folio_test_hugetlb_vmemmap_optimized(folio))
++		__clear_hugetlb_destructor(h, folio);
++
++	 /*
++	  * In the case of demote we do not ref count the page as it will soon
++	  * be turned into a page of smaller size.
+ 	 */
+ 	if (!demote)
+ 		folio_ref_unfreeze(folio, 1);
+-	if (hstate_is_gigantic(h))
+-		folio_set_compound_dtor(folio, NULL_COMPOUND_DTOR);
+-	else
+-		folio_set_compound_dtor(folio, COMPOUND_PAGE_DTOR);
+ 
+ 	h->nr_huge_pages--;
+ 	h->nr_huge_pages_node[nid]--;
+@@ -1705,6 +1721,7 @@ static void __update_and_free_hugetlb_fo
+ {
+ 	int i;
+ 	struct page *subpage;
++	bool clear_dtor = folio_test_hugetlb_vmemmap_optimized(folio);
+ 
+ 	if (hstate_is_gigantic(h) && !gigantic_page_runtime_supported())
+ 		return;
+@@ -1735,6 +1752,16 @@ static void __update_and_free_hugetlb_fo
+ 	if (unlikely(folio_test_hwpoison(folio)))
+ 		folio_clear_hugetlb_hwpoison(folio);
+ 
++	/*
++	 * If vmemmap pages were allocated above, then we need to clear the
++	 * hugetlb destructor under the hugetlb lock.
++	 */
++	if (clear_dtor) {
++		spin_lock_irq(&hugetlb_lock);
++		__clear_hugetlb_destructor(h, folio);
++		spin_unlock_irq(&hugetlb_lock);
++	}
++
+ 	for (i = 0; i < pages_per_huge_page(h); i++) {
+ 		subpage = folio_page(folio, i);
+ 		subpage->flags &= ~(1 << PG_locked | 1 << PG_error |
 _
 
-Patches currently in -mm which might be from linmiaohe@huawei.com are
+Patches currently in -mm which might be from mike.kravetz@oracle.com are
 
-mm-mm_initc-update-obsolete-comment-in-get_pfn_range_for_nid.patch
-mm-memory-failure-fix-unexpected-return-value-in-soft_offline_page.patch
-mm-memory-failure-fix-potential-page-refcnt-leak-in-memory_failure.patch
-mm-memory-failure-remove-unneeded-page-state-check-in-shake_page.patch
-memory-tier-use-helper-function-destroy_memory_type.patch
-mm-memory-failure-remove-unneeded-inline-annotation.patch
-mm-mm_initc-remove-obsolete-macro-hash_small.patch
-mm-page_alloc-avoid-false-page-outside-zone-error-info.patch
-memory-tier-rename-destroy_memory_type-to-put_memory_type.patch
-mm-remove-obsolete-comment-above-struct-per_cpu_pages.patch
-mm-memcg-minor-cleanup-for-mem_cgroup_id_max.patch
-mm-memory-failure-remove-unneeded-pagehuge-check.patch
-mm-memory-failure-ensure-moving-hwpoison-flag-to-the-raw-error-pages.patch
-mm-memory-failure-dont-account-hwpoison_filter-filtered-pages.patch
-mm-memory-failure-use-local-variable-huge-to-check-hugetlb-page.patch
-mm-memory-failure-remove-unneeded-header-files.patch
-mm-memory-failure-minor-cleanup-for-comments-and-codestyle.patch
-mm-memory-failure-fetch-compound-head-after-extra-page-refcnt-is-held.patch
-mm-memory-failure-fix-race-window-when-trying-to-get-hugetlb-folio.patch
-mm-huge_memory-use-rmap_none-when-calling-page_add_anon_rmap.patch
-mm-memcg-fix-obsolete-comment-above-mem_cgroup_max_reclaim_loops.patch
-mm-memcg-minor-cleanup-for-mc_handle_present_pte.patch
-memory-tier-use-helper-macro-__attr_rw.patch
-mm-fix-obsolete-function-name-above-debug_pagealloc_enabled_static.patch
-mm-mprotect-fix-obsolete-function-name-in-change_pte_range.patch
-mm-memcg-fix-obsolete-function-name-in-mem_cgroup_protection.patch
-mm-memory-failure-add-pageoffline-check.patch
-mm-page_alloc-avoid-unneeded-alike_pages-calculation.patch
-mm-memcg-update-obsolete-comment-above-parent_mem_cgroup.patch
-mm-page_alloc-remove-unneeded-variable-base.patch
-mm-memcg-fix-wrong-function-name-above-obj_cgroup_charge_zswap.patch
 
