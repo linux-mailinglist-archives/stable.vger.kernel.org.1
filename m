@@ -2,168 +2,163 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 49F20770103
-	for <lists+stable@lfdr.de>; Fri,  4 Aug 2023 15:16:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A2864770163
+	for <lists+stable@lfdr.de>; Fri,  4 Aug 2023 15:24:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230351AbjHDNP7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 4 Aug 2023 09:15:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57870 "EHLO
+        id S229582AbjHDNYG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 4 Aug 2023 09:24:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60894 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230343AbjHDNP5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 4 Aug 2023 09:15:57 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C0EB011B;
-        Fri,  4 Aug 2023 06:14:21 -0700 (PDT)
+        with ESMTP id S229637AbjHDNWy (ORCPT
+        <rfc822;Stable@vger.kernel.org>); Fri, 4 Aug 2023 09:22:54 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 686B54C00
+        for <Stable@vger.kernel.org>; Fri,  4 Aug 2023 06:21:36 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2860F61FF8;
-        Fri,  4 Aug 2023 13:14:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07F31C433C8;
-        Fri,  4 Aug 2023 13:14:20 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 434D462000
+        for <Stable@vger.kernel.org>; Fri,  4 Aug 2023 13:20:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52F5EC433C8;
+        Fri,  4 Aug 2023 13:20:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691154860;
-        bh=JRE8h+VxG5Sd0jsKXzMVWXS7hQJqeXSQ/aS/ksekctE=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=kiXa8ellOolgBX83CbkFAS4DexJZLm4NO9bEkXxWKDp2PRndVu92Fl8me2/AuA2iW
-         kAyX6ZYB8BHKmENnZohPpK8n/tItrWyZz3yDJt3zsoPqQBM4J+b+jI7prCAVlroolS
-         eC+syGFi33IAs2OJ/bVkE2Lueby6EfFjTC8uOsl8=
-Date:   Fri, 4 Aug 2023 15:14:18 +0200
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Hugo Villeneuve <hugo@hugovil.com>
-Cc:     robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
-        conor+dt@kernel.org, jirislaby@kernel.org, jringle@gridpoint.com,
-        isaac.true@canonical.com, jesse.sung@canonical.com,
-        l.perczak@camlintechnologies.com, tomasz.mon@camlingroup.com,
-        linux-serial@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
-        Hugo Villeneuve <hvilleneuve@dimonoff.com>,
-        stable@vger.kernel.org, Lech Perczak <lech.perczak@camlingroup.com>
-Subject: Re: [PATCH v9 04/10] serial: sc16is7xx: refactor GPIO controller
- registration
-Message-ID: <2023080415-kinetic-repurpose-030a@gregkh>
-References: <20230725142343.1724130-1-hugo@hugovil.com>
- <20230725142343.1724130-5-hugo@hugovil.com>
- <2023073118-mousiness-sandlot-6258@gregkh>
- <20230803121449.bcf74899e062ca39dfb073a3@hugovil.com>
+        s=korg; t=1691155225;
+        bh=1IQVSvqt/MhvAoefq7wO/CxxfPRYs06kO7kREmJRCDk=;
+        h=Subject:To:From:Date:From;
+        b=QSFuT8tMDhBB/kz8ed0bkgfPXx4jym2l7+E5RFhIFiby9XdDqgxqXRFc5O+x+Kk4x
+         ptZRrIMQ1rIymvY51UHfdNYblqurbUu8N9e+kHGR1eK066BWZFRoo1wExDoA6KD8BT
+         u5eT8PewoijS32oFPZtlN6T+8ZPwGZ0sY+I1jdMQ=
+Subject: patch "iio: adc: ina2xx: avoid NULL pointer dereference on OF device match" added to char-misc-linus
+To:     alsi@bang-olufsen.dk, Jonathan.Cameron@huawei.com,
+        Stable@vger.kernel.org
+From:   <gregkh@linuxfoundation.org>
+Date:   Fri, 04 Aug 2023 15:20:14 +0200
+Message-ID: <2023080414-patient-vanish-0697@gregkh>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230803121449.bcf74899e062ca39dfb073a3@hugovil.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, Aug 03, 2023 at 12:14:49PM -0400, Hugo Villeneuve wrote:
-> On Mon, 31 Jul 2023 17:55:42 +0200
-> Greg KH <gregkh@linuxfoundation.org> wrote:
-> 
-> > On Tue, Jul 25, 2023 at 10:23:36AM -0400, Hugo Villeneuve wrote:
-> > > From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-> > > 
-> > > In preparation for upcoming patch "fix regression with GPIO
-> > > configuration". To facilitate review and make code more modular.
-> > 
-> > I would much rather the issue be fixed _before_ the code is refactored,
-> > unless it is impossible to fix it without the refactor?
-> 
-> Hi Greg,
-> normally I would agree, but the refactor in this case helps a lot to
-> address some issues raised by you and Andy in V7 of this series.
-> 
-> Maybe I could merge it with the actual patch "fix regression with GPIO
-> configuration"?
 
-Sure.
+This is a note to let you know that I've just added the patch titled
 
-> > > Cc: <stable@vger.kernel.org> # 6.1.x
-> > 
-> > What commit id does this fix?
-> 
-> It doesn't fix anything, but I tought that I needed this tag since
-> this patch is a prerequisite for the next patch in the series, which
-> would be applied to stable kernels. I will remove this tag (assuming
-> the patch stays as it is, depending on your answer to the above
-> question).
-> 
->  
-> > > Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-> > > Reviewed-by: Lech Perczak <lech.perczak@camlingroup.com>
-> > > Tested-by: Lech Perczak <lech.perczak@camlingroup.com>
-> > > ---
-> > >  drivers/tty/serial/sc16is7xx.c | 40 ++++++++++++++++++++--------------
-> > >  1 file changed, 24 insertions(+), 16 deletions(-)
-> > > 
-> > > diff --git a/drivers/tty/serial/sc16is7xx.c b/drivers/tty/serial/sc16is7xx.c
-> > > index 32d43d00a583..5b0aeef9d534 100644
-> > > --- a/drivers/tty/serial/sc16is7xx.c
-> > > +++ b/drivers/tty/serial/sc16is7xx.c
-> > > @@ -332,6 +332,7 @@ struct sc16is7xx_one {
-> > >  
-> > >  struct sc16is7xx_port {
-> > >  	const struct sc16is7xx_devtype	*devtype;
-> > > +	struct device			*dev;
-> > 
-> > Why is this pointer needed?
-> > 
-> > Why is it grabbed and yet the reference count is never incremented?  Who
-> > owns the reference count and when will it go away?
-> > 
-> > And what device is this?  The parent?  Current device?  What type of
-> > device is it?  And why is it needed?
-> > 
-> > Using "raw" devices is almost never something a driver should do, they
-> > are only passed into functions by the driver core, but then the driver
-> > should instantly turn them into the "real" structure.
-> 
-> We already discussed that a lot in previous versions (v7)... I am
-> trying my best to modify the code to address your concerns, but I am
-> not fully understanding what you mean about raw devices, and you didn't
-> answer some of my previous questions/interrogations in v7 about that.
+    iio: adc: ina2xx: avoid NULL pointer dereference on OF device match
 
-I don't have time to answer all questions, sorry.
+to my char-misc git tree which can be found at
+    git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/char-misc.git
+in the char-misc-linus branch.
 
-Please help review submitted patches to reduce my load and allow me to
-answer other stuff :)
+The patch will show up in the next release of the linux-next tree
+(usually sometime within the next 24 hours during the week.)
 
-> So, in the new function that I
-> need to implement, sc16is7xx_setup_gpio_chip(), I absolutely need to use
-> a raw device to read a device tree property and to set
-> s->gpio.parent:
-> 
->     count = device_property_count_u32(dev, ...
->     ...
->     s->gpio.parent = dev;
-> 
-> Do we agree on that?
+The patch will hopefully also be merged in Linus's tree for the
+next -rc kernel release.
 
-Yes, but what type of parent is that?
+If you have any questions about this process, please let me know.
 
-> Then, how do I pass this raw device to the 
-> device_property_count_u32() function and to the s->gpio.parent
-> assignment?
-> 
-> Should I modify sc16is7xx_setup_gpio_chip() like so:
-> 
->     static int sc16is7xx_setup_gpio_chip(struct sc16is7xx_port *s)
->     {
-> 	struct device *dev = &s->p[0].port.dev;
-> 
->         count = device_property_count_u32(dev, ...
->         ...
->         s->gpio.parent = dev;
 
-Again, what is the real type of that parent?  It's a port, right, so
-pass in the port to this function and then do the "take the struct
-device of the port" at that point in time.
+From a41e19cc0d6b6a445a4133170b90271e4a2553dc Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Alvin=20=C5=A0ipraga?= <alsi@bang-olufsen.dk>
+Date: Mon, 19 Jun 2023 16:12:39 +0200
+Subject: iio: adc: ina2xx: avoid NULL pointer dereference on OF device match
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-thanks,
+The affected lines were resulting in a NULL pointer dereference on our
+platform because the device tree contained the following list of
+compatible strings:
 
-greg k-h
+    power-sensor@40 {
+        compatible = "ti,ina232", "ti,ina231";
+        ...
+    };
+
+Since the driver doesn't declare a compatible string "ti,ina232", the OF
+matching succeeds on "ti,ina231". But the I2C device ID info is
+populated via the first compatible string, cf. modalias population in
+of_i2c_get_board_info(). Since there is no "ina232" entry in the legacy
+I2C device ID table either, the struct i2c_device_id *id pointer in the
+probe function is NULL.
+
+Fix this by using the already populated type variable instead, which
+points to the proper driver data. Since the name is also wanted, add a
+generic one to the ina2xx_config table.
+
+Signed-off-by: Alvin Šipraga <alsi@bang-olufsen.dk>
+Fixes: c43a102e67db ("iio: ina2xx: add support for TI INA2xx Power Monitors")
+Link: https://lore.kernel.org/r/20230619141239.2257392-1-alvin@pqrs.dk
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+---
+ drivers/iio/adc/ina2xx-adc.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/iio/adc/ina2xx-adc.c b/drivers/iio/adc/ina2xx-adc.c
+index 213526c1592f..aea83f369437 100644
+--- a/drivers/iio/adc/ina2xx-adc.c
++++ b/drivers/iio/adc/ina2xx-adc.c
+@@ -124,6 +124,7 @@ static const struct regmap_config ina2xx_regmap_config = {
+ enum ina2xx_ids { ina219, ina226 };
+ 
+ struct ina2xx_config {
++	const char *name;
+ 	u16 config_default;
+ 	int calibration_value;
+ 	int shunt_voltage_lsb;	/* nV */
+@@ -155,6 +156,7 @@ struct ina2xx_chip_info {
+ 
+ static const struct ina2xx_config ina2xx_config[] = {
+ 	[ina219] = {
++		.name = "ina219",
+ 		.config_default = INA219_CONFIG_DEFAULT,
+ 		.calibration_value = 4096,
+ 		.shunt_voltage_lsb = 10000,
+@@ -164,6 +166,7 @@ static const struct ina2xx_config ina2xx_config[] = {
+ 		.chip_id = ina219,
+ 	},
+ 	[ina226] = {
++		.name = "ina226",
+ 		.config_default = INA226_CONFIG_DEFAULT,
+ 		.calibration_value = 2048,
+ 		.shunt_voltage_lsb = 2500,
+@@ -996,7 +999,7 @@ static int ina2xx_probe(struct i2c_client *client)
+ 	/* Patch the current config register with default. */
+ 	val = chip->config->config_default;
+ 
+-	if (id->driver_data == ina226) {
++	if (type == ina226) {
+ 		ina226_set_average(chip, INA226_DEFAULT_AVG, &val);
+ 		ina226_set_int_time_vbus(chip, INA226_DEFAULT_IT, &val);
+ 		ina226_set_int_time_vshunt(chip, INA226_DEFAULT_IT, &val);
+@@ -1015,7 +1018,7 @@ static int ina2xx_probe(struct i2c_client *client)
+ 	}
+ 
+ 	indio_dev->modes = INDIO_DIRECT_MODE;
+-	if (id->driver_data == ina226) {
++	if (type == ina226) {
+ 		indio_dev->channels = ina226_channels;
+ 		indio_dev->num_channels = ARRAY_SIZE(ina226_channels);
+ 		indio_dev->info = &ina226_info;
+@@ -1024,7 +1027,7 @@ static int ina2xx_probe(struct i2c_client *client)
+ 		indio_dev->num_channels = ARRAY_SIZE(ina219_channels);
+ 		indio_dev->info = &ina219_info;
+ 	}
+-	indio_dev->name = id->name;
++	indio_dev->name = id ? id->name : chip->config->name;
+ 
+ 	ret = devm_iio_kfifo_buffer_setup(&client->dev, indio_dev,
+ 					  &ina2xx_setup_ops);
+-- 
+2.41.0
+
+
