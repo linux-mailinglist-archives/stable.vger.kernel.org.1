@@ -2,201 +2,213 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8F22B770739
-	for <lists+stable@lfdr.de>; Fri,  4 Aug 2023 19:34:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 387627707A1
+	for <lists+stable@lfdr.de>; Fri,  4 Aug 2023 20:12:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232282AbjHDRey (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 4 Aug 2023 13:34:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58056 "EHLO
+        id S230332AbjHDSMl (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 4 Aug 2023 14:12:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47690 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229776AbjHDRex (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 4 Aug 2023 13:34:53 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D74104C18
-        for <stable@vger.kernel.org>; Fri,  4 Aug 2023 10:34:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1691170440;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=5HCex7OscvVPSb+aVsDqyfjlMqtwIJUHlLvy33ZAyJg=;
-        b=Oe/+GKoGFRcuFwliSPsV0rTAVOmxn+ZYI8Rgq3FEOpzbewnkS3/Gn9HUEDv96QjIlsT6EH
-        dym1aV0NbhgeXT7kPuUg1ZpINh2WHODPZ/9m/g0aFX0hCWE13zUWz+B7rImlbyrl9fVZVi
-        ESW4xC6Pg+7/kdtjtL8mKGFklpPHa3s=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-665-3gt5amElNl-qUyHzN-fuzA-1; Fri, 04 Aug 2023 13:33:57 -0400
-X-MC-Unique: 3gt5amElNl-qUyHzN-fuzA-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com [10.11.54.8])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 083F780027F;
-        Fri,  4 Aug 2023 17:33:57 +0000 (UTC)
-Received: from virtlab511.virt.lab.eng.bos.redhat.com (virtlab511.virt.lab.eng.bos.redhat.com [10.19.152.198])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id C7025C5796B;
-        Fri,  4 Aug 2023 17:33:56 +0000 (UTC)
-From:   Paolo Bonzini <pbonzini@redhat.com>
-To:     linux-kernel@vger.kernel.org, kvm@vger.kernel.org
-Cc:     pgonda@google.com, seanjc@google.com, theflow@google.com,
-        vkuznets@redhat.com, thomas.lendacky@amd.com,
-        stable@vger.kernel.org
-Subject: [PATCH 2/3] KVM: SEV: only access GHCB fields once
-Date:   Fri,  4 Aug 2023 13:33:54 -0400
-Message-Id: <20230804173355.51753-3-pbonzini@redhat.com>
-In-Reply-To: <20230804173355.51753-1-pbonzini@redhat.com>
-References: <20230804173355.51753-1-pbonzini@redhat.com>
+        with ESMTP id S230355AbjHDSMV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 4 Aug 2023 14:12:21 -0400
+Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [85.215.255.51])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5567C59C4
+        for <stable@vger.kernel.org>; Fri,  4 Aug 2023 11:11:50 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1691172518; cv=none;
+    d=strato.com; s=strato-dkim-0002;
+    b=fLf+nk6TZ5/qH5xbTHujlQihJ+fdkpdlkHtvB5tAYn+mDVLQU9cQz2LGRlQWX6t7qU
+    PIsg8zwSyXA9qHaEn1pC2HmGu2soyr2QvHIxUHzwizMggUSVt8w7PRc01H6tCC/DTjb6
+    11ZVN+Kjh1jfu2Ey4Il5LU250qBWCxKZLWJ70jkBEW/gMaIwhbTSoF9HxE7jz186BQaO
+    +rsVlRE8ZMq15tFixuxz+6quYGZEyf7QLN4OiXvpi3OXbzGj22iaEwoAr7hFOiA3xNF4
+    Nia2ihmYMo4f5vpga810CpnuDsEsdvzThiUSmlvmSgdpn1bEeY5JJJ1vPogmTsV5nhBG
+    Ay/w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1691172518;
+    s=strato-dkim-0002; d=strato.com;
+    h=References:Message-ID:In-Reply-To:Subject:cc:To:From:Date:Cc:Date:
+    From:Subject:Sender;
+    bh=KbTSG9OgTKvRp1/Rflsl/+c1/jWgayXkjXruRYIH3Xw=;
+    b=Uk8PNA/duUTotcZ3Frn3wKQfOv+CgK5MVlj8aJ/OQHGQCASRaWUw7zq6iGkZG2rKPu
+    PozBVKfSX+HaCBWKfH095cp5iHAJSSc3LaBOO5zMIIPo9vLyYh0fZUQ2xTb7wRufLxW2
+    YU9lKA0F1ICmYNagjtmM3vF44n1Sn36f00tytfc3uN+64FkXXwr+iOjR1czrZKwRp1Xv
+    bn7gjANuPrTjbG6tK1cvNp3hArnRGOlqHgdKcUNh17bJA+VnAoNZ6TsRsWdYBdcB+PPn
+    HSF8a0fzrzjPA+P5GTW1boaHYWSYVLxPkE/GfR4sZwL2PZUa1Pa4p9N+dQmEp2frKFdE
+    j4+A==
+ARC-Authentication-Results: i=1; strato.com;
+    arc=none;
+    dkim=none
+X-RZG-CLASS-ID: mo01
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1691172518;
+    s=strato-dkim-0002; d=kravcenko.com;
+    h=References:Message-ID:In-Reply-To:Subject:cc:To:From:Date:Cc:Date:
+    From:Subject:Sender;
+    bh=KbTSG9OgTKvRp1/Rflsl/+c1/jWgayXkjXruRYIH3Xw=;
+    b=A0opKnKoCEgKBI3styBUJ26OhIZbUV77w1z0cXQobnxZspsnnl4IJloSs3q+pOTnis
+    TBjWAuOwWQUMoq4y7thXEPm7K6b2xpjs/dc5zPMlA/ArB2Rrlt88fIy9oPR/pp/CFIS0
+    OFY32W3WZTpFr0ETQ+gPhh4i5D9lv6xOQ1VxFPGDnFWxOqmOd632fmVt4XroIgpSvrxm
+    Zef73QJ97qvcv/9m2uBoXMSCn/GhJwbvs/pQWZSnhzVkupL5Q6JB+EA5xPhWr315CbVv
+    Sx+WcqF9lTOWZFtE/qJpasi7D1lHcdpAz/AnKAKMdsdR2nak60XvGmskeXv4H33qVSZA
+    foQw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1691172518;
+    s=strato-dkim-0003; d=kravcenko.com;
+    h=References:Message-ID:In-Reply-To:Subject:cc:To:From:Date:Cc:Date:
+    From:Subject:Sender;
+    bh=KbTSG9OgTKvRp1/Rflsl/+c1/jWgayXkjXruRYIH3Xw=;
+    b=0an8gO4fImtydXd66lp/kXKz3RH+alieDeZJc2Zln8/f9ldqZYpcQvqjsXwz7TnmmI
+    rkO5nLWsUfOL3PrF7hDw==
+X-RZG-AUTH: ":I2AFc2Cjaf5HiRB0lhnvZ9elhwku56KjVuxY6AZJWRy8C0aEhFGYVtZdsoywGOIVpSHY0o63PckPhiSO1IhQGG0mBjo18W4hBO/Ijw=="
+Received: from p200300c7f704d301468a5bfffe84f964.dip0.t-ipconnect.de
+    by smtp.strato.de (RZmta 49.6.6 AUTH)
+    with ESMTPSA id dd2654z74I8cXS7
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+        (Client did not present a certificate);
+    Fri, 4 Aug 2023 20:08:38 +0200 (CEST)
+Date:   Fri, 4 Aug 2023 20:08:30 +0200 (CEST)
+From:   Olaf Skibbe <news@kravcenko.com>
+To:     Karol Herbst <kherbst@redhat.com>
+cc:     Thorsten Leemhuis <regressions@leemhuis.info>,
+        dri-devel@lists.freedesktop.org, nouveau@lists.freedesktop.org,
+        1042753@bugs.debian.org, Ben Skeggs <bskeggs@redhat.com>,
+        Lyude Paul <lyude@redhat.com>,
+        Linux kernel regressions list <regressions@lists.linux.dev>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: Re: nouveau bug in linux/6.1.38-2
+In-Reply-To: <CACO55ttcUEUjdVgx4y7pv26VAGeHS5q1wVKWrMw5=o9QLaJLZw@mail.gmail.com>
+Message-ID: <977ac5b0-4ab8-7782-10e1-b4bee6b58030@kravcenko.com>
+References: <20be6650-5db3-b72a-a7a8-5e817113cff5@kravcenko.com> <c27fb4dd-b2dc-22de-4425-6c7db5f543ba@leemhuis.info> <CACO55ttcUEUjdVgx4y7pv26VAGeHS5q1wVKWrMw5=o9QLaJLZw@mail.gmail.com>
+User-Agent: Alpine 2.26 (DEB 649 2022-06-02)
 MIME-Version: 1.0
-Content-Type: text/plain
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.8
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Type: multipart/mixed; boundary="-1463786238-675451933-1691172518=:22036"
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_NONE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-A KVM guest using SEV-ES or SEV-SNP with multiple vCPUs can trigger
-a double fetch race condition vulnerability and invoke the VMGEXIT
-handler recursively.
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-sev_handle_vmgexit() maps the GHCB page using kvm_vcpu_map() and then
-fetches the exit code using ghcb_get_sw_exit_code().  Soon after,
-sev_es_validate_vmgexit() fetches the exit code again. Since the GHCB
-page is shared with the guest, the guest is able to quickly swap the
-values with another vCPU and hence bypass the validation. One vmexit code
-that can be rejected by sev_es_validate_vmgexit() is SVM_EXIT_VMGEXIT;
-if sev_handle_vmgexit() observes it in the second fetch, the call
-to svm_invoke_exit_handler() will invoke sev_handle_vmgexit() again
-recursively.
+---1463786238-675451933-1691172518=:22036
+Content-Type: text/plain; format=flowed; charset=US-ASCII
 
-To avoid the race, always fetch the GHCB data from the places where
-sev_es_sync_from_ghcb stores it.
+Dear all,
 
-Exploiting recursions on linux kernel has been proven feasible
-in the past, but the impact is mitigated by stack guard pages
-(CONFIG_VMAP_STACK).  Still, if an attacker manages to call the handler
-multiple times, they can theoretically trigger a stack overflow and
-cause a denial-of-service, or potentially guest-to-host escape in kernel
-configurations without stack guard pages.
+On Fri, 4 Aug 2023 at 14:15, Karol Herbst wrote:
 
-Note that winning the race reliably in every iteration is very tricky
-due to the very tight window of the fetches; depending on the compiler
-settings, they are often consecutive because of optimization and inlining.
+>>> 62aecf23f3d1 drm/nouveau: add nv_encoder pointer check for NULL
+>>> fb725beca62d drm/nouveau/dp: check for NULL nv_connector->native_mode
+>>> 90748be0f4f3 drm/nouveau: don't detect DSM for non-NVIDIA device
+>>> 5a144bad3e75 nouveau: fix client work fence deletion race
+>
+> mind retrying with only fb725beca62d and 62aecf23f3d1 reverted? Would 
+> be weird if the other two commits are causing it. If that's the case, 
+> it's a bit worrying that reverting either of the those causes issues, 
+> but maybe there is a good reason for it. Anyway, mind figuring out 
+> which of the two you need reverted to fix your issue? Thanks!
 
-Tested by booting an SEV-ES RHEL9 guest.
+The result is:
 
-Fixes: CVE-2023-4155
-Fixes: 291bd20d5d88 ("KVM: SVM: Add initial support for a VMGEXIT VMEXIT")
-Cc: stable@vger.kernel.org
-Reported-by: Andy Nguyen <theflow@google.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
- arch/x86/kvm/svm/sev.c | 25 ++++++++++++++-----------
- 1 file changed, 14 insertions(+), 11 deletions(-)
+Patch with commit fb725beca62d reverted: Graphics works. I attached the 
+respective patch again to this mail.
 
-diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-index e898f0b2b0ba..ca4ba5fe9a01 100644
---- a/arch/x86/kvm/svm/sev.c
-+++ b/arch/x86/kvm/svm/sev.c
-@@ -2445,9 +2445,15 @@ static void sev_es_sync_from_ghcb(struct vcpu_svm *svm)
- 	memset(ghcb->save.valid_bitmap, 0, sizeof(ghcb->save.valid_bitmap));
- }
- 
-+static u64 kvm_ghcb_get_sw_exit_code(struct vmcb_control_area *control)
-+{
-+	return (((u64)control->exit_code_hi) << 32) | control->exit_code;
-+}
-+
- static int sev_es_validate_vmgexit(struct vcpu_svm *svm)
- {
--	struct kvm_vcpu *vcpu;
-+	struct vmcb_control_area *control = &svm->vmcb->control;
-+	struct kvm_vcpu *vcpu = &svm->vcpu;
- 	struct ghcb *ghcb;
- 	u64 exit_code;
- 	u64 reason;
-@@ -2458,7 +2464,7 @@ static int sev_es_validate_vmgexit(struct vcpu_svm *svm)
- 	 * Retrieve the exit code now even though it may not be marked valid
- 	 * as it could help with debugging.
- 	 */
--	exit_code = ghcb_get_sw_exit_code(ghcb);
-+	exit_code = kvm_ghcb_get_sw_exit_code(control);
- 
- 	/* Only GHCB Usage code 0 is supported */
- 	if (ghcb->ghcb_usage) {
-@@ -2473,7 +2479,7 @@ static int sev_es_validate_vmgexit(struct vcpu_svm *svm)
- 	    !kvm_ghcb_sw_exit_info_2_is_valid(svm))
- 		goto vmgexit_err;
- 
--	switch (ghcb_get_sw_exit_code(ghcb)) {
-+	switch (exit_code) {
- 	case SVM_EXIT_READ_DR7:
- 		break;
- 	case SVM_EXIT_WRITE_DR7:
-@@ -2490,18 +2496,18 @@ static int sev_es_validate_vmgexit(struct vcpu_svm *svm)
- 		if (!kvm_ghcb_rax_is_valid(svm) ||
- 		    !kvm_ghcb_rcx_is_valid(svm))
- 			goto vmgexit_err;
--		if (ghcb_get_rax(ghcb) == 0xd)
-+		if (vcpu->arch.regs[VCPU_REGS_RAX] == 0xd)
- 			if (!kvm_ghcb_xcr0_is_valid(svm))
- 				goto vmgexit_err;
- 		break;
- 	case SVM_EXIT_INVD:
- 		break;
- 	case SVM_EXIT_IOIO:
--		if (ghcb_get_sw_exit_info_1(ghcb) & SVM_IOIO_STR_MASK) {
-+		if (control->exit_info_1 & SVM_IOIO_STR_MASK) {
- 			if (!kvm_ghcb_sw_scratch_is_valid(svm))
- 				goto vmgexit_err;
- 		} else {
--			if (!(ghcb_get_sw_exit_info_1(ghcb) & SVM_IOIO_TYPE_MASK))
-+			if (!(control->exit_info_1 & SVM_IOIO_TYPE_MASK))
- 				if (!kvm_ghcb_rax_is_valid(svm))
- 					goto vmgexit_err;
- 		}
-@@ -2509,7 +2515,7 @@ static int sev_es_validate_vmgexit(struct vcpu_svm *svm)
- 	case SVM_EXIT_MSR:
- 		if (!kvm_ghcb_rcx_is_valid(svm))
- 			goto vmgexit_err;
--		if (ghcb_get_sw_exit_info_1(ghcb)) {
-+		if (control->exit_info_1) {
- 			if (!kvm_ghcb_rax_is_valid(svm) ||
- 			    !kvm_ghcb_rdx_is_valid(svm))
- 				goto vmgexit_err;
-@@ -2553,8 +2559,6 @@ static int sev_es_validate_vmgexit(struct vcpu_svm *svm)
- 	return 0;
- 
- vmgexit_err:
--	vcpu = &svm->vcpu;
--
- 	if (reason == GHCB_ERR_INVALID_USAGE) {
- 		vcpu_unimpl(vcpu, "vmgexit: ghcb usage %#x is not valid\n",
- 			    ghcb->ghcb_usage);
-@@ -2852,8 +2856,6 @@ int sev_handle_vmgexit(struct kvm_vcpu *vcpu)
- 
- 	trace_kvm_vmgexit_enter(vcpu->vcpu_id, ghcb);
- 
--	exit_code = ghcb_get_sw_exit_code(ghcb);
--
- 	sev_es_sync_from_ghcb(svm);
- 	ret = sev_es_validate_vmgexit(svm);
- 	if (ret)
-@@ -2862,6 +2864,7 @@ int sev_handle_vmgexit(struct kvm_vcpu *vcpu)
- 	ghcb_set_sw_exit_info_1(ghcb, 0);
- 	ghcb_set_sw_exit_info_2(ghcb, 0);
- 
-+	exit_code = kvm_ghcb_get_sw_exit_code(control);
- 	switch (exit_code) {
- 	case SVM_VMGEXIT_MMIO_READ:
- 		ret = setup_vmgexit_scratch(svm, true, control->exit_info_2);
--- 
-2.39.0
+Patch with commit 62aecf23f3d1 reverted: Screen remains black, error 
+message:
 
+# dmesg | grep -A 36 "cut here"
+[    2.921358] ------------[ cut here ]------------
+[    2.921361] WARNING: CPU: 1 PID: 176 at drivers/gpu/drm/nouveau/nvkm/engine/disp/dp.c:460 nvkm_dp_acquire+0x26a/0x490 [nouveau]
+[    2.921627] Modules linked in: sd_mod(E) t10_pi(E) crc64_rocksoft(E) sr_mod(E) crc64(E) crc_t10dif(E) crct10dif_generic(E) cdrom(E) nouveau(E+) mxm_wmi(E) i2c_algo_bit(E) drm_display_helper(E) cec(E) ahci(E) rc_core(E) drm_ttm_helper(E) libahci(E) ttm(E) ehci_pci(E) crct10dif_pclmul(E) crct10dif_common(E) ehci_hcd(E) drm_kms_helper(E) crc32_pclmul(E) firewire_ohci(E) sdhci_pci(E) cqhci(E) libata(E) e1000e(E) sdhci(E) psmouse(E) crc32c_intel(E) lpc_ich(E) ptp(E) i2c_i801(E) scsi_mod(E) i2c_smbus(E) firewire_core(E) scsi_common(E) usbcore(E) crc_itu_t(E) mmc_core(E) drm(E) pps_core(E) usb_common(E) battery(E) video(E) wmi(E) button(E)
+[    2.921695] CPU: 1 PID: 176 Comm: kworker/u16:5 Tainted: G            E      6.1.0-0.a.test-amd64 #1  Debian 6.1.38-2a~test
+[    2.921701] Hardware name: Dell Inc. Latitude E6510/0N5KHN, BIOS A17 05/12/2017
+[    2.921705] Workqueue: nvkm-disp nv50_disp_super [nouveau]
+[    2.921948] RIP: 0010:nvkm_dp_acquire+0x26a/0x490 [nouveau]
+[    2.922192] Code: 48 8b 44 24 58 65 48 2b 04 25 28 00 00 00 0f 85 37 02 00 00 48 83 c4 60 44 89 e0 5b 5d 41 5c 41 5d 41 5e 41 5f c3 cc cc cc cc <0f> 0b c1 e8 03 41 88 6d 62 44 89 fe 48 89 df 48 69 c0 cf 0d d6 26
+[    2.922196] RSP: 0018:ffffc077c04dfd60 EFLAGS: 00010246
+[    2.922201] RAX: 0000000000041eb0 RBX: ffff9a8482624c00 RCX: 0000000000041eb0
+[    2.922204] RDX: ffffffffc0b47760 RSI: 0000000000000000 RDI: ffffc077c04dfcf0
+[    2.922206] RBP: 0000000000000001 R08: ffffc077c04dfc64 R09: 0000000000005b76
+[    2.922209] R10: 000000000000000d R11: ffffc077c04dfde0 R12: 00000000ffffffea
+[    2.922212] R13: ffff9a8517541e00 R14: 0000000000044d45 R15: 0000000000000000
+[    2.922215] FS:  0000000000000000(0000) GS:ffff9a85a3c40000(0000) knlGS:0000000000000000
+[    2.922219] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[    2.922222] CR2: 000055f660bcb3a8 CR3: 0000000197610000 CR4: 00000000000006e0
+[    2.922226] Call Trace:
+[    2.922231]  <TASK>
+[    2.922235]  ? __warn+0x7d/0xc0
+[    2.922244]  ? nvkm_dp_acquire+0x26a/0x490 [nouveau]
+[    2.922487]  ? report_bug+0xe6/0x170
+[    2.922494]  ? handle_bug+0x41/0x70
+[    2.922501]  ? exc_invalid_op+0x13/0x60
+[    2.922505]  ? asm_exc_invalid_op+0x16/0x20
+[    2.922512]  ? init_reset_begun+0x20/0x20 [nouveau]
+[    2.922708]  ? nvkm_dp_acquire+0x26a/0x490 [nouveau]
+[    2.922954]  nv50_disp_super_2_2+0x70/0x430 [nouveau]
+[    2.923200]  nv50_disp_super+0x113/0x210 [nouveau]
+[    2.923445]  process_one_work+0x1c7/0x380
+[    2.923456]  worker_thread+0x4d/0x380
+[    2.923463]  ? rescuer_thread+0x3a0/0x3a0
+[    2.923469]  kthread+0xe9/0x110
+[    2.923476]  ? kthread_complete_and_exit+0x20/0x20
+[    2.923482]  ret_from_fork+0x22/0x30
+[    2.923493]  </TASK>
+[    2.923494] ---[ end trace 0000000000000000 ]---
 
+(Maybe it's worth to mention that the LED back-light is on, while the 
+screen appears black.)
+
+Cheers,
+Olaf
+
+P.S.: By the way: as a linux user for more than 20 years, I am very 
+pleased to have the opportunity to contribute at least a little bit to 
+the improvement. I'd like to use the chance to thank you all very much 
+for building and developing this great operating system.
+---1463786238-675451933-1691172518=:22036
+Content-Type: text/x-diff; name=0002-Revert-drm-nouveau-dp-check-for-NULL-nv_connector-na.patch
+Content-Transfer-Encoding: BASE64
+Content-ID: <6f94cf73-1a71-90ac-9374-6c19b6d5ca06@cam.uni-heidelberg.de>
+Content-Description: 
+Content-Disposition: attachment; filename=0002-Revert-drm-nouveau-dp-check-for-NULL-nv_connector-na.patch
+
+RnJvbSA0N2MwZTkzOGJlZWY3MzM1ZmZhMTc5ZjEwMDY3NTRmOTY2NGM2YzRk
+IE1vbiBTZXAgMTcgMDA6MDA6MDAgMjAwMQ0KRnJvbTogRGllZGVyaWsgZGUg
+SGFhcyA8ZGlkaS5kZWJpYW5AY2tub3cub3JnPg0KRGF0ZTogTW9uLCAzMSBK
+dWwgMjAyMyAxOTo1NTo1NCArMDIwMA0KU3ViamVjdDogW1BBVENIIDIvNF0g
+UmV2ZXJ0ICJkcm0vbm91dmVhdS9kcDogY2hlY2sgZm9yIE5VTEwNCiBudl9j
+b25uZWN0b3ItPm5hdGl2ZV9tb2RlIg0KDQpUaGlzIHJldmVydHMgY29tbWl0
+IGZiNzI1YmVjYTYyZDE3NWMwMmNhNjE5YzI3MDM3YzE0ZjdhYjhlN2MuDQot
+LS0NCiBkcml2ZXJzL2dwdS9kcm0vbm91dmVhdS9ub3V2ZWF1X2Nvbm5lY3Rv
+ci5jIHwgNCArKy0tDQogMSBmaWxlIGNoYW5nZWQsIDIgaW5zZXJ0aW9ucygr
+KSwgMiBkZWxldGlvbnMoLSkNCg0KZGlmZiAtLWdpdCBhL2RyaXZlcnMvZ3B1
+L2RybS9ub3V2ZWF1L25vdXZlYXVfY29ubmVjdG9yLmMgYi9kcml2ZXJzL2dw
+dS9kcm0vbm91dmVhdS9ub3V2ZWF1X2Nvbm5lY3Rvci5jDQppbmRleCBmZDk4
+NDczM2I4ZTYuLjE5OTFiYmIxZDA1YyAxMDA2NDQNCi0tLSBhL2RyaXZlcnMv
+Z3B1L2RybS9ub3V2ZWF1L25vdXZlYXVfY29ubmVjdG9yLmMNCisrKyBiL2Ry
+aXZlcnMvZ3B1L2RybS9ub3V2ZWF1L25vdXZlYXVfY29ubmVjdG9yLmMNCkBA
+IC05NjYsNyArOTY2LDcgQEAgbm91dmVhdV9jb25uZWN0b3JfZ2V0X21vZGVz
+KHN0cnVjdCBkcm1fY29ubmVjdG9yICpjb25uZWN0b3IpDQogCS8qIERldGVy
+bWluZSBkaXNwbGF5IGNvbG91ciBkZXB0aCBmb3IgZXZlcnl0aGluZyBleGNl
+cHQgTFZEUyBub3csDQogCSAqIERQIHJlcXVpcmVzIHRoaXMgYmVmb3JlIG1v
+ZGVfdmFsaWQoKSBpcyBjYWxsZWQuDQogCSAqLw0KLQlpZiAoY29ubmVjdG9y
+LT5jb25uZWN0b3JfdHlwZSAhPSBEUk1fTU9ERV9DT05ORUNUT1JfTFZEUyAm
+JiBudl9jb25uZWN0b3ItPm5hdGl2ZV9tb2RlKQ0KKwlpZiAoY29ubmVjdG9y
+LT5jb25uZWN0b3JfdHlwZSAhPSBEUk1fTU9ERV9DT05ORUNUT1JfTFZEUykN
+CiAJCW5vdXZlYXVfY29ubmVjdG9yX2RldGVjdF9kZXB0aChjb25uZWN0b3Ip
+Ow0KIA0KIAkvKiBGaW5kIHRoZSBuYXRpdmUgbW9kZSBpZiB0aGlzIGlzIGEg
+ZGlnaXRhbCBwYW5lbCwgaWYgd2UgZGlkbid0DQpAQCAtOTg3LDcgKzk4Nyw3
+IEBAIG5vdXZlYXVfY29ubmVjdG9yX2dldF9tb2RlcyhzdHJ1Y3QgZHJtX2Nv
+bm5lY3RvciAqY29ubmVjdG9yKQ0KIAkgKiAibmF0aXZlIiBtb2RlIGFzIHNv
+bWUgVkJJT1MgdGFibGVzIHJlcXVpcmUgdXMgdG8gdXNlIHRoZQ0KIAkgKiBw
+aXhlbCBjbG9jayBhcyBwYXJ0IG9mIHRoZSBsb29rdXAuLi4NCiAJICovDQot
+CWlmIChjb25uZWN0b3ItPmNvbm5lY3Rvcl90eXBlID09IERSTV9NT0RFX0NP
+Tk5FQ1RPUl9MVkRTICYmIG52X2Nvbm5lY3Rvci0+bmF0aXZlX21vZGUpDQor
+CWlmIChjb25uZWN0b3ItPmNvbm5lY3Rvcl90eXBlID09IERSTV9NT0RFX0NP
+Tk5FQ1RPUl9MVkRTKQ0KIAkJbm91dmVhdV9jb25uZWN0b3JfZGV0ZWN0X2Rl
+cHRoKGNvbm5lY3Rvcik7DQogDQogCWlmIChudl9lbmNvZGVyLT5kY2ItPnR5
+cGUgPT0gRENCX09VVFBVVF9UVikNCi0tIA0KMi40MC4xDQoNCg==
+
+---1463786238-675451933-1691172518=:22036--
