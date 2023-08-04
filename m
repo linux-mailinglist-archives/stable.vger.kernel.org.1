@@ -2,118 +2,194 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C217176F92A
-	for <lists+stable@lfdr.de>; Fri,  4 Aug 2023 06:53:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 97F5F76FA55
+	for <lists+stable@lfdr.de>; Fri,  4 Aug 2023 08:45:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232994AbjHDExQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 4 Aug 2023 00:53:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38654 "EHLO
+        id S232524AbjHDGpT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 4 Aug 2023 02:45:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42860 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232818AbjHDExG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 4 Aug 2023 00:53:06 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 485C52D49;
-        Thu,  3 Aug 2023 21:53:04 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CBF2561F23;
-        Fri,  4 Aug 2023 04:53:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D0AAC433C7;
-        Fri,  4 Aug 2023 04:53:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691124783;
-        bh=H0r420Rv0jy6sbduYNWFrMk8bU+2FH4efv4MEVBrzMk=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=D4cGJjtV8HI447xvYWdb3TtixgaYUV4PkbGZAkQwzpTeDXuW6Jj/iHFtyrvaMEgDg
-         PYe7vOi2o78mzoGYJpOAdiiv0m5N94xeuL4QAZJQJEN1X23SDJBT7L3ncQ6bmQaGRf
-         ZZ/qzezvQvEnP9vVTShhbv9jCz/WuArL/djMoQcQ=
-Date:   Fri, 4 Aug 2023 06:53:00 +0200
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Hugo Villeneuve <hugo@hugovil.com>, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
-        jirislaby@kernel.org, jringle@gridpoint.com,
-        isaac.true@canonical.com, jesse.sung@canonical.com,
-        l.perczak@camlintechnologies.com, tomasz.mon@camlingroup.com,
-        linux-serial@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
-        Hugo Villeneuve <hvilleneuve@dimonoff.com>,
-        stable@vger.kernel.org, Lech Perczak <lech.perczak@camlingroup.com>
-Subject: Re: [PATCH v9 06/10] serial: sc16is7xx: fix regression with GPIO
- configuration
-Message-ID: <2023080434-outcast-preheated-29b1@gregkh>
-References: <20230725142343.1724130-1-hugo@hugovil.com>
- <20230725142343.1724130-7-hugo@hugovil.com>
- <2023073105-elevation-canister-2777@gregkh>
- <20230803101814.39a61229d81dcd3e96cbe8ee@hugovil.com>
- <CAHp75VdCqqZfQXRRWUkbDTf_gd3T60Stp+m59Q34iWxddLiG5g@mail.gmail.com>
+        with ESMTP id S230236AbjHDGpS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 4 Aug 2023 02:45:18 -0400
+Received: from domac.alu.hr (domac.alu.unizg.hr [161.53.235.3])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8614BE53;
+        Thu,  3 Aug 2023 23:45:16 -0700 (PDT)
+Received: from localhost (localhost [127.0.0.1])
+        by domac.alu.hr (Postfix) with ESMTP id CF4E66015F;
+        Fri,  4 Aug 2023 08:45:13 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=alu.unizg.hr; s=mail;
+        t=1691131513; bh=pg8OxTOJmcrRiDterXwr1dvrgpNBoZlh/o4umNGkx4g=;
+        h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
+        b=rK2gL0J17UZlFRl6BOG2mVK68B1JJ1edrOe8fBT+ihHHm588SOlZBfzUnq/We6jQm
+         kvbbCVaOe1hbm9UB02L0sNqxecTNlrudRqGb5lAWJUZpBVT4pSOZtYZ1qpxSZipeMj
+         1bBIOXMxx9kYJMqeMqNGSRpXloZT0Te/kmMtdSIciz7FOTKk5x3hYCJ+CJlkSosm7I
+         vKvrl4sG6EBZOx4vHUEawM+bN3tOASb607sRJQryJVv5aotFssRnvifBMkLGPP9anG
+         FrmtVNqQ1oVpkv1GaThgqKCM7ozJs4knU8L/j5sg0yOH7eo1ndarJ8mJrnrIi9+v+O
+         odbzX2FKnJ3xQ==
+X-Virus-Scanned: Debian amavisd-new at domac.alu.hr
+Received: from domac.alu.hr ([127.0.0.1])
+        by localhost (domac.alu.hr [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id T_GVxCmGnqIc; Fri,  4 Aug 2023 08:45:11 +0200 (CEST)
+Received: from [192.168.1.4] (unknown [94.250.191.183])
+        by domac.alu.hr (Postfix) with ESMTPSA id 8B7676015E;
+        Fri,  4 Aug 2023 08:45:10 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=alu.unizg.hr; s=mail;
+        t=1691131511; bh=pg8OxTOJmcrRiDterXwr1dvrgpNBoZlh/o4umNGkx4g=;
+        h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
+        b=WHuvQMUrjNO/aZOGdKwxOHbJSRJrG+ZClRAIJaZAJOfRo9n2F5yugbIMt7f2mZyro
+         cJo8iTcj+PC5+Y8SV/xhNBV32KDrmHnPeHhR8p/hvKeil8SPGIS6/Sry/W7Cg9uC/V
+         OZbwjqhnuM4zDth3NMM+ev6ArIa7QUUqym8uCKQTHdjS0vrpOF6y0VWb9QdJsnYEsy
+         kNP0Y2bj2uLUJoX4hkHZ9pbOgVLq6zbnEYllIHIkumitJn2npNblRajy3MI78tDTky
+         uDsMWw2AFMVI4FPFWjg4Dgx5LPtzFL6oPzFNBwa+h1MXmW3w0Id911fVUTvO1btzFk
+         t5zEF9DglZyQw==
+Message-ID: <6b2740b7-8337-88dc-b709-8ebc660b9e7c@alu.unizg.hr>
+Date:   Fri, 4 Aug 2023 08:45:10 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH v1 1/1] test_firmware: prevent race conditions by a
+ correct implementation of locking
+From:   Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>
+To:     Luis Chamberlain <mcgrof@kernel.org>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-kernel@vger.kernel.org,
+        Russ Weight <russell.h.weight@intel.com>,
+        Takashi Iwai <tiwai@suse.de>,
+        Tianfei Zhang <tianfei.zhang@intel.com>,
+        Shuah Khan <shuah@kernel.org>,
+        Colin Ian King <colin.i.king@gmail.com>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        linux-kselftest@vger.kernel.org, stable@vger.kernel.org,
+        Dan Carpenter <error27@gmail.com>
+References: <20230731165018.8233-1-mirsad.todorovac@alu.unizg.hr>
+ <ZMfvAhOfSP5UXN6l@bombadil.infradead.org>
+ <0e3a740f-60dd-e657-8a5c-79b155fa62b3@alu.unizg.hr>
+ <24d27380-544e-66d1-1cb2-14eb87ce89ac@alu.unizg.hr>
+Content-Language: en-US, hr
+In-Reply-To: <24d27380-544e-66d1-1cb2-14eb87ce89ac@alu.unizg.hr>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAHp75VdCqqZfQXRRWUkbDTf_gd3T60Stp+m59Q34iWxddLiG5g@mail.gmail.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,NICE_REPLY_A,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Fri, Aug 04, 2023 at 12:04:29AM +0300, Andy Shevchenko wrote:
-> On Thu, Aug 3, 2023 at 5:18 PM Hugo Villeneuve <hugo@hugovil.com> wrote:
-> > On Mon, 31 Jul 2023 17:58:41 +0200
-> > Greg KH <gregkh@linuxfoundation.org> wrote:
-> > > On Tue, Jul 25, 2023 at 10:23:38AM -0400, Hugo Villeneuve wrote:
+On 01. 08. 2023. 11:57, Mirsad Todorovac wrote:
+> On 8/1/23 10:24, Mirsad Todorovac wrote:
+>> On 7/31/23 19:27, Luis Chamberlain wrote:
+>>> On Mon, Jul 31, 2023 at 06:50:19PM +0200, Mirsad Todorovac wrote:
+>>>> NOTE: This patch is tested against 5.4 stable
+>>>>
+>>>> NOTE: This is a patch for the 5.4 stable branch, not for the torvalds tree.
+>>>>
+>>>>        The torvalds tree, and stable tree 5.10, 5.15, 6.1 and 6.4 branches
+>>>>        were fixed in the separate
+>>>>        commit ID 4acfe3dfde68 ("test_firmware: prevent race conditions by a correct implementation of locking")
+>>>>        which was incompatible with 5.4
+>>>>
+>>>
+>>> The above part is not part of the original commit, you also forgot to
+>>> mention the upstream commit:
+>>>
+>>> [ Upstream commit 4acfe3dfde685a5a9eaec5555351918e2d7266a1 ]
+>>
+>> Will fix. Actually, I wasn't sure if it was required, because this backported patch
+>> isn't verbatim equal to commit 4acfe3dfde685a5a9eaec5555351918e2d7266a1 .
+>>
+>> Though they are cousins, addressing the same issue.
+>>
+>> There is a race to be fixed, despite not all racy functions present in the original commit c92316bf8e948.
+>>
+>>>> Fixes: c92316bf8e948 ("test_firmware: add batched firmware tests")
+>>>> Cc: Luis R. Rodriguez <mcgrof@kernel.org>
+>>>> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+>>>> Cc: Russ Weight <russell.h.weight@intel.com>
+>>>> Cc: Takashi Iwai <tiwai@suse.de>
+>>>> Cc: Tianfei Zhang <tianfei.zhang@intel.com>
+>>>> Cc: Shuah Khan <shuah@kernel.org>
+>>>> Cc: Colin Ian King <colin.i.king@gmail.com>
+>>>> Cc: Randy Dunlap <rdunlap@infradead.org>
+>>>> Cc: linux-kselftest@vger.kernel.org
+>>>> Cc: stable@vger.kernel.org # v5.4
+>>>> Suggested-by: Dan Carpenter <error27@gmail.com>
+>>>
+>>> Here you can add the above note in brackets:
+>>>
+>>> [ explain your changes here from the original commit ]
+>>>
+>>> Then, I see two commits upstream on Linus tree which are also fixes
+>>> but not merged on v5.4, did you want those applied too?
+>>
+>> These seem merged in the stable 5.4?
+>>
+>> commit 75d9e00f65cd2e0f2ce9ceeb395f821976773489 test_firmware: fix a memory leak with reqs buffer
+>> commit 94f3bc7e84af2f17dbfbc7afe93991c2a6f2f25e test_firmware: fix the memory leak of the allocated firmware buffer
+>>
+>> Maybe this commit should be backported instead:
+>>
+>> test_firmware: return ENOMEM instead of ENOSPC on failed memory allocation
+>> [ Upstream commit 7dae593cd226a0bca61201cf85ceb9335cf63682 ]
+>>
+>> It was also merged into 6.4, 6.1, 5.15 and 5.10 stable, but not on 5.4
+>>
+>> I might also check whether the 4.19 and 4.14 are vulnerable to these memory leaks and this race
+>> (Yes, they are, so it might be prudent that we backport this fix.)
 > 
-> ...
-> 
-> > > > Fixes: 679875d1d880 ("sc16is7xx: Separate GPIOs from modem control lines")
-> > > > Fixes: 21144bab4f11 ("sc16is7xx: Handle modem status lines")
-> > > > Cc: <stable@vger.kernel.org> # 6.1.x: 95982fad dt-bindings: sc16is7xx: Add property to change GPIO function
-> > > > Cc: <stable@vger.kernel.org> # 6.1.x: 1584d572 serial: sc16is7xx: refactor GPIO controller registration
-> > > > Cc: <stable@vger.kernel.org> # 6.1.x: ac2caa5a serial: sc16is7xx: remove obsolete out_thread label
-> > > > Cc: <stable@vger.kernel.org> # 6.1.x: d90961ad serial: sc16is7xx: mark IOCONTROL register as volatile
-> > > > Cc: <stable@vger.kernel.org> # 6.1.x: 6dae3bad serial: sc16is7xx: fix broken port 0 uart init
-> > >
-> > > Where are these git commit ids from?  I don't see them in Linus's tree,
-> > > how are they supposed to be picked up by the stable developers if they
-> > > are not valid ones?
-> > >
-> > > confused,
-> 
-> ...
-> 
-> > I wrongly assumed that, for example, this patch had, as a prerequisite,
-> > all the patches before it in this series, and that is why I listed
-> > them.
+> FYI, just checked, the patch applied w/o modifications to 4.19 and 4.14 LTS stable branches.
 
-That's fine, but if you have already marked those patches for stable
-inclusion, no need to list them here too.
+Hi, Mr. Luis,
 
-> The problem, as I understand it, is not that you listed them (how else
-> will the backporter know that this patch requires something else?) but
-> the format (you used wrong SHA-1 sums).
+I tried to guess the best way how to backport these four patches:
 
-Exactly, those are invalid sha1 values.
+48e156023059 test_firmware: fix the memory leak of the allocated firmware buffer
+	5.4		[ALREADY IN THE TREE]
+	4.1[49]		N/A
+be37bed754ed test_firmware: fix a memory leak with reqs buffer
+	5.4		[ALREADY IN THE TREE]
+	4.19		https://lore.kernel.org/lkml/20230801170746.191505-1-mirsad.todorovac@alu.unizg.hr/
+	4.14		https://lore.kernel.org/lkml/20230802053253.667634-1-mirsad.todorovac@alu.unizg.hr/
+4acfe3dfde68 test_firmware: prevent race conditions by a correct implementation of locking
+	5.4,4.19,4.14	https://lore.kernel.org/lkml/20230803165304.9200-1-mirsad.todorovac@alu.unizg.hr/
+7dae593cd226 test_firmware: return ENOMEM instead of ENOSPC on failed memory allocation
+	5.4		https://lore.kernel.org/lkml/20230803165304.9200-2-mirsad.todorovac@alu.unizg.hr/
+	4.1[49]		https://lore.kernel.org/lkml/20230801185324.197544-1-mirsad.todorovac@alu.unizg.hr/
 
-> > So I will remove them all, since this patch doesn't have any other
-> > requisites other than the previous patches in this series.
-> >
-> > Maybe it would be good to add some notes about that in
-> > stable-kernel-rules.rst?
-> 
-> This probably is a good idea. Briefly looking at it I see no examples
-> like yours there.
+I have tested the 5.4 and 4.19 builds, but 4.14 still won't boot at my hw (black screen,
+no msgs at all to diagnose).
 
-Because it's not a thing?  Just mark all of these patches in the series
-as cc: stable@ and all will happen automatically for you.  Nothing
-fancy or complex here, happens daily in other subsystems just fine :)
+I hope you will manage between the patches that have the same name and version, but
+address the backport to a different stable LTS branch. They differ by the patch proper,
+naturally, to state the obvious, or the upstream would apply of course.
 
-thanks,
+I don't know the exact formatting procedure for the backports, so I improvised, but I feel that backporting
+bug fixes is very important, even if they are not security fixes.
 
-greg k-h
+I found no new weaknesses in the firmware driver after reviewing the code again. The buffer for name can be
+released twice, though, but kfree(NULL) is permissible:
+
+        kfree_const(test_fw_config->name);
+        test_fw_config->name = NULL;
+
+This about ends this chapter, and I am waiting for a review and an ACK.
+
+Kind regards,
+Mirsad Todorovac
+
+-- 
+Mirsad Goran Todorovac
+Sistem inženjer
+Grafički fakultet | Akademija likovnih umjetnosti
+Sveučilište u Zagrebu
+ 
+System engineer
+Faculty of Graphic Arts | Academy of Fine Arts
+University of Zagreb, Republic of Croatia
+The European Union
+
+"I see something approaching fast ... Will it be friends with me?"
+
