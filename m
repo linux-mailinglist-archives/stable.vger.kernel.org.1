@@ -2,333 +2,126 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8D9AD7707FF
-	for <lists+stable@lfdr.de>; Fri,  4 Aug 2023 20:31:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6073D77084B
+	for <lists+stable@lfdr.de>; Fri,  4 Aug 2023 20:56:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231381AbjHDSa6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 4 Aug 2023 14:30:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57398 "EHLO
+        id S229987AbjHDS42 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 4 Aug 2023 14:56:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37342 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231422AbjHDSaS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 4 Aug 2023 14:30:18 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A3EB14EFC;
-        Fri,  4 Aug 2023 11:27:33 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3E2D7620BC;
-        Fri,  4 Aug 2023 18:27:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84DCEC433C9;
-        Fri,  4 Aug 2023 18:27:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-        s=korg; t=1691173648;
-        bh=VeRRCXUVKWMhMK0/cbpCEI6Xu8uXV4N7L5A+IrJk62U=;
-        h=Date:To:From:Subject:From;
-        b=vSDeq4rOUwwFyEJ0aSzL1+5T82l1XEAg3ls6tuowkOSIQaEDDEvut/rPyDGVIRCtM
-         Tj0jf7/OCtqCThOa5FI0ufft0Il4RmA0tpPoeAvkpgqwSb2FByfvVqv5l1YLodlAjB
-         4mK3xveRQze6bssV1q2j0smPEek/piR4U1QZ5tu0=
-Date:   Fri, 04 Aug 2023 11:27:26 -0700
-To:     mm-commits@vger.kernel.org, willy@infradead.org,
-        torvalds@linux-foundation.org, stable@vger.kernel.org,
-        shuah@kernel.org, peterx@redhat.com, pbonzini@redhat.com,
-        mgorman@techsingularity.net, mgorman@suse.de, liubo254@huawei.com,
-        jhubbard@nvidia.com, jgg@ziepe.ca, hughd@google.com,
-        david@redhat.com, akpm@linux-foundation.org
-From:   Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-gup-reintroduce-foll_numa-as-foll_honor_numa_fault.patch added to mm-hotfixes-unstable branch
-Message-Id: <20230804182728.84DCEC433C9@smtp.kernel.org>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+        with ESMTP id S229515AbjHDS4Q (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 4 Aug 2023 14:56:16 -0400
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B38AFA9
+        for <stable@vger.kernel.org>; Fri,  4 Aug 2023 11:56:13 -0700 (PDT)
+Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
+        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        id 1qRzy5-0001rx-TR; Fri, 04 Aug 2023 20:56:09 +0200
+Message-ID: <96bcca9a-48a2-a2db-bd12-f7b69df90ad8@leemhuis.info>
+Date:   Fri, 4 Aug 2023 20:56:09 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 5.10 1/6] bpf: allow precision tracking for programs with
+ subprogs
+Content-Language: en-US, de-DE
+To:     Greg KH <gregkh@linuxfoundation.org>,
+        Pu Lehui <pulehui@huaweicloud.com>
+Cc:     stable@vger.kernel.org, Eduard Zingerman <eddyz87@gmail.com>,
+        Luiz Capitulino <luizcap@amazon.com>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Andrii Nakryiko <andrii@kernel.org>,
+        Pu Lehui <pulehui@huawei.com>
+References: <20230801143700.1012887-1-pulehui@huaweicloud.com>
+ <20230801143700.1012887-2-pulehui@huaweicloud.com>
+ <2023080425-decline-chitchat-2075@gregkh>
+From:   Thorsten Leemhuis <linux@leemhuis.info>
+Autocrypt: addr=linux@leemhuis.info; keydata=
+ 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 n7RI
+In-Reply-To: <2023080425-decline-chitchat-2075@gregkh>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-bounce-key: webpack.hosteurope.de;linux@leemhuis.info;1691175373;c1b2f57d;
+X-HE-SMSGID: 1qRzy5-0001rx-TR
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+On 04.08.23 12:33, Greg KH wrote:
+> On Tue, Aug 01, 2023 at 10:36:55PM +0800, Pu Lehui wrote:
+>> From: Andrii Nakryiko <andrii@kernel.org>
+>>
+>> [ Upstream commit be2ef8161572ec1973124ebc50f56dafc2925e07 ]
+> 
+> For obvious reasons, I can't take this series only for 5.10 and not for
+> 5.15, otherwise you would update your kernel and have a regression.
+> 
+> So please, create a 5.15.y series also, and resend both of these, and
+> then we will be glad to apply them.  For this series, I've dropped them
+> from my review queue now.
 
-The patch titled
-     Subject: mm/gup: reintroduce FOLL_NUMA as FOLL_HONOR_NUMA_FAULT
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     mm-gup-reintroduce-foll_numa-as-foll_honor_numa_fault.patch
+I see you explaining this occasionally, makes me wonder if we should add
+something like the following to
+Documentation/process/stable-kernel-rules.rst (sorry, no diff/context,
+but I guess you'll understand things nevertheless):
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-gup-reintroduce-foll_numa-as-foll_honor_numa_fault.patch
+"""
+When using option 2 or 3 you can target a specific stable series. When
+doing so, you have to ensure that the fix or and equivalent is present
+or submitted to all newer stable trees, as users updating to them
+otherwise might encounter regressions. Hence, if you want a patch that
+was merged for 5.19-rc1 included in the 5.10 stable series, you must
+submit it for any stable series still maintained in the v5.11..v5.18
+range.
+"""
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+I plan to send my second set of changes soon anyway, would be simple to
+include this there.
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: David Hildenbrand <david@redhat.com>
-Subject: mm/gup: reintroduce FOLL_NUMA as FOLL_HONOR_NUMA_FAULT
-Date: Thu, 3 Aug 2023 16:32:02 +0200
-
-Unfortunately commit 474098edac26 ("mm/gup: replace FOLL_NUMA by
-gup_can_follow_protnone()") missed that follow_page() and
-follow_trans_huge_pmd() never implicitly set FOLL_NUMA because they really
-don't want to fail on PROT_NONE-mapped pages -- either due to NUMA hinting
-or due to inaccessible (PROT_NONE) VMAs.
-
-As spelled out in commit 0b9d705297b2 ("mm: numa: Support NUMA hinting
-page faults from gup/gup_fast"): "Other follow_page callers like KSM
-should not use FOLL_NUMA, or they would fail to get the pages if they use
-follow_page instead of get_user_pages."
-
-liubo reported [1] that smaps_rollup results are imprecise, because they
-miss accounting of pages that are mapped PROT_NONE.  Further, it's easy to
-reproduce that KSM no longer works on inaccessible VMAs on x86-64, because
-pte_protnone()/pmd_protnone() also indictaes "true" in inaccessible VMAs,
-and follow_page() refuses to return such pages right now.
-
-As KVM really depends on these NUMA hinting faults, removing the
-pte_protnone()/pmd_protnone() handling in GUP code completely is not
-really an option.
-
-To fix the issues at hand, let's revive FOLL_NUMA as FOLL_HONOR_NUMA_FAULT
-to restore the original behavior for now and add better comments.
-
-Set FOLL_HONOR_NUMA_FAULT independent of FOLL_FORCE in
-is_valid_gup_args(), to add that flag for all external GUP users.
-
-Note that there are three GUP-internal __get_user_pages() users that don't
-end up calling is_valid_gup_args() and consequently won't get
-FOLL_HONOR_NUMA_FAULT set.
-
-1) get_dump_page(): we really don't want to handle NUMA hinting
-   faults. It specifies FOLL_FORCE and wouldn't have honored NUMA
-   hinting faults already.
-2) populate_vma_page_range(): we really don't want to handle NUMA hinting
-   faults. It specifies FOLL_FORCE on accessible VMAs, so it wouldn't have
-   honored NUMA hinting faults already.
-3) faultin_vma_page_range(): we similarly don't want to handle NUMA
-   hinting faults.
-
-To make the combination of FOLL_FORCE and FOLL_HONOR_NUMA_FAULT work in
-inaccessible VMAs properly, we have to perform VMA accessibility checks in
-gup_can_follow_protnone().
-
-As GUP-fast should reject such pages either way in
-pte_access_permitted()/pmd_access_permitted() -- for example on x86-64 and
-arm64 that both implement pte_protnone() -- let's just always fallback to
-ordinary GUP when stumbling over pte_protnone()/pmd_protnone().
-
-As Linus notes [2], honoring NUMA faults might only make sense for
-selected GUP users.
-
-So we should really see if we can instead let relevant GUP callers specify
-it manually, and not trigger NUMA hinting faults from GUP as default. 
-Prepare for that by making FOLL_HONOR_NUMA_FAULT an external GUP flag and
-adding appropriate documenation.
-
-While at it, remove a stale comment from follow_trans_huge_pmd(): That
-comment for pmd_protnone() was added in commit 2b4847e73004 ("mm: numa:
-serialise parallel get_user_page against THP migration"), which noted:
-
-	THP does not unmap pages due to a lack of support for migration
-	entries at a PMD level.  This allows races with get_user_pages
-
-Nowadays, we do have PMD migration entries, so the comment no longer
-applies.  Let's drop it.
-
-[1] https://lore.kernel.org/r/20230726073409.631838-1-liubo254@huawei.com
-[2] https://lore.kernel.org/r/CAHk-=wgRiP_9X0rRdZKT8nhemZGNateMtb366t37d8-x7VRs=g@mail.gmail.com
-
-Link: https://lkml.kernel.org/r/20230803143208.383663-2-david@redhat.com
-Fixes: 474098edac26 ("mm/gup: replace FOLL_NUMA by gup_can_follow_protnone()")
-Signed-off-by: David Hildenbrand <david@redhat.com>
-Reported-by: liubo <liubo254@huawei.com>
-Closes: https://lore.kernel.org/r/20230726073409.631838-1-liubo254@huawei.com
-Reported-by: Peter Xu <peterx@redhat.com>
-Closes: https://lore.kernel.org/all/ZMKJjDaqZ7FW0jfe@x1n/
-Acked-by: Mel Gorman <mgorman@techsingularity.net>
-Acked-by: Peter Xu <peterx@redhat.com>
-Cc: Hugh Dickins <hughd@google.com>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: John Hubbard <jhubbard@nvidia.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Mel Gorman <mgorman@suse.de>
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Shuah Khan <shuah@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- include/linux/mm.h       |   21 +++++++++++++++------
- include/linux/mm_types.h |    9 +++++++++
- mm/gup.c                 |   30 ++++++++++++++++++++++++------
- mm/huge_memory.c         |    3 +--
- 4 files changed, 49 insertions(+), 14 deletions(-)
-
---- a/include/linux/mm.h~mm-gup-reintroduce-foll_numa-as-foll_honor_numa_fault
-+++ a/include/linux/mm.h
-@@ -3421,15 +3421,24 @@ static inline int vm_fault_to_errno(vm_f
-  * Indicates whether GUP can follow a PROT_NONE mapped page, or whether
-  * a (NUMA hinting) fault is required.
-  */
--static inline bool gup_can_follow_protnone(unsigned int flags)
-+static inline bool gup_can_follow_protnone(struct vm_area_struct *vma,
-+					   unsigned int flags)
- {
- 	/*
--	 * FOLL_FORCE has to be able to make progress even if the VMA is
--	 * inaccessible. Further, FOLL_FORCE access usually does not represent
--	 * application behaviour and we should avoid triggering NUMA hinting
--	 * faults.
-+	 * If callers don't want to honor NUMA hinting faults, no need to
-+	 * determine if we would actually have to trigger a NUMA hinting fault.
- 	 */
--	return flags & FOLL_FORCE;
-+	if (!(flags & FOLL_HONOR_NUMA_FAULT))
-+		return true;
-+
-+	/*
-+	 * NUMA hinting faults don't apply in inaccessible (PROT_NONE) VMAs.
-+	 *
-+	 * Requiring a fault here even for inaccessible VMAs would mean that
-+	 * FOLL_FORCE cannot make any progress, because handle_mm_fault()
-+	 * refuses to process NUMA hinting faults in inaccessible VMAs.
-+	 */
-+	return !vma_is_accessible(vma);
- }
- 
- typedef int (*pte_fn_t)(pte_t *pte, unsigned long addr, void *data);
---- a/include/linux/mm_types.h~mm-gup-reintroduce-foll_numa-as-foll_honor_numa_fault
-+++ a/include/linux/mm_types.h
-@@ -1286,6 +1286,15 @@ enum {
- 	FOLL_PCI_P2PDMA = 1 << 10,
- 	/* allow interrupts from generic signals */
- 	FOLL_INTERRUPTIBLE = 1 << 11,
-+	/*
-+	 * Always honor (trigger) NUMA hinting faults.
-+	 *
-+	 * FOLL_WRITE implicitly honors NUMA hinting faults because a
-+	 * PROT_NONE-mapped page is not writable (exceptions with FOLL_FORCE
-+	 * apply). get_user_pages_fast_only() always implicitly honors NUMA
-+	 * hinting faults.
-+	 */
-+	FOLL_HONOR_NUMA_FAULT = 1 << 12,
- 
- 	/* See also internal only FOLL flags in mm/internal.h */
- };
---- a/mm/gup.c~mm-gup-reintroduce-foll_numa-as-foll_honor_numa_fault
-+++ a/mm/gup.c
-@@ -597,7 +597,7 @@ static struct page *follow_page_pte(stru
- 	pte = ptep_get(ptep);
- 	if (!pte_present(pte))
- 		goto no_page;
--	if (pte_protnone(pte) && !gup_can_follow_protnone(flags))
-+	if (pte_protnone(pte) && !gup_can_follow_protnone(vma, flags))
- 		goto no_page;
- 
- 	page = vm_normal_page(vma, address, pte);
-@@ -714,7 +714,7 @@ static struct page *follow_pmd_mask(stru
- 	if (likely(!pmd_trans_huge(pmdval)))
- 		return follow_page_pte(vma, address, pmd, flags, &ctx->pgmap);
- 
--	if (pmd_protnone(pmdval) && !gup_can_follow_protnone(flags))
-+	if (pmd_protnone(pmdval) && !gup_can_follow_protnone(vma, flags))
- 		return no_page_table(vma, flags);
- 
- 	ptl = pmd_lock(mm, pmd);
-@@ -851,6 +851,10 @@ struct page *follow_page(struct vm_area_
- 	if (WARN_ON_ONCE(foll_flags & FOLL_PIN))
- 		return NULL;
- 
-+	/*
-+	 * We never set FOLL_HONOR_NUMA_FAULT because callers don't expect
-+	 * to fail on PROT_NONE-mapped pages.
-+	 */
- 	page = follow_page_mask(vma, address, foll_flags, &ctx);
- 	if (ctx.pgmap)
- 		put_dev_pagemap(ctx.pgmap);
-@@ -2227,6 +2231,13 @@ static bool is_valid_gup_args(struct pag
- 		gup_flags |= FOLL_UNLOCKABLE;
- 	}
- 
-+	/*
-+	 * For now, always trigger NUMA hinting faults. Some GUP users like
-+	 * KVM require the hint to be as the calling context of GUP is
-+	 * functionally similar to a memory reference from task context.
-+	 */
-+	gup_flags |= FOLL_HONOR_NUMA_FAULT;
-+
- 	/* FOLL_GET and FOLL_PIN are mutually exclusive. */
- 	if (WARN_ON_ONCE((gup_flags & (FOLL_PIN | FOLL_GET)) ==
- 			 (FOLL_PIN | FOLL_GET)))
-@@ -2551,7 +2562,14 @@ static int gup_pte_range(pmd_t pmd, pmd_
- 		struct page *page;
- 		struct folio *folio;
- 
--		if (pte_protnone(pte) && !gup_can_follow_protnone(flags))
-+		/*
-+		 * Always fallback to ordinary GUP on PROT_NONE-mapped pages:
-+		 * pte_access_permitted() better should reject these pages
-+		 * either way: otherwise, GUP-fast might succeed in
-+		 * cases where ordinary GUP would fail due to VMA access
-+		 * permissions.
-+		 */
-+		if (pte_protnone(pte))
- 			goto pte_unmap;
- 
- 		if (!pte_access_permitted(pte, flags & FOLL_WRITE))
-@@ -2970,8 +2988,8 @@ static int gup_pmd_range(pud_t *pudp, pu
- 
- 		if (unlikely(pmd_trans_huge(pmd) || pmd_huge(pmd) ||
- 			     pmd_devmap(pmd))) {
--			if (pmd_protnone(pmd) &&
--			    !gup_can_follow_protnone(flags))
-+			/* See gup_pte_range() */
-+			if (pmd_protnone(pmd))
- 				return 0;
- 
- 			if (!gup_huge_pmd(pmd, pmdp, addr, next, flags,
-@@ -3151,7 +3169,7 @@ static int internal_get_user_pages_fast(
- 	if (WARN_ON_ONCE(gup_flags & ~(FOLL_WRITE | FOLL_LONGTERM |
- 				       FOLL_FORCE | FOLL_PIN | FOLL_GET |
- 				       FOLL_FAST_ONLY | FOLL_NOFAULT |
--				       FOLL_PCI_P2PDMA)))
-+				       FOLL_PCI_P2PDMA | FOLL_HONOR_NUMA_FAULT)))
- 		return -EINVAL;
- 
- 	if (gup_flags & FOLL_PIN)
---- a/mm/huge_memory.c~mm-gup-reintroduce-foll_numa-as-foll_honor_numa_fault
-+++ a/mm/huge_memory.c
-@@ -1467,8 +1467,7 @@ struct page *follow_trans_huge_pmd(struc
- 	if ((flags & FOLL_DUMP) && is_huge_zero_pmd(*pmd))
- 		return ERR_PTR(-EFAULT);
- 
--	/* Full NUMA hinting faults to serialise migration in fault paths */
--	if (pmd_protnone(*pmd) && !gup_can_follow_protnone(flags))
-+	if (pmd_protnone(*pmd) && !gup_can_follow_protnone(vma, flags))
- 		return NULL;
- 
- 	if (!pmd_write(*pmd) && gup_must_unshare(vma, flags, page))
-_
-
-Patches currently in -mm which might be from david@redhat.com are
-
-mm-gup-reintroduce-foll_numa-as-foll_honor_numa_fault.patch
-smaps-use-vm_normal_page_pmd-instead-of-follow_trans_huge_pmd.patch
-mm-memory_hotplug-document-the-signal_pending-check-in-offline_pages.patch
-kvm-explicitly-set-foll_honor_numa_fault-in-hva_to_pfn_slow.patch
-mm-gup-dont-implicitly-set-foll_honor_numa_fault.patch
-pgtable-improve-pte_protnone-comment.patch
-selftest-mm-ksm_functional_tests-test-in-mmap_and_merge_range-if-anything-got-merged.patch
-selftest-mm-ksm_functional_tests-add-prot_none-test.patch
-
+Ciao, Thorsten
