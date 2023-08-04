@@ -2,161 +2,97 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DB03D770BC2
-	for <lists+stable@lfdr.de>; Sat,  5 Aug 2023 00:10:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7673B770C1E
+	for <lists+stable@lfdr.de>; Sat,  5 Aug 2023 00:50:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229997AbjHDWKn (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 4 Aug 2023 18:10:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32862 "EHLO
+        id S229758AbjHDWuD (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 4 Aug 2023 18:50:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48422 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229640AbjHDWKl (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 4 Aug 2023 18:10:41 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 16B80E60
-        for <stable@vger.kernel.org>; Fri,  4 Aug 2023 15:09:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1691186996;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=evYrVf/iKCZzrXphWuBBZKTjd3mBH9ss4zSdxYs7MUs=;
-        b=VeasDIYTPlIONOCJA9UE7idljjljNYzyejhonPRqXrfewl2R2y4HUHZU1ihYDWX6NhjUkN
-        W1SDxDCup5/jgVqC20/+NIlrKqGyjq01mktVL6+9vKPM4RCLzdzWSBiSvlqiCahc0fGhrP
-        xrrJFk3L06boX+/6+syqW9xwVlHcVB8=
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
- [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-512-MEFRsT3zMkq_pMTpTev7pQ-1; Fri, 04 Aug 2023 18:09:55 -0400
-X-MC-Unique: MEFRsT3zMkq_pMTpTev7pQ-1
-Received: by mail-ed1-f72.google.com with SMTP id 4fb4d7f45d1cf-51866148986so1565372a12.3
-        for <stable@vger.kernel.org>; Fri, 04 Aug 2023 15:09:54 -0700 (PDT)
+        with ESMTP id S229445AbjHDWuB (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 4 Aug 2023 18:50:01 -0400
+Received: from mail-lj1-x236.google.com (mail-lj1-x236.google.com [IPv6:2a00:1450:4864:20::236])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C7B861BE
+        for <stable@vger.kernel.org>; Fri,  4 Aug 2023 15:50:00 -0700 (PDT)
+Received: by mail-lj1-x236.google.com with SMTP id 38308e7fff4ca-2b9cdba1228so42958191fa.2
+        for <stable@vger.kernel.org>; Fri, 04 Aug 2023 15:50:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google; t=1691189399; x=1691794199;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=Oufc1x89nwlrXRNKkHYYKDDdEzz4I9gpw2oNWdbuYSU=;
+        b=WESz/UJcbkuC1/4tkTKKEXzXCsXzaK8bRDz8bYGONYVqkWQPmZCg3lbSQOXRxx7psd
+         zmFCAmf4v7R+HOLobeRCONgy9ZJBtiauCjZiopL3HJDeWzDBxpmvWgNRq7AoX1bZKzzJ
+         sWv/j/axjRsP7+oM72qqm8A7Qlt+MfZrKtJTk=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691186994; x=1691791794;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=evYrVf/iKCZzrXphWuBBZKTjd3mBH9ss4zSdxYs7MUs=;
-        b=OVfBoaT1lakHg9o7hSsmEbKfZx7nAF4lx2+AiqY33wSP7Qpn5r1y1Hd9XSNGFjggAD
-         FA2aHaU4fzqKoBjsWnfFQM+/bvPsbxJDfQ1JC8pweScUtrw58hSf/J2bPQijGMLxe9Va
-         YIw6dTfYSROUoljkYR4yyY7sXWyDxKRT9PRr1hxAkhFGIh7GRzHnXK3Q+n9zxpiDcADx
-         Olttss6I90XRyjdCY5BDo9Ff/hImY1t5tw9BuScBi7yJszN1xkIcJlf2PBkqHIkv4y+C
-         pRab++ewxkWIE3FuXjCnskwmkaZKvz/5LeIaoGJJ/oXydOhP9N9vysxT1eAe/FaDUTOc
-         1lSg==
-X-Gm-Message-State: AOJu0YwWwRxNxMVyXZqQmW7p9poq6jAxGED0wKpi8/tAbRiAEm0kgZoD
-        TX/4W6AqpcsGCsqJfuYimdRNXOW9ClDAPHsUZjN+iLE3UjqgmcZKo24Nd1j+h3z7LR7/A+HB5Ch
-        t4jJaU4HLC/l4iRx6
-X-Received: by 2002:aa7:c990:0:b0:521:a99b:a233 with SMTP id c16-20020aa7c990000000b00521a99ba233mr2648710edt.10.1691186994115;
-        Fri, 04 Aug 2023 15:09:54 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHBekLNPRykim88ENWzH/K7RT7FRQkvjiPm6lNHDHg7kFI2E3ObIAF2P2Vh1gJoj7x5HPbMiw==
-X-Received: by 2002:aa7:c990:0:b0:521:a99b:a233 with SMTP id c16-20020aa7c990000000b00521a99ba233mr2648687edt.10.1691186993726;
-        Fri, 04 Aug 2023 15:09:53 -0700 (PDT)
-Received: from ?IPV6:2001:b07:6468:f312:63a7:c72e:ea0e:6045? ([2001:b07:6468:f312:63a7:c72e:ea0e:6045])
-        by smtp.googlemail.com with ESMTPSA id p12-20020aa7d30c000000b00522ce914f51sm1774622edq.67.2023.08.04.15.09.49
+        d=1e100.net; s=20221208; t=1691189399; x=1691794199;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Oufc1x89nwlrXRNKkHYYKDDdEzz4I9gpw2oNWdbuYSU=;
+        b=YIGceHgJIG1CIGziphrCuEAJIKuOmLWxkCwCBcY67tiZ+mMhUQ3UPv66nyj9Cbnb1L
+         As6MODsOZv0X0ZF2ivzxCoiBxC2EoX5wTPrbW230ZoIZTe42H3pXVkdVs0kmfTFFEg14
+         ZByXElkAQUqYnMSGPM/zXNTVNOSQi5NDQf9SAna0d4ozLWM7VdvMbnvtOHBLVOVKZElL
+         FvmUkiO6My09mwIDnlooJrW0Uhwxx7Rf9EKbElOhv/asBRigQPIwDj0Q2VAFmHbxqu/l
+         z11CWJb9w/lcFcyExfKPKGFO7qTH0cCoRZQlTZKR+fsyO0nilO0jGg2ZkkqYIf+2j39h
+         HlWQ==
+X-Gm-Message-State: AOJu0YwrbOnaPLP67bMy0AVUjkjI89oQBL+Yv3oOxrkZpaekcmxayEQF
+        rYvIXOiIWg67V9sR9/cyQZFCEJCqvO3U6Ib4KVov+Q==
+X-Google-Smtp-Source: AGHT+IEmIxdPwrhPTchlC+XZAsUnkmrQChWp6suxfexqLpE8VkHw/4Ff36GRmP9pILoS8VrK0UFT6g==
+X-Received: by 2002:a2e:9f08:0:b0:2b8:67ce:4ad7 with SMTP id u8-20020a2e9f08000000b002b867ce4ad7mr2332208ljk.6.1691189398723;
+        Fri, 04 Aug 2023 15:49:58 -0700 (PDT)
+Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com. [209.85.208.49])
+        by smtp.gmail.com with ESMTPSA id re15-20020a170906d8cf00b009886aaeb722sm1886177ejb.137.2023.08.04.15.49.57
+        for <stable@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 04 Aug 2023 15:09:53 -0700 (PDT)
-Message-ID: <ff7fecca-8413-6625-4d10-a6b3c21fc24d@redhat.com>
-Date:   Sat, 5 Aug 2023 00:09:49 +0200
+        Fri, 04 Aug 2023 15:49:57 -0700 (PDT)
+Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-52307552b03so3365818a12.0
+        for <stable@vger.kernel.org>; Fri, 04 Aug 2023 15:49:57 -0700 (PDT)
+X-Received: by 2002:a05:6402:514:b0:521:d75d:ef69 with SMTP id
+ m20-20020a056402051400b00521d75def69mr2790287edv.31.1691189397521; Fri, 04
+ Aug 2023 15:49:57 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH] selftests/rseq: Fix build with undefined __weak
-Content-Language: en-US
-To:     Mark Brown <broonie@kernel.org>,
-        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        "Paul E. McKenney" <paulmck@kernel.org>,
-        Boqun Feng <boqun.feng@gmail.com>,
-        Shuah Khan <shuah@kernel.org>,
-        Sean Christopherson <seanjc@google.com>
-Cc:     Aaron Lewis <aaronlewis@google.com>, stable@vger.kernel.org,
-        kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-kselftest@vger.kernel.org
-References: <20230804-kselftest-rseq-build-v1-1-015830b66aa9@kernel.org>
-From:   Paolo Bonzini <pbonzini@redhat.com>
-In-Reply-To: <20230804-kselftest-rseq-build-v1-1-015830b66aa9@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+References: <20230708191212.4147700-1-surenb@google.com> <20230708191212.4147700-3-surenb@google.com>
+ <20230804214620.btgwhsszsd7rh6nf@f>
+In-Reply-To: <20230804214620.btgwhsszsd7rh6nf@f>
+From:   Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Fri, 4 Aug 2023 15:49:40 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wiy125k1dBmQFTGpHwiOqEyrD6xnd4xKWfe97H_HodgDA@mail.gmail.com>
+Message-ID: <CAHk-=wiy125k1dBmQFTGpHwiOqEyrD6xnd4xKWfe97H_HodgDA@mail.gmail.com>
+Subject: Re: [PATCH v2 3/3] fork: lock VMAs of the parent process when forking
+To:     Mateusz Guzik <mjguzik@gmail.com>
+Cc:     Suren Baghdasaryan <surenb@google.com>, akpm@linux-foundation.org,
+        regressions@leemhuis.info, bagasdotme@gmail.com,
+        jacobly.alt@gmail.com, willy@infradead.org,
+        liam.howlett@oracle.com, david@redhat.com, peterx@redhat.com,
+        ldufour@linux.ibm.com, linux-kernel@vger.kernel.org,
+        linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org,
+        linux-arm-kernel@lists.infradead.org, gregkh@linuxfoundation.org,
+        regressions@lists.linux.dev, Jiri Slaby <jirislaby@kernel.org>,
+        =?UTF-8?Q?Holger_Hoffst=C3=A4tte?= <holger@applied-asynchrony.com>,
+        stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 8/4/23 21:22, Mark Brown wrote:
-> Commit 3bcbc20942db ("selftests/rseq: Play nice with binaries statically
-> linked against glibc 2.35+") which is now in Linus' tree introduced uses
-> of __weak but did nothing to ensure that a definition is provided for it
-> resulting in build failures for the rseq tests:
-> 
-> rseq.c:41:1: error: unknown type name '__weak'
-> __weak ptrdiff_t __rseq_offset;
-> ^
-> rseq.c:41:17: error: expected ';' after top level declarator
-> __weak ptrdiff_t __rseq_offset;
->                  ^
->                  ;
-> rseq.c:42:1: error: unknown type name '__weak'
-> __weak unsigned int __rseq_size;
-> ^
-> rseq.c:43:1: error: unknown type name '__weak'
-> __weak unsigned int __rseq_flags;
-> 
-> Fix this by using the definition from tools/include compiler.h.
-> 
+On Fri, 4 Aug 2023 at 14:46, Mateusz Guzik <mjguzik@gmail.com> wrote:
+>
+> I don't see it mentioned in the discussion, so at a risk of ruffling
+> feathers or looking really bad I'm going to ask: is the locking of any
+> use if the forking process is single-threaded? T
 
-Queued, thanks.  Sorry for the breakage.
+Sadly, we've always been able to access the mm from other processes,
+so the locking is - I think - unavoidable.
 
-Paolo
+And some of those "access from other processes" aren't even uncommon
+or special. It's things like "ps" etc, that do it just to see the
+process name and arguments.
 
-> Fixes: 3bcbc20942db ("selftests/rseq: Play nice with binaries statically linked against glibc 2.35+")
-> Signed-off-by: Mark Brown <broonie@kernel.org>
-> ---
-> It'd be good if the KVM testing could include builds of the rseq
-> selftests, the KVM tests pull in code from rseq but not the build system
-> which has resulted in multiple failures like this.
-> ---
->   tools/testing/selftests/rseq/Makefile | 4 +++-
->   tools/testing/selftests/rseq/rseq.c   | 2 ++
->   2 files changed, 5 insertions(+), 1 deletion(-)
-> 
-> diff --git a/tools/testing/selftests/rseq/Makefile b/tools/testing/selftests/rseq/Makefile
-> index b357ba24af06..7a957c7d459a 100644
-> --- a/tools/testing/selftests/rseq/Makefile
-> +++ b/tools/testing/selftests/rseq/Makefile
-> @@ -4,8 +4,10 @@ ifneq ($(shell $(CC) --version 2>&1 | head -n 1 | grep clang),)
->   CLANG_FLAGS += -no-integrated-as
->   endif
->   
-> +top_srcdir = ../../../..
-> +
->   CFLAGS += -O2 -Wall -g -I./ $(KHDR_INCLUDES) -L$(OUTPUT) -Wl,-rpath=./ \
-> -	  $(CLANG_FLAGS)
-> +	  $(CLANG_FLAGS) -I$(top_srcdir)/tools/include
->   LDLIBS += -lpthread -ldl
->   
->   # Own dependencies because we only want to build against 1st prerequisite, but
-> diff --git a/tools/testing/selftests/rseq/rseq.c b/tools/testing/selftests/rseq/rseq.c
-> index a723da253244..96e812bdf8a4 100644
-> --- a/tools/testing/selftests/rseq/rseq.c
-> +++ b/tools/testing/selftests/rseq/rseq.c
-> @@ -31,6 +31,8 @@
->   #include <sys/auxv.h>
->   #include <linux/auxvec.h>
->   
-> +#include <linux/compiler.h>
-> +
->   #include "../kselftest.h"
->   #include "rseq.h"
->   
-> 
-> ---
-> base-commit: 5d0c230f1de8c7515b6567d9afba1f196fb4e2f4
-> change-id: 20230804-kselftest-rseq-build-9d537942b1de
-> 
-> Best regards,
-
+            Linus
