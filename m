@@ -2,108 +2,168 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BA3767700D8
-	for <lists+stable@lfdr.de>; Fri,  4 Aug 2023 15:11:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 49F20770103
+	for <lists+stable@lfdr.de>; Fri,  4 Aug 2023 15:16:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229845AbjHDNLx (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 4 Aug 2023 09:11:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55032 "EHLO
+        id S230351AbjHDNP7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 4 Aug 2023 09:15:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57870 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229819AbjHDNLu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 4 Aug 2023 09:11:50 -0400
-Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [81.169.146.166])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 640A613D
-        for <stable@vger.kernel.org>; Fri,  4 Aug 2023 06:11:49 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1691154707; cv=none;
-    d=strato.com; s=strato-dkim-0002;
-    b=N8QPmQRPBmmcwZIXzOCbMrg7bVt0ORNpLTpvCJryhj7//qYYWLNxviKvRY0Uc1y7mO
-    O+y/HHmLT+Z2nuQh6UmUN7eh+SjSta9Uts5T7xcXrpWnDruWWUthLSmvg8RLpHraxkNL
-    wtOTaRAzbGlHRWjRL7sOdU9Ny01ImWiexV6QwMHunONU/1KajmI5jBH7kBmT7dP1ZjoN
-    vifOD8siIS/btzIUAs+BHwV0aiZP+s3i16vKDSFM0e6EauqJRsxr6ULN9vvY8mseUZ96
-    JjkJeYHrYz0vTKAc1DP2onVkTFqh8cgej0tx5Ret+LwoKDwm/ONEoOYC6y3KveFoBdED
-    /WEg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1691154707;
-    s=strato-dkim-0002; d=strato.com;
-    h=References:Message-ID:In-Reply-To:Subject:cc:To:From:Date:Cc:Date:
-    From:Subject:Sender;
-    bh=vIQtdrkQZ/mwLTpAq2v2mFxTNyKyXCo1I0JLGZ9R+q4=;
-    b=GtvqbyQ2722eGk83jV8pInbWiusFZOCFOyz6Queu8XBRYEIAHgSJTneHk0DPSkiJvw
-    5cXW7c57ZIQI4/scN3ATvYLfuB3YcqzcuyuLqxIxkXMbeHvmXTesodJfDXxuW5hYYh6u
-    BcX5YkQSDBigOA/6a6PFAj89RcS1iUyDsZZ2Qj9qoRN+u4PPOJFgaNhQGoPwUJWR7aUm
-    8zcXXNG1WUAXSsbfgHisHNN0szSLiNv8748MfYYlmO4A/Wsv8sp6ozFM9OvXmeZLLHJH
-    Nn6WKZ1IGZojwAg2WXXzeJp8IHJGOmuSQqBLRyBTE4wr2pLGV89+k59u7uFE4z4hGMY0
-    9IOA==
-ARC-Authentication-Results: i=1; strato.com;
-    arc=none;
-    dkim=none
-X-RZG-CLASS-ID: mo01
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1691154707;
-    s=strato-dkim-0002; d=kravcenko.com;
-    h=References:Message-ID:In-Reply-To:Subject:cc:To:From:Date:Cc:Date:
-    From:Subject:Sender;
-    bh=vIQtdrkQZ/mwLTpAq2v2mFxTNyKyXCo1I0JLGZ9R+q4=;
-    b=rd1gi8x2/bMLWP6RGMuN/ax6souAbf1W7OX7tL1fyNyFYzmwHEy6VPUVCMYp/E4kr3
-    bCrQP1Q1maDiaVflqQnVnSaePi4is1lkam1sk/iO7JFzntUK7VtICcCFfw+FHVIchRdL
-    5sehAO0RJI8dBK5awrYdt576txXpSyzhB6YWptkBXTEdXooANyRh189WSh81L7au79xi
-    V9yj7S2gXQW4n541pOYB1/HNpnymeP+stmXQTbVIICWDMITS1jNFwPTjzeyocYeF4EUe
-    xCriocqeIgby3vj9xfVuKX9GgG+6DFVwmPoEdYttSshJIuvh8p8x9dVU4Lbji6J479+X
-    ALoQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1691154707;
-    s=strato-dkim-0003; d=kravcenko.com;
-    h=References:Message-ID:In-Reply-To:Subject:cc:To:From:Date:Cc:Date:
-    From:Subject:Sender;
-    bh=vIQtdrkQZ/mwLTpAq2v2mFxTNyKyXCo1I0JLGZ9R+q4=;
-    b=fhKFqYGec4nOjbDEUSIgjyChh0R4FRKzjV76fRoQcarog/BgHpCEs02Ar9kYSdxg3K
-    BNDFlA8wcoXuyV40FFCg==
-X-RZG-AUTH: ":I2AFc2Cjaf5HiRB0lhnvZ9elhwku56KjVuxY6AZJWRy8C0aEhFGbVIvMVnbXlOZqFTX/PnlW"
-Received: from duane.cam.uni-heidelberg.de
-    by smtp.strato.de (RZmta 49.6.6 AUTH)
-    with ESMTPSA id dd2654z74DBlWx7
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-        (Client did not present a certificate);
-    Fri, 4 Aug 2023 15:11:47 +0200 (CEST)
-Date:   Fri, 4 Aug 2023 15:11:46 +0200 (CEST)
-From:   Olaf Skibbe <news@kravcenko.com>
-To:     Karol Herbst <kherbst@redhat.com>
-cc:     Thorsten Leemhuis <regressions@leemhuis.info>,
-        dri-devel@lists.freedesktop.org, nouveau@lists.freedesktop.org,
-        1042753@bugs.debian.org, Ben Skeggs <bskeggs@redhat.com>,
-        Lyude Paul <lyude@redhat.com>,
-        Linux kernel regressions list <regressions@lists.linux.dev>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: nouveau bug in linux/6.1.38-2
-In-Reply-To: <CACO55tvu4X3u8K-FGUeN2CBw1BnumRPBNEEqjn+EPzNCCCQYyg@mail.gmail.com>
-Message-ID: <b12e2b00-de18-df9c-eb4a-c6704aad2c97@kravcenko.com>
-References: <20be6650-5db3-b72a-a7a8-5e817113cff5@kravcenko.com> <c27fb4dd-b2dc-22de-4425-6c7db5f543ba@leemhuis.info> <CACO55ttcUEUjdVgx4y7pv26VAGeHS5q1wVKWrMw5=o9QLaJLZw@mail.gmail.com> <0a5084b7-732b-6658-653e-7ece4c0768c9@kravcenko.com>
- <CACO55tvu4X3u8K-FGUeN2CBw1BnumRPBNEEqjn+EPzNCCCQYyg@mail.gmail.com>
+        with ESMTP id S230343AbjHDNP5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 4 Aug 2023 09:15:57 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C0EB011B;
+        Fri,  4 Aug 2023 06:14:21 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2860F61FF8;
+        Fri,  4 Aug 2023 13:14:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07F31C433C8;
+        Fri,  4 Aug 2023 13:14:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1691154860;
+        bh=JRE8h+VxG5Sd0jsKXzMVWXS7hQJqeXSQ/aS/ksekctE=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=kiXa8ellOolgBX83CbkFAS4DexJZLm4NO9bEkXxWKDp2PRndVu92Fl8me2/AuA2iW
+         kAyX6ZYB8BHKmENnZohPpK8n/tItrWyZz3yDJt3zsoPqQBM4J+b+jI7prCAVlroolS
+         eC+syGFi33IAs2OJ/bVkE2Lueby6EfFjTC8uOsl8=
+Date:   Fri, 4 Aug 2023 15:14:18 +0200
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Hugo Villeneuve <hugo@hugovil.com>
+Cc:     robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+        conor+dt@kernel.org, jirislaby@kernel.org, jringle@gridpoint.com,
+        isaac.true@canonical.com, jesse.sung@canonical.com,
+        l.perczak@camlintechnologies.com, tomasz.mon@camlingroup.com,
+        linux-serial@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
+        Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+        stable@vger.kernel.org, Lech Perczak <lech.perczak@camlingroup.com>
+Subject: Re: [PATCH v9 04/10] serial: sc16is7xx: refactor GPIO controller
+ registration
+Message-ID: <2023080415-kinetic-repurpose-030a@gregkh>
+References: <20230725142343.1724130-1-hugo@hugovil.com>
+ <20230725142343.1724130-5-hugo@hugovil.com>
+ <2023073118-mousiness-sandlot-6258@gregkh>
+ <20230803121449.bcf74899e062ca39dfb073a3@hugovil.com>
 MIME-Version: 1.0
-Content-Type: text/plain; CHARSET=US-ASCII; format=flowed
-Content-ID: <f4af53b7-f8ea-1825-731c-cb2bd0e71968@cam.uni-heidelberg.de>
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_NONE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230803121449.bcf74899e062ca39dfb073a3@hugovil.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Fri, 4 Aug 2023 at 14:51, Karol Herbst wrote:
+On Thu, Aug 03, 2023 at 12:14:49PM -0400, Hugo Villeneuve wrote:
+> On Mon, 31 Jul 2023 17:55:42 +0200
+> Greg KH <gregkh@linuxfoundation.org> wrote:
+> 
+> > On Tue, Jul 25, 2023 at 10:23:36AM -0400, Hugo Villeneuve wrote:
+> > > From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+> > > 
+> > > In preparation for upcoming patch "fix regression with GPIO
+> > > configuration". To facilitate review and make code more modular.
+> > 
+> > I would much rather the issue be fixed _before_ the code is refactored,
+> > unless it is impossible to fix it without the refactor?
+> 
+> Hi Greg,
+> normally I would agree, but the refactor in this case helps a lot to
+> address some issues raised by you and Andy in V7 of this series.
+> 
+> Maybe I could merge it with the actual patch "fix regression with GPIO
+> configuration"?
 
-> How are you building the kernel? Because normally from git reverting 
-> one of those shouldn't take long, because it doesn't recompile the 
-> entire kernel. But yeah, you can potentially just revert one of one 
-> for now and it should be fine.
+Sure.
 
-I am using the `test-patches` script described here: 
-https://kernel-team.pages.debian.net/kernel-handbook/ch-common-tasks.html#id-1.6.6.4 
-This worked for my limited knowledge (first kernel I ever compiled).
+> > > Cc: <stable@vger.kernel.org> # 6.1.x
+> > 
+> > What commit id does this fix?
+> 
+> It doesn't fix anything, but I tought that I needed this tag since
+> this patch is a prerequisite for the next patch in the series, which
+> would be applied to stable kernels. I will remove this tag (assuming
+> the patch stays as it is, depending on your answer to the above
+> question).
+> 
+>  
+> > > Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+> > > Reviewed-by: Lech Perczak <lech.perczak@camlingroup.com>
+> > > Tested-by: Lech Perczak <lech.perczak@camlingroup.com>
+> > > ---
+> > >  drivers/tty/serial/sc16is7xx.c | 40 ++++++++++++++++++++--------------
+> > >  1 file changed, 24 insertions(+), 16 deletions(-)
+> > > 
+> > > diff --git a/drivers/tty/serial/sc16is7xx.c b/drivers/tty/serial/sc16is7xx.c
+> > > index 32d43d00a583..5b0aeef9d534 100644
+> > > --- a/drivers/tty/serial/sc16is7xx.c
+> > > +++ b/drivers/tty/serial/sc16is7xx.c
+> > > @@ -332,6 +332,7 @@ struct sc16is7xx_one {
+> > >  
+> > >  struct sc16is7xx_port {
+> > >  	const struct sc16is7xx_devtype	*devtype;
+> > > +	struct device			*dev;
+> > 
+> > Why is this pointer needed?
+> > 
+> > Why is it grabbed and yet the reference count is never incremented?  Who
+> > owns the reference count and when will it go away?
+> > 
+> > And what device is this?  The parent?  Current device?  What type of
+> > device is it?  And why is it needed?
+> > 
+> > Using "raw" devices is almost never something a driver should do, they
+> > are only passed into functions by the driver core, but then the driver
+> > should instantly turn them into the "real" structure.
+> 
+> We already discussed that a lot in previous versions (v7)... I am
+> trying my best to modify the code to address your concerns, but I am
+> not fully understanding what you mean about raw devices, and you didn't
+> answer some of my previous questions/interrogations in v7 about that.
 
-(On the occasion a maybe silly question: am I right assuming that the 
-kernel has to be build on the machine we want to reproduce the bug on? 
-Otherwise it could use much faster hardware (running also bookworm).)
+I don't have time to answer all questions, sorry.
 
-Cheers,
-Olaf
+Please help review submitted patches to reduce my load and allow me to
+answer other stuff :)
+
+> So, in the new function that I
+> need to implement, sc16is7xx_setup_gpio_chip(), I absolutely need to use
+> a raw device to read a device tree property and to set
+> s->gpio.parent:
+> 
+>     count = device_property_count_u32(dev, ...
+>     ...
+>     s->gpio.parent = dev;
+> 
+> Do we agree on that?
+
+Yes, but what type of parent is that?
+
+> Then, how do I pass this raw device to the 
+> device_property_count_u32() function and to the s->gpio.parent
+> assignment?
+> 
+> Should I modify sc16is7xx_setup_gpio_chip() like so:
+> 
+>     static int sc16is7xx_setup_gpio_chip(struct sc16is7xx_port *s)
+>     {
+> 	struct device *dev = &s->p[0].port.dev;
+> 
+>         count = device_property_count_u32(dev, ...
+>         ...
+>         s->gpio.parent = dev;
+
+Again, what is the real type of that parent?  It's a port, right, so
+pass in the port to this function and then do the "take the struct
+device of the port" at that point in time.
+
+thanks,
+
+greg k-h
