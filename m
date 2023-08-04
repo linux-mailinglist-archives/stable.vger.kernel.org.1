@@ -2,48 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6601076FD09
-	for <lists+stable@lfdr.de>; Fri,  4 Aug 2023 11:16:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A4F4C76FD84
+	for <lists+stable@lfdr.de>; Fri,  4 Aug 2023 11:39:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230274AbjHDJQn (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 4 Aug 2023 05:16:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33208 "EHLO
+        id S231144AbjHDJjA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 4 Aug 2023 05:39:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46230 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230287AbjHDJQI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 4 Aug 2023 05:16:08 -0400
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C23C5B8A;
-        Fri,  4 Aug 2023 02:13:52 -0700 (PDT)
-Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
-        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        id 1qRqsX-0001BG-Re; Fri, 04 Aug 2023 11:13:49 +0200
-Message-ID: <b68cf309-fca4-7ae0-b42f-90d5f338acdd@leemhuis.info>
-Date:   Fri, 4 Aug 2023 11:13:47 +0200
+        with ESMTP id S231145AbjHDJis (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 4 Aug 2023 05:38:48 -0400
+Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::221])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 74B5249F0;
+        Fri,  4 Aug 2023 02:38:41 -0700 (PDT)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id DC33724000B;
+        Fri,  4 Aug 2023 09:38:36 +0000 (UTC)
+From:   Remi Pommarel <repk@triplefau.lt>
+To:     Marek Lindner <mareklindner@neomailbox.ch>,
+        Simon Wunderlich <sw@simonwunderlich.de>,
+        Antonio Quartulli <a@unstable.cc>,
+        Sven Eckelmann <sven@narfation.org>
+Cc:     "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        b.a.t.m.a.n@lists.open-mesh.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Remi Pommarel <repk@triplefau.lt>,
+        stable@vger.kernel.org
+Subject: [PATCH net] batman-adv: Fix TT global entry leak when client roamed back
+Date:   Fri,  4 Aug 2023 11:39:36 +0200
+Message-Id: <20230804093936.22257-1-repk@triplefau.lt>
+X-Mailer: git-send-email 2.40.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
-Subject: Re: [PATCH v2] HID: logitech-hidpp: rework one more time the retries
- attempts
-Content-Language: en-US, de-DE
-To:     bentiss@kernel.org,
-        =?UTF-8?Q?Filipe_La=C3=ADns?= <lains@riseup.net>,
-        Bastien Nocera <hadess@hadess.net>,
-        Jiri Kosina <jikos@kernel.org>,
-        Greg KH <gregkh@linuxfoundation.org>
-Cc:     linux-input@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Benjamin Tissoires <benjamin.tissoires@redhat.com>,
-        stable@vger.kernel.org,
-        Linux kernel regressions list <regressions@lists.linux.dev>
-References: <20230621-logitech-fixes-v2-1-3635f7f9c8af@kernel.org>
-From:   "Linux regression tracking (Thorsten Leemhuis)" 
-        <regressions@leemhuis.info>
-In-Reply-To: <20230621-logitech-fixes-v2-1-3635f7f9c8af@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1691140432;4cb83ccd;
-X-HE-SMSGID: 1qRqsX-0001BG-Re
+Content-Transfer-Encoding: 8bit
+X-GND-Sasl: repk@triplefau.lt
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_PASS,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -51,200 +42,81 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi Benjamin, /me again! :-D
+When a client roamed back to a node before it got time to destroy the
+pending local entry (i.e. within the same originator interval) the old
+global one is directly removed from hash table and left as such.
 
-On 12.07.23 17:02, bentiss@kernel.org wrote:
-> From: Benjamin Tissoires <benjamin.tissoires@redhat.com>
-> 
-> Extract the internal code inside a helper function, fix the
-> initialization of the parameters used in the helper function
-> (`hidpp->answer_available` was not reset and `*response` wasn't either),
-> and use a `do {...} while();` loop.
-> 
-> Fixes: 586e8fede795 ("HID: logitech-hidpp: Retry commands when device is busy")
-> Cc: stable@vger.kernel.org
+But because this entry had an extra reference taken at lookup (i.e using
+batadv_tt_global_hash_find) there is no way its memory will be reclaimed
+at any time causing the following memory leak:
 
-From what I understood there was hope that this would cure the last
-remains (occasional init problems iirc) of the recent regressions with
-this driver and their fixes. But things look stalled. Is there a reason?
-Lack of reviews? Is there nevertheless hope that this will make it at
-least into 6.6?
+  unreferenced object 0xffff0000073c8000 (size 18560):
+    comm "softirq", pid 0, jiffies 4294907738 (age 228.644s)
+    hex dump (first 32 bytes):
+      06 31 ac 12 c7 7a 05 00 01 00 00 00 00 00 00 00  .1...z..........
+      2c ad be 08 00 80 ff ff 6c b6 be 08 00 80 ff ff  ,.......l.......
+    backtrace:
+      [<00000000ee6e0ffa>] kmem_cache_alloc+0x1b4/0x300
+      [<000000000ff2fdbc>] batadv_tt_global_add+0x700/0xe20
+      [<00000000443897c7>] _batadv_tt_update_changes+0x21c/0x790
+      [<000000005dd90463>] batadv_tt_update_changes+0x3c/0x110
+      [<00000000a2d7fc57>] batadv_tt_tvlv_unicast_handler_v1+0xafc/0xe10
+      [<0000000011793f2a>] batadv_tvlv_containers_process+0x168/0x2b0
+      [<00000000b7cbe2ef>] batadv_recv_unicast_tvlv+0xec/0x1f4
+      [<0000000042aef1d8>] batadv_batman_skb_recv+0x25c/0x3a0
+      [<00000000bbd8b0a2>] __netif_receive_skb_core.isra.0+0x7a8/0xe90
+      [<000000004033d428>] __netif_receive_skb_one_core+0x64/0x74
+      [<000000000f39a009>] __netif_receive_skb+0x48/0xe0
+      [<00000000f2cd8888>] process_backlog+0x174/0x344
+      [<00000000507d6564>] __napi_poll+0x58/0x1f4
+      [<00000000b64ef9eb>] net_rx_action+0x504/0x590
+      [<00000000056fa5e4>] _stext+0x1b8/0x418
+      [<00000000878879d6>] run_ksoftirqd+0x74/0xa4
+  unreferenced object 0xffff00000bae1a80 (size 56):
+    comm "softirq", pid 0, jiffies 4294910888 (age 216.092s)
+    hex dump (first 32 bytes):
+      00 78 b1 0b 00 00 ff ff 0d 50 00 00 00 00 00 00  .x.......P......
+      00 00 00 00 00 00 00 00 50 c8 3c 07 00 00 ff ff  ........P.<.....
+    backtrace:
+      [<00000000ee6e0ffa>] kmem_cache_alloc+0x1b4/0x300
+      [<00000000d9aaa49e>] batadv_tt_global_add+0x53c/0xe20
+      [<00000000443897c7>] _batadv_tt_update_changes+0x21c/0x790
+      [<000000005dd90463>] batadv_tt_update_changes+0x3c/0x110
+      [<00000000a2d7fc57>] batadv_tt_tvlv_unicast_handler_v1+0xafc/0xe10
+      [<0000000011793f2a>] batadv_tvlv_containers_process+0x168/0x2b0
+      [<00000000b7cbe2ef>] batadv_recv_unicast_tvlv+0xec/0x1f4
+      [<0000000042aef1d8>] batadv_batman_skb_recv+0x25c/0x3a0
+      [<00000000bbd8b0a2>] __netif_receive_skb_core.isra.0+0x7a8/0xe90
+      [<000000004033d428>] __netif_receive_skb_one_core+0x64/0x74
+      [<000000000f39a009>] __netif_receive_skb+0x48/0xe0
+      [<00000000f2cd8888>] process_backlog+0x174/0x344
+      [<00000000507d6564>] __napi_poll+0x58/0x1f4
+      [<00000000b64ef9eb>] net_rx_action+0x504/0x590
+      [<00000000056fa5e4>] _stext+0x1b8/0x418
+      [<00000000878879d6>] run_ksoftirqd+0x74/0xa4
 
-Ciao, Thorsten
+Releasing the extra reference from batadv_tt_global_hash_find even at
+roam back when batadv_tt_global_free is called fixes this memory leak.
 
-> Reviewed-by: Bastien Nocera <hadess@hadess.net>
-> Signed-off-by: Benjamin Tissoires <benjamin.tissoires@redhat.com>
-> ---
-> as requested by https://lore.kernel.org/all/CAHk-=wiMbF38KCNhPFiargenpSBoecSXTLQACKS2UMyo_Vu2ww@mail.gmail.com/
-> This is a rewrite of that particular piece of code.
-> ---
-> Changes in v2:
-> - added __must_hold() for KASAN
-> - Reworked the comment describing the functions and their return values
-> - Link to v1: https://lore.kernel.org/r/20230621-logitech-fixes-v1-1-32e70933c0b0@redhat.com
-> ---
->  drivers/hid/hid-logitech-hidpp.c | 115 +++++++++++++++++++++++++--------------
->  1 file changed, 75 insertions(+), 40 deletions(-)
-> 
-> diff --git a/drivers/hid/hid-logitech-hidpp.c b/drivers/hid/hid-logitech-hidpp.c
-> index 129b01be488d..09ba2086c95c 100644
-> --- a/drivers/hid/hid-logitech-hidpp.c
-> +++ b/drivers/hid/hid-logitech-hidpp.c
-> @@ -275,21 +275,22 @@ static int __hidpp_send_report(struct hid_device *hdev,
->  }
->  
->  /*
-> - * hidpp_send_message_sync() returns 0 in case of success, and something else
-> - * in case of a failure.
-> - * - If ' something else' is positive, that means that an error has been raised
-> - *   by the protocol itself.
-> - * - If ' something else' is negative, that means that we had a classic error
-> - *   (-ENOMEM, -EPIPE, etc...)
-> + * Effectively send the message to the device, waiting for its answer.
-> + *
-> + * Must be called with hidpp->send_mutex locked
-> + *
-> + * Same return protocol than hidpp_send_message_sync():
-> + * - success on 0
-> + * - negative error means transport error
-> + * - positive value means protocol error
->   */
-> -static int hidpp_send_message_sync(struct hidpp_device *hidpp,
-> +static int __do_hidpp_send_message_sync(struct hidpp_device *hidpp,
->  	struct hidpp_report *message,
->  	struct hidpp_report *response)
->  {
-> -	int ret = -1;
-> -	int max_retries = 3;
-> +	int ret;
->  
-> -	mutex_lock(&hidpp->send_mutex);
-> +	__must_hold(&hidpp->send_mutex);
->  
->  	hidpp->send_receive_buf = response;
->  	hidpp->answer_available = false;
-> @@ -300,47 +301,74 @@ static int hidpp_send_message_sync(struct hidpp_device *hidpp,
->  	 */
->  	*response = *message;
->  
-> -	for (; max_retries != 0 && ret; max_retries--) {
-> -		ret = __hidpp_send_report(hidpp->hid_dev, message);
-> +	ret = __hidpp_send_report(hidpp->hid_dev, message);
-> +	if (ret) {
-> +		dbg_hid("__hidpp_send_report returned err: %d\n", ret);
-> +		memset(response, 0, sizeof(struct hidpp_report));
-> +		return ret;
-> +	}
->  
-> -		if (ret) {
-> -			dbg_hid("__hidpp_send_report returned err: %d\n", ret);
-> -			memset(response, 0, sizeof(struct hidpp_report));
-> -			break;
-> -		}
-> +	if (!wait_event_timeout(hidpp->wait, hidpp->answer_available,
-> +				5*HZ)) {
-> +		dbg_hid("%s:timeout waiting for response\n", __func__);
-> +		memset(response, 0, sizeof(struct hidpp_report));
-> +		return -ETIMEDOUT;
-> +	}
->  
-> -		if (!wait_event_timeout(hidpp->wait, hidpp->answer_available,
-> -					5*HZ)) {
-> -			dbg_hid("%s:timeout waiting for response\n", __func__);
-> -			memset(response, 0, sizeof(struct hidpp_report));
-> -			ret = -ETIMEDOUT;
-> -			break;
-> -		}
-> +	if (response->report_id == REPORT_ID_HIDPP_SHORT &&
-> +	    response->rap.sub_id == HIDPP_ERROR) {
-> +		ret = response->rap.params[1];
-> +		dbg_hid("%s:got hidpp error %02X\n", __func__, ret);
-> +		return ret;
-> +	}
->  
-> -		if (response->report_id == REPORT_ID_HIDPP_SHORT &&
-> -		    response->rap.sub_id == HIDPP_ERROR) {
-> -			ret = response->rap.params[1];
-> -			dbg_hid("%s:got hidpp error %02X\n", __func__, ret);
-> +	if ((response->report_id == REPORT_ID_HIDPP_LONG ||
-> +	     response->report_id == REPORT_ID_HIDPP_VERY_LONG) &&
-> +	    response->fap.feature_index == HIDPP20_ERROR) {
-> +		ret = response->fap.params[1];
-> +		dbg_hid("%s:got hidpp 2.0 error %02X\n", __func__, ret);
-> +		return ret;
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +/*
-> + * hidpp_send_message_sync() returns 0 in case of success, and something else
-> + * in case of a failure.
-> + *
-> + * See __do_hidpp_send_message_sync() for a detailed explanation of the returned
-> + * value.
-> + */
-> +static int hidpp_send_message_sync(struct hidpp_device *hidpp,
-> +	struct hidpp_report *message,
-> +	struct hidpp_report *response)
-> +{
-> +	int ret;
-> +	int max_retries = 3;
-> +
-> +	mutex_lock(&hidpp->send_mutex);
-> +
-> +	do {
-> +		ret = __do_hidpp_send_message_sync(hidpp, message, response);
-> +		if (ret != HIDPP20_ERROR_BUSY)
->  			break;
-> -		}
->  
-> -		if ((response->report_id == REPORT_ID_HIDPP_LONG ||
-> -		     response->report_id == REPORT_ID_HIDPP_VERY_LONG) &&
-> -		    response->fap.feature_index == HIDPP20_ERROR) {
-> -			ret = response->fap.params[1];
-> -			if (ret != HIDPP20_ERROR_BUSY) {
-> -				dbg_hid("%s:got hidpp 2.0 error %02X\n", __func__, ret);
-> -				break;
-> -			}
-> -			dbg_hid("%s:got busy hidpp 2.0 error %02X, retrying\n", __func__, ret);
-> -		}
-> -	}
-> +		dbg_hid("%s:got busy hidpp 2.0 error %02X, retrying\n", __func__, ret);
-> +	} while (--max_retries);
->  
->  	mutex_unlock(&hidpp->send_mutex);
->  	return ret;
->  
->  }
->  
-> +/*
-> + * hidpp_send_fap_command_sync() returns 0 in case of success, and something else
-> + * in case of a failure.
-> + *
-> + * See __do_hidpp_send_message_sync() for a detailed explanation of the returned
-> + * value.
-> + */
->  static int hidpp_send_fap_command_sync(struct hidpp_device *hidpp,
->  	u8 feat_index, u8 funcindex_clientid, u8 *params, int param_count,
->  	struct hidpp_report *response)
-> @@ -373,6 +401,13 @@ static int hidpp_send_fap_command_sync(struct hidpp_device *hidpp,
->  	return ret;
->  }
->  
-> +/*
-> + * hidpp_send_rap_command_sync() returns 0 in case of success, and something else
-> + * in case of a failure.
-> + *
-> + * See __do_hidpp_send_message_sync() for a detailed explanation of the returned
-> + * value.
-> + */
->  static int hidpp_send_rap_command_sync(struct hidpp_device *hidpp_dev,
->  	u8 report_id, u8 sub_id, u8 reg_address, u8 *params, int param_count,
->  	struct hidpp_report *response)
-> 
-> ---
-> base-commit: 87854366176403438d01f368b09de3ec2234e0f5
-> change-id: 20230621-logitech-fixes-a4c0e66ea2ad
-> 
-> Best regards,
+Cc: stable@vger.kernel.org
+Fixes: 068ee6e204e1 ("batman-adv: roaming handling mechanism redesign")
+Signed-off-by: Remi Pommarel <repk@triplefau.lt>
+---
+ net/batman-adv/translation-table.c | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/net/batman-adv/translation-table.c b/net/batman-adv/translation-table.c
+index 36ca31252a73..b95c36765d04 100644
+--- a/net/batman-adv/translation-table.c
++++ b/net/batman-adv/translation-table.c
+@@ -774,7 +774,6 @@ bool batadv_tt_local_add(struct net_device *soft_iface, const u8 *addr,
+ 		if (roamed_back) {
+ 			batadv_tt_global_free(bat_priv, tt_global,
+ 					      "Roaming canceled");
+-			tt_global = NULL;
+ 		} else {
+ 			/* The global entry has to be marked as ROAMING and
+ 			 * has to be kept for consistency purpose
+-- 
+2.40.0
+
