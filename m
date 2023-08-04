@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A2864770163
-	for <lists+stable@lfdr.de>; Fri,  4 Aug 2023 15:24:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 971E2770164
+	for <lists+stable@lfdr.de>; Fri,  4 Aug 2023 15:24:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229582AbjHDNYG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 4 Aug 2023 09:24:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60894 "EHLO
+        id S229798AbjHDNYH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 4 Aug 2023 09:24:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33382 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229637AbjHDNWy (ORCPT
-        <rfc822;Stable@vger.kernel.org>); Fri, 4 Aug 2023 09:22:54 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 686B54C00
-        for <Stable@vger.kernel.org>; Fri,  4 Aug 2023 06:21:36 -0700 (PDT)
+        with ESMTP id S231462AbjHDNXX (ORCPT
+        <rfc822;Stable@vger.kernel.org>); Fri, 4 Aug 2023 09:23:23 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC48C526A
+        for <Stable@vger.kernel.org>; Fri,  4 Aug 2023 06:22:20 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 434D462000
-        for <Stable@vger.kernel.org>; Fri,  4 Aug 2023 13:20:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52F5EC433C8;
-        Fri,  4 Aug 2023 13:20:25 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A9F7361FBB
+        for <Stable@vger.kernel.org>; Fri,  4 Aug 2023 13:20:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6237C433C8;
+        Fri,  4 Aug 2023 13:20:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691155225;
-        bh=1IQVSvqt/MhvAoefq7wO/CxxfPRYs06kO7kREmJRCDk=;
+        s=korg; t=1691155229;
+        bh=BxZPkIl93oJZVkmXVLp3sFf4VHVev49yl0qc+FUoAwE=;
         h=Subject:To:From:Date:From;
-        b=QSFuT8tMDhBB/kz8ed0bkgfPXx4jym2l7+E5RFhIFiby9XdDqgxqXRFc5O+x+Kk4x
-         ptZRrIMQ1rIymvY51UHfdNYblqurbUu8N9e+kHGR1eK066BWZFRoo1wExDoA6KD8BT
-         u5eT8PewoijS32oFPZtlN6T+8ZPwGZ0sY+I1jdMQ=
-Subject: patch "iio: adc: ina2xx: avoid NULL pointer dereference on OF device match" added to char-misc-linus
-To:     alsi@bang-olufsen.dk, Jonathan.Cameron@huawei.com,
+        b=UBWswkhoBLgWw5fSsXKh7i63oRtyKki3hLn8BTOdP7ZRx7ulZyCFFrnfaNx+y6uXN
+         k4hwqbmy+OQSeNZ/RHH+RdTOt5SMXLutQEyoavfjtvMNIIVEuEPohMQwkNy7ahM3Ba
+         oJ5G4lLdVg66UTXqzb3Il3J3Z7329u6W8yFxCS2M=
+Subject: patch "iio: frequency: admv1013: propagate errors from" added to char-misc-linus
+To:     dan.carpenter@linaro.org, Jonathan.Cameron@huawei.com,
         Stable@vger.kernel.org
 From:   <gregkh@linuxfoundation.org>
-Date:   Fri, 04 Aug 2023 15:20:14 +0200
-Message-ID: <2023080414-patient-vanish-0697@gregkh>
+Date:   Fri, 04 Aug 2023 15:20:15 +0200
+Message-ID: <2023080415-armed-refocus-d895@gregkh>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -51,7 +51,7 @@ X-Mailing-List: stable@vger.kernel.org
 
 This is a note to let you know that I've just added the patch titled
 
-    iio: adc: ina2xx: avoid NULL pointer dereference on OF device match
+    iio: frequency: admv1013: propagate errors from
 
 to my char-misc git tree which can be found at
     git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/char-misc.git
@@ -66,98 +66,48 @@ next -rc kernel release.
 If you have any questions about this process, please let me know.
 
 
-From a41e19cc0d6b6a445a4133170b90271e4a2553dc Mon Sep 17 00:00:00 2001
-From: =?UTF-8?q?Alvin=20=C5=A0ipraga?= <alsi@bang-olufsen.dk>
-Date: Mon, 19 Jun 2023 16:12:39 +0200
-Subject: iio: adc: ina2xx: avoid NULL pointer dereference on OF device match
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+From 507397d19b5a296aa339f7a1bd16284f668a1906 Mon Sep 17 00:00:00 2001
+From: Dan Carpenter <dan.carpenter@linaro.org>
+Date: Tue, 18 Jul 2023 10:02:18 +0300
+Subject: iio: frequency: admv1013: propagate errors from
+ regulator_get_voltage()
 
-The affected lines were resulting in a NULL pointer dereference on our
-platform because the device tree contained the following list of
-compatible strings:
+The regulator_get_voltage() function returns negative error codes.
+This function saves it to an unsigned int and then does some range
+checking and, since the error code falls outside the correct range,
+it returns -EINVAL.
 
-    power-sensor@40 {
-        compatible = "ti,ina232", "ti,ina231";
-        ...
-    };
+Beyond the messiness, this is bad because the regulator_get_voltage()
+function can return -EPROBE_DEFER and it's important to propagate that
+back properly so it can be handled.
 
-Since the driver doesn't declare a compatible string "ti,ina232", the OF
-matching succeeds on "ti,ina231". But the I2C device ID info is
-populated via the first compatible string, cf. modalias population in
-of_i2c_get_board_info(). Since there is no "ina232" entry in the legacy
-I2C device ID table either, the struct i2c_device_id *id pointer in the
-probe function is NULL.
-
-Fix this by using the already populated type variable instead, which
-points to the proper driver data. Since the name is also wanted, add a
-generic one to the ina2xx_config table.
-
-Signed-off-by: Alvin Šipraga <alsi@bang-olufsen.dk>
-Fixes: c43a102e67db ("iio: ina2xx: add support for TI INA2xx Power Monitors")
-Link: https://lore.kernel.org/r/20230619141239.2257392-1-alvin@pqrs.dk
+Fixes: da35a7b526d9 ("iio: frequency: admv1013: add support for ADMV1013")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://lore.kernel.org/r/ce75aac3-2aba-4435-8419-02e59fdd862b@moroto.mountain
 Cc: <Stable@vger.kernel.org>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- drivers/iio/adc/ina2xx-adc.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/iio/frequency/admv1013.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/iio/adc/ina2xx-adc.c b/drivers/iio/adc/ina2xx-adc.c
-index 213526c1592f..aea83f369437 100644
---- a/drivers/iio/adc/ina2xx-adc.c
-+++ b/drivers/iio/adc/ina2xx-adc.c
-@@ -124,6 +124,7 @@ static const struct regmap_config ina2xx_regmap_config = {
- enum ina2xx_ids { ina219, ina226 };
+diff --git a/drivers/iio/frequency/admv1013.c b/drivers/iio/frequency/admv1013.c
+index 9bf8337806fc..8c8e0bbfc99f 100644
+--- a/drivers/iio/frequency/admv1013.c
++++ b/drivers/iio/frequency/admv1013.c
+@@ -344,9 +344,12 @@ static int admv1013_update_quad_filters(struct admv1013_state *st)
  
- struct ina2xx_config {
-+	const char *name;
- 	u16 config_default;
- 	int calibration_value;
- 	int shunt_voltage_lsb;	/* nV */
-@@ -155,6 +156,7 @@ struct ina2xx_chip_info {
+ static int admv1013_update_mixer_vgate(struct admv1013_state *st)
+ {
+-	unsigned int vcm, mixer_vgate;
++	unsigned int mixer_vgate;
++	int vcm;
  
- static const struct ina2xx_config ina2xx_config[] = {
- 	[ina219] = {
-+		.name = "ina219",
- 		.config_default = INA219_CONFIG_DEFAULT,
- 		.calibration_value = 4096,
- 		.shunt_voltage_lsb = 10000,
-@@ -164,6 +166,7 @@ static const struct ina2xx_config ina2xx_config[] = {
- 		.chip_id = ina219,
- 	},
- 	[ina226] = {
-+		.name = "ina226",
- 		.config_default = INA226_CONFIG_DEFAULT,
- 		.calibration_value = 2048,
- 		.shunt_voltage_lsb = 2500,
-@@ -996,7 +999,7 @@ static int ina2xx_probe(struct i2c_client *client)
- 	/* Patch the current config register with default. */
- 	val = chip->config->config_default;
+ 	vcm = regulator_get_voltage(st->reg);
++	if (vcm < 0)
++		return vcm;
  
--	if (id->driver_data == ina226) {
-+	if (type == ina226) {
- 		ina226_set_average(chip, INA226_DEFAULT_AVG, &val);
- 		ina226_set_int_time_vbus(chip, INA226_DEFAULT_IT, &val);
- 		ina226_set_int_time_vshunt(chip, INA226_DEFAULT_IT, &val);
-@@ -1015,7 +1018,7 @@ static int ina2xx_probe(struct i2c_client *client)
- 	}
- 
- 	indio_dev->modes = INDIO_DIRECT_MODE;
--	if (id->driver_data == ina226) {
-+	if (type == ina226) {
- 		indio_dev->channels = ina226_channels;
- 		indio_dev->num_channels = ARRAY_SIZE(ina226_channels);
- 		indio_dev->info = &ina226_info;
-@@ -1024,7 +1027,7 @@ static int ina2xx_probe(struct i2c_client *client)
- 		indio_dev->num_channels = ARRAY_SIZE(ina219_channels);
- 		indio_dev->info = &ina219_info;
- 	}
--	indio_dev->name = id->name;
-+	indio_dev->name = id ? id->name : chip->config->name;
- 
- 	ret = devm_iio_kfifo_buffer_setup(&client->dev, indio_dev,
- 					  &ina2xx_setup_ops);
+ 	if (vcm < 1800000)
+ 		mixer_vgate = (2389 * vcm / 1000000 + 8100) / 100;
 -- 
 2.41.0
 
