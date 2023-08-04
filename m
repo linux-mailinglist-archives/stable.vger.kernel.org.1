@@ -2,82 +2,93 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 79F7976FF1D
-	for <lists+stable@lfdr.de>; Fri,  4 Aug 2023 12:59:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D1C3976FF54
+	for <lists+stable@lfdr.de>; Fri,  4 Aug 2023 13:20:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231356AbjHDK7Y (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 4 Aug 2023 06:59:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55152 "EHLO
+        id S229953AbjHDLUY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 4 Aug 2023 07:20:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37360 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231376AbjHDK7A (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 4 Aug 2023 06:59:00 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 44E5A4ED7
-        for <stable@vger.kernel.org>; Fri,  4 Aug 2023 03:57:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1691146657; x=1722682657;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=QPNpGrplDFi/bkhbG4LeRBXgYmZRvH4AZEuR5h3iZ5c=;
-  b=ABEplz7fAharHBS1I51LhXvsu5yJ/VtqqK41YmxXWe1LoyB9DvkJha6V
-   xfsNjLBbina+b2bqSlrOLYj7dgvZHBrBum/xjAx4n6VTQ4pxIcX9uodOw
-   yhYo6QQgCG/mg2pEGj6qwUeldM9zKMHGHI1U32+UscnPtugdNPivZYDPk
-   zS/qHWIMT3H/lBSJ0g8UTZ/jZruOw5//W+Ywt50MaAQtgSchNREIJrr+s
-   1iVzf3Xel9MdCz0a/DaNKmH6IO7bif2kKFTg25QCouJ/FlQ8eRa9rnblA
-   x/pV5kU4eYjJuZ9zuQohnbZzDQ7PZ8PqfNj5kJvqJq9Bj3ayR2IDcXEmo
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10791"; a="350429197"
-X-IronPort-AV: E=Sophos;i="6.01,254,1684825200"; 
-   d="scan'208";a="350429197"
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Aug 2023 03:57:25 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10791"; a="795376160"
-X-IronPort-AV: E=Sophos;i="6.01,254,1684825200"; 
-   d="scan'208";a="795376160"
-Received: from lkp-server01.sh.intel.com (HELO d1ccc7e87e8f) ([10.239.97.150])
-  by fmsmga008.fm.intel.com with ESMTP; 04 Aug 2023 03:57:24 -0700
-Received: from kbuild by d1ccc7e87e8f with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1qRsUl-0002o3-0p;
-        Fri, 04 Aug 2023 10:57:23 +0000
-Date:   Fri, 4 Aug 2023 18:57:04 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     max.chou@realtek.com
-Cc:     stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH v2] Bluetooth: btrtl: Load FW v2 otherwise FW v1 for
- RTL8852C
-Message-ID: <ZMzZgAI8XBD+8aP5@11d7ca01dc46>
+        with ESMTP id S229710AbjHDLUX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 4 Aug 2023 07:20:23 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D344EE7;
+        Fri,  4 Aug 2023 04:20:22 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 65AA861F98;
+        Fri,  4 Aug 2023 11:20:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D47DC433CC;
+        Fri,  4 Aug 2023 11:20:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1691148021;
+        bh=PD0WZl9g+p7buh6X5We6vYyuenWLuZ43sDfUiVyrgh8=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=PCURGU8du84F8nuxxbHBGPvyvE6YwYxp3BgLvMmp7Z76Ys7dcQ+VqmYVi/TgIvRZ2
+         wHPZYBzgtqc6LN1Iaqx8RNNHATXs4ddIN8ecC9TtHJZHMWJ67QMlm78fstJ0SmlzhS
+         kN1yNWVDvueFpiWgcPXiUz3p1Vg51qR90KUVhZSQ=
+Date:   Fri, 4 Aug 2023 13:19:59 +0200
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Easwar Hariharan <eahariha@linux.microsoft.com>
+Cc:     stable@vger.kernel.org, easwar.hariharan@microsoft.com,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Robin Murphy <robin.murphy@arm.com>,
+        Joerg Roedel <joro@8bytes.org>,
+        linux-arm-kernel@lists.infradead.org, linux-doc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, iommu@lists.linux.dev
+Subject: Re: [PATCH v2 6.4 0/4] ARM SMMUv3 errata for 6.4
+Message-ID: <2023080452-rewire-ashy-3a7f@gregkh>
+References: <20230802172620.1628017-1-eahariha@linux.microsoft.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230804104735.9281-1-max.chou@realtek.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+In-Reply-To: <20230802172620.1628017-1-eahariha@linux.microsoft.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi,
+On Wed, Aug 02, 2023 at 05:26:16PM +0000, Easwar Hariharan wrote:
+> Cc: Catalin Marinas <catalin.marinas@arm.com>
+> Cc: Will Deacon <will@kernel.org>
+> Cc: Jonathan Corbet <corbet@lwn.net>
+> Cc: Robin Murphy <robin.murphy@arm.com>
+> Cc: Joerg Roedel <joro@8bytes.org>
+> Cc: linux-arm-kernel@lists.infradead.org
+> Cc: linux-doc@vger.kernel.org
+> Cc: linux-kernel@vger.kernel.org
+> Cc: iommu@lists.linux.dev
+> 
+> Changelog:
+> ==========
+> v1 -> v2:
+>  - Backport other relevant errata patches from the same series as MMU-700 erratum 2812531
+>  - v1 link: https://lore.kernel.org/stable/20230724185130.1676140-1-eahariha@linux.microsoft.com/T/#u
+> 
+> Robin Murphy (4):
+>   iommu/arm-smmu-v3: Work around MMU-600 erratum 1076982
+>   iommu/arm-smmu-v3: Document MMU-700 erratum 2812531
+>   iommu/arm-smmu-v3: Add explicit feature for nesting
+>   iommu/arm-smmu-v3: Document nesting-related errata
+> 
+>  Documentation/arm64/silicon-errata.rst      |  4 ++
+>  drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c | 50 +++++++++++++++++++++
+>  drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.h |  8 ++++
+>  3 files changed, 62 insertions(+)
+> 
+> -- 
+> 2.25.1
+> 
 
-Thanks for your patch.
+All now queued up, thanks.
 
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
-
-Rule: 'Cc: stable@vger.kernel.org' or 'commit <sha1> upstream.'
-Subject: [PATCH v2] Bluetooth: btrtl: Load FW v2 otherwise FW v1 for RTL8852C
-Link: https://lore.kernel.org/stable/20230804104735.9281-1-max.chou%40realtek.com
-
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
-
-
-
+greg k-h
