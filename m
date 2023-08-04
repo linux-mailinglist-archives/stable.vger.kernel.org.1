@@ -2,167 +2,77 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F261576FE5D
-	for <lists+stable@lfdr.de>; Fri,  4 Aug 2023 12:24:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E5E8876FE64
+	for <lists+stable@lfdr.de>; Fri,  4 Aug 2023 12:25:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230014AbjHDKYW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 4 Aug 2023 06:24:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37056 "EHLO
+        id S229503AbjHDKZZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 4 Aug 2023 06:25:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37848 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229925AbjHDKYV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 4 Aug 2023 06:24:21 -0400
-Received: from wout4-smtp.messagingengine.com (wout4-smtp.messagingengine.com [64.147.123.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 81E0F30F6
-        for <stable@vger.kernel.org>; Fri,  4 Aug 2023 03:24:19 -0700 (PDT)
-Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
-        by mailout.west.internal (Postfix) with ESMTP id 98A373200319;
-        Fri,  4 Aug 2023 06:24:15 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute4.internal (MEProxy); Fri, 04 Aug 2023 06:24:16 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
-        :cc:content-type:content-type:date:date:from:from:in-reply-to
-        :in-reply-to:message-id:mime-version:references:reply-to:sender
-        :subject:subject:to:to; s=fm3; t=1691144655; x=1691231055; bh=WW
-        Wx8vA3jttFz/l/kqhUdIbz1oSt+W7uK3OEb3BhEzg=; b=w3BNtQpS9re0va+arY
-        XjK3MYENksWw4URQA1vTsbH84GB/xqLdZslvAx0P3mLKTXl8JJ04Vg6HYTxTP6km
-        bKYU6BA83sDUSQ0Cbdkddk80aSoBT3xiHEUGXzEd16rFkr/DWoFasF7/+ffANOP4
-        ex2IkRbUEoqvDus4xAvzxLrCs1KhRpbf09M0e8N2PMbfyq0GMq1ZVG4EFhgsG0MU
-        meSa04hDOHNTpK8cw3ZRYPVyc5DkKtXKcwbIzE20kIa+CL8aa5GjRYBvd3BQEx8Y
-        jgAEFexC164Sb+LkrrubnedFHa5DNZpTpFHNqz5Nq8GF54VQW75DZWNfKwpcay7V
-        /aww==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-type:content-type:date:date
-        :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-        :message-id:mime-version:references:reply-to:sender:subject
-        :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-        :x-sasl-enc; s=fm3; t=1691144655; x=1691231055; bh=WWWx8vA3jttFz
-        /l/kqhUdIbz1oSt+W7uK3OEb3BhEzg=; b=08HRUFm1bsmArvwrmGtmmUpitQLFm
-        /QXsCMgV7MX1QLrFk7jPVLf3OkXa9WVWDne1PqtR6R0q+iLm9LI/67+N+EPg6A5Q
-        yzks40F+ksSy+6uCNIF+e3iR6KFxApLBd+4nVktzOqGwLBUkre8o1lcD+OXvWC2X
-        r/uKwEm/gJgr8fiPR5Xk1CeEHvqdElG9Lizmnx6Z4liU+iK++KgrhgL7PjHpycdO
-        RVwMOvuYIVcAmcmcMfGUyuIJiDGavXUO72ApkhrHiSm0lswhVb+5X1JrBDcF8jnn
-        ptUHvJOC4rCPoUnP1sSp2kc1zzzXEDudi1DFqw8LUYA9L1vsj/8JP9cDw==
-X-ME-Sender: <xms:ztHMZMzykzp1Y88OBDWaWZqLtqCQRib5FBf_XlEIi-w9TJpI9RsIkQ>
-    <xme:ztHMZATFJ-GylcxBEQ0WJFt4RGQmdyrU29GBSY28aAdjkXosB_Wdilh7ILpZFWHhL
-    sZaCOGeZpzLgw>
-X-ME-Received: <xmr:ztHMZOXSAKg_Fue-vMJT3Cjz2TIZXNGZSIVZvxJnBzmyRRaB9-CRazPBgpEaF4PSyZnGVnulR-vtbQm6Ro-Kot_g9tEw-lSoY4saxw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrkeeggddviecutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
-    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
-    fjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpefirhgvghcu
-    mffjuceoghhrvghgsehkrhhorghhrdgtohhmqeenucggtffrrghtthgvrhhnpeegheeuhe
-    fgtdeluddtleekfeegjeetgeeikeehfeduieffvddufeefleevtddtvdenucffohhmrghi
-    nhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpe
-    hmrghilhhfrhhomhepghhrvghgsehkrhhorghhrdgtohhm
-X-ME-Proxy: <xmx:ztHMZKj10ot2g1erPEwP4EqyCpljUNzQU3oDI_AO-mLQW36X-9cyhg>
-    <xmx:ztHMZOBMq3QNkZ-k1DUvWbJumdX0v-9xarnbNQrlz5JFYDoeirxnVg>
-    <xmx:ztHMZLKXZzNOVrLpYu6hbC-inMdAPmIKgFzmTt5CRZMbJyYfxTNrKg>
-    <xmx:z9HMZK0-TlEym_xEdqtfvHscptsH0tcWXKlSDzqdEu9LUhVlC6VzlA>
-Feedback-ID: i787e41f1:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 4 Aug 2023 06:24:14 -0400 (EDT)
-Date:   Fri, 4 Aug 2023 12:24:12 +0200
-From:   Greg KH <greg@kroah.com>
-To:     ovidiu.panait@windriver.com
-Cc:     stable@vger.kernel.org,
-        D Scott Phillips <scott@os.amperecomputing.com>,
-        James Morse <james.morse@arm.com>,
-        Catalin Marinas <catalin.marinas@arm.com>
-Subject: Re: [PATCH 5.4 1/2] arm64: Add AMPERE1 to the Spectre-BHB affected
- list
-Message-ID: <2023080406-wow-repeated-09d9@gregkh>
-References: <20230801093736.4110870-1-ovidiu.panait@windriver.com>
+        with ESMTP id S229736AbjHDKZY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 4 Aug 2023 06:25:24 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 31B9D49DA
+        for <stable@vger.kernel.org>; Fri,  4 Aug 2023 03:25:19 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B8D0461EF8
+        for <stable@vger.kernel.org>; Fri,  4 Aug 2023 10:25:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABF03C433C7;
+        Fri,  4 Aug 2023 10:25:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1691144718;
+        bh=AdZbBOmPeP3lw5z1vCRP0Q3buyiyEPVzMXT9YFDdvro=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=G07woGCgjt9pCao1Wx4MP+a8f6jhDNRcrDyPQSlOXFypqg7gWb4kMqHVJ5qty9ATK
+         vl5adD9CS1JHsOZP7eUbmFaB15lz1QcxJDFxboDdPayc0n/osDXyVeLg6++Alhix7H
+         EVD7HMOrLottFhTzuEyx7gtCe2RconWjXP4uGuzM=
+Date:   Fri, 4 Aug 2023 12:25:14 +0200
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Jens Axboe <axboe@kernel.dk>
+Cc:     andres@anarazel.de, oleksandr@natalenko.name, phil@raspberrypi.com,
+        stable@vger.kernel.org
+Subject: Re: FAILED: patch "[PATCH] io_uring: gate iowait schedule on having
+ pending requests" failed to apply to 6.1-stable tree
+Message-ID: <2023080407-snowless-delirious-bf7f@gregkh>
+References: <2023080153-turkey-reload-8fa7@gregkh>
+ <c2516403-4aff-375b-a519-9fb815c7d4bb@kernel.dk>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20230801093736.4110870-1-ovidiu.panait@windriver.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <c2516403-4aff-375b-a519-9fb815c7d4bb@kernel.dk>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, Aug 01, 2023 at 12:37:35PM +0300, ovidiu.panait@windriver.com wrote:
-> From: D Scott Phillips <scott@os.amperecomputing.com>
+On Tue, Aug 01, 2023 at 08:48:36AM -0600, Jens Axboe wrote:
+> On 7/31/23 11:53 PM, gregkh@linuxfoundation.org wrote:
+> > 
+> > The patch below does not apply to the 6.1-stable tree.
+> > If someone wants it applied there, or to any other stable or longterm
+> > tree, then please email the backport, including the original git commit
+> > id to <stable@vger.kernel.org>.
+> > 
+> > To reproduce the conflict and resubmit, you may use the following commands:
+> > 
+> > git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+> > git checkout FETCH_HEAD
+> > git cherry-pick -x 7b72d661f1f2f950ab8c12de7e2bc48bdac8ed69
+> > # <resolve conflicts, build, test, etc.>
+> > git commit -s
+> > git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023080153-turkey-reload-8fa7@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 > 
-> commit 0e5d5ae837c8ce04d2ddb874ec5f920118bd9d31 upstream.
-> 
-> Per AmpereOne erratum AC03_CPU_12, "Branch history may allow control of
-> speculative execution across software contexts," the AMPERE1 core needs the
-> bhb clearing loop to mitigate Spectre-BHB, with a loop iteration count of
-> 11.
-> 
-> Signed-off-by: D Scott Phillips <scott@os.amperecomputing.com>
-> Link: https://lore.kernel.org/r/20221011022140.432370-1-scott@os.amperecomputing.com
-> Reviewed-by: James Morse <james.morse@arm.com>
-> Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
-> Signed-off-by: Ovidiu Panait <ovidiu.panait@windriver.com>
-> ---
->  arch/arm64/include/asm/cputype.h | 4 ++++
->  arch/arm64/kernel/cpu_errata.c   | 6 ++++++
->  2 files changed, 10 insertions(+)
-> 
-> diff --git a/arch/arm64/include/asm/cputype.h b/arch/arm64/include/asm/cputype.h
-> index f0165df489a3..08241810cfea 100644
-> --- a/arch/arm64/include/asm/cputype.h
-> +++ b/arch/arm64/include/asm/cputype.h
-> @@ -59,6 +59,7 @@
->  #define ARM_CPU_IMP_NVIDIA		0x4E
->  #define ARM_CPU_IMP_FUJITSU		0x46
->  #define ARM_CPU_IMP_HISI		0x48
-> +#define ARM_CPU_IMP_AMPERE		0xC0
->  
->  #define ARM_CPU_PART_AEM_V8		0xD0F
->  #define ARM_CPU_PART_FOUNDATION		0xD00
-> @@ -101,6 +102,8 @@
->  
->  #define HISI_CPU_PART_TSV110		0xD01
->  
-> +#define AMPERE_CPU_PART_AMPERE1		0xAC3
-> +
->  #define MIDR_CORTEX_A53 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A53)
->  #define MIDR_CORTEX_A57 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A57)
->  #define MIDR_CORTEX_A72 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A72)
-> @@ -131,6 +134,7 @@
->  #define MIDR_NVIDIA_CARMEL MIDR_CPU_MODEL(ARM_CPU_IMP_NVIDIA, NVIDIA_CPU_PART_CARMEL)
->  #define MIDR_FUJITSU_A64FX MIDR_CPU_MODEL(ARM_CPU_IMP_FUJITSU, FUJITSU_CPU_PART_A64FX)
->  #define MIDR_HISI_TSV110 MIDR_CPU_MODEL(ARM_CPU_IMP_HISI, HISI_CPU_PART_TSV110)
-> +#define MIDR_AMPERE1 MIDR_CPU_MODEL(ARM_CPU_IMP_AMPERE, AMPERE_CPU_PART_AMPERE1)
->  
->  /* Fujitsu Erratum 010001 affects A64FX 1.0 and 1.1, (v0r0 and v1r0) */
->  #define MIDR_FUJITSU_ERRATUM_010001		MIDR_FUJITSU_A64FX
-> diff --git a/arch/arm64/kernel/cpu_errata.c b/arch/arm64/kernel/cpu_errata.c
-> index b18f307a3c59..342cba2ae982 100644
-> --- a/arch/arm64/kernel/cpu_errata.c
-> +++ b/arch/arm64/kernel/cpu_errata.c
-> @@ -1145,6 +1145,10 @@ u8 spectre_bhb_loop_affected(int scope)
->  			MIDR_ALL_VERSIONS(MIDR_NEOVERSE_N1),
->  			{},
->  		};
-> +		static const struct midr_range spectre_bhb_k11_list[] = {
-> +			MIDR_ALL_VERSIONS(MIDR_AMPERE1),
-> +			{},
-> +		};
->  		static const struct midr_range spectre_bhb_k8_list[] = {
->  			MIDR_ALL_VERSIONS(MIDR_CORTEX_A72),
->  			MIDR_ALL_VERSIONS(MIDR_CORTEX_A57),
-> @@ -1155,6 +1159,8 @@ u8 spectre_bhb_loop_affected(int scope)
->  			k = 32;
->  		else if (is_midr_in_range_list(read_cpuid_id(), spectre_bhb_k24_list))
->  			k = 24;
-> +		else if (is_midr_in_range_list(read_cpuid_id(), spectre_bhb_k11_list))
-> +			k = 11;
->  		else if (is_midr_in_range_list(read_cpuid_id(), spectre_bhb_k8_list))
->  			k =  8;
->  
-> -- 
-> 2.39.1
-> 
+> Here's one that applies to 6.1-stable.
 
-Both now queued up, thanks.
+All now queued up, thanks.
 
 greg k-h
