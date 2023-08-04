@@ -2,46 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CCB5076FE71
-	for <lists+stable@lfdr.de>; Fri,  4 Aug 2023 12:27:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DC3B076FE77
+	for <lists+stable@lfdr.de>; Fri,  4 Aug 2023 12:28:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231370AbjHDK1o (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 4 Aug 2023 06:27:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39336 "EHLO
+        id S229711AbjHDK2k (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 4 Aug 2023 06:28:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39668 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229954AbjHDK1m (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 4 Aug 2023 06:27:42 -0400
+        with ESMTP id S231217AbjHDK2e (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 4 Aug 2023 06:28:34 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A17F49D4
-        for <stable@vger.kernel.org>; Fri,  4 Aug 2023 03:27:40 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 54E7849EC;
+        Fri,  4 Aug 2023 03:28:22 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0461161F89
-        for <stable@vger.kernel.org>; Fri,  4 Aug 2023 10:27:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C06BC433C7;
-        Fri,  4 Aug 2023 10:27:38 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 98E4261F89;
+        Fri,  4 Aug 2023 10:28:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83A5CC433C8;
+        Fri,  4 Aug 2023 10:28:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691144859;
-        bh=vARprLRm4WSYiNLe830FG9jjTyDkBRJ6GpZlh8LefAA=;
+        s=korg; t=1691144901;
+        bh=QoEsYNbjsFFAbciklJ7lF0/x8SccEJnHPlvLfQ6xsLE=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=JUAzO32H+yXD9n+akjohyXETNNWR0Hr/qHtoku/D8LlnF9kWB9UUt30nXm5AAeoNn
-         zSFKcjRkSkzZZaIrKGuzfRVCX/OGRW0zadQRNkxB5ObkHsXNT21+BhY95QmvMzVERa
-         AIMW83/KIYQ9Pbys011uBKVNXyTf6gQRBjFGAuWs=
-Date:   Fri, 4 Aug 2023 12:27:27 +0200
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     jannh@google.com, stable@vger.kernel.org
-Subject: Re: FAILED: patch "[PATCH] mm: lock_vma_under_rcu() must check
- vma->anon_vma under vma" failed to apply to 6.4-stable tree
-Message-ID: <2023080418-anvil-grumbly-c3ff@gregkh>
-References: <2023080129-surface-stench-5e24@gregkh>
- <CAHk-=wjfdPq6=rwECsYaSzFaehBoGxGEHwyJmAVK0ekXoS89FQ@mail.gmail.com>
+        b=uFbH5vBM8CBeZgwU32UOseiNmn3vZkQ2Q01WdpbKuXu4YKCK8JcQmlUGtpdhm1Z2i
+         azg1TGfXTlwawzDxzBwx/Kgwyz8Te9nSyOIv1gOUMX9JdGlAyd7xjJXL6/P4Q1Vs14
+         846YHdjwSi8nlPFXzdar6pH72nZUU9mCJfEG2Vr0=
+Date:   Fri, 4 Aug 2023 12:28:18 +0200
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Ashwin Dayanand Kamat <kashwindayan@vmware.com>
+Cc:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        Wen Gong <wgong@codeaurora.org>,
+        Jouni Malinen <jouni@codeaurora.org>,
+        Johannes Berg <johannes.berg@intel.com>, davem@davemloft.net,
+        ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, akaher@vmware.com, vsirnapalli@vmware.com,
+        tkundu@vmware.com, namit@vmware.com
+Subject: Re: [PATCH v4.19.y] ath10k: Fix TKIP Michael MIC verification for
+ PCIe
+Message-ID: <2023080408-squad-pony-2638@gregkh>
+References: <1690971733-22270-1-git-send-email-kashwindayan@vmware.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAHk-=wjfdPq6=rwECsYaSzFaehBoGxGEHwyJmAVK0ekXoS89FQ@mail.gmail.com>
+In-Reply-To: <1690971733-22270-1-git-send-email-kashwindayan@vmware.com>
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
@@ -52,21 +57,34 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, Aug 01, 2023 at 09:34:10AM -0700, Linus Torvalds wrote:
-> On Mon, 31 Jul 2023 at 23:28, <gregkh@linuxfoundation.org> wrote:
-> >
-> > The patch below does not apply to the 6.4-stable tree.
+On Wed, Aug 02, 2023 at 03:52:13PM +0530, Ashwin Dayanand Kamat wrote:
+> From: Wen Gong <wgong@codeaurora.org>
 > 
-> Ahh. The vma_is_tcp() checks are new.
+> commit 0dc267b13f3a7e8424a898815dd357211b737330 upstream.
 > 
-> I think you can literally just remove all occurrences of
+> TKIP Michael MIC was not verified properly for PCIe cases since the
+> validation steps in ieee80211_rx_h_michael_mic_verify() in mac80211 did
+> not get fully executed due to unexpected flag values in
+> ieee80211_rx_status.
 > 
->      && !vma_is_tcp(vma)
+> Fix this by setting the flags property to meet mac80211 expectations for
+> performing Michael MIC validation there. This fixes CVE-2020-26141. It
+> does the same as ath10k_htt_rx_proc_rx_ind_hl() for SDIO which passed
+> MIC verification case. This applies only to QCA6174/QCA9377 PCIe.
 > 
-> in that patch to make it apply.
+> Tested-on: QCA6174 hw3.2 PCI WLAN.RM.4.4.1-00110-QCARMSWP-1
 > 
-> The end result should look something like the attached, afaik.
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Wen Gong <wgong@codeaurora.org>
+> Signed-off-by: Jouni Malinen <jouni@codeaurora.org>
+> Link: https://lore.kernel.org/r/20210511200110.c3f1d42c6746.I795593fcaae941c471425b8c7d5f7bb185d29142@changeid
+> Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+> Signed-off-by: Ashwin Dayanand Kamat <kashwindayan@vmware.com>
+> ---
+>  drivers/net/wireless/ath/ath10k/htt_rx.c | 10 ++++++++++
+>  1 file changed, 10 insertions(+)
+> 
 
-Thanks, that worked, now queued up.
+Now queued up, thanks.
 
 greg k-h
