@@ -2,123 +2,100 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A162F770CF0
-	for <lists+stable@lfdr.de>; Sat,  5 Aug 2023 03:17:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 53059770CFD
+	for <lists+stable@lfdr.de>; Sat,  5 Aug 2023 03:22:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229509AbjHEBRC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 4 Aug 2023 21:17:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48024 "EHLO
+        id S229461AbjHEBWB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 4 Aug 2023 21:22:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49382 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229566AbjHEBRB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 4 Aug 2023 21:17:01 -0400
-Received: from mail-ot1-x32d.google.com (mail-ot1-x32d.google.com [IPv6:2607:f8b0:4864:20::32d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B60A84EDE;
-        Fri,  4 Aug 2023 18:17:00 -0700 (PDT)
-Received: by mail-ot1-x32d.google.com with SMTP id 46e09a7af769-6bc8d1878a0so2306303a34.1;
-        Fri, 04 Aug 2023 18:17:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1691198220; x=1691803020;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :references:in-reply-to:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=cu168Y9vRpg+vzxEgSTGxY5n1ZLC+DuEViAjXzgPHZs=;
-        b=folnjqF0aKRuew+xhfxHFYWs8LU+t5rP5KIRDLS0LazdBGhH9vtd1rk3BObzT3m5/y
-         ukLp+VvYZQ4Ov8BDfr5g28AkAWB4g/hxW1Ssb8KRkKEt5RbkmTW2rc739qTXAxeDDDUE
-         iIwn+0jXiPiqotQdwWEEf4v2EV8llX8EjhKSrtIZFTH7mwFarOlyk1wE1w1aDt0GwCX9
-         2i9+2hZ2zwdOB7u07/U9V1zz19XN4xpjHrLB6dRkyuWahGPwMFFO19gkHFqsD51e7KcF
-         SGCnklBW6xXIGZNAIl9Y7eHS6bVtNiEuidNQcV2Z29dq9T8Xtl8zifCjWsz1/ZOz282N
-         Y2sg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691198220; x=1691803020;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :references:in-reply-to:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=cu168Y9vRpg+vzxEgSTGxY5n1ZLC+DuEViAjXzgPHZs=;
-        b=iz8RKmMZF8DB0jbMi7s1duK8dzESL69dnlbi1fInYj+yAfW00wX8YAJfzcvc9DtocB
-         +705fpAQ3Nk6/b/QEL6myodj97BMti1T/npXlML1J1US8tvyetBovNGvduZMLpjyLfh2
-         QPPTzoMzoOHCsuJyOa2CJ+7pxCSE/mTIrf4mrdV0k5/9ZzQxlXZhpsApyU3ZOCjE0RNr
-         S1NGXxsr/XH6pJsb8ASOAEssvKfahEY2CyVXYQBfdD15zAxTRyIg1lL1ivOVI0huA0+1
-         4m4ykVzqCWSuY8v04NXi1SOmk+pbquXmRvlR5rN6DegsYNLoCMk9anHTdCaRtdRs64/n
-         7xOA==
-X-Gm-Message-State: AOJu0YxpN8rvPwt1V2Wc4S6Q0WwCwgRk5yQPJUzZo4XsBLBlmdIsgDUh
-        Ww/P/B7EzRlG8FHfEz2gbKtjEdMDtAEOcmIgcDY=
-X-Google-Smtp-Source: AGHT+IEuQ/dvOW7eFSBM63FzAr7WHgJtR9IpCyPZws0vFNx4oFHhozb1cWWML9qeqWJlkUR7TgqFe1XMIHdejPAlQbA=
-X-Received: by 2002:a05:6870:ecac:b0:1b7:2edd:df6d with SMTP id
- eo44-20020a056870ecac00b001b72edddf6dmr3872658oab.10.1691198219991; Fri, 04
- Aug 2023 18:16:59 -0700 (PDT)
-MIME-Version: 1.0
-Received: by 2002:ac9:7b87:0:b0:4f0:1250:dd51 with HTTP; Fri, 4 Aug 2023
- 18:16:59 -0700 (PDT)
-In-Reply-To: <CAJuCfpHYBqULvwNELO3Gkc0bkKDV7VJxMjvBru4zaAz4WKQNhw@mail.gmail.com>
-References: <20230708191212.4147700-1-surenb@google.com> <20230708191212.4147700-3-surenb@google.com>
- <20230804214620.btgwhsszsd7rh6nf@f> <CAHk-=wiy125k1dBmQFTGpHwiOqEyrD6xnd4xKWfe97H_HodgDA@mail.gmail.com>
- <CAGudoHFsAU_BDCOuz8UgDBLGEM8xg=aUGjaVoqkM_Zvxo2Re_g@mail.gmail.com>
- <CAHk-=wiG9xaVvBJXHqTxtop0=mW9KxPS9C54ED23p59VNEKdWg@mail.gmail.com>
- <CAJuCfpGWGsh2BRgwcJ7oVHnqZfrtiesvhzomK0ZmxE_KK=R7FA@mail.gmail.com>
- <CAJuCfpG6BBP+fjV9oyBx3SNiKhiafPzM9vV9bx_goO2aZzAptg@mail.gmail.com>
- <CAGudoHFrDG6-u-XXEmQoPS2CJ2Wpo4ETwhXc2R=jy78RSYw-Zg@mail.gmail.com> <CAJuCfpHYBqULvwNELO3Gkc0bkKDV7VJxMjvBru4zaAz4WKQNhw@mail.gmail.com>
-From:   Mateusz Guzik <mjguzik@gmail.com>
-Date:   Sat, 5 Aug 2023 03:16:59 +0200
-Message-ID: <CAGudoHGm2hbjSG-2kJevF=xGpz=4Sd0m5CjVO8Ntsahqz5NcGA@mail.gmail.com>
-Subject: Re: [PATCH v2 3/3] fork: lock VMAs of the parent process when forking
-To:     Suren Baghdasaryan <surenb@google.com>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        akpm@linux-foundation.org, regressions@leemhuis.info,
-        bagasdotme@gmail.com, jacobly.alt@gmail.com, willy@infradead.org,
-        liam.howlett@oracle.com, david@redhat.com, peterx@redhat.com,
-        ldufour@linux.ibm.com, linux-kernel@vger.kernel.org,
-        linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org,
-        linux-arm-kernel@lists.infradead.org, gregkh@linuxfoundation.org,
-        regressions@lists.linux.dev, Jiri Slaby <jirislaby@kernel.org>,
-        =?UTF-8?Q?Holger_Hoffst=C3=A4tte?= <holger@applied-asynchrony.com>,
-        stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        with ESMTP id S229675AbjHEBWA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 4 Aug 2023 21:22:00 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A5874EE4;
+        Fri,  4 Aug 2023 18:21:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1691198518; x=1722734518;
+  h=from:to:cc:subject:date:message-id;
+  bh=8qZ03i3VQJk0gArG0C57L1TxXOVJULlo1Yez71dt/+g=;
+  b=WgqSJepR8LX5soCYvNHkgW3wRTm/UmZXcOY1Qr/Jd4B12auYFeWv5fps
+   nqNQ844Mrx+ZicoNEhyOCObEZVA6N8pw5O78t5layvK/bhUy1FtiXFdLu
+   uNNmmIp6dNTqw7JpafxFmaQeVRwwJrUghupoFwgLM7uGuxtfdzEknG4Qx
+   po12f4sdIUgwbIcpAC9q2j/ybP831APaHK8yDwzcpmISkuuoGatj5gZQM
+   oAINgVp4OfKgnGbnkwmNxGO6uTkruFsFIICu9OtbjEjsTFUVWIrcREZ9h
+   //KlFmNxyQBKfFeGg/aEosgJKAgSsCbe4S2QGKXJOD86KCMTuRNzTPs7o
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10792"; a="367735754"
+X-IronPort-AV: E=Sophos;i="6.01,256,1684825200"; 
+   d="scan'208";a="367735754"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Aug 2023 18:21:58 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10792"; a="844317613"
+X-IronPort-AV: E=Sophos;i="6.01,256,1684825200"; 
+   d="scan'208";a="844317613"
+Received: from ranerica-svr.sc.intel.com ([172.25.110.23])
+  by fmsmga002.fm.intel.com with ESMTP; 04 Aug 2023 18:21:57 -0700
+From:   Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
+To:     x86@kernel.org
+Cc:     Andreas Herrmann <aherrmann@suse.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Chen Yu <yu.c.chen@intel.com>, Len Brown <len.brown@intel.com>,
+        Radu Rendec <rrendec@redhat.com>,
+        Pierre Gondois <Pierre.Gondois@arm.com>,
+        Pu Wen <puwen@hygon.cn>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        Will Deacon <will@kernel.org>, Zhang Rui <rui.zhang@intel.com>,
+        stable@vger.kernel.org, Ricardo Neri <ricardo.neri@intel.com>,
+        "Ravi V. Shankar" <ravi.v.shankar@intel.com>,
+        linux-kernel@vger.kernel.org,
+        Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
+Subject: [PATCH v3 0/3] x86/cacheinfo: Set the number of leaves per CPU
+Date:   Fri,  4 Aug 2023 18:24:18 -0700
+Message-Id: <20230805012421.7002-1-ricardo.neri-calderon@linux.intel.com>
+X-Mailer: git-send-email 2.17.1
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 8/5/23, Suren Baghdasaryan <surenb@google.com> wrote:
-> On Fri, Aug 4, 2023 at 5:49=E2=80=AFPM Mateusz Guzik <mjguzik@gmail.com> =
-wrote:
->> However, the other users (that I know of ) go through the mmap
->> semaphore to mess with anything which means they will wait for
->> dup_mmap to finish (or do their work first). I would be surprised if
->> there were any cases which don't take the semaphore, given that it was
->> a requirement prior to the vma patchset (unless you patched some to no
->> longer need it?). I would guess worst case the semaphore can be added
->> if missing.
->
-> No, the only mmap_lock read-lock that is affected is during the page
-> fault, which is expected.
->
+Hi,
 
-I have difficulty parsing your statement.
+This is v3 of a patchset to set the number of cache leaves independently
+for each CPU. v1 and v2 can be found here [1] and here [2].
 
-I am saying that any 3rd parties which can trigger page faults already
-read lock mmap_lock or can be made to do it (and I don't know any case
-which does not already, but I'm not willing to spend time poking
-around to make sure). One can consider 3rd parties as not a problem,
-modulo the audit.
+Changes since v2:
+  * This version uncovered a NULL-pointer dereference in recent changes to
+    cacheinfo[3]. This dereference is observed when the system does not
+    configure cacheinfo early during boot nor makes corrections later
+    during CPU hotplug; as is the case in x86. Patch 1 fixes this issue.
 
-Past that there does is no known source of trouble? In my original
-e-mail I was worried about processes up the chain in ancestry, perhaps
-some of the state is shared(?) and the locking at hand neuters any
-problems. I'm guessing this is not necessary.
+Changes since v1:
+  * Dave Hansen suggested to use the existing per-CPU ci_cpu_cacheinfo
+    variable. Now the global variable num_cache_leaves became useless.
+  * While here, I noticed that init_cache_level() also became useless:
+    x86 does not need ci_cpu_cacheinfo::num_levels.
 
-Bottom line though it looks like this will work fine?
+[1]. https://lore.kernel.org/lkml/20230314231658.30169-1-ricardo.neri-calderon@linux.intel.com/
+[2]. https://lore.kernel.org/all/20230424001956.21434-1-ricardo.neri-calderon@linux.intel.com/
+[3]. https://lore.kernel.org/all/20230412185759.755408-1-rrendec@redhat.com/
 
-That said, I'm not going to submit a patch I can't confidently defend.
-As I did not dig into any of the VMA code and can't be arsed to audit
-all places which mess with "foreign" mm, I'm definitely not submitting
-this myself. You are most welcome to write your own variant at your
-leisure. :)
+Ricardo Neri (3):
+  cacheinfo: Allocate memory for memory if not done from the primary CPU
+  x86/cacheinfo: Delete global num_cache_leaves
+  x86/cacheinfo: Clean out init_cache_level()
 
---=20
-Mateusz Guzik <mjguzik gmail.com>
+ arch/x86/kernel/cpu/cacheinfo.c | 50 ++++++++++++++++-----------------
+ drivers/base/cacheinfo.c        |  6 +++-
+ 2 files changed, 30 insertions(+), 26 deletions(-)
+
+-- 
+2.25.1
+
