@@ -2,58 +2,59 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CA281770CA6
-	for <lists+stable@lfdr.de>; Sat,  5 Aug 2023 02:26:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0E5C0770CB7
+	for <lists+stable@lfdr.de>; Sat,  5 Aug 2023 02:34:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229615AbjHEA0t (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 4 Aug 2023 20:26:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40418 "EHLO
+        id S229802AbjHEAeY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 4 Aug 2023 20:34:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41446 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229580AbjHEA0t (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 4 Aug 2023 20:26:49 -0400
-Received: from mail-yb1-xb33.google.com (mail-yb1-xb33.google.com [IPv6:2607:f8b0:4864:20::b33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D5844EDE
-        for <stable@vger.kernel.org>; Fri,  4 Aug 2023 17:26:47 -0700 (PDT)
-Received: by mail-yb1-xb33.google.com with SMTP id 3f1490d57ef6-d16889b3e93so2663024276.0
-        for <stable@vger.kernel.org>; Fri, 04 Aug 2023 17:26:47 -0700 (PDT)
+        with ESMTP id S229757AbjHEAeX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 4 Aug 2023 20:34:23 -0400
+Received: from mail-yb1-xb31.google.com (mail-yb1-xb31.google.com [IPv6:2607:f8b0:4864:20::b31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C13054EDE
+        for <stable@vger.kernel.org>; Fri,  4 Aug 2023 17:34:21 -0700 (PDT)
+Received: by mail-yb1-xb31.google.com with SMTP id 3f1490d57ef6-d075a831636so2900300276.3
+        for <stable@vger.kernel.org>; Fri, 04 Aug 2023 17:34:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1691195206; x=1691800006;
+        d=google.com; s=20221208; t=1691195661; x=1691800461;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=mxe81u7udmo92GKvP+siVLCAkn/wI0aAvKtL6yx1U3g=;
-        b=IDYaS2Jlq4whyIHc7JhRYfrcrAbZnELtmh2woo/KuYYzAzsbayvQ4sj8qrACxQTt3E
-         lYDAcPv0oqswtU0a+8JiNOxwSOMnlBuWRX/kUju4NfI2bkeIEoUd+hpoIymCGCrg+HOd
-         rOReOu27oMxzSRZka0CWgiWvfvyFOK0RrE0oxXSXuHZ/6hvL8HbaMJh2bTXme5gHpVfp
-         p1jGS/SX43x7wyiaKixT6DLKPsA1RnNYoqMQNguxmupUlnDjz4f6JHVu8pmLvpu1YxU+
-         2jSfSQVlNRKHZayvnNhSQsr4CW9cqxboPyMOci7lrIrxoLjF91f9DZPkkFJiVd1YSI5t
-         wB5w==
+        bh=GE6BW9pFYdezUl7cDS0TzP1DYFsIzJQ0ypEfGdJ3TBg=;
+        b=h0TxxwCKVye0DQdqW8QciL6a/cGS644vYZUx3RI0OE1671HBfkLOeCjBNqcVrLOU2b
+         ycUmZSGLpA9J5ensM11f+iadX9Igk/HzJLsetwc9ly0gURsAFjMfewFY/ZbbuNvVegBO
+         zzsxkPT9b50kkszDh+PkQ3GspK2tIZt+I3X+8usJTbDu2o7JkhwHvqL4jBShd4IfGcpl
+         UvUXcNV5NlwO1ex/P6Q99K1X+l1eVkU1QU5hcPg4wm2SkhYzjGIIbU58/izBoxYFf7Y/
+         H2/yj5m5CuBBcYn7Gjr7Dd36TjaoDemXFlAk5O+znIBaWL3JFXYYXipgVBaiJa9ssh/c
+         YgvA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691195206; x=1691800006;
+        d=1e100.net; s=20221208; t=1691195661; x=1691800461;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=mxe81u7udmo92GKvP+siVLCAkn/wI0aAvKtL6yx1U3g=;
-        b=i9K2gRLJLxz/AwgHavxBdfUhP8h6UXUcSRwazfill9x8c4WTCAwUNU9RFftJz6y8gn
-         rqRMT2S1YWFtsxKivFs1C6YV3pyHFMUwC6U3eb0gywMwoG+5mg+ECbBOlv4jEH3uBVZz
-         cUraXisBwznlmI9WLG4rL6co6muL0bN7Rin0l9Zy3ZlTreJglJfbr9I6TxWhYdnkd5wa
-         nYOp/z3MtCpZ4j+vHB/BQ3pF85GyBXjaF0+B+ARYhKyOyHH0wSh0FqWnLVjqltoms8Qw
-         aG7ZH/JlON4Y9XXghjJVftPvxJrMDfTQkzjrglvCrONtN96Qd2QfKx4FfEcBfLB1XfMh
-         69Xg==
-X-Gm-Message-State: AOJu0YxFgBgFmNIBV5d+wdIhi5rW5e+EHTtzaYoS2XhVP2R7OG6MYdty
-        vrMonmlaQ6azK4aUCYKLD0zRnmyEH/jUtRII77al9w==
-X-Google-Smtp-Source: AGHT+IFV5JuRf10Of18+lGhJEPb7ELh0VS/HhAfs0nhr73hV/LaKvg8puQls+izXLadWiO6FQO7JuYQNY8dwcMbQzOg=
-X-Received: by 2002:a25:361b:0:b0:d0f:846c:ef7b with SMTP id
- d27-20020a25361b000000b00d0f846cef7bmr3175751yba.17.1691195206375; Fri, 04
- Aug 2023 17:26:46 -0700 (PDT)
+        bh=GE6BW9pFYdezUl7cDS0TzP1DYFsIzJQ0ypEfGdJ3TBg=;
+        b=HQQuBwZ5bPCyp48xRA7C7qc7sFZvF+a0RXwIEg/RD5hKPGL7VVp6NXvzOqneBvFIss
+         C3Io+FFOP18ZNQfiXbzjuzKrDFbGXbEcyVYt0OM8Dqp9mUkiRNpZ1/jA2lq0Ihzg+itS
+         TpZbkgXVqAcJYVfPS4hcsTrfgwA8vGXOm0VkvGFGD4yuMD+vD9PjBS/cIMI9H90SVZ6g
+         hwQwG6/a3RIPokYefyoKyHUICxlLDZgOhR/e+OJ1PiUG7Qh/lh0/kaPtX6MNtn7BoFlB
+         qXABVXClwjJEJpcsbwQ+Xp42Hw+xX18w71X8mcxoMIVoUtcZWu+L+neKa4hcbLOoNBj1
+         F90Q==
+X-Gm-Message-State: AOJu0Yw3+9gPiSfFbpkeztsaz4kr02VQ1OwGa46gKKZ5PtOAUnA4lFG2
+        Av8UL4nCvx15IPGNk+6jFQWK40b2setAuYraKCTFFg==
+X-Google-Smtp-Source: AGHT+IGIa1nXviU0YBg9eLF8cyB0v1ib0mH9PwLc2T9pyyHMpMQsFzfvoD0GfbNXEO9Va/0KSmKs9VeIuXib/uNqJuc=
+X-Received: by 2002:a25:250c:0:b0:c14:68fd:6e30 with SMTP id
+ l12-20020a25250c000000b00c1468fd6e30mr2908586ybl.16.1691195660786; Fri, 04
+ Aug 2023 17:34:20 -0700 (PDT)
 MIME-Version: 1.0
 References: <20230708191212.4147700-1-surenb@google.com> <20230708191212.4147700-3-surenb@google.com>
  <20230804214620.btgwhsszsd7rh6nf@f> <CAHk-=wiy125k1dBmQFTGpHwiOqEyrD6xnd4xKWfe97H_HodgDA@mail.gmail.com>
- <CAGudoHFsAU_BDCOuz8UgDBLGEM8xg=aUGjaVoqkM_Zvxo2Re_g@mail.gmail.com> <CAHk-=wiG9xaVvBJXHqTxtop0=mW9KxPS9C54ED23p59VNEKdWg@mail.gmail.com>
-In-Reply-To: <CAHk-=wiG9xaVvBJXHqTxtop0=mW9KxPS9C54ED23p59VNEKdWg@mail.gmail.com>
+ <CAGudoHFsAU_BDCOuz8UgDBLGEM8xg=aUGjaVoqkM_Zvxo2Re_g@mail.gmail.com>
+ <CAHk-=wiG9xaVvBJXHqTxtop0=mW9KxPS9C54ED23p59VNEKdWg@mail.gmail.com> <CAJuCfpGWGsh2BRgwcJ7oVHnqZfrtiesvhzomK0ZmxE_KK=R7FA@mail.gmail.com>
+In-Reply-To: <CAJuCfpGWGsh2BRgwcJ7oVHnqZfrtiesvhzomK0ZmxE_KK=R7FA@mail.gmail.com>
 From:   Suren Baghdasaryan <surenb@google.com>
-Date:   Fri, 4 Aug 2023 17:26:33 -0700
-Message-ID: <CAJuCfpGWGsh2BRgwcJ7oVHnqZfrtiesvhzomK0ZmxE_KK=R7FA@mail.gmail.com>
+Date:   Fri, 4 Aug 2023 17:34:06 -0700
+Message-ID: <CAJuCfpG6BBP+fjV9oyBx3SNiKhiafPzM9vV9bx_goO2aZzAptg@mail.gmail.com>
 Subject: Re: [PATCH v2 3/3] fork: lock VMAs of the parent process when forking
 To:     Linus Torvalds <torvalds@linux-foundation.org>
 Cc:     Mateusz Guzik <mjguzik@gmail.com>, akpm@linux-foundation.org,
@@ -79,42 +80,51 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Fri, Aug 4, 2023 at 5:15=E2=80=AFPM Linus Torvalds
-<torvalds@linux-foundation.org> wrote:
+On Fri, Aug 4, 2023 at 5:26=E2=80=AFPM Suren Baghdasaryan <surenb@google.co=
+m> wrote:
 >
-> On Fri, 4 Aug 2023 at 16:25, Mateusz Guzik <mjguzik@gmail.com> wrote:
+> On Fri, Aug 4, 2023 at 5:15=E2=80=AFPM Linus Torvalds
+> <torvalds@linux-foundation.org> wrote:
 > >
-> > I know of these guys, I think they are excluded as is -- they go
-> > through access_remote_vm, starting with:
-> >         if (mmap_read_lock_killable(mm))
-> >                 return 0;
+> > On Fri, 4 Aug 2023 at 16:25, Mateusz Guzik <mjguzik@gmail.com> wrote:
+> > >
+> > > I know of these guys, I think they are excluded as is -- they go
+> > > through access_remote_vm, starting with:
+> > >         if (mmap_read_lock_killable(mm))
+> > >                 return 0;
+> > >
+> > > while dup_mmap already write locks the parent's mm.
 > >
-> > while dup_mmap already write locks the parent's mm.
+> > Oh, you're only worried about vma_start_write()?
+> >
+> > That's a non-issue. It doesn't take the lock normally, since it starts =
+off with
+> >
+> >         if (__is_vma_write_locked(vma, &mm_lock_seq))
+> >                 return;
+> >
+> > which catches on the lock sequence number already being set.
 >
-> Oh, you're only worried about vma_start_write()?
->
-> That's a non-issue. It doesn't take the lock normally, since it starts of=
-f with
->
->         if (__is_vma_write_locked(vma, &mm_lock_seq))
->                 return;
->
-> which catches on the lock sequence number already being set.
+> That check will prevent re-locking but if vma is not already locked
+> then the call will proceed with obtaining the lock and setting
+> vma->vm_lock_seq to mm->mm_lock_seq.
 
-That check will prevent re-locking but if vma is not already locked
-then the call will proceed with obtaining the lock and setting
-vma->vm_lock_seq to mm->mm_lock_seq.
+The optimization Mateusz describes looks valid to me. If there is
+nobody else to fault a page and mm_users is stable (which I think it
+is because we are holding mmap_lock for write) then we can skip vma
+locking, I think.
 
 >
-> So no extra locking there.
->
-> Well, technically there's extra locking because the code stupidly
-> doesn't initialize new vma allocations to the right sequence number,
-> but that was talked about here:
->
->     https://lore.kernel.org/all/CAHk-=3DwiCrWAoEesBuoGoqqufvesicbGp3cX0Ly=
-KgEvsFaZNpDA@mail.gmail.com/
->
-> and it's a separate issue.
->
->           Linus
+> >
+> > So no extra locking there.
+> >
+> > Well, technically there's extra locking because the code stupidly
+> > doesn't initialize new vma allocations to the right sequence number,
+> > but that was talked about here:
+> >
+> >     https://lore.kernel.org/all/CAHk-=3DwiCrWAoEesBuoGoqqufvesicbGp3cX0=
+LyKgEvsFaZNpDA@mail.gmail.com/
+> >
+> > and it's a separate issue.
+> >
+> >           Linus
