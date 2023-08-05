@@ -2,118 +2,102 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0C3BB77120C
-	for <lists+stable@lfdr.de>; Sat,  5 Aug 2023 22:18:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 55AB57712E8
+	for <lists+stable@lfdr.de>; Sun,  6 Aug 2023 00:48:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230000AbjHEUSW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 5 Aug 2023 16:18:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35744 "EHLO
+        id S229521AbjHEWsz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 5 Aug 2023 18:48:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60108 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229511AbjHEUSV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 5 Aug 2023 16:18:21 -0400
-Received: from mx01.omp.ru (mx01.omp.ru [90.154.21.10])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DCF12DD
-        for <stable@vger.kernel.org>; Sat,  5 Aug 2023 13:18:19 -0700 (PDT)
-Received: from [192.168.1.103] (178.176.73.131) by msexch01.omp.ru
- (10.188.4.12) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.986.14; Sat, 5 Aug 2023
- 23:18:15 +0300
-Subject: Re: FAILED: patch "[PATCH] mmc: meson-gx: fix deferred probing"
- failed to apply to 6.1-stable tree
-To:     <gregkh@linuxfoundation.org>, <neil.armstrong@linaro.org>,
-        <ulf.hansson@linaro.org>
-CC:     <stable@vger.kernel.org>
-References: <2023062303-crazily-recent-78b0@gregkh>
-From:   Sergey Shtylyov <s.shtylyov@omp.ru>
-Organization: Open Mobile Platform
-Message-ID: <2fadc77e-4ea3-6f1a-4ac5-3452791606d8@omp.ru>
-Date:   Sat, 5 Aug 2023 23:18:14 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.10.1
+        with ESMTP id S229509AbjHEWsy (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 5 Aug 2023 18:48:54 -0400
+Received: from mout-p-103.mailbox.org (mout-p-103.mailbox.org [IPv6:2001:67c:2050:0:465::103])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7824B1732;
+        Sat,  5 Aug 2023 15:48:52 -0700 (PDT)
+Received: from smtp1.mailbox.org (smtp1.mailbox.org [10.196.197.1])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-384) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        by mout-p-103.mailbox.org (Postfix) with ESMTPS id 4RJHnC3JB0z9sZj;
+        Sun,  6 Aug 2023 00:48:47 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cyphar.com; s=MBO0001;
+        t=1691275727;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=Zs3M/G44ypGLQBrS+6QpeGQyQMHY0My7xyCyNV5W7UY=;
+        b=OK8G3j2tqbi0xW+hYczXouurJh/7+yh1lAy+hUoiYh/a362dI4iHFebLy56nohqqax4s3B
+        hdAJ1wTzBf8B1O65AtKeW9jFupsDqNXNxBbq5rlgI5QNLC62nGqqpAU/gMc0NP4UJxaR6C
+        kPrObKgTeRoZ+ICh1WMceu3on0zEiEkRqm/J859mOhVlPn06gJ9wTI4fZCZzQfiNqFQ/oJ
+        ASoP8boEovce1emNvItAZP3xUvVArWzqNeTDHnnY8iBwxyTgScMzMoHIcVg05he6bWHs/f
+        2tPKrPdywUs7Jrmsr82JT9taqK+HGBzvky340DKCaTDD9KAqP9hk7vBcIuyTYg==
+From:   Aleksa Sarai <cyphar@cyphar.com>
+Subject: [PATCH v2 0/2] open: make RESOLVE_CACHED correctly test for
+ O_TMPFILE
+Date:   Sun, 06 Aug 2023 08:48:07 +1000
+Message-Id: <20230806-resolve_cached-o_tmpfile-v2-0-058bff24fb16@cyphar.com>
 MIME-Version: 1.0
-In-Reply-To: <2023062303-crazily-recent-78b0@gregkh>
-Content-Type: text/plain; charset="windows-1252"
-Content-Language: en-US
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [178.176.73.131]
-X-ClientProxiedBy: msexch01.omp.ru (10.188.4.12) To msexch01.omp.ru
- (10.188.4.12)
-X-KSE-ServerInfo: msexch01.omp.ru, 9
-X-KSE-AntiSpam-Interceptor-Info: scan successful
-X-KSE-AntiSpam-Version: 5.9.59, Database issued on: 08/05/2023 20:00:48
-X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
-X-KSE-AntiSpam-Method: none
-X-KSE-AntiSpam-Rate: 59
-X-KSE-AntiSpam-Info: Lua profiles 179090 [Aug 04 2023]
-X-KSE-AntiSpam-Info: Version: 5.9.59.0
-X-KSE-AntiSpam-Info: Envelope from: s.shtylyov@omp.ru
-X-KSE-AntiSpam-Info: LuaCore: 526 526 7a6a9b19f6b9b3921b5701490f189af0e0cd5310
-X-KSE-AntiSpam-Info: {rep_avail}
-X-KSE-AntiSpam-Info: {Tracking_uf_ne_domains}
-X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
-X-KSE-AntiSpam-Info: {relay has no DNS name}
-X-KSE-AntiSpam-Info: {SMTP from is not routable}
-X-KSE-AntiSpam-Info: {Found in DNSBL: 178.176.73.131 in (user)
- b.barracudacentral.org}
-X-KSE-AntiSpam-Info: {Found in DNSBL: 178.176.73.131 in (user)
- dbl.spamhaus.org}
-X-KSE-AntiSpam-Info: git.kernel.org:7.1.1;omp.ru:7.1.1;178.176.73.131:7.1.2,7.7.1;127.0.0.199:7.1.2;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1
-X-KSE-AntiSpam-Info: FromAlignment: s
-X-KSE-AntiSpam-Info: {rdns complete}
-X-KSE-AntiSpam-Info: {fromrtbl complete}
-X-KSE-AntiSpam-Info: ApMailHostAddress: 178.176.73.131
-X-KSE-AntiSpam-Info: Rate: 59
-X-KSE-AntiSpam-Info: Status: not_detected
-X-KSE-AntiSpam-Info: Method: none
-X-KSE-AntiSpam-Info: Auth:dmarc=none header.from=omp.ru;spf=none
- smtp.mailfrom=omp.ru;dkim=none
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Heuristic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 08/05/2023 20:04:00
-X-KSE-Antivirus-Interceptor-Info: scan successful
-X-KSE-Antivirus-Info: Clean, bases: 8/5/2023 3:57:00 PM
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: InTheLimit
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-B4-Tracking: v=1; b=H4sIAKfRzmQC/42NQQ6DIBREr2L+ujSCLVJXvUdjDOK3/ESFgCE1x
+ ruXeoIu32TmzQ4RA2GEptghYKJIbskgLgUYq5c3MhoygyhFVapSsoDRTQk7o43Fgblunf1IE7J
+ HrUwvKtUPUkGe+4AjfU71q81sKa4ubOdT4r/0D2nijLO611zm4k3e8Wk2b3W4GjdDexzHF2sgy
+ UXBAAAA
+To:     Alexander Viro <viro@zeniv.linux.org.uk>,
+        Christian Brauner <brauner@kernel.org>,
+        Jens Axboe <axboe@kernel.dk>,
+        Pavel Begunkov <asml.silence@gmail.com>
+Cc:     linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+        io-uring@vger.kernel.org, Aleksa Sarai <cyphar@cyphar.com>,
+        stable@vger.kernel.org
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1214; i=cyphar@cyphar.com;
+ h=from:subject:message-id; bh=iu0CMEKoz0Ewqe8aOMvuXAQy1aWcE4V3njCd+ME8HFo=;
+ b=owGbwMvMwCWmMf3Xpe0vXfIZT6slMaScu3jCQPDPKxvTW8zKfW/nKh57c/r5wtTjrZXtm2ezn
+ N6teeHvso5SFgYxLgZZMUWWbX6eoZvmL76S/GklG8wcViaQIQxcnAIwkX+7Gf4ZPc6Kf7e53XrP
+ 0aPn351rntwsf8VuZeySBFmD5fN4ghM+MzK8WGm3uGN97IWvGm3PjsWuqauNnMpqvOj2BaWudbm
+ J8TfZAA==
+X-Developer-Key: i=cyphar@cyphar.com; a=openpgp;
+ fpr=C9C370B246B09F6DBCFC744C34401015D1D2D386
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hello!
+There were a few places that were incorrectly testing for whether an
+open(2) operation was O_TMPFILE by doing (flags & O_TMPFILE). As
+O_TMPFILE is defined as __O_TMPFILE|O_DIRECTORY, this would cause the
+code to assume that O_DIRECTORY is equivalent to O_TMPFILE.
 
-On 6/23/23 12:42 PM, gregkh@linuxfoundation.org wrote:
+The only places where this happened were in RESOLVE_CACHED and
+io_uring's checking related to RESOLVE_CACHED, so the only bug this
+really fixes is that now O_DIRECTORY will no longer cause RESOLVE_CACHED
+to always fail with -EAGAIN (and io_uring will thus be faster when doing
+O_DIRECTORY opens).
 
-> The patch below does not apply to the 6.1-stable tree.
-> If someone wants it applied there, or to any other stable or longterm
-> tree, then please email the backport, including the original git commit
-> id to <stable@vger.kernel.org>.
+Signed-off-by: Aleksa Sarai <cyphar@cyphar.com>
+---
+Changes in v2:
+- fix io_uring's io_openat_force_async as well.
+- v1: <https://lore.kernel.org/r/20230806-resolve_cached-o_tmpfile-v1-1-7ba16308465e@cyphar.com>
 
-   I finally got around to fixing the reject but now seeing that Sasha Levin
-has beaten me to it, back in June. Oops! :-)
+---
+Aleksa Sarai (2):
+      open: make RESOLVE_CACHED correctly test for O_TMPFILE
+      io_uring: correct check for O_TMPFILE
 
-> To reproduce the conflict and resubmit, you may use the following commands:
-> 
-> git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
-> git checkout FETCH_HEAD
-> git cherry-pick -x b8ada54fa1b83f3b6480d4cced71354301750153
-> # <resolve conflicts, build, test, etc.>
-> git commit -s
-> git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023062303-crazily-recent-78b0@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+ fs/open.c            | 2 +-
+ io_uring/openclose.c | 4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
+---
+base-commit: bf5ad7af0516cb47121dae1b1c160e4385615274
+change-id: 20230806-resolve_cached-o_tmpfile-978cb238bd68
 
-   Thanks for the instruction! :-)
+Best regards,
+-- 
+Aleksa Sarai <cyphar@cyphar.com>
 
-[...]
-
-> thanks,
-> 
-> greg k-h
-
-[...]
-
-MBR, Sergey
