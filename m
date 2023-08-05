@@ -2,145 +2,96 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1B94F770D29
-	for <lists+stable@lfdr.de>; Sat,  5 Aug 2023 03:42:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 15527770DF2
+	for <lists+stable@lfdr.de>; Sat,  5 Aug 2023 07:47:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229653AbjHEBmj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 4 Aug 2023 21:42:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54062 "EHLO
+        id S229494AbjHEFrR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 5 Aug 2023 01:47:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58312 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229593AbjHEBmi (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 4 Aug 2023 21:42:38 -0400
-Received: from mail-yw1-x112f.google.com (mail-yw1-x112f.google.com [IPv6:2607:f8b0:4864:20::112f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A2614EE1
-        for <stable@vger.kernel.org>; Fri,  4 Aug 2023 18:42:37 -0700 (PDT)
-Received: by mail-yw1-x112f.google.com with SMTP id 00721157ae682-583c48a9aa1so30580617b3.1
-        for <stable@vger.kernel.org>; Fri, 04 Aug 2023 18:42:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1691199756; x=1691804556;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=+rSm29+3cw5ZqZkXj3qFSUuwbm7CIlxZaN5vcndHFEY=;
-        b=plN7LmsfHyvXpPp/HAgS7nXgIXteE8264IDa/o2tjDOX8unsmYk7EojQmTU5cUe+jV
-         cjliykudifFvc7dLk6/DwgOH7+9X4MDhzMIsMQm/onYSQqKdwNZX8UqVTYKuJYl6Ha+O
-         9WZhXR18J7XAaXbGAAwEXZ6ix0+UBKlzsTvo5jb05KSoRLL7qXvNBl5pNC1d6tXmVHMW
-         SXIZLO8BP/DYmu5uEYaOUv39DLoLQlpwPV7BHp0dSXWIa4usOAk1N8w9mKX5V2IkcGwp
-         8LnltCq2ELwZcpwu4a4wWAkmF+JXVmG8o9gLjlgrYUu/NaekCF94WvOvLo4XO9zaSpD4
-         kw3g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691199756; x=1691804556;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=+rSm29+3cw5ZqZkXj3qFSUuwbm7CIlxZaN5vcndHFEY=;
-        b=GRPpnjrgIwTeBFp6FHxJCipRkT6XBO955Ua0s2dDuf+M+Ptb/u7ntU1KLKgZHbLKym
-         g4TftqJey9YbyKSDYx5kB1owlqWr0St3bAC9hk8jJ/SUIyxrBS7s8StBrec/Clthc/j1
-         hG2zrICngC45Xo9G1Jnw/6AR2WOAWap2mNxhdDxgqGgSJbZN+mQhfOOgQbR0fc37kRG3
-         M5WFESiF+1d1CwmGAhJOKi4IeLgORh4JYWX/YLzr1NpmEtvYGK8erQU3VP3I7rZdX0US
-         kYE87BKQw6vB0Ksq/opjeCkkqda89xE6DZoe5pLw9ibuw043y3YOrEfeh4VXEVg7G4T4
-         QuNA==
-X-Gm-Message-State: AOJu0YzwadcRndLb8+W/eec+O1eGBEA1/2nFvTUbHr91SMlnOOrIbsgQ
-        9h3v0hZi+krK/Bva0+2bWm5sdYPuaiqMFhDxQd+uVw==
-X-Google-Smtp-Source: AGHT+IG/HG+1FkEX7JGdDxDWOldixEM0zkMBonCbqf9PfeycEQrUJ/6TiOpqPkR0mOG06UahG1Vw84tdIhU/dMHaqDg=
-X-Received: by 2002:a0d:db41:0:b0:570:2568:15e with SMTP id
- d62-20020a0ddb41000000b005702568015emr3945027ywe.43.1691199756040; Fri, 04
- Aug 2023 18:42:36 -0700 (PDT)
+        with ESMTP id S229445AbjHEFrQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 5 Aug 2023 01:47:16 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D26A4ECB
+        for <stable@vger.kernel.org>; Fri,  4 Aug 2023 22:47:15 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8F7C060AD1
+        for <stable@vger.kernel.org>; Sat,  5 Aug 2023 05:47:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5279BC433C7;
+        Sat,  5 Aug 2023 05:47:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1691214433;
+        bh=0ewYA4CQtyYbLhUCTtG4NwMFqN0+bxh3CbA47vw4JTs=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=WJehDj/BIVhabZpVcT5SmcHJayf5L9fD77I2sTzGHuqyyMj0ICHPVVUiuCFWtxPfU
+         t0H0Hap+2lpqGCqj6CsF243+ypKhO4rxUfgPoSnhedGQJUxA0ZK73KSfwTJ+44KYEd
+         NbwV5rz0kKMVm9FI0LNXytvvz3suKJUwG1BiPSR4=
+Date:   Sat, 5 Aug 2023 07:47:10 +0200
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Thorsten Leemhuis <linux@leemhuis.info>
+Cc:     Pu Lehui <pulehui@huaweicloud.com>, stable@vger.kernel.org,
+        Eduard Zingerman <eddyz87@gmail.com>,
+        Luiz Capitulino <luizcap@amazon.com>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Andrii Nakryiko <andrii@kernel.org>,
+        Pu Lehui <pulehui@huawei.com>
+Subject: Re: [PATCH 5.10 1/6] bpf: allow precision tracking for programs with
+ subprogs
+Message-ID: <2023080542-theme-sleet-808c@gregkh>
+References: <20230801143700.1012887-1-pulehui@huaweicloud.com>
+ <20230801143700.1012887-2-pulehui@huaweicloud.com>
+ <2023080425-decline-chitchat-2075@gregkh>
+ <96bcca9a-48a2-a2db-bd12-f7b69df90ad8@leemhuis.info>
 MIME-Version: 1.0
-References: <20230708191212.4147700-1-surenb@google.com> <20230708191212.4147700-3-surenb@google.com>
- <20230804214620.btgwhsszsd7rh6nf@f> <CAHk-=wiy125k1dBmQFTGpHwiOqEyrD6xnd4xKWfe97H_HodgDA@mail.gmail.com>
- <CAGudoHFsAU_BDCOuz8UgDBLGEM8xg=aUGjaVoqkM_Zvxo2Re_g@mail.gmail.com>
- <CAHk-=wiG9xaVvBJXHqTxtop0=mW9KxPS9C54ED23p59VNEKdWg@mail.gmail.com> <CAGudoHFsxmiezZREyVkrPYBBij3u9SNaxLWipOOPy5S+5pJcZA@mail.gmail.com>
-In-Reply-To: <CAGudoHFsxmiezZREyVkrPYBBij3u9SNaxLWipOOPy5S+5pJcZA@mail.gmail.com>
-From:   Suren Baghdasaryan <surenb@google.com>
-Date:   Fri, 4 Aug 2023 18:42:23 -0700
-Message-ID: <CAJuCfpE6K6x7EKAr2rtW1Gn+1oht6w2qZSZ2bGATfoe8C8fJhA@mail.gmail.com>
-Subject: Re: [PATCH v2 3/3] fork: lock VMAs of the parent process when forking
-To:     Mateusz Guzik <mjguzik@gmail.com>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        akpm@linux-foundation.org, regressions@leemhuis.info,
-        bagasdotme@gmail.com, jacobly.alt@gmail.com, willy@infradead.org,
-        liam.howlett@oracle.com, david@redhat.com, peterx@redhat.com,
-        ldufour@linux.ibm.com, linux-kernel@vger.kernel.org,
-        linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org,
-        linux-arm-kernel@lists.infradead.org, gregkh@linuxfoundation.org,
-        regressions@lists.linux.dev, Jiri Slaby <jirislaby@kernel.org>,
-        =?UTF-8?Q?Holger_Hoffst=C3=A4tte?= <holger@applied-asynchrony.com>,
-        stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
-        USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <96bcca9a-48a2-a2db-bd12-f7b69df90ad8@leemhuis.info>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Fri, Aug 4, 2023 at 6:06=E2=80=AFPM Mateusz Guzik <mjguzik@gmail.com> wr=
-ote:
->
-> On 8/5/23, Linus Torvalds <torvalds@linux-foundation.org> wrote:
-> > On Fri, 4 Aug 2023 at 16:25, Mateusz Guzik <mjguzik@gmail.com> wrote:
+On Fri, Aug 04, 2023 at 08:56:09PM +0200, Thorsten Leemhuis wrote:
+> On 04.08.23 12:33, Greg KH wrote:
+> > On Tue, Aug 01, 2023 at 10:36:55PM +0800, Pu Lehui wrote:
+> >> From: Andrii Nakryiko <andrii@kernel.org>
 > >>
-> >> I know of these guys, I think they are excluded as is -- they go
-> >> through access_remote_vm, starting with:
-> >>         if (mmap_read_lock_killable(mm))
-> >>                 return 0;
-> >>
-> >> while dup_mmap already write locks the parent's mm.
-> >
-> > Oh, you're only worried about vma_start_write()?
-> >
-> > That's a non-issue. It doesn't take the lock normally, since it starts =
-off
-> > with
-> >
-> >         if (__is_vma_write_locked(vma, &mm_lock_seq))
-> >                 return;
-> >
-> > which catches on the lock sequence number already being set.
-> >
-> > So no extra locking there.
-> >
-> > Well, technically there's extra locking because the code stupidly
-> > doesn't initialize new vma allocations to the right sequence number,
-> > but that was talked about here:
-> >
-> >
-> > https://lore.kernel.org/all/CAHk-=3DwiCrWAoEesBuoGoqqufvesicbGp3cX0LyKg=
-EvsFaZNpDA@mail.gmail.com/
-> >
-> > and it's a separate issue.
-> >
->
-> I'm going to bet one beer this is the issue.
->
-> The patch I'm responding to only consists of adding the call to
-> vma_start_write and claims the 5% slowdown from it, while fixing
-> crashes if the forking process is multithreaded.
->
-> For the fix to work it has to lock something against the parent.
->
->         VMA_ITERATOR(old_vmi, oldmm, 0);
-> [..]
->         for_each_vma(old_vmi, mpnt) {
-> [..]
->                 vma_start_write(mpnt);
->
-> the added line locks an obj in the parent's vm space.
->
-> The problem you linked looks like pessimization for freshly allocated
-> vmas, but that's what is being operated on here.
+> >> [ Upstream commit be2ef8161572ec1973124ebc50f56dafc2925e07 ]
+> > 
+> > For obvious reasons, I can't take this series only for 5.10 and not for
+> > 5.15, otherwise you would update your kernel and have a regression.
+> > 
+> > So please, create a 5.15.y series also, and resend both of these, and
+> > then we will be glad to apply them.  For this series, I've dropped them
+> > from my review queue now.
+> 
+> I see you explaining this occasionally, makes me wonder if we should add
+> something like the following to
+> Documentation/process/stable-kernel-rules.rst (sorry, no diff/context,
+> but I guess you'll understand things nevertheless):
+> 
+> """
+> When using option 2 or 3 you can target a specific stable series. When
+> doing so, you have to ensure that the fix or and equivalent is present
+> or submitted to all newer stable trees, as users updating to them
+> otherwise might encounter regressions. Hence, if you want a patch that
+> was merged for 5.19-rc1 included in the 5.10 stable series, you must
+> submit it for any stable series still maintained in the v5.11..v5.18
+> range.
+> """
 
-Sorry, now I'm having trouble understanding the problem you are
-describing. We are locking the parent's vma before copying it and the
-newly created vma is locked before it's added into the vma tree. What
-is the problem then?
+Sure, hopefully people read the documentation, at the very least, I can
+just point the at it and stop saying this over and over :)
 
->
-> --
-> Mateusz Guzik <mjguzik gmail.com>
+thanks,
+
+greg k-h
