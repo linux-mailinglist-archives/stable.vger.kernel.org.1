@@ -2,60 +2,66 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B420D770C5F
-	for <lists+stable@lfdr.de>; Sat,  5 Aug 2023 01:25:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2FBA4770C98
+	for <lists+stable@lfdr.de>; Sat,  5 Aug 2023 02:15:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229661AbjHDXZw (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 4 Aug 2023 19:25:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55872 "EHLO
+        id S229871AbjHEAPB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 4 Aug 2023 20:15:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37852 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229514AbjHDXZu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 4 Aug 2023 19:25:50 -0400
-Received: from mail-oi1-x22f.google.com (mail-oi1-x22f.google.com [IPv6:2607:f8b0:4864:20::22f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC9614C2D;
-        Fri,  4 Aug 2023 16:25:49 -0700 (PDT)
-Received: by mail-oi1-x22f.google.com with SMTP id 5614622812f47-3a5a7e7cd61so1779197b6e.0;
-        Fri, 04 Aug 2023 16:25:49 -0700 (PDT)
+        with ESMTP id S229786AbjHEAPA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 4 Aug 2023 20:15:00 -0400
+Received: from mail-lf1-x129.google.com (mail-lf1-x129.google.com [IPv6:2a00:1450:4864:20::129])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2FCAA4694
+        for <stable@vger.kernel.org>; Fri,  4 Aug 2023 17:14:59 -0700 (PDT)
+Received: by mail-lf1-x129.google.com with SMTP id 2adb3069b0e04-4fe27849e6aso4519530e87.1
+        for <stable@vger.kernel.org>; Fri, 04 Aug 2023 17:14:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1691191549; x=1691796349;
-        h=cc:to:subject:message-id:date:from:references:in-reply-to
+        d=linux-foundation.org; s=google; t=1691194497; x=1691799297;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=2ECpGsVgScrXWZOLp4MGlhJInQlqSJK5uh2ufnsxsdQ=;
-        b=KN5ZYHb0WcW1urRTacMTcHcK1iJfsyKLuTL34dGK3epmEymYUfmkINYqz6aEbdMp+W
-         zP3dEKtnz6JUtoqVZ1SnahfZCc5VVKFxGx/8h93CY/AxPITLLZOB6+xETO/sMYVRHySA
-         TaMiFlxxDsv7HIJe00SxpQVu9Hn7GKNHwBxbOGtO1AXBFT+BEswiulBLKt6bP6OMt4wd
-         12MBsdSJMyXvBwCe6D2ym2yxWn3SVy+r1EJz04/d6QPozmfj9tn6XaE+A3eVha3VW8Bw
-         HsxwAfYJFsWa+JNVAHCA2y3A6DqjGG47Z5jkfZegfqiTqVqo78ji96xRiH5TdjogMFji
-         HGqg==
+        bh=BOt/owxzUYbRmdYSMwC2b72ailgyx1LyngYZzbpA3ng=;
+        b=MF8u79hZkqfIQj1bKlqAfcw+UQ/BjtTo66egFuiPnkVR9Kysz/98+FJKraaklpJQHj
+         79f6ExYtvBzJmQf8j0iqQTHPzQPWEGuC+p60EbGtvMIAFYJcjooc34ylQ53jWEv4a8iS
+         7naqDeTti+w+vfBweyCdRCmw9m6yVNMT1++W0=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691191549; x=1691796349;
-        h=cc:to:subject:message-id:date:from:references:in-reply-to
+        d=1e100.net; s=20221208; t=1691194497; x=1691799297;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=2ECpGsVgScrXWZOLp4MGlhJInQlqSJK5uh2ufnsxsdQ=;
-        b=j4hvMb+8XTDdn0Yk2A6LWb8uv3KTnRMQxOQ3dhdf+MxzCvZLTx9TB8CdKAyY42VGum
-         t8/JdsMgTMs3fd6cKo1vMzKBYPpUi5jPgHoRZ6i9sZRvKk/dRoOuuC0ZMVjmnq8QyDGZ
-         SOhfC4+Vqa9/ZBpwEOCaOkv+svcn4arWcmC1Cv3rf8hiK4PVNUf9O5XyPYPi50t9AqsC
-         84dEpld5jQS4X5BzmrZa0S2P3lDJn9b+GuMsCwbVvJiS447m4Ph3cMAW2Lq9KiJlaqbu
-         KkGByiUZGDdL7raxMc0weLWJYSvft76ASABFzDn4/XjpcrDRzo3atr/FU+/OjXGOJVBr
-         fnnA==
-X-Gm-Message-State: AOJu0YwVt51/Wx4urQ5w7Z+e9R2lqzYrAHN03/W4G3R/hsoQnzaCH8FU
-        EQ+1tN3nbwoEABpQOHA7YTavG1Bg+bilcEYsOGE=
-X-Google-Smtp-Source: AGHT+IGtBQglFMOFnETZZ/fmovN1PMvk23bCpNKojUYy5iXfJ0+vg0zUB8AJgZ4V2vFlc91Ap5FBtffJGXGc3wkjEE8=
-X-Received: by 2002:a05:6808:3a7:b0:39c:7d50:ab86 with SMTP id
- n7-20020a05680803a700b0039c7d50ab86mr778649oie.29.1691191548939; Fri, 04 Aug
- 2023 16:25:48 -0700 (PDT)
+        bh=BOt/owxzUYbRmdYSMwC2b72ailgyx1LyngYZzbpA3ng=;
+        b=KpHAOy2shYO6Udjcw48eKwWvNb2ptt/sA4g4k3isIwJmYAqPzK449fKURYdy0oqVZF
+         UqeNxW3r6LHJkgoQzn9SQBu34WYbYC66+Ce/uof8n7cp++uljdldfnzzqUBnM5pQvtbv
+         4oLEoDyqB/S14RbJ+MpsjbVQHrh+RpS3sNnk5ddrsnN9boyDkDTBQ1PWAcQQRTMNMMZC
+         OHwwUCS6LmqusuSfDPyDZbDuUb6FczYhISkZFfU84DPDFEOlYg+YVnSGFap9Y8o7i10t
+         AWYsO81vcpJXmGyCsp3CLPwLxiUNZ/VtsUr0sHIk6MYQ5MwCAGxiKF+zzfGEGEYytTE6
+         OBcw==
+X-Gm-Message-State: AOJu0Yy7eENn0NPKtUz+JmfSzj5fwHMLuijJqlnG23wKweMspYEG5Zc6
+        cvFdc7JH+csg1H/XewMtoVVaYJQCWTtIq4bLT/msbVRy
+X-Google-Smtp-Source: AGHT+IGDmmfcMfBXvtN/jG+NvdUrxR87vS09CBmz95KSACJEWZ0ChxJBZU3NqTNI7USI5xfBIm5Fpg==
+X-Received: by 2002:a05:6512:2097:b0:4f8:5ede:d447 with SMTP id t23-20020a056512209700b004f85eded447mr2128381lfr.28.1691194497407;
+        Fri, 04 Aug 2023 17:14:57 -0700 (PDT)
+Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com. [209.85.167.53])
+        by smtp.gmail.com with ESMTPSA id w13-20020a05651204cd00b004fdfd79e732sm557943lfq.289.2023.08.04.17.14.55
+        for <stable@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 04 Aug 2023 17:14:56 -0700 (PDT)
+Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-4fe27849e6aso4519507e87.1
+        for <stable@vger.kernel.org>; Fri, 04 Aug 2023 17:14:55 -0700 (PDT)
+X-Received: by 2002:a05:6512:74e:b0:4fb:ca59:42d7 with SMTP id
+ c14-20020a056512074e00b004fbca5942d7mr2051745lfs.33.1691194495615; Fri, 04
+ Aug 2023 17:14:55 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 2002:ac9:7b87:0:b0:4f0:1250:dd51 with HTTP; Fri, 4 Aug 2023
- 16:25:48 -0700 (PDT)
-In-Reply-To: <CAHk-=wiy125k1dBmQFTGpHwiOqEyrD6xnd4xKWfe97H_HodgDA@mail.gmail.com>
 References: <20230708191212.4147700-1-surenb@google.com> <20230708191212.4147700-3-surenb@google.com>
  <20230804214620.btgwhsszsd7rh6nf@f> <CAHk-=wiy125k1dBmQFTGpHwiOqEyrD6xnd4xKWfe97H_HodgDA@mail.gmail.com>
-From:   Mateusz Guzik <mjguzik@gmail.com>
-Date:   Sat, 5 Aug 2023 01:25:48 +0200
-Message-ID: <CAGudoHFsAU_BDCOuz8UgDBLGEM8xg=aUGjaVoqkM_Zvxo2Re_g@mail.gmail.com>
+ <CAGudoHFsAU_BDCOuz8UgDBLGEM8xg=aUGjaVoqkM_Zvxo2Re_g@mail.gmail.com>
+In-Reply-To: <CAGudoHFsAU_BDCOuz8UgDBLGEM8xg=aUGjaVoqkM_Zvxo2Re_g@mail.gmail.com>
+From:   Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Fri, 4 Aug 2023 17:14:38 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wiG9xaVvBJXHqTxtop0=mW9KxPS9C54ED23p59VNEKdWg@mail.gmail.com>
+Message-ID: <CAHk-=wiG9xaVvBJXHqTxtop0=mW9KxPS9C54ED23p59VNEKdWg@mail.gmail.com>
 Subject: Re: [PATCH v2 3/3] fork: lock VMAs of the parent process when forking
-To:     Linus Torvalds <torvalds@linux-foundation.org>
+To:     Mateusz Guzik <mjguzik@gmail.com>
 Cc:     Suren Baghdasaryan <surenb@google.com>, akpm@linux-foundation.org,
         regressions@leemhuis.info, bagasdotme@gmail.com,
         jacobly.alt@gmail.com, willy@infradead.org,
@@ -67,41 +73,42 @@ Cc:     Suren Baghdasaryan <surenb@google.com>, akpm@linux-foundation.org,
         =?UTF-8?Q?Holger_Hoffst=C3=A4tte?= <holger@applied-asynchrony.com>,
         stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 8/5/23, Linus Torvalds <torvalds@linux-foundation.org> wrote:
-> On Fri, 4 Aug 2023 at 14:46, Mateusz Guzik <mjguzik@gmail.com> wrote:
->>
->> I don't see it mentioned in the discussion, so at a risk of ruffling
->> feathers or looking really bad I'm going to ask: is the locking of any
->> use if the forking process is single-threaded? T
+On Fri, 4 Aug 2023 at 16:25, Mateusz Guzik <mjguzik@gmail.com> wrote:
 >
-> Sadly, we've always been able to access the mm from other processes,
-> so the locking is - I think - unavoidable.
+> I know of these guys, I think they are excluded as is -- they go
+> through access_remote_vm, starting with:
+>         if (mmap_read_lock_killable(mm))
+>                 return 0;
 >
-> And some of those "access from other processes" aren't even uncommon
-> or special. It's things like "ps" etc, that do it just to see the
-> process name and arguments.
->
+> while dup_mmap already write locks the parent's mm.
 
-I know of these guys, I think they are excluded as is -- they go
-through access_remote_vm, starting with:
-        if (mmap_read_lock_killable(mm))
-                return 0;
+Oh, you're only worried about vma_start_write()?
 
-while dup_mmap already write locks the parent's mm.
+That's a non-issue. It doesn't take the lock normally, since it starts off with
 
-I don't see any surprise relocks of the semaphore.
+        if (__is_vma_write_locked(vma, &mm_lock_seq))
+                return;
 
-Granted, should someone *bypass* this mechanism the above would be moot.
+which catches on the lock sequence number already being set.
 
--- 
-Mateusz Guzik <mjguzik gmail.com>
+So no extra locking there.
+
+Well, technically there's extra locking because the code stupidly
+doesn't initialize new vma allocations to the right sequence number,
+but that was talked about here:
+
+    https://lore.kernel.org/all/CAHk-=wiCrWAoEesBuoGoqqufvesicbGp3cX0LyKgEvsFaZNpDA@mail.gmail.com/
+
+and it's a separate issue.
+
+          Linus
