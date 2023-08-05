@@ -2,58 +2,81 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CEDF2770D0D
-	for <lists+stable@lfdr.de>; Sat,  5 Aug 2023 03:30:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6D7F6770D1E
+	for <lists+stable@lfdr.de>; Sat,  5 Aug 2023 03:36:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229527AbjHEBa0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 4 Aug 2023 21:30:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51510 "EHLO
+        id S229571AbjHEBgu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 4 Aug 2023 21:36:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52688 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229450AbjHEBaZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 4 Aug 2023 21:30:25 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD411E72;
-        Fri,  4 Aug 2023 18:30:24 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5BA6662190;
-        Sat,  5 Aug 2023 01:30:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id BAE76C433C7;
-        Sat,  5 Aug 2023 01:30:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1691199023;
-        bh=pwzAgcSEzJzd2+U8fbKBX1WqagT3Y+bBXKBHZ+l48ik=;
-        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-        b=Rk6zzPclZOXAqHBB9oE9EW3EBuB+mRQuzXf9wjdj2z9h6HX+j3vJcAA/1FpQJ1isg
-         JmQaxURcpZBXDymoODynt/ZuEAVaEjh6PO/iJk6Ts0IrxA3lgzuBgoqooHs/b2ROtL
-         WedU6u4N7KAEDtjzTVQmCABKU8QD51L4EYk6++VjqF4Dl5MDWUREDOhvulqvYkcuOP
-         Z+G/3ca34QpjBz1TU0DDA3VRmlc2/Q7c/F/6VBUEr6aWJTpxB3wmcxe9AMmigb0r6R
-         KhztBNIkq70iQInZkKpqkEIjG+ykj7NKIUOGLNM5tpD+023v0txob46a0BQ0ZG9/0D
-         UcxsIkRjI4lxQ==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id A1DE6C64458;
-        Sat,  5 Aug 2023 01:30:23 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+        with ESMTP id S229450AbjHEBgt (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 4 Aug 2023 21:36:49 -0400
+Received: from mail-yb1-xb34.google.com (mail-yb1-xb34.google.com [IPv6:2607:f8b0:4864:20::b34])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70FAE1BE
+        for <stable@vger.kernel.org>; Fri,  4 Aug 2023 18:36:48 -0700 (PDT)
+Received: by mail-yb1-xb34.google.com with SMTP id 3f1490d57ef6-d3522283441so2685851276.0
+        for <stable@vger.kernel.org>; Fri, 04 Aug 2023 18:36:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20221208; t=1691199407; x=1691804207;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=AujeCo6jm3AYe4qZ6y6dt+l/y9fmf46ls+zy0ks6uBk=;
+        b=bpswymm8/aHd6mYtUujhG2QErdghxkdOBUSisUuXISL43iBt5anSiCY7npzyoUiEp/
+         2r0DThfOtkG+yPEzC58xZLlele5B03sILA+y2PDwjAPMcXtkwUcFy5lrcWm18fIezCd2
+         TvTlOQPRw7trWWi7TFwzUQOVcXl3hZGoUY/y3/OIyQgS+g5h8gNRs0QcE+lMY/pkkoXy
+         Ns1q4mZuMDjIYZNsw7vuvEEABh4IA+p+ZsHCspKeMOXHkfvzh6yntnLUxWpgnw8t77Vi
+         bBEHLKcSkpQzi5wly6AOeCVeTC0b886H1B0C1idctkdvu2YXbxSIRxaC+odXZzrzeWAu
+         h22w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1691199407; x=1691804207;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=AujeCo6jm3AYe4qZ6y6dt+l/y9fmf46ls+zy0ks6uBk=;
+        b=fHtXiqlxNNU7fvZ35+qmqN0WErlStojoBPd7GB+kK2cmtq4CJnDEj9WYxWcjbzDLyS
+         afsuYOLasLSQdwW2KBCigwKhBusEkXLQyb4cSkvu3lCXnAKztvafmwslqo2MQQvZR6K1
+         D8BpqTVJMz/cFgt3BGH5VvjmiFJjNlFLZJvNNx6xPGrpAO52SK6sgMl4lQzeJ0Rrog+c
+         h37OSbWsWSIqwm9Y8LFzMimr5KJD7PNnJp2U0aK3d3Mk9Zd3rB4cs+8NpL1L20eRm1TP
+         H5qMoWF2KoLW4ViLq0InrR/KS0BoBPHUtH+9PqSgWULwI1hFxmBCDLN9+INnBsUdR1D0
+         HFHg==
+X-Gm-Message-State: AOJu0YyEU3Y6MxTA6NwQi+E4U+FA3L0m/Zm+TI/4hljdIuRctnHAvmZV
+        bQ2YkGzDmoQvDRnX+RdUAPWKJEikNlprn08xufKqtw==
+X-Google-Smtp-Source: AGHT+IFJHUDmRmfkaGOcYBONV1HYLRgCo/dnuTAMETxoZRKS9/hRI1iaTAV07Qp4qriq/KEZCcwC9+dZWAiPFh/72cs=
+X-Received: by 2002:a25:d08:0:b0:d1c:7549:4e8b with SMTP id
+ 8-20020a250d08000000b00d1c75494e8bmr2986579ybn.29.1691199407388; Fri, 04 Aug
+ 2023 18:36:47 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net 0/4] mptcp: more fixes for v6.5
-From:   patchwork-bot+netdevbpf@kernel.org
-Message-Id: <169119902365.19124.7615476498177445087.git-patchwork-notify@kernel.org>
-Date:   Sat, 05 Aug 2023 01:30:23 +0000
-References: <20230803-upstream-net-20230803-misc-fixes-6-5-v1-0-6671b1ab11cc@tessares.net>
-In-Reply-To: <20230803-upstream-net-20230803-misc-fixes-6-5-v1-0-6671b1ab11cc@tessares.net>
-To:     Matthieu Baerts <matthieu.baerts@tessares.net>
-Cc:     mptcp@lists.linux.dev, martineau@kernel.org, davem@davemloft.net,
-        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-        shuah@kernel.org, geliang.tang@suse.com, aclaudi@redhat.com,
-        netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        cpaasch@apple.com
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+References: <20230708191212.4147700-1-surenb@google.com> <20230708191212.4147700-3-surenb@google.com>
+ <20230804214620.btgwhsszsd7rh6nf@f> <CAHk-=wiy125k1dBmQFTGpHwiOqEyrD6xnd4xKWfe97H_HodgDA@mail.gmail.com>
+ <CAGudoHFsAU_BDCOuz8UgDBLGEM8xg=aUGjaVoqkM_Zvxo2Re_g@mail.gmail.com>
+ <CAHk-=wiG9xaVvBJXHqTxtop0=mW9KxPS9C54ED23p59VNEKdWg@mail.gmail.com>
+ <CAJuCfpGWGsh2BRgwcJ7oVHnqZfrtiesvhzomK0ZmxE_KK=R7FA@mail.gmail.com>
+ <CAJuCfpG6BBP+fjV9oyBx3SNiKhiafPzM9vV9bx_goO2aZzAptg@mail.gmail.com>
+ <CAGudoHFrDG6-u-XXEmQoPS2CJ2Wpo4ETwhXc2R=jy78RSYw-Zg@mail.gmail.com>
+ <CAJuCfpHYBqULvwNELO3Gkc0bkKDV7VJxMjvBru4zaAz4WKQNhw@mail.gmail.com> <CAGudoHGm2hbjSG-2kJevF=xGpz=4Sd0m5CjVO8Ntsahqz5NcGA@mail.gmail.com>
+In-Reply-To: <CAGudoHGm2hbjSG-2kJevF=xGpz=4Sd0m5CjVO8Ntsahqz5NcGA@mail.gmail.com>
+From:   Suren Baghdasaryan <surenb@google.com>
+Date:   Fri, 4 Aug 2023 18:36:34 -0700
+Message-ID: <CAJuCfpH0tG8n5AUOqxOnKgXR_ge7rU4dpW3aw0hjOUN99+WXTw@mail.gmail.com>
+Subject: Re: [PATCH v2 3/3] fork: lock VMAs of the parent process when forking
+To:     Mateusz Guzik <mjguzik@gmail.com>
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        akpm@linux-foundation.org, regressions@leemhuis.info,
+        bagasdotme@gmail.com, jacobly.alt@gmail.com, willy@infradead.org,
+        liam.howlett@oracle.com, david@redhat.com, peterx@redhat.com,
+        ldufour@linux.ibm.com, linux-kernel@vger.kernel.org,
+        linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org,
+        linux-arm-kernel@lists.infradead.org, gregkh@linuxfoundation.org,
+        regressions@lists.linux.dev, Jiri Slaby <jirislaby@kernel.org>,
+        =?UTF-8?Q?Holger_Hoffst=C3=A4tte?= <holger@applied-asynchrony.com>,
+        stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
+        USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -61,36 +84,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hello:
+On Fri, Aug 4, 2023 at 6:17=E2=80=AFPM Mateusz Guzik <mjguzik@gmail.com> wr=
+ote:
+>
+> On 8/5/23, Suren Baghdasaryan <surenb@google.com> wrote:
+> > On Fri, Aug 4, 2023 at 5:49=E2=80=AFPM Mateusz Guzik <mjguzik@gmail.com=
+> wrote:
+> >> However, the other users (that I know of ) go through the mmap
+> >> semaphore to mess with anything which means they will wait for
+> >> dup_mmap to finish (or do their work first). I would be surprised if
+> >> there were any cases which don't take the semaphore, given that it was
+> >> a requirement prior to the vma patchset (unless you patched some to no
+> >> longer need it?). I would guess worst case the semaphore can be added
+> >> if missing.
+> >
+> > No, the only mmap_lock read-lock that is affected is during the page
+> > fault, which is expected.
+> >
+>
+> I have difficulty parsing your statement.
 
-This series was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+I was just saying that vma lock patchset did not touch any other
+mmap_locking paths except for the page fault one where we try to skip
+read-locking mmap_lock.
 
-On Thu, 03 Aug 2023 18:27:26 +0200 you wrote:
-> Here is a new batch of fixes related to MPTCP for v6.5 and older.
-> 
-> Patches 1 and 2 fix issues with MPTCP Join selftest when manually
-> launched with '-i' parameter to use 'ip mptcp' tool instead of the
-> dedicated one (pm_nl_ctl). The issues have been there since v5.18.
-> 
-> Thank you Andrea for your first contributions to MPTCP code in the
-> upstream kernel!
-> 
-> [...]
+>
+> I am saying that any 3rd parties which can trigger page faults already
+> read lock mmap_lock or can be made to do it (and I don't know any case
+> which does not already, but I'm not willing to spend time poking
+> around to make sure). One can consider 3rd parties as not a problem,
+> modulo the audit.
+>
+> Past that there does is no known source of trouble? In my original
+> e-mail I was worried about processes up the chain in ancestry, perhaps
+> some of the state is shared(?) and the locking at hand neuters any
+> problems. I'm guessing this is not necessary.
+>
+> Bottom line though it looks like this will work fine?
+>
+> That said, I'm not going to submit a patch I can't confidently defend.
+> As I did not dig into any of the VMA code and can't be arsed to audit
+> all places which mess with "foreign" mm, I'm definitely not submitting
+> this myself. You are most welcome to write your own variant at your
+> leisure. :)
 
-Here is the summary with links:
-  - [net,1/4] selftests: mptcp: join: fix 'delete and re-add' test
-    https://git.kernel.org/netdev/net/c/aaf2123a5cf4
-  - [net,2/4] selftests: mptcp: join: fix 'implicit EP' test
-    https://git.kernel.org/netdev/net/c/c8c101ae390a
-  - [net,3/4] mptcp: avoid bogus reset on fallback close
-    https://git.kernel.org/netdev/net/c/ff18f9ef30ee
-  - [net,4/4] mptcp: fix disconnect vs accept race
-    https://git.kernel.org/netdev/net/c/511b90e39250
+Ok, I see. I'll need to double check locking when a 3rd party is
+involved. Will post a patch when I'm confident enough it's safe.
+Thanks!
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+>
+> --
+> Mateusz Guzik <mjguzik gmail.com>
