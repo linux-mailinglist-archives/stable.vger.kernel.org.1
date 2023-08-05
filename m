@@ -2,73 +2,100 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 89C05771035
-	for <lists+stable@lfdr.de>; Sat,  5 Aug 2023 16:44:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 04B3777106E
+	for <lists+stable@lfdr.de>; Sat,  5 Aug 2023 18:12:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229464AbjHEOo2 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 5 Aug 2023 10:44:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51830 "EHLO
+        id S229572AbjHEQMb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 5 Aug 2023 12:12:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34876 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229445AbjHEOo1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 5 Aug 2023 10:44:27 -0400
-Received: from mail-il1-x134.google.com (mail-il1-x134.google.com [IPv6:2607:f8b0:4864:20::134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33E771FE6
-        for <stable@vger.kernel.org>; Sat,  5 Aug 2023 07:44:27 -0700 (PDT)
-Received: by mail-il1-x134.google.com with SMTP id e9e14a558f8ab-3491a8e6fd1so12105655ab.3
-        for <stable@vger.kernel.org>; Sat, 05 Aug 2023 07:44:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1691246666; x=1691851466;
-        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=9n8PAr25ES5j6NMo7WIYiUGc35sn81xEWBwZyOU8pz0=;
-        b=k23Jm2BpWd0WXa0pK0VexBjchjkjAT5uj6c82OvS49kcr47BCDCS/MRzbwERFj175j
-         YLpZjxJzwrd0qUNFw6z2DtZZAEqaEN6JLgf16TtcuDK/3gql7JY7fQmwcW43HaeX8n+U
-         szoCYVP4yNQwp99yPq5mQukjXzThhg0CSwWa5KhVmwSYFOe+I6DSBIzajz0j2P8SXx+z
-         nxNDD+ajCg5Cyxz41vhp8U0bYiL7FWaKHwuCx9kTXHgInFmu938scO+fqHOB0XYtYeC7
-         IMpIIXtl6Vo/QqtoTSK63F3QI7rUn2W5V+8jI0jaxHCt7sdQgWtyqjL9LCYqZ7Sv+CWk
-         8LTw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691246666; x=1691851466;
-        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=9n8PAr25ES5j6NMo7WIYiUGc35sn81xEWBwZyOU8pz0=;
-        b=Y3KKWzHTseKYHvhoIFhJZFe/Q85kDZ/zxoMbSAYWRopIt6m4TEuQxhwJwAsS1TxUNi
-         uF/06i7qv2FHzMustauL8pbmciRqAbyUMlIgTXoAHtQBBdZk+mxjxX7+jRI2Mj05C736
-         q5HOLT3HUEnWR6MgiDr2YCY4kK0BkagxUqEI1RywJyaiIhNxLwutoobxtiGfjLd9KaSn
-         479hD0kuHbmCMxKAGwvExMow29ysfCKDQnsWG5j7aZIZVRMMAf55XBYqKPurPpYVMYQ3
-         B4c6n95awDVEy2ipgvVd6u3xDh+Vi2yYNDcZzZ08tL7GwH5BKJsJHwRDo/GsXp5Sb1zP
-         S4Eg==
-X-Gm-Message-State: AOJu0Yx36lIPT4uh3P+iLLKUYuoyl3h4xdG5oGjRadaYVDEu8HugDAv3
-        /D5rDKC+ykIRe3SYmN+ZV5MuSd1R9aYpLrjQ2rQ=
-X-Google-Smtp-Source: AGHT+IFdUQRoNfhQp7J8/RMIMO1529Vc28UP4+WKRoucPZLzbxSPY81T1g/GIbhgNMcBObkNU5f4I/CeJmUAZkEVX8c=
-X-Received: by 2002:a05:6e02:198b:b0:349:2bb0:c87d with SMTP id
- g11-20020a056e02198b00b003492bb0c87dmr7532523ilf.32.1691246666583; Sat, 05
- Aug 2023 07:44:26 -0700 (PDT)
+        with ESMTP id S229436AbjHEQMa (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 5 Aug 2023 12:12:30 -0400
+Received: from mout-p-202.mailbox.org (mout-p-202.mailbox.org [80.241.56.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6ACB510F8;
+        Sat,  5 Aug 2023 09:12:29 -0700 (PDT)
+Received: from smtp202.mailbox.org (smtp202.mailbox.org [IPv6:2001:67c:2050:b231:465::202])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-384) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        by mout-p-202.mailbox.org (Postfix) with ESMTPS id 4RJ6zt0Slbz9sW7;
+        Sat,  5 Aug 2023 18:12:26 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cyphar.com; s=MBO0001;
+        t=1691251946;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=yCYqR+EeCPhLlyuM0EqRgutL3UUW623kAbsrUT4n0kQ=;
+        b=OdHd8pGnTpNlH8BuqgTP2VG0QtbjeH+XFPBKgoRCyFzxn5xBoAejSoyYHQTYZ7gNnV8+pf
+        x8IUMF26GANA0MZ3PS2IudaGlDu07PS/G7/h4n0CrM6s2DKtBYWDpINo882+LsvNHyv1X1
+        vWCYSXacXeKQRf6Q1365f1pcSoLWMBIU9gAXFckG/98YZvO4CgBOdPmWTJH0K71YO/Y9Z3
+        voWV9JqroE3EY+8PZRtzatBf//qtMQIQCH1qrfcV1nisYQm80mGKdphzRdnwyMMYLAYecH
+        VoFZvyY1qkaPzYSLnaxONLuFtLxmqMZaxlHMVNvZKb+Ld8NNtDqwjdCK3X8opQ==
+From:   Aleksa Sarai <cyphar@cyphar.com>
+Date:   Sun, 06 Aug 2023 02:11:58 +1000
+Subject: [PATCH] open: make RESOLVE_CACHED correctly test for O_TMPFILE
 MIME-Version: 1.0
-Received: by 2002:a05:6638:264a:b0:42b:74a4:f5d4 with HTTP; Sat, 5 Aug 2023
- 07:44:26 -0700 (PDT)
-From:   audu bello <agbe21047@gmail.com>
-Date:   Sat, 5 Aug 2023 16:44:26 +0200
-Message-ID: <CAK3i3o9dbCpJYBb40QmD3QYiqfbsk=VyG6yFePt=XBGiy1rX-w@mail.gmail.com>
-Subject: Communication
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=1.9 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLY,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,
-        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Level: *
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20230806-resolve_cached-o_tmpfile-v1-1-7ba16308465e@cyphar.com>
+X-B4-Tracking: v=1; b=H4sIAM10zmQC/x3M0QpAMBiG4VvRf2w1U4xbkcT24S9Mm6SWe7ccP
+ gfvGynAMwK1WSSPmwO7I6HIMzLreCwQbJNJSVVKLSvhEdx2YzCjWWGFG679nHmDaGptJlXqyVa
+ aUn56zPz8665/3w/C9KPragAAAA==
+To:     Alexander Viro <viro@zeniv.linux.org.uk>,
+        Christian Brauner <brauner@kernel.org>,
+        Jens Axboe <axboe@kernel.dk>
+Cc:     linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org, Aleksa Sarai <cyphar@cyphar.com>
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1168; i=cyphar@cyphar.com;
+ h=from:subject:message-id; bh=h2QuFb5UlHU5Y1F2VVpvnKPcSGujrQ9dOJy94AF37xw=;
+ b=owGbwMvMwCWmMf3Xpe0vXfIZT6slMaScK3nk1nf+Q8LV1/2PmHr2fTU5ltOxr7prz4nNXd+vT
+ dgkeExuS0cpC4MYF4OsmCLLNj/P0E3zF19J/rSSDWYOKxPIEAYuTgGYyGwzhl/MlcFRcw/msdgI
+ 1Fzpnen1sGP/pvjZtnoGcat55f5a31vF8Fdi/du2a+4N71dnSu45b9i252+939kvu0/Mszyf93/
+ Xpa+MAA==
+X-Developer-Key: i=cyphar@cyphar.com; a=openpgp;
+ fpr=C9C370B246B09F6DBCFC744C34401015D1D2D386
+X-Rspamd-Queue-Id: 4RJ6zt0Slbz9sW7
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+O_TMPFILE is actually __O_TMPFILE|O_DIRECTORY. This means that the old
+fast-path check for RESOLVE_CACHED would reject all users passing
+O_DIRECTORY with -EAGAIN, when in fact the intended test was to check
+for __O_TMPFILE.
+
+Cc: stable@vger.kernel.org # v5.12+
+Fixes: 99668f618062 ("fs: expose LOOKUP_CACHED through openat2() RESOLVE_CACHED")
+Signed-off-by: Aleksa Sarai <cyphar@cyphar.com>
+---
+ fs/open.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/fs/open.c b/fs/open.c
+index b8883ec286f5..2634047c9e9f 100644
+--- a/fs/open.c
++++ b/fs/open.c
+@@ -1337,7 +1337,7 @@ inline int build_open_flags(const struct open_how *how, struct open_flags *op)
+ 		lookup_flags |= LOOKUP_IN_ROOT;
+ 	if (how->resolve & RESOLVE_CACHED) {
+ 		/* Don't bother even trying for create/truncate/tmpfile open */
+-		if (flags & (O_TRUNC | O_CREAT | O_TMPFILE))
++		if (flags & (O_TRUNC | O_CREAT | __O_TMPFILE))
+ 			return -EAGAIN;
+ 		lookup_flags |= LOOKUP_CACHED;
+ 	}
+
+---
+base-commit: bf5ad7af0516cb47121dae1b1c160e4385615274
+change-id: 20230806-resolve_cached-o_tmpfile-978cb238bd68
+
+Best regards,
 -- 
-I've reached out to you a couple of times, but I haven't heard back. I'd
-appreciate a response to resolve the pending transaction.
+Aleksa Sarai <cyphar@cyphar.com>
 
-All future correspondence should be directed to>  a00728298@yahoo.com
-
-Yours faithfully
-Audit Manager
