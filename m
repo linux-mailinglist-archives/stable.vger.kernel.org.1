@@ -2,203 +2,104 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 61E38770F39
-	for <lists+stable@lfdr.de>; Sat,  5 Aug 2023 12:14:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1BC93770F7B
+	for <lists+stable@lfdr.de>; Sat,  5 Aug 2023 13:47:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229704AbjHEKOh (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 5 Aug 2023 06:14:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45246 "EHLO
+        id S229473AbjHELrC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 5 Aug 2023 07:47:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56224 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229573AbjHEKOg (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 5 Aug 2023 06:14:36 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F2C244A0
-        for <stable@vger.kernel.org>; Sat,  5 Aug 2023 03:13:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1691230428;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=gzcbtTcLRTqfUr+sJMtFYMn2Exc1ZZ92jeIwz7XOB2k=;
-        b=KmGAMzwWGpXymiFoAt1/LUM0GYXEfxNzToQ+m5FR/fj0yy9AB7igSWqXU5OBbz4en/owsy
-        MeBq8m22RYCx4squNfhYCRnYU0IxFyP2PYmiY2oafPvIIdScZtmlWfkCDBmfk12UZnTQaB
-        kSmEzQnQzTV/i1rDOeflJrleMUeJZTA=
-Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-621-RDbso_ouOr6OYGzsgSY-Zw-1; Sat, 05 Aug 2023 06:13:46 -0400
-X-MC-Unique: RDbso_ouOr6OYGzsgSY-Zw-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com [10.11.54.5])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        with ESMTP id S229456AbjHELrB (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 5 Aug 2023 07:47:01 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 74B1AE70;
+        Sat,  5 Aug 2023 04:47:00 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B72CD3C0DDA6;
-        Sat,  5 Aug 2023 10:13:45 +0000 (UTC)
-Received: from t14s.fritz.box (unknown [10.39.192.47])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 4B42EF7FBA;
-        Sat,  5 Aug 2023 10:12:57 +0000 (UTC)
-From:   David Hildenbrand <david@redhat.com>
-To:     linux-kernel@vger.kernel.org
-Cc:     linux-mm@kvack.org, David Hildenbrand <david@redhat.com>,
-        Ryan Roberts <ryan.roberts@arm.com>, stable@vger.kernel.org,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        John Hubbard <jhubbard@nvidia.com>,
-        Jason Gunthorpe <jgg@nvidia.com>, Peter Xu <peterx@redhat.com>,
-        Mike Kravetz <mike.kravetz@oracle.com>
-Subject: [PATCH v1] mm/gup: handle cont-PTE hugetlb pages correctly in gup_must_unshare() via GUP-fast
-Date:   Sat,  5 Aug 2023 12:12:56 +0200
-Message-ID: <20230805101256.87306-1-david@redhat.com>
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0572A60CEE;
+        Sat,  5 Aug 2023 11:47:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59E14C433C7;
+        Sat,  5 Aug 2023 11:46:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1691236019;
+        bh=F/viQAtCmBsmf8fFp/zPikP9dkOYxWBOVwWsvbEtFoo=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:From;
+        b=aX+IVGk+jRFoLbKXeetWjJjbWnapZMv/0/fmNScSSJp9kCOXYm2S/n0yOmzm9xUlw
+         7vMc36YxuJEbSulRYyFzdWCWkHaU0BQSfkhu7D/jAL/DgKlUHhH5PfbzfPx7IWDEh1
+         U9I689NN3CEgHmTbZJNCISno/Q/9N7fIpqiiL7FnOlOg1vh/xe5qTkJG4rkqM4dYRI
+         0AY39gTayUF1sWTudSMRhg7CyxfqA7BICD2b74CB3I01f08dkcW0o99EwxvCr5kDID
+         9Pw8c3trzDy1dWzvuSK1VoEWh1fmIX9MEfTCf0wxQVoMGeK4Bjjx+kD00P2Z91G+fW
+         YKU59cBGqf79w==
+Date:   Sat, 5 Aug 2023 13:46:54 +0200
+From:   Christian Brauner <brauner@kernel.org>
+To:     Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     Mateusz Guzik <mjguzik@gmail.com>, Jens Axboe <axboe@kernel.dk>,
+        Christoph Hellwig <hch@lst.de>,
+        Aleksa Sarai <cyphar@cyphar.com>,
+        Al Viro <viro@zeniv.linux.org.uk>,
+        Seth Forshee <sforshee@kernel.org>,
+        linux-fsdevel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] file: always lock position
+Message-ID: <20230805-furor-angekauft-82e334fc83a3@brauner>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.5
+Content-Type: multipart/mixed; boundary="2pofktc7xzw7zelm"
+Content-Disposition: inline
+In-Reply-To: <20230804-turnverein-helfer-ef07a4d7bbec@brauner>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.6
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-In contrast to most other GUP code, GUP-fast common page table walking code
-like gup_pte_range() also handles hugetlb pages. But in contrast to other
-hugetlb page table walking code, it does not look at the hugetlb PTE
-abstraction whereby we have only a single logical hugetlb PTE per hugetlb
-page, even when using multiple cont-PTEs underneath -- which is for example
-what huge_ptep_get() abstracts.
 
-So when we have a hugetlb page that is mapped via cont-PTEs, GUP-fast
-might stumble over a PTE that does not map the head page of a hugetlb
-page -- not the first "head" PTE of such a cont mapping.
+--2pofktc7xzw7zelm
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 
-Logically, the whole hugetlb page is mapped (entire_mapcount == 1), but we
-might end up calling gup_must_unshare() with a tail page of a hugetlb
-page.
+> > thing to do is to just special-case S_ISDIR. Not lovely, but whatever.
+> > 
+> > So something like this instead? It's a smaller diff anyway, and it
+> > gets the crazy afds/ceph cases right too.
+> 
+> If you really care about this we can do it. But if we can live with just
 
-We only maintain a single PageAnonExclusive flag per hugetlb page (as
-hugetlb pages cannot get partially COW-shared), stored for the head page.
-That flag is clear for all tail pages.
+I see you went with the S_ISDIR thing for now. How do you feel about
+adding something like the appended patch (untested) on top of this?
 
-So when gup_must_unshare() ends up calling PageAnonExclusive() with a
-tail page of a hugetlb page:
+So instead of relying on the inode we could just check f_ops for
+iterate/iterate_shared. That should amount to the same thing(*) but
+looks cleaner to me. Alternatively we can do the flag thing you
+mentioned ofc.
 
-1) With CONFIG_DEBUG_VM_PGFLAGS
+(*) I suffered from a proper cold so my brain is in a half-working state.
 
-Stumbles over the:
+--2pofktc7xzw7zelm
+Content-Type: text/x-diff; charset=utf-8
+Content-Disposition: attachment; filename="dir.diff"
 
-	VM_BUG_ON_PGFLAGS(PageHuge(page) && !PageHead(page), page);
-
-For example, when executing the COW selftests with 64k hugetlb pages on
-arm64:
-
-  [   61.082187] page:00000000829819ff refcount:3 mapcount:1 mapping:0000000000000000 index:0x1 pfn:0x11ee11
-  [   61.082842] head:0000000080f79bf7 order:4 entire_mapcount:1 nr_pages_mapped:0 pincount:2
-  [   61.083384] anon flags: 0x17ffff80003000e(referenced|uptodate|dirty|head|mappedtodisk|node=0|zone=2|lastcpupid=0xfffff)
-  [   61.084101] page_type: 0xffffffff()
-  [   61.084332] raw: 017ffff800000000 fffffc00037b8401 0000000000000402 0000000200000000
-  [   61.084840] raw: 0000000000000010 0000000000000000 00000000ffffffff 0000000000000000
-  [   61.085359] head: 017ffff80003000e ffffd9e95b09b788 ffffd9e95b09b788 ffff0007ff63cf71
-  [   61.085885] head: 0000000000000000 0000000000000002 00000003ffffffff 0000000000000000
-  [   61.086415] page dumped because: VM_BUG_ON_PAGE(PageHuge(page) && !PageHead(page))
-  [   61.086914] ------------[ cut here ]------------
-  [   61.087220] kernel BUG at include/linux/page-flags.h:990!
-  [   61.087591] Internal error: Oops - BUG: 00000000f2000800 [#1] SMP
-  [   61.087999] Modules linked in: ...
-  [   61.089404] CPU: 0 PID: 4612 Comm: cow Kdump: loaded Not tainted 6.5.0-rc4+ #3
-  [   61.089917] Hardware name: QEMU KVM Virtual Machine, BIOS 0.0.0 02/06/2015
-  [   61.090409] pstate: 604000c5 (nZCv daIF +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-  [   61.090897] pc : gup_must_unshare.part.0+0x64/0x98
-  [   61.091242] lr : gup_must_unshare.part.0+0x64/0x98
-  [   61.091592] sp : ffff8000825eb940
-  [   61.091826] x29: ffff8000825eb940 x28: 0000000000000000 x27: fffffc00037b8440
-  [   61.092329] x26: 0400000000000001 x25: 0000000000080101 x24: 0000000000080000
-  [   61.092835] x23: 0000000000080100 x22: ffff0000cffb9588 x21: ffff0000c8ec6b58
-  [   61.093341] x20: 0000ffffad6b1000 x19: fffffc00037b8440 x18: ffffffffffffffff
-  [   61.093850] x17: 2864616548656761 x16: 5021202626202965 x15: 6761702865677548
-  [   61.094358] x14: 6567615028454741 x13: 2929656761702864 x12: 6165486567615021
-  [   61.094858] x11: 00000000ffff7fff x10: 00000000ffff7fff x9 : ffffd9e958b7a1c0
-  [   61.095359] x8 : 00000000000bffe8 x7 : c0000000ffff7fff x6 : 00000000002bffa8
-  [   61.095873] x5 : ffff0008bb19e708 x4 : 0000000000000000 x3 : 0000000000000000
-  [   61.096380] x2 : 0000000000000000 x1 : ffff0000cf6636c0 x0 : 0000000000000046
-  [   61.096894] Call trace:
-  [   61.097080]  gup_must_unshare.part.0+0x64/0x98
-  [   61.097392]  gup_pte_range+0x3a8/0x3f0
-  [   61.097662]  gup_pgd_range+0x1ec/0x280
-  [   61.097942]  lockless_pages_from_mm+0x64/0x1a0
-  [   61.098258]  internal_get_user_pages_fast+0xe4/0x1d0
-  [   61.098612]  pin_user_pages_fast+0x58/0x78
-  [   61.098917]  pin_longterm_test_start+0xf4/0x2b8
-  [   61.099243]  gup_test_ioctl+0x170/0x3b0
-  [   61.099528]  __arm64_sys_ioctl+0xa8/0xf0
-  [   61.099822]  invoke_syscall.constprop.0+0x7c/0xd0
-  [   61.100160]  el0_svc_common.constprop.0+0xe8/0x100
-  [   61.100500]  do_el0_svc+0x38/0xa0
-  [   61.100736]  el0_svc+0x3c/0x198
-  [   61.100971]  el0t_64_sync_handler+0x134/0x150
-  [   61.101280]  el0t_64_sync+0x17c/0x180
-  [   61.101543] Code: aa1303e0 f00074c1 912b0021 97fffeb2 (d4210000)
-
-2) Without CONFIG_DEBUG_VM_PGFLAGS
-
-Always detects "not exclusive" for passed tail pages and refuses to PIN the
-tail pages R/O, as gup_must_unshare() == true. GUP-fast will fallback to
-ordinary GUP. As ordinary GUP properly considers the logical hugetlb PTE
-abstraction in hugetlb_follow_page_mask(), pinning the page will succeed
-when looking at the PageAnonExclusive on the head page only.
-
-So the only real effect of this is that with cont-PTE hugetlb pages, we'll
-always fallback from GUP-fast to ordinary GUP when not working on the head
-page, which ends up checking the head page and do the right thing.
-
-Consequently, the cow selftests pass with cont-PTE hugetlb pages as well
-without CONFIG_DEBUG_VM_PGFLAGS.
-
-Note that this only applies to anon hugetlb pages that are mapped using
-cont-PTEs: for example 64k hugetlb pages on a 4k arm64 kernel.
-
-... and only when R/O-pinning (FOLL_PIN) such pages that are mapped into
-the page table R/O using GUP-fast.
-
-On production kernels (and even most debug kernels, that don't set
-CONFIG_DEBUG_VM_PGFLAGS) this patch should theoretically not be required
-to be backported. But of course, it does not hurt.
-
-Reported-by: Ryan Roberts <ryan.roberts@arm.com>
-Fixes: a7f226604170 ("mm/gup: trigger FAULT_FLAG_UNSHARE when R/O-pinning a possibly shared anonymous page")
-Cc: <stable@vger.kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: John Hubbard <jhubbard@nvidia.com>
-Cc: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Peter Xu <peterx@redhat.com>
-Cc: Mike Kravetz <mike.kravetz@oracle.com>
-Signed-off-by: David Hildenbrand <david@redhat.com>
----
- mm/internal.h | 10 ++++++++++
- 1 file changed, 10 insertions(+)
-
-diff --git a/mm/internal.h b/mm/internal.h
-index a7d9e980429a..fe242dd0b72c 100644
---- a/mm/internal.h
-+++ b/mm/internal.h
-@@ -997,6 +997,16 @@ static inline bool gup_must_unshare(struct vm_area_struct *vma,
- 	if (IS_ENABLED(CONFIG_HAVE_FAST_GUP))
- 		smp_rmb();
+diff --git a/fs/file.c b/fs/file.c
+index dbca26ef7a01..dd49bc77d5cf 100644
+--- a/fs/file.c
++++ b/fs/file.c
+@@ -1046,10 +1046,11 @@ unsigned long __fdget_raw(unsigned int fd)
+  * not be, and for directories this is a correctness
+  * issue, not a "POSIX requirement".
+  */
+-static inline bool file_needs_f_pos_lock(struct file *file)
++static inline bool file_needs_f_pos_lock(const struct file *file)
+ {
+ 	return (file->f_mode & FMODE_ATOMIC_POS) &&
+-		(file_count(file) > 1 || S_ISDIR(file_inode(file)->i_mode));
++	       (file_count(file) > 1 ||
++		file->f_op->iterate_shared || file->f_op->iterate);
+ }
  
-+	/*
-+	 * During GUP-fast we might not get called on the head page for a
-+	 * hugetlb page that is mapped using cont-PTE, because GUP-fast does
-+	 * not work with the abstracted hugetlb PTEs that always point at the
-+	 * head page. For hugetlb, PageAnonExclusive only applies on the head
-+	 * page (as it cannot be partially COW-shared), so lookup the head page.
-+	 */
-+	if (unlikely(!PageHead(page) && PageHuge(page)))
-+		page = compound_head(page);
-+
- 	/*
- 	 * Note that PageKsm() pages cannot be exclusive, and consequently,
- 	 * cannot get pinned.
--- 
-2.41.0
+ unsigned long __fdget_pos(unsigned int fd)
 
+--2pofktc7xzw7zelm--
