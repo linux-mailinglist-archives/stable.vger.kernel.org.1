@@ -2,120 +2,215 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 44B687713C8
-	for <lists+stable@lfdr.de>; Sun,  6 Aug 2023 08:43:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E153E77141B
+	for <lists+stable@lfdr.de>; Sun,  6 Aug 2023 11:03:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229932AbjHFGm6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 6 Aug 2023 02:42:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46184 "EHLO
+        id S229491AbjHFJDp (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 6 Aug 2023 05:03:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33254 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229436AbjHFGm5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 6 Aug 2023 02:42:57 -0400
-X-Greylist: delayed 28440 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sat, 05 Aug 2023 23:42:55 PDT
-Received: from mout-p-103.mailbox.org (mout-p-103.mailbox.org [80.241.56.161])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC6091FD4;
-        Sat,  5 Aug 2023 23:42:55 -0700 (PDT)
-Received: from smtp2.mailbox.org (smtp2.mailbox.org [10.196.197.2])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-384) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        by mout-p-103.mailbox.org (Postfix) with ESMTPS id 4RJVJC40Wmz9sd7;
-        Sun,  6 Aug 2023 08:42:51 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cyphar.com; s=MBO0001;
-        t=1691304171;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=TKUhKDbUC2/JSkRExIBVVYTgnPGLNw5xhGLizhZFaHo=;
-        b=0nHhRGGKpevO0jS9yjWDUb1TZ5f6D4nVFvWmJdx6fQ1GxYReNPVZzuSzFZOlXqxQgPy5xU
-        gDHuynxSoFBJ1fZl/lzJdVvwLSE33BtTsC/e1J9N3zVk2gkALsL0ZZM/ZTytvry27UYdBi
-        4pKzRWBPIBWu4GvJ5bKSpdYliUFrAlbPP16bbiNXj04qjo4b+N76EecgznCYkVWPZz6HdT
-        V9XJke6raTUWhnoK3E8QuxrgfztQF2A5fvkQxOU/5Gx385NoF6/rwZT8OnP3I67Fwk6kaT
-        531fC1WASz3rSgkjRJbDnnfMNrORpEiI5VI6iLFJOMDkQNqAuNqUsZ1M/9+1OQ==
-Date:   Sun, 6 Aug 2023 16:42:37 +1000
-From:   Aleksa Sarai <cyphar@cyphar.com>
-To:     Jens Axboe <axboe@kernel.dk>
-Cc:     Alexander Viro <viro@zeniv.linux.org.uk>,
-        Christian Brauner <brauner@kernel.org>,
-        Pavel Begunkov <asml.silence@gmail.com>,
-        linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-        io-uring@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2 2/2] io_uring: correct check for O_TMPFILE
-Message-ID: <20230806.063800-dusky.orc.woody.spectrum-98W6qtUkFLgk@cyphar.com>
-References: <20230806-resolve_cached-o_tmpfile-v2-0-058bff24fb16@cyphar.com>
- <20230806-resolve_cached-o_tmpfile-v2-2-058bff24fb16@cyphar.com>
- <41b5f092-5422-e461-b9bf-3a5a04c0b9e2@kernel.dk>
+        with ESMTP id S229436AbjHFJDo (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 6 Aug 2023 05:03:44 -0400
+Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 050051BD0;
+        Sun,  6 Aug 2023 02:03:41 -0700 (PDT)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 011BF40002;
+        Sun,  6 Aug 2023 09:03:37 +0000 (UTC)
+Message-ID: <c1fca971-6993-09cc-0cf6-a60bd5fd684e@ghiti.fr>
+Date:   Sun, 6 Aug 2023 11:03:37 +0200
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="hguio7qt6czmuq3q"
-Content-Disposition: inline
-In-Reply-To: <41b5f092-5422-e461-b9bf-3a5a04c0b9e2@kernel.dk>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [RFT 1/2] RISC-V: handle missing "no-map" properties for
+ OpenSBI's PMP protected regions
+Content-Language: en-US
+To:     Conor Dooley <conor.dooley@microchip.com>, palmer@dabbelt.com
+Cc:     conor@kernel.org, Paul Walmsley <paul.walmsley@sifive.com>,
+        Atish Patra <atishp@rivosinc.com>,
+        Anup Patel <apatel@ventanamicro.com>,
+        Alexandre Ghiti <alexghiti@rivosinc.com>,
+        =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@rivosinc.com>,
+        Song Shuai <suagrfillet@gmail.com>,
+        JeeHeng Sia <jeeheng.sia@starfivetech.com>,
+        Petr Tesarik <petrtesarik@huaweicloud.com>,
+        linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org
+References: <20230802-purse-hydrant-6f44f77364b0@wendy>
+ <20230802-detention-second-82ab2b53e07a@wendy>
+From:   Alexandre Ghiti <alex@ghiti.fr>
+In-Reply-To: <20230802-detention-second-82ab2b53e07a@wendy>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-GND-Sasl: alex@ghiti.fr
+X-Spam-Status: No, score=-6.8 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+Hi Conor,
 
---hguio7qt6czmuq3q
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On 02/08/2023 13:12, Conor Dooley wrote:
+> Add an erratum for versions [v0.8 to v1.3) of OpenSBI which fail to add
+> the "no-map" property to the reserved memory nodes for the regions it
+> has protected using PMPs.
+>
+> Our existing fix sweeping hibernation under the carpet by marking it
+> NONPORTABLE is insufficient as there are other ways to generate
+> accesses to these reserved memory regions, as Petr discovered [1]
+> while testing crash kernels & kdump.
+>
+> Intercede during the boot process when the afflicted versions of OpenSBI
+> are present & set the "no-map" property in all "mmode_resv" nodes before
+> the kernel does its reserved memory region initialisation.
+>
+> Reported-by: Song Shuai <suagrfillet@gmail.com>
+> Link: https://lore.kernel.org/all/CAAYs2=gQvkhTeioMmqRDVGjdtNF_vhB+vm_1dHJxPNi75YDQ_Q@mail.gmail.com/
+> Reported-by: JeeHeng Sia <jeeheng.sia@starfivetech.com>
+> Link: https://groups.google.com/a/groups.riscv.org/g/sw-dev/c/ITXwaKfA6z8
+> Reported-by: Petr Tesarik <petrtesarik@huaweicloud.com>
+> Closes: https://lore.kernel.org/linux-riscv/76ff0f51-d6c1-580d-f943-061e93073306@huaweicloud.com/ [1]
+> CC: stable@vger.kernel.org
+> Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
+> ---
+>   arch/riscv/include/asm/sbi.h |  5 +++++
+>   arch/riscv/kernel/sbi.c      | 42 +++++++++++++++++++++++++++++++++++-
+>   arch/riscv/mm/init.c         |  3 +++
+>   3 files changed, 49 insertions(+), 1 deletion(-)
+>
+> diff --git a/arch/riscv/include/asm/sbi.h b/arch/riscv/include/asm/sbi.h
+> index 5b4a1bf5f439..5360f3476278 100644
+> --- a/arch/riscv/include/asm/sbi.h
+> +++ b/arch/riscv/include/asm/sbi.h
+> @@ -252,6 +252,9 @@ enum sbi_pmu_ctr_type {
+>   #define SBI_ERR_ALREADY_STARTED -7
+>   #define SBI_ERR_ALREADY_STOPPED -8
+>   
+> +/* SBI implementation IDs */
+> +#define SBI_IMP_OPENSBI	1
+> +
+>   extern unsigned long sbi_spec_version;
+>   struct sbiret {
+>   	long error;
+> @@ -259,6 +262,8 @@ struct sbiret {
+>   };
+>   
+>   void sbi_init(void);
+> +void sbi_apply_reserved_mem_erratum(void *dtb_va);
+> +
+>   struct sbiret sbi_ecall(int ext, int fid, unsigned long arg0,
+>   			unsigned long arg1, unsigned long arg2,
+>   			unsigned long arg3, unsigned long arg4,
+> diff --git a/arch/riscv/kernel/sbi.c b/arch/riscv/kernel/sbi.c
+> index c672c8ba9a2a..aeb27263fa53 100644
+> --- a/arch/riscv/kernel/sbi.c
+> +++ b/arch/riscv/kernel/sbi.c
+> @@ -5,8 +5,10 @@
+>    * Copyright (c) 2020 Western Digital Corporation or its affiliates.
+>    */
+>   
+> +#include <linux/acpi.h>
+>   #include <linux/bits.h>
+>   #include <linux/init.h>
+> +#include <linux/libfdt.h>
+>   #include <linux/pm.h>
+>   #include <linux/reboot.h>
+>   #include <asm/sbi.h>
+> @@ -583,6 +585,40 @@ long sbi_get_mimpid(void)
+>   }
+>   EXPORT_SYMBOL_GPL(sbi_get_mimpid);
+>   
+> +static long sbi_firmware_id;
+> +static long sbi_firmware_version;
+> +
+> +/*
+> + * For devicetrees patched by OpenSBI a "mmode_resv" node is added to cover
+> + * the region OpenSBI has protected by means of a PMP. Some versions of OpenSBI,
+> + * [v0.8 to v1.3), omitted the "no-map" property, but this trips up hibernation
+> + * among other things.
+> + */
+> +void __init sbi_apply_reserved_mem_erratum(void *dtb_pa)
+> +{
+> +	int child, reserved_mem;
+> +
+> +	if (sbi_firmware_id != SBI_IMP_OPENSBI)
+> +		return;
+> +
+> +	if (!acpi_disabled)
+> +		return;
+> +
+> +	if (sbi_firmware_version >= 0x10003 || sbi_firmware_version < 0x8)
+> +		return;
+> +
+> +	reserved_mem = fdt_path_offset((void *)dtb_pa, "/reserved-memory");
+> +	if (reserved_mem < 0)
+> +		return;
+> +
+> +	fdt_for_each_subnode(child, (void *)dtb_pa, reserved_mem) {
+> +		const char *name = fdt_get_name((void *)dtb_pa, child, NULL);
+> +
+> +		if (!strncmp(name, "mmode_resv", 10))
 
-On 2023-08-05, Jens Axboe <axboe@kernel.dk> wrote:
-> On 8/5/23 4:48?PM, Aleksa Sarai wrote:
-> > O_TMPFILE is actually __O_TMPFILE|O_DIRECTORY. This means that the old
-> > check for whether RESOLVE_CACHED can be used would incorrectly think
-> > that O_DIRECTORY could not be used with RESOLVE_CACHED.
-> >=20
-> > Cc: stable@vger.kernel.org # v5.12+
-> > Fixes: 3a81fd02045c ("io_uring: enable LOOKUP_CACHED path resolution fo=
-r filename lookups")
-> > Signed-off-by: Aleksa Sarai <cyphar@cyphar.com>
-> > ---
-> >  io_uring/openclose.c | 4 ++--
-> >  1 file changed, 2 insertions(+), 2 deletions(-)
-> >=20
-> > diff --git a/io_uring/openclose.c b/io_uring/openclose.c
-> > index 10ca57f5bd24..a029c230119f 100644
-> > --- a/io_uring/openclose.c
-> > +++ b/io_uring/openclose.c
-> > @@ -35,9 +35,9 @@ static bool io_openat_force_async(struct io_open *ope=
-n)
-> >  {
-> >  	/*
-> >  	 * Don't bother trying for O_TRUNC, O_CREAT, or O_TMPFILE open,
-> > -	 * it'll always -EAGAIN
-> > +	 * it'll always -EAGAIN.
->=20
-> Please don't make this change, it just detracts from the actual change.
-> And if we are making changes in there, why not change O_TMPFILE as well
-> since this is what the change is about?
 
-Userspace can't pass just __O_TMPFILE, so to me "__O_TMPFILE open"
-sounds strange. The intention is to detect open(O_TMPFILE), it just so
-happens that the correct check is __O_TMPFILE.
+I would check that name != NULL before strncmp.
 
-But I can change it if you prefer.
 
---=20
-Aleksa Sarai
-Senior Software Engineer (Containers)
-SUSE Linux GmbH
-<https://www.cyphar.com/>
+> +			fdt_setprop((void *)dtb_pa, child, "no-map", NULL, 0);
+> +	}
+> +};
+> +
+>   void __init sbi_init(void)
+>   {
+>   	int ret;
+> @@ -596,8 +632,12 @@ void __init sbi_init(void)
+>   		sbi_major_version(), sbi_minor_version());
+>   
+>   	if (!sbi_spec_is_0_1()) {
+> +		sbi_firmware_id = sbi_get_firmware_id();
+> +		sbi_firmware_version = sbi_get_firmware_version();
+> +
+>   		pr_info("SBI implementation ID=0x%lx Version=0x%lx\n",
+> -			sbi_get_firmware_id(), sbi_get_firmware_version());
+> +			sbi_firmware_id, sbi_firmware_version);
+> +
+>   		if (sbi_probe_extension(SBI_EXT_TIME)) {
+>   			__sbi_set_timer = __sbi_set_timer_v02;
+>   			pr_info("SBI TIME extension detected\n");
+> diff --git a/arch/riscv/mm/init.c b/arch/riscv/mm/init.c
+> index 70fb31960b63..cb16bfdeacdb 100644
+> --- a/arch/riscv/mm/init.c
+> +++ b/arch/riscv/mm/init.c
+> @@ -29,6 +29,7 @@
+>   #include <asm/tlbflush.h>
+>   #include <asm/sections.h>
+>   #include <asm/soc.h>
+> +#include <asm/sbi.h>
+>   #include <asm/io.h>
+>   #include <asm/ptdump.h>
+>   #include <asm/numa.h>
+> @@ -253,6 +254,8 @@ static void __init setup_bootmem(void)
+>   	 * in the device tree, otherwise the allocation could end up in a
+>   	 * reserved region.
+>   	 */
+> +
+> +	sbi_apply_reserved_mem_erratum(dtb_early_va);
+>   	early_init_fdt_scan_reserved_mem();
+>   
+>   	/*
 
---hguio7qt6czmuq3q
-Content-Type: application/pgp-signature; name="signature.asc"
 
------BEGIN PGP SIGNATURE-----
+Otherwise the patch looks good to me:
 
-iHUEABYKAB0WIQS2TklVsp+j1GPyqQYol/rSt+lEbwUCZM9A3QAKCRAol/rSt+lE
-b6q1AQCfpbiZQ3YBX5RjN7wlBlTKoVIIWmi3jbLZIfwsLpbALQEAxjj7JrE5m2QB
-Ef3B/oTCkUaU5I9BTzF90EexiV0qAww=
-=mPYA
------END PGP SIGNATURE-----
+You can add:
 
---hguio7qt6czmuq3q--
+Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+
+I just have one question though (that we discussed privately already): 
+should we fix openSBI in the kernel? If yes, what makes a bug worth 
+being fixed in the kernel?
+
+Thanks,
+
