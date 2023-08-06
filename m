@@ -2,167 +2,102 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E50AF7715CA
-	for <lists+stable@lfdr.de>; Sun,  6 Aug 2023 17:15:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DBDD47715FA
+	for <lists+stable@lfdr.de>; Sun,  6 Aug 2023 17:51:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229804AbjHFPPu (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 6 Aug 2023 11:15:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56926 "EHLO
+        id S230047AbjHFPvv (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 6 Aug 2023 11:51:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34378 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229515AbjHFPPt (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 6 Aug 2023 11:15:49 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C0184114
-        for <stable@vger.kernel.org>; Sun,  6 Aug 2023 08:15:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1691334901;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=CNB47Sp7trc9bmNcKr/Qyt4K/JLPlJPyfPKXwvKIQrU=;
-        b=M0I8uBZK8rsXvyMjX6gToRSuTvLHQfgKWsu62nlhomxfbLdFwO84tyWbHQ8wFTeZjK3nhP
-        X3Zyag+Rr35HCV4a85p7AYzCTA5g38lFv90C8pPJVQ0F7ynLhhs+fm5oHeZ1s2bGXe6ZEO
-        45AN+TCBadBOTm+ly1/opGrQ3eCqxI4=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-590-70ptTuQVNsewBDtaapMtnw-1; Sun, 06 Aug 2023 11:14:58 -0400
-X-MC-Unique: 70ptTuQVNsewBDtaapMtnw-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com [10.11.54.6])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E30038002BF;
-        Sun,  6 Aug 2023 15:14:57 +0000 (UTC)
-Received: from shalem.redhat.com (unknown [10.39.192.27])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id F1E232166B25;
-        Sun,  6 Aug 2023 15:14:56 +0000 (UTC)
-From:   Hans de Goede <hdegoede@redhat.com>
-To:     "Rafael J . Wysocki" <rafael@kernel.org>
-Cc:     Hans de Goede <hdegoede@redhat.com>, linux-acpi@vger.kernel.org,
+        with ESMTP id S229510AbjHFPvv (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 6 Aug 2023 11:51:51 -0400
+Received: from abi149hd125.arn1.oracleemaildelivery.com (abi149hd125.arn1.oracleemaildelivery.com [129.149.84.125])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C76D171B
+        for <stable@vger.kernel.org>; Sun,  6 Aug 2023 08:51:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=oci-arn1-20220924;
+ d=augustwikerfors.se;
+ h=Date:To:From:Subject:Message-Id:MIME-Version:Sender;
+ bh=x/SG0A30SFxLUadyn8TesCdeaY9lbopeGx+AqtWaSH8=;
+ b=C+0lAmAwhYrlUEOg/RIc/wacgQBoujwxGhqqUcgOInd1LxjmmPHw1zhOlckEIwVFbd75wGEVBbjr
+   irGqxzv+EJwnPlToLsJgRoaN+pSRkLhN4X9vyJw5P38DUd5oVAq1GxIXfE0xywidKb2qj4XJGQWn
+   1eukAEOCfyKKqsYK18iuXGC2/liVnjlu8BRw1cLDM8tH+GqoEcTRRPwMCrVeeDAxSZ9wncjEVOee
+   UqEb3a6X2jbC6lBAUYxxoHFPWLBRwa1Zj8RjjaoplXKadhk3cTmdwCkd6Ns6Waosao507K30EEbA
+   rPpTHtsA5pkE2ZXy21iTGOH5ooKNGNWc97hWIQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=prod-arn-20211201;
+ d=arn1.rp.oracleemaildelivery.com;
+ h=Date:To:From:Subject:Message-Id:MIME-Version:Sender;
+ bh=x/SG0A30SFxLUadyn8TesCdeaY9lbopeGx+AqtWaSH8=;
+ b=grz5RZOv+pIfbcPpS2paGkgXdbft3u/fTSi0ZQyBdTdBiNVl2zewx7VKLegh+9Wv4sI6hMR4gJzD
+   C56llS8GCEstumBlU1t90ICOg55h//7dQa6lyPU22BOnOT3aYCCMFrnPXv1/BxWwcDiofsTyXOAI
+   151kCgRsSSd+l+84wwLyfYZmAH56fr9NTg6KPYoC9H5yqW6Or9JY4qDg5cDL/MDVQieqpwO+2rYK
+   LqkQaPe2QPFOfln8ZhTL0rMrjGhgB4F1uD06n2kFeUzuzs/uHIGzdIRKzy7ap8lnbI47w5gFRMNc
+   7f+GQBamBeiBs2f/+YsY9mOCggg7XF2RPy9Nwg==
+Received: by omta-ad1-fd1-401-eu-stockholm-1.omtaad1.vcndparn.oraclevcn.com
+ (Oracle Communications Messaging Server 8.1.0.1.20230707 64bit (built Jul  7
+ 2023))
+ with ESMTPS id <0RYZ007TJ82AA510@omta-ad1-fd1-401-eu-stockholm-1.omtaad1.vcndparn.oraclevcn.com>
+ for stable@vger.kernel.org; Sun, 06 Aug 2023 15:51:46 +0000 (GMT)
+Message-id: <e56c1c28-9300-4103-b9b1-52191c09c436@augustwikerfors.se>
+Date:   Sun, 6 Aug 2023 17:51:43 +0200
+MIME-version: 1.0
+From:   August Wikerfors <git@augustwikerfors.se>
+Subject: Re: [PATCH] ACPI: resource: revert
+ "Remove "Zen" specific match and quirks"
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
+        linux-acpi@vger.kernel.org,
         Mario Limonciello <mario.limonciello@amd.com>,
         Linux regressions mailing list <regressions@lists.linux.dev>,
         stable@vger.kernel.org
-Subject: [PATCH] ACPI: resource: revert "Remove "Zen" specific match and quirks"
-Date:   Sun,  6 Aug 2023 17:14:53 +0200
-Message-ID: <20230806151453.10690-1-hdegoede@redhat.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
-        autolearn=ham autolearn_force=no version=3.4.6
+References: <20230806151453.10690-1-hdegoede@redhat.com>
+Content-language: en-US
+In-reply-to: <20230806151453.10690-1-hdegoede@redhat.com>
+Content-type: text/plain; charset=UTF-8; format=flowed
+Content-transfer-encoding: 7bit
+Reporting-Meta: AAH1BlvagG6VXJZ1MKDUlAUw9iWIQPC6vIGZnYKwTMs/fesCqfB/c4UbXaYbw7b5
+ +holF8NzX225p2fEg/a/rflSLvHEpxdQxcQ0tSlpAooTdAMC/WmZWBjh4Qm0CzgU
+ 25p+6K8AU+VnThIWA8Bqlza+V3yjsGzFXMFtHgOdSDCRijj4O5eH9bs8O9EW5b6D
+ hGGVhkow9DBiOTjfFPlyy3HU/+nJ+NHWgn/Wf/0cpWsmuWTE8bhUc8MuW4IA4du3
+ CekAe+nhUzX/zpCTk7G3uAYj6Z/8hzaA2tqT4I0XXtsTAGq3vbfdzNYC8RWFzfvB
+ FgEOVkG/uSMdIfvGqc5b58OQsuE5lnVgcWVlqsATaP90TOH67c/UT+OdKEzvgKb5
+ EkxuaWvKqikGkdqoh6MN+0HVJxEqzXULFa6dTd/IhQDFB3YwUrfeH9aw85YJU/Vd YQ==
+X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Commit a9c4a912b7dc ("ACPI: resource: Remove "Zen" specific match and
-quirks") is causing keyboard problems for quite a log of AMD based
-laptop users, leading to many bug reports.
+On 2023-08-06 17:14, Hans de Goede wrote:
+> Commit a9c4a912b7dc ("ACPI: resource: Remove "Zen" specific match and
+> quirks") is causing keyboard problems for quite a log of AMD based
+> laptop users, leading to many bug reports.
+> 
+> Revert this change for now, until we can come up with
+> a better fix for the PS/2 IRQ trigger-type/polarity problems
+> on some x86 laptops.
+> 
+> Fixes: a9c4a912b7dc ("ACPI: resource: Remove "Zen" specific match and quirks")
+> Link: https://bugzilla.redhat.com/show_bug.cgi?id=2229165
+> Link: https://bugzilla.redhat.com/show_bug.cgi?id=2229317
+> Link: https://bugzilla.kernel.org/show_bug.cgi?id=217726
 
-Revert this change for now, until we can come up with
-a better fix for the PS/2 IRQ trigger-type/polarity problems
-on some x86 laptops.
+Other reports for various Lenovo laptops:
+https://lore.kernel.org/all/596b9c4a-fb83-a8ab-3a44-6052d83fa546@augustwikerfors.se/T/
+https://bugzilla.kernel.org/show_bug.cgi?id=217718
+https://bugzilla.kernel.org/show_bug.cgi?id=217731
 
-Fixes: a9c4a912b7dc ("ACPI: resource: Remove "Zen" specific match and quirks")
-Link: https://bugzilla.redhat.com/show_bug.cgi?id=2229165
-Link: https://bugzilla.redhat.com/show_bug.cgi?id=2229317
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=217726
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Linux regressions mailing list <regressions@lists.linux.dev>
-Cc: stable@vger.kernel.org
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
----
- drivers/acpi/resource.c | 60 +++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 60 insertions(+)
+> Cc: Mario Limonciello <mario.limonciello@amd.com>
+> Cc: Linux regressions mailing list <regressions@lists.linux.dev>
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 
-diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
-index 1dd8d5aebf67..0800a9d77558 100644
---- a/drivers/acpi/resource.c
-+++ b/drivers/acpi/resource.c
-@@ -470,6 +470,52 @@ static const struct dmi_system_id asus_laptop[] = {
- 	{ }
- };
- 
-+static const struct dmi_system_id lenovo_laptop[] = {
-+	{
-+		.ident = "LENOVO IdeaPad Flex 5 14ALC7",
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "82R9"),
-+		},
-+	},
-+	{
-+		.ident = "LENOVO IdeaPad Flex 5 16ALC7",
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "82RA"),
-+		},
-+	},
-+	{ }
-+};
-+
-+static const struct dmi_system_id tongfang_gm_rg[] = {
-+	{
-+		.ident = "TongFang GMxRGxx/XMG CORE 15 (M22)/TUXEDO Stellaris 15 Gen4 AMD",
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_NAME, "GMxRGxx"),
-+		},
-+	},
-+	{ }
-+};
-+
-+static const struct dmi_system_id maingear_laptop[] = {
-+	{
-+		.ident = "MAINGEAR Vector Pro 2 15",
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "Micro Electronics Inc"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "MG-VCP2-15A3070T"),
-+		}
-+	},
-+	{
-+		.ident = "MAINGEAR Vector Pro 2 17",
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "Micro Electronics Inc"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "MG-VCP2-17A3070T"),
-+		},
-+	},
-+	{ }
-+};
-+
- static const struct dmi_system_id lg_laptop[] = {
- 	{
- 		.ident = "LG Electronics 17U70P",
-@@ -493,6 +539,10 @@ struct irq_override_cmp {
- static const struct irq_override_cmp override_table[] = {
- 	{ medion_laptop, 1, ACPI_LEVEL_SENSITIVE, ACPI_ACTIVE_LOW, 0, false },
- 	{ asus_laptop, 1, ACPI_LEVEL_SENSITIVE, ACPI_ACTIVE_LOW, 0, false },
-+	{ lenovo_laptop, 6, ACPI_LEVEL_SENSITIVE, ACPI_ACTIVE_LOW, 0, true },
-+	{ lenovo_laptop, 10, ACPI_LEVEL_SENSITIVE, ACPI_ACTIVE_LOW, 0, true },
-+	{ tongfang_gm_rg, 1, ACPI_EDGE_SENSITIVE, ACPI_ACTIVE_LOW, 1, true },
-+	{ maingear_laptop, 1, ACPI_EDGE_SENSITIVE, ACPI_ACTIVE_LOW, 1, true },
- 	{ lg_laptop, 1, ACPI_LEVEL_SENSITIVE, ACPI_ACTIVE_LOW, 0, false },
- };
- 
-@@ -512,6 +562,16 @@ static bool acpi_dev_irq_override(u32 gsi, u8 triggering, u8 polarity,
- 			return entry->override;
- 	}
- 
-+#ifdef CONFIG_X86
-+	/*
-+	 * IRQ override isn't needed on modern AMD Zen systems and
-+	 * this override breaks active low IRQs on AMD Ryzen 6000 and
-+	 * newer systems. Skip it.
-+	 */
-+	if (boot_cpu_has(X86_FEATURE_ZEN))
-+		return false;
-+#endif
-+
- 	return true;
- }
- 
--- 
-2.41.0
+FWIW only reverting a9c4a912b7dc will also cause a regression because it 
+did also fix the keyboard on some devices, see the links in its commit 
+message.
 
+Regards,
+August Wikerfors
