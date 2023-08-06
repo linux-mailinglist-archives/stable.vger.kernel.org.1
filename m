@@ -2,91 +2,116 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BEA6C7715FC
-	for <lists+stable@lfdr.de>; Sun,  6 Aug 2023 17:58:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 15EC0771613
+	for <lists+stable@lfdr.de>; Sun,  6 Aug 2023 18:30:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230107AbjHFP6U (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 6 Aug 2023 11:58:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34622 "EHLO
+        id S230408AbjHFQa0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 6 Aug 2023 12:30:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37676 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229510AbjHFP6U (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 6 Aug 2023 11:58:20 -0400
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E0CBD1B3;
-        Sun,  6 Aug 2023 08:58:18 -0700 (PDT)
-Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
-        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        id 1qSg92-0001dY-NT; Sun, 06 Aug 2023 17:58:16 +0200
-Message-ID: <1315675b-295a-fd26-0e54-86cb6cdbbcf1@leemhuis.info>
-Date:   Sun, 6 Aug 2023 17:58:14 +0200
+        with ESMTP id S229436AbjHFQa0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 6 Aug 2023 12:30:26 -0400
+Received: from mail-ed1-x52b.google.com (mail-ed1-x52b.google.com [IPv6:2a00:1450:4864:20::52b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD71F115;
+        Sun,  6 Aug 2023 09:30:24 -0700 (PDT)
+Received: by mail-ed1-x52b.google.com with SMTP id 4fb4d7f45d1cf-5222bc916acso4722781a12.3;
+        Sun, 06 Aug 2023 09:30:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1691339423; x=1691944223;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=4FzIGJB3RF9rAhmTZEhvxM+refdOYwtltFRNRcqfwUU=;
+        b=MYpX1fWWRMg7736RNBD69cMPy67TLJxBxJnyk1gXkqaz6uXV19IgSd+K7dT8JWKhjw
+         Zsuwa+dgW2zOu8HtICpnZDFBL+HRmcVHDYSxjA7RyVIwhPT59nOUa0LIlITuC+BlFfGd
+         iRx3yLe4tPS3rpA4oM7pSGu7v+DvR2uV+dwsH4JAKDxQkyTodGC0JTcyZ8L5UQYFoGq2
+         RBMTFh7RrZ9iLYqldgjb4YTNpH0V6aHysGSLF9WdhEqvnSEz2ba363CqDQBf9z1+brB/
+         NUPmu/UkMvlvHgisnt+yZSItJdRZ57f7Zo4qaYd58PJyGiuXAs3AwJA7djJoAKFRwOtZ
+         sbdw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1691339423; x=1691944223;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=4FzIGJB3RF9rAhmTZEhvxM+refdOYwtltFRNRcqfwUU=;
+        b=MQJvLsn9EBEUImihmf0Qxoq5EjyAFuWa1pYS3wQvn1N3dZRV78qbcjqB3/Z+lINq1M
+         WC5MUqyON2O42BrRtQiPQyasgNsdlVnmZex/nOIO8P9h+N/bLP08Vz6AUQ4rjJWYVqmA
+         EM5QjOaFynfcdb3zzqtQUldOnDVdmDJEosMaxvgnCcyLSYgu3LRGsWO7OT1HjUxVdM7H
+         U2TFvRNgd+Iq0InCuV0V8ksyD0+pHejdpqBSiTQahKgWzGFX2YVy8rRvQKKtnDO2O1C1
+         TlHEMGxqvX16PKc1vtx29N3ynDSgdUAkEZincgGoEaoW4JziWBGcQ/cIMA58KQB/tlu0
+         WRDA==
+X-Gm-Message-State: AOJu0YwxB0wyBARw+IORIGfGi8KD1glBAlPVINBsXBTVuYlRK99xIWtc
+        SDzrMGJGVe6aRhDw0Rsjubk=
+X-Google-Smtp-Source: AGHT+IFBgcTomtBPCWj3ELlkRqpOeLLFbgNNd0voEnTkW6Tkl4KJgY/36xffVukkLB+Ou2WdyYy81Q==
+X-Received: by 2002:a17:906:2d4:b0:99c:c15f:31b2 with SMTP id 20-20020a17090602d400b0099cc15f31b2mr3356297ejk.8.1691339422791;
+        Sun, 06 Aug 2023 09:30:22 -0700 (PDT)
+Received: from [192.168.1.23] ([176.232.63.90])
+        by smtp.gmail.com with ESMTPSA id y7-20020a17090668c700b0099315454e76sm4008742ejr.211.2023.08.06.09.30.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 06 Aug 2023 09:30:22 -0700 (PDT)
+Message-ID: <fdd5fd9ece045ebd1888672a75f157e64ade98fb.camel@gmail.com>
+Subject: Re: [PATCH v2 1/2] tpm/tpm_tis: Disable interrupts for Framework
+ Laptop Intel 12th gen
+From:   Grundik <ggrundik@gmail.com>
+To:     Jarkko Sakkinen <jarkko@kernel.org>,
+        Christian Hesse <list@eworm.de>,
+        linux-integrity@vger.kernel.org,
+        Lino Sanfilippo <LinoSanfilippo@gmx.de>
+Cc:     Thorsten Leemhuis <regressions@leemhuis.info>,
+        Linux kernel regressions list <regressions@lists.linux.dev>,
+        Peter Huewe <peterhuewe@gmx.de>,
+        Christian Hesse <mail@eworm.de>, stable@vger.kernel.org,
+        roubro1991@gmail.com,
+        Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Sun, 06 Aug 2023 19:30:19 +0300
+In-Reply-To: <0f272843a33a1706dbcbb2d84b02e3951ee60cbb.camel@kernel.org>
+References: <20230710133836.4367-1-mail@eworm.de>
+         <20230710142916.18162-1-mail@eworm.de>
+         <20230710231315.4ef54679@leda.eworm.net>
+         <bd0587e16d55ef38277ab1f6169909ae7cde3542.camel@kernel.org>
+         <bb5580e93d244400c3330d7091bf64868aa2053f.camel@gmail.com>
+         <0f272843a33a1706dbcbb2d84b02e3951ee60cbb.camel@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.48.4 (by Flathub.org) 
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] ACPI: resource: revert "Remove "Zen" specific match and
- quirks"
-Content-Language: en-US, de-DE
-To:     Hans de Goede <hdegoede@redhat.com>,
-        "Rafael J . Wysocki" <rafael@kernel.org>
-Cc:     linux-acpi@vger.kernel.org,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        Linux regressions mailing list <regressions@lists.linux.dev>,
-        stable@vger.kernel.org
-References: <20230806151453.10690-1-hdegoede@redhat.com>
-From:   "Linux regression tracking (Thorsten Leemhuis)" 
-        <regressions@leemhuis.info>
-Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
-In-Reply-To: <20230806151453.10690-1-hdegoede@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1691337499;c93a2866;
-X-HE-SMSGID: 1qSg92-0001dY-NT
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 06.08.23 17:14, Hans de Goede wrote:
-> Commit a9c4a912b7dc ("ACPI: resource: Remove "Zen" specific match and
-> quirks") is causing keyboard problems for quite a log of AMD based
-> laptop users, leading to many bug reports.
-> 
-> Revert this change for now, until we can come up with
-> a better fix for the PS/2 IRQ trigger-type/polarity problems
-> on some x86 laptops.
+On Wed, 2023-07-12 at 00:50 +0300, Jarkko Sakkinen wrote:
+> > I want to say: this issue is NOT limited to Framework laptops.
+> >=20
+> > For example this MSI gen12 i5-1240P laptop also suffers from same
+> > problem:
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Manufacturer: Micro-Star Int=
+ernational Co., Ltd.
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Product Name: Summit E13Flip=
+Evo A12MT
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Version: REV:1.0
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 SKU Number: 13P3.1
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Family: Summit
+> >=20
+> > So, probably just blacklisting affected models is not the best
+> > solution...
+>=20
+> It will be supplemented with
+>=20
+> https://lore.kernel.org/linux-integrity/CTYXI8TL7C36.2SCWH82FAZWBO@suppil=
+ovahvero/T/#me895f1920ca6983f791b58a6fa0c157161a33849
+>=20
+> Together they should fairly sustainable framework.
+>=20
 
-Thx for this.
+Unfortunately, they dont. Problem still occurs in debian 6.5-rc4
+kernel, with forementioned laptop. According to sources, these patches
+are applied in that kernel version.
 
-> Fixes: a9c4a912b7dc ("ACPI: resource: Remove "Zen" specific match and quirks")
-> Link: https://bugzilla.redhat.com/show_bug.cgi?id=2229165
-> Link: https://bugzilla.redhat.com/show_bug.cgi?id=2229317
-> Link: https://bugzilla.kernel.org/show_bug.cgi?id=217726
+What can I do to assist fixing it?..
 
-Not that it matters much, but there is at least one more:
-
-https://lore.kernel.org/lkml/596b9c4a-fb83-a8ab-3a44-6052d83fa546@augustwikerfors.se/
-
-> Cc: Mario Limonciello <mario.limonciello@amd.com>
-> Cc: Linux regressions mailing list <regressions@lists.linux.dev>
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-
-I tend to think this is the right thing to do. But for completeness to
-ensure everybody is aware of this: I'm pretty sure (Mario will know for
-sure) this will cause a regression for a few users, because a9c4a912b7dc
-was meant fixing a regression for them. Not sure how many users this
-might affect, but I guess it are at least those linked to in a9c4a912b7dc:
-
-https://bugzilla.kernel.org/show_bug.cgi?id=217336
-https://bugzilla.kernel.org/show_bug.cgi?id=217406
-https://bugzilla.kernel.org/show_bug.cgi?id=217394
-
-I assume that could be avoided by adding quirk entries for their
-machines. Some of the tickets have the data to do so.
-
-Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
---
-Everything you wanna know about Linux kernel regression tracking:
-https://linux-regtracking.leemhuis.info/about/#tldr
-If I did something stupid, please tell me, as explained on that page.
