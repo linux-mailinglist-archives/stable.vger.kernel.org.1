@@ -2,122 +2,219 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 553ED771655
-	for <lists+stable@lfdr.de>; Sun,  6 Aug 2023 19:49:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 24CB677166B
+	for <lists+stable@lfdr.de>; Sun,  6 Aug 2023 20:21:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230097AbjHFRtf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 6 Aug 2023 13:49:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49578 "EHLO
+        id S230376AbjHFSVM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 6 Aug 2023 14:21:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52434 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230028AbjHFRte (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 6 Aug 2023 13:49:34 -0400
-Received: from mail-lf1-x134.google.com (mail-lf1-x134.google.com [IPv6:2a00:1450:4864:20::134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 704D01719
-        for <stable@vger.kernel.org>; Sun,  6 Aug 2023 10:49:33 -0700 (PDT)
-Received: by mail-lf1-x134.google.com with SMTP id 2adb3069b0e04-4fe55d70973so3977125e87.0
-        for <stable@vger.kernel.org>; Sun, 06 Aug 2023 10:49:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1691344171; x=1691948971;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=5c+qcNDwemDSSTXvTKcISpxIGdg6gcplF2JUpghI6yw=;
-        b=Y7czYanOw1jkq3Ke+oPnYmgVSNNSvEHn0BW+Brrk87ZZffcwmvrJkbmXdkVgY6wVrG
-         w1rpUT/evg+p+4IcnUQuHWPAh9T0wLm67GRIRI2hg7SJJB1uoSwUOEipy3+0VNoD9aha
-         nqrFj4Vz98Nw5p7Z8hp/t38UB3bc21+NnTe3o=
+        with ESMTP id S229436AbjHFSVL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 6 Aug 2023 14:21:11 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C042B171B
+        for <stable@vger.kernel.org>; Sun,  6 Aug 2023 11:20:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1691346021;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=TSC0nhQYh4CfeL29OqIqZRL9s5DPSTmoy4ZpT/cMCmk=;
+        b=Fk3vqiDpQV0RACiErqeUdwniJQeU6wm0rhKD364vRm2nrWJ+44U3eVqnXil2al8AR7OR9d
+        c364hsxpE9ycO0DgXQGMKmzBiT2M9p+2ZA/oXIU5VfzqkaoPxkt0L4mWTYqXtO32XcRth8
+        59uVVak76dESs8l9hNbVQkKIZI3LQpk=
+Received: from mail-lj1-f197.google.com (mail-lj1-f197.google.com
+ [209.85.208.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-561-7gobtWfXOHyV6gGK1ZAkJQ-1; Sun, 06 Aug 2023 14:20:19 -0400
+X-MC-Unique: 7gobtWfXOHyV6gGK1ZAkJQ-1
+Received: by mail-lj1-f197.google.com with SMTP id 38308e7fff4ca-2b9b50be2ccso36024081fa.2
+        for <stable@vger.kernel.org>; Sun, 06 Aug 2023 11:20:19 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691344171; x=1691948971;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=5c+qcNDwemDSSTXvTKcISpxIGdg6gcplF2JUpghI6yw=;
-        b=V8H+GU3zvcuPK7f/hHDzx0rVKp0K7cgoguizltIhRzP8upepSD32h4ihm0JKqITbVc
-         O/lbDg4T4zsMlXml5isvzSEFSPijuPQWttIBXkefZQi6urXSk+1+sE4enDMBfF8cV2Db
-         LdZ/pTYxBkWvZZwPRaZKraVVbXwIIO4Xtkeb8KCQET2S0SdIgv7ffZ1N05BR1bGKR7TK
-         9yP9CQryaPtbb9PR4z9hhUrmfYstCIDozrw4XSFMYvoK0vupa5mJOsYmrk1jbSGNPxtK
-         4PLAuokkyPBc4L2/LQG4DoD7ji6AsFuHYC8pzFLxxozHYrBsb4xT3YFAj9K8cQp54GDp
-         ZyuA==
-X-Gm-Message-State: AOJu0Yy+rExjKPa+rGALQhPwjQEWaSPGb15UX42J7ZthOiZguiFbPUlF
-        MAtMGtOUHp/m0z7HHvqgUavXSHJHpxEE2Wz0nDHlTpXM
-X-Google-Smtp-Source: AGHT+IEkbVCWiMFBxzwCt0yc/QOb6DOL+h9uhad2onUsqxPs9KlFTPbL86CBpIdX6/oW6QPx6/iVcA==
-X-Received: by 2002:a05:6512:12cb:b0:4fb:c9e1:5286 with SMTP id p11-20020a05651212cb00b004fbc9e15286mr2095387lfg.7.1691344171583;
-        Sun, 06 Aug 2023 10:49:31 -0700 (PDT)
-Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com. [209.85.167.45])
-        by smtp.gmail.com with ESMTPSA id d18-20020ac24c92000000b004fb99da37e3sm1195481lfl.220.2023.08.06.10.49.31
-        for <stable@vger.kernel.org>
+        d=1e100.net; s=20221208; t=1691346017; x=1691950817;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=TSC0nhQYh4CfeL29OqIqZRL9s5DPSTmoy4ZpT/cMCmk=;
+        b=g+8t2qoQdhTeLp641KjZrkMNyKL16DTLqburBp3m6jcxTeFnInuTfvbNMUdZ0r3kaE
+         H/mjZeY4iyQuJ4oZcqLRm0l74oVDqkW33qSEMvibfXZOKjSTzgZf4RzezMp2PfdL4IPn
+         JP8hqiec+/vGPp2U6u36vYMoFyy7oBrctkw41F6KNBcIW9nTZtL0i2ORmpTT+VV6NDeZ
+         C61+E67qLYNVGEbUeqXcDPfpHZvzD41yBxupIX3dzmrwcSXp9Kwk6DDuUtmznXDXSKdF
+         XdrC/UQv2rESjhw63iJbWuALp5ZkN0HFeJJZso7M7GfqAOj6FLY85RD19Kse8uRCiQOA
+         Umhw==
+X-Gm-Message-State: AOJu0YxDKkm6MukYOauYSWobRKXIOhezEiAedKbrlGujuZwJq3qQIUfY
+        inGvrk+EHfHouME7EoxC77Yj6KyumgspOWInHrbNpPGDUKDqroiwH8BIxC773vNIdCPRy0n/51Y
+        cd9ZpzfGWq2yJ2ihCr6x/p4dN
+X-Received: by 2002:a2e:7c15:0:b0:2b6:e105:6174 with SMTP id x21-20020a2e7c15000000b002b6e1056174mr4763480ljc.47.1691346017602;
+        Sun, 06 Aug 2023 11:20:17 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFUhi1wLAOGbe2I1gYd6DBRCyk8IJP/ndGdF6V2OiTaVkoXJdMKcLANQ5F7d4mWZPABueNuKg==
+X-Received: by 2002:a2e:7c15:0:b0:2b6:e105:6174 with SMTP id x21-20020a2e7c15000000b002b6e1056174mr4763472ljc.47.1691346017174;
+        Sun, 06 Aug 2023 11:20:17 -0700 (PDT)
+Received: from ?IPV6:2001:1c00:c32:7800:5bfa:a036:83f0:f9ec? (2001-1c00-0c32-7800-5bfa-a036-83f0-f9ec.cable.dynamic.v6.ziggo.nl. [2001:1c00:c32:7800:5bfa:a036:83f0:f9ec])
+        by smtp.gmail.com with ESMTPSA id 4-20020a170906058400b00992c92af6f4sm4214310ejn.144.2023.08.06.11.20.16
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 06 Aug 2023 10:49:31 -0700 (PDT)
-Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-4fe55d70973so3977106e87.0
-        for <stable@vger.kernel.org>; Sun, 06 Aug 2023 10:49:31 -0700 (PDT)
-X-Received: by 2002:a17:907:160e:b0:993:da5f:5a9b with SMTP id
- hb14-20020a170907160e00b00993da5f5a9bmr6239608ejc.8.1691344149938; Sun, 06
- Aug 2023 10:49:09 -0700 (PDT)
+        Sun, 06 Aug 2023 11:20:16 -0700 (PDT)
+Message-ID: <b37098da-4437-ef5b-53ae-a536f550df08@redhat.com>
+Date:   Sun, 6 Aug 2023 20:20:15 +0200
 MIME-Version: 1.0
-References: <20230804-turnverein-helfer-ef07a4d7bbec@brauner>
- <20230805-furor-angekauft-82e334fc83a3@brauner> <CAHk-=witxS+hfdFc+xJVpb9y-cE6vYopkDaZvvk=aXHcv-P5=w@mail.gmail.com>
- <CAHk-=wiEzoh1gqfOp3DNTS9iPOxAWtS71qS0xv1XBziqGHGTwg@mail.gmail.com>
- <20230806-mundwinkel-wenig-d1c9dcb2c595@brauner> <20230806-appell-heulen-61fc63545739@brauner>
-In-Reply-To: <20230806-appell-heulen-61fc63545739@brauner>
-From:   Linus Torvalds <torvalds@linux-foundation.org>
-Date:   Sun, 6 Aug 2023 10:48:52 -0700
-X-Gmail-Original-Message-ID: <CAHk-=whJtLkYwEFTS9LcRiMjSqq_xswDeXo7hYNWT0Em6nL4Sw@mail.gmail.com>
-Message-ID: <CAHk-=whJtLkYwEFTS9LcRiMjSqq_xswDeXo7hYNWT0Em6nL4Sw@mail.gmail.com>
-Subject: Re: [PATCH] file: always lock position
-To:     Christian Brauner <brauner@kernel.org>
-Cc:     Xiubo Li <xiubli@redhat.com>, Ilya Dryomov <idryomov@gmail.com>,
-        Jan Harkes <jaharkes@cs.cmu.edu>,
-        Namjae Jeon <linkinjeon@kernel.org>,
-        Sungjong Seo <sj1557.seo@samsung.com>,
-        Dave Kleikamp <shaggy@kernel.org>,
-        Anton Altaparmakov <anton@tuxera.com>,
-        Mark Fasheh <mark@fasheh.com>,
-        Joel Becker <jlbec@evilplan.org>,
-        Joseph Qi <joseph.qi@linux.alibaba.com>,
-        Miklos Szeredi <miklos@szeredi.hu>,
-        Amir Goldstein <amir73il@gmail.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Mateusz Guzik <mjguzik@gmail.com>,
-        Jens Axboe <axboe@kernel.dk>, Christoph Hellwig <hch@lst.de>,
-        Aleksa Sarai <cyphar@cyphar.com>,
-        Al Viro <viro@zeniv.linux.org.uk>,
-        Seth Forshee <sforshee@kernel.org>,
-        linux-fsdevel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=no
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH] ACPI: resource: revert "Remove "Zen" specific match and
+ quirks"
+To:     Mario Limonciello <mario.limonciello@amd.com>,
+        "Rafael J . Wysocki" <rafael@kernel.org>
+Cc:     linux-acpi@vger.kernel.org,
+        Linux regressions mailing list <regressions@lists.linux.dev>,
+        stable@vger.kernel.org
+References: <20230806151453.10690-1-hdegoede@redhat.com>
+ <130cb2e0-90b4-7d7b-1633-3469c859b30f@amd.com>
+Content-Language: en-US, nl
+From:   Hans de Goede <hdegoede@redhat.com>
+In-Reply-To: <130cb2e0-90b4-7d7b-1633-3469c859b30f@amd.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-6.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Sun, 6 Aug 2023 at 06:26, Christian Brauner <brauner@kernel.org> wrote:
->
-> We got sent a fix for a wrong check for O_TMPFILE during RESOLVE_CACHED
-> lookup which I've put on vfs.fixes yesterday:
->
-> git@gitolite.kernel.org:pub/scm/linux/kernel/git/vfs/vfs tags/v6.5-rc5.vfs.resolve_cached.fix
->
-> But in case you planned on applying this directly instead of waiting for
-> next cycle I've added your two appended patches on top of it and my
-> earlier patch for massaging the file_needs_f_pos_lock() check that
-> triggered this whole thing:
->
-> git@gitolite.kernel.org:pub/scm/linux/kernel/git/vfs/vfs tags/v6.5-rc5.vfs.fixes
+Hi Mario,
 
-I had actually planned on just waiting for the 6.6 merge window, but
-then you made this _so_ easy for me that I ended up taking these
-things right now.
+On 8/6/23 19:13, Mario Limonciello wrote:
+> On 8/6/23 10:14, Hans de Goede wrote:
+>> Commit a9c4a912b7dc ("ACPI: resource: Remove "Zen" specific match and
+>> quirks") is causing keyboard problems for quite a log of AMD based
+>> laptop users, leading to many bug reports.
+>>
+>> Revert this change for now, until we can come up with
+>> a better fix for the PS/2 IRQ trigger-type/polarity problems
+>> on some x86 laptops.
+> 
+> Reverting it is going to help a bunch of machines but cause regressions for others.  How do you prioritize which to fix when it comes to a regression?
 
-The timing may not be entirely right, but I'm very comfortable with
-the "get rid of '->iterate' op" change since it (a) would clearly fail
-the build on a missed conversion and (b) doesn't touch any core
-filesystems anyway.
+I understand where you are coming from. But we are dealing with a lot of bug reports from users of recent kernel versions (so not on LTS distros) where things used to work fine. Which is pretty much the definition of a regression.
 
-And now that file_needs_f_pos_lock() does look better, and as you say
-in teh commit, makes it clearer why that locking rule exists.
+OTOH the do not override IRQ on Zen behavior has been with us for a while now, so things which are broken by it have been broken for a while and have only started working since 6.4.7.
 
-             Linus
+So to me it is clear that we first need to revert to the old state, so that users for which everything was working fine get back to a working system.
 
-                     Linus
+I realize this will unfix some very recently fixed systems, but notice the very recently bit here most users are no in 6.4.7 or .8 yet, so most users will not even have gotten the fixing effect OTOH many users are seeing breakage now.
+
+So IMHO we should first get back to the known bad state, instead of introducing a new unknown bad state like a9c4a912b7dc did.
+
+If there are known systems which will need an override with a9c4a912b7dc reverted, then we should probably add those to the override table right away.
+
+And I think what we also need is a way to specify an IRQ trigger-type override for IRQ 1 on the kernel commandline, so that we can easily ask users to try a different trigger-type without them needing to build a kernel with an updated quirk table.
+
+As Linus mentioned already, we really need to find a proper fix for this, but for now my main priority is to stop the influx of new Fedora bugzilla and bugzilla.kernel.org bugs caused by a9c4a912b7dc, counting the extra bug links added in this thread it seems we are up to 6 known bug reports for this and that likely is just the tip of the iceberg.
+
+Regards,
+
+Hans
+
+
+
+> 
+>>
+>> Fixes: a9c4a912b7dc ("ACPI: resource: Remove "Zen" specific match and quirks")
+>> Link: https://bugzilla.redhat.com/show_bug.cgi?id=2229165
+>> Link: https://bugzilla.redhat.com/show_bug.cgi?id=2229317
+>> Link: https://bugzilla.kernel.org/show_bug.cgi?id=217726
+>> Cc: Mario Limonciello <mario.limonciello@amd.com>
+>> Cc: Linux regressions mailing list <regressions@lists.linux.dev>
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+>> ---
+>>   drivers/acpi/resource.c | 60 +++++++++++++++++++++++++++++++++++++++++
+>>   1 file changed, 60 insertions(+)
+>>
+>> diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
+>> index 1dd8d5aebf67..0800a9d77558 100644
+>> --- a/drivers/acpi/resource.c
+>> +++ b/drivers/acpi/resource.c
+>> @@ -470,6 +470,52 @@ static const struct dmi_system_id asus_laptop[] = {
+>>       { }
+>>   };
+>>   +static const struct dmi_system_id lenovo_laptop[] = {
+>> +    {
+>> +        .ident = "LENOVO IdeaPad Flex 5 14ALC7",
+>> +        .matches = {
+>> +            DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
+>> +            DMI_MATCH(DMI_PRODUCT_NAME, "82R9"),
+>> +        },
+>> +    },
+>> +    {
+>> +        .ident = "LENOVO IdeaPad Flex 5 16ALC7",
+>> +        .matches = {
+>> +            DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
+>> +            DMI_MATCH(DMI_PRODUCT_NAME, "82RA"),
+>> +        },
+>> +    },
+>> +    { }
+>> +};
+>> +
+>> +static const struct dmi_system_id tongfang_gm_rg[] = {
+>> +    {
+>> +        .ident = "TongFang GMxRGxx/XMG CORE 15 (M22)/TUXEDO Stellaris 15 Gen4 AMD",
+>> +        .matches = {
+>> +            DMI_MATCH(DMI_BOARD_NAME, "GMxRGxx"),
+>> +        },
+>> +    },
+>> +    { }
+>> +};
+>> +
+>> +static const struct dmi_system_id maingear_laptop[] = {
+>> +    {
+>> +        .ident = "MAINGEAR Vector Pro 2 15",
+>> +        .matches = {
+>> +            DMI_MATCH(DMI_SYS_VENDOR, "Micro Electronics Inc"),
+>> +            DMI_MATCH(DMI_PRODUCT_NAME, "MG-VCP2-15A3070T"),
+>> +        }
+>> +    },
+>> +    {
+>> +        .ident = "MAINGEAR Vector Pro 2 17",
+>> +        .matches = {
+>> +            DMI_MATCH(DMI_SYS_VENDOR, "Micro Electronics Inc"),
+>> +            DMI_MATCH(DMI_PRODUCT_NAME, "MG-VCP2-17A3070T"),
+>> +        },
+>> +    },
+>> +    { }
+>> +};
+>> +
+>>   static const struct dmi_system_id lg_laptop[] = {
+>>       {
+>>           .ident = "LG Electronics 17U70P",
+>> @@ -493,6 +539,10 @@ struct irq_override_cmp {
+>>   static const struct irq_override_cmp override_table[] = {
+>>       { medion_laptop, 1, ACPI_LEVEL_SENSITIVE, ACPI_ACTIVE_LOW, 0, false },
+>>       { asus_laptop, 1, ACPI_LEVEL_SENSITIVE, ACPI_ACTIVE_LOW, 0, false },
+>> +    { lenovo_laptop, 6, ACPI_LEVEL_SENSITIVE, ACPI_ACTIVE_LOW, 0, true },
+>> +    { lenovo_laptop, 10, ACPI_LEVEL_SENSITIVE, ACPI_ACTIVE_LOW, 0, true },
+>> +    { tongfang_gm_rg, 1, ACPI_EDGE_SENSITIVE, ACPI_ACTIVE_LOW, 1, true },
+>> +    { maingear_laptop, 1, ACPI_EDGE_SENSITIVE, ACPI_ACTIVE_LOW, 1, true },
+>>       { lg_laptop, 1, ACPI_LEVEL_SENSITIVE, ACPI_ACTIVE_LOW, 0, false },
+>>   };
+>>   @@ -512,6 +562,16 @@ static bool acpi_dev_irq_override(u32 gsi, u8 triggering, u8 polarity,
+>>               return entry->override;
+>>       }
+>>   +#ifdef CONFIG_X86
+>> +    /*
+>> +     * IRQ override isn't needed on modern AMD Zen systems and
+>> +     * this override breaks active low IRQs on AMD Ryzen 6000 and
+>> +     * newer systems. Skip it.
+>> +     */
+>> +    if (boot_cpu_has(X86_FEATURE_ZEN))
+>> +        return false;
+>> +#endif
+>> +
+>>       return true;
+>>   }
+>>   
+> 
+
