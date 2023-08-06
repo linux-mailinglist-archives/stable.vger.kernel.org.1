@@ -2,170 +2,167 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 244607715A0
-	for <lists+stable@lfdr.de>; Sun,  6 Aug 2023 16:31:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E50AF7715CA
+	for <lists+stable@lfdr.de>; Sun,  6 Aug 2023 17:15:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230223AbjHFObB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 6 Aug 2023 10:31:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51926 "EHLO
+        id S229804AbjHFPPu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 6 Aug 2023 11:15:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56926 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229509AbjHFObB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 6 Aug 2023 10:31:01 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CCC3AE49;
-        Sun,  6 Aug 2023 07:30:59 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        with ESMTP id S229515AbjHFPPt (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 6 Aug 2023 11:15:49 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C0184114
+        for <stable@vger.kernel.org>; Sun,  6 Aug 2023 08:15:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1691334901;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=CNB47Sp7trc9bmNcKr/Qyt4K/JLPlJPyfPKXwvKIQrU=;
+        b=M0I8uBZK8rsXvyMjX6gToRSuTvLHQfgKWsu62nlhomxfbLdFwO84tyWbHQ8wFTeZjK3nhP
+        X3Zyag+Rr35HCV4a85p7AYzCTA5g38lFv90C8pPJVQ0F7ynLhhs+fm5oHeZ1s2bGXe6ZEO
+        45AN+TCBadBOTm+ly1/opGrQ3eCqxI4=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-590-70ptTuQVNsewBDtaapMtnw-1; Sun, 06 Aug 2023 11:14:58 -0400
+X-MC-Unique: 70ptTuQVNsewBDtaapMtnw-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com [10.11.54.6])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6087761058;
-        Sun,  6 Aug 2023 14:30:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2137C433CA;
-        Sun,  6 Aug 2023 14:30:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1691332258;
-        bh=JrZfNdw9wgAZfBMUuRYMyGJexeF+fKE8GZDmCA/BpeI=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=YTU8MC0+gH8TfbrhCBbJqavhqTyGGPF5Aj0sHrJy2mtO7ljXuMzZf24h7rzwkyUFx
-         1wef7z7KMC8U+vBOUBfugecKv0/UDYWO4DUMbrrcB9K10vJdsmA3o17DlUsNRnUYWX
-         x0nR97kCUgpt236K1p6/yaQ4y2dEZksHu1+iD0d+muqLDVhNVzlE4TsnzSCzWHQPTX
-         rBzFwzVi9siE+/ch+JgCHLJl6TcBxEb7mTfEdX5+spqRianM65dTpfwLlK3O4Oldx1
-         MEGPe3CngMeknvMdwpLV4oqEnz0zezluRumRkkxO6Y5Xwzy7oaObB70Ft911L0BEvR
-         YU4yQzAQ6eUoQ==
-Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-52229f084beso5324284a12.2;
-        Sun, 06 Aug 2023 07:30:58 -0700 (PDT)
-X-Gm-Message-State: AOJu0YxjPvNp2XUp7Fx4Rl3w2zu3W0B3TwdpN45LvYrv69zetn5Gsviv
-        YpmJuvCMeiibexJ99kluAutEBB2R5c6vc/CCA3w=
-X-Google-Smtp-Source: AGHT+IHnNYeNlB/J6SJY/CFDzA2RFqR6M0U8Ki5KshBuuCYRCLBknJAiKZxM+4l7ASuSyVx1k5af/FCZI4gVt9alZo4=
-X-Received: by 2002:aa7:de96:0:b0:522:2aee:682c with SMTP id
- j22-20020aa7de96000000b005222aee682cmr5517074edv.2.1691332256931; Sun, 06 Aug
- 2023 07:30:56 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230725061008.1504292-1-jiaxun.yang@flygoat.com> <e9c103dc-98ac-9a51-7291-f5da1467b2ff@flygoat.com>
-In-Reply-To: <e9c103dc-98ac-9a51-7291-f5da1467b2ff@flygoat.com>
-From:   Huacai Chen <chenhuacai@kernel.org>
-Date:   Sun, 6 Aug 2023 22:30:45 +0800
-X-Gmail-Original-Message-ID: <CAAhV-H7_OjTaU_wn6mUW0-JSrXS+=A2rXCiBc8cyce5ob49BLg@mail.gmail.com>
-Message-ID: <CAAhV-H7_OjTaU_wn6mUW0-JSrXS+=A2rXCiBc8cyce5ob49BLg@mail.gmail.com>
-Subject: Re: [PATCH v2] pci: loongson: Workaround MIPS firmware MRRS settings
-To:     Jiaxun Yang <jiaxun.yang@flygoat.com>
-Cc:     linux-pci@vger.kernel.org, bhelgaas@google.com,
-        linux-kernel@vger.kernel.org, kw@linux.com, lpieralisi@kernel.org,
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E30038002BF;
+        Sun,  6 Aug 2023 15:14:57 +0000 (UTC)
+Received: from shalem.redhat.com (unknown [10.39.192.27])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id F1E232166B25;
+        Sun,  6 Aug 2023 15:14:56 +0000 (UTC)
+From:   Hans de Goede <hdegoede@redhat.com>
+To:     "Rafael J . Wysocki" <rafael@kernel.org>
+Cc:     Hans de Goede <hdegoede@redhat.com>, linux-acpi@vger.kernel.org,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        Linux regressions mailing list <regressions@lists.linux.dev>,
         stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Subject: [PATCH] ACPI: resource: revert "Remove "Zen" specific match and quirks"
+Date:   Sun,  6 Aug 2023 17:14:53 +0200
+Message-ID: <20230806151453.10690-1-hdegoede@redhat.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi, Jiaxun,
+Commit a9c4a912b7dc ("ACPI: resource: Remove "Zen" specific match and
+quirks") is causing keyboard problems for quite a log of AMD based
+laptop users, leading to many bug reports.
 
-On Sun, Aug 6, 2023 at 10:20=E2=80=AFAM Jiaxun Yang <jiaxun.yang@flygoat.co=
-m> wrote:
->
->
->
-> =E5=9C=A8 2023/7/25 14:10, Jiaxun Yang =E5=86=99=E9=81=93:
-> > This is a partial revert of commit 8b3517f88ff2 ("PCI:
-> > loongson: Prevent LS7A MRRS increases") for MIPS based Loongson.
-> >
-> > There are many MIPS based Loongson systems in wild that
-> > shipped with firmware which does not set maximum MRRS properly.
-> >
-> > Limiting MRRS to 256 for all as MIPS Loongson comes with higher
-> > MRRS support is considered rare.
-> >
-> > Cc: stable@vger.kernel.org
-> > Closes: https://bugzilla.kernel.org/show_bug.cgi?id=3D217680
-> > Fixes: 8b3517f88ff2 ("PCI: loongson: Prevent LS7A MRRS increases")
-> > Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
->
-> Ping?
-> I expect this patch to go through PCI fixes tree.
-Can we do it like this by modifying the existing loongson_mrrs_quirk()?
+Revert this change for now, until we can come up with
+a better fix for the PS/2 IRQ trigger-type/polarity problems
+on some x86 laptops.
 
-static void loongson_mrrs_quirk(struct pci_dev *pdev)
-{
-        /*
-         * Some Loongson PCIe ports have h/w limitations of maximum read
-         * request size. They can't handle anything larger than this. So
-         * force this limit on any devices attached under these ports.
-         */
-        struct pci_host_bridge *bridge =3D pci_find_host_bridge(pdev->bus);
+Fixes: a9c4a912b7dc ("ACPI: resource: Remove "Zen" specific match and quirks")
+Link: https://bugzilla.redhat.com/show_bug.cgi?id=2229165
+Link: https://bugzilla.redhat.com/show_bug.cgi?id=2229317
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=217726
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Linux regressions mailing list <regressions@lists.linux.dev>
+Cc: stable@vger.kernel.org
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+---
+ drivers/acpi/resource.c | 60 +++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 60 insertions(+)
 
-#ifdef CONFIG_MIPS
-        set_pcie_ports_to_mrrs_256_to_emulate_the_firmware_behavior();
-#endif
-
-        bridge->no_inc_mrrs =3D 1;
-}
-
->
-> Thanks
-> - Jiaxun
->
-> > ---
-> > v2: Rename quirk name to: loongson_old_mrrs_quirk
-> > ---
-> >   drivers/pci/controller/pci-loongson.c | 38 ++++++++++++++++++++++++++=
+diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
+index 1dd8d5aebf67..0800a9d77558 100644
+--- a/drivers/acpi/resource.c
++++ b/drivers/acpi/resource.c
+@@ -470,6 +470,52 @@ static const struct dmi_system_id asus_laptop[] = {
+ 	{ }
+ };
+ 
++static const struct dmi_system_id lenovo_laptop[] = {
++	{
++		.ident = "LENOVO IdeaPad Flex 5 14ALC7",
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "82R9"),
++		},
++	},
++	{
++		.ident = "LENOVO IdeaPad Flex 5 16ALC7",
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "82RA"),
++		},
++	},
++	{ }
++};
 +
-> >   1 file changed, 38 insertions(+)
-> >
-> > diff --git a/drivers/pci/controller/pci-loongson.c b/drivers/pci/contro=
-ller/pci-loongson.c
-> > index fe0f732f6e43..d0f68b102d10 100644
-> > --- a/drivers/pci/controller/pci-loongson.c
-> > +++ b/drivers/pci/controller/pci-loongson.c
-> > @@ -108,6 +108,44 @@ DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_LOONGSON,
-> >   DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_LOONGSON,
-> >                       DEV_LS7A_PCIE_PORT6, loongson_mrrs_quirk);
-> >
-> > +#ifdef CONFIG_MIPS
-> > +static void loongson_old_mrrs_quirk(struct pci_dev *pdev)
-> > +{
-> > +     struct pci_bus *bus =3D pdev->bus;
-> > +     struct pci_dev *bridge;
-> > +     static const struct pci_device_id bridge_devids[] =3D {
-> > +             { PCI_VDEVICE(LOONGSON, DEV_LS2K_PCIE_PORT0) },
-> > +             { PCI_VDEVICE(LOONGSON, DEV_LS7A_PCIE_PORT0) },
-> > +             { PCI_VDEVICE(LOONGSON, DEV_LS7A_PCIE_PORT1) },
-> > +             { PCI_VDEVICE(LOONGSON, DEV_LS7A_PCIE_PORT2) },
-> > +             { PCI_VDEVICE(LOONGSON, DEV_LS7A_PCIE_PORT3) },
-> > +             { PCI_VDEVICE(LOONGSON, DEV_LS7A_PCIE_PORT4) },
-> > +             { PCI_VDEVICE(LOONGSON, DEV_LS7A_PCIE_PORT5) },
-> > +             { PCI_VDEVICE(LOONGSON, DEV_LS7A_PCIE_PORT6) },
-> > +             { 0, },
-> > +     };
-> > +
-> > +     /* look for the matching bridge */
-> > +     while (!pci_is_root_bus(bus)) {
-> > +             bridge =3D bus->self;
-> > +             bus =3D bus->parent;
-> > +             /*
-> > +              * There are still some wild MIPS Loongson firmware won't
-> > +              * set MRRS properly. Limiting MRRS to 256 as MIPS Loongs=
-on
-> > +              * comes with higher MRRS support is considered rare.
-> > +              */
-> > +             if (pci_match_id(bridge_devids, bridge)) {
-> > +                     if (pcie_get_readrq(pdev) > 256) {
-> > +                             pci_info(pdev, "limiting MRRS to 256\n");
-> > +                             pcie_set_readrq(pdev, 256);
-> > +                     }
-> > +                     break;
-> > +             }
-> > +     }
-> > +}
-> > +DECLARE_PCI_FIXUP_ENABLE(PCI_ANY_ID, PCI_ANY_ID, loongson_old_mrrs_qui=
-rk);
-> > +#endif
-> > +
-> >   static void loongson_pci_pin_quirk(struct pci_dev *pdev)
-> >   {
-> >       pdev->pin =3D 1 + (PCI_FUNC(pdev->devfn) & 3);
->
++static const struct dmi_system_id tongfang_gm_rg[] = {
++	{
++		.ident = "TongFang GMxRGxx/XMG CORE 15 (M22)/TUXEDO Stellaris 15 Gen4 AMD",
++		.matches = {
++			DMI_MATCH(DMI_BOARD_NAME, "GMxRGxx"),
++		},
++	},
++	{ }
++};
++
++static const struct dmi_system_id maingear_laptop[] = {
++	{
++		.ident = "MAINGEAR Vector Pro 2 15",
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "Micro Electronics Inc"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "MG-VCP2-15A3070T"),
++		}
++	},
++	{
++		.ident = "MAINGEAR Vector Pro 2 17",
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "Micro Electronics Inc"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "MG-VCP2-17A3070T"),
++		},
++	},
++	{ }
++};
++
+ static const struct dmi_system_id lg_laptop[] = {
+ 	{
+ 		.ident = "LG Electronics 17U70P",
+@@ -493,6 +539,10 @@ struct irq_override_cmp {
+ static const struct irq_override_cmp override_table[] = {
+ 	{ medion_laptop, 1, ACPI_LEVEL_SENSITIVE, ACPI_ACTIVE_LOW, 0, false },
+ 	{ asus_laptop, 1, ACPI_LEVEL_SENSITIVE, ACPI_ACTIVE_LOW, 0, false },
++	{ lenovo_laptop, 6, ACPI_LEVEL_SENSITIVE, ACPI_ACTIVE_LOW, 0, true },
++	{ lenovo_laptop, 10, ACPI_LEVEL_SENSITIVE, ACPI_ACTIVE_LOW, 0, true },
++	{ tongfang_gm_rg, 1, ACPI_EDGE_SENSITIVE, ACPI_ACTIVE_LOW, 1, true },
++	{ maingear_laptop, 1, ACPI_EDGE_SENSITIVE, ACPI_ACTIVE_LOW, 1, true },
+ 	{ lg_laptop, 1, ACPI_LEVEL_SENSITIVE, ACPI_ACTIVE_LOW, 0, false },
+ };
+ 
+@@ -512,6 +562,16 @@ static bool acpi_dev_irq_override(u32 gsi, u8 triggering, u8 polarity,
+ 			return entry->override;
+ 	}
+ 
++#ifdef CONFIG_X86
++	/*
++	 * IRQ override isn't needed on modern AMD Zen systems and
++	 * this override breaks active low IRQs on AMD Ryzen 6000 and
++	 * newer systems. Skip it.
++	 */
++	if (boot_cpu_has(X86_FEATURE_ZEN))
++		return false;
++#endif
++
+ 	return true;
+ }
+ 
+-- 
+2.41.0
+
