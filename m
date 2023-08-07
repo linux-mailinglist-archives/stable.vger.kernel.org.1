@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 90444771ADC
-	for <lists+stable@lfdr.de>; Mon,  7 Aug 2023 08:55:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2986F771ADF
+	for <lists+stable@lfdr.de>; Mon,  7 Aug 2023 08:56:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230191AbjHGGz6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 7 Aug 2023 02:55:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53496 "EHLO
+        id S231356AbjHGG4L (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 7 Aug 2023 02:56:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53542 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229967AbjHGGz6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 7 Aug 2023 02:55:58 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0CB21E78
-        for <stable@vger.kernel.org>; Sun,  6 Aug 2023 23:55:57 -0700 (PDT)
+        with ESMTP id S231236AbjHGG4H (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 7 Aug 2023 02:56:07 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 270D310C2
+        for <stable@vger.kernel.org>; Sun,  6 Aug 2023 23:56:06 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 95AD961585
-        for <stable@vger.kernel.org>; Mon,  7 Aug 2023 06:55:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0330C433C8;
-        Mon,  7 Aug 2023 06:55:55 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id AFDA661578
+        for <stable@vger.kernel.org>; Mon,  7 Aug 2023 06:56:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDE21C433C8;
+        Mon,  7 Aug 2023 06:56:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691391356;
-        bh=t9SVBuGgcygFNB9dnQq43JrMBwkVz+taurDcUt4q86c=;
+        s=korg; t=1691391365;
+        bh=S78sP210K9OxfXlOBblnlWwuw7HZv1ptCUc23VDiqQQ=;
         h=Subject:To:Cc:From:Date:From;
-        b=QlSLMwCMs3iqJt3JV3qjuAfNJIXMhZTj8/VyZuudIuXtpl+JvEhESVXCMKv+DxxnE
-         4jjaRaCFLpnOisYgAYnFHlh/bGJBA9En1n3Y9/HTixG1iC+6TMII6uka045cPlMvPq
-         Uq0wds5cdPq7ird1NjBuYlYDCOwUqB1oU0WlWpak=
-Subject: FAILED: patch "[PATCH] exfat: release s_lock before calling dir_emit()" failed to apply to 5.15-stable tree
+        b=pfpInInRmJAw2ThPEKp9GXX5G5N2cOoaLqlaTwq6vdFi0raJdRQgZDCvEp+uOOC+/
+         5RtcCXDTqBFGjAgrcW4iKKjgw6d9pUovYS8tyYFifREJ+lt8mpJ6pTF2+GONi5OC1a
+         j9G2ix9uw5ekQEBinafBR9vTAH2+gcNXeD8Di974=
+Subject: FAILED: patch "[PATCH] exfat: release s_lock before calling dir_emit()" failed to apply to 5.10-stable tree
 To:     sj1557.seo@samsung.com, linkinjeon@kernel.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Mon, 07 Aug 2023 08:55:53 +0200
-Message-ID: <2023080753-shortage-helium-c261@gregkh>
+Date:   Mon, 07 Aug 2023 08:55:54 +0200
+Message-ID: <2023080754-balcony-pantyhose-1628@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -48,24 +48,25 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x ff84772fd45d486e4fc78c82e2f70ce5333543e6
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023080753-shortage-helium-c261@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023080754-balcony-pantyhose-1628@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
 ff84772fd45d ("exfat: release s_lock before calling dir_emit()")
 703e3e9a9cb1 ("exfat_iterate(): don't open-code file_inode(file)")
+1e5654de0f51 ("exfat: handle wrong stream entry size in exfat_readdir()")
 
 thanks,
 
