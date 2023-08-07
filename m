@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4A172771BE6
-	for <lists+stable@lfdr.de>; Mon,  7 Aug 2023 09:57:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C31FB771BE7
+	for <lists+stable@lfdr.de>; Mon,  7 Aug 2023 09:57:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229926AbjHGH5O (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 7 Aug 2023 03:57:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49230 "EHLO
+        id S229803AbjHGH5X (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 7 Aug 2023 03:57:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49274 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229582AbjHGH5O (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 7 Aug 2023 03:57:14 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B3553DD
-        for <stable@vger.kernel.org>; Mon,  7 Aug 2023 00:57:10 -0700 (PDT)
+        with ESMTP id S229582AbjHGH5W (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 7 Aug 2023 03:57:22 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E38B110F4
+        for <stable@vger.kernel.org>; Mon,  7 Aug 2023 00:57:20 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 393C4615F0
-        for <stable@vger.kernel.org>; Mon,  7 Aug 2023 07:57:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4123DC433C7;
-        Mon,  7 Aug 2023 07:57:09 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 780B1615C1
+        for <stable@vger.kernel.org>; Mon,  7 Aug 2023 07:57:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C400C433C8;
+        Mon,  7 Aug 2023 07:57:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691395029;
-        bh=o+hPRvFLC5f+rA4+dQ+37xU/ygiUQWLkcuH+NmQQr6Q=;
+        s=korg; t=1691395039;
+        bh=GduS/h6j5XpEKFLSfMDyJbf6hIv+MNPT3XU+T7mDQYY=;
         h=Subject:To:Cc:From:Date:From;
-        b=ImYAHWyK7V1dF0Jm4h/58PSB9vSwkJcnP77HSy53GnHsWigeVPzUvvWm1iRHQTQ5j
-         WcqMTLajtzoA/kpCv9OKpG85QG1OA5REBbAG6pBlI6CWlo7cmHQv4ePbyEbXicveo0
-         AfexRc1WPtZ0PI/KRs19/512zWd0p651YA7PKlbI=
-Subject: FAILED: patch "[PATCH] net/mlx5: Free IRQ rmap and notifier on kernel shutdown" failed to apply to 6.1-stable tree
+        b=C2BW7/dJN48vngCPVp++BJ2pMYSGCZBb7zxXL6gIjwy7kEpt3X5B2Oh6kXMLFdTpH
+         To8CTfuzYRZq5iqDdSNPXDTCtHCQqd0bW1f7lTuuZTT2MyrKH6QAkO4rGjX+sVah19
+         DE9NjZ5XUJUnNd/6YEnPNeGyDUUAjfLfFaxMqJMk=
+Subject: FAILED: patch "[PATCH] net/mlx5: Free IRQ rmap and notifier on kernel shutdown" failed to apply to 5.15-stable tree
 To:     saeedm@nvidia.com, shayd@nvidia.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Mon, 07 Aug 2023 09:57:06 +0200
-Message-ID: <2023080706-enclosure-disobey-0b27@gregkh>
+Date:   Mon, 07 Aug 2023 09:57:08 +0200
+Message-ID: <2023080708-livable-distress-7173@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -48,19 +48,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x 314ded538e5f22e7610b1bf621402024a180ec80
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023080706-enclosure-disobey-0b27@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023080708-livable-distress-7173@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
@@ -72,6 +72,7 @@ Possible dependencies:
 bbac70c74183 ("net/mlx5: Use newer affinity descriptor")
 235a25fe28de ("net/mlx5: Modify struct mlx5_irq to use struct msi_map")
 2acda57736de ("net/mlx5e: Improve remote NUMA preferences used for the IRQ affinity hints")
+147cc5838c0f ("Merge tag 'irq-core-2022-01-13' of git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip")
 
 thanks,
 
