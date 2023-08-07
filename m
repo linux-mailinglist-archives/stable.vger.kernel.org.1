@@ -2,224 +2,126 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 39D2E771DEE
-	for <lists+stable@lfdr.de>; Mon,  7 Aug 2023 12:25:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5B368771DF0
+	for <lists+stable@lfdr.de>; Mon,  7 Aug 2023 12:25:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231487AbjHGKZB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 7 Aug 2023 06:25:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51592 "EHLO
+        id S229984AbjHGKZk (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 7 Aug 2023 06:25:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52130 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231560AbjHGKY5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 7 Aug 2023 06:24:57 -0400
-Received: from mail-pf1-x434.google.com (mail-pf1-x434.google.com [IPv6:2607:f8b0:4864:20::434])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 86D2A10F6
-        for <stable@vger.kernel.org>; Mon,  7 Aug 2023 03:24:51 -0700 (PDT)
-Received: by mail-pf1-x434.google.com with SMTP id d2e1a72fcca58-686f38692b3so4328953b3a.2
-        for <stable@vger.kernel.org>; Mon, 07 Aug 2023 03:24:51 -0700 (PDT)
+        with ESMTP id S229926AbjHGKZj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 7 Aug 2023 06:25:39 -0400
+Received: from mail-yw1-x1149.google.com (mail-yw1-x1149.google.com [IPv6:2607:f8b0:4864:20::1149])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4DEED10F6
+        for <stable@vger.kernel.org>; Mon,  7 Aug 2023 03:25:38 -0700 (PDT)
+Received: by mail-yw1-x1149.google.com with SMTP id 00721157ae682-585f254c41aso52073327b3.1
+        for <stable@vger.kernel.org>; Mon, 07 Aug 2023 03:25:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20221208.gappssmtp.com; s=20221208; t=1691403890; x=1692008690;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=IOvS1CqbZuvyQdbr7taElqIpdQkgKLPSCxDQtF8xRlk=;
-        b=q93N/Zt3m6sL8c6RPuayt475WCBRtZpy4WWczzltgbLrfnhAOlh+QB37OEn5DzHtoU
-         pY8RsLUZYtxVnp80MDcl+tl4EIIfXhbrME2rf8zHsLHn5on6WZIaU+XDYB9Bo4FIxNqX
-         hkLRWQxi6vHlnfvqN8/GyLNikksBLwb7YgekUhMzDMmya+CPZVl8u95MbJYuni4A/sIy
-         Y1cmwfqvqENGSAOWRkGVGNVLFlwGldoomK/ZZGJ/svSw29xHxnna6w3axYjHwUFkB++l
-         S1hL+eN7MVVMC3Yur1DZzf0idoL4U0N2elLaw5+Q9eghMz91Dmn+MdF8dIZWdLGwgZyY
-         I7sw==
+        d=google.com; s=20221208; t=1691403937; x=1692008737;
+        h=content-transfer-encoding:cc:to:from:subject:mime-version
+         :message-id:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=2aUKpQwJlHBI/B+2GbtIOlPh3mE3Zvb3L0td+ezE/jI=;
+        b=7E/NkiULl2M9cdqts9VO0MSxJxbVHEHGurbi0jgvhMeGimmxGgM31Trmm7/Ctyw2qz
+         zE7g+nTkHNHTadi35xGUawIfJe5q2mopjl4cxWLWPCOqxr8SgKgMlKYHeFJqM58YNMJn
+         /DNi8RC8XznZbAWw2kJuXdC6dd4fn7Tsrq4psW9I9HNFAeY7QASLb/CaN6/UDGVkcH2t
+         TqoK5mVQibv7JOkUDYavFugC4pkQhh4Jp40dxkdr7n4nr9l/liqs4jnj0JQMZm881nTj
+         ZqANgzgd6sgCQSMpCIWrGzLemywGYMeMPo7/voT306ax/7c0npWW6njPmoj8RYZ4cjRe
+         rYnA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691403890; x=1692008690;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=IOvS1CqbZuvyQdbr7taElqIpdQkgKLPSCxDQtF8xRlk=;
-        b=GvXUw6pPXUZfxdMek+VToC1khNlF5T2UsYOFSOcaaDPCs592eXzETNn7IXKRd3CXwv
-         0SlyVozE6Pe1nPZyuqWxsPeFNAUeem22xdbMaPh7X3X1YHQrjF6yGXBvY8qLS90VzFKd
-         z2HzDziPGC4OoDrbNiuhCsf9FyzQy4aCRcejFUELbX3NBg64IICzHBPtlSuHqO2mvATv
-         TwDPVIVVbnVMaHf1UZLfREAV2S0tNw5oT/TCn/tl/UI43owrfm5PM9EBQQavmwsOforz
-         zqVa5im0hiSW3e0BEwAzmqjjLSqY2fOARAiFRy73GAcK8TpOf2He77SrO46qyZYbZvkt
-         xdOw==
-X-Gm-Message-State: AOJu0YxIzicvpcZIOUUlP+0F/xvKyq1rJ+EOOa8jMb7Lb0ndNWtZ2lNV
-        eZkEOsJYy2EIRv8p3Glw36v8IO6kI+NrHQhXYhGyxg==
-X-Google-Smtp-Source: AGHT+IHFe7YMJJgPtGJSUaIA+pTBwu4VWacCSK8L0pYsv/bRcn2Qv8/qBAjyca0UJdyySwj4jJVEVA==
-X-Received: by 2002:a05:6a20:3c8a:b0:130:11e4:d693 with SMTP id b10-20020a056a203c8a00b0013011e4d693mr11720582pzj.53.1691403890028;
-        Mon, 07 Aug 2023 03:24:50 -0700 (PDT)
-Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id q24-20020a62e118000000b00681783cfc85sm6007585pfh.144.2023.08.07.03.24.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 07 Aug 2023 03:24:49 -0700 (PDT)
-Message-ID: <64d0c671.620a0220.aa29a.a5c2@mx.google.com>
-Date:   Mon, 07 Aug 2023 03:24:49 -0700 (PDT)
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
+        d=1e100.net; s=20221208; t=1691403937; x=1692008737;
+        h=content-transfer-encoding:cc:to:from:subject:mime-version
+         :message-id:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=2aUKpQwJlHBI/B+2GbtIOlPh3mE3Zvb3L0td+ezE/jI=;
+        b=ESsxrmF1sMpJ4UI45F5TZ8vxByx2tim87mMHaPOghEn37BvU4kxX9gFXeLphP4nck5
+         yHqmkYTDlBvtrxZaHVHyZXpkW92CZr7psLj0UN3rjCLx3mpnhuvJI9DExThM61Z7i3hE
+         31uE5UBW5HsVXh/E2NKNfllIh9di17g5mUJqZz5sY8bww2D5ZYTeT5b0czf2bar7mmPh
+         eptGjkcK6OWtmbI7nAbPNWVIkNXMVBQ/Zulu1LXfo1Iwai3o2wDJYcLqfyKlStw/d8NZ
+         lScDzgya7i7ogs8sK8jdcJ4SwfL9oNZLkKDoWGpa/B3FivZzv0ZGkBpDKdgQZLBtm8jt
+         tO6A==
+X-Gm-Message-State: AOJu0YwI3Atmre5oBeqfwZTXWHTOxyAjvNT9swXcV3LBQY1BYpY7Aruq
+        pv02al9vp/LqTW524+BujqI4/Xh7
+X-Google-Smtp-Source: AGHT+IGGLdFXemELYIzvqJ5Mv44a7zYa4WvyXVxK9VeqHYvA+/dL0sWoulXMRVWNeb8CH4lDtKL9kmlJ
+X-Received: from athina.mtv.corp.google.com ([2620:15c:211:200:a6d2:3629:c0bf:7b42])
+ (user=maze job=sendgmr) by 2002:a81:af20:0:b0:583:529d:1b9d with SMTP id
+ n32-20020a81af20000000b00583529d1b9dmr61419ywh.5.1691403937532; Mon, 07 Aug
+ 2023 03:25:37 -0700 (PDT)
+Date:   Mon,  7 Aug 2023 03:25:32 -0700
+Message-Id: <20230807102533.1147559-1-maze@google.com>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.41.0.640.ga95def55d0-goog
+Subject: [PATCH net] ipv6: adjust ndisc_is_useropt() to also return true for PIO
+From:   "=?UTF-8?q?Maciej=20=C5=BBenczykowski?=" <maze@google.com>
+To:     "=?UTF-8?q?Maciej=20=C5=BBenczykowski?=" <zenczykowski@gmail.com>
+Cc:     Linux Network Development Mailing List <netdev@vger.kernel.org>,
+        "=?UTF-8?q?Maciej=20=C5=BBenczykowski?=" <maze@google.com>,
+        Jen Linkova <furry@google.com>,
+        Lorenzo Colitti <lorenzo@google.com>,
+        David Ahern <dsahern@gmail.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        "=?UTF-8?q?YOSHIFUJI=20Hideaki=20/=20=E5=90=89=E8=97=A4=E8=8B=B1=E6=98=8E?=" 
+        <yoshfuji@linux-ipv6.org>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Report-Type: build
-X-Kernelci-Kernel: v6.1.43-111-g565bca90c30e
-X-Kernelci-Tree: stable-rc
-X-Kernelci-Branch: linux-6.1.y
-Subject: stable-rc/linux-6.1.y build: 20 builds: 0 failed, 20 passed,
- 1 warning (v6.1.43-111-g565bca90c30e)
-To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
-        kernelci-results@groups.io
-From:   "kernelci.org bot" <bot@kernelci.org>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-stable-rc/linux-6.1.y build: 20 builds: 0 failed, 20 passed, 1 warning (v6.=
-1.43-111-g565bca90c30e)
+The upcoming (and nearly finalized):
+  https://datatracker.ietf.org/doc/draft-collink-6man-pio-pflag/
+will update the IPv6 RA to include a new flag in the PIO field,
+which will serve as a hint to perform DHCPv6-PD.
 
-Full Build Summary: https://kernelci.org/build/stable-rc/branch/linux-6.1.y=
-/kernel/v6.1.43-111-g565bca90c30e/
+As we don't want DHCPv6 related logic inside the kernel, this piece of
+information needs to be exposed to userspace.  The simplest option is to
+simply expose the entire PIO through the already existing mechanism.
 
-Tree: stable-rc
-Branch: linux-6.1.y
-Git Describe: v6.1.43-111-g565bca90c30e
-Git Commit: 565bca90c30ecf86c2b3a78473840668ac6621f6
-Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
-e-rc.git
-Built: 7 unique architectures
+Even without this new flag, the already existing PIO R (router address)
+flag (from RFC6275) cannot AFAICT be handled entirely in kernel,
+and provides useful information that should be exposed to userspace
+(the router's global address, for use by Mobile IPv6).
 
-Warnings Detected:
+Also cc'ing stable@ for inclusion in LTS, as while technically this is
+not quite a bugfix, and instead more of a feature, it is absolutely
+trivial and the alternative is manually cherrypicking into all Android
+Common Kernel trees - and I know Greg will ask for it to be sent in via
+LTS instead...
 
-arc:
-
-arm64:
-
-arm:
-
-i386:
-
-mips:
-    32r2el_defconfig (gcc-10): 1 warning
-
-riscv:
-
-x86_64:
-
-
-Warnings summary:
-
-    1    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_devic=
-e_reg): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expec=
-ted "0,0"
-
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D
-
-Detailed per-defconfig build reports:
-
----------------------------------------------------------------------------=
------
-32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sect=
-ion mismatches
-
-Warnings:
-    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_device_reg=
-): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expected "=
-0,0"
-
----------------------------------------------------------------------------=
------
-allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
-mismatches
-
----------------------------------------------------------------------------=
------
-allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
-n mismatches
-
----------------------------------------------------------------------------=
------
-defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warn=
-ings, 0 section mismatches
-
----------------------------------------------------------------------------=
------
-haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
- section mismatches
-
----------------------------------------------------------------------------=
------
-i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
-on mismatches
-
----------------------------------------------------------------------------=
------
-imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-nommu_k210_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, =
-0 section mismatches
-
----------------------------------------------------------------------------=
------
-nommu_k210_sdcard_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 war=
-nings, 0 section mismatches
-
----------------------------------------------------------------------------=
------
-omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-rv32_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
-ion mismatches
-
----------------------------------------------------------------------------=
------
-tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section=
- mismatches
-
----------------------------------------------------------------------------=
------
-vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig+x86-chromebook (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, =
-0 warnings, 0 section mismatches
-
+Cc: Jen Linkova <furry@google.com>
+Cc: Lorenzo Colitti <lorenzo@google.com>
+Cc: David Ahern <dsahern@gmail.com>
+Cc: David S. Miller <davem@davemloft.net>
+Cc: Eric Dumazet <edumazet@google.com>
+Cc: YOSHIFUJI Hideaki / =E5=90=89=E8=97=A4=E8=8B=B1=E6=98=8E <yoshfuji@linu=
+x-ipv6.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Maciej =C5=BBenczykowski <maze@google.com>
 ---
-For more info write to <info@kernelci.org>
+ net/ipv6/ndisc.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/net/ipv6/ndisc.c b/net/ipv6/ndisc.c
+index 18634ebd20a4..a42be96ae209 100644
+--- a/net/ipv6/ndisc.c
++++ b/net/ipv6/ndisc.c
+@@ -197,7 +197,8 @@ static struct nd_opt_hdr *ndisc_next_option(struct nd_o=
+pt_hdr *cur,
+ static inline int ndisc_is_useropt(const struct net_device *dev,
+ 				   struct nd_opt_hdr *opt)
+ {
+-	return opt->nd_opt_type =3D=3D ND_OPT_RDNSS ||
++	return opt->nd_opt_type =3D=3D ND_OPT_PREFIX_INFO ||
++		opt->nd_opt_type =3D=3D ND_OPT_RDNSS ||
+ 		opt->nd_opt_type =3D=3D ND_OPT_DNSSL ||
+ 		opt->nd_opt_type =3D=3D ND_OPT_CAPTIVE_PORTAL ||
+ 		opt->nd_opt_type =3D=3D ND_OPT_PREF64 ||
+--=20
+2.41.0.640.ga95def55d0-goog
+
