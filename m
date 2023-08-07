@@ -2,42 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 311BF771B2E
-	for <lists+stable@lfdr.de>; Mon,  7 Aug 2023 09:09:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0BC1D771B2F
+	for <lists+stable@lfdr.de>; Mon,  7 Aug 2023 09:09:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231135AbjHGHJl (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 7 Aug 2023 03:09:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60838 "EHLO
+        id S231450AbjHGHJp (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 7 Aug 2023 03:09:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60860 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230523AbjHGHJk (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 7 Aug 2023 03:09:40 -0400
+        with ESMTP id S231429AbjHGHJn (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 7 Aug 2023 03:09:43 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B27AE95
-        for <stable@vger.kernel.org>; Mon,  7 Aug 2023 00:09:39 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 801F4E78
+        for <stable@vger.kernel.org>; Mon,  7 Aug 2023 00:09:42 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 426AC615B1
-        for <stable@vger.kernel.org>; Mon,  7 Aug 2023 07:09:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D771C433C7;
-        Mon,  7 Aug 2023 07:09:38 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 10E98612AF
+        for <stable@vger.kernel.org>; Mon,  7 Aug 2023 07:09:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C7CFC433C8;
+        Mon,  7 Aug 2023 07:09:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691392178;
-        bh=eii6KVYo9GC+EG4UnWj1zjxedmVihsx7gqaRogr3tuE=;
+        s=korg; t=1691392181;
+        bh=5fp/SJF+O3dphKf8H00xt77pjUqiJf4C7OlczEQk7qc=;
         h=Subject:To:Cc:From:Date:From;
-        b=k6/pRMPX449dCSFvpvx3sNHzfM3x/4sd+kKpToPQXZByh8j75sNcXCKPLteSTW2IW
-         5Je8RQKnYoGwbd3aJvucaTr2kQaTEKe6coaA3As/Ds0OG56hLBtV5ljYFAvxQO6tSq
-         VvbN60w0oULJWKUxIE/0zLxQfFVcOiLmc2cWLyJc=
-Subject: FAILED: patch "[PATCH] drm/i915: Add the gen12_needs_ccs_aux_inv helper" failed to apply to 6.1-stable tree
+        b=p0am95el4BfECqsrKFzz/0mZzB9EXRaCQi0UQ73YXK0znn9k6wAHpJ4aXwHXLlZcK
+         wcY+5YEC6yHC8zfSTfAE6zTBc8vEMpAf1oBXBWRCHiTwKdxkgaXkpPwfwc9mE0jtFO
+         /jL+TeOZyqqBw8fBqqQGVg6VGNMY4qJHSuc/N4ns=
+Subject: FAILED: patch "[PATCH] drm/i915: Add the gen12_needs_ccs_aux_inv helper" failed to apply to 5.15-stable tree
 To:     andi.shyti@linux.intel.com, andrzej.hajda@intel.com,
         jonathan.cavitt@intel.com, matthew.d.roper@intel.com,
         nirmoy.das@intel.com, stable@vger.kernel.org,
         tvrtko.ursulin@intel.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Mon, 07 Aug 2023 09:09:33 +0200
-Message-ID: <2023080733-perennial-celery-94b8@gregkh>
+Date:   Mon, 07 Aug 2023 09:09:34 +0200
+Message-ID: <2023080734-pork-defog-d54c@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -51,23 +51,40 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x b2f59e9026038a5bbcbc0019fa58f963138211ee
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023080733-perennial-celery-94b8@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023080734-pork-defog-d54c@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
 b2f59e902603 ("drm/i915: Add the gen12_needs_ccs_aux_inv helper")
+29063c6a6a57 ("drm/i915/mtl: Add gsi_offset when emitting aux table invalidation")
+d8b932014c4a ("drm/i915: avoid concurrent writes to aux_inv")
+6639fabb1685 ("drm/i915/xehp: Drop aux table invalidation on FlatCCS platforms")
+ff6b19d3a0f9 ("drm/i915/xehp: Add compute workarounds")
+803efd297e31 ("drm/i915/xehp: compute engine pipe_control")
+0d53879faada ("drm/i915/gt: Order GT registers by MMIO offset")
+bd3de31950ae ("drm/i915/gt: Use consistent offset notation in intel_gt_regs.h")
+680a5cd10b9c ("drm/i915/gt: Cleanup spacing of intel_gt_regs.h")
+ab9e00a3509a ("drm/i915/gt: Use parameterized RING_MI_MODE")
+93cc7aa0b037 ("drm/i915/gt: Move SFC lock bits to intel_engine_regs.h")
+4895b90dd510 ("drm/i915/gt: Drop duplicate register definition for VDBOX_CGCTL3F18")
+22ba60f617bd ("drm/i915: Move [more] GT registers to their own header file")
+0d6419e9c855 ("drm/i915: Move GT registers to their own header file")
+e71a74122863 ("drm/i915: Parameterize MI_PREDICATE registers")
+7d296f369d38 ("drm/i915: Parameterize R_PWR_CLK_STATE register definition")
+2ef6d3bf4262 ("drm/i915/perf: Move OA regs to their own header")
+063565aca373 ("Merge drm/drm-next into drm-intel-next")
 
 thanks,
 
