@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3E3CC771AD5
-	for <lists+stable@lfdr.de>; Mon,  7 Aug 2023 08:54:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B3047771AD9
+	for <lists+stable@lfdr.de>; Mon,  7 Aug 2023 08:55:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231382AbjHGGyv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 7 Aug 2023 02:54:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53010 "EHLO
+        id S231278AbjHGGzl (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 7 Aug 2023 02:55:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53344 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231278AbjHGGyu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 7 Aug 2023 02:54:50 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5AE611A4
-        for <stable@vger.kernel.org>; Sun,  6 Aug 2023 23:54:49 -0700 (PDT)
+        with ESMTP id S231236AbjHGGzj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 7 Aug 2023 02:55:39 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8CE0FE78
+        for <stable@vger.kernel.org>; Sun,  6 Aug 2023 23:55:38 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E329861521
-        for <stable@vger.kernel.org>; Mon,  7 Aug 2023 06:54:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE485C433C8;
-        Mon,  7 Aug 2023 06:54:47 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2099061521
+        for <stable@vger.kernel.org>; Mon,  7 Aug 2023 06:55:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31512C433C8;
+        Mon,  7 Aug 2023 06:55:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691391288;
-        bh=htOcvYaAEinI0AqZD30OnahlYsLVBqHP1NmqJnFMWHU=;
+        s=korg; t=1691391337;
+        bh=ojM7BjKlG/4EzDRvaOks07ZBYQIS8sSlnxOeC5KtUO0=;
         h=Subject:To:Cc:From:Date:From;
-        b=ZxuaCDZJpQ/PZCtlKnzBFovI4962KhPzoE41EBbmF82mdAFzqqS+0y2stnQAEWkD6
-         h8vKc8N5QmCRflx99/NgOyii4Hy6ody67zCwN1pRiERsptPwqrx1snDvNxmTTp/+zA
-         dGW3GyixyVBwpG525M9Q8T5i3LhXQN/pbPqwtKKI=
-Subject: FAILED: patch "[PATCH] ceph: defer stopping mdsc delayed_work" failed to apply to 4.14-stable tree
-To:     xiubli@redhat.com, idryomov@gmail.com, mchangir@redhat.com
+        b=dsv0pTiy2bVHlWgF+NyWEaUUssTL+g79XylxREJ7NM96leG0/8w3J+ZrgfPcXu5Y+
+         27yw47Uu6dHvrz9UqjBjecz56sPl8d7Dn3YxwlUYx7qZn7lFrFeMvw1meQb0ibeWIk
+         fzRnp/eGi94s1WiSPsUuNbSfo1bg47APrA3DPQJo=
+Subject: FAILED: patch "[PATCH] exfat: check if filename entries exceeds max filename length" failed to apply to 6.1-stable tree
+To:     linkinjeon@kernel.org, Yuezhang.Mo@sony.com, dfirblog@gmail.com,
+        sj1557.seo@samsung.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Mon, 07 Aug 2023 08:54:35 +0200
-Message-ID: <2023080735-sprang-moonlit-32f2@gregkh>
+Date:   Mon, 07 Aug 2023 08:55:34 +0200
+Message-ID: <2023080734-remarry-tamer-aabe@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -48,42 +49,25 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 4.14-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
-git cherry-pick -x e7e607bd00481745550389a29ecabe33e13d67cf
+git cherry-pick -x d42334578eba1390859012ebb91e1e556d51db49
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023080735-sprang-moonlit-32f2@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023080734-remarry-tamer-aabe@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
-e7e607bd0048 ("ceph: defer stopping mdsc delayed_work")
-470a5c77eac0 ("ceph: use kill_anon_super helper")
-fa9967734227 ("ceph: fix potential mdsc use-after-free crash")
-3a3430affce5 ("ceph: show tasks waiting on caps in debugfs caps file")
-7b2f936fc828 ("ceph: fix error handling in ceph_get_caps()")
-1199d7da2d29 ("ceph: simplify arguments and return semantics of try_get_cap_refs")
-ff4a80bf2d3f ("ceph: dump granular cap info in "caps" debugfs file")
-0c44a8e0fc55 ("ceph: quota: fix quota subdir mounts")
-2ee9dd958d47 ("ceph: add non-blocking parameter to ceph_try_get_caps()")
-a57d9064e4ee ("ceph: flush pending works before shutdown super")
-9122eed5281e ("ceph: quota: report root dir quota usage in statfs")
-d557c48db730 ("ceph: quota: add counter for snaprealms with quota")
-e3161f17d926 ("ceph: quota: cache inode pointer in ceph_snap_realm")
-0eb6bbe4d9cf ("ceph: fix root quota realm check")
-2596366907f8 ("ceph: don't check quota for snap inode")
-1ab302a0cb14 ("ceph: quota: update MDS when max_bytes is approaching")
-2b83845f8bd7 ("ceph: quota: support for ceph.quota.max_bytes")
-cafe21a4fb30 ("ceph: quota: don't allow cross-quota renames")
-b7a2921765cf ("ceph: quota: support for ceph.quota.max_files")
-fb18a57568c2 ("ceph: quota: add initial infrastructure to support cephfs quotas")
+d42334578eba ("exfat: check if filename entries exceeds max filename length")
+20914ff6dd56 ("exfat: move exfat_entry_set_cache from heap to stack")
+a3ff29a95fde ("exfat: support dynamic allocate bh for exfat_entry_set_cache")
 
 thanks,
 
@@ -91,79 +75,58 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From e7e607bd00481745550389a29ecabe33e13d67cf Mon Sep 17 00:00:00 2001
-From: Xiubo Li <xiubli@redhat.com>
-Date: Tue, 25 Jul 2023 12:03:59 +0800
-Subject: [PATCH] ceph: defer stopping mdsc delayed_work
+From d42334578eba1390859012ebb91e1e556d51db49 Mon Sep 17 00:00:00 2001
+From: Namjae Jeon <linkinjeon@kernel.org>
+Date: Thu, 13 Jul 2023 21:59:37 +0900
+Subject: [PATCH] exfat: check if filename entries exceeds max filename length
 
-Flushing the dirty buffer may take a long time if the cluster is
-overloaded or if there is network issue. So we should ping the
-MDSs periodically to keep alive, else the MDS will blocklist
-the kclient.
+exfat_extract_uni_name copies characters from a given file name entry into
+the 'uniname' variable. This variable is actually defined on the stack of
+the exfat_readdir() function. According to the definition of
+the 'exfat_uni_name' type, the file name should be limited 255 characters
+(+ null teminator space), but the exfat_get_uniname_from_ext_entry()
+function can write more characters because there is no check if filename
+entries exceeds max filename length. This patch add the check not to copy
+filename characters when exceeding max filename length.
 
 Cc: stable@vger.kernel.org
-Link: https://tracker.ceph.com/issues/61843
-Signed-off-by: Xiubo Li <xiubli@redhat.com>
-Reviewed-by: Milind Changire <mchangir@redhat.com>
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+Cc: Yuezhang Mo <Yuezhang.Mo@sony.com>
+Reported-by: Maxim Suhanov <dfirblog@gmail.com>
+Reviewed-by: Sungjong Seo <sj1557.seo@samsung.com>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
 
-diff --git a/fs/ceph/mds_client.c b/fs/ceph/mds_client.c
-index 66048a86c480..5fb367b1d4b0 100644
---- a/fs/ceph/mds_client.c
-+++ b/fs/ceph/mds_client.c
-@@ -4764,7 +4764,7 @@ static void delayed_work(struct work_struct *work)
- 
- 	dout("mdsc delayed_work\n");
- 
--	if (mdsc->stopping)
-+	if (mdsc->stopping >= CEPH_MDSC_STOPPING_FLUSHED)
- 		return;
- 
- 	mutex_lock(&mdsc->mutex);
-@@ -4943,7 +4943,7 @@ void send_flush_mdlog(struct ceph_mds_session *s)
- void ceph_mdsc_pre_umount(struct ceph_mds_client *mdsc)
+diff --git a/fs/exfat/dir.c b/fs/exfat/dir.c
+index 957574180a5e..bc48f3329921 100644
+--- a/fs/exfat/dir.c
++++ b/fs/exfat/dir.c
+@@ -34,6 +34,7 @@ static int exfat_get_uniname_from_ext_entry(struct super_block *sb,
  {
- 	dout("pre_umount\n");
--	mdsc->stopping = 1;
-+	mdsc->stopping = CEPH_MDSC_STOPPING_BEGIN;
+ 	int i, err;
+ 	struct exfat_entry_set_cache es;
++	unsigned int uni_len = 0, len;
  
- 	ceph_mdsc_iterate_sessions(mdsc, send_flush_mdlog, true);
- 	ceph_mdsc_iterate_sessions(mdsc, lock_unlock_session, false);
-diff --git a/fs/ceph/mds_client.h b/fs/ceph/mds_client.h
-index 724307ff89cd..86d2965e68a1 100644
---- a/fs/ceph/mds_client.h
-+++ b/fs/ceph/mds_client.h
-@@ -380,6 +380,11 @@ struct cap_wait {
- 	int			want;
- };
+ 	err = exfat_get_dentry_set(&es, sb, p_dir, entry, ES_ALL_ENTRIES);
+ 	if (err)
+@@ -52,7 +53,10 @@ static int exfat_get_uniname_from_ext_entry(struct super_block *sb,
+ 		if (exfat_get_entry_type(ep) != TYPE_EXTEND)
+ 			break;
  
-+enum {
-+       CEPH_MDSC_STOPPING_BEGIN = 1,
-+       CEPH_MDSC_STOPPING_FLUSHED = 2,
-+};
-+
- /*
-  * mds client state
-  */
-diff --git a/fs/ceph/super.c b/fs/ceph/super.c
-index 3fc48b43cab0..a5f52013314d 100644
---- a/fs/ceph/super.c
-+++ b/fs/ceph/super.c
-@@ -1374,6 +1374,16 @@ static void ceph_kill_sb(struct super_block *s)
- 	ceph_mdsc_pre_umount(fsc->mdsc);
- 	flush_fs_workqueues(fsc);
+-		exfat_extract_uni_name(ep, uniname);
++		len = exfat_extract_uni_name(ep, uniname);
++		uni_len += len;
++		if (len != EXFAT_FILE_NAME_LEN || uni_len >= MAX_NAME_LENGTH)
++			break;
+ 		uniname += EXFAT_FILE_NAME_LEN;
+ 	}
  
-+	/*
-+	 * Though the kill_anon_super() will finally trigger the
-+	 * sync_filesystem() anyway, we still need to do it here
-+	 * and then bump the stage of shutdown to stop the work
-+	 * queue as earlier as possible.
-+	 */
-+	sync_filesystem(s);
-+
-+	fsc->mdsc->stopping = CEPH_MDSC_STOPPING_FLUSHED;
-+
- 	kill_anon_super(s);
+@@ -1079,7 +1083,8 @@ int exfat_find_dir_entry(struct super_block *sb, struct exfat_inode_info *ei,
+ 			if (entry_type == TYPE_EXTEND) {
+ 				unsigned short entry_uniname[16], unichar;
  
- 	fsc->client->extra_mon_dispatch = NULL;
+-				if (step != DIRENT_STEP_NAME) {
++				if (step != DIRENT_STEP_NAME ||
++				    name_len >= MAX_NAME_LENGTH) {
+ 					step = DIRENT_STEP_FILE;
+ 					continue;
+ 				}
 
