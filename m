@@ -2,172 +2,167 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 810227722EE
-	for <lists+stable@lfdr.de>; Mon,  7 Aug 2023 13:42:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7063E772384
+	for <lists+stable@lfdr.de>; Mon,  7 Aug 2023 14:11:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233053AbjHGLmw (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 7 Aug 2023 07:42:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47430 "EHLO
+        id S233317AbjHGMLu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 7 Aug 2023 08:11:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45832 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233042AbjHGLmk (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 7 Aug 2023 07:42:40 -0400
-Received: from NAM04-MW2-obe.outbound.protection.outlook.com (mail-mw2nam04on2087.outbound.protection.outlook.com [40.107.101.87])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 28B932709;
-        Mon,  7 Aug 2023 04:40:04 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=ORjmxrPg9YCUzLtpCuRblNavNgZVeN1InBqFiOzmvjn8w29OFxRLcGwSf8Wr98HWU4ZlRIN2KG8PF0rdQZIlEayVAfzbid47vmr6TEwFqLWrNH6pDbr50O0RW1GPKzPfXL1KRcOLVeqw95v2O86e+EkylyDjfYIwr2wmLi7+Ovwtax03hqFjKGyEHpq9rU1XA5Lm4sYbmtplbWGuz1aJvY4NY9Qe0ebsep+PvhguwVvGMxHkp0+4B18DQx1bOSZaveOZbeHG4l9YDPS+lMg4EkUHQwSUlqQ+dcdl82rirelGD8uPTM5vDAfXHTfxoxGWt/yukWG/F9y/njVlGxPIGA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=nJUiiXf2uIow2qQa7K+aK3Ql8WiLaVoFQanao5VEEtg=;
- b=nhcWbJ1w6eA02VFfHG4940OmNHYqZPv0gSnPzoI1Gi6rlfamfcKzlkns2ugIB3Ka0+Zocc5RE3hIcK8/LurE0arMnZPLhmoVdu64h19a3JkZPFGTTYPgU/7Q3BVGZx5K4J5ThoJVNSBdAoVtU6Zd3aMK4V0ux0SuWYiuGXF2qXzwXmoKnQ6ukRlV0+EXd/Y7/GxRc1hXHW+siON/CZb1tKljaUxHOt4B80H7XiCLWkyUYLutVLYGQmR2rJQCsUO6Uqyc4+zVks2phhDPiHJyHQzV4agChZV+/piomf+co3ryiCZbRSfv4JSUwy/6zqkOJg4/0bAdsDSZaN0EIgbIoQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=nJUiiXf2uIow2qQa7K+aK3Ql8WiLaVoFQanao5VEEtg=;
- b=FiZ/KDPSD0IuVSDeiVoYqcQFg1TUV7/mFG54WmN89W//LRqsBC1IbG7DCvOuPUheJBM7Sf9u986iZKI2JD/LnUktx38rVM1hZTrM0QsIfl0Utxzcbon2KTXHA2Tyl7xoku9sPIgV5kPZYD4je0LWID5yS9k+VBEhNuxWt7pPw94=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from MN0PR12MB6101.namprd12.prod.outlook.com (2603:10b6:208:3cb::10)
- by SA3PR12MB7783.namprd12.prod.outlook.com (2603:10b6:806:314::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6652.26; Mon, 7 Aug
- 2023 11:39:01 +0000
-Received: from MN0PR12MB6101.namprd12.prod.outlook.com
- ([fe80::36f9:ffa7:c770:d146]) by MN0PR12MB6101.namprd12.prod.outlook.com
- ([fe80::36f9:ffa7:c770:d146%7]) with mapi id 15.20.6652.026; Mon, 7 Aug 2023
- 11:39:01 +0000
-Message-ID: <561f0807-a78c-4dab-b8ef-a0f0836902d9@amd.com>
-Date:   Mon, 7 Aug 2023 06:39:02 -0500
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] ACPI: resource: revert "Remove "Zen" specific match and
- quirks"
-Content-Language: en-US
-To:     Hans de Goede <hdegoede@redhat.com>,
-        "Rafael J . Wysocki" <rafael@kernel.org>
-Cc:     linux-acpi@vger.kernel.org,
-        Linux regressions mailing list <regressions@lists.linux.dev>,
-        stable@vger.kernel.org, August Wikerfors <git@augustwikerfors.se>
-References: <20230806151453.10690-1-hdegoede@redhat.com>
- <130cb2e0-90b4-7d7b-1633-3469c859b30f@amd.com>
- <b37098da-4437-ef5b-53ae-a536f550df08@redhat.com>
- <0c1cb09a-2e78-65ad-61c1-174e5226d08e@amd.com>
- <8f0cbe61-99aa-8c45-c29e-69c27ba96d81@redhat.com>
-From:   Mario Limonciello <mario.limonciello@amd.com>
-In-Reply-To: <8f0cbe61-99aa-8c45-c29e-69c27ba96d81@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: SA0PR11CA0048.namprd11.prod.outlook.com
- (2603:10b6:806:d0::23) To MN0PR12MB6101.namprd12.prod.outlook.com
- (2603:10b6:208:3cb::10)
+        with ESMTP id S233318AbjHGMLr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 7 Aug 2023 08:11:47 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E39A2E79;
+        Mon,  7 Aug 2023 05:11:18 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E423F61940;
+        Mon,  7 Aug 2023 12:11:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E611C433C7;
+        Mon,  7 Aug 2023 12:11:02 +0000 (UTC)
+From:   Huacai Chen <chenhuacai@loongson.cn>
+To:     "Paul E . McKenney" <paulmck@kernel.org>,
+        Frederic Weisbecker <frederic@kernel.org>,
+        Neeraj Upadhyay <quic_neeraju@quicinc.com>,
+        Joel Fernandes <joel@joelfernandes.org>,
+        Josh Triplett <josh@joshtriplett.org>,
+        Boqun Feng <boqun.feng@gmail.com>
+Cc:     Steven Rostedt <rostedt@goodmis.org>,
+        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+        Lai Jiangshan <jiangshanlai@gmail.com>,
+        Zqiang <qiang.zhang1211@gmail.com>,
+        Sergey Senozhatsky <senozhatsky@chromium.org>,
+        chenhuacai@kernel.org, rcu@vger.kernel.org,
+        Huacai Chen <chenhuacai@loongson.cn>, stable@vger.kernel.org,
+        Binbin Zhou <zhoubinbin@loongson.cn>
+Subject: [PATCH] rcu: Set jiffies_stall to two periods later in rcu_cpu_stall_reset()
+Date:   Mon,  7 Aug 2023 20:10:45 +0800
+Message-Id: <20230807121045.2574938-1-chenhuacai@loongson.cn>
+X-Mailer: git-send-email 2.39.3
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MN0PR12MB6101:EE_|SA3PR12MB7783:EE_
-X-MS-Office365-Filtering-Correlation-Id: e199206c-6adc-4d71-bb48-08db973ae551
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: uvP/o26+BMTIXM/2j+NiG0QthCKd3KoPFHPP0aNRxsK9VUDAO8ufkBHLkXaMeBkwmccmTzNGi/zcKbOUjr7tQ0B4hHvbx2vNWvWHRlOiCMzObqf1qH57qVXbnxWOs85XP2pA4XKskU6xDL/5/ivLtmMK+DB30s57WIBbC8s3dkdbqHygJN6FEq36zGheYDCit0rSau7d2RsxdlqM8C1yElm6aGHssPkHkOFt/YBU47l2ESTEZmnYSKIJhR08LLp24gx8Emg5Gkx/7kH3t5RENQ2bBwvoiHWHzaLAfOiUkGgp0AybYZhIeFX1G2mHl0zpzTtkdzAKNwP1Eco5VLAbJLRbgiqEialqb4QSHENwkNZlxDxJ5FS0wTZc+ZPqhYkpME3LDlPq10xpOekyHGH8/67bFntRVLaWWMrlXtCXLk0ZtRxQ4sjy0oN50W0J0OMYX1Ce/F3ZhSX7Flg0jn+DWtI/ynmIB8RZeXdvbDzHEyPdvYJVg61EW0KZ+FDeeWkoOvE1fr7CDcSZB4LU/duLTQHdITZhaC/ZPLv8wN6/CA6Pzi5jK0iP2npLP282kpUu4RnLZ+IrXS8go072iUsdqlIrQSRvH/UgzAmXaa+DloVMlJwSK4qS1aMXrv3eZmbqpXbMFBHMsD1aHKqr9iZx4g==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR12MB6101.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(39860400002)(396003)(136003)(346002)(376002)(366004)(451199021)(186006)(1800799003)(2616005)(36756003)(6512007)(4326008)(316002)(86362001)(478600001)(54906003)(110136005)(38100700002)(66946007)(6486002)(66556008)(66476007)(31696002)(6506007)(41300700001)(8676002)(8936002)(2906002)(83380400001)(5660300002)(31686004)(44832011)(45980500001)(43740500002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?VVZEakpldDZDTUdJSktZd3ZZV3ZMa1B0TWo0aXYrdjJteTd4bGo3VWhnbWhS?=
- =?utf-8?B?eUNCenYvUGF0aWlFUnJ3L0lvM0VGVjdWUXV4cVdTMXFZcDhaUmtueEF1dHA0?=
- =?utf-8?B?NHh4L3lDaktTaVc2SUpyZTErUDJ3dzNuamVUSUd4TFcxb1gra3V4cTJqOEFo?=
- =?utf-8?B?bG4yT01CcmcrVnVuWWxLZmxFR29BOHJOUE1acW5rWUZnWUIyUDFXVDFZdHFz?=
- =?utf-8?B?NHZuTU9mZGE2UWpIbVhZUlphSE5lamprS29UZG8vNzNwc253ajI5cGRkL2Fo?=
- =?utf-8?B?ZHI5SStQcGI1NXRsNXRlRXJNeG04VnhUZjBoV05JTHo5Sk9kMnhydW9ZZWtq?=
- =?utf-8?B?RFNSTitWYVM3STZvQ1dJQUdPVVJWM1VBUEo3WnNTekZsbW4xbndNOU8xM0I0?=
- =?utf-8?B?N0UyWXVyZ25ybWFlSm1ndXZPWDNrcXZ4dlZwaHBBUzA5bHdQVGQwemdOTytU?=
- =?utf-8?B?a1NtYk15ZXM4R3dRa0pCZW95UGR4VG1QV25CemdiTWVINDB2VnA5ODczajhY?=
- =?utf-8?B?ZUphWGVtUi8wMUJjSW5hdDBSOEdoSGdUUVptc05LcmQ4MXRGQ2VWRzRCNk9F?=
- =?utf-8?B?a0M5UTV4OE14RVBTTWhTYzl4cDBOUDFpclZjQjNaZFQ2ZkF1MVVLb3YwK2Mr?=
- =?utf-8?B?cWxLM3BCazdiYTBrQ3BTYUs2bDU0d3RHSHRqbGtFVVgzUXh3d1ZZeVBlV2Jj?=
- =?utf-8?B?VTl4ZlNPb3Z1ZXA4WXpGV2lEM0dlUkF1dk1IUjhJT0lVWmowSW9KZUorcDhO?=
- =?utf-8?B?ZmcrdVk0RkpBNFdYUTNBSlMyNVpMVVlkcjRpM0dtNTJHS2QwUjdnc1pIRFNW?=
- =?utf-8?B?VkUzYzdaK3lueHhLT3RobkZnWE8rRDY5Z0NNZElRbTVudXJnZE12cXBqdEIz?=
- =?utf-8?B?d1BRZ0RmSCtpazJUc01CYytXdDg3R0d0enhxeU94Szc3TndWaWlSTGpzWGJv?=
- =?utf-8?B?ZnFTRnpORVBtQllmV09ndkhHNTJKVmErSXphQUYxRlhUaVJkN2NFd3VBczJ2?=
- =?utf-8?B?K1IvWHJHNGdxeTBpOWlSRzBVc2pyQUdnNXVZc09NMmkzQ01oUDFBQ0h5MFNO?=
- =?utf-8?B?TEtQVGwybmJpYWlsZ0pQK3g4YkRFUWVoVlJtNm82eENmUnc5d3pQcHRqOUxN?=
- =?utf-8?B?b1VDQjZQeTNMZ1MvY3pKdUxKMjZsSGFUY2NnSTNhb2dJNzdGWGR0SVd0VHpw?=
- =?utf-8?B?dEUwQnYxRFBzbXVzelIrUEkzR0dGamM4ZnJTMEVYbytlajNib1pZUVJWYTQy?=
- =?utf-8?B?YXRtZTBaUFRNazU2Tmw1VERDZ2hMcmRCU3hIMEJEODZXeksyWGJxZW1ydWZE?=
- =?utf-8?B?VitrelBLQy8vMUJFY1gwUURKRmE2QTRVdHVmeHpGYWdEaFF0dmZyU2prUTJO?=
- =?utf-8?B?Qk1FbkRBdTQxVjRYNlNzU2lEM2NUbzRsWVRDOEpwY04wbUxvbmdmY21LdC83?=
- =?utf-8?B?R3RKcStRSlFpdzBaZDduTkxpSXk1RFB3TEE4NDZudWwwekVSTVFWejlLVWw1?=
- =?utf-8?B?UE81UExOVG1pYTIrd1pPWGRuVUowaWl1M2lxV3BJYXRkNHpDdkhpbE8zemJN?=
- =?utf-8?B?U1E3UzlUc3YvaW94a3Zma052TTFYMGI4UHhWcEJiVWhvS0lZcmpNaVNWeWgz?=
- =?utf-8?B?Y2YySmlPcjBlcGFjdG44dlhFV2l0THBreTZnVWVDeDlyMFVpaS9JOTdvRmVO?=
- =?utf-8?B?Y0tiNStiVXVhZTM0TU5la0ZCbC9wNEZra2pwQWZxOVBkclZFdzRBbytyd3ZW?=
- =?utf-8?B?ckxLQ3dZOW1KSkkzR2hudVY4aWphU3hMOWtkMWcrSHg5ay95RjdGTk9rclg5?=
- =?utf-8?B?TWh1UlN3a3dTcjVsb1JJUnZuMlRISWx0UnNabmlvL0swU25GYldEcGdnTURm?=
- =?utf-8?B?OGJqS1VHR1ZkS2JxMjVRMFJnNzk1RVpnaTdsY1hGdGJmUVBYcG5MOEg3TUgr?=
- =?utf-8?B?MVhIWHdYNk5nVHNCWXNvUnRhQStsU2ZCeEpVZ1VLQkluQ1haVzllZnlJd25D?=
- =?utf-8?B?UGJ6UVRrUCtORnFzb0IrM2hmemd3RjM0T0JaSm96YkxvMEdZSXlnK3dQUmZz?=
- =?utf-8?B?azZiNGtyOGE1emoyMDJpQWVaYU9GcDdobTRRNFdxTlpFUnAzUkNVLy90NVc5?=
- =?utf-8?B?cUxubW9FamU1cFdpeVl0VTJOdUpQdHlUWGQ2b2JzS3pjT1dxTmYwZHIzeTRY?=
- =?utf-8?B?OFE9PQ==?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e199206c-6adc-4d71-bb48-08db973ae551
-X-MS-Exchange-CrossTenant-AuthSource: MN0PR12MB6101.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Aug 2023 11:39:01.5817
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Ote+JmPlvvNlKxLLo9Mu/kzIzMSxizbXQC6qsdoiH4+NA/rnfOMGnZzz+2C60j0H7aQ6fkyLgmasCCcOulAJUQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR12MB7783
-X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE
-        autolearn=no autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-0.7 required=5.0 tests=BAYES_00,
+        HEADER_FROM_DIFFERENT_DOMAINS,HEXHASH_WORD,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
->> We haven't even given a try to fixing it; I think the revert is still hasty.
->>
->> I don't have a machine that can reproduce this failure, but I did confirm that my keyboard still works with this:
->>
->> diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
->> index 1dd8d5aebf678..b74d7d8cc8630 100644
->> --- a/drivers/acpi/resource.c
->> +++ b/drivers/acpi/resource.c
->> @@ -19,7 +19,7 @@
->>   #include <linux/dmi.h>
->>
->>   #ifdef CONFIG_X86
->> -#define valid_IRQ(i) (((i) != 0) && ((i) != 2))
->> +#define valid_IRQ(i) ((i) > 2)
->>   static inline bool acpi_iospace_resource_valid(struct resource *res)
->>   {
->>          /* On X86 IO space is limited to the [0 - 64K] IO port range */
->>
->> Can we perhaps see if that works instead for some affected people?
-> 
-> That does not just skip the override stuff, it will make the kernel return irqresource_disabled(res, 1) for the kbd IRQ:
-> 
-> static inline void irqresource_disabled(struct resource *res, u32 irq)
-> {
->          res->start = irq;
->          res->end = irq;
->          res->flags |= IORESOURCE_IRQ | IORESOURCE_DISABLED | IORESOURCE_UNSET;
-> }
-> 
-> Now not much code seems to actually check the IORESOURCE_DISABLED | IORESOURCE_UNSET flags, so this might still work but it does not seem like the right thing to do.
-> 
+The KGDB initial breakpoint gets an rcu stall warning after commit
+a80be428fbc1f1f3bc9ed924 ("rcu: Do not disable GP stall detection in
+rcu_cpu_stall_reset()").
 
-Right; so it makes the resource get skipped when PNP is enumerated.
+[   53.452051] rcu: INFO: rcu_preempt self-detected stall on CPU
+[   53.487950] rcu:     3-...0: (1 ticks this GP) idle=0e2c/1/0x4000000000000000 softirq=375/375 fqs=8
+[   53.528243] rcu:     (t=12297 jiffies g=-995 q=1 ncpus=4)
+[   53.564840] CPU: 3 PID: 1 Comm: swapper/0 Not tainted 6.5.0-rc2+ #4848
+[   53.603005] Hardware name: Loongson Loongson-3A5000-HV-7A2000-1w-V0.1-CRB/Loongson-LS3A5000-7A2000-1w-CRB-V1.21, BIOS Loongson-UDK2018-V2.0.05099-beta8 08
+[   53.682062] pc 9000000000332100 ra 90000000003320f4 tp 90000001000a0000 sp 90000001000a3710
+[   53.724934] a0 9000000001d4b488 a1 0000000000000000 a2 0000000000000001 a3 0000000000000000
+[   53.768179] a4 9000000001d526c8 a5 90000001000a38f0 a6 000000000000002c a7 0000000000000000
+[   53.810751] t0 00000000000002b0 t1 0000000000000004 t2 900000000131c9c0 t3 fffffffffffffffa
+[   53.853249] t4 0000000000000080 t5 90000001002ac190 t6 0000000000000004 t7 9000000001912d58
+[   53.895684] t8 0000000000000000 u0 90000000013141a0 s9 0000000000000028 s0 9000000001d512f0
+[   53.937633] s1 9000000001d51278 s2 90000001000a3798 s3 90000000019fc410 s4 9000000001d4b488
+[   53.979486] s5 9000000001d512f0 s6 90000000013141a0 s7 0000000000000078 s8 9000000001d4b450
+[   54.021175]    ra: 90000000003320f4 kgdb_cpu_enter+0x534/0x640
+[   54.060150]   ERA: 9000000000332100 kgdb_cpu_enter+0x540/0x640
+[   54.098347]  CRMD: 000000b0 (PLV0 -IE -DA +PG DACF=CC DACM=CC -WE)
+[   54.136621]  PRMD: 0000000c (PPLV0 +PIE +PWE)
+[   54.172192]  EUEN: 00000000 (-FPE -SXE -ASXE -BTE)
+[   54.207838]  ECFG: 00071c1c (LIE=2-4,10-12 VS=7)
+[   54.242503] ESTAT: 00000800 [INT] (IS=11 ECode=0 EsubCode=0)
+[   54.277996]  PRID: 0014c011 (Loongson-64bit, Loongson-3A5000-HV)
+[   54.313544] CPU: 3 PID: 1 Comm: swapper/0 Not tainted 6.5.0-rc2+ #4848
+[   54.430170] Stack : 0072617764726148 0000000000000000 9000000000223504 90000001000a0000
+[   54.472308]         9000000100073a90 9000000100073a98 0000000000000000 9000000100073bd8
+[   54.514413]         9000000100073bd0 9000000100073bd0 9000000100073a00 0000000000000001
+[   54.556018]         0000000000000001 9000000100073a98 99828271f24e961a 90000001002810c0
+[   54.596924]         0000000000000001 0000000000010003 0000000000000000 0000000000000001
+[   54.637115]         ffff8000337cdb80 0000000000000001 0000000006360000 900000000131c9c0
+[   54.677049]         0000000000000000 0000000000000000 90000000017b4c98 9000000001912000
+[   54.716394]         9000000001912f68 9000000001913000 9000000001912f70 00000000000002b0
+[   54.754880]         90000000014a8840 0000000000000000 900000000022351c 0000000000000000
+[   54.792372]         00000000000002b0 000000000000000c 0000000000000000 0000000000071c1c
+[   54.829302]         ...
+[   54.859163] Call Trace:
+[   54.859165] [<900000000022351c>] show_stack+0x5c/0x180
+[   54.918298] [<90000000012f6100>] dump_stack_lvl+0x60/0x88
+[   54.949251] [<90000000012dd5d8>] rcu_dump_cpu_stacks+0xf0/0x148
+[   54.981116] [<90000000002d2fb8>] rcu_sched_clock_irq+0xb78/0xe60
+[   55.012744] [<90000000002e47cc>] update_process_times+0x6c/0xc0
+[   55.044169] [<90000000002f65d4>] tick_sched_timer+0x54/0x100
+[   55.075488] [<90000000002e5174>] __hrtimer_run_queues+0x154/0x240
+[   55.107347] [<90000000002e6288>] hrtimer_interrupt+0x108/0x2a0
+[   55.139112] [<9000000000226418>] constant_timer_interrupt+0x38/0x60
+[   55.170749] [<90000000002b3010>] __handle_irq_event_percpu+0x50/0x160
+[   55.203141] [<90000000002b3138>] handle_irq_event_percpu+0x18/0x80
+[   55.235064] [<90000000002b9d54>] handle_percpu_irq+0x54/0xa0
+[   55.266241] [<90000000002b2168>] generic_handle_domain_irq+0x28/0x40
+[   55.298466] [<9000000000aba95c>] handle_cpu_irq+0x5c/0xa0
+[   55.329749] [<90000000012f7270>] handle_loongarch_irq+0x30/0x60
+[   55.361476] [<90000000012f733c>] do_vint+0x9c/0x100
+[   55.391737] [<9000000000332100>] kgdb_cpu_enter+0x540/0x640
+[   55.422440] [<9000000000332b64>] kgdb_handle_exception+0x104/0x180
+[   55.452911] [<9000000000232478>] kgdb_loongarch_notify+0x38/0xa0
+[   55.481964] [<900000000026b4d4>] notify_die+0x94/0x100
+[   55.509184] [<90000000012f685c>] do_bp+0x21c/0x340
+[   55.562475] [<90000000003315b8>] kgdb_compiled_break+0x0/0x28
+[   55.590319] [<9000000000332e80>] kgdb_register_io_module+0x160/0x1c0
+[   55.618901] [<9000000000c0f514>] configure_kgdboc+0x154/0x1c0
+[   55.647034] [<9000000000c0f5e0>] kgdboc_probe+0x60/0x80
+[   55.674647] [<9000000000c96da8>] platform_probe+0x68/0x100
+[   55.702613] [<9000000000c938e0>] really_probe+0xc0/0x340
+[   55.730528] [<9000000000c93be4>] __driver_probe_device+0x84/0x140
+[   55.759615] [<9000000000c93cdc>] driver_probe_device+0x3c/0x120
+[   55.787990] [<9000000000c93e8c>] __device_attach_driver+0xcc/0x160
+[   55.817145] [<9000000000c91290>] bus_for_each_drv+0x90/0x100
+[   55.845654] [<9000000000c94328>] __device_attach+0xa8/0x1a0
+[   55.874145] [<9000000000c925f0>] bus_probe_device+0xb0/0xe0
+[   55.902572] [<9000000000c8ec7c>] device_add+0x65c/0x860
+[   55.930635] [<9000000000c96704>] platform_device_add+0x124/0x2c0
+[   55.959669] [<9000000001452b38>] init_kgdboc+0x58/0xa0
+[   55.987677] [<900000000022015c>] do_one_initcall+0x7c/0x1e0
+[   56.016134] [<9000000001420f1c>] kernel_init_freeable+0x22c/0x2a0
+[   56.045128] [<90000000012f923c>] kernel_init+0x20/0x124
 
-To me it seems that it should match the theme of 'don't reprogram the 
-polarity and triggering for the IRQ'.  When the IRQ is set up by i8042 
-then it will try to go and get a resource and wouldn't find one.  So 
-when the IRQ is set up it should match the values already programmed.
+Currently rcu_cpu_stall_reset() set rcu_state.jiffies_stall to one check
+period later, i.e. jiffies + rcu_jiffies_till_stall_check(). But jiffies
+is only updated in the timer interrupt, so when kgdb_cpu_enter() begins
+to run there may already be nearly one rcu check period after jiffies.
+Since all interrupts are disabled during kgdb_cpu_enter(), jiffies will
+not be updated. When kgdb_cpu_enter() returns, rcu_state.jiffies_stall
+maybe already gets timeout.
 
-I do wonder if both IRQ 1 and IRQ 12 both would need to be skipped for 
-this to work (if people are affected by both i8042 devices).
+We can set rcu_state.jiffies_stall to two rcu check periods later, i.e.
+jiffies + (rcu_jiffies_till_stall_check() * 2) in rcu_cpu_stall_reset()
+to avoid this problem.
+
+Cc: stable@vger.kernel.org
+Fixes: a80be428fbc1f1f3bc9ed924 ("rcu: Do not disable GP stall detection in rcu_cpu_stall_reset()")
+Reported-off-by: Binbin Zhou <zhoubinbin@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+---
+ kernel/rcu/tree_stall.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/kernel/rcu/tree_stall.h b/kernel/rcu/tree_stall.h
+index b10b8349bb2a..a35afd19e2bf 100644
+--- a/kernel/rcu/tree_stall.h
++++ b/kernel/rcu/tree_stall.h
+@@ -154,7 +154,7 @@ static void panic_on_rcu_stall(void)
+ void rcu_cpu_stall_reset(void)
+ {
+ 	WRITE_ONCE(rcu_state.jiffies_stall,
+-		   jiffies + rcu_jiffies_till_stall_check());
++		   jiffies + (rcu_jiffies_till_stall_check() * 2));
+ }
+ 
+ //////////////////////////////////////////////////////////////////////////////
+-- 
+2.39.3
+
