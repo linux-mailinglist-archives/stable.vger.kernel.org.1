@@ -2,41 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9005A771B41
-	for <lists+stable@lfdr.de>; Mon,  7 Aug 2023 09:11:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CC79B771B40
+	for <lists+stable@lfdr.de>; Mon,  7 Aug 2023 09:11:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231472AbjHGHL6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 7 Aug 2023 03:11:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33334 "EHLO
+        id S231468AbjHGHLz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 7 Aug 2023 03:11:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33314 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231470AbjHGHL5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 7 Aug 2023 03:11:57 -0400
+        with ESMTP id S231470AbjHGHLy (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 7 Aug 2023 03:11:54 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 694ECE78
-        for <stable@vger.kernel.org>; Mon,  7 Aug 2023 00:11:56 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 77FA795
+        for <stable@vger.kernel.org>; Mon,  7 Aug 2023 00:11:53 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id F2A41615AC
-        for <stable@vger.kernel.org>; Mon,  7 Aug 2023 07:11:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D7CBC433C8;
-        Mon,  7 Aug 2023 07:11:54 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0FA4B615B3
+        for <stable@vger.kernel.org>; Mon,  7 Aug 2023 07:11:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BA3BC433C8;
+        Mon,  7 Aug 2023 07:11:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691392315;
-        bh=mKvgneXDUkgGR47nNHNjo/jQW/5Ek2kXg9XQz7H0FM4=;
+        s=korg; t=1691392312;
+        bh=O1p0hZR2jJWu52rzeF22TrJKe+zV6kXTHdhrWElXqYg=;
         h=Subject:To:Cc:From:Date:From;
-        b=LFyBI6XJXIJqkGELvF1zUSvrM+vgxCnu/xVgANHofDFSyDddaWc+SUOv9vu/dkmds
-         rtDwCvmjfqpHCJe2Mi69PnlFu5V1ekNALOFSX44fZF5Pl/5TMpX2dXfkyhBciC2yYN
-         ayOyzhOlSjqO7uHI4yYrqpO7vCiiuOYishQa5MvE=
-Subject: FAILED: patch "[PATCH] drm/i915/gt: Support aux invalidation on all engines" failed to apply to 6.1-stable tree
+        b=jgO7u/4voQVlfxlCkgeE6iPAFkQDS2npKyTC8D1l33mugBThVF+KIVFM9cGV9ttC/
+         68R+vfkKE0ff2R3jFQF/A8TWnuEYrzsg0BsGku1gGVO2tVfu/c0TaWIrwyJRzNRd58
+         poqa5UV3knacQLiY+uZa/IGuDLVD3ygn4j2xCrUs=
+Subject: FAILED: patch "[PATCH] drm/i915/gt: Support aux invalidation on all engines" failed to apply to 5.15-stable tree
 To:     andi.shyti@linux.intel.com, andrzej.hajda@intel.com,
         jonathan.cavitt@intel.com, matthew.d.roper@intel.com,
         stable@vger.kernel.org, tvrtko.ursulin@intel.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
 Date:   Mon, 07 Aug 2023 09:11:35 +0200
-Message-ID: <2023080734-ladder-viscous-30c9@gregkh>
+Message-ID: <2023080735-maternal-grafting-7c1c@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -50,19 +50,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x 6a35f22d222528e1b157c6978c9424d2f8cbe0a1
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023080734-ladder-viscous-30c9@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023080735-maternal-grafting-7c1c@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
@@ -70,6 +70,22 @@ Possible dependencies:
 0fde2f23516a ("drm/i915/gt: Poll aux invalidation register bit on invalidation")
 b2f59e902603 ("drm/i915: Add the gen12_needs_ccs_aux_inv helper")
 d14560ac1b59 ("drm/i915/gt: Cleanup aux invalidation registers")
+29063c6a6a57 ("drm/i915/mtl: Add gsi_offset when emitting aux table invalidation")
+1a1a5a315ee8 ("drm/i915/pvc: skip all copy engines from aux table invalidate")
+d8b932014c4a ("drm/i915: avoid concurrent writes to aux_inv")
+6639fabb1685 ("drm/i915/xehp: Drop aux table invalidation on FlatCCS platforms")
+ff6b19d3a0f9 ("drm/i915/xehp: Add compute workarounds")
+803efd297e31 ("drm/i915/xehp: compute engine pipe_control")
+0d53879faada ("drm/i915/gt: Order GT registers by MMIO offset")
+bd3de31950ae ("drm/i915/gt: Use consistent offset notation in intel_gt_regs.h")
+680a5cd10b9c ("drm/i915/gt: Cleanup spacing of intel_gt_regs.h")
+ab9e00a3509a ("drm/i915/gt: Use parameterized RING_MI_MODE")
+93cc7aa0b037 ("drm/i915/gt: Move SFC lock bits to intel_engine_regs.h")
+4895b90dd510 ("drm/i915/gt: Drop duplicate register definition for VDBOX_CGCTL3F18")
+22ba60f617bd ("drm/i915: Move [more] GT registers to their own header file")
+0d6419e9c855 ("drm/i915: Move GT registers to their own header file")
+e71a74122863 ("drm/i915: Parameterize MI_PREDICATE registers")
+7d296f369d38 ("drm/i915: Parameterize R_PWR_CLK_STATE register definition")
 
 thanks,
 
