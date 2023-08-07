@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1EE13771B37
-	for <lists+stable@lfdr.de>; Mon,  7 Aug 2023 09:11:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4C2BA771B38
+	for <lists+stable@lfdr.de>; Mon,  7 Aug 2023 09:11:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229934AbjHGHLZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 7 Aug 2023 03:11:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32906 "EHLO
+        id S231234AbjHGHLa (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 7 Aug 2023 03:11:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32986 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231234AbjHGHLZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 7 Aug 2023 03:11:25 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2FC7495
-        for <stable@vger.kernel.org>; Mon,  7 Aug 2023 00:11:24 -0700 (PDT)
+        with ESMTP id S231468AbjHGHL2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 7 Aug 2023 03:11:28 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B1F2171E
+        for <stable@vger.kernel.org>; Mon,  7 Aug 2023 00:11:27 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B54E8615B3
-        for <stable@vger.kernel.org>; Mon,  7 Aug 2023 07:11:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEDB9C433C7;
-        Mon,  7 Aug 2023 07:11:22 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B56BA615B2
+        for <stable@vger.kernel.org>; Mon,  7 Aug 2023 07:11:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD0D1C433C7;
+        Mon,  7 Aug 2023 07:11:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691392283;
-        bh=TsYO0DboiicZu3AtSDmPLnhT1kXaiWrmnLh4V1VePK4=;
+        s=korg; t=1691392286;
+        bh=o25qnkcHSTBvd1+3MNxqSLS4jI+G0HU4FDoJLRtO+Mk=;
         h=Subject:To:Cc:From:Date:From;
-        b=vLF2R9mdW/JYiOR7uxDTltvW1jPSUwDt5GT/aMgdwoqigf/8BK+jZII6XBP+w6uB1
-         +wXvy/R9b/HfcbTctbUTvipc1adt/nXtO2g2DPB9JmNYWssCokx4y49c5w01CdYXcY
-         bJlPouWYFoRuQfInUcAiP4xZpntdMzrXdmEDbfVg=
-Subject: FAILED: patch "[PATCH] drm/i915/gt: Rename flags with bit_group_X according to the" failed to apply to 6.4-stable tree
+        b=2lcjR29ZcrbECbHJJ0GjeIzvSWX+jqPDbJQ0ioJsuw33JBhj3ZCQ3Qn2Um7NU3rkC
+         450JJOUtTa5ie3jm7M0ykW3l9BqkElDBlaLKTgivarGGw8VqYyLG9NW8MQZWh6Wkz6
+         mxZFF+5TUOIHJ3oYB4PgwJtViNeWHysLSb4BWEPw=
+Subject: FAILED: patch "[PATCH] drm/i915/gt: Rename flags with bit_group_X according to the" failed to apply to 6.1-stable tree
 To:     andi.shyti@linux.intel.com, andrzej.hajda@intel.com,
         matthew.d.roper@intel.com, nirmoy.das@intel.com,
         stable@vger.kernel.org, tvrtko.ursulin@intel.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Mon, 07 Aug 2023 09:11:20 +0200
-Message-ID: <2023080720-silica-postnasal-108e@gregkh>
+Date:   Mon, 07 Aug 2023 09:11:21 +0200
+Message-ID: <2023080721-urethane-unedited-c67b@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -50,23 +50,25 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.4-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
 git cherry-pick -x 592b228f12e15867a63e3a6eeeb54c5c12662a62
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023080720-silica-postnasal-108e@gregkh' --subject-prefix 'PATCH 6.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023080721-urethane-unedited-c67b@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
-
+592b228f12e1 ("drm/i915/gt: Rename flags with bit_group_X according to the datasheet")
+78a6ccd65fa3 ("drm/i915/gt: Ensure memory quiesced before invalidation")
+d922b80b1010 ("drm/i915/gt: Add workaround 14016712196")
 
 thanks,
 
