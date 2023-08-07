@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 07D95771B15
+	by mail.lfdr.de (Postfix) with ESMTP id 51D42771B16
 	for <lists+stable@lfdr.de>; Mon,  7 Aug 2023 09:05:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231346AbjHGHFt (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 7 Aug 2023 03:05:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59668 "EHLO
+        id S231463AbjHGHFu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 7 Aug 2023 03:05:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59498 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231463AbjHGHFq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 7 Aug 2023 03:05:46 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 961811701
-        for <stable@vger.kernel.org>; Mon,  7 Aug 2023 00:05:37 -0700 (PDT)
+        with ESMTP id S231468AbjHGHFr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 7 Aug 2023 03:05:47 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4BA3E1724
+        for <stable@vger.kernel.org>; Mon,  7 Aug 2023 00:05:41 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 27A14611C0
-        for <stable@vger.kernel.org>; Mon,  7 Aug 2023 07:05:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F62EC433C7;
-        Mon,  7 Aug 2023 07:05:35 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D4123615B0
+        for <stable@vger.kernel.org>; Mon,  7 Aug 2023 07:05:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7491C433C8;
+        Mon,  7 Aug 2023 07:05:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691391936;
-        bh=RvjmhgjnPrVUsLQLB+K2gVG+ROLj4IBapo+O/LT5XV0=;
+        s=korg; t=1691391940;
+        bh=mf7dAq3PD+AggAHPLVLaW2rv/3JlyNWJOEmUjtCpCB0=;
         h=Subject:To:Cc:From:Date:From;
-        b=07NrK5IZ4vxHjgxnwIqR0CWs0bNSKGbIl3ZGXK6EBxKh5N4HWas43P13+MusthGD/
-         SWIdBgR00JhgdhzVGIDIhnCN/C8Ik1kL18cB06MxxxaAtf/94OVL8tzqve1TSszvX8
-         mI2tTCQP2cWxYgBmfTKDreEnEhzgsrs+PR5CYPmA=
-Subject: FAILED: patch "[PATCH] powerpc/ftrace: Create a dummy stackframe to fix stack unwind" failed to apply to 5.15-stable tree
+        b=EK2Z8lQ5u/QU+bd3ggDtA8s3rgj9Rs+wI72mTycEzAYKjhwwmOzwISdbBjoettlS0
+         NL37Qt2iKTXYY5l16YnveyDnC9i/x+x/CuO4kIisyijNNv8zmxwtGFXNkjsco2TLyt
+         69kP5SxphHin6ESWY7CpB9hNp+TwVFExfNGyiPe4=
+Subject: FAILED: patch "[PATCH] powerpc/ftrace: Create a dummy stackframe to fix stack unwind" failed to apply to 5.10-stable tree
 To:     naveen@kernel.org, mpe@ellerman.id.au
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Mon, 07 Aug 2023 09:05:33 +0200
-Message-ID: <2023080733-wife-elope-de1b@gregkh>
+Date:   Mon, 07 Aug 2023 09:05:35 +0200
+Message-ID: <2023080735-masculine-twister-ba16@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -48,19 +48,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x 41a506ef71eb38d94fe133f565c87c3e06ccc072
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023080733-wife-elope-de1b@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023080735-masculine-twister-ba16@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
