@@ -2,271 +2,202 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B4964771BBC
-	for <lists+stable@lfdr.de>; Mon,  7 Aug 2023 09:45:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4A172771BE6
+	for <lists+stable@lfdr.de>; Mon,  7 Aug 2023 09:57:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229704AbjHGHpD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 7 Aug 2023 03:45:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44428 "EHLO
+        id S229926AbjHGH5O (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 7 Aug 2023 03:57:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49230 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229582AbjHGHpC (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 7 Aug 2023 03:45:02 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD16A1700
-        for <stable@vger.kernel.org>; Mon,  7 Aug 2023 00:44:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1691394254;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=+JCQZR3EjBoY9Gn4OenyJbbS8uuNzlYA3xL1UGjbFk8=;
-        b=g/COw+gCGSxhsMoxgpM1lEAVFZxT+bp81/IFhdZbAozCEnq5wyLEnzX7u4mVBGDgO8/Ph1
-        Q6ufIv+SMNPkvVsOxMn57diw9gMyraJLC8GuhnXORP4Oj4HC1dk0np4LL32m96t6vSkP3E
-        vpYYF7wHFL2gziyOSiL7JtKqGc15oXA=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-104-bvdyp_g0Ot-KEhBhTBN_dQ-1; Mon, 07 Aug 2023 03:44:12 -0400
-X-MC-Unique: bvdyp_g0Ot-KEhBhTBN_dQ-1
-Received: by mail-ej1-f69.google.com with SMTP id a640c23a62f3a-99bc8f1290eso284897466b.3
-        for <stable@vger.kernel.org>; Mon, 07 Aug 2023 00:44:12 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691394251; x=1691999051;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=+JCQZR3EjBoY9Gn4OenyJbbS8uuNzlYA3xL1UGjbFk8=;
-        b=eUxZ7OXpZRpDIIA6Amd05rJyaOrVx40xCHu/+fkoPxymsEkZlQx35sQxXy4oP5NWQ9
-         1604Pth4bB1buaSLwZYUolTuc11le254qt+NrrdE+HvnEGEtxbt5Bv8gn+z8xJ+F1lbZ
-         zafCZCDboQbxv52hHmTb2rxWTMPFxRlXId+E2U/94o7CqAhgFepDS6g+3PkgKI7KJZ8n
-         Jw6a8i7tDg3EXvOp/PoCwcVkBhBnT7+TjjyNHF7b46PpfsOm3LtGAw8agTaBZgYVq8B4
-         oIVmKqu65OClMUBluYcLW6NDzL406DOZ1L6IRU8eXPXSdB//1Usg+yLJ5h/djpc4NcEE
-         inOA==
-X-Gm-Message-State: AOJu0Yz5OPRW17S2//zhO3SRORTILTWmlfhUqXy/SRrKFQ5YI+KMBUfM
-        mqksFPSoxClqNrCIOsJDv3/k44JwK45QtgtkcXMl83CR7MxX6weE7Vum91yNXoq4nQvZXmYYDpm
-        gjr3m9UVZMdRmNoth
-X-Received: by 2002:a17:906:20d4:b0:99b:dd38:864d with SMTP id c20-20020a17090620d400b0099bdd38864dmr8099635ejc.23.1691394251067;
-        Mon, 07 Aug 2023 00:44:11 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IH27Jk3o0JkT1Qn89ig8DIvZy4Jj3QOpj9dFlYjkRBqwquGiVyvEtoEs50WICuQkk6YN7gpDg==
-X-Received: by 2002:a17:906:20d4:b0:99b:dd38:864d with SMTP id c20-20020a17090620d400b0099bdd38864dmr8099620ejc.23.1691394250738;
-        Mon, 07 Aug 2023 00:44:10 -0700 (PDT)
-Received: from [10.40.98.142] ([78.108.130.194])
-        by smtp.gmail.com with ESMTPSA id p27-20020a170906229b00b0099bd8c1f67esm4814187eja.109.2023.08.07.00.44.09
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 07 Aug 2023 00:44:09 -0700 (PDT)
-Message-ID: <8f0cbe61-99aa-8c45-c29e-69c27ba96d81@redhat.com>
-Date:   Mon, 7 Aug 2023 09:44:08 +0200
+        with ESMTP id S229582AbjHGH5O (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 7 Aug 2023 03:57:14 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B3553DD
+        for <stable@vger.kernel.org>; Mon,  7 Aug 2023 00:57:10 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 393C4615F0
+        for <stable@vger.kernel.org>; Mon,  7 Aug 2023 07:57:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4123DC433C7;
+        Mon,  7 Aug 2023 07:57:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1691395029;
+        bh=o+hPRvFLC5f+rA4+dQ+37xU/ygiUQWLkcuH+NmQQr6Q=;
+        h=Subject:To:Cc:From:Date:From;
+        b=ImYAHWyK7V1dF0Jm4h/58PSB9vSwkJcnP77HSy53GnHsWigeVPzUvvWm1iRHQTQ5j
+         WcqMTLajtzoA/kpCv9OKpG85QG1OA5REBbAG6pBlI6CWlo7cmHQv4ePbyEbXicveo0
+         AfexRc1WPtZ0PI/KRs19/512zWd0p651YA7PKlbI=
+Subject: FAILED: patch "[PATCH] net/mlx5: Free IRQ rmap and notifier on kernel shutdown" failed to apply to 6.1-stable tree
+To:     saeedm@nvidia.com, shayd@nvidia.com
+Cc:     <stable@vger.kernel.org>
+From:   <gregkh@linuxfoundation.org>
+Date:   Mon, 07 Aug 2023 09:57:06 +0200
+Message-ID: <2023080706-enclosure-disobey-0b27@gregkh>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH] ACPI: resource: revert "Remove "Zen" specific match and
- quirks"
-To:     Mario Limonciello <mario.limonciello@amd.com>,
-        "Rafael J . Wysocki" <rafael@kernel.org>
-Cc:     linux-acpi@vger.kernel.org,
-        Linux regressions mailing list <regressions@lists.linux.dev>,
-        stable@vger.kernel.org, August Wikerfors <git@augustwikerfors.se>
-References: <20230806151453.10690-1-hdegoede@redhat.com>
- <130cb2e0-90b4-7d7b-1633-3469c859b30f@amd.com>
- <b37098da-4437-ef5b-53ae-a536f550df08@redhat.com>
- <0c1cb09a-2e78-65ad-61c1-174e5226d08e@amd.com>
-Content-Language: en-US
-From:   Hans de Goede <hdegoede@redhat.com>
-In-Reply-To: <0c1cb09a-2e78-65ad-61c1-174e5226d08e@amd.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-3.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi,
 
-On 8/7/23 06:38, Mario Limonciello wrote:
-> On 8/6/23 13:20, Hans de Goede wrote:
->> Hi Mario,
->>
->> On 8/6/23 19:13, Mario Limonciello wrote:
->>> On 8/6/23 10:14, Hans de Goede wrote:
->>>> Commit a9c4a912b7dc ("ACPI: resource: Remove "Zen" specific match and
->>>> quirks") is causing keyboard problems for quite a log of AMD based
->>>> laptop users, leading to many bug reports.
->>>>
->>>> Revert this change for now, until we can come up with
->>>> a better fix for the PS/2 IRQ trigger-type/polarity problems
->>>> on some x86 laptops.
->>>
->>> Reverting it is going to help a bunch of machines but cause regressions for others.  How do you prioritize which to fix when it comes to a regression?
->>
->> I understand where you are coming from. But we are dealing with a lot of bug reports from users of recent kernel versions (so not on LTS distros) where things used to work fine. Which is pretty much the definition of a regression.
->>
->> OTOH the do not override IRQ on Zen behavior has been with us for a while now, so things which are broken by it have been broken for a while and have only started working since 6.4.7.
->>
->> So to me it is clear that we first need to revert to the old state, so that users for which everything was working fine get back to a working system.
->>
->> I realize this will unfix some very recently fixed systems, but notice the very recently bit here most users are no in 6.4.7 or .8 yet, so most users will not even have gotten the fixing effect OTOH many users are seeing breakage now.
->>
->> So IMHO we should first get back to the known bad state, instead of introducing a new unknown bad state like a9c4a912b7dc did.
->>
->> If there are known systems which will need an override with a9c4a912b7dc reverted, then we should probably add those to the override table right away.
->>
->> And I think what we also need is a way to specify an IRQ trigger-type override for IRQ 1 on the kernel commandline, so that we can easily ask users to try a different trigger-type without them needing to build a kernel with an updated quirk table.
->>
->> As Linus mentioned already, we really need to find a proper fix for this, but for now my main priority is to stop the influx of new Fedora bugzilla and bugzilla.kernel.org bugs caused by a9c4a912b7dc, counting the extra bug links added in this thread it seems we are up to 6 known bug reports for this and that likely is just the tip of the iceberg.
->>
->> Regards,
->>
->> Hans
->>
->>
-> 
-> We haven't even given a try to fixing it; I think the revert is still hasty.
-> 
-> I don't have a machine that can reproduce this failure, but I did confirm that my keyboard still works with this:
-> 
-> diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
-> index 1dd8d5aebf678..b74d7d8cc8630 100644
-> --- a/drivers/acpi/resource.c
-> +++ b/drivers/acpi/resource.c
-> @@ -19,7 +19,7 @@
->  #include <linux/dmi.h>
-> 
->  #ifdef CONFIG_X86
-> -#define valid_IRQ(i) (((i) != 0) && ((i) != 2))
-> +#define valid_IRQ(i) ((i) > 2)
->  static inline bool acpi_iospace_resource_valid(struct resource *res)
->  {
->         /* On X86 IO space is limited to the [0 - 64K] IO port range */
-> 
-> Can we perhaps see if that works instead for some affected people?
+The patch below does not apply to the 6.1-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-That does not just skip the override stuff, it will make the kernel return irqresource_disabled(res, 1) for the kbd IRQ:
+To reproduce the conflict and resubmit, you may use the following commands:
 
-static inline void irqresource_disabled(struct resource *res, u32 irq)
-{
-        res->start = irq;
-        res->end = irq;
-        res->flags |= IORESOURCE_IRQ | IORESOURCE_DISABLED | IORESOURCE_UNSET;
-}
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git checkout FETCH_HEAD
+git cherry-pick -x 314ded538e5f22e7610b1bf621402024a180ec80
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023080706-enclosure-disobey-0b27@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
-Now not much code seems to actually check the IORESOURCE_DISABLED | IORESOURCE_UNSET flags, so this might still work but it does not seem like the right thing to do.
+Possible dependencies:
 
-Regards,
+314ded538e5f ("net/mlx5: Free IRQ rmap and notifier on kernel shutdown")
+1da438c0ae02 ("net/mlx5: Fix indexing of mlx5_irq")
+9c2d08010963 ("net/mlx5: Free irqs only on shutdown callback")
+3354822cde5a ("net/mlx5: Use dynamic msix vectors allocation")
+8bebfd767909 ("net/mlx5: Improve naming of pci function vectors")
+bbac70c74183 ("net/mlx5: Use newer affinity descriptor")
+235a25fe28de ("net/mlx5: Modify struct mlx5_irq to use struct msi_map")
+2acda57736de ("net/mlx5e: Improve remote NUMA preferences used for the IRQ affinity hints")
 
-Hans
+thanks,
 
+greg k-h
 
+------------------ original commit in Linus's tree ------------------
 
+From 314ded538e5f22e7610b1bf621402024a180ec80 Mon Sep 17 00:00:00 2001
+From: Saeed Mahameed <saeedm@nvidia.com>
+Date: Thu, 8 Jun 2023 12:00:54 -0700
+Subject: [PATCH] net/mlx5: Free IRQ rmap and notifier on kernel shutdown
 
+The kernel IRQ system needs the irq affinity notifier to be clear
+before attempting to free the irq, see WARN_ON log below.
 
+On a normal driver unload we don't have this issue since we do the
+complete cleanup of the irq resources.
 
-> 
-> If it does we should be able to throw away the entire quirks table.
-> 
->>
->>>
->>>>
->>>> Fixes: a9c4a912b7dc ("ACPI: resource: Remove "Zen" specific match and quirks")
->>>> Link: https://bugzilla.redhat.com/show_bug.cgi?id=2229165
->>>> Link: https://bugzilla.redhat.com/show_bug.cgi?id=2229317
->>>> Link: https://bugzilla.kernel.org/show_bug.cgi?id=217726
->>>> Cc: Mario Limonciello <mario.limonciello@amd.com>
->>>> Cc: Linux regressions mailing list <regressions@lists.linux.dev>
->>>> Cc: stable@vger.kernel.org
->>>> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
->>>> ---
->>>>    drivers/acpi/resource.c | 60 +++++++++++++++++++++++++++++++++++++++++
->>>>    1 file changed, 60 insertions(+)
->>>>
->>>> diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
->>>> index 1dd8d5aebf67..0800a9d77558 100644
->>>> --- a/drivers/acpi/resource.c
->>>> +++ b/drivers/acpi/resource.c
->>>> @@ -470,6 +470,52 @@ static const struct dmi_system_id asus_laptop[] = {
->>>>        { }
->>>>    };
->>>>    +static const struct dmi_system_id lenovo_laptop[] = {
->>>> +    {
->>>> +        .ident = "LENOVO IdeaPad Flex 5 14ALC7",
->>>> +        .matches = {
->>>> +            DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
->>>> +            DMI_MATCH(DMI_PRODUCT_NAME, "82R9"),
->>>> +        },
->>>> +    },
->>>> +    {
->>>> +        .ident = "LENOVO IdeaPad Flex 5 16ALC7",
->>>> +        .matches = {
->>>> +            DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
->>>> +            DMI_MATCH(DMI_PRODUCT_NAME, "82RA"),
->>>> +        },
->>>> +    },
->>>> +    { }
->>>> +};
->>>> +
->>>> +static const struct dmi_system_id tongfang_gm_rg[] = {
->>>> +    {
->>>> +        .ident = "TongFang GMxRGxx/XMG CORE 15 (M22)/TUXEDO Stellaris 15 Gen4 AMD",
->>>> +        .matches = {
->>>> +            DMI_MATCH(DMI_BOARD_NAME, "GMxRGxx"),
->>>> +        },
->>>> +    },
->>>> +    { }
->>>> +};
->>>> +
->>>> +static const struct dmi_system_id maingear_laptop[] = {
->>>> +    {
->>>> +        .ident = "MAINGEAR Vector Pro 2 15",
->>>> +        .matches = {
->>>> +            DMI_MATCH(DMI_SYS_VENDOR, "Micro Electronics Inc"),
->>>> +            DMI_MATCH(DMI_PRODUCT_NAME, "MG-VCP2-15A3070T"),
->>>> +        }
->>>> +    },
->>>> +    {
->>>> +        .ident = "MAINGEAR Vector Pro 2 17",
->>>> +        .matches = {
->>>> +            DMI_MATCH(DMI_SYS_VENDOR, "Micro Electronics Inc"),
->>>> +            DMI_MATCH(DMI_PRODUCT_NAME, "MG-VCP2-17A3070T"),
->>>> +        },
->>>> +    },
->>>> +    { }
->>>> +};
->>>> +
->>>>    static const struct dmi_system_id lg_laptop[] = {
->>>>        {
->>>>            .ident = "LG Electronics 17U70P",
->>>> @@ -493,6 +539,10 @@ struct irq_override_cmp {
->>>>    static const struct irq_override_cmp override_table[] = {
->>>>        { medion_laptop, 1, ACPI_LEVEL_SENSITIVE, ACPI_ACTIVE_LOW, 0, false },
->>>>        { asus_laptop, 1, ACPI_LEVEL_SENSITIVE, ACPI_ACTIVE_LOW, 0, false },
->>>> +    { lenovo_laptop, 6, ACPI_LEVEL_SENSITIVE, ACPI_ACTIVE_LOW, 0, true },
->>>> +    { lenovo_laptop, 10, ACPI_LEVEL_SENSITIVE, ACPI_ACTIVE_LOW, 0, true },
->>>> +    { tongfang_gm_rg, 1, ACPI_EDGE_SENSITIVE, ACPI_ACTIVE_LOW, 1, true },
->>>> +    { maingear_laptop, 1, ACPI_EDGE_SENSITIVE, ACPI_ACTIVE_LOW, 1, true },
->>>>        { lg_laptop, 1, ACPI_LEVEL_SENSITIVE, ACPI_ACTIVE_LOW, 0, false },
->>>>    };
->>>>    @@ -512,6 +562,16 @@ static bool acpi_dev_irq_override(u32 gsi, u8 triggering, u8 polarity,
->>>>                return entry->override;
->>>>        }
->>>>    +#ifdef CONFIG_X86
->>>> +    /*
->>>> +     * IRQ override isn't needed on modern AMD Zen systems and
->>>> +     * this override breaks active low IRQs on AMD Ryzen 6000 and
->>>> +     * newer systems. Skip it.
->>>> +     */
->>>> +    if (boot_cpu_has(X86_FEATURE_ZEN))
->>>> +        return false;
->>>> +#endif
->>>> +
->>>>        return true;
->>>>    }
->>>>    
->>>
->>
-> 
+To fix this, put the important resources cleanup in a helper function
+and use it in both normal driver unload and shutdown flows.
+
+[ 4497.498434] ------------[ cut here ]------------
+[ 4497.498726] WARNING: CPU: 0 PID: 9 at kernel/irq/manage.c:2034 free_irq+0x295/0x340
+[ 4497.499193] Modules linked in:
+[ 4497.499386] CPU: 0 PID: 9 Comm: kworker/0:1 Tainted: G        W          6.4.0-rc4+ #10
+[ 4497.499876] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.2-1.fc38 04/01/2014
+[ 4497.500518] Workqueue: events do_poweroff
+[ 4497.500849] RIP: 0010:free_irq+0x295/0x340
+[ 4497.501132] Code: 85 c0 0f 84 1d ff ff ff 48 89 ef ff d0 0f 1f 00 e9 10 ff ff ff 0f 0b e9 72 ff ff ff 49 8d 7f 28 ff d0 0f 1f 00 e9 df fd ff ff <0f> 0b 48 c7 80 c0 008
+[ 4497.502269] RSP: 0018:ffffc90000053da0 EFLAGS: 00010282
+[ 4497.502589] RAX: ffff888100949600 RBX: ffff88810330b948 RCX: 0000000000000000
+[ 4497.503035] RDX: ffff888100949600 RSI: ffff888100400490 RDI: 0000000000000023
+[ 4497.503472] RBP: ffff88810330c7e0 R08: ffff8881004005d0 R09: ffffffff8273a260
+[ 4497.503923] R10: 0000000000000000 R11: 0000000000000000 R12: ffff8881009ae000
+[ 4497.504359] R13: ffff8881009ae148 R14: 0000000000000000 R15: ffff888100949600
+[ 4497.504804] FS:  0000000000000000(0000) GS:ffff88813bc00000(0000) knlGS:0000000000000000
+[ 4497.505302] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[ 4497.505671] CR2: 00007fce98806298 CR3: 000000000262e005 CR4: 0000000000370ef0
+[ 4497.506104] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+[ 4497.506540] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+[ 4497.507002] Call Trace:
+[ 4497.507158]  <TASK>
+[ 4497.507299]  ? free_irq+0x295/0x340
+[ 4497.507522]  ? __warn+0x7c/0x130
+[ 4497.507740]  ? free_irq+0x295/0x340
+[ 4497.507963]  ? report_bug+0x171/0x1a0
+[ 4497.508197]  ? handle_bug+0x3c/0x70
+[ 4497.508417]  ? exc_invalid_op+0x17/0x70
+[ 4497.508662]  ? asm_exc_invalid_op+0x1a/0x20
+[ 4497.508926]  ? free_irq+0x295/0x340
+[ 4497.509146]  mlx5_irq_pool_free_irqs+0x48/0x90
+[ 4497.509421]  mlx5_irq_table_free_irqs+0x38/0x50
+[ 4497.509714]  mlx5_core_eq_free_irqs+0x27/0x40
+[ 4497.509984]  shutdown+0x7b/0x100
+[ 4497.510184]  pci_device_shutdown+0x30/0x60
+[ 4497.510440]  device_shutdown+0x14d/0x240
+[ 4497.510698]  kernel_power_off+0x30/0x70
+[ 4497.510938]  process_one_work+0x1e6/0x3e0
+[ 4497.511183]  worker_thread+0x49/0x3b0
+[ 4497.511407]  ? __pfx_worker_thread+0x10/0x10
+[ 4497.511679]  kthread+0xe0/0x110
+[ 4497.511879]  ? __pfx_kthread+0x10/0x10
+[ 4497.512114]  ret_from_fork+0x29/0x50
+[ 4497.512342]  </TASK>
+
+Fixes: 9c2d08010963 ("net/mlx5: Free irqs only on shutdown callback")
+Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+Reviewed-by: Shay Drory <shayd@nvidia.com>
+
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/pci_irq.c b/drivers/net/ethernet/mellanox/mlx5/core/pci_irq.c
+index 33b9359de53d..98412bd5a696 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/pci_irq.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/pci_irq.c
+@@ -126,14 +126,22 @@ int mlx5_set_msix_vec_count(struct mlx5_core_dev *dev, int function_id,
+ 	return ret;
+ }
+ 
+-static void irq_release(struct mlx5_irq *irq)
++/* mlx5_system_free_irq - Free an IRQ
++ * @irq: IRQ to free
++ *
++ * Free the IRQ and other resources such as rmap from the system.
++ * BUT doesn't free or remove reference from mlx5.
++ * This function is very important for the shutdown flow, where we need to
++ * cleanup system resoruces but keep mlx5 objects alive,
++ * see mlx5_irq_table_free_irqs().
++ */
++static void mlx5_system_free_irq(struct mlx5_irq *irq)
+ {
+ 	struct mlx5_irq_pool *pool = irq->pool;
+ #ifdef CONFIG_RFS_ACCEL
+ 	struct cpu_rmap *rmap;
+ #endif
+ 
+-	xa_erase(&pool->irqs, irq->pool_index);
+ 	/* free_irq requires that affinity_hint and rmap will be cleared before
+ 	 * calling it. To satisfy this requirement, we call
+ 	 * irq_cpu_rmap_remove() to remove the notifier
+@@ -145,10 +153,18 @@ static void irq_release(struct mlx5_irq *irq)
+ 		irq_cpu_rmap_remove(rmap, irq->map.virq);
+ #endif
+ 
+-	free_cpumask_var(irq->mask);
+ 	free_irq(irq->map.virq, &irq->nh);
+ 	if (irq->map.index && pci_msix_can_alloc_dyn(pool->dev->pdev))
+ 		pci_msix_free_irq(pool->dev->pdev, irq->map);
++}
++
++static void irq_release(struct mlx5_irq *irq)
++{
++	struct mlx5_irq_pool *pool = irq->pool;
++
++	xa_erase(&pool->irqs, irq->pool_index);
++	mlx5_system_free_irq(irq);
++	free_cpumask_var(irq->mask);
+ 	kfree(irq);
+ }
+ 
+@@ -705,7 +721,8 @@ static void mlx5_irq_pool_free_irqs(struct mlx5_irq_pool *pool)
+ 	unsigned long index;
+ 
+ 	xa_for_each(&pool->irqs, index, irq)
+-		free_irq(irq->map.virq, &irq->nh);
++		mlx5_system_free_irq(irq);
++
+ }
+ 
+ static void mlx5_irq_pools_free_irqs(struct mlx5_irq_table *table)
 
