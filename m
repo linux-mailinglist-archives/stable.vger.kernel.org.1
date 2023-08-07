@@ -2,46 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 70E0C771B2B
-	for <lists+stable@lfdr.de>; Mon,  7 Aug 2023 09:08:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B3705771B2D
+	for <lists+stable@lfdr.de>; Mon,  7 Aug 2023 09:09:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231414AbjHGHI5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 7 Aug 2023 03:08:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60744 "EHLO
+        id S231416AbjHGHJj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 7 Aug 2023 03:09:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60822 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231135AbjHGHI4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 7 Aug 2023 03:08:56 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EEE7210F0
-        for <stable@vger.kernel.org>; Mon,  7 Aug 2023 00:08:54 -0700 (PDT)
+        with ESMTP id S231135AbjHGHJh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 7 Aug 2023 03:09:37 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7CC6995
+        for <stable@vger.kernel.org>; Mon,  7 Aug 2023 00:09:36 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7540B615AF
-        for <stable@vger.kernel.org>; Mon,  7 Aug 2023 07:08:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 805D3C433C7;
-        Mon,  7 Aug 2023 07:08:53 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0EF6F615B1
+        for <stable@vger.kernel.org>; Mon,  7 Aug 2023 07:09:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E287C433C8;
+        Mon,  7 Aug 2023 07:09:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691392133;
-        bh=IDwhUJeaYXCpPLEp5RXBcWzEjJVGHGhMFvGiisuzDa0=;
+        s=korg; t=1691392175;
+        bh=rF9MbRSDCSP8gsED4aZ8aDyrhXsI+JajbQ3vIU8F0ZA=;
         h=Subject:To:Cc:From:Date:From;
-        b=imbsOaIEPj0l0ZDFnVmwKhlBnB/llUeg1EzL3bjxPr4SXNhb+yh7OyRM+8jp0O+1C
-         Zd9JPhsBvolabMd8ACqC+TrDepMc5xpuARnJWDhxJiFzrF7DkpzwsOnmxeCh17jSFo
-         DdnipJcF1E7KuQJO911VFZ6qXzxNxePqyiKnw6F8=
-Subject: FAILED: patch "[PATCH] drm/i915: Fix premature release of request's reusable memory" failed to apply to 5.10-stable tree
-To:     janusz.krzysztofik@linux.intel.com, andi.shyti@linux.intel.com,
-        chris@chris-wilson.co.uk, stable@vger.kernel.org,
+        b=ll7suPTO0yiwoNCgXVIP2qxNwaKXz/9zhGke0R0nNL1w5qWAqcoFx49sWMn73xmdS
+         ROWcJg+kNdh9IimOr6l3qrRJFBfqywvXEvAg2uwfsQyyqXqzvX9fOuqiD+OaE5QM42
+         HgpZ+IXQx4t7jfTsl9qNqf/+zl8CYhokdpVekX34=
+Subject: FAILED: patch "[PATCH] drm/i915: Add the gen12_needs_ccs_aux_inv helper" failed to apply to 6.4-stable tree
+To:     andi.shyti@linux.intel.com, andrzej.hajda@intel.com,
+        jonathan.cavitt@intel.com, matthew.d.roper@intel.com,
+        nirmoy.das@intel.com, stable@vger.kernel.org,
         tvrtko.ursulin@intel.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Mon, 07 Aug 2023 09:08:42 +0200
-Message-ID: <2023080742-ion-implement-ceb1@gregkh>
+Date:   Mon, 07 Aug 2023 09:09:32 +0200
+Message-ID: <2023080732-tricking-quickstep-30b0@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -50,42 +51,23 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 6.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.4.y
 git checkout FETCH_HEAD
-git cherry-pick -x a337b64f0d5717248a0c894e2618e658e6a9de9f
+git cherry-pick -x b2f59e9026038a5bbcbc0019fa58f963138211ee
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023080742-ion-implement-ceb1@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023080732-tricking-quickstep-30b0@gregkh' --subject-prefix 'PATCH 6.4.y' HEAD^..
 
 Possible dependencies:
 
-a337b64f0d57 ("drm/i915: Fix premature release of request's reusable memory")
-506006055769 ("drm/i915/active: Fix misuse of non-idle barriers as fence trackers")
-ad5c99e02047 ("drm/i915: Remove unused bits of i915_vma/active api")
-f6c466b84cfa ("drm/i915: Add support for moving fence waiting")
-544460c33821 ("drm/i915: Multi-BB execbuf")
-5851387a422c ("drm/i915/guc: Implement no mid batch preemption for multi-lrc")
-e5e32171a2cf ("drm/i915/guc: Connect UAPI to GuC multi-lrc interface")
-d38a9294491d ("drm/i915/guc: Update debugfs for GuC multi-lrc")
-bc955204919e ("drm/i915/guc: Insert submit fences between requests in parent-child relationship")
-6b540bf6f143 ("drm/i915/guc: Implement multi-lrc submission")
-99b47aaddfa9 ("drm/i915/guc: Implement parallel context pin / unpin functions")
-c2aa552ff09d ("drm/i915/guc: Add multi-lrc context registration")
-3897df4c0187 ("drm/i915/guc: Introduce context parent-child relationship")
-4f3059dc2dbb ("drm/i915: Add logical engine mapping")
-1a52faed3131 ("drm/i915/guc: Take GT PM ref when deregistering context")
-0ea92ace8b95 ("drm/i915/guc: Move GuC guc_id allocation under submission state sub-struct")
-0d8ee5ba8db4 ("drm/i915: Don't back up pinned LMEM context images and rings during suspend")
-c56ce9565374 ("drm/i915 Implement LMEM backup and restore for suspend / resume")
-0d9388635a22 ("drm/i915/ttm: Implement a function to copy the contents of two TTM-based objects")
-68c03c0e985e ("drm/i915/debugfs: Do not report currently active engine when describing objects")
+
 
 thanks,
 
@@ -93,268 +75,81 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From a337b64f0d5717248a0c894e2618e658e6a9de9f Mon Sep 17 00:00:00 2001
-From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Date: Thu, 20 Jul 2023 11:35:44 +0200
-Subject: [PATCH] drm/i915: Fix premature release of request's reusable memory
+From b2f59e9026038a5bbcbc0019fa58f963138211ee Mon Sep 17 00:00:00 2001
+From: Andi Shyti <andi.shyti@linux.intel.com>
+Date: Tue, 25 Jul 2023 02:19:45 +0200
+Subject: [PATCH] drm/i915: Add the gen12_needs_ccs_aux_inv helper
 
-Infinite waits for completion of GPU activity have been observed in CI,
-mostly inside __i915_active_wait(), triggered by igt@gem_barrier_race or
-igt@perf@stress-open-close.  Root cause analysis, based of ftrace dumps
-generated with a lot of extra trace_printk() calls added to the code,
-revealed loops of request dependencies being accidentally built,
-preventing the requests from being processed, each waiting for completion
-of another one's activity.
+We always assumed that a device might either have AUX or FLAT
+CCS, but this is an approximation that is not always true, e.g.
+PVC represents an exception.
 
-After we substitute a new request for a last active one tracked on a
-timeline, we set up a dependency of our new request to wait on completion
-of current activity of that previous one.  While doing that, we must take
-care of keeping the old request still in memory until we use its
-attributes for setting up that await dependency, or we can happen to set
-up the await dependency on an unrelated request that already reuses the
-memory previously allocated to the old one, already released.  Combined
-with perf adding consecutive kernel context remote requests to different
-user context timelines, unresolvable loops of await dependencies can be
-built, leading do infinite waits.
+Set the basis for future finer selection by implementing a
+boolean gen12_needs_ccs_aux_inv() function that tells whether aux
+invalidation is needed or not.
 
-We obtain a pointer to the previous request to wait upon when we
-substitute it with a pointer to our new request in an active tracker,
-e.g. in intel_timeline.last_request.  In some processing paths we protect
-that old request from being freed before we use it by getting a reference
-to it under RCU protection, but in others, e.g.  __i915_request_commit()
--> __i915_request_add_to_timeline() -> __i915_request_ensure_ordering(),
-we don't.  But anyway, since the requests' memory is SLAB_FAILSAFE_BY_RCU,
-that RCU protection is not sufficient against reuse of memory.
+Currently PVC is the only exception to the above mentioned rule.
 
-We could protect i915_request's memory from being prematurely reused by
-calling its release function via call_rcu() and using rcu_read_lock()
-consequently, as proposed in v1.  However, that approach leads to
-significant (up to 10 times) increase of SLAB utilization by i915_request
-SLAB cache.  Another potential approach is to take a reference to the
-previous active fence.
-
-When updating an active fence tracker, we first lock the new fence,
-substitute a pointer of the current active fence with the new one, then we
-lock the substituted fence.  With this approach, there is a time window
-after the substitution and before the lock when the request can be
-concurrently released by an interrupt handler and its memory reused, then
-we may happen to lock and return a new, unrelated request.
-
-Always get a reference to the current active fence first, before
-replacing it with a new one.  Having it protected from premature release
-and reuse, lock it and then replace with the new one but only if not
-yet signalled via a potential concurrent interrupt nor replaced with
-another one by a potential concurrent thread, otherwise retry, starting
-from getting a reference to the new current one.  Adjust users to not
-get a reference to the previous active fence themselves and always put the
-reference got by __i915_active_fence_set() when no longer needed.
-
-v3: Fix lockdep splat reports and other issues caused by incorrect use of
-    try_cmpxchg() (use (cmpxchg() != prev) instead)
-v2: Protect request's memory by getting a reference to it in favor of
-    delegating its release to call_rcu() (Chris)
-
-Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/8211
-Fixes: df9f85d8582e ("drm/i915: Serialise i915_active_fence_set() with itself")
-Suggested-by: Chris Wilson <chris@chris-wilson.co.uk>
-Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Cc: <stable@vger.kernel.org> # v5.6+
-Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
+Requires: 059ae7ae2a1c ("drm/i915/gt: Cleanup aux invalidation registers")
 Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230720093543.832147-2-janusz.krzysztofik@linux.intel.com
-(cherry picked from commit 946e047a3d88d46d15b5c5af0414098e12b243f7)
+Cc: Matt Roper <matthew.d.roper@intel.com>
+Cc: Jonathan Cavitt <jonathan.cavitt@intel.com>
+Cc: <stable@vger.kernel.org> # v5.8+
+Reviewed-by: Matt Roper <matthew.d.roper@intel.com>
+Reviewed-by: Andrzej Hajda <andrzej.hajda@intel.com>
+Reviewed-by: Nirmoy Das <nirmoy.das@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230725001950.1014671-3-andi.shyti@linux.intel.com
+(cherry picked from commit c827655b87ad201ebe36f2e28d16b5491c8f7801)
 Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 
-diff --git a/drivers/gpu/drm/i915/i915_active.c b/drivers/gpu/drm/i915/i915_active.c
-index 8ef93889061a..5ec293011d99 100644
---- a/drivers/gpu/drm/i915/i915_active.c
-+++ b/drivers/gpu/drm/i915/i915_active.c
-@@ -449,8 +449,11 @@ int i915_active_add_request(struct i915_active *ref, struct i915_request *rq)
- 		}
- 	} while (unlikely(is_barrier(active)));
- 
--	if (!__i915_active_fence_set(active, fence))
-+	fence = __i915_active_fence_set(active, fence);
-+	if (!fence)
- 		__i915_active_acquire(ref);
-+	else
-+		dma_fence_put(fence);
- 
- out:
- 	i915_active_release(ref);
-@@ -469,13 +472,9 @@ __i915_active_set_fence(struct i915_active *ref,
- 		return NULL;
- 	}
- 
--	rcu_read_lock();
- 	prev = __i915_active_fence_set(active, fence);
--	if (prev)
--		prev = dma_fence_get_rcu(prev);
--	else
-+	if (!prev)
- 		__i915_active_acquire(ref);
--	rcu_read_unlock();
- 
- 	return prev;
- }
-@@ -1019,10 +1018,11 @@ void i915_request_add_active_barriers(struct i915_request *rq)
-  *
-  * Records the new @fence as the last active fence along its timeline in
-  * this active tracker, moving the tracking callbacks from the previous
-- * fence onto this one. Returns the previous fence (if not already completed),
-- * which the caller must ensure is executed before the new fence. To ensure
-- * that the order of fences within the timeline of the i915_active_fence is
-- * understood, it should be locked by the caller.
-+ * fence onto this one. Gets and returns a reference to the previous fence
-+ * (if not already completed), which the caller must put after making sure
-+ * that it is executed before the new fence. To ensure that the order of
-+ * fences within the timeline of the i915_active_fence is understood, it
-+ * should be locked by the caller.
-  */
- struct dma_fence *
- __i915_active_fence_set(struct i915_active_fence *active,
-@@ -1031,7 +1031,23 @@ __i915_active_fence_set(struct i915_active_fence *active,
- 	struct dma_fence *prev;
- 	unsigned long flags;
- 
--	if (fence == rcu_access_pointer(active->fence))
-+	/*
-+	 * In case of fences embedded in i915_requests, their memory is
-+	 * SLAB_FAILSAFE_BY_RCU, then it can be reused right after release
-+	 * by new requests.  Then, there is a risk of passing back a pointer
-+	 * to a new, completely unrelated fence that reuses the same memory
-+	 * while tracked under a different active tracker.  Combined with i915
-+	 * perf open/close operations that build await dependencies between
-+	 * engine kernel context requests and user requests from different
-+	 * timelines, this can lead to dependency loops and infinite waits.
-+	 *
-+	 * As a countermeasure, we try to get a reference to the active->fence
-+	 * first, so if we succeed and pass it back to our user then it is not
-+	 * released and potentially reused by an unrelated request before the
-+	 * user has a chance to set up an await dependency on it.
-+	 */
-+	prev = i915_active_fence_get(active);
-+	if (fence == prev)
- 		return fence;
- 
- 	GEM_BUG_ON(test_bit(DMA_FENCE_FLAG_SIGNALED_BIT, &fence->flags));
-@@ -1040,27 +1056,56 @@ __i915_active_fence_set(struct i915_active_fence *active,
- 	 * Consider that we have two threads arriving (A and B), with
- 	 * C already resident as the active->fence.
- 	 *
--	 * A does the xchg first, and so it sees C or NULL depending
--	 * on the timing of the interrupt handler. If it is NULL, the
--	 * previous fence must have been signaled and we know that
--	 * we are first on the timeline. If it is still present,
--	 * we acquire the lock on that fence and serialise with the interrupt
--	 * handler, in the process removing it from any future interrupt
--	 * callback. A will then wait on C before executing (if present).
--	 *
--	 * As B is second, it sees A as the previous fence and so waits for
--	 * it to complete its transition and takes over the occupancy for
--	 * itself -- remembering that it needs to wait on A before executing.
-+	 * Both A and B have got a reference to C or NULL, depending on the
-+	 * timing of the interrupt handler.  Let's assume that if A has got C
-+	 * then it has locked C first (before B).
- 	 *
- 	 * Note the strong ordering of the timeline also provides consistent
- 	 * nesting rules for the fence->lock; the inner lock is always the
- 	 * older lock.
- 	 */
- 	spin_lock_irqsave(fence->lock, flags);
--	prev = xchg(__active_fence_slot(active), fence);
--	if (prev) {
--		GEM_BUG_ON(prev == fence);
-+	if (prev)
- 		spin_lock_nested(prev->lock, SINGLE_DEPTH_NESTING);
-+
-+	/*
-+	 * A does the cmpxchg first, and so it sees C or NULL, as before, or
-+	 * something else, depending on the timing of other threads and/or
-+	 * interrupt handler.  If not the same as before then A unlocks C if
-+	 * applicable and retries, starting from an attempt to get a new
-+	 * active->fence.  Meanwhile, B follows the same path as A.
-+	 * Once A succeeds with cmpxch, B fails again, retires, gets A from
-+	 * active->fence, locks it as soon as A completes, and possibly
-+	 * succeeds with cmpxchg.
-+	 */
-+	while (cmpxchg(__active_fence_slot(active), prev, fence) != prev) {
-+		if (prev) {
-+			spin_unlock(prev->lock);
-+			dma_fence_put(prev);
-+		}
-+		spin_unlock_irqrestore(fence->lock, flags);
-+
-+		prev = i915_active_fence_get(active);
-+		GEM_BUG_ON(prev == fence);
-+
-+		spin_lock_irqsave(fence->lock, flags);
-+		if (prev)
-+			spin_lock_nested(prev->lock, SINGLE_DEPTH_NESTING);
-+	}
-+
-+	/*
-+	 * If prev is NULL then the previous fence must have been signaled
-+	 * and we know that we are first on the timeline.  If it is still
-+	 * present then, having the lock on that fence already acquired, we
-+	 * serialise with the interrupt handler, in the process of removing it
-+	 * from any future interrupt callback.  A will then wait on C before
-+	 * executing (if present).
-+	 *
-+	 * As B is second, it sees A as the previous fence and so waits for
-+	 * it to complete its transition and takes over the occupancy for
-+	 * itself -- remembering that it needs to wait on A before executing.
-+	 */
-+	if (prev) {
- 		__list_del_entry(&active->cb.node);
- 		spin_unlock(prev->lock); /* serialise with prev->cb_list */
- 	}
-@@ -1077,11 +1122,7 @@ int i915_active_fence_set(struct i915_active_fence *active,
- 	int err = 0;
- 
- 	/* Must maintain timeline ordering wrt previous active requests */
--	rcu_read_lock();
- 	fence = __i915_active_fence_set(active, &rq->fence);
--	if (fence) /* but the previous fence may not belong to that timeline! */
--		fence = dma_fence_get_rcu(fence);
--	rcu_read_unlock();
- 	if (fence) {
- 		err = i915_request_await_dma_fence(rq, fence);
- 		dma_fence_put(fence);
-diff --git a/drivers/gpu/drm/i915/i915_request.c b/drivers/gpu/drm/i915/i915_request.c
-index 894068bb37b6..833b73edefdb 100644
---- a/drivers/gpu/drm/i915/i915_request.c
-+++ b/drivers/gpu/drm/i915/i915_request.c
-@@ -1661,6 +1661,11 @@ __i915_request_ensure_parallel_ordering(struct i915_request *rq,
- 
- 	request_to_parent(rq)->parallel.last_rq = i915_request_get(rq);
- 
-+	/*
-+	 * Users have to put a reference potentially got by
-+	 * __i915_active_fence_set() to the returned request
-+	 * when no longer needed
-+	 */
- 	return to_request(__i915_active_fence_set(&timeline->last_request,
- 						  &rq->fence));
- }
-@@ -1707,6 +1712,10 @@ __i915_request_ensure_ordering(struct i915_request *rq,
- 							 0);
- 	}
- 
-+	/*
-+	 * Users have to put the reference to prev potentially got
-+	 * by __i915_active_fence_set() when no longer needed
-+	 */
- 	return prev;
+diff --git a/drivers/gpu/drm/i915/gt/gen8_engine_cs.c b/drivers/gpu/drm/i915/gt/gen8_engine_cs.c
+index 563efee05560..460c9225a50f 100644
+--- a/drivers/gpu/drm/i915/gt/gen8_engine_cs.c
++++ b/drivers/gpu/drm/i915/gt/gen8_engine_cs.c
+@@ -165,6 +165,18 @@ static u32 preparser_disable(bool state)
+ 	return MI_ARB_CHECK | 1 << 8 | state;
  }
  
-@@ -1760,6 +1769,8 @@ __i915_request_add_to_timeline(struct i915_request *rq)
- 		prev = __i915_request_ensure_ordering(rq, timeline);
- 	else
- 		prev = __i915_request_ensure_parallel_ordering(rq, timeline);
-+	if (prev)
-+		i915_request_put(prev);
++static bool gen12_needs_ccs_aux_inv(struct intel_engine_cs *engine)
++{
++	if (IS_PONTEVECCHIO(engine->i915))
++		return false;
++
++	/*
++	 * so far platforms supported by i915 having
++	 * flat ccs do not require AUX invalidation
++	 */
++	return !HAS_FLAT_CCS(engine->i915);
++}
++
+ u32 *gen12_emit_aux_table_inv(struct intel_gt *gt, u32 *cs, const i915_reg_t inv_reg)
+ {
+ 	u32 gsi_offset = gt->uncore->gsi_offset;
+@@ -267,7 +279,7 @@ int gen12_emit_flush_rcs(struct i915_request *rq, u32 mode)
+ 		else if (engine->class == COMPUTE_CLASS)
+ 			flags &= ~PIPE_CONTROL_3D_ENGINE_FLAGS;
  
- 	/*
- 	 * Make sure that no request gazumped us - if it was allocated after
+-		if (!HAS_FLAT_CCS(rq->engine->i915))
++		if (gen12_needs_ccs_aux_inv(rq->engine))
+ 			count = 8 + 4;
+ 		else
+ 			count = 8;
+@@ -285,7 +297,7 @@ int gen12_emit_flush_rcs(struct i915_request *rq, u32 mode)
+ 
+ 		cs = gen8_emit_pipe_control(cs, flags, LRC_PPHWSP_SCRATCH_ADDR);
+ 
+-		if (!HAS_FLAT_CCS(rq->engine->i915)) {
++		if (gen12_needs_ccs_aux_inv(rq->engine)) {
+ 			/* hsdes: 1809175790 */
+ 			cs = gen12_emit_aux_table_inv(rq->engine->gt, cs,
+ 						      GEN12_CCS_AUX_INV);
+@@ -307,7 +319,7 @@ int gen12_emit_flush_xcs(struct i915_request *rq, u32 mode)
+ 	if (mode & EMIT_INVALIDATE) {
+ 		cmd += 2;
+ 
+-		if (!HAS_FLAT_CCS(rq->engine->i915) &&
++		if (gen12_needs_ccs_aux_inv(rq->engine) &&
+ 		    (rq->engine->class == VIDEO_DECODE_CLASS ||
+ 		     rq->engine->class == VIDEO_ENHANCEMENT_CLASS)) {
+ 			aux_inv = rq->engine->mask &
 
