@@ -2,47 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 33E72771B3C
-	for <lists+stable@lfdr.de>; Mon,  7 Aug 2023 09:11:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 50791771B3D
+	for <lists+stable@lfdr.de>; Mon,  7 Aug 2023 09:11:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229880AbjHGHLm (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 7 Aug 2023 03:11:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33214 "EHLO
+        id S230292AbjHGHLt (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 7 Aug 2023 03:11:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33246 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230292AbjHGHLl (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 7 Aug 2023 03:11:41 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8154795
-        for <stable@vger.kernel.org>; Mon,  7 Aug 2023 00:11:40 -0700 (PDT)
+        with ESMTP id S231470AbjHGHLo (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 7 Aug 2023 03:11:44 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5ECBA10EC
+        for <stable@vger.kernel.org>; Mon,  7 Aug 2023 00:11:43 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 18C93615B0
-        for <stable@vger.kernel.org>; Mon,  7 Aug 2023 07:11:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25D0BC433C8;
-        Mon,  7 Aug 2023 07:11:38 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DC9CB615B7
+        for <stable@vger.kernel.org>; Mon,  7 Aug 2023 07:11:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E94F0C433C8;
+        Mon,  7 Aug 2023 07:11:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691392299;
-        bh=sygxEmSnOtczuxkZ0k/yPaAKlDNspd1RPYEpgSTZUDs=;
+        s=korg; t=1691392302;
+        bh=cbFW7o07XvwJrnPhKzInqOfvn8I1TrnE+9HEEWWFheo=;
         h=Subject:To:Cc:From:Date:From;
-        b=E0VdSEnmOOudsnK1KRG6OpqsnPF7cVkpb+JFzhsoByFMQhcoHTDW8DZqlKl8DsX5w
-         RTBLRnckbWnZoVhqRVwrbWPyAL5MN8ayUWS4aoZd1d6uWYyOPlYZ3ymIiTDa2YMR7K
-         XzGGo2QPJv1MAKi3jrVYpXL8nk22zmOtsn19yXiw=
-Subject: FAILED: patch "[PATCH] drm/i915/gt: Poll aux invalidation register bit on" failed to apply to 6.1-stable tree
+        b=ZZOUJd9UGt3EDogc0ngIemPnP1XoxA817py+9wUis7afuw1py3KGFbE/kCvR9I/Y0
+         LPtA0VPgZ+LeJKMxGtoFGwUv0t4jdIjm3+Rb+E7CcXNO76cKc5xv49NPEcZByeyJDc
+         19T9DMYNm+PN7bYTsOiqFweMDJ6C4RjWESjxyBZc=
+Subject: FAILED: patch "[PATCH] drm/i915/gt: Poll aux invalidation register bit on" failed to apply to 5.15-stable tree
 To:     jonathan.cavitt@intel.com, andi.shyti@linux.intel.com,
         andrzej.hajda@intel.com, matthew.d.roper@intel.com,
         nirmoy.das@intel.com, stable@vger.kernel.org,
         tvrtko.ursulin@intel.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Mon, 07 Aug 2023 09:11:28 +0200
-Message-ID: <2023080728-courier-quit-35fd@gregkh>
+Date:   Mon, 07 Aug 2023 09:11:29 +0200
+Message-ID: <2023080729-opulently-resemble-4943@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -51,24 +51,41 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x 0fde2f23516a00fd90dfb980b66b4665fcbfa659
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023080728-courier-quit-35fd@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023080729-opulently-resemble-4943@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
 0fde2f23516a ("drm/i915/gt: Poll aux invalidation register bit on invalidation")
 b2f59e902603 ("drm/i915: Add the gen12_needs_ccs_aux_inv helper")
+29063c6a6a57 ("drm/i915/mtl: Add gsi_offset when emitting aux table invalidation")
+d8b932014c4a ("drm/i915: avoid concurrent writes to aux_inv")
+6639fabb1685 ("drm/i915/xehp: Drop aux table invalidation on FlatCCS platforms")
+ff6b19d3a0f9 ("drm/i915/xehp: Add compute workarounds")
+803efd297e31 ("drm/i915/xehp: compute engine pipe_control")
+0d53879faada ("drm/i915/gt: Order GT registers by MMIO offset")
+bd3de31950ae ("drm/i915/gt: Use consistent offset notation in intel_gt_regs.h")
+680a5cd10b9c ("drm/i915/gt: Cleanup spacing of intel_gt_regs.h")
+ab9e00a3509a ("drm/i915/gt: Use parameterized RING_MI_MODE")
+93cc7aa0b037 ("drm/i915/gt: Move SFC lock bits to intel_engine_regs.h")
+4895b90dd510 ("drm/i915/gt: Drop duplicate register definition for VDBOX_CGCTL3F18")
+22ba60f617bd ("drm/i915: Move [more] GT registers to their own header file")
+0d6419e9c855 ("drm/i915: Move GT registers to their own header file")
+e71a74122863 ("drm/i915: Parameterize MI_PREDICATE registers")
+7d296f369d38 ("drm/i915: Parameterize R_PWR_CLK_STATE register definition")
+2ef6d3bf4262 ("drm/i915/perf: Move OA regs to their own header")
+063565aca373 ("Merge drm/drm-next into drm-intel-next")
 
 thanks,
 
