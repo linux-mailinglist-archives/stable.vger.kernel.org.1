@@ -2,41 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 35D07771B3F
-	for <lists+stable@lfdr.de>; Mon,  7 Aug 2023 09:11:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9005A771B41
+	for <lists+stable@lfdr.de>; Mon,  7 Aug 2023 09:11:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230265AbjHGHLv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 7 Aug 2023 03:11:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33258 "EHLO
+        id S231472AbjHGHL6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 7 Aug 2023 03:11:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33334 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231472AbjHGHLu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 7 Aug 2023 03:11:50 -0400
+        with ESMTP id S231470AbjHGHL5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 7 Aug 2023 03:11:57 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E5D2C10EC
-        for <stable@vger.kernel.org>; Mon,  7 Aug 2023 00:11:48 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 694ECE78
+        for <stable@vger.kernel.org>; Mon,  7 Aug 2023 00:11:56 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 786B0615B3
-        for <stable@vger.kernel.org>; Mon,  7 Aug 2023 07:11:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81EE7C433C8;
-        Mon,  7 Aug 2023 07:11:47 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id F2A41615AC
+        for <stable@vger.kernel.org>; Mon,  7 Aug 2023 07:11:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D7CBC433C8;
+        Mon,  7 Aug 2023 07:11:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691392307;
-        bh=8QI+mua1zxx1V74OTU16lv1+6jhVGoITZI+khzGbDCw=;
+        s=korg; t=1691392315;
+        bh=mKvgneXDUkgGR47nNHNjo/jQW/5Ek2kXg9XQz7H0FM4=;
         h=Subject:To:Cc:From:Date:From;
-        b=SNjRWlJE8slMsucyYzXwwh1RMFbvtvunjJE3pZv6pB6MR0wGxmByn1sjdLx9mSRvF
-         /IvHUQb6rlBobB5MCUC2948a3r5xEE0IH/WPJEelEtVYUr0O4WTdDbBTYHL5K3+NV7
-         RBRL8RR2pW7Ud92m2QZWZm1bUTR1EzMdK/pTPNR4=
-Subject: FAILED: patch "[PATCH] drm/i915/gt: Support aux invalidation on all engines" failed to apply to 6.4-stable tree
+        b=LFyBI6XJXIJqkGELvF1zUSvrM+vgxCnu/xVgANHofDFSyDddaWc+SUOv9vu/dkmds
+         rtDwCvmjfqpHCJe2Mi69PnlFu5V1ekNALOFSX44fZF5Pl/5TMpX2dXfkyhBciC2yYN
+         ayOyzhOlSjqO7uHI4yYrqpO7vCiiuOYishQa5MvE=
+Subject: FAILED: patch "[PATCH] drm/i915/gt: Support aux invalidation on all engines" failed to apply to 6.1-stable tree
 To:     andi.shyti@linux.intel.com, andrzej.hajda@intel.com,
         jonathan.cavitt@intel.com, matthew.d.roper@intel.com,
         stable@vger.kernel.org, tvrtko.ursulin@intel.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Mon, 07 Aug 2023 09:11:34 +0200
-Message-ID: <2023080733-hardiness-overfeed-0997@gregkh>
+Date:   Mon, 07 Aug 2023 09:11:35 +0200
+Message-ID: <2023080734-ladder-viscous-30c9@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -50,23 +50,26 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.4-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
 git cherry-pick -x 6a35f22d222528e1b157c6978c9424d2f8cbe0a1
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023080733-hardiness-overfeed-0997@gregkh' --subject-prefix 'PATCH 6.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023080734-ladder-viscous-30c9@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
-
+6a35f22d2225 ("drm/i915/gt: Support aux invalidation on all engines")
+0fde2f23516a ("drm/i915/gt: Poll aux invalidation register bit on invalidation")
+b2f59e902603 ("drm/i915: Add the gen12_needs_ccs_aux_inv helper")
+d14560ac1b59 ("drm/i915/gt: Cleanup aux invalidation registers")
 
 thanks,
 
