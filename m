@@ -2,193 +2,118 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 86BF7771C5D
-	for <lists+stable@lfdr.de>; Mon,  7 Aug 2023 10:36:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9BB20771CE5
+	for <lists+stable@lfdr.de>; Mon,  7 Aug 2023 11:11:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229646AbjHGIga (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 7 Aug 2023 04:36:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32866 "EHLO
+        id S231303AbjHGJLo (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 7 Aug 2023 05:11:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49244 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229469AbjHGIga (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 7 Aug 2023 04:36:30 -0400
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 86E1C170B;
-        Mon,  7 Aug 2023 01:36:28 -0700 (PDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id F07E01FB;
-        Mon,  7 Aug 2023 01:37:10 -0700 (PDT)
-Received: from [10.57.77.247] (unknown [10.57.77.247])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 90A033F59C;
-        Mon,  7 Aug 2023 01:36:26 -0700 (PDT)
-Message-ID: <a91d24a5-1e4b-91db-89c0-3bec01d2e90b@arm.com>
-Date:   Mon, 7 Aug 2023 09:36:25 +0100
+        with ESMTP id S230369AbjHGJLn (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 7 Aug 2023 05:11:43 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70543E68;
+        Mon,  7 Aug 2023 02:11:42 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0D917616E6;
+        Mon,  7 Aug 2023 09:11:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11130C433C8;
+        Mon,  7 Aug 2023 09:11:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1691399501;
+        bh=jo05FRX8fxSniehU439g0zTeJkxYcL2Nno5qi9V86Dk=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=JUpB8aqlWBbjSIDG2OjPDnFTb1NPFIcJs6mjX/zmKdGLV98KN5OwwC6Lxkzce8fO0
+         jlsxptGiMmH3OFHdIhj2cOUH1GzAwY7BznwrZDqH0pCzXN7QdCAWU62gFrYCXJKghf
+         S/uK5UqTpaZnMZuZKXtdetRYn4W9ThzxlStgfEcE=
+Date:   Mon, 7 Aug 2023 11:11:38 +0200
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Guoqing Jiang <guoqing.jiang@linux.dev>
+Cc:     "Darrick J. Wong" <djwong@kernel.org>, amir73il@gmail.com,
+        dchinner@redhat.com, yangx.jy@fujitsu.com,
+        linux-xfs@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH 5.10 0/2] Fix xfs/179 for 5.10 stable
+Message-ID: <2023080737-marathon-payday-cd03@gregkh>
+References: <20230803093652.7119-1-guoqing.jiang@linux.dev>
+ <20230804154757.GI11352@frogsfrogsfrogs>
+ <5d44e45b-cb85-b878-f21d-d0b508c3b696@linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.13.0
-Subject: Re: [PATCH v1] mm/gup: handle cont-PTE hugetlb pages correctly in
- gup_must_unshare() via GUP-fast
-To:     David Hildenbrand <david@redhat.com>, linux-kernel@vger.kernel.org
-Cc:     linux-mm@kvack.org, stable@vger.kernel.org,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        John Hubbard <jhubbard@nvidia.com>,
-        Jason Gunthorpe <jgg@nvidia.com>, Peter Xu <peterx@redhat.com>,
-        Mike Kravetz <mike.kravetz@oracle.com>
-References: <20230805101256.87306-1-david@redhat.com>
-From:   Ryan Roberts <ryan.roberts@arm.com>
-In-Reply-To: <20230805101256.87306-1-david@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-3.7 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <5d44e45b-cb85-b878-f21d-d0b508c3b696@linux.dev>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 05/08/2023 11:12, David Hildenbrand wrote:
-> In contrast to most other GUP code, GUP-fast common page table walking code
-> like gup_pte_range() also handles hugetlb pages. But in contrast to other
-> hugetlb page table walking code, it does not look at the hugetlb PTE
-> abstraction whereby we have only a single logical hugetlb PTE per hugetlb
-> page, even when using multiple cont-PTEs underneath -- which is for example
-> what huge_ptep_get() abstracts.
+On Mon, Aug 07, 2023 at 10:39:44AM +0800, Guoqing Jiang wrote:
 > 
-> So when we have a hugetlb page that is mapped via cont-PTEs, GUP-fast
-> might stumble over a PTE that does not map the head page of a hugetlb
-> page -- not the first "head" PTE of such a cont mapping.
 > 
-> Logically, the whole hugetlb page is mapped (entire_mapcount == 1), but we
-> might end up calling gup_must_unshare() with a tail page of a hugetlb
-> page.
+> On 8/4/23 23:47, Darrick J. Wong wrote:
+> > On Thu, Aug 03, 2023 at 05:36:50PM +0800, Guoqing Jiang wrote:
+> > > Hi,
+> > > 
+> > > With the two patches applied, xfs/179 can pass in 5.10.188. Otherwise I got
+> > > 
+> > > [root@localhost xfstests]# ./check xfs/179
+> > > FSTYP         -- xfs (non-debug)
+> > > PLATFORM      -- Linux/x86_64 localhost 5.10.188-default #14 SMP Thu Aug 3 15:23:19 CST 2023
+> > > MKFS_OPTIONS  -- -f /dev/loop1
+> > > MOUNT_OPTIONS -- -o context=system_u:object_r:root_t:s0 /dev/loop1 /mnt/scratch
+> > > 
+> > > xfs/179 1s ... [failed, exit status 1]- output mismatch (see /root/xfstests/results//xfs/179.out.bad)
+> > >      --- tests/xfs/179.out	2023-07-13 16:12:27.000000000 +0800
+> > >      +++ /root/xfstests/results//xfs/179.out.bad	2023-08-03 16:55:38.173787911 +0800
+> > >      @@ -8,3 +8,5 @@
+> > >       Check scratch fs
+> > >       Remove reflinked files
+> > >       Check scratch fs
+> > >      +xfs_repair fails
+> > >      +(see /root/xfstests/results//xfs/179.full for details)
+> > >      ...
+> > >      (Run 'diff -u /root/xfstests/tests/xfs/179.out /root/xfstests/results//xfs/179.out.bad'  to see the entire diff)
+> > > 
+> > > HINT: You _MAY_ be missing kernel fix:
+> > >        b25d1984aa88 xfs: estimate post-merge refcounts correctly
+> > > 
+> > > Ran: xfs/179
+> > > Failures: xfs/179
+> > > Failed 1 of 1 tests
+> > > 
+> > > Please review if they are approriate for 5.10 stable.
+> > Seems fine to me, but ... there is no maintainer for 5.10; is your
+> > employer willing to support this LTS kernel?
 > 
-> We only maintain a single PageAnonExclusive flag per hugetlb page (as
-> hugetlb pages cannot get partially COW-shared), stored for the head page.
-> That flag is clear for all tail pages.
+> Hi Darrick,
 > 
-> So when gup_must_unshare() ends up calling PageAnonExclusive() with a
-> tail page of a hugetlb page:
+> Thanks for your review! I think Amir is the maintainer for 5.10 😉. I can
+> help
+> if needed since our kernel is heavily based on 5.10 stable. We also run
+> tests
+> against 5.10 stable, that is why I send fixes patches for it.
 > 
-> 1) With CONFIG_DEBUG_VM_PGFLAGS
+> Hi Greg,
 > 
-> Stumbles over the:
-> 
-> 	VM_BUG_ON_PGFLAGS(PageHuge(page) && !PageHead(page), page);
-> 
-> For example, when executing the COW selftests with 64k hugetlb pages on
-> arm64:
-> 
->   [   61.082187] page:00000000829819ff refcount:3 mapcount:1 mapping:0000000000000000 index:0x1 pfn:0x11ee11
->   [   61.082842] head:0000000080f79bf7 order:4 entire_mapcount:1 nr_pages_mapped:0 pincount:2
->   [   61.083384] anon flags: 0x17ffff80003000e(referenced|uptodate|dirty|head|mappedtodisk|node=0|zone=2|lastcpupid=0xfffff)
->   [   61.084101] page_type: 0xffffffff()
->   [   61.084332] raw: 017ffff800000000 fffffc00037b8401 0000000000000402 0000000200000000
->   [   61.084840] raw: 0000000000000010 0000000000000000 00000000ffffffff 0000000000000000
->   [   61.085359] head: 017ffff80003000e ffffd9e95b09b788 ffffd9e95b09b788 ffff0007ff63cf71
->   [   61.085885] head: 0000000000000000 0000000000000002 00000003ffffffff 0000000000000000
->   [   61.086415] page dumped because: VM_BUG_ON_PAGE(PageHuge(page) && !PageHead(page))
->   [   61.086914] ------------[ cut here ]------------
->   [   61.087220] kernel BUG at include/linux/page-flags.h:990!
->   [   61.087591] Internal error: Oops - BUG: 00000000f2000800 [#1] SMP
->   [   61.087999] Modules linked in: ...
->   [   61.089404] CPU: 0 PID: 4612 Comm: cow Kdump: loaded Not tainted 6.5.0-rc4+ #3
->   [   61.089917] Hardware name: QEMU KVM Virtual Machine, BIOS 0.0.0 02/06/2015
->   [   61.090409] pstate: 604000c5 (nZCv daIF +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
->   [   61.090897] pc : gup_must_unshare.part.0+0x64/0x98
->   [   61.091242] lr : gup_must_unshare.part.0+0x64/0x98
->   [   61.091592] sp : ffff8000825eb940
->   [   61.091826] x29: ffff8000825eb940 x28: 0000000000000000 x27: fffffc00037b8440
->   [   61.092329] x26: 0400000000000001 x25: 0000000000080101 x24: 0000000000080000
->   [   61.092835] x23: 0000000000080100 x22: ffff0000cffb9588 x21: ffff0000c8ec6b58
->   [   61.093341] x20: 0000ffffad6b1000 x19: fffffc00037b8440 x18: ffffffffffffffff
->   [   61.093850] x17: 2864616548656761 x16: 5021202626202965 x15: 6761702865677548
->   [   61.094358] x14: 6567615028454741 x13: 2929656761702864 x12: 6165486567615021
->   [   61.094858] x11: 00000000ffff7fff x10: 00000000ffff7fff x9 : ffffd9e958b7a1c0
->   [   61.095359] x8 : 00000000000bffe8 x7 : c0000000ffff7fff x6 : 00000000002bffa8
->   [   61.095873] x5 : ffff0008bb19e708 x4 : 0000000000000000 x3 : 0000000000000000
->   [   61.096380] x2 : 0000000000000000 x1 : ffff0000cf6636c0 x0 : 0000000000000046
->   [   61.096894] Call trace:
->   [   61.097080]  gup_must_unshare.part.0+0x64/0x98
->   [   61.097392]  gup_pte_range+0x3a8/0x3f0
->   [   61.097662]  gup_pgd_range+0x1ec/0x280
->   [   61.097942]  lockless_pages_from_mm+0x64/0x1a0
->   [   61.098258]  internal_get_user_pages_fast+0xe4/0x1d0
->   [   61.098612]  pin_user_pages_fast+0x58/0x78
->   [   61.098917]  pin_longterm_test_start+0xf4/0x2b8
->   [   61.099243]  gup_test_ioctl+0x170/0x3b0
->   [   61.099528]  __arm64_sys_ioctl+0xa8/0xf0
->   [   61.099822]  invoke_syscall.constprop.0+0x7c/0xd0
->   [   61.100160]  el0_svc_common.constprop.0+0xe8/0x100
->   [   61.100500]  do_el0_svc+0x38/0xa0
->   [   61.100736]  el0_svc+0x3c/0x198
->   [   61.100971]  el0t_64_sync_handler+0x134/0x150
->   [   61.101280]  el0t_64_sync+0x17c/0x180
->   [   61.101543] Code: aa1303e0 f00074c1 912b0021 97fffeb2 (d4210000)
-> 
-> 2) Without CONFIG_DEBUG_VM_PGFLAGS
-> 
-> Always detects "not exclusive" for passed tail pages and refuses to PIN the
-> tail pages R/O, as gup_must_unshare() == true. GUP-fast will fallback to
-> ordinary GUP. As ordinary GUP properly considers the logical hugetlb PTE
-> abstraction in hugetlb_follow_page_mask(), pinning the page will succeed
-> when looking at the PageAnonExclusive on the head page only.
-> 
-> So the only real effect of this is that with cont-PTE hugetlb pages, we'll
-> always fallback from GUP-fast to ordinary GUP when not working on the head
-> page, which ends up checking the head page and do the right thing.
-> 
-> Consequently, the cow selftests pass with cont-PTE hugetlb pages as well
-> without CONFIG_DEBUG_VM_PGFLAGS.
-> 
-> Note that this only applies to anon hugetlb pages that are mapped using
-> cont-PTEs: for example 64k hugetlb pages on a 4k arm64 kernel.
-> 
-> ... and only when R/O-pinning (FOLL_PIN) such pages that are mapped into
-> the page table R/O using GUP-fast.
-> 
-> On production kernels (and even most debug kernels, that don't set
-> CONFIG_DEBUG_VM_PGFLAGS) this patch should theoretically not be required
-> to be backported. But of course, it does not hurt.
-> 
-> Reported-by: Ryan Roberts <ryan.roberts@arm.com>
-> Fixes: a7f226604170 ("mm/gup: trigger FAULT_FLAG_UNSHARE when R/O-pinning a possibly shared anonymous page")
-> Cc: <stable@vger.kernel.org>
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: Vlastimil Babka <vbabka@suse.cz>
-> Cc: John Hubbard <jhubbard@nvidia.com>
-> Cc: Jason Gunthorpe <jgg@nvidia.com>
-> Cc: Peter Xu <peterx@redhat.com>
-> Cc: Mike Kravetz <mike.kravetz@oracle.com>
-> Signed-off-by: David Hildenbrand <david@redhat.com>
+> Could you consider add the two to your list? Thank you!
 
-Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
-Tested-by: Ryan Roberts <ryan.roberts@arm.com>
+Sorry, but as these would only be in th 5.10.y release, and not in any
+newer stable kernel, you would have a regression if you moved to a newer
+stable kernel branch, right?
 
-> ---
->  mm/internal.h | 10 ++++++++++
->  1 file changed, 10 insertions(+)
-> 
-> diff --git a/mm/internal.h b/mm/internal.h
-> index a7d9e980429a..fe242dd0b72c 100644
-> --- a/mm/internal.h
-> +++ b/mm/internal.h
-> @@ -997,6 +997,16 @@ static inline bool gup_must_unshare(struct vm_area_struct *vma,
->  	if (IS_ENABLED(CONFIG_HAVE_FAST_GUP))
->  		smp_rmb();
->  
-> +	/*
-> +	 * During GUP-fast we might not get called on the head page for a
-> +	 * hugetlb page that is mapped using cont-PTE, because GUP-fast does
-> +	 * not work with the abstracted hugetlb PTEs that always point at the
-> +	 * head page. For hugetlb, PageAnonExclusive only applies on the head
-> +	 * page (as it cannot be partially COW-shared), so lookup the head page.
-> +	 */
-> +	if (unlikely(!PageHead(page) && PageHuge(page)))
-> +		page = compound_head(page);
-> +
->  	/*
->  	 * Note that PageKsm() pages cannot be exclusive, and consequently,
->  	 * cannot get pinned.
+Because of that, no, I can't take this, nor should you want me to, as
+you would have a regression if you upgraded, right?
 
+I'll be glad to do so if we have backports for all relevant stable
+kernels.
+
+thanks,
+
+greg k-h
