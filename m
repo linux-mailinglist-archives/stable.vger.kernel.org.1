@@ -2,82 +2,125 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7BF87772790
-	for <lists+stable@lfdr.de>; Mon,  7 Aug 2023 16:23:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0E284772709
+	for <lists+stable@lfdr.de>; Mon,  7 Aug 2023 16:06:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232929AbjHGOXC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 7 Aug 2023 10:23:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37750 "EHLO
+        id S229977AbjHGOGq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 7 Aug 2023 10:06:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54280 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233131AbjHGOWu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 7 Aug 2023 10:22:50 -0400
-X-Greylist: delayed 2364 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 07 Aug 2023 07:22:49 PDT
-Received: from www.linuxtv.org (www.linuxtv.org [130.149.80.248])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2025BC2
-        for <stable@vger.kernel.org>; Mon,  7 Aug 2023 07:22:49 -0700 (PDT)
-Received: from hverkuil by www.linuxtv.org with local (Exim 4.92)
-        (envelope-from <hverkuil@linuxtv.org>)
-        id 1qT0Vd-00CSdW-RF; Mon, 07 Aug 2023 13:42:57 +0000
-From:   Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Date:   Mon, 07 Aug 2023 13:42:49 +0000
-Subject: [git:media_stage/master] media: venus: hfi_venus: Write to VIDC_CTRL_INIT after unmasking interrupts
-To:     linuxtv-commits@linuxtv.org
-Cc:     stable@vger.kernel.org,
-        Stanimir Varbanov <stanimir.k.varbanov@gmail.com>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>
-Mail-followup-to: linux-media@vger.kernel.org
-Forward-to: linux-media@vger.kernel.org
-Reply-to: linux-media@vger.kernel.org
-Message-Id: <E1qT0Vd-00CSdW-RF@www.linuxtv.org>
-X-Spam-Status: No, score=-1.6 required=5.0 tests=BAYES_00,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,
-        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE autolearn=no
-        autolearn_force=no version=3.4.6
+        with ESMTP id S231911AbjHGOGk (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 7 Aug 2023 10:06:40 -0400
+X-Greylist: delayed 336 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 07 Aug 2023 07:06:19 PDT
+Received: from out-78.mta0.migadu.com (out-78.mta0.migadu.com [IPv6:2001:41d0:1004:224b::4e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7BEE71FEA
+        for <stable@vger.kernel.org>; Mon,  7 Aug 2023 07:06:19 -0700 (PDT)
+Message-ID: <cdbb886d-96b8-1cad-5853-eaef264a88e4@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+        t=1691416839;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=FureXkV41D/C+5hcQf6mQ9dUeOIFfTKiHx4hvPOuhkQ=;
+        b=E/xYGGM0+cQhKXIvfXHfdSBcxKiQipv+hQODm9ENixFTkJfe4D+yUYC2Ddi1/Lr3l56VPE
+        /jS8kVwBFmpSJ3COBivkJ/+aILAevWRJH9pN2PKnxWxh5+CMiH8WuHsOqMbpVat7n2WhBq
+        gKZ6voASjEFWenvVh2+8uhagf9mzTdA=
+Date:   Mon, 7 Aug 2023 22:00:33 +0800
+MIME-Version: 1.0
+Subject: Re: [PATCH 5.10 0/2] Fix xfs/179 for 5.10 stable
+Content-Language: en-US
+To:     Greg KH <gregkh@linuxfoundation.org>
+Cc:     "Darrick J. Wong" <djwong@kernel.org>, amir73il@gmail.com,
+        dchinner@redhat.com, yangx.jy@fujitsu.com,
+        linux-xfs@vger.kernel.org, stable@vger.kernel.org
+References: <20230803093652.7119-1-guoqing.jiang@linux.dev>
+ <20230804154757.GI11352@frogsfrogsfrogs>
+ <5d44e45b-cb85-b878-f21d-d0b508c3b696@linux.dev>
+ <2023080737-marathon-payday-cd03@gregkh>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From:   Guoqing Jiang <guoqing.jiang@linux.dev>
+In-Reply-To: <2023080737-marathon-payday-cd03@gregkh>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-This is an automatic generated email to let you know that the following patch were queued:
 
-Subject: media: venus: hfi_venus: Write to VIDC_CTRL_INIT after unmasking interrupts
-Author:  Konrad Dybcio <konrad.dybcio@linaro.org>
-Date:    Tue May 30 14:30:36 2023 +0200
 
-The startup procedure shouldn't be started with interrupts masked, as that
-may entail silent failures.
+On 8/7/23 17:11, Greg KH wrote:
+> On Mon, Aug 07, 2023 at 10:39:44AM +0800, Guoqing Jiang wrote:
+>>
+>> On 8/4/23 23:47, Darrick J. Wong wrote:
+>>> On Thu, Aug 03, 2023 at 05:36:50PM +0800, Guoqing Jiang wrote:
+>>>> Hi,
+>>>>
+>>>> With the two patches applied, xfs/179 can pass in 5.10.188. Otherwise I got
+>>>>
+>>>> [root@localhost xfstests]# ./check xfs/179
+>>>> FSTYP         -- xfs (non-debug)
+>>>> PLATFORM      -- Linux/x86_64 localhost 5.10.188-default #14 SMP Thu Aug 3 15:23:19 CST 2023
+>>>> MKFS_OPTIONS  -- -f /dev/loop1
+>>>> MOUNT_OPTIONS -- -o context=system_u:object_r:root_t:s0 /dev/loop1 /mnt/scratch
+>>>>
+>>>> xfs/179 1s ... [failed, exit status 1]- output mismatch (see /root/xfstests/results//xfs/179.out.bad)
+>>>>       --- tests/xfs/179.out	2023-07-13 16:12:27.000000000 +0800
+>>>>       +++ /root/xfstests/results//xfs/179.out.bad	2023-08-03 16:55:38.173787911 +0800
+>>>>       @@ -8,3 +8,5 @@
+>>>>        Check scratch fs
+>>>>        Remove reflinked files
+>>>>        Check scratch fs
+>>>>       +xfs_repair fails
+>>>>       +(see /root/xfstests/results//xfs/179.full for details)
+>>>>       ...
+>>>>       (Run 'diff -u /root/xfstests/tests/xfs/179.out /root/xfstests/results//xfs/179.out.bad'  to see the entire diff)
+>>>>
+>>>> HINT: You _MAY_ be missing kernel fix:
+>>>>         b25d1984aa88 xfs: estimate post-merge refcounts correctly
+>>>>
+>>>> Ran: xfs/179
+>>>> Failures: xfs/179
+>>>> Failed 1 of 1 tests
+>>>>
+>>>> Please review if they are approriate for 5.10 stable.
+>>> Seems fine to me, but ... there is no maintainer for 5.10; is your
+>>> employer willing to support this LTS kernel?
+>> Hi Darrick,
+>>
+>> Thanks for your review! I think Amir is the maintainer for 5.10 😉. I can
+>> help
+>> if needed since our kernel is heavily based on 5.10 stable. We also run
+>> tests
+>> against 5.10 stable, that is why I send fixes patches for it.
+>>
+>> Hi Greg,
+>>
+>> Could you consider add the two to your list? Thank you!
+> Sorry, but as these would only be in th 5.10.y release, and not in any
+> newer stable kernel, you would have a regression if you moved to a newer
+> stable kernel branch, right?
 
-Kick off initialization only after the interrupts are unmasked.
+Fair enough.
 
-Cc: stable@vger.kernel.org # v4.12+
-Fixes: d96d3f30c0f2 ("[media] media: venus: hfi: add Venus HFI files")
-Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Signed-off-by: Stanimir Varbanov <stanimir.k.varbanov@gmail.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+> Because of that, no, I can't take this, nor should you want me to, as
+> you would have a regression if you upgraded, right?
+>
+> I'll be glad to do so if we have backports for all relevant stable
+> kernels.
+>
 
- drivers/media/platform/qcom/venus/hfi_venus.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+I found Ted had mentioned the two commits ([1]), so it probably make sense
+to port them to 5.10 as well.
 
----
+[1]. https://lore.kernel.org/linux-xfs/20230802031039.GC358316@mit.edu/
 
-diff --git a/drivers/media/platform/qcom/venus/hfi_venus.c b/drivers/media/platform/qcom/venus/hfi_venus.c
-index 918a283bd890..5506a0d196ef 100644
---- a/drivers/media/platform/qcom/venus/hfi_venus.c
-+++ b/drivers/media/platform/qcom/venus/hfi_venus.c
-@@ -453,7 +453,6 @@ static int venus_boot_core(struct venus_hfi_device *hdev)
- 	void __iomem *wrapper_base = hdev->core->wrapper_base;
- 	int ret = 0;
- 
--	writel(BIT(VIDC_CTRL_INIT_CTRL_SHIFT), cpu_cs_base + VIDC_CTRL_INIT);
- 	if (IS_V6(hdev->core)) {
- 		mask_val = readl(wrapper_base + WRAPPER_INTR_MASK);
- 		mask_val &= ~(WRAPPER_INTR_MASK_A2HWD_BASK_V6 |
-@@ -464,6 +463,7 @@ static int venus_boot_core(struct venus_hfi_device *hdev)
- 	writel(mask_val, wrapper_base + WRAPPER_INTR_MASK);
- 	writel(1, cpu_cs_base + CPU_CS_SCIACMDARG3);
- 
-+	writel(BIT(VIDC_CTRL_INIT_CTRL_SHIFT), cpu_cs_base + VIDC_CTRL_INIT);
- 	while (!ctrl_status && count < max_tries) {
- 		ctrl_status = readl(cpu_cs_base + CPU_CS_SCIACMDARG0);
- 		if ((ctrl_status & CPU_CS_SCIACMDARG0_ERROR_STATUS_MASK) == 4) {
+Thanks,
+Guoqing
