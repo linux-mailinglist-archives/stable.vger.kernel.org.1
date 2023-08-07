@@ -2,73 +2,235 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 06D42772810
-	for <lists+stable@lfdr.de>; Mon,  7 Aug 2023 16:43:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 66E5777284A
+	for <lists+stable@lfdr.de>; Mon,  7 Aug 2023 16:56:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231784AbjHGOnh (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 7 Aug 2023 10:43:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51694 "EHLO
+        id S229716AbjHGO4J (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 7 Aug 2023 10:56:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58004 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230003AbjHGOng (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 7 Aug 2023 10:43:36 -0400
-Received: from www.linuxtv.org (www.linuxtv.org [130.149.80.248])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 006B710DC
-        for <stable@vger.kernel.org>; Mon,  7 Aug 2023 07:43:35 -0700 (PDT)
-Received: from hverkuil by www.linuxtv.org with local (Exim 4.92)
-        (envelope-from <hverkuil@linuxtv.org>)
-        id 1qT1SI-00CX0P-A5; Mon, 07 Aug 2023 14:43:34 +0000
-From:   Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Date:   Mon, 07 Aug 2023 14:43:17 +0000
-Subject: [git:media_stage/master] media: nxp: Fix wrong return pointer check in mxc_isi_crossbar_init()
-To:     linuxtv-commits@linuxtv.org
-Cc:     stable@vger.kernel.org, Yang Yingliang <yangyingliang@huawei.com>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Fabio Estevam <festevam@gmail.com>
-Mail-followup-to: linux-media@vger.kernel.org
-Forward-to: linux-media@vger.kernel.org
-Reply-to: linux-media@vger.kernel.org
-Message-Id: <E1qT1SI-00CX0P-A5@www.linuxtv.org>
-X-Spam-Status: No, score=-1.6 required=5.0 tests=BAYES_00,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,
-        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE autolearn=no
-        autolearn_force=no version=3.4.6
+        with ESMTP id S229655AbjHGO4H (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 7 Aug 2023 10:56:07 -0400
+Received: from mail.hugovil.com (mail.hugovil.com [162.243.120.170])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 09EFC107;
+        Mon,  7 Aug 2023 07:56:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=hugovil.com
+        ; s=x; h=Subject:Content-Transfer-Encoding:Content-Type:Mime-Version:
+        References:In-Reply-To:Message-Id:Cc:To:From:Date:Sender:Reply-To:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+        :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+        List-Post:List-Owner:List-Archive;
+        bh=g3hhovT0tDP4nv8TwY9Cvh2h3vrcrT925rPbO0OkZfs=; b=Pwwiz0LIsjNM0pesyOIJBF0ajR
+        q9NtwnumEaWf+t4KyB3BCxkTPmZ6tIQPnp1IWZml4bcpdOmMCfL3DSneLM5aGsyHx3fKdLDionSsP
+        NdNkI8pO9w2Wluwn5bYwv81BsPPcyzOTGViDSphY3KEqm6IL2a9xczqjkuPlzS0CFAKc=;
+Received: from modemcable061.19-161-184.mc.videotron.ca ([184.161.19.61]:60300 helo=pettiford)
+        by mail.hugovil.com with esmtpa (Exim 4.92)
+        (envelope-from <hugo@hugovil.com>)
+        id 1qT1eA-0003x0-JI; Mon, 07 Aug 2023 10:55:52 -0400
+Date:   Mon, 7 Aug 2023 10:55:49 -0400
+From:   Hugo Villeneuve <hugo@hugovil.com>
+To:     Hugo Villeneuve <hugo@hugovil.com>
+Cc:     Rob Herring <robh+dt@kernel.org>,
+        Greg KH <gregkh@linuxfoundation.org>,
+        krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
+        jirislaby@kernel.org, jringle@gridpoint.com,
+        isaac.true@canonical.com, jesse.sung@canonical.com,
+        tomasz.mon@camlingroup.com, l.perczak@camlintechnologies.com,
+        linux-serial@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
+        Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+        stable@vger.kernel.org,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Lech Perczak <lech.perczak@camlingroup.com>
+Message-Id: <20230807105549.e4f81835f180326969031910@hugovil.com>
+In-Reply-To: <20230803173854.efdda6d30d88b85ee101ce6b@hugovil.com>
+References: <20230721161840.1393996-1-hugo@hugovil.com>
+        <20230721161840.1393996-7-hugo@hugovil.com>
+        <CAL_JsqJpdhtnZ8FcM7kGWnM+iuDs1fWiCVgf413evbw-o8TZGQ@mail.gmail.com>
+        <20230722104724.ef0c5896c239e721794b9fe9@hugovil.com>
+        <2023072240-supremacy-shallot-a77f@gregkh>
+        <20230724115428.d191186852c0bd0ee0d78398@hugovil.com>
+        <CAL_JsqL8rjwONd6UAitKik0U44BKSD6m8zbachgfq0R9oHBW8w@mail.gmail.com>
+        <20230731124600.39eb8d5c132f9338c2897543@hugovil.com>
+        <CAL_JsqLaF70hNQndXpJfmH1TMGNbA7myQG0GK9fjyKOs63z-3w@mail.gmail.com>
+        <20230731144115.14733f0e01f586a7efb91370@hugovil.com>
+        <20230803135401.3a11bfb7c2985c1a90a2521b@hugovil.com>
+        <CAL_JsqK-qbz=w2a00EXh_e1XmY1gF1nvxih7AOYXw+VuMXhnmw@mail.gmail.com>
+        <20230803173854.efdda6d30d88b85ee101ce6b@hugovil.com>
+X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 184.161.19.61
+X-SA-Exim-Mail-From: hugo@hugovil.com
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
+X-Spam-Level: 
+X-Spam-Status: No, score=-3.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_PASS,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
+Subject: Re: [RESEND PATCH v8 06/10] serial: sc16is7xx: fix regression with
+ GPIO configuration
+X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
+X-SA-Exim-Scanned: Yes (on mail.hugovil.com)
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-This is an automatic generated email to let you know that the following patch were queued:
+On Thu, 3 Aug 2023 17:38:54 -0400
+Hugo Villeneuve <hugo@hugovil.com> wrote:
 
-Subject: media: nxp: Fix wrong return pointer check in mxc_isi_crossbar_init()
-Author:  Yang Yingliang <yangyingliang@huawei.com>
-Date:    Tue Jul 25 21:00:24 2023 +0800
+> On Thu, 3 Aug 2023 14:10:30 -0600
+> Rob Herring <robh+dt@kernel.org> wrote:
+> 
+> > On Thu, Aug 3, 2023 at 11:54 AM Hugo Villeneuve <hugo@hugovil.com> wrote:
+> > >
+> > > On Mon, 31 Jul 2023 14:41:15 -0400
+> > > Hugo Villeneuve <hugo@hugovil.com> wrote:
+> > >
+> > > > On Mon, 31 Jul 2023 12:04:45 -0600
+> > > > Rob Herring <robh+dt@kernel.org> wrote:
+> > > >
+> > > > > On Mon, Jul 31, 2023 at 10:46 AM Hugo Villeneuve <hugo@hugovil.com> wrote:
+> > > > > >
+> > > > > > On Mon, 31 Jul 2023 09:31:53 -0600
+> > > > > > Rob Herring <robh+dt@kernel.org> wrote:
+> > > > > >
+> > > > > > > On Mon, Jul 24, 2023 at 9:54 AM Hugo Villeneuve <hugo@hugovil.com> wrote:
+> > > > > > > >
+> > > > > > > > On Sat, 22 Jul 2023 17:15:26 +0200
+> > > > > > > > Greg KH <gregkh@linuxfoundation.org> wrote:
+> > > > > > > >
+> > > > > > > > > On Sat, Jul 22, 2023 at 10:47:24AM -0400, Hugo Villeneuve wrote:
+> > > > > > > > > > On Fri, 21 Jul 2023 13:24:19 -0600
+> > > > > > > > > > Rob Herring <robh+dt@kernel.org> wrote:
+> > > > > > > > > >
+> > > > > > > > > > > On Fri, Jul 21, 2023 at 10:19 AM Hugo Villeneuve <hugo@hugovil.com> wrote:
+> > > > > > > > > > > >
+> > > > > > > > > > > > From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+> > > > > > > > > > > >
+> > > > > > > > > > > > Commit 679875d1d880 ("sc16is7xx: Separate GPIOs from modem control lines")
+> > > > > > > > > > > > and commit 21144bab4f11 ("sc16is7xx: Handle modem status lines")
+> > > > > > > > > > > > changed the function of the GPIOs pins to act as modem control
+> > > > > > > > > > > > lines without any possibility of selecting GPIO function.
+> > > > > > > > > > >
+> > > > > > > > > > > Requiring a new DT property is not fixing a kernel regression. You
+> > > > > > > > > > > should be returning the kernel to original behavior and then have a
+> > > > > > > > > > > new DT property for new behavior.
+> > > > > > > > > >
+> > > > > > > > > > Hi Rob,
+> > > > > > > > > > please read the entire patch history starting from V1
+> > > > > > > > > >  and you will understand why this course of action was
+> > > > > > > > > >  not selected.
+> > > > > > > > >
+> > > > > > > > > That's not going to happen, sorry, you need to explain it here, in this
+> > > > > > > > > patch series, why a specific action is being taken over another one, as
+> > > > > > > > > no one has time to go dig through past history, sorry.
+> > > > > > > >
+> > > > > > > > Hi Rob,
+> > > > > > > > I initially submitted a patch to revert the kernel to original
+> > > > > > > > behavior, but it created more problems because the patch was
+> > > > > > > > unfortunately split in two separate patches, and mixed with other non
+> > > > > > > > closely-related changes. It was also noted to me that reverting to the
+> > > > > > > > old behavior would break things for some users.
+> > > > > > > >
+> > > > > > > > It was suggested to me by a more experienced kernel developer to
+> > > > > > > > "suggest a fix, instead of hurrying a revert":
+> > > > > > > >
+> > > > > > > >     https://lkml.org/lkml/2023/5/17/758
+> > > > > > >
+> > > > > > > Do I have to go read this to decipher the justification and reasoning?
+> > > > > > > When Greg says "in this patch series", he means in the commit messages
+> > > > > > > of the patches. You send v9 already and it doesn't have that. The
+> > > > > > > patchset needs to stand on its own summarizing any relevant prior
+> > > > > > > discussions.
+> > > > > > >
+> > > > > > > I never suggested doing a revert.
+> > > > > >
+> > > > > > Hi Rob,
+> > > > > > I am sorry, but this is exactly what I "deciphered" from your
+> > > > > > original email.
+> > > > > >
+> > > > > > I am trying very hard to understand exactly what you mean, but it is
+> > > > > > not that obvious for me. If something is not clear in my commit message,
+> > > > > > I will try to improve it. But before, let's try to focus on making sure
+> > > > > > I understand more clearly what you want exactly.
+> > > > > >
+> > > > > > > Obviously, someone still wants the
+> > > > > > > new feature.
+> > > > > >
+> > > > > > I assume that you refer to the "new feature" as what was added in
+> > > > > > the commit 679875d1d880 ("sc16is7xx: Separate GPIOs from modem control
+> > > > > > lines")?
+> > > > >
+> > > > > Shrug. It's one of the 2 commits mentioned, I don't know which one
+> > > > > exactly. Whichever one changed default behavior from use GPIOs to use
+> > > > > modem ctrl lines.
+> > > > >
+> > > > > Reading it again, I *think* this patch is correct. Default behavior is
+> > > > > restored to use GPIOs. The DT property is needed to enable modem ctrl
+> > > > > lines.
+> > > >
+> > > > Hi,
+> > > > this is correct.
+> > > >
+> > > >
+> > > > > What's not okay is just saying, these platforms may or may not need an update:
+> > > > >
+> > > > >     arm64/boot/dts/freescale/fsl-ls1012a-frdm.dts
+> > > > >     mips/boot/dts/ingenic/cu1830-neo.dts
+> > > > >     mips/boot/dts/ingenic/cu1000-neo.dts
+> > > >
+> > > > Yes, my bad. I initially mentioned them and hoped to get some
+> > > > feedback, which I never got, and I kind of forgot about it.
+> > > >
+> > > > > You need to figure that out. Have you checked with maintainers of
+> > > > > these boards? When were they added and by who? At the same time or by
+> > > > > the same person would be a good indication the platform uses modem
+> > > > > ctrl lines. Or were these platforms in use before adding modem ctrl
+> > > > > support? Then they probably use GPIOs or nothing.
+> > > > >
+> > > > > If there are platforms which would regress if the modem ctrl feature
+> > > > > was just reverted, which ones are those?
+> > > >
+> > > > Ok, let me do some checks and get back to you on this.
+> > >
+> > > Hi Rob,
+> > > for this board:
+> > >     arm64/boot/dts/freescale/fsl-ls1012a-frdm.dts
+> > >
+> > > it uses a SC16IS740, which doesn't have any GPIOs nor modem
+> > > control lines, so no DT changes required.
+> > >
+> > > For these two Ingenic boards:
+> > >     mips/boot/dts/ingenic/cu1830-neo.dts
+> > >     mips/boot/dts/ingenic/cu1000-neo.dts
+> > >
+> > > They use a SC16IS752, which has shared modem control lines and GPIOs.
+> > > Unfortunately, the maintainers have not (yet) responded to my
+> > > inquiries. Also, I tried to search for schematics or block diagrams on
+> > > the net but couldn't find anything.
+> > >
+> > > These platforms were in use before the patch to add the modem control
+> > > lines was added. Then like you said they probably use these shared
+> > > lines as GPIOs or nothing, so no DT changes would be required.
+> > 
+> > Okay, that's useful (please add to the commit msg).
+> 
+> I added the information in the cover letter, but I can add it to the
+> actual patch commit message if you prefer.
+> 
+> > Still, what platform(s) need the modem control feature? Presumably
+> > that's whatever platform Lech and Tomasz work on. I guess given the
+> > Reviewed-by they are fine with needing a DT change.
+> 
+> Ok. I have previously also emailed Lech about that, but he has not
+> responded yet.
 
-It should check 'xbar->inputs', when allocate memory for it.
+Hi Rob,
+Lech just confirmed that he made the DT changes
+to a board that was used only internally, and that no other DT changes
+should be necessary for in-tree DTS.
 
-Cc: stable@vger.kernel.org
-Fixes: cf21f328fcaf ("media: nxp: Add i.MX8 ISI driver")
-Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
-Reviewed-by: Fabio Estevam <festevam@gmail.com>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-
- drivers/media/platform/nxp/imx8-isi/imx8-isi-crossbar.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
----
-
-diff --git a/drivers/media/platform/nxp/imx8-isi/imx8-isi-crossbar.c b/drivers/media/platform/nxp/imx8-isi/imx8-isi-crossbar.c
-index f7447b2f4d77..9fcfc3925733 100644
---- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-crossbar.c
-+++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-crossbar.c
-@@ -483,7 +483,7 @@ int mxc_isi_crossbar_init(struct mxc_isi_dev *isi)
- 
- 	xbar->inputs = kcalloc(xbar->num_sinks, sizeof(*xbar->inputs),
- 			       GFP_KERNEL);
--	if (!xbar->pads) {
-+	if (!xbar->inputs) {
- 		ret = -ENOMEM;
- 		goto err_free;
- 	}
+Hugo.
