@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CC79B771B40
-	for <lists+stable@lfdr.de>; Mon,  7 Aug 2023 09:11:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5DDAD771B42
+	for <lists+stable@lfdr.de>; Mon,  7 Aug 2023 09:12:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231468AbjHGHLz (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 7 Aug 2023 03:11:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33314 "EHLO
+        id S231470AbjHGHMB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 7 Aug 2023 03:12:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33348 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231470AbjHGHLy (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 7 Aug 2023 03:11:54 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 77FA795
-        for <stable@vger.kernel.org>; Mon,  7 Aug 2023 00:11:53 -0700 (PDT)
+        with ESMTP id S229537AbjHGHMA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 7 Aug 2023 03:12:00 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 42B4595
+        for <stable@vger.kernel.org>; Mon,  7 Aug 2023 00:11:59 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0FA4B615B3
-        for <stable@vger.kernel.org>; Mon,  7 Aug 2023 07:11:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BA3BC433C8;
-        Mon,  7 Aug 2023 07:11:51 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C2C56612AF
+        for <stable@vger.kernel.org>; Mon,  7 Aug 2023 07:11:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3FEAC433C8;
+        Mon,  7 Aug 2023 07:11:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691392312;
-        bh=O1p0hZR2jJWu52rzeF22TrJKe+zV6kXTHdhrWElXqYg=;
+        s=korg; t=1691392318;
+        bh=uzWkZVWC6y43vJJFtDimh9xpmjkm0eKROiDbQrGFQAs=;
         h=Subject:To:Cc:From:Date:From;
-        b=jgO7u/4voQVlfxlCkgeE6iPAFkQDS2npKyTC8D1l33mugBThVF+KIVFM9cGV9ttC/
-         68R+vfkKE0ff2R3jFQF/A8TWnuEYrzsg0BsGku1gGVO2tVfu/c0TaWIrwyJRzNRd58
-         poqa5UV3knacQLiY+uZa/IGuDLVD3ygn4j2xCrUs=
-Subject: FAILED: patch "[PATCH] drm/i915/gt: Support aux invalidation on all engines" failed to apply to 5.15-stable tree
+        b=mdYUNwfheKPXOIJqGbA9UJdLlpjmBd0qzBWWESILmcYRriKiujp6ZbeAsUeZxjsEX
+         1P+vjrvbWEQeH8GBh6uIVHKmIEON5yg0i6c6cCl+tC201rSUXvTfYkPqJB+S106QWu
+         qigh2c7+1Roch8C5ZofppoDfeeWkLaGM2c+elYQI=
+Subject: FAILED: patch "[PATCH] drm/i915/gt: Support aux invalidation on all engines" failed to apply to 5.10-stable tree
 To:     andi.shyti@linux.intel.com, andrzej.hajda@intel.com,
         jonathan.cavitt@intel.com, matthew.d.roper@intel.com,
         stable@vger.kernel.org, tvrtko.ursulin@intel.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Mon, 07 Aug 2023 09:11:35 +0200
-Message-ID: <2023080735-maternal-grafting-7c1c@gregkh>
+Date:   Mon, 07 Aug 2023 09:11:36 +0200
+Message-ID: <2023080736-starlet-helpless-0b22@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -50,19 +50,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x 6a35f22d222528e1b157c6978c9424d2f8cbe0a1
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023080735-maternal-grafting-7c1c@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023080736-starlet-helpless-0b22@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
