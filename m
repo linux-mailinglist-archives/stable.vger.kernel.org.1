@@ -2,118 +2,95 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 35B3B772D38
-	for <lists+stable@lfdr.de>; Mon,  7 Aug 2023 19:45:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 67DF4772DD2
+	for <lists+stable@lfdr.de>; Mon,  7 Aug 2023 20:25:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231565AbjHGRpF convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+stable@lfdr.de>); Mon, 7 Aug 2023 13:45:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42378 "EHLO
+        id S229952AbjHGSZE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 7 Aug 2023 14:25:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57580 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231597AbjHGRpE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 7 Aug 2023 13:45:04 -0400
-Received: from mail-oo1-f45.google.com (mail-oo1-f45.google.com [209.85.161.45])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D7171710;
-        Mon,  7 Aug 2023 10:45:02 -0700 (PDT)
-Received: by mail-oo1-f45.google.com with SMTP id 006d021491bc7-56d279a4d5cso945088eaf.1;
-        Mon, 07 Aug 2023 10:45:02 -0700 (PDT)
+        with ESMTP id S229829AbjHGSZD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 7 Aug 2023 14:25:03 -0400
+Received: from mail-pl1-x629.google.com (mail-pl1-x629.google.com [IPv6:2607:f8b0:4864:20::629])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B946194
+        for <stable@vger.kernel.org>; Mon,  7 Aug 2023 11:25:01 -0700 (PDT)
+Received: by mail-pl1-x629.google.com with SMTP id d9443c01a7336-1bb91c20602so10145855ad.0
+        for <stable@vger.kernel.org>; Mon, 07 Aug 2023 11:25:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernel-dk.20221208.gappssmtp.com; s=20221208; t=1691432701; x=1692037501;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=3pJjNXs4QCJ//eacbs196+Ii1BpskstaQNpYfpqnv34=;
+        b=kqpgx8X5bLaxAqYEt2ijFW6BbvzevlhTzCZkihAiTGIL5Bt5jai7jEaWqvv1B7EO+b
+         22+Upfg9ezalxH4MWmswPVIgAvpB6gqHr1UBWtXQh4GJ8lj7IPFOsFeQPxcUcl7CbGnN
+         5PkVwiWNBnQz+7my0AmCfmTF1JIPazlgFI9k9clZhAK4nNqyE6tnB+js5OIBMeE1dWgH
+         NCuxFlGYMHbG+08KJ2xmr/lVGyPUU7+nWAclpnykQk0yJkVkLCovZIuGYjCkfr1GRIjk
+         nflf74Wc4lnMaNOwfcrJpx+48WwZyCFGXvFGPlWCUlq7uU28bzZrsbxRVCw/ODyKsKk7
+         dFtw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691430301; x=1692035101;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20221208; t=1691432701; x=1692037501;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=TWKNVFPG2tk11UK8ShmuaIuXv6kvQHWLsHEKxszVH4E=;
-        b=epWKavYJDsEMKBrONVIP0A/OhkscwkvEA3vTy5OBKaNMRgv5y60IjpTUx974Mfx3rA
-         TJX/PexYui/PP/BJzsK7vNfMy6AgG7HUlh2JdrpyfK4l+9t4/VZBO2d2+5eUxlyMfxq5
-         wT4d/v40gUO5x15tiA34xLBZvGtQ1tKfLHQW54U0wNGWVAtWLmjNaavcDVQpyGOxPhcM
-         tYM1o4F8Dgt905lLf6hoqEaBsvj4meSg50jdwNEoPurTldVTmfDLc3Uk8REq481mec03
-         ceGwjHWTvwyPTQeB6ewSqrcg6GDp+m8j/0/6wx9mw/kXVGJ7744UbS9Rd87LnlUBZ6P3
-         2DVw==
-X-Gm-Message-State: ABy/qLbfe0dhDyE30AmU+0pHFLpk2Xp9Q7BdTl9VbRaIEw5Rxd+3upi2
-        6AMnlYY/SmiMn6NHevCg/CAd/ScbV/LQLpDcGfq3uBy8
-X-Google-Smtp-Source: APBJJlHIs1Rd+8IBsAtPW72ueQVYXf1CaTX97GCshJ93wMpSx0aG6YLWBWfqKydbnmKuq9XeVtYAw+GgLZ8IIBr3ziI=
-X-Received: by 2002:a4a:e251:0:b0:566:951e:140c with SMTP id
- c17-20020a4ae251000000b00566951e140cmr17718901oot.1.1691430301602; Mon, 07
- Aug 2023 10:45:01 -0700 (PDT)
+        bh=3pJjNXs4QCJ//eacbs196+Ii1BpskstaQNpYfpqnv34=;
+        b=XUsojG0mmRhVFYPAQUdca/q2nfuM4vNw2UPEmRLDgucDLV72TF6ax+pomb3eBX3FH+
+         Ro2G4zGIuEW315gJr4jBJbmLtI3TzNz7/YLxe23aCv5LX2I7Qbnx4IHYGzVNDlSPZrSl
+         jhgoNd76EkvxMlMP0/iX0oHDRtRlXhdUh3OsyhgM9BXlgxFs4m0gQgxgmQvx8iM7FMbH
+         osVXVHCQQZQ575xCARf+JZljjLQi6YSSbtJufsGh0qXFCabIMDtcR4n5uhVJsAXWn5Hq
+         YWdr0OU0vq9j5L7XIzD0fIOQsgkV7LXobsLQfa5RQ2l/Lw3F9QWmUKgbUyGtO38V5oZS
+         OIGw==
+X-Gm-Message-State: ABy/qLbtBdK58r7Ycgeteg6ZjrNT1eAcuBtxfA1IakYUFMdC1eWDXLAT
+        8NGuk+f6xpoFlV0B/ZXJ0QxisQ==
+X-Google-Smtp-Source: APBJJlFURYryyRLRBjK4Cyr916nSBSaubf5aUgZlsfvmwJhugTUqlPYOfhCnpbjWJ4qrDtXrk7/lgg==
+X-Received: by 2002:a17:902:d503:b0:1bb:83ec:832 with SMTP id b3-20020a170902d50300b001bb83ec0832mr33892430plg.2.1691432700593;
+        Mon, 07 Aug 2023 11:25:00 -0700 (PDT)
+Received: from [127.0.0.1] ([12.221.160.50])
+        by smtp.gmail.com with ESMTPSA id u3-20020a170902b28300b001b66a71a4a0sm7240722plr.32.2023.08.07.11.24.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 07 Aug 2023 11:24:59 -0700 (PDT)
+From:   Jens Axboe <axboe@kernel.dk>
+To:     Alexander Viro <viro@zeniv.linux.org.uk>,
+        Christian Brauner <brauner@kernel.org>,
+        Pavel Begunkov <asml.silence@gmail.com>,
+        Aleksa Sarai <cyphar@cyphar.com>
+Cc:     linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+        io-uring@vger.kernel.org, stable@vger.kernel.org
+In-Reply-To: <20230807-resolve_cached-o_tmpfile-v3-1-e49323e1ef6f@cyphar.com>
+References: <20230807-resolve_cached-o_tmpfile-v3-1-e49323e1ef6f@cyphar.com>
+Subject: Re: [PATCH v3] io_uring: correct check for O_TMPFILE
+Message-Id: <169143269944.27533.6390760474967259170.b4-ty@kernel.dk>
+Date:   Mon, 07 Aug 2023 12:24:59 -0600
 MIME-Version: 1.0
-References: <20230807-amd-pstate-cfi-v1-1-0263daa13bc3@weissschuh.net> <20230807160635.GA3061@dev-arch.thelio-3990X>
-In-Reply-To: <20230807160635.GA3061@dev-arch.thelio-3990X>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Mon, 7 Aug 2023 19:44:50 +0200
-Message-ID: <CAJZ5v0jNiq_-T9nF_-Xe7q_XMfxSbU7OzC02Y8SrhYv6XjX=Aw@mail.gmail.com>
-Subject: Re: [PATCH] cpufreq: amd-pstate: fix global sysfs attribute type
-To:     Nathan Chancellor <nathan@kernel.org>,
-        =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
-Cc:     Huang Rui <ray.huang@amd.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Viresh Kumar <viresh.kumar@linaro.org>,
-        linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Jannik Glueckert <jannik.glueckert@gmail.com>,
-        Bagas Sanjaya <bagasdotme@gmail.com>,
-        Linux LLVM Build Support <llvm@lists.linux.dev>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.13-dev-034f2
+X-Spam-Status: No, score=1.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,RCVD_IN_SBL_CSS,SPF_HELO_NONE,
+        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: *
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, Aug 7, 2023 at 6:06 PM Nathan Chancellor <nathan@kernel.org> wrote:
->
-> Hi Thomas,
->
-> On Mon, Aug 07, 2023 at 08:37:45AM +0200, Thomas Weißschuh wrote:
-> > In commit 3666062b87ec ("cpufreq: amd-pstate: move to use bus_get_dev_root()")
-> > the "amd_pstate" attributes where moved from a dedicated kobject to the
-> > cpu root kobject.
-> > While the dedicated kobject expects to contain kobj_attributes the root
-> > kobject needs device_attributes.
-> >
-> > As the changed arguments are not used by the callbacks it works most of
-> > the time.
-> > However CFI will detect this issue:
-> >
-> > [ 4947.849350] CFI failure at dev_attr_show+0x24/0x60 (target: show_status+0x0/0x70; expected type: 0x8651b1de)
-> > ...
-> > [ 4947.849409] Call Trace:
-> > [ 4947.849410]  <TASK>
-> > [ 4947.849411]  ? __warn+0xcf/0x1c0
-> > [ 4947.849414]  ? dev_attr_show+0x24/0x60
-> > [ 4947.849415]  ? report_cfi_failure+0x4e/0x60
-> > [ 4947.849417]  ? handle_cfi_failure+0x14c/0x1d0
-> > [ 4947.849419]  ? __cfi_show_status+0x10/0x10
-> > [ 4947.849420]  ? handle_bug+0x4f/0x90
-> > [ 4947.849421]  ? exc_invalid_op+0x1a/0x60
-> > [ 4947.849422]  ? asm_exc_invalid_op+0x1a/0x20
-> > [ 4947.849424]  ? __cfi_show_status+0x10/0x10
-> > [ 4947.849425]  ? dev_attr_show+0x24/0x60
-> > [ 4947.849426]  sysfs_kf_seq_show+0xa6/0x110
-> > [ 4947.849433]  seq_read_iter+0x16c/0x4b0
-> > [ 4947.849436]  vfs_read+0x272/0x2d0
-> > [ 4947.849438]  ksys_read+0x72/0xe0
-> > [ 4947.849439]  do_syscall_64+0x76/0xb0
-> > [ 4947.849440]  ? do_user_addr_fault+0x252/0x650
-> > [ 4947.849442]  ? exc_page_fault+0x7a/0x1b0
-> > [ 4947.849443]  entry_SYSCALL_64_after_hwframe+0x72/0xdc
-> >
-> > Reported-by: Jannik Glückert <jannik.glueckert@gmail.com>
-> > Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217765
-> > Link: https://lore.kernel.org/lkml/c7f1bf9b-b183-bf6e-1cbb-d43f72494083@gmail.com/
-> > Fixes: 3666062b87ec ("cpufreq: amd-pstate: move to use bus_get_dev_root()")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
->
-> Thanks a lot for the quick patch! Unfortunately, it seems like neither
-> of my AMD machines support amd-pstate so I can't test this but it seems
-> like the right fix to me.
->
-> Reviewed-by: Nathan Chancellor <nathan@kernel.org>
 
-Applied as 6.5-rc material, thanks!
+On Mon, 07 Aug 2023 12:24:15 +1000, Aleksa Sarai wrote:
+> O_TMPFILE is actually __O_TMPFILE|O_DIRECTORY. This means that the old
+> check for whether RESOLVE_CACHED can be used would incorrectly think
+> that O_DIRECTORY could not be used with RESOLVE_CACHED.
+> 
+> 
+
+Applied, thanks!
+
+[1/1] io_uring: correct check for O_TMPFILE
+      (no commit info)
+
+Best regards,
+-- 
+Jens Axboe
+
+
+
