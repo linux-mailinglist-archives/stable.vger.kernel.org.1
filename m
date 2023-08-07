@@ -2,42 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2268A771B44
-	for <lists+stable@lfdr.de>; Mon,  7 Aug 2023 09:12:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B04F7771B45
+	for <lists+stable@lfdr.de>; Mon,  7 Aug 2023 09:12:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229964AbjHGHMH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 7 Aug 2023 03:12:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33402 "EHLO
+        id S231475AbjHGHMJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 7 Aug 2023 03:12:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33414 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229537AbjHGHMG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 7 Aug 2023 03:12:06 -0400
+        with ESMTP id S229537AbjHGHMI (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 7 Aug 2023 03:12:08 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 03BE910EC
-        for <stable@vger.kernel.org>; Mon,  7 Aug 2023 00:12:05 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C06B1E78
+        for <stable@vger.kernel.org>; Mon,  7 Aug 2023 00:12:07 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8B0FA612AF
-        for <stable@vger.kernel.org>; Mon,  7 Aug 2023 07:12:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 966A9C433C7;
-        Mon,  7 Aug 2023 07:12:03 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 51A56612AF
+        for <stable@vger.kernel.org>; Mon,  7 Aug 2023 07:12:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E336C433C7;
+        Mon,  7 Aug 2023 07:12:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691392324;
-        bh=35KeMli4rCNtl5Lb3j0SI+Q/ySLCAYzmLLz4l3q1ML4=;
+        s=korg; t=1691392326;
+        bh=qhd4YsLsY8ZmAOEbJDB+spj1shA1a6RbeZkujEisMUM=;
         h=Subject:To:Cc:From:Date:From;
-        b=RrSeQQADovpPsCTmz8fJCFfXLQyGr0S3BZpDK0c1wa+xdR1sd7TayyDFYC0YcDJ3Y
-         GwPTjoHPJ8hBjm5HjxA7CqNse0K8FaOEtnhZtnDd6WA8+nKIKDUgyniYTuo6hucEeL
-         3IDYNRNVRQhUZi/VNVpVT0tl3Z1Kte0eaUECbo90=
-Subject: FAILED: patch "[PATCH] drm/i915/gt: Enable the CCS_FLUSH bit in the pipe control and" failed to apply to 6.1-stable tree
+        b=BTkzQzFS4/ErBp1+sLhL9WXdx2yI8HddqlmJ9EQCfhCpjZ6DZbgAwyhv5senXzPhT
+         tuptYA5yYNHrNjCXQGpgGkR1En3HuVgPDyt4jOctgnDikIA6nQLLjMNsXtQasN/NPx
+         RljXL2QsDwqnPis2eSmqcSduWycboQREbAtxpYAM=
+Subject: FAILED: patch "[PATCH] drm/i915/gt: Enable the CCS_FLUSH bit in the pipe control and" failed to apply to 5.15-stable tree
 To:     andi.shyti@linux.intel.com, andrzej.hajda@intel.com,
         jonathan.cavitt@intel.com, matthew.d.roper@intel.com,
         nirmoy.das@intel.com, stable@vger.kernel.org,
         tvrtko.ursulin@intel.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Mon, 07 Aug 2023 09:11:45 +0200
-Message-ID: <2023080745-flashback-clavicle-561f@gregkh>
+Date:   Mon, 07 Aug 2023 09:11:46 +0200
+Message-ID: <2023080746-outlook-luster-f054@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -51,19 +51,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x 824df77ab2107d8d4740b834b276681a41ae1ac8
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023080745-flashback-clavicle-561f@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023080746-outlook-luster-f054@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
@@ -71,6 +71,13 @@ Possible dependencies:
 592b228f12e1 ("drm/i915/gt: Rename flags with bit_group_X according to the datasheet")
 78a6ccd65fa3 ("drm/i915/gt: Ensure memory quiesced before invalidation")
 d922b80b1010 ("drm/i915/gt: Add workaround 14016712196")
+1eb313389948 ("drm/i915/pvc: Remove additional 3D flags from PIPE_CONTROL")
+b409db082da6 ("Revert "drm/i915: Drop has_reset_engine from device info"")
+9d67edba730c ("drm/i915/pvc: Define MOCS table for PVC")
+922abe4d19bd ("drm/i915: Drop has_reset_engine from device info")
+218076abbcd6 ("drm/i915: Drop has_rc6 from device info")
+448a54ace4bb ("drm/i915/pvc: add initial Ponte Vecchio definitions")
+e1e1f4e32594 ("Merge drm/drm-next into drm-intel-gt-next")
 
 thanks,
 
