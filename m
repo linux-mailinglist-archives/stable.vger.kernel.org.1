@@ -2,173 +2,136 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CD1AF773030
-	for <lists+stable@lfdr.de>; Mon,  7 Aug 2023 22:14:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DB70E7730DC
+	for <lists+stable@lfdr.de>; Mon,  7 Aug 2023 23:03:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229915AbjHGUOi (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 7 Aug 2023 16:14:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55230 "EHLO
+        id S229787AbjHGVD1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 7 Aug 2023 17:03:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47312 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229696AbjHGUOh (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 7 Aug 2023 16:14:37 -0400
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 68D1510CF;
-        Mon,  7 Aug 2023 13:14:35 -0700 (PDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id DE9021FB;
-        Mon,  7 Aug 2023 13:15:17 -0700 (PDT)
-Received: from [192.168.1.102] (unknown [172.31.20.19])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 702233F6C4;
-        Mon,  7 Aug 2023 13:14:32 -0700 (PDT)
-Message-ID: <919ab857-30cf-00a5-1a40-fb180678792e@arm.com>
-Date:   Mon, 7 Aug 2023 21:14:24 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v3 5.15 4/6] iommu/arm-smmu-v3: Document MMU-700 erratum
- 2812531
-Content-Language: en-GB
-To:     Easwar Hariharan <eahariha@linux.microsoft.com>,
-        stable@vger.kernel.org
-Cc:     easwar.hariharan@microsoft.com, Nicolin Chen <nicolinc@nvidia.com>,
-        Will Deacon <will@kernel.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Joerg Roedel <joro@8bytes.org>,
-        Sasha Levin <sashal@kernel.org>,
-        Yicong Yang <yangyicong@hisilicon.com>,
-        Tomas Krcka <krckatom@amazon.de>,
-        "moderated list:ARM64 PORT (AARCH64 ARCHITECTURE)" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
-        open list <linux-kernel@vger.kernel.org>,
-        "open list:IOMMU DRIVERS" <iommu@lists.linux-foundation.org>,
-        "open list:IOMMU DRIVERS" <iommu@lists.linux.dev>
-References: <20230802170227.1590187-1-eahariha@linux.microsoft.com>
- <20230802170227.1590187-5-eahariha@linux.microsoft.com>
-From:   Robin Murphy <robin.murphy@arm.com>
-In-Reply-To: <20230802170227.1590187-5-eahariha@linux.microsoft.com>
+        with ESMTP id S229520AbjHGVD0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 7 Aug 2023 17:03:26 -0400
+Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on2058.outbound.protection.outlook.com [40.107.220.58])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 94BC410F7
+        for <stable@vger.kernel.org>; Mon,  7 Aug 2023 14:03:25 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=SS+YbeLYNeEmLuWDuv0jVm/gP277+T7rH2RuXZ+69iXrtWBYXliUcClcyjSITMFvGeEbFfp1Jt1pHLiJZnL75hairCsp3dfdorM0vVKyRyxsyNNpHS+W1+k83meNE4A4nW9R2vuI6QPh36dC+61dQFKMIKV3vWiDEK40RL9aijQ/uBtrnyUnmJ1way0tbmupJsmkd2QsYEqj2Xz6O6fMyGrf6guvJFbNj+XTWKiBhTwJG9Z9YLqDrd0S1Ox0aJo47cyi8fuo78bJMqT8MUPRX0jmZ1mkH3tDIzybhVp6tfGNiIGNHl5CbQsNEZHDiRCkOugt+i9iQ7JExI5MVvacJg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=mTVSPanZkuMicvo9QNUA+zBDDeI3KiHorgY7tSgJrds=;
+ b=gPJbmqPswq+4Bh2T33I/8oQuDyOq/NC/Cp2RlGWC8SnjqbW6uZ2yu6RSyOYqP0bhLODoxBquSq+0elWT/vu4NwaMyJbuyKIcfA7NE/wauPS7gSfB5hjlFZQ7YyObdNZPGFiWnC60CaENkxubJVCbyq0xJ2jJYBNC7WG1IcRLaDITrokMewXS8J1q/9BEy100Ocw2UffvjW9MxToCr8OpsXPfQ/wsvduSb+MFuilxVDq7c4675lIPfgJFwTqF8/HyZCsYx3tpuCJbNW+O7TZAyNJGh7HtnKrJ+5z2akPT2or4nDf9sX7U/MRKzgJRMK+GKyy1nZGnHyBRvZOgZm+rgg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=mTVSPanZkuMicvo9QNUA+zBDDeI3KiHorgY7tSgJrds=;
+ b=ElsGjNZaMX02St9ecmZ+0SKekA2ZIPRp0os+msPTMIpq1+mLy5RRag1Q32attokk72TXv+qweJwmh6MWpmjHBm1Hye23CMaiIrAfb1dFTEKSoA3c2WxnhAvqe3HSTP0Arfe7yGLLvG7u4dpB1s1S9QxkkdWW/C4cZVbWY7AjsZo=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from MN0PR12MB6101.namprd12.prod.outlook.com (2603:10b6:208:3cb::10)
+ by MN0PR12MB5833.namprd12.prod.outlook.com (2603:10b6:208:378::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6652.25; Mon, 7 Aug
+ 2023 21:03:22 +0000
+Received: from MN0PR12MB6101.namprd12.prod.outlook.com
+ ([fe80::36f9:ffa7:c770:d146]) by MN0PR12MB6101.namprd12.prod.outlook.com
+ ([fe80::36f9:ffa7:c770:d146%7]) with mapi id 15.20.6652.026; Mon, 7 Aug 2023
+ 21:03:19 +0000
+Message-ID: <50a5705d-dbcb-4db4-a210-c55dabe5d7a0@amd.com>
+Date:   Mon, 7 Aug 2023 16:03:20 -0500
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+To:     Stable <stable@vger.kernel.org>, william.bonnaventure@gmail.com
+From:   Mario Limonciello <mario.limonciello@amd.com>
+Subject: [6.1.y] Fix a regression where Kodi stopped working on 6.1.y
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-3.7 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-ClientProxiedBy: SA0PR11CA0093.namprd11.prod.outlook.com
+ (2603:10b6:806:d1::8) To MN0PR12MB6101.namprd12.prod.outlook.com
+ (2603:10b6:208:3cb::10)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MN0PR12MB6101:EE_|MN0PR12MB5833:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0b86cc64-470b-487d-e21e-08db9789ba27
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: xzzBfSJ5T5puHdshXHHncaiGicud1w0s9tLtfotKxQHAPP1DCbMDx7etI8hrk25bD+T8Sa/qJQLZaiEg3iwdkRr353/qMe/rRA/ABMXCmkbGqHgysXz70sAXs9yn91ynXcAJBLCJpecfPGTHUEJ3e4wlqKrdqe586Qb4fqUuI0aIxG13JJ/UmIzv+M7pM5NiepMOm0HNxkSZt9OEOU0wDV5zKSBMDtjg/WBx/Vo88MDe+IlorCMBCboIN0QRbHvAHn196OQZoqVGO7vmarsgWxYGIiMa4ECyBpDBxmHUz+r12CbhI5/96qnR/hxoIRB3G72OcKTe1XZzk5c48IFrcVJMueJ3BIUuwSGtJ0F9QGbZC5euNAApxD+DipfwI4XPFfSEgUAJon9mWBjKDhozDWfiB+TtomocBVYeOoncj2L38RZ1Nz6kyLYuYvLzWh7fabyK7lP/vOAU0SU6BL2bOCnYQ1Mh6y2FN4i/QiSEjM4Qf7B+I0S1Z6KxUOCSo9Au+PUo95jMpXvUo3s6qQkZsdgEu36rdUAGaIEL7pCLSesvTJ/IcImD76VsEa1LPwc/4W1JdrcvUmfW+mDs5cUvCgE85Bk4EU580wVCTGn355XRzaif/3CCGTl+nmW2tD0SwK5vKz96VzxbOiaU/dmGVa/uJrWQdGZs+4xy5IpKxP4=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR12MB6101.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(39860400002)(396003)(136003)(346002)(366004)(376002)(451199021)(186006)(1800799003)(2616005)(36756003)(966005)(6512007)(316002)(86362001)(38100700002)(6666004)(66946007)(478600001)(6486002)(66476007)(66556008)(31696002)(6506007)(41300700001)(26005)(8676002)(8936002)(4744005)(2906002)(83380400001)(5660300002)(31686004)(44832011)(45980500001)(43740500002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?bFcrTjVzSkdoSzFBeXZKVk9GTWZQM2tLNHYxczhYbzFBRGE5K1l0UG96L2Rh?=
+ =?utf-8?B?a0NKTlhLRGRWOXNvKzU0VnJyU0tkdVBsUXFoZmlJUjRqOG5ZYzN6U3RFd0tF?=
+ =?utf-8?B?SU0xOTJuL0ZtbjNObkp5TDNHQ3ZxRndrcU1rU2cza1ZWUnpCdjc1ckhOWFN5?=
+ =?utf-8?B?blhXajY0bzluRUNCdzBIYkN2a282d0NzQjlFdUhiQ3RPV01PV2kvY2tUbzBB?=
+ =?utf-8?B?ZkE0NlZBc2hpak9kRG1IVWJ5b3g5bnJPajB3UzV4d0RIc0FjUHdzQVpNRERK?=
+ =?utf-8?B?MTNNc1hDYU5PNzNDb1ZUY3ZRKzlPRmd1WE5BZFFONEVyU0NlbE8rT2FJVmtw?=
+ =?utf-8?B?d1lSWWhaRmtHVWFZWU1rWEw1dVBOZkNrWHBXS3dqd24rNm1yT3BjbGUrMm4r?=
+ =?utf-8?B?YjVZRHpiVGRiNUhPOHo4NEhJcE5wUHdNdnNZQTRjMms2Q1NDaGdDNkJjQjQ3?=
+ =?utf-8?B?YjZNQjZhY09qNWpXSkQ0NG8wdVZKZEZpeEc2NVZlWUZ5bURtOXRkakQ0MFlp?=
+ =?utf-8?B?N21UTk8rZXFZYktWemZ1bHQzelFmRlhVZ2xUVHNESUZtNmVoUnJSMVRyMmRa?=
+ =?utf-8?B?Vlc5dFF3QmkwZWZaRGxMSnFtN01iQWRRNWhOWVAwK3ZwK1IyTmZwZTNuZ0Rh?=
+ =?utf-8?B?QzdRSUYxaVRmUzZRQjhKMW1KdUp0Q21pVWQ4QzZnVVc5SlM5N05LMHJab0o5?=
+ =?utf-8?B?ZGlFYjFwN0tubUtnQmx1M1hlOE5MYjlhUzJ3ZUQrRFd3NlpRL0JDeEZtVjh6?=
+ =?utf-8?B?NXhjdFlRSHk4cFAvMWtibnloMWtZYm8wTTFveUZWTUczOFJtSlYxZ1VwTElU?=
+ =?utf-8?B?eUpsOHY1T25jQ0RaVE12UFhlN1l6MFp3RUpnNFhSbWdhUW5wdVpDQ3J3NzJz?=
+ =?utf-8?B?R1pucEx2WmtsRk1lMTRDcFZBczF6NllmTFJ5bTA1M25LOWVQVnN6aGtna3FJ?=
+ =?utf-8?B?cmcvWElRMzlEaVo3Q3ZEdVoyWW40VFUvTzN4WG9oNTE2Yk5EZEJtWXdta2lw?=
+ =?utf-8?B?NHdqZXdCbklxdW1JWEM0aCs0OVhPN3VCK2swS0IrQlV2WngzN3NaS0RGUW1G?=
+ =?utf-8?B?bzVybDhWOU4wR1ZycmhxTTVWdzlnRStUY3JGcHVCU2I1ZHYrSHZoeFVzR3NG?=
+ =?utf-8?B?akJGcGVyaWlhbmZXV2JBcmVuT3pUQWpLWU52TGgwQjlQYmJEMk44UFNEdWcx?=
+ =?utf-8?B?UTNpSGE4anZ3OXFZUURhejV1VnJ2cHpZdGU4ZnREaUpLS1k0MityNi9hMnhj?=
+ =?utf-8?B?WEErRzJxSW1LdWlFZ0JNcHRVcFFVZ3F2WjQ5eUJvWGlxT254ZW1YNkNUTEgy?=
+ =?utf-8?B?eXlwam9sQ0x6QktyeVlHKytwRjg3TDZSWFkwOCtIMG5NMFFXL3JLcHEwZWpV?=
+ =?utf-8?B?eU9WZTFJejhkYVRROGttOUFZRWY4QStWeTN4cnRmU0QwWUg4dW5xOE5JcU9v?=
+ =?utf-8?B?OE1xRXJZZUNnODExaGxVS3k3REtlMWdQY20yMmFJajBvNkRNVEsvVkY0R3Qv?=
+ =?utf-8?B?cDVRcmhlcWlSWll3NWVER3hBdDNpN0NXZnI5Zy9EUGY5QVpZVlZTcyt4K0pw?=
+ =?utf-8?B?d0FTUWJMc240NTJkYjNGRTllTzU1YmtYczM5NW5lV2tCK1liSWZCc3dOQXkw?=
+ =?utf-8?B?UXQ2WWlwNDlqWDVrRFpXZFBPcGMxWjZYK25QZWdHeHYrb3FEZk1DWTBRVVY5?=
+ =?utf-8?B?Y1l3dlg4WXhDeWZpaCswSEtFS1o4Ky9Yb1dnS2pNbnZmVXgxbXI5TU5jUThL?=
+ =?utf-8?B?bTNRRWx0NlZZRXRqSUVMMTc4ZE8rMFR3REVwSmh0RUs3MzlNSFN1UFAwdWNr?=
+ =?utf-8?B?K3BnRmNNaFl0QnhOR2EzOVJYYWlEMG9raE1EaEx0dFVuWjVkSmd3THhTRmtV?=
+ =?utf-8?B?QmVuSmU5M1Q3Ti9tVHA4UDMyZkNwMTZIN09IZTAzamNpLzhkWGlzYUVuVzRL?=
+ =?utf-8?B?VHNaeFI3NU9sd2wxdlBNcnRoL1hoTWdTNVlvdEgxRXFaTExpMEQ5Z3lqSi9I?=
+ =?utf-8?B?ZTNBZENmNzBXaCtDNUFzMENiVW11NDhuZmlTUG12QTQwbndjQXFkbkgrc28r?=
+ =?utf-8?B?ZUVDZ0ppUHNrR0QzQnZHNzdhYXNMa25YSkw2eGlDZjhNQ2E5YjVUVkJLL1dT?=
+ =?utf-8?Q?/TwbngbXGvgTY2huK/NnggXNK?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0b86cc64-470b-487d-e21e-08db9789ba27
+X-MS-Exchange-CrossTenant-AuthSource: MN0PR12MB6101.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Aug 2023 21:03:19.4201
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: KLW1u5xhj5E49M5eyaCCTe1b8YcEHSlRVXWHXopK0vq+/+JD0B8s2emZqkOPW6ChYYPYLBp0xQjL+Cuez6QhJg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR12MB5833
+X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 2023-08-02 18:02, Easwar Hariharan wrote:
-> From: Robin Murphy <robin.murphy@arm.com>
-> 
-> commit 309a15cb16bb075da1c99d46fb457db6a1a2669e upstream
-> 
-> To work around MMU-700 erratum 2812531 we need to ensure that certain
-> sequences of commands cannot be issued without an intervening sync. In
-> practice this falls out of our current command-batching machinery
-> anyway - each batch only contains a single type of invalidation command,
-> and ends with a sync. The only exception is when a batch is sufficiently
-> large to need issuing across multiple command queue slots, wherein the
-> earlier slots will not contain a sync and thus may in theory interleave
-> with another batch being issued in parallel to create an affected
-> sequence across the slot boundary.
-> 
-> Since MMU-700 supports range invalidate commands and thus we will prefer
-> to use them (which also happens to avoid conditions for other errata),
-> I'm not entirely sure it's even possible for a single high-level
-> invalidate call to generate a batch of more than 63 commands,
+Hi,
 
-Out of interest, have you observed a case where this actually happens?
+It was reported that when '8d855bc67630 ("drm/amd/display: Use 
+dc_update_planes_and_stream")' was backported it caused a regression 
+where Kodi could no longer display.
 
-> but for
-> the sake of robustness and documentation, wire up an option to enforce
-> that a sync is always inserted for every slot issued.
-> 
-> The other aspect is that the relative order of DVM commands cannot be
-> controlled, so DVM cannot be used. Again that is already the status quo,
-> but since we have at least defined ARM_SMMU_FEAT_BTM, we can explicitly
-> disable it for documentation purposes even if it's not wired up anywhere
-> yet.
+Reported-and-tested-by: william.bonnaventure@gmail.com
+Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2766
+Link: https://github.com/LibreELEC/LibreELEC.tv/issues/8013
 
-Note that there seems to be a slight issue with this patch that I 
-missed, under discussion here:
+This is fixed by backporting this additional commit to 6.1.y.
 
-https://lore.kernel.org/linux-iommu/27c895b8-1fb0-be88-8bc3-878d754684c8@huawei.com/T/#t
+bb46a6a9bab1 ("drm/amd/display: Ensure that planes are in the same order")
 
-Thanks,
-Robin.
+Can you please queue this up?
 
-> Signed-off-by: Robin Murphy <robin.murphy@arm.com>
-> Reviewed-by: Nicolin Chen <nicolinc@nvidia.com>
-> Link: https://lore.kernel.org/r/330221cdfd0003cd51b6c04e7ff3566741ad8374.1683731256.git.robin.murphy@arm.com
-> Signed-off-by: Will Deacon <will@kernel.org>
-> Signed-off-by: Easwar Hariharan <eahariha@linux.microsoft.com>
-> ---
->   Documentation/arm64/silicon-errata.rst      |  2 ++
->   drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c | 12 ++++++++++++
->   drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.h |  1 +
->   3 files changed, 15 insertions(+)
-> 
-> diff --git a/Documentation/arm64/silicon-errata.rst b/Documentation/arm64/silicon-errata.rst
-> index 55e1e074dec1..322df8abbc0e 100644
-> --- a/Documentation/arm64/silicon-errata.rst
-> +++ b/Documentation/arm64/silicon-errata.rst
-> @@ -124,6 +124,8 @@ stable kernels.
->   +----------------+-----------------+-----------------+-----------------------------+
->   | ARM            | MMU-600         | #1076982        | N/A                         |
->   +----------------+-----------------+-----------------+-----------------------------+
-> +| ARM            | MMU-700         | #2812531        | N/A                         |
-> ++----------------+-----------------+-----------------+-----------------------------+
->   +----------------+-----------------+-----------------+-----------------------------+
->   | Broadcom       | Brahma-B53      | N/A             | ARM64_ERRATUM_845719        |
->   +----------------+-----------------+-----------------+-----------------------------+
-> diff --git a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
-> index 782d040a829c..6a551a48d271 100644
-> --- a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
-> +++ b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
-> @@ -897,6 +897,12 @@ static void arm_smmu_cmdq_batch_add(struct arm_smmu_device *smmu,
->   				    struct arm_smmu_cmdq_batch *cmds,
->   				    struct arm_smmu_cmdq_ent *cmd)
->   {
-> +	if (cmds->num == CMDQ_BATCH_ENTRIES - 1 &&
-> +	    (smmu->options & ARM_SMMU_OPT_CMDQ_FORCE_SYNC)) {
-> +		arm_smmu_cmdq_issue_cmdlist(smmu, cmds->cmds, cmds->num, true);
-> +		cmds->num = 0;
-> +	}
-> +
->   	if (cmds->num == CMDQ_BATCH_ENTRIES) {
->   		arm_smmu_cmdq_issue_cmdlist(smmu, cmds->cmds, cmds->num, false);
->   		cmds->num = 0;
-> @@ -3461,6 +3467,7 @@ static int arm_smmu_device_reset(struct arm_smmu_device *smmu, bool bypass)
->   
->   #define IIDR_IMPLEMENTER_ARM		0x43b
->   #define IIDR_PRODUCTID_ARM_MMU_600	0x483
-> +#define IIDR_PRODUCTID_ARM_MMU_700	0x487
->   
->   static void arm_smmu_device_iidr_probe(struct arm_smmu_device *smmu)
->   {
-> @@ -3481,6 +3488,11 @@ static void arm_smmu_device_iidr_probe(struct arm_smmu_device *smmu)
->   			if (variant == 0 && revision <= 2)
->   				smmu->features &= ~ARM_SMMU_FEAT_SEV;
->   			break;
-> +		case IIDR_PRODUCTID_ARM_MMU_700:
-> +			/* Arm erratum 2812531 */
-> +			smmu->features &= ~ARM_SMMU_FEAT_BTM;
-> +			smmu->options |= ARM_SMMU_OPT_CMDQ_FORCE_SYNC;
-> +			break;
->   		}
->   		break;
->   	}
-> diff --git a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.h b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.h
-> index 5964e02c4e57..abaecdf8d5d2 100644
-> --- a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.h
-> +++ b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.h
-> @@ -651,6 +651,7 @@ struct arm_smmu_device {
->   #define ARM_SMMU_OPT_SKIP_PREFETCH	(1 << 0)
->   #define ARM_SMMU_OPT_PAGE0_REGS_ONLY	(1 << 1)
->   #define ARM_SMMU_OPT_MSIPOLL		(1 << 2)
-> +#define ARM_SMMU_OPT_CMDQ_FORCE_SYNC	(1 << 3)
->   	u32				options;
->   
->   	struct arm_smmu_cmdq		cmdq;
+Thanks!
