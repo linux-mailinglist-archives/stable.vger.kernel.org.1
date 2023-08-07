@@ -2,42 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B3705771B2D
-	for <lists+stable@lfdr.de>; Mon,  7 Aug 2023 09:09:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 311BF771B2E
+	for <lists+stable@lfdr.de>; Mon,  7 Aug 2023 09:09:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231416AbjHGHJj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 7 Aug 2023 03:09:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60822 "EHLO
+        id S231135AbjHGHJl (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 7 Aug 2023 03:09:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60838 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231135AbjHGHJh (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 7 Aug 2023 03:09:37 -0400
+        with ESMTP id S230523AbjHGHJk (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 7 Aug 2023 03:09:40 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7CC6995
-        for <stable@vger.kernel.org>; Mon,  7 Aug 2023 00:09:36 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B27AE95
+        for <stable@vger.kernel.org>; Mon,  7 Aug 2023 00:09:39 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0EF6F615B1
-        for <stable@vger.kernel.org>; Mon,  7 Aug 2023 07:09:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E287C433C8;
-        Mon,  7 Aug 2023 07:09:34 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 426AC615B1
+        for <stable@vger.kernel.org>; Mon,  7 Aug 2023 07:09:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D771C433C7;
+        Mon,  7 Aug 2023 07:09:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691392175;
-        bh=rF9MbRSDCSP8gsED4aZ8aDyrhXsI+JajbQ3vIU8F0ZA=;
+        s=korg; t=1691392178;
+        bh=eii6KVYo9GC+EG4UnWj1zjxedmVihsx7gqaRogr3tuE=;
         h=Subject:To:Cc:From:Date:From;
-        b=ll7suPTO0yiwoNCgXVIP2qxNwaKXz/9zhGke0R0nNL1w5qWAqcoFx49sWMn73xmdS
-         ROWcJg+kNdh9IimOr6l3qrRJFBfqywvXEvAg2uwfsQyyqXqzvX9fOuqiD+OaE5QM42
-         HgpZ+IXQx4t7jfTsl9qNqf/+zl8CYhokdpVekX34=
-Subject: FAILED: patch "[PATCH] drm/i915: Add the gen12_needs_ccs_aux_inv helper" failed to apply to 6.4-stable tree
+        b=k6/pRMPX449dCSFvpvx3sNHzfM3x/4sd+kKpToPQXZByh8j75sNcXCKPLteSTW2IW
+         5Je8RQKnYoGwbd3aJvucaTr2kQaTEKe6coaA3As/Ds0OG56hLBtV5ljYFAvxQO6tSq
+         VvbN60w0oULJWKUxIE/0zLxQfFVcOiLmc2cWLyJc=
+Subject: FAILED: patch "[PATCH] drm/i915: Add the gen12_needs_ccs_aux_inv helper" failed to apply to 6.1-stable tree
 To:     andi.shyti@linux.intel.com, andrzej.hajda@intel.com,
         jonathan.cavitt@intel.com, matthew.d.roper@intel.com,
         nirmoy.das@intel.com, stable@vger.kernel.org,
         tvrtko.ursulin@intel.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Mon, 07 Aug 2023 09:09:32 +0200
-Message-ID: <2023080732-tricking-quickstep-30b0@gregkh>
+Date:   Mon, 07 Aug 2023 09:09:33 +0200
+Message-ID: <2023080733-perennial-celery-94b8@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -51,23 +51,23 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.4-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
 git cherry-pick -x b2f59e9026038a5bbcbc0019fa58f963138211ee
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023080732-tricking-quickstep-30b0@gregkh' --subject-prefix 'PATCH 6.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023080733-perennial-celery-94b8@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
-
+b2f59e902603 ("drm/i915: Add the gen12_needs_ccs_aux_inv helper")
 
 thanks,
 
