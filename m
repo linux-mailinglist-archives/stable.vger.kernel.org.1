@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 67C98771AD4
-	for <lists+stable@lfdr.de>; Mon,  7 Aug 2023 08:54:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3E3CC771AD5
+	for <lists+stable@lfdr.de>; Mon,  7 Aug 2023 08:54:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231378AbjHGGyt (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 7 Aug 2023 02:54:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52996 "EHLO
+        id S231382AbjHGGyv (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 7 Aug 2023 02:54:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53010 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231326AbjHGGyr (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 7 Aug 2023 02:54:47 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 49CA21A4
-        for <stable@vger.kernel.org>; Sun,  6 Aug 2023 23:54:46 -0700 (PDT)
+        with ESMTP id S231278AbjHGGyu (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 7 Aug 2023 02:54:50 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5AE611A4
+        for <stable@vger.kernel.org>; Sun,  6 Aug 2023 23:54:49 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DC45261578
-        for <stable@vger.kernel.org>; Mon,  7 Aug 2023 06:54:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB8C3C433C8;
-        Mon,  7 Aug 2023 06:54:44 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E329861521
+        for <stable@vger.kernel.org>; Mon,  7 Aug 2023 06:54:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE485C433C8;
+        Mon,  7 Aug 2023 06:54:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691391285;
-        bh=wJmKP7vU9LqHN7dLIk2aKflanQhNr9cs/mG+f4wocsY=;
+        s=korg; t=1691391288;
+        bh=htOcvYaAEinI0AqZD30OnahlYsLVBqHP1NmqJnFMWHU=;
         h=Subject:To:Cc:From:Date:From;
-        b=Qmkd67jjGPyk1sIP/Pa9crVspXiG2muN+cHkmfjb/r7qzpNMpt0i/lQHoK99vPSSB
-         JhWqqdUMkMTN1tQBvxubcvv8YYOtrpFSC9HtQQsA7G4w6fI3Q3DVUcW0erMnv2xptn
-         lySgsvDhBMlTVtwLP2TYahjQVp26wTf5wDVwAfUg=
-Subject: FAILED: patch "[PATCH] ceph: defer stopping mdsc delayed_work" failed to apply to 4.19-stable tree
+        b=ZxuaCDZJpQ/PZCtlKnzBFovI4962KhPzoE41EBbmF82mdAFzqqS+0y2stnQAEWkD6
+         h8vKc8N5QmCRflx99/NgOyii4Hy6ody67zCwN1pRiERsptPwqrx1snDvNxmTTp/+zA
+         dGW3GyixyVBwpG525M9Q8T5i3LhXQN/pbPqwtKKI=
+Subject: FAILED: patch "[PATCH] ceph: defer stopping mdsc delayed_work" failed to apply to 4.14-stable tree
 To:     xiubli@redhat.com, idryomov@gmail.com, mchangir@redhat.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Mon, 07 Aug 2023 08:54:34 +0200
-Message-ID: <2023080734-unenvied-relocate-bccd@gregkh>
+Date:   Mon, 07 Aug 2023 08:54:35 +0200
+Message-ID: <2023080735-sprang-moonlit-32f2@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -48,19 +48,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 4.19-stable tree.
+The patch below does not apply to the 4.14-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
 git checkout FETCH_HEAD
 git cherry-pick -x e7e607bd00481745550389a29ecabe33e13d67cf
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023080734-unenvied-relocate-bccd@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023080735-sprang-moonlit-32f2@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
 
 Possible dependencies:
 
@@ -73,6 +73,17 @@ fa9967734227 ("ceph: fix potential mdsc use-after-free crash")
 ff4a80bf2d3f ("ceph: dump granular cap info in "caps" debugfs file")
 0c44a8e0fc55 ("ceph: quota: fix quota subdir mounts")
 2ee9dd958d47 ("ceph: add non-blocking parameter to ceph_try_get_caps()")
+a57d9064e4ee ("ceph: flush pending works before shutdown super")
+9122eed5281e ("ceph: quota: report root dir quota usage in statfs")
+d557c48db730 ("ceph: quota: add counter for snaprealms with quota")
+e3161f17d926 ("ceph: quota: cache inode pointer in ceph_snap_realm")
+0eb6bbe4d9cf ("ceph: fix root quota realm check")
+2596366907f8 ("ceph: don't check quota for snap inode")
+1ab302a0cb14 ("ceph: quota: update MDS when max_bytes is approaching")
+2b83845f8bd7 ("ceph: quota: support for ceph.quota.max_bytes")
+cafe21a4fb30 ("ceph: quota: don't allow cross-quota renames")
+b7a2921765cf ("ceph: quota: support for ceph.quota.max_files")
+fb18a57568c2 ("ceph: quota: add initial infrastructure to support cephfs quotas")
 
 thanks,
 
