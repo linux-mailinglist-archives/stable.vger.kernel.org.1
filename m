@@ -2,104 +2,108 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 37A81771AA2
-	for <lists+stable@lfdr.de>; Mon,  7 Aug 2023 08:46:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AA8F5771AA7
+	for <lists+stable@lfdr.de>; Mon,  7 Aug 2023 08:47:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229877AbjHGGq1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 7 Aug 2023 02:46:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46300 "EHLO
+        id S231232AbjHGGrL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 7 Aug 2023 02:47:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46414 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229436AbjHGGq0 (ORCPT
-        <rfc822;Stable@vger.kernel.org>); Mon, 7 Aug 2023 02:46:26 -0400
-Received: from mail-yw1-x112f.google.com (mail-yw1-x112f.google.com [IPv6:2607:f8b0:4864:20::112f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB882BA;
-        Sun,  6 Aug 2023 23:46:25 -0700 (PDT)
-Received: by mail-yw1-x112f.google.com with SMTP id 00721157ae682-586a3159588so42734717b3.0;
-        Sun, 06 Aug 2023 23:46:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1691390785; x=1691995585;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=OPit1TdQvpFj3vYGEVAqTQWDvXp1/1QOmkcsDpd8W38=;
-        b=ILJh7rXRaJz3ooIMWsI3lHaN4X/pCel7zgF9Tzav2ru5xmBrnGaH3Hylqhqtemeqgw
-         /dWMvhZXb9DogIng32ZgzBQJrI+Fl6ye/GJ3SkrlqnrAQnNZHlRVlfIvj1fabzzXQmQW
-         rfLLGc1/reBK3YXrHMFh999VQo1mKv2hksNKDTSp6WKsfwxKSLl23HsX3yPfUZ3Z8Nd6
-         dv9lMlyL6O9CP1m1aHBkvaKrq8dn/zIHcMi/FevX7V2VPbDhUtPYIEPCYY2m5fbgMvQz
-         pDUQwu12gSQbuoCJBh2UMtgZJvjQr0hwDTWemXQhbAXrAwokHmi9bdtKg5QRBYvo+1GM
-         Po0A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691390785; x=1691995585;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=OPit1TdQvpFj3vYGEVAqTQWDvXp1/1QOmkcsDpd8W38=;
-        b=VGhVXa8WuoqghzWv9iFiz2JulctxAv9lnZNfueGVElepBUFzXEtG30tQmBFJCDQ7nw
-         2wnnPUPTTZHQcYOaxW9+z1sqVsPa3Kqzo/+W+IpxH7rSOqDpqLECQq+UbrxlLL5n4qE6
-         zfphPkdVbv+EYAMF07kyFw5aQJXGIR2ufoKI9Pq+UQbwiB6GGgSf7NNOeQDNC2nC3ZO0
-         oy3YDSQpW3XPfWcW+y0ts2F0ICUUaEcnReIjxZ14epev3QZus3Qz1n0NleeSjL4kT7ke
-         d0Yujl01bxzwQ222Ea3sNferFZntmpId5MEayURfB7O73d3n0eI4YT+mRhRf1yZMTh15
-         HQLw==
-X-Gm-Message-State: AOJu0YzJcDD0tOHjTu2beWrYov0gpufvwPSOqTPSPxjOTciMVVdATz7O
-        yZJQ1i1HqdQ+OObYUSIY0MWPVmYmkRGYnOwhPhw=
-X-Google-Smtp-Source: AGHT+IFCDztwAJGLGjIDLeUYS/lu8SHmjnsSxHAiVh9defMQ3X8ec4icZClubo2kh3HfOO2I9qgQZQ4phO4OaotTxAU=
-X-Received: by 2002:a0d:d7cc:0:b0:56f:fd0a:588d with SMTP id
- z195-20020a0dd7cc000000b0056ffd0a588dmr7365675ywd.8.1691390784862; Sun, 06
- Aug 2023 23:46:24 -0700 (PDT)
+        with ESMTP id S230108AbjHGGrK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 7 Aug 2023 02:47:10 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A66FD1A4;
+        Sun,  6 Aug 2023 23:47:09 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4463761563;
+        Mon,  7 Aug 2023 06:47:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F3A9C433C7;
+        Mon,  7 Aug 2023 06:47:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1691390828;
+        bh=1jCsoWdlJTQsQF5IZ+gzdQAhBlUO6GA0wb8Hp3Tpm2M=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=pdNQrp4B3s23/8MXLecBvUwKr11RDoNkw+A8dWesq8YLdLe2VN7yXzb+3UgkJqak1
+         VzzZHLXonZ5s9m3OATYR/eKxHSeULfMwkOcJ6sHXu/bhV0zAdbtbtDD4tYN0Q+jaJL
+         M3WOIbagKcjn/NDg2t1jRWutVtrMRgIC/feHCJ7E=
+Date:   Mon, 7 Aug 2023 08:47:05 +0200
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Thomas =?iso-8859-1?Q?Wei=DFschuh?= <linux@weissschuh.net>
+Cc:     Huang Rui <ray.huang@amd.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Viresh Kumar <viresh.kumar@linaro.org>,
+        linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Jannik Glueckert <jannik.glueckert@gmail.com>,
+        Bagas Sanjaya <bagasdotme@gmail.com>,
+        Linux LLVM Build Support <llvm@lists.linux.dev>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Nathan Chancellor <nathan@kernel.org>, stable@vger.kernel.org
+Subject: Re: [PATCH] cpufreq: amd-pstate: fix global sysfs attribute type
+Message-ID: <2023080748-apprehend-carnation-e71c@gregkh>
+References: <20230807-amd-pstate-cfi-v1-1-0263daa13bc3@weissschuh.net>
 MIME-Version: 1.0
-References: <20230804105002.5781-1-pkshih@realtek.com>
-In-Reply-To: <20230804105002.5781-1-pkshih@realtek.com>
-From:   Damian Bronecki <bronecki.damian@gmail.com>
-Date:   Mon, 7 Aug 2023 08:45:49 +0200
-Message-ID: <CAEvXze=dbg9iR2Ym2YVKcph+6QG1rx+fcQeJSdqgPN6Jrqy=8g@mail.gmail.com>
-Subject: Re: [PATCH] wifi: rtw89: fix 8852AE disconnection caused by RX full flags
-To:     Ping-Ke Shih <pkshih@realtek.com>
-Cc:     kvalo@kernel.org, Stable@vger.kernel.org,
-        linux-wireless@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20230807-amd-pstate-cfi-v1-1-0263daa13bc3@weissschuh.net>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-> RX full flags are raised if certain types of RX FIFO are full, and then
-> drop all following MSDU of APMDU. In order to resume to receive MSDU
-> when RX FIFO becomes available, we clear the regitster bits by the
-> commit a0d99ebb3ecd ("wifi: rtw89: initialize DMA of CMAC"). But, 8852AE
-> needs more settings to support this. To quickly fix disconnection problem,
-> revert the behavior as before.
->
-> Fixes: a0d99ebb3ecd ("wifi: rtw89: initialize DMA of CMAC")
-> Reported-by: Damian B <bronecki.damian@gmail.com>
-> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217710
-> Cc: <Stable@vger.kernel.org>
-> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-
-This patch fixed connection drops for me. Thanks!
-
-Tested-by: Damian B <bronecki.damian@gmail.com>
-
+On Mon, Aug 07, 2023 at 08:37:45AM +0200, Thomas Weißschuh wrote:
+> In commit 3666062b87ec ("cpufreq: amd-pstate: move to use bus_get_dev_root()")
+> the "amd_pstate" attributes where moved from a dedicated kobject to the
+> cpu root kobject.
+> While the dedicated kobject expects to contain kobj_attributes the root
+> kobject needs device_attributes.
+> 
+> As the changed arguments are not used by the callbacks it works most of
+> the time.
+> However CFI will detect this issue:
+> 
+> [ 4947.849350] CFI failure at dev_attr_show+0x24/0x60 (target: show_status+0x0/0x70; expected type: 0x8651b1de)
+> ...
+> [ 4947.849409] Call Trace:
+> [ 4947.849410]  <TASK>
+> [ 4947.849411]  ? __warn+0xcf/0x1c0
+> [ 4947.849414]  ? dev_attr_show+0x24/0x60
+> [ 4947.849415]  ? report_cfi_failure+0x4e/0x60
+> [ 4947.849417]  ? handle_cfi_failure+0x14c/0x1d0
+> [ 4947.849419]  ? __cfi_show_status+0x10/0x10
+> [ 4947.849420]  ? handle_bug+0x4f/0x90
+> [ 4947.849421]  ? exc_invalid_op+0x1a/0x60
+> [ 4947.849422]  ? asm_exc_invalid_op+0x1a/0x20
+> [ 4947.849424]  ? __cfi_show_status+0x10/0x10
+> [ 4947.849425]  ? dev_attr_show+0x24/0x60
+> [ 4947.849426]  sysfs_kf_seq_show+0xa6/0x110
+> [ 4947.849433]  seq_read_iter+0x16c/0x4b0
+> [ 4947.849436]  vfs_read+0x272/0x2d0
+> [ 4947.849438]  ksys_read+0x72/0xe0
+> [ 4947.849439]  do_syscall_64+0x76/0xb0
+> [ 4947.849440]  ? do_user_addr_fault+0x252/0x650
+> [ 4947.849442]  ? exc_page_fault+0x7a/0x1b0
+> [ 4947.849443]  entry_SYSCALL_64_after_hwframe+0x72/0xdc
+> 
+> Reported-by: Jannik Glückert <jannik.glueckert@gmail.com>
+> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217765
+> Link: https://lore.kernel.org/lkml/c7f1bf9b-b183-bf6e-1cbb-d43f72494083@gmail.com/
+> Fixes: 3666062b87ec ("cpufreq: amd-pstate: move to use bus_get_dev_root()")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
 > ---
->  drivers/net/wireless/realtek/rtw89/mac.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/drivers/net/wireless/realtek/rtw89/mac.c b/drivers/net/wireless/realtek/rtw89/mac.c
-> index 1efa4da3cebc..cebefa3b1db3 100644
-> --- a/drivers/net/wireless/realtek/rtw89/mac.c
-> +++ b/drivers/net/wireless/realtek/rtw89/mac.c
-> @@ -2524,7 +2524,7 @@ static int cmac_dma_init(struct rtw89_dev *rtwdev, u8 mac_idx)
->         u32 reg;
->         int ret;
->
-> -       if (chip_id != RTL8852A && chip_id != RTL8852B)
-> +       if (chip_id != RTL8852B)
->                 return 0;
->
->         ret = rtw89_mac_check_mac_en(rtwdev, mac_idx, RTW89_CMAC_SEL);
-> --
-> 2.25.1
->
+> Note:
+> 
+> This was not tested with CFI as I don't have the toolchain available.
+> Jannik, could you give it a spin?
+
+Ah, that was fast, nice!
+
+Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
