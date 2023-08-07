@@ -2,49 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9BB20771CE5
-	for <lists+stable@lfdr.de>; Mon,  7 Aug 2023 11:11:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A63FB771CF3
+	for <lists+stable@lfdr.de>; Mon,  7 Aug 2023 11:15:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231303AbjHGJLo (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 7 Aug 2023 05:11:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49244 "EHLO
+        id S230322AbjHGJPW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 7 Aug 2023 05:15:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50680 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230369AbjHGJLn (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 7 Aug 2023 05:11:43 -0400
+        with ESMTP id S229776AbjHGJPV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 7 Aug 2023 05:15:21 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70543E68;
-        Mon,  7 Aug 2023 02:11:42 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E8722E68;
+        Mon,  7 Aug 2023 02:15:20 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0D917616E6;
-        Mon,  7 Aug 2023 09:11:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11130C433C8;
-        Mon,  7 Aug 2023 09:11:40 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7C8CE616EA;
+        Mon,  7 Aug 2023 09:15:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60DC2C433C8;
+        Mon,  7 Aug 2023 09:15:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691399501;
-        bh=jo05FRX8fxSniehU439g0zTeJkxYcL2Nno5qi9V86Dk=;
+        s=korg; t=1691399719;
+        bh=WxAh8iW+258bwzaDgHMpc14XPRfhm/gtCpiInP6uO78=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=JUpB8aqlWBbjSIDG2OjPDnFTb1NPFIcJs6mjX/zmKdGLV98KN5OwwC6Lxkzce8fO0
-         jlsxptGiMmH3OFHdIhj2cOUH1GzAwY7BznwrZDqH0pCzXN7QdCAWU62gFrYCXJKghf
-         S/uK5UqTpaZnMZuZKXtdetRYn4W9ThzxlStgfEcE=
-Date:   Mon, 7 Aug 2023 11:11:38 +0200
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Guoqing Jiang <guoqing.jiang@linux.dev>
-Cc:     "Darrick J. Wong" <djwong@kernel.org>, amir73il@gmail.com,
-        dchinner@redhat.com, yangx.jy@fujitsu.com,
-        linux-xfs@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH 5.10 0/2] Fix xfs/179 for 5.10 stable
-Message-ID: <2023080737-marathon-payday-cd03@gregkh>
-References: <20230803093652.7119-1-guoqing.jiang@linux.dev>
- <20230804154757.GI11352@frogsfrogsfrogs>
- <5d44e45b-cb85-b878-f21d-d0b508c3b696@linux.dev>
+        b=WQ5kz3l1kCG1seHKBJtn2Nvn6Jl47GPL2qmAppv0jy4/SCW8whxLwLLVphOO84sBD
+         zuXgb/eoKwxiv1AyShNwmy1kf8bmFSrETaAgzyJ+7d4guemGZtAFogE1BqVyvkIE/2
+         hhLQk0XmGL1uF2N7kHGUnqViaKBB2LiDhnXE/1/w=
+Date:   Mon, 7 Aug 2023 11:15:17 +0200
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>
+Cc:     linux-kernel@vger.kernel.org, Luis Chamberlain <mcgrof@kernel.org>,
+        Russ Weight <russell.h.weight@intel.com>,
+        Tianfei Zhang <tianfei.zhang@intel.com>,
+        Shuah Khan <shuah@kernel.org>,
+        Colin Ian King <colin.i.king@gmail.com>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        linux-kselftest@vger.kernel.org, stable@vger.kernel.org,
+        Dan Carpenter <error27@gmail.com>, Takashi Iwai <tiwai@suse.de>
+Subject: Re: [PATCH v3 4.14 1/1] test_firmware: fix the memory leaks with the
+ reqs buffer
+Message-ID: <2023080705-poet-nickname-5e08@gregkh>
+References: <20230804170017.92671-1-mirsad.todorovac@alu.unizg.hr>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <5d44e45b-cb85-b878-f21d-d0b508c3b696@linux.dev>
+In-Reply-To: <20230804170017.92671-1-mirsad.todorovac@alu.unizg.hr>
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -54,66 +57,37 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, Aug 07, 2023 at 10:39:44AM +0800, Guoqing Jiang wrote:
+On Fri, Aug 04, 2023 at 07:00:18PM +0200, Mirsad Todorovac wrote:
+> [ commit be37bed754ed90b2655382f93f9724b3c1aae847 upstream ]
 > 
+> Dan Carpenter spotted that test_fw_config->reqs will be leaked if
+> trigger_batched_requests_store() is called two or more times.
+> The same appears with trigger_batched_requests_async_store().
 > 
-> On 8/4/23 23:47, Darrick J. Wong wrote:
-> > On Thu, Aug 03, 2023 at 05:36:50PM +0800, Guoqing Jiang wrote:
-> > > Hi,
-> > > 
-> > > With the two patches applied, xfs/179 can pass in 5.10.188. Otherwise I got
-> > > 
-> > > [root@localhost xfstests]# ./check xfs/179
-> > > FSTYP         -- xfs (non-debug)
-> > > PLATFORM      -- Linux/x86_64 localhost 5.10.188-default #14 SMP Thu Aug 3 15:23:19 CST 2023
-> > > MKFS_OPTIONS  -- -f /dev/loop1
-> > > MOUNT_OPTIONS -- -o context=system_u:object_r:root_t:s0 /dev/loop1 /mnt/scratch
-> > > 
-> > > xfs/179 1s ... [failed, exit status 1]- output mismatch (see /root/xfstests/results//xfs/179.out.bad)
-> > >      --- tests/xfs/179.out	2023-07-13 16:12:27.000000000 +0800
-> > >      +++ /root/xfstests/results//xfs/179.out.bad	2023-08-03 16:55:38.173787911 +0800
-> > >      @@ -8,3 +8,5 @@
-> > >       Check scratch fs
-> > >       Remove reflinked files
-> > >       Check scratch fs
-> > >      +xfs_repair fails
-> > >      +(see /root/xfstests/results//xfs/179.full for details)
-> > >      ...
-> > >      (Run 'diff -u /root/xfstests/tests/xfs/179.out /root/xfstests/results//xfs/179.out.bad'  to see the entire diff)
-> > > 
-> > > HINT: You _MAY_ be missing kernel fix:
-> > >        b25d1984aa88 xfs: estimate post-merge refcounts correctly
-> > > 
-> > > Ran: xfs/179
-> > > Failures: xfs/179
-> > > Failed 1 of 1 tests
-> > > 
-> > > Please review if they are approriate for 5.10 stable.
-> > Seems fine to me, but ... there is no maintainer for 5.10; is your
-> > employer willing to support this LTS kernel?
+> This bug wasn't triggered by the tests, but observed by Dan's visual
+> inspection of the code.
 > 
-> Hi Darrick,
+> The recommended workaround was to return -EBUSY if test_fw_config->reqs
+> is already allocated.
 > 
-> Thanks for your review! I think Amir is the maintainer for 5.10 😉. I can
-> help
-> if needed since our kernel is heavily based on 5.10 stable. We also run
-> tests
-> against 5.10 stable, that is why I send fixes patches for it.
+> Fixes: c92316bf8e94 ("test_firmware: add batched firmware tests")
+> Cc: Luis Chamberlain <mcgrof@kernel.org>
+> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Cc: Russ Weight <russell.h.weight@intel.com>
+> Cc: Tianfei Zhang <tianfei.zhang@intel.com>
+> Cc: Shuah Khan <shuah@kernel.org>
+> Cc: Colin Ian King <colin.i.king@gmail.com>
+> Cc: Randy Dunlap <rdunlap@infradead.org>
+> Cc: linux-kselftest@vger.kernel.org
+> Cc: stable@vger.kernel.org # v4.14
+> Suggested-by: Dan Carpenter <error27@gmail.com>
+> Suggested-by: Takashi Iwai <tiwai@suse.de>
+> Link: https://lore.kernel.org/r/20230509084746.48259-2-mirsad.todorovac@alu.unizg.hr
+> Signed-off-by: Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>
 > 
-> Hi Greg,
-> 
-> Could you consider add the two to your list? Thank you!
+> [ This fix is applied against the 4.14 stable branch. There are no changes to the ]
+> [ fix in code when compared to the upstread, only the reformatting for backport.  ]
 
-Sorry, but as these would only be in th 5.10.y release, and not in any
-newer stable kernel, you would have a regression if you moved to a newer
-stable kernel branch, right?
-
-Because of that, no, I can't take this, nor should you want me to, as
-you would have a regression if you upgraded, right?
-
-I'll be glad to do so if we have backports for all relevant stable
-kernels.
-
-thanks,
+Thanks for all of these, now queued up.
 
 greg k-h
