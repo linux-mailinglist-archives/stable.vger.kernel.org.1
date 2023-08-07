@@ -2,229 +2,368 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CC193771788
-	for <lists+stable@lfdr.de>; Mon,  7 Aug 2023 02:44:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7B41B7717F1
+	for <lists+stable@lfdr.de>; Mon,  7 Aug 2023 03:45:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229480AbjHGAoP convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+stable@lfdr.de>); Sun, 6 Aug 2023 20:44:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47468 "EHLO
+        id S229541AbjHGBpP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 6 Aug 2023 21:45:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58462 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229436AbjHGAoO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 6 Aug 2023 20:44:14 -0400
-Received: from ex01.ufhost.com (ex01.ufhost.com [61.152.239.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E7072B1;
-        Sun,  6 Aug 2023 17:44:11 -0700 (PDT)
-Received: from EXMBX165.cuchost.com (unknown [175.102.18.54])
-        (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
-        (Client CN "EXMBX165", Issuer "EXMBX165" (not verified))
-        by ex01.ufhost.com (Postfix) with ESMTP id 3E50B24E28D;
-        Mon,  7 Aug 2023 08:44:08 +0800 (CST)
-Received: from EXMBX068.cuchost.com (172.16.6.68) by EXMBX165.cuchost.com
- (172.16.6.75) with Microsoft SMTP Server (TLS) id 15.0.1497.42; Mon, 7 Aug
- 2023 08:44:08 +0800
-Received: from EXMBX066.cuchost.com (172.16.7.66) by EXMBX068.cuchost.com
- (172.16.6.68) with Microsoft SMTP Server (TLS) id 15.0.1497.42; Mon, 7 Aug
- 2023 08:44:07 +0800
-Received: from EXMBX066.cuchost.com ([fe80::5947:9245:907e:339f]) by
- EXMBX066.cuchost.com ([fe80::5947:9245:907e:339f%17]) with mapi id
- 15.00.1497.044; Mon, 7 Aug 2023 08:44:07 +0800
-From:   JeeHeng Sia <jeeheng.sia@starfivetech.com>
-To:     Conor Dooley <conor.dooley@microchip.com>,
-        "palmer@dabbelt.com" <palmer@dabbelt.com>
-CC:     "conor@kernel.org" <conor@kernel.org>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Atish Patra <atishp@rivosinc.com>,
-        Anup Patel <apatel@ventanamicro.com>,
-        Alexandre Ghiti <alexghiti@rivosinc.com>,
-        =?iso-8859-1?Q?Bj=F6rn_T=F6pel?= <bjorn@rivosinc.com>,
-        Song Shuai <suagrfillet@gmail.com>,
-        Petr Tesarik <petrtesarik@huaweicloud.com>,
-        "linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: RE: [RFT 1/2] RISC-V: handle missing "no-map" properties for
- OpenSBI's PMP protected regions
-Thread-Topic: [RFT 1/2] RISC-V: handle missing "no-map" properties for
- OpenSBI's PMP protected regions
-Thread-Index: AQHZxTKPVELaCqW/WUK93+UXGxBdOK/eAqwg
-Date:   Mon, 7 Aug 2023 00:44:07 +0000
-Message-ID: <3e066032031e4552b4b7903755deb669@EXMBX066.cuchost.com>
-References: <20230802-purse-hydrant-6f44f77364b0@wendy>
- <20230802-detention-second-82ab2b53e07a@wendy>
-In-Reply-To: <20230802-detention-second-82ab2b53e07a@wendy>
-Accept-Language: en-US, zh-CN
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [202.188.176.82]
-x-yovoleruleagent: yovoleflag
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: 8BIT
+        with ESMTP id S229530AbjHGBpO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 6 Aug 2023 21:45:14 -0400
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 7833C170B;
+        Sun,  6 Aug 2023 18:45:11 -0700 (PDT)
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 3771i6ZG1031859, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 3771i6ZG1031859
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
+        Mon, 7 Aug 2023 09:44:06 +0800
+Received: from RTEXMBS03.realtek.com.tw (172.21.6.96) by
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.17; Mon, 7 Aug 2023 09:44:22 +0800
+Received: from localhost.localhost (172.21.132.123) by
+ RTEXMBS03.realtek.com.tw (172.21.6.96) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.7; Mon, 7 Aug 2023 09:44:19 +0800
+From:   <max.chou@realtek.com>
+To:     <marcel@holtmann.org>
+CC:     <johan.hedberg@gmail.com>, <luiz.dentz@gmail.com>,
+        <linux-bluetooth@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <alex_lu@realsil.com.cn>, <hildawu@realtek.com>,
+        <karenhsu@realtek.com>, <kidman@realtek.com>,
+        <max.chou@realtek.com>, <juerg.haefliger@canonical.com>,
+        <vicamo.yang@canonical.com>, <Riley.Kao@dell.com>,
+        <stable@vger.kernel.org>, <jwboyer@kernel.org>,
+        <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+        <pabeni@redhat.com>, <regressions@lists.linux.dev>
+Subject: [PATCH v3] Bluetooth: btrtl: Load FW v2 otherwise FW v1 for RTL8852C
+Date:   Mon, 7 Aug 2023 09:44:15 +0800
+Message-ID: <20230807014415.12358-1-max.chou@realtek.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [172.21.132.123]
+X-ClientProxiedBy: RTEXH36505.realtek.com.tw (172.21.6.25) To
+ RTEXMBS03.realtek.com.tw (172.21.6.96)
+X-KSE-ServerInfo: RTEXMBS03.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-Antivirus-Interceptor-Info: fallback
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+From: Max Chou <max.chou@realtek.com>
 
+In the commit of linux-firmware project, rtl8852cu_fw.bin is updated as
+FW v2 format[1]. Consider the case that if driver did not be updated for
+FW v2 supported[2], it can not use FW v2.
+By Canonical's suggestion, older driver should be able to load FW v1,
+so rtl8852cu_fw.bin will be revert to the previous commit as FW v1 and
+add rtl8852cu_fw_v2.bin as FW v2. This item will be started on
+linux-firmware project.
 
-> -----Original Message-----
-> From: Conor Dooley <conor.dooley@microchip.com>
-> Sent: Wednesday, August 2, 2023 7:13 PM
-> To: palmer@dabbelt.com
-> Cc: conor@kernel.org; conor.dooley@microchip.com; Paul Walmsley <paul.walmsley@sifive.com>; Atish Patra
-> <atishp@rivosinc.com>; Anup Patel <apatel@ventanamicro.com>; Alexandre Ghiti <alexghiti@rivosinc.com>; Björn Töpel
-> <bjorn@rivosinc.com>; Song Shuai <suagrfillet@gmail.com>; JeeHeng Sia <jeeheng.sia@starfivetech.com>; Petr Tesarik
-> <petrtesarik@huaweicloud.com>; linux-riscv@lists.infradead.org; linux-kernel@vger.kernel.org; stable@vger.kernel.org
-> Subject: [RFT 1/2] RISC-V: handle missing "no-map" properties for OpenSBI's PMP protected regions
-> 
-> Add an erratum for versions [v0.8 to v1.3) of OpenSBI which fail to add
-> the "no-map" property to the reserved memory nodes for the regions it
-> has protected using PMPs.
-> 
-> Our existing fix sweeping hibernation under the carpet by marking it
-> NONPORTABLE is insufficient as there are other ways to generate
-> accesses to these reserved memory regions, as Petr discovered [1]
-> while testing crash kernels & kdump.
-> 
-> Intercede during the boot process when the afflicted versions of OpenSBI
-> are present & set the "no-map" property in all "mmode_resv" nodes before
-> the kernel does its reserved memory region initialisation.
-> 
-> Reported-by: Song Shuai <suagrfillet@gmail.com>
-> Link: https://lore.kernel.org/all/CAAYs2=gQvkhTeioMmqRDVGjdtNF_vhB+vm_1dHJxPNi75YDQ_Q@mail.gmail.com/
-> Reported-by: JeeHeng Sia <jeeheng.sia@starfivetech.com>
-> Link: https://groups.google.com/a/groups.riscv.org/g/sw-dev/c/ITXwaKfA6z8
-> Reported-by: Petr Tesarik <petrtesarik@huaweicloud.com>
-> Closes: https://lore.kernel.org/linux-riscv/76ff0f51-d6c1-580d-f943-061e93073306@huaweicloud.com/ [1]
-> CC: stable@vger.kernel.org
-> Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
-> ---
->  arch/riscv/include/asm/sbi.h |  5 +++++
->  arch/riscv/kernel/sbi.c      | 42 +++++++++++++++++++++++++++++++++++-
->  arch/riscv/mm/init.c         |  3 +++
->  3 files changed, 49 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/riscv/include/asm/sbi.h b/arch/riscv/include/asm/sbi.h
-> index 5b4a1bf5f439..5360f3476278 100644
-> --- a/arch/riscv/include/asm/sbi.h
-> +++ b/arch/riscv/include/asm/sbi.h
-> @@ -252,6 +252,9 @@ enum sbi_pmu_ctr_type {
->  #define SBI_ERR_ALREADY_STARTED -7
->  #define SBI_ERR_ALREADY_STOPPED -8
-> 
-> +/* SBI implementation IDs */
-> +#define SBI_IMP_OPENSBI	1
-I would suggest to create an enum struct for the SBI Imp ID in the sbi.h file. What do you think?
-> +
->  extern unsigned long sbi_spec_version;
->  struct sbiret {
->  	long error;
-> @@ -259,6 +262,8 @@ struct sbiret {
->  };
-> 
->  void sbi_init(void);
-> +void sbi_apply_reserved_mem_erratum(void *dtb_va);
-> +
->  struct sbiret sbi_ecall(int ext, int fid, unsigned long arg0,
->  			unsigned long arg1, unsigned long arg2,
->  			unsigned long arg3, unsigned long arg4,
-> diff --git a/arch/riscv/kernel/sbi.c b/arch/riscv/kernel/sbi.c
-> index c672c8ba9a2a..aeb27263fa53 100644
-> --- a/arch/riscv/kernel/sbi.c
-> +++ b/arch/riscv/kernel/sbi.c
-> @@ -5,8 +5,10 @@
->   * Copyright (c) 2020 Western Digital Corporation or its affiliates.
->   */
-> 
-> +#include <linux/acpi.h>
->  #include <linux/bits.h>
->  #include <linux/init.h>
-> +#include <linux/libfdt.h>
->  #include <linux/pm.h>
->  #include <linux/reboot.h>
->  #include <asm/sbi.h>
-> @@ -583,6 +585,40 @@ long sbi_get_mimpid(void)
->  }
->  EXPORT_SYMBOL_GPL(sbi_get_mimpid);
-> 
-> +static long sbi_firmware_id;
-> +static long sbi_firmware_version;
-> +
-> +/*
-> + * For devicetrees patched by OpenSBI a "mmode_resv" node is added to cover
-> + * the region OpenSBI has protected by means of a PMP. Some versions of OpenSBI,
-> + * [v0.8 to v1.3), omitted the "no-map" property, but this trips up hibernation
-> + * among other things.
-> + */
-> +void __init sbi_apply_reserved_mem_erratum(void *dtb_pa)
-> +{
-> +	int child, reserved_mem;
-> +
-> +	if (sbi_firmware_id != SBI_IMP_OPENSBI)
-> +		return;
-> +
-> +	if (!acpi_disabled)
-> +		return;
-> +
-> +	if (sbi_firmware_version >= 0x10003 || sbi_firmware_version < 0x8)
-> +		return;
-> +
-> +	reserved_mem = fdt_path_offset((void *)dtb_pa, "/reserved-memory");
-> +	if (reserved_mem < 0)
-> +		return;
-> +
-> +	fdt_for_each_subnode(child, (void *)dtb_pa, reserved_mem) {
-> +		const char *name = fdt_get_name((void *)dtb_pa, child, NULL);
-> +
-> +		if (!strncmp(name, "mmode_resv", 10))
-> +			fdt_setprop((void *)dtb_pa, child, "no-map", NULL, 0);
-> +	}
-> +};
-> +
->  void __init sbi_init(void)
->  {
->  	int ret;
-> @@ -596,8 +632,12 @@ void __init sbi_init(void)
->  		sbi_major_version(), sbi_minor_version());
-> 
->  	if (!sbi_spec_is_0_1()) {
-> +		sbi_firmware_id = sbi_get_firmware_id();
-> +		sbi_firmware_version = sbi_get_firmware_version();
-> +
->  		pr_info("SBI implementation ID=0x%lx Version=0x%lx\n",
-> -			sbi_get_firmware_id(), sbi_get_firmware_version());
-> +			sbi_firmware_id, sbi_firmware_version);
-> +
->  		if (sbi_probe_extension(SBI_EXT_TIME)) {
->  			__sbi_set_timer = __sbi_set_timer_v02;
->  			pr_info("SBI TIME extension detected\n");
-> diff --git a/arch/riscv/mm/init.c b/arch/riscv/mm/init.c
-> index 70fb31960b63..cb16bfdeacdb 100644
-> --- a/arch/riscv/mm/init.c
-> +++ b/arch/riscv/mm/init.c
-> @@ -29,6 +29,7 @@
->  #include <asm/tlbflush.h>
->  #include <asm/sections.h>
->  #include <asm/soc.h>
-> +#include <asm/sbi.h>
->  #include <asm/io.h>
->  #include <asm/ptdump.h>
->  #include <asm/numa.h>
-> @@ -253,6 +254,8 @@ static void __init setup_bootmem(void)
->  	 * in the device tree, otherwise the allocation could end up in a
->  	 * reserved region.
->  	 */
-> +
-> +	sbi_apply_reserved_mem_erratum(dtb_early_va);
->  	early_init_fdt_scan_reserved_mem();
-> 
->  	/*
-> --
-> 2.40.1
+In this commit, the driver prefers to load FW v2 if available. Fallback to
+FW v1 otherwise.
+
+Note that the driver has supported to extract the data for v1 and v2
+since the commit[1].
+The previous FW format of RTL8852C is v1. After the commit[2], the FW
+format was changed to v2. Only RTL8852C suffered the different FW formats,
+so we will use rtl8852cu_fw.bin for the original commit as FW v1 and
+rtl8852cu_fw_v2.bin for the future maintained as FW v2. Other Realtek
+chips will not been impacted by this patch.
+
+To do on linux-firmware project after this commit.
+1. revert '55e7448533e7 ("rtl_bt: Update RTL8852C BT USB firmware
+   to 0x040D_7225")'
+   => rtl_bt/rtl8852cu_fw.bin: FW v1 (stay at ver. 0xD7B8_FABF)
+2. Add a new commit for rtl8852cu_fw_v2.bin
+   =>rtl_bt/rtl8852cu_fw_v2.bin: FW v2 (to be maintained)
+
+Reference:
+[1]'9a24ce5e29b1 ("Bluetooth: btrtl: Firmware format v2 support")'
+[2]'55e7448533e7 ("rtl_bt: Update RTL8852C BT USB firmware
+    to 0x040D_7225")'
+
+Fixes: '9a24ce5e29b ("Bluetooth: btrtl: Firmware format v2 support")'
+Suggested-by: Juerg Haefliger <juerg.haefliger@canonical.com>
+Tested-by: Hilda Wu <hildawu@realtek.com>
+Signed-off-by: Max Chou <max.chou@realtek.com>
+
+---
+Changes in v2:
+- Fix commit log for CheckPatch FAIL
+
+Changes in v2:
+- Tuning the code for more readable. Thanks Juerg!
+- Modify the commit log.
+---
+ drivers/bluetooth/btrtl.c | 70 +++++++++++++++++++++++++--------------
+ 1 file changed, 45 insertions(+), 25 deletions(-)
+
+diff --git a/drivers/bluetooth/btrtl.c b/drivers/bluetooth/btrtl.c
+index ddae6524106d..84c2c2e1122f 100644
+--- a/drivers/bluetooth/btrtl.c
++++ b/drivers/bluetooth/btrtl.c
+@@ -104,7 +104,7 @@ static const struct id_table ic_id_table[] = {
+ 	{ IC_INFO(RTL_ROM_LMP_8723A, 0xb, 0x6, HCI_USB),
+ 	  .config_needed = false,
+ 	  .has_rom_version = false,
+-	  .fw_name = "rtl_bt/rtl8723a_fw.bin",
++	  .fw_name = "rtl_bt/rtl8723a_fw",
+ 	  .cfg_name = NULL,
+ 	  .hw_info = "rtl8723au" },
+ 
+@@ -112,7 +112,7 @@ static const struct id_table ic_id_table[] = {
+ 	{ IC_INFO(RTL_ROM_LMP_8723B, 0xb, 0x6, HCI_UART),
+ 	  .config_needed = true,
+ 	  .has_rom_version = true,
+-	  .fw_name  = "rtl_bt/rtl8723bs_fw.bin",
++	  .fw_name  = "rtl_bt/rtl8723bs_fw",
+ 	  .cfg_name = "rtl_bt/rtl8723bs_config",
+ 	  .hw_info  = "rtl8723bs" },
+ 
+@@ -120,7 +120,7 @@ static const struct id_table ic_id_table[] = {
+ 	{ IC_INFO(RTL_ROM_LMP_8723B, 0xb, 0x6, HCI_USB),
+ 	  .config_needed = false,
+ 	  .has_rom_version = true,
+-	  .fw_name  = "rtl_bt/rtl8723b_fw.bin",
++	  .fw_name  = "rtl_bt/rtl8723b_fw",
+ 	  .cfg_name = "rtl_bt/rtl8723b_config",
+ 	  .hw_info  = "rtl8723bu" },
+ 
+@@ -132,7 +132,7 @@ static const struct id_table ic_id_table[] = {
+ 	  .hci_bus = HCI_UART,
+ 	  .config_needed = true,
+ 	  .has_rom_version = true,
+-	  .fw_name  = "rtl_bt/rtl8723cs_cg_fw.bin",
++	  .fw_name  = "rtl_bt/rtl8723cs_cg_fw",
+ 	  .cfg_name = "rtl_bt/rtl8723cs_cg_config",
+ 	  .hw_info  = "rtl8723cs-cg" },
+ 
+@@ -144,7 +144,7 @@ static const struct id_table ic_id_table[] = {
+ 	  .hci_bus = HCI_UART,
+ 	  .config_needed = true,
+ 	  .has_rom_version = true,
+-	  .fw_name  = "rtl_bt/rtl8723cs_vf_fw.bin",
++	  .fw_name  = "rtl_bt/rtl8723cs_vf_fw",
+ 	  .cfg_name = "rtl_bt/rtl8723cs_vf_config",
+ 	  .hw_info  = "rtl8723cs-vf" },
+ 
+@@ -156,7 +156,7 @@ static const struct id_table ic_id_table[] = {
+ 	  .hci_bus = HCI_UART,
+ 	  .config_needed = true,
+ 	  .has_rom_version = true,
+-	  .fw_name  = "rtl_bt/rtl8723cs_xx_fw.bin",
++	  .fw_name  = "rtl_bt/rtl8723cs_xx_fw",
+ 	  .cfg_name = "rtl_bt/rtl8723cs_xx_config",
+ 	  .hw_info  = "rtl8723cs" },
+ 
+@@ -164,7 +164,7 @@ static const struct id_table ic_id_table[] = {
+ 	{ IC_INFO(RTL_ROM_LMP_8723B, 0xd, 0x8, HCI_USB),
+ 	  .config_needed = true,
+ 	  .has_rom_version = true,
+-	  .fw_name  = "rtl_bt/rtl8723d_fw.bin",
++	  .fw_name  = "rtl_bt/rtl8723d_fw",
+ 	  .cfg_name = "rtl_bt/rtl8723d_config",
+ 	  .hw_info  = "rtl8723du" },
+ 
+@@ -172,7 +172,7 @@ static const struct id_table ic_id_table[] = {
+ 	{ IC_INFO(RTL_ROM_LMP_8723B, 0xd, 0x8, HCI_UART),
+ 	  .config_needed = true,
+ 	  .has_rom_version = true,
+-	  .fw_name  = "rtl_bt/rtl8723ds_fw.bin",
++	  .fw_name  = "rtl_bt/rtl8723ds_fw",
+ 	  .cfg_name = "rtl_bt/rtl8723ds_config",
+ 	  .hw_info  = "rtl8723ds" },
+ 
+@@ -180,7 +180,7 @@ static const struct id_table ic_id_table[] = {
+ 	{ IC_INFO(RTL_ROM_LMP_8821A, 0xa, 0x6, HCI_USB),
+ 	  .config_needed = false,
+ 	  .has_rom_version = true,
+-	  .fw_name  = "rtl_bt/rtl8821a_fw.bin",
++	  .fw_name  = "rtl_bt/rtl8821a_fw",
+ 	  .cfg_name = "rtl_bt/rtl8821a_config",
+ 	  .hw_info  = "rtl8821au" },
+ 
+@@ -189,7 +189,7 @@ static const struct id_table ic_id_table[] = {
+ 	  .config_needed = false,
+ 	  .has_rom_version = true,
+ 	  .has_msft_ext = true,
+-	  .fw_name  = "rtl_bt/rtl8821c_fw.bin",
++	  .fw_name  = "rtl_bt/rtl8821c_fw",
+ 	  .cfg_name = "rtl_bt/rtl8821c_config",
+ 	  .hw_info  = "rtl8821cu" },
+ 
+@@ -198,7 +198,7 @@ static const struct id_table ic_id_table[] = {
+ 	  .config_needed = true,
+ 	  .has_rom_version = true,
+ 	  .has_msft_ext = true,
+-	  .fw_name  = "rtl_bt/rtl8821cs_fw.bin",
++	  .fw_name  = "rtl_bt/rtl8821cs_fw",
+ 	  .cfg_name = "rtl_bt/rtl8821cs_config",
+ 	  .hw_info  = "rtl8821cs" },
+ 
+@@ -206,7 +206,7 @@ static const struct id_table ic_id_table[] = {
+ 	{ IC_INFO(RTL_ROM_LMP_8761A, 0xa, 0x6, HCI_USB),
+ 	  .config_needed = false,
+ 	  .has_rom_version = true,
+-	  .fw_name  = "rtl_bt/rtl8761a_fw.bin",
++	  .fw_name  = "rtl_bt/rtl8761a_fw",
+ 	  .cfg_name = "rtl_bt/rtl8761a_config",
+ 	  .hw_info  = "rtl8761au" },
+ 
+@@ -215,7 +215,7 @@ static const struct id_table ic_id_table[] = {
+ 	  .config_needed = false,
+ 	  .has_rom_version = true,
+ 	  .has_msft_ext = true,
+-	  .fw_name  = "rtl_bt/rtl8761b_fw.bin",
++	  .fw_name  = "rtl_bt/rtl8761b_fw",
+ 	  .cfg_name = "rtl_bt/rtl8761b_config",
+ 	  .hw_info  = "rtl8761btv" },
+ 
+@@ -223,7 +223,7 @@ static const struct id_table ic_id_table[] = {
+ 	{ IC_INFO(RTL_ROM_LMP_8761A, 0xb, 0xa, HCI_USB),
+ 	  .config_needed = false,
+ 	  .has_rom_version = true,
+-	  .fw_name  = "rtl_bt/rtl8761bu_fw.bin",
++	  .fw_name  = "rtl_bt/rtl8761bu_fw",
+ 	  .cfg_name = "rtl_bt/rtl8761bu_config",
+ 	  .hw_info  = "rtl8761bu" },
+ 
+@@ -232,7 +232,7 @@ static const struct id_table ic_id_table[] = {
+ 	  .config_needed = true,
+ 	  .has_rom_version = true,
+ 	  .has_msft_ext = true,
+-	  .fw_name  = "rtl_bt/rtl8822cs_fw.bin",
++	  .fw_name  = "rtl_bt/rtl8822cs_fw",
+ 	  .cfg_name = "rtl_bt/rtl8822cs_config",
+ 	  .hw_info  = "rtl8822cs" },
+ 
+@@ -241,7 +241,7 @@ static const struct id_table ic_id_table[] = {
+ 	  .config_needed = true,
+ 	  .has_rom_version = true,
+ 	  .has_msft_ext = true,
+-	  .fw_name  = "rtl_bt/rtl8822cs_fw.bin",
++	  .fw_name  = "rtl_bt/rtl8822cs_fw",
+ 	  .cfg_name = "rtl_bt/rtl8822cs_config",
+ 	  .hw_info  = "rtl8822cs" },
+ 
+@@ -250,7 +250,7 @@ static const struct id_table ic_id_table[] = {
+ 	  .config_needed = false,
+ 	  .has_rom_version = true,
+ 	  .has_msft_ext = true,
+-	  .fw_name  = "rtl_bt/rtl8822cu_fw.bin",
++	  .fw_name  = "rtl_bt/rtl8822cu_fw",
+ 	  .cfg_name = "rtl_bt/rtl8822cu_config",
+ 	  .hw_info  = "rtl8822cu" },
+ 
+@@ -259,7 +259,7 @@ static const struct id_table ic_id_table[] = {
+ 	  .config_needed = true,
+ 	  .has_rom_version = true,
+ 	  .has_msft_ext = true,
+-	  .fw_name  = "rtl_bt/rtl8822b_fw.bin",
++	  .fw_name  = "rtl_bt/rtl8822b_fw",
+ 	  .cfg_name = "rtl_bt/rtl8822b_config",
+ 	  .hw_info  = "rtl8822bu" },
+ 
+@@ -268,7 +268,7 @@ static const struct id_table ic_id_table[] = {
+ 	  .config_needed = false,
+ 	  .has_rom_version = true,
+ 	  .has_msft_ext = true,
+-	  .fw_name  = "rtl_bt/rtl8852au_fw.bin",
++	  .fw_name  = "rtl_bt/rtl8852au_fw",
+ 	  .cfg_name = "rtl_bt/rtl8852au_config",
+ 	  .hw_info  = "rtl8852au" },
+ 
+@@ -277,7 +277,7 @@ static const struct id_table ic_id_table[] = {
+ 	  .config_needed = true,
+ 	  .has_rom_version = true,
+ 	  .has_msft_ext = true,
+-	  .fw_name  = "rtl_bt/rtl8852bs_fw.bin",
++	  .fw_name  = "rtl_bt/rtl8852bs_fw",
+ 	  .cfg_name = "rtl_bt/rtl8852bs_config",
+ 	  .hw_info  = "rtl8852bs" },
+ 
+@@ -286,7 +286,7 @@ static const struct id_table ic_id_table[] = {
+ 	  .config_needed = false,
+ 	  .has_rom_version = true,
+ 	  .has_msft_ext = true,
+-	  .fw_name  = "rtl_bt/rtl8852bu_fw.bin",
++	  .fw_name  = "rtl_bt/rtl8852bu_fw",
+ 	  .cfg_name = "rtl_bt/rtl8852bu_config",
+ 	  .hw_info  = "rtl8852bu" },
+ 
+@@ -295,7 +295,7 @@ static const struct id_table ic_id_table[] = {
+ 	  .config_needed = false,
+ 	  .has_rom_version = true,
+ 	  .has_msft_ext = true,
+-	  .fw_name  = "rtl_bt/rtl8852cu_fw.bin",
++	  .fw_name  = "rtl_bt/rtl8852cu_fw",
+ 	  .cfg_name = "rtl_bt/rtl8852cu_config",
+ 	  .hw_info  = "rtl8852cu" },
+ 
+@@ -304,7 +304,7 @@ static const struct id_table ic_id_table[] = {
+ 	  .config_needed = false,
+ 	  .has_rom_version = true,
+ 	  .has_msft_ext = false,
+-	  .fw_name  = "rtl_bt/rtl8851bu_fw.bin",
++	  .fw_name  = "rtl_bt/rtl8851bu_fw",
+ 	  .cfg_name = "rtl_bt/rtl8851bu_config",
+ 	  .hw_info  = "rtl8851bu" },
+ 	};
+@@ -1045,6 +1045,7 @@ struct btrtl_device_info *btrtl_initialize(struct hci_dev *hdev,
+ 	struct sk_buff *skb;
+ 	struct hci_rp_read_local_version *resp;
+ 	struct hci_command_hdr *cmd;
++	char fw_name[40];
+ 	char cfg_name[40];
+ 	u16 hci_rev, lmp_subver;
+ 	u8 hci_ver, lmp_ver, chip_type = 0;
+@@ -1154,8 +1155,26 @@ struct btrtl_device_info *btrtl_initialize(struct hci_dev *hdev,
+ 			goto err_free;
+ 	}
+ 
+-	btrtl_dev->fw_len = rtl_load_file(hdev, btrtl_dev->ic_info->fw_name,
+-					  &btrtl_dev->fw_data);
++	if (!btrtl_dev->ic_info->fw_name) {
++		ret = -ENOMEM;
++		goto err_free;
++	}
++
++	btrtl_dev->fw_len = -EIO;
++	if (lmp_subver == RTL_ROM_LMP_8852A && hci_rev == 0x000c) {
++		snprintf(fw_name, sizeof(fw_name), "%s_v2.bin",
++				btrtl_dev->ic_info->fw_name);
++		btrtl_dev->fw_len = rtl_load_file(hdev, fw_name,
++				&btrtl_dev->fw_data);
++	}
++
++	if (btrtl_dev->fw_len < 0) {
++		snprintf(fw_name, sizeof(fw_name), "%s.bin",
++				btrtl_dev->ic_info->fw_name);
++		btrtl_dev->fw_len = rtl_load_file(hdev, fw_name,
++				&btrtl_dev->fw_data);
++	}
++
+ 	if (btrtl_dev->fw_len < 0) {
+ 		rtl_dev_err(hdev, "firmware file %s not found",
+ 			    btrtl_dev->ic_info->fw_name);
+@@ -1491,4 +1510,5 @@ MODULE_FIRMWARE("rtl_bt/rtl8852bs_config.bin");
+ MODULE_FIRMWARE("rtl_bt/rtl8852bu_fw.bin");
+ MODULE_FIRMWARE("rtl_bt/rtl8852bu_config.bin");
+ MODULE_FIRMWARE("rtl_bt/rtl8852cu_fw.bin");
++MODULE_FIRMWARE("rtl_bt/rtl8852cu_fw_v2.bin");
+ MODULE_FIRMWARE("rtl_bt/rtl8852cu_config.bin");
+-- 
+2.34.1
 
