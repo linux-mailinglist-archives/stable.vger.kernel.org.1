@@ -2,55 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AA8F5771AA7
-	for <lists+stable@lfdr.de>; Mon,  7 Aug 2023 08:47:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2153E771AD0
+	for <lists+stable@lfdr.de>; Mon,  7 Aug 2023 08:54:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231232AbjHGGrL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 7 Aug 2023 02:47:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46414 "EHLO
+        id S231376AbjHGGyF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 7 Aug 2023 02:54:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50950 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230108AbjHGGrK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 7 Aug 2023 02:47:10 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A66FD1A4;
-        Sun,  6 Aug 2023 23:47:09 -0700 (PDT)
+        with ESMTP id S231432AbjHGGx5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 7 Aug 2023 02:53:57 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0FF872105
+        for <stable@vger.kernel.org>; Sun,  6 Aug 2023 23:53:26 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4463761563;
-        Mon,  7 Aug 2023 06:47:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F3A9C433C7;
-        Mon,  7 Aug 2023 06:47:07 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5550661547
+        for <stable@vger.kernel.org>; Mon,  7 Aug 2023 06:53:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BEB8C433C8;
+        Mon,  7 Aug 2023 06:53:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691390828;
-        bh=1jCsoWdlJTQsQF5IZ+gzdQAhBlUO6GA0wb8Hp3Tpm2M=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=pdNQrp4B3s23/8MXLecBvUwKr11RDoNkw+A8dWesq8YLdLe2VN7yXzb+3UgkJqak1
-         VzzZHLXonZ5s9m3OATYR/eKxHSeULfMwkOcJ6sHXu/bhV0zAdbtbtDD4tYN0Q+jaJL
-         M3WOIbagKcjn/NDg2t1jRWutVtrMRgIC/feHCJ7E=
-Date:   Mon, 7 Aug 2023 08:47:05 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Thomas =?iso-8859-1?Q?Wei=DFschuh?= <linux@weissschuh.net>
-Cc:     Huang Rui <ray.huang@amd.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Viresh Kumar <viresh.kumar@linaro.org>,
-        linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Jannik Glueckert <jannik.glueckert@gmail.com>,
-        Bagas Sanjaya <bagasdotme@gmail.com>,
-        Linux LLVM Build Support <llvm@lists.linux.dev>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Nathan Chancellor <nathan@kernel.org>, stable@vger.kernel.org
-Subject: Re: [PATCH] cpufreq: amd-pstate: fix global sysfs attribute type
-Message-ID: <2023080748-apprehend-carnation-e71c@gregkh>
-References: <20230807-amd-pstate-cfi-v1-1-0263daa13bc3@weissschuh.net>
+        s=korg; t=1691391200;
+        bh=BHgst8JXRYpPT0txlKxBFo1PIpQ6oIxifxENXK4kn4M=;
+        h=Subject:To:Cc:From:Date:From;
+        b=Jin0xDLqmgcD+6nHS5bUJ3OyjgWv4SHia+sU08336qISTMmFYr070y+JdPF+81yfa
+         +qJkHtfq/FuZ8qtK/HOYs0wm5aM8RDEOAouXkRPOgMWqll++xBCdCG2vrHSnmir1Z4
+         Ag7Kdof93z1OgMIHK1Nr3MS4hNlXDdHc9a02bjzI=
+Subject: FAILED: patch "[PATCH] scsi: zfcp: Defer fc_rport blocking until after ADISC" failed to apply to 4.14-stable tree
+To:     maier@linux.ibm.com, bblock@linux.ibm.com, loshakov@linux.ibm.com,
+        martin.petersen@oracle.com
+Cc:     <stable@vger.kernel.org>
+From:   <gregkh@linuxfoundation.org>
+Date:   Mon, 07 Aug 2023 08:53:17 +0200
+Message-ID: <2023080717-repair-pessimism-cb11@gregkh>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230807-amd-pstate-cfi-v1-1-0263daa13bc3@weissschuh.net>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -58,52 +48,86 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, Aug 07, 2023 at 08:37:45AM +0200, Thomas Weißschuh wrote:
-> In commit 3666062b87ec ("cpufreq: amd-pstate: move to use bus_get_dev_root()")
-> the "amd_pstate" attributes where moved from a dedicated kobject to the
-> cpu root kobject.
-> While the dedicated kobject expects to contain kobj_attributes the root
-> kobject needs device_attributes.
-> 
-> As the changed arguments are not used by the callbacks it works most of
-> the time.
-> However CFI will detect this issue:
-> 
-> [ 4947.849350] CFI failure at dev_attr_show+0x24/0x60 (target: show_status+0x0/0x70; expected type: 0x8651b1de)
-> ...
-> [ 4947.849409] Call Trace:
-> [ 4947.849410]  <TASK>
-> [ 4947.849411]  ? __warn+0xcf/0x1c0
-> [ 4947.849414]  ? dev_attr_show+0x24/0x60
-> [ 4947.849415]  ? report_cfi_failure+0x4e/0x60
-> [ 4947.849417]  ? handle_cfi_failure+0x14c/0x1d0
-> [ 4947.849419]  ? __cfi_show_status+0x10/0x10
-> [ 4947.849420]  ? handle_bug+0x4f/0x90
-> [ 4947.849421]  ? exc_invalid_op+0x1a/0x60
-> [ 4947.849422]  ? asm_exc_invalid_op+0x1a/0x20
-> [ 4947.849424]  ? __cfi_show_status+0x10/0x10
-> [ 4947.849425]  ? dev_attr_show+0x24/0x60
-> [ 4947.849426]  sysfs_kf_seq_show+0xa6/0x110
-> [ 4947.849433]  seq_read_iter+0x16c/0x4b0
-> [ 4947.849436]  vfs_read+0x272/0x2d0
-> [ 4947.849438]  ksys_read+0x72/0xe0
-> [ 4947.849439]  do_syscall_64+0x76/0xb0
-> [ 4947.849440]  ? do_user_addr_fault+0x252/0x650
-> [ 4947.849442]  ? exc_page_fault+0x7a/0x1b0
-> [ 4947.849443]  entry_SYSCALL_64_after_hwframe+0x72/0xdc
-> 
-> Reported-by: Jannik Glückert <jannik.glueckert@gmail.com>
-> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217765
-> Link: https://lore.kernel.org/lkml/c7f1bf9b-b183-bf6e-1cbb-d43f72494083@gmail.com/
-> Fixes: 3666062b87ec ("cpufreq: amd-pstate: move to use bus_get_dev_root()")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
-> ---
-> Note:
-> 
-> This was not tested with CFI as I don't have the toolchain available.
-> Jannik, could you give it a spin?
 
-Ah, that was fast, nice!
+The patch below does not apply to the 4.14-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To reproduce the conflict and resubmit, you may use the following commands:
+
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
+git checkout FETCH_HEAD
+git cherry-pick -x e65851989001c0c9ba9177564b13b38201c0854c
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023080717-repair-pessimism-cb11@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
+
+Possible dependencies:
+
+e65851989001 ("scsi: zfcp: Defer fc_rport blocking until after ADISC response")
+8c9db6679be4 ("scsi: zfcp: Fix failed recovery on gone remote port with non-NPIV FCP devices")
+5c750d58e9d7 ("scsi: zfcp: workqueue: set description for port work items with their WWPN as context")
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From e65851989001c0c9ba9177564b13b38201c0854c Mon Sep 17 00:00:00 2001
+From: Steffen Maier <maier@linux.ibm.com>
+Date: Mon, 24 Jul 2023 16:51:56 +0200
+Subject: [PATCH] scsi: zfcp: Defer fc_rport blocking until after ADISC
+ response
+
+Storage devices are free to send RSCNs, e.g. for internal state changes. If
+this happens on all connected paths, zfcp risks temporarily losing all
+paths at the same time. This has strong requirements on multipath
+configuration such as "no_path_retry queue".
+
+Avoid such situations by deferring fc_rport blocking until after the ADISC
+response, when any actual state change of the remote port became clear.
+The already existing port recovery triggers explicitly block the fc_rport.
+The triggers are: on ADISC reject or timeout (typical cable pull case), and
+on ADISC indicating that the remote port has changed its WWPN or
+the port is meanwhile no longer open.
+
+As a side effect, this also removes a confusing direct function call to
+another work item function zfcp_scsi_rport_work() instead of scheduling
+that other work item. It was probably done that way to have the rport block
+side effect immediate and synchronous to the caller.
+
+Fixes: a2fa0aede07c ("[SCSI] zfcp: Block FC transport rports early on errors")
+Cc: stable@vger.kernel.org #v2.6.30+
+Reviewed-by: Benjamin Block <bblock@linux.ibm.com>
+Reviewed-by: Fedor Loshakov <loshakov@linux.ibm.com>
+Signed-off-by: Steffen Maier <maier@linux.ibm.com>
+Link: https://lore.kernel.org/r/20230724145156.3920244-1-maier@linux.ibm.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+
+diff --git a/drivers/s390/scsi/zfcp_fc.c b/drivers/s390/scsi/zfcp_fc.c
+index f21307537829..4f0d0e55f0d4 100644
+--- a/drivers/s390/scsi/zfcp_fc.c
++++ b/drivers/s390/scsi/zfcp_fc.c
+@@ -534,8 +534,7 @@ static void zfcp_fc_adisc_handler(void *data)
+ 
+ 	/* re-init to undo drop from zfcp_fc_adisc() */
+ 	port->d_id = ntoh24(adisc_resp->adisc_port_id);
+-	/* port is good, unblock rport without going through erp */
+-	zfcp_scsi_schedule_rport_register(port);
++	/* port is still good, nothing to do */
+  out:
+ 	atomic_andnot(ZFCP_STATUS_PORT_LINK_TEST, &port->status);
+ 	put_device(&port->dev);
+@@ -595,9 +594,6 @@ void zfcp_fc_link_test_work(struct work_struct *work)
+ 	int retval;
+ 
+ 	set_worker_desc("zadisc%16llx", port->wwpn); /* < WORKER_DESC_LEN=24 */
+-	get_device(&port->dev);
+-	port->rport_task = RPORT_DEL;
+-	zfcp_scsi_rport_work(&port->rport_work);
+ 
+ 	/* only issue one test command at one time per port */
+ 	if (atomic_read(&port->status) & ZFCP_STATUS_PORT_LINK_TEST)
+
