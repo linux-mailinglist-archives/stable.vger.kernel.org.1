@@ -2,63 +2,57 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5332C772962
-	for <lists+stable@lfdr.de>; Mon,  7 Aug 2023 17:37:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A90AA772A19
+	for <lists+stable@lfdr.de>; Mon,  7 Aug 2023 18:06:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230197AbjHGPhX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 7 Aug 2023 11:37:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58306 "EHLO
+        id S229631AbjHGQG5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 7 Aug 2023 12:06:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47780 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230472AbjHGPhT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 7 Aug 2023 11:37:19 -0400
+        with ESMTP id S229484AbjHGQGj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 7 Aug 2023 12:06:39 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6DF3919A9;
-        Mon,  7 Aug 2023 08:37:11 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8116DE72;
+        Mon,  7 Aug 2023 09:06:38 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id AA36E61E2C;
-        Mon,  7 Aug 2023 15:37:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68116C433C7;
-        Mon,  7 Aug 2023 15:37:09 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1E2AA61E3E;
+        Mon,  7 Aug 2023 16:06:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF9AFC433C8;
+        Mon,  7 Aug 2023 16:06:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1691422630;
-        bh=Tv6VzIDd4SIlArHBmIHp9VMuLmiykxV8wOzCt+lQsFg=;
-        h=From:Date:Subject:To:Cc:From;
-        b=pYDj8uco4GtRbiwzZQvDQuZqaghPK/L/nkZ2pZfUDnIp7eOfWyTy/bnDqck2DL0gE
-         8/J8KohuKXxPgOci7K/A8KXF6nnLlgrH1pHUpNk8WGaZtjV1crio+MHCk8fjkQBjPb
-         CY1iec/HzpPhW3xRDtkKQ+TBmSba1u33OsXGvvv1NKSpJnDCZlzFSg+Ukjgldo+khW
-         hkBW83rtyKiJj5XWDeHSlFTKBJZH9vPpe7hUyAnitqiN0abMEoeBCyXVJwvI15Mck7
-         IUf3QHQ/Zl76gPtJEiy8nLKVqbBbA+2zPP6WvhNW+FOwHpha5VtoxoPOMx7osRLVXH
-         uIYxVPT/mrtUg==
+        s=k20201202; t=1691424397;
+        bh=ZwgSkM17mLAbzW5Agrgxi1QqjB4UKZiqVCCapuKRcgU=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=Q4YcCyrqSQKiJo6sKcVZfs5eTvqXZUYiaEbopoWNhRgIP9lMIs0IQFjwvHijp3lFn
+         B64UzMVnlW/LIq+NhbQnVl4dv7nbcRPI/FqM/c3t3qBylZ79H31uNwyS65yZuv0QCe
+         T4entT1OIkt8hOL98qK40HCjRCuqESn7f9o9AGM9v6ieY+smya+S2QkgYWqKx3xEX7
+         VNBHQvzvQInFTxRhGnuwvfZRYcHc7sGZyZ2h/LYa72cxWu7i+JFcUPkLHBxueRpaYu
+         aO/Wl0y40KVNDcsF1F5L+OdxeEUMHX4244tdMwCEAq7flzqWbHg+nAkO+RI3auxluV
+         Dxd9H3Tz9n7jA==
+Date:   Mon, 7 Aug 2023 09:06:35 -0700
 From:   Nathan Chancellor <nathan@kernel.org>
-Date:   Mon, 07 Aug 2023 08:36:28 -0700
-Subject: [PATCH v2] lib: test_scanf: Add explicit type cast to result
- initialization in test_number_prefix()
+To:     Thomas =?iso-8859-1?Q?Wei=DFschuh?= <linux@weissschuh.net>
+Cc:     Huang Rui <ray.huang@amd.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Viresh Kumar <viresh.kumar@linaro.org>,
+        linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Jannik Glueckert <jannik.glueckert@gmail.com>,
+        Bagas Sanjaya <bagasdotme@gmail.com>,
+        Linux LLVM Build Support <llvm@lists.linux.dev>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org
+Subject: Re: [PATCH] cpufreq: amd-pstate: fix global sysfs attribute type
+Message-ID: <20230807160635.GA3061@dev-arch.thelio-3990X>
+References: <20230807-amd-pstate-cfi-v1-1-0263daa13bc3@weissschuh.net>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20230807-test_scanf-wconstant-conversion-v2-1-839ca39083e1@kernel.org>
-X-B4-Tracking: v=1; b=H4sIAHsP0WQC/42NXQrCMBCEr1L22ZU2rdT65D2kSH42bVAS2YSol
- N7dtCfwbb6B+WaBSOwowqVagCm76IIvIA4V6Fn6idCZwiBq0dbnusVEMd2jlt7iWwcfk/QJS8j
- E2xbN0JNVtlXqZKBYXkzWffaH21h4djEF/u6Hudna/925wQb7zshh6AwZpa8PYk/PY+AJxnVdf
- 2Pr4zvPAAAA
-To:     pmladek@suse.com, rostedt@goodmis.org
-Cc:     senozhatsky@chromium.org, andriy.shevchenko@linux.intel.com,
-        linux@rasmusvillemoes.dk, ndesaulniers@google.com, trix@redhat.com,
-        linux-kernel@vger.kernel.org, llvm@lists.linux.dev,
-        patches@lists.linux.dev, stable@vger.kernel.org,
-        Nathan Chancellor <nathan@kernel.org>
-X-Mailer: b4 0.13-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2585; i=nathan@kernel.org;
- h=from:subject:message-id; bh=Tv6VzIDd4SIlArHBmIHp9VMuLmiykxV8wOzCt+lQsFg=;
- b=owGbwMvMwCEmm602sfCA1DTG02pJDCkX+ZfeXZ6ZtHxLf+QKvwd7Tp7avsChcfJjk+TXPnrKr
- //+fHzwV0cpC4MYB4OsmCJL9WPV44aGc84y3jg1CWYOKxPIEAYuTgGYiMJORoav2WeXuqfc1LXM
- uqpxcbGBc36moElHXIvRPN9Z00otxX0Y/kpIswrm9WVFdX77Iffx5Yzku3Ou3OPevTddYY1pq5N
- AOA8A
-X-Developer-Key: i=nathan@kernel.org; a=openpgp;
- fpr=2437CB76E544CB6AB3D9DFD399739260CB6CB716
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20230807-amd-pstate-cfi-v1-1-0263daa13bc3@weissschuh.net>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
@@ -69,60 +63,120 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-A recent change in clang allows it to consider more expressions as
-compile time constants, which causes it to point out an implicit
-conversion in the scanf tests:
+Hi Thomas,
 
-  lib/test_scanf.c:661:2: warning: implicit conversion from 'int' to 'unsigned char' changes value from -168 to 88 [-Wconstant-conversion]
-    661 |         test_number_prefix(unsigned char,       "0xA7", "%2hhx%hhx", 0, 0xa7, 2, check_uchar);
-        |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  lib/test_scanf.c:609:29: note: expanded from macro 'test_number_prefix'
-    609 |         T result[2] = {~expect[0], ~expect[1]};                                 \
-        |                       ~            ^~~~~~~~~~
-  1 warning generated.
+On Mon, Aug 07, 2023 at 08:37:45AM +0200, Thomas Weißschuh wrote:
+> In commit 3666062b87ec ("cpufreq: amd-pstate: move to use bus_get_dev_root()")
+> the "amd_pstate" attributes where moved from a dedicated kobject to the
+> cpu root kobject.
+> While the dedicated kobject expects to contain kobj_attributes the root
+> kobject needs device_attributes.
+> 
+> As the changed arguments are not used by the callbacks it works most of
+> the time.
+> However CFI will detect this issue:
+> 
+> [ 4947.849350] CFI failure at dev_attr_show+0x24/0x60 (target: show_status+0x0/0x70; expected type: 0x8651b1de)
+> ...
+> [ 4947.849409] Call Trace:
+> [ 4947.849410]  <TASK>
+> [ 4947.849411]  ? __warn+0xcf/0x1c0
+> [ 4947.849414]  ? dev_attr_show+0x24/0x60
+> [ 4947.849415]  ? report_cfi_failure+0x4e/0x60
+> [ 4947.849417]  ? handle_cfi_failure+0x14c/0x1d0
+> [ 4947.849419]  ? __cfi_show_status+0x10/0x10
+> [ 4947.849420]  ? handle_bug+0x4f/0x90
+> [ 4947.849421]  ? exc_invalid_op+0x1a/0x60
+> [ 4947.849422]  ? asm_exc_invalid_op+0x1a/0x20
+> [ 4947.849424]  ? __cfi_show_status+0x10/0x10
+> [ 4947.849425]  ? dev_attr_show+0x24/0x60
+> [ 4947.849426]  sysfs_kf_seq_show+0xa6/0x110
+> [ 4947.849433]  seq_read_iter+0x16c/0x4b0
+> [ 4947.849436]  vfs_read+0x272/0x2d0
+> [ 4947.849438]  ksys_read+0x72/0xe0
+> [ 4947.849439]  do_syscall_64+0x76/0xb0
+> [ 4947.849440]  ? do_user_addr_fault+0x252/0x650
+> [ 4947.849442]  ? exc_page_fault+0x7a/0x1b0
+> [ 4947.849443]  entry_SYSCALL_64_after_hwframe+0x72/0xdc
+> 
+> Reported-by: Jannik Glückert <jannik.glueckert@gmail.com>
+> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217765
+> Link: https://lore.kernel.org/lkml/c7f1bf9b-b183-bf6e-1cbb-d43f72494083@gmail.com/
+> Fixes: 3666062b87ec ("cpufreq: amd-pstate: move to use bus_get_dev_root()")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
 
-The result of the bitwise negation is the type of the operand after
-going through the integer promotion rules, so this truncation is
-expected but harmless, as the initial values in the result array get
-overwritten by _test() anyways. Add an explicit cast to the expected
-type in test_number_prefix() to silence the warning. There is no
-functional change, as all the tests still pass with GCC 13.1.0 and clang
-18.0.0.
+Thanks a lot for the quick patch! Unfortunately, it seems like neither
+of my AMD machines support amd-pstate so I can't test this but it seems
+like the right fix to me.
 
-Cc: stable@vger.kernel.org
-Closes: https://github.com/ClangBuiltLinux/linux/issues/1899
-Link: https://github.com/llvm/llvm-project/commit/610ec954e1f81c0e8fcadedcd25afe643f5a094e
-Suggested-by: Nick Desaulniers <ndesaulniers@google.com>
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
----
-Changes in v2:
-- Add spaces in initializer to match result (Andy)
-- Add 'Cc: stable', as builds with CONFIG_WERROR will be broken, such as
-  allmodconfig
-- Link to v1: https://lore.kernel.org/r/20230803-test_scanf-wconstant-conversion-v1-1-74da994dedbc@kernel.org
----
- lib/test_scanf.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Reviewed-by: Nathan Chancellor <nathan@kernel.org>
 
-diff --git a/lib/test_scanf.c b/lib/test_scanf.c
-index b620cf7de503..a2707af2951a 100644
---- a/lib/test_scanf.c
-+++ b/lib/test_scanf.c
-@@ -606,7 +606,7 @@ static void __init numbers_slice(void)
- #define test_number_prefix(T, str, scan_fmt, expect0, expect1, n_args, fn)	\
- do {										\
- 	const T expect[2] = { expect0, expect1 };				\
--	T result[2] = {~expect[0], ~expect[1]};					\
-+	T result[2] = { (T)~expect[0], (T)~expect[1] };				\
- 										\
- 	_test(fn, &expect, str, scan_fmt, n_args, &result[0], &result[1]);	\
- } while (0)
+> ---
+> Note:
+> 
+> This was not tested with CFI as I don't have the toolchain available.
 
----
-base-commit: 5d0c230f1de8c7515b6567d9afba1f196fb4e2f4
-change-id: 20230803-test_scanf-wconstant-conversion-d97efbf3bb5d
+For the record, I have LLVM toolchains on kernel.org that should be
+relatively standalone enough to have them somewhere on your hard drive
+then use the LLVM=<prefix>/bin/ syntax that has been supported since
+5.18:
 
-Best regards,
--- 
-Nathan Chancellor <nathan@kernel.org>
+https://mirrors.edge.kernel.org/pub/tools/llvm/
 
+> Jannik, could you give it a spin?
+> ---
+>  drivers/cpufreq/amd-pstate.c | 10 +++++-----
+>  1 file changed, 5 insertions(+), 5 deletions(-)
+> 
+> diff --git a/drivers/cpufreq/amd-pstate.c b/drivers/cpufreq/amd-pstate.c
+> index 81fba0dcbee9..9a1e194d5cf8 100644
+> --- a/drivers/cpufreq/amd-pstate.c
+> +++ b/drivers/cpufreq/amd-pstate.c
+> @@ -1012,8 +1012,8 @@ static int amd_pstate_update_status(const char *buf, size_t size)
+>  	return 0;
+>  }
+>  
+> -static ssize_t show_status(struct kobject *kobj,
+> -			   struct kobj_attribute *attr, char *buf)
+> +static ssize_t status_show(struct device *dev,
+> +			   struct device_attribute *attr, char *buf)
+>  {
+>  	ssize_t ret;
+>  
+> @@ -1024,7 +1024,7 @@ static ssize_t show_status(struct kobject *kobj,
+>  	return ret;
+>  }
+>  
+> -static ssize_t store_status(struct kobject *a, struct kobj_attribute *b,
+> +static ssize_t status_store(struct device *a, struct device_attribute *b,
+>  			    const char *buf, size_t count)
+>  {
+>  	char *p = memchr(buf, '\n', count);
+> @@ -1043,7 +1043,7 @@ cpufreq_freq_attr_ro(amd_pstate_lowest_nonlinear_freq);
+>  cpufreq_freq_attr_ro(amd_pstate_highest_perf);
+>  cpufreq_freq_attr_rw(energy_performance_preference);
+>  cpufreq_freq_attr_ro(energy_performance_available_preferences);
+> -define_one_global_rw(status);
+> +static DEVICE_ATTR_RW(status);
+>  
+>  static struct freq_attr *amd_pstate_attr[] = {
+>  	&amd_pstate_max_freq,
+> @@ -1062,7 +1062,7 @@ static struct freq_attr *amd_pstate_epp_attr[] = {
+>  };
+>  
+>  static struct attribute *pstate_global_attributes[] = {
+> -	&status.attr,
+> +	&dev_attr_status.attr,
+>  	NULL
+>  };
+>  
+> 
+> ---
+> base-commit: 52a93d39b17dc7eb98b6aa3edb93943248e03b2f
+> change-id: 20230807-amd-pstate-cfi-8302498c54f5
+> 
+> Best regards,
+> -- 
+> Thomas Weißschuh <linux@weissschuh.net>
+> 
