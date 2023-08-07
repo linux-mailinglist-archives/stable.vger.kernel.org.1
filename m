@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3D123771AFE
-	for <lists+stable@lfdr.de>; Mon,  7 Aug 2023 09:02:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 20AD8771AFD
+	for <lists+stable@lfdr.de>; Mon,  7 Aug 2023 09:02:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229572AbjHGHCg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 7 Aug 2023 03:02:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56044 "EHLO
+        id S229691AbjHGHCe (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 7 Aug 2023 03:02:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56674 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230320AbjHGHCX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 7 Aug 2023 03:02:23 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D5EB71721
-        for <stable@vger.kernel.org>; Mon,  7 Aug 2023 00:02:21 -0700 (PDT)
+        with ESMTP id S229721AbjHGHCO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 7 Aug 2023 03:02:14 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 03B6EE78
+        for <stable@vger.kernel.org>; Mon,  7 Aug 2023 00:02:13 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 45C9F6112C
-        for <stable@vger.kernel.org>; Mon,  7 Aug 2023 07:02:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F48BC433C8;
-        Mon,  7 Aug 2023 07:02:20 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9460061049
+        for <stable@vger.kernel.org>; Mon,  7 Aug 2023 07:02:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F6B5C433C8;
+        Mon,  7 Aug 2023 07:02:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691391740;
-        bh=wBponFLYpYmQOiP8sdqzkH3lEkPqrdtWm143xArn9RE=;
+        s=korg; t=1691391732;
+        bh=i0bXprdmd4BfT4CtO0lmIx8RJoSnbvC7SFIGwQ9oY1Y=;
         h=Subject:To:Cc:From:Date:From;
-        b=GMeipxHIz6OF8EpJ1/MIJRG9yG9hxNdrs+FIIakDmPe/7vyszzjnO2eWopWlhmeWR
-         U8A8F69rkiR+sGDarZPiMJiobhMpgR7PmtWuwD7dD7Gp7oWOnPbtxMOjG/dV7HzLJd
-         VbcgQ/C+R2Q6WsQwrT06Dnhk3TXKPHweKgijEvX0=
-Subject: FAILED: patch "[PATCH] arm64: dts: stratix10: fix incorrect I2C property for SCL" failed to apply to 4.19-stable tree
+        b=c97AXD+v881ZfD46GUelDheNqvtlon9t+7+4rFRDLYUwkxL1yJXcvGKLMVbVPBo/D
+         YxMRnZXDaE13cNAH1sDsiNXXR7ynL0/b7ST0Us4SCH+irAtvkkJpVwS2TLR/VWq/7S
+         evlbnANHIl3pu2p6VY7QFZx57FvB+yQ4ADvlt1Pw=
+Subject: FAILED: patch "[PATCH] arm64: dts: stratix10: fix incorrect I2C property for SCL" failed to apply to 5.4-stable tree
 To:     dinguyen@kernel.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
 Date:   Mon, 07 Aug 2023 09:02:09 +0200
-Message-ID: <2023080709-atrium-collage-9ccc@gregkh>
+Message-ID: <2023080708-ocean-immorally-78ec@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -48,27 +48,24 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 4.19-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
 git cherry-pick -x db66795f61354c373ecdadbdae1ed253a96c47cb
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023080709-atrium-collage-9ccc@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023080708-ocean-immorally-78ec@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
 db66795f6135 ("arm64: dts: stratix10: fix incorrect I2C property for SCL signal")
 3c0f3b8545e7 ("arm64: dts: add NAND board files for Stratix10 and Agilex")
-ec8f24b7faaf ("treewide: Add SPDX license identifier - Makefile/Kconfig")
-9cc342f6c4a0 ("treewide: prefix header search paths with $(srctree)/")
-dc413a90edbe ("Merge tag 'armsoc-drivers' of git://git.kernel.org/pub/scm/linux/kernel/git/soc/soc")
 
 thanks,
 
