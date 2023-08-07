@@ -2,46 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 75CED772FE8
-	for <lists+stable@lfdr.de>; Mon,  7 Aug 2023 21:52:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AB22D772FFF
+	for <lists+stable@lfdr.de>; Mon,  7 Aug 2023 21:57:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229537AbjHGTwZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 7 Aug 2023 15:52:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44016 "EHLO
+        id S229905AbjHGT5B (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 7 Aug 2023 15:57:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47736 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229473AbjHGTwY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 7 Aug 2023 15:52:24 -0400
+        with ESMTP id S230518AbjHGT4z (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 7 Aug 2023 15:56:55 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC0FFE66;
-        Mon,  7 Aug 2023 12:52:22 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 51884E7F
+        for <stable@vger.kernel.org>; Mon,  7 Aug 2023 12:56:50 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4CFE161EB7;
-        Mon,  7 Aug 2023 19:52:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C9F5C433C7;
-        Mon,  7 Aug 2023 19:52:21 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E05B4621BC
+        for <stable@vger.kernel.org>; Mon,  7 Aug 2023 19:56:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DA33C433C8;
+        Mon,  7 Aug 2023 19:56:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1691437941;
-        bh=IH39znwDLBIRmDZcSbrudFffMeVXA/5wEHS2vZgdSZM=;
-        h=From:To:Cc:Subject:Date:From;
-        b=VuDazwdxCMW48TtNWpF2UIaT3LPyGTUqYykkRTPr27gutEDYmNWtAILZDTGmOt3U7
-         CcHoKK8lfvBimNqmG/2RaIHME/vWlsmBwSV151wA8hhGH3HWqMD07MI1B30ikxMvfc
-         vdZfIuFW8XLxmU9YFYyZxggC/29Megg7X2eft+x3lyHmfUF9IiRfBig43oEyH1QtYh
-         gbaNRZkcw2EK/W1cjSzLb3le+0d48ZMvDwDfySvjtvoitxT+cvLuv5RRU3uQntj6gA
-         MjvLh9Ur//LvQkc+lYTDkIS93PL06c7QK6cJ7vKocg6Q4L3Rmv1d7x9RjLEuqVxZlT
-         DrsANJX3Pc6GQ==
-From:   Jaegeuk Kim <jaegeuk@kernel.org>
-To:     linux-kernel@vger.kernel.org,
-        linux-f2fs-devel@lists.sourceforge.net
-Cc:     Jaegeuk Kim <jaegeuk@kernel.org>, stable@vger.kernel.org,
-        Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>
-Subject: [PATCH] Revert "f2fs: clean up w/ sbi->log_sectors_per_block"
-Date:   Mon,  7 Aug 2023 12:52:19 -0700
-Message-ID: <20230807195219.371131-1-jaegeuk@kernel.org>
-X-Mailer: git-send-email 2.41.0.640.ga95def55d0-goog
+        s=k20201202; t=1691438209;
+        bh=fJyD+AAHIJnBBhADt8x6I9YY9Z0rlG4FmX11nos9t58=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=JrI4zXjIbVnWciWgqRxLuRz+kL13Vvu6zaMwx3yNg5c17LEXJjh1nqhXc5Q8GHDbN
+         sy1T2j9q2t3/agOLjzMbzWlNetA2cVYoMlhWbB/qVLoOCnbCgdPJTED0B2BIGze4kQ
+         kSxHh4OINRM3N7ZXJz/lzKdmflVx4gXukpTh/ieXTxneHFTXnuOiIyp6Y7GGOjTvi+
+         guGFJ4+gqzhAf8iXJZdDlNsW4l6GQgCbJEUhuk1AA1lYDsKcA6SUBh2T4mhLO/+tZn
+         eEYNSXGD1Of+9HCVsxKs/32wOLcC88EC8TztK4f2nD6IfFjnXs5EXCUB5wTuvMWK/M
+         qbui2F8aQWgoQ==
+From:   Mark Brown <broonie@kernel.org>
+To:     stable@vger.kernel.org
+Cc:     Mark Brown <broonie@kernel.org>,
+        Catalin Marinas <catalin.marinas@arm.com>
+Subject: [PATCH 6.1.y] arm64/ptrace: Don't enable SVE when setting streaming SVE
+Date:   Mon,  7 Aug 2023 20:56:33 +0100
+Message-Id: <20230807195634.309031-1-broonie@kernel.org>
+X-Mailer: git-send-email 2.30.2
+In-Reply-To: <2023080713-schedule-tuition-b3a5@gregkh>
+References: <2023080713-schedule-tuition-b3a5@gregkh>
 MIME-Version: 1.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2542; i=broonie@kernel.org; h=from:subject; bh=fJyD+AAHIJnBBhADt8x6I9YY9Z0rlG4FmX11nos9t58=; b=owGbwMvMwMWocq27KDak/QLjabUkhpSLPoUVL6aycThs1w7mTI58fL//gYRvgFw4x8Yzxm1vQ/tX HzbtZDRmYWDkYpAVU2RZ+yxjVXq4xNb5j+a/ghnEygQyhYGLUwAuIsH+P2zX3E2LTvzZ+jTT8qTrs7 6MwlY3v4WFxW+TOMSr767LTLRIOc9w4C4rW7j/jto2l1Nlj/dXbCtPnnhwyoxI9tcCF0/vTV21+o3O npClsh8b9T3U5llqiNsG3OTqCuMWPJfFf3hy1JP3m9hLZtWHFpxdLLH5V8JaZqO4HZbvK2YYBpQq9v c23i3daHDI1lU92nEeb7C6kkpzlu9Sx2weH71/8hPWv+bP03uyTvV4soxL1YT/Uf4s3R3cglPk+zvO bwnIN1+y5/Elp4stb9sZJdPs1Ss/sNza/0zrGZsov7p98xNVi79vUi4Y35adWzNTc8/lb+mZD/gKdH 4L7XpyvOTbN6akKzliUhEcJacB
+X-Developer-Key: i=broonie@kernel.org; a=openpgp; fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -53,126 +56,58 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-This reverts commit bfd476623999118d9c509cb0fa9380f2912bc225.
+Systems which implement SME without also implementing SVE are
+architecturally valid but were not initially supported by the kernel,
+unfortunately we missed one issue in the ptrace code.
 
-Shinichiro Kawasaki reported:
+The SVE register setting code is shared between SVE and streaming mode
+SVE. When we set full SVE register state we currently enable TIF_SVE
+unconditionally, in the case where streaming SVE is being configured on a
+system that supports vanilla SVE this is not an issue since we always
+initialise enough state for both vector lengths but on a system which only
+support SME it will result in us attempting to restore the SVE vector
+length after having set streaming SVE registers.
 
-When I ran workloads on f2fs using v6.5-rcX with fixes [1][2] and a zoned block
-devices with 4kb logical block size, I observe mount failure as follows. When
-I revert this commit, the failure goes away.
+Fix this by making the enabling of SVE conditional on setting SVE vector
+state. If we set streaming SVE state and SVE was not already enabled this
+will result in a SVE access trap on next use of normal SVE, this will cause
+us to flush our register state but this is fine since the only way to
+trigger a SVE access trap would be to exit streaming mode which will cause
+the in register state to be flushed anyway.
 
-[  167.781975][ T1555] F2FS-fs (dm-0): IO Block Size:        4 KB
-[  167.890728][ T1555] F2FS-fs (dm-0): Found nat_bits in checkpoint
-[  171.482588][ T1555] F2FS-fs (dm-0): Zone without valid block has non-zero write pointer. Reset the write pointer: wp[0x1300,0x8]
-[  171.496000][ T1555] F2FS-fs (dm-0): (0) : Unaligned zone reset attempted (block 280000 + 80000)
-[  171.505037][ T1555] F2FS-fs (dm-0): Discard zone failed:  (errno=-5)
-
-The patch replaced "sbi->log_blocksize - SECTOR_SHIFT" with
-"sbi->log_sectors_per_block". However, I think these two are not equal when the
-device has 4k logical block size. The former uses Linux kernel sector size 512
-byte. The latter use 512b sector size or 4kb sector size depending on the
-device. mkfs.f2fs obtains logical block size via BLKSSZGET ioctl from the device
-and reflects it to the value sbi->log_sector_size_per_block. This causes
-unexpected write pointer calculations in check_zone_write_pointer(). This
-resulted in unexpected zone reset and the mount failure.
-
-[1] https://lkml.kernel.org/linux-f2fs-devel/20230711050101.GA19128@lst.de/
-[2] https://lore.kernel.org/linux-f2fs-devel/20230804091556.2372567-1-shinichiro.kawasaki@wdc.com/
-
+Fixes: e12310a0d30f ("arm64/sme: Implement ptrace support for streaming mode SVE registers")
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Cc: stable@vger.kernel.org
-Reported-by: Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>
-Fixes: bfd476623999 ("f2fs: clean up w/ sbi->log_sectors_per_block")
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Link: https://lore.kernel.org/r/20230803-arm64-fix-ptrace-ssve-no-sve-v1-1-49df214bfb3e@kernel.org
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+(cherry picked from commit 045aecdfcb2e060db142d83a0f4082380c465d2c)
+[Fix up backport -- broonie]
+Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- fs/f2fs/segment.c | 23 ++++++++++++-----------
- 1 file changed, 12 insertions(+), 11 deletions(-)
+ arch/arm64/kernel/ptrace.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/fs/f2fs/segment.c b/fs/f2fs/segment.c
-index 0457d620011f..cbb4bd95ea19 100644
---- a/fs/f2fs/segment.c
-+++ b/fs/f2fs/segment.c
-@@ -4846,17 +4846,17 @@ static int check_zone_write_pointer(struct f2fs_sb_info *sbi,
- {
- 	unsigned int wp_segno, wp_blkoff, zone_secno, zone_segno, segno;
- 	block_t zone_block, wp_block, last_valid_block;
-+	unsigned int log_sectors_per_block = sbi->log_blocksize - SECTOR_SHIFT;
- 	int i, s, b, ret;
- 	struct seg_entry *se;
+diff --git a/arch/arm64/kernel/ptrace.c b/arch/arm64/kernel/ptrace.c
+index 92bc9a2d702c..f19f020ccff9 100644
+--- a/arch/arm64/kernel/ptrace.c
++++ b/arch/arm64/kernel/ptrace.c
+@@ -937,11 +937,13 @@ static int sve_set_common(struct task_struct *target,
+ 	/*
+ 	 * Ensure target->thread.sve_state is up to date with target's
+ 	 * FPSIMD regs, so that a short copyin leaves trailing
+-	 * registers unmodified.  Always enable SVE even if going into
+-	 * streaming mode.
++	 * registers unmodified.  Only enable SVE if we are
++	 * configuring normal SVE, a system with streaming SVE may not
++	 * have normal SVE.
+ 	 */
+ 	fpsimd_sync_to_sve(target);
+-	set_tsk_thread_flag(target, TIF_SVE);
++	if (type == ARM64_VEC_SVE)
++		set_tsk_thread_flag(target, TIF_SVE);
  
- 	if (zone->type != BLK_ZONE_TYPE_SEQWRITE_REQ)
- 		return 0;
- 
--	wp_block = fdev->start_blk + (zone->wp >> sbi->log_sectors_per_block);
-+	wp_block = fdev->start_blk + (zone->wp >> log_sectors_per_block);
- 	wp_segno = GET_SEGNO(sbi, wp_block);
- 	wp_blkoff = wp_block - START_BLOCK(sbi, wp_segno);
--	zone_block = fdev->start_blk + (zone->start >>
--						sbi->log_sectors_per_block);
-+	zone_block = fdev->start_blk + (zone->start >> log_sectors_per_block);
- 	zone_segno = GET_SEGNO(sbi, zone_block);
- 	zone_secno = GET_SEC_FROM_SEG(sbi, zone_segno);
- 
-@@ -4906,7 +4906,7 @@ static int check_zone_write_pointer(struct f2fs_sb_info *sbi,
- 			    "pointer. Reset the write pointer: wp[0x%x,0x%x]",
- 			    wp_segno, wp_blkoff);
- 		ret = __f2fs_issue_discard_zone(sbi, fdev->bdev, zone_block,
--				zone->len >> sbi->log_sectors_per_block);
-+					zone->len >> log_sectors_per_block);
- 		if (ret)
- 			f2fs_err(sbi, "Discard zone failed: %s (errno=%d)",
- 				 fdev->path, ret);
-@@ -4967,6 +4967,7 @@ static int fix_curseg_write_pointer(struct f2fs_sb_info *sbi, int type)
- 	struct blk_zone zone;
- 	unsigned int cs_section, wp_segno, wp_blkoff, wp_sector_off;
- 	block_t cs_zone_block, wp_block;
-+	unsigned int log_sectors_per_block = sbi->log_blocksize - SECTOR_SHIFT;
- 	sector_t zone_sector;
- 	int err;
- 
-@@ -4978,8 +4979,8 @@ static int fix_curseg_write_pointer(struct f2fs_sb_info *sbi, int type)
- 		return 0;
- 
- 	/* report zone for the sector the curseg points to */
--	zone_sector = (sector_t)(cs_zone_block - zbd->start_blk) <<
--						sbi->log_sectors_per_block;
-+	zone_sector = (sector_t)(cs_zone_block - zbd->start_blk)
-+		<< log_sectors_per_block;
- 	err = blkdev_report_zones(zbd->bdev, zone_sector, 1,
- 				  report_one_zone_cb, &zone);
- 	if (err != 1) {
-@@ -4991,10 +4992,10 @@ static int fix_curseg_write_pointer(struct f2fs_sb_info *sbi, int type)
- 	if (zone.type != BLK_ZONE_TYPE_SEQWRITE_REQ)
- 		return 0;
- 
--	wp_block = zbd->start_blk + (zone.wp >> sbi->log_sectors_per_block);
-+	wp_block = zbd->start_blk + (zone.wp >> log_sectors_per_block);
- 	wp_segno = GET_SEGNO(sbi, wp_block);
- 	wp_blkoff = wp_block - START_BLOCK(sbi, wp_segno);
--	wp_sector_off = zone.wp & GENMASK(sbi->log_sectors_per_block - 1, 0);
-+	wp_sector_off = zone.wp & GENMASK(log_sectors_per_block - 1, 0);
- 
- 	if (cs->segno == wp_segno && cs->next_blkoff == wp_blkoff &&
- 		wp_sector_off == 0)
-@@ -5021,8 +5022,8 @@ static int fix_curseg_write_pointer(struct f2fs_sb_info *sbi, int type)
- 	if (!zbd)
- 		return 0;
- 
--	zone_sector = (sector_t)(cs_zone_block - zbd->start_blk) <<
--						sbi->log_sectors_per_block;
-+	zone_sector = (sector_t)(cs_zone_block - zbd->start_blk)
-+		<< log_sectors_per_block;
- 	err = blkdev_report_zones(zbd->bdev, zone_sector, 1,
- 				  report_one_zone_cb, &zone);
- 	if (err != 1) {
-@@ -5040,7 +5041,7 @@ static int fix_curseg_write_pointer(struct f2fs_sb_info *sbi, int type)
- 			    "Reset the zone: curseg[0x%x,0x%x]",
- 			    type, cs->segno, cs->next_blkoff);
- 		err = __f2fs_issue_discard_zone(sbi, zbd->bdev,	cs_zone_block,
--					zone.len >> sbi->log_sectors_per_block);
-+					zone.len >> log_sectors_per_block);
- 		if (err) {
- 			f2fs_err(sbi, "Discard zone failed: %s (errno=%d)",
- 				 zbd->path, err);
+ 	BUILD_BUG_ON(SVE_PT_SVE_OFFSET != sizeof(header));
+ 	start = SVE_PT_SVE_OFFSET;
 -- 
-2.41.0.640.ga95def55d0-goog
+2.30.2
 
