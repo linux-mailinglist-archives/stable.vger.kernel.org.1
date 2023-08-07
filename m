@@ -2,273 +2,438 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A5E08771DB0
-	for <lists+stable@lfdr.de>; Mon,  7 Aug 2023 12:00:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BBA2D771DBF
+	for <lists+stable@lfdr.de>; Mon,  7 Aug 2023 12:06:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229866AbjHGKA3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 7 Aug 2023 06:00:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44432 "EHLO
+        id S230499AbjHGKGo (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 7 Aug 2023 06:06:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46748 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231659AbjHGKA1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 7 Aug 2023 06:00:27 -0400
-Received: from mail-pl1-x636.google.com (mail-pl1-x636.google.com [IPv6:2607:f8b0:4864:20::636])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D526A10F8
-        for <stable@vger.kernel.org>; Mon,  7 Aug 2023 03:00:25 -0700 (PDT)
-Received: by mail-pl1-x636.google.com with SMTP id d9443c01a7336-1bbd03cb7c1so26786795ad.3
-        for <stable@vger.kernel.org>; Mon, 07 Aug 2023 03:00:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20221208.gappssmtp.com; s=20221208; t=1691402424; x=1692007224;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=bnZyPkEf6tk/QQ2qKM+rS4FMo4zAxq7wZEDCNtm1gnY=;
-        b=TLrIRePxRscLAxA3GgdCx9wwCunCV+zqBv2l7Mpf7xBGFTnGHtZaF0sq9oow2F955w
-         lNNhYDtXKK4UVlMLnnezPhW1LEaTHf41kX+Gvhm8Q74Drft4cTt22q9JnyB1ieattWOG
-         bw9UgzIzVwA3AOOBZa871vCdEhq7bhnJKZUMG5f7IOLYeFfJnW8hXbj+JBBznw6r0r1g
-         Bk/HB1Fb1Lke6sfAdJMX/IDMIyc49CN2Aml1yy2GcA8me1ch5ZnqYqnUF45kHKUSsFRR
-         kjKvmFKdz2fv+imunXwoSVWfzH/4Wy3G8oM4+yTJGG7N0a9JEthceRvS8wPe+L5TkiEb
-         EPdw==
+        with ESMTP id S230449AbjHGKGn (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 7 Aug 2023 06:06:43 -0400
+Received: from smtp-relay-internal-0.canonical.com (smtp-relay-internal-0.canonical.com [185.125.188.122])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 75598F9
+        for <stable@vger.kernel.org>; Mon,  7 Aug 2023 03:06:41 -0700 (PDT)
+Received: from mail-lj1-f198.google.com (mail-lj1-f198.google.com [209.85.208.198])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id D57454422B
+        for <stable@vger.kernel.org>; Mon,  7 Aug 2023 10:06:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+        s=20210705; t=1691402794;
+        bh=tiBd4FV24pTIyw+lEOPD46vPQPAgrmVT10F9gyKM1yo=;
+        h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+         MIME-Version:Content-Type;
+        b=K5fjGkVDIXS6DltX9743j+Gl34NSpxvuJiCquDs0028ZQhMigkJZTDBCU+tpKFdUn
+         AZtDSp+s/mrlLGfgv8bARzPsWX7Dki9As40f1zRQt3KDcom2EUOqjb+xPqwsuSh12y
+         aTnJHt2siMIWYY9DenX6yoW++LGycyf4ui6gnpn0Wedxb/G/iPN/cCTe6KhDB4TNw/
+         xWgvXiC8uXrQntlCfl2RjV9p8lx27yq5H26Tme2ggAv93AEXHXOEBo4Uird5Vaywe2
+         pfg8fFsZpF7mZfd5+NgL0cxne+xyDlmC7oG0Q9/eS2Ma/1HFb+4+MYa017Qmofiaiv
+         KhauHROzuOUcQ==
+Received: by mail-lj1-f198.google.com with SMTP id 38308e7fff4ca-2b9aa4db031so45399281fa.3
+        for <stable@vger.kernel.org>; Mon, 07 Aug 2023 03:06:34 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691402424; x=1692007224;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=bnZyPkEf6tk/QQ2qKM+rS4FMo4zAxq7wZEDCNtm1gnY=;
-        b=RpTF/dWYG7HzU+Er1NuciSBoi/nA9ryXFQuT3z3BrAlHt7pBXFbfunq7kFe2ILzpCP
-         +JDllgYskJEHOOnGOdog0VGfevWIkfNsfYXaTbNYiD0w5YmTUHjGoG7qc/R5TF+pGgeW
-         YUWHAIFbOxHF74/it2bWObGrDDfch6364mwlwGKKv67HS7bKRCGPyD3V7r7dX7zmqcO3
-         oQpSlfzCqQaCXqX51NZALQEIP8yFAfWIPskGj+lSuFdrBe4Xt2YsEkeyMfedKoTTg/pS
-         zDHxwKe3IswD14WMiar3w9mKYMg5N/dC0HxVpsqdo5OuKgnHrbaLe6D2oaLYDE1b3VHw
-         XIXg==
-X-Gm-Message-State: AOJu0YxBlcXH14n0rs/Fmh75XTEQknbwTlJfzJcRBA69M4YZHxmQThuX
-        k1dUgaAuOYVpNVZIZkA3lCO7adZ/uNQDDF4vIYvw/Q==
-X-Google-Smtp-Source: AGHT+IE1DoooqMDsyW4+cxPTM5QlzE2EpRLl7xDLlCjhIs1T63SC/rvOkI0XJXxGeO+jcKWCAvpO8A==
-X-Received: by 2002:a17:903:32d1:b0:1bb:9675:8c06 with SMTP id i17-20020a17090332d100b001bb96758c06mr8222102plr.35.1691402424576;
-        Mon, 07 Aug 2023 03:00:24 -0700 (PDT)
-Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id ix14-20020a170902f80e00b001bc7306d321sm1155555plb.282.2023.08.07.03.00.23
+        d=1e100.net; s=20221208; t=1691402793; x=1692007593;
+        h=mime-version:organization:references:in-reply-to:message-id:subject
+         :cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=tiBd4FV24pTIyw+lEOPD46vPQPAgrmVT10F9gyKM1yo=;
+        b=AT4/SUeiAMicbh17OKj2AxX/x8WRcwyYHJTABT3BKZw/ck4OH7sH6PvMHLHe50Qy20
+         ljXTwGjvEv/eDsEw2XRWpF2iMUtsRQFbJxSRR5K2e8FDBkXkIaS/R7EivticEb3bFgjF
+         nBx4T2P55UdjedE/S9QijlNI4QWILMXORsoebv3hFEGrCDWpsIpHSb8+Sw+UzTeFUHqC
+         1jheUTlU4NSdq35tNhnWUatjWa6oiHy2npY/ad8ewbS9YTwTO531Oh/088mxxf4UBmBJ
+         NinChbL0YjEo2If3ekM9CmHudmJOthoaQB7LfSjPnwghOB7J4rS5K9zyDK0LNL9BdqYU
+         ERqw==
+X-Gm-Message-State: AOJu0YzZdAk2rmelxVzDwxcq2fKLvEPAVfcublU4XB2Z2wzwl0xIyiF8
+        3C30w6UN6cXR5nN3WuSGzpc18PcXE1oc+NLrSOPHH3OCOdJInqqoIPHgJc+YKKY1vjYM7z7LNM1
+        v46Ug1DgmqqwF97ZeK0bIzgTgcr0HsUUh704K+DV1AtAg
+X-Received: by 2002:a05:651c:1030:b0:2b9:e230:25ce with SMTP id w16-20020a05651c103000b002b9e23025cemr5820417ljm.12.1691402793574;
+        Mon, 07 Aug 2023 03:06:33 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH0JrQw6Apt/haUT8sfawDGDhXFni9hmPq0KuqW+fbQkSnP6PkyiajBrVGgi+QU0zeG/z7Chw==
+X-Received: by 2002:a05:651c:1030:b0:2b9:e230:25ce with SMTP id w16-20020a05651c103000b002b9e23025cemr5820397ljm.12.1691402793109;
+        Mon, 07 Aug 2023 03:06:33 -0700 (PDT)
+Received: from smeagol ([194.191.244.86])
+        by smtp.gmail.com with ESMTPSA id l26-20020a1c791a000000b003fbb06af219sm10197710wme.32.2023.08.07.03.06.32
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 07 Aug 2023 03:00:23 -0700 (PDT)
-Message-ID: <64d0c0b7.170a0220.a592b.1d04@mx.google.com>
-Date:   Mon, 07 Aug 2023 03:00:23 -0700 (PDT)
-Content-Type: text/plain; charset="utf-8"
+        Mon, 07 Aug 2023 03:06:32 -0700 (PDT)
+Date:   Mon, 7 Aug 2023 12:06:30 +0200
+From:   Juerg Haefliger <juerg.haefliger@canonical.com>
+To:     <max.chou@realtek.com>
+Cc:     <marcel@holtmann.org>, <johan.hedberg@gmail.com>,
+        <luiz.dentz@gmail.com>, <linux-bluetooth@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <alex_lu@realsil.com.cn>,
+        <hildawu@realtek.com>, <karenhsu@realtek.com>,
+        <kidman@realtek.com>, <vicamo.yang@canonical.com>,
+        <Riley.Kao@dell.com>, <stable@vger.kernel.org>,
+        <jwboyer@kernel.org>, <davem@davemloft.net>, <edumazet@google.com>,
+        <kuba@kernel.org>, <pabeni@redhat.com>,
+        <regressions@lists.linux.dev>
+Subject: Re: [PATCH v3] Bluetooth: btrtl: Load FW v2 otherwise FW v1 for
+ RTL8852C
+Message-ID: <20230807120630.79b9e933@smeagol>
+In-Reply-To: <20230807014415.12358-1-max.chou@realtek.com>
+References: <20230807014415.12358-1-max.chou@realtek.com>
+Organization: Canonical Ltd
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Report-Type: build
-X-Kernelci-Kernel: v5.15.124-80-g6a5dd0772845f
-X-Kernelci-Tree: stable-rc
-X-Kernelci-Branch: linux-5.15.y
-Subject: stable-rc/linux-5.15.y build: 20 builds: 3 failed, 17 passed, 6 errors,
- 3 warnings (v5.15.124-80-g6a5dd0772845f)
-To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
-        kernelci-results@groups.io
-From:   "kernelci.org bot" <bot@kernelci.org>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: multipart/signed; boundary="Sig_/ycLv.MY4m=zxGSdbwkiRmra";
+ protocol="application/pgp-signature"; micalg=pgp-sha512
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-stable-rc/linux-5.15.y build: 20 builds: 3 failed, 17 passed, 6 errors, 3 w=
-arnings (v5.15.124-80-g6a5dd0772845f)
+--Sig_/ycLv.MY4m=zxGSdbwkiRmra
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-Full Build Summary: https://kernelci.org/build/stable-rc/branch/linux-5.15.=
-y/kernel/v5.15.124-80-g6a5dd0772845f/
+On Mon, 7 Aug 2023 09:44:15 +0800
+<max.chou@realtek.com> wrote:
 
-Tree: stable-rc
-Branch: linux-5.15.y
-Git Describe: v5.15.124-80-g6a5dd0772845f
-Git Commit: 6a5dd0772845f2aa538ac5a4aeaf609d54892791
-Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
-e-rc.git
-Built: 7 unique architectures
+> From: Max Chou <max.chou@realtek.com>
+>=20
+> In the commit of linux-firmware project, rtl8852cu_fw.bin is updated as
+> FW v2 format[1]. Consider the case that if driver did not be updated for
+> FW v2 supported[2], it can not use FW v2.
+> By Canonical's suggestion, older driver should be able to load FW v1,
+> so rtl8852cu_fw.bin will be revert to the previous commit as FW v1 and
+> add rtl8852cu_fw_v2.bin as FW v2. This item will be started on
+> linux-firmware project.
+>=20
+> In this commit, the driver prefers to load FW v2 if available. Fallback to
+> FW v1 otherwise.
+>=20
+> Note that the driver has supported to extract the data for v1 and v2
+> since the commit[1].
+> The previous FW format of RTL8852C is v1. After the commit[2], the FW
+> format was changed to v2. Only RTL8852C suffered the different FW formats,
+> so we will use rtl8852cu_fw.bin for the original commit as FW v1 and
+> rtl8852cu_fw_v2.bin for the future maintained as FW v2. Other Realtek
+> chips will not been impacted by this patch.
+>=20
+> To do on linux-firmware project after this commit.
+> 1. revert '55e7448533e7 ("rtl_bt: Update RTL8852C BT USB firmware
+>    to 0x040D_7225")'
+>    =3D> rtl_bt/rtl8852cu_fw.bin: FW v1 (stay at ver. 0xD7B8_FABF) =20
+> 2. Add a new commit for rtl8852cu_fw_v2.bin
+>    =3D>rtl_bt/rtl8852cu_fw_v2.bin: FW v2 (to be maintained) =20
+>=20
+> Reference:
+> [1]'9a24ce5e29b1 ("Bluetooth: btrtl: Firmware format v2 support")'
+> [2]'55e7448533e7 ("rtl_bt: Update RTL8852C BT USB firmware
+>     to 0x040D_7225")'
 
-Build Failures Detected:
+IMO this commit message is too confusing. I don't think you need nor should
+refer to linux-firmware commits and what happened in that repo. This commit
+simply fixes the v2 support by trying to load a v2 file for certain chips
+with a fall-back if fw is not found (or failed to load). That's all that
+needs to be mentioned in the commit message.
 
-arm64:
-    defconfig: (gcc-10) FAIL
-    defconfig+arm64-chromebook: (gcc-10) FAIL
+> Fixes: '9a24ce5e29b ("Bluetooth: btrtl: Firmware format v2 support")'
 
-arm:
-    multi_v7_defconfig: (gcc-10) FAIL
+No '' quotes.
 
-Errors and Warnings Detected:
+...Juerg
 
-arc:
 
-arm64:
-    defconfig (gcc-10): 2 errors
-    defconfig+arm64-chromebook (gcc-10): 2 errors
+> Suggested-by: Juerg Haefliger <juerg.haefliger@canonical.com>
+> Tested-by: Hilda Wu <hildawu@realtek.com>
+> Signed-off-by: Max Chou <max.chou@realtek.com>
+>=20
+> ---
+> Changes in v2:
+> - Fix commit log for CheckPatch FAIL
+>=20
+> Changes in v2:
+> - Tuning the code for more readable. Thanks Juerg!
+> - Modify the commit log.
+> ---
+>  drivers/bluetooth/btrtl.c | 70 +++++++++++++++++++++++++--------------
+>  1 file changed, 45 insertions(+), 25 deletions(-)
+>=20
+> diff --git a/drivers/bluetooth/btrtl.c b/drivers/bluetooth/btrtl.c
+> index ddae6524106d..84c2c2e1122f 100644
+> --- a/drivers/bluetooth/btrtl.c
+> +++ b/drivers/bluetooth/btrtl.c
+> @@ -104,7 +104,7 @@ static const struct id_table ic_id_table[] =3D {
+>  	{ IC_INFO(RTL_ROM_LMP_8723A, 0xb, 0x6, HCI_USB),
+>  	  .config_needed =3D false,
+>  	  .has_rom_version =3D false,
+> -	  .fw_name =3D "rtl_bt/rtl8723a_fw.bin",
+> +	  .fw_name =3D "rtl_bt/rtl8723a_fw",
+>  	  .cfg_name =3D NULL,
+>  	  .hw_info =3D "rtl8723au" },
+> =20
+> @@ -112,7 +112,7 @@ static const struct id_table ic_id_table[] =3D {
+>  	{ IC_INFO(RTL_ROM_LMP_8723B, 0xb, 0x6, HCI_UART),
+>  	  .config_needed =3D true,
+>  	  .has_rom_version =3D true,
+> -	  .fw_name  =3D "rtl_bt/rtl8723bs_fw.bin",
+> +	  .fw_name  =3D "rtl_bt/rtl8723bs_fw",
+>  	  .cfg_name =3D "rtl_bt/rtl8723bs_config",
+>  	  .hw_info  =3D "rtl8723bs" },
+> =20
+> @@ -120,7 +120,7 @@ static const struct id_table ic_id_table[] =3D {
+>  	{ IC_INFO(RTL_ROM_LMP_8723B, 0xb, 0x6, HCI_USB),
+>  	  .config_needed =3D false,
+>  	  .has_rom_version =3D true,
+> -	  .fw_name  =3D "rtl_bt/rtl8723b_fw.bin",
+> +	  .fw_name  =3D "rtl_bt/rtl8723b_fw",
+>  	  .cfg_name =3D "rtl_bt/rtl8723b_config",
+>  	  .hw_info  =3D "rtl8723bu" },
+> =20
+> @@ -132,7 +132,7 @@ static const struct id_table ic_id_table[] =3D {
+>  	  .hci_bus =3D HCI_UART,
+>  	  .config_needed =3D true,
+>  	  .has_rom_version =3D true,
+> -	  .fw_name  =3D "rtl_bt/rtl8723cs_cg_fw.bin",
+> +	  .fw_name  =3D "rtl_bt/rtl8723cs_cg_fw",
+>  	  .cfg_name =3D "rtl_bt/rtl8723cs_cg_config",
+>  	  .hw_info  =3D "rtl8723cs-cg" },
+> =20
+> @@ -144,7 +144,7 @@ static const struct id_table ic_id_table[] =3D {
+>  	  .hci_bus =3D HCI_UART,
+>  	  .config_needed =3D true,
+>  	  .has_rom_version =3D true,
+> -	  .fw_name  =3D "rtl_bt/rtl8723cs_vf_fw.bin",
+> +	  .fw_name  =3D "rtl_bt/rtl8723cs_vf_fw",
+>  	  .cfg_name =3D "rtl_bt/rtl8723cs_vf_config",
+>  	  .hw_info  =3D "rtl8723cs-vf" },
+> =20
+> @@ -156,7 +156,7 @@ static const struct id_table ic_id_table[] =3D {
+>  	  .hci_bus =3D HCI_UART,
+>  	  .config_needed =3D true,
+>  	  .has_rom_version =3D true,
+> -	  .fw_name  =3D "rtl_bt/rtl8723cs_xx_fw.bin",
+> +	  .fw_name  =3D "rtl_bt/rtl8723cs_xx_fw",
+>  	  .cfg_name =3D "rtl_bt/rtl8723cs_xx_config",
+>  	  .hw_info  =3D "rtl8723cs" },
+> =20
+> @@ -164,7 +164,7 @@ static const struct id_table ic_id_table[] =3D {
+>  	{ IC_INFO(RTL_ROM_LMP_8723B, 0xd, 0x8, HCI_USB),
+>  	  .config_needed =3D true,
+>  	  .has_rom_version =3D true,
+> -	  .fw_name  =3D "rtl_bt/rtl8723d_fw.bin",
+> +	  .fw_name  =3D "rtl_bt/rtl8723d_fw",
+>  	  .cfg_name =3D "rtl_bt/rtl8723d_config",
+>  	  .hw_info  =3D "rtl8723du" },
+> =20
+> @@ -172,7 +172,7 @@ static const struct id_table ic_id_table[] =3D {
+>  	{ IC_INFO(RTL_ROM_LMP_8723B, 0xd, 0x8, HCI_UART),
+>  	  .config_needed =3D true,
+>  	  .has_rom_version =3D true,
+> -	  .fw_name  =3D "rtl_bt/rtl8723ds_fw.bin",
+> +	  .fw_name  =3D "rtl_bt/rtl8723ds_fw",
+>  	  .cfg_name =3D "rtl_bt/rtl8723ds_config",
+>  	  .hw_info  =3D "rtl8723ds" },
+> =20
+> @@ -180,7 +180,7 @@ static const struct id_table ic_id_table[] =3D {
+>  	{ IC_INFO(RTL_ROM_LMP_8821A, 0xa, 0x6, HCI_USB),
+>  	  .config_needed =3D false,
+>  	  .has_rom_version =3D true,
+> -	  .fw_name  =3D "rtl_bt/rtl8821a_fw.bin",
+> +	  .fw_name  =3D "rtl_bt/rtl8821a_fw",
+>  	  .cfg_name =3D "rtl_bt/rtl8821a_config",
+>  	  .hw_info  =3D "rtl8821au" },
+> =20
+> @@ -189,7 +189,7 @@ static const struct id_table ic_id_table[] =3D {
+>  	  .config_needed =3D false,
+>  	  .has_rom_version =3D true,
+>  	  .has_msft_ext =3D true,
+> -	  .fw_name  =3D "rtl_bt/rtl8821c_fw.bin",
+> +	  .fw_name  =3D "rtl_bt/rtl8821c_fw",
+>  	  .cfg_name =3D "rtl_bt/rtl8821c_config",
+>  	  .hw_info  =3D "rtl8821cu" },
+> =20
+> @@ -198,7 +198,7 @@ static const struct id_table ic_id_table[] =3D {
+>  	  .config_needed =3D true,
+>  	  .has_rom_version =3D true,
+>  	  .has_msft_ext =3D true,
+> -	  .fw_name  =3D "rtl_bt/rtl8821cs_fw.bin",
+> +	  .fw_name  =3D "rtl_bt/rtl8821cs_fw",
+>  	  .cfg_name =3D "rtl_bt/rtl8821cs_config",
+>  	  .hw_info  =3D "rtl8821cs" },
+> =20
+> @@ -206,7 +206,7 @@ static const struct id_table ic_id_table[] =3D {
+>  	{ IC_INFO(RTL_ROM_LMP_8761A, 0xa, 0x6, HCI_USB),
+>  	  .config_needed =3D false,
+>  	  .has_rom_version =3D true,
+> -	  .fw_name  =3D "rtl_bt/rtl8761a_fw.bin",
+> +	  .fw_name  =3D "rtl_bt/rtl8761a_fw",
+>  	  .cfg_name =3D "rtl_bt/rtl8761a_config",
+>  	  .hw_info  =3D "rtl8761au" },
+> =20
+> @@ -215,7 +215,7 @@ static const struct id_table ic_id_table[] =3D {
+>  	  .config_needed =3D false,
+>  	  .has_rom_version =3D true,
+>  	  .has_msft_ext =3D true,
+> -	  .fw_name  =3D "rtl_bt/rtl8761b_fw.bin",
+> +	  .fw_name  =3D "rtl_bt/rtl8761b_fw",
+>  	  .cfg_name =3D "rtl_bt/rtl8761b_config",
+>  	  .hw_info  =3D "rtl8761btv" },
+> =20
+> @@ -223,7 +223,7 @@ static const struct id_table ic_id_table[] =3D {
+>  	{ IC_INFO(RTL_ROM_LMP_8761A, 0xb, 0xa, HCI_USB),
+>  	  .config_needed =3D false,
+>  	  .has_rom_version =3D true,
+> -	  .fw_name  =3D "rtl_bt/rtl8761bu_fw.bin",
+> +	  .fw_name  =3D "rtl_bt/rtl8761bu_fw",
+>  	  .cfg_name =3D "rtl_bt/rtl8761bu_config",
+>  	  .hw_info  =3D "rtl8761bu" },
+> =20
+> @@ -232,7 +232,7 @@ static const struct id_table ic_id_table[] =3D {
+>  	  .config_needed =3D true,
+>  	  .has_rom_version =3D true,
+>  	  .has_msft_ext =3D true,
+> -	  .fw_name  =3D "rtl_bt/rtl8822cs_fw.bin",
+> +	  .fw_name  =3D "rtl_bt/rtl8822cs_fw",
+>  	  .cfg_name =3D "rtl_bt/rtl8822cs_config",
+>  	  .hw_info  =3D "rtl8822cs" },
+> =20
+> @@ -241,7 +241,7 @@ static const struct id_table ic_id_table[] =3D {
+>  	  .config_needed =3D true,
+>  	  .has_rom_version =3D true,
+>  	  .has_msft_ext =3D true,
+> -	  .fw_name  =3D "rtl_bt/rtl8822cs_fw.bin",
+> +	  .fw_name  =3D "rtl_bt/rtl8822cs_fw",
+>  	  .cfg_name =3D "rtl_bt/rtl8822cs_config",
+>  	  .hw_info  =3D "rtl8822cs" },
+> =20
+> @@ -250,7 +250,7 @@ static const struct id_table ic_id_table[] =3D {
+>  	  .config_needed =3D false,
+>  	  .has_rom_version =3D true,
+>  	  .has_msft_ext =3D true,
+> -	  .fw_name  =3D "rtl_bt/rtl8822cu_fw.bin",
+> +	  .fw_name  =3D "rtl_bt/rtl8822cu_fw",
+>  	  .cfg_name =3D "rtl_bt/rtl8822cu_config",
+>  	  .hw_info  =3D "rtl8822cu" },
+> =20
+> @@ -259,7 +259,7 @@ static const struct id_table ic_id_table[] =3D {
+>  	  .config_needed =3D true,
+>  	  .has_rom_version =3D true,
+>  	  .has_msft_ext =3D true,
+> -	  .fw_name  =3D "rtl_bt/rtl8822b_fw.bin",
+> +	  .fw_name  =3D "rtl_bt/rtl8822b_fw",
+>  	  .cfg_name =3D "rtl_bt/rtl8822b_config",
+>  	  .hw_info  =3D "rtl8822bu" },
+> =20
+> @@ -268,7 +268,7 @@ static const struct id_table ic_id_table[] =3D {
+>  	  .config_needed =3D false,
+>  	  .has_rom_version =3D true,
+>  	  .has_msft_ext =3D true,
+> -	  .fw_name  =3D "rtl_bt/rtl8852au_fw.bin",
+> +	  .fw_name  =3D "rtl_bt/rtl8852au_fw",
+>  	  .cfg_name =3D "rtl_bt/rtl8852au_config",
+>  	  .hw_info  =3D "rtl8852au" },
+> =20
+> @@ -277,7 +277,7 @@ static const struct id_table ic_id_table[] =3D {
+>  	  .config_needed =3D true,
+>  	  .has_rom_version =3D true,
+>  	  .has_msft_ext =3D true,
+> -	  .fw_name  =3D "rtl_bt/rtl8852bs_fw.bin",
+> +	  .fw_name  =3D "rtl_bt/rtl8852bs_fw",
+>  	  .cfg_name =3D "rtl_bt/rtl8852bs_config",
+>  	  .hw_info  =3D "rtl8852bs" },
+> =20
+> @@ -286,7 +286,7 @@ static const struct id_table ic_id_table[] =3D {
+>  	  .config_needed =3D false,
+>  	  .has_rom_version =3D true,
+>  	  .has_msft_ext =3D true,
+> -	  .fw_name  =3D "rtl_bt/rtl8852bu_fw.bin",
+> +	  .fw_name  =3D "rtl_bt/rtl8852bu_fw",
+>  	  .cfg_name =3D "rtl_bt/rtl8852bu_config",
+>  	  .hw_info  =3D "rtl8852bu" },
+> =20
+> @@ -295,7 +295,7 @@ static const struct id_table ic_id_table[] =3D {
+>  	  .config_needed =3D false,
+>  	  .has_rom_version =3D true,
+>  	  .has_msft_ext =3D true,
+> -	  .fw_name  =3D "rtl_bt/rtl8852cu_fw.bin",
+> +	  .fw_name  =3D "rtl_bt/rtl8852cu_fw",
+>  	  .cfg_name =3D "rtl_bt/rtl8852cu_config",
+>  	  .hw_info  =3D "rtl8852cu" },
+> =20
+> @@ -304,7 +304,7 @@ static const struct id_table ic_id_table[] =3D {
+>  	  .config_needed =3D false,
+>  	  .has_rom_version =3D true,
+>  	  .has_msft_ext =3D false,
+> -	  .fw_name  =3D "rtl_bt/rtl8851bu_fw.bin",
+> +	  .fw_name  =3D "rtl_bt/rtl8851bu_fw",
+>  	  .cfg_name =3D "rtl_bt/rtl8851bu_config",
+>  	  .hw_info  =3D "rtl8851bu" },
+>  	};
+> @@ -1045,6 +1045,7 @@ struct btrtl_device_info *btrtl_initialize(struct h=
+ci_dev *hdev,
+>  	struct sk_buff *skb;
+>  	struct hci_rp_read_local_version *resp;
+>  	struct hci_command_hdr *cmd;
+> +	char fw_name[40];
+>  	char cfg_name[40];
+>  	u16 hci_rev, lmp_subver;
+>  	u8 hci_ver, lmp_ver, chip_type =3D 0;
+> @@ -1154,8 +1155,26 @@ struct btrtl_device_info *btrtl_initialize(struct =
+hci_dev *hdev,
+>  			goto err_free;
+>  	}
+> =20
+> -	btrtl_dev->fw_len =3D rtl_load_file(hdev, btrtl_dev->ic_info->fw_name,
+> -					  &btrtl_dev->fw_data);
+> +	if (!btrtl_dev->ic_info->fw_name) {
+> +		ret =3D -ENOMEM;
+> +		goto err_free;
+> +	}
+> +
+> +	btrtl_dev->fw_len =3D -EIO;
+> +	if (lmp_subver =3D=3D RTL_ROM_LMP_8852A && hci_rev =3D=3D 0x000c) {
+> +		snprintf(fw_name, sizeof(fw_name), "%s_v2.bin",
+> +				btrtl_dev->ic_info->fw_name);
+> +		btrtl_dev->fw_len =3D rtl_load_file(hdev, fw_name,
+> +				&btrtl_dev->fw_data);
+> +	}
+> +
+> +	if (btrtl_dev->fw_len < 0) {
+> +		snprintf(fw_name, sizeof(fw_name), "%s.bin",
+> +				btrtl_dev->ic_info->fw_name);
+> +		btrtl_dev->fw_len =3D rtl_load_file(hdev, fw_name,
+> +				&btrtl_dev->fw_data);
+> +	}
+> +
+>  	if (btrtl_dev->fw_len < 0) {
+>  		rtl_dev_err(hdev, "firmware file %s not found",
+>  			    btrtl_dev->ic_info->fw_name);
+> @@ -1491,4 +1510,5 @@ MODULE_FIRMWARE("rtl_bt/rtl8852bs_config.bin");
+>  MODULE_FIRMWARE("rtl_bt/rtl8852bu_fw.bin");
+>  MODULE_FIRMWARE("rtl_bt/rtl8852bu_config.bin");
+>  MODULE_FIRMWARE("rtl_bt/rtl8852cu_fw.bin");
+> +MODULE_FIRMWARE("rtl_bt/rtl8852cu_fw_v2.bin");
+>  MODULE_FIRMWARE("rtl_bt/rtl8852cu_config.bin");
 
-arm:
-    multi_v7_defconfig (gcc-10): 2 errors
 
-i386:
+--Sig_/ycLv.MY4m=zxGSdbwkiRmra
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
 
-mips:
-    32r2el_defconfig (gcc-10): 1 warning
+-----BEGIN PGP SIGNATURE-----
 
-riscv:
+iQIzBAEBCgAdFiEEhZfU96IuprviLdeLD9OLCQumQrcFAmTQwiYACgkQD9OLCQum
+Qrdl1xAAh9eK8IPvSD/Id5Kvfl7sJ3IiKybrK09SXp9H+V4EPuMELlHIjjuZ1FDU
+EeTJSeP0vy3ron+Ckgs4NlGEY1oZhdNb6XMNhbzSS/uRaswO/K5LJg8f+PujfQ7B
+/RaxTAcNU+DBO4vUaFT9/2QEsa9xRz7dKP87Sfca00HxgBkw20EvFQ1x9Go1AkKD
+mH/ms1XQ9C9eC7j5N0Co3M3Sp13m9stxZqDVXQAqziIiKk/t7EsRc0lLHFRhndtA
+DxhMojzyscGq4uEcXD7nBM4U7IP4hXOQhUtnoLIa0U6Hp8pO8wgOvP574XWjgWKu
+qfDBhKr/cbjFhJKsfXDbYtbOUI+PT7a+lfyu+Hnjq5cxlirg9HO+UP+CBjrEL7q4
+2icumMW/QVCBZZryMOUd92JS/52SlcuJj9Gnf2GEOnz8ppfiNltzwVUGPQaxydBD
+D7wE8SlZzlZM9TnS/y59+A15YhCKrKU9CP5LxxXsNHKtjMH7LoM4BuMbpYcJtaic
+D48YVwpTZ4bJTyRWOaNbKIYkoHjqe0tB/ZI6phePNwjnDajc1LNzwx7dpWd+hW/+
+AjPE2hN2AW3A4nNr2q7AFygkYCHxI6jLNXpDVWJ6ouv81UqwZEieneE4K+ifWXUA
+vYKUl5JLcKTe0PNU2SeG9SMCe0g9NDgm8lS9Ih+wHcSop4vxiXY=
+=9qNN
+-----END PGP SIGNATURE-----
 
-x86_64:
-    x86_64_defconfig (gcc-10): 1 warning
-    x86_64_defconfig+x86-chromebook (gcc-10): 1 warning
-
-Errors summary:
-
-    3    drivers/firmware/arm_scmi/smc.c:39:6: error: duplicate member =E2=
-=80=98irq=E2=80=99
-    3    drivers/firmware/arm_scmi/smc.c:118:20: error: =E2=80=98irq=E2=80=
-=99 undeclared (first use in this function); did you mean =E2=80=98rq=E2=80=
-=99?
-
-Warnings summary:
-
-    2    arch/x86/kernel/smp.o: warning: objtool: sysvec_reboot()+0x45: unr=
-eachable instruction
-    1    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_devic=
-e_reg): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expec=
-ted "0,0"
-
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D
-
-Detailed per-defconfig build reports:
-
----------------------------------------------------------------------------=
------
-32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sect=
-ion mismatches
-
-Warnings:
-    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_device_reg=
-): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expected "=
-0,0"
-
----------------------------------------------------------------------------=
------
-allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
-mismatches
-
----------------------------------------------------------------------------=
------
-allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
-n mismatches
-
----------------------------------------------------------------------------=
------
-defconfig (arm64, gcc-10) =E2=80=94 FAIL, 2 errors, 0 warnings, 0 section m=
-ismatches
-
-Errors:
-    drivers/firmware/arm_scmi/smc.c:39:6: error: duplicate member =E2=80=98=
-irq=E2=80=99
-    drivers/firmware/arm_scmi/smc.c:118:20: error: =E2=80=98irq=E2=80=99 un=
-declared (first use in this function); did you mean =E2=80=98rq=E2=80=99?
-
----------------------------------------------------------------------------=
------
-defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 FAIL, 2 errors, 0 warn=
-ings, 0 section mismatches
-
-Errors:
-    drivers/firmware/arm_scmi/smc.c:39:6: error: duplicate member =E2=80=98=
-irq=E2=80=99
-    drivers/firmware/arm_scmi/smc.c:118:20: error: =E2=80=98irq=E2=80=99 un=
-declared (first use in this function); did you mean =E2=80=98rq=E2=80=99?
-
----------------------------------------------------------------------------=
------
-haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
- section mismatches
-
----------------------------------------------------------------------------=
------
-i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
-on mismatches
-
----------------------------------------------------------------------------=
------
-imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-multi_v7_defconfig (arm, gcc-10) =E2=80=94 FAIL, 2 errors, 0 warnings, 0 se=
-ction mismatches
-
-Errors:
-    drivers/firmware/arm_scmi/smc.c:39:6: error: duplicate member =E2=80=98=
-irq=E2=80=99
-    drivers/firmware/arm_scmi/smc.c:118:20: error: =E2=80=98irq=E2=80=99 un=
-declared (first use in this function); did you mean =E2=80=98rq=E2=80=99?
-
----------------------------------------------------------------------------=
------
-nommu_k210_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, =
-0 section mismatches
-
----------------------------------------------------------------------------=
------
-nommu_k210_sdcard_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 war=
-nings, 0 section mismatches
-
----------------------------------------------------------------------------=
------
-omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-rv32_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
-ion mismatches
-
----------------------------------------------------------------------------=
------
-tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section=
- mismatches
-
----------------------------------------------------------------------------=
------
-vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 se=
-ction mismatches
-
-Warnings:
-    arch/x86/kernel/smp.o: warning: objtool: sysvec_reboot()+0x45: unreacha=
-ble instruction
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig+x86-chromebook (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, =
-1 warning, 0 section mismatches
-
-Warnings:
-    arch/x86/kernel/smp.o: warning: objtool: sysvec_reboot()+0x45: unreacha=
-ble instruction
-
----
-For more info write to <info@kernelci.org>
+--Sig_/ycLv.MY4m=zxGSdbwkiRmra--
