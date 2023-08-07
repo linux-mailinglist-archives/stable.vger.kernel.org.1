@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 192B1771ADA
-	for <lists+stable@lfdr.de>; Mon,  7 Aug 2023 08:55:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 60909771ADB
+	for <lists+stable@lfdr.de>; Mon,  7 Aug 2023 08:55:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229562AbjHGGzu (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 7 Aug 2023 02:55:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53462 "EHLO
+        id S230395AbjHGGzw (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 7 Aug 2023 02:55:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53470 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230395AbjHGGzt (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 7 Aug 2023 02:55:49 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A4E8E78
-        for <stable@vger.kernel.org>; Sun,  6 Aug 2023 23:55:47 -0700 (PDT)
+        with ESMTP id S230231AbjHGGzw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 7 Aug 2023 02:55:52 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B44E11A4
+        for <stable@vger.kernel.org>; Sun,  6 Aug 2023 23:55:50 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1B69261585
-        for <stable@vger.kernel.org>; Mon,  7 Aug 2023 06:55:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F395C433C7;
-        Mon,  7 Aug 2023 06:55:45 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 50E5161588
+        for <stable@vger.kernel.org>; Mon,  7 Aug 2023 06:55:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63AAFC433C8;
+        Mon,  7 Aug 2023 06:55:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691391346;
-        bh=T2O82nXvDeCGqLds/6SduqiLpiGBabh2OibqKHqGLxE=;
+        s=korg; t=1691391349;
+        bh=WidCEgac8yGgt8WBnqg+fu7C8GVtRAQR+a4fGzZpH9Q=;
         h=Subject:To:Cc:From:Date:From;
-        b=bLOIrj5VSvvPaG5wHe5Ipy4yOWxs/IZilYDdsgT/0CmU4h/w6uzdd7S3btBqA3Rwx
-         A4GDDT2Gq7iBPG0njSi7DfBOMJI6YmCw12Kt0hMNreiNm357WvVRWFU6Ir3MpUYLJv
-         bTNNyKN0hXNHEZOcpu8+gmC7F7tojl8XkY5Z90XU=
-Subject: FAILED: patch "[PATCH] exfat: check if filename entries exceeds max filename length" failed to apply to 5.15-stable tree
+        b=Q6sNkwm+CaCotLrIVZ4XqCf67QHGqRJ0pcv3xj2BdjKAKTy3uHEKaI7vPolQS77P2
+         ywk3UwEXDiaejc6BzAcpWrr0v/EYMwIZZDBkJbaIO4Ib79sU4ZqzZQ7kveB/0FM97H
+         thT63eAmzwo1uxfgVgZQ0yPO24InInlv8DfRIk+s=
+Subject: FAILED: patch "[PATCH] exfat: check if filename entries exceeds max filename length" failed to apply to 5.10-stable tree
 To:     linkinjeon@kernel.org, Yuezhang.Mo@sony.com, dfirblog@gmail.com,
         sj1557.seo@samsung.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Mon, 07 Aug 2023 08:55:35 +0200
-Message-ID: <2023080735-headsman-grandpa-be68@gregkh>
+Date:   Mon, 07 Aug 2023 08:55:36 +0200
+Message-ID: <2023080736-valley-grub-bcec@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -49,25 +49,26 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x d42334578eba1390859012ebb91e1e556d51db49
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023080735-headsman-grandpa-be68@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023080736-valley-grub-bcec@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
 d42334578eba ("exfat: check if filename entries exceeds max filename length")
 20914ff6dd56 ("exfat: move exfat_entry_set_cache from heap to stack")
 a3ff29a95fde ("exfat: support dynamic allocate bh for exfat_entry_set_cache")
+c6e2f52e3051 ("exfat: speed up iterate/lookup by fixing start point of traversing cluster chain")
 
 thanks,
 
