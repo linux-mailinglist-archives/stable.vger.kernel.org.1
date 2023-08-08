@@ -2,150 +2,242 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6054C774C79
-	for <lists+stable@lfdr.de>; Tue,  8 Aug 2023 23:10:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1A42D774BA4
+	for <lists+stable@lfdr.de>; Tue,  8 Aug 2023 22:51:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234471AbjHHVKM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 8 Aug 2023 17:10:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54074 "EHLO
+        id S234580AbjHHUvp (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 8 Aug 2023 16:51:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37512 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235113AbjHHVJ5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 8 Aug 2023 17:09:57 -0400
-Received: from abi149hd127.arn1.oracleemaildelivery.com (abi149hd127.arn1.oracleemaildelivery.com [129.149.84.127])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD2F5618E
-        for <stable@vger.kernel.org>; Tue,  8 Aug 2023 13:32:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=oci-arn1-20220924;
- d=augustwikerfors.se;
- h=Date:To:From:Subject:Message-Id:MIME-Version:Sender;
- bh=00B+bvS7xxbE3P6eaqYNfcMl67cqchVUieBrLpYsDxc=;
- b=Lcug5vRz4iHrMWQFbkRRRJ1QogKubjFMqdPfIFsVGUmZl/2P9aw+rmoeswZRV3Uw4ISfqoyQJR6T
-   O0OZiS/n3mmdO9oEUkbOhnpZ6jXSRc0huKOTxl6+a3XC9Lpc98C1C7R9rgCrvhjVPU5x5yH/dqRV
-   WFq0dUOlaR7lTb7OFyp0xQs0cBElerp+YTaJtF4KX1YjXtfi18upscJCL+RLPmWxAgMP4g+9aDJP
-   zMnEJ5rtBxqwpG/mHekgGQFks6sFS5D5sdPWF3UyEEFlQZWRhmYD1AUk04f+u3bJHnOYvHi0aEMR
-   hoZQ2BMBvG6y1ApQzbxlK4JV7/GcvZ8v0dZp6A==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=prod-arn-20211201;
- d=arn1.rp.oracleemaildelivery.com;
- h=Date:To:From:Subject:Message-Id:MIME-Version:Sender;
- bh=00B+bvS7xxbE3P6eaqYNfcMl67cqchVUieBrLpYsDxc=;
- b=izLkc7PhLbHGtYjTXc/0sBGSLEqmkyIgouwwv40Bsd96Cn2U8WBW6v9XBAlzz+mKPb0gzomox063
-   f/v0vPXi1e9s/A7BFHaMSa29lVz2LpwKYFlmqp8TF22XNaKU2tkPXLIbikpN2BycK1BqAVka+mct
-   fW7P5EXOUxMH7QByEUYNOoJV8rdQszjOWpFV3I6zUFR0XPoGkEgz3FyyylFgVODzR1JAr7B84Gdt
-   eEZ2PWcYl0EmY7UTcZ6Bgd0vDrW7a0vqeQdNvpdK7dBs+bwdx5oMHj2FOSrEpY7GlaYonqshD+lr
-   p/ynKq8YraLynVid5xQnPHmHjQv+nnm6kBX1Vw==
-Received: by omta-ad1-fd2-401-eu-stockholm-1.omtaad1.vcndparn.oraclevcn.com
- (Oracle Communications Messaging Server 8.1.0.1.20230707 64bit (built Jul  7
- 2023))
- with ESMTPS id <0RZ300CTYADDSL30@omta-ad1-fd2-401-eu-stockholm-1.omtaad1.vcndparn.oraclevcn.com>
- for stable@vger.kernel.org; Tue, 08 Aug 2023 20:32:01 +0000 (GMT)
-Message-id: <abaad492-6aea-4edf-891f-f57bc2b86781@augustwikerfors.se>
-Date:   Tue, 8 Aug 2023 22:31:57 +0200
-MIME-version: 1.0
-Subject: Re: [PATCH v2 2/3] ACPI: resource: Always use MADT override IRQ
- settings for GSI != 1
-To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        Linux regressions mailing list <regressions@lists.linux.dev>,
-        stable@vger.kernel.org, linux-acpi@vger.kernel.org, x86@kernel.org
-References: <20230808103335.95339-1-hdegoede@redhat.com>
- <20230808103335.95339-3-hdegoede@redhat.com>
-Content-language: en-US
-From:   August Wikerfors <git@augustwikerfors.se>
-In-reply-to: <20230808103335.95339-3-hdegoede@redhat.com>
-Content-type: text/plain; charset=UTF-8; format=flowed
-Content-transfer-encoding: 7bit
-Reporting-Meta: AAELwczx0/PLPh99wS5vR5JfKPvEuMYNwWpXbIZ357NfxSo4P0nGN+uZ47Gqli9C
- 1Ie7q4CpfU++soFG2pswdAraYd+Sx3xJHcB/3JIqUo6uI/d6BhV/INM7vPJAYw9w
- TnPQewRb4wBw0awNbQBwxTYZ/6HpMDGmQvCbLslp0Eyc0xdyEVuol6VLr2szeiq+
- uzon7gTF4uo0tIz9s5tTafnoz3lyghk9LkfiGI1FqywSiGXxUuMZn0CZKKp36/Dz
- jQYrvosy2ZKHqnuA99XfMAajv7Te1vljKzPFM4XYIqRYa/QjFYpzjiy98qNjc5Bc
- l7mp/NZXmeEUQjlXxM/Luh5FdFZHQfi70wyiDobb2g5p84S9uOitGnTmqpYOhKKl
- 5BdTUyhjzfgVzAIrD+AYADL+81CFagasgTVaxNRwmn6hd+x6Ltq0yGktcROn5rJZ tQ==
-X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,SPF_HELO_NONE,
-        SPF_PASS,URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.6
+        with ESMTP id S235425AbjHHUvd (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 8 Aug 2023 16:51:33 -0400
+Received: from mail-pl1-x631.google.com (mail-pl1-x631.google.com [IPv6:2607:f8b0:4864:20::631])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 28F8C1DD6E
+        for <stable@vger.kernel.org>; Tue,  8 Aug 2023 13:33:32 -0700 (PDT)
+Received: by mail-pl1-x631.google.com with SMTP id d9443c01a7336-1bc02bd4eafso52108855ad.1
+        for <stable@vger.kernel.org>; Tue, 08 Aug 2023 13:33:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernelci-org.20221208.gappssmtp.com; s=20221208; t=1691526811; x=1692131611;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=hwxkYtWawE+aJ2vtJSC/ghJVVnhvQsEJ8XRUOFI/Eak=;
+        b=10PheRtLoXhr9w/O6ctZOS8inFq3taRre678LuS3obi9O8A6j9yHgLVUOcJxUM1v2B
+         bE5vIBsdsL3fFkfuf7qD4XvpqbpFdDQJcVNt7Ynrq4eliEqnPr9akA3O8V3rK0f/6r3T
+         Dmz0HH8EiFZ3Rv5zLx8WhhNbhqvZtxZAc85CzZ0VhFpVLfIIjHQSj62hf4jiGn9J7E4P
+         817Gsv5FXMXwxEnGQ/mr3hRdbbxK7fOihsHzScafASxXT8VQzuPrQJKypsrScoUrxFjs
+         suZ5cYP2FN5BE4ZcYEvf/LyLx39uHlza9+Fp41+O6m7W0mXoZDuKWVl2T0u6cM/NZCoY
+         qgIA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1691526811; x=1692131611;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=hwxkYtWawE+aJ2vtJSC/ghJVVnhvQsEJ8XRUOFI/Eak=;
+        b=aD2aOEeMbODfyhKjLvBOxqxmCmD8ZLYqM92jIS55BytABzNgaA0vga/pPGiTsI3dft
+         QR6+YrDoLcHZM5JpY0MRAuKPgORIoL/goBkqN2pb/IBnahxGtRPOFODsPxblX15iygfH
+         6N/iqW7GsWX7Ii3HfboEIDcYJYx42ok/6+X0oQmU/eRZZj5iS+q9M4f+wHRiOn8/8ZqW
+         EvuMsgPUT2b70hG8r2yDQhWzSy65ClPQ2Nug1wwEHSGOC+9xRtTHD5Y8miXzh4DmMNjW
+         6BiSCUQ1prWRUSeck3R0ifeBxbcOY9HiJOnjHJ9ocgwLo+/OmLH4OySnZXAbgXdZVXaE
+         YVzw==
+X-Gm-Message-State: AOJu0Yx0Tvn/2S7z3VodhSrGBhJihYH9CCoaHEp8e+KzJ7x3Dwi3+0It
+        Knkh17HMpQ6PT6OkSor55HRbYmR/pmG+ra0Lyq9CTw==
+X-Google-Smtp-Source: AGHT+IFb3gfOcupkC2liQ7FY3pmZCm99haWfM6cfA4+3k9zylt1Cc4Z4XloqDD6b/owJa/c7r0Hhow==
+X-Received: by 2002:a17:902:e803:b0:1bc:2036:5338 with SMTP id u3-20020a170902e80300b001bc20365338mr954598plg.28.1691526810961;
+        Tue, 08 Aug 2023 13:33:30 -0700 (PDT)
+Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
+        by smtp.gmail.com with ESMTPSA id g5-20020a170902c38500b001b89536974bsm9421993plg.202.2023.08.08.13.33.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 08 Aug 2023 13:33:30 -0700 (PDT)
+Message-ID: <64d2a69a.170a0220.667b1.1c90@mx.google.com>
+Date:   Tue, 08 Aug 2023 13:33:30 -0700 (PDT)
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+X-Kernelci-Report-Type: build
+X-Kernelci-Kernel: v5.10.189
+X-Kernelci-Tree: stable
+X-Kernelci-Branch: linux-5.10.y
+Subject: stable/linux-5.10.y build: 19 builds: 0 failed, 19 passed,
+ 7 warnings (v5.10.189)
+To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+        kernelci-results@groups.io
+From:   "kernelci.org bot" <bot@kernelci.org>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 2023-08-08 12:33, Hans de Goede wrote:
-> All the cases, were the DSDT IRQ settings should be used instead of
-> the MADT override, are for IRQ 1 (the PS/2 kbd IRQ).
-> 
-> Simplify things by always honering the override for GSI != 1
-> (for non DMI quirked cases).
-> 
-> This allows removing the DMI quirks to honor the override for
-> some non IRQ 1 IRQs on some AMD ZEN based Lenovo models.
-> 
-> Fixes: a9c4a912b7dc ("ACPI: resource: Remove "Zen" specific match and quirks")
-> Cc: Mario Limonciello <mario.limonciello@amd.com>
-> Cc: Linux regressions mailing list <regressions@lists.linux.dev>
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-> ---
->   drivers/acpi/resource.c | 28 ++++++++--------------------
->   1 file changed, 8 insertions(+), 20 deletions(-)
-> 
-> diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
-> index 0800a9d77558..840b938a5fb0 100644
-> --- a/drivers/acpi/resource.c
-> +++ b/drivers/acpi/resource.c
-> @@ -470,24 +470,6 @@ static const struct dmi_system_id asus_laptop[] = {
->   	{ }
->   };
->   
-> -static const struct dmi_system_id lenovo_laptop[] = {
-> -	{
-> -		.ident = "LENOVO IdeaPad Flex 5 14ALC7",
-> -		.matches = {
-> -			DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
-> -			DMI_MATCH(DMI_PRODUCT_NAME, "82R9"),
-> -		},
-> -	},
-> -	{
-> -		.ident = "LENOVO IdeaPad Flex 5 16ALC7",
-> -		.matches = {
-> -			DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
-> -			DMI_MATCH(DMI_PRODUCT_NAME, "82RA"),
-> -		},
-> -	},
-> -	{ }
-> -};
-> -
->   static const struct dmi_system_id tongfang_gm_rg[] = {
->   	{
->   		.ident = "TongFang GMxRGxx/XMG CORE 15 (M22)/TUXEDO Stellaris 15 Gen4 AMD",
-> @@ -539,8 +521,6 @@ struct irq_override_cmp {
->   static const struct irq_override_cmp override_table[] = {
->   	{ medion_laptop, 1, ACPI_LEVEL_SENSITIVE, ACPI_ACTIVE_LOW, 0, false },
->   	{ asus_laptop, 1, ACPI_LEVEL_SENSITIVE, ACPI_ACTIVE_LOW, 0, false },
-> -	{ lenovo_laptop, 6, ACPI_LEVEL_SENSITIVE, ACPI_ACTIVE_LOW, 0, true },
-> -	{ lenovo_laptop, 10, ACPI_LEVEL_SENSITIVE, ACPI_ACTIVE_LOW, 0, true },
->   	{ tongfang_gm_rg, 1, ACPI_EDGE_SENSITIVE, ACPI_ACTIVE_LOW, 1, true },
->   	{ maingear_laptop, 1, ACPI_EDGE_SENSITIVE, ACPI_ACTIVE_LOW, 1, true },
->   	{ lg_laptop, 1, ACPI_LEVEL_SENSITIVE, ACPI_ACTIVE_LOW, 0, false },
-> @@ -562,6 +542,14 @@ static bool acpi_dev_irq_override(u32 gsi, u8 triggering, u8 polarity,
->   			return entry->override;
->   	}
->   
-> +	/*
-> +	 * Always use the MADT override info, except for IRQ 1 for IRQ1
-> +	 * the DSDT IRQ settings should sometimes be used otherwise
-> +	 * PS/2 keyboards will not work.
-> +	 */
-> +	if (gsi != 1)
-> +		return true;
-> +
->   #ifdef CONFIG_X86
->   	/*
->   	 * IRQ override isn't needed on modern AMD Zen systems and
+stable/linux-5.10.y build: 19 builds: 0 failed, 19 passed, 7 warnings (v5.1=
+0.189)
 
-I don't think this will work for the Lenovo ThinkPad neo 14 because 
-according to https://bugzilla.kernel.org/show_bug.cgi?id=217731 it needs 
-the override to also be skipped for IRQ 12.
+Full Build Summary: https://kernelci.org/build/stable/branch/linux-5.10.y/k=
+ernel/v5.10.189/
 
-Regards,
-August Wikerfors
+Tree: stable
+Branch: linux-5.10.y
+Git Describe: v5.10.189
+Git Commit: de5f63612d1631c89e72ecffc089f948392cf24a
+Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
+e.git
+Built: 7 unique architectures
+
+Warnings Detected:
+
+arc:
+
+arm64:
+
+arm:
+
+i386:
+
+mips:
+    32r2el_defconfig (gcc-10): 1 warning
+
+riscv:
+    rv32_defconfig (gcc-10): 4 warnings
+
+x86_64:
+    x86_64_defconfig (gcc-10): 1 warning
+    x86_64_defconfig+x86-chromebook (gcc-10): 1 warning
+
+
+Warnings summary:
+
+    2    arch/x86/lib/retpoline.o: warning: objtool: .altinstr_replacement:=
+ unexpected end of section
+    2    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [=
+-Wcpp]
+    2    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemente=
+d [-Wcpp]
+    1    WARNING: modpost: Symbol info of vmlinux is missing. Unresolved sy=
+mbol check will be entirely skipped.
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
+
+Detailed per-defconfig build reports:
+
+---------------------------------------------------------------------------=
+-----
+32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sect=
+ion mismatches
+
+Warnings:
+    WARNING: modpost: Symbol info of vmlinux is missing. Unresolved symbol =
+check will be entirely skipped.
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
+mismatches
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
+n mismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warn=
+ings, 0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
+ section mismatches
+
+---------------------------------------------------------------------------=
+-----
+i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
+on mismatches
+
+---------------------------------------------------------------------------=
+-----
+imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+nommu_k210_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, =
+0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+rv32_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 sect=
+ion mismatches
+
+Warnings:
+    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [-Wcpp]
+    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemented [-W=
+cpp]
+    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [-Wcpp]
+    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemented [-W=
+cpp]
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section=
+ mismatches
+
+---------------------------------------------------------------------------=
+-----
+vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 se=
+ction mismatches
+
+Warnings:
+    arch/x86/lib/retpoline.o: warning: objtool: .altinstr_replacement: unex=
+pected end of section
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig+x86-chromebook (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, =
+1 warning, 0 section mismatches
+
+Warnings:
+    arch/x86/lib/retpoline.o: warning: objtool: .altinstr_replacement: unex=
+pected end of section
+
+---
+For more info write to <info@kernelci.org>
