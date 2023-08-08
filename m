@@ -2,50 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 28D377747AF
-	for <lists+stable@lfdr.de>; Tue,  8 Aug 2023 21:17:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5D9387744AB
+	for <lists+stable@lfdr.de>; Tue,  8 Aug 2023 20:26:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235601AbjHHTRj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 8 Aug 2023 15:17:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33156 "EHLO
+        id S235441AbjHHS0b (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 8 Aug 2023 14:26:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48256 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236148AbjHHTRW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 8 Aug 2023 15:17:22 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CCB15F83B7
-        for <stable@vger.kernel.org>; Tue,  8 Aug 2023 09:39:19 -0700 (PDT)
+        with ESMTP id S235405AbjHHS0J (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 8 Aug 2023 14:26:09 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 412689C466
+        for <stable@vger.kernel.org>; Tue,  8 Aug 2023 10:39:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1691512732;
+        s=mimecast20190719; t=1691516341;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=CNB47Sp7trc9bmNcKr/Qyt4K/JLPlJPyfPKXwvKIQrU=;
-        b=QUT25xh2x6xZU2IKxaIgLawMA7xqQ5IwhPqTQKSDLl7ut+/DuHStae7KFUBqqlvTmBpsqS
-        zn0CRGi+h3MG4dByNhkulJX+OvxKkwJMDd/wgJxOLHAYncVKWPlxCinNuKwtraM/5mFuut
-        guoeLIoCQJeWaSXa/tm1dZvJMcFiaJI=
+        bh=MGbr01H7ohRSkPP3ck7I4OfbupVIQ571vmUuvRJPa8U=;
+        b=G8xpKcNZyoja9HC0HPkWxTepYS//rbdbxrQQp3VjXt8WSgeCAhSi6RCT4lex3yRcegWLvk
+        lZiUSA0pdyzHio7xi0xy4z8wMJLnYvGEq+ISAaPRgEassVc4CD4Nest9wDptdVQiRAtp9v
+        7xHzcn1estpE8OaM3Esm83pMmVbjb5k=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-550-a_3N6NsJOtqpEwgmPnVgVQ-1; Tue, 08 Aug 2023 06:33:46 -0400
-X-MC-Unique: a_3N6NsJOtqpEwgmPnVgVQ-1
+ us-mta-259-SAkIxSzVMZW-004HZWkrgw-1; Tue, 08 Aug 2023 06:33:48 -0400
+X-MC-Unique: SAkIxSzVMZW-004HZWkrgw-1
 Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com [10.11.54.1])
         (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 63D93185A793;
-        Tue,  8 Aug 2023 10:33:46 +0000 (UTC)
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 91053185A7A5;
+        Tue,  8 Aug 2023 10:33:47 +0000 (UTC)
 Received: from localhost.localdomain (unknown [10.39.194.191])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 68C8740C2076;
-        Tue,  8 Aug 2023 10:33:45 +0000 (UTC)
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 966D740C2076;
+        Tue,  8 Aug 2023 10:33:46 +0000 (UTC)
 From:   Hans de Goede <hdegoede@redhat.com>
 To:     "Rafael J . Wysocki" <rafael@kernel.org>,
         Mario Limonciello <mario.limonciello@amd.com>
 Cc:     Hans de Goede <hdegoede@redhat.com>,
         Linux regressions mailing list <regressions@lists.linux.dev>,
         stable@vger.kernel.org, linux-acpi@vger.kernel.org, x86@kernel.org
-Subject: [PATCH v2 1/3] ACPI: resource: revert "Remove "Zen" specific match and quirks"
-Date:   Tue,  8 Aug 2023 12:33:33 +0200
-Message-ID: <20230808103335.95339-2-hdegoede@redhat.com>
+Subject: [PATCH v2 2/3] ACPI: resource: Always use MADT override IRQ settings for GSI != 1
+Date:   Tue,  8 Aug 2023 12:33:34 +0200
+Message-ID: <20230808103335.95339-3-hdegoede@redhat.com>
 In-Reply-To: <20230808103335.95339-1-hdegoede@redhat.com>
 References: <20230808103335.95339-1-hdegoede@redhat.com>
 MIME-Version: 1.0
@@ -61,111 +61,77 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Commit a9c4a912b7dc ("ACPI: resource: Remove "Zen" specific match and
-quirks") is causing keyboard problems for quite a log of AMD based
-laptop users, leading to many bug reports.
+All the cases, were the DSDT IRQ settings should be used instead of
+the MADT override, are for IRQ 1 (the PS/2 kbd IRQ).
 
-Revert this change for now, until we can come up with
-a better fix for the PS/2 IRQ trigger-type/polarity problems
-on some x86 laptops.
+Simplify things by always honering the override for GSI != 1
+(for non DMI quirked cases).
+
+This allows removing the DMI quirks to honor the override for
+some non IRQ 1 IRQs on some AMD ZEN based Lenovo models.
 
 Fixes: a9c4a912b7dc ("ACPI: resource: Remove "Zen" specific match and quirks")
-Link: https://bugzilla.redhat.com/show_bug.cgi?id=2229165
-Link: https://bugzilla.redhat.com/show_bug.cgi?id=2229317
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=217726
 Cc: Mario Limonciello <mario.limonciello@amd.com>
 Cc: Linux regressions mailing list <regressions@lists.linux.dev>
 Cc: stable@vger.kernel.org
 Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 ---
- drivers/acpi/resource.c | 60 +++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 60 insertions(+)
+ drivers/acpi/resource.c | 28 ++++++++--------------------
+ 1 file changed, 8 insertions(+), 20 deletions(-)
 
 diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
-index 1dd8d5aebf67..0800a9d77558 100644
+index 0800a9d77558..840b938a5fb0 100644
 --- a/drivers/acpi/resource.c
 +++ b/drivers/acpi/resource.c
-@@ -470,6 +470,52 @@ static const struct dmi_system_id asus_laptop[] = {
+@@ -470,24 +470,6 @@ static const struct dmi_system_id asus_laptop[] = {
  	{ }
  };
  
-+static const struct dmi_system_id lenovo_laptop[] = {
-+	{
-+		.ident = "LENOVO IdeaPad Flex 5 14ALC7",
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "82R9"),
-+		},
-+	},
-+	{
-+		.ident = "LENOVO IdeaPad Flex 5 16ALC7",
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "82RA"),
-+		},
-+	},
-+	{ }
-+};
-+
-+static const struct dmi_system_id tongfang_gm_rg[] = {
-+	{
-+		.ident = "TongFang GMxRGxx/XMG CORE 15 (M22)/TUXEDO Stellaris 15 Gen4 AMD",
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_NAME, "GMxRGxx"),
-+		},
-+	},
-+	{ }
-+};
-+
-+static const struct dmi_system_id maingear_laptop[] = {
-+	{
-+		.ident = "MAINGEAR Vector Pro 2 15",
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "Micro Electronics Inc"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "MG-VCP2-15A3070T"),
-+		}
-+	},
-+	{
-+		.ident = "MAINGEAR Vector Pro 2 17",
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "Micro Electronics Inc"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "MG-VCP2-17A3070T"),
-+		},
-+	},
-+	{ }
-+};
-+
- static const struct dmi_system_id lg_laptop[] = {
+-static const struct dmi_system_id lenovo_laptop[] = {
+-	{
+-		.ident = "LENOVO IdeaPad Flex 5 14ALC7",
+-		.matches = {
+-			DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
+-			DMI_MATCH(DMI_PRODUCT_NAME, "82R9"),
+-		},
+-	},
+-	{
+-		.ident = "LENOVO IdeaPad Flex 5 16ALC7",
+-		.matches = {
+-			DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
+-			DMI_MATCH(DMI_PRODUCT_NAME, "82RA"),
+-		},
+-	},
+-	{ }
+-};
+-
+ static const struct dmi_system_id tongfang_gm_rg[] = {
  	{
- 		.ident = "LG Electronics 17U70P",
-@@ -493,6 +539,10 @@ struct irq_override_cmp {
+ 		.ident = "TongFang GMxRGxx/XMG CORE 15 (M22)/TUXEDO Stellaris 15 Gen4 AMD",
+@@ -539,8 +521,6 @@ struct irq_override_cmp {
  static const struct irq_override_cmp override_table[] = {
  	{ medion_laptop, 1, ACPI_LEVEL_SENSITIVE, ACPI_ACTIVE_LOW, 0, false },
  	{ asus_laptop, 1, ACPI_LEVEL_SENSITIVE, ACPI_ACTIVE_LOW, 0, false },
-+	{ lenovo_laptop, 6, ACPI_LEVEL_SENSITIVE, ACPI_ACTIVE_LOW, 0, true },
-+	{ lenovo_laptop, 10, ACPI_LEVEL_SENSITIVE, ACPI_ACTIVE_LOW, 0, true },
-+	{ tongfang_gm_rg, 1, ACPI_EDGE_SENSITIVE, ACPI_ACTIVE_LOW, 1, true },
-+	{ maingear_laptop, 1, ACPI_EDGE_SENSITIVE, ACPI_ACTIVE_LOW, 1, true },
+-	{ lenovo_laptop, 6, ACPI_LEVEL_SENSITIVE, ACPI_ACTIVE_LOW, 0, true },
+-	{ lenovo_laptop, 10, ACPI_LEVEL_SENSITIVE, ACPI_ACTIVE_LOW, 0, true },
+ 	{ tongfang_gm_rg, 1, ACPI_EDGE_SENSITIVE, ACPI_ACTIVE_LOW, 1, true },
+ 	{ maingear_laptop, 1, ACPI_EDGE_SENSITIVE, ACPI_ACTIVE_LOW, 1, true },
  	{ lg_laptop, 1, ACPI_LEVEL_SENSITIVE, ACPI_ACTIVE_LOW, 0, false },
- };
- 
-@@ -512,6 +562,16 @@ static bool acpi_dev_irq_override(u32 gsi, u8 triggering, u8 polarity,
+@@ -562,6 +542,14 @@ static bool acpi_dev_irq_override(u32 gsi, u8 triggering, u8 polarity,
  			return entry->override;
  	}
  
-+#ifdef CONFIG_X86
 +	/*
-+	 * IRQ override isn't needed on modern AMD Zen systems and
-+	 * this override breaks active low IRQs on AMD Ryzen 6000 and
-+	 * newer systems. Skip it.
++	 * Always use the MADT override info, except for IRQ 1 for IRQ1
++	 * the DSDT IRQ settings should sometimes be used otherwise
++	 * PS/2 keyboards will not work.
 +	 */
-+	if (boot_cpu_has(X86_FEATURE_ZEN))
-+		return false;
-+#endif
++	if (gsi != 1)
++		return true;
 +
- 	return true;
- }
- 
+ #ifdef CONFIG_X86
+ 	/*
+ 	 * IRQ override isn't needed on modern AMD Zen systems and
 -- 
 2.41.0
 
