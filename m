@@ -2,124 +2,124 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C7763774046
-	for <lists+stable@lfdr.de>; Tue,  8 Aug 2023 19:01:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A9050773D76
+	for <lists+stable@lfdr.de>; Tue,  8 Aug 2023 18:18:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233954AbjHHRBj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 8 Aug 2023 13:01:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36192 "EHLO
+        id S232322AbjHHQSM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 8 Aug 2023 12:18:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52606 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233712AbjHHRBA (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 8 Aug 2023 13:01:00 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80EAA8685;
-        Tue,  8 Aug 2023 09:00:46 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 85C99623A0;
-        Tue,  8 Aug 2023 07:35:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 607DBC433C8;
-        Tue,  8 Aug 2023 07:35:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691480120;
-        bh=2X/NGOteLx4UL3AZkQJT72BA3+ipWBqs7JqK5Lor0b8=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=Su9ocHgjU00cWfZv6OLYZoas6jUlRqbWOEtcbT1kZAr/ElT/82cIeISg8oVmdK5fL
-         j8w/eEwG/vrvr4fk9sP8HvryDnGXUuXUcABLYP68xSlz7J6p8mli5w2jy6aQjoIFiC
-         80rf2TYDsg8WV2Ye4sT6LmGwDeF+MX56LM7BaMnA=
-Date:   Tue, 8 Aug 2023 09:35:17 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>
-Cc:     linux-kernel@vger.kernel.org, Luis Chamberlain <mcgrof@kernel.org>,
-        Russ Weight <russell.h.weight@intel.com>,
-        Tianfei Zhang <tianfei.zhang@intel.com>,
-        Shuah Khan <shuah@kernel.org>,
-        Colin Ian King <colin.i.king@gmail.com>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        linux-kselftest@vger.kernel.org, stable@vger.kernel.org,
-        Dan Carpenter <error27@gmail.com>, Takashi Iwai <tiwai@suse.de>
-Subject: Re: [PATCH v3 4.14 1/1] test_firmware: fix the memory leaks with the
- reqs buffer
-Message-ID: <2023080817-why-shawl-8ac1@gregkh>
-References: <20230804170017.92671-1-mirsad.todorovac@alu.unizg.hr>
- <2023080705-poet-nickname-5e08@gregkh>
- <a9e443c7-c7b5-63ce-08d9-5604ac545bf6@alu.unizg.hr>
- <2023080802-moonrise-cascade-a4c0@gregkh>
- <1269af66-bd86-0fab-e4ec-968f14371279@alu.unizg.hr>
+        with ESMTP id S229503AbjHHQQO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 8 Aug 2023 12:16:14 -0400
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2041.outbound.protection.outlook.com [40.107.236.41])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B91B930DC
+        for <stable@vger.kernel.org>; Tue,  8 Aug 2023 08:48:12 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=GeiA75V3WWEk16f1EeOzcXFPFtoLAHASaZa+c21FrsS9rCScwKJzVcHVRAXrtOy4i310+EcT/RRlKbi+55GIWEXitnKVfiDw7ox2IhDvyrFWQyjFtUvMnerCDnU//sVvaqeGEh+VngO2vcVVDlcUKvdeuWvq0asV3yHtbzIrjGbosa9MtUgcTV4w/eYOXOqDWZGfEYEj+W30HItXgvVId0LoQ9JC9fV3tLMIk8CaQc7E7MFb7FO6fih0SdR6BoxFGl4WVz919zKCoLaJ6rDdmwVwVnDHvxwoG0kCue1oL7iwRRDLxGxS/Fa5RnqjBKg+osR0o+eJoAFB0dtBoMTx/w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=tWcrJnv7QMqDnPLEP540T4BuNIOoTnV5jSoj4U+yVDc=;
+ b=P+iSVANCe2hHdtXzDQuiquDQ5ykDMeD0dnuyUbv+NzLiHa7gckdJj6k6b59winocRAMwe44C8c7paRRoKTRUTXTjH1gLN6haJkan3i2fLg0l/LkjxGkL6f3oDKBRJy3Xk8a6qlbsRxelA3IVgi87riNbXGdMRrshHBMcFALzuqIPwU6WZQ7qc2jK6bp7ZSHQFwAofKvQuG210KmElmSvrcapnMyoYS4lx3vke/Qjbo37qQBeaRRF2fTAY0fq4mcUrTqzkM4LIsKvzPxPlnIsPqDfQum4C6duc3FqJOkEdPXFmVzwD0XKLgh/AJ0wgDkBBCFIl3ZiGDTkZG0aIU44ig==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=tWcrJnv7QMqDnPLEP540T4BuNIOoTnV5jSoj4U+yVDc=;
+ b=DuZ04X+rdEZRVh5Wr766WY6zCfxkvnb3roGP+MsMsvX3cya7ze9Y2hH6VV4trwFNdXGMO1XzOasRCgETNfl9I1B+fh+vetbLR6YQ0CqRAIvGn0xf2nTEcX1wZRelmNrm0XSeXlKSvvrsq3JJW3jDp9D4bzAsoVqUsiim0iQs7A4=
+Received: from DM4PR12MB5294.namprd12.prod.outlook.com (2603:10b6:5:39e::15)
+ by MW3PR12MB4379.namprd12.prod.outlook.com (2603:10b6:303:5e::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6652.27; Tue, 8 Aug
+ 2023 09:56:13 +0000
+Received: from DM4PR12MB5294.namprd12.prod.outlook.com
+ ([fe80::7269:df2a:4f85:3aae]) by DM4PR12MB5294.namprd12.prod.outlook.com
+ ([fe80::7269:df2a:4f85:3aae%4]) with mapi id 15.20.6652.026; Tue, 8 Aug 2023
+ 09:56:13 +0000
+From:   "Yin, Tianci (Rico)" <Tianci.Yin@amd.com>
+To:     "stable@vger.kernel.org" <stable@vger.kernel.org>
+CC:     "Siqueira, Rodrigo" <Rodrigo.Siqueira@amd.com>,
+        "Wentland, Harry" <Harry.Wentland@amd.com>,
+        "Pillai, Aurabindo" <Aurabindo.Pillai@amd.com>,
+        "Deucher, Alexander" <Alexander.Deucher@amd.com>
+Subject: Recall: [PATCH 6.1.y 02/10] drm/amd/display: Add function for
+ validate and update new stream
+Thread-Topic: [PATCH 6.1.y 02/10] drm/amd/display: Add function for validate
+ and update new stream
+Thread-Index: AQHZyd6Q0yg77prryE+ZTOKodyfK7g==
+X-CallingTelephoneNumber: IPM.Note
+X-VoiceMessageDuration: 1
+X-FaxNumberOfPages: 0
+Date:   Tue, 8 Aug 2023 09:56:12 +0000
+Message-ID: <DM4PR12MB52945F277BB4DC73FF170A62950DA@DM4PR12MB5294.namprd12.prod.outlook.com>
+Accept-Language: en-US, zh-CN
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: DM4PR12MB5294:EE_|MW3PR12MB4379:EE_
+x-ms-office365-filtering-correlation-id: 3f7a7bcf-3871-4c54-c3f2-08db97f5b302
+x-ms-exchange-recallreportgenerated: true
+x-ms-exchange-recallreportcfmgenerated: true
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: X2SGl/zKmKEOR9kDBpZRc2j8B3d9+g+U44Q30ISy2/mF6tMu7PRkO3EutYbuHfhTG0wrmZzW99zyttEsiNCcbR/b9QXlMTrYeTv+Y74yxNIhHd280hevI534TFKRrDgwPYaL29naNiWgkaYrT0VWZXKXvXCiCTSnCPbJoEtq0m8Zdo6nbFZyu/qDRZzoO0boxtLmSSW1H06TFeyitHegDzDX68gRpB295Tp9jZkBIkspqRv2dqd4llKC1uAtgcWYLIbZR7O35vtuXpc4R8enjkDhb6VgazJiNnExQzAgtHiRDO+XBFKkCwjhqz1k75Wya2cQh+bq5ZqB0VUi5OcgLGCGJ/QFt0CejjSiwB1yxBhoDNjRHEwnovuPeNvfNkyk6dALMhQZOe8v2MTkxpYtYRay5zkEAuWUCwpJP4Djrm4AxxHTwV2f+g8PMukkWTF9jts97HJWeqyARZ7N+6zuu7/J64pNdJld2SIfmmbcC0GwCWKiwrN77A5x8SY1RnGaDzfCBcLIwZovtlfBh5O7CarUcz2LfDRwiQsGSt6ukqGEiN/QziGrayt0uN3/9KRznsmkYdtPY79RNMxzuksHGaia0Yqug7bOIh/F0q/03g5k4fJjAQfv2YGy2L0A7dE9
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR12MB5294.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(396003)(39860400002)(376002)(136003)(366004)(346002)(451199021)(186006)(1800799003)(38070700005)(8936002)(8676002)(52536014)(5660300002)(6916009)(64756008)(66446008)(4326008)(558084003)(41300700001)(316002)(86362001)(83380400001)(55016003)(15650500001)(2906002)(9686003)(71200400001)(7696005)(6506007)(26005)(76116006)(66946007)(66476007)(66556008)(478600001)(122000001)(54906003)(38100700002)(33656002);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?KLuaE/LiMzARw336mBiduDGWi18/V42g6QkcjPqgVVGh5jfDCIwnt7Hlv6kk?=
+ =?us-ascii?Q?BJyAYFGSFfostFqEX48HVSfbTytd/XqGvIcp/hFEv9eNT+JrA8H8H+jYsYU3?=
+ =?us-ascii?Q?pBRaPFQ1OSle+oUjBDLu4X47YIOooJEN9/l0+CkmkyCvP7migxd1qO0q1Br8?=
+ =?us-ascii?Q?XJin58o9NEPr68UmIb5hTkM+ajJ9OpvlZsVo+j+8O6kVfLym6gexsXhTaVYS?=
+ =?us-ascii?Q?VwAvsxQGOyo4KbTH5wRlfEUyQYRAC7LvF6S6WXbqbjDqvA2CIfqXNhJ2h2Jr?=
+ =?us-ascii?Q?tdHZpjdZVBrZbJQSe98O6wTEcsTtu863dUzqJzNciaZBOdsjAHJ1AkQxl1tQ?=
+ =?us-ascii?Q?QyG8ZxHqPEQ1ERbg8D1EUoq4vewaRaPghJGR3BokfeW7bTc+slbcswdmU9KC?=
+ =?us-ascii?Q?HG5cllzCmWor0eutqn0SMcFYmhSvsMPXEmpPw8TYb0k6HM8RG9EONEWLndxu?=
+ =?us-ascii?Q?Bs6GU5QtOy/9MkaY8C7gZsY0GZSeWVF2BtxSDY4ruzH52iSunFqpKIwFob40?=
+ =?us-ascii?Q?JjNKAv+fBGsVYOlVaw10RpbNO/oaB7SfA2FoQoRa3nMI6lTmwcbUmD4eAFZs?=
+ =?us-ascii?Q?T77sItMJ+ucMwzobEdv3CvvJ9clE0NpOGF97HhZi8Ff5qBMpNT1L4fMAOaao?=
+ =?us-ascii?Q?J6DwTKQwnNx/S6GrZHVpAFBWVP+5dL/oMsM6PxfdvVuPFt+pGmFeUpaYW8mL?=
+ =?us-ascii?Q?F4y3JriiZzJgFl5ScIF3h21Jjyxwxl8bl+WJpBJVEYWXJnDzPZIDhh4O5ju3?=
+ =?us-ascii?Q?I5E6okukcD1RjZ/FsoaG8toXKDKGFcFoyfxbDcMerv65NS6EJvPBniJq57l+?=
+ =?us-ascii?Q?iNBbO+fYU0suGjTjKpY8c0NIg+00Zr8gekQt2qxAVxiOuGW4LlAtMEVADxVf?=
+ =?us-ascii?Q?Kelxf1F16CiwyQaIqj731Dag5q53bwQZS3i6DhK0RtseKKWQNhuiRTr3qZ71?=
+ =?us-ascii?Q?ka/N2K5buNjR9jQSJe0ctvlVZtFw2b/xHn/xprvxya7OSgHNrYuSRV7iX9C3?=
+ =?us-ascii?Q?xjFTeJ21R5dzD3jAhl7u+S2v5Uc/uQ/PjzCushc8VpbgSWA61aHhepqxBIwA?=
+ =?us-ascii?Q?z9jvmK3KOk7H76kxb8PibiRLQqnohRlN7q1yjBIWqQkgymssQt4gnjn8zGSM?=
+ =?us-ascii?Q?JD7e0mLa7XeT+PGTWJEog7cbokhoEkrdI08gSG8Ooe0dMbo8LtEX8JlHRHuW?=
+ =?us-ascii?Q?8aV638LVWrMGFhCnnHKBj89eBFGlSE07XkqcEdn5pU7nDOi7H6ffIxW+AARr?=
+ =?us-ascii?Q?/uTQCvMrBTP1sNL2ygi1UfEcdUBYwiycp8heuBX8CaEtxnciiK1+UUoIAfav?=
+ =?us-ascii?Q?6eg+yQWhaxn8Wt/igiLWkYfrScBu+iZgsE05zQP4Emi5J5TDl+HeZr49aS3d?=
+ =?us-ascii?Q?jg6bCrNdI0qYOVWRNp4h/ZB7qHCmD5nAUMgW0YCzsuX0jkIOayUy0HLnf/EH?=
+ =?us-ascii?Q?4iVncfuOAq5xUTb4y/GZTd5XEIx2FpNPYSKSTMZqAF79oAKP0cYB6o1H7zGX?=
+ =?us-ascii?Q?TuV+vR6SLQA5PkqtCW/F4YAUTbUMdRtCebQJLGMdn1wPYZeVCapMiH7dYZdt?=
+ =?us-ascii?Q?FtEptRsL01McW1PpFXU=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1269af66-bd86-0fab-e4ec-968f14371279@alu.unizg.hr>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR12MB5294.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3f7a7bcf-3871-4c54-c3f2-08db97f5b302
+X-MS-Exchange-CrossTenant-originalarrivaltime: 08 Aug 2023 09:56:12.8671
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: kTWrO5tjpU8HFG6d8vpcZlIzg1r8TaEmhsDC6bgqSpuQdl10790FOajFEjWfuLFAlxng+MNFLMrobSp+LjGGGg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW3PR12MB4379
+X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, Aug 08, 2023 at 08:24:43AM +0200, Mirsad Todorovac wrote:
-> On 8/8/23 06:28, Greg Kroah-Hartman wrote:
-> > On Mon, Aug 07, 2023 at 08:28:04PM +0200, Mirsad Todorovac wrote:
-> > > On 8/7/23 11:15, Greg Kroah-Hartman wrote:
-> > > > On Fri, Aug 04, 2023 at 07:00:18PM +0200, Mirsad Todorovac wrote:
-> > > > > [ commit be37bed754ed90b2655382f93f9724b3c1aae847 upstream ]
-> > > > > 
-> > > > > Dan Carpenter spotted that test_fw_config->reqs will be leaked if
-> > > > > trigger_batched_requests_store() is called two or more times.
-> > > > > The same appears with trigger_batched_requests_async_store().
-> > > > > 
-> > > > > This bug wasn't triggered by the tests, but observed by Dan's visual
-> > > > > inspection of the code.
-> > > > > 
-> > > > > The recommended workaround was to return -EBUSY if test_fw_config->reqs
-> > > > > is already allocated.
-> > > > > 
-> > > > > Fixes: c92316bf8e94 ("test_firmware: add batched firmware tests")
-> > > > > Cc: Luis Chamberlain <mcgrof@kernel.org>
-> > > > > Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> > > > > Cc: Russ Weight <russell.h.weight@intel.com>
-> > > > > Cc: Tianfei Zhang <tianfei.zhang@intel.com>
-> > > > > Cc: Shuah Khan <shuah@kernel.org>
-> > > > > Cc: Colin Ian King <colin.i.king@gmail.com>
-> > > > > Cc: Randy Dunlap <rdunlap@infradead.org>
-> > > > > Cc: linux-kselftest@vger.kernel.org
-> > > > > Cc: stable@vger.kernel.org # v4.14
-> > > > > Suggested-by: Dan Carpenter <error27@gmail.com>
-> > > > > Suggested-by: Takashi Iwai <tiwai@suse.de>
-> > > > > Link: https://lore.kernel.org/r/20230509084746.48259-2-mirsad.todorovac@alu.unizg.hr
-> > > > > Signed-off-by: Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>
-> > > > > 
-> > > > > [ This fix is applied against the 4.14 stable branch. There are no changes to the ]
-> > > > > [ fix in code when compared to the upstread, only the reformatting for backport.  ]
-> > > > 
-> > > > Thanks for all of these, now queued up.
-> > > 
-> > > No problem, I should have done it right the first time to reduce your load.
-> > > 
-> > > I really believe that backporting bug fix patches is important because many systems
-> > > cannot upgrade because of the legacy apps and hardware, to state the obvious.
-> > 
-> > What "legacy apps" rely on a specific kernel version?
-> 
-> Hi, Mr. Greg,
-> 
-> Actually, in our particular case, it was the Eprints that required old mysql on Debian stretch
-> rather than MariaDB that came with Buster. So, the release required particular kernel version (4.9).
-
-So what happens when this kernel becomes end-of-life?
-
-> Of course, we can upgrade to any mainline kernel, but that is no longer a tested distro kernel,
-> and faults would be blamed on me entirely. Plus the overhead of regular patching ...
-
-You should be doing regular patching for any LTS kernel as well, right?
-Same for testing, there should not be any difference in testing any
-kernel update be it on a LTS branch, or between major versions.
-
-anyway, good luck!
-
-greg k-h
+Yin, Tianci (Rico) would like to recall the message, "[PATCH 6.1.y 02/10] d=
+rm/amd/display: Add function for validate and update new stream".=
