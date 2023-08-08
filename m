@@ -2,159 +2,127 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D676E774A28
-	for <lists+stable@lfdr.de>; Tue,  8 Aug 2023 22:21:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E3D96774A58
+	for <lists+stable@lfdr.de>; Tue,  8 Aug 2023 22:25:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234655AbjHHUU7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 8 Aug 2023 16:20:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42684 "EHLO
+        id S233915AbjHHUZ3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 8 Aug 2023 16:25:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46958 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234016AbjHHUUu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 8 Aug 2023 16:20:50 -0400
-Received: from domac.alu.hr (domac.alu.unizg.hr [IPv6:2001:b68:2:2800::3])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DEEDA6AB0;
-        Tue,  8 Aug 2023 12:26:51 -0700 (PDT)
-Received: from localhost (localhost [127.0.0.1])
-        by domac.alu.hr (Postfix) with ESMTP id 752E76016E;
-        Tue,  8 Aug 2023 21:26:39 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=alu.unizg.hr; s=mail;
-        t=1691522799; bh=42Ov8jrdWSouqXJnDzfdWxBesTTZMngT6wAy2edAW/w=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=E9hNIjarZwig6adv0rcta4RJ24zoCbOYC/g7Gf4o1c4zg2Kr4JpxkCEPhBkbit9UE
-         ZkJnHdyKGMqapeAqMoaZrlncClCAAG+h4Ime3ZfV9VTZrmvmxICm8uKKHTHAG8I4Cf
-         OksjKB/F/ZFoAJOH2XQNujeIDSLjjDNm2qcSCQlotRRqr4dHnugtFmSxgSfr7m/Kq0
-         rQdiE+Kbz/QQWnPTOiSdrnfBXUjU6praYDZphGoZ4optoejIZwIli70nnPaYMttbCD
-         NcGeU+Qq+qkCKEfg2/LBp+ZY73kFjI6/zmH79DI1O/04zPu2qUpERhhT+w1/hCAaRQ
-         TsovLiRX9dtug==
-X-Virus-Scanned: Debian amavisd-new at domac.alu.hr
-Received: from domac.alu.hr ([127.0.0.1])
-        by localhost (domac.alu.hr [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id e3CtfOAwfMdD; Tue,  8 Aug 2023 21:26:36 +0200 (CEST)
-Received: from [192.168.1.6] (unknown [94.250.191.183])
-        by domac.alu.hr (Postfix) with ESMTPSA id 6CAD46015F;
-        Tue,  8 Aug 2023 21:26:36 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=alu.unizg.hr; s=mail;
-        t=1691522796; bh=42Ov8jrdWSouqXJnDzfdWxBesTTZMngT6wAy2edAW/w=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=pGaNmvMEH4k+VJqZzWBluvDX2OkmL7ZytZAuuKwGVMDdOlnGV7PZA29V0IAVsA6xr
-         /JlrKKECBLrY7m3fiY4lWYeU+Ucpr7uK2q/aa2tj8zB0fIX+IpdHGzjcXsfMaDTQoC
-         8rPGqsoldTV3dRsDY//Oi5+QH0iKWOX4yQhIZDXLhhZlwi4KC5plobP+CE9TMBLHR8
-         AphrCDIWKrI5ZQdOU6cK3YBRbhMRXqixizNXvNCYQo1Q+JXebzHsSFPrrrlOFNeTFa
-         XrgKPguPHnDd7f/A/y7YTWnshbB4TJnYLvkAUYk/v9NFdOb+ZytpkU1PhSN7lTP4sN
-         wd6jl2PAPokcw==
-Message-ID: <dc641c92-38c2-4aa6-71d7-b30064c38d55@alu.unizg.hr>
-Date:   Tue, 8 Aug 2023 21:26:31 +0200
+        with ESMTP id S231139AbjHHUZE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 8 Aug 2023 16:25:04 -0400
+Received: from mail-oa1-x2d.google.com (mail-oa1-x2d.google.com [IPv6:2001:4860:4864:20::2d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1331776A5;
+        Tue,  8 Aug 2023 12:35:01 -0700 (PDT)
+Received: by mail-oa1-x2d.google.com with SMTP id 586e51a60fabf-1bbaa549c82so4770864fac.0;
+        Tue, 08 Aug 2023 12:35:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1691523300; x=1692128100;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=I4jmX6f3odZ4nHfZebc6/TcVEAAv4WJvJuplgi61v7I=;
+        b=LrhoRfkDVR76vUadL5zLHCdDk9Mqly3jDtCCZl3YVhy/fSfGD0Jh+XIEp90BduDO0t
+         JFkmOxtgi0dKU10NsPRnhPQaLiF32shxLAM6ss4Wsd5RpAw1Htn74pnaqa4IIA6lTwpA
+         Ow4zgcLGXoowuf5ZX3HzlsPlj/LW1Gm+U2AMhUmzoAaGP74A5ilCcNLFLbcPG70tyL5K
+         dN8ZLL2f+EcqRTYOTXhPknyTCKDw+Dbdt7S7BlZVmwUjGnrbqq/FfI+mad0bGruHTINZ
+         Jq8dzeooHlsFxHjP3l+NU2Hvn7EOxMiE+jBubLyrYAsgatHTZlB0mCIX6zkENj1loHdD
+         BGzw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1691523300; x=1692128100;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:sender:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=I4jmX6f3odZ4nHfZebc6/TcVEAAv4WJvJuplgi61v7I=;
+        b=DW1JTqo3AEm4EB94l4WpdF5H019yuOWk1whS8Rj0Gtfyqx/Kb24DMgyVYNkg/9S44z
+         CrNBwJ8nab8Z9bqNzGlBYEkWN1odGKbJ6TzcvdR2f/Tj2MGAVuhTuL0NVh4hoNFXSL8Y
+         WHYR2oo4L15TcuHm7JfGk4SLPIsdXUcoTrvflAJaBupDu2uxfJG3VtE385lR5AuheHry
+         cTbZvVuVs1O++xtjxLjg4Osqte0fT+EkVGABE6gAELX/8op9CNFAirHtZD5F/rU9h9P2
+         sgZJ4ClF0WVUoh4NWBUX7z2gPvHPNZeTyCjIlsoqcR/piVuvKQxBm7k3UEmuwKxDEUGt
+         /qvw==
+X-Gm-Message-State: AOJu0YyF73tXUEl5FbmBTUSeg4+mGkY7tiE2TZherjDN1YASG89I7tLC
+        b5AR2UAK+vbtG3rHAga7/WA=
+X-Google-Smtp-Source: AGHT+IErIa+QfvDosdkpjOtdJ6SbDMrCXt8JVuM6PfVYSdoZ/7NfcF+UMUeskadKohsK2dLWSlMo0w==
+X-Received: by 2002:a05:6870:ac24:b0:1bf:df47:7b5e with SMTP id kw36-20020a056870ac2400b001bfdf477b5emr709421oab.16.1691523300298;
+        Tue, 08 Aug 2023 12:35:00 -0700 (PDT)
+Received: from localhost.localdomain ([216.130.59.33])
+        by smtp.gmail.com with ESMTPSA id a3-20020a056870b30300b001b390c6e00bsm6411195oao.56.2023.08.08.12.34.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 08 Aug 2023 12:34:59 -0700 (PDT)
+Sender: Larry Finger <larry.finger@gmail.com>
+From:   Larry Finger <Larry.Finger@lwfinger.net>
+To:     Marcel Holtmann <marcel@holtmann.org>,
+        Gustavo Padovan <gustavo@padovan.org>,
+        Johan Hedberg <johan.hedberg@gmail.com>
+Cc:     linux-bluetooth@vger.kernel.org, Hilda Wu <hildawu@realtek.com>,
+        Larry Finger <Larry.Finger@lwfinger.net>,
+        stable@vger.kernel.org
+Subject: [PATCH] bluetooth: Add device 0bda:4853 to device tables
+Date:   Tue,  8 Aug 2023 14:34:55 -0500
+Message-ID: <20230808193455.11037-1-Larry.Finger@lwfinger.net>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.14.0
-Subject: Re: [PATCH v3 4.14 1/1] test_firmware: fix the memory leaks with the
- reqs buffer
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     linux-kernel@vger.kernel.org, Luis Chamberlain <mcgrof@kernel.org>,
-        Russ Weight <russell.h.weight@intel.com>,
-        Tianfei Zhang <tianfei.zhang@intel.com>,
-        Shuah Khan <shuah@kernel.org>,
-        Colin Ian King <colin.i.king@gmail.com>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        linux-kselftest@vger.kernel.org, stable@vger.kernel.org,
-        Dan Carpenter <error27@gmail.com>, Takashi Iwai <tiwai@suse.de>
-References: <20230804170017.92671-1-mirsad.todorovac@alu.unizg.hr>
- <2023080705-poet-nickname-5e08@gregkh>
- <a9e443c7-c7b5-63ce-08d9-5604ac545bf6@alu.unizg.hr>
- <2023080802-moonrise-cascade-a4c0@gregkh>
- <1269af66-bd86-0fab-e4ec-968f14371279@alu.unizg.hr>
- <2023080817-why-shawl-8ac1@gregkh>
-Content-Language: en-US
-From:   Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>
-In-Reply-To: <2023080817-why-shawl-8ac1@gregkh>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-3.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,NICE_REPLY_A,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,
+        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+This device is part of a Realtek RTW8852BE chip. The device table is as follows:
 
+T: Bus=03 Lev=01 Prnt=01 Port=09 Cnt=03 Dev#= 4 Spd=12 MxCh= 0
+D: Ver= 1.00 Cls=e0(wlcon) Sub=01 Prot=01 MxPS=64 #Cfgs= 1
+P: Vendor=0bda ProdID=4853 Rev= 0.00
+S: Manufacturer=Realtek
+S: Product=Bluetooth Radio
+S: SerialNumber=00e04c000001
+C:* #Ifs= 2 Cfg#= 1 Atr=e0 MxPwr=500mA
+I:* If#= 0 Alt= 0 #EPs= 3 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E: Ad=81(I) Atr=03(Int.) MxPS= 16 Ivl=1ms
+E: Ad=02(O) Atr=02(Bulk) MxPS= 64 Ivl=0ms
+E: Ad=82(I) Atr=02(Bulk) MxPS= 64 Ivl=0ms
+I:* If#= 1 Alt= 0 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E: Ad=03(O) Atr=01(Isoc) MxPS= 0 Ivl=1ms
+E: Ad=83(I) Atr=01(Isoc) MxPS= 0 Ivl=1ms
+I: If#= 1 Alt= 1 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E: Ad=03(O) Atr=01(Isoc) MxPS= 9 Ivl=1ms
+E: Ad=83(I) Atr=01(Isoc) MxPS= 9 Ivl=1ms
+I: If#= 1 Alt= 2 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E: Ad=03(O) Atr=01(Isoc) MxPS= 17 Ivl=1ms
+E: Ad=83(I) Atr=01(Isoc) MxPS= 17 Ivl=1ms
+I: If#= 1 Alt= 3 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E: Ad=03(O) Atr=01(Isoc) MxPS= 25 Ivl=1ms
+E: Ad=83(I) Atr=01(Isoc) MxPS= 25 Ivl=1ms
+I: If#= 1 Alt= 4 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E: Ad=03(O) Atr=01(Isoc) MxPS= 33 Ivl=1ms
+E: Ad=83(I) Atr=01(Isoc) MxPS= 33 Ivl=1ms
+I: If#= 1 Alt= 5 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E: Ad=03(O) Atr=01(Isoc) MxPS= 49 Ivl=1ms
+E: Ad=83(I) Atr=01(Isoc) MxPS= 49 Ivl=1ms
 
-On 8/8/23 09:35, Greg Kroah-Hartman wrote:
-> On Tue, Aug 08, 2023 at 08:24:43AM +0200, Mirsad Todorovac wrote:
->> On 8/8/23 06:28, Greg Kroah-Hartman wrote:
->>> On Mon, Aug 07, 2023 at 08:28:04PM +0200, Mirsad Todorovac wrote:
->>>> On 8/7/23 11:15, Greg Kroah-Hartman wrote:
->>>>> On Fri, Aug 04, 2023 at 07:00:18PM +0200, Mirsad Todorovac wrote:
->>>>>> [ commit be37bed754ed90b2655382f93f9724b3c1aae847 upstream ]
->>>>>>
->>>>>> Dan Carpenter spotted that test_fw_config->reqs will be leaked if
->>>>>> trigger_batched_requests_store() is called two or more times.
->>>>>> The same appears with trigger_batched_requests_async_store().
->>>>>>
->>>>>> This bug wasn't triggered by the tests, but observed by Dan's visual
->>>>>> inspection of the code.
->>>>>>
->>>>>> The recommended workaround was to return -EBUSY if test_fw_config->reqs
->>>>>> is already allocated.
->>>>>>
->>>>>> Fixes: c92316bf8e94 ("test_firmware: add batched firmware tests")
->>>>>> Cc: Luis Chamberlain <mcgrof@kernel.org>
->>>>>> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
->>>>>> Cc: Russ Weight <russell.h.weight@intel.com>
->>>>>> Cc: Tianfei Zhang <tianfei.zhang@intel.com>
->>>>>> Cc: Shuah Khan <shuah@kernel.org>
->>>>>> Cc: Colin Ian King <colin.i.king@gmail.com>
->>>>>> Cc: Randy Dunlap <rdunlap@infradead.org>
->>>>>> Cc: linux-kselftest@vger.kernel.org
->>>>>> Cc: stable@vger.kernel.org # v4.14
->>>>>> Suggested-by: Dan Carpenter <error27@gmail.com>
->>>>>> Suggested-by: Takashi Iwai <tiwai@suse.de>
->>>>>> Link: https://lore.kernel.org/r/20230509084746.48259-2-mirsad.todorovac@alu.unizg.hr
->>>>>> Signed-off-by: Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>
->>>>>>
->>>>>> [ This fix is applied against the 4.14 stable branch. There are no changes to the ]
->>>>>> [ fix in code when compared to the upstread, only the reformatting for backport.  ]
->>>>>
->>>>> Thanks for all of these, now queued up.
->>>>
->>>> No problem, I should have done it right the first time to reduce your load.
->>>>
->>>> I really believe that backporting bug fix patches is important because many systems
->>>> cannot upgrade because of the legacy apps and hardware, to state the obvious.
->>>
->>> What "legacy apps" rely on a specific kernel version?
->>
->> Hi, Mr. Greg,
->>
->> Actually, in our particular case, it was the Eprints that required old mysql on Debian stretch
->> rather than MariaDB that came with Buster. So, the release required particular kernel version (4.9).
-> 
-> So what happens when this kernel becomes end-of-life?
+Cc: stable@vger.kernel.org
+Signed-off-by: Larry Finger <Larry.Finger@lwfinger.net>
+---
+ drivers/bluetooth/btusb.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-I guess by now I could maintain the 4.19 line, with the bug fixes and the security fixes,
-but it would impose significant overhead to already overwhelmed IT department.
+diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
+index 764d176e9735..1019f19d86a7 100644
+--- a/drivers/bluetooth/btusb.c
++++ b/drivers/bluetooth/btusb.c
+@@ -540,6 +540,8 @@ static const struct usb_device_id blacklist_table[] = {
+ 	/* Realtek 8852BE Bluetooth devices */
+ 	{ USB_DEVICE(0x0cb8, 0xc559), .driver_info = BTUSB_REALTEK |
+ 						     BTUSB_WIDEBAND_SPEECH },
++	{ USB_DEVICE(0x0bda, 0x4853), .driver_info = BTUSB_REALTEK |
++						     BTUSB_WIDEBAND_SPEECH },
+ 	{ USB_DEVICE(0x0bda, 0x887b), .driver_info = BTUSB_REALTEK |
+ 						     BTUSB_WIDEBAND_SPEECH },
+ 	{ USB_DEVICE(0x13d3, 0x3571), .driver_info = BTUSB_REALTEK |
+-- 
+2.41.0
 
-I could use the same config and produce the same kernel, but w/o the testing as it would
-happen w the distro kernels.
-
->> Of course, we can upgrade to any mainline kernel, but that is no longer a tested distro kernel,
->> and faults would be blamed on me entirely. Plus the overhead of regular patching ...
-> 
-> You should be doing regular patching for any LTS kernel as well, right?
-> Same for testing, there should not be any difference in testing any
-> kernel update be it on a LTS branch, or between major versions.
-
-Sure, but apt-get dist-upgrade is easier than rebuilding the kernel. I say, we'd have to
-get the necessary "blessings" to make this routine or procedure. Now we have the machines
-that could build a recent kernel in less than an hour, but it wasn't always so :-)
-
-We still do not have a twin test server for each single one of our production releases.
-
-> anyway, good luck!
-
-Thanks, I think we'll need it.
-
-Kind regards,
-Mirsad Todorovac
