@@ -2,106 +2,173 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9F1DF773649
-	for <lists+stable@lfdr.de>; Tue,  8 Aug 2023 04:11:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 275B37736CC
+	for <lists+stable@lfdr.de>; Tue,  8 Aug 2023 04:37:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229824AbjHHCLa (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 7 Aug 2023 22:11:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43712 "EHLO
+        id S230211AbjHHChT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 7 Aug 2023 22:37:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55018 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229566AbjHHCL3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 7 Aug 2023 22:11:29 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.24])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C6ED19B6;
-        Mon,  7 Aug 2023 19:11:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1691460682; x=1722996682;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=d3VIX2xY+fu1wWsahOfoN14pobtO1cM2MgEWqpBvgLY=;
-  b=EuJd4qa0AAArhVMsFAlVuljUHzrNuN+NCuFOvd/FratfgL2JETvU6eCh
-   qg6KhSCb58AqZmPXhmlnGTLUklrJP7iYSWSXQYEQRj7TcTSSk+e0wJc+m
-   JURZuL/L5ni+vhYi93jQ0OaAWfp8hWPV15Xe0MPextHEwx2/gBdsKQHPx
-   12/mcxBQm0bm7Olx+egeufVxqoqMDaxF/ysXGR2cqJc/UB5n5PAPL8Hvp
-   iQzc2W1QdyXnuBwG/qtj/XSzk3PlTQcOZVp0R3aZ0IrVRgu1tzPhbFvzG
-   dsZRTrN9URLfshzRnuKIzObcL+fm3PdBJpkYAg1HUJIQWN7+NgtF1ONx1
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10795"; a="373453596"
-X-IronPort-AV: E=Sophos;i="6.01,263,1684825200"; 
-   d="scan'208";a="373453596"
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Aug 2023 19:11:21 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10795"; a="977689411"
-X-IronPort-AV: E=Sophos;i="6.01,263,1684825200"; 
-   d="scan'208";a="977689411"
-Received: from fyin-dev.sh.intel.com ([10.239.159.32])
-  by fmsmga006.fm.intel.com with ESMTP; 07 Aug 2023 19:11:18 -0700
-From:   Yin Fengwei <fengwei.yin@intel.com>
-To:     linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org, akpm@linux-foundation.org,
-        willy@infradead.org, vishal.moola@gmail.com,
-        wangkefeng.wang@huawei.com, minchan@kernel.org, yuzhao@google.com,
-        david@redhat.com, ryan.roberts@arm.com, shy828301@gmail.com
-Cc:     fengwei.yin@intel.com
-Subject: [PATCH v2 3/3] madvise:madvise_free_pte_range(): don't use mapcount() against large folio for sharing check
-Date:   Tue,  8 Aug 2023 10:09:17 +0800
-Message-Id: <20230808020917.2230692-4-fengwei.yin@intel.com>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230808020917.2230692-1-fengwei.yin@intel.com>
-References: <20230808020917.2230692-1-fengwei.yin@intel.com>
+        with ESMTP id S229996AbjHHChS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 7 Aug 2023 22:37:18 -0400
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE228B8;
+        Mon,  7 Aug 2023 19:37:17 -0700 (PDT)
+Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
+        by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3781iPHb030955;
+        Tue, 8 Aug 2023 02:37:16 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=to : cc : subject :
+ from : message-id : references : date : in-reply-to : content-type :
+ mime-version; s=corp-2023-03-30;
+ bh=GrJZzkSWh2elkbdjRoGKfEra3Cex7y/92i8+Gs6TN+4=;
+ b=v2sQ5ksOh75KlPavGLoHbmL2Q0FKrMQwrMj2XVxFR9CBVUD93ck1LNwn5L213WVAaxM9
+ XbgoPWqCEWsCns9XXddA3OxBynCByRnId0lUbHPzUAIBvYb4G9RHy13DROJE7MFGqEvR
+ 769Ags+E7GYS30J/bELY2xGaGImaK8YXbVimtUJK/G0pSe6JSDdHADhHs7VvQ5iLMmrO
+ AHZ8tZlvCUC6sdpvGtLVCxOGsfl4m2lhJEu+8rDWLE5TJN0y6t7t4f46Ya6L1Ld+FLU0
+ gglHrLerdsEsEAy65OS+rFW2M7CRg7STcJ7nN4jCGY28e/l6RArlCK+Lv//34Ntev0WU yQ== 
+Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
+        by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3s9d12c5ge-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 08 Aug 2023 02:37:16 +0000
+Received: from pps.filterd (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+        by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19) with ESMTP id 377NUgsd022825;
+        Tue, 8 Aug 2023 02:37:15 GMT
+Received: from nam12-mw2-obe.outbound.protection.outlook.com (mail-mw2nam12lp2040.outbound.protection.outlook.com [104.47.66.40])
+        by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 3s9cv5drfc-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 08 Aug 2023 02:37:14 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=amxHuawY00UWhB742bnUZmHHevextUFPhbuA6xlk3Vp5O/GOx/Vi8ozO/oAnsdeQYfBs60EBgstEIJEWTfFPtrwtA0+En1adJ2uM9A6ZoxxwYb0STF5nglpiz98fCrYyb2aq7EsF+tDFFmzNh8qWZ3dqyl2gt00r32e/1SE/OY6ViY+JpDTKGtDbbZ2pXMMs9tI4atYFZEnsopHz13gfC+cvBCXHJJ67Xb6QsFLEaayLicv6jja1YrSSTTslefoazgUHwcWdg2Aj0FXhNxjJSTvleR4+izPqhLfRu6kRS6tH+ahUBuE/k2YR07CwN5NdpNU5EdoUMxVIa9DTUgmApA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=GrJZzkSWh2elkbdjRoGKfEra3Cex7y/92i8+Gs6TN+4=;
+ b=PcByY8m3E+XJBXu4VthDH53gStn42+7+mbYI0TrRcqGEyKq6hwtYuAkpp5XRHAlPQjENSkqXg8zsTYbW74P12PLrxh1vVeFFKOtMF/q5g1O9FP/t/MTh4AputKXAirlQ6THk9yNcS8I676z4Dq9OjGv2uwA4m3n+HalmCEtyogTmZP1voNBCDye1r+lnJ2FxoYAmIGjhPFbxzYIfUvBBqWA7ayOalO4dVxLsgzEbR9L+6cKozbKNG8QqyxklvSCfObFH/COtHO/Hxh4/iI9fn8EZ1A0JyKzZmRnelsYgDER3m5PdLK9srNPSWhWg55glxNXJiFh2Xr9WHMkFoBGfDw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=GrJZzkSWh2elkbdjRoGKfEra3Cex7y/92i8+Gs6TN+4=;
+ b=OaQpxzdcVV7R4GpQy13re+aS7AEJf/qPOoW4upcHNr+ZgzmFcvnIm7vNL63KwCDy8bYBOaF5f5qUpSa69cbNeUK9UHQxhfCib23bq0tLLq0VOkc7o7xqLd3LDcbVOQKdmWifZAGrpkdbfsDw5jAXQVtlSAIsNTmiMgNDX7Ht50o=
+Received: from PH0PR10MB4759.namprd10.prod.outlook.com (2603:10b6:510:3d::12)
+ by MW6PR10MB7590.namprd10.prod.outlook.com (2603:10b6:303:24c::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6652.25; Tue, 8 Aug
+ 2023 02:37:12 +0000
+Received: from PH0PR10MB4759.namprd10.prod.outlook.com
+ ([fe80::59f3:b30d:a592:36be]) by PH0PR10MB4759.namprd10.prod.outlook.com
+ ([fe80::59f3:b30d:a592:36be%6]) with mapi id 15.20.6652.026; Tue, 8 Aug 2023
+ 02:37:12 +0000
+To:     Ranjan Kumar <ranjan.kumar@broadcom.com>
+Cc:     "Martin K. Petersen" <martin.petersen@oracle.com>,
+        linux-scsi@vger.kernel.org, sathya.prakash@broadcom.com,
+        sreekanth.reddy@broadcom.com, stable@vger.kernel.org
+Subject: Re: [PATCH v3 1/2] Perform additional retries if Doorbell read
+ returns 0
+From:   "Martin K. Petersen" <martin.petersen@oracle.com>
+Organization: Oracle Corporation
+Message-ID: <yq1sf8ujmf2.fsf@ca-mkp.ca.oracle.com>
+References: <20230726112527.14987-1-ranjan.kumar@broadcom.com>
+        <20230726112527.14987-2-ranjan.kumar@broadcom.com>
+        <yq1o7jsq9lq.fsf@ca-mkp.ca.oracle.com>
+        <CAMFBP8MS0hwd9-bfVrPi8yTB3Es-w7ugHwEMyxtb8R-mj8PPCg@mail.gmail.com>
+Date:   Mon, 07 Aug 2023 22:37:09 -0400
+In-Reply-To: <CAMFBP8MS0hwd9-bfVrPi8yTB3Es-w7ugHwEMyxtb8R-mj8PPCg@mail.gmail.com>
+        (Ranjan Kumar's message of "Thu, 3 Aug 2023 13:46:12 +0530")
+Content-Type: text/plain
+X-ClientProxiedBy: SJ2PR07CA0013.namprd07.prod.outlook.com
+ (2603:10b6:a03:505::15) To PH0PR10MB4759.namprd10.prod.outlook.com
+ (2603:10b6:510:3d::12)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH0PR10MB4759:EE_|MW6PR10MB7590:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9883d0e9-5241-4e5d-476f-08db97b85eca
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: uJCLP+nCpVxB3axB/zoWKV4DO8Ee1DG2uYk+VlwnvIcY7DKIAaJznMuJXi5yqkjl8F8J2HhV1MYjG4eCWRX7kW88hcDHLJNdNRlN5/ds0wTlN1SvU8dFOpZxy8yZ8LU6DfBdfB/VA4KTXzk7tgMh/Vkmm6oAzlfEsA6A4N1Ta83WIk5ZY6Gg2BxiGcK4+H4nWMkvolWjTDd1KDySsubCaMkh6TrVWjvL8rGfyz5ia+Mi+TJm42ZkVXYLoN0Fr4XpsXiXX7ybiI1fTyIu/91UH/aU2gdSyBGdDTj8uLRARPQhIFg8MTV0Mns23L7Sm2h6LiVr8H0RhCuOFJjO5YVvVsHxMFNs/K6aYMMUP3iO7tE7+IxkzSaY9Ea+HYhNCqi/gumZaUey1x0A3qLJE2GTbd8Duy0cW+SU2/A82f3c2w615cEPSV3hYcmMyW775zA5fbtztwj4hOjdyRIIlHmBferdLdxsZ0wK9HaScy0bQXSLt86wC2d5gt1xNfmIYM784Pnwdi3uZJvoLcU7PiMingTw3D4oWPnZUvJWn8txVpkwtuu0OorgWObWCxROOu3Fhv4yrPg0AOsExX19UlSymYEhQATUJmTITD3fbiF6cuBYxR9ERhgceUbnAAe11YaygKoYZfzU+jFm9D6MiufNEQ==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR10MB4759.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(396003)(39860400002)(346002)(366004)(376002)(136003)(451199021)(90011799007)(90021799007)(186006)(1800799003)(6512007)(4326008)(316002)(86362001)(6916009)(38100700002)(36916002)(6666004)(66946007)(478600001)(6486002)(66476007)(66556008)(6506007)(41300700001)(26005)(8676002)(8936002)(4744005)(2906002)(5660300002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?qGStVNfsBn8CO6U2ctPvb8xdpsBYyAHrDjByy/KAmwNwfLnw/ylp10MNpX4a?=
+ =?us-ascii?Q?AHpW2kzMCFXptn2a2BFwJAhGzCpZZxLR0ZR0DzjUwEwMkaPXtQn8t4AqTqW8?=
+ =?us-ascii?Q?S2DxeRMw9emQQ+yon36UIHWNU3Tmzg2HaMoBS6D9slLUZuv4MINwwq21cpXU?=
+ =?us-ascii?Q?35obwDl/ndJCi7xWtkbg8qHglU24mJxN8ZU2IOnvT9GfGqW8DJDifmsbsXvt?=
+ =?us-ascii?Q?69DWH9O/xYoMbbF0C7sZ8/cjaMyKC9t/CIpgofVgtDmludgCu1LkpmAJ/SLp?=
+ =?us-ascii?Q?593J45xmy/i4DCGstM/o+5QIGXrM8mWmUjRl75uGZ//Tjf4+cr+OcDi0JNFU?=
+ =?us-ascii?Q?oReRGAOphUlMmsIIihjFVdUSQOc/oRZ/TKiPcHokOf/36+YUUMAvsdbWRlPl?=
+ =?us-ascii?Q?EEpzLcycu9M4jjMFAMigGZ+teEoE3S0XHlKuzGfbQdTz5ya2n6ANcRsuIbgh?=
+ =?us-ascii?Q?cmoeB/4QnNR7XOGEnCEvV76jyCZBNEQ/FHJ50BP16eMe4jYauEBfXoefXQeg?=
+ =?us-ascii?Q?NFpnMVmdGc5Zsmnn7A2QcaK+WNRrtstKNmiOr6PNs17Rj6kxo9Q+/dJvfYzV?=
+ =?us-ascii?Q?2++M60iwpo6aNloSq6t275Qg4H7LRPa9xchNSDhTcoLaFEXI1nPEM3/6DvfQ?=
+ =?us-ascii?Q?4w5iMWRcsPM/ElU+ouWKA6pNBb+k3dhZxxTaF/4LuZg5zpchQEaxckv5jJi7?=
+ =?us-ascii?Q?44uMCkf6l8hLkRCXrn5Ex6NvUK+kJLjvIQ3sWKa+Wu839b+g85ZohvBKuHHV?=
+ =?us-ascii?Q?OHs2xpuvY7N+N68a1tx51IgJVlimKH+1kvoJCddHB0NncXQybxt/7lw549jW?=
+ =?us-ascii?Q?b4La4JxquP6T/MgtRlOg6NqvqLp9LR3eVke6/06s9baemAyxw9b0pxexubTA?=
+ =?us-ascii?Q?OCOyL9TTEHY5dF2CDMSsnRki9H86Vcx3Oj4AslqNUR3AMP6Rf621Z/IAgSIX?=
+ =?us-ascii?Q?jDAwWkVt7bygTPCUZHu8OlNeQWg+7FQpOsEiBO7R3/FrOXomBlwkQeJJxMCK?=
+ =?us-ascii?Q?RRdSgThxMEi/wxrWtIqdAhxaYkUMOSbbSCc4dxg3Mue7nB+fAutvgrVxUWdd?=
+ =?us-ascii?Q?SxVxI0EOjXVxX7/WJ+xtzD72yv12qd3D3+0He2/ngIo9/Eo+d14Q5mngH4Ym?=
+ =?us-ascii?Q?depWLjbiaIrH5xU1eLd8fCOEfMgy4OmBOGkW9J9D/CLrs8/d+8D3WWKMg6lT?=
+ =?us-ascii?Q?bapnUW6GSX2uvhyL1vwrsxBzpOIKBSjQoAx2iAPhqQOH0qCWyHFR7H79tR30?=
+ =?us-ascii?Q?fH0vcFzo8PYmk19KyiMObhoG3n0afKKGfjoWC6H76Q4Vh4AZ7+fDEh85Rtjr?=
+ =?us-ascii?Q?d2UHlp6qeB6O5p9NJCPaNdZOLzi7aKc+U4DO8SeaZlWtQQhI4MjTanCWqha2?=
+ =?us-ascii?Q?6I2xOBck5Axw26rK+QVPOAiKr8wc2ycOK+4AWboO9rlBnq8m5Yxva6QlRMfc?=
+ =?us-ascii?Q?0WwhZ1Rf5JZE1KC29hKXsVZFLpUIqz42yrzaTzhSLHjXZ+qSyukNEf9gibE7?=
+ =?us-ascii?Q?E1ROZlMd3tjXph9kvFSALWYtm6A4si2dDmGeOJKQ/jYfpEHSyku5U2yCHd+S?=
+ =?us-ascii?Q?vE2gxTjEoYuAbjt3ZEer+ltPjNYMUg/pArNUBhXhAioabIpK3D34haM7bK6O?=
+ =?us-ascii?Q?jA=3D=3D?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: 3Xi72XcEnigCuachw723cCjwWEg4RMRHhjA5S+JwVu7dhfr0wpxxudIDKpxgMRNqbkJYHUy9/XBmy1xWT1wrpOq/hd/K6MTbVUSudxEuE052t4x7ymsu3JzY1U4i1Qzl6aALM7iMVjc62M3meFnxL6byw03IWxnkWb7equSqrOH7Hs6VMSOQZcH2SF24uomUwEUfnk9YsDuQbNJvc97E8z7Z4Ggh+SIo5e7VilydkvvD4iaD3eacOEecMpivF9G+e0Tjy3S948NM0caCV3E4Rjv1WU3dSYeSKzH4EEdqh9tnKdqCxPEXwB6ZczDovJGAQnwJEp+TeDzJsu9ThlRYjMfl00uoDDQgMIeIb5AQNsY984KD896eEmp+VviOKf0b/Y9v8H9/EUYvTgdmmsAnnqWevKGf8h+Vt6IL9KfHpeUDbZjpZcCuNcW/g0CbJd4idJL+ylDRPI6UwzRS+at/wlIPDP7P7+hFlyxAR720o9LweXOWPSte/5aH9rhBuFFSjU6dCj5f4zUX1zAWJ8k8mtz/LHpC+0zuw2HZmrHDm6Xw/2nsoNi1XYcZ6DBZF3xkk+atbJhxXZecRILxW/I2ugzBjjvrbALCpDipKhEvoDOdMkWxQyxU574tiO2pmvIcnvkebZeQc4oLvg3S75FRB8/QlAjiGtj6crYAOstxD/ppn6uy5G7ktOjtEFZxPLFUn9d48Sby9Biq59eLmIBiPNPD8Kk0FF9wHeOSKkPrJF66r3kjGTZkpfaRur3nmlO/NqBTzk7ofKDarE3h6L55YlfaZwfUfWCoJD/djsVp2/g=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9883d0e9-5241-4e5d-476f-08db97b85eca
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR10MB4759.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Aug 2023 02:37:12.4642
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 4ER7tnwPnNGm+rOhJIXmNOQnyeG9voh8ygBMTX97uzRQi2oZ0OF2WuKcvM6vryx2pqhJ9eQVpaq9tQDQ02nTI6nUQ5P1kv4XwKnbzKZMa7c=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW6PR10MB7590
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-08-07_28,2023-08-03_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 spamscore=0 bulkscore=0
+ malwarescore=0 adultscore=0 phishscore=0 mlxlogscore=880 mlxscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2306200000
+ definitions=main-2308080021
+X-Proofpoint-GUID: gnn9CrkDnr8og3PrFIq1TaHL1QbVwk_M
+X-Proofpoint-ORIG-GUID: gnn9CrkDnr8og3PrFIq1TaHL1QbVwk_M
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Commit 98b211d6415f ("madvise: convert madvise_free_pte_range() to use a
-folio") replaced the page_mapcount() with folio_mapcount() to check
-whether the folio is shared by other mapping.
 
-It's not correct for large folios. folio_mapcount() returns the total
-mapcount of large folio which is not suitable to detect whether the folio
-is shared.
+Hi Ranjan!
 
-Use folio_estimated_sharers() which returns a estimated number of shares.
-That means it's not 100% correct. It should be OK for madvise case here.
+>> This HW bug impacts only a few registers. However, for code
+>> simplicity, we added retry logic(of 3 retries count) for all
+>> registers exposed to the driver.
 
-User-visible effects is that the THP is skipped when user call madvise.
-But the correct behavior is THP should be split and processed then.
+> Now the recommendation is:
+> - Increase retry count from 3 to 30 for only impacted registers.
+> - We also do not want to reduce the retries from 3 to 1 for
+>   non-impacted registers to avoid any regression.
+>
+> Hence, this patch retries upto 30 times for impacted registers and 3
+> times for non-impacted registers.
 
-NOTE: this change is a temporary fix to reduce the user-visible effects
-before the long term fix from David is ready.
+What is the adverse affect is of having a loop iterator of 30 if the
+non-impacted registers always return a non-zero value after 1 to 3
+attempts?
 
-Fixes: 98b211d6415f ("madvise: convert madvise_free_pte_range() to use a folio")
-Cc: stable@vger.kernel.org
-Signed-off-by: Yin Fengwei <fengwei.yin@intel.com>
-Reviewed-by: Yu Zhao <yuzhao@google.com>
-Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
----
- mm/madvise.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/mm/madvise.c b/mm/madvise.c
-index 49af35e2d99a..4dded5d27e7e 100644
---- a/mm/madvise.c
-+++ b/mm/madvise.c
-@@ -683,7 +683,7 @@ static int madvise_free_pte_range(pmd_t *pmd, unsigned long addr,
- 		if (folio_test_large(folio)) {
- 			int err;
- 
--			if (folio_mapcount(folio) != 1)
-+			if (folio_estimated_sharers(folio) != 1)
- 				break;
- 			if (!folio_trylock(folio))
- 				break;
 -- 
-2.39.2
-
+Martin K. Petersen	Oracle Linux Engineering
