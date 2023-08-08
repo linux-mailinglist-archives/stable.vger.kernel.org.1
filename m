@@ -2,136 +2,112 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5D9387744AB
-	for <lists+stable@lfdr.de>; Tue,  8 Aug 2023 20:26:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5595F7745C3
+	for <lists+stable@lfdr.de>; Tue,  8 Aug 2023 20:46:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235441AbjHHS0b (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 8 Aug 2023 14:26:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48256 "EHLO
+        id S234059AbjHHSqJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 8 Aug 2023 14:46:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40752 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235405AbjHHS0J (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 8 Aug 2023 14:26:09 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 412689C466
-        for <stable@vger.kernel.org>; Tue,  8 Aug 2023 10:39:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1691516341;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=MGbr01H7ohRSkPP3ck7I4OfbupVIQ571vmUuvRJPa8U=;
-        b=G8xpKcNZyoja9HC0HPkWxTepYS//rbdbxrQQp3VjXt8WSgeCAhSi6RCT4lex3yRcegWLvk
-        lZiUSA0pdyzHio7xi0xy4z8wMJLnYvGEq+ISAaPRgEassVc4CD4Nest9wDptdVQiRAtp9v
-        7xHzcn1estpE8OaM3Esm83pMmVbjb5k=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-259-SAkIxSzVMZW-004HZWkrgw-1; Tue, 08 Aug 2023 06:33:48 -0400
-X-MC-Unique: SAkIxSzVMZW-004HZWkrgw-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com [10.11.54.1])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 91053185A7A5;
-        Tue,  8 Aug 2023 10:33:47 +0000 (UTC)
-Received: from localhost.localdomain (unknown [10.39.194.191])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 966D740C2076;
-        Tue,  8 Aug 2023 10:33:46 +0000 (UTC)
-From:   Hans de Goede <hdegoede@redhat.com>
-To:     "Rafael J . Wysocki" <rafael@kernel.org>,
-        Mario Limonciello <mario.limonciello@amd.com>
-Cc:     Hans de Goede <hdegoede@redhat.com>,
-        Linux regressions mailing list <regressions@lists.linux.dev>,
-        stable@vger.kernel.org, linux-acpi@vger.kernel.org, x86@kernel.org
-Subject: [PATCH v2 2/3] ACPI: resource: Always use MADT override IRQ settings for GSI != 1
-Date:   Tue,  8 Aug 2023 12:33:34 +0200
-Message-ID: <20230808103335.95339-3-hdegoede@redhat.com>
-In-Reply-To: <20230808103335.95339-1-hdegoede@redhat.com>
-References: <20230808103335.95339-1-hdegoede@redhat.com>
+        with ESMTP id S234107AbjHHSpm (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 8 Aug 2023 14:45:42 -0400
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 45C4C4446A
+        for <stable@vger.kernel.org>; Tue,  8 Aug 2023 09:46:40 -0700 (PDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5A8ED153B;
+        Tue,  8 Aug 2023 03:50:03 -0700 (PDT)
+Received: from e120937-lin (unknown [172.31.20.19])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 78FEA3F59C;
+        Tue,  8 Aug 2023 03:49:19 -0700 (PDT)
+Date:   Tue, 8 Aug 2023 11:49:17 +0100
+From:   Cristian Marussi <cristian.marussi@arm.com>
+To:     Naresh Kamboju <naresh.kamboju@linaro.org>,
+        Sasha Levin <sashal@kernel.org>
+Cc:     linux-stable <stable@vger.kernel.org>,
+        lkft-triage@lists.linaro.org,
+        clang-built-linux <llvm@lists.linux.dev>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Anders Roxell <anders.roxell@linaro.org>
+Subject: Re: stable-rc 5.15: clang-17: drivers/firmware/arm_scmi/smc.c:39:6:
+ error: duplicate member 'irq'
+Message-ID: <ZNIdrd+SQ0KjYWKA@e120937-lin>
+References: <CA+G9fYvPn4N6yPEQauHLXw22AWihQFxyA=twQMDCEwDjXZyYAg@mail.gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.1
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CA+G9fYvPn4N6yPEQauHLXw22AWihQFxyA=twQMDCEwDjXZyYAg@mail.gmail.com>
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-All the cases, were the DSDT IRQ settings should be used instead of
-the MADT override, are for IRQ 1 (the PS/2 kbd IRQ).
+On Tue, Aug 08, 2023 at 11:59:22AM +0530, Naresh Kamboju wrote:
+> LKFT build plans upgraded to clang-17 and found this failure,
+> 
+> While building stable-rc 5.15 arm with clang-17 failed with below
+> warnings and errors.
+> 
+> Build log:
+> ----------
+> 
+> drivers/firmware/arm_scmi/smc.c:39:6: error: duplicate member 'irq'
+>    39 |         int irq;
+>       |             ^
+> drivers/firmware/arm_scmi/smc.c:34:6: note: previous declaration is here
+>    34 |         int irq;
+>       |             ^
+> drivers/firmware/arm_scmi/smc.c:118:20: error: use of undeclared
+> identifier 'irq'
+>   118 |                 scmi_info->irq = irq;
+>       |                                  ^
+> 2 errors generated.
+> 
+>   Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+> 
+> Links:
+>  - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-5.15.y/build/v5.15.124-80-g6a5dd0772845/testrun/18864721/suite/build/test/clang-lkftconfig/log
+>  - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-5.15.y/build/v5.15.124-80-g6a5dd0772845/testrun/18864721/suite/build/test/clang-lkftconfig/details/
+> 
 
-Simplify things by always honering the override for GSI != 1
-(for non DMI quirked cases).
+Hi Naresh and Sasha,
 
-This allows removing the DMI quirks to honor the override for
-some non IRQ 1 IRQs on some AMD ZEN based Lenovo models.
+so this fix (unluckily) applies cleanly to v5.15 but fails to build since the
+logic and code around it was different in v5.15.
 
-Fixes: a9c4a912b7dc ("ACPI: resource: Remove "Zen" specific match and quirks")
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Linux regressions mailing list <regressions@lists.linux.dev>
-Cc: stable@vger.kernel.org
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
----
- drivers/acpi/resource.c | 28 ++++++++--------------------
- 1 file changed, 8 insertions(+), 20 deletions(-)
+While looking at backporting it properly, though, I realized that the fix is
+NOT needed really in v5.15 due to the different context and logic, so I ask you
+to DROP this fix in v5.15.
 
-diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
-index 0800a9d77558..840b938a5fb0 100644
---- a/drivers/acpi/resource.c
-+++ b/drivers/acpi/resource.c
-@@ -470,24 +470,6 @@ static const struct dmi_system_id asus_laptop[] = {
- 	{ }
- };
- 
--static const struct dmi_system_id lenovo_laptop[] = {
--	{
--		.ident = "LENOVO IdeaPad Flex 5 14ALC7",
--		.matches = {
--			DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
--			DMI_MATCH(DMI_PRODUCT_NAME, "82R9"),
--		},
--	},
--	{
--		.ident = "LENOVO IdeaPad Flex 5 16ALC7",
--		.matches = {
--			DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
--			DMI_MATCH(DMI_PRODUCT_NAME, "82RA"),
--		},
--	},
--	{ }
--};
--
- static const struct dmi_system_id tongfang_gm_rg[] = {
- 	{
- 		.ident = "TongFang GMxRGxx/XMG CORE 15 (M22)/TUXEDO Stellaris 15 Gen4 AMD",
-@@ -539,8 +521,6 @@ struct irq_override_cmp {
- static const struct irq_override_cmp override_table[] = {
- 	{ medion_laptop, 1, ACPI_LEVEL_SENSITIVE, ACPI_ACTIVE_LOW, 0, false },
- 	{ asus_laptop, 1, ACPI_LEVEL_SENSITIVE, ACPI_ACTIVE_LOW, 0, false },
--	{ lenovo_laptop, 6, ACPI_LEVEL_SENSITIVE, ACPI_ACTIVE_LOW, 0, true },
--	{ lenovo_laptop, 10, ACPI_LEVEL_SENSITIVE, ACPI_ACTIVE_LOW, 0, true },
- 	{ tongfang_gm_rg, 1, ACPI_EDGE_SENSITIVE, ACPI_ACTIVE_LOW, 1, true },
- 	{ maingear_laptop, 1, ACPI_EDGE_SENSITIVE, ACPI_ACTIVE_LOW, 1, true },
- 	{ lg_laptop, 1, ACPI_LEVEL_SENSITIVE, ACPI_ACTIVE_LOW, 0, false },
-@@ -562,6 +542,14 @@ static bool acpi_dev_irq_override(u32 gsi, u8 triggering, u8 polarity,
- 			return entry->override;
- 	}
- 
-+	/*
-+	 * Always use the MADT override info, except for IRQ 1 for IRQ1
-+	 * the DSDT IRQ settings should sometimes be used otherwise
-+	 * PS/2 keyboards will not work.
-+	 */
-+	if (gsi != 1)
-+		return true;
-+
- #ifdef CONFIG_X86
- 	/*
- 	 * IRQ override isn't needed on modern AMD Zen systems and
--- 
-2.41.0
+I suppose the patch has been automatically applied because the Fixes referred
+a commit that was on v5.15 too since some of those lines were indeed impacted
+and were present also in later versions, but the logic around it has
+changed afterwards, so the original code (up to v5.17) was not really affected
+by the bug addressed by this fix...only later versions from v5.18 (included)
+onwards needs it.
 
+Moreover note that the whole SMC ISR logic was introduced in v5.12 (and was
+good up to v5.17 as said) so v5.15 is really the only stable release that needs
+to drop this fix.
+
+Thanks and sorry for the noise,
+Cristian
+
+> 
+> Steps to reproduce:
+>  tuxmake --runtime podman --target-arch arm --toolchain clang-17
+> --kconfig https://storage.tuxsuite.com/public/linaro/lkft/builds/2TeTE3iE8aq4t1kv169LcMmd9jo/config
+> LLVM=1 LLVM_IAS=1
+> 
+>   Links:
+>     - https://storage.tuxsuite.com/public/linaro/lkft/builds/2TeTE3iE8aq4t1kv169LcMmd9jo/tuxmake_reproducer.sh
+> 
+> --
+> Linaro LKFT
+> https://lkft.linaro.org
