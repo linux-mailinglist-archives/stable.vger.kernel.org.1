@@ -2,57 +2,58 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7E9FA7736FE
-	for <lists+stable@lfdr.de>; Tue,  8 Aug 2023 04:44:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EC17077370A
+	for <lists+stable@lfdr.de>; Tue,  8 Aug 2023 04:50:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230500AbjHHCo4 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 7 Aug 2023 22:44:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60328 "EHLO
+        id S230461AbjHHCuB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 7 Aug 2023 22:50:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34752 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231179AbjHHCow (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 7 Aug 2023 22:44:52 -0400
-Received: from mail-qt1-x836.google.com (mail-qt1-x836.google.com [IPv6:2607:f8b0:4864:20::836])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 10E8919B7
-        for <stable@vger.kernel.org>; Mon,  7 Aug 2023 19:44:27 -0700 (PDT)
-Received: by mail-qt1-x836.google.com with SMTP id d75a77b69052e-4036bd4fff1so105711cf.0
-        for <stable@vger.kernel.org>; Mon, 07 Aug 2023 19:44:27 -0700 (PDT)
+        with ESMTP id S231236AbjHHCuA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 7 Aug 2023 22:50:00 -0400
+Received: from mail-qt1-x833.google.com (mail-qt1-x833.google.com [IPv6:2607:f8b0:4864:20::833])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7AC86E62
+        for <stable@vger.kernel.org>; Mon,  7 Aug 2023 19:49:56 -0700 (PDT)
+Received: by mail-qt1-x833.google.com with SMTP id d75a77b69052e-407db3e9669so102261cf.1
+        for <stable@vger.kernel.org>; Mon, 07 Aug 2023 19:49:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1691462666; x=1692067466;
+        d=google.com; s=20221208; t=1691462995; x=1692067795;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=HFBtj5+GUeabKO+a6gaW+tViZxqLfdyLTKUL9Gnj9eE=;
-        b=i/VHYmemj0AqwkE/aEQ4VIiX9E0CoxW/L48u4vW5wLdg+eBjtfFFhyPqu2GgIu5+dt
-         BiI2K5Lb0TvWaP543JgNpD7yXw9P2/pLuGt2dsO/utVzQ8XT7TYpsrHSkTwtdX2mA5DT
-         irRmR0UxGtLREgcczpJCHDyBpvwUqQ6l+NDAeO486ZTbdMidl781riX1QJ4Jl0xlIIjk
-         RfgUMutLOKsftAogFysgdrsiR9oepxWFN9bA9VmQylHmBypyYAA7UyrmUH52/2rB5uD+
-         LOz2Af4axT+crlWHpcBMMcF6pmoXQPvyG16cS3nxnJRqBj1X+3Hd4on0V903PwK2KSr3
-         eLNA==
+        bh=6RSNnQZT08dQdFVE5RJv/G+IJCRbc3TJGyCsrhcpmdQ=;
+        b=a272jKXZUQokY6L5C0Br3ocABCJ+A8NpiSSqAW2ukctHWiYUg0oPKJ+vgx0NyQAwv2
+         UKQDyT/D5JaOlhyZlhwe/G7vvSnImf0tKcfkclJhEKEzV6GEr7q+JBN8MxUO7P9r913M
+         uI+NpMpW3CMQ9TtTqVY509r87gnSnsvdAVwRDCljGI3WsvByZB2H6f4qwRj/RotvSktg
+         n33C1JWAuTsjt7/yM1TrXoyLh3SF/AoKIUPQxtQ8dWgMYhIkOZpoQWzmZ72g46myu1b6
+         MvfVM6rFEPbilLDFeGW1Gt9RNnEsYUZ/Q63C54Az3wdihv5Q6BKRqdaVa8N0hz7NDLwD
+         inzA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691462666; x=1692067466;
+        d=1e100.net; s=20221208; t=1691462995; x=1692067795;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=HFBtj5+GUeabKO+a6gaW+tViZxqLfdyLTKUL9Gnj9eE=;
-        b=e3y4nqmRJO/ci+X+QUem+Kmpwm9TDmN/jzPRxM15xHQNX5N03lgWAPH6hb6rsoUYPf
-         PqRveHZVkb7jA6a3Hav3bKU0wwbK6UwBOgPQaar1baTf8y+XP8MBDhzshTM9qvtzhR5K
-         SdkLQE+ZwLTrfK8aAuaW2v6ncZRDHkk0pqy8F+Bp3GoIE4NOmw+Le++9Ylui46OjD4xa
-         2KjWH4PsHCnK/TYH/K3eCWcvwksAwKZV8LwI0iUCFlm+umk+vvrvevUM5xLHuv9TM9mS
-         enPxsDpsc+P8h7/lFXZ5eeisG70MQx8EojJPVjSG5XBvluj0F1/ao0cW1JeDhtDLiuyB
-         lbxA==
-X-Gm-Message-State: AOJu0YwPYZQt+BC6sJKxsFLeqQX4e8C8wkwTjHlKIDZXxAifx0onvnPw
-        vMmlIXtmvMcI+iUKm0C12LXcjBDyoY40QW5RGY1yPw==
-X-Google-Smtp-Source: AGHT+IF64S4/Xi/oJhQgXH6fWplai9RuABjTLRY3oKXCVmngRrRUof9ljJ+2KiXHIjJ2ezLm2h04KupyzFuwiGBk5zg=
-X-Received: by 2002:a05:622a:1456:b0:3fa:45ab:22a5 with SMTP id
- v22-20020a05622a145600b003fa45ab22a5mr550337qtx.27.1691462666077; Mon, 07 Aug
- 2023 19:44:26 -0700 (PDT)
+        bh=6RSNnQZT08dQdFVE5RJv/G+IJCRbc3TJGyCsrhcpmdQ=;
+        b=QzQe/10RAlKqnT58OOzunZ6Zt2JQSaLFhttvoHMgCw/Iz5eTNw5foMN1xmgSIVagsv
+         hi+znlOK0kUaQJvo9LgMBiSr2OtxOPCWG0M1pww7FOJ9GO5ngx9CZQbxyIBpB1XjfG3D
+         hFjMaDGWF/Cbnn4pnZuUHTy65o4ll17W5DCm792j3oCubyrNLoaaITLQHNmmS5Mh8vNn
+         y6MCetx9WyULNxqjFjkkKdU+aQYjo8w+L7aJcCM4TPwvZ/ImhwOo5wDjsK3XOjUpuoDj
+         a072GPuwWUJlxO73Lut97YMPD2d8nvQS6oIE0SJToFiVLX6IgjKywXUJMMlS9TH8GSJj
+         Nf4Q==
+X-Gm-Message-State: AOJu0YyB1uear9E4EgJGE7qcK173z5cwgQGuir3dYWCrFbFz+8ssiVZ0
+        EQtL9+ZCXPySJ9kbHN9VeZ1KNohPgIkWYyym+hhPog==
+X-Google-Smtp-Source: AGHT+IFvXwWNd1BMS+iG4q7Z3meYuXCiDq9AoY3zcgK3v7qramlFnSOemTPJKu+4UN/Xp/QO5nOMIVY1TX40Y3Ro7hQ=
+X-Received: by 2002:ac8:5c53:0:b0:403:b1e5:bcae with SMTP id
+ j19-20020ac85c53000000b00403b1e5bcaemr749780qtj.10.1691462995526; Mon, 07 Aug
+ 2023 19:49:55 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230808020917.2230692-1-fengwei.yin@intel.com>
-In-Reply-To: <20230808020917.2230692-1-fengwei.yin@intel.com>
+References: <20230808020917.2230692-1-fengwei.yin@intel.com> <20230808020917.2230692-3-fengwei.yin@intel.com>
+In-Reply-To: <20230808020917.2230692-3-fengwei.yin@intel.com>
 From:   Yu Zhao <yuzhao@google.com>
-Date:   Mon, 7 Aug 2023 20:43:49 -0600
-Message-ID: <CAOUHufa99BbKi3pq2xxrNEzygULE-brUELK=DLU89REW-GT-Vw@mail.gmail.com>
-Subject: Re: [PATCH v2 0/3] don't use mapcount() to check large folio sharing
+Date:   Mon, 7 Aug 2023 20:49:19 -0600
+Message-ID: <CAOUHufZnYk5BtTB9Cm0Jnf_KJPXdsLD4H7Fd4wdxP2Rm+QW+Ag@mail.gmail.com>
+Subject: Re: [PATCH v2 2/3] madvise:madvise_free_huge_pmd(): don't use
+ mapcount() against large folio for sharing check
 To:     Yin Fengwei <fengwei.yin@intel.com>, akpm@linux-foundation.org
 Cc:     linux-mm@kvack.org, linux-kernel@vger.kernel.org,
         stable@vger.kernel.org, willy@infradead.org,
@@ -72,39 +73,59 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, Aug 7, 2023 at 8:10=E2=80=AFPM Yin Fengwei <fengwei.yin@intel.com> =
+On Mon, Aug 7, 2023 at 8:11=E2=80=AFPM Yin Fengwei <fengwei.yin@intel.com> =
 wrote:
 >
-> In madvise_cold_or_pageout_pte_range() and madvise_free_pte_range(),
-> folio_mapcount() is used to check whether the folio is shared. But it's
-> not correct as folio_mapcount() returns total mapcount of large folio.
+> Commit fc986a38b670 ("mm: huge_memory: convert madvise_free_huge_pmd to
+> use a folio") replaced the page_mapcount() with folio_mapcount() to check
+> whether the folio is shared by other mapping.
 >
-> Use folio_estimated_sharers() here as the estimated number is enough.
+> It's not correct for large folios. folio_mapcount() returns the total
+> mapcount of large folio which is not suitable to detect whether the folio
+> is shared.
 >
+> Use folio_estimated_sharers() which returns a estimated number of shares.
+> That means it's not 100% correct. It should be OK for madvise case here.
 >
-> This patchset will fix the cases:
-> User space application call madvise() with MADV_FREE, MADV_COLD and
-> MADV_PAGEOUT for specific address range. There are THP mapped to the
-> range. Without the patchset, the THP is skipped. With the patch, the
-> THP will be split and handled accordingly.
+> User-visible effects is that the THP is skipped when user call madvise.
+> But the correct behavior is THP should be split and processed then.
 >
-> David reported the cow self test skip some cases because of
-> MADV_PAGEOUT skip THP:
-> https://lore.kernel.org/linux-mm/9e92e42d-488f-47db-ac9d-75b24cd0d037@int=
-el.com/T/#mbf0f2ec7fbe45da47526de1d7036183981691e81
-> and I confirmed this patchset make it work again.
+> NOTE: this change is a temporary fix to reduce the user-visible effects
+> before the long term fix from David is ready.
 >
->
-> Changelog from v1:
->   - Avoid two Fixes tags make backport harder. Thank Andrew for pointing
->     this out.
->
->   - Add note section to mention this is a temporary fix which is fine
->     to reduce user-visble effects. For long term fix, we should wait for
->     David's solution. Thank Ryan and David for pointing this out.
->
->   - Spell user-visible effects out. Then people could decide whether
->     these patches are necessary for stable branch. Thank Andrew for
->     pointing this out.
+> Fixes: fc986a38b670 ("mm: huge_memory: convert madvise_free_huge_pmd to u=
+se a folio")
+> Cc: stable@vger.kernel.org
 
-LGTM, thank you.
+Andrew, this one isn't really a bug fix but an optimization, so please
+feel free to drop the Fixes and Cc tags above. (It seems to me it
+doesn't hurt for stable to take it though.)
+
+Thank you.
+
+
+> Signed-off-by: Yin Fengwei <fengwei.yin@intel.com>
+> Reviewed-by: Yu Zhao <yuzhao@google.com>
+> Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
+> ---
+>  mm/huge_memory.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+> index 154c210892a1..0b709d2c46c6 100644
+> --- a/mm/huge_memory.c
+> +++ b/mm/huge_memory.c
+> @@ -1612,7 +1612,7 @@ bool madvise_free_huge_pmd(struct mmu_gather *tlb, =
+struct vm_area_struct *vma,
+>          * If other processes are mapping this folio, we couldn't discard
+>          * the folio unless they all do MADV_FREE so let's skip the folio=
+.
+>          */
+> -       if (folio_mapcount(folio) !=3D 1)
+> +       if (folio_estimated_sharers(folio) !=3D 1)
+>                 goto out;
+>
+>         if (!folio_trylock(folio))
+> --
+> 2.39.2
+>
