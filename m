@@ -2,270 +2,303 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5DBBF7742F7
-	for <lists+stable@lfdr.de>; Tue,  8 Aug 2023 19:53:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A75687740F5
+	for <lists+stable@lfdr.de>; Tue,  8 Aug 2023 19:13:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234917AbjHHRxh convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+stable@lfdr.de>); Tue, 8 Aug 2023 13:53:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44018 "EHLO
+        id S234136AbjHHRNK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 8 Aug 2023 13:13:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44918 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229839AbjHHRxQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 8 Aug 2023 13:53:16 -0400
-Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D46A29B7C;
-        Tue,  8 Aug 2023 09:23:41 -0700 (PDT)
-Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-6873f64a290so1574844b3a.0;
-        Tue, 08 Aug 2023 09:23:41 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691511794; x=1692116594;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=xIz8xHvDX016h5cw1rUukWudmsNBq0m1nrGbkhWaLZU=;
-        b=YDjto9KJwXd5bzo8PCPUUi8B+qc500wgas+vuIYgEI6ttiBVgjDSu3DtNA4NBv7aOD
-         +ZuwAqq/cCfKO9zxM5D8QsRnabcR2uB0jJtkkexhcftrVYI5tbVNY4QmpRaFaNJ0lup1
-         S9ECbOCfa8enEPhdTP5NGfNRM5fbwQT6vcWtVcpppJ/alPW/xFHKbR8QhXl9H1TSzq5J
-         RGTK4DaPgcK0BRPwAf4FI8SRoS7smBZUANP5TTdSz647c6yPw9BcwsbjajlgvyMp8Zy+
-         kC8ExuF75o299Uz58D/Tt3IsxMweIYOGmAMuKLpWY2D9JVONYHNHkwpZt/5WYUIvX64I
-         GTDw==
-X-Gm-Message-State: ABy/qLaVRfDr+RgrwhiOwN/ezGnGfcOu+oMr2hkqmD1aqJS3yGpMPdXK
-        cn+YjjajeytKxzEHI67ooxDlQKaYAi4g36xlfPkE4fGw
-X-Google-Smtp-Source: APBJJlGvkRYzTrsgUPkJtu2i243z1/N0LawwcBumLHZaL7SYVSklHjWf5yhoeVk+BUWOtJPtewuSHxufV6ZqhdMKOck=
-X-Received: by 2002:a4a:cf14:0:b0:569:a08a:d9c5 with SMTP id
- l20-20020a4acf14000000b00569a08ad9c5mr23082881oos.0.1691501864362; Tue, 08
- Aug 2023 06:37:44 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230806151453.10690-1-hdegoede@redhat.com> <3cdde518-1c0c-24dc-1ffb-90ae34c23296@redhat.com>
- <de2864f9-1b70-0e35-b22a-875eb857d274@redhat.com> <CAJZ5v0ijaemfrMemeowYQ9kGcsRVtD0vVoJfuf8YdgsmXe9=VQ@mail.gmail.com>
- <c2213c75-192b-1fbf-d2dc-5c098c880e17@redhat.com>
-In-Reply-To: <c2213c75-192b-1fbf-d2dc-5c098c880e17@redhat.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Tue, 8 Aug 2023 15:37:33 +0200
-Message-ID: <CAJZ5v0i9Uaw16k2q+7yzFMG+3t40gcK06Xi5Ea6c+RyvV5ePyw@mail.gmail.com>
-Subject: Re: [PATCH] ACPI: resource: revert "Remove "Zen" specific match and quirks"
-To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        linux-acpi@vger.kernel.org,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        Linux regressions mailing list <regressions@lists.linux.dev>,
+        with ESMTP id S229731AbjHHRMX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 8 Aug 2023 13:12:23 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 54FFB1BAEF;
+        Tue,  8 Aug 2023 09:05:14 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D10D46255B;
+        Tue,  8 Aug 2023 13:39:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB753C433C7;
+        Tue,  8 Aug 2023 13:39:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1691501956;
+        bh=Ki1HzhNVrEMQqJYK0ubVbjtanH8DpF6Ky5gGu4/0x4k=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=qoX/eMO017CMAZkvb5eeeZSwrGoo7OhaWXNBUPAwkABu5o8SDL76hkMVFaXDUR5Io
+         Nn0o252MBpOGGoZYWuNRNgFRx5bOTLOTY993hG6hJUjbz1nIX/5ukgMnMXkxGl1zba
+         Mo3kuaoicSI+nGJ9g/AG+ieTHPdLvzThSBQorQGCGt9p17fq4lkAUz4SwEW0stHdO7
+         Szagd69E8U2I5XXZ4IV7JaHi9SYjiOGvOnevorrizcM64DnADzW35VYq4e0ljaSbXr
+         rpWSPeHnMcHVQVEklx3CorOhu5FBhpKItIdm9k2lUzS56OGu2NCv4S+5jgbvr6Wbmo
+         qCqtSFuHo4lFA==
+Date:   Tue, 8 Aug 2023 14:39:11 +0100
+From:   Conor Dooley <conor@kernel.org>
+To:     Atish Kumar Patra <atishp@rivosinc.com>
+Cc:     Conor Dooley <conor.dooley@microchip.com>, palmer@dabbelt.com,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Anup Patel <apatel@ventanamicro.com>,
+        Alexandre Ghiti <alexghiti@rivosinc.com>,
+        =?iso-8859-1?Q?Bj=F6rn_T=F6pel?= <bjorn@rivosinc.com>,
+        Song Shuai <suagrfillet@gmail.com>,
+        JeeHeng Sia <jeeheng.sia@starfivetech.com>,
+        Petr Tesarik <petrtesarik@huaweicloud.com>,
+        linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
         stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-        autolearn=no autolearn_force=no version=3.4.6
+Subject: Re: [RFT 1/2] RISC-V: handle missing "no-map" properties for
+ OpenSBI's PMP protected regions
+Message-ID: <20230808-handbag-mushily-f884178d29f5@spud>
+References: <20230802-purse-hydrant-6f44f77364b0@wendy>
+ <20230802-detention-second-82ab2b53e07a@wendy>
+ <CAHBxVyGgSJ66zMj65tRup2u23KP4=RJ5zN7hj5=K9e91NA9eog@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="rx7tRWhyclYJdoyr"
+Content-Disposition: inline
+In-Reply-To: <CAHBxVyGgSJ66zMj65tRup2u23KP4=RJ5zN7hj5=K9e91NA9eog@mail.gmail.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi,
 
-On Tue, Aug 8, 2023 at 3:31 PM Hans de Goede <hdegoede@redhat.com> wrote:
->
-> Hi,
->
-> On 8/8/23 13:18, Rafael J. Wysocki wrote:
-> > On Tue, Aug 8, 2023 at 10:36 AM Hans de Goede <hdegoede@redhat.com> wrote:
-> >>
-> >> Hi,
-> >>
-> >> On 8/7/23 17:19, Hans de Goede wrote:
-> >>> Hi All,
-> >>>
-> >>> On 8/6/23 17:14, Hans de Goede wrote:
-> >>>> Commit a9c4a912b7dc ("ACPI: resource: Remove "Zen" specific match and
-> >>>> quirks") is causing keyboard problems for quite a log of AMD based
-> >>>> laptop users, leading to many bug reports.
-> >>>>
-> >>>> Revert this change for now, until we can come up with
-> >>>> a better fix for the PS/2 IRQ trigger-type/polarity problems
-> >>>> on some x86 laptops.
-> >>>>
-> >>>> Fixes: a9c4a912b7dc ("ACPI: resource: Remove "Zen" specific match and quirks")
-> >>>> Link: https://bugzilla.redhat.com/show_bug.cgi?id=2229165
-> >>>> Link: https://bugzilla.redhat.com/show_bug.cgi?id=2229317
-> >>>> Link: https://bugzilla.kernel.org/show_bug.cgi?id=217726
-> >>>> Cc: Mario Limonciello <mario.limonciello@amd.com>
-> >>>> Cc: Linux regressions mailing list <regressions@lists.linux.dev>
-> >>>> Cc: stable@vger.kernel.org
-> >>>> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-> >>>
-> >>> I've spend most of today analysing the situation / this problem :
-> >>>
-> >>> 213031 - MEDION notebook internal keyboard not recognized / not working correctly
-> >>> https://bugzilla.kernel.org/show_bug.cgi?id=213031
-> >>>
-> >>> This is the bug that started it all, the issue here was overriding
-> >>> a level low DSDT entry:
-> >>>
-> >>>                 IRQ (Level, ActiveLow, Exclusive, )
-> >>>                     {1}
-> >>>
-> >>> With an edge high entry from the MADT, note that edge high is the default
-> >>> mp_irqs[idx].irqflags value for legacy/ISA IRQs. The dmesg for the Ice Lake
-> >>> Medion M15T this bug is about shows no INT_SRC_OVR entry for IRQ 1
-> >>> in the MADT, it does show INT_SRC_OVR entries for IRQ 0 and 9.
-> >>>
-> >>> At first a fix was attempted to not use the MADT override unless
-> >>> the DSDT entry was edge high. But that caused regressions, so a switch
-> >>> to a DMI based approach was used instead. Noteworthy is that some of
-> >>> the regressions benefitted from a MADT override to high edge for
-> >>> IRQ 3 and 4 (UART IRQs) even though there are no INT_SRC_OVR messages
-> >>> in the dmesg of the machine with the regression.
-> >>>
-> >>> *** fast forward to today ***
-> >>>
-> >>> The DMI quirk based approach seems to have worked well for the Ice Lake
-> >>> era problems from approx. 3 years ago. But on AMD Zen based systems
-> >>> the situation seems to be more complex. Not using the MADT override
-> >>> is a problem for quite a few models. But using the MADT override
-> >>> is a problem on quite a few other models ...
-> >>>
-> >>> Looking at the status quo for v6.4 where MADT overriding by default
-> >>> is not used, 3 bugs have been filed where the override is actually
-> >>> necessary (note dmesg snippets with patched kernel to enable
-> >>> MADT override):
-> >>>
-> >>> 217394 - IRQ override skipping breaks the Aya Neo Air Plus 6800U keyboard buttons
-> >>> https://bugzilla.kernel.org/show_bug.cgi?id=217394
-> >>>
-> >>> Aya Neo Air Plus - AMD Ryzen 7 6800U
-> >>>
-> >>> [    0.003333] ACPI: INT_SRC_OVR (bus 0 bus_irq 0 global_irq 2 dfl dfl)
-> >>> [    0.003333] ACPI: INT_SRC_OVR (bus 0 bus_irq 1 global_irq 1 low edge)
-> >>> [    0.003333] ACPI: INT_SRC_OVR (bus 0 bus_irq 9 global_irq 9 low level)
-> >>> [    0.410670] ACPI: IRQ 1 override to edge, low(!)
-> >>>
-> >>> 217406 - very slow keyboard typing without IRQ override with new AMD Ryzen CPUs
-> >>> https://bugzilla.kernel.org/show_bug.cgi?id=217406
-> >>>
-> >>> HP Pavilion Aero 13 - AMD Ryzen 7735U
-> >>>
-> >>> [    0.026135] ACPI: INT_SRC_OVR (bus 0 bus_irq 1 global_irq 1 low edge)
-> >>> [    0.026136] ACPI: INT_SRC_OVR (bus 0 bus_irq 0 global_irq 2 dfl dfl)
-> >>> [    0.026137] ACPI: INT_SRC_OVR (bus 0 bus_irq 9 global_irq 9 low level)
-> >>>
-> >>> [    0.361640] ACPI: IRQ 1 override to edge, low(!)
-> >>>
-> >>> 217336 - keyboard not working Asus TUF FA617NS
-> >>> https://bugzilla.kernel.org/show_bug.cgi?id=217336
-> >>>
-> >>> Asus TUF FA617NS - AMD Ryzen 7 7735HS
-> >>>
-> >>> Noteworthy DSTD keyboard resource:
-> >>>
-> >>>                 IRQNoFlags ()
-> >>>                     {1}
-> >>>
-> >>> ACPI: INT_SRC_OVR (bus 0 bus_irq 0 global_irq 2 dfl dfl)
-> >>> ACPI: INT_SRC_OVR (bus 0 bus_irq 1 global_irq 1 low edge)
-> >>> ACPI: INT_SRC_OVR (bus 0 bus_irq 9 global_irq 9 low level)
-> >>> ACPI: IRQ 1 override to edge, low(!)
-> >>>
-> >>> So for all 3 do use MADT override on Zen bugs we have an INT_SRC_OVR dmesg entry
-> >>> for IRQ 1.
-> >>>
-> >>> Unfortunately the "MAINGEAR Vector Pro 2 17" / "MG-VCP2-17A3070T" for
-> >>> which a quirk was added in commit 9946e39fe8d0 to force the override
-> >>> even though it it Zen based breaks this pattern:
-> >>>
-> >>> [    0.073733] ACPI: INT_SRC_OVR (bus 0 bus_irq 0 global_irq 2 dfl dfl)
-> >>> [    0.073734] ACPI: INT_SRC_OVR (bus 0 bus_irq 9 global_irq 9 low level)
-> >>> [    0.341347] ACPI: IRQ 1 override to edge, high(!)
-> >>>
-> >>> Still the presence of an INT_SRC_OVR for a specific legacy IRQ seems
-> >>> to be a strong indicator that MADT overriding should be used in that
-> >>> case and can be used to at least reduce the amount of DMI quirks.
-> >>>
-> >>> Another interesting data point is that all the devices for which
-> >>> DMI quirks are present for which MADT overriding should not be used
-> >>> for IRQ 1 all have a DSDT entry with the IRQ configured as level low
-> >>> and exclusive.
-> >>>
-> >>> I think that the best thing to do might be to go back to
-> >>> the original approach from:
-> >>>
-> >>> https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git/commit/?id=0ec4e55e9f571f08970ed115ec0addc691eda613
-> >>>
-> >>> and then limit this to IRQ1. Also maybe inverting the check to:
-> >>>
-> >>> static bool irq_is_legacy(struct acpi_resource_irq *irq)
-> >>> {
-> >>>       return !(irq->triggering == ACPI_LEVEL_SENSITIVE &&
-> >>>                irq->polarity == ACPI_ACTIVE_LOW &&
-> >>>                irq->shareable == ACPI_EXCLUSIVE);
-> >>> }
-> >>>
-> >>> But I need to check if this will work for all the new Zen models
-> >>> for which we got bug reports after the recent dropping of
-> >>> 9946e39fe8d0 ("ACPI: resource: skip IRQ override on AMD Zen platforms")
-> >>
-> >> So today I have started with continueing the investigation looking
-> >> at laptop models where we used to not override because of:
-> >>
-> >>         if (boot_cpu_has(X86_FEATURE_ZEN))
-> >>                 return false;
-> >>
-> >> And where removing this and thus using the override has led to a
-> >> regression.
-> >>
-> >> Looking at the acpidump-s from the following bugs:
-> >>
-> >> https://bugzilla.redhat.com/show_bug.cgi?id=2229165
-> >> https://bugzilla.redhat.com/show_bug.cgi?id=2229317
-> >> https://bugzilla.kernel.org/show_bug.cgi?id=217726
-> >>
-> >> All of these use the following settings for the kbd in the DSDT:
-> >>
-> >>          IRQ (Edge, ActiveLow, Shared, )
-> >>              {1}
-> >>
-> >> So we know these are at least 3 models with "Edge, ActiveLow, Shared" IRQ 1 settings which must not use the override. But the existing quirks before a9c4a912b7dc ("ACPI: resource: Remove "Zen" specific match and quirks") contain:
-> >>
-> >>         { tongfang_gm_rg, 1, ACPI_EDGE_SENSITIVE, ACPI_ACTIVE_LOW, 1, true },
-> >>         { maingear_laptop, 1, ACPI_EDGE_SENSITIVE, ACPI_ACTIVE_LOW, 1, true },
-> >>
-> >> IOW models with "Edge, ActiveLow, Shared" IRQ 1 settings which OTOH must use the override, so as I was already afraid there is no easy for these DSDT IRQ 1 settings skip the override solution :|
-> >>
-> >> So I have 2 plans to move forward with this:
-> >>
-> >> Plan 1. Short them for 6.5 and backporting to 6.4.y (and other stable series):
-> >>
-> >> 1. Revert a9c4a912b7dc
-> >> 2. Limit the acpi_dev_irq_override() check to only ever skip the IRQ override
-> >>    (return false) for GSI 1.
-> >> 3. Add a check if there is a INT_SRC_OVR MADT entry for GSI 1 and in that case
-> >>    use the override even on ZEN, fixing:
-> >>
-> >> 217394 - IRQ override skipping breaks the Aya Neo Air Plus 6800U keyboard buttons
-> >>  https://bugzilla.kernel.org/show_bug.cgi?id=217394
-> >> 217406 - very slow keyboard typing without IRQ override with new AMD Ryzen CPUs
-> >>  https://bugzilla.kernel.org/show_bug.cgi?id=217406
-> >> 217336 - keyboard not working Asus TUF FA617NS
-> >>  https://bugzilla.kernel.org/show_bug.cgi?id=217336
-> >>
-> >> Which are known AMD ZEN based laptops which do need the override for IRQ 1.
-> >>
-> >> This short term plan is not ideal, but it does fix all currently known issues / models and does so in a way which will hopefully not cause regressions on any other models.
-> >>
-> >>
-> >> Plan 2. Long term, see if I can come up with a way to read back the actual trigger type set in the IOAPIC for IRQ 1 at boot (in drivers/acpi/resource.c) and use that.
+--rx7tRWhyclYJdoyr
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Tue, Aug 08, 2023 at 12:54:11AM -0700, Atish Kumar Patra wrote:
+> On Wed, Aug 2, 2023 at 4:14=E2=80=AFAM Conor Dooley <conor.dooley@microch=
+ip.com> wrote:
 > >
-> > Sounds reasonable to me.
+> > Add an erratum for versions [v0.8 to v1.3) of OpenSBI which fail to add
+> > the "no-map" property to the reserved memory nodes for the regions it
+> > has protected using PMPs.
 > >
-> > It looks like using the IRQ 1 configuration left by the BIOS as is
-> > would be the best choice unless that is not viable for some reason.
->
-> Agreed, do you have a suggestion how to do that ? I've been looking at this but I've gotten a bit lost in all the layers of ioapic code.
->
-> It looks like we need to add a flag to acpi_register_gsi() for it to register a gsi while keeping the IOAPIC settings as is (or a new function) but it is not clear to me how to implement this.
->
-> An alternative method would be to call irq_get_trigger_type() for IRQ 1 and use that for the IRQ trigger info when calling acpi_register_gsi(), but I think we need to have the IRQ registered / added to the IRQ domain first ?
+> > Our existing fix sweeping hibernation under the carpet by marking it
+> > NONPORTABLE is insufficient as there are other ways to generate
+> > accesses to these reserved memory regions, as Petr discovered [1]
+> > while testing crash kernels & kdump.
+> >
+> > Intercede during the boot process when the afflicted versions of OpenSBI
+> > are present & set the "no-map" property in all "mmode_resv" nodes before
+> > the kernel does its reserved memory region initialisation.
+> >
+>=20
+> We have different mechanisms of DT being passed to the kernel.
+>=20
+> 1. A prior stage(e.g U-Boot SPL) to M-mode runtime firmware (e.g.
+> OpenSBI, rustSBI) passes the DT to M-mode runtime firmware and it
+> passes to the next stage.
+> In this case, M-mode runtime firmware gets a chance to update the
+> no-map property in DT that the kernel can parse.
+>=20
+> 2. User loads the DT from the boot loader (e.g EDK2, U-Boot proper).
+> Any DT patching done by the M-mode firmware is useless. If these DTBs
+> don't have the no-map
+> property, hibernation or EFI booting will have issues as well.
+>=20
 
-I need to take a deeper look into this, which I guess is going to take
-some time.
+> We are trying to solve only one part of problem #1 in this patch.
 
-If you figure this out in the meantime, please let me know.
+Correct.
+
+If someone's second stage is also providing an incorrect devicetree
+then, yeah, this approach would fall apart - but it's the firmware
+provided devicetree being incorrect that I am trying to account for
+here. If a person incorrectly constructed one, I am not really sure what
+we can do for them, they incorrect described their hardware /shrug
+My patch should of course help in some of the scenarios you mention above
+if the name of the reserved memory region from OpenSBI is propagated by
+the second-stage bootloader, but that is just an extension of case 1,
+not case 2.
+
+> I
+> don't think any other M-mode runtime firmware patches DT with no-map
+> property as well.
+> Please let me know if I am wrong about that. The problem is not
+> restricted to [v0.8 to v1.3) of OpenSBI.
+
+It comes down to Alex's question - do we want to fix this kind of
+firmware issue in the kernel? Ultimately this is a policy decision that
+"somebody" has to make. Maybe the list of firmwares that need this
+grows, but hopefully this bug will be fixed everywhere going forward,
+since, as you say, we now have a document.
+The reason I've only targeted OpenSBI here is that it's what is being
+shipped on people's SBCs etc by default & is also what is in the
+versions of QEMU that people seem to be using. Unless there's some
+example that I am missing, other firmwares are either not affected or
+not actually being shipped on to consumers?
+
+> The booting doc now says that no-map property must be set and any
+> usage of DTBs without that (via #1 or #2) will have unintended
+> consequences.
+
+Which is great. It unfortunately does not help one iota with stuff
+that's already in the wild.
+
+Thanks,
+Conor.
+
+> > Reported-by: Song Shuai <suagrfillet@gmail.com>
+> > Link: https://lore.kernel.org/all/CAAYs2=3DgQvkhTeioMmqRDVGjdtNF_vhB+vm=
+_1dHJxPNi75YDQ_Q@mail.gmail.com/
+> > Reported-by: JeeHeng Sia <jeeheng.sia@starfivetech.com>
+> > Link: https://groups.google.com/a/groups.riscv.org/g/sw-dev/c/ITXwaKfA6=
+z8
+> > Reported-by: Petr Tesarik <petrtesarik@huaweicloud.com>
+> > Closes: https://lore.kernel.org/linux-riscv/76ff0f51-d6c1-580d-f943-061=
+e93073306@huaweicloud.com/ [1]
+> > CC: stable@vger.kernel.org
+> > Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
+> > ---
+> >  arch/riscv/include/asm/sbi.h |  5 +++++
+> >  arch/riscv/kernel/sbi.c      | 42 +++++++++++++++++++++++++++++++++++-
+> >  arch/riscv/mm/init.c         |  3 +++
+> >  3 files changed, 49 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/arch/riscv/include/asm/sbi.h b/arch/riscv/include/asm/sbi.h
+> > index 5b4a1bf5f439..5360f3476278 100644
+> > --- a/arch/riscv/include/asm/sbi.h
+> > +++ b/arch/riscv/include/asm/sbi.h
+> > @@ -252,6 +252,9 @@ enum sbi_pmu_ctr_type {
+> >  #define SBI_ERR_ALREADY_STARTED -7
+> >  #define SBI_ERR_ALREADY_STOPPED -8
+> >
+> > +/* SBI implementation IDs */
+> > +#define SBI_IMP_OPENSBI        1
+> > +
+> >  extern unsigned long sbi_spec_version;
+> >  struct sbiret {
+> >         long error;
+> > @@ -259,6 +262,8 @@ struct sbiret {
+> >  };
+> >
+> >  void sbi_init(void);
+> > +void sbi_apply_reserved_mem_erratum(void *dtb_va);
+> > +
+> >  struct sbiret sbi_ecall(int ext, int fid, unsigned long arg0,
+> >                         unsigned long arg1, unsigned long arg2,
+> >                         unsigned long arg3, unsigned long arg4,
+> > diff --git a/arch/riscv/kernel/sbi.c b/arch/riscv/kernel/sbi.c
+> > index c672c8ba9a2a..aeb27263fa53 100644
+> > --- a/arch/riscv/kernel/sbi.c
+> > +++ b/arch/riscv/kernel/sbi.c
+> > @@ -5,8 +5,10 @@
+> >   * Copyright (c) 2020 Western Digital Corporation or its affiliates.
+> >   */
+> >
+> > +#include <linux/acpi.h>
+> >  #include <linux/bits.h>
+> >  #include <linux/init.h>
+> > +#include <linux/libfdt.h>
+> >  #include <linux/pm.h>
+> >  #include <linux/reboot.h>
+> >  #include <asm/sbi.h>
+> > @@ -583,6 +585,40 @@ long sbi_get_mimpid(void)
+> >  }
+> >  EXPORT_SYMBOL_GPL(sbi_get_mimpid);
+> >
+> > +static long sbi_firmware_id;
+> > +static long sbi_firmware_version;
+> > +
+> > +/*
+> > + * For devicetrees patched by OpenSBI a "mmode_resv" node is added to =
+cover
+> > + * the region OpenSBI has protected by means of a PMP. Some versions o=
+f OpenSBI,
+> > + * [v0.8 to v1.3), omitted the "no-map" property, but this trips up hi=
+bernation
+> > + * among other things.
+> > + */
+> > +void __init sbi_apply_reserved_mem_erratum(void *dtb_pa)
+> > +{
+> > +       int child, reserved_mem;
+> > +
+> > +       if (sbi_firmware_id !=3D SBI_IMP_OPENSBI)
+> > +               return;
+> > +
+> > +       if (!acpi_disabled)
+> > +               return;
+> > +
+> > +       if (sbi_firmware_version >=3D 0x10003 || sbi_firmware_version <=
+ 0x8)
+> > +               return;
+> > +
+> > +       reserved_mem =3D fdt_path_offset((void *)dtb_pa, "/reserved-mem=
+ory");
+> > +       if (reserved_mem < 0)
+> > +               return;
+> > +
+> > +       fdt_for_each_subnode(child, (void *)dtb_pa, reserved_mem) {
+> > +               const char *name =3D fdt_get_name((void *)dtb_pa, child=
+, NULL);
+> > +
+> > +               if (!strncmp(name, "mmode_resv", 10))
+> > +                       fdt_setprop((void *)dtb_pa, child, "no-map", NU=
+LL, 0);
+> > +       }
+> > +};
+> > +
+> >  void __init sbi_init(void)
+> >  {
+> >         int ret;
+> > @@ -596,8 +632,12 @@ void __init sbi_init(void)
+> >                 sbi_major_version(), sbi_minor_version());
+> >
+> >         if (!sbi_spec_is_0_1()) {
+> > +               sbi_firmware_id =3D sbi_get_firmware_id();
+> > +               sbi_firmware_version =3D sbi_get_firmware_version();
+> > +
+> >                 pr_info("SBI implementation ID=3D0x%lx Version=3D0x%lx\=
+n",
+> > -                       sbi_get_firmware_id(), sbi_get_firmware_version=
+());
+> > +                       sbi_firmware_id, sbi_firmware_version);
+> > +
+> >                 if (sbi_probe_extension(SBI_EXT_TIME)) {
+> >                         __sbi_set_timer =3D __sbi_set_timer_v02;
+> >                         pr_info("SBI TIME extension detected\n");
+> > diff --git a/arch/riscv/mm/init.c b/arch/riscv/mm/init.c
+> > index 70fb31960b63..cb16bfdeacdb 100644
+> > --- a/arch/riscv/mm/init.c
+> > +++ b/arch/riscv/mm/init.c
+> > @@ -29,6 +29,7 @@
+> >  #include <asm/tlbflush.h>
+> >  #include <asm/sections.h>
+> >  #include <asm/soc.h>
+> > +#include <asm/sbi.h>
+> >  #include <asm/io.h>
+> >  #include <asm/ptdump.h>
+> >  #include <asm/numa.h>
+> > @@ -253,6 +254,8 @@ static void __init setup_bootmem(void)
+> >          * in the device tree, otherwise the allocation could end up in=
+ a
+> >          * reserved region.
+> >          */
+> > +
+> > +       sbi_apply_reserved_mem_erratum(dtb_early_va);
+> >         early_init_fdt_scan_reserved_mem();
+> >
+> >         /*
+> > --
+> > 2.40.1
+> >
+
+--rx7tRWhyclYJdoyr
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZNJFfwAKCRB4tDGHoIJi
+0uEqAP9hw6Quu+1eFhYzWMHbD4zSBoRmdSPjufPiD7IKziLVzgD/XlkWXPdZ+Ror
+6EFOBSXlAVHRbpzcs80M/sl1y1Z46wc=
+=rpvq
+-----END PGP SIGNATURE-----
+
+--rx7tRWhyclYJdoyr--
