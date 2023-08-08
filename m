@@ -2,112 +2,154 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5595F7745C3
-	for <lists+stable@lfdr.de>; Tue,  8 Aug 2023 20:46:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0FA96774578
+	for <lists+stable@lfdr.de>; Tue,  8 Aug 2023 20:42:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234059AbjHHSqJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 8 Aug 2023 14:46:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40752 "EHLO
+        id S234022AbjHHSml (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 8 Aug 2023 14:42:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60670 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234107AbjHHSpm (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 8 Aug 2023 14:45:42 -0400
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 45C4C4446A
-        for <stable@vger.kernel.org>; Tue,  8 Aug 2023 09:46:40 -0700 (PDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5A8ED153B;
-        Tue,  8 Aug 2023 03:50:03 -0700 (PDT)
-Received: from e120937-lin (unknown [172.31.20.19])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 78FEA3F59C;
-        Tue,  8 Aug 2023 03:49:19 -0700 (PDT)
-Date:   Tue, 8 Aug 2023 11:49:17 +0100
-From:   Cristian Marussi <cristian.marussi@arm.com>
-To:     Naresh Kamboju <naresh.kamboju@linaro.org>,
-        Sasha Levin <sashal@kernel.org>
-Cc:     linux-stable <stable@vger.kernel.org>,
-        lkft-triage@lists.linaro.org,
-        clang-built-linux <llvm@lists.linux.dev>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Anders Roxell <anders.roxell@linaro.org>
-Subject: Re: stable-rc 5.15: clang-17: drivers/firmware/arm_scmi/smc.c:39:6:
- error: duplicate member 'irq'
-Message-ID: <ZNIdrd+SQ0KjYWKA@e120937-lin>
-References: <CA+G9fYvPn4N6yPEQauHLXw22AWihQFxyA=twQMDCEwDjXZyYAg@mail.gmail.com>
+        with ESMTP id S232023AbjHHSmT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 8 Aug 2023 14:42:19 -0400
+Received: from mail-oo1-xc30.google.com (mail-oo1-xc30.google.com [IPv6:2607:f8b0:4864:20::c30])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF4C832135
+        for <stable@vger.kernel.org>; Tue,  8 Aug 2023 09:33:05 -0700 (PDT)
+Received: by mail-oo1-xc30.google.com with SMTP id 006d021491bc7-56c711a88e8so3950471eaf.2
+        for <stable@vger.kernel.org>; Tue, 08 Aug 2023 09:33:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1691512347; x=1692117147;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=s++4blSxMjulxr4WqQlajWQp+reqB47xPJw4qPYyIJs=;
+        b=O8ECM+9UqIXUmMSXDK2fhOEVIDTBbwYbfwt0V/rIu3Npgn3KR7lmtvqD+mf5THe/SJ
+         dlrd9IOJcCibjaixNZSgh/VQwnXw2Etv7X+WNRNKCipnZ+Ek6VrDhVDHvnzdTQPdGK7y
+         SEWduC0zSmsVHmS5PYb1NH9hme5JfyPBIXFyGcdW7xqvARfXRQC/PZH08IOcMuwBN5Y6
+         TfgRjnBUivX7jpI1uNbfT+K2h4SnuzoXXZKsfRrfxijT0/S50EUXvBWp+IULFs7M7loo
+         QTUC6EDZcXlDSYKkoGBZjjedOG3ui+yecDT+SmmxcUfAph7OeVyMCzxLoUzYfkH0VUq1
+         KVSQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1691512347; x=1692117147;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=s++4blSxMjulxr4WqQlajWQp+reqB47xPJw4qPYyIJs=;
+        b=g94a1q1zy0QsH4bGXDY5LrD+LGcIBLz1zRwtFKv7mEm1uIM7n4X2/KLnZF1RohzMVb
+         F3orq5+V4P7aompdWFJMVzt5xiIuFCHSum1djASw168xprtNChMhDBWlPmtLFxuwW+tn
+         ZG6NjKGvZ29tfh5KuqpABcnnAHLhZApXs+hVc3+b7wWz9ydRbzDTjh0i1NhKVUUsuIjX
+         F4OrvxFzYQW03BVhpJxCeOUNvc60JPSn3iX2Tk4uaKZZBw+n0mS5/Yoy/ISegnm6rB4A
+         FPFUN4mHbbHymJHQBAJTBfQSE9CeQhlPbrq02bYTxqa/p3dX+rvLOL4G4ZdWZWJBF1Mf
+         n4PA==
+X-Gm-Message-State: AOJu0Yy8Jo8EJRerAfsOIp4wh6mxo2J0X5XkY1u+Zlx7u4mCtIDPiXmT
+        7KaZScsjf4Q9YfqsnoLOecA2cBKfdFgH2gBZ387aM9MKj20ofISk
+X-Google-Smtp-Source: AGHT+IGGcAj42nyoezAnxw/gRQ5a8aT9hrh74ET1epNHdpkHqryPud6eA2qTIgp9XEhLBjrOsYxl27ezpR/VAqMtR6k=
+X-Received: by 2002:a25:6943:0:b0:ce8:42b6:46f9 with SMTP id
+ e64-20020a256943000000b00ce842b646f9mr15212913ybc.45.1691491995143; Tue, 08
+ Aug 2023 03:53:15 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CA+G9fYvPn4N6yPEQauHLXw22AWihQFxyA=twQMDCEwDjXZyYAg@mail.gmail.com>
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+References: <20230802023023.1318134-1-yunlong.xing@unisoc.com>
+In-Reply-To: <20230802023023.1318134-1-yunlong.xing@unisoc.com>
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+Date:   Tue, 8 Aug 2023 12:52:39 +0200
+Message-ID: <CAPDyKFr1ts4yE3it=+fFsvQaSPTa=R01yobaNVhHfRh4nRicow@mail.gmail.com>
+Subject: Re: [PATCH V2] mmc: block: Fix in_flight[issue_type] value error
+To:     Yunlong Xing <yunlong.xing@unisoc.com>
+Cc:     adrian.hunter@intel.com, CLoehle@hyperstone.com,
+        brauner@kernel.org, hare@suse.de, asuk4.q@gmail.com,
+        avri.altman@wdc.com, beanhuo@micron.com, linus.walleij@linaro.org,
+        linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org, hongyu.jin@unisoc.com,
+        zhiguo.niu@unisoc.com, yunlong.xing23@gmail.com,
+        yibin.ding@unisoc.com, dongliang.cui@unisoc.com
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-0.5 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, Aug 08, 2023 at 11:59:22AM +0530, Naresh Kamboju wrote:
-> LKFT build plans upgraded to clang-17 and found this failure,
-> 
-> While building stable-rc 5.15 arm with clang-17 failed with below
-> warnings and errors.
-> 
-> Build log:
-> ----------
-> 
-> drivers/firmware/arm_scmi/smc.c:39:6: error: duplicate member 'irq'
->    39 |         int irq;
->       |             ^
-> drivers/firmware/arm_scmi/smc.c:34:6: note: previous declaration is here
->    34 |         int irq;
->       |             ^
-> drivers/firmware/arm_scmi/smc.c:118:20: error: use of undeclared
-> identifier 'irq'
->   118 |                 scmi_info->irq = irq;
->       |                                  ^
-> 2 errors generated.
-> 
->   Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
-> 
-> Links:
->  - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-5.15.y/build/v5.15.124-80-g6a5dd0772845/testrun/18864721/suite/build/test/clang-lkftconfig/log
->  - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-5.15.y/build/v5.15.124-80-g6a5dd0772845/testrun/18864721/suite/build/test/clang-lkftconfig/details/
-> 
+On Wed, 2 Aug 2023 at 04:33, Yunlong Xing <yunlong.xing@unisoc.com> wrote:
+>
+> From: Yibin Ding <yibin.ding@unisoc.com>
+>
+> For a completed request, after the mmc_blk_mq_complete_rq(mq, req)
+> function is executed, the bitmap_tags corresponding to the
+> request will be cleared, that is, the request will be regarded as
+> idle. If the request is acquired by a different type of process at
+> this time, the issue_type of the request may change. It further
+> caused the value of mq->in_flight[issue_type] to be abnormal,
+> and a large number of requests could not be sent.
+>
+> p1:                                           p2:
+> mmc_blk_mq_complete_rq
+>   blk_mq_free_request
+>                                               blk_mq_get_request
+>                                                 blk_mq_rq_ctx_init
+> mmc_blk_mq_dec_in_flight
+>   mmc_issue_type(mq, req)
+>
+> This strategy can ensure the consistency of issue_type
+> before and after executing mmc_blk_mq_complete_rq.
+>
+> Fixes: 81196976ed94 ("mmc: block: Add blk-mq support")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Yibin Ding <yibin.ding@unisoc.com>
+> Acked-by: Adrian Hunter <adrian.hunter@intel.com>
 
-Hi Naresh and Sasha,
+Applied for fixes, thanks!
 
-so this fix (unluckily) applies cleanly to v5.15 but fails to build since the
-logic and code around it was different in v5.15.
+Kind regards
+Uffe
 
-While looking at backporting it properly, though, I realized that the fix is
-NOT needed really in v5.15 due to the different context and logic, so I ask you
-to DROP this fix in v5.15.
 
-I suppose the patch has been automatically applied because the Fixes referred
-a commit that was on v5.15 too since some of those lines were indeed impacted
-and were present also in later versions, but the logic around it has
-changed afterwards, so the original code (up to v5.17) was not really affected
-by the bug addressed by this fix...only later versions from v5.18 (included)
-onwards needs it.
-
-Moreover note that the whole SMC ISR logic was introduced in v5.12 (and was
-good up to v5.17 as said) so v5.15 is really the only stable release that needs
-to drop this fix.
-
-Thanks and sorry for the noise,
-Cristian
-
-> 
-> Steps to reproduce:
->  tuxmake --runtime podman --target-arch arm --toolchain clang-17
-> --kconfig https://storage.tuxsuite.com/public/linaro/lkft/builds/2TeTE3iE8aq4t1kv169LcMmd9jo/config
-> LLVM=1 LLVM_IAS=1
-> 
->   Links:
->     - https://storage.tuxsuite.com/public/linaro/lkft/builds/2TeTE3iE8aq4t1kv169LcMmd9jo/tuxmake_reproducer.sh
-> 
+> ---
+> changes of v2: Sort local declarations in descending order of
+> line length
+> ---
+>  drivers/mmc/core/block.c | 7 ++++---
+>  1 file changed, 4 insertions(+), 3 deletions(-)
+>
+> diff --git a/drivers/mmc/core/block.c b/drivers/mmc/core/block.c
+> index f701efb1fa78..b6f4be25b31b 100644
+> --- a/drivers/mmc/core/block.c
+> +++ b/drivers/mmc/core/block.c
+> @@ -2097,14 +2097,14 @@ static void mmc_blk_mq_poll_completion(struct mmc_queue *mq,
+>         mmc_blk_urgent_bkops(mq, mqrq);
+>  }
+>
+> -static void mmc_blk_mq_dec_in_flight(struct mmc_queue *mq, struct request *req)
+> +static void mmc_blk_mq_dec_in_flight(struct mmc_queue *mq, enum mmc_issue_type issue_type)
+>  {
+>         unsigned long flags;
+>         bool put_card;
+>
+>         spin_lock_irqsave(&mq->lock, flags);
+>
+> -       mq->in_flight[mmc_issue_type(mq, req)] -= 1;
+> +       mq->in_flight[issue_type] -= 1;
+>
+>         put_card = (mmc_tot_in_flight(mq) == 0);
+>
+> @@ -2117,6 +2117,7 @@ static void mmc_blk_mq_dec_in_flight(struct mmc_queue *mq, struct request *req)
+>  static void mmc_blk_mq_post_req(struct mmc_queue *mq, struct request *req,
+>                                 bool can_sleep)
+>  {
+> +       enum mmc_issue_type issue_type = mmc_issue_type(mq, req);
+>         struct mmc_queue_req *mqrq = req_to_mmc_queue_req(req);
+>         struct mmc_request *mrq = &mqrq->brq.mrq;
+>         struct mmc_host *host = mq->card->host;
+> @@ -2136,7 +2137,7 @@ static void mmc_blk_mq_post_req(struct mmc_queue *mq, struct request *req,
+>                         blk_mq_complete_request(req);
+>         }
+>
+> -       mmc_blk_mq_dec_in_flight(mq, req);
+> +       mmc_blk_mq_dec_in_flight(mq, issue_type);
+>  }
+>
+>  void mmc_blk_mq_recovery(struct mmc_queue *mq)
 > --
-> Linaro LKFT
-> https://lkft.linaro.org
+> 2.25.1
+>
