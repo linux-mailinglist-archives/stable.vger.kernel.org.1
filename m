@@ -2,135 +2,164 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B9FF977488B
-	for <lists+stable@lfdr.de>; Tue,  8 Aug 2023 21:35:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 54A62774830
+	for <lists+stable@lfdr.de>; Tue,  8 Aug 2023 21:28:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236510AbjHHTfY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 8 Aug 2023 15:35:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35582 "EHLO
+        id S231723AbjHHT2Z (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 8 Aug 2023 15:28:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37612 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236498AbjHHTfL (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 8 Aug 2023 15:35:11 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 039E0212E;
-        Tue,  8 Aug 2023 11:00:43 -0700 (PDT)
+        with ESMTP id S231880AbjHHT2C (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 8 Aug 2023 15:28:02 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EBE205F868;
+        Tue,  8 Aug 2023 11:54:27 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9681A62983;
-        Tue,  8 Aug 2023 18:00:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9CDEC433C8;
-        Tue,  8 Aug 2023 18:00:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-        s=korg; t=1691517642;
-        bh=dOb+lybiDEvGSANKZ5rPYPaRqGBJAorOXa2Uok+pTFE=;
-        h=Date:To:From:Subject:From;
-        b=feEWvfbXIueQlwL/KcyCymxmdp8g1bMMM5tVHtezVYyt09/RKiE/zuXAKY18OG2Dw
-         x7vMql442v5lwsEYrWMyNG3d92022oS0k/AWT+SVXDaR8hMlhuq+YhrIVw5M8SjOwQ
-         zqgwmNqQwlogIbPADjKJE1S97P40BXEJSaSsTcc8=
-Date:   Tue, 08 Aug 2023 11:00:41 -0700
-To:     mm-commits@vger.kernel.org, yuzhao@google.com, willy@infradead.org,
-        wangkefeng.wang@huawei.com, vishal.moola@gmail.com,
-        stable@vger.kernel.org, shy828301@gmail.com, ryan.roberts@arm.com,
-        minchan@kernel.org, david@redhat.com, fengwei.yin@intel.com,
-        akpm@linux-foundation.org
-From:   Andrew Morton <akpm@linux-foundation.org>
-Subject: + madvise-madvise_free_pte_range-dont-use-mapcount-against-large-folio-for-sharing-check.patch added to mm-hotfixes-unstable branch
-Message-Id: <20230808180041.E9CDEC433C8@smtp.kernel.org>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
-        SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 42C1362A1E;
+        Tue,  8 Aug 2023 18:54:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50B1CC433C7;
+        Tue,  8 Aug 2023 18:54:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1691520866;
+        bh=wSfB+zwUb2FmgHmNF0uWcGJQhUWa7SwhK3gVe15fv3I=;
+        h=From:To:Cc:Subject:Date:From;
+        b=aEkmMXKWBfIEAJCHwdA0MWDTz75AN/y68+bTxfGOrRJ0ZvG049vLliUjbAi6dOg05
+         t+HFQRDmjDqvGHuNhQrNONiEtforuLDT0PNjO8tfF1z7AW3U5wn99+QGDQEs1mujK+
+         UYtK9mI3BgId9n4xx+SODiGdAWwP787eeSyiF8YE=
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
+        torvalds@linux-foundation.org, stable@vger.kernel.org
+Cc:     lwn@lwn.net, jslaby@suse.cz,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: Linux 4.14.321
+Date:   Tue,  8 Aug 2023 20:54:21 +0200
+Message-ID: <2023080807-joylessly-upchuck-b4fe@gregkh>
+X-Mailer: git-send-email 2.41.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+-----------------
+Note, PLEASE TEST this kernel if you are on the 4.14.y tree before using
+it in a real workload.  This was a quick release due to the obvious
+security fixes in it, and as such, it has not had very much testing "in
+the wild".  Please let us know of any problems seen.  Also note that the
+user/kernel api for the new security mitigations might be changing over
+time, so do not get used to them being fixed in stone just yet.
+-----------------
 
-The patch titled
-     Subject: madvise:madvise_free_pte_range(): don't use mapcount() against large folio for sharing check
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     madvise-madvise_free_pte_range-dont-use-mapcount-against-large-folio-for-sharing-check.patch
+I'm announcing the release of the 4.14.321 kernel.
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/madvise-madvise_free_pte_range-dont-use-mapcount-against-large-folio-for-sharing-check.patch
+All users of the 4.14 kernel series must upgrade.
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+The updated 4.14.y git tree can be found at:
+	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git linux-4.14.y
+and can be browsed at the normal kernel.org git web browser:
+	https://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=summary
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
+thanks,
 
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+greg k-h
 
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
+------------
 
-------------------------------------------------------
-From: Yin Fengwei <fengwei.yin@intel.com>
-Subject: madvise:madvise_free_pte_range(): don't use mapcount() against large folio for sharing check
-Date: Tue, 8 Aug 2023 10:09:17 +0800
+ Documentation/ABI/testing/sysfs-devices-system-cpu         |   11 
+ Documentation/admin-guide/hw-vuln/gather_data_sampling.rst |  109 ++++++
+ Documentation/admin-guide/hw-vuln/index.rst                |    1 
+ Documentation/admin-guide/kernel-parameters.txt            |   39 +-
+ Makefile                                                   |    2 
+ arch/Kconfig                                               |    3 
+ arch/alpha/include/asm/bugs.h                              |   20 -
+ arch/arm/Kconfig                                           |    1 
+ arch/arm/include/asm/bugs.h                                |    4 
+ arch/arm/kernel/bugs.c                                     |    3 
+ arch/ia64/Kconfig                                          |    1 
+ arch/ia64/include/asm/bugs.h                               |   20 -
+ arch/ia64/kernel/setup.c                                   |    3 
+ arch/m68k/Kconfig                                          |    1 
+ arch/m68k/include/asm/bugs.h                               |   21 -
+ arch/m68k/kernel/setup_mm.c                                |    3 
+ arch/mips/Kconfig                                          |    1 
+ arch/mips/include/asm/bugs.h                               |   17 -
+ arch/mips/kernel/setup.c                                   |   13 
+ arch/parisc/include/asm/bugs.h                             |   20 -
+ arch/powerpc/include/asm/bugs.h                            |   18 -
+ arch/sh/Kconfig                                            |    1 
+ arch/sh/include/asm/bugs.h                                 |   78 ----
+ arch/sh/include/asm/processor.h                            |    2 
+ arch/sh/kernel/idle.c                                      |    1 
+ arch/sh/kernel/setup.c                                     |   55 +++
+ arch/sparc/Kconfig                                         |    1 
+ arch/sparc/include/asm/bugs.h                              |   18 -
+ arch/sparc/kernel/setup_32.c                               |    7 
+ arch/um/Kconfig.common                                     |    1 
+ arch/um/include/asm/bugs.h                                 |    7 
+ arch/um/kernel/um_arch.c                                   |    3 
+ arch/x86/Kconfig                                           |   20 +
+ arch/x86/include/asm/bugs.h                                |    2 
+ arch/x86/include/asm/cpufeatures.h                         |    1 
+ arch/x86/include/asm/fpu/internal.h                        |    2 
+ arch/x86/include/asm/mem_encrypt.h                         |    2 
+ arch/x86/include/asm/msr-index.h                           |   11 
+ arch/x86/kernel/cpu/bugs.c                                 |  209 +++++++++----
+ arch/x86/kernel/cpu/common.c                               |  117 ++++++-
+ arch/x86/kernel/cpu/cpu.h                                  |    2 
+ arch/x86/kernel/fpu/init.c                                 |    8 
+ arch/x86/kernel/smpboot.c                                  |    1 
+ arch/x86/kvm/x86.c                                         |    5 
+ arch/x86/xen/smp_pv.c                                      |    2 
+ arch/xtensa/include/asm/bugs.h                             |   18 -
+ drivers/base/cpu.c                                         |    8 
+ drivers/net/xen-netback/netback.c                          |   15 
+ include/asm-generic/bugs.h                                 |   11 
+ include/linux/cpu.h                                        |    6 
+ init/main.c                                                |   15 
+ 51 files changed, 579 insertions(+), 361 deletions(-)
 
-Commit 98b211d6415f ("madvise: convert madvise_free_pte_range() to use a
-folio") replaced the page_mapcount() with folio_mapcount() to check
-whether the folio is shared by other mapping.
+Daniel Sneddon (4):
+      x86/speculation: Add Gather Data Sampling mitigation
+      x86/speculation: Add force option to GDS mitigation
+      x86/speculation: Add Kconfig option for GDS
+      KVM: Add GDS_NO support to KVM
 
-It's not correct for large folios. folio_mapcount() returns the total
-mapcount of large folio which is not suitable to detect whether the folio
-is shared.
+Dave Hansen (1):
+      Documentation/x86: Fix backwards on/off logic about YMM support
 
-Use folio_estimated_sharers() which returns a estimated number of shares.
-That means it's not 100% correct. It should be OK for madvise case here.
+Greg Kroah-Hartman (2):
+      x86: fix backwards merge of GDS/SRSO bit
+      Linux 4.14.321
 
-User-visible effects is that the THP is skipped when user call madvise.
-But the correct behavior is THP should be split and processed then.
+Juergen Gross (1):
+      x86/xen: Fix secondary processors' FPU initialization
 
-NOTE: this change is a temporary fix to reduce the user-visible effects
-before the long term fix from David is ready.
+Ross Lagerwall (1):
+      xen/netback: Fix buffer overrun triggered by unusual packet
 
-Link: https://lkml.kernel.org/r/20230808020917.2230692-4-fengwei.yin@intel.com
-Fixes: 98b211d6415f ("madvise: convert madvise_free_pte_range() to use a folio")
-Signed-off-by: Yin Fengwei <fengwei.yin@intel.com>
-Reviewed-by: Yu Zhao <yuzhao@google.com>
-Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc: Matthew Wilcox <willy@infradead.org>
-Cc: Minchan Kim <minchan@kernel.org>
-Cc: Vishal Moola (Oracle) <vishal.moola@gmail.com>
-Cc: Yang Shi <shy828301@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/madvise.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
---- a/mm/madvise.c~madvise-madvise_free_pte_range-dont-use-mapcount-against-large-folio-for-sharing-check
-+++ a/mm/madvise.c
-@@ -680,7 +680,7 @@ static int madvise_free_pte_range(pmd_t
- 		if (folio_test_large(folio)) {
- 			int err;
- 
--			if (folio_mapcount(folio) != 1)
-+			if (folio_estimated_sharers(folio) != 1)
- 				break;
- 			if (!folio_trylock(folio))
- 				break;
-_
-
-Patches currently in -mm which might be from fengwei.yin@intel.com are
-
-madvise-madvise_cold_or_pageout_pte_range-dont-use-mapcount-against-large-folio-for-sharing-check.patch
-madvise-madvise_free_huge_pmd-dont-use-mapcount-against-large-folio-for-sharing-check.patch
-madvise-madvise_free_pte_range-dont-use-mapcount-against-large-folio-for-sharing-check.patch
-filemap-add-filemap_map_folio_range.patch
-rmap-add-folio_add_file_rmap_range.patch
-mm-convert-do_set_pte-to-set_pte_range.patch
-filemap-batch-pte-mappings.patch
+Thomas Gleixner (15):
+      init: Provide arch_cpu_finalize_init()
+      x86/cpu: Switch to arch_cpu_finalize_init()
+      ARM: cpu: Switch to arch_cpu_finalize_init()
+      ia64/cpu: Switch to arch_cpu_finalize_init()
+      m68k/cpu: Switch to arch_cpu_finalize_init()
+      mips/cpu: Switch to arch_cpu_finalize_init()
+      sh/cpu: Switch to arch_cpu_finalize_init()
+      sparc/cpu: Switch to arch_cpu_finalize_init()
+      um/cpu: Switch to arch_cpu_finalize_init()
+      init: Remove check_bugs() leftovers
+      init: Invoke arch_cpu_finalize_init() earlier
+      init, x86: Move mem_encrypt_init() into arch_cpu_finalize_init()
+      x86/fpu: Remove cpuinfo argument from init functions
+      x86/fpu: Mark init functions __init
+      x86/fpu: Move FPU initialization into arch_cpu_finalize_init()
 
