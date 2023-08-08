@@ -2,123 +2,99 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C5D767741B8
-	for <lists+stable@lfdr.de>; Tue,  8 Aug 2023 19:27:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 67C0577466B
+	for <lists+stable@lfdr.de>; Tue,  8 Aug 2023 20:56:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229686AbjHHR1S (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 8 Aug 2023 13:27:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42276 "EHLO
+        id S231582AbjHHS4J (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 8 Aug 2023 14:56:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56026 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231837AbjHHR0k (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 8 Aug 2023 13:26:40 -0400
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 7DC25852B7
-        for <stable@vger.kernel.org>; Tue,  8 Aug 2023 09:11:26 -0700 (PDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D74A81515;
-        Tue,  8 Aug 2023 09:03:12 -0700 (PDT)
-Received: from e120937-lin (unknown [172.31.20.19])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8D73D3F64C;
-        Tue,  8 Aug 2023 09:02:28 -0700 (PDT)
-Date:   Tue, 8 Aug 2023 17:02:26 +0100
-From:   Cristian Marussi <cristian.marussi@arm.com>
-To:     Sudeep Holla <sudeep.holla@arm.com>
-Cc:     Nick Desaulniers <ndesaulniers@google.com>,
-        Naresh Kamboju <naresh.kamboju@linaro.org>,
-        Sasha Levin <sashal@kernel.org>,
-        linux-stable <stable@vger.kernel.org>,
-        lkft-triage@lists.linaro.org,
-        clang-built-linux <llvm@lists.linux.dev>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Anders Roxell <anders.roxell@linaro.org>
-Subject: Re: stable-rc 5.15: clang-17: drivers/firmware/arm_scmi/smc.c:39:6:
- error: duplicate member 'irq'
-Message-ID: <ZNJnEvXm2SJHfLeB@e120937-lin>
-References: <CA+G9fYvPn4N6yPEQauHLXw22AWihQFxyA=twQMDCEwDjXZyYAg@mail.gmail.com>
- <ZNIdrd+SQ0KjYWKA@e120937-lin>
- <CAKwvOdmoPUJXT3-+nwYdOBOpcp30zvxapDmvYAt+_wUQj98O8A@mail.gmail.com>
- <20230808154432.nwq3yg5xtbtet4rl@bogus>
+        with ESMTP id S229463AbjHHSzp (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 8 Aug 2023 14:55:45 -0400
+Received: from mail-pf1-x430.google.com (mail-pf1-x430.google.com [IPv6:2607:f8b0:4864:20::430])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 373351C109
+        for <stable@vger.kernel.org>; Tue,  8 Aug 2023 10:14:23 -0700 (PDT)
+Received: by mail-pf1-x430.google.com with SMTP id d2e1a72fcca58-686f1240a22so5709378b3a.0
+        for <stable@vger.kernel.org>; Tue, 08 Aug 2023 10:14:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1691514863; x=1692119663;
+        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=frvcjSHU9+qDHY4YZC4he2fEZsvOzbP34ouHk5d60vI=;
+        b=NB9H+GX92YeuwyZJ58ROuShbqGEm1bGu0GUZgEKjexgIt/naZdzXEH8ACRIdJuzZof
+         WK8jU7TzDVtgtb4xweizjg4lulRQOxs7vmpBIAGRT8PESzz0l6XiJLP9tgEmY5F4fp98
+         jDEgyGecoJHSnlSEa6Xo4lwc8BaEbKQaIvyNLjpgnB35gH9tjAvRiDwTC4G8/oyetjAF
+         oacMYcWXrDGVjefEHwRUjZqAxmHAw628BorfTlWlWyPU2ozSv2eDP0ngZPi4CfQ6bGvn
+         0v9eXRZXIA7/lX4/aYLzyacL70PJhcyl+3anfIiHbkI39KROfCoWE4z3syjiWBxOPXDC
+         wFCw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1691514863; x=1692119663;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=frvcjSHU9+qDHY4YZC4he2fEZsvOzbP34ouHk5d60vI=;
+        b=iuqJhNkipB8BCy8DCMAHhDYLzPntYDCU0QP3JlTXwBddokLQvYbpAUqiMzCoYgHHuH
+         3PHY+O9HiEQ7AeOlWMP4rIfTantKLyeOvw8yyCiPP476Nn6DS6EH+0hnDfky0N+wk0Xn
+         PWS+cHjd9JCK96KTeZEpKUaZzzcDjyK8+j0IPjqgaQ/gqmzAwxAcpne8tnF9+yoSUJ00
+         22tjBYAIiAOrvYkQLaDgb+NTj6kfNTRUn2tIy+Z/pp/dgcI0nO2HXNKqdt4V9C6TgNAa
+         sq8hCJxb60j247KKOX5YEwKtraki6BAmLbW4N1glPPLbNlAtYbBRiz+qhL9SB/b6pzyH
+         UK1Q==
+X-Gm-Message-State: AOJu0YxHXrgT5rPqrzXyDktR/AbIr1t/BMiGip4vvbfuHdEX+t9d+sQl
+        2Jz+phQp+VJaaRbXULsW676+iJ7LEQs6/UkcBWdakm0ASBbI7xPtfP8=
+X-Google-Smtp-Source: AGHT+IEmrwbdceoImr/R1pVLTPPsMVZl7KMGyvlgjYP7+OdE6wTnFjB1sGC91Ej10qjfVOUgq8HfN0LbTnuvsAMOdpw=
+X-Received: by 2002:a05:6102:3172:b0:445:202:d278 with SMTP id
+ l18-20020a056102317200b004450202d278mr4303132vsm.32.1691472461928; Mon, 07
+ Aug 2023 22:27:41 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230808154432.nwq3yg5xtbtet4rl@bogus>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+From:   Naresh Kamboju <naresh.kamboju@linaro.org>
+Date:   Tue, 8 Aug 2023 10:57:30 +0530
+Message-ID: <CA+G9fYsf0jePDO3VPz0pb1sURdefpYCAYH-y+OdsAf3HuzbeRw@mail.gmail.com>
+Subject: stable-rc: 6.1: gcc-plugins: Reorganize gimple includes for GCC 13
+To:     linux-stable <stable@vger.kernel.org>, lkft-triage@lists.linaro.org
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Sasha Levin <sashal@kernel.org>,
+        Anders Roxell <anders.roxell@linaro.org>,
+        Kees Cook <keescook@chromium.org>,
+        linux-hardening@vger.kernel.org,
+        Palmer Dabbelt <palmer@rivosinc.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-0.6 required=5.0 tests=BAYES_00,DATE_IN_PAST_06_12,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, Aug 08, 2023 at 04:44:32PM +0100, Sudeep Holla wrote:
-> On Tue, Aug 08, 2023 at 08:30:30AM -0700, Nick Desaulniers wrote:
-> > On Tue, Aug 8, 2023 at 3:49 AM Cristian Marussi
-> > <cristian.marussi@arm.com> wrote:
-> > >
-> > > On Tue, Aug 08, 2023 at 11:59:22AM +0530, Naresh Kamboju wrote:
-> > > > LKFT build plans upgraded to clang-17 and found this failure,
-> > > >
-> > > > While building stable-rc 5.15 arm with clang-17 failed with below
-> > > > warnings and errors.
-> > > >
-> > > > Build log:
-> > > > ----------
-> > > >
-> > > > drivers/firmware/arm_scmi/smc.c:39:6: error: duplicate member 'irq'
-> > > >    39 |         int irq;
-> > > >       |             ^
-> > > > drivers/firmware/arm_scmi/smc.c:34:6: note: previous declaration is here
-> > > >    34 |         int irq;
-> > > >       |             ^
-> > > > drivers/firmware/arm_scmi/smc.c:118:20: error: use of undeclared
-> > > > identifier 'irq'
-> > > >   118 |                 scmi_info->irq = irq;
-> > > >       |                                  ^
-> > > > 2 errors generated.
-> > > >
-> > > >   Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
-> > > >
-> > > > Links:
-> > > >  - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-5.15.y/build/v5.15.124-80-g6a5dd0772845/testrun/18864721/suite/build/test/clang-lkftconfig/log
-> > > >  - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-5.15.y/build/v5.15.124-80-g6a5dd0772845/testrun/18864721/suite/build/test/clang-lkftconfig/details/
-> > > >
-> > >
-> > > Hi Naresh and Sasha,
-> > >
-> > > so this fix (unluckily) applies cleanly to v5.15 but fails to build since the
-> > > logic and code around it was different in v5.15.
-> > >
-> > > While looking at backporting it properly, though, I realized that the fix is
-> > > NOT needed really in v5.15 due to the different context and logic, so I ask you
-> > > to DROP this fix in v5.15.
-> > 
-> > What's the SHA of the patch that you are referring to (in
-> > linux-5.15.y) that you're suggesting the stable maintainers revert?
-> >
-> 
-> 8482711670fdfc8f89d437284a6ad159ee88615f
-> Commit 8482711670fd ("firmware: arm_scmi: Fix chan_free cleanup on SMC")
-> 
-> For reference upstream commit 
-> d1ff11d7ad87 ("firmware: arm_scmi: Fix chan_free cleanup on SMC")
-> 
-> Note this is only in
-> git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
-> 
-> And not in
-> 
-> git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git linux-5.15.y
+LKFT build plans updated with toolchain gcc-13 and here is the report.
 
-Yes, this is a patch that was recently added to the stable queue for 5.15 and
-it is still pending AFAIU (I suppose since it failed to build once applied).
+Stable rc 6.1 arm64 builds with gcc-13 failed and the bisection is pointing
+to this as first bad commit,
 
-There is another previous failed build report from yesterday:
+# first fixed commit: [e6a71160cc145e18ab45195abf89884112e02dfb]
+   gcc-plugins: Reorganize gimple includes for GCC 13
 
-https://lore.kernel.org/all/202308070912.4UYUVJVJ-lkp@intel.com/
+Thanks Anders for bisecting this problem against Linux 6.2-rc6.
 
-Thanks,
-Cristian
+Build errors:
+---------------
+In file included from /builds/linux/scripts/gcc-plugins/gcc-common.h:75,
+                 from /builds/linux/scripts/gcc-plugins/stackleak_plugin.c:30:
+/usr/lib/gcc-cross/aarch64-linux-gnu/13/plugin/include/gimple-fold.h:72:32:
+error: use of enum 'gsi_iterator_update' without previous declaration
+   72 |                           enum gsi_iterator_update,
+      |                                ^~~~~~~~~~~~~~~~~~
 
+Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+
+
+Links:
+--------
+ - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.1.y-sanity/build/v6.1.43-111-g565bca90c30e/testrun/18861637/suite/build/test/gcc-13-lkftconfig-kselftest-kernel/details/
+ -  https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.1.y-sanity/build/v6.1.43-111-g565bca90c30e/testrun/18861637/suite/build/test/gcc-13-lkftconfig-kselftest-kernel/log
+  - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.1.y-sanity/build/v6.1.43-111-g565bca90c30e/testrun/18861637/suite/build/test/gcc-13-lkftconfig-kselftest-kernel/history/
+
+--
+Linaro LKFT
+https://lkft.linaro.org
