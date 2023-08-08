@@ -2,95 +2,97 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C1454773585
-	for <lists+stable@lfdr.de>; Tue,  8 Aug 2023 02:48:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 433EF773599
+	for <lists+stable@lfdr.de>; Tue,  8 Aug 2023 02:55:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229917AbjHHAsa (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 7 Aug 2023 20:48:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47782 "EHLO
+        id S229566AbjHHAzS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 7 Aug 2023 20:55:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50198 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229545AbjHHAs3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 7 Aug 2023 20:48:29 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36E52170B;
-        Mon,  7 Aug 2023 17:48:29 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B87086233B;
-        Tue,  8 Aug 2023 00:48:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07EBEC433C7;
-        Tue,  8 Aug 2023 00:48:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1691455708;
-        bh=6PjpG/yBmovC2lWrM3FLycfIZttTgbH8fpSd7ReR39U=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=ub5fxKJRhB9BYv+vYgp/sIPn13iURlxUQS/3XAlSYx+Fzqzb5X89wfRZg6aUWiWgS
-         P+YPKIjH1mCILpaTqJqwgbU+TuL29luYo6Esx79wqW8BuLevBPMc10XBAYWeOkqlOl
-         o44h3MTnpYhCLwfAiQoVLp48wbJSdBkGhDP5iGySoL/kmu8Fyt9O6i/l20HrDOr8hu
-         b+ko4crNwqkio+8FY5nQvsPwDIN5/QyF9K1lIXvFKWNJRApvHVVx9lFPBnIVdKMLYy
-         2aQsz0BwzmDwm3Fg5zJFRNsS4RKAUplV4Hg3DafLTgwSbk7Sn4nck8NlkxrE05i2vF
-         ztVYlUaGxzTgg==
-Message-ID: <eefdd25f-502c-8ab4-c49b-f1cb2c6bfd2a@kernel.org>
-Date:   Tue, 8 Aug 2023 08:48:25 +0800
+        with ESMTP id S229533AbjHHAzR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 7 Aug 2023 20:55:17 -0400
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id CBF73170B;
+        Mon,  7 Aug 2023 17:55:12 -0700 (PDT)
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 3780sd2N3026202, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 3780sd2N3026202
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=FAIL);
+        Tue, 8 Aug 2023 08:54:39 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.32; Tue, 8 Aug 2023 08:54:55 +0800
+Received: from [127.0.1.1] (172.21.69.188) by RTEXMBS04.realtek.com.tw
+ (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.7; Tue, 8 Aug 2023
+ 08:54:55 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     <kvalo@kernel.org>
+CC:     <Stable@vger.kernel.org>, <bronecki.damian@gmail.com>,
+        <linux-wireless@vger.kernel.org>
+Subject: [PATCH v2] wifi: rtw89: fix 8852AE disconnection caused by RX full flags
+Date:   Tue, 8 Aug 2023 08:54:26 +0800
+Message-ID: <20230808005426.5327-1-pkshih@realtek.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [f2fs-dev] [PATCH] Revert "f2fs: clean up w/
- sbi->log_sectors_per_block"
-Content-Language: en-US
-To:     Jaegeuk Kim <jaegeuk@kernel.org>, linux-kernel@vger.kernel.org,
-        linux-f2fs-devel@lists.sourceforge.net
-Cc:     Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>,
-        stable@vger.kernel.org
-References: <20230807195219.371131-1-jaegeuk@kernel.org>
-From:   Chao Yu <chao@kernel.org>
-In-Reply-To: <20230807195219.371131-1-jaegeuk@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-6.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [172.21.69.188]
+X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
+ RTEXMBS04.realtek.com.tw (172.21.6.97)
+X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-Antivirus-Interceptor-Info: fallback
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-Antivirus-Interceptor-Info: fallback
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 2023/8/8 3:52, Jaegeuk Kim wrote:
-> This reverts commit bfd476623999118d9c509cb0fa9380f2912bc225.
-> 
-> Shinichiro Kawasaki reported:
-> 
-> When I ran workloads on f2fs using v6.5-rcX with fixes [1][2] and a zoned block
-> devices with 4kb logical block size, I observe mount failure as follows. When
-> I revert this commit, the failure goes away.
-> 
-> [  167.781975][ T1555] F2FS-fs (dm-0): IO Block Size:        4 KB
-> [  167.890728][ T1555] F2FS-fs (dm-0): Found nat_bits in checkpoint
-> [  171.482588][ T1555] F2FS-fs (dm-0): Zone without valid block has non-zero write pointer. Reset the write pointer: wp[0x1300,0x8]
-> [  171.496000][ T1555] F2FS-fs (dm-0): (0) : Unaligned zone reset attempted (block 280000 + 80000)
-> [  171.505037][ T1555] F2FS-fs (dm-0): Discard zone failed:  (errno=-5)
-> 
-> The patch replaced "sbi->log_blocksize - SECTOR_SHIFT" with
-> "sbi->log_sectors_per_block". However, I think these two are not equal when the
-> device has 4k logical block size. The former uses Linux kernel sector size 512
-> byte. The latter use 512b sector size or 4kb sector size depending on the
-> device. mkfs.f2fs obtains logical block size via BLKSSZGET ioctl from the device
-> and reflects it to the value sbi->log_sector_size_per_block. This causes
-> unexpected write pointer calculations in check_zone_write_pointer(). This
-> resulted in unexpected zone reset and the mount failure.
-> 
-> [1] https://lkml.kernel.org/linux-f2fs-devel/20230711050101.GA19128@lst.de/
-> [2] https://lore.kernel.org/linux-f2fs-devel/20230804091556.2372567-1-shinichiro.kawasaki@wdc.com/
-> 
-> Cc: stable@vger.kernel.org
-> Reported-by: Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>
-> Fixes: bfd476623999 ("f2fs: clean up w/ sbi->log_sectors_per_block")
-> Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+RX full flags are raised if certain types of RX FIFO are full, and then
+drop all following MPDU of AMPDU. In order to resume to receive MPDU
+when RX FIFO becomes available, we clear the register bits by the
+commit a0d99ebb3ecd ("wifi: rtw89: initialize DMA of CMAC"). But, 8852AE
+needs more settings to support this. To quickly fix disconnection problem,
+revert the behavior as before.
 
-Reviewed-by: Chao Yu <chao@kernel.org>
+Fixes: a0d99ebb3ecd ("wifi: rtw89: initialize DMA of CMAC")
+Reported-by: Damian B <bronecki.damian@gmail.com>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217710
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Tested-by: Damian B <bronecki.damian@gmail.com>
+---
+v2:
+ - fix commit message typo
+ - collect Damian's Tested-by
+---
+ drivers/net/wireless/realtek/rtw89/mac.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Thanks,
+diff --git a/drivers/net/wireless/realtek/rtw89/mac.c b/drivers/net/wireless/realtek/rtw89/mac.c
+index 1efa4da3cebc..cebefa3b1db3 100644
+--- a/drivers/net/wireless/realtek/rtw89/mac.c
++++ b/drivers/net/wireless/realtek/rtw89/mac.c
+@@ -2524,7 +2524,7 @@ static int cmac_dma_init(struct rtw89_dev *rtwdev, u8 mac_idx)
+ 	u32 reg;
+ 	int ret;
+ 
+-	if (chip_id != RTL8852A && chip_id != RTL8852B)
++	if (chip_id != RTL8852B)
+ 		return 0;
+ 
+ 	ret = rtw89_mac_check_mac_en(rtwdev, mac_idx, RTW89_CMAC_SEL);
+-- 
+2.25.1
+
