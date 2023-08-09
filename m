@@ -2,47 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 67EE5775C1C
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:24:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E2FD9775ABC
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:11:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233654AbjHILX7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:23:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42044 "EHLO
+        id S233274AbjHILLJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:11:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53386 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233648AbjHILX6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:23:58 -0400
+        with ESMTP id S233269AbjHILLI (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:11:08 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B3EC1BF7
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:23:58 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1EFFC1724
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:11:08 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id ED1CA6323D
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:23:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05178C433C7;
-        Wed,  9 Aug 2023 11:23:56 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B096D62347
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:11:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C174EC433C7;
+        Wed,  9 Aug 2023 11:11:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691580237;
-        bh=dleVTXhSIKPW820ypn8OW2MSkoSnzyfIBux6q9cjLoc=;
+        s=korg; t=1691579467;
+        bh=F4DG/9CPpBBSe3WFuB9X4t3IEXxaZt8yTLR4kpZuK64=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=HKApkjsw/97jDeEGH57ZPOknXfm74tUhHhDFwNcKdP2FZXhzcz1S4cZXt8KwFoRZU
-         IPuIUZGbe1vMQeBJbPwOSdJhlVT4VzVWQ3/RDGoGefaos2pD+nVEEvxufE7YAWPItr
-         UElnCFflWWhxWJz0YW2J058wbm6RkXQSADWn+GHY=
+        b=ezM3solCI+Jhk60BgFs4b8rZiYpIXWI5ccMjPw8zo0yZh3DO5ySrF7wPRaUMgXACC
+         cxPdNv3lZl33QgoRs/0s5RjDNXYpiDP/bQbGivGn2QJpKUCTlzArEbNOrswc2opyRx
+         Cdn2LPz3DHtZHUH/nztCpWDGFKOsPTjstm7m/7/s=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, stable <stable@kernel.org>,
-        Ruihong Luo <colorsu1922@gmail.com>,
-        =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 277/323] serial: 8250_dw: Preserve original value of DLF register
+        patches@lists.linux.dev, Zhang Yi <yizhan@redhat.com>,
+        Jocelyn Falempe <jfalempe@redhat.com>,
+        Javier Martinez Canillas <javierm@redhat.com>,
+        Thomas Zimmermann <tzimmermann@suse.de>
+Subject: [PATCH 4.14 177/204] drm/client: Fix memory leak in drm_client_target_cloned
 Date:   Wed,  9 Aug 2023 12:41:55 +0200
-Message-ID: <20230809103710.721381650@linuxfoundation.org>
+Message-ID: <20230809103648.432229069@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
-References: <20230809103658.104386911@linuxfoundation.org>
+In-Reply-To: <20230809103642.552405807@linuxfoundation.org>
+References: <20230809103642.552405807@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,56 +56,69 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ruihong Luo <colorsu1922@gmail.com>
+From: Jocelyn Falempe <jfalempe@redhat.com>
 
-[ Upstream commit 748c5ea8b8796ae8ee80b8d3a3d940570b588d59 ]
+commit c2a88e8bdf5f6239948d75283d0ae7e0c7945b03 upstream.
 
-Preserve the original value of the Divisor Latch Fraction (DLF) register.
-When the DLF register is modified without preservation, it can disrupt
-the baudrate settings established by firmware or bootloader, leading to
-data corruption and the generation of unreadable or distorted characters.
+dmt_mode is allocated and never freed in this function.
+It was found with the ast driver, but most drivers using generic fbdev
+setup are probably affected.
 
-Fixes: 701c5e73b296 ("serial: 8250_dw: add fractional divisor support")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Ruihong Luo <colorsu1922@gmail.com>
-Link: https://lore.kernel.org/stable/20230713004235.35904-1-colorsu1922%40gmail.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/r/20230713004235.35904-1-colorsu1922@gmail.com
+This fixes the following kmemleak report:
+  backtrace:
+    [<00000000b391296d>] drm_mode_duplicate+0x45/0x220 [drm]
+    [<00000000e45bb5b3>] drm_client_target_cloned.constprop.0+0x27b/0x480 [drm]
+    [<00000000ed2d3a37>] drm_client_modeset_probe+0x6bd/0xf50 [drm]
+    [<0000000010e5cc9d>] __drm_fb_helper_initial_config_and_unlock+0xb4/0x2c0 [drm_kms_helper]
+    [<00000000909f82ca>] drm_fbdev_client_hotplug+0x2bc/0x4d0 [drm_kms_helper]
+    [<00000000063a69aa>] drm_client_register+0x169/0x240 [drm]
+    [<00000000a8c61525>] ast_pci_probe+0x142/0x190 [ast]
+    [<00000000987f19bb>] local_pci_probe+0xdc/0x180
+    [<000000004fca231b>] work_for_cpu_fn+0x4e/0xa0
+    [<0000000000b85301>] process_one_work+0x8b7/0x1540
+    [<000000003375b17c>] worker_thread+0x70a/0xed0
+    [<00000000b0d43cd9>] kthread+0x29f/0x340
+    [<000000008d770833>] ret_from_fork+0x1f/0x30
+unreferenced object 0xff11000333089a00 (size 128):
+
+cc: <stable@vger.kernel.org>
+Fixes: 1d42bbc8f7f9 ("drm/fbdev: fix cloning on fbcon")
+Reported-by: Zhang Yi <yizhan@redhat.com>
+Signed-off-by: Jocelyn Falempe <jfalempe@redhat.com>
+Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
+Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230711092203.68157-2-jfalempe@redhat.com
+Signed-off-by: Jocelyn Falempe <jfalempe@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/8250/8250_dwlib.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/drm_fb_helper.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/tty/serial/8250/8250_dwlib.c b/drivers/tty/serial/8250/8250_dwlib.c
-index 6d6a78eead3ef..1cf229cca5928 100644
---- a/drivers/tty/serial/8250/8250_dwlib.c
-+++ b/drivers/tty/serial/8250/8250_dwlib.c
-@@ -80,7 +80,7 @@ static void dw8250_set_divisor(struct uart_port *p, unsigned int baud,
- void dw8250_setup_port(struct uart_port *p)
- {
- 	struct uart_8250_port *up = up_to_u8250p(p);
--	u32 reg;
-+	u32 reg, old_dlf;
+--- a/drivers/gpu/drm/drm_fb_helper.c
++++ b/drivers/gpu/drm/drm_fb_helper.c
+@@ -2112,6 +2112,9 @@ static bool drm_target_cloned(struct drm
+ 	can_clone = true;
+ 	dmt_mode = drm_mode_find_dmt(fb_helper->dev, 1024, 768, 60, false);
  
- 	/*
- 	 * If the Component Version Register returns zero, we know that
-@@ -93,9 +93,11 @@ void dw8250_setup_port(struct uart_port *p)
- 	dev_dbg(p->dev, "Designware UART version %c.%c%c\n",
- 		(reg >> 24) & 0xff, (reg >> 16) & 0xff, (reg >> 8) & 0xff);
++	if (!dmt_mode)
++		goto fail;
++
+ 	drm_fb_helper_for_each_connector(fb_helper, i) {
+ 		if (!enabled[i])
+ 			continue;
+@@ -2124,11 +2127,13 @@ static bool drm_target_cloned(struct drm
+ 		if (!modes[i])
+ 			can_clone = false;
+ 	}
++	kfree(dmt_mode);
  
-+	/* Preserve value written by firmware or bootloader  */
-+	old_dlf = dw8250_readl_ext(p, DW_UART_DLF);
- 	dw8250_writel_ext(p, DW_UART_DLF, ~0U);
- 	reg = dw8250_readl_ext(p, DW_UART_DLF);
--	dw8250_writel_ext(p, DW_UART_DLF, 0);
-+	dw8250_writel_ext(p, DW_UART_DLF, old_dlf);
- 
- 	if (reg) {
- 		struct dw8250_port_data *d = p->private_data;
--- 
-2.40.1
-
+ 	if (can_clone) {
+ 		DRM_DEBUG_KMS("can clone using 1024x768\n");
+ 		return true;
+ 	}
++fail:
+ 	DRM_INFO("kms: can't enable cloning when we probably wanted to.\n");
+ 	return false;
+ }
 
 
