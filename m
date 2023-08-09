@@ -2,49 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C9BFD775AAF
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:10:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D4D01775DA5
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:39:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233260AbjHILKl (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:10:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39682 "EHLO
+        id S234177AbjHILjk (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:39:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47356 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233254AbjHILKk (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:10:40 -0400
+        with ESMTP id S234176AbjHILjf (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:39:35 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C3C8ED
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:10:40 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ABBA11FD2
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:39:34 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id AA71862457
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:10:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD867C433C7;
-        Wed,  9 Aug 2023 11:10:38 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4C7BD635FA
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:39:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F987C433C8;
+        Wed,  9 Aug 2023 11:39:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691579439;
-        bh=p73Xefp+eZuzIvz0TvYZQjRi1+zTZoheJpMRaOwCD9o=;
+        s=korg; t=1691581173;
+        bh=BMjwEV0ZQ5Iu/GYGsSI5uGTuTGCiha/l+o2Bc9NxFRg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=IUUJGghkm0t4w7hTZVFi0b+Av0jA3QoxeNLp4VG6pb9sz4nHz8Dnrjyge/9M7/dAi
-         jihqIGqyXDoUNGm5JWox/hOo8lBB7+PfpueXa2k1NRQ5AWU1lEV9MYGG4Lh6WVTBJa
-         T5Nj2g6OUH4yqhcYYOWY4YwqVSAzQnPnqN4NBZVk=
+        b=nxzbsTbF/uf89guv+vQgiwQQpoFl1fYUvZwi7u5FOF6ItREwKkEPJmAYDA+D1CdjH
+         zY3f/YdI302sS5DSsNQlYGvXMYPQV1GOaj+Zalj6N54dP/qCt1eRbcobpJdH8J5ow6
+         yQ08OrB4lOh6Ygm40KXy8w9QVEXng44dUOG+fMWY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Christoph Hellwig <hch@lst.de>,
-        Ming Lei <ming.lei@redhat.com>,
-        Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
-        Martijn Coenen <maco@android.com>,
-        Jaegeuk Kim <jaegeuk@kernel.org>,
-        Bart Van Assche <bvanassche@acm.org>,
-        Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 4.14 196/204] loop: Select I/O scheduler none from inside add_disk()
+        patches@lists.linux.dev, Jakub Kicinski <kuba@kernel.org>,
+        Lin Ma <linma@zju.edu.cn>,
+        Nikolay Aleksandrov <razor@blackwall.org>,
+        Hangbin Liu <liuhangbin@gmail.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 132/201] rtnetlink: let rtnl_bridge_setlink checks IFLA_BRIDGE_MODE length
 Date:   Wed,  9 Aug 2023 12:42:14 +0200
-Message-ID: <20230809103649.042478097@linuxfoundation.org>
+Message-ID: <20230809103648.144487209@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103642.552405807@linuxfoundation.org>
-References: <20230809103642.552405807@linuxfoundation.org>
+In-Reply-To: <20230809103643.799166053@linuxfoundation.org>
+References: <20230809103643.799166053@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -59,53 +57,66 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Bart Van Assche <bvanassche@acm.org>
+From: Lin Ma <linma@zju.edu.cn>
 
-commit 2112f5c1330a671fa852051d85cb9eadc05d7eb7 upstream.
+[ Upstream commit d73ef2d69c0dba5f5a1cb9600045c873bab1fb7f ]
 
-We noticed that the user interface of Android devices becomes very slow
-under memory pressure. This is because Android uses the zram driver on top
-of the loop driver for swapping, because under memory pressure the swap
-code alternates reads and writes quickly, because mq-deadline is the
-default scheduler for loop devices and because mq-deadline delays writes by
-five seconds for such a workload with default settings. Fix this by making
-the kernel select I/O scheduler 'none' from inside add_disk() for loop
-devices. This default can be overridden at any time from user space,
-e.g. via a udev rule. This approach has an advantage compared to changing
-the I/O scheduler from userspace from 'mq-deadline' into 'none', namely
-that synchronize_rcu() does not get called.
+There are totally 9 ndo_bridge_setlink handlers in the current kernel,
+which are 1) bnxt_bridge_setlink, 2) be_ndo_bridge_setlink 3)
+i40e_ndo_bridge_setlink 4) ice_bridge_setlink 5)
+ixgbe_ndo_bridge_setlink 6) mlx5e_bridge_setlink 7)
+nfp_net_bridge_setlink 8) qeth_l2_bridge_setlink 9) br_setlink.
 
-This patch changes the default I/O scheduler for loop devices from
-'mq-deadline' into 'none'.
+By investigating the code, we find that 1-7 parse and use nlattr
+IFLA_BRIDGE_MODE but 3 and 4 forget to do the nla_len check. This can
+lead to an out-of-attribute read and allow a malformed nlattr (e.g.,
+length 0) to be viewed as a 2 byte integer.
 
-Additionally, this patch reduces the Android boot time on my test setup
-with 0.5 seconds compared to configuring the loop I/O scheduler from user
-space.
+To avoid such issues, also for other ndo_bridge_setlink handlers in the
+future. This patch adds the nla_len check in rtnl_bridge_setlink and
+does an early error return if length mismatches. To make it works, the
+break is removed from the parsing for IFLA_BRIDGE_FLAGS to make sure
+this nla_for_each_nested iterates every attribute.
 
-Cc: Christoph Hellwig <hch@lst.de>
-Cc: Ming Lei <ming.lei@redhat.com>
-Cc: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-Cc: Martijn Coenen <maco@android.com>
-Cc: Jaegeuk Kim <jaegeuk@kernel.org>
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
-Link: https://lore.kernel.org/r/20210805174200.3250718-3-bvanassche@acm.org
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: b1edc14a3fbf ("ice: Implement ice_bridge_getlink and ice_bridge_setlink")
+Fixes: 51616018dd1b ("i40e: Add support for getlink, setlink ndo ops")
+Suggested-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Lin Ma <linma@zju.edu.cn>
+Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
+Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
+Link: https://lore.kernel.org/r/20230726075314.1059224-1-linma@zju.edu.cn
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/block/loop.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/core/rtnetlink.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
---- a/drivers/block/loop.c
-+++ b/drivers/block/loop.c
-@@ -1846,7 +1846,8 @@ static int loop_add(struct loop_device *
- 	lo->tag_set.queue_depth = 128;
- 	lo->tag_set.numa_node = NUMA_NO_NODE;
- 	lo->tag_set.cmd_size = sizeof(struct loop_cmd);
--	lo->tag_set.flags = BLK_MQ_F_SHOULD_MERGE | BLK_MQ_F_SG_MERGE;
-+	lo->tag_set.flags = BLK_MQ_F_SHOULD_MERGE | BLK_MQ_F_SG_MERGE |
-+		BLK_MQ_F_NO_SCHED;
- 	lo->tag_set.driver_data = lo;
+diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
+index d3c03ebf06a5b..ce37a052b9c32 100644
+--- a/net/core/rtnetlink.c
++++ b/net/core/rtnetlink.c
+@@ -4897,13 +4897,17 @@ static int rtnl_bridge_setlink(struct sk_buff *skb, struct nlmsghdr *nlh,
+ 	br_spec = nlmsg_find_attr(nlh, sizeof(struct ifinfomsg), IFLA_AF_SPEC);
+ 	if (br_spec) {
+ 		nla_for_each_nested(attr, br_spec, rem) {
+-			if (nla_type(attr) == IFLA_BRIDGE_FLAGS) {
++			if (nla_type(attr) == IFLA_BRIDGE_FLAGS && !have_flags) {
+ 				if (nla_len(attr) < sizeof(flags))
+ 					return -EINVAL;
  
- 	err = blk_mq_alloc_tag_set(&lo->tag_set);
+ 				have_flags = true;
+ 				flags = nla_get_u16(attr);
+-				break;
++			}
++
++			if (nla_type(attr) == IFLA_BRIDGE_MODE) {
++				if (nla_len(attr) < sizeof(u16))
++					return -EINVAL;
+ 			}
+ 		}
+ 	}
+-- 
+2.40.1
+
 
 
