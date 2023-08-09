@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C55AF775C05
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:23:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1B66C775C9E
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:29:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233621AbjHILXI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:23:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38074 "EHLO
+        id S233816AbjHIL3P (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:29:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52996 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233605AbjHILXI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:23:08 -0400
+        with ESMTP id S233804AbjHIL3O (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:29:14 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B136E1BF7
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:23:07 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1F11FED
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:29:14 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5021863222
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:23:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61647C433C8;
-        Wed,  9 Aug 2023 11:23:06 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B2D0063303
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:29:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C02B4C433C8;
+        Wed,  9 Aug 2023 11:29:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691580186;
-        bh=RL9RBXmGnk83Lglxc1dK+n6oKfAAOT68XQuTr52dmGk=;
+        s=korg; t=1691580553;
+        bh=QhMdq6GsBUCYsRgx77tTtwmBPNjhq1VtDPdyxlTqKHY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=F/7MltxCN/DYuaQrhuu2fSEOlkHTBQ/IKAhJaXZ1973tlL7Y2V2mtUaRrmX8Nz47b
-         0BuOATux7Aay+COjcKRJ8e8xtiy7Ombc6QzGKlzsVq4mjpR9/CtorwIjuzPhcbalLM
-         FYrdA4eSFp0MT+mC/SfYyUM0uzxTUtyRNPtOLjSU=
+        b=ldCstW3mD7ugl9fpMI03UK4goNHFVqJ38mPzVsMfFaL8GCE501UeyWz3rTurQ3sei
+         zlBmMEW6hPkxYQws7bImjCI6PjaQd/pQ9KNSQS2BDZG9y2ODRvisPpVP4oZrxV1k+k
+         ZylBbRtBVOvBLAP8xtGzpa2DCn9C960k4hMNIYiQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jerry Meng <jerry-meng@foxmail.com>,
-        Johan Hovold <johan@kernel.org>
-Subject: [PATCH 4.19 258/323] USB: serial: option: support Quectel EM060K_128
-Date:   Wed,  9 Aug 2023 12:41:36 +0200
-Message-ID: <20230809103709.897918565@linuxfoundation.org>
+        patches@lists.linux.dev,
+        =?UTF-8?q?=C5=81ukasz=20Bartosik?= <lb@semihalf.com>,
+        stable <stable@kernel.org>
+Subject: [PATCH 5.4 066/154] USB: quirks: add quirk for Focusrite Scarlett
+Date:   Wed,  9 Aug 2023 12:41:37 +0200
+Message-ID: <20230809103639.176602012@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
-References: <20230809103658.104386911@linuxfoundation.org>
+In-Reply-To: <20230809103636.887175326@linuxfoundation.org>
+References: <20230809103636.887175326@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,73 +55,63 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jerry Meng <jerry-meng@foxmail.com>
+From: Łukasz Bartosik <lb@semihalf.com>
 
-commit 4f7cab49cecee16120d27c1734cfdf3d6c0e5329 upstream.
+commit 9dc162e22387080e2d06de708b89920c0e158c9a upstream.
 
-EM060K_128 is EM060K's sub-model, having the same name "Quectel EM060K-GL"
+The Focusrite Scarlett audio device does not behave correctly during
+resumes. Below is what happens during every resume (captured with
+Beagle 5000):
 
-MBIM + GNSS + DIAG + NMEA + AT + QDSS + DPL
+<Suspend>
+<Resume>
+<Reset>/<Chirp J>/<Tiny J>
+<Reset/Target disconnected>
+<High Speed>
 
-T:  Bus=03 Lev=01 Prnt=01 Port=01 Cnt=02 Dev#=  8 Spd=480  MxCh= 0
-D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=2c7c ProdID=0128 Rev= 5.04
-S:  Manufacturer=Quectel
-S:  Product=Quectel EM060K-GL
-S:  SerialNumber=f6fa08b6
-C:* #Ifs= 8 Cfg#= 1 Atr=a0 MxPwr=500mA
-A:  FirstIf#= 0 IfCount= 2 Cls=02(comm.) Sub=0e Prot=00
-I:* If#= 0 Alt= 0 #EPs= 1 Cls=02(comm.) Sub=0e Prot=00 Driver=cdc_mbim
-E:  Ad=81(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
-I:  If#= 1 Alt= 0 #EPs= 0 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
-I:* If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
-E:  Ad=8e(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=0f(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 2 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=ff Driver=(none)
-E:  Ad=82(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
-I:* If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=40 Driver=option
-E:  Ad=85(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 5 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=87(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 6 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=70 Driver=(none)
-E:  Ad=88(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 7 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=80 Driver=(none)
-E:  Ad=8f(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+The Scarlett disconnects and is enumerated again.
 
-Signed-off-by: Jerry Meng <jerry-meng@foxmail.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
+However from time to time it drops completely off the USB bus during
+resume. Below is captured occurrence of such an event:
+
+<Suspend>
+<Resume>
+<Reset>/<Chirp J>/<Tiny J>
+<Reset>/<Chirp K>/<Tiny K>
+<High Speed>
+<Corrupted packet>
+<Reset/Target disconnected>
+
+To fix the condition a user has to unplug and plug the device again.
+
+With USB_QUIRK_RESET_RESUME applied ("usbcore.quirks=1235:8211:b")
+for the Scarlett audio device the issue still reproduces.
+
+Applying USB_QUIRK_DISCONNECT_SUSPEND ("usbcore.quirks=1235:8211:m")
+fixed the issue and the Scarlett audio device didn't drop off the USB
+bus for ~5000 suspend/resume cycles where originally issue reproduced in
+~100 or less suspend/resume cycles.
+
+Signed-off-by: Łukasz Bartosik <lb@semihalf.com>
+Cc: stable <stable@kernel.org>
+Link: https://lore.kernel.org/r/20230724112911.1802577-1-lb@semihalf.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/serial/option.c |    4 ++++
+ drivers/usb/core/quirks.c |    4 ++++
  1 file changed, 4 insertions(+)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -251,6 +251,7 @@ static void option_instat_callback(struc
- #define QUECTEL_PRODUCT_EM061K_LTA		0x0123
- #define QUECTEL_PRODUCT_EM061K_LMS		0x0124
- #define QUECTEL_PRODUCT_EC25			0x0125
-+#define QUECTEL_PRODUCT_EM060K_128		0x0128
- #define QUECTEL_PRODUCT_EG91			0x0191
- #define QUECTEL_PRODUCT_EG95			0x0195
- #define QUECTEL_PRODUCT_BG96			0x0296
-@@ -1197,6 +1198,9 @@ static const struct usb_device_id option
- 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EM060K, 0xff, 0x00, 0x40) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EM060K, 0xff, 0xff, 0x30) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EM060K, 0xff, 0xff, 0x40) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EM060K_128, 0xff, 0xff, 0x30) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EM060K_128, 0xff, 0x00, 0x40) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EM060K_128, 0xff, 0xff, 0x40) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EM061K_LCN, 0xff, 0xff, 0x30) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EM061K_LCN, 0xff, 0x00, 0x40) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EM061K_LCN, 0xff, 0xff, 0x40) },
+--- a/drivers/usb/core/quirks.c
++++ b/drivers/usb/core/quirks.c
+@@ -437,6 +437,10 @@ static const struct usb_device_id usb_qu
+ 	/* novation SoundControl XL */
+ 	{ USB_DEVICE(0x1235, 0x0061), .driver_info = USB_QUIRK_RESET_RESUME },
+ 
++	/* Focusrite Scarlett Solo USB */
++	{ USB_DEVICE(0x1235, 0x8211), .driver_info =
++			USB_QUIRK_DISCONNECT_SUSPEND },
++
+ 	/* Huawei 4G LTE module */
+ 	{ USB_DEVICE(0x12d1, 0x15bb), .driver_info =
+ 			USB_QUIRK_DISCONNECT_SUSPEND },
 
 
