@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B303A775C9B
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:29:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 443A4775D74
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:37:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233809AbjHIL3H (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:29:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42832 "EHLO
+        id S234114AbjHILhn (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:37:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59630 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233804AbjHIL3G (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:29:06 -0400
+        with ESMTP id S234110AbjHILhm (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:37:42 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8954A10D4
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:29:05 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45EFEE3
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:37:42 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1FC7F63308
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:29:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DD70C433C7;
-        Wed,  9 Aug 2023 11:29:04 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CEA0D63576
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:37:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA712C433C9;
+        Wed,  9 Aug 2023 11:37:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691580544;
-        bh=I1ZA1uOv1I3PlwNgBWA82bgA6l6BnFZ/xC4d1IHHxtA=;
+        s=korg; t=1691581061;
+        bh=fsQLgh5fBbSXM4GjCiryUIBMx4SSAbka1yZ9henrX1M=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=LDFDArCwuKboLwH1hdqJakltVabWejJcJWrD1a8zKBwzGXIh2d4QjsLdM48dK9560
-         JMjtzxkMzgKzx17KXW9sgVh+c+r3HHG3+fHGhKZMH9Cmz4PLIqmWbnxNsUe3XCawUD
-         tfhlM5vkxQCMT+Ps3bzLkol32eFikCrrrEZnjWI0=
+        b=AL9/dQltFgmGvvX07DKBNH6WSP4gQMRj+YdyGAHqVKV60XiKhDkz5ikVFbpIiUGNN
+         wRdo1qmPUYPVxY2Aj3HPx4xBtLsZUZV7k2tKinz6YxbcXFX3+fNIqPzYlLBe7mL4RA
+         fGOvGWGjyIsL0vC2Wu79lPNN1eLyxjAVZwl7uV54=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, stable <stable@kernel.org>,
-        Gratian Crisan <gratian.crisan@ni.com>,
-        Hans de Goede <hdegoede@redhat.com>
-Subject: [PATCH 5.4 063/154] usb: dwc3: pci: skip BYT GPIO lookup table for hardwired phy
+        patches@lists.linux.dev, Jonas Gorski <jonas.gorski@gmail.com>,
+        =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+        Florian Fainelli <florian.fainelli@broadcom.com>,
+        Marc Zyngier <maz@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 092/201] irq-bcm6345-l1: Do not assume a fixed block to cpu mapping
 Date:   Wed,  9 Aug 2023 12:41:34 +0200
-Message-ID: <20230809103639.082448802@linuxfoundation.org>
+Message-ID: <20230809103646.895471841@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103636.887175326@linuxfoundation.org>
-References: <20230809103636.887175326@linuxfoundation.org>
+In-Reply-To: <20230809103643.799166053@linuxfoundation.org>
+References: <20230809103643.799166053@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,69 +56,88 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Gratian Crisan <gratian.crisan@ni.com>
+From: Jonas Gorski <jonas.gorski@gmail.com>
 
-commit b32b8f2b9542d8039f5468303a6ca78c1b5611a5 upstream.
+[ Upstream commit 55ad24857341c36616ecc1d9580af5626c226cf1 ]
 
-Hardware based on the Bay Trail / BYT SoCs require an external ULPI phy for
-USB device-mode. The phy chip usually has its 'reset' and 'chip select'
-lines connected to GPIOs described by ACPI fwnodes in the DSDT table.
+The irq to block mapping is fixed, and interrupts from the first block
+will always be routed to the first parent IRQ. But the parent interrupts
+themselves can be routed to any available CPU.
 
-Because of hardware with missing ACPI resources for the 'reset' and 'chip
-select' GPIOs commit 5741022cbdf3 ("usb: dwc3: pci: Add GPIO lookup table
-on platforms without ACPI GPIO resources") introduced a fallback
-gpiod_lookup_table with hard-coded mappings for Bay Trail devices.
+This is used by the bootloader to map the first parent interrupt to the
+boot CPU, regardless wether the boot CPU is the first one or the second
+one.
 
-However there are existing Bay Trail based devices, like the National
-Instruments cRIO-903x series, where the phy chip has its 'reset' and
-'chip-select' lines always asserted in hardware via resistor pull-ups. On
-this hardware the phy chip is always enabled and the ACPI dsdt table is
-missing information not only for the 'chip-select' and 'reset' lines but
-also for the BYT GPIO controller itself "INT33FC".
+When booting from the second CPU, the assumption that the first block's
+IRQ is mapped to the first CPU breaks, and the system hangs because
+interrupts do not get routed correctly.
 
-With the introduction of the gpiod_lookup_table initializing the USB
-device-mode on these hardware now errors out. The error comes from the
-gpiod_get_optional() calls in dwc3_pci_quirks() which will now return an
--ENOENT error due to the missing ACPI entry for the INT33FC gpio controller
-used in the aforementioned table.
+Fix this by passing the appropriate bcm6434_l1_cpu to the interrupt
+handler instead of the chip itself, so the handler always has the right
+block.
 
-This hardware used to work before because gpiod_get_optional() will return
-NULL instead of -ENOENT if no GPIO has been assigned to the requested
-function. The dwc3_pci_quirks() code for setting the 'cs' and 'reset' GPIOs
-was then skipped (due to the NULL return). This is the correct behavior in
-cases where the phy chip is hardwired and there are no GPIOs to control.
-
-Since the gpiod_lookup_table relies on the presence of INT33FC fwnode
-in ACPI tables only add the table if we know the entry for the INT33FC
-gpio controller is present. This allows Bay Trail based devices with
-hardwired dwc3 ULPI phys to continue working.
-
-Fixes: 5741022cbdf3 ("usb: dwc3: pci: Add GPIO lookup table on platforms without ACPI GPIO resources")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Gratian Crisan <gratian.crisan@ni.com>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20230726184555.218091-2-gratian.crisan@ni.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: c7c42ec2baa1 ("irqchips/bmips: Add bcm6345-l1 interrupt controller")
+Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Link: https://lore.kernel.org/r/20230629072620.62527-1-jonas.gorski@gmail.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/dwc3/dwc3-pci.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/irqchip/irq-bcm6345-l1.c | 14 +++++---------
+ 1 file changed, 5 insertions(+), 9 deletions(-)
 
---- a/drivers/usb/dwc3/dwc3-pci.c
-+++ b/drivers/usb/dwc3/dwc3-pci.c
-@@ -171,10 +171,12 @@ static int dwc3_pci_quirks(struct dwc3_p
+diff --git a/drivers/irqchip/irq-bcm6345-l1.c b/drivers/irqchip/irq-bcm6345-l1.c
+index 1bd0621c4ce2a..4827a11832478 100644
+--- a/drivers/irqchip/irq-bcm6345-l1.c
++++ b/drivers/irqchip/irq-bcm6345-l1.c
+@@ -82,6 +82,7 @@ struct bcm6345_l1_chip {
+ };
  
- 			/*
- 			 * A lot of BYT devices lack ACPI resource entries for
--			 * the GPIOs, add a fallback mapping to the reference
-+			 * the GPIOs. If the ACPI entry for the GPIO controller
-+			 * is present add a fallback mapping to the reference
- 			 * design GPIOs which all boards seem to use.
- 			 */
--			gpiod_add_lookup_table(&platform_bytcr_gpios);
-+			if (acpi_dev_present("INT33FC", NULL, -1))
-+				gpiod_add_lookup_table(&platform_bytcr_gpios);
+ struct bcm6345_l1_cpu {
++	struct bcm6345_l1_chip	*intc;
+ 	void __iomem		*map_base;
+ 	unsigned int		parent_irq;
+ 	u32			enable_cache[];
+@@ -115,17 +116,11 @@ static inline unsigned int cpu_for_irq(struct bcm6345_l1_chip *intc,
  
- 			/*
- 			 * These GPIOs will turn on the USB2 PHY. Note that we have to
+ static void bcm6345_l1_irq_handle(struct irq_desc *desc)
+ {
+-	struct bcm6345_l1_chip *intc = irq_desc_get_handler_data(desc);
+-	struct bcm6345_l1_cpu *cpu;
++	struct bcm6345_l1_cpu *cpu = irq_desc_get_handler_data(desc);
++	struct bcm6345_l1_chip *intc = cpu->intc;
+ 	struct irq_chip *chip = irq_desc_get_chip(desc);
+ 	unsigned int idx;
+ 
+-#ifdef CONFIG_SMP
+-	cpu = intc->cpus[cpu_logical_map(smp_processor_id())];
+-#else
+-	cpu = intc->cpus[0];
+-#endif
+-
+ 	chained_irq_enter(chip, desc);
+ 
+ 	for (idx = 0; idx < intc->n_words; idx++) {
+@@ -257,6 +252,7 @@ static int __init bcm6345_l1_init_one(struct device_node *dn,
+ 	if (!cpu)
+ 		return -ENOMEM;
+ 
++	cpu->intc = intc;
+ 	cpu->map_base = ioremap(res.start, sz);
+ 	if (!cpu->map_base)
+ 		return -ENOMEM;
+@@ -272,7 +268,7 @@ static int __init bcm6345_l1_init_one(struct device_node *dn,
+ 		return -EINVAL;
+ 	}
+ 	irq_set_chained_handler_and_data(cpu->parent_irq,
+-						bcm6345_l1_irq_handle, intc);
++						bcm6345_l1_irq_handle, cpu);
+ 
+ 	return 0;
+ }
+-- 
+2.40.1
+
 
 
