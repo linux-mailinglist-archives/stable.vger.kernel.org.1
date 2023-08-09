@@ -2,106 +2,131 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DE3A3775C4B
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:25:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B9898775AB7
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:11:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233699AbjHILZz (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:25:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59956 "EHLO
+        id S233272AbjHILK6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:10:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56178 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233701AbjHILZz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:25:55 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D5908ED
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:25:54 -0700 (PDT)
+        with ESMTP id S233269AbjHILK5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:10:57 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E865172A
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:10:57 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 74BDE63272
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:25:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88ACFC433C7;
-        Wed,  9 Aug 2023 11:25:53 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A755462415
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:10:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6531C433C8;
+        Wed,  9 Aug 2023 11:10:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691580353;
-        bh=9Skas82wgX1XgJWE0u33lrzQI4oiePd3nRtAzWT8SJ0=;
+        s=korg; t=1691579456;
+        bh=tDRfuayXCET3oGj5nmHXPih/VgT/NxLGFh8CnbOXiR0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=tI4J9rH1w3j7NPC7MRo+NyTQ3VEkRp3eZkUwDizC89zTPonlK0BRhZ4lJ2ZNX3Hs3
-         72y8dTVQWUOjB7NKP2L2QtRvcvhZEBuacYiVPvQp9J3ePbw34mG67FGGOknXmkm2K0
-         eLc+Zt1jyZ9mzFVet+3a6ID9mwz/m3gQhxlRUZxA=
+        b=o8vMcddeI8Szh5DkWn+J6oNfkkIcN+bOG6AMdwOEe1YWHw9xrIgLd9dxC3uWGGw3C
+         WlS/WKQ15LcMEvpfVV6ca4WZb6VAJGAgnVwoq03LobgKCRYLcPKCrF8zYwAQAFXnOF
+         agfaEJtJqUecdXT/LdzL08cl0XwurBCa3mlN6eM4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
-        David Ahern <dsahern@kernel.org>,
-        Kuniyuki Iwashima <kuniyu@amazon.com>,
+        patches@lists.linux.dev, Alan Stern <stern@rowland.harvard.edu>,
+        Oliver Neukum <oneukum@suse.com>,
         Jakub Kicinski <kuba@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 301/323] tcp_metrics: annotate data-races around tm->tcpm_lock
+        syzbot+63ee658b9a100ffadbe2@syzkaller.appspotmail.com
+Subject: [PATCH 4.14 201/204] net: usbnet: Fix WARNING in usbnet_start_xmit/usb_submit_urb
 Date:   Wed,  9 Aug 2023 12:42:19 +0200
-Message-ID: <20230809103711.833359406@linuxfoundation.org>
+Message-ID: <20230809103649.234537954@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
-References: <20230809103658.104386911@linuxfoundation.org>
+In-Reply-To: <20230809103642.552405807@linuxfoundation.org>
+References: <20230809103642.552405807@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Eric Dumazet <edumazet@google.com>
+From: Alan Stern <stern@rowland.harvard.edu>
 
-[ Upstream commit 285ce119a3c6c4502585936650143e54c8692788 ]
+commit 5e1627cb43ddf1b24b92eb26f8d958a3f5676ccb upstream.
 
-tm->tcpm_lock can be read or written locklessly.
+The syzbot fuzzer identified a problem in the usbnet driver:
 
-Add needed READ_ONCE()/WRITE_ONCE() to document this.
+usb 1-1: BOGUS urb xfer, pipe 3 != type 1
+WARNING: CPU: 0 PID: 754 at drivers/usb/core/urb.c:504 usb_submit_urb+0xed6/0x1880 drivers/usb/core/urb.c:504
+Modules linked in:
+CPU: 0 PID: 754 Comm: kworker/0:2 Not tainted 6.4.0-rc7-syzkaller-00014-g692b7dc87ca6 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 05/27/2023
+Workqueue: mld mld_ifc_work
+RIP: 0010:usb_submit_urb+0xed6/0x1880 drivers/usb/core/urb.c:504
+Code: 7c 24 18 e8 2c b4 5b fb 48 8b 7c 24 18 e8 42 07 f0 fe 41 89 d8 44 89 e1 4c 89 ea 48 89 c6 48 c7 c7 a0 c9 fc 8a e8 5a 6f 23 fb <0f> 0b e9 58 f8 ff ff e8 fe b3 5b fb 48 81 c5 c0 05 00 00 e9 84 f7
+RSP: 0018:ffffc9000463f568 EFLAGS: 00010086
+RAX: 0000000000000000 RBX: 0000000000000001 RCX: 0000000000000000
+RDX: ffff88801eb28000 RSI: ffffffff814c03b7 RDI: 0000000000000001
+RBP: ffff8881443b7190 R08: 0000000000000001 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000001 R12: 0000000000000003
+R13: ffff88802a77cb18 R14: 0000000000000003 R15: ffff888018262500
+FS:  0000000000000000(0000) GS:ffff8880b9800000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000556a99c15a18 CR3: 0000000028c71000 CR4: 0000000000350ef0
+Call Trace:
+ <TASK>
+ usbnet_start_xmit+0xfe5/0x2190 drivers/net/usb/usbnet.c:1453
+ __netdev_start_xmit include/linux/netdevice.h:4918 [inline]
+ netdev_start_xmit include/linux/netdevice.h:4932 [inline]
+ xmit_one net/core/dev.c:3578 [inline]
+ dev_hard_start_xmit+0x187/0x700 net/core/dev.c:3594
+...
 
-Fixes: 51c5d0c4b169 ("tcp: Maintain dynamic metrics in local cache.")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Link: https://lore.kernel.org/r/20230802131500.1478140-4-edumazet@google.com
+This bug is caused by the fact that usbnet trusts the bulk endpoint
+addresses its probe routine receives in the driver_info structure, and
+it does not check to see that these endpoints actually exist and have
+the expected type and directions.
+
+The fix is simply to add such a check.
+
+Reported-and-tested-by: syzbot+63ee658b9a100ffadbe2@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/linux-usb/000000000000a56e9105d0cec021@google.com/
+Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
+CC: Oliver Neukum <oneukum@suse.com>
+Link: https://lore.kernel.org/r/ea152b6d-44df-4f8a-95c6-4db51143dcc1@rowland.harvard.edu
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/tcp_metrics.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/net/usb/usbnet.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/net/ipv4/tcp_metrics.c b/net/ipv4/tcp_metrics.c
-index 2d9d95559f5fa..2529b1e6ded0c 100644
---- a/net/ipv4/tcp_metrics.c
-+++ b/net/ipv4/tcp_metrics.c
-@@ -59,7 +59,8 @@ static inline struct net *tm_net(struct tcp_metrics_block *tm)
- static bool tcp_metric_locked(struct tcp_metrics_block *tm,
- 			      enum tcp_metric_index idx)
- {
--	return tm->tcpm_lock & (1 << idx);
-+	/* Paired with WRITE_ONCE() in tcpm_suck_dst() */
-+	return READ_ONCE(tm->tcpm_lock) & (1 << idx);
- }
+--- a/drivers/net/usb/usbnet.c
++++ b/drivers/net/usb/usbnet.c
+@@ -1771,6 +1771,10 @@ usbnet_probe (struct usb_interface *udev
+ 	} else if (!info->in || !info->out)
+ 		status = usbnet_get_endpoints (dev, udev);
+ 	else {
++		u8 ep_addrs[3] = {
++			info->in + USB_DIR_IN, info->out + USB_DIR_OUT, 0
++		};
++
+ 		dev->in = usb_rcvbulkpipe (xdev, info->in);
+ 		dev->out = usb_sndbulkpipe (xdev, info->out);
+ 		if (!(info->flags & FLAG_NO_SETINT))
+@@ -1780,6 +1784,8 @@ usbnet_probe (struct usb_interface *udev
+ 		else
+ 			status = 0;
  
- static u32 tcp_metric_get(struct tcp_metrics_block *tm,
-@@ -110,7 +111,8 @@ static void tcpm_suck_dst(struct tcp_metrics_block *tm,
- 		val |= 1 << TCP_METRIC_CWND;
- 	if (dst_metric_locked(dst, RTAX_REORDERING))
- 		val |= 1 << TCP_METRIC_REORDERING;
--	tm->tcpm_lock = val;
-+	/* Paired with READ_ONCE() in tcp_metric_locked() */
-+	WRITE_ONCE(tm->tcpm_lock, val);
- 
- 	msval = dst_metric_raw(dst, RTAX_RTT);
- 	tm->tcpm_vals[TCP_METRIC_RTT] = msval * USEC_PER_MSEC;
--- 
-2.40.1
-
++		if (status == 0 && !usb_check_bulk_endpoints(udev, ep_addrs))
++			status = -EINVAL;
+ 	}
+ 	if (status >= 0 && dev->status)
+ 		status = init_status (dev, udev);
 
 
