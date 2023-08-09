@@ -2,139 +2,251 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1A9677758B4
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:55:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 14DA1775C65
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:27:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232479AbjHIKzI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 06:55:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35362 "EHLO
+        id S233729AbjHIL1A (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:27:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52270 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232699AbjHIKy5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:54:57 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A9DB2D4D
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:53:22 -0700 (PDT)
+        with ESMTP id S233746AbjHIL05 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:26:57 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF55919A1
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:26:56 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7D0B9630D2
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:53:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BCBBC433C7;
-        Wed,  9 Aug 2023 10:53:21 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6ADF163298
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:26:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C951C433C8;
+        Wed,  9 Aug 2023 11:26:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691578401;
-        bh=ZDRv62iHnx15vR5/unuhXh0ZVIK1FV3ojU97Kwd0vUE=;
+        s=korg; t=1691580415;
+        bh=BTiVa1Ay0gnJqaVbJcW3CnhFAXwIDIkCEEEReNLOVxI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=nQbIRxPcqU9jT4kK3OIOyp9qV20YWQ0pqdK4lO+21q1IzvgMK7ISOZ2vPNM5eGh4q
-         eHgjrpOAoX3/Ns6i9x0MO1/fM4sfv9YoK3NIErO8B11x2lrHCk0zE6KGl/zD8FOS6t
-         vDqLugMB4GmPYILK+Na/y8haqRmC0tp2EDDItSsA=
+        b=dWZ6oBph/zFdAlckg6e/firJIdSqSIF8l7qwtcs458Lmcld1oFuzVO+9INXIMmb+u
+         wOWMvogPTgC7m5YLq4hqT30vz15WiSL+HSVTo6yE0ybBbDgwRQLIYwfMPfCumfDbHm
+         9VKQGV0HGQv9/yEuF7Tte05SfSplo0hgjHueN8Mk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hou Tao <houtao1@huawei.com>,
-        Jesper Dangaard Brouer <hawk@kernel.org>,
-        Martin KaFai Lau <martin.lau@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 047/127] bpf, cpumap: Handle skb as well when clean up ptr_ring
-Date:   Wed,  9 Aug 2023 12:40:34 +0200
-Message-ID: <20230809103638.242033030@linuxfoundation.org>
+        patches@lists.linux.dev, Jan Kara <jack@suse.cz>,
+        Zhang Yi <yi.zhang@huawei.com>,
+        Zhihao Cheng <chengzhihao1@huawei.com>,
+        Theodore Tso <tytso@mit.edu>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 004/154] jbd2: recheck chechpointing non-dirty buffer
+Date:   Wed,  9 Aug 2023 12:40:35 +0200
+Message-ID: <20230809103637.059989625@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103636.615294317@linuxfoundation.org>
-References: <20230809103636.615294317@linuxfoundation.org>
+In-Reply-To: <20230809103636.887175326@linuxfoundation.org>
+References: <20230809103636.887175326@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Hou Tao <houtao1@huawei.com>
+From: Zhang Yi <yi.zhang@huawei.com>
 
-[ Upstream commit 7c62b75cd1a792e14b037fa4f61f9b18914e7de1 ]
+[ Upstream commit c2d6fd9d6f35079f1669f0100f05b46708c74b7f ]
 
-The following warning was reported when running xdp_redirect_cpu with
-both skb-mode and stress-mode enabled:
+There is a long-standing metadata corruption issue that happens from
+time to time, but it's very difficult to reproduce and analyse, benefit
+from the JBD2_CYCLE_RECORD option, we found out that the problem is the
+checkpointing process miss to write out some buffers which are raced by
+another do_get_write_access(). Looks below for detail.
 
-  ------------[ cut here ]------------
-  Incorrect XDP memory type (-2128176192) usage
-  WARNING: CPU: 7 PID: 1442 at net/core/xdp.c:405
-  Modules linked in:
-  CPU: 7 PID: 1442 Comm: kworker/7:0 Tainted: G  6.5.0-rc2+ #1
-  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996)
-  Workqueue: events __cpu_map_entry_free
-  RIP: 0010:__xdp_return+0x1e4/0x4a0
-  ......
-  Call Trace:
-   <TASK>
-   ? show_regs+0x65/0x70
-   ? __warn+0xa5/0x240
-   ? __xdp_return+0x1e4/0x4a0
-   ......
-   xdp_return_frame+0x4d/0x150
-   __cpu_map_entry_free+0xf9/0x230
-   process_one_work+0x6b0/0xb80
-   worker_thread+0x96/0x720
-   kthread+0x1a5/0x1f0
-   ret_from_fork+0x3a/0x70
-   ret_from_fork_asm+0x1b/0x30
-   </TASK>
+jbd2_log_do_checkpoint() //transaction X
+ //buffer A is dirty and not belones to any transaction
+ __buffer_relink_io() //move it to the IO list
+ __flush_batch()
+  write_dirty_buffer()
+                             do_get_write_access()
+                             clear_buffer_dirty
+                             __jbd2_journal_file_buffer()
+                             //add buffer A to a new transaction Y
+   lock_buffer(bh)
+   //doesn't write out
+ __jbd2_journal_remove_checkpoint()
+ //finish checkpoint except buffer A
+ //filesystem corrupt if the new transaction Y isn't fully write out.
 
-The reason for the warning is twofold. One is due to the kthread
-cpu_map_kthread_run() is stopped prematurely. Another one is
-__cpu_map_ring_cleanup() doesn't handle skb mode and treats skbs in
-ptr_ring as XDP frames.
+Due to the t_checkpoint_list walking loop in jbd2_log_do_checkpoint()
+have already handles waiting for buffers under IO and re-added new
+transaction to complete commit, and it also removing cleaned buffers,
+this makes sure the list will eventually get empty. So it's fine to
+leave buffers on the t_checkpoint_list while flushing out and completely
+stop using the t_checkpoint_io_list.
 
-Prematurely-stopped kthread will be fixed by the preceding patch and
-ptr_ring will be empty when __cpu_map_ring_cleanup() is called. But
-as the comments in __cpu_map_ring_cleanup() said, handling and freeing
-skbs in ptr_ring as well to "catch any broken behaviour gracefully".
-
-Fixes: 11941f8a8536 ("bpf: cpumap: Implement generic cpumap")
-Signed-off-by: Hou Tao <houtao1@huawei.com>
-Acked-by: Jesper Dangaard Brouer <hawk@kernel.org>
-Link: https://lore.kernel.org/r/20230729095107.1722450-3-houtao@huaweicloud.com
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+Cc: stable@vger.kernel.org
+Suggested-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
+Tested-by: Zhihao Cheng <chengzhihao1@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/r/20230606135928.434610-2-yi.zhang@huaweicloud.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Stable-dep-of: e34c8dd238d0 ("jbd2: Fix wrongly judgement for buffer head removing while doing checkpoint")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/cpumap.c | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+ fs/jbd2/checkpoint.c | 102 ++++++++++++-------------------------------
+ 1 file changed, 29 insertions(+), 73 deletions(-)
 
-diff --git a/kernel/bpf/cpumap.c b/kernel/bpf/cpumap.c
-index 09141351d5457..e5888d401d799 100644
---- a/kernel/bpf/cpumap.c
-+++ b/kernel/bpf/cpumap.c
-@@ -134,11 +134,17 @@ static void __cpu_map_ring_cleanup(struct ptr_ring *ring)
- 	 * invoked cpu_map_kthread_stop(). Catch any broken behaviour
- 	 * gracefully and warn once.
- 	 */
--	struct xdp_frame *xdpf;
-+	void *ptr;
- 
--	while ((xdpf = ptr_ring_consume(ring)))
--		if (WARN_ON_ONCE(xdpf))
--			xdp_return_frame(xdpf);
-+	while ((ptr = ptr_ring_consume(ring))) {
-+		WARN_ON_ONCE(1);
-+		if (unlikely(__ptr_test_bit(0, &ptr))) {
-+			__ptr_clear_bit(0, &ptr);
-+			kfree_skb(ptr);
-+			continue;
-+		}
-+		xdp_return_frame(ptr);
-+	}
+diff --git a/fs/jbd2/checkpoint.c b/fs/jbd2/checkpoint.c
+index c5f7b7a455fa4..587b89b67c1c6 100644
+--- a/fs/jbd2/checkpoint.c
++++ b/fs/jbd2/checkpoint.c
+@@ -57,28 +57,6 @@ static inline void __buffer_unlink(struct journal_head *jh)
+ 	}
  }
  
- static void put_cpu_map_entry(struct bpf_cpu_map_entry *rcpu)
+-/*
+- * Move a buffer from the checkpoint list to the checkpoint io list
+- *
+- * Called with j_list_lock held
+- */
+-static inline void __buffer_relink_io(struct journal_head *jh)
+-{
+-	transaction_t *transaction = jh->b_cp_transaction;
+-
+-	__buffer_unlink_first(jh);
+-
+-	if (!transaction->t_checkpoint_io_list) {
+-		jh->b_cpnext = jh->b_cpprev = jh;
+-	} else {
+-		jh->b_cpnext = transaction->t_checkpoint_io_list;
+-		jh->b_cpprev = transaction->t_checkpoint_io_list->b_cpprev;
+-		jh->b_cpprev->b_cpnext = jh;
+-		jh->b_cpnext->b_cpprev = jh;
+-	}
+-	transaction->t_checkpoint_io_list = jh;
+-}
+-
+ /*
+  * Try to release a checkpointed buffer from its transaction.
+  * Returns 1 if we released it and 2 if we also released the
+@@ -190,6 +168,7 @@ __flush_batch(journal_t *journal, int *batch_count)
+ 		struct buffer_head *bh = journal->j_chkpt_bhs[i];
+ 		BUFFER_TRACE(bh, "brelse");
+ 		__brelse(bh);
++		journal->j_chkpt_bhs[i] = NULL;
+ 	}
+ 	*batch_count = 0;
+ }
+@@ -249,6 +228,11 @@ int jbd2_log_do_checkpoint(journal_t *journal)
+ 		jh = transaction->t_checkpoint_list;
+ 		bh = jh2bh(jh);
+ 
++		/*
++		 * The buffer may be writing back, or flushing out in the
++		 * last couple of cycles, or re-adding into a new transaction,
++		 * need to check it again until it's unlocked.
++		 */
+ 		if (buffer_locked(bh)) {
+ 			get_bh(bh);
+ 			spin_unlock(&journal->j_list_lock);
+@@ -294,28 +278,32 @@ int jbd2_log_do_checkpoint(journal_t *journal)
+ 		}
+ 		if (!buffer_dirty(bh)) {
+ 			BUFFER_TRACE(bh, "remove from checkpoint");
+-			if (__jbd2_journal_remove_checkpoint(jh))
+-				/* The transaction was released; we're done */
++			/*
++			 * If the transaction was released or the checkpoint
++			 * list was empty, we're done.
++			 */
++			if (__jbd2_journal_remove_checkpoint(jh) ||
++			    !transaction->t_checkpoint_list)
+ 				goto out;
+-			continue;
++		} else {
++			/*
++			 * We are about to write the buffer, it could be
++			 * raced by some other transaction shrink or buffer
++			 * re-log logic once we release the j_list_lock,
++			 * leave it on the checkpoint list and check status
++			 * again to make sure it's clean.
++			 */
++			BUFFER_TRACE(bh, "queue");
++			get_bh(bh);
++			J_ASSERT_BH(bh, !buffer_jwrite(bh));
++			journal->j_chkpt_bhs[batch_count++] = bh;
++			transaction->t_chp_stats.cs_written++;
++			transaction->t_checkpoint_list = jh->b_cpnext;
+ 		}
+-		/*
+-		 * Important: we are about to write the buffer, and
+-		 * possibly block, while still holding the journal
+-		 * lock.  We cannot afford to let the transaction
+-		 * logic start messing around with this buffer before
+-		 * we write it to disk, as that would break
+-		 * recoverability.
+-		 */
+-		BUFFER_TRACE(bh, "queue");
+-		get_bh(bh);
+-		J_ASSERT_BH(bh, !buffer_jwrite(bh));
+-		journal->j_chkpt_bhs[batch_count++] = bh;
+-		__buffer_relink_io(jh);
+-		transaction->t_chp_stats.cs_written++;
++
+ 		if ((batch_count == JBD2_NR_BATCH) ||
+-		    need_resched() ||
+-		    spin_needbreak(&journal->j_list_lock))
++		    need_resched() || spin_needbreak(&journal->j_list_lock) ||
++		    jh2bh(transaction->t_checkpoint_list) == journal->j_chkpt_bhs[0])
+ 			goto unlock_and_flush;
+ 	}
+ 
+@@ -329,38 +317,6 @@ int jbd2_log_do_checkpoint(journal_t *journal)
+ 			goto restart;
+ 	}
+ 
+-	/*
+-	 * Now we issued all of the transaction's buffers, let's deal
+-	 * with the buffers that are out for I/O.
+-	 */
+-restart2:
+-	/* Did somebody clean up the transaction in the meanwhile? */
+-	if (journal->j_checkpoint_transactions != transaction ||
+-	    transaction->t_tid != this_tid)
+-		goto out;
+-
+-	while (transaction->t_checkpoint_io_list) {
+-		jh = transaction->t_checkpoint_io_list;
+-		bh = jh2bh(jh);
+-		if (buffer_locked(bh)) {
+-			get_bh(bh);
+-			spin_unlock(&journal->j_list_lock);
+-			wait_on_buffer(bh);
+-			/* the journal_head may have gone by now */
+-			BUFFER_TRACE(bh, "brelse");
+-			__brelse(bh);
+-			spin_lock(&journal->j_list_lock);
+-			goto restart2;
+-		}
+-
+-		/*
+-		 * Now in whatever state the buffer currently is, we
+-		 * know that it has been written out and so we can
+-		 * drop it from the list
+-		 */
+-		if (__jbd2_journal_remove_checkpoint(jh))
+-			break;
+-	}
+ out:
+ 	spin_unlock(&journal->j_list_lock);
+ 	result = jbd2_cleanup_journal_tail(journal);
 -- 
-2.40.1
+2.39.2
 
 
 
