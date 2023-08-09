@@ -2,131 +2,94 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D15A1775A5B
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:07:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BB5C27758E2
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:55:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233151AbjHILHm (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:07:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51662 "EHLO
+        id S232739AbjHIKzy (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 06:55:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43030 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233156AbjHILHl (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:07:41 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9CEF82101
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:07:38 -0700 (PDT)
+        with ESMTP id S232414AbjHIKzj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:55:39 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A22391FD4
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:55:00 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3D76462BD5
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:07:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41CFBC433C8;
-        Wed,  9 Aug 2023 11:07:37 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2BC2863125
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:55:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35B63C433C8;
+        Wed,  9 Aug 2023 10:54:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691579257;
-        bh=AFj/zl8rGeSxxDo2tsI753xkbWhSov2vs0dhTnVGScU=;
+        s=korg; t=1691578499;
+        bh=NCXi58lZmrY3/Flvmx5M+hWQPziilast69XVEOtBkjI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=l3VxiajuWNe7auD77TZSa9i3u3jVr6/4X30DM13bsv4HjORGWsQLpth9IY769wQmF
-         goxdJegn2OSJfBSGstwTVRI+8nGJsA8S98i0CwS2BOL9fSpgWmtDPtP1ouKORiIf9b
-         6pCNGjjwkEws8yLOtsFYmbI9NFxA/R6ep/Ly1pgs=
+        b=uKSkRJM25ULVzpX+Nu6pI5Lh8f37G9zNeJZ4SgtjYWYbtj59mf9YqFWYQSXSkILxA
+         +t8AlegZdtz08/sQ+ahJXIM7kA58oW8KEZQvEXHhuFMKl202H2AphbhbQfGy0b2X8Q
+         K4eV7+CvgixDQYOQO5D5t8bqq6oK/qpr2IHc1G6s=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yu Kuai <yukuai3@huawei.com>,
-        Song Liu <song@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 131/204] md/raid10: prevent soft lockup while flush writes
+        patches@lists.linux.dev, Dinh Nguyen <dinguyen@kernel.org>
+Subject: [PATCH 6.1 082/127] arm64: dts: stratix10: fix incorrect I2C property for SCL signal
 Date:   Wed,  9 Aug 2023 12:41:09 +0200
-Message-ID: <20230809103646.981522172@linuxfoundation.org>
+Message-ID: <20230809103639.367986005@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103642.552405807@linuxfoundation.org>
-References: <20230809103642.552405807@linuxfoundation.org>
+In-Reply-To: <20230809103636.615294317@linuxfoundation.org>
+References: <20230809103636.615294317@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Yu Kuai <yukuai3@huawei.com>
+From: Dinh Nguyen <dinguyen@kernel.org>
 
-[ Upstream commit 010444623e7f4da6b4a4dd603a7da7469981e293 ]
+commit db66795f61354c373ecdadbdae1ed253a96c47cb upstream.
 
-Currently, there is no limit for raid1/raid10 plugged bio. While flushing
-writes, raid1 has cond_resched() while raid10 doesn't, and too many
-writes can cause soft lockup.
+The correct dts property for the SCL falling time is
+"i2c-scl-falling-time-ns".
 
-Follow up soft lockup can be triggered easily with writeback test for
-raid10 with ramdisks:
-
-watchdog: BUG: soft lockup - CPU#10 stuck for 27s! [md0_raid10:1293]
-Call Trace:
- <TASK>
- call_rcu+0x16/0x20
- put_object+0x41/0x80
- __delete_object+0x50/0x90
- delete_object_full+0x2b/0x40
- kmemleak_free+0x46/0xa0
- slab_free_freelist_hook.constprop.0+0xed/0x1a0
- kmem_cache_free+0xfd/0x300
- mempool_free_slab+0x1f/0x30
- mempool_free+0x3a/0x100
- bio_free+0x59/0x80
- bio_put+0xcf/0x2c0
- free_r10bio+0xbf/0xf0
- raid_end_bio_io+0x78/0xb0
- one_write_done+0x8a/0xa0
- raid10_end_write_request+0x1b4/0x430
- bio_endio+0x175/0x320
- brd_submit_bio+0x3b9/0x9b7 [brd]
- __submit_bio+0x69/0xe0
- submit_bio_noacct_nocheck+0x1e6/0x5a0
- submit_bio_noacct+0x38c/0x7e0
- flush_pending_writes+0xf0/0x240
- raid10d+0xac/0x1ed0
-
-Fix the problem by adding cond_resched() to raid10 like what raid1 did.
-
-Note that unlimited plugged bio still need to be optimized, for example,
-in the case of lots of dirty pages writeback, this will take lots of
-memory and io will spend a long time in plug, hence io latency is bad.
-
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
-Signed-off-by: Song Liu <song@kernel.org>
-Link: https://lore.kernel.org/r/20230529131106.2123367-2-yukuai1@huaweicloud.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: c8da1d15b8a4 ("arm64: dts: stratix10: i2c clock running out of spec")
+Cc: stable@vger.kernel.org
+Signed-off-by: Dinh Nguyen <dinguyen@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/raid10.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/arm64/boot/dts/altera/socfpga_stratix10_socdk.dts      |    2 +-
+ arch/arm64/boot/dts/altera/socfpga_stratix10_socdk_nand.dts |    2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/md/raid10.c b/drivers/md/raid10.c
-index 25c8f3e3d2edb..6ecc68fd702e4 100644
---- a/drivers/md/raid10.c
-+++ b/drivers/md/raid10.c
-@@ -924,6 +924,7 @@ static void flush_pending_writes(struct r10conf *conf)
- 			else
- 				generic_make_request(bio);
- 			bio = next;
-+			cond_resched();
- 		}
- 		blk_finish_plug(&plug);
- 	} else
-@@ -1109,6 +1110,7 @@ static void raid10_unplug(struct blk_plug_cb *cb, bool from_schedule)
- 		else
- 			generic_make_request(bio);
- 		bio = next;
-+		cond_resched();
- 	}
- 	kfree(plug);
- }
--- 
-2.39.2
-
+--- a/arch/arm64/boot/dts/altera/socfpga_stratix10_socdk.dts
++++ b/arch/arm64/boot/dts/altera/socfpga_stratix10_socdk.dts
+@@ -128,7 +128,7 @@
+ 	status = "okay";
+ 	clock-frequency = <100000>;
+ 	i2c-sda-falling-time-ns = <890>;  /* hcnt */
+-	i2c-sdl-falling-time-ns = <890>;  /* lcnt */
++	i2c-scl-falling-time-ns = <890>;  /* lcnt */
+ 
+ 	adc@14 {
+ 		compatible = "lltc,ltc2497";
+--- a/arch/arm64/boot/dts/altera/socfpga_stratix10_socdk_nand.dts
++++ b/arch/arm64/boot/dts/altera/socfpga_stratix10_socdk_nand.dts
+@@ -141,7 +141,7 @@
+ 	status = "okay";
+ 	clock-frequency = <100000>;
+ 	i2c-sda-falling-time-ns = <890>;  /* hcnt */
+-	i2c-sdl-falling-time-ns = <890>;  /* lcnt */
++	i2c-scl-falling-time-ns = <890>;  /* lcnt */
+ 
+ 	adc@14 {
+ 		compatible = "lltc,ltc2497";
 
 
