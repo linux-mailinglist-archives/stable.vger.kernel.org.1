@@ -2,46 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3FFCA775BC0
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:20:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 04BC8775D1B
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:33:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233532AbjHILUk (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:20:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52448 "EHLO
+        id S233996AbjHILdz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:33:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40458 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233530AbjHILUk (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:20:40 -0400
+        with ESMTP id S233990AbjHILdy (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:33:54 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A9B62ED
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:20:39 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7ACFA1BFA
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:33:54 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4850E631D8
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:20:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5ED90C433C7;
-        Wed,  9 Aug 2023 11:20:38 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 19A4E63478
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:33:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29FD5C433C8;
+        Wed,  9 Aug 2023 11:33:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691580038;
-        bh=l2kX24XkgBp95wGPNETf8ANGpR74OeiNyMb5CiOl4Lw=;
+        s=korg; t=1691580833;
+        bh=JLiesMjfKwDhymwOLI9RuTv7+DnyIlORD92oIf1v0fU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=fzdXvsNHbLjYriRQI6RSoLxH7+/IhEqnrQ6Sc4IQpJl4fNclEFrI8slveO5T6mETt
-         ZRvXwG/VONtBRofTZOFmxRnh6fjHXtSPOyTEG14JT3D68LnLqSjlCsM1SO0jnHdRg2
-         GEMXQ8I9pXJtUmwfCfMbEuyJnBA1wPJIxVvOitB8=
+        b=G03d6Oxjjn+HBmsW2bPM1hontYtZ+zq/JBnlW84p0WNtJ9ZdcIYANhyWFISpAH9Ym
+         wlLs2HncAWp4qkdbCTWYwX7dpFaWGSSSoxg7IpNvOoYmWiKjWu/WfvvDLjVgklXy/N
+         5BDeY7hhDp2DTf72mLqD0Fjcr8bskoODWYhzkBeg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, George Stark <GNStark@sberdevices.ru>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 4.19 175/323] meson saradc: fix clock divider mask length
+        patches@lists.linux.dev, Bjorn Helgaas <bhelgaas@google.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 011/201] PCI/ASPM: Return 0 or -ETIMEDOUT from pcie_retrain_link()
 Date:   Wed,  9 Aug 2023 12:40:13 +0200
-Message-ID: <20230809103706.141237383@linuxfoundation.org>
+Message-ID: <20230809103644.193399256@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
-References: <20230809103658.104386911@linuxfoundation.org>
+In-Reply-To: <20230809103643.799166053@linuxfoundation.org>
+References: <20230809103643.799166053@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,37 +54,72 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: George Stark <gnstark@sberdevices.ru>
+From: Bjorn Helgaas <bhelgaas@google.com>
 
-commit c57fa0037024c92c2ca34243e79e857da5d2c0a9 upstream.
+[ Upstream commit f5297a01ee805d7fa569d288ed65fc0f9ac9b03d ]
 
-According to the datasheets of supported meson SoCs length of ADC_CLK_DIV
-field is 6-bit. Although all supported SoCs have the register
-with that field documented later SoCs use external clock rather than
-ADC internal clock so this patch affects only meson8 family (S8* SoCs).
+"pcie_retrain_link" is not a question with a true/false answer, so "bool"
+isn't quite the right return type.  Return 0 for success or -ETIMEDOUT if
+the retrain failed.  No functional change intended.
 
-Fixes: 3adbf3427330 ("iio: adc: add a driver for the SAR ADC found in Amlogic Meson SoCs")
-Signed-off-by: George Stark <GNStark@sberdevices.ru>
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-Reviewed-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Link: https://lore.kernel.org/r/20230606165357.42417-1-gnstark@sberdevices.ru
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[bhelgaas: based on Ilpo's patch below]
+Link: https://lore.kernel.org/r/20230502083923.34562-1-ilpo.jarvinen@linux.intel.com
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Stable-dep-of: e7e39756363a ("PCI/ASPM: Avoid link retraining race")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/adc/meson_saradc.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pci/pcie/aspm.c | 20 +++++++++++---------
+ 1 file changed, 11 insertions(+), 9 deletions(-)
 
---- a/drivers/iio/adc/meson_saradc.c
-+++ b/drivers/iio/adc/meson_saradc.c
-@@ -75,7 +75,7 @@
- 	#define MESON_SAR_ADC_REG3_PANEL_DETECT_COUNT_MASK	GENMASK(20, 18)
- 	#define MESON_SAR_ADC_REG3_PANEL_DETECT_FILTER_TB_MASK	GENMASK(17, 16)
- 	#define MESON_SAR_ADC_REG3_ADC_CLK_DIV_SHIFT		10
--	#define MESON_SAR_ADC_REG3_ADC_CLK_DIV_WIDTH		5
-+	#define MESON_SAR_ADC_REG3_ADC_CLK_DIV_WIDTH		6
- 	#define MESON_SAR_ADC_REG3_BLOCK_DLY_SEL_MASK		GENMASK(9, 8)
- 	#define MESON_SAR_ADC_REG3_BLOCK_DLY_MASK		GENMASK(7, 0)
+diff --git a/drivers/pci/pcie/aspm.c b/drivers/pci/pcie/aspm.c
+index 51da8ba67d216..166cb0077023e 100644
+--- a/drivers/pci/pcie/aspm.c
++++ b/drivers/pci/pcie/aspm.c
+@@ -192,7 +192,7 @@ static void pcie_clkpm_cap_init(struct pcie_link_state *link, int blacklist)
+ 	link->clkpm_disable = blacklist ? 1 : 0;
+ }
  
+-static bool pcie_retrain_link(struct pcie_link_state *link)
++static int pcie_retrain_link(struct pcie_link_state *link)
+ {
+ 	struct pci_dev *parent = link->pdev;
+ 	unsigned long end_jiffies;
+@@ -219,7 +219,9 @@ static bool pcie_retrain_link(struct pcie_link_state *link)
+ 			break;
+ 		msleep(1);
+ 	} while (time_before(jiffies, end_jiffies));
+-	return !(reg16 & PCI_EXP_LNKSTA_LT);
++	if (reg16 & PCI_EXP_LNKSTA_LT)
++		return -ETIMEDOUT;
++	return 0;
+ }
+ 
+ /*
+@@ -288,15 +290,15 @@ static void pcie_aspm_configure_common_clock(struct pcie_link_state *link)
+ 		reg16 &= ~PCI_EXP_LNKCTL_CCC;
+ 	pcie_capability_write_word(parent, PCI_EXP_LNKCTL, reg16);
+ 
+-	if (pcie_retrain_link(link))
+-		return;
++	if (pcie_retrain_link(link)) {
+ 
+-	/* Training failed. Restore common clock configurations */
+-	pci_err(parent, "ASPM: Could not configure common clock\n");
+-	list_for_each_entry(child, &linkbus->devices, bus_list)
+-		pcie_capability_write_word(child, PCI_EXP_LNKCTL,
++		/* Training failed. Restore common clock configurations */
++		pci_err(parent, "ASPM: Could not configure common clock\n");
++		list_for_each_entry(child, &linkbus->devices, bus_list)
++			pcie_capability_write_word(child, PCI_EXP_LNKCTL,
+ 					   child_reg[PCI_FUNC(child->devfn)]);
+-	pcie_capability_write_word(parent, PCI_EXP_LNKCTL, parent_reg);
++		pcie_capability_write_word(parent, PCI_EXP_LNKCTL, parent_reg);
++	}
+ }
+ 
+ /* Convert L0s latency encoding to ns */
+-- 
+2.39.2
+
 
 
