@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 69EA3775D5B
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:36:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 88E7C775BE7
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:22:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234078AbjHILgf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:36:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51280 "EHLO
+        id S229585AbjHILWG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:22:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46836 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234082AbjHILgf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:36:35 -0400
+        with ESMTP id S233576AbjHILWF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:22:05 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D69E51BFA
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:36:34 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7CDE72126
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:21:57 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6EDF563531
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:36:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7ACC0C433C8;
-        Wed,  9 Aug 2023 11:36:33 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 10D49631F7
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:21:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23562C433C9;
+        Wed,  9 Aug 2023 11:21:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691580993;
-        bh=v/YyHskIMONw7W8OYh+x6h1qcGTm1Mgs/t4Mnf22p58=;
+        s=korg; t=1691580116;
+        bh=g7JKSqivtcA1ZxQt5+G+tLt5Lkt5nQIiMQbb5r9Z4ic=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Id2O4Vv/8cEWRRZPa8ui4zcirbxaxc31DYTfLkq1MySjbIk0NwvXPz8wbcE8d5rf8
-         R7Pi491jln4RMZ0yGyhtgt68yUIGbjPGnJY2uLn+vwHkDsr+AsslhGi0GlmzXC1I0X
-         yRdceyEkXQ9CNaJ1P/K1m53gbFAALDwxqfnY35OQ=
+        b=z8vzxpsvSAa9aMDQiPA35h2pooSAYDOnVFVHQnQEd3zbJeEoep1RqzY5zj42GYRxq
+         zeePvW9fUKLyv04cr7Xn53lTYoY/nNnAIo66XV9xdqQ7cVfT+gEM0PCnSw4lIBWmHV
+         c2l0US+e85jZA+rzv+tfCZsF/Yckv7RoJhgG81/k=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, stable <stable@kernel.org>,
-        Ruihong Luo <colorsu1922@gmail.com>,
-        =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: [PATCH 5.10 068/201] serial: 8250_dw: Preserve original value of DLF register
+        patches@lists.linux.dev, Abaci Robot <abaci@linux.alibaba.com>,
+        "Steven Rostedt (VMware)" <rostedt@goodmis.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 232/323] ftrace: Check if pages were allocated before calling free_pages()
 Date:   Wed,  9 Aug 2023 12:41:10 +0200
-Message-ID: <20230809103646.109426702@linuxfoundation.org>
+Message-ID: <20230809103708.708497295@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103643.799166053@linuxfoundation.org>
-References: <20230809103643.799166053@linuxfoundation.org>
+In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
+References: <20230809103658.104386911@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,50 +55,61 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ruihong Luo <colorsu1922@gmail.com>
+From: Steven Rostedt (VMware) <rostedt@goodmis.org>
 
-commit 748c5ea8b8796ae8ee80b8d3a3d940570b588d59 upstream.
+[ Upstream commit 59300b36f85f254260c81d9dd09195fa49eb0f98 ]
 
-Preserve the original value of the Divisor Latch Fraction (DLF) register.
-When the DLF register is modified without preservation, it can disrupt
-the baudrate settings established by firmware or bootloader, leading to
-data corruption and the generation of unreadable or distorted characters.
+It is possible that on error pg->size can be zero when getting its order,
+which would return a -1 value. It is dangerous to pass in an order of -1
+to free_pages(). Check if order is greater than or equal to zero before
+calling free_pages().
 
-Fixes: 701c5e73b296 ("serial: 8250_dw: add fractional divisor support")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Ruihong Luo <colorsu1922@gmail.com>
-Link: https://lore.kernel.org/stable/20230713004235.35904-1-colorsu1922%40gmail.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/r/20230713004235.35904-1-colorsu1922@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/lkml/20210330093916.432697c7@gandalf.local.home/
+
+Reported-by: Abaci Robot <abaci@linux.alibaba.com>
+Signed-off-by: Steven Rostedt (VMware) <rostedt@goodmis.org>
+Stable-dep-of: 26efd79c4624 ("ftrace: Fix possible warning on checking all pages used in ftrace_process_locs()")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/8250/8250_dwlib.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ kernel/trace/ftrace.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
---- a/drivers/tty/serial/8250/8250_dwlib.c
-+++ b/drivers/tty/serial/8250/8250_dwlib.c
-@@ -80,7 +80,7 @@ static void dw8250_set_divisor(struct ua
- void dw8250_setup_port(struct uart_port *p)
- {
- 	struct uart_8250_port *up = up_to_u8250p(p);
--	u32 reg;
-+	u32 reg, old_dlf;
+diff --git a/kernel/trace/ftrace.c b/kernel/trace/ftrace.c
+index 48ab4d750c650..1b92a22086f50 100644
+--- a/kernel/trace/ftrace.c
++++ b/kernel/trace/ftrace.c
+@@ -3095,7 +3095,8 @@ ftrace_allocate_pages(unsigned long num_to_init)
+ 	pg = start_pg;
+ 	while (pg) {
+ 		order = get_count_order(pg->size / ENTRIES_PER_PAGE);
+-		free_pages((unsigned long)pg->records, order);
++		if (order >= 0)
++			free_pages((unsigned long)pg->records, order);
+ 		start_pg = pg->next;
+ 		kfree(pg);
+ 		pg = start_pg;
+@@ -5843,7 +5844,8 @@ void ftrace_release_mod(struct module *mod)
+ 		clear_mod_from_hashes(pg);
  
- 	/*
- 	 * If the Component Version Register returns zero, we know that
-@@ -93,9 +93,11 @@ void dw8250_setup_port(struct uart_port
- 	dev_dbg(p->dev, "Designware UART version %c.%c%c\n",
- 		(reg >> 24) & 0xff, (reg >> 16) & 0xff, (reg >> 8) & 0xff);
- 
-+	/* Preserve value written by firmware or bootloader  */
-+	old_dlf = dw8250_readl_ext(p, DW_UART_DLF);
- 	dw8250_writel_ext(p, DW_UART_DLF, ~0U);
- 	reg = dw8250_readl_ext(p, DW_UART_DLF);
--	dw8250_writel_ext(p, DW_UART_DLF, 0);
-+	dw8250_writel_ext(p, DW_UART_DLF, old_dlf);
- 
- 	if (reg) {
- 		struct dw8250_port_data *d = p->private_data;
+ 		order = get_count_order(pg->size / ENTRIES_PER_PAGE);
+-		free_pages((unsigned long)pg->records, order);
++		if (order >= 0)
++			free_pages((unsigned long)pg->records, order);
+ 		tmp_page = pg->next;
+ 		kfree(pg);
+ 		ftrace_number_of_pages -= 1 << order;
+@@ -6192,7 +6194,8 @@ void ftrace_free_mem(struct module *mod, void *start_ptr, void *end_ptr)
+ 		if (!pg->index) {
+ 			*last_pg = pg->next;
+ 			order = get_count_order(pg->size / ENTRIES_PER_PAGE);
+-			free_pages((unsigned long)pg->records, order);
++			if (order >= 0)
++				free_pages((unsigned long)pg->records, order);
+ 			ftrace_number_of_pages -= 1 << order;
+ 			ftrace_number_of_groups--;
+ 			kfree(pg);
+-- 
+2.39.2
+
 
 
