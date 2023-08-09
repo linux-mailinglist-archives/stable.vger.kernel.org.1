@@ -2,99 +2,107 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 99BEF775A03
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:04:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 78183775781
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:46:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233043AbjHILEj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:04:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40198 "EHLO
+        id S232168AbjHIKqv (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 06:46:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34542 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233041AbjHILEi (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:04:38 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB69F1702
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:04:37 -0700 (PDT)
+        with ESMTP id S231171AbjHIKqu (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:46:50 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E0F7B1BCF
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:46:47 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5B9526309F
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:04:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D622C433C7;
-        Wed,  9 Aug 2023 11:04:36 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6D340630D2
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:46:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F215C433C7;
+        Wed,  9 Aug 2023 10:46:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691579076;
-        bh=6JDC17LJIuuzIteAkk6FYq4riJuhw3qeR9tzdTmUCn8=;
+        s=korg; t=1691578006;
+        bh=Sq70zDpA9bUaqA8q/43orJPsjhYX4lbqEdOc+1lX/WA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=yuJl8Ws4ilhRAlFPouQuzOpq3xjbe1P5Ax/U7/iBN/VYIVcZpv6jn1se21hXQn09n
-         uXasaEcdCH7zSgIgDsUxmeBFQ8/1w4IgdygfAIzUXlHamCrVyR5lcrwXRQu2WCC6C1
-         pQijmDS8WmMK2vne6azky8AmfFnHPxIgXUL71iXw=
+        b=aA0PL4NLfTre+DhSFyr5O8l5ckH04psfU3B8qzL4ozDW6IR80Zm+zt0CYzGojFGNG
+         7n3lA8ts1ewomhVe4OzZUKiFSdoQUoh/gHOvRmjRgY4C7rB3Z8I+sbuESfxGEZLQEC
+         94F49eaz74IbdXbixUsR+uPROwyx1uz0LSO9OOfA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Lee Jones <lee@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 066/204] mfd: stmpe: Only disable the regulators if they are enabled
+        patches@lists.linux.dev, valis <sec@valis.email>,
+        Bing-Jhong Billy Jheng <billy@starlabs.sg>,
+        Jamal Hadi Salim <jhs@mojatatu.com>,
+        Victor Nogueira <victor@mojatatu.com>,
+        Pedro Tammela <pctammela@mojatatu.com>,
+        M A Ramdhan <ramdhan@starlabs.sg>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 073/165] net/sched: cls_route: No longer copy tcf_result on update to avoid use-after-free
 Date:   Wed,  9 Aug 2023 12:40:04 +0200
-Message-ID: <20230809103644.855300462@linuxfoundation.org>
+Message-ID: <20230809103645.191283349@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103642.552405807@linuxfoundation.org>
-References: <20230809103642.552405807@linuxfoundation.org>
+In-Reply-To: <20230809103642.720851262@linuxfoundation.org>
+References: <20230809103642.720851262@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: valis <sec@valis.email>
 
-[ Upstream commit 104d32bd81f620bb9f67fbf7d1159c414e89f05f ]
+[ Upstream commit b80b829e9e2c1b3f7aae34855e04d8f6ecaf13c8 ]
 
-In stmpe_probe(), if some regulator_enable() calls fail, probing continues
-and there is only a dev_warn().
+When route4_change() is called on an existing filter, the whole
+tcf_result struct is always copied into the new instance of the filter.
 
-So, if stmpe_probe() is called the regulator may not be enabled. It is
-cleaner to test it before calling regulator_disable() in the remove
-function.
+This causes a problem when updating a filter bound to a class,
+as tcf_unbind_filter() is always called on the old instance in the
+success path, decreasing filter_cnt of the still referenced class
+and allowing it to be deleted, leading to a use-after-free.
 
-Fixes: 9c9e321455fb ("mfd: stmpe: add optional regulators")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Link: https://lore.kernel.org/r/8de3aaf297931d655b9ad6aed548f4de8b85425a.1686998575.git.christophe.jaillet@wanadoo.fr
-Signed-off-by: Lee Jones <lee@kernel.org>
+Fix this by no longer copying the tcf_result struct from the old filter.
+
+Fixes: 1109c00547fc ("net: sched: RCU cls_route")
+Reported-by: valis <sec@valis.email>
+Reported-by: Bing-Jhong Billy Jheng <billy@starlabs.sg>
+Signed-off-by: valis <sec@valis.email>
+Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Reviewed-by: Victor Nogueira <victor@mojatatu.com>
+Reviewed-by: Pedro Tammela <pctammela@mojatatu.com>
+Reviewed-by: M A Ramdhan <ramdhan@starlabs.sg>
+Link: https://lore.kernel.org/r/20230729123202.72406-4-jhs@mojatatu.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mfd/stmpe.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/sched/cls_route.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/mfd/stmpe.c b/drivers/mfd/stmpe.c
-index 722ad2c368a56..d752c56d60e42 100644
---- a/drivers/mfd/stmpe.c
-+++ b/drivers/mfd/stmpe.c
-@@ -1428,9 +1428,9 @@ int stmpe_probe(struct stmpe_client_info *ci, enum stmpe_partnum partnum)
+diff --git a/net/sched/cls_route.c b/net/sched/cls_route.c
+index d0c53724d3e86..1e20bbd687f1d 100644
+--- a/net/sched/cls_route.c
++++ b/net/sched/cls_route.c
+@@ -513,7 +513,6 @@ static int route4_change(struct net *net, struct sk_buff *in_skb,
+ 	if (fold) {
+ 		f->id = fold->id;
+ 		f->iif = fold->iif;
+-		f->res = fold->res;
+ 		f->handle = fold->handle;
  
- int stmpe_remove(struct stmpe *stmpe)
- {
--	if (!IS_ERR(stmpe->vio))
-+	if (!IS_ERR(stmpe->vio) && regulator_is_enabled(stmpe->vio))
- 		regulator_disable(stmpe->vio);
--	if (!IS_ERR(stmpe->vcc))
-+	if (!IS_ERR(stmpe->vcc) && regulator_is_enabled(stmpe->vcc))
- 		regulator_disable(stmpe->vcc);
- 
- 	mfd_remove_devices(stmpe->dev);
+ 		f->tp = fold->tp;
 -- 
-2.39.2
+2.40.1
 
 
 
