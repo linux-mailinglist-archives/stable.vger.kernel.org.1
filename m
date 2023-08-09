@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 68F07775979
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:00:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 486FD775ABB
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:11:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232869AbjHILAu (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:00:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60254 "EHLO
+        id S233266AbjHILLI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:11:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53320 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232874AbjHILAt (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:00:49 -0400
+        with ESMTP id S233277AbjHILLF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:11:05 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 249342106
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:00:49 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 660941FD7
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:11:05 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B364B61FA9
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:00:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C60DEC433C7;
-        Wed,  9 Aug 2023 11:00:47 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 009C6630F0
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:11:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10265C433C7;
+        Wed,  9 Aug 2023 11:11:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691578848;
-        bh=VMg8K5EVnX7/oY8swP080IjOR6BhVeATY8/Y8CQKuTY=;
+        s=korg; t=1691579464;
+        bh=6o0pLO7TjNZ+KtZg94Db3fBPF2vEF7sgfvhv4hePvSo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=qvQO1Hg6XCxp79Eiq3kgKvZZdvIMAvowCxkFR6yQjL5Vp38exuO6xhK42moaxsptZ
-         D4+LH18F1Xf02hYE9rrop6fX2r0KbYZXWlwmphpMr84XLbazzwaKL3uFOVKdRxwsSe
-         yGGcX8ClHnwPfH/r+yYgU80zUwb2b4ykuDXlVmdY=
+        b=QKk48IVOvhMXMTffiFSVkgiHSlXSCxpvZuJLi8T8Ayhu2UQWr7qd63UejtynHS80B
+         aVtXufGaoJpEnY7x4sKqFwnzPdUyegAqhroAi0PAAX3Dkd7oLxDshyX5iNSYfqkfTf
+         iJF3JOrhxqaDtlhVXkOzW6EqCpuI/2xuMlwfCjI4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jan Kara <jack@suse.cz>,
-        Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 5.15 78/92] fs: Protect reconfiguration of sb read-write from racing writes
+        patches@lists.linux.dev, David Jeffery <djeffery@redhat.com>,
+        Joe Thornber <ejt@redhat.com>,
+        Mike Snitzer <snitzer@kernel.org>
+Subject: [PATCH 4.14 176/204] dm cache policy smq: ensure IO doesnt prevent cleaner policy progress
 Date:   Wed,  9 Aug 2023 12:41:54 +0200
-Message-ID: <20230809103636.257001078@linuxfoundation.org>
+Message-ID: <20230809103648.398722378@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103633.485906560@linuxfoundation.org>
-References: <20230809103633.485906560@linuxfoundation.org>
+In-Reply-To: <20230809103642.552405807@linuxfoundation.org>
+References: <20230809103642.552405807@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,68 +55,106 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jan Kara <jack@suse.cz>
+From: Joe Thornber <ejt@redhat.com>
 
-commit c541dce86c537714b6761a79a969c1623dfa222b upstream.
+commit 1e4ab7b4c881cf26c1c72b3f56519e03475486fb upstream.
 
-The reconfigure / remount code takes a lot of effort to protect
-filesystem's reconfiguration code from racing writes on remounting
-read-only. However during remounting read-only filesystem to read-write
-mode userspace writes can start immediately once we clear SB_RDONLY
-flag. This is inconvenient for example for ext4 because we need to do
-some writes to the filesystem (such as preparation of quota files)
-before we can take userspace writes so we are clearing SB_RDONLY flag
-before we are fully ready to accept userpace writes and syzbot has found
-a way to exploit this [1]. Also as far as I'm reading the code
-the filesystem remount code was protected from racing writes in the
-legacy mount path by the mount's MNT_READONLY flag so this is relatively
-new problem. It is actually fairly easy to protect remount read-write
-from racing writes using sb->s_readonly_remount flag so let's just do
-that instead of having to workaround these races in the filesystem code.
+When using the cleaner policy to decommission the cache, there is
+never any writeback started from the cache as it is constantly delayed
+due to normal I/O keeping the device busy. Meaning @idle=false was
+always being passed to clean_target_met()
 
-[1] https://lore.kernel.org/all/00000000000006a0df05f6667499@google.com/T/
+Fix this by adding a specific 'cleaner' flag that is set when the
+cleaner policy is configured. This flag serves to always allow the
+cleaner's writeback work to be queued until the cache is
+decommissioned (even if the cache isn't idle).
 
-Signed-off-by: Jan Kara <jack@suse.cz>
-Message-Id: <20230615113848.8439-1-jack@suse.cz>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Reported-by: David Jeffery <djeffery@redhat.com>
+Fixes: b29d4986d0da ("dm cache: significant rework to leverage dm-bio-prison-v2")
+Cc: stable@vger.kernel.org
+Signed-off-by: Joe Thornber <ejt@redhat.com>
+Signed-off-by: Mike Snitzer <snitzer@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/super.c |   11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ drivers/md/dm-cache-policy-smq.c |   28 ++++++++++++++++++----------
+ 1 file changed, 18 insertions(+), 10 deletions(-)
 
---- a/fs/super.c
-+++ b/fs/super.c
-@@ -863,6 +863,7 @@ int reconfigure_super(struct fs_context
- 	struct super_block *sb = fc->root->d_sb;
- 	int retval;
- 	bool remount_ro = false;
-+	bool remount_rw = false;
- 	bool force = fc->sb_flags & SB_FORCE;
+--- a/drivers/md/dm-cache-policy-smq.c
++++ b/drivers/md/dm-cache-policy-smq.c
+@@ -841,7 +841,13 @@ struct smq_policy {
  
- 	if (fc->sb_flags_mask & ~MS_RMT_MASK)
-@@ -880,7 +881,7 @@ int reconfigure_super(struct fs_context
- 		    bdev_read_only(sb->s_bdev))
- 			return -EACCES;
- #endif
--
-+		remount_rw = !(fc->sb_flags & SB_RDONLY) && sb_rdonly(sb);
- 		remount_ro = (fc->sb_flags & SB_RDONLY) && !sb_rdonly(sb);
- 	}
+ 	struct background_tracker *bg_work;
  
-@@ -910,6 +911,14 @@ int reconfigure_super(struct fs_context
- 			if (retval)
- 				return retval;
- 		}
-+	} else if (remount_rw) {
-+		/*
-+		 * We set s_readonly_remount here to protect filesystem's
-+		 * reconfigure code from writes from userspace until
-+		 * reconfigure finishes.
-+		 */
-+		sb->s_readonly_remount = 1;
-+		smp_wmb();
- 	}
+-	bool migrations_allowed;
++	bool migrations_allowed:1;
++
++	/*
++	 * If this is set the policy will try and clean the whole cache
++	 * even if the device is not idle.
++	 */
++	bool cleaner:1;
+ };
  
- 	if (fc->ops->reconfigure) {
+ /*----------------------------------------------------------------*/
+@@ -1120,7 +1126,7 @@ static bool clean_target_met(struct smq_
+ 	 * Cache entries may not be populated.  So we cannot rely on the
+ 	 * size of the clean queue.
+ 	 */
+-	if (idle) {
++	if (idle || mq->cleaner) {
+ 		/*
+ 		 * We'd like to clean everything.
+ 		 */
+@@ -1692,11 +1698,9 @@ static void calc_hotspot_params(sector_t
+ 		*hotspot_block_size /= 2u;
+ }
+ 
+-static struct dm_cache_policy *__smq_create(dm_cblock_t cache_size,
+-					    sector_t origin_size,
+-					    sector_t cache_block_size,
+-					    bool mimic_mq,
+-					    bool migrations_allowed)
++static struct dm_cache_policy *
++__smq_create(dm_cblock_t cache_size, sector_t origin_size, sector_t cache_block_size,
++	     bool mimic_mq, bool migrations_allowed, bool cleaner)
+ {
+ 	unsigned i;
+ 	unsigned nr_sentinels_per_queue = 2u * NR_CACHE_LEVELS;
+@@ -1783,6 +1787,7 @@ static struct dm_cache_policy *__smq_cre
+ 		goto bad_btracker;
+ 
+ 	mq->migrations_allowed = migrations_allowed;
++	mq->cleaner = cleaner;
+ 
+ 	return &mq->policy;
+ 
+@@ -1806,21 +1811,24 @@ static struct dm_cache_policy *smq_creat
+ 					  sector_t origin_size,
+ 					  sector_t cache_block_size)
+ {
+-	return __smq_create(cache_size, origin_size, cache_block_size, false, true);
++	return __smq_create(cache_size, origin_size, cache_block_size,
++			    false, true, false);
+ }
+ 
+ static struct dm_cache_policy *mq_create(dm_cblock_t cache_size,
+ 					 sector_t origin_size,
+ 					 sector_t cache_block_size)
+ {
+-	return __smq_create(cache_size, origin_size, cache_block_size, true, true);
++	return __smq_create(cache_size, origin_size, cache_block_size,
++			    true, true, false);
+ }
+ 
+ static struct dm_cache_policy *cleaner_create(dm_cblock_t cache_size,
+ 					      sector_t origin_size,
+ 					      sector_t cache_block_size)
+ {
+-	return __smq_create(cache_size, origin_size, cache_block_size, false, false);
++	return __smq_create(cache_size, origin_size, cache_block_size,
++			    false, false, true);
+ }
+ 
+ /*----------------------------------------------------------------*/
 
 
