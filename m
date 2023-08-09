@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3893E775D92
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:39:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4ACB8775A77
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:08:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234151AbjHILjC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:39:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48248 "EHLO
+        id S233189AbjHILIi (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:08:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47300 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234150AbjHILjB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:39:01 -0400
+        with ESMTP id S233184AbjHILIh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:08:37 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E58F3173A
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:39:00 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 535171FD7
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:08:37 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 855A76357A
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:39:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94AF4C433C8;
-        Wed,  9 Aug 2023 11:38:59 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E87AF62BC8
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:08:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0605CC433C7;
+        Wed,  9 Aug 2023 11:08:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691581140;
-        bh=xI7tUpXiEioH4kiYsvdPspS8wMK6On5hF2ELWJg0nwI=;
+        s=korg; t=1691579316;
+        bh=lzMKXovOchqRLhPbKiknvSr0RlnnLWn4+skwDANVLQ8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ilY6sEALfvF1Q/OuR3O3RawkgO0txkmczGzyBVrhAg1Z5ykYghmQ8iB0mNDE5sAnL
-         36BbODV+GfD1la6tqeoUxlPPdMRPJOZE3FILDqIEZtggFUfepNr4wCXIlTquE3jha2
-         de8OJrJy/cXckCOH3PfRWPilAYOc9xwSGcKx1Txg=
+        b=e3qNumzaSLJD0is3BexzO+Z/whdwhZIUMOJvLxsnEGuNl4HzL56Q7vlj1tGmunu4u
+         3affJxM+bybRu6HwTJWn8pRR1POr7w61JeoyqbqzxbIINiI8uS3PbRp/DaANRNfyHH
+         sD901TqTKKUex+vYX5uAiPKKkSktd6ah6v/ew9JQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, stable@kernel.org,
-        Christian Brauner <brauner@kernel.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH 5.10 089/201] file: always lock position for FMODE_ATOMIC_POS
+        patches@lists.linux.dev, Liang Li <liali@redhat.com>,
+        Hangbin Liu <liuhangbin@gmail.com>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.14 153/204] team: reset teams flags when down link is P2P device
 Date:   Wed,  9 Aug 2023 12:41:31 +0200
-Message-ID: <20230809103646.797089106@linuxfoundation.org>
+Message-ID: <20230809103647.670291499@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103643.799166053@linuxfoundation.org>
-References: <20230809103643.799166053@linuxfoundation.org>
+In-Reply-To: <20230809103642.552405807@linuxfoundation.org>
+References: <20230809103642.552405807@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,57 +56,52 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Christian Brauner <brauner@kernel.org>
+From: Hangbin Liu <liuhangbin@gmail.com>
 
-commit 20ea1e7d13c1b544fe67c4a8dc3943bb1ab33e6f upstream.
+[ Upstream commit fa532bee17d15acf8bba4bc8e2062b7a093ba801 ]
 
-The pidfd_getfd() system call allows a caller with ptrace_may_access()
-abilities on another process to steal a file descriptor from this
-process. This system call is used by debuggers, container runtimes,
-system call supervisors, networking proxies etc. So while it is a
-special interest system call it is used in common tools.
+When adding a point to point downlink to team device, we neglected to reset
+the team's flags, which were still using flags like BROADCAST and
+MULTICAST. Consequently, this would initiate ARP/DAD for P2P downlink
+interfaces, such as when adding a GRE device to team device. Fix this by
+remove multicast/broadcast flags and add p2p and noarp flags.
 
-That ability ends up breaking our long-time optimization in fdget_pos(),
-which "knew" that if we had exclusive access to the file descriptor
-nobody else could access it, and we didn't need the lock for the file
-position.
+After removing the none ethernet interface and adding an ethernet interface
+to team, we need to reset team interface flags. Unlike bonding interface,
+team do not need restore IFF_MASTER, IFF_SLAVE flags.
 
-That check for file_count(file) was always fairly subtle - it depended
-on __fdget() not incrementing the file count for single-threaded
-processes and thus included that as part of the rule - but it did mean
-that we didn't need to take the lock in all those traditional unix
-process contexts.
-
-So it's sad to see this go, and I'd love to have some way to re-instate
-the optimization. At the same time, the lock obviously isn't ever
-contended in the case we optimized, so all we were optimizing away is
-the atomics and the cacheline dirtying. Let's see if anybody even
-notices that the optimization is gone.
-
-Link: https://lore.kernel.org/linux-fsdevel/20230724-vfs-fdget_pos-v1-1-a4abfd7103f3@kernel.org/
-Fixes: 8649c322f75c ("pid: Implement pidfd_getfd syscall")
-Cc: stable@kernel.org
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Liang Li <liali@redhat.com>
+Closes: https://bugzilla.redhat.com/show_bug.cgi?id=2221438
+Fixes: 1d76efe1577b ("team: add support for non-ethernet devices")
+Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/file.c |    6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/net/team/team.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
---- a/fs/file.c
-+++ b/fs/file.c
-@@ -1013,10 +1013,8 @@ unsigned long __fdget_pos(unsigned int f
- 	struct file *file = (struct file *)(v & ~3);
- 
- 	if (file && (file->f_mode & FMODE_ATOMIC_POS)) {
--		if (file_count(file) > 1) {
--			v |= FDPUT_POS_UNLOCK;
--			mutex_lock(&file->f_pos_lock);
--		}
-+		v |= FDPUT_POS_UNLOCK;
-+		mutex_lock(&file->f_pos_lock);
- 	}
- 	return v;
+diff --git a/drivers/net/team/team.c b/drivers/net/team/team.c
+index c7c1ff419d75d..b318464a4fcad 100644
+--- a/drivers/net/team/team.c
++++ b/drivers/net/team/team.c
+@@ -2095,6 +2095,15 @@ static void team_setup_by_port(struct net_device *dev,
+ 	dev->mtu = port_dev->mtu;
+ 	memcpy(dev->broadcast, port_dev->broadcast, port_dev->addr_len);
+ 	eth_hw_addr_inherit(dev, port_dev);
++
++	if (port_dev->flags & IFF_POINTOPOINT) {
++		dev->flags &= ~(IFF_BROADCAST | IFF_MULTICAST);
++		dev->flags |= (IFF_POINTOPOINT | IFF_NOARP);
++	} else if ((port_dev->flags & (IFF_BROADCAST | IFF_MULTICAST)) ==
++		    (IFF_BROADCAST | IFF_MULTICAST)) {
++		dev->flags |= (IFF_BROADCAST | IFF_MULTICAST);
++		dev->flags &= ~(IFF_POINTOPOINT | IFF_NOARP);
++	}
  }
+ 
+ static int team_dev_type_check_change(struct net_device *dev,
+-- 
+2.39.2
+
 
 
