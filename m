@@ -2,105 +2,99 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C322B775DB0
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:40:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D98F9775D04
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:33:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234195AbjHILkR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:40:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42528 "EHLO
+        id S233956AbjHILdB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:33:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52168 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234191AbjHILkR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:40:17 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 94471173A
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:40:16 -0700 (PDT)
+        with ESMTP id S233944AbjHILdB (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:33:01 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 00A5819A1
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:33:00 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2BD6463444
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:40:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EF4FC433C8;
-        Wed,  9 Aug 2023 11:40:15 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 94FBD63433
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:33:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6CBFC433C7;
+        Wed,  9 Aug 2023 11:32:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691581215;
-        bh=/elxbnBDUqVhJTxLil6bn6cOiPcNgV0kGbBiJ3Rr4oQ=;
+        s=korg; t=1691580780;
+        bh=j1cxSXpz3W0pcRRsErDLH56/GW5oO6ZIGK61d8JEUGI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Ag6srQG3Y1WvM6LnQZsx+eQDu9UnQx9dGDsv6/JXmzrCGFOdN31UVj0NYflzolofq
-         OTh/DgkX/2v70eTq8fJYW+TCoQzPVXUbm3SHe5+t3Dc51hm3EWslImWUlqqJPj5MpS
-         mBh2oAcvST5EeRjLKTjVbXlu7ZPR4RAW8OGgTsQs=
+        b=HGxrWlqj7YFaJ/hsLUddyi9Y22ztWgaowqDUd46xC3RgfujNMibKA6BOCzWHYgERc
+         SkT/Ou3q0Y8h8gB6Y8R8wmOYFipARE308LLH8yCjMrIuZZ21CkTuowzE2QqZ/SUd6a
+         NwpJos/BY+iDARbhaEYxhe8PJQ+sqJ1XkYSlHGWw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, valis <sec@valis.email>,
-        Bing-Jhong Billy Jheng <billy@starlabs.sg>,
-        Jamal Hadi Salim <jhs@mojatatu.com>,
-        Victor Nogueira <victor@mojatatu.com>,
-        Pedro Tammela <pctammela@mojatatu.com>,
-        M A Ramdhan <ramdhan@starlabs.sg>,
+        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
+        David Ahern <dsahern@kernel.org>,
+        Kuniyuki Iwashima <kuniyu@amazon.com>,
         Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 145/201] net/sched: cls_route: No longer copy tcf_result on update to avoid use-after-free
+Subject: [PATCH 5.4 116/154] tcp_metrics: fix addr_same() helper
 Date:   Wed,  9 Aug 2023 12:42:27 +0200
-Message-ID: <20230809103648.572006383@linuxfoundation.org>
+Message-ID: <20230809103640.768090643@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103643.799166053@linuxfoundation.org>
-References: <20230809103643.799166053@linuxfoundation.org>
+In-Reply-To: <20230809103636.887175326@linuxfoundation.org>
+References: <20230809103636.887175326@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: valis <sec@valis.email>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit b80b829e9e2c1b3f7aae34855e04d8f6ecaf13c8 ]
+[ Upstream commit e6638094d7af6c7b9dcca05ad009e79e31b4f670 ]
 
-When route4_change() is called on an existing filter, the whole
-tcf_result struct is always copied into the new instance of the filter.
+Because v4 and v6 families use separate inetpeer trees (respectively
+net->ipv4.peers and net->ipv6.peers), inetpeer_addr_cmp(a, b) assumes
+a & b share the same family.
 
-This causes a problem when updating a filter bound to a class,
-as tcf_unbind_filter() is always called on the old instance in the
-success path, decreasing filter_cnt of the still referenced class
-and allowing it to be deleted, leading to a use-after-free.
+tcp_metrics use a common hash table, where entries can have different
+families.
 
-Fix this by no longer copying the tcf_result struct from the old filter.
+We must therefore make sure to not call inetpeer_addr_cmp()
+if the families do not match.
 
-Fixes: 1109c00547fc ("net: sched: RCU cls_route")
-Reported-by: valis <sec@valis.email>
-Reported-by: Bing-Jhong Billy Jheng <billy@starlabs.sg>
-Signed-off-by: valis <sec@valis.email>
-Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Reviewed-by: Victor Nogueira <victor@mojatatu.com>
-Reviewed-by: Pedro Tammela <pctammela@mojatatu.com>
-Reviewed-by: M A Ramdhan <ramdhan@starlabs.sg>
-Link: https://lore.kernel.org/r/20230729123202.72406-4-jhs@mojatatu.com
+Fixes: d39d14ffa24c ("net: Add helper function to compare inetpeer addresses")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Link: https://lore.kernel.org/r/20230802131500.1478140-2-edumazet@google.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/cls_route.c | 1 -
- 1 file changed, 1 deletion(-)
+ net/ipv4/tcp_metrics.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/sched/cls_route.c b/net/sched/cls_route.c
-index b775e681cb56e..1ad4b3e60eb3b 100644
---- a/net/sched/cls_route.c
-+++ b/net/sched/cls_route.c
-@@ -511,7 +511,6 @@ static int route4_change(struct net *net, struct sk_buff *in_skb,
- 	if (fold) {
- 		f->id = fold->id;
- 		f->iif = fold->iif;
--		f->res = fold->res;
- 		f->handle = fold->handle;
+diff --git a/net/ipv4/tcp_metrics.c b/net/ipv4/tcp_metrics.c
+index 0af6249a993af..f3fb19df72e1c 100644
+--- a/net/ipv4/tcp_metrics.c
++++ b/net/ipv4/tcp_metrics.c
+@@ -78,7 +78,7 @@ static void tcp_metric_set(struct tcp_metrics_block *tm,
+ static bool addr_same(const struct inetpeer_addr *a,
+ 		      const struct inetpeer_addr *b)
+ {
+-	return inetpeer_addr_cmp(a, b) == 0;
++	return (a->family == b->family) && !inetpeer_addr_cmp(a, b);
+ }
  
- 		f->tp = fold->tp;
+ struct tcpm_hash_bucket {
 -- 
 2.40.1
 
