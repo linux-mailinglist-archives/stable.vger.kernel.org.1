@@ -2,89 +2,144 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E71F2775DFC
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:42:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 83FFB775A0E
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:05:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234307AbjHILm4 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:42:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60500 "EHLO
+        id S233049AbjHILFC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:05:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54494 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234285AbjHILmx (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:42:53 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 21A882101
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:42:52 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B643C63707
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:42:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1EA1C433C7;
-        Wed,  9 Aug 2023 11:42:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691581371;
-        bh=CmD37yCS0W9/zt85kp8DbXO4L8Qr+ez1h2V1K9sTpeA=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=wVHquH7OVli5VVc0N/oK2d4V3DnPgE4FvysgJ9x3QdideX+7ZQbR1UsW/jdWNfu/Q
-         3elQUk2TLI5AavrHkeihchbFWFgRV3iD2OEXOoofgt/9BXbtXN4CSRvWoY5Mmmr8In
-         4V9uE8iN/cVSfcVtaoEKB0U9c2KULcIei0uEOj70=
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     stable@vger.kernel.org
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Xu Yang <xu.yang_2@nxp.com>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 201/201] ARM: dts: nxp/imx6sll: fix wrong property name in usbphy node
-Date:   Wed,  9 Aug 2023 12:43:23 +0200
-Message-ID: <20230809103650.653983735@linuxfoundation.org>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103643.799166053@linuxfoundation.org>
-References: <20230809103643.799166053@linuxfoundation.org>
-User-Agent: quilt/0.67
+        with ESMTP id S233056AbjHILFC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:05:02 -0400
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 762A910F3;
+        Wed,  9 Aug 2023 04:05:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1691579102; x=1723115102;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=p4FORBjsEVC++BkkUwWMyRT93MEizkm2MWw3FwdJmlM=;
+  b=MPnK12+r7pE9s3a/7CNNgdacB1T6t79JtWA3z5Otc5jRvrhK9CLkd4IX
+   r9bHVKPUniZxu0Ps+N+cjy5fiaWOTaM6wwCjXpu9k6NWqVRZwFZ/fYBPM
+   rYNMs1BAipaZh2AhMotNZKewHbz2I0Y/tKILaaWMCjMCT62b5oO1bHOPK
+   x/QhyO0yCV8I2w5E/IMw5Bo19nHSGs0hJaL7CDZakvvZ7vzK2ORTWez5/
+   kAGWM4Bh3vT+Z2WEgs/hySkyXUe9ENVrWepY2he7ue656xuaG3b5t1w3t
+   +/NmOXzyzTXAD74BlijCvrd7S8Dn9MScPlcw2PvVcl9M2I8IONibGvQSU
+   A==;
+X-IronPort-AV: E=Sophos;i="6.01,159,1684825200"; 
+   d="asc'?scan'208";a="228848708"
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa5.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 09 Aug 2023 04:05:01 -0700
+Received: from chn-vm-ex03.mchp-main.com (10.10.85.151) by
+ chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.21; Wed, 9 Aug 2023 04:04:54 -0700
+Received: from wendy (10.10.115.15) by chn-vm-ex03.mchp-main.com
+ (10.10.85.151) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.21 via Frontend
+ Transport; Wed, 9 Aug 2023 04:04:51 -0700
+Date:   Wed, 9 Aug 2023 12:04:14 +0100
+From:   Conor Dooley <conor.dooley@microchip.com>
+To:     JeeHeng Sia <jeeheng.sia@starfivetech.com>
+CC:     Conor Dooley <conor@kernel.org>,
+        "palmer@dabbelt.com" <palmer@dabbelt.com>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Atish Patra <atishp@rivosinc.com>,
+        Anup Patel <apatel@ventanamicro.com>,
+        Alexandre Ghiti <alexghiti@rivosinc.com>,
+        =?iso-8859-1?Q?Bj=F6rn_T=F6pel?= <bjorn@rivosinc.com>,
+        Song Shuai <suagrfillet@gmail.com>,
+        Petr Tesarik <petrtesarik@huaweicloud.com>,
+        "linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: Re: [RFT 1/2] RISC-V: handle missing "no-map" properties for
+ OpenSBI's PMP protected regions
+Message-ID: <20230809-eastcoast-glimmer-a16985ff08f0@wendy>
+References: <20230802-purse-hydrant-6f44f77364b0@wendy>
+ <20230802-detention-second-82ab2b53e07a@wendy>
+ <3e066032031e4552b4b7903755deb669@EXMBX066.cuchost.com>
+ <20230808-humility-rut-e1e46cf75708@spud>
+ <3931cc7932e644bd88f9baf2beddd00d@EXMBX066.cuchost.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="D7xFCxRFk6Od56Zz"
+Content-Disposition: inline
+In-Reply-To: <3931cc7932e644bd88f9baf2beddd00d@EXMBX066.cuchost.com>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_PASS,SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Xu Yang <xu.yang_2@nxp.com>
+--D7xFCxRFk6Od56Zz
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-[ Upstream commit ee70b908f77a9d8f689dea986f09e6d7dc481934 ]
+On Wed, Aug 09, 2023 at 10:24:57AM +0000, JeeHeng Sia wrote:
+>=20
+>=20
+> > -----Original Message-----
+> > From: Conor Dooley <conor@kernel.org>
+> > Sent: Tuesday, August 8, 2023 9:13 PM
+> > To: JeeHeng Sia <jeeheng.sia@starfivetech.com>
+> > Cc: Conor Dooley <conor.dooley@microchip.com>; palmer@dabbelt.com; Paul=
+ Walmsley <paul.walmsley@sifive.com>; Atish Patra
+> > <atishp@rivosinc.com>; Anup Patel <apatel@ventanamicro.com>; Alexandre =
+Ghiti <alexghiti@rivosinc.com>; Bj=F6rn T=F6pel
+> > <bjorn@rivosinc.com>; Song Shuai <suagrfillet@gmail.com>; Petr Tesarik =
+<petrtesarik@huaweicloud.com>; linux-
+> > riscv@lists.infradead.org; linux-kernel@vger.kernel.org; stable@vger.ke=
+rnel.org
+> > Subject: Re: [RFT 1/2] RISC-V: handle missing "no-map" properties for O=
+penSBI's PMP protected regions
+> >=20
+> > On Mon, Aug 07, 2023 at 12:44:07AM +0000, JeeHeng Sia wrote:
+> >=20
+> > > > +/* SBI implementation IDs */
+> > > > +#define SBI_IMP_OPENSBI	1
+> > > I would suggest to create an enum struct for the SBI Imp ID in
+> > > the sbi.h file. What do you think?
+> >=20
+> > I'm not really sure what the advantage of doing so is.
+> The macro SBI_IMP_OPENSBI seems weird (I would read it as "SBI Implementa=
+tion OpenSBI").
 
-Property name "phy-3p0-supply" is used instead of "phy-reg_3p0-supply".
+That is what it is though, so I don't see what's weird about that.
 
-Fixes: 9f30b6b1a957 ("ARM: dts: imx: Add basic dtsi file for imx6sll")
-cc: <stable@vger.kernel.org>
-Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- arch/arm/boot/dts/imx6sll.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> However, if we implement an enum struct for SBI_IMP_ID
 
-diff --git a/arch/arm/boot/dts/imx6sll.dtsi b/arch/arm/boot/dts/imx6sll.dtsi
-index 2873369a57c02..3659fd5ecfa62 100644
---- a/arch/arm/boot/dts/imx6sll.dtsi
-+++ b/arch/arm/boot/dts/imx6sll.dtsi
-@@ -552,7 +552,7 @@ usbphy2: usb-phy@20ca000 {
- 				reg = <0x020ca000 0x1000>;
- 				interrupts = <GIC_SPI 41 IRQ_TYPE_LEVEL_HIGH>;
- 				clocks = <&clks IMX6SLL_CLK_USBPHY2>;
--				phy-reg_3p0-supply = <&reg_3p0>;
-+				phy-3p0-supply = <&reg_3p0>;
- 				fsl,anatop = <&anatop>;
- 			};
- 
--- 
-2.40.1
+> (There are numerous IDs available),
 
+Ohh I know, but I didn't see the point adding those when I was only
+focusing on a single implementation.
 
+> the macro can be abbreviated to OpenSBI. By doing this, the conditional
+> checking of the implementation ID would be more readable, as shown below:
+> if (sbi_firmware_id !=3D OPENSBI)
 
+I don't see that it can become that simple, it'd still need to be
+prefixed with SBI_ to be consistent with any other SBI related enum, and
+at that point adding the extra IMP_ makes little odds.
+
+--D7xFCxRFk6Od56Zz
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZNNyrgAKCRB4tDGHoIJi
+0rvGAP0SyeQqm6UAvnXOLJzlnblTo0HwOabHKj0s86xTLkhOfwD/YaRKdWFfgbVn
+VGwGKCt34I07EXIAbaW33QoCY9kxkQk=
+=SRBE
+-----END PGP SIGNATURE-----
+
+--D7xFCxRFk6Od56Zz--
