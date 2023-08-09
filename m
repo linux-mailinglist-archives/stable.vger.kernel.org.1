@@ -2,42 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A33F1775C66
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:27:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 716D9775C67
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:27:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233736AbjHIL1B (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:27:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59606 "EHLO
+        id S233737AbjHIL1E (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:27:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59644 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233773AbjHIL1A (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:27:00 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A27B2ED
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:26:59 -0700 (PDT)
+        with ESMTP id S233734AbjHIL1C (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:27:02 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 66658FA
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:27:02 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3879963286
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:26:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A32EC433C7;
-        Wed,  9 Aug 2023 11:26:58 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0535D6328C
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:27:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 153B3C433C8;
+        Wed,  9 Aug 2023 11:27:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691580418;
-        bh=6zPNgIGkzoRWs5wmD+bzGo2ZH3OR2GPvx2iCWQLbT14=;
+        s=korg; t=1691580421;
+        bh=A8h31/oX3dqLXdzJMAQvlBClgdzboMUqP23qpJXtQ5U=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=AOHKzNIJ87G+UGfL+4g5Uho9HpFL7oQw59iWJJyzbJFcMZNk2TXp95YW9BLMhGYFK
-         5iUjA+8YZdU/VPX2TKKabf27XEgYIkDrGLk8gNfVu6m76rYPL3qgROr6w+0/OuVQcZ
-         rGy22UhHVRJEnsz2UUIaKIy+SPdyoniLDocw8X0M=
+        b=HOhj+XU8rsJ772gKA8Oz9MBYcRYXlCcqaWp5i2Qj6L6FnibH1o9oApmY+h+twrbif
+         zQrhHw3UsnzvCmTgD/oGmChv3z/cgUGrsgoRAkxbd/lt9GCP9puGC9wnnkmBZNuixg
+         b/o9ghJfWnt0zY1wqO3VxLFC/J3CJm/rd6ZAUrlo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zhihao Cheng <chengzhihao1@huawei.com>,
-        Zhang Yi <yi.zhang@huawei.com>, Jan Kara <jack@suse.cz>,
-        Theodore Tso <tytso@mit.edu>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 005/154] jbd2: Fix wrongly judgement for buffer head removing while doing checkpoint
-Date:   Wed,  9 Aug 2023 12:40:36 +0200
-Message-ID: <20230809103637.095401063@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Daniel Scally <dan.scally@ideasonboard.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 006/154] gpio: tps68470: Make tps68470_gpio_output() always set the initial value
+Date:   Wed,  9 Aug 2023 12:40:37 +0200
+Message-ID: <20230809103637.126272770@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230809103636.887175326@linuxfoundation.org>
 References: <20230809103636.887175326@linuxfoundation.org>
@@ -45,113 +49,57 @@ User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Zhihao Cheng <chengzhihao1@huawei.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit e34c8dd238d0c9368b746480f313055f5bab5040 ]
+[ Upstream commit 5a7adc6c1069ce31ef4f606ae9c05592c80a6ab5 ]
 
-Following process,
+Make tps68470_gpio_output() call tps68470_gpio_set() for output-only pins
+too, so that the initial value passed to gpiod_direction_output() is
+honored for these pins too.
 
-jbd2_journal_commit_transaction
-// there are several dirty buffer heads in transaction->t_checkpoint_list
-          P1                   wb_workfn
-jbd2_log_do_checkpoint
- if (buffer_locked(bh)) // false
-                            __block_write_full_page
-                             trylock_buffer(bh)
-                             test_clear_buffer_dirty(bh)
- if (!buffer_dirty(bh))
-  __jbd2_journal_remove_checkpoint(jh)
-   if (buffer_write_io_error(bh)) // false
-                             >> bh IO error occurs <<
- jbd2_cleanup_journal_tail
-  __jbd2_update_log_tail
-   jbd2_write_superblock
-   // The bh won't be replayed in next mount.
-, which could corrupt the ext4 image, fetch a reproducer in [Link].
-
-Since writeback process clears buffer dirty after locking buffer head,
-we can fix it by try locking buffer and check dirtiness while buffer is
-locked, the buffer head can be removed if it is neither dirty nor locked.
-
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=217490
-Fixes: 470decc613ab ("[PATCH] jbd2: initial copy of files from jbd")
-Signed-off-by: Zhihao Cheng <chengzhihao1@huawei.com>
-Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20230606135928.434610-5-yi.zhang@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Fixes: 275b13a65547 ("gpio: Add support for TPS68470 GPIOs")
+Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+Reviewed-by: Daniel Scally <dan.scally@ideasonboard.com>
+Tested-by: Daniel Scally <dan.scally@ideasonboard.com>
+Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/jbd2/checkpoint.c | 32 +++++++++++++++++---------------
- 1 file changed, 17 insertions(+), 15 deletions(-)
+ drivers/gpio/gpio-tps68470.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/fs/jbd2/checkpoint.c b/fs/jbd2/checkpoint.c
-index 587b89b67c1c6..edb17822f8e6b 100644
---- a/fs/jbd2/checkpoint.c
-+++ b/fs/jbd2/checkpoint.c
-@@ -228,20 +228,6 @@ int jbd2_log_do_checkpoint(journal_t *journal)
- 		jh = transaction->t_checkpoint_list;
- 		bh = jh2bh(jh);
+diff --git a/drivers/gpio/gpio-tps68470.c b/drivers/gpio/gpio-tps68470.c
+index aff6e504c6668..9704cff9b4aa3 100644
+--- a/drivers/gpio/gpio-tps68470.c
++++ b/drivers/gpio/gpio-tps68470.c
+@@ -91,13 +91,13 @@ static int tps68470_gpio_output(struct gpio_chip *gc, unsigned int offset,
+ 	struct tps68470_gpio_data *tps68470_gpio = gpiochip_get_data(gc);
+ 	struct regmap *regmap = tps68470_gpio->tps68470_regmap;
  
--		/*
--		 * The buffer may be writing back, or flushing out in the
--		 * last couple of cycles, or re-adding into a new transaction,
--		 * need to check it again until it's unlocked.
--		 */
--		if (buffer_locked(bh)) {
--			get_bh(bh);
--			spin_unlock(&journal->j_list_lock);
--			wait_on_buffer(bh);
--			/* the journal_head may have gone by now */
--			BUFFER_TRACE(bh, "brelse");
--			__brelse(bh);
--			goto retry;
--		}
- 		if (jh->b_transaction != NULL) {
- 			transaction_t *t = jh->b_transaction;
- 			tid_t tid = t->t_tid;
-@@ -276,7 +262,22 @@ int jbd2_log_do_checkpoint(journal_t *journal)
- 			spin_lock(&journal->j_list_lock);
- 			goto restart;
- 		}
--		if (!buffer_dirty(bh)) {
-+		if (!trylock_buffer(bh)) {
-+			/*
-+			 * The buffer is locked, it may be writing back, or
-+			 * flushing out in the last couple of cycles, or
-+			 * re-adding into a new transaction, need to check
-+			 * it again until it's unlocked.
-+			 */
-+			get_bh(bh);
-+			spin_unlock(&journal->j_list_lock);
-+			wait_on_buffer(bh);
-+			/* the journal_head may have gone by now */
-+			BUFFER_TRACE(bh, "brelse");
-+			__brelse(bh);
-+			goto retry;
-+		} else if (!buffer_dirty(bh)) {
-+			unlock_buffer(bh);
- 			BUFFER_TRACE(bh, "remove from checkpoint");
- 			/*
- 			 * If the transaction was released or the checkpoint
-@@ -286,6 +287,7 @@ int jbd2_log_do_checkpoint(journal_t *journal)
- 			    !transaction->t_checkpoint_list)
- 				goto out;
- 		} else {
-+			unlock_buffer(bh);
- 			/*
- 			 * We are about to write the buffer, it could be
- 			 * raced by some other transaction shrink or buffer
++	/* Set the initial value */
++	tps68470_gpio_set(gc, offset, value);
++
+ 	/* rest are always outputs */
+ 	if (offset >= TPS68470_N_REGULAR_GPIO)
+ 		return 0;
+ 
+-	/* Set the initial value */
+-	tps68470_gpio_set(gc, offset, value);
+-
+ 	return regmap_update_bits(regmap, TPS68470_GPIO_CTL_REG_A(offset),
+ 				 TPS68470_GPIO_MODE_MASK,
+ 				 TPS68470_GPIO_MODE_OUT_CMOS);
 -- 
 2.39.2
 
