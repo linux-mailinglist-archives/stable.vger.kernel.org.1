@@ -2,242 +2,170 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 51853775F89
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 14:46:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 948A377602D
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 15:06:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230303AbjHIMqP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 08:46:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44402 "EHLO
+        id S232373AbjHINGG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 09:06:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33712 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229549AbjHIMqO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 08:46:14 -0400
-Received: from mail-oa1-x32.google.com (mail-oa1-x32.google.com [IPv6:2001:4860:4864:20::32])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CDA3C19A1
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 05:46:13 -0700 (PDT)
-Received: by mail-oa1-x32.google.com with SMTP id 586e51a60fabf-1bb7a1c2fe5so5143692fac.2
-        for <stable@vger.kernel.org>; Wed, 09 Aug 2023 05:46:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20221208.gappssmtp.com; s=20221208; t=1691585172; x=1692189972;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=Y00dp6QJ4g5u69/rrwlBopOO8kAGq1s2NlH42DcsrYU=;
-        b=DufbvmZHS51mb2iadTMF9semGIDdwLqncQEpVauhYa2EtcbrHw+/ZYU8PSQsf5Ho/Z
-         O7EReZl9KTFr0arSaBv4gFqjltM5c79NyTvkscv+QIibK7+fBBesLZg50gqmdTaKkZbB
-         X3tOp65hWnlIZZFFzUzr9gNp2pNo78eLtsDGu0jZuF5UMyGcail5JKNt6DICnEJs2v5X
-         RBU6N0Ek/fMR7bBfTHDgPyh7NT36JUfJBwiWKZrHew1YO3raN7sdgzFcypX+0w3xKKgL
-         uoFDVacS8QoB6bwDXxXJb7a2Bg7oUSwi8YDCGIgqMJAuycifrjoh8gFNx/tCsiLEroB+
-         jFtw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691585172; x=1692189972;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Y00dp6QJ4g5u69/rrwlBopOO8kAGq1s2NlH42DcsrYU=;
-        b=VXiRIwAnx3EfTTL2nM60b3KOrWcL7jJudcA+JiTd4zGphBKeSB0q4nHDbLjTQ8YkRO
-         zpCxCvqN7r0KPwPMhikJs4zaqf4mq/FmB0ArMPYq8DXbsxGgIH7MHrJobQuOTXexZaWK
-         S0Z8bI0wcKJ4IM1Qy2i0iIEVfZfRb5nwG7B8BzazIk85Nz19mAHAp6c3/Sy2ctCeu9an
-         zdE57Z+lwRCf0GRgPeRSj3lrzhxgeChXP9I9/3erNFVryNR26YcMWSWLxUJC+Oirv3a7
-         8oBoGWtE/HyO+K1ijZlQ0oRv02VELDshtaunftynC1axCitqyWtkdH1S1VO7YpYt+SAX
-         ibTQ==
-X-Gm-Message-State: AOJu0YyDZ/gICBckMumVre5f6ivf1vabbZn7pzLftHeCUKtG+ChSQ8fb
-        wQ+xoHjd211nmoUK8q/0cqfZjtCbyU3t9oxvDuQjrQ==
-X-Google-Smtp-Source: AGHT+IE26PF4RAaYalJc/lS+Daq5cS08ceiFKHjV9AcinvI7SS2urCLq98jCGHwcyXi+yPSvyOCw0A==
-X-Received: by 2002:a05:6870:1482:b0:1bf:174b:a17e with SMTP id k2-20020a056870148200b001bf174ba17emr3126918oab.22.1691585172635;
-        Wed, 09 Aug 2023 05:46:12 -0700 (PDT)
-Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id w9-20020a63af09000000b00564670fea62sm7920525pge.21.2023.08.09.05.46.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 09 Aug 2023 05:46:11 -0700 (PDT)
-Message-ID: <64d38a93.630a0220.29800.e8a6@mx.google.com>
-Date:   Wed, 09 Aug 2023 05:46:11 -0700 (PDT)
-Content-Type: text/plain; charset="utf-8"
+        with ESMTP id S230339AbjHINGF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 09:06:05 -0400
+X-Greylist: delayed 570 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 09 Aug 2023 06:06:02 PDT
+Received: from box.fidei.email (box.fidei.email [71.19.144.250])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BADE410C;
+        Wed,  9 Aug 2023 06:06:01 -0700 (PDT)
+Received: from authenticated-user (box.fidei.email [71.19.144.250])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+        (No client certificate requested)
+        by box.fidei.email (Postfix) with ESMTPSA id 19A87834D2;
+        Wed,  9 Aug 2023 08:56:31 -0400 (EDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=dorminy.me; s=mail;
+        t=1691585791; bh=NrVUfXZHRsDdyxphwCPRaTbgAx0nC8B+c1H1KhwtTtc=;
+        h=From:To:Cc:Subject:Date:From;
+        b=qnP8wtvxLp7OyF9F4OOBzjm1L7BkYmyhGg/5Tz0awwdVGNRQhTuNKyAR9Kg9N1zzH
+         oC5qtLiqQQEqo9FtxrDEFyME4M1oyPJIZOP4S/OiFZj5tZ0IErsnaYFui7Dg3UKMeD
+         edijdoiym3F1DwiJnEHWIT7/VZWp7PVLErA59f4Pe0p9+e2PAXRKvFbQ+N8Ah8JC8g
+         +CUYe1e9zwVUg4sXBY85a52rVBahqTjRYFvO3XDxKbBkjR/cz7W6vkzTXoug3F0bxE
+         vR4g32cGOK6EAUoXPjSn/tFdaT/bX1mXmVyn7VB92RUrdEI985a1VJRsbhkM5vIcTv
+         rU+PYCUCTDTEw==
+From:   Sweet Tea Dorminy <sweettea-kernel@dorminy.me>
+To:     Jens Axboe <axboe@kernel.dk>, Satya Tangirala <satyat@google.com>,
+        linux-block@vger.kernel.org, kernel-team@meta.com,
+        ebiggers@kernel.org
+Cc:     Sweet Tea Dorminy <sweettea-kernel@dorminy.me>,
+        stable@vger.kernel.org
+Subject: [PATCH v2] blk-crypto: dynamically allocate fallback profile
+Date:   Wed,  9 Aug 2023 08:56:22 -0400
+Message-ID: <20230809125628.529884-1-sweettea-kernel@dorminy.me>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Report-Type: build
-X-Kernelci-Kernel: v5.10.189-202-g0195dc1d1da1c
-X-Kernelci-Tree: stable-rc
-X-Kernelci-Branch: linux-5.10.y
-Subject: stable-rc/linux-5.10.y build: 19 builds: 0 failed, 19 passed,
- 7 warnings (v5.10.189-202-g0195dc1d1da1c)
-To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
-        kernelci-results@groups.io
-From:   "kernelci.org bot" <bot@kernelci.org>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_PASS,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-stable-rc/linux-5.10.y build: 19 builds: 0 failed, 19 passed, 7 warnings (v=
-5.10.189-202-g0195dc1d1da1c)
+blk_crypto_profile_init() calls lockdep_register_key(), which warns and
+does not register if the provided memory is a static object.
+blk-crypto-fallback currently has a static blk_crypto_profile and calls
+blk_crypto_profile_init() thereupon, resulting in the warning and
+failure to register.
 
-Full Build Summary: https://kernelci.org/build/stable-rc/branch/linux-5.10.=
-y/kernel/v5.10.189-202-g0195dc1d1da1c/
+Fortunately it is simple enough to use a dynamically allocated profile
+and make lockdep function correctly.
 
-Tree: stable-rc
-Branch: linux-5.10.y
-Git Describe: v5.10.189-202-g0195dc1d1da1c
-Git Commit: 0195dc1d1da1c3ea5afb2a07e66d1446ae278243
-Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
-e-rc.git
-Built: 7 unique architectures
-
-Warnings Detected:
-
-arc:
-
-arm64:
-
-arm:
-
-i386:
-
-mips:
-    32r2el_defconfig (gcc-10): 1 warning
-
-riscv:
-    rv32_defconfig (gcc-10): 4 warnings
-
-x86_64:
-    x86_64_defconfig (gcc-10): 1 warning
-    x86_64_defconfig+x86-chromebook (gcc-10): 1 warning
-
-
-Warnings summary:
-
-    2    arch/x86/lib/retpoline.o: warning: objtool: .altinstr_replacement:=
- unexpected end of section
-    2    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [=
--Wcpp]
-    2    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemente=
-d [-Wcpp]
-    1    WARNING: modpost: Symbol info of vmlinux is missing. Unresolved sy=
-mbol check will be entirely skipped.
-
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D
-
-Detailed per-defconfig build reports:
-
----------------------------------------------------------------------------=
------
-32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sect=
-ion mismatches
-
-Warnings:
-    WARNING: modpost: Symbol info of vmlinux is missing. Unresolved symbol =
-check will be entirely skipped.
-
----------------------------------------------------------------------------=
------
-allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
-mismatches
-
----------------------------------------------------------------------------=
------
-allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
-n mismatches
-
----------------------------------------------------------------------------=
------
-defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warn=
-ings, 0 section mismatches
-
----------------------------------------------------------------------------=
------
-haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
- section mismatches
-
----------------------------------------------------------------------------=
------
-i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
-on mismatches
-
----------------------------------------------------------------------------=
------
-imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-nommu_k210_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, =
-0 section mismatches
-
----------------------------------------------------------------------------=
------
-omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-rv32_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 sect=
-ion mismatches
-
-Warnings:
-    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [-Wcpp]
-    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemented [-W=
-cpp]
-    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [-Wcpp]
-    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemented [-W=
-cpp]
-
----------------------------------------------------------------------------=
------
-tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section=
- mismatches
-
----------------------------------------------------------------------------=
------
-vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 se=
-ction mismatches
-
-Warnings:
-    arch/x86/lib/retpoline.o: warning: objtool: .altinstr_replacement: unex=
-pected end of section
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig+x86-chromebook (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, =
-1 warning, 0 section mismatches
-
-Warnings:
-    arch/x86/lib/retpoline.o: warning: objtool: .altinstr_replacement: unex=
-pected end of section
-
+Fixes: 2fb48d88e77f ("blk-crypto: use dynamic lock class for blk_crypto_profile::lock")
+Cc: stable@vger.kernel.org
+Signed-off-by: Sweet Tea Dorminy <sweettea-kernel@dorminy.me>
 ---
-For more info write to <info@kernelci.org>
+v2: reworded commit message, fixed Fixes tag, as pointed out by Eric
+Biggers.
+
+ block/blk-crypto-fallback.c | 27 +++++++++++++++------------
+ 1 file changed, 15 insertions(+), 12 deletions(-)
+
+diff --git a/block/blk-crypto-fallback.c b/block/blk-crypto-fallback.c
+index ad9844c5b40c..de94e9bffec6 100644
+--- a/block/blk-crypto-fallback.c
++++ b/block/blk-crypto-fallback.c
+@@ -78,7 +78,7 @@ static struct blk_crypto_fallback_keyslot {
+ 	struct crypto_skcipher *tfms[BLK_ENCRYPTION_MODE_MAX];
+ } *blk_crypto_keyslots;
+ 
+-static struct blk_crypto_profile blk_crypto_fallback_profile;
++static struct blk_crypto_profile *blk_crypto_fallback_profile;
+ static struct workqueue_struct *blk_crypto_wq;
+ static mempool_t *blk_crypto_bounce_page_pool;
+ static struct bio_set crypto_bio_split;
+@@ -292,7 +292,7 @@ static bool blk_crypto_fallback_encrypt_bio(struct bio **bio_ptr)
+ 	 * Get a blk-crypto-fallback keyslot that contains a crypto_skcipher for
+ 	 * this bio's algorithm and key.
+ 	 */
+-	blk_st = blk_crypto_get_keyslot(&blk_crypto_fallback_profile,
++	blk_st = blk_crypto_get_keyslot(blk_crypto_fallback_profile,
+ 					bc->bc_key, &slot);
+ 	if (blk_st != BLK_STS_OK) {
+ 		src_bio->bi_status = blk_st;
+@@ -395,7 +395,7 @@ static void blk_crypto_fallback_decrypt_bio(struct work_struct *work)
+ 	 * Get a blk-crypto-fallback keyslot that contains a crypto_skcipher for
+ 	 * this bio's algorithm and key.
+ 	 */
+-	blk_st = blk_crypto_get_keyslot(&blk_crypto_fallback_profile,
++	blk_st = blk_crypto_get_keyslot(blk_crypto_fallback_profile,
+ 					bc->bc_key, &slot);
+ 	if (blk_st != BLK_STS_OK) {
+ 		bio->bi_status = blk_st;
+@@ -499,7 +499,7 @@ bool blk_crypto_fallback_bio_prep(struct bio **bio_ptr)
+ 		return false;
+ 	}
+ 
+-	if (!__blk_crypto_cfg_supported(&blk_crypto_fallback_profile,
++	if (!__blk_crypto_cfg_supported(blk_crypto_fallback_profile,
+ 					&bc->bc_key->crypto_cfg)) {
+ 		bio->bi_status = BLK_STS_NOTSUPP;
+ 		return false;
+@@ -526,7 +526,7 @@ bool blk_crypto_fallback_bio_prep(struct bio **bio_ptr)
+ 
+ int blk_crypto_fallback_evict_key(const struct blk_crypto_key *key)
+ {
+-	return __blk_crypto_evict_key(&blk_crypto_fallback_profile, key);
++	return __blk_crypto_evict_key(blk_crypto_fallback_profile, key);
+ }
+ 
+ static bool blk_crypto_fallback_inited;
+@@ -534,29 +534,32 @@ static int blk_crypto_fallback_init(void)
+ {
+ 	int i;
+ 	int err;
+-	struct blk_crypto_profile *profile = &blk_crypto_fallback_profile;
+ 
+ 	if (blk_crypto_fallback_inited)
+ 		return 0;
+ 
+ 	get_random_bytes(blank_key, BLK_CRYPTO_MAX_KEY_SIZE);
+ 
++	blk_crypto_fallback_profile =
++		kzalloc(sizeof(*blk_crypto_fallback_profile), GFP_KERNEL);
++
+ 	err = bioset_init(&crypto_bio_split, 64, 0, 0);
+ 	if (err)
+ 		goto out;
+ 
+-	err = blk_crypto_profile_init(profile, blk_crypto_num_keyslots);
++	err = blk_crypto_profile_init(blk_crypto_fallback_profile,
++				      blk_crypto_num_keyslots);
+ 	if (err)
+ 		goto fail_free_bioset;
+ 	err = -ENOMEM;
+ 
+-	profile->ll_ops = blk_crypto_fallback_ll_ops;
+-	profile->max_dun_bytes_supported = BLK_CRYPTO_MAX_IV_SIZE;
++	blk_crypto_fallback_profile->ll_ops = blk_crypto_fallback_ll_ops;
++	blk_crypto_fallback_profile->max_dun_bytes_supported = BLK_CRYPTO_MAX_IV_SIZE;
+ 
+ 	/* All blk-crypto modes have a crypto API fallback. */
+ 	for (i = 0; i < BLK_ENCRYPTION_MODE_MAX; i++)
+-		profile->modes_supported[i] = 0xFFFFFFFF;
+-	profile->modes_supported[BLK_ENCRYPTION_MODE_INVALID] = 0;
++		blk_crypto_fallback_profile->modes_supported[i] = 0xFFFFFFFF;
++	blk_crypto_fallback_profile->modes_supported[BLK_ENCRYPTION_MODE_INVALID] = 0;
+ 
+ 	blk_crypto_wq = alloc_workqueue("blk_crypto_wq",
+ 					WQ_UNBOUND | WQ_HIGHPRI |
+@@ -597,7 +600,7 @@ static int blk_crypto_fallback_init(void)
+ fail_free_wq:
+ 	destroy_workqueue(blk_crypto_wq);
+ fail_destroy_profile:
+-	blk_crypto_profile_destroy(profile);
++	blk_crypto_profile_destroy(blk_crypto_fallback_profile);
+ fail_free_bioset:
+ 	bioset_exit(&crypto_bio_split);
+ out:
+-- 
+2.41.0
+
