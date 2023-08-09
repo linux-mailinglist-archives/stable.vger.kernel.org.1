@@ -2,143 +2,131 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 85CC4775D05
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:33:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C7CDF775C41
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:25:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233937AbjHILdE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:33:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40686 "EHLO
+        id S233689AbjHILZb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:25:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33266 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233960AbjHILdE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:33:04 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E59C51BFA
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:33:03 -0700 (PDT)
+        with ESMTP id S233677AbjHILZa (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:25:30 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C25B71BFE
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:25:29 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6781963439
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:33:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7847CC433C7;
-        Wed,  9 Aug 2023 11:33:02 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 62ACD6325E
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:25:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74286C433C8;
+        Wed,  9 Aug 2023 11:25:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691580782;
-        bh=DLtRwfCh8k0mo4QeIhE9K58jIA5ACw37+yfSsXfDi7A=;
+        s=korg; t=1691580328;
+        bh=AbcIkz36QYCDzvE9UQA+u4iGeneHue/oyfp22pzInYk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=CtvurcrYt0wZky/muHT5Q/U4LjzSHqhdLNzc2Ap+tQj7advV655Xz3MwR/aieLxDq
-         hKfbU9RdjVAmGGRjBfRErj4Ga6enXCZ924ftoLVfqmqD7L2HC+/dB+t6t+0jX9/Hr7
-         PG2LvxnlF1IFUVz2y6kPiHQDY/ze51TMmFIRK7AI=
+        b=ZszdUeU9jfVB/EZrJD4DqkGZzY/bp9doUeredRmRCd3yzBb1NSiz04kg4ARNVzPd2
+         nzdmhBI0rlCzGS8RxTskdGGHD1Ly7Ab02/y1+AUv9fS6p3V03PBZmJ5f4m4Q3N9hhj
+         M+RJOGd41LjCSVO93wCUaV1KqmWPa/GxEZ1QQZkI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
-        David Ahern <dsahern@kernel.org>,
-        Kuniyuki Iwashima <kuniyu@amazon.com>,
+        patches@lists.linux.dev, Alan Stern <stern@rowland.harvard.edu>,
+        Oliver Neukum <oneukum@suse.com>,
         Jakub Kicinski <kuba@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 117/154] tcp_metrics: annotate data-races around tm->tcpm_stamp
+        syzbot+63ee658b9a100ffadbe2@syzkaller.appspotmail.com
+Subject: [PATCH 4.19 310/323] net: usbnet: Fix WARNING in usbnet_start_xmit/usb_submit_urb
 Date:   Wed,  9 Aug 2023 12:42:28 +0200
-Message-ID: <20230809103640.797639919@linuxfoundation.org>
+Message-ID: <20230809103712.256593610@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103636.887175326@linuxfoundation.org>
-References: <20230809103636.887175326@linuxfoundation.org>
+In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
+References: <20230809103658.104386911@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Eric Dumazet <edumazet@google.com>
+From: Alan Stern <stern@rowland.harvard.edu>
 
-[ Upstream commit 949ad62a5d5311d36fce2e14fe5fed3f936da51c ]
+commit 5e1627cb43ddf1b24b92eb26f8d958a3f5676ccb upstream.
 
-tm->tcpm_stamp can be read or written locklessly.
+The syzbot fuzzer identified a problem in the usbnet driver:
 
-Add needed READ_ONCE()/WRITE_ONCE() to document this.
+usb 1-1: BOGUS urb xfer, pipe 3 != type 1
+WARNING: CPU: 0 PID: 754 at drivers/usb/core/urb.c:504 usb_submit_urb+0xed6/0x1880 drivers/usb/core/urb.c:504
+Modules linked in:
+CPU: 0 PID: 754 Comm: kworker/0:2 Not tainted 6.4.0-rc7-syzkaller-00014-g692b7dc87ca6 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 05/27/2023
+Workqueue: mld mld_ifc_work
+RIP: 0010:usb_submit_urb+0xed6/0x1880 drivers/usb/core/urb.c:504
+Code: 7c 24 18 e8 2c b4 5b fb 48 8b 7c 24 18 e8 42 07 f0 fe 41 89 d8 44 89 e1 4c 89 ea 48 89 c6 48 c7 c7 a0 c9 fc 8a e8 5a 6f 23 fb <0f> 0b e9 58 f8 ff ff e8 fe b3 5b fb 48 81 c5 c0 05 00 00 e9 84 f7
+RSP: 0018:ffffc9000463f568 EFLAGS: 00010086
+RAX: 0000000000000000 RBX: 0000000000000001 RCX: 0000000000000000
+RDX: ffff88801eb28000 RSI: ffffffff814c03b7 RDI: 0000000000000001
+RBP: ffff8881443b7190 R08: 0000000000000001 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000001 R12: 0000000000000003
+R13: ffff88802a77cb18 R14: 0000000000000003 R15: ffff888018262500
+FS:  0000000000000000(0000) GS:ffff8880b9800000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000556a99c15a18 CR3: 0000000028c71000 CR4: 0000000000350ef0
+Call Trace:
+ <TASK>
+ usbnet_start_xmit+0xfe5/0x2190 drivers/net/usb/usbnet.c:1453
+ __netdev_start_xmit include/linux/netdevice.h:4918 [inline]
+ netdev_start_xmit include/linux/netdevice.h:4932 [inline]
+ xmit_one net/core/dev.c:3578 [inline]
+ dev_hard_start_xmit+0x187/0x700 net/core/dev.c:3594
+...
 
-Also constify tcpm_check_stamp() dst argument.
+This bug is caused by the fact that usbnet trusts the bulk endpoint
+addresses its probe routine receives in the driver_info structure, and
+it does not check to see that these endpoints actually exist and have
+the expected type and directions.
 
-Fixes: 51c5d0c4b169 ("tcp: Maintain dynamic metrics in local cache.")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Link: https://lore.kernel.org/r/20230802131500.1478140-3-edumazet@google.com
+The fix is simply to add such a check.
+
+Reported-and-tested-by: syzbot+63ee658b9a100ffadbe2@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/linux-usb/000000000000a56e9105d0cec021@google.com/
+Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
+CC: Oliver Neukum <oneukum@suse.com>
+Link: https://lore.kernel.org/r/ea152b6d-44df-4f8a-95c6-4db51143dcc1@rowland.harvard.edu
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/tcp_metrics.c | 19 +++++++++++++------
- 1 file changed, 13 insertions(+), 6 deletions(-)
+ drivers/net/usb/usbnet.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/net/ipv4/tcp_metrics.c b/net/ipv4/tcp_metrics.c
-index f3fb19df72e1c..6a5a6683194c9 100644
---- a/net/ipv4/tcp_metrics.c
-+++ b/net/ipv4/tcp_metrics.c
-@@ -97,7 +97,7 @@ static void tcpm_suck_dst(struct tcp_metrics_block *tm,
- 	u32 msval;
- 	u32 val;
- 
--	tm->tcpm_stamp = jiffies;
-+	WRITE_ONCE(tm->tcpm_stamp, jiffies);
- 
- 	val = 0;
- 	if (dst_metric_locked(dst, RTAX_RTT))
-@@ -131,9 +131,15 @@ static void tcpm_suck_dst(struct tcp_metrics_block *tm,
- 
- #define TCP_METRICS_TIMEOUT		(60 * 60 * HZ)
- 
--static void tcpm_check_stamp(struct tcp_metrics_block *tm, struct dst_entry *dst)
-+static void tcpm_check_stamp(struct tcp_metrics_block *tm,
-+			     const struct dst_entry *dst)
- {
--	if (tm && unlikely(time_after(jiffies, tm->tcpm_stamp + TCP_METRICS_TIMEOUT)))
-+	unsigned long limit;
+--- a/drivers/net/usb/usbnet.c
++++ b/drivers/net/usb/usbnet.c
+@@ -1767,6 +1767,10 @@ usbnet_probe (struct usb_interface *udev
+ 	} else if (!info->in || !info->out)
+ 		status = usbnet_get_endpoints (dev, udev);
+ 	else {
++		u8 ep_addrs[3] = {
++			info->in + USB_DIR_IN, info->out + USB_DIR_OUT, 0
++		};
 +
-+	if (!tm)
-+		return;
-+	limit = READ_ONCE(tm->tcpm_stamp) + TCP_METRICS_TIMEOUT;
-+	if (unlikely(time_after(jiffies, limit)))
- 		tcpm_suck_dst(tm, dst, false);
- }
+ 		dev->in = usb_rcvbulkpipe (xdev, info->in);
+ 		dev->out = usb_sndbulkpipe (xdev, info->out);
+ 		if (!(info->flags & FLAG_NO_SETINT))
+@@ -1776,6 +1780,8 @@ usbnet_probe (struct usb_interface *udev
+ 		else
+ 			status = 0;
  
-@@ -174,7 +180,8 @@ static struct tcp_metrics_block *tcpm_new(struct dst_entry *dst,
- 		oldest = deref_locked(tcp_metrics_hash[hash].chain);
- 		for (tm = deref_locked(oldest->tcpm_next); tm;
- 		     tm = deref_locked(tm->tcpm_next)) {
--			if (time_before(tm->tcpm_stamp, oldest->tcpm_stamp))
-+			if (time_before(READ_ONCE(tm->tcpm_stamp),
-+					READ_ONCE(oldest->tcpm_stamp)))
- 				oldest = tm;
- 		}
- 		tm = oldest;
-@@ -431,7 +438,7 @@ void tcp_update_metrics(struct sock *sk)
- 					       tp->reordering);
- 		}
++		if (status == 0 && !usb_check_bulk_endpoints(udev, ep_addrs))
++			status = -EINVAL;
  	}
--	tm->tcpm_stamp = jiffies;
-+	WRITE_ONCE(tm->tcpm_stamp, jiffies);
- out_unlock:
- 	rcu_read_unlock();
- }
-@@ -642,7 +649,7 @@ static int tcp_metrics_fill_info(struct sk_buff *msg,
- 	}
- 
- 	if (nla_put_msecs(msg, TCP_METRICS_ATTR_AGE,
--			  jiffies - tm->tcpm_stamp,
-+			  jiffies - READ_ONCE(tm->tcpm_stamp),
- 			  TCP_METRICS_ATTR_PAD) < 0)
- 		goto nla_put_failure;
- 
--- 
-2.40.1
-
+ 	if (status >= 0 && dev->status)
+ 		status = init_status (dev, udev);
 
 
