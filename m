@@ -2,55 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DBA5F77591C
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:58:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3A8917757B0
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:49:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232536AbjHIK5p (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 06:57:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55390 "EHLO
+        id S231205AbjHIKtA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 06:49:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46280 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232762AbjHIK5n (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:57:43 -0400
+        with ESMTP id S232271AbjHIKs6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:48:58 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 01770268B
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:57:42 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AABCF1FF5
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:48:57 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9693E630D6
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:57:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7B54C433C7;
-        Wed,  9 Aug 2023 10:57:40 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4777763123
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:48:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F55BC433C9;
+        Wed,  9 Aug 2023 10:48:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691578661;
-        bh=C+1EicSQJNvZOGbCeipkQKbPcfoFEiSfRLYh9vWU/54=;
+        s=korg; t=1691578136;
+        bh=bKykhrVBkcgAeTxdZkxZD+WdT182djLJIMhQCuuI34Y=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=xAsxJp/PTePbMfQYqOy8D582p1O0tBk8Q8sPzkFPY9zKwQ3ETKmJQCED7vSXK5jDD
-         5mMeBcpdxaJ6/H/lowRwYy8CF+UVkKhBpAVtzfI744XJM0i96ZAODBU969GUkm180g
-         YGbxcZ+JWve+C3rpymGaQsWWWABEywHWTpdVXeCY=
+        b=laOpvo1DZEbXt1QNzPLOAiMQnhYHpJ9WULw1voEWlDbtm5WG6D+d0qcY4d+ZaWZHY
+         Sj7UOzD96/5+BT9kPNJMliZ/+YHqcd1XWdJ0+3qwoC7orEoRzWF81P1OaxrPMSUgkP
+         nJksLIRk/MY4gNy+EF0iG3l+2fM4Xj4HtsUBCPyI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Sasha Levin <sashal@kernel.org>,
-        Nathan Chancellor <nathan@kernel.org>
-Subject: [PATCH 5.15 12/92] word-at-a-time: use the same return type for has_zero regardless of endianness
-Date:   Wed,  9 Aug 2023 12:40:48 +0200
-Message-ID: <20230809103634.000762571@linuxfoundation.org>
+        =?UTF-8?q?Oleg=20 livelace =20Popov?= <o.popov@livelace.ru>,
+        Hou Tao <houtao1@huawei.com>, Jiri Olsa <jolsa@kernel.org>,
+        Alexei Starovoitov <ast@kernel.org>
+Subject: [PATCH 6.4 118/165] bpf: Disable preemption in bpf_event_output
+Date:   Wed,  9 Aug 2023 12:40:49 +0200
+Message-ID: <20230809103646.659922575@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103633.485906560@linuxfoundation.org>
-References: <20230809103633.485906560@linuxfoundation.org>
+In-Reply-To: <20230809103642.720851262@linuxfoundation.org>
+References: <20230809103642.720851262@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAD_ENC_HEADER,BAYES_00,
+        DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -59,73 +56,91 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: ndesaulniers@google.com <ndesaulniers@google.com>
+From: Jiri Olsa <jolsa@kernel.org>
 
-[ Upstream commit 79e8328e5acbe691bbde029a52c89d70dcbc22f3 ]
+commit d62cc390c2e99ae267ffe4b8d7e2e08b6c758c32 upstream.
 
-Compiling big-endian targets with Clang produces the diagnostic:
+We received report [1] of kernel crash, which is caused by
+using nesting protection without disabled preemption.
 
-  fs/namei.c:2173:13: warning: use of bitwise '|' with boolean operands [-Wbitwise-instead-of-logical]
-	} while (!(has_zero(a, &adata, &constants) | has_zero(b, &bdata, &constants)));
-	          ~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-                                               ||
-  fs/namei.c:2173:13: note: cast one or both operands to int to silence this warning
+The bpf_event_output can be called by programs executed by
+bpf_prog_run_array_cg function that disabled migration but
+keeps preemption enabled.
 
-It appears that when has_zero was introduced, two definitions were
-produced with different signatures (in particular different return
-types).
+This can cause task to be preempted by another one inside the
+nesting protection and lead eventually to two tasks using same
+perf_sample_data buffer and cause crashes like:
 
-Looking at the usage in hash_name() in fs/namei.c, I suspect that
-has_zero() is meant to be invoked twice per while loop iteration; using
-logical-or would not update `bdata` when `a` did not have zeros.  So I
-think it's preferred to always return an unsigned long rather than a
-bool than update the while loop in hash_name() to use a logical-or
-rather than bitwise-or.
+  BUG: kernel NULL pointer dereference, address: 0000000000000001
+  #PF: supervisor instruction fetch in kernel mode
+  #PF: error_code(0x0010) - not-present page
+  ...
+  ? perf_output_sample+0x12a/0x9a0
+  ? finish_task_switch.isra.0+0x81/0x280
+  ? perf_event_output+0x66/0xa0
+  ? bpf_event_output+0x13a/0x190
+  ? bpf_event_output_data+0x22/0x40
+  ? bpf_prog_dfc84bbde731b257_cil_sock4_connect+0x40a/0xacb
+  ? xa_load+0x87/0xe0
+  ? __cgroup_bpf_run_filter_sock_addr+0xc1/0x1a0
+  ? release_sock+0x3e/0x90
+  ? sk_setsockopt+0x1a1/0x12f0
+  ? udp_pre_connect+0x36/0x50
+  ? inet_dgram_connect+0x93/0xa0
+  ? __sys_connect+0xb4/0xe0
+  ? udp_setsockopt+0x27/0x40
+  ? __pfx_udp_push_pending_frames+0x10/0x10
+  ? __sys_setsockopt+0xdf/0x1a0
+  ? __x64_sys_connect+0xf/0x20
+  ? do_syscall_64+0x3a/0x90
+  ? entry_SYSCALL_64_after_hwframe+0x72/0xdc
 
-[ Also changed powerpc version to do the same  - Linus ]
+Fixing this by disabling preemption in bpf_event_output.
 
-Link: https://github.com/ClangBuiltLinux/linux/issues/1832
-Link: https://lore.kernel.org/lkml/20230801-bitwise-v1-1-799bec468dc4@google.com/
-Fixes: 36126f8f2ed8 ("word-at-a-time: make the interfaces truly generic")
-Debugged-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Nick Desaulniers <ndesaulniers@google.com>
-Acked-by: Heiko Carstens <hca@linux.ibm.com>
-Cc: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+[1] https://github.com/cilium/cilium/issues/26756
+Cc: stable@vger.kernel.org
+Reported-by: Oleg "livelace" Popov <o.popov@livelace.ru>
+Closes: https://github.com/cilium/cilium/issues/26756
+Fixes: 2a916f2f546c ("bpf: Use migrate_disable/enable in array macros and cgroup/lirc code.")
+Acked-by: Hou Tao <houtao1@huawei.com>
+Signed-off-by: Jiri Olsa <jolsa@kernel.org>
+Link: https://lore.kernel.org/r/20230725084206.580930-3-jolsa@kernel.org
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/include/asm/word-at-a-time.h | 2 +-
- include/asm-generic/word-at-a-time.h      | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ kernel/trace/bpf_trace.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/include/asm/word-at-a-time.h b/arch/powerpc/include/asm/word-at-a-time.h
-index f3f4710d4ff52..99129b0cd8b8a 100644
---- a/arch/powerpc/include/asm/word-at-a-time.h
-+++ b/arch/powerpc/include/asm/word-at-a-time.h
-@@ -34,7 +34,7 @@ static inline long find_zero(unsigned long mask)
- 	return leading_zero_bits >> 3;
+--- a/kernel/trace/bpf_trace.c
++++ b/kernel/trace/bpf_trace.c
+@@ -718,7 +718,6 @@ static DEFINE_PER_CPU(struct bpf_trace_s
+ u64 bpf_event_output(struct bpf_map *map, u64 flags, void *meta, u64 meta_size,
+ 		     void *ctx, u64 ctx_size, bpf_ctx_copy_t ctx_copy)
+ {
+-	int nest_level = this_cpu_inc_return(bpf_event_output_nest_level);
+ 	struct perf_raw_frag frag = {
+ 		.copy		= ctx_copy,
+ 		.size		= ctx_size,
+@@ -735,8 +734,12 @@ u64 bpf_event_output(struct bpf_map *map
+ 	};
+ 	struct perf_sample_data *sd;
+ 	struct pt_regs *regs;
++	int nest_level;
+ 	u64 ret;
+ 
++	preempt_disable();
++	nest_level = this_cpu_inc_return(bpf_event_output_nest_level);
++
+ 	if (WARN_ON_ONCE(nest_level > ARRAY_SIZE(bpf_misc_sds.sds))) {
+ 		ret = -EBUSY;
+ 		goto out;
+@@ -751,6 +754,7 @@ u64 bpf_event_output(struct bpf_map *map
+ 	ret = __bpf_perf_event_output(regs, map, flags, sd);
+ out:
+ 	this_cpu_dec(bpf_event_output_nest_level);
++	preempt_enable();
+ 	return ret;
  }
  
--static inline bool has_zero(unsigned long val, unsigned long *data, const struct word_at_a_time *c)
-+static inline unsigned long has_zero(unsigned long val, unsigned long *data, const struct word_at_a_time *c)
- {
- 	unsigned long rhs = val | c->low_bits;
- 	*data = rhs;
-diff --git a/include/asm-generic/word-at-a-time.h b/include/asm-generic/word-at-a-time.h
-index 20c93f08c9933..95a1d214108a5 100644
---- a/include/asm-generic/word-at-a-time.h
-+++ b/include/asm-generic/word-at-a-time.h
-@@ -38,7 +38,7 @@ static inline long find_zero(unsigned long mask)
- 	return (mask >> 8) ? byte : byte + 1;
- }
- 
--static inline bool has_zero(unsigned long val, unsigned long *data, const struct word_at_a_time *c)
-+static inline unsigned long has_zero(unsigned long val, unsigned long *data, const struct word_at_a_time *c)
- {
- 	unsigned long rhs = val | c->low_bits;
- 	*data = rhs;
--- 
-2.40.1
-
 
 
