@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 800247758C8
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:55:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 17E42775BB4
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:20:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232594AbjHIKzX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 06:55:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35032 "EHLO
+        id S233517AbjHILUK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:20:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53294 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232550AbjHIKzK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:55:10 -0400
+        with ESMTP id S233511AbjHILUJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:20:09 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 15A612101
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:53:48 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79483FA
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:20:08 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1120C63136
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:53:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B2B6C433C8;
-        Wed,  9 Aug 2023 10:53:12 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 17A77631D2
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:20:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24C76C433C7;
+        Wed,  9 Aug 2023 11:20:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691578393;
-        bh=Qp66Jzj5anjQenM5vzmEf2ZeluSmJ/biy8nl1qCliVk=;
+        s=korg; t=1691580007;
+        bh=GkTnCfG9CqE9cItvm7MTBbPF8bOrujndLn7AK3y/aow=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=C92dxN4FwrzO4AnCAqx8nrNjlFISSP4lzJS6KzVI653JLNUvOPeUbXeYvf2gmuE8a
-         qUB0r0xzeQs1CgfDrY4hPRljXImqybnfuQGUz1H+aNFW4Et9BY/VygeRiBjJ5pt4WD
-         kf2sr+mGqlbgr/NI9oA/I7S3TPZfTBWEfFO5iPow=
+        b=ew8kAnZ2vBNWWTrNVnKTVB5Ws7S0CbAjIclX3/LHDooulat9s9XpHNT+Nib20xjdE
+         A7Ib488bN1DGD5UUvHu1vT8dslK3ak93+q3goSfPL58p6aaoJkw0KSDYxTa5EQKvyr
+         W5z7/KjMRC1awfy/ln8hgJmDVzTV7V3ADgx+wzes=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 044/127] net: annotate data-races around sk->sk_priority
-Date:   Wed,  9 Aug 2023 12:40:31 +0200
-Message-ID: <20230809103638.131133073@linuxfoundation.org>
+        patches@lists.linux.dev, Yu Kuai <yukuai3@huawei.com>,
+        Song Liu <song@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 194/323] md/raid10: prevent soft lockup while flush writes
+Date:   Wed,  9 Aug 2023 12:40:32 +0200
+Message-ID: <20230809103707.052098422@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103636.615294317@linuxfoundation.org>
-References: <20230809103636.615294317@linuxfoundation.org>
+In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
+References: <20230809103658.104386911@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,184 +54,79 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Eric Dumazet <edumazet@google.com>
+From: Yu Kuai <yukuai3@huawei.com>
 
-[ Upstream commit 8bf43be799d4b242ea552a14db10456446be843e ]
+[ Upstream commit 010444623e7f4da6b4a4dd603a7da7469981e293 ]
 
-sk_getsockopt() runs locklessly. This means sk->sk_priority
-can be read while other threads are changing its value.
+Currently, there is no limit for raid1/raid10 plugged bio. While flushing
+writes, raid1 has cond_resched() while raid10 doesn't, and too many
+writes can cause soft lockup.
 
-Other reads also happen without socket lock being held.
+Follow up soft lockup can be triggered easily with writeback test for
+raid10 with ramdisks:
 
-Add missing annotations where needed.
+watchdog: BUG: soft lockup - CPU#10 stuck for 27s! [md0_raid10:1293]
+Call Trace:
+ <TASK>
+ call_rcu+0x16/0x20
+ put_object+0x41/0x80
+ __delete_object+0x50/0x90
+ delete_object_full+0x2b/0x40
+ kmemleak_free+0x46/0xa0
+ slab_free_freelist_hook.constprop.0+0xed/0x1a0
+ kmem_cache_free+0xfd/0x300
+ mempool_free_slab+0x1f/0x30
+ mempool_free+0x3a/0x100
+ bio_free+0x59/0x80
+ bio_put+0xcf/0x2c0
+ free_r10bio+0xbf/0xf0
+ raid_end_bio_io+0x78/0xb0
+ one_write_done+0x8a/0xa0
+ raid10_end_write_request+0x1b4/0x430
+ bio_endio+0x175/0x320
+ brd_submit_bio+0x3b9/0x9b7 [brd]
+ __submit_bio+0x69/0xe0
+ submit_bio_noacct_nocheck+0x1e6/0x5a0
+ submit_bio_noacct+0x38c/0x7e0
+ flush_pending_writes+0xf0/0x240
+ raid10d+0xac/0x1ed0
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fix the problem by adding cond_resched() to raid10 like what raid1 did.
+
+Note that unlimited plugged bio still need to be optimized, for example,
+in the case of lots of dirty pages writeback, this will take lots of
+memory and io will spend a long time in plug, hence io latency is bad.
+
+Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+Signed-off-by: Song Liu <song@kernel.org>
+Link: https://lore.kernel.org/r/20230529131106.2123367-2-yukuai1@huaweicloud.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/sock.c        | 6 +++---
- net/ipv4/ip_output.c   | 4 ++--
- net/ipv4/ip_sockglue.c | 2 +-
- net/ipv4/raw.c         | 2 +-
- net/ipv4/tcp_ipv4.c    | 2 +-
- net/ipv6/raw.c         | 2 +-
- net/ipv6/tcp_ipv6.c    | 3 ++-
- net/packet/af_packet.c | 6 +++---
- 8 files changed, 14 insertions(+), 13 deletions(-)
+ drivers/md/raid10.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/core/sock.c b/net/core/sock.c
-index ff52d51dfe2c5..3b5304f084ef3 100644
---- a/net/core/sock.c
-+++ b/net/core/sock.c
-@@ -800,7 +800,7 @@ EXPORT_SYMBOL(sock_no_linger);
- void sock_set_priority(struct sock *sk, u32 priority)
- {
- 	lock_sock(sk);
--	sk->sk_priority = priority;
-+	WRITE_ONCE(sk->sk_priority, priority);
- 	release_sock(sk);
- }
- EXPORT_SYMBOL(sock_set_priority);
-@@ -1203,7 +1203,7 @@ int sk_setsockopt(struct sock *sk, int level, int optname,
- 		if ((val >= 0 && val <= 6) ||
- 		    sockopt_ns_capable(sock_net(sk)->user_ns, CAP_NET_RAW) ||
- 		    sockopt_ns_capable(sock_net(sk)->user_ns, CAP_NET_ADMIN))
--			sk->sk_priority = val;
-+			WRITE_ONCE(sk->sk_priority, val);
+diff --git a/drivers/md/raid10.c b/drivers/md/raid10.c
+index d46056b07c079..bee694be20132 100644
+--- a/drivers/md/raid10.c
++++ b/drivers/md/raid10.c
+@@ -942,6 +942,7 @@ static void flush_pending_writes(struct r10conf *conf)
+ 			else
+ 				generic_make_request(bio);
+ 			bio = next;
++			cond_resched();
+ 		}
+ 		blk_finish_plug(&plug);
+ 	} else
+@@ -1127,6 +1128,7 @@ static void raid10_unplug(struct blk_plug_cb *cb, bool from_schedule)
  		else
- 			ret = -EPERM;
- 		break;
-@@ -1670,7 +1670,7 @@ int sk_getsockopt(struct sock *sk, int level, int optname,
- 		break;
- 
- 	case SO_PRIORITY:
--		v.val = sk->sk_priority;
-+		v.val = READ_ONCE(sk->sk_priority);
- 		break;
- 
- 	case SO_LINGER:
-diff --git a/net/ipv4/ip_output.c b/net/ipv4/ip_output.c
-index 99d8cdbfd9ab5..acfe58d2f1dd7 100644
---- a/net/ipv4/ip_output.c
-+++ b/net/ipv4/ip_output.c
-@@ -182,7 +182,7 @@ int ip_build_and_send_pkt(struct sk_buff *skb, const struct sock *sk,
- 		ip_options_build(skb, &opt->opt, daddr, rt);
+ 			generic_make_request(bio);
+ 		bio = next;
++		cond_resched();
  	}
- 
--	skb->priority = sk->sk_priority;
-+	skb->priority = READ_ONCE(sk->sk_priority);
- 	if (!skb->mark)
- 		skb->mark = READ_ONCE(sk->sk_mark);
- 
-@@ -526,7 +526,7 @@ int __ip_queue_xmit(struct sock *sk, struct sk_buff *skb, struct flowi *fl,
- 			     skb_shinfo(skb)->gso_segs ?: 1);
- 
- 	/* TODO : should we use skb->sk here instead of sk ? */
--	skb->priority = sk->sk_priority;
-+	skb->priority = READ_ONCE(sk->sk_priority);
- 	skb->mark = READ_ONCE(sk->sk_mark);
- 
- 	res = ip_local_out(net, sk, skb);
-diff --git a/net/ipv4/ip_sockglue.c b/net/ipv4/ip_sockglue.c
-index a7fd035b5b4f9..63aa52becd880 100644
---- a/net/ipv4/ip_sockglue.c
-+++ b/net/ipv4/ip_sockglue.c
-@@ -591,7 +591,7 @@ void __ip_sock_set_tos(struct sock *sk, int val)
- 	}
- 	if (inet_sk(sk)->tos != val) {
- 		inet_sk(sk)->tos = val;
--		sk->sk_priority = rt_tos2priority(val);
-+		WRITE_ONCE(sk->sk_priority, rt_tos2priority(val));
- 		sk_dst_reset(sk);
- 	}
+ 	kfree(plug);
  }
-diff --git a/net/ipv4/raw.c b/net/ipv4/raw.c
-index 86197634dcf5d..639aa5abda9dd 100644
---- a/net/ipv4/raw.c
-+++ b/net/ipv4/raw.c
-@@ -346,7 +346,7 @@ static int raw_send_hdrinc(struct sock *sk, struct flowi4 *fl4,
- 		goto error;
- 	skb_reserve(skb, hlen);
- 
--	skb->priority = sk->sk_priority;
-+	skb->priority = READ_ONCE(sk->sk_priority);
- 	skb->mark = sockc->mark;
- 	skb->tstamp = sockc->transmit_time;
- 	skb_dst_set(skb, &rt->dst);
-diff --git a/net/ipv4/tcp_ipv4.c b/net/ipv4/tcp_ipv4.c
-index 23b4f93afb28d..08921b96f9728 100644
---- a/net/ipv4/tcp_ipv4.c
-+++ b/net/ipv4/tcp_ipv4.c
-@@ -933,7 +933,7 @@ static void tcp_v4_send_ack(const struct sock *sk,
- 	ctl_sk->sk_mark = (sk->sk_state == TCP_TIME_WAIT) ?
- 			   inet_twsk(sk)->tw_mark : READ_ONCE(sk->sk_mark);
- 	ctl_sk->sk_priority = (sk->sk_state == TCP_TIME_WAIT) ?
--			   inet_twsk(sk)->tw_priority : sk->sk_priority;
-+			   inet_twsk(sk)->tw_priority : READ_ONCE(sk->sk_priority);
- 	transmit_time = tcp_transmit_time(sk);
- 	ip_send_unicast_reply(ctl_sk,
- 			      skb, &TCP_SKB_CB(skb)->header.h4.opt,
-diff --git a/net/ipv6/raw.c b/net/ipv6/raw.c
-index e8675e5b5d00b..df3abd9e5237c 100644
---- a/net/ipv6/raw.c
-+++ b/net/ipv6/raw.c
-@@ -612,7 +612,7 @@ static int rawv6_send_hdrinc(struct sock *sk, struct msghdr *msg, int length,
- 	skb_reserve(skb, hlen);
- 
- 	skb->protocol = htons(ETH_P_IPV6);
--	skb->priority = sk->sk_priority;
-+	skb->priority = READ_ONCE(sk->sk_priority);
- 	skb->mark = sockc->mark;
- 	skb->tstamp = sockc->transmit_time;
- 
-diff --git a/net/ipv6/tcp_ipv6.c b/net/ipv6/tcp_ipv6.c
-index 039aa51390aed..4bdd356bb5c46 100644
---- a/net/ipv6/tcp_ipv6.c
-+++ b/net/ipv6/tcp_ipv6.c
-@@ -1132,7 +1132,8 @@ static void tcp_v6_reqsk_send_ack(const struct sock *sk, struct sk_buff *skb,
- 			tcp_time_stamp_raw() + tcp_rsk(req)->ts_off,
- 			READ_ONCE(req->ts_recent), sk->sk_bound_dev_if,
- 			tcp_v6_md5_do_lookup(sk, &ipv6_hdr(skb)->saddr, l3index),
--			ipv6_get_dsfield(ipv6_hdr(skb)), 0, sk->sk_priority,
-+			ipv6_get_dsfield(ipv6_hdr(skb)), 0,
-+			READ_ONCE(sk->sk_priority),
- 			READ_ONCE(tcp_rsk(req)->txhash));
- }
- 
-diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
-index 30a28c1ff928a..1681068400733 100644
---- a/net/packet/af_packet.c
-+++ b/net/packet/af_packet.c
-@@ -2052,7 +2052,7 @@ static int packet_sendmsg_spkt(struct socket *sock, struct msghdr *msg,
- 
- 	skb->protocol = proto;
- 	skb->dev = dev;
--	skb->priority = sk->sk_priority;
-+	skb->priority = READ_ONCE(sk->sk_priority);
- 	skb->mark = READ_ONCE(sk->sk_mark);
- 	skb->tstamp = sockc.transmit_time;
- 
-@@ -2575,7 +2575,7 @@ static int tpacket_fill_skb(struct packet_sock *po, struct sk_buff *skb,
- 
- 	skb->protocol = proto;
- 	skb->dev = dev;
--	skb->priority = po->sk.sk_priority;
-+	skb->priority = READ_ONCE(po->sk.sk_priority);
- 	skb->mark = READ_ONCE(po->sk.sk_mark);
- 	skb->tstamp = sockc->transmit_time;
- 	skb_setup_tx_timestamp(skb, sockc->tsflags);
-@@ -3052,7 +3052,7 @@ static int packet_snd(struct socket *sock, struct msghdr *msg, size_t len)
- 
- 	skb->protocol = proto;
- 	skb->dev = dev;
--	skb->priority = sk->sk_priority;
-+	skb->priority = READ_ONCE(sk->sk_priority);
- 	skb->mark = sockc.mark;
- 	skb->tstamp = sockc.transmit_time;
- 
 -- 
-2.40.1
+2.39.2
 
 
 
