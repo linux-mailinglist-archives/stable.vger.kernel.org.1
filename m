@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BBABB77588C
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:53:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9AD69775910
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:57:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232657AbjHIKxr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 06:53:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40194 "EHLO
+        id S232721AbjHIK52 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 06:57:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53744 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232670AbjHIKxe (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:53:34 -0400
+        with ESMTP id S232997AbjHIK5V (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:57:21 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C9943C16
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:51:36 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D9E601FF6
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:57:19 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1762F63130
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:51:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2881FC433C7;
-        Wed,  9 Aug 2023 10:51:18 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 70D4D62DC8
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:57:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78A34C433C7;
+        Wed,  9 Aug 2023 10:57:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691578279;
-        bh=OL6ODWb1lVgr9XUOo8zv/7g9MB93FpiJUlNyL41Y//0=;
+        s=korg; t=1691578638;
+        bh=SGYlyc6Dy6y8yLP0AIzyINsW+vIzvO1HHftq0XdOAlQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=QOqSRTD8KEXs63W+EpMXIH0Qv3RoFTlVlHxclZDKeFI4I9yz9NFJZacXC9SH84BYh
-         5EPBGDHKz/1eIk+5nDgzpCzfybRR23bapUnuudrwwFNWMHE4M5c1DuILcBBnbNImNd
-         zzfRFqNBjJg+OtR9w/Ahv05h1JdF08FB0AwDL4rE=
+        b=J9kOfNeMEN479dAySBMzynoEtAKCEDqe62grWc3naiFUyACFd6WsT9b59vC184jyu
+         CtH2l7QVWNc+bS3C5rQvUMohu9e+N+hHelNpioGzt/UFn5GMl7G7xuMbIA2YZm7zIC
+         dCaKiI59XQc21JAiVk2dVskPc5z0w02O/DUmBQ9k=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Tejas Upadhyay <tejas.upadhyay@intel.com>,
-        Andi Shyti <andi.shyti@linux.intel.com>,
-        Andrzej Hajda <andrzej.hajda@intel.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 161/165] drm/i915/gt: Add workaround 14016712196
+        patches@lists.linux.dev, Alan Stern <stern@rowland.harvard.edu>,
+        Oliver Neukum <oneukum@suse.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        syzbot+63ee658b9a100ffadbe2@syzkaller.appspotmail.com
+Subject: [PATCH 6.1 105/127] net: usbnet: Fix WARNING in usbnet_start_xmit/usb_submit_urb
 Date:   Wed,  9 Aug 2023 12:41:32 +0200
-Message-ID: <20230809103648.049848823@linuxfoundation.org>
+Message-ID: <20230809103640.100522271@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103642.720851262@linuxfoundation.org>
-References: <20230809103642.720851262@linuxfoundation.org>
+In-Reply-To: <20230809103636.615294317@linuxfoundation.org>
+References: <20230809103636.615294317@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,111 +56,77 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Tejas Upadhyay <tejas.upadhyay@intel.com>
+From: Alan Stern <stern@rowland.harvard.edu>
 
-[ Upstream commit d922b80b1010cd6164fa7d3c197b4fbf94b47beb ]
+commit 5e1627cb43ddf1b24b92eb26f8d958a3f5676ccb upstream.
 
-For mtl, workaround suggests that, SW insert a
-dummy PIPE_CONTROL prior to PIPE_CONTROL which
-contains a post sync: Timestamp or Write Immediate.
+The syzbot fuzzer identified a problem in the usbnet driver:
 
-Bspec: 72197
+usb 1-1: BOGUS urb xfer, pipe 3 != type 1
+WARNING: CPU: 0 PID: 754 at drivers/usb/core/urb.c:504 usb_submit_urb+0xed6/0x1880 drivers/usb/core/urb.c:504
+Modules linked in:
+CPU: 0 PID: 754 Comm: kworker/0:2 Not tainted 6.4.0-rc7-syzkaller-00014-g692b7dc87ca6 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 05/27/2023
+Workqueue: mld mld_ifc_work
+RIP: 0010:usb_submit_urb+0xed6/0x1880 drivers/usb/core/urb.c:504
+Code: 7c 24 18 e8 2c b4 5b fb 48 8b 7c 24 18 e8 42 07 f0 fe 41 89 d8 44 89 e1 4c 89 ea 48 89 c6 48 c7 c7 a0 c9 fc 8a e8 5a 6f 23 fb <0f> 0b e9 58 f8 ff ff e8 fe b3 5b fb 48 81 c5 c0 05 00 00 e9 84 f7
+RSP: 0018:ffffc9000463f568 EFLAGS: 00010086
+RAX: 0000000000000000 RBX: 0000000000000001 RCX: 0000000000000000
+RDX: ffff88801eb28000 RSI: ffffffff814c03b7 RDI: 0000000000000001
+RBP: ffff8881443b7190 R08: 0000000000000001 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000001 R12: 0000000000000003
+R13: ffff88802a77cb18 R14: 0000000000000003 R15: ffff888018262500
+FS:  0000000000000000(0000) GS:ffff8880b9800000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000556a99c15a18 CR3: 0000000028c71000 CR4: 0000000000350ef0
+Call Trace:
+ <TASK>
+ usbnet_start_xmit+0xfe5/0x2190 drivers/net/usb/usbnet.c:1453
+ __netdev_start_xmit include/linux/netdevice.h:4918 [inline]
+ netdev_start_xmit include/linux/netdevice.h:4932 [inline]
+ xmit_one net/core/dev.c:3578 [inline]
+ dev_hard_start_xmit+0x187/0x700 net/core/dev.c:3594
+...
 
-V5:
-  - Remove ret variable - Andi
-V4:
-  - Update commit message, avoid returing cs - Andi/Matt
-V3:
-  - Wrap dummy pipe control stuff in API - Andi
-V2:
-  - Fix  kernel test robot warnings
+This bug is caused by the fact that usbnet trusts the bulk endpoint
+addresses its probe routine receives in the driver_info structure, and
+it does not check to see that these endpoints actually exist and have
+the expected type and directions.
 
-Closes: https://lore.kernel.org/oe-kbuild-all/202305121525.3EWdGoBY-lkp@intel.com/
-Signed-off-by: Tejas Upadhyay <tejas.upadhyay@intel.com>
-Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
-Reviewed-by: Andrzej Hajda <andrzej.hajda@intel.com>
-Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230601110959.1715927-1-tejas.upadhyay@intel.com
-Stable-dep-of: 592b228f12e1 ("drm/i915/gt: Rename flags with bit_group_X according to the datasheet")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The fix is simply to add such a check.
+
+Reported-and-tested-by: syzbot+63ee658b9a100ffadbe2@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/linux-usb/000000000000a56e9105d0cec021@google.com/
+Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
+CC: Oliver Neukum <oneukum@suse.com>
+Link: https://lore.kernel.org/r/ea152b6d-44df-4f8a-95c6-4db51143dcc1@rowland.harvard.edu
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/i915/gt/gen8_engine_cs.c | 38 ++++++++++++++++++++++++
- 1 file changed, 38 insertions(+)
+ drivers/net/usb/usbnet.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/gpu/drm/i915/gt/gen8_engine_cs.c b/drivers/gpu/drm/i915/gt/gen8_engine_cs.c
-index 6e914c3f5019a..6210b38a2d382 100644
---- a/drivers/gpu/drm/i915/gt/gen8_engine_cs.c
-+++ b/drivers/gpu/drm/i915/gt/gen8_engine_cs.c
-@@ -189,6 +189,27 @@ u32 *gen12_emit_aux_table_inv(struct intel_gt *gt, u32 *cs, const i915_reg_t inv
- 	return cs;
- }
+--- a/drivers/net/usb/usbnet.c
++++ b/drivers/net/usb/usbnet.c
+@@ -1770,6 +1770,10 @@ usbnet_probe (struct usb_interface *udev
+ 	} else if (!info->in || !info->out)
+ 		status = usbnet_get_endpoints (dev, udev);
+ 	else {
++		u8 ep_addrs[3] = {
++			info->in + USB_DIR_IN, info->out + USB_DIR_OUT, 0
++		};
++
+ 		dev->in = usb_rcvbulkpipe (xdev, info->in);
+ 		dev->out = usb_sndbulkpipe (xdev, info->out);
+ 		if (!(info->flags & FLAG_NO_SETINT))
+@@ -1779,6 +1783,8 @@ usbnet_probe (struct usb_interface *udev
+ 		else
+ 			status = 0;
  
-+static int mtl_dummy_pipe_control(struct i915_request *rq)
-+{
-+	/* Wa_14016712196 */
-+	if (IS_MTL_GRAPHICS_STEP(rq->engine->i915, M, STEP_A0, STEP_B0) ||
-+	    IS_MTL_GRAPHICS_STEP(rq->engine->i915, P, STEP_A0, STEP_B0)) {
-+		u32 *cs;
-+
-+		/* dummy PIPE_CONTROL + depth flush */
-+		cs = intel_ring_begin(rq, 6);
-+		if (IS_ERR(cs))
-+			return PTR_ERR(cs);
-+		cs = gen12_emit_pipe_control(cs,
-+					     0,
-+					     PIPE_CONTROL_DEPTH_CACHE_FLUSH,
-+					     LRC_PPHWSP_SCRATCH_ADDR);
-+		intel_ring_advance(rq, cs);
-+	}
-+
-+	return 0;
-+}
-+
- int gen12_emit_flush_rcs(struct i915_request *rq, u32 mode)
- {
- 	struct intel_engine_cs *engine = rq->engine;
-@@ -199,8 +220,13 @@ int gen12_emit_flush_rcs(struct i915_request *rq, u32 mode)
- 	 */
- 	if (mode & EMIT_FLUSH || gen12_needs_ccs_aux_inv(engine)) {
- 		u32 flags = 0;
-+		int err;
- 		u32 *cs;
- 
-+		err = mtl_dummy_pipe_control(rq);
-+		if (err)
-+			return err;
-+
- 		flags |= PIPE_CONTROL_TILE_CACHE_FLUSH;
- 		flags |= PIPE_CONTROL_FLUSH_L3;
- 		flags |= PIPE_CONTROL_RENDER_TARGET_CACHE_FLUSH;
-@@ -233,6 +259,11 @@ int gen12_emit_flush_rcs(struct i915_request *rq, u32 mode)
- 	if (mode & EMIT_INVALIDATE) {
- 		u32 flags = 0;
- 		u32 *cs, count;
-+		int err;
-+
-+		err = mtl_dummy_pipe_control(rq);
-+		if (err)
-+			return err;
- 
- 		flags |= PIPE_CONTROL_COMMAND_CACHE_INVALIDATE;
- 		flags |= PIPE_CONTROL_TLB_INVALIDATE;
-@@ -749,6 +780,13 @@ u32 *gen12_emit_fini_breadcrumb_rcs(struct i915_request *rq, u32 *cs)
- 		     PIPE_CONTROL_DC_FLUSH_ENABLE |
- 		     PIPE_CONTROL_FLUSH_ENABLE);
- 
-+	/* Wa_14016712196 */
-+	if (IS_MTL_GRAPHICS_STEP(i915, M, STEP_A0, STEP_B0) ||
-+	    IS_MTL_GRAPHICS_STEP(i915, P, STEP_A0, STEP_B0))
-+		/* dummy PIPE_CONTROL + depth flush */
-+		cs = gen12_emit_pipe_control(cs, 0,
-+					     PIPE_CONTROL_DEPTH_CACHE_FLUSH, 0);
-+
- 	if (GRAPHICS_VER(i915) == 12 && GRAPHICS_VER_FULL(i915) < IP_VER(12, 50))
- 		/* Wa_1409600907 */
- 		flags |= PIPE_CONTROL_DEPTH_STALL;
--- 
-2.40.1
-
++		if (status == 0 && !usb_check_bulk_endpoints(udev, ep_addrs))
++			status = -EINVAL;
+ 	}
+ 	if (status >= 0 && dev->status)
+ 		status = init_status (dev, udev);
 
 
