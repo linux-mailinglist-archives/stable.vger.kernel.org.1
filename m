@@ -2,95 +2,107 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7FAC47758AA
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:54:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E23B9775D26
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:34:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232523AbjHIKyv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 06:54:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53054 "EHLO
+        id S234002AbjHILe0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:34:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40754 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232530AbjHIKyj (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:54:39 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C40C5252
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:52:55 -0700 (PDT)
+        with ESMTP id S234001AbjHILeZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:34:25 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A880E3
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:34:25 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 284DF6313C
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:52:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37D23C433C9;
-        Wed,  9 Aug 2023 10:52:09 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DD6E16349E
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:34:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED0E5C433C8;
+        Wed,  9 Aug 2023 11:34:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691578329;
-        bh=2XXdPOTDSqJFS4M4YaVWmybwHWkLi90mkThsE4aDSRU=;
+        s=korg; t=1691580864;
+        bh=E4XwL3/2lAJKYuXQtRtlVUzWDqAWeDd81XaCnoLF3qY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=eBla6wpGpxZSszvJ3R0ayHR1CGJFHLDnKo4JEBsFNvtNr4nadjudynRaM0Cf6xKQK
-         mTFnNG2hs1lNnPP/uAahK5oG5YJk28qeqXSl5oo0mXRKjE0TQKyPo15Hc/UNlaoWHf
-         X6pxsjR8s0KhH+i+NtXVQMOt2afJ4ooDbyvGOAp4=
+        b=J2VRRWLZPg5CdRJ5tJ2pMB0t/9eljGhk8vj31Va/phRItkSuvaTBp0i7E1VYabs+y
+         HlgBDaKVnkfZdY4LB8EcAnIV0rAlrMOlhlCHx3yRDRFgQJ3I7h7mhfULi/0zKGx6Un
+         R44vx+pLWNtLe3VHhQ6ppHGfIx7E54ClgKRQu3EQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ilan Peer <ilan.peer@intel.com>,
-        Kalle Valo <kvalo@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 021/127] wifi: cfg80211: Fix return value in scan logic
-Date:   Wed,  9 Aug 2023 12:40:08 +0200
-Message-ID: <20230809103637.349978590@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Markus Elfring <elfring@users.sourceforge.net>,
+        Wolfram Sang <wsa@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 007/201] i2c: Improve size determinations
+Date:   Wed,  9 Aug 2023 12:40:09 +0200
+Message-ID: <20230809103644.043552663@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103636.615294317@linuxfoundation.org>
-References: <20230809103636.615294317@linuxfoundation.org>
+In-Reply-To: <20230809103643.799166053@linuxfoundation.org>
+References: <20230809103643.799166053@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ilan Peer <ilan.peer@intel.com>
+From: Markus Elfring <elfring@users.sourceforge.net>
 
-[ Upstream commit fd7f08d92fcd7cc3eca0dd6c853f722a4c6176df ]
+[ Upstream commit 06e989578232da33a7fe96b04191b862af8b2cec ]
 
-The reporter noticed a warning when running iwlwifi:
+Replace the specification of a data structure by a pointer dereference
+as the parameter for the operator "sizeof" to make the corresponding
+size determination a bit safer according to the Linux coding style
+convention.
 
-WARNING: CPU: 8 PID: 659 at mm/page_alloc.c:4453 __alloc_pages+0x329/0x340
+This issue was detected by using the Coccinelle software.
 
-As cfg80211_parse_colocated_ap() is not expected to return a negative
-value return 0 and not a negative value if cfg80211_calc_short_ssid()
-fails.
-
-Fixes: c8cb5b854b40f ("nl80211/cfg80211: support 6 GHz scanning")
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217675
-Signed-off-by: Ilan Peer <ilan.peer@intel.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://lore.kernel.org/r/20230723201043.3007430-1-ilan.peer@intel.com
+Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
+Signed-off-by: Wolfram Sang <wsa@kernel.org>
+Stable-dep-of: 05f933d5f731 ("i2c: nomadik: Remove a useless call in the remove function")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/wireless/scan.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/i2c/busses/i2c-nomadik.c | 2 +-
+ drivers/i2c/busses/i2c-sh7760.c  | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/wireless/scan.c b/net/wireless/scan.c
-index efe9283e98935..e5c1510c098fd 100644
---- a/net/wireless/scan.c
-+++ b/net/wireless/scan.c
-@@ -643,7 +643,7 @@ static int cfg80211_parse_colocated_ap(const struct cfg80211_bss_ies *ies,
+diff --git a/drivers/i2c/busses/i2c-nomadik.c b/drivers/i2c/busses/i2c-nomadik.c
+index b456e4ae8830c..4eb087575d962 100644
+--- a/drivers/i2c/busses/i2c-nomadik.c
++++ b/drivers/i2c/busses/i2c-nomadik.c
+@@ -970,7 +970,7 @@ static int nmk_i2c_probe(struct amba_device *adev, const struct amba_id *id)
+ 	struct i2c_vendor_data *vendor = id->data;
+ 	u32 max_fifo_threshold = (vendor->fifodepth / 2) - 1;
  
- 	ret = cfg80211_calc_short_ssid(ies, &ssid_elem, &s_ssid_tmp);
- 	if (ret)
--		return ret;
-+		return 0;
+-	dev = devm_kzalloc(&adev->dev, sizeof(struct nmk_i2c_dev), GFP_KERNEL);
++	dev = devm_kzalloc(&adev->dev, sizeof(*dev), GFP_KERNEL);
+ 	if (!dev) {
+ 		ret = -ENOMEM;
+ 		goto err_no_mem;
+diff --git a/drivers/i2c/busses/i2c-sh7760.c b/drivers/i2c/busses/i2c-sh7760.c
+index a0ccc5d009874..051b904cb35f6 100644
+--- a/drivers/i2c/busses/i2c-sh7760.c
++++ b/drivers/i2c/busses/i2c-sh7760.c
+@@ -443,7 +443,7 @@ static int sh7760_i2c_probe(struct platform_device *pdev)
+ 		goto out0;
+ 	}
  
- 	/* RNR IE may contain more than one NEIGHBOR_AP_INFO */
- 	while (pos + sizeof(*ap_info) <= end) {
+-	id = kzalloc(sizeof(struct cami2c), GFP_KERNEL);
++	id = kzalloc(sizeof(*id), GFP_KERNEL);
+ 	if (!id) {
+ 		ret = -ENOMEM;
+ 		goto out0;
 -- 
-2.40.1
+2.39.2
 
 
 
