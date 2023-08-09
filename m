@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BE577775CD6
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:31:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 475B577590F
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:57:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233873AbjHILbX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:31:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59560 "EHLO
+        id S232582AbjHIK50 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 06:57:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51580 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233894AbjHILbW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:31:22 -0400
+        with ESMTP id S232861AbjHIK5H (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:57:07 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 847EB19A1
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:31:22 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C43DD2133
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:57:05 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 233B0633A8
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:31:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34B4DC433C7;
-        Wed,  9 Aug 2023 11:31:21 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 64B456238A
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:57:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77BCAC433C9;
+        Wed,  9 Aug 2023 10:57:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691580681;
-        bh=neC51Y0PDL9Aw9f6ud1M8ut0384NXKPeGvxiEUROiD8=;
+        s=korg; t=1691578624;
+        bh=Ma0v6Fzyz6uYKqGPDdR4wHjrl0VDC09imx4S4yHjzOU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=EJSAyVqP7C6NcBrOQcA8PUWsF/6UH4SWR7EOpBGKOjvNigK5mBeFwr69INKzwzOqV
-         CKX209QVpId4xZoQ8oZwHLKukuS5uSzWA5yYt8JIipv6qAju0E3eCGCw3xkFpHs+4A
-         Yzjz1DG1M7aVUcWU+xHnbw8uhH7IbayO82PsHmEU=
+        b=G01mDfQSwg3JPLnkxDrKkB+CIOGqIH4c7kTP3r1a4R4DAwsjZZjbx9ndMbb03YNNh
+         xGzmbM3e03dEIwVrarnXhMa5T1y81sIGbvAOz8hKLAsZhcfeW3Tr+TifQXn04EMW5n
+         gSvJ3LggeO2DpBQRdrQ0tvaz1u92gCbFtt5nXqZ0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Hagar Hemdan <hagarhem@amazon.de>
-Subject: [PATCH 5.4 082/154] ACPI: processor: perflib: Avoid updating frequency QoS unnecessarily
+        Mario Limonciello <mario.limonciello@amd.com>,
+        Lijo Lazar <lijo.lazar@amd.com>, Le Ma <le.ma@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.1 126/127] drm/amdgpu: Use apt name for FW reserved region
 Date:   Wed,  9 Aug 2023 12:41:53 +0200
-Message-ID: <20230809103639.705410704@linuxfoundation.org>
+Message-ID: <20230809103640.765148012@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103636.887175326@linuxfoundation.org>
-References: <20230809103636.887175326@linuxfoundation.org>
+In-Reply-To: <20230809103636.615294317@linuxfoundation.org>
+References: <20230809103636.615294317@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,67 +56,127 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Lijo Lazar <lijo.lazar@amd.com>
 
-commit 99387b016022c29234c4ebf9abd34358c6e56532 upstream.
+commit db3b5cb64a9ca301d14ed027e470834316720e42 upstream
 
-Modify acpi_processor_get_platform_limit() to avoid updating its
-frequency QoS request when the _PPC return value has not changed
-by comparing that value to the previous _PPC return value stored in
-the performance_platform_limit field of the struct acpi_processor
-corresponding to the given CPU.
+Use the generic term fw_reserved_memory for FW reserve region. This
+region may also hold discovery TMR in addition to other reserve
+regions. This region size could be larger than discovery tmr size, hence
+don't change the discovery tmr size based on this.
 
-While at it, do the _PPC return value check against the state count
-earlier, to avoid setting performance_platform_limit to an invalid
-value, and make acpi_processor_ppc_init() use FREQ_QOS_MAX_DEFAULT_VALUE
-as the "no limit" frequency QoS for consistency.
-
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Tested-by: Hagar Hemdan <hagarhem@amazon.de>
+Signed-off-by: Lijo Lazar <lijo.lazar@amd.com>
+Reviewed-by: Le Ma <le.ma@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+[ This change fixes reading IP discovery from debugfs.
+  It needed to be hand modified because:
+  * GC 9.4.3 support isn't introduced in older kernels until
+    228ce176434b ("drm/amdgpu: Handle VRAM dependencies on GFXIP9.4.3")
+  * It also changed because of 58ab2c08d708 (drm/amdgpu: use VRAM|GTT
+    for a bunch of kernel allocations) not being present.
+  Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2748 ]
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/processor_perflib.c |   18 ++++++++++++++----
- 1 file changed, 14 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c |   33 ++++++++++++++++++--------------
+ drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.h |    3 +-
+ 2 files changed, 21 insertions(+), 15 deletions(-)
 
---- a/drivers/acpi/processor_perflib.c
-+++ b/drivers/acpi/processor_perflib.c
-@@ -79,13 +79,16 @@ static int acpi_processor_get_platform_l
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c
+@@ -1625,14 +1625,15 @@ static int amdgpu_ttm_training_reserve_v
+ 	return 0;
+ }
  
- 	index = ppc;
+-static void amdgpu_ttm_training_data_block_init(struct amdgpu_device *adev)
++static void amdgpu_ttm_training_data_block_init(struct amdgpu_device *adev,
++						uint32_t reserve_size)
+ {
+ 	struct psp_memory_training_context *ctx = &adev->psp.mem_train_ctx;
  
-+	if (pr->performance_platform_limit == index ||
-+	    ppc >= pr->performance->state_count)
-+		return 0;
-+
- 	pr_debug("CPU %d: _PPC is %d - frequency %s limited\n", pr->id,
- 		 index, index ? "is" : "is not");
+ 	memset(ctx, 0, sizeof(*ctx));
  
- 	pr->performance_platform_limit = index;
+ 	ctx->c2p_train_data_offset =
+-		ALIGN((adev->gmc.mc_vram_size - adev->mman.discovery_tmr_size - SZ_1M), SZ_1M);
++		ALIGN((adev->gmc.mc_vram_size - reserve_size - SZ_1M), SZ_1M);
+ 	ctx->p2c_train_data_offset =
+ 		(adev->gmc.mc_vram_size - GDDR6_MEM_TRAINING_OFFSET);
+ 	ctx->train_data_size =
+@@ -1650,9 +1651,10 @@ static void amdgpu_ttm_training_data_blo
+  */
+ static int amdgpu_ttm_reserve_tmr(struct amdgpu_device *adev)
+ {
+-	int ret;
+ 	struct psp_memory_training_context *ctx = &adev->psp.mem_train_ctx;
+ 	bool mem_train_support = false;
++	uint32_t reserve_size = 0;
++	int ret;
  
--	if (ppc >= pr->performance->state_count ||
--	    unlikely(!freq_qos_request_active(&pr->perflib_req)))
-+	if (unlikely(!freq_qos_request_active(&pr->perflib_req)))
- 		return 0;
+ 	if (!amdgpu_sriov_vf(adev)) {
+ 		if (amdgpu_atomfirmware_mem_training_supported(adev))
+@@ -1668,14 +1670,15 @@ static int amdgpu_ttm_reserve_tmr(struct
+ 	 * Otherwise, fallback to legacy approach to check and reserve tmr block for ip
+ 	 * discovery data and G6 memory training data respectively
+ 	 */
+-	adev->mman.discovery_tmr_size =
+-		amdgpu_atomfirmware_get_fw_reserved_fb_size(adev);
+-	if (!adev->mman.discovery_tmr_size)
+-		adev->mman.discovery_tmr_size = DISCOVERY_TMR_OFFSET;
++	if (adev->bios)
++		reserve_size =
++			amdgpu_atomfirmware_get_fw_reserved_fb_size(adev);
++	if (!reserve_size)
++		reserve_size = DISCOVERY_TMR_OFFSET;
  
- 	/*
-@@ -180,9 +183,16 @@ void acpi_processor_ppc_init(struct cpuf
- 		if (!pr)
- 			continue;
+ 	if (mem_train_support) {
+ 		/* reserve vram for mem train according to TMR location */
+-		amdgpu_ttm_training_data_block_init(adev);
++		amdgpu_ttm_training_data_block_init(adev, reserve_size);
+ 		ret = amdgpu_bo_create_kernel_at(adev,
+ 					 ctx->c2p_train_data_offset,
+ 					 ctx->train_data_size,
+@@ -1690,13 +1693,14 @@ static int amdgpu_ttm_reserve_tmr(struct
+ 	}
  
-+		/*
-+		 * Reset performance_platform_limit in case there is a stale
-+		 * value in it, so as to make it match the "no limit" QoS value
-+		 * below.
-+		 */
-+		pr->performance_platform_limit = 0;
-+
- 		ret = freq_qos_add_request(&policy->constraints,
--					   &pr->perflib_req,
--					   FREQ_QOS_MAX, INT_MAX);
-+					   &pr->perflib_req, FREQ_QOS_MAX,
-+					   FREQ_QOS_MAX_DEFAULT_VALUE);
- 		if (ret < 0)
- 			pr_err("Failed to add freq constraint for CPU%d (%d)\n",
- 			       cpu, ret);
+ 	ret = amdgpu_bo_create_kernel_at(adev,
+-				adev->gmc.real_vram_size - adev->mman.discovery_tmr_size,
+-				adev->mman.discovery_tmr_size,
+-				&adev->mman.discovery_memory,
++				adev->gmc.real_vram_size - reserve_size,
++				reserve_size,
++				&adev->mman.fw_reserved_memory,
+ 				NULL);
+ 	if (ret) {
+ 		DRM_ERROR("alloc tmr failed(%d)!\n", ret);
+-		amdgpu_bo_free_kernel(&adev->mman.discovery_memory, NULL, NULL);
++		amdgpu_bo_free_kernel(&adev->mman.fw_reserved_memory,
++				      NULL, NULL);
+ 		return ret;
+ 	}
+ 
+@@ -1890,8 +1894,9 @@ void amdgpu_ttm_fini(struct amdgpu_devic
+ 	/* return the stolen vga memory back to VRAM */
+ 	amdgpu_bo_free_kernel(&adev->mman.stolen_vga_memory, NULL, NULL);
+ 	amdgpu_bo_free_kernel(&adev->mman.stolen_extended_memory, NULL, NULL);
+-	/* return the IP Discovery TMR memory back to VRAM */
+-	amdgpu_bo_free_kernel(&adev->mman.discovery_memory, NULL, NULL);
++	/* return the FW reserved memory back to VRAM */
++	amdgpu_bo_free_kernel(&adev->mman.fw_reserved_memory, NULL,
++			      NULL);
+ 	if (adev->mman.stolen_reserved_size)
+ 		amdgpu_bo_free_kernel(&adev->mman.stolen_reserved_memory,
+ 				      NULL, NULL);
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.h
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.h
+@@ -78,7 +78,8 @@ struct amdgpu_mman {
+ 	/* discovery */
+ 	uint8_t				*discovery_bin;
+ 	uint32_t			discovery_tmr_size;
+-	struct amdgpu_bo		*discovery_memory;
++	/* fw reserved memory */
++	struct amdgpu_bo		*fw_reserved_memory;
+ 
+ 	/* firmware VRAM reservation */
+ 	u64		fw_vram_usage_start_offset;
 
 
