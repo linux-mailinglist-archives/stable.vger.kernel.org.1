@@ -2,42 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 100B6775AB8
+	by mail.lfdr.de (Postfix) with ESMTP id 644A6775AB9
 	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:11:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233265AbjHILLB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:11:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53200 "EHLO
+        id S233276AbjHILLD (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:11:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53206 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233266AbjHILLA (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:11:00 -0400
+        with ESMTP id S233269AbjHILLD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:11:03 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CDAB21724
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:10:59 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4E081BFE
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:11:02 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6EDC2630F0
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:10:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 851C6C433C7;
-        Wed,  9 Aug 2023 11:10:58 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4278A630F0
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:11:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51090C433C8;
+        Wed,  9 Aug 2023 11:11:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691579458;
-        bh=m9VBjD3Z7qdh+iqBDlEIqV3q/m93UW91yy+tKPkNG/M=;
+        s=korg; t=1691579461;
+        bh=ZZLjs4ulXEe4bxDrT+5K+MxlppHVhjaKQ34ECfN4xeA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ub+k1OBGh/nZ2gGvfUHV6itNcMSwj1PkPi7Z2bhMoyrT/1P7rYq9UzoxYzee9fcB7
-         INOEDIVeJJR5U1jAKqugGzS64F5sdAvJ+kplDoVwjaPSrpk+BY+xEFEuHwzjZoCi9A
-         ysadnvrYngoEUIwmKHdaARc6Kg1rQZcoBXFko1bw=
+        b=A5g7ILjJrNSeP/NklaxLU9lRLICtVnOAqDN/eM5FSBQnwdoRfl48IHkawrVPxcUVu
+         39Xr4T694vwqezcMHsM3hunkU99Z46p+/7lFSL5WLmluneIi9KI+ghtNj3v5sAhbkB
+         385zg29CsSIeVim8NsaDohzPh0+T9yNjcF+BKHRk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Stefan Haberland <sth@linux.ibm.com>,
-        Jan Hoeppner <hoeppner@linux.ibm.com>,
-        Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 4.14 174/204] s390/dasd: fix hanging device after quiesce/resume
-Date:   Wed,  9 Aug 2023 12:41:52 +0200
-Message-ID: <20230809103648.340945719@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Charles Keepax <ckeepax@opensource.cirrus.com>,
+        Mark Brown <broonie@kernel.org>
+Subject: [PATCH 4.14 175/204] ASoC: wm8904: Fill the cache for WM8904_ADC_TEST_0 register
+Date:   Wed,  9 Aug 2023 12:41:53 +0200
+Message-ID: <20230809103648.369486211@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230809103642.552405807@linuxfoundation.org>
 References: <20230809103642.552405807@linuxfoundation.org>
@@ -55,44 +55,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Stefan Haberland <sth@linux.ibm.com>
+From: Mark Brown <broonie@kernel.org>
 
-commit 05f1d8ed03f547054efbc4d29bb7991c958ede95 upstream.
+commit f061e2be8689057cb4ec0dbffa9f03e1a23cdcb2 upstream.
 
-Quiesce and resume are functions that tell the DASD driver to stop/resume
-issuing I/Os to a specific DASD.
+The WM8904_ADC_TEST_0 register is modified as part of updating the OSR
+controls but does not have a cache default, leading to errors when we try
+to modify these controls in cache only mode with no prior read:
 
-On resume dasd_schedule_block_bh() is called to kick handling of IO
-requests again. This does unfortunately not cover internal requests which
-are used for path verification for example.
+wm8904 3-001a: ASoC: error at snd_soc_component_update_bits on wm8904.3-001a for register: [0x000000c6] -16
 
-This could lead to a hanging device when a path event or anything else
-that triggers internal requests occurs on a quiesced device.
+Add a read of the register to probe() to fill the cache and avoid both the
+error messages and the misconfiguration of the chip which will result.
 
-Fix by also calling dasd_schedule_device_bh() which triggers handling of
-internal requests on resume.
-
-Fixes: 8e09f21574ea ("[S390] dasd: add hyper PAV support to DASD device driver, part 1")
-
+Acked-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Cc: stable@vger.kernel.org
-Signed-off-by: Stefan Haberland <sth@linux.ibm.com>
-Reviewed-by: Jan Hoeppner <hoeppner@linux.ibm.com>
-Link: https://lore.kernel.org/r/20230721193647.3889634-2-sth@linux.ibm.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Link: https://lore.kernel.org/r/20230723-asoc-fix-wm8904-adc-test-read-v1-1-2cdf2edd83fd@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/s390/block/dasd_ioctl.c |    1 +
- 1 file changed, 1 insertion(+)
+ sound/soc/codecs/wm8904.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/s390/block/dasd_ioctl.c
-+++ b/drivers/s390/block/dasd_ioctl.c
-@@ -138,6 +138,7 @@ static int dasd_ioctl_resume(struct dasd
- 	spin_unlock_irqrestore(get_ccwdev_lock(base->cdev), flags);
+--- a/sound/soc/codecs/wm8904.c
++++ b/sound/soc/codecs/wm8904.c
+@@ -2261,6 +2261,9 @@ static int wm8904_i2c_probe(struct i2c_c
+ 	regmap_update_bits(wm8904->regmap, WM8904_BIAS_CONTROL_0,
+ 			    WM8904_POBCTRL, 0);
  
- 	dasd_schedule_block_bh(block);
-+	dasd_schedule_device_bh(base);
- 	return 0;
- }
- 
++	/* Fill the cache for the ADC test register */
++	regmap_read(wm8904->regmap, WM8904_ADC_TEST_0, &val);
++
+ 	/* Can leave the device powered off until we need it */
+ 	regcache_cache_only(wm8904->regmap, true);
+ 	regulator_bulk_disable(ARRAY_SIZE(wm8904->supplies), wm8904->supplies);
 
 
