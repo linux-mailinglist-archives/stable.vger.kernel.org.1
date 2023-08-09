@@ -2,44 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1DAA4775CEF
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:32:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E3EEA775DBE
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:40:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233920AbjHILcX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:32:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46870 "EHLO
+        id S234210AbjHILk5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:40:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45722 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233925AbjHILcW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:32:22 -0400
+        with ESMTP id S234209AbjHILk4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:40:56 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B051D10D4
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:32:21 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EECF11FD7
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:40:55 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 45724633EE
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:32:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54EDDC433C7;
-        Wed,  9 Aug 2023 11:32:20 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 83C0C63651
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:40:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95C33C433C8;
+        Wed,  9 Aug 2023 11:40:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691580740;
-        bh=g79FXCclP/QUdKks1Plf94RX2TPZM8s0yZXFbUi2a7k=;
+        s=korg; t=1691581255;
+        bh=wjLs6io6+ugGorn2kwSCTLcwv2MgJYSslqI9JA3pL80=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=acZW1dy8P6vuaccBofSzrW2uQvEqLiPTLpTq9FP63qCgrdLY1pp6IeBTBI3+kO/hi
-         XQpAprEw97bJwl+/GWGvZCdYD+YwnCzr0Kmf9YkDq4ZBnK6XXZUwm1zZduKyuRRa0V
-         0aw2MbveX4s+fFXd9bS89gWxC84NMlUrxA6PbzYQ=
+        b=W2c7rQfT737CZ+JkIzRWHubhRyWQdFzmO89cXvxV9eat/zbML/za3e+ODS8elxwpA
+         axxIHps26G/kKxHupLxOCTzKPLOAujMFN7dbJvvDpE/1j+hwIHz82ariq705qFDYWg
+         lYpuswDxfkyxDmPwxeolRqCZbAvHSceilifCsMEI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jan Kara <jack@suse.cz>,
-        Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 5.4 132/154] fs: Protect reconfiguration of sb read-write from racing writes
+        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
+        Yuchung Cheng <ycheng@google.com>,
+        Kuniyuki Iwashima <kuniyu@amazon.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 161/201] tcp_metrics: fix data-race in tcpm_suck_dst() vs fastopen
 Date:   Wed,  9 Aug 2023 12:42:43 +0200
-Message-ID: <20230809103641.253221448@linuxfoundation.org>
+Message-ID: <20230809103649.118536831@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103636.887175326@linuxfoundation.org>
-References: <20230809103636.887175326@linuxfoundation.org>
+In-Reply-To: <20230809103643.799166053@linuxfoundation.org>
+References: <20230809103643.799166053@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,68 +57,85 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jan Kara <jack@suse.cz>
+From: Eric Dumazet <edumazet@google.com>
 
-commit c541dce86c537714b6761a79a969c1623dfa222b upstream.
+[ Upstream commit ddf251fa2bc1d3699eec0bae6ed0bc373b8fda79 ]
 
-The reconfigure / remount code takes a lot of effort to protect
-filesystem's reconfiguration code from racing writes on remounting
-read-only. However during remounting read-only filesystem to read-write
-mode userspace writes can start immediately once we clear SB_RDONLY
-flag. This is inconvenient for example for ext4 because we need to do
-some writes to the filesystem (such as preparation of quota files)
-before we can take userspace writes so we are clearing SB_RDONLY flag
-before we are fully ready to accept userpace writes and syzbot has found
-a way to exploit this [1]. Also as far as I'm reading the code
-the filesystem remount code was protected from racing writes in the
-legacy mount path by the mount's MNT_READONLY flag so this is relatively
-new problem. It is actually fairly easy to protect remount read-write
-from racing writes using sb->s_readonly_remount flag so let's just do
-that instead of having to workaround these races in the filesystem code.
+Whenever tcpm_new() reclaims an old entry, tcpm_suck_dst()
+would overwrite data that could be read from tcp_fastopen_cache_get()
+or tcp_metrics_fill_info().
 
-[1] https://lore.kernel.org/all/00000000000006a0df05f6667499@google.com/T/
+We need to acquire fastopen_seqlock to maintain consistency.
 
-Signed-off-by: Jan Kara <jack@suse.cz>
-Message-Id: <20230615113848.8439-1-jack@suse.cz>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+For newly allocated objects, tcpm_new() can switch to kzalloc()
+to avoid an extra fastopen_seqlock acquisition.
+
+Fixes: 1fe4c481ba63 ("net-tcp: Fast Open client - cookie cache")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Yuchung Cheng <ycheng@google.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Link: https://lore.kernel.org/r/20230802131500.1478140-7-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/super.c |   11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ net/ipv4/tcp_metrics.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
---- a/fs/super.c
-+++ b/fs/super.c
-@@ -905,6 +905,7 @@ int reconfigure_super(struct fs_context
- 	struct super_block *sb = fc->root->d_sb;
- 	int retval;
- 	bool remount_ro = false;
-+	bool remount_rw = false;
- 	bool force = fc->sb_flags & SB_FORCE;
+diff --git a/net/ipv4/tcp_metrics.c b/net/ipv4/tcp_metrics.c
+index b01cc35407481..a707fa1dbcafd 100644
+--- a/net/ipv4/tcp_metrics.c
++++ b/net/ipv4/tcp_metrics.c
+@@ -93,6 +93,7 @@ static struct tcpm_hash_bucket	*tcp_metrics_hash __read_mostly;
+ static unsigned int		tcp_metrics_hash_log __read_mostly;
  
- 	if (fc->sb_flags_mask & ~MS_RMT_MASK)
-@@ -921,7 +922,7 @@ int reconfigure_super(struct fs_context
- 		if (!(fc->sb_flags & SB_RDONLY) && bdev_read_only(sb->s_bdev))
- 			return -EACCES;
- #endif
--
-+		remount_rw = !(fc->sb_flags & SB_RDONLY) && sb_rdonly(sb);
- 		remount_ro = (fc->sb_flags & SB_RDONLY) && !sb_rdonly(sb);
+ static DEFINE_SPINLOCK(tcp_metrics_lock);
++static DEFINE_SEQLOCK(fastopen_seqlock);
+ 
+ static void tcpm_suck_dst(struct tcp_metrics_block *tm,
+ 			  const struct dst_entry *dst,
+@@ -129,11 +130,13 @@ static void tcpm_suck_dst(struct tcp_metrics_block *tm,
+ 	tcp_metric_set(tm, TCP_METRIC_REORDERING,
+ 		       dst_metric_raw(dst, RTAX_REORDERING));
+ 	if (fastopen_clear) {
++		write_seqlock(&fastopen_seqlock);
+ 		tm->tcpm_fastopen.mss = 0;
+ 		tm->tcpm_fastopen.syn_loss = 0;
+ 		tm->tcpm_fastopen.try_exp = 0;
+ 		tm->tcpm_fastopen.cookie.exp = false;
+ 		tm->tcpm_fastopen.cookie.len = 0;
++		write_sequnlock(&fastopen_seqlock);
  	}
+ }
  
-@@ -951,6 +952,14 @@ int reconfigure_super(struct fs_context
- 			if (retval)
- 				return retval;
+@@ -194,7 +197,7 @@ static struct tcp_metrics_block *tcpm_new(struct dst_entry *dst,
  		}
-+	} else if (remount_rw) {
-+		/*
-+		 * We set s_readonly_remount here to protect filesystem's
-+		 * reconfigure code from writes from userspace until
-+		 * reconfigure finishes.
-+		 */
-+		sb->s_readonly_remount = 1;
-+		smp_wmb();
+ 		tm = oldest;
+ 	} else {
+-		tm = kmalloc(sizeof(*tm), GFP_ATOMIC);
++		tm = kzalloc(sizeof(*tm), GFP_ATOMIC);
+ 		if (!tm)
+ 			goto out_unlock;
  	}
+@@ -204,7 +207,7 @@ static struct tcp_metrics_block *tcpm_new(struct dst_entry *dst,
+ 	tm->tcpm_saddr = *saddr;
+ 	tm->tcpm_daddr = *daddr;
  
- 	if (fc->ops->reconfigure) {
+-	tcpm_suck_dst(tm, dst, true);
++	tcpm_suck_dst(tm, dst, reclaim);
+ 
+ 	if (likely(!reclaim)) {
+ 		tm->tcpm_next = tcp_metrics_hash[hash].chain;
+@@ -556,8 +559,6 @@ bool tcp_peer_is_proven(struct request_sock *req, struct dst_entry *dst)
+ 	return ret;
+ }
+ 
+-static DEFINE_SEQLOCK(fastopen_seqlock);
+-
+ void tcp_fastopen_cache_get(struct sock *sk, u16 *mss,
+ 			    struct tcp_fastopen_cookie *cookie)
+ {
+-- 
+2.40.1
+
 
 
