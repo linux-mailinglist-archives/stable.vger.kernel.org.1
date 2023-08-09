@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 78DDF7757BF
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:49:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B07D8775D37
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:34:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232274AbjHIKth (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 06:49:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45600 "EHLO
+        id S233708AbjHILe5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:34:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52618 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232266AbjHIKth (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:49:37 -0400
+        with ESMTP id S234043AbjHILez (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:34:55 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 94EF610F3
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:49:36 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 963A51BFF
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:34:53 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2A1FA6283F
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:49:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FD4CC433C7;
-        Wed,  9 Aug 2023 10:49:35 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2C3FE634CB
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:34:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C9FBC433C8;
+        Wed,  9 Aug 2023 11:34:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691578175;
-        bh=UrCM4DYeb4BCsSfsME7f+whGNtDCW2I3xQe/1RdA3Ew=;
+        s=korg; t=1691580892;
+        bh=zT8j9RqAIb3TvxuGxMCmKOVM6gPMxktlpTTqenENVqU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=PHry2TAjylofrsjdJtgFzBajxYBxTwHejj19w3kjToPiYtnA5jgo3rBxVtwaWEwLN
-         zsFCG3O99UXjrIRUUJmco8o4BulvR5cTu+F1FEyADi6o3wVUBOZ6wpOMlJIR0Ae3SB
-         GNCEIotwJrI0DkGauwNuypMx4qXg0ukw1G3iLFwM=
+        b=urbjH3hivHsnOomatSTBoYHymPvQ+7UqlcI62r9fRSdwSnZFnR7e1UpmVWT+sF5Z8
+         SDecpswga+RvFk+6s+2rpMyr+ZMWt5EpqKmXPBOqbfY/PPbYn2q3mh91IL0om+5Tjd
+         JmL45HGUiWcPJZnj80Gav9aGrgYI9bbaPrjmGu8o=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Cristian Marussi <cristian.marussi@arm.com>,
-        Sudeep Holla <sudeep.holla@arm.com>
-Subject: [PATCH 6.4 103/165] firmware: arm_scmi: Drop OF node reference in the transport channel setup
+        patches@lists.linux.dev, Roopa Prabhu <roopa@nvidia.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 032/201] vxlan: move to its own directory
 Date:   Wed,  9 Aug 2023 12:40:34 +0200
-Message-ID: <20230809103646.149997548@linuxfoundation.org>
+Message-ID: <20230809103644.905048250@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103642.720851262@linuxfoundation.org>
-References: <20230809103642.720851262@linuxfoundation.org>
+In-Reply-To: <20230809103643.799166053@linuxfoundation.org>
+References: <20230809103643.799166053@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,52 +55,58 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Roopa Prabhu <roopa@nvidia.com>
 
-commit da042eb4f061a0b54aedadcaa15391490c48e1ad upstream.
+[ Upstream commit 6765393614ea8e2c0a7b953063513823f87c9115 ]
 
-The OF node reference obtained from of_parse_phandle() should be dropped
-if node is not compatible with arm,scmi-shmem.
+vxlan.c has grown too long. This patch moves
+it to its own directory. subsequent patches add new
+functionality in new files.
 
-Fixes: 507cd4d2c5eb ("firmware: arm_scmi: Add compatibility checks for shmem node")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Cristian Marussi <cristian.marussi@arm.com>
-Link: https://lore.kernel.org/r/20230719061652.8850-1-krzysztof.kozlowski@linaro.org
-Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Roopa Prabhu <roopa@nvidia.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: 94d166c5318c ("vxlan: calculate correct header length for GPE")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/arm_scmi/mailbox.c |    4 +++-
- drivers/firmware/arm_scmi/smc.c     |    4 +++-
- 2 files changed, 6 insertions(+), 2 deletions(-)
+ drivers/net/Makefile                        | 2 +-
+ drivers/net/vxlan/Makefile                  | 7 +++++++
+ drivers/net/{vxlan.c => vxlan/vxlan_core.c} | 0
+ 3 files changed, 8 insertions(+), 1 deletion(-)
+ create mode 100644 drivers/net/vxlan/Makefile
+ rename drivers/net/{vxlan.c => vxlan/vxlan_core.c} (100%)
 
---- a/drivers/firmware/arm_scmi/mailbox.c
-+++ b/drivers/firmware/arm_scmi/mailbox.c
-@@ -166,8 +166,10 @@ static int mailbox_chan_setup(struct scm
- 		return -ENOMEM;
- 
- 	shmem = of_parse_phandle(cdev->of_node, "shmem", idx);
--	if (!of_device_is_compatible(shmem, "arm,scmi-shmem"))
-+	if (!of_device_is_compatible(shmem, "arm,scmi-shmem")) {
-+		of_node_put(shmem);
- 		return -ENXIO;
-+	}
- 
- 	ret = of_address_to_resource(shmem, 0, &res);
- 	of_node_put(shmem);
---- a/drivers/firmware/arm_scmi/smc.c
-+++ b/drivers/firmware/arm_scmi/smc.c
-@@ -118,8 +118,10 @@ static int smc_chan_setup(struct scmi_ch
- 		return -ENOMEM;
- 
- 	np = of_parse_phandle(cdev->of_node, "shmem", 0);
--	if (!of_device_is_compatible(np, "arm,scmi-shmem"))
-+	if (!of_device_is_compatible(np, "arm,scmi-shmem")) {
-+		of_node_put(np);
- 		return -ENXIO;
-+	}
- 
- 	ret = of_address_to_resource(np, 0, &res);
- 	of_node_put(np);
+diff --git a/drivers/net/Makefile b/drivers/net/Makefile
+index 72e18d505d1ac..64430440c580c 100644
+--- a/drivers/net/Makefile
++++ b/drivers/net/Makefile
+@@ -29,7 +29,7 @@ obj-$(CONFIG_TUN) += tun.o
+ obj-$(CONFIG_TAP) += tap.o
+ obj-$(CONFIG_VETH) += veth.o
+ obj-$(CONFIG_VIRTIO_NET) += virtio_net.o
+-obj-$(CONFIG_VXLAN) += vxlan.o
++obj-$(CONFIG_VXLAN) += vxlan/
+ obj-$(CONFIG_GENEVE) += geneve.o
+ obj-$(CONFIG_BAREUDP) += bareudp.o
+ obj-$(CONFIG_GTP) += gtp.o
+diff --git a/drivers/net/vxlan/Makefile b/drivers/net/vxlan/Makefile
+new file mode 100644
+index 0000000000000..5672661335933
+--- /dev/null
++++ b/drivers/net/vxlan/Makefile
+@@ -0,0 +1,7 @@
++#
++# Makefile for the vxlan driver
++#
++
++obj-$(CONFIG_VXLAN) += vxlan.o
++
++vxlan-objs := vxlan_core.o
+diff --git a/drivers/net/vxlan.c b/drivers/net/vxlan/vxlan_core.c
+similarity index 100%
+rename from drivers/net/vxlan.c
+rename to drivers/net/vxlan/vxlan_core.c
+-- 
+2.39.2
+
 
 
