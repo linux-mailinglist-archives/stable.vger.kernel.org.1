@@ -2,47 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EB717775798
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:47:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 430F3775A1E
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:05:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232230AbjHIKry (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 06:47:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55176 "EHLO
+        id S233075AbjHILFe (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:05:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38744 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231804AbjHIKrx (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:47:53 -0400
+        with ESMTP id S233079AbjHILFd (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:05:33 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C207710F3
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:47:52 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5512B1702;
+        Wed,  9 Aug 2023 04:05:33 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 595B463120
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:47:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6ABF7C433C8;
-        Wed,  9 Aug 2023 10:47:51 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DFF9863149;
+        Wed,  9 Aug 2023 11:05:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDB56C433C8;
+        Wed,  9 Aug 2023 11:05:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691578071;
-        bh=Ipu8Q0YS64p/0teQKnzEFQUtTOc66WHT7o5srnnbMXo=;
+        s=korg; t=1691579132;
+        bh=8pJflrcLjtiQfhmtVx/WccHYskOAvyk+xC4ErnaQySo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=LgIv1Lc+Jcnf5awFM1i5I+KJ8efV1trCxUvpX02Dk+btHR+lzrkOABIMtJDGttGrI
-         OJYmxEsGM1FsuPh8ZuUKux/4pJb15hur6YnIvy83ICuwGC8sBhxKtNxEHJeLJy13Jw
-         1QKnN0XxwF8iyW72oq7YGOh7K8HGVqVF/7gJg9og=
+        b=AUruQYZ2Rck6Mct3b+3VPS5Gcps3bGlprJs/9y/u4L1refU4s1z9H8lHklN0QFCe2
+         Ev07T0ZVFOonkg0a+HyBI5hpB+TScgkpJpwvLz7UHrO7b3M+PoqJL/GU4LksZ9ThCt
+         R+JIpqyH0gC9BsMYCVxtW7yNfrtdOYToTWRE5dew=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     stable@vger.kernel.org
+To:     stable@vger.kernel.org, netfilter-devel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
-        Yuchung Cheng <ycheng@google.com>,
-        Kuniyuki Iwashima <kuniyu@amazon.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 094/165] tcp_metrics: fix data-race in tcpm_suck_dst() vs fastopen
+        patches@lists.linux.dev, Pablo Neira Ayuso <pablo@netfilter.org>
+Subject: [PATCH 4.14 087/204] netfilter: nf_tables: incorrect error path handling with NFT_MSG_NEWRULE
 Date:   Wed,  9 Aug 2023 12:40:25 +0200
-Message-ID: <20230809103645.862262899@linuxfoundation.org>
+Message-ID: <20230809103645.557362718@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103642.720851262@linuxfoundation.org>
-References: <20230809103642.720851262@linuxfoundation.org>
+In-Reply-To: <20230809103642.552405807@linuxfoundation.org>
+References: <20230809103642.552405807@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,85 +53,70 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Eric Dumazet <edumazet@google.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit ddf251fa2bc1d3699eec0bae6ed0bc373b8fda79 ]
+[ 1240eb93f0616b21c675416516ff3d74798fdc97 ]
 
-Whenever tcpm_new() reclaims an old entry, tcpm_suck_dst()
-would overwrite data that could be read from tcp_fastopen_cache_get()
-or tcp_metrics_fill_info().
+In case of error when adding a new rule that refers to an anonymous set,
+deactivate expressions via NFT_TRANS_PREPARE state, not NFT_TRANS_RELEASE.
+Thus, the lookup expression marks anonymous sets as inactive in the next
+generation to ensure it is not reachable in this transaction anymore and
+decrement the set refcount as introduced by c1592a89942e ("netfilter:
+nf_tables: deactivate anonymous set from preparation phase"). The abort
+step takes care of undoing the anonymous set.
 
-We need to acquire fastopen_seqlock to maintain consistency.
+This is also consistent with rule deletion, where NFT_TRANS_PREPARE is
+used. Note that this error path is exercised in the preparation step of
+the commit protocol. This patch replaces nf_tables_rule_release() by the
+deactivate and destroy calls, this time with NFT_TRANS_PREPARE.
 
-For newly allocated objects, tcpm_new() can switch to kzalloc()
-to avoid an extra fastopen_seqlock acquisition.
+Due to this incorrect error handling, it is possible to access a
+dangling pointer to the anonymous set that remains in the transaction
+list.
 
-Fixes: 1fe4c481ba63 ("net-tcp: Fast Open client - cookie cache")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Yuchung Cheng <ycheng@google.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Link: https://lore.kernel.org/r/20230802131500.1478140-7-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+[1009.379054] BUG: KASAN: use-after-free in nft_set_lookup_global+0x147/0x1a0 [nf_tables]
+[1009.379106] Read of size 8 at addr ffff88816c4c8020 by task nft-rule-add/137110
+[1009.379116] CPU: 7 PID: 137110 Comm: nft-rule-add Not tainted 6.4.0-rc4+ #256
+[1009.379128] Call Trace:
+[1009.379132]  <TASK>
+[1009.379135]  dump_stack_lvl+0x33/0x50
+[1009.379146]  ? nft_set_lookup_global+0x147/0x1a0 [nf_tables]
+[1009.379191]  print_address_description.constprop.0+0x27/0x300
+[1009.379201]  kasan_report+0x107/0x120
+[1009.379210]  ? nft_set_lookup_global+0x147/0x1a0 [nf_tables]
+[1009.379255]  nft_set_lookup_global+0x147/0x1a0 [nf_tables]
+[1009.379302]  nft_lookup_init+0xa5/0x270 [nf_tables]
+[1009.379350]  nf_tables_newrule+0x698/0xe50 [nf_tables]
+[1009.379397]  ? nf_tables_rule_release+0xe0/0xe0 [nf_tables]
+[1009.379441]  ? kasan_unpoison+0x23/0x50
+[1009.379450]  nfnetlink_rcv_batch+0x97c/0xd90 [nfnetlink]
+[1009.379470]  ? nfnetlink_rcv_msg+0x480/0x480 [nfnetlink]
+[1009.379485]  ? __alloc_skb+0xb8/0x1e0
+[1009.379493]  ? __alloc_skb+0xb8/0x1e0
+[1009.379502]  ? entry_SYSCALL_64_after_hwframe+0x46/0xb0
+[1009.379509]  ? unwind_get_return_address+0x2a/0x40
+[1009.379517]  ? write_profile+0xc0/0xc0
+[1009.379524]  ? avc_lookup+0x8f/0xc0
+[1009.379532]  ? __rcu_read_unlock+0x43/0x60
+
+Fixes: 958bee14d071 ("netfilter: nf_tables: use new transaction infrastructure to handle sets")
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/tcp_metrics.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ net/netfilter/nf_tables_api.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/ipv4/tcp_metrics.c b/net/ipv4/tcp_metrics.c
-index 4fd274836a48f..99ac5efe244d3 100644
---- a/net/ipv4/tcp_metrics.c
-+++ b/net/ipv4/tcp_metrics.c
-@@ -93,6 +93,7 @@ static struct tcpm_hash_bucket	*tcp_metrics_hash __read_mostly;
- static unsigned int		tcp_metrics_hash_log __read_mostly;
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -2465,7 +2465,8 @@ static int nf_tables_newrule(struct net
+ 	return 0;
  
- static DEFINE_SPINLOCK(tcp_metrics_lock);
-+static DEFINE_SEQLOCK(fastopen_seqlock);
- 
- static void tcpm_suck_dst(struct tcp_metrics_block *tm,
- 			  const struct dst_entry *dst,
-@@ -129,11 +130,13 @@ static void tcpm_suck_dst(struct tcp_metrics_block *tm,
- 	tcp_metric_set(tm, TCP_METRIC_REORDERING,
- 		       dst_metric_raw(dst, RTAX_REORDERING));
- 	if (fastopen_clear) {
-+		write_seqlock(&fastopen_seqlock);
- 		tm->tcpm_fastopen.mss = 0;
- 		tm->tcpm_fastopen.syn_loss = 0;
- 		tm->tcpm_fastopen.try_exp = 0;
- 		tm->tcpm_fastopen.cookie.exp = false;
- 		tm->tcpm_fastopen.cookie.len = 0;
-+		write_sequnlock(&fastopen_seqlock);
- 	}
- }
- 
-@@ -194,7 +197,7 @@ static struct tcp_metrics_block *tcpm_new(struct dst_entry *dst,
- 		}
- 		tm = oldest;
- 	} else {
--		tm = kmalloc(sizeof(*tm), GFP_ATOMIC);
-+		tm = kzalloc(sizeof(*tm), GFP_ATOMIC);
- 		if (!tm)
- 			goto out_unlock;
- 	}
-@@ -204,7 +207,7 @@ static struct tcp_metrics_block *tcpm_new(struct dst_entry *dst,
- 	tm->tcpm_saddr = *saddr;
- 	tm->tcpm_daddr = *daddr;
- 
--	tcpm_suck_dst(tm, dst, true);
-+	tcpm_suck_dst(tm, dst, reclaim);
- 
- 	if (likely(!reclaim)) {
- 		tm->tcpm_next = tcp_metrics_hash[hash].chain;
-@@ -556,8 +559,6 @@ bool tcp_peer_is_proven(struct request_sock *req, struct dst_entry *dst)
- 	return ret;
- }
- 
--static DEFINE_SEQLOCK(fastopen_seqlock);
--
- void tcp_fastopen_cache_get(struct sock *sk, u16 *mss,
- 			    struct tcp_fastopen_cookie *cookie)
- {
--- 
-2.40.1
-
+ err2:
+-	nf_tables_rule_release(&ctx, rule);
++	nft_rule_expr_deactivate(&ctx, rule, NFT_TRANS_PREPARE);
++	nf_tables_rule_destroy(&ctx, rule);
+ err1:
+ 	for (i = 0; i < n; i++) {
+ 		if (info[i].ops != NULL)
 
 
