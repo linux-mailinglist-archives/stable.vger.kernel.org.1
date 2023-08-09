@@ -2,45 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F354E775A02
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:04:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4E6E9775D19
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:33:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233036AbjHILEg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:04:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40150 "EHLO
+        id S233992AbjHILdt (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:33:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38574 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233034AbjHILEf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:04:35 -0400
+        with ESMTP id S233990AbjHILdt (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:33:49 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 05512ED
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:04:35 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D649B1BFE
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:33:48 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 97A4863146
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:04:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A068CC433C8;
-        Wed,  9 Aug 2023 11:04:33 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 766EA6346F
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:33:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 864DBC433C7;
+        Wed,  9 Aug 2023 11:33:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691579074;
-        bh=3c7ap01Zl4Uhy4WQkYjigLEqaNEEdIkr+TE3d7D20RY=;
+        s=korg; t=1691580827;
+        bh=+YHGZxQgg61/xHxTJN/+H46POv+pk6eYgfwC39rHZ/8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=mQIye5LwiWiBnVg29EYDCuLhqtDmWolEVCdflNth+pax1ISpVIlRbLq811nKQrHK6
-         9gTA4OrONxtvvDf/ifZsfT7Ix/Fbfm5NNdM6UBEp4jgecgBSNCCNdXC5Dg0OPkPPCe
-         NZesCjeAQWCp2z5jWpu/w9JZynzyVo5VOCtudD8I=
+        b=1LQRQpPFkVWwbTTb+j0LLvcgfTquOjjk6GAH1mcDu5ee65lHwzZL56NNexJD5KbqQ
+         xN4iq9CJ9rksz0JS5uve6hhX+8d5qSmg7WScuFdGJ0H33O2RqNkU+6Vl56jkWCWzhy
+         Z0rjPV9xd8NAZkYMgSKdh46XNWYUewagbEVL2Aro=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jiasheng Jiang <jiasheng@iscas.ac.cn>,
-        Lee Jones <lee@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 065/204] mfd: intel-lpss: Add missing check for platform_get_resource
+        patches@lists.linux.dev,
+        =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+        Janosch Frank <frankja@linux.ibm.com>,
+        Claudio Imbrenda <imbrenda@linux.ibm.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 001/201] KVM: s390: pv: fix index value of replaced ASCE
 Date:   Wed,  9 Aug 2023 12:40:03 +0200
-Message-ID: <20230809103644.825832937@linuxfoundation.org>
+Message-ID: <20230809103643.846759196@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103642.552405807@linuxfoundation.org>
-References: <20230809103642.552405807@linuxfoundation.org>
+In-Reply-To: <20230809103643.799166053@linuxfoundation.org>
+References: <20230809103643.799166053@linuxfoundation.org>
 User-Agent: quilt/0.67
+X-stable: review
+X-Patchwork-Hint: ignore
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -54,36 +59,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jiasheng Jiang <jiasheng@iscas.ac.cn>
+From: Claudio Imbrenda <imbrenda@linux.ibm.com>
 
-[ Upstream commit d918e0d5824495a75d00b879118b098fcab36fdb ]
+[ Upstream commit c2fceb59bbda16468bda82b002383bff59de89ab ]
 
-Add the missing check for platform_get_resource and return error
-if it fails.
+The index field of the struct page corresponding to a guest ASCE should
+be 0. When replacing the ASCE in s390_replace_asce(), the index of the
+new ASCE should also be set to 0.
 
-Fixes: 4b45efe85263 ("mfd: Add support for Intel Sunrisepoint LPSS devices")
-Signed-off-by: Jiasheng Jiang <jiasheng@iscas.ac.cn>
-Signed-off-by: Lee Jones <lee@kernel.org>
-Link: https://lore.kernel.org/r/20230609014818.28475-1-jiasheng@iscas.ac.cn
+Having the wrong index might lead to the wrong addresses being passed
+around when notifying pte invalidations, and eventually to validity
+intercepts (VM crash) if the prefix gets unmapped and the notifier gets
+called with the wrong address.
+
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Fixes: faa2f72cb356 ("KVM: s390: pv: leak the topmost page table when destroy fails")
+Reviewed-by: Janosch Frank <frankja@linux.ibm.com>
+Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
+Message-ID: <20230705111937.33472-3-imbrenda@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mfd/intel-lpss-acpi.c | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/s390/mm/gmap.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/mfd/intel-lpss-acpi.c b/drivers/mfd/intel-lpss-acpi.c
-index fc44fb7c595bc..281ef5f52eb55 100644
---- a/drivers/mfd/intel-lpss-acpi.c
-+++ b/drivers/mfd/intel-lpss-acpi.c
-@@ -92,6 +92,9 @@ static int intel_lpss_acpi_probe(struct platform_device *pdev)
+diff --git a/arch/s390/mm/gmap.c b/arch/s390/mm/gmap.c
+index 03e561608eed4..b5a60fbb96644 100644
+--- a/arch/s390/mm/gmap.c
++++ b/arch/s390/mm/gmap.c
+@@ -2786,6 +2786,7 @@ int s390_replace_asce(struct gmap *gmap)
+ 	page = alloc_pages(GFP_KERNEL_ACCOUNT, CRST_ALLOC_ORDER);
+ 	if (!page)
  		return -ENOMEM;
++	page->index = 0;
+ 	table = page_to_virt(page);
+ 	memcpy(table, gmap->table, 1UL << (CRST_ALLOC_ORDER + PAGE_SHIFT));
  
- 	info->mem = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-+	if (!info->mem)
-+		return -ENODEV;
-+
- 	info->irq = platform_get_irq(pdev, 0);
- 
- 	ret = intel_lpss_probe(&pdev->dev, info);
 -- 
 2.39.2
 
