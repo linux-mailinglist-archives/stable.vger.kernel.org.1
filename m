@@ -2,96 +2,122 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 408777758FF
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:56:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 485CC775C10
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:23:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232578AbjHIK4h (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 06:56:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34574 "EHLO
+        id S233633AbjHILXa (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:23:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41046 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232503AbjHIK4d (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:56:33 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 72B1F1FD8
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:56:32 -0700 (PDT)
+        with ESMTP id S233640AbjHILX2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:23:28 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 77692FA
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:23:27 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 12DD262C35
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:56:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 286F4C433C8;
-        Wed,  9 Aug 2023 10:56:30 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id F23F163204
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:23:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F34EDC433CC;
+        Wed,  9 Aug 2023 11:23:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691578591;
-        bh=sc06U4RR1eaFwU9DQlRlff9KWyeU+3QPspxLNzP20bs=;
+        s=korg; t=1691580206;
+        bh=I1ZA1uOv1I3PlwNgBWA82bgA6l6BnFZ/xC4d1IHHxtA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=v6eRkMSMkoH21i/TY/bxJL9rBlGwcYCJY2LNmb6Kw5Ho0HPVdFBqGKFsDf9xCn1ZR
-         Xo5dhTK7cs4OhQivNx9EDilTQkGwH60z2LGPktGadQlp7HtVZOsrjv9rkw3sOBWgX5
-         kY1eEdnnUMCsgZ1gGJsFQc2WMw8Qumcw5gL+VGs4=
+        b=VObuDo35BwZWt33VPPeUGFDIwM1vD5nRjMw9fzafwjS+oRTbnZ+55/ZybYrUA9h56
+         toIfblLiU7oE69lQMYiev3t9mklRWx60nSi4TEVbfrw8tDHhcTCCWfvOv6j7s7ZbaT
+         bHRb4fJsbrcHPfZPk4A92HOwKlo8OeJ0ohJMShg4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
-        David Hildenbrand <david@redhat.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 115/127] powerpc/mm/altmap: Fix altmap boundary check
+        patches@lists.linux.dev, stable <stable@kernel.org>,
+        Gratian Crisan <gratian.crisan@ni.com>,
+        Hans de Goede <hdegoede@redhat.com>
+Subject: [PATCH 4.19 264/323] usb: dwc3: pci: skip BYT GPIO lookup table for hardwired phy
 Date:   Wed,  9 Aug 2023 12:41:42 +0200
-Message-ID: <20230809103640.420863136@linuxfoundation.org>
+Message-ID: <20230809103710.138908663@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103636.615294317@linuxfoundation.org>
-References: <20230809103636.615294317@linuxfoundation.org>
+In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
+References: <20230809103658.104386911@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+From: Gratian Crisan <gratian.crisan@ni.com>
 
-[ Upstream commit 6722b25712054c0f903b839b8f5088438dd04df3 ]
+commit b32b8f2b9542d8039f5468303a6ca78c1b5611a5 upstream.
 
-altmap->free includes the entire free space from which altmap blocks
-can be allocated. So when checking whether the kernel is doing altmap
-block free, compute the boundary correctly, otherwise memory hotunplug
-can fail.
+Hardware based on the Bay Trail / BYT SoCs require an external ULPI phy for
+USB device-mode. The phy chip usually has its 'reset' and 'chip select'
+lines connected to GPIOs described by ACPI fwnodes in the DSDT table.
 
-Fixes: 9ef34630a461 ("powerpc/mm: Fallback to RAM if the altmap is unusable")
-Signed-off-by: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-Reviewed-by: David Hildenbrand <david@redhat.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20230724181320.471386-1-aneesh.kumar@linux.ibm.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Because of hardware with missing ACPI resources for the 'reset' and 'chip
+select' GPIOs commit 5741022cbdf3 ("usb: dwc3: pci: Add GPIO lookup table
+on platforms without ACPI GPIO resources") introduced a fallback
+gpiod_lookup_table with hard-coded mappings for Bay Trail devices.
+
+However there are existing Bay Trail based devices, like the National
+Instruments cRIO-903x series, where the phy chip has its 'reset' and
+'chip-select' lines always asserted in hardware via resistor pull-ups. On
+this hardware the phy chip is always enabled and the ACPI dsdt table is
+missing information not only for the 'chip-select' and 'reset' lines but
+also for the BYT GPIO controller itself "INT33FC".
+
+With the introduction of the gpiod_lookup_table initializing the USB
+device-mode on these hardware now errors out. The error comes from the
+gpiod_get_optional() calls in dwc3_pci_quirks() which will now return an
+-ENOENT error due to the missing ACPI entry for the INT33FC gpio controller
+used in the aforementioned table.
+
+This hardware used to work before because gpiod_get_optional() will return
+NULL instead of -ENOENT if no GPIO has been assigned to the requested
+function. The dwc3_pci_quirks() code for setting the 'cs' and 'reset' GPIOs
+was then skipped (due to the NULL return). This is the correct behavior in
+cases where the phy chip is hardwired and there are no GPIOs to control.
+
+Since the gpiod_lookup_table relies on the presence of INT33FC fwnode
+in ACPI tables only add the table if we know the entry for the INT33FC
+gpio controller is present. This allows Bay Trail based devices with
+hardwired dwc3 ULPI phys to continue working.
+
+Fixes: 5741022cbdf3 ("usb: dwc3: pci: Add GPIO lookup table on platforms without ACPI GPIO resources")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Gratian Crisan <gratian.crisan@ni.com>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/r/20230726184555.218091-2-gratian.crisan@ni.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/mm/init_64.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/usb/dwc3/dwc3-pci.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/arch/powerpc/mm/init_64.c b/arch/powerpc/mm/init_64.c
-index fe1b83020e0df..0ec5b45b1e86a 100644
---- a/arch/powerpc/mm/init_64.c
-+++ b/arch/powerpc/mm/init_64.c
-@@ -314,8 +314,7 @@ void __ref vmemmap_free(unsigned long start, unsigned long end,
- 	start = ALIGN_DOWN(start, page_size);
- 	if (altmap) {
- 		alt_start = altmap->base_pfn;
--		alt_end = altmap->base_pfn + altmap->reserve +
--			  altmap->free + altmap->alloc + altmap->align;
-+		alt_end = altmap->base_pfn + altmap->reserve + altmap->free;
- 	}
+--- a/drivers/usb/dwc3/dwc3-pci.c
++++ b/drivers/usb/dwc3/dwc3-pci.c
+@@ -171,10 +171,12 @@ static int dwc3_pci_quirks(struct dwc3_p
  
- 	pr_debug("vmemmap_free %lx...%lx\n", start, end);
--- 
-2.40.1
-
+ 			/*
+ 			 * A lot of BYT devices lack ACPI resource entries for
+-			 * the GPIOs, add a fallback mapping to the reference
++			 * the GPIOs. If the ACPI entry for the GPIO controller
++			 * is present add a fallback mapping to the reference
+ 			 * design GPIOs which all boards seem to use.
+ 			 */
+-			gpiod_add_lookup_table(&platform_bytcr_gpios);
++			if (acpi_dev_present("INT33FC", NULL, -1))
++				gpiod_add_lookup_table(&platform_bytcr_gpios);
+ 
+ 			/*
+ 			 * These GPIOs will turn on the USB2 PHY. Note that we have to
 
 
