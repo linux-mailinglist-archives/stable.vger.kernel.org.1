@@ -2,46 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 05A7E775767
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:45:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D1AC3775B99
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:19:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229901AbjHIKpg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 06:45:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39134 "EHLO
+        id S233488AbjHILTF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:19:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41876 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229996AbjHIKpf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:45:35 -0400
+        with ESMTP id S233482AbjHILTE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:19:04 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 649D91702
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:45:35 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 54673ED
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:19:04 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id F108B63118
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:45:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 108AEC433C7;
-        Wed,  9 Aug 2023 10:45:33 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DEF1063182
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:19:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2529C433C8;
+        Wed,  9 Aug 2023 11:19:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691577934;
-        bh=iPaa9r7atXl47JPGr+2Ljzu2q7SBLJtZu2Y/1elZZiw=;
+        s=korg; t=1691579943;
+        bh=RvTTwIPJVJ0UR8W3JxkyY2sOtZFvlLp9ieILZ94Xenc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=fsdvqoIaKkP1O1Uodje3taxQ2mDHFJ4dyQUM/CzTxmwTm/m7j7Psrf0r/QYuMlZ4+
-         KSDKsI31t5PpoJ4SzJxzUCVOTuUMtNnT4CBtkOolNmdbA77Rp/BcXxfjmzuFEkPqXo
-         i7T/BgZkomJYchzm/QXoNLKQkSS78MKCCy3jh5ig=
+        b=l4EmUabDegua2EnZM3rSuBQy0EoF8VgkuPPQ92RgMFyyq7ZP+hA8tOXbT/4VxSSQ7
+         3z4wXu+RFgrMiKi+GBV96CzZ4JzSgBbtvi0PQhGW+DuNq0NyBx6Z5nGh005q4n/5mk
+         cY518owXZZjL6DdvVMiE7u05yIV4QqYWcrYZ/L8Q=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Thierry Reding <treding@nvidia.com>,
-        Simon Horman <simon.horman@corigine.com>,
+        patches@lists.linux.dev, Amit Klein <aksecurity@gmail.com>,
+        Eric Dumazet <edumazet@google.com>, Willy Tarreau <w@1wt.eu>,
+        Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
+        David Ahern <dsahern@kernel.org>,
+        Hannes Frederic Sowa <hannes@stressinduktion.org>,
         "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 047/165] net: stmmac: tegra: Properly allocate clock bulk data
-Date:   Wed,  9 Aug 2023 12:39:38 +0200
-Message-ID: <20230809103644.362688776@linuxfoundation.org>
+Subject: [PATCH 4.19 141/323] udp6: fix udp6_ehashfn() typo
+Date:   Wed,  9 Aug 2023 12:39:39 +0200
+Message-ID: <20230809103704.601227019@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103642.720851262@linuxfoundation.org>
-References: <20230809103642.720851262@linuxfoundation.org>
+In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
+References: <20230809103658.104386911@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,38 +59,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Thierry Reding <treding@nvidia.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit a0b1b2055be34c0ec1371764d040164cde1ead79 ]
+[ Upstream commit 51d03e2f2203e76ed02d33fb5ffbb5fc85ffaf54 ]
 
-The clock data is an array of struct clk_bulk_data, so make sure to
-allocate enough memory.
+Amit Klein reported that udp6_ehash_secret was initialized but never used.
 
-Fixes: d8ca113724e7 ("net: stmmac: tegra: Add MGBE support")
-Signed-off-by: Thierry Reding <treding@nvidia.com>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Fixes: 1bbdceef1e53 ("inet: convert inet_ehash_secret and ipv6_hash_secret to net_get_random_once")
+Reported-by: Amit Klein <aksecurity@gmail.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Willy Tarreau <w@1wt.eu>
+Cc: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Cc: David Ahern <dsahern@kernel.org>
+Cc: Hannes Frederic Sowa <hannes@stressinduktion.org>
 Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/stmicro/stmmac/dwmac-tegra.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/ipv6/udp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-tegra.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-tegra.c
-index bdf990cf2f310..0880048ccdddc 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-tegra.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-tegra.c
-@@ -234,7 +234,8 @@ static int tegra_mgbe_probe(struct platform_device *pdev)
- 	res.addr = mgbe->regs;
- 	res.irq = irq;
+diff --git a/net/ipv6/udp.c b/net/ipv6/udp.c
+index 9274603514e54..cf0bbe2e3a79f 100644
+--- a/net/ipv6/udp.c
++++ b/net/ipv6/udp.c
+@@ -99,7 +99,7 @@ static u32 udp6_ehashfn(const struct net *net,
+ 	fhash = __ipv6_addr_jhash(faddr, udp_ipv6_hash_secret);
  
--	mgbe->clks = devm_kzalloc(&pdev->dev, sizeof(*mgbe->clks), GFP_KERNEL);
-+	mgbe->clks = devm_kcalloc(&pdev->dev, ARRAY_SIZE(mgbe_clks),
-+				  sizeof(*mgbe->clks), GFP_KERNEL);
- 	if (!mgbe->clks)
- 		return -ENOMEM;
+ 	return __inet6_ehashfn(lhash, lport, fhash, fport,
+-			       udp_ipv6_hash_secret + net_hash_mix(net));
++			       udp6_ehash_secret + net_hash_mix(net));
+ }
  
+ int udp_v6_get_port(struct sock *sk, unsigned short snum)
 -- 
-2.40.1
+2.39.2
 
 
 
