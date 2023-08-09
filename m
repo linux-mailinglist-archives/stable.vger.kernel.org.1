@@ -2,43 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DF428775CA3
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:29:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D27617758FE
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:56:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233821AbjHIL30 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:29:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53676 "EHLO
+        id S232413AbjHIK42 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 06:56:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33576 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233820AbjHIL3Z (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:29:25 -0400
+        with ESMTP id S232501AbjHIK41 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:56:27 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32377ED
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:29:25 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 00CDE1FEA
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:56:26 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B9E0763315
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:29:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0079C433C8;
-        Wed,  9 Aug 2023 11:29:23 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8D32C62C35
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:56:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D1CAC433C8;
+        Wed,  9 Aug 2023 10:56:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691580564;
-        bh=kUdY39Vvl+59gv1C/dT/69binvhxB0iX9AyhSAiRqyk=;
+        s=korg; t=1691578586;
+        bh=O2nC9diB9HcYpe7JqX51FDpdZozPJb5xBsCdqZseFg8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=xDcS22keQx7KumDx2NLujEFcOqyf+44wJ+lVjjEWQkLTdctAH38+xc1fvGVftOXXK
-         ycZBmzu3ufwTpv9u8GFhvCp2BJHcs9BLLZxz+CNmODUp2wccjbf6LUfYahKefroxAs
-         NRaHHWgdd+1kMhGNtTmeifMraPuDy8rSip3oDQVo=
+        b=O8qgH8wVFejeArdQ5X0C843Ly7GMQwzRAkY8l3P4SzSFSfhwQyFp3QOTDLlD8s+dE
+         PlQhkaQoqNcya3ZGWH+lJRNr1AC3+oZ6TcnTq9OodOi4Ui6wUymQYQjO+un+F8OY5J
+         Gk7VQEubYxAlNU0OwVJS9ZvpqXLF+IBhwWnT6q4g=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Kees Cook <keescook@chromium.org>
-Subject: [PATCH 5.4 069/154] Documentation: security-bugs.rst: update preferences when dealing with the linux-distros group
+        patches@lists.linux.dev, Johan Jonker <jbx6244@gmail.com>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 113/127] mtd: rawnand: rockchip: Align hwecc vs. raw page helper layouts
 Date:   Wed,  9 Aug 2023 12:41:40 +0200
-Message-ID: <20230809103639.275443743@linuxfoundation.org>
+Message-ID: <20230809103640.359376821@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103636.887175326@linuxfoundation.org>
-References: <20230809103636.887175326@linuxfoundation.org>
+In-Reply-To: <20230809103636.615294317@linuxfoundation.org>
+References: <20230809103636.615294317@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,56 +55,114 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Johan Jonker <jbx6244@gmail.com>
 
-commit 4fee0915e649bd0cea56dece6d96f8f4643df33c upstream.
+[ Upstream commit ea690ad78dd611e3906df5b948a516000b05c1cb ]
 
-Because the linux-distros group forces reporters to release information
-about reported bugs, and they impose arbitrary deadlines in having those
-bugs fixed despite not actually being kernel developers, the kernel
-security team recommends not interacting with them at all as this just
-causes confusion and the early-release of reported security problems.
+Currently, read/write_page_hwecc() and read/write_page_raw() are not
+aligned: there is a mismatch in the OOB bytes which are not
+read/written at the same offset in both cases (raw vs. hwecc).
 
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Link: https://lore.kernel.org/r/2023063020-throat-pantyhose-f110@gregkh
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This is a real problem when relying on the presence of the Page
+Addresses (PA) when using the NAND chip as a boot device, as the
+BootROM expects additional data in the OOB area at specific locations.
+
+Rockchip boot blocks are written per 4 x 512 byte sectors per page.
+Each page with boot blocks must have a page address (PA) pointer in OOB
+to the next page. Pages are written in a pattern depending on the NAND chip ID.
+
+Generate boot block page address and pattern for hwecc in user space
+and copy PA data to/from the already reserved last 4 bytes before ECC
+in the chip->oob_poi data layout.
+
+Align the different helpers. This change breaks existing jffs2 users.
+
+Fixes: 058e0e847d54 ("mtd: rawnand: rockchip: NFC driver for RK3308, RK2928 and others")
+Signed-off-by: Johan Jonker <jbx6244@gmail.com>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://lore.kernel.org/linux-mtd/5e782c08-862b-51ae-47ff-3299940928ca@gmail.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/admin-guide/security-bugs.rst |   24 +++++++++++-------------
- 1 file changed, 11 insertions(+), 13 deletions(-)
+ .../mtd/nand/raw/rockchip-nand-controller.c   | 34 ++++++++++++-------
+ 1 file changed, 21 insertions(+), 13 deletions(-)
 
---- a/Documentation/admin-guide/security-bugs.rst
-+++ b/Documentation/admin-guide/security-bugs.rst
-@@ -56,20 +56,18 @@ information submitted to the security li
- of the report are treated confidentially even after the embargo has been
- lifted, in perpetuity.
+diff --git a/drivers/mtd/nand/raw/rockchip-nand-controller.c b/drivers/mtd/nand/raw/rockchip-nand-controller.c
+index 9070dafae9db8..c9c4e9ffcae18 100644
+--- a/drivers/mtd/nand/raw/rockchip-nand-controller.c
++++ b/drivers/mtd/nand/raw/rockchip-nand-controller.c
+@@ -598,7 +598,7 @@ static int rk_nfc_write_page_hwecc(struct nand_chip *chip, const u8 *buf,
+ 	int pages_per_blk = mtd->erasesize / mtd->writesize;
+ 	int ret = 0, i, boot_rom_mode = 0;
+ 	dma_addr_t dma_data, dma_oob;
+-	u32 reg;
++	u32 tmp;
+ 	u8 *oob;
  
--Coordination
--------------
-+Coordination with other groups
-+------------------------------
+ 	nand_prog_page_begin_op(chip, page, 0, NULL, 0);
+@@ -625,6 +625,13 @@ static int rk_nfc_write_page_hwecc(struct nand_chip *chip, const u8 *buf,
+ 	 *
+ 	 *   0xFF 0xFF 0xFF 0xFF | BBM OOB1 OOB2 OOB3 | ...
+ 	 *
++	 * The code here just swaps the first 4 bytes with the last
++	 * 4 bytes without losing any data.
++	 *
++	 * The chip->oob_poi data layout:
++	 *
++	 *    BBM  OOB1 OOB2 OOB3 |......|  PA0  PA1  PA2  PA3
++	 *
+ 	 * Configure the ECC algorithm supported by the boot ROM.
+ 	 */
+ 	if ((page < (pages_per_blk * rknand->boot_blks)) &&
+@@ -635,21 +642,17 @@ static int rk_nfc_write_page_hwecc(struct nand_chip *chip, const u8 *buf,
+ 	}
  
--Fixes for sensitive bugs, such as those that might lead to privilege
--escalations, may need to be coordinated with the private
--<linux-distros@vs.openwall.org> mailing list so that distribution vendors
--are well prepared to issue a fixed kernel upon public disclosure of the
--upstream fix. Distros will need some time to test the proposed patch and
--will generally request at least a few days of embargo, and vendor update
--publication prefers to happen Tuesday through Thursday. When appropriate,
--the security team can assist with this coordination, or the reporter can
--include linux-distros from the start. In this case, remember to prefix
--the email Subject line with "[vs]" as described in the linux-distros wiki:
--<http://oss-security.openwall.org/wiki/mailing-lists/distros#how-to-use-the-lists>
-+The kernel security team strongly recommends that reporters of potential
-+security issues NEVER contact the "linux-distros" mailing list until
-+AFTER discussing it with the kernel security team.  Do not Cc: both
-+lists at once.  You may contact the linux-distros mailing list after a
-+fix has been agreed on and you fully understand the requirements that
-+doing so will impose on you and the kernel community.
+ 	for (i = 0; i < ecc->steps; i++) {
+-		if (!i) {
+-			reg = 0xFFFFFFFF;
+-		} else {
++		if (!i)
++			oob = chip->oob_poi + (ecc->steps - 1) * NFC_SYS_DATA_SIZE;
++		else
+ 			oob = chip->oob_poi + (i - 1) * NFC_SYS_DATA_SIZE;
+-			reg = oob[0] | oob[1] << 8 | oob[2] << 16 |
+-			      oob[3] << 24;
+-		}
+ 
+-		if (!i && boot_rom_mode)
+-			reg = (page & (pages_per_blk - 1)) * 4;
++		tmp = oob[0] | oob[1] << 8 | oob[2] << 16 | oob[3] << 24;
+ 
+ 		if (nfc->cfg->type == NFC_V9)
+-			nfc->oob_buf[i] = reg;
++			nfc->oob_buf[i] = tmp;
+ 		else
+-			nfc->oob_buf[i * (oob_step / 4)] = reg;
++			nfc->oob_buf[i * (oob_step / 4)] = tmp;
+ 	}
+ 
+ 	dma_data = dma_map_single(nfc->dev, (void *)nfc->page_buf,
+@@ -812,12 +815,17 @@ static int rk_nfc_read_page_hwecc(struct nand_chip *chip, u8 *buf, int oob_on,
+ 		goto timeout_err;
+ 	}
+ 
+-	for (i = 1; i < ecc->steps; i++) {
+-		oob = chip->oob_poi + (i - 1) * NFC_SYS_DATA_SIZE;
++	for (i = 0; i < ecc->steps; i++) {
++		if (!i)
++			oob = chip->oob_poi + (ecc->steps - 1) * NFC_SYS_DATA_SIZE;
++		else
++			oob = chip->oob_poi + (i - 1) * NFC_SYS_DATA_SIZE;
 +
-+The different lists have different goals and the linux-distros rules do
-+not contribute to actually fixing any potential security problems.
- 
- CVE assignment
- --------------
+ 		if (nfc->cfg->type == NFC_V9)
+ 			tmp = nfc->oob_buf[i];
+ 		else
+ 			tmp = nfc->oob_buf[i * (oob_step / 4)];
++
+ 		*oob++ = (u8)tmp;
+ 		*oob++ = (u8)(tmp >> 8);
+ 		*oob++ = (u8)(tmp >> 16);
+-- 
+2.40.1
+
 
 
