@@ -2,46 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2BA2E775C4D
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:26:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1843C775CE8
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:32:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233705AbjHIL0B (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:26:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36756 "EHLO
+        id S233914AbjHILcL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:32:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60458 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233704AbjHIL0A (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:26:00 -0400
+        with ESMTP id S234021AbjHILcF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:32:05 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 68B71ED
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:26:00 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E3ECC10D4
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:32:04 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id F343C63265
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:25:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E5DCC433C7;
-        Wed,  9 Aug 2023 11:25:58 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 78B38633D8
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:32:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82A32C433C7;
+        Wed,  9 Aug 2023 11:32:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691580359;
-        bh=cYaSP2DfhiFv8EgyERl99h2EsgBV+APSYi2fASBmTpg=;
+        s=korg; t=1691580723;
+        bh=vzhlfpb3fAu57RQ73yklDZT8zzxAWTiocZEqj/AFnEg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=nHTmMNos8fFsjEcyktNVN8P/c/hrYqD1+LoJhmU2GSNcd0nxRoxIfoeoNGbqZBYXm
-         h+gK2B4VAU+7Cwq74lX8iHnT/hf1NabP8wjQhKFpeTRuFXOufSAkyIIoj1V7ZTUzWM
-         l+5/R9hahEM+XgXAoq/mMp9rdS28Uz7L4jXBke+o=
+        b=M/r/5DDIPbwTFS3MTrs8UGNQQQuKmoQuZacc/K6qzdWVdwIS4/Spz06VzxUM94ElW
+         7uyOl97s/eWLdlXlZ7SPRUEX+nUpA/HZf8W0Ufpe9jHD9GjJYj+dojLTXecLX12tF6
+         kjPx7LvN9Z3V9KBmcunuPo7sWYcWqokIMkiEniGo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Andreas Kemnade <andreas@kemnade.info>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 320/323] ARM: dts: imx6sll: fixup of operating points
+        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
+        Lorenzo Colitti <lorenzo@google.com>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Pietro Borrello <borrello@diag.uniroma1.it>,
+        netdev@vger.kernel.org, Laszlo Ersek <lersek@redhat.com>,
+        "David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 5.4 127/154] net: tun_chr_open(): set sk_uid from current_fsuid()
 Date:   Wed,  9 Aug 2023 12:42:38 +0200
-Message-ID: <20230809103712.722459687@linuxfoundation.org>
+Message-ID: <20230809103641.099103532@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
-References: <20230809103658.104386911@linuxfoundation.org>
+In-Reply-To: <20230809103636.887175326@linuxfoundation.org>
+References: <20230809103636.887175326@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,59 +58,55 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Andreas Kemnade <andreas@kemnade.info>
+From: Laszlo Ersek <lersek@redhat.com>
 
-[ Upstream commit 1875903019ea6e32e6e544c1631b119e4fd60b20 ]
+commit 9bc3047374d5bec163e83e743709e23753376f0c upstream.
 
-Make operating point definitions comply with binding
-specifications.
+Commit a096ccca6e50 initializes the "sk_uid" field in the protocol socket
+(struct sock) from the "/dev/net/tun" device node's owner UID. Per
+original commit 86741ec25462 ("net: core: Add a UID field to struct
+sock.", 2016-11-04), that's wrong: the idea is to cache the UID of the
+userspace process that creates the socket. Commit 86741ec25462 mentions
+socket() and accept(); with "tun", the action that creates the socket is
+open("/dev/net/tun").
 
-Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
-Stable-dep-of: ee70b908f77a ("ARM: dts: nxp/imx6sll: fix wrong property name in usbphy node")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Therefore the device node's owner UID is irrelevant. In most cases,
+"/dev/net/tun" will be owned by root, so in practice, commit a096ccca6e50
+has no observable effect:
+
+- before, "sk_uid" would be zero, due to undefined behavior
+  (CVE-2023-1076),
+
+- after, "sk_uid" would be zero, due to "/dev/net/tun" being owned by root.
+
+What matters is the (fs)UID of the process performing the open(), so cache
+that in "sk_uid".
+
+Cc: Eric Dumazet <edumazet@google.com>
+Cc: Lorenzo Colitti <lorenzo@google.com>
+Cc: Paolo Abeni <pabeni@redhat.com>
+Cc: Pietro Borrello <borrello@diag.uniroma1.it>
+Cc: netdev@vger.kernel.org
+Cc: stable@vger.kernel.org
+Fixes: a096ccca6e50 ("tun: tun_chr_open(): correctly initialize socket uid")
+Bugzilla: https://bugzilla.redhat.com/show_bug.cgi?id=2173435
+Signed-off-by: Laszlo Ersek <lersek@redhat.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm/boot/dts/imx6sll.dtsi | 22 ++++++++++------------
- 1 file changed, 10 insertions(+), 12 deletions(-)
+ drivers/net/tun.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/boot/dts/imx6sll.dtsi b/arch/arm/boot/dts/imx6sll.dtsi
-index b519ab87c4596..164836fe63cc2 100644
---- a/arch/arm/boot/dts/imx6sll.dtsi
-+++ b/arch/arm/boot/dts/imx6sll.dtsi
-@@ -51,20 +51,18 @@ cpu0: cpu@0 {
- 			device_type = "cpu";
- 			reg = <0>;
- 			next-level-cache = <&L2>;
--			operating-points = <
-+			operating-points =
- 				/* kHz    uV */
--				996000  1275000
--				792000  1175000
--				396000  1075000
--				198000	975000
--			>;
--			fsl,soc-operating-points = <
-+				<996000  1275000>,
-+				<792000  1175000>,
-+				<396000  1075000>,
-+				<198000	  975000>;
-+			fsl,soc-operating-points =
- 				/* ARM kHz      SOC-PU uV */
--				996000          1175000
--				792000          1175000
--				396000          1175000
--				198000		1175000
--			>;
-+				<996000         1175000>,
-+				<792000         1175000>,
-+				<396000         1175000>,
-+				<198000		1175000>;
- 			clock-latency = <61036>; /* two CLK32 periods */
- 			clocks = <&clks IMX6SLL_CLK_ARM>,
- 				 <&clks IMX6SLL_CLK_PLL2_PFD2>,
--- 
-2.40.1
-
+--- a/drivers/net/tun.c
++++ b/drivers/net/tun.c
+@@ -3534,7 +3534,7 @@ static int tun_chr_open(struct inode *in
+ 	tfile->socket.file = file;
+ 	tfile->socket.ops = &tun_socket_ops;
+ 
+-	sock_init_data_uid(&tfile->socket, &tfile->sk, inode->i_uid);
++	sock_init_data_uid(&tfile->socket, &tfile->sk, current_fsuid());
+ 
+ 	tfile->sk.sk_write_space = tun_sock_write_space;
+ 	tfile->sk.sk_sndbuf = INT_MAX;
 
 
