@@ -2,133 +2,108 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B883477588B
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:53:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 94374775A7E
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:08:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232628AbjHIKxp (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 06:53:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37794 "EHLO
+        id S233195AbjHILIz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:08:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45506 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232634AbjHIKxd (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:53:33 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E845211D
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:51:31 -0700 (PDT)
+        with ESMTP id S233203AbjHILIy (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:08:54 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E798B2103
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:08:53 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 410B363128
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:51:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B128C433C7;
-        Wed,  9 Aug 2023 10:51:30 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 80F1063153
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:08:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F039C433C8;
+        Wed,  9 Aug 2023 11:08:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691578290;
-        bh=yMuxpVUPJ9x0mdWLUmMz2TxM+XlrPvkPIR/KXfL/sZc=;
+        s=korg; t=1691579332;
+        bh=cKxXEx65rImlKqF2+1Z98yL7DnM60cwWAbQ6PP0Z530=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=YpUxYfq6xuweb9LHWRUR9P8clA+KvSXdGDrzLLT3u4FMnHvMQhreYHLZbkomk01JL
-         3gR4z+18TJpsO+/PR1YqpkqZ/Soj4P9TxvxVpa9K7YKF6vfCBwPBBa4a2knkfJi0fw
-         DAPlw2q6FdG4sMiMSzXjjoFkV7HMam3pGH/xbNI0=
+        b=yVKysYtPXVPYgQqeTHywjvYsEdrBz5WVkRus7TFUV3kTBkfKu4o0k6naWmnsgn7MJ
+         jVTFS2OWPyD5OEk8AVv19xFTfa1y98wBaHLqbOhmf0KJ/3sdR+jKNvnfhfcKNU5Aup
+         oYRxGAnR4q5WG+PvpqIU+HhhncylWZri5zt3g80U=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Andi Shyti <andi.shyti@linux.intel.com>,
-        Jonathan Cavitt <jonathan.cavitt@intel.com>,
-        Nirmoy Das <nirmoy.das@intel.com>,
-        Matt Roper <matthew.d.roper@intel.com>,
-        Andrzej Hajda <andrzej.hajda@intel.com>,
-        Tvrtko Ursulin <tvrtko.ursulin@intel.com>,
+        patches@lists.linux.dev, Yu Kuai <yukuai3@huawei.com>,
+        Mike Snitzer <snitzer@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 165/165] drm/i915/gt: Enable the CCS_FLUSH bit in the pipe control and in the CS
+Subject: [PATCH 4.14 158/204] dm raid: fix missing reconfig_mutex unlock in raid_ctr() error paths
 Date:   Wed,  9 Aug 2023 12:41:36 +0200
-Message-ID: <20230809103648.174968049@linuxfoundation.org>
+Message-ID: <20230809103647.825427447@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103642.720851262@linuxfoundation.org>
-References: <20230809103642.720851262@linuxfoundation.org>
+In-Reply-To: <20230809103642.552405807@linuxfoundation.org>
+References: <20230809103642.552405807@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Andi Shyti <andi.shyti@linux.intel.com>
+From: Yu Kuai <yukuai3@huawei.com>
 
-[ Upstream commit 824df77ab2107d8d4740b834b276681a41ae1ac8 ]
+[ Upstream commit bae3028799dc4f1109acc4df37c8ff06f2d8f1a0 ]
 
-Enable the CCS_FLUSH bit 13 in the control pipe for render and
-compute engines in platforms starting from Meteor Lake (BSPEC
-43904 and 47112).
+In the error paths 'bad_stripe_cache' and 'bad_check_reshape',
+'reconfig_mutex' is still held after raid_ctr() returns.
 
-For the copy engine add MI_FLUSH_DW_CCS (bit 16) in the command
-streamer.
-
-Fixes: 972282c4cf24 ("drm/i915/gen12: Add aux table invalidate for all engines")
-Requires: 8da173db894a ("drm/i915/gt: Rename flags with bit_group_X according to the datasheet")
-Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
-Cc: Jonathan Cavitt <jonathan.cavitt@intel.com>
-Cc: Nirmoy Das <nirmoy.das@intel.com>
-Cc: <stable@vger.kernel.org> # v5.8+
-Reviewed-by: Matt Roper <matthew.d.roper@intel.com>
-Reviewed-by: Andrzej Hajda <andrzej.hajda@intel.com>
-Reviewed-by: Nirmoy Das <nirmoy.das@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230725001950.1014671-6-andi.shyti@linux.intel.com
-(cherry picked from commit b70df82b428774875c7c56d3808102165891547c)
-Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+Fixes: 9dbd1aa3a81c ("dm raid: add reshaping support to the target")
+Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+Signed-off-by: Mike Snitzer <snitzer@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/gt/gen8_engine_cs.c     | 11 +++++++++++
- drivers/gpu/drm/i915/gt/intel_gpu_commands.h |  1 +
- 2 files changed, 12 insertions(+)
+ drivers/md/dm-raid.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/gt/gen8_engine_cs.c b/drivers/gpu/drm/i915/gt/gen8_engine_cs.c
-index 024e212b5f80d..2702ad4c26c88 100644
---- a/drivers/gpu/drm/i915/gt/gen8_engine_cs.c
-+++ b/drivers/gpu/drm/i915/gt/gen8_engine_cs.c
-@@ -264,6 +264,13 @@ int gen12_emit_flush_rcs(struct i915_request *rq, u32 mode)
- 
- 		bit_group_0 |= PIPE_CONTROL0_HDC_PIPELINE_FLUSH;
- 
-+		/*
-+		 * When required, in MTL and beyond platforms we
-+		 * need to set the CCS_FLUSH bit in the pipe control
-+		 */
-+		if (GRAPHICS_VER_FULL(rq->i915) >= IP_VER(12, 70))
-+			bit_group_0 |= PIPE_CONTROL_CCS_FLUSH;
-+
- 		bit_group_1 |= PIPE_CONTROL_TILE_CACHE_FLUSH;
- 		bit_group_1 |= PIPE_CONTROL_FLUSH_L3;
- 		bit_group_1 |= PIPE_CONTROL_RENDER_TARGET_CACHE_FLUSH;
-@@ -378,6 +385,10 @@ int gen12_emit_flush_xcs(struct i915_request *rq, u32 mode)
- 		cmd |= MI_INVALIDATE_TLB;
- 		if (rq->engine->class == VIDEO_DECODE_CLASS)
- 			cmd |= MI_INVALIDATE_BSD;
-+
-+		if (gen12_needs_ccs_aux_inv(rq->engine) &&
-+		    rq->engine->class == COPY_ENGINE_CLASS)
-+			cmd |= MI_FLUSH_DW_CCS;
+diff --git a/drivers/md/dm-raid.c b/drivers/md/dm-raid.c
+index 025a36ddf26ec..b818cc982e624 100644
+--- a/drivers/md/dm-raid.c
++++ b/drivers/md/dm-raid.c
+@@ -3190,15 +3190,19 @@ static int raid_ctr(struct dm_target *ti, unsigned int argc, char **argv)
+ 	/* Try to adjust the raid4/5/6 stripe cache size to the stripe size */
+ 	if (rs_is_raid456(rs)) {
+ 		r = rs_set_raid456_stripe_cache(rs);
+-		if (r)
++		if (r) {
++			mddev_unlock(&rs->md);
+ 			goto bad_stripe_cache;
++		}
  	}
  
- 	*cs++ = cmd;
-diff --git a/drivers/gpu/drm/i915/gt/intel_gpu_commands.h b/drivers/gpu/drm/i915/gt/intel_gpu_commands.h
-index 02125a1db2796..2bd8d98d21102 100644
---- a/drivers/gpu/drm/i915/gt/intel_gpu_commands.h
-+++ b/drivers/gpu/drm/i915/gt/intel_gpu_commands.h
-@@ -300,6 +300,7 @@
- #define   PIPE_CONTROL_QW_WRITE				(1<<14)
- #define   PIPE_CONTROL_POST_SYNC_OP_MASK                (3<<14)
- #define   PIPE_CONTROL_DEPTH_STALL			(1<<13)
-+#define   PIPE_CONTROL_CCS_FLUSH			(1<<13) /* MTL+ */
- #define   PIPE_CONTROL_WRITE_FLUSH			(1<<12)
- #define   PIPE_CONTROL_RENDER_TARGET_CACHE_FLUSH	(1<<12) /* gen6+ */
- #define   PIPE_CONTROL_INSTRUCTION_CACHE_INVALIDATE	(1<<11) /* MBZ on ILK */
+ 	/* Now do an early reshape check */
+ 	if (test_bit(RT_FLAG_RESHAPE_RS, &rs->runtime_flags)) {
+ 		r = rs_check_reshape(rs);
+-		if (r)
++		if (r) {
++			mddev_unlock(&rs->md);
+ 			goto bad_check_reshape;
++		}
+ 
+ 		/* Restore new, ctr requested layout to perform check */
+ 		rs_config_restore(rs, &rs_layout);
+@@ -3207,6 +3211,7 @@ static int raid_ctr(struct dm_target *ti, unsigned int argc, char **argv)
+ 			r = rs->md.pers->check_reshape(&rs->md);
+ 			if (r) {
+ 				ti->error = "Reshape check failed";
++				mddev_unlock(&rs->md);
+ 				goto bad_check_reshape;
+ 			}
+ 		}
 -- 
 2.40.1
 
