@@ -2,44 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A03DB775BC4
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:20:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2C4427758D5
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:55:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233533AbjHILUv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:20:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51784 "EHLO
+        id S232492AbjHIKzk (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 06:55:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43068 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233530AbjHILUv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:20:51 -0400
+        with ESMTP id S232564AbjHIKzT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:55:19 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6046ED
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:20:50 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C55783AAF
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:54:04 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 64628631D2
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:20:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72432C433C8;
-        Wed,  9 Aug 2023 11:20:49 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8F07C63126
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:54:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99D60C433C8;
+        Wed,  9 Aug 2023 10:54:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691580049;
-        bh=2gADQCweMX9/a+LVw/fVAVpRUw8A6CjTa0O3+lO06vg=;
+        s=korg; t=1691578444;
+        bh=WW5/VMujNgJgEX5KrNYTxgt6GOA6dMoKnDNkQCH+/6c=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ROluxSjEUzhdAJiKmFYU6iqp3M/XZBLIHdfvIpR5Lwom1bCXb1hlJsAKDbQVhGXwb
-         6Otb6rwx3noXaaScNTcoll+pY+z6YbeSRGJkkI4M2FhUgBTiqdG0UWy6Y6bw+qDFwC
-         9M1r4z0QAt+aiM1ZjaCiU//0WInqnrTmsVLUcWow=
+        b=0UDgpVxuoUxrqcTxg4hPtPitsEahezc7fqWyCmOJMcKxcBpv6d4zyfl9dAL/Q+1/0
+         cKz6dQ0y0hQzOBFqtcxtFtT52uSwOZdtHSGWlxsecXH/LeepgTu3x9AfGO8O0OF7WQ
+         9Xq3EzoGlliIvxvBxxaiSR8FxqpXMttx/mUQum7k=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Florian Westphal <fw@strlen.de>,
+        patches@lists.linux.dev, Jianbo Liu <jianbol@nvidia.com>,
+        Leon Romanovsky <leonro@nvidia.com>,
+        Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 210/323] netfilter: nf_tables: cant schedule in nft_chain_validate
+Subject: [PATCH 6.1 061/127] net/mlx5: fs_core: Make find_closest_ft more generic
 Date:   Wed,  9 Aug 2023 12:40:48 +0200
-Message-ID: <20230809103707.744052423@linuxfoundation.org>
+Message-ID: <20230809103638.691641266@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
-References: <20230809103658.104386911@linuxfoundation.org>
+In-Reply-To: <20230809103636.615294317@linuxfoundation.org>
+References: <20230809103636.615294317@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,64 +56,120 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Florian Westphal <fw@strlen.de>
+From: Jianbo Liu <jianbol@nvidia.com>
 
-[ Upstream commit 314c82841602a111c04a7210c21dc77e0d560242 ]
+[ Upstream commit 618d28a535a0582617465d14e05f3881736a2962 ]
 
-Can be called via nft set element list iteration, which may acquire
-rcu and/or bh read lock (depends on set type).
+As find_closest_ft_recursive is called to find the closest FT, the
+first parameter of find_closest_ft can be changed from fs_prio to
+fs_node. Thus this function is extended to find the closest FT for the
+nodes of any type, not only prios, but also the sub namespaces.
 
-BUG: sleeping function called from invalid context at net/netfilter/nf_tables_api.c:3353
-in_atomic(): 0, irqs_disabled(): 0, non_block: 0, pid: 1232, name: nft
-preempt_count: 0, expected: 0
-RCU nest depth: 1, expected: 0
-2 locks held by nft/1232:
- #0: ffff8881180e3ea8 (&nft_net->commit_mutex){+.+.}-{3:3}, at: nf_tables_valid_genid
- #1: ffffffff83f5f540 (rcu_read_lock){....}-{1:2}, at: rcu_lock_acquire
-Call Trace:
- nft_chain_validate
- nft_lookup_validate_setelem
- nft_pipapo_walk
- nft_lookup_validate
- nft_chain_validate
- nft_immediate_validate
- nft_chain_validate
- nf_tables_validate
- nf_tables_abort
-
-No choice but to move it to nf_tables_validate().
-
-Fixes: 81ea01066741 ("netfilter: nf_tables: add rescheduling points during loop detection walks")
-Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Jianbo Liu <jianbol@nvidia.com>
+Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+Link: https://lore.kernel.org/r/d3962c2b443ec8dde7a740dc742a1f052d5e256c.1690803944.git.leonro@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: c635ca45a7a2 ("net/mlx5: fs_core: Skip the FTs in the same FS_TYPE_PRIO_CHAINS fs_prio")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_tables_api.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ .../net/ethernet/mellanox/mlx5/core/fs_core.c | 29 +++++++++----------
+ 1 file changed, 14 insertions(+), 15 deletions(-)
 
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index f25b6337f150a..115bc79ec9055 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -2602,8 +2602,6 @@ int nft_chain_validate(const struct nft_ctx *ctx, const struct nft_chain *chain)
- 			if (err < 0)
- 				return err;
- 		}
--
--		cond_resched();
- 	}
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c b/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c
+index d53749248fa09..73ef771d6a4a4 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c
+@@ -876,18 +876,17 @@ static struct mlx5_flow_table *find_closest_ft_recursive(struct fs_node  *root,
+ 	return ft;
+ }
  
- 	return 0;
-@@ -2627,6 +2625,8 @@ static int nft_table_validate(struct net *net, const struct nft_table *table)
- 		err = nft_chain_validate(&ctx, chain);
- 		if (err < 0)
+-/* If reverse is false then return the first flow table in next priority of
+- * prio in the tree, else return the last flow table in the previous priority
+- * of prio in the tree.
++/* If reverse is false then return the first flow table next to the passed node
++ * in the tree, else return the last flow table before the node in the tree.
+  */
+-static struct mlx5_flow_table *find_closest_ft(struct fs_prio *prio, bool reverse)
++static struct mlx5_flow_table *find_closest_ft(struct fs_node *node, bool reverse)
+ {
+ 	struct mlx5_flow_table *ft = NULL;
+ 	struct fs_node *curr_node;
+ 	struct fs_node *parent;
+ 
+-	parent = prio->node.parent;
+-	curr_node = &prio->node;
++	parent = node->parent;
++	curr_node = node;
+ 	while (!ft && parent) {
+ 		ft = find_closest_ft_recursive(parent, &curr_node->list, reverse);
+ 		curr_node = parent;
+@@ -897,15 +896,15 @@ static struct mlx5_flow_table *find_closest_ft(struct fs_prio *prio, bool revers
+ }
+ 
+ /* Assuming all the tree is locked by mutex chain lock */
+-static struct mlx5_flow_table *find_next_chained_ft(struct fs_prio *prio)
++static struct mlx5_flow_table *find_next_chained_ft(struct fs_node *node)
+ {
+-	return find_closest_ft(prio, false);
++	return find_closest_ft(node, false);
+ }
+ 
+ /* Assuming all the tree is locked by mutex chain lock */
+-static struct mlx5_flow_table *find_prev_chained_ft(struct fs_prio *prio)
++static struct mlx5_flow_table *find_prev_chained_ft(struct fs_node *node)
+ {
+-	return find_closest_ft(prio, true);
++	return find_closest_ft(node, true);
+ }
+ 
+ static struct mlx5_flow_table *find_next_fwd_ft(struct mlx5_flow_table *ft,
+@@ -917,7 +916,7 @@ static struct mlx5_flow_table *find_next_fwd_ft(struct mlx5_flow_table *ft,
+ 	next_ns = flow_act->action & MLX5_FLOW_CONTEXT_ACTION_FWD_NEXT_NS;
+ 	fs_get_obj(prio, next_ns ? ft->ns->node.parent : ft->node.parent);
+ 
+-	return find_next_chained_ft(prio);
++	return find_next_chained_ft(&prio->node);
+ }
+ 
+ static int connect_fts_in_prio(struct mlx5_core_dev *dev,
+@@ -948,7 +947,7 @@ static int connect_prev_fts(struct mlx5_core_dev *dev,
+ {
+ 	struct mlx5_flow_table *prev_ft;
+ 
+-	prev_ft = find_prev_chained_ft(prio);
++	prev_ft = find_prev_chained_ft(&prio->node);
+ 	if (prev_ft) {
+ 		struct fs_prio *prev_prio;
+ 
+@@ -1094,7 +1093,7 @@ static int connect_flow_table(struct mlx5_core_dev *dev, struct mlx5_flow_table
+ 		if (err)
  			return err;
-+
-+		cond_resched();
- 	}
  
- 	return 0;
+-		next_ft = first_ft ? first_ft : find_next_chained_ft(prio);
++		next_ft = first_ft ? first_ft : find_next_chained_ft(&prio->node);
+ 		err = connect_fwd_rules(dev, ft, next_ft);
+ 		if (err)
+ 			return err;
+@@ -1169,7 +1168,7 @@ static struct mlx5_flow_table *__mlx5_create_flow_table(struct mlx5_flow_namespa
+ 
+ 	tree_init_node(&ft->node, del_hw_flow_table, del_sw_flow_table);
+ 	next_ft = unmanaged ? ft_attr->next_ft :
+-			      find_next_chained_ft(fs_prio);
++			      find_next_chained_ft(&fs_prio->node);
+ 	ft->def_miss_action = ns->def_miss_action;
+ 	ft->ns = ns;
+ 	err = root->cmds->create_flow_table(root, ft, ft_attr, next_ft);
+@@ -2163,7 +2162,7 @@ static struct mlx5_flow_table *find_next_ft(struct mlx5_flow_table *ft)
+ 
+ 	if (!list_is_last(&ft->node.list, &prio->node.children))
+ 		return list_next_entry(ft, node.list);
+-	return find_next_chained_ft(prio);
++	return find_next_chained_ft(&prio->node);
+ }
+ 
+ static int update_root_ft_destroy(struct mlx5_flow_table *ft)
 -- 
-2.39.2
+2.40.1
 
 
 
