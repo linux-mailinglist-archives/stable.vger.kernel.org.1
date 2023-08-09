@@ -2,111 +2,108 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9D2967757AB
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:48:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9F0D7775D43
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:35:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232254AbjHIKso (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 06:48:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46418 "EHLO
+        id S234046AbjHILf3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:35:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34488 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232249AbjHIKsn (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:48:43 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 73AB510FF
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:48:43 -0700 (PDT)
+        with ESMTP id S234042AbjHILf2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:35:28 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A830F173A
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:35:27 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1294C6310A
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:48:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FCC3C433D9;
-        Wed,  9 Aug 2023 10:48:41 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3F3E0634E3
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:35:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 500ECC433C7;
+        Wed,  9 Aug 2023 11:35:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691578122;
-        bh=617wgk/xr9HDjcH8QWkmQ3bN2EiGQnLPqrC35uy8W+I=;
+        s=korg; t=1691580926;
+        bh=2mZlbLAVD93nf+7an2Iq42iwijLxRuU4FTlpsPyEBwA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=GILCa1MBANQksnGoVjiZ7m4Hse3LTl/DHREQB4Y6goM91hO7NMntuoMEcmrFYIgAd
-         /MfasDgYlmzznKcd5xPci04M32GM7ntaL56bp0TWm0K15+K5PISlU3MgTQLOfdWCPN
-         EBBIm/rmToMr9lL+p5AxB+kY1hkeVfOWxHgzE4aU=
+        b=d55J0qv6h7tL+8SYYZpSXrBv3US8cET3JO1vfT80SymdeeUrGuTNfZiNIKHI+XnSj
+         lqU3QtASli/Lc6aYja4lOaknFklYaxVRsDMeSxniM/p90snqadtOpmiLLnBww3IF5n
+         S1a2EnVPPwU95hSxSe8iIfmd+dRkwTu1gEfvvFzI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
-        Lorenzo Colitti <lorenzo@google.com>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Pietro Borrello <borrello@diag.uniroma1.it>,
-        netdev@vger.kernel.org, Laszlo Ersek <lersek@redhat.com>,
-        "David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 6.4 114/165] net: tap_open(): set sk_uid from current_fsuid()
+        patches@lists.linux.dev, Pablo Neira Ayuso <pablo@netfilter.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 043/201] netfilter: nftables: add helper function to validate set element data
 Date:   Wed,  9 Aug 2023 12:40:45 +0200
-Message-ID: <20230809103646.530296736@linuxfoundation.org>
+Message-ID: <20230809103645.288315462@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103642.720851262@linuxfoundation.org>
-References: <20230809103642.720851262@linuxfoundation.org>
+In-Reply-To: <20230809103643.799166053@linuxfoundation.org>
+References: <20230809103643.799166053@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Laszlo Ersek <lersek@redhat.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-commit 5c9241f3ceab3257abe2923a59950db0dc8bb737 upstream.
+[ Upstream commit 97c976d662fb9080a6a5d1e1a108c7a1f5c9484d ]
 
-Commit 66b2c338adce initializes the "sk_uid" field in the protocol socket
-(struct sock) from the "/dev/tapX" device node's owner UID. Per original
-commit 86741ec25462 ("net: core: Add a UID field to struct sock.",
-2016-11-04), that's wrong: the idea is to cache the UID of the userspace
-process that creates the socket. Commit 86741ec25462 mentions socket() and
-accept(); with "tap", the action that creates the socket is
-open("/dev/tapX").
+When binding sets to rule, validate set element data according to
+set definition. This patch adds a helper function to be reused by
+the catch-all set element support.
 
-Therefore the device node's owner UID is irrelevant. In most cases,
-"/dev/tapX" will be owned by root, so in practice, commit 66b2c338adce has
-no observable effect:
-
-- before, "sk_uid" would be zero, due to undefined behavior
-  (CVE-2023-1076),
-
-- after, "sk_uid" would be zero, due to "/dev/tapX" being owned by root.
-
-What matters is the (fs)UID of the process performing the open(), so cache
-that in "sk_uid".
-
-Cc: Eric Dumazet <edumazet@google.com>
-Cc: Lorenzo Colitti <lorenzo@google.com>
-Cc: Paolo Abeni <pabeni@redhat.com>
-Cc: Pietro Borrello <borrello@diag.uniroma1.it>
-Cc: netdev@vger.kernel.org
-Cc: stable@vger.kernel.org
-Fixes: 66b2c338adce ("tap: tap_open(): correctly initialize socket uid")
-Bugzilla: https://bugzilla.redhat.com/show_bug.cgi?id=2173435
-Signed-off-by: Laszlo Ersek <lersek@redhat.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Stable-dep-of: 0a771f7b266b ("netfilter: nf_tables: skip immediate deactivate in _PREPARE_ERROR")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/tap.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/netfilter/nf_tables_api.c | 15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
 
---- a/drivers/net/tap.c
-+++ b/drivers/net/tap.c
-@@ -534,7 +534,7 @@ static int tap_open(struct inode *inode,
- 	q->sock.state = SS_CONNECTED;
- 	q->sock.file = file;
- 	q->sock.ops = &tap_socket_ops;
--	sock_init_data_uid(&q->sock, &q->sk, inode->i_uid);
-+	sock_init_data_uid(&q->sock, &q->sk, current_fsuid());
- 	q->sk.sk_write_space = tap_sock_write_space;
- 	q->sk.sk_destruct = tap_sock_destruct;
- 	q->flags = IFF_VNET_HDR | IFF_NO_PI | IFF_TAP;
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index 356416564d9f4..5ef9acba7c171 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -4576,10 +4576,9 @@ static int nft_validate_register_store(const struct nft_ctx *ctx,
+ 				       enum nft_data_types type,
+ 				       unsigned int len);
+ 
+-static int nf_tables_bind_check_setelem(const struct nft_ctx *ctx,
+-					struct nft_set *set,
+-					const struct nft_set_iter *iter,
+-					struct nft_set_elem *elem)
++static int nft_setelem_data_validate(const struct nft_ctx *ctx,
++				     struct nft_set *set,
++				     struct nft_set_elem *elem)
+ {
+ 	const struct nft_set_ext *ext = nft_set_elem_ext(set, elem->priv);
+ 	enum nft_registers dreg;
+@@ -4591,6 +4590,14 @@ static int nf_tables_bind_check_setelem(const struct nft_ctx *ctx,
+ 					   set->dlen);
+ }
+ 
++static int nf_tables_bind_check_setelem(const struct nft_ctx *ctx,
++					struct nft_set *set,
++					const struct nft_set_iter *iter,
++					struct nft_set_elem *elem)
++{
++	return nft_setelem_data_validate(ctx, set, elem);
++}
++
+ int nf_tables_bind_set(const struct nft_ctx *ctx, struct nft_set *set,
+ 		       struct nft_set_binding *binding)
+ {
+-- 
+2.39.2
+
 
 
