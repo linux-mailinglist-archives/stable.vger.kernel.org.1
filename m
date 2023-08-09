@@ -2,51 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B88FC7758C3
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:55:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8C35D775A2D
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:06:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232543AbjHIKzS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 06:55:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40142 "EHLO
+        id S233099AbjHILF7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:05:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58150 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232306AbjHIKzG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:55:06 -0400
+        with ESMTP id S233097AbjHILF7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:05:59 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 06EAF30FE
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:53:40 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5ABBD1724
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:05:58 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B46CF63146
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:53:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0E83C433CB;
-        Wed,  9 Aug 2023 10:53:18 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E3D756309F
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:05:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3640C433C8;
+        Wed,  9 Aug 2023 11:05:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691578399;
-        bh=bFh9oKDwHV7x8q00ixcvvXKUZEMEW2UN3qe2ajmoysU=;
+        s=korg; t=1691579157;
+        bh=pBNfEecOGy5y0g4apnTJFUrxtuxRusLi22Jiv62NQNE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=YRwH7Byd/Cl1d42jKuxYqTlAUNeUjIWuqma2Xqn9xdYRQDZGrsv5zG/lXJ03yws9D
-         iocNY5jw/Fh9nMhzb7MJH/i+PAIoLgR8tJUk4NUiizXqgJZZ5jpDSxTjqDPgP0LND+
-         8n47LYH64PMncmTp5RSgc5BQDlPcjw0Rnd45UTSo=
+        b=XMMKjraXNt3dwwRM4dn1xye5RMTON3ZZD9+nsYqS8ZsxiszJ6iBLYcnSwev+qZp6N
+         d5+Ehu9zrn4YTL/uQUaCwbtzZQzxUObZAFMYAgHKu6WxPlL7MXu4Upm0PCcK0Js4kP
+         xhT+1FHtA1l8IAfo9UpUUlNVA4QBuICIKWiWBHZ4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Rafal Rogalski <rafalx.rogalski@intel.com>,
-        Mateusz Palczewski <mateusz.palczewski@intel.com>,
-        Kamil Maziarz <kamil.maziarz@intel.com>,
-        Bharathi Sreenivas <bharathi.sreenivas@intel.com>,
-        Tony Nguyen <anthony.l.nguyen@intel.com>,
-        Leon Romanovsky <leonro@nvidia.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 046/127] ice: Fix RDMA VSI removal during queue rebuild
+        patches@lists.linux.dev, Yuan Can <yuancan@huawei.com>,
+        Jon Mason <jdmason@kudzu.us>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.14 095/204] ntb: idt: Fix error handling in idt_pci_driver_init()
 Date:   Wed,  9 Aug 2023 12:40:33 +0200
-Message-ID: <20230809103638.210726045@linuxfoundation.org>
+Message-ID: <20230809103645.816694704@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103636.615294317@linuxfoundation.org>
-References: <20230809103636.615294317@linuxfoundation.org>
+In-Reply-To: <20230809103642.552405807@linuxfoundation.org>
+References: <20230809103642.552405807@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -61,73 +54,66 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Rafal Rogalski <rafalx.rogalski@intel.com>
+From: Yuan Can <yuancan@huawei.com>
 
-[ Upstream commit 4b31fd4d77ffa430d0b74ba1885ea0a41594f202 ]
+[ Upstream commit c012968259b451dc4db407f2310fe131eaefd800 ]
 
-During qdisc create/delete, it is necessary to rebuild the queue
-of VSIs. An error occurred because the VSIs created by RDMA were
-still active.
+A problem about ntb_hw_idt create debugfs failed is triggered with the
+following log given:
 
-Added check if RDMA is active. If yes, it disallows qdisc changes
-and writes a message in the system logs.
+ [ 1236.637636] IDT PCI-E Non-Transparent Bridge Driver 2.0
+ [ 1236.639292] debugfs: Directory 'ntb_hw_idt' with parent '/' already present!
 
-Fixes: 348048e724a0 ("ice: Implement iidc operations")
-Signed-off-by: Rafal Rogalski <rafalx.rogalski@intel.com>
-Signed-off-by: Mateusz Palczewski <mateusz.palczewski@intel.com>
-Signed-off-by: Kamil Maziarz <kamil.maziarz@intel.com>
-Tested-by: Bharathi Sreenivas <bharathi.sreenivas@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
-Link: https://lore.kernel.org/r/20230728171243.2446101-1-anthony.l.nguyen@intel.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+The reason is that idt_pci_driver_init() returns pci_register_driver()
+directly without checking its return value, if pci_register_driver()
+failed, it returns without destroy the newly created debugfs, resulting
+the debugfs of ntb_hw_idt can never be created later.
+
+ idt_pci_driver_init()
+   debugfs_create_dir() # create debugfs directory
+   pci_register_driver()
+     driver_register()
+       bus_add_driver()
+         priv = kzalloc(...) # OOM happened
+   # return without destroy debugfs directory
+
+Fix by removing debugfs when pci_register_driver() returns error.
+
+Fixes: bf2a952d31d2 ("NTB: Add IDT 89HPESxNTx PCIe-switches support")
+Signed-off-by: Yuan Can <yuancan@huawei.com>
+Signed-off-by: Jon Mason <jdmason@kudzu.us>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ice/ice_main.c | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+ drivers/ntb/hw/idt/ntb_hw_idt.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
-index 8f77088900e94..a771e597795d3 100644
---- a/drivers/net/ethernet/intel/ice/ice_main.c
-+++ b/drivers/net/ethernet/intel/ice/ice_main.c
-@@ -8777,6 +8777,7 @@ ice_setup_tc(struct net_device *netdev, enum tc_setup_type type,
- {
- 	struct ice_netdev_priv *np = netdev_priv(netdev);
- 	struct ice_pf *pf = np->vsi->back;
-+	bool locked = false;
- 	int err;
+diff --git a/drivers/ntb/hw/idt/ntb_hw_idt.c b/drivers/ntb/hw/idt/ntb_hw_idt.c
+index b68e2cad74cc7..d6f68a17bbd91 100644
+--- a/drivers/ntb/hw/idt/ntb_hw_idt.c
++++ b/drivers/ntb/hw/idt/ntb_hw_idt.c
+@@ -2689,6 +2689,7 @@ static struct pci_driver idt_pci_driver = {
  
- 	switch (type) {
-@@ -8786,10 +8787,27 @@ ice_setup_tc(struct net_device *netdev, enum tc_setup_type type,
- 						  ice_setup_tc_block_cb,
- 						  np, np, true);
- 	case TC_SETUP_QDISC_MQPRIO:
-+		if (pf->adev) {
-+			mutex_lock(&pf->adev_mutex);
-+			device_lock(&pf->adev->dev);
-+			locked = true;
-+			if (pf->adev->dev.driver) {
-+				netdev_err(netdev, "Cannot change qdisc when RDMA is active\n");
-+				err = -EBUSY;
-+				goto adev_unlock;
-+			}
-+		}
+ static int __init idt_pci_driver_init(void)
+ {
++	int ret;
+ 	pr_info("%s %s\n", NTB_DESC, NTB_VER);
+ 
+ 	/* Create the top DebugFS directory if the FS is initialized */
+@@ -2696,7 +2697,11 @@ static int __init idt_pci_driver_init(void)
+ 		dbgfs_topdir = debugfs_create_dir(KBUILD_MODNAME, NULL);
+ 
+ 	/* Register the NTB hardware driver to handle the PCI device */
+-	return pci_register_driver(&idt_pci_driver);
++	ret = pci_register_driver(&idt_pci_driver);
++	if (ret)
++		debugfs_remove_recursive(dbgfs_topdir);
 +
- 		/* setup traffic classifier for receive side */
- 		mutex_lock(&pf->tc_mutex);
- 		err = ice_setup_tc_mqprio_qdisc(netdev, type_data);
- 		mutex_unlock(&pf->tc_mutex);
-+
-+adev_unlock:
-+		if (locked) {
-+			device_unlock(&pf->adev->dev);
-+			mutex_unlock(&pf->adev_mutex);
-+		}
- 		return err;
- 	default:
- 		return -EOPNOTSUPP;
++	return ret;
+ }
+ module_init(idt_pci_driver_init);
+ 
 -- 
-2.40.1
+2.39.2
 
 
 
