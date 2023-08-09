@@ -2,90 +2,120 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8918D775C39
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:25:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 79055775D85
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:38:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233680AbjHILZI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:25:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46458 "EHLO
+        id S234128AbjHILia (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:38:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33480 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233677AbjHILZI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:25:08 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C4C30ED
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:25:07 -0700 (PDT)
+        with ESMTP id S234129AbjHILia (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:38:30 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 15E3A173A
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:38:30 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 635F563234
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:25:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75A6BC433C8;
-        Wed,  9 Aug 2023 11:25:06 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9F458635A7
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:38:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A90F9C433C8;
+        Wed,  9 Aug 2023 11:38:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691580306;
-        bh=klIyRPhZk1qjMfAf/bEyH2s8w7OPj8rpn0B/fHo3njE=;
+        s=korg; t=1691581109;
+        bh=neC51Y0PDL9Aw9f6ud1M8ut0384NXKPeGvxiEUROiD8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=QBg/el1Y4repn9fcMA6cvUJXV33CPjecV49sOno+EMY4BzBarRBnyb8AMLn1bQo1x
-         GDQXATpzkRVV9tFE4RywJf+hr9GfYXc+LVNWQXYD3CNR5fPua/+oSUMhvfQKjRdnJX
-         bj6Zr8vLTuONl1HL5jnSjRc2WH4gAZtjC9NYDC8c=
+        b=AG4NmAlJyxfrBKH1zo/PFcEFKPbG6WcEpBoBmcAuJHKUS85mQzKysQEykaVhJPou5
+         nO29jP8OfMj7L/45nC+DSSlY9bX0nfoDmeIxInwERSkKGDc64Cy0i9JXIXvFwqagzc
+         zv5MCitDiaSR8U890y6Bm0RIVn9tGAH3EaSRwA2E=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, stable <stable@kernel.org>,
-        Zhang Shurong <zhang_shurong@foxmail.com>,
-        Dan Carpenter <dan.carpenter@linaro.org>
-Subject: [PATCH 4.19 271/323] staging: ks7010: potential buffer overflow in ks_wlan_set_encode_ext()
-Date:   Wed,  9 Aug 2023 12:41:49 +0200
-Message-ID: <20230809103710.463044010@linuxfoundation.org>
+        patches@lists.linux.dev,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Hagar Hemdan <hagarhem@amazon.de>
+Subject: [PATCH 5.10 108/201] ACPI: processor: perflib: Avoid updating frequency QoS unnecessarily
+Date:   Wed,  9 Aug 2023 12:41:50 +0200
+Message-ID: <20230809103647.410546805@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
-References: <20230809103658.104386911@linuxfoundation.org>
+In-Reply-To: <20230809103643.799166053@linuxfoundation.org>
+References: <20230809103643.799166053@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Zhang Shurong <zhang_shurong@foxmail.com>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-commit 5f1c7031e044cb2fba82836d55cc235e2ad619dc upstream.
+commit 99387b016022c29234c4ebf9abd34358c6e56532 upstream.
 
-The "exc->key_len" is a u16 that comes from the user.  If it's over
-IW_ENCODING_TOKEN_MAX (64) that could lead to memory corruption.
+Modify acpi_processor_get_platform_limit() to avoid updating its
+frequency QoS request when the _PPC return value has not changed
+by comparing that value to the previous _PPC return value stored in
+the performance_platform_limit field of the struct acpi_processor
+corresponding to the given CPU.
 
-Fixes: b121d84882b9 ("staging: ks7010: simplify calls to memcpy()")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Zhang Shurong <zhang_shurong@foxmail.com>
-Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://lore.kernel.org/r/tencent_5153B668C0283CAA15AA518325346E026A09@qq.com
+While at it, do the _PPC return value check against the state count
+earlier, to avoid setting performance_platform_limit to an invalid
+value, and make acpi_processor_ppc_init() use FREQ_QOS_MAX_DEFAULT_VALUE
+as the "no limit" frequency QoS for consistency.
+
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Tested-by: Hagar Hemdan <hagarhem@amazon.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/staging/ks7010/ks_wlan_net.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/acpi/processor_perflib.c |   18 ++++++++++++++----
+ 1 file changed, 14 insertions(+), 4 deletions(-)
 
---- a/drivers/staging/ks7010/ks_wlan_net.c
-+++ b/drivers/staging/ks7010/ks_wlan_net.c
-@@ -1584,8 +1584,10 @@ static int ks_wlan_set_encode_ext(struct
- 			commit |= SME_WEP_FLAG;
- 		}
- 		if (enc->key_len) {
--			memcpy(&key->key_val[0], &enc->key[0], enc->key_len);
--			key->key_len = enc->key_len;
-+			int key_len = clamp_val(enc->key_len, 0, IW_ENCODING_TOKEN_MAX);
+--- a/drivers/acpi/processor_perflib.c
++++ b/drivers/acpi/processor_perflib.c
+@@ -79,13 +79,16 @@ static int acpi_processor_get_platform_l
+ 
+ 	index = ppc;
+ 
++	if (pr->performance_platform_limit == index ||
++	    ppc >= pr->performance->state_count)
++		return 0;
 +
-+			memcpy(&key->key_val[0], &enc->key[0], key_len);
-+			key->key_len = key_len;
- 			commit |= (SME_WEP_VAL1 << index);
- 		}
- 		break;
+ 	pr_debug("CPU %d: _PPC is %d - frequency %s limited\n", pr->id,
+ 		 index, index ? "is" : "is not");
+ 
+ 	pr->performance_platform_limit = index;
+ 
+-	if (ppc >= pr->performance->state_count ||
+-	    unlikely(!freq_qos_request_active(&pr->perflib_req)))
++	if (unlikely(!freq_qos_request_active(&pr->perflib_req)))
+ 		return 0;
+ 
+ 	/*
+@@ -180,9 +183,16 @@ void acpi_processor_ppc_init(struct cpuf
+ 		if (!pr)
+ 			continue;
+ 
++		/*
++		 * Reset performance_platform_limit in case there is a stale
++		 * value in it, so as to make it match the "no limit" QoS value
++		 * below.
++		 */
++		pr->performance_platform_limit = 0;
++
+ 		ret = freq_qos_add_request(&policy->constraints,
+-					   &pr->perflib_req,
+-					   FREQ_QOS_MAX, INT_MAX);
++					   &pr->perflib_req, FREQ_QOS_MAX,
++					   FREQ_QOS_MAX_DEFAULT_VALUE);
+ 		if (ret < 0)
+ 			pr_err("Failed to add freq constraint for CPU%d (%d)\n",
+ 			       cpu, ret);
 
 
