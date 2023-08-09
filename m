@@ -2,107 +2,195 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0DC60775C34
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:24:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AFCF1775909
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:56:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233672AbjHILYz (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:24:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45742 "EHLO
+        id S232533AbjHIK4y (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 06:56:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34614 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233674AbjHILYy (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:24:54 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F1B761FCE
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:24:53 -0700 (PDT)
+        with ESMTP id S232646AbjHIK4x (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:56:53 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 19D412136
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:56:51 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 70B2A6324A
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:24:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E301C433C8;
-        Wed,  9 Aug 2023 11:24:52 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7E6F96238A
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:56:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91A31C433C7;
+        Wed,  9 Aug 2023 10:56:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691580292;
-        bh=kUdY39Vvl+59gv1C/dT/69binvhxB0iX9AyhSAiRqyk=;
+        s=korg; t=1691578610;
+        bh=IbMvQDssz+gfA3rTNCfP6ZkB5lDDpkCYqkm6ACfUTU8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=lIhgPJwuw8cenUqPQ9KVgCpL9JZru5bEQhbHMiLr8SmGAa3WCaYcPIeKQfdHq7z4Y
-         NOyCSYEdcI+O/+P2vCDxFVACwcjepRfDwjeN9J/AU7/nHS5TScc3a8tIiv8/nXtIPQ
-         XTyPKnnK8sljpesMrSOf/VU5bVpQ7t9mkzQTzZOo=
+        b=QMFPkOdptgV1bsJk0IHjIseHDqrPmEg3tbZ3OxPK9Dr0m3FHQSRfauuoyFmOi/hmY
+         BmDjW/HfW3zWd9oFax1ul6cekOsg2uDepfKQ+EvAeAraiBVt4EheOVbLmU9bW7Ck2d
+         V8ScYSYPKGnRtYMNbK+5fLHQCZnCbSDGj/5LUeQU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Kees Cook <keescook@chromium.org>
-Subject: [PATCH 4.19 269/323] Documentation: security-bugs.rst: update preferences when dealing with the linux-distros group
-Date:   Wed,  9 Aug 2023 12:41:47 +0200
-Message-ID: <20230809103710.369119739@linuxfoundation.org>
+        patches@lists.linux.dev,
+        syzbot+d015b6c2fbb5c383bf08@syzkaller.appspotmail.com,
+        Chao Yu <chao@kernel.org>, Jaegeuk Kim <jaegeuk@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 121/127] f2fs: dont reset unchangable mount option in f2fs_remount()
+Date:   Wed,  9 Aug 2023 12:41:48 +0200
+Message-ID: <20230809103640.612110509@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
-References: <20230809103658.104386911@linuxfoundation.org>
+In-Reply-To: <20230809103636.615294317@linuxfoundation.org>
+References: <20230809103636.615294317@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Chao Yu <chao@kernel.org>
 
-commit 4fee0915e649bd0cea56dece6d96f8f4643df33c upstream.
+[ Upstream commit 458c15dfbce62c35fefd9ca637b20a051309c9f1 ]
 
-Because the linux-distros group forces reporters to release information
-about reported bugs, and they impose arbitrary deadlines in having those
-bugs fixed despite not actually being kernel developers, the kernel
-security team recommends not interacting with them at all as this just
-causes confusion and the early-release of reported security problems.
+syzbot reports a bug as below:
 
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Link: https://lore.kernel.org/r/2023063020-throat-pantyhose-f110@gregkh
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+general protection fault, probably for non-canonical address 0xdffffc0000000009: 0000 [#1] PREEMPT SMP KASAN
+RIP: 0010:__lock_acquire+0x69/0x2000 kernel/locking/lockdep.c:4942
+Call Trace:
+ lock_acquire+0x1e3/0x520 kernel/locking/lockdep.c:5691
+ __raw_write_lock include/linux/rwlock_api_smp.h:209 [inline]
+ _raw_write_lock+0x2e/0x40 kernel/locking/spinlock.c:300
+ __drop_extent_tree+0x3ac/0x660 fs/f2fs/extent_cache.c:1100
+ f2fs_drop_extent_tree+0x17/0x30 fs/f2fs/extent_cache.c:1116
+ f2fs_insert_range+0x2d5/0x3c0 fs/f2fs/file.c:1664
+ f2fs_fallocate+0x4e4/0x6d0 fs/f2fs/file.c:1838
+ vfs_fallocate+0x54b/0x6b0 fs/open.c:324
+ ksys_fallocate fs/open.c:347 [inline]
+ __do_sys_fallocate fs/open.c:355 [inline]
+ __se_sys_fallocate fs/open.c:353 [inline]
+ __x64_sys_fallocate+0xbd/0x100 fs/open.c:353
+ do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+ do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
+ entry_SYSCALL_64_after_hwframe+0x63/0xcd
+
+The root cause is race condition as below:
+- since it tries to remount rw filesystem, so that do_remount won't
+call sb_prepare_remount_readonly to block fallocate, there may be race
+condition in between remount and fallocate.
+- in f2fs_remount(), default_options() will reset mount option to default
+one, and then update it based on result of parse_options(), so there is
+a hole which race condition can happen.
+
+Thread A			Thread B
+- f2fs_fill_super
+ - parse_options
+  - clear_opt(READ_EXTENT_CACHE)
+
+- f2fs_remount
+ - default_options
+  - set_opt(READ_EXTENT_CACHE)
+				- f2fs_fallocate
+				 - f2fs_insert_range
+				  - f2fs_drop_extent_tree
+				   - __drop_extent_tree
+				    - __may_extent_tree
+				     - test_opt(READ_EXTENT_CACHE) return true
+				    - write_lock(&et->lock) access NULL pointer
+ - parse_options
+  - clear_opt(READ_EXTENT_CACHE)
+
+Cc: <stable@vger.kernel.org>
+Reported-by: syzbot+d015b6c2fbb5c383bf08@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/linux-f2fs-devel/20230522124203.3838360-1-chao@kernel.org
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/admin-guide/security-bugs.rst |   24 +++++++++++-------------
- 1 file changed, 11 insertions(+), 13 deletions(-)
+ fs/f2fs/super.c | 30 ++++++++++++++++++------------
+ 1 file changed, 18 insertions(+), 12 deletions(-)
 
---- a/Documentation/admin-guide/security-bugs.rst
-+++ b/Documentation/admin-guide/security-bugs.rst
-@@ -56,20 +56,18 @@ information submitted to the security li
- of the report are treated confidentially even after the embargo has been
- lifted, in perpetuity.
+diff --git a/fs/f2fs/super.c b/fs/f2fs/super.c
+index 36bb1c969e8bb..ff47aad636e5b 100644
+--- a/fs/f2fs/super.c
++++ b/fs/f2fs/super.c
+@@ -2040,9 +2040,22 @@ static int f2fs_show_options(struct seq_file *seq, struct dentry *root)
+ 	return 0;
+ }
  
--Coordination
--------------
-+Coordination with other groups
-+------------------------------
- 
--Fixes for sensitive bugs, such as those that might lead to privilege
--escalations, may need to be coordinated with the private
--<linux-distros@vs.openwall.org> mailing list so that distribution vendors
--are well prepared to issue a fixed kernel upon public disclosure of the
--upstream fix. Distros will need some time to test the proposed patch and
--will generally request at least a few days of embargo, and vendor update
--publication prefers to happen Tuesday through Thursday. When appropriate,
--the security team can assist with this coordination, or the reporter can
--include linux-distros from the start. In this case, remember to prefix
--the email Subject line with "[vs]" as described in the linux-distros wiki:
--<http://oss-security.openwall.org/wiki/mailing-lists/distros#how-to-use-the-lists>
-+The kernel security team strongly recommends that reporters of potential
-+security issues NEVER contact the "linux-distros" mailing list until
-+AFTER discussing it with the kernel security team.  Do not Cc: both
-+lists at once.  You may contact the linux-distros mailing list after a
-+fix has been agreed on and you fully understand the requirements that
-+doing so will impose on you and the kernel community.
+-static void default_options(struct f2fs_sb_info *sbi)
++static void default_options(struct f2fs_sb_info *sbi, bool remount)
+ {
+ 	/* init some FS parameters */
++	if (!remount) {
++		set_opt(sbi, READ_EXTENT_CACHE);
++		clear_opt(sbi, DISABLE_CHECKPOINT);
 +
-+The different lists have different goals and the linux-distros rules do
-+not contribute to actually fixing any potential security problems.
++		if (f2fs_hw_support_discard(sbi) || f2fs_hw_should_discard(sbi))
++			set_opt(sbi, DISCARD);
++
++		if (f2fs_sb_has_blkzoned(sbi))
++			F2FS_OPTION(sbi).discard_unit = DISCARD_UNIT_SECTION;
++		else
++			F2FS_OPTION(sbi).discard_unit = DISCARD_UNIT_BLOCK;
++	}
++
+ 	if (f2fs_sb_has_readonly(sbi))
+ 		F2FS_OPTION(sbi).active_logs = NR_CURSEG_RO_TYPE;
+ 	else
+@@ -2065,23 +2078,16 @@ static void default_options(struct f2fs_sb_info *sbi)
+ 	set_opt(sbi, INLINE_XATTR);
+ 	set_opt(sbi, INLINE_DATA);
+ 	set_opt(sbi, INLINE_DENTRY);
+-	set_opt(sbi, READ_EXTENT_CACHE);
+ 	set_opt(sbi, NOHEAP);
+-	clear_opt(sbi, DISABLE_CHECKPOINT);
+ 	set_opt(sbi, MERGE_CHECKPOINT);
+ 	F2FS_OPTION(sbi).unusable_cap = 0;
+ 	sbi->sb->s_flags |= SB_LAZYTIME;
+ 	if (!f2fs_sb_has_readonly(sbi) && !f2fs_readonly(sbi->sb))
+ 		set_opt(sbi, FLUSH_MERGE);
+-	if (f2fs_hw_support_discard(sbi) || f2fs_hw_should_discard(sbi))
+-		set_opt(sbi, DISCARD);
+-	if (f2fs_sb_has_blkzoned(sbi)) {
++	if (f2fs_sb_has_blkzoned(sbi))
+ 		F2FS_OPTION(sbi).fs_mode = FS_MODE_LFS;
+-		F2FS_OPTION(sbi).discard_unit = DISCARD_UNIT_SECTION;
+-	} else {
++	else
+ 		F2FS_OPTION(sbi).fs_mode = FS_MODE_ADAPTIVE;
+-		F2FS_OPTION(sbi).discard_unit = DISCARD_UNIT_BLOCK;
+-	}
  
- CVE assignment
- --------------
+ #ifdef CONFIG_F2FS_FS_XATTR
+ 	set_opt(sbi, XATTR_USER);
+@@ -2253,7 +2259,7 @@ static int f2fs_remount(struct super_block *sb, int *flags, char *data)
+ 			clear_sbi_flag(sbi, SBI_NEED_SB_WRITE);
+ 	}
+ 
+-	default_options(sbi);
++	default_options(sbi, true);
+ 
+ 	/* parse mount options */
+ 	err = parse_options(sb, data, true);
+@@ -4150,7 +4156,7 @@ static int f2fs_fill_super(struct super_block *sb, void *data, int silent)
+ 		sbi->s_chksum_seed = f2fs_chksum(sbi, ~0, raw_super->uuid,
+ 						sizeof(raw_super->uuid));
+ 
+-	default_options(sbi);
++	default_options(sbi, false);
+ 	/* parse mount options */
+ 	options = kstrdup((const char *)data, GFP_KERNEL);
+ 	if (data && !options) {
+-- 
+2.40.1
+
 
 
