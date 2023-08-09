@@ -2,149 +2,140 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2C553775BA8
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:19:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 03A94775795
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:47:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233504AbjHILTl (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:19:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47476 "EHLO
+        id S232227AbjHIKrp (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 06:47:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35398 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233500AbjHILTl (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:19:41 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71267FA
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:19:40 -0700 (PDT)
+        with ESMTP id S231804AbjHIKro (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:47:44 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 323771999
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:47:44 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 098F4631C8
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:19:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 188F6C433C7;
-        Wed,  9 Aug 2023 11:19:38 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C684A63125
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:47:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5BBEC433C8;
+        Wed,  9 Aug 2023 10:47:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691579979;
-        bh=nJOjsIaWQNSLUBI//4GF7vEBGQWqYszLFbqD/6J6too=;
+        s=korg; t=1691578063;
+        bh=GrrhLshHlUq7TpMPhhcL1vaxnPxupLHT9ww0CF7Ahzo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=l77HRU0C03+jKcBdZOWNe35mhDckBPoSFaVRlcaTT97Lji0eid7k5fyeg1DIMeQ8t
-         s6UHrk+aTlaFbLW0TrUeiyNtO6ENJLON+zMJSiEBgDJg7qcrUnV37kFDmXHVpkdu6c
-         DMCQKYDOcz14ZKNoqaVlNbMrVLK4F5pEqh5D5tp0=
+        b=a3qzIiLtcWTKx1pT2xsYroDZpzDvuPgRucLZvlvlzVKz3JnHRwR9fIlVjx49Wi+l7
+         rGlN0e5m2AhTIyhh0btDUifzvyKcnfCwkQiPI1U3DO/23onOHxPTH/I+umI6X+S9Bk
+         Xy0V4XYR3nTRcFM/6j+889aTsDxwIZvhiOvJWecM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, shanzhulig <shanzhulig@gmail.com>,
-        Maxime Ripard <mripard@kernel.org>,
-        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        David Airlie <airlied@gmail.com>, stable@kernel.org,
-        Daniel Vetter <daniel.vetter@intel.com>,
-        Daniel Vetter <daniel.vetter@ffwll.ch>,
-        Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH 4.19 185/323] drm/atomic: Fix potential use-after-free in nonblocking commits
+        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
+        David Ahern <dsahern@kernel.org>,
+        Kuniyuki Iwashima <kuniyu@amazon.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 092/165] tcp_metrics: annotate data-races around tm->tcpm_vals[]
 Date:   Wed,  9 Aug 2023 12:40:23 +0200
-Message-ID: <20230809103706.636719097@linuxfoundation.org>
+Message-ID: <20230809103645.805122026@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
-References: <20230809103658.104386911@linuxfoundation.org>
+In-Reply-To: <20230809103642.720851262@linuxfoundation.org>
+References: <20230809103642.720851262@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Daniel Vetter <daniel.vetter@ffwll.ch>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 4e076c73e4f6e90816b30fcd4a0d7ab365087255 upstream.
+[ Upstream commit 8c4d04f6b443869d25e59822f7cec88d647028a9 ]
 
-This requires a bit of background.  Properly done a modeset driver's
-unload/remove sequence should be
+tm->tcpm_vals[] values can be read or written locklessly.
 
-	drm_dev_unplug();
-	drm_atomic_helper_shutdown();
-	drm_dev_put();
+Add needed READ_ONCE()/WRITE_ONCE() to document this,
+and force use of tcp_metric_get() and tcp_metric_set()
 
-The trouble is that the drm_dev_unplugged() checks are by design racy,
-they do not synchronize against all outstanding ioctl.  This is because
-those ioctl could block forever (both for modeset and for driver
-specific ioctls), leading to deadlocks in hotunplug.  Instead the code
-sections that touch the hardware need to be annotated with
-drm_dev_enter/exit, to avoid accessing hardware resources after the
-unload/remove has finished.
-
-To avoid use-after-free issues all the involved userspace visible
-objects are supposed to hold a reference on the underlying drm_device,
-like drm_file does.
-
-The issue now is that we missed one, the atomic modeset ioctl can be run
-in a nonblocking fashion, and in that case it cannot rely on the implied
-drm_device reference provided by the ioctl calling context.  This can
-result in a use-after-free if an nonblocking atomic commit is carefully
-raced against a driver unload.
-
-Fix this by unconditionally grabbing a drm_device reference for any
-drm_atomic_state structures.  Strictly speaking this isn't required for
-blocking commits and TEST_ONLY calls, but it's the simpler approach.
-
-Thanks to shanzhulig for the initial idea of grabbing an unconditional
-reference, I just added comments, a condensed commit message and fixed a
-minor potential issue in where exactly we drop the final reference.
-
-Reported-by: shanzhulig <shanzhulig@gmail.com>
-Suggested-by: shanzhulig <shanzhulig@gmail.com>
-Reviewed-by: Maxime Ripard <mripard@kernel.org>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: David Airlie <airlied@gmail.com>
-Cc: stable@kernel.org
-Signed-off-by: Daniel Vetter <daniel.vetter@intel.com>
-Signed-off-by: Daniel Vetter <daniel.vetter@ffwll.ch>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 51c5d0c4b169 ("tcp: Maintain dynamic metrics in local cache.")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/drm_atomic.c |   11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ net/ipv4/tcp_metrics.c | 23 ++++++++++++++---------
+ 1 file changed, 14 insertions(+), 9 deletions(-)
 
---- a/drivers/gpu/drm/drm_atomic.c
-+++ b/drivers/gpu/drm/drm_atomic.c
-@@ -91,6 +91,12 @@ drm_atomic_state_init(struct drm_device
- 	if (!state->planes)
- 		goto fail;
- 
-+	/*
-+	 * Because drm_atomic_state can be committed asynchronously we need our
-+	 * own reference and cannot rely on the on implied by drm_file in the
-+	 * ioctl call.
-+	 */
-+	drm_dev_get(dev);
- 	state->dev = dev;
- 
- 	DRM_DEBUG_ATOMIC("Allocated atomic state %p\n", state);
-@@ -250,7 +256,8 @@ EXPORT_SYMBOL(drm_atomic_state_clear);
- void __drm_atomic_state_free(struct kref *ref)
- {
- 	struct drm_atomic_state *state = container_of(ref, typeof(*state), ref);
--	struct drm_mode_config *config = &state->dev->mode_config;
-+	struct drm_device *dev = state->dev;
-+	struct drm_mode_config *config = &dev->mode_config;
- 
- 	drm_atomic_state_clear(state);
- 
-@@ -262,6 +269,8 @@ void __drm_atomic_state_free(struct kref
- 		drm_atomic_state_default_release(state);
- 		kfree(state);
- 	}
-+
-+	drm_dev_put(dev);
+diff --git a/net/ipv4/tcp_metrics.c b/net/ipv4/tcp_metrics.c
+index 131fa30049691..fd4ab7a51cef2 100644
+--- a/net/ipv4/tcp_metrics.c
++++ b/net/ipv4/tcp_metrics.c
+@@ -63,17 +63,19 @@ static bool tcp_metric_locked(struct tcp_metrics_block *tm,
+ 	return READ_ONCE(tm->tcpm_lock) & (1 << idx);
  }
- EXPORT_SYMBOL(__drm_atomic_state_free);
  
+-static u32 tcp_metric_get(struct tcp_metrics_block *tm,
++static u32 tcp_metric_get(const struct tcp_metrics_block *tm,
+ 			  enum tcp_metric_index idx)
+ {
+-	return tm->tcpm_vals[idx];
++	/* Paired with WRITE_ONCE() in tcp_metric_set() */
++	return READ_ONCE(tm->tcpm_vals[idx]);
+ }
+ 
+ static void tcp_metric_set(struct tcp_metrics_block *tm,
+ 			   enum tcp_metric_index idx,
+ 			   u32 val)
+ {
+-	tm->tcpm_vals[idx] = val;
++	/* Paired with READ_ONCE() in tcp_metric_get() */
++	WRITE_ONCE(tm->tcpm_vals[idx], val);
+ }
+ 
+ static bool addr_same(const struct inetpeer_addr *a,
+@@ -115,13 +117,16 @@ static void tcpm_suck_dst(struct tcp_metrics_block *tm,
+ 	WRITE_ONCE(tm->tcpm_lock, val);
+ 
+ 	msval = dst_metric_raw(dst, RTAX_RTT);
+-	tm->tcpm_vals[TCP_METRIC_RTT] = msval * USEC_PER_MSEC;
++	tcp_metric_set(tm, TCP_METRIC_RTT, msval * USEC_PER_MSEC);
+ 
+ 	msval = dst_metric_raw(dst, RTAX_RTTVAR);
+-	tm->tcpm_vals[TCP_METRIC_RTTVAR] = msval * USEC_PER_MSEC;
+-	tm->tcpm_vals[TCP_METRIC_SSTHRESH] = dst_metric_raw(dst, RTAX_SSTHRESH);
+-	tm->tcpm_vals[TCP_METRIC_CWND] = dst_metric_raw(dst, RTAX_CWND);
+-	tm->tcpm_vals[TCP_METRIC_REORDERING] = dst_metric_raw(dst, RTAX_REORDERING);
++	tcp_metric_set(tm, TCP_METRIC_RTTVAR, msval * USEC_PER_MSEC);
++	tcp_metric_set(tm, TCP_METRIC_SSTHRESH,
++		       dst_metric_raw(dst, RTAX_SSTHRESH));
++	tcp_metric_set(tm, TCP_METRIC_CWND,
++		       dst_metric_raw(dst, RTAX_CWND));
++	tcp_metric_set(tm, TCP_METRIC_REORDERING,
++		       dst_metric_raw(dst, RTAX_REORDERING));
+ 	if (fastopen_clear) {
+ 		tm->tcpm_fastopen.mss = 0;
+ 		tm->tcpm_fastopen.syn_loss = 0;
+@@ -667,7 +672,7 @@ static int tcp_metrics_fill_info(struct sk_buff *msg,
+ 		if (!nest)
+ 			goto nla_put_failure;
+ 		for (i = 0; i < TCP_METRIC_MAX_KERNEL + 1; i++) {
+-			u32 val = tm->tcpm_vals[i];
++			u32 val = tcp_metric_get(tm, i);
+ 
+ 			if (!val)
+ 				continue;
+-- 
+2.40.1
+
 
 
