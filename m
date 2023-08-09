@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5D955775BE9
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:22:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C3AED7757A7
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:48:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231678AbjHILWO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:22:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53084 "EHLO
+        id S232250AbjHIKsg (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 06:48:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56090 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233594AbjHILWN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:22:13 -0400
+        with ESMTP id S232249AbjHIKsf (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:48:35 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 332342113
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:22:03 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE98510F3
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:48:34 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B80676320C
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:22:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9330C433C8;
-        Wed,  9 Aug 2023 11:22:01 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 72E8063123
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:48:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77415C433C8;
+        Wed,  9 Aug 2023 10:48:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691580122;
-        bh=1Tv1XWHyUokPcrn+qROxSrCRROsPpVm5F8c71hH3FOI=;
+        s=korg; t=1691578113;
+        bh=eTcz6bIUyGp53N9M8fXParpMDa0FbsuPIF2BGIJYRq8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=FN+zprPfMHoPKlaFtpqndPFKpHwfmFZ5X4Kv4/SgKMh1dYAnPfkh73/pYDnZ0Dy1S
-         9Ttvv1jvEaoWrSpiwhNccBbxoCb74mi9HVq4O/FD+/peIIVQt0zsxEE2rsBO88IpUA
-         HuYOtVYeO9igUnBSDpVtWpBmunS1wbGE5TQbHjiI=
+        b=YE8hgaHd0MATgSf81QwJlorOphWt77BSc+3iklIZ4wJXzfcOgNHB9ZRQoNLJeoiG0
+         qo3D+sbxOVGCbmKnNLeoHn4d40XKPjHgm93AKKGMI4l+Gd+XKoeD6NKVf+5Gucf7ao
+         FYI8Z1QkjB+TcdqSWAPask+LoMv9WcAxmWBqem20=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Tanmay Patil <t-patil@ti.com>,
-        Siddharth Vadapalli <s-vadapalli@ti.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 204/323] net: ethernet: ti: cpsw_ale: Fix cpsw_ale_get_field()/cpsw_ale_set_field()
+        patches@lists.linux.dev, Hou Tao <houtao1@huawei.com>,
+        Jiri Olsa <jolsa@kernel.org>,
+        Alexei Starovoitov <ast@kernel.org>
+Subject: [PATCH 6.4 111/165] bpf: Disable preemption in bpf_perf_event_output
 Date:   Wed,  9 Aug 2023 12:40:42 +0200
-Message-ID: <20230809103707.476709419@linuxfoundation.org>
+Message-ID: <20230809103646.425080696@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
-References: <20230809103658.104386911@linuxfoundation.org>
+In-Reply-To: <20230809103642.720851262@linuxfoundation.org>
+References: <20230809103642.720851262@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,77 +55,89 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Tanmay Patil <t-patil@ti.com>
+From: Jiri Olsa <jolsa@kernel.org>
 
-[ Upstream commit b685f1a58956fa36cc01123f253351b25bfacfda ]
+commit f2c67a3e60d1071b65848efaa8c3b66c363dd025 upstream.
 
-CPSW ALE has 75 bit ALE entries which are stored within three 32 bit words.
-The cpsw_ale_get_field() and cpsw_ale_set_field() functions assume that the
-field will be strictly contained within one word. However, this is not
-guaranteed to be the case and it is possible for ALE field entries to span
-across up to two words at the most.
+The nesting protection in bpf_perf_event_output relies on disabled
+preemption, which is guaranteed for kprobes and tracepoints.
 
-Fix the methods to handle getting/setting fields spanning up to two words.
+However bpf_perf_event_output can be also called from uprobes context
+through bpf_prog_run_array_sleepable function which disables migration,
+but keeps preemption enabled.
 
-Fixes: db82173f23c5 ("netdev: driver: ethernet: add cpsw address lookup engine support")
-Signed-off-by: Tanmay Patil <t-patil@ti.com>
-[s-vadapalli@ti.com: rephrased commit message and added Fixes tag]
-Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This can cause task to be preempted by another one inside the nesting
+protection and lead eventually to two tasks using same perf_sample_data
+buffer and cause crashes like:
+
+  kernel tried to execute NX-protected page - exploit attempt? (uid: 0)
+  BUG: unable to handle page fault for address: ffffffff82be3eea
+  ...
+  Call Trace:
+   ? __die+0x1f/0x70
+   ? page_fault_oops+0x176/0x4d0
+   ? exc_page_fault+0x132/0x230
+   ? asm_exc_page_fault+0x22/0x30
+   ? perf_output_sample+0x12b/0x910
+   ? perf_event_output+0xd0/0x1d0
+   ? bpf_perf_event_output+0x162/0x1d0
+   ? bpf_prog_c6271286d9a4c938_krava1+0x76/0x87
+   ? __uprobe_perf_func+0x12b/0x540
+   ? uprobe_dispatcher+0x2c4/0x430
+   ? uprobe_notify_resume+0x2da/0xce0
+   ? atomic_notifier_call_chain+0x7b/0x110
+   ? exit_to_user_mode_prepare+0x13e/0x290
+   ? irqentry_exit_to_user_mode+0x5/0x30
+   ? asm_exc_int3+0x35/0x40
+
+Fixing this by disabling preemption in bpf_perf_event_output.
+
+Cc: stable@vger.kernel.org
+Fixes: 8c7dcb84e3b7 ("bpf: implement sleepable uprobes by chaining gps")
+Acked-by: Hou Tao <houtao1@huawei.com>
+Signed-off-by: Jiri Olsa <jolsa@kernel.org>
+Link: https://lore.kernel.org/r/20230725084206.580930-2-jolsa@kernel.org
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/ti/cpsw_ale.c | 24 +++++++++++++++++++-----
- 1 file changed, 19 insertions(+), 5 deletions(-)
+ kernel/trace/bpf_trace.c |   11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/ti/cpsw_ale.c b/drivers/net/ethernet/ti/cpsw_ale.c
-index c245629a38c76..6cb98760bc84e 100644
---- a/drivers/net/ethernet/ti/cpsw_ale.c
-+++ b/drivers/net/ethernet/ti/cpsw_ale.c
-@@ -67,23 +67,37 @@
- 
- static inline int cpsw_ale_get_field(u32 *ale_entry, u32 start, u32 bits)
+--- a/kernel/trace/bpf_trace.c
++++ b/kernel/trace/bpf_trace.c
+@@ -661,8 +661,7 @@ static DEFINE_PER_CPU(int, bpf_trace_nes
+ BPF_CALL_5(bpf_perf_event_output, struct pt_regs *, regs, struct bpf_map *, map,
+ 	   u64, flags, void *, data, u64, size)
  {
--	int idx;
-+	int idx, idx2;
-+	u32 hi_val = 0;
+-	struct bpf_trace_sample_data *sds = this_cpu_ptr(&bpf_trace_sds);
+-	int nest_level = this_cpu_inc_return(bpf_trace_nest_level);
++	struct bpf_trace_sample_data *sds;
+ 	struct perf_raw_record raw = {
+ 		.frag = {
+ 			.size = size,
+@@ -670,7 +669,11 @@ BPF_CALL_5(bpf_perf_event_output, struct
+ 		},
+ 	};
+ 	struct perf_sample_data *sd;
+-	int err;
++	int nest_level, err;
++
++	preempt_disable();
++	sds = this_cpu_ptr(&bpf_trace_sds);
++	nest_level = this_cpu_inc_return(bpf_trace_nest_level);
  
- 	idx    = start / 32;
-+	idx2 = (start + bits - 1) / 32;
-+	/* Check if bits to be fetched exceed a word */
-+	if (idx != idx2) {
-+		idx2 = 2 - idx2; /* flip */
-+		hi_val = ale_entry[idx2] << ((idx2 * 32) - start);
-+	}
- 	start -= idx * 32;
- 	idx    = 2 - idx; /* flip */
--	return (ale_entry[idx] >> start) & BITMASK(bits);
-+	return (hi_val + (ale_entry[idx] >> start)) & BITMASK(bits);
+ 	if (WARN_ON_ONCE(nest_level > ARRAY_SIZE(sds->sds))) {
+ 		err = -EBUSY;
+@@ -688,9 +691,9 @@ BPF_CALL_5(bpf_perf_event_output, struct
+ 	perf_sample_save_raw_data(sd, &raw);
+ 
+ 	err = __bpf_perf_event_output(regs, map, flags, sd);
+-
+ out:
+ 	this_cpu_dec(bpf_trace_nest_level);
++	preempt_enable();
+ 	return err;
  }
  
- static inline void cpsw_ale_set_field(u32 *ale_entry, u32 start, u32 bits,
- 				      u32 value)
- {
--	int idx;
-+	int idx, idx2;
- 
- 	value &= BITMASK(bits);
--	idx    = start / 32;
-+	idx = start / 32;
-+	idx2 = (start + bits - 1) / 32;
-+	/* Check if bits to be set exceed a word */
-+	if (idx != idx2) {
-+		idx2 = 2 - idx2; /* flip */
-+		ale_entry[idx2] &= ~(BITMASK(bits + start - (idx2 * 32)));
-+		ale_entry[idx2] |= (value >> ((idx2 * 32) - start));
-+	}
- 	start -= idx * 32;
--	idx    = 2 - idx; /* flip */
-+	idx = 2 - idx; /* flip */
- 	ale_entry[idx] &= ~(BITMASK(bits) << start);
- 	ale_entry[idx] |=  (value << start);
- }
--- 
-2.39.2
-
 
 
