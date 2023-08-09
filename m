@@ -2,45 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3C40D775BC5
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:20:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 287FC775D48
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:35:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233538AbjHILUz (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:20:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51820 "EHLO
+        id S234061AbjHILfm (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:35:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41036 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233530AbjHILUy (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:20:54 -0400
+        with ESMTP id S234057AbjHILfm (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:35:42 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA555ED
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:20:53 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A1296173A
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:35:41 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 509A1631DF
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:20:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E58AC433C8;
-        Wed,  9 Aug 2023 11:20:52 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 38F02634EC
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:35:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C037C433C7;
+        Wed,  9 Aug 2023 11:35:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691580052;
-        bh=TnAYbfVoSZrUMPy8eAlpWCJVB8r01TL2fjoRLO6Wc78=;
+        s=korg; t=1691580940;
+        bh=zt8m6+ocboRYsXwshUSV93BTHV3fnqjyRhJaoxtWpzw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=RtumMOcV/YHdM6ANO7IgOsId9XqW1zGfb3Y7LEDpQ+U6qw+YHBpCdn76/BfA5Lynb
-         x69XBSae3z6UvVLTQ217thnc8wRSsfEc7dfuKJx6lWLSDnySicd/AzpSwxgN46VIJf
-         +BlVGcoMDliRXik+VQdFtFl6AuxmBDlhS+l7YW/o=
+        b=yxpjJWEAp8vO9H8XiEo9/5wgOQo/Z8Eb1dOc1PaLIw4oDFd49y3G67Czq7JlrFI1Y
+         oKvymzKOkCFhp35tq2+RI+A9J+dqjtTB+ljPxOG7joSGVTuzF+Rv5FnUqcn5UTWu6h
+         xLSCGZBPq4pAaeyEpnK/HuVU4evl71W8nEr6V4xM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Cambda Zhu <cambda@linux.alibaba.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev, Vladimir Oltean <vladimir.oltean@nxp.com>,
+        Ferenc Fejes <fejes@inf.elte.hu>,
+        Simon Horman <simon.horman@corigine.com>,
+        Jamal Hadi Salim <jhs@mojatatu.com>,
+        Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 211/323] net: Replace the limit of TCP_LINGER2 with TCP_FIN_TIMEOUT_MAX
+Subject: [PATCH 5.10 047/201] net/sched: mqprio: add extack to mqprio_parse_nlattr()
 Date:   Wed,  9 Aug 2023 12:40:49 +0200
-Message-ID: <20230809103707.791899223@linuxfoundation.org>
+Message-ID: <20230809103645.410444967@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
-References: <20230809103658.104386911@linuxfoundation.org>
+In-Reply-To: <20230809103643.799166053@linuxfoundation.org>
+References: <20230809103643.799166053@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,71 +58,108 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Cambda Zhu <cambda@linux.alibaba.com>
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-[ Upstream commit f0628c524fd188c3f9418e12478dfdfadacba815 ]
+[ Upstream commit 57f21bf85400abadac0cb2a4db5de1d663f8863f ]
 
-This patch changes the behavior of TCP_LINGER2 about its limit. The
-sysctl_tcp_fin_timeout used to be the limit of TCP_LINGER2 but now it's
-only the default value. A new macro named TCP_FIN_TIMEOUT_MAX is added
-as the limit of TCP_LINGER2, which is 2 minutes.
+Netlink attribute parsing in mqprio is a minesweeper game, with many
+options having the possibility of being passed incorrectly and the user
+being none the wiser.
 
-Since TCP_LINGER2 used sysctl_tcp_fin_timeout as the default value
-and the limit in the past, the system administrator cannot set the
-default value for most of sockets and let some sockets have a greater
-timeout. It might be a mistake that let the sysctl to be the limit of
-the TCP_LINGER2. Maybe we can add a new sysctl to set the max of
-TCP_LINGER2, but FIN-WAIT-2 timeout is usually no need to be too long
-and 2 minutes are legal considering TCP specs.
+Try to make errors less sour by giving user space some information
+regarding what went wrong.
 
-Changes in v3:
-- Remove the new socket option and change the TCP_LINGER2 behavior so
-  that the timeout can be set to value between sysctl_tcp_fin_timeout
-  and 2 minutes.
-
-Changes in v2:
-- Add int overflow check for the new socket option.
-
-Changes in v1:
-- Add a new socket option to set timeout greater than
-  sysctl_tcp_fin_timeout.
-
-Signed-off-by: Cambda Zhu <cambda@linux.alibaba.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: 9df5335ca974 ("tcp: annotate data-races around tp->linger2")
+Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Reviewed-by: Ferenc Fejes <fejes@inf.elte.hu>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 6c58c8816abb ("net/sched: mqprio: Add length check for TCA_MQPRIO_{MAX/MIN}_RATE64")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/tcp.h | 1 +
- net/ipv4/tcp.c    | 4 ++--
- 2 files changed, 3 insertions(+), 2 deletions(-)
+ net/sched/sch_mqprio.c | 30 +++++++++++++++++++++++-------
+ 1 file changed, 23 insertions(+), 7 deletions(-)
 
-diff --git a/include/net/tcp.h b/include/net/tcp.h
-index 81300a04b5808..22cca858f2678 100644
---- a/include/net/tcp.h
-+++ b/include/net/tcp.h
-@@ -128,6 +128,7 @@ void tcp_time_wait(struct sock *sk, int state, int timeo);
- 				  * to combine FIN-WAIT-2 timeout with
- 				  * TIME-WAIT timer.
- 				  */
-+#define TCP_FIN_TIMEOUT_MAX (120 * HZ) /* max TCP_LINGER2 value (two minutes) */
+diff --git a/net/sched/sch_mqprio.c b/net/sched/sch_mqprio.c
+index a5df5604e0150..4ec222a5530d1 100644
+--- a/net/sched/sch_mqprio.c
++++ b/net/sched/sch_mqprio.c
+@@ -131,7 +131,8 @@ static int parse_attr(struct nlattr *tb[], int maxtype, struct nlattr *nla,
+ }
  
- #define TCP_DELACK_MAX	((unsigned)(HZ/5))	/* maximal time to delay before sending an ACK */
- #if HZ >= 100
-diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
-index cb96775fc86f6..9f3cdcbbb7590 100644
---- a/net/ipv4/tcp.c
-+++ b/net/ipv4/tcp.c
-@@ -3001,8 +3001,8 @@ static int do_tcp_setsockopt(struct sock *sk, int level,
- 	case TCP_LINGER2:
- 		if (val < 0)
- 			tp->linger2 = -1;
--		else if (val > net->ipv4.sysctl_tcp_fin_timeout / HZ)
--			tp->linger2 = 0;
-+		else if (val > TCP_FIN_TIMEOUT_MAX / HZ)
-+			tp->linger2 = TCP_FIN_TIMEOUT_MAX;
- 		else
- 			tp->linger2 = val * HZ;
- 		break;
+ static int mqprio_parse_nlattr(struct Qdisc *sch, struct tc_mqprio_qopt *qopt,
+-			       struct nlattr *opt)
++			       struct nlattr *opt,
++			       struct netlink_ext_ack *extack)
+ {
+ 	struct mqprio_sched *priv = qdisc_priv(sch);
+ 	struct nlattr *tb[TCA_MQPRIO_MAX + 1];
+@@ -143,8 +144,11 @@ static int mqprio_parse_nlattr(struct Qdisc *sch, struct tc_mqprio_qopt *qopt,
+ 	if (err < 0)
+ 		return err;
+ 
+-	if (!qopt->hw)
++	if (!qopt->hw) {
++		NL_SET_ERR_MSG(extack,
++			       "mqprio TCA_OPTIONS can only contain netlink attributes in hardware mode");
+ 		return -EINVAL;
++	}
+ 
+ 	if (tb[TCA_MQPRIO_MODE]) {
+ 		priv->flags |= TC_MQPRIO_F_MODE;
+@@ -157,13 +161,19 @@ static int mqprio_parse_nlattr(struct Qdisc *sch, struct tc_mqprio_qopt *qopt,
+ 	}
+ 
+ 	if (tb[TCA_MQPRIO_MIN_RATE64]) {
+-		if (priv->shaper != TC_MQPRIO_SHAPER_BW_RATE)
++		if (priv->shaper != TC_MQPRIO_SHAPER_BW_RATE) {
++			NL_SET_ERR_MSG_ATTR(extack, tb[TCA_MQPRIO_MIN_RATE64],
++					    "min_rate accepted only when shaper is in bw_rlimit mode");
+ 			return -EINVAL;
++		}
+ 		i = 0;
+ 		nla_for_each_nested(attr, tb[TCA_MQPRIO_MIN_RATE64],
+ 				    rem) {
+-			if (nla_type(attr) != TCA_MQPRIO_MIN_RATE64)
++			if (nla_type(attr) != TCA_MQPRIO_MIN_RATE64) {
++				NL_SET_ERR_MSG_ATTR(extack, attr,
++						    "Attribute type expected to be TCA_MQPRIO_MIN_RATE64");
+ 				return -EINVAL;
++			}
+ 			if (i >= qopt->num_tc)
+ 				break;
+ 			priv->min_rate[i] = *(u64 *)nla_data(attr);
+@@ -173,13 +183,19 @@ static int mqprio_parse_nlattr(struct Qdisc *sch, struct tc_mqprio_qopt *qopt,
+ 	}
+ 
+ 	if (tb[TCA_MQPRIO_MAX_RATE64]) {
+-		if (priv->shaper != TC_MQPRIO_SHAPER_BW_RATE)
++		if (priv->shaper != TC_MQPRIO_SHAPER_BW_RATE) {
++			NL_SET_ERR_MSG_ATTR(extack, tb[TCA_MQPRIO_MAX_RATE64],
++					    "max_rate accepted only when shaper is in bw_rlimit mode");
+ 			return -EINVAL;
++		}
+ 		i = 0;
+ 		nla_for_each_nested(attr, tb[TCA_MQPRIO_MAX_RATE64],
+ 				    rem) {
+-			if (nla_type(attr) != TCA_MQPRIO_MAX_RATE64)
++			if (nla_type(attr) != TCA_MQPRIO_MAX_RATE64) {
++				NL_SET_ERR_MSG_ATTR(extack, attr,
++						    "Attribute type expected to be TCA_MQPRIO_MAX_RATE64");
+ 				return -EINVAL;
++			}
+ 			if (i >= qopt->num_tc)
+ 				break;
+ 			priv->max_rate[i] = *(u64 *)nla_data(attr);
+@@ -224,7 +240,7 @@ static int mqprio_init(struct Qdisc *sch, struct nlattr *opt,
+ 
+ 	len = nla_len(opt) - NLA_ALIGN(sizeof(*qopt));
+ 	if (len > 0) {
+-		err = mqprio_parse_nlattr(sch, qopt, opt);
++		err = mqprio_parse_nlattr(sch, qopt, opt, extack);
+ 		if (err)
+ 			return err;
+ 	}
 -- 
 2.39.2
 
