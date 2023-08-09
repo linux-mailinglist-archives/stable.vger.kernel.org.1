@@ -2,123 +2,97 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 759AF775CD2
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:31:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 100B6775AB8
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:11:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233888AbjHILbP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:31:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40060 "EHLO
+        id S233265AbjHILLB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:11:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53200 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233876AbjHILbP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:31:15 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 23589172A
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:31:14 -0700 (PDT)
+        with ESMTP id S233266AbjHILLA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:11:00 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CDAB21724
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:10:59 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id AF26963399
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:31:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C263CC433C8;
-        Wed,  9 Aug 2023 11:31:12 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6EDC2630F0
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:10:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 851C6C433C7;
+        Wed,  9 Aug 2023 11:10:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691580673;
-        bh=WMfYavpZhy6SfzZyjVwRQwdxTEbekJnHTEWcStSw/dw=;
+        s=korg; t=1691579458;
+        bh=m9VBjD3Z7qdh+iqBDlEIqV3q/m93UW91yy+tKPkNG/M=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=RmDwaK56aAHkDD/FKppIAf5Lj+RJPja8Im+mm2mWAY1xIsHrwtK0Mpi/f3SguhNlo
-         vjVtgaes2VRDPFHK0IsE1wJ8kNLY8nLLqKa8OPbNwoZEXwfghiNBJVOlsF5e+ig6Qt
-         XSSHK5w7UQ2G+vRgWH6YbcflNi3OxN6+XmT+pnzI=
+        b=ub+k1OBGh/nZ2gGvfUHV6itNcMSwj1PkPi7Z2bhMoyrT/1P7rYq9UzoxYzee9fcB7
+         INOEDIVeJJR5U1jAKqugGzS64F5sdAvJ+kplDoVwjaPSrpk+BY+xEFEuHwzjZoCi9A
+         ysadnvrYngoEUIwmKHdaARc6Kg1rQZcoBXFko1bw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Pratyush Yadav <ptyadav@amazon.de>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Hagar Hemdan <hagarhem@amazon.de>
-Subject: [PATCH 5.4 081/154] ACPI: processor: perflib: Use the "no limit" frequency QoS
+        patches@lists.linux.dev, Stefan Haberland <sth@linux.ibm.com>,
+        Jan Hoeppner <hoeppner@linux.ibm.com>,
+        Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 4.14 174/204] s390/dasd: fix hanging device after quiesce/resume
 Date:   Wed,  9 Aug 2023 12:41:52 +0200
-Message-ID: <20230809103639.665452884@linuxfoundation.org>
+Message-ID: <20230809103648.340945719@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103636.887175326@linuxfoundation.org>
-References: <20230809103636.887175326@linuxfoundation.org>
+In-Reply-To: <20230809103642.552405807@linuxfoundation.org>
+References: <20230809103642.552405807@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Stefan Haberland <sth@linux.ibm.com>
 
-commit c02d5feb6e2f60affc6ba8606d8d614c071e2ba6 upstream.
+commit 05f1d8ed03f547054efbc4d29bb7991c958ede95 upstream.
 
-When _PPC returns 0, it means that the CPU frequency is not limited by
-the platform firmware, so make acpi_processor_get_platform_limit()
-update the frequency QoS request used by it to "no limit" in that case.
+Quiesce and resume are functions that tell the DASD driver to stop/resume
+issuing I/Os to a specific DASD.
 
-This addresses a problem with limiting CPU frequency artificially on
-some systems after CPU offline/online to the frequency that corresponds
-to the first entry in the _PSS return package.
+On resume dasd_schedule_block_bh() is called to kick handling of IO
+requests again. This does unfortunately not cover internal requests which
+are used for path verification for example.
 
-Reported-by: Pratyush Yadav <ptyadav@amazon.de>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Reviewed-by: Pratyush Yadav <ptyadav@amazon.de>
-Tested-by: Pratyush Yadav <ptyadav@amazon.de>
-Tested-by: Hagar Hemdan <hagarhem@amazon.de>
+This could lead to a hanging device when a path event or anything else
+that triggers internal requests occurs on a quiesced device.
+
+Fix by also calling dasd_schedule_device_bh() which triggers handling of
+internal requests on resume.
+
+Fixes: 8e09f21574ea ("[S390] dasd: add hyper PAV support to DASD device driver, part 1")
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Stefan Haberland <sth@linux.ibm.com>
+Reviewed-by: Jan Hoeppner <hoeppner@linux.ibm.com>
+Link: https://lore.kernel.org/r/20230721193647.3889634-2-sth@linux.ibm.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/processor_perflib.c |   20 ++++++++++++++++----
- 1 file changed, 16 insertions(+), 4 deletions(-)
+ drivers/s390/block/dasd_ioctl.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/acpi/processor_perflib.c
-+++ b/drivers/acpi/processor_perflib.c
-@@ -56,6 +56,8 @@ static int acpi_processor_get_platform_l
- {
- 	acpi_status status = 0;
- 	unsigned long long ppc = 0;
-+	s32 qos_value;
-+	int index;
- 	int ret;
+--- a/drivers/s390/block/dasd_ioctl.c
++++ b/drivers/s390/block/dasd_ioctl.c
+@@ -138,6 +138,7 @@ static int dasd_ioctl_resume(struct dasd
+ 	spin_unlock_irqrestore(get_ccwdev_lock(base->cdev), flags);
  
- 	if (!pr)
-@@ -75,17 +77,27 @@ static int acpi_processor_get_platform_l
- 		return -ENODEV;
- 	}
+ 	dasd_schedule_block_bh(block);
++	dasd_schedule_device_bh(base);
+ 	return 0;
+ }
  
-+	index = ppc;
-+
- 	pr_debug("CPU %d: _PPC is %d - frequency %s limited\n", pr->id,
--		       (int)ppc, ppc ? "" : "not");
-+		 index, index ? "is" : "is not");
- 
--	pr->performance_platform_limit = (int)ppc;
-+	pr->performance_platform_limit = index;
- 
- 	if (ppc >= pr->performance->state_count ||
- 	    unlikely(!freq_qos_request_active(&pr->perflib_req)))
- 		return 0;
- 
--	ret = freq_qos_update_request(&pr->perflib_req,
--			pr->performance->states[ppc].core_frequency * 1000);
-+	/*
-+	 * If _PPC returns 0, it means that all of the available states can be
-+	 * used ("no limit").
-+	 */
-+	if (index == 0)
-+		qos_value = FREQ_QOS_MAX_DEFAULT_VALUE;
-+	else
-+		qos_value = pr->performance->states[index].core_frequency * 1000;
-+
-+	ret = freq_qos_update_request(&pr->perflib_req, qos_value);
- 	if (ret < 0) {
- 		pr_warn("Failed to update perflib freq constraint: CPU%d (%d)\n",
- 			pr->id, ret);
 
 
