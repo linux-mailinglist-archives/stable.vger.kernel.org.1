@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1F4CF7757F0
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:50:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3AB3E775A8D
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:09:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232297AbjHIKuc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 06:50:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50674 "EHLO
+        id S233200AbjHILJb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:09:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56092 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232332AbjHIKu2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:50:28 -0400
+        with ESMTP id S233214AbjHILJb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:09:31 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A63F21FFE
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:50:19 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E132ED
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:09:30 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 369B562835
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:50:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F284C433CC;
-        Wed,  9 Aug 2023 10:50:18 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 02EDA6314B
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:09:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B28FC433C8;
+        Wed,  9 Aug 2023 11:09:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691578218;
-        bh=2DiyHnhdOhQH1I5L4g/qb6AXmouf9vfRZJoHYHTlc0g=;
+        s=korg; t=1691579369;
+        bh=BrVKPDOtDd7ao1urvGV/fU0cRvUaqDpCMbtBCabua+E=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=IfVPR1HWusnbNZFGNJn+xJ9F0OyOaL8tkyE7RRnJ5k+N12Se8UfyfB53+TsZcd9Kx
-         6lUwWIfWb3GWsntbF0+H3Maa3+UujR0JEmjrnEh2eTS53LI2iVKh28TCCQHL2vUIHt
-         IZvvq1ImX/DTuIBZORV73/mHbJCX/u+WYjOd4b7A=
+        b=StLLmANGJvabl6QWWknzOPTJcYn7vYhO9puvfl7soCbUVcjB+ejZZzs6czI3fYu9G
+         T6laGLxmB+wZNbN9tI7zRbIlhJEAOY2S9OjDwk9C520eJ/ywXtUCArmtyNrvV5AdcO
+         0L7v5bf+Tz+X3v64skpALl+ti/ffSs/HCCdPl8Gk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        syzbot+cb265db2f3f3468ef436@syzkaller.appspotmail.com,
-        Pavel Begunkov <asml.silence@gmail.com>,
-        Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.4 147/165] io_uring: annotate offset timeout races
+        patches@lists.linux.dev, Tanmay Patil <t-patil@ti.com>,
+        Siddharth Vadapalli <s-vadapalli@ti.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.14 140/204] net: ethernet: ti: cpsw_ale: Fix cpsw_ale_get_field()/cpsw_ale_set_field()
 Date:   Wed,  9 Aug 2023 12:41:18 +0200
-Message-ID: <20230809103647.598345210@linuxfoundation.org>
+Message-ID: <20230809103647.274645366@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103642.720851262@linuxfoundation.org>
-References: <20230809103642.720851262@linuxfoundation.org>
+In-Reply-To: <20230809103642.552405807@linuxfoundation.org>
+References: <20230809103642.552405807@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,34 +56,77 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Pavel Begunkov <asml.silence@gmail.com>
+From: Tanmay Patil <t-patil@ti.com>
 
-commit 5498bf28d8f2bd63a46ad40f4427518615fb793f upstream.
+[ Upstream commit b685f1a58956fa36cc01123f253351b25bfacfda ]
 
-It's racy to read ->cached_cq_tail without taking proper measures
-(usually grabbing ->completion_lock) as timeout requests with CQE
-offsets do, however they have never had a good semantics for from
-when they start counting. Annotate racy reads with data_race().
+CPSW ALE has 75 bit ALE entries which are stored within three 32 bit words.
+The cpsw_ale_get_field() and cpsw_ale_set_field() functions assume that the
+field will be strictly contained within one word. However, this is not
+guaranteed to be the case and it is possible for ALE field entries to span
+across up to two words at the most.
 
-Reported-by: syzbot+cb265db2f3f3468ef436@syzkaller.appspotmail.com
-Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
-Link: https://lore.kernel.org/r/4de3685e185832a92a572df2be2c735d2e21a83d.1684506056.git.asml.silence@gmail.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix the methods to handle getting/setting fields spanning up to two words.
+
+Fixes: db82173f23c5 ("netdev: driver: ethernet: add cpsw address lookup engine support")
+Signed-off-by: Tanmay Patil <t-patil@ti.com>
+[s-vadapalli@ti.com: rephrased commit message and added Fixes tag]
+Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/timeout.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/ti/cpsw_ale.c | 24 +++++++++++++++++++-----
+ 1 file changed, 19 insertions(+), 5 deletions(-)
 
---- a/io_uring/timeout.c
-+++ b/io_uring/timeout.c
-@@ -594,7 +594,7 @@ int io_timeout(struct io_kiocb *req, uns
- 		goto add;
- 	}
+diff --git a/drivers/net/ethernet/ti/cpsw_ale.c b/drivers/net/ethernet/ti/cpsw_ale.c
+index ddd43e09111e2..d9db5c23a9639 100644
+--- a/drivers/net/ethernet/ti/cpsw_ale.c
++++ b/drivers/net/ethernet/ti/cpsw_ale.c
+@@ -67,23 +67,37 @@
  
--	tail = ctx->cached_cq_tail - atomic_read(&ctx->cq_timeouts);
-+	tail = data_race(ctx->cached_cq_tail) - atomic_read(&ctx->cq_timeouts);
- 	timeout->target_seq = tail + off;
+ static inline int cpsw_ale_get_field(u32 *ale_entry, u32 start, u32 bits)
+ {
+-	int idx;
++	int idx, idx2;
++	u32 hi_val = 0;
  
- 	/* Update the last seq here in case io_flush_timeouts() hasn't.
+ 	idx    = start / 32;
++	idx2 = (start + bits - 1) / 32;
++	/* Check if bits to be fetched exceed a word */
++	if (idx != idx2) {
++		idx2 = 2 - idx2; /* flip */
++		hi_val = ale_entry[idx2] << ((idx2 * 32) - start);
++	}
+ 	start -= idx * 32;
+ 	idx    = 2 - idx; /* flip */
+-	return (ale_entry[idx] >> start) & BITMASK(bits);
++	return (hi_val + (ale_entry[idx] >> start)) & BITMASK(bits);
+ }
+ 
+ static inline void cpsw_ale_set_field(u32 *ale_entry, u32 start, u32 bits,
+ 				      u32 value)
+ {
+-	int idx;
++	int idx, idx2;
+ 
+ 	value &= BITMASK(bits);
+-	idx    = start / 32;
++	idx = start / 32;
++	idx2 = (start + bits - 1) / 32;
++	/* Check if bits to be set exceed a word */
++	if (idx != idx2) {
++		idx2 = 2 - idx2; /* flip */
++		ale_entry[idx2] &= ~(BITMASK(bits + start - (idx2 * 32)));
++		ale_entry[idx2] |= (value >> ((idx2 * 32) - start));
++	}
+ 	start -= idx * 32;
+-	idx    = 2 - idx; /* flip */
++	idx = 2 - idx; /* flip */
+ 	ale_entry[idx] &= ~(BITMASK(bits) << start);
+ 	ale_entry[idx] |=  (value << start);
+ }
+-- 
+2.39.2
+
 
 
