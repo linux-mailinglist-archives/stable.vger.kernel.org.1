@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D0530775A57
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:07:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0A1D8775C7C
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:27:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233133AbjHILH2 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:07:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40980 "EHLO
+        id S233767AbjHIL16 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:27:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46606 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233144AbjHILH2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:07:28 -0400
+        with ESMTP id S233778AbjHIL1y (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:27:54 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F838ED
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:07:27 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B842210D
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:27:44 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1837A62BD5
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:07:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A3A1C433C8;
-        Wed,  9 Aug 2023 11:07:25 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DC54A632B0
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:27:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF40AC433C7;
+        Wed,  9 Aug 2023 11:27:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691579246;
-        bh=E7lYeDajVPC9k1njXFk9w/Uxb4Etf5SuZ4G0+uW4A24=;
+        s=korg; t=1691580463;
+        bh=PIerRCkuYAa4O3KDqj1uItBm4vKg2JLR/jWl7Oids4E=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Nnukh+0XVB7p4VsQcSrFs6ewaG/SuHW+1oNDucUogt3t/yZ5f0lbxRUiODFTta2di
-         3x8SWKbckOxUOKW5BDcgAS2FaaezuuoQL6jFP9D3bN40wB8BdKu5tpinSSNPyFsnAJ
-         TSH2X0jkyclDYxIyyulw10k/qDF6fAP0LyHkEo78=
+        b=PBLNDhqVEBv9Dby4X0g4kaC6/mP19xkxNhibjJ1CPaMmEpl+D++FGchO6VegpfFMZ
+         2g4Gy3xhbmj8Tc4Pdk413hjdpOD8D6O5QF9XZjYIWdswwruGkNmGhikZw8AmUSIWt3
+         +MNXkUxyrFzZSOl4dWyNyWS4FNEbx99FixM3VjC8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, stable@kernel.org,
-        Eric Whitney <enwlinux@gmail.com>, Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 4.14 127/204] ext4: correct inline offset when handling xattrs in inode body
+        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
+        Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
+        Vinod Koul <vkoul@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 034/154] phy: hisilicon: Fix an out of bounds check in hisi_inno_phy_probe()
 Date:   Wed,  9 Aug 2023 12:41:05 +0200
-Message-ID: <20230809103646.854455487@linuxfoundation.org>
+Message-ID: <20230809103638.147782689@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103642.552405807@linuxfoundation.org>
-References: <20230809103642.552405807@linuxfoundation.org>
+In-Reply-To: <20230809103636.887175326@linuxfoundation.org>
+References: <20230809103636.887175326@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,54 +55,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Eric Whitney <enwlinux@gmail.com>
+From: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
 
-commit 6909cf5c4101214f4305a62d582a5b93c7e1eb9a upstream.
+[ Upstream commit 13c088cf3657d70893d75cf116be937f1509cc0f ]
 
-When run on a file system where the inline_data feature has been
-enabled, xfstests generic/269, generic/270, and generic/476 cause ext4
-to emit error messages indicating that inline directory entries are
-corrupted.  This occurs because the inline offset used to locate
-inline directory entries in the inode body is not updated when an
-xattr in that shared region is deleted and the region is shifted in
-memory to recover the space it occupied.  If the deleted xattr precedes
-the system.data attribute, which points to the inline directory entries,
-that attribute will be moved further up in the region.  The inline
-offset continues to point to whatever is located in system.data's former
-location, with unfortunate effects when used to access directory entries
-or (presumably) inline data in the inode body.
+The size of array 'priv->ports[]' is INNO_PHY_PORT_NUM.
 
-Cc: stable@kernel.org
-Signed-off-by: Eric Whitney <enwlinux@gmail.com>
-Link: https://lore.kernel.org/r/20230522181520.1570360-1-enwlinux@gmail.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+In the for loop, 'i' is used as the index for array 'priv->ports[]'
+with a check (i > INNO_PHY_PORT_NUM) which indicates that
+INNO_PHY_PORT_NUM is allowed value for 'i' in the same loop.
+
+This > comparison needs to be changed to >=, otherwise it potentially leads
+to an out of bounds write on the next iteration through the loop
+
+Fixes: ba8b0ee81fbb ("phy: add inno-usb2-phy driver for hi3798cv200 SoC")
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Link: https://lore.kernel.org/r/20230721090558.3588613-1-harshit.m.mogalapalli@oracle.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/xattr.c |   14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ drivers/phy/hisilicon/phy-hisi-inno-usb2.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/ext4/xattr.c
-+++ b/fs/ext4/xattr.c
-@@ -1757,6 +1757,20 @@ static int ext4_xattr_set_entry(struct e
- 		memmove(here, (void *)here + size,
- 			(void *)last - (void *)here + sizeof(__u32));
- 		memset(last, 0, size);
-+
-+		/*
-+		 * Update i_inline_off - moved ibody region might contain
-+		 * system.data attribute.  Handling a failure here won't
-+		 * cause other complications for setting an xattr.
-+		 */
-+		if (!is_block && ext4_has_inline_data(inode)) {
-+			ret = ext4_find_inline_data_nolock(inode);
-+			if (ret) {
-+				ext4_warning_inode(inode,
-+					"unable to update i_inline_off");
-+				goto out;
-+			}
-+		}
- 	} else if (s->not_found) {
- 		/* Insert new name. */
- 		size_t size = EXT4_XATTR_LEN(name_len);
+diff --git a/drivers/phy/hisilicon/phy-hisi-inno-usb2.c b/drivers/phy/hisilicon/phy-hisi-inno-usb2.c
+index 9b16f13b5ab29..96162b9a2e53d 100644
+--- a/drivers/phy/hisilicon/phy-hisi-inno-usb2.c
++++ b/drivers/phy/hisilicon/phy-hisi-inno-usb2.c
+@@ -155,7 +155,7 @@ static int hisi_inno_phy_probe(struct platform_device *pdev)
+ 		phy_set_drvdata(phy, &priv->ports[i]);
+ 		i++;
+ 
+-		if (i > INNO_PHY_PORT_NUM) {
++		if (i >= INNO_PHY_PORT_NUM) {
+ 			dev_warn(dev, "Support %d ports in maximum\n", i);
+ 			break;
+ 		}
+-- 
+2.39.2
+
 
 
