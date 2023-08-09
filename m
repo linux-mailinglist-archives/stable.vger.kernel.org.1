@@ -2,91 +2,94 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9A02A775A9F
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:10:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 670FB775990
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:01:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233234AbjHILKC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:10:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35550 "EHLO
+        id S232901AbjHILBg (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:01:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52062 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233241AbjHILKB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:10:01 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 045D21FD7
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:10:01 -0700 (PDT)
+        with ESMTP id S232897AbjHILBf (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:01:35 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A592ED
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:01:35 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8EBC46314A
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:10:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9155CC43397;
-        Wed,  9 Aug 2023 11:09:59 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9CB1563118
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:01:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC60CC433C7;
+        Wed,  9 Aug 2023 11:01:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691579399;
-        bh=EPqlSTCY14pZjhj4Wi5mzQMmTm7xkJM4f0PkNcSY+Ik=;
+        s=korg; t=1691578894;
+        bh=g3lm+/DoZrAH4e1Xzx69w5OIQX7B068y/Da5UOrfw7A=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=WGsCeXry3crAgdvPBu+GwDfDuAedPMCN0d6inVye/4d64Rw8wXtZR1KqSUmtCUylo
-         dToHIvP1wEMeU5ZcBDqAT0VNS8c40TXJTnanDm7vGGZmzGPVnCs3TnJQKc6xlpZB0H
-         aqy/XvZjKYVRmrqUyi8BKy4UMsAwWascspOndzg4=
+        b=de0WYLNQz4Nc6k3QPQ/UKE0UppVJGaQ2Zj5rXmVU3b4O5dMJYUQTu4jlZbpb2pdzF
+         VrUTr3zyxw4qCJWLRXNUtAGKksXwbONBaDJ/rJHIKF65hBRhUNsoJyuBkeIHWsDBQr
+         lJeyUaevrhh9VCXW4BmW0j/9G2G5pS4B8DLxQdi0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yuanjun Gong <ruc_gongyuanjun@163.com>,
-        Leon Romanovsky <leonro@nvidia.com>,
-        Saeed Mahameed <saeedm@nvidia.com>,
+        patches@lists.linux.dev,
+        Alexander Stein <alexander.stein@ew.tq-group.com>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 183/204] net/mlx5e: fix return value check in mlx5e_ipsec_remove_trailer()
-Date:   Wed,  9 Aug 2023 12:42:01 +0200
-Message-ID: <20230809103648.619935872@linuxfoundation.org>
+Subject: [PATCH 5.15 86/92] drm/imx/ipuv3: Fix front porch adjustment upon hactive aligning
+Date:   Wed,  9 Aug 2023 12:42:02 +0200
+Message-ID: <20230809103636.505554984@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103642.552405807@linuxfoundation.org>
-References: <20230809103642.552405807@linuxfoundation.org>
+In-Reply-To: <20230809103633.485906560@linuxfoundation.org>
+References: <20230809103633.485906560@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Yuanjun Gong <ruc_gongyuanjun@163.com>
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
 
-[ Upstream commit e5bcb7564d3bd0c88613c76963c5349be9c511c5 ]
+[ Upstream commit ee31742bf17636da1304af77b2cb1c29b5dda642 ]
 
-mlx5e_ipsec_remove_trailer() should return an error code if function
-pskb_trim() returns an unexpected value.
+When hactive is not aligned to 8 pixels, it is aligned accordingly and
+hfront porch needs to be reduced the same amount. Unfortunately the front
+porch is set to the difference rather than reducing it. There are some
+Samsung TVs which can't cope with a front porch of instead of 70.
 
-Fixes: 2ac9cfe78223 ("net/mlx5e: IPSec, Add Innova IPSec offload TX data path")
-Signed-off-by: Yuanjun Gong <ruc_gongyuanjun@163.com>
-Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+Fixes: 94dfec48fca7 ("drm/imx: Add 8 pixel alignment fix")
+Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+Reviewed-by: Philipp Zabel <p.zabel@pengutronix.de>
+Link: https://lore.kernel.org/r/20230515072137.116211-1-alexander.stein@ew.tq-group.com
+[p.zabel@pengutronix.de: Fixed subject]
+Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230515072137.116211-1-alexander.stein@ew.tq-group.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_rxtx.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/imx/ipuv3-crtc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_rxtx.c b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_rxtx.c
-index 4614ddfa91ebc..3803e7f23299e 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_rxtx.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_rxtx.c
-@@ -119,7 +119,9 @@ static int mlx5e_ipsec_remove_trailer(struct sk_buff *skb, struct xfrm_state *x)
+diff --git a/drivers/gpu/drm/imx/ipuv3-crtc.c b/drivers/gpu/drm/imx/ipuv3-crtc.c
+index f7863d6dea804..ba5b16618c237 100644
+--- a/drivers/gpu/drm/imx/ipuv3-crtc.c
++++ b/drivers/gpu/drm/imx/ipuv3-crtc.c
+@@ -311,7 +311,7 @@ static void ipu_crtc_mode_set_nofb(struct drm_crtc *crtc)
+ 		dev_warn(ipu_crtc->dev, "8-pixel align hactive %d -> %d\n",
+ 			 sig_cfg.mode.hactive, new_hactive);
  
- 	trailer_len = alen + plen + 2;
+-		sig_cfg.mode.hfront_porch = new_hactive - sig_cfg.mode.hactive;
++		sig_cfg.mode.hfront_porch -= new_hactive - sig_cfg.mode.hactive;
+ 		sig_cfg.mode.hactive = new_hactive;
+ 	}
  
--	pskb_trim(skb, skb->len - trailer_len);
-+	ret = pskb_trim(skb, skb->len - trailer_len);
-+	if (unlikely(ret))
-+		return ret;
- 	if (skb->protocol == htons(ETH_P_IP)) {
- 		ipv4hdr->tot_len = htons(ntohs(ipv4hdr->tot_len) - trailer_len);
- 		ip_send_check(ipv4hdr);
 -- 
 2.40.1
 
