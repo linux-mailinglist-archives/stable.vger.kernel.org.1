@@ -2,89 +2,113 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 78CF9775DDF
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:42:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 07993775D14
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:33:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234250AbjHILmR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:42:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49344 "EHLO
+        id S233988AbjHILdg (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:33:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41992 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234340AbjHILmH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:42:07 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B47A0173A
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:42:06 -0700 (PDT)
+        with ESMTP id S233989AbjHILdf (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:33:35 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D1B201FD2
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:33:34 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 53F0C636B6
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:42:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6213EC433C9;
-        Wed,  9 Aug 2023 11:42:05 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 693BB6345C
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:33:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D096C433C7;
+        Wed,  9 Aug 2023 11:33:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691581325;
-        bh=EQ4ZQNWXbrWOvn9E46s0iU/rYrE5RbLdcOQhsusyyiE=;
+        s=korg; t=1691580813;
+        bh=QuOx/tdavAF67M4xw+GjCe+zc7e+EBiIvlgPkvw1H3A=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jnRRL322z/bEtZsuxxz0Z8Zddl4JXOGy/ZyOmmm4pAzFXpUf6uW1ALXDErQaJoaS5
-         75oVi0jU5NGsMOx+DcX9sYRgbthcLB19a5Venra2QXLOGlHVuTvSllryUPIPxqERzX
-         xgle6so2gcBOSnX7QR6USxwc5CTT5zpVuXWK2VdA=
+        b=Jx6/yJ7myw1fO+bk4BZMeJkKk//dQfSC+1TVEbQpkqFmkEZwBVYDUjCdZTeeffUEw
+         ask5/5aZVnTeP1By/RLQ0zZMRfPXxMfte4VrPRxXvRUvfUNnuxhIerzJk/WQZGe+Sm
+         R5eDQBQcm8xvbmyev0HCt8wCqaWV7WfhM2XB/Esk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        syzbot+aad58150cbc64ba41bdc@syzkaller.appspotmail.com,
-        Prince Kumar Maurya <princekumarmaurya06@gmail.com>,
-        Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 5.10 178/201] fs/sysv: Null check to prevent null-ptr-deref bug
+        patches@lists.linux.dev, Andreas Kemnade <andreas@kemnade.info>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 149/154] ARM: dts: imx6sll: fixup of operating points
 Date:   Wed,  9 Aug 2023 12:43:00 +0200
-Message-ID: <20230809103649.713568254@linuxfoundation.org>
+Message-ID: <20230809103641.779462565@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103643.799166053@linuxfoundation.org>
-References: <20230809103643.799166053@linuxfoundation.org>
+In-Reply-To: <20230809103636.887175326@linuxfoundation.org>
+References: <20230809103636.887175326@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Prince Kumar Maurya <princekumarmaurya06@gmail.com>
+From: Andreas Kemnade <andreas@kemnade.info>
 
-commit ea2b62f305893992156a798f665847e0663c9f41 upstream.
+[ Upstream commit 1875903019ea6e32e6e544c1631b119e4fd60b20 ]
 
-sb_getblk(inode->i_sb, parent) return a null ptr and taking lock on
-that leads to the null-ptr-deref bug.
+Make operating point definitions comply with binding
+specifications.
 
-Reported-by: syzbot+aad58150cbc64ba41bdc@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=aad58150cbc64ba41bdc
-Signed-off-by: Prince Kumar Maurya <princekumarmaurya06@gmail.com>
-Message-Id: <20230531013141.19487-1-princekumarmaurya06@gmail.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Stable-dep-of: ee70b908f77a ("ARM: dts: nxp/imx6sll: fix wrong property name in usbphy node")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/sysv/itree.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ arch/arm/boot/dts/imx6sll.dtsi | 22 ++++++++++------------
+ 1 file changed, 10 insertions(+), 12 deletions(-)
 
---- a/fs/sysv/itree.c
-+++ b/fs/sysv/itree.c
-@@ -145,6 +145,10 @@ static int alloc_branch(struct inode *in
- 		 */
- 		parent = block_to_cpu(SYSV_SB(inode->i_sb), branch[n-1].key);
- 		bh = sb_getblk(inode->i_sb, parent);
-+		if (!bh) {
-+			sysv_free_block(inode->i_sb, branch[n].key);
-+			break;
-+		}
- 		lock_buffer(bh);
- 		memset(bh->b_data, 0, blocksize);
- 		branch[n].bh = bh;
+diff --git a/arch/arm/boot/dts/imx6sll.dtsi b/arch/arm/boot/dts/imx6sll.dtsi
+index 4c29fb9e35dce..e8623d77eb42b 100644
+--- a/arch/arm/boot/dts/imx6sll.dtsi
++++ b/arch/arm/boot/dts/imx6sll.dtsi
+@@ -51,20 +51,18 @@ cpu0: cpu@0 {
+ 			device_type = "cpu";
+ 			reg = <0>;
+ 			next-level-cache = <&L2>;
+-			operating-points = <
++			operating-points =
+ 				/* kHz    uV */
+-				996000  1275000
+-				792000  1175000
+-				396000  1075000
+-				198000	975000
+-			>;
+-			fsl,soc-operating-points = <
++				<996000  1275000>,
++				<792000  1175000>,
++				<396000  1075000>,
++				<198000	  975000>;
++			fsl,soc-operating-points =
+ 				/* ARM kHz      SOC-PU uV */
+-				996000          1175000
+-				792000          1175000
+-				396000          1175000
+-				198000		1175000
+-			>;
++				<996000         1175000>,
++				<792000         1175000>,
++				<396000         1175000>,
++				<198000		1175000>;
+ 			clock-latency = <61036>; /* two CLK32 periods */
+ 			#cooling-cells = <2>;
+ 			clocks = <&clks IMX6SLL_CLK_ARM>,
+-- 
+2.40.1
+
 
 
