@@ -2,54 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9EDBF775A4F
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:07:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8B929775C79
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:27:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233131AbjHILHR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:07:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45518 "EHLO
+        id S233757AbjHIL1r (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:27:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36646 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233135AbjHILHQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:07:16 -0400
+        with ESMTP id S233802AbjHIL1l (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:27:41 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E4A21FCE
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:07:16 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A0532694
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:27:36 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0BC1A6309F
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:07:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5131C433C8;
-        Wed,  9 Aug 2023 11:07:14 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A4883632D0
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:27:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8A79C433CA;
+        Wed,  9 Aug 2023 11:27:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691579235;
-        bh=SP7FcrL/n/JbIPYcqAj06Y4gPl8RVIcWqAmrAHKcOK0=;
+        s=korg; t=1691580455;
+        bh=yr8KPD87HHrbVkXz6Lxl2lpLdcIynT1od3rUjJpr9Oc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=SMoV/HFqqhCVj8b1gMQ3x9AdUk7ya2sGae/9Su6NjtY5S74aEqimQHYIfEznJMhwq
-         AdWH8huMEXrIWCb41Ny0Nb4rMe2a60/CURjXpLi1JnTuuWY0u3nCNvBRdBZaoTFJoY
-         03LmrAFbyjOCCLhRR9i8MZPpDufeNvg3DQpEZejk=
+        b=XovtVR6mxNjsEjiO++LPIwMsDV3/7GzoQ2e1TRZ8HwLR5/xfxiVnaocZ/GDaCBrVs
+         t7AdzL9aof6WOx2rwvsVFG9OWSBH6zzyUzgPJPFTrvhQNTR0T8PCk3chE3B0mkyrGk
+         0irGZMZUvbNhVAKWU/nTcuvz0o7+FHWZWuBEII2k=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        =?UTF-8?q?Georg=20M=C3=BCller?= <georgmueller@gmx.net>,
-        "Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Ian Rogers <irogers@google.com>,
-        Ingo Molnar <mingo@redhat.com>, Jiri Olsa <jolsa@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        regressions@lists.linux.dev,
-        Arnaldo Carvalho de Melo <acme@redhat.com>
-Subject: [PATCH 4.14 124/204] perf probe: Add test for regression introduced by switch to die_get_decl_file()
+        patches@lists.linux.dev, stable@kernel.org,
+        Chao Yu <chao@kernel.org>, Theodore Tso <tytso@mit.edu>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 031/154] ext4: fix to check return value of freeze_bdev() in ext4_shutdown()
 Date:   Wed,  9 Aug 2023 12:41:02 +0200
-Message-ID: <20230809103646.752555655@linuxfoundation.org>
+Message-ID: <20230809103638.029514999@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103642.552405807@linuxfoundation.org>
-References: <20230809103642.552405807@linuxfoundation.org>
+In-Reply-To: <20230809103636.887175326@linuxfoundation.org>
+References: <20230809103636.887175326@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -64,112 +55,48 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Georg Müller <georgmueller@gmx.net>
+From: Chao Yu <chao@kernel.org>
 
-commit 56cbeacf143530576905623ac72ae0964f3293a6 upstream.
+[ Upstream commit c4d13222afd8a64bf11bc7ec68645496ee8b54b9 ]
 
-This patch adds a test to validate that 'perf probe' works for binaries
-where DWARF info is split into multiple CUs
+freeze_bdev() can fail due to a lot of reasons, it needs to check its
+reason before later process.
 
-Signed-off-by: Georg Müller <georgmueller@gmx.net>
-Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Ian Rogers <irogers@google.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: regressions@lists.linux.dev
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20230628084551.1860532-5-georgmueller@gmx.net
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 783d94854499 ("ext4: add EXT4_IOC_GOINGDOWN ioctl")
+Cc: stable@kernel.org
+Signed-off-by: Chao Yu <chao@kernel.org>
+Link: https://lore.kernel.org/r/20230606073203.1310389-1-chao@kernel.org
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/tests/shell/test_uprobe_from_different_cu.sh |   77 ++++++++++++++++
- 1 file changed, 77 insertions(+)
- create mode 100755 tools/perf/tests/shell/test_uprobe_from_different_cu.sh
+ fs/ext4/ioctl.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- /dev/null
-+++ b/tools/perf/tests/shell/test_uprobe_from_different_cu.sh
-@@ -0,0 +1,77 @@
-+#!/bin/bash
-+# test perf probe of function from different CU
-+# SPDX-License-Identifier: GPL-2.0
-+
-+set -e
-+
-+temp_dir=$(mktemp -d /tmp/perf-uprobe-different-cu-sh.XXXXXXXXXX)
-+
-+cleanup()
-+{
-+	trap - EXIT TERM INT
-+	if [[ "${temp_dir}" =~ ^/tmp/perf-uprobe-different-cu-sh.*$ ]]; then
-+		echo "--- Cleaning up ---"
-+		perf probe -x ${temp_dir}/testfile -d foo
-+		rm -f "${temp_dir}/"*
-+		rmdir "${temp_dir}"
-+	fi
-+}
-+
-+trap_cleanup()
-+{
-+        cleanup
-+        exit 1
-+}
-+
-+trap trap_cleanup EXIT TERM INT
-+
-+cat > ${temp_dir}/testfile-foo.h << EOF
-+struct t
-+{
-+  int *p;
-+  int c;
-+};
-+
-+extern int foo (int i, struct t *t);
-+EOF
-+
-+cat > ${temp_dir}/testfile-foo.c << EOF
-+#include "testfile-foo.h"
-+
-+int
-+foo (int i, struct t *t)
-+{
-+  int j, res = 0;
-+  for (j = 0; j < i && j < t->c; j++)
-+    res += t->p[j];
-+
-+  return res;
-+}
-+EOF
-+
-+cat > ${temp_dir}/testfile-main.c << EOF
-+#include "testfile-foo.h"
-+
-+static struct t g;
-+
-+int
-+main (int argc, char **argv)
-+{
-+  int i;
-+  int j[argc];
-+  g.c = argc;
-+  g.p = j;
-+  for (i = 0; i < argc; i++)
-+    j[i] = (int) argv[i][0];
-+  return foo (3, &g);
-+}
-+EOF
-+
-+gcc -g -Og -flto -c ${temp_dir}/testfile-foo.c -o ${temp_dir}/testfile-foo.o
-+gcc -g -Og -c ${temp_dir}/testfile-main.c -o ${temp_dir}/testfile-main.o
-+gcc -g -Og -o ${temp_dir}/testfile ${temp_dir}/testfile-foo.o ${temp_dir}/testfile-main.o
-+
-+perf probe -x ${temp_dir}/testfile --funcs foo
-+perf probe -x ${temp_dir}/testfile foo
-+
-+cleanup
+diff --git a/fs/ext4/ioctl.c b/fs/ext4/ioctl.c
+index 306ad7d0003bb..ae47505964c4b 100644
+--- a/fs/ext4/ioctl.c
++++ b/fs/ext4/ioctl.c
+@@ -573,6 +573,7 @@ static int ext4_shutdown(struct super_block *sb, unsigned long arg)
+ {
+ 	struct ext4_sb_info *sbi = EXT4_SB(sb);
+ 	__u32 flags;
++	struct super_block *ret;
+ 
+ 	if (!capable(CAP_SYS_ADMIN))
+ 		return -EPERM;
+@@ -591,7 +592,9 @@ static int ext4_shutdown(struct super_block *sb, unsigned long arg)
+ 
+ 	switch (flags) {
+ 	case EXT4_GOING_FLAGS_DEFAULT:
+-		freeze_bdev(sb->s_bdev);
++		ret = freeze_bdev(sb->s_bdev);
++		if (IS_ERR(ret))
++			return PTR_ERR(ret);
+ 		set_bit(EXT4_FLAGS_SHUTDOWN, &sbi->s_ext4_flags);
+ 		thaw_bdev(sb->s_bdev, sb);
+ 		break;
+-- 
+2.39.2
+
 
 
