@@ -2,49 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 08806775C2A
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:24:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 329EF775995
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:01:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233666AbjHILYd (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:24:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53188 "EHLO
+        id S232903AbjHILBr (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:01:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33382 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233663AbjHILYd (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:24:33 -0400
+        with ESMTP id S232911AbjHILBr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:01:47 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA2F3ED
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:24:31 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 309A4ED
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:01:46 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 59F466323F
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:24:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66B39C433C7;
-        Wed,  9 Aug 2023 11:24:30 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C31EF6313C
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:01:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF698C433C8;
+        Wed,  9 Aug 2023 11:01:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691580270;
-        bh=3rByZ7xnttdtHnvBkU+gSjIb+QJovBqySvgarQ91jjg=;
+        s=korg; t=1691578905;
+        bh=t54YheNrO1/pc+CYAuD6vSPYXJKINvSGA+JQ5xf5KV8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=vcAoTvxG8wQu5LPMXRkhcWzqSADxZWifNwCn0GMwEKCmr5sFBVBp1D4dxh4M19ysG
-         PIMTYlN5u2l+bGzur/8h5a/+FC3/xE3bW7o/NPrYnoQcFRFcwv1etQnZHGYuDbD0OV
-         ZtN6BMtvXnRu0xMN+zoIs8sJYW3uqZCPq/WPcFCg=
+        b=D7LGiHT/Uga6pUwmpUnNzeikIeanTWzscYQob3phjGbN/a6009vXx3JKxQ3iYWIKb
+         T8993trg8s6kldaqbmjIDLYFGC1F6drv2lr5T79PwD+LHi7VLMphRmf1jRVIz7ax4a
+         ry1rgjRae02Pq2QBrse9Ed3N+tXb9Vsn9d48LVL0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Christoph Hellwig <hch@lst.de>,
-        Ming Lei <ming.lei@redhat.com>,
-        Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
-        Martijn Coenen <maco@android.com>,
-        Jaegeuk Kim <jaegeuk@kernel.org>,
-        Bart Van Assche <bvanassche@acm.org>,
-        Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 4.19 288/323] loop: Select I/O scheduler none from inside add_disk()
+        patches@lists.linux.dev,
+        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+        Rander Wang <rander.wang@linux.intel.com>,
+        Johan Hovold <johan+linaro@kernel.org>,
+        Vinod Koul <vkoul@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 90/92] soundwire: fix enumeration completion
 Date:   Wed,  9 Aug 2023 12:42:06 +0200
-Message-ID: <20230809103711.230260828@linuxfoundation.org>
+Message-ID: <20230809103636.633521003@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
-References: <20230809103658.104386911@linuxfoundation.org>
+In-Reply-To: <20230809103633.485906560@linuxfoundation.org>
+References: <20230809103633.485906560@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -59,53 +57,75 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Bart Van Assche <bvanassche@acm.org>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-commit 2112f5c1330a671fa852051d85cb9eadc05d7eb7 upstream.
+[ Upstream commit c40d6b3249b11d60e09d81530588f56233d9aa44 ]
 
-We noticed that the user interface of Android devices becomes very slow
-under memory pressure. This is because Android uses the zram driver on top
-of the loop driver for swapping, because under memory pressure the swap
-code alternates reads and writes quickly, because mq-deadline is the
-default scheduler for loop devices and because mq-deadline delays writes by
-five seconds for such a workload with default settings. Fix this by making
-the kernel select I/O scheduler 'none' from inside add_disk() for loop
-devices. This default can be overridden at any time from user space,
-e.g. via a udev rule. This approach has an advantage compared to changing
-the I/O scheduler from userspace from 'mq-deadline' into 'none', namely
-that synchronize_rcu() does not get called.
+The soundwire subsystem uses two completion structures that allow
+drivers to wait for soundwire device to become enumerated on the bus and
+initialised by their drivers, respectively.
 
-This patch changes the default I/O scheduler for loop devices from
-'mq-deadline' into 'none'.
+The code implementing the signalling is currently broken as it does not
+signal all current and future waiters and also uses the wrong
+reinitialisation function, which can potentially lead to memory
+corruption if there are still waiters on the queue.
 
-Additionally, this patch reduces the Android boot time on my test setup
-with 0.5 seconds compared to configuring the loop I/O scheduler from user
-space.
+Not signalling future waiters specifically breaks sound card probe
+deferrals as codec drivers can not tell that the soundwire device is
+already attached when being reprobed. Some codec runtime PM
+implementations suffer from similar problems as waiting for enumeration
+during resume can also timeout despite the device already having been
+enumerated.
 
-Cc: Christoph Hellwig <hch@lst.de>
-Cc: Ming Lei <ming.lei@redhat.com>
-Cc: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-Cc: Martijn Coenen <maco@android.com>
-Cc: Jaegeuk Kim <jaegeuk@kernel.org>
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
-Link: https://lore.kernel.org/r/20210805174200.3250718-3-bvanassche@acm.org
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: fb9469e54fa7 ("soundwire: bus: fix race condition with enumeration_complete signaling")
+Fixes: a90def068127 ("soundwire: bus: fix race condition with initialization_complete signaling")
+Cc: stable@vger.kernel.org      # 5.7
+Cc: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Cc: Rander Wang <rander.wang@linux.intel.com>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Link: https://lore.kernel.org/r/20230705123018.30903-2-johan+linaro@kernel.org
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/block/loop.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/soundwire/bus.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/block/loop.c
-+++ b/drivers/block/loop.c
-@@ -1991,7 +1991,8 @@ static int loop_add(struct loop_device *
- 	lo->tag_set.queue_depth = 128;
- 	lo->tag_set.numa_node = NUMA_NO_NODE;
- 	lo->tag_set.cmd_size = sizeof(struct loop_cmd);
--	lo->tag_set.flags = BLK_MQ_F_SHOULD_MERGE | BLK_MQ_F_SG_MERGE;
-+	lo->tag_set.flags = BLK_MQ_F_SHOULD_MERGE | BLK_MQ_F_SG_MERGE |
-+		BLK_MQ_F_NO_SCHED;
- 	lo->tag_set.driver_data = lo;
+diff --git a/drivers/soundwire/bus.c b/drivers/soundwire/bus.c
+index cc4cca0325b98..230a3250f3154 100644
+--- a/drivers/soundwire/bus.c
++++ b/drivers/soundwire/bus.c
+@@ -828,8 +828,8 @@ static void sdw_modify_slave_status(struct sdw_slave *slave,
+ 			"%s: initializing enumeration and init completion for Slave %d\n",
+ 			__func__, slave->dev_num);
  
- 	err = blk_mq_alloc_tag_set(&lo->tag_set);
+-		init_completion(&slave->enumeration_complete);
+-		init_completion(&slave->initialization_complete);
++		reinit_completion(&slave->enumeration_complete);
++		reinit_completion(&slave->initialization_complete);
+ 
+ 	} else if ((status == SDW_SLAVE_ATTACHED) &&
+ 		   (slave->status == SDW_SLAVE_UNATTACHED)) {
+@@ -837,7 +837,7 @@ static void sdw_modify_slave_status(struct sdw_slave *slave,
+ 			"%s: signaling enumeration completion for Slave %d\n",
+ 			__func__, slave->dev_num);
+ 
+-		complete(&slave->enumeration_complete);
++		complete_all(&slave->enumeration_complete);
+ 	}
+ 	slave->status = status;
+ 	mutex_unlock(&bus->bus_lock);
+@@ -1840,7 +1840,7 @@ int sdw_handle_slave_status(struct sdw_bus *bus,
+ 				"%s: signaling initialization completion for Slave %d\n",
+ 				__func__, slave->dev_num);
+ 
+-			complete(&slave->initialization_complete);
++			complete_all(&slave->initialization_complete);
+ 
+ 			/*
+ 			 * If the manager became pm_runtime active, the peripherals will be
+-- 
+2.40.1
+
 
 
