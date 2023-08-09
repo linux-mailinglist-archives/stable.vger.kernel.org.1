@@ -2,139 +2,123 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 471F1775DB1
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:40:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DCD88775C22
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:24:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234194AbjHILkU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:40:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44908 "EHLO
+        id S233655AbjHILYN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:24:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34776 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234191AbjHILkT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:40:19 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71202173A
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:40:19 -0700 (PDT)
+        with ESMTP id S233653AbjHILYM (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:24:12 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F8F3ED
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:24:12 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0504C63444
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:40:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12837C433C8;
-        Wed,  9 Aug 2023 11:40:17 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C1DF36322D
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:24:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D319CC433C8;
+        Wed,  9 Aug 2023 11:24:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691581218;
-        bh=6uYalQw1VlVMLEx6Ar0ytMb7LtY6q5xkkYJLaGrJwIc=;
+        s=korg; t=1691580251;
+        bh=Sa3BukU6kNkCDw15hMlUGK7S1VHMnOS1tI3hAkDUbvo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=gPf6Tui6+EuTLLaueGbXHMgEb9+mbiUpG8a3ORUGlQx5ao0LNVBZCww58Yc8UiOfI
-         OJ+GGpLD7Ibbhyk1J7FS7DYjqNuoCJVZyRBafHTnbxoFcZi6ihKxFUvy8ZunrfkLXe
-         +9TqjmQf81BsmzgJ3j6njDzWb4F+vlzsXXGRynmc=
+        b=xbJEocZJIXWHX6DInUh0rCSEMqt6oNvM+7r/3QDCKWbu/2iQV9ayM4sEcUo/OvUA5
+         8NPRNNNyAkf1W9MLdJ3L4FNnADY+vX3jdWMExLPOmFMwU+P+1u+s2aGfSosna5Ce9B
+         q/udQHkhRRQKwNb3i+3Xlt+L4/oeY2WTasxbYGuM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Colin Ian King <colin.king@canonical.com>,
-        Masami Hiramatsu <mhiramat@kernel.org>,
-        Ingo Molnar <mingo@kernel.org>,
-        Li Huafei <lihuafei1@huawei.com>
-Subject: [PATCH 5.10 118/201] x86/kprobes: Fix to identify indirect jmp and others using range case
+        patches@lists.linux.dev, Zhang Yi <yizhan@redhat.com>,
+        Jocelyn Falempe <jfalempe@redhat.com>,
+        Javier Martinez Canillas <javierm@redhat.com>,
+        Thomas Zimmermann <tzimmermann@suse.de>
+Subject: [PATCH 4.19 282/323] drm/client: Fix memory leak in drm_client_target_cloned
 Date:   Wed,  9 Aug 2023 12:42:00 +0200
-Message-ID: <20230809103647.715756034@linuxfoundation.org>
+Message-ID: <20230809103710.948981242@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103643.799166053@linuxfoundation.org>
-References: <20230809103643.799166053@linuxfoundation.org>
+In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
+References: <20230809103658.104386911@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Masami Hiramatsu <mhiramat@kernel.org>
+From: Jocelyn Falempe <jfalempe@redhat.com>
 
-[ Upstream commit 2f706e0e5e263c0d204e37ea496cbb0e98aac2d2 ]
+commit c2a88e8bdf5f6239948d75283d0ae7e0c7945b03 upstream.
 
-Fix can_boost() to identify indirect jmp and others using range case
-correctly.
+dmt_mode is allocated and never freed in this function.
+It was found with the ast driver, but most drivers using generic fbdev
+setup are probably affected.
 
-Since the condition in switch statement is opcode & 0xf0, it can not
-evaluate to 0xff case. This should be under the 0xf0 case. However,
-there is no reason to use the conbinations of the bit-masked condition
-and lower bit checking.
+This fixes the following kmemleak report:
+  backtrace:
+    [<00000000b391296d>] drm_mode_duplicate+0x45/0x220 [drm]
+    [<00000000e45bb5b3>] drm_client_target_cloned.constprop.0+0x27b/0x480 [drm]
+    [<00000000ed2d3a37>] drm_client_modeset_probe+0x6bd/0xf50 [drm]
+    [<0000000010e5cc9d>] __drm_fb_helper_initial_config_and_unlock+0xb4/0x2c0 [drm_kms_helper]
+    [<00000000909f82ca>] drm_fbdev_client_hotplug+0x2bc/0x4d0 [drm_kms_helper]
+    [<00000000063a69aa>] drm_client_register+0x169/0x240 [drm]
+    [<00000000a8c61525>] ast_pci_probe+0x142/0x190 [ast]
+    [<00000000987f19bb>] local_pci_probe+0xdc/0x180
+    [<000000004fca231b>] work_for_cpu_fn+0x4e/0xa0
+    [<0000000000b85301>] process_one_work+0x8b7/0x1540
+    [<000000003375b17c>] worker_thread+0x70a/0xed0
+    [<00000000b0d43cd9>] kthread+0x29f/0x340
+    [<000000008d770833>] ret_from_fork+0x1f/0x30
+unreferenced object 0xff11000333089a00 (size 128):
 
-Use range case to clean up the switch statement too.
-
-Fixes: 6256e668b7 ("x86/kprobes: Use int3 instead of debug trap for single-step")
-Reported-by: Colin Ian King <colin.king@canonical.com>
-Signed-off-by: Masami Hiramatsu <mhiramat@kernel.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/161666692308.1120877.4675552834049546493.stgit@devnote2
-Signed-off-by: Li Huafei <lihuafei1@huawei.com>
+cc: <stable@vger.kernel.org>
+Fixes: 1d42bbc8f7f9 ("drm/fbdev: fix cloning on fbcon")
+Reported-by: Zhang Yi <yizhan@redhat.com>
+Signed-off-by: Jocelyn Falempe <jfalempe@redhat.com>
+Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
+Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230711092203.68157-2-jfalempe@redhat.com
+Signed-off-by: Jocelyn Falempe <jfalempe@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/kprobes/core.c |   44 ++++++++++++++++++-----------------------
- 1 file changed, 20 insertions(+), 24 deletions(-)
+ drivers/gpu/drm/drm_fb_helper.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/arch/x86/kernel/kprobes/core.c
-+++ b/arch/x86/kernel/kprobes/core.c
-@@ -165,32 +165,28 @@ int can_boost(struct insn *insn, void *a
+--- a/drivers/gpu/drm/drm_fb_helper.c
++++ b/drivers/gpu/drm/drm_fb_helper.c
+@@ -2233,6 +2233,9 @@ static bool drm_target_cloned(struct drm
+ 	can_clone = true;
+ 	dmt_mode = drm_mode_find_dmt(fb_helper->dev, 1024, 768, 60, false);
  
- 	opcode = insn->opcode.bytes[0];
- 
--	switch (opcode & 0xf0) {
--	case 0x60:
--		/* can't boost "bound" */
--		return (opcode != 0x62);
--	case 0x70:
--		return 0; /* can't boost conditional jump */
--	case 0x90:
--		return opcode != 0x9a;	/* can't boost call far */
--	case 0xc0:
--		/* can't boost software-interruptions */
--		return (0xc1 < opcode && opcode < 0xcc) || opcode == 0xcf;
--	case 0xd0:
--		/* can boost AA* and XLAT */
--		return (opcode == 0xd4 || opcode == 0xd5 || opcode == 0xd7);
--	case 0xe0:
--		/* can boost in/out and absolute jmps */
--		return ((opcode & 0x04) || opcode == 0xea);
--	case 0xf0:
--		/* clear and set flags are boostable */
--		return (opcode == 0xf5 || (0xf7 < opcode && opcode < 0xfe));
--	case 0xff:
--		/* indirect jmp is boostable */
-+	switch (opcode) {
-+	case 0x62:		/* bound */
-+	case 0x70 ... 0x7f:	/* Conditional jumps */
-+	case 0x9a:		/* Call far */
-+	case 0xc0 ... 0xc1:	/* Grp2 */
-+	case 0xcc ... 0xce:	/* software exceptions */
-+	case 0xd0 ... 0xd3:	/* Grp2 */
-+	case 0xd6:		/* (UD) */
-+	case 0xd8 ... 0xdf:	/* ESC */
-+	case 0xe0 ... 0xe3:	/* LOOP*, JCXZ */
-+	case 0xe8 ... 0xe9:	/* near Call, JMP */
-+	case 0xeb:		/* Short JMP */
-+	case 0xf0 ... 0xf4:	/* LOCK/REP, HLT */
-+	case 0xf6 ... 0xf7:	/* Grp3 */
-+	case 0xfe:		/* Grp4 */
-+		/* ... are not boostable */
-+		return 0;
-+	case 0xff:		/* Grp5 */
-+		/* Only indirect jmp is boostable */
- 		return X86_MODRM_REG(insn->modrm.bytes[0]) == 4;
- 	default:
--		/* call is not boostable */
--		return opcode != 0x9a;
-+		return 1;
++	if (!dmt_mode)
++		goto fail;
++
+ 	drm_fb_helper_for_each_connector(fb_helper, i) {
+ 		if (!enabled[i])
+ 			continue;
+@@ -2249,11 +2252,13 @@ static bool drm_target_cloned(struct drm
+ 		if (!modes[i])
+ 			can_clone = false;
  	}
- }
++	kfree(dmt_mode);
  
+ 	if (can_clone) {
+ 		DRM_DEBUG_KMS("can clone using 1024x768\n");
+ 		return true;
+ 	}
++fail:
+ 	DRM_INFO("kms: can't enable cloning when we probably wanted to.\n");
+ 	return false;
+ }
 
 
