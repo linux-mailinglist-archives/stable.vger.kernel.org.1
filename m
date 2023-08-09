@@ -2,45 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DC52A775BCD
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:21:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 797DE775A47
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:07:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233545AbjHILVO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:21:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38370 "EHLO
+        id S233125AbjHILHB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:07:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52074 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233539AbjHILVN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:21:13 -0400
+        with ESMTP id S233122AbjHILHA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:07:00 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0735FFA
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:21:13 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D4A6AED
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:06:59 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9A87E631EA
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:21:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABD11C433C8;
-        Wed,  9 Aug 2023 11:21:11 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 74C3262BD5
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:06:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 869F7C433C7;
+        Wed,  9 Aug 2023 11:06:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691580072;
-        bh=Ca2xW03CkZsnqK+E76VYFr7uIFkOOdn/ahPLoWva4HY=;
+        s=korg; t=1691579218;
+        bh=iWdoR3Gz8Rm0s5SUotJWyAZ7oSl2Ulccg10t4TUr22M=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=yT7MJttbKoSQPsjB6OoUeKyJQjCCLTOtYz1Hm2syjgTEZFcNn90kJZoTyh5k3e9Q3
-         DRQW+/cf/IixUEtME/xTJNvNvA128QHNXRBz2X/pN+kJHicZ/sAjxSaaI6kAmAhG0e
-         I5NVL4Lzm3P4XqV75ZlGv8oGpj0Q5yOI/p1n+dWA=
+        b=YqVFvWth2yzRM35tzLMo7Bc+0wkCdkEwX+OnSYmr1UOqCcsW/nlbvW1XaQxC2Mr5k
+         a8Y+BeJYD3lxVSBKPNp7wKymPw37suNW3bUF5qSLdxxR/stUTSC/UzEF+zVl9rx4RP
+         DFc7oHUC9gtv78at7lEJjoB6E/d18SUUwFfb0RwY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Shenghui Wang <shhuiw@foxmail.com>,
-        Coly Li <colyli@suse.de>, Jens Axboe <axboe@kernel.dk>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 218/323] bcache: use MAX_CACHES_PER_SET instead of magic number 8 in __bch_bucket_alloc_set
+        patches@lists.linux.dev, Max Filippov <jcmvbkbc@gmail.com>
+Subject: [PATCH 4.14 118/204] xtensa: ISS: fix call to split_if_spec
 Date:   Wed,  9 Aug 2023 12:40:56 +0200
-Message-ID: <20230809103708.083779483@linuxfoundation.org>
+Message-ID: <20230809103646.555877097@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
-References: <20230809103658.104386911@linuxfoundation.org>
+In-Reply-To: <20230809103642.552405807@linuxfoundation.org>
+References: <20230809103642.552405807@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,44 +53,34 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Shenghui Wang <shhuiw@foxmail.com>
+From: Max Filippov <jcmvbkbc@gmail.com>
 
-[ Upstream commit 8792099f9ad487cf381f4e8199ff2158ba0f6eb5 ]
+commit bc8d5916541fa19ca5bc598eb51a5f78eb891a36 upstream.
 
-Current cache_set has MAX_CACHES_PER_SET caches most, and the macro
-is used for
-"
-	struct cache *cache_by_alloc[MAX_CACHES_PER_SET];
-"
-in the define of struct cache_set.
+split_if_spec expects a NULL-pointer as an end marker for the argument
+list, but tuntap_probe never supplied that terminating NULL. As a result
+incorrectly formatted interface specification string may cause a crash
+because of the random memory access. Fix that by adding NULL terminator
+to the split_if_spec argument list.
 
-Use MAX_CACHES_PER_SET instead of magic number 8 in
-__bch_bucket_alloc_set.
-
-Signed-off-by: Shenghui Wang <shhuiw@foxmail.com>
-Signed-off-by: Coly Li <colyli@suse.de>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Stable-dep-of: 80fca8a10b60 ("bcache: Fix __bch_btree_node_alloc to make the failure behavior consistent")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 7282bee78798 ("[PATCH] xtensa: Architecture support for Tensilica Xtensa Part 8")
+Signed-off-by: Max Filippov <jcmvbkbc@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/bcache/alloc.c | 2 +-
+ arch/xtensa/platforms/iss/network.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/md/bcache/alloc.c b/drivers/md/bcache/alloc.c
-index 46794cac167e7..a1df0d95151c6 100644
---- a/drivers/md/bcache/alloc.c
-+++ b/drivers/md/bcache/alloc.c
-@@ -497,7 +497,7 @@ int __bch_bucket_alloc_set(struct cache_set *c, unsigned int reserve,
- 		return -1;
+--- a/arch/xtensa/platforms/iss/network.c
++++ b/arch/xtensa/platforms/iss/network.c
+@@ -234,7 +234,7 @@ static int tuntap_probe(struct iss_net_p
  
- 	lockdep_assert_held(&c->bucket_lock);
--	BUG_ON(!n || n > c->caches_loaded || n > 8);
-+	BUG_ON(!n || n > c->caches_loaded || n > MAX_CACHES_PER_SET);
- 
- 	bkey_init(k);
- 
--- 
-2.39.2
-
+ 	init += sizeof(TRANSPORT_TUNTAP_NAME) - 1;
+ 	if (*init == ',') {
+-		rem = split_if_spec(init + 1, &mac_str, &dev_name);
++		rem = split_if_spec(init + 1, &mac_str, &dev_name, NULL);
+ 		if (rem != NULL) {
+ 			pr_err("%s: extra garbage on specification : '%s'\n",
+ 			       dev->name, rem);
 
 
