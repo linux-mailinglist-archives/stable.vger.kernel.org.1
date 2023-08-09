@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 75FD777595D
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:59:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AFEB477587F
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:53:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232838AbjHIK7v (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 06:59:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60784 "EHLO
+        id S232659AbjHIKxW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 06:53:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37794 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232841AbjHIK7v (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:59:51 -0400
+        with ESMTP id S232655AbjHIKxI (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:53:08 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 66F491FFE
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:59:50 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0955030C8
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:51:03 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E7EC863130
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:59:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04759C433C9;
-        Wed,  9 Aug 2023 10:59:48 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DEF3E6312C
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:51:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE79FC433C7;
+        Wed,  9 Aug 2023 10:51:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691578789;
-        bh=uABZAp7WCzbTJt+0ts5NNTFbJVnOFl0TsAjn0kXLvhc=;
+        s=korg; t=1691578262;
+        bh=VyamkGxHw20EZnr6NfjS7vn1NEbDOapFJzrIPRFpVuM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=P1VYjzXOCrJ6T8fQ+jS4W+vj+Phh7AKQXC1Av8yeFAHNI5XHy7QR39Sy+lRos1iQv
-         ofcofCKvDiB19Yey4FOYhNorP3wP6AZ25TE3dtXozgmi9yS4Zg2qaeKpWoDRPyjV2l
-         z/vpZ2FaiY46ALGCLA88wP0DArvlcyhzfveJd9q8=
+        b=hxPYZRMg24XvGV492kCQaMXSsd3heqCBrqRZj/d1CZw5J2ksBv5f7m0fpkp4+SUDB
+         BTX7abfPV1+xjWNBRg3dseRBFOM/ou7xj7Bq/CkNhJxONH0KI3hNkf6jXOBW1XCFGp
+         9cAFKJdAPwMjAQAMUxzimvsRKdtuUqVCJzdCZ7dA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
-        Willem de Bruijn <willemb@google.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 29/92] net: add missing data-race annotations around sk->sk_peek_off
+        patches@lists.linux.dev, Mateusz Guzik <mjguzik@gmail.com>,
+        Christian Brauner <brauner@kernel.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>
+Subject: [PATCH 6.4 134/165] file: reinstate f_pos locking optimization for regular files
 Date:   Wed,  9 Aug 2023 12:41:05 +0200
-Message-ID: <20230809103634.634805395@linuxfoundation.org>
+Message-ID: <20230809103647.199248198@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103633.485906560@linuxfoundation.org>
-References: <20230809103633.485906560@linuxfoundation.org>
+In-Reply-To: <20230809103642.720851262@linuxfoundation.org>
+References: <20230809103642.720851262@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,63 +55,64 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Eric Dumazet <edumazet@google.com>
+From: Linus Torvalds <torvalds@linux-foundation.org>
 
-[ Upstream commit 11695c6e966b0ec7ed1d16777d294cef865a5c91 ]
+commit 797964253d358cf8d705614dda394dbe30120223 upstream.
 
-sk_getsockopt() runs locklessly, thus we need to annotate the read
-of sk->sk_peek_off.
+In commit 20ea1e7d13c1 ("file: always lock position for
+FMODE_ATOMIC_POS") we ended up always taking the file pos lock, because
+pidfd_getfd() could get a reference to the file even when it didn't have
+an elevated file count due to threading of other sharing cases.
 
-While we are at it, add corresponding annotations to sk_set_peek_off()
-and unix_set_peek_off().
+But Mateusz Guzik reports that the extra locking is actually measurable,
+so let's re-introduce the optimization, and only force the locking for
+directory traversal.
 
-Fixes: b9bb53f3836f ("sock: convert sk_peek_offset functions to WRITE_ONCE")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Willem de Bruijn <willemb@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Directories need the lock for correctness reasons, while regular files
+only need it for "POSIX semantics".  Since pidfd_getfd() is about
+debuggers etc special things that are _way_ outside of POSIX, we can
+relax the rules for that case.
+
+Reported-by: Mateusz Guzik <mjguzik@gmail.com>
+Cc: Christian Brauner <brauner@kernel.org>
+Link: https://lore.kernel.org/linux-fsdevel/20230803095311.ijpvhx3fyrbkasul@f/
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/sock.c    | 4 ++--
- net/unix/af_unix.c | 2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ fs/file.c |   18 +++++++++++++++++-
+ 1 file changed, 17 insertions(+), 1 deletion(-)
 
-diff --git a/net/core/sock.c b/net/core/sock.c
-index 59abfb2c92266..0cca1ccf14990 100644
---- a/net/core/sock.c
-+++ b/net/core/sock.c
-@@ -1643,7 +1643,7 @@ int sock_getsockopt(struct socket *sock, int level, int optname,
- 		if (!sock->ops->set_peek_off)
- 			return -EOPNOTSUPP;
- 
--		v.val = sk->sk_peek_off;
-+		v.val = READ_ONCE(sk->sk_peek_off);
- 		break;
- 	case SO_NOFCS:
- 		v.val = sock_flag(sk, SOCK_NOFCS);
-@@ -2901,7 +2901,7 @@ EXPORT_SYMBOL(__sk_mem_reclaim);
- 
- int sk_set_peek_off(struct sock *sk, int val)
- {
--	sk->sk_peek_off = val;
-+	WRITE_ONCE(sk->sk_peek_off, val);
- 	return 0;
+--- a/fs/file.c
++++ b/fs/file.c
+@@ -1036,12 +1036,28 @@ unsigned long __fdget_raw(unsigned int f
+ 	return __fget_light(fd, 0);
  }
- EXPORT_SYMBOL_GPL(sk_set_peek_off);
-diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
-index d326540e4938c..7a076d5017d1c 100644
---- a/net/unix/af_unix.c
-+++ b/net/unix/af_unix.c
-@@ -717,7 +717,7 @@ static int unix_set_peek_off(struct sock *sk, int val)
- 	if (mutex_lock_interruptible(&u->iolock))
- 		return -EINTR;
  
--	sk->sk_peek_off = val;
-+	WRITE_ONCE(sk->sk_peek_off, val);
- 	mutex_unlock(&u->iolock);
++/*
++ * Try to avoid f_pos locking. We only need it if the
++ * file is marked for FMODE_ATOMIC_POS, and it can be
++ * accessed multiple ways.
++ *
++ * Always do it for directories, because pidfd_getfd()
++ * can make a file accessible even if it otherwise would
++ * not be, and for directories this is a correctness
++ * issue, not a "POSIX requirement".
++ */
++static inline bool file_needs_f_pos_lock(struct file *file)
++{
++	return (file->f_mode & FMODE_ATOMIC_POS) &&
++		(file_count(file) > 1 || S_ISDIR(file_inode(file)->i_mode));
++}
++
+ unsigned long __fdget_pos(unsigned int fd)
+ {
+ 	unsigned long v = __fdget(fd);
+ 	struct file *file = (struct file *)(v & ~3);
  
- 	return 0;
--- 
-2.40.1
-
+-	if (file && (file->f_mode & FMODE_ATOMIC_POS)) {
++	if (file && file_needs_f_pos_lock(file)) {
+ 		v |= FDPUT_POS_UNLOCK;
+ 		mutex_lock(&file->f_pos_lock);
+ 	}
 
 
