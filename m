@@ -2,46 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D005B775D57
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:36:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DDE54775880
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:53:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234074AbjHILg1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:36:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36080 "EHLO
+        id S232697AbjHIKxZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 06:53:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40224 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234095AbjHILg0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:36:26 -0400
+        with ESMTP id S232545AbjHIKxN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:53:13 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ADC3A2112
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:36:23 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 77C0A30DF
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:51:05 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4742E63527
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:36:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57C87C433C8;
-        Wed,  9 Aug 2023 11:36:22 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BF7FC63141
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:51:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9222C433C8;
+        Wed,  9 Aug 2023 10:51:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691580982;
-        bh=B/RAgFrvkzcuQPP/THAsHrdxKsIrw9YwaY8+Y2ndRBQ=;
+        s=korg; t=1691578265;
+        bh=24hJtYD6VGbSW98PzYBlom6ABTa9EtnJNpoW7DlJ8GM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=tgrLO/gHY1MKb1V4NUPCmRMELCUWoKo+ZXCmx2Hw17bgYOF3qgENNvgqXI91YYpuy
-         HsUQcqG8/qEsrM9IQVugwCqxBnXBZLxXp3nWbZbH3Ud+nil9m7CJUK+pn6TINHifAY
-         zRLD9l4+QFgX6yNeQTkwDCwYsdHJWsIMFdlMGFw8=
+        b=1k4Zu3H0A4ABCPFBCnFyTo0WBPpKkXDrSXUDjeuQh2RoSjy3pAF9J+T+exgUF8tDX
+         EzVmjLrr8roI5q+tXNZU2M4e9s9xC/D352jqRdYO+8DayEUyDGsdrCGQT0X+XUYHd+
+         Ln5F5IERrPIfH7JB3QkWwzdK2An7WFuZc7sea0VE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, mhiramat@kernel.org,
-        Zheng Yejian <zhengyejian1@huawei.com>,
-        "Steven Rostedt (Google)" <rostedt@goodmis.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 064/201] tracing: Fix warning in trace_buffered_event_disable()
+        patches@lists.linux.dev, Roman Gushchin <roman.gushchin@linux.dev>,
+        syzbot+774c29891415ab0fd29d@syzkaller.appspotmail.com,
+        Dmitry Vyukov <dvyukov@google.com>,
+        Yosry Ahmed <yosryahmed@google.com>,
+        Shakeel Butt <shakeelb@google.com>,
+        Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.4 135/165] mm: kmem: fix a NULL pointer dereference in obj_stock_flush_required()
 Date:   Wed,  9 Aug 2023 12:41:06 +0200
-Message-ID: <20230809103645.975359740@linuxfoundation.org>
+Message-ID: <20230809103647.234171510@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103643.799166053@linuxfoundation.org>
-References: <20230809103643.799166053@linuxfoundation.org>
+In-Reply-To: <20230809103642.720851262@linuxfoundation.org>
+References: <20230809103642.720851262@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,119 +58,153 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Zheng Yejian <zhengyejian1@huawei.com>
+From: Roman Gushchin <roman.gushchin@linux.dev>
 
-[ Upstream commit dea499781a1150d285c62b26659f62fb00824fce ]
+commit 3b8abb3239530c423c0b97e42af7f7e856e1ee96 upstream.
 
-Warning happened in trace_buffered_event_disable() at
-  WARN_ON_ONCE(!trace_buffered_event_ref)
+KCSAN found an issue in obj_stock_flush_required():
+stock->cached_objcg can be reset between the check and dereference:
 
-  Call Trace:
-   ? __warn+0xa5/0x1b0
-   ? trace_buffered_event_disable+0x189/0x1b0
-   __ftrace_event_enable_disable+0x19e/0x3e0
-   free_probe_data+0x3b/0xa0
-   unregister_ftrace_function_probe_func+0x6b8/0x800
-   event_enable_func+0x2f0/0x3d0
-   ftrace_process_regex.isra.0+0x12d/0x1b0
-   ftrace_filter_write+0xe6/0x140
-   vfs_write+0x1c9/0x6f0
-   [...]
+==================================================================
+BUG: KCSAN: data-race in drain_all_stock / drain_obj_stock
 
-The cause of the warning is in __ftrace_event_enable_disable(),
-trace_buffered_event_enable() was called once while
-trace_buffered_event_disable() was called twice.
-Reproduction script show as below, for analysis, see the comments:
- ```
- #!/bin/bash
+write to 0xffff888237c2a2f8 of 8 bytes by task 19625 on cpu 0:
+ drain_obj_stock+0x408/0x4e0 mm/memcontrol.c:3306
+ refill_obj_stock+0x9c/0x1e0 mm/memcontrol.c:3340
+ obj_cgroup_uncharge+0xe/0x10 mm/memcontrol.c:3408
+ memcg_slab_free_hook mm/slab.h:587 [inline]
+ __cache_free mm/slab.c:3373 [inline]
+ __do_kmem_cache_free mm/slab.c:3577 [inline]
+ kmem_cache_free+0x105/0x280 mm/slab.c:3602
+ __d_free fs/dcache.c:298 [inline]
+ dentry_free fs/dcache.c:375 [inline]
+ __dentry_kill+0x422/0x4a0 fs/dcache.c:621
+ dentry_kill+0x8d/0x1e0
+ dput+0x118/0x1f0 fs/dcache.c:913
+ __fput+0x3bf/0x570 fs/file_table.c:329
+ ____fput+0x15/0x20 fs/file_table.c:349
+ task_work_run+0x123/0x160 kernel/task_work.c:179
+ resume_user_mode_work include/linux/resume_user_mode.h:49 [inline]
+ exit_to_user_mode_loop+0xcf/0xe0 kernel/entry/common.c:171
+ exit_to_user_mode_prepare+0x6a/0xa0 kernel/entry/common.c:203
+ __syscall_exit_to_user_mode_work kernel/entry/common.c:285 [inline]
+ syscall_exit_to_user_mode+0x26/0x140 kernel/entry/common.c:296
+ do_syscall_64+0x4d/0xc0 arch/x86/entry/common.c:86
+ entry_SYSCALL_64_after_hwframe+0x63/0xcd
 
- cd /sys/kernel/tracing/
+read to 0xffff888237c2a2f8 of 8 bytes by task 19632 on cpu 1:
+ obj_stock_flush_required mm/memcontrol.c:3319 [inline]
+ drain_all_stock+0x174/0x2a0 mm/memcontrol.c:2361
+ try_charge_memcg+0x6d0/0xd10 mm/memcontrol.c:2703
+ try_charge mm/memcontrol.c:2837 [inline]
+ mem_cgroup_charge_skmem+0x51/0x140 mm/memcontrol.c:7290
+ sock_reserve_memory+0xb1/0x390 net/core/sock.c:1025
+ sk_setsockopt+0x800/0x1e70 net/core/sock.c:1525
+ udp_lib_setsockopt+0x99/0x6c0 net/ipv4/udp.c:2692
+ udp_setsockopt+0x73/0xa0 net/ipv4/udp.c:2817
+ sock_common_setsockopt+0x61/0x70 net/core/sock.c:3668
+ __sys_setsockopt+0x1c3/0x230 net/socket.c:2271
+ __do_sys_setsockopt net/socket.c:2282 [inline]
+ __se_sys_setsockopt net/socket.c:2279 [inline]
+ __x64_sys_setsockopt+0x66/0x80 net/socket.c:2279
+ do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+ do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
+ entry_SYSCALL_64_after_hwframe+0x63/0xcd
 
- # 1. Register a 'disable_event' command, then:
- #    1) SOFT_DISABLED_BIT was set;
- #    2) trace_buffered_event_enable() was called first time;
- echo 'cmdline_proc_show:disable_event:initcall:initcall_finish' > \
-     set_ftrace_filter
+value changed: 0xffff8881382d52c0 -> 0xffff888138893740
 
- # 2. Enable the event registered, then:
- #    1) SOFT_DISABLED_BIT was cleared;
- #    2) trace_buffered_event_disable() was called first time;
- echo 1 > events/initcall/initcall_finish/enable
+Reported by Kernel Concurrency Sanitizer on:
+CPU: 1 PID: 19632 Comm: syz-executor.0 Not tainted 6.3.0-rc2-syzkaller-00387-g534293368afa #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 03/02/2023
 
- # 3. Try to call into cmdline_proc_show(), then SOFT_DISABLED_BIT was
- #    set again!!!
- cat /proc/cmdline
+Fix it by using READ_ONCE()/WRITE_ONCE() for all accesses to
+stock->cached_objcg.
 
- # 4. Unregister the 'disable_event' command, then:
- #    1) SOFT_DISABLED_BIT was cleared again;
- #    2) trace_buffered_event_disable() was called second time!!!
- echo '!cmdline_proc_show:disable_event:initcall:initcall_finish' > \
-     set_ftrace_filter
- ```
-
-To fix it, IIUC, we can change to call trace_buffered_event_enable() at
-fist time soft-mode enabled, and call trace_buffered_event_disable() at
-last time soft-mode disabled.
-
-Link: https://lore.kernel.org/linux-trace-kernel/20230726095804.920457-1-zhengyejian1@huawei.com
-
-Cc: <mhiramat@kernel.org>
-Fixes: 0fc1b09ff1ff ("tracing: Use temp buffer when filtering events")
-Signed-off-by: Zheng Yejian <zhengyejian1@huawei.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20230502160839.361544-1-roman.gushchin@linux.dev
+Fixes: bf4f059954dc ("mm: memcg/slab: obj_cgroup API")
+Signed-off-by: Roman Gushchin <roman.gushchin@linux.dev>
+Reported-by: syzbot+774c29891415ab0fd29d@syzkaller.appspotmail.com
+Reported-by: Dmitry Vyukov <dvyukov@google.com>
+  Link: https://lore.kernel.org/linux-mm/CACT4Y+ZfucZhM60YPphWiCLJr6+SGFhT+jjm8k1P-a_8Kkxsjg@mail.gmail.com/T/#t
+Reviewed-by: Yosry Ahmed <yosryahmed@google.com>
+Acked-by: Shakeel Butt <shakeelb@google.com>
+Reviewed-by: Dmitry Vyukov <dvyukov@google.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/trace_events.c | 14 ++++----------
- 1 file changed, 4 insertions(+), 10 deletions(-)
+ mm/memcontrol.c |   19 ++++++++++---------
+ 1 file changed, 10 insertions(+), 9 deletions(-)
 
-diff --git a/kernel/trace/trace_events.c b/kernel/trace/trace_events.c
-index f8ed66f38175b..a46d34d840f69 100644
---- a/kernel/trace/trace_events.c
-+++ b/kernel/trace/trace_events.c
-@@ -371,7 +371,6 @@ static int __ftrace_event_enable_disable(struct trace_event_file *file,
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -3208,12 +3208,12 @@ void mod_objcg_state(struct obj_cgroup *
+ 	 * accumulating over a page of vmstat data or when pgdat or idx
+ 	 * changes.
+ 	 */
+-	if (stock->cached_objcg != objcg) {
++	if (READ_ONCE(stock->cached_objcg) != objcg) {
+ 		old = drain_obj_stock(stock);
+ 		obj_cgroup_get(objcg);
+ 		stock->nr_bytes = atomic_read(&objcg->nr_charged_bytes)
+ 				? atomic_xchg(&objcg->nr_charged_bytes, 0) : 0;
+-		stock->cached_objcg = objcg;
++		WRITE_ONCE(stock->cached_objcg, objcg);
+ 		stock->cached_pgdat = pgdat;
+ 	} else if (stock->cached_pgdat != pgdat) {
+ 		/* Flush the existing cached vmstat data */
+@@ -3267,7 +3267,7 @@ static bool consume_obj_stock(struct obj
+ 	local_lock_irqsave(&memcg_stock.stock_lock, flags);
+ 
+ 	stock = this_cpu_ptr(&memcg_stock);
+-	if (objcg == stock->cached_objcg && stock->nr_bytes >= nr_bytes) {
++	if (objcg == READ_ONCE(stock->cached_objcg) && stock->nr_bytes >= nr_bytes) {
+ 		stock->nr_bytes -= nr_bytes;
+ 		ret = true;
+ 	}
+@@ -3279,7 +3279,7 @@ static bool consume_obj_stock(struct obj
+ 
+ static struct obj_cgroup *drain_obj_stock(struct memcg_stock_pcp *stock)
  {
- 	struct trace_event_call *call = file->event_call;
- 	struct trace_array *tr = file->tr;
--	unsigned long file_flags = file->flags;
- 	int ret = 0;
- 	int disable;
+-	struct obj_cgroup *old = stock->cached_objcg;
++	struct obj_cgroup *old = READ_ONCE(stock->cached_objcg);
  
-@@ -395,6 +394,8 @@ static int __ftrace_event_enable_disable(struct trace_event_file *file,
- 				break;
- 			disable = file->flags & EVENT_FILE_FL_SOFT_DISABLED;
- 			clear_bit(EVENT_FILE_FL_SOFT_MODE_BIT, &file->flags);
-+			/* Disable use of trace_buffered_event */
-+			trace_buffered_event_disable();
- 		} else
- 			disable = !(file->flags & EVENT_FILE_FL_SOFT_MODE);
- 
-@@ -433,6 +434,8 @@ static int __ftrace_event_enable_disable(struct trace_event_file *file,
- 			if (atomic_inc_return(&file->sm_ref) > 1)
- 				break;
- 			set_bit(EVENT_FILE_FL_SOFT_MODE_BIT, &file->flags);
-+			/* Enable use of trace_buffered_event */
-+			trace_buffered_event_enable();
- 		}
- 
- 		if (!(file->flags & EVENT_FILE_FL_ENABLED)) {
-@@ -472,15 +475,6 @@ static int __ftrace_event_enable_disable(struct trace_event_file *file,
- 		break;
+ 	if (!old)
+ 		return NULL;
+@@ -3332,7 +3332,7 @@ static struct obj_cgroup *drain_obj_stoc
+ 		stock->cached_pgdat = NULL;
  	}
  
--	/* Enable or disable use of trace_buffered_event */
--	if ((file_flags & EVENT_FILE_FL_SOFT_DISABLED) !=
--	    (file->flags & EVENT_FILE_FL_SOFT_DISABLED)) {
--		if (file->flags & EVENT_FILE_FL_SOFT_DISABLED)
--			trace_buffered_event_enable();
--		else
--			trace_buffered_event_disable();
--	}
--
- 	return ret;
- }
+-	stock->cached_objcg = NULL;
++	WRITE_ONCE(stock->cached_objcg, NULL);
+ 	/*
+ 	 * The `old' objects needs to be released by the caller via
+ 	 * obj_cgroup_put() outside of memcg_stock_pcp::stock_lock.
+@@ -3343,10 +3343,11 @@ static struct obj_cgroup *drain_obj_stoc
+ static bool obj_stock_flush_required(struct memcg_stock_pcp *stock,
+ 				     struct mem_cgroup *root_memcg)
+ {
++	struct obj_cgroup *objcg = READ_ONCE(stock->cached_objcg);
+ 	struct mem_cgroup *memcg;
  
--- 
-2.40.1
-
+-	if (stock->cached_objcg) {
+-		memcg = obj_cgroup_memcg(stock->cached_objcg);
++	if (objcg) {
++		memcg = obj_cgroup_memcg(objcg);
+ 		if (memcg && mem_cgroup_is_descendant(memcg, root_memcg))
+ 			return true;
+ 	}
+@@ -3365,10 +3366,10 @@ static void refill_obj_stock(struct obj_
+ 	local_lock_irqsave(&memcg_stock.stock_lock, flags);
+ 
+ 	stock = this_cpu_ptr(&memcg_stock);
+-	if (stock->cached_objcg != objcg) { /* reset if necessary */
++	if (READ_ONCE(stock->cached_objcg) != objcg) { /* reset if necessary */
+ 		old = drain_obj_stock(stock);
+ 		obj_cgroup_get(objcg);
+-		stock->cached_objcg = objcg;
++		WRITE_ONCE(stock->cached_objcg, objcg);
+ 		stock->nr_bytes = atomic_read(&objcg->nr_charged_bytes)
+ 				? atomic_xchg(&objcg->nr_charged_bytes, 0) : 0;
+ 		allow_uncharge = true;	/* Allow uncharge when objcg changes */
 
 
