@@ -2,125 +2,122 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B9525775A61
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:07:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4649C7758E6
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:55:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233170AbjHILHy (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:07:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45832 "EHLO
+        id S232746AbjHIKz5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 06:55:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42336 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233150AbjHILHx (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:07:53 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CEB271FFA
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:07:52 -0700 (PDT)
+        with ESMTP id S232742AbjHIKzn (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:55:43 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8FE2F26AE
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:55:14 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 66E0961FA9
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:07:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74F91C433C8;
-        Wed,  9 Aug 2023 11:07:51 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2D68562DC8
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:55:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CEC4C433C8;
+        Wed,  9 Aug 2023 10:55:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691579271;
-        bh=awbj2evehOQOiW6jsCjgQkZfyEE1jLdz0/ScGsRgki4=;
+        s=korg; t=1691578513;
+        bh=dSIXtpwQccNx6XL9tjwjKF+Q5tQEyFk3ShF24MCk+j4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=OWcdQxxdUR9uK8+kUlKorSO0a9c6u+Lez3WKAH4Dy7cRjJymIEJtquZG2rqfKTD7v
-         dP+75GiZxnQey2nJD0EQXj9PhBTCrK7oxhM7i8Zh7qaLBDnvnf5f9P3jONkc5znCT1
-         a3PWVbOv6Ry4q3INwnujfexptl+npt5E/vXz2gYk=
+        b=RVcdzTv3dRptOk96+wXZoKPud7pUmBO9d77/NZHubvu8bLQeDJ5qGCgLktWmSo8cw
+         kOvZXssa/dG/OjFhhib1/LBCz8tMyEUFgV4fveJukueioQg2wCcMQ3wW/YIUim690b
+         PyIgeTxf9x/vzKG8T+YZKHkc38rzNhAd0nMabspc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        Simon Horman <simon.horman@corigine.com>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 135/204] wifi: wext-core: Fix -Wstringop-overflow warning in ioctl_standard_iw_point()
+        patches@lists.linux.dev, Michael Kelley <mikelley@microsoft.com>,
+        Wei Liu <wei.liu@kernel.org>
+Subject: [PATCH 6.1 086/127] x86/hyperv: Disable IBT when hypercall page lacks ENDBR instruction
 Date:   Wed,  9 Aug 2023 12:41:13 +0200
-Message-ID: <20230809103647.104840300@linuxfoundation.org>
+Message-ID: <20230809103639.502150626@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103642.552405807@linuxfoundation.org>
-References: <20230809103642.552405807@linuxfoundation.org>
+In-Reply-To: <20230809103636.615294317@linuxfoundation.org>
+References: <20230809103636.615294317@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Gustavo A. R. Silva <gustavoars@kernel.org>
+From: Michael Kelley <mikelley@microsoft.com>
 
-[ Upstream commit 71e7552c90db2a2767f5c17c7ec72296b0d92061 ]
+commit d5ace2a776442d80674eff9ed42e737f7dd95056 upstream.
 
--Wstringop-overflow is legitimately warning us about extra_size
-pontentially being zero at some point, hence potenially ending
-up _allocating_ zero bytes of memory for extra pointer and then
-trying to access such object in a call to copy_from_user().
+On hardware that supports Indirect Branch Tracking (IBT), Hyper-V VMs
+with ConfigVersion 9.3 or later support IBT in the guest. However,
+current versions of Hyper-V have a bug in that there's not an ENDBR64
+instruction at the beginning of the hypercall page. Since hypercalls are
+made with an indirect call to the hypercall page, all hypercall attempts
+fail with an exception and Linux panics.
 
-Fix this by adding a sanity check to ensure we never end up
-trying to allocate zero bytes of data for extra pointer, before
-continue executing the rest of the code in the function.
+A Hyper-V fix is in progress to add ENDBR64. But guard against the Linux
+panic by clearing X86_FEATURE_IBT if the hypercall page doesn't start
+with ENDBR. The VM will boot and run without IBT.
 
-Address the following -Wstringop-overflow warning seen when built
-m68k architecture with allyesconfig configuration:
-                 from net/wireless/wext-core.c:11:
-In function '_copy_from_user',
-    inlined from 'copy_from_user' at include/linux/uaccess.h:183:7,
-    inlined from 'ioctl_standard_iw_point' at net/wireless/wext-core.c:825:7:
-arch/m68k/include/asm/string.h:48:25: warning: '__builtin_memset' writing 1 or more bytes into a region of size 0 overflows the destination [-Wstringop-overflow=]
-   48 | #define memset(d, c, n) __builtin_memset(d, c, n)
-      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~
-include/linux/uaccess.h:153:17: note: in expansion of macro 'memset'
-  153 |                 memset(to + (n - res), 0, res);
-      |                 ^~~~~~
-In function 'kmalloc',
-    inlined from 'kzalloc' at include/linux/slab.h:694:9,
-    inlined from 'ioctl_standard_iw_point' at net/wireless/wext-core.c:819:10:
-include/linux/slab.h:577:16: note: at offset 1 into destination object of size 0 allocated by '__kmalloc'
-  577 |         return __kmalloc(size, flags);
-      |                ^~~~~~~~~~~~~~~~~~~~~~
+If future Linux 32-bit kernels were to support IBT, additional hypercall
+page hackery would be needed to make IBT work for such kernels in a
+Hyper-V VM.
 
-This help with the ongoing efforts to globally enable
--Wstringop-overflow.
-
-Link: https://github.com/KSPP/linux/issues/315
-Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Link: https://lore.kernel.org/r/ZItSlzvIpjdjNfd8@work
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Michael Kelley <mikelley@microsoft.com>
+Link: https://lore.kernel.org/r/1690001476-98594-1-git-send-email-mikelley@microsoft.com
+Signed-off-by: Wei Liu <wei.liu@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/wireless/wext-core.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ arch/x86/hyperv/hv_init.c |   21 +++++++++++++++++++++
+ 1 file changed, 21 insertions(+)
 
-diff --git a/net/wireless/wext-core.c b/net/wireless/wext-core.c
-index b6414c7bef556..4bf33f9b28870 100644
---- a/net/wireless/wext-core.c
-+++ b/net/wireless/wext-core.c
-@@ -798,6 +798,12 @@ static int ioctl_standard_iw_point(struct iw_point *iwp, unsigned int cmd,
- 		}
+--- a/arch/x86/hyperv/hv_init.c
++++ b/arch/x86/hyperv/hv_init.c
+@@ -14,6 +14,7 @@
+ #include <asm/apic.h>
+ #include <asm/desc.h>
+ #include <asm/sev.h>
++#include <asm/ibt.h>
+ #include <asm/hypervisor.h>
+ #include <asm/hyperv-tlfs.h>
+ #include <asm/mshyperv.h>
+@@ -468,6 +469,26 @@ void __init hyperv_init(void)
  	}
  
-+	/* Sanity-check to ensure we never end up _allocating_ zero
-+	 * bytes of data for extra.
+ 	/*
++	 * Some versions of Hyper-V that provide IBT in guest VMs have a bug
++	 * in that there's no ENDBR64 instruction at the entry to the
++	 * hypercall page. Because hypercalls are invoked via an indirect call
++	 * to the hypercall page, all hypercall attempts fail when IBT is
++	 * enabled, and Linux panics. For such buggy versions, disable IBT.
++	 *
++	 * Fixed versions of Hyper-V always provide ENDBR64 on the hypercall
++	 * page, so if future Linux kernel versions enable IBT for 32-bit
++	 * builds, additional hypercall page hackery will be required here
++	 * to provide an ENDBR32.
 +	 */
-+	if (extra_size <= 0)
-+		return -EFAULT;
++#ifdef CONFIG_X86_KERNEL_IBT
++	if (cpu_feature_enabled(X86_FEATURE_IBT) &&
++	    *(u32 *)hv_hypercall_pg != gen_endbr()) {
++		setup_clear_cpu_cap(X86_FEATURE_IBT);
++		pr_warn("Hyper-V: Disabling IBT because of Hyper-V bug\n");
++	}
++#endif
 +
- 	/* kzalloc() ensures NULL-termination for essid_compat. */
- 	extra = kzalloc(extra_size, GFP_KERNEL);
- 	if (!extra)
--- 
-2.39.2
-
++	/*
+ 	 * hyperv_init() is called before LAPIC is initialized: see
+ 	 * apic_intr_mode_init() -> x86_platform.apic_post_init() and
+ 	 * apic_bsp_setup() -> setup_local_APIC(). The direct-mode STIMER
 
 
