@@ -2,45 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3DA45775E1B
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:48:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BEA0A775DDA
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:42:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231491AbjHILsz (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:48:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37898 "EHLO
+        id S234245AbjHILmP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:42:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40532 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233923AbjHILb4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:31:56 -0400
+        with ESMTP id S234242AbjHILl4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:41:56 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AFDAA10DC
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:31:53 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4BF4C1FDE
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:41:55 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 44EC1633DA
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:31:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5353FC433CA;
-        Wed,  9 Aug 2023 11:31:52 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D675D63473
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:41:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E95FBC433C7;
+        Wed,  9 Aug 2023 11:41:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691580712;
-        bh=5deS8qqVdi9BHBs94CGhkpY4EO9hUOrW4EeUZwxc1qM=;
+        s=korg; t=1691581314;
+        bh=VVcsMQ0TJ+1BjVbus1HoWhCUF/4P8ZC0fHrpXpHmXEg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=TGlnRViJX0rzTcXjIhiVz3FSEw/52jG+VzIX28oZKQDdtM2u9na7ckHWwQk3zOOm7
-         mUvNfjVBDdSlvCkXpWdkJxWtfPwVqsiQPCMOh87WrGMt5u8yQ1sg7EnQYI1g6zaxIQ
-         up/I8By51JuwtjwvC4es28iOzlN3SLa5rTRBOino=
+        b=rj9B/HQjcHLqCmRgD5q9taOWQOPJPbajIFn3nJDP/kqeTC6fMgb6pkKueF9TDYjem
+         HbMe6MMhJA1SZ5+sEWjszynZjK9ISsERH5EjnraDGJaLyuXp943D1PV7N+FtCsa5jx
+         jJx8TxE6BHnGAIfW5MDil5hmjWgwpybBZexPcDG8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ilya Dryomov <idryomov@gmail.com>,
-        Dongsheng Yang <dongsheng.yang@easystack.cn>,
-        Xiubo Li <xiubli@redhat.com>
-Subject: [PATCH 5.4 123/154] libceph: fix potential hang in ceph_osdc_notify()
-Date:   Wed,  9 Aug 2023 12:42:34 +0200
-Message-ID: <20230809103640.978554157@linuxfoundation.org>
+        patches@lists.linux.dev, Benjamin Poirier <bpoirier@nvidia.com>,
+        Ido Schimmel <idosch@nvidia.com>,
+        Simon Horman <horms@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 153/201] vxlan: Fix nexthop hash size
+Date:   Wed,  9 Aug 2023 12:42:35 +0200
+Message-ID: <20230809103648.846748883@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103636.887175326@linuxfoundation.org>
-References: <20230809103636.887175326@linuxfoundation.org>
+In-Reply-To: <20230809103643.799166053@linuxfoundation.org>
+References: <20230809103643.799166053@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,69 +57,175 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ilya Dryomov <idryomov@gmail.com>
+From: Benjamin Poirier <bpoirier@nvidia.com>
 
-commit e6e2843230799230fc5deb8279728a7218b0d63c upstream.
+[ Upstream commit 0756384fb1bd38adb2ebcfd1307422f433a1d772 ]
 
-If the cluster becomes unavailable, ceph_osdc_notify() may hang even
-with osd_request_timeout option set because linger_notify_finish_wait()
-waits for MWatchNotify NOTIFY_COMPLETE message with no associated OSD
-request in flight -- it's completely asynchronous.
+The nexthop code expects a 31 bit hash, such as what is returned by
+fib_multipath_hash() and rt6_multipath_hash(). Passing the 32 bit hash
+returned by skb_get_hash() can lead to problems related to the fact that
+'int hash' is a negative number when the MSB is set.
 
-Introduce an additional timeout, derived from the specified notify
-timeout.  While at it, switch both waits to killable which is more
-correct.
+In the case of hash threshold nexthop groups, nexthop_select_path_hthr()
+will disproportionately select the first nexthop group entry. In the case
+of resilient nexthop groups, nexthop_select_path_res() may do an out of
+bounds access in nh_buckets[], for example:
+    hash = -912054133
+    num_nh_buckets = 2
+    bucket_index = 65535
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
-Reviewed-by: Dongsheng Yang <dongsheng.yang@easystack.cn>
-Reviewed-by: Xiubo Li <xiubli@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+which leads to the following panic:
+
+BUG: unable to handle page fault for address: ffffc900025910c8
+PGD 100000067 P4D 100000067 PUD 10026b067 PMD 0
+Oops: 0002 [#1] PREEMPT SMP KASAN NOPTI
+CPU: 4 PID: 856 Comm: kworker/4:3 Not tainted 6.5.0-rc2+ #34
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
+Workqueue: ipv6_addrconf addrconf_dad_work
+RIP: 0010:nexthop_select_path+0x197/0xbf0
+Code: c1 e4 05 be 08 00 00 00 4c 8b 35 a4 14 7e 01 4e 8d 6c 25 00 4a 8d 7c 25 08 48 01 dd e8 c2 25 15 ff 49 8d 7d 08 e8 39 13 15 ff <4d> 89 75 08 48 89 ef e8 7d 12 15 ff 48 8b 5d 00 e8 14 55 2f 00 85
+RSP: 0018:ffff88810c36f260 EFLAGS: 00010246
+RAX: 0000000000000000 RBX: 00000000002000c0 RCX: ffffffffaf02dd77
+RDX: dffffc0000000000 RSI: 0000000000000008 RDI: ffffc900025910c8
+RBP: ffffc900025910c0 R08: 0000000000000001 R09: fffff520004b2219
+R10: ffffc900025910cf R11: 31392d2068736168 R12: 00000000002000c0
+R13: ffffc900025910c0 R14: 00000000fffef608 R15: ffff88811840e900
+FS:  0000000000000000(0000) GS:ffff8881f7000000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: ffffc900025910c8 CR3: 0000000129d00000 CR4: 0000000000750ee0
+PKRU: 55555554
+Call Trace:
+ <TASK>
+ ? __die+0x23/0x70
+ ? page_fault_oops+0x1ee/0x5c0
+ ? __pfx_is_prefetch.constprop.0+0x10/0x10
+ ? __pfx_page_fault_oops+0x10/0x10
+ ? search_bpf_extables+0xfe/0x1c0
+ ? fixup_exception+0x3b/0x470
+ ? exc_page_fault+0xf6/0x110
+ ? asm_exc_page_fault+0x26/0x30
+ ? nexthop_select_path+0x197/0xbf0
+ ? nexthop_select_path+0x197/0xbf0
+ ? lock_is_held_type+0xe7/0x140
+ vxlan_xmit+0x5b2/0x2340
+ ? __lock_acquire+0x92b/0x3370
+ ? __pfx_vxlan_xmit+0x10/0x10
+ ? __pfx___lock_acquire+0x10/0x10
+ ? __pfx_register_lock_class+0x10/0x10
+ ? skb_network_protocol+0xce/0x2d0
+ ? dev_hard_start_xmit+0xca/0x350
+ ? __pfx_vxlan_xmit+0x10/0x10
+ dev_hard_start_xmit+0xca/0x350
+ __dev_queue_xmit+0x513/0x1e20
+ ? __pfx___dev_queue_xmit+0x10/0x10
+ ? __pfx_lock_release+0x10/0x10
+ ? mark_held_locks+0x44/0x90
+ ? skb_push+0x4c/0x80
+ ? eth_header+0x81/0xe0
+ ? __pfx_eth_header+0x10/0x10
+ ? neigh_resolve_output+0x215/0x310
+ ? ip6_finish_output2+0x2ba/0xc90
+ ip6_finish_output2+0x2ba/0xc90
+ ? lock_release+0x236/0x3e0
+ ? ip6_mtu+0xbb/0x240
+ ? __pfx_ip6_finish_output2+0x10/0x10
+ ? find_held_lock+0x83/0xa0
+ ? lock_is_held_type+0xe7/0x140
+ ip6_finish_output+0x1ee/0x780
+ ip6_output+0x138/0x460
+ ? __pfx_ip6_output+0x10/0x10
+ ? __pfx___lock_acquire+0x10/0x10
+ ? __pfx_ip6_finish_output+0x10/0x10
+ NF_HOOK.constprop.0+0xc0/0x420
+ ? __pfx_NF_HOOK.constprop.0+0x10/0x10
+ ? ndisc_send_skb+0x2c0/0x960
+ ? __pfx_lock_release+0x10/0x10
+ ? __local_bh_enable_ip+0x93/0x110
+ ? lock_is_held_type+0xe7/0x140
+ ndisc_send_skb+0x4be/0x960
+ ? __pfx_ndisc_send_skb+0x10/0x10
+ ? mark_held_locks+0x65/0x90
+ ? find_held_lock+0x83/0xa0
+ ndisc_send_ns+0xb0/0x110
+ ? __pfx_ndisc_send_ns+0x10/0x10
+ addrconf_dad_work+0x631/0x8e0
+ ? lock_acquire+0x180/0x3f0
+ ? __pfx_addrconf_dad_work+0x10/0x10
+ ? mark_held_locks+0x24/0x90
+ process_one_work+0x582/0x9c0
+ ? __pfx_process_one_work+0x10/0x10
+ ? __pfx_do_raw_spin_lock+0x10/0x10
+ ? mark_held_locks+0x24/0x90
+ worker_thread+0x93/0x630
+ ? __kthread_parkme+0xdc/0x100
+ ? __pfx_worker_thread+0x10/0x10
+ kthread+0x1a5/0x1e0
+ ? __pfx_kthread+0x10/0x10
+ ret_from_fork+0x34/0x60
+ ? __pfx_kthread+0x10/0x10
+ ret_from_fork_asm+0x1b/0x30
+RIP: 0000:0x0
+Code: Unable to access opcode bytes at 0xffffffffffffffd6.
+RSP: 0000:0000000000000000 EFLAGS: 00000000 ORIG_RAX: 0000000000000000
+RAX: 0000000000000000 RBX: 0000000000000000 RCX: 0000000000000000
+RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
+RBP: 0000000000000000 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000000 R12: 0000000000000000
+R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
+ </TASK>
+Modules linked in:
+CR2: ffffc900025910c8
+---[ end trace 0000000000000000 ]---
+RIP: 0010:nexthop_select_path+0x197/0xbf0
+Code: c1 e4 05 be 08 00 00 00 4c 8b 35 a4 14 7e 01 4e 8d 6c 25 00 4a 8d 7c 25 08 48 01 dd e8 c2 25 15 ff 49 8d 7d 08 e8 39 13 15 ff <4d> 89 75 08 48 89 ef e8 7d 12 15 ff 48 8b 5d 00 e8 14 55 2f 00 85
+RSP: 0018:ffff88810c36f260 EFLAGS: 00010246
+RAX: 0000000000000000 RBX: 00000000002000c0 RCX: ffffffffaf02dd77
+RDX: dffffc0000000000 RSI: 0000000000000008 RDI: ffffc900025910c8
+RBP: ffffc900025910c0 R08: 0000000000000001 R09: fffff520004b2219
+R10: ffffc900025910cf R11: 31392d2068736168 R12: 00000000002000c0
+R13: ffffc900025910c0 R14: 00000000fffef608 R15: ffff88811840e900
+FS:  0000000000000000(0000) GS:ffff8881f7000000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: ffffffffffffffd6 CR3: 0000000129d00000 CR4: 0000000000750ee0
+PKRU: 55555554
+Kernel panic - not syncing: Fatal exception in interrupt
+Kernel Offset: 0x2ca00000 from 0xffffffff81000000 (relocation range: 0xffffffff80000000-0xffffffffbfffffff)
+---[ end Kernel panic - not syncing: Fatal exception in interrupt ]---
+
+Fix this problem by ensuring the MSB of hash is 0 using a right shift - the
+same approach used in fib_multipath_hash() and rt6_multipath_hash().
+
+Fixes: 1274e1cc4226 ("vxlan: ecmp support for mac fdb entries")
+Signed-off-by: Benjamin Poirier <bpoirier@nvidia.com>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ceph/osd_client.c |   20 ++++++++++++++------
- 1 file changed, 14 insertions(+), 6 deletions(-)
+ include/net/vxlan.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/net/ceph/osd_client.c
-+++ b/net/ceph/osd_client.c
-@@ -3249,17 +3249,24 @@ static int linger_reg_commit_wait(struct
- 	int ret;
- 
- 	dout("%s lreq %p linger_id %llu\n", __func__, lreq, lreq->linger_id);
--	ret = wait_for_completion_interruptible(&lreq->reg_commit_wait);
-+	ret = wait_for_completion_killable(&lreq->reg_commit_wait);
- 	return ret ?: lreq->reg_commit_error;
+diff --git a/include/net/vxlan.h b/include/net/vxlan.h
+index cf1d870f7b9a8..e149a0b6f9a3c 100644
+--- a/include/net/vxlan.h
++++ b/include/net/vxlan.h
+@@ -497,12 +497,12 @@ static inline void vxlan_flag_attr_error(int attrtype,
  }
  
--static int linger_notify_finish_wait(struct ceph_osd_linger_request *lreq)
-+static int linger_notify_finish_wait(struct ceph_osd_linger_request *lreq,
-+				     unsigned long timeout)
+ static inline bool vxlan_fdb_nh_path_select(struct nexthop *nh,
+-					    int hash,
++					    u32 hash,
+ 					    struct vxlan_rdst *rdst)
  {
--	int ret;
-+	long left;
+ 	struct fib_nh_common *nhc;
  
- 	dout("%s lreq %p linger_id %llu\n", __func__, lreq, lreq->linger_id);
--	ret = wait_for_completion_interruptible(&lreq->notify_finish_wait);
--	return ret ?: lreq->notify_finish_error;
-+	left = wait_for_completion_killable_timeout(&lreq->notify_finish_wait,
-+						ceph_timeout_jiffies(timeout));
-+	if (left <= 0)
-+		left = left ?: -ETIMEDOUT;
-+	else
-+		left = lreq->notify_finish_error; /* completed */
-+
-+	return left;
- }
+-	nhc = nexthop_path_fdb_result(nh, hash);
++	nhc = nexthop_path_fdb_result(nh, hash >> 1);
+ 	if (unlikely(!nhc))
+ 		return false;
  
- /*
-@@ -4875,7 +4882,8 @@ int ceph_osdc_notify(struct ceph_osd_cli
- 	linger_submit(lreq);
- 	ret = linger_reg_commit_wait(lreq);
- 	if (!ret)
--		ret = linger_notify_finish_wait(lreq);
-+		ret = linger_notify_finish_wait(lreq,
-+				 msecs_to_jiffies(2 * timeout * MSEC_PER_SEC));
- 	else
- 		dout("lreq %p failed to initiate notify %d\n", lreq, ret);
- 
+-- 
+2.40.1
+
 
 
