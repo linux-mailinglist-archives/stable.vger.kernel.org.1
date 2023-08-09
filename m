@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DB93F775A59
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:07:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 93A99775BE0
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:22:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233155AbjHILHj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:07:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44866 "EHLO
+        id S233580AbjHILV7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:21:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45592 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233149AbjHILHj (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:07:39 -0400
+        with ESMTP id S233586AbjHILVy (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:21:54 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C8C8C1FFE
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:07:35 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD3BA2129
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:21:51 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 699756314A
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:07:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A363C433C7;
-        Wed,  9 Aug 2023 11:07:34 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6E6DD631F8
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:21:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D718C433C7;
+        Wed,  9 Aug 2023 11:21:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691579254;
-        bh=z9OzmJKZxp99VYGNNyVrK/NGpC07thCra3aguncas6g=;
+        s=korg; t=1691580110;
+        bh=bstnWSVLzdZRowKMJai/fU4rOhHPAqGlyHXpaBRYI34=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=h6uag2C3Uqa2K5cbd3Dkw/FSBj7ymrE5YXWvwkudTvM8ItufCbpo4EOT5ndaAOuyk
-         GVUsFei5oYbvpJyH6ryJ6bl8n9UuKXOL3J2PbVNeO310lt6Ul4XiWTlysH6Wd5zAZq
-         obeQ3LhQ83UuvOLEDdGPmmI7lAbJH48Ki6E4Hifk=
+        b=FvlBTQn1EptfImsZeQ5dbIUKmeTGNmJmm0yp2sSjkrMl8xYUH8y3OjQ4SV7UhkGSK
+         bzOXBCuF+QUyCuKvci8XsC2jYzN+4YjSOe/7mLQ8L3bAOSFAopGEjd3KhKi2Dd7j1D
+         mxCHMUyUM8AHhgkPXAbXR8AhAzBMSSOFtjiRuiqc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Peter Neuwirth <reddunur@online.de>,
-        Yu Kuai <yukuai3@huawei.com>, Song Liu <song@kernel.org>,
+        patches@lists.linux.dev, Alexander Aring <aahringo@redhat.com>,
+        David Teigland <teigland@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 130/204] md: fix data corruption for raid456 when reshape restart while grow up
+Subject: [PATCH 4.19 230/323] fs: dlm: interrupt posix locks only when process is killed
 Date:   Wed,  9 Aug 2023 12:41:08 +0200
-Message-ID: <20230809103646.952245224@linuxfoundation.org>
+Message-ID: <20230809103708.621775058@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103642.552405807@linuxfoundation.org>
-References: <20230809103642.552405807@linuxfoundation.org>
+In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
+References: <20230809103658.104386911@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,57 +55,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Yu Kuai <yukuai3@huawei.com>
+From: Alexander Aring <aahringo@redhat.com>
 
-[ Upstream commit 873f50ece41aad5c4f788a340960c53774b5526e ]
+[ Upstream commit 59e45c758ca1b9893ac923dd63536da946ac333b ]
 
-Currently, if reshape is interrupted, echo "reshape" to sync_action will
-restart reshape from scratch, for example:
+If a posix lock request is waiting for a result from user space
+(dlm_controld), do not let it be interrupted unless the process
+is killed. This reverts commit a6b1533e9a57 ("dlm: make posix locks
+interruptible"). The problem with the interruptible change is
+that all locks were cleared on any signal interrupt. If a signal
+was received that did not terminate the process, the process
+could continue running after all its dlm posix locks had been
+cleared. A future patch will add cancelation to allow proper
+interruption.
 
-echo frozen > sync_action
-echo reshape > sync_action
-
-This will corrupt data before reshape_position if the array is growing,
-fix the problem by continue reshape from reshape_position.
-
-Reported-by: Peter Neuwirth <reddunur@online.de>
-Link: https://lore.kernel.org/linux-raid/e2f96772-bfbc-f43b-6da1-f520e5164536@online.de/
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
-Signed-off-by: Song Liu <song@kernel.org>
-Link: https://lore.kernel.org/r/20230512015610.821290-3-yukuai1@huaweicloud.com
+Cc: stable@vger.kernel.org
+Fixes: a6b1533e9a57 ("dlm: make posix locks interruptible")
+Signed-off-by: Alexander Aring <aahringo@redhat.com>
+Signed-off-by: David Teigland <teigland@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/md.c | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ fs/dlm/plock.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/md/md.c b/drivers/md/md.c
-index 12392a4fb9c0d..3c2364d0d88f3 100644
---- a/drivers/md/md.c
-+++ b/drivers/md/md.c
-@@ -4615,11 +4615,21 @@ action_store(struct mddev *mddev, const char *page, size_t len)
- 			return -EINVAL;
- 		err = mddev_lock(mddev);
- 		if (!err) {
--			if (test_bit(MD_RECOVERY_RUNNING, &mddev->recovery))
-+			if (test_bit(MD_RECOVERY_RUNNING, &mddev->recovery)) {
- 				err =  -EBUSY;
--			else {
-+			} else if (mddev->reshape_position == MaxSector ||
-+				   mddev->pers->check_reshape == NULL ||
-+				   mddev->pers->check_reshape(mddev)) {
- 				clear_bit(MD_RECOVERY_FROZEN, &mddev->recovery);
- 				err = mddev->pers->start_reshape(mddev);
-+			} else {
-+				/*
-+				 * If reshape is still in progress, and
-+				 * md_check_recovery() can continue to reshape,
-+				 * don't restart reshape because data can be
-+				 * corrupted for raid456.
-+				 */
-+				clear_bit(MD_RECOVERY_FROZEN, &mddev->recovery);
- 			}
- 			mddev_unlock(mddev);
- 		}
+diff --git a/fs/dlm/plock.c b/fs/dlm/plock.c
+index 54ed11013d062..9fef426ce6f41 100644
+--- a/fs/dlm/plock.c
++++ b/fs/dlm/plock.c
+@@ -162,7 +162,7 @@ int dlm_posix_lock(dlm_lockspace_t *lockspace, u64 number, struct file *file,
+ 
+ 	send_op(op);
+ 
+-	rv = wait_event_interruptible(recv_wq, (op->done != 0));
++	rv = wait_event_killable(recv_wq, (op->done != 0));
+ 	if (rv == -ERESTARTSYS) {
+ 		log_debug(ls, "%s: wait killed %llx", __func__,
+ 			  (unsigned long long)number);
 -- 
 2.39.2
 
