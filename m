@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C27A3775D4D
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:35:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 65202775BAF
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:19:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234064AbjHILf5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:35:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49204 "EHLO
+        id S233505AbjHILTz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:19:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37518 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234068AbjHILf4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:35:56 -0400
+        with ESMTP id S233506AbjHILTz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:19:55 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A87351BFF
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:35:55 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A1AB1FA
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:19:54 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3E0E16350F
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:35:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 502C9C433C9;
-        Wed,  9 Aug 2023 11:35:54 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 36FFE631CC
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:19:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4530DC433C8;
+        Wed,  9 Aug 2023 11:19:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691580954;
-        bh=oURpJredoucDcEveexJXt0TQPG51YWuWX58XsNxKLPA=;
+        s=korg; t=1691579993;
+        bh=eypUSl1/c7hqNgZBXc/EePBe/xpjL2lNZgQwK/f+5l0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=EvmDpM1FIw772Agxz+yIXB2IW8DcwlAKNqGYyDvFXe7DFRsz5RV82Amk2EaJyIYMt
-         JNyW8QiYcwqhILyolmFZzkTbMOZiynrdxCmnBlMKgXUsjRbbSFoNvIoY76L2mDL5TS
-         aXI6SGjLaPO4GbH3bcm48Wsyb4SDbfbXq1uXf+Lg=
+        b=YMfPUBlRYzlDY+I7r6iAp+EVdDFyIVYkoUG3iPlTuewXJNDkBXS6xEB79HqIpjVN5
+         dMsdmP5kLr+Z6ATdFb0ma4eWg59SbkfTOpGccIClMoKUWaYsqnfTgT0UWOlGD+Rf4d
+         zF8sRboiD4ZOcQEKDRSZiWWn42uXySUSKIuSWB3U=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Vinod Koul <vkoul@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 024/201] phy: qcom-snps: correct struct qcom_snps_hsphy kerneldoc
-Date:   Wed,  9 Aug 2023 12:40:26 +0200
-Message-ID: <20230809103644.631058896@linuxfoundation.org>
+        patches@lists.linux.dev, YueHaibing <yuehaibing@huawei.com>,
+        Oliver Hartkopp <socketcan@hartkopp.net>,
+        Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH 4.19 189/323] can: bcm: Fix UAF in bcm_proc_show()
+Date:   Wed,  9 Aug 2023 12:40:27 +0200
+Message-ID: <20230809103706.822869600@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103643.799166053@linuxfoundation.org>
-References: <20230809103643.799166053@linuxfoundation.org>
+In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
+References: <20230809103658.104386911@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,43 +55,92 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: YueHaibing <yuehaibing@huawei.com>
 
-[ Upstream commit 2a881183dc5ab2474ef602e48fe7af34db460d95 ]
+commit 55c3b96074f3f9b0aee19bf93cd71af7516582bb upstream.
 
-Update kerneldoc of struct qcom_snps_hsphy to fix:
+BUG: KASAN: slab-use-after-free in bcm_proc_show+0x969/0xa80
+Read of size 8 at addr ffff888155846230 by task cat/7862
 
-  drivers/phy/qualcomm/phy-qcom-snps-femto-v2.c:135: warning: Function parameter or member 'update_seq_cfg' not described in 'qcom_snps_hsphy'
+CPU: 1 PID: 7862 Comm: cat Not tainted 6.5.0-rc1-00153-gc8746099c197 #230
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0xd5/0x150
+ print_report+0xc1/0x5e0
+ kasan_report+0xba/0xf0
+ bcm_proc_show+0x969/0xa80
+ seq_read_iter+0x4f6/0x1260
+ seq_read+0x165/0x210
+ proc_reg_read+0x227/0x300
+ vfs_read+0x1d5/0x8d0
+ ksys_read+0x11e/0x240
+ do_syscall_64+0x35/0xb0
+ entry_SYSCALL_64_after_hwframe+0x63/0xcd
 
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20230507144818.193039-1-krzysztof.kozlowski@linaro.org
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Stable-dep-of: 8a0eb8f9b9a0 ("phy: qcom-snps-femto-v2: properly enable ref clock")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Allocated by task 7846:
+ kasan_save_stack+0x1e/0x40
+ kasan_set_track+0x21/0x30
+ __kasan_kmalloc+0x9e/0xa0
+ bcm_sendmsg+0x264b/0x44e0
+ sock_sendmsg+0xda/0x180
+ ____sys_sendmsg+0x735/0x920
+ ___sys_sendmsg+0x11d/0x1b0
+ __sys_sendmsg+0xfa/0x1d0
+ do_syscall_64+0x35/0xb0
+ entry_SYSCALL_64_after_hwframe+0x63/0xcd
+
+Freed by task 7846:
+ kasan_save_stack+0x1e/0x40
+ kasan_set_track+0x21/0x30
+ kasan_save_free_info+0x27/0x40
+ ____kasan_slab_free+0x161/0x1c0
+ slab_free_freelist_hook+0x119/0x220
+ __kmem_cache_free+0xb4/0x2e0
+ rcu_core+0x809/0x1bd0
+
+bcm_op is freed before procfs entry be removed in bcm_release(),
+this lead to bcm_proc_show() may read the freed bcm_op.
+
+Fixes: ffd980f976e7 ("[CAN]: Add broadcast manager (bcm) protocol")
+Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+Reviewed-by: Oliver Hartkopp <socketcan@hartkopp.net>
+Acked-by: Oliver Hartkopp <socketcan@hartkopp.net>
+Link: https://lore.kernel.org/all/20230715092543.15548-1-yuehaibing@huawei.com
+Cc: stable@vger.kernel.org
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/phy/qualcomm/phy-qcom-snps-femto-v2.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/can/bcm.c |   12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/phy/qualcomm/phy-qcom-snps-femto-v2.c b/drivers/phy/qualcomm/phy-qcom-snps-femto-v2.c
-index 54846259405a9..136b45903c798 100644
---- a/drivers/phy/qualcomm/phy-qcom-snps-femto-v2.c
-+++ b/drivers/phy/qualcomm/phy-qcom-snps-femto-v2.c
-@@ -73,11 +73,11 @@ static const char * const qcom_snps_hsphy_vreg_names[] = {
-  *
-  * @cfg_ahb_clk: AHB2PHY interface clock
-  * @ref_clk: phy reference clock
-- * @iface_clk: phy interface clock
-  * @phy_reset: phy reset control
-  * @vregs: regulator supplies bulk data
-  * @phy_initialized: if PHY has been initialized correctly
-  * @mode: contains the current mode the PHY is in
-+ * @update_seq_cfg: tuning parameters for phy init
-  */
- struct qcom_snps_hsphy {
- 	struct phy *phy;
--- 
-2.39.2
-
+--- a/net/can/bcm.c
++++ b/net/can/bcm.c
+@@ -1520,6 +1520,12 @@ static int bcm_release(struct socket *so
+ 
+ 	lock_sock(sk);
+ 
++#if IS_ENABLED(CONFIG_PROC_FS)
++	/* remove procfs entry */
++	if (net->can.bcmproc_dir && bo->bcm_proc_read)
++		remove_proc_entry(bo->procname, net->can.bcmproc_dir);
++#endif /* CONFIG_PROC_FS */
++
+ 	list_for_each_entry_safe(op, next, &bo->tx_ops, list)
+ 		bcm_remove_op(op);
+ 
+@@ -1555,12 +1561,6 @@ static int bcm_release(struct socket *so
+ 	list_for_each_entry_safe(op, next, &bo->rx_ops, list)
+ 		bcm_remove_op(op);
+ 
+-#if IS_ENABLED(CONFIG_PROC_FS)
+-	/* remove procfs entry */
+-	if (net->can.bcmproc_dir && bo->bcm_proc_read)
+-		remove_proc_entry(bo->procname, net->can.bcmproc_dir);
+-#endif /* CONFIG_PROC_FS */
+-
+ 	/* remove device reference */
+ 	if (bo->bound) {
+ 		bo->bound   = 0;
 
 
