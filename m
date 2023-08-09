@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 850A6775759
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:44:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B9BF0775B3D
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:15:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231738AbjHIKo5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 06:44:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35572 "EHLO
+        id S233403AbjHILPq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:15:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58834 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230073AbjHIKo4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:44:56 -0400
+        with ESMTP id S229967AbjHILPp (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:15:45 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6FBC310F3
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:44:56 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 42D37ED
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:15:45 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 06A3B63118
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:44:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15DD2C433C8;
-        Wed,  9 Aug 2023 10:44:54 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C96D062457
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:15:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA976C433C8;
+        Wed,  9 Aug 2023 11:15:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691577895;
-        bh=LsLxq6AipUqdIARdrqSpYCPEupm3Npfjr8RLT86+MHk=;
+        s=korg; t=1691579744;
+        bh=dvJZmvyo1H6AaegGuiBlfE7X/cckUiTVWq714Ro/3JI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=kdgL72RaUaBOqokxJukK4/84Tw2Jke0Vsc0Wc4mv5OUG0WrHJKLOZq9dqQIz4i2VO
-         2YGdel6kveNra0zUKChwKFL3X0lssMAqiqazW68tMMLdwjU5472LSmzLafB5t9u4TX
-         NIELjqkJSeaj5eq1SVN0RrObTuRHIOZ0KS7Cqw3k=
+        b=Sew77MaRzqMudvk6K2FPgGjrEgMLGxw6dID/MwpP8XnWXW5uDw5SII/yCDw2J0tBs
+         u637pIKxpyY5ohQw6h85QX5TaAzx/dq/wmekwLJ/aoeBNFfuzi/B26Wt6HXk+apa9v
+         k1h+hqt3J4TvfzJ6+Y5mQZYH6C3ChHzzWQiAH9Ow=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Robin Murphy <robin.murphy@arm.com>,
-        Nicolin Chen <nicolinc@nvidia.com>,
-        Will Deacon <will@kernel.org>,
-        Easwar Hariharan <eahariha@linux.microsoft.com>
-Subject: [PATCH 6.4 005/165] iommu/arm-smmu-v3: Document nesting-related errata
-Date:   Wed,  9 Aug 2023 12:38:56 +0200
-Message-ID: <20230809103642.935677228@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 099/323] rtc: st-lpc: Release some resources in st_rtc_probe() in case of error
+Date:   Wed,  9 Aug 2023 12:38:57 +0200
+Message-ID: <20230809103702.589651280@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103642.720851262@linuxfoundation.org>
-References: <20230809103642.720851262@linuxfoundation.org>
+In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
+References: <20230809103658.104386911@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,59 +56,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Robin Murphy <robin.murphy@arm.com>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-commit 0bfbfc526c70606bf0fad302e4821087cbecfaf4 upstream
+[ Upstream commit 06c6e1b01d9261f03629cefd1f3553503291e6cf ]
 
-Both MMU-600 and MMU-700 have similar errata around TLB invalidation
-while both stages of translation are active, which will need some
-consideration once nesting support is implemented. For now, though,
-it's very easy to make our implicit lack of nesting support explicit
-for those cases, so they're less likely to be missed in future.
+If an error occurs after clk_get(), the corresponding resources should be
+released.
 
-Signed-off-by: Robin Murphy <robin.murphy@arm.com>
-Reviewed-by: Nicolin Chen <nicolinc@nvidia.com>
-Link: https://lore.kernel.org/r/696da78d32bb4491f898f11b0bb4d850a8aa7c6a.1683731256.git.robin.murphy@arm.com
-Signed-off-by: Will Deacon <will@kernel.org>
-Signed-off-by: Easwar Hariharan <eahariha@linux.microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Use devm_clk_get() to fix it.
+
+Fixes: b5b2bdfc2893 ("rtc: st: Add new driver for ST's LPC RTC")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Link: https://lore.kernel.org/r/866af6adbc7454a7b4505eb6c28fbdc86ccff39e.1686251455.git.christophe.jaillet@wanadoo.fr
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/arm64/silicon-errata.rst      |    4 ++--
- drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c |    5 +++++
- 2 files changed, 7 insertions(+), 2 deletions(-)
+ drivers/rtc/rtc-st-lpc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/Documentation/arm64/silicon-errata.rst
-+++ b/Documentation/arm64/silicon-errata.rst
-@@ -143,9 +143,9 @@ stable kernels.
- +----------------+-----------------+-----------------+-----------------------------+
- | ARM            | MMU-500         | #841119,826419  | N/A                         |
- +----------------+-----------------+-----------------+-----------------------------+
--| ARM            | MMU-600         | #1076982        | N/A                         |
-+| ARM            | MMU-600         | #1076982,1209401| N/A                         |
- +----------------+-----------------+-----------------+-----------------------------+
--| ARM            | MMU-700         | #2812531        | N/A                         |
-+| ARM            | MMU-700         | #2268618,2812531| N/A                         |
- +----------------+-----------------+-----------------+-----------------------------+
- +----------------+-----------------+-----------------+-----------------------------+
- | Broadcom       | Brahma-B53      | N/A             | ARM64_ERRATUM_845719        |
---- a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
-+++ b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
-@@ -3457,11 +3457,16 @@ static void arm_smmu_device_iidr_probe(s
- 			/* Arm erratum 1076982 */
- 			if (variant == 0 && revision <= 2)
- 				smmu->features &= ~ARM_SMMU_FEAT_SEV;
-+			/* Arm erratum 1209401 */
-+			if (variant < 2)
-+				smmu->features &= ~ARM_SMMU_FEAT_NESTING;
- 			break;
- 		case IIDR_PRODUCTID_ARM_MMU_700:
- 			/* Arm erratum 2812531 */
- 			smmu->features &= ~ARM_SMMU_FEAT_BTM;
- 			smmu->options |= ARM_SMMU_OPT_CMDQ_FORCE_SYNC;
-+			/* Arm errata 2268618, 2812531 */
-+			smmu->features &= ~ARM_SMMU_FEAT_NESTING;
- 			break;
- 		}
- 		break;
+diff --git a/drivers/rtc/rtc-st-lpc.c b/drivers/rtc/rtc-st-lpc.c
+index e66439b6247a4..e8a8ca3545f00 100644
+--- a/drivers/rtc/rtc-st-lpc.c
++++ b/drivers/rtc/rtc-st-lpc.c
+@@ -239,7 +239,7 @@ static int st_rtc_probe(struct platform_device *pdev)
+ 	enable_irq_wake(rtc->irq);
+ 	disable_irq(rtc->irq);
+ 
+-	rtc->clk = clk_get(&pdev->dev, NULL);
++	rtc->clk = devm_clk_get(&pdev->dev, NULL);
+ 	if (IS_ERR(rtc->clk)) {
+ 		dev_err(&pdev->dev, "Unable to request clock\n");
+ 		return PTR_ERR(rtc->clk);
+-- 
+2.39.2
+
 
 
