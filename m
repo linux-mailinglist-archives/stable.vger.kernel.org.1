@@ -2,47 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 02B6B775922
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:58:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 91DA6775BCC
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:21:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232755AbjHIK6B (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 06:58:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41010 "EHLO
+        id S233543AbjHILVI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:21:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33730 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232781AbjHIK57 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:57:59 -0400
+        with ESMTP id S233539AbjHILVH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:21:07 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F41EA268F
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:57:58 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8DDECED
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:21:07 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 86C7E6312C
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:57:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D5EDC433C7;
-        Wed,  9 Aug 2023 10:57:57 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2531B631D8
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:21:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33551C433C8;
+        Wed,  9 Aug 2023 11:21:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691578677;
-        bh=a79A/tL9TIDh6QOe9Mc4x9qYqeaBI+ep9heK96Qp7D0=;
+        s=korg; t=1691580066;
+        bh=zQj0mF09h+PsoflCAP/MixvTSZp8WKAFEJ9F/zbnAfI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ni5tkl4vzRhzK/4jLh7gbJvl8i9pusDP2PCRwCd4mXeiHwCZqCtfy3DEYijzYOXl+
-         U2CdtW5x7zA3S5DLDoANVmG5wErRCDt2tBXf9enENk6z2SUjVQOZGQ9bzZyTywj/Qm
-         PCAlI4SSHWZB+OGpZ8qsJgsqWDeOds7hx5AXNiKQ=
+        b=xrOZdyIS8GD6LPru7xZQqJbPMfSqkNi6i1H5hhGXHOlKWCP3vcJmh8mxKYx/jAXvK
+         ufXlRqMZ70bd+/TE3BdLh3uUhhljH/fqq0PIomIsW5VlILxvOY2sgRe+sR3Yqhxgq0
+         cqAJiVMaIJz7Oa2BiqGLbDptwgbvOF+KSSEeT8jQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jakub Kicinski <kuba@kernel.org>,
-        Lin Ma <linma@zju.edu.cn>,
-        Nikolay Aleksandrov <razor@blackwall.org>,
-        Hangbin Liu <liuhangbin@gmail.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 18/92] rtnetlink: let rtnl_bridge_setlink checks IFLA_BRIDGE_MODE length
+        patches@lists.linux.dev,
+        Mohamed Khalfella <mkhalfella@purestorage.com>,
+        "Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 4.19 216/323] tracing/histograms: Return an error if we fail to add histogram to hist_vars list
 Date:   Wed,  9 Aug 2023 12:40:54 +0200
-Message-ID: <20230809103634.236175469@linuxfoundation.org>
+Message-ID: <20230809103707.994494332@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103633.485906560@linuxfoundation.org>
-References: <20230809103633.485906560@linuxfoundation.org>
+In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
+References: <20230809103658.104386911@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,66 +55,38 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Lin Ma <linma@zju.edu.cn>
+From: Mohamed Khalfella <mkhalfella@purestorage.com>
 
-[ Upstream commit d73ef2d69c0dba5f5a1cb9600045c873bab1fb7f ]
+commit 4b8b3905165ef98386a3c06f196c85d21292d029 upstream.
 
-There are totally 9 ndo_bridge_setlink handlers in the current kernel,
-which are 1) bnxt_bridge_setlink, 2) be_ndo_bridge_setlink 3)
-i40e_ndo_bridge_setlink 4) ice_bridge_setlink 5)
-ixgbe_ndo_bridge_setlink 6) mlx5e_bridge_setlink 7)
-nfp_net_bridge_setlink 8) qeth_l2_bridge_setlink 9) br_setlink.
+Commit 6018b585e8c6 ("tracing/histograms: Add histograms to hist_vars if
+they have referenced variables") added a check to fail histogram creation
+if save_hist_vars() failed to add histogram to hist_vars list. But the
+commit failed to set ret to failed return code before jumping to
+unregister histogram, fix it.
 
-By investigating the code, we find that 1-7 parse and use nlattr
-IFLA_BRIDGE_MODE but 3 and 4 forget to do the nla_len check. This can
-lead to an out-of-attribute read and allow a malformed nlattr (e.g.,
-length 0) to be viewed as a 2 byte integer.
+Link: https://lore.kernel.org/linux-trace-kernel/20230714203341.51396-1-mkhalfella@purestorage.com
 
-To avoid such issues, also for other ndo_bridge_setlink handlers in the
-future. This patch adds the nla_len check in rtnl_bridge_setlink and
-does an early error return if length mismatches. To make it works, the
-break is removed from the parsing for IFLA_BRIDGE_FLAGS to make sure
-this nla_for_each_nested iterates every attribute.
-
-Fixes: b1edc14a3fbf ("ice: Implement ice_bridge_getlink and ice_bridge_setlink")
-Fixes: 51616018dd1b ("i40e: Add support for getlink, setlink ndo ops")
-Suggested-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Lin Ma <linma@zju.edu.cn>
-Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
-Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
-Link: https://lore.kernel.org/r/20230726075314.1059224-1-linma@zju.edu.cn
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 6018b585e8c6 ("tracing/histograms: Add histograms to hist_vars if they have referenced variables")
+Signed-off-by: Mohamed Khalfella <mkhalfella@purestorage.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/rtnetlink.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ kernel/trace/trace_events_hist.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
-index 49766446797c1..b055e196f5306 100644
---- a/net/core/rtnetlink.c
-+++ b/net/core/rtnetlink.c
-@@ -4919,13 +4919,17 @@ static int rtnl_bridge_setlink(struct sk_buff *skb, struct nlmsghdr *nlh,
- 	br_spec = nlmsg_find_attr(nlh, sizeof(struct ifinfomsg), IFLA_AF_SPEC);
- 	if (br_spec) {
- 		nla_for_each_nested(attr, br_spec, rem) {
--			if (nla_type(attr) == IFLA_BRIDGE_FLAGS) {
-+			if (nla_type(attr) == IFLA_BRIDGE_FLAGS && !have_flags) {
- 				if (nla_len(attr) < sizeof(flags))
- 					return -EINVAL;
+--- a/kernel/trace/trace_events_hist.c
++++ b/kernel/trace/trace_events_hist.c
+@@ -5792,7 +5792,8 @@ static int event_hist_trigger_func(struc
+ 		goto out_unreg;
  
- 				have_flags = true;
- 				flags = nla_get_u16(attr);
--				break;
-+			}
-+
-+			if (nla_type(attr) == IFLA_BRIDGE_MODE) {
-+				if (nla_len(attr) < sizeof(u16))
-+					return -EINVAL;
- 			}
- 		}
+ 	if (has_hist_vars(hist_data) || hist_data->n_var_refs) {
+-		if (save_hist_vars(hist_data))
++		ret = save_hist_vars(hist_data);
++		if (ret)
+ 			goto out_unreg;
  	}
--- 
-2.40.1
-
+ 
 
 
