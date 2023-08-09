@@ -2,47 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0C85D77595F
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:00:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AB6AF77587A
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:53:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232854AbjHIK76 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 06:59:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60908 "EHLO
+        id S232476AbjHIKxK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 06:53:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53006 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232846AbjHIK75 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:59:57 -0400
+        with ESMTP id S232526AbjHIKvm (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:51:42 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 099B6210A
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:59:56 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 506E8271F;
+        Wed,  9 Aug 2023 03:50:52 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 83F5C62DC8
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:59:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92532C433C8;
-        Wed,  9 Aug 2023 10:59:54 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D784263122;
+        Wed,  9 Aug 2023 10:50:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3BA2C433C9;
+        Wed,  9 Aug 2023 10:50:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691578795;
-        bh=ZvQdwN+165wF2gWyzmHSFGBbUJ7XJBFwN3y8jvA0vOk=;
+        s=korg; t=1691578251;
+        bh=KKVi2bbA1Q6bv143vAKbeQn3sSDsFkzRtiY/acM/1cM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=QUCJVhND1dga0gjePjOMpp7gyRPjWgOHDTwl1ld/EGQJ/wb8/grZ2D30cxFKSymQ/
-         imJN5DpE5oxqp7Zxlk6rcgWs8+YbOAaGENBjZnB1c29p3RuRysvbEL2Wl1bxELtjbr
-         d/Sdzj9moveSnsNepYpSDOQhLWqDymwuQc3rDOG8=
+        b=msvRz0zUpeTGFqjAFpk5TgAzNynXFEKnAeBn05nAr01jcWDTecahvps0WEBUWCXmc
+         66lQ3kAjeo6Vl2dHmWpYs0lD8DOplq3mftS21YKkyVpDOOKTf6bjMgNLra9hKi6g5f
+         NQxNiiexspG5DbPfTN4fowWnzsN3Km+08IKhJxjM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
-        David Ahern <dsahern@kernel.org>,
-        Kuniyuki Iwashima <kuniyu@amazon.com>,
-        Jakub Kicinski <kuba@kernel.org>,
+        patches@lists.linux.dev, Aaron Lewis <aaronlewis@google.com>,
+        kvm@vger.kernel.org, Sean Christopherson <seanjc@google.com>,
+        Paolo Bonzini <pbonzini@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 52/92] tcp_metrics: annotate data-races around tm->tcpm_net
+Subject: [PATCH 6.4 157/165] selftests/rseq: Play nice with binaries statically linked against glibc 2.35+
 Date:   Wed,  9 Aug 2023 12:41:28 +0200
-Message-ID: <20230809103635.403231969@linuxfoundation.org>
+Message-ID: <20230809103647.907748512@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103633.485906560@linuxfoundation.org>
-References: <20230809103633.485906560@linuxfoundation.org>
+In-Reply-To: <20230809103642.720851262@linuxfoundation.org>
+References: <20230809103642.720851262@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,64 +56,81 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Eric Dumazet <edumazet@google.com>
+From: Sean Christopherson <seanjc@google.com>
 
-[ Upstream commit d5d986ce42c71a7562d32c4e21e026b0f87befec ]
+[ Upstream commit 3bcbc20942db5d738221cca31a928efc09827069 ]
 
-tm->tcpm_net can be read or written locklessly.
+To allow running rseq and KVM's rseq selftests as statically linked
+binaries, initialize the various "trampoline" pointers to point directly
+at the expect glibc symbols, and skip the dlysm() lookups if the rseq
+size is non-zero, i.e. the binary is statically linked *and* the libc
+registered its own rseq.
 
-Instead of changing write_pnet() and read_pnet() and potentially
-hurt performance, add the needed READ_ONCE()/WRITE_ONCE()
-in tm_net() and tcpm_new().
+Define weak versions of the symbols so as not to break linking against
+libc versions that don't support rseq in any capacity.
 
-Fixes: 849e8a0ca8d5 ("tcp_metrics: Add a field tcpm_net and verify it matches on lookup")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Link: https://lore.kernel.org/r/20230802131500.1478140-6-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+The KVM selftests in particular are often statically linked so that they
+can be run on targets with very limited runtime environments, i.e. test
+machines.
+
+Fixes: 233e667e1ae3 ("selftests/rseq: Uplift rseq selftests for compatibility with glibc-2.35")
+Cc: Aaron Lewis <aaronlewis@google.com>
+Cc: kvm@vger.kernel.org
+Cc: stable@vger.kernel.org
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Message-Id: <20230721223352.2333911-1-seanjc@google.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/tcp_metrics.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ tools/testing/selftests/rseq/rseq.c | 28 ++++++++++++++++++++++------
+ 1 file changed, 22 insertions(+), 6 deletions(-)
 
-diff --git a/net/ipv4/tcp_metrics.c b/net/ipv4/tcp_metrics.c
-index 0c309fd4e04b2..88b0d952a2888 100644
---- a/net/ipv4/tcp_metrics.c
-+++ b/net/ipv4/tcp_metrics.c
-@@ -40,7 +40,7 @@ struct tcp_fastopen_metrics {
+diff --git a/tools/testing/selftests/rseq/rseq.c b/tools/testing/selftests/rseq/rseq.c
+index 4e4aa006004c8..a723da2532441 100644
+--- a/tools/testing/selftests/rseq/rseq.c
++++ b/tools/testing/selftests/rseq/rseq.c
+@@ -34,9 +34,17 @@
+ #include "../kselftest.h"
+ #include "rseq.h"
  
- struct tcp_metrics_block {
- 	struct tcp_metrics_block __rcu	*tcpm_next;
--	possible_net_t			tcpm_net;
-+	struct net			*tcpm_net;
- 	struct inetpeer_addr		tcpm_saddr;
- 	struct inetpeer_addr		tcpm_daddr;
- 	unsigned long			tcpm_stamp;
-@@ -51,9 +51,10 @@ struct tcp_metrics_block {
- 	struct rcu_head			rcu_head;
- };
- 
--static inline struct net *tm_net(struct tcp_metrics_block *tm)
-+static inline struct net *tm_net(const struct tcp_metrics_block *tm)
- {
--	return read_pnet(&tm->tcpm_net);
-+	/* Paired with the WRITE_ONCE() in tcpm_new() */
-+	return READ_ONCE(tm->tcpm_net);
- }
- 
- static bool tcp_metric_locked(struct tcp_metrics_block *tm,
-@@ -197,7 +198,9 @@ static struct tcp_metrics_block *tcpm_new(struct dst_entry *dst,
- 		if (!tm)
- 			goto out_unlock;
- 	}
--	write_pnet(&tm->tcpm_net, net);
-+	/* Paired with the READ_ONCE() in tm_net() */
-+	WRITE_ONCE(tm->tcpm_net, net);
+-static const ptrdiff_t *libc_rseq_offset_p;
+-static const unsigned int *libc_rseq_size_p;
+-static const unsigned int *libc_rseq_flags_p;
++/*
++ * Define weak versions to play nice with binaries that are statically linked
++ * against a libc that doesn't support registering its own rseq.
++ */
++__weak ptrdiff_t __rseq_offset;
++__weak unsigned int __rseq_size;
++__weak unsigned int __rseq_flags;
 +
- 	tm->tcpm_saddr = *saddr;
- 	tm->tcpm_daddr = *daddr;
++static const ptrdiff_t *libc_rseq_offset_p = &__rseq_offset;
++static const unsigned int *libc_rseq_size_p = &__rseq_size;
++static const unsigned int *libc_rseq_flags_p = &__rseq_flags;
  
+ /* Offset from the thread pointer to the rseq area. */
+ ptrdiff_t rseq_offset;
+@@ -155,9 +163,17 @@ unsigned int get_rseq_feature_size(void)
+ static __attribute__((constructor))
+ void rseq_init(void)
+ {
+-	libc_rseq_offset_p = dlsym(RTLD_NEXT, "__rseq_offset");
+-	libc_rseq_size_p = dlsym(RTLD_NEXT, "__rseq_size");
+-	libc_rseq_flags_p = dlsym(RTLD_NEXT, "__rseq_flags");
++	/*
++	 * If the libc's registered rseq size isn't already valid, it may be
++	 * because the binary is dynamically linked and not necessarily due to
++	 * libc not having registered a restartable sequence.  Try to find the
++	 * symbols if that's the case.
++	 */
++	if (!*libc_rseq_size_p) {
++		libc_rseq_offset_p = dlsym(RTLD_NEXT, "__rseq_offset");
++		libc_rseq_size_p = dlsym(RTLD_NEXT, "__rseq_size");
++		libc_rseq_flags_p = dlsym(RTLD_NEXT, "__rseq_flags");
++	}
+ 	if (libc_rseq_size_p && libc_rseq_offset_p && libc_rseq_flags_p &&
+ 			*libc_rseq_size_p != 0) {
+ 		/* rseq registration owned by glibc */
 -- 
 2.40.1
 
