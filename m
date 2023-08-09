@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 734F37759D7
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:03:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9272E775766
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:45:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233003AbjHILDa (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:03:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44088 "EHLO
+        id S229596AbjHIKpd (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 06:45:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39094 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232950AbjHILDX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:03:23 -0400
+        with ESMTP id S231783AbjHIKpd (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:45:33 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 90FB3ED
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:03:22 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A190010F3
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:45:32 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2518E6309F
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:03:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31D45C433C7;
-        Wed,  9 Aug 2023 11:03:21 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 38A1963121
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:45:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41C7FC433C8;
+        Wed,  9 Aug 2023 10:45:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691579001;
-        bh=KZnft3sVw5x33P3BLTN2j1AAlZ2+XyVaeAqZgoxC67k=;
+        s=korg; t=1691577931;
+        bh=AqAh7YCAiUeU0r707uGxMBwKEUx2DmtY4bG0LN6OTqI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=PP8H/DUBjcWO76kwIgnHnAvr17D0wC+8aSBrRCKJn6BdqIvfT1uw5CbT0zN7Rmphy
-         rSLaswOQ2jhHnjCiEnnhY6hwPCM+n2xthyO1AUaeZdoImQhtTu/5U6cSHOiIozu+1w
-         QXP8giCHLC60E1jn9l4Haf8f9+8KKK9AVQ1ooe48=
+        b=FDICxi20i8eg+HTnMaMeznOWLyIEF99QnskRntqZTuKUn9fFJooE1bgvtYiDYe6Fl
+         YZknTSNNwThjdWMTv+XFB306lmzPU+tutTTlxqw37PgJf6Vkyn80ui7a12q+ge8mQS
+         wzEyo7Gf2s1I3K6xGsZS8Bqqq0rO8OQHna6Ty9TY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Alexander Sverdlin <alexander.sverdlin@gmail.com>,
-        Arnd Bergmann <arnd@arndb.de>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 039/204] ARM: ep93xx: fix missing-prototype warnings
+        patches@lists.linux.dev, Chengfeng Ye <dg573847474@gmail.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 046/165] mISDN: hfcpci: Fix potential deadlock on &hc->lock
 Date:   Wed,  9 Aug 2023 12:39:37 +0200
-Message-ID: <20230809103643.880477584@linuxfoundation.org>
+Message-ID: <20230809103644.327805975@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103642.552405807@linuxfoundation.org>
-References: <20230809103642.552405807@linuxfoundation.org>
+In-Reply-To: <20230809103642.720851262@linuxfoundation.org>
+References: <20230809103642.720851262@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,48 +55,88 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Chengfeng Ye <dg573847474@gmail.com>
 
-[ Upstream commit 419013740ea1e4343d8ade535d999f59fa28e460 ]
+[ Upstream commit 56c6be35fcbed54279df0a2c9e60480a61841d6f ]
 
-ep93xx_clocksource_read() is only called from the file it is declared in,
-while ep93xx_timer_init() is declared in a header that is not included here.
+As &hc->lock is acquired by both timer _hfcpci_softirq() and hardirq
+hfcpci_int(), the timer should disable irq before lock acquisition
+otherwise deadlock could happen if the timmer is preemtped by the hadr irq.
 
-arch/arm/mach-ep93xx/timer-ep93xx.c:120:13: error: no previous prototype for 'ep93xx_timer_init'
-arch/arm/mach-ep93xx/timer-ep93xx.c:63:5: error: no previous prototype for 'ep93xx_clocksource_read'
+Possible deadlock scenario:
+hfcpci_softirq() (timer)
+    -> _hfcpci_softirq()
+    -> spin_lock(&hc->lock);
+        <irq interruption>
+        -> hfcpci_int()
+        -> spin_lock(&hc->lock); (deadlock here)
 
-Fixes: 000bc17817bf ("ARM: ep93xx: switch to GENERIC_CLOCKEVENTS")
-Acked-by: Alexander Sverdlin <alexander.sverdlin@gmail.com>
-Link: https://lore.kernel.org/r/20230516153109.514251-3-arnd@kernel.org
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+This flaw was found by an experimental static analysis tool I am developing
+for irq-related deadlock.
+
+The tentative patch fixes the potential deadlock by spin_lock_irq()
+in timer.
+
+Fixes: b36b654a7e82 ("mISDN: Create /sys/class/mISDN")
+Signed-off-by: Chengfeng Ye <dg573847474@gmail.com>
+Link: https://lore.kernel.org/r/20230727085619.7419-1-dg573847474@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/mach-ep93xx/timer-ep93xx.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/isdn/hardware/mISDN/hfcpci.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/arch/arm/mach-ep93xx/timer-ep93xx.c b/arch/arm/mach-ep93xx/timer-ep93xx.c
-index de998830f534f..b07956883e165 100644
---- a/arch/arm/mach-ep93xx/timer-ep93xx.c
-+++ b/arch/arm/mach-ep93xx/timer-ep93xx.c
-@@ -9,6 +9,7 @@
- #include <linux/io.h>
- #include <asm/mach/time.h>
- #include "soc.h"
-+#include "platform.h"
- 
- /*************************************************************************
-  * Timer handling for EP93xx
-@@ -60,7 +61,7 @@ static u64 notrace ep93xx_read_sched_clock(void)
- 	return ret;
+diff --git a/drivers/isdn/hardware/mISDN/hfcpci.c b/drivers/isdn/hardware/mISDN/hfcpci.c
+index c0331b2680108..fe391de1aba32 100644
+--- a/drivers/isdn/hardware/mISDN/hfcpci.c
++++ b/drivers/isdn/hardware/mISDN/hfcpci.c
+@@ -839,7 +839,7 @@ hfcpci_fill_fifo(struct bchannel *bch)
+ 		*z1t = cpu_to_le16(new_z1);	/* now send data */
+ 		if (bch->tx_idx < bch->tx_skb->len)
+ 			return;
+-		dev_kfree_skb(bch->tx_skb);
++		dev_kfree_skb_any(bch->tx_skb);
+ 		if (get_next_bframe(bch))
+ 			goto next_t_frame;
+ 		return;
+@@ -895,7 +895,7 @@ hfcpci_fill_fifo(struct bchannel *bch)
+ 	}
+ 	bz->za[new_f1].z1 = cpu_to_le16(new_z1);	/* for next buffer */
+ 	bz->f1 = new_f1;	/* next frame */
+-	dev_kfree_skb(bch->tx_skb);
++	dev_kfree_skb_any(bch->tx_skb);
+ 	get_next_bframe(bch);
  }
  
--u64 ep93xx_clocksource_read(struct clocksource *c)
-+static u64 ep93xx_clocksource_read(struct clocksource *c)
- {
- 	u64 ret;
+@@ -1119,7 +1119,7 @@ tx_birq(struct bchannel *bch)
+ 	if (bch->tx_skb && bch->tx_idx < bch->tx_skb->len)
+ 		hfcpci_fill_fifo(bch);
+ 	else {
+-		dev_kfree_skb(bch->tx_skb);
++		dev_kfree_skb_any(bch->tx_skb);
+ 		if (get_next_bframe(bch))
+ 			hfcpci_fill_fifo(bch);
+ 	}
+@@ -2277,7 +2277,7 @@ _hfcpci_softirq(struct device *dev, void *unused)
+ 		return 0;
  
+ 	if (hc->hw.int_m2 & HFCPCI_IRQ_ENABLE) {
+-		spin_lock(&hc->lock);
++		spin_lock_irq(&hc->lock);
+ 		bch = Sel_BCS(hc, hc->hw.bswapped ? 2 : 1);
+ 		if (bch && bch->state == ISDN_P_B_RAW) { /* B1 rx&tx */
+ 			main_rec_hfcpci(bch);
+@@ -2288,7 +2288,7 @@ _hfcpci_softirq(struct device *dev, void *unused)
+ 			main_rec_hfcpci(bch);
+ 			tx_birq(bch);
+ 		}
+-		spin_unlock(&hc->lock);
++		spin_unlock_irq(&hc->lock);
+ 	}
+ 	return 0;
+ }
 -- 
-2.39.2
+2.40.1
 
 
 
