@@ -2,125 +2,199 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 30614775A48
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:07:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 46AA7775933
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:58:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233126AbjHILHD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:07:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52106 "EHLO
+        id S232787AbjHIK6c (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 06:58:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37180 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233122AbjHILHC (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:07:02 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 95D6810F3
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:07:02 -0700 (PDT)
+        with ESMTP id S232778AbjHIK6a (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:58:30 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 93CCB2137
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:58:29 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2C34362BD5
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:07:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BCC7C433C8;
-        Wed,  9 Aug 2023 11:07:01 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3118D6312F
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:58:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 428EDC433C8;
+        Wed,  9 Aug 2023 10:58:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691579221;
-        bh=E6zZJbs2IHZ6ARA5rBEZYDsdoWqvFzGdXLdHhRC1IlA=;
+        s=korg; t=1691578708;
+        bh=USqjyf4fu+60U/HlQTS5Y1sAGfNgPOwuoeaqjXcI+90=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=gm3DrvcLvtAexfjiq20WKc7NStnLPluZDkCWpD10iIsXATZaVKdsLif8FNDbma7Z3
-         YCsO9Juxv/QzlM2wzsZq2O9AuIeCEHnMW7+PmXZcTUZZEwOtWYfw8IL2Q4v7EXGkqs
-         K0gcFZQpWhOKNV22Lu99gU8NP8A70Ct8bvhfNuyI=
+        b=G/8+c2YjOAM8HKVCkX+5Ka062XP6kRekgTxY59yFTUPT1I+zewjGApZzhogGcLpQ8
+         9YCw3Du6Mfth6iXk2bzHVuQjeMYXCu5JYUPAO6s8/jTpj/qLecJZ4GOAkoCqwPR3M4
+         VnRlGX5qYg2QGpwpMn4K/LBKveXXHm06+NR51y0A=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Quinn Tran <qutran@marvell.com>,
-        Nilesh Javali <njavali@marvell.com>,
-        Himanshu Madhani <himanshu.madhani@oracle.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 4.14 119/204] scsi: qla2xxx: Wait for io return on terminate rport
+        patches@lists.linux.dev, Mingi Cho <mgcho.minic@gmail.com>,
+        Jamal Hadi Salim <jhs@mojatatu.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 21/92] net: sched: cls_u32: Fix match key mis-addressing
 Date:   Wed,  9 Aug 2023 12:40:57 +0200
-Message-ID: <20230809103646.585339752@linuxfoundation.org>
+Message-ID: <20230809103634.348743785@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103642.552405807@linuxfoundation.org>
-References: <20230809103642.552405807@linuxfoundation.org>
+In-Reply-To: <20230809103633.485906560@linuxfoundation.org>
+References: <20230809103633.485906560@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Quinn Tran <qutran@marvell.com>
+From: Jamal Hadi Salim <jhs@mojatatu.com>
 
-commit fc0cba0c7be8261a1625098bd1d695077ec621c9 upstream.
+[ Upstream commit e68409db995380d1badacba41ff24996bd396171 ]
 
-System crash due to use after free.
-Current code allows terminate_rport_io to exit before making
-sure all IOs has returned. For FCP-2 device, IO's can hang
-on in HW because driver has not tear down the session in FW at
-first sign of cable pull. When dev_loss_tmo timer pops,
-terminate_rport_io is called and upper layer is about to
-free various resources. Terminate_rport_io trigger qla to do
-the final cleanup, but the cleanup might not be fast enough where it
-leave qla still holding on to the same resource.
+A match entry is uniquely identified with an "address" or "path" in the
+form of: hashtable ID(12b):bucketid(8b):nodeid(12b).
 
-Wait for IO's to return to upper layer before resources are freed.
+When creating table match entries all of hash table id, bucket id and
+node (match entry id) are needed to be either specified by the user or
+reasonable in-kernel defaults are used. The in-kernel default for a table id is
+0x800(omnipresent root table); for bucketid it is 0x0. Prior to this fix there
+was none for a nodeid i.e. the code assumed that the user passed the correct
+nodeid and if the user passes a nodeid of 0 (as Mingi Cho did) then that is what
+was used. But nodeid of 0 is reserved for identifying the table. This is not
+a problem until we dump. The dump code notices that the nodeid is zero and
+assumes it is referencing a table and therefore references table struct
+tc_u_hnode instead of what was created i.e match entry struct tc_u_knode.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Quinn Tran <qutran@marvell.com>
-Signed-off-by: Nilesh Javali <njavali@marvell.com>
-Link: https://lore.kernel.org/r/20230428075339.32551-7-njavali@marvell.com
-Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Ming does an equivalent of:
+tc filter add dev dummy0 parent 10: prio 1 handle 0x1000 \
+protocol ip u32 match ip src 10.0.0.1/32 classid 10:1 action ok
+
+Essentially specifying a table id 0, bucketid 1 and nodeid of zero
+Tableid 0 is remapped to the default of 0x800.
+Bucketid 1 is ignored and defaults to 0x00.
+Nodeid was assumed to be what Ming passed - 0x000
+
+dumping before fix shows:
+~$ tc filter ls dev dummy0 parent 10:
+filter protocol ip pref 1 u32 chain 0
+filter protocol ip pref 1 u32 chain 0 fh 800: ht divisor 1
+filter protocol ip pref 1 u32 chain 0 fh 800: ht divisor -30591
+
+Note that the last line reports a table instead of a match entry
+(you can tell this because it says "ht divisor...").
+As a result of reporting the wrong data type (misinterpretting of struct
+tc_u_knode as being struct tc_u_hnode) the divisor is reported with value
+of -30591. Ming identified this as part of the heap address
+(physmap_base is 0xffff8880 (-30591 - 1)).
+
+The fix is to ensure that when table entry matches are added and no
+nodeid is specified (i.e nodeid == 0) then we get the next available
+nodeid from the table's pool.
+
+After the fix, this is what the dump shows:
+$ tc filter ls dev dummy0 parent 10:
+filter protocol ip pref 1 u32 chain 0
+filter protocol ip pref 1 u32 chain 0 fh 800: ht divisor 1
+filter protocol ip pref 1 u32 chain 0 fh 800::800 order 2048 key ht 800 bkt 0 flowid 10:1 not_in_hw
+  match 0a000001/ffffffff at 12
+	action order 1: gact action pass
+	 random type none pass val 0
+	 index 1 ref 1 bind 1
+
+Reported-by: Mingi Cho <mgcho.minic@gmail.com>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Link: https://lore.kernel.org/r/20230726135151.416917-1-jhs@mojatatu.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/qla2xxx/qla_attr.c |   13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ net/sched/cls_u32.c | 56 ++++++++++++++++++++++++++++++++++++++++-----
+ 1 file changed, 50 insertions(+), 6 deletions(-)
 
---- a/drivers/scsi/qla2xxx/qla_attr.c
-+++ b/drivers/scsi/qla2xxx/qla_attr.c
-@@ -1779,6 +1779,7 @@ static void
- qla2x00_terminate_rport_io(struct fc_rport *rport)
- {
- 	fc_port_t *fcport = *(fc_port_t **)rport->dd_data;
-+	scsi_qla_host_t *vha;
- 
- 	if (!fcport)
- 		return;
-@@ -1788,9 +1789,12 @@ qla2x00_terminate_rport_io(struct fc_rpo
- 
- 	if (test_bit(ABORT_ISP_ACTIVE, &fcport->vha->dpc_flags))
- 		return;
-+	vha = fcport->vha;
- 
- 	if (unlikely(pci_channel_offline(fcport->vha->hw->pdev))) {
- 		qla2x00_abort_all_cmds(fcport->vha, DID_NO_CONNECT << 16);
-+		qla2x00_eh_wait_for_pending_commands(fcport->vha, fcport->d_id.b24,
-+			0, WAIT_TARGET);
- 		return;
+diff --git a/net/sched/cls_u32.c b/net/sched/cls_u32.c
+index 0025fa837e857..e4e38aa75111e 100644
+--- a/net/sched/cls_u32.c
++++ b/net/sched/cls_u32.c
+@@ -999,18 +999,62 @@ static int u32_change(struct net *net, struct sk_buff *in_skb,
+ 		return -EINVAL;
  	}
- 	/*
-@@ -1805,6 +1809,15 @@ qla2x00_terminate_rport_io(struct fc_rpo
- 		else
- 			qla2x00_port_logout(fcport->vha, fcport);
- 	}
-+
-+	/* check for any straggling io left behind */
-+	if (qla2x00_eh_wait_for_pending_commands(fcport->vha, fcport->d_id.b24, 0, WAIT_TARGET)) {
-+		ql_log(ql_log_warn, vha, 0x300b,
-+		       "IO not return.  Resetting. \n");
-+		set_bit(ISP_ABORT_NEEDED, &vha->dpc_flags);
-+		qla2xxx_wake_dpc(vha);
-+		qla2x00_wait_for_chip_reset(vha);
+ 
++	/* At this point, we need to derive the new handle that will be used to
++	 * uniquely map the identity of this table match entry. The
++	 * identity of the entry that we need to construct is 32 bits made of:
++	 *     htid(12b):bucketid(8b):node/entryid(12b)
++	 *
++	 * At this point _we have the table(ht)_ in which we will insert this
++	 * entry. We carry the table's id in variable "htid".
++	 * Note that earlier code picked the ht selection either by a) the user
++	 * providing the htid specified via TCA_U32_HASH attribute or b) when
++	 * no such attribute is passed then the root ht, is default to at ID
++	 * 0x[800][00][000]. Rule: the root table has a single bucket with ID 0.
++	 * If OTOH the user passed us the htid, they may also pass a bucketid of
++	 * choice. 0 is fine. For example a user htid is 0x[600][01][000] it is
++	 * indicating hash bucketid of 1. Rule: the entry/node ID _cannot_ be
++	 * passed via the htid, so even if it was non-zero it will be ignored.
++	 *
++	 * We may also have a handle, if the user passed one. The handle also
++	 * carries the same addressing of htid(12b):bucketid(8b):node/entryid(12b).
++	 * Rule: the bucketid on the handle is ignored even if one was passed;
++	 * rather the value on "htid" is always assumed to be the bucketid.
++	 */
+ 	if (handle) {
++		/* Rule: The htid from handle and tableid from htid must match */
+ 		if (TC_U32_HTID(handle) && TC_U32_HTID(handle ^ htid)) {
+ 			NL_SET_ERR_MSG_MOD(extack, "Handle specified hash table address mismatch");
+ 			return -EINVAL;
+ 		}
+-		handle = htid | TC_U32_NODE(handle);
+-		err = idr_alloc_u32(&ht->handle_idr, NULL, &handle, handle,
+-				    GFP_KERNEL);
+-		if (err)
+-			return err;
+-	} else
++		/* Ok, so far we have a valid htid(12b):bucketid(8b) but we
++		 * need to finalize the table entry identification with the last
++		 * part - the node/entryid(12b)). Rule: Nodeid _cannot be 0_ for
++		 * entries. Rule: nodeid of 0 is reserved only for tables(see
++		 * earlier code which processes TC_U32_DIVISOR attribute).
++		 * Rule: The nodeid can only be derived from the handle (and not
++		 * htid).
++		 * Rule: if the handle specified zero for the node id example
++		 * 0x60000000, then pick a new nodeid from the pool of IDs
++		 * this hash table has been allocating from.
++		 * If OTOH it is specified (i.e for example the user passed a
++		 * handle such as 0x60000123), then we use it generate our final
++		 * handle which is used to uniquely identify the match entry.
++		 */
++		if (!TC_U32_NODE(handle)) {
++			handle = gen_new_kid(ht, htid);
++		} else {
++			handle = htid | TC_U32_NODE(handle);
++			err = idr_alloc_u32(&ht->handle_idr, NULL, &handle,
++					    handle, GFP_KERNEL);
++			if (err)
++				return err;
++		}
++	} else {
++		/* The user did not give us a handle; lets just generate one
++		 * from the table's pool of nodeids.
++		 */
+ 		handle = gen_new_kid(ht, htid);
 +	}
- }
  
- static int
+ 	if (tb[TCA_U32_SEL] == NULL) {
+ 		NL_SET_ERR_MSG_MOD(extack, "Selector not specified");
+-- 
+2.40.1
+
 
 
