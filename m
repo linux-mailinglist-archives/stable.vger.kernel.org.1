@@ -2,141 +2,181 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9272E775766
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:45:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8A80F775B97
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:19:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229596AbjHIKpd (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 06:45:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39094 "EHLO
+        id S233486AbjHILS7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:18:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55110 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231783AbjHIKpd (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:45:33 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A190010F3
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:45:32 -0700 (PDT)
+        with ESMTP id S233487AbjHILS7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:18:59 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CFE02ED
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:18:58 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 38A1963121
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:45:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41C7FC433C8;
-        Wed,  9 Aug 2023 10:45:31 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6EA0663193
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:18:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E38EC433C7;
+        Wed,  9 Aug 2023 11:18:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691577931;
-        bh=AqAh7YCAiUeU0r707uGxMBwKEUx2DmtY4bG0LN6OTqI=;
+        s=korg; t=1691579937;
+        bh=IZHb1zt9D0xRB5bklRHdIbvHTe+HbSuKK2gMtrmcaUU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=FDICxi20i8eg+HTnMaMeznOWLyIEF99QnskRntqZTuKUn9fFJooE1bgvtYiDYe6Fl
-         YZknTSNNwThjdWMTv+XFB306lmzPU+tutTTlxqw37PgJf6Vkyn80ui7a12q+ge8mQS
-         wzEyo7Gf2s1I3K6xGsZS8Bqqq0rO8OQHna6Ty9TY=
+        b=QNjeV0vCnE+IpZwynV2A4A6b1O9Oc2HdzaKcDdR8OHDowhcystVuwxqzEokqrTWS5
+         qMD1dRMXh+CxUEp6ZyzfFRt8+u0BiNTXDBVwVpPeP9K3hx5VbLFsKp4Pg9DtpAJsBH
+         MqBNaS1jQGnDvqjsiVrBfyRktlG/ZYWu/OHkTc5U=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Chengfeng Ye <dg573847474@gmail.com>,
-        Jakub Kicinski <kuba@kernel.org>,
+        patches@lists.linux.dev, Stephen Suryaputra <ssuryaextr@gmail.com>,
+        David Ahern <dsahern@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 046/165] mISDN: hfcpci: Fix potential deadlock on &hc->lock
+Subject: [PATCH 4.19 139/323] vrf: Increment Icmp6InMsgs on the original netdev
 Date:   Wed,  9 Aug 2023 12:39:37 +0200
-Message-ID: <20230809103644.327805975@linuxfoundation.org>
+Message-ID: <20230809103704.504527435@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103642.720851262@linuxfoundation.org>
-References: <20230809103642.720851262@linuxfoundation.org>
+In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
+References: <20230809103658.104386911@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Chengfeng Ye <dg573847474@gmail.com>
+From: Stephen Suryaputra <ssuryaextr@gmail.com>
 
-[ Upstream commit 56c6be35fcbed54279df0a2c9e60480a61841d6f ]
+[ Upstream commit e1ae5c2ea4783b1fd87be250f9fcc9d9e1a6ba3f ]
 
-As &hc->lock is acquired by both timer _hfcpci_softirq() and hardirq
-hfcpci_int(), the timer should disable irq before lock acquisition
-otherwise deadlock could happen if the timmer is preemtped by the hadr irq.
+Get the ingress interface and increment ICMP counters based on that
+instead of skb->dev when the the dev is a VRF device.
 
-Possible deadlock scenario:
-hfcpci_softirq() (timer)
-    -> _hfcpci_softirq()
-    -> spin_lock(&hc->lock);
-        <irq interruption>
-        -> hfcpci_int()
-        -> spin_lock(&hc->lock); (deadlock here)
+This is a follow up on the following message:
+https://www.spinics.net/lists/netdev/msg560268.html
 
-This flaw was found by an experimental static analysis tool I am developing
-for irq-related deadlock.
-
-The tentative patch fixes the potential deadlock by spin_lock_irq()
-in timer.
-
-Fixes: b36b654a7e82 ("mISDN: Create /sys/class/mISDN")
-Signed-off-by: Chengfeng Ye <dg573847474@gmail.com>
-Link: https://lore.kernel.org/r/20230727085619.7419-1-dg573847474@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+v2: Avoid changing skb->dev since it has unintended effect for local
+    delivery (David Ahern).
+Signed-off-by: Stephen Suryaputra <ssuryaextr@gmail.com>
+Reviewed-by: David Ahern <dsahern@gmail.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: 2aaa8a15de73 ("icmp6: Fix null-ptr-deref of ip6_null_entry->rt6i_idev in icmp6_dev().")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/isdn/hardware/mISDN/hfcpci.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ include/net/addrconf.h | 16 ++++++++++++++++
+ net/ipv6/icmp.c        | 17 +++++++++++------
+ net/ipv6/reassembly.c  |  4 ++--
+ 3 files changed, 29 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/isdn/hardware/mISDN/hfcpci.c b/drivers/isdn/hardware/mISDN/hfcpci.c
-index c0331b2680108..fe391de1aba32 100644
---- a/drivers/isdn/hardware/mISDN/hfcpci.c
-+++ b/drivers/isdn/hardware/mISDN/hfcpci.c
-@@ -839,7 +839,7 @@ hfcpci_fill_fifo(struct bchannel *bch)
- 		*z1t = cpu_to_le16(new_z1);	/* now send data */
- 		if (bch->tx_idx < bch->tx_skb->len)
- 			return;
--		dev_kfree_skb(bch->tx_skb);
-+		dev_kfree_skb_any(bch->tx_skb);
- 		if (get_next_bframe(bch))
- 			goto next_t_frame;
- 		return;
-@@ -895,7 +895,7 @@ hfcpci_fill_fifo(struct bchannel *bch)
- 	}
- 	bz->za[new_f1].z1 = cpu_to_le16(new_z1);	/* for next buffer */
- 	bz->f1 = new_f1;	/* next frame */
--	dev_kfree_skb(bch->tx_skb);
-+	dev_kfree_skb_any(bch->tx_skb);
- 	get_next_bframe(bch);
+diff --git a/include/net/addrconf.h b/include/net/addrconf.h
+index db2a87981dd46..9583d3bbab039 100644
+--- a/include/net/addrconf.h
++++ b/include/net/addrconf.h
+@@ -340,6 +340,22 @@ static inline struct inet6_dev *__in6_dev_get(const struct net_device *dev)
+ 	return rcu_dereference_rtnl(dev->ip6_ptr);
  }
  
-@@ -1119,7 +1119,7 @@ tx_birq(struct bchannel *bch)
- 	if (bch->tx_skb && bch->tx_idx < bch->tx_skb->len)
- 		hfcpci_fill_fifo(bch);
- 	else {
--		dev_kfree_skb(bch->tx_skb);
-+		dev_kfree_skb_any(bch->tx_skb);
- 		if (get_next_bframe(bch))
- 			hfcpci_fill_fifo(bch);
- 	}
-@@ -2277,7 +2277,7 @@ _hfcpci_softirq(struct device *dev, void *unused)
- 		return 0;
- 
- 	if (hc->hw.int_m2 & HFCPCI_IRQ_ENABLE) {
--		spin_lock(&hc->lock);
-+		spin_lock_irq(&hc->lock);
- 		bch = Sel_BCS(hc, hc->hw.bswapped ? 2 : 1);
- 		if (bch && bch->state == ISDN_P_B_RAW) { /* B1 rx&tx */
- 			main_rec_hfcpci(bch);
-@@ -2288,7 +2288,7 @@ _hfcpci_softirq(struct device *dev, void *unused)
- 			main_rec_hfcpci(bch);
- 			tx_birq(bch);
- 		}
--		spin_unlock(&hc->lock);
-+		spin_unlock_irq(&hc->lock);
- 	}
- 	return 0;
++/**
++ * __in6_dev_stats_get - get inet6_dev pointer for stats
++ * @dev: network device
++ * @skb: skb for original incoming interface if neeeded
++ *
++ * Caller must hold rcu_read_lock or RTNL, because this function
++ * does not take a reference on the inet6_dev.
++ */
++static inline struct inet6_dev *__in6_dev_stats_get(const struct net_device *dev,
++						    const struct sk_buff *skb)
++{
++	if (netif_is_l3_master(dev))
++		dev = dev_get_by_index_rcu(dev_net(dev), inet6_iif(skb));
++	return __in6_dev_get(dev);
++}
++
+ /**
+  * __in6_dev_get_safely - get inet6_dev pointer from netdevice
+  * @dev: network device
+diff --git a/net/ipv6/icmp.c b/net/ipv6/icmp.c
+index fbc8746371b6d..1b86a2e03d049 100644
+--- a/net/ipv6/icmp.c
++++ b/net/ipv6/icmp.c
+@@ -395,23 +395,28 @@ static struct dst_entry *icmpv6_route_lookup(struct net *net,
+ 	return ERR_PTR(err);
  }
+ 
+-static int icmp6_iif(const struct sk_buff *skb)
++static struct net_device *icmp6_dev(const struct sk_buff *skb)
+ {
+-	int iif = skb->dev->ifindex;
++	struct net_device *dev = skb->dev;
+ 
+ 	/* for local traffic to local address, skb dev is the loopback
+ 	 * device. Check if there is a dst attached to the skb and if so
+ 	 * get the real device index. Same is needed for replies to a link
+ 	 * local address on a device enslaved to an L3 master device
+ 	 */
+-	if (unlikely(iif == LOOPBACK_IFINDEX || netif_is_l3_master(skb->dev))) {
++	if (unlikely(dev->ifindex == LOOPBACK_IFINDEX || netif_is_l3_master(skb->dev))) {
+ 		const struct rt6_info *rt6 = skb_rt6_info(skb);
+ 
+ 		if (rt6)
+-			iif = rt6->rt6i_idev->dev->ifindex;
++			dev = rt6->rt6i_idev->dev;
+ 	}
+ 
+-	return iif;
++	return dev;
++}
++
++static int icmp6_iif(const struct sk_buff *skb)
++{
++	return icmp6_dev(skb)->ifindex;
+ }
+ 
+ /*
+@@ -800,7 +805,7 @@ void icmpv6_notify(struct sk_buff *skb, u8 type, u8 code, __be32 info)
+ static int icmpv6_rcv(struct sk_buff *skb)
+ {
+ 	struct net *net = dev_net(skb->dev);
+-	struct net_device *dev = skb->dev;
++	struct net_device *dev = icmp6_dev(skb);
+ 	struct inet6_dev *idev = __in6_dev_get(dev);
+ 	const struct in6_addr *saddr, *daddr;
+ 	struct icmp6hdr *hdr;
+diff --git a/net/ipv6/reassembly.c b/net/ipv6/reassembly.c
+index 60dfd0d118512..b596727f04978 100644
+--- a/net/ipv6/reassembly.c
++++ b/net/ipv6/reassembly.c
+@@ -302,7 +302,7 @@ static int ip6_frag_reasm(struct frag_queue *fq, struct sk_buff *skb,
+ 			   skb_network_header_len(skb));
+ 
+ 	rcu_read_lock();
+-	__IP6_INC_STATS(net, __in6_dev_get(dev), IPSTATS_MIB_REASMOKS);
++	__IP6_INC_STATS(net, __in6_dev_stats_get(dev, skb), IPSTATS_MIB_REASMOKS);
+ 	rcu_read_unlock();
+ 	fq->q.fragments = NULL;
+ 	fq->q.rb_fragments = RB_ROOT;
+@@ -317,7 +317,7 @@ static int ip6_frag_reasm(struct frag_queue *fq, struct sk_buff *skb,
+ 	net_dbg_ratelimited("ip6_frag_reasm: no memory for reassembly\n");
+ out_fail:
+ 	rcu_read_lock();
+-	__IP6_INC_STATS(net, __in6_dev_get(dev), IPSTATS_MIB_REASMFAILS);
++	__IP6_INC_STATS(net, __in6_dev_stats_get(dev, skb), IPSTATS_MIB_REASMFAILS);
+ 	rcu_read_unlock();
+ 	inet_frag_kill(&fq->q);
+ 	return -1;
 -- 
-2.40.1
+2.39.2
 
 
 
