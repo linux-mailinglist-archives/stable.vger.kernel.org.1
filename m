@@ -2,46 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CB222775876
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:53:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 78AD4775954
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:59:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232614AbjHIKxE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 06:53:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53054 "EHLO
+        id S232834AbjHIK7e (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 06:59:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42310 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232430AbjHIKva (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:51:30 -0400
+        with ESMTP id S232829AbjHIK7d (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:59:33 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB0381FD4
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:50:43 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C0622106
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:59:33 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 69EEC630F8
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:50:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68AE0C4339A;
-        Wed,  9 Aug 2023 10:50:42 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 24E3562BD5
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:59:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3461CC433C9;
+        Wed,  9 Aug 2023 10:59:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691578242;
-        bh=kPceT0pqd6KXALsKV0Dwyqw2w1QmbD7SOQAMEJ1gv4k=;
+        s=korg; t=1691578772;
+        bh=AzsVl0PeeTpIBOQbWOyhslIjWTZF6uVY3UdIhI8nvIY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=nKPs4iah7nagvZwTv0p3f7om4qfcc96SwMEV9XACCALmbWbB0EcIWuiiQ68AHknsA
-         sOh3LoOd1S+KNvJqlNoGmqIbTfoWF2FMCXFhaLl2T2XuEuzF4uLB3VMQYzwY5Fzrqt
-         rV64sfuPKa1UgLeAlyCFaJFa8Y3zNvAe3b6t5B8k=
+        b=FDU/xc0Gzadrx4zFh5x3oRW88lIrHZ5h+GlHFfUcP3u0vfXtY5Ta3HFEjMsD8zJm/
+         3ETuxNBsu0JUpuDFMZotxE/T1ebPPrKAYLGPwWwH56EzNW+W39MUeQKbAwUBdAPL7N
+         eHCuPvslQeHphrXXIBhKW7OFsTd/NiL9O1M6MaGQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Alexander Stein <alexander.stein@ew.tq-group.com>,
-        Philipp Zabel <p.zabel@pengutronix.de>,
+        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
+        David Ahern <dsahern@kernel.org>,
+        Kuniyuki Iwashima <kuniyu@amazon.com>,
+        Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 155/165] drm/imx/ipuv3: Fix front porch adjustment upon hactive aligning
+Subject: [PATCH 5.15 50/92] tcp_metrics: annotate data-races around tm->tcpm_lock
 Date:   Wed,  9 Aug 2023 12:41:26 +0200
-Message-ID: <20230809103647.840438794@linuxfoundation.org>
+Message-ID: <20230809103635.337325891@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103642.720851262@linuxfoundation.org>
-References: <20230809103642.720851262@linuxfoundation.org>
+In-Reply-To: <20230809103633.485906560@linuxfoundation.org>
+References: <20230809103633.485906560@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,40 +57,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit ee31742bf17636da1304af77b2cb1c29b5dda642 ]
+[ Upstream commit 285ce119a3c6c4502585936650143e54c8692788 ]
 
-When hactive is not aligned to 8 pixels, it is aligned accordingly and
-hfront porch needs to be reduced the same amount. Unfortunately the front
-porch is set to the difference rather than reducing it. There are some
-Samsung TVs which can't cope with a front porch of instead of 70.
+tm->tcpm_lock can be read or written locklessly.
 
-Fixes: 94dfec48fca7 ("drm/imx: Add 8 pixel alignment fix")
-Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-Reviewed-by: Philipp Zabel <p.zabel@pengutronix.de>
-Link: https://lore.kernel.org/r/20230515072137.116211-1-alexander.stein@ew.tq-group.com
-[p.zabel@pengutronix.de: Fixed subject]
-Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230515072137.116211-1-alexander.stein@ew.tq-group.com
+Add needed READ_ONCE()/WRITE_ONCE() to document this.
+
+Fixes: 51c5d0c4b169 ("tcp: Maintain dynamic metrics in local cache.")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Link: https://lore.kernel.org/r/20230802131500.1478140-4-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/imx/ipuv3/ipuv3-crtc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/ipv4/tcp_metrics.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/imx/ipuv3/ipuv3-crtc.c b/drivers/gpu/drm/imx/ipuv3/ipuv3-crtc.c
-index 5f26090b0c985..89585b31b985e 100644
---- a/drivers/gpu/drm/imx/ipuv3/ipuv3-crtc.c
-+++ b/drivers/gpu/drm/imx/ipuv3/ipuv3-crtc.c
-@@ -310,7 +310,7 @@ static void ipu_crtc_mode_set_nofb(struct drm_crtc *crtc)
- 		dev_warn(ipu_crtc->dev, "8-pixel align hactive %d -> %d\n",
- 			 sig_cfg.mode.hactive, new_hactive);
+diff --git a/net/ipv4/tcp_metrics.c b/net/ipv4/tcp_metrics.c
+index cac6548340906..07bce467c71a7 100644
+--- a/net/ipv4/tcp_metrics.c
++++ b/net/ipv4/tcp_metrics.c
+@@ -59,7 +59,8 @@ static inline struct net *tm_net(struct tcp_metrics_block *tm)
+ static bool tcp_metric_locked(struct tcp_metrics_block *tm,
+ 			      enum tcp_metric_index idx)
+ {
+-	return tm->tcpm_lock & (1 << idx);
++	/* Paired with WRITE_ONCE() in tcpm_suck_dst() */
++	return READ_ONCE(tm->tcpm_lock) & (1 << idx);
+ }
  
--		sig_cfg.mode.hfront_porch = new_hactive - sig_cfg.mode.hactive;
-+		sig_cfg.mode.hfront_porch -= new_hactive - sig_cfg.mode.hactive;
- 		sig_cfg.mode.hactive = new_hactive;
- 	}
+ static u32 tcp_metric_get(struct tcp_metrics_block *tm,
+@@ -110,7 +111,8 @@ static void tcpm_suck_dst(struct tcp_metrics_block *tm,
+ 		val |= 1 << TCP_METRIC_CWND;
+ 	if (dst_metric_locked(dst, RTAX_REORDERING))
+ 		val |= 1 << TCP_METRIC_REORDERING;
+-	tm->tcpm_lock = val;
++	/* Paired with READ_ONCE() in tcp_metric_locked() */
++	WRITE_ONCE(tm->tcpm_lock, val);
  
+ 	msval = dst_metric_raw(dst, RTAX_RTT);
+ 	tm->tcpm_vals[TCP_METRIC_RTT] = msval * USEC_PER_MSEC;
 -- 
 2.40.1
 
