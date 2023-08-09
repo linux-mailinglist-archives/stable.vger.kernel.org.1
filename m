@@ -2,233 +2,133 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B19DB775BB8
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:20:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 429EF7757C0
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:49:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233511AbjHILUV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:20:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52206 "EHLO
+        id S232276AbjHIKtk (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 06:49:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59388 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233524AbjHILUU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:20:20 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2B4819A1
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:20:19 -0700 (PDT)
+        with ESMTP id S232266AbjHIKtj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:49:39 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69C3A10F3
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:49:39 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2A560631D7
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:20:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 313CEC433C8;
-        Wed,  9 Aug 2023 11:20:18 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0965C63123
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:49:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14FB7C433C7;
+        Wed,  9 Aug 2023 10:49:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691580018;
-        bh=9rSVqdKcxx7I835Y7LAo46+7GLpjCTaOzwiFWPXuui4=;
+        s=korg; t=1691578178;
+        bh=34IZI6J+9VCtP2DJwMSfurinIzc9SPD1ACQoE9wPedw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=DaplYKIsf0M6m+L4n19rZ4veYTLUgiAHsNBsJ1FjbS10e+YI15QVc4Sth+U+o17yn
-         o2o0nyWtOJ/vAJ3td41ZlL46ts6vHEb8tl0aN+eEPEGhwMqVWB45w6jQuUiiENynuX
-         IAz/6NxfUonobt8U7MFL+wmMZE0bDj84sl2Vw61A=
+        b=COmtBdXguGazj3uQWmQsBx5QGVGSSRr6/F2QRDb7UOTUo3hnG775sCJhXsG1GztRW
+         hnBSbZmow64ESfVoOah3F9el83LJX+aOOpbboaaVaoBtVNeslK9fUnjFcI6HNaor00
+         w2WLf1BW52auUfWJwMLtCo6z+n3tMTlB4W8YF9nY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        syzbot+ebe648a84e8784763f82@syzkaller.appspotmail.com,
-        Martin KaFai Lau <martin.lau@kernel.org>,
-        Yonghong Song <yhs@fb.com>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 197/323] bpf: Address KCSAN report on bpf_lru_list
+        patches@lists.linux.dev, gaoming <gaoming20@hihonor.com>,
+        Namjae Jeon <linkinjeon@kernel.org>
+Subject: [PATCH 6.4 104/165] exfat: use kvmalloc_array/kvfree instead of kmalloc_array/kfree
 Date:   Wed,  9 Aug 2023 12:40:35 +0200
-Message-ID: <20230809103707.185707025@linuxfoundation.org>
+Message-ID: <20230809103646.179080005@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
-References: <20230809103658.104386911@linuxfoundation.org>
+In-Reply-To: <20230809103642.720851262@linuxfoundation.org>
+References: <20230809103642.720851262@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Martin KaFai Lau <martin.lau@kernel.org>
+From: gaoming <gaoming20@hihonor.com>
 
-[ Upstream commit ee9fd0ac3017c4313be91a220a9ac4c99dde7ad4 ]
+commit daf60d6cca26e50d65dac374db92e58de745ad26 upstream.
 
-KCSAN reported a data-race when accessing node->ref.
-Although node->ref does not have to be accurate,
-take this chance to use a more common READ_ONCE() and WRITE_ONCE()
-pattern instead of data_race().
+The call stack shown below is a scenario in the Linux 4.19 kernel.
+Allocating memory failed where exfat fs use kmalloc_array due to
+system memory fragmentation, while the u-disk was inserted without
+recognition.
+Devices such as u-disk using the exfat file system are pluggable and
+may be insert into the system at any time.
+However, long-term running systems cannot guarantee the continuity of
+physical memory. Therefore, it's necessary to address this issue.
 
-There is an existing bpf_lru_node_is_ref() and bpf_lru_node_set_ref().
-This patch also adds bpf_lru_node_clear_ref() to do the
-WRITE_ONCE(node->ref, 0) also.
+Binder:2632_6: page allocation failure: order:4,
+ mode:0x6040c0(GFP_KERNEL|__GFP_COMP), nodemask=(null)
+Call trace:
+[242178.097582]  dump_backtrace+0x0/0x4
+[242178.097589]  dump_stack+0xf4/0x134
+[242178.097598]  warn_alloc+0xd8/0x144
+[242178.097603]  __alloc_pages_nodemask+0x1364/0x1384
+[242178.097608]  kmalloc_order+0x2c/0x510
+[242178.097612]  kmalloc_order_trace+0x40/0x16c
+[242178.097618]  __kmalloc+0x360/0x408
+[242178.097624]  load_alloc_bitmap+0x160/0x284
+[242178.097628]  exfat_fill_super+0xa3c/0xe7c
+[242178.097635]  mount_bdev+0x2e8/0x3a0
+[242178.097638]  exfat_fs_mount+0x40/0x50
+[242178.097643]  mount_fs+0x138/0x2e8
+[242178.097649]  vfs_kern_mount+0x90/0x270
+[242178.097655]  do_mount+0x798/0x173c
+[242178.097659]  ksys_mount+0x114/0x1ac
+[242178.097665]  __arm64_sys_mount+0x24/0x34
+[242178.097671]  el0_svc_common+0xb8/0x1b8
+[242178.097676]  el0_svc_handler+0x74/0x90
+[242178.097681]  el0_svc+0x8/0x340
 
-==================================================================
-BUG: KCSAN: data-race in __bpf_lru_list_rotate / __htab_lru_percpu_map_update_elem
+By analyzing the exfat code,we found that continuous physical memory
+is not required here,so kvmalloc_array is used can solve this problem.
 
-write to 0xffff888137038deb of 1 bytes by task 11240 on cpu 1:
-__bpf_lru_node_move kernel/bpf/bpf_lru_list.c:113 [inline]
-__bpf_lru_list_rotate_active kernel/bpf/bpf_lru_list.c:149 [inline]
-__bpf_lru_list_rotate+0x1bf/0x750 kernel/bpf/bpf_lru_list.c:240
-bpf_lru_list_pop_free_to_local kernel/bpf/bpf_lru_list.c:329 [inline]
-bpf_common_lru_pop_free kernel/bpf/bpf_lru_list.c:447 [inline]
-bpf_lru_pop_free+0x638/0xe20 kernel/bpf/bpf_lru_list.c:499
-prealloc_lru_pop kernel/bpf/hashtab.c:290 [inline]
-__htab_lru_percpu_map_update_elem+0xe7/0x820 kernel/bpf/hashtab.c:1316
-bpf_percpu_hash_update+0x5e/0x90 kernel/bpf/hashtab.c:2313
-bpf_map_update_value+0x2a9/0x370 kernel/bpf/syscall.c:200
-generic_map_update_batch+0x3ae/0x4f0 kernel/bpf/syscall.c:1687
-bpf_map_do_batch+0x2d9/0x3d0 kernel/bpf/syscall.c:4534
-__sys_bpf+0x338/0x810
-__do_sys_bpf kernel/bpf/syscall.c:5096 [inline]
-__se_sys_bpf kernel/bpf/syscall.c:5094 [inline]
-__x64_sys_bpf+0x43/0x50 kernel/bpf/syscall.c:5094
-do_syscall_x64 arch/x86/entry/common.c:50 [inline]
-do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
-entry_SYSCALL_64_after_hwframe+0x63/0xcd
-
-read to 0xffff888137038deb of 1 bytes by task 11241 on cpu 0:
-bpf_lru_node_set_ref kernel/bpf/bpf_lru_list.h:70 [inline]
-__htab_lru_percpu_map_update_elem+0x2f1/0x820 kernel/bpf/hashtab.c:1332
-bpf_percpu_hash_update+0x5e/0x90 kernel/bpf/hashtab.c:2313
-bpf_map_update_value+0x2a9/0x370 kernel/bpf/syscall.c:200
-generic_map_update_batch+0x3ae/0x4f0 kernel/bpf/syscall.c:1687
-bpf_map_do_batch+0x2d9/0x3d0 kernel/bpf/syscall.c:4534
-__sys_bpf+0x338/0x810
-__do_sys_bpf kernel/bpf/syscall.c:5096 [inline]
-__se_sys_bpf kernel/bpf/syscall.c:5094 [inline]
-__x64_sys_bpf+0x43/0x50 kernel/bpf/syscall.c:5094
-do_syscall_x64 arch/x86/entry/common.c:50 [inline]
-do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
-entry_SYSCALL_64_after_hwframe+0x63/0xcd
-
-value changed: 0x01 -> 0x00
-
-Reported by Kernel Concurrency Sanitizer on:
-CPU: 0 PID: 11241 Comm: syz-executor.3 Not tainted 6.3.0-rc7-syzkaller-00136-g6a66fdd29ea1 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 03/30/2023
-==================================================================
-
-Reported-by: syzbot+ebe648a84e8784763f82@syzkaller.appspotmail.com
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
-Acked-by: Yonghong Song <yhs@fb.com>
-Link: https://lore.kernel.org/r/20230511043748.1384166-1-martin.lau@linux.dev
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: gaoming <gaoming20@hihonor.com>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/bpf/bpf_lru_list.c | 21 +++++++++++++--------
- kernel/bpf/bpf_lru_list.h |  7 ++-----
- 2 files changed, 15 insertions(+), 13 deletions(-)
+ fs/exfat/balloc.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/kernel/bpf/bpf_lru_list.c b/kernel/bpf/bpf_lru_list.c
-index 9b5eeff72fd37..39a0e768adc39 100644
---- a/kernel/bpf/bpf_lru_list.c
-+++ b/kernel/bpf/bpf_lru_list.c
-@@ -44,7 +44,12 @@ static struct list_head *local_pending_list(struct bpf_lru_locallist *loc_l)
- /* bpf_lru_node helpers */
- static bool bpf_lru_node_is_ref(const struct bpf_lru_node *node)
- {
--	return node->ref;
-+	return READ_ONCE(node->ref);
-+}
-+
-+static void bpf_lru_node_clear_ref(struct bpf_lru_node *node)
-+{
-+	WRITE_ONCE(node->ref, 0);
- }
- 
- static void bpf_lru_list_count_inc(struct bpf_lru_list *l,
-@@ -92,7 +97,7 @@ static void __bpf_lru_node_move_in(struct bpf_lru_list *l,
- 
- 	bpf_lru_list_count_inc(l, tgt_type);
- 	node->type = tgt_type;
--	node->ref = 0;
-+	bpf_lru_node_clear_ref(node);
- 	list_move(&node->list, &l->lists[tgt_type]);
- }
- 
-@@ -113,7 +118,7 @@ static void __bpf_lru_node_move(struct bpf_lru_list *l,
- 		bpf_lru_list_count_inc(l, tgt_type);
- 		node->type = tgt_type;
+--- a/fs/exfat/balloc.c
++++ b/fs/exfat/balloc.c
+@@ -69,7 +69,7 @@ static int exfat_allocate_bitmap(struct
  	}
--	node->ref = 0;
-+	bpf_lru_node_clear_ref(node);
+ 	sbi->map_sectors = ((need_map_size - 1) >>
+ 			(sb->s_blocksize_bits)) + 1;
+-	sbi->vol_amap = kmalloc_array(sbi->map_sectors,
++	sbi->vol_amap = kvmalloc_array(sbi->map_sectors,
+ 				sizeof(struct buffer_head *), GFP_KERNEL);
+ 	if (!sbi->vol_amap)
+ 		return -ENOMEM;
+@@ -84,7 +84,7 @@ static int exfat_allocate_bitmap(struct
+ 			while (j < i)
+ 				brelse(sbi->vol_amap[j++]);
  
- 	/* If the moving node is the next_inactive_rotation candidate,
- 	 * move the next_inactive_rotation pointer also.
-@@ -356,7 +361,7 @@ static void __local_list_add_pending(struct bpf_lru *lru,
- 	*(u32 *)((void *)node + lru->hash_offset) = hash;
- 	node->cpu = cpu;
- 	node->type = BPF_LRU_LOCAL_LIST_T_PENDING;
--	node->ref = 0;
-+	bpf_lru_node_clear_ref(node);
- 	list_add(&node->list, local_pending_list(loc_l));
- }
- 
-@@ -422,7 +427,7 @@ static struct bpf_lru_node *bpf_percpu_lru_pop_free(struct bpf_lru *lru,
- 	if (!list_empty(free_list)) {
- 		node = list_first_entry(free_list, struct bpf_lru_node, list);
- 		*(u32 *)((void *)node + lru->hash_offset) = hash;
--		node->ref = 0;
-+		bpf_lru_node_clear_ref(node);
- 		__bpf_lru_node_move(l, node, BPF_LRU_LIST_T_INACTIVE);
- 	}
- 
-@@ -525,7 +530,7 @@ static void bpf_common_lru_push_free(struct bpf_lru *lru,
+-			kfree(sbi->vol_amap);
++			kvfree(sbi->vol_amap);
+ 			sbi->vol_amap = NULL;
+ 			return -EIO;
  		}
+@@ -138,7 +138,7 @@ void exfat_free_bitmap(struct exfat_sb_i
+ 	for (i = 0; i < sbi->map_sectors; i++)
+ 		__brelse(sbi->vol_amap[i]);
  
- 		node->type = BPF_LRU_LOCAL_LIST_T_FREE;
--		node->ref = 0;
-+		bpf_lru_node_clear_ref(node);
- 		list_move(&node->list, local_free_list(loc_l));
- 
- 		raw_spin_unlock_irqrestore(&loc_l->lock, flags);
-@@ -571,7 +576,7 @@ static void bpf_common_lru_populate(struct bpf_lru *lru, void *buf,
- 
- 		node = (struct bpf_lru_node *)(buf + node_offset);
- 		node->type = BPF_LRU_LIST_T_FREE;
--		node->ref = 0;
-+		bpf_lru_node_clear_ref(node);
- 		list_add(&node->list, &l->lists[BPF_LRU_LIST_T_FREE]);
- 		buf += elem_size;
- 	}
-@@ -597,7 +602,7 @@ static void bpf_percpu_lru_populate(struct bpf_lru *lru, void *buf,
- 		node = (struct bpf_lru_node *)(buf + node_offset);
- 		node->cpu = cpu;
- 		node->type = BPF_LRU_LIST_T_FREE;
--		node->ref = 0;
-+		bpf_lru_node_clear_ref(node);
- 		list_add(&node->list, &l->lists[BPF_LRU_LIST_T_FREE]);
- 		i++;
- 		buf += elem_size;
-diff --git a/kernel/bpf/bpf_lru_list.h b/kernel/bpf/bpf_lru_list.h
-index 7d4f89b7cb841..08da78b59f0b9 100644
---- a/kernel/bpf/bpf_lru_list.h
-+++ b/kernel/bpf/bpf_lru_list.h
-@@ -66,11 +66,8 @@ struct bpf_lru {
- 
- static inline void bpf_lru_node_set_ref(struct bpf_lru_node *node)
- {
--	/* ref is an approximation on access frequency.  It does not
--	 * have to be very accurate.  Hence, no protection is used.
--	 */
--	if (!node->ref)
--		node->ref = 1;
-+	if (!READ_ONCE(node->ref))
-+		WRITE_ONCE(node->ref, 1);
+-	kfree(sbi->vol_amap);
++	kvfree(sbi->vol_amap);
  }
  
- int bpf_lru_init(struct bpf_lru *lru, bool percpu, u32 hash_offset,
--- 
-2.39.2
-
+ int exfat_set_bitmap(struct inode *inode, unsigned int clu, bool sync)
 
 
