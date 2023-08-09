@@ -2,96 +2,508 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 51C6C775C74
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:27:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D4B74775955
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:59:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233786AbjHIL1d (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:27:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56010 "EHLO
+        id S232835AbjHIK7i (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 06:59:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42372 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233787AbjHIL1a (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:27:30 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 86FDC2122
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:27:27 -0700 (PDT)
+        with ESMTP id S232829AbjHIK7h (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:59:37 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7DA58171E
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:59:36 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 09092632B3
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:27:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1867DC433C8;
-        Wed,  9 Aug 2023 11:27:25 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0BC1A63130
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:59:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13DFDC433C8;
+        Wed,  9 Aug 2023 10:59:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691580446;
-        bh=QNGJDNXM/O+WLq7IZl+ZJXFfDaOCkHY71FaNPvpjQ8M=;
+        s=korg; t=1691578775;
+        bh=QwF+DecsBHKH6EA2/ZEiIZjGVshnp0TAt8cpFk6A8T8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=XPc95v9XCvyk0ImW0y1gm4GwH7xMvkGDJz7P+W4iGK7rACoYBoLaNcTLHCrLqb1pZ
-         jpig3VVf6lgGo/29OmKb/TMpWbZ/xyyYbeINjuPjEZU3G6g30F3nwmlAIUgtCbH9Vg
-         o7iVsHKxiDqmLrT0tFi+/m+xGMg/ve4xuM9ksO6k=
+        b=VvQOdcU6BUGU6fNsmSmaqKtrEunbIXOnj/eo7cMj5WVrBfvDl1NtD6wMKMuEDR+aB
+         TUPHEGnwItCATVClSXyFePB62ayHgINDTwEPMGk66dQYedTrx62vXgMJOJKrYKIA52
+         t5QPt/hQuQB27yHEA/kVfePrAve8fsN6sSQ4W/Qo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Bikash Hazarika <bhazarika@marvell.com>,
-        Nilesh Javali <njavali@marvell.com>,
-        Himanshu Madhani <himanshu.madhani@oracle.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        patches@lists.linux.dev, Sudarsana Kalluru <skalluru@marvell.com>,
+        David Miller <davem@davemloft.net>,
+        Manish Chopra <manishc@marvell.com>,
+        Konstantin Khorenko <khorenko@virtuozzo.com>,
+        Simon Horman <horms@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 028/154] scsi: qla2xxx: Array index may go out of bound
-Date:   Wed,  9 Aug 2023 12:40:59 +0200
-Message-ID: <20230809103637.925012833@linuxfoundation.org>
+Subject: [PATCH 5.15 24/92] qed: Fix scheduling in a tasklet while getting stats
+Date:   Wed,  9 Aug 2023 12:41:00 +0200
+Message-ID: <20230809103634.445905117@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103636.887175326@linuxfoundation.org>
-References: <20230809103636.887175326@linuxfoundation.org>
+In-Reply-To: <20230809103633.485906560@linuxfoundation.org>
+References: <20230809103633.485906560@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Nilesh Javali <njavali@marvell.com>
+From: Konstantin Khorenko <khorenko@virtuozzo.com>
 
-[ Upstream commit d721b591b95cf3f290f8a7cbe90aa2ee0368388d ]
+[ Upstream commit e346e231b42bcae6822a6326acfb7b741e9e6026 ]
 
-Klocwork reports array 'vha->host_str' of size 16 may use index value(s)
-16..19.  Use snprintf() instead of sprintf().
+Here we've got to a situation when tasklet called usleep_range() in PTT
+acquire logic, thus welcome to the "scheduling while atomic" BUG().
 
-Cc: stable@vger.kernel.org
-Co-developed-by: Bikash Hazarika <bhazarika@marvell.com>
-Signed-off-by: Bikash Hazarika <bhazarika@marvell.com>
-Signed-off-by: Nilesh Javali <njavali@marvell.com>
-Link: https://lore.kernel.org/r/20230607113843.37185-2-njavali@marvell.com
-Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+  BUG: scheduling while atomic: swapper/24/0/0x00000100
+
+   [<ffffffffb41c6199>] schedule+0x29/0x70
+   [<ffffffffb41c5512>] schedule_hrtimeout_range_clock+0xb2/0x150
+   [<ffffffffb41c55c3>] schedule_hrtimeout_range+0x13/0x20
+   [<ffffffffb41c3bcf>] usleep_range+0x4f/0x70
+   [<ffffffffc08d3e58>] qed_ptt_acquire+0x38/0x100 [qed]
+   [<ffffffffc08eac48>] _qed_get_vport_stats+0x458/0x580 [qed]
+   [<ffffffffc08ead8c>] qed_get_vport_stats+0x1c/0xd0 [qed]
+   [<ffffffffc08dffd3>] qed_get_protocol_stats+0x93/0x100 [qed]
+                        qed_mcp_send_protocol_stats
+            case MFW_DRV_MSG_GET_LAN_STATS:
+            case MFW_DRV_MSG_GET_FCOE_STATS:
+            case MFW_DRV_MSG_GET_ISCSI_STATS:
+            case MFW_DRV_MSG_GET_RDMA_STATS:
+   [<ffffffffc08e36d8>] qed_mcp_handle_events+0x2d8/0x890 [qed]
+                        qed_int_assertion
+                        qed_int_attentions
+   [<ffffffffc08d9490>] qed_int_sp_dpc+0xa50/0xdc0 [qed]
+   [<ffffffffb3aa7623>] tasklet_action+0x83/0x140
+   [<ffffffffb41d9125>] __do_softirq+0x125/0x2bb
+   [<ffffffffb41d560c>] call_softirq+0x1c/0x30
+   [<ffffffffb3a30645>] do_softirq+0x65/0xa0
+   [<ffffffffb3aa78d5>] irq_exit+0x105/0x110
+   [<ffffffffb41d8996>] do_IRQ+0x56/0xf0
+
+Fix this by making caller to provide the context whether it could be in
+atomic context flow or not when getting stats from QED driver.
+QED driver based on the context provided decide to schedule out or not
+when acquiring the PTT BAR window.
+
+We faced the BUG_ON() while getting vport stats, but according to the
+code same issue could happen for fcoe and iscsi statistics as well, so
+fixing them too.
+
+Fixes: 6c75424612a7 ("qed: Add support for NCSI statistics.")
+Fixes: 1e128c81290a ("qed: Add support for hardware offloaded FCoE.")
+Fixes: 2f2b2614e893 ("qed: Provide iSCSI statistics to management")
+Cc: Sudarsana Kalluru <skalluru@marvell.com>
+Cc: David Miller <davem@davemloft.net>
+Cc: Manish Chopra <manishc@marvell.com>
+
+Signed-off-by: Konstantin Khorenko <khorenko@virtuozzo.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/qla2xxx/qla_os.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/qlogic/qed/qed_dev_api.h | 16 ++++++++++++
+ drivers/net/ethernet/qlogic/qed/qed_fcoe.c    | 19 ++++++++++----
+ drivers/net/ethernet/qlogic/qed/qed_fcoe.h    | 17 ++++++++++--
+ drivers/net/ethernet/qlogic/qed/qed_hw.c      | 26 ++++++++++++++++---
+ drivers/net/ethernet/qlogic/qed/qed_iscsi.c   | 19 ++++++++++----
+ drivers/net/ethernet/qlogic/qed/qed_iscsi.h   |  8 ++++--
+ drivers/net/ethernet/qlogic/qed/qed_l2.c      | 19 ++++++++++----
+ drivers/net/ethernet/qlogic/qed/qed_l2.h      | 24 +++++++++++++++++
+ drivers/net/ethernet/qlogic/qed/qed_main.c    |  6 ++---
+ 9 files changed, 128 insertions(+), 26 deletions(-)
 
-diff --git a/drivers/scsi/qla2xxx/qla_os.c b/drivers/scsi/qla2xxx/qla_os.c
-index 9bd73a5a722b4..99d4bc2ab5a91 100644
---- a/drivers/scsi/qla2xxx/qla_os.c
-+++ b/drivers/scsi/qla2xxx/qla_os.c
-@@ -4831,7 +4831,8 @@ struct scsi_qla_host *qla2x00_create_host(struct scsi_host_template *sht,
- 	}
- 	INIT_DELAYED_WORK(&vha->scan.scan_work, qla_scan_work_fn);
+diff --git a/drivers/net/ethernet/qlogic/qed/qed_dev_api.h b/drivers/net/ethernet/qlogic/qed/qed_dev_api.h
+index f0a825b985a4b..a0a766a1723cc 100644
+--- a/drivers/net/ethernet/qlogic/qed/qed_dev_api.h
++++ b/drivers/net/ethernet/qlogic/qed/qed_dev_api.h
+@@ -194,6 +194,22 @@ void qed_hw_remove(struct qed_dev *cdev);
+  */
+ struct qed_ptt *qed_ptt_acquire(struct qed_hwfn *p_hwfn);
  
--	sprintf(vha->host_str, "%s_%lu", QLA2XXX_DRIVER_NAME, vha->host_no);
-+	snprintf(vha->host_str, sizeof(vha->host_str), "%s_%lu",
-+		 QLA2XXX_DRIVER_NAME, vha->host_no);
- 	ql_dbg(ql_dbg_init, vha, 0x0041,
- 	    "Allocated the host=%p hw=%p vha=%p dev_name=%s",
- 	    vha->host, vha->hw, vha,
++/**
++ * qed_ptt_acquire_context(): Allocate a PTT window honoring the context
++ *			      atomicy.
++ *
++ * @p_hwfn: HW device data.
++ * @is_atomic: Hint from the caller - if the func can sleep or not.
++ *
++ * Context: The function should not sleep in case is_atomic == true.
++ * Return: struct qed_ptt.
++ *
++ * Should be called at the entry point to the driver
++ * (at the beginning of an exported function).
++ */
++struct qed_ptt *qed_ptt_acquire_context(struct qed_hwfn *p_hwfn,
++					bool is_atomic);
++
+ /**
+  * qed_ptt_release(): Release PTT Window.
+  *
+diff --git a/drivers/net/ethernet/qlogic/qed/qed_fcoe.c b/drivers/net/ethernet/qlogic/qed/qed_fcoe.c
+index b768f0698170e..0c55249b3a358 100644
+--- a/drivers/net/ethernet/qlogic/qed/qed_fcoe.c
++++ b/drivers/net/ethernet/qlogic/qed/qed_fcoe.c
+@@ -694,13 +694,14 @@ static void _qed_fcoe_get_pstats(struct qed_hwfn *p_hwfn,
+ }
+ 
+ static int qed_fcoe_get_stats(struct qed_hwfn *p_hwfn,
+-			      struct qed_fcoe_stats *p_stats)
++			      struct qed_fcoe_stats *p_stats,
++			      bool is_atomic)
+ {
+ 	struct qed_ptt *p_ptt;
+ 
+ 	memset(p_stats, 0, sizeof(*p_stats));
+ 
+-	p_ptt = qed_ptt_acquire(p_hwfn);
++	p_ptt = qed_ptt_acquire_context(p_hwfn, is_atomic);
+ 
+ 	if (!p_ptt) {
+ 		DP_ERR(p_hwfn, "Failed to acquire ptt\n");
+@@ -974,19 +975,27 @@ static int qed_fcoe_destroy_conn(struct qed_dev *cdev,
+ 					QED_SPQ_MODE_EBLOCK, NULL);
+ }
+ 
++static int qed_fcoe_stats_context(struct qed_dev *cdev,
++				  struct qed_fcoe_stats *stats,
++				  bool is_atomic)
++{
++	return qed_fcoe_get_stats(QED_AFFIN_HWFN(cdev), stats, is_atomic);
++}
++
+ static int qed_fcoe_stats(struct qed_dev *cdev, struct qed_fcoe_stats *stats)
+ {
+-	return qed_fcoe_get_stats(QED_AFFIN_HWFN(cdev), stats);
++	return qed_fcoe_stats_context(cdev, stats, false);
+ }
+ 
+ void qed_get_protocol_stats_fcoe(struct qed_dev *cdev,
+-				 struct qed_mcp_fcoe_stats *stats)
++				 struct qed_mcp_fcoe_stats *stats,
++				 bool is_atomic)
+ {
+ 	struct qed_fcoe_stats proto_stats;
+ 
+ 	/* Retrieve FW statistics */
+ 	memset(&proto_stats, 0, sizeof(proto_stats));
+-	if (qed_fcoe_stats(cdev, &proto_stats)) {
++	if (qed_fcoe_stats_context(cdev, &proto_stats, is_atomic)) {
+ 		DP_VERBOSE(cdev, QED_MSG_STORAGE,
+ 			   "Failed to collect FCoE statistics\n");
+ 		return;
+diff --git a/drivers/net/ethernet/qlogic/qed/qed_fcoe.h b/drivers/net/ethernet/qlogic/qed/qed_fcoe.h
+index 19c85adf4ceb1..214e8299ecb4e 100644
+--- a/drivers/net/ethernet/qlogic/qed/qed_fcoe.h
++++ b/drivers/net/ethernet/qlogic/qed/qed_fcoe.h
+@@ -28,8 +28,20 @@ int qed_fcoe_alloc(struct qed_hwfn *p_hwfn);
+ void qed_fcoe_setup(struct qed_hwfn *p_hwfn);
+ 
+ void qed_fcoe_free(struct qed_hwfn *p_hwfn);
++/**
++ * qed_get_protocol_stats_fcoe(): Fills provided statistics
++ *				  struct with statistics.
++ *
++ * @cdev: Qed dev pointer.
++ * @stats: Points to struct that will be filled with statistics.
++ * @is_atomic: Hint from the caller - if the func can sleep or not.
++ *
++ * Context: The function should not sleep in case is_atomic == true.
++ * Return: Void.
++ */
+ void qed_get_protocol_stats_fcoe(struct qed_dev *cdev,
+-				 struct qed_mcp_fcoe_stats *stats);
++				 struct qed_mcp_fcoe_stats *stats,
++				 bool is_atomic);
+ #else /* CONFIG_QED_FCOE */
+ static inline int qed_fcoe_alloc(struct qed_hwfn *p_hwfn)
+ {
+@@ -40,7 +52,8 @@ static inline void qed_fcoe_setup(struct qed_hwfn *p_hwfn) {}
+ static inline void qed_fcoe_free(struct qed_hwfn *p_hwfn) {}
+ 
+ static inline void qed_get_protocol_stats_fcoe(struct qed_dev *cdev,
+-					       struct qed_mcp_fcoe_stats *stats)
++					       struct qed_mcp_fcoe_stats *stats,
++					       bool is_atomic)
+ {
+ }
+ #endif /* CONFIG_QED_FCOE */
+diff --git a/drivers/net/ethernet/qlogic/qed/qed_hw.c b/drivers/net/ethernet/qlogic/qed/qed_hw.c
+index 554f30b0cfd5e..6263f847b6b92 100644
+--- a/drivers/net/ethernet/qlogic/qed/qed_hw.c
++++ b/drivers/net/ethernet/qlogic/qed/qed_hw.c
+@@ -23,7 +23,10 @@
+ #include "qed_reg_addr.h"
+ #include "qed_sriov.h"
+ 
+-#define QED_BAR_ACQUIRE_TIMEOUT 1000
++#define QED_BAR_ACQUIRE_TIMEOUT_USLEEP_CNT	1000
++#define QED_BAR_ACQUIRE_TIMEOUT_USLEEP		1000
++#define QED_BAR_ACQUIRE_TIMEOUT_UDELAY_CNT	100000
++#define QED_BAR_ACQUIRE_TIMEOUT_UDELAY		10
+ 
+ /* Invalid values */
+ #define QED_BAR_INVALID_OFFSET          (cpu_to_le32(-1))
+@@ -84,12 +87,22 @@ void qed_ptt_pool_free(struct qed_hwfn *p_hwfn)
+ }
+ 
+ struct qed_ptt *qed_ptt_acquire(struct qed_hwfn *p_hwfn)
++{
++	return qed_ptt_acquire_context(p_hwfn, false);
++}
++
++struct qed_ptt *qed_ptt_acquire_context(struct qed_hwfn *p_hwfn, bool is_atomic)
+ {
+ 	struct qed_ptt *p_ptt;
+-	unsigned int i;
++	unsigned int i, count;
++
++	if (is_atomic)
++		count = QED_BAR_ACQUIRE_TIMEOUT_UDELAY_CNT;
++	else
++		count = QED_BAR_ACQUIRE_TIMEOUT_USLEEP_CNT;
+ 
+ 	/* Take the free PTT from the list */
+-	for (i = 0; i < QED_BAR_ACQUIRE_TIMEOUT; i++) {
++	for (i = 0; i < count; i++) {
+ 		spin_lock_bh(&p_hwfn->p_ptt_pool->lock);
+ 
+ 		if (!list_empty(&p_hwfn->p_ptt_pool->free_list)) {
+@@ -105,7 +118,12 @@ struct qed_ptt *qed_ptt_acquire(struct qed_hwfn *p_hwfn)
+ 		}
+ 
+ 		spin_unlock_bh(&p_hwfn->p_ptt_pool->lock);
+-		usleep_range(1000, 2000);
++
++		if (is_atomic)
++			udelay(QED_BAR_ACQUIRE_TIMEOUT_UDELAY);
++		else
++			usleep_range(QED_BAR_ACQUIRE_TIMEOUT_USLEEP,
++				     QED_BAR_ACQUIRE_TIMEOUT_USLEEP * 2);
+ 	}
+ 
+ 	DP_NOTICE(p_hwfn, "PTT acquire timeout - failed to allocate PTT\n");
+diff --git a/drivers/net/ethernet/qlogic/qed/qed_iscsi.c b/drivers/net/ethernet/qlogic/qed/qed_iscsi.c
+index db926d8b30334..f111391772778 100644
+--- a/drivers/net/ethernet/qlogic/qed/qed_iscsi.c
++++ b/drivers/net/ethernet/qlogic/qed/qed_iscsi.c
+@@ -1000,13 +1000,14 @@ static void _qed_iscsi_get_pstats(struct qed_hwfn *p_hwfn,
+ }
+ 
+ static int qed_iscsi_get_stats(struct qed_hwfn *p_hwfn,
+-			       struct qed_iscsi_stats *stats)
++			       struct qed_iscsi_stats *stats,
++			       bool is_atomic)
+ {
+ 	struct qed_ptt *p_ptt;
+ 
+ 	memset(stats, 0, sizeof(*stats));
+ 
+-	p_ptt = qed_ptt_acquire(p_hwfn);
++	p_ptt = qed_ptt_acquire_context(p_hwfn, is_atomic);
+ 	if (!p_ptt) {
+ 		DP_ERR(p_hwfn, "Failed to acquire ptt\n");
+ 		return -EAGAIN;
+@@ -1337,9 +1338,16 @@ static int qed_iscsi_destroy_conn(struct qed_dev *cdev,
+ 					   QED_SPQ_MODE_EBLOCK, NULL);
+ }
+ 
++static int qed_iscsi_stats_context(struct qed_dev *cdev,
++				   struct qed_iscsi_stats *stats,
++				   bool is_atomic)
++{
++	return qed_iscsi_get_stats(QED_AFFIN_HWFN(cdev), stats, is_atomic);
++}
++
+ static int qed_iscsi_stats(struct qed_dev *cdev, struct qed_iscsi_stats *stats)
+ {
+-	return qed_iscsi_get_stats(QED_AFFIN_HWFN(cdev), stats);
++	return qed_iscsi_stats_context(cdev, stats, false);
+ }
+ 
+ static int qed_iscsi_change_mac(struct qed_dev *cdev,
+@@ -1359,13 +1367,14 @@ static int qed_iscsi_change_mac(struct qed_dev *cdev,
+ }
+ 
+ void qed_get_protocol_stats_iscsi(struct qed_dev *cdev,
+-				  struct qed_mcp_iscsi_stats *stats)
++				  struct qed_mcp_iscsi_stats *stats,
++				  bool is_atomic)
+ {
+ 	struct qed_iscsi_stats proto_stats;
+ 
+ 	/* Retrieve FW statistics */
+ 	memset(&proto_stats, 0, sizeof(proto_stats));
+-	if (qed_iscsi_stats(cdev, &proto_stats)) {
++	if (qed_iscsi_stats_context(cdev, &proto_stats, is_atomic)) {
+ 		DP_VERBOSE(cdev, QED_MSG_STORAGE,
+ 			   "Failed to collect ISCSI statistics\n");
+ 		return;
+diff --git a/drivers/net/ethernet/qlogic/qed/qed_iscsi.h b/drivers/net/ethernet/qlogic/qed/qed_iscsi.h
+index dec2b00259d42..974cb8d26608c 100644
+--- a/drivers/net/ethernet/qlogic/qed/qed_iscsi.h
++++ b/drivers/net/ethernet/qlogic/qed/qed_iscsi.h
+@@ -39,11 +39,14 @@ void qed_iscsi_free(struct qed_hwfn *p_hwfn);
+  *
+  * @cdev: Qed dev pointer.
+  * @stats: Points to struct that will be filled with statistics.
++ * @is_atomic: Hint from the caller - if the func can sleep or not.
+  *
++ * Context: The function should not sleep in case is_atomic == true.
+  * Return: Void.
+  */
+ void qed_get_protocol_stats_iscsi(struct qed_dev *cdev,
+-				  struct qed_mcp_iscsi_stats *stats);
++				  struct qed_mcp_iscsi_stats *stats,
++				  bool is_atomic);
+ #else /* IS_ENABLED(CONFIG_QED_ISCSI) */
+ static inline int qed_iscsi_alloc(struct qed_hwfn *p_hwfn)
+ {
+@@ -56,7 +59,8 @@ static inline void qed_iscsi_free(struct qed_hwfn *p_hwfn) {}
+ 
+ static inline void
+ qed_get_protocol_stats_iscsi(struct qed_dev *cdev,
+-			     struct qed_mcp_iscsi_stats *stats) {}
++			     struct qed_mcp_iscsi_stats *stats,
++			     bool is_atomic) {}
+ #endif /* IS_ENABLED(CONFIG_QED_ISCSI) */
+ 
+ #endif
+diff --git a/drivers/net/ethernet/qlogic/qed/qed_l2.c b/drivers/net/ethernet/qlogic/qed/qed_l2.c
+index bc17bc36d346e..6ffa6425a75a5 100644
+--- a/drivers/net/ethernet/qlogic/qed/qed_l2.c
++++ b/drivers/net/ethernet/qlogic/qed/qed_l2.c
+@@ -1863,7 +1863,8 @@ static void __qed_get_vport_stats(struct qed_hwfn *p_hwfn,
+ }
+ 
+ static void _qed_get_vport_stats(struct qed_dev *cdev,
+-				 struct qed_eth_stats *stats)
++				 struct qed_eth_stats *stats,
++				 bool is_atomic)
+ {
+ 	u8 fw_vport = 0;
+ 	int i;
+@@ -1872,10 +1873,11 @@ static void _qed_get_vport_stats(struct qed_dev *cdev,
+ 
+ 	for_each_hwfn(cdev, i) {
+ 		struct qed_hwfn *p_hwfn = &cdev->hwfns[i];
+-		struct qed_ptt *p_ptt = IS_PF(cdev) ? qed_ptt_acquire(p_hwfn)
+-						    :  NULL;
++		struct qed_ptt *p_ptt;
+ 		bool b_get_port_stats;
+ 
++		p_ptt = IS_PF(cdev) ? qed_ptt_acquire_context(p_hwfn, is_atomic)
++				    : NULL;
+ 		if (IS_PF(cdev)) {
+ 			/* The main vport index is relative first */
+ 			if (qed_fw_vport(p_hwfn, 0, &fw_vport)) {
+@@ -1900,6 +1902,13 @@ static void _qed_get_vport_stats(struct qed_dev *cdev,
+ }
+ 
+ void qed_get_vport_stats(struct qed_dev *cdev, struct qed_eth_stats *stats)
++{
++	qed_get_vport_stats_context(cdev, stats, false);
++}
++
++void qed_get_vport_stats_context(struct qed_dev *cdev,
++				 struct qed_eth_stats *stats,
++				 bool is_atomic)
+ {
+ 	u32 i;
+ 
+@@ -1908,7 +1917,7 @@ void qed_get_vport_stats(struct qed_dev *cdev, struct qed_eth_stats *stats)
+ 		return;
+ 	}
+ 
+-	_qed_get_vport_stats(cdev, stats);
++	_qed_get_vport_stats(cdev, stats, is_atomic);
+ 
+ 	if (!cdev->reset_stats)
+ 		return;
+@@ -1960,7 +1969,7 @@ void qed_reset_vport_stats(struct qed_dev *cdev)
+ 	if (!cdev->reset_stats) {
+ 		DP_INFO(cdev, "Reset stats not allocated\n");
+ 	} else {
+-		_qed_get_vport_stats(cdev, cdev->reset_stats);
++		_qed_get_vport_stats(cdev, cdev->reset_stats, false);
+ 		cdev->reset_stats->common.link_change_count = 0;
+ 	}
+ }
+diff --git a/drivers/net/ethernet/qlogic/qed/qed_l2.h b/drivers/net/ethernet/qlogic/qed/qed_l2.h
+index 2ab7f3f0cf6c9..602a12a348b2e 100644
+--- a/drivers/net/ethernet/qlogic/qed/qed_l2.h
++++ b/drivers/net/ethernet/qlogic/qed/qed_l2.h
+@@ -250,8 +250,32 @@ qed_sp_eth_rx_queues_update(struct qed_hwfn *p_hwfn,
+ 			    enum spq_mode comp_mode,
+ 			    struct qed_spq_comp_cb *p_comp_data);
+ 
++/**
++ * qed_get_vport_stats(): Fills provided statistics
++ *			  struct with statistics.
++ *
++ * @cdev: Qed dev pointer.
++ * @stats: Points to struct that will be filled with statistics.
++ *
++ * Return: Void.
++ */
+ void qed_get_vport_stats(struct qed_dev *cdev, struct qed_eth_stats *stats);
+ 
++/**
++ * qed_get_vport_stats_context(): Fills provided statistics
++ *				  struct with statistics.
++ *
++ * @cdev: Qed dev pointer.
++ * @stats: Points to struct that will be filled with statistics.
++ * @is_atomic: Hint from the caller - if the func can sleep or not.
++ *
++ * Context: The function should not sleep in case is_atomic == true.
++ * Return: Void.
++ */
++void qed_get_vport_stats_context(struct qed_dev *cdev,
++				 struct qed_eth_stats *stats,
++				 bool is_atomic);
++
+ void qed_reset_vport_stats(struct qed_dev *cdev);
+ 
+ /**
+diff --git a/drivers/net/ethernet/qlogic/qed/qed_main.c b/drivers/net/ethernet/qlogic/qed/qed_main.c
+index d10e1cd6d2ba9..26700b0b4b370 100644
+--- a/drivers/net/ethernet/qlogic/qed/qed_main.c
++++ b/drivers/net/ethernet/qlogic/qed/qed_main.c
+@@ -3054,7 +3054,7 @@ void qed_get_protocol_stats(struct qed_dev *cdev,
+ 
+ 	switch (type) {
+ 	case QED_MCP_LAN_STATS:
+-		qed_get_vport_stats(cdev, &eth_stats);
++		qed_get_vport_stats_context(cdev, &eth_stats, true);
+ 		stats->lan_stats.ucast_rx_pkts =
+ 					eth_stats.common.rx_ucast_pkts;
+ 		stats->lan_stats.ucast_tx_pkts =
+@@ -3062,10 +3062,10 @@ void qed_get_protocol_stats(struct qed_dev *cdev,
+ 		stats->lan_stats.fcs_err = -1;
+ 		break;
+ 	case QED_MCP_FCOE_STATS:
+-		qed_get_protocol_stats_fcoe(cdev, &stats->fcoe_stats);
++		qed_get_protocol_stats_fcoe(cdev, &stats->fcoe_stats, true);
+ 		break;
+ 	case QED_MCP_ISCSI_STATS:
+-		qed_get_protocol_stats_iscsi(cdev, &stats->iscsi_stats);
++		qed_get_protocol_stats_iscsi(cdev, &stats->iscsi_stats, true);
+ 		break;
+ 	default:
+ 		DP_VERBOSE(cdev, QED_MSG_SP,
 -- 
-2.39.2
+2.40.1
 
 
 
