@@ -2,43 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 475B577590F
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:57:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B42BA775913
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:57:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232582AbjHIK50 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 06:57:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51580 "EHLO
+        id S232706AbjHIK5b (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 06:57:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51608 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232861AbjHIK5H (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:57:07 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C43DD2133
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:57:05 -0700 (PDT)
+        with ESMTP id S232885AbjHIK5J (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:57:09 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2BF81FD4
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:57:08 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 64B456238A
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:57:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77BCAC433C9;
-        Wed,  9 Aug 2023 10:57:04 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3A7C162DC8
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:57:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C579C433C8;
+        Wed,  9 Aug 2023 10:57:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691578624;
-        bh=Ma0v6Fzyz6uYKqGPDdR4wHjrl0VDC09imx4S4yHjzOU=;
+        s=korg; t=1691578627;
+        bh=FrDkZ6Lwbx9XAR5PnwuSfBzCGjvu884ya+ON1ddBC38=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=G01mDfQSwg3JPLnkxDrKkB+CIOGqIH4c7kTP3r1a4R4DAwsjZZjbx9ndMbb03YNNh
-         xGzmbM3e03dEIwVrarnXhMa5T1y81sIGbvAOz8hKLAsZhcfeW3Tr+TifQXn04EMW5n
-         gSvJ3LggeO2DpBQRdrQ0tvaz1u92gCbFtt5nXqZ0=
+        b=VV8GEhQfZO1MBkvRBH7kmeB3yt2nuDHOjVGKCohZEjvApwl9d4EiL0nU+YG0x29n4
+         bMWrsJ/89nO/Kf6Bx6LvhE/o3m750qb78Q62efUHJWNDnH8QDP1+FO67LuXLqJl8Rx
+         Zb0bqCcuxCt0JZHSw/r1ZqPhPL7T3CgqQD6Ftogc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        Lijo Lazar <lijo.lazar@amd.com>, Le Ma <le.ma@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.1 126/127] drm/amdgpu: Use apt name for FW reserved region
-Date:   Wed,  9 Aug 2023 12:41:53 +0200
-Message-ID: <20230809103640.765148012@linuxfoundation.org>
+        Thorsten Leemhuis <regressions@leemhuis.info>,
+        Manasi Navare <navaremanasi@google.com>,
+        Drew Davenport <ddavenport@chromium.org>,
+        =?UTF-8?q?Jouni=20H=C3=B6gander?= <jouni.hogander@intel.com>,
+        Imre Deak <imre.deak@intel.com>,
+        =?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= 
+        <ville.syrjala@linux.intel.com>,
+        Jani Nikula <jani.nikula@intel.com>
+Subject: [PATCH 6.1 127/127] Revert "drm/i915: Disable DC states for all commits"
+Date:   Wed,  9 Aug 2023 12:41:54 +0200
+Message-ID: <20230809103640.795291713@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230809103636.615294317@linuxfoundation.org>
 References: <20230809103636.615294317@linuxfoundation.org>
@@ -46,137 +51,89 @@ User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Lijo Lazar <lijo.lazar@amd.com>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-commit db3b5cb64a9ca301d14ed027e470834316720e42 upstream
+This reverts commit 0fc6fea41c7122aa5f2088117f50144b507e13d7 which is
+commit a2b6e99d8a623544f3bdccd28ee35b9c1b00daa5 upstream.
 
-Use the generic term fw_reserved_memory for FW reserve region. This
-region may also hold discovery TMR in addition to other reserve
-regions. This region size could be larger than discovery tmr size, hence
-don't change the discovery tmr size based on this.
+It is reported to cause regression issues, so it should be reverted from
+the 6.1.y tree for now.
 
-Signed-off-by: Lijo Lazar <lijo.lazar@amd.com>
-Reviewed-by: Le Ma <le.ma@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-[ This change fixes reading IP discovery from debugfs.
-  It needed to be hand modified because:
-  * GC 9.4.3 support isn't introduced in older kernels until
-    228ce176434b ("drm/amdgpu: Handle VRAM dependencies on GFXIP9.4.3")
-  * It also changed because of 58ab2c08d708 (drm/amdgpu: use VRAM|GTT
-    for a bunch of kernel allocations) not being present.
-  Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2748 ]
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Reported-by: Thorsten Leemhuis <regressions@leemhuis.info>
+Link: https://lore.kernel.org/r/f0870e8f-0c66-57fd-f95d-18d014a11939@leemhuis.info
+Link: https://gitlab.freedesktop.org/drm/intel/-/issues/8419
+Cc: Manasi Navare <navaremanasi@google.com>
+Cc: Drew Davenport <ddavenport@chromium.org>
+Cc: Jouni Högander <jouni.hogander@intel.com>
+Cc: Imre Deak <imre.deak@intel.com>
+Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Cc: Jani Nikula <jani.nikula@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c |   33 ++++++++++++++++++--------------
- drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.h |    3 +-
- 2 files changed, 21 insertions(+), 15 deletions(-)
+ drivers/gpu/drm/i915/display/intel_display.c |   28 ++-------------------------
+ 1 file changed, 3 insertions(+), 25 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c
-@@ -1625,14 +1625,15 @@ static int amdgpu_ttm_training_reserve_v
- 	return 0;
- }
+--- a/drivers/gpu/drm/i915/display/intel_display.c
++++ b/drivers/gpu/drm/i915/display/intel_display.c
+@@ -7123,8 +7123,6 @@ static void intel_update_crtc(struct int
  
--static void amdgpu_ttm_training_data_block_init(struct amdgpu_device *adev)
-+static void amdgpu_ttm_training_data_block_init(struct amdgpu_device *adev,
-+						uint32_t reserve_size)
- {
- 	struct psp_memory_training_context *ctx = &adev->psp.mem_train_ctx;
+ 	intel_fbc_update(state, crtc);
  
- 	memset(ctx, 0, sizeof(*ctx));
+-	drm_WARN_ON(&i915->drm, !intel_display_power_is_enabled(i915, POWER_DOMAIN_DC_OFF));
+-
+ 	if (!modeset &&
+ 	    (new_crtc_state->uapi.color_mgmt_changed ||
+ 	     new_crtc_state->update_pipe))
+@@ -7501,28 +7499,8 @@ static void intel_atomic_commit_tail(str
+ 	drm_atomic_helper_wait_for_dependencies(&state->base);
+ 	drm_dp_mst_atomic_wait_for_dependencies(&state->base);
  
- 	ctx->c2p_train_data_offset =
--		ALIGN((adev->gmc.mc_vram_size - adev->mman.discovery_tmr_size - SZ_1M), SZ_1M);
-+		ALIGN((adev->gmc.mc_vram_size - reserve_size - SZ_1M), SZ_1M);
- 	ctx->p2c_train_data_offset =
- 		(adev->gmc.mc_vram_size - GDDR6_MEM_TRAINING_OFFSET);
- 	ctx->train_data_size =
-@@ -1650,9 +1651,10 @@ static void amdgpu_ttm_training_data_blo
-  */
- static int amdgpu_ttm_reserve_tmr(struct amdgpu_device *adev)
- {
--	int ret;
- 	struct psp_memory_training_context *ctx = &adev->psp.mem_train_ctx;
- 	bool mem_train_support = false;
-+	uint32_t reserve_size = 0;
-+	int ret;
+-	/*
+-	 * During full modesets we write a lot of registers, wait
+-	 * for PLLs, etc. Doing that while DC states are enabled
+-	 * is not a good idea.
+-	 *
+-	 * During fastsets and other updates we also need to
+-	 * disable DC states due to the following scenario:
+-	 * 1. DC5 exit and PSR exit happen
+-	 * 2. Some or all _noarm() registers are written
+-	 * 3. Due to some long delay PSR is re-entered
+-	 * 4. DC5 entry -> DMC saves the already written new
+-	 *    _noarm() registers and the old not yet written
+-	 *    _arm() registers
+-	 * 5. DC5 exit -> DMC restores a mixture of old and
+-	 *    new register values and arms the update
+-	 * 6. PSR exit -> hardware latches a mixture of old and
+-	 *    new register values -> corrupted frame, or worse
+-	 * 7. New _arm() registers are finally written
+-	 * 8. Hardware finally latches a complete set of new
+-	 *    register values, and subsequent frames will be OK again
+-	 */
+-	wakeref = intel_display_power_get(dev_priv, POWER_DOMAIN_DC_OFF);
++	if (state->modeset)
++		wakeref = intel_display_power_get(dev_priv, POWER_DOMAIN_MODESET);
  
- 	if (!amdgpu_sriov_vf(adev)) {
- 		if (amdgpu_atomfirmware_mem_training_supported(adev))
-@@ -1668,14 +1670,15 @@ static int amdgpu_ttm_reserve_tmr(struct
- 	 * Otherwise, fallback to legacy approach to check and reserve tmr block for ip
- 	 * discovery data and G6 memory training data respectively
- 	 */
--	adev->mman.discovery_tmr_size =
--		amdgpu_atomfirmware_get_fw_reserved_fb_size(adev);
--	if (!adev->mman.discovery_tmr_size)
--		adev->mman.discovery_tmr_size = DISCOVERY_TMR_OFFSET;
-+	if (adev->bios)
-+		reserve_size =
-+			amdgpu_atomfirmware_get_fw_reserved_fb_size(adev);
-+	if (!reserve_size)
-+		reserve_size = DISCOVERY_TMR_OFFSET;
+ 	intel_atomic_prepare_plane_clear_colors(state);
  
- 	if (mem_train_support) {
- 		/* reserve vram for mem train according to TMR location */
--		amdgpu_ttm_training_data_block_init(adev);
-+		amdgpu_ttm_training_data_block_init(adev, reserve_size);
- 		ret = amdgpu_bo_create_kernel_at(adev,
- 					 ctx->c2p_train_data_offset,
- 					 ctx->train_data_size,
-@@ -1690,13 +1693,14 @@ static int amdgpu_ttm_reserve_tmr(struct
+@@ -7661,8 +7639,8 @@ static void intel_atomic_commit_tail(str
+ 		 * the culprit.
+ 		 */
+ 		intel_uncore_arm_unclaimed_mmio_detection(&dev_priv->uncore);
++		intel_display_power_put(dev_priv, POWER_DOMAIN_MODESET, wakeref);
  	}
+-	intel_display_power_put(dev_priv, POWER_DOMAIN_DC_OFF, wakeref);
+ 	intel_runtime_pm_put(&dev_priv->runtime_pm, state->wakeref);
  
- 	ret = amdgpu_bo_create_kernel_at(adev,
--				adev->gmc.real_vram_size - adev->mman.discovery_tmr_size,
--				adev->mman.discovery_tmr_size,
--				&adev->mman.discovery_memory,
-+				adev->gmc.real_vram_size - reserve_size,
-+				reserve_size,
-+				&adev->mman.fw_reserved_memory,
- 				NULL);
- 	if (ret) {
- 		DRM_ERROR("alloc tmr failed(%d)!\n", ret);
--		amdgpu_bo_free_kernel(&adev->mman.discovery_memory, NULL, NULL);
-+		amdgpu_bo_free_kernel(&adev->mman.fw_reserved_memory,
-+				      NULL, NULL);
- 		return ret;
- 	}
- 
-@@ -1890,8 +1894,9 @@ void amdgpu_ttm_fini(struct amdgpu_devic
- 	/* return the stolen vga memory back to VRAM */
- 	amdgpu_bo_free_kernel(&adev->mman.stolen_vga_memory, NULL, NULL);
- 	amdgpu_bo_free_kernel(&adev->mman.stolen_extended_memory, NULL, NULL);
--	/* return the IP Discovery TMR memory back to VRAM */
--	amdgpu_bo_free_kernel(&adev->mman.discovery_memory, NULL, NULL);
-+	/* return the FW reserved memory back to VRAM */
-+	amdgpu_bo_free_kernel(&adev->mman.fw_reserved_memory, NULL,
-+			      NULL);
- 	if (adev->mman.stolen_reserved_size)
- 		amdgpu_bo_free_kernel(&adev->mman.stolen_reserved_memory,
- 				      NULL, NULL);
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.h
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.h
-@@ -78,7 +78,8 @@ struct amdgpu_mman {
- 	/* discovery */
- 	uint8_t				*discovery_bin;
- 	uint32_t			discovery_tmr_size;
--	struct amdgpu_bo		*discovery_memory;
-+	/* fw reserved memory */
-+	struct amdgpu_bo		*fw_reserved_memory;
- 
- 	/* firmware VRAM reservation */
- 	u64		fw_vram_usage_start_offset;
+ 	/*
 
 
