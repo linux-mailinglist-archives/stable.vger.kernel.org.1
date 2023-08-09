@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 81230775D44
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:35:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 423637757AD
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:48:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234042AbjHILfb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:35:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40328 "EHLO
+        id S232256AbjHIKsu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 06:48:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46480 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234057AbjHILfa (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:35:30 -0400
+        with ESMTP id S231205AbjHIKst (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:48:49 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 81D0F173A
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:35:30 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1ABB510F3
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:48:49 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 17C01634E3
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:35:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23419C433C8;
-        Wed,  9 Aug 2023 11:35:28 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A74A063123
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:48:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B14BBC433C7;
+        Wed,  9 Aug 2023 10:48:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691580929;
-        bh=3Vj2MRMKV3yTa5cT+BUgL4fJJih1jfVifMlINcqFn7k=;
+        s=korg; t=1691578128;
+        bh=HrLJv5CHEXEZye7nf+ZWk4xLjtdLwahWPBddOkNAsHE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=0Yea66J9ItBH49/00zefC7iMdq3chKZaFqIw3tbmq7geCCseSKnYzTgA/wJy6H7ik
-         4UKuJyqHpr6DT4ecDpG1FHq0rOVoRryCWejRWy5gFTYmesAoh/64tJzFTKqD/t/GJ3
-         d2FtBV3S6fHkZ/uixFa3rFcJ9M/e1Gaw/po5YLdw=
+        b=0iZrK5ac2ur0CfjJMQm2kSSkuPb16DdOrjI2pTphSAv/n6hmBnwzXE6VJGC1ImwKG
+         WVP6RgeBGwqSV8dNbhrGH60wLUlzCYsIbT1635JPtcuvgvEw0r3EgvWD3WRirNj0gX
+         zxpR2Rx5gSNhL1z9Lh4Bs5riXguSd7bie33eOK7w=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Kevin Rich <kevinrich1337@gmail.com>,
-        Pablo Neira Ayuso <pablo@netfilter.org>,
-        Florian Westphal <fw@strlen.de>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 044/201] netfilter: nf_tables: skip immediate deactivate in _PREPARE_ERROR
+        patches@lists.linux.dev, Rani Hod <rani.hod@gmail.com>,
+        Paul Fertser <fercerpav@gmail.com>,
+        Simon Horman <simon.horman@corigine.com>,
+        Felix Fietkau <nbd@nbd.name>, Kalle Valo <kvalo@kernel.org>
+Subject: [PATCH 6.4 115/165] wifi: mt76: mt7615: do not advertise 5 GHz on first phy of MT7615D (DBDC)
 Date:   Wed,  9 Aug 2023 12:40:46 +0200
-Message-ID: <20230809103645.317966366@linuxfoundation.org>
+Message-ID: <20230809103646.560595847@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103643.799166053@linuxfoundation.org>
-References: <20230809103643.799166053@linuxfoundation.org>
+In-Reply-To: <20230809103642.720851262@linuxfoundation.org>
+References: <20230809103642.720851262@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,89 +56,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Paul Fertser <fercerpav@gmail.com>
 
-[ Upstream commit 0a771f7b266b02d262900c75f1e175c7fe76fec2 ]
+commit 421033deb91521aa6a9255e495cb106741a52275 upstream.
 
-On error when building the rule, the immediate expression unbinds the
-chain, hence objects can be deactivated by the transaction records.
+On DBDC devices the first (internal) phy is only capable of using
+2.4 GHz band, and the 5 GHz band is exposed via a separate phy object,
+so avoid the false advertising.
 
-Otherwise, it is possible to trigger the following warning:
-
- WARNING: CPU: 3 PID: 915 at net/netfilter/nf_tables_api.c:2013 nf_tables_chain_destroy+0x1f7/0x210 [nf_tables]
- CPU: 3 PID: 915 Comm: chain-bind-err- Not tainted 6.1.39 #1
- RIP: 0010:nf_tables_chain_destroy+0x1f7/0x210 [nf_tables]
-
-Fixes: 4bedf9eee016 ("netfilter: nf_tables: fix chain binding transaction logic")
-Reported-by: Kevin Rich <kevinrich1337@gmail.com>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Rani Hod <rani.hod@gmail.com>
+Closes: https://github.com/openwrt/openwrt/pull/12361
+Fixes: 7660a1bd0c22 ("mt76: mt7615: register ext_phy if DBDC is detected")
+Cc: stable@vger.kernel.org
+Signed-off-by: Paul Fertser <fercerpav@gmail.com>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Acked-by: Felix Fietkau <nbd@nbd.name>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://lore.kernel.org/r/20230605073408.8699-1-fercerpav@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nft_immediate.c | 27 ++++++++++++++++++---------
- 1 file changed, 18 insertions(+), 9 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7615/eeprom.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/net/netfilter/nft_immediate.c b/net/netfilter/nft_immediate.c
-index 6b0efab4fad09..6bf1c852e8eaa 100644
---- a/net/netfilter/nft_immediate.c
-+++ b/net/netfilter/nft_immediate.c
-@@ -125,15 +125,27 @@ static void nft_immediate_activate(const struct nft_ctx *ctx,
- 	return nft_data_hold(&priv->data, nft_dreg_to_type(priv->dreg));
- }
- 
-+static void nft_immediate_chain_deactivate(const struct nft_ctx *ctx,
-+					   struct nft_chain *chain,
-+					   enum nft_trans_phase phase)
-+{
-+	struct nft_ctx chain_ctx;
-+	struct nft_rule *rule;
-+
-+	chain_ctx = *ctx;
-+	chain_ctx.chain = chain;
-+
-+	list_for_each_entry(rule, &chain->rules, list)
-+		nft_rule_expr_deactivate(&chain_ctx, rule, phase);
-+}
-+
- static void nft_immediate_deactivate(const struct nft_ctx *ctx,
- 				     const struct nft_expr *expr,
- 				     enum nft_trans_phase phase)
- {
- 	const struct nft_immediate_expr *priv = nft_expr_priv(expr);
- 	const struct nft_data *data = &priv->data;
--	struct nft_ctx chain_ctx;
- 	struct nft_chain *chain;
--	struct nft_rule *rule;
- 
- 	if (priv->dreg == NFT_REG_VERDICT) {
- 		switch (data->verdict.code) {
-@@ -143,20 +155,17 @@ static void nft_immediate_deactivate(const struct nft_ctx *ctx,
- 			if (!nft_chain_binding(chain))
- 				break;
- 
--			chain_ctx = *ctx;
--			chain_ctx.chain = chain;
--
--			list_for_each_entry(rule, &chain->rules, list)
--				nft_rule_expr_deactivate(&chain_ctx, rule, phase);
--
- 			switch (phase) {
- 			case NFT_TRANS_PREPARE_ERROR:
- 				nf_tables_unbind_chain(ctx, chain);
--				fallthrough;
-+				nft_deactivate_next(ctx->net, chain);
-+				break;
- 			case NFT_TRANS_PREPARE:
-+				nft_immediate_chain_deactivate(ctx, chain, phase);
- 				nft_deactivate_next(ctx->net, chain);
- 				break;
- 			default:
-+				nft_immediate_chain_deactivate(ctx, chain, phase);
- 				nft_chain_del(chain);
- 				chain->bound = false;
- 				chain->table->use--;
--- 
-2.39.2
-
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/eeprom.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/eeprom.c
+@@ -128,12 +128,12 @@ mt7615_eeprom_parse_hw_band_cap(struct m
+ 	case MT_EE_5GHZ:
+ 		dev->mphy.cap.has_5ghz = true;
+ 		break;
+-	case MT_EE_2GHZ:
+-		dev->mphy.cap.has_2ghz = true;
+-		break;
+ 	case MT_EE_DBDC:
+ 		dev->dbdc_support = true;
+ 		fallthrough;
++	case MT_EE_2GHZ:
++		dev->mphy.cap.has_2ghz = true;
++		break;
+ 	default:
+ 		dev->mphy.cap.has_2ghz = true;
+ 		dev->mphy.cap.has_5ghz = true;
 
 
