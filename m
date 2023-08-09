@@ -2,48 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4FE96775C86
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:28:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B9525775A61
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:07:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233692AbjHIL2Q (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:28:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37700 "EHLO
+        id S233170AbjHILHy (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:07:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45832 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233773AbjHIL2P (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:28:15 -0400
+        with ESMTP id S233150AbjHILHx (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:07:53 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A78B2100
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:28:09 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CEB271FFA
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:07:52 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 31664632AC
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:28:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44D2EC433C8;
-        Wed,  9 Aug 2023 11:28:08 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 66E0961FA9
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:07:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74F91C433C8;
+        Wed,  9 Aug 2023 11:07:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691580488;
-        bh=zt8m6+ocboRYsXwshUSV93BTHV3fnqjyRhJaoxtWpzw=;
+        s=korg; t=1691579271;
+        bh=awbj2evehOQOiW6jsCjgQkZfyEE1jLdz0/ScGsRgki4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=DofD38jAfYjlRZ9IguO2mMEs+ETttfrC54oB4UI3CMTJDJeuaQ8JDINLOz3sgS5dt
-         BbkwhxBO6xqTlo8wiTL2KLpbt8XPnWa2HImItfnbfFInoZKrk7O8jIPrvdcn5vzuBt
-         27K5qKKS7hIDyTgrJH7wWx/1PKYwne+12i6L4ZJ4=
+        b=OWcdQxxdUR9uK8+kUlKorSO0a9c6u+Lez3WKAH4Dy7cRjJymIEJtquZG2rqfKTD7v
+         dP+75GiZxnQey2nJD0EQXj9PhBTCrK7oxhM7i8Zh7qaLBDnvnf5f9P3jONkc5znCT1
+         a3PWVbOv6Ry4q3INwnujfexptl+npt5E/vXz2gYk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Vladimir Oltean <vladimir.oltean@nxp.com>,
-        Ferenc Fejes <fejes@inf.elte.hu>,
+        patches@lists.linux.dev,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
         Simon Horman <simon.horman@corigine.com>,
-        Jamal Hadi Salim <jhs@mojatatu.com>,
-        Jakub Kicinski <kuba@kernel.org>,
+        Johannes Berg <johannes.berg@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 042/154] net/sched: mqprio: add extack to mqprio_parse_nlattr()
+Subject: [PATCH 4.14 135/204] wifi: wext-core: Fix -Wstringop-overflow warning in ioctl_standard_iw_point()
 Date:   Wed,  9 Aug 2023 12:41:13 +0200
-Message-ID: <20230809103638.415971942@linuxfoundation.org>
+Message-ID: <20230809103647.104840300@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103636.887175326@linuxfoundation.org>
-References: <20230809103636.887175326@linuxfoundation.org>
+In-Reply-To: <20230809103642.552405807@linuxfoundation.org>
+References: <20230809103642.552405807@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -58,108 +57,68 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
+From: Gustavo A. R. Silva <gustavoars@kernel.org>
 
-[ Upstream commit 57f21bf85400abadac0cb2a4db5de1d663f8863f ]
+[ Upstream commit 71e7552c90db2a2767f5c17c7ec72296b0d92061 ]
 
-Netlink attribute parsing in mqprio is a minesweeper game, with many
-options having the possibility of being passed incorrectly and the user
-being none the wiser.
+-Wstringop-overflow is legitimately warning us about extra_size
+pontentially being zero at some point, hence potenially ending
+up _allocating_ zero bytes of memory for extra pointer and then
+trying to access such object in a call to copy_from_user().
 
-Try to make errors less sour by giving user space some information
-regarding what went wrong.
+Fix this by adding a sanity check to ensure we never end up
+trying to allocate zero bytes of data for extra pointer, before
+continue executing the rest of the code in the function.
 
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Reviewed-by: Ferenc Fejes <fejes@inf.elte.hu>
+Address the following -Wstringop-overflow warning seen when built
+m68k architecture with allyesconfig configuration:
+                 from net/wireless/wext-core.c:11:
+In function '_copy_from_user',
+    inlined from 'copy_from_user' at include/linux/uaccess.h:183:7,
+    inlined from 'ioctl_standard_iw_point' at net/wireless/wext-core.c:825:7:
+arch/m68k/include/asm/string.h:48:25: warning: '__builtin_memset' writing 1 or more bytes into a region of size 0 overflows the destination [-Wstringop-overflow=]
+   48 | #define memset(d, c, n) __builtin_memset(d, c, n)
+      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~
+include/linux/uaccess.h:153:17: note: in expansion of macro 'memset'
+  153 |                 memset(to + (n - res), 0, res);
+      |                 ^~~~~~
+In function 'kmalloc',
+    inlined from 'kzalloc' at include/linux/slab.h:694:9,
+    inlined from 'ioctl_standard_iw_point' at net/wireless/wext-core.c:819:10:
+include/linux/slab.h:577:16: note: at offset 1 into destination object of size 0 allocated by '__kmalloc'
+  577 |         return __kmalloc(size, flags);
+      |                ^~~~~~~~~~~~~~~~~~~~~~
+
+This help with the ongoing efforts to globally enable
+-Wstringop-overflow.
+
+Link: https://github.com/KSPP/linux/issues/315
+Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
 Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 6c58c8816abb ("net/sched: mqprio: Add length check for TCA_MQPRIO_{MAX/MIN}_RATE64")
+Link: https://lore.kernel.org/r/ZItSlzvIpjdjNfd8@work
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_mqprio.c | 30 +++++++++++++++++++++++-------
- 1 file changed, 23 insertions(+), 7 deletions(-)
+ net/wireless/wext-core.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/net/sched/sch_mqprio.c b/net/sched/sch_mqprio.c
-index a5df5604e0150..4ec222a5530d1 100644
---- a/net/sched/sch_mqprio.c
-+++ b/net/sched/sch_mqprio.c
-@@ -131,7 +131,8 @@ static int parse_attr(struct nlattr *tb[], int maxtype, struct nlattr *nla,
- }
- 
- static int mqprio_parse_nlattr(struct Qdisc *sch, struct tc_mqprio_qopt *qopt,
--			       struct nlattr *opt)
-+			       struct nlattr *opt,
-+			       struct netlink_ext_ack *extack)
- {
- 	struct mqprio_sched *priv = qdisc_priv(sch);
- 	struct nlattr *tb[TCA_MQPRIO_MAX + 1];
-@@ -143,8 +144,11 @@ static int mqprio_parse_nlattr(struct Qdisc *sch, struct tc_mqprio_qopt *qopt,
- 	if (err < 0)
- 		return err;
- 
--	if (!qopt->hw)
-+	if (!qopt->hw) {
-+		NL_SET_ERR_MSG(extack,
-+			       "mqprio TCA_OPTIONS can only contain netlink attributes in hardware mode");
- 		return -EINVAL;
-+	}
- 
- 	if (tb[TCA_MQPRIO_MODE]) {
- 		priv->flags |= TC_MQPRIO_F_MODE;
-@@ -157,13 +161,19 @@ static int mqprio_parse_nlattr(struct Qdisc *sch, struct tc_mqprio_qopt *qopt,
+diff --git a/net/wireless/wext-core.c b/net/wireless/wext-core.c
+index b6414c7bef556..4bf33f9b28870 100644
+--- a/net/wireless/wext-core.c
++++ b/net/wireless/wext-core.c
+@@ -798,6 +798,12 @@ static int ioctl_standard_iw_point(struct iw_point *iwp, unsigned int cmd,
+ 		}
  	}
  
- 	if (tb[TCA_MQPRIO_MIN_RATE64]) {
--		if (priv->shaper != TC_MQPRIO_SHAPER_BW_RATE)
-+		if (priv->shaper != TC_MQPRIO_SHAPER_BW_RATE) {
-+			NL_SET_ERR_MSG_ATTR(extack, tb[TCA_MQPRIO_MIN_RATE64],
-+					    "min_rate accepted only when shaper is in bw_rlimit mode");
- 			return -EINVAL;
-+		}
- 		i = 0;
- 		nla_for_each_nested(attr, tb[TCA_MQPRIO_MIN_RATE64],
- 				    rem) {
--			if (nla_type(attr) != TCA_MQPRIO_MIN_RATE64)
-+			if (nla_type(attr) != TCA_MQPRIO_MIN_RATE64) {
-+				NL_SET_ERR_MSG_ATTR(extack, attr,
-+						    "Attribute type expected to be TCA_MQPRIO_MIN_RATE64");
- 				return -EINVAL;
-+			}
- 			if (i >= qopt->num_tc)
- 				break;
- 			priv->min_rate[i] = *(u64 *)nla_data(attr);
-@@ -173,13 +183,19 @@ static int mqprio_parse_nlattr(struct Qdisc *sch, struct tc_mqprio_qopt *qopt,
- 	}
- 
- 	if (tb[TCA_MQPRIO_MAX_RATE64]) {
--		if (priv->shaper != TC_MQPRIO_SHAPER_BW_RATE)
-+		if (priv->shaper != TC_MQPRIO_SHAPER_BW_RATE) {
-+			NL_SET_ERR_MSG_ATTR(extack, tb[TCA_MQPRIO_MAX_RATE64],
-+					    "max_rate accepted only when shaper is in bw_rlimit mode");
- 			return -EINVAL;
-+		}
- 		i = 0;
- 		nla_for_each_nested(attr, tb[TCA_MQPRIO_MAX_RATE64],
- 				    rem) {
--			if (nla_type(attr) != TCA_MQPRIO_MAX_RATE64)
-+			if (nla_type(attr) != TCA_MQPRIO_MAX_RATE64) {
-+				NL_SET_ERR_MSG_ATTR(extack, attr,
-+						    "Attribute type expected to be TCA_MQPRIO_MAX_RATE64");
- 				return -EINVAL;
-+			}
- 			if (i >= qopt->num_tc)
- 				break;
- 			priv->max_rate[i] = *(u64 *)nla_data(attr);
-@@ -224,7 +240,7 @@ static int mqprio_init(struct Qdisc *sch, struct nlattr *opt,
- 
- 	len = nla_len(opt) - NLA_ALIGN(sizeof(*qopt));
- 	if (len > 0) {
--		err = mqprio_parse_nlattr(sch, qopt, opt);
-+		err = mqprio_parse_nlattr(sch, qopt, opt, extack);
- 		if (err)
- 			return err;
- 	}
++	/* Sanity-check to ensure we never end up _allocating_ zero
++	 * bytes of data for extra.
++	 */
++	if (extra_size <= 0)
++		return -EFAULT;
++
+ 	/* kzalloc() ensures NULL-termination for essid_compat. */
+ 	extra = kzalloc(extra_size, GFP_KERNEL);
+ 	if (!extra)
 -- 
 2.39.2
 
