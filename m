@@ -2,47 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B2D277759D0
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:03:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DC52A775BCD
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:21:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233020AbjHILDT (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:03:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38526 "EHLO
+        id S233545AbjHILVO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:21:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38370 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232970AbjHILDJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:03:09 -0400
+        with ESMTP id S233539AbjHILVN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:21:13 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CAA322109
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:55:11 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0735FFA
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:21:13 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6B7C962BD5
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:55:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7950DC433C8;
-        Wed,  9 Aug 2023 10:55:10 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9A87E631EA
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:21:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABD11C433C8;
+        Wed,  9 Aug 2023 11:21:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691578510;
-        bh=HqxHB1BkX3P7VovaGf2jiIVzQKWXw3rhyBzklKdPS1c=;
+        s=korg; t=1691580072;
+        bh=Ca2xW03CkZsnqK+E76VYFr7uIFkOOdn/ahPLoWva4HY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ENkSIEEyVJ4WII07AM9swkTKzLs8xTtB1zeV0m4fp1zU64gsvSTZrqnAKsWnGBpa7
-         fUcRtcoszJ66GJ09rnGlG3Gbqx0IXCmEw6Aa5vgyZUaDZqmb0h6Vtle3L/yvDCYTJA
-         63siTUGKgfjZ2fT4D45F+ZBcqDEjNHkazgQVAzAs=
+        b=yT7MJttbKoSQPsjB6OoUeKyJQjCCLTOtYz1Hm2syjgTEZFcNn90kJZoTyh5k3e9Q3
+         DRQW+/cf/IixUEtME/xTJNvNvA128QHNXRBz2X/pN+kJHicZ/sAjxSaaI6kAmAhG0e
+         I5NVL4Lzm3P4XqV75ZlGv8oGpj0Q5yOI/p1n+dWA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
-        David Ahern <dsahern@kernel.org>,
-        Kuniyuki Iwashima <kuniyu@amazon.com>,
-        Jakub Kicinski <kuba@kernel.org>,
+        patches@lists.linux.dev, Shenghui Wang <shhuiw@foxmail.com>,
+        Coly Li <colyli@suse.de>, Jens Axboe <axboe@kernel.dk>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 068/127] tcp_metrics: annotate data-races around tm->tcpm_net
-Date:   Wed,  9 Aug 2023 12:40:55 +0200
-Message-ID: <20230809103638.915095159@linuxfoundation.org>
+Subject: [PATCH 4.19 218/323] bcache: use MAX_CACHES_PER_SET instead of magic number 8 in __bch_bucket_alloc_set
+Date:   Wed,  9 Aug 2023 12:40:56 +0200
+Message-ID: <20230809103708.083779483@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103636.615294317@linuxfoundation.org>
-References: <20230809103636.615294317@linuxfoundation.org>
+In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
+References: <20230809103658.104386911@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,66 +55,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Eric Dumazet <edumazet@google.com>
+From: Shenghui Wang <shhuiw@foxmail.com>
 
-[ Upstream commit d5d986ce42c71a7562d32c4e21e026b0f87befec ]
+[ Upstream commit 8792099f9ad487cf381f4e8199ff2158ba0f6eb5 ]
 
-tm->tcpm_net can be read or written locklessly.
+Current cache_set has MAX_CACHES_PER_SET caches most, and the macro
+is used for
+"
+	struct cache *cache_by_alloc[MAX_CACHES_PER_SET];
+"
+in the define of struct cache_set.
 
-Instead of changing write_pnet() and read_pnet() and potentially
-hurt performance, add the needed READ_ONCE()/WRITE_ONCE()
-in tm_net() and tcpm_new().
+Use MAX_CACHES_PER_SET instead of magic number 8 in
+__bch_bucket_alloc_set.
 
-Fixes: 849e8a0ca8d5 ("tcp_metrics: Add a field tcpm_net and verify it matches on lookup")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Link: https://lore.kernel.org/r/20230802131500.1478140-6-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Shenghui Wang <shhuiw@foxmail.com>
+Signed-off-by: Coly Li <colyli@suse.de>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Stable-dep-of: 80fca8a10b60 ("bcache: Fix __bch_btree_node_alloc to make the failure behavior consistent")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/tcp_metrics.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ drivers/md/bcache/alloc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/ipv4/tcp_metrics.c b/net/ipv4/tcp_metrics.c
-index fd4ab7a51cef2..4fd274836a48f 100644
---- a/net/ipv4/tcp_metrics.c
-+++ b/net/ipv4/tcp_metrics.c
-@@ -40,7 +40,7 @@ struct tcp_fastopen_metrics {
+diff --git a/drivers/md/bcache/alloc.c b/drivers/md/bcache/alloc.c
+index 46794cac167e7..a1df0d95151c6 100644
+--- a/drivers/md/bcache/alloc.c
++++ b/drivers/md/bcache/alloc.c
+@@ -497,7 +497,7 @@ int __bch_bucket_alloc_set(struct cache_set *c, unsigned int reserve,
+ 		return -1;
  
- struct tcp_metrics_block {
- 	struct tcp_metrics_block __rcu	*tcpm_next;
--	possible_net_t			tcpm_net;
-+	struct net			*tcpm_net;
- 	struct inetpeer_addr		tcpm_saddr;
- 	struct inetpeer_addr		tcpm_daddr;
- 	unsigned long			tcpm_stamp;
-@@ -51,9 +51,10 @@ struct tcp_metrics_block {
- 	struct rcu_head			rcu_head;
- };
+ 	lockdep_assert_held(&c->bucket_lock);
+-	BUG_ON(!n || n > c->caches_loaded || n > 8);
++	BUG_ON(!n || n > c->caches_loaded || n > MAX_CACHES_PER_SET);
  
--static inline struct net *tm_net(struct tcp_metrics_block *tm)
-+static inline struct net *tm_net(const struct tcp_metrics_block *tm)
- {
--	return read_pnet(&tm->tcpm_net);
-+	/* Paired with the WRITE_ONCE() in tcpm_new() */
-+	return READ_ONCE(tm->tcpm_net);
- }
- 
- static bool tcp_metric_locked(struct tcp_metrics_block *tm,
-@@ -197,7 +198,9 @@ static struct tcp_metrics_block *tcpm_new(struct dst_entry *dst,
- 		if (!tm)
- 			goto out_unlock;
- 	}
--	write_pnet(&tm->tcpm_net, net);
-+	/* Paired with the READ_ONCE() in tm_net() */
-+	WRITE_ONCE(tm->tcpm_net, net);
-+
- 	tm->tcpm_saddr = *saddr;
- 	tm->tcpm_daddr = *daddr;
+ 	bkey_init(k);
  
 -- 
-2.40.1
+2.39.2
 
 
 
