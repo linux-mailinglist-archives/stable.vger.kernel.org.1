@@ -2,43 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D0C38775A86
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:09:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8C065775CA7
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:29:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233197AbjHILJP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:09:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60922 "EHLO
+        id S233824AbjHIL3e (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:29:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35714 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233200AbjHILJO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:09:14 -0400
+        with ESMTP id S233820AbjHIL3d (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:29:33 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB2F8ED
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:09:13 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F222ED
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:29:33 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 651796314D
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:09:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76BF0C433C8;
-        Wed,  9 Aug 2023 11:09:12 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2D77F63315
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:29:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AA18C433C8;
+        Wed,  9 Aug 2023 11:29:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691579352;
-        bh=Abm8rZvBiLy5+tBL4LcLiiGfrik4KtzTOZjgbtTCtoE=;
+        s=korg; t=1691580572;
+        bh=uGvdWJCsFNbf5m4VfhCqMqS0rCknEsFqq072qKtJ14I=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=TilzfdG0EfZMDxI1fWxA7GcTBOECrPkyvQ6qeT13rP4OTGyvdg0UpnYDxdQxftCWC
-         jYQvi7OkxBVhbaHPlHrRoFWJgFTDgxApLH0hN8JXWg64UMIM3E7NzkXQlg0kDzL5sW
-         VEj7RCZJYtOy9ETBNdbvM9czq/zBb7WjmIJ+1yJA=
+        b=Jl7x0OBQnPbW1UNbojU1Eiv1l23t0oxCWdvyWXCh6QMXG8PSObHCRcNmhWIUFz0va
+         jJFHqFTpYH+PDzr66erx8rzTkSyD/Rnr+f2mIuQIiTjQMmOb7j0yI1LWbfrmFKFn5N
+         j2wIf1oaGdoIz/S/ARetMsSP76pE3ocvh7EQY/Ec=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Johan Hovold <johan@kernel.org>
-Subject: [PATCH 4.14 165/204] USB: serial: simple: sort driver entries
+        patches@lists.linux.dev, Gilles Buloz <gilles.buloz@kontron.com>,
+        Guenter Roeck <linux@roeck-us.net>
+Subject: [PATCH 5.4 072/154] hwmon: (nct7802) Fix for temp6 (PECI1) processed even if PECI1 disabled
 Date:   Wed,  9 Aug 2023 12:41:43 +0200
-Message-ID: <20230809103648.034122351@linuxfoundation.org>
+Message-ID: <20230809103639.369489545@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103642.552405807@linuxfoundation.org>
-References: <20230809103642.552405807@linuxfoundation.org>
+In-Reply-To: <20230809103636.887175326@linuxfoundation.org>
+References: <20230809103636.887175326@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,157 +54,34 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Johan Hovold <johan@kernel.org>
+From: Gilles Buloz <Gilles.Buloz@kontron.com>
 
-commit d245aedc00775c4d7265a9f4522cc4e1fd34d102 upstream.
+commit 54685abe660a59402344d5045ce08c43c6a5ac42 upstream.
 
-Sort the driver symbols alphabetically in order to make it more obvious
-where new driver entries should be added.
+Because of hex value 0x46 used instead of decimal 46, the temp6
+(PECI1) temperature is always declared visible and then displayed
+even if disabled in the chip
 
+Signed-off-by: Gilles Buloz <gilles.buloz@kontron.com>
+Link: https://lore.kernel.org/r/DU0PR10MB62526435ADBC6A85243B90E08002A@DU0PR10MB6252.EURPRD10.PROD.OUTLOOK.COM
+Fixes: fcdc5739dce03 ("hwmon: (nct7802) add temperature sensor type attribute")
 Cc: stable@vger.kernel.org
-Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/serial/usb-serial-simple.c |   66 ++++++++++++++++-----------------
- 1 file changed, 33 insertions(+), 33 deletions(-)
+ drivers/hwmon/nct7802.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/serial/usb-serial-simple.c
-+++ b/drivers/usb/serial/usb-serial-simple.c
-@@ -41,16 +41,6 @@ static struct usb_serial_driver vendor##
- 	{ USB_DEVICE(0x0a21, 0x8001) }	/* MMT-7305WW */
- DEVICE(carelink, CARELINK_IDS);
+--- a/drivers/hwmon/nct7802.c
++++ b/drivers/hwmon/nct7802.c
+@@ -708,7 +708,7 @@ static umode_t nct7802_temp_is_visible(s
+ 	if (index >= 38 && index < 46 && !(reg & 0x01))		/* PECI 0 */
+ 		return 0;
  
--/* ZIO Motherboard USB driver */
--#define ZIO_IDS()			\
--	{ USB_DEVICE(0x1CBE, 0x0103) }
--DEVICE(zio, ZIO_IDS);
--
--/* Funsoft Serial USB driver */
--#define FUNSOFT_IDS()			\
--	{ USB_DEVICE(0x1404, 0xcddc) }
--DEVICE(funsoft, FUNSOFT_IDS);
--
- /* Infineon Flashloader driver */
- #define FLASHLOADER_IDS()		\
- 	{ USB_DEVICE_INTERFACE_CLASS(0x058b, 0x0041, USB_CLASS_CDC_DATA) }, \
-@@ -58,6 +48,11 @@ DEVICE(funsoft, FUNSOFT_IDS);
- 	{ USB_DEVICE(0x8087, 0x0801) }
- DEVICE(flashloader, FLASHLOADER_IDS);
+-	if (index >= 0x46 && (!(reg & 0x02)))			/* PECI 1 */
++	if (index >= 46 && !(reg & 0x02))			/* PECI 1 */
+ 		return 0;
  
-+/* Funsoft Serial USB driver */
-+#define FUNSOFT_IDS()			\
-+	{ USB_DEVICE(0x1404, 0xcddc) }
-+DEVICE(funsoft, FUNSOFT_IDS);
-+
- /* Google Serial USB SubClass */
- #define GOOGLE_IDS()						\
- 	{ USB_VENDOR_AND_INTERFACE_INFO(0x18d1,			\
-@@ -66,6 +61,11 @@ DEVICE(flashloader, FLASHLOADER_IDS);
- 					0x01) }
- DEVICE(google, GOOGLE_IDS);
- 
-+/* HP4x (48/49) Generic Serial driver */
-+#define HP4X_IDS()			\
-+	{ USB_DEVICE(0x03f0, 0x0121) }
-+DEVICE(hp4x, HP4X_IDS);
-+
- /* KAUFMANN RKS+CAN VCP */
- #define KAUFMANN_IDS()			\
- 	{ USB_DEVICE(0x16d0, 0x0870) }
-@@ -76,11 +76,6 @@ DEVICE(kaufmann, KAUFMANN_IDS);
- 	{ USB_DEVICE(0x1209, 0x8b00) }
- DEVICE(libtransistor, LIBTRANSISTOR_IDS);
- 
--/* ViVOpay USB Serial Driver */
--#define VIVOPAY_IDS()			\
--	{ USB_DEVICE(0x1d5f, 0x1004) }	/* ViVOpay 8800 */
--DEVICE(vivopay, VIVOPAY_IDS);
--
- /* Motorola USB Phone driver */
- #define MOTO_IDS()			\
- 	{ USB_DEVICE(0x05c6, 0x3197) },	/* unknown Motorola phone */	\
-@@ -109,10 +104,10 @@ DEVICE(nokia, NOKIA_IDS);
- 	{ USB_DEVICE(0x09d7, 0x0100) }	/* NovAtel FlexPack GPS */
- DEVICE_N(novatel_gps, NOVATEL_IDS, 3);
- 
--/* HP4x (48/49) Generic Serial driver */
--#define HP4X_IDS()			\
--	{ USB_DEVICE(0x03f0, 0x0121) }
--DEVICE(hp4x, HP4X_IDS);
-+/* Siemens USB/MPI adapter */
-+#define SIEMENS_IDS()			\
-+	{ USB_DEVICE(0x908, 0x0004) }
-+DEVICE(siemens_mpi, SIEMENS_IDS);
- 
- /* Suunto ANT+ USB Driver */
- #define SUUNTO_IDS()			\
-@@ -120,47 +115,52 @@ DEVICE(hp4x, HP4X_IDS);
- 	{ USB_DEVICE(0x0fcf, 0x1009) } /* Dynastream ANT USB-m Stick */
- DEVICE(suunto, SUUNTO_IDS);
- 
--/* Siemens USB/MPI adapter */
--#define SIEMENS_IDS()			\
--	{ USB_DEVICE(0x908, 0x0004) }
--DEVICE(siemens_mpi, SIEMENS_IDS);
-+/* ViVOpay USB Serial Driver */
-+#define VIVOPAY_IDS()			\
-+	{ USB_DEVICE(0x1d5f, 0x1004) }	/* ViVOpay 8800 */
-+DEVICE(vivopay, VIVOPAY_IDS);
-+
-+/* ZIO Motherboard USB driver */
-+#define ZIO_IDS()			\
-+	{ USB_DEVICE(0x1CBE, 0x0103) }
-+DEVICE(zio, ZIO_IDS);
- 
- /* All of the above structures mushed into two lists */
- static struct usb_serial_driver * const serial_drivers[] = {
- 	&carelink_device,
--	&zio_device,
--	&funsoft_device,
- 	&flashloader_device,
-+	&funsoft_device,
- 	&google_device,
-+	&hp4x_device,
- 	&kaufmann_device,
- 	&libtransistor_device,
--	&vivopay_device,
- 	&moto_modem_device,
- 	&motorola_tetra_device,
- 	&nokia_device,
- 	&novatel_gps_device,
--	&hp4x_device,
--	&suunto_device,
- 	&siemens_mpi_device,
-+	&suunto_device,
-+	&vivopay_device,
-+	&zio_device,
- 	NULL
- };
- 
- static const struct usb_device_id id_table[] = {
- 	CARELINK_IDS(),
--	ZIO_IDS(),
--	FUNSOFT_IDS(),
- 	FLASHLOADER_IDS(),
-+	FUNSOFT_IDS(),
- 	GOOGLE_IDS(),
-+	HP4X_IDS(),
- 	KAUFMANN_IDS(),
- 	LIBTRANSISTOR_IDS(),
--	VIVOPAY_IDS(),
- 	MOTO_IDS(),
- 	MOTOROLA_TETRA_IDS(),
- 	NOKIA_IDS(),
- 	NOVATEL_IDS(),
--	HP4X_IDS(),
--	SUUNTO_IDS(),
- 	SIEMENS_IDS(),
-+	SUUNTO_IDS(),
-+	VIVOPAY_IDS(),
-+	ZIO_IDS(),
- 	{ },
- };
- MODULE_DEVICE_TABLE(usb, id_table);
+ 	return attr->mode;
 
 
