@@ -2,44 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5912D775981
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:01:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 234AF775C02
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:23:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232874AbjHILBL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:01:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34050 "EHLO
+        id S233614AbjHILXA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:23:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37968 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232888AbjHILBK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:01:10 -0400
+        with ESMTP id S233605AbjHILW7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:22:59 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E41341724
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:01:09 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3CB31FA
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:22:59 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 835F063132
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:01:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E709C433C8;
-        Wed,  9 Aug 2023 11:01:08 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D07526317E
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:22:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4D46C433C8;
+        Wed,  9 Aug 2023 11:22:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691578868;
-        bh=5bvDYRsWQYjFnXUeY3L5Xz3uuD3jdckUz/TMP1bTBqs=;
+        s=korg; t=1691580178;
+        bh=gKVFHwSXSmOUO+wu0kP45q87sKnNRbCF9coSPjK/g+Y=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Xf66fPBIdxFlchBQtC986ULwApaleVOXRqQ96JIdZkBgrr/68U3hadXg9rtEeltzR
-         J79b7d9jVURRhZZcWeKDo7TU3Pl2BmiHkwc5Tv80IriLhS1J5ITeLoGr+tddiZxH7q
-         n9e2cfgwCogIcKaJXPM+SwS5zyAIvzTit/jvWRRc=
+        b=QbGpBpalmH2WYNrkC9rKc+BG258RIsum73VZ16kSXGNoY2WTAXzq0l85D3aCANqKv
+         mF+9NkHKH67bG54ws5eTO4KDTvzU84dl72RWxmAA5arBHyLS8ZsXGTyZWMOlfoHqKL
+         YqeIm7+UQMocmG1K+ccoMq/XJJdhbnyGOWuf0yNc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ross Maynard <bids.7405@bigpond.com>,
-        Andrew Lunn <andrew@lunn.ch>, Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.15 57/92] USB: zaurus: Add ID for A-300/B-500/C-700
+        patches@lists.linux.dev, Sergey Shtylyov <s.shtylyov@omp.ru>,
+        Serge Semin <fancer.lancer@gmail.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Damien Le Moal <dlemoal@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 255/323] ata: pata_ns87415: mark ns87560_tf_read static
 Date:   Wed,  9 Aug 2023 12:41:33 +0200
-Message-ID: <20230809103635.574678876@linuxfoundation.org>
+Message-ID: <20230809103709.752208269@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103633.485906560@linuxfoundation.org>
-References: <20230809103633.485906560@linuxfoundation.org>
+In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
+References: <20230809103658.104386911@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,111 +57,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ross Maynard <bids.7405@bigpond.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-commit b99225b4fe297d07400f9e2332ecd7347b224f8d upstream.
+[ Upstream commit 3fc2febb0f8ffae354820c1772ec008733237cfa ]
 
-The SL-A300, B500/5600, and C700 devices no longer auto-load because of
-"usbnet: Remove over-broad module alias from zaurus."
-This patch adds IDs for those 3 devices.
+The global function triggers a warning because of the missing prototype
 
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=217632
-Fixes: 16adf5d07987 ("usbnet: Remove over-broad module alias from zaurus.")
-Signed-off-by: Ross Maynard <bids.7405@bigpond.com>
-Cc: stable@vger.kernel.org
-Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://lore.kernel.org/r/69b5423b-2013-9fc9-9569-58e707d9bafb@bigpond.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+drivers/ata/pata_ns87415.c:263:6: warning: no previous prototype for 'ns87560_tf_read' [-Wmissing-prototypes]
+  263 | void ns87560_tf_read(struct ata_port *ap, struct ata_taskfile *tf)
+
+There are no other references to this, so just make it static.
+
+Fixes: c4b5b7b6c4423 ("pata_ns87415: Initial cut at 87415/87560 IDE support")
+Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+Reviewed-by: Serge Semin <fancer.lancer@gmail.com>
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/cdc_ether.c |   21 +++++++++++++++++++++
- drivers/net/usb/zaurus.c    |   21 +++++++++++++++++++++
- 2 files changed, 42 insertions(+)
+ drivers/ata/pata_ns87415.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/net/usb/cdc_ether.c
-+++ b/drivers/net/usb/cdc_ether.c
-@@ -617,6 +617,13 @@ static const struct usb_device_id	produc
- 	.match_flags	=   USB_DEVICE_ID_MATCH_INT_INFO
- 			  | USB_DEVICE_ID_MATCH_DEVICE,
- 	.idVendor		= 0x04DD,
-+	.idProduct		= 0x8005,   /* A-300 */
-+	ZAURUS_FAKE_INTERFACE,
-+	.driver_info        = 0,
-+}, {
-+	.match_flags    =   USB_DEVICE_ID_MATCH_INT_INFO
-+			  | USB_DEVICE_ID_MATCH_DEVICE,
-+	.idVendor		= 0x04DD,
- 	.idProduct		= 0x8006,	/* B-500/SL-5600 */
- 	ZAURUS_MASTER_INTERFACE,
- 	.driver_info		= 0,
-@@ -624,11 +631,25 @@ static const struct usb_device_id	produc
- 	.match_flags    =   USB_DEVICE_ID_MATCH_INT_INFO
- 			  | USB_DEVICE_ID_MATCH_DEVICE,
- 	.idVendor		= 0x04DD,
-+	.idProduct		= 0x8006,   /* B-500/SL-5600 */
-+	ZAURUS_FAKE_INTERFACE,
-+	.driver_info        = 0,
-+}, {
-+	.match_flags    =   USB_DEVICE_ID_MATCH_INT_INFO
-+			  | USB_DEVICE_ID_MATCH_DEVICE,
-+	.idVendor		= 0x04DD,
- 	.idProduct		= 0x8007,	/* C-700 */
- 	ZAURUS_MASTER_INTERFACE,
- 	.driver_info		= 0,
- }, {
- 	.match_flags    =   USB_DEVICE_ID_MATCH_INT_INFO
-+			  | USB_DEVICE_ID_MATCH_DEVICE,
-+	.idVendor		= 0x04DD,
-+	.idProduct		= 0x8007,   /* C-700 */
-+	ZAURUS_FAKE_INTERFACE,
-+	.driver_info        = 0,
-+}, {
-+	.match_flags    =   USB_DEVICE_ID_MATCH_INT_INFO
- 		 | USB_DEVICE_ID_MATCH_DEVICE,
- 	.idVendor               = 0x04DD,
- 	.idProduct              = 0x9031,	/* C-750 C-760 */
---- a/drivers/net/usb/zaurus.c
-+++ b/drivers/net/usb/zaurus.c
-@@ -289,11 +289,25 @@ static const struct usb_device_id	produc
- 	.match_flags	=   USB_DEVICE_ID_MATCH_INT_INFO
- 			  | USB_DEVICE_ID_MATCH_DEVICE,
- 	.idVendor		= 0x04DD,
-+	.idProduct		= 0x8005,	/* A-300 */
-+	ZAURUS_FAKE_INTERFACE,
-+	.driver_info = (unsigned long)&bogus_mdlm_info,
-+}, {
-+	.match_flags    =   USB_DEVICE_ID_MATCH_INT_INFO
-+			  | USB_DEVICE_ID_MATCH_DEVICE,
-+	.idVendor		= 0x04DD,
- 	.idProduct		= 0x8006,	/* B-500/SL-5600 */
- 	ZAURUS_MASTER_INTERFACE,
- 	.driver_info = ZAURUS_PXA_INFO,
- }, {
- 	.match_flags    =   USB_DEVICE_ID_MATCH_INT_INFO
-+			  | USB_DEVICE_ID_MATCH_DEVICE,
-+	.idVendor		= 0x04DD,
-+	.idProduct		= 0x8006,	/* B-500/SL-5600 */
-+	ZAURUS_FAKE_INTERFACE,
-+	.driver_info = (unsigned long)&bogus_mdlm_info,
-+}, {
-+	.match_flags    =   USB_DEVICE_ID_MATCH_INT_INFO
- 	          | USB_DEVICE_ID_MATCH_DEVICE,
- 	.idVendor		= 0x04DD,
- 	.idProduct		= 0x8007,	/* C-700 */
-@@ -301,6 +315,13 @@ static const struct usb_device_id	produc
- 	.driver_info = ZAURUS_PXA_INFO,
- }, {
- 	.match_flags    =   USB_DEVICE_ID_MATCH_INT_INFO
-+			  | USB_DEVICE_ID_MATCH_DEVICE,
-+	.idVendor		= 0x04DD,
-+	.idProduct		= 0x8007,	/* C-700 */
-+	ZAURUS_FAKE_INTERFACE,
-+	.driver_info = (unsigned long)&bogus_mdlm_info,
-+}, {
-+	.match_flags    =   USB_DEVICE_ID_MATCH_INT_INFO
- 		 | USB_DEVICE_ID_MATCH_DEVICE,
- 	.idVendor               = 0x04DD,
- 	.idProduct              = 0x9031,	/* C-750 C-760 */
+diff --git a/drivers/ata/pata_ns87415.c b/drivers/ata/pata_ns87415.c
+index 84c6b225b56e9..9ee4aefca8675 100644
+--- a/drivers/ata/pata_ns87415.c
++++ b/drivers/ata/pata_ns87415.c
+@@ -260,7 +260,7 @@ static u8 ns87560_check_status(struct ata_port *ap)
+  *	LOCKING:
+  *	Inherited from caller.
+  */
+-void ns87560_tf_read(struct ata_port *ap, struct ata_taskfile *tf)
++static void ns87560_tf_read(struct ata_port *ap, struct ata_taskfile *tf)
+ {
+ 	struct ata_ioports *ioaddr = &ap->ioaddr;
+ 
+-- 
+2.40.1
+
 
 
