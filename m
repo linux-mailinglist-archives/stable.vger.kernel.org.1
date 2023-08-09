@@ -2,48 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 35695775DCF
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:41:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B4ECD775D09
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:33:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234224AbjHILla (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:41:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41750 "EHLO
+        id S233958AbjHILdQ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:33:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34824 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234231AbjHILla (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:41:30 -0400
+        with ESMTP id S233944AbjHILdP (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:33:15 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B97941FD7
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:41:29 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D593E3
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:33:15 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 58B4B6368B
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:41:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57EAAC433C9;
-        Wed,  9 Aug 2023 11:41:28 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A1C1863442
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:33:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEF59C433C8;
+        Wed,  9 Aug 2023 11:33:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691581288;
-        bh=dVBAkrIYNCNukXN1fuSFIY/HtrxN633d6BXx6ActWB8=;
+        s=korg; t=1691580794;
+        bh=UpHjY8lhyxAMt43nsF/tBQenGyYnAxrk+fVsdIxA28s=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=wda5k3iHkwPFV9E/ZcXZjDiG6pi1k+G8W2kyQvAWCHP/+mIx9SbafNUug1ZlutuUu
-         AG464MryZxTFOL39IOETCxUuopaCrbQcM9QqJGvqtbv0cnFv3FZwSPtTfW09m5nd7w
-         XPH9wXhuxuB+v1n2c16LIYpjhMwgkq1KG29CEdmo=
+        b=r9+reYBxWI1u/Uf7PbKhuu/+TB2AcstqGFPr+og0Dv87gUkiTV0gaXT4xzmHFbHQJ
+         TNq+s31gtACn6lDOs8jUaG3k311Yc4h63BxzqkfKaAjM6CNlT2B068wKhmPUuHaL3X
+         DlP9L1VNLPu3eAHjC/Lm5bDuWIN/qKVFRS05JcdY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
-        Lorenzo Colitti <lorenzo@google.com>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Pietro Borrello <borrello@diag.uniroma1.it>,
-        netdev@vger.kernel.org, Laszlo Ersek <lersek@redhat.com>,
-        "David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 5.10 172/201] net: tap_open(): set sk_uid from current_fsuid()
-Date:   Wed,  9 Aug 2023 12:42:54 +0200
-Message-ID: <20230809103649.479837718@linuxfoundation.org>
+        patches@lists.linux.dev, Xiubo Li <xiubli@redhat.com>,
+        Milind Changire <mchangir@redhat.com>,
+        Ilya Dryomov <idryomov@gmail.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 144/154] ceph: defer stopping mdsc delayed_work
+Date:   Wed,  9 Aug 2023 12:42:55 +0200
+Message-ID: <20230809103641.625048891@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103643.799166053@linuxfoundation.org>
-References: <20230809103643.799166053@linuxfoundation.org>
+In-Reply-To: <20230809103636.887175326@linuxfoundation.org>
+References: <20230809103636.887175326@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -58,55 +56,88 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Laszlo Ersek <lersek@redhat.com>
+From: Xiubo Li <xiubli@redhat.com>
 
-commit 5c9241f3ceab3257abe2923a59950db0dc8bb737 upstream.
+[ Upstream commit e7e607bd00481745550389a29ecabe33e13d67cf ]
 
-Commit 66b2c338adce initializes the "sk_uid" field in the protocol socket
-(struct sock) from the "/dev/tapX" device node's owner UID. Per original
-commit 86741ec25462 ("net: core: Add a UID field to struct sock.",
-2016-11-04), that's wrong: the idea is to cache the UID of the userspace
-process that creates the socket. Commit 86741ec25462 mentions socket() and
-accept(); with "tap", the action that creates the socket is
-open("/dev/tapX").
+Flushing the dirty buffer may take a long time if the cluster is
+overloaded or if there is network issue. So we should ping the
+MDSs periodically to keep alive, else the MDS will blocklist
+the kclient.
 
-Therefore the device node's owner UID is irrelevant. In most cases,
-"/dev/tapX" will be owned by root, so in practice, commit 66b2c338adce has
-no observable effect:
-
-- before, "sk_uid" would be zero, due to undefined behavior
-  (CVE-2023-1076),
-
-- after, "sk_uid" would be zero, due to "/dev/tapX" being owned by root.
-
-What matters is the (fs)UID of the process performing the open(), so cache
-that in "sk_uid".
-
-Cc: Eric Dumazet <edumazet@google.com>
-Cc: Lorenzo Colitti <lorenzo@google.com>
-Cc: Paolo Abeni <pabeni@redhat.com>
-Cc: Pietro Borrello <borrello@diag.uniroma1.it>
-Cc: netdev@vger.kernel.org
 Cc: stable@vger.kernel.org
-Fixes: 66b2c338adce ("tap: tap_open(): correctly initialize socket uid")
-Bugzilla: https://bugzilla.redhat.com/show_bug.cgi?id=2173435
-Signed-off-by: Laszlo Ersek <lersek@redhat.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://tracker.ceph.com/issues/61843
+Signed-off-by: Xiubo Li <xiubli@redhat.com>
+Reviewed-by: Milind Changire <mchangir@redhat.com>
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/tap.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/ceph/mds_client.c |  4 ++--
+ fs/ceph/mds_client.h |  5 +++++
+ fs/ceph/super.c      | 10 ++++++++++
+ 3 files changed, 17 insertions(+), 2 deletions(-)
 
---- a/drivers/net/tap.c
-+++ b/drivers/net/tap.c
-@@ -523,7 +523,7 @@ static int tap_open(struct inode *inode,
- 	q->sock.state = SS_CONNECTED;
- 	q->sock.file = file;
- 	q->sock.ops = &tap_socket_ops;
--	sock_init_data_uid(&q->sock, &q->sk, inode->i_uid);
-+	sock_init_data_uid(&q->sock, &q->sk, current_fsuid());
- 	q->sk.sk_write_space = tap_sock_write_space;
- 	q->sk.sk_destruct = tap_sock_destruct;
- 	q->flags = IFF_VNET_HDR | IFF_NO_PI | IFF_TAP;
+diff --git a/fs/ceph/mds_client.c b/fs/ceph/mds_client.c
+index 6ceda2a4791c4..f7acf9680c9b6 100644
+--- a/fs/ceph/mds_client.c
++++ b/fs/ceph/mds_client.c
+@@ -4074,7 +4074,7 @@ static void delayed_work(struct work_struct *work)
+ 
+ 	dout("mdsc delayed_work\n");
+ 
+-	if (mdsc->stopping)
++	if (mdsc->stopping >= CEPH_MDSC_STOPPING_FLUSHED)
+ 		return;
+ 
+ 	mutex_lock(&mdsc->mutex);
+@@ -4246,7 +4246,7 @@ static void wait_requests(struct ceph_mds_client *mdsc)
+ void ceph_mdsc_pre_umount(struct ceph_mds_client *mdsc)
+ {
+ 	dout("pre_umount\n");
+-	mdsc->stopping = 1;
++	mdsc->stopping = CEPH_MDSC_STOPPING_BEGIN;
+ 
+ 	lock_unlock_sessions(mdsc);
+ 	ceph_flush_dirty_caps(mdsc);
+diff --git a/fs/ceph/mds_client.h b/fs/ceph/mds_client.h
+index 14c7e8c49970a..4fbbc33023c97 100644
+--- a/fs/ceph/mds_client.h
++++ b/fs/ceph/mds_client.h
+@@ -348,6 +348,11 @@ struct cap_wait {
+ 	int			want;
+ };
+ 
++enum {
++       CEPH_MDSC_STOPPING_BEGIN = 1,
++       CEPH_MDSC_STOPPING_FLUSHED = 2,
++};
++
+ /*
+  * mds client state
+  */
+diff --git a/fs/ceph/super.c b/fs/ceph/super.c
+index 279334f955702..0e38678d5adda 100644
+--- a/fs/ceph/super.c
++++ b/fs/ceph/super.c
+@@ -1180,6 +1180,16 @@ static void ceph_kill_sb(struct super_block *s)
+ 	ceph_mdsc_pre_umount(fsc->mdsc);
+ 	flush_fs_workqueues(fsc);
+ 
++	/*
++	 * Though the kill_anon_super() will finally trigger the
++	 * sync_filesystem() anyway, we still need to do it here
++	 * and then bump the stage of shutdown to stop the work
++	 * queue as earlier as possible.
++	 */
++	sync_filesystem(s);
++
++	fsc->mdsc->stopping = CEPH_MDSC_STOPPING_FLUSHED;
++
+ 	kill_anon_super(s);
+ 
+ 	fsc->client->extra_mon_dispatch = NULL;
+-- 
+2.40.1
+
 
 
