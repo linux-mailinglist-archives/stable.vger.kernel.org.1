@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 28153775C92
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:28:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 81230775D44
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:35:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233795AbjHIL2o (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:28:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58068 "EHLO
+        id S234042AbjHILfb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:35:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40328 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233793AbjHIL2n (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:28:43 -0400
+        with ESMTP id S234057AbjHILfa (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:35:30 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF8C41BFA
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:28:42 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 81D0F173A
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:35:30 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 870E2632F6
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:28:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93B94C433C7;
-        Wed,  9 Aug 2023 11:28:41 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 17C01634E3
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:35:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23419C433C8;
+        Wed,  9 Aug 2023 11:35:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691580521;
-        bh=lPugAP0vYa6mjlja02DZJMNKUKeEy+qevsAcwIEyhxk=;
+        s=korg; t=1691580929;
+        bh=3Vj2MRMKV3yTa5cT+BUgL4fJJih1jfVifMlINcqFn7k=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=B4vbrm9hnII4D0D8D2PB0Pi7q88ynXzSCfLP8HwaVmV8CrGsEK5WZ9ZXiEDfDIpiy
-         gkzP414/V7Q0YzN+3f+tCPnI0LJRl1nDWIJBf+BWkuH8iYf/F1jlyPyIkROGvnVURx
-         nEIM3Omh6bC2rHJunp1G70M/aAM8kHNmWci/AHrs=
+        b=0Yea66J9ItBH49/00zefC7iMdq3chKZaFqIw3tbmq7geCCseSKnYzTgA/wJy6H7ik
+         4UKuJyqHpr6DT4ecDpG1FHq0rOVoRryCWejRWy5gFTYmesAoh/64tJzFTKqD/t/GJ3
+         d2FtBV3S6fHkZ/uixFa3rFcJ9M/e1Gaw/po5YLdw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
+        patches@lists.linux.dev, Kevin Rich <kevinrich1337@gmail.com>,
+        Pablo Neira Ayuso <pablo@netfilter.org>,
+        Florian Westphal <fw@strlen.de>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 015/154] PCI/ASPM: Factor out pcie_wait_for_retrain()
+Subject: [PATCH 5.10 044/201] netfilter: nf_tables: skip immediate deactivate in _PREPARE_ERROR
 Date:   Wed,  9 Aug 2023 12:40:46 +0200
-Message-ID: <20230809103637.446355788@linuxfoundation.org>
+Message-ID: <20230809103645.317966366@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103636.887175326@linuxfoundation.org>
-References: <20230809103636.887175326@linuxfoundation.org>
+In-Reply-To: <20230809103643.799166053@linuxfoundation.org>
+References: <20230809103643.799166053@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,74 +56,87 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit 9c7f136433d26592cb4d9cd00b4e15c33d9797c6 ]
+[ Upstream commit 0a771f7b266b02d262900c75f1e175c7fe76fec2 ]
 
-Factor pcie_wait_for_retrain() out from pcie_retrain_link().  No functional
-change intended.
+On error when building the rule, the immediate expression unbinds the
+chain, hence objects can be deactivated by the transaction records.
 
-[bhelgaas: split out from
-https: //lore.kernel.org/r/20230502083923.34562-1-ilpo.jarvinen@linux.intel.com]
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Stable-dep-of: e7e39756363a ("PCI/ASPM: Avoid link retraining race")
+Otherwise, it is possible to trigger the following warning:
+
+ WARNING: CPU: 3 PID: 915 at net/netfilter/nf_tables_api.c:2013 nf_tables_chain_destroy+0x1f7/0x210 [nf_tables]
+ CPU: 3 PID: 915 Comm: chain-bind-err- Not tainted 6.1.39 #1
+ RIP: 0010:nf_tables_chain_destroy+0x1f7/0x210 [nf_tables]
+
+Fixes: 4bedf9eee016 ("netfilter: nf_tables: fix chain binding transaction logic")
+Reported-by: Kevin Rich <kevinrich1337@gmail.com>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/pcie/aspm.c | 30 ++++++++++++++++++------------
- 1 file changed, 18 insertions(+), 12 deletions(-)
+ net/netfilter/nft_immediate.c | 27 ++++++++++++++++++---------
+ 1 file changed, 18 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/pci/pcie/aspm.c b/drivers/pci/pcie/aspm.c
-index 3197ac6dda35b..749a367bde2df 100644
---- a/drivers/pci/pcie/aspm.c
-+++ b/drivers/pci/pcie/aspm.c
-@@ -200,10 +200,26 @@ static void pcie_clkpm_cap_init(struct pcie_link_state *link, int blacklist)
- 	link->clkpm_disable = blacklist ? 1 : 0;
+diff --git a/net/netfilter/nft_immediate.c b/net/netfilter/nft_immediate.c
+index 6b0efab4fad09..6bf1c852e8eaa 100644
+--- a/net/netfilter/nft_immediate.c
++++ b/net/netfilter/nft_immediate.c
+@@ -125,15 +125,27 @@ static void nft_immediate_activate(const struct nft_ctx *ctx,
+ 	return nft_data_hold(&priv->data, nft_dreg_to_type(priv->dreg));
  }
  
-+static int pcie_wait_for_retrain(struct pci_dev *pdev)
++static void nft_immediate_chain_deactivate(const struct nft_ctx *ctx,
++					   struct nft_chain *chain,
++					   enum nft_trans_phase phase)
 +{
-+	unsigned long end_jiffies;
-+	u16 reg16;
++	struct nft_ctx chain_ctx;
++	struct nft_rule *rule;
 +
-+	/* Wait for Link Training to be cleared by hardware */
-+	end_jiffies = jiffies + LINK_RETRAIN_TIMEOUT;
-+	do {
-+		pcie_capability_read_word(pdev, PCI_EXP_LNKSTA, &reg16);
-+		if (!(reg16 & PCI_EXP_LNKSTA_LT))
-+			return 0;
-+		msleep(1);
-+	} while (time_before(jiffies, end_jiffies));
++	chain_ctx = *ctx;
++	chain_ctx.chain = chain;
 +
-+	return -ETIMEDOUT;
++	list_for_each_entry(rule, &chain->rules, list)
++		nft_rule_expr_deactivate(&chain_ctx, rule, phase);
 +}
 +
- static int pcie_retrain_link(struct pcie_link_state *link)
+ static void nft_immediate_deactivate(const struct nft_ctx *ctx,
+ 				     const struct nft_expr *expr,
+ 				     enum nft_trans_phase phase)
  {
- 	struct pci_dev *parent = link->pdev;
--	unsigned long end_jiffies;
- 	u16 reg16;
+ 	const struct nft_immediate_expr *priv = nft_expr_priv(expr);
+ 	const struct nft_data *data = &priv->data;
+-	struct nft_ctx chain_ctx;
+ 	struct nft_chain *chain;
+-	struct nft_rule *rule;
  
- 	pcie_capability_read_word(parent, PCI_EXP_LNKCTL, &reg16);
-@@ -219,17 +235,7 @@ static int pcie_retrain_link(struct pcie_link_state *link)
- 		pcie_capability_write_word(parent, PCI_EXP_LNKCTL, reg16);
- 	}
+ 	if (priv->dreg == NFT_REG_VERDICT) {
+ 		switch (data->verdict.code) {
+@@ -143,20 +155,17 @@ static void nft_immediate_deactivate(const struct nft_ctx *ctx,
+ 			if (!nft_chain_binding(chain))
+ 				break;
  
--	/* Wait for link training end. Break out after waiting for timeout */
--	end_jiffies = jiffies + LINK_RETRAIN_TIMEOUT;
--	do {
--		pcie_capability_read_word(parent, PCI_EXP_LNKSTA, &reg16);
--		if (!(reg16 & PCI_EXP_LNKSTA_LT))
--			break;
--		msleep(1);
--	} while (time_before(jiffies, end_jiffies));
--	if (reg16 & PCI_EXP_LNKSTA_LT)
--		return -ETIMEDOUT;
--	return 0;
-+	return pcie_wait_for_retrain(parent);
- }
- 
- /*
+-			chain_ctx = *ctx;
+-			chain_ctx.chain = chain;
+-
+-			list_for_each_entry(rule, &chain->rules, list)
+-				nft_rule_expr_deactivate(&chain_ctx, rule, phase);
+-
+ 			switch (phase) {
+ 			case NFT_TRANS_PREPARE_ERROR:
+ 				nf_tables_unbind_chain(ctx, chain);
+-				fallthrough;
++				nft_deactivate_next(ctx->net, chain);
++				break;
+ 			case NFT_TRANS_PREPARE:
++				nft_immediate_chain_deactivate(ctx, chain, phase);
+ 				nft_deactivate_next(ctx->net, chain);
+ 				break;
+ 			default:
++				nft_immediate_chain_deactivate(ctx, chain, phase);
+ 				nft_chain_del(chain);
+ 				chain->bound = false;
+ 				chain->table->use--;
 -- 
 2.39.2
 
