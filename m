@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BE483775D7E
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:38:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8F5AC775900
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:56:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234121AbjHILiL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:38:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41790 "EHLO
+        id S232503AbjHIK4i (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 06:56:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34610 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234120AbjHILiK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:38:10 -0400
+        with ESMTP id S232533AbjHIK4f (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:56:35 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 53870E3
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:38:10 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A3B71FF6
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:56:35 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E504C63591
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:38:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02BA3C433C8;
-        Wed,  9 Aug 2023 11:38:08 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CD6C563130
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:56:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9717C433CA;
+        Wed,  9 Aug 2023 10:56:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691581089;
-        bh=S96WK/iD2nnxKmyXykIWQ6R0KPzXAWpu4o24+YrMX5w=;
+        s=korg; t=1691578594;
+        bh=E7QL+viAsCpCXkbNyxQWBw6Q2RMRGSRIMCvTWaVkWkc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=TJ3sUW6e0L5ob+MRZwEE87YuX68f01XtVRRby4Sh2HiiGJHLuQ1elIhmmSk4n6kSP
-         kZ0KEmk6Yk+vT0BUABrB6fIaAhIY1TaRPUQO8z8jQ3pRIk0luuvPYC9mpsskXkW5Q5
-         Pxlsto8ZC3jeSV2qyCrZbEBFMUazgNSKUFQ+hVZM=
+        b=E62qkWexHTeu/2BuXplVDWETS+qXHCbZx6iIYTRFumcOBkvYl3WWaSX+p/ZI2K+hh
+         0GTJpXx44CbtRJI8yJj7YiF5S21UYWUjfTVH869rkkD4tPnumjr/LJ3rvxr8gQY4wy
+         FD3STWNUDVdO/2RXiQURKqkFxer5t7bBfu8wmg1Q=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jason Wang <jasowang@redhat.com>,
-        "Michael S. Tsirkin" <mst@redhat.com>,
-        Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-        Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.10 101/201] virtio-net: fix race between set queues and probe
+        patches@lists.linux.dev,
+        Alexander Stein <alexander.stein@ew.tq-group.com>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 116/127] drm/imx/ipuv3: Fix front porch adjustment upon hactive aligning
 Date:   Wed,  9 Aug 2023 12:41:43 +0200
-Message-ID: <20230809103647.200462281@linuxfoundation.org>
+Message-ID: <20230809103640.450242653@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103643.799166053@linuxfoundation.org>
-References: <20230809103643.799166053@linuxfoundation.org>
+In-Reply-To: <20230809103636.615294317@linuxfoundation.org>
+References: <20230809103636.615294317@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,47 +56,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jason Wang <jasowang@redhat.com>
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
 
-commit 25266128fe16d5632d43ada34c847d7b8daba539 upstream.
+[ Upstream commit ee31742bf17636da1304af77b2cb1c29b5dda642 ]
 
-A race were found where set_channels could be called after registering
-but before virtnet_set_queues() in virtnet_probe(). Fixing this by
-moving the virtnet_set_queues() before netdevice registering. While at
-it, use _virtnet_set_queues() to avoid holding rtnl as the device is
-not even registered at that time.
+When hactive is not aligned to 8 pixels, it is aligned accordingly and
+hfront porch needs to be reduced the same amount. Unfortunately the front
+porch is set to the difference rather than reducing it. There are some
+Samsung TVs which can't cope with a front porch of instead of 70.
 
-Cc: stable@vger.kernel.org
-Fixes: a220871be66f ("virtio-net: correctly enable multiqueue")
-Signed-off-by: Jason Wang <jasowang@redhat.com>
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
-Reviewed-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
-Link: https://lore.kernel.org/r/20230725072049.617289-1-jasowang@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 94dfec48fca7 ("drm/imx: Add 8 pixel alignment fix")
+Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+Reviewed-by: Philipp Zabel <p.zabel@pengutronix.de>
+Link: https://lore.kernel.org/r/20230515072137.116211-1-alexander.stein@ew.tq-group.com
+[p.zabel@pengutronix.de: Fixed subject]
+Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230515072137.116211-1-alexander.stein@ew.tq-group.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/virtio_net.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/imx/ipuv3-crtc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/net/virtio_net.c
-+++ b/drivers/net/virtio_net.c
-@@ -3220,6 +3220,8 @@ static int virtnet_probe(struct virtio_d
- 		}
+diff --git a/drivers/gpu/drm/imx/ipuv3-crtc.c b/drivers/gpu/drm/imx/ipuv3-crtc.c
+index 5f26090b0c985..89585b31b985e 100644
+--- a/drivers/gpu/drm/imx/ipuv3-crtc.c
++++ b/drivers/gpu/drm/imx/ipuv3-crtc.c
+@@ -310,7 +310,7 @@ static void ipu_crtc_mode_set_nofb(struct drm_crtc *crtc)
+ 		dev_warn(ipu_crtc->dev, "8-pixel align hactive %d -> %d\n",
+ 			 sig_cfg.mode.hactive, new_hactive);
+ 
+-		sig_cfg.mode.hfront_porch = new_hactive - sig_cfg.mode.hactive;
++		sig_cfg.mode.hfront_porch -= new_hactive - sig_cfg.mode.hactive;
+ 		sig_cfg.mode.hactive = new_hactive;
  	}
  
-+	_virtnet_set_queues(vi, vi->curr_queue_pairs);
-+
- 	/* serialize netdev register + virtio_device_ready() with ndo_open() */
- 	rtnl_lock();
- 
-@@ -3240,8 +3242,6 @@ static int virtnet_probe(struct virtio_d
- 		goto free_unregister_netdev;
- 	}
- 
--	virtnet_set_queues(vi, vi->curr_queue_pairs);
--
- 	/* Assume link up if device can't report link status,
- 	   otherwise get link status from config. */
- 	netif_carrier_off(dev);
+-- 
+2.40.1
+
 
 
