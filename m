@@ -2,109 +2,194 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EC73E775D73
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:37:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D8096775888
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:53:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234101AbjHILhl (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:37:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59576 "EHLO
+        id S232698AbjHIKxh (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 06:53:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39600 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234111AbjHILhj (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:37:39 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 782FE1BFA
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:37:39 -0700 (PDT)
+        with ESMTP id S232701AbjHIKx0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:53:26 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0477F3AAB
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:51:23 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1114863579
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:37:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C8FFC433CA;
-        Wed,  9 Aug 2023 11:37:37 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DACAF63125
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:51:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E571DC433C8;
+        Wed,  9 Aug 2023 10:51:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691581058;
-        bh=iR1ZjivxWQ/a2FNRUrQbQdszLORLNbKkX/b3z71/6e4=;
+        s=korg; t=1691578282;
+        bh=DblqICsfUV+poGMLOYUX3Y6XNoOzQ7uf6Evs3uLezfU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=VSBllw1okl2EwLxDYqmi7CjjAEB9zZitPWFoKpG9zLBQSf3OtWBQ9YvCNNhUOA1bR
-         u635eNnQVgCM9+T0nkZ/a/uk+vIixoV83sAX8N8ehgXvLjU+6s1HV23e54IK/o9i7J
-         DIxlnR4uGLqz/+Pr+PYH2ahKCcx9CLao74ZxHpaU=
+        b=zxG0kMPzjGe0I4ccjR9U2Zs8ma1PLZXQ8M4gScSg9XYeJEzYLzZhwAO1H11ImLjIe
+         KVYFTZnkOLc7NLp4cFO3wEfaAHwfPSeY/eBd6asZNZ4Y0JuZBNDwslbwkDMFV1zdyj
+         5ahgfzUONQhp1+SiXs50IzGD9DheRI9x8n0nQwMM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Alexander Steffen <Alexander.Steffen@infineon.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>
-Subject: [PATCH 5.10 091/201] tpm_tis: Explicitly check for error code
+        patches@lists.linux.dev, Andi Shyti <andi.shyti@linux.intel.com>,
+        Matt Roper <matthew.d.roper@intel.com>,
+        Andrzej Hajda <andrzej.hajda@intel.com>,
+        Nirmoy Das <nirmoy.das@intel.com>,
+        Tvrtko Ursulin <tvrtko.ursulin@intel.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 162/165] drm/i915/gt: Rename flags with bit_group_X according to the datasheet
 Date:   Wed,  9 Aug 2023 12:41:33 +0200
-Message-ID: <20230809103646.866358402@linuxfoundation.org>
+Message-ID: <20230809103648.080151972@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103643.799166053@linuxfoundation.org>
-References: <20230809103643.799166053@linuxfoundation.org>
+In-Reply-To: <20230809103642.720851262@linuxfoundation.org>
+References: <20230809103642.720851262@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Alexander Steffen <Alexander.Steffen@infineon.com>
+From: Andi Shyti <andi.shyti@linux.intel.com>
 
-commit 513253f8c293c0c8bd46d09d337fc892bf8f9f48 upstream.
+[ Upstream commit 592b228f12e15867a63e3a6eeeb54c5c12662a62 ]
 
-recv_data either returns the number of received bytes, or a negative value
-representing an error code. Adding the return value directly to the total
-number of received bytes therefore looks a little weird, since it might add
-a negative error code to a sum of bytes.
+In preparation of the next patch align with the datasheet (BSPEC
+47112) with the naming of the pipe control set of flag values.
+The variable "flags" in gen12_emit_flush_rcs() is applied as a
+set of flags called Bit Group 1.
 
-The following check for size < expected usually makes the function return
-ETIME in that case, so it does not cause too many problems in practice. But
-to make the code look cleaner and because the caller might still be
-interested in the original error code, explicitly check for the presence of
-an error code and pass that through.
+Define also the Bit Group 0 as bit_group_0 where currently only
+PIPE_CONTROL0_HDC_PIPELINE_FLUSH bit is set.
 
-Cc: stable@vger.kernel.org
-Fixes: cb5354253af2 ("[PATCH] tpm: spacing cleanups 2")
-Signed-off-by: Alexander Steffen <Alexander.Steffen@infineon.com>
-Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
-Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
+Cc: <stable@vger.kernel.org> # v5.8+
+Reviewed-by: Matt Roper <matthew.d.roper@intel.com>
+Reviewed-by: Andrzej Hajda <andrzej.hajda@intel.com>
+Reviewed-by: Nirmoy Das <nirmoy.das@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230725001950.1014671-5-andi.shyti@linux.intel.com
+(cherry picked from commit f2dcd21d5a22e13f2fbfe7ab65149038b93cf2ff)
+Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/char/tpm/tpm_tis_core.c |   10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/i915/gt/gen8_engine_cs.c | 34 +++++++++++++-----------
+ drivers/gpu/drm/i915/gt/gen8_engine_cs.h | 18 ++++++++-----
+ 2 files changed, 29 insertions(+), 23 deletions(-)
 
---- a/drivers/char/tpm/tpm_tis_core.c
-+++ b/drivers/char/tpm/tpm_tis_core.c
-@@ -314,6 +314,7 @@ static int tpm_tis_recv(struct tpm_chip
- 	int size = 0;
- 	int status;
- 	u32 expected;
-+	int rc;
+diff --git a/drivers/gpu/drm/i915/gt/gen8_engine_cs.c b/drivers/gpu/drm/i915/gt/gen8_engine_cs.c
+index 6210b38a2d382..5d2175e918dd2 100644
+--- a/drivers/gpu/drm/i915/gt/gen8_engine_cs.c
++++ b/drivers/gpu/drm/i915/gt/gen8_engine_cs.c
+@@ -219,7 +219,8 @@ int gen12_emit_flush_rcs(struct i915_request *rq, u32 mode)
+ 	 * table requires quiescing memory traffic beforehand
+ 	 */
+ 	if (mode & EMIT_FLUSH || gen12_needs_ccs_aux_inv(engine)) {
+-		u32 flags = 0;
++		u32 bit_group_0 = 0;
++		u32 bit_group_1 = 0;
+ 		int err;
+ 		u32 *cs;
  
- 	if (count < TPM_HEADER_SIZE) {
- 		size = -EIO;
-@@ -333,8 +334,13 @@ static int tpm_tis_recv(struct tpm_chip
- 		goto out;
+@@ -227,32 +228,33 @@ int gen12_emit_flush_rcs(struct i915_request *rq, u32 mode)
+ 		if (err)
+ 			return err;
+ 
+-		flags |= PIPE_CONTROL_TILE_CACHE_FLUSH;
+-		flags |= PIPE_CONTROL_FLUSH_L3;
+-		flags |= PIPE_CONTROL_RENDER_TARGET_CACHE_FLUSH;
+-		flags |= PIPE_CONTROL_DEPTH_CACHE_FLUSH;
++		bit_group_0 |= PIPE_CONTROL0_HDC_PIPELINE_FLUSH;
++
++		bit_group_1 |= PIPE_CONTROL_TILE_CACHE_FLUSH;
++		bit_group_1 |= PIPE_CONTROL_FLUSH_L3;
++		bit_group_1 |= PIPE_CONTROL_RENDER_TARGET_CACHE_FLUSH;
++		bit_group_1 |= PIPE_CONTROL_DEPTH_CACHE_FLUSH;
+ 		/* Wa_1409600907:tgl,adl-p */
+-		flags |= PIPE_CONTROL_DEPTH_STALL;
+-		flags |= PIPE_CONTROL_DC_FLUSH_ENABLE;
+-		flags |= PIPE_CONTROL_FLUSH_ENABLE;
++		bit_group_1 |= PIPE_CONTROL_DEPTH_STALL;
++		bit_group_1 |= PIPE_CONTROL_DC_FLUSH_ENABLE;
++		bit_group_1 |= PIPE_CONTROL_FLUSH_ENABLE;
+ 
+-		flags |= PIPE_CONTROL_STORE_DATA_INDEX;
+-		flags |= PIPE_CONTROL_QW_WRITE;
++		bit_group_1 |= PIPE_CONTROL_STORE_DATA_INDEX;
++		bit_group_1 |= PIPE_CONTROL_QW_WRITE;
+ 
+-		flags |= PIPE_CONTROL_CS_STALL;
++		bit_group_1 |= PIPE_CONTROL_CS_STALL;
+ 
+ 		if (!HAS_3D_PIPELINE(engine->i915))
+-			flags &= ~PIPE_CONTROL_3D_ARCH_FLAGS;
++			bit_group_1 &= ~PIPE_CONTROL_3D_ARCH_FLAGS;
+ 		else if (engine->class == COMPUTE_CLASS)
+-			flags &= ~PIPE_CONTROL_3D_ENGINE_FLAGS;
++			bit_group_1 &= ~PIPE_CONTROL_3D_ENGINE_FLAGS;
+ 
+ 		cs = intel_ring_begin(rq, 6);
+ 		if (IS_ERR(cs))
+ 			return PTR_ERR(cs);
+ 
+-		cs = gen12_emit_pipe_control(cs,
+-					     PIPE_CONTROL0_HDC_PIPELINE_FLUSH,
+-					     flags, LRC_PPHWSP_SCRATCH_ADDR);
++		cs = gen12_emit_pipe_control(cs, bit_group_0, bit_group_1,
++					     LRC_PPHWSP_SCRATCH_ADDR);
+ 		intel_ring_advance(rq, cs);
  	}
  
--	size += recv_data(chip, &buf[TPM_HEADER_SIZE],
--			  expected - TPM_HEADER_SIZE);
-+	rc = recv_data(chip, &buf[TPM_HEADER_SIZE],
-+		       expected - TPM_HEADER_SIZE);
-+	if (rc < 0) {
-+		size = rc;
-+		goto out;
-+	}
-+	size += rc;
- 	if (size < expected) {
- 		dev_err(&chip->dev, "Unable to read remainder of result\n");
- 		size = -ETIME;
+diff --git a/drivers/gpu/drm/i915/gt/gen8_engine_cs.h b/drivers/gpu/drm/i915/gt/gen8_engine_cs.h
+index 655e5c00ddc27..a44eda096557c 100644
+--- a/drivers/gpu/drm/i915/gt/gen8_engine_cs.h
++++ b/drivers/gpu/drm/i915/gt/gen8_engine_cs.h
+@@ -49,25 +49,29 @@ u32 *gen12_emit_fini_breadcrumb_rcs(struct i915_request *rq, u32 *cs);
+ u32 *gen12_emit_aux_table_inv(struct intel_gt *gt, u32 *cs, const i915_reg_t inv_reg);
+ 
+ static inline u32 *
+-__gen8_emit_pipe_control(u32 *batch, u32 flags0, u32 flags1, u32 offset)
++__gen8_emit_pipe_control(u32 *batch, u32 bit_group_0,
++			 u32 bit_group_1, u32 offset)
+ {
+ 	memset(batch, 0, 6 * sizeof(u32));
+ 
+-	batch[0] = GFX_OP_PIPE_CONTROL(6) | flags0;
+-	batch[1] = flags1;
++	batch[0] = GFX_OP_PIPE_CONTROL(6) | bit_group_0;
++	batch[1] = bit_group_1;
+ 	batch[2] = offset;
+ 
+ 	return batch + 6;
+ }
+ 
+-static inline u32 *gen8_emit_pipe_control(u32 *batch, u32 flags, u32 offset)
++static inline u32 *gen8_emit_pipe_control(u32 *batch,
++					  u32 bit_group_1, u32 offset)
+ {
+-	return __gen8_emit_pipe_control(batch, 0, flags, offset);
++	return __gen8_emit_pipe_control(batch, 0, bit_group_1, offset);
+ }
+ 
+-static inline u32 *gen12_emit_pipe_control(u32 *batch, u32 flags0, u32 flags1, u32 offset)
++static inline u32 *gen12_emit_pipe_control(u32 *batch, u32 bit_group_0,
++					   u32 bit_group_1, u32 offset)
+ {
+-	return __gen8_emit_pipe_control(batch, flags0, flags1, offset);
++	return __gen8_emit_pipe_control(batch, bit_group_0,
++					bit_group_1, offset);
+ }
+ 
+ static inline u32 *
+-- 
+2.40.1
+
 
 
