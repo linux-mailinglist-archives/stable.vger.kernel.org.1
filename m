@@ -2,48 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EB9CA775BFD
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:22:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6707A775970
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:00:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233607AbjHILWq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:22:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59934 "EHLO
+        id S232868AbjHILA2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:00:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44066 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233603AbjHILWp (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:22:45 -0400
+        with ESMTP id S232860AbjHILA1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:00:27 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A2B91FD7
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:22:45 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F1553ED
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:00:26 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id EE4C163219
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:22:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08B91C433C7;
-        Wed,  9 Aug 2023 11:22:43 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8FDCE61FA9
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:00:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5A4AC433C8;
+        Wed,  9 Aug 2023 11:00:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691580164;
-        bh=RRKfzOfeqW5FzfCjlplJpaneGEP7NKkao+mwt4XSeE8=;
+        s=korg; t=1691578826;
+        bh=5Mw2TH+xXtczHkcjmnvyk0oSfrqil52hVygfl8miDHU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=PpPpeQ/nrTk6p2m6gk08iTZZ/H5tgTG3gZew7lO+4YY+w+zextxaB5X08sw4wmalT
-         ZzQ36WXI0JOQEacEXmGfRu6efa5Ox9m/UJyiiFVbkSR+GdMArbi0lgqw8FfpVDLqul
-         Ms9S3lP+4dfI/3NEPhTdmS5m3SfIiPwWIuo/Ezy0=
+        b=Cl4KltI5aeKw3wKysQICDqu7UR9cLrxA/Zj0CeIb0ps1PtIzoASqkfnNxS9du+HQR
+         Bjgp6bUvTY6u1S+w0rZZkuwoQKPrEK+W3xaxGm0Cnlq5X2qThsXmgMMRPbSk7lqarO
+         N8HnTuFJKuGef9gFinyrnjVFYWlN+wQ+4L6F63gw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Gaosheng Cui <cuigaosheng1@huawei.com>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Abhinav Kumar <quic_abhinavk@quicinc.com>,
-        Akhil P Oommen <quic_akhilpo@quicinc.com>,
-        Rob Clark <robdclark@chromium.org>,
+        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
+        Yuchung Cheng <ycheng@google.com>,
+        Kuniyuki Iwashima <kuniyu@amazon.com>,
+        Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 251/323] drm/msm: Fix IS_ERR_OR_NULL() vs NULL check in a5xx_submit_in_rb()
+Subject: [PATCH 5.15 53/92] tcp_metrics: fix data-race in tcpm_suck_dst() vs fastopen
 Date:   Wed,  9 Aug 2023 12:41:29 +0200
-Message-ID: <20230809103709.574596583@linuxfoundation.org>
+Message-ID: <20230809103635.440383116@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
-References: <20230809103658.104386911@linuxfoundation.org>
+In-Reply-To: <20230809103633.485906560@linuxfoundation.org>
+References: <20230809103633.485906560@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -58,39 +57,83 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Gaosheng Cui <cuigaosheng1@huawei.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 6e8a996563ecbe68e49c49abd4aaeef69f11f2dc ]
+[ Upstream commit ddf251fa2bc1d3699eec0bae6ed0bc373b8fda79 ]
 
-The msm_gem_get_vaddr() returns an ERR_PTR() on failure, and a null
-is catastrophic here, so we should use IS_ERR_OR_NULL() to check
-the return value.
+Whenever tcpm_new() reclaims an old entry, tcpm_suck_dst()
+would overwrite data that could be read from tcp_fastopen_cache_get()
+or tcp_metrics_fill_info().
 
-Fixes: 6a8bd08d0465 ("drm/msm: add sudo flag to submit ioctl")
-Signed-off-by: Gaosheng Cui <cuigaosheng1@huawei.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
-Reviewed-by: Akhil P Oommen <quic_akhilpo@quicinc.com>
-Patchwork: https://patchwork.freedesktop.org/patch/547712/
-Signed-off-by: Rob Clark <robdclark@chromium.org>
+We need to acquire fastopen_seqlock to maintain consistency.
+
+For newly allocated objects, tcpm_new() can switch to kzalloc()
+to avoid an extra fastopen_seqlock acquisition.
+
+Fixes: 1fe4c481ba63 ("net-tcp: Fast Open client - cookie cache")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Yuchung Cheng <ycheng@google.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Link: https://lore.kernel.org/r/20230802131500.1478140-7-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/adreno/a5xx_gpu.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/ipv4/tcp_metrics.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/adreno/a5xx_gpu.c b/drivers/gpu/drm/msm/adreno/a5xx_gpu.c
-index ba513018534e3..1bdba8cc25d3e 100644
---- a/drivers/gpu/drm/msm/adreno/a5xx_gpu.c
-+++ b/drivers/gpu/drm/msm/adreno/a5xx_gpu.c
-@@ -173,7 +173,7 @@ static void a5xx_submit_in_rb(struct msm_gpu *gpu, struct msm_gem_submit *submit
- 			 * since we've already mapped it once in
- 			 * submit_reloc()
- 			 */
--			if (WARN_ON(!ptr))
-+			if (WARN_ON(IS_ERR_OR_NULL(ptr)))
- 				return;
+diff --git a/net/ipv4/tcp_metrics.c b/net/ipv4/tcp_metrics.c
+index 88b0d952a2888..5df97aaac252e 100644
+--- a/net/ipv4/tcp_metrics.c
++++ b/net/ipv4/tcp_metrics.c
+@@ -93,6 +93,7 @@ static struct tcpm_hash_bucket	*tcp_metrics_hash __read_mostly;
+ static unsigned int		tcp_metrics_hash_log __read_mostly;
  
- 			for (i = 0; i < dwords; i++) {
+ static DEFINE_SPINLOCK(tcp_metrics_lock);
++static DEFINE_SEQLOCK(fastopen_seqlock);
+ 
+ static void tcpm_suck_dst(struct tcp_metrics_block *tm,
+ 			  const struct dst_entry *dst,
+@@ -129,11 +130,13 @@ static void tcpm_suck_dst(struct tcp_metrics_block *tm,
+ 	tcp_metric_set(tm, TCP_METRIC_REORDERING,
+ 		       dst_metric_raw(dst, RTAX_REORDERING));
+ 	if (fastopen_clear) {
++		write_seqlock(&fastopen_seqlock);
+ 		tm->tcpm_fastopen.mss = 0;
+ 		tm->tcpm_fastopen.syn_loss = 0;
+ 		tm->tcpm_fastopen.try_exp = 0;
+ 		tm->tcpm_fastopen.cookie.exp = false;
+ 		tm->tcpm_fastopen.cookie.len = 0;
++		write_sequnlock(&fastopen_seqlock);
+ 	}
+ }
+ 
+@@ -194,7 +197,7 @@ static struct tcp_metrics_block *tcpm_new(struct dst_entry *dst,
+ 		}
+ 		tm = oldest;
+ 	} else {
+-		tm = kmalloc(sizeof(*tm), GFP_ATOMIC);
++		tm = kzalloc(sizeof(*tm), GFP_ATOMIC);
+ 		if (!tm)
+ 			goto out_unlock;
+ 	}
+@@ -204,7 +207,7 @@ static struct tcp_metrics_block *tcpm_new(struct dst_entry *dst,
+ 	tm->tcpm_saddr = *saddr;
+ 	tm->tcpm_daddr = *daddr;
+ 
+-	tcpm_suck_dst(tm, dst, true);
++	tcpm_suck_dst(tm, dst, reclaim);
+ 
+ 	if (likely(!reclaim)) {
+ 		tm->tcpm_next = tcp_metrics_hash[hash].chain;
+@@ -556,8 +559,6 @@ bool tcp_peer_is_proven(struct request_sock *req, struct dst_entry *dst)
+ 	return ret;
+ }
+ 
+-static DEFINE_SEQLOCK(fastopen_seqlock);
+-
+ void tcp_fastopen_cache_get(struct sock *sk, u16 *mss,
+ 			    struct tcp_fastopen_cookie *cookie)
+ {
 -- 
 2.40.1
 
