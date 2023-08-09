@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B1C5D775962
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:00:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AAD427758FD
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:56:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232010AbjHILAG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:00:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34320 "EHLO
+        id S232367AbjHIK4Z (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 06:56:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33466 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232855AbjHILAE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:00:04 -0400
+        with ESMTP id S232375AbjHIK4Y (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:56:24 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 684F81724
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:00:04 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 374B21FD8
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:56:24 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0847A63118
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:00:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 173F9C433C8;
-        Wed,  9 Aug 2023 11:00:02 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CADF362DC8
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:56:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D571EC433C7;
+        Wed,  9 Aug 2023 10:56:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691578803;
-        bh=XlbgVCpjLjBcuC5CO9oQMBvE6AsXTStywk+HeY1I650=;
+        s=korg; t=1691578583;
+        bh=e5dE3oWEJjyPuzfpDjfZxWOAfMkD0nYTA6auk8D9cvQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=CGeFcrsXVPI7NUtpJNvo2XLJ3n2yMX/m5eqwjdoSUHsb7qD4QEclRfhblbUGzwAVS
-         0F/iMmYnfH2vScHBD9ZgDGJaVimOXFeYbT96r87z7zolq5IXIrpd222pbATpV5LXtE
-         ciC5kZOKaxgJKp6j/hq4fbVhW6hTW7NnncmQ6sN8=
+        b=TybHU5EbH9G63qrr1+rprfOCko6F9K7q1sQ1bSPG9dnqKBoJKFBE8XKFcbRWlfVg8
+         ZYf/Ry8PtQ6oLpUvoLAoflMdlA1iMMEtJYW+n/M9YeBVCnyqEY5UCklcelXiNssp5m
+         h2WUp8sPSd0f2jqOEwPP+mqHCjQpq7/rg8cSk/zc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Stable@vger.kernel.org,
-        Arseniy Krasnov <AVKrasnov@sberdevices.ru>,
-        Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 5.15 63/92] mtd: rawnand: meson: fix OOB available bytes for ECC
+        patches@lists.linux.dev, Johan Jonker <jbx6244@gmail.com>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 112/127] mtd: rawnand: rockchip: fix oobfree offset and description
 Date:   Wed,  9 Aug 2023 12:41:39 +0200
-Message-ID: <20230809103635.772775097@linuxfoundation.org>
+Message-ID: <20230809103640.324366160@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103633.485906560@linuxfoundation.org>
-References: <20230809103633.485906560@linuxfoundation.org>
+In-Reply-To: <20230809103636.615294317@linuxfoundation.org>
+References: <20230809103636.615294317@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,44 +55,65 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Arseniy Krasnov <AVKrasnov@sberdevices.ru>
+From: Johan Jonker <jbx6244@gmail.com>
 
-commit 7e6b04f9238eab0f684fafd158c1f32ea65b9eaa upstream.
+[ Upstream commit d0ca3b92b7a6f42841ea9da8492aaf649db79780 ]
 
-It is incorrect to calculate number of OOB bytes for ECC engine using
-some "already known" ECC step size (1024 bytes here). Number of such
-bytes for ECC engine must be whole OOB except 2 bytes for bad block
-marker, while proper ECC step size and strength will be selected by
-ECC logic.
+Rockchip boot blocks are written per 4 x 512 byte sectors per page.
+Each page with boot blocks must have a page address (PA) pointer in OOB
+to the next page.
 
-Fixes: 8fae856c5350 ("mtd: rawnand: meson: add support for Amlogic NAND flash controller")
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Arseniy Krasnov <AVKrasnov@sberdevices.ru>
+The currently advertised free OOB area starts at offset 6, like
+if 4 PA bytes were located right after the BBM. This is wrong as the
+PA bytes are located right before the ECC bytes.
+
+Fix the layout by allowing access to all bytes between the BBM and the
+PA bytes instead of reserving 4 bytes right after the BBM.
+
+This change breaks existing jffs2 users.
+
+Fixes: 058e0e847d54 ("mtd: rawnand: rockchip: NFC driver for RK3308, RK2928 and others")
+Signed-off-by: Johan Jonker <jbx6244@gmail.com>
 Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://lore.kernel.org/linux-mtd/20230705065211.293500-1-AVKrasnov@sberdevices.ru
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/linux-mtd/d202f12d-188c-20e8-f2c2-9cc874ad4d22@gmail.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/nand/raw/meson_nand.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/mtd/nand/raw/rockchip-nand-controller.c | 11 ++++-------
+ 1 file changed, 4 insertions(+), 7 deletions(-)
 
---- a/drivers/mtd/nand/raw/meson_nand.c
-+++ b/drivers/mtd/nand/raw/meson_nand.c
-@@ -1180,7 +1180,6 @@ static int meson_nand_attach_chip(struct
- 	struct meson_nfc *nfc = nand_get_controller_data(nand);
- 	struct meson_nfc_nand_chip *meson_chip = to_meson_nand(nand);
- 	struct mtd_info *mtd = nand_to_mtd(nand);
--	int nsectors = mtd->writesize / 1024;
- 	int ret;
+diff --git a/drivers/mtd/nand/raw/rockchip-nand-controller.c b/drivers/mtd/nand/raw/rockchip-nand-controller.c
+index f133985cc053a..9070dafae9db8 100644
+--- a/drivers/mtd/nand/raw/rockchip-nand-controller.c
++++ b/drivers/mtd/nand/raw/rockchip-nand-controller.c
+@@ -562,9 +562,10 @@ static int rk_nfc_write_page_raw(struct nand_chip *chip, const u8 *buf,
+ 		 *    BBM  OOB1 OOB2 OOB3 |......|  PA0  PA1  PA2  PA3
+ 		 *
+ 		 * The rk_nfc_ooblayout_free() function already has reserved
+-		 * these 4 bytes with:
++		 * these 4 bytes together with 2 bytes for BBM
++		 * by reducing it's length:
+ 		 *
+-		 * oob_region->offset = NFC_SYS_DATA_SIZE + 2;
++		 * oob_region->length = rknand->metadata_size - NFC_SYS_DATA_SIZE - 2;
+ 		 */
+ 		if (!i)
+ 			memcpy(rk_nfc_oob_ptr(chip, i),
+@@ -933,12 +934,8 @@ static int rk_nfc_ooblayout_free(struct mtd_info *mtd, int section,
+ 	if (section)
+ 		return -ERANGE;
  
- 	if (!mtd->name) {
-@@ -1198,7 +1197,7 @@ static int meson_nand_attach_chip(struct
- 	nand->options |= NAND_NO_SUBPAGE_WRITE;
+-	/*
+-	 * The beginning of the OOB area stores the reserved data for the NFC,
+-	 * the size of the reserved data is NFC_SYS_DATA_SIZE bytes.
+-	 */
+ 	oob_region->length = rknand->metadata_size - NFC_SYS_DATA_SIZE - 2;
+-	oob_region->offset = NFC_SYS_DATA_SIZE + 2;
++	oob_region->offset = 2;
  
- 	ret = nand_ecc_choose_conf(nand, nfc->data->ecc_caps,
--				   mtd->oobsize - 2 * nsectors);
-+				   mtd->oobsize - 2);
- 	if (ret) {
- 		dev_err(nfc->dev, "failed to ECC init\n");
- 		return -EINVAL;
+ 	return 0;
+ }
+-- 
+2.40.1
+
 
 
