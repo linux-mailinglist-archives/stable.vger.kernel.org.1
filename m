@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B3E967757B6
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:49:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 42471775925
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:58:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232260AbjHIKtM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 06:49:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58316 "EHLO
+        id S232627AbjHIK6D (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 06:58:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40810 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232259AbjHIKtM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:49:12 -0400
+        with ESMTP id S232719AbjHIK6C (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:58:02 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A87B31702
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:49:11 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A9C4A2126
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:58:01 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4985C63123
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:49:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B207C433C8;
-        Wed,  9 Aug 2023 10:49:10 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 476496312C
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:58:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51F1CC433C7;
+        Wed,  9 Aug 2023 10:58:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691578150;
-        bh=B1JbXKcGI7cr6P6giT4nARUL76oNhIvPlJYyBMp1dn4=;
+        s=korg; t=1691578680;
+        bh=Mis3xshci9iVAlLvKaAqXkF6ndpHhAW4bGRaQFImN0M=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=qR7Zsywjfu7NEV4Bllx1sXGMuxACuVcshuRlMzFnZlIlQuzRSNeDlyab2Qi+qCp1l
-         BYIozcTAxmOICJ43lY4khN5+gMmYCNMucRaFAGfotUa5wePgv8kyOpSGITNhbZk36B
-         j293tfb2H8xvaN8lf84hoh2M+Uvg9HSflcX4W6io=
+        b=eupElMbHa/pNLezqqjxAz+31ELIb/7ILsRjsqof0eEeUcHAQTvkkEoREz3h9uhVb7
+         DEJqjBmb61CQKcU4OzsWZ9JggQJNXSza39L+2WGle4pCgKQHYjmDNi1EpJSRAinWUq
+         7jINH3Ki4sxrsDI3BVBH3E7DPiZ3g9I41RSBuUKc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, David Spickett <David.Spickett@arm.com>,
-        Mark Brown <broonie@kernel.org>,
-        Catalin Marinas <catalin.marinas@arm.com>
-Subject: [PATCH 6.4 123/165] arm64/fpsimd: Clear SME state in the target task when setting the VL
-Date:   Wed,  9 Aug 2023 12:40:54 +0200
-Message-ID: <20230809103646.826769550@linuxfoundation.org>
+        patches@lists.linux.dev, Yuanjun Gong <ruc_gongyuanjun@163.com>,
+        Florian Fainelli <florian.fainelli@broadcom.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 19/92] net: dsa: fix value check in bcm_sf2_sw_probe()
+Date:   Wed,  9 Aug 2023 12:40:55 +0200
+Message-ID: <20230809103634.288366772@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103642.720851262@linuxfoundation.org>
-References: <20230809103642.720851262@linuxfoundation.org>
+In-Reply-To: <20230809103633.485906560@linuxfoundation.org>
+References: <20230809103633.485906560@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,40 +56,52 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Mark Brown <broonie@kernel.org>
+From: Yuanjun Gong <ruc_gongyuanjun@163.com>
 
-commit c9bb40b7f786662e33d71afe236442b0b61f0446 upstream.
+[ Upstream commit dadc5b86cc9459581f37fe755b431adc399ea393 ]
 
-When setting SME vector lengths we clear TIF_SME to reenable SME traps,
-doing a reallocation of the backing storage on next use. We do this using
-clear_thread_flag() which operates on the current thread, meaning that when
-setting the vector length via ptrace we may both not force traps for the
-target task and force a spurious flush of any SME state that the tracing
-task may have.
+in bcm_sf2_sw_probe(), check the return value of clk_prepare_enable()
+and return the error code if clk_prepare_enable() returns an
+unexpected value.
 
-Clear the flag in the target task.
-
-Fixes: e12310a0d30f ("arm64/sme: Implement ptrace support for streaming mode SVE registers")
-Reported-by: David Spickett <David.Spickett@arm.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20230803-arm64-fix-ptrace-tif-sme-v1-1-88312fd6fbfd@kernel.org
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: e9ec5c3bd238 ("net: dsa: bcm_sf2: request and handle clocks")
+Signed-off-by: Yuanjun Gong <ruc_gongyuanjun@163.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Link: https://lore.kernel.org/r/20230726170506.16547-1-ruc_gongyuanjun@163.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/kernel/fpsimd.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/dsa/bcm_sf2.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
---- a/arch/arm64/kernel/fpsimd.c
-+++ b/arch/arm64/kernel/fpsimd.c
-@@ -910,7 +910,7 @@ int vec_set_vector_length(struct task_st
- 			 */
- 			task->thread.svcr &= ~(SVCR_SM_MASK |
- 					       SVCR_ZA_MASK);
--			clear_thread_flag(TIF_SME);
-+			clear_tsk_thread_flag(task, TIF_SME);
- 			free_sme = true;
- 		}
+diff --git a/drivers/net/dsa/bcm_sf2.c b/drivers/net/dsa/bcm_sf2.c
+index d76b2377d66ef..773d751ef169f 100644
+--- a/drivers/net/dsa/bcm_sf2.c
++++ b/drivers/net/dsa/bcm_sf2.c
+@@ -1422,7 +1422,9 @@ static int bcm_sf2_sw_probe(struct platform_device *pdev)
+ 	if (IS_ERR(priv->clk))
+ 		return PTR_ERR(priv->clk);
+ 
+-	clk_prepare_enable(priv->clk);
++	ret = clk_prepare_enable(priv->clk);
++	if (ret)
++		return ret;
+ 
+ 	priv->clk_mdiv = devm_clk_get_optional(&pdev->dev, "sw_switch_mdiv");
+ 	if (IS_ERR(priv->clk_mdiv)) {
+@@ -1430,7 +1432,9 @@ static int bcm_sf2_sw_probe(struct platform_device *pdev)
+ 		goto out_clk;
  	}
+ 
+-	clk_prepare_enable(priv->clk_mdiv);
++	ret = clk_prepare_enable(priv->clk_mdiv);
++	if (ret)
++		goto out_clk;
+ 
+ 	ret = bcm_sf2_sw_rst(priv);
+ 	if (ret) {
+-- 
+2.40.1
+
 
 
