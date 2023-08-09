@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 676897759C4
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:03:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E7081775BE1
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:22:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233046AbjHILDI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:03:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38130 "EHLO
+        id S230300AbjHILVo (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:21:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49706 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232954AbjHILDE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:03:04 -0400
+        with ESMTP id S229640AbjHILVo (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:21:44 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A535423F
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:54:52 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7162C19A1
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:21:43 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E587C63126
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:54:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 008C5C433C9;
-        Wed,  9 Aug 2023 10:54:50 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 115D1631FA
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:21:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2200CC433C7;
+        Wed,  9 Aug 2023 11:21:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691578491;
-        bh=ogEyB2jafn+lL0XcfemZLOnlaxUvSvCl+NBfFQsP8A8=;
+        s=korg; t=1691580102;
+        bh=tpz4kB2Ly2FIVkeTErOxPRQschlLWe6bKpi00BSRDjQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=f1I+d+kQJczcP+lgFFxQkcPnCCukEv+reQM9CBjAHcHaX/tCrwWM0eRnO/UWCJC5N
-         7JPnVMo7c98k4PKwoj6Mgvk+XDcz2WodZCu62mUbivGgDddD9fgqR2oOm7UOX4dZvP
-         iLTlX8B1QbvnS20EPpdLo5ir6d7ZrFx5B54V2080=
+        b=DwaDWjtyHI64rVldBp1tqH0+2W0IXc3vqwI5SCULsLNK2s+kkhP2xP+NX5D1IZecZ
+         wTIqo/kSG1dYzpmuEIx21Y9DvPsnUUvNtsn9CgdsuCtQDLd+wm5iW6gSfxxNawGCaj
+         xvOmLObxvM6pV074cxtGK9WS8SybiBB+JVxpwLNA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Olivier Maignial <olivier.maignial@hotmail.fr>,
-        Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 6.1 079/127] mtd: spinand: toshiba: Fix ecc_get_status
+        patches@lists.linux.dev, Alexander Aring <aahringo@redhat.com>,
+        David Teigland <teigland@redhat.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 228/323] dlm: cleanup plock_op vs plock_xop
 Date:   Wed,  9 Aug 2023 12:41:06 +0200
-Message-ID: <20230809103639.268420058@linuxfoundation.org>
+Message-ID: <20230809103708.533167785@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103636.615294317@linuxfoundation.org>
-References: <20230809103636.615294317@linuxfoundation.org>
+In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
+References: <20230809103658.104386911@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,54 +55,233 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Olivier Maignial <olivier.maignial@hotmail.fr>
+From: Alexander Aring <aahringo@redhat.com>
 
-commit 8544cda94dae6be3f1359539079c68bb731428b1 upstream.
+[ Upstream commit bcbb4ba6c9ba81e6975b642a2cade68044cd8a66 ]
 
-Reading ECC status is failing.
+Lately the different casting between plock_op and plock_xop and list
+holders which was involved showed some issues which were hard to see.
+This patch removes the "plock_xop" structure and introduces a
+"struct plock_async_data". This structure will be set in "struct plock_op"
+in case of asynchronous lock handling as the original "plock_xop" was
+made for. There is no need anymore to cast pointers around for
+additional fields in case of asynchronous lock handling.  As disadvantage
+another allocation was introduces but only needed in the asynchronous
+case which is currently only used in combination with nfs lockd.
 
-tx58cxgxsxraix_ecc_get_status() is using on-stack buffer
-for SPINAND_GET_FEATURE_OP() output. It is not suitable
-for DMA needs of spi-mem.
-
-Fix this by using the spi-mem operations dedicated buffer
-spinand->scratchbuf.
-
-See
-spinand->scratchbuf:
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/include/linux/mtd/spinand.h?h=v6.3#n418
-spi_mem_check_op():
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/spi/spi-mem.c?h=v6.3#n199
-
-Fixes: 10949af1681d ("mtd: spinand: Add initial support for Toshiba TC58CVG2S0H")
-Cc: stable@vger.kernel.org
-Signed-off-by: Olivier Maignial <olivier.maignial@hotmail.fr>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://lore.kernel.org/linux-mtd/DB4P250MB1032553D05FBE36DEE0D311EFE23A@DB4P250MB1032.EURP250.PROD.OUTLOOK.COM
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Alexander Aring <aahringo@redhat.com>
+Signed-off-by: David Teigland <teigland@redhat.com>
+Stable-dep-of: 59e45c758ca1 ("fs: dlm: interrupt posix locks only when process is killed")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/nand/spi/toshiba.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/dlm/plock.c | 77 ++++++++++++++++++++++++++++++--------------------
+ 1 file changed, 46 insertions(+), 31 deletions(-)
 
---- a/drivers/mtd/nand/spi/toshiba.c
-+++ b/drivers/mtd/nand/spi/toshiba.c
-@@ -73,7 +73,7 @@ static int tx58cxgxsxraix_ecc_get_status
+diff --git a/fs/dlm/plock.c b/fs/dlm/plock.c
+index 505cfe669762e..7912ef3706e26 100644
+--- a/fs/dlm/plock.c
++++ b/fs/dlm/plock.c
+@@ -22,20 +22,20 @@ static struct list_head recv_list;
+ static wait_queue_head_t send_wq;
+ static wait_queue_head_t recv_wq;
+ 
+-struct plock_op {
+-	struct list_head list;
+-	int done;
+-	struct dlm_plock_info info;
+-	int (*callback)(struct file_lock *fl, int result);
+-};
+-
+-struct plock_xop {
+-	struct plock_op xop;
++struct plock_async_data {
+ 	void *fl;
+ 	void *file;
+ 	struct file_lock flc;
++	int (*callback)(struct file_lock *fl, int result);
+ };
+ 
++struct plock_op {
++	struct list_head list;
++	int done;
++	struct dlm_plock_info info;
++	/* if set indicates async handling */
++	struct plock_async_data *data;
++};
+ 
+ static inline void set_version(struct dlm_plock_info *info)
  {
- 	struct nand_device *nand = spinand_to_nand(spinand);
- 	u8 mbf = 0;
--	struct spi_mem_op op = SPINAND_GET_FEATURE_OP(0x30, &mbf);
-+	struct spi_mem_op op = SPINAND_GET_FEATURE_OP(0x30, spinand->scratchbuf);
+@@ -61,6 +61,12 @@ static int check_version(struct dlm_plock_info *info)
+ 	return 0;
+ }
  
- 	switch (status & STATUS_ECC_MASK) {
- 	case STATUS_ECC_NO_BITFLIPS:
-@@ -92,7 +92,7 @@ static int tx58cxgxsxraix_ecc_get_status
- 		if (spi_mem_exec_op(spinand->spimem, &op))
- 			return nanddev_get_ecc_conf(nand)->strength;
++static void dlm_release_plock_op(struct plock_op *op)
++{
++	kfree(op->data);
++	kfree(op);
++}
++
+ static void send_op(struct plock_op *op)
+ {
+ 	set_version(&op->info);
+@@ -104,22 +110,21 @@ static void do_unlock_close(struct dlm_ls *ls, u64 number,
+ int dlm_posix_lock(dlm_lockspace_t *lockspace, u64 number, struct file *file,
+ 		   int cmd, struct file_lock *fl)
+ {
++	struct plock_async_data *op_data;
+ 	struct dlm_ls *ls;
+ 	struct plock_op *op;
+-	struct plock_xop *xop;
+ 	int rv;
  
--		mbf >>= 4;
-+		mbf = *(spinand->scratchbuf) >> 4;
+ 	ls = dlm_find_lockspace_local(lockspace);
+ 	if (!ls)
+ 		return -EINVAL;
  
- 		if (WARN_ON(mbf > nanddev_get_ecc_conf(nand)->strength || !mbf))
- 			return nanddev_get_ecc_conf(nand)->strength;
+-	xop = kzalloc(sizeof(*xop), GFP_NOFS);
+-	if (!xop) {
++	op = kzalloc(sizeof(*op), GFP_NOFS);
++	if (!op) {
+ 		rv = -ENOMEM;
+ 		goto out;
+ 	}
+ 
+-	op = &xop->xop;
+ 	op->info.optype		= DLM_PLOCK_OP_LOCK;
+ 	op->info.pid		= fl->fl_pid;
+ 	op->info.ex		= (fl->fl_type == F_WRLCK);
+@@ -128,22 +133,32 @@ int dlm_posix_lock(dlm_lockspace_t *lockspace, u64 number, struct file *file,
+ 	op->info.number		= number;
+ 	op->info.start		= fl->fl_start;
+ 	op->info.end		= fl->fl_end;
++	/* async handling */
+ 	if (fl->fl_lmops && fl->fl_lmops->lm_grant) {
++		op_data = kzalloc(sizeof(*op_data), GFP_NOFS);
++		if (!op_data) {
++			dlm_release_plock_op(op);
++			rv = -ENOMEM;
++			goto out;
++		}
++
+ 		/* fl_owner is lockd which doesn't distinguish
+ 		   processes on the nfs client */
+ 		op->info.owner	= (__u64) fl->fl_pid;
+-		op->callback	= fl->fl_lmops->lm_grant;
+-		locks_init_lock(&xop->flc);
+-		locks_copy_lock(&xop->flc, fl);
+-		xop->fl		= fl;
+-		xop->file	= file;
++		op_data->callback = fl->fl_lmops->lm_grant;
++		locks_init_lock(&op_data->flc);
++		locks_copy_lock(&op_data->flc, fl);
++		op_data->fl		= fl;
++		op_data->file	= file;
++
++		op->data = op_data;
+ 	} else {
+ 		op->info.owner	= (__u64)(long) fl->fl_owner;
+ 	}
+ 
+ 	send_op(op);
+ 
+-	if (!op->callback) {
++	if (!op->data) {
+ 		rv = wait_event_interruptible(recv_wq, (op->done != 0));
+ 		if (rv == -ERESTARTSYS) {
+ 			log_debug(ls, "dlm_posix_lock: wait killed %llx",
+@@ -151,7 +166,7 @@ int dlm_posix_lock(dlm_lockspace_t *lockspace, u64 number, struct file *file,
+ 			spin_lock(&ops_lock);
+ 			list_del(&op->list);
+ 			spin_unlock(&ops_lock);
+-			kfree(xop);
++			dlm_release_plock_op(op);
+ 			do_unlock_close(ls, number, file, fl);
+ 			goto out;
+ 		}
+@@ -176,7 +191,7 @@ int dlm_posix_lock(dlm_lockspace_t *lockspace, u64 number, struct file *file,
+ 				  (unsigned long long)number);
+ 	}
+ 
+-	kfree(xop);
++	dlm_release_plock_op(op);
+ out:
+ 	dlm_put_lockspace(ls);
+ 	return rv;
+@@ -186,11 +201,11 @@ EXPORT_SYMBOL_GPL(dlm_posix_lock);
+ /* Returns failure iff a successful lock operation should be canceled */
+ static int dlm_plock_callback(struct plock_op *op)
+ {
++	struct plock_async_data *op_data = op->data;
+ 	struct file *file;
+ 	struct file_lock *fl;
+ 	struct file_lock *flc;
+ 	int (*notify)(struct file_lock *fl, int result) = NULL;
+-	struct plock_xop *xop = (struct plock_xop *)op;
+ 	int rv = 0;
+ 
+ 	spin_lock(&ops_lock);
+@@ -202,10 +217,10 @@ static int dlm_plock_callback(struct plock_op *op)
+ 	spin_unlock(&ops_lock);
+ 
+ 	/* check if the following 2 are still valid or make a copy */
+-	file = xop->file;
+-	flc = &xop->flc;
+-	fl = xop->fl;
+-	notify = op->callback;
++	file = op_data->file;
++	flc = &op_data->flc;
++	fl = op_data->fl;
++	notify = op_data->callback;
+ 
+ 	if (op->info.rv) {
+ 		notify(fl, op->info.rv);
+@@ -236,7 +251,7 @@ static int dlm_plock_callback(struct plock_op *op)
+ 	}
+ 
+ out:
+-	kfree(xop);
++	dlm_release_plock_op(op);
+ 	return rv;
+ }
+ 
+@@ -306,7 +321,7 @@ int dlm_posix_unlock(dlm_lockspace_t *lockspace, u64 number, struct file *file,
+ 		rv = 0;
+ 
+ out_free:
+-	kfree(op);
++	dlm_release_plock_op(op);
+ out:
+ 	dlm_put_lockspace(ls);
+ 	fl->fl_flags = fl_flags;
+@@ -374,7 +389,7 @@ int dlm_posix_get(dlm_lockspace_t *lockspace, u64 number, struct file *file,
+ 		rv = 0;
+ 	}
+ 
+-	kfree(op);
++	dlm_release_plock_op(op);
+ out:
+ 	dlm_put_lockspace(ls);
+ 	return rv;
+@@ -410,7 +425,7 @@ static ssize_t dev_read(struct file *file, char __user *u, size_t count,
+ 	   (the process did not make an unlock call). */
+ 
+ 	if (op->info.flags & DLM_PLOCK_FL_CLOSE)
+-		kfree(op);
++		dlm_release_plock_op(op);
+ 
+ 	if (copy_to_user(u, &info, sizeof(info)))
+ 		return -EFAULT;
+@@ -442,7 +457,7 @@ static ssize_t dev_write(struct file *file, const char __user *u, size_t count,
+ 		    op->info.owner == info.owner) {
+ 			list_del_init(&op->list);
+ 			memcpy(&op->info, &info, sizeof(info));
+-			if (op->callback)
++			if (op->data)
+ 				do_callback = 1;
+ 			else
+ 				op->done = 1;
+-- 
+2.39.2
+
 
 
