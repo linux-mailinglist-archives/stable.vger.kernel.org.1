@@ -2,94 +2,149 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4AA257757C1
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:49:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4AF23775A21
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:05:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232278AbjHIKtn (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 06:49:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59432 "EHLO
+        id S233079AbjHILFh (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:05:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38760 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232266AbjHIKtn (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:49:43 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 892541FF5
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:49:42 -0700 (PDT)
+        with ESMTP id S233073AbjHILFg (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:05:36 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D4711702;
+        Wed,  9 Aug 2023 04:05:36 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2082663124
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:49:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1F26C433C7;
-        Wed,  9 Aug 2023 10:49:40 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9E1CD6309F;
+        Wed,  9 Aug 2023 11:05:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE790C433C8;
+        Wed,  9 Aug 2023 11:05:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691578181;
-        bh=8ubs4RcrbBIeXpq2NzUn76EDHrR9zFkXbvjB4VCqmUA=;
+        s=korg; t=1691579135;
+        bh=fcibgim+ERhMZSah6mrjCAVT5weOmibbe8XwNkL2MLA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=E45eH7rvCwyCoV9PgOXP4u0KGAGlYkWdHbj15Lrw7yzZrsLUI59lZIkdwtNyv9+o6
-         hy7Tk9ym0DAYoBUc3D+mOZeLpgPgKrW6iDwqmt8dSu94JzyL3t5cQLmo9Gfib+DwKd
-         l0Es9/1YrDJ9+1N10HU6w+WUCQyX1RT8UNwZeZMk=
+        b=EmIqXTyPWQoSVTOq3+WyERDkjsr5/LbXAxZIqnsQuyNxNJN8s4cNHqCSicKWuoGiw
+         SSSsjNsvqg1hrhGUMUtlu371MJ7/4ar13k2UISiscsJbFJbkEE/zVy4pAFe7sMm+5W
+         BIP1CASgEV7hIi1W7Ax/cBZMf1cjOU/DSa4jBuIg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     stable@vger.kernel.org
+To:     stable@vger.kernel.org, netfilter-devel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, AVKrasnov@sberdevices.ru,
-        Stefano Garzarella <sgarzare@redhat.com>,
-        Simon Horman <horms@kernel.org>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 095/165] test/vsock: remove vsock_perf executable on `make clean`
+        patches@lists.linux.dev, Pablo Neira Ayuso <pablo@netfilter.org>
+Subject: [PATCH 4.14 088/204] netfilter: nf_tables: add NFT_TRANS_PREPARE_ERROR to deal with bound set/chain
 Date:   Wed,  9 Aug 2023 12:40:26 +0200
-Message-ID: <20230809103645.891726314@linuxfoundation.org>
+Message-ID: <20230809103645.594505855@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103642.720851262@linuxfoundation.org>
-References: <20230809103642.720851262@linuxfoundation.org>
+In-Reply-To: <20230809103642.552405807@linuxfoundation.org>
+References: <20230809103642.552405807@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Stefano Garzarella <sgarzare@redhat.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit 3c50c8b240390907c9a33c86d25d850520db6dfa ]
+[ 26b5a5712eb85e253724e56a54c17f8519bd8e4e ]
 
-We forgot to add vsock_perf to the rm command in the `clean`
-target, so now we have a left over after `make clean` in
-tools/testing/vsock.
+Add a new state to deal with rule expressions deactivation from the
+newrule error path, otherwise the anonymous set remains in the list in
+inactive state for the next generation. Mark the set/chain transaction
+as unbound so the abort path releases this object, set it as inactive in
+the next generation so it is not reachable anymore from this transaction
+and reference counter is dropped.
 
-Fixes: 8abbffd27ced ("test/vsock: vsock_perf utility")
-Cc: AVKrasnov@sberdevices.ru
-Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Simon Horman <horms@kernel.org> # build-tested
-Link: https://lore.kernel.org/r/20230803085454.30897-1-sgarzare@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 1240eb93f061 ("netfilter: nf_tables: incorrect error path handling with NFT_MSG_NEWRULE")
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/vsock/Makefile | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/net/netfilter/nf_tables.h |    1 +
+ net/netfilter/nf_tables_api.c     |   26 ++++++++++++++++++++++----
+ 2 files changed, 23 insertions(+), 4 deletions(-)
 
-diff --git a/tools/testing/vsock/Makefile b/tools/testing/vsock/Makefile
-index 43a254f0e14dd..21a98ba565ab5 100644
---- a/tools/testing/vsock/Makefile
-+++ b/tools/testing/vsock/Makefile
-@@ -8,5 +8,5 @@ vsock_perf: vsock_perf.o
- CFLAGS += -g -O2 -Werror -Wall -I. -I../../include -I../../../usr/include -Wno-pointer-sign -fno-strict-overflow -fno-strict-aliasing -fno-common -MMD -U_FORTIFY_SOURCE -D_GNU_SOURCE
- .PHONY: all test clean
- clean:
--	${RM} *.o *.d vsock_test vsock_diag_test
-+	${RM} *.o *.d vsock_test vsock_diag_test vsock_perf
- -include *.d
--- 
-2.40.1
-
+--- a/include/net/netfilter/nf_tables.h
++++ b/include/net/netfilter/nf_tables.h
+@@ -725,6 +725,7 @@ struct nft_expr_type {
+ 
+ enum nft_trans_phase {
+ 	NFT_TRANS_PREPARE,
++	NFT_TRANS_PREPARE_ERROR,
+ 	NFT_TRANS_ABORT,
+ 	NFT_TRANS_COMMIT,
+ 	NFT_TRANS_RELEASE
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -140,7 +140,8 @@ static void nft_trans_destroy(struct nft
+ 	kfree(trans);
+ }
+ 
+-static void nft_set_trans_bind(const struct nft_ctx *ctx, struct nft_set *set)
++static void __nft_set_trans_bind(const struct nft_ctx *ctx, struct nft_set *set,
++				 bool bind)
+ {
+ 	struct net *net = ctx->net;
+ 	struct nft_trans *trans;
+@@ -152,16 +153,26 @@ static void nft_set_trans_bind(const str
+ 		switch (trans->msg_type) {
+ 		case NFT_MSG_NEWSET:
+ 			if (nft_trans_set(trans) == set)
+-				nft_trans_set_bound(trans) = true;
++				nft_trans_set_bound(trans) = bind;
+ 			break;
+ 		case NFT_MSG_NEWSETELEM:
+ 			if (nft_trans_elem_set(trans) == set)
+-				nft_trans_elem_set_bound(trans) = true;
++				nft_trans_elem_set_bound(trans) = bind;
+ 			break;
+ 		}
+ 	}
+ }
+ 
++static void nft_set_trans_bind(const struct nft_ctx *ctx, struct nft_set *set)
++{
++	return __nft_set_trans_bind(ctx, set, true);
++}
++
++static void nft_set_trans_unbind(const struct nft_ctx *ctx, struct nft_set *set)
++{
++	return __nft_set_trans_bind(ctx, set, false);
++}
++
+ static int nf_tables_register_hooks(struct net *net,
+ 				    const struct nft_table *table,
+ 				    struct nft_chain *chain,
+@@ -2465,7 +2476,7 @@ static int nf_tables_newrule(struct net
+ 	return 0;
+ 
+ err2:
+-	nft_rule_expr_deactivate(&ctx, rule, NFT_TRANS_PREPARE);
++	nft_rule_expr_deactivate(&ctx, rule, NFT_TRANS_PREPARE_ERROR);
+ 	nf_tables_rule_destroy(&ctx, rule);
+ err1:
+ 	for (i = 0; i < n; i++) {
+@@ -3446,6 +3457,13 @@ void nf_tables_deactivate_set(const stru
+ 			      enum nft_trans_phase phase)
+ {
+ 	switch (phase) {
++	case NFT_TRANS_PREPARE_ERROR:
++		nft_set_trans_unbind(ctx, set);
++		if (set->flags & NFT_SET_ANONYMOUS)
++			nft_deactivate_next(ctx->net, set);
++
++		set->use--;
++		break;
+ 	case NFT_TRANS_PREPARE:
+ 		if (set->flags & NFT_SET_ANONYMOUS)
+ 			nft_deactivate_next(ctx->net, set);
 
 
