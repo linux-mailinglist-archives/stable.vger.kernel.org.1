@@ -2,49 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 438D5775939
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:58:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7067C7759BA
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:03:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232778AbjHIK6g (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 06:58:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38616 "EHLO
+        id S232956AbjHILDC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:03:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60262 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232784AbjHIK6f (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:58:35 -0400
+        with ESMTP id S232944AbjHILDB (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:03:01 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1705F1724
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:58:35 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B16A4482
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:54:55 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id AA32E630D6
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:58:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE8D7C433C8;
-        Wed,  9 Aug 2023 10:58:33 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9D76E630D2
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:54:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF081C433C7;
+        Wed,  9 Aug 2023 10:54:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691578714;
-        bh=KgDIko+Fy+0akOAfzu5bdTygXnS0jt7cYnPuq5fYPGE=;
+        s=korg; t=1691578494;
+        bh=8PotWt2WRbU2C8ZpTP2s4gYfkiZfIyyFJ1H8NqhZja8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=DhhtLYzUQbgCRl0wRaxwGNTZKAoGrhfdcU1llyHZK7FeBBVGKPxq3x6B8jOXcB5ye
-         yLHvzcP9ubtvDJ8yUfl2eQFaDWgcH5evHcryoI8AjG2+8SIjqOuWd9mxPckvr7YpcT
-         MsXymV4JQBHtEfvxL8wi4gxvBYLbSCLyIgQuQIP0=
+        b=M4TBSubFbj4y/BfkTdnVQhuUAEi3qknATarqlOSLE8kc6WC15Y4f6nkxkEGwudHpZ
+         JL9l8JjvCeYnmXkuFD4cjx+GQA6fgRMho9EuKrQPMC54PF44aeCKJ/S6HsrhlXZHF+
+         QOviWP25SzTNzTUd5tQX5C5K7gIeOpDWKXrsP0t0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, syzkaller <syzkaller@googlegroups.com>,
-        Kuniyuki Iwashima <kuniyu@amazon.com>,
-        Vinicius Costa Gomes <vinicius.gomes@intel.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>,
-        Eric Dumazet <edumazet@google.com>,
-        Pedro Tammela <pctammela@mojatatu.com>
-Subject: [PATCH 5.15 31/92] net/sched: taprio: Limit TCA_TAPRIO_ATTR_SCHED_CYCLE_TIME to INT_MAX.
+        patches@lists.linux.dev, Stable@vger.kernel.org,
+        Arseniy Krasnov <AVKrasnov@sberdevices.ru>,
+        Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH 6.1 080/127] mtd: rawnand: meson: fix OOB available bytes for ECC
 Date:   Wed,  9 Aug 2023 12:41:07 +0200
-Message-ID: <20230809103634.695909492@linuxfoundation.org>
+Message-ID: <20230809103639.303372179@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103633.485906560@linuxfoundation.org>
-References: <20230809103633.485906560@linuxfoundation.org>
+In-Reply-To: <20230809103636.615294317@linuxfoundation.org>
+References: <20230809103636.615294317@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -59,140 +55,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Arseniy Krasnov <AVKrasnov@sberdevices.ru>
 
-[ Upstream commit e739718444f7bf2fa3d70d101761ad83056ca628 ]
+commit 7e6b04f9238eab0f684fafd158c1f32ea65b9eaa upstream.
 
-syzkaller found zero division error [0] in div_s64_rem() called from
-get_cycle_time_elapsed(), where sched->cycle_time is the divisor.
+It is incorrect to calculate number of OOB bytes for ECC engine using
+some "already known" ECC step size (1024 bytes here). Number of such
+bytes for ECC engine must be whole OOB except 2 bytes for bad block
+marker, while proper ECC step size and strength will be selected by
+ECC logic.
 
-We have tests in parse_taprio_schedule() so that cycle_time will never
-be 0, and actually cycle_time is not 0 in get_cycle_time_elapsed().
-
-The problem is that the types of divisor are different; cycle_time is
-s64, but the argument of div_s64_rem() is s32.
-
-syzkaller fed this input and 0x100000000 is cast to s32 to be 0.
-
-  @TCA_TAPRIO_ATTR_SCHED_CYCLE_TIME={0xc, 0x8, 0x100000000}
-
-We use s64 for cycle_time to cast it to ktime_t, so let's keep it and
-set max for cycle_time.
-
-While at it, we prevent overflow in setup_txtime() and add another
-test in parse_taprio_schedule() to check if cycle_time overflows.
-
-Also, we add a new tdc test case for this issue.
-
-[0]:
-divide error: 0000 [#1] PREEMPT SMP KASAN NOPTI
-CPU: 1 PID: 103 Comm: kworker/1:3 Not tainted 6.5.0-rc1-00330-g60cc1f7d0605 #3
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.0-0-gd239552ce722-prebuilt.qemu.org 04/01/2014
-Workqueue: ipv6_addrconf addrconf_dad_work
-RIP: 0010:div_s64_rem include/linux/math64.h:42 [inline]
-RIP: 0010:get_cycle_time_elapsed net/sched/sch_taprio.c:223 [inline]
-RIP: 0010:find_entry_to_transmit+0x252/0x7e0 net/sched/sch_taprio.c:344
-Code: 3c 02 00 0f 85 5e 05 00 00 48 8b 4c 24 08 4d 8b bd 40 01 00 00 48 8b 7c 24 48 48 89 c8 4c 29 f8 48 63 f7 48 99 48 89 74 24 70 <48> f7 fe 48 29 d1 48 8d 04 0f 49 89 cc 48 89 44 24 20 49 8d 85 10
-RSP: 0018:ffffc90000acf260 EFLAGS: 00010206
-RAX: 177450e0347560cf RBX: 0000000000000000 RCX: 177450e0347560cf
-RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000100000000
-RBP: 0000000000000056 R08: 0000000000000000 R09: ffffed10020a0934
-R10: ffff8880105049a7 R11: ffff88806cf3a520 R12: ffff888010504800
-R13: ffff88800c00d800 R14: ffff8880105049a0 R15: 0000000000000000
-FS:  0000000000000000(0000) GS:ffff88806cf00000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f0edf84f0e8 CR3: 000000000d73c002 CR4: 0000000000770ee0
-PKRU: 55555554
-Call Trace:
- <TASK>
- get_packet_txtime net/sched/sch_taprio.c:508 [inline]
- taprio_enqueue_one+0x900/0xff0 net/sched/sch_taprio.c:577
- taprio_enqueue+0x378/0xae0 net/sched/sch_taprio.c:658
- dev_qdisc_enqueue+0x46/0x170 net/core/dev.c:3732
- __dev_xmit_skb net/core/dev.c:3821 [inline]
- __dev_queue_xmit+0x1b2f/0x3000 net/core/dev.c:4169
- dev_queue_xmit include/linux/netdevice.h:3088 [inline]
- neigh_resolve_output net/core/neighbour.c:1552 [inline]
- neigh_resolve_output+0x4a7/0x780 net/core/neighbour.c:1532
- neigh_output include/net/neighbour.h:544 [inline]
- ip6_finish_output2+0x924/0x17d0 net/ipv6/ip6_output.c:135
- __ip6_finish_output+0x620/0xaa0 net/ipv6/ip6_output.c:196
- ip6_finish_output net/ipv6/ip6_output.c:207 [inline]
- NF_HOOK_COND include/linux/netfilter.h:292 [inline]
- ip6_output+0x206/0x410 net/ipv6/ip6_output.c:228
- dst_output include/net/dst.h:458 [inline]
- NF_HOOK.constprop.0+0xea/0x260 include/linux/netfilter.h:303
- ndisc_send_skb+0x872/0xe80 net/ipv6/ndisc.c:508
- ndisc_send_ns+0xb5/0x130 net/ipv6/ndisc.c:666
- addrconf_dad_work+0xc14/0x13f0 net/ipv6/addrconf.c:4175
- process_one_work+0x92c/0x13a0 kernel/workqueue.c:2597
- worker_thread+0x60f/0x1240 kernel/workqueue.c:2748
- kthread+0x2fe/0x3f0 kernel/kthread.c:389
- ret_from_fork+0x2c/0x50 arch/x86/entry/entry_64.S:308
- </TASK>
-Modules linked in:
-
-Fixes: 4cfd5779bd6e ("taprio: Add support for txtime-assist mode")
-Reported-by: syzkaller <syzkaller@googlegroups.com>
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Co-developed-by: Eric Dumazet <edumazet@google.com>
-Co-developed-by: Pedro Tammela <pctammela@mojatatu.com>
-Acked-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 8fae856c5350 ("mtd: rawnand: meson: add support for Amlogic NAND flash controller")
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Arseniy Krasnov <AVKrasnov@sberdevices.ru>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://lore.kernel.org/linux-mtd/20230705065211.293500-1-AVKrasnov@sberdevices.ru
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/sch_taprio.c | 15 +++++++++++++--
- 1 file changed, 13 insertions(+), 2 deletions(-)
+ drivers/mtd/nand/raw/meson_nand.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/net/sched/sch_taprio.c b/net/sched/sch_taprio.c
-index e203deacc9533..e40b4425eb6b5 100644
---- a/net/sched/sch_taprio.c
-+++ b/net/sched/sch_taprio.c
-@@ -780,6 +780,11 @@ static const struct nla_policy entry_policy[TCA_TAPRIO_SCHED_ENTRY_MAX + 1] = {
- 	[TCA_TAPRIO_SCHED_ENTRY_INTERVAL]  = { .type = NLA_U32 },
- };
+--- a/drivers/mtd/nand/raw/meson_nand.c
++++ b/drivers/mtd/nand/raw/meson_nand.c
+@@ -1184,7 +1184,6 @@ static int meson_nand_attach_chip(struct
+ 	struct meson_nfc *nfc = nand_get_controller_data(nand);
+ 	struct meson_nfc_nand_chip *meson_chip = to_meson_nand(nand);
+ 	struct mtd_info *mtd = nand_to_mtd(nand);
+-	int nsectors = mtd->writesize / 1024;
+ 	int ret;
  
-+static struct netlink_range_validation_signed taprio_cycle_time_range = {
-+	.min = 0,
-+	.max = INT_MAX,
-+};
-+
- static const struct nla_policy taprio_policy[TCA_TAPRIO_ATTR_MAX + 1] = {
- 	[TCA_TAPRIO_ATTR_PRIOMAP]	       = {
- 		.len = sizeof(struct tc_mqprio_qopt)
-@@ -788,7 +793,8 @@ static const struct nla_policy taprio_policy[TCA_TAPRIO_ATTR_MAX + 1] = {
- 	[TCA_TAPRIO_ATTR_SCHED_BASE_TIME]            = { .type = NLA_S64 },
- 	[TCA_TAPRIO_ATTR_SCHED_SINGLE_ENTRY]         = { .type = NLA_NESTED },
- 	[TCA_TAPRIO_ATTR_SCHED_CLOCKID]              = { .type = NLA_S32 },
--	[TCA_TAPRIO_ATTR_SCHED_CYCLE_TIME]           = { .type = NLA_S64 },
-+	[TCA_TAPRIO_ATTR_SCHED_CYCLE_TIME]           =
-+		NLA_POLICY_FULL_RANGE_SIGNED(NLA_S64, &taprio_cycle_time_range),
- 	[TCA_TAPRIO_ATTR_SCHED_CYCLE_TIME_EXTENSION] = { .type = NLA_S64 },
- 	[TCA_TAPRIO_ATTR_FLAGS]                      = { .type = NLA_U32 },
- 	[TCA_TAPRIO_ATTR_TXTIME_DELAY]		     = { .type = NLA_U32 },
-@@ -923,6 +929,11 @@ static int parse_taprio_schedule(struct taprio_sched *q, struct nlattr **tb,
- 			return -EINVAL;
- 		}
+ 	if (!mtd->name) {
+@@ -1202,7 +1201,7 @@ static int meson_nand_attach_chip(struct
+ 	nand->options |= NAND_NO_SUBPAGE_WRITE;
  
-+		if (cycle < 0 || cycle > INT_MAX) {
-+			NL_SET_ERR_MSG(extack, "'cycle_time' is too big");
-+			return -EINVAL;
-+		}
-+
- 		new->cycle_time = cycle;
- 	}
- 
-@@ -1127,7 +1138,7 @@ static void setup_txtime(struct taprio_sched *q,
- 			 struct sched_gate_list *sched, ktime_t base)
- {
- 	struct sched_entry *entry;
--	u32 interval = 0;
-+	u64 interval = 0;
- 
- 	list_for_each_entry(entry, &sched->entries, list) {
- 		entry->next_txtime = ktime_add_ns(base, interval);
--- 
-2.40.1
-
+ 	ret = nand_ecc_choose_conf(nand, nfc->data->ecc_caps,
+-				   mtd->oobsize - 2 * nsectors);
++				   mtd->oobsize - 2);
+ 	if (ret) {
+ 		dev_err(nfc->dev, "failed to ECC init\n");
+ 		return -EINVAL;
 
 
