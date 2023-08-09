@@ -2,106 +2,124 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D7B07776801
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 21:11:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5E8A3776895
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 21:22:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229620AbjHITLf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 15:11:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42782 "EHLO
+        id S233778AbjHITWn (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 15:22:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45216 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232027AbjHITLf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 15:11:35 -0400
-Received: from mail-qt1-x830.google.com (mail-qt1-x830.google.com [IPv6:2607:f8b0:4864:20::830])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E653212C;
-        Wed,  9 Aug 2023 12:11:33 -0700 (PDT)
-Received: by mail-qt1-x830.google.com with SMTP id d75a77b69052e-40648d758f1so565391cf.0;
-        Wed, 09 Aug 2023 12:11:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1691608292; x=1692213092;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=39V1XP/MDO5emu6081lH6KVDmQxsvOMhi6iEGD0/k0U=;
-        b=gjFv26sMM1eHzEtxx2MXwogocNkgovOz8URBxYoYe27GmwXNajwtgSm+orytKW12G1
-         iISROCzHtKwuO8/dJMET4rnSkW/br8jXA2tigNpLSk8jr1sbD5ZcKT1uvIOAJL8a0dYf
-         ZcXa9mrTBECaoh9GN4g6wxHAFGEImOCPfK6fyiOZ8pEDxUPLC87+FVFutkIVCgSPCmcH
-         UBN6vqmqCRGM1HoDLT1pAnJ3ttlFvn+8wQadKZJu2LzO4p/SwT0jPNG/sxbvkYviqgmP
-         2M7BMKBACmbL4CB0olPxXNTysUWXUOlbjxPL2F0OkTei02SBNKeUlVDD3Dj2T1Hd9bP4
-         FQgA==
+        with ESMTP id S234157AbjHITWS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 15:22:18 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 96BF730EF
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 12:21:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1691608825;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=NYJARn+Tr8oo6UNssY2uogwaQ1veOX4LdfLq6I1sIi0=;
+        b=GpFWoA4noun05sXXu7hal0LWdvtPYTYKjCQvsgXd5UwjHnPqCWUnQ45tsc81SAouVkAcG4
+        r8zXt3KElfCvuCLW1rBSLrcGzfK1y4btTVGJosgEHCwu58+xc1icIIXzDJiKTQFV3TsU9o
+        eJIZeRCfEb3KzhyKeDZM5NoZbRKQ5tY=
+Received: from mail-lf1-f70.google.com (mail-lf1-f70.google.com
+ [209.85.167.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-474-tMyW6-jEOI-zGiAbT3K-EQ-1; Wed, 09 Aug 2023 15:20:23 -0400
+X-MC-Unique: tMyW6-jEOI-zGiAbT3K-EQ-1
+Received: by mail-lf1-f70.google.com with SMTP id 2adb3069b0e04-4fe157ebea0so70755e87.1
+        for <stable@vger.kernel.org>; Wed, 09 Aug 2023 12:20:23 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691608292; x=1692213092;
+        d=1e100.net; s=20221208; t=1691608822; x=1692213622;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=39V1XP/MDO5emu6081lH6KVDmQxsvOMhi6iEGD0/k0U=;
-        b=haO37o1mp6d2f3WusVDeFW379GiPqEPl1AeIpbz0MgKpkPBFDmzL/GwW00nk5ibFNO
-         ijIFAsH84q9ONUEOWw07Wfg1Ybj4uaTY+ut4wPPxM8dSCceHmdyhz5NGEzSXfUGQYu0+
-         dihhiv4UFYrrtiw7tOh1klQM2udAna/5LDsmezVPsnneDW1WEz3gEazeM5R+tpGHEBE/
-         x1FDtZqdCNXAFzMJzHfpzH78RMZt8ib4sP9KY7fTNhMU0WC+niaSFNK5/Gs7YPNg6OP+
-         +pz1FlqA3SUW9qf2hGBOCYcbhMYMSi/JARhmh1hEl45Tvc1khnW+ghXZy+PndZSMf80n
-         Bmuw==
-X-Gm-Message-State: AOJu0YwSpg/8wsisEZMq688mr7ny5nRKK4R3sckF/5dzczgFOqSW3GnH
-        kjHRkPJlG0w1V95VUs3ff2s=
-X-Google-Smtp-Source: AGHT+IEoDHHTd4iwD5s8iqaRVMVdpuvTq6P/qKBXPGbYljLoS6mP0Z9g307sIC3SkJPsJckDQW1L2g==
-X-Received: by 2002:a05:622a:5ce:b0:40f:dc70:fde1 with SMTP id d14-20020a05622a05ce00b0040fdc70fde1mr334170qtb.18.1691608292122;
-        Wed, 09 Aug 2023 12:11:32 -0700 (PDT)
-Received: from [10.67.48.245] ([192.19.223.252])
-        by smtp.googlemail.com with ESMTPSA id z23-20020ac84317000000b004100c132990sm2538301qtm.44.2023.08.09.12.11.29
+        bh=NYJARn+Tr8oo6UNssY2uogwaQ1veOX4LdfLq6I1sIi0=;
+        b=GGi9yFoWnP7hn8jI9hmkkbItHOjNahR3om6xjomdoZzn66epyYl2J+DOANeb9s9BxF
+         EwUNMkm8gHPRA5v8OjdXDFHkbk1TjPkVsEwBZwyrWb0TGYNI8WOGGWfqS51Y344E5SRx
+         T7xk/cxzDd8+jQS5DTUqTUClQ4T53JcSfCMmkHHuTT3VNV/8ZmtaKzUidGBFqmLtRP8g
+         zjtPjqo7c8yjSNMAgyptQ64FEQLp2cJSzHKGaLEv+hZYd7bhmur94yk72Iyfln11gVB9
+         MX+qPDE5S36CwifNkeMlnU/s2lzhbQSBVBrQt78jxv1A6V/RyiBb1bK5JbgRPGVG2LxL
+         5JuA==
+X-Gm-Message-State: AOJu0YyCGKnM/TFeEXURtXlKMheaFDpkhr2HzMtAUWUuUIJW2I6YQiOJ
+        +lfAGsRIqzu23EEOsJ+OMUMwpWgqVsoixmPyRoW6fVddTPswTfDt+5bKJZ2syLnTHlpUI8Y2INV
+        t2BMyyKIcFBhEyrNB
+X-Received: by 2002:a05:6512:6d5:b0:4fe:825:a081 with SMTP id u21-20020a05651206d500b004fe0825a081mr44161lff.45.1691608822370;
+        Wed, 09 Aug 2023 12:20:22 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGtu6F06SjXUXLKVgFHropPatS+pATl3bG4JmLunyJmmo8QQwzISppJhRNnKn08hjruOqg3Cg==
+X-Received: by 2002:a05:6512:6d5:b0:4fe:825:a081 with SMTP id u21-20020a05651206d500b004fe0825a081mr44145lff.45.1691608822042;
+        Wed, 09 Aug 2023 12:20:22 -0700 (PDT)
+Received: from ?IPV6:2001:1c00:c32:7800:5bfa:a036:83f0:f9ec? (2001-1c00-0c32-7800-5bfa-a036-83f0-f9ec.cable.dynamic.v6.ziggo.nl. [2001:1c00:c32:7800:5bfa:a036:83f0:f9ec])
+        by smtp.gmail.com with ESMTPSA id p17-20020a1709066a9100b009887f4e0291sm8302774ejr.27.2023.08.09.12.20.20
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 09 Aug 2023 12:11:31 -0700 (PDT)
-Message-ID: <a7457613-7e46-bd41-a825-377fb2266740@gmail.com>
-Date:   Wed, 9 Aug 2023 12:11:28 -0700
+        Wed, 09 Aug 2023 12:20:20 -0700 (PDT)
+Message-ID: <c3684f00-27bd-d4dd-93dd-18936c006de9@redhat.com>
+Date:   Wed, 9 Aug 2023 21:20:20 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: [PATCH 5.10 000/201] 5.10.190-rc1 review
-Content-Language: en-US
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org
-Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-        torvalds@linux-foundation.org, akpm@linux-foundation.org,
-        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-        conor@kernel.org
-References: <20230809103643.799166053@linuxfoundation.org>
-From:   Florian Fainelli <f.fainelli@gmail.com>
-In-Reply-To: <20230809103643.799166053@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Subject: Re: [PATCH v3 3/3] ACPI: resource: Honor MADT INT_SRC_OVR settings
+ for IRQ1 on AMD Zen
+Content-Language: en-US, nl
+To:     August Wikerfors <git@augustwikerfors.se>
+Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        Linux regressions mailing list <regressions@lists.linux.dev>,
+        stable@vger.kernel.org, linux-acpi@vger.kernel.org, x86@kernel.org
+References: <20230809085526.84913-1-hdegoede@redhat.com>
+ <20230809085526.84913-4-hdegoede@redhat.com>
+ <6a6fa2ba-c07d-45b2-96c5-b0f44f5f288b@augustwikerfors.se>
+From:   Hans de Goede <hdegoede@redhat.com>
+In-Reply-To: <6a6fa2ba-c07d-45b2-96c5-b0f44f5f288b@augustwikerfors.se>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 8/9/23 03:40, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 5.10.190 release.
-> There are 201 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Fri, 11 Aug 2023 10:36:10 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.10.190-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.10.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
+Hi,
 
-On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
-BMIPS_GENERIC:
+On 8/9/23 17:58, August Wikerfors wrote:
+> On 2023-08-09 10:55, Hans de Goede wrote:
+>> On AMD Zen acpi_dev_irq_override() by default prefers the DSDT IRQ 1
+>> settings over the MADT settings.
+>>
+>> This causes the keyboard to malfunction on some laptop models
+>> (see Links), all models from the Links have an INT_SRC_OVR MADT entry
+>> for IRQ 1.
+>>
+>> Fixes: a9c4a912b7dc ("ACPI: resource: Remove "Zen" specific match and quirks")
+>> Link: https://bugzilla.kernel.org/show_bug.cgi?id=217336
+>> Link: https://bugzilla.kernel.org/show_bug.cgi?id=217394
+>> Link: https://bugzilla.kernel.org/show_bug.cgi?id=217406
+>> Cc: Mario Limonciello <mario.limonciello@amd.com>
+>> Cc: Linux regressions mailing list <regressions@lists.linux.dev>
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+> 
+> One of the laptops fixed by a9c4a912b7dc, PCSpecialist Elimina Pro 16 M [1], seems to have no INT_SRC_OVR entry for IRQ 1 [2]:
+> 
+>> [    0.084265] ACPI: INT_SRC_OVR (bus 0 bus_irq 0 global_irq 2 dfl dfl)
+>> [    0.084266] ACPI: INT_SRC_OVR (bus 0 bus_irq 9 global_irq 9 low level)
+> 
+> I'm not sure if it was IRQ 1 that needed to be overridden for that model though, so it may work anyway with patch 2 of this series.
+> 
+> [1] https://bugzilla.kernel.org/show_bug.cgi?id=217394#c18
+> [2] https://bugzilla.kernel.org/attachment.cgi?id=304338
 
-Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
--- 
-Florian
+Good catch, thanks. So it looks like this one needs a DMI quirk (until we have a better generic solution.
+
+I'll reach out to the reporter and ask for dmidecode output and prepare a follow-up patch. Still I think that we should move forward with this series to fix the 6 bugs which are linked to from PAtch 1's commitmsg and those are likely just the top of the iceberg.
+
+Regards,
+
+Hans
 
