@@ -2,111 +2,106 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B10CC7762C0
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 16:43:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6DD057762DE
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 16:46:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233370AbjHIOnw (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 10:43:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44306 "EHLO
+        id S233635AbjHIOqV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 10:46:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56524 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229726AbjHIOnw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 10:43:52 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A49F11FCC
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 07:43:51 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4438263C84
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 14:43:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CF1AC433C7;
-        Wed,  9 Aug 2023 14:43:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1691592230;
-        bh=SPWJfTnbAyDY9DXjwsNoO3N5YSghdMJD2KAlo08kyuU=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=N8HUqP58IW1+TxwGGSuVD0eKX0BcuC021V9vGaxKCq62YYnplPFJJFJT4GkCm+1R3
-         tHiq5Xe4V6uQ+AQMBhOUHJwyJHZLSZu8aMY1/YXWmlPGPhea27sO9+UeF6FTnZ1ZjE
-         aXj+Z8VowJtHdyaFuqYQ8Z5L054I3F+ApjUA9NCOurM2hV6ffTM2DZwBKjyLbyCF0l
-         gLAg3wEXRVwKaABDaWtQtewA3P/HPl/dEG17ATWWTGnNMlxyEknFhFox69ECZm0jR2
-         ZjHVvBqGfPwhQUoZW+fT0dfZhE3LtWpr1nf1PQgJAfDdlqueOvS+/Zw37UKCbuzAfj
-         OVC97Cde4FGBw==
-Date:   Wed, 9 Aug 2023 10:43:49 -0400
-From:   Sasha Levin <sashal@kernel.org>
-To:     Naresh Kamboju <naresh.kamboju@linaro.org>, bp@alien8.de
-Cc:     linux-stable <stable@vger.kernel.org>,
-        clang-built-linux <llvm@lists.linux.dev>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Anders Roxell <anders.roxell@linaro.org>,
-        Arnd Bergmann <arnd@arndb.de>
-Subject: Re: ld.lld: error: ./arch/x86/kernel/vmlinux.lds:191: at least one
- side of the expression must be absolute
-Message-ID: <ZNOmJc5WYk9vUE85@sashalap>
-References: <CA+G9fYsdUeNu-gwbs0+T6XHi4hYYk=Y9725-wFhZ7gJMspLDRA@mail.gmail.com>
- <CA+G9fYvDa-u22+gXt7VRWcQkCJFHvt2FPnjFmbwLX0bY__QrLg@mail.gmail.com>
+        with ESMTP id S233427AbjHIOqU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 10:46:20 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 00CBE2110;
+        Wed,  9 Aug 2023 07:46:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1691592378; x=1723128378;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=nat6JIpKlbNyaE2SmtvG1qRCszoGjlyVBGDav8zdJFs=;
+  b=BBovHaA8b6u5OGs6B2AXPziLc9QFSB8FJ/iiT9pvhDj7h/gul2Ci2eHg
+   UMAlYjAdULgGJJA4hblimEThnXofy/6hzGv0HL0iOQjTkXjHwd5FKm+14
+   SuYQCSWLuACCVwNXnj+Rm2FbloTXiXq537Qtr4HX2vqX3M3iyyjzObAF5
+   ZW4v4rbY1yCTsOarUzMv0FKH5LR3fnVXjc5hmZnwGYppDUcSPw9cLpWxJ
+   xZBsJOCBtdRJXGZpA8klIvEoTqSxHX9rHc8a+fn10cPiSW15pxpEuCQ0O
+   vh4mN04lnclRWPI664VooVKAMGewMaFUynudz7dHNfMWVKnVlGRtQcLy7
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10797"; a="371127925"
+X-IronPort-AV: E=Sophos;i="6.01,159,1684825200"; 
+   d="scan'208";a="371127925"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Aug 2023 07:46:17 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10797"; a="905676169"
+X-IronPort-AV: E=Sophos;i="6.01,159,1684825200"; 
+   d="scan'208";a="905676169"
+Received: from jmhendri-mobl.ger.corp.intel.com (HELO box.shutemov.name) ([10.252.40.58])
+  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Aug 2023 07:46:11 -0700
+Received: by box.shutemov.name (Postfix, from userid 1000)
+        id 8E85310A257; Wed,  9 Aug 2023 17:46:07 +0300 (+03)
+From:   "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+To:     Linus Torvalds <torvalds@linux-foundation.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Dave Hansen <dave.hansen@linux.intel.com>
+Cc:     Kostya Serebryany <kcc@google.com>,
+        Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+        Andrey Konovalov <andreyknvl@gmail.com>,
+        Alexander Potapenko <glider@google.com>,
+        Taras Madan <tarasmadan@google.com>,
+        Dmitry Vyukov <dvyukov@google.com>,
+        Rick Edgecombe <rick.p.edgecombe@intel.com>,
+        linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+        Christina Schimpe <christina.schimpe@intel.com>,
+        stable@vger.kernel.org
+Subject: [PATCH] mm: Fix access_remote_vm() regression on tagged addresses
+Date:   Wed,  9 Aug 2023 17:46:00 +0300
+Message-ID: <20230809144600.13721-1-kirill.shutemov@linux.intel.com>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <CA+G9fYvDa-u22+gXt7VRWcQkCJFHvt2FPnjFmbwLX0bY__QrLg@mail.gmail.com>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, Aug 09, 2023 at 11:54:59AM +0530, Naresh Kamboju wrote:
->also noticed on stable-rc 5.15 and 5.10.
->
->On Wed, 9 Aug 2023 at 11:40, Naresh Kamboju <naresh.kamboju@linaro.org> wrote:
->>
->> While building Linux stable rc 6.1 x86_64 with clang-17 failed due to
->> following warnings / errors.
->>
->> make --silent --keep-going --jobs=8
->> O=/home/tuxbuild/.cache/tuxmake/builds/2/build ARCH=x86_64 SRCARCH=x86
->> CROSS_COMPILE=x86_64-linux-gnu- 'HOSTCC=sccache clang' 'CC=sccache
->> clang' LLVM=1 LLVM_IAS=1
->>
->> arch/x86/lib/retpoline.o: warning: objtool: .altinstr_replacement:
->> unexpected end of section
->> ld.lld: error: ./arch/x86/kernel/vmlinux.lds:191: at least one side of
->> the expression must be absolute
->> ld.lld: error: ./arch/x86/kernel/vmlinux.lds:192: at least one side of
->> the expression must be absolute
->> ld.lld: error: ./arch/x86/kernel/vmlinux.lds:191: at least one side of
->> the expression must be absolute
->> ld.lld: error: ./arch/x86/kernel/vmlinux.lds:192: at least one side of
->> the expression must be absolute
->> ld.lld: error: ./arch/x86/kernel/vmlinux.lds:191: at least one side of
->> the expression must be absolute
->> ld.lld: error: ./arch/x86/kernel/vmlinux.lds:192: at least one side of
->> the expression must be absolute
->> make[2]: *** [scripts/Makefile.vmlinux:34: vmlinux] Error 1
->> make[2]: Target '__default' not remade because of errors.
->> make[1]: *** [Makefile:1255: vmlinux] Error 2
->>
->>
->> Build links,
->>  - https://storage.tuxsuite.com/public/linaro/lkft/builds/2TiTUgExGs7SrTm9Lb4fakgeTfw/
->>  - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.1.y/build/v6.1.44-117-g74848b090997/testrun/18917095/suite/build/test/clang-lkftconfig/details/
->>  - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.1.y/build/v6.1.44-117-g74848b090997/testrun/18917095/suite/build/test/clang-lkftconfig/history/
->>
->> Steps to reproduce:
->>   tuxmake --runtime podman --target-arch x86_64 --toolchain clang-17
->> --kconfig https://storage.tuxsuite.com/public/linaro/lkft/builds/2TiTUgExGs7SrTm9Lb4fakgeTfw/config
->> LLVM=1 LLVM_IAS=1
->>   https://storage.tuxsuite.com/public/linaro/lkft/builds/2TiTUgExGs7SrTm9Lb4fakgeTfw/tuxmake_reproducer.sh
+GDB uses /proc/PID/mem to access memory of the target process. GDB
+doesn't untag addresses manually, but relies on kernel to do the right
+thing.
 
-Same here... Bisected to ac41e90d8daa ("x86/srso: Add a Speculative RAS
-Overflow mitigation"), so adding in Borislav.
+mem_rw() of procfs uses access_remote_vm() to get data from the target
+process. It worked fine until recent changes in __access_remote_vm()
+that now checks if there's VMA at target address using raw address.
 
+Untag the address before looking up the VMA.
+
+Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Reported-by: Christina Schimpe <christina.schimpe@intel.com>
+Fixes: eee9c708cc89 ("gup: avoid stack expansion warning for known-good case")
+Cc: stable@vger.kernel.org
+---
+ mm/memory.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/mm/memory.c b/mm/memory.c
+index 01f39e8144ef..3be9db30db32 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -5701,6 +5701,9 @@ int __access_remote_vm(struct mm_struct *mm, unsigned long addr, void *buf,
+ 	if (mmap_read_lock_killable(mm))
+ 		return 0;
+ 
++	/* Untag the address before looking up the VMA */
++	addr = untagged_addr_remote(mm, addr);
++
+ 	/* Avoid triggering the temporary warning in __get_user_pages */
+ 	if (!vma_lookup(mm, addr) && !expand_stack(mm, addr))
+ 		return 0;
 -- 
-Thanks,
-Sasha
+2.41.0
+
