@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 581E3775B7F
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:18:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 33FB9775773
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:46:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233448AbjHILSG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:18:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54868 "EHLO
+        id S231924AbjHIKqK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 06:46:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48476 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233451AbjHILSG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:18:06 -0400
+        with ESMTP id S231905AbjHIKqJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:46:09 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D073B10DC
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:18:05 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E3C741702
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:46:08 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 67E4C63184
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:18:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78604C433C8;
-        Wed,  9 Aug 2023 11:18:04 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7CCE663120
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:46:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DF61C433C8;
+        Wed,  9 Aug 2023 10:46:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691579884;
-        bh=8peJxeWXg3ise84rCSOvjtbWDfugtX1cIYe8Dx3dzW8=;
+        s=korg; t=1691577967;
+        bh=d1RADx/qy5Gv1xwMCMtyXAmCfWWh6+7awRnJ1EIMPTc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ZzfBtvKma1fLDXjuOlz2S7v6t4nH4gv0Or1I++kBDDXDo/zX76VBw+IGAcsIzc1+S
-         WNeReMpxSYZbK1t4Nx95i6G3JJ20W5trRQ0lUMe9HyAlZxA80jfpJbydOf7da99+Qj
-         1egDVyZNYvbcBXkqCIb6Z1/dsXlWzrUMgQedpSec=
+        b=KwHjHU3HOwtaYnB7OIlh5UfWtj9NgCoUQADqq7oDBq6FcuySqM/BNDEvjFVHXrZby
+         fOIgILi4mCGZhtwmwyoCB4xn0imqsc/sZH8XI0nTA6k8EqCliHobVTvxTRa5VG6GIi
+         n4n4jgMEAq3vWw0lswYckmWKY1s8EvuW1xe/M6Hw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        Linus Walleij <linus.walleij@linaro.org>
-Subject: [PATCH 4.19 151/323] pinctrl: amd: Detect internal GPIO0 debounce handling
+        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
+        Willem de Bruijn <willemb@google.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 058/165] net: add missing data-race annotations around sk->sk_peek_off
 Date:   Wed,  9 Aug 2023 12:39:49 +0200
-Message-ID: <20230809103705.072096408@linuxfoundation.org>
+Message-ID: <20230809103644.718803368@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
-References: <20230809103658.104386911@linuxfoundation.org>
+In-Reply-To: <20230809103642.720851262@linuxfoundation.org>
+References: <20230809103642.720851262@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,77 +56,63 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 968ab9261627fa305307e3935ca1a32fcddd36cb upstream.
+[ Upstream commit 11695c6e966b0ec7ed1d16777d294cef865a5c91 ]
 
-commit 4e5a04be88fe ("pinctrl: amd: disable and mask interrupts on probe")
-had a mistake in loop iteration 63 that it would clear offset 0xFC instead
-of 0x100.  Offset 0xFC is actually `WAKE_INT_MASTER_REG`.  This was
-clearing bits 13 and 15 from the register which significantly changed the
-expected handling for some platforms for GPIO0.
+sk_getsockopt() runs locklessly, thus we need to annotate the read
+of sk->sk_peek_off.
 
-commit b26cd9325be4 ("pinctrl: amd: Disable and mask interrupts on resume")
-actually fixed this bug, but lead to regressions on Lenovo Z13 and some
-other systems.  This is because there was no handling in the driver for bit
-15 debounce behavior.
+While we are at it, add corresponding annotations to sk_set_peek_off()
+and unix_set_peek_off().
 
-Quoting a public BKDG:
-```
-EnWinBlueBtn. Read-write. Reset: 0. 0=GPIO0 detect debounced power button;
-Power button override is 4 seconds. 1=GPIO0 detect debounced power button
-in S3/S5/S0i3, and detect "pressed less than 2 seconds" and "pressed 2~10
-seconds" in S0; Power button override is 10 seconds
-```
-
-Cross referencing the same master register in Windows it's obvious that
-Windows doesn't use debounce values in this configuration.  So align the
-Linux driver to do this as well.  This fixes wake on lid when
-WAKE_INT_MASTER_REG is properly programmed.
-
-Cc: stable@vger.kernel.org
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=217315
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Link: https://lore.kernel.org/r/20230421120625.3366-2-mario.limonciello@amd.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: b9bb53f3836f ("sock: convert sk_peek_offset functions to WRITE_ONCE")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Willem de Bruijn <willemb@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/pinctrl-amd.c |    7 +++++++
- drivers/pinctrl/pinctrl-amd.h |    1 +
- 2 files changed, 8 insertions(+)
+ net/core/sock.c    | 4 ++--
+ net/unix/af_unix.c | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/pinctrl/pinctrl-amd.c
-+++ b/drivers/pinctrl/pinctrl-amd.c
-@@ -127,6 +127,12 @@ static int amd_gpio_set_debounce(struct
- 	struct amd_gpio *gpio_dev = gpiochip_get_data(gc);
+diff --git a/net/core/sock.c b/net/core/sock.c
+index 9298dffbe46b8..f9fc2a0130a9f 100644
+--- a/net/core/sock.c
++++ b/net/core/sock.c
+@@ -1818,7 +1818,7 @@ int sk_getsockopt(struct sock *sk, int level, int optname,
+ 		if (!sock->ops->set_peek_off)
+ 			return -EOPNOTSUPP;
  
- 	raw_spin_lock_irqsave(&gpio_dev->lock, flags);
-+
-+	/* Use special handling for Pin0 debounce */
-+	pin_reg = readl(gpio_dev->base + WAKE_INT_MASTER_REG);
-+	if (pin_reg & INTERNAL_GPIO0_DEBOUNCE)
-+		debounce = 0;
-+
- 	pin_reg = readl(gpio_dev->base + offset * 4);
+-		v.val = sk->sk_peek_off;
++		v.val = READ_ONCE(sk->sk_peek_off);
+ 		break;
+ 	case SO_NOFCS:
+ 		v.val = sock_flag(sk, SOCK_NOFCS);
+@@ -3127,7 +3127,7 @@ EXPORT_SYMBOL(__sk_mem_reclaim);
  
- 	if (debounce) {
-@@ -216,6 +222,7 @@ static void amd_gpio_dbg_show(struct seq
- 	char *output_value;
- 	char *output_enable;
+ int sk_set_peek_off(struct sock *sk, int val)
+ {
+-	sk->sk_peek_off = val;
++	WRITE_ONCE(sk->sk_peek_off, val);
+ 	return 0;
+ }
+ EXPORT_SYMBOL_GPL(sk_set_peek_off);
+diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
+index e7728b57a8c70..10615878e3961 100644
+--- a/net/unix/af_unix.c
++++ b/net/unix/af_unix.c
+@@ -780,7 +780,7 @@ static int unix_set_peek_off(struct sock *sk, int val)
+ 	if (mutex_lock_interruptible(&u->iolock))
+ 		return -EINTR;
  
-+	seq_printf(s, "WAKE_INT_MASTER_REG: 0x%08x\n", readl(gpio_dev->base + WAKE_INT_MASTER_REG));
- 	for (bank = 0; bank < gpio_dev->hwbank_num; bank++) {
- 		seq_printf(s, "GPIO bank%d\t", bank);
+-	sk->sk_peek_off = val;
++	WRITE_ONCE(sk->sk_peek_off, val);
+ 	mutex_unlock(&u->iolock);
  
---- a/drivers/pinctrl/pinctrl-amd.h
-+++ b/drivers/pinctrl/pinctrl-amd.h
-@@ -21,6 +21,7 @@
- #define AMD_GPIO_PINS_BANK3     32
- 
- #define WAKE_INT_MASTER_REG 0xfc
-+#define INTERNAL_GPIO0_DEBOUNCE (1 << 15)
- #define EOI_MASK (1 << 29)
- 
- #define WAKE_INT_STATUS_REG0 0x2f8
+ 	return 0;
+-- 
+2.40.1
+
 
 
