@@ -2,161 +2,97 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8FFE5775D3E
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:35:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2B1097757A5
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:48:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234050AbjHILfR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:35:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34934 "EHLO
+        id S232248AbjHIKsa (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 06:48:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33780 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234046AbjHILfQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:35:16 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B7B2210C
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:35:13 -0700 (PDT)
+        with ESMTP id S232246AbjHIKs3 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:48:29 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 277D110FF
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:48:29 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C168E634DE
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:35:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2F52C433C8;
-        Wed,  9 Aug 2023 11:35:11 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BBEDA630D2
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:48:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0217C433C8;
+        Wed,  9 Aug 2023 10:48:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691580912;
-        bh=Thg+zncokL3pE3ftedusitXN7t7V4BYpC5VTPvyJUFE=;
+        s=korg; t=1691578108;
+        bh=8PotWt2WRbU2C8ZpTP2s4gYfkiZfIyyFJ1H8NqhZja8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=0eCa4ZBLTxRKMMRpfE+91JM098Oli8/aYU5BkkOApltGUZ2JQzUuYEVGyKYZkKB4I
-         Q0EZHgJ4/mo4Ehf5d1c7IKK3k0i+CyV+WD8Dm8sOWuuobEutiqoW366TCGzaJMByq4
-         09wECumfJrTh/dawkyXsBIsZ9jb9PInbb0qyvBGs=
+        b=hLkRFkEjbLqYnsKLChv25ksJsAZELW5mWZvFedArHiKONSFqwc1z5ZRceNN30PDd1
+         zGa4IqVKHo9syNSqAI/pxdoIgCGjWInO3GCF91ZevbQyv45cdoyHjDuhcR1Y2xiknQ
+         VElMpSBQMomozmvgVV6yvTb6w0CBkhKt/aedIU0Y=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Michal Schmidt <mschmidt@redhat.com>,
-        Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-        Jedrzej Jagielski <jedrzej.jagielski@intel.com>,
-        Leon Romanovsky <leonro@nvidia.com>,
-        Tony Nguyen <anthony.l.nguyen@intel.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Sasha Levin <sashal@kernel.org>,
-        Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
-Subject: [PATCH 5.10 038/201] ice: Fix memory management in ice_ethtool_fdir.c
+        patches@lists.linux.dev, Stable@vger.kernel.org,
+        Arseniy Krasnov <AVKrasnov@sberdevices.ru>,
+        Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH 6.4 109/165] mtd: rawnand: meson: fix OOB available bytes for ECC
 Date:   Wed,  9 Aug 2023 12:40:40 +0200
-Message-ID: <20230809103645.130341380@linuxfoundation.org>
+Message-ID: <20230809103646.353120265@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103643.799166053@linuxfoundation.org>
-References: <20230809103643.799166053@linuxfoundation.org>
+In-Reply-To: <20230809103642.720851262@linuxfoundation.org>
+References: <20230809103642.720851262@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
+From: Arseniy Krasnov <AVKrasnov@sberdevices.ru>
 
-[ Upstream commit a3336056504d780590ac6d6ac94fbba829994594 ]
+commit 7e6b04f9238eab0f684fafd158c1f32ea65b9eaa upstream.
 
-Fix ethtool FDIR logic to not use memory after its release.
-In the ice_ethtool_fdir.c file there are 2 spots where code can
-refer to pointers which may be missing.
+It is incorrect to calculate number of OOB bytes for ECC engine using
+some "already known" ECC step size (1024 bytes here). Number of such
+bytes for ECC engine must be whole OOB except 2 bytes for bad block
+marker, while proper ECC step size and strength will be selected by
+ECC logic.
 
-In the ice_cfg_fdir_xtrct_seq() function seg may be freed but
-even then may be still used by memcpy(&tun_seg[1], seg, sizeof(*seg)).
-
-In the ice_add_fdir_ethtool() function struct ice_fdir_fltr *input
-may first fail to be added via ice_fdir_update_list_entry() but then
-may be deleted by ice_fdir_update_list_entry.
-
-Terminate in both cases when the returned value of the previous
-operation is other than 0, free memory and don't use it anymore.
-
-Reported-by: Michal Schmidt <mschmidt@redhat.com>
-Link: https://bugzilla.redhat.com/show_bug.cgi?id=2208423
-Fixes: cac2a27cd9ab ("ice: Support IPv4 Flow Director filters")
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Signed-off-by: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
-Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
-Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Link: https://lore.kernel.org/r/20230721155854.1292805-1-anthony.l.nguyen@intel.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 8fae856c5350 ("mtd: rawnand: meson: add support for Amlogic NAND flash controller")
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Arseniy Krasnov <AVKrasnov@sberdevices.ru>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://lore.kernel.org/linux-mtd/20230705065211.293500-1-AVKrasnov@sberdevices.ru
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../net/ethernet/intel/ice/ice_ethtool_fdir.c | 26 ++++++++++---------
- 1 file changed, 14 insertions(+), 12 deletions(-)
+ drivers/mtd/nand/raw/meson_nand.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_ethtool_fdir.c b/drivers/net/ethernet/intel/ice/ice_ethtool_fdir.c
-index 192729546bbfc..a122a267ede53 100644
---- a/drivers/net/ethernet/intel/ice/ice_ethtool_fdir.c
-+++ b/drivers/net/ethernet/intel/ice/ice_ethtool_fdir.c
-@@ -1135,16 +1135,21 @@ ice_cfg_fdir_xtrct_seq(struct ice_pf *pf, struct ethtool_rx_flow_spec *fsp,
- 				     ICE_FLOW_FLD_OFF_INVAL);
- 	}
+--- a/drivers/mtd/nand/raw/meson_nand.c
++++ b/drivers/mtd/nand/raw/meson_nand.c
+@@ -1184,7 +1184,6 @@ static int meson_nand_attach_chip(struct
+ 	struct meson_nfc *nfc = nand_get_controller_data(nand);
+ 	struct meson_nfc_nand_chip *meson_chip = to_meson_nand(nand);
+ 	struct mtd_info *mtd = nand_to_mtd(nand);
+-	int nsectors = mtd->writesize / 1024;
+ 	int ret;
  
--	/* add filter for outer headers */
- 	fltr_idx = ice_ethtool_flow_to_fltr(fsp->flow_type & ~FLOW_EXT);
-+
-+	assign_bit(fltr_idx, hw->fdir_perfect_fltr, perfect_filter);
-+
-+	/* add filter for outer headers */
- 	ret = ice_fdir_set_hw_fltr_rule(pf, seg, fltr_idx,
- 					ICE_FD_HW_SEG_NON_TUN);
--	if (ret == -EEXIST)
--		/* Rule already exists, free memory and continue */
--		devm_kfree(dev, seg);
--	else if (ret)
-+	if (ret == -EEXIST) {
-+		/* Rule already exists, free memory and count as success */
-+		ret = 0;
-+		goto err_exit;
-+	} else if (ret) {
- 		/* could not write filter, free memory */
- 		goto err_exit;
-+	}
+ 	if (!mtd->name) {
+@@ -1202,7 +1201,7 @@ static int meson_nand_attach_chip(struct
+ 	nand->options |= NAND_NO_SUBPAGE_WRITE;
  
- 	/* make tunneled filter HW entries if possible */
- 	memcpy(&tun_seg[1], seg, sizeof(*seg));
-@@ -1159,18 +1164,13 @@ ice_cfg_fdir_xtrct_seq(struct ice_pf *pf, struct ethtool_rx_flow_spec *fsp,
- 		devm_kfree(dev, tun_seg);
- 	}
- 
--	if (perfect_filter)
--		set_bit(fltr_idx, hw->fdir_perfect_fltr);
--	else
--		clear_bit(fltr_idx, hw->fdir_perfect_fltr);
--
- 	return ret;
- 
- err_exit:
- 	devm_kfree(dev, tun_seg);
- 	devm_kfree(dev, seg);
- 
--	return -EOPNOTSUPP;
-+	return ret;
- }
- 
- /**
-@@ -1680,7 +1680,9 @@ int ice_add_fdir_ethtool(struct ice_vsi *vsi, struct ethtool_rxnfc *cmd)
- 	}
- 
- 	/* input struct is added to the HW filter list */
--	ice_fdir_update_list_entry(pf, input, fsp->location);
-+	ret = ice_fdir_update_list_entry(pf, input, fsp->location);
-+	if (ret)
-+		goto release_lock;
- 
- 	ret = ice_fdir_write_all_fltr(pf, input, true);
- 	if (ret)
--- 
-2.39.2
-
+ 	ret = nand_ecc_choose_conf(nand, nfc->data->ecc_caps,
+-				   mtd->oobsize - 2 * nsectors);
++				   mtd->oobsize - 2);
+ 	if (ret) {
+ 		dev_err(nfc->dev, "failed to ECC init\n");
+ 		return -EINVAL;
 
 
