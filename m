@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A99B3775998
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:01:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 64A16775CB9
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:30:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232897AbjHILBw (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:01:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52640 "EHLO
+        id S233776AbjHILaR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:30:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40662 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232910AbjHILBw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:01:52 -0400
+        with ESMTP id S233853AbjHILaQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:30:16 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A7E771FD8
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:01:51 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 248AE172A
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:30:15 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3E0F562496
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:01:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EC7BC433C8;
-        Wed,  9 Aug 2023 11:01:50 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B85BC63352
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:30:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4D3DC433C8;
+        Wed,  9 Aug 2023 11:30:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691578910;
-        bh=2iAsaos6gO1TU9oQ+5tDb/5/eJ9vc+eMLDMfEVZC2bk=;
+        s=korg; t=1691580614;
+        bh=7dIaTM1vK0cKND6HYq8Dg2UE9W2bDrS4TCkSDhqrGMo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=wGu0b3gkRXCXOwYCICsGW+Euxs3qvX8+4uM2YEYEMfr6d472yBt9KQ/XztlI5M1R0
-         Qha/e/EhgIni6koIhy92Ed8EQv2d7O883LEl1niISodbUtnArifbOTtelSs4PE9SDx
-         angu1lDKwXcL3EIvSKx/zwMbtthYakbP7nZorqvI=
+        b=t5mTn/pyB50QdDu/av2G/uyHiqgokjEOGb+mVgpebat2r+J8gL65S2xJhTMdvcjdq
+         JhBsqP1rnZDiR5wORptTvHB+rvL1m5TcfhqZZGl54HoN2sFeh/iTTp1c0M4XejnkIQ
+         fAuQA+kNzS+iaO5LiWmH68OIOjWtORH7de/WJUzE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Johan Jonker <jbx6244@gmail.com>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 82/92] mtd: rawnand: rockchip: Align hwecc vs. raw page helper layouts
-Date:   Wed,  9 Aug 2023 12:41:58 +0200
-Message-ID: <20230809103636.377670523@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        Mark Brown <broonie@kernel.org>
+Subject: [PATCH 5.4 088/154] ASoC: cs42l51: fix driver to properly autoload with automatic module loading
+Date:   Wed,  9 Aug 2023 12:41:59 +0200
+Message-ID: <20230809103639.899339019@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103633.485906560@linuxfoundation.org>
-References: <20230809103633.485906560@linuxfoundation.org>
+In-Reply-To: <20230809103636.887175326@linuxfoundation.org>
+References: <20230809103636.887175326@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,114 +55,86 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Johan Jonker <jbx6244@gmail.com>
+From: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
 
-[ Upstream commit ea690ad78dd611e3906df5b948a516000b05c1cb ]
+commit e51df4f81b02bcdd828a04de7c1eb6a92988b61e upstream.
 
-Currently, read/write_page_hwecc() and read/write_page_raw() are not
-aligned: there is a mismatch in the OOB bytes which are not
-read/written at the same offset in both cases (raw vs. hwecc).
+In commit 2cb1e0259f50 ("ASoC: cs42l51: re-hook of_match_table
+pointer"), 9 years ago, some random guy fixed the cs42l51 after it was
+split into a core part and an I2C part to properly match based on a
+Device Tree compatible string.
 
-This is a real problem when relying on the presence of the Page
-Addresses (PA) when using the NAND chip as a boot device, as the
-BootROM expects additional data in the OOB area at specific locations.
+However, the fix in this commit is wrong: the MODULE_DEVICE_TABLE(of,
+....) is in the core part of the driver, not the I2C part. Therefore,
+automatic module loading based on module.alias, based on matching with
+the DT compatible string, loads the core part of the driver, but not
+the I2C part. And threfore, the i2c_driver is not registered, and the
+codec is not known to the system, nor matched with a DT node with the
+corresponding compatible string.
 
-Rockchip boot blocks are written per 4 x 512 byte sectors per page.
-Each page with boot blocks must have a page address (PA) pointer in OOB
-to the next page. Pages are written in a pattern depending on the NAND chip ID.
+In order to fix that, we move the MODULE_DEVICE_TABLE(of, ...) into
+the I2C part of the driver. The cs42l51_of_match[] array is also moved
+as well, as it is not possible to have this definition in one file,
+and the MODULE_DEVICE_TABLE(of, ...) invocation in another file, due
+to how MODULE_DEVICE_TABLE works.
 
-Generate boot block page address and pattern for hwecc in user space
-and copy PA data to/from the already reserved last 4 bytes before ECC
-in the chip->oob_poi data layout.
+Thanks to this commit, the I2C part of the driver now properly
+autoloads, and thanks to its dependency on the core part, the core
+part gets autoloaded as well, resulting in a functional sound card
+without having to manually load kernel modules.
 
-Align the different helpers. This change breaks existing jffs2 users.
-
-Fixes: 058e0e847d54 ("mtd: rawnand: rockchip: NFC driver for RK3308, RK2928 and others")
-Signed-off-by: Johan Jonker <jbx6244@gmail.com>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://lore.kernel.org/linux-mtd/5e782c08-862b-51ae-47ff-3299940928ca@gmail.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 2cb1e0259f50 ("ASoC: cs42l51: re-hook of_match_table pointer")
+Cc: stable@vger.kernel.org
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Link: https://lore.kernel.org/r/20230713112112.778576-1-thomas.petazzoni@bootlin.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../mtd/nand/raw/rockchip-nand-controller.c   | 34 ++++++++++++-------
- 1 file changed, 21 insertions(+), 13 deletions(-)
+ sound/soc/codecs/cs42l51-i2c.c |    6 ++++++
+ sound/soc/codecs/cs42l51.c     |    7 -------
+ sound/soc/codecs/cs42l51.h     |    1 -
+ 3 files changed, 6 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/mtd/nand/raw/rockchip-nand-controller.c b/drivers/mtd/nand/raw/rockchip-nand-controller.c
-index 45cdc6ca210ca..99242bd684375 100644
---- a/drivers/mtd/nand/raw/rockchip-nand-controller.c
-+++ b/drivers/mtd/nand/raw/rockchip-nand-controller.c
-@@ -598,7 +598,7 @@ static int rk_nfc_write_page_hwecc(struct nand_chip *chip, const u8 *buf,
- 	int pages_per_blk = mtd->erasesize / mtd->writesize;
- 	int ret = 0, i, boot_rom_mode = 0;
- 	dma_addr_t dma_data, dma_oob;
--	u32 reg;
-+	u32 tmp;
- 	u8 *oob;
+--- a/sound/soc/codecs/cs42l51-i2c.c
++++ b/sound/soc/codecs/cs42l51-i2c.c
+@@ -19,6 +19,12 @@ static struct i2c_device_id cs42l51_i2c_
+ };
+ MODULE_DEVICE_TABLE(i2c, cs42l51_i2c_id);
  
- 	nand_prog_page_begin_op(chip, page, 0, NULL, 0);
-@@ -625,6 +625,13 @@ static int rk_nfc_write_page_hwecc(struct nand_chip *chip, const u8 *buf,
- 	 *
- 	 *   0xFF 0xFF 0xFF 0xFF | BBM OOB1 OOB2 OOB3 | ...
- 	 *
-+	 * The code here just swaps the first 4 bytes with the last
-+	 * 4 bytes without losing any data.
-+	 *
-+	 * The chip->oob_poi data layout:
-+	 *
-+	 *    BBM  OOB1 OOB2 OOB3 |......|  PA0  PA1  PA2  PA3
-+	 *
- 	 * Configure the ECC algorithm supported by the boot ROM.
- 	 */
- 	if ((page < (pages_per_blk * rknand->boot_blks)) &&
-@@ -635,21 +642,17 @@ static int rk_nfc_write_page_hwecc(struct nand_chip *chip, const u8 *buf,
- 	}
- 
- 	for (i = 0; i < ecc->steps; i++) {
--		if (!i) {
--			reg = 0xFFFFFFFF;
--		} else {
-+		if (!i)
-+			oob = chip->oob_poi + (ecc->steps - 1) * NFC_SYS_DATA_SIZE;
-+		else
- 			oob = chip->oob_poi + (i - 1) * NFC_SYS_DATA_SIZE;
--			reg = oob[0] | oob[1] << 8 | oob[2] << 16 |
--			      oob[3] << 24;
--		}
- 
--		if (!i && boot_rom_mode)
--			reg = (page & (pages_per_blk - 1)) * 4;
-+		tmp = oob[0] | oob[1] << 8 | oob[2] << 16 | oob[3] << 24;
- 
- 		if (nfc->cfg->type == NFC_V9)
--			nfc->oob_buf[i] = reg;
-+			nfc->oob_buf[i] = tmp;
- 		else
--			nfc->oob_buf[i * (oob_step / 4)] = reg;
-+			nfc->oob_buf[i * (oob_step / 4)] = tmp;
- 	}
- 
- 	dma_data = dma_map_single(nfc->dev, (void *)nfc->page_buf,
-@@ -812,12 +815,17 @@ static int rk_nfc_read_page_hwecc(struct nand_chip *chip, u8 *buf, int oob_on,
- 		goto timeout_err;
- 	}
- 
--	for (i = 1; i < ecc->steps; i++) {
--		oob = chip->oob_poi + (i - 1) * NFC_SYS_DATA_SIZE;
-+	for (i = 0; i < ecc->steps; i++) {
-+		if (!i)
-+			oob = chip->oob_poi + (ecc->steps - 1) * NFC_SYS_DATA_SIZE;
-+		else
-+			oob = chip->oob_poi + (i - 1) * NFC_SYS_DATA_SIZE;
++const struct of_device_id cs42l51_of_match[] = {
++	{ .compatible = "cirrus,cs42l51", },
++	{ }
++};
++MODULE_DEVICE_TABLE(of, cs42l51_of_match);
 +
- 		if (nfc->cfg->type == NFC_V9)
- 			tmp = nfc->oob_buf[i];
- 		else
- 			tmp = nfc->oob_buf[i * (oob_step / 4)];
-+
- 		*oob++ = (u8)tmp;
- 		*oob++ = (u8)(tmp >> 8);
- 		*oob++ = (u8)(tmp >> 16);
--- 
-2.40.1
-
+ static int cs42l51_i2c_probe(struct i2c_client *i2c,
+ 			     const struct i2c_device_id *id)
+ {
+--- a/sound/soc/codecs/cs42l51.c
++++ b/sound/soc/codecs/cs42l51.c
+@@ -811,13 +811,6 @@ int __maybe_unused cs42l51_resume(struct
+ }
+ EXPORT_SYMBOL_GPL(cs42l51_resume);
+ 
+-const struct of_device_id cs42l51_of_match[] = {
+-	{ .compatible = "cirrus,cs42l51", },
+-	{ }
+-};
+-MODULE_DEVICE_TABLE(of, cs42l51_of_match);
+-EXPORT_SYMBOL_GPL(cs42l51_of_match);
+-
+ MODULE_AUTHOR("Arnaud Patard <arnaud.patard@rtp-net.org>");
+ MODULE_DESCRIPTION("Cirrus Logic CS42L51 ALSA SoC Codec Driver");
+ MODULE_LICENSE("GPL");
+--- a/sound/soc/codecs/cs42l51.h
++++ b/sound/soc/codecs/cs42l51.h
+@@ -16,7 +16,6 @@ int cs42l51_probe(struct device *dev, st
+ int cs42l51_remove(struct device *dev);
+ int __maybe_unused cs42l51_suspend(struct device *dev);
+ int __maybe_unused cs42l51_resume(struct device *dev);
+-extern const struct of_device_id cs42l51_of_match[];
+ 
+ #define CS42L51_CHIP_ID			0x1B
+ #define CS42L51_CHIP_REV_A		0x00
 
 
