@@ -2,117 +2,183 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 59F9E775C06
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:23:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0BD6D775960
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:00:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233624AbjHILXL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:23:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59274 "EHLO
+        id S232840AbjHILAB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:00:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32846 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233605AbjHILXK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:23:10 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B996FA
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:23:10 -0700 (PDT)
+        with ESMTP id S232846AbjHIK77 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:59:59 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B25082107
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:59:58 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1305963228
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:23:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2693AC433C7;
-        Wed,  9 Aug 2023 11:23:08 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 52DC66312F
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:59:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6147CC433C7;
+        Wed,  9 Aug 2023 10:59:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691580189;
-        bh=y2X+6Ws0RSAnwqIEIVnYHSMjoQ/u0fwlQxWXNh1VjCc=;
+        s=korg; t=1691578797;
+        bh=8C+hyQoZWiWot1x9Sn6RDYUxgkJeOYwFxoyRMAmzKMY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=dOh9cCXtGKaz/bZWYRNLqRdAdRL8VeT3FeVE6mYdCMmkKFHFfLVybjKdwQfSqb+Mj
-         /JMdBO7URQ+ufnJ8pYwvW4SuS9IcMwivEgErJpVhAgLEDOfYIu6zOzOXRkgVk/BN5+
-         HWEBdbSKAqhSgpPYL2UOkj268L3HIJziCAAZp8lk=
+        b=Ce3K4X9IbZsxbNKHdGMl1BLlSXoeSQFb9u11IZttaDLY/N3i3+0I1AZsTPOpRFwaA
+         y6Neqt+PvJo5mLEclFkfgktaFl1cy8h9g1NsLWNJv4UskdCu76HaAl9x9Ill9upJFX
+         PuHdJa115QHS5yTtxZIeAG4Xp/u7aJDmLB26qjpA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Mohsen Tahmasebi <moh53n@moh53n.ir>,
-        Mostafa Ghofrani <mostafaghrr@gmail.com>,
-        Johan Hovold <johan@kernel.org>
-Subject: [PATCH 4.19 259/323] USB: serial: option: add Quectel EC200A module support
+        patches@lists.linux.dev,
+        syzbot+1741a5d9b79989c10bdc@syzkaller.appspotmail.com,
+        Sungjong Seo <sj1557.seo@samsung.com>,
+        Namjae Jeon <linkinjeon@kernel.org>
+Subject: [PATCH 5.15 61/92] exfat: release s_lock before calling dir_emit()
 Date:   Wed,  9 Aug 2023 12:41:37 +0200
-Message-ID: <20230809103709.931481264@linuxfoundation.org>
+Message-ID: <20230809103635.703715689@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
-References: <20230809103658.104386911@linuxfoundation.org>
+In-Reply-To: <20230809103633.485906560@linuxfoundation.org>
+References: <20230809103633.485906560@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Mohsen Tahmasebi <moh53n@moh53n.ir>
+From: Sungjong Seo <sj1557.seo@samsung.com>
 
-commit 857ea9005806e2a458016880278f98715873e977 upstream.
+commit ff84772fd45d486e4fc78c82e2f70ce5333543e6 upstream.
 
-Add Quectel EC200A "DIAG, AT, MODEM":
+There is a potential deadlock reported by syzbot as below:
 
-0x6005: ECM / RNDIS + DIAG + AT + MODEM
+======================================================
+WARNING: possible circular locking dependency detected
+6.4.0-next-20230707-syzkaller #0 Not tainted
+------------------------------------------------------
+syz-executor330/5073 is trying to acquire lock:
+ffff8880218527a0 (&mm->mmap_lock){++++}-{3:3}, at: mmap_read_lock_killable include/linux/mmap_lock.h:151 [inline]
+ffff8880218527a0 (&mm->mmap_lock){++++}-{3:3}, at: get_mmap_lock_carefully mm/memory.c:5293 [inline]
+ffff8880218527a0 (&mm->mmap_lock){++++}-{3:3}, at: lock_mm_and_find_vma+0x369/0x510 mm/memory.c:5344
+but task is already holding lock:
+ffff888019f760e0 (&sbi->s_lock){+.+.}-{3:3}, at: exfat_iterate+0x117/0xb50 fs/exfat/dir.c:232
 
-T:  Bus=01 Lev=01 Prnt=02 Port=05 Cnt=01 Dev#=  8 Spd=480  MxCh= 0
-D:  Ver= 2.00 Cls=ef(misc ) Sub=02 Prot=01 MxPS=64 #Cfgs=  1
-P:  Vendor=2c7c ProdID=6005 Rev=03.18
-S:  Manufacturer=Android
-S:  Product=Android
-S:  SerialNumber=0000
-C:  #Ifs= 5 Cfg#= 1 Atr=e0 MxPwr=500mA
-I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=06 Prot=00 Driver=cdc_ether
-E:  Ad=87(I) Atr=03(Int.) MxPS=  64 Ivl=4096ms
-I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=00 Driver=cdc_ether
-E:  Ad=0c(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=0b(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=0f(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=89(I) Atr=03(Int.) MxPS=  64 Ivl=4096ms
-I:  If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=0a(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=88(I) Atr=03(Int.) MxPS=  64 Ivl=4096ms
+which lock already depends on the new lock.
 
-Signed-off-by: Mohsen Tahmasebi <moh53n@moh53n.ir>
-Tested-by: Mostafa Ghofrani <mostafaghrr@gmail.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
+Chain exists of:
+  &mm->mmap_lock --> mapping.invalidate_lock#3 --> &sbi->s_lock
+
+ Possible unsafe locking scenario:
+
+       CPU0                    CPU1
+       ----                    ----
+  lock(&sbi->s_lock);
+                               lock(mapping.invalidate_lock#3);
+                               lock(&sbi->s_lock);
+  rlock(&mm->mmap_lock);
+
+Let's try to avoid above potential deadlock condition by moving dir_emit*()
+out of sbi->s_lock coverage.
+
+Fixes: ca06197382bd ("exfat: add directory operations")
+Cc: stable@vger.kernel.org #v5.7+
+Reported-by: syzbot+1741a5d9b79989c10bdc@syzkaller.appspotmail.com
+Link: https://lore.kernel.org/lkml/00000000000078ee7e060066270b@google.com/T/#u
+Tested-by: syzbot+1741a5d9b79989c10bdc@syzkaller.appspotmail.com
+Signed-off-by: Sungjong Seo <sj1557.seo@samsung.com>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/serial/option.c |    2 ++
- 1 file changed, 2 insertions(+)
+ fs/exfat/dir.c |   27 ++++++++++++---------------
+ 1 file changed, 12 insertions(+), 15 deletions(-)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -269,6 +269,7 @@ static void option_instat_callback(struc
- #define QUECTEL_PRODUCT_RM520N			0x0801
- #define QUECTEL_PRODUCT_EC200U			0x0901
- #define QUECTEL_PRODUCT_EC200S_CN		0x6002
-+#define QUECTEL_PRODUCT_EC200A			0x6005
- #define QUECTEL_PRODUCT_EM061K_LWW		0x6008
- #define QUECTEL_PRODUCT_EM061K_LCN		0x6009
- #define QUECTEL_PRODUCT_EC200T			0x6026
-@@ -1229,6 +1230,7 @@ static const struct usb_device_id option
- 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_RM520N, 0xff, 0, 0) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, 0x0900, 0xff, 0, 0), /* RM500U-CN */
- 	  .driver_info = ZLP },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EC200A, 0xff, 0, 0) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EC200U, 0xff, 0, 0) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EC200S_CN, 0xff, 0, 0) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EC200T, 0xff, 0, 0) },
+--- a/fs/exfat/dir.c
++++ b/fs/exfat/dir.c
+@@ -211,7 +211,10 @@ static void exfat_free_namebuf(struct ex
+ 	exfat_init_namebuf(nb);
+ }
+ 
+-/* skip iterating emit_dots when dir is empty */
++/*
++ * Before calling dir_emit*(), sbi->s_lock should be released
++ * because page fault can occur in dir_emit*().
++ */
+ #define ITER_POS_FILLED_DOTS    (2)
+ static int exfat_iterate(struct file *filp, struct dir_context *ctx)
+ {
+@@ -226,11 +229,10 @@ static int exfat_iterate(struct file *fi
+ 	int err = 0, fake_offset = 0;
+ 
+ 	exfat_init_namebuf(nb);
+-	mutex_lock(&EXFAT_SB(sb)->s_lock);
+ 
+ 	cpos = ctx->pos;
+ 	if (!dir_emit_dots(filp, ctx))
+-		goto unlock;
++		goto out;
+ 
+ 	if (ctx->pos == ITER_POS_FILLED_DOTS) {
+ 		cpos = 0;
+@@ -242,16 +244,18 @@ static int exfat_iterate(struct file *fi
+ 	/* name buffer should be allocated before use */
+ 	err = exfat_alloc_namebuf(nb);
+ 	if (err)
+-		goto unlock;
++		goto out;
+ get_new:
++	mutex_lock(&EXFAT_SB(sb)->s_lock);
++
+ 	if (ei->flags == ALLOC_NO_FAT_CHAIN && cpos >= i_size_read(inode))
+ 		goto end_of_dir;
+ 
+ 	err = exfat_readdir(inode, &cpos, &de);
+ 	if (err) {
+ 		/*
+-		 * At least we tried to read a sector.  Move cpos to next sector
+-		 * position (should be aligned).
++		 * At least we tried to read a sector.
++		 * Move cpos to next sector position (should be aligned).
+ 		 */
+ 		if (err == -EIO) {
+ 			cpos += 1 << (sb->s_blocksize_bits);
+@@ -274,16 +278,10 @@ get_new:
+ 		inum = iunique(sb, EXFAT_ROOT_INO);
+ 	}
+ 
+-	/*
+-	 * Before calling dir_emit(), sb_lock should be released.
+-	 * Because page fault can occur in dir_emit() when the size
+-	 * of buffer given from user is larger than one page size.
+-	 */
+ 	mutex_unlock(&EXFAT_SB(sb)->s_lock);
+ 	if (!dir_emit(ctx, nb->lfn, strlen(nb->lfn), inum,
+ 			(de.attr & ATTR_SUBDIR) ? DT_DIR : DT_REG))
+-		goto out_unlocked;
+-	mutex_lock(&EXFAT_SB(sb)->s_lock);
++		goto out;
+ 	ctx->pos = cpos;
+ 	goto get_new;
+ 
+@@ -291,9 +289,8 @@ end_of_dir:
+ 	if (!cpos && fake_offset)
+ 		cpos = ITER_POS_FILLED_DOTS;
+ 	ctx->pos = cpos;
+-unlock:
+ 	mutex_unlock(&EXFAT_SB(sb)->s_lock);
+-out_unlocked:
++out:
+ 	/*
+ 	 * To improve performance, free namebuf after unlock sb_lock.
+ 	 * If namebuf is not allocated, this function do nothing
 
 
