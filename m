@@ -2,165 +2,160 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 06B08775B5E
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:17:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0CA1477576B
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:45:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229489AbjHILRB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:17:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40630 "EHLO
+        id S231580AbjHIKps (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 06:45:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55032 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233431AbjHILQ6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:16:58 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BBD6210F3;
-        Wed,  9 Aug 2023 04:16:57 -0700 (PDT)
+        with ESMTP id S229996AbjHIKpr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:45:47 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A63C810F3
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:45:46 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 54DC76315F;
-        Wed,  9 Aug 2023 11:16:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68F7AC433C7;
-        Wed,  9 Aug 2023 11:16:56 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4591363118
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:45:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55337C433C8;
+        Wed,  9 Aug 2023 10:45:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691579816;
-        bh=93FdhOffN2IdJjElA1A0bYyEJDti2U92q9FniqWMZ5A=;
+        s=korg; t=1691577945;
+        bh=ivblmI/dG2shNsK7wnarMREE5p73W9rb76OjDb+1kNU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=xnwAdWhWQ9522O2FvLMeeQif1NE9Ycpya1eG6Nph5At0+Uxf6ap83M2ruV+tEpvtj
-         zj4rapT1eRkTYfOe5Y+wx0xP/4hTkXD/AdRAChmP3jkBhga5xhOZasZCs9DpmTCFEf
-         qqo/TCG29pwfmKkKzPU26Yu0J35Mm53Cy9V7ZqaM=
+        b=K9zfLK6tvNLaBj0mOAGsEo3wP97zeyDX+7HBZiSpsASbwpWHChohZJd3XYqcRqJKg
+         WrIJfBKGncee26WUSkReUokye22j/ntO4XlsBEVX3IFgcRHvZtmfX/ZPRgGrXbO+1i
+         PFkkTYI9t9XNCbwycFzrMKdcW85Vf1wA9hl/WKao=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     stable@vger.kernel.org, netfilter-devel@vger.kernel.org
+To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Pablo Neira Ayuso <pablo@netfilter.org>
-Subject: [PATCH 4.19 126/323] netfilter: nftables: add helper function to set the base sequence number
+        patches@lists.linux.dev, Chris Mi <cmi@nvidia.com>,
+        Vlad Buslov <vladbu@nvidia.com>,
+        Saeed Mahameed <saeedm@nvidia.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 033/165] net/mlx5e: Dont hold encap tbl lock if there is no encap action
 Date:   Wed,  9 Aug 2023 12:39:24 +0200
-Message-ID: <20230809103703.896804025@linuxfoundation.org>
+Message-ID: <20230809103643.899295366@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
-References: <20230809103658.104386911@linuxfoundation.org>
+In-Reply-To: <20230809103642.720851262@linuxfoundation.org>
+References: <20230809103642.720851262@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Chris Mi <cmi@nvidia.com>
 
-[ 802b805162a1b7d8391c40ac8a878e9e63287aff ]
+[ Upstream commit 93a331939d1d1c6c3422bc09ec43cac658594b34 ]
 
-This patch adds a helper function to calculate the base sequence number
-field that is stored in the nfnetlink header. Use the helper function
-whenever possible.
+The cited commit holds encap tbl lock unconditionally when setting
+up dests. But it may cause the following deadlock:
 
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+ PID: 1063722  TASK: ffffa062ca5d0000  CPU: 13   COMMAND: "handler8"
+  #0 [ffffb14de05b7368] __schedule at ffffffffa1d5aa91
+  #1 [ffffb14de05b7410] schedule at ffffffffa1d5afdb
+  #2 [ffffb14de05b7430] schedule_preempt_disabled at ffffffffa1d5b528
+  #3 [ffffb14de05b7440] __mutex_lock at ffffffffa1d5d6cb
+  #4 [ffffb14de05b74e8] mutex_lock_nested at ffffffffa1d5ddeb
+  #5 [ffffb14de05b74f8] mlx5e_tc_tun_encap_dests_set at ffffffffc12f2096 [mlx5_core]
+  #6 [ffffb14de05b7568] post_process_attr at ffffffffc12d9fc5 [mlx5_core]
+  #7 [ffffb14de05b75a0] mlx5e_tc_add_fdb_flow at ffffffffc12de877 [mlx5_core]
+  #8 [ffffb14de05b75f0] __mlx5e_add_fdb_flow at ffffffffc12e0eef [mlx5_core]
+  #9 [ffffb14de05b7660] mlx5e_tc_add_flow at ffffffffc12e12f7 [mlx5_core]
+ #10 [ffffb14de05b76b8] mlx5e_configure_flower at ffffffffc12e1686 [mlx5_core]
+ #11 [ffffb14de05b7720] mlx5e_rep_indr_offload at ffffffffc12e3817 [mlx5_core]
+ #12 [ffffb14de05b7730] mlx5e_rep_indr_setup_tc_cb at ffffffffc12e388a [mlx5_core]
+ #13 [ffffb14de05b7740] tc_setup_cb_add at ffffffffa1ab2ba8
+ #14 [ffffb14de05b77a0] fl_hw_replace_filter at ffffffffc0bdec2f [cls_flower]
+ #15 [ffffb14de05b7868] fl_change at ffffffffc0be6caa [cls_flower]
+ #16 [ffffb14de05b7908] tc_new_tfilter at ffffffffa1ab71f0
+
+[1031218.028143]  wait_for_completion+0x24/0x30
+[1031218.028589]  mlx5e_update_route_decap_flows+0x9a/0x1e0 [mlx5_core]
+[1031218.029256]  mlx5e_tc_fib_event_work+0x1ad/0x300 [mlx5_core]
+[1031218.029885]  process_one_work+0x24e/0x510
+
+Actually no need to hold encap tbl lock if there is no encap action.
+Fix it by checking if encap action exists or not before holding
+encap tbl lock.
+
+Fixes: 37c3b9fa7ccf ("net/mlx5e: Prevent encap offload when neigh update is running")
+Signed-off-by: Chris Mi <cmi@nvidia.com>
+Reviewed-by: Vlad Buslov <vladbu@nvidia.com>
+Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_tables_api.c |   23 ++++++++++++++---------
- 1 file changed, 14 insertions(+), 9 deletions(-)
+ .../mellanox/mlx5/core/en/tc_tun_encap.c      |  3 ---
+ .../net/ethernet/mellanox/mlx5/core/en_tc.c   | 21 ++++++++++++++++---
+ 2 files changed, 18 insertions(+), 6 deletions(-)
 
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -561,6 +561,11 @@ nf_tables_chain_type_lookup(struct net *
- 	return ERR_PTR(-ENOENT);
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun_encap.c b/drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun_encap.c
+index f0c3464f037f4..0c88cf47af01b 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun_encap.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun_encap.c
+@@ -1030,9 +1030,6 @@ int mlx5e_tc_tun_encap_dests_set(struct mlx5e_priv *priv,
+ 	int out_index;
+ 	int err = 0;
+ 
+-	if (!mlx5e_is_eswitch_flow(flow))
+-		return 0;
+-
+ 	parse_attr = attr->parse_attr;
+ 	esw_attr = attr->esw_attr;
+ 	*vf_tun = false;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c b/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c
+index ed05ac8ae1de5..e002f013fa015 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c
+@@ -1725,6 +1725,19 @@ verify_attr_actions(u32 actions, struct netlink_ext_ack *extack)
+ 	return 0;
  }
  
-+static __be16 nft_base_seq(const struct net *net)
++static bool
++has_encap_dests(struct mlx5_flow_attr *attr)
 +{
-+	return htons(net->nft.base_seq & 0xffff);
++	struct mlx5_esw_flow_attr *esw_attr = attr->esw_attr;
++	int out_index;
++
++	for (out_index = 0; out_index < MLX5_MAX_FLOW_FWD_VPORTS; out_index++)
++		if (esw_attr->dests[out_index].flags & MLX5_ESW_DEST_ENCAP)
++			return true;
++
++	return false;
 +}
 +
- static const struct nla_policy nft_table_policy[NFTA_TABLE_MAX + 1] = {
- 	[NFTA_TABLE_NAME]	= { .type = NLA_STRING,
- 				    .len = NFT_TABLE_MAXNAMELEN - 1 },
-@@ -583,7 +588,7 @@ static int nf_tables_fill_table_info(str
- 	nfmsg = nlmsg_data(nlh);
- 	nfmsg->nfgen_family	= family;
- 	nfmsg->version		= NFNETLINK_V0;
--	nfmsg->res_id		= htons(net->nft.base_seq & 0xffff);
-+	nfmsg->res_id		= nft_base_seq(net);
+ static int
+ post_process_attr(struct mlx5e_tc_flow *flow,
+ 		  struct mlx5_flow_attr *attr,
+@@ -1737,9 +1750,11 @@ post_process_attr(struct mlx5e_tc_flow *flow,
+ 	if (err)
+ 		goto err_out;
  
- 	if (nla_put_string(skb, NFTA_TABLE_NAME, table->name) ||
- 	    nla_put_be32(skb, NFTA_TABLE_FLAGS, htonl(table->flags)) ||
-@@ -1218,7 +1223,7 @@ static int nf_tables_fill_chain_info(str
- 	nfmsg = nlmsg_data(nlh);
- 	nfmsg->nfgen_family	= family;
- 	nfmsg->version		= NFNETLINK_V0;
--	nfmsg->res_id		= htons(net->nft.base_seq & 0xffff);
-+	nfmsg->res_id		= nft_base_seq(net);
+-	err = mlx5e_tc_tun_encap_dests_set(flow->priv, flow, attr, extack, &vf_tun);
+-	if (err)
+-		goto err_out;
++	if (mlx5e_is_eswitch_flow(flow) && has_encap_dests(attr)) {
++		err = mlx5e_tc_tun_encap_dests_set(flow->priv, flow, attr, extack, &vf_tun);
++		if (err)
++			goto err_out;
++	}
  
- 	if (nla_put_string(skb, NFTA_CHAIN_TABLE, table->name))
- 		goto nla_put_failure;
-@@ -2265,7 +2270,7 @@ static int nf_tables_fill_rule_info(stru
- 	nfmsg = nlmsg_data(nlh);
- 	nfmsg->nfgen_family	= family;
- 	nfmsg->version		= NFNETLINK_V0;
--	nfmsg->res_id		= htons(net->nft.base_seq & 0xffff);
-+	nfmsg->res_id		= nft_base_seq(net);
- 
- 	if (nla_put_string(skb, NFTA_RULE_TABLE, table->name))
- 		goto nla_put_failure;
-@@ -3176,7 +3181,7 @@ static int nf_tables_fill_set(struct sk_
- 	nfmsg = nlmsg_data(nlh);
- 	nfmsg->nfgen_family	= ctx->family;
- 	nfmsg->version		= NFNETLINK_V0;
--	nfmsg->res_id		= htons(ctx->net->nft.base_seq & 0xffff);
-+	nfmsg->res_id		= nft_base_seq(ctx->net);
- 
- 	if (nla_put_string(skb, NFTA_SET_TABLE, ctx->table->name))
- 		goto nla_put_failure;
-@@ -4032,7 +4037,7 @@ static int nf_tables_dump_set(struct sk_
- 	nfmsg = nlmsg_data(nlh);
- 	nfmsg->nfgen_family = table->family;
- 	nfmsg->version      = NFNETLINK_V0;
--	nfmsg->res_id	    = htons(net->nft.base_seq & 0xffff);
-+	nfmsg->res_id	    = nft_base_seq(net);
- 
- 	if (nla_put_string(skb, NFTA_SET_ELEM_LIST_TABLE, table->name))
- 		goto nla_put_failure;
-@@ -4104,7 +4109,7 @@ static int nf_tables_fill_setelem_info(s
- 	nfmsg = nlmsg_data(nlh);
- 	nfmsg->nfgen_family	= ctx->family;
- 	nfmsg->version		= NFNETLINK_V0;
--	nfmsg->res_id		= htons(ctx->net->nft.base_seq & 0xffff);
-+	nfmsg->res_id		= nft_base_seq(ctx->net);
- 
- 	if (nla_put_string(skb, NFTA_SET_TABLE, ctx->table->name))
- 		goto nla_put_failure;
-@@ -5152,7 +5157,7 @@ static int nf_tables_fill_obj_info(struc
- 	nfmsg = nlmsg_data(nlh);
- 	nfmsg->nfgen_family	= family;
- 	nfmsg->version		= NFNETLINK_V0;
--	nfmsg->res_id		= htons(net->nft.base_seq & 0xffff);
-+	nfmsg->res_id		= nft_base_seq(net);
- 
- 	if (nla_put_string(skb, NFTA_OBJ_TABLE, table->name) ||
- 	    nla_put_string(skb, NFTA_OBJ_NAME, obj->name) ||
-@@ -5813,7 +5818,7 @@ static int nf_tables_fill_flowtable_info
- 	nfmsg = nlmsg_data(nlh);
- 	nfmsg->nfgen_family	= family;
- 	nfmsg->version		= NFNETLINK_V0;
--	nfmsg->res_id		= htons(net->nft.base_seq & 0xffff);
-+	nfmsg->res_id		= nft_base_seq(net);
- 
- 	if (nla_put_string(skb, NFTA_FLOWTABLE_TABLE, flowtable->table->name) ||
- 	    nla_put_string(skb, NFTA_FLOWTABLE_NAME, flowtable->name) ||
-@@ -6051,7 +6056,7 @@ static int nf_tables_fill_gen_info(struc
- 	nfmsg = nlmsg_data(nlh);
- 	nfmsg->nfgen_family	= AF_UNSPEC;
- 	nfmsg->version		= NFNETLINK_V0;
--	nfmsg->res_id		= htons(net->nft.base_seq & 0xffff);
-+	nfmsg->res_id		= nft_base_seq(net);
- 
- 	if (nla_put_be32(skb, NFTA_GEN_ID, htonl(net->nft.base_seq)) ||
- 	    nla_put_be32(skb, NFTA_GEN_PROC_PID, htonl(task_pid_nr(current))) ||
+ 	if (attr->action & MLX5_FLOW_CONTEXT_ACTION_MOD_HDR) {
+ 		err = mlx5e_tc_attach_mod_hdr(flow->priv, flow, attr);
+-- 
+2.40.1
+
 
 
