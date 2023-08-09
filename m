@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C3F56775A67
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:08:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0B4567757B4
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:49:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233162AbjHILIL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:08:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47800 "EHLO
+        id S232261AbjHIKtI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 06:49:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54722 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233163AbjHILIK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:08:10 -0400
+        with ESMTP id S232259AbjHIKtH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:49:07 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8FDF910F3
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:08:09 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C0F210F3
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:49:06 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 15FA563146
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:08:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24A7EC433C9;
-        Wed,  9 Aug 2023 11:08:07 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A7C176283F
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:49:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1AE9C433C8;
+        Wed,  9 Aug 2023 10:49:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691579288;
-        bh=ADoMPk6prMPmDhAsYshXfHNpZoREW1yv/l1H1V9x/OM=;
+        s=korg; t=1691578145;
+        bh=oKnCtufrTBWCJoxqU9OBjThY1S93kC5T7cv1ksoUwKY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=nN9J9wUIeVv4E/dHCosfs8eo8jVsaZCbI6Fp9DxL1qt0NegVmRqSC3+LBfbpsO3hF
-         KvJ8JfOGUwKUk4VLl3I4jvSeFEUgrs38teJ958+r5aozI7MSEx8eUy6Wnt8ywnoH/H
-         IjYI5T1/jnuLJsO5pxksm3auiUPmNgHjInlJBMeI=
+        b=xxj9CnminXJNrJ6/55wuNBOQjdR0OXKij0P16IK5WXD3xhsPEx64SR+97cO1MIuHC
+         cpFV1U6wDq3XgjIqOliOgI5MpG92idg6NVg/n8Vm6pf1F40TAFP2azrNFqihRf5yyX
+         jVE/4ymiygERfBb3bNV/1/GHZIX9Twu9TvHCsbuM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, stable <stable@kernel.org>,
-        Jiaqing Zhao <jiaqing.zhao@linux.intel.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: [PATCH 4.14 114/204] Revert "8250: add support for ASIX devices with a FIFO bug"
+        patches@lists.linux.dev, "Mike Rapoport (IBM)" <rppt@kernel.org>,
+        Vlastimil Babka <vbabka@suse.cz>, Helge Deller <deller@gmx.de>,
+        Christoph Biedl <linux-kernel.bfrz@manchmal.in-ulm.de>,
+        John David Anglin <dave.anglin@bell.net>
+Subject: [PATCH 6.4 121/165] parisc/mm: preallocate fixmap page tables at init
 Date:   Wed,  9 Aug 2023 12:40:52 +0200
-Message-ID: <20230809103646.413090000@linuxfoundation.org>
+Message-ID: <20230809103646.761202750@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103642.552405807@linuxfoundation.org>
-References: <20230809103642.552405807@linuxfoundation.org>
+In-Reply-To: <20230809103642.720851262@linuxfoundation.org>
+References: <20230809103642.720851262@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,139 +56,159 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jiaqing Zhao <jiaqing.zhao@linux.intel.com>
+From: Mike Rapoport (IBM) <rppt@kernel.org>
 
-commit a82d62f708545d22859584e0e0620da8e3759bbc upstream.
+commit c2ff2b736c41cc63bb0aaec85cccfead9fbcfe92 upstream.
 
-This reverts commit eb26dfe8aa7eeb5a5aa0b7574550125f8aa4c3b3.
+Christoph Biedl reported early OOM on recent kernels:
 
-Commit eb26dfe8aa7e ("8250: add support for ASIX devices with a FIFO
-bug") merged on Jul 13, 2012 adds a quirk for PCI_VENDOR_ID_ASIX
-(0x9710). But that ID is the same as PCI_VENDOR_ID_NETMOS defined in
-1f8b061050c7 ("[PATCH] Netmos parallel/serial/combo support") merged
-on Mar 28, 2005. In pci_serial_quirks array, the NetMos entry always
-takes precedence over the ASIX entry even since it was initially
-merged, code in that commit is always unreachable.
+    swapper: page allocation failure: order:0, mode:0x100(__GFP_ZERO),
+nodemask=(null)
+    CPU: 0 PID: 0 Comm: swapper Not tainted 6.3.0-rc4+ #16
+    Hardware name: 9000/785/C3600
+    Backtrace:
+     [<10408594>] show_stack+0x48/0x5c
+     [<10e152d8>] dump_stack_lvl+0x48/0x64
+     [<10e15318>] dump_stack+0x24/0x34
+     [<105cf7f8>] warn_alloc+0x10c/0x1c8
+     [<105d068c>] __alloc_pages+0xbbc/0xcf8
+     [<105d0e4c>] __get_free_pages+0x28/0x78
+     [<105ad10c>] __pte_alloc_kernel+0x30/0x98
+     [<10406934>] set_fixmap+0xec/0xf4
+     [<10411ad4>] patch_map.constprop.0+0xa8/0xdc
+     [<10411bb0>] __patch_text_multiple+0xa8/0x208
+     [<10411d78>] patch_text+0x30/0x48
+     [<1041246c>] arch_jump_label_transform+0x90/0xcc
+     [<1056f734>] jump_label_update+0xd4/0x184
+     [<1056fc9c>] static_key_enable_cpuslocked+0xc0/0x110
+     [<1056fd08>] static_key_enable+0x1c/0x2c
+     [<1011362c>] init_mem_debugging_and_hardening+0xdc/0xf8
+     [<1010141c>] start_kernel+0x5f0/0xa98
+     [<10105da8>] start_parisc+0xb8/0xe4
 
-In my tests, adding the FIFO workaround to pci_netmos_init() makes no
-difference, and the vendor driver also does not have such workaround.
-Given that the code was never used for over a decade, it's safe to
-revert it.
+    Mem-Info:
+    active_anon:0 inactive_anon:0 isolated_anon:0
+     active_file:0 inactive_file:0 isolated_file:0
+     unevictable:0 dirty:0 writeback:0
+     slab_reclaimable:0 slab_unreclaimable:0
+     mapped:0 shmem:0 pagetables:0
+     sec_pagetables:0 bounce:0
+     kernel_misc_reclaimable:0
+     free:0 free_pcp:0 free_cma:0
+    Node 0 active_anon:0kB inactive_anon:0kB active_file:0kB
+inactive_file:0kB unevictable:0kB isolated(anon):0kB isolated(file):0kB
+mapped:0kB dirty:0kB writeback:0kB shmem:0kB
++writeback_tmp:0kB kernel_stack:0kB pagetables:0kB sec_pagetables:0kB
+all_unreclaimable? no
+    Normal free:0kB boost:0kB min:0kB low:0kB high:0kB
+reserved_highatomic:0KB active_anon:0kB inactive_anon:0kB active_file:0kB
+inactive_file:0kB unevictable:0kB writepending:0kB
++present:1048576kB managed:1039360kB mlocked:0kB bounce:0kB free_pcp:0kB
+local_pcp:0kB free_cma:0kB
+    lowmem_reserve[]: 0 0
+    Normal: 0*4kB 0*8kB 0*16kB 0*32kB 0*64kB 0*128kB 0*256kB 0*512kB
+0*1024kB 0*2048kB 0*4096kB = 0kB
+    0 total pagecache pages
+    0 pages in swap cache
+    Free swap  = 0kB
+    Total swap = 0kB
+    262144 pages RAM
+    0 pages HighMem/MovableOnly
+    2304 pages reserved
+    Backtrace:
+     [<10411d78>] patch_text+0x30/0x48
+     [<1041246c>] arch_jump_label_transform+0x90/0xcc
+     [<1056f734>] jump_label_update+0xd4/0x184
+     [<1056fc9c>] static_key_enable_cpuslocked+0xc0/0x110
+     [<1056fd08>] static_key_enable+0x1c/0x2c
+     [<1011362c>] init_mem_debugging_and_hardening+0xdc/0xf8
+     [<1010141c>] start_kernel+0x5f0/0xa98
+     [<10105da8>] start_parisc+0xb8/0xe4
 
-Also, the real PCI_VENDOR_ID_ASIX should be 0x125b, which is used on
-their newer AX99100 PCIe serial controllers released on 2016. The FIFO
-workaround should not be intended for these newer controllers, and it
-was never implemented in vendor driver.
+    Kernel Fault: Code=15 (Data TLB miss fault) at addr 0f7fe3c0
+    CPU: 0 PID: 0 Comm: swapper Not tainted 6.3.0-rc4+ #16
+    Hardware name: 9000/785/C3600
 
-Fixes: eb26dfe8aa7e ("8250: add support for ASIX devices with a FIFO bug")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Jiaqing Zhao <jiaqing.zhao@linux.intel.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/r/20230619155743.827859-1-jiaqing.zhao@linux.intel.com
+This happens because patching static key code temporarily maps it via
+fixmap and if it happens before page allocator is initialized set_fixmap()
+cannot allocate memory using pte_alloc_kernel().
+
+Make sure that fixmap page tables are preallocated early so that
+pte_offset_kernel() in set_fixmap() never resorts to pte allocation.
+
+Signed-off-by: Mike Rapoport (IBM) <rppt@kernel.org>
+Acked-by: Vlastimil Babka <vbabka@suse.cz>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Tested-by: Christoph Biedl <linux-kernel.bfrz@manchmal.in-ulm.de>
+Tested-by: John David Anglin <dave.anglin@bell.net>
+Cc: <stable@vger.kernel.org> # v6.4+
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/8250/8250.h      |    1 -
- drivers/tty/serial/8250/8250_pci.c  |   19 -------------------
- drivers/tty/serial/8250/8250_port.c |   11 +++--------
- include/linux/serial_8250.h         |    1 -
- 4 files changed, 3 insertions(+), 29 deletions(-)
+ arch/parisc/mm/fixmap.c |    3 ---
+ arch/parisc/mm/init.c   |   34 ++++++++++++++++++++++++++++++++++
+ 2 files changed, 34 insertions(+), 3 deletions(-)
 
---- a/drivers/tty/serial/8250/8250.h
-+++ b/drivers/tty/serial/8250/8250.h
-@@ -89,7 +89,6 @@ struct serial8250_config {
- #define UART_BUG_TXEN	(1 << 1)	/* UART has buggy TX IIR status */
- #define UART_BUG_NOMSR	(1 << 2)	/* UART has buggy MSR status bits (Au1x00) */
- #define UART_BUG_THRE	(1 << 3)	/* UART has buggy THRE reassertion */
--#define UART_BUG_PARITY	(1 << 4)	/* UART mishandles parity if FIFO enabled */
+--- a/arch/parisc/mm/fixmap.c
++++ b/arch/parisc/mm/fixmap.c
+@@ -19,9 +19,6 @@ void notrace set_fixmap(enum fixed_addre
+ 	pmd_t *pmd = pmd_offset(pud, vaddr);
+ 	pte_t *pte;
  
- 
- #ifdef CONFIG_SERIAL_8250_SHARE_IRQ
---- a/drivers/tty/serial/8250/8250_pci.c
-+++ b/drivers/tty/serial/8250/8250_pci.c
-@@ -1052,14 +1052,6 @@ static int pci_oxsemi_tornado_init(struc
- 	return number_uarts;
+-	if (pmd_none(*pmd))
+-		pte = pte_alloc_kernel(pmd, vaddr);
+-
+ 	pte = pte_offset_kernel(pmd, vaddr);
+ 	set_pte_at(&init_mm, vaddr, pte, __mk_pte(phys, PAGE_KERNEL_RWX));
+ 	flush_tlb_kernel_range(vaddr, vaddr + PAGE_SIZE);
+--- a/arch/parisc/mm/init.c
++++ b/arch/parisc/mm/init.c
+@@ -671,6 +671,39 @@ static void __init gateway_init(void)
+ 		  PAGE_SIZE, PAGE_GATEWAY, 1);
  }
  
--static int pci_asix_setup(struct serial_private *priv,
--		  const struct pciserial_board *board,
--		  struct uart_8250_port *port, int idx)
--{
--	port->bugs |= UART_BUG_PARITY;
--	return pci_default_setup(priv, board, port, idx);
--}
--
- /* Quatech devices have their own extra interface features */
++static void __init fixmap_init(void)
++{
++	unsigned long addr = FIXMAP_START;
++	unsigned long end = FIXMAP_START + FIXMAP_SIZE;
++	pgd_t *pgd = pgd_offset_k(addr);
++	p4d_t *p4d = p4d_offset(pgd, addr);
++	pud_t *pud = pud_offset(p4d, addr);
++	pmd_t *pmd;
++
++	BUILD_BUG_ON(FIXMAP_SIZE > PMD_SIZE);
++
++#if CONFIG_PGTABLE_LEVELS == 3
++	if (pud_none(*pud)) {
++		pmd = memblock_alloc(PAGE_SIZE << PMD_TABLE_ORDER,
++				     PAGE_SIZE << PMD_TABLE_ORDER);
++		if (!pmd)
++			panic("fixmap: pmd allocation failed.\n");
++		pud_populate(NULL, pud, pmd);
++	}
++#endif
++
++	pmd = pmd_offset(pud, addr);
++	do {
++		pte_t *pte = memblock_alloc(PAGE_SIZE, PAGE_SIZE);
++		if (!pte)
++			panic("fixmap: pte allocation failed.\n");
++
++		pmd_populate_kernel(&init_mm, pmd, pte);
++
++		addr += PAGE_SIZE;
++	} while (addr < end);
++}
++
+ static void __init parisc_bootmem_free(void)
+ {
+ 	unsigned long max_zone_pfn[MAX_NR_ZONES] = { 0, };
+@@ -685,6 +718,7 @@ void __init paging_init(void)
+ 	setup_bootmem();
+ 	pagetable_init();
+ 	gateway_init();
++	fixmap_init();
+ 	flush_cache_all_local(); /* start with known state */
+ 	flush_tlb_all_local(NULL);
  
- struct quatech_feature {
-@@ -1686,7 +1678,6 @@ pci_wch_ch38x_setup(struct serial_privat
- #define PCI_DEVICE_ID_WCH_CH355_4S	0x7173
- #define PCI_VENDOR_ID_AGESTAR		0x5372
- #define PCI_DEVICE_ID_AGESTAR_9375	0x6872
--#define PCI_VENDOR_ID_ASIX		0x9710
- #define PCI_DEVICE_ID_BROADCOM_TRUMANAGE 0x160a
- #define PCI_DEVICE_ID_AMCC_ADDIDATA_APCI7800 0x818e
- 
-@@ -2467,16 +2458,6 @@ static struct pci_serial_quirk pci_seria
- 		.setup          = pci_wch_ch38x_setup,
- 	},
- 	/*
--	 * ASIX devices with FIFO bug
--	 */
--	{
--		.vendor		= PCI_VENDOR_ID_ASIX,
--		.device		= PCI_ANY_ID,
--		.subvendor	= PCI_ANY_ID,
--		.subdevice	= PCI_ANY_ID,
--		.setup		= pci_asix_setup,
--	},
--	/*
- 	 * Broadcom TruManage (NetXtreme)
- 	 */
- 	{
---- a/drivers/tty/serial/8250/8250_port.c
-+++ b/drivers/tty/serial/8250/8250_port.c
-@@ -2609,11 +2609,8 @@ static unsigned char serial8250_compute_
- 
- 	if (c_cflag & CSTOPB)
- 		cval |= UART_LCR_STOP;
--	if (c_cflag & PARENB) {
-+	if (c_cflag & PARENB)
- 		cval |= UART_LCR_PARITY;
--		if (up->bugs & UART_BUG_PARITY)
--			up->fifo_bug = true;
--	}
- 	if (!(c_cflag & PARODD))
- 		cval |= UART_LCR_EPAR;
- #ifdef CMSPAR
-@@ -2702,8 +2699,7 @@ serial8250_do_set_termios(struct uart_po
- 	up->lcr = cval;					/* Save computed LCR */
- 
- 	if (up->capabilities & UART_CAP_FIFO && port->fifosize > 1) {
--		/* NOTE: If fifo_bug is not set, a user can set RX_trigger. */
--		if ((baud < 2400 && !up->dma) || up->fifo_bug) {
-+		if (baud < 2400 && !up->dma) {
- 			up->fcr &= ~UART_FCR_TRIGGER_MASK;
- 			up->fcr |= UART_FCR_TRIGGER_1;
- 		}
-@@ -3039,8 +3035,7 @@ static int do_set_rxtrig(struct tty_port
- 	struct uart_8250_port *up = up_to_u8250p(uport);
- 	int rxtrig;
- 
--	if (!(up->capabilities & UART_CAP_FIFO) || uport->fifosize <= 1 ||
--	    up->fifo_bug)
-+	if (!(up->capabilities & UART_CAP_FIFO) || uport->fifosize <= 1)
- 		return -EINVAL;
- 
- 	rxtrig = bytes_to_fcr_rxtrig(up, bytes);
---- a/include/linux/serial_8250.h
-+++ b/include/linux/serial_8250.h
-@@ -99,7 +99,6 @@ struct uart_8250_port {
- 	struct list_head	list;		/* ports on this IRQ */
- 	u32			capabilities;	/* port capabilities */
- 	unsigned short		bugs;		/* port bugs */
--	bool			fifo_bug;	/* min RX trigger if enabled */
- 	unsigned int		tx_loadsz;	/* transmit fifo load size */
- 	unsigned char		acr;
- 	unsigned char		fcr;
 
 
