@@ -2,75 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B69D0776ECD
-	for <lists+stable@lfdr.de>; Thu, 10 Aug 2023 05:54:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2AC49776F0E
+	for <lists+stable@lfdr.de>; Thu, 10 Aug 2023 06:28:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229470AbjHJDyl (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 23:54:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53352 "EHLO
+        id S231336AbjHJE2W (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 10 Aug 2023 00:28:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58278 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231426AbjHJDyi (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 23:54:38 -0400
-Received: from mail-pf1-x434.google.com (mail-pf1-x434.google.com [IPv6:2607:f8b0:4864:20::434])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA3B010E9;
-        Wed,  9 Aug 2023 20:54:37 -0700 (PDT)
-Received: by mail-pf1-x434.google.com with SMTP id d2e1a72fcca58-686bea20652so414433b3a.1;
-        Wed, 09 Aug 2023 20:54:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1691639677; x=1692244477;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=T65HFgviXpuQEaQuQvJWe048FrBItQM2dkf3KrcfKV8=;
-        b=C9qm/u7YyrXmjda5G+F/h6m5IrosXpbx8Zo1GkosHnocctdAGcoPWQYAtsb+LqWjYl
-         eIfwmQPpN4XkSnzqZOsFlciTEmCSzIzirW1/xKjUJVMwLjAvwoaCJ7C2JmAbU3bDiDez
-         1iEl2+4kbY+EuUEaygJkY6RRjIhL97TLgGSMcmN9z+QmSBgTM4LBtrjUZbNZ+PZ6o6+/
-         CWUFl4CyJqFD89g2FukpX+LxbMdVJlgC2g/hJDcUm2+QhNpHZA3sWfA5U7iZYrR6S3OL
-         TnA3Ww8axH5y4IMzG8cr33vXqOYUZET4yhWtGCM8DdiZavnEFsWSglQhIA41NclvCwTL
-         h8LQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691639677; x=1692244477;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=T65HFgviXpuQEaQuQvJWe048FrBItQM2dkf3KrcfKV8=;
-        b=gYwWRnRu2VqF/6xwCNW7SWzuCFgAHGzbBUuxtIew3xyZblJ7rT26FqI38yGe/oIZ+i
-         xztdcXnS6u+/80iDQ+kT5U6qOcWDZqFyycN5V0fsEnudVwnDzcD9jO2L52Es2kQIheI7
-         z+31PWjUcf/KkQXjRh7pXpOymrmsXeyjmwBcnkuAa2ySddheZuBENLOO5/ydt7kQgElg
-         ItNsnT8ogbNjlnB7baQVgmdVVb/pk8Uzpm4YApUn80FwX1DRpT2hToZCAEVnXy99D4GP
-         mXB51/aemSTT5yneHuqGtTS37PbN14THq+jHWSsi/pl6pbVyA1jsW/RdgN2GaqGrfQOc
-         8Kwg==
-X-Gm-Message-State: AOJu0Yzq0500vn98YTLIjWCaV3iKZZXcuJcvAtqnKPcZV2tuKVX6Rkwu
-        7BDIjqy4Uh3X/ugLHX/y4ufsTDzgiE0=
-X-Google-Smtp-Source: AGHT+IG3Xxt6oSCMxaIbRsqGyZbK+xF0XdK+eC/wYNbGojqgMJ+7VvX16KBfh2wj6UsPsYAMR1SpoA==
-X-Received: by 2002:a05:6a20:244a:b0:12f:382d:2a37 with SMTP id t10-20020a056a20244a00b0012f382d2a37mr1667840pzc.15.1691639677329;
-        Wed, 09 Aug 2023 20:54:37 -0700 (PDT)
-Received: from debian.me ([103.131.18.64])
-        by smtp.gmail.com with ESMTPSA id 8-20020aa79108000000b00686da0e163bsm400650pfh.11.2023.08.09.20.54.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 09 Aug 2023 20:54:36 -0700 (PDT)
-Received: by debian.me (Postfix, from userid 1000)
-        id C8BC08196A01; Thu, 10 Aug 2023 10:54:33 +0700 (WIB)
-Date:   Thu, 10 Aug 2023 10:54:33 +0700
-From:   Bagas Sanjaya <bagasdotme@gmail.com>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org
-Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-        torvalds@linux-foundation.org, akpm@linux-foundation.org,
-        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
-Subject: Re: [PATCH 6.1 000/127] 6.1.45-rc1 review
-Message-ID: <ZNRfef0jTqcRQdNI@debian.me>
-References: <20230809103636.615294317@linuxfoundation.org>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="lNMSrdUV5XmaBB9f"
-Content-Disposition: inline
-In-Reply-To: <20230809103636.615294317@linuxfoundation.org>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        with ESMTP id S229457AbjHJE2W (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 10 Aug 2023 00:28:22 -0400
+Received: from www.linuxtv.org (www.linuxtv.org [130.149.80.248])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 135E41702
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 21:28:22 -0700 (PDT)
+Received: from mchehab by www.linuxtv.org with local (Exim 4.92)
+        (envelope-from <mchehab@linuxtv.org>)
+        id 1qTxHY-00EOtu-E0; Thu, 10 Aug 2023 04:28:20 +0000
+From:   Mauro Carvalho Chehab <mchehab@kernel.org>
+Date:   Wed, 09 Aug 2023 12:25:54 +0000
+Subject: [git:media_stage/master] media: i2c: Add a camera sensor top level menu
+To:     linuxtv-commits@linuxtv.org
+Cc:     stable@vger.kernel.org,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Hans de Goede <hdegoede@redhat.com>
+Mail-followup-to: linux-media@vger.kernel.org
+Forward-to: linux-media@vger.kernel.org
+Reply-to: linux-media@vger.kernel.org
+Message-Id: <E1qTxHY-00EOtu-E0@www.linuxtv.org>
+X-Spam-Status: No, score=-0.6 required=5.0 tests=BAYES_00,DATE_IN_PAST_12_24,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,
+        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE autolearn=no
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -78,36 +39,63 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+This is an automatic generated email to let you know that the following patch were queued:
 
---lNMSrdUV5XmaBB9f
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Subject: media: i2c: Add a camera sensor top level menu
+Author:  Sakari Ailus <sakari.ailus@linux.intel.com>
+Date:    Thu Jun 15 10:29:07 2023 +0200
 
-On Wed, Aug 09, 2023 at 12:39:47PM +0200, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.1.45 release.
-> There are 127 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->=20
+Select V4L2_FWNODE and VIDEO_V4L2_SUBDEV_API for all sensor drivers. This
+also adds the options to drivers that don't specifically need them, these
+are still seldom used drivers using old APIs. The upside is that these
+should now all compile --- many drivers have had missing dependencies.
 
-Successfully compiled and installed bindeb-pkgs on my computer (Acer
-Aspire E15, Intel Core i3 Haswell). No noticeable regressions.
+The "menu" is replaced by selectable "menuconfig" to select the needed
+V4L2_FWNODE and VIDEO_V4L2_SUBDEV_API options.
 
-Tested-by: Bagas Sanjaya <bagasdotme@gmail.com>
+Also select MEDIA_CONTROLLER which VIDEO_V4L2_SUBDEV_API effectively
+depends on, and add the I2C dependency to the menu.
 
---=20
-An old man doll... just what I always wanted! - Clara
+Reported-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Cc: stable@vger.kernel.org # for >= 6.1
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 
---lNMSrdUV5XmaBB9f
-Content-Type: application/pgp-signature; name="signature.asc"
+ drivers/media/i2c/Kconfig | 13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
------BEGIN PGP SIGNATURE-----
+---
 
-iHUEABYKAB0WIQSSYQ6Cy7oyFNCHrUH2uYlJVVFOowUCZNRfdAAKCRD2uYlJVVFO
-o3OvAQCm9b1Hq80VY7zGgilAcxvVPXZFTbY8E1GKCTVt1OZs4AD6A1WnH1L0p/lB
-t0w715x/P76S9vcD9G/33BrpmEGFAwI=
-=UB92
------END PGP SIGNATURE-----
-
---lNMSrdUV5XmaBB9f--
+diff --git a/drivers/media/i2c/Kconfig b/drivers/media/i2c/Kconfig
+index 694afb85acb9..eef5e872a824 100644
+--- a/drivers/media/i2c/Kconfig
++++ b/drivers/media/i2c/Kconfig
+@@ -25,8 +25,15 @@ config VIDEO_IR_I2C
+ # V4L2 I2C drivers that are related with Camera support
+ #
+ 
+-menu "Camera sensor devices"
+-	visible if MEDIA_CAMERA_SUPPORT
++menuconfig VIDEO_CAMERA_SENSOR
++	bool "Camera sensor devices"
++	depends on MEDIA_CAMERA_SUPPORT && I2C
++	select MEDIA_CONTROLLER
++	select V4L2_FWNODE
++	select VIDEO_V4L2_SUBDEV_API
++	default y
++
++if VIDEO_CAMERA_SENSOR
+ 
+ config VIDEO_APTINA_PLL
+ 	tristate
+@@ -810,7 +817,7 @@ config VIDEO_ST_VGXY61
+ source "drivers/media/i2c/ccs/Kconfig"
+ source "drivers/media/i2c/et8ek8/Kconfig"
+ 
+-endmenu
++endif
+ 
+ menu "Lens drivers"
+ 	visible if MEDIA_CAMERA_SUPPORT
