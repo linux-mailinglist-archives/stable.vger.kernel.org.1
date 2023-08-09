@@ -2,44 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5E85A775C76
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:27:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E351D775837
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:51:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233779AbjHIL1m (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:27:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56154 "EHLO
+        id S232540AbjHIKu4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 06:50:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50642 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233781AbjHIL1c (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:27:32 -0400
+        with ESMTP id S232320AbjHIKu1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:50:27 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 98EE52684
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:27:30 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B2E3E1FD4
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:50:16 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2F04B632B0
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:27:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4350AC433C7;
-        Wed,  9 Aug 2023 11:27:29 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3C501630EF
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:50:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03C2BC43140;
+        Wed,  9 Aug 2023 10:50:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691580449;
-        bh=r1HfVHaZ0U4+Jo/h/IrSHAbvhnmMaZzfv4L6KBTXHXE=;
+        s=korg; t=1691578215;
+        bh=2//GA3u7Bc/z2ou1799K88txhO3n6/wGlRz9NRPZ5e4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=MWQF755JE6MlNcGmlwgYq1CrTxi4c0KlSbARIuQ3uMiEcPTK94arVbvKqr976rkAV
-         Uie3Yt3kQOZqHaxT61gcFSiVKube4yARD0JyI/QMOJ/CIPIg+pGXuKwRGN2zQnY+7T
-         /nbgXT3mWEOViakxeb9ISWoEXOS4Jhq03hGG/XAA=
+        b=i9lQl40IIRwJuy5gfxap/mCjFeQBSMZLXw6lUJQ5tGxQBdqGut8iypkUjBaddnd5r
+         psOcsVNkIwJE3jhT2RUBVwqf3IfPmRfQkckQgjLrKLnfuouVgF2I4WWf2yArfuwvmy
+         Xgk/UNhUUpaNdDqAoypN/FzU/TQqho51w9Z/5SIs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, David Howells <dhowells@redhat.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 029/154] uapi: General notification queue definitions
+        patches@lists.linux.dev, Chris Wilson <chris@chris-wilson.co.uk>,
+        Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
+        Andi Shyti <andi.shyti@linux.intel.com>,
+        Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+Subject: [PATCH 6.4 129/165] drm/i915: Fix premature release of requests reusable memory
 Date:   Wed,  9 Aug 2023 12:41:00 +0200
-Message-ID: <20230809103637.955706582@linuxfoundation.org>
+Message-ID: <20230809103647.033732984@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103636.887175326@linuxfoundation.org>
-References: <20230809103636.887175326@linuxfoundation.org>
+In-Reply-To: <20230809103642.720851262@linuxfoundation.org>
+References: <20230809103642.720851262@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,114 +56,269 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: David Howells <dhowells@redhat.com>
+From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
 
-[ Upstream commit 0858caa419e6cf9d31e734d09d70b34f64443ef6 ]
+commit a337b64f0d5717248a0c894e2618e658e6a9de9f upstream.
 
-Add UAPI definitions for the general notification queue, including the
-following pieces:
+Infinite waits for completion of GPU activity have been observed in CI,
+mostly inside __i915_active_wait(), triggered by igt@gem_barrier_race or
+igt@perf@stress-open-close.  Root cause analysis, based of ftrace dumps
+generated with a lot of extra trace_printk() calls added to the code,
+revealed loops of request dependencies being accidentally built,
+preventing the requests from being processed, each waiting for completion
+of another one's activity.
 
- (*) struct watch_notification.
+After we substitute a new request for a last active one tracked on a
+timeline, we set up a dependency of our new request to wait on completion
+of current activity of that previous one.  While doing that, we must take
+care of keeping the old request still in memory until we use its
+attributes for setting up that await dependency, or we can happen to set
+up the await dependency on an unrelated request that already reuses the
+memory previously allocated to the old one, already released.  Combined
+with perf adding consecutive kernel context remote requests to different
+user context timelines, unresolvable loops of await dependencies can be
+built, leading do infinite waits.
 
-     This is the metadata header for notification messages.  It includes a
-     type and subtype that indicate the source of the message
-     (eg. WATCH_TYPE_MOUNT_NOTIFY) and the kind of the message
-     (eg. NOTIFY_MOUNT_NEW_MOUNT).
+We obtain a pointer to the previous request to wait upon when we
+substitute it with a pointer to our new request in an active tracker,
+e.g. in intel_timeline.last_request.  In some processing paths we protect
+that old request from being freed before we use it by getting a reference
+to it under RCU protection, but in others, e.g.  __i915_request_commit()
+-> __i915_request_add_to_timeline() -> __i915_request_ensure_ordering(),
+we don't.  But anyway, since the requests' memory is SLAB_FAILSAFE_BY_RCU,
+that RCU protection is not sufficient against reuse of memory.
 
-     The header also contains an information field that conveys the
-     following information:
+We could protect i915_request's memory from being prematurely reused by
+calling its release function via call_rcu() and using rcu_read_lock()
+consequently, as proposed in v1.  However, that approach leads to
+significant (up to 10 times) increase of SLAB utilization by i915_request
+SLAB cache.  Another potential approach is to take a reference to the
+previous active fence.
 
-	- WATCH_INFO_LENGTH.  The size of the entry (entries are variable
-          length).
+When updating an active fence tracker, we first lock the new fence,
+substitute a pointer of the current active fence with the new one, then we
+lock the substituted fence.  With this approach, there is a time window
+after the substitution and before the lock when the request can be
+concurrently released by an interrupt handler and its memory reused, then
+we may happen to lock and return a new, unrelated request.
 
-	- WATCH_INFO_ID.  The watch ID specified when the watchpoint was
-          set.
+Always get a reference to the current active fence first, before
+replacing it with a new one.  Having it protected from premature release
+and reuse, lock it and then replace with the new one but only if not
+yet signalled via a potential concurrent interrupt nor replaced with
+another one by a potential concurrent thread, otherwise retry, starting
+from getting a reference to the new current one.  Adjust users to not
+get a reference to the previous active fence themselves and always put the
+reference got by __i915_active_fence_set() when no longer needed.
 
-	- WATCH_INFO_TYPE_INFO.  (Sub)type-specific information.
+v3: Fix lockdep splat reports and other issues caused by incorrect use of
+    try_cmpxchg() (use (cmpxchg() != prev) instead)
+v2: Protect request's memory by getting a reference to it in favor of
+    delegating its release to call_rcu() (Chris)
 
-	- WATCH_INFO_FLAG_*.  Flag bits overlain on the type-specific
-          information.  For use by the type.
-
-     All the information in the header can be used in filtering messages at
-     the point of writing into the buffer.
-
- (*) struct watch_notification_removal
-
-     This is an extended watch-removal notification record that includes an
-     'id' field that can indicate the identifier of the object being
-     removed if available (for instance, a keyring serial number).
-
-Signed-off-by: David Howells <dhowells@redhat.com>
-Stable-dep-of: d55901522f96 ("keys: Fix linking a duplicate key to a keyring's assoc_array")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/8211
+Fixes: df9f85d8582e ("drm/i915: Serialise i915_active_fence_set() with itself")
+Suggested-by: Chris Wilson <chris@chris-wilson.co.uk>
+Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Cc: <stable@vger.kernel.org> # v5.6+
+Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
+Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230720093543.832147-2-janusz.krzysztofik@linux.intel.com
+(cherry picked from commit 946e047a3d88d46d15b5c5af0414098e12b243f7)
+Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/uapi/linux/watch_queue.h | 55 ++++++++++++++++++++++++++++++++
- 1 file changed, 55 insertions(+)
- create mode 100644 include/uapi/linux/watch_queue.h
+ drivers/gpu/drm/i915/i915_active.c  |   99 +++++++++++++++++++++++++-----------
+ drivers/gpu/drm/i915/i915_request.c |   11 ++++
+ 2 files changed, 81 insertions(+), 29 deletions(-)
 
-diff --git a/include/uapi/linux/watch_queue.h b/include/uapi/linux/watch_queue.h
-new file mode 100644
-index 0000000000000..5f3d21e8a34b0
---- /dev/null
-+++ b/include/uapi/linux/watch_queue.h
-@@ -0,0 +1,55 @@
-+/* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
-+#ifndef _UAPI_LINUX_WATCH_QUEUE_H
-+#define _UAPI_LINUX_WATCH_QUEUE_H
+--- a/drivers/gpu/drm/i915/i915_active.c
++++ b/drivers/gpu/drm/i915/i915_active.c
+@@ -449,8 +449,11 @@ int i915_active_add_request(struct i915_
+ 		}
+ 	} while (unlikely(is_barrier(active)));
+ 
+-	if (!__i915_active_fence_set(active, fence))
++	fence = __i915_active_fence_set(active, fence);
++	if (!fence)
+ 		__i915_active_acquire(ref);
++	else
++		dma_fence_put(fence);
+ 
+ out:
+ 	i915_active_release(ref);
+@@ -469,13 +472,9 @@ __i915_active_set_fence(struct i915_acti
+ 		return NULL;
+ 	}
+ 
+-	rcu_read_lock();
+ 	prev = __i915_active_fence_set(active, fence);
+-	if (prev)
+-		prev = dma_fence_get_rcu(prev);
+-	else
++	if (!prev)
+ 		__i915_active_acquire(ref);
+-	rcu_read_unlock();
+ 
+ 	return prev;
+ }
+@@ -1019,10 +1018,11 @@ void i915_request_add_active_barriers(st
+  *
+  * Records the new @fence as the last active fence along its timeline in
+  * this active tracker, moving the tracking callbacks from the previous
+- * fence onto this one. Returns the previous fence (if not already completed),
+- * which the caller must ensure is executed before the new fence. To ensure
+- * that the order of fences within the timeline of the i915_active_fence is
+- * understood, it should be locked by the caller.
++ * fence onto this one. Gets and returns a reference to the previous fence
++ * (if not already completed), which the caller must put after making sure
++ * that it is executed before the new fence. To ensure that the order of
++ * fences within the timeline of the i915_active_fence is understood, it
++ * should be locked by the caller.
+  */
+ struct dma_fence *
+ __i915_active_fence_set(struct i915_active_fence *active,
+@@ -1031,7 +1031,23 @@ __i915_active_fence_set(struct i915_acti
+ 	struct dma_fence *prev;
+ 	unsigned long flags;
+ 
+-	if (fence == rcu_access_pointer(active->fence))
++	/*
++	 * In case of fences embedded in i915_requests, their memory is
++	 * SLAB_FAILSAFE_BY_RCU, then it can be reused right after release
++	 * by new requests.  Then, there is a risk of passing back a pointer
++	 * to a new, completely unrelated fence that reuses the same memory
++	 * while tracked under a different active tracker.  Combined with i915
++	 * perf open/close operations that build await dependencies between
++	 * engine kernel context requests and user requests from different
++	 * timelines, this can lead to dependency loops and infinite waits.
++	 *
++	 * As a countermeasure, we try to get a reference to the active->fence
++	 * first, so if we succeed and pass it back to our user then it is not
++	 * released and potentially reused by an unrelated request before the
++	 * user has a chance to set up an await dependency on it.
++	 */
++	prev = i915_active_fence_get(active);
++	if (fence == prev)
+ 		return fence;
+ 
+ 	GEM_BUG_ON(test_bit(DMA_FENCE_FLAG_SIGNALED_BIT, &fence->flags));
+@@ -1040,27 +1056,56 @@ __i915_active_fence_set(struct i915_acti
+ 	 * Consider that we have two threads arriving (A and B), with
+ 	 * C already resident as the active->fence.
+ 	 *
+-	 * A does the xchg first, and so it sees C or NULL depending
+-	 * on the timing of the interrupt handler. If it is NULL, the
+-	 * previous fence must have been signaled and we know that
+-	 * we are first on the timeline. If it is still present,
+-	 * we acquire the lock on that fence and serialise with the interrupt
+-	 * handler, in the process removing it from any future interrupt
+-	 * callback. A will then wait on C before executing (if present).
+-	 *
+-	 * As B is second, it sees A as the previous fence and so waits for
+-	 * it to complete its transition and takes over the occupancy for
+-	 * itself -- remembering that it needs to wait on A before executing.
++	 * Both A and B have got a reference to C or NULL, depending on the
++	 * timing of the interrupt handler.  Let's assume that if A has got C
++	 * then it has locked C first (before B).
+ 	 *
+ 	 * Note the strong ordering of the timeline also provides consistent
+ 	 * nesting rules for the fence->lock; the inner lock is always the
+ 	 * older lock.
+ 	 */
+ 	spin_lock_irqsave(fence->lock, flags);
+-	prev = xchg(__active_fence_slot(active), fence);
+-	if (prev) {
+-		GEM_BUG_ON(prev == fence);
++	if (prev)
+ 		spin_lock_nested(prev->lock, SINGLE_DEPTH_NESTING);
 +
-+#include <linux/types.h>
++	/*
++	 * A does the cmpxchg first, and so it sees C or NULL, as before, or
++	 * something else, depending on the timing of other threads and/or
++	 * interrupt handler.  If not the same as before then A unlocks C if
++	 * applicable and retries, starting from an attempt to get a new
++	 * active->fence.  Meanwhile, B follows the same path as A.
++	 * Once A succeeds with cmpxch, B fails again, retires, gets A from
++	 * active->fence, locks it as soon as A completes, and possibly
++	 * succeeds with cmpxchg.
++	 */
++	while (cmpxchg(__active_fence_slot(active), prev, fence) != prev) {
++		if (prev) {
++			spin_unlock(prev->lock);
++			dma_fence_put(prev);
++		}
++		spin_unlock_irqrestore(fence->lock, flags);
 +
-+enum watch_notification_type {
-+	WATCH_TYPE_META		= 0,	/* Special record */
-+	WATCH_TYPE__NR		= 1
-+};
++		prev = i915_active_fence_get(active);
++		GEM_BUG_ON(prev == fence);
 +
-+enum watch_meta_notification_subtype {
-+	WATCH_META_REMOVAL_NOTIFICATION	= 0,	/* Watched object was removed */
-+	WATCH_META_LOSS_NOTIFICATION	= 1,	/* Data loss occurred */
-+};
++		spin_lock_irqsave(fence->lock, flags);
++		if (prev)
++			spin_lock_nested(prev->lock, SINGLE_DEPTH_NESTING);
++	}
 +
-+/*
-+ * Notification record header.  This is aligned to 64-bits so that subclasses
-+ * can contain __u64 fields.
-+ */
-+struct watch_notification {
-+	__u32			type:24;	/* enum watch_notification_type */
-+	__u32			subtype:8;	/* Type-specific subtype (filterable) */
-+	__u32			info;
-+#define WATCH_INFO_LENGTH	0x0000007f	/* Length of record */
-+#define WATCH_INFO_LENGTH__SHIFT 0
-+#define WATCH_INFO_ID		0x0000ff00	/* ID of watchpoint */
-+#define WATCH_INFO_ID__SHIFT	8
-+#define WATCH_INFO_TYPE_INFO	0xffff0000	/* Type-specific info */
-+#define WATCH_INFO_TYPE_INFO__SHIFT 16
-+#define WATCH_INFO_FLAG_0	0x00010000	/* Type-specific info, flag bit 0 */
-+#define WATCH_INFO_FLAG_1	0x00020000	/* ... */
-+#define WATCH_INFO_FLAG_2	0x00040000
-+#define WATCH_INFO_FLAG_3	0x00080000
-+#define WATCH_INFO_FLAG_4	0x00100000
-+#define WATCH_INFO_FLAG_5	0x00200000
-+#define WATCH_INFO_FLAG_6	0x00400000
-+#define WATCH_INFO_FLAG_7	0x00800000
-+};
-+
-+
-+/*
-+ * Extended watch removal notification.  This is used optionally if the type
-+ * wants to indicate an identifier for the object being watched, if there is
-+ * such.  This can be distinguished by the length.
-+ *
-+ * type -> WATCH_TYPE_META
-+ * subtype -> WATCH_META_REMOVAL_NOTIFICATION
-+ */
-+struct watch_notification_removal {
-+	struct watch_notification watch;
-+	__u64	id;		/* Type-dependent identifier */
-+};
-+
-+#endif /* _UAPI_LINUX_WATCH_QUEUE_H */
--- 
-2.39.2
-
++	/*
++	 * If prev is NULL then the previous fence must have been signaled
++	 * and we know that we are first on the timeline.  If it is still
++	 * present then, having the lock on that fence already acquired, we
++	 * serialise with the interrupt handler, in the process of removing it
++	 * from any future interrupt callback.  A will then wait on C before
++	 * executing (if present).
++	 *
++	 * As B is second, it sees A as the previous fence and so waits for
++	 * it to complete its transition and takes over the occupancy for
++	 * itself -- remembering that it needs to wait on A before executing.
++	 */
++	if (prev) {
+ 		__list_del_entry(&active->cb.node);
+ 		spin_unlock(prev->lock); /* serialise with prev->cb_list */
+ 	}
+@@ -1077,11 +1122,7 @@ int i915_active_fence_set(struct i915_ac
+ 	int err = 0;
+ 
+ 	/* Must maintain timeline ordering wrt previous active requests */
+-	rcu_read_lock();
+ 	fence = __i915_active_fence_set(active, &rq->fence);
+-	if (fence) /* but the previous fence may not belong to that timeline! */
+-		fence = dma_fence_get_rcu(fence);
+-	rcu_read_unlock();
+ 	if (fence) {
+ 		err = i915_request_await_dma_fence(rq, fence);
+ 		dma_fence_put(fence);
+--- a/drivers/gpu/drm/i915/i915_request.c
++++ b/drivers/gpu/drm/i915/i915_request.c
+@@ -1661,6 +1661,11 @@ __i915_request_ensure_parallel_ordering(
+ 
+ 	request_to_parent(rq)->parallel.last_rq = i915_request_get(rq);
+ 
++	/*
++	 * Users have to put a reference potentially got by
++	 * __i915_active_fence_set() to the returned request
++	 * when no longer needed
++	 */
+ 	return to_request(__i915_active_fence_set(&timeline->last_request,
+ 						  &rq->fence));
+ }
+@@ -1707,6 +1712,10 @@ __i915_request_ensure_ordering(struct i9
+ 							 0);
+ 	}
+ 
++	/*
++	 * Users have to put the reference to prev potentially got
++	 * by __i915_active_fence_set() when no longer needed
++	 */
+ 	return prev;
+ }
+ 
+@@ -1760,6 +1769,8 @@ __i915_request_add_to_timeline(struct i9
+ 		prev = __i915_request_ensure_ordering(rq, timeline);
+ 	else
+ 		prev = __i915_request_ensure_parallel_ordering(rq, timeline);
++	if (prev)
++		i915_request_put(prev);
+ 
+ 	/*
+ 	 * Make sure that no request gazumped us - if it was allocated after
 
 
