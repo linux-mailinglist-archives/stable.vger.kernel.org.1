@@ -2,46 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4E140775C6C
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:27:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 15BB7775BC3
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:20:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233755AbjHIL1S (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:27:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36288 "EHLO
+        id S233536AbjHILUt (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:20:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52518 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233752AbjHIL1Q (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:27:16 -0400
+        with ESMTP id S233530AbjHILUs (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:20:48 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 898F7FA
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:27:16 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D8C0ED
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:20:48 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 18EBC632A5
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:27:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F689C433C8;
-        Wed,  9 Aug 2023 11:27:15 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 981C8631DF
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:20:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1FDEC433C7;
+        Wed,  9 Aug 2023 11:20:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691580435;
-        bh=aU3qxn3G6HJeo84kmnq0JMS1zMg0+w/83krGntnvmA0=;
+        s=korg; t=1691580047;
+        bh=o55XrKVm5ppVeLVzq/eueCjL+sp/Va0Dcwr+MSFVrzE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=UzveRZOA9XijqPOOi701Ct3VO1oowBzrxv83P/XS97IbIdsdhSqlF6IJ+6D2uVHZS
-         0KHDvsbMpQWHUOCxcOfL1ERdJQ0aFnQCb55gMGxv3lDrxmpgpBgXEmjG4E4SdD9zk0
-         Cw6ykLrN5wF2Arejoo3jSaScqnlGDyDE78849ltY=
+        b=H1y7De5g8uQdFTAOYxXWW5ClQzmsPfxzXiu4TTREkvThaCdA7x8NrvwYgnqp6K+RK
+         03WxHJcHBVEEZem0SfhCfTIfcSWhg6+G7ImS7LCD3GD0xlIiJfi/JJn2Om7G+GPOl+
+         SQnhC2eb0OlZ1m2kGiGLNsF1KPR5Xk4f8di8zUec=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Lukas Wunner <lukas@wunner.de>,
-        =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
+        patches@lists.linux.dev, Florian Westphal <fw@strlen.de>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 016/154] PCI/ASPM: Avoid link retraining race
+Subject: [PATCH 4.19 209/323] netfilter: nf_tables: fix spurious set element insertion failure
 Date:   Wed,  9 Aug 2023 12:40:47 +0200
-Message-ID: <20230809103637.477080966@linuxfoundation.org>
+Message-ID: <20230809103707.700401706@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103636.887175326@linuxfoundation.org>
-References: <20230809103636.887175326@linuxfoundation.org>
+In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
+References: <20230809103658.104386911@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,59 +54,47 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit e7e39756363ad5bd83ddeae1063193d0f13870fd ]
+[ Upstream commit ddbd8be68941985f166f5107109a90ce13147c44 ]
 
-PCIe r6.0.1, sec 7.5.3.7, recommends setting the link control parameters,
-then waiting for the Link Training bit to be clear before setting the
-Retrain Link bit.
+On some platforms there is a padding hole in the nft_verdict
+structure, between the verdict code and the chain pointer.
 
-This avoids a race where the LTSSM may not use the updated parameters if it
-is already in the midst of link training because of other normal link
-activity.
+On element insertion, if the new element clashes with an existing one and
+NLM_F_EXCL flag isn't set, we want to ignore the -EEXIST error as long as
+the data associated with duplicated element is the same as the existing
+one.  The data equality check uses memcmp.
 
-Wait for the Link Training bit to be clear before toggling the Retrain Link
-bit to ensure that the LTSSM uses the updated link control parameters.
+For normal data (NFT_DATA_VALUE) this works fine, but for NFT_DATA_VERDICT
+padding area leads to spurious failure even if the verdict data is the
+same.
 
-[bhelgaas: commit log, return 0 (success)/-ETIMEDOUT instead of bool for
-both pcie_wait_for_retrain() and the existing pcie_retrain_link()]
-Suggested-by: Lukas Wunner <lukas@wunner.de>
-Fixes: 7d715a6c1ae5 ("PCI: add PCI Express ASPM support")
-Link: https://lore.kernel.org/r/20230502083923.34562-1-ilpo.jarvinen@linux.intel.com
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Lukas Wunner <lukas@wunner.de>
-Cc: stable@vger.kernel.org
+This then makes the insertion fail with 'already exists' error, even
+though the new "key : data" matches an existing entry and userspace
+told the kernel that it doesn't want to receive an error indication.
+
+Fixes: c016c7e45ddf ("netfilter: nf_tables: honor NLM_F_EXCL flag in set element insertion")
+Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/pcie/aspm.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ net/netfilter/nf_tables_api.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/pci/pcie/aspm.c b/drivers/pci/pcie/aspm.c
-index 749a367bde2df..55270180ae081 100644
---- a/drivers/pci/pcie/aspm.c
-+++ b/drivers/pci/pcie/aspm.c
-@@ -220,8 +220,19 @@ static int pcie_wait_for_retrain(struct pci_dev *pdev)
- static int pcie_retrain_link(struct pcie_link_state *link)
- {
- 	struct pci_dev *parent = link->pdev;
-+	int rc;
- 	u16 reg16;
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index 16405e71a6780..f25b6337f150a 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -7248,6 +7248,9 @@ static int nft_verdict_init(const struct nft_ctx *ctx, struct nft_data *data,
  
-+	/*
-+	 * Ensure the updated LNKCTL parameters are used during link
-+	 * training by checking that there is no ongoing link training to
-+	 * avoid LTSSM race as recommended in Implementation Note at the
-+	 * end of PCIe r6.0.1 sec 7.5.3.7.
-+	 */
-+	rc = pcie_wait_for_retrain(parent);
-+	if (rc)
-+		return rc;
+ 	if (!tb[NFTA_VERDICT_CODE])
+ 		return -EINVAL;
 +
- 	pcie_capability_read_word(parent, PCI_EXP_LNKCTL, &reg16);
- 	reg16 |= PCI_EXP_LNKCTL_RL;
- 	pcie_capability_write_word(parent, PCI_EXP_LNKCTL, reg16);
++	/* zero padding hole for memcmp */
++	memset(data, 0, sizeof(*data));
+ 	data->verdict.code = ntohl(nla_get_be32(tb[NFTA_VERDICT_CODE]));
+ 
+ 	switch (data->verdict.code) {
 -- 
 2.39.2
 
