@@ -2,48 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6E28E775791
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:47:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 66A08775A3E
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:06:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231143AbjHIKrf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 06:47:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60076 "EHLO
+        id S233112AbjHILGi (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:06:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45392 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232227AbjHIKrd (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:47:33 -0400
+        with ESMTP id S233113AbjHILGi (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:06:38 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 001B310F3
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:47:32 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6676B10F3
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:06:37 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 94A47630D2
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:47:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9272AC433C8;
-        Wed,  9 Aug 2023 10:47:31 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0628C63118
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:06:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15C35C433C8;
+        Wed,  9 Aug 2023 11:06:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691578052;
-        bh=hIB8bzkdEhVkg3ebuWgqUtM20iL7IY4hyTdDMCXLDlI=;
+        s=korg; t=1691579196;
+        bh=CZNTdOr0qThjqT/wf9+TGGciE3frlEIOaIt1tsNMhY8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=InPYIMj39lkHljsUrPMKK7D+R4kmMzPEEQC5yjbMwkLUcMqTd1W3ncbfVxaXnR5J9
-         FhDliPbVTyKFS6idPb7Kl2q3qb4BgOaN32D2g0xQzZbSwPGUFXHS1VwGKyXIyiqXcA
-         zfXMM9q+g6I/Zbm8BKpquzYw0oN00CFT7fTcqJh0=
+        b=YvrphXCZgQ7LXT1uxsEEYpZJi+G2pjiAR1sh2WeK7SjXDA4cNm+AMonSJkCxtwU7t
+         4juoQ9BTzMN+s7I6l/WNkDZ3EAjeNs0h4w4RhYue5Rk2SKHNv8qUOMjjNcpv0tEyB2
+         QpK9PUrbqkUZmfM/2GXFm/xXVXjGkebPcF+iuAuI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jonas Gorski <jonas.gorski@bisdn.de>,
-        Elad Nachman <enachman@marvell.com>,
-        Jesse Brandeburg <jesse.brandeburg@intel.com>,
-        Taras Chornyi <taras.chornyi@plvision.eu>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 088/165] prestera: fix fallback to previous version on same major version
+        patches@lists.linux.dev, Tim Gardner <tim.gardner@canonical.com>,
+        kernel test robot <lkp@intel.com>,
+        Ron Economos <re@w6rz.net>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Fabian Frederick <fabf@skynet.be>,
+        Christian Marangi <ansuelsmth@gmail.com>,
+        Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 4.14 081/204] jffs2: reduce stack usage in jffs2_build_xattr_subsystem()
 Date:   Wed,  9 Aug 2023 12:40:19 +0200
-Message-ID: <20230809103645.685220118@linuxfoundation.org>
+Message-ID: <20230809103645.378008760@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103642.720851262@linuxfoundation.org>
-References: <20230809103642.720851262@linuxfoundation.org>
+In-Reply-To: <20230809103642.552405807@linuxfoundation.org>
+References: <20230809103642.552405807@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -58,66 +60,128 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jonas Gorski <jonas.gorski@bisdn.de>
+From: Fabian Frederick <fabf@skynet.be>
 
-[ Upstream commit b755c25fbcd568821a3bb0e0d5c2daa5fcb00bba ]
+commit 1168f095417643f663caa341211e117db552989f upstream.
 
-When both supported and previous version have the same major version,
-and the firmwares are missing, the driver ends in a loop requesting the
-same (previous) version over and over again:
+Use kcalloc() for allocation/flush of 128 pointers table to
+reduce stack usage.
 
-    [   76.327413] Prestera DX 0000:01:00.0: missing latest mrvl/prestera/mvsw_prestera_fw-v4.1.img firmware, fall-back to previous 4.0 version
-    [   76.339802] Prestera DX 0000:01:00.0: missing latest mrvl/prestera/mvsw_prestera_fw-v4.0.img firmware, fall-back to previous 4.0 version
-    [   76.352162] Prestera DX 0000:01:00.0: missing latest mrvl/prestera/mvsw_prestera_fw-v4.0.img firmware, fall-back to previous 4.0 version
-    [   76.364502] Prestera DX 0000:01:00.0: missing latest mrvl/prestera/mvsw_prestera_fw-v4.0.img firmware, fall-back to previous 4.0 version
-    [   76.376848] Prestera DX 0000:01:00.0: missing latest mrvl/prestera/mvsw_prestera_fw-v4.0.img firmware, fall-back to previous 4.0 version
-    [   76.389183] Prestera DX 0000:01:00.0: missing latest mrvl/prestera/mvsw_prestera_fw-v4.0.img firmware, fall-back to previous 4.0 version
-    [   76.401522] Prestera DX 0000:01:00.0: missing latest mrvl/prestera/mvsw_prestera_fw-v4.0.img firmware, fall-back to previous 4.0 version
-    [   76.413860] Prestera DX 0000:01:00.0: missing latest mrvl/prestera/mvsw_prestera_fw-v4.0.img firmware, fall-back to previous 4.0 version
-    [   76.426199] Prestera DX 0000:01:00.0: missing latest mrvl/prestera/mvsw_prestera_fw-v4.0.img firmware, fall-back to previous 4.0 version
-    ...
+Function now returns -ENOMEM or 0 on success.
 
-Fix this by inverting the check to that we aren't yet at the previous
-version, and also check the minor version.
+stackusage
+Before:
+./fs/jffs2/xattr.c:775  jffs2_build_xattr_subsystem     1208
+dynamic,bounded
 
-This also catches the case where both versions are the same, as it was
-after commit bb5dbf2cc64d ("net: marvell: prestera: add firmware v4.0
-support").
+After:
+./fs/jffs2/xattr.c:775  jffs2_build_xattr_subsystem     192
+dynamic,bounded
 
-With this fix applied:
+Also update definition when CONFIG_JFFS2_FS_XATTR is not enabled
 
-    [   88.499622] Prestera DX 0000:01:00.0: missing latest mrvl/prestera/mvsw_prestera_fw-v4.1.img firmware, fall-back to previous 4.0 version
-    [   88.511995] Prestera DX 0000:01:00.0: failed to request previous firmware: mrvl/prestera/mvsw_prestera_fw-v4.0.img
-    [   88.522403] Prestera DX: probe of 0000:01:00.0 failed with error -2
+Tested with an MTD mount point and some user set/getfattr.
 
-Fixes: 47f26018a414 ("net: marvell: prestera: try to load previous fw version")
-Signed-off-by: Jonas Gorski <jonas.gorski@bisdn.de>
-Acked-by: Elad Nachman <enachman@marvell.com>
-Reviewed-by: Jesse Brandeburg <jesse.brandeburg@intel.com>
-Acked-by: Taras Chornyi <taras.chornyi@plvision.eu>
-Link: https://lore.kernel.org/r/20230802092357.163944-1-jonas.gorski@bisdn.de
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Many current target on OpenWRT also suffer from a compilation warning
+(that become an error with CONFIG_WERROR) with the following output:
+
+fs/jffs2/xattr.c: In function 'jffs2_build_xattr_subsystem':
+fs/jffs2/xattr.c:887:1: error: the frame size of 1088 bytes is larger than 1024 bytes [-Werror=frame-larger-than=]
+  887 | }
+      | ^
+
+Using dynamic allocation fix this compilation warning.
+
+Fixes: c9f700f840bd ("[JFFS2][XATTR] using 'delete marker' for xdatum/xref deletion")
+Reported-by: Tim Gardner <tim.gardner@canonical.com>
+Reported-by: kernel test robot <lkp@intel.com>
+Reported-by: Ron Economos <re@w6rz.net>
+Reported-by: Nathan Chancellor <nathan@kernel.org>
+Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
+Signed-off-by: Fabian Frederick <fabf@skynet.be>
+Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
+Cc: stable@vger.kernel.org
+Message-Id: <20230506045612.16616-1-ansuelsmth@gmail.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/marvell/prestera/prestera_pci.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/jffs2/build.c |    5 ++++-
+ fs/jffs2/xattr.c |   13 +++++++++----
+ fs/jffs2/xattr.h |    4 ++--
+ 3 files changed, 15 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/ethernet/marvell/prestera/prestera_pci.c b/drivers/net/ethernet/marvell/prestera/prestera_pci.c
-index f328d957b2db7..35857dc19542f 100644
---- a/drivers/net/ethernet/marvell/prestera/prestera_pci.c
-+++ b/drivers/net/ethernet/marvell/prestera/prestera_pci.c
-@@ -727,7 +727,8 @@ static int prestera_fw_get(struct prestera_fw *fw)
+--- a/fs/jffs2/build.c
++++ b/fs/jffs2/build.c
+@@ -211,7 +211,10 @@ static int jffs2_build_filesystem(struct
+ 		ic->scan_dents = NULL;
+ 		cond_resched();
+ 	}
+-	jffs2_build_xattr_subsystem(c);
++	ret = jffs2_build_xattr_subsystem(c);
++	if (ret)
++		goto exit;
++
+ 	c->flags &= ~JFFS2_SB_FLAG_BUILDING;
  
- 	err = request_firmware_direct(&fw->bin, fw_path, fw->dev.dev);
- 	if (err) {
--		if (ver_maj == PRESTERA_SUPP_FW_MAJ_VER) {
-+		if (ver_maj != PRESTERA_PREV_FW_MAJ_VER ||
-+		    ver_min != PRESTERA_PREV_FW_MIN_VER) {
- 			ver_maj = PRESTERA_PREV_FW_MAJ_VER;
- 			ver_min = PRESTERA_PREV_FW_MIN_VER;
+ 	dbg_fsbuild("FS build complete\n");
+--- a/fs/jffs2/xattr.c
++++ b/fs/jffs2/xattr.c
+@@ -772,10 +772,10 @@ void jffs2_clear_xattr_subsystem(struct
+ }
  
--- 
-2.40.1
-
+ #define XREF_TMPHASH_SIZE	(128)
+-void jffs2_build_xattr_subsystem(struct jffs2_sb_info *c)
++int jffs2_build_xattr_subsystem(struct jffs2_sb_info *c)
+ {
+ 	struct jffs2_xattr_ref *ref, *_ref;
+-	struct jffs2_xattr_ref *xref_tmphash[XREF_TMPHASH_SIZE];
++	struct jffs2_xattr_ref **xref_tmphash;
+ 	struct jffs2_xattr_datum *xd, *_xd;
+ 	struct jffs2_inode_cache *ic;
+ 	struct jffs2_raw_node_ref *raw;
+@@ -784,9 +784,12 @@ void jffs2_build_xattr_subsystem(struct
+ 
+ 	BUG_ON(!(c->flags & JFFS2_SB_FLAG_BUILDING));
+ 
++	xref_tmphash = kcalloc(XREF_TMPHASH_SIZE,
++			       sizeof(struct jffs2_xattr_ref *), GFP_KERNEL);
++	if (!xref_tmphash)
++		return -ENOMEM;
++
+ 	/* Phase.1 : Merge same xref */
+-	for (i=0; i < XREF_TMPHASH_SIZE; i++)
+-		xref_tmphash[i] = NULL;
+ 	for (ref=c->xref_temp; ref; ref=_ref) {
+ 		struct jffs2_xattr_ref *tmp;
+ 
+@@ -884,6 +887,8 @@ void jffs2_build_xattr_subsystem(struct
+ 		     "%u of xref (%u dead, %u orphan) found.\n",
+ 		     xdatum_count, xdatum_unchecked_count, xdatum_orphan_count,
+ 		     xref_count, xref_dead_count, xref_orphan_count);
++	kfree(xref_tmphash);
++	return 0;
+ }
+ 
+ struct jffs2_xattr_datum *jffs2_setup_xattr_datum(struct jffs2_sb_info *c,
+--- a/fs/jffs2/xattr.h
++++ b/fs/jffs2/xattr.h
+@@ -71,7 +71,7 @@ static inline int is_xattr_ref_dead(stru
+ #ifdef CONFIG_JFFS2_FS_XATTR
+ 
+ extern void jffs2_init_xattr_subsystem(struct jffs2_sb_info *c);
+-extern void jffs2_build_xattr_subsystem(struct jffs2_sb_info *c);
++extern int jffs2_build_xattr_subsystem(struct jffs2_sb_info *c);
+ extern void jffs2_clear_xattr_subsystem(struct jffs2_sb_info *c);
+ 
+ extern struct jffs2_xattr_datum *jffs2_setup_xattr_datum(struct jffs2_sb_info *c,
+@@ -103,7 +103,7 @@ extern ssize_t jffs2_listxattr(struct de
+ #else
+ 
+ #define jffs2_init_xattr_subsystem(c)
+-#define jffs2_build_xattr_subsystem(c)
++#define jffs2_build_xattr_subsystem(c)		(0)
+ #define jffs2_clear_xattr_subsystem(c)
+ 
+ #define jffs2_xattr_do_crccheck_inode(c, ic)
 
 
