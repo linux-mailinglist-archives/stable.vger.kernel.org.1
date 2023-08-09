@@ -2,103 +2,95 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 96F3F7758B3
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:55:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CF41B775B9F
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:19:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232535AbjHIKzF (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 06:55:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35380 "EHLO
+        id S233495AbjHILTT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:19:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36120 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232543AbjHIKyz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:54:55 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9ED412727
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:53:19 -0700 (PDT)
+        with ESMTP id S233489AbjHILTS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:19:18 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 30EF8ED
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:19:18 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3B28963145
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:52:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46409C433C7;
-        Wed,  9 Aug 2023 10:52:31 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C4340631B1
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:19:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D48D0C433C8;
+        Wed,  9 Aug 2023 11:19:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691578351;
-        bh=QD+2NvHvpYFesV9dgkYpnKxM7sapwZVDek+B14lqOc4=;
+        s=korg; t=1691579957;
+        bh=2Boqgdv+d+CAbaPylFU5D9+yQB76GtZgHvvqAMNFois=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Q55WGGDwOpdpLf+iueKx9at0bI929a4i0hqttjlXHtnd987s/UzBSMh7TTeM5/LPH
-         ZWxtzGrTIJI2Hu2WzboqlTcNfltozrRk7EljWEo1AbdIx3W0fT133e9kk0AzwwKEYT
-         Waj1xjttrC0uUF1xqFZnJjCh0ozxTjCKxENZFd/A=
+        b=dYfMVRrQ+cqW7W5q9EeNdcHNpM1BtkKBdyfTV/LnLIEjQuNRWzrg1vn2AwS+ZbkKa
+         6u4SMEXNfjwv1wj+U5aOylBnbtg1T6bV35FH4G7hbPf54j/usxT4bNjc1C6oUt8vMq
+         ZxKIn2Noi/1n7cw35uDnpLUmBHPULTvGCzSN0m3M=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jakub Kicinski <kuba@kernel.org>,
-        Lin Ma <linma@zju.edu.cn>,
-        Martin KaFai Lau <martin.lau@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 028/127] bpf: Add length check for SK_DIAG_BPF_STORAGE_REQ_MAP_FD parsing
+        patches@lists.linux.dev,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Andi Shyti <andi.shyti@kernel.org>,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        Jiri Slaby <jirislaby@kernel.org>
+Subject: [PATCH 4.19 177/323] tty: serial: samsung_tty: Fix a memory leak in s3c24xx_serial_getclk() in case of error
 Date:   Wed,  9 Aug 2023 12:40:15 +0200
-Message-ID: <20230809103637.589469422@linuxfoundation.org>
+Message-ID: <20230809103706.233324866@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103636.615294317@linuxfoundation.org>
-References: <20230809103636.615294317@linuxfoundation.org>
+In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
+References: <20230809103658.104386911@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Lin Ma <linma@zju.edu.cn>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit bcc29b7f5af6797702c2306a7aacb831fc5ce9cb ]
+commit a9c09546e903f1068acfa38e1ee18bded7114b37 upstream.
 
-The nla_for_each_nested parsing in function bpf_sk_storage_diag_alloc
-does not check the length of the nested attribute. This can lead to an
-out-of-attribute read and allow a malformed nlattr (e.g., length 0) to
-be viewed as a 4 byte integer.
+If clk_get_rate() fails, the clk that has just been allocated needs to be
+freed.
 
-This patch adds an additional check when the nlattr is getting counted.
-This makes sure the latter nla_get_u32 can access the attributes with
-the correct length.
-
-Fixes: 1ed4d92458a9 ("bpf: INET_DIAG support in bpf_sk_storage")
-Suggested-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Lin Ma <linma@zju.edu.cn>
-Reviewed-by: Jakub Kicinski <kuba@kernel.org>
-Link: https://lore.kernel.org/r/20230725023330.422856-1-linma@zju.edu.cn
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: <stable@vger.kernel.org> # v3.3+
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
+Fixes: 5f5a7a5578c5 ("serial: samsung: switch to clkdev based clock lookup")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Reviewed-by: Jiri Slaby <jirislaby@kernel.org>
+Message-ID: <e4baf6039368f52e5a5453982ddcb9a330fc689e.1686412569.git.christophe.jaillet@wanadoo.fr>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/bpf_sk_storage.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/tty/serial/samsung.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/net/core/bpf_sk_storage.c b/net/core/bpf_sk_storage.c
-index 94374d529ea42..ad01b1bea52e4 100644
---- a/net/core/bpf_sk_storage.c
-+++ b/net/core/bpf_sk_storage.c
-@@ -531,8 +531,11 @@ bpf_sk_storage_diag_alloc(const struct nlattr *nla_stgs)
- 		return ERR_PTR(-EPERM);
+--- a/drivers/tty/serial/samsung.c
++++ b/drivers/tty/serial/samsung.c
+@@ -1199,8 +1199,12 @@ static unsigned int s3c24xx_serial_getcl
+ 			continue;
  
- 	nla_for_each_nested(nla, nla_stgs, rem) {
--		if (nla_type(nla) == SK_DIAG_BPF_STORAGE_REQ_MAP_FD)
-+		if (nla_type(nla) == SK_DIAG_BPF_STORAGE_REQ_MAP_FD) {
-+			if (nla_len(nla) != sizeof(u32))
-+				return ERR_PTR(-EINVAL);
- 			nr_maps++;
+ 		rate = clk_get_rate(clk);
+-		if (!rate)
++		if (!rate) {
++			dev_err(ourport->port.dev,
++				"Failed to get clock rate for %s.\n", clkname);
++			clk_put(clk);
+ 			continue;
 +		}
- 	}
  
- 	diag = kzalloc(struct_size(diag, maps, nr_maps), GFP_KERNEL);
--- 
-2.40.1
-
+ 		if (ourport->info->has_divslot) {
+ 			unsigned long div = rate / req_baud;
 
 
