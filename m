@@ -2,131 +2,111 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5CA117762B6
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 16:40:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B10CC7762C0
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 16:43:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233927AbjHIOkw (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 10:40:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35868 "EHLO
+        id S233370AbjHIOnw (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 10:43:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44306 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233975AbjHIOkt (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 10:40:49 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E0021FFA
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 07:40:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1691592002;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=QE78PQ7iVBej15oB5yPppMhS2FGb0gwiYPKV6kLIcTg=;
-        b=Lst/9E26VHKP7VdSGH1/6tMkjKXsdxaJ5O0sLVEyLTS3SYixLDMwmin7GAun6Qp0nvb5nl
-        NjRhF6/CrfMNai6camsQmFNKDND8kRfHIycyWVc0cpEok21I3WITBItMMThNoTb8P1cUOr
-        92RJozs6WEvqFDqu5av17iH13ziiq5U=
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
- [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-355-HxjiQ19oM_edoI_wb_cN-w-1; Wed, 09 Aug 2023 10:40:01 -0400
-X-MC-Unique: HxjiQ19oM_edoI_wb_cN-w-1
-Received: by mail-ej1-f71.google.com with SMTP id a640c23a62f3a-99c01c680beso463539466b.2
-        for <stable@vger.kernel.org>; Wed, 09 Aug 2023 07:40:00 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691592000; x=1692196800;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=QE78PQ7iVBej15oB5yPppMhS2FGb0gwiYPKV6kLIcTg=;
-        b=N9tBVY46TaCPTFsQbVyLyMVnhGpSeBOIysTdpm+QDkIN5YwsdTtQTs0S/76TOSP0yI
-         EXjeEv78HhFVziWzoTS3efCJc/a2klTuNmqbTdLRXofXg2oz12JRqesa5cLW7mYsPhVp
-         mElbODvkoNz7ODGq8xEzf1S0Fu1ORtYsRw/OIZn3OYhuylRgVbgvJcZxFf8Ug+70XKFf
-         qYWlNPO8+rjMms8bdtLqEKuztS/jCLrqNA0TBrK7aC234VrWdUucJc22FEQMV3xtwSFe
-         dCm5f8cGYo9eZfEYTMtiL2xYOJ1uPaGciZnCxvtmQHhfqMI9WUWBVQvR1QXh4VKRzKdV
-         N1Ug==
-X-Gm-Message-State: AOJu0Yy7SzzdAIMnOQ8EDH7XDb/ybIuiq+BuIQnMwxDV0Ufthx5wwHWf
-        HJ3u+29LO51GlMgv3N1wbJEvapIllmF3vN/dxicgKZ1GWSeh78ljzlzzNG6nnIQhzeCW1hLFSCg
-        CYTkWN/KePwKzf6tx
-X-Received: by 2002:a17:906:19b:b0:992:a90a:5d1f with SMTP id 27-20020a170906019b00b00992a90a5d1fmr2538417ejb.68.1691591999924;
-        Wed, 09 Aug 2023 07:39:59 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGxOAkAnR+lsG01THkgi5DLnNo2B4fwxuzOvrIqPnpF+a2p0A5CIujpmCmKQg1GWF9uB6lJCA==
-X-Received: by 2002:a17:906:19b:b0:992:a90a:5d1f with SMTP id 27-20020a170906019b00b00992a90a5d1fmr2538402ejb.68.1691591999648;
-        Wed, 09 Aug 2023 07:39:59 -0700 (PDT)
-Received: from ?IPV6:2001:1c00:c32:7800:5bfa:a036:83f0:f9ec? (2001-1c00-0c32-7800-5bfa-a036-83f0-f9ec.cable.dynamic.v6.ziggo.nl. [2001:1c00:c32:7800:5bfa:a036:83f0:f9ec])
-        by smtp.gmail.com with ESMTPSA id j15-20020a170906430f00b0099b76c3041csm8181983ejm.7.2023.08.09.07.39.58
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 09 Aug 2023 07:39:59 -0700 (PDT)
-Message-ID: <3fe197da-c26e-e826-4ea2-c13d2880046d@redhat.com>
-Date:   Wed, 9 Aug 2023 16:39:58 +0200
+        with ESMTP id S229726AbjHIOnw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 10:43:52 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A49F11FCC
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 07:43:51 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4438263C84
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 14:43:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CF1AC433C7;
+        Wed,  9 Aug 2023 14:43:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1691592230;
+        bh=SPWJfTnbAyDY9DXjwsNoO3N5YSghdMJD2KAlo08kyuU=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=N8HUqP58IW1+TxwGGSuVD0eKX0BcuC021V9vGaxKCq62YYnplPFJJFJT4GkCm+1R3
+         tHiq5Xe4V6uQ+AQMBhOUHJwyJHZLSZu8aMY1/YXWmlPGPhea27sO9+UeF6FTnZ1ZjE
+         aXj+Z8VowJtHdyaFuqYQ8Z5L054I3F+ApjUA9NCOurM2hV6ffTM2DZwBKjyLbyCF0l
+         gLAg3wEXRVwKaABDaWtQtewA3P/HPl/dEG17ATWWTGnNMlxyEknFhFox69ECZm0jR2
+         ZjHVvBqGfPwhQUoZW+fT0dfZhE3LtWpr1nf1PQgJAfDdlqueOvS+/Zw37UKCbuzAfj
+         OVC97Cde4FGBw==
+Date:   Wed, 9 Aug 2023 10:43:49 -0400
+From:   Sasha Levin <sashal@kernel.org>
+To:     Naresh Kamboju <naresh.kamboju@linaro.org>, bp@alien8.de
+Cc:     linux-stable <stable@vger.kernel.org>,
+        clang-built-linux <llvm@lists.linux.dev>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Anders Roxell <anders.roxell@linaro.org>,
+        Arnd Bergmann <arnd@arndb.de>
+Subject: Re: ld.lld: error: ./arch/x86/kernel/vmlinux.lds:191: at least one
+ side of the expression must be absolute
+Message-ID: <ZNOmJc5WYk9vUE85@sashalap>
+References: <CA+G9fYsdUeNu-gwbs0+T6XHi4hYYk=Y9725-wFhZ7gJMspLDRA@mail.gmail.com>
+ <CA+G9fYvDa-u22+gXt7VRWcQkCJFHvt2FPnjFmbwLX0bY__QrLg@mail.gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v3 3/3] ACPI: resource: Honor MADT INT_SRC_OVR settings
- for IRQ1 on AMD Zen
-Content-Language: en-US, nl
-To:     Jiri Slaby <jirislaby@kernel.org>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        August Wikerfors <git@augustwikerfors.se>
-Cc:     Linux regressions mailing list <regressions@lists.linux.dev>,
-        stable@vger.kernel.org, linux-acpi@vger.kernel.org, x86@kernel.org
-References: <20230809085526.84913-1-hdegoede@redhat.com>
- <20230809085526.84913-4-hdegoede@redhat.com>
- <f133d401-1975-6c85-47c5-f9464d5ef06f@kernel.org>
-From:   Hans de Goede <hdegoede@redhat.com>
-In-Reply-To: <f133d401-1975-6c85-47c5-f9464d5ef06f@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <CA+G9fYvDa-u22+gXt7VRWcQkCJFHvt2FPnjFmbwLX0bY__QrLg@mail.gmail.com>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi,
-
-On 8/9/23 11:20, Jiri Slaby wrote:
-> On 09. 08. 23, 10:55, Hans de Goede wrote:
->> On AMD Zen acpi_dev_irq_override() by default prefers the DSDT IRQ 1
->> settings over the MADT settings.
+On Wed, Aug 09, 2023 at 11:54:59AM +0530, Naresh Kamboju wrote:
+>also noticed on stable-rc 5.15 and 5.10.
+>
+>On Wed, 9 Aug 2023 at 11:40, Naresh Kamboju <naresh.kamboju@linaro.org> wrote:
 >>
->> This causes the keyboard to malfunction on some laptop models
->> (see Links), all models from the Links have an INT_SRC_OVR MADT entry
->> for IRQ 1.
-> ...
->> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-> ...
->> diff --git a/arch/x86/kernel/acpi/boot.c b/arch/x86/kernel/acpi/boot.c
->> index 21b542a6866c..b88e5e0135ab 100644
->> --- a/arch/x86/kernel/acpi/boot.c
->> +++ b/arch/x86/kernel/acpi/boot.c
->> @@ -52,6 +52,7 @@ int acpi_lapic;
->>   int acpi_ioapic;
->>   int acpi_strict;
->>   int acpi_disable_cmcff;
->> +int acpi_int_src_ovr[NR_IRQS_LEGACY];
-> 
-> So why not to use bool to make it clear this is not an irq number, but a state?
-> 
->>     /* ACPI SCI override configuration */
->>   u8 acpi_sci_flags __initdata;
->> @@ -588,6 +589,9 @@ acpi_parse_int_src_ovr(union acpi_subtable_headers * header,
->>         acpi_table_print_madt_entry(&header->common);
->>   +    if (intsrc->source_irq < NR_IRQS_LEGACY)
->> +        acpi_int_src_ovr[intsrc->source_irq] = 1;
-> 
-> And "true" here.
+>> While building Linux stable rc 6.1 x86_64 with clang-17 failed due to
+>> following warnings / errors.
+>>
+>> make --silent --keep-going --jobs=8
+>> O=/home/tuxbuild/.cache/tuxmake/builds/2/build ARCH=x86_64 SRCARCH=x86
+>> CROSS_COMPILE=x86_64-linux-gnu- 'HOSTCC=sccache clang' 'CC=sccache
+>> clang' LLVM=1 LLVM_IAS=1
+>>
+>> arch/x86/lib/retpoline.o: warning: objtool: .altinstr_replacement:
+>> unexpected end of section
+>> ld.lld: error: ./arch/x86/kernel/vmlinux.lds:191: at least one side of
+>> the expression must be absolute
+>> ld.lld: error: ./arch/x86/kernel/vmlinux.lds:192: at least one side of
+>> the expression must be absolute
+>> ld.lld: error: ./arch/x86/kernel/vmlinux.lds:191: at least one side of
+>> the expression must be absolute
+>> ld.lld: error: ./arch/x86/kernel/vmlinux.lds:192: at least one side of
+>> the expression must be absolute
+>> ld.lld: error: ./arch/x86/kernel/vmlinux.lds:191: at least one side of
+>> the expression must be absolute
+>> ld.lld: error: ./arch/x86/kernel/vmlinux.lds:192: at least one side of
+>> the expression must be absolute
+>> make[2]: *** [scripts/Makefile.vmlinux:34: vmlinux] Error 1
+>> make[2]: Target '__default' not remade because of errors.
+>> make[1]: *** [Makefile:1255: vmlinux] Error 2
+>>
+>>
+>> Build links,
+>>  - https://storage.tuxsuite.com/public/linaro/lkft/builds/2TiTUgExGs7SrTm9Lb4fakgeTfw/
+>>  - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.1.y/build/v6.1.44-117-g74848b090997/testrun/18917095/suite/build/test/clang-lkftconfig/details/
+>>  - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.1.y/build/v6.1.44-117-g74848b090997/testrun/18917095/suite/build/test/clang-lkftconfig/history/
+>>
+>> Steps to reproduce:
+>>   tuxmake --runtime podman --target-arch x86_64 --toolchain clang-17
+>> --kconfig https://storage.tuxsuite.com/public/linaro/lkft/builds/2TiTUgExGs7SrTm9Lb4fakgeTfw/config
+>> LLVM=1 LLVM_IAS=1
+>>   https://storage.tuxsuite.com/public/linaro/lkft/builds/2TiTUgExGs7SrTm9Lb4fakgeTfw/tuxmake_reproducer.sh
 
-Ack that would indeed be better.
+Same here... Bisected to ac41e90d8daa ("x86/srso: Add a Speculative RAS
+Overflow mitigation"), so adding in Borislav.
 
-Rafael, can you fix this up while merging or do you want a v4 series ?
-
-Regards,
-
-Hans
-
-
-
+-- 
+Thanks,
+Sasha
