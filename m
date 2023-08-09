@@ -2,49 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 633DB77574D
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:44:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6242A775B4F
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:16:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229632AbjHIKob (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 06:44:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51240 "EHLO
+        id S230296AbjHILQb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:16:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52578 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231378AbjHIKo2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:44:28 -0400
+        with ESMTP id S233420AbjHILQ3 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:16:29 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C3781702
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:44:28 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E9F8B1FD7
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:16:26 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id AF12563122
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:44:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCF3AC433C9;
-        Wed,  9 Aug 2023 10:44:26 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 89843619FA
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:16:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C45AC433C8;
+        Wed,  9 Aug 2023 11:16:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691577867;
-        bh=jwvgWVtNftjjBSavMJVmhqFPAca+IA7DejtQ3+/t+bc=;
+        s=korg; t=1691579786;
+        bh=OCn+iJArtvFnfoHeYGfW0+GnZXjY7OhoUjoVOfhu2BE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=vCBzq4NHdnmzlwARu9u1MDw8i3My8zwwwrMVbftoSq6ai8EOYykykrs8XgDlHbrL0
-         dXSjpFm/4hRo2JnqD595wfAakol+UdelPJqO9GiNMn3tXx5/1qn8k96mdueYajm522
-         rUETdoMl6mm4TFILk7gj8Ap5+VAr6rjLwPq2NcNo=
+        b=Oprw43bAdW1+fUELO7CzHU32BgjorqPoLe5z/Y8GKS+RNtAAAZav733TRM8R4qJoX
+         RVfIfrI8Bv5LD/Qx/xFz7nhtA9WSi0EkVIz5NBXtcu9yXx9YNMjtS22UitN6zoQw2m
+         DFI0UvVLeIEo+WTH3ThYSjaZGmM/wyqXrr1gP02I=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Sasha Levin <sashal@kernel.org>,
-        Nathan Chancellor <nathan@kernel.org>
-Subject: [PATCH 6.4 022/165] word-at-a-time: use the same return type for has_zero regardless of endianness
-Date:   Wed,  9 Aug 2023 12:39:13 +0200
-Message-ID: <20230809103643.524583362@linuxfoundation.org>
+        patches@lists.linux.dev, Zheng Wang <zyytlz.wz@163.com>,
+        Coly Li <colyli@suse.de>, Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 4.19 116/323] bcache: Remove unnecessary NULL point check in node allocations
+Date:   Wed,  9 Aug 2023 12:39:14 +0200
+Message-ID: <20230809103703.414111801@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103642.720851262@linuxfoundation.org>
-References: <20230809103642.720851262@linuxfoundation.org>
+In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
+References: <20230809103658.104386911@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -59,73 +54,92 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: ndesaulniers@google.com <ndesaulniers@google.com>
+From: Zheng Wang <zyytlz.wz@163.com>
 
-[ Upstream commit 79e8328e5acbe691bbde029a52c89d70dcbc22f3 ]
+commit 028ddcac477b691dd9205c92f991cc15259d033e upstream.
 
-Compiling big-endian targets with Clang produces the diagnostic:
+Due to the previous fix of __bch_btree_node_alloc, the return value will
+never be a NULL pointer. So IS_ERR is enough to handle the failure
+situation. Fix it by replacing IS_ERR_OR_NULL check by an IS_ERR check.
 
-  fs/namei.c:2173:13: warning: use of bitwise '|' with boolean operands [-Wbitwise-instead-of-logical]
-	} while (!(has_zero(a, &adata, &constants) | has_zero(b, &bdata, &constants)));
-	          ~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-                                               ||
-  fs/namei.c:2173:13: note: cast one or both operands to int to silence this warning
-
-It appears that when has_zero was introduced, two definitions were
-produced with different signatures (in particular different return
-types).
-
-Looking at the usage in hash_name() in fs/namei.c, I suspect that
-has_zero() is meant to be invoked twice per while loop iteration; using
-logical-or would not update `bdata` when `a` did not have zeros.  So I
-think it's preferred to always return an unsigned long rather than a
-bool than update the while loop in hash_name() to use a logical-or
-rather than bitwise-or.
-
-[ Also changed powerpc version to do the same  - Linus ]
-
-Link: https://github.com/ClangBuiltLinux/linux/issues/1832
-Link: https://lore.kernel.org/lkml/20230801-bitwise-v1-1-799bec468dc4@google.com/
-Fixes: 36126f8f2ed8 ("word-at-a-time: make the interfaces truly generic")
-Debugged-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Nick Desaulniers <ndesaulniers@google.com>
-Acked-by: Heiko Carstens <hca@linux.ibm.com>
-Cc: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: cafe56359144 ("bcache: A block layer cache")
+Cc: stable@vger.kernel.org
+Signed-off-by: Zheng Wang <zyytlz.wz@163.com>
+Signed-off-by: Coly Li <colyli@suse.de>
+Link: https://lore.kernel.org/r/20230615121223.22502-5-colyli@suse.de
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/include/asm/word-at-a-time.h | 2 +-
- include/asm-generic/word-at-a-time.h      | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/md/bcache/btree.c |   10 +++++-----
+ drivers/md/bcache/super.c |    4 ++--
+ 2 files changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/word-at-a-time.h b/arch/powerpc/include/asm/word-at-a-time.h
-index 46c31fb8748d5..30a12d2086871 100644
---- a/arch/powerpc/include/asm/word-at-a-time.h
-+++ b/arch/powerpc/include/asm/word-at-a-time.h
-@@ -34,7 +34,7 @@ static inline long find_zero(unsigned long mask)
- 	return leading_zero_bits >> 3;
- }
- 
--static inline bool has_zero(unsigned long val, unsigned long *data, const struct word_at_a_time *c)
-+static inline unsigned long has_zero(unsigned long val, unsigned long *data, const struct word_at_a_time *c)
+--- a/drivers/md/bcache/btree.c
++++ b/drivers/md/bcache/btree.c
+@@ -1174,7 +1174,7 @@ static struct btree *btree_node_alloc_re
  {
- 	unsigned long rhs = val | c->low_bits;
- 	*data = rhs;
-diff --git a/include/asm-generic/word-at-a-time.h b/include/asm-generic/word-at-a-time.h
-index 20c93f08c9933..95a1d214108a5 100644
---- a/include/asm-generic/word-at-a-time.h
-+++ b/include/asm-generic/word-at-a-time.h
-@@ -38,7 +38,7 @@ static inline long find_zero(unsigned long mask)
- 	return (mask >> 8) ? byte : byte + 1;
- }
+ 	struct btree *n = bch_btree_node_alloc(b->c, op, b->level, b->parent);
  
--static inline bool has_zero(unsigned long val, unsigned long *data, const struct word_at_a_time *c)
-+static inline unsigned long has_zero(unsigned long val, unsigned long *data, const struct word_at_a_time *c)
- {
- 	unsigned long rhs = val | c->low_bits;
- 	*data = rhs;
--- 
-2.40.1
-
+-	if (!IS_ERR_OR_NULL(n)) {
++	if (!IS_ERR(n)) {
+ 		mutex_lock(&n->write_lock);
+ 		bch_btree_sort_into(&b->keys, &n->keys, &b->c->sort);
+ 		bkey_copy_key(&n->key, &b->key);
+@@ -1377,7 +1377,7 @@ static int btree_gc_coalesce(struct btre
+ 	memset(new_nodes, 0, sizeof(new_nodes));
+ 	closure_init_stack(&cl);
+ 
+-	while (nodes < GC_MERGE_NODES && !IS_ERR_OR_NULL(r[nodes].b))
++	while (nodes < GC_MERGE_NODES && !IS_ERR(r[nodes].b))
+ 		keys += r[nodes++].keys;
+ 
+ 	blocks = btree_default_blocks(b->c) * 2 / 3;
+@@ -1389,7 +1389,7 @@ static int btree_gc_coalesce(struct btre
+ 
+ 	for (i = 0; i < nodes; i++) {
+ 		new_nodes[i] = btree_node_alloc_replacement(r[i].b, NULL);
+-		if (IS_ERR_OR_NULL(new_nodes[i]))
++		if (IS_ERR(new_nodes[i]))
+ 			goto out_nocoalesce;
+ 	}
+ 
+@@ -1524,7 +1524,7 @@ out_nocoalesce:
+ 			atomic_dec(&b->c->prio_blocked);
+ 
+ 	for (i = 0; i < nodes; i++)
+-		if (!IS_ERR_OR_NULL(new_nodes[i])) {
++		if (!IS_ERR(new_nodes[i])) {
+ 			btree_node_free(new_nodes[i]);
+ 			rw_unlock(true, new_nodes[i]);
+ 		}
+@@ -1706,7 +1706,7 @@ static int bch_btree_gc_root(struct btre
+ 	if (should_rewrite) {
+ 		n = btree_node_alloc_replacement(b, NULL);
+ 
+-		if (!IS_ERR_OR_NULL(n)) {
++		if (!IS_ERR(n)) {
+ 			bch_btree_node_write_sync(n);
+ 
+ 			bch_btree_set_root(n);
+--- a/drivers/md/bcache/super.c
++++ b/drivers/md/bcache/super.c
+@@ -1576,7 +1576,7 @@ static void cache_set_flush(struct closu
+ 	if (!IS_ERR_OR_NULL(c->gc_thread))
+ 		kthread_stop(c->gc_thread);
+ 
+-	if (!IS_ERR_OR_NULL(c->root))
++	if (!IS_ERR(c->root))
+ 		list_add(&c->root->list, &c->btree_cache);
+ 
+ 	/* Should skip this if we're unregistering because of an error */
+@@ -1921,7 +1921,7 @@ static int run_cache_set(struct cache_se
+ 
+ 		err = "cannot allocate new btree root";
+ 		c->root = __bch_btree_node_alloc(c, NULL, 0, true, NULL);
+-		if (IS_ERR_OR_NULL(c->root))
++		if (IS_ERR(c->root))
+ 			goto err;
+ 
+ 		mutex_lock(&c->root->write_lock);
 
 
