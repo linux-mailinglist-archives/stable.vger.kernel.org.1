@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EC73A77593A
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:58:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C8D4C7757C5
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:49:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232816AbjHIK6n (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 06:58:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35420 "EHLO
+        id S232279AbjHIKtv (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 06:49:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42972 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232819AbjHIK6k (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:58:40 -0400
+        with ESMTP id S230216AbjHIKtv (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:49:51 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D16A0213B
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:58:37 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D787410F3
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:49:50 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 70D68630D6
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:58:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82A90C433C7;
-        Wed,  9 Aug 2023 10:58:36 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 733E263123
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:49:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D325C433C8;
+        Wed,  9 Aug 2023 10:49:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691578716;
-        bh=LqfAj6TXgrvCVG67E2Iu0XiUOxKNonVzjiDz1lXHoH4=;
+        s=korg; t=1691578189;
+        bh=EQ4ZQNWXbrWOvn9E46s0iU/rYrE5RbLdcOQhsusyyiE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=wdqgaTeiz+7MAEQUd3m4WJK5VA53QQFb0IsJ81R5GnccuQ6cXOqCbnjmnw9L9LoHU
-         F9S1YsP95hj8I2qUVQiHPsaUirZeDae4g8fy07VLUjOCxAupkNSKkS33BnGkpOZTjs
-         tkQaDc2Lht8AbFViJ2/1+Am0wOpHHm4KlHmgP6MQ=
+        b=L8jOjASdk0thO1tD3l59XKmZlK6Z8iFyxMaupBcBcOxr16F1z1ZqpMDxvXAlnLBBF
+         q2f7eEwYF3Igs7VSEth6/mgKK4I+qYAgaiztO9FqdGZQnQu/PT/bK1vCUBXJo+hWIU
+         3zc8hEyd2v5oAEyem1vpVwhPgXEF/avYGcMhHZ4Q=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hou Tao <houtao1@huawei.com>,
-        Jesper Dangaard Brouer <hawk@kernel.org>,
-        Martin KaFai Lau <martin.lau@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 32/92] bpf, cpumap: Handle skb as well when clean up ptr_ring
-Date:   Wed,  9 Aug 2023 12:41:08 +0200
-Message-ID: <20230809103634.726216023@linuxfoundation.org>
+        patches@lists.linux.dev,
+        syzbot+aad58150cbc64ba41bdc@syzkaller.appspotmail.com,
+        Prince Kumar Maurya <princekumarmaurya06@gmail.com>,
+        Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 6.4 138/165] fs/sysv: Null check to prevent null-ptr-deref bug
+Date:   Wed,  9 Aug 2023 12:41:09 +0200
+Message-ID: <20230809103647.330181268@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103633.485906560@linuxfoundation.org>
-References: <20230809103633.485906560@linuxfoundation.org>
+In-Reply-To: <20230809103642.720851262@linuxfoundation.org>
+References: <20230809103642.720851262@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,85 +56,35 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Hou Tao <houtao1@huawei.com>
+From: Prince Kumar Maurya <princekumarmaurya06@gmail.com>
 
-[ Upstream commit 7c62b75cd1a792e14b037fa4f61f9b18914e7de1 ]
+commit ea2b62f305893992156a798f665847e0663c9f41 upstream.
 
-The following warning was reported when running xdp_redirect_cpu with
-both skb-mode and stress-mode enabled:
+sb_getblk(inode->i_sb, parent) return a null ptr and taking lock on
+that leads to the null-ptr-deref bug.
 
-  ------------[ cut here ]------------
-  Incorrect XDP memory type (-2128176192) usage
-  WARNING: CPU: 7 PID: 1442 at net/core/xdp.c:405
-  Modules linked in:
-  CPU: 7 PID: 1442 Comm: kworker/7:0 Tainted: G  6.5.0-rc2+ #1
-  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996)
-  Workqueue: events __cpu_map_entry_free
-  RIP: 0010:__xdp_return+0x1e4/0x4a0
-  ......
-  Call Trace:
-   <TASK>
-   ? show_regs+0x65/0x70
-   ? __warn+0xa5/0x240
-   ? __xdp_return+0x1e4/0x4a0
-   ......
-   xdp_return_frame+0x4d/0x150
-   __cpu_map_entry_free+0xf9/0x230
-   process_one_work+0x6b0/0xb80
-   worker_thread+0x96/0x720
-   kthread+0x1a5/0x1f0
-   ret_from_fork+0x3a/0x70
-   ret_from_fork_asm+0x1b/0x30
-   </TASK>
-
-The reason for the warning is twofold. One is due to the kthread
-cpu_map_kthread_run() is stopped prematurely. Another one is
-__cpu_map_ring_cleanup() doesn't handle skb mode and treats skbs in
-ptr_ring as XDP frames.
-
-Prematurely-stopped kthread will be fixed by the preceding patch and
-ptr_ring will be empty when __cpu_map_ring_cleanup() is called. But
-as the comments in __cpu_map_ring_cleanup() said, handling and freeing
-skbs in ptr_ring as well to "catch any broken behaviour gracefully".
-
-Fixes: 11941f8a8536 ("bpf: cpumap: Implement generic cpumap")
-Signed-off-by: Hou Tao <houtao1@huawei.com>
-Acked-by: Jesper Dangaard Brouer <hawk@kernel.org>
-Link: https://lore.kernel.org/r/20230729095107.1722450-3-houtao@huaweicloud.com
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: syzbot+aad58150cbc64ba41bdc@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=aad58150cbc64ba41bdc
+Signed-off-by: Prince Kumar Maurya <princekumarmaurya06@gmail.com>
+Message-Id: <20230531013141.19487-1-princekumarmaurya06@gmail.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/bpf/cpumap.c | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+ fs/sysv/itree.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/kernel/bpf/cpumap.c b/kernel/bpf/cpumap.c
-index db6221773e43f..17f52efba1c80 100644
---- a/kernel/bpf/cpumap.c
-+++ b/kernel/bpf/cpumap.c
-@@ -133,11 +133,17 @@ static void __cpu_map_ring_cleanup(struct ptr_ring *ring)
- 	 * invoked cpu_map_kthread_stop(). Catch any broken behaviour
- 	 * gracefully and warn once.
- 	 */
--	struct xdp_frame *xdpf;
-+	void *ptr;
- 
--	while ((xdpf = ptr_ring_consume(ring)))
--		if (WARN_ON_ONCE(xdpf))
--			xdp_return_frame(xdpf);
-+	while ((ptr = ptr_ring_consume(ring))) {
-+		WARN_ON_ONCE(1);
-+		if (unlikely(__ptr_test_bit(0, &ptr))) {
-+			__ptr_clear_bit(0, &ptr);
-+			kfree_skb(ptr);
-+			continue;
+--- a/fs/sysv/itree.c
++++ b/fs/sysv/itree.c
+@@ -145,6 +145,10 @@ static int alloc_branch(struct inode *in
+ 		 */
+ 		parent = block_to_cpu(SYSV_SB(inode->i_sb), branch[n-1].key);
+ 		bh = sb_getblk(inode->i_sb, parent);
++		if (!bh) {
++			sysv_free_block(inode->i_sb, branch[n].key);
++			break;
 +		}
-+		xdp_return_frame(ptr);
-+	}
- }
- 
- static void put_cpu_map_entry(struct bpf_cpu_map_entry *rcpu)
--- 
-2.40.1
-
+ 		lock_buffer(bh);
+ 		memset(bh->b_data, 0, blocksize);
+ 		branch[n].bh = bh;
 
 
