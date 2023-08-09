@@ -2,111 +2,107 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CF19A7758E3
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:55:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6B08577593C
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:58:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232469AbjHIKzz (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 06:55:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40218 "EHLO
+        id S232376AbjHIK6p (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 06:58:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35554 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232425AbjHIKzk (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:55:40 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 52AC31FF6
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:55:03 -0700 (PDT)
+        with ESMTP id S232784AbjHIK6o (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:58:44 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 47FEC1FD8
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:58:43 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DDFD2630F7
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:55:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFF75C433C8;
-        Wed,  9 Aug 2023 10:55:01 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DC46863118
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:58:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF4B3C433C8;
+        Wed,  9 Aug 2023 10:58:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691578502;
-        bh=B1QedS+pB//tSBuJSmXwg7w1JvOxIlQtpHnhU9RrjF4=;
+        s=korg; t=1691578722;
+        bh=bM5scgED38jPBgKdFc/yEQrdjIGEUG6zfFhX/pSt+Ho=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=O18Wm0Vv9GT9Z3XCEDzFXMVwZxf9H6JiVdSh7QmqrRwJfNKJcQotiTPYs9OPwD6CB
-         LlH0f+jZND9itCLmgqGG995KCgD9ANDPCviRpXr7pWGHGle77QD4eGfh1bpZMgBD37
-         mA7W9KAZUeg3l4mGKdHyphOeQFf03YGeWmm+gzcI=
+        b=a5A67WtW1CerSh976EHoiqiqOnnPCPoxtA0xUFh09m69V0bEGhM6gKQoRjoPxYb8j
+         8Snuo7LUGoHeLEl2Lu8cng/Z1dzlWkIAyP/XJSJIAItVpK6HQqlfO4ZTI7TY9ByvtH
+         /AYQXUNL6qiDWaCxSILd20eqxq7QSH2fVDrM/q3k=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
-        Lorenzo Colitti <lorenzo@google.com>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Pietro Borrello <borrello@diag.uniroma1.it>,
-        netdev@vger.kernel.org, Laszlo Ersek <lersek@redhat.com>,
-        "David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 6.1 083/127] net: tun_chr_open(): set sk_uid from current_fsuid()
+        patches@lists.linux.dev, valis <sec@valis.email>,
+        Bing-Jhong Billy Jheng <billy@starlabs.sg>,
+        Jamal Hadi Salim <jhs@mojatatu.com>,
+        Victor Nogueira <victor@mojatatu.com>,
+        Pedro Tammela <pctammela@mojatatu.com>,
+        M A Ramdhan <ramdhan@starlabs.sg>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 34/92] net/sched: cls_fw: No longer copy tcf_result on update to avoid use-after-free
 Date:   Wed,  9 Aug 2023 12:41:10 +0200
-Message-ID: <20230809103639.406806992@linuxfoundation.org>
+Message-ID: <20230809103634.792048331@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103636.615294317@linuxfoundation.org>
-References: <20230809103636.615294317@linuxfoundation.org>
+In-Reply-To: <20230809103633.485906560@linuxfoundation.org>
+References: <20230809103633.485906560@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Laszlo Ersek <lersek@redhat.com>
+From: valis <sec@valis.email>
 
-commit 9bc3047374d5bec163e83e743709e23753376f0c upstream.
+[ Upstream commit 76e42ae831991c828cffa8c37736ebfb831ad5ec ]
 
-Commit a096ccca6e50 initializes the "sk_uid" field in the protocol socket
-(struct sock) from the "/dev/net/tun" device node's owner UID. Per
-original commit 86741ec25462 ("net: core: Add a UID field to struct
-sock.", 2016-11-04), that's wrong: the idea is to cache the UID of the
-userspace process that creates the socket. Commit 86741ec25462 mentions
-socket() and accept(); with "tun", the action that creates the socket is
-open("/dev/net/tun").
+When fw_change() is called on an existing filter, the whole
+tcf_result struct is always copied into the new instance of the filter.
 
-Therefore the device node's owner UID is irrelevant. In most cases,
-"/dev/net/tun" will be owned by root, so in practice, commit a096ccca6e50
-has no observable effect:
+This causes a problem when updating a filter bound to a class,
+as tcf_unbind_filter() is always called on the old instance in the
+success path, decreasing filter_cnt of the still referenced class
+and allowing it to be deleted, leading to a use-after-free.
 
-- before, "sk_uid" would be zero, due to undefined behavior
-  (CVE-2023-1076),
+Fix this by no longer copying the tcf_result struct from the old filter.
 
-- after, "sk_uid" would be zero, due to "/dev/net/tun" being owned by root.
-
-What matters is the (fs)UID of the process performing the open(), so cache
-that in "sk_uid".
-
-Cc: Eric Dumazet <edumazet@google.com>
-Cc: Lorenzo Colitti <lorenzo@google.com>
-Cc: Paolo Abeni <pabeni@redhat.com>
-Cc: Pietro Borrello <borrello@diag.uniroma1.it>
-Cc: netdev@vger.kernel.org
-Cc: stable@vger.kernel.org
-Fixes: a096ccca6e50 ("tun: tun_chr_open(): correctly initialize socket uid")
-Bugzilla: https://bugzilla.redhat.com/show_bug.cgi?id=2173435
-Signed-off-by: Laszlo Ersek <lersek@redhat.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: e35a8ee5993b ("net: sched: fw use RCU")
+Reported-by: valis <sec@valis.email>
+Reported-by: Bing-Jhong Billy Jheng <billy@starlabs.sg>
+Signed-off-by: valis <sec@valis.email>
+Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Reviewed-by: Victor Nogueira <victor@mojatatu.com>
+Reviewed-by: Pedro Tammela <pctammela@mojatatu.com>
+Reviewed-by: M A Ramdhan <ramdhan@starlabs.sg>
+Link: https://lore.kernel.org/r/20230729123202.72406-3-jhs@mojatatu.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/tun.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/sched/cls_fw.c | 1 -
+ 1 file changed, 1 deletion(-)
 
---- a/drivers/net/tun.c
-+++ b/drivers/net/tun.c
-@@ -3457,7 +3457,7 @@ static int tun_chr_open(struct inode *in
- 	tfile->socket.file = file;
- 	tfile->socket.ops = &tun_socket_ops;
+diff --git a/net/sched/cls_fw.c b/net/sched/cls_fw.c
+index ea52c320f67c4..a2f53aee39097 100644
+--- a/net/sched/cls_fw.c
++++ b/net/sched/cls_fw.c
+@@ -265,7 +265,6 @@ static int fw_change(struct net *net, struct sk_buff *in_skb,
+ 			return -ENOBUFS;
  
--	sock_init_data_uid(&tfile->socket, &tfile->sk, inode->i_uid);
-+	sock_init_data_uid(&tfile->socket, &tfile->sk, current_fsuid());
+ 		fnew->id = f->id;
+-		fnew->res = f->res;
+ 		fnew->ifindex = f->ifindex;
+ 		fnew->tp = f->tp;
  
- 	tfile->sk.sk_write_space = tun_sock_write_space;
- 	tfile->sk.sk_sndbuf = INT_MAX;
+-- 
+2.40.1
+
 
 
