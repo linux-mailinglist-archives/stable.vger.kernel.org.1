@@ -2,164 +2,340 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DC5A5775B73
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:17:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A2D7D775748
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:44:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233428AbjHILRg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:17:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35456 "EHLO
+        id S230303AbjHIKoR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 06:44:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52412 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233442AbjHILRf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:17:35 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F89510F3
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:17:34 -0700 (PDT)
+        with ESMTP id S231636AbjHIKoP (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:44:15 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F191B1FEB
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:44:13 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3762363180
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:17:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47DD9C433C7;
-        Wed,  9 Aug 2023 11:17:33 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 83721630F0
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:44:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F028C433C9;
+        Wed,  9 Aug 2023 10:44:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691579853;
-        bh=UKqmKFzWEAZAOf4GvdtSNh8k9uZcRIVPagiH05ZbRqA=;
+        s=korg; t=1691577852;
+        bh=60DFOGa/HHKmdf1Yd0iNhzdGpOWjP3yJ+d5qQGWMFZU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=THSSeNEv7Z+j6scYUh9aCc3eum+Zc8CLrK3G0gvj9mAY1xGjGFMWbUYjRQvp2D7p5
-         QqLXQ3O04MCfJTYKvpemwP4hf4YanCFIqV/FATn9s5cL3Kz74//dy6Ej/CauseYq1F
-         eDxm9m+pdboVYYjp5NaxdsHgpbzO1cQl1L8Z6ZKk=
+        b=yVb0/01WJMJ94LtSGQ4bn44ZMqYt/PGepAN9xz8gwZB/IWqjjHtrwD7wqqS/L+mIf
+         l+6ll2RA2vKj5hxLEBjn+P/X9DqKfHCa66oKn94x1maK8qcVB6pVPkgc6ibf4dpohl
+         +YfzVk3UHm5CR/5AhAwm0fV8lxhKq6ye37VBmvnk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Marek Vasut <marex@denx.de>,
-        Michal Simek <michal.simek@xilinx.com>,
-        Wolfram Sang <wsa@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 110/323] i2c: xiic: Defer xiic_wakeup() and __xiic_start_xfer() in xiic_process()
-Date:   Wed,  9 Aug 2023 12:39:08 +0200
-Message-ID: <20230809103703.120755701@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Claudiu Beznea <claudiu.beznea@microchip.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 018/165] ARM: dts: at91: use clock-controller name for PMC nodes
+Date:   Wed,  9 Aug 2023 12:39:09 +0200
+Message-ID: <20230809103643.375905843@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
-References: <20230809103658.104386911@linuxfoundation.org>
+In-Reply-To: <20230809103642.720851262@linuxfoundation.org>
+References: <20230809103642.720851262@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Marek Vasut <marex@denx.de>
+From: Claudiu Beznea <claudiu.beznea@microchip.com>
 
-[ Upstream commit 743e227a895923c37a333eb2ebf3e391f00c406d ]
+[ Upstream commit d08f92bdfb2dc4a2a14237cfd8a22c568781797c ]
 
-The __xiic_start_xfer() manipulates the interrupt flags, xiic_wakeup()
-may result in return from xiic_xfer() early. Defer both to the end of
-the xiic_process() interrupt thread, so that they are executed after
-all the other interrupt bits handling completed and once it completely
-safe to perform changes to the interrupt bits in the hardware.
+Use clock-controller generic name for PMC nodes.
 
-Signed-off-by: Marek Vasut <marex@denx.de>
-Acked-by: Michal Simek <michal.simek@xilinx.com>
-Signed-off-by: Wolfram Sang <wsa@kernel.org>
-Stable-dep-of: cb6e45c9a0ad ("i2c: xiic: Don't try to handle more interrupt events after error")
+Signed-off-by: Claudiu Beznea <claudiu.beznea@microchip.com>
+Link: https://lore.kernel.org/r/20230517094119.2894220-2-claudiu.beznea@microchip.com
+Stable-dep-of: f6ad3c13f1b8 ("ARM: dts: at91: sam9x60: fix the SOC detection")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/i2c-xiic.c | 37 ++++++++++++++++++++++++-----------
- 1 file changed, 26 insertions(+), 11 deletions(-)
+ arch/arm/boot/dts/at91rm9200.dtsi   | 2 +-
+ arch/arm/boot/dts/at91sam9260.dtsi  | 2 +-
+ arch/arm/boot/dts/at91sam9261.dtsi  | 2 +-
+ arch/arm/boot/dts/at91sam9263.dtsi  | 2 +-
+ arch/arm/boot/dts/at91sam9g20.dtsi  | 2 +-
+ arch/arm/boot/dts/at91sam9g25.dtsi  | 2 +-
+ arch/arm/boot/dts/at91sam9g35.dtsi  | 2 +-
+ arch/arm/boot/dts/at91sam9g45.dtsi  | 2 +-
+ arch/arm/boot/dts/at91sam9n12.dtsi  | 2 +-
+ arch/arm/boot/dts/at91sam9rl.dtsi   | 2 +-
+ arch/arm/boot/dts/at91sam9x25.dtsi  | 2 +-
+ arch/arm/boot/dts/at91sam9x35.dtsi  | 2 +-
+ arch/arm/boot/dts/at91sam9x5.dtsi   | 2 +-
+ arch/arm/boot/dts/sam9x60.dtsi      | 2 +-
+ arch/arm/boot/dts/sama5d2.dtsi      | 2 +-
+ arch/arm/boot/dts/sama5d3.dtsi      | 2 +-
+ arch/arm/boot/dts/sama5d3_emac.dtsi | 2 +-
+ arch/arm/boot/dts/sama5d4.dtsi      | 2 +-
+ arch/arm/boot/dts/sama7g5.dtsi      | 2 +-
+ 19 files changed, 19 insertions(+), 19 deletions(-)
 
-diff --git a/drivers/i2c/busses/i2c-xiic.c b/drivers/i2c/busses/i2c-xiic.c
-index 03ce9b7d6456a..c7f74687282ea 100644
---- a/drivers/i2c/busses/i2c-xiic.c
-+++ b/drivers/i2c/busses/i2c-xiic.c
-@@ -362,6 +362,9 @@ static irqreturn_t xiic_process(int irq, void *dev_id)
- 	struct xiic_i2c *i2c = dev_id;
- 	u32 pend, isr, ier;
- 	u32 clr = 0;
-+	int xfer_more = 0;
-+	int wakeup_req = 0;
-+	int wakeup_code = 0;
+diff --git a/arch/arm/boot/dts/at91rm9200.dtsi b/arch/arm/boot/dts/at91rm9200.dtsi
+index 6f9004ebf4245..37b500f6f3956 100644
+--- a/arch/arm/boot/dts/at91rm9200.dtsi
++++ b/arch/arm/boot/dts/at91rm9200.dtsi
+@@ -102,7 +102,7 @@
+ 				reg = <0xffffff00 0x100>;
+ 			};
  
- 	/* Get the interrupt Status from the IPIF. There is no clearing of
- 	 * interrupts in the IPIF. Interrupts must be cleared at the source.
-@@ -398,10 +401,14 @@ static irqreturn_t xiic_process(int irq, void *dev_id)
- 		 */
- 		xiic_reinit(i2c);
+-			pmc: pmc@fffffc00 {
++			pmc: clock-controller@fffffc00 {
+ 				compatible = "atmel,at91rm9200-pmc", "syscon";
+ 				reg = <0xfffffc00 0x100>;
+ 				interrupts = <1 IRQ_TYPE_LEVEL_HIGH 7>;
+diff --git a/arch/arm/boot/dts/at91sam9260.dtsi b/arch/arm/boot/dts/at91sam9260.dtsi
+index 789fe356dbf60..16e3b24b4dddb 100644
+--- a/arch/arm/boot/dts/at91sam9260.dtsi
++++ b/arch/arm/boot/dts/at91sam9260.dtsi
+@@ -115,7 +115,7 @@
+ 				reg = <0xffffee00 0x200>;
+ 			};
  
--		if (i2c->rx_msg)
--			xiic_wakeup(i2c, STATE_ERROR);
--		if (i2c->tx_msg)
--			xiic_wakeup(i2c, STATE_ERROR);
-+		if (i2c->rx_msg) {
-+			wakeup_req = 1;
-+			wakeup_code = STATE_ERROR;
-+		}
-+		if (i2c->tx_msg) {
-+			wakeup_req = 1;
-+			wakeup_code = STATE_ERROR;
-+		}
- 	}
- 	if (pend & XIIC_INTR_RX_FULL_MASK) {
- 		/* Receive register/FIFO is full */
-@@ -435,8 +442,7 @@ static irqreturn_t xiic_process(int irq, void *dev_id)
- 				i2c->tx_msg++;
- 				dev_dbg(i2c->adap.dev.parent,
- 					"%s will start next...\n", __func__);
--
--				__xiic_start_xfer(i2c);
-+				xfer_more = 1;
- 			}
- 		}
- 	}
-@@ -450,11 +456,13 @@ static irqreturn_t xiic_process(int irq, void *dev_id)
- 		if (!i2c->tx_msg)
- 			goto out;
+-			pmc: pmc@fffffc00 {
++			pmc: clock-controller@fffffc00 {
+ 				compatible = "atmel,at91sam9260-pmc", "syscon";
+ 				reg = <0xfffffc00 0x100>;
+ 				interrupts = <1 IRQ_TYPE_LEVEL_HIGH 7>;
+diff --git a/arch/arm/boot/dts/at91sam9261.dtsi b/arch/arm/boot/dts/at91sam9261.dtsi
+index ee0bd1aceb3f0..fe9ead867e2ab 100644
+--- a/arch/arm/boot/dts/at91sam9261.dtsi
++++ b/arch/arm/boot/dts/at91sam9261.dtsi
+@@ -599,7 +599,7 @@
+ 				};
+ 			};
  
--		if ((i2c->nmsgs == 1) && !i2c->rx_msg &&
--			xiic_tx_space(i2c) == 0)
--			xiic_wakeup(i2c, STATE_DONE);
-+		wakeup_req = 1;
-+
-+		if (i2c->nmsgs == 1 && !i2c->rx_msg &&
-+		    xiic_tx_space(i2c) == 0)
-+			wakeup_code = STATE_DONE;
- 		else
--			xiic_wakeup(i2c, STATE_ERROR);
-+			wakeup_code = STATE_ERROR;
- 	}
- 	if (pend & (XIIC_INTR_TX_EMPTY_MASK | XIIC_INTR_TX_HALF_MASK)) {
- 		/* Transmit register/FIFO is empty or ½ empty */
-@@ -478,7 +486,7 @@ static irqreturn_t xiic_process(int irq, void *dev_id)
- 			if (i2c->nmsgs > 1) {
- 				i2c->nmsgs--;
- 				i2c->tx_msg++;
--				__xiic_start_xfer(i2c);
-+				xfer_more = 1;
- 			} else {
- 				xiic_irq_dis(i2c, XIIC_INTR_TX_HALF_MASK);
+-			pmc: pmc@fffffc00 {
++			pmc: clock-controller@fffffc00 {
+ 				compatible = "atmel,at91sam9261-pmc", "syscon";
+ 				reg = <0xfffffc00 0x100>;
+ 				interrupts = <1 IRQ_TYPE_LEVEL_HIGH 7>;
+diff --git a/arch/arm/boot/dts/at91sam9263.dtsi b/arch/arm/boot/dts/at91sam9263.dtsi
+index 3ce9ea9873129..ee5e6ed44dd40 100644
+--- a/arch/arm/boot/dts/at91sam9263.dtsi
++++ b/arch/arm/boot/dts/at91sam9263.dtsi
+@@ -101,7 +101,7 @@
+ 				atmel,external-irqs = <30 31>;
+ 			};
  
-@@ -496,6 +504,13 @@ static irqreturn_t xiic_process(int irq, void *dev_id)
- 	dev_dbg(i2c->adap.dev.parent, "%s clr: 0x%x\n", __func__, clr);
+-			pmc: pmc@fffffc00 {
++			pmc: clock-controller@fffffc00 {
+ 				compatible = "atmel,at91sam9263-pmc", "syscon";
+ 				reg = <0xfffffc00 0x100>;
+ 				interrupts = <1 IRQ_TYPE_LEVEL_HIGH 7>;
+diff --git a/arch/arm/boot/dts/at91sam9g20.dtsi b/arch/arm/boot/dts/at91sam9g20.dtsi
+index 708e1646b7f46..738a43ffd2281 100644
+--- a/arch/arm/boot/dts/at91sam9g20.dtsi
++++ b/arch/arm/boot/dts/at91sam9g20.dtsi
+@@ -41,7 +41,7 @@
+ 				atmel,adc-startup-time = <40>;
+ 			};
  
- 	xiic_setreg32(i2c, XIIC_IISR_OFFSET, clr);
-+	if (xfer_more)
-+		__xiic_start_xfer(i2c);
-+	if (wakeup_req)
-+		xiic_wakeup(i2c, wakeup_code);
-+
-+	WARN_ON(xfer_more && wakeup_req);
-+
- 	mutex_unlock(&i2c->lock);
- 	return IRQ_HANDLED;
- }
+-			pmc: pmc@fffffc00 {
++			pmc: clock-controller@fffffc00 {
+ 				compatible = "atmel,at91sam9g20-pmc", "atmel,at91sam9260-pmc", "syscon";
+ 			};
+ 		};
+diff --git a/arch/arm/boot/dts/at91sam9g25.dtsi b/arch/arm/boot/dts/at91sam9g25.dtsi
+index d2f13afb35eaf..ec3c77221881c 100644
+--- a/arch/arm/boot/dts/at91sam9g25.dtsi
++++ b/arch/arm/boot/dts/at91sam9g25.dtsi
+@@ -26,7 +26,7 @@
+ 				      >;
+ 			};
+ 
+-			pmc: pmc@fffffc00 {
++			pmc: clock-controller@fffffc00 {
+ 				compatible = "atmel,at91sam9g25-pmc", "atmel,at91sam9x5-pmc", "syscon";
+ 			};
+ 		};
+diff --git a/arch/arm/boot/dts/at91sam9g35.dtsi b/arch/arm/boot/dts/at91sam9g35.dtsi
+index 48c2bc4a7753d..c9cfb93092ee6 100644
+--- a/arch/arm/boot/dts/at91sam9g35.dtsi
++++ b/arch/arm/boot/dts/at91sam9g35.dtsi
+@@ -25,7 +25,7 @@
+ 				      >;
+ 			};
+ 
+-			pmc: pmc@fffffc00 {
++			pmc: clock-controller@fffffc00 {
+ 				compatible = "atmel,at91sam9g35-pmc", "atmel,at91sam9x5-pmc", "syscon";
+ 			};
+ 		};
+diff --git a/arch/arm/boot/dts/at91sam9g45.dtsi b/arch/arm/boot/dts/at91sam9g45.dtsi
+index 95f5d76234dbb..76afeb31b7f54 100644
+--- a/arch/arm/boot/dts/at91sam9g45.dtsi
++++ b/arch/arm/boot/dts/at91sam9g45.dtsi
+@@ -129,7 +129,7 @@
+ 				reg = <0xffffea00 0x200>;
+ 			};
+ 
+-			pmc: pmc@fffffc00 {
++			pmc: clock-controller@fffffc00 {
+ 				compatible = "atmel,at91sam9g45-pmc", "syscon";
+ 				reg = <0xfffffc00 0x100>;
+ 				interrupts = <1 IRQ_TYPE_LEVEL_HIGH 7>;
+diff --git a/arch/arm/boot/dts/at91sam9n12.dtsi b/arch/arm/boot/dts/at91sam9n12.dtsi
+index 83114d26f10d0..c2e7460fb7ff6 100644
+--- a/arch/arm/boot/dts/at91sam9n12.dtsi
++++ b/arch/arm/boot/dts/at91sam9n12.dtsi
+@@ -118,7 +118,7 @@
+ 				reg = <0xffffea00 0x200>;
+ 			};
+ 
+-			pmc: pmc@fffffc00 {
++			pmc: clock-controller@fffffc00 {
+ 				compatible = "atmel,at91sam9n12-pmc", "syscon";
+ 				reg = <0xfffffc00 0x200>;
+ 				#clock-cells = <2>;
+diff --git a/arch/arm/boot/dts/at91sam9rl.dtsi b/arch/arm/boot/dts/at91sam9rl.dtsi
+index 364a2ff0a763d..a12e6c419fe3d 100644
+--- a/arch/arm/boot/dts/at91sam9rl.dtsi
++++ b/arch/arm/boot/dts/at91sam9rl.dtsi
+@@ -763,7 +763,7 @@
+ 				};
+ 			};
+ 
+-			pmc: pmc@fffffc00 {
++			pmc: clock-controller@fffffc00 {
+ 				compatible = "atmel,at91sam9rl-pmc", "syscon";
+ 				reg = <0xfffffc00 0x100>;
+ 				interrupts = <1 IRQ_TYPE_LEVEL_HIGH 7>;
+diff --git a/arch/arm/boot/dts/at91sam9x25.dtsi b/arch/arm/boot/dts/at91sam9x25.dtsi
+index 0fe8802e1242b..7036f5f045715 100644
+--- a/arch/arm/boot/dts/at91sam9x25.dtsi
++++ b/arch/arm/boot/dts/at91sam9x25.dtsi
+@@ -27,7 +27,7 @@
+ 				      >;
+ 			};
+ 
+-			pmc: pmc@fffffc00 {
++			pmc: clock-controller@fffffc00 {
+ 				compatible = "atmel,at91sam9x25-pmc", "atmel,at91sam9x5-pmc", "syscon";
+ 			};
+ 		};
+diff --git a/arch/arm/boot/dts/at91sam9x35.dtsi b/arch/arm/boot/dts/at91sam9x35.dtsi
+index 0bfa21f18f870..eb03b0497e371 100644
+--- a/arch/arm/boot/dts/at91sam9x35.dtsi
++++ b/arch/arm/boot/dts/at91sam9x35.dtsi
+@@ -26,7 +26,7 @@
+ 				      >;
+ 			};
+ 
+-			pmc: pmc@fffffc00 {
++			pmc: clock-controller@fffffc00 {
+ 				compatible = "atmel,at91sam9x35-pmc", "atmel,at91sam9x5-pmc", "syscon";
+ 			};
+ 		};
+diff --git a/arch/arm/boot/dts/at91sam9x5.dtsi b/arch/arm/boot/dts/at91sam9x5.dtsi
+index 0c26c925761b2..af19ef2a875c4 100644
+--- a/arch/arm/boot/dts/at91sam9x5.dtsi
++++ b/arch/arm/boot/dts/at91sam9x5.dtsi
+@@ -126,7 +126,7 @@
+ 				reg = <0xffffea00 0x200>;
+ 			};
+ 
+-			pmc: pmc@fffffc00 {
++			pmc: clock-controller@fffffc00 {
+ 				compatible = "atmel,at91sam9x5-pmc", "syscon";
+ 				reg = <0xfffffc00 0x200>;
+ 				interrupts = <1 IRQ_TYPE_LEVEL_HIGH 7>;
+diff --git a/arch/arm/boot/dts/sam9x60.dtsi b/arch/arm/boot/dts/sam9x60.dtsi
+index e67ede940071f..89aafb9a8b0fe 100644
+--- a/arch/arm/boot/dts/sam9x60.dtsi
++++ b/arch/arm/boot/dts/sam9x60.dtsi
+@@ -1282,7 +1282,7 @@
+ 				};
+ 			};
+ 
+-			pmc: pmc@fffffc00 {
++			pmc: clock-controller@fffffc00 {
+ 				compatible = "microchip,sam9x60-pmc", "syscon";
+ 				reg = <0xfffffc00 0x200>;
+ 				interrupts = <1 IRQ_TYPE_LEVEL_HIGH 7>;
+diff --git a/arch/arm/boot/dts/sama5d2.dtsi b/arch/arm/boot/dts/sama5d2.dtsi
+index 14c35c12a115f..86009dd28e623 100644
+--- a/arch/arm/boot/dts/sama5d2.dtsi
++++ b/arch/arm/boot/dts/sama5d2.dtsi
+@@ -284,7 +284,7 @@
+ 				clock-names = "dma_clk";
+ 			};
+ 
+-			pmc: pmc@f0014000 {
++			pmc: clock-controller@f0014000 {
+ 				compatible = "atmel,sama5d2-pmc", "syscon";
+ 				reg = <0xf0014000 0x160>;
+ 				interrupts = <74 IRQ_TYPE_LEVEL_HIGH 7>;
+diff --git a/arch/arm/boot/dts/sama5d3.dtsi b/arch/arm/boot/dts/sama5d3.dtsi
+index bde8e92d60bb1..4524a16322d16 100644
+--- a/arch/arm/boot/dts/sama5d3.dtsi
++++ b/arch/arm/boot/dts/sama5d3.dtsi
+@@ -1001,7 +1001,7 @@
+ 				};
+ 			};
+ 
+-			pmc: pmc@fffffc00 {
++			pmc: clock-controller@fffffc00 {
+ 				compatible = "atmel,sama5d3-pmc", "syscon";
+ 				reg = <0xfffffc00 0x120>;
+ 				interrupts = <1 IRQ_TYPE_LEVEL_HIGH 7>;
+diff --git a/arch/arm/boot/dts/sama5d3_emac.dtsi b/arch/arm/boot/dts/sama5d3_emac.dtsi
+index 45226108850d2..5d7ce13de8ccf 100644
+--- a/arch/arm/boot/dts/sama5d3_emac.dtsi
++++ b/arch/arm/boot/dts/sama5d3_emac.dtsi
+@@ -30,7 +30,7 @@
+ 				};
+ 			};
+ 
+-			pmc: pmc@fffffc00 {
++			pmc: clock-controller@fffffc00 {
+ 			};
+ 
+ 			macb1: ethernet@f802c000 {
+diff --git a/arch/arm/boot/dts/sama5d4.dtsi b/arch/arm/boot/dts/sama5d4.dtsi
+index af62157ae214f..e94f3a661f4bb 100644
+--- a/arch/arm/boot/dts/sama5d4.dtsi
++++ b/arch/arm/boot/dts/sama5d4.dtsi
+@@ -250,7 +250,7 @@
+ 				clock-names = "dma_clk";
+ 			};
+ 
+-			pmc: pmc@f0018000 {
++			pmc: clock-controller@f0018000 {
+ 				compatible = "atmel,sama5d4-pmc", "syscon";
+ 				reg = <0xf0018000 0x120>;
+ 				interrupts = <1 IRQ_TYPE_LEVEL_HIGH 7>;
+diff --git a/arch/arm/boot/dts/sama7g5.dtsi b/arch/arm/boot/dts/sama7g5.dtsi
+index 929ba73702e93..b55adb96a06ec 100644
+--- a/arch/arm/boot/dts/sama7g5.dtsi
++++ b/arch/arm/boot/dts/sama7g5.dtsi
+@@ -241,7 +241,7 @@
+ 			clocks = <&pmc PMC_TYPE_PERIPHERAL 11>;
+ 		};
+ 
+-		pmc: pmc@e0018000 {
++		pmc: clock-controller@e0018000 {
+ 			compatible = "microchip,sama7g5-pmc", "syscon";
+ 			reg = <0xe0018000 0x200>;
+ 			interrupts = <GIC_SPI 10 IRQ_TYPE_LEVEL_HIGH>;
 -- 
-2.39.2
+2.40.1
 
 
 
