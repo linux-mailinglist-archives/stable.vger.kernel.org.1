@@ -2,51 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 232AA775927
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:58:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 06509775C6A
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:27:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232599AbjHIK6M (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 06:58:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47608 "EHLO
+        id S233734AbjHIL1M (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:27:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36176 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232750AbjHIK6L (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:58:11 -0400
+        with ESMTP id S233739AbjHIL1L (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:27:11 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F78C1FD4
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:58:07 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0DCF9FA
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:27:11 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BC722630D6
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:58:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE03AC433C8;
-        Wed,  9 Aug 2023 10:58:05 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9F7DC6324C
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:27:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B248FC433C8;
+        Wed,  9 Aug 2023 11:27:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691578686;
-        bh=8+RgxHCLeUqDggBgbPEY7BoHgJO0zbcympNvSzdNxtI=;
+        s=korg; t=1691580430;
+        bh=sftnswOuJU47Y3jnjWsUs3kn1k3dujQUxEA0/mFR7Vc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=codruxTWXJHE9jw9e/UzY6/bIWdDATlokP0cnMRkqo6NxEBbFIHzggyJBBHOT/5CU
-         YWN9bCM8LTe3SSE8DvdUg4JVaPT+uB13427PEugJi0O9hk6JCZhPyR7h0izK55tlZI
-         HGAodVHLwQN/4GlmKBgYY1c2DMQbCR/Bz1tukwNE=
+        b=o7YS0tUTdjQ9Wpd9qw/UzEim8gffQssyoiSgyOZENSnqY4GVduw3QUBkmdru3hYWZ
+         1elKEIvdo0pictwui4oSVCHA/PedN+Lvb4ve+f8yqrQwT47O7mtDJ6dt/+X4wZeOM+
+         LdNIymRoas6FZ0TxESLouROO1nHTyHXjNe/l3TYo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Will Deacon <will@kernel.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Mathieu Poirier <mathieu.poirier@linaro.org>,
-        Mike Leach <mike.leach@linaro.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Anshuman Khandual <anshuman.khandual@arm.com>,
-        Marc Zyngier <maz@kernel.org>,
-        Suzuki K Poulose <suzuki.poulose@arm.com>,
-        Easwar Hariharan <eahariha@linux.microsoft.com>
-Subject: [PATCH 5.15 04/92] arm64: errata: Add workaround for TSB flush failures
+        patches@lists.linux.dev, Josef Bacik <josef@toxicpanda.com>,
+        Qu Wenruo <wqu@suse.com>, David Sterba <dsterba@suse.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 009/154] btrfs: qgroup: catch reserved space leaks at unmount time
 Date:   Wed,  9 Aug 2023 12:40:40 +0200
-Message-ID: <20230809103633.677416983@linuxfoundation.org>
+Message-ID: <20230809103637.228356121@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103633.485906560@linuxfoundation.org>
-References: <20230809103633.485906560@linuxfoundation.org>
+In-Reply-To: <20230809103636.887175326@linuxfoundation.org>
+References: <20230809103636.887175326@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -61,189 +55,118 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
+From: Qu Wenruo <wqu@suse.com>
 
-commit fa82d0b4b833790ac4572377fb777dcea24a9d69 upstream
+[ Upstream commit 5958253cf65de42493f17f36877a901486a90365 ]
 
-Arm Neoverse-N2 (#2067961) and Cortex-A710 (#2054223) suffers
-from errata, where a TSB (trace synchronization barrier)
-fails to flush the trace data completely, when executed from
-a trace prohibited region. In Linux we always execute it
-after we have moved the PE to trace prohibited region. So,
-we can apply the workaround every time a TSB is executed.
+Before this patch, qgroup completely relies on per-inode extent io tree
+to detect reserved data space leak.
 
-The work around is to issue two TSB consecutively.
+However previous bug has already shown how release page before
+btrfs_finish_ordered_io() could lead to leak, and since it's
+QGROUP_RESERVED bit cleared without triggering qgroup rsv, it can't be
+detected by per-inode extent io tree.
 
-NOTE: This errata is defined as LOCAL_CPU_ERRATUM, implying
-that a late CPU could be blocked from booting if it is the
-first CPU that requires the workaround. This is because we
-do not allow setting a cpu_hwcaps after the SMP boot. The
-other alternative is to use "this_cpu_has_cap()" instead
-of the faster system wide check, which may be a bit of an
-overhead, given we may have to do this in nvhe KVM host
-before a guest entry.
+So this patch adds another (and hopefully the final) safety net to catch
+qgroup data reserved space leak.  At least the new safety net catches
+all the leaks during development, so it should be pretty useful in the
+real world.
 
-Cc: Will Deacon <will@kernel.org>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Mathieu Poirier <mathieu.poirier@linaro.org>
-Cc: Mike Leach <mike.leach@linaro.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Anshuman Khandual <anshuman.khandual@arm.com>
-Cc: Marc Zyngier <maz@kernel.org>
-Acked-by: Catalin Marinas <catalin.marinas@arm.com>
-Reviewed-by: Mathieu Poirier <mathieu.poirier@linaro.org>
-Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
-Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-Link: https://lore.kernel.org/r/20211019163153.3692640-4-suzuki.poulose@arm.com
-Signed-off-by: Will Deacon <will@kernel.org>
-Signed-off-by: Easwar Hariharan <eahariha@linux.microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Josef Bacik <josef@toxicpanda.com>
+Signed-off-by: Qu Wenruo <wqu@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Stable-dep-of: 8a4a0b2a3eaf ("btrfs: fix race between quota disable and relocation")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/arm64/silicon-errata.rst |    4 ++++
- arch/arm64/Kconfig                     |   33 +++++++++++++++++++++++++++++++++
- arch/arm64/include/asm/barrier.h       |   16 +++++++++++++++-
- arch/arm64/kernel/cpu_errata.c         |   19 +++++++++++++++++++
- arch/arm64/tools/cpucaps               |    1 +
- 5 files changed, 72 insertions(+), 1 deletion(-)
+ fs/btrfs/disk-io.c |  5 +++++
+ fs/btrfs/qgroup.c  | 43 +++++++++++++++++++++++++++++++++++++++++++
+ fs/btrfs/qgroup.h  |  1 +
+ 3 files changed, 49 insertions(+)
 
---- a/Documentation/arm64/silicon-errata.rst
-+++ b/Documentation/arm64/silicon-errata.rst
-@@ -104,6 +104,8 @@ stable kernels.
- +----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Cortex-A710     | #2119858        | ARM64_ERRATUM_2119858       |
- +----------------+-----------------+-----------------+-----------------------------+
-+| ARM            | Cortex-A710     | #2054223        | ARM64_ERRATUM_2054223       |
-++----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Neoverse-N1     | #1188873,1418040| ARM64_ERRATUM_1418040       |
- +----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Neoverse-N1     | #1349291        | N/A                         |
-@@ -112,6 +114,8 @@ stable kernels.
- +----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Neoverse-N2     | #2139208        | ARM64_ERRATUM_2139208       |
- +----------------+-----------------+-----------------+-----------------------------+
-+| ARM            | Neoverse-N2     | #2067961        | ARM64_ERRATUM_2067961       |
-++----------------+-----------------+-----------------+-----------------------------+
- | ARM            | MMU-500         | #841119,826419  | N/A                         |
- +----------------+-----------------+-----------------+-----------------------------+
- +----------------+-----------------+-----------------+-----------------------------+
---- a/arch/arm64/Kconfig
-+++ b/arch/arm64/Kconfig
-@@ -774,6 +774,39 @@ config ARM64_ERRATUM_2139208
+diff --git a/fs/btrfs/disk-io.c b/fs/btrfs/disk-io.c
+index 7e9d914369a02..d98cf8aba753b 100644
+--- a/fs/btrfs/disk-io.c
++++ b/fs/btrfs/disk-io.c
+@@ -4106,6 +4106,11 @@ void close_ctree(struct btrfs_fs_info *fs_info)
+ 	ASSERT(list_empty(&fs_info->delayed_iputs));
+ 	set_bit(BTRFS_FS_CLOSING_DONE, &fs_info->flags);
  
- 	  If unsure, say Y.
++	if (btrfs_check_quota_leak(fs_info)) {
++		WARN_ON(IS_ENABLED(CONFIG_BTRFS_DEBUG));
++		btrfs_err(fs_info, "qgroup reserved space leaked");
++	}
++
+ 	btrfs_free_qgroup_config(fs_info);
+ 	ASSERT(list_empty(&fs_info->delalloc_roots));
  
-+config ARM64_WORKAROUND_TSB_FLUSH_FAILURE
-+	bool
-+
-+config ARM64_ERRATUM_2054223
-+	bool "Cortex-A710: 2054223: workaround TSB instruction failing to flush trace"
-+	default y
-+	select ARM64_WORKAROUND_TSB_FLUSH_FAILURE
-+	help
-+	  Enable workaround for ARM Cortex-A710 erratum 2054223
-+
-+	  Affected cores may fail to flush the trace data on a TSB instruction, when
-+	  the PE is in trace prohibited state. This will cause losing a few bytes
-+	  of the trace cached.
-+
-+	  Workaround is to issue two TSB consecutively on affected cores.
-+
-+	  If unsure, say Y.
-+
-+config ARM64_ERRATUM_2067961
-+	bool "Neoverse-N2: 2067961: workaround TSB instruction failing to flush trace"
-+	default y
-+	select ARM64_WORKAROUND_TSB_FLUSH_FAILURE
-+	help
-+	  Enable workaround for ARM Neoverse-N2 erratum 2067961
-+
-+	  Affected cores may fail to flush the trace data on a TSB instruction, when
-+	  the PE is in trace prohibited state. This will cause losing a few bytes
-+	  of the trace cached.
-+
-+	  Workaround is to issue two TSB consecutively on affected cores.
-+
-+	  If unsure, say Y.
-+
- config CAVIUM_ERRATUM_22375
- 	bool "Cavium erratum 22375, 24313"
- 	default y
---- a/arch/arm64/include/asm/barrier.h
-+++ b/arch/arm64/include/asm/barrier.h
-@@ -23,7 +23,7 @@
- #define dsb(opt)	asm volatile("dsb " #opt : : : "memory")
+diff --git a/fs/btrfs/qgroup.c b/fs/btrfs/qgroup.c
+index db8f83ab55f63..7821bef061fe6 100644
+--- a/fs/btrfs/qgroup.c
++++ b/fs/btrfs/qgroup.c
+@@ -504,6 +504,49 @@ int btrfs_read_qgroup_config(struct btrfs_fs_info *fs_info)
+ 	return ret < 0 ? ret : 0;
+ }
  
- #define psb_csync()	asm volatile("hint #17" : : : "memory")
--#define tsb_csync()	asm volatile("hint #18" : : : "memory")
-+#define __tsb_csync()	asm volatile("hint #18" : : : "memory")
- #define csdb()		asm volatile("hint #20" : : : "memory")
- 
- #ifdef CONFIG_ARM64_PSEUDO_NMI
-@@ -46,6 +46,20 @@
- #define dma_rmb()	dmb(oshld)
- #define dma_wmb()	dmb(oshst)
- 
++static u64 btrfs_qgroup_subvolid(u64 qgroupid)
++{
++	return (qgroupid & ((1ULL << BTRFS_QGROUP_LEVEL_SHIFT) - 1));
++}
 +
-+#define tsb_csync()								\
-+	do {									\
-+		/*								\
-+		 * CPUs affected by Arm Erratum 2054223 or 2067961 needs	\
-+		 * another TSB to ensure the trace is flushed. The barriers	\
-+		 * don't have to be strictly back to back, as long as the	\
-+		 * CPU is in trace prohibited state.				\
-+		 */								\
-+		if (cpus_have_final_cap(ARM64_WORKAROUND_TSB_FLUSH_FAILURE))	\
-+			__tsb_csync();						\
-+		__tsb_csync();							\
-+	} while (0)
++/*
++ * Called in close_ctree() when quota is still enabled.  This verifies we don't
++ * leak some reserved space.
++ *
++ * Return false if no reserved space is left.
++ * Return true if some reserved space is leaked.
++ */
++bool btrfs_check_quota_leak(struct btrfs_fs_info *fs_info)
++{
++	struct rb_node *node;
++	bool ret = false;
++
++	if (!test_bit(BTRFS_FS_QUOTA_ENABLED, &fs_info->flags))
++		return ret;
++	/*
++	 * Since we're unmounting, there is no race and no need to grab qgroup
++	 * lock.  And here we don't go post-order to provide a more user
++	 * friendly sorted result.
++	 */
++	for (node = rb_first(&fs_info->qgroup_tree); node; node = rb_next(node)) {
++		struct btrfs_qgroup *qgroup;
++		int i;
++
++		qgroup = rb_entry(node, struct btrfs_qgroup, node);
++		for (i = 0; i < BTRFS_QGROUP_RSV_LAST; i++) {
++			if (qgroup->rsv.values[i]) {
++				ret = true;
++				btrfs_warn(fs_info,
++		"qgroup %llu/%llu has unreleased space, type %d rsv %llu",
++				   btrfs_qgroup_level(qgroup->qgroupid),
++				   btrfs_qgroup_subvolid(qgroup->qgroupid),
++				   i, qgroup->rsv.values[i]);
++			}
++		}
++	}
++	return ret;
++}
 +
  /*
-  * Generate a mask for array_index__nospec() that is ~0UL when 0 <= idx < sz
-  * and 0 otherwise.
---- a/arch/arm64/kernel/cpu_errata.c
-+++ b/arch/arm64/kernel/cpu_errata.c
-@@ -375,6 +375,18 @@ static const struct midr_range trbe_over
- };
- #endif	/* CONFIG_ARM64_WORKAROUND_TRBE_OVERWRITE_FILL_MODE */
+  * This is called from close_ctree() or open_ctree() or btrfs_quota_disable(),
+  * first two are in single-threaded paths.And for the third one, we have set
+diff --git a/fs/btrfs/qgroup.h b/fs/btrfs/qgroup.h
+index 0a2659685ad65..94bdfb89505e8 100644
+--- a/fs/btrfs/qgroup.h
++++ b/fs/btrfs/qgroup.h
+@@ -416,5 +416,6 @@ int btrfs_qgroup_add_swapped_blocks(struct btrfs_trans_handle *trans,
+ int btrfs_qgroup_trace_subtree_after_cow(struct btrfs_trans_handle *trans,
+ 		struct btrfs_root *root, struct extent_buffer *eb);
+ void btrfs_qgroup_destroy_extent_records(struct btrfs_transaction *trans);
++bool btrfs_check_quota_leak(struct btrfs_fs_info *fs_info);
  
-+#ifdef CONFIG_ARM64_WORKAROUND_TSB_FLUSH_FAILURE
-+static const struct midr_range tsb_flush_fail_cpus[] = {
-+#ifdef CONFIG_ARM64_ERRATUM_2067961
-+	MIDR_ALL_VERSIONS(MIDR_NEOVERSE_N2),
-+#endif
-+#ifdef CONFIG_ARM64_ERRATUM_2054223
-+	MIDR_ALL_VERSIONS(MIDR_CORTEX_A710),
-+#endif
-+	{},
-+};
-+#endif	/* CONFIG_ARM64_WORKAROUND_TSB_FLUSH_FAILURE */
-+
- const struct arm64_cpu_capabilities arm64_errata[] = {
- #ifdef CONFIG_ARM64_WORKAROUND_CLEAN_CACHE
- 	{
-@@ -607,6 +619,13 @@ const struct arm64_cpu_capabilities arm6
- 		CAP_MIDR_RANGE_LIST(trbe_overwrite_fill_mode_cpus),
- 	},
  #endif
-+#ifdef CONFIG_ARM64_WORKAROUND_TSB_FLUSH_FAILURE
-+	{
-+		.desc = "ARM erratum 2067961 or 2054223",
-+		.capability = ARM64_WORKAROUND_TSB_FLUSH_FAILURE,
-+		ERRATA_MIDR_RANGE_LIST(tsb_flush_fail_cpus),
-+	},
-+#endif
- 	{
- 	}
- };
---- a/arch/arm64/tools/cpucaps
-+++ b/arch/arm64/tools/cpucaps
-@@ -57,6 +57,7 @@ WORKAROUND_1542419
- WORKAROUND_1742098
- WORKAROUND_2457168
- WORKAROUND_TRBE_OVERWRITE_FILL_MODE
-+WORKAROUND_TSB_FLUSH_FAILURE
- WORKAROUND_CAVIUM_23154
- WORKAROUND_CAVIUM_27456
- WORKAROUND_CAVIUM_30115
+-- 
+2.39.2
+
 
 
