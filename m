@@ -2,43 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 45D7D775DAB
+	by mail.lfdr.de (Postfix) with ESMTP id DBF0E775DAC
 	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:40:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234187AbjHILkG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        id S234189AbjHILkG (ORCPT <rfc822;lists+stable@lfdr.de>);
         Wed, 9 Aug 2023 07:40:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35562 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35576 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234194AbjHILkF (ORCPT
+        with ESMTP id S234179AbjHILkF (ORCPT
         <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:40:05 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC4531FDE
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:40:02 -0700 (PDT)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 837D6173A
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:40:05 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 51A5263617
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:40:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D1EEC433C8;
-        Wed,  9 Aug 2023 11:40:01 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 232076361B
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:40:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31453C433C8;
+        Wed,  9 Aug 2023 11:40:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691581201;
-        bh=dkS9YoxsD0MTKpj+A9Q/Pmtf+6QWvC886+H0ocqd7A8=;
+        s=korg; t=1691581204;
+        bh=sAT4MrXXhCpLoXZXcpuJeXFtTCZ6fawC3gcrdoxEf8c=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=r9jlsLSfHa1zuKV3Xlr/dP9tyzq1OZwL22d8GyIG9wuhnva3BxS4UC+GrKSNzju0a
-         tpBQMZk3s2hZ7UazCbHKJdsrGGgAOEoRAanncr33QmYGwcDz/ZrKb6Pf4PVY+kJ0cl
-         zww5YmyT6fYaWS4vTrhbMoaYlfXeknS/B7gDRuaM=
+        b=Y7oqcgEMuDCvR7A/1rBgxHuZORkioiLnD9KW/NjSKe/RSG5xw9XOYKAqXb5YYMu3O
+         wLN3Wx4eNr9jrkI/WwUykKgP7OvgBKIVi2tTfSAYIgrUfTZ6Zhm1J9HM6Wg5OTQjxq
+         jUZdRPSDhx0q2URjqtbepir2zPxA2TGRuKGi05/o=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
-        Willem de Bruijn <willemb@google.com>,
         "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 141/201] net: add missing data-race annotations around sk->sk_peek_off
-Date:   Wed,  9 Aug 2023 12:42:23 +0200
-Message-ID: <20230809103648.449114442@linuxfoundation.org>
+Subject: [PATCH 5.10 142/201] net: add missing data-race annotation for sk_ll_usec
+Date:   Wed,  9 Aug 2023 12:42:24 +0200
+Message-ID: <20230809103648.479153965@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230809103643.799166053@linuxfoundation.org>
 References: <20230809103643.799166053@linuxfoundation.org>
@@ -46,10 +45,10 @@ User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -58,59 +57,32 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 11695c6e966b0ec7ed1d16777d294cef865a5c91 ]
+[ Upstream commit e5f0d2dd3c2faa671711dac6d3ff3cef307bcfe3 ]
 
-sk_getsockopt() runs locklessly, thus we need to annotate the read
-of sk->sk_peek_off.
+In a prior commit I forgot that sk_getsockopt() reads
+sk->sk_ll_usec without holding a lock.
 
-While we are at it, add corresponding annotations to sk_set_peek_off()
-and unix_set_peek_off().
-
-Fixes: b9bb53f3836f ("sock: convert sk_peek_offset functions to WRITE_ONCE")
+Fixes: 0dbffbb5335a ("net: annotate data race around sk_ll_usec")
 Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Willem de Bruijn <willemb@google.com>
 Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/sock.c    | 4 ++--
- net/unix/af_unix.c | 2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ net/core/sock.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/net/core/sock.c b/net/core/sock.c
-index 708018b58e906..a241734b10240 100644
+index a241734b10240..98f4b4a80de42 100644
 --- a/net/core/sock.c
 +++ b/net/core/sock.c
-@@ -1517,7 +1517,7 @@ int sock_getsockopt(struct socket *sock, int level, int optname,
- 		if (!sock->ops->set_peek_off)
- 			return -EOPNOTSUPP;
+@@ -1547,7 +1547,7 @@ int sock_getsockopt(struct socket *sock, int level, int optname,
  
--		v.val = sk->sk_peek_off;
-+		v.val = READ_ONCE(sk->sk_peek_off);
+ #ifdef CONFIG_NET_RX_BUSY_POLL
+ 	case SO_BUSY_POLL:
+-		v.val = sk->sk_ll_usec;
++		v.val = READ_ONCE(sk->sk_ll_usec);
  		break;
- 	case SO_NOFCS:
- 		v.val = sock_flag(sk, SOCK_NOFCS);
-@@ -2745,7 +2745,7 @@ EXPORT_SYMBOL(__sk_mem_reclaim);
+ #endif
  
- int sk_set_peek_off(struct sock *sk, int val)
- {
--	sk->sk_peek_off = val;
-+	WRITE_ONCE(sk->sk_peek_off, val);
- 	return 0;
- }
- EXPORT_SYMBOL_GPL(sk_set_peek_off);
-diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
-index 2fe0efcbfed16..3aa783a23c5f6 100644
---- a/net/unix/af_unix.c
-+++ b/net/unix/af_unix.c
-@@ -697,7 +697,7 @@ static int unix_set_peek_off(struct sock *sk, int val)
- 	if (mutex_lock_interruptible(&u->iolock))
- 		return -EINTR;
- 
--	sk->sk_peek_off = val;
-+	WRITE_ONCE(sk->sk_peek_off, val);
- 	mutex_unlock(&u->iolock);
- 
- 	return 0;
 -- 
 2.40.1
 
