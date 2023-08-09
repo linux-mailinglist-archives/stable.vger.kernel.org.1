@@ -2,44 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3B173775B86
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:18:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A0BD17758A7
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:54:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233459AbjHILSU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:18:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50388 "EHLO
+        id S232723AbjHIKys (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 06:54:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47630 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233470AbjHILSU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:18:20 -0400
+        with ESMTP id S232728AbjHIKyg (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:54:36 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE1C110F3
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:18:19 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 191D34EFF
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:52:52 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6512D63189
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:18:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74742C433C7;
-        Wed,  9 Aug 2023 11:18:18 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9E0C463128
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:52:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8A08C433C7;
+        Wed,  9 Aug 2023 10:52:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691579898;
-        bh=NXMHAvA2/MMpP/mRwMTUPCFYlW1B8yNBcD/yJg8l9rU=;
+        s=korg; t=1691578371;
+        bh=cMA3oev4frsrMIowZpPgyLwH83iCO8YTuH1at/X1fiQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Stxw+StB6Re/YfYObGiqgMr26SPy/ULF0UejLHwNqnu/XrCAb3ZCBNLn0PNI7e1un
-         om+ljSVUOZdlw+j7YZj1SGCj3B6cx8IP0BpiQ60eQdKgJ5ZwXkgwb78Lr9cEsvTYkR
-         23fXfN9isSfYREKk8EjBEzjFHq1+7SQRW6cCvaKw=
+        b=XErv0TNhjvKuWLVd4Xt6IFz9VO2BC1jZKmUMXwTRz9TeC8RG6Azd/mUwBZeLZ6/MF
+         m0qQF+OBUKsgdtm+IajOILhGRaVOZYjvI8fHGyky201yg/ifD/8zdAnzTRRKmqdVNl
+         6Ca6JMKJcwv9rgilKO2O4V40Sy30e+KRIxx3InTw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ding Hui <dinghui@sangfor.com.cn>,
-        Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 4.19 155/323] SUNRPC: Fix UAF in svc_tcp_listen_data_ready()
+        patches@lists.linux.dev, Robin Murphy <robin.murphy@arm.com>,
+        Nicolin Chen <nicolinc@nvidia.com>,
+        Will Deacon <will@kernel.org>,
+        Easwar Hariharan <eahariha@linux.microsoft.com>
+Subject: [PATCH 6.1 006/127] iommu/arm-smmu-v3: Document MMU-700 erratum 2812531
 Date:   Wed,  9 Aug 2023 12:39:53 +0200
-Message-ID: <20230809103705.245561890@linuxfoundation.org>
+Message-ID: <20230809103636.833476032@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
-References: <20230809103658.104386911@linuxfoundation.org>
+In-Reply-To: <20230809103636.615294317@linuxfoundation.org>
+References: <20230809103636.615294317@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,142 +56,100 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ding Hui <dinghui@sangfor.com.cn>
+From: Robin Murphy <robin.murphy@arm.com>
 
-commit fc80fc2d4e39137869da3150ee169b40bf879287 upstream.
+commit 309a15cb16bb075da1c99d46fb457db6a1a2669e upstream
 
-After the listener svc_sock is freed, and before invoking svc_tcp_accept()
-for the established child sock, there is a window that the newsock
-retaining a freed listener svc_sock in sk_user_data which cloning from
-parent. In the race window, if data is received on the newsock, we will
-observe use-after-free report in svc_tcp_listen_data_ready().
+To work around MMU-700 erratum 2812531 we need to ensure that certain
+sequences of commands cannot be issued without an intervening sync. In
+practice this falls out of our current command-batching machinery
+anyway - each batch only contains a single type of invalidation command,
+and ends with a sync. The only exception is when a batch is sufficiently
+large to need issuing across multiple command queue slots, wherein the
+earlier slots will not contain a sync and thus may in theory interleave
+with another batch being issued in parallel to create an affected
+sequence across the slot boundary.
 
-Reproduce by two tasks:
+Since MMU-700 supports range invalidate commands and thus we will prefer
+to use them (which also happens to avoid conditions for other errata),
+I'm not entirely sure it's even possible for a single high-level
+invalidate call to generate a batch of more than 63 commands, but for
+the sake of robustness and documentation, wire up an option to enforce
+that a sync is always inserted for every slot issued.
 
-1. while :; do rpc.nfsd 0 ; rpc.nfsd; done
-2. while :; do echo "" | ncat -4 127.0.0.1 2049 ; done
+The other aspect is that the relative order of DVM commands cannot be
+controlled, so DVM cannot be used. Again that is already the status quo,
+but since we have at least defined ARM_SMMU_FEAT_BTM, we can explicitly
+disable it for documentation purposes even if it's not wired up anywhere
+yet.
 
-KASAN report:
-
-  ==================================================================
-  BUG: KASAN: slab-use-after-free in svc_tcp_listen_data_ready+0x1cf/0x1f0 [sunrpc]
-  Read of size 8 at addr ffff888139d96228 by task nc/102553
-  CPU: 7 PID: 102553 Comm: nc Not tainted 6.3.0+ #18
-  Hardware name: VMware, Inc. VMware Virtual Platform/440BX Desktop Reference Platform, BIOS 6.00 11/12/2020
-  Call Trace:
-   <IRQ>
-   dump_stack_lvl+0x33/0x50
-   print_address_description.constprop.0+0x27/0x310
-   print_report+0x3e/0x70
-   kasan_report+0xae/0xe0
-   svc_tcp_listen_data_ready+0x1cf/0x1f0 [sunrpc]
-   tcp_data_queue+0x9f4/0x20e0
-   tcp_rcv_established+0x666/0x1f60
-   tcp_v4_do_rcv+0x51c/0x850
-   tcp_v4_rcv+0x23fc/0x2e80
-   ip_protocol_deliver_rcu+0x62/0x300
-   ip_local_deliver_finish+0x267/0x350
-   ip_local_deliver+0x18b/0x2d0
-   ip_rcv+0x2fb/0x370
-   __netif_receive_skb_one_core+0x166/0x1b0
-   process_backlog+0x24c/0x5e0
-   __napi_poll+0xa2/0x500
-   net_rx_action+0x854/0xc90
-   __do_softirq+0x1bb/0x5de
-   do_softirq+0xcb/0x100
-   </IRQ>
-   <TASK>
-   ...
-   </TASK>
-
-  Allocated by task 102371:
-   kasan_save_stack+0x1e/0x40
-   kasan_set_track+0x21/0x30
-   __kasan_kmalloc+0x7b/0x90
-   svc_setup_socket+0x52/0x4f0 [sunrpc]
-   svc_addsock+0x20d/0x400 [sunrpc]
-   __write_ports_addfd+0x209/0x390 [nfsd]
-   write_ports+0x239/0x2c0 [nfsd]
-   nfsctl_transaction_write+0xac/0x110 [nfsd]
-   vfs_write+0x1c3/0xae0
-   ksys_write+0xed/0x1c0
-   do_syscall_64+0x38/0x90
-   entry_SYSCALL_64_after_hwframe+0x72/0xdc
-
-  Freed by task 102551:
-   kasan_save_stack+0x1e/0x40
-   kasan_set_track+0x21/0x30
-   kasan_save_free_info+0x2a/0x50
-   __kasan_slab_free+0x106/0x190
-   __kmem_cache_free+0x133/0x270
-   svc_xprt_free+0x1e2/0x350 [sunrpc]
-   svc_xprt_destroy_all+0x25a/0x440 [sunrpc]
-   nfsd_put+0x125/0x240 [nfsd]
-   nfsd_svc+0x2cb/0x3c0 [nfsd]
-   write_threads+0x1ac/0x2a0 [nfsd]
-   nfsctl_transaction_write+0xac/0x110 [nfsd]
-   vfs_write+0x1c3/0xae0
-   ksys_write+0xed/0x1c0
-   do_syscall_64+0x38/0x90
-   entry_SYSCALL_64_after_hwframe+0x72/0xdc
-
-Fix the UAF by simply doing nothing in svc_tcp_listen_data_ready()
-if state != TCP_LISTEN, that will avoid dereferencing svsk for all
-child socket.
-
-Link: https://lore.kernel.org/lkml/20230507091131.23540-1-dinghui@sangfor.com.cn/
-Fixes: fa9251afc33c ("SUNRPC: Call the default socket callbacks instead of open coding")
-Signed-off-by: Ding Hui <dinghui@sangfor.com.cn>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Robin Murphy <robin.murphy@arm.com>
+Reviewed-by: Nicolin Chen <nicolinc@nvidia.com>
+Link: https://lore.kernel.org/r/330221cdfd0003cd51b6c04e7ff3566741ad8374.1683731256.git.robin.murphy@arm.com
+Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Easwar Hariharan <eahariha@linux.microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sunrpc/svcsock.c |   27 +++++++++++++--------------
- 1 file changed, 13 insertions(+), 14 deletions(-)
+ Documentation/arm64/silicon-errata.rst      |    2 ++
+ drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c |   12 ++++++++++++
+ drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.h |    1 +
+ 3 files changed, 15 insertions(+)
 
---- a/net/sunrpc/svcsock.c
-+++ b/net/sunrpc/svcsock.c
-@@ -757,12 +757,6 @@ static void svc_tcp_listen_data_ready(st
- 	dprintk("svc: socket %p TCP (listen) state change %d\n",
- 		sk, sk->sk_state);
+--- a/Documentation/arm64/silicon-errata.rst
++++ b/Documentation/arm64/silicon-errata.rst
+@@ -143,6 +143,8 @@ stable kernels.
+ +----------------+-----------------+-----------------+-----------------------------+
+ | ARM            | MMU-600         | #1076982        | N/A                         |
+ +----------------+-----------------+-----------------+-----------------------------+
++| ARM            | MMU-700         | #2812531        | N/A                         |
+++----------------+-----------------+-----------------+-----------------------------+
+ +----------------+-----------------+-----------------+-----------------------------+
+ | Broadcom       | Brahma-B53      | N/A             | ARM64_ERRATUM_845719        |
+ +----------------+-----------------+-----------------+-----------------------------+
+--- a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
++++ b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
+@@ -882,6 +882,12 @@ static void arm_smmu_cmdq_batch_add(stru
+ {
+ 	int index;
  
--	if (svsk) {
--		/* Refer to svc_setup_socket() for details. */
--		rmb();
--		svsk->sk_odata(sk);
--	}
--
- 	/*
- 	 * This callback may called twice when a new connection
- 	 * is established as a child socket inherits everything
-@@ -771,15 +765,20 @@ static void svc_tcp_listen_data_ready(st
- 	 *    when one of child sockets become ESTABLISHED.
- 	 * 2) data_ready method of the child socket may be called
- 	 *    when it receives data before the socket is accepted.
--	 * In case of 2, we should ignore it silently.
-+	 * In case of 2, we should ignore it silently and DO NOT
-+	 * dereference svsk.
- 	 */
--	if (sk->sk_state == TCP_LISTEN) {
--		if (svsk) {
--			set_bit(XPT_CONN, &svsk->sk_xprt.xpt_flags);
--			svc_xprt_enqueue(&svsk->sk_xprt);
--		} else
--			printk("svc: socket %p: no user data\n", sk);
--	}
-+	if (sk->sk_state != TCP_LISTEN)
-+		return;
++	if (cmds->num == CMDQ_BATCH_ENTRIES - 1 &&
++	    (smmu->options & ARM_SMMU_OPT_CMDQ_FORCE_SYNC)) {
++		arm_smmu_cmdq_issue_cmdlist(smmu, cmds->cmds, cmds->num, true);
++		cmds->num = 0;
++	}
 +
-+	if (svsk) {
-+		/* Refer to svc_setup_socket() for details. */
-+		rmb();
-+		svsk->sk_odata(sk);
-+		set_bit(XPT_CONN, &svsk->sk_xprt.xpt_flags);
-+		svc_xprt_enqueue(&svsk->sk_xprt);
-+	} else
-+		printk("svc: socket %p: no user data\n", sk);
- }
+ 	if (cmds->num == CMDQ_BATCH_ENTRIES) {
+ 		arm_smmu_cmdq_issue_cmdlist(smmu, cmds->cmds, cmds->num, false);
+ 		cmds->num = 0;
+@@ -3412,6 +3418,7 @@ static int arm_smmu_device_reset(struct
  
- /*
+ #define IIDR_IMPLEMENTER_ARM		0x43b
+ #define IIDR_PRODUCTID_ARM_MMU_600	0x483
++#define IIDR_PRODUCTID_ARM_MMU_700	0x487
+ 
+ static void arm_smmu_device_iidr_probe(struct arm_smmu_device *smmu)
+ {
+@@ -3432,6 +3439,11 @@ static void arm_smmu_device_iidr_probe(s
+ 			if (variant == 0 && revision <= 2)
+ 				smmu->features &= ~ARM_SMMU_FEAT_SEV;
+ 			break;
++		case IIDR_PRODUCTID_ARM_MMU_700:
++			/* Arm erratum 2812531 */
++			smmu->features &= ~ARM_SMMU_FEAT_BTM;
++			smmu->options |= ARM_SMMU_OPT_CMDQ_FORCE_SYNC;
++			break;
+ 		}
+ 		break;
+ 	}
+--- a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.h
++++ b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.h
+@@ -650,6 +650,7 @@ struct arm_smmu_device {
+ #define ARM_SMMU_OPT_SKIP_PREFETCH	(1 << 0)
+ #define ARM_SMMU_OPT_PAGE0_REGS_ONLY	(1 << 1)
+ #define ARM_SMMU_OPT_MSIPOLL		(1 << 2)
++#define ARM_SMMU_OPT_CMDQ_FORCE_SYNC	(1 << 3)
+ 	u32				options;
+ 
+ 	struct arm_smmu_cmdq		cmdq;
 
 
