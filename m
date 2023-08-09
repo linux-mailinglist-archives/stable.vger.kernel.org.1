@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 09B1B775D23
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:34:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B8B5F7758A2
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:54:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233998AbjHILeR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:34:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42212 "EHLO
+        id S232427AbjHIKyn (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 06:54:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43010 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234001AbjHILeR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:34:17 -0400
+        with ESMTP id S232717AbjHIKyc (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:54:32 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB768173A
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:34:16 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 54F624ED0
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:52:44 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5B87263491
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:34:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D113C433C7;
-        Wed,  9 Aug 2023 11:34:15 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9111C63132
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:52:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A25CAC433C8;
+        Wed,  9 Aug 2023 10:52:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691580855;
-        bh=nDpWQFNmQonVzqavfzVuG+CmSZ5vsZSlCiQILpDqbd4=;
+        s=korg; t=1691578324;
+        bh=28fG5fkPGJQDb2cdOhFHY3gRKl2EyeLtsvT7ucTWlc0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Myz56GtTu1+nyLkMMxPWO0UfDMGgCY5LsDALpyNFIqNm1Mz7cuEGlJZZb0HM+bDW0
-         c4v/Okuba2A+OXbnKMTgsKjyf7784qhdYF4o8vWtEMGMxWZgj9xIQyn1/S/8ikhV7G
-         yTHZ0WHawFjrBp5/xeVHsAf9V2SPxio9sQxlelGI=
+        b=UksCGVkBper9Bg4PvLtLHku5ywifIm9pbW/D3ijn3g7W25KnTWGcXjyUawfWQiDRu
+         U2NFVPGZ7o6VywpZ4TROkrzbU0asZZeeEnoncExGeIMCsFJvuO97CVl0qBaNUrJ8K7
+         byMgLVdcMxZSpX2yNsCJQ4MWaoxQQRsPBvpYWYPU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Filipe Manana <fdmanana@suse.com>,
-        David Sterba <dsterba@suse.com>,
+        patches@lists.linux.dev,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Heiko Carstens <hca@linux.ibm.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 004/201] btrfs: fix race between quota disable and relocation
+Subject: [PATCH 6.1 019/127] KVM: s390: fix sthyi error handling
 Date:   Wed,  9 Aug 2023 12:40:06 +0200
-Message-ID: <20230809103643.950079499@linuxfoundation.org>
+Message-ID: <20230809103637.290188474@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103643.799166053@linuxfoundation.org>
-References: <20230809103643.799166053@linuxfoundation.org>
+In-Reply-To: <20230809103636.615294317@linuxfoundation.org>
+References: <20230809103636.615294317@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,97 +56,78 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Heiko Carstens <hca@linux.ibm.com>
 
-[ Upstream commit 8a4a0b2a3eaf75ca8854f856ef29690c12b2f531 ]
+[ Upstream commit 0c02cc576eac161601927b41634f80bfd55bfa9e ]
 
-If we disable quotas while we have a relocation of a metadata block group
-that has extents belonging to the quota root, we can cause the relocation
-to fail with -ENOENT. This is because relocation builds backref nodes for
-extents of the quota root and later needs to walk the backrefs and access
-the quota root - however if in between a task disables quotas, it results
-in deleting the quota root from the root tree (with btrfs_del_root(),
-called from btrfs_quota_disable().
+Commit 9fb6c9b3fea1 ("s390/sthyi: add cache to store hypervisor info")
+added cache handling for store hypervisor info. This also changed the
+possible return code for sthyi_fill().
 
-This can be sporadically triggered by test case btrfs/255 from fstests:
+Instead of only returning a condition code like the sthyi instruction would
+do, it can now also return a negative error value (-ENOMEM). handle_styhi()
+was not changed accordingly. In case of an error, the negative error value
+would incorrectly injected into the guest PSW.
 
-  $ ./check btrfs/255
-  FSTYP         -- btrfs
-  PLATFORM      -- Linux/x86_64 debian0 6.4.0-rc6-btrfs-next-134+ #1 SMP PREEMPT_DYNAMIC Thu Jun 15 11:59:28 WEST 2023
-  MKFS_OPTIONS  -- /dev/sdc
-  MOUNT_OPTIONS -- /dev/sdc /home/fdmanana/btrfs-tests/scratch_1
+Add proper error handling to prevent this, and update the comment which
+describes the possible return values of sthyi_fill().
 
-  btrfs/255 6s ... _check_dmesg: something found in dmesg (see /home/fdmanana/git/hub/xfstests/results//btrfs/255.dmesg)
-  - output mismatch (see /home/fdmanana/git/hub/xfstests/results//btrfs/255.out.bad)
-#      --- tests/btrfs/255.out	2023-03-02 21:47:53.876609426 +0000
-#      +++ /home/fdmanana/git/hub/xfstests/results//btrfs/255.out.bad	2023-06-16 10:20:39.267563212 +0100
-#      @@ -1,2 +1,4 @@
-#       QA output created by 255
-#      +ERROR: error during balancing '/home/fdmanana/btrfs-tests/scratch_1': No such file or directory
-#      +There may be more info in syslog - try dmesg | tail
-#       Silence is golden
-#      ...
-      (Run 'diff -u /home/fdmanana/git/hub/xfstests/tests/btrfs/255.out /home/fdmanana/git/hub/xfstests/results//btrfs/255.out.bad'  to see the entire diff)
-  Ran: btrfs/255
-  Failures: btrfs/255
-  Failed 1 of 1 tests
-
-To fix this make the quota disable operation take the cleaner mutex, as
-relocation of a block group also takes this mutex. This is also what we
-do when deleting a subvolume/snapshot, we take the cleaner mutex in the
-cleaner kthread (at cleaner_kthread()) and then we call btrfs_del_root()
-at btrfs_drop_snapshot() while under the protection of the cleaner mutex.
-
-Fixes: bed92eae26cc ("Btrfs: qgroup implementation and prototypes")
-CC: stable@vger.kernel.org # 5.4+
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Fixes: 9fb6c9b3fea1 ("s390/sthyi: add cache to store hypervisor info")
+Reviewed-by: Christian Borntraeger <borntraeger@linux.ibm.com>
+Link: https://lore.kernel.org/r/20230727182939.2050744-1-hca@linux.ibm.com
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/qgroup.c | 18 +++++++++++++++---
- 1 file changed, 15 insertions(+), 3 deletions(-)
+ arch/s390/kernel/sthyi.c  | 6 +++---
+ arch/s390/kvm/intercept.c | 9 ++++++---
+ 2 files changed, 9 insertions(+), 6 deletions(-)
 
-diff --git a/fs/btrfs/qgroup.c b/fs/btrfs/qgroup.c
-index 828a7ff4aebe7..a67323c2d41f7 100644
---- a/fs/btrfs/qgroup.c
-+++ b/fs/btrfs/qgroup.c
-@@ -1202,12 +1202,23 @@ int btrfs_quota_disable(struct btrfs_fs_info *fs_info)
- 	int ret = 0;
+diff --git a/arch/s390/kernel/sthyi.c b/arch/s390/kernel/sthyi.c
+index 4d141e2c132e5..2ea7f208f0e73 100644
+--- a/arch/s390/kernel/sthyi.c
++++ b/arch/s390/kernel/sthyi.c
+@@ -459,9 +459,9 @@ static int sthyi_update_cache(u64 *rc)
+  *
+  * Fills the destination with system information returned by the STHYI
+  * instruction. The data is generated by emulation or execution of STHYI,
+- * if available. The return value is the condition code that would be
+- * returned, the rc parameter is the return code which is passed in
+- * register R2 + 1.
++ * if available. The return value is either a negative error value or
++ * the condition code that would be returned, the rc parameter is the
++ * return code which is passed in register R2 + 1.
+  */
+ int sthyi_fill(void *dst, u64 *rc)
+ {
+diff --git a/arch/s390/kvm/intercept.c b/arch/s390/kvm/intercept.c
+index ee7478a601442..b37bb960bfaf0 100644
+--- a/arch/s390/kvm/intercept.c
++++ b/arch/s390/kvm/intercept.c
+@@ -389,8 +389,8 @@ static int handle_partial_execution(struct kvm_vcpu *vcpu)
+  */
+ int handle_sthyi(struct kvm_vcpu *vcpu)
+ {
+-	int reg1, reg2, r = 0;
+-	u64 code, addr, cc = 0, rc = 0;
++	int reg1, reg2, cc = 0, r = 0;
++	u64 code, addr, rc = 0;
+ 	struct sthyi_sctns *sctns = NULL;
  
- 	/*
--	 * We need to have subvol_sem write locked, to prevent races between
--	 * concurrent tasks trying to disable quotas, because we will unlock
--	 * and relock qgroup_ioctl_lock across BTRFS_FS_QUOTA_ENABLED changes.
-+	 * We need to have subvol_sem write locked to prevent races with
-+	 * snapshot creation.
- 	 */
- 	lockdep_assert_held_write(&fs_info->subvol_sem);
+ 	if (!test_kvm_facility(vcpu->kvm, 74))
+@@ -421,7 +421,10 @@ int handle_sthyi(struct kvm_vcpu *vcpu)
+ 		return -ENOMEM;
  
-+	/*
-+	 * Lock the cleaner mutex to prevent races with concurrent relocation,
-+	 * because relocation may be building backrefs for blocks of the quota
-+	 * root while we are deleting the root. This is like dropping fs roots
-+	 * of deleted snapshots/subvolumes, we need the same protection.
-+	 *
-+	 * This also prevents races between concurrent tasks trying to disable
-+	 * quotas, because we will unlock and relock qgroup_ioctl_lock across
-+	 * BTRFS_FS_QUOTA_ENABLED changes.
-+	 */
-+	mutex_lock(&fs_info->cleaner_mutex);
-+
- 	mutex_lock(&fs_info->qgroup_ioctl_lock);
- 	if (!fs_info->quota_root)
- 		goto out;
-@@ -1287,6 +1298,7 @@ int btrfs_quota_disable(struct btrfs_fs_info *fs_info)
- 		btrfs_end_transaction(trans);
- 	else if (trans)
- 		ret = btrfs_end_transaction(trans);
-+	mutex_unlock(&fs_info->cleaner_mutex);
- 
- 	return ret;
- }
+ 	cc = sthyi_fill(sctns, &rc);
+-
++	if (cc < 0) {
++		free_page((unsigned long)sctns);
++		return cc;
++	}
+ out:
+ 	if (!cc) {
+ 		if (kvm_s390_pv_cpu_is_protected(vcpu)) {
 -- 
-2.39.2
+2.40.1
 
 
 
