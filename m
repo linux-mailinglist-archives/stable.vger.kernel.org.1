@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 781BC775C2E
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:24:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 338C4775D99
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:39:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233668AbjHILYk (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:24:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34936 "EHLO
+        id S234156AbjHILjV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:39:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52774 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233663AbjHILYk (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:24:40 -0400
+        with ESMTP id S234157AbjHILjV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:39:21 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 144AC1BFE
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:24:40 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A15D4173A
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:39:20 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9FABB6324E
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:24:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B22F8C433C8;
-        Wed,  9 Aug 2023 11:24:38 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 36FCC635DA
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:39:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43331C433C7;
+        Wed,  9 Aug 2023 11:39:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691580279;
-        bh=rkocAO7QOc6Q2XecRwP5ZC3q2N1UXqpLI5F2SVl858s=;
+        s=korg; t=1691581159;
+        bh=MwF6NOtXlug4SdrmuY24jadCyzDDgfCNLiXYUzzUUXU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=hanGlyCyaN4youYWXapClZ0v89k2JriF1fW9k7lNtfnRF370svbk3KhV8rFgKnjEP
-         el5uyriOKeuUms8wK80FY2tj/QWbt+GIHQwnawOUKd+X2b3SG3+QEKv1MXCnA2+U3+
-         4HzHv9cE7EHzANAeinum5ihPTAGcdQb5RRNgYWok=
+        b=NCKlJmOcLx8wpojmEIDqf7Ni8aamzyVhTQ6IYR5cTC1hJN4W/PPMLRdzbWyCOcabw
+         0R7WF8SwursfDKnBGKNPQ41KPqx06EJmDI8CCK+u5xr/KI1GM4rgMU9Iyhc/JRgMrq
+         1E5/icC7K5QQX+e1P3MldvdTK+LlFO1rUcaCAeog=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yuanjun Gong <ruc_gongyuanjun@163.com>,
-        Leon Romanovsky <leonro@nvidia.com>,
-        Saeed Mahameed <saeedm@nvidia.com>,
+        patches@lists.linux.dev,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Heiko Carstens <hca@linux.ibm.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 291/323] net/mlx5e: fix return value check in mlx5e_ipsec_remove_trailer()
+Subject: [PATCH 5.10 127/201] KVM: s390: fix sthyi error handling
 Date:   Wed,  9 Aug 2023 12:42:09 +0200
-Message-ID: <20230809103711.371394033@linuxfoundation.org>
+Message-ID: <20230809103647.988126949@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
-References: <20230809103658.104386911@linuxfoundation.org>
+In-Reply-To: <20230809103643.799166053@linuxfoundation.org>
+References: <20230809103643.799166053@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,37 +56,76 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Yuanjun Gong <ruc_gongyuanjun@163.com>
+From: Heiko Carstens <hca@linux.ibm.com>
 
-[ Upstream commit e5bcb7564d3bd0c88613c76963c5349be9c511c5 ]
+[ Upstream commit 0c02cc576eac161601927b41634f80bfd55bfa9e ]
 
-mlx5e_ipsec_remove_trailer() should return an error code if function
-pskb_trim() returns an unexpected value.
+Commit 9fb6c9b3fea1 ("s390/sthyi: add cache to store hypervisor info")
+added cache handling for store hypervisor info. This also changed the
+possible return code for sthyi_fill().
 
-Fixes: 2ac9cfe78223 ("net/mlx5e: IPSec, Add Innova IPSec offload TX data path")
-Signed-off-by: Yuanjun Gong <ruc_gongyuanjun@163.com>
-Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+Instead of only returning a condition code like the sthyi instruction would
+do, it can now also return a negative error value (-ENOMEM). handle_styhi()
+was not changed accordingly. In case of an error, the negative error value
+would incorrectly injected into the guest PSW.
+
+Add proper error handling to prevent this, and update the comment which
+describes the possible return values of sthyi_fill().
+
+Fixes: 9fb6c9b3fea1 ("s390/sthyi: add cache to store hypervisor info")
+Reviewed-by: Christian Borntraeger <borntraeger@linux.ibm.com>
+Link: https://lore.kernel.org/r/20230727182939.2050744-1-hca@linux.ibm.com
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_rxtx.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/s390/kernel/sthyi.c  | 6 +++---
+ arch/s390/kvm/intercept.c | 9 ++++++---
+ 2 files changed, 9 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_rxtx.c b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_rxtx.c
-index 128a82b1dbfc6..ad9db70eb879e 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_rxtx.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_rxtx.c
-@@ -121,7 +121,9 @@ static int mlx5e_ipsec_remove_trailer(struct sk_buff *skb, struct xfrm_state *x)
+diff --git a/arch/s390/kernel/sthyi.c b/arch/s390/kernel/sthyi.c
+index 888cc2f166db7..ce6084e28d904 100644
+--- a/arch/s390/kernel/sthyi.c
++++ b/arch/s390/kernel/sthyi.c
+@@ -460,9 +460,9 @@ static int sthyi_update_cache(u64 *rc)
+  *
+  * Fills the destination with system information returned by the STHYI
+  * instruction. The data is generated by emulation or execution of STHYI,
+- * if available. The return value is the condition code that would be
+- * returned, the rc parameter is the return code which is passed in
+- * register R2 + 1.
++ * if available. The return value is either a negative error value or
++ * the condition code that would be returned, the rc parameter is the
++ * return code which is passed in register R2 + 1.
+  */
+ int sthyi_fill(void *dst, u64 *rc)
+ {
+diff --git a/arch/s390/kvm/intercept.c b/arch/s390/kvm/intercept.c
+index 5be68190901f9..8bf72a323e4fa 100644
+--- a/arch/s390/kvm/intercept.c
++++ b/arch/s390/kvm/intercept.c
+@@ -387,8 +387,8 @@ static int handle_partial_execution(struct kvm_vcpu *vcpu)
+  */
+ int handle_sthyi(struct kvm_vcpu *vcpu)
+ {
+-	int reg1, reg2, r = 0;
+-	u64 code, addr, cc = 0, rc = 0;
++	int reg1, reg2, cc = 0, r = 0;
++	u64 code, addr, rc = 0;
+ 	struct sthyi_sctns *sctns = NULL;
  
- 	trailer_len = alen + plen + 2;
+ 	if (!test_kvm_facility(vcpu->kvm, 74))
+@@ -419,7 +419,10 @@ int handle_sthyi(struct kvm_vcpu *vcpu)
+ 		return -ENOMEM;
  
--	pskb_trim(skb, skb->len - trailer_len);
-+	ret = pskb_trim(skb, skb->len - trailer_len);
-+	if (unlikely(ret))
-+		return ret;
- 	if (skb->protocol == htons(ETH_P_IP)) {
- 		ipv4hdr->tot_len = htons(ntohs(ipv4hdr->tot_len) - trailer_len);
- 		ip_send_check(ipv4hdr);
+ 	cc = sthyi_fill(sctns, &rc);
+-
++	if (cc < 0) {
++		free_page((unsigned long)sctns);
++		return cc;
++	}
+ out:
+ 	if (!cc) {
+ 		if (kvm_s390_pv_cpu_is_protected(vcpu)) {
 -- 
 2.40.1
 
