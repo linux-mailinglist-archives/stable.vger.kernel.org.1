@@ -2,109 +2,99 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 22877775A11
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:05:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7CC2A775B7C
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:17:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233056AbjHILFI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:05:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54588 "EHLO
+        id S233452AbjHILR6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:17:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58844 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233072AbjHILFH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:05:07 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A9901FCE
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:05:05 -0700 (PDT)
+        with ESMTP id S233445AbjHILR5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:17:57 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B87FFA
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:17:57 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 10B5B6309F
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:05:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C68BC433C9;
-        Wed,  9 Aug 2023 11:05:03 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0564363187
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:17:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A2A4C433C8;
+        Wed,  9 Aug 2023 11:17:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691579104;
-        bh=rLFJCWiG2eGiCjB58qNPRmfGBIT6AIWutEi+ZFiX7ek=;
+        s=korg; t=1691579876;
+        bh=5B7BQNfC+z975cUNfiYvZh1sjrdi68gmnfnGL/f0Jzo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ZPhA0crkSfFDI9/j945ClLmZSe+cYzpC5ZMDT/NxpKWaxTC6TzwLwWz1+ibhmhrZP
-         6sDiHvNzmcPusMjd/TRHbBg1xka/Ub0prChk7SzSV1SyA0tRuiLeGVna8QGrZ/338N
-         DNoorj1/yZOoLu/srgVPjDDFJ+krs87bQMvbzWQY=
+        b=y5HTqxaUfFtOwEpCX6IqCfmAddlAS1rg2ifqBw9VpN4gPaoY36TNImWrdZSvrN5wP
+         xYytb8HOPc8lkN2VvepP1NXxfGBv8SPzzeO/Zh0YEzvlAHCy0ouLFVUBEzD/9TGjdm
+         T6VAb943AxfGLXGZZJJyv5AuM65DJu0xHviYvSws=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 047/204] pinctrl: cherryview: Return correct value if pin in push-pull mode
-Date:   Wed,  9 Aug 2023 12:39:45 +0200
-Message-ID: <20230809103644.143726627@linuxfoundation.org>
+Subject: [PATCH 4.19 148/323] wifi: airo: avoid uninitialized warning in airo_get_rate()
+Date:   Wed,  9 Aug 2023 12:39:46 +0200
+Message-ID: <20230809103704.925441637@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103642.552405807@linuxfoundation.org>
-References: <20230809103642.552405807@linuxfoundation.org>
+In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
+References: <20230809103658.104386911@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Randy Dunlap <rdunlap@infradead.org>
 
-[ Upstream commit 5835196a17be5cfdcad0b617f90cf4abe16951a4 ]
+[ Upstream commit 9373771aaed17f5c2c38485f785568abe3a9f8c1 ]
 
-Currently the getter returns ENOTSUPP on pin configured in
-the push-pull mode. Fix this by adding the missed switch case.
+Quieten a gcc (11.3.0) build error or warning by checking the function
+call status and returning -EBUSY if the function call failed.
+This is similar to what several other wireless drivers do for the
+SIOCGIWRATE ioctl call when there is a locking problem.
 
-Fixes: ccdf81d08dbe ("pinctrl: cherryview: add option to set open-drain pin config")
-Fixes: 6e08d6bbebeb ("pinctrl: Add Intel Cherryview/Braswell pin controller support")
-Acked-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+drivers/net/wireless/cisco/airo.c: error: 'status_rid.currentXmitRate' is used uninitialized [-Werror=uninitialized]
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Reported-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Link: https://lore.kernel.org/r/39abf2c7-24a-f167-91da-ed4c5435d1c4@linux-m68k.org
+Link: https://lore.kernel.org/r/20230709133154.26206-1-rdunlap@infradead.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/intel/pinctrl-cherryview.c | 15 ++++++++++-----
- 1 file changed, 10 insertions(+), 5 deletions(-)
+ drivers/net/wireless/cisco/airo.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/pinctrl/intel/pinctrl-cherryview.c b/drivers/pinctrl/intel/pinctrl-cherryview.c
-index d39718b4242d9..fa4a9ccef1f49 100644
---- a/drivers/pinctrl/intel/pinctrl-cherryview.c
-+++ b/drivers/pinctrl/intel/pinctrl-cherryview.c
-@@ -1040,11 +1040,6 @@ static int chv_config_get(struct pinctrl_dev *pctldev, unsigned pin,
+diff --git a/drivers/net/wireless/cisco/airo.c b/drivers/net/wireless/cisco/airo.c
+index 5a6ee0b014da0..a01b42c7c07ac 100644
+--- a/drivers/net/wireless/cisco/airo.c
++++ b/drivers/net/wireless/cisco/airo.c
+@@ -6100,8 +6100,11 @@ static int airo_get_rate(struct net_device *dev,
+ {
+ 	struct airo_info *local = dev->ml_priv;
+ 	StatusRid status_rid;		/* Card status info */
++	int ret;
  
- 		break;
+-	readStatusRid(local, &status_rid, 1);
++	ret = readStatusRid(local, &status_rid, 1);
++	if (ret)
++		return -EBUSY;
  
--	case PIN_CONFIG_DRIVE_OPEN_DRAIN:
--		if (!(ctrl1 & CHV_PADCTRL1_ODEN))
--			return -EINVAL;
--		break;
--
- 	case PIN_CONFIG_BIAS_HIGH_IMPEDANCE: {
- 		u32 cfg;
- 
-@@ -1054,6 +1049,16 @@ static int chv_config_get(struct pinctrl_dev *pctldev, unsigned pin,
- 			return -EINVAL;
- 
- 		break;
-+
-+	case PIN_CONFIG_DRIVE_PUSH_PULL:
-+		if (ctrl1 & CHV_PADCTRL1_ODEN)
-+			return -EINVAL;
-+		break;
-+
-+	case PIN_CONFIG_DRIVE_OPEN_DRAIN:
-+		if (!(ctrl1 & CHV_PADCTRL1_ODEN))
-+			return -EINVAL;
-+		break;
- 	}
- 
- 	default:
+ 	vwrq->value = le16_to_cpu(status_rid.currentXmitRate) * 500000;
+ 	/* If more than one rate, set auto */
 -- 
 2.39.2
 
