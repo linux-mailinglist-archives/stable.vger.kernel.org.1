@@ -2,167 +2,182 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 89194775D78
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:37:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0A69C775A80
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:09:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234115AbjHILhz (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:37:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58418 "EHLO
+        id S233203AbjHILJA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:09:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46422 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234111AbjHILhy (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:37:54 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F340173A
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:37:53 -0700 (PDT)
+        with ESMTP id S233193AbjHILJA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:09:00 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 763391FCE
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:08:59 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2F31763587
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:37:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 403F2C433C7;
-        Wed,  9 Aug 2023 11:37:52 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0E21D630F0
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:08:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FA3CC433C8;
+        Wed,  9 Aug 2023 11:08:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691581072;
-        bh=hbHBrkmb3zO/4wCorDCJDA3Swc/hPtL+18fIiKGITDc=;
+        s=korg; t=1691579338;
+        bh=tlCISQvpeuRCJ2Kpg8mJ2ZZIkSSYmiRArHOEBSY27Ak=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=izXnFLefBTBpIco/98JGJS9w3J+y+Az3xuPFSp7IMkQTO/ju7gCT6xiGKuUIQr+5e
-         9AGEXki1QQEb/smrOlupBTeKE4EDkqgQRhPcN9SUHrEb8uo6O3u9r2BiSb24ksNURy
-         OBn9Jo1ZtaqIrO4Xsn1A8UTJ4HO6mQIXzYipCndk=
+        b=Ofj2ZxTr/JdW5QvB0dCMN2p6UjRkyD1P61cC4YRIP8j1ODO5WHvrTCaekg1X1FeNX
+         NWPw7xOCjaREI7u8qM7Cb/aTO2SNtc+Ltr5c0eKMYi/unL/sQKIhqrpJ2uwNTO8gGr
+         zmh5MiOal1C04Ab4UqilPdDAwzDp1MUmvsoAZSYE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Sean Christopherson <seanjc@google.com>,
-        Paolo Bonzini <pbonzini@redhat.com>,
+        patches@lists.linux.dev, mhiramat@kernel.org,
+        vnagarnaik@google.com, Zheng Yejian <zhengyejian1@huawei.com>,
+        "Steven Rostedt (Google)" <rostedt@goodmis.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 096/201] KVM: nVMX: Do not clear CR3 load/store exiting bits if L1 wants em
+Subject: [PATCH 4.14 160/204] ring-buffer: Fix wrong stat of cpu_buffer->read
 Date:   Wed,  9 Aug 2023 12:41:38 +0200
-Message-ID: <20230809103647.031132491@linuxfoundation.org>
+Message-ID: <20230809103647.883433474@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103643.799166053@linuxfoundation.org>
-References: <20230809103643.799166053@linuxfoundation.org>
+In-Reply-To: <20230809103642.552405807@linuxfoundation.org>
+References: <20230809103642.552405807@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Sean Christopherson <seanjc@google.com>
+From: Zheng Yejian <zhengyejian1@huawei.com>
 
-[ Upstream commit 470750b3425513b9f63f176e564e63e0e7998afc ]
+[ Upstream commit 2d093282b0d4357373497f65db6a05eb0c28b7c8 ]
 
-Keep CR3 load/store exiting enable as needed when running L2 in order to
-honor L1's desires.  This fixes a largely theoretical bug where L1 could
-intercept CR3 but not CR0.PG and end up not getting the desired CR3 exits
-when L2 enables paging.  In other words, the existing !is_paging() check
-inadvertantly handles the normal case for L2 where vmx_set_cr0() is
-called during VM-Enter, which is guaranteed to run with paging enabled,
-and thus will never clear the bits.
+When pages are removed in rb_remove_pages(), 'cpu_buffer->read' is set
+to 0 in order to make sure any read iterators reset themselves. However,
+this will mess 'entries' stating, see following steps:
 
-Removing the !is_paging() check will also allow future consolidation and
-cleanup of the related code.  From a performance perspective, this is
-all a nop, as the VMCS controls shadow will optimize away the VMWRITE
-when the controls are in the desired state.
+  # cd /sys/kernel/tracing/
+  # 1. Enlarge ring buffer prepare for later reducing:
+  # echo 20 > per_cpu/cpu0/buffer_size_kb
+  # 2. Write a log into ring buffer of cpu0:
+  # taskset -c 0 echo "hello1" > trace_marker
+  # 3. Read the log:
+  # cat per_cpu/cpu0/trace_pipe
+       <...>-332     [000] .....    62.406844: tracing_mark_write: hello1
+  # 4. Stop reading and see the stats, now 0 entries, and 1 event readed:
+  # cat per_cpu/cpu0/stats
+   entries: 0
+   [...]
+   read events: 1
+  # 5. Reduce the ring buffer
+  # echo 7 > per_cpu/cpu0/buffer_size_kb
+  # 6. Now entries became unexpected 1 because actually no entries!!!
+  # cat per_cpu/cpu0/stats
+   entries: 1
+   [...]
+   read events: 0
 
-Add a comment explaining why CR3 is intercepted, with a big disclaimer
-about not querying the old CR3.  Because vmx_set_cr0() is used for flows
-that are not directly tied to MOV CR3, e.g. vCPU RESET/INIT and nested
-VM-Enter, it's possible that is_paging() is not synchronized with CR3
-load/store exiting.  This is actually guaranteed in the current code, as
-KVM starts with CR3 interception disabled.  Obviously that can be fixed,
-but there's no good reason to play whack-a-mole, and it tends to end
-poorly, e.g. descriptor table exiting for UMIP emulation attempted to be
-precise in the past and ended up botching the interception toggling.
+To fix it, introduce 'page_removed' field to count total removed pages
+since last reset, then use it to let read iterators reset themselves
+instead of changing the 'read' pointer.
 
-Fixes: fe3ef05c7572 ("KVM: nVMX: Prepare vmcs02 from vmcs01 and vmcs12")
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Message-Id: <20210713163324.627647-25-seanjc@google.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-Stable-dep-of: c4abd7352023 ("KVM: VMX: Don't fudge CR0 and CR4 for restricted L2 guest")
+Link: https://lore.kernel.org/linux-trace-kernel/20230724054040.3489499-1-zhengyejian1@huawei.com
+
+Cc: <mhiramat@kernel.org>
+Cc: <vnagarnaik@google.com>
+Fixes: 83f40318dab0 ("ring-buffer: Make removal of ring buffer pages atomic")
+Signed-off-by: Zheng Yejian <zhengyejian1@huawei.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kvm/vmx/vmx.c | 46 +++++++++++++++++++++++++++++++++---------
- 1 file changed, 37 insertions(+), 9 deletions(-)
+ kernel/trace/ring_buffer.c | 22 ++++++++++++----------
+ 1 file changed, 12 insertions(+), 10 deletions(-)
 
-diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index b9abe08c9d590..ca51df0df3f94 100644
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -3063,10 +3063,14 @@ void ept_save_pdptrs(struct kvm_vcpu *vcpu)
- 	kvm_register_mark_dirty(vcpu, VCPU_EXREG_PDPTR);
+diff --git a/kernel/trace/ring_buffer.c b/kernel/trace/ring_buffer.c
+index d0fed522bf23a..1949d7bbe145d 100644
+--- a/kernel/trace/ring_buffer.c
++++ b/kernel/trace/ring_buffer.c
+@@ -464,6 +464,8 @@ struct ring_buffer_per_cpu {
+ 	unsigned long			read_bytes;
+ 	u64				write_stamp;
+ 	u64				read_stamp;
++	/* pages removed since last reset */
++	unsigned long			pages_removed;
+ 	/* ring buffer pages to update, > 0 to add, < 0 to remove */
+ 	long				nr_pages_to_update;
+ 	struct list_head		new_pages; /* new pages to add */
+@@ -498,6 +500,7 @@ struct ring_buffer_iter {
+ 	struct buffer_page		*head_page;
+ 	struct buffer_page		*cache_reader_page;
+ 	unsigned long			cache_read;
++	unsigned long			cache_pages_removed;
+ 	u64				read_stamp;
+ };
+ 
+@@ -1447,6 +1450,8 @@ rb_remove_pages(struct ring_buffer_per_cpu *cpu_buffer, unsigned long nr_pages)
+ 		to_remove = rb_list_head(to_remove)->next;
+ 		head_bit |= (unsigned long)to_remove & RB_PAGE_HEAD;
+ 	}
++	/* Read iterators need to reset themselves when some pages removed */
++	cpu_buffer->pages_removed += nr_removed;
+ 
+ 	next_page = rb_list_head(to_remove)->next;
+ 
+@@ -1468,12 +1473,6 @@ rb_remove_pages(struct ring_buffer_per_cpu *cpu_buffer, unsigned long nr_pages)
+ 		cpu_buffer->head_page = list_entry(next_page,
+ 						struct buffer_page, list);
+ 
+-	/*
+-	 * change read pointer to make sure any read iterators reset
+-	 * themselves
+-	 */
+-	cpu_buffer->read = 0;
+-
+ 	/* pages are removed, resume tracing and then free the pages */
+ 	atomic_dec(&cpu_buffer->record_disabled);
+ 	raw_spin_unlock_irq(&cpu_buffer->reader_lock);
+@@ -3464,6 +3463,7 @@ static void rb_iter_reset(struct ring_buffer_iter *iter)
+ 
+ 	iter->cache_reader_page = iter->head_page;
+ 	iter->cache_read = cpu_buffer->read;
++	iter->cache_pages_removed = cpu_buffer->pages_removed;
+ 
+ 	if (iter->head)
+ 		iter->read_stamp = cpu_buffer->read_stamp;
+@@ -3896,12 +3896,13 @@ rb_iter_peek(struct ring_buffer_iter *iter, u64 *ts)
+ 	buffer = cpu_buffer->buffer;
+ 
+ 	/*
+-	 * Check if someone performed a consuming read to
+-	 * the buffer. A consuming read invalidates the iterator
+-	 * and we need to reset the iterator in this case.
++	 * Check if someone performed a consuming read to the buffer
++	 * or removed some pages from the buffer. In these cases,
++	 * iterator was invalidated and we need to reset it.
+ 	 */
+ 	if (unlikely(iter->cache_read != cpu_buffer->read ||
+-		     iter->cache_reader_page != cpu_buffer->reader_page))
++		     iter->cache_reader_page != cpu_buffer->reader_page ||
++		     iter->cache_pages_removed != cpu_buffer->pages_removed))
+ 		rb_iter_reset(iter);
+ 
+  again:
+@@ -4323,6 +4324,7 @@ rb_reset_cpu(struct ring_buffer_per_cpu *cpu_buffer)
+ 	cpu_buffer->last_overrun = 0;
+ 
+ 	rb_head_page_activate(cpu_buffer);
++	cpu_buffer->pages_removed = 0;
  }
  
-+#define CR3_EXITING_BITS (CPU_BASED_CR3_LOAD_EXITING | \
-+			  CPU_BASED_CR3_STORE_EXITING)
-+
- void vmx_set_cr0(struct kvm_vcpu *vcpu, unsigned long cr0)
- {
- 	struct vcpu_vmx *vmx = to_vmx(vcpu);
- 	unsigned long hw_cr0;
-+	u32 tmp;
- 
- 	hw_cr0 = (cr0 & ~KVM_VM_CR0_ALWAYS_OFF);
- 	if (is_unrestricted_guest(vcpu))
-@@ -3093,18 +3097,42 @@ void vmx_set_cr0(struct kvm_vcpu *vcpu, unsigned long cr0)
- #endif
- 
- 	if (enable_ept && !is_unrestricted_guest(vcpu)) {
-+		/*
-+		 * Ensure KVM has an up-to-date snapshot of the guest's CR3.  If
-+		 * the below code _enables_ CR3 exiting, vmx_cache_reg() will
-+		 * (correctly) stop reading vmcs.GUEST_CR3 because it thinks
-+		 * KVM's CR3 is installed.
-+		 */
- 		if (!kvm_register_is_available(vcpu, VCPU_EXREG_CR3))
- 			vmx_cache_reg(vcpu, VCPU_EXREG_CR3);
-+
-+		/*
-+		 * When running with EPT but not unrestricted guest, KVM must
-+		 * intercept CR3 accesses when paging is _disabled_.  This is
-+		 * necessary because restricted guests can't actually run with
-+		 * paging disabled, and so KVM stuffs its own CR3 in order to
-+		 * run the guest when identity mapped page tables.
-+		 *
-+		 * Do _NOT_ check the old CR0.PG, e.g. to optimize away the
-+		 * update, it may be stale with respect to CR3 interception,
-+		 * e.g. after nested VM-Enter.
-+		 *
-+		 * Lastly, honor L1's desires, i.e. intercept CR3 loads and/or
-+		 * stores to forward them to L1, even if KVM does not need to
-+		 * intercept them to preserve its identity mapped page tables.
-+		 */
- 		if (!(cr0 & X86_CR0_PG)) {
--			/* From paging/starting to nonpaging */
--			exec_controls_setbit(vmx, CPU_BASED_CR3_LOAD_EXITING |
--						  CPU_BASED_CR3_STORE_EXITING);
--			vcpu->arch.cr0 = cr0;
--			vmx_set_cr4(vcpu, kvm_read_cr4(vcpu));
--		} else if (!is_paging(vcpu)) {
--			/* From nonpaging to paging */
--			exec_controls_clearbit(vmx, CPU_BASED_CR3_LOAD_EXITING |
--						    CPU_BASED_CR3_STORE_EXITING);
-+			exec_controls_setbit(vmx, CR3_EXITING_BITS);
-+		} else if (!is_guest_mode(vcpu)) {
-+			exec_controls_clearbit(vmx, CR3_EXITING_BITS);
-+		} else {
-+			tmp = exec_controls_get(vmx);
-+			tmp &= ~CR3_EXITING_BITS;
-+			tmp |= get_vmcs12(vcpu)->cpu_based_vm_exec_control & CR3_EXITING_BITS;
-+			exec_controls_set(vmx, tmp);
-+		}
-+
-+		if (!is_paging(vcpu) != !(cr0 & X86_CR0_PG)) {
- 			vcpu->arch.cr0 = cr0;
- 			vmx_set_cr4(vcpu, kvm_read_cr4(vcpu));
- 		}
+ /**
 -- 
 2.40.1
 
