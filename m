@@ -2,53 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 30FA3775CCA
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:30:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4C1EF775C33
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:24:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233866AbjHILa6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:30:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44228 "EHLO
+        id S233147AbjHILYw (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:24:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45672 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233870AbjHILa5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:30:57 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B2BB10DC
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:30:57 -0700 (PDT)
+        with ESMTP id S233672AbjHILYv (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:24:51 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2232819A1
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:24:51 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9FBFB6338D
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:30:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF944C433C7;
-        Wed,  9 Aug 2023 11:30:55 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id AAAD963250
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:24:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8F15C433C7;
+        Wed,  9 Aug 2023 11:24:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691580656;
-        bh=uVgnSk2t4tHv/P4XL4Wkzr+x/EmlfgRC4kqp0gdEDo0=;
+        s=korg; t=1691580290;
+        bh=HeK5GxO+uAoeGEp0zl9W9EPYge1CgkH/9avWRfCvRl0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=OhWzwVJh9BqSVsLuJgdFCTQotANLQVnJryCYoYkVWTS/TPjNy279W7KTumEmbo0jS
-         so32yIGVljh56bm6Ww2+KnGOd9glKA9I1KZ0ufJRyuN7S7Mu+XVaR8EGg5zTmXcNCq
-         jf2lgbOehYVRzVYWDyepqnKFAGXORuYXcf0ZfAVo=
+        b=PczPYnSbldgoUpRjopiGHlG7EdLjJVLeXqUvIb3ahqU/m4sNMVUj2obgK1KNekOBd
+         IjtfaG3uONC/C9LN+MJ88jFy8OtGMpwaEdK/fKp8/1JZ20ddMUtArhwdDl70AuxMq3
+         1lCCQO6jsNz3CS1KNnV8uWib9D7BEkH5E7Zq3pVs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
         "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 102/154] net: add missing READ_ONCE(sk->sk_rcvlowat) annotation
+Subject: [PATCH 4.19 295/323] net: add missing data-race annotation for sk_ll_usec
 Date:   Wed,  9 Aug 2023 12:42:13 +0200
-Message-ID: <20230809103640.343184702@linuxfoundation.org>
+Message-ID: <20230809103711.563595137@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103636.887175326@linuxfoundation.org>
-References: <20230809103636.887175326@linuxfoundation.org>
+In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
+References: <20230809103658.104386911@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -57,12 +57,12 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit e6d12bdb435d23ff6c1890c852d85408a2f496ee ]
+[ Upstream commit e5f0d2dd3c2faa671711dac6d3ff3cef307bcfe3 ]
 
-In a prior commit, I forgot to change sk_getsockopt()
-when reading sk->sk_rcvlowat locklessly.
+In a prior commit I forgot that sk_getsockopt() reads
+sk->sk_ll_usec without holding a lock.
 
-Fixes: eac66402d1c3 ("net: annotate sk->sk_rcvlowat lockless reads")
+Fixes: 0dbffbb5335a ("net: annotate data race around sk_ll_usec")
 Signed-off-by: Eric Dumazet <edumazet@google.com>
 Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
@@ -71,18 +71,18 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/net/core/sock.c b/net/core/sock.c
-index 539c39ad1e488..a73111be68581 100644
+index f112862fe0682..3e6da3694a5a5 100644
 --- a/net/core/sock.c
 +++ b/net/core/sock.c
-@@ -1350,7 +1350,7 @@ int sock_getsockopt(struct socket *sock, int level, int optname,
- 		break;
+@@ -1349,7 +1349,7 @@ int sock_getsockopt(struct socket *sock, int level, int optname,
  
- 	case SO_RCVLOWAT:
--		v.val = sk->sk_rcvlowat;
-+		v.val = READ_ONCE(sk->sk_rcvlowat);
+ #ifdef CONFIG_NET_RX_BUSY_POLL
+ 	case SO_BUSY_POLL:
+-		v.val = sk->sk_ll_usec;
++		v.val = READ_ONCE(sk->sk_ll_usec);
  		break;
+ #endif
  
- 	case SO_SNDLOWAT:
 -- 
 2.40.1
 
