@@ -2,91 +2,101 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2D575775A66
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:08:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7BAB07759BC
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:03:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233161AbjHILIH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:08:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58098 "EHLO
+        id S232957AbjHILDE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:03:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38038 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233162AbjHILIH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:08:07 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A300C10F3
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:08:06 -0700 (PDT)
+        with ESMTP id S232971AbjHILDC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:03:02 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 11B663581
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:54:15 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4372063148
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:08:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52216C433C8;
-        Wed,  9 Aug 2023 11:08:05 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B1E116312C
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:54:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9C33C433C7;
+        Wed,  9 Aug 2023 10:54:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691579285;
-        bh=l2kX24XkgBp95wGPNETf8ANGpR74OeiNyMb5CiOl4Lw=;
+        s=korg; t=1691578455;
+        bh=ym55Z87JiY8qWPBJSsqJ7I6NZWwChYv7feAfOj6Givc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=XmWedrVYDBhn46JLIWa/u75pRLmpHLxlIgixGOu82+JkfZV1gsJDZSzXMoMqjOmCx
-         iBVeuyose6DlmKe3BrFVaXccKfvyu7T4YBZcIpych2gbMW5azdPuN9AX4ivRwi8xNL
-         n1S35MWSxzxnpnzejTojar9w9DS11ER52XG1DB5k=
+        b=La1tjdIbJDNEPA2cPZFyiJO+R+VQBF55p6G4EngEwgyMfDA2NWF53Z90PjEI/SA1g
+         pnaYeS2kcIJZaqZ0SpVolfR1FVeokpceR95+o9KzrcD8KuX+iZcsEPFneBSPV4V/Al
+         Pp5f9zKJpaWKK63msDvaULIZOUkFQbnzbgXYUMJE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, George Stark <GNStark@sberdevices.ru>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 4.14 113/204] meson saradc: fix clock divider mask length
+        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
+        David Ahern <dsahern@kernel.org>,
+        Kuniyuki Iwashima <kuniyu@amazon.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 064/127] tcp_metrics: fix addr_same() helper
 Date:   Wed,  9 Aug 2023 12:40:51 +0200
-Message-ID: <20230809103646.383009109@linuxfoundation.org>
+Message-ID: <20230809103638.781735813@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103642.552405807@linuxfoundation.org>
-References: <20230809103642.552405807@linuxfoundation.org>
+In-Reply-To: <20230809103636.615294317@linuxfoundation.org>
+References: <20230809103636.615294317@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: George Stark <gnstark@sberdevices.ru>
+From: Eric Dumazet <edumazet@google.com>
 
-commit c57fa0037024c92c2ca34243e79e857da5d2c0a9 upstream.
+[ Upstream commit e6638094d7af6c7b9dcca05ad009e79e31b4f670 ]
 
-According to the datasheets of supported meson SoCs length of ADC_CLK_DIV
-field is 6-bit. Although all supported SoCs have the register
-with that field documented later SoCs use external clock rather than
-ADC internal clock so this patch affects only meson8 family (S8* SoCs).
+Because v4 and v6 families use separate inetpeer trees (respectively
+net->ipv4.peers and net->ipv6.peers), inetpeer_addr_cmp(a, b) assumes
+a & b share the same family.
 
-Fixes: 3adbf3427330 ("iio: adc: add a driver for the SAR ADC found in Amlogic Meson SoCs")
-Signed-off-by: George Stark <GNStark@sberdevices.ru>
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-Reviewed-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Link: https://lore.kernel.org/r/20230606165357.42417-1-gnstark@sberdevices.ru
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+tcp_metrics use a common hash table, where entries can have different
+families.
+
+We must therefore make sure to not call inetpeer_addr_cmp()
+if the families do not match.
+
+Fixes: d39d14ffa24c ("net: Add helper function to compare inetpeer addresses")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Link: https://lore.kernel.org/r/20230802131500.1478140-2-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/adc/meson_saradc.c |    2 +-
+ net/ipv4/tcp_metrics.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/iio/adc/meson_saradc.c
-+++ b/drivers/iio/adc/meson_saradc.c
-@@ -75,7 +75,7 @@
- 	#define MESON_SAR_ADC_REG3_PANEL_DETECT_COUNT_MASK	GENMASK(20, 18)
- 	#define MESON_SAR_ADC_REG3_PANEL_DETECT_FILTER_TB_MASK	GENMASK(17, 16)
- 	#define MESON_SAR_ADC_REG3_ADC_CLK_DIV_SHIFT		10
--	#define MESON_SAR_ADC_REG3_ADC_CLK_DIV_WIDTH		5
-+	#define MESON_SAR_ADC_REG3_ADC_CLK_DIV_WIDTH		6
- 	#define MESON_SAR_ADC_REG3_BLOCK_DLY_SEL_MASK		GENMASK(9, 8)
- 	#define MESON_SAR_ADC_REG3_BLOCK_DLY_MASK		GENMASK(7, 0)
+diff --git a/net/ipv4/tcp_metrics.c b/net/ipv4/tcp_metrics.c
+index 82f4575f9cd90..c4daf0aa2d4d9 100644
+--- a/net/ipv4/tcp_metrics.c
++++ b/net/ipv4/tcp_metrics.c
+@@ -78,7 +78,7 @@ static void tcp_metric_set(struct tcp_metrics_block *tm,
+ static bool addr_same(const struct inetpeer_addr *a,
+ 		      const struct inetpeer_addr *b)
+ {
+-	return inetpeer_addr_cmp(a, b) == 0;
++	return (a->family == b->family) && !inetpeer_addr_cmp(a, b);
+ }
  
+ struct tcpm_hash_bucket {
+-- 
+2.40.1
+
 
 
