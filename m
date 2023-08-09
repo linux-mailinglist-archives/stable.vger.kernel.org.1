@@ -2,44 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 04E03775B30
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:15:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5D243775B3C
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:15:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233397AbjHILPM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:15:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34420 "EHLO
+        id S233386AbjHILPn (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:15:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58782 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229827AbjHILPM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:15:12 -0400
+        with ESMTP id S233403AbjHILPn (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:15:43 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E5C4DED
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:15:11 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 82A2E10F3
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:15:42 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6C6F862347
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:15:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F541C433C8;
-        Wed,  9 Aug 2023 11:15:10 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 19F016283A
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:15:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C4F8C433C8;
+        Wed,  9 Aug 2023 11:15:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691579710;
-        bh=gIGLAdgQn9vJGnbBSe1F7LP1EKdgb4kes7QT/yotcdI=;
+        s=korg; t=1691579741;
+        bh=Loy1l09wQmN+xGENzRLkK1bK6n3Ih4AHIJfD5X4MVKk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=gixD/PZwEb6/1hyyy8wRw2iWU30CWTBGRZaG48H0muLajZWDLkyDN4TEhPAWNUWFG
-         yZt2No2P53Nm1HX7Y9MRZcYVYn/JYz/2KHIFMFRG/gTtK7vqyVj8G01J1n6CFywfDJ
-         lvEm3jVFPVf43Yw9G5Bk0xCxAprt8XgOwJsL+c34=
+        b=ExjVyA5qhZO81UxPSoB3CJasIZrKVqex/YurJ0RlaI6mUWNbrHvPRQ9nBNs5kwxM2
+         kxW5oIuxSqD/Sh/SPTq2fjd94s0lksXGHkbl4uccDuLBy3Jb66iyWvDi7k63HslLqK
+         ZNWMxtvTF1hTqTRAiogymOmftlZAQpxq6eK8PxWg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Claudiu Beznea <claudiu.beznea@microchip.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
+        patches@lists.linux.dev, Laurent Vivier <lvivier@redhat.com>,
+        "Michael S. Tsirkin" <mst@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 071/323] pinctrl: at91-pio4: check return value of devm_kasprintf()
-Date:   Wed,  9 Aug 2023 12:38:29 +0200
-Message-ID: <20230809103701.397992340@linuxfoundation.org>
+Subject: [PATCH 4.19 072/323] hwrng: virtio - add an internal buffer
+Date:   Wed,  9 Aug 2023 12:38:30 +0200
+Message-ID: <20230809103701.450413171@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
 References: <20230809103658.104386911@linuxfoundation.org>
@@ -57,39 +55,125 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Claudiu Beznea <claudiu.beznea@microchip.com>
+From: Laurent Vivier <lvivier@redhat.com>
 
-[ Upstream commit f6fd5d4ff8ca0b24cee1af4130bcb1fa96b61aa0 ]
+[ Upstream commit bf3175bc50a3754dc427e2f5046e17a9fafc8be7 ]
 
-devm_kasprintf() returns a pointer to dynamically allocated memory.
-Pointer could be NULL in case allocation fails. Check pointer validity.
-Identified with coccinelle (kmerr.cocci script).
+hwrng core uses two buffers that can be mixed in the
+virtio-rng queue.
 
-Fixes: 776180848b57 ("pinctrl: introduce driver for Atmel PIO4 controller")
-Depends-on: 1c4e5c470a56 ("pinctrl: at91: use devm_kasprintf() to avoid potential leaks")
-Depends-on: 5a8f9cf269e8 ("pinctrl: at91-pio4: use proper format specifier for unsigned int")
-Signed-off-by: Claudiu Beznea <claudiu.beznea@microchip.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/r/20230615105333.585304-4-claudiu.beznea@microchip.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+If the buffer is provided with wait=0 it is enqueued in the
+virtio-rng queue but unused by the caller.
+On the next call, core provides another buffer but the
+first one is filled instead and the new one queued.
+And the caller reads the data from the new one that is not
+updated, and the data in the first one are lost.
+
+To avoid this mix, virtio-rng needs to use its own unique
+internal buffer at a cost of a data copy to the caller buffer.
+
+Signed-off-by: Laurent Vivier <lvivier@redhat.com>
+Link: https://lore.kernel.org/r/20211028101111.128049-2-lvivier@redhat.com
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Stable-dep-of: ac52578d6e8d ("hwrng: virtio - Fix race on data_avail and actual data")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/pinctrl-at91-pio4.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/char/hw_random/virtio-rng.c | 43 ++++++++++++++++++++++-------
+ 1 file changed, 33 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/pinctrl/pinctrl-at91-pio4.c b/drivers/pinctrl/pinctrl-at91-pio4.c
-index 5b883eb49ce92..cbbda24bf6a80 100644
---- a/drivers/pinctrl/pinctrl-at91-pio4.c
-+++ b/drivers/pinctrl/pinctrl-at91-pio4.c
-@@ -1024,6 +1024,8 @@ static int atmel_pinctrl_probe(struct platform_device *pdev)
- 		/* Pin naming convention: P(bank_name)(bank_pin_number). */
- 		pin_desc[i].name = devm_kasprintf(&pdev->dev, GFP_KERNEL, "P%c%d",
- 						  bank + 'A', line);
-+		if (!pin_desc[i].name)
-+			return -ENOMEM;
+diff --git a/drivers/char/hw_random/virtio-rng.c b/drivers/char/hw_random/virtio-rng.c
+index 7abd604e938c2..999f523c80c1e 100644
+--- a/drivers/char/hw_random/virtio-rng.c
++++ b/drivers/char/hw_random/virtio-rng.c
+@@ -30,13 +30,20 @@ static DEFINE_IDA(rng_index_ida);
+ struct virtrng_info {
+ 	struct hwrng hwrng;
+ 	struct virtqueue *vq;
+-	struct completion have_data;
+ 	char name[25];
+-	unsigned int data_avail;
+ 	int index;
+ 	bool busy;
+ 	bool hwrng_register_done;
+ 	bool hwrng_removed;
++	/* data transfer */
++	struct completion have_data;
++	unsigned int data_avail;
++	/* minimal size returned by rng_buffer_size() */
++#if SMP_CACHE_BYTES < 32
++	u8 data[32];
++#else
++	u8 data[SMP_CACHE_BYTES];
++#endif
+ };
  
- 		group->name = group_names[i] = pin_desc[i].name;
- 		group->pin = pin_desc[i].number;
+ static void random_recv_done(struct virtqueue *vq)
+@@ -51,14 +58,14 @@ static void random_recv_done(struct virtqueue *vq)
+ }
+ 
+ /* The host will fill any buffer we give it with sweet, sweet randomness. */
+-static void register_buffer(struct virtrng_info *vi, u8 *buf, size_t size)
++static void register_buffer(struct virtrng_info *vi)
+ {
+ 	struct scatterlist sg;
+ 
+-	sg_init_one(&sg, buf, size);
++	sg_init_one(&sg, vi->data, sizeof(vi->data));
+ 
+ 	/* There should always be room for one buffer. */
+-	virtqueue_add_inbuf(vi->vq, &sg, 1, buf, GFP_KERNEL);
++	virtqueue_add_inbuf(vi->vq, &sg, 1, vi->data, GFP_KERNEL);
+ 
+ 	virtqueue_kick(vi->vq);
+ }
+@@ -67,6 +74,8 @@ static int virtio_read(struct hwrng *rng, void *buf, size_t size, bool wait)
+ {
+ 	int ret;
+ 	struct virtrng_info *vi = (struct virtrng_info *)rng->priv;
++	unsigned int chunk;
++	size_t read;
+ 
+ 	if (vi->hwrng_removed)
+ 		return -ENODEV;
+@@ -74,19 +83,33 @@ static int virtio_read(struct hwrng *rng, void *buf, size_t size, bool wait)
+ 	if (!vi->busy) {
+ 		vi->busy = true;
+ 		reinit_completion(&vi->have_data);
+-		register_buffer(vi, buf, size);
++		register_buffer(vi);
+ 	}
+ 
+ 	if (!wait)
+ 		return 0;
+ 
+-	ret = wait_for_completion_killable(&vi->have_data);
+-	if (ret < 0)
+-		return ret;
++	read = 0;
++	while (size != 0) {
++		ret = wait_for_completion_killable(&vi->have_data);
++		if (ret < 0)
++			return ret;
++
++		chunk = min_t(unsigned int, size, vi->data_avail);
++		memcpy(buf + read, vi->data, chunk);
++		read += chunk;
++		size -= chunk;
++		vi->data_avail = 0;
++
++		if (size != 0) {
++			reinit_completion(&vi->have_data);
++			register_buffer(vi);
++		}
++	}
+ 
+ 	vi->busy = false;
+ 
+-	return vi->data_avail;
++	return read;
+ }
+ 
+ static void virtio_cleanup(struct hwrng *rng)
 -- 
 2.39.2
 
