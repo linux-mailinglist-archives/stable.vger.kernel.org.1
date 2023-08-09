@@ -2,184 +2,115 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 295A7775D56
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:36:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9951F775BDD
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:22:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234080AbjHILgX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:36:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36078 "EHLO
+        id S233577AbjHILVm (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:21:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49658 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234077AbjHILgW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:36:22 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1BFDA1FEB
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:36:21 -0700 (PDT)
+        with ESMTP id S233572AbjHILVl (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:21:41 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A5E77FA
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:21:40 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 800376351C
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:36:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92081C433C8;
-        Wed,  9 Aug 2023 11:36:19 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4623A631EE
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:21:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58D6FC433C9;
+        Wed,  9 Aug 2023 11:21:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691580979;
-        bh=ISbCgdEgy6+VTmje+9N9jiayv8ETEKEg1KrWHhT95V8=;
+        s=korg; t=1691580099;
+        bh=Db9OxNFxw241siNFh1QxZuiqbOyemDmCLZ30HL9J2B0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=HnMl+NgVpb6UTyPvLikUMfrQb6/mwYiQp/pDXWcqETnEDojN1npLq76zJJQl8JPgn
-         BZgENuKv3tXuHhFlUC0n3rLiMhFCNHRjUzf2hGokKSt+oHY/ucebZ/jzgW6MHcm+Iq
-         Q1g3QKJXnf2QS8XYOPw0BXqq3mkMF3IE47hWIMKw=
+        b=kl0gBSo4GydoN9HvkmMT8FxfjCOYSZZqlmoKeiDa+YKRbwXLfeNbffpRroEQ12ZkJ
+         6NqJ5w5OGnondXrjY2jFlqENgLd1qAgc+2ojObTZ4qZiskE+92L0VFCXTQunvF4/4N
+         hrpd/7kpCex7vkgKeb2SzfhF223pcHFWmRnzPoBk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, mhiramat@kernel.org,
-        vnagarnaik@google.com, Zheng Yejian <zhengyejian1@huawei.com>,
-        "Steven Rostedt (Google)" <rostedt@goodmis.org>,
+        patches@lists.linux.dev, Lukas Wunner <lukas@wunner.de>,
+        =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 063/201] ring-buffer: Fix wrong stat of cpu_buffer->read
+Subject: [PATCH 4.19 227/323] PCI/ASPM: Avoid link retraining race
 Date:   Wed,  9 Aug 2023 12:41:05 +0200
-Message-ID: <20230809103645.937636807@linuxfoundation.org>
+Message-ID: <20230809103708.482702161@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103643.799166053@linuxfoundation.org>
-References: <20230809103643.799166053@linuxfoundation.org>
+In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
+References: <20230809103658.104386911@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Zheng Yejian <zhengyejian1@huawei.com>
+From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
-[ Upstream commit 2d093282b0d4357373497f65db6a05eb0c28b7c8 ]
+[ Upstream commit e7e39756363ad5bd83ddeae1063193d0f13870fd ]
 
-When pages are removed in rb_remove_pages(), 'cpu_buffer->read' is set
-to 0 in order to make sure any read iterators reset themselves. However,
-this will mess 'entries' stating, see following steps:
+PCIe r6.0.1, sec 7.5.3.7, recommends setting the link control parameters,
+then waiting for the Link Training bit to be clear before setting the
+Retrain Link bit.
 
-  # cd /sys/kernel/tracing/
-  # 1. Enlarge ring buffer prepare for later reducing:
-  # echo 20 > per_cpu/cpu0/buffer_size_kb
-  # 2. Write a log into ring buffer of cpu0:
-  # taskset -c 0 echo "hello1" > trace_marker
-  # 3. Read the log:
-  # cat per_cpu/cpu0/trace_pipe
-       <...>-332     [000] .....    62.406844: tracing_mark_write: hello1
-  # 4. Stop reading and see the stats, now 0 entries, and 1 event readed:
-  # cat per_cpu/cpu0/stats
-   entries: 0
-   [...]
-   read events: 1
-  # 5. Reduce the ring buffer
-  # echo 7 > per_cpu/cpu0/buffer_size_kb
-  # 6. Now entries became unexpected 1 because actually no entries!!!
-  # cat per_cpu/cpu0/stats
-   entries: 1
-   [...]
-   read events: 0
+This avoids a race where the LTSSM may not use the updated parameters if it
+is already in the midst of link training because of other normal link
+activity.
 
-To fix it, introduce 'page_removed' field to count total removed pages
-since last reset, then use it to let read iterators reset themselves
-instead of changing the 'read' pointer.
+Wait for the Link Training bit to be clear before toggling the Retrain Link
+bit to ensure that the LTSSM uses the updated link control parameters.
 
-Link: https://lore.kernel.org/linux-trace-kernel/20230724054040.3489499-1-zhengyejian1@huawei.com
-
-Cc: <mhiramat@kernel.org>
-Cc: <vnagarnaik@google.com>
-Fixes: 83f40318dab0 ("ring-buffer: Make removal of ring buffer pages atomic")
-Signed-off-by: Zheng Yejian <zhengyejian1@huawei.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+[bhelgaas: commit log, return 0 (success)/-ETIMEDOUT instead of bool for
+both pcie_wait_for_retrain() and the existing pcie_retrain_link()]
+Suggested-by: Lukas Wunner <lukas@wunner.de>
+Fixes: 7d715a6c1ae5 ("PCI: add PCI Express ASPM support")
+Link: https://lore.kernel.org/r/20230502083923.34562-1-ilpo.jarvinen@linux.intel.com
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Lukas Wunner <lukas@wunner.de>
+Cc: stable@vger.kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/ring_buffer.c | 22 ++++++++++++----------
- 1 file changed, 12 insertions(+), 10 deletions(-)
+ drivers/pci/pcie/aspm.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/kernel/trace/ring_buffer.c b/kernel/trace/ring_buffer.c
-index 593e446f6c487..3b8c53264441e 100644
---- a/kernel/trace/ring_buffer.c
-+++ b/kernel/trace/ring_buffer.c
-@@ -526,6 +526,8 @@ struct ring_buffer_per_cpu {
- 	rb_time_t			write_stamp;
- 	rb_time_t			before_stamp;
- 	u64				read_stamp;
-+	/* pages removed since last reset */
-+	unsigned long			pages_removed;
- 	/* ring buffer pages to update, > 0 to add, < 0 to remove */
- 	long				nr_pages_to_update;
- 	struct list_head		new_pages; /* new pages to add */
-@@ -561,6 +563,7 @@ struct ring_buffer_iter {
- 	struct buffer_page		*head_page;
- 	struct buffer_page		*cache_reader_page;
- 	unsigned long			cache_read;
-+	unsigned long			cache_pages_removed;
- 	u64				read_stamp;
- 	u64				page_stamp;
- 	struct ring_buffer_event	*event;
-@@ -1833,6 +1836,8 @@ rb_remove_pages(struct ring_buffer_per_cpu *cpu_buffer, unsigned long nr_pages)
- 		to_remove = rb_list_head(to_remove)->next;
- 		head_bit |= (unsigned long)to_remove & RB_PAGE_HEAD;
- 	}
-+	/* Read iterators need to reset themselves when some pages removed */
-+	cpu_buffer->pages_removed += nr_removed;
+diff --git a/drivers/pci/pcie/aspm.c b/drivers/pci/pcie/aspm.c
+index 7b1fb6cb16fba..eec62f7377f48 100644
+--- a/drivers/pci/pcie/aspm.c
++++ b/drivers/pci/pcie/aspm.c
+@@ -223,8 +223,19 @@ static int pcie_wait_for_retrain(struct pci_dev *pdev)
+ static int pcie_retrain_link(struct pcie_link_state *link)
+ {
+ 	struct pci_dev *parent = link->pdev;
++	int rc;
+ 	u16 reg16;
  
- 	next_page = rb_list_head(to_remove)->next;
- 
-@@ -1854,12 +1859,6 @@ rb_remove_pages(struct ring_buffer_per_cpu *cpu_buffer, unsigned long nr_pages)
- 		cpu_buffer->head_page = list_entry(next_page,
- 						struct buffer_page, list);
- 
--	/*
--	 * change read pointer to make sure any read iterators reset
--	 * themselves
--	 */
--	cpu_buffer->read = 0;
--
- 	/* pages are removed, resume tracing and then free the pages */
- 	atomic_dec(&cpu_buffer->record_disabled);
- 	raw_spin_unlock_irq(&cpu_buffer->reader_lock);
-@@ -4105,6 +4104,7 @@ static void rb_iter_reset(struct ring_buffer_iter *iter)
- 
- 	iter->cache_reader_page = iter->head_page;
- 	iter->cache_read = cpu_buffer->read;
-+	iter->cache_pages_removed = cpu_buffer->pages_removed;
- 
- 	if (iter->head) {
- 		iter->read_stamp = cpu_buffer->read_stamp;
-@@ -4558,12 +4558,13 @@ rb_iter_peek(struct ring_buffer_iter *iter, u64 *ts)
- 	buffer = cpu_buffer->buffer;
- 
- 	/*
--	 * Check if someone performed a consuming read to
--	 * the buffer. A consuming read invalidates the iterator
--	 * and we need to reset the iterator in this case.
-+	 * Check if someone performed a consuming read to the buffer
-+	 * or removed some pages from the buffer. In these cases,
-+	 * iterator was invalidated and we need to reset it.
- 	 */
- 	if (unlikely(iter->cache_read != cpu_buffer->read ||
--		     iter->cache_reader_page != cpu_buffer->reader_page))
-+		     iter->cache_reader_page != cpu_buffer->reader_page ||
-+		     iter->cache_pages_removed != cpu_buffer->pages_removed))
- 		rb_iter_reset(iter);
- 
-  again:
-@@ -5005,6 +5006,7 @@ rb_reset_cpu(struct ring_buffer_per_cpu *cpu_buffer)
- 	cpu_buffer->last_overrun = 0;
- 
- 	rb_head_page_activate(cpu_buffer);
-+	cpu_buffer->pages_removed = 0;
- }
- 
- /* Must have disabled the cpu buffer then done a synchronize_rcu */
++	/*
++	 * Ensure the updated LNKCTL parameters are used during link
++	 * training by checking that there is no ongoing link training to
++	 * avoid LTSSM race as recommended in Implementation Note at the
++	 * end of PCIe r6.0.1 sec 7.5.3.7.
++	 */
++	rc = pcie_wait_for_retrain(parent);
++	if (rc)
++		return rc;
++
+ 	pcie_capability_read_word(parent, PCI_EXP_LNKCTL, &reg16);
+ 	reg16 |= PCI_EXP_LNKCTL_RL;
+ 	pcie_capability_write_word(parent, PCI_EXP_LNKCTL, reg16);
 -- 
-2.40.1
+2.39.2
 
 
 
