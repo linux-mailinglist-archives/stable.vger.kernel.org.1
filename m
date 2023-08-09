@@ -2,44 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A2DB17758E8
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:56:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BF1507757CA
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:50:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232452AbjHIKz7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 06:55:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43918 "EHLO
+        id S232289AbjHIKuG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 06:50:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34788 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232503AbjHIKzo (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:55:44 -0400
+        with ESMTP id S232285AbjHIKuF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:50:05 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5137B26AB
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:55:17 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0969410FF
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:50:05 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E29E262E69
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:55:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00A4BC433C8;
-        Wed,  9 Aug 2023 10:55:15 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9B99C630F7
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:50:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9C67C433C7;
+        Wed,  9 Aug 2023 10:50:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691578516;
-        bh=QvjYIl8a0O27/jUNsc2M54WDKpYj6PH10MieaQIhGQc=;
+        s=korg; t=1691578204;
+        bh=lioioFTzveg9uOJXhwc+Y94idNQZkr/ip16TaRXGABs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ajQY4X4ZpncG6QyzaVHg/1dn1zcmCrHJuTn9D6KedRQX2+ZjmO8S283BB1r2Bg6Y6
-         puOIIP83OrZ4i5cTvcOV/5p8kjYf+LSgedYdfNWuu0FQD9D3xSDlxAVPk0VOjuF3Uw
-         Bo05AvManJJ9c23z2hVDd+URuhWpk8jK1r/PQVJk=
+        b=QYNgBmX7Sf9Ax74kDEreSZDfQbFq9aLySIGV3XOAAcGtVt+ewCZX6CY8ol6WFLS2+
+         kgPCZE3Vrx3ULwUf8j4aiqmSfaF2dnod7+FPbSQfUvJRi2w4pwZWJyZhmQ8manvoO4
+         Gj3VMKNtGE6n1j7HZEi8fg4SrcNHpi91f/tOq4uc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ilya Dryomov <idryomov@gmail.com>,
-        Dongsheng Yang <dongsheng.yang@easystack.cn>
-Subject: [PATCH 6.1 087/127] rbd: prevent busy loop when requesting exclusive lock
+        patches@lists.linux.dev, Jason Gunthorpe <jgg@nvidia.com>,
+        syzbot+353c7be4964c6253f24a@syzkaller.appspotmail.com,
+        John Hubbard <jhubbard@nvidia.com>,
+        Lorenzo Stoakes <lstoakes@gmail.com>,
+        David Hildenbrand <david@redhat.com>,
+        Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.4 143/165] mm/gup: do not return 0 from pin_user_pages_fast() for bad args
 Date:   Wed,  9 Aug 2023 12:41:14 +0200
-Message-ID: <20230809103639.531311063@linuxfoundation.org>
+Message-ID: <20230809103647.480696506@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103636.615294317@linuxfoundation.org>
-References: <20230809103636.615294317@linuxfoundation.org>
+In-Reply-To: <20230809103642.720851262@linuxfoundation.org>
+References: <20230809103642.720851262@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,109 +58,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ilya Dryomov <idryomov@gmail.com>
+From: Jason Gunthorpe <jgg@nvidia.com>
 
-commit 9d01e07fd1bfb4daae156ab528aa196f5ac2b2bc upstream.
+commit 9883c7f84053cec2826ca3c56254601b5ce9cdbe upstream.
 
-Due to rbd_try_acquire_lock() effectively swallowing all but
-EBLOCKLISTED error from rbd_try_lock() ("request lock anyway") and
-rbd_request_lock() returning ETIMEDOUT error not only for an actual
-notify timeout but also when the lock owner doesn't respond, a busy
-loop inside of rbd_acquire_lock() between rbd_try_acquire_lock() and
-rbd_request_lock() is possible.
+These routines are not intended to return zero, the callers cannot do
+anything sane with a 0 return.  They should return an error which means
+future calls to GUP will not succeed, or they should return some non-zero
+number of pinned pages which means GUP should be called again.
 
-Requesting the lock on EBUSY error (returned by get_lock_owner_info()
-if an incompatible lock or invalid lock owner is detected) makes very
-little sense.  The same goes for ETIMEDOUT error (might pop up pretty
-much anywhere if osd_request_timeout option is set) and many others.
+If start + nr_pages overflows it should return -EOVERFLOW to signal the
+arguments are invalid.
 
-Just fail I/O requests on rbd_dev->acquiring_list immediately on any
-error from rbd_try_lock().
+Syzkaller keeps tripping on this when fuzzing GUP arguments.
 
-Cc: stable@vger.kernel.org # 588159009d5b: rbd: retrieve and check lock owner twice before blocklisting
-Cc: stable@vger.kernel.org
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
-Reviewed-by: Dongsheng Yang <dongsheng.yang@easystack.cn>
+Link: https://lkml.kernel.org/r/0-v1-3d5ed1f20d50+104-gup_overflow_jgg@nvidia.com
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Reported-by: syzbot+353c7be4964c6253f24a@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/000000000000094fdd05faa4d3a4@google.com
+Reviewed-by: John Hubbard <jhubbard@nvidia.com>
+Reviewed-by: Lorenzo Stoakes <lstoakes@gmail.com>
+Reviewed-by: David Hildenbrand <david@redhat.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/block/rbd.c |   28 +++++++++++++++-------------
- 1 file changed, 15 insertions(+), 13 deletions(-)
+ mm/gup.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/block/rbd.c
-+++ b/drivers/block/rbd.c
-@@ -3676,7 +3676,7 @@ static int rbd_lock(struct rbd_device *r
- 	ret = ceph_cls_lock(osdc, &rbd_dev->header_oid, &rbd_dev->header_oloc,
- 			    RBD_LOCK_NAME, CEPH_CLS_LOCK_EXCLUSIVE, cookie,
- 			    RBD_LOCK_TAG, "", 0);
--	if (ret)
-+	if (ret && ret != -EEXIST)
- 		return ret;
- 
- 	__rbd_lock(rbd_dev, cookie);
-@@ -3879,7 +3879,7 @@ static struct ceph_locker *get_lock_owne
- 				 &rbd_dev->header_oloc, RBD_LOCK_NAME,
- 				 &lock_type, &lock_tag, &lockers, &num_lockers);
- 	if (ret) {
--		rbd_warn(rbd_dev, "failed to retrieve lockers: %d", ret);
-+		rbd_warn(rbd_dev, "failed to get header lockers: %d", ret);
- 		return ERR_PTR(ret);
- 	}
- 
-@@ -3941,8 +3941,10 @@ static int find_watcher(struct rbd_devic
- 	ret = ceph_osdc_list_watchers(osdc, &rbd_dev->header_oid,
- 				      &rbd_dev->header_oloc, &watchers,
- 				      &num_watchers);
--	if (ret)
-+	if (ret) {
-+		rbd_warn(rbd_dev, "failed to get watchers: %d", ret);
- 		return ret;
-+	}
- 
- 	sscanf(locker->id.cookie, RBD_LOCK_COOKIE_PREFIX " %llu", &cookie);
- 	for (i = 0; i < num_watchers; i++) {
-@@ -3986,8 +3988,12 @@ static int rbd_try_lock(struct rbd_devic
- 		locker = refreshed_locker = NULL;
- 
- 		ret = rbd_lock(rbd_dev);
--		if (ret != -EBUSY)
-+		if (!ret)
-+			goto out;
-+		if (ret != -EBUSY) {
-+			rbd_warn(rbd_dev, "failed to lock header: %d", ret);
- 			goto out;
-+		}
- 
- 		/* determine if the current lock holder is still alive */
- 		locker = get_lock_owner_info(rbd_dev);
-@@ -4090,11 +4096,8 @@ static int rbd_try_acquire_lock(struct r
- 
- 	ret = rbd_try_lock(rbd_dev);
- 	if (ret < 0) {
--		rbd_warn(rbd_dev, "failed to lock header: %d", ret);
--		if (ret == -EBLOCKLISTED)
--			goto out;
--
--		ret = 1; /* request lock anyway */
-+		rbd_warn(rbd_dev, "failed to acquire lock: %d", ret);
-+		goto out;
- 	}
- 	if (ret > 0) {
- 		up_write(&rbd_dev->lock_rwsem);
-@@ -6628,12 +6631,11 @@ static int rbd_add_acquire_lock(struct r
- 		cancel_delayed_work_sync(&rbd_dev->lock_dwork);
- 		if (!ret)
- 			ret = -ETIMEDOUT;
--	}
- 
--	if (ret) {
--		rbd_warn(rbd_dev, "failed to acquire exclusive lock: %ld", ret);
--		return ret;
-+		rbd_warn(rbd_dev, "failed to acquire lock: %ld", ret);
- 	}
-+	if (ret)
-+		return ret;
- 
- 	/*
- 	 * The lock may have been released by now, unless automatic lock
+--- a/mm/gup.c
++++ b/mm/gup.c
+@@ -2977,7 +2977,7 @@ static int internal_get_user_pages_fast(
+ 	start = untagged_addr(start) & PAGE_MASK;
+ 	len = nr_pages << PAGE_SHIFT;
+ 	if (check_add_overflow(start, len, &end))
+-		return 0;
++		return -EOVERFLOW;
+ 	if (end > TASK_SIZE_MAX)
+ 		return -EFAULT;
+ 	if (unlikely(!access_ok((void __user *)start, len)))
 
 
