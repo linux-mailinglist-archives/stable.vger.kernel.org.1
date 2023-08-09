@@ -2,33 +2,33 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7F989775D96
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:39:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 08806775C2A
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:24:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234147AbjHILjN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:39:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60364 "EHLO
+        id S233666AbjHILYd (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:24:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53188 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234150AbjHILjM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:39:12 -0400
+        with ESMTP id S233663AbjHILYd (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:24:33 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D81D1FD2
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:39:12 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA2F3ED
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:24:31 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D0E76635E1
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:39:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E00FEC433C7;
-        Wed,  9 Aug 2023 11:39:10 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 59F466323F
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:24:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66B39C433C7;
+        Wed,  9 Aug 2023 11:24:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691581151;
-        bh=hH0Whs3Ohcf/xs+zaJ3EQvnuYMHzb722yr/TdbiXMYM=;
+        s=korg; t=1691580270;
+        bh=3rByZ7xnttdtHnvBkU+gSjIb+QJovBqySvgarQ91jjg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=r4hfU+ndFW6SpsCNSWKc1aGpkMFSQ3ePPHBj4DhPtRp7+u/a5ibrAnYhg5wFxfuhw
-         wKh86korgaHuMpnParhWgPWLYcLHgWxeEEWAKii0E5hnZgjr63TQcPvCxDOqjShHlu
-         cPwglT5EshoEzMo8asKY6MPBbDVX4y/CT7sSuJew=
+        b=vcAoTvxG8wQu5LPMXRkhcWzqSADxZWifNwCn0GMwEKCmr5sFBVBp1D4dxh4M19ysG
+         PIMTYlN5u2l+bGzur/8h5a/+FC3/xE3bW7o/NPrYnoQcFRFcwv1etQnZHGYuDbD0OV
+         ZtN6BMtvXnRu0xMN+zoIs8sJYW3uqZCPq/WPcFCg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -39,12 +39,12 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Jaegeuk Kim <jaegeuk@kernel.org>,
         Bart Van Assche <bvanassche@acm.org>,
         Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 5.10 124/201] loop: Select I/O scheduler none from inside add_disk()
+Subject: [PATCH 4.19 288/323] loop: Select I/O scheduler none from inside add_disk()
 Date:   Wed,  9 Aug 2023 12:42:06 +0200
-Message-ID: <20230809103647.895397540@linuxfoundation.org>
+Message-ID: <20230809103711.230260828@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103643.799166053@linuxfoundation.org>
-References: <20230809103643.799166053@linuxfoundation.org>
+In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
+References: <20230809103658.104386911@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -52,7 +52,7 @@ Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=unavailable autolearn_force=no version=3.4.6
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -97,12 +97,12 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/drivers/block/loop.c
 +++ b/drivers/block/loop.c
-@@ -2109,7 +2109,8 @@ static int loop_add(struct loop_device *
+@@ -1991,7 +1991,8 @@ static int loop_add(struct loop_device *
  	lo->tag_set.queue_depth = 128;
  	lo->tag_set.numa_node = NUMA_NO_NODE;
  	lo->tag_set.cmd_size = sizeof(struct loop_cmd);
--	lo->tag_set.flags = BLK_MQ_F_SHOULD_MERGE | BLK_MQ_F_STACKING;
-+	lo->tag_set.flags = BLK_MQ_F_SHOULD_MERGE | BLK_MQ_F_STACKING |
+-	lo->tag_set.flags = BLK_MQ_F_SHOULD_MERGE | BLK_MQ_F_SG_MERGE;
++	lo->tag_set.flags = BLK_MQ_F_SHOULD_MERGE | BLK_MQ_F_SG_MERGE |
 +		BLK_MQ_F_NO_SCHED;
  	lo->tag_set.driver_data = lo;
  
