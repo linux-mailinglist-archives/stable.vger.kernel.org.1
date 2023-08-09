@@ -2,99 +2,129 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E6FDF775932
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:58:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 396EE7758D2
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:55:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232813AbjHIK63 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 06:58:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37106 "EHLO
+        id S232430AbjHIKzh (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 06:55:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52978 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232773AbjHIK6Y (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:58:24 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 255211736
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:58:24 -0700 (PDT)
+        with ESMTP id S232532AbjHIKzQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:55:16 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 020B83A90
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:53:59 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B3A9462DC8
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:58:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C42EFC433C7;
-        Wed,  9 Aug 2023 10:58:22 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D7E1A6312C
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:53:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA9F9C433C7;
+        Wed,  9 Aug 2023 10:53:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691578703;
-        bh=kHtrEE6ToEs9T8f/zG0VQZWoE0DTPdqZCLeu+k/00Z8=;
+        s=korg; t=1691578438;
+        bh=l7JXj5ebOuWNzgeM3yqkWOJjvgsM0bMiDjlNYRXxr9c=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=s1QpkcdmtfCzoWAQMYR1/Cp966QGu46CFzS0jeiOdD3Vq110PCy09Mi7y/0c6iD7n
-         uNyRO+wWc2z4WKqtYNW+0iVnFxA4/5Q+s1NFXFRPJLFodI3qHjlPF5gQk/fUnKChd/
-         PlFRzv8e+RA/Je7ym+HyMaOw+PwQaM2wKeQcZIbw=
+        b=pZwYRXqnLoCSLJ4PKxQRCrVd/lY/olaQSgoMALAS57hi5H07LRyTIVLr5CY3zk2c7
+         Uwj6t4iLsM3MnbXDiaMXOPqd2pSfjX6yWsHpuwtHwgS1KWA3NFqaO5pcd8DPzOQLY7
+         v48dOcn8c/vhNEFnreU6W8UKon8DRh3LGgsfiGys=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Hugo Villeneuve <hvilleneuve@dimonoff.com>,
-        Fabio Estevam <festevam@gmail.com>,
-        Shawn Guo <shawnguo@kernel.org>,
+        patches@lists.linux.dev, Yue Haibing <yuehaibing@huawei.com>,
+        Eric Dumazet <edumazet@google.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 10/92] arm64: dts: imx8mn-var-som: add missing pull-up for onboard PHY reset pinmux
+Subject: [PATCH 6.1 059/127] ip6mr: Fix skb_under_panic in ip6mr_cache_report()
 Date:   Wed,  9 Aug 2023 12:40:46 +0200
-Message-ID: <20230809103633.913431767@linuxfoundation.org>
+Message-ID: <20230809103638.624782825@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103633.485906560@linuxfoundation.org>
-References: <20230809103633.485906560@linuxfoundation.org>
+In-Reply-To: <20230809103636.615294317@linuxfoundation.org>
+References: <20230809103636.615294317@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+From: Yue Haibing <yuehaibing@huawei.com>
 
-[ Upstream commit 253be5b53c2792fb4384f8005b05421e6f040ee3 ]
+[ Upstream commit 30e0191b16e8a58e4620fa3e2839ddc7b9d4281c ]
 
-For SOMs with an onboard PHY, the RESET_N pull-up resistor is
-currently deactivated in the pinmux configuration. When the pinmux
-code selects the GPIO function for this pin, with a default direction
-of input, this prevents the RESET_N pin from being taken to the proper
-3.3V level (deasserted), and this results in the PHY being not
-detected since it is held in reset.
+skbuff: skb_under_panic: text:ffffffff88771f69 len:56 put:-4
+ head:ffff88805f86a800 data:ffff887f5f86a850 tail:0x88 end:0x2c0 dev:pim6reg
+ ------------[ cut here ]------------
+ kernel BUG at net/core/skbuff.c:192!
+ invalid opcode: 0000 [#1] PREEMPT SMP KASAN
+ CPU: 2 PID: 22968 Comm: kworker/2:11 Not tainted 6.5.0-rc3-00044-g0a8db05b571a #236
+ Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
+ Workqueue: ipv6_addrconf addrconf_dad_work
+ RIP: 0010:skb_panic+0x152/0x1d0
+ Call Trace:
+  <TASK>
+  skb_push+0xc4/0xe0
+  ip6mr_cache_report+0xd69/0x19b0
+  reg_vif_xmit+0x406/0x690
+  dev_hard_start_xmit+0x17e/0x6e0
+  __dev_queue_xmit+0x2d6a/0x3d20
+  vlan_dev_hard_start_xmit+0x3ab/0x5c0
+  dev_hard_start_xmit+0x17e/0x6e0
+  __dev_queue_xmit+0x2d6a/0x3d20
+  neigh_connected_output+0x3ed/0x570
+  ip6_finish_output2+0x5b5/0x1950
+  ip6_finish_output+0x693/0x11c0
+  ip6_output+0x24b/0x880
+  NF_HOOK.constprop.0+0xfd/0x530
+  ndisc_send_skb+0x9db/0x1400
+  ndisc_send_rs+0x12a/0x6c0
+  addrconf_dad_completed+0x3c9/0xea0
+  addrconf_dad_work+0x849/0x1420
+  process_one_work+0xa22/0x16e0
+  worker_thread+0x679/0x10c0
+  ret_from_fork+0x28/0x60
+  ret_from_fork_asm+0x11/0x20
 
-Taken from RESET_N pin description in ADIN13000 datasheet:
-    This pin requires a 1K pull-up resistor to AVDD_3P3.
+When setup a vlan device on dev pim6reg, DAD ns packet may sent on reg_vif_xmit().
+reg_vif_xmit()
+    ip6mr_cache_report()
+        skb_push(skb, -skb_network_offset(pkt));//skb_network_offset(pkt) is 4
+And skb_push declared as:
+	void *skb_push(struct sk_buff *skb, unsigned int len);
+		skb->data -= len;
+		//0xffff88805f86a84c - 0xfffffffc = 0xffff887f5f86a850
+skb->data is set to 0xffff887f5f86a850, which is invalid mem addr, lead to skb_push() fails.
 
-Activate the pull-up resistor to fix the issue.
-
-Fixes: ade0176dd8a0 ("arm64: dts: imx8mn-var-som: Add Variscite VAR-SOM-MX8MN System on Module")
-Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Reviewed-by: Fabio Estevam <festevam@gmail.com>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Fixes: 14fb64e1f449 ("[IPV6] MROUTE: Support PIM-SM (SSM).")
+Signed-off-by: Yue Haibing <yuehaibing@huawei.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/freescale/imx8mn-var-som.dtsi | 2 +-
+ net/ipv6/ip6mr.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mn-var-som.dtsi b/arch/arm64/boot/dts/freescale/imx8mn-var-som.dtsi
-index d053ef302fb82..faafefe562e4b 100644
---- a/arch/arm64/boot/dts/freescale/imx8mn-var-som.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mn-var-som.dtsi
-@@ -351,7 +351,7 @@
- 			MX8MN_IOMUXC_ENET_RXC_ENET1_RGMII_RXC		0x91
- 			MX8MN_IOMUXC_ENET_RX_CTL_ENET1_RGMII_RX_CTL	0x91
- 			MX8MN_IOMUXC_ENET_TX_CTL_ENET1_RGMII_TX_CTL	0x1f
--			MX8MN_IOMUXC_GPIO1_IO09_GPIO1_IO9		0x19
-+			MX8MN_IOMUXC_GPIO1_IO09_GPIO1_IO9		0x159
- 		>;
- 	};
+diff --git a/net/ipv6/ip6mr.c b/net/ipv6/ip6mr.c
+index facdc78a43e5c..27fb5479988af 100644
+--- a/net/ipv6/ip6mr.c
++++ b/net/ipv6/ip6mr.c
+@@ -1073,7 +1073,7 @@ static int ip6mr_cache_report(const struct mr_table *mrt, struct sk_buff *pkt,
+ 		   And all this only to mangle msg->im6_msgtype and
+ 		   to set msg->im6_mbz to "mbz" :-)
+ 		 */
+-		skb_push(skb, -skb_network_offset(pkt));
++		__skb_pull(skb, skb_network_offset(pkt));
  
+ 		skb_push(skb, sizeof(*msg));
+ 		skb_reset_transport_header(skb);
 -- 
 2.40.1
 
