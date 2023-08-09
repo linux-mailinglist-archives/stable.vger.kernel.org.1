@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 12796775AC4
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:11:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 45AFF775C58
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:26:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233283AbjHILLX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:11:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38194 "EHLO
+        id S233721AbjHIL0W (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:26:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60534 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233277AbjHILLW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:11:22 -0400
+        with ESMTP id S233718AbjHIL0V (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:26:21 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F40FBED
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:11:21 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 76FC41FCE
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:26:20 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8985B6314D
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:11:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 936C5C433C8;
-        Wed,  9 Aug 2023 11:11:20 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0E0D563275
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:26:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DF07C433C9;
+        Wed,  9 Aug 2023 11:26:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691579481;
-        bh=6UPSdUbsYVPPtPr1+Gij0tXL60cIzWi8PkxqfZ70TYw=;
+        s=korg; t=1691580379;
+        bh=1g4NKE7ziG5yB3fVf2fTsDUzYjCajxUhRMOqE15E93E=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=W4LGaWzkfvG60yo6l1qPl3QXQgb3XJbzejAvByFp+qEh5vJV9qsKJvGLdwgy9FIhA
-         xMgdsuEx3eoWbuawgaLKt1dCGSTYdO9FMs3Jk+Ny9fOC3PEtWMUIjjbLMBv1/dRxQA
-         5qs22ksxgr2/8yJjplvrkJ5ZYszk7tEv/eZapKVA=
+        b=k2nybphXuyIza2TwhH37MPdKjIYgvuVnxVUk0Lcs7kl1/On/dxGgY518GEOUYzu07
+         LygICZ48CUV2E3RU2M0gzJJPNq22nuoJf2M8Nk/OdawxNQNzTCncsxCZuM4wEGYCuY
+         kzIJh2198tke0pfQlGavnmg5VizTPDG3jydYG6nQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, kernel test robot <lkp@intel.com>,
-        Roger Quadros <rogerq@kernel.org>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 204/204] mtd: rawnand: omap_elm: Fix incorrect type in assignment
-Date:   Wed,  9 Aug 2023 12:42:22 +0200
-Message-ID: <20230809103649.332960848@linuxfoundation.org>
+        patches@lists.linux.dev, Benjamin Block <bblock@linux.ibm.com>,
+        Fedor Loshakov <loshakov@linux.ibm.com>,
+        Steffen Maier <maier@linux.ibm.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 4.19 305/323] scsi: zfcp: Defer fc_rport blocking until after ADISC response
+Date:   Wed,  9 Aug 2023 12:42:23 +0200
+Message-ID: <20230809103711.996742400@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103642.552405807@linuxfoundation.org>
-References: <20230809103642.552405807@linuxfoundation.org>
+In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
+References: <20230809103658.104386911@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,120 +56,60 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Roger Quadros <rogerq@kernel.org>
+From: Steffen Maier <maier@linux.ibm.com>
 
-[ Upstream commit d8403b9eeee66d5dd81ecb9445800b108c267ce3 ]
+commit e65851989001c0c9ba9177564b13b38201c0854c upstream.
 
-Once the ECC word endianness is converted to BE32, we force cast it
-to u32 so we can use elm_write_reg() which in turn uses writel().
+Storage devices are free to send RSCNs, e.g. for internal state changes. If
+this happens on all connected paths, zfcp risks temporarily losing all
+paths at the same time. This has strong requirements on multipath
+configuration such as "no_path_retry queue".
 
-Fixes below sparse warnings:
+Avoid such situations by deferring fc_rport blocking until after the ADISC
+response, when any actual state change of the remote port became clear.
+The already existing port recovery triggers explicitly block the fc_rport.
+The triggers are: on ADISC reject or timeout (typical cable pull case), and
+on ADISC indicating that the remote port has changed its WWPN or
+the port is meanwhile no longer open.
 
-   drivers/mtd/nand/raw/omap_elm.c:180:37: sparse:     expected unsigned int [usertype] val
-   drivers/mtd/nand/raw/omap_elm.c:180:37: sparse:     got restricted __be32 [usertype]
-   drivers/mtd/nand/raw/omap_elm.c:185:37: sparse:     expected unsigned int [usertype] val
-   drivers/mtd/nand/raw/omap_elm.c:185:37: sparse:     got restricted __be32 [usertype]
-   drivers/mtd/nand/raw/omap_elm.c:190:37: sparse:     expected unsigned int [usertype] val
-   drivers/mtd/nand/raw/omap_elm.c:190:37: sparse:     got restricted __be32 [usertype]
->> drivers/mtd/nand/raw/omap_elm.c:200:40: sparse: sparse: restricted __be32 degrades to integer
-   drivers/mtd/nand/raw/omap_elm.c:206:39: sparse: sparse: restricted __be32 degrades to integer
-   drivers/mtd/nand/raw/omap_elm.c:210:37: sparse:     expected unsigned int [assigned] [usertype] val
-   drivers/mtd/nand/raw/omap_elm.c:210:37: sparse:     got restricted __be32 [usertype]
-   drivers/mtd/nand/raw/omap_elm.c:213:37: sparse:     expected unsigned int [assigned] [usertype] val
-   drivers/mtd/nand/raw/omap_elm.c:213:37: sparse:     got restricted __be32 [usertype]
-   drivers/mtd/nand/raw/omap_elm.c:216:37: sparse:     expected unsigned int [assigned] [usertype] val
-   drivers/mtd/nand/raw/omap_elm.c:216:37: sparse:     got restricted __be32 [usertype]
-   drivers/mtd/nand/raw/omap_elm.c:219:37: sparse:     expected unsigned int [assigned] [usertype] val
-   drivers/mtd/nand/raw/omap_elm.c:219:37: sparse:     got restricted __be32 [usertype]
-   drivers/mtd/nand/raw/omap_elm.c:222:37: sparse:     expected unsigned int [assigned] [usertype] val
-   drivers/mtd/nand/raw/omap_elm.c:222:37: sparse:     got restricted __be32 [usertype]
-   drivers/mtd/nand/raw/omap_elm.c:225:37: sparse:     expected unsigned int [assigned] [usertype] val
-   drivers/mtd/nand/raw/omap_elm.c:225:37: sparse:     got restricted __be32 [usertype]
-   drivers/mtd/nand/raw/omap_elm.c:228:39: sparse: sparse: restricted __be32 degrades to integer
+As a side effect, this also removes a confusing direct function call to
+another work item function zfcp_scsi_rport_work() instead of scheduling
+that other work item. It was probably done that way to have the rport block
+side effect immediate and synchronous to the caller.
 
-Fixes: bf22433575ef ("mtd: devices: elm: Add support for ELM error correction")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202306212211.WDXokuWh-lkp@intel.com/
-Signed-off-by: Roger Quadros <rogerq@kernel.org>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://lore.kernel.org/linux-mtd/20230624184021.7740-1-rogerq@kernel.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: a2fa0aede07c ("[SCSI] zfcp: Block FC transport rports early on errors")
+Cc: stable@vger.kernel.org #v2.6.30+
+Reviewed-by: Benjamin Block <bblock@linux.ibm.com>
+Reviewed-by: Fedor Loshakov <loshakov@linux.ibm.com>
+Signed-off-by: Steffen Maier <maier@linux.ibm.com>
+Link: https://lore.kernel.org/r/20230724145156.3920244-1-maier@linux.ibm.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mtd/nand/omap_elm.c | 24 ++++++++++++------------
- 1 file changed, 12 insertions(+), 12 deletions(-)
+ drivers/s390/scsi/zfcp_fc.c |    6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-diff --git a/drivers/mtd/nand/omap_elm.c b/drivers/mtd/nand/omap_elm.c
-index 6736777a41567..02d1740383120 100644
---- a/drivers/mtd/nand/omap_elm.c
-+++ b/drivers/mtd/nand/omap_elm.c
-@@ -184,17 +184,17 @@ static void elm_load_syndrome(struct elm_info *info,
- 			switch (info->bch_type) {
- 			case BCH8_ECC:
- 				/* syndrome fragment 0 = ecc[9-12B] */
--				val = cpu_to_be32(*(u32 *) &ecc[9]);
-+				val = (__force u32)cpu_to_be32(*(u32 *)&ecc[9]);
- 				elm_write_reg(info, offset, val);
+--- a/drivers/s390/scsi/zfcp_fc.c
++++ b/drivers/s390/scsi/zfcp_fc.c
+@@ -534,8 +534,7 @@ static void zfcp_fc_adisc_handler(void *
  
- 				/* syndrome fragment 1 = ecc[5-8B] */
- 				offset += 4;
--				val = cpu_to_be32(*(u32 *) &ecc[5]);
-+				val = (__force u32)cpu_to_be32(*(u32 *)&ecc[5]);
- 				elm_write_reg(info, offset, val);
+ 	/* re-init to undo drop from zfcp_fc_adisc() */
+ 	port->d_id = ntoh24(adisc_resp->adisc_port_id);
+-	/* port is good, unblock rport without going through erp */
+-	zfcp_scsi_schedule_rport_register(port);
++	/* port is still good, nothing to do */
+  out:
+ 	atomic_andnot(ZFCP_STATUS_PORT_LINK_TEST, &port->status);
+ 	put_device(&port->dev);
+@@ -595,9 +594,6 @@ void zfcp_fc_link_test_work(struct work_
+ 	int retval;
  
- 				/* syndrome fragment 2 = ecc[1-4B] */
- 				offset += 4;
--				val = cpu_to_be32(*(u32 *) &ecc[1]);
-+				val = (__force u32)cpu_to_be32(*(u32 *)&ecc[1]);
- 				elm_write_reg(info, offset, val);
+ 	set_worker_desc("zadisc%16llx", port->wwpn); /* < WORKER_DESC_LEN=24 */
+-	get_device(&port->dev);
+-	port->rport_task = RPORT_DEL;
+-	zfcp_scsi_rport_work(&port->rport_work);
  
- 				/* syndrome fragment 3 = ecc[0B] */
-@@ -204,35 +204,35 @@ static void elm_load_syndrome(struct elm_info *info,
- 				break;
- 			case BCH4_ECC:
- 				/* syndrome fragment 0 = ecc[20-52b] bits */
--				val = (cpu_to_be32(*(u32 *) &ecc[3]) >> 4) |
-+				val = ((__force u32)cpu_to_be32(*(u32 *)&ecc[3]) >> 4) |
- 					((ecc[2] & 0xf) << 28);
- 				elm_write_reg(info, offset, val);
- 
- 				/* syndrome fragment 1 = ecc[0-20b] bits */
- 				offset += 4;
--				val = cpu_to_be32(*(u32 *) &ecc[0]) >> 12;
-+				val = (__force u32)cpu_to_be32(*(u32 *)&ecc[0]) >> 12;
- 				elm_write_reg(info, offset, val);
- 				break;
- 			case BCH16_ECC:
--				val = cpu_to_be32(*(u32 *) &ecc[22]);
-+				val = (__force u32)cpu_to_be32(*(u32 *)&ecc[22]);
- 				elm_write_reg(info, offset, val);
- 				offset += 4;
--				val = cpu_to_be32(*(u32 *) &ecc[18]);
-+				val = (__force u32)cpu_to_be32(*(u32 *)&ecc[18]);
- 				elm_write_reg(info, offset, val);
- 				offset += 4;
--				val = cpu_to_be32(*(u32 *) &ecc[14]);
-+				val = (__force u32)cpu_to_be32(*(u32 *)&ecc[14]);
- 				elm_write_reg(info, offset, val);
- 				offset += 4;
--				val = cpu_to_be32(*(u32 *) &ecc[10]);
-+				val = (__force u32)cpu_to_be32(*(u32 *)&ecc[10]);
- 				elm_write_reg(info, offset, val);
- 				offset += 4;
--				val = cpu_to_be32(*(u32 *) &ecc[6]);
-+				val = (__force u32)cpu_to_be32(*(u32 *)&ecc[6]);
- 				elm_write_reg(info, offset, val);
- 				offset += 4;
--				val = cpu_to_be32(*(u32 *) &ecc[2]);
-+				val = (__force u32)cpu_to_be32(*(u32 *)&ecc[2]);
- 				elm_write_reg(info, offset, val);
- 				offset += 4;
--				val = cpu_to_be32(*(u32 *) &ecc[0]) >> 16;
-+				val = (__force u32)cpu_to_be32(*(u32 *)&ecc[0]) >> 16;
- 				elm_write_reg(info, offset, val);
- 				break;
- 			default:
--- 
-2.40.1
-
+ 	/* only issue one test command at one time per port */
+ 	if (atomic_read(&port->status) & ZFCP_STATUS_PORT_LINK_TEST)
 
 
