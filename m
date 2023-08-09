@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 79663775917
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:57:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2D786775A32
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:06:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232734AbjHIK5l (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 06:57:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55522 "EHLO
+        id S233092AbjHILGN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:06:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44180 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232549AbjHIK5h (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:57:37 -0400
+        with ESMTP id S233104AbjHILGM (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:06:12 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E36D1FF9
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:57:36 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 677671FCE
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:06:12 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 178BA62DC8
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:57:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D74DC433C7;
-        Wed,  9 Aug 2023 10:57:34 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id F0C1D6314D
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:06:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D275AC433C9;
+        Wed,  9 Aug 2023 11:06:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691578655;
-        bh=pW7J/mByNgRSGYv6drB/2zznXQiJR/ZpCx1ltvWuGK4=;
+        s=korg; t=1691579171;
+        bh=nPxEDE4BaeENzmBn85ehb5uD4+Fd0cgaQCQuaH8TH6Q=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=2ierVD11sAUBYM1HjCn+rKYOsfMcMr4LxB61Ra6rELZ6xGrnGWArEjAcy+Shiiem+
-         3zvEMtHb8sAhS1CFao+i8V+uuPiuqfSv5QId5magVIZx8QJCqUw8PRnxQuIwyBgZV/
-         19ARKlgsvhZwXfq648cayl53OHcYaba2SrlQB/44=
+        b=nL/IblQd2WUSGgCAfZmzrhPoyMJYs3oANpl//TNhPmRmQaIx6z2RufiapC2RBZU43
+         YcgdVMu2vS7W9xO051pY/DpS7uFffe8V9L9aN43yvBWTMXYNkkSoOCdCf8q6YfhFPM
+         Wyf9kbcoRRkLOJ+uhqeaaKHwAvPQNaFYLLcNZ0rc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, kernel test robot <lkp@intel.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Cixi Geng <cixi.geng1@unisoc.com>
-Subject: [PATCH 5.15 02/92] perf: Fix function pointer case
+        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.14 100/204] wifi: airo: avoid uninitialized warning in airo_get_rate()
 Date:   Wed,  9 Aug 2023 12:40:38 +0200
-Message-ID: <20230809103633.591165323@linuxfoundation.org>
+Message-ID: <20230809103645.980849277@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103633.485906560@linuxfoundation.org>
-References: <20230809103633.485906560@linuxfoundation.org>
+In-Reply-To: <20230809103642.552405807@linuxfoundation.org>
+References: <20230809103642.552405807@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,48 +56,47 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Peter Zijlstra <peterz@infradead.org>
+From: Randy Dunlap <rdunlap@infradead.org>
 
-commit 1af6239d1d3e61d33fd2f0ba53d3d1a67cc50574 upstream.
+[ Upstream commit 9373771aaed17f5c2c38485f785568abe3a9f8c1 ]
 
-With the advent of CFI it is no longer acceptible to cast function
-pointers.
+Quieten a gcc (11.3.0) build error or warning by checking the function
+call status and returning -EBUSY if the function call failed.
+This is similar to what several other wireless drivers do for the
+SIOCGIWRATE ioctl call when there is a locking problem.
 
-The robot complains thusly:
+drivers/net/wireless/cisco/airo.c: error: 'status_rid.currentXmitRate' is used uninitialized [-Werror=uninitialized]
 
-  kernel-events-core.c:warning:cast-from-int-(-)(struct-perf_cpu_pmu_context-)-to-remote_function_f-(aka-int-(-)(void-)-)-converts-to-incompatible-function-type
-
-Reported-by: kernel test robot <lkp@intel.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Signed-off-by: Cixi Geng <cixi.geng1@unisoc.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Reported-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Link: https://lore.kernel.org/r/39abf2c7-24a-f167-91da-ed4c5435d1c4@linux-m68k.org
+Link: https://lore.kernel.org/r/20230709133154.26206-1-rdunlap@infradead.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/events/core.c |    8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/net/wireless/cisco/airo.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -1224,6 +1224,11 @@ static int perf_mux_hrtimer_restart(stru
- 	return 0;
- }
- 
-+static int perf_mux_hrtimer_restart_ipi(void *arg)
-+{
-+	return perf_mux_hrtimer_restart(arg);
-+}
-+
- void perf_pmu_disable(struct pmu *pmu)
+diff --git a/drivers/net/wireless/cisco/airo.c b/drivers/net/wireless/cisco/airo.c
+index d06dc446a3931..ca4a3330337d7 100644
+--- a/drivers/net/wireless/cisco/airo.c
++++ b/drivers/net/wireless/cisco/airo.c
+@@ -6102,8 +6102,11 @@ static int airo_get_rate(struct net_device *dev,
  {
- 	int *count = this_cpu_ptr(pmu->pmu_disable_count);
-@@ -11137,8 +11142,7 @@ perf_event_mux_interval_ms_store(struct
- 		cpuctx = per_cpu_ptr(pmu->pmu_cpu_context, cpu);
- 		cpuctx->hrtimer_interval = ns_to_ktime(NSEC_PER_MSEC * timer);
+ 	struct airo_info *local = dev->ml_priv;
+ 	StatusRid status_rid;		/* Card status info */
++	int ret;
  
--		cpu_function_call(cpu,
--			(remote_function_f)perf_mux_hrtimer_restart, cpuctx);
-+		cpu_function_call(cpu, perf_mux_hrtimer_restart_ipi, cpuctx);
- 	}
- 	cpus_read_unlock();
- 	mutex_unlock(&mux_interval_mutex);
+-	readStatusRid(local, &status_rid, 1);
++	ret = readStatusRid(local, &status_rid, 1);
++	if (ret)
++		return -EBUSY;
+ 
+ 	vwrq->value = le16_to_cpu(status_rid.currentXmitRate) * 500000;
+ 	/* If more than one rate, set auto */
+-- 
+2.39.2
+
 
 
