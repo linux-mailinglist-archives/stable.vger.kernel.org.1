@@ -2,44 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 123DE775BB0
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:19:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2F1C27757AC
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:48:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233506AbjHILT6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:19:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37556 "EHLO
+        id S232249AbjHIKsr (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 06:48:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46444 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233511AbjHILT5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:19:57 -0400
+        with ESMTP id S231205AbjHIKsq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:48:46 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E133FA
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:19:57 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 72EBF10F3
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:48:46 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E4DA4631CE
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:19:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01FC1C433C7;
-        Wed,  9 Aug 2023 11:19:55 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 05AA56310A
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:48:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE414C433D9;
+        Wed,  9 Aug 2023 10:48:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691579996;
-        bh=xYhHPQ3iL6z5/SWssyfOsobUPrjEgRc8UFKqW0taZCc=;
+        s=korg; t=1691578125;
+        bh=1g4NKE7ziG5yB3fVf2fTsDUzYjCajxUhRMOqE15E93E=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=MDiYpLBoxaSzMShbKr0hOZnJGlBPbUvVetNM1JEppXX9Gmjne0wztpK8BffyUEFo6
-         GiL+1cBo4ZCVH6ASIJVLHWAjgerw6Aentqassouq8I0TfNCRTQfxeXB17PM4e8VsMZ
-         CqsP8yN+D9t3FfrL60EZMx8toktZ79MtI4iOPxxo=
+        b=1h5rTCje9bNJyChu0Kal3OrqU6AqzPKQDQmv90Wf/b9AMLAuRCzphYTz7OSB0Ct3I
+         ceJ+yxDJUaafulVEm4Wh8Eu6+aCIFJrrhze9/6du8Ex9B2lulowDK4BeiJuhd1LrF1
+         /XViTnWm4c5weDgOSG4utdepr8HXtttn8v+WH38g=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, stable@kernel.org,
-        Eric Whitney <enwlinux@gmail.com>, Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 4.19 190/323] ext4: correct inline offset when handling xattrs in inode body
+        patches@lists.linux.dev, Benjamin Block <bblock@linux.ibm.com>,
+        Fedor Loshakov <loshakov@linux.ibm.com>,
+        Steffen Maier <maier@linux.ibm.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.4 097/165] scsi: zfcp: Defer fc_rport blocking until after ADISC response
 Date:   Wed,  9 Aug 2023 12:40:28 +0200
-Message-ID: <20230809103706.873300213@linuxfoundation.org>
+Message-ID: <20230809103645.952154656@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
-References: <20230809103658.104386911@linuxfoundation.org>
+In-Reply-To: <20230809103642.720851262@linuxfoundation.org>
+References: <20230809103642.720851262@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,54 +56,60 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Eric Whitney <enwlinux@gmail.com>
+From: Steffen Maier <maier@linux.ibm.com>
 
-commit 6909cf5c4101214f4305a62d582a5b93c7e1eb9a upstream.
+commit e65851989001c0c9ba9177564b13b38201c0854c upstream.
 
-When run on a file system where the inline_data feature has been
-enabled, xfstests generic/269, generic/270, and generic/476 cause ext4
-to emit error messages indicating that inline directory entries are
-corrupted.  This occurs because the inline offset used to locate
-inline directory entries in the inode body is not updated when an
-xattr in that shared region is deleted and the region is shifted in
-memory to recover the space it occupied.  If the deleted xattr precedes
-the system.data attribute, which points to the inline directory entries,
-that attribute will be moved further up in the region.  The inline
-offset continues to point to whatever is located in system.data's former
-location, with unfortunate effects when used to access directory entries
-or (presumably) inline data in the inode body.
+Storage devices are free to send RSCNs, e.g. for internal state changes. If
+this happens on all connected paths, zfcp risks temporarily losing all
+paths at the same time. This has strong requirements on multipath
+configuration such as "no_path_retry queue".
 
-Cc: stable@kernel.org
-Signed-off-by: Eric Whitney <enwlinux@gmail.com>
-Link: https://lore.kernel.org/r/20230522181520.1570360-1-enwlinux@gmail.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Avoid such situations by deferring fc_rport blocking until after the ADISC
+response, when any actual state change of the remote port became clear.
+The already existing port recovery triggers explicitly block the fc_rport.
+The triggers are: on ADISC reject or timeout (typical cable pull case), and
+on ADISC indicating that the remote port has changed its WWPN or
+the port is meanwhile no longer open.
+
+As a side effect, this also removes a confusing direct function call to
+another work item function zfcp_scsi_rport_work() instead of scheduling
+that other work item. It was probably done that way to have the rport block
+side effect immediate and synchronous to the caller.
+
+Fixes: a2fa0aede07c ("[SCSI] zfcp: Block FC transport rports early on errors")
+Cc: stable@vger.kernel.org #v2.6.30+
+Reviewed-by: Benjamin Block <bblock@linux.ibm.com>
+Reviewed-by: Fedor Loshakov <loshakov@linux.ibm.com>
+Signed-off-by: Steffen Maier <maier@linux.ibm.com>
+Link: https://lore.kernel.org/r/20230724145156.3920244-1-maier@linux.ibm.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/xattr.c |   14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ drivers/s390/scsi/zfcp_fc.c |    6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
---- a/fs/ext4/xattr.c
-+++ b/fs/ext4/xattr.c
-@@ -1767,6 +1767,20 @@ static int ext4_xattr_set_entry(struct e
- 		memmove(here, (void *)here + size,
- 			(void *)last - (void *)here + sizeof(__u32));
- 		memset(last, 0, size);
-+
-+		/*
-+		 * Update i_inline_off - moved ibody region might contain
-+		 * system.data attribute.  Handling a failure here won't
-+		 * cause other complications for setting an xattr.
-+		 */
-+		if (!is_block && ext4_has_inline_data(inode)) {
-+			ret = ext4_find_inline_data_nolock(inode);
-+			if (ret) {
-+				ext4_warning_inode(inode,
-+					"unable to update i_inline_off");
-+				goto out;
-+			}
-+		}
- 	} else if (s->not_found) {
- 		/* Insert new name. */
- 		size_t size = EXT4_XATTR_LEN(name_len);
+--- a/drivers/s390/scsi/zfcp_fc.c
++++ b/drivers/s390/scsi/zfcp_fc.c
+@@ -534,8 +534,7 @@ static void zfcp_fc_adisc_handler(void *
+ 
+ 	/* re-init to undo drop from zfcp_fc_adisc() */
+ 	port->d_id = ntoh24(adisc_resp->adisc_port_id);
+-	/* port is good, unblock rport without going through erp */
+-	zfcp_scsi_schedule_rport_register(port);
++	/* port is still good, nothing to do */
+  out:
+ 	atomic_andnot(ZFCP_STATUS_PORT_LINK_TEST, &port->status);
+ 	put_device(&port->dev);
+@@ -595,9 +594,6 @@ void zfcp_fc_link_test_work(struct work_
+ 	int retval;
+ 
+ 	set_worker_desc("zadisc%16llx", port->wwpn); /* < WORKER_DESC_LEN=24 */
+-	get_device(&port->dev);
+-	port->rport_task = RPORT_DEL;
+-	zfcp_scsi_rport_work(&port->rport_work);
+ 
+ 	/* only issue one test command at one time per port */
+ 	if (atomic_read(&port->status) & ZFCP_STATUS_PORT_LINK_TEST)
 
 
