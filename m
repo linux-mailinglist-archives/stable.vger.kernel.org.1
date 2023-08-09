@@ -2,45 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ABE0D775AC5
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:11:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2EAE0775C55
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:26:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233277AbjHILL0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:11:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38224 "EHLO
+        id S233719AbjHIL0N (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:26:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49982 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233278AbjHILLZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:11:25 -0400
+        with ESMTP id S233718AbjHIL0N (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:26:13 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C47F7ED
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:11:24 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 174D2ED
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:26:12 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 59DCF6237C
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:11:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67E9EC433C7;
-        Wed,  9 Aug 2023 11:11:23 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A0DD063279
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:26:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE6BFC433C8;
+        Wed,  9 Aug 2023 11:26:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691579483;
-        bh=euwBlSNnrv+lJCndowg+XL48O4JzGKtTJNyCutwPPqU=;
+        s=korg; t=1691580371;
+        bh=qKLsRhFTSv4I6RDCoaYwf2p12FudP0RHeYdwY5ysPSw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=egxLezirMwEtt3ef4upPPZC3Xrt7242MoJu/ztmjV8lqc3E1P86rVgAFFuctJOzYL
-         la7l3jAC0UOunQcGfTJ1gaHOMGKsNrxr/vII1f3wowrB7DWyFzR8Qxf/KsY4AGGEDz
-         EGR2sUkxZ+nu0JnGbIlw6nStVeekOC2/iUQ/6REs=
+        b=VR0hjzjHopNPZn4ldxKaGiweE7sUqHwG68U6/NL1VbmwAnSDZ9q1Q7w8wqPQaVAgC
+         e20BmVfOgGMxHKippepbEWV5dG/1KQjQUaSmFMxNqpVwI+wJp+IDK96uakhSZVQffG
+         /y+f2MhQd1x+vfK4XN7J5pR4bXAu7OgyQimk8VAk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        syzbot+af5e10f73dbff48f70af@syzkaller.appspotmail.com,
-        Jan Kara <jack@suse.cz>
-Subject: [PATCH 4.14 202/204] ext2: Drop fragment support
+        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
+        David Ahern <dsahern@kernel.org>,
+        Kuniyuki Iwashima <kuniyu@amazon.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 302/323] tcp_metrics: annotate data-races around tm->tcpm_vals[]
 Date:   Wed,  9 Aug 2023 12:42:20 +0200
-Message-ID: <20230809103649.264643195@linuxfoundation.org>
+Message-ID: <20230809103711.871381996@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103642.552405807@linuxfoundation.org>
-References: <20230809103642.552405807@linuxfoundation.org>
+In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
+References: <20230809103658.104386911@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,106 +57,85 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jan Kara <jack@suse.cz>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 404615d7f1dcd4cca200e9a7a9df3a1dcae1dd62 upstream.
+[ Upstream commit 8c4d04f6b443869d25e59822f7cec88d647028a9 ]
 
-Ext2 has fields in superblock reserved for subblock allocation support.
-However that never landed. Drop the many years dead code.
+tm->tcpm_vals[] values can be read or written locklessly.
 
-Reported-by: syzbot+af5e10f73dbff48f70af@syzkaller.appspotmail.com
-Signed-off-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Add needed READ_ONCE()/WRITE_ONCE() to document this,
+and force use of tcp_metric_get() and tcp_metric_set()
+
+Fixes: 51c5d0c4b169 ("tcp: Maintain dynamic metrics in local cache.")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext2/ext2.h  |   12 ------------
- fs/ext2/super.c |   23 ++++-------------------
- 2 files changed, 4 insertions(+), 31 deletions(-)
+ net/ipv4/tcp_metrics.c | 23 ++++++++++++++---------
+ 1 file changed, 14 insertions(+), 9 deletions(-)
 
---- a/fs/ext2/ext2.h
-+++ b/fs/ext2/ext2.h
-@@ -68,10 +68,7 @@ struct mb_cache;
-  * second extended-fs super-block data in memory
-  */
- struct ext2_sb_info {
--	unsigned long s_frag_size;	/* Size of a fragment in bytes */
--	unsigned long s_frags_per_block;/* Number of fragments per block */
- 	unsigned long s_inodes_per_block;/* Number of inodes per block */
--	unsigned long s_frags_per_group;/* Number of fragments in a group */
- 	unsigned long s_blocks_per_group;/* Number of blocks in a group */
- 	unsigned long s_inodes_per_group;/* Number of inodes in a group */
- 	unsigned long s_itb_per_group;	/* Number of inode table blocks per group */
-@@ -186,15 +183,6 @@ static inline struct ext2_sb_info *EXT2_
- #define EXT2_FIRST_INO(s)		(EXT2_SB(s)->s_first_ino)
+diff --git a/net/ipv4/tcp_metrics.c b/net/ipv4/tcp_metrics.c
+index 2529b1e6ded0c..fa99481abce8f 100644
+--- a/net/ipv4/tcp_metrics.c
++++ b/net/ipv4/tcp_metrics.c
+@@ -63,17 +63,19 @@ static bool tcp_metric_locked(struct tcp_metrics_block *tm,
+ 	return READ_ONCE(tm->tcpm_lock) & (1 << idx);
+ }
  
- /*
-- * Macro-instructions used to manage fragments
-- */
--#define EXT2_MIN_FRAG_SIZE		1024
--#define	EXT2_MAX_FRAG_SIZE		4096
--#define EXT2_MIN_FRAG_LOG_SIZE		  10
--#define EXT2_FRAG_SIZE(s)		(EXT2_SB(s)->s_frag_size)
--#define EXT2_FRAGS_PER_BLOCK(s)		(EXT2_SB(s)->s_frags_per_block)
--
--/*
-  * Structure of a blocks group descriptor
-  */
- struct ext2_group_desc
---- a/fs/ext2/super.c
-+++ b/fs/ext2/super.c
-@@ -684,10 +684,9 @@ static int ext2_setup_super (struct supe
- 		es->s_max_mnt_count = cpu_to_le16(EXT2_DFL_MAX_MNT_COUNT);
- 	le16_add_cpu(&es->s_mnt_count, 1);
- 	if (test_opt (sb, DEBUG))
--		ext2_msg(sb, KERN_INFO, "%s, %s, bs=%lu, fs=%lu, gc=%lu, "
-+		ext2_msg(sb, KERN_INFO, "%s, %s, bs=%lu, gc=%lu, "
- 			"bpg=%lu, ipg=%lu, mo=%04lx]",
- 			EXT2FS_VERSION, EXT2FS_DATE, sb->s_blocksize,
--			sbi->s_frag_size,
- 			sbi->s_groups_count,
- 			EXT2_BLOCKS_PER_GROUP(sb),
- 			EXT2_INODES_PER_GROUP(sb),
-@@ -1024,14 +1023,7 @@ static int ext2_fill_super(struct super_
- 		}
- 	}
+-static u32 tcp_metric_get(struct tcp_metrics_block *tm,
++static u32 tcp_metric_get(const struct tcp_metrics_block *tm,
+ 			  enum tcp_metric_index idx)
+ {
+-	return tm->tcpm_vals[idx];
++	/* Paired with WRITE_ONCE() in tcp_metric_set() */
++	return READ_ONCE(tm->tcpm_vals[idx]);
+ }
  
--	sbi->s_frag_size = EXT2_MIN_FRAG_SIZE <<
--				   le32_to_cpu(es->s_log_frag_size);
--	if (sbi->s_frag_size == 0)
--		goto cantfind_ext2;
--	sbi->s_frags_per_block = sb->s_blocksize / sbi->s_frag_size;
--
- 	sbi->s_blocks_per_group = le32_to_cpu(es->s_blocks_per_group);
--	sbi->s_frags_per_group = le32_to_cpu(es->s_frags_per_group);
- 	sbi->s_inodes_per_group = le32_to_cpu(es->s_inodes_per_group);
+ static void tcp_metric_set(struct tcp_metrics_block *tm,
+ 			   enum tcp_metric_index idx,
+ 			   u32 val)
+ {
+-	tm->tcpm_vals[idx] = val;
++	/* Paired with READ_ONCE() in tcp_metric_get() */
++	WRITE_ONCE(tm->tcpm_vals[idx], val);
+ }
  
- 	if (EXT2_INODE_SIZE(sb) == 0)
-@@ -1059,11 +1051,10 @@ static int ext2_fill_super(struct super_
- 		goto failed_mount;
- 	}
+ static bool addr_same(const struct inetpeer_addr *a,
+@@ -115,13 +117,16 @@ static void tcpm_suck_dst(struct tcp_metrics_block *tm,
+ 	WRITE_ONCE(tm->tcpm_lock, val);
  
--	if (sb->s_blocksize != sbi->s_frag_size) {
-+	if (es->s_log_frag_size != es->s_log_block_size) {
- 		ext2_msg(sb, KERN_ERR,
--			"error: fragsize %lu != blocksize %lu"
--			"(not supported yet)",
--			sbi->s_frag_size, sb->s_blocksize);
-+			"error: fragsize log %u != blocksize log %u",
-+			le32_to_cpu(es->s_log_frag_size), sb->s_blocksize_bits);
- 		goto failed_mount;
- 	}
+ 	msval = dst_metric_raw(dst, RTAX_RTT);
+-	tm->tcpm_vals[TCP_METRIC_RTT] = msval * USEC_PER_MSEC;
++	tcp_metric_set(tm, TCP_METRIC_RTT, msval * USEC_PER_MSEC);
  
-@@ -1073,12 +1064,6 @@ static int ext2_fill_super(struct super_
- 			sbi->s_blocks_per_group);
- 		goto failed_mount;
- 	}
--	if (sbi->s_frags_per_group > sb->s_blocksize * 8) {
--		ext2_msg(sb, KERN_ERR,
--			"error: #fragments per group too big: %lu",
--			sbi->s_frags_per_group);
--		goto failed_mount;
--	}
- 	if (sbi->s_inodes_per_group < sbi->s_inodes_per_block ||
- 	    sbi->s_inodes_per_group > sb->s_blocksize * 8) {
- 		ext2_msg(sb, KERN_ERR,
+ 	msval = dst_metric_raw(dst, RTAX_RTTVAR);
+-	tm->tcpm_vals[TCP_METRIC_RTTVAR] = msval * USEC_PER_MSEC;
+-	tm->tcpm_vals[TCP_METRIC_SSTHRESH] = dst_metric_raw(dst, RTAX_SSTHRESH);
+-	tm->tcpm_vals[TCP_METRIC_CWND] = dst_metric_raw(dst, RTAX_CWND);
+-	tm->tcpm_vals[TCP_METRIC_REORDERING] = dst_metric_raw(dst, RTAX_REORDERING);
++	tcp_metric_set(tm, TCP_METRIC_RTTVAR, msval * USEC_PER_MSEC);
++	tcp_metric_set(tm, TCP_METRIC_SSTHRESH,
++		       dst_metric_raw(dst, RTAX_SSTHRESH));
++	tcp_metric_set(tm, TCP_METRIC_CWND,
++		       dst_metric_raw(dst, RTAX_CWND));
++	tcp_metric_set(tm, TCP_METRIC_REORDERING,
++		       dst_metric_raw(dst, RTAX_REORDERING));
+ 	if (fastopen_clear) {
+ 		tm->tcpm_fastopen.mss = 0;
+ 		tm->tcpm_fastopen.syn_loss = 0;
+@@ -672,7 +677,7 @@ static int tcp_metrics_fill_info(struct sk_buff *msg,
+ 		if (!nest)
+ 			goto nla_put_failure;
+ 		for (i = 0; i < TCP_METRIC_MAX_KERNEL + 1; i++) {
+-			u32 val = tm->tcpm_vals[i];
++			u32 val = tcp_metric_get(tm, i);
+ 
+ 			if (!val)
+ 				continue;
+-- 
+2.40.1
+
 
 
