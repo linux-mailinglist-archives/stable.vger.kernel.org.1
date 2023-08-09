@@ -2,161 +2,86 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C3495775742
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:44:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E56627759A3
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:02:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229989AbjHIKoD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 06:44:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34370 "EHLO
+        id S232917AbjHILCP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:02:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43730 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231282AbjHIKoD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:44:03 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 876A11FEA
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:44:02 -0700 (PDT)
+        with ESMTP id S232898AbjHILCO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:02:14 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 29D77ED
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:02:14 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1E4B663118
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:44:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3200FC433C7;
-        Wed,  9 Aug 2023 10:44:01 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BCD52630D7
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:02:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7642C433C8;
+        Wed,  9 Aug 2023 11:02:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691577841;
-        bh=+lFRoqUltJpmdAn9VZ07BAf6NuATGqxd7JhU+g1DU+k=;
+        s=korg; t=1691578933;
+        bh=PJm1jLcCLU2IAKB8lg4Ibyd4e30cRAj79dScY5xtqEk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=I4CjTNFS3ez1lKUK9rvSCcCCOo+2IRasBrnnF1z1bmCkmEfxYVs2dDSku4S3KCTxL
-         8IgGyBUzyQphaBliEDYA3KBnSKU28HAODGEDaxtgWtBwyus5HYzeiO5fnrTZ1d89oF
-         3ypNcWmEwJ73uIgyDGoALxNNybydNfH7fT9qsSt4=
+        b=KPpTrmrHfcFE8LXQNwe+qQc5wtUcwFQs4f56FiiPfz4HHEzl2s0IpiMOvJA08IX9D
+         j52nmnwu9vxSfkGxuTCZ1YldifzS0I3JX8Nxzd6Xy4cP7n9YUENVAxP48k0ERUeCA9
+         CiVKxO/JOqvUzq3Nn/5s/lSMzZPZ/8pB4tVyA5Pc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, kernel test robot <lkp@intel.com>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Yury Norov <yury.norov@gmail.com>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Alexander Lobakin <aleksander.lobakin@intel.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 014/165] lib/bitmap: workaround const_eval test build failure
+        patches@lists.linux.dev,
+        Bas Nieuwenhuizen <bas@basnieuwenhuizen.nl>,
+        Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 4.14 007/204] drm/amdgpu: Validate VM ioctl flags.
 Date:   Wed,  9 Aug 2023 12:39:05 +0200
-Message-ID: <20230809103643.239137468@linuxfoundation.org>
+Message-ID: <20230809103642.813575642@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103642.720851262@linuxfoundation.org>
-References: <20230809103642.720851262@linuxfoundation.org>
+In-Reply-To: <20230809103642.552405807@linuxfoundation.org>
+References: <20230809103642.552405807@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Yury Norov <yury.norov@gmail.com>
+From: Bas Nieuwenhuizen <bas@basnieuwenhuizen.nl>
 
-[ Upstream commit 2356d198d2b4ddec24efea98271cb3be230bc787 ]
+commit a2b308044dcaca8d3e580959a4f867a1d5c37fac upstream.
 
-When building with Clang, and when KASAN and GCOV_PROFILE_ALL are both
-enabled, the test fails to build [1]:
+None have been defined yet, so reject anybody setting any. Mesa sets
+it to 0 anyway.
 
->> lib/test_bitmap.c:920:2: error: call to '__compiletime_assert_239' declared with 'error' attribute: BUILD_BUG_ON failed: !__builtin_constant_p(res)
-           BUILD_BUG_ON(!__builtin_constant_p(res));
-           ^
-   include/linux/build_bug.h:50:2: note: expanded from macro 'BUILD_BUG_ON'
-           BUILD_BUG_ON_MSG(condition, "BUILD_BUG_ON failed: " #condition)
-           ^
-   include/linux/build_bug.h:39:37: note: expanded from macro 'BUILD_BUG_ON_MSG'
-   #define BUILD_BUG_ON_MSG(cond, msg) compiletime_assert(!(cond), msg)
-                                       ^
-   include/linux/compiler_types.h:352:2: note: expanded from macro 'compiletime_assert'
-           _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
-           ^
-   include/linux/compiler_types.h:340:2: note: expanded from macro '_compiletime_assert'
-           __compiletime_assert(condition, msg, prefix, suffix)
-           ^
-   include/linux/compiler_types.h:333:4: note: expanded from macro '__compiletime_assert'
-                           prefix ## suffix();                             \
-                           ^
-   <scratch space>:185:1: note: expanded from here
-   __compiletime_assert_239
-
-Originally it was attributed to s390, which now looks seemingly wrong. The
-issue is not related to bitmap code itself, but it breaks build for a given
-configuration.
-
-Disabling the const_eval test under that config may potentially hide other
-bugs. Instead, workaround it by disabling GCOV for the test_bitmap unless
-the compiler will get fixed.
-
-[1] https://github.com/ClangBuiltLinux/linux/issues/1874
-
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202307171254.yFcH97ej-lkp@intel.com/
-Fixes: dc34d5036692 ("lib: test_bitmap: add compile-time optimization/evaluations assertions")
-Co-developed-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Yury Norov <yury.norov@gmail.com>
-Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
-Reviewed-by: Alexander Lobakin <aleksander.lobakin@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Bas Nieuwenhuizen <bas@basnieuwenhuizen.nl>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- lib/Makefile      | 6 ++++++
- lib/test_bitmap.c | 8 ++++----
- 2 files changed, 10 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/lib/Makefile b/lib/Makefile
-index 876fcdeae34ec..05d8ec332baac 100644
---- a/lib/Makefile
-+++ b/lib/Makefile
-@@ -82,7 +82,13 @@ obj-$(CONFIG_TEST_STATIC_KEYS) += test_static_key_base.o
- obj-$(CONFIG_TEST_DYNAMIC_DEBUG) += test_dynamic_debug.o
- obj-$(CONFIG_TEST_PRINTF) += test_printf.o
- obj-$(CONFIG_TEST_SCANF) += test_scanf.o
-+
- obj-$(CONFIG_TEST_BITMAP) += test_bitmap.o
-+ifeq ($(CONFIG_CC_IS_CLANG)$(CONFIG_KASAN),yy)
-+# FIXME: Clang breaks test_bitmap_const_eval when KASAN and GCOV are enabled
-+GCOV_PROFILE_test_bitmap.o := n
-+endif
-+
- obj-$(CONFIG_TEST_UUID) += test_uuid.o
- obj-$(CONFIG_TEST_XARRAY) += test_xarray.o
- obj-$(CONFIG_TEST_MAPLE_TREE) += test_maple_tree.o
-diff --git a/lib/test_bitmap.c b/lib/test_bitmap.c
-index a8005ad3bd589..37a9108c4f588 100644
---- a/lib/test_bitmap.c
-+++ b/lib/test_bitmap.c
-@@ -1149,6 +1149,10 @@ static void __init test_bitmap_print_buf(void)
- 	}
- }
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
+@@ -2712,6 +2712,10 @@ int amdgpu_vm_ioctl(struct drm_device *d
+ 	struct amdgpu_fpriv *fpriv = filp->driver_priv;
+ 	int r;
  
-+/*
-+ * FIXME: Clang breaks compile-time evaluations when KASAN and GCOV are enabled.
-+ * To workaround it, GCOV is force-disabled in Makefile for this configuration.
-+ */
- static void __init test_bitmap_const_eval(void)
- {
- 	DECLARE_BITMAP(bitmap, BITS_PER_LONG);
-@@ -1174,11 +1178,7 @@ static void __init test_bitmap_const_eval(void)
- 	 * the compiler is fixed.
- 	 */
- 	bitmap_clear(bitmap, 0, BITS_PER_LONG);
--#if defined(__s390__) && defined(__clang__)
--	if (!const_test_bit(7, bitmap))
--#else
- 	if (!test_bit(7, bitmap))
--#endif
- 		bitmap_set(bitmap, 5, 2);
- 
- 	/* Equals to `unsigned long bitopvar = BIT(20)` */
--- 
-2.40.1
-
++	/* No valid flags defined yet */
++	if (args->in.flags)
++		return -EINVAL;
++
+ 	switch (args->in.op) {
+ 	case AMDGPU_VM_OP_RESERVE_VMID:
+ 		/* current, we only have requirement to reserve vmid from gfxhub */
 
 
