@@ -2,65 +2,59 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C54E87752D6
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 08:25:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 86F63775301
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 08:39:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230476AbjHIGZP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 02:25:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40954 "EHLO
+        id S230037AbjHIGje (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 02:39:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48446 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230466AbjHIGZO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 02:25:14 -0400
-Received: from mail-vs1-xe33.google.com (mail-vs1-xe33.google.com [IPv6:2607:f8b0:4864:20::e33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 41602133
-        for <stable@vger.kernel.org>; Tue,  8 Aug 2023 23:25:12 -0700 (PDT)
-Received: by mail-vs1-xe33.google.com with SMTP id ada2fe7eead31-4475fc33c8dso2498899137.0
-        for <stable@vger.kernel.org>; Tue, 08 Aug 2023 23:25:12 -0700 (PDT)
+        with ESMTP id S229874AbjHIGjd (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 02:39:33 -0400
+Received: from mail-vs1-xe32.google.com (mail-vs1-xe32.google.com [IPv6:2607:f8b0:4864:20::e32])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E8DD1BFF
+        for <stable@vger.kernel.org>; Tue,  8 Aug 2023 23:39:33 -0700 (PDT)
+Received: by mail-vs1-xe32.google.com with SMTP id ada2fe7eead31-447be69ae43so1869558137.0
+        for <stable@vger.kernel.org>; Tue, 08 Aug 2023 23:39:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1691562311; x=1692167111;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=CH4TGJEPAdBC6NjBXoK01yC3B5N+WMqmtilRzRbkims=;
-        b=f41qEX0W5lLISZ0Nfjc46G7zq/I6E34u/BND0DyKao8ZtoIeCJNHB9tivdYif2qObT
-         egfnFaMP3JtWgLS3I0zr7+PPi9NIXZBqvDmRw/k28hztr4io0Agt8lMoxOJ07jAJ/bc5
-         tff/XVcVWmkAzVr6cZwX1GVE4Pjt7zo4smTb5ZVbBmLIOVPHO970rQJaQaTOODytR+Od
-         ohyo95yl5/+HRm7dIilW7DjUfhaao/zPZzPAIQXsyLaFHe/z5zelyb4alx0d9sPEonkB
-         +/+pvYsu3XOIBMSHiM4z958wB3dfpCLqoljlYMf5G92rC5Qagx9/+8S28M7n8IaSuLe+
-         bWbQ==
+        d=linaro.org; s=google; t=1691563172; x=1692167972;
+        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=3qQgaWeBmt3DtdG2Hl7roraat6kslDvXggsFhAfCiGo=;
+        b=pFoLUi4OmmbL1JXEZdtRe6FRQu+8pLO7HWCbWkroAFIFPGGQym60cWCOS6thU/AmyG
+         rjfPQ64wUJrJmkHGoEI3mx39yAHbt/0+fmeM82hLZFtE6LtiusDmRrqwKZa9CEX7S5mJ
+         r/H1CfhNMmGPBWqr7fwXodjk1ifzkhb2lx1BPxdouDjiK52NwTDsqMlgXzj4F+NKMAW7
+         HWzmZpx+zAaOESiR0KrH5J3cOdts5m/I97nKbwsU5mRA8b261vPY3Ag8CjSf9ScYkjrl
+         BgRL+AxRTXXyoa+jLlB3yKuluTX2Hsck2u3ZAgUs/+Vda+w3Bx9nggeE4Sky4vrsoFzU
+         H/eQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691562311; x=1692167111;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=CH4TGJEPAdBC6NjBXoK01yC3B5N+WMqmtilRzRbkims=;
-        b=SfrKSr/8C9pRUp21fo75oHTkKOU79Vm8/lh8P4/XO6G6BPuOcZgvntj03XsnI7YnMH
-         zWrc24sqI4hbY1i7zWy/l7Dq5sfh7n7mQslcy2V3r6SATRLMHg2sEI02nLEQ7m3jJ4Lh
-         uuzR1V6QwuM5/lX/y12mltQmHG0Bv3ufJ4HtUAJR8ZNBIcCLAQyqXd9EXyDbu4SZVUMv
-         sp4EmxQ2IusQqzdfiYhFhTByyOPfVVdVyqeQZsOywIjWstOM1pZr6kl6OwkFthpdHrTz
-         0tTB0bLQLU5gjk9qRjOt9vMsKg7OPOW7yrI5nz2QsA3xCNCftvaahHfvRHjqYIwhHVqj
-         iyxg==
-X-Gm-Message-State: AOJu0Yyk6Lipvow7ohiovpfAMeJpzorkBOBF4QE4Z+Q7e60o7enUgSa4
-        YFPv1Vvs12yqfRZE449SIq+LOJ3V4royTmO/kq2DwKpA7zzswYEu
-X-Google-Smtp-Source: AGHT+IEollPvCnxSCgZPUkQFllEv9ntre1aTV2g6cdDF/eJM4k4KOdW/tK4KVfKouozYky01aD7Wp2qDzz/Xi+cjCLc=
-X-Received: by 2002:a05:6102:3168:b0:443:8a7b:f76d with SMTP id
- l8-20020a056102316800b004438a7bf76dmr2057531vsm.28.1691562310886; Tue, 08 Aug
- 2023 23:25:10 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1691563172; x=1692167972;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=3qQgaWeBmt3DtdG2Hl7roraat6kslDvXggsFhAfCiGo=;
+        b=OeRLundOdxhVwwdmlTXUxTRpGfs6lnT3j7eO4VypC9lvKC6Uz2+WJeBz0efN/ht5z9
+         vebC5hKis3COh+zu9VG5WkC30z0vFq1dr8p5uPJMKOwPOSPrWrt5TubM1R0JufJstagU
+         bLwATbSXF7GA1arbffI7lD5AhqwC6ZCOuZknihjXlOTMxsXxHwtrUYlRqpvE/hhR6ROX
+         hSmS+bUoif1VhzMvgMJaW8onGSwqHdN4X6OSxYJpV+slyYUE7KPzVc0IKxHEGSsX5/M8
+         az/3+tDKoShFM5sghMD7i1lH1E815Jo7nRLsRb9LIYiXN7/9VXvoUga2lqL9y/vyJaP2
+         F9gA==
+X-Gm-Message-State: AOJu0YwfztYMC78Q5tWeZhA4IvBwLhdpEnq5vqcu8EuzU+wMzGm6OmOu
+        DMAhklsnZhet4xXdJomM9qcG+1FARLWE5pQUyx6V4EfLmOWjwoSPcI4=
+X-Google-Smtp-Source: AGHT+IEYZvpdTfPAn7yPFj5/Kl5d/bYEMLmh39UH9C9I3yPVT/nkMHLP33yIMIMiAZe35u2OD3RJoqSihYAqLLiVbO4=
+X-Received: by 2002:a67:ea04:0:b0:443:7eba:e22c with SMTP id
+ g4-20020a67ea04000000b004437ebae22cmr1115292vso.8.1691563171739; Tue, 08 Aug
+ 2023 23:39:31 -0700 (PDT)
 MIME-Version: 1.0
-References: <CA+G9fYsdUeNu-gwbs0+T6XHi4hYYk=Y9725-wFhZ7gJMspLDRA@mail.gmail.com>
-In-Reply-To: <CA+G9fYsdUeNu-gwbs0+T6XHi4hYYk=Y9725-wFhZ7gJMspLDRA@mail.gmail.com>
 From:   Naresh Kamboju <naresh.kamboju@linaro.org>
-Date:   Wed, 9 Aug 2023 11:54:59 +0530
-Message-ID: <CA+G9fYvDa-u22+gXt7VRWcQkCJFHvt2FPnjFmbwLX0bY__QrLg@mail.gmail.com>
-Subject: Re: ld.lld: error: ./arch/x86/kernel/vmlinux.lds:191: at least one
- side of the expression must be absolute
-To:     linux-stable <stable@vger.kernel.org>,
-        clang-built-linux <llvm@lists.linux.dev>
+Date:   Wed, 9 Aug 2023 12:09:20 +0530
+Message-ID: <CA+G9fYs+rvyX59MDnZDOLTa-1DZVN1RqKo3K70bmw4iKHVT9TA@mail.gmail.com>
+Subject: stable-rc: 5.4: drivers/ata/libahci.c: In function 'ahci_led_store':
+ include/linux/compiler.h:419:45: error: call to '__compiletime_assert_123'
+ declared with attribute error: BUILD_BUG_ON failed: sizeof(_s) > sizeof(long)
+To:     linux-stable <stable@vger.kernel.org>, lkft-triage@lists.linaro.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Sasha Levin <sashal@kernel.org>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Anders Roxell <anders.roxell@linaro.org>,
-        Arnd Bergmann <arnd@arndb.de>
+        Sasha Levin <sashal@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+        Anders Roxell <anders.roxell@linaro.org>
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
@@ -72,49 +66,61 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-also noticed on stable-rc 5.15 and 5.10.
+LKFT build plans updated with toolchain gcc-13 and here is the report.
 
-On Wed, 9 Aug 2023 at 11:40, Naresh Kamboju <naresh.kamboju@linaro.org> wrote:
->
-> While building Linux stable rc 6.1 x86_64 with clang-17 failed due to
-> following warnings / errors.
->
-> make --silent --keep-going --jobs=8
-> O=/home/tuxbuild/.cache/tuxmake/builds/2/build ARCH=x86_64 SRCARCH=x86
-> CROSS_COMPILE=x86_64-linux-gnu- 'HOSTCC=sccache clang' 'CC=sccache
-> clang' LLVM=1 LLVM_IAS=1
->
-> arch/x86/lib/retpoline.o: warning: objtool: .altinstr_replacement:
-> unexpected end of section
-> ld.lld: error: ./arch/x86/kernel/vmlinux.lds:191: at least one side of
-> the expression must be absolute
-> ld.lld: error: ./arch/x86/kernel/vmlinux.lds:192: at least one side of
-> the expression must be absolute
-> ld.lld: error: ./arch/x86/kernel/vmlinux.lds:191: at least one side of
-> the expression must be absolute
-> ld.lld: error: ./arch/x86/kernel/vmlinux.lds:192: at least one side of
-> the expression must be absolute
-> ld.lld: error: ./arch/x86/kernel/vmlinux.lds:191: at least one side of
-> the expression must be absolute
-> ld.lld: error: ./arch/x86/kernel/vmlinux.lds:192: at least one side of
-> the expression must be absolute
-> make[2]: *** [scripts/Makefile.vmlinux:34: vmlinux] Error 1
-> make[2]: Target '__default' not remade because of errors.
-> make[1]: *** [Makefile:1255: vmlinux] Error 2
->
->
-> Build links,
->  - https://storage.tuxsuite.com/public/linaro/lkft/builds/2TiTUgExGs7SrTm9Lb4fakgeTfw/
->  - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.1.y/build/v6.1.44-117-g74848b090997/testrun/18917095/suite/build/test/clang-lkftconfig/details/
->  - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.1.y/build/v6.1.44-117-g74848b090997/testrun/18917095/suite/build/test/clang-lkftconfig/history/
->
-> Steps to reproduce:
->   tuxmake --runtime podman --target-arch x86_64 --toolchain clang-17
-> --kconfig https://storage.tuxsuite.com/public/linaro/lkft/builds/2TiTUgExGs7SrTm9Lb4fakgeTfw/config
-> LLVM=1 LLVM_IAS=1
->   https://storage.tuxsuite.com/public/linaro/lkft/builds/2TiTUgExGs7SrTm9Lb4fakgeTfw/tuxmake_reproducer.sh
->
->
-> --
-> Linaro LKFT
-> https://lkft.linaro.org
+While building Linux stable rc 5.4 arm with gcc-13 failed due to
+following warnings / errors.
+
+make --silent --keep-going --jobs=8
+O=/home/tuxbuild/.cache/tuxmake/builds/3/build ARCH=arm
+CROSS_COMPILE=arm-linux-gnueabihf- 'CC=sccache
+arm-linux-gnueabihf-gcc' 'HOSTCC=sccache gcc'
+In file included from include/linux/kernel.h:11,
+                 from drivers/ata/libahci.c:19:
+drivers/ata/libahci.c: In function 'ahci_led_store':
+include/linux/compiler.h:419:45: error: call to
+'__compiletime_assert_123' declared with attribute error: BUILD_BUG_ON
+failed: sizeof(_s) > sizeof(long)
+  419 |         _compiletime_assert(condition, msg,
+__compiletime_assert_, __COUNTER__)
+      |                                             ^
+include/linux/compiler.h:400:25: note: in definition of macro
+'__compiletime_assert'
+  400 |                         prefix ## suffix();
+         \
+      |                         ^~~~~~
+include/linux/compiler.h:419:9: note: in expansion of macro
+'_compiletime_assert'
+  419 |         _compiletime_assert(condition, msg,
+__compiletime_assert_, __COUNTER__)
+      |         ^~~~~~~~~~~~~~~~~~~
+include/linux/build_bug.h:39:37: note: in expansion of macro
+'compiletime_assert'
+   39 | #define BUILD_BUG_ON_MSG(cond, msg) compiletime_assert(!(cond), msg)
+      |                                     ^~~~~~~~~~~~~~~~~~
+include/linux/build_bug.h:50:9: note: in expansion of macro 'BUILD_BUG_ON_MSG'
+   50 |         BUILD_BUG_ON_MSG(condition, "BUILD_BUG_ON failed: " #condition)
+      |         ^~~~~~~~~~~~~~~~
+include/linux/nospec.h:60:9: note: in expansion of macro 'BUILD_BUG_ON'
+   60 |         BUILD_BUG_ON(sizeof(_s) > sizeof(long));
+         \
+      |         ^~~~~~~~~~~~
+drivers/ata/libahci.c:1142:23: note: in expansion of macro 'array_index_nospec'
+ 1142 |                 pmp = array_index_nospec(pmp, EM_MAX_SLOTS);
+      |                       ^~~~~~~~~~~~~~~~~~
+make[3]: *** [scripts/Makefile.build:262: drivers/ata/libahci.o] Error
+
+Build links,
+ - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-5.4.y/build/v5.4.252-138-g6540c78c6405/testrun/18922674/suite/build/test/gcc-13-lkftconfig/log
+ - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-5.4.y/build/v5.4.252-138-g6540c78c6405/testrun/18922674/suite/build/test/gcc-13-lkftconfig/details/
+ - https://storage.tuxsuite.com/public/linaro/lkft/builds/2TiUQ2Oi0YnrXQyA0eCoDEOpw05/
+
+Steps to reproduce:
+  tuxmake --runtime podman --target-arch arm --toolchain gcc-13
+--kconfig https://storage.tuxsuite.com/public/linaro/lkft/builds/2TiUQ2Oi0YnrXQyA0eCoDEOpw05/config
+  - https://storage.tuxsuite.com/public/linaro/lkft/builds/2TiUQ2Oi0YnrXQyA0eCoDEOpw05/tuxmake_reproducer.sh
+
+
+--
+Linaro LKFT
+https://lkft.linaro.org
