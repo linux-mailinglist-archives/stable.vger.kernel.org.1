@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 71308775BFE
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:22:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D9F9F775C97
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:28:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233557AbjHILWs (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:22:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60052 "EHLO
+        id S233802AbjHIL2z (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:28:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50284 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233613AbjHILWs (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:22:48 -0400
+        with ESMTP id S233793AbjHIL2y (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:28:54 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24FD51FCE
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:22:48 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6FDE8ED
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:28:54 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B06EF6321D
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:22:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3891C433C8;
-        Wed,  9 Aug 2023 11:22:46 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 055AF632FE
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:28:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AD3CC433C7;
+        Wed,  9 Aug 2023 11:28:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691580167;
-        bh=MDU65qV/4mWCS3/X7rvA1K81aDxGyiA70wmRk/MW+CM=;
+        s=korg; t=1691580533;
+        bh=9ONyQ4ihBn7mfC8UgUwyjEKAdvj/wr1Iu5ByNyvxK8Y=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Dh95pDQ6ig0kq+/dhQODLKg4eqfNYi0uDs2bieIsL++0n1Ch38PmyUhMCtOU5WuZi
-         jziveHYveljVjEkjhCAzTyMzB3Q7j/p94urFZkvxi4Q3tyu0xvxttFGpkKICuarprv
-         QkYEMcOm3hRS4HbaQSUbPeQEKyzKhLyfe31j0EYs=
+        b=YpheEXpF3PRsVxDW3ySPVqu9igK6C33p4DpFWQ22txdWIjgvlsDRcmZS2qXpKmZ98
+         W1POkW9PX/DCasVHdMvWCXi/6h8i2qa6KWgivQ7hhduDNCMNSvWQ5zRlJriwuP0gFj
+         C8HxEhQAgW9fr+Aql+PgdRyVv1RR2Ks7sOGu2W3k=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Matus Gajdos <matuszpd@gmail.com>,
-        Fabio Estevam <festevam@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 252/323] ASoC: fsl_spdif: Silence output on stop
+        patches@lists.linux.dev,
+        Kaufmann Automotive GmbH <info@kaufmann-automotive.ch>,
+        Oliver Neukum <oneukum@suse.com>,
+        Johan Hovold <johan@kernel.org>
+Subject: [PATCH 5.4 059/154] USB: serial: simple: add Kaufmann RKS+CAN VCP
 Date:   Wed,  9 Aug 2023 12:41:30 +0200
-Message-ID: <20230809103709.614540153@linuxfoundation.org>
+Message-ID: <20230809103638.954893670@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
-References: <20230809103658.104386911@linuxfoundation.org>
+In-Reply-To: <20230809103636.887175326@linuxfoundation.org>
+References: <20230809103636.887175326@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,38 +56,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Matus Gajdos <matuszpd@gmail.com>
+From: Oliver Neukum <oneukum@suse.com>
 
-[ Upstream commit 0e4c2b6b0c4a4b4014d9424c27e5e79d185229c5 ]
+commit dd92c8a1f99bcd166204ffc219ea5a23dd65d64f upstream.
 
-Clear TX registers on stop to prevent the SPDIF interface from sending
-last written word over and over again.
+Add the device and product ID for this CAN bus interface / license
+dongle. The device is usable either directly from user space or can be
+attached to a kernel CAN interface with slcan_attach.
 
-Fixes: a2388a498ad2 ("ASoC: fsl: Add S/PDIF CPU DAI driver")
-Signed-off-by: Matus Gajdos <matuszpd@gmail.com>
-Reviewed-by: Fabio Estevam <festevam@gmail.com>
-Link: https://lore.kernel.org/r/20230719164729.19969-1-matuszpd@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Kaufmann Automotive GmbH <info@kaufmann-automotive.ch>
+Tested-by: Kaufmann Automotive GmbH <info@kaufmann-automotive.ch>
+Signed-off-by: Oliver Neukum <oneukum@suse.com>
+[ johan: amend commit message and move entries in sort order ]
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/fsl/fsl_spdif.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/usb/serial/usb-serial-simple.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/sound/soc/fsl/fsl_spdif.c b/sound/soc/fsl/fsl_spdif.c
-index 740b90df44bb5..0a1ba64ed63cf 100644
---- a/sound/soc/fsl/fsl_spdif.c
-+++ b/sound/soc/fsl/fsl_spdif.c
-@@ -614,6 +614,8 @@ static int fsl_spdif_trigger(struct snd_pcm_substream *substream,
- 	case SNDRV_PCM_TRIGGER_PAUSE_PUSH:
- 		regmap_update_bits(regmap, REG_SPDIF_SCR, dmaen, 0);
- 		regmap_update_bits(regmap, REG_SPDIF_SIE, intr, 0);
-+		regmap_write(regmap, REG_SPDIF_STL, 0x0);
-+		regmap_write(regmap, REG_SPDIF_STR, 0x0);
- 		break;
- 	default:
- 		return -EINVAL;
--- 
-2.40.1
-
+--- a/drivers/usb/serial/usb-serial-simple.c
++++ b/drivers/usb/serial/usb-serial-simple.c
+@@ -63,6 +63,11 @@ DEVICE(flashloader, FLASHLOADER_IDS);
+ 					0x01) }
+ DEVICE(google, GOOGLE_IDS);
+ 
++/* KAUFMANN RKS+CAN VCP */
++#define KAUFMANN_IDS()			\
++	{ USB_DEVICE(0x16d0, 0x0870) }
++DEVICE(kaufmann, KAUFMANN_IDS);
++
+ /* Libtransistor USB console */
+ #define LIBTRANSISTOR_IDS()			\
+ 	{ USB_DEVICE(0x1209, 0x8b00) }
+@@ -124,6 +129,7 @@ static struct usb_serial_driver * const
+ 	&funsoft_device,
+ 	&flashloader_device,
+ 	&google_device,
++	&kaufmann_device,
+ 	&libtransistor_device,
+ 	&vivopay_device,
+ 	&moto_modem_device,
+@@ -142,6 +148,7 @@ static const struct usb_device_id id_tab
+ 	FUNSOFT_IDS(),
+ 	FLASHLOADER_IDS(),
+ 	GOOGLE_IDS(),
++	KAUFMANN_IDS(),
+ 	LIBTRANSISTOR_IDS(),
+ 	VIVOPAY_IDS(),
+ 	MOTO_IDS(),
 
 
