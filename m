@@ -2,160 +2,163 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0CA1477576B
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:45:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7DD337759B1
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:02:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231580AbjHIKps (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 06:45:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55032 "EHLO
+        id S232941AbjHILCr (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:02:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56376 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229996AbjHIKpr (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:45:47 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A63C810F3
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:45:46 -0700 (PDT)
+        with ESMTP id S232974AbjHILCo (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:02:44 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B4C50ED
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:02:42 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4591363118
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:45:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55337C433C8;
-        Wed,  9 Aug 2023 10:45:45 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4B1B562496
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:02:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59A96C433C8;
+        Wed,  9 Aug 2023 11:02:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691577945;
-        bh=ivblmI/dG2shNsK7wnarMREE5p73W9rb76OjDb+1kNU=;
+        s=korg; t=1691578961;
+        bh=dG63SZkzQW8LeRT59yp6af79QlvI3n455f0E5DhJZck=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=K9zfLK6tvNLaBj0mOAGsEo3wP97zeyDX+7HBZiSpsASbwpWHChohZJd3XYqcRqJKg
-         WrIJfBKGncee26WUSkReUokye22j/ntO4XlsBEVX3IFgcRHvZtmfX/ZPRgGrXbO+1i
-         PFkkTYI9t9XNCbwycFzrMKdcW85Vf1wA9hl/WKao=
+        b=AUn7NC9UBYYgX8qkaHzYSJW+uEzqqaEYo07Ge3r496TJQE/W7ZfSV5xi2+riGpTRr
+         jZD+XkEsqcg+yhGD0f5qddTsYG3WUDI5D1nq2h/KEaTFxXSLxSJiIkDFIF1fIKPgPP
+         cbo/7w1sz2/okYVxuBhElBXSmBmLHBYkUHFD3STs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Chris Mi <cmi@nvidia.com>,
-        Vlad Buslov <vladbu@nvidia.com>,
-        Saeed Mahameed <saeedm@nvidia.com>,
+        patches@lists.linux.dev, Remi Pommarel <repk@triplefau.lt>,
+        Nicolas Escande <nico.escande@gmail.com>,
+        =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
+        Kalle Valo <quic_kvalo@quicinc.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 033/165] net/mlx5e: Dont hold encap tbl lock if there is no encap action
+Subject: [PATCH 4.14 026/204] wifi: ath9k: Fix possible stall on ath9k_txq_list_has_key()
 Date:   Wed,  9 Aug 2023 12:39:24 +0200
-Message-ID: <20230809103643.899295366@linuxfoundation.org>
+Message-ID: <20230809103643.445871334@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103642.720851262@linuxfoundation.org>
-References: <20230809103642.720851262@linuxfoundation.org>
+In-Reply-To: <20230809103642.552405807@linuxfoundation.org>
+References: <20230809103642.552405807@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Chris Mi <cmi@nvidia.com>
+From: Remi Pommarel <repk@triplefau.lt>
 
-[ Upstream commit 93a331939d1d1c6c3422bc09ec43cac658594b34 ]
+[ Upstream commit 75086cc6dee046e3fbb3dba148b376d8802f83bc ]
 
-The cited commit holds encap tbl lock unconditionally when setting
-up dests. But it may cause the following deadlock:
+On EDMA capable hardware, ath9k_txq_list_has_key() can enter infinite
+loop if it is called while all txq_fifos have packets that use different
+key that the one we are looking for. Fix it by exiting the loop if all
+txq_fifos have been checked already.
 
- PID: 1063722  TASK: ffffa062ca5d0000  CPU: 13   COMMAND: "handler8"
-  #0 [ffffb14de05b7368] __schedule at ffffffffa1d5aa91
-  #1 [ffffb14de05b7410] schedule at ffffffffa1d5afdb
-  #2 [ffffb14de05b7430] schedule_preempt_disabled at ffffffffa1d5b528
-  #3 [ffffb14de05b7440] __mutex_lock at ffffffffa1d5d6cb
-  #4 [ffffb14de05b74e8] mutex_lock_nested at ffffffffa1d5ddeb
-  #5 [ffffb14de05b74f8] mlx5e_tc_tun_encap_dests_set at ffffffffc12f2096 [mlx5_core]
-  #6 [ffffb14de05b7568] post_process_attr at ffffffffc12d9fc5 [mlx5_core]
-  #7 [ffffb14de05b75a0] mlx5e_tc_add_fdb_flow at ffffffffc12de877 [mlx5_core]
-  #8 [ffffb14de05b75f0] __mlx5e_add_fdb_flow at ffffffffc12e0eef [mlx5_core]
-  #9 [ffffb14de05b7660] mlx5e_tc_add_flow at ffffffffc12e12f7 [mlx5_core]
- #10 [ffffb14de05b76b8] mlx5e_configure_flower at ffffffffc12e1686 [mlx5_core]
- #11 [ffffb14de05b7720] mlx5e_rep_indr_offload at ffffffffc12e3817 [mlx5_core]
- #12 [ffffb14de05b7730] mlx5e_rep_indr_setup_tc_cb at ffffffffc12e388a [mlx5_core]
- #13 [ffffb14de05b7740] tc_setup_cb_add at ffffffffa1ab2ba8
- #14 [ffffb14de05b77a0] fl_hw_replace_filter at ffffffffc0bdec2f [cls_flower]
- #15 [ffffb14de05b7868] fl_change at ffffffffc0be6caa [cls_flower]
- #16 [ffffb14de05b7908] tc_new_tfilter at ffffffffa1ab71f0
+Because this loop is called under spin_lock_bh() (see ath_txq_lock) it
+causes the following rcu stall:
 
-[1031218.028143]  wait_for_completion+0x24/0x30
-[1031218.028589]  mlx5e_update_route_decap_flows+0x9a/0x1e0 [mlx5_core]
-[1031218.029256]  mlx5e_tc_fib_event_work+0x1ad/0x300 [mlx5_core]
-[1031218.029885]  process_one_work+0x24e/0x510
+rcu: INFO: rcu_sched self-detected stall on CPU
+ath10k_pci 0000:01:00.0: failed to read temperature -11
+rcu:    1-....: (5254 ticks this GP) idle=189/1/0x4000000000000002 softirq=8442983/8442984 fqs=2579
+        (t=5257 jiffies g=17983297 q=334)
+Task dump for CPU 1:
+task:hostapd         state:R  running task     stack:    0 pid:  297 ppid:   289 flags:0x0000000a
+Call trace:
+ dump_backtrace+0x0/0x170
+ show_stack+0x1c/0x24
+ sched_show_task+0x140/0x170
+ dump_cpu_task+0x48/0x54
+ rcu_dump_cpu_stacks+0xf0/0x134
+ rcu_sched_clock_irq+0x8d8/0x9fc
+ update_process_times+0xa0/0xec
+ tick_sched_timer+0x5c/0xd0
+ __hrtimer_run_queues+0x154/0x320
+ hrtimer_interrupt+0x120/0x2f0
+ arch_timer_handler_virt+0x38/0x44
+ handle_percpu_devid_irq+0x9c/0x1e0
+ handle_domain_irq+0x64/0x90
+ gic_handle_irq+0x78/0xb0
+ call_on_irq_stack+0x28/0x38
+ do_interrupt_handler+0x54/0x5c
+ el1_interrupt+0x2c/0x4c
+ el1h_64_irq_handler+0x14/0x1c
+ el1h_64_irq+0x74/0x78
+ ath9k_txq_has_key+0x1bc/0x250 [ath9k]
+ ath9k_set_key+0x1cc/0x3dc [ath9k]
+ drv_set_key+0x78/0x170
+ ieee80211_key_replace+0x564/0x6cc
+ ieee80211_key_link+0x174/0x220
+ ieee80211_add_key+0x11c/0x300
+ nl80211_new_key+0x12c/0x330
+ genl_family_rcv_msg_doit+0xbc/0x11c
+ genl_rcv_msg+0xd8/0x1c4
+ netlink_rcv_skb+0x40/0x100
+ genl_rcv+0x3c/0x50
+ netlink_unicast+0x1ec/0x2c0
+ netlink_sendmsg+0x198/0x3c0
+ ____sys_sendmsg+0x210/0x250
+ ___sys_sendmsg+0x78/0xc4
+ __sys_sendmsg+0x4c/0x90
+ __arm64_sys_sendmsg+0x28/0x30
+ invoke_syscall.constprop.0+0x60/0x100
+ do_el0_svc+0x48/0xd0
+ el0_svc+0x14/0x50
+ el0t_64_sync_handler+0xa8/0xb0
+ el0t_64_sync+0x158/0x15c
 
-Actually no need to hold encap tbl lock if there is no encap action.
-Fix it by checking if encap action exists or not before holding
-encap tbl lock.
+This rcu stall is hard to reproduce as is, but changing ATH_TXFIFO_DEPTH
+from 8 to 2 makes it reasonably easy to reproduce.
 
-Fixes: 37c3b9fa7ccf ("net/mlx5e: Prevent encap offload when neigh update is running")
-Signed-off-by: Chris Mi <cmi@nvidia.com>
-Reviewed-by: Vlad Buslov <vladbu@nvidia.com>
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+Fixes: ca2848022c12 ("ath9k: Postpone key cache entry deletion for TXQ frames reference it")
+Signed-off-by: Remi Pommarel <repk@triplefau.lt>
+Tested-by: Nicolas Escande <nico.escande@gmail.com>
+Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://lore.kernel.org/r/20230609093744.1985-1-repk@triplefau.lt
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../mellanox/mlx5/core/en/tc_tun_encap.c      |  3 ---
- .../net/ethernet/mellanox/mlx5/core/en_tc.c   | 21 ++++++++++++++++---
- 2 files changed, 18 insertions(+), 6 deletions(-)
+ drivers/net/wireless/ath/ath9k/main.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun_encap.c b/drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun_encap.c
-index f0c3464f037f4..0c88cf47af01b 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun_encap.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun_encap.c
-@@ -1030,9 +1030,6 @@ int mlx5e_tc_tun_encap_dests_set(struct mlx5e_priv *priv,
- 	int out_index;
- 	int err = 0;
+diff --git a/drivers/net/wireless/ath/ath9k/main.c b/drivers/net/wireless/ath/ath9k/main.c
+index 507d8c5149686..1afaa437619d3 100644
+--- a/drivers/net/wireless/ath/ath9k/main.c
++++ b/drivers/net/wireless/ath/ath9k/main.c
+@@ -846,7 +846,7 @@ static bool ath9k_txq_list_has_key(struct list_head *txq_list, u32 keyix)
+ static bool ath9k_txq_has_key(struct ath_softc *sc, u32 keyix)
+ {
+ 	struct ath_hw *ah = sc->sc_ah;
+-	int i;
++	int i, j;
+ 	struct ath_txq *txq;
+ 	bool key_in_use = false;
  
--	if (!mlx5e_is_eswitch_flow(flow))
--		return 0;
--
- 	parse_attr = attr->parse_attr;
- 	esw_attr = attr->esw_attr;
- 	*vf_tun = false;
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c b/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c
-index ed05ac8ae1de5..e002f013fa015 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c
-@@ -1725,6 +1725,19 @@ verify_attr_actions(u32 actions, struct netlink_ext_ack *extack)
- 	return 0;
- }
+@@ -864,8 +864,9 @@ static bool ath9k_txq_has_key(struct ath_softc *sc, u32 keyix)
+ 		if (sc->sc_ah->caps.hw_caps & ATH9K_HW_CAP_EDMA) {
+ 			int idx = txq->txq_tailidx;
  
-+static bool
-+has_encap_dests(struct mlx5_flow_attr *attr)
-+{
-+	struct mlx5_esw_flow_attr *esw_attr = attr->esw_attr;
-+	int out_index;
-+
-+	for (out_index = 0; out_index < MLX5_MAX_FLOW_FWD_VPORTS; out_index++)
-+		if (esw_attr->dests[out_index].flags & MLX5_ESW_DEST_ENCAP)
-+			return true;
-+
-+	return false;
-+}
-+
- static int
- post_process_attr(struct mlx5e_tc_flow *flow,
- 		  struct mlx5_flow_attr *attr,
-@@ -1737,9 +1750,11 @@ post_process_attr(struct mlx5e_tc_flow *flow,
- 	if (err)
- 		goto err_out;
- 
--	err = mlx5e_tc_tun_encap_dests_set(flow->priv, flow, attr, extack, &vf_tun);
--	if (err)
--		goto err_out;
-+	if (mlx5e_is_eswitch_flow(flow) && has_encap_dests(attr)) {
-+		err = mlx5e_tc_tun_encap_dests_set(flow->priv, flow, attr, extack, &vf_tun);
-+		if (err)
-+			goto err_out;
-+	}
- 
- 	if (attr->action & MLX5_FLOW_CONTEXT_ACTION_MOD_HDR) {
- 		err = mlx5e_tc_attach_mod_hdr(flow->priv, flow, attr);
+-			while (!key_in_use &&
+-			       !list_empty(&txq->txq_fifo[idx])) {
++			for (j = 0; !key_in_use &&
++			     !list_empty(&txq->txq_fifo[idx]) &&
++			     j < ATH_TXFIFO_DEPTH; j++) {
+ 				key_in_use = ath9k_txq_list_has_key(
+ 					&txq->txq_fifo[idx], keyix);
+ 				INCR(idx, ATH_TXFIFO_DEPTH);
 -- 
-2.40.1
+2.39.2
 
 
 
