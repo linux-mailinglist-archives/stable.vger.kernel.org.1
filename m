@@ -2,43 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F3CE0775C98
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:28:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F2A0775885
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:53:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233793AbjHIL26 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:28:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50344 "EHLO
+        id S232660AbjHIKxe (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 06:53:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43010 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233804AbjHIL25 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:28:57 -0400
+        with ESMTP id S232657AbjHIKxW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:53:22 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 41219ED
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:28:57 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 86BE630E7
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:51:17 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D206263304
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:28:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0180C433C7;
-        Wed,  9 Aug 2023 11:28:55 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 53CE063136
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:51:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64E1BC433C7;
+        Wed,  9 Aug 2023 10:51:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691580536;
-        bh=qHzkB4rDZhclUz0Z8Wnq1Bjd2kYpJ1sHdGLBjwrSiaw=;
+        s=korg; t=1691578276;
+        bh=mQ6prVLlLK6mIl/u46607q4NZkfys8D0FvBUrmR/n4k=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=h88yyPSo73uUkFhag3e/UcabRh9vmkVUXyJmBrlHi7Osd3QFH52eO68aV3jq7cOBm
-         y8/8Oq3qC57vDjysH/Zwgr5YYnKI3zynDqaKnxZFZn08NZYlloqecv3rgfxPGQspXR
-         dwQuZJO3kWn4bPsbi+uITfAPEeoj/S7Gv/9SbYZE=
+        b=rGcp8gF07xOIU1k3oPxMOmZy8tRUoFmgXYdOo6lM/cKx3btOr5fizrgNForq7+Y6S
+         1VD92kSqXbHE/ZpRpSUcYl6HmE5rpXBfanCc1bYaNNRQ0Pgy4JfE+I6NywmrSsJm3b
+         55UwLsK6Al4UoAyUX06Lda3nwrFhYK2Uo2l6idYc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Johan Hovold <johan@kernel.org>
-Subject: [PATCH 5.4 060/154] USB: serial: simple: sort driver entries
+        patches@lists.linux.dev,
+        Jonathan Cavitt <jonathan.cavitt@intel.com>,
+        Andi Shyti <andi.shyti@linux.intel.com>,
+        Nirmoy Das <nirmoy.das@intel.com>,
+        Andrzej Hajda <andrzej.hajda@intel.com>,
+        Tvrtko Ursulin <tvrtko.ursulin@intel.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 160/165] drm/i915/gt: Ensure memory quiesced before invalidation
 Date:   Wed,  9 Aug 2023 12:41:31 +0200
-Message-ID: <20230809103638.983729749@linuxfoundation.org>
+Message-ID: <20230809103648.010951136@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103636.887175326@linuxfoundation.org>
-References: <20230809103636.887175326@linuxfoundation.org>
+In-Reply-To: <20230809103642.720851262@linuxfoundation.org>
+References: <20230809103642.720851262@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,157 +59,47 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Johan Hovold <johan@kernel.org>
+From: Jonathan Cavitt <jonathan.cavitt@intel.com>
 
-commit d245aedc00775c4d7265a9f4522cc4e1fd34d102 upstream.
+[ Upstream commit 78a6ccd65fa3a7cc697810db079cc4b84dff03d5 ]
 
-Sort the driver symbols alphabetically in order to make it more obvious
-where new driver entries should be added.
+All memory traffic must be quiesced before requesting
+an aux invalidation on platforms that use Aux CCS.
 
-Cc: stable@vger.kernel.org
-Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 972282c4cf24 ("drm/i915/gen12: Add aux table invalidate for all engines")
+Requires: a2a4aa0eef3b ("drm/i915: Add the gen12_needs_ccs_aux_inv helper")
+Signed-off-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
+Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
+Cc: <stable@vger.kernel.org> # v5.8+
+Reviewed-by: Nirmoy Das <nirmoy.das@intel.com>
+Reviewed-by: Andrzej Hajda <andrzej.hajda@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230725001950.1014671-4-andi.shyti@linux.intel.com
+(cherry picked from commit ad8ebf12217e451cd19804b1c3e97ad56491c74a)
+Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/serial/usb-serial-simple.c |   66 ++++++++++++++++-----------------
- 1 file changed, 33 insertions(+), 33 deletions(-)
+ drivers/gpu/drm/i915/gt/gen8_engine_cs.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/serial/usb-serial-simple.c
-+++ b/drivers/usb/serial/usb-serial-simple.c
-@@ -38,16 +38,6 @@ static struct usb_serial_driver vendor##
- 	{ USB_DEVICE(0x0a21, 0x8001) }	/* MMT-7305WW */
- DEVICE(carelink, CARELINK_IDS);
+diff --git a/drivers/gpu/drm/i915/gt/gen8_engine_cs.c b/drivers/gpu/drm/i915/gt/gen8_engine_cs.c
+index c5b926e3f20d7..6e914c3f5019a 100644
+--- a/drivers/gpu/drm/i915/gt/gen8_engine_cs.c
++++ b/drivers/gpu/drm/i915/gt/gen8_engine_cs.c
+@@ -193,7 +193,11 @@ int gen12_emit_flush_rcs(struct i915_request *rq, u32 mode)
+ {
+ 	struct intel_engine_cs *engine = rq->engine;
  
--/* ZIO Motherboard USB driver */
--#define ZIO_IDS()			\
--	{ USB_DEVICE(0x1CBE, 0x0103) }
--DEVICE(zio, ZIO_IDS);
--
--/* Funsoft Serial USB driver */
--#define FUNSOFT_IDS()			\
--	{ USB_DEVICE(0x1404, 0xcddc) }
--DEVICE(funsoft, FUNSOFT_IDS);
--
- /* Infineon Flashloader driver */
- #define FLASHLOADER_IDS()		\
- 	{ USB_DEVICE_INTERFACE_CLASS(0x058b, 0x0041, USB_CLASS_CDC_DATA) }, \
-@@ -55,6 +45,11 @@ DEVICE(funsoft, FUNSOFT_IDS);
- 	{ USB_DEVICE(0x8087, 0x0801) }
- DEVICE(flashloader, FLASHLOADER_IDS);
+-	if (mode & EMIT_FLUSH) {
++	/*
++	 * On Aux CCS platforms the invalidation of the Aux
++	 * table requires quiescing memory traffic beforehand
++	 */
++	if (mode & EMIT_FLUSH || gen12_needs_ccs_aux_inv(engine)) {
+ 		u32 flags = 0;
+ 		u32 *cs;
  
-+/* Funsoft Serial USB driver */
-+#define FUNSOFT_IDS()			\
-+	{ USB_DEVICE(0x1404, 0xcddc) }
-+DEVICE(funsoft, FUNSOFT_IDS);
-+
- /* Google Serial USB SubClass */
- #define GOOGLE_IDS()						\
- 	{ USB_VENDOR_AND_INTERFACE_INFO(0x18d1,			\
-@@ -63,6 +58,11 @@ DEVICE(flashloader, FLASHLOADER_IDS);
- 					0x01) }
- DEVICE(google, GOOGLE_IDS);
- 
-+/* HP4x (48/49) Generic Serial driver */
-+#define HP4X_IDS()			\
-+	{ USB_DEVICE(0x03f0, 0x0121) }
-+DEVICE(hp4x, HP4X_IDS);
-+
- /* KAUFMANN RKS+CAN VCP */
- #define KAUFMANN_IDS()			\
- 	{ USB_DEVICE(0x16d0, 0x0870) }
-@@ -73,11 +73,6 @@ DEVICE(kaufmann, KAUFMANN_IDS);
- 	{ USB_DEVICE(0x1209, 0x8b00) }
- DEVICE(libtransistor, LIBTRANSISTOR_IDS);
- 
--/* ViVOpay USB Serial Driver */
--#define VIVOPAY_IDS()			\
--	{ USB_DEVICE(0x1d5f, 0x1004) }	/* ViVOpay 8800 */
--DEVICE(vivopay, VIVOPAY_IDS);
--
- /* Motorola USB Phone driver */
- #define MOTO_IDS()			\
- 	{ USB_DEVICE(0x05c6, 0x3197) },	/* unknown Motorola phone */	\
-@@ -106,10 +101,10 @@ DEVICE(nokia, NOKIA_IDS);
- 	{ USB_DEVICE(0x09d7, 0x0100) }	/* NovAtel FlexPack GPS */
- DEVICE_N(novatel_gps, NOVATEL_IDS, 3);
- 
--/* HP4x (48/49) Generic Serial driver */
--#define HP4X_IDS()			\
--	{ USB_DEVICE(0x03f0, 0x0121) }
--DEVICE(hp4x, HP4X_IDS);
-+/* Siemens USB/MPI adapter */
-+#define SIEMENS_IDS()			\
-+	{ USB_DEVICE(0x908, 0x0004) }
-+DEVICE(siemens_mpi, SIEMENS_IDS);
- 
- /* Suunto ANT+ USB Driver */
- #define SUUNTO_IDS()			\
-@@ -117,47 +112,52 @@ DEVICE(hp4x, HP4X_IDS);
- 	{ USB_DEVICE(0x0fcf, 0x1009) } /* Dynastream ANT USB-m Stick */
- DEVICE(suunto, SUUNTO_IDS);
- 
--/* Siemens USB/MPI adapter */
--#define SIEMENS_IDS()			\
--	{ USB_DEVICE(0x908, 0x0004) }
--DEVICE(siemens_mpi, SIEMENS_IDS);
-+/* ViVOpay USB Serial Driver */
-+#define VIVOPAY_IDS()			\
-+	{ USB_DEVICE(0x1d5f, 0x1004) }	/* ViVOpay 8800 */
-+DEVICE(vivopay, VIVOPAY_IDS);
-+
-+/* ZIO Motherboard USB driver */
-+#define ZIO_IDS()			\
-+	{ USB_DEVICE(0x1CBE, 0x0103) }
-+DEVICE(zio, ZIO_IDS);
- 
- /* All of the above structures mushed into two lists */
- static struct usb_serial_driver * const serial_drivers[] = {
- 	&carelink_device,
--	&zio_device,
--	&funsoft_device,
- 	&flashloader_device,
-+	&funsoft_device,
- 	&google_device,
-+	&hp4x_device,
- 	&kaufmann_device,
- 	&libtransistor_device,
--	&vivopay_device,
- 	&moto_modem_device,
- 	&motorola_tetra_device,
- 	&nokia_device,
- 	&novatel_gps_device,
--	&hp4x_device,
--	&suunto_device,
- 	&siemens_mpi_device,
-+	&suunto_device,
-+	&vivopay_device,
-+	&zio_device,
- 	NULL
- };
- 
- static const struct usb_device_id id_table[] = {
- 	CARELINK_IDS(),
--	ZIO_IDS(),
--	FUNSOFT_IDS(),
- 	FLASHLOADER_IDS(),
-+	FUNSOFT_IDS(),
- 	GOOGLE_IDS(),
-+	HP4X_IDS(),
- 	KAUFMANN_IDS(),
- 	LIBTRANSISTOR_IDS(),
--	VIVOPAY_IDS(),
- 	MOTO_IDS(),
- 	MOTOROLA_TETRA_IDS(),
- 	NOKIA_IDS(),
- 	NOVATEL_IDS(),
--	HP4X_IDS(),
--	SUUNTO_IDS(),
- 	SIEMENS_IDS(),
-+	SUUNTO_IDS(),
-+	VIVOPAY_IDS(),
-+	ZIO_IDS(),
- 	{ },
- };
- MODULE_DEVICE_TABLE(usb, id_table);
+-- 
+2.40.1
+
 
 
