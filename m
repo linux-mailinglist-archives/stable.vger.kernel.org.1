@@ -2,116 +2,174 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F1140775D68
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:37:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5926A77594C
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:59:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234096AbjHILhR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:37:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33902 "EHLO
+        id S232680AbjHIK7R (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 06:59:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33054 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234245AbjHILhL (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:37:11 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 41BD1173A
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:37:11 -0700 (PDT)
+        with ESMTP id S232818AbjHIK7Q (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:59:16 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 580DC171E
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:59:16 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D2B8E63547
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:37:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E14B8C433C7;
-        Wed,  9 Aug 2023 11:37:09 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E394362BD5
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:59:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03016C433C8;
+        Wed,  9 Aug 2023 10:59:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691581030;
-        bh=QhMdq6GsBUCYsRgx77tTtwmBPNjhq1VtDPdyxlTqKHY=;
+        s=korg; t=1691578755;
+        bh=c2NdosTuF64QyylpzdwpOEiZcXJWhzi4FoOSAIsObxQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=1ovic7cm/I6Chq/SaR/uOPpNQulfRPBvCgzBT6lLQO7rQL3daoh9vJH7M8BMOTCaw
-         Xy4z7f94N25iWl2OQ65rzGM17kJac4MtyNkAB8vN7WUorqbalNlpvTKy+uarbOXQZL
-         qv9kgHokHze0klO1P0aYFViqAlzP2AYh5RiboSak=
+        b=lcmSwWNhh1Tq1mAjkSOS3bk+KeV359A6BDChUSVFLm3NeGh5ewNDrWeSXz7zL5/67
+         vQYfvL0AftyEjSjwhlmlbNzyzp2UG0a7SA44rkGikEQcmJkSQwRawIKmZJqbkto+0w
+         Fn4d/vTWUvZAEv/YkQ2HErD/f/L3WNJxz+8CNlD4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        =?UTF-8?q?=C5=81ukasz=20Bartosik?= <lb@semihalf.com>,
-        stable <stable@kernel.org>
-Subject: [PATCH 5.10 079/201] USB: quirks: add quirk for Focusrite Scarlett
+        patches@lists.linux.dev, Jianbo Liu <jianbol@nvidia.com>,
+        Leon Romanovsky <leonro@nvidia.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 45/92] net/mlx5: fs_core: Make find_closest_ft more generic
 Date:   Wed,  9 Aug 2023 12:41:21 +0200
-Message-ID: <20230809103646.451791558@linuxfoundation.org>
+Message-ID: <20230809103635.170821963@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103643.799166053@linuxfoundation.org>
-References: <20230809103643.799166053@linuxfoundation.org>
+In-Reply-To: <20230809103633.485906560@linuxfoundation.org>
+References: <20230809103633.485906560@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Łukasz Bartosik <lb@semihalf.com>
+From: Jianbo Liu <jianbol@nvidia.com>
 
-commit 9dc162e22387080e2d06de708b89920c0e158c9a upstream.
+[ Upstream commit 618d28a535a0582617465d14e05f3881736a2962 ]
 
-The Focusrite Scarlett audio device does not behave correctly during
-resumes. Below is what happens during every resume (captured with
-Beagle 5000):
+As find_closest_ft_recursive is called to find the closest FT, the
+first parameter of find_closest_ft can be changed from fs_prio to
+fs_node. Thus this function is extended to find the closest FT for the
+nodes of any type, not only prios, but also the sub namespaces.
 
-<Suspend>
-<Resume>
-<Reset>/<Chirp J>/<Tiny J>
-<Reset/Target disconnected>
-<High Speed>
-
-The Scarlett disconnects and is enumerated again.
-
-However from time to time it drops completely off the USB bus during
-resume. Below is captured occurrence of such an event:
-
-<Suspend>
-<Resume>
-<Reset>/<Chirp J>/<Tiny J>
-<Reset>/<Chirp K>/<Tiny K>
-<High Speed>
-<Corrupted packet>
-<Reset/Target disconnected>
-
-To fix the condition a user has to unplug and plug the device again.
-
-With USB_QUIRK_RESET_RESUME applied ("usbcore.quirks=1235:8211:b")
-for the Scarlett audio device the issue still reproduces.
-
-Applying USB_QUIRK_DISCONNECT_SUSPEND ("usbcore.quirks=1235:8211:m")
-fixed the issue and the Scarlett audio device didn't drop off the USB
-bus for ~5000 suspend/resume cycles where originally issue reproduced in
-~100 or less suspend/resume cycles.
-
-Signed-off-by: Łukasz Bartosik <lb@semihalf.com>
-Cc: stable <stable@kernel.org>
-Link: https://lore.kernel.org/r/20230724112911.1802577-1-lb@semihalf.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Jianbo Liu <jianbol@nvidia.com>
+Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+Link: https://lore.kernel.org/r/d3962c2b443ec8dde7a740dc742a1f052d5e256c.1690803944.git.leonro@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: c635ca45a7a2 ("net/mlx5: fs_core: Skip the FTs in the same FS_TYPE_PRIO_CHAINS fs_prio")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/core/quirks.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ .../net/ethernet/mellanox/mlx5/core/fs_core.c | 29 +++++++++----------
+ 1 file changed, 14 insertions(+), 15 deletions(-)
 
---- a/drivers/usb/core/quirks.c
-+++ b/drivers/usb/core/quirks.c
-@@ -437,6 +437,10 @@ static const struct usb_device_id usb_qu
- 	/* novation SoundControl XL */
- 	{ USB_DEVICE(0x1235, 0x0061), .driver_info = USB_QUIRK_RESET_RESUME },
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c b/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c
+index cb3f9de3d00ba..8b1a5f5637597 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c
+@@ -818,18 +818,17 @@ static struct mlx5_flow_table *find_closest_ft_recursive(struct fs_node  *root,
+ 	return ft;
+ }
  
-+	/* Focusrite Scarlett Solo USB */
-+	{ USB_DEVICE(0x1235, 0x8211), .driver_info =
-+			USB_QUIRK_DISCONNECT_SUSPEND },
-+
- 	/* Huawei 4G LTE module */
- 	{ USB_DEVICE(0x12d1, 0x15bb), .driver_info =
- 			USB_QUIRK_DISCONNECT_SUSPEND },
+-/* If reverse is false then return the first flow table in next priority of
+- * prio in the tree, else return the last flow table in the previous priority
+- * of prio in the tree.
++/* If reverse is false then return the first flow table next to the passed node
++ * in the tree, else return the last flow table before the node in the tree.
+  */
+-static struct mlx5_flow_table *find_closest_ft(struct fs_prio *prio, bool reverse)
++static struct mlx5_flow_table *find_closest_ft(struct fs_node *node, bool reverse)
+ {
+ 	struct mlx5_flow_table *ft = NULL;
+ 	struct fs_node *curr_node;
+ 	struct fs_node *parent;
+ 
+-	parent = prio->node.parent;
+-	curr_node = &prio->node;
++	parent = node->parent;
++	curr_node = node;
+ 	while (!ft && parent) {
+ 		ft = find_closest_ft_recursive(parent, &curr_node->list, reverse);
+ 		curr_node = parent;
+@@ -839,15 +838,15 @@ static struct mlx5_flow_table *find_closest_ft(struct fs_prio *prio, bool revers
+ }
+ 
+ /* Assuming all the tree is locked by mutex chain lock */
+-static struct mlx5_flow_table *find_next_chained_ft(struct fs_prio *prio)
++static struct mlx5_flow_table *find_next_chained_ft(struct fs_node *node)
+ {
+-	return find_closest_ft(prio, false);
++	return find_closest_ft(node, false);
+ }
+ 
+ /* Assuming all the tree is locked by mutex chain lock */
+-static struct mlx5_flow_table *find_prev_chained_ft(struct fs_prio *prio)
++static struct mlx5_flow_table *find_prev_chained_ft(struct fs_node *node)
+ {
+-	return find_closest_ft(prio, true);
++	return find_closest_ft(node, true);
+ }
+ 
+ static struct mlx5_flow_table *find_next_fwd_ft(struct mlx5_flow_table *ft,
+@@ -859,7 +858,7 @@ static struct mlx5_flow_table *find_next_fwd_ft(struct mlx5_flow_table *ft,
+ 	next_ns = flow_act->action & MLX5_FLOW_CONTEXT_ACTION_FWD_NEXT_NS;
+ 	fs_get_obj(prio, next_ns ? ft->ns->node.parent : ft->node.parent);
+ 
+-	return find_next_chained_ft(prio);
++	return find_next_chained_ft(&prio->node);
+ }
+ 
+ static int connect_fts_in_prio(struct mlx5_core_dev *dev,
+@@ -890,7 +889,7 @@ static int connect_prev_fts(struct mlx5_core_dev *dev,
+ {
+ 	struct mlx5_flow_table *prev_ft;
+ 
+-	prev_ft = find_prev_chained_ft(prio);
++	prev_ft = find_prev_chained_ft(&prio->node);
+ 	if (prev_ft) {
+ 		struct fs_prio *prev_prio;
+ 
+@@ -1036,7 +1035,7 @@ static int connect_flow_table(struct mlx5_core_dev *dev, struct mlx5_flow_table
+ 		if (err)
+ 			return err;
+ 
+-		next_ft = first_ft ? first_ft : find_next_chained_ft(prio);
++		next_ft = first_ft ? first_ft : find_next_chained_ft(&prio->node);
+ 		err = connect_fwd_rules(dev, ft, next_ft);
+ 		if (err)
+ 			return err;
+@@ -1111,7 +1110,7 @@ static struct mlx5_flow_table *__mlx5_create_flow_table(struct mlx5_flow_namespa
+ 
+ 	tree_init_node(&ft->node, del_hw_flow_table, del_sw_flow_table);
+ 	next_ft = unmanaged ? ft_attr->next_ft :
+-			      find_next_chained_ft(fs_prio);
++			      find_next_chained_ft(&fs_prio->node);
+ 	ft->def_miss_action = ns->def_miss_action;
+ 	ft->ns = ns;
+ 	err = root->cmds->create_flow_table(root, ft, ft_attr->max_fte, next_ft);
+@@ -2086,7 +2085,7 @@ static struct mlx5_flow_table *find_next_ft(struct mlx5_flow_table *ft)
+ 
+ 	if (!list_is_last(&ft->node.list, &prio->node.children))
+ 		return list_next_entry(ft, node.list);
+-	return find_next_chained_ft(prio);
++	return find_next_chained_ft(&prio->node);
+ }
+ 
+ static int update_root_ft_destroy(struct mlx5_flow_table *ft)
+-- 
+2.40.1
+
 
 
