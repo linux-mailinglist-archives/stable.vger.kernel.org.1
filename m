@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3E3AE775A31
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:06:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D24EA7757A3
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:48:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233102AbjHILGK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:06:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44044 "EHLO
+        id S232242AbjHIKsY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 06:48:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33728 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233094AbjHILGJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:06:09 -0400
+        with ESMTP id S232248AbjHIKsY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:48:24 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 64AE6ED
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:06:09 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 945EC1999
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:48:23 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 028046314B
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:06:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12F13C433C7;
-        Wed,  9 Aug 2023 11:06:07 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3470C6310A
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:48:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 395C4C433C7;
+        Wed,  9 Aug 2023 10:48:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691579168;
-        bh=kbDagVPNnshq9xsMf9SlTqGxu0hRzfVO/fma3oi8cBc=;
+        s=korg; t=1691578102;
+        bh=ogEyB2jafn+lL0XcfemZLOnlaxUvSvCl+NBfFQsP8A8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=wDK3j5/b0E+Y5NX5Vy90qcWvPl9gygHgBd2oMgWAUR6sBbUKdtLD1d3uo1ojVv8+A
-         vH2oIkWnWh3wtfNMGFNrkgmIma9513eclijgaym1Dfn6zbMXifpqhisQ9X5XWGQFJE
-         H31zHjz/rEAUU2QjJR2AZdN8VQ6J2xmO7yXA+SUA=
+        b=ICtQVy5k1DaWDuCzwfu7/pqDIjXpw9c5QB0cGhmxn7/wfgy6+ufjrCGJLBqa/Pc/t
+         GudnwZuLPzD2/dwtw7VoK2x8I9ghSBrYMFNIqmGMcqB5eWp/92MdnsOJoe9Hg4gXrM
+         E5lqGdLwCUfOyXaRLCaLyeSTyae3Rlth1+/o3lWM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
-        Ziyang Xuan <william.xuanziyang@huawei.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 099/204] ipv6/addrconf: fix a potential refcount underflow for idev
-Date:   Wed,  9 Aug 2023 12:40:37 +0200
-Message-ID: <20230809103645.952373624@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Olivier Maignial <olivier.maignial@hotmail.fr>,
+        Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH 6.4 107/165] mtd: spinand: toshiba: Fix ecc_get_status
+Date:   Wed,  9 Aug 2023 12:40:38 +0200
+Message-ID: <20230809103646.293594828@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103642.552405807@linuxfoundation.org>
-References: <20230809103642.552405807@linuxfoundation.org>
+In-Reply-To: <20230809103642.720851262@linuxfoundation.org>
+References: <20230809103642.720851262@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,53 +55,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ziyang Xuan <william.xuanziyang@huawei.com>
+From: Olivier Maignial <olivier.maignial@hotmail.fr>
 
-[ Upstream commit 06a0716949c22e2aefb648526580671197151acc ]
+commit 8544cda94dae6be3f1359539079c68bb731428b1 upstream.
 
-Now in addrconf_mod_rs_timer(), reference idev depends on whether
-rs_timer is not pending. Then modify rs_timer timeout.
+Reading ECC status is failing.
 
-There is a time gap in [1], during which if the pending rs_timer
-becomes not pending. It will miss to hold idev, but the rs_timer
-is activated. Thus rs_timer callback function addrconf_rs_timer()
-will be executed and put idev later without holding idev. A refcount
-underflow issue for idev can be caused by this.
+tx58cxgxsxraix_ecc_get_status() is using on-stack buffer
+for SPINAND_GET_FEATURE_OP() output. It is not suitable
+for DMA needs of spi-mem.
 
-	if (!timer_pending(&idev->rs_timer))
-		in6_dev_hold(idev);
-		  <--------------[1]
-	mod_timer(&idev->rs_timer, jiffies + when);
+Fix this by using the spi-mem operations dedicated buffer
+spinand->scratchbuf.
 
-To fix the issue, hold idev if mod_timer() return 0.
+See
+spinand->scratchbuf:
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/include/linux/mtd/spinand.h?h=v6.3#n418
+spi_mem_check_op():
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/spi/spi-mem.c?h=v6.3#n199
 
-Fixes: b7b1bfce0bb6 ("ipv6: split duplicate address detection and router solicitation timer")
-Suggested-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Ziyang Xuan <william.xuanziyang@huawei.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 10949af1681d ("mtd: spinand: Add initial support for Toshiba TC58CVG2S0H")
+Cc: stable@vger.kernel.org
+Signed-off-by: Olivier Maignial <olivier.maignial@hotmail.fr>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://lore.kernel.org/linux-mtd/DB4P250MB1032553D05FBE36DEE0D311EFE23A@DB4P250MB1032.EURP250.PROD.OUTLOOK.COM
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/addrconf.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/mtd/nand/spi/toshiba.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/ipv6/addrconf.c b/net/ipv6/addrconf.c
-index 0d3e76b160a5b..6703a5b65e4a6 100644
---- a/net/ipv6/addrconf.c
-+++ b/net/ipv6/addrconf.c
-@@ -325,9 +325,8 @@ static void addrconf_del_dad_work(struct inet6_ifaddr *ifp)
- static void addrconf_mod_rs_timer(struct inet6_dev *idev,
- 				  unsigned long when)
+--- a/drivers/mtd/nand/spi/toshiba.c
++++ b/drivers/mtd/nand/spi/toshiba.c
+@@ -73,7 +73,7 @@ static int tx58cxgxsxraix_ecc_get_status
  {
--	if (!timer_pending(&idev->rs_timer))
-+	if (!mod_timer(&idev->rs_timer, jiffies + when))
- 		in6_dev_hold(idev);
--	mod_timer(&idev->rs_timer, jiffies + when);
- }
+ 	struct nand_device *nand = spinand_to_nand(spinand);
+ 	u8 mbf = 0;
+-	struct spi_mem_op op = SPINAND_GET_FEATURE_OP(0x30, &mbf);
++	struct spi_mem_op op = SPINAND_GET_FEATURE_OP(0x30, spinand->scratchbuf);
  
- static void addrconf_mod_dad_work(struct inet6_ifaddr *ifp,
--- 
-2.39.2
-
+ 	switch (status & STATUS_ECC_MASK) {
+ 	case STATUS_ECC_NO_BITFLIPS:
+@@ -92,7 +92,7 @@ static int tx58cxgxsxraix_ecc_get_status
+ 		if (spi_mem_exec_op(spinand->spimem, &op))
+ 			return nanddev_get_ecc_conf(nand)->strength;
+ 
+-		mbf >>= 4;
++		mbf = *(spinand->scratchbuf) >> 4;
+ 
+ 		if (WARN_ON(mbf > nanddev_get_ecc_conf(nand)->strength || !mbf))
+ 			return nanddev_get_ecc_conf(nand)->strength;
 
 
