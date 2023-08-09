@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8283977599E
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:02:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 297DE775B69
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:17:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232921AbjHILCG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:02:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41314 "EHLO
+        id S232201AbjHILRN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:17:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39040 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232913AbjHILCG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:02:06 -0400
+        with ESMTP id S233018AbjHILRM (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:17:12 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A1EB1ED
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:02:05 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D7671BFE
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:17:12 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 382E66309F
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:02:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47787C433C7;
-        Wed,  9 Aug 2023 11:02:04 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D911B6316B
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:17:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8B6DC433C7;
+        Wed,  9 Aug 2023 11:17:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691578924;
-        bh=aR2qafydWa2RUIZDD16zu3uN114bm7NQb3ViPEPiPNA=;
+        s=korg; t=1691579831;
+        bh=ALxGGsVHo2CqY7t069NLXHwh45AekJpFCcPebmJ3uXY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=bCrwK4vi90NfSOI8yZpHloCL2vMijnYJtMbu33Mwl4LLsv4jAsA0ymR4Z0JHTmPOO
-         3SRsSmxQn9GJSIRdWaAcs5pD5Mu7iG4S0HeDrFIBJJ1cKn+uyssaDiviUbDs0rQ5QD
-         6vGjLRrtUCmxzQ/SN+kT3nZvPuNxpKwGXu9I8FQ4=
+        b=tzObcRm3D6qIgWQAc6zETPMCgeD0z1pp1ErZICc91A9wnMGTNqHSEybpPwoZL3I1d
+         JgrGUc/hL8T3bMPQqCSBziYsc5a4fhqwLj8jut/vG7Q0vmHogqP8dzKEME8EMaRJ9M
+         rBdCZQoiIvIrIDSAgtTxDWaIH4wYY9BvF2vWK4CU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zheng Wang <zyytlz.wz@163.com>,
-        Helge Deller <deller@gmx.de>
-Subject: [PATCH 4.14 004/204] fbdev: imsttfb: Fix use after free bug in imsttfb_probe
+        patches@lists.linux.dev, Chao Yu <chao@kernel.org>,
+        Jaegeuk Kim <jaegeuk@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 104/323] f2fs: fix error path handling in truncate_dnode()
 Date:   Wed,  9 Aug 2023 12:39:02 +0200
-Message-ID: <20230809103642.700560020@linuxfoundation.org>
+Message-ID: <20230809103702.827530689@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103642.552405807@linuxfoundation.org>
-References: <20230809103642.552405807@linuxfoundation.org>
+In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
+References: <20230809103658.104386911@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,85 +55,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Zheng Wang <zyytlz.wz@163.com>
+From: Chao Yu <chao@kernel.org>
 
-commit c75f5a55061091030a13fef71b9995b89bc86213 upstream.
+[ Upstream commit 0135c482fa97e2fd8245cb462784112a00ed1211 ]
 
-A use-after-free bug may occur if init_imstt invokes framebuffer_release
-and free the info ptr. The caller, imsttfb_probe didn't notice that and
-still keep the ptr as private data in pdev.
+If truncate_node() fails in truncate_dnode(), it missed to call
+f2fs_put_page(), fix it.
 
-If we remove the driver which will call imsttfb_remove to make cleanup,
-UAF happens.
-
-Fix it by return error code if bad case happens in init_imstt.
-
-Signed-off-by: Zheng Wang <zyytlz.wz@163.com>
-Signed-off-by: Helge Deller <deller@gmx.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 7735730d39d7 ("f2fs: fix to propagate error from __get_meta_page()")
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/imsttfb.c |   18 ++++++++++--------
- 1 file changed, 10 insertions(+), 8 deletions(-)
+ fs/f2fs/node.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/video/fbdev/imsttfb.c
-+++ b/drivers/video/fbdev/imsttfb.c
-@@ -1348,7 +1348,7 @@ static struct fb_ops imsttfb_ops = {
- 	.fb_ioctl 	= imsttfb_ioctl,
- };
+diff --git a/fs/f2fs/node.c b/fs/f2fs/node.c
+index 2c28f488ac2f0..9911f780e0136 100644
+--- a/fs/f2fs/node.c
++++ b/fs/f2fs/node.c
+@@ -879,8 +879,10 @@ static int truncate_dnode(struct dnode_of_data *dn)
+ 	dn->ofs_in_node = 0;
+ 	f2fs_truncate_data_blocks(dn);
+ 	err = truncate_node(dn);
+-	if (err)
++	if (err) {
++		f2fs_put_page(page, 1);
+ 		return err;
++	}
  
--static void init_imstt(struct fb_info *info)
-+static int init_imstt(struct fb_info *info)
- {
- 	struct imstt_par *par = info->par;
- 	__u32 i, tmp, *ip, *end;
-@@ -1420,7 +1420,7 @@ static void init_imstt(struct fb_info *i
- 	    || !(compute_imstt_regvals(par, info->var.xres, info->var.yres))) {
- 		printk("imsttfb: %ux%ux%u not supported\n", info->var.xres, info->var.yres, info->var.bits_per_pixel);
- 		framebuffer_release(info);
--		return;
-+		return -ENODEV;
- 	}
- 
- 	sprintf(info->fix.id, "IMS TT (%s)", par->ramdac == IBM ? "IBM" : "TVP");
-@@ -1460,12 +1460,13 @@ static void init_imstt(struct fb_info *i
- 	if (register_framebuffer(info) < 0) {
- 		fb_dealloc_cmap(&info->cmap);
- 		framebuffer_release(info);
--		return;
-+		return -ENODEV;
- 	}
- 
- 	tmp = (read_reg_le32(par->dc_regs, SSTATUS) & 0x0f00) >> 8;
- 	fb_info(info, "%s frame buffer; %uMB vram; chip version %u\n",
- 		info->fix.id, info->fix.smem_len >> 20, tmp);
-+	return 0;
+ 	return 1;
  }
- 
- static int imsttfb_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
-@@ -1474,7 +1475,8 @@ static int imsttfb_probe(struct pci_dev
- 	struct imstt_par *par;
- 	struct fb_info *info;
- 	struct device_node *dp;
--	
-+	int ret;
-+
- 	dp = pci_device_to_OF_node(pdev);
- 	if(dp)
- 		printk(KERN_INFO "%s: OF name %s\n",__func__, dp->name);
-@@ -1525,10 +1527,10 @@ static int imsttfb_probe(struct pci_dev
- 	par->cmap_regs_phys = addr + 0x840000;
- 	par->cmap_regs = (__u8 *)ioremap(addr + 0x840000, 0x1000);
- 	info->pseudo_palette = par->palette;
--	init_imstt(info);
--
--	pci_set_drvdata(pdev, info);
--	return 0;
-+	ret = init_imstt(info);
-+	if (!ret)
-+		pci_set_drvdata(pdev, info);
-+	return ret;
- }
- 
- static void imsttfb_remove(struct pci_dev *pdev)
+-- 
+2.39.2
+
 
 
