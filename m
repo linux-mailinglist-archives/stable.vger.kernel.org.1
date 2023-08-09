@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3AB3E775A8D
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:09:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C2F30775C14
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:23:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233200AbjHILJb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:09:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56092 "EHLO
+        id S233639AbjHILXm (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:23:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38496 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233214AbjHILJb (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:09:31 -0400
+        with ESMTP id S233644AbjHILXl (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:23:41 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E132ED
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:09:30 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8132E1FD7
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:23:41 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 02EDA6314B
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:09:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B28FC433C8;
-        Wed,  9 Aug 2023 11:09:28 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 16FC863230
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:23:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1ECB7C433C8;
+        Wed,  9 Aug 2023 11:23:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691579369;
-        bh=BrVKPDOtDd7ao1urvGV/fU0cRvUaqDpCMbtBCabua+E=;
+        s=korg; t=1691580220;
+        bh=Dx+GMRpnrb+FWn6zG/ZfBmQbicBDDcI1nE4EX4LqUOQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=StLLmANGJvabl6QWWknzOPTJcYn7vYhO9puvfl7soCbUVcjB+ejZZzs6czI3fYu9G
-         T6laGLxmB+wZNbN9tI7zRbIlhJEAOY2S9OjDwk9C520eJ/ywXtUCArmtyNrvV5AdcO
-         0L7v5bf+Tz+X3v64skpALl+ti/ffSs/HCCdPl8Gk=
+        b=vNQgf71woJheqqDbU985oDlh7dHBjtCfmt4+gOmmliKUtAyQ1vknibLy1IHgvP4ev
+         SLY1APXR0y+0KHKiKEdD9t7B6ylXvtiJPvGGQzOAcgb2W+eZqHuOEBfbvrbeA8dOCF
+         oJ/qcNOAYp4WDMlpzqQ8ryesaYsBgLCoe0wDEuD0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Tanmay Patil <t-patil@ti.com>,
-        Siddharth Vadapalli <s-vadapalli@ti.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev, Yuanjun Gong <ruc_gongyuanjun@163.com>,
+        Simon Horman <simon.horman@corigine.com>,
+        Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 140/204] net: ethernet: ti: cpsw_ale: Fix cpsw_ale_get_field()/cpsw_ale_set_field()
+Subject: [PATCH 4.19 240/323] ethernet: atheros: fix return value check in atl1e_tso_csum()
 Date:   Wed,  9 Aug 2023 12:41:18 +0200
-Message-ID: <20230809103647.274645366@linuxfoundation.org>
+Message-ID: <20230809103709.061790819@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103642.552405807@linuxfoundation.org>
-References: <20230809103642.552405807@linuxfoundation.org>
+In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
+References: <20230809103658.104386911@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,75 +56,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Tanmay Patil <t-patil@ti.com>
+From: Yuanjun Gong <ruc_gongyuanjun@163.com>
 
-[ Upstream commit b685f1a58956fa36cc01123f253351b25bfacfda ]
+[ Upstream commit 69a184f7a372aac588babfb0bd681aaed9779f5b ]
 
-CPSW ALE has 75 bit ALE entries which are stored within three 32 bit words.
-The cpsw_ale_get_field() and cpsw_ale_set_field() functions assume that the
-field will be strictly contained within one word. However, this is not
-guaranteed to be the case and it is possible for ALE field entries to span
-across up to two words at the most.
+in atl1e_tso_csum, it should check the return value of pskb_trim(),
+and return an error code if an unexpected value is returned
+by pskb_trim().
 
-Fix the methods to handle getting/setting fields spanning up to two words.
-
-Fixes: db82173f23c5 ("netdev: driver: ethernet: add cpsw address lookup engine support")
-Signed-off-by: Tanmay Patil <t-patil@ti.com>
-[s-vadapalli@ti.com: rephrased commit message and added Fixes tag]
-Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: a6a5325239c2 ("atl1e: Atheros L1E Gigabit Ethernet driver")
+Signed-off-by: Yuanjun Gong <ruc_gongyuanjun@163.com>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Link: https://lore.kernel.org/r/20230720144219.39285-1-ruc_gongyuanjun@163.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/ti/cpsw_ale.c | 24 +++++++++++++++++++-----
- 1 file changed, 19 insertions(+), 5 deletions(-)
+ drivers/net/ethernet/atheros/atl1e/atl1e_main.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/ti/cpsw_ale.c b/drivers/net/ethernet/ti/cpsw_ale.c
-index ddd43e09111e2..d9db5c23a9639 100644
---- a/drivers/net/ethernet/ti/cpsw_ale.c
-+++ b/drivers/net/ethernet/ti/cpsw_ale.c
-@@ -67,23 +67,37 @@
+diff --git a/drivers/net/ethernet/atheros/atl1e/atl1e_main.c b/drivers/net/ethernet/atheros/atl1e/atl1e_main.c
+index 3164aad29bcf8..e4d58c7aeaf82 100644
+--- a/drivers/net/ethernet/atheros/atl1e/atl1e_main.c
++++ b/drivers/net/ethernet/atheros/atl1e/atl1e_main.c
+@@ -1651,8 +1651,11 @@ static int atl1e_tso_csum(struct atl1e_adapter *adapter,
+ 			real_len = (((unsigned char *)ip_hdr(skb) - skb->data)
+ 					+ ntohs(ip_hdr(skb)->tot_len));
  
- static inline int cpsw_ale_get_field(u32 *ale_entry, u32 start, u32 bits)
- {
--	int idx;
-+	int idx, idx2;
-+	u32 hi_val = 0;
+-			if (real_len < skb->len)
+-				pskb_trim(skb, real_len);
++			if (real_len < skb->len) {
++				err = pskb_trim(skb, real_len);
++				if (err)
++					return err;
++			}
  
- 	idx    = start / 32;
-+	idx2 = (start + bits - 1) / 32;
-+	/* Check if bits to be fetched exceed a word */
-+	if (idx != idx2) {
-+		idx2 = 2 - idx2; /* flip */
-+		hi_val = ale_entry[idx2] << ((idx2 * 32) - start);
-+	}
- 	start -= idx * 32;
- 	idx    = 2 - idx; /* flip */
--	return (ale_entry[idx] >> start) & BITMASK(bits);
-+	return (hi_val + (ale_entry[idx] >> start)) & BITMASK(bits);
- }
- 
- static inline void cpsw_ale_set_field(u32 *ale_entry, u32 start, u32 bits,
- 				      u32 value)
- {
--	int idx;
-+	int idx, idx2;
- 
- 	value &= BITMASK(bits);
--	idx    = start / 32;
-+	idx = start / 32;
-+	idx2 = (start + bits - 1) / 32;
-+	/* Check if bits to be set exceed a word */
-+	if (idx != idx2) {
-+		idx2 = 2 - idx2; /* flip */
-+		ale_entry[idx2] &= ~(BITMASK(bits + start - (idx2 * 32)));
-+		ale_entry[idx2] |= (value >> ((idx2 * 32) - start));
-+	}
- 	start -= idx * 32;
--	idx    = 2 - idx; /* flip */
-+	idx = 2 - idx; /* flip */
- 	ale_entry[idx] &= ~(BITMASK(bits) << start);
- 	ale_entry[idx] |=  (value << start);
- }
+ 			hdr_len = (skb_transport_offset(skb) + tcp_hdrlen(skb));
+ 			if (unlikely(skb->len == hdr_len)) {
 -- 
 2.39.2
 
