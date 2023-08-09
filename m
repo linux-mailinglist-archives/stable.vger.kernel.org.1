@@ -2,49 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BE22A775DAD
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:40:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5B72D775D02
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:32:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234186AbjHILkJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:40:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35632 "EHLO
+        id S233954AbjHILc4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:32:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52060 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234191AbjHILkI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:40:08 -0400
+        with ESMTP id S233955AbjHILc4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:32:56 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F2121FD7
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:40:08 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 62CE61FDE
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:32:55 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E3DA463624
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:40:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0017AC433C7;
-        Wed,  9 Aug 2023 11:40:06 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0364663420
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:32:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14357C433CA;
+        Wed,  9 Aug 2023 11:32:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691581207;
-        bh=j26lokBMULN6zdeY34JL6al1/0G0LeGP6+IVMDtzzpQ=;
+        s=korg; t=1691580774;
+        bh=h8RWDouXx/uxGIg7JJjGwBYhAXOHdayLZGqwbwc6LZY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=plOodmoZoHTTymOnu40vucJi6OMRA0dC223Cb3lCvx67SJzMaucnuepQoz8GGsSei
-         Gr1fOrHHUMvuI+ztyY6sK9C97MKr1rbbrIXW6s1BlcX6VsKDTydEms0SJAqElldoCq
-         sGlhjKygNq7fSHAwAPGEKgYBcW3upuMTjIgM5lFM=
+        b=ZZmEmrwhRJNKWfvWrdlPBgHYBX6UvJplUBPLKdPeP0ipOLxCwVqnp3Ch0IEPGCm9z
+         n/yEdNdhEAVLLQfKMEQGYgXDPvPVMOvVxUgsUr98azMMBUzeZSQY2BPO12eqDlNkwh
+         15vJmZp0Lf9yLQ6Xd2BUN9bKlmzw1J0Ju1nKZy4I=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, valis <sec@valis.email>,
-        M A Ramdhan <ramdhan@starlabs.sg>,
-        Jamal Hadi Salim <jhs@mojatatu.com>,
-        Victor Nogueira <victor@mojatatu.com>,
-        Pedro Tammela <pctammela@mojatatu.com>,
+        patches@lists.linux.dev, Lin Ma <linma@zju.edu.cn>,
+        Simon Horman <horms@kernel.org>,
         Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 143/201] net/sched: cls_u32: No longer copy tcf_result on update to avoid use-after-free
+Subject: [PATCH 5.4 114/154] net: dcb: choose correct policy to parse DCB_ATTR_BCN
 Date:   Wed,  9 Aug 2023 12:42:25 +0200
-Message-ID: <20230809103648.513119921@linuxfoundation.org>
+Message-ID: <20230809103640.708663755@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103643.799166053@linuxfoundation.org>
-References: <20230809103643.799166053@linuxfoundation.org>
+In-Reply-To: <20230809103636.887175326@linuxfoundation.org>
+References: <20230809103636.887175326@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -59,47 +56,101 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: valis <sec@valis.email>
+From: Lin Ma <linma@zju.edu.cn>
 
-[ Upstream commit 3044b16e7c6fe5d24b1cdbcf1bd0a9d92d1ebd81 ]
+[ Upstream commit 31d49ba033095f6e8158c60f69714a500922e0c3 ]
 
-When u32_change() is called on an existing filter, the whole
-tcf_result struct is always copied into the new instance of the filter.
+The dcbnl_bcn_setcfg uses erroneous policy to parse tb[DCB_ATTR_BCN],
+which is introduced in commit 859ee3c43812 ("DCB: Add support for DCB
+BCN"). Please see the comment in below code
 
-This causes a problem when updating a filter bound to a class,
-as tcf_unbind_filter() is always called on the old instance in the
-success path, decreasing filter_cnt of the still referenced class
-and allowing it to be deleted, leading to a use-after-free.
+static int dcbnl_bcn_setcfg(...)
+{
+  ...
+  ret = nla_parse_nested_deprecated(..., dcbnl_pfc_up_nest, .. )
+  // !!! dcbnl_pfc_up_nest for attributes
+  //  DCB_PFC_UP_ATTR_0 to DCB_PFC_UP_ATTR_ALL in enum dcbnl_pfc_up_attrs
+  ...
+  for (i = DCB_BCN_ATTR_RP_0; i <= DCB_BCN_ATTR_RP_7; i++) {
+  // !!! DCB_BCN_ATTR_RP_0 to DCB_BCN_ATTR_RP_7 in enum dcbnl_bcn_attrs
+    ...
+    value_byte = nla_get_u8(data[i]);
+    ...
+  }
+  ...
+  for (i = DCB_BCN_ATTR_BCNA_0; i <= DCB_BCN_ATTR_RI; i++) {
+  // !!! DCB_BCN_ATTR_BCNA_0 to DCB_BCN_ATTR_RI in enum dcbnl_bcn_attrs
+  ...
+    value_int = nla_get_u32(data[i]);
+  ...
+  }
+  ...
+}
 
-Fix this by no longer copying the tcf_result struct from the old filter.
+That is, the nla_parse_nested_deprecated uses dcbnl_pfc_up_nest
+attributes to parse nlattr defined in dcbnl_pfc_up_attrs. But the
+following access code fetch each nlattr as dcbnl_bcn_attrs attributes.
+By looking up the associated nla_policy for dcbnl_bcn_attrs. We can find
+the beginning part of these two policies are "same".
 
-Fixes: de5df63228fc ("net: sched: cls_u32 changes to knode must appear atomic to readers")
-Reported-by: valis <sec@valis.email>
-Reported-by: M A Ramdhan <ramdhan@starlabs.sg>
-Signed-off-by: valis <sec@valis.email>
-Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Reviewed-by: Victor Nogueira <victor@mojatatu.com>
-Reviewed-by: Pedro Tammela <pctammela@mojatatu.com>
-Reviewed-by: M A Ramdhan <ramdhan@starlabs.sg>
-Link: https://lore.kernel.org/r/20230729123202.72406-2-jhs@mojatatu.com
+static const struct nla_policy dcbnl_pfc_up_nest[...] = {
+        [DCB_PFC_UP_ATTR_0]   = {.type = NLA_U8},
+        [DCB_PFC_UP_ATTR_1]   = {.type = NLA_U8},
+        [DCB_PFC_UP_ATTR_2]   = {.type = NLA_U8},
+        [DCB_PFC_UP_ATTR_3]   = {.type = NLA_U8},
+        [DCB_PFC_UP_ATTR_4]   = {.type = NLA_U8},
+        [DCB_PFC_UP_ATTR_5]   = {.type = NLA_U8},
+        [DCB_PFC_UP_ATTR_6]   = {.type = NLA_U8},
+        [DCB_PFC_UP_ATTR_7]   = {.type = NLA_U8},
+        [DCB_PFC_UP_ATTR_ALL] = {.type = NLA_FLAG},
+};
+
+static const struct nla_policy dcbnl_bcn_nest[...] = {
+        [DCB_BCN_ATTR_RP_0]         = {.type = NLA_U8},
+        [DCB_BCN_ATTR_RP_1]         = {.type = NLA_U8},
+        [DCB_BCN_ATTR_RP_2]         = {.type = NLA_U8},
+        [DCB_BCN_ATTR_RP_3]         = {.type = NLA_U8},
+        [DCB_BCN_ATTR_RP_4]         = {.type = NLA_U8},
+        [DCB_BCN_ATTR_RP_5]         = {.type = NLA_U8},
+        [DCB_BCN_ATTR_RP_6]         = {.type = NLA_U8},
+        [DCB_BCN_ATTR_RP_7]         = {.type = NLA_U8},
+        [DCB_BCN_ATTR_RP_ALL]       = {.type = NLA_FLAG},
+        // from here is somewhat different
+        [DCB_BCN_ATTR_BCNA_0]       = {.type = NLA_U32},
+        ...
+        [DCB_BCN_ATTR_ALL]          = {.type = NLA_FLAG},
+};
+
+Therefore, the current code is buggy and this
+nla_parse_nested_deprecated could overflow the dcbnl_pfc_up_nest and use
+the adjacent nla_policy to parse attributes from DCB_BCN_ATTR_BCNA_0.
+
+Hence use the correct policy dcbnl_bcn_nest to parse the nested
+tb[DCB_ATTR_BCN] TLV.
+
+Fixes: 859ee3c43812 ("DCB: Add support for DCB BCN")
+Signed-off-by: Lin Ma <linma@zju.edu.cn>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/20230801013248.87240-1-linma@zju.edu.cn
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/cls_u32.c | 1 -
- 1 file changed, 1 deletion(-)
+ net/dcb/dcbnl.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/sched/cls_u32.c b/net/sched/cls_u32.c
-index 04e933530cade..b2d2ba561eba1 100644
---- a/net/sched/cls_u32.c
-+++ b/net/sched/cls_u32.c
-@@ -812,7 +812,6 @@ static struct tc_u_knode *u32_init_knode(struct net *net, struct tcf_proto *tp,
+diff --git a/net/dcb/dcbnl.c b/net/dcb/dcbnl.c
+index b53d5e1d026fe..71e97e2a36845 100644
+--- a/net/dcb/dcbnl.c
++++ b/net/dcb/dcbnl.c
+@@ -946,7 +946,7 @@ static int dcbnl_bcn_setcfg(struct net_device *netdev, struct nlmsghdr *nlh,
+ 		return -EOPNOTSUPP;
  
- 	new->ifindex = n->ifindex;
- 	new->fshift = n->fshift;
--	new->res = n->res;
- 	new->flags = n->flags;
- 	RCU_INIT_POINTER(new->ht_down, ht);
- 
+ 	ret = nla_parse_nested_deprecated(data, DCB_BCN_ATTR_MAX,
+-					  tb[DCB_ATTR_BCN], dcbnl_pfc_up_nest,
++					  tb[DCB_ATTR_BCN], dcbnl_bcn_nest,
+ 					  NULL);
+ 	if (ret)
+ 		return ret;
 -- 
 2.40.1
 
