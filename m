@@ -2,130 +2,123 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 338C4775D99
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:39:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1E4C7775CC4
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:30:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234156AbjHILjV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:39:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52774 "EHLO
+        id S233864AbjHILaq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:30:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38026 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234157AbjHILjV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:39:21 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A15D4173A
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:39:20 -0700 (PDT)
+        with ESMTP id S233862AbjHILaq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:30:46 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B8235172A
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:30:45 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 36FCC635DA
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:39:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43331C433C7;
-        Wed,  9 Aug 2023 11:39:19 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 57E976337D
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:30:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AABFC433C8;
+        Wed,  9 Aug 2023 11:30:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691581159;
-        bh=MwF6NOtXlug4SdrmuY24jadCyzDDgfCNLiXYUzzUUXU=;
+        s=korg; t=1691580644;
+        bh=31HqNmphNVvCIARF6+f3rsUCFR54BlZLVf+HFB64Jbg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=NCKlJmOcLx8wpojmEIDqf7Ni8aamzyVhTQ6IYR5cTC1hJN4W/PPMLRdzbWyCOcabw
-         0R7WF8SwursfDKnBGKNPQ41KPqx06EJmDI8CCK+u5xr/KI1GM4rgMU9Iyhc/JRgMrq
-         1E5/icC7K5QQX+e1P3MldvdTK+LlFO1rUcaCAeog=
+        b=IGkhn5thvWl262tUSRoXzjszqDXGFePEbnqi2CYa87UvWvCkp9sAdlznSqeeKwVWj
+         7AeMyozSgF1Alm+GFPJaJEk8b6DSGk724I+anegk3L18G54TG8sXS6VWolQYKyxjIv
+         VYZF5vJ52zyJeFquT9acV+G3X0gtyQBOD/vHwNm0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Heiko Carstens <hca@linux.ibm.com>,
+        =?UTF-8?q?Georg=20M=C3=BCller?= <georgmueller@gmx.net>,
+        Ian Rogers <irogers@google.com>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Ingo Molnar <mingo@redhat.com>, Jiri Olsa <jolsa@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Masami Hiramatsu <mhiramat@kernel.org>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 127/201] KVM: s390: fix sthyi error handling
+Subject: [PATCH 5.4 098/154] perf test uprobe_from_different_cu: Skip if there is no gcc
 Date:   Wed,  9 Aug 2023 12:42:09 +0200
-Message-ID: <20230809103647.988126949@linuxfoundation.org>
+Message-ID: <20230809103640.223235763@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103643.799166053@linuxfoundation.org>
-References: <20230809103643.799166053@linuxfoundation.org>
+In-Reply-To: <20230809103636.887175326@linuxfoundation.org>
+References: <20230809103636.887175326@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Heiko Carstens <hca@linux.ibm.com>
+From: Georg Müller <georgmueller@gmx.net>
 
-[ Upstream commit 0c02cc576eac161601927b41634f80bfd55bfa9e ]
+[ Upstream commit 98ce8e4a9dcfb448b30a2d7a16190f4a00382377 ]
 
-Commit 9fb6c9b3fea1 ("s390/sthyi: add cache to store hypervisor info")
-added cache handling for store hypervisor info. This also changed the
-possible return code for sthyi_fill().
+Without gcc, the test will fail.
 
-Instead of only returning a condition code like the sthyi instruction would
-do, it can now also return a negative error value (-ENOMEM). handle_styhi()
-was not changed accordingly. In case of an error, the negative error value
-would incorrectly injected into the guest PSW.
+On cleanup, ignore probe removal errors. Otherwise, in case of an error
+adding the probe, the temporary directory is not removed.
 
-Add proper error handling to prevent this, and update the comment which
-describes the possible return values of sthyi_fill().
-
-Fixes: 9fb6c9b3fea1 ("s390/sthyi: add cache to store hypervisor info")
-Reviewed-by: Christian Borntraeger <borntraeger@linux.ibm.com>
-Link: https://lore.kernel.org/r/20230727182939.2050744-1-hca@linux.ibm.com
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Fixes: 56cbeacf14353057 ("perf probe: Add test for regression introduced by switch to die_get_decl_file()")
+Signed-off-by: Georg Müller <georgmueller@gmx.net>
+Acked-by: Ian Rogers <irogers@google.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Georg Müller <georgmueller@gmx.net>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20230728151812.454806-2-georgmueller@gmx.net
+Link: https://lore.kernel.org/r/CAP-5=fUP6UuLgRty3t2=fQsQi3k4hDMz415vWdp1x88QMvZ8ug@mail.gmail.com/
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/kernel/sthyi.c  | 6 +++---
- arch/s390/kvm/intercept.c | 9 ++++++---
- 2 files changed, 9 insertions(+), 6 deletions(-)
+ tools/perf/tests/shell/test_uprobe_from_different_cu.sh | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/arch/s390/kernel/sthyi.c b/arch/s390/kernel/sthyi.c
-index 888cc2f166db7..ce6084e28d904 100644
---- a/arch/s390/kernel/sthyi.c
-+++ b/arch/s390/kernel/sthyi.c
-@@ -460,9 +460,9 @@ static int sthyi_update_cache(u64 *rc)
-  *
-  * Fills the destination with system information returned by the STHYI
-  * instruction. The data is generated by emulation or execution of STHYI,
-- * if available. The return value is the condition code that would be
-- * returned, the rc parameter is the return code which is passed in
-- * register R2 + 1.
-+ * if available. The return value is either a negative error value or
-+ * the condition code that would be returned, the rc parameter is the
-+ * return code which is passed in register R2 + 1.
-  */
- int sthyi_fill(void *dst, u64 *rc)
- {
-diff --git a/arch/s390/kvm/intercept.c b/arch/s390/kvm/intercept.c
-index 5be68190901f9..8bf72a323e4fa 100644
---- a/arch/s390/kvm/intercept.c
-+++ b/arch/s390/kvm/intercept.c
-@@ -387,8 +387,8 @@ static int handle_partial_execution(struct kvm_vcpu *vcpu)
-  */
- int handle_sthyi(struct kvm_vcpu *vcpu)
- {
--	int reg1, reg2, r = 0;
--	u64 code, addr, cc = 0, rc = 0;
-+	int reg1, reg2, cc = 0, r = 0;
-+	u64 code, addr, rc = 0;
- 	struct sthyi_sctns *sctns = NULL;
+diff --git a/tools/perf/tests/shell/test_uprobe_from_different_cu.sh b/tools/perf/tests/shell/test_uprobe_from_different_cu.sh
+index 00d2e0e2e0c28..319f36ebb9a40 100644
+--- a/tools/perf/tests/shell/test_uprobe_from_different_cu.sh
++++ b/tools/perf/tests/shell/test_uprobe_from_different_cu.sh
+@@ -4,6 +4,12 @@
  
- 	if (!test_kvm_facility(vcpu->kvm, 74))
-@@ -419,7 +419,10 @@ int handle_sthyi(struct kvm_vcpu *vcpu)
- 		return -ENOMEM;
+ set -e
  
- 	cc = sthyi_fill(sctns, &rc);
--
-+	if (cc < 0) {
-+		free_page((unsigned long)sctns);
-+		return cc;
-+	}
- out:
- 	if (!cc) {
- 		if (kvm_s390_pv_cpu_is_protected(vcpu)) {
++# skip if there's no gcc
++if ! [ -x "$(command -v gcc)" ]; then
++        echo "failed: no gcc compiler"
++        exit 2
++fi
++
+ temp_dir=$(mktemp -d /tmp/perf-uprobe-different-cu-sh.XXXXXXXXXX)
+ 
+ cleanup()
+@@ -11,7 +17,7 @@ cleanup()
+ 	trap - EXIT TERM INT
+ 	if [[ "${temp_dir}" =~ ^/tmp/perf-uprobe-different-cu-sh.*$ ]]; then
+ 		echo "--- Cleaning up ---"
+-		perf probe -x ${temp_dir}/testfile -d foo
++		perf probe -x ${temp_dir}/testfile -d foo || true
+ 		rm -f "${temp_dir}/"*
+ 		rmdir "${temp_dir}"
+ 	fi
 -- 
 2.40.1
 
