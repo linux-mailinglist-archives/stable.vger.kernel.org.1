@@ -2,46 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8928C775975
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:00:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BA2DE775C3A
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:25:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232875AbjHILAj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:00:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52446 "EHLO
+        id S233683AbjHILZL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:25:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45038 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232862AbjHILAi (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:00:38 -0400
+        with ESMTP id S233681AbjHILZK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:25:10 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0AB522103
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:00:38 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89CF519A1
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:25:10 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9F255619FA
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:00:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3A25C433C8;
-        Wed,  9 Aug 2023 11:00:36 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 27D7A6325D
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:25:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A0E4C433C7;
+        Wed,  9 Aug 2023 11:25:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691578837;
-        bh=ldIHsHWBIL20Eu1g1t8jASQBmtybSnCfPApNXoURqq0=;
+        s=korg; t=1691580309;
+        bh=jk1aOO4apUpapoCvjzFcjvQGW6LWJoD4C975uIVuVNg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=UFcAMlcez6MRy8H4zzoxXJLoSjyg+2rp1E7sz0JkrKNsULSo74XNg3BHoNUyAMx8z
-         j6GrU+jSC+29USeh6IYitiRLZxDma+1QZznhI802iChFSS1JR5txlUsiEZehzrIaDt
-         dIrZIry/NMX//5zWj1McKJN+jBVqaSZYpgz3dc6c=
+        b=cD8cF7lcXsNRxHsatOxBFIoly3kdmu5jQGN5sUTSwn0ItkobW6ZSUdCE/Zm/AGGPa
+         hKskkZkpWX+1KyGj+o3tNcPuP99SWZyHfFRBz46TXljsqMkSkB1G9/aYme1WggdQ07
+         cQPJm5V39lAWI6eCjNkhldQrM/yMWITcyp2/5eGE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        syzbot <syzbot+89dbb3a789a5b9711793@syzkaller.appspotmail.com>,
-        Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
-        Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
-Subject: [PATCH 5.15 74/92] fs/ntfs3: Use __GFP_NOWARN allocation at ntfs_load_attr_list()
+        patches@lists.linux.dev, Gilles Buloz <gilles.buloz@kontron.com>,
+        Guenter Roeck <linux@roeck-us.net>
+Subject: [PATCH 4.19 272/323] hwmon: (nct7802) Fix for temp6 (PECI1) processed even if PECI1 disabled
 Date:   Wed,  9 Aug 2023 12:41:50 +0200
-Message-ID: <20230809103636.118091827@linuxfoundation.org>
+Message-ID: <20230809103710.504890128@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103633.485906560@linuxfoundation.org>
-References: <20230809103633.485906560@linuxfoundation.org>
+In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
+References: <20230809103658.104386911@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,41 +54,34 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+From: Gilles Buloz <Gilles.Buloz@kontron.com>
 
-commit ea303f72d70ce2f0b0aa94ab127085289768c5a6 upstream.
+commit 54685abe660a59402344d5045ce08c43c6a5ac42 upstream.
 
-syzbot is reporting too large allocation at ntfs_load_attr_list(), for
-a crafted filesystem can have huge data_size.
+Because of hex value 0x46 used instead of decimal 46, the temp6
+(PECI1) temperature is always declared visible and then displayed
+even if disabled in the chip
 
-Reported-by: syzbot <syzbot+89dbb3a789a5b9711793@syzkaller.appspotmail.com>
-Link: https://syzkaller.appspot.com/bug?extid=89dbb3a789a5b9711793
-Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Signed-off-by: Gilles Buloz <gilles.buloz@kontron.com>
+Link: https://lore.kernel.org/r/DU0PR10MB62526435ADBC6A85243B90E08002A@DU0PR10MB6252.EURPRD10.PROD.OUTLOOK.COM
+Fixes: fcdc5739dce03 ("hwmon: (nct7802) add temperature sensor type attribute")
+Cc: stable@vger.kernel.org
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ntfs3/attrlist.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/hwmon/nct7802.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/ntfs3/attrlist.c
-+++ b/fs/ntfs3/attrlist.c
-@@ -52,7 +52,7 @@ int ntfs_load_attr_list(struct ntfs_inod
+--- a/drivers/hwmon/nct7802.c
++++ b/drivers/hwmon/nct7802.c
+@@ -698,7 +698,7 @@ static umode_t nct7802_temp_is_visible(s
+ 	if (index >= 38 && index < 46 && !(reg & 0x01))		/* PECI 0 */
+ 		return 0;
  
- 	if (!attr->non_res) {
- 		lsize = le32_to_cpu(attr->res.data_size);
--		le = kmalloc(al_aligned(lsize), GFP_NOFS);
-+		le = kmalloc(al_aligned(lsize), GFP_NOFS | __GFP_NOWARN);
- 		if (!le) {
- 			err = -ENOMEM;
- 			goto out;
-@@ -80,7 +80,7 @@ int ntfs_load_attr_list(struct ntfs_inod
- 		if (err < 0)
- 			goto out;
+-	if (index >= 0x46 && (!(reg & 0x02)))			/* PECI 1 */
++	if (index >= 46 && !(reg & 0x02))			/* PECI 1 */
+ 		return 0;
  
--		le = kmalloc(al_aligned(lsize), GFP_NOFS);
-+		le = kmalloc(al_aligned(lsize), GFP_NOFS | __GFP_NOWARN);
- 		if (!le) {
- 			err = -ENOMEM;
- 			goto out;
+ 	return attr->mode;
 
 
