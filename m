@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CA5F6775B9E
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:19:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 847217758BC
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:55:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233492AbjHILTQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:19:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36102 "EHLO
+        id S232665AbjHIKzN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 06:55:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39614 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233489AbjHILTQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:19:16 -0400
+        with ESMTP id S232716AbjHIKzB (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:55:01 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E30DFA
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:19:15 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4062D30C3
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:53:30 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E764B6319E
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:19:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03ABFC433C8;
-        Wed,  9 Aug 2023 11:19:13 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7F59F63129
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:52:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8ED4CC433C7;
+        Wed,  9 Aug 2023 10:52:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691579954;
-        bh=uVIqulHaXwRlpcsoExfLzlxMcNY9Td9mspEb4T8qVhg=;
+        s=korg; t=1691578348;
+        bh=H2k+uEjtcO+lDiNydGsbUfreNbo70L+yBdfG2oK7PZ4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=l6UwPydsgpIhChyUM6EGHmU2kB0oNxB5qSloBeRjYfJirMxtY7F6moFgPXCd/WoP/
-         WeuUwqlR6yDWfpnx/IRqphUD+DiyrzA9AWvMHSulXyfYetm7mID2avaqHcVqKKAoDh
-         bY+UGqPF1Dgrw5fj56vYjUHeECEdpyqZItsy7bk4=
+        b=vpuIy9heqh6Zafkua/gRMYemMisbnnS9ExVTkTAE4YgKtZX0kdfa1gSZfa5Qnolxo
+         numNOxklnolH0PVA3xFNnLQUCg532qRCaTXoqet0aTqaab36i4k32at4Ae+V8RWfMV
+         eLNcYuB9NdLIXD2ZS/RMw1pLSHG2e0dwDzTcjNX0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, stable <stable@kernel.org>,
-        Jiaqing Zhao <jiaqing.zhao@linux.intel.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: [PATCH 4.19 176/323] Revert "8250: add support for ASIX devices with a FIFO bug"
+        patches@lists.linux.dev, Jianbo Liu <jianbol@nvidia.com>,
+        Vlad Buslov <vladbu@nvidia.com>,
+        Saeed Mahameed <saeedm@nvidia.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 027/127] net/mlx5e: Move representor neigh cleanup to profile cleanup_tx
 Date:   Wed,  9 Aug 2023 12:40:14 +0200
-Message-ID: <20230809103706.193306207@linuxfoundation.org>
+Message-ID: <20230809103637.548532758@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
-References: <20230809103658.104386911@linuxfoundation.org>
+In-Reply-To: <20230809103636.615294317@linuxfoundation.org>
+References: <20230809103636.615294317@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,139 +56,176 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jiaqing Zhao <jiaqing.zhao@linux.intel.com>
+From: Jianbo Liu <jianbol@nvidia.com>
 
-commit a82d62f708545d22859584e0e0620da8e3759bbc upstream.
+[ Upstream commit d03b6e6f31820b84f7449cca022047f36c42bc3f ]
 
-This reverts commit eb26dfe8aa7eeb5a5aa0b7574550125f8aa4c3b3.
+For IP tunnel encapsulation in ECMP (Equal-Cost Multipath) mode, as
+the flow is duplicated to the peer eswitch, the related neighbour
+information on the peer uplink representor is created as well.
 
-Commit eb26dfe8aa7e ("8250: add support for ASIX devices with a FIFO
-bug") merged on Jul 13, 2012 adds a quirk for PCI_VENDOR_ID_ASIX
-(0x9710). But that ID is the same as PCI_VENDOR_ID_NETMOS defined in
-1f8b061050c7 ("[PATCH] Netmos parallel/serial/combo support") merged
-on Mar 28, 2005. In pci_serial_quirks array, the NetMos entry always
-takes precedence over the ASIX entry even since it was initially
-merged, code in that commit is always unreachable.
+In the cited commit, eswitch devcom unpair is moved to uplink unload
+API, specifically the profile->cleanup_tx. If there is a encap rule
+offloaded in ECMP mode, when one eswitch does unpair (because of
+unloading the driver, for instance), and the peer rule from the peer
+eswitch is going to be deleted, the use-after-free error is triggered
+while accessing neigh info, as it is already cleaned up in uplink's
+profile->disable, which is before its profile->cleanup_tx.
 
-In my tests, adding the FIFO workaround to pci_netmos_init() makes no
-difference, and the vendor driver also does not have such workaround.
-Given that the code was never used for over a decade, it's safe to
-revert it.
+To fix this issue, move the neigh cleanup to profile's cleanup_tx
+callback, and after mlx5e_cleanup_uplink_rep_tx is called. The neigh
+init is moved to init_tx for symmeter.
 
-Also, the real PCI_VENDOR_ID_ASIX should be 0x125b, which is used on
-their newer AX99100 PCIe serial controllers released on 2016. The FIFO
-workaround should not be intended for these newer controllers, and it
-was never implemented in vendor driver.
+[ 2453.376299] BUG: KASAN: slab-use-after-free in mlx5e_rep_neigh_entry_release+0x109/0x3a0 [mlx5_core]
+[ 2453.379125] Read of size 4 at addr ffff888127af9008 by task modprobe/2496
 
-Fixes: eb26dfe8aa7e ("8250: add support for ASIX devices with a FIFO bug")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Jiaqing Zhao <jiaqing.zhao@linux.intel.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/r/20230619155743.827859-1-jiaqing.zhao@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[ 2453.381542] CPU: 7 PID: 2496 Comm: modprobe Tainted: G    B              6.4.0-rc7+ #15
+[ 2453.383386] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.13.0-0-gf21b5a4aeb02-prebuilt.qemu.org 04/01/2014
+[ 2453.384335] Call Trace:
+[ 2453.384625]  <TASK>
+[ 2453.384891]  dump_stack_lvl+0x33/0x50
+[ 2453.385285]  print_report+0xc2/0x610
+[ 2453.385667]  ? __virt_addr_valid+0xb1/0x130
+[ 2453.386091]  ? mlx5e_rep_neigh_entry_release+0x109/0x3a0 [mlx5_core]
+[ 2453.386757]  kasan_report+0xae/0xe0
+[ 2453.387123]  ? mlx5e_rep_neigh_entry_release+0x109/0x3a0 [mlx5_core]
+[ 2453.387798]  mlx5e_rep_neigh_entry_release+0x109/0x3a0 [mlx5_core]
+[ 2453.388465]  mlx5e_rep_encap_entry_detach+0xa6/0xe0 [mlx5_core]
+[ 2453.389111]  mlx5e_encap_dealloc+0xa7/0x100 [mlx5_core]
+[ 2453.389706]  mlx5e_tc_tun_encap_dests_unset+0x61/0xb0 [mlx5_core]
+[ 2453.390361]  mlx5_free_flow_attr_actions+0x11e/0x340 [mlx5_core]
+[ 2453.391015]  ? complete_all+0x43/0xd0
+[ 2453.391398]  ? free_flow_post_acts+0x38/0x120 [mlx5_core]
+[ 2453.392004]  mlx5e_tc_del_fdb_flow+0x4ae/0x690 [mlx5_core]
+[ 2453.392618]  mlx5e_tc_del_fdb_peers_flow+0x308/0x370 [mlx5_core]
+[ 2453.393276]  mlx5e_tc_clean_fdb_peer_flows+0xf5/0x140 [mlx5_core]
+[ 2453.393925]  mlx5_esw_offloads_unpair+0x86/0x540 [mlx5_core]
+[ 2453.394546]  ? mlx5_esw_offloads_set_ns_peer.isra.0+0x180/0x180 [mlx5_core]
+[ 2453.395268]  ? down_write+0xaa/0x100
+[ 2453.395652]  mlx5_esw_offloads_devcom_event+0x203/0x530 [mlx5_core]
+[ 2453.396317]  mlx5_devcom_send_event+0xbb/0x190 [mlx5_core]
+[ 2453.396917]  mlx5_esw_offloads_devcom_cleanup+0xb0/0xd0 [mlx5_core]
+[ 2453.397582]  mlx5e_tc_esw_cleanup+0x42/0x120 [mlx5_core]
+[ 2453.398182]  mlx5e_rep_tc_cleanup+0x15/0x30 [mlx5_core]
+[ 2453.398768]  mlx5e_cleanup_rep_tx+0x6c/0x80 [mlx5_core]
+[ 2453.399367]  mlx5e_detach_netdev+0xee/0x120 [mlx5_core]
+[ 2453.399957]  mlx5e_netdev_change_profile+0x84/0x170 [mlx5_core]
+[ 2453.400598]  mlx5e_vport_rep_unload+0xe0/0xf0 [mlx5_core]
+[ 2453.403781]  mlx5_eswitch_unregister_vport_reps+0x15e/0x190 [mlx5_core]
+[ 2453.404479]  ? mlx5_eswitch_register_vport_reps+0x200/0x200 [mlx5_core]
+[ 2453.405170]  ? up_write+0x39/0x60
+[ 2453.405529]  ? kernfs_remove_by_name_ns+0xb7/0xe0
+[ 2453.405985]  auxiliary_bus_remove+0x2e/0x40
+[ 2453.406405]  device_release_driver_internal+0x243/0x2d0
+[ 2453.406900]  ? kobject_put+0x42/0x2d0
+[ 2453.407284]  bus_remove_device+0x128/0x1d0
+[ 2453.407687]  device_del+0x240/0x550
+[ 2453.408053]  ? waiting_for_supplier_show+0xe0/0xe0
+[ 2453.408511]  ? kobject_put+0xfa/0x2d0
+[ 2453.408889]  ? __kmem_cache_free+0x14d/0x280
+[ 2453.409310]  mlx5_rescan_drivers_locked.part.0+0xcd/0x2b0 [mlx5_core]
+[ 2453.409973]  mlx5_unregister_device+0x40/0x50 [mlx5_core]
+[ 2453.410561]  mlx5_uninit_one+0x3d/0x110 [mlx5_core]
+[ 2453.411111]  remove_one+0x89/0x130 [mlx5_core]
+[ 2453.411628]  pci_device_remove+0x59/0xf0
+[ 2453.412026]  device_release_driver_internal+0x243/0x2d0
+[ 2453.412511]  ? parse_option_str+0x14/0x90
+[ 2453.412915]  driver_detach+0x7b/0xf0
+[ 2453.413289]  bus_remove_driver+0xb5/0x160
+[ 2453.413685]  pci_unregister_driver+0x3f/0xf0
+[ 2453.414104]  mlx5_cleanup+0xc/0x20 [mlx5_core]
+
+Fixes: 2be5bd42a5bb ("net/mlx5: Handle pairing of E-switch via uplink un/load APIs")
+Signed-off-by: Jianbo Liu <jianbol@nvidia.com>
+Reviewed-by: Vlad Buslov <vladbu@nvidia.com>
+Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/8250/8250.h      |    1 -
- drivers/tty/serial/8250/8250_pci.c  |   19 -------------------
- drivers/tty/serial/8250/8250_port.c |   11 +++--------
- include/linux/serial_8250.h         |    1 -
- 4 files changed, 3 insertions(+), 29 deletions(-)
+ .../net/ethernet/mellanox/mlx5/core/en_rep.c    | 17 +++++++----------
+ 1 file changed, 7 insertions(+), 10 deletions(-)
 
---- a/drivers/tty/serial/8250/8250.h
-+++ b/drivers/tty/serial/8250/8250.h
-@@ -85,7 +85,6 @@ struct serial8250_config {
- #define UART_BUG_TXEN	(1 << 1)	/* UART has buggy TX IIR status */
- #define UART_BUG_NOMSR	(1 << 2)	/* UART has buggy MSR status bits (Au1x00) */
- #define UART_BUG_THRE	(1 << 3)	/* UART has buggy THRE reassertion */
--#define UART_BUG_PARITY	(1 << 4)	/* UART mishandles parity if FIFO enabled */
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_rep.c b/drivers/net/ethernet/mellanox/mlx5/core/en_rep.c
+index ff0c025db1402..bd895ef341a0b 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_rep.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_rep.c
+@@ -1040,6 +1040,10 @@ static int mlx5e_init_rep_tx(struct mlx5e_priv *priv)
+ 		return err;
+ 	}
  
++	err = mlx5e_rep_neigh_init(rpriv);
++	if (err)
++		goto err_neigh_init;
++
+ 	if (rpriv->rep->vport == MLX5_VPORT_UPLINK) {
+ 		err = mlx5e_init_uplink_rep_tx(rpriv);
+ 		if (err)
+@@ -1056,6 +1060,8 @@ static int mlx5e_init_rep_tx(struct mlx5e_priv *priv)
+ 	if (rpriv->rep->vport == MLX5_VPORT_UPLINK)
+ 		mlx5e_cleanup_uplink_rep_tx(rpriv);
+ err_init_tx:
++	mlx5e_rep_neigh_cleanup(rpriv);
++err_neigh_init:
+ 	mlx5e_destroy_tises(priv);
+ 	return err;
+ }
+@@ -1069,22 +1075,17 @@ static void mlx5e_cleanup_rep_tx(struct mlx5e_priv *priv)
+ 	if (rpriv->rep->vport == MLX5_VPORT_UPLINK)
+ 		mlx5e_cleanup_uplink_rep_tx(rpriv);
  
- #ifdef CONFIG_SERIAL_8250_SHARE_IRQ
---- a/drivers/tty/serial/8250/8250_pci.c
-+++ b/drivers/tty/serial/8250/8250_pci.c
-@@ -1049,14 +1049,6 @@ static int pci_oxsemi_tornado_init(struc
- 	return number_uarts;
++	mlx5e_rep_neigh_cleanup(rpriv);
+ 	mlx5e_destroy_tises(priv);
  }
  
--static int pci_asix_setup(struct serial_private *priv,
--		  const struct pciserial_board *board,
--		  struct uart_8250_port *port, int idx)
--{
--	port->bugs |= UART_BUG_PARITY;
--	return pci_default_setup(priv, board, port, idx);
--}
+ static void mlx5e_rep_enable(struct mlx5e_priv *priv)
+ {
+-	struct mlx5e_rep_priv *rpriv = priv->ppriv;
 -
- /* Quatech devices have their own extra interface features */
+ 	mlx5e_set_netdev_mtu_boundaries(priv);
+-	mlx5e_rep_neigh_init(rpriv);
+ }
  
- struct quatech_feature {
-@@ -1683,7 +1675,6 @@ pci_wch_ch38x_setup(struct serial_privat
- #define PCI_DEVICE_ID_WCH_CH355_4S	0x7173
- #define PCI_VENDOR_ID_AGESTAR		0x5372
- #define PCI_DEVICE_ID_AGESTAR_9375	0x6872
--#define PCI_VENDOR_ID_ASIX		0x9710
- #define PCI_DEVICE_ID_BROADCOM_TRUMANAGE 0x160a
- #define PCI_DEVICE_ID_AMCC_ADDIDATA_APCI7800 0x818e
+ static void mlx5e_rep_disable(struct mlx5e_priv *priv)
+ {
+-	struct mlx5e_rep_priv *rpriv = priv->ppriv;
+-
+-	mlx5e_rep_neigh_cleanup(rpriv);
+ }
  
-@@ -2455,16 +2446,6 @@ static struct pci_serial_quirk pci_seria
- 		.setup          = pci_wch_ch38x_setup,
- 	},
- 	/*
--	 * ASIX devices with FIFO bug
--	 */
--	{
--		.vendor		= PCI_VENDOR_ID_ASIX,
--		.device		= PCI_ANY_ID,
--		.subvendor	= PCI_ANY_ID,
--		.subdevice	= PCI_ANY_ID,
--		.setup		= pci_asix_setup,
--	},
--	/*
- 	 * Broadcom TruManage (NetXtreme)
- 	 */
- 	{
---- a/drivers/tty/serial/8250/8250_port.c
-+++ b/drivers/tty/serial/8250/8250_port.c
-@@ -2617,11 +2617,8 @@ static unsigned char serial8250_compute_
+ static int mlx5e_update_rep_rx(struct mlx5e_priv *priv)
+@@ -1119,7 +1120,6 @@ static int uplink_rep_async_event(struct notifier_block *nb, unsigned long event
  
- 	if (c_cflag & CSTOPB)
- 		cval |= UART_LCR_STOP;
--	if (c_cflag & PARENB) {
-+	if (c_cflag & PARENB)
- 		cval |= UART_LCR_PARITY;
--		if (up->bugs & UART_BUG_PARITY)
--			up->fifo_bug = true;
--	}
- 	if (!(c_cflag & PARODD))
- 		cval |= UART_LCR_EPAR;
- #ifdef CMSPAR
-@@ -2735,8 +2732,7 @@ serial8250_do_set_termios(struct uart_po
- 	up->lcr = cval;					/* Save computed LCR */
+ static void mlx5e_uplink_rep_enable(struct mlx5e_priv *priv)
+ {
+-	struct mlx5e_rep_priv *rpriv = priv->ppriv;
+ 	struct net_device *netdev = priv->netdev;
+ 	struct mlx5_core_dev *mdev = priv->mdev;
+ 	u16 max_mtu;
+@@ -1139,7 +1139,6 @@ static void mlx5e_uplink_rep_enable(struct mlx5e_priv *priv)
+ 	mlx5_notifier_register(mdev, &priv->events_nb);
+ 	mlx5e_dcbnl_initialize(priv);
+ 	mlx5e_dcbnl_init_app(priv);
+-	mlx5e_rep_neigh_init(rpriv);
+ 	mlx5e_rep_bridge_init(priv);
  
- 	if (up->capabilities & UART_CAP_FIFO && port->fifosize > 1) {
--		/* NOTE: If fifo_bug is not set, a user can set RX_trigger. */
--		if ((baud < 2400 && !up->dma) || up->fifo_bug) {
-+		if (baud < 2400 && !up->dma) {
- 			up->fcr &= ~UART_FCR_TRIGGER_MASK;
- 			up->fcr |= UART_FCR_TRIGGER_1;
- 		}
-@@ -3072,8 +3068,7 @@ static int do_set_rxtrig(struct tty_port
- 	struct uart_8250_port *up = up_to_u8250p(uport);
- 	int rxtrig;
+ 	netdev->wanted_features |= NETIF_F_HW_TC;
+@@ -1154,7 +1153,6 @@ static void mlx5e_uplink_rep_enable(struct mlx5e_priv *priv)
  
--	if (!(up->capabilities & UART_CAP_FIFO) || uport->fifosize <= 1 ||
--	    up->fifo_bug)
-+	if (!(up->capabilities & UART_CAP_FIFO) || uport->fifosize <= 1)
- 		return -EINVAL;
+ static void mlx5e_uplink_rep_disable(struct mlx5e_priv *priv)
+ {
+-	struct mlx5e_rep_priv *rpriv = priv->ppriv;
+ 	struct mlx5_core_dev *mdev = priv->mdev;
  
- 	rxtrig = bytes_to_fcr_rxtrig(up, bytes);
---- a/include/linux/serial_8250.h
-+++ b/include/linux/serial_8250.h
-@@ -99,7 +99,6 @@ struct uart_8250_port {
- 	struct list_head	list;		/* ports on this IRQ */
- 	u32			capabilities;	/* port capabilities */
- 	unsigned short		bugs;		/* port bugs */
--	bool			fifo_bug;	/* min RX trigger if enabled */
- 	unsigned int		tx_loadsz;	/* transmit fifo load size */
- 	unsigned char		acr;
- 	unsigned char		fcr;
+ 	rtnl_lock();
+@@ -1164,7 +1162,6 @@ static void mlx5e_uplink_rep_disable(struct mlx5e_priv *priv)
+ 	rtnl_unlock();
+ 
+ 	mlx5e_rep_bridge_cleanup(priv);
+-	mlx5e_rep_neigh_cleanup(rpriv);
+ 	mlx5e_dcbnl_delete_app(priv);
+ 	mlx5_notifier_unregister(mdev, &priv->events_nb);
+ 	mlx5e_rep_tc_disable(priv);
+-- 
+2.40.1
+
 
 
