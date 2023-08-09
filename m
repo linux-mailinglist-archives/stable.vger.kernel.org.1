@@ -2,49 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DE73C775884
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:53:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5D76A77590C
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:57:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232428AbjHIKxc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 06:53:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52966 "EHLO
+        id S232692AbjHIK51 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 06:57:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53332 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232624AbjHIKxU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:53:20 -0400
+        with ESMTP id S232968AbjHIK5R (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:57:17 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A3ED635AB
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:51:14 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 07D731FD4
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:57:17 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 859986312D
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:51:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 982B8C433C8;
-        Wed,  9 Aug 2023 10:51:13 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 90A18630D6
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:57:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1FA5C433C9;
+        Wed,  9 Aug 2023 10:57:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691578274;
-        bh=UH1GBfAiYU+uHyPaEW73eyAEL4QbYE2sAOvQUvOoOfw=;
+        s=korg; t=1691578636;
+        bh=UKUEdsspYwOBuFHYxWq3/aW4IdQa46sQ7xP4/TcyL/A=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=cvxv7Y4bdMbWy+Q5p5Vf/sK22Z00Be2M5Yf8hxjCrgF6UQDZn1coUU44CBXGMadJP
-         6iuk8kvqvWLWS6lmIta2VL7YJZOhqK+s9tBB5vPYyhgognp94BQFN8OmcJ+s/O5fwU
-         xeaRXZ9uscs9HQ2nrQTHLYjTxnHCmxpEb0Q8YLUM=
+        b=hdINgk4uFb145pAwrZ9/wMqdJzwhdyUxEpEUv1vjVLLXstdsrPc3vk+to+bsEf+i2
+         Gp0V0Kcb44jp/Fj8GOa4kLIx2XVllynEMl3mKqSO8ecwmcPVqIX8KSkBc2VTC76EvP
+         SgUdBXVTmSlU+IU+L+Y0IJ31MbWNKF/qaig7i6hY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Andi Shyti <andi.shyti@linux.intel.com>,
-        Matt Roper <matthew.d.roper@intel.com>,
-        Jonathan Cavitt <jonathan.cavitt@intel.com>,
-        Andrzej Hajda <andrzej.hajda@intel.com>,
-        Nirmoy Das <nirmoy.das@intel.com>,
-        Tvrtko Ursulin <tvrtko.ursulin@intel.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 159/165] drm/i915: Add the gen12_needs_ccs_aux_inv helper
-Date:   Wed,  9 Aug 2023 12:41:30 +0200
-Message-ID: <20230809103647.971759361@linuxfoundation.org>
+        patches@lists.linux.dev,
+        syzbot <syzbot+7937ba6a50bdd00fffdf@syzkaller.appspotmail.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Subject: [PATCH 6.1 104/127] debugobjects: Recheck debug_objects_enabled before reporting
+Date:   Wed,  9 Aug 2023 12:41:31 +0200
+Message-ID: <20230809103640.067035361@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103642.720851262@linuxfoundation.org>
-References: <20230809103642.720851262@linuxfoundation.org>
+In-Reply-To: <20230809103636.615294317@linuxfoundation.org>
+References: <20230809103636.615294317@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -59,88 +56,69 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Andi Shyti <andi.shyti@linux.intel.com>
+From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
 
-[ Upstream commit b2f59e9026038a5bbcbc0019fa58f963138211ee ]
+commit 8b64d420fe2450f82848178506d3e3a0bd195539 upstream.
 
-We always assumed that a device might either have AUX or FLAT
-CCS, but this is an approximation that is not always true, e.g.
-PVC represents an exception.
+syzbot is reporting false a positive ODEBUG message immediately after
+ODEBUG was disabled due to OOM.
 
-Set the basis for future finer selection by implementing a
-boolean gen12_needs_ccs_aux_inv() function that tells whether aux
-invalidation is needed or not.
+  [ 1062.309646][T22911] ODEBUG: Out of memory. ODEBUG disabled
+  [ 1062.886755][ T5171] ------------[ cut here ]------------
+  [ 1062.892770][ T5171] ODEBUG: assert_init not available (active state 0) object: ffffc900056afb20 object type: timer_list hint: process_timeout+0x0/0x40
 
-Currently PVC is the only exception to the above mentioned rule.
+  CPU 0 [ T5171]                CPU 1 [T22911]
+  --------------                --------------
+  debug_object_assert_init() {
+    if (!debug_objects_enabled)
+      return;
+    db = get_bucket(addr);
+                                lookup_object_or_alloc() {
+                                  debug_objects_enabled = 0;
+                                  return NULL;
+                                }
+                                debug_objects_oom() {
+                                  pr_warn("Out of memory. ODEBUG disabled\n");
+                                  // all buckets get emptied here, and
+                                }
+    lookup_object_or_alloc(addr, db, descr, false, true) {
+      // this bucket is already empty.
+      return ERR_PTR(-ENOENT);
+    }
+    // Emits false positive warning.
+    debug_print_object(&o, "assert_init");
+  }
 
-Requires: 059ae7ae2a1c ("drm/i915/gt: Cleanup aux invalidation registers")
-Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
-Cc: Matt Roper <matthew.d.roper@intel.com>
-Cc: Jonathan Cavitt <jonathan.cavitt@intel.com>
-Cc: <stable@vger.kernel.org> # v5.8+
-Reviewed-by: Matt Roper <matthew.d.roper@intel.com>
-Reviewed-by: Andrzej Hajda <andrzej.hajda@intel.com>
-Reviewed-by: Nirmoy Das <nirmoy.das@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230725001950.1014671-3-andi.shyti@linux.intel.com
-(cherry picked from commit c827655b87ad201ebe36f2e28d16b5491c8f7801)
-Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Recheck debug_object_enabled in debug_print_object() to avoid that.
+
+Reported-by: syzbot <syzbot+7937ba6a50bdd00fffdf@syzkaller.appspotmail.com>
+Suggested-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/r/492fe2ae-5141-d548-ebd5-62f5fe2e57f7@I-love.SAKURA.ne.jp
+Closes: https://syzkaller.appspot.com/bug?extid=7937ba6a50bdd00fffdf
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/i915/gt/gen8_engine_cs.c | 18 +++++++++++++++---
- 1 file changed, 15 insertions(+), 3 deletions(-)
+ lib/debugobjects.c |    9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/gpu/drm/i915/gt/gen8_engine_cs.c b/drivers/gpu/drm/i915/gt/gen8_engine_cs.c
-index f4ed89646fd26..c5b926e3f20d7 100644
---- a/drivers/gpu/drm/i915/gt/gen8_engine_cs.c
-+++ b/drivers/gpu/drm/i915/gt/gen8_engine_cs.c
-@@ -165,6 +165,18 @@ static u32 preparser_disable(bool state)
- 	return MI_ARB_CHECK | 1 << 8 | state;
- }
+--- a/lib/debugobjects.c
++++ b/lib/debugobjects.c
+@@ -498,6 +498,15 @@ static void debug_print_object(struct de
+ 	const struct debug_obj_descr *descr = obj->descr;
+ 	static int limit;
  
-+static bool gen12_needs_ccs_aux_inv(struct intel_engine_cs *engine)
-+{
-+	if (IS_PONTEVECCHIO(engine->i915))
-+		return false;
-+
 +	/*
-+	 * so far platforms supported by i915 having
-+	 * flat ccs do not require AUX invalidation
++	 * Don't report if lookup_object_or_alloc() by the current thread
++	 * failed because lookup_object_or_alloc()/debug_objects_oom() by a
++	 * concurrent thread turned off debug_objects_enabled and cleared
++	 * the hash buckets.
 +	 */
-+	return !HAS_FLAT_CCS(engine->i915);
-+}
++	if (!debug_objects_enabled)
++		return;
 +
- u32 *gen12_emit_aux_table_inv(struct intel_gt *gt, u32 *cs, const i915_reg_t inv_reg)
- {
- 	u32 gsi_offset = gt->uncore->gsi_offset;
-@@ -236,7 +248,7 @@ int gen12_emit_flush_rcs(struct i915_request *rq, u32 mode)
- 		else if (engine->class == COMPUTE_CLASS)
- 			flags &= ~PIPE_CONTROL_3D_ENGINE_FLAGS;
- 
--		if (!HAS_FLAT_CCS(rq->engine->i915))
-+		if (gen12_needs_ccs_aux_inv(rq->engine))
- 			count = 8 + 4;
- 		else
- 			count = 8;
-@@ -254,7 +266,7 @@ int gen12_emit_flush_rcs(struct i915_request *rq, u32 mode)
- 
- 		cs = gen8_emit_pipe_control(cs, flags, LRC_PPHWSP_SCRATCH_ADDR);
- 
--		if (!HAS_FLAT_CCS(rq->engine->i915)) {
-+		if (gen12_needs_ccs_aux_inv(rq->engine)) {
- 			/* hsdes: 1809175790 */
- 			cs = gen12_emit_aux_table_inv(rq->engine->gt, cs,
- 						      GEN12_CCS_AUX_INV);
-@@ -276,7 +288,7 @@ int gen12_emit_flush_xcs(struct i915_request *rq, u32 mode)
- 	if (mode & EMIT_INVALIDATE) {
- 		cmd += 2;
- 
--		if (!HAS_FLAT_CCS(rq->engine->i915) &&
-+		if (gen12_needs_ccs_aux_inv(rq->engine) &&
- 		    (rq->engine->class == VIDEO_DECODE_CLASS ||
- 		     rq->engine->class == VIDEO_ENHANCEMENT_CLASS)) {
- 			aux_inv = rq->engine->mask &
--- 
-2.40.1
-
+ 	if (limit < 5 && descr != descr_test) {
+ 		void *hint = descr->debug_hint ?
+ 			descr->debug_hint(obj->object) : NULL;
 
 
