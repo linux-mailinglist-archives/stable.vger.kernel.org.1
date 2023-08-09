@@ -2,96 +2,161 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ADB3D775C0B
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:23:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A2DB17758E8
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:56:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233605AbjHILXX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:23:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40996 "EHLO
+        id S232452AbjHIKz7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 06:55:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43918 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233627AbjHILXW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:23:22 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B664C1BF7
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:23:21 -0700 (PDT)
+        with ESMTP id S232503AbjHIKzo (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:55:44 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5137B26AB
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:55:17 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4B3D46322B
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:23:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5420AC433C7;
-        Wed,  9 Aug 2023 11:23:20 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E29E262E69
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:55:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00A4BC433C8;
+        Wed,  9 Aug 2023 10:55:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691580200;
-        bh=XSkqrTxKqQkGMkAkKQN4ZiC3SRTgzQqK5MO4WCvWMqA=;
+        s=korg; t=1691578516;
+        bh=QvjYIl8a0O27/jUNsc2M54WDKpYj6PH10MieaQIhGQc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Au60I3/vdqm/sf8H5yV/BuEmaRFV6XVwyV7fbUMNxJsoyGZc6GTYHCTo79nbl+ypW
-         4ia53tuUzFOOGF4iSbVUs8IpaujWNPBm/esvju8oVDbE9dJWAgus2mspO/PcXrb61F
-         1vQxuEoOBlFW4c1r7wEWW3BOeR+8Z6vflVo/r+cE=
+        b=ajQY4X4ZpncG6QyzaVHg/1dn1zcmCrHJuTn9D6KedRQX2+ZjmO8S283BB1r2Bg6Y6
+         puOIIP83OrZ4i5cTvcOV/5p8kjYf+LSgedYdfNWuu0FQD9D3xSDlxAVPk0VOjuF3Uw
+         Bo05AvManJJ9c23z2hVDd+URuhWpk8jK1r/PQVJk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Bikash Hazarika <bhazarika@marvell.com>,
-        Nilesh Javali <njavali@marvell.com>,
-        Himanshu Madhani <himanshu.madhani@oracle.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 236/323] scsi: qla2xxx: Array index may go out of bound
+        patches@lists.linux.dev, Ilya Dryomov <idryomov@gmail.com>,
+        Dongsheng Yang <dongsheng.yang@easystack.cn>
+Subject: [PATCH 6.1 087/127] rbd: prevent busy loop when requesting exclusive lock
 Date:   Wed,  9 Aug 2023 12:41:14 +0200
-Message-ID: <20230809103708.883072030@linuxfoundation.org>
+Message-ID: <20230809103639.531311063@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
-References: <20230809103658.104386911@linuxfoundation.org>
+In-Reply-To: <20230809103636.615294317@linuxfoundation.org>
+References: <20230809103636.615294317@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Nilesh Javali <njavali@marvell.com>
+From: Ilya Dryomov <idryomov@gmail.com>
 
-[ Upstream commit d721b591b95cf3f290f8a7cbe90aa2ee0368388d ]
+commit 9d01e07fd1bfb4daae156ab528aa196f5ac2b2bc upstream.
 
-Klocwork reports array 'vha->host_str' of size 16 may use index value(s)
-16..19.  Use snprintf() instead of sprintf().
+Due to rbd_try_acquire_lock() effectively swallowing all but
+EBLOCKLISTED error from rbd_try_lock() ("request lock anyway") and
+rbd_request_lock() returning ETIMEDOUT error not only for an actual
+notify timeout but also when the lock owner doesn't respond, a busy
+loop inside of rbd_acquire_lock() between rbd_try_acquire_lock() and
+rbd_request_lock() is possible.
 
+Requesting the lock on EBUSY error (returned by get_lock_owner_info()
+if an incompatible lock or invalid lock owner is detected) makes very
+little sense.  The same goes for ETIMEDOUT error (might pop up pretty
+much anywhere if osd_request_timeout option is set) and many others.
+
+Just fail I/O requests on rbd_dev->acquiring_list immediately on any
+error from rbd_try_lock().
+
+Cc: stable@vger.kernel.org # 588159009d5b: rbd: retrieve and check lock owner twice before blocklisting
 Cc: stable@vger.kernel.org
-Co-developed-by: Bikash Hazarika <bhazarika@marvell.com>
-Signed-off-by: Bikash Hazarika <bhazarika@marvell.com>
-Signed-off-by: Nilesh Javali <njavali@marvell.com>
-Link: https://lore.kernel.org/r/20230607113843.37185-2-njavali@marvell.com
-Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+Reviewed-by: Dongsheng Yang <dongsheng.yang@easystack.cn>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/qla2xxx/qla_os.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/block/rbd.c |   28 +++++++++++++++-------------
+ 1 file changed, 15 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/scsi/qla2xxx/qla_os.c b/drivers/scsi/qla2xxx/qla_os.c
-index 73f3e51ce9798..4580774b2c3e7 100644
---- a/drivers/scsi/qla2xxx/qla_os.c
-+++ b/drivers/scsi/qla2xxx/qla_os.c
-@@ -4604,7 +4604,8 @@ struct scsi_qla_host *qla2x00_create_host(struct scsi_host_template *sht,
- 	}
- 	INIT_DELAYED_WORK(&vha->scan.scan_work, qla_scan_work_fn);
+--- a/drivers/block/rbd.c
++++ b/drivers/block/rbd.c
+@@ -3676,7 +3676,7 @@ static int rbd_lock(struct rbd_device *r
+ 	ret = ceph_cls_lock(osdc, &rbd_dev->header_oid, &rbd_dev->header_oloc,
+ 			    RBD_LOCK_NAME, CEPH_CLS_LOCK_EXCLUSIVE, cookie,
+ 			    RBD_LOCK_TAG, "", 0);
+-	if (ret)
++	if (ret && ret != -EEXIST)
+ 		return ret;
  
--	sprintf(vha->host_str, "%s_%lu", QLA2XXX_DRIVER_NAME, vha->host_no);
-+	snprintf(vha->host_str, sizeof(vha->host_str), "%s_%lu",
-+		 QLA2XXX_DRIVER_NAME, vha->host_no);
- 	ql_dbg(ql_dbg_init, vha, 0x0041,
- 	    "Allocated the host=%p hw=%p vha=%p dev_name=%s",
- 	    vha->host, vha->hw, vha,
--- 
-2.39.2
-
+ 	__rbd_lock(rbd_dev, cookie);
+@@ -3879,7 +3879,7 @@ static struct ceph_locker *get_lock_owne
+ 				 &rbd_dev->header_oloc, RBD_LOCK_NAME,
+ 				 &lock_type, &lock_tag, &lockers, &num_lockers);
+ 	if (ret) {
+-		rbd_warn(rbd_dev, "failed to retrieve lockers: %d", ret);
++		rbd_warn(rbd_dev, "failed to get header lockers: %d", ret);
+ 		return ERR_PTR(ret);
+ 	}
+ 
+@@ -3941,8 +3941,10 @@ static int find_watcher(struct rbd_devic
+ 	ret = ceph_osdc_list_watchers(osdc, &rbd_dev->header_oid,
+ 				      &rbd_dev->header_oloc, &watchers,
+ 				      &num_watchers);
+-	if (ret)
++	if (ret) {
++		rbd_warn(rbd_dev, "failed to get watchers: %d", ret);
+ 		return ret;
++	}
+ 
+ 	sscanf(locker->id.cookie, RBD_LOCK_COOKIE_PREFIX " %llu", &cookie);
+ 	for (i = 0; i < num_watchers; i++) {
+@@ -3986,8 +3988,12 @@ static int rbd_try_lock(struct rbd_devic
+ 		locker = refreshed_locker = NULL;
+ 
+ 		ret = rbd_lock(rbd_dev);
+-		if (ret != -EBUSY)
++		if (!ret)
++			goto out;
++		if (ret != -EBUSY) {
++			rbd_warn(rbd_dev, "failed to lock header: %d", ret);
+ 			goto out;
++		}
+ 
+ 		/* determine if the current lock holder is still alive */
+ 		locker = get_lock_owner_info(rbd_dev);
+@@ -4090,11 +4096,8 @@ static int rbd_try_acquire_lock(struct r
+ 
+ 	ret = rbd_try_lock(rbd_dev);
+ 	if (ret < 0) {
+-		rbd_warn(rbd_dev, "failed to lock header: %d", ret);
+-		if (ret == -EBLOCKLISTED)
+-			goto out;
+-
+-		ret = 1; /* request lock anyway */
++		rbd_warn(rbd_dev, "failed to acquire lock: %d", ret);
++		goto out;
+ 	}
+ 	if (ret > 0) {
+ 		up_write(&rbd_dev->lock_rwsem);
+@@ -6628,12 +6631,11 @@ static int rbd_add_acquire_lock(struct r
+ 		cancel_delayed_work_sync(&rbd_dev->lock_dwork);
+ 		if (!ret)
+ 			ret = -ETIMEDOUT;
+-	}
+ 
+-	if (ret) {
+-		rbd_warn(rbd_dev, "failed to acquire exclusive lock: %ld", ret);
+-		return ret;
++		rbd_warn(rbd_dev, "failed to acquire lock: %ld", ret);
+ 	}
++	if (ret)
++		return ret;
+ 
+ 	/*
+ 	 * The lock may have been released by now, unless automatic lock
 
 
