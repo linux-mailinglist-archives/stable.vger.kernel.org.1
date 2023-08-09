@@ -2,179 +2,142 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8A80F775B97
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:19:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E5F607759DF
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:03:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233486AbjHILS7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:18:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55110 "EHLO
+        id S233030AbjHILDd (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:03:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38378 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233487AbjHILS7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:18:59 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CFE02ED
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:18:58 -0700 (PDT)
+        with ESMTP id S233011AbjHILD0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:03:26 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A76A1FD8
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:03:25 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6EA0663193
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:18:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E38EC433C7;
-        Wed,  9 Aug 2023 11:18:57 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E72C063118
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:03:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED96FC433D9;
+        Wed,  9 Aug 2023 11:03:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691579937;
-        bh=IZHb1zt9D0xRB5bklRHdIbvHTe+HbSuKK2gMtrmcaUU=;
+        s=korg; t=1691579004;
+        bh=KkqpjLlg8MVBheYvhzn2RF14G2iBoE895dphAR2TZ7w=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=QNjeV0vCnE+IpZwynV2A4A6b1O9Oc2HdzaKcDdR8OHDowhcystVuwxqzEokqrTWS5
-         qMD1dRMXh+CxUEp6ZyzfFRt8+u0BiNTXDBVwVpPeP9K3hx5VbLFsKp4Pg9DtpAJsBH
-         MqBNaS1jQGnDvqjsiVrBfyRktlG/ZYWu/OHkTc5U=
+        b=b7ynOnx8qqNfhXe/w9+ufbeE/knJLjzn9EK0MxhDRmWU4cKYKo5d8cU2rm9QVhX1/
+         h14M+yy4w7tghMUtQdU7e1U9ok6w54qEwiPfK/keGyhl0Faqw3L9geuB8QuNVVQm1R
+         mZHbLnWQVhExO9DUcXwcxcnwQk/z5TNrtxi7f+ds=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Stephen Suryaputra <ssuryaextr@gmail.com>,
-        David Ahern <dsahern@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev,
+        Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
+        Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 139/323] vrf: Increment Icmp6InMsgs on the original netdev
-Date:   Wed,  9 Aug 2023 12:39:37 +0200
-Message-ID: <20230809103704.504527435@linuxfoundation.org>
+Subject: [PATCH 4.14 040/204] ASoC: es8316: Increment max value for ALC Capture Target Volume control
+Date:   Wed,  9 Aug 2023 12:39:38 +0200
+Message-ID: <20230809103643.910794865@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
-References: <20230809103658.104386911@linuxfoundation.org>
+In-Reply-To: <20230809103642.552405807@linuxfoundation.org>
+References: <20230809103642.552405807@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Stephen Suryaputra <ssuryaextr@gmail.com>
+From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
 
-[ Upstream commit e1ae5c2ea4783b1fd87be250f9fcc9d9e1a6ba3f ]
+[ Upstream commit 6f073429037cd79d7311cd8236311c53f5ea8f01 ]
 
-Get the ingress interface and increment ICMP counters based on that
-instead of skb->dev when the the dev is a VRF device.
+The following error occurs when trying to restore a previously saved
+ALSA mixer state (tested on a Rock 5B board):
 
-This is a follow up on the following message:
-https://www.spinics.net/lists/netdev/msg560268.html
+  $ alsactl --no-ucm -f /tmp/asound.state store hw:Analog
+  $ alsactl --no-ucm -I -f /tmp/asound.state restore hw:Analog
+  alsactl: set_control:1475: Cannot write control '2:0:0:ALC Capture Target Volume:0' : Invalid argument
 
-v2: Avoid changing skb->dev since it has unintended effect for local
-    delivery (David Ahern).
-Signed-off-by: Stephen Suryaputra <ssuryaextr@gmail.com>
-Reviewed-by: David Ahern <dsahern@gmail.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: 2aaa8a15de73 ("icmp6: Fix null-ptr-deref of ip6_null_entry->rt6i_idev in icmp6_dev().")
+According to ES8316 datasheet, the register at address 0x2B, which is
+related to the above mixer control, contains by default the value 0xB0.
+Considering the corresponding ALC target bits (ALCLVL) are 7:4, the
+control is initialized with 11, which is one step above the maximum
+value allowed by the driver:
+
+ ALCLVL | dB gain
+ -------+--------
+  0000  |  -16.5
+  0001  |  -15.0
+  0010  |  -13.5
+  ....  |  .....
+  0111  |   -6.0
+  1000  |   -4.5
+  1001  |   -3.0
+  1010  |   -1.5
+  ....  |  .....
+  1111  |   -1.5
+
+The tests performed using the VU meter feature (--vumeter=TYPE) of
+arecord/aplay confirm the specs are correct and there is no measured
+gain if the 1011-1111 range would have been mapped to 0 dB:
+
+ dB gain | VU meter %
+ --------+-----------
+   -6.0  |  30-31
+   -4.5  |  35-36
+   -3.0  |  42-43
+   -1.5  |  50-51
+    0.0  |  50-51
+
+Increment the max value allowed for ALC Capture Target Volume control,
+so that it matches the hardware default.  Additionally, update the
+related TLV to prevent an artificial extension of the dB gain range.
+
+Fixes: b8b88b70875a ("ASoC: add es8316 codec driver")
+Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+Link: https://lore.kernel.org/r/20230530181140.483936-2-cristian.ciocaltea@collabora.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/addrconf.h | 16 ++++++++++++++++
- net/ipv6/icmp.c        | 17 +++++++++++------
- net/ipv6/reassembly.c  |  4 ++--
- 3 files changed, 29 insertions(+), 8 deletions(-)
+ sound/soc/codecs/es8316.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/include/net/addrconf.h b/include/net/addrconf.h
-index db2a87981dd46..9583d3bbab039 100644
---- a/include/net/addrconf.h
-+++ b/include/net/addrconf.h
-@@ -340,6 +340,22 @@ static inline struct inet6_dev *__in6_dev_get(const struct net_device *dev)
- 	return rcu_dereference_rtnl(dev->ip6_ptr);
- }
- 
-+/**
-+ * __in6_dev_stats_get - get inet6_dev pointer for stats
-+ * @dev: network device
-+ * @skb: skb for original incoming interface if neeeded
-+ *
-+ * Caller must hold rcu_read_lock or RTNL, because this function
-+ * does not take a reference on the inet6_dev.
-+ */
-+static inline struct inet6_dev *__in6_dev_stats_get(const struct net_device *dev,
-+						    const struct sk_buff *skb)
-+{
-+	if (netif_is_l3_master(dev))
-+		dev = dev_get_by_index_rcu(dev_net(dev), inet6_iif(skb));
-+	return __in6_dev_get(dev);
-+}
+diff --git a/sound/soc/codecs/es8316.c b/sound/soc/codecs/es8316.c
+index 0410f2e5183c3..fad918c44ec97 100644
+--- a/sound/soc/codecs/es8316.c
++++ b/sound/soc/codecs/es8316.c
+@@ -45,7 +45,12 @@ static const SNDRV_CTL_TLVD_DECLARE_DB_SCALE(dac_vol_tlv, -9600, 50, 1);
+ static const SNDRV_CTL_TLVD_DECLARE_DB_SCALE(adc_vol_tlv, -9600, 50, 1);
+ static const SNDRV_CTL_TLVD_DECLARE_DB_SCALE(alc_max_gain_tlv, -650, 150, 0);
+ static const SNDRV_CTL_TLVD_DECLARE_DB_SCALE(alc_min_gain_tlv, -1200, 150, 0);
+-static const SNDRV_CTL_TLVD_DECLARE_DB_SCALE(alc_target_tlv, -1650, 150, 0);
 +
- /**
-  * __in6_dev_get_safely - get inet6_dev pointer from netdevice
-  * @dev: network device
-diff --git a/net/ipv6/icmp.c b/net/ipv6/icmp.c
-index fbc8746371b6d..1b86a2e03d049 100644
---- a/net/ipv6/icmp.c
-+++ b/net/ipv6/icmp.c
-@@ -395,23 +395,28 @@ static struct dst_entry *icmpv6_route_lookup(struct net *net,
- 	return ERR_PTR(err);
- }
- 
--static int icmp6_iif(const struct sk_buff *skb)
-+static struct net_device *icmp6_dev(const struct sk_buff *skb)
- {
--	int iif = skb->dev->ifindex;
-+	struct net_device *dev = skb->dev;
- 
- 	/* for local traffic to local address, skb dev is the loopback
- 	 * device. Check if there is a dst attached to the skb and if so
- 	 * get the real device index. Same is needed for replies to a link
- 	 * local address on a device enslaved to an L3 master device
- 	 */
--	if (unlikely(iif == LOOPBACK_IFINDEX || netif_is_l3_master(skb->dev))) {
-+	if (unlikely(dev->ifindex == LOOPBACK_IFINDEX || netif_is_l3_master(skb->dev))) {
- 		const struct rt6_info *rt6 = skb_rt6_info(skb);
- 
- 		if (rt6)
--			iif = rt6->rt6i_idev->dev->ifindex;
-+			dev = rt6->rt6i_idev->dev;
- 	}
- 
--	return iif;
-+	return dev;
-+}
++static const SNDRV_CTL_TLVD_DECLARE_DB_RANGE(alc_target_tlv,
++	0, 10, TLV_DB_SCALE_ITEM(-1650, 150, 0),
++	11, 11, TLV_DB_SCALE_ITEM(-150, 0, 0),
++);
 +
-+static int icmp6_iif(const struct sk_buff *skb)
-+{
-+	return icmp6_dev(skb)->ifindex;
- }
- 
- /*
-@@ -800,7 +805,7 @@ void icmpv6_notify(struct sk_buff *skb, u8 type, u8 code, __be32 info)
- static int icmpv6_rcv(struct sk_buff *skb)
- {
- 	struct net *net = dev_net(skb->dev);
--	struct net_device *dev = skb->dev;
-+	struct net_device *dev = icmp6_dev(skb);
- 	struct inet6_dev *idev = __in6_dev_get(dev);
- 	const struct in6_addr *saddr, *daddr;
- 	struct icmp6hdr *hdr;
-diff --git a/net/ipv6/reassembly.c b/net/ipv6/reassembly.c
-index 60dfd0d118512..b596727f04978 100644
---- a/net/ipv6/reassembly.c
-+++ b/net/ipv6/reassembly.c
-@@ -302,7 +302,7 @@ static int ip6_frag_reasm(struct frag_queue *fq, struct sk_buff *skb,
- 			   skb_network_header_len(skb));
- 
- 	rcu_read_lock();
--	__IP6_INC_STATS(net, __in6_dev_get(dev), IPSTATS_MIB_REASMOKS);
-+	__IP6_INC_STATS(net, __in6_dev_stats_get(dev, skb), IPSTATS_MIB_REASMOKS);
- 	rcu_read_unlock();
- 	fq->q.fragments = NULL;
- 	fq->q.rb_fragments = RB_ROOT;
-@@ -317,7 +317,7 @@ static int ip6_frag_reasm(struct frag_queue *fq, struct sk_buff *skb,
- 	net_dbg_ratelimited("ip6_frag_reasm: no memory for reassembly\n");
- out_fail:
- 	rcu_read_lock();
--	__IP6_INC_STATS(net, __in6_dev_get(dev), IPSTATS_MIB_REASMFAILS);
-+	__IP6_INC_STATS(net, __in6_dev_stats_get(dev, skb), IPSTATS_MIB_REASMFAILS);
- 	rcu_read_unlock();
- 	inet_frag_kill(&fq->q);
- 	return -1;
+ static const SNDRV_CTL_TLVD_DECLARE_DB_RANGE(hpmixer_gain_tlv,
+ 	0, 4, TLV_DB_SCALE_ITEM(-1200, 150, 0),
+ 	8, 11, TLV_DB_SCALE_ITEM(-450, 150, 0),
+@@ -107,7 +112,7 @@ static const struct snd_kcontrol_new es8316_snd_controls[] = {
+ 		       alc_max_gain_tlv),
+ 	SOC_SINGLE_TLV("ALC Capture Min Volume", ES8316_ADC_ALC2, 0, 28, 0,
+ 		       alc_min_gain_tlv),
+-	SOC_SINGLE_TLV("ALC Capture Target Volume", ES8316_ADC_ALC3, 4, 10, 0,
++	SOC_SINGLE_TLV("ALC Capture Target Volume", ES8316_ADC_ALC3, 4, 11, 0,
+ 		       alc_target_tlv),
+ 	SOC_SINGLE("ALC Capture Hold Time", ES8316_ADC_ALC3, 0, 10, 0),
+ 	SOC_SINGLE("ALC Capture Decay Time", ES8316_ADC_ALC4, 4, 10, 0),
 -- 
 2.39.2
 
