@@ -2,103 +2,98 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7A3E0775BA0
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:19:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9ADD7775A39
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:06:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233494AbjHILTV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:19:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57456 "EHLO
+        id S233097AbjHILGa (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:06:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37256 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233489AbjHILTV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:19:21 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F2B3FED
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:19:20 -0700 (PDT)
+        with ESMTP id S233113AbjHILG3 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:06:29 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1F8AC1FEB
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:06:29 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 89EB1631A2
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:19:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DDFBC433C7;
-        Wed,  9 Aug 2023 11:19:19 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B4BEC63142
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:06:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8690C433C7;
+        Wed,  9 Aug 2023 11:06:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691579960;
-        bh=2uQL/F6/hJ52Pd3GlZgRHGNkwwdzsw1fMacJfJA+ayM=;
+        s=korg; t=1691579188;
+        bh=s327MfDf7ncgj3I2dnSkNNBNdztu74kcYOvEJEwQdsk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=xnv/CpD+Y8sp5flJSjahoNZh4C5qvAKEcDCKx/jLK5/7d/JDBef2CPQyCfxCmnffW
-         BrV5gcsV80uNqCwwY+BCblHHQpCVVZKcyajqIZSJb3eN31HOrH3TM4vavNtCyS62aU
-         /UBF7RFv2NxFfqXIbTXqgjGbUgnKG5/DPS8S6GeU=
+        b=EAB8O6s5zTYXAGNgUWKJS0cEjNMrceeziCRRhtYNrAhpnOsUk6NXTxzaFi9X6LkSK
+         xpd8pWErHiMK6MGk7i9dKheWMNV7/7Ix4in3pkLHQPokD80IhKZigPHRvBy2pge6ZW
+         BTFoFbE0ILyeCDbg5g52GpxuedpSR5oaxQtZ8RRM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Andi Shyti <andi.shyti@kernel.org>,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Jiri Slaby <jirislaby@kernel.org>
-Subject: [PATCH 4.19 178/323] tty: serial: samsung_tty: Fix a memory leak in s3c24xx_serial_getclk() when iterating clk
+        patches@lists.linux.dev, Robert Marko <robimarko@gmail.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 4.14 078/204] mmc: core: disable TRIM on Kingston EMMC04G-M627
 Date:   Wed,  9 Aug 2023 12:40:16 +0200
-Message-ID: <20230809103706.285254030@linuxfoundation.org>
+Message-ID: <20230809103645.271587227@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
-References: <20230809103658.104386911@linuxfoundation.org>
+In-Reply-To: <20230809103642.552405807@linuxfoundation.org>
+References: <20230809103642.552405807@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Robert Marko <robimarko@gmail.com>
 
-commit 832e231cff476102e8204a9e7bddfe5c6154a375 upstream.
+commit f1738a1f816233e6dfc2407f24a31d596643fd90 upstream.
 
-When the best clk is searched, we iterate over all possible clk.
+It seems that Kingston EMMC04G-M627 despite advertising TRIM support does
+not work when the core is trying to use REQ_OP_WRITE_ZEROES.
 
-If we find a better match, the previous one, if any, needs to be freed.
-If a better match has already been found, we still need to free the new
-one, otherwise it leaks.
+We are seeing I/O errors in OpenWrt under 6.1 on Zyxel NBG7815 that we did
+not previously have and tracked it down to REQ_OP_WRITE_ZEROES.
 
-Cc: <stable@vger.kernel.org> # v3.3+
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
-Fixes: 5f5a7a5578c5 ("serial: samsung: switch to clkdev based clock lookup")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Reviewed-by: Jiri Slaby <jirislaby@kernel.org>
-Message-ID: <cf3e0053d2fc7391b2d906a86cd01a5ef15fb9dc.1686412569.git.christophe.jaillet@wanadoo.fr>
+Trying to use fstrim seems to also throw errors like:
+[93010.835112] I/O error, dev loop0, sector 16902 op 0x3:(DISCARD) flags 0x800 phys_seg 1 prio class 2
+
+Disabling TRIM makes the error go away, so lets add a quirk for this eMMC
+to disable TRIM.
+
+Signed-off-by: Robert Marko <robimarko@gmail.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20230619193621.437358-1-robimarko@gmail.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/samsung.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/mmc/core/quirks.h |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/drivers/tty/serial/samsung.c
-+++ b/drivers/tty/serial/samsung.c
-@@ -1230,10 +1230,18 @@ static unsigned int s3c24xx_serial_getcl
- 			calc_deviation = -calc_deviation;
+--- a/drivers/mmc/core/quirks.h
++++ b/drivers/mmc/core/quirks.h
+@@ -91,6 +91,13 @@ static const struct mmc_fixup mmc_blk_fi
+ 		  MMC_QUIRK_SEC_ERASE_TRIM_BROKEN),
  
- 		if (calc_deviation < deviation) {
-+			/*
-+			 * If we find a better clk, release the previous one, if
-+			 * any.
-+			 */
-+			if (!IS_ERR(*best_clk))
-+				clk_put(*best_clk);
- 			*best_clk = clk;
- 			best_quot = quot;
- 			*clk_num = cnt;
- 			deviation = calc_deviation;
-+		} else {
-+			clk_put(clk);
- 		}
- 	}
- 
+ 	/*
++	 * Kingston EMMC04G-M627 advertises TRIM but it does not seems to
++	 * support being used to offload WRITE_ZEROES.
++	 */
++	MMC_FIXUP("M62704", CID_MANFID_KINGSTON, 0x0100, add_quirk_mmc,
++		  MMC_QUIRK_TRIM_BROKEN),
++
++	/*
+ 	 *  On Some Kingston eMMCs, performing trim can result in
+ 	 *  unrecoverable data conrruption occasionally due to a firmware bug.
+ 	 */
 
 
