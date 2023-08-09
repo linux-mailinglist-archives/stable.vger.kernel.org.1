@@ -2,41 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CBACE775B3A
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:15:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1E112775B3B
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:15:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233399AbjHILPi (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:15:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40248 "EHLO
+        id S233404AbjHILPk (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:15:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58772 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233386AbjHILPh (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:15:37 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F1AE8ED
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:15:36 -0700 (PDT)
+        with ESMTP id S233386AbjHILPk (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:15:40 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BBF79FA
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:15:39 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8C61F62457
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:15:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9ACA2C433C8;
-        Wed,  9 Aug 2023 11:15:35 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4F44863146
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:15:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CD02C433C7;
+        Wed,  9 Aug 2023 11:15:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691579736;
-        bh=3c7ap01Zl4Uhy4WQkYjigLEqaNEEdIkr+TE3d7D20RY=;
+        s=korg; t=1691579738;
+        bh=6JDC17LJIuuzIteAkk6FYq4riJuhw3qeR9tzdTmUCn8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=1F/lUN9vqLbXbQv35067q3jTyGpW8AX/r+GuGOgZYlri1tJ56R9vmQB52d80b+Qt/
-         k1W4ujNZYvpFcCpGNprIj1uJHW1IhVSUkK5yBzj61gIMgCUR8QuQA/BXVyWPB7oJw/
-         yPCeDX/0jgnZadBUjX5PckSdkvaUatagG89TiffM=
+        b=O/jA5EBmwIbLD1BA1THowGL/Awdc44G79SqypkKrl7oLWgHb460ZuIGFdwKt3GNLP
+         6ZVf11spwglccaCukMxPox+EfMGqMgK8ykzmgJAouoNhwMpzDBWkkbGtl420a6TuQJ
+         DuDuyKjCcsVa8eKzcWlArbRgoAr5F0FMueT0FJH8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jiasheng Jiang <jiasheng@iscas.ac.cn>,
+        patches@lists.linux.dev,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        Linus Walleij <linus.walleij@linaro.org>,
         Lee Jones <lee@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 097/323] mfd: intel-lpss: Add missing check for platform_get_resource
-Date:   Wed,  9 Aug 2023 12:38:55 +0200
-Message-ID: <20230809103702.497513298@linuxfoundation.org>
+Subject: [PATCH 4.19 098/323] mfd: stmpe: Only disable the regulators if they are enabled
+Date:   Wed,  9 Aug 2023 12:38:56 +0200
+Message-ID: <20230809103702.545676326@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
 References: <20230809103658.104386911@linuxfoundation.org>
@@ -44,46 +46,53 @@ User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jiasheng Jiang <jiasheng@iscas.ac.cn>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit d918e0d5824495a75d00b879118b098fcab36fdb ]
+[ Upstream commit 104d32bd81f620bb9f67fbf7d1159c414e89f05f ]
 
-Add the missing check for platform_get_resource and return error
-if it fails.
+In stmpe_probe(), if some regulator_enable() calls fail, probing continues
+and there is only a dev_warn().
 
-Fixes: 4b45efe85263 ("mfd: Add support for Intel Sunrisepoint LPSS devices")
-Signed-off-by: Jiasheng Jiang <jiasheng@iscas.ac.cn>
+So, if stmpe_probe() is called the regulator may not be enabled. It is
+cleaner to test it before calling regulator_disable() in the remove
+function.
+
+Fixes: 9c9e321455fb ("mfd: stmpe: add optional regulators")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Link: https://lore.kernel.org/r/8de3aaf297931d655b9ad6aed548f4de8b85425a.1686998575.git.christophe.jaillet@wanadoo.fr
 Signed-off-by: Lee Jones <lee@kernel.org>
-Link: https://lore.kernel.org/r/20230609014818.28475-1-jiasheng@iscas.ac.cn
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mfd/intel-lpss-acpi.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/mfd/stmpe.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/mfd/intel-lpss-acpi.c b/drivers/mfd/intel-lpss-acpi.c
-index fc44fb7c595bc..281ef5f52eb55 100644
---- a/drivers/mfd/intel-lpss-acpi.c
-+++ b/drivers/mfd/intel-lpss-acpi.c
-@@ -92,6 +92,9 @@ static int intel_lpss_acpi_probe(struct platform_device *pdev)
- 		return -ENOMEM;
+diff --git a/drivers/mfd/stmpe.c b/drivers/mfd/stmpe.c
+index 722ad2c368a56..d752c56d60e42 100644
+--- a/drivers/mfd/stmpe.c
++++ b/drivers/mfd/stmpe.c
+@@ -1428,9 +1428,9 @@ int stmpe_probe(struct stmpe_client_info *ci, enum stmpe_partnum partnum)
  
- 	info->mem = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-+	if (!info->mem)
-+		return -ENODEV;
-+
- 	info->irq = platform_get_irq(pdev, 0);
+ int stmpe_remove(struct stmpe *stmpe)
+ {
+-	if (!IS_ERR(stmpe->vio))
++	if (!IS_ERR(stmpe->vio) && regulator_is_enabled(stmpe->vio))
+ 		regulator_disable(stmpe->vio);
+-	if (!IS_ERR(stmpe->vcc))
++	if (!IS_ERR(stmpe->vcc) && regulator_is_enabled(stmpe->vcc))
+ 		regulator_disable(stmpe->vcc);
  
- 	ret = intel_lpss_probe(&pdev->dev, info);
+ 	mfd_remove_devices(stmpe->dev);
 -- 
 2.39.2
 
