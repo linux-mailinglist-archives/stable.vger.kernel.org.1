@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CBA827759D5
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:03:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C11EF775763
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:45:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233017AbjHILD2 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:03:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38242 "EHLO
+        id S231671AbjHIKpZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 06:45:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41296 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232955AbjHILDO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:03:14 -0400
+        with ESMTP id S231782AbjHIKpZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:45:25 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2850D212A
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:03:14 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45C1410F3
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:45:24 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BC4AE63118
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:03:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC65FC433C7;
-        Wed,  9 Aug 2023 11:03:12 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DA24B6283F
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:45:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC327C433C8;
+        Wed,  9 Aug 2023 10:45:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691578993;
-        bh=dYq8nxoIMX8PAo4+foTqb6nfE1TXHhdfhTmjgqBjN4c=;
+        s=korg; t=1691577923;
+        bh=ZuyOmiYij5xC3a6HX90W7ItMYe7QSxKV6ddJBoSIejQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=V05lnpGYineRK+fkWsu+y1XwJx4aF8Mp+peTIyB17HaEqPtHYDN0CDOV5cPkQv6aZ
-         v7O7ObzZXgogo5ALpUi4HlYRihYqZ3Jnavboajm9ptVbMaKlv8TLGtAH73mUwc7uI3
-         0R5vW2GGW0gl9NtN4+vWyDSBXVjXAeV2lftDKEwc=
+        b=JaDHsKzYdSVGLvhknnwwGa9HwX7L9itMmbNnzdmLdOOpewKS4xy1RHxc+v8PgE2VD
+         4yXN6EpV7SM1U58kzm6NaXx1zJnLJKrAGUpGurzgRYZyk28HRbWQjg6ISmTPdNJmU0
+         snCiEflfWFt8WQCCGkkIF+DrntECAR3KEFeVSMIU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
-        Florian Fainelli <f.fainelli@gmail.com>,
+        patches@lists.linux.dev, Yuanjun Gong <ruc_gongyuanjun@163.com>,
+        Florian Fainelli <florian.fainelli@broadcom.com>,
+        Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 036/204] ARM: dts: BCM5301X: Drop "clock-names" from the SPI node
+Subject: [PATCH 6.4 043/165] net: dsa: fix value check in bcm_sf2_sw_probe()
 Date:   Wed,  9 Aug 2023 12:39:34 +0200
-Message-ID: <20230809103643.778680262@linuxfoundation.org>
+Message-ID: <20230809103644.233619203@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103642.552405807@linuxfoundation.org>
-References: <20230809103642.552405807@linuxfoundation.org>
+In-Reply-To: <20230809103642.720851262@linuxfoundation.org>
+References: <20230809103642.720851262@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,39 +56,52 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Rafał Miłecki <rafal@milecki.pl>
+From: Yuanjun Gong <ruc_gongyuanjun@163.com>
 
-[ Upstream commit d3c8e2c5757153bbfad70019ec1decbca86f3def ]
+[ Upstream commit dadc5b86cc9459581f37fe755b431adc399ea393 ]
 
-There is no such property in the SPI controller binding documentation.
-Also Linux driver doesn't look for it.
+in bcm_sf2_sw_probe(), check the return value of clk_prepare_enable()
+and return the error code if clk_prepare_enable() returns an
+unexpected value.
 
-This fixes:
-arch/arm/boot/dts/bcm4708-asus-rt-ac56u.dtb: spi@18029200: Unevaluated properties are not allowed ('clock-names' was unexpected)
-        From schema: Documentation/devicetree/bindings/spi/brcm,spi-bcm-qspi.yaml
-
-Signed-off-by: Rafał Miłecki <rafal@milecki.pl>
-Link: https://lore.kernel.org/r/20230503122830.3200-1-zajec5@gmail.com
-Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
+Fixes: e9ec5c3bd238 ("net: dsa: bcm_sf2: request and handle clocks")
+Signed-off-by: Yuanjun Gong <ruc_gongyuanjun@163.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Link: https://lore.kernel.org/r/20230726170506.16547-1-ruc_gongyuanjun@163.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/bcm5301x.dtsi | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/net/dsa/bcm_sf2.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/boot/dts/bcm5301x.dtsi b/arch/arm/boot/dts/bcm5301x.dtsi
-index c3b6ba4db8e3d..b48d8336b798e 100644
---- a/arch/arm/boot/dts/bcm5301x.dtsi
-+++ b/arch/arm/boot/dts/bcm5301x.dtsi
-@@ -449,7 +449,6 @@ spi@18029200 {
- 				  "spi_lr_session_done",
- 				  "spi_lr_overread";
- 		clocks = <&iprocmed>;
--		clock-names = "iprocmed";
- 		num-cs = <2>;
- 		#address-cells = <1>;
- 		#size-cells = <0>;
+diff --git a/drivers/net/dsa/bcm_sf2.c b/drivers/net/dsa/bcm_sf2.c
+index cde253d27bd08..72374b066f64a 100644
+--- a/drivers/net/dsa/bcm_sf2.c
++++ b/drivers/net/dsa/bcm_sf2.c
+@@ -1436,7 +1436,9 @@ static int bcm_sf2_sw_probe(struct platform_device *pdev)
+ 	if (IS_ERR(priv->clk))
+ 		return PTR_ERR(priv->clk);
+ 
+-	clk_prepare_enable(priv->clk);
++	ret = clk_prepare_enable(priv->clk);
++	if (ret)
++		return ret;
+ 
+ 	priv->clk_mdiv = devm_clk_get_optional(&pdev->dev, "sw_switch_mdiv");
+ 	if (IS_ERR(priv->clk_mdiv)) {
+@@ -1444,7 +1446,9 @@ static int bcm_sf2_sw_probe(struct platform_device *pdev)
+ 		goto out_clk;
+ 	}
+ 
+-	clk_prepare_enable(priv->clk_mdiv);
++	ret = clk_prepare_enable(priv->clk_mdiv);
++	if (ret)
++		goto out_clk;
+ 
+ 	ret = bcm_sf2_sw_rst(priv);
+ 	if (ret) {
 -- 
-2.39.2
+2.40.1
 
 
 
