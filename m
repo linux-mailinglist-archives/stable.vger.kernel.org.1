@@ -2,45 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C3AED7757A7
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:48:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A852F7758C7
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:55:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232250AbjHIKsg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 06:48:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56090 "EHLO
+        id S232759AbjHIKzX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 06:55:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40204 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232249AbjHIKsf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:48:35 -0400
+        with ESMTP id S232745AbjHIKzK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:55:10 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE98510F3
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:48:34 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF21F211F
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:53:47 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 72E8063123
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:48:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77415C433C8;
-        Wed,  9 Aug 2023 10:48:33 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CE64063126
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:53:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD885C433C8;
+        Wed,  9 Aug 2023 10:53:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691578113;
-        bh=eTcz6bIUyGp53N9M8fXParpMDa0FbsuPIF2BGIJYRq8=;
+        s=korg; t=1691578427;
+        bh=v47xBzXjD+GHjZL4ICjkuLE4qxgPP/0Aqz0GJvuScHA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=YE8hgaHd0MATgSf81QwJlorOphWt77BSc+3iklIZ4wJXzfcOgNHB9ZRQoNLJeoiG0
-         qo3D+sbxOVGCbmKnNLeoHn4d40XKPjHgm93AKKGMI4l+Gd+XKoeD6NKVf+5Gucf7ao
-         FYI8Z1QkjB+TcdqSWAPask+LoMv9WcAxmWBqem20=
+        b=JRIDTqt+/HqJW7DJwH4R6hmkWtzUXe7aU56unNysXq0nJwPmO9MyfF+qi44OWfBgr
+         tYYeqNv8WC5rkL5PHcn3Hh8aKV0eUwvTqiX8HFbJUpE3ASzFx/Vk3ObtDfJ28Gxpz9
+         pObzmsuRG3ng6TqgGS9JcxTBcD+V3rzWvHAx8g14=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hou Tao <houtao1@huawei.com>,
-        Jiri Olsa <jolsa@kernel.org>,
-        Alexei Starovoitov <ast@kernel.org>
-Subject: [PATCH 6.4 111/165] bpf: Disable preemption in bpf_perf_event_output
+        patches@lists.linux.dev,
+        Andy Gospodarek <andrew.gospodarek@broadcom.com>,
+        Somnath Kotur <somnath.kotur@broadcom.com>,
+        Michael Chan <michael.chan@broadcom.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 055/127] bnxt_en: Fix page pool logic for page size >= 64K
 Date:   Wed,  9 Aug 2023 12:40:42 +0200
-Message-ID: <20230809103646.425080696@linuxfoundation.org>
+Message-ID: <20230809103638.506475405@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103642.720851262@linuxfoundation.org>
-References: <20230809103642.720851262@linuxfoundation.org>
+In-Reply-To: <20230809103636.615294317@linuxfoundation.org>
+References: <20230809103636.615294317@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,89 +58,193 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jiri Olsa <jolsa@kernel.org>
+From: Somnath Kotur <somnath.kotur@broadcom.com>
 
-commit f2c67a3e60d1071b65848efaa8c3b66c363dd025 upstream.
+[ Upstream commit f6974b4c2d8e1062b5a52228ee47293c15b4ee1e ]
 
-The nesting protection in bpf_perf_event_output relies on disabled
-preemption, which is guaranteed for kprobes and tracepoints.
+The RXBD length field on all bnxt chips is 16-bit and so we cannot
+support a full page when the native page size is 64K or greater.
+The non-XDP (non page pool) code path has logic to handle this but
+the XDP page pool code path does not handle this.  Add the missing
+logic to use page_pool_dev_alloc_frag() to allocate 32K chunks if
+the page size is 64K or greater.
 
-However bpf_perf_event_output can be also called from uprobes context
-through bpf_prog_run_array_sleepable function which disables migration,
-but keeps preemption enabled.
-
-This can cause task to be preempted by another one inside the nesting
-protection and lead eventually to two tasks using same perf_sample_data
-buffer and cause crashes like:
-
-  kernel tried to execute NX-protected page - exploit attempt? (uid: 0)
-  BUG: unable to handle page fault for address: ffffffff82be3eea
-  ...
-  Call Trace:
-   ? __die+0x1f/0x70
-   ? page_fault_oops+0x176/0x4d0
-   ? exc_page_fault+0x132/0x230
-   ? asm_exc_page_fault+0x22/0x30
-   ? perf_output_sample+0x12b/0x910
-   ? perf_event_output+0xd0/0x1d0
-   ? bpf_perf_event_output+0x162/0x1d0
-   ? bpf_prog_c6271286d9a4c938_krava1+0x76/0x87
-   ? __uprobe_perf_func+0x12b/0x540
-   ? uprobe_dispatcher+0x2c4/0x430
-   ? uprobe_notify_resume+0x2da/0xce0
-   ? atomic_notifier_call_chain+0x7b/0x110
-   ? exit_to_user_mode_prepare+0x13e/0x290
-   ? irqentry_exit_to_user_mode+0x5/0x30
-   ? asm_exc_int3+0x35/0x40
-
-Fixing this by disabling preemption in bpf_perf_event_output.
-
-Cc: stable@vger.kernel.org
-Fixes: 8c7dcb84e3b7 ("bpf: implement sleepable uprobes by chaining gps")
-Acked-by: Hou Tao <houtao1@huawei.com>
-Signed-off-by: Jiri Olsa <jolsa@kernel.org>
-Link: https://lore.kernel.org/r/20230725084206.580930-2-jolsa@kernel.org
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 9f4b28301ce6 ("bnxt: XDP multibuffer enablement")
+Link: https://lore.kernel.org/netdev/20230728231829.235716-2-michael.chan@broadcom.com/
+Reviewed-by: Andy Gospodarek <andrew.gospodarek@broadcom.com>
+Signed-off-by: Somnath Kotur <somnath.kotur@broadcom.com>
+Signed-off-by: Michael Chan <michael.chan@broadcom.com>
+Link: https://lore.kernel.org/r/20230731142043.58855-2-michael.chan@broadcom.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/bpf_trace.c |   11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/broadcom/bnxt/bnxt.c     | 42 ++++++++++++-------
+ drivers/net/ethernet/broadcom/bnxt/bnxt_xdp.c |  6 +--
+ 2 files changed, 29 insertions(+), 19 deletions(-)
 
---- a/kernel/trace/bpf_trace.c
-+++ b/kernel/trace/bpf_trace.c
-@@ -661,8 +661,7 @@ static DEFINE_PER_CPU(int, bpf_trace_nes
- BPF_CALL_5(bpf_perf_event_output, struct pt_regs *, regs, struct bpf_map *, map,
- 	   u64, flags, void *, data, u64, size)
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+index 6469fb8a42a89..9bd18c2b10bc6 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+@@ -721,17 +721,24 @@ static void bnxt_tx_int(struct bnxt *bp, struct bnxt_napi *bnapi, int nr_pkts)
+ 
+ static struct page *__bnxt_alloc_rx_page(struct bnxt *bp, dma_addr_t *mapping,
+ 					 struct bnxt_rx_ring_info *rxr,
++					 unsigned int *offset,
+ 					 gfp_t gfp)
  {
--	struct bpf_trace_sample_data *sds = this_cpu_ptr(&bpf_trace_sds);
--	int nest_level = this_cpu_inc_return(bpf_trace_nest_level);
-+	struct bpf_trace_sample_data *sds;
- 	struct perf_raw_record raw = {
- 		.frag = {
- 			.size = size,
-@@ -670,7 +669,11 @@ BPF_CALL_5(bpf_perf_event_output, struct
- 		},
- 	};
- 	struct perf_sample_data *sd;
--	int err;
-+	int nest_level, err;
-+
-+	preempt_disable();
-+	sds = this_cpu_ptr(&bpf_trace_sds);
-+	nest_level = this_cpu_inc_return(bpf_trace_nest_level);
+ 	struct device *dev = &bp->pdev->dev;
+ 	struct page *page;
  
- 	if (WARN_ON_ONCE(nest_level > ARRAY_SIZE(sds->sds))) {
- 		err = -EBUSY;
-@@ -688,9 +691,9 @@ BPF_CALL_5(bpf_perf_event_output, struct
- 	perf_sample_save_raw_data(sd, &raw);
+-	page = page_pool_dev_alloc_pages(rxr->page_pool);
++	if (PAGE_SIZE > BNXT_RX_PAGE_SIZE) {
++		page = page_pool_dev_alloc_frag(rxr->page_pool, offset,
++						BNXT_RX_PAGE_SIZE);
++	} else {
++		page = page_pool_dev_alloc_pages(rxr->page_pool);
++		*offset = 0;
++	}
+ 	if (!page)
+ 		return NULL;
  
- 	err = __bpf_perf_event_output(regs, map, flags, sd);
--
- out:
- 	this_cpu_dec(bpf_trace_nest_level);
-+	preempt_enable();
- 	return err;
+-	*mapping = dma_map_page_attrs(dev, page, 0, PAGE_SIZE, bp->rx_dir,
+-				      DMA_ATTR_WEAK_ORDERING);
++	*mapping = dma_map_page_attrs(dev, page, *offset, BNXT_RX_PAGE_SIZE,
++				      bp->rx_dir, DMA_ATTR_WEAK_ORDERING);
+ 	if (dma_mapping_error(dev, *mapping)) {
+ 		page_pool_recycle_direct(rxr->page_pool, page);
+ 		return NULL;
+@@ -771,15 +778,16 @@ int bnxt_alloc_rx_data(struct bnxt *bp, struct bnxt_rx_ring_info *rxr,
+ 	dma_addr_t mapping;
+ 
+ 	if (BNXT_RX_PAGE_MODE(bp)) {
++		unsigned int offset;
+ 		struct page *page =
+-			__bnxt_alloc_rx_page(bp, &mapping, rxr, gfp);
++			__bnxt_alloc_rx_page(bp, &mapping, rxr, &offset, gfp);
+ 
+ 		if (!page)
+ 			return -ENOMEM;
+ 
+ 		mapping += bp->rx_dma_offset;
+ 		rx_buf->data = page;
+-		rx_buf->data_ptr = page_address(page) + bp->rx_offset;
++		rx_buf->data_ptr = page_address(page) + offset + bp->rx_offset;
+ 	} else {
+ 		u8 *data = __bnxt_alloc_rx_frag(bp, &mapping, gfp);
+ 
+@@ -839,7 +847,7 @@ static inline int bnxt_alloc_rx_page(struct bnxt *bp,
+ 	unsigned int offset = 0;
+ 
+ 	if (BNXT_RX_PAGE_MODE(bp)) {
+-		page = __bnxt_alloc_rx_page(bp, &mapping, rxr, gfp);
++		page = __bnxt_alloc_rx_page(bp, &mapping, rxr, &offset, gfp);
+ 
+ 		if (!page)
+ 			return -ENOMEM;
+@@ -986,15 +994,15 @@ static struct sk_buff *bnxt_rx_multi_page_skb(struct bnxt *bp,
+ 		return NULL;
+ 	}
+ 	dma_addr -= bp->rx_dma_offset;
+-	dma_unmap_page_attrs(&bp->pdev->dev, dma_addr, PAGE_SIZE, bp->rx_dir,
+-			     DMA_ATTR_WEAK_ORDERING);
+-	skb = build_skb(page_address(page), PAGE_SIZE);
++	dma_unmap_page_attrs(&bp->pdev->dev, dma_addr, BNXT_RX_PAGE_SIZE,
++			     bp->rx_dir, DMA_ATTR_WEAK_ORDERING);
++	skb = build_skb(data_ptr - bp->rx_offset, BNXT_RX_PAGE_SIZE);
+ 	if (!skb) {
+ 		page_pool_recycle_direct(rxr->page_pool, page);
+ 		return NULL;
+ 	}
+ 	skb_mark_for_recycle(skb);
+-	skb_reserve(skb, bp->rx_dma_offset);
++	skb_reserve(skb, bp->rx_offset);
+ 	__skb_put(skb, len);
+ 
+ 	return skb;
+@@ -1020,8 +1028,8 @@ static struct sk_buff *bnxt_rx_page_skb(struct bnxt *bp,
+ 		return NULL;
+ 	}
+ 	dma_addr -= bp->rx_dma_offset;
+-	dma_unmap_page_attrs(&bp->pdev->dev, dma_addr, PAGE_SIZE, bp->rx_dir,
+-			     DMA_ATTR_WEAK_ORDERING);
++	dma_unmap_page_attrs(&bp->pdev->dev, dma_addr, BNXT_RX_PAGE_SIZE,
++			     bp->rx_dir, DMA_ATTR_WEAK_ORDERING);
+ 
+ 	if (unlikely(!payload))
+ 		payload = eth_get_headlen(bp->dev, data_ptr, len);
+@@ -1034,7 +1042,7 @@ static struct sk_buff *bnxt_rx_page_skb(struct bnxt *bp,
+ 
+ 	skb_mark_for_recycle(skb);
+ 	off = (void *)data_ptr - page_address(page);
+-	skb_add_rx_frag(skb, 0, page, off, len, PAGE_SIZE);
++	skb_add_rx_frag(skb, 0, page, off, len, BNXT_RX_PAGE_SIZE);
+ 	memcpy(skb->data - NET_IP_ALIGN, data_ptr - NET_IP_ALIGN,
+ 	       payload + NET_IP_ALIGN);
+ 
+@@ -1169,7 +1177,7 @@ static struct sk_buff *bnxt_rx_agg_pages_skb(struct bnxt *bp,
+ 
+ 	skb->data_len += total_frag_len;
+ 	skb->len += total_frag_len;
+-	skb->truesize += PAGE_SIZE * agg_bufs;
++	skb->truesize += BNXT_RX_PAGE_SIZE * agg_bufs;
+ 	return skb;
  }
  
+@@ -2972,8 +2980,8 @@ static void bnxt_free_one_rx_ring_skbs(struct bnxt *bp, int ring_nr)
+ 		rx_buf->data = NULL;
+ 		if (BNXT_RX_PAGE_MODE(bp)) {
+ 			mapping -= bp->rx_dma_offset;
+-			dma_unmap_page_attrs(&pdev->dev, mapping, PAGE_SIZE,
+-					     bp->rx_dir,
++			dma_unmap_page_attrs(&pdev->dev, mapping,
++					     BNXT_RX_PAGE_SIZE, bp->rx_dir,
+ 					     DMA_ATTR_WEAK_ORDERING);
+ 			page_pool_recycle_direct(rxr->page_pool, data);
+ 		} else {
+@@ -3241,6 +3249,8 @@ static int bnxt_alloc_rx_page_pool(struct bnxt *bp,
+ 	pp.nid = dev_to_node(&bp->pdev->dev);
+ 	pp.dev = &bp->pdev->dev;
+ 	pp.dma_dir = DMA_BIDIRECTIONAL;
++	if (PAGE_SIZE > BNXT_RX_PAGE_SIZE)
++		pp.flags |= PP_FLAG_PAGE_FRAG;
+ 
+ 	rxr->page_pool = page_pool_create(&pp);
+ 	if (IS_ERR(rxr->page_pool)) {
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_xdp.c b/drivers/net/ethernet/broadcom/bnxt/bnxt_xdp.c
+index 36d5202c0aeec..aa56db138d6b5 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt_xdp.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_xdp.c
+@@ -180,8 +180,8 @@ void bnxt_xdp_buff_init(struct bnxt *bp, struct bnxt_rx_ring_info *rxr,
+ 			u16 cons, u8 *data_ptr, unsigned int len,
+ 			struct xdp_buff *xdp)
+ {
++	u32 buflen = BNXT_RX_PAGE_SIZE;
+ 	struct bnxt_sw_rx_bd *rx_buf;
+-	u32 buflen = PAGE_SIZE;
+ 	struct pci_dev *pdev;
+ 	dma_addr_t mapping;
+ 	u32 offset;
+@@ -297,7 +297,7 @@ bool bnxt_rx_xdp(struct bnxt *bp, struct bnxt_rx_ring_info *rxr, u16 cons,
+ 		rx_buf = &rxr->rx_buf_ring[cons];
+ 		mapping = rx_buf->mapping - bp->rx_dma_offset;
+ 		dma_unmap_page_attrs(&pdev->dev, mapping,
+-				     PAGE_SIZE, bp->rx_dir,
++				     BNXT_RX_PAGE_SIZE, bp->rx_dir,
+ 				     DMA_ATTR_WEAK_ORDERING);
+ 
+ 		/* if we are unable to allocate a new buffer, abort and reuse */
+@@ -478,7 +478,7 @@ bnxt_xdp_build_skb(struct bnxt *bp, struct sk_buff *skb, u8 num_frags,
+ 	}
+ 	xdp_update_skb_shared_info(skb, num_frags,
+ 				   sinfo->xdp_frags_size,
+-				   PAGE_SIZE * sinfo->nr_frags,
++				   BNXT_RX_PAGE_SIZE * sinfo->nr_frags,
+ 				   xdp_buff_is_frag_pfmemalloc(xdp));
+ 	return skb;
+ }
+-- 
+2.40.1
+
 
 
