@@ -2,44 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C72AF775A40
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:06:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BE5C0775793
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:47:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233117AbjHILGp (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:06:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41756 "EHLO
+        id S232229AbjHIKrj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 06:47:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60098 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233118AbjHILGo (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:06:44 -0400
+        with ESMTP id S232227AbjHIKrj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:47:39 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EDDFA1FEB
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:06:42 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A067D1702
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:47:38 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8CB3C63118
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:06:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 982D4C433C8;
-        Wed,  9 Aug 2023 11:06:41 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3F7CE6310A
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:47:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B114C433C7;
+        Wed,  9 Aug 2023 10:47:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691579202;
-        bh=AHAfLPUTCUUHRsnA2xM2PyG6fmI/bjg4m342f+s8WGk=;
+        s=korg; t=1691578057;
+        bh=gD7o2St27/AzZMpl15tanI1BOTSmKiu7ZhIDu6NVRLM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=BwhPdMZ4DU6JajnwPZqXLuYexAUbieCV1gnkBxeDPYjyaDzm1Hl1JI7CR4VUVGZbP
-         hUgG5OiaF4Aw4KkUVOgMNXCWQ7wKUvfEE26eSw2KJkMk+I/QeP++mH6huw8JkuApV7
-         80yKmWthtLDZwIewP/gQTTHN+pbwfgIKTjpKSWq0=
+        b=f77qyVgugoc74SOHY3rjk0Fj/iLKrmtpCb5VZbv6ZEye8rC7Q3Km+LeQoHetGGKDr
+         WJaiDZvXM7Gkc9BR/fgnuDng3iFpw1yOXF1bIW8wEzFO7x8ExVkurFO3f6puX8Zrh6
+         uM8hiw4AqvAnu2pZ861T46LGccr7tsV8Uh8tWta0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Andrew Lunn <andrew@lunn.ch>,
-        Arnd Bergmann <arnd@arndb.de>
-Subject: [PATCH 4.14 083/204] ARM: orion5x: fix d2net gpio initialization
+        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
+        David Ahern <dsahern@kernel.org>,
+        Kuniyuki Iwashima <kuniyu@amazon.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 090/165] tcp_metrics: annotate data-races around tm->tcpm_stamp
 Date:   Wed,  9 Aug 2023 12:40:21 +0200
-Message-ID: <20230809103645.438881209@linuxfoundation.org>
+Message-ID: <20230809103645.745109562@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103642.552405807@linuxfoundation.org>
-References: <20230809103642.552405807@linuxfoundation.org>
+In-Reply-To: <20230809103642.720851262@linuxfoundation.org>
+References: <20230809103642.720851262@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,55 +57,88 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Eric Dumazet <edumazet@google.com>
 
-commit f8ef1233939495c405a9faa4bd1ae7d3f581bae4 upstream.
+[ Upstream commit 949ad62a5d5311d36fce2e14fe5fed3f936da51c ]
 
-The DT version of this board has a custom file with the gpio
-device. However, it does nothing because the d2net_init()
-has no caller or prototype:
+tm->tcpm_stamp can be read or written locklessly.
 
-arch/arm/mach-orion5x/board-d2net.c:101:13: error: no previous prototype for 'd2net_init'
+Add needed READ_ONCE()/WRITE_ONCE() to document this.
 
-Call it from the board-dt file as intended.
+Also constify tcpm_check_stamp() dst argument.
 
-Fixes: 94b0bd366e36 ("ARM: orion5x: convert d2net to Device Tree")
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20230516153109.514251-10-arnd@kernel.org
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 51c5d0c4b169 ("tcp: Maintain dynamic metrics in local cache.")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Link: https://lore.kernel.org/r/20230802131500.1478140-3-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/mach-orion5x/board-dt.c |    3 +++
- arch/arm/mach-orion5x/common.h   |    6 ++++++
- 2 files changed, 9 insertions(+)
+ net/ipv4/tcp_metrics.c | 19 +++++++++++++------
+ 1 file changed, 13 insertions(+), 6 deletions(-)
 
---- a/arch/arm/mach-orion5x/board-dt.c
-+++ b/arch/arm/mach-orion5x/board-dt.c
-@@ -63,6 +63,9 @@ static void __init orion5x_dt_init(void)
- 	if (of_machine_is_compatible("maxtor,shared-storage-2"))
- 		mss2_init();
+diff --git a/net/ipv4/tcp_metrics.c b/net/ipv4/tcp_metrics.c
+index c4daf0aa2d4d9..8386165887963 100644
+--- a/net/ipv4/tcp_metrics.c
++++ b/net/ipv4/tcp_metrics.c
+@@ -97,7 +97,7 @@ static void tcpm_suck_dst(struct tcp_metrics_block *tm,
+ 	u32 msval;
+ 	u32 val;
  
-+	if (of_machine_is_compatible("lacie,d2-network"))
-+		d2net_init();
+-	tm->tcpm_stamp = jiffies;
++	WRITE_ONCE(tm->tcpm_stamp, jiffies);
+ 
+ 	val = 0;
+ 	if (dst_metric_locked(dst, RTAX_RTT))
+@@ -131,9 +131,15 @@ static void tcpm_suck_dst(struct tcp_metrics_block *tm,
+ 
+ #define TCP_METRICS_TIMEOUT		(60 * 60 * HZ)
+ 
+-static void tcpm_check_stamp(struct tcp_metrics_block *tm, struct dst_entry *dst)
++static void tcpm_check_stamp(struct tcp_metrics_block *tm,
++			     const struct dst_entry *dst)
+ {
+-	if (tm && unlikely(time_after(jiffies, tm->tcpm_stamp + TCP_METRICS_TIMEOUT)))
++	unsigned long limit;
 +
- 	of_platform_default_populate(NULL, orion5x_auxdata_lookup, NULL);
++	if (!tm)
++		return;
++	limit = READ_ONCE(tm->tcpm_stamp) + TCP_METRICS_TIMEOUT;
++	if (unlikely(time_after(jiffies, limit)))
+ 		tcpm_suck_dst(tm, dst, false);
  }
  
---- a/arch/arm/mach-orion5x/common.h
-+++ b/arch/arm/mach-orion5x/common.h
-@@ -75,6 +75,12 @@ extern void mss2_init(void);
- static inline void mss2_init(void) {}
- #endif
+@@ -174,7 +180,8 @@ static struct tcp_metrics_block *tcpm_new(struct dst_entry *dst,
+ 		oldest = deref_locked(tcp_metrics_hash[hash].chain);
+ 		for (tm = deref_locked(oldest->tcpm_next); tm;
+ 		     tm = deref_locked(tm->tcpm_next)) {
+-			if (time_before(tm->tcpm_stamp, oldest->tcpm_stamp))
++			if (time_before(READ_ONCE(tm->tcpm_stamp),
++					READ_ONCE(oldest->tcpm_stamp)))
+ 				oldest = tm;
+ 		}
+ 		tm = oldest;
+@@ -434,7 +441,7 @@ void tcp_update_metrics(struct sock *sk)
+ 					       tp->reordering);
+ 		}
+ 	}
+-	tm->tcpm_stamp = jiffies;
++	WRITE_ONCE(tm->tcpm_stamp, jiffies);
+ out_unlock:
+ 	rcu_read_unlock();
+ }
+@@ -647,7 +654,7 @@ static int tcp_metrics_fill_info(struct sk_buff *msg,
+ 	}
  
-+#ifdef CONFIG_MACH_D2NET_DT
-+void d2net_init(void);
-+#else
-+static inline void d2net_init(void) {}
-+#endif
-+
- /*****************************************************************************
-  * Helpers to access Orion registers
-  ****************************************************************************/
+ 	if (nla_put_msecs(msg, TCP_METRICS_ATTR_AGE,
+-			  jiffies - tm->tcpm_stamp,
++			  jiffies - READ_ONCE(tm->tcpm_stamp),
+ 			  TCP_METRICS_ATTR_PAD) < 0)
+ 		goto nla_put_failure;
+ 
+-- 
+2.40.1
+
 
 
