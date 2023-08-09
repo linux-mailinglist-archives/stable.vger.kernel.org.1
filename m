@@ -2,47 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7085E775946
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:59:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6AA87775C8A
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:28:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232814AbjHIK7G (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 06:59:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59488 "EHLO
+        id S233782AbjHIL2V (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:28:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50574 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232798AbjHIK7D (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:59:03 -0400
+        with ESMTP id S233773AbjHIL2V (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:28:21 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 877811724
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:59:02 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AFE72ED
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:28:20 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2752163130
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:59:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A38DC433C8;
-        Wed,  9 Aug 2023 10:59:01 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4F656632E5
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:28:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CF9BC433C7;
+        Wed,  9 Aug 2023 11:28:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691578741;
-        bh=PAR1NtWvwQLeYgEC0LFyp6voZOAAFNmK+qNEJorTAbo=;
+        s=korg; t=1691580499;
+        bh=xBH/tG141jmPTLoCMD5zyciakySYrBEF2Fzz85AglRk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=gXqN5QVhNB6iGDrFgJ6BwH+lWpAKqHooBGSgAWkha6lV/8IM/fH38hglAtAOF1c5u
-         +1UKbIKJeQeEUqS7GyiIQvO3QRJBp2XlIVlWPUPQA7QtET4bWWspgJihXUuOx5v+LR
-         Q++4L4zElfDP0Jz6iYuf72KF5UOzj8EHQewyxw7g=
+        b=wgx8nXX7sqceSktEfCH7OW3VC/UWtRoUFmM/Ro4V2HL4nqOdH4Hg60SJKTg7ntl4s
+         83hBaiR2ZoKaehkXuLxL+/lHee1A+6c9ecYKeW/JO0rFxur76ZSkCM/YczyAC9UNiG
+         JZaNqY0iQiR0NT2OavdwosS1GD5InEgkOwWwuvxw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Mark Brown <broonie@kernel.org>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-        Andrew Lunn <andrew@lunn.ch>, Jakub Kicinski <kuba@kernel.org>,
+        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
+        Leon Romanovsky <leon@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 40/92] net: netsec: Ignore phy-mode on SynQuacer in DT mode
+Subject: [PATCH 5.4 045/154] RDMA/mlx4: Make check for invalid flags stricter
 Date:   Wed,  9 Aug 2023 12:41:16 +0200
-Message-ID: <20230809103635.010347557@linuxfoundation.org>
+Message-ID: <20230809103638.507385609@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103633.485906560@linuxfoundation.org>
-References: <20230809103633.485906560@linuxfoundation.org>
+In-Reply-To: <20230809103636.887175326@linuxfoundation.org>
+References: <20230809103636.887175326@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,59 +55,53 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Mark Brown <broonie@kernel.org>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit f3bb7759a924713bc54d15f6d0d70733b5935fad ]
+[ Upstream commit d64b1ee12a168030fbb3e0aebf7bce49e9a07589 ]
 
-As documented in acd7aaf51b20 ("netsec: ignore 'phy-mode' device
-property on ACPI systems") the SocioNext SynQuacer platform ships with
-firmware defining the PHY mode as RGMII even though the physical
-configuration of the PHY is for TX and RX delays.  Since bbc4d71d63549bc
-("net: phy: realtek: fix rtl8211e rx/tx delay config") this has caused
-misconfiguration of the PHY, rendering the network unusable.
+This code is trying to ensure that only the flags specified in the list
+are allowed.  The problem is that ucmd->rx_hash_fields_mask is a u64 and
+the flags are an enum which is treated as a u32 in this context.  That
+means the test doesn't check whether the highest 32 bits are zero.
 
-This was worked around for ACPI by ignoring the phy-mode property but
-the system is also used with DT.  For DT instead if we're running on a
-SynQuacer force a working PHY mode, as well as the standard EDK2
-firmware with DT there are also some of these systems that use u-boot
-and might not initialise the PHY if not netbooting.  Newer firmware
-imagaes for at least EDK2 are available from Linaro so print a warning
-when doing this.
-
-Fixes: 533dd11a12f6 ("net: socionext: Add Synquacer NetSec driver")
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Acked-by: Ard Biesheuvel <ardb@kernel.org>
-Acked-by: Ilias Apalodimas <ilias.apalodimas@linaro.org>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://lore.kernel.org/r/20230731-synquacer-net-v3-1-944be5f06428@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 4d02ebd9bbbd ("IB/mlx4: Fix RSS hash fields restrictions")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://lore.kernel.org/r/233ed975-982d-422a-b498-410f71d8a101@moroto.mountain
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/socionext/netsec.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ drivers/infiniband/hw/mlx4/qp.c | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/net/ethernet/socionext/netsec.c b/drivers/net/ethernet/socionext/netsec.c
-index 6b8013fb17c38..eb59e8abe6915 100644
---- a/drivers/net/ethernet/socionext/netsec.c
-+++ b/drivers/net/ethernet/socionext/netsec.c
-@@ -1851,6 +1851,17 @@ static int netsec_of_probe(struct platform_device *pdev,
- 		return err;
+diff --git a/drivers/infiniband/hw/mlx4/qp.c b/drivers/infiniband/hw/mlx4/qp.c
+index 02caf9a439cf1..395d8a99b12e4 100644
+--- a/drivers/infiniband/hw/mlx4/qp.c
++++ b/drivers/infiniband/hw/mlx4/qp.c
+@@ -556,15 +556,15 @@ static int set_qp_rss(struct mlx4_ib_dev *dev, struct mlx4_ib_rss *rss_ctx,
+ 		return (-EOPNOTSUPP);
  	}
  
-+	/*
-+	 * SynQuacer is physically configured with TX and RX delays
-+	 * but the standard firmware claimed otherwise for a long
-+	 * time, ignore it.
-+	 */
-+	if (of_machine_is_compatible("socionext,developer-box") &&
-+	    priv->phy_interface != PHY_INTERFACE_MODE_RGMII_ID) {
-+		dev_warn(&pdev->dev, "Outdated firmware reports incorrect PHY mode, overriding\n");
-+		priv->phy_interface = PHY_INTERFACE_MODE_RGMII_ID;
-+	}
-+
- 	priv->phy_np = of_parse_phandle(pdev->dev.of_node, "phy-handle", 0);
- 	if (!priv->phy_np) {
- 		dev_err(&pdev->dev, "missing required property 'phy-handle'\n");
+-	if (ucmd->rx_hash_fields_mask & ~(MLX4_IB_RX_HASH_SRC_IPV4	|
+-					  MLX4_IB_RX_HASH_DST_IPV4	|
+-					  MLX4_IB_RX_HASH_SRC_IPV6	|
+-					  MLX4_IB_RX_HASH_DST_IPV6	|
+-					  MLX4_IB_RX_HASH_SRC_PORT_TCP	|
+-					  MLX4_IB_RX_HASH_DST_PORT_TCP	|
+-					  MLX4_IB_RX_HASH_SRC_PORT_UDP	|
+-					  MLX4_IB_RX_HASH_DST_PORT_UDP  |
+-					  MLX4_IB_RX_HASH_INNER)) {
++	if (ucmd->rx_hash_fields_mask & ~(u64)(MLX4_IB_RX_HASH_SRC_IPV4	|
++					       MLX4_IB_RX_HASH_DST_IPV4	|
++					       MLX4_IB_RX_HASH_SRC_IPV6	|
++					       MLX4_IB_RX_HASH_DST_IPV6	|
++					       MLX4_IB_RX_HASH_SRC_PORT_TCP |
++					       MLX4_IB_RX_HASH_DST_PORT_TCP |
++					       MLX4_IB_RX_HASH_SRC_PORT_UDP |
++					       MLX4_IB_RX_HASH_DST_PORT_UDP |
++					       MLX4_IB_RX_HASH_INNER)) {
+ 		pr_debug("RX Hash fields_mask has unsupported mask (0x%llx)\n",
+ 			 ucmd->rx_hash_fields_mask);
+ 		return (-EOPNOTSUPP);
 -- 
 2.40.1
 
