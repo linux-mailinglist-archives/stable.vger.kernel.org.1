@@ -2,43 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 79247775ADB
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:12:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 149F2775ADD
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:12:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233304AbjHILMQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:12:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33530 "EHLO
+        id S233305AbjHILMX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:12:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60212 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233303AbjHILMQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:12:16 -0400
+        with ESMTP id S233306AbjHILMW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:12:22 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 257F81FCE
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:12:16 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A5F5DED
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:12:21 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BA33962347
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:12:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A19DDC433C8;
-        Wed,  9 Aug 2023 11:12:14 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 467F562457
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:12:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59E77C433C8;
+        Wed,  9 Aug 2023 11:12:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691579535;
-        bh=hGX1m5NzUpiY7KPmtMCQuxWJ61gXsuJdiLbzPlQz+5w=;
+        s=korg; t=1691579540;
+        bh=jXMu5i5rhqurSYTDGtvJ7Kb3ZPzWEJNw/7nn02n5vq0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=xQhjiKJsbzLIQnED1wH6CSGjPJviYueEjVvMzhlbld95g4fhI+n9/NOozw0k5CQhA
-         BkWgX0OISgsBIDI6RmnylWXmb/69f4yO4Py73mL8ldkTaqF4t6zm4WQa+JpsbLEsM1
-         Tl4aJCMyElxBdlyaIEfXhpODNRqpql5neZ2d6j6k=
+        b=zAvsBOBjHu8ufwXwYuDcD0sav7Q0KWA8RJhke4g+sOorFsOQEFWbmqd6AqhKu4U+U
+         n1zrqR42jXN8ZM+t2307B3Txz+PQ1lrlpPH9qSLRVG18nU/laiPkXhIyFi+zpcQwGu
+         F9hap4Q5CAAaA5w4cBHpJSChiIbGm8T6w90pPMsc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 026/323] nfc: llcp: fix possible use of uninitialized variable in nfc_llcp_send_connect()
-Date:   Wed,  9 Aug 2023 12:37:44 +0200
-Message-ID: <20230809103659.315499352@linuxfoundation.org>
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        Simon Horman <simon.horman@corigine.com>,
+        Kalle Valo <kvalo@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 027/323] wifi: orinoco: Fix an error handling path in spectrum_cs_probe()
+Date:   Wed,  9 Aug 2023 12:37:45 +0200
+Message-ID: <20230809103659.363866548@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
 References: <20230809103658.104386911@linuxfoundation.org>
@@ -56,38 +56,57 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit 0d9b41daa5907756a31772d8af8ac5ff25cf17c1 ]
+[ Upstream commit 925244325159824385209e3e0e3f91fa6bf0646c ]
 
-If sock->service_name is NULL, the local variable
-service_name_tlv_length will not be assigned by nfc_llcp_build_tlv(),
-later leading to using value frmo the stack.  Smatch warning:
+Should spectrum_cs_config() fail, some resources need to be released as
+already done in the remove function.
 
-  net/nfc/llcp_commands.c:442 nfc_llcp_send_connect() error: uninitialized symbol 'service_name_tlv_length'.
+While at it, remove a useless and erroneous comment. The probe is
+spectrum_cs_probe(), not spectrum_cs_attach().
 
-Fixes: de9e5aeb4f40 ("NFC: llcp: Fix usage of llcp_add_tlv()")
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 15b99ac17295 ("[PATCH] pcmcia: add return value to _config() functions")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://lore.kernel.org/r/c0bc0c21c58ca477fc5521607615bafbf2aef8eb.1684567733.git.christophe.jaillet@wanadoo.fr
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/nfc/llcp_commands.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/wireless/intersil/orinoco/spectrum_cs.c | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
-diff --git a/net/nfc/llcp_commands.c b/net/nfc/llcp_commands.c
-index 6dcad7bcf20bb..737c7aa384f44 100644
---- a/net/nfc/llcp_commands.c
-+++ b/net/nfc/llcp_commands.c
-@@ -406,7 +406,8 @@ int nfc_llcp_send_connect(struct nfc_llcp_sock *sock)
- 	const u8 *service_name_tlv = NULL;
- 	const u8 *miux_tlv = NULL;
- 	const u8 *rw_tlv = NULL;
--	u8 service_name_tlv_length, miux_tlv_length,  rw_tlv_length, rw;
-+	u8 service_name_tlv_length = 0;
-+	u8 miux_tlv_length,  rw_tlv_length, rw;
- 	int err;
- 	u16 size = 0;
- 	__be16 miux;
+diff --git a/drivers/net/wireless/intersil/orinoco/spectrum_cs.c b/drivers/net/wireless/intersil/orinoco/spectrum_cs.c
+index b60048c95e0a8..011c86e55923e 100644
+--- a/drivers/net/wireless/intersil/orinoco/spectrum_cs.c
++++ b/drivers/net/wireless/intersil/orinoco/spectrum_cs.c
+@@ -157,6 +157,7 @@ spectrum_cs_probe(struct pcmcia_device *link)
+ {
+ 	struct orinoco_private *priv;
+ 	struct orinoco_pccard *card;
++	int ret;
+ 
+ 	priv = alloc_orinocodev(sizeof(*card), &link->dev,
+ 				spectrum_cs_hard_reset,
+@@ -169,8 +170,16 @@ spectrum_cs_probe(struct pcmcia_device *link)
+ 	card->p_dev = link;
+ 	link->priv = priv;
+ 
+-	return spectrum_cs_config(link);
+-}				/* spectrum_cs_attach */
++	ret = spectrum_cs_config(link);
++	if (ret)
++		goto err_free_orinocodev;
++
++	return 0;
++
++err_free_orinocodev:
++	free_orinocodev(priv);
++	return ret;
++}
+ 
+ static void spectrum_cs_detach(struct pcmcia_device *link)
+ {
 -- 
 2.39.2
 
