@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3B3FF775A52
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:07:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 54C6177587E
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:53:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233137AbjHILHZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:07:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40906 "EHLO
+        id S232616AbjHIKxU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 06:53:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37678 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233133AbjHILHZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:07:25 -0400
+        with ESMTP id S232428AbjHIKxF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:53:05 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD5B210F3
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:07:24 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F7A02D67
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:51:00 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4D9AE63146
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:07:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D1DFC433C7;
-        Wed,  9 Aug 2023 11:07:23 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2950C63122
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:51:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AED7C433C7;
+        Wed,  9 Aug 2023 10:50:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691579243;
-        bh=+4F+jbmnDb7dGt24n8kG/y50S1oILj5eCJueOyqEqKM=;
+        s=korg; t=1691578259;
+        bh=yjb+DL6XkIoN0iV3XWxSpWjgrrfESiZWTyArR9z9F0Q=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=MuWDCiceY9sOgPQXoEwwakpRms8PujfFrGWhYIMYaXO0vgC8MBO/w1ZF9fC12piZz
-         y62CwqogQBy1dHp2y67+uAhvYE9BXlakkR6kESh8XJ41jMj/ufLp665/c7l2hLClS9
-         +n51vXEYGdoU9OGNlyvzmwe++YXQf9xMcv3JoUao=
+        b=WfVs74VhURYe9Q/X2AyXaJ0/5t4d1yA2Ellmsmvzil3BmzSr/gP/Lg+ftheAabJt7
+         zsx8PtWiFU9U1Ef9oEf7/+yToi/IRrAHsndXU4y7ulTGzv08oxegYtBMYKD+aX96pO
+         tlTWrMc7CPFTR0nqgv8IJQQbRd7f+3l7Ge+lDIFs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, YueHaibing <yuehaibing@huawei.com>,
-        Oliver Hartkopp <socketcan@hartkopp.net>,
-        Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH 4.14 126/204] can: bcm: Fix UAF in bcm_proc_show()
+        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
+        kernel test robot <lkp@intel.com>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Peng Fan <peng.fan@nxp.com>, Stephen Boyd <sboyd@kernel.org>
+Subject: [PATCH 6.4 133/165] clk: imx93: Propagate correct error in imx93_clocks_probe()
 Date:   Wed,  9 Aug 2023 12:41:04 +0200
-Message-ID: <20230809103646.820800527@linuxfoundation.org>
+Message-ID: <20230809103647.167080790@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103642.552405807@linuxfoundation.org>
-References: <20230809103642.552405807@linuxfoundation.org>
+In-Reply-To: <20230809103642.720851262@linuxfoundation.org>
+References: <20230809103642.720851262@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,92 +56,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: YueHaibing <yuehaibing@huawei.com>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-commit 55c3b96074f3f9b0aee19bf93cd71af7516582bb upstream.
+commit a29b2fccf5f2689a9637be85ff1f51c834c6fb33 upstream.
 
-BUG: KASAN: slab-use-after-free in bcm_proc_show+0x969/0xa80
-Read of size 8 at addr ffff888155846230 by task cat/7862
+smatch reports:
 
-CPU: 1 PID: 7862 Comm: cat Not tainted 6.5.0-rc1-00153-gc8746099c197 #230
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
-Call Trace:
- <TASK>
- dump_stack_lvl+0xd5/0x150
- print_report+0xc1/0x5e0
- kasan_report+0xba/0xf0
- bcm_proc_show+0x969/0xa80
- seq_read_iter+0x4f6/0x1260
- seq_read+0x165/0x210
- proc_reg_read+0x227/0x300
- vfs_read+0x1d5/0x8d0
- ksys_read+0x11e/0x240
- do_syscall_64+0x35/0xb0
- entry_SYSCALL_64_after_hwframe+0x63/0xcd
+    drivers/clk/imx/clk-imx93.c:294 imx93_clocks_probe() error: uninitialized symbol 'base'.
 
-Allocated by task 7846:
- kasan_save_stack+0x1e/0x40
- kasan_set_track+0x21/0x30
- __kasan_kmalloc+0x9e/0xa0
- bcm_sendmsg+0x264b/0x44e0
- sock_sendmsg+0xda/0x180
- ____sys_sendmsg+0x735/0x920
- ___sys_sendmsg+0x11d/0x1b0
- __sys_sendmsg+0xfa/0x1d0
- do_syscall_64+0x35/0xb0
- entry_SYSCALL_64_after_hwframe+0x63/0xcd
+Indeed, in case of an error, the wrong (yet uninitialized) variable is
+converted to an error code and returned.
+Fix this by propagating the error code in the correct variable.
 
-Freed by task 7846:
- kasan_save_stack+0x1e/0x40
- kasan_set_track+0x21/0x30
- kasan_save_free_info+0x27/0x40
- ____kasan_slab_free+0x161/0x1c0
- slab_free_freelist_hook+0x119/0x220
- __kmem_cache_free+0xb4/0x2e0
- rcu_core+0x809/0x1bd0
-
-bcm_op is freed before procfs entry be removed in bcm_release(),
-this lead to bcm_proc_show() may read the freed bcm_op.
-
-Fixes: ffd980f976e7 ("[CAN]: Add broadcast manager (bcm) protocol")
-Signed-off-by: YueHaibing <yuehaibing@huawei.com>
-Reviewed-by: Oliver Hartkopp <socketcan@hartkopp.net>
-Acked-by: Oliver Hartkopp <socketcan@hartkopp.net>
-Link: https://lore.kernel.org/all/20230715092543.15548-1-yuehaibing@huawei.com
-Cc: stable@vger.kernel.org
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Fixes: e02ba11b45764705 ("clk: imx93: fix memory leak and missing unwind goto in imx93_clocks_probe")
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Closes: https://lore.kernel.org/all/9c2acd81-3ad8-485d-819e-9e4201277831@kadam.mountain
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/all/202306161533.4YDmL22b-lkp@intel.com/
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://lore.kernel.org/r/20230711150812.3562221-1-geert+renesas@glider.be
+Reviewed-by: Peng Fan <peng.fan@nxp.com>
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/can/bcm.c |   12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/clk/imx/clk-imx93.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/can/bcm.c
-+++ b/net/can/bcm.c
-@@ -1572,6 +1572,12 @@ static int bcm_release(struct socket *so
+--- a/drivers/clk/imx/clk-imx93.c
++++ b/drivers/clk/imx/clk-imx93.c
+@@ -291,7 +291,7 @@ static int imx93_clocks_probe(struct pla
+ 	anatop_base = devm_of_iomap(dev, np, 0, NULL);
+ 	of_node_put(np);
+ 	if (WARN_ON(IS_ERR(anatop_base))) {
+-		ret = PTR_ERR(base);
++		ret = PTR_ERR(anatop_base);
+ 		goto unregister_hws;
+ 	}
  
- 	lock_sock(sk);
- 
-+#if IS_ENABLED(CONFIG_PROC_FS)
-+	/* remove procfs entry */
-+	if (net->can.bcmproc_dir && bo->bcm_proc_read)
-+		remove_proc_entry(bo->procname, net->can.bcmproc_dir);
-+#endif /* CONFIG_PROC_FS */
-+
- 	list_for_each_entry_safe(op, next, &bo->tx_ops, list)
- 		bcm_remove_op(op);
- 
-@@ -1607,12 +1613,6 @@ static int bcm_release(struct socket *so
- 	list_for_each_entry_safe(op, next, &bo->rx_ops, list)
- 		bcm_remove_op(op);
- 
--#if IS_ENABLED(CONFIG_PROC_FS)
--	/* remove procfs entry */
--	if (net->can.bcmproc_dir && bo->bcm_proc_read)
--		remove_proc_entry(bo->procname, net->can.bcmproc_dir);
--#endif /* CONFIG_PROC_FS */
--
- 	/* remove device reference */
- 	if (bo->bound) {
- 		bo->bound   = 0;
 
 
