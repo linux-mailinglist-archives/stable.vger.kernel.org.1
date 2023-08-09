@@ -2,242 +2,101 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9EC3B775731
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:40:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 791AF775BBF
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:20:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230340AbjHIKkP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 06:40:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33994 "EHLO
+        id S233528AbjHILUj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:20:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33390 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229457AbjHIKkO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:40:14 -0400
-Received: from mail-pl1-x633.google.com (mail-pl1-x633.google.com [IPv6:2607:f8b0:4864:20::633])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4820B10F3
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:40:14 -0700 (PDT)
-Received: by mail-pl1-x633.google.com with SMTP id d9443c01a7336-1bc8b15c3c3so11068775ad.0
-        for <stable@vger.kernel.org>; Wed, 09 Aug 2023 03:40:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20221208.gappssmtp.com; s=20221208; t=1691577613; x=1692182413;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=sATRgrNgRco86Ytp1AjHgO4U5xINaDaAmrmGcHPwnFI=;
-        b=GQTxbzY0y4y5n4IGqWyvalcsiwtSrzoS42RaEx6rskaC3mgpznjbyGhpJLDiY8I10H
-         gRP3oc7ihMiduYTE9Fbw+eRdBjw4wTf0rXVPd7dbz2D4kq2uG1Qe5O1kMMPZBaAi6HWH
-         ynaYlMc9JALr5gAwrTC7CYgroh1CcVFQ4UPC+IIFrjxkQRBDRtV/mgdgEwJlsGxMRvpc
-         uU2Z4Yuoc+R12ca+07hLre5QbuQrRV1bPWGHZrWbdpFHA7Lk4rdv+Zyq9dF3t9+6nkhj
-         RnCeoxlkzKUt6Lsfcaz+0HQ2id2JS+pa3RIVSrY6OcmvEbRggzYtTQAYU3xNc4exOWET
-         zcaw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691577613; x=1692182413;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=sATRgrNgRco86Ytp1AjHgO4U5xINaDaAmrmGcHPwnFI=;
-        b=jgek8vZuzdgKBOAhW8D7g7iUfaUZKZqCufl/RheG7TRBMVoW/Ro7jv/HnZANd5+qCn
-         rXc53uzS66E1J+e2lzUihrgjljlglO8iZPyYjhdPeN/AmNcuU/BXvRJT0/uREAFx7cfF
-         JLZHg7p5U8axlV0j6us9kB0RSPLTRvIXpPQaXcPs8GZA/FH9dwmk31kpB8DVYAlVm9MG
-         0vMpFPQldkqcFQ4PYYXApnOXZXmM6GcpUKhdJ6Ee5e5PRO8eBObswAGIi/gBBEnQSq6g
-         OyDlK58+LkE08PqYWEaYrKdxzOckALOX/SIwahBq4L9rFmf+ZSa8rzYc/ZvWAnUOKG7R
-         7UJA==
-X-Gm-Message-State: AOJu0YxLaOEWyAwrUwyd/wXrfrJD4T6udPWGChaYyw+gWsYcuhMtNtfU
-        hWPcdSRFupdelz3Ggm7mmAspCg+S1T94NKyQ+181Wg==
-X-Google-Smtp-Source: AGHT+IHl9serfq0CxltLbzBZo/sJDHSJgu42old0CHnep3uLTLPx4WSVBp5sRfq5ajrzVEJyydRLGg==
-X-Received: by 2002:a17:902:6907:b0:1ab:11c8:777a with SMTP id j7-20020a170902690700b001ab11c8777amr2156742plk.13.1691577613224;
-        Wed, 09 Aug 2023 03:40:13 -0700 (PDT)
-Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id q9-20020a170902b10900b001b8622c1ad2sm10757183plr.130.2023.08.09.03.40.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 09 Aug 2023 03:40:12 -0700 (PDT)
-Message-ID: <64d36d0c.170a0220.e3f9b.336c@mx.google.com>
-Date:   Wed, 09 Aug 2023 03:40:12 -0700 (PDT)
-Content-Type: text/plain; charset="utf-8"
+        with ESMTP id S233530AbjHILUh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:20:37 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C14CEED
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:20:36 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5731F631D3
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:20:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65786C433C8;
+        Wed,  9 Aug 2023 11:20:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1691580035;
+        bh=ZJchF7m3ZrlQJP4mwQBqgjadwArwlQ50Xl/dE38mYjA=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=lr3Pzqyy9Dg4iFTn6gYhyF9dWRyDE/+omqFxwH/aHlOr4V8FjZqbdbXoO8RDEWFi7
+         AZ2rjgwR0iwzQid4ffih36C+EBnP/WgUH7JoS1DLXFzplRckzDTZ9QAt+O+n0Ep5b+
+         GE72m/fSTHTsjflgXcF8EWEC5n0UYAvPqIhKX5wE=
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     stable@vger.kernel.org
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        patches@lists.linux.dev, Xiubo Li <xiubli@redhat.com>,
+        Milind Changire <mchangir@redhat.com>,
+        Patrick Donnelly <pdonnell@redhat.com>,
+        Ilya Dryomov <idryomov@gmail.com>
+Subject: [PATCH 4.19 174/323] ceph: dont let check_caps skip sending responses for revoke msgs
+Date:   Wed,  9 Aug 2023 12:40:12 +0200
+Message-ID: <20230809103706.108145941@linuxfoundation.org>
+X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
+References: <20230809103658.104386911@linuxfoundation.org>
+User-Agent: quilt/0.67
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Report-Type: build
-X-Kernelci-Kernel: v5.10.189-202-gb9dd551c546f
-X-Kernelci-Tree: stable-rc
-X-Kernelci-Branch: linux-5.10.y
-Subject: stable-rc/linux-5.10.y build: 19 builds: 0 failed, 19 passed,
- 7 warnings (v5.10.189-202-gb9dd551c546f)
-To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
-        kernelci-results@groups.io
-From:   "kernelci.org bot" <bot@kernelci.org>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-stable-rc/linux-5.10.y build: 19 builds: 0 failed, 19 passed, 7 warnings (v=
-5.10.189-202-gb9dd551c546f)
+From: Xiubo Li <xiubli@redhat.com>
 
-Full Build Summary: https://kernelci.org/build/stable-rc/branch/linux-5.10.=
-y/kernel/v5.10.189-202-gb9dd551c546f/
+commit 257e6172ab36ebbe295a6c9ee9a9dd0fe54c1dc2 upstream.
 
-Tree: stable-rc
-Branch: linux-5.10.y
-Git Describe: v5.10.189-202-gb9dd551c546f
-Git Commit: b9dd551c546fb01fe5f91b8aaad6183005e2af20
-Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
-e-rc.git
-Built: 7 unique architectures
+If a client sends out a cap update dropping caps with the prior 'seq'
+just before an incoming cap revoke request, then the client may drop
+the revoke because it believes it's already released the requested
+capabilities.
 
-Warnings Detected:
+This causes the MDS to wait indefinitely for the client to respond
+to the revoke. It's therefore always a good idea to ack the cap
+revoke request with the bumped up 'seq'.
 
-arc:
-
-arm64:
-
-arm:
-
-i386:
-
-mips:
-    32r2el_defconfig (gcc-10): 1 warning
-
-riscv:
-    rv32_defconfig (gcc-10): 4 warnings
-
-x86_64:
-    x86_64_defconfig (gcc-10): 1 warning
-    x86_64_defconfig+x86-chromebook (gcc-10): 1 warning
-
-
-Warnings summary:
-
-    2    arch/x86/lib/retpoline.o: warning: objtool: .altinstr_replacement:=
- unexpected end of section
-    2    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [=
--Wcpp]
-    2    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemente=
-d [-Wcpp]
-    1    WARNING: modpost: Symbol info of vmlinux is missing. Unresolved sy=
-mbol check will be entirely skipped.
-
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D
-
-Detailed per-defconfig build reports:
-
----------------------------------------------------------------------------=
------
-32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sect=
-ion mismatches
-
-Warnings:
-    WARNING: modpost: Symbol info of vmlinux is missing. Unresolved symbol =
-check will be entirely skipped.
-
----------------------------------------------------------------------------=
------
-allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
-mismatches
-
----------------------------------------------------------------------------=
------
-allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
-n mismatches
-
----------------------------------------------------------------------------=
------
-defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warn=
-ings, 0 section mismatches
-
----------------------------------------------------------------------------=
------
-haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
- section mismatches
-
----------------------------------------------------------------------------=
------
-i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
-on mismatches
-
----------------------------------------------------------------------------=
------
-imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-nommu_k210_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, =
-0 section mismatches
-
----------------------------------------------------------------------------=
------
-omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-rv32_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 sect=
-ion mismatches
-
-Warnings:
-    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [-Wcpp]
-    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemented [-W=
-cpp]
-    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [-Wcpp]
-    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemented [-W=
-cpp]
-
----------------------------------------------------------------------------=
------
-tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section=
- mismatches
-
----------------------------------------------------------------------------=
------
-vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 se=
-ction mismatches
-
-Warnings:
-    arch/x86/lib/retpoline.o: warning: objtool: .altinstr_replacement: unex=
-pected end of section
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig+x86-chromebook (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, =
-1 warning, 0 section mismatches
-
-Warnings:
-    arch/x86/lib/retpoline.o: warning: objtool: .altinstr_replacement: unex=
-pected end of section
-
+Cc: stable@vger.kernel.org
+Link: https://tracker.ceph.com/issues/61782
+Signed-off-by: Xiubo Li <xiubli@redhat.com>
+Reviewed-by: Milind Changire <mchangir@redhat.com>
+Reviewed-by: Patrick Donnelly <pdonnell@redhat.com>
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
-For more info write to <info@kernelci.org>
+ fs/ceph/caps.c |    9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+--- a/fs/ceph/caps.c
++++ b/fs/ceph/caps.c
+@@ -3285,6 +3285,15 @@ static void handle_cap_grant(struct inod
+ 	}
+ 	BUG_ON(cap->issued & ~cap->implemented);
+ 
++	/* don't let check_caps skip sending a response to MDS for revoke msgs */
++	if (le32_to_cpu(grant->op) == CEPH_CAP_OP_REVOKE) {
++		cap->mds_wanted = 0;
++		if (cap == ci->i_auth_cap)
++			check_caps = 1; /* check auth cap only */
++		else
++			check_caps = 2; /* check all caps */
++	}
++
+ 	if (extra_info->inline_version > 0 &&
+ 	    extra_info->inline_version >= ci->i_inline_version) {
+ 		ci->i_inline_version = extra_info->inline_version;
+
+
