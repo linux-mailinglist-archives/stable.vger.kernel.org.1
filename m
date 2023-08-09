@@ -2,96 +2,101 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4B6FA775D66
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:37:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B2D82775A95
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:09:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234092AbjHILhQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:37:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47260 "EHLO
+        id S233227AbjHILJm (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:09:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40844 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234198AbjHILhG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:37:06 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7D141BFE
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:37:05 -0700 (PDT)
+        with ESMTP id S233226AbjHILJm (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:09:42 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CFB2B10F3
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:09:38 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 558FD6354B
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:37:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6357BC433C7;
-        Wed,  9 Aug 2023 11:37:04 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 66C8D6314A
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:09:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50C28C433CB;
+        Wed,  9 Aug 2023 11:09:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691581024;
-        bh=BzAO1hbA+DDXbj1cRfz/AK+sFJ/y+3foj8deBLOtmzY=;
+        s=korg; t=1691579377;
+        bh=lGZnPdpFyt1JDy7prZ0HWcAym9BTEnaA+BV3ZlSacX8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=l6sELjmeixZuHiRhMMorymzuM6HkZaQ4Q4yZW8lVYA11DcHyp1wZoAnGQj84ydloD
-         bPHinFHpfrcKn8TW+GvefuVDCnbhGs+kiD8JiebWQYg8j/7SRyHQEtmADCkAoFnAgj
-         pzLZ25XU8QtKVxoa2nUc5TDsAQ56PzvNDc1uoazU=
+        b=yU69TVKwCicmLaxKEAFThe7wasOjGkM6T8haLsEIuR0oyV9NPdcMHQss8IzkGoGSb
+         8mhoCRgjFDS5kfbhPGzEaNHbHgRmLsYnMMqVan3Q0qxG3kt3Zn/OfgsxedbTQNfkqw
+         1Alf7DA3ymmq8WFg/WWbuFs1LPYjVveRP7QAomSw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Guiting Shen <aarongt.shen@gmail.com>,
-        stable <stable@kernel.org>,
-        Alan Stern <stern@rowland.harvard.edu>
-Subject: [PATCH 5.10 078/201] usb: ohci-at91: Fix the unhandle interrupt when resume
-Date:   Wed,  9 Aug 2023 12:41:20 +0200
-Message-ID: <20230809103646.413041311@linuxfoundation.org>
+        patches@lists.linux.dev, Florian Westphal <fw@strlen.de>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.14 143/204] netfilter: nf_tables: fix spurious set element insertion failure
+Date:   Wed,  9 Aug 2023 12:41:21 +0200
+Message-ID: <20230809103647.372965830@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103643.799166053@linuxfoundation.org>
-References: <20230809103643.799166053@linuxfoundation.org>
+In-Reply-To: <20230809103642.552405807@linuxfoundation.org>
+References: <20230809103642.552405807@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Guiting Shen <aarongt.shen@gmail.com>
+From: Florian Westphal <fw@strlen.de>
 
-commit c55afcbeaa7a6f4fffdbc999a9bf3f0b29a5186f upstream.
+[ Upstream commit ddbd8be68941985f166f5107109a90ce13147c44 ]
 
-The ohci_hcd_at91_drv_suspend() sets ohci->rh_state to OHCI_RH_HALTED when
-suspend which will let the ohci_irq() skip the interrupt after resume. And
-nobody to handle this interrupt.
+On some platforms there is a padding hole in the nft_verdict
+structure, between the verdict code and the chain pointer.
 
-According to the comment in ohci_hcd_at91_drv_suspend(), it need to reset
-when resume from suspend(MEM) to fix by setting "hibernated" argument of
-ohci_resume().
+On element insertion, if the new element clashes with an existing one and
+NLM_F_EXCL flag isn't set, we want to ignore the -EEXIST error as long as
+the data associated with duplicated element is the same as the existing
+one.  The data equality check uses memcmp.
 
-Signed-off-by: Guiting Shen <aarongt.shen@gmail.com>
-Cc: stable <stable@kernel.org>
-Reviewed-by: Alan Stern <stern@rowland.harvard.edu>
-Link: https://lore.kernel.org/r/20230626152713.18950-1-aarongt.shen@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+For normal data (NFT_DATA_VALUE) this works fine, but for NFT_DATA_VERDICT
+padding area leads to spurious failure even if the verdict data is the
+same.
+
+This then makes the insertion fail with 'already exists' error, even
+though the new "key : data" matches an existing entry and userspace
+told the kernel that it doesn't want to receive an error indication.
+
+Fixes: c016c7e45ddf ("netfilter: nf_tables: honor NLM_F_EXCL flag in set element insertion")
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/ohci-at91.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ net/netfilter/nf_tables_api.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/usb/host/ohci-at91.c
-+++ b/drivers/usb/host/ohci-at91.c
-@@ -647,7 +647,13 @@ ohci_hcd_at91_drv_resume(struct device *
- 	else
- 		at91_start_clock(ohci_at91);
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index b016ae68d9db8..68a13ab584acf 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -5852,6 +5852,9 @@ static int nft_verdict_init(const struct nft_ctx *ctx, struct nft_data *data,
  
--	ohci_resume(hcd, false);
-+	/*
-+	 * According to the comment in ohci_hcd_at91_drv_suspend()
-+	 * we need to do a reset if the 48Mhz clock was stopped,
-+	 * that is, if ohci_at91->wakeup is clear. Tell ohci_resume()
-+	 * to reset in this case by setting its "hibernated" flag.
-+	 */
-+	ohci_resume(hcd, !ohci_at91->wakeup);
+ 	if (!tb[NFTA_VERDICT_CODE])
+ 		return -EINVAL;
++
++	/* zero padding hole for memcmp */
++	memset(data, 0, sizeof(*data));
+ 	data->verdict.code = ntohl(nla_get_be32(tb[NFTA_VERDICT_CODE]));
  
- 	return 0;
- }
+ 	switch (data->verdict.code) {
+-- 
+2.39.2
+
 
 
