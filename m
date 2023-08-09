@@ -2,45 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 550C5775771
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:46:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 46170775A13
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:05:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231848AbjHIKqG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 06:46:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48366 "EHLO
+        id S233059AbjHILFN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:05:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33832 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232060AbjHIKqE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:46:04 -0400
+        with ESMTP id S233075AbjHILFL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:05:11 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A5FC1FD8
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:46:03 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 16CF41FD8
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:05:11 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0047763118
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:46:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EF49C433C8;
-        Wed,  9 Aug 2023 10:46:01 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A255D625AD
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:05:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD887C433C7;
+        Wed,  9 Aug 2023 11:05:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691577962;
-        bh=WxVAyr/b4Gr6p7QN1M4qGkQb40nfA+WCxuQltzZRve4=;
+        s=korg; t=1691579110;
+        bh=jOgneZPvlVm368i1kkwaiB6gQJWVW7E6uZjdM19iyAQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=IdXIKGjPDVrN/G2F3rlwDO/rv3x+/39dajX2EXnEtCx5eVbmwmClP0k2b0dejNfs5
-         oQC3SlYb/Ty+bWZ5QELYsX2CM6aNl1NhTJr9pIgSrQzcKmsn/jwnCtALbJvT4RbQhh
-         mG/lh5rtApKwgiitXDmRoH+NynQyuNIOjalBQzYA=
+        b=HExcK6pv+b5yGf7Y7NNXMttB/RxPE4v/8YAHRfU6joa1U8sqEmP5HPy2hYlrdvVgD
+         GF2mTHXH5Ng3NrIYN/q4o2DG4iQT3Hnl43edZvKnbzFfjJ9cIP00a3hYPqTmAB2mCx
+         GF5FLHavBMpfkUeaTxrqoODrkoGiJrUTmPKCdQHY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev,
+        Claudiu Beznea <claudiu.beznea@microchip.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 056/165] net: add missing READ_ONCE(sk->sk_rcvbuf) annotation
+Subject: [PATCH 4.14 049/204] pinctrl: at91-pio4: check return value of devm_kasprintf()
 Date:   Wed,  9 Aug 2023 12:39:47 +0200
-Message-ID: <20230809103644.650329245@linuxfoundation.org>
+Message-ID: <20230809103644.209871142@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103642.720851262@linuxfoundation.org>
-References: <20230809103642.720851262@linuxfoundation.org>
+In-Reply-To: <20230809103642.552405807@linuxfoundation.org>
+References: <20230809103642.552405807@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,36 +57,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Eric Dumazet <edumazet@google.com>
+From: Claudiu Beznea <claudiu.beznea@microchip.com>
 
-[ Upstream commit b4b553253091cafe9ec38994acf42795e073bef5 ]
+[ Upstream commit f6fd5d4ff8ca0b24cee1af4130bcb1fa96b61aa0 ]
 
-In a prior commit, I forgot to change sk_getsockopt()
-when reading sk->sk_rcvbuf locklessly.
+devm_kasprintf() returns a pointer to dynamically allocated memory.
+Pointer could be NULL in case allocation fails. Check pointer validity.
+Identified with coccinelle (kmerr.cocci script).
 
-Fixes: ebb3b78db7bf ("tcp: annotate sk->sk_rcvbuf lockless reads")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 776180848b57 ("pinctrl: introduce driver for Atmel PIO4 controller")
+Depends-on: 1c4e5c470a56 ("pinctrl: at91: use devm_kasprintf() to avoid potential leaks")
+Depends-on: 5a8f9cf269e8 ("pinctrl: at91-pio4: use proper format specifier for unsigned int")
+Signed-off-by: Claudiu Beznea <claudiu.beznea@microchip.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/r/20230615105333.585304-4-claudiu.beznea@microchip.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/sock.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pinctrl/pinctrl-at91-pio4.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/core/sock.c b/net/core/sock.c
-index c5dfeb6d4fec6..8c69610753ec2 100644
---- a/net/core/sock.c
-+++ b/net/core/sock.c
-@@ -1630,7 +1630,7 @@ int sk_getsockopt(struct sock *sk, int level, int optname,
- 		break;
+diff --git a/drivers/pinctrl/pinctrl-at91-pio4.c b/drivers/pinctrl/pinctrl-at91-pio4.c
+index 32e863a352a30..8f18a35b66b61 100644
+--- a/drivers/pinctrl/pinctrl-at91-pio4.c
++++ b/drivers/pinctrl/pinctrl-at91-pio4.c
+@@ -983,6 +983,8 @@ static int atmel_pinctrl_probe(struct platform_device *pdev)
+ 		/* Pin naming convention: P(bank_name)(bank_pin_number). */
+ 		pin_desc[i].name = devm_kasprintf(&pdev->dev, GFP_KERNEL, "P%c%d",
+ 						  bank + 'A', line);
++		if (!pin_desc[i].name)
++			return -ENOMEM;
  
- 	case SO_RCVBUF:
--		v.val = sk->sk_rcvbuf;
-+		v.val = READ_ONCE(sk->sk_rcvbuf);
- 		break;
- 
- 	case SO_REUSEADDR:
+ 		group->name = group_names[i] = pin_desc[i].name;
+ 		group->pin = pin_desc[i].number;
 -- 
-2.40.1
+2.39.2
 
 
 
