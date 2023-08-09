@@ -2,103 +2,135 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8E401775D1A
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:33:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0AEA377589D
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:54:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233995AbjHILdw (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:33:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40366 "EHLO
+        id S232724AbjHIKyf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 06:54:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40218 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233990AbjHILdw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:33:52 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF03F1FCE
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:33:51 -0700 (PDT)
+        with ESMTP id S232638AbjHIKyN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:54:13 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 013AC49F3
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:52:27 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4F60063475
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:33:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58ABEC433C8;
-        Wed,  9 Aug 2023 11:33:50 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C9EC86312B
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:52:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D76B1C433C7;
+        Wed,  9 Aug 2023 10:52:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691580830;
-        bh=QP8Vdohz0MHqhABbwiaoTLw56uOVHkvclDxsEDGPt/4=;
+        s=korg; t=1691578346;
+        bh=iTnnX3OC5vcKNl7qEsmrQqC732q4InTfn4rldMu+0bI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=QWWXgdlN6lSQ/YvmElwsZ41WRukUocN03dxhA2N/fg+IIaXl5LPmvKi0Hp7tsuY0f
-         0DjBwtm5KbA+NPichkJmix6ojKV2AKEQTg6GqUczzjnUd7+/79Mqt5iGlxYzX8iRTD
-         4Q38pODjEnY6hgAYptu78rwvF7mbWSvYJiKxsBdo=
+        b=Qkbx1u17dCYJPgVs9V3fvRPvZ3kLv5hFdldE5jy68vMzruSOBPm6hak3y49U3g3/O
+         Lr/j+ANrhwrRGj2rtC7IhTunfxeTTM5MfsLK/xAL1RvZpBsAepVh6Bl4BE2zHINlII
+         2QqLj7B1D+sf1iw6He8ddQsjD4o5jGwegz8uGY0o=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Linus Walleij <linus.walleij@linaro.org>,
-        Andi Shyti <andi.shyti@kernel.org>,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Wolfram Sang <wsa@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 010/201] i2c: nomadik: Remove a useless call in the remove function
-Date:   Wed,  9 Aug 2023 12:40:12 +0200
-Message-ID: <20230809103644.151260089@linuxfoundation.org>
+        patches@lists.linux.dev, Amir Tzin <amirtz@nvidia.com>,
+        Aya Levin <ayal@nvidia.com>,
+        Saeed Mahameed <saeedm@nvidia.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 026/127] net/mlx5e: Fix crash moving to switchdev mode when ntuple offload is set
+Date:   Wed,  9 Aug 2023 12:40:13 +0200
+Message-ID: <20230809103637.509494872@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103643.799166053@linuxfoundation.org>
-References: <20230809103643.799166053@linuxfoundation.org>
+In-Reply-To: <20230809103636.615294317@linuxfoundation.org>
+References: <20230809103636.615294317@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Amir Tzin <amirtz@nvidia.com>
 
-[ Upstream commit 05f933d5f7318b03ff2028c1704dc867ac16f2c7 ]
+[ Upstream commit 3ec43c1b082a8804472430e1253544d75f4b540e ]
 
-Since commit 235602146ec9 ("i2c-nomadik: turn the platform driver to an amba
-driver"), there is no more request_mem_region() call in this driver.
+Moving to switchdev mode with ntuple offload on causes the kernel to
+crash since fs->arfs is freed during nic profile cleanup flow.
 
-So remove the release_mem_region() call from the remove function which is
-likely a left over.
+Ntuple offload is not supported in switchdev mode and it is already
+unset by mlx5 fix feature ndo in switchdev mode. Verify fs->arfs is
+valid before disabling it.
 
-Fixes: 235602146ec9 ("i2c-nomadik: turn the platform driver to an amba driver")
-Cc: <stable@vger.kernel.org> # v3.6+
-Acked-by: Linus Walleij <linus.walleij@linaro.org>
-Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Signed-off-by: Wolfram Sang <wsa@kernel.org>
+trace:
+[] RIP: 0010:_raw_spin_lock_bh+0x17/0x30
+[] arfs_del_rules+0x44/0x1a0 [mlx5_core]
+[] mlx5e_arfs_disable+0xe/0x20 [mlx5_core]
+[] mlx5e_handle_feature+0x3d/0xb0 [mlx5_core]
+[] ? __rtnl_unlock+0x25/0x50
+[] mlx5e_set_features+0xfe/0x160 [mlx5_core]
+[] __netdev_update_features+0x278/0xa50
+[] ? netdev_run_todo+0x5e/0x2a0
+[] netdev_update_features+0x22/0x70
+[] ? _cond_resched+0x15/0x30
+[] mlx5e_attach_netdev+0x12a/0x1e0 [mlx5_core]
+[] mlx5e_netdev_attach_profile+0xa1/0xc0 [mlx5_core]
+[] mlx5e_netdev_change_profile+0x77/0xe0 [mlx5_core]
+[] mlx5e_vport_rep_load+0x1ed/0x290 [mlx5_core]
+[] mlx5_esw_offloads_rep_load+0x88/0xd0 [mlx5_core]
+[] esw_offloads_load_rep.part.38+0x31/0x50 [mlx5_core]
+[] esw_offloads_enable+0x6c5/0x710 [mlx5_core]
+[] mlx5_eswitch_enable_locked+0x1bb/0x290 [mlx5_core]
+[] mlx5_devlink_eswitch_mode_set+0x14f/0x320 [mlx5_core]
+[] devlink_nl_cmd_eswitch_set_doit+0x94/0x120
+[] genl_family_rcv_msg_doit.isra.17+0x113/0x150
+[] genl_family_rcv_msg+0xb7/0x170
+[] ? devlink_nl_cmd_port_split_doit+0x100/0x100
+[] genl_rcv_msg+0x47/0xa0
+[] ? genl_family_rcv_msg+0x170/0x170
+[] netlink_rcv_skb+0x4c/0x130
+[] genl_rcv+0x24/0x40
+[] netlink_unicast+0x19a/0x230
+[] netlink_sendmsg+0x204/0x3d0
+[] sock_sendmsg+0x50/0x60
+
+Fixes: 90b22b9bcd24 ("net/mlx5e: Disable Rx ntuple offload for uplink representor")
+Signed-off-by: Amir Tzin <amirtz@nvidia.com>
+Reviewed-by: Aya Levin <ayal@nvidia.com>
+Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/i2c-nomadik.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/en_arfs.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/drivers/i2c/busses/i2c-nomadik.c b/drivers/i2c/busses/i2c-nomadik.c
-index 344d1daa4ea06..a06c4b76894a9 100644
---- a/drivers/i2c/busses/i2c-nomadik.c
-+++ b/drivers/i2c/busses/i2c-nomadik.c
-@@ -1040,7 +1040,6 @@ static int nmk_i2c_probe(struct amba_device *adev, const struct amba_id *id)
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_arfs.c b/drivers/net/ethernet/mellanox/mlx5/core/en_arfs.c
+index 0ae1865086ff1..dc0a0a27ac84a 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_arfs.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_arfs.c
+@@ -136,6 +136,16 @@ static void arfs_del_rules(struct mlx5e_flow_steering *fs);
  
- static void nmk_i2c_remove(struct amba_device *adev)
+ int mlx5e_arfs_disable(struct mlx5e_flow_steering *fs)
  {
--	struct resource *res = &adev->res;
- 	struct nmk_i2c_dev *dev = amba_get_drvdata(adev);
++	/* Moving to switchdev mode, fs->arfs is freed by mlx5e_nic_profile
++	 * cleanup_rx callback and it is not recreated when
++	 * mlx5e_uplink_rep_profile is loaded as mlx5e_create_flow_steering()
++	 * is not called by the uplink_rep profile init_rx callback. Thus, if
++	 * ntuple is set, moving to switchdev flow will enter this function
++	 * with fs->arfs nullified.
++	 */
++	if (!mlx5e_fs_get_arfs(fs))
++		return 0;
++
+ 	arfs_del_rules(fs);
  
- 	i2c_del_adapter(&dev->adap);
-@@ -1049,7 +1048,6 @@ static void nmk_i2c_remove(struct amba_device *adev)
- 	clear_all_interrupts(dev);
- 	/* disable the controller */
- 	i2c_clr_bit(dev->virtbase + I2C_CR, I2C_CR_PE);
--	release_mem_region(res->start, resource_size(res));
- }
- 
- static struct i2c_vendor_data vendor_stn8815 = {
+ 	return arfs_disable(fs);
 -- 
-2.39.2
+2.40.1
 
 
 
