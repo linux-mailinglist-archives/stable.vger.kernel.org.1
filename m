@@ -2,55 +2,77 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 019BE776662
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 19:22:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 93A4577669A
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 19:41:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231340AbjHIRWy (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 13:22:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47948 "EHLO
+        id S229955AbjHIRli (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 13:41:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55464 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232715AbjHIRV4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 13:21:56 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B2E2DA;
-        Wed,  9 Aug 2023 10:21:56 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1227D64260;
-        Wed,  9 Aug 2023 17:21:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14367C433C8;
-        Wed,  9 Aug 2023 17:21:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1691601715;
-        bh=97KbzLi9Si0wiuAVs4dKvbELDUj4qzzEdAk6c/YCBr4=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=BQYy9yJcNS6eSDh1GYBGi4bu3L7TH4mFnuYNDJiF2uPlTp2YhLYGEAI7K9Q9MDqFV
-         Joypdb8zs9XlYky+VIGMYfv+Vaw/RUxqC+h5/+0e30kx/Pt7VB42lECwqgv/ik1YFy
-         E0o7wTpesm6lAoKxRew5WMehr5F77D7dh2GmmOBBSbqVff5Wf6T4xsO4V96z7+cmC6
-         MOgGKnphWsyQaHGei0NF0RYd+sVWsqLPrRzvjRONZzR+KSX1R5Ol3dn6sPyaijF4t8
-         5l9pmckYrLRGmS9RXEXO4CoBllbmipZj1ZwyHT2hFxl8vSkjwtPVx6QVgu+RXf7I+C
-         vnBWukHcK3Acw==
-Date:   Wed, 9 Aug 2023 18:21:51 +0100
-From:   Mark Brown <broonie@kernel.org>
-To:     Nick Desaulniers <ndesaulniers@google.com>
-Cc:     Joe Perches <joe@perches.com>,
-        Konstantin Ryabitsev <konstantin@linuxfoundation.org>,
-        "Kernel.org Tools" <tools@linux.kernel.org>,
-        "# 3.4.x" <stable@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-Subject: Re: get_maintainer, b4, and CC: stable
-Message-ID: <6dabeab8-d013-40fc-a705-d2d202510549@sirena.org.uk>
-References: <CAKwvOdmOVnhKws_6DdakK9SDxiCCCR1d6VJwvz94Ng_y3V8QCg@mail.gmail.com>
+        with ESMTP id S229488AbjHIRlh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 13:41:37 -0400
+Received: from mail-oa1-x36.google.com (mail-oa1-x36.google.com [IPv6:2001:4860:4864:20::36])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 61799E71;
+        Wed,  9 Aug 2023 10:41:37 -0700 (PDT)
+Received: by mail-oa1-x36.google.com with SMTP id 586e51a60fabf-1bbafe6fd8fso25355fac.3;
+        Wed, 09 Aug 2023 10:41:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1691602896; x=1692207696;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=ycbMab7q1HQ8UI9guXQ6JfRQeBQi+U/6NBqVjfVg4XI=;
+        b=IvMSxJhOCtdwgRwkslaJNYSn+5JmQuxnezIL91pP4DSC4ISclVOZNLZ18+UOP1q17Y
+         5ne3yJM58woh5mw0v7FA6HTV8bQ0sLHU5ALXWZR5efvuNFR2YaqQenmbdN4YXDVcd8//
+         3WyddVTTFcIWIjdydjQktBbFaNWmr0hFx+dmvHCaZJ/P+kmp2aM/55EMJmKsnTtvgIQv
+         FGEWafwD1HJWENmAWmgEytliTFEcU1fcHj7V0RS6fPb4bSXsfZ9k4i4SKGNw/tB6so4d
+         Msegmw0jCNyWPP/8syEeoLVP3Y3/4q16b2mEOG1ybZu2W5P8Rc6ZYEl0zLMSvtxiA3UE
+         qcHA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1691602896; x=1692207696;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ycbMab7q1HQ8UI9guXQ6JfRQeBQi+U/6NBqVjfVg4XI=;
+        b=OtwVyClZx725FuYq4QZctFYO24kUesEEqIMVK8BUyLj8tOKGk4ft1ega3RvwJRpaRQ
+         oUmbcecBXAXCz936giNCKXdh4FqnfDsQqdq+cTE02JPfqHDmsp0MBbsiZ2lqNjaW1BwG
+         Rog1d2BZlfa8CHeq4Amq+qIRdsav911S9YErK5tre6N16k8L2PUk1DZoa9nETyaw7/j/
+         IE3Z8QYXZY0Qy4os2ml30P3FN8QfOxXut5+eq72H6F0jd1cLReHUq/hIlCNhj5f3MU0G
+         IUkqpzJV/6kKAXWvjHltSc21PXSPi+S83lejZD+OxcAff7XaVve7nWxJd7fgB4YLn5Vv
+         Qd5A==
+X-Gm-Message-State: AOJu0Yz2jyjen4SNG+7lXOL+ZFF8S6PEzmJ/uKgvRnaBhoLccq6wXCw5
+        XXUOnz7CdsaElzI9dXKqk0M=
+X-Google-Smtp-Source: AGHT+IFt2+p7mDezSGWcNMh+gx/zSJPM87d2ieMzJMky3a1LD4i6GdN08URcs54eVfbgy8epCJEp2A==
+X-Received: by 2002:a05:6870:d799:b0:187:e563:77b9 with SMTP id bd25-20020a056870d79900b00187e56377b9mr3192034oab.45.1691602896653;
+        Wed, 09 Aug 2023 10:41:36 -0700 (PDT)
+Received: from [192.168.1.119] ([216.130.59.33])
+        by smtp.gmail.com with ESMTPSA id g2-20020a9d6202000000b006b753685cc5sm7068299otj.79.2023.08.09.10.41.35
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 09 Aug 2023 10:41:36 -0700 (PDT)
+Sender: Larry Finger <larry.finger@gmail.com>
+Message-ID: <33cd4c70-fcf1-d148-8f8b-66b81cd48d72@lwfinger.net>
+Date:   Wed, 9 Aug 2023 12:41:35 -0500
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="LWqUKYVMG3UGwyMl"
-Content-Disposition: inline
-In-Reply-To: <CAKwvOdmOVnhKws_6DdakK9SDxiCCCR1d6VJwvz94Ng_y3V8QCg@mail.gmail.com>
-X-Cookie: Necessity is a mother.
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.14.0
+Subject: Re: [PATCH v2] bluetooth: Add device 0bda:4853 to device tables
+Content-Language: en-US
+To:     Paul Menzel <pmenzel@molgen.mpg.de>
+Cc:     Marcel Holtmann <marcel@holtmann.org>,
+        Gustavo Padovan <gustavo@padovan.org>,
+        Johan Hedberg <johan.hedberg@gmail.com>,
+        linux-bluetooth@vger.kernel.org, Hilda Wu <hildawu@realtek.com>,
+        stable@vger.kernel.org
+References: <20230809010403.24612-1-Larry.Finger@lwfinger.net>
+ <ce62fee5-7f67-4cf9-b265-f6e6fdc2c59b@molgen.mpg.de>
+From:   Larry Finger <Larry.Finger@lwfinger.net>
+In-Reply-To: <ce62fee5-7f67-4cf9-b265-f6e6fdc2c59b@molgen.mpg.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,NICE_REPLY_A,RCVD_IN_DNSWL_BLOCKED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -58,34 +80,31 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+On 8/9/23 00:58, Paul Menzel wrote:
+> Dear Larry,
+> 
+> 
+> Thank you for your patch.
+> 
+> Am 09.08.23 um 03:04 schrieb Larry Finger:
+>> This device is part of a Realtek RTW8852BE chip. The device table
+>> is as follows:
+> 
+> […]
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: Larry Finger <Larry.Finger@lwfinger.net>
+>> ---
+>> v2 - fix too long line in description
+> 
+> You also need to start with a capital letter: Bluetooth.
+> 
+> Also, I’d be more specific in the commit message summary. Maybe:
+> 
+> Bluetooth: Flag RTL 0bda:4853 to support wide band speech
 
---LWqUKYVMG3UGwyMl
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+No, that one is not better. The intent is to let the device be driven by btrtl, 
+not btusb. I changed it to "Bluetooth: Add device 0bda:4853 to blacklist/quirk 
+table."
 
-On Wed, Aug 09, 2023 at 09:50:00AM -0700, Nick Desaulniers wrote:
+Larry
 
-> I suspect that either b4 or get_maintainer could see the Fixes tag and
-> then suggest to Cc stable for me.
-
-> Should get_maintainer.pl make such recommendations?
-
-People use the Fixes tag all the time for bugs that never made it into a
-release...
-
---LWqUKYVMG3UGwyMl
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmTTyy4ACgkQJNaLcl1U
-h9A/Qgf9HGkw8mUChyCpqj1Gd7XYPoLdfYsL4xPF8/eVvrohiJHpz5TaO4jE+UAN
-SFPnbZhSINInsqL+/q+MEX3VmwTySCNknhlKflE51q6Zo6CpgSt0TfYCM0BsvrfT
-VrXCnsXlkjONOGnTRmV1FoayrSOGF+wXy7TUxFhaT7UpgR9Ar6a6uiiJmsJC7jO7
-DFd3jt2Uy2bUWOJeUqhdHV0zvBZhcMitut761Wd5QHwtaOq2xhEOzTPOgW6P/0Cb
-HvPQK1mRMePYnEfpbKWxZ5M/2jNtn5hSD1HyopV8byELbf5HS7BtCQmOckp6JyIu
-CahImhLPoqIQWzpys/PykESoFgs3+Q==
-=5jRH
------END PGP SIGNATURE-----
-
---LWqUKYVMG3UGwyMl--
