@@ -2,157 +2,100 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8F08A775B72
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:17:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F40CF775744
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:44:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233437AbjHILRc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:17:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35392 "EHLO
+        id S229693AbjHIKoJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 06:44:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34524 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233428AbjHILRc (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:17:32 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D978AED
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:17:31 -0700 (PDT)
+        with ESMTP id S230272AbjHIKoI (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:44:08 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4464A1BF0
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:44:08 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6FA3C6317A
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:17:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B97EC433C8;
-        Wed,  9 Aug 2023 11:17:30 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D7EC1630F0
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:44:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7216C433C7;
+        Wed,  9 Aug 2023 10:44:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691579850;
-        bh=0CafBrQiEEReLNP/c8SyftyzBtjMt5sk4PgL7lbirJE=;
+        s=korg; t=1691577847;
+        bh=kMJWxdHBwpyw+US6+myc/dzgv1dHdORVS5tybQFM+z0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=XdWre/0X6DHkprmd0tW88Ohz7JMvpsdJQO5dvZbFPdEX6Im6VeZrxu6uW4mXqJ4bR
-         eZu4zGTay03aeB33L3KIpBAAP2AOrIU9/YU6fKxSAGHscTe2DO4wpNrBUySkkE8wwc
-         B932oIK92niKW7FqyalHnSgi4kUmuQoS0wJcNEsI=
+        b=JidJgcbakwlppwA5at5QPhoEoebM3+9WorAQGTxKM82fenyVLWzc32hRQJSYGEi5e
+         eQAXYyuJKuOoC/ID+NsQKkz8dfCRQPD7Hvqu5x5a4gF6QZsghFCBGGiSJoQKVSnoNl
+         DtOWqQtL7G2gBG14d7hoW5HnqrckrCobG4kNlVWM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Artur Rojek <contact@artur-rojek.eu>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+        patches@lists.linux.dev, Yannic Moog <Y.Moog@phytec.de>,
+        Lucas Stach <l.stach@pengutronix.de>,
+        Yannic Moog <y.moog@phytec.de>,
+        Shawn Guo <shawnguo@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 109/323] sh: dma: Fix DMA channel offset calculation
+Subject: [PATCH 6.4 016/165] soc: imx: imx8mp-blk-ctrl: register HSIO PLL clock as bus_power_dev child
 Date:   Wed,  9 Aug 2023 12:39:07 +0200
-Message-ID: <20230809103703.072568803@linuxfoundation.org>
+Message-ID: <20230809103643.310945129@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
-References: <20230809103658.104386911@linuxfoundation.org>
+In-Reply-To: <20230809103642.720851262@linuxfoundation.org>
+References: <20230809103642.720851262@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Artur Rojek <contact@artur-rojek.eu>
+From: Lucas Stach <l.stach@pengutronix.de>
 
-[ Upstream commit e82e47584847129a20b8c9f4a1dcde09374fb0e0 ]
+[ Upstream commit 53cab4d871690c49fac87c657cbf459e39c5b93b ]
 
-Various SoCs of the SH3, SH4 and SH4A family, which use this driver,
-feature a differing number of DMA channels, which can be distributed
-between up to two DMAC modules. The existing implementation fails to
-correctly accommodate for all those variations, resulting in wrong
-channel offset calculations and leading to kernel panics.
+The blk-ctrl device is deliberately placed outside of the GPC power
+domain as it needs to control the power sequencing of the blk-ctrl
+domains together with the GPC domains.
 
-Rewrite dma_base_addr() in order to properly calculate channel offsets
-in a DMAC module. Fix dmaor_read_reg() and dmaor_write_reg(), so that
-the correct DMAC module base is selected for the DMAOR register.
+Clock runtime PM works by operating on the clock parent device, which
+doesn't translate into the neccessary GPC power domain action if the
+clk parent is not part of the GPC power domain. Use the bus_power_device
+as the parent for the clock to trigger the proper GPC domain actions on
+clock runtime power management.
 
-Fixes: 7f47c7189b3e8f19 ("sh: dma: More legacy cpu dma chainsawing.")
-Signed-off-by: Artur Rojek <contact@artur-rojek.eu>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Reviewed-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Link: https://lore.kernel.org/r/20230527164452.64797-2-contact@artur-rojek.eu
-Signed-off-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Fixes: 2cbee26e5d59 ("soc: imx: imx8mp-blk-ctrl: expose high performance PLL clock")
+Reported-by: Yannic Moog <Y.Moog@phytec.de>
+Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+Tested-by: Yannic Moog <y.moog@phytec.de>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/sh/drivers/dma/dma-sh.c | 37 +++++++++++++++++++++++-------------
- 1 file changed, 24 insertions(+), 13 deletions(-)
+ drivers/soc/imx/imx8mp-blk-ctrl.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/sh/drivers/dma/dma-sh.c b/arch/sh/drivers/dma/dma-sh.c
-index afde2a7d3eb35..e0679d8a9b34b 100644
---- a/arch/sh/drivers/dma/dma-sh.c
-+++ b/arch/sh/drivers/dma/dma-sh.c
-@@ -21,6 +21,18 @@
- #include <cpu/dma-register.h>
- #include <cpu/dma.h>
+diff --git a/drivers/soc/imx/imx8mp-blk-ctrl.c b/drivers/soc/imx/imx8mp-blk-ctrl.c
+index 870aecc0202ae..1c1fcab4979a4 100644
+--- a/drivers/soc/imx/imx8mp-blk-ctrl.c
++++ b/drivers/soc/imx/imx8mp-blk-ctrl.c
+@@ -164,7 +164,7 @@ static int imx8mp_hsio_blk_ctrl_probe(struct imx8mp_blk_ctrl *bc)
+ 	clk_hsio_pll->hw.init = &init;
  
-+/*
-+ * Some of the SoCs feature two DMAC modules. In such a case, the channels are
-+ * distributed equally among them.
-+ */
-+#ifdef	SH_DMAC_BASE1
-+#define	SH_DMAC_NR_MD_CH	(CONFIG_NR_ONCHIP_DMA_CHANNELS / 2)
-+#else
-+#define	SH_DMAC_NR_MD_CH	CONFIG_NR_ONCHIP_DMA_CHANNELS
-+#endif
-+
-+#define	SH_DMAC_CH_SZ		0x10
-+
- /*
-  * Define the default configuration for dual address memory-memory transfer.
-  * The 0x400 value represents auto-request, external->external.
-@@ -32,7 +44,7 @@ static unsigned long dma_find_base(unsigned int chan)
- 	unsigned long base = SH_DMAC_BASE0;
+ 	hw = &clk_hsio_pll->hw;
+-	ret = devm_clk_hw_register(bc->dev, hw);
++	ret = devm_clk_hw_register(bc->bus_power_dev, hw);
+ 	if (ret)
+ 		return ret;
  
- #ifdef SH_DMAC_BASE1
--	if (chan >= 6)
-+	if (chan >= SH_DMAC_NR_MD_CH)
- 		base = SH_DMAC_BASE1;
- #endif
- 
-@@ -43,13 +55,13 @@ static unsigned long dma_base_addr(unsigned int chan)
- {
- 	unsigned long base = dma_find_base(chan);
- 
--	/* Normalize offset calculation */
--	if (chan >= 9)
--		chan -= 6;
--	if (chan >= 4)
--		base += 0x10;
-+	chan = (chan % SH_DMAC_NR_MD_CH) * SH_DMAC_CH_SZ;
-+
-+	/* DMAOR is placed inside the channel register space. Step over it. */
-+	if (chan >= DMAOR)
-+		base += SH_DMAC_CH_SZ;
- 
--	return base + (chan * 0x10);
-+	return base + chan;
- }
- 
- #ifdef CONFIG_SH_DMA_IRQ_MULTI
-@@ -253,12 +265,11 @@ static int sh_dmac_get_dma_residue(struct dma_channel *chan)
- #define NR_DMAOR	1
- #endif
- 
--/*
-- * DMAOR bases are broken out amongst channel groups. DMAOR0 manages
-- * channels 0 - 5, DMAOR1 6 - 11 (optional).
-- */
--#define dmaor_read_reg(n)		__raw_readw(dma_find_base((n)*6))
--#define dmaor_write_reg(n, data)	__raw_writew(data, dma_find_base(n)*6)
-+#define dmaor_read_reg(n)		__raw_readw(dma_find_base((n) * \
-+						    SH_DMAC_NR_MD_CH) + DMAOR)
-+#define dmaor_write_reg(n, data)	__raw_writew(data, \
-+						     dma_find_base((n) * \
-+						     SH_DMAC_NR_MD_CH) + DMAOR)
- 
- static inline int dmaor_reset(int no)
- {
 -- 
-2.39.2
+2.40.1
 
 
 
