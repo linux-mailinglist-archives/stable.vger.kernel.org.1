@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ED6D4775A50
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:07:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E9D4B7759BD
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:03:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233132AbjHILHU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:07:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45598 "EHLO
+        id S232951AbjHILDH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:03:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38100 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233136AbjHILHT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:07:19 -0400
+        with ESMTP id S232982AbjHILDE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:03:04 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3305810F3
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:07:19 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4183C3589
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:53:56 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C6E466309F
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:07:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D31C3C433C7;
-        Wed,  9 Aug 2023 11:07:17 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 236B562835
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:53:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3656AC433C8;
+        Wed,  9 Aug 2023 10:53:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691579238;
-        bh=lkhUxhy61uW8P0bPLPvndZLu+Wlp2DuCOPG4mnQCbCw=;
+        s=korg; t=1691578435;
+        bh=d7wx/1Q53bZSKT3WK86VXHNNAct+yVw6z+K94eOa/j0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=fFofBoNJtfKjWTetNbNVeEj6LU7JBcFvbjMldctOmDRIzg4TDzJT0Pzbx9uB9AFBw
-         PdBFCRd17aUcOkaS3jhkk4QUrumGkRevFAm3ap2cG0fNCdP/Ckr1c2fYx+1FzsTxBh
-         OdAiNpXfNxFAjHwXYOelPEfLrMTLI9xscy99Kt5E=
+        b=o8tw+GhOPGsE8Bvokv+7hmdBLeyWBInCODSVUDvp12d1NMEOeFzbaPZZVHL7SXwAP
+         W2ly+vpP5xYMn4Td/I9ROH7H6sWyDM56MiGuQYw4vmc50sYPxBBQMqgF2mK6CXroTo
+         Vc8glRXOcRPxBZsG/tAOHpvherlh7loVLkElek1c=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dave Kleikamp <dave.kleikamp@oracle.com>,
-        Siddh Raman Pant <code@siddh.me>,
-        syzbot+d2cd27dcf8e04b232eb2@syzkaller.appspotmail.com
-Subject: [PATCH 4.14 107/204] jfs: jfs_dmap: Validate db_l2nbperpage while mounting
+        patches@lists.linux.dev, Alexandra Winter <wintera@linux.ibm.com>,
+        Wenjia Zhang <wenjia@linux.ibm.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 058/127] s390/qeth: Dont call dev_close/dev_open (DOWN/UP)
 Date:   Wed,  9 Aug 2023 12:40:45 +0200
-Message-ID: <20230809103646.192870500@linuxfoundation.org>
+Message-ID: <20230809103638.595089211@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103642.552405807@linuxfoundation.org>
-References: <20230809103642.552405807@linuxfoundation.org>
+In-Reply-To: <20230809103636.615294317@linuxfoundation.org>
+References: <20230809103636.615294317@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,66 +56,104 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Siddh Raman Pant <code@siddh.me>
+From: Alexandra Winter <wintera@linux.ibm.com>
 
-commit 11509910c599cbd04585ec35a6d5e1a0053d84c1 upstream.
+[ Upstream commit 1cfef80d4c2b2c599189f36f36320b205d9447d9 ]
 
-In jfs_dmap.c at line 381, BLKTODMAP is used to get a logical block
-number inside dbFree(). db_l2nbperpage, which is the log2 number of
-blocks per page, is passed as an argument to BLKTODMAP which uses it
-for shifting.
+dev_close() and dev_open() are issued to change the interface state to DOWN
+or UP (dev->flags IFF_UP). When the netdev is set DOWN it loses e.g its
+Ipv6 addresses and routes. We don't want this in cases of device recovery
+(triggered by hardware or software) or when the qeth device is set
+offline.
 
-Syzbot reported a shift out-of-bounds crash because db_l2nbperpage is
-too big. This happens because the large value is set without any
-validation in dbMount() at line 181.
+Setting a qeth device offline or online and device recovery actions call
+netif_device_detach() and/or netif_device_attach(). That will reset or
+set the LOWER_UP indication i.e. change the dev->state Bit
+__LINK_STATE_PRESENT. That is enough to e.g. cause bond failovers, and
+still preserves the interface settings that are handled by the network
+stack.
 
-Thus, make sure that db_l2nbperpage is correct while mounting.
+Don't call dev_open() nor dev_close() from the qeth device driver. Let the
+network stack handle this.
 
-Max number of blocks per page = Page size / Min block size
-=> log2(Max num_block per page) = log2(Page size / Min block size)
-				= log2(Page size) - log2(Min block size)
-
-=> Max db_l2nbperpage = L2PSIZE - L2MINBLOCKSIZE
-
-Reported-and-tested-by: syzbot+d2cd27dcf8e04b232eb2@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?id=2a70a453331db32ed491f5cbb07e81bf2d225715
-Cc: stable@vger.kernel.org
-Suggested-by: Dave Kleikamp <dave.kleikamp@oracle.com>
-Signed-off-by: Siddh Raman Pant <code@siddh.me>
-Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: d4560150cb47 ("s390/qeth: call dev_close() during recovery")
+Signed-off-by: Alexandra Winter <wintera@linux.ibm.com>
+Reviewed-by: Wenjia Zhang <wenjia@linux.ibm.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/jfs/jfs_dmap.c   |    6 ++++++
- fs/jfs/jfs_filsys.h |    2 ++
- 2 files changed, 8 insertions(+)
+ drivers/s390/net/qeth_core.h      | 1 -
+ drivers/s390/net/qeth_core_main.c | 2 --
+ drivers/s390/net/qeth_l2_main.c   | 9 ++++++---
+ drivers/s390/net/qeth_l3_main.c   | 8 +++++---
+ 4 files changed, 11 insertions(+), 9 deletions(-)
 
---- a/fs/jfs/jfs_dmap.c
-+++ b/fs/jfs/jfs_dmap.c
-@@ -191,7 +191,13 @@ int dbMount(struct inode *ipbmap)
- 	dbmp_le = (struct dbmap_disk *) mp->data;
- 	bmp->db_mapsize = le64_to_cpu(dbmp_le->dn_mapsize);
- 	bmp->db_nfree = le64_to_cpu(dbmp_le->dn_nfree);
-+
- 	bmp->db_l2nbperpage = le32_to_cpu(dbmp_le->dn_l2nbperpage);
-+	if (bmp->db_l2nbperpage > L2PSIZE - L2MINBLOCKSIZE) {
-+		err = -EINVAL;
-+		goto err_release_metapage;
-+	}
-+
- 	bmp->db_numag = le32_to_cpu(dbmp_le->dn_numag);
- 	if (!bmp->db_numag) {
- 		err = -EINVAL;
---- a/fs/jfs/jfs_filsys.h
-+++ b/fs/jfs/jfs_filsys.h
-@@ -135,7 +135,9 @@
- #define NUM_INODE_PER_IAG	INOSPERIAG
+diff --git a/drivers/s390/net/qeth_core.h b/drivers/s390/net/qeth_core.h
+index 1d195429753dd..613eab7297046 100644
+--- a/drivers/s390/net/qeth_core.h
++++ b/drivers/s390/net/qeth_core.h
+@@ -716,7 +716,6 @@ struct qeth_card_info {
+ 	u16 chid;
+ 	u8 ids_valid:1; /* cssid,iid,chid */
+ 	u8 dev_addr_is_registered:1;
+-	u8 open_when_online:1;
+ 	u8 promisc_mode:1;
+ 	u8 use_v1_blkt:1;
+ 	u8 is_vm_nic:1;
+diff --git a/drivers/s390/net/qeth_core_main.c b/drivers/s390/net/qeth_core_main.c
+index 8bd9fd51208c9..ae4b6d24bc902 100644
+--- a/drivers/s390/net/qeth_core_main.c
++++ b/drivers/s390/net/qeth_core_main.c
+@@ -5371,8 +5371,6 @@ int qeth_set_offline(struct qeth_card *card, const struct qeth_discipline *disc,
+ 	qeth_clear_ipacmd_list(card);
  
- #define MINBLOCKSIZE		512
-+#define L2MINBLOCKSIZE		9
- #define MAXBLOCKSIZE		4096
-+#define L2MAXBLOCKSIZE		12
- #define	MAXFILESIZE		((s64)1 << 52)
+ 	rtnl_lock();
+-	card->info.open_when_online = card->dev->flags & IFF_UP;
+-	dev_close(card->dev);
+ 	netif_device_detach(card->dev);
+ 	netif_carrier_off(card->dev);
+ 	rtnl_unlock();
+diff --git a/drivers/s390/net/qeth_l2_main.c b/drivers/s390/net/qeth_l2_main.c
+index c6ded3fdd715c..9ef2118fc7a2a 100644
+--- a/drivers/s390/net/qeth_l2_main.c
++++ b/drivers/s390/net/qeth_l2_main.c
+@@ -2387,9 +2387,12 @@ static int qeth_l2_set_online(struct qeth_card *card, bool carrier_ok)
+ 		qeth_enable_hw_features(dev);
+ 		qeth_l2_enable_brport_features(card);
  
- #define JFS_LINK_MAX		0xffffffff
+-		if (card->info.open_when_online) {
+-			card->info.open_when_online = 0;
+-			dev_open(dev, NULL);
++		if (netif_running(dev)) {
++			local_bh_disable();
++			napi_schedule(&card->napi);
++			/* kick-start the NAPI softirq: */
++			local_bh_enable();
++			qeth_l2_set_rx_mode(dev);
+ 		}
+ 		rtnl_unlock();
+ 	}
+diff --git a/drivers/s390/net/qeth_l3_main.c b/drivers/s390/net/qeth_l3_main.c
+index d8487a10cd555..c0f30cefec102 100644
+--- a/drivers/s390/net/qeth_l3_main.c
++++ b/drivers/s390/net/qeth_l3_main.c
+@@ -2017,9 +2017,11 @@ static int qeth_l3_set_online(struct qeth_card *card, bool carrier_ok)
+ 		netif_device_attach(dev);
+ 		qeth_enable_hw_features(dev);
+ 
+-		if (card->info.open_when_online) {
+-			card->info.open_when_online = 0;
+-			dev_open(dev, NULL);
++		if (netif_running(dev)) {
++			local_bh_disable();
++			napi_schedule(&card->napi);
++			/* kick-start the NAPI softirq: */
++			local_bh_enable();
+ 		}
+ 		rtnl_unlock();
+ 	}
+-- 
+2.40.1
+
 
 
