@@ -2,149 +2,163 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BA5E9775C49
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:25:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6B8E1775CE9
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:32:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233695AbjHILZu (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:25:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59858 "EHLO
+        id S233913AbjHILcL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:32:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37992 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233699AbjHILZt (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:25:49 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 44C44FA
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:25:49 -0700 (PDT)
+        with ESMTP id S233945AbjHILb6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:31:58 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6DF941FCE
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:31:56 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D5F5463265
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:25:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4F06C433C8;
-        Wed,  9 Aug 2023 11:25:47 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 06BDE633D2
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:31:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18A8AC433C7;
+        Wed,  9 Aug 2023 11:31:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691580348;
-        bh=hVVao+3uHAgTLzd5Oj3YmgPuqcrubzUBNGWiwhXd840=;
+        s=korg; t=1691580715;
+        bh=nmGdQgeECzuO48xF+0nNj0zBnSGSYR8mABVVcMg6Ux0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=MmhJQI1CTMZjP7OLsxubjrSw/OWhrU+qyrLy6ZrgdRm/zTMY420U1NvV6jvdJlDp7
-         Z1Kev/sz15Pv5zIUsT0PLdOGbBFFDscCeaxVmFNX3XWPka+TaM3EchlvhUxfePIs9O
-         Cm5C2RL/JwJEcQSiTLa7Zs+pXrWMqWFkOGf1vEps=
+        b=nIqF1Do2r7gtODd1beweyrsS3CxORdy/ocSBhy8/hJBDAAYP8+5bjzRG+yP9ORyjz
+         s1+orHE/Sa8oNftJr5LEr9JkUngzSkddvOZAYhdjwwQJSsuMXUCQTdFtkSETLZ+ImX
+         evPqXW8pwV39HS2yRL9KIqFu1Wy4hci+DnytKW6g=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Johan Hovold <johan+linaro@kernel.org>,
-        Tony Lindgren <tony@atomide.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 317/323] PM: sleep: wakeirq: fix wake irq arming
+        patches@lists.linux.dev, Ross Maynard <bids.7405@bigpond.com>,
+        Andrew Lunn <andrew@lunn.ch>, Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.4 124/154] USB: zaurus: Add ID for A-300/B-500/C-700
 Date:   Wed,  9 Aug 2023 12:42:35 +0200
-Message-ID: <20230809103712.577932024@linuxfoundation.org>
+Message-ID: <20230809103641.008533129@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
-References: <20230809103658.104386911@linuxfoundation.org>
+In-Reply-To: <20230809103636.887175326@linuxfoundation.org>
+References: <20230809103636.887175326@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Ross Maynard <bids.7405@bigpond.com>
 
-[ Upstream commit 8527beb12087238d4387607597b4020bc393c4b4 ]
+commit b99225b4fe297d07400f9e2332ecd7347b224f8d upstream.
 
-The decision whether to enable a wake irq during suspend can not be done
-based on the runtime PM state directly as a driver may use wake irqs
-without implementing runtime PM. Such drivers specifically leave the
-state set to the default 'suspended' and the wake irq is thus never
-enabled at suspend.
+The SL-A300, B500/5600, and C700 devices no longer auto-load because of
+"usbnet: Remove over-broad module alias from zaurus."
+This patch adds IDs for those 3 devices.
 
-Add a new wake irq flag to track whether a dedicated wake irq has been
-enabled at runtime suspend and therefore must not be enabled at system
-suspend.
-
-Note that pm_runtime_enabled() can not be used as runtime PM is always
-disabled during late suspend.
-
-Fixes: 69728051f5bf ("PM / wakeirq: Fix unbalanced IRQ enable for wakeirq")
-Cc: 4.16+ <stable@vger.kernel.org> # 4.16+
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Reviewed-by: Tony Lindgren <tony@atomide.com>
-Tested-by: Tony Lindgren <tony@atomide.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=217632
+Fixes: 16adf5d07987 ("usbnet: Remove over-broad module alias from zaurus.")
+Signed-off-by: Ross Maynard <bids.7405@bigpond.com>
+Cc: stable@vger.kernel.org
+Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://lore.kernel.org/r/69b5423b-2013-9fc9-9569-58e707d9bafb@bigpond.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/base/power/power.h   |  1 +
- drivers/base/power/wakeirq.c | 12 ++++++++----
- 2 files changed, 9 insertions(+), 4 deletions(-)
+ drivers/net/usb/cdc_ether.c |   21 +++++++++++++++++++++
+ drivers/net/usb/zaurus.c    |   21 +++++++++++++++++++++
+ 2 files changed, 42 insertions(+)
 
-diff --git a/drivers/base/power/power.h b/drivers/base/power/power.h
-index 55f32bd390007..3f9934bd6137d 100644
---- a/drivers/base/power/power.h
-+++ b/drivers/base/power/power.h
-@@ -28,6 +28,7 @@ extern void pm_runtime_remove(struct device *dev);
- #define WAKE_IRQ_DEDICATED_MASK		(WAKE_IRQ_DEDICATED_ALLOCATED | \
- 					 WAKE_IRQ_DEDICATED_MANAGED | \
- 					 WAKE_IRQ_DEDICATED_REVERSE)
-+#define WAKE_IRQ_DEDICATED_ENABLED	BIT(3)
- 
- struct wake_irq {
- 	struct device *dev;
-diff --git a/drivers/base/power/wakeirq.c b/drivers/base/power/wakeirq.c
-index fa69e4ce47527..e7ba514999163 100644
---- a/drivers/base/power/wakeirq.c
-+++ b/drivers/base/power/wakeirq.c
-@@ -328,8 +328,10 @@ void dev_pm_enable_wake_irq_check(struct device *dev,
- 	return;
- 
- enable:
--	if (!can_change_status || !(wirq->status & WAKE_IRQ_DEDICATED_REVERSE))
-+	if (!can_change_status || !(wirq->status & WAKE_IRQ_DEDICATED_REVERSE)) {
- 		enable_irq(wirq->irq);
-+		wirq->status |= WAKE_IRQ_DEDICATED_ENABLED;
-+	}
- }
- 
- /**
-@@ -350,8 +352,10 @@ void dev_pm_disable_wake_irq_check(struct device *dev, bool cond_disable)
- 	if (cond_disable && (wirq->status & WAKE_IRQ_DEDICATED_REVERSE))
- 		return;
- 
--	if (wirq->status & WAKE_IRQ_DEDICATED_MANAGED)
-+	if (wirq->status & WAKE_IRQ_DEDICATED_MANAGED) {
-+		wirq->status &= ~WAKE_IRQ_DEDICATED_ENABLED;
- 		disable_irq_nosync(wirq->irq);
-+	}
- }
- 
- /**
-@@ -390,7 +394,7 @@ void dev_pm_arm_wake_irq(struct wake_irq *wirq)
- 
- 	if (device_may_wakeup(wirq->dev)) {
- 		if (wirq->status & WAKE_IRQ_DEDICATED_ALLOCATED &&
--		    !pm_runtime_status_suspended(wirq->dev))
-+		    !(wirq->status & WAKE_IRQ_DEDICATED_ENABLED))
- 			enable_irq(wirq->irq);
- 
- 		enable_irq_wake(wirq->irq);
-@@ -413,7 +417,7 @@ void dev_pm_disarm_wake_irq(struct wake_irq *wirq)
- 		disable_irq_wake(wirq->irq);
- 
- 		if (wirq->status & WAKE_IRQ_DEDICATED_ALLOCATED &&
--		    !pm_runtime_status_suspended(wirq->dev))
-+		    !(wirq->status & WAKE_IRQ_DEDICATED_ENABLED))
- 			disable_irq_nosync(wirq->irq);
- 	}
- }
--- 
-2.40.1
-
+--- a/drivers/net/usb/cdc_ether.c
++++ b/drivers/net/usb/cdc_ether.c
+@@ -605,6 +605,13 @@ static const struct usb_device_id	produc
+ 	.match_flags	=   USB_DEVICE_ID_MATCH_INT_INFO
+ 			  | USB_DEVICE_ID_MATCH_DEVICE,
+ 	.idVendor		= 0x04DD,
++	.idProduct		= 0x8005,   /* A-300 */
++	ZAURUS_FAKE_INTERFACE,
++	.driver_info        = 0,
++}, {
++	.match_flags    =   USB_DEVICE_ID_MATCH_INT_INFO
++			  | USB_DEVICE_ID_MATCH_DEVICE,
++	.idVendor		= 0x04DD,
+ 	.idProduct		= 0x8006,	/* B-500/SL-5600 */
+ 	ZAURUS_MASTER_INTERFACE,
+ 	.driver_info		= 0,
+@@ -612,11 +619,25 @@ static const struct usb_device_id	produc
+ 	.match_flags    =   USB_DEVICE_ID_MATCH_INT_INFO
+ 			  | USB_DEVICE_ID_MATCH_DEVICE,
+ 	.idVendor		= 0x04DD,
++	.idProduct		= 0x8006,   /* B-500/SL-5600 */
++	ZAURUS_FAKE_INTERFACE,
++	.driver_info        = 0,
++}, {
++	.match_flags    =   USB_DEVICE_ID_MATCH_INT_INFO
++			  | USB_DEVICE_ID_MATCH_DEVICE,
++	.idVendor		= 0x04DD,
+ 	.idProduct		= 0x8007,	/* C-700 */
+ 	ZAURUS_MASTER_INTERFACE,
+ 	.driver_info		= 0,
+ }, {
+ 	.match_flags    =   USB_DEVICE_ID_MATCH_INT_INFO
++			  | USB_DEVICE_ID_MATCH_DEVICE,
++	.idVendor		= 0x04DD,
++	.idProduct		= 0x8007,   /* C-700 */
++	ZAURUS_FAKE_INTERFACE,
++	.driver_info        = 0,
++}, {
++	.match_flags    =   USB_DEVICE_ID_MATCH_INT_INFO
+ 		 | USB_DEVICE_ID_MATCH_DEVICE,
+ 	.idVendor               = 0x04DD,
+ 	.idProduct              = 0x9031,	/* C-750 C-760 */
+--- a/drivers/net/usb/zaurus.c
++++ b/drivers/net/usb/zaurus.c
+@@ -289,11 +289,25 @@ static const struct usb_device_id	produc
+ 	.match_flags	=   USB_DEVICE_ID_MATCH_INT_INFO
+ 			  | USB_DEVICE_ID_MATCH_DEVICE,
+ 	.idVendor		= 0x04DD,
++	.idProduct		= 0x8005,	/* A-300 */
++	ZAURUS_FAKE_INTERFACE,
++	.driver_info = (unsigned long)&bogus_mdlm_info,
++}, {
++	.match_flags    =   USB_DEVICE_ID_MATCH_INT_INFO
++			  | USB_DEVICE_ID_MATCH_DEVICE,
++	.idVendor		= 0x04DD,
+ 	.idProduct		= 0x8006,	/* B-500/SL-5600 */
+ 	ZAURUS_MASTER_INTERFACE,
+ 	.driver_info = ZAURUS_PXA_INFO,
+ }, {
+ 	.match_flags    =   USB_DEVICE_ID_MATCH_INT_INFO
++			  | USB_DEVICE_ID_MATCH_DEVICE,
++	.idVendor		= 0x04DD,
++	.idProduct		= 0x8006,	/* B-500/SL-5600 */
++	ZAURUS_FAKE_INTERFACE,
++	.driver_info = (unsigned long)&bogus_mdlm_info,
++}, {
++	.match_flags    =   USB_DEVICE_ID_MATCH_INT_INFO
+ 	          | USB_DEVICE_ID_MATCH_DEVICE,
+ 	.idVendor		= 0x04DD,
+ 	.idProduct		= 0x8007,	/* C-700 */
+@@ -301,6 +315,13 @@ static const struct usb_device_id	produc
+ 	.driver_info = ZAURUS_PXA_INFO,
+ }, {
+ 	.match_flags    =   USB_DEVICE_ID_MATCH_INT_INFO
++			  | USB_DEVICE_ID_MATCH_DEVICE,
++	.idVendor		= 0x04DD,
++	.idProduct		= 0x8007,	/* C-700 */
++	ZAURUS_FAKE_INTERFACE,
++	.driver_info = (unsigned long)&bogus_mdlm_info,
++}, {
++	.match_flags    =   USB_DEVICE_ID_MATCH_INT_INFO
+ 		 | USB_DEVICE_ID_MATCH_DEVICE,
+ 	.idVendor               = 0x04DD,
+ 	.idProduct              = 0x9031,	/* C-750 C-760 */
 
 
