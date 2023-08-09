@@ -2,192 +2,125 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1EC37775B95
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:18:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3A6FC775764
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:45:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233484AbjHILSy (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:18:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54958 "EHLO
+        id S231724AbjHIKpa (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 06:45:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41306 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233478AbjHILSx (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:18:53 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 160AF1FCE
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:18:53 -0700 (PDT)
+        with ESMTP id S229596AbjHIKp1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:45:27 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1317310F3
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:45:27 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9BD776319E
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:18:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D075C433C7;
-        Wed,  9 Aug 2023 11:18:51 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9DB0E63125
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:45:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81E9EC433C9;
+        Wed,  9 Aug 2023 10:45:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691579932;
-        bh=FSI0STsjghi8Qoq5OUEGKHdc/TJwzVCNs3Otdy3gwSY=;
+        s=korg; t=1691577926;
+        bh=31HqNmphNVvCIARF6+f3rsUCFR54BlZLVf+HFB64Jbg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=fG8Fnf9K1qCUqKlGlRSTBjLP2ECO5rJRS5BWvvNU+N0Eahc2ikgYED8K5rOll1eRD
-         BeSuzmj8ABKCJwtAedwJo4FkYIASEC8joCpzmP8GJ1NNaBCkqCAztPWFU3y6NrKGMR
-         4cnhlN0svMSZCNtJ+FnzA2xKIfdi8nR6CTpgijC8=
+        b=nxahGxXVmLUQ0YEszaT3uHgBoDNY3rCiatwXJuumiU2iMDMTSlTAam65/baGb3aLa
+         ypTJBB0q2RSoLs9jYtncWIOrVql+1OVZSxL6Ac/LntcFLCDn7Szm9XR8C3sFtiDW6z
+         K1cmC+TXojQCRFWF/dQnOgEsga/pRqDi8pan9ZUk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dave Airlie <airlied@gmail.com>,
-        Arnd Bergmann <arnd@arndb.de>, Tejun Heo <tj@kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH 4.19 137/323] workqueue: clean up WORK_* constant types, clarify masking
+        patches@lists.linux.dev,
+        =?UTF-8?q?Georg=20M=C3=BCller?= <georgmueller@gmx.net>,
+        Ian Rogers <irogers@google.com>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Ingo Molnar <mingo@redhat.com>, Jiri Olsa <jolsa@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Masami Hiramatsu <mhiramat@kernel.org>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 044/165] perf test uprobe_from_different_cu: Skip if there is no gcc
 Date:   Wed,  9 Aug 2023 12:39:35 +0200
-Message-ID: <20230809103704.413508717@linuxfoundation.org>
+Message-ID: <20230809103644.263395968@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
-References: <20230809103658.104386911@linuxfoundation.org>
+In-Reply-To: <20230809103642.720851262@linuxfoundation.org>
+References: <20230809103642.720851262@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Linus Torvalds <torvalds@linux-foundation.org>
+From: Georg Müller <georgmueller@gmx.net>
 
-commit afa4bb778e48d79e4a642ed41e3b4e0de7489a6c upstream.
+[ Upstream commit 98ce8e4a9dcfb448b30a2d7a16190f4a00382377 ]
 
-Dave Airlie reports that gcc-13.1.1 has started complaining about some
-of the workqueue code in 32-bit arm builds:
+Without gcc, the test will fail.
 
-  kernel/workqueue.c: In function ‘get_work_pwq’:
-  kernel/workqueue.c:713:24: error: cast to pointer from integer of different size [-Werror=int-to-pointer-cast]
-    713 |                 return (void *)(data & WORK_STRUCT_WQ_DATA_MASK);
-        |                        ^
-  [ ... a couple of other cases ... ]
+On cleanup, ignore probe removal errors. Otherwise, in case of an error
+adding the probe, the temporary directory is not removed.
 
-and while it's not immediately clear exactly why gcc started complaining
-about it now, I suspect it's some C23-induced enum type handlign fixup in
-gcc-13 is the cause.
-
-Whatever the reason for starting to complain, the code and data types
-are indeed disgusting enough that the complaint is warranted.
-
-The wq code ends up creating various "helper constants" (like that
-WORK_STRUCT_WQ_DATA_MASK) using an enum type, which is all kinds of
-confused.  The mask needs to be 'unsigned long', not some unspecified
-enum type.
-
-To make matters worse, the actual "mask and cast to a pointer" is
-repeated a couple of times, and the cast isn't even always done to the
-right pointer, but - as the error case above - to a 'void *' with then
-the compiler finishing the job.
-
-That's now how we roll in the kernel.
-
-So create the masks using the proper types rather than some ambiguous
-enumeration, and use a nice helper that actually does the type
-conversion in one well-defined place.
-
-Incidentally, this magically makes clang generate better code.  That,
-admittedly, is really just a sign of clang having been seriously
-confused before, and cleaning up the typing unconfuses the compiler too.
-
-Reported-by: Dave Airlie <airlied@gmail.com>
-Link: https://lore.kernel.org/lkml/CAPM=9twNnV4zMCvrPkw3H-ajZOH-01JVh_kDrxdPYQErz8ZTdA@mail.gmail.com/
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: Tejun Heo <tj@kernel.org>
-Cc: Nick Desaulniers <ndesaulniers@google.com>
-Cc: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 56cbeacf14353057 ("perf probe: Add test for regression introduced by switch to die_get_decl_file()")
+Signed-off-by: Georg Müller <georgmueller@gmx.net>
+Acked-by: Ian Rogers <irogers@google.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Georg Müller <georgmueller@gmx.net>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20230728151812.454806-2-georgmueller@gmx.net
+Link: https://lore.kernel.org/r/CAP-5=fUP6UuLgRty3t2=fQsQi3k4hDMz415vWdp1x88QMvZ8ug@mail.gmail.com/
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/workqueue.h |   15 ++++++++-------
- kernel/workqueue.c        |   13 ++++++++-----
- 2 files changed, 16 insertions(+), 12 deletions(-)
+ tools/perf/tests/shell/test_uprobe_from_different_cu.sh | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
---- a/include/linux/workqueue.h
-+++ b/include/linux/workqueue.h
-@@ -73,7 +73,6 @@ enum {
- 	WORK_OFFQ_FLAG_BASE	= WORK_STRUCT_COLOR_SHIFT,
+diff --git a/tools/perf/tests/shell/test_uprobe_from_different_cu.sh b/tools/perf/tests/shell/test_uprobe_from_different_cu.sh
+index 00d2e0e2e0c28..319f36ebb9a40 100644
+--- a/tools/perf/tests/shell/test_uprobe_from_different_cu.sh
++++ b/tools/perf/tests/shell/test_uprobe_from_different_cu.sh
+@@ -4,6 +4,12 @@
  
- 	__WORK_OFFQ_CANCELING	= WORK_OFFQ_FLAG_BASE,
--	WORK_OFFQ_CANCELING	= (1 << __WORK_OFFQ_CANCELING),
+ set -e
  
- 	/*
- 	 * When a work item is off queue, its high bits point to the last
-@@ -84,12 +83,6 @@ enum {
- 	WORK_OFFQ_POOL_SHIFT	= WORK_OFFQ_FLAG_BASE + WORK_OFFQ_FLAG_BITS,
- 	WORK_OFFQ_LEFT		= BITS_PER_LONG - WORK_OFFQ_POOL_SHIFT,
- 	WORK_OFFQ_POOL_BITS	= WORK_OFFQ_LEFT <= 31 ? WORK_OFFQ_LEFT : 31,
--	WORK_OFFQ_POOL_NONE	= (1LU << WORK_OFFQ_POOL_BITS) - 1,
--
--	/* convenience constants */
--	WORK_STRUCT_FLAG_MASK	= (1UL << WORK_STRUCT_FLAG_BITS) - 1,
--	WORK_STRUCT_WQ_DATA_MASK = ~WORK_STRUCT_FLAG_MASK,
--	WORK_STRUCT_NO_POOL	= (unsigned long)WORK_OFFQ_POOL_NONE << WORK_OFFQ_POOL_SHIFT,
- 
- 	/* bit mask for work_busy() return values */
- 	WORK_BUSY_PENDING	= 1 << 0,
-@@ -99,6 +92,14 @@ enum {
- 	WORKER_DESC_LEN		= 24,
- };
- 
-+/* Convenience constants - of type 'unsigned long', not 'enum'! */
-+#define WORK_OFFQ_CANCELING	(1ul << __WORK_OFFQ_CANCELING)
-+#define WORK_OFFQ_POOL_NONE	((1ul << WORK_OFFQ_POOL_BITS) - 1)
-+#define WORK_STRUCT_NO_POOL	(WORK_OFFQ_POOL_NONE << WORK_OFFQ_POOL_SHIFT)
++# skip if there's no gcc
++if ! [ -x "$(command -v gcc)" ]; then
++        echo "failed: no gcc compiler"
++        exit 2
++fi
 +
-+#define WORK_STRUCT_FLAG_MASK    ((1ul << WORK_STRUCT_FLAG_BITS) - 1)
-+#define WORK_STRUCT_WQ_DATA_MASK (~WORK_STRUCT_FLAG_MASK)
-+
- struct work_struct {
- 	atomic_long_t data;
- 	struct list_head entry;
---- a/kernel/workqueue.c
-+++ b/kernel/workqueue.c
-@@ -680,12 +680,17 @@ static void clear_work_data(struct work_
- 	set_work_data(work, WORK_STRUCT_NO_POOL, 0);
- }
+ temp_dir=$(mktemp -d /tmp/perf-uprobe-different-cu-sh.XXXXXXXXXX)
  
-+static inline struct pool_workqueue *work_struct_pwq(unsigned long data)
-+{
-+	return (struct pool_workqueue *)(data & WORK_STRUCT_WQ_DATA_MASK);
-+}
-+
- static struct pool_workqueue *get_work_pwq(struct work_struct *work)
- {
- 	unsigned long data = atomic_long_read(&work->data);
- 
- 	if (data & WORK_STRUCT_PWQ)
--		return (void *)(data & WORK_STRUCT_WQ_DATA_MASK);
-+		return work_struct_pwq(data);
- 	else
- 		return NULL;
- }
-@@ -713,8 +718,7 @@ static struct worker_pool *get_work_pool
- 	assert_rcu_or_pool_mutex();
- 
- 	if (data & WORK_STRUCT_PWQ)
--		return ((struct pool_workqueue *)
--			(data & WORK_STRUCT_WQ_DATA_MASK))->pool;
-+		return work_struct_pwq(data)->pool;
- 
- 	pool_id = data >> WORK_OFFQ_POOL_SHIFT;
- 	if (pool_id == WORK_OFFQ_POOL_NONE)
-@@ -735,8 +739,7 @@ static int get_work_pool_id(struct work_
- 	unsigned long data = atomic_long_read(&work->data);
- 
- 	if (data & WORK_STRUCT_PWQ)
--		return ((struct pool_workqueue *)
--			(data & WORK_STRUCT_WQ_DATA_MASK))->pool->id;
-+		return work_struct_pwq(data)->pool->id;
- 
- 	return data >> WORK_OFFQ_POOL_SHIFT;
- }
+ cleanup()
+@@ -11,7 +17,7 @@ cleanup()
+ 	trap - EXIT TERM INT
+ 	if [[ "${temp_dir}" =~ ^/tmp/perf-uprobe-different-cu-sh.*$ ]]; then
+ 		echo "--- Cleaning up ---"
+-		perf probe -x ${temp_dir}/testfile -d foo
++		perf probe -x ${temp_dir}/testfile -d foo || true
+ 		rm -f "${temp_dir}/"*
+ 		rmdir "${temp_dir}"
+ 	fi
+-- 
+2.40.1
+
 
 
