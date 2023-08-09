@@ -2,195 +2,191 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AFCF1775909
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:56:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1414F775973
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:00:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232533AbjHIK4y (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 06:56:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34614 "EHLO
+        id S232860AbjHILAe (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:00:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52322 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232646AbjHIK4x (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:56:53 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 19D412136
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:56:51 -0700 (PDT)
+        with ESMTP id S232874AbjHILAd (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:00:33 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8778F2106
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:00:32 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7E6F96238A
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:56:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91A31C433C7;
-        Wed,  9 Aug 2023 10:56:50 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1E5826313B
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:00:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BC9AC433C7;
+        Wed,  9 Aug 2023 11:00:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691578610;
-        bh=IbMvQDssz+gfA3rTNCfP6ZkB5lDDpkCYqkm6ACfUTU8=;
+        s=korg; t=1691578831;
+        bh=VUG+ByRL25HMSdf8bc7sbiuPHKD2Aa9XqPK/rk2GeWw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=QMFPkOdptgV1bsJk0IHjIseHDqrPmEg3tbZ3OxPK9Dr0m3FHQSRfauuoyFmOi/hmY
-         BmDjW/HfW3zWd9oFax1ul6cekOsg2uDepfKQ+EvAeAraiBVt4EheOVbLmU9bW7Ck2d
-         V8ScYSYPKGnRtYMNbK+5fLHQCZnCbSDGj/5LUeQU=
+        b=sBgQajGXPKFDDS/3z1acytDChK8/oPB+5Zt/DWRLLKwtOjcJ2htyX3kPid7LTVLtj
+         fKYxe8u1yBEFd8UfKgITNM12SoZfZr9Gwv7tJyDF/hFZ53zJumcnTN+ccTvISBCpf5
+         gTX+qLALZMJ5DKWebRMeUGNMA2lJTT2YlEjmp5HQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        syzbot+d015b6c2fbb5c383bf08@syzkaller.appspotmail.com,
-        Chao Yu <chao@kernel.org>, Jaegeuk Kim <jaegeuk@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 121/127] f2fs: dont reset unchangable mount option in f2fs_remount()
+        patches@lists.linux.dev, Hou Tao <houtao1@huawei.com>,
+        Pu Lehui <pulehui@huawei.com>,
+        Jesper Dangaard Brouer <hawk@kernel.org>,
+        Martin KaFai Lau <martin.lau@kernel.org>
+Subject: [PATCH 5.15 72/92] bpf, cpumap: Make sure kthread is running before map update returns
 Date:   Wed,  9 Aug 2023 12:41:48 +0200
-Message-ID: <20230809103640.612110509@linuxfoundation.org>
+Message-ID: <20230809103636.058698229@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103636.615294317@linuxfoundation.org>
-References: <20230809103636.615294317@linuxfoundation.org>
+In-Reply-To: <20230809103633.485906560@linuxfoundation.org>
+References: <20230809103633.485906560@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Chao Yu <chao@kernel.org>
+From: Hou Tao <houtao1@huawei.com>
 
-[ Upstream commit 458c15dfbce62c35fefd9ca637b20a051309c9f1 ]
+commit 640a604585aa30f93e39b17d4d6ba69fcb1e66c9 upstream.
 
-syzbot reports a bug as below:
+The following warning was reported when running stress-mode enabled
+xdp_redirect_cpu with some RT threads:
 
-general protection fault, probably for non-canonical address 0xdffffc0000000009: 0000 [#1] PREEMPT SMP KASAN
-RIP: 0010:__lock_acquire+0x69/0x2000 kernel/locking/lockdep.c:4942
-Call Trace:
- lock_acquire+0x1e3/0x520 kernel/locking/lockdep.c:5691
- __raw_write_lock include/linux/rwlock_api_smp.h:209 [inline]
- _raw_write_lock+0x2e/0x40 kernel/locking/spinlock.c:300
- __drop_extent_tree+0x3ac/0x660 fs/f2fs/extent_cache.c:1100
- f2fs_drop_extent_tree+0x17/0x30 fs/f2fs/extent_cache.c:1116
- f2fs_insert_range+0x2d5/0x3c0 fs/f2fs/file.c:1664
- f2fs_fallocate+0x4e4/0x6d0 fs/f2fs/file.c:1838
- vfs_fallocate+0x54b/0x6b0 fs/open.c:324
- ksys_fallocate fs/open.c:347 [inline]
- __do_sys_fallocate fs/open.c:355 [inline]
- __se_sys_fallocate fs/open.c:353 [inline]
- __x64_sys_fallocate+0xbd/0x100 fs/open.c:353
- do_syscall_x64 arch/x86/entry/common.c:50 [inline]
- do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
- entry_SYSCALL_64_after_hwframe+0x63/0xcd
+  ------------[ cut here ]------------
+  WARNING: CPU: 4 PID: 65 at kernel/bpf/cpumap.c:135
+  CPU: 4 PID: 65 Comm: kworker/4:1 Not tainted 6.5.0-rc2+ #1
+  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996)
+  Workqueue: events cpu_map_kthread_stop
+  RIP: 0010:put_cpu_map_entry+0xda/0x220
+  ......
+  Call Trace:
+   <TASK>
+   ? show_regs+0x65/0x70
+   ? __warn+0xa5/0x240
+   ......
+   ? put_cpu_map_entry+0xda/0x220
+   cpu_map_kthread_stop+0x41/0x60
+   process_one_work+0x6b0/0xb80
+   worker_thread+0x96/0x720
+   kthread+0x1a5/0x1f0
+   ret_from_fork+0x3a/0x70
+   ret_from_fork_asm+0x1b/0x30
+   </TASK>
 
-The root cause is race condition as below:
-- since it tries to remount rw filesystem, so that do_remount won't
-call sb_prepare_remount_readonly to block fallocate, there may be race
-condition in between remount and fallocate.
-- in f2fs_remount(), default_options() will reset mount option to default
-one, and then update it based on result of parse_options(), so there is
-a hole which race condition can happen.
+The root cause is the same as commit 436901649731 ("bpf: cpumap: Fix memory
+leak in cpu_map_update_elem"). The kthread is stopped prematurely by
+kthread_stop() in cpu_map_kthread_stop(), and kthread() doesn't call
+cpu_map_kthread_run() at all but XDP program has already queued some
+frames or skbs into ptr_ring. So when __cpu_map_ring_cleanup() checks
+the ptr_ring, it will find it was not emptied and report a warning.
 
-Thread A			Thread B
-- f2fs_fill_super
- - parse_options
-  - clear_opt(READ_EXTENT_CACHE)
+An alternative fix is to use __cpu_map_ring_cleanup() to drop these
+pending frames or skbs when kthread_stop() returns -EINTR, but it may
+confuse the user, because these frames or skbs have been handled
+correctly by XDP program. So instead of dropping these frames or skbs,
+just make sure the per-cpu kthread is running before
+__cpu_map_entry_alloc() returns.
 
-- f2fs_remount
- - default_options
-  - set_opt(READ_EXTENT_CACHE)
-				- f2fs_fallocate
-				 - f2fs_insert_range
-				  - f2fs_drop_extent_tree
-				   - __drop_extent_tree
-				    - __may_extent_tree
-				     - test_opt(READ_EXTENT_CACHE) return true
-				    - write_lock(&et->lock) access NULL pointer
- - parse_options
-  - clear_opt(READ_EXTENT_CACHE)
+After apply the fix, the error handle for kthread_stop() will be
+unnecessary because it will always return 0, so just remove it.
 
-Cc: <stable@vger.kernel.org>
-Reported-by: syzbot+d015b6c2fbb5c383bf08@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/linux-f2fs-devel/20230522124203.3838360-1-chao@kernel.org
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 6710e1126934 ("bpf: introduce new bpf cpu map type BPF_MAP_TYPE_CPUMAP")
+Signed-off-by: Hou Tao <houtao1@huawei.com>
+Reviewed-by: Pu Lehui <pulehui@huawei.com>
+Acked-by: Jesper Dangaard Brouer <hawk@kernel.org>
+Link: https://lore.kernel.org/r/20230729095107.1722450-2-houtao@huaweicloud.com
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/f2fs/super.c | 30 ++++++++++++++++++------------
- 1 file changed, 18 insertions(+), 12 deletions(-)
+ kernel/bpf/cpumap.c |   21 +++++++++++----------
+ 1 file changed, 11 insertions(+), 10 deletions(-)
 
-diff --git a/fs/f2fs/super.c b/fs/f2fs/super.c
-index 36bb1c969e8bb..ff47aad636e5b 100644
---- a/fs/f2fs/super.c
-+++ b/fs/f2fs/super.c
-@@ -2040,9 +2040,22 @@ static int f2fs_show_options(struct seq_file *seq, struct dentry *root)
- 	return 0;
+--- a/kernel/bpf/cpumap.c
++++ b/kernel/bpf/cpumap.c
+@@ -26,6 +26,7 @@
+ #include <linux/workqueue.h>
+ #include <linux/kthread.h>
+ #include <linux/capability.h>
++#include <linux/completion.h>
+ #include <trace/events/xdp.h>
+ 
+ #include <linux/netdevice.h>   /* netif_receive_skb_list */
+@@ -70,6 +71,7 @@ struct bpf_cpu_map_entry {
+ 	struct rcu_head rcu;
+ 
+ 	struct work_struct kthread_stop_wq;
++	struct completion kthread_running;
+ };
+ 
+ struct bpf_cpu_map {
+@@ -163,7 +165,6 @@ static void put_cpu_map_entry(struct bpf
+ static void cpu_map_kthread_stop(struct work_struct *work)
+ {
+ 	struct bpf_cpu_map_entry *rcpu;
+-	int err;
+ 
+ 	rcpu = container_of(work, struct bpf_cpu_map_entry, kthread_stop_wq);
+ 
+@@ -173,14 +174,7 @@ static void cpu_map_kthread_stop(struct
+ 	rcu_barrier();
+ 
+ 	/* kthread_stop will wake_up_process and wait for it to complete */
+-	err = kthread_stop(rcpu->kthread);
+-	if (err) {
+-		/* kthread_stop may be called before cpu_map_kthread_run
+-		 * is executed, so we need to release the memory related
+-		 * to rcpu.
+-		 */
+-		put_cpu_map_entry(rcpu);
+-	}
++	kthread_stop(rcpu->kthread);
  }
  
--static void default_options(struct f2fs_sb_info *sbi)
-+static void default_options(struct f2fs_sb_info *sbi, bool remount)
+ static void cpu_map_bpf_prog_run_skb(struct bpf_cpu_map_entry *rcpu,
+@@ -308,11 +302,11 @@ static int cpu_map_bpf_prog_run(struct b
+ 	return nframes;
+ }
+ 
+-
+ static int cpu_map_kthread_run(void *data)
  {
- 	/* init some FS parameters */
-+	if (!remount) {
-+		set_opt(sbi, READ_EXTENT_CACHE);
-+		clear_opt(sbi, DISABLE_CHECKPOINT);
+ 	struct bpf_cpu_map_entry *rcpu = data;
+ 
++	complete(&rcpu->kthread_running);
+ 	set_current_state(TASK_INTERRUPTIBLE);
+ 
+ 	/* When kthread gives stop order, then rcpu have been disconnected
+@@ -475,6 +469,7 @@ __cpu_map_entry_alloc(struct bpf_map *ma
+ 		goto free_ptr_ring;
+ 
+ 	/* Setup kthread */
++	init_completion(&rcpu->kthread_running);
+ 	rcpu->kthread = kthread_create_on_node(cpu_map_kthread_run, rcpu, numa,
+ 					       "cpumap/%d/map:%d", cpu,
+ 					       map->id);
+@@ -488,6 +483,12 @@ __cpu_map_entry_alloc(struct bpf_map *ma
+ 	kthread_bind(rcpu->kthread, cpu);
+ 	wake_up_process(rcpu->kthread);
+ 
++	/* Make sure kthread has been running, so kthread_stop() will not
++	 * stop the kthread prematurely and all pending frames or skbs
++	 * will be handled by the kthread before kthread_stop() returns.
++	 */
++	wait_for_completion(&rcpu->kthread_running);
 +
-+		if (f2fs_hw_support_discard(sbi) || f2fs_hw_should_discard(sbi))
-+			set_opt(sbi, DISCARD);
-+
-+		if (f2fs_sb_has_blkzoned(sbi))
-+			F2FS_OPTION(sbi).discard_unit = DISCARD_UNIT_SECTION;
-+		else
-+			F2FS_OPTION(sbi).discard_unit = DISCARD_UNIT_BLOCK;
-+	}
-+
- 	if (f2fs_sb_has_readonly(sbi))
- 		F2FS_OPTION(sbi).active_logs = NR_CURSEG_RO_TYPE;
- 	else
-@@ -2065,23 +2078,16 @@ static void default_options(struct f2fs_sb_info *sbi)
- 	set_opt(sbi, INLINE_XATTR);
- 	set_opt(sbi, INLINE_DATA);
- 	set_opt(sbi, INLINE_DENTRY);
--	set_opt(sbi, READ_EXTENT_CACHE);
- 	set_opt(sbi, NOHEAP);
--	clear_opt(sbi, DISABLE_CHECKPOINT);
- 	set_opt(sbi, MERGE_CHECKPOINT);
- 	F2FS_OPTION(sbi).unusable_cap = 0;
- 	sbi->sb->s_flags |= SB_LAZYTIME;
- 	if (!f2fs_sb_has_readonly(sbi) && !f2fs_readonly(sbi->sb))
- 		set_opt(sbi, FLUSH_MERGE);
--	if (f2fs_hw_support_discard(sbi) || f2fs_hw_should_discard(sbi))
--		set_opt(sbi, DISCARD);
--	if (f2fs_sb_has_blkzoned(sbi)) {
-+	if (f2fs_sb_has_blkzoned(sbi))
- 		F2FS_OPTION(sbi).fs_mode = FS_MODE_LFS;
--		F2FS_OPTION(sbi).discard_unit = DISCARD_UNIT_SECTION;
--	} else {
-+	else
- 		F2FS_OPTION(sbi).fs_mode = FS_MODE_ADAPTIVE;
--		F2FS_OPTION(sbi).discard_unit = DISCARD_UNIT_BLOCK;
--	}
+ 	return rcpu;
  
- #ifdef CONFIG_F2FS_FS_XATTR
- 	set_opt(sbi, XATTR_USER);
-@@ -2253,7 +2259,7 @@ static int f2fs_remount(struct super_block *sb, int *flags, char *data)
- 			clear_sbi_flag(sbi, SBI_NEED_SB_WRITE);
- 	}
- 
--	default_options(sbi);
-+	default_options(sbi, true);
- 
- 	/* parse mount options */
- 	err = parse_options(sb, data, true);
-@@ -4150,7 +4156,7 @@ static int f2fs_fill_super(struct super_block *sb, void *data, int silent)
- 		sbi->s_chksum_seed = f2fs_chksum(sbi, ~0, raw_super->uuid,
- 						sizeof(raw_super->uuid));
- 
--	default_options(sbi);
-+	default_options(sbi, false);
- 	/* parse mount options */
- 	options = kstrdup((const char *)data, GFP_KERNEL);
- 	if (data && !options) {
--- 
-2.40.1
-
+ free_prog:
 
 
