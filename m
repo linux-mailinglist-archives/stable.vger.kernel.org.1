@@ -2,96 +2,137 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0641E775A89
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:09:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 66A51775908
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:56:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233213AbjHILJX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:09:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42784 "EHLO
+        id S232603AbjHIK4u (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 06:56:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34610 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233200AbjHILJW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:09:22 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 14E7010F3
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:09:22 -0700 (PDT)
+        with ESMTP id S232635AbjHIK4r (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:56:47 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9557B2103;
+        Wed,  9 Aug 2023 03:56:46 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A84DE63118
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:09:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B77A0C433C7;
-        Wed,  9 Aug 2023 11:09:20 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D6C726238A;
+        Wed,  9 Aug 2023 10:56:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8E0EC433C8;
+        Wed,  9 Aug 2023 10:56:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691579361;
-        bh=kJSGXMN6WwD28vr0XPwLKOwp7MoNNqmsdMpaPqdnkKc=;
+        s=korg; t=1691578605;
+        bh=Ye3ys9UcDM6pMksK+MRq0l+vVAWGIT5xFw4fgsIyerM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=yjm5sD6RzS+Y2t4QcaHTRY14AbpdBW2+HMoySvLEO3ftq/SVYyM0UqDhWffHWu5lu
-         X8DoAV/7EYzP98e15+0GBWBX86KRZv6kzYijmiHPYl84OQkSGz8mEnha76aCeFuOrs
-         ed+EvpajHBYPyYYBHcZAjy8RAiWKGZ0T0mgPdDAs=
+        b=hV7/vtBwdNKloQAMxauNprhskkV7MaQn+D2lQUMKFhOhxBdYMJUA2nVIcFCK2mzF7
+         ib9Zg04J+xGNLsI125GfXooAIrLUJoc5sgIObYq9WILQ8ftLgjSWOgPMKWFh46iFdW
+         9X1xY9h2TAHFPALVP8SNnLdBfIa5itFGjS7Bqdz8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Guiting Shen <aarongt.shen@gmail.com>,
-        stable <stable@kernel.org>,
-        Alan Stern <stern@rowland.harvard.edu>
-Subject: [PATCH 4.14 167/204] usb: ohci-at91: Fix the unhandle interrupt when resume
-Date:   Wed,  9 Aug 2023 12:41:45 +0200
-Message-ID: <20230809103648.102218894@linuxfoundation.org>
+        patches@lists.linux.dev, Aaron Lewis <aaronlewis@google.com>,
+        kvm@vger.kernel.org, Sean Christopherson <seanjc@google.com>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 119/127] selftests/rseq: Play nice with binaries statically linked against glibc 2.35+
+Date:   Wed,  9 Aug 2023 12:41:46 +0200
+Message-ID: <20230809103640.548687186@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103642.552405807@linuxfoundation.org>
-References: <20230809103642.552405807@linuxfoundation.org>
+In-Reply-To: <20230809103636.615294317@linuxfoundation.org>
+References: <20230809103636.615294317@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Guiting Shen <aarongt.shen@gmail.com>
+From: Sean Christopherson <seanjc@google.com>
 
-commit c55afcbeaa7a6f4fffdbc999a9bf3f0b29a5186f upstream.
+[ Upstream commit 3bcbc20942db5d738221cca31a928efc09827069 ]
 
-The ohci_hcd_at91_drv_suspend() sets ohci->rh_state to OHCI_RH_HALTED when
-suspend which will let the ohci_irq() skip the interrupt after resume. And
-nobody to handle this interrupt.
+To allow running rseq and KVM's rseq selftests as statically linked
+binaries, initialize the various "trampoline" pointers to point directly
+at the expect glibc symbols, and skip the dlysm() lookups if the rseq
+size is non-zero, i.e. the binary is statically linked *and* the libc
+registered its own rseq.
 
-According to the comment in ohci_hcd_at91_drv_suspend(), it need to reset
-when resume from suspend(MEM) to fix by setting "hibernated" argument of
-ohci_resume().
+Define weak versions of the symbols so as not to break linking against
+libc versions that don't support rseq in any capacity.
 
-Signed-off-by: Guiting Shen <aarongt.shen@gmail.com>
-Cc: stable <stable@kernel.org>
-Reviewed-by: Alan Stern <stern@rowland.harvard.edu>
-Link: https://lore.kernel.org/r/20230626152713.18950-1-aarongt.shen@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The KVM selftests in particular are often statically linked so that they
+can be run on targets with very limited runtime environments, i.e. test
+machines.
+
+Fixes: 233e667e1ae3 ("selftests/rseq: Uplift rseq selftests for compatibility with glibc-2.35")
+Cc: Aaron Lewis <aaronlewis@google.com>
+Cc: kvm@vger.kernel.org
+Cc: stable@vger.kernel.org
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Message-Id: <20230721223352.2333911-1-seanjc@google.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/ohci-at91.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ tools/testing/selftests/rseq/rseq.c | 28 ++++++++++++++++++++++------
+ 1 file changed, 22 insertions(+), 6 deletions(-)
 
---- a/drivers/usb/host/ohci-at91.c
-+++ b/drivers/usb/host/ohci-at91.c
-@@ -641,7 +641,13 @@ ohci_hcd_at91_drv_resume(struct device *
+diff --git a/tools/testing/selftests/rseq/rseq.c b/tools/testing/selftests/rseq/rseq.c
+index 4177f9507bbee..b736a5169aad0 100644
+--- a/tools/testing/selftests/rseq/rseq.c
++++ b/tools/testing/selftests/rseq/rseq.c
+@@ -32,9 +32,17 @@
+ #include "../kselftest.h"
+ #include "rseq.h"
  
- 	at91_start_clock(ohci_at91);
+-static const ptrdiff_t *libc_rseq_offset_p;
+-static const unsigned int *libc_rseq_size_p;
+-static const unsigned int *libc_rseq_flags_p;
++/*
++ * Define weak versions to play nice with binaries that are statically linked
++ * against a libc that doesn't support registering its own rseq.
++ */
++__weak ptrdiff_t __rseq_offset;
++__weak unsigned int __rseq_size;
++__weak unsigned int __rseq_flags;
++
++static const ptrdiff_t *libc_rseq_offset_p = &__rseq_offset;
++static const unsigned int *libc_rseq_size_p = &__rseq_size;
++static const unsigned int *libc_rseq_flags_p = &__rseq_flags;
  
--	ohci_resume(hcd, false);
+ /* Offset from the thread pointer to the rseq area.  */
+ ptrdiff_t rseq_offset;
+@@ -108,9 +116,17 @@ int rseq_unregister_current_thread(void)
+ static __attribute__((constructor))
+ void rseq_init(void)
+ {
+-	libc_rseq_offset_p = dlsym(RTLD_NEXT, "__rseq_offset");
+-	libc_rseq_size_p = dlsym(RTLD_NEXT, "__rseq_size");
+-	libc_rseq_flags_p = dlsym(RTLD_NEXT, "__rseq_flags");
 +	/*
-+	 * According to the comment in ohci_hcd_at91_drv_suspend()
-+	 * we need to do a reset if the 48Mhz clock was stopped,
-+	 * that is, if ohci_at91->wakeup is clear. Tell ohci_resume()
-+	 * to reset in this case by setting its "hibernated" flag.
++	 * If the libc's registered rseq size isn't already valid, it may be
++	 * because the binary is dynamically linked and not necessarily due to
++	 * libc not having registered a restartable sequence.  Try to find the
++	 * symbols if that's the case.
 +	 */
-+	ohci_resume(hcd, !ohci_at91->wakeup);
- 
- 	ohci_at91_port_suspend(ohci_at91->sfr_regmap, 0);
- 
++	if (!*libc_rseq_size_p) {
++		libc_rseq_offset_p = dlsym(RTLD_NEXT, "__rseq_offset");
++		libc_rseq_size_p = dlsym(RTLD_NEXT, "__rseq_size");
++		libc_rseq_flags_p = dlsym(RTLD_NEXT, "__rseq_flags");
++	}
+ 	if (libc_rseq_size_p && libc_rseq_offset_p && libc_rseq_flags_p &&
+ 			*libc_rseq_size_p != 0) {
+ 		/* rseq registration owned by glibc */
+-- 
+2.40.1
+
 
 
