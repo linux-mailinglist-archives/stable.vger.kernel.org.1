@@ -2,44 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9CB5C775BAD
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:19:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C27A3775D4D
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:35:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233509AbjHILTw (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:19:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37420 "EHLO
+        id S234064AbjHILf5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:35:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49204 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233506AbjHILTw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:19:52 -0400
+        with ESMTP id S234068AbjHILf4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:35:56 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D175AFA
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:19:51 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A87351BFF
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:35:55 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 685FB631CC
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:19:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A3D7C433CB;
-        Wed,  9 Aug 2023 11:19:50 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3E0E16350F
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:35:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 502C9C433C9;
+        Wed,  9 Aug 2023 11:35:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691579990;
-        bh=eiyvl/okVesoN/JuYzffwuxLxyQhoO84+sCbZkaRyRc=;
+        s=korg; t=1691580954;
+        bh=oURpJredoucDcEveexJXt0TQPG51YWuWX58XsNxKLPA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=T07bUd1wACxNC8wsOYbl2xX2iNFIMbG9i5r40Lsg0zx1eSbPjYnvuYw/js1yJm9HF
-         J6h0D1jomRM9Ay7Sbz1Rl7VxhudJsLucLm1e+wV7ghEQiqAFFwIdub4Mpux2TKa32K
-         xcYzsFey+h04xXYAkzBGaoSdoHdjFEwTI1yPkcaA=
+        b=EvmDpM1FIw772Agxz+yIXB2IW8DcwlAKNqGYyDvFXe7DFRsz5RV82Amk2EaJyIYMt
+         JNyW8QiYcwqhILyolmFZzkTbMOZiynrdxCmnBlMKgXUsjRbbSFoNvIoY76L2mDL5TS
+         aXI6SGjLaPO4GbH3bcm48Wsyb4SDbfbXq1uXf+Lg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Xu Rongbo <xurongbo@baidu.com>,
-        Miklos Szeredi <mszeredi@redhat.com>
-Subject: [PATCH 4.19 188/323] fuse: revalidate: dont invalidate if interrupted
+        patches@lists.linux.dev,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Vinod Koul <vkoul@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 024/201] phy: qcom-snps: correct struct qcom_snps_hsphy kerneldoc
 Date:   Wed,  9 Aug 2023 12:40:26 +0200
-Message-ID: <20230809103706.774645552@linuxfoundation.org>
+Message-ID: <20230809103644.631058896@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
-References: <20230809103658.104386911@linuxfoundation.org>
+In-Reply-To: <20230809103643.799166053@linuxfoundation.org>
+References: <20230809103643.799166053@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,34 +56,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Miklos Szeredi <mszeredi@redhat.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-commit a9d1c4c6df0e568207907c04aed9e7beb1294c42 upstream.
+[ Upstream commit 2a881183dc5ab2474ef602e48fe7af34db460d95 ]
 
-If the LOOKUP request triggered from fuse_dentry_revalidate() is
-interrupted, then the dentry will be invalidated, possibly resulting in
-submounts being unmounted.
+Update kerneldoc of struct qcom_snps_hsphy to fix:
 
-Reported-by: Xu Rongbo <xurongbo@baidu.com>
-Closes: https://lore.kernel.org/all/CAJfpegswN_CJJ6C3RZiaK6rpFmNyWmXfaEpnQUJ42KCwNF5tWw@mail.gmail.com/
-Fixes: 9e6268db496a ("[PATCH] FUSE - read-write operations")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+  drivers/phy/qualcomm/phy-qcom-snps-femto-v2.c:135: warning: Function parameter or member 'update_seq_cfg' not described in 'qcom_snps_hsphy'
+
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20230507144818.193039-1-krzysztof.kozlowski@linaro.org
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Stable-dep-of: 8a0eb8f9b9a0 ("phy: qcom-snps-femto-v2: properly enable ref clock")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/fuse/dir.c |    2 +-
+ drivers/phy/qualcomm/phy-qcom-snps-femto-v2.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/fuse/dir.c
-+++ b/fs/fuse/dir.c
-@@ -232,7 +232,7 @@ static int fuse_dentry_revalidate(struct
- 			spin_unlock(&fc->lock);
- 		}
- 		kfree(forget);
--		if (ret == -ENOMEM)
-+		if (ret == -ENOMEM || ret == -EINTR)
- 			goto out;
- 		if (ret || fuse_invalid_attr(&outarg.attr) ||
- 		    (outarg.attr.mode ^ inode->i_mode) & S_IFMT)
+diff --git a/drivers/phy/qualcomm/phy-qcom-snps-femto-v2.c b/drivers/phy/qualcomm/phy-qcom-snps-femto-v2.c
+index 54846259405a9..136b45903c798 100644
+--- a/drivers/phy/qualcomm/phy-qcom-snps-femto-v2.c
++++ b/drivers/phy/qualcomm/phy-qcom-snps-femto-v2.c
+@@ -73,11 +73,11 @@ static const char * const qcom_snps_hsphy_vreg_names[] = {
+  *
+  * @cfg_ahb_clk: AHB2PHY interface clock
+  * @ref_clk: phy reference clock
+- * @iface_clk: phy interface clock
+  * @phy_reset: phy reset control
+  * @vregs: regulator supplies bulk data
+  * @phy_initialized: if PHY has been initialized correctly
+  * @mode: contains the current mode the PHY is in
++ * @update_seq_cfg: tuning parameters for phy init
+  */
+ struct qcom_snps_hsphy {
+ 	struct phy *phy;
+-- 
+2.39.2
+
 
 
