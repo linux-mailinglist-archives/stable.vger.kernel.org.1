@@ -2,107 +2,123 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 44E74775A8C
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:09:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C96D0775971
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:00:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233215AbjHILJ2 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:09:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42824 "EHLO
+        id S232865AbjHILAb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:00:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52212 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233200AbjHILJ2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:09:28 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 83C4AED
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:09:27 -0700 (PDT)
+        with ESMTP id S232858AbjHILAa (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:00:30 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6275171E
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:00:29 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 21B9D630F0
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:09:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 301E1C433C7;
-        Wed,  9 Aug 2023 11:09:26 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5F441625AD
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:00:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70F5FC433C8;
+        Wed,  9 Aug 2023 11:00:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691579366;
-        bh=H0TKRjdDOb6PBxwTn9p9QlwmdCfsVF23J9kHlRFZVtY=;
+        s=korg; t=1691578828;
+        bh=dqrofLYrXSlgaW3/6Nh5XdwMgO734l+ASe5AK48AB+U=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Bj3hQx5qiELIWNzOkyDRIxI8Erx066zHfTg1jQcHTIUd00/K4PsIyZSLOPRUDKqh0
-         MnEK3LjMeOx7oUlDogRyJDa71HMrBXjqWUIDGWFzfD8BBuirQP+bqxA2WfrzE1q+DG
-         5PzMiWw6oWtmw8llO66DoJeLsGwNtokVy3IDFsqQ=
+        b=OG+0kfc8UVBBzgAo6Y04RsjTp4oFKfmAlTmpP+wmULqMo0XiDV1ZAcx4JDVhoywQv
+         ic85ZQ6yIuxSxEEpVtqPi9crrl2oElqeptbagndorGgBiEGNE7y6V7qj3VDhZV7Ech
+         AkYJF7tCo07eg5J+M+8z/sXBYowfpwK159zlU63E=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Kees Cook <keescook@chromium.org>
-Subject: [PATCH 4.14 169/204] Documentation: security-bugs.rst: update preferences when dealing with the linux-distros group
+        patches@lists.linux.dev,
+        Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>,
+        Guchun Chen <guchun.chen@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>
+Subject: [PATCH 5.15 71/92] drm/ttm: check null pointer before accessing when swapping
 Date:   Wed,  9 Aug 2023 12:41:47 +0200
-Message-ID: <20230809103648.170684536@linuxfoundation.org>
+Message-ID: <20230809103636.027639692@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103642.552405807@linuxfoundation.org>
-References: <20230809103642.552405807@linuxfoundation.org>
+In-Reply-To: <20230809103633.485906560@linuxfoundation.org>
+References: <20230809103633.485906560@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Guchun Chen <guchun.chen@amd.com>
 
-commit 4fee0915e649bd0cea56dece6d96f8f4643df33c upstream.
+commit 2dedcf414bb01b8d966eb445db1d181d92304fb2 upstream.
 
-Because the linux-distros group forces reporters to release information
-about reported bugs, and they impose arbitrary deadlines in having those
-bugs fixed despite not actually being kernel developers, the kernel
-security team recommends not interacting with them at all as this just
-causes confusion and the early-release of reported security problems.
+Add a check to avoid null pointer dereference as below:
 
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Link: https://lore.kernel.org/r/2023063020-throat-pantyhose-f110@gregkh
+[   90.002283] general protection fault, probably for non-canonical
+address 0xdffffc0000000000: 0000 [#1] PREEMPT SMP KASAN NOPTI
+[   90.002292] KASAN: null-ptr-deref in range
+[0x0000000000000000-0x0000000000000007]
+[   90.002346]  ? exc_general_protection+0x159/0x240
+[   90.002352]  ? asm_exc_general_protection+0x26/0x30
+[   90.002357]  ? ttm_bo_evict_swapout_allowable+0x322/0x5e0 [ttm]
+[   90.002365]  ? ttm_bo_evict_swapout_allowable+0x42e/0x5e0 [ttm]
+[   90.002373]  ttm_bo_swapout+0x134/0x7f0 [ttm]
+[   90.002383]  ? __pfx_ttm_bo_swapout+0x10/0x10 [ttm]
+[   90.002391]  ? lock_acquire+0x44d/0x4f0
+[   90.002398]  ? ttm_device_swapout+0xa5/0x260 [ttm]
+[   90.002412]  ? lock_acquired+0x355/0xa00
+[   90.002416]  ? do_raw_spin_trylock+0xb6/0x190
+[   90.002421]  ? __pfx_lock_acquired+0x10/0x10
+[   90.002426]  ? ttm_global_swapout+0x25/0x210 [ttm]
+[   90.002442]  ttm_device_swapout+0x198/0x260 [ttm]
+[   90.002456]  ? __pfx_ttm_device_swapout+0x10/0x10 [ttm]
+[   90.002472]  ttm_global_swapout+0x75/0x210 [ttm]
+[   90.002486]  ttm_tt_populate+0x187/0x3f0 [ttm]
+[   90.002501]  ttm_bo_handle_move_mem+0x437/0x590 [ttm]
+[   90.002517]  ttm_bo_validate+0x275/0x430 [ttm]
+[   90.002530]  ? __pfx_ttm_bo_validate+0x10/0x10 [ttm]
+[   90.002544]  ? kasan_save_stack+0x33/0x60
+[   90.002550]  ? kasan_set_track+0x25/0x30
+[   90.002554]  ? __kasan_kmalloc+0x8f/0xa0
+[   90.002558]  ? amdgpu_gtt_mgr_new+0x81/0x420 [amdgpu]
+[   90.003023]  ? ttm_resource_alloc+0xf6/0x220 [ttm]
+[   90.003038]  amdgpu_bo_pin_restricted+0x2dd/0x8b0 [amdgpu]
+[   90.003210]  ? __x64_sys_ioctl+0x131/0x1a0
+[   90.003210]  ? do_syscall_64+0x60/0x90
+
+Fixes: a2848d08742c ("drm/ttm: never consider pinned BOs for eviction&swap")
+Tested-by: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
+Signed-off-by: Guchun Chen <guchun.chen@amd.com>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Cc: stable@vger.kernel.org
+Link: https://patchwork.freedesktop.org/patch/msgid/20230724024229.1118444-1-guchun.chen@amd.com
+Signed-off-by: Christian König <christian.koenig@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/admin-guide/security-bugs.rst |   24 +++++++++++-------------
- 1 file changed, 11 insertions(+), 13 deletions(-)
+ drivers/gpu/drm/ttm/ttm_bo.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/Documentation/admin-guide/security-bugs.rst
-+++ b/Documentation/admin-guide/security-bugs.rst
-@@ -42,20 +42,18 @@ disclosure is from immediate (esp. if it
- to a few weeks.  As a basic default policy, we expect report date to
- disclosure date to be on the order of 7 days.
+--- a/drivers/gpu/drm/ttm/ttm_bo.c
++++ b/drivers/gpu/drm/ttm/ttm_bo.c
+@@ -606,7 +606,8 @@ static bool ttm_bo_evict_swapout_allowab
  
--Coordination
--------------
-+Coordination with other groups
-+------------------------------
+ 	if (bo->pin_count) {
+ 		*locked = false;
+-		*busy = false;
++		if (busy)
++			*busy = false;
+ 		return false;
+ 	}
  
--Fixes for sensitive bugs, such as those that might lead to privilege
--escalations, may need to be coordinated with the private
--<linux-distros@vs.openwall.org> mailing list so that distribution vendors
--are well prepared to issue a fixed kernel upon public disclosure of the
--upstream fix. Distros will need some time to test the proposed patch and
--will generally request at least a few days of embargo, and vendor update
--publication prefers to happen Tuesday through Thursday. When appropriate,
--the security team can assist with this coordination, or the reporter can
--include linux-distros from the start. In this case, remember to prefix
--the email Subject line with "[vs]" as described in the linux-distros wiki:
--<http://oss-security.openwall.org/wiki/mailing-lists/distros#how-to-use-the-lists>
-+The kernel security team strongly recommends that reporters of potential
-+security issues NEVER contact the "linux-distros" mailing list until
-+AFTER discussing it with the kernel security team.  Do not Cc: both
-+lists at once.  You may contact the linux-distros mailing list after a
-+fix has been agreed on and you fully understand the requirements that
-+doing so will impose on you and the kernel community.
-+
-+The different lists have different goals and the linux-distros rules do
-+not contribute to actually fixing any potential security problems.
- 
- CVE assignment
- --------------
 
 
