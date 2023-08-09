@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ECA9C775DCA
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:41:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 64AA7775CF9
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:32:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234232AbjHILlU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:41:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58048 "EHLO
+        id S233938AbjHILcm (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:32:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47468 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234239AbjHILlT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:41:19 -0400
+        with ESMTP id S233939AbjHILcl (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:32:41 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B1C41FD2
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:41:18 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C8701FDE;
+        Wed,  9 Aug 2023 04:32:41 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E6EE663676
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:41:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 002C3C433C7;
-        Wed,  9 Aug 2023 11:41:16 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BFDF16340C;
+        Wed,  9 Aug 2023 11:32:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0244C433C8;
+        Wed,  9 Aug 2023 11:32:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691581277;
-        bh=PVBKaBja4FnfXp0zYB7kZKru88o5mv/S9lf7gvC9jWw=;
+        s=korg; t=1691580760;
+        bh=Ye3ys9UcDM6pMksK+MRq0l+vVAWGIT5xFw4fgsIyerM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=cfZk2dT1/HyDTs/BgCtZtkut4aQfmUUylawQVkjIFJor5lm48NKVYz2Fk+tydsMuf
-         XJXAXu6zrvzch32L9RoeBazPtYW4NjSLEsXM8331zkJj8srCB4HqNcN/1DinZyXzFJ
-         VWuTl/EQ5+XUoF9USfL3FSw+QlIOCVVkSLPiqCLY=
+        b=TFKkmwkaqKjAzmHHyZOqkZq1XolJx2INwva5xFemQVf9meNHsGrAM7DYT7gQzQMeb
+         nB1/YIS3fdoxmC8HzBDRf/2Zhf1ET58sJ7gawKQDrh3TCZNW3rJWPlJts5gi02CC0B
+         4CRicZ0RWKGsQ+z2BlZhw/SEbqWljX2C+LHnW2Uc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Olivier Maignial <olivier.maignial@hotmail.fr>,
-        Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 5.10 168/201] mtd: spinand: toshiba: Fix ecc_get_status
+        patches@lists.linux.dev, Aaron Lewis <aaronlewis@google.com>,
+        kvm@vger.kernel.org, Sean Christopherson <seanjc@google.com>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 139/154] selftests/rseq: Play nice with binaries statically linked against glibc 2.35+
 Date:   Wed,  9 Aug 2023 12:42:50 +0200
-Message-ID: <20230809103649.352365956@linuxfoundation.org>
+Message-ID: <20230809103641.472760854@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103643.799166053@linuxfoundation.org>
-References: <20230809103643.799166053@linuxfoundation.org>
+In-Reply-To: <20230809103636.887175326@linuxfoundation.org>
+References: <20230809103636.887175326@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,54 +56,83 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Olivier Maignial <olivier.maignial@hotmail.fr>
+From: Sean Christopherson <seanjc@google.com>
 
-commit 8544cda94dae6be3f1359539079c68bb731428b1 upstream.
+[ Upstream commit 3bcbc20942db5d738221cca31a928efc09827069 ]
 
-Reading ECC status is failing.
+To allow running rseq and KVM's rseq selftests as statically linked
+binaries, initialize the various "trampoline" pointers to point directly
+at the expect glibc symbols, and skip the dlysm() lookups if the rseq
+size is non-zero, i.e. the binary is statically linked *and* the libc
+registered its own rseq.
 
-tx58cxgxsxraix_ecc_get_status() is using on-stack buffer
-for SPINAND_GET_FEATURE_OP() output. It is not suitable
-for DMA needs of spi-mem.
+Define weak versions of the symbols so as not to break linking against
+libc versions that don't support rseq in any capacity.
 
-Fix this by using the spi-mem operations dedicated buffer
-spinand->scratchbuf.
+The KVM selftests in particular are often statically linked so that they
+can be run on targets with very limited runtime environments, i.e. test
+machines.
 
-See
-spinand->scratchbuf:
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/include/linux/mtd/spinand.h?h=v6.3#n418
-spi_mem_check_op():
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/spi/spi-mem.c?h=v6.3#n199
-
-Fixes: 10949af1681d ("mtd: spinand: Add initial support for Toshiba TC58CVG2S0H")
+Fixes: 233e667e1ae3 ("selftests/rseq: Uplift rseq selftests for compatibility with glibc-2.35")
+Cc: Aaron Lewis <aaronlewis@google.com>
+Cc: kvm@vger.kernel.org
 Cc: stable@vger.kernel.org
-Signed-off-by: Olivier Maignial <olivier.maignial@hotmail.fr>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://lore.kernel.org/linux-mtd/DB4P250MB1032553D05FBE36DEE0D311EFE23A@DB4P250MB1032.EURP250.PROD.OUTLOOK.COM
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Message-Id: <20230721223352.2333911-1-seanjc@google.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/nand/spi/toshiba.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tools/testing/selftests/rseq/rseq.c | 28 ++++++++++++++++++++++------
+ 1 file changed, 22 insertions(+), 6 deletions(-)
 
---- a/drivers/mtd/nand/spi/toshiba.c
-+++ b/drivers/mtd/nand/spi/toshiba.c
-@@ -73,7 +73,7 @@ static int tx58cxgxsxraix_ecc_get_status
+diff --git a/tools/testing/selftests/rseq/rseq.c b/tools/testing/selftests/rseq/rseq.c
+index 4177f9507bbee..b736a5169aad0 100644
+--- a/tools/testing/selftests/rseq/rseq.c
++++ b/tools/testing/selftests/rseq/rseq.c
+@@ -32,9 +32,17 @@
+ #include "../kselftest.h"
+ #include "rseq.h"
+ 
+-static const ptrdiff_t *libc_rseq_offset_p;
+-static const unsigned int *libc_rseq_size_p;
+-static const unsigned int *libc_rseq_flags_p;
++/*
++ * Define weak versions to play nice with binaries that are statically linked
++ * against a libc that doesn't support registering its own rseq.
++ */
++__weak ptrdiff_t __rseq_offset;
++__weak unsigned int __rseq_size;
++__weak unsigned int __rseq_flags;
++
++static const ptrdiff_t *libc_rseq_offset_p = &__rseq_offset;
++static const unsigned int *libc_rseq_size_p = &__rseq_size;
++static const unsigned int *libc_rseq_flags_p = &__rseq_flags;
+ 
+ /* Offset from the thread pointer to the rseq area.  */
+ ptrdiff_t rseq_offset;
+@@ -108,9 +116,17 @@ int rseq_unregister_current_thread(void)
+ static __attribute__((constructor))
+ void rseq_init(void)
  {
- 	struct nand_device *nand = spinand_to_nand(spinand);
- 	u8 mbf = 0;
--	struct spi_mem_op op = SPINAND_GET_FEATURE_OP(0x30, &mbf);
-+	struct spi_mem_op op = SPINAND_GET_FEATURE_OP(0x30, spinand->scratchbuf);
- 
- 	switch (status & STATUS_ECC_MASK) {
- 	case STATUS_ECC_NO_BITFLIPS:
-@@ -92,7 +92,7 @@ static int tx58cxgxsxraix_ecc_get_status
- 		if (spi_mem_exec_op(spinand->spimem, &op))
- 			return nanddev_get_ecc_requirements(nand)->strength;
- 
--		mbf >>= 4;
-+		mbf = *(spinand->scratchbuf) >> 4;
- 
- 		if (WARN_ON(mbf > nanddev_get_ecc_requirements(nand)->strength || !mbf))
- 			return nanddev_get_ecc_requirements(nand)->strength;
+-	libc_rseq_offset_p = dlsym(RTLD_NEXT, "__rseq_offset");
+-	libc_rseq_size_p = dlsym(RTLD_NEXT, "__rseq_size");
+-	libc_rseq_flags_p = dlsym(RTLD_NEXT, "__rseq_flags");
++	/*
++	 * If the libc's registered rseq size isn't already valid, it may be
++	 * because the binary is dynamically linked and not necessarily due to
++	 * libc not having registered a restartable sequence.  Try to find the
++	 * symbols if that's the case.
++	 */
++	if (!*libc_rseq_size_p) {
++		libc_rseq_offset_p = dlsym(RTLD_NEXT, "__rseq_offset");
++		libc_rseq_size_p = dlsym(RTLD_NEXT, "__rseq_size");
++		libc_rseq_flags_p = dlsym(RTLD_NEXT, "__rseq_flags");
++	}
+ 	if (libc_rseq_size_p && libc_rseq_offset_p && libc_rseq_flags_p &&
+ 			*libc_rseq_size_p != 0) {
+ 		/* rseq registration owned by glibc */
+-- 
+2.40.1
+
 
 
