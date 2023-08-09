@@ -2,47 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 55F4A775AA9
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:10:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0B4A9775C2D
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:24:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233245AbjHILKY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:10:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55380 "EHLO
+        id S233669AbjHILYi (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:24:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53242 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233252AbjHILKY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:10:24 -0400
+        with ESMTP id S233663AbjHILYh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:24:37 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7FC1A10F3
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:10:23 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4928C19A1
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:24:37 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1FC1262415
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:10:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29AEFC433C8;
-        Wed,  9 Aug 2023 11:10:21 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DE1D16323C
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:24:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F09FBC433C7;
+        Wed,  9 Aug 2023 11:24:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691579422;
-        bh=IbhinwREYuIl5BKGO76KXFa41B+dyD5EkKDwanj1G0E=;
+        s=korg; t=1691580276;
+        bh=q1dFmBdX9mZSx1VitoctepFLja5YGhOK6ollODksYHk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=DIu6qo0S6kZNnAYfjiWQ1u2dp3MuIrAH066q9Zbmjyd2aQux8Udk8Pbi91RzLAa+7
-         AY9Q8bOxMGXMr+pDYvEeeuFlCwAs84vng2cybl1IZ2Qln889o1qSb5CxRxraU3mDa4
-         O5hI3SoNt9M8YS4kKtGCw092E5/vUSfC3cZrM/Os=
+        b=vvzWcF8UBko6EHdRilMRVxVM1YGmdf1Nrk8979LRLFn1kWQCRPq00JZnXtnoHMBXv
+         ZXoFr9WnC2GQUcZaAO8pUrqvKbemVEwsXSTftQesrHavemBJpRq9x6b1Adv2W0JPcm
+         QRKHnwooXrcFm/1tgJ640iuZ+LkQ3pYWFK1VV96U=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
-        David Ahern <dsahern@kernel.org>,
-        Kuniyuki Iwashima <kuniyu@amazon.com>,
-        Jakub Kicinski <kuba@kernel.org>,
+        patches@lists.linux.dev,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Heiko Carstens <hca@linux.ibm.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 190/204] tcp_metrics: fix addr_same() helper
+Subject: [PATCH 4.19 290/323] KVM: s390: fix sthyi error handling
 Date:   Wed,  9 Aug 2023 12:42:08 +0200
-Message-ID: <20230809103648.831058501@linuxfoundation.org>
+Message-ID: <20230809103711.324849485@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103642.552405807@linuxfoundation.org>
-References: <20230809103642.552405807@linuxfoundation.org>
+In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
+References: <20230809103658.104386911@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,44 +56,76 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Eric Dumazet <edumazet@google.com>
+From: Heiko Carstens <hca@linux.ibm.com>
 
-[ Upstream commit e6638094d7af6c7b9dcca05ad009e79e31b4f670 ]
+[ Upstream commit 0c02cc576eac161601927b41634f80bfd55bfa9e ]
 
-Because v4 and v6 families use separate inetpeer trees (respectively
-net->ipv4.peers and net->ipv6.peers), inetpeer_addr_cmp(a, b) assumes
-a & b share the same family.
+Commit 9fb6c9b3fea1 ("s390/sthyi: add cache to store hypervisor info")
+added cache handling for store hypervisor info. This also changed the
+possible return code for sthyi_fill().
 
-tcp_metrics use a common hash table, where entries can have different
-families.
+Instead of only returning a condition code like the sthyi instruction would
+do, it can now also return a negative error value (-ENOMEM). handle_styhi()
+was not changed accordingly. In case of an error, the negative error value
+would incorrectly injected into the guest PSW.
 
-We must therefore make sure to not call inetpeer_addr_cmp()
-if the families do not match.
+Add proper error handling to prevent this, and update the comment which
+describes the possible return values of sthyi_fill().
 
-Fixes: d39d14ffa24c ("net: Add helper function to compare inetpeer addresses")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Link: https://lore.kernel.org/r/20230802131500.1478140-2-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 9fb6c9b3fea1 ("s390/sthyi: add cache to store hypervisor info")
+Reviewed-by: Christian Borntraeger <borntraeger@linux.ibm.com>
+Link: https://lore.kernel.org/r/20230727182939.2050744-1-hca@linux.ibm.com
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/tcp_metrics.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/s390/kernel/sthyi.c  | 6 +++---
+ arch/s390/kvm/intercept.c | 9 ++++++---
+ 2 files changed, 9 insertions(+), 6 deletions(-)
 
-diff --git a/net/ipv4/tcp_metrics.c b/net/ipv4/tcp_metrics.c
-index 0f0d740f6c8b9..34e3873b31946 100644
---- a/net/ipv4/tcp_metrics.c
-+++ b/net/ipv4/tcp_metrics.c
-@@ -80,7 +80,7 @@ static void tcp_metric_set(struct tcp_metrics_block *tm,
- static bool addr_same(const struct inetpeer_addr *a,
- 		      const struct inetpeer_addr *b)
+diff --git a/arch/s390/kernel/sthyi.c b/arch/s390/kernel/sthyi.c
+index 888cc2f166db7..ce6084e28d904 100644
+--- a/arch/s390/kernel/sthyi.c
++++ b/arch/s390/kernel/sthyi.c
+@@ -460,9 +460,9 @@ static int sthyi_update_cache(u64 *rc)
+  *
+  * Fills the destination with system information returned by the STHYI
+  * instruction. The data is generated by emulation or execution of STHYI,
+- * if available. The return value is the condition code that would be
+- * returned, the rc parameter is the return code which is passed in
+- * register R2 + 1.
++ * if available. The return value is either a negative error value or
++ * the condition code that would be returned, the rc parameter is the
++ * return code which is passed in register R2 + 1.
+  */
+ int sthyi_fill(void *dst, u64 *rc)
  {
--	return inetpeer_addr_cmp(a, b) == 0;
-+	return (a->family == b->family) && !inetpeer_addr_cmp(a, b);
- }
+diff --git a/arch/s390/kvm/intercept.c b/arch/s390/kvm/intercept.c
+index a389fa85cca2d..5450d43d26ea5 100644
+--- a/arch/s390/kvm/intercept.c
++++ b/arch/s390/kvm/intercept.c
+@@ -360,8 +360,8 @@ static int handle_partial_execution(struct kvm_vcpu *vcpu)
+  */
+ int handle_sthyi(struct kvm_vcpu *vcpu)
+ {
+-	int reg1, reg2, r = 0;
+-	u64 code, addr, cc = 0, rc = 0;
++	int reg1, reg2, cc = 0, r = 0;
++	u64 code, addr, rc = 0;
+ 	struct sthyi_sctns *sctns = NULL;
  
- struct tcpm_hash_bucket {
+ 	if (!test_kvm_facility(vcpu->kvm, 74))
+@@ -392,7 +392,10 @@ int handle_sthyi(struct kvm_vcpu *vcpu)
+ 		return -ENOMEM;
+ 
+ 	cc = sthyi_fill(sctns, &rc);
+-
++	if (cc < 0) {
++		free_page((unsigned long)sctns);
++		return cc;
++	}
+ out:
+ 	if (!cc) {
+ 		r = write_guest(vcpu, addr, reg2, sctns, PAGE_SIZE);
 -- 
 2.40.1
 
