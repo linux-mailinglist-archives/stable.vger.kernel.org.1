@@ -2,93 +2,149 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F2C37775C1F
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:24:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BAB3A775CE0
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:31:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233656AbjHILYH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:24:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60150 "EHLO
+        id S233901AbjHILbj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:31:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60502 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233653AbjHILYG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:24:06 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 90C26FA
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:24:06 -0700 (PDT)
+        with ESMTP id S233905AbjHILbi (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:31:38 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C0E7B1FFE
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:31:36 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 30CB26323F
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:24:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4265FC433C8;
-        Wed,  9 Aug 2023 11:24:05 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 590AE633C2
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:31:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67F75C433C7;
+        Wed,  9 Aug 2023 11:31:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691580245;
-        bh=E7GGSJlgCxpYtIeRAJF+inTBdHE7dtcWrCLR0DVx1ig=;
+        s=korg; t=1691580695;
+        bh=b4tEXfw2Sego/01f9fZM0X7NLRDSgZJZUJvsMBnhA6E=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ahaFwkRirZmfhOa+xo32yIhlQI9oARs5MyPQYoXtADeWOny2uYV5Z+sP33zNYZo2D
-         BLAjb55oYs5YzKDNYzTI2sLFe2okjkML7VhiGhwAEcWGRCj065HgH/DuQQEgmRxT1f
-         UM5jB7uHON7vwGOK7RNq0BZIyG1YE/IUyjFInzpk=
+        b=TzJl0tpQ74o+ZoGn66ZmOPvinIo4cakdb0/w383+qq4gFkTCEaPZH3GvIo736fK87
+         tjhyFR7VNiorlodS0e9LkWCq8+B7qC4DkTZctS6HA9CEYefebLppLVIV0BgX5/TI1i
+         59OgnGDq/6rXoR7m9Yh9OHTsrqIm8gFSqHig6CWc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Charles Keepax <ckeepax@opensource.cirrus.com>,
-        Mark Brown <broonie@kernel.org>
-Subject: [PATCH 4.19 280/323] ASoC: wm8904: Fill the cache for WM8904_ADC_TEST_0 register
+        patches@lists.linux.dev, Lion <nnamrec@gmail.com>,
+        Eric Dumazet <edumazet@google.com>,
+        Jamal Hadi Salim <jhs@mojatatu.com>,
+        Pedro Tammela <pctammela@mojatatu.com>,
+        Simon Horman <simon.horman@corigine.com>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Shaoying Xu <shaoyi@amazon.com>
+Subject: [PATCH 5.4 087/154] net/sched: sch_qfq: account for stab overhead in qfq_enqueue
 Date:   Wed,  9 Aug 2023 12:41:58 +0200
-Message-ID: <20230809103710.859192546@linuxfoundation.org>
+Message-ID: <20230809103639.869268488@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
-References: <20230809103658.104386911@linuxfoundation.org>
+In-Reply-To: <20230809103636.887175326@linuxfoundation.org>
+References: <20230809103636.887175326@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Mark Brown <broonie@kernel.org>
+From: Pedro Tammela <pctammela@mojatatu.com>
 
-commit f061e2be8689057cb4ec0dbffa9f03e1a23cdcb2 upstream.
+commit 3e337087c3b5805fe0b8a46ba622a962880b5d64 upstream.
 
-The WM8904_ADC_TEST_0 register is modified as part of updating the OSR
-controls but does not have a cache default, leading to errors when we try
-to modify these controls in cache only mode with no prior read:
+Lion says:
+-------
+In the QFQ scheduler a similar issue to CVE-2023-31436
+persists.
 
-wm8904 3-001a: ASoC: error at snd_soc_component_update_bits on wm8904.3-001a for register: [0x000000c6] -16
+Consider the following code in net/sched/sch_qfq.c:
 
-Add a read of the register to probe() to fill the cache and avoid both the
-error messages and the misconfiguration of the chip which will result.
+static int qfq_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+                struct sk_buff **to_free)
+{
+     unsigned int len = qdisc_pkt_len(skb), gso_segs;
 
-Acked-by: Charles Keepax <ckeepax@opensource.cirrus.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20230723-asoc-fix-wm8904-adc-test-read-v1-1-2cdf2edd83fd@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+    // ...
+
+     if (unlikely(cl->agg->lmax < len)) {
+         pr_debug("qfq: increasing maxpkt from %u to %u for class %u",
+              cl->agg->lmax, len, cl->common.classid);
+         err = qfq_change_agg(sch, cl, cl->agg->class_weight, len);
+         if (err) {
+             cl->qstats.drops++;
+             return qdisc_drop(skb, sch, to_free);
+         }
+
+    // ...
+
+     }
+
+Similarly to CVE-2023-31436, "lmax" is increased without any bounds
+checks according to the packet length "len". Usually this would not
+impose a problem because packet sizes are naturally limited.
+
+This is however not the actual packet length, rather the
+"qdisc_pkt_len(skb)" which might apply size transformations according to
+"struct qdisc_size_table" as created by "qdisc_get_stab()" in
+net/sched/sch_api.c if the TCA_STAB option was set when modifying the qdisc.
+
+A user may choose virtually any size using such a table.
+
+As a result the same issue as in CVE-2023-31436 can occur, allowing heap
+out-of-bounds read / writes in the kmalloc-8192 cache.
+-------
+
+We can create the issue with the following commands:
+
+tc qdisc add dev $DEV root handle 1: stab mtu 2048 tsize 512 mpu 0 \
+overhead 999999999 linklayer ethernet qfq
+tc class add dev $DEV parent 1: classid 1:1 htb rate 6mbit burst 15k
+tc filter add dev $DEV parent 1: matchall classid 1:1
+ping -I $DEV 1.1.1.2
+
+This is caused by incorrectly assuming that qdisc_pkt_len() returns a
+length within the QFQ_MIN_LMAX < len < QFQ_MAX_LMAX.
+
+Fixes: 462dbc9101ac ("pkt_sched: QFQ Plus: fair-queueing service at DRR cost")
+Reported-by: Lion <nnamrec@gmail.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Signed-off-by: Pedro Tammela <pctammela@mojatatu.com>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Shaoying Xu <shaoyi@amazon.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/codecs/wm8904.c |    3 +++
- 1 file changed, 3 insertions(+)
+ net/sched/sch_qfq.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/sound/soc/codecs/wm8904.c
-+++ b/sound/soc/codecs/wm8904.c
-@@ -2264,6 +2264,9 @@ static int wm8904_i2c_probe(struct i2c_c
- 	regmap_update_bits(wm8904->regmap, WM8904_BIAS_CONTROL_0,
- 			    WM8904_POBCTRL, 0);
+--- a/net/sched/sch_qfq.c
++++ b/net/sched/sch_qfq.c
+@@ -375,8 +375,13 @@ static int qfq_change_agg(struct Qdisc *
+ 			   u32 lmax)
+ {
+ 	struct qfq_sched *q = qdisc_priv(sch);
+-	struct qfq_aggregate *new_agg = qfq_find_agg(q, lmax, weight);
++	struct qfq_aggregate *new_agg;
  
-+	/* Fill the cache for the ADC test register */
-+	regmap_read(wm8904->regmap, WM8904_ADC_TEST_0, &val);
++	/* 'lmax' can range from [QFQ_MIN_LMAX, pktlen + stab overhead] */
++	if (lmax > (1UL << QFQ_MTU_SHIFT))
++		return -EINVAL;
 +
- 	/* Can leave the device powered off until we need it */
- 	regcache_cache_only(wm8904->regmap, true);
- 	regulator_bulk_disable(ARRAY_SIZE(wm8904->supplies), wm8904->supplies);
++	new_agg = qfq_find_agg(q, lmax, weight);
+ 	if (new_agg == NULL) { /* create new aggregate */
+ 		new_agg = kzalloc(sizeof(*new_agg), GFP_ATOMIC);
+ 		if (new_agg == NULL)
 
 
