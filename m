@@ -2,121 +2,120 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4C5E1775DBD
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:40:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1DAA4775CEF
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:32:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234213AbjHILky (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:40:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45654 "EHLO
+        id S233920AbjHILcX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:32:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46870 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234210AbjHILkx (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:40:53 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 250981FD7
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:40:53 -0700 (PDT)
+        with ESMTP id S233925AbjHILcW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:32:22 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B051D10D4
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:32:21 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B76E063656
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:40:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C233FC433C7;
-        Wed,  9 Aug 2023 11:40:51 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 45724633EE
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:32:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54EDDC433C7;
+        Wed,  9 Aug 2023 11:32:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691581252;
-        bh=eqbwTp3zV8mFShzsrXOwbikH1jTmH5HVJP+lahWahn8=;
+        s=korg; t=1691580740;
+        bh=g79FXCclP/QUdKks1Plf94RX2TPZM8s0yZXFbUi2a7k=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=JmFJf49qX0Z7revVQbzQuyLVnNFfcfjUozgJzToi9itIAFwARpmsE/EaimoB9wcWk
-         QyBNn0cBw4m5qDt9LKtQ8J+XCYDtjxgpebyT/2fZoOiHgHOr5EvzBF04wKAM8t/fiZ
-         nsD/wxZ1RHvBmuNV/JmQguHa+t7IzQq4tLb27FZo=
+        b=acZW1dy8P6vuaccBofSzrW2uQvEqLiPTLpTq9FP63qCgrdLY1pp6IeBTBI3+kO/hi
+         XQpAprEw97bJwl+/GWGvZCdYD+YwnCzr0Kmf9YkDq4ZBnK6XXZUwm1zZduKyuRRa0V
+         0aw2MbveX4s+fFXd9bS89gWxC84NMlUrxA6PbzYQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
-        David Ahern <dsahern@kernel.org>,
-        Kuniyuki Iwashima <kuniyu@amazon.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 160/201] tcp_metrics: annotate data-races around tm->tcpm_net
-Date:   Wed,  9 Aug 2023 12:42:42 +0200
-Message-ID: <20230809103649.079212157@linuxfoundation.org>
+        patches@lists.linux.dev, Jan Kara <jack@suse.cz>,
+        Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 5.4 132/154] fs: Protect reconfiguration of sb read-write from racing writes
+Date:   Wed,  9 Aug 2023 12:42:43 +0200
+Message-ID: <20230809103641.253221448@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103643.799166053@linuxfoundation.org>
-References: <20230809103643.799166053@linuxfoundation.org>
+In-Reply-To: <20230809103636.887175326@linuxfoundation.org>
+References: <20230809103636.887175326@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Eric Dumazet <edumazet@google.com>
+From: Jan Kara <jack@suse.cz>
 
-[ Upstream commit d5d986ce42c71a7562d32c4e21e026b0f87befec ]
+commit c541dce86c537714b6761a79a969c1623dfa222b upstream.
 
-tm->tcpm_net can be read or written locklessly.
+The reconfigure / remount code takes a lot of effort to protect
+filesystem's reconfiguration code from racing writes on remounting
+read-only. However during remounting read-only filesystem to read-write
+mode userspace writes can start immediately once we clear SB_RDONLY
+flag. This is inconvenient for example for ext4 because we need to do
+some writes to the filesystem (such as preparation of quota files)
+before we can take userspace writes so we are clearing SB_RDONLY flag
+before we are fully ready to accept userpace writes and syzbot has found
+a way to exploit this [1]. Also as far as I'm reading the code
+the filesystem remount code was protected from racing writes in the
+legacy mount path by the mount's MNT_READONLY flag so this is relatively
+new problem. It is actually fairly easy to protect remount read-write
+from racing writes using sb->s_readonly_remount flag so let's just do
+that instead of having to workaround these races in the filesystem code.
 
-Instead of changing write_pnet() and read_pnet() and potentially
-hurt performance, add the needed READ_ONCE()/WRITE_ONCE()
-in tm_net() and tcpm_new().
+[1] https://lore.kernel.org/all/00000000000006a0df05f6667499@google.com/T/
 
-Fixes: 849e8a0ca8d5 ("tcp_metrics: Add a field tcpm_net and verify it matches on lookup")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Link: https://lore.kernel.org/r/20230802131500.1478140-6-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Jan Kara <jack@suse.cz>
+Message-Id: <20230615113848.8439-1-jack@suse.cz>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/tcp_metrics.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ fs/super.c |   11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/net/ipv4/tcp_metrics.c b/net/ipv4/tcp_metrics.c
-index 6ea833474feb5..b01cc35407481 100644
---- a/net/ipv4/tcp_metrics.c
-+++ b/net/ipv4/tcp_metrics.c
-@@ -40,7 +40,7 @@ struct tcp_fastopen_metrics {
+--- a/fs/super.c
++++ b/fs/super.c
+@@ -905,6 +905,7 @@ int reconfigure_super(struct fs_context
+ 	struct super_block *sb = fc->root->d_sb;
+ 	int retval;
+ 	bool remount_ro = false;
++	bool remount_rw = false;
+ 	bool force = fc->sb_flags & SB_FORCE;
  
- struct tcp_metrics_block {
- 	struct tcp_metrics_block __rcu	*tcpm_next;
--	possible_net_t			tcpm_net;
-+	struct net			*tcpm_net;
- 	struct inetpeer_addr		tcpm_saddr;
- 	struct inetpeer_addr		tcpm_daddr;
- 	unsigned long			tcpm_stamp;
-@@ -51,9 +51,10 @@ struct tcp_metrics_block {
- 	struct rcu_head			rcu_head;
- };
- 
--static inline struct net *tm_net(struct tcp_metrics_block *tm)
-+static inline struct net *tm_net(const struct tcp_metrics_block *tm)
- {
--	return read_pnet(&tm->tcpm_net);
-+	/* Paired with the WRITE_ONCE() in tcpm_new() */
-+	return READ_ONCE(tm->tcpm_net);
- }
- 
- static bool tcp_metric_locked(struct tcp_metrics_block *tm,
-@@ -197,7 +198,9 @@ static struct tcp_metrics_block *tcpm_new(struct dst_entry *dst,
- 		if (!tm)
- 			goto out_unlock;
+ 	if (fc->sb_flags_mask & ~MS_RMT_MASK)
+@@ -921,7 +922,7 @@ int reconfigure_super(struct fs_context
+ 		if (!(fc->sb_flags & SB_RDONLY) && bdev_read_only(sb->s_bdev))
+ 			return -EACCES;
+ #endif
+-
++		remount_rw = !(fc->sb_flags & SB_RDONLY) && sb_rdonly(sb);
+ 		remount_ro = (fc->sb_flags & SB_RDONLY) && !sb_rdonly(sb);
  	}
--	write_pnet(&tm->tcpm_net, net);
-+	/* Paired with the READ_ONCE() in tm_net() */
-+	WRITE_ONCE(tm->tcpm_net, net);
-+
- 	tm->tcpm_saddr = *saddr;
- 	tm->tcpm_daddr = *daddr;
  
--- 
-2.40.1
-
+@@ -951,6 +952,14 @@ int reconfigure_super(struct fs_context
+ 			if (retval)
+ 				return retval;
+ 		}
++	} else if (remount_rw) {
++		/*
++		 * We set s_readonly_remount here to protect filesystem's
++		 * reconfigure code from writes from userspace until
++		 * reconfigure finishes.
++		 */
++		sb->s_readonly_remount = 1;
++		smp_wmb();
+ 	}
+ 
+ 	if (fc->ops->reconfigure) {
 
 
