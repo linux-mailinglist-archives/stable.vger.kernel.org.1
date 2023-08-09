@@ -2,125 +2,116 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A43BB7758B5
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:55:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 96321775A3D
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:06:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231361AbjHIKzK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 06:55:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53014 "EHLO
+        id S233108AbjHILGf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:06:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45308 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232582AbjHIKy6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:54:58 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1EFE42D63
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:53:27 -0700 (PDT)
+        with ESMTP id S233115AbjHILGf (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:06:35 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A63C61724
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:06:34 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9DE336313E
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:52:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 849EBC433C8;
-        Wed,  9 Aug 2023 10:52:39 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3DDB062B6A
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:06:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5024FC433C7;
+        Wed,  9 Aug 2023 11:06:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691578360;
-        bh=31HqNmphNVvCIARF6+f3rsUCFR54BlZLVf+HFB64Jbg=;
+        s=korg; t=1691579193;
+        bh=9EkPA70tfcvex043nceDNayBSNkuPT5+4oLfBE1oUrY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=zDtcPS9glNuyTYunFeyApWLZStxHy5HjlgJcs99IJ/zM5rWUyzPvcS70BUyXWjjym
-         +juVF4NAJykeqqJf0ClgrM79b5qAPXhPnPnXa/3y2v0NcKQPceNMdHvlchCwSANEVx
-         NVKfB255ZnoGME4FUBH9EMabFsYqz2Hxv/8fWOe0=
+        b=V8EHMgHSx68qBepXShjC+bmMPTVWIQXg8My3ZWQwEbiIYKK1eeib0H0xRZ3vuYddD
+         OKf+HhHr+gqb0qNLQF7gHIectFFeKhoixTNF5uWBYBRKvOYqezI4mH88hQKYQINE+3
+         0yf3CmLx9hSLDALgyzyaEmjzGCj0kw+dycWe9B0M=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        =?UTF-8?q?Georg=20M=C3=BCller?= <georgmueller@gmx.net>,
-        Ian Rogers <irogers@google.com>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Ingo Molnar <mingo@redhat.com>, Jiri Olsa <jolsa@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Masami Hiramatsu <mhiramat@kernel.org>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 031/127] perf test uprobe_from_different_cu: Skip if there is no gcc
+        Tianjia Zhang <tianjia.zhang@linux.alibaba.com>,
+        Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
+        Mimi Zohar <zohar@linux.ibm.com>
+Subject: [PATCH 4.14 080/204] integrity: Fix possible multiple allocation in integrity_inode_get()
 Date:   Wed,  9 Aug 2023 12:40:18 +0200
-Message-ID: <20230809103637.690754338@linuxfoundation.org>
+Message-ID: <20230809103645.344732728@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103636.615294317@linuxfoundation.org>
-References: <20230809103636.615294317@linuxfoundation.org>
+In-Reply-To: <20230809103642.552405807@linuxfoundation.org>
+References: <20230809103642.552405807@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Georg Müller <georgmueller@gmx.net>
+From: Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
 
-[ Upstream commit 98ce8e4a9dcfb448b30a2d7a16190f4a00382377 ]
+commit 9df6a4870dc371136e90330cfbbc51464ee66993 upstream.
 
-Without gcc, the test will fail.
+When integrity_inode_get() is querying and inserting the cache, there
+is a conditional race in the concurrent environment.
 
-On cleanup, ignore probe removal errors. Otherwise, in case of an error
-adding the probe, the temporary directory is not removed.
+The race condition is the result of not properly implementing
+"double-checked locking". In this case, it first checks to see if the
+iint cache record exists before taking the lock, but doesn't check
+again after taking the integrity_iint_lock.
 
-Fixes: 56cbeacf14353057 ("perf probe: Add test for regression introduced by switch to die_get_decl_file()")
-Signed-off-by: Georg Müller <georgmueller@gmx.net>
-Acked-by: Ian Rogers <irogers@google.com>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Georg Müller <georgmueller@gmx.net>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20230728151812.454806-2-georgmueller@gmx.net
-Link: https://lore.kernel.org/r/CAP-5=fUP6UuLgRty3t2=fQsQi3k4hDMz415vWdp1x88QMvZ8ug@mail.gmail.com/
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: bf2276d10ce5 ("ima: allocating iint improvements")
+Signed-off-by: Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
+Cc: Dmitry Kasatkin <dmitry.kasatkin@gmail.com>
+Cc: <stable@vger.kernel.org> # v3.10+
+Signed-off-by: Mimi Zohar <zohar@linux.ibm.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/perf/tests/shell/test_uprobe_from_different_cu.sh | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ security/integrity/iint.c |   15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
 
-diff --git a/tools/perf/tests/shell/test_uprobe_from_different_cu.sh b/tools/perf/tests/shell/test_uprobe_from_different_cu.sh
-index 00d2e0e2e0c28..319f36ebb9a40 100644
---- a/tools/perf/tests/shell/test_uprobe_from_different_cu.sh
-+++ b/tools/perf/tests/shell/test_uprobe_from_different_cu.sh
-@@ -4,6 +4,12 @@
+--- a/security/integrity/iint.c
++++ b/security/integrity/iint.c
+@@ -43,12 +43,10 @@ static struct integrity_iint_cache *__in
+ 		else if (inode > iint->inode)
+ 			n = n->rb_right;
+ 		else
+-			break;
++			return iint;
+ 	}
+-	if (!n)
+-		return NULL;
  
- set -e
+-	return iint;
++	return NULL;
+ }
  
-+# skip if there's no gcc
-+if ! [ -x "$(command -v gcc)" ]; then
-+        echo "failed: no gcc compiler"
-+        exit 2
-+fi
-+
- temp_dir=$(mktemp -d /tmp/perf-uprobe-different-cu-sh.XXXXXXXXXX)
+ /*
+@@ -112,10 +110,15 @@ struct integrity_iint_cache *integrity_i
+ 		parent = *p;
+ 		test_iint = rb_entry(parent, struct integrity_iint_cache,
+ 				     rb_node);
+-		if (inode < test_iint->inode)
++		if (inode < test_iint->inode) {
+ 			p = &(*p)->rb_left;
+-		else
++		} else if (inode > test_iint->inode) {
+ 			p = &(*p)->rb_right;
++		} else {
++			write_unlock(&integrity_iint_lock);
++			kmem_cache_free(iint_cache, iint);
++			return test_iint;
++		}
+ 	}
  
- cleanup()
-@@ -11,7 +17,7 @@ cleanup()
- 	trap - EXIT TERM INT
- 	if [[ "${temp_dir}" =~ ^/tmp/perf-uprobe-different-cu-sh.*$ ]]; then
- 		echo "--- Cleaning up ---"
--		perf probe -x ${temp_dir}/testfile -d foo
-+		perf probe -x ${temp_dir}/testfile -d foo || true
- 		rm -f "${temp_dir}/"*
- 		rmdir "${temp_dir}"
- 	fi
--- 
-2.40.1
-
+ 	iint->inode = inode;
 
 
