@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A7BA477575D
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:45:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0EE63775B54
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:16:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230398AbjHIKpI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 06:45:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54804 "EHLO
+        id S230052AbjHILQm (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:16:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33598 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231180AbjHIKpH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:45:07 -0400
+        with ESMTP id S232029AbjHILQl (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:16:41 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A7AB1BCF
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:45:07 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA4541BFA
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:16:40 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3077763120
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:45:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 396ABC433C8;
-        Wed,  9 Aug 2023 10:45:06 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 619AD62903
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:16:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FA9DC433C7;
+        Wed,  9 Aug 2023 11:16:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691577906;
-        bh=l56dCURKkAzoQ/tNGe6Hyi0aJdhWGw7xW2/y5Pt15Sw=;
+        s=korg; t=1691579799;
+        bh=T/y0l6N58k8RbchRa8PChcGugPYW48Qa9sCRgQ/A0Ic=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=BRmeMr7ZpvzUPeUnsJwTbYmepHmkXR2yFghbcZtUEWcbWzwZ44ve8op518MDpm4eG
-         1QSQZVfLCDrLBoWPItfRQwXlAD0RZsVT5ow6vCOElyvHk6LPjElWZOolTojAovROfd
-         /j4ImwQPFu+ZFnS8mLZwy/XrJRx50M8VHQqUrpwA=
+        b=KeSdpZeVDzT7wOuedaE2jUTeilEIO5JpkWEhVTy2P+IvPn67R/u+KLPwhebd0UyOM
+         SWeK2Qd7e2+gYko73YFvZ+w6p8E4dcez1IFfFjrk91I2PMnhe+lv1ywCOeQU5sC+qb
+         vKZD0IiTaSVxtw3F1hmyj7qi31VVHwg2gPWRv2wQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yashwanth Varakala <y.varakala@phytec.de>,
-        Cem Tenruh <c.tenruh@phytec.de>,
-        Shawn Guo <shawnguo@kernel.org>,
+        patches@lists.linux.dev, Nishanth Menon <nm@ti.com>,
+        Jassi Brar <jaswinder.singh@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 009/165] arm64: dts: phycore-imx8mm: Correction in gpio-line-names
-Date:   Wed,  9 Aug 2023 12:39:00 +0200
-Message-ID: <20230809103643.063350759@linuxfoundation.org>
+Subject: [PATCH 4.19 103/323] mailbox: ti-msgmgr: Fill non-message tx data fields with 0x0
+Date:   Wed,  9 Aug 2023 12:39:01 +0200
+Message-ID: <20230809103702.781237429@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103642.720851262@linuxfoundation.org>
-References: <20230809103642.720851262@linuxfoundation.org>
+In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
+References: <20230809103658.104386911@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,51 +55,75 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Yashwanth Varakala <y.varakala@phytec.de>
+From: Nishanth Menon <nm@ti.com>
 
-[ Upstream commit 1ef0aa137a96c5f0564f2db0c556a4f0f60ce8f5 ]
+[ Upstream commit 1b712f18c461bd75f018033a15cf381e712806b5 ]
 
-Remove unused nINT_ETHPHY entry from gpio-line-names in gpio1 nodes of
-phyCORE-i.MX8MM and phyBOARD-Polis-i.MX8MM devicetrees.
+Sec proxy/message manager data buffer is 60 bytes with the last of the
+registers indicating transmission completion. This however poses a bit
+of a challenge.
 
-Fixes: ae6847f26ac9 ("arm64: dts: freescale: Add phyBOARD-Polis-i.MX8MM support")
-Signed-off-by: Yashwanth Varakala <y.varakala@phytec.de>
-Signed-off-by: Cem Tenruh <c.tenruh@phytec.de>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+The backing memory for sec_proxy / message manager is regular memory,
+and all sec proxy does is to trigger a burst of all 60 bytes of data
+over to the target thread backing ring accelerator. It doesn't do a
+memory scrub when it moves data out in the burst. When we transmit
+multiple messages, remnants of previous message is also transmitted
+which results in some random data being set in TISCI fields of
+messages that have been expanded forward.
+
+The entire concept of backward compatibility hinges on the fact that
+the unused message fields remain 0x0 allowing for 0x0 value to be
+specially considered when backward compatibility of message extension
+is done.
+
+So, instead of just writing the completion register, we continue
+to fill the message buffer up with 0x0 (note: for partial message
+involving completion, we already do this).
+
+This allows us to scale and introduce ABI changes back also work with
+other boot stages that may have left data in the internal memory.
+
+While at this, be consistent and explicit with the data_reg pointer
+increment.
+
+Fixes: aace66b170ce ("mailbox: Introduce TI message manager driver")
+Signed-off-by: Nishanth Menon <nm@ti.com>
+Signed-off-by: Jassi Brar <jaswinder.singh@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/freescale/imx8mm-phyboard-polis-rdk.dts | 2 +-
- arch/arm64/boot/dts/freescale/imx8mm-phycore-som.dtsi       | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/mailbox/ti-msgmgr.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mm-phyboard-polis-rdk.dts b/arch/arm64/boot/dts/freescale/imx8mm-phyboard-polis-rdk.dts
-index 03e7679217b24..479948f8a4b75 100644
---- a/arch/arm64/boot/dts/freescale/imx8mm-phyboard-polis-rdk.dts
-+++ b/arch/arm64/boot/dts/freescale/imx8mm-phyboard-polis-rdk.dts
-@@ -141,7 +141,7 @@
- };
+diff --git a/drivers/mailbox/ti-msgmgr.c b/drivers/mailbox/ti-msgmgr.c
+index 01e9e462512b7..eb1e9771037f2 100644
+--- a/drivers/mailbox/ti-msgmgr.c
++++ b/drivers/mailbox/ti-msgmgr.c
+@@ -385,14 +385,20 @@ static int ti_msgmgr_send_data(struct mbox_chan *chan, void *data)
+ 		/* Ensure all unused data is 0 */
+ 		data_trail &= 0xFFFFFFFF >> (8 * (sizeof(u32) - trail_bytes));
+ 		writel(data_trail, data_reg);
+-		data_reg++;
++		data_reg += sizeof(u32);
+ 	}
++
+ 	/*
+ 	 * 'data_reg' indicates next register to write. If we did not already
+ 	 * write on tx complete reg(last reg), we must do so for transmit
++	 * In addition, we also need to make sure all intermediate data
++	 * registers(if any required), are reset to 0 for TISCI backward
++	 * compatibility to be maintained.
+ 	 */
+-	if (data_reg <= qinst->queue_buff_end)
+-		writel(0, qinst->queue_buff_end);
++	while (data_reg <= qinst->queue_buff_end) {
++		writel(0, data_reg);
++		data_reg += sizeof(u32);
++	}
  
- &gpio1 {
--	gpio-line-names = "nINT_ETHPHY", "LED_RED", "WDOG_INT", "X_RTC_INT",
-+	gpio-line-names = "", "LED_RED", "WDOG_INT", "X_RTC_INT",
- 		"", "", "", "RESET_ETHPHY",
- 		"CAN_nINT", "CAN_EN", "nENABLE_FLATLINK", "",
- 		"USB_OTG_VBUS_EN", "", "LED_GREEN", "LED_BLUE";
-diff --git a/arch/arm64/boot/dts/freescale/imx8mm-phycore-som.dtsi b/arch/arm64/boot/dts/freescale/imx8mm-phycore-som.dtsi
-index 2dd179ec923d7..847f08537b48a 100644
---- a/arch/arm64/boot/dts/freescale/imx8mm-phycore-som.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mm-phycore-som.dtsi
-@@ -111,7 +111,7 @@
- };
- 
- &gpio1 {
--	gpio-line-names = "nINT_ETHPHY", "", "WDOG_INT", "X_RTC_INT",
-+	gpio-line-names = "", "", "WDOG_INT", "X_RTC_INT",
- 		"", "", "", "RESET_ETHPHY",
- 		"", "", "nENABLE_FLATLINK";
- };
+ 	return 0;
+ }
 -- 
-2.40.1
+2.39.2
 
 
 
