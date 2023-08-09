@@ -2,279 +2,87 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F15C977606A
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 15:17:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3B6E87760A8
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 15:28:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229560AbjHINRb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 09:17:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41182 "EHLO
+        id S230447AbjHIN2g (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 09:28:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49890 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232468AbjHINRb (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 09:17:31 -0400
-Received: from mail-pl1-x633.google.com (mail-pl1-x633.google.com [IPv6:2607:f8b0:4864:20::633])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 089EB2113
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 06:17:28 -0700 (PDT)
-Received: by mail-pl1-x633.google.com with SMTP id d9443c01a7336-1bc73a2b0easo19624825ad.0
-        for <stable@vger.kernel.org>; Wed, 09 Aug 2023 06:17:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20221208.gappssmtp.com; s=20221208; t=1691587047; x=1692191847;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=lxU5eq7ivldBkLHCffcP5HYn7kyARlPjNlnfoOZcZ3I=;
-        b=W4aPY/08JbSKNIore+RhDef1gtHx+FfyOfOCl9IkIt6QQi4sGwMf0TWkkvrCJaHYUP
-         YvXgDqhMCS1xyo/1lx93u5A0oj3gBQRWy/hiqcaTQNy9DAz4Nc/24rF1HnpGtTHCYKSU
-         UKZiKzR2UGjUuHo+seXusp0PH+WOeK+XXvmmrvB/zjH3xnpwM4/7YTTDVW3ZkZBnqRjg
-         yPCb23Mk8kAR2TionHGHjByrbao5BsI4tcPtT8YBoJqal3eACRGIdxhrVDaYrplS6HqY
-         ld9dFPz2XKjTIFSC9fOZsp/tfUJgsqmhVpzFz23Y5UR4G4JHMf8jkGeTcuOUdiobzbH2
-         6DLQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691587047; x=1692191847;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=lxU5eq7ivldBkLHCffcP5HYn7kyARlPjNlnfoOZcZ3I=;
-        b=TZEew/f81taWbOOyPYT5n973hZL8hDhI4TKBdj3L5l76v1AeitdV+gbNe0Nq455eyW
-         I5O/n/RW3l7iJA1ZTTOxyuY8TmXgh4eSEPbhe4Glknkp4K0b5vyOEx/gBk9gUix5Lv2B
-         ZMvDj46gReYaryx8+RODslOuJ3On5d9TlpOEXlyooXKTxNm2sAZgO1rq/ks0N58CkP6O
-         CjKsjGqM6JSxqlH54HhfXLnuNtWtYEPLMRuR6Hc9IrFqN0jAz4ctZa8bHC4g/5HHvdkF
-         kC3aPmsX/Ky3QKxTuTWdlx5G9mZCzKvd14Dff/hkld4zSKIeu0rEt9IaOR3BI3xzaQ+L
-         OHMg==
-X-Gm-Message-State: AOJu0YwfaPaEZKLfAE2M/hfn8TXT/ZZlkhgFHXDwyJkvfcna3Wg5UEPt
-        RuwV8FX8381/d1P3M8HVIR1q+DfFQT4SrKoZk3YyDQ==
-X-Google-Smtp-Source: AGHT+IGQqDqrlOOE7igoCux0J7pCr33vZSJS8kpxxbORunr7WRlMiM/DT7+sl061aMCJttSwdlA87A==
-X-Received: by 2002:a17:902:be08:b0:1bb:b855:db3c with SMTP id r8-20020a170902be0800b001bbb855db3cmr2243393pls.41.1691587046904;
-        Wed, 09 Aug 2023 06:17:26 -0700 (PDT)
-Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id l16-20020a170902f69000b001bc65360526sm7540512plg.125.2023.08.09.06.17.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 09 Aug 2023 06:17:26 -0700 (PDT)
-Message-ID: <64d391e6.170a0220.88a4b.daf9@mx.google.com>
-Date:   Wed, 09 Aug 2023 06:17:26 -0700 (PDT)
-Content-Type: text/plain; charset="utf-8"
+        with ESMTP id S232976AbjHIN22 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 09:28:28 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C66D268C;
+        Wed,  9 Aug 2023 06:28:19 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D4A0F63AE7;
+        Wed,  9 Aug 2023 13:28:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E40C1C4339A;
+        Wed,  9 Aug 2023 13:28:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1691587698;
+        bh=IxApwh33/aJkVQAgEepQkLoYD1avbYlKUbd6GWQT4yo=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=M55USQCRdGrLmiomuHVBXGof2MHxlCoeoQM1OZZ4SeZjwutoOXJOshQ8t2i5mPCYm
+         Cijk5I7YBCtaiGAqZVyuk4EGuDtDnJIOb+SjtSV2gGU8FPiST5fH8iksGsXSRAnRuf
+         hX4CfSqWpGT3mjLgye8U7HenSYS1ZW5ocQtTjVlG0FePmYTUKlsUZ5SfvAxCxmsNFf
+         LeyC6wyCRm9WjM08Uaeg7gsnZnXSh0fW15ziNji0obmbxk/ch/5twygEnXQ7nrHqKl
+         j5BKABss4g6+dH6x7ZuQAHu4aSQDW0eCF28ENPBGZMqElNtNJUMax8Srd98AocemJF
+         Ikr9N4meNvmqA==
+Received: by quaco.ghostprotocols.net (Postfix, from userid 1000)
+        id 28138404DF; Wed,  9 Aug 2023 10:28:15 -0300 (-03)
+Date:   Wed, 9 Aug 2023 10:28:15 -0300
+From:   Arnaldo Carvalho de Melo <acme@kernel.org>
+To:     Namhyung Kim <namhyung@kernel.org>
+Cc:     Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Ingo Molnar <mingo@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        linux-perf-users@vger.kernel.org,
+        Anup Sharma <anupnewsmail@gmail.com>, stable@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] perf build: Update build rule for generated files
+Message-ID: <ZNOUb1Q5ifyLju/q@kernel.org>
+References: <20230728022447.1323563-1-namhyung@kernel.org>
+ <ZMPMHNjX2IxsLbAe@kernel.org>
+ <CAM9d7cgqJatFn0tQVOxoQymFUruSzniPi5Okb1sotb6VLt+X_g@mail.gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Report-Type: build
-X-Kernelci-Kernel: v5.15.125-93-gae7f23cbf199
-X-Kernelci-Tree: stable-rc
-X-Kernelci-Branch: linux-5.15.y
-Subject: stable-rc/linux-5.15.y build: 20 builds: 3 failed, 17 passed, 6 errors,
- 5 warnings (v5.15.125-93-gae7f23cbf199)
-To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
-        kernelci-results@groups.io
-From:   "kernelci.org bot" <bot@kernelci.org>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAM9d7cgqJatFn0tQVOxoQymFUruSzniPi5Okb1sotb6VLt+X_g@mail.gmail.com>
+X-Url:  http://acmel.wordpress.com
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-stable-rc/linux-5.15.y build: 20 builds: 3 failed, 17 passed, 6 errors, 5 w=
-arnings (v5.15.125-93-gae7f23cbf199)
+Em Wed, Aug 09, 2023 at 03:56:17PM +0900, Namhyung Kim escreveu:
+> On Fri, Jul 28, 2023 at 11:09 PM Arnaldo Carvalho de Melo <acme@kernel.org> wrote:
+> > Em Thu, Jul 27, 2023 at 07:24:46PM -0700, Namhyung Kim escreveu:
+> > > Let's update the build rule to specify those cases explicitly to depend
+> > > on the files in the output directory.
 
-Full Build Summary: https://kernelci.org/build/stable-rc/branch/linux-5.15.=
-y/kernel/v5.15.125-93-gae7f23cbf199/
+> > > Note that it's not a complete fix and it needs the next patch for the
+> > > include path too.
 
-Tree: stable-rc
-Branch: linux-5.15.y
-Git Describe: v5.15.125-93-gae7f23cbf199
-Git Commit: ae7f23cbf199ef4564263bdf82cbcedca2f4d60c
-Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
-e-rc.git
-Built: 7 unique architectures
+> > Applied, testing it on the container builds.
 
-Build Failures Detected:
+> I don't see these commits in the perf-tools{,-next} yet.
 
-arm64:
-    defconfig: (gcc-10) FAIL
-    defconfig+arm64-chromebook: (gcc-10) FAIL
+6 days	perf build: Include generated header files properly	Namhyung Kim	5	-9/+9
+6 days	perf build: Update build rule for generated files	Namhyung Kim	2	-0/+16
 
-arm:
-    multi_v7_defconfig: (gcc-10) FAIL
+https://git.kernel.org/pub/scm/linux/kernel/git/perf/perf-tools-next.git/commit/?h=perf-tools-next&id=7822a8913f4c51c7d1aff793b525d60c3384fb5b
+https://git.kernel.org/pub/scm/linux/kernel/git/perf/perf-tools-next.git/commit/?h=perf-tools-next&id=c7e97f215a4ad634b746804679f5937d25f77e29
 
-Errors and Warnings Detected:
+Did I miss something?
 
-arc:
-
-arm64:
-    defconfig (gcc-10): 2 errors
-    defconfig+arm64-chromebook (gcc-10): 2 errors
-
-arm:
-    multi_v7_defconfig (gcc-10): 2 errors
-
-i386:
-
-mips:
-    32r2el_defconfig (gcc-10): 1 warning
-
-riscv:
-
-x86_64:
-    x86_64_defconfig (gcc-10): 2 warnings
-    x86_64_defconfig+x86-chromebook (gcc-10): 2 warnings
-
-Errors summary:
-
-    3    drivers/firmware/arm_scmi/smc.c:39:6: error: duplicate member =E2=
-=80=98irq=E2=80=99
-    3    drivers/firmware/arm_scmi/smc.c:118:20: error: =E2=80=98irq=E2=80=
-=99 undeclared (first use in this function); did you mean =E2=80=98rq=E2=80=
-=99?
-
-Warnings summary:
-
-    2    arch/x86/lib/retpoline.o: warning: objtool: .altinstr_replacement:=
- unexpected end of section
-    2    arch/x86/kernel/smp.o: warning: objtool: sysvec_reboot()+0x45: unr=
-eachable instruction
-    1    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_devic=
-e_reg): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expec=
-ted "0,0"
-
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D
-
-Detailed per-defconfig build reports:
-
----------------------------------------------------------------------------=
------
-32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sect=
-ion mismatches
-
-Warnings:
-    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_device_reg=
-): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expected "=
-0,0"
-
----------------------------------------------------------------------------=
------
-allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
-mismatches
-
----------------------------------------------------------------------------=
------
-allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
-n mismatches
-
----------------------------------------------------------------------------=
------
-defconfig (arm64, gcc-10) =E2=80=94 FAIL, 2 errors, 0 warnings, 0 section m=
-ismatches
-
-Errors:
-    drivers/firmware/arm_scmi/smc.c:39:6: error: duplicate member =E2=80=98=
-irq=E2=80=99
-    drivers/firmware/arm_scmi/smc.c:118:20: error: =E2=80=98irq=E2=80=99 un=
-declared (first use in this function); did you mean =E2=80=98rq=E2=80=99?
-
----------------------------------------------------------------------------=
------
-defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 FAIL, 2 errors, 0 warn=
-ings, 0 section mismatches
-
-Errors:
-    drivers/firmware/arm_scmi/smc.c:39:6: error: duplicate member =E2=80=98=
-irq=E2=80=99
-    drivers/firmware/arm_scmi/smc.c:118:20: error: =E2=80=98irq=E2=80=99 un=
-declared (first use in this function); did you mean =E2=80=98rq=E2=80=99?
-
----------------------------------------------------------------------------=
------
-haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
- section mismatches
-
----------------------------------------------------------------------------=
------
-i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
-on mismatches
-
----------------------------------------------------------------------------=
------
-imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-multi_v7_defconfig (arm, gcc-10) =E2=80=94 FAIL, 2 errors, 0 warnings, 0 se=
-ction mismatches
-
-Errors:
-    drivers/firmware/arm_scmi/smc.c:39:6: error: duplicate member =E2=80=98=
-irq=E2=80=99
-    drivers/firmware/arm_scmi/smc.c:118:20: error: =E2=80=98irq=E2=80=99 un=
-declared (first use in this function); did you mean =E2=80=98rq=E2=80=99?
-
----------------------------------------------------------------------------=
------
-nommu_k210_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, =
-0 section mismatches
-
----------------------------------------------------------------------------=
------
-nommu_k210_sdcard_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 war=
-nings, 0 section mismatches
-
----------------------------------------------------------------------------=
------
-omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-rv32_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
-ion mismatches
-
----------------------------------------------------------------------------=
------
-tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section=
- mismatches
-
----------------------------------------------------------------------------=
------
-tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 s=
-ection mismatches
-
-Warnings:
-    arch/x86/kernel/smp.o: warning: objtool: sysvec_reboot()+0x45: unreacha=
-ble instruction
-    arch/x86/lib/retpoline.o: warning: objtool: .altinstr_replacement: unex=
-pected end of section
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig+x86-chromebook (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, =
-2 warnings, 0 section mismatches
-
-Warnings:
-    arch/x86/kernel/smp.o: warning: objtool: sysvec_reboot()+0x45: unreacha=
-ble instruction
-    arch/x86/lib/retpoline.o: warning: objtool: .altinstr_replacement: unex=
-pected end of section
-
----
-For more info write to <info@kernelci.org>
+- Arnaldo
