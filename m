@@ -2,42 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C56CD775B4B
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:16:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 34A08775B4D
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:16:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233419AbjHILQX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:16:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52444 "EHLO
+        id S233441AbjHILQ1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:16:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52624 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231598AbjHILQV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:16:21 -0400
+        with ESMTP id S233418AbjHILQX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:16:23 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A8EF7210B
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:16:18 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5CA9E2133
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:16:21 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3712C62842
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:16:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C7DAC433C7;
-        Wed,  9 Aug 2023 11:16:17 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id EC31861FA9
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:16:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C5C7C433C7;
+        Wed,  9 Aug 2023 11:16:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691579777;
-        bh=ol2SnMmYOzZLtJrR4jWi2/SJSlbCvgKt6uN495wqYj8=;
+        s=korg; t=1691579780;
+        bh=s327MfDf7ncgj3I2dnSkNNBNdztu74kcYOvEJEwQdsk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Y+XV6ulyuFVQCmKYKxYCwBuAg/LXg0YL4N7E/36Bk+Ea/4B6yaDqpRCygUC/A/JKa
-         Lm5of/NSwq/bIkOHbz8fLN8j+bt6OtIscam/CFTo1H5FFiSqPIg/I5sdtsDmJjzUCV
-         tRLUVpB0IbAG1z9HfuxW6A+zXulV/lhBU+b9QqTI=
+        b=1tFSzPcFmd+qZ3pW6x5OnI0xMRj+7ZGA8XV6Kw6nChAJxCV9bKpNU7O/H7HPd5pfR
+         gojkKkuJ5N76tyOgKIFPSPcShWf0oFFXt+u0V7Z6Pziwdg+g/hcYEG8p3NB/4HOcLf
+         yh+EkHDqKwR7+/eRCa11BVAtQnjsfcAjvVL3x7OY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dai Ngo <dai.ngo@oracle.com>,
-        Jeff Layton <jlayton@kernel.org>,
-        Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 4.19 113/323] NFSD: add encoding of op_recall flag for write delegation
-Date:   Wed,  9 Aug 2023 12:39:11 +0200
-Message-ID: <20230809103703.269610277@linuxfoundation.org>
+        patches@lists.linux.dev, Robert Marko <robimarko@gmail.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 4.19 114/323] mmc: core: disable TRIM on Kingston EMMC04G-M627
+Date:   Wed,  9 Aug 2023 12:39:12 +0200
+Message-ID: <20230809103703.317553697@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
 References: <20230809103658.104386911@linuxfoundation.org>
@@ -55,32 +54,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Dai Ngo <dai.ngo@oracle.com>
+From: Robert Marko <robimarko@gmail.com>
 
-commit 58f5d894006d82ed7335e1c37182fbc5f08c2f51 upstream.
+commit f1738a1f816233e6dfc2407f24a31d596643fd90 upstream.
 
-Modified nfsd4_encode_open to encode the op_recall flag properly
-for OPEN result with write delegation granted.
+It seems that Kingston EMMC04G-M627 despite advertising TRIM support does
+not work when the core is trying to use REQ_OP_WRITE_ZEROES.
 
-Signed-off-by: Dai Ngo <dai.ngo@oracle.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+We are seeing I/O errors in OpenWrt under 6.1 on Zyxel NBG7815 that we did
+not previously have and tracked it down to REQ_OP_WRITE_ZEROES.
+
+Trying to use fstrim seems to also throw errors like:
+[93010.835112] I/O error, dev loop0, sector 16902 op 0x3:(DISCARD) flags 0x800 phys_seg 1 prio class 2
+
+Disabling TRIM makes the error go away, so lets add a quirk for this eMMC
+to disable TRIM.
+
+Signed-off-by: Robert Marko <robimarko@gmail.com>
 Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20230619193621.437358-1-robimarko@gmail.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/nfs4xdr.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/mmc/core/quirks.h |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/fs/nfsd/nfs4xdr.c
-+++ b/fs/nfsd/nfs4xdr.c
-@@ -3403,7 +3403,7 @@ nfsd4_encode_open(struct nfsd4_compoundr
- 		p = xdr_reserve_space(xdr, 32);
- 		if (!p)
- 			return nfserr_resource;
--		*p++ = cpu_to_be32(0);
-+		*p++ = cpu_to_be32(open->op_recall);
+--- a/drivers/mmc/core/quirks.h
++++ b/drivers/mmc/core/quirks.h
+@@ -91,6 +91,13 @@ static const struct mmc_fixup mmc_blk_fi
+ 		  MMC_QUIRK_SEC_ERASE_TRIM_BROKEN),
  
- 		/*
- 		 * TODO: space_limit's in delegations
+ 	/*
++	 * Kingston EMMC04G-M627 advertises TRIM but it does not seems to
++	 * support being used to offload WRITE_ZEROES.
++	 */
++	MMC_FIXUP("M62704", CID_MANFID_KINGSTON, 0x0100, add_quirk_mmc,
++		  MMC_QUIRK_TRIM_BROKEN),
++
++	/*
+ 	 *  On Some Kingston eMMCs, performing trim can result in
+ 	 *  unrecoverable data conrruption occasionally due to a firmware bug.
+ 	 */
 
 
