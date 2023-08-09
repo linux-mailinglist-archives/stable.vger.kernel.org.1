@@ -2,145 +2,208 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 50BA47758E7
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:56:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4CCE5775D61
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:36:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232761AbjHIKz6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 06:55:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47628 "EHLO
+        id S234083AbjHILgw (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:36:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39868 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232549AbjHIKzo (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:55:44 -0400
+        with ESMTP id S234086AbjHILgw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:36:52 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 22E21210A
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:55:20 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B4701FCE
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:36:51 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id AC9A062C35
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:55:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8238C433C8;
-        Wed,  9 Aug 2023 10:55:18 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 31C8463547
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:36:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4093FC433C8;
+        Wed,  9 Aug 2023 11:36:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691578519;
-        bh=pSmeYvB8oNzJyu5FuJhLCnw6IkelECpqmRzYpptmYGY=;
+        s=korg; t=1691581010;
+        bh=qHzkB4rDZhclUz0Z8Wnq1Bjd2kYpJ1sHdGLBjwrSiaw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=GgjHt7EYsdUWIWzOQCY/EQdE1LqN/sPSxMqQAHJKwHG3UqxJ/JQ6hz6obvqaUI9rR
-         IxN5vEUAahb5lztvYMKG4ijo/FLGjuWqqFD4MOMhms10CyoVk/W7lVG9WYJVygp+Hi
-         pS/myVLpW/FMjLJBV6JiV5k3XGZjYQ14O+++3dVo=
+        b=XvelRtBkqKKhmqaN+GGVUaZzJ1Vi8NO3Sl2vmqglKO1Y1UMfWdnVEUs8R5zvlokZQ
+         sKohuxeokh9O40kZX+yxroDZ57FlGCRXNuJ1PZ18PcfOe9EyTdnUFsJySsKh0L0Tzq
+         QZczLFPHBNrQ8bgYNLrT1Y71FNN57Cm6CRIYQy/c=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        =?UTF-8?q?Oleg=20 livelace =20Popov?= <o.popov@livelace.ru>,
-        Hou Tao <houtao1@huawei.com>, Jiri Olsa <jolsa@kernel.org>,
-        Alexei Starovoitov <ast@kernel.org>
-Subject: [PATCH 6.1 088/127] bpf: Disable preemption in bpf_event_output
+        patches@lists.linux.dev, Johan Hovold <johan@kernel.org>
+Subject: [PATCH 5.10 073/201] USB: serial: simple: sort driver entries
 Date:   Wed,  9 Aug 2023 12:41:15 +0200
-Message-ID: <20230809103639.567916714@linuxfoundation.org>
+Message-ID: <20230809103646.256333482@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103636.615294317@linuxfoundation.org>
-References: <20230809103636.615294317@linuxfoundation.org>
+In-Reply-To: <20230809103643.799166053@linuxfoundation.org>
+References: <20230809103643.799166053@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAD_ENC_HEADER,BAYES_00,
-        DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jiri Olsa <jolsa@kernel.org>
+From: Johan Hovold <johan@kernel.org>
 
-commit d62cc390c2e99ae267ffe4b8d7e2e08b6c758c32 upstream.
+commit d245aedc00775c4d7265a9f4522cc4e1fd34d102 upstream.
 
-We received report [1] of kernel crash, which is caused by
-using nesting protection without disabled preemption.
+Sort the driver symbols alphabetically in order to make it more obvious
+where new driver entries should be added.
 
-The bpf_event_output can be called by programs executed by
-bpf_prog_run_array_cg function that disabled migration but
-keeps preemption enabled.
-
-This can cause task to be preempted by another one inside the
-nesting protection and lead eventually to two tasks using same
-perf_sample_data buffer and cause crashes like:
-
-  BUG: kernel NULL pointer dereference, address: 0000000000000001
-  #PF: supervisor instruction fetch in kernel mode
-  #PF: error_code(0x0010) - not-present page
-  ...
-  ? perf_output_sample+0x12a/0x9a0
-  ? finish_task_switch.isra.0+0x81/0x280
-  ? perf_event_output+0x66/0xa0
-  ? bpf_event_output+0x13a/0x190
-  ? bpf_event_output_data+0x22/0x40
-  ? bpf_prog_dfc84bbde731b257_cil_sock4_connect+0x40a/0xacb
-  ? xa_load+0x87/0xe0
-  ? __cgroup_bpf_run_filter_sock_addr+0xc1/0x1a0
-  ? release_sock+0x3e/0x90
-  ? sk_setsockopt+0x1a1/0x12f0
-  ? udp_pre_connect+0x36/0x50
-  ? inet_dgram_connect+0x93/0xa0
-  ? __sys_connect+0xb4/0xe0
-  ? udp_setsockopt+0x27/0x40
-  ? __pfx_udp_push_pending_frames+0x10/0x10
-  ? __sys_setsockopt+0xdf/0x1a0
-  ? __x64_sys_connect+0xf/0x20
-  ? do_syscall_64+0x3a/0x90
-  ? entry_SYSCALL_64_after_hwframe+0x72/0xdc
-
-Fixing this by disabling preemption in bpf_event_output.
-
-[1] https://github.com/cilium/cilium/issues/26756
 Cc: stable@vger.kernel.org
-Reported-by: Oleg "livelace" Popov <o.popov@livelace.ru>
-Closes: https://github.com/cilium/cilium/issues/26756
-Fixes: 2a916f2f546c ("bpf: Use migrate_disable/enable in array macros and cgroup/lirc code.")
-Acked-by: Hou Tao <houtao1@huawei.com>
-Signed-off-by: Jiri Olsa <jolsa@kernel.org>
-Link: https://lore.kernel.org/r/20230725084206.580930-3-jolsa@kernel.org
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/bpf_trace.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/usb/serial/usb-serial-simple.c |   66 ++++++++++++++++-----------------
+ 1 file changed, 33 insertions(+), 33 deletions(-)
 
---- a/kernel/trace/bpf_trace.c
-+++ b/kernel/trace/bpf_trace.c
-@@ -720,7 +720,6 @@ static DEFINE_PER_CPU(struct bpf_trace_s
- u64 bpf_event_output(struct bpf_map *map, u64 flags, void *meta, u64 meta_size,
- 		     void *ctx, u64 ctx_size, bpf_ctx_copy_t ctx_copy)
- {
--	int nest_level = this_cpu_inc_return(bpf_event_output_nest_level);
- 	struct perf_raw_frag frag = {
- 		.copy		= ctx_copy,
- 		.size		= ctx_size,
-@@ -737,8 +736,12 @@ u64 bpf_event_output(struct bpf_map *map
- 	};
- 	struct perf_sample_data *sd;
- 	struct pt_regs *regs;
-+	int nest_level;
- 	u64 ret;
+--- a/drivers/usb/serial/usb-serial-simple.c
++++ b/drivers/usb/serial/usb-serial-simple.c
+@@ -38,16 +38,6 @@ static struct usb_serial_driver vendor##
+ 	{ USB_DEVICE(0x0a21, 0x8001) }	/* MMT-7305WW */
+ DEVICE(carelink, CARELINK_IDS);
  
-+	preempt_disable();
-+	nest_level = this_cpu_inc_return(bpf_event_output_nest_level);
+-/* ZIO Motherboard USB driver */
+-#define ZIO_IDS()			\
+-	{ USB_DEVICE(0x1CBE, 0x0103) }
+-DEVICE(zio, ZIO_IDS);
+-
+-/* Funsoft Serial USB driver */
+-#define FUNSOFT_IDS()			\
+-	{ USB_DEVICE(0x1404, 0xcddc) }
+-DEVICE(funsoft, FUNSOFT_IDS);
+-
+ /* Infineon Flashloader driver */
+ #define FLASHLOADER_IDS()		\
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x058b, 0x0041, USB_CLASS_CDC_DATA) }, \
+@@ -55,6 +45,11 @@ DEVICE(funsoft, FUNSOFT_IDS);
+ 	{ USB_DEVICE(0x8087, 0x0801) }
+ DEVICE(flashloader, FLASHLOADER_IDS);
+ 
++/* Funsoft Serial USB driver */
++#define FUNSOFT_IDS()			\
++	{ USB_DEVICE(0x1404, 0xcddc) }
++DEVICE(funsoft, FUNSOFT_IDS);
 +
- 	if (WARN_ON_ONCE(nest_level > ARRAY_SIZE(bpf_misc_sds.sds))) {
- 		ret = -EBUSY;
- 		goto out;
-@@ -754,6 +757,7 @@ u64 bpf_event_output(struct bpf_map *map
- 	ret = __bpf_perf_event_output(regs, map, flags, sd);
- out:
- 	this_cpu_dec(bpf_event_output_nest_level);
-+	preempt_enable();
- 	return ret;
- }
+ /* Google Serial USB SubClass */
+ #define GOOGLE_IDS()						\
+ 	{ USB_VENDOR_AND_INTERFACE_INFO(0x18d1,			\
+@@ -63,6 +58,11 @@ DEVICE(flashloader, FLASHLOADER_IDS);
+ 					0x01) }
+ DEVICE(google, GOOGLE_IDS);
  
++/* HP4x (48/49) Generic Serial driver */
++#define HP4X_IDS()			\
++	{ USB_DEVICE(0x03f0, 0x0121) }
++DEVICE(hp4x, HP4X_IDS);
++
+ /* KAUFMANN RKS+CAN VCP */
+ #define KAUFMANN_IDS()			\
+ 	{ USB_DEVICE(0x16d0, 0x0870) }
+@@ -73,11 +73,6 @@ DEVICE(kaufmann, KAUFMANN_IDS);
+ 	{ USB_DEVICE(0x1209, 0x8b00) }
+ DEVICE(libtransistor, LIBTRANSISTOR_IDS);
+ 
+-/* ViVOpay USB Serial Driver */
+-#define VIVOPAY_IDS()			\
+-	{ USB_DEVICE(0x1d5f, 0x1004) }	/* ViVOpay 8800 */
+-DEVICE(vivopay, VIVOPAY_IDS);
+-
+ /* Motorola USB Phone driver */
+ #define MOTO_IDS()			\
+ 	{ USB_DEVICE(0x05c6, 0x3197) },	/* unknown Motorola phone */	\
+@@ -106,10 +101,10 @@ DEVICE(nokia, NOKIA_IDS);
+ 	{ USB_DEVICE(0x09d7, 0x0100) }	/* NovAtel FlexPack GPS */
+ DEVICE_N(novatel_gps, NOVATEL_IDS, 3);
+ 
+-/* HP4x (48/49) Generic Serial driver */
+-#define HP4X_IDS()			\
+-	{ USB_DEVICE(0x03f0, 0x0121) }
+-DEVICE(hp4x, HP4X_IDS);
++/* Siemens USB/MPI adapter */
++#define SIEMENS_IDS()			\
++	{ USB_DEVICE(0x908, 0x0004) }
++DEVICE(siemens_mpi, SIEMENS_IDS);
+ 
+ /* Suunto ANT+ USB Driver */
+ #define SUUNTO_IDS()			\
+@@ -117,47 +112,52 @@ DEVICE(hp4x, HP4X_IDS);
+ 	{ USB_DEVICE(0x0fcf, 0x1009) } /* Dynastream ANT USB-m Stick */
+ DEVICE(suunto, SUUNTO_IDS);
+ 
+-/* Siemens USB/MPI adapter */
+-#define SIEMENS_IDS()			\
+-	{ USB_DEVICE(0x908, 0x0004) }
+-DEVICE(siemens_mpi, SIEMENS_IDS);
++/* ViVOpay USB Serial Driver */
++#define VIVOPAY_IDS()			\
++	{ USB_DEVICE(0x1d5f, 0x1004) }	/* ViVOpay 8800 */
++DEVICE(vivopay, VIVOPAY_IDS);
++
++/* ZIO Motherboard USB driver */
++#define ZIO_IDS()			\
++	{ USB_DEVICE(0x1CBE, 0x0103) }
++DEVICE(zio, ZIO_IDS);
+ 
+ /* All of the above structures mushed into two lists */
+ static struct usb_serial_driver * const serial_drivers[] = {
+ 	&carelink_device,
+-	&zio_device,
+-	&funsoft_device,
+ 	&flashloader_device,
++	&funsoft_device,
+ 	&google_device,
++	&hp4x_device,
+ 	&kaufmann_device,
+ 	&libtransistor_device,
+-	&vivopay_device,
+ 	&moto_modem_device,
+ 	&motorola_tetra_device,
+ 	&nokia_device,
+ 	&novatel_gps_device,
+-	&hp4x_device,
+-	&suunto_device,
+ 	&siemens_mpi_device,
++	&suunto_device,
++	&vivopay_device,
++	&zio_device,
+ 	NULL
+ };
+ 
+ static const struct usb_device_id id_table[] = {
+ 	CARELINK_IDS(),
+-	ZIO_IDS(),
+-	FUNSOFT_IDS(),
+ 	FLASHLOADER_IDS(),
++	FUNSOFT_IDS(),
+ 	GOOGLE_IDS(),
++	HP4X_IDS(),
+ 	KAUFMANN_IDS(),
+ 	LIBTRANSISTOR_IDS(),
+-	VIVOPAY_IDS(),
+ 	MOTO_IDS(),
+ 	MOTOROLA_TETRA_IDS(),
+ 	NOKIA_IDS(),
+ 	NOVATEL_IDS(),
+-	HP4X_IDS(),
+-	SUUNTO_IDS(),
+ 	SIEMENS_IDS(),
++	SUUNTO_IDS(),
++	VIVOPAY_IDS(),
++	ZIO_IDS(),
+ 	{ },
+ };
+ MODULE_DEVICE_TABLE(usb, id_table);
 
 
