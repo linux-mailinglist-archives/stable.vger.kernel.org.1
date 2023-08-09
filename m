@@ -2,63 +2,63 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 302737750E3
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 04:28:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E77877750E4
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 04:28:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229598AbjHIC2T (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 8 Aug 2023 22:28:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35250 "EHLO
+        id S229671AbjHIC2i (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 8 Aug 2023 22:28:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33714 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229557AbjHIC2T (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 8 Aug 2023 22:28:19 -0400
-Received: from mail-oa1-x36.google.com (mail-oa1-x36.google.com [IPv6:2001:4860:4864:20::36])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E6D7173A
-        for <stable@vger.kernel.org>; Tue,  8 Aug 2023 19:28:17 -0700 (PDT)
-Received: by mail-oa1-x36.google.com with SMTP id 586e51a60fabf-1c023900f3fso896979fac.0
-        for <stable@vger.kernel.org>; Tue, 08 Aug 2023 19:28:17 -0700 (PDT)
+        with ESMTP id S229557AbjHIC2h (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 8 Aug 2023 22:28:37 -0400
+Received: from mail-ot1-x32b.google.com (mail-ot1-x32b.google.com [IPv6:2607:f8b0:4864:20::32b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4DD81980
+        for <stable@vger.kernel.org>; Tue,  8 Aug 2023 19:28:35 -0700 (PDT)
+Received: by mail-ot1-x32b.google.com with SMTP id 46e09a7af769-6bd066b0fd4so1000416a34.2
+        for <stable@vger.kernel.org>; Tue, 08 Aug 2023 19:28:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20221208.gappssmtp.com; s=20221208; t=1691548096; x=1692152896;
+        d=kernelci-org.20221208.gappssmtp.com; s=20221208; t=1691548115; x=1692152915;
         h=from:to:subject:content-transfer-encoding:mime-version:date
          :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=3mtxHWqV3eK8w9QWTrPPIxjPOqu3eZvWapPEhHBb5zQ=;
-        b=SZ4dYFs+SkSOyaKr/n30FqtUGW54h0Y2FbsF9uxjFWXs88chvAT6Lp7tgEYJSnfOiU
-         5YJ5THeSJMKAlxKC+qCnohlSvkTdo1+iews5zj/lQOTDEahDMGW0e34X/1dVFWVljsvO
-         KsBDNtdk7m4UrvTH7gWkiSsRb3HoJZpExNmB/OlB0QG+skgOt9dirMuk2WjNeVmb+s/D
-         hXE0rvBtzDiN4uqlUEIHjB6oRNNaouDnORuUX9z4YuR5LYw5IsWtBsAgYq09BKmeFG3N
-         xC2R54Rn98sLWna636nS4NrAhmLqCpeUlm6IcsnTZClDb6HkYJLqrWGjQtcun0TOrB0s
-         WPCA==
+        bh=0W0hGiS/AahwOi48Mg7Hibr58OyuVstR2bW/v0lrE9s=;
+        b=SxtI3VmnuGYv6XKaHOeQt8fgcU2N37QjQ301pVvsPcYYihmyGonhs5aXJ/xuN7u9Pa
+         tsG7yJmUb4tihLZsVDgCl2/xHCMOUwwOH48X76mYUIAG71243LazmkECAkftpAFGshos
+         4X9rLqarRow3gquHF5GX89kPU8zbQykoSRbVM9u+WryqLoEwQR7AHY/oPHNjPefNAqaC
+         /sL3dgUArhQAocI+shyvpm+dmzOdKAfpG3Rj+/a+oSmXr4q51UIg4W+pMHYUAiGQ7LCb
+         awkRoFU37TIUWjBE4HwJLFh5zc7P4ZGky5rybBeATl4BbeQNrXgiO+0sHi+24/6IkxAQ
+         SV8w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691548096; x=1692152896;
+        d=1e100.net; s=20221208; t=1691548115; x=1692152915;
         h=from:to:subject:content-transfer-encoding:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=3mtxHWqV3eK8w9QWTrPPIxjPOqu3eZvWapPEhHBb5zQ=;
-        b=OfQVIc2JS4MBNVh+RNsUhfjFJxHTnJzlX2c/gHBo0oqcTOSwin0lgid5TO+cybxOE1
-         boXhWEqG/spmxy+41nBAw+vjDImlcQPHwCLjuKcbd0dAwLWJtW/KXeBzwx9HiKC+85UM
-         quhlCseX1MrLVK/ZVcfRsOf1SPPu5ZGeTDXO37R1Bl5c5EfspRSm4OwCdFUJmOfO9fNH
-         knQoPaLTkJA22VngntK8eDnp30fveP22nftdhMJy/Al9DR61nOrHzM1tugCyBGuQFBk4
-         4qLfl8ATUCzwXc4RtTg0z/08MOmcP3P9vhVQv5TsYqPiPQ9aKjnI1zkOYqB9pEWZmbMZ
-         OBbg==
-X-Gm-Message-State: AOJu0YzEdWM6r7Y1XqbS9lrIYqlNEWkGS8YLM3oEB/9BP7mqlbKvFEYu
-        4wrpv0LyISX/nGmFGJGhMDIfd0usJnF9MKojqsirRQ==
-X-Google-Smtp-Source: AGHT+IFc15ZtJdJqnoWIYKqe3K22nZ1A0ECumhlcKa7yiF1b9GW69zQhL20l46278HtyaKhk2Dgqgw==
-X-Received: by 2002:a05:6871:151:b0:1c0:219b:17f4 with SMTP id z17-20020a056871015100b001c0219b17f4mr1616704oab.5.1691548095803;
-        Tue, 08 Aug 2023 19:28:15 -0700 (PDT)
+        bh=0W0hGiS/AahwOi48Mg7Hibr58OyuVstR2bW/v0lrE9s=;
+        b=AtV/zFG0P6tKvYvyh2vGPgWMwQ569deN8z59Tm8RyypWoqXMsz59YMXS/N3bmVGJ28
+         f1rIjv7qIMBCzcbRtFD4fjGG6uHskIlOYCY+uW9t4UTY7FwwgETsILQ8hbXhIhXcWc1v
+         2bzOA0rxCj1JESm9zQO8hUzBRS3zJ9Wq8RKRwwKw93/+EaAuGxF2JNreUHVgl43VfKnd
+         M2yD6Eg5VPdSXDPdKiMe+UtZFtYXeEdAcz41CcHkFO5/wMwqva3MCC1ejAEdY2uEm7R9
+         bnsPzfAeYbxIigS1bCOLOa8hgAn1S3M6pLQAl/A0cXGQXIBtyUOSlkT5Klc9EAbtjx6c
+         NEuw==
+X-Gm-Message-State: AOJu0YxcQhI3oDlf3paX89KK3bO0hfqeBc55wlIdNuq3dtC7Fz3Kyl+O
+        PUyLW8AX58wOJPsPdm6TSZs8B1y+Z7UYpKXKU02Wqg==
+X-Google-Smtp-Source: AGHT+IFNWZy68G6L8E0jl9prXLTYdWjLPYT8p8qRd6yZzBZrCk4mRBfq76rg8IIK/RwvthO+kidqTA==
+X-Received: by 2002:a05:6808:30aa:b0:3a7:36b3:5fa3 with SMTP id bl42-20020a05680830aa00b003a736b35fa3mr1582061oib.42.1691548114507;
+        Tue, 08 Aug 2023 19:28:34 -0700 (PDT)
 Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id bm2-20020a056a00320200b0068707966034sm8804086pfb.21.2023.08.08.19.28.14
+        by smtp.gmail.com with ESMTPSA id s22-20020a170902a51600b001a80ad9c599sm9651163plq.294.2023.08.08.19.28.33
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 08 Aug 2023 19:28:14 -0700 (PDT)
-Message-ID: <64d2f9be.050a0220.42dc4.0bd4@mx.google.com>
-Date:   Tue, 08 Aug 2023 19:28:14 -0700 (PDT)
+        Tue, 08 Aug 2023 19:28:33 -0700 (PDT)
+Message-ID: <64d2f9d1.170a0220.ee6d0.25b9@mx.google.com>
+Date:   Tue, 08 Aug 2023 19:28:33 -0700 (PDT)
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 X-Kernelci-Report-Type: test
-X-Kernelci-Kernel: v5.10.189-186-g6bbe4c818f99
+X-Kernelci-Kernel: v5.4.252-138-g6540c78c64058
 X-Kernelci-Tree: stable-rc
-X-Kernelci-Branch: linux-5.10.y
-Subject: stable-rc/linux-5.10.y baseline: 120 runs,
- 11 regressions (v5.10.189-186-g6bbe4c818f99)
+X-Kernelci-Branch: linux-5.4.y
+Subject: stable-rc/linux-5.4.y baseline: 108 runs,
+ 21 regressions (v5.4.252-138-g6540c78c64058)
 To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
         kernelci-results@groups.io
 From:   "kernelci.org bot" <bot@kernelci.org>
@@ -71,8 +71,8 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-stable-rc/linux-5.10.y baseline: 120 runs, 11 regressions (v5.10.189-186-g6=
-bbe4c818f99)
+stable-rc/linux-5.4.y baseline: 108 runs, 21 regressions (v5.4.252-138-g654=
+0c78c64058)
 
 Regressions Summary
 -------------------
@@ -84,47 +84,74 @@ g                    | regressions
 cubietruck                   | arm    | lab-baylibre  | gcc-10   | multi_v7=
 _defconfig           | 1          =
 
-fsl-ls2088a-rdb              | arm64  | lab-nxp       | gcc-10   | defconfi=
-g                    | 1          =
-
-fsl-lx2160a-rdb              | arm64  | lab-nxp       | gcc-10   | defconfi=
-g                    | 1          =
-
 hp-x360-12b-c...4020-octopus | x86_64 | lab-collabora | gcc-10   | x86_64_d=
 efcon...6-chromebook | 1          =
 
 hp-x360-14-G1-sona           | x86_64 | lab-collabora | gcc-10   | x86_64_d=
 efcon...6-chromebook | 1          =
 
-r8a774a1-hihope-rzg2m-ex     | arm64  | lab-cip       | gcc-10   | defconfi=
+qemu_arm64-virt-gicv2        | arm64  | lab-broonie   | gcc-10   | defconfi=
 g+arm64-chromebook   | 1          =
 
-r8a774b1-hihope-rzg2n-ex     | arm64  | lab-cip       | gcc-10   | defconfi=
+qemu_arm64-virt-gicv2        | arm64  | lab-broonie   | gcc-10   | defconfi=
+g                    | 1          =
+
+qemu_arm64-virt-gicv2        | arm64  | lab-collabora | gcc-10   | defconfi=
 g+arm64-chromebook   | 1          =
 
-r8a774c0-ek874               | arm64  | lab-cip       | gcc-10   | defconfi=
+qemu_arm64-virt-gicv2        | arm64  | lab-collabora | gcc-10   | defconfi=
 g                    | 1          =
 
-r8a774c0-ek874               | arm64  | lab-cip       | gcc-10   | defconfi=
+qemu_arm64-virt-gicv2-uefi   | arm64  | lab-broonie   | gcc-10   | defconfi=
 g+arm64-chromebook   | 1          =
 
-r8a77960-ulcb                | arm64  | lab-collabora | gcc-10   | defconfi=
+qemu_arm64-virt-gicv2-uefi   | arm64  | lab-broonie   | gcc-10   | defconfi=
 g                    | 1          =
 
-sun50i-h6-pine-h64           | arm64  | lab-collabora | gcc-10   | defconfi=
+qemu_arm64-virt-gicv2-uefi   | arm64  | lab-collabora | gcc-10   | defconfi=
+g+arm64-chromebook   | 1          =
+
+qemu_arm64-virt-gicv2-uefi   | arm64  | lab-collabora | gcc-10   | defconfi=
 g                    | 1          =
 
+qemu_arm64-virt-gicv3        | arm64  | lab-broonie   | gcc-10   | defconfi=
+g+arm64-chromebook   | 1          =
 
-  Details:  https://kernelci.org/test/job/stable-rc/branch/linux-5.10.y/ker=
-nel/v5.10.189-186-g6bbe4c818f99/plan/baseline/
+qemu_arm64-virt-gicv3        | arm64  | lab-broonie   | gcc-10   | defconfi=
+g                    | 1          =
+
+qemu_arm64-virt-gicv3        | arm64  | lab-collabora | gcc-10   | defconfi=
+g+arm64-chromebook   | 1          =
+
+qemu_arm64-virt-gicv3        | arm64  | lab-collabora | gcc-10   | defconfi=
+g                    | 1          =
+
+qemu_arm64-virt-gicv3-uefi   | arm64  | lab-broonie   | gcc-10   | defconfi=
+g+arm64-chromebook   | 1          =
+
+qemu_arm64-virt-gicv3-uefi   | arm64  | lab-broonie   | gcc-10   | defconfi=
+g                    | 1          =
+
+qemu_arm64-virt-gicv3-uefi   | arm64  | lab-collabora | gcc-10   | defconfi=
+g+arm64-chromebook   | 1          =
+
+qemu_arm64-virt-gicv3-uefi   | arm64  | lab-collabora | gcc-10   | defconfi=
+g                    | 1          =
+
+rk3399-gru-kevin             | arm64  | lab-collabora | gcc-10   | defconfi=
+g+arm64-chromebook   | 2          =
+
+
+  Details:  https://kernelci.org/test/job/stable-rc/branch/linux-5.4.y/kern=
+el/v5.4.252-138-g6540c78c64058/plan/baseline/
 
   Test:     baseline
   Tree:     stable-rc
-  Branch:   linux-5.10.y
-  Describe: v5.10.189-186-g6bbe4c818f99
+  Branch:   linux-5.4.y
+  Describe: v5.4.252-138-g6540c78c64058
   URL:      https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-st=
 able-rc.git
-  SHA:      6bbe4c818f996eb36691875374062ff46920c95d =
+  SHA:      6540c78c640582128658d4767943c99e7ca816e8 =
 
 
 
@@ -141,156 +168,47 @@ cubietruck                   | arm    | lab-baylibre  | gcc-10   | multi_v7=
 _defconfig           | 1          =
 
 
-  Details:     https://kernelci.org/test/plan/id/64d2c8c49ca05146c835b1e5
+  Details:     https://kernelci.org/test/plan/id/64d2c93c9eb16409ec35b1da
 
   Results:     5 PASS, 1 FAIL, 1 SKIP
   Full config: multi_v7_defconfig
   Compiler:    gcc-10 (arm-linux-gnueabihf-gcc (Debian 10.2.1-6) 10.2.1 202=
 10110)
-  Plain log:   https://storage.kernelci.org//stable-rc/linux-5.10.y/v5.10.1=
-89-186-g6bbe4c818f99/arm/multi_v7_defconfig/gcc-10/lab-baylibre/baseline-cu=
-bietruck.txt
-  HTML log:    https://storage.kernelci.org//stable-rc/linux-5.10.y/v5.10.1=
-89-186-g6bbe4c818f99/arm/multi_v7_defconfig/gcc-10/lab-baylibre/baseline-cu=
-bietruck.html
+  Plain log:   https://storage.kernelci.org//stable-rc/linux-5.4.y/v5.4.252=
+-138-g6540c78c64058/arm/multi_v7_defconfig/gcc-10/lab-baylibre/baseline-cub=
+ietruck.txt
+  HTML log:    https://storage.kernelci.org//stable-rc/linux-5.4.y/v5.4.252=
+-138-g6540c78c64058/arm/multi_v7_defconfig/gcc-10/lab-baylibre/baseline-cub=
+ietruck.html
   Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
 t-baseline/20230623.0/armel/rootfs.cpio.gz =
 
 
 
   * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
-/64d2c8c49ca05146c835b1ea
-        failing since 203 days (last pass: v5.10.158-107-gd2432186ff47, fir=
-st fail: v5.10.162-852-geeaac3cf2eb3)
+/64d2c93d9eb16409ec35b1df
+        failing since 203 days (last pass: v5.4.226-68-g8c05f5e0777d, first=
+ fail: v5.4.228-659-gb3b34c474ec7)
 
-    2023-08-08T22:58:59.561372  + set +x<8>[   11.067741] <LAVA_SIGNAL_ENDR=
-UN 0_dmesg 3733997_1.5.2.4.1>
-    2023-08-08T22:58:59.562108  =
-
-    2023-08-08T22:58:59.671211  / # #
-    2023-08-08T22:58:59.774765  export SHELL=3D/bin/sh
-    2023-08-08T22:58:59.775298  #
-    2023-08-08T22:58:59.876545  / # export SHELL=3D/bin/sh. /lava-3733997/e=
+    2023-08-08T23:01:04.219692  <8>[    9.881438] <LAVA_SIGNAL_ENDRUN 0_dme=
+sg 3734026_1.5.2.4.1>
+    2023-08-08T23:01:04.330564  / # #
+    2023-08-08T23:01:04.434364  export SHELL=3D/bin/sh
+    2023-08-08T23:01:04.435565  #
+    2023-08-08T23:01:04.538014  / # export SHELL=3D/bin/sh. /lava-3734026/e=
 nvironment
-    2023-08-08T22:58:59.877029  =
+    2023-08-08T23:01:04.539376  =
 
-    2023-08-08T22:58:59.978470  / # . /lava-3733997/environment/lava-373399=
-7/bin/lava-test-runner /lava-3733997/1
-    2023-08-08T22:58:59.979259  =
+    2023-08-08T23:01:04.641772  / # . /lava-3734026/environment/lava-373402=
+6/bin/lava-test-runner /lava-3734026/1
+    2023-08-08T23:01:04.643837  =
 
-    2023-08-08T22:58:59.987155  / # /lava-3733997/bin/lava-test-runner /lav=
-a-3733997/1 =
+    2023-08-08T23:01:04.648675  / # /lava-3734026/bin/lava-test-runner /lav=
+a-3734026/1
+    2023-08-08T23:01:04.692546  <3>[   10.320730] Bluetooth: hci0: command =
+0x0c03 tx timeout =
 
     ... (12 line(s) more)  =
-
- =
-
-
-
-platform                     | arch   | lab           | compiler | defconfi=
-g                    | regressions
------------------------------+--------+---------------+----------+---------=
----------------------+------------
-fsl-ls2088a-rdb              | arm64  | lab-nxp       | gcc-10   | defconfi=
-g                    | 1          =
-
-
-  Details:     https://kernelci.org/test/plan/id/64d2c89e4b7a80659635b1ec
-
-  Results:     5 PASS, 1 FAIL, 1 SKIP
-  Full config: defconfig
-  Compiler:    gcc-10 (aarch64-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210=
-110)
-  Plain log:   https://storage.kernelci.org//stable-rc/linux-5.10.y/v5.10.1=
-89-186-g6bbe4c818f99/arm64/defconfig/gcc-10/lab-nxp/baseline-fsl-ls2088a-rd=
-b.txt
-  HTML log:    https://storage.kernelci.org//stable-rc/linux-5.10.y/v5.10.1=
-89-186-g6bbe4c818f99/arm64/defconfig/gcc-10/lab-nxp/baseline-fsl-ls2088a-rd=
-b.html
-  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
-t-baseline/20230623.0/arm64/rootfs.cpio.gz =
-
-
-
-  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
-/64d2c89e4b7a80659635b1ef
-        failing since 21 days (last pass: v5.10.142, first fail: v5.10.186-=
-332-gf98a4d3a5cec)
-
-    2023-08-08T22:58:28.094708  + [   13.191109] <LAVA_SIGNAL_ENDRUN 0_dmes=
-g 1241906_1.5.2.4.1>
-    2023-08-08T22:58:28.095058  set +x
-    2023-08-08T22:58:28.201218  =
-
-    2023-08-08T22:58:28.302395  / # #export SHELL=3D/bin/sh
-    2023-08-08T22:58:28.302978  =
-
-    2023-08-08T22:58:28.404047  / # export SHELL=3D/bin/sh. /lava-1241906/e=
-nvironment
-    2023-08-08T22:58:28.404492  =
-
-    2023-08-08T22:58:28.505459  / # . /lava-1241906/environment/lava-124190=
-6/bin/lava-test-runner /lava-1241906/1
-    2023-08-08T22:58:28.506198  =
-
-    2023-08-08T22:58:28.510024  / # /lava-1241906/bin/lava-test-runner /lav=
-a-1241906/1 =
-
-    ... (12 line(s) more)  =
-
- =
-
-
-
-platform                     | arch   | lab           | compiler | defconfi=
-g                    | regressions
------------------------------+--------+---------------+----------+---------=
----------------------+------------
-fsl-lx2160a-rdb              | arm64  | lab-nxp       | gcc-10   | defconfi=
-g                    | 1          =
-
-
-  Details:     https://kernelci.org/test/plan/id/64d2c8a176a64c260b35b1f9
-
-  Results:     5 PASS, 1 FAIL, 1 SKIP
-  Full config: defconfig
-  Compiler:    gcc-10 (aarch64-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210=
-110)
-  Plain log:   https://storage.kernelci.org//stable-rc/linux-5.10.y/v5.10.1=
-89-186-g6bbe4c818f99/arm64/defconfig/gcc-10/lab-nxp/baseline-fsl-lx2160a-rd=
-b.txt
-  HTML log:    https://storage.kernelci.org//stable-rc/linux-5.10.y/v5.10.1=
-89-186-g6bbe4c818f99/arm64/defconfig/gcc-10/lab-nxp/baseline-fsl-lx2160a-rd=
-b.html
-  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
-t-baseline/20230623.0/arm64/rootfs.cpio.gz =
-
-
-
-  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
-/64d2c8a176a64c260b35b1fc
-        failing since 158 days (last pass: v5.10.155, first fail: v5.10.172)
-
-    2023-08-08T22:58:16.342384  [   14.936855] <LAVA_SIGNAL_ENDRUN 0_dmesg =
-1241907_1.5.2.4.1>
-    2023-08-08T22:58:16.446334  =
-
-    2023-08-08T22:58:16.547760  / # #export SHELL=3D/bin/sh
-    2023-08-08T22:58:16.548088  =
-
-    2023-08-08T22:58:16.648701  / # export SHELL=3D/bin/sh. /lava-1241907/e=
-nvironment
-    2023-08-08T22:58:16.648981  =
-
-    2023-08-08T22:58:16.749602  / # . /lava-1241907/environment/lava-124190=
-7/bin/lava-test-runner /lava-1241907/1
-    2023-08-08T22:58:16.750011  =
-
-    2023-08-08T22:58:16.752875  / # /lava-1241907/bin/lava-test-runner /lav=
-a-1241907/1
-    2023-08-08T22:58:16.770120  + export 'TESTRUN_ID=3D1_bootrr' =
-
-    ... (11 line(s) more)  =
 
  =
 
@@ -304,53 +222,52 @@ hp-x360-12b-c...4020-octopus | x86_64 | lab-collabora | gcc-10   | x86_64_d=
 efcon...6-chromebook | 1          =
 
 
-  Details:     https://kernelci.org/test/plan/id/64d2c72f02ac7275de35b1da
+  Details:     https://kernelci.org/test/plan/id/64d2c77efbeb84e6ae35b239
 
-  Results:     6 PASS, 1 FAIL, 0 SKIP
+  Results:     5 PASS, 1 FAIL, 1 SKIP
   Full config: x86_64_defconfig+x86-chromebook
   Compiler:    gcc-10 (gcc (Debian 10.2.1-6) 10.2.1 20210110)
-  Plain log:   https://storage.kernelci.org//stable-rc/linux-5.10.y/v5.10.1=
-89-186-g6bbe4c818f99/x86_64/x86_64_defconfig+x86-chromebook/gcc-10/lab-coll=
-abora/baseline-hp-x360-12b-ca0010nr-n4020-octopus.txt
-  HTML log:    https://storage.kernelci.org//stable-rc/linux-5.10.y/v5.10.1=
-89-186-g6bbe4c818f99/x86_64/x86_64_defconfig+x86-chromebook/gcc-10/lab-coll=
-abora/baseline-hp-x360-12b-ca0010nr-n4020-octopus.html
+  Plain log:   https://storage.kernelci.org//stable-rc/linux-5.4.y/v5.4.252=
+-138-g6540c78c64058/x86_64/x86_64_defconfig+x86-chromebook/gcc-10/lab-colla=
+bora/baseline-hp-x360-12b-ca0010nr-n4020-octopus.txt
+  HTML log:    https://storage.kernelci.org//stable-rc/linux-5.4.y/v5.4.252=
+-138-g6540c78c64058/x86_64/x86_64_defconfig+x86-chromebook/gcc-10/lab-colla=
+bora/baseline-hp-x360-12b-ca0010nr-n4020-octopus.html
   Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
 t-baseline/20230623.0/x86/rootfs.cpio.gz =
 
 
 
   * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
-/64d2c72f02ac7275de35b1df
-        failing since 133 days (last pass: v5.10.176, first fail: v5.10.176=
--105-g18265b240021)
+/64d2c77efbeb84e6ae35b23e
+        failing since 131 days (last pass: v5.4.238, first fail: v5.4.238)
 
-    2023-08-08T22:52:56.411309  + <8>[   10.267617] <LAVA_SIGNAL_ENDRUN 0_d=
-mesg 11237742_1.4.2.3.1>
+    2023-08-08T22:54:04.271408  + set<8>[   10.247410] <LAVA_SIGNAL_ENDRUN =
+0_dmesg 11237772_1.4.2.3.1>
 
-    2023-08-08T22:52:56.411424  set +x
+    2023-08-08T22:54:04.271539   +x
 
-    2023-08-08T22:52:56.512525  #
+    2023-08-08T22:54:04.372652  / #
 
-    2023-08-08T22:52:56.613422  / # #export SHELL=3D/bin/sh
+    2023-08-08T22:54:04.473420  # #export SHELL=3D/bin/sh
 
-    2023-08-08T22:52:56.613659  =
+    2023-08-08T22:54:04.473609  =
 
 
-    2023-08-08T22:52:56.714232  / # export SHELL=3D/bin/sh. /lava-11237742/=
+    2023-08-08T22:54:04.574146  / # export SHELL=3D/bin/sh. /lava-11237772/=
 environment
 
-    2023-08-08T22:52:56.714441  =
+    2023-08-08T22:54:04.574339  =
 
 
-    2023-08-08T22:52:56.815015  / # . /lava-11237742/environment/lava-11237=
-742/bin/lava-test-runner /lava-11237742/1
+    2023-08-08T22:54:04.674899  / # . /lava-11237772/environment/lava-11237=
+772/bin/lava-test-runner /lava-11237772/1
 
-    2023-08-08T22:52:56.815362  =
+    2023-08-08T22:54:04.675176  =
 
 
-    2023-08-08T22:52:56.820207  / # /lava-11237742/bin/lava-test-runner /la=
-va-11237742/1
+    2023-08-08T22:54:04.679871  / # /lava-11237772/bin/lava-test-runner /la=
+va-11237772/1
  =
 
     ... (12 line(s) more)  =
@@ -367,52 +284,51 @@ hp-x360-14-G1-sona           | x86_64 | lab-collabora | gcc-10   | x86_64_d=
 efcon...6-chromebook | 1          =
 
 
-  Details:     https://kernelci.org/test/plan/id/64d2c74402ac7275de35b20f
+  Details:     https://kernelci.org/test/plan/id/64d2c76afbeb84e6ae35b217
 
-  Results:     6 PASS, 1 FAIL, 0 SKIP
+  Results:     5 PASS, 1 FAIL, 1 SKIP
   Full config: x86_64_defconfig+x86-chromebook
   Compiler:    gcc-10 (gcc (Debian 10.2.1-6) 10.2.1 20210110)
-  Plain log:   https://storage.kernelci.org//stable-rc/linux-5.10.y/v5.10.1=
-89-186-g6bbe4c818f99/x86_64/x86_64_defconfig+x86-chromebook/gcc-10/lab-coll=
-abora/baseline-hp-x360-14-G1-sona.txt
-  HTML log:    https://storage.kernelci.org//stable-rc/linux-5.10.y/v5.10.1=
-89-186-g6bbe4c818f99/x86_64/x86_64_defconfig+x86-chromebook/gcc-10/lab-coll=
-abora/baseline-hp-x360-14-G1-sona.html
+  Plain log:   https://storage.kernelci.org//stable-rc/linux-5.4.y/v5.4.252=
+-138-g6540c78c64058/x86_64/x86_64_defconfig+x86-chromebook/gcc-10/lab-colla=
+bora/baseline-hp-x360-14-G1-sona.txt
+  HTML log:    https://storage.kernelci.org//stable-rc/linux-5.4.y/v5.4.252=
+-138-g6540c78c64058/x86_64/x86_64_defconfig+x86-chromebook/gcc-10/lab-colla=
+bora/baseline-hp-x360-14-G1-sona.html
   Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
 t-baseline/20230623.0/x86/rootfs.cpio.gz =
 
 
 
   * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
-/64d2c74402ac7275de35b214
-        failing since 133 days (last pass: v5.10.176, first fail: v5.10.176=
--105-g18265b240021)
+/64d2c76afbeb84e6ae35b21c
+        failing since 131 days (last pass: v5.4.238, first fail: v5.4.238)
 
-    2023-08-08T22:52:27.574578  <8>[   12.602325] <LAVA_SIGNAL_ENDRUN 0_dme=
-sg 11237726_1.4.2.3.1>
+    2023-08-08T22:53:15.344974  + set +x
 
-    2023-08-08T22:52:27.578051  + set +x
+    2023-08-08T22:53:15.351420  <8>[   12.561766] <LAVA_SIGNAL_ENDRUN 0_dme=
+sg 11237757_1.4.2.3.1>
 
-    2023-08-08T22:52:27.683055  #
+    2023-08-08T22:53:15.458587  #
 
-    2023-08-08T22:52:27.684214  =
-
-
-    2023-08-08T22:52:27.785910  / # #export SHELL=3D/bin/sh
-
-    2023-08-08T22:52:27.786606  =
+    2023-08-08T22:53:15.459684  =
 
 
-    2023-08-08T22:52:27.887876  / # export SHELL=3D/bin/sh. /lava-11237726/=
+    2023-08-08T22:53:15.561454  / # #export SHELL=3D/bin/sh
+
+    2023-08-08T22:53:15.562347  =
+
+
+    2023-08-08T22:53:15.664409  / # export SHELL=3D/bin/sh. /lava-11237757/=
 environment
 
-    2023-08-08T22:52:27.888562  =
+    2023-08-08T22:53:15.665140  =
 
 
-    2023-08-08T22:52:27.989884  / # . /lava-11237726/environment/lava-11237=
-726/bin/lava-test-runner /lava-11237726/1
+    2023-08-08T22:53:15.766752  / # . /lava-11237757/environment/lava-11237=
+757/bin/lava-test-runner /lava-11237757/1
 
-    2023-08-08T22:52:27.991024  =
+    2023-08-08T22:53:15.768135  =
 
  =
 
@@ -426,47 +342,31 @@ platform                     | arch   | lab           | compiler | defconfi=
 g                    | regressions
 -----------------------------+--------+---------------+----------+---------=
 ---------------------+------------
-r8a774a1-hihope-rzg2m-ex     | arm64  | lab-cip       | gcc-10   | defconfi=
+qemu_arm64-virt-gicv2        | arm64  | lab-broonie   | gcc-10   | defconfi=
 g+arm64-chromebook   | 1          =
 
 
-  Details:     https://kernelci.org/test/plan/id/64d2c95a9eb16409ec35b208
+  Details:     https://kernelci.org/test/plan/id/64d2c8c59ca05146c835b1f0
 
-  Results:     5 PASS, 1 FAIL, 1 SKIP
+  Results:     0 PASS, 1 FAIL, 0 SKIP
   Full config: defconfig+arm64-chromebook
   Compiler:    gcc-10 (aarch64-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210=
 110)
-  Plain log:   https://storage.kernelci.org//stable-rc/linux-5.10.y/v5.10.1=
-89-186-g6bbe4c818f99/arm64/defconfig+arm64-chromebook/gcc-10/lab-cip/baseli=
-ne-r8a774a1-hihope-rzg2m-ex.txt
-  HTML log:    https://storage.kernelci.org//stable-rc/linux-5.10.y/v5.10.1=
-89-186-g6bbe4c818f99/arm64/defconfig+arm64-chromebook/gcc-10/lab-cip/baseli=
-ne-r8a774a1-hihope-rzg2m-ex.html
+  Plain log:   https://storage.kernelci.org//stable-rc/linux-5.4.y/v5.4.252=
+-138-g6540c78c64058/arm64/defconfig+arm64-chromebook/gcc-10/lab-broonie/bas=
+eline-qemu_arm64-virt-gicv2.txt
+  HTML log:    https://storage.kernelci.org//stable-rc/linux-5.4.y/v5.4.252=
+-138-g6540c78c64058/arm64/defconfig+arm64-chromebook/gcc-10/lab-broonie/bas=
+eline-qemu_arm64-virt-gicv2.html
   Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
 t-baseline/20230623.0/arm64/rootfs.cpio.gz =
 
 
 
-  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
-/64d2c95a9eb16409ec35b20b
-        failing since 21 days (last pass: v5.10.186-221-gf178eace6e074, fir=
-st fail: v5.10.186-332-gf98a4d3a5cec)
-
-    2023-08-08T23:01:29.108146  + set +x
-    2023-08-08T23:01:29.111441  <8>[   83.739104] <LAVA_SIGNAL_ENDRUN 0_dme=
-sg 994487_1.5.2.4.1>
-    2023-08-08T23:01:29.218473  / # #
-    2023-08-08T23:01:30.680146  export SHELL=3D/bin/sh
-    2023-08-08T23:01:30.700935  #
-    2023-08-08T23:01:30.701126  / # export SHELL=3D/bin/sh
-    2023-08-08T23:01:32.584232  / # . /lava-994487/environment
-    2023-08-08T23:01:36.038570  /lava-994487/bin/lava-test-runner /lava-994=
-487/1
-    2023-08-08T23:01:36.059647  . /lava-994487/environment
-    2023-08-08T23:01:36.059981  / # /lava-994487/bin/lava-test-runner /lava=
--994487/1 =
-
-    ... (28 line(s) more)  =
+  * baseline.login: https://kernelci.org/test/case/id/64d2c8c59ca05146c835b=
+1f1
+        failing since 370 days (last pass: v5.4.180-59-g4f62141869c8, first=
+ fail: v5.4.209) =
 
  =
 
@@ -476,47 +376,65 @@ platform                     | arch   | lab           | compiler | defconfi=
 g                    | regressions
 -----------------------------+--------+---------------+----------+---------=
 ---------------------+------------
-r8a774b1-hihope-rzg2n-ex     | arm64  | lab-cip       | gcc-10   | defconfi=
+qemu_arm64-virt-gicv2        | arm64  | lab-broonie   | gcc-10   | defconfi=
+g                    | 1          =
+
+
+  Details:     https://kernelci.org/test/plan/id/64d2cb45d33e1e152a35b1e3
+
+  Results:     0 PASS, 1 FAIL, 0 SKIP
+  Full config: defconfig
+  Compiler:    gcc-10 (aarch64-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210=
+110)
+  Plain log:   https://storage.kernelci.org//stable-rc/linux-5.4.y/v5.4.252=
+-138-g6540c78c64058/arm64/defconfig/gcc-10/lab-broonie/baseline-qemu_arm64-=
+virt-gicv2.txt
+  HTML log:    https://storage.kernelci.org//stable-rc/linux-5.4.y/v5.4.252=
+-138-g6540c78c64058/arm64/defconfig/gcc-10/lab-broonie/baseline-qemu_arm64-=
+virt-gicv2.html
+  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
+t-baseline/20230623.0/arm64/rootfs.cpio.gz =
+
+
+
+  * baseline.login: https://kernelci.org/test/case/id/64d2cb45d33e1e152a35b=
+1e4
+        failing since 350 days (last pass: v5.4.180-59-g4f62141869c8, first=
+ fail: v5.4.210-390-g1cece69eaa88) =
+
+ =
+
+
+
+platform                     | arch   | lab           | compiler | defconfi=
+g                    | regressions
+-----------------------------+--------+---------------+----------+---------=
+---------------------+------------
+qemu_arm64-virt-gicv2        | arm64  | lab-collabora | gcc-10   | defconfi=
 g+arm64-chromebook   | 1          =
 
 
-  Details:     https://kernelci.org/test/plan/id/64d2ca236da113bde235b1ef
+  Details:     https://kernelci.org/test/plan/id/64d2c88d6f14da488a35b1de
 
-  Results:     5 PASS, 1 FAIL, 1 SKIP
+  Results:     0 PASS, 1 FAIL, 0 SKIP
   Full config: defconfig+arm64-chromebook
   Compiler:    gcc-10 (aarch64-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210=
 110)
-  Plain log:   https://storage.kernelci.org//stable-rc/linux-5.10.y/v5.10.1=
-89-186-g6bbe4c818f99/arm64/defconfig+arm64-chromebook/gcc-10/lab-cip/baseli=
-ne-r8a774b1-hihope-rzg2n-ex.txt
-  HTML log:    https://storage.kernelci.org//stable-rc/linux-5.10.y/v5.10.1=
-89-186-g6bbe4c818f99/arm64/defconfig+arm64-chromebook/gcc-10/lab-cip/baseli=
-ne-r8a774b1-hihope-rzg2n-ex.html
+  Plain log:   https://storage.kernelci.org//stable-rc/linux-5.4.y/v5.4.252=
+-138-g6540c78c64058/arm64/defconfig+arm64-chromebook/gcc-10/lab-collabora/b=
+aseline-qemu_arm64-virt-gicv2.txt
+  HTML log:    https://storage.kernelci.org//stable-rc/linux-5.4.y/v5.4.252=
+-138-g6540c78c64058/arm64/defconfig+arm64-chromebook/gcc-10/lab-collabora/b=
+aseline-qemu_arm64-virt-gicv2.html
   Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
 t-baseline/20230623.0/arm64/rootfs.cpio.gz =
 
 
 
-  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
-/64d2ca236da113bde235b1f2
-        failing since 21 days (last pass: v5.10.186-221-gf178eace6e074, fir=
-st fail: v5.10.186-332-gf98a4d3a5cec)
-
-    2023-08-08T23:04:43.356981  + set +x
-    2023-08-08T23:04:43.357193  <8>[   83.948938] <LAVA_SIGNAL_ENDRUN 0_dme=
-sg 994483_1.5.2.4.1>
-    2023-08-08T23:04:43.464391  / # #
-    2023-08-08T23:04:44.927209  export SHELL=3D/bin/sh
-    2023-08-08T23:04:44.947861  #
-    2023-08-08T23:04:44.948070  / # export SHELL=3D/bin/sh
-    2023-08-08T23:04:46.833439  / # . /lava-994483/environment
-    2023-08-08T23:04:50.291446  /lava-994483/bin/lava-test-runner /lava-994=
-483/1
-    2023-08-08T23:04:50.312326  . /lava-994483/environment
-    2023-08-08T23:04:50.312438  / # /lava-994483/bin/lava-test-runner /lava=
--994483/1 =
-
-    ... (15 line(s) more)  =
+  * baseline.login: https://kernelci.org/test/case/id/64d2c88d6f14da488a35b=
+1df
+        failing since 370 days (last pass: v5.4.180-59-g4f62141869c8, first=
+ fail: v5.4.209) =
 
  =
 
@@ -526,46 +444,31 @@ platform                     | arch   | lab           | compiler | defconfi=
 g                    | regressions
 -----------------------------+--------+---------------+----------+---------=
 ---------------------+------------
-r8a774c0-ek874               | arm64  | lab-cip       | gcc-10   | defconfi=
+qemu_arm64-virt-gicv2        | arm64  | lab-collabora | gcc-10   | defconfi=
 g                    | 1          =
 
 
-  Details:     https://kernelci.org/test/plan/id/64d2c8d09ca05146c835b1f8
+  Details:     https://kernelci.org/test/plan/id/64d2ca6ea731efbb5135b216
 
-  Results:     5 PASS, 1 FAIL, 1 SKIP
+  Results:     0 PASS, 1 FAIL, 0 SKIP
   Full config: defconfig
   Compiler:    gcc-10 (aarch64-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210=
 110)
-  Plain log:   https://storage.kernelci.org//stable-rc/linux-5.10.y/v5.10.1=
-89-186-g6bbe4c818f99/arm64/defconfig/gcc-10/lab-cip/baseline-r8a774c0-ek874=
-.txt
-  HTML log:    https://storage.kernelci.org//stable-rc/linux-5.10.y/v5.10.1=
-89-186-g6bbe4c818f99/arm64/defconfig/gcc-10/lab-cip/baseline-r8a774c0-ek874=
-.html
+  Plain log:   https://storage.kernelci.org//stable-rc/linux-5.4.y/v5.4.252=
+-138-g6540c78c64058/arm64/defconfig/gcc-10/lab-collabora/baseline-qemu_arm6=
+4-virt-gicv2.txt
+  HTML log:    https://storage.kernelci.org//stable-rc/linux-5.4.y/v5.4.252=
+-138-g6540c78c64058/arm64/defconfig/gcc-10/lab-collabora/baseline-qemu_arm6=
+4-virt-gicv2.html
   Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
 t-baseline/20230623.0/arm64/rootfs.cpio.gz =
 
 
 
-  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
-/64d2c8d09ca05146c835b1fb
-        failing since 21 days (last pass: v5.10.186-221-gf178eace6e074, fir=
-st fail: v5.10.186-332-gf98a4d3a5cec)
-
-    2023-08-08T22:58:57.023514  / # #
-    2023-08-08T22:58:58.483281  export SHELL=3D/bin/sh
-    2023-08-08T22:58:58.503725  #
-    2023-08-08T22:58:58.503844  / # export SHELL=3D/bin/sh
-    2023-08-08T22:59:00.386228  / # . /lava-994470/environment
-    2023-08-08T22:59:03.838812  /lava-994470/bin/lava-test-runner /lava-994=
-470/1
-    2023-08-08T22:59:03.859456  . /lava-994470/environment
-    2023-08-08T22:59:03.859584  / # /lava-994470/bin/lava-test-runner /lava=
--994470/1
-    2023-08-08T22:59:03.937813  + export 'TESTRUN_ID=3D1_bootrr'
-    2023-08-08T22:59:03.937946  + cd /lava-994470/1/tests/1_bootrr =
-
-    ... (25 line(s) more)  =
+  * baseline.login: https://kernelci.org/test/case/id/64d2ca6ea731efbb5135b=
+217
+        failing since 350 days (last pass: v5.4.180-59-g4f62141869c8, first=
+ fail: v5.4.210-390-g1cece69eaa88) =
 
  =
 
@@ -575,46 +478,31 @@ platform                     | arch   | lab           | compiler | defconfi=
 g                    | regressions
 -----------------------------+--------+---------------+----------+---------=
 ---------------------+------------
-r8a774c0-ek874               | arm64  | lab-cip       | gcc-10   | defconfi=
+qemu_arm64-virt-gicv2-uefi   | arm64  | lab-broonie   | gcc-10   | defconfi=
 g+arm64-chromebook   | 1          =
 
 
-  Details:     https://kernelci.org/test/plan/id/64d2c9d3d25849c43535b1da
+  Details:     https://kernelci.org/test/plan/id/64d2c929cbc72439f935b1d9
 
-  Results:     5 PASS, 1 FAIL, 1 SKIP
+  Results:     0 PASS, 1 FAIL, 0 SKIP
   Full config: defconfig+arm64-chromebook
   Compiler:    gcc-10 (aarch64-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210=
 110)
-  Plain log:   https://storage.kernelci.org//stable-rc/linux-5.10.y/v5.10.1=
-89-186-g6bbe4c818f99/arm64/defconfig+arm64-chromebook/gcc-10/lab-cip/baseli=
-ne-r8a774c0-ek874.txt
-  HTML log:    https://storage.kernelci.org//stable-rc/linux-5.10.y/v5.10.1=
-89-186-g6bbe4c818f99/arm64/defconfig+arm64-chromebook/gcc-10/lab-cip/baseli=
-ne-r8a774c0-ek874.html
+  Plain log:   https://storage.kernelci.org//stable-rc/linux-5.4.y/v5.4.252=
+-138-g6540c78c64058/arm64/defconfig+arm64-chromebook/gcc-10/lab-broonie/bas=
+eline-qemu_arm64-virt-gicv2-uefi.txt
+  HTML log:    https://storage.kernelci.org//stable-rc/linux-5.4.y/v5.4.252=
+-138-g6540c78c64058/arm64/defconfig+arm64-chromebook/gcc-10/lab-broonie/bas=
+eline-qemu_arm64-virt-gicv2-uefi.html
   Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
 t-baseline/20230623.0/arm64/rootfs.cpio.gz =
 
 
 
-  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
-/64d2c9d4d25849c43535b1dd
-        failing since 21 days (last pass: v5.10.186-221-gf178eace6e074, fir=
-st fail: v5.10.186-332-gf98a4d3a5cec)
-
-    2023-08-08T23:03:35.402952  / # #
-    2023-08-08T23:03:36.866800  export SHELL=3D/bin/sh
-    2023-08-08T23:03:36.887380  #
-    2023-08-08T23:03:36.887586  / # export SHELL=3D/bin/sh
-    2023-08-08T23:03:38.772543  / # . /lava-994486/environment
-    2023-08-08T23:03:42.229946  /lava-994486/bin/lava-test-runner /lava-994=
-486/1
-    2023-08-08T23:03:42.250804  . /lava-994486/environment
-    2023-08-08T23:03:42.250915  / # /lava-994486/bin/lava-test-runner /lava=
--994486/1
-    2023-08-08T23:03:42.330552  + export 'TESTRUN_ID=3D1_bootrr'
-    2023-08-08T23:03:42.330863  + cd /lava-994486/1/tests/1_bootrr =
-
-    ... (25 line(s) more)  =
+  * baseline.login: https://kernelci.org/test/case/id/64d2c929cbc72439f935b=
+1da
+        failing since 372 days (last pass: v5.4.180-59-g4f62141869c8, first=
+ fail: v5.4.207-123-gb48a8f43dce6) =
 
  =
 
@@ -624,60 +512,31 @@ platform                     | arch   | lab           | compiler | defconfi=
 g                    | regressions
 -----------------------------+--------+---------------+----------+---------=
 ---------------------+------------
-r8a77960-ulcb                | arm64  | lab-collabora | gcc-10   | defconfi=
+qemu_arm64-virt-gicv2-uefi   | arm64  | lab-broonie   | gcc-10   | defconfi=
 g                    | 1          =
 
 
-  Details:     https://kernelci.org/test/plan/id/64d2c8378c1299827d35b1d9
+  Details:     https://kernelci.org/test/plan/id/64d2cb1d6cfebe7d8f35b1ef
 
-  Results:     4 PASS, 2 FAIL, 1 SKIP
+  Results:     0 PASS, 1 FAIL, 0 SKIP
   Full config: defconfig
   Compiler:    gcc-10 (aarch64-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210=
 110)
-  Plain log:   https://storage.kernelci.org//stable-rc/linux-5.10.y/v5.10.1=
-89-186-g6bbe4c818f99/arm64/defconfig/gcc-10/lab-collabora/baseline-r8a77960=
--ulcb.txt
-  HTML log:    https://storage.kernelci.org//stable-rc/linux-5.10.y/v5.10.1=
-89-186-g6bbe4c818f99/arm64/defconfig/gcc-10/lab-collabora/baseline-r8a77960=
--ulcb.html
+  Plain log:   https://storage.kernelci.org//stable-rc/linux-5.4.y/v5.4.252=
+-138-g6540c78c64058/arm64/defconfig/gcc-10/lab-broonie/baseline-qemu_arm64-=
+virt-gicv2-uefi.txt
+  HTML log:    https://storage.kernelci.org//stable-rc/linux-5.4.y/v5.4.252=
+-138-g6540c78c64058/arm64/defconfig/gcc-10/lab-broonie/baseline-qemu_arm64-=
+virt-gicv2-uefi.html
   Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
 t-baseline/20230623.0/arm64/rootfs.cpio.gz =
 
 
 
-  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
-/64d2c8378c1299827d35b1de
-        failing since 21 days (last pass: v5.10.186-221-gf178eace6e074, fir=
-st fail: v5.10.186-332-gf98a4d3a5cec)
-
-    2023-08-08T22:58:22.134978  / # #
-
-    2023-08-08T22:58:22.237121  export SHELL=3D/bin/sh
-
-    2023-08-08T22:58:22.237824  #
-
-    2023-08-08T22:58:22.339270  / # export SHELL=3D/bin/sh. /lava-11237810/=
-environment
-
-    2023-08-08T22:58:22.339973  =
-
-
-    2023-08-08T22:58:22.441437  / # . /lava-11237810/environment/lava-11237=
-810/bin/lava-test-runner /lava-11237810/1
-
-    2023-08-08T22:58:22.442539  =
-
-
-    2023-08-08T22:58:22.458914  / # /lava-11237810/bin/lava-test-runner /la=
-va-11237810/1
-
-    2023-08-08T22:58:22.508275  + export 'TESTRUN_ID=3D1_bootrr'
-
-    2023-08-08T22:58:22.508779  + cd /lav<8>[   16.442229] <LAVA_SIGNAL_STA=
-RTRUN 1_bootrr 11237810_1.5.2.4.5>
- =
-
-    ... (28 line(s) more)  =
+  * baseline.login: https://kernelci.org/test/case/id/64d2cb1d6cfebe7d8f35b=
+1f0
+        failing since 372 days (last pass: v5.4.180-59-g4f62141869c8, first=
+ fail: v5.4.207-123-gb48a8f43dce6) =
 
  =
 
@@ -687,59 +546,391 @@ platform                     | arch   | lab           | compiler | defconfi=
 g                    | regressions
 -----------------------------+--------+---------------+----------+---------=
 ---------------------+------------
-sun50i-h6-pine-h64           | arm64  | lab-collabora | gcc-10   | defconfi=
-g                    | 1          =
+qemu_arm64-virt-gicv2-uefi   | arm64  | lab-collabora | gcc-10   | defconfi=
+g+arm64-chromebook   | 1          =
 
 
-  Details:     https://kernelci.org/test/plan/id/64d2c84d819d26950335b221
+  Details:     https://kernelci.org/test/plan/id/64d2c8b64b7a80659635b208
 
-  Results:     5 PASS, 1 FAIL, 1 SKIP
-  Full config: defconfig
+  Results:     0 PASS, 1 FAIL, 0 SKIP
+  Full config: defconfig+arm64-chromebook
   Compiler:    gcc-10 (aarch64-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210=
 110)
-  Plain log:   https://storage.kernelci.org//stable-rc/linux-5.10.y/v5.10.1=
-89-186-g6bbe4c818f99/arm64/defconfig/gcc-10/lab-collabora/baseline-sun50i-h=
-6-pine-h64.txt
-  HTML log:    https://storage.kernelci.org//stable-rc/linux-5.10.y/v5.10.1=
-89-186-g6bbe4c818f99/arm64/defconfig/gcc-10/lab-collabora/baseline-sun50i-h=
-6-pine-h64.html
+  Plain log:   https://storage.kernelci.org//stable-rc/linux-5.4.y/v5.4.252=
+-138-g6540c78c64058/arm64/defconfig+arm64-chromebook/gcc-10/lab-collabora/b=
+aseline-qemu_arm64-virt-gicv2-uefi.txt
+  HTML log:    https://storage.kernelci.org//stable-rc/linux-5.4.y/v5.4.252=
+-138-g6540c78c64058/arm64/defconfig+arm64-chromebook/gcc-10/lab-collabora/b=
+aseline-qemu_arm64-virt-gicv2-uefi.html
   Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
 t-baseline/20230623.0/arm64/rootfs.cpio.gz =
 
 
 
-  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
-/64d2c84d819d26950335b226
-        failing since 21 days (last pass: v5.10.186-221-gf178eace6e074, fir=
-st fail: v5.10.186-332-gf98a4d3a5cec)
+  * baseline.login: https://kernelci.org/test/case/id/64d2c8b64b7a80659635b=
+209
+        failing since 372 days (last pass: v5.4.180-59-g4f62141869c8, first=
+ fail: v5.4.207-123-gb48a8f43dce6) =
 
-    2023-08-08T22:58:37.371390  / # #
-
-    2023-08-08T22:58:37.472191  export SHELL=3D/bin/sh
-
-    2023-08-08T22:58:37.472441  #
-
-    2023-08-08T22:58:37.573042  / # export SHELL=3D/bin/sh. /lava-11237819/=
-environment
-
-    2023-08-08T22:58:37.573306  =
-
-
-    2023-08-08T22:58:37.673891  / # . /lava-11237819/environment/lava-11237=
-819/bin/lava-test-runner /lava-11237819/1
-
-    2023-08-08T22:58:37.674273  =
-
-
-    2023-08-08T22:58:37.684725  / # /lava-11237819/bin/lava-test-runner /la=
-va-11237819/1
-
-    2023-08-08T22:58:37.746735  + export 'TESTRUN_ID=3D1_bootrr'
-
-    2023-08-08T22:58:37.746898  + cd /lava-1123781<8>[   18.288421] <LAVA_S=
-IGNAL_STARTRUN 1_bootrr 11237819_1.5.2.4.5>
  =
 
-    ... (10 line(s) more)  =
+
+
+platform                     | arch   | lab           | compiler | defconfi=
+g                    | regressions
+-----------------------------+--------+---------------+----------+---------=
+---------------------+------------
+qemu_arm64-virt-gicv2-uefi   | arm64  | lab-collabora | gcc-10   | defconfi=
+g                    | 1          =
+
+
+  Details:     https://kernelci.org/test/plan/id/64d2ca5ab1242d694635b1dc
+
+  Results:     0 PASS, 1 FAIL, 0 SKIP
+  Full config: defconfig
+  Compiler:    gcc-10 (aarch64-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210=
+110)
+  Plain log:   https://storage.kernelci.org//stable-rc/linux-5.4.y/v5.4.252=
+-138-g6540c78c64058/arm64/defconfig/gcc-10/lab-collabora/baseline-qemu_arm6=
+4-virt-gicv2-uefi.txt
+  HTML log:    https://storage.kernelci.org//stable-rc/linux-5.4.y/v5.4.252=
+-138-g6540c78c64058/arm64/defconfig/gcc-10/lab-collabora/baseline-qemu_arm6=
+4-virt-gicv2-uefi.html
+  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
+t-baseline/20230623.0/arm64/rootfs.cpio.gz =
+
+
+
+  * baseline.login: https://kernelci.org/test/case/id/64d2ca5ab1242d694635b=
+1dd
+        failing since 372 days (last pass: v5.4.180-59-g4f62141869c8, first=
+ fail: v5.4.207-123-gb48a8f43dce6) =
+
+ =
+
+
+
+platform                     | arch   | lab           | compiler | defconfi=
+g                    | regressions
+-----------------------------+--------+---------------+----------+---------=
+---------------------+------------
+qemu_arm64-virt-gicv3        | arm64  | lab-broonie   | gcc-10   | defconfi=
+g+arm64-chromebook   | 1          =
+
+
+  Details:     https://kernelci.org/test/plan/id/64d2c9ddd25849c43535b1e8
+
+  Results:     0 PASS, 1 FAIL, 0 SKIP
+  Full config: defconfig+arm64-chromebook
+  Compiler:    gcc-10 (aarch64-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210=
+110)
+  Plain log:   https://storage.kernelci.org//stable-rc/linux-5.4.y/v5.4.252=
+-138-g6540c78c64058/arm64/defconfig+arm64-chromebook/gcc-10/lab-broonie/bas=
+eline-qemu_arm64-virt-gicv3.txt
+  HTML log:    https://storage.kernelci.org//stable-rc/linux-5.4.y/v5.4.252=
+-138-g6540c78c64058/arm64/defconfig+arm64-chromebook/gcc-10/lab-broonie/bas=
+eline-qemu_arm64-virt-gicv3.html
+  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
+t-baseline/20230623.0/arm64/rootfs.cpio.gz =
+
+
+
+  * baseline.login: https://kernelci.org/test/case/id/64d2c9ddd25849c43535b=
+1e9
+        failing since 370 days (last pass: v5.4.180-59-g4f62141869c8, first=
+ fail: v5.4.209) =
+
+ =
+
+
+
+platform                     | arch   | lab           | compiler | defconfi=
+g                    | regressions
+-----------------------------+--------+---------------+----------+---------=
+---------------------+------------
+qemu_arm64-virt-gicv3        | arm64  | lab-broonie   | gcc-10   | defconfi=
+g                    | 1          =
+
+
+  Details:     https://kernelci.org/test/plan/id/64d2cb105cb431367035b1d9
+
+  Results:     0 PASS, 1 FAIL, 0 SKIP
+  Full config: defconfig
+  Compiler:    gcc-10 (aarch64-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210=
+110)
+  Plain log:   https://storage.kernelci.org//stable-rc/linux-5.4.y/v5.4.252=
+-138-g6540c78c64058/arm64/defconfig/gcc-10/lab-broonie/baseline-qemu_arm64-=
+virt-gicv3.txt
+  HTML log:    https://storage.kernelci.org//stable-rc/linux-5.4.y/v5.4.252=
+-138-g6540c78c64058/arm64/defconfig/gcc-10/lab-broonie/baseline-qemu_arm64-=
+virt-gicv3.html
+  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
+t-baseline/20230623.0/arm64/rootfs.cpio.gz =
+
+
+
+  * baseline.login: https://kernelci.org/test/case/id/64d2cb105cb431367035b=
+1da
+        failing since 370 days (last pass: v5.4.180-59-g4f62141869c8, first=
+ fail: v5.4.209) =
+
+ =
+
+
+
+platform                     | arch   | lab           | compiler | defconfi=
+g                    | regressions
+-----------------------------+--------+---------------+----------+---------=
+---------------------+------------
+qemu_arm64-virt-gicv3        | arm64  | lab-collabora | gcc-10   | defconfi=
+g+arm64-chromebook   | 1          =
+
+
+  Details:     https://kernelci.org/test/plan/id/64d2c8f1f53a0f6d6935b262
+
+  Results:     0 PASS, 1 FAIL, 0 SKIP
+  Full config: defconfig+arm64-chromebook
+  Compiler:    gcc-10 (aarch64-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210=
+110)
+  Plain log:   https://storage.kernelci.org//stable-rc/linux-5.4.y/v5.4.252=
+-138-g6540c78c64058/arm64/defconfig+arm64-chromebook/gcc-10/lab-collabora/b=
+aseline-qemu_arm64-virt-gicv3.txt
+  HTML log:    https://storage.kernelci.org//stable-rc/linux-5.4.y/v5.4.252=
+-138-g6540c78c64058/arm64/defconfig+arm64-chromebook/gcc-10/lab-collabora/b=
+aseline-qemu_arm64-virt-gicv3.html
+  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
+t-baseline/20230623.0/arm64/rootfs.cpio.gz =
+
+
+
+  * baseline.login: https://kernelci.org/test/case/id/64d2c8f1f53a0f6d6935b=
+263
+        failing since 370 days (last pass: v5.4.180-59-g4f62141869c8, first=
+ fail: v5.4.209) =
+
+ =
+
+
+
+platform                     | arch   | lab           | compiler | defconfi=
+g                    | regressions
+-----------------------------+--------+---------------+----------+---------=
+---------------------+------------
+qemu_arm64-virt-gicv3        | arm64  | lab-collabora | gcc-10   | defconfi=
+g                    | 1          =
+
+
+  Details:     https://kernelci.org/test/plan/id/64d2ca596da113bde235b281
+
+  Results:     0 PASS, 1 FAIL, 0 SKIP
+  Full config: defconfig
+  Compiler:    gcc-10 (aarch64-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210=
+110)
+  Plain log:   https://storage.kernelci.org//stable-rc/linux-5.4.y/v5.4.252=
+-138-g6540c78c64058/arm64/defconfig/gcc-10/lab-collabora/baseline-qemu_arm6=
+4-virt-gicv3.txt
+  HTML log:    https://storage.kernelci.org//stable-rc/linux-5.4.y/v5.4.252=
+-138-g6540c78c64058/arm64/defconfig/gcc-10/lab-collabora/baseline-qemu_arm6=
+4-virt-gicv3.html
+  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
+t-baseline/20230623.0/arm64/rootfs.cpio.gz =
+
+
+
+  * baseline.login: https://kernelci.org/test/case/id/64d2ca596da113bde235b=
+282
+        failing since 370 days (last pass: v5.4.180-59-g4f62141869c8, first=
+ fail: v5.4.209) =
+
+ =
+
+
+
+platform                     | arch   | lab           | compiler | defconfi=
+g                    | regressions
+-----------------------------+--------+---------------+----------+---------=
+---------------------+------------
+qemu_arm64-virt-gicv3-uefi   | arm64  | lab-broonie   | gcc-10   | defconfi=
+g+arm64-chromebook   | 1          =
+
+
+  Details:     https://kernelci.org/test/plan/id/64d2c979712d0f6cdc35b1ee
+
+  Results:     0 PASS, 1 FAIL, 0 SKIP
+  Full config: defconfig+arm64-chromebook
+  Compiler:    gcc-10 (aarch64-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210=
+110)
+  Plain log:   https://storage.kernelci.org//stable-rc/linux-5.4.y/v5.4.252=
+-138-g6540c78c64058/arm64/defconfig+arm64-chromebook/gcc-10/lab-broonie/bas=
+eline-qemu_arm64-virt-gicv3-uefi.txt
+  HTML log:    https://storage.kernelci.org//stable-rc/linux-5.4.y/v5.4.252=
+-138-g6540c78c64058/arm64/defconfig+arm64-chromebook/gcc-10/lab-broonie/bas=
+eline-qemu_arm64-virt-gicv3-uefi.html
+  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
+t-baseline/20230623.0/arm64/rootfs.cpio.gz =
+
+
+
+  * baseline.login: https://kernelci.org/test/case/id/64d2c979712d0f6cdc35b=
+1ef
+        failing since 358 days (last pass: v5.4.180-59-g4f62141869c8, first=
+ fail: v5.4.210-258-ge86027f8111f5) =
+
+ =
+
+
+
+platform                     | arch   | lab           | compiler | defconfi=
+g                    | regressions
+-----------------------------+--------+---------------+----------+---------=
+---------------------+------------
+qemu_arm64-virt-gicv3-uefi   | arm64  | lab-broonie   | gcc-10   | defconfi=
+g                    | 1          =
+
+
+  Details:     https://kernelci.org/test/plan/id/64d2cb1e5cb431367035b1df
+
+  Results:     0 PASS, 1 FAIL, 0 SKIP
+  Full config: defconfig
+  Compiler:    gcc-10 (aarch64-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210=
+110)
+  Plain log:   https://storage.kernelci.org//stable-rc/linux-5.4.y/v5.4.252=
+-138-g6540c78c64058/arm64/defconfig/gcc-10/lab-broonie/baseline-qemu_arm64-=
+virt-gicv3-uefi.txt
+  HTML log:    https://storage.kernelci.org//stable-rc/linux-5.4.y/v5.4.252=
+-138-g6540c78c64058/arm64/defconfig/gcc-10/lab-broonie/baseline-qemu_arm64-=
+virt-gicv3-uefi.html
+  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
+t-baseline/20230623.0/arm64/rootfs.cpio.gz =
+
+
+
+  * baseline.login: https://kernelci.org/test/case/id/64d2cb1e5cb431367035b=
+1e0
+        failing since 350 days (last pass: v5.4.180-59-g4f62141869c8, first=
+ fail: v5.4.210-390-g1cece69eaa88) =
+
+ =
+
+
+
+platform                     | arch   | lab           | compiler | defconfi=
+g                    | regressions
+-----------------------------+--------+---------------+----------+---------=
+---------------------+------------
+qemu_arm64-virt-gicv3-uefi   | arm64  | lab-collabora | gcc-10   | defconfi=
+g+arm64-chromebook   | 1          =
+
+
+  Details:     https://kernelci.org/test/plan/id/64d2c8c99ca05146c835b1f3
+
+  Results:     0 PASS, 1 FAIL, 0 SKIP
+  Full config: defconfig+arm64-chromebook
+  Compiler:    gcc-10 (aarch64-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210=
+110)
+  Plain log:   https://storage.kernelci.org//stable-rc/linux-5.4.y/v5.4.252=
+-138-g6540c78c64058/arm64/defconfig+arm64-chromebook/gcc-10/lab-collabora/b=
+aseline-qemu_arm64-virt-gicv3-uefi.txt
+  HTML log:    https://storage.kernelci.org//stable-rc/linux-5.4.y/v5.4.252=
+-138-g6540c78c64058/arm64/defconfig+arm64-chromebook/gcc-10/lab-collabora/b=
+aseline-qemu_arm64-virt-gicv3-uefi.html
+  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
+t-baseline/20230623.0/arm64/rootfs.cpio.gz =
+
+
+
+  * baseline.login: https://kernelci.org/test/case/id/64d2c8c99ca05146c835b=
+1f4
+        failing since 358 days (last pass: v5.4.180-59-g4f62141869c8, first=
+ fail: v5.4.210-258-ge86027f8111f5) =
+
+ =
+
+
+
+platform                     | arch   | lab           | compiler | defconfi=
+g                    | regressions
+-----------------------------+--------+---------------+----------+---------=
+---------------------+------------
+qemu_arm64-virt-gicv3-uefi   | arm64  | lab-collabora | gcc-10   | defconfi=
+g                    | 1          =
+
+
+  Details:     https://kernelci.org/test/plan/id/64d2ca5ab1242d694635b1d9
+
+  Results:     0 PASS, 1 FAIL, 0 SKIP
+  Full config: defconfig
+  Compiler:    gcc-10 (aarch64-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210=
+110)
+  Plain log:   https://storage.kernelci.org//stable-rc/linux-5.4.y/v5.4.252=
+-138-g6540c78c64058/arm64/defconfig/gcc-10/lab-collabora/baseline-qemu_arm6=
+4-virt-gicv3-uefi.txt
+  HTML log:    https://storage.kernelci.org//stable-rc/linux-5.4.y/v5.4.252=
+-138-g6540c78c64058/arm64/defconfig/gcc-10/lab-collabora/baseline-qemu_arm6=
+4-virt-gicv3-uefi.html
+  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
+t-baseline/20230623.0/arm64/rootfs.cpio.gz =
+
+
+
+  * baseline.login: https://kernelci.org/test/case/id/64d2ca5ab1242d694635b=
+1da
+        failing since 350 days (last pass: v5.4.180-59-g4f62141869c8, first=
+ fail: v5.4.210-390-g1cece69eaa88) =
+
+ =
+
+
+
+platform                     | arch   | lab           | compiler | defconfi=
+g                    | regressions
+-----------------------------+--------+---------------+----------+---------=
+---------------------+------------
+rk3399-gru-kevin             | arm64  | lab-collabora | gcc-10   | defconfi=
+g+arm64-chromebook   | 2          =
+
+
+  Details:     https://kernelci.org/test/plan/id/64d2c76c8cead973b935b265
+
+  Results:     82 PASS, 2 FAIL, 1 SKIP
+  Full config: defconfig+arm64-chromebook
+  Compiler:    gcc-10 (aarch64-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210=
+110)
+  Plain log:   https://storage.kernelci.org//stable-rc/linux-5.4.y/v5.4.252=
+-138-g6540c78c64058/arm64/defconfig+arm64-chromebook/gcc-10/lab-collabora/b=
+aseline-rk3399-gru-kevin.txt
+  HTML log:    https://storage.kernelci.org//stable-rc/linux-5.4.y/v5.4.252=
+-138-g6540c78c64058/arm64/defconfig+arm64-chromebook/gcc-10/lab-collabora/b=
+aseline-rk3399-gru-kevin.html
+  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
+t-baseline/20230623.0/arm64/rootfs.cpio.gz =
+
+
+
+  * baseline.bootrr.rockchip-usb2phy1-probed: https://kernelci.org/test/cas=
+e/id/64d2c76c8cead973b935b26b
+        failing since 147 days (last pass: v5.4.235, first fail: v5.4.235-4=
+-gb829e8b6e1a7)
+
+    2023-08-08T22:53:18.386090  /lava-11237695/1/../bin/lava-test-case
+
+    2023-08-08T22:53:18.394264  <8>[   32.485215] <LAVA_SIGNAL_TESTCASE TES=
+T_CASE_ID=3Drockchip-usb2phy1-probed RESULT=3Dfail>
+   =
+
+
+  * baseline.bootrr.rockchip-usb2phy0-probed: https://kernelci.org/test/cas=
+e/id/64d2c76c8cead973b935b26c
+        failing since 147 days (last pass: v5.4.235, first fail: v5.4.235-4=
+-gb829e8b6e1a7)
+
+    2023-08-08T22:53:16.349980  <8>[   30.439396] <LAVA_SIGNAL_TESTCASE TES=
+T_CASE_ID=3Drockchip-usb2phy-driver-present RESULT=3Dpass>
+
+    2023-08-08T22:53:17.362475  /lava-11237695/1/../bin/lava-test-case
+
+    2023-08-08T22:53:17.371416  <8>[   31.462416] <LAVA_SIGNAL_TESTCASE TES=
+T_CASE_ID=3Drockchip-usb2phy0-probed RESULT=3Dfail>
+   =
 
  =20
