@@ -2,47 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 54DFA775AAD
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:10:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C20A6775D9C
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:39:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233253AbjHILKf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:10:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54840 "EHLO
+        id S234160AbjHILja (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:39:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52954 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233260AbjHILKf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:10:35 -0400
+        with ESMTP id S234159AbjHILj3 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:39:29 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 804DF172A
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:10:34 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E49E173A
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:39:29 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1638D62457
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:10:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 261D4C433C8;
-        Wed,  9 Aug 2023 11:10:32 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B66A5635F3
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:39:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAAF0C433C8;
+        Wed,  9 Aug 2023 11:39:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691579433;
-        bh=YtNCZvDaltpLcd/hEPArT8AfDR0oCHlsufM4f5BPc6Y=;
+        s=korg; t=1691581168;
+        bh=n4SxgRwpXVPRGcc/hEQsjMqmVj6ipWjTSoboApbc26Y=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ZzBD2SpFQkLl3OV/5uPPM9f5HktLk3dmVXJIGP/CBXZxA7hFknaPMhKOIYT+DTiK3
-         odrMrImxfwytaQtsPphxP3iBl0sNUoWNq5JrFYWOqKSh45rp3FiltkEjqJY5vI9oFg
-         y/JvZCwr+VV9Z28xb1yWv18hDlA+nQ3hcOcmiZTM=
+        b=AjiSreYGK1F8HOsB4aKFDSNdmCzL27QEYw5IE0dCtaQDboS2mrJvGknZtDDuJ+nkw
+         fQzeJl6VZSntgClHDsn1vMES7yCbarWUx8QE8Ko/vwBbfIYbFjC8QT6hfPDMP/7xrp
+         bh3mXKP5f1E30TOjRuaKjV6j84wzVhSvZI3/fiXU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
-        David Ahern <dsahern@kernel.org>,
-        Kuniyuki Iwashima <kuniyu@amazon.com>,
-        Jakub Kicinski <kuba@kernel.org>,
+        patches@lists.linux.dev, Yuanjun Gong <ruc_gongyuanjun@163.com>,
+        Leon Romanovsky <leonro@nvidia.com>,
+        Saeed Mahameed <saeedm@nvidia.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 194/204] tcp_metrics: annotate data-races around tm->tcpm_net
+Subject: [PATCH 5.10 130/201] net/mlx5e: fix return value check in mlx5e_ipsec_remove_trailer()
 Date:   Wed,  9 Aug 2023 12:42:12 +0200
-Message-ID: <20230809103648.983705015@linuxfoundation.org>
+Message-ID: <20230809103648.075456462@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103642.552405807@linuxfoundation.org>
-References: <20230809103642.552405807@linuxfoundation.org>
+In-Reply-To: <20230809103643.799166053@linuxfoundation.org>
+References: <20230809103643.799166053@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,64 +56,37 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Eric Dumazet <edumazet@google.com>
+From: Yuanjun Gong <ruc_gongyuanjun@163.com>
 
-[ Upstream commit d5d986ce42c71a7562d32c4e21e026b0f87befec ]
+[ Upstream commit e5bcb7564d3bd0c88613c76963c5349be9c511c5 ]
 
-tm->tcpm_net can be read or written locklessly.
+mlx5e_ipsec_remove_trailer() should return an error code if function
+pskb_trim() returns an unexpected value.
 
-Instead of changing write_pnet() and read_pnet() and potentially
-hurt performance, add the needed READ_ONCE()/WRITE_ONCE()
-in tm_net() and tcpm_new().
-
-Fixes: 849e8a0ca8d5 ("tcp_metrics: Add a field tcpm_net and verify it matches on lookup")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Link: https://lore.kernel.org/r/20230802131500.1478140-6-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 2ac9cfe78223 ("net/mlx5e: IPSec, Add Innova IPSec offload TX data path")
+Signed-off-by: Yuanjun Gong <ruc_gongyuanjun@163.com>
+Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
+Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/tcp_metrics.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_rxtx.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/net/ipv4/tcp_metrics.c b/net/ipv4/tcp_metrics.c
-index 13b92573aadd3..14f8b29892c97 100644
---- a/net/ipv4/tcp_metrics.c
-+++ b/net/ipv4/tcp_metrics.c
-@@ -42,7 +42,7 @@ struct tcp_fastopen_metrics {
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_rxtx.c b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_rxtx.c
+index a9b45606dbdb7..76ef8a009d6e8 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_rxtx.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_rxtx.c
+@@ -121,7 +121,9 @@ static int mlx5e_ipsec_remove_trailer(struct sk_buff *skb, struct xfrm_state *x)
  
- struct tcp_metrics_block {
- 	struct tcp_metrics_block __rcu	*tcpm_next;
--	possible_net_t			tcpm_net;
-+	struct net			*tcpm_net;
- 	struct inetpeer_addr		tcpm_saddr;
- 	struct inetpeer_addr		tcpm_daddr;
- 	unsigned long			tcpm_stamp;
-@@ -53,9 +53,10 @@ struct tcp_metrics_block {
- 	struct rcu_head			rcu_head;
- };
+ 	trailer_len = alen + plen + 2;
  
--static inline struct net *tm_net(struct tcp_metrics_block *tm)
-+static inline struct net *tm_net(const struct tcp_metrics_block *tm)
- {
--	return read_pnet(&tm->tcpm_net);
-+	/* Paired with the WRITE_ONCE() in tcpm_new() */
-+	return READ_ONCE(tm->tcpm_net);
- }
- 
- static bool tcp_metric_locked(struct tcp_metrics_block *tm,
-@@ -199,7 +200,9 @@ static struct tcp_metrics_block *tcpm_new(struct dst_entry *dst,
- 		if (!tm)
- 			goto out_unlock;
- 	}
--	write_pnet(&tm->tcpm_net, net);
-+	/* Paired with the READ_ONCE() in tm_net() */
-+	WRITE_ONCE(tm->tcpm_net, net);
-+
- 	tm->tcpm_saddr = *saddr;
- 	tm->tcpm_daddr = *daddr;
- 
+-	pskb_trim(skb, skb->len - trailer_len);
++	ret = pskb_trim(skb, skb->len - trailer_len);
++	if (unlikely(ret))
++		return ret;
+ 	if (skb->protocol == htons(ETH_P_IP)) {
+ 		ipv4hdr->tot_len = htons(ntohs(ipv4hdr->tot_len) - trailer_len);
+ 		ip_send_check(ipv4hdr);
 -- 
 2.40.1
 
