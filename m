@@ -2,145 +2,115 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A7B69775B8B
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:18:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ACE097759FA
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:04:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233461AbjHILS3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:18:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50608 "EHLO
+        id S233037AbjHILEQ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:04:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60476 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233472AbjHILS2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:18:28 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25071ED
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:18:28 -0700 (PDT)
+        with ESMTP id S233027AbjHILEP (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:04:15 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6410B1BFE
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:04:15 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id AF4F96318F
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:18:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDF8CC433C8;
-        Wed,  9 Aug 2023 11:18:26 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 026F763142
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:04:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10386C433C7;
+        Wed,  9 Aug 2023 11:04:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691579907;
-        bh=Z4RGLk2+EUDgUYs9ki2npOLda8/R28f3wtmTI2eE0+0=;
+        s=korg; t=1691579054;
+        bh=a4caj6wr3tQ8C3wIQaB71rUB7T6jWBGaH4bJ/Tehhlw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=KDQnljupzCnIyRfvPuD0qTDYAvDEX5wVRhER/KM0dMyAWw3Zp8sWmakZaex9tNdzY
-         9fA+YgBMJi7ran69B2Ifd2L2yPn/IlNwPn2emjtfS3ww6LlSoA2oq+vtCL/Fcc2uMb
-         SOtv6tK4UegpL4jnqSEndFLu1EMlveGWNpTWrAKg=
+        b=ikEwUNFDLXv4vQH8NkSHPA8/O1HglS16b5AfN9kOsGGWrayZN/WreQETKvbeinDuF
+         GKo0pk0ZPimNjk2MP3eh/+Bml8NSPer9gcRovVQChHz6nvLfsyt7vPJEavDus70dnH
+         zDrlpzH4K3n74LiE/y4jt+rVustEH3DrqVFIEFas=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, stable@kernel.org,
-        Baokun Li <libaokun1@huawei.com>, Jan Kara <jack@suse.cz>,
-        Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 4.19 158/323] ext4: only update i_reserved_data_blocks on successful block allocation
-Date:   Wed,  9 Aug 2023 12:39:56 +0200
-Message-ID: <20230809103705.373442628@linuxfoundation.org>
+        patches@lists.linux.dev, Marek Vasut <marex@denx.de>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.14 059/204] media: videodev2.h: Fix struct v4l2_input tuner index comment
+Date:   Wed,  9 Aug 2023 12:39:57 +0200
+Message-ID: <20230809103644.589029149@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
-References: <20230809103658.104386911@linuxfoundation.org>
+In-Reply-To: <20230809103642.552405807@linuxfoundation.org>
+References: <20230809103642.552405807@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Baokun Li <libaokun1@huawei.com>
+From: Marek Vasut <marex@denx.de>
 
-commit de25d6e9610a8b30cce9bbb19b50615d02ebca02 upstream.
+[ Upstream commit 26ae58f65e64fa7ba61d64bae752e59e08380c6a ]
 
-In our fault injection test, we create an ext4 file, migrate it to
-non-extent based file, then punch a hole and finally trigger a WARN_ON
-in the ext4_da_update_reserve_space():
+VIDIOC_ENUMINPUT documentation describes the tuner field of
+struct v4l2_input as index:
 
-EXT4-fs warning (device sda): ext4_da_update_reserve_space:369:
-ino 14, used 11 with only 10 reserved data blocks
+Documentation/userspace-api/media/v4l/vidioc-enuminput.rst
+"
+* - __u32
+  - ``tuner``
+  - Capture devices can have zero or more tuners (RF demodulators).
+    When the ``type`` is set to ``V4L2_INPUT_TYPE_TUNER`` this is an
+    RF connector and this field identifies the tuner. It corresponds
+    to struct :c:type:`v4l2_tuner` field ``index``. For
+    details on tuners see :ref:`tuner`.
+"
 
-When writing back a non-extent based file, if we enable delalloc, the
-number of reserved blocks will be subtracted from the number of blocks
-mapped by ext4_ind_map_blocks(), and the extent status tree will be
-updated. We update the extent status tree by first removing the old
-extent_status and then inserting the new extent_status. If the block range
-we remove happens to be in an extent, then we need to allocate another
-extent_status with ext4_es_alloc_extent().
+Drivers I could find also use the 'tuner' field as an index, e.g.:
+drivers/media/pci/bt8xx/bttv-driver.c bttv_enum_input()
+drivers/media/usb/go7007/go7007-v4l2.c vidioc_enum_input()
 
-       use old    to remove   to add new
-    |----------|------------|------------|
-              old extent_status
+However, the UAPI comment claims this field is 'enum v4l2_tuner_type':
+include/uapi/linux/videodev2.h
 
-The problem is that the allocation of a new extent_status failed due to a
-fault injection, and __es_shrink() did not get free memory, resulting in
-a return of -ENOMEM. Then do_writepages() retries after receiving -ENOMEM,
-we map to the same extent again, and the number of reserved blocks is again
-subtracted from the number of blocks in that extent. Since the blocks in
-the same extent are subtracted twice, we end up triggering WARN_ON at
-ext4_da_update_reserve_space() because used > ei->i_reserved_data_blocks.
+This field being 'enum v4l2_tuner_type' is unlikely as it seems to be
+never used that way in drivers, and documentation confirms it. It seem
+this comment got in accidentally in the commit which this patch fixes.
+Fix the UAPI comment to stop confusion.
 
-For non-extent based file, we update the number of reserved blocks after
-ext4_ind_map_blocks() is executed, which causes a problem that when we call
-ext4_ind_map_blocks() to create a block, it doesn't always create a block,
-but we always reduce the number of reserved blocks. So we move the logic
-for updating reserved blocks to ext4_ind_map_blocks() to ensure that the
-number of reserved blocks is updated only after we do succeed in allocating
-some new blocks.
+This was pointed out by Dmitry while reviewing VIDIOC_ENUMINPUT
+support for strace.
 
-Fixes: 5f634d064c70 ("ext4: Fix quota accounting error with fallocate")
-Cc: stable@kernel.org
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20230424033846.4732-2-libaokun1@huawei.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 6016af82eafc ("[media] v4l2: use __u32 rather than enums in ioctl() structs")
+Signed-off-by: Marek Vasut <marex@denx.de>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/indirect.c |    8 ++++++++
- fs/ext4/inode.c    |   10 ----------
- 2 files changed, 8 insertions(+), 10 deletions(-)
+ include/uapi/linux/videodev2.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/ext4/indirect.c
-+++ b/fs/ext4/indirect.c
-@@ -642,6 +642,14 @@ int ext4_ind_map_blocks(handle_t *handle
- 
- 	ext4_update_inode_fsync_trans(handle, inode, 1);
- 	count = ar.len;
-+
-+	/*
-+	 * Update reserved blocks/metadata blocks after successful block
-+	 * allocation which had been deferred till now.
-+	 */
-+	if (flags & EXT4_GET_BLOCKS_DELALLOC_RESERVE)
-+		ext4_da_update_reserve_space(inode, count, 1);
-+
- got_it:
- 	map->m_flags |= EXT4_MAP_MAPPED;
- 	map->m_pblk = le32_to_cpu(chain[depth-1].key);
---- a/fs/ext4/inode.c
-+++ b/fs/ext4/inode.c
-@@ -668,16 +668,6 @@ found:
- 			 */
- 			ext4_clear_inode_state(inode, EXT4_STATE_EXT_MIGRATE);
- 		}
--
--		/*
--		 * Update reserved blocks/metadata blocks after successful
--		 * block allocation which had been deferred till now. We don't
--		 * support fallocate for non extent files. So we can update
--		 * reserve space here.
--		 */
--		if ((retval > 0) &&
--			(flags & EXT4_GET_BLOCKS_DELALLOC_RESERVE))
--			ext4_da_update_reserve_space(inode, retval, 1);
- 	}
- 
- 	if (retval > 0) {
+diff --git a/include/uapi/linux/videodev2.h b/include/uapi/linux/videodev2.h
+index b8fd2c303ed04..2ada2122d2743 100644
+--- a/include/uapi/linux/videodev2.h
++++ b/include/uapi/linux/videodev2.h
+@@ -1484,7 +1484,7 @@ struct v4l2_input {
+ 	__u8	     name[32];		/*  Label */
+ 	__u32	     type;		/*  Type of input */
+ 	__u32	     audioset;		/*  Associated audios (bitfield) */
+-	__u32        tuner;             /*  enum v4l2_tuner_type */
++	__u32        tuner;             /*  Tuner index */
+ 	v4l2_std_id  std;
+ 	__u32	     status;
+ 	__u32	     capabilities;
+-- 
+2.39.2
+
 
 
