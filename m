@@ -2,214 +2,268 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AC838775D75
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:37:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C2CE7775918
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:57:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234110AbjHILhq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:37:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59712 "EHLO
+        id S232754AbjHIK5f (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 06:57:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53870 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234111AbjHILhp (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:37:45 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 09C7C1BFA
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:37:45 -0700 (PDT)
+        with ESMTP id S232712AbjHIK52 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:57:28 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B66B1FDF
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:57:28 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9C8F163580
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:37:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA217C433C7;
-        Wed,  9 Aug 2023 11:37:43 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A7BD962DC8
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:57:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5E7CC433C9;
+        Wed,  9 Aug 2023 10:57:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691581064;
-        bh=5u/D3ArNmHqIDpCkBJ186gF0t2XzKvfOpUT/sCf6hZE=;
+        s=korg; t=1691578647;
+        bh=9tdeZa8YNi0iO5GpH4IB6YGcUBkCa2cvR5KIzeN442Y=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Fn15iC1ES6iAdCK2C4QOBU+zJiXZ2wr4RgnqmsKTRUsITinheVueLWsEIkRuco3ep
-         CWY6GOU3du7cLU+CAijdPHqZd7+5HK0wa4GXRoZ5IhjyQyI3IBKWleb023ArVTZthO
-         d+VeSrg6i7Re4zWB5aJwcWvEnrKHw7C+nT5AFqfg=
+        b=qnnZ1JeVrlcEeBpL2VpvPpejQ64MkzwJxFFvpAvHLY15/5wVfUzaiEguvsYfNrEaF
+         yUZZwM+QJ6oAaGvHAAzm1lyjIFTmFz4tAsLRTYTfkuw9A39dzhh963GroHpPReTaF7
+         HEBjv3OtarrsV41mzQEMqndnB024kDtqZUO5Szfk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Kunkun Jiang <jiangkunkun@huawei.com>,
-        Marc Zyngier <maz@kernel.org>,
-        Zenghui Yu <yuzenghui@huawei.com>, wanghaibin.wang@huawei.com,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 093/201] irqchip/gic-v4.1: Properly lock VPEs when doing a directLPI invalidation
+        patches@lists.linux.dev,
+        syzbot+3ba856e07b7127889d8c@syzkaller.appspotmail.com,
+        Filipe Manana <fdmanana@suse.com>,
+        David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.1 108/127] btrfs: remove BUG_ON()s in add_new_free_space()
 Date:   Wed,  9 Aug 2023 12:41:35 +0200
-Message-ID: <20230809103646.929638606@linuxfoundation.org>
+Message-ID: <20230809103640.194657582@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103643.799166053@linuxfoundation.org>
-References: <20230809103643.799166053@linuxfoundation.org>
+In-Reply-To: <20230809103636.615294317@linuxfoundation.org>
+References: <20230809103636.615294317@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Marc Zyngier <maz@kernel.org>
+From: Filipe Manana <fdmanana@suse.com>
 
-[ Upstream commit 926846a703cbf5d0635cc06e67d34b228746554b ]
+commit d8ccbd21918fd7fa6ce3226cffc22c444228e8ad upstream.
 
-We normally rely on the irq_to_cpuid_[un]lock() primitives to make
-sure nothing will change col->idx while performing a LPI invalidation.
+At add_new_free_space() we have these BUG_ON()'s that are there to deal
+with any failure to add free space to the in memory free space cache.
+Such failures are mostly -ENOMEM that should be very rare. However there's
+no need to have these BUG_ON()'s, we can just return any error to the
+caller and all callers and their upper call chain are already dealing with
+errors.
 
-However, these primitives do not cover VPE doorbells, and we have
-some open-coded locking for that. Unfortunately, this locking is
-pretty bogus.
+So just make add_new_free_space() return any errors, while removing the
+BUG_ON()'s, and returning the total amount of added free space to an
+optional u64 pointer argument.
 
-Instead, extend the above primitives to cover VPE doorbells and
-convert the whole thing to it.
-
-Fixes: f3a059219bc7 ("irqchip/gic-v4.1: Ensure mutual exclusion between vPE affinity change and RD access")
-Reported-by: Kunkun Jiang <jiangkunkun@huawei.com>
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-Cc: Zenghui Yu <yuzenghui@huawei.com>
-Cc: wanghaibin.wang@huawei.com
-Tested-by: Kunkun Jiang <jiangkunkun@huawei.com>
-Reviewed-by: Zenghui Yu <yuzenghui@huawei.com>
-Link: https://lore.kernel.org/r/20230617073242.3199746-1-maz@kernel.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: syzbot+3ba856e07b7127889d8c@syzkaller.appspotmail.com
+Link: https://lore.kernel.org/linux-btrfs/000000000000e9cb8305ff4e8327@google.com/
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/irqchip/irq-gic-v3-its.c | 75 ++++++++++++++++++++------------
- 1 file changed, 46 insertions(+), 29 deletions(-)
+ fs/btrfs/block-group.c     |   51 ++++++++++++++++++++++++++++++---------------
+ fs/btrfs/block-group.h     |    4 +--
+ fs/btrfs/free-space-tree.c |   24 +++++++++++++++------
+ 3 files changed, 53 insertions(+), 26 deletions(-)
 
-diff --git a/drivers/irqchip/irq-gic-v3-its.c b/drivers/irqchip/irq-gic-v3-its.c
-index 5ec091c64d47f..f1fa98e5ea13f 100644
---- a/drivers/irqchip/irq-gic-v3-its.c
-+++ b/drivers/irqchip/irq-gic-v3-its.c
-@@ -267,13 +267,23 @@ static void vpe_to_cpuid_unlock(struct its_vpe *vpe, unsigned long flags)
- 	raw_spin_unlock_irqrestore(&vpe->vpe_lock, flags);
- }
- 
-+static struct irq_chip its_vpe_irq_chip;
-+
- static int irq_to_cpuid_lock(struct irq_data *d, unsigned long *flags)
+--- a/fs/btrfs/block-group.c
++++ b/fs/btrfs/block-group.c
+@@ -494,12 +494,16 @@ static void fragment_free_space(struct b
+  * used yet since their free space will be released as soon as the transaction
+  * commits.
+  */
+-u64 add_new_free_space(struct btrfs_block_group *block_group, u64 start, u64 end)
++int add_new_free_space(struct btrfs_block_group *block_group, u64 start, u64 end,
++		       u64 *total_added_ret)
  {
--	struct its_vlpi_map *map = get_vlpi_map(d);
-+	struct its_vpe *vpe = NULL;
- 	int cpu;
+ 	struct btrfs_fs_info *info = block_group->fs_info;
+-	u64 extent_start, extent_end, size, total_added = 0;
++	u64 extent_start, extent_end, size;
+ 	int ret;
  
--	if (map) {
--		cpu = vpe_to_cpuid_lock(map->vpe, flags);
-+	if (d->chip == &its_vpe_irq_chip) {
-+		vpe = irq_data_get_irq_chip_data(d);
-+	} else {
-+		struct its_vlpi_map *map = get_vlpi_map(d);
-+		if (map)
-+			vpe = map->vpe;
-+	}
++	if (total_added_ret)
++		*total_added_ret = 0;
 +
-+	if (vpe) {
-+		cpu = vpe_to_cpuid_lock(vpe, flags);
- 	} else {
- 		/* Physical LPIs are already locked via the irq_desc lock */
- 		struct its_device *its_dev = irq_data_get_irq_chip_data(d);
-@@ -287,10 +297,18 @@ static int irq_to_cpuid_lock(struct irq_data *d, unsigned long *flags)
+ 	while (start < end) {
+ 		ret = find_first_extent_bit(&info->excluded_extents, start,
+ 					    &extent_start, &extent_end,
+@@ -512,10 +516,12 @@ u64 add_new_free_space(struct btrfs_bloc
+ 			start = extent_end + 1;
+ 		} else if (extent_start > start && extent_start < end) {
+ 			size = extent_start - start;
+-			total_added += size;
+ 			ret = btrfs_add_free_space_async_trimmed(block_group,
+ 								 start, size);
+-			BUG_ON(ret); /* -ENOMEM or logic error */
++			if (ret)
++				return ret;
++			if (total_added_ret)
++				*total_added_ret += size;
+ 			start = extent_end + 1;
+ 		} else {
+ 			break;
+@@ -524,13 +530,15 @@ u64 add_new_free_space(struct btrfs_bloc
  
- static void irq_to_cpuid_unlock(struct irq_data *d, unsigned long flags)
- {
--	struct its_vlpi_map *map = get_vlpi_map(d);
-+	struct its_vpe *vpe = NULL;
-+
-+	if (d->chip == &its_vpe_irq_chip) {
-+		vpe = irq_data_get_irq_chip_data(d);
-+	} else {
-+		struct its_vlpi_map *map = get_vlpi_map(d);
-+		if (map)
-+			vpe = map->vpe;
-+	}
- 
--	if (map)
--		vpe_to_cpuid_unlock(map->vpe, flags);
-+	if (vpe)
-+		vpe_to_cpuid_unlock(vpe, flags);
- }
- 
- static struct its_collection *valid_col(struct its_collection *col)
-@@ -1422,14 +1440,29 @@ static void wait_for_syncr(void __iomem *rdbase)
- 		cpu_relax();
- }
- 
--static void direct_lpi_inv(struct irq_data *d)
-+static void __direct_lpi_inv(struct irq_data *d, u64 val)
- {
--	struct its_vlpi_map *map = get_vlpi_map(d);
- 	void __iomem *rdbase;
- 	unsigned long flags;
--	u64 val;
- 	int cpu;
- 
-+	/* Target the redistributor this LPI is currently routed to */
-+	cpu = irq_to_cpuid_lock(d, &flags);
-+	raw_spin_lock(&gic_data_rdist_cpu(cpu)->rd_lock);
-+
-+	rdbase = per_cpu_ptr(gic_rdists->rdist, cpu)->rd_base;
-+	gic_write_lpir(val, rdbase + GICR_INVLPIR);
-+	wait_for_syncr(rdbase);
-+
-+	raw_spin_unlock(&gic_data_rdist_cpu(cpu)->rd_lock);
-+	irq_to_cpuid_unlock(d, flags);
-+}
-+
-+static void direct_lpi_inv(struct irq_data *d)
-+{
-+	struct its_vlpi_map *map = get_vlpi_map(d);
-+	u64 val;
-+
- 	if (map) {
- 		struct its_device *its_dev = irq_data_get_irq_chip_data(d);
- 
-@@ -1442,15 +1475,7 @@ static void direct_lpi_inv(struct irq_data *d)
- 		val = d->hwirq;
+ 	if (start < end) {
+ 		size = end - start;
+-		total_added += size;
+ 		ret = btrfs_add_free_space_async_trimmed(block_group, start,
+ 							 size);
+-		BUG_ON(ret); /* -ENOMEM or logic error */
++		if (ret)
++			return ret;
++		if (total_added_ret)
++			*total_added_ret += size;
  	}
  
--	/* Target the redistributor this LPI is currently routed to */
--	cpu = irq_to_cpuid_lock(d, &flags);
--	raw_spin_lock(&gic_data_rdist_cpu(cpu)->rd_lock);
--	rdbase = per_cpu_ptr(gic_rdists->rdist, cpu)->rd_base;
--	gic_write_lpir(val, rdbase + GICR_INVLPIR);
--
--	wait_for_syncr(rdbase);
--	raw_spin_unlock(&gic_data_rdist_cpu(cpu)->rd_lock);
--	irq_to_cpuid_unlock(d, flags);
-+	__direct_lpi_inv(d, val);
+-	return total_added;
++	return 0;
  }
  
- static void lpi_update_config(struct irq_data *d, u8 clr, u8 set)
-@@ -3916,18 +3941,10 @@ static void its_vpe_send_inv(struct irq_data *d)
- {
- 	struct its_vpe *vpe = irq_data_get_irq_chip_data(d);
+ static int load_extent_tree_free(struct btrfs_caching_control *caching_ctl)
+@@ -637,8 +645,13 @@ next:
  
--	if (gic_rdists->has_direct_lpi) {
--		void __iomem *rdbase;
+ 		if (key.type == BTRFS_EXTENT_ITEM_KEY ||
+ 		    key.type == BTRFS_METADATA_ITEM_KEY) {
+-			total_found += add_new_free_space(block_group, last,
+-							  key.objectid);
++			u64 space_added;
++
++			ret = add_new_free_space(block_group, last, key.objectid,
++						 &space_added);
++			if (ret)
++				goto out;
++			total_found += space_added;
+ 			if (key.type == BTRFS_METADATA_ITEM_KEY)
+ 				last = key.objectid +
+ 					fs_info->nodesize;
+@@ -653,11 +666,10 @@ next:
+ 		}
+ 		path->slots[0]++;
+ 	}
+-	ret = 0;
 -
--		/* Target the redistributor this VPE is currently known on */
--		raw_spin_lock(&gic_data_rdist_cpu(vpe->col_idx)->rd_lock);
--		rdbase = per_cpu_ptr(gic_rdists->rdist, vpe->col_idx)->rd_base;
--		gic_write_lpir(d->parent_data->hwirq, rdbase + GICR_INVLPIR);
--		wait_for_syncr(rdbase);
--		raw_spin_unlock(&gic_data_rdist_cpu(vpe->col_idx)->rd_lock);
--	} else {
-+	if (gic_rdists->has_direct_lpi)
-+		__direct_lpi_inv(d, d->parent_data->hwirq);
-+	else
- 		its_vpe_send_cmd(vpe, its_send_inv);
--	}
- }
+-	total_found += add_new_free_space(block_group, last,
+-				block_group->start + block_group->length);
  
- static void its_vpe_mask_irq(struct irq_data *d)
--- 
-2.40.1
-
++	ret = add_new_free_space(block_group, last,
++				 block_group->start + block_group->length,
++				 NULL);
+ out:
+ 	btrfs_free_path(path);
+ 	return ret;
+@@ -2101,9 +2113,11 @@ static int read_one_block_group(struct b
+ 		btrfs_free_excluded_extents(cache);
+ 	} else if (cache->used == 0) {
+ 		cache->cached = BTRFS_CACHE_FINISHED;
+-		add_new_free_space(cache, cache->start,
+-				   cache->start + cache->length);
++		ret = add_new_free_space(cache, cache->start,
++					 cache->start + cache->length, NULL);
+ 		btrfs_free_excluded_extents(cache);
++		if (ret)
++			goto error;
+ 	}
+ 
+ 	ret = btrfs_add_block_group_cache(info, cache);
+@@ -2529,9 +2543,12 @@ struct btrfs_block_group *btrfs_make_blo
+ 		return ERR_PTR(ret);
+ 	}
+ 
+-	add_new_free_space(cache, chunk_offset, chunk_offset + size);
+-
++	ret = add_new_free_space(cache, chunk_offset, chunk_offset + size, NULL);
+ 	btrfs_free_excluded_extents(cache);
++	if (ret) {
++		btrfs_put_block_group(cache);
++		return ERR_PTR(ret);
++	}
+ 
+ 	/*
+ 	 * Ensure the corresponding space_info object is created and
+--- a/fs/btrfs/block-group.h
++++ b/fs/btrfs/block-group.h
+@@ -284,8 +284,8 @@ int btrfs_cache_block_group(struct btrfs
+ void btrfs_put_caching_control(struct btrfs_caching_control *ctl);
+ struct btrfs_caching_control *btrfs_get_caching_control(
+ 		struct btrfs_block_group *cache);
+-u64 add_new_free_space(struct btrfs_block_group *block_group,
+-		       u64 start, u64 end);
++int add_new_free_space(struct btrfs_block_group *block_group,
++		       u64 start, u64 end, u64 *total_added_ret);
+ struct btrfs_trans_handle *btrfs_start_trans_remove_block_group(
+ 				struct btrfs_fs_info *fs_info,
+ 				const u64 chunk_offset);
+--- a/fs/btrfs/free-space-tree.c
++++ b/fs/btrfs/free-space-tree.c
+@@ -1510,9 +1510,13 @@ static int load_free_space_bitmaps(struc
+ 			if (prev_bit == 0 && bit == 1) {
+ 				extent_start = offset;
+ 			} else if (prev_bit == 1 && bit == 0) {
+-				total_found += add_new_free_space(block_group,
+-								  extent_start,
+-								  offset);
++				u64 space_added;
++
++				ret = add_new_free_space(block_group, extent_start,
++							 offset, &space_added);
++				if (ret)
++					goto out;
++				total_found += space_added;
+ 				if (total_found > CACHING_CTL_WAKE_UP) {
+ 					total_found = 0;
+ 					wake_up(&caching_ctl->wait);
+@@ -1524,8 +1528,9 @@ static int load_free_space_bitmaps(struc
+ 		}
+ 	}
+ 	if (prev_bit == 1) {
+-		total_found += add_new_free_space(block_group, extent_start,
+-						  end);
++		ret = add_new_free_space(block_group, extent_start, end, NULL);
++		if (ret)
++			goto out;
+ 		extent_count++;
+ 	}
+ 
+@@ -1564,6 +1569,8 @@ static int load_free_space_extents(struc
+ 	end = block_group->start + block_group->length;
+ 
+ 	while (1) {
++		u64 space_added;
++
+ 		ret = btrfs_next_item(root, path);
+ 		if (ret < 0)
+ 			goto out;
+@@ -1578,8 +1585,11 @@ static int load_free_space_extents(struc
+ 		ASSERT(key.type == BTRFS_FREE_SPACE_EXTENT_KEY);
+ 		ASSERT(key.objectid < end && key.objectid + key.offset <= end);
+ 
+-		total_found += add_new_free_space(block_group, key.objectid,
+-						  key.objectid + key.offset);
++		ret = add_new_free_space(block_group, key.objectid,
++					 key.objectid + key.offset, &space_added);
++		if (ret)
++			goto out;
++		total_found += space_added;
+ 		if (total_found > CACHING_CTL_WAKE_UP) {
+ 			total_found = 0;
+ 			wake_up(&caching_ctl->wait);
 
 
