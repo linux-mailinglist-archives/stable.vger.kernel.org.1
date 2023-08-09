@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 106D7775AC1
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:11:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 89D7B775CAD
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:29:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233273AbjHILLR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:11:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47040 "EHLO
+        id S233833AbjHIL3u (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:29:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41334 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233277AbjHILLQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:11:16 -0400
+        with ESMTP id S233832AbjHIL3u (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:29:50 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 67AA210F3
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:11:16 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 13ABF10D4
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:29:50 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id F32BC62457
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:11:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F68EC433C7;
-        Wed,  9 Aug 2023 11:11:14 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9F5856332C
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:29:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2198C433C7;
+        Wed,  9 Aug 2023 11:29:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691579475;
-        bh=yCNO3Zuo3wG/hMZ3W27QWTrszfexDRaGqdc/xUc+VNA=;
+        s=korg; t=1691580589;
+        bh=difyhOUnjjYjKAnJhDd5dQazrBvIX//60nzFfhE3IR8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=uoqUfUSBj+v7Hp3mVA1/5H86NhryWEQ1a0bOXekyH3J0nb1BhZINn+K5R5bhABpxR
-         RfBth9XhFNQXYndh5caob8vjxH/YwfMWXkCCWjBw+KRVwKF07YCkfvn/grWSF0/5C/
-         BiAxX3lEyraLn0yGFRbZXwuawATyAmKKqQ99YDb4=
+        b=wcLoxOPJnRkeDtFEKP5pYVOzpz9iQqXaGv3/DXDmWIhcvGtFgO643syYW2mPnz8MN
+         IpUoGzWcE9w3YVu+bOpznBccxFph5vpSjx2g6RNKSRKQ+Ro1vr927yN7GcobFJQqgp
+         GbX7EPxqtnPfeArlM5LBNfst7bECxpniPdSZKcgo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, stable <stable@kernel.org>,
-        Zhang Shurong <zhang_shurong@foxmail.com>,
-        Dan Carpenter <dan.carpenter@linaro.org>
-Subject: [PATCH 4.14 170/204] staging: ks7010: potential buffer overflow in ks_wlan_set_encode_ext()
+        patches@lists.linux.dev, Jason Wang <jasowang@redhat.com>,
+        "Michael S. Tsirkin" <mst@redhat.com>,
+        Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+        Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.4 077/154] virtio-net: fix race between set queues and probe
 Date:   Wed,  9 Aug 2023 12:41:48 +0200
-Message-ID: <20230809103648.200134502@linuxfoundation.org>
+Message-ID: <20230809103639.539749300@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103642.552405807@linuxfoundation.org>
-References: <20230809103642.552405807@linuxfoundation.org>
+In-Reply-To: <20230809103636.887175326@linuxfoundation.org>
+References: <20230809103636.887175326@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,37 +56,47 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Zhang Shurong <zhang_shurong@foxmail.com>
+From: Jason Wang <jasowang@redhat.com>
 
-commit 5f1c7031e044cb2fba82836d55cc235e2ad619dc upstream.
+commit 25266128fe16d5632d43ada34c847d7b8daba539 upstream.
 
-The "exc->key_len" is a u16 that comes from the user.  If it's over
-IW_ENCODING_TOKEN_MAX (64) that could lead to memory corruption.
+A race were found where set_channels could be called after registering
+but before virtnet_set_queues() in virtnet_probe(). Fixing this by
+moving the virtnet_set_queues() before netdevice registering. While at
+it, use _virtnet_set_queues() to avoid holding rtnl as the device is
+not even registered at that time.
 
-Fixes: b121d84882b9 ("staging: ks7010: simplify calls to memcpy()")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Zhang Shurong <zhang_shurong@foxmail.com>
-Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://lore.kernel.org/r/tencent_5153B668C0283CAA15AA518325346E026A09@qq.com
+Cc: stable@vger.kernel.org
+Fixes: a220871be66f ("virtio-net: correctly enable multiqueue")
+Signed-off-by: Jason Wang <jasowang@redhat.com>
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Reviewed-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+Link: https://lore.kernel.org/r/20230725072049.617289-1-jasowang@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/staging/ks7010/ks_wlan_net.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/net/virtio_net.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/staging/ks7010/ks_wlan_net.c
-+++ b/drivers/staging/ks7010/ks_wlan_net.c
-@@ -1787,8 +1787,10 @@ static int ks_wlan_set_encode_ext(struct
- 			commit |= SME_WEP_FLAG;
+--- a/drivers/net/virtio_net.c
++++ b/drivers/net/virtio_net.c
+@@ -3265,6 +3265,8 @@ static int virtnet_probe(struct virtio_d
  		}
- 		if (enc->key_len) {
--			memcpy(&key->key_val[0], &enc->key[0], enc->key_len);
--			key->key_len = enc->key_len;
-+			int key_len = clamp_val(enc->key_len, 0, IW_ENCODING_TOKEN_MAX);
+ 	}
+ 
++	_virtnet_set_queues(vi, vi->curr_queue_pairs);
 +
-+			memcpy(&key->key_val[0], &enc->key[0], key_len);
-+			key->key_len = key_len;
- 			commit |= (SME_WEP_VAL1 << index);
- 		}
- 		break;
+ 	/* serialize netdev register + virtio_device_ready() with ndo_open() */
+ 	rtnl_lock();
+ 
+@@ -3285,8 +3287,6 @@ static int virtnet_probe(struct virtio_d
+ 		goto free_unregister_netdev;
+ 	}
+ 
+-	virtnet_set_queues(vi, vi->curr_queue_pairs);
+-
+ 	/* Assume link up if device can't report link status,
+ 	   otherwise get link status from config. */
+ 	netif_carrier_off(dev);
 
 
