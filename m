@@ -2,91 +2,83 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A4C91775439
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 09:34:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A68A177551E
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 10:24:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230090AbjHIHeg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 03:34:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34100 "EHLO
+        id S230047AbjHIIYF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 04:24:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56474 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229852AbjHIHeg (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 03:34:36 -0400
-Received: from mail-ua1-x92f.google.com (mail-ua1-x92f.google.com [IPv6:2607:f8b0:4864:20::92f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80771172A
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 00:34:35 -0700 (PDT)
-Received: by mail-ua1-x92f.google.com with SMTP id a1e0cc1a2514c-79acc14c09eso1777954241.1
-        for <stable@vger.kernel.org>; Wed, 09 Aug 2023 00:34:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1691566474; x=1692171274;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=Oyhg2pANKD68dgMgU9DabYU5m+ytOR6lQNIOfsZ9UzI=;
-        b=g0tKX2DCyORwzEhoeazVPVOaGIy2uWwv3HedMFwoKSZJLtz+Iy7iyju0sBSoLONO7c
-         jfJH4kjW/4GXCN8MaeSWer1nMtst0bZMRFfTQkdUkQxy7zAks1PABdEh+fPX/HK462dN
-         bSeaFw8wGfwM9/zMCcFyo/4KoYTGD+sC95HM6Bv/zwxZDrg4ThDoMiluKVGLn8RCoeFH
-         lKdqS2Wg5yf/JrhcebkljDFRPMmFLLb7RO0snqi31iEqB7j7jZM3AY930jCW7xrJkAef
-         R3fyfkprNiUK9EX7QbuUtvC8Vgn5AqcGKFkk1nvis6zMrOFVzPDUPY2Eu9QXh9woBtjn
-         DAtQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691566474; x=1692171274;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Oyhg2pANKD68dgMgU9DabYU5m+ytOR6lQNIOfsZ9UzI=;
-        b=Tgryxap1ooj+N+wn8wGa1Ppb737y+qqd4YHHDX/LwJwOOv7NFvD7eJ826UNc95YQMo
-         ICiEMBILi6VHVEXj5/Llh8EFdLU3M8r867MFgqUrGdZBtTnH7KmnQFbceyMD5QIpV329
-         6K4cHZMYdgxlshkPdX75wHGdoQzTMz9N22X0mCGXGXBijhazibHUrkY/EjyE+ylAd6tS
-         cjgRFXMBw9fH9v41vFdJ3AsC/x3k1jLL+9q3zYDiQqfqjoHYxaxgUdXn/AJVRmYrg/RB
-         kr5sJmL60buA6bpAz2SdgY9iTRN/swdNNjg6mCbzIcwqcggNBL/tIn4VrX3ZyoR4h3oI
-         S3fQ==
-X-Gm-Message-State: AOJu0Yz1JljhdxUL2NcA9FLYGZlx3UxeQy18odR9C6MNiQkyIGeOUXSb
-        dfmkl2L/+or/w45RIow2a1dYxtdqLJi+RjNfm8ivFw==
-X-Google-Smtp-Source: AGHT+IHUHomkKQLuc2ockx5qqoKtNjm8EUSuGamSC4pxg/F8ldsdG3lijuTReykUZ/A/lSn4lW2qUkjfcLC9xGb/+sg=
-X-Received: by 2002:a05:6102:446:b0:447:68a0:a11a with SMTP id
- e6-20020a056102044600b0044768a0a11amr1211673vsq.2.1691566474521; Wed, 09 Aug
- 2023 00:34:34 -0700 (PDT)
+        with ESMTP id S229541AbjHIIYE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 04:24:04 -0400
+Received: from eu-smtp-delivery-151.mimecast.com (eu-smtp-delivery-151.mimecast.com [185.58.85.151])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 60A1699
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 01:24:03 -0700 (PDT)
+Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) by
+ relay.mimecast.com with ESMTP with both STARTTLS and AUTH (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
+ uk-mta-258-oV41YQSUPSmBcZSspKOtjg-1; Wed, 09 Aug 2023 09:23:49 +0100
+X-MC-Unique: oV41YQSUPSmBcZSspKOtjg-1
+Received: from AcuMS.Aculab.com (10.202.163.6) by AcuMS.aculab.com
+ (10.202.163.6) with Microsoft SMTP Server (TLS) id 15.0.1497.48; Wed, 9 Aug
+ 2023 09:23:46 +0100
+Received: from AcuMS.Aculab.com ([::1]) by AcuMS.aculab.com ([::1]) with mapi
+ id 15.00.1497.048; Wed, 9 Aug 2023 09:23:46 +0100
+From:   David Laight <David.Laight@ACULAB.COM>
+To:     "'Martin K. Petersen'" <martin.petersen@oracle.com>,
+        Ranjan Kumar <ranjan.kumar@broadcom.com>
+CC:     "linux-scsi@vger.kernel.org" <linux-scsi@vger.kernel.org>,
+        "sathya.prakash@broadcom.com" <sathya.prakash@broadcom.com>,
+        "sreekanth.reddy@broadcom.com" <sreekanth.reddy@broadcom.com>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: RE: [PATCH v3 1/2] Perform additional retries if Doorbell read
+ returns 0
+Thread-Topic: [PATCH v3 1/2] Perform additional retries if Doorbell read
+ returns 0
+Thread-Index: AQHZymB3zD70idl4qkOVizLGETk6/K/hn8Ag
+Date:   Wed, 9 Aug 2023 08:23:46 +0000
+Message-ID: <f89c7dea130842c4bb0089bd2d5a07d9@AcuMS.aculab.com>
+References: <20230726112527.14987-1-ranjan.kumar@broadcom.com>
+        <20230726112527.14987-2-ranjan.kumar@broadcom.com>
+        <yq1o7jsq9lq.fsf@ca-mkp.ca.oracle.com>
+        <CAMFBP8MS0hwd9-bfVrPi8yTB3Es-w7ugHwEMyxtb8R-mj8PPCg@mail.gmail.com>
+        <yq1sf8ujmf2.fsf@ca-mkp.ca.oracle.com>
+        <CAMFBP8Nf6ifVxJnNBv=zq+WyJRZR-2Hiuo4AejLAguE-GWuzJg@mail.gmail.com>
+ <yq1a5v1ja8a.fsf@ca-mkp.ca.oracle.com>
+In-Reply-To: <yq1a5v1ja8a.fsf@ca-mkp.ca.oracle.com>
+Accept-Language: en-GB, en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.202.205.107]
 MIME-Version: 1.0
-References: <CA+G9fYt86w3Z+XeZjbjcOq_hvpkx=uUZS3ecH_nQGfBn9KaX3A@mail.gmail.com>
- <2023080953-boxcar-dart-6ac7@gregkh>
-In-Reply-To: <2023080953-boxcar-dart-6ac7@gregkh>
-From:   Naresh Kamboju <naresh.kamboju@linaro.org>
-Date:   Wed, 9 Aug 2023 13:04:20 +0530
-Message-ID: <CA+G9fYuHmZuAscesHQsGYz_aG-6nUkCBXWuMgxem=_8Ln60-Eg@mail.gmail.com>
-Subject: Re: stable-rc: 4.19: i386: build warnings / errors
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     linux-stable <stable@vger.kernel.org>,
-        lkft-triage@lists.linaro.org, Sasha Levin <sashal@kernel.org>,
-        Anders Roxell <anders.roxell@linaro.org>,
-        Arnd Bergmann <arnd@arndb.de>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: aculab.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: base64
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, 9 Aug 2023 at 12:58, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> On Wed, Aug 09, 2023 at 12:44:00PM +0530, Naresh Kamboju wrote:
-> > LKFT build plans updated with toolchain gcc-13 and here is the report.
-> >
-> > While building Linux stable rc 4.19 i386 with gcc-13 failed due to
-> > following warnings / errors.
->
-> I'm amazed that this is all the issues you found, I gave up due to all
-> of the build issues.
->
-> If you care about 4.19 (and any other kernel tree) with newer compilers,
-> I will gladly take patches/backports for these issues.  But to just
-> report them like this isn't going to get very far as I doubt anyone who
-> actually uses 4.19 will ever use gcc-13.
+RnJvbTogTWFydGluIEsuIFBldGVyc2VuDQo+IFNlbnQ6IDA5IEF1Z3VzdCAyMDIzIDAyOjI2DQo+
+IA0KPiANCj4gSGkgUmFuamFuLA0KPiANCj4gPiBCdXQgZm9yIGZldyByZWdpc3RlcnMgemVybyBt
+YXkgYmUgYSB2YWxpZCB2YWx1ZSBhbmQgd2UgZG9u4oCZdCB3YW50DQo+ID4gdGhvc2UgcmVnaXN0
+ZXJzIHRvIGdldCBwZW5hbGl6ZWQgd2l0aCAzMCByZWFkIHJldHJpZXMgd2hlcmUgMS8zIHJlYWRz
+DQo+ID4gd291bGQgaGF2ZSBzdWZmaWNlZC4NCj4gDQo+IElmIDAgaXMgYSB2YWxpZCByZWdpc3Rl
+ciB2YWx1ZSB5b3UnbGwgZW5kIHVwIGFsd2F5cyBkb2luZyAzIHJldHJpZXMNCj4gYmVmb3JlIHJl
+dHVybmluZy4gRXZlbiBpZiB0aGUgZmlyc3QgcmVnaXN0ZXIgcmVhZHMgd2VyZSAic3VjY2Vzc2Z1
+bCIuDQo+IFBlY3VsaWFyIQ0KDQpMb29rcyBsaWtlIHRoZSBjb3JyZWN0IHNvbHV0aW9uIGlzIHRv
+IGNvbXBsZXRlbHkgZGlzYWJsZSB0aGUgQk1DLg0KSXQgY2xlYXJseSBpc24ndCBjb21wYXRpYmxl
+IHdpdGggdXNpbmcgdGhlIGRyaXZlciBhcyB3ZWxsLg0KDQpJZiB0aGF0IGlzbid0IHBvc3NpYmxl
+IGlzIHNlZW1zIGl0IG5lZWRzIHRvIGJlIG1hcmtlZCBCUk9LRU4gOi0pDQoNCk11Y2ggbGlrZSB0
+aGUgbWFpbiBldGhlcm5ldCBpbnRlcmZhY2Ugb24gbXkgSXZ5IGJyaWRnZSBpNy4NCg0KCURhdmlk
+DQoNCi0NClJlZ2lzdGVyZWQgQWRkcmVzcyBMYWtlc2lkZSwgQnJhbWxleSBSb2FkLCBNb3VudCBG
+YXJtLCBNaWx0b24gS2V5bmVzLCBNSzEgMVBULCBVSw0KUmVnaXN0cmF0aW9uIE5vOiAxMzk3Mzg2
+IChXYWxlcykNCg==
 
-I totally agree with this old tree and the latest toolchains builds are not a
-great combination. I will not send any reports like this in the future.
-
-- Naresh
