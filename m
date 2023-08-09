@@ -2,88 +2,124 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8ABC5775B9B
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:19:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7F88077577E
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:46:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233482AbjHILTK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:19:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36064 "EHLO
+        id S230295AbjHIKql (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 06:46:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48304 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233489AbjHILTK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:19:10 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CFAC719A1;
-        Wed,  9 Aug 2023 04:19:09 -0700 (PDT)
+        with ESMTP id S232135AbjHIKql (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:46:41 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 82E091BCF
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:46:39 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 66F42631AC;
-        Wed,  9 Aug 2023 11:19:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78023C433C8;
-        Wed,  9 Aug 2023 11:19:08 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2367963123
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:46:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 356EDC433C7;
+        Wed,  9 Aug 2023 10:46:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691579948;
-        bh=8L/TvAryEMTfA6i07lOCF+U37J9ixVgJfRQIS/3uIRo=;
+        s=korg; t=1691577998;
+        bh=w4I5AQglVYeviVzOg3Rd/c3IvqIv22X4qNiJrdYbujY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ZcHJdIlp/cak4weaqHlQcgF0AXFsHllDKiJ8ecyNYRSNSqovJDUhFkbIKElZF/oBU
-         r0kJRP7cO1WO0VhmW15zJGuiHPoA/sgk1aA6hEZI5xKArE8jhVe5fWzvK5pAHJ1+0q
-         EzP3T49xUk/jIXA/0ENVNWAnTvaD8gges9glhwH8=
+        b=urrUmfves0oEHsfsuNhnObY6RCma307VmYo/RLL4N3X15sL0amETlMOeqVYDiFmUK
+         IltzhL+dFEBk7AG+1I1/gQ8NKomMQV8LrGG+0m+rj17clFz20Y4naIW2aSRylkeFy2
+         ex3AuY9GHeWmzsjLzGCPaSesVaY1pcjvT2M42YQo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     stable@vger.kernel.org, netfilter-devel@vger.kernel.org
+To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Florian Westphal <fw@strlen.de>,
-        Pablo Neira Ayuso <pablo@netfilter.org>
-Subject: [PATCH 4.19 133/323] netfilter: nf_tables: fix scheduling-while-atomic splat
+        patches@lists.linux.dev, Shay Drory <shayd@nvidia.com>,
+        Maher Sanalla <msanalla@nvidia.com>,
+        Saeed Mahameed <saeedm@nvidia.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 040/165] net/mlx5: Unregister devlink params in case interface is down
 Date:   Wed,  9 Aug 2023 12:39:31 +0200
-Message-ID: <20230809103704.216917829@linuxfoundation.org>
+Message-ID: <20230809103644.124193789@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
-References: <20230809103658.104386911@linuxfoundation.org>
+In-Reply-To: <20230809103642.720851262@linuxfoundation.org>
+References: <20230809103642.720851262@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Florian Westphal <fw@strlen.de>
+From: Shay Drory <shayd@nvidia.com>
 
-[ 2024439bd5ceb145eeeb428b2a59e9b905153ac3 ]
+[ Upstream commit 53d737dfd3d7b023fa9fa445ea3f3db0ac9da402 ]
 
-nf_tables_check_loops() can be called from rhashtable list
-walk so cond_resched() cannot be used here.
+Currently, in case an interface is down, mlx5 driver doesn't
+unregister its devlink params, which leads to this WARN[1].
+Fix it by unregistering devlink params in that case as well.
 
-Fixes: 81ea01066741 ("netfilter: nf_tables: add rescheduling points during loop detection walks")
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[1]
+[  295.244769 ] WARNING: CPU: 15 PID: 1 at net/core/devlink.c:9042 devlink_free+0x174/0x1fc
+[  295.488379 ] CPU: 15 PID: 1 Comm: shutdown Tainted: G S         OE 5.15.0-1017.19.3.g0677e61-bluefield #g0677e61
+[  295.509330 ] Hardware name: https://www.mellanox.com BlueField SoC/BlueField SoC, BIOS 4.2.0.12761 Jun  6 2023
+[  295.543096 ] pc : devlink_free+0x174/0x1fc
+[  295.551104 ] lr : mlx5_devlink_free+0x18/0x2c [mlx5_core]
+[  295.561816 ] sp : ffff80000809b850
+[  295.711155 ] Call trace:
+[  295.716030 ]  devlink_free+0x174/0x1fc
+[  295.723346 ]  mlx5_devlink_free+0x18/0x2c [mlx5_core]
+[  295.733351 ]  mlx5_sf_dev_remove+0x98/0xb0 [mlx5_core]
+[  295.743534 ]  auxiliary_bus_remove+0x2c/0x50
+[  295.751893 ]  __device_release_driver+0x19c/0x280
+[  295.761120 ]  device_release_driver+0x34/0x50
+[  295.769649 ]  bus_remove_device+0xdc/0x170
+[  295.777656 ]  device_del+0x17c/0x3a4
+[  295.784620 ]  mlx5_sf_dev_remove+0x28/0xf0 [mlx5_core]
+[  295.794800 ]  mlx5_sf_dev_table_destroy+0x98/0x110 [mlx5_core]
+[  295.806375 ]  mlx5_unload+0x34/0xd0 [mlx5_core]
+[  295.815339 ]  mlx5_unload_one+0x70/0xe4 [mlx5_core]
+[  295.824998 ]  shutdown+0xb0/0xd8 [mlx5_core]
+[  295.833439 ]  pci_device_shutdown+0x3c/0xa0
+[  295.841651 ]  device_shutdown+0x170/0x340
+[  295.849486 ]  __do_sys_reboot+0x1f4/0x2a0
+[  295.857322 ]  __arm64_sys_reboot+0x2c/0x40
+[  295.865329 ]  invoke_syscall+0x78/0x100
+[  295.872817 ]  el0_svc_common.constprop.0+0x54/0x184
+[  295.882392 ]  do_el0_svc+0x30/0xac
+[  295.889008 ]  el0_svc+0x48/0x160
+[  295.895278 ]  el0t_64_sync_handler+0xa4/0x130
+[  295.903807 ]  el0t_64_sync+0x1a4/0x1a8
+[  295.911120 ] ---[ end trace 4f1d2381d00d9dce  ]---
+
+Fixes: fe578cbb2f05 ("net/mlx5: Move devlink registration before mlx5_load")
+Signed-off-by: Shay Drory <shayd@nvidia.com>
+Reviewed-by: Maher Sanalla <msanalla@nvidia.com>
+Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_tables_api.c |    4 ----
- 1 file changed, 4 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/main.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -7021,13 +7021,9 @@ static int nf_tables_check_loops(const s
- 				break;
- 			}
- 		}
--
--		cond_resched();
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/main.c b/drivers/net/ethernet/mellanox/mlx5/core/main.c
+index d6ee016deae17..c7a06c8bbb7a3 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/main.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/main.c
+@@ -1456,6 +1456,7 @@ void mlx5_uninit_one(struct mlx5_core_dev *dev)
+ 	if (!test_bit(MLX5_INTERFACE_STATE_UP, &dev->intf_state)) {
+ 		mlx5_core_warn(dev, "%s: interface is down, NOP\n",
+ 			       __func__);
++		mlx5_devlink_params_unregister(priv_to_devlink(dev));
+ 		mlx5_cleanup_once(dev);
+ 		goto out;
  	}
- 
- 	list_for_each_entry(set, &ctx->table->sets, list) {
--		cond_resched();
--
- 		if (!nft_is_active_next(ctx->net, set))
- 			continue;
- 		if (!(set->flags & NFT_SET_MAP) ||
+-- 
+2.40.1
+
 
 
