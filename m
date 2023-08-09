@@ -2,45 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A25DD7759E1
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:03:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A8F65775A23
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:05:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232978AbjHILDZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:03:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43994 "EHLO
+        id S233084AbjHILFj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:05:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38804 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233058AbjHILDK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:03:10 -0400
+        with ESMTP id S233073AbjHILFj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:05:39 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E95B43C26
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:54:26 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA9A0ED;
+        Wed,  9 Aug 2023 04:05:38 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CC0306312B
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:54:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD41AC433C7;
-        Wed,  9 Aug 2023 10:54:25 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6A4096309F;
+        Wed,  9 Aug 2023 11:05:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78A1AC433C8;
+        Wed,  9 Aug 2023 11:05:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691578466;
-        bh=AiKXa/KMJ93F0a4tASOyXRcAR1mYEUXmRdzxSraca6k=;
+        s=korg; t=1691579137;
+        bh=u4hkklQ7mPd5TNvxqqKW2I1ApRm6cAGp/u7Ip4YwA+0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=HpyFDj8OuB4nBQ3zHLkPdQbDp7bc/+luESpMqKDsZ6a4ZJ3OarORmJGvpFzJiwgMs
-         +mOSDI4yyE0gLNATuCUeegMjn/oLhNEdwUr2h1olPd60CA2D9Hfsl4IpQKTYIvTyOk
-         A41aaer0mMyOrfnIXHkCmJagg+UW5zvJpFB2c/cE=
+        b=uCitcEinsKITepuAe4J21oPfXpr8osBXqrY8gj9YaWIksRRf30IB7KxCWKq373Rzz
+         KiAjmVrfgk6x+JklT4V0g+CmJANcj8UjH6946euEbYihx2+w9HjWPnTnLgJ2ZLpkoi
+         u35MnbEqdAjWpgI7cVnl0A1F84OGUZyi4e/OLEss=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     stable@vger.kernel.org
+To:     stable@vger.kernel.org, netfilter-devel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 040/127] net: add missing READ_ONCE(sk->sk_rcvbuf) annotation
+        patches@lists.linux.dev, Pablo Neira Ayuso <pablo@netfilter.org>
+Subject: [PATCH 4.14 089/204] netfilter: nf_tables: unbind non-anonymous set if rule construction fails
 Date:   Wed,  9 Aug 2023 12:40:27 +0200
-Message-ID: <20230809103638.000787079@linuxfoundation.org>
+Message-ID: <20230809103645.623787672@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103636.615294317@linuxfoundation.org>
-References: <20230809103636.615294317@linuxfoundation.org>
+In-Reply-To: <20230809103642.552405807@linuxfoundation.org>
+References: <20230809103642.552405807@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,36 +53,30 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Eric Dumazet <edumazet@google.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit b4b553253091cafe9ec38994acf42795e073bef5 ]
+[ 3e70489721b6c870252c9082c496703677240f53 ]
 
-In a prior commit, I forgot to change sk_getsockopt()
-when reading sk->sk_rcvbuf locklessly.
+Otherwise a dangling reference to a rule object that is gone remains
+in the set binding list.
 
-Fixes: ebb3b78db7bf ("tcp: annotate sk->sk_rcvbuf lockless reads")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 26b5a5712eb8 ("netfilter: nf_tables: add NFT_TRANS_PREPARE_ERROR to deal with bound set/chain")
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/sock.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/netfilter/nf_tables_api.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/core/sock.c b/net/core/sock.c
-index 04306ccdf9081..1a2ec2c4cfe26 100644
---- a/net/core/sock.c
-+++ b/net/core/sock.c
-@@ -1628,7 +1628,7 @@ int sk_getsockopt(struct sock *sk, int level, int optname,
- 		break;
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -3461,6 +3461,8 @@ void nf_tables_deactivate_set(const stru
+ 		nft_set_trans_unbind(ctx, set);
+ 		if (set->flags & NFT_SET_ANONYMOUS)
+ 			nft_deactivate_next(ctx->net, set);
++		else
++			list_del_rcu(&binding->list);
  
- 	case SO_RCVBUF:
--		v.val = sk->sk_rcvbuf;
-+		v.val = READ_ONCE(sk->sk_rcvbuf);
+ 		set->use--;
  		break;
- 
- 	case SO_REUSEADDR:
--- 
-2.40.1
-
 
 
