@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 37711775A6B
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:08:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E8B2A7757CB
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:50:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233165AbjHILIQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:08:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47876 "EHLO
+        id S232288AbjHIKuJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 06:50:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34824 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233139AbjHILIP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:08:15 -0400
+        with ESMTP id S232285AbjHIKuI (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:50:08 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 092801702
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:08:15 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C30921702
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:50:07 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9240D63149
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:08:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5B49C433C8;
-        Wed,  9 Aug 2023 11:08:13 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 57CD0630EF
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:50:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B80FC433C8;
+        Wed,  9 Aug 2023 10:50:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691579294;
-        bh=d7bIEEX+a4+7VdW/TyVgxCt0oFBeV9TzH7T5ruEhwj8=;
+        s=korg; t=1691578206;
+        bh=sP1DYyQo8k9yVAgXGQ6HrN1Rxo7+PkXcKsJfyvaNi8c=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ehyqknueMtiq2hMM4Qj3wCnFhc6x2WKq/fVbFosVR7KKlkBvLVEpEPXkxs3imPRYj
-         EisEkgmbrMaXPpDSB/hJlARgaArWyvlQ/Elenfto8ZFV85AQ/2a7NPRfl4WdfPStwD
-         ZCz78GEjQt645sYhPyXfhU3zbhanqC5Ck0C+PuqE=
+        b=CaaLdw8N8wuYVH6DJNXoSTnQzX1tTQfU0e+niq4FPHmeHTvzC1tJ7og1hgpv1JCtE
+         ACSwiK3BWsrUNNWokhZzICaIjh093VIeWzOC/WE/BvB4OqllySZ1O/6XJW8rN3Ttnz
+         Iro0OglaqhbwsuD25X+ic+BJ2QgiLEsmW7h9XhQI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jonas Gorski <jonas.gorski@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 137/204] spi: bcm63xx: fix max prepend length
+        patches@lists.linux.dev,
+        syzbot+af5e10f73dbff48f70af@syzkaller.appspotmail.com,
+        Jan Kara <jack@suse.cz>
+Subject: [PATCH 6.4 144/165] ext2: Drop fragment support
 Date:   Wed,  9 Aug 2023 12:41:15 +0200
-Message-ID: <20230809103647.167682506@linuxfoundation.org>
+Message-ID: <20230809103647.509744295@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103642.552405807@linuxfoundation.org>
-References: <20230809103642.552405807@linuxfoundation.org>
+In-Reply-To: <20230809103642.720851262@linuxfoundation.org>
+References: <20230809103642.720851262@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,47 +55,106 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jonas Gorski <jonas.gorski@gmail.com>
+From: Jan Kara <jack@suse.cz>
 
-[ Upstream commit 5158814cbb37bbb38344b3ecddc24ba2ed0365f2 ]
+commit 404615d7f1dcd4cca200e9a7a9df3a1dcae1dd62 upstream.
 
-The command word is defined as following:
+Ext2 has fields in superblock reserved for subblock allocation support.
+However that never landed. Drop the many years dead code.
 
-    /* Command */
-    #define SPI_CMD_COMMAND_SHIFT           0
-    #define SPI_CMD_DEVICE_ID_SHIFT         4
-    #define SPI_CMD_PREPEND_BYTE_CNT_SHIFT  8
-    #define SPI_CMD_ONE_BYTE_SHIFT          11
-    #define SPI_CMD_ONE_WIRE_SHIFT          12
-
-If the prepend byte count field starts at bit 8, and the next defined
-bit is SPI_CMD_ONE_BYTE at bit 11, it can be at most 3 bits wide, and
-thus the max value is 7, not 15.
-
-Fixes: b17de076062a ("spi/bcm63xx: work around inability to keep CS up")
-Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
-Link: https://lore.kernel.org/r/20230629071453.62024-1-jonas.gorski@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: syzbot+af5e10f73dbff48f70af@syzkaller.appspotmail.com
+Signed-off-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-bcm63xx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/ext2/ext2.h  |   12 ------------
+ fs/ext2/super.c |   23 ++++-------------------
+ 2 files changed, 4 insertions(+), 31 deletions(-)
 
-diff --git a/drivers/spi/spi-bcm63xx.c b/drivers/spi/spi-bcm63xx.c
-index bfe5754768f97..cc6ec3fb5bfdf 100644
---- a/drivers/spi/spi-bcm63xx.c
-+++ b/drivers/spi/spi-bcm63xx.c
-@@ -134,7 +134,7 @@ enum bcm63xx_regs_spi {
- 	SPI_MSG_DATA_SIZE,
- };
+--- a/fs/ext2/ext2.h
++++ b/fs/ext2/ext2.h
+@@ -70,10 +70,7 @@ struct mb_cache;
+  * second extended-fs super-block data in memory
+  */
+ struct ext2_sb_info {
+-	unsigned long s_frag_size;	/* Size of a fragment in bytes */
+-	unsigned long s_frags_per_block;/* Number of fragments per block */
+ 	unsigned long s_inodes_per_block;/* Number of inodes per block */
+-	unsigned long s_frags_per_group;/* Number of fragments in a group */
+ 	unsigned long s_blocks_per_group;/* Number of blocks in a group */
+ 	unsigned long s_inodes_per_group;/* Number of inodes in a group */
+ 	unsigned long s_itb_per_group;	/* Number of inode table blocks per group */
+@@ -189,15 +186,6 @@ static inline struct ext2_sb_info *EXT2_
+ #define EXT2_FIRST_INO(s)		(EXT2_SB(s)->s_first_ino)
  
--#define BCM63XX_SPI_MAX_PREPEND		15
-+#define BCM63XX_SPI_MAX_PREPEND		7
+ /*
+- * Macro-instructions used to manage fragments
+- */
+-#define EXT2_MIN_FRAG_SIZE		1024
+-#define	EXT2_MAX_FRAG_SIZE		4096
+-#define EXT2_MIN_FRAG_LOG_SIZE		  10
+-#define EXT2_FRAG_SIZE(s)		(EXT2_SB(s)->s_frag_size)
+-#define EXT2_FRAGS_PER_BLOCK(s)		(EXT2_SB(s)->s_frags_per_block)
+-
+-/*
+  * Structure of a blocks group descriptor
+  */
+ struct ext2_group_desc
+--- a/fs/ext2/super.c
++++ b/fs/ext2/super.c
+@@ -668,10 +668,9 @@ static int ext2_setup_super (struct supe
+ 		es->s_max_mnt_count = cpu_to_le16(EXT2_DFL_MAX_MNT_COUNT);
+ 	le16_add_cpu(&es->s_mnt_count, 1);
+ 	if (test_opt (sb, DEBUG))
+-		ext2_msg(sb, KERN_INFO, "%s, %s, bs=%lu, fs=%lu, gc=%lu, "
++		ext2_msg(sb, KERN_INFO, "%s, %s, bs=%lu, gc=%lu, "
+ 			"bpg=%lu, ipg=%lu, mo=%04lx]",
+ 			EXT2FS_VERSION, EXT2FS_DATE, sb->s_blocksize,
+-			sbi->s_frag_size,
+ 			sbi->s_groups_count,
+ 			EXT2_BLOCKS_PER_GROUP(sb),
+ 			EXT2_INODES_PER_GROUP(sb),
+@@ -1012,14 +1011,7 @@ static int ext2_fill_super(struct super_
+ 		}
+ 	}
  
- #define BCM63XX_SPI_MAX_CS		8
- #define BCM63XX_SPI_BUS_NUM		0
--- 
-2.39.2
-
+-	sbi->s_frag_size = EXT2_MIN_FRAG_SIZE <<
+-				   le32_to_cpu(es->s_log_frag_size);
+-	if (sbi->s_frag_size == 0)
+-		goto cantfind_ext2;
+-	sbi->s_frags_per_block = sb->s_blocksize / sbi->s_frag_size;
+-
+ 	sbi->s_blocks_per_group = le32_to_cpu(es->s_blocks_per_group);
+-	sbi->s_frags_per_group = le32_to_cpu(es->s_frags_per_group);
+ 	sbi->s_inodes_per_group = le32_to_cpu(es->s_inodes_per_group);
+ 
+ 	sbi->s_inodes_per_block = sb->s_blocksize / EXT2_INODE_SIZE(sb);
+@@ -1045,11 +1037,10 @@ static int ext2_fill_super(struct super_
+ 		goto failed_mount;
+ 	}
+ 
+-	if (sb->s_blocksize != sbi->s_frag_size) {
++	if (es->s_log_frag_size != es->s_log_block_size) {
+ 		ext2_msg(sb, KERN_ERR,
+-			"error: fragsize %lu != blocksize %lu"
+-			"(not supported yet)",
+-			sbi->s_frag_size, sb->s_blocksize);
++			"error: fragsize log %u != blocksize log %u",
++			le32_to_cpu(es->s_log_frag_size), sb->s_blocksize_bits);
+ 		goto failed_mount;
+ 	}
+ 
+@@ -1066,12 +1057,6 @@ static int ext2_fill_super(struct super_
+ 			sbi->s_blocks_per_group, sbi->s_inodes_per_group + 3);
+ 		goto failed_mount;
+ 	}
+-	if (sbi->s_frags_per_group > sb->s_blocksize * 8) {
+-		ext2_msg(sb, KERN_ERR,
+-			"error: #fragments per group too big: %lu",
+-			sbi->s_frags_per_group);
+-		goto failed_mount;
+-	}
+ 	if (sbi->s_inodes_per_group < sbi->s_inodes_per_block ||
+ 	    sbi->s_inodes_per_group > sb->s_blocksize * 8) {
+ 		ext2_msg(sb, KERN_ERR,
 
 
