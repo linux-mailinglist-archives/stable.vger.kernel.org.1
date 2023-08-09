@@ -2,47 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4DDCD775D07
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:33:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C3C67775DC6
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:41:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233953AbjHILdK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:33:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52166 "EHLO
+        id S234211AbjHILlN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:41:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57914 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233944AbjHILdK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:33:10 -0400
+        with ESMTP id S234236AbjHILlL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:41:11 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 841E3173A
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:33:09 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D9AF81FFE
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:41:09 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1B94E6343B
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:33:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CDE7C433C7;
-        Wed,  9 Aug 2023 11:33:08 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 70F436366B
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:41:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D26BC433AD;
+        Wed,  9 Aug 2023 11:41:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691580788;
-        bh=hyzram7K7JUyg7jzU8rDIOBtjYdxRcMdVBx59tI/mRY=;
+        s=korg; t=1691581268;
+        bh=cPzV7UBio9D2qI/Kd9yHCRxi+JdGjD62PCgI3EzNUmk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Qpko9kUT17raRY5k1hC3++NO2XvKR4AhR1QFvtE3PI9d5mpuFRuqku0+kO7mCQBN7
-         2JuJwozODVLSqcYLo4bldcW77yjhiHBL70r3YPRd7B5LxwR/BfSvksD7Z6oCCwkCLH
-         v8Wo6dxf0HNNwY6YJX6gCYqzEJ3EinWl7v45pBnA=
+        b=0pQ1ct33NFKu5qrbiUon4LJA5LFU3q2PuCYJFE2vntIF9lVL44fqE7+Ob2NX2De04
+         9ISJXzhNqvuT2mvQmwQsWwscM4Aht6CTdbXv+PpD9D0a4R5FsLdl787+DX29OxXCsV
+         XLFZJZ4te2KxcjR/19oadRWUV6+JmDNWDHngJCKs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
-        David Ahern <dsahern@kernel.org>,
-        Kuniyuki Iwashima <kuniyu@amazon.com>,
+        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
+        Esben Haabendal <esben@geanix.com>,
+        Yang Yingliang <yangyingliang@huawei.com>,
+        Harini Katakam <harini.katakam@amd.com>,
         Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 119/154] tcp_metrics: annotate data-races around tm->tcpm_vals[]
+Subject: [PATCH 5.10 148/201] net: ll_temac: fix error checking of irq_of_parse_and_map()
 Date:   Wed,  9 Aug 2023 12:42:30 +0200
-Message-ID: <20230809103640.857362995@linuxfoundation.org>
+Message-ID: <20230809103648.664753123@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103636.887175326@linuxfoundation.org>
-References: <20230809103636.887175326@linuxfoundation.org>
+In-Reply-To: <20230809103643.799166053@linuxfoundation.org>
+References: <20230809103643.799166053@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,83 +58,52 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Eric Dumazet <edumazet@google.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 8c4d04f6b443869d25e59822f7cec88d647028a9 ]
+[ Upstream commit ef45e8400f5bb66b03cc949f76c80e2a118447de ]
 
-tm->tcpm_vals[] values can be read or written locklessly.
+Most kernel functions return negative error codes but some irq functions
+return zero on error.  In this code irq_of_parse_and_map(), returns zero
+and platform_get_irq() returns negative error codes.  We need to handle
+both cases appropriately.
 
-Add needed READ_ONCE()/WRITE_ONCE() to document this,
-and force use of tcp_metric_get() and tcp_metric_set()
-
-Fixes: 51c5d0c4b169 ("tcp: Maintain dynamic metrics in local cache.")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Fixes: 8425c41d1ef7 ("net: ll_temac: Extend support to non-device-tree platforms")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Acked-by: Esben Haabendal <esben@geanix.com>
+Reviewed-by: Yang Yingliang <yangyingliang@huawei.com>
+Reviewed-by: Harini Katakam <harini.katakam@amd.com>
+Link: https://lore.kernel.org/r/3d0aef75-06e0-45a5-a2a6-2cc4738d4143@moroto.mountain
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/tcp_metrics.c | 23 ++++++++++++++---------
- 1 file changed, 14 insertions(+), 9 deletions(-)
+ drivers/net/ethernet/xilinx/ll_temac_main.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/net/ipv4/tcp_metrics.c b/net/ipv4/tcp_metrics.c
-index 2dac82154af85..29261aa96eb40 100644
---- a/net/ipv4/tcp_metrics.c
-+++ b/net/ipv4/tcp_metrics.c
-@@ -63,17 +63,19 @@ static bool tcp_metric_locked(struct tcp_metrics_block *tm,
- 	return READ_ONCE(tm->tcpm_lock) & (1 << idx);
- }
+diff --git a/drivers/net/ethernet/xilinx/ll_temac_main.c b/drivers/net/ethernet/xilinx/ll_temac_main.c
+index 2f27e93370c6c..da136abba1520 100644
+--- a/drivers/net/ethernet/xilinx/ll_temac_main.c
++++ b/drivers/net/ethernet/xilinx/ll_temac_main.c
+@@ -1550,12 +1550,16 @@ static int temac_probe(struct platform_device *pdev)
+ 	}
  
--static u32 tcp_metric_get(struct tcp_metrics_block *tm,
-+static u32 tcp_metric_get(const struct tcp_metrics_block *tm,
- 			  enum tcp_metric_index idx)
- {
--	return tm->tcpm_vals[idx];
-+	/* Paired with WRITE_ONCE() in tcp_metric_set() */
-+	return READ_ONCE(tm->tcpm_vals[idx]);
- }
+ 	/* Error handle returned DMA RX and TX interrupts */
+-	if (lp->rx_irq < 0)
+-		return dev_err_probe(&pdev->dev, lp->rx_irq,
++	if (lp->rx_irq <= 0) {
++		rc = lp->rx_irq ?: -EINVAL;
++		return dev_err_probe(&pdev->dev, rc,
+ 				     "could not get DMA RX irq\n");
+-	if (lp->tx_irq < 0)
+-		return dev_err_probe(&pdev->dev, lp->tx_irq,
++	}
++	if (lp->tx_irq <= 0) {
++		rc = lp->tx_irq ?: -EINVAL;
++		return dev_err_probe(&pdev->dev, rc,
+ 				     "could not get DMA TX irq\n");
++	}
  
- static void tcp_metric_set(struct tcp_metrics_block *tm,
- 			   enum tcp_metric_index idx,
- 			   u32 val)
- {
--	tm->tcpm_vals[idx] = val;
-+	/* Paired with READ_ONCE() in tcp_metric_get() */
-+	WRITE_ONCE(tm->tcpm_vals[idx], val);
- }
- 
- static bool addr_same(const struct inetpeer_addr *a,
-@@ -115,13 +117,16 @@ static void tcpm_suck_dst(struct tcp_metrics_block *tm,
- 	WRITE_ONCE(tm->tcpm_lock, val);
- 
- 	msval = dst_metric_raw(dst, RTAX_RTT);
--	tm->tcpm_vals[TCP_METRIC_RTT] = msval * USEC_PER_MSEC;
-+	tcp_metric_set(tm, TCP_METRIC_RTT, msval * USEC_PER_MSEC);
- 
- 	msval = dst_metric_raw(dst, RTAX_RTTVAR);
--	tm->tcpm_vals[TCP_METRIC_RTTVAR] = msval * USEC_PER_MSEC;
--	tm->tcpm_vals[TCP_METRIC_SSTHRESH] = dst_metric_raw(dst, RTAX_SSTHRESH);
--	tm->tcpm_vals[TCP_METRIC_CWND] = dst_metric_raw(dst, RTAX_CWND);
--	tm->tcpm_vals[TCP_METRIC_REORDERING] = dst_metric_raw(dst, RTAX_REORDERING);
-+	tcp_metric_set(tm, TCP_METRIC_RTTVAR, msval * USEC_PER_MSEC);
-+	tcp_metric_set(tm, TCP_METRIC_SSTHRESH,
-+		       dst_metric_raw(dst, RTAX_SSTHRESH));
-+	tcp_metric_set(tm, TCP_METRIC_CWND,
-+		       dst_metric_raw(dst, RTAX_CWND));
-+	tcp_metric_set(tm, TCP_METRIC_REORDERING,
-+		       dst_metric_raw(dst, RTAX_REORDERING));
- 	if (fastopen_clear) {
- 		tm->tcpm_fastopen.mss = 0;
- 		tm->tcpm_fastopen.syn_loss = 0;
-@@ -662,7 +667,7 @@ static int tcp_metrics_fill_info(struct sk_buff *msg,
- 		if (!nest)
- 			goto nla_put_failure;
- 		for (i = 0; i < TCP_METRIC_MAX_KERNEL + 1; i++) {
--			u32 val = tm->tcpm_vals[i];
-+			u32 val = tcp_metric_get(tm, i);
- 
- 			if (!val)
- 				continue;
+ 	if (temac_np) {
+ 		/* Retrieve the MAC address */
 -- 
 2.40.1
 
