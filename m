@@ -2,96 +2,166 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1523777585E
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:52:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4F576775BF9
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:22:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232556AbjHIKwQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 06:52:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42336 "EHLO
+        id S233594AbjHILWh (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:22:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46674 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232332AbjHIKvE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:51:04 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D920C2686
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:50:40 -0700 (PDT)
+        with ESMTP id S233557AbjHILWg (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:22:36 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 06D4919A1
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:22:34 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6F86E63137
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:50:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 722ECC433BB;
-        Wed,  9 Aug 2023 10:50:39 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 93B32631F8
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:22:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A43FEC433C8;
+        Wed,  9 Aug 2023 11:22:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691578239;
-        bh=sc06U4RR1eaFwU9DQlRlff9KWyeU+3QPspxLNzP20bs=;
+        s=korg; t=1691580153;
+        bh=TwZrQsxypMl0Y2TTwNtd8l639hoeIQLenVliggWzqVo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=vd7JXuxzIwPt4ZtZxv4618NcrZkw81mF74Y0YFPPq+86MWv1Lu/GVRgyi41w8paLp
-         5qbVI1d0v1/UBUdANeV096PlVx/fhGn+QvVqWM/laL4o/Q5ElC2Hezx9WagHyKsZdl
-         SJcYgp0/EI4eHqKaYhoTPrI9P+Gj2b8ArwATPVEc=
+        b=jfpsHxhTRptvaYyaHjX85eKuvGe9ppN8eyXrzpYPGSraPfmVmxMXkFxNbFYHGj0Y7
+         rR9OgvEvJWVcOUeU1WXG+kdm+T2s03xh39i/FQxnDddpWyYOcUdU1ZM8XF2cxjx22R
+         ZtXk6v0u5WFgx3KyjzWecU/7+WNBGLzjUdEtuKQU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
-        David Hildenbrand <david@redhat.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
+        patches@lists.linux.dev, Vladimir Oltean <vladimir.oltean@nxp.com>,
+        Ferenc Fejes <fejes@inf.elte.hu>,
+        Simon Horman <simon.horman@corigine.com>,
+        Jamal Hadi Salim <jhs@mojatatu.com>,
+        Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 154/165] powerpc/mm/altmap: Fix altmap boundary check
+Subject: [PATCH 4.19 247/323] net/sched: mqprio: add extack to mqprio_parse_nlattr()
 Date:   Wed,  9 Aug 2023 12:41:25 +0200
-Message-ID: <20230809103647.811423966@linuxfoundation.org>
+Message-ID: <20230809103709.373362805@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103642.720851262@linuxfoundation.org>
-References: <20230809103642.720851262@linuxfoundation.org>
+In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
+References: <20230809103658.104386911@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-[ Upstream commit 6722b25712054c0f903b839b8f5088438dd04df3 ]
+[ Upstream commit 57f21bf85400abadac0cb2a4db5de1d663f8863f ]
 
-altmap->free includes the entire free space from which altmap blocks
-can be allocated. So when checking whether the kernel is doing altmap
-block free, compute the boundary correctly, otherwise memory hotunplug
-can fail.
+Netlink attribute parsing in mqprio is a minesweeper game, with many
+options having the possibility of being passed incorrectly and the user
+being none the wiser.
 
-Fixes: 9ef34630a461 ("powerpc/mm: Fallback to RAM if the altmap is unusable")
-Signed-off-by: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-Reviewed-by: David Hildenbrand <david@redhat.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20230724181320.471386-1-aneesh.kumar@linux.ibm.com
+Try to make errors less sour by giving user space some information
+regarding what went wrong.
+
+Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Reviewed-by: Ferenc Fejes <fejes@inf.elte.hu>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 6c58c8816abb ("net/sched: mqprio: Add length check for TCA_MQPRIO_{MAX/MIN}_RATE64")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/mm/init_64.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ net/sched/sch_mqprio.c | 30 +++++++++++++++++++++++-------
+ 1 file changed, 23 insertions(+), 7 deletions(-)
 
-diff --git a/arch/powerpc/mm/init_64.c b/arch/powerpc/mm/init_64.c
-index fe1b83020e0df..0ec5b45b1e86a 100644
---- a/arch/powerpc/mm/init_64.c
-+++ b/arch/powerpc/mm/init_64.c
-@@ -314,8 +314,7 @@ void __ref vmemmap_free(unsigned long start, unsigned long end,
- 	start = ALIGN_DOWN(start, page_size);
- 	if (altmap) {
- 		alt_start = altmap->base_pfn;
--		alt_end = altmap->base_pfn + altmap->reserve +
--			  altmap->free + altmap->alloc + altmap->align;
-+		alt_end = altmap->base_pfn + altmap->reserve + altmap->free;
+diff --git a/net/sched/sch_mqprio.c b/net/sched/sch_mqprio.c
+index 7726d8f623027..c9bdb4476a5bc 100644
+--- a/net/sched/sch_mqprio.c
++++ b/net/sched/sch_mqprio.c
+@@ -133,7 +133,8 @@ static int parse_attr(struct nlattr *tb[], int maxtype, struct nlattr *nla,
+ }
+ 
+ static int mqprio_parse_nlattr(struct Qdisc *sch, struct tc_mqprio_qopt *qopt,
+-			       struct nlattr *opt)
++			       struct nlattr *opt,
++			       struct netlink_ext_ack *extack)
+ {
+ 	struct mqprio_sched *priv = qdisc_priv(sch);
+ 	struct nlattr *tb[TCA_MQPRIO_MAX + 1];
+@@ -145,8 +146,11 @@ static int mqprio_parse_nlattr(struct Qdisc *sch, struct tc_mqprio_qopt *qopt,
+ 	if (err < 0)
+ 		return err;
+ 
+-	if (!qopt->hw)
++	if (!qopt->hw) {
++		NL_SET_ERR_MSG(extack,
++			       "mqprio TCA_OPTIONS can only contain netlink attributes in hardware mode");
+ 		return -EINVAL;
++	}
+ 
+ 	if (tb[TCA_MQPRIO_MODE]) {
+ 		priv->flags |= TC_MQPRIO_F_MODE;
+@@ -159,13 +163,19 @@ static int mqprio_parse_nlattr(struct Qdisc *sch, struct tc_mqprio_qopt *qopt,
  	}
  
- 	pr_debug("vmemmap_free %lx...%lx\n", start, end);
+ 	if (tb[TCA_MQPRIO_MIN_RATE64]) {
+-		if (priv->shaper != TC_MQPRIO_SHAPER_BW_RATE)
++		if (priv->shaper != TC_MQPRIO_SHAPER_BW_RATE) {
++			NL_SET_ERR_MSG_ATTR(extack, tb[TCA_MQPRIO_MIN_RATE64],
++					    "min_rate accepted only when shaper is in bw_rlimit mode");
+ 			return -EINVAL;
++		}
+ 		i = 0;
+ 		nla_for_each_nested(attr, tb[TCA_MQPRIO_MIN_RATE64],
+ 				    rem) {
+-			if (nla_type(attr) != TCA_MQPRIO_MIN_RATE64)
++			if (nla_type(attr) != TCA_MQPRIO_MIN_RATE64) {
++				NL_SET_ERR_MSG_ATTR(extack, attr,
++						    "Attribute type expected to be TCA_MQPRIO_MIN_RATE64");
+ 				return -EINVAL;
++			}
+ 			if (i >= qopt->num_tc)
+ 				break;
+ 			priv->min_rate[i] = *(u64 *)nla_data(attr);
+@@ -175,13 +185,19 @@ static int mqprio_parse_nlattr(struct Qdisc *sch, struct tc_mqprio_qopt *qopt,
+ 	}
+ 
+ 	if (tb[TCA_MQPRIO_MAX_RATE64]) {
+-		if (priv->shaper != TC_MQPRIO_SHAPER_BW_RATE)
++		if (priv->shaper != TC_MQPRIO_SHAPER_BW_RATE) {
++			NL_SET_ERR_MSG_ATTR(extack, tb[TCA_MQPRIO_MAX_RATE64],
++					    "max_rate accepted only when shaper is in bw_rlimit mode");
+ 			return -EINVAL;
++		}
+ 		i = 0;
+ 		nla_for_each_nested(attr, tb[TCA_MQPRIO_MAX_RATE64],
+ 				    rem) {
+-			if (nla_type(attr) != TCA_MQPRIO_MAX_RATE64)
++			if (nla_type(attr) != TCA_MQPRIO_MAX_RATE64) {
++				NL_SET_ERR_MSG_ATTR(extack, attr,
++						    "Attribute type expected to be TCA_MQPRIO_MAX_RATE64");
+ 				return -EINVAL;
++			}
+ 			if (i >= qopt->num_tc)
+ 				break;
+ 			priv->max_rate[i] = *(u64 *)nla_data(attr);
+@@ -226,7 +242,7 @@ static int mqprio_init(struct Qdisc *sch, struct nlattr *opt,
+ 
+ 	len = nla_len(opt) - NLA_ALIGN(sizeof(*qopt));
+ 	if (len > 0) {
+-		err = mqprio_parse_nlattr(sch, qopt, opt);
++		err = mqprio_parse_nlattr(sch, qopt, opt, extack);
+ 		if (err)
+ 			return err;
+ 	}
 -- 
-2.40.1
+2.39.2
 
 
 
