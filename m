@@ -2,50 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6B08577593C
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:58:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C89AE7758E4
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:55:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232376AbjHIK6p (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 06:58:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35554 "EHLO
+        id S232425AbjHIKz4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 06:55:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56078 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232784AbjHIK6o (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:58:44 -0400
+        with ESMTP id S232692AbjHIKzl (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:55:41 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 47FEC1FD8
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:58:43 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 457C62103
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:55:06 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DC46863118
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:58:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF4B3C433C8;
-        Wed,  9 Aug 2023 10:58:41 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D84A063122
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:55:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCFEBC433CD;
+        Wed,  9 Aug 2023 10:55:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691578722;
-        bh=bM5scgED38jPBgKdFc/yEQrdjIGEUG6zfFhX/pSt+Ho=;
+        s=korg; t=1691578505;
+        bh=o5kVOmmulYHn0UuyrUiUIxhNbTitBnpOWApY0H1ojgg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=a5A67WtW1CerSh976EHoiqiqOnnPCPoxtA0xUFh09m69V0bEGhM6gKQoRjoPxYb8j
-         8Snuo7LUGoHeLEl2Lu8cng/Z1dzlWkIAyP/XJSJIAItVpK6HQqlfO4ZTI7TY9ByvtH
-         /AYQXUNL6qiDWaCxSILd20eqxq7QSH2fVDrM/q3k=
+        b=QuLApYWH8OVHeqvtqJ0pkRnmA9kCTl1HDzaoUmIpid5LEQPeyswE7HMyOxi6nQety
+         uECT/CXiPuX4+E2TjVwYBxZdGpqpVTUkM8o5cEmJJDJ5yfapF4X20Og0TPZLb6zFgz
+         4953EWBYUqM91+gbTnymCWMHljbLG8iayOrjhq4k=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, valis <sec@valis.email>,
-        Bing-Jhong Billy Jheng <billy@starlabs.sg>,
-        Jamal Hadi Salim <jhs@mojatatu.com>,
-        Victor Nogueira <victor@mojatatu.com>,
-        Pedro Tammela <pctammela@mojatatu.com>,
-        M A Ramdhan <ramdhan@starlabs.sg>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 34/92] net/sched: cls_fw: No longer copy tcf_result on update to avoid use-after-free
-Date:   Wed,  9 Aug 2023 12:41:10 +0200
-Message-ID: <20230809103634.792048331@linuxfoundation.org>
+        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
+        Lorenzo Colitti <lorenzo@google.com>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Pietro Borrello <borrello@diag.uniroma1.it>,
+        netdev@vger.kernel.org, Laszlo Ersek <lersek@redhat.com>,
+        "David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 6.1 084/127] net: tap_open(): set sk_uid from current_fsuid()
+Date:   Wed,  9 Aug 2023 12:41:11 +0200
+Message-ID: <20230809103639.436767604@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103633.485906560@linuxfoundation.org>
-References: <20230809103633.485906560@linuxfoundation.org>
+In-Reply-To: <20230809103636.615294317@linuxfoundation.org>
+References: <20230809103636.615294317@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -60,49 +58,55 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: valis <sec@valis.email>
+From: Laszlo Ersek <lersek@redhat.com>
 
-[ Upstream commit 76e42ae831991c828cffa8c37736ebfb831ad5ec ]
+commit 5c9241f3ceab3257abe2923a59950db0dc8bb737 upstream.
 
-When fw_change() is called on an existing filter, the whole
-tcf_result struct is always copied into the new instance of the filter.
+Commit 66b2c338adce initializes the "sk_uid" field in the protocol socket
+(struct sock) from the "/dev/tapX" device node's owner UID. Per original
+commit 86741ec25462 ("net: core: Add a UID field to struct sock.",
+2016-11-04), that's wrong: the idea is to cache the UID of the userspace
+process that creates the socket. Commit 86741ec25462 mentions socket() and
+accept(); with "tap", the action that creates the socket is
+open("/dev/tapX").
 
-This causes a problem when updating a filter bound to a class,
-as tcf_unbind_filter() is always called on the old instance in the
-success path, decreasing filter_cnt of the still referenced class
-and allowing it to be deleted, leading to a use-after-free.
+Therefore the device node's owner UID is irrelevant. In most cases,
+"/dev/tapX" will be owned by root, so in practice, commit 66b2c338adce has
+no observable effect:
 
-Fix this by no longer copying the tcf_result struct from the old filter.
+- before, "sk_uid" would be zero, due to undefined behavior
+  (CVE-2023-1076),
 
-Fixes: e35a8ee5993b ("net: sched: fw use RCU")
-Reported-by: valis <sec@valis.email>
-Reported-by: Bing-Jhong Billy Jheng <billy@starlabs.sg>
-Signed-off-by: valis <sec@valis.email>
-Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Reviewed-by: Victor Nogueira <victor@mojatatu.com>
-Reviewed-by: Pedro Tammela <pctammela@mojatatu.com>
-Reviewed-by: M A Ramdhan <ramdhan@starlabs.sg>
-Link: https://lore.kernel.org/r/20230729123202.72406-3-jhs@mojatatu.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+- after, "sk_uid" would be zero, due to "/dev/tapX" being owned by root.
+
+What matters is the (fs)UID of the process performing the open(), so cache
+that in "sk_uid".
+
+Cc: Eric Dumazet <edumazet@google.com>
+Cc: Lorenzo Colitti <lorenzo@google.com>
+Cc: Paolo Abeni <pabeni@redhat.com>
+Cc: Pietro Borrello <borrello@diag.uniroma1.it>
+Cc: netdev@vger.kernel.org
+Cc: stable@vger.kernel.org
+Fixes: 66b2c338adce ("tap: tap_open(): correctly initialize socket uid")
+Bugzilla: https://bugzilla.redhat.com/show_bug.cgi?id=2173435
+Signed-off-by: Laszlo Ersek <lersek@redhat.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/cls_fw.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/net/tap.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/sched/cls_fw.c b/net/sched/cls_fw.c
-index ea52c320f67c4..a2f53aee39097 100644
---- a/net/sched/cls_fw.c
-+++ b/net/sched/cls_fw.c
-@@ -265,7 +265,6 @@ static int fw_change(struct net *net, struct sk_buff *in_skb,
- 			return -ENOBUFS;
- 
- 		fnew->id = f->id;
--		fnew->res = f->res;
- 		fnew->ifindex = f->ifindex;
- 		fnew->tp = f->tp;
- 
--- 
-2.40.1
-
+--- a/drivers/net/tap.c
++++ b/drivers/net/tap.c
+@@ -533,7 +533,7 @@ static int tap_open(struct inode *inode,
+ 	q->sock.state = SS_CONNECTED;
+ 	q->sock.file = file;
+ 	q->sock.ops = &tap_socket_ops;
+-	sock_init_data_uid(&q->sock, &q->sk, inode->i_uid);
++	sock_init_data_uid(&q->sock, &q->sk, current_fsuid());
+ 	q->sk.sk_write_space = tap_sock_write_space;
+ 	q->sk.sk_destruct = tap_sock_destruct;
+ 	q->flags = IFF_VNET_HDR | IFF_NO_PI | IFF_TAP;
 
 
