@@ -2,104 +2,103 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 42471775925
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:58:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6ECD8775D6A
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:37:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232627AbjHIK6D (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 06:58:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40810 "EHLO
+        id S234098AbjHILhR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:37:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33942 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232719AbjHIK6C (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:58:02 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A9C4A2126
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:58:01 -0700 (PDT)
+        with ESMTP id S234095AbjHILhR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:37:17 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1E1C173A
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:37:16 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 476496312C
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:58:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51F1CC433C7;
-        Wed,  9 Aug 2023 10:58:00 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 47EB86354C
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:37:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 561C3C433C9;
+        Wed,  9 Aug 2023 11:37:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691578680;
-        bh=Mis3xshci9iVAlLvKaAqXkF6ndpHhAW4bGRaQFImN0M=;
+        s=korg; t=1691581035;
+        bh=zYbBpl3C+/45YeKEemcPVoWChYo4iY6UjwOzo4mpUgA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=eupElMbHa/pNLezqqjxAz+31ELIb/7ILsRjsqof0eEeUcHAQTvkkEoREz3h9uhVb7
-         DEJqjBmb61CQKcU4OzsWZ9JggQJNXSza39L+2WGle4pCgKQHYjmDNi1EpJSRAinWUq
-         7jINH3Ki4sxrsDI3BVBH3E7DPiZ3g9I41RSBuUKc=
+        b=HAZKK1TLvT/1GvnLVhmP6oD591gHEqEMviLOsQHZzb/B3v4htL1mANye6in8KX55w
+         yID4JqAeBlSjc+mSKX1KS1iplPul+rZuHCHQEm8Hfg51y6ubLY5GxVpQFXaMmfj1IB
+         2cDzErvpc0vId5FWsmXp4RW+TQmxF90N6baQP5pk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yuanjun Gong <ruc_gongyuanjun@163.com>,
-        Florian Fainelli <florian.fainelli@broadcom.com>,
-        Jakub Kicinski <kuba@kernel.org>,
+        patches@lists.linux.dev, Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Abhinav Kumar <quic_abhinavk@quicinc.com>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 19/92] net: dsa: fix value check in bcm_sf2_sw_probe()
+Subject: [PATCH 5.10 053/201] drm/msm/dpu: drop enum dpu_core_perf_data_bus_id
 Date:   Wed,  9 Aug 2023 12:40:55 +0200
-Message-ID: <20230809103634.288366772@linuxfoundation.org>
+Message-ID: <20230809103645.616033440@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103633.485906560@linuxfoundation.org>
-References: <20230809103633.485906560@linuxfoundation.org>
+In-Reply-To: <20230809103643.799166053@linuxfoundation.org>
+References: <20230809103643.799166053@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Yuanjun Gong <ruc_gongyuanjun@163.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit dadc5b86cc9459581f37fe755b431adc399ea393 ]
+[ Upstream commit e8383f5cf1b3573ce140a80bfbfd809278ab16d6 ]
 
-in bcm_sf2_sw_probe(), check the return value of clk_prepare_enable()
-and return the error code if clk_prepare_enable() returns an
-unexpected value.
+Drop the leftover of bus-client -> interconnect conversion, the enum
+dpu_core_perf_data_bus_id.
 
-Fixes: e9ec5c3bd238 ("net: dsa: bcm_sf2: request and handle clocks")
-Signed-off-by: Yuanjun Gong <ruc_gongyuanjun@163.com>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Link: https://lore.kernel.org/r/20230726170506.16547-1-ruc_gongyuanjun@163.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: cb88482e2570 ("drm/msm/dpu: clean up references of DPU custom bus scaling")
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Patchwork: https://patchwork.freedesktop.org/patch/546048/
+Link: https://lore.kernel.org/r/20230707193942.3806526-2-dmitry.baryshkov@linaro.org
+Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/bcm_sf2.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/msm/disp/dpu1/dpu_core_perf.h | 13 -------------
+ 1 file changed, 13 deletions(-)
 
-diff --git a/drivers/net/dsa/bcm_sf2.c b/drivers/net/dsa/bcm_sf2.c
-index d76b2377d66ef..773d751ef169f 100644
---- a/drivers/net/dsa/bcm_sf2.c
-+++ b/drivers/net/dsa/bcm_sf2.c
-@@ -1422,7 +1422,9 @@ static int bcm_sf2_sw_probe(struct platform_device *pdev)
- 	if (IS_ERR(priv->clk))
- 		return PTR_ERR(priv->clk);
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_core_perf.h b/drivers/gpu/drm/msm/disp/dpu1/dpu_core_perf.h
+index cf4b9b5964c6c..cd6c3518ba021 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/dpu_core_perf.h
++++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_core_perf.h
+@@ -14,19 +14,6 @@
  
--	clk_prepare_enable(priv->clk);
-+	ret = clk_prepare_enable(priv->clk);
-+	if (ret)
-+		return ret;
+ #define	DPU_PERF_DEFAULT_MAX_CORE_CLK_RATE	412500000
  
- 	priv->clk_mdiv = devm_clk_get_optional(&pdev->dev, "sw_switch_mdiv");
- 	if (IS_ERR(priv->clk_mdiv)) {
-@@ -1430,7 +1432,9 @@ static int bcm_sf2_sw_probe(struct platform_device *pdev)
- 		goto out_clk;
- 	}
- 
--	clk_prepare_enable(priv->clk_mdiv);
-+	ret = clk_prepare_enable(priv->clk_mdiv);
-+	if (ret)
-+		goto out_clk;
- 
- 	ret = bcm_sf2_sw_rst(priv);
- 	if (ret) {
+-/**
+- * enum dpu_core_perf_data_bus_id - data bus identifier
+- * @DPU_CORE_PERF_DATA_BUS_ID_MNOC: DPU/MNOC data bus
+- * @DPU_CORE_PERF_DATA_BUS_ID_LLCC: MNOC/LLCC data bus
+- * @DPU_CORE_PERF_DATA_BUS_ID_EBI: LLCC/EBI data bus
+- */
+-enum dpu_core_perf_data_bus_id {
+-	DPU_CORE_PERF_DATA_BUS_ID_MNOC,
+-	DPU_CORE_PERF_DATA_BUS_ID_LLCC,
+-	DPU_CORE_PERF_DATA_BUS_ID_EBI,
+-	DPU_CORE_PERF_DATA_BUS_ID_MAX,
+-};
+-
+ /**
+  * struct dpu_core_perf_params - definition of performance parameters
+  * @max_per_pipe_ib: maximum instantaneous bandwidth request
 -- 
 2.40.1
 
