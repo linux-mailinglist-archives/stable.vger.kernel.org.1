@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C969C775CA9
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:29:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C4177775C18
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:23:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233820AbjHIL3k (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:29:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35780 "EHLO
+        id S233652AbjHILXy (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:23:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41892 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233827AbjHIL3j (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:29:39 -0400
+        with ESMTP id S233644AbjHILXx (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:23:53 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2641CED
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:29:39 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18B251BF7
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:23:53 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A98016332B
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:29:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8DC1C433C8;
-        Wed,  9 Aug 2023 11:29:37 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 74C9963234
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:23:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8615DC433C8;
+        Wed,  9 Aug 2023 11:23:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691580578;
-        bh=Elm/IbQH+RjVwVI8uuNCD+TQt7lRxqZV9TK74mGHsfU=;
+        s=korg; t=1691580231;
+        bh=QhMdq6GsBUCYsRgx77tTtwmBPNjhq1VtDPdyxlTqKHY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=FSyIxVTaO84kO78qJ7fFm5VKvo1aDQxVO+LQS1UOqspM5fiDLpF7BgkNQCe/gGqr9
-         JqEA8QgPPfWL7LugvOd42oXthFCYK8ujW6c+zdDU4QE0M8yqq634KytSGQmrZQ1dT+
-         qRQbzGTGP9JAakd5RURQKu6s7S8PavGkAUdgKoy4=
+        b=vVkRI4F91bHXM9F3j13wYQ8/zQc4sSy+QxfLWeVjmSqeUdiIf748r5mUoKSE/ai0l
+         bL0SHFjdtYlXqimCqvRv1SeTkoEpuvz1TJ+sZ3jhmGR0niGQYYiHIZ4IX6+kgPS4fB
+         HNp1kUlLriakCC6oX1ZxUXpGk7SFr/jtTZTqxu1E=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Alexander Steffen <Alexander.Steffen@infineon.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>
-Subject: [PATCH 5.4 074/154] tpm_tis: Explicitly check for error code
+        =?UTF-8?q?=C5=81ukasz=20Bartosik?= <lb@semihalf.com>,
+        stable <stable@kernel.org>
+Subject: [PATCH 4.19 267/323] USB: quirks: add quirk for Focusrite Scarlett
 Date:   Wed,  9 Aug 2023 12:41:45 +0200
-Message-ID: <20230809103639.439497408@linuxfoundation.org>
+Message-ID: <20230809103710.275798975@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103636.887175326@linuxfoundation.org>
-References: <20230809103636.887175326@linuxfoundation.org>
+In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
+References: <20230809103658.104386911@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,56 +55,63 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Alexander Steffen <Alexander.Steffen@infineon.com>
+From: Łukasz Bartosik <lb@semihalf.com>
 
-commit 513253f8c293c0c8bd46d09d337fc892bf8f9f48 upstream.
+commit 9dc162e22387080e2d06de708b89920c0e158c9a upstream.
 
-recv_data either returns the number of received bytes, or a negative value
-representing an error code. Adding the return value directly to the total
-number of received bytes therefore looks a little weird, since it might add
-a negative error code to a sum of bytes.
+The Focusrite Scarlett audio device does not behave correctly during
+resumes. Below is what happens during every resume (captured with
+Beagle 5000):
 
-The following check for size < expected usually makes the function return
-ETIME in that case, so it does not cause too many problems in practice. But
-to make the code look cleaner and because the caller might still be
-interested in the original error code, explicitly check for the presence of
-an error code and pass that through.
+<Suspend>
+<Resume>
+<Reset>/<Chirp J>/<Tiny J>
+<Reset/Target disconnected>
+<High Speed>
 
-Cc: stable@vger.kernel.org
-Fixes: cb5354253af2 ("[PATCH] tpm: spacing cleanups 2")
-Signed-off-by: Alexander Steffen <Alexander.Steffen@infineon.com>
-Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
-Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+The Scarlett disconnects and is enumerated again.
+
+However from time to time it drops completely off the USB bus during
+resume. Below is captured occurrence of such an event:
+
+<Suspend>
+<Resume>
+<Reset>/<Chirp J>/<Tiny J>
+<Reset>/<Chirp K>/<Tiny K>
+<High Speed>
+<Corrupted packet>
+<Reset/Target disconnected>
+
+To fix the condition a user has to unplug and plug the device again.
+
+With USB_QUIRK_RESET_RESUME applied ("usbcore.quirks=1235:8211:b")
+for the Scarlett audio device the issue still reproduces.
+
+Applying USB_QUIRK_DISCONNECT_SUSPEND ("usbcore.quirks=1235:8211:m")
+fixed the issue and the Scarlett audio device didn't drop off the USB
+bus for ~5000 suspend/resume cycles where originally issue reproduced in
+~100 or less suspend/resume cycles.
+
+Signed-off-by: Łukasz Bartosik <lb@semihalf.com>
+Cc: stable <stable@kernel.org>
+Link: https://lore.kernel.org/r/20230724112911.1802577-1-lb@semihalf.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/char/tpm/tpm_tis_core.c |   10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ drivers/usb/core/quirks.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/char/tpm/tpm_tis_core.c
-+++ b/drivers/char/tpm/tpm_tis_core.c
-@@ -266,6 +266,7 @@ static int tpm_tis_recv(struct tpm_chip
- 	int size = 0;
- 	int status;
- 	u32 expected;
-+	int rc;
+--- a/drivers/usb/core/quirks.c
++++ b/drivers/usb/core/quirks.c
+@@ -437,6 +437,10 @@ static const struct usb_device_id usb_qu
+ 	/* novation SoundControl XL */
+ 	{ USB_DEVICE(0x1235, 0x0061), .driver_info = USB_QUIRK_RESET_RESUME },
  
- 	if (count < TPM_HEADER_SIZE) {
- 		size = -EIO;
-@@ -285,8 +286,13 @@ static int tpm_tis_recv(struct tpm_chip
- 		goto out;
- 	}
- 
--	size += recv_data(chip, &buf[TPM_HEADER_SIZE],
--			  expected - TPM_HEADER_SIZE);
-+	rc = recv_data(chip, &buf[TPM_HEADER_SIZE],
-+		       expected - TPM_HEADER_SIZE);
-+	if (rc < 0) {
-+		size = rc;
-+		goto out;
-+	}
-+	size += rc;
- 	if (size < expected) {
- 		dev_err(&chip->dev, "Unable to read remainder of result\n");
- 		size = -ETIME;
++	/* Focusrite Scarlett Solo USB */
++	{ USB_DEVICE(0x1235, 0x8211), .driver_info =
++			USB_QUIRK_DISCONNECT_SUSPEND },
++
+ 	/* Huawei 4G LTE module */
+ 	{ USB_DEVICE(0x12d1, 0x15bb), .driver_info =
+ 			USB_QUIRK_DISCONNECT_SUSPEND },
 
 
