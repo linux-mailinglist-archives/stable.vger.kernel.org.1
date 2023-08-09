@@ -2,230 +2,96 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E37B677594B
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:59:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4B6FA775D66
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:37:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232810AbjHIK7P (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 06:59:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32970 "EHLO
+        id S234092AbjHILhQ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:37:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47260 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232815AbjHIK7O (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:59:14 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A62CD2107
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:59:13 -0700 (PDT)
+        with ESMTP id S234198AbjHILhG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:37:06 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7D141BFE
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:37:05 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 25C4862BD5
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:59:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38B4AC433C8;
-        Wed,  9 Aug 2023 10:59:12 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 558FD6354B
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:37:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6357BC433C7;
+        Wed,  9 Aug 2023 11:37:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691578752;
-        bh=VVcsMQ0TJ+1BjVbus1HoWhCUF/4P8ZC0fHrpXpHmXEg=;
+        s=korg; t=1691581024;
+        bh=BzAO1hbA+DDXbj1cRfz/AK+sFJ/y+3foj8deBLOtmzY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=vPHBs8HhmCvj5ws+VNR+2aKCRNjAfeXoodutCw/LzxsCeOXgsxeC9XMBx6N4ni/b5
-         DMpFC1Rx8aJpQZcB08jfGa0AOufqr/vJA1P7Ty+Q9+zNqdPS1TrlSnipd/LFUHCfDn
-         1pEygT7seYIrn5rb/ltBvMzcUIEk6VReRaiaO57Q=
+        b=l6sELjmeixZuHiRhMMorymzuM6HkZaQ4Q4yZW8lVYA11DcHyp1wZoAnGQj84ydloD
+         bPHinFHpfrcKn8TW+GvefuVDCnbhGs+kiD8JiebWQYg8j/7SRyHQEtmADCkAoFnAgj
+         pzLZ25XU8QtKVxoa2nUc5TDsAQ56PzvNDc1uoazU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Benjamin Poirier <bpoirier@nvidia.com>,
-        Ido Schimmel <idosch@nvidia.com>,
-        Simon Horman <horms@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 44/92] vxlan: Fix nexthop hash size
+        patches@lists.linux.dev, Guiting Shen <aarongt.shen@gmail.com>,
+        stable <stable@kernel.org>,
+        Alan Stern <stern@rowland.harvard.edu>
+Subject: [PATCH 5.10 078/201] usb: ohci-at91: Fix the unhandle interrupt when resume
 Date:   Wed,  9 Aug 2023 12:41:20 +0200
-Message-ID: <20230809103635.140646191@linuxfoundation.org>
+Message-ID: <20230809103646.413041311@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103633.485906560@linuxfoundation.org>
-References: <20230809103633.485906560@linuxfoundation.org>
+In-Reply-To: <20230809103643.799166053@linuxfoundation.org>
+References: <20230809103643.799166053@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Benjamin Poirier <bpoirier@nvidia.com>
+From: Guiting Shen <aarongt.shen@gmail.com>
 
-[ Upstream commit 0756384fb1bd38adb2ebcfd1307422f433a1d772 ]
+commit c55afcbeaa7a6f4fffdbc999a9bf3f0b29a5186f upstream.
 
-The nexthop code expects a 31 bit hash, such as what is returned by
-fib_multipath_hash() and rt6_multipath_hash(). Passing the 32 bit hash
-returned by skb_get_hash() can lead to problems related to the fact that
-'int hash' is a negative number when the MSB is set.
+The ohci_hcd_at91_drv_suspend() sets ohci->rh_state to OHCI_RH_HALTED when
+suspend which will let the ohci_irq() skip the interrupt after resume. And
+nobody to handle this interrupt.
 
-In the case of hash threshold nexthop groups, nexthop_select_path_hthr()
-will disproportionately select the first nexthop group entry. In the case
-of resilient nexthop groups, nexthop_select_path_res() may do an out of
-bounds access in nh_buckets[], for example:
-    hash = -912054133
-    num_nh_buckets = 2
-    bucket_index = 65535
+According to the comment in ohci_hcd_at91_drv_suspend(), it need to reset
+when resume from suspend(MEM) to fix by setting "hibernated" argument of
+ohci_resume().
 
-which leads to the following panic:
-
-BUG: unable to handle page fault for address: ffffc900025910c8
-PGD 100000067 P4D 100000067 PUD 10026b067 PMD 0
-Oops: 0002 [#1] PREEMPT SMP KASAN NOPTI
-CPU: 4 PID: 856 Comm: kworker/4:3 Not tainted 6.5.0-rc2+ #34
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
-Workqueue: ipv6_addrconf addrconf_dad_work
-RIP: 0010:nexthop_select_path+0x197/0xbf0
-Code: c1 e4 05 be 08 00 00 00 4c 8b 35 a4 14 7e 01 4e 8d 6c 25 00 4a 8d 7c 25 08 48 01 dd e8 c2 25 15 ff 49 8d 7d 08 e8 39 13 15 ff <4d> 89 75 08 48 89 ef e8 7d 12 15 ff 48 8b 5d 00 e8 14 55 2f 00 85
-RSP: 0018:ffff88810c36f260 EFLAGS: 00010246
-RAX: 0000000000000000 RBX: 00000000002000c0 RCX: ffffffffaf02dd77
-RDX: dffffc0000000000 RSI: 0000000000000008 RDI: ffffc900025910c8
-RBP: ffffc900025910c0 R08: 0000000000000001 R09: fffff520004b2219
-R10: ffffc900025910cf R11: 31392d2068736168 R12: 00000000002000c0
-R13: ffffc900025910c0 R14: 00000000fffef608 R15: ffff88811840e900
-FS:  0000000000000000(0000) GS:ffff8881f7000000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: ffffc900025910c8 CR3: 0000000129d00000 CR4: 0000000000750ee0
-PKRU: 55555554
-Call Trace:
- <TASK>
- ? __die+0x23/0x70
- ? page_fault_oops+0x1ee/0x5c0
- ? __pfx_is_prefetch.constprop.0+0x10/0x10
- ? __pfx_page_fault_oops+0x10/0x10
- ? search_bpf_extables+0xfe/0x1c0
- ? fixup_exception+0x3b/0x470
- ? exc_page_fault+0xf6/0x110
- ? asm_exc_page_fault+0x26/0x30
- ? nexthop_select_path+0x197/0xbf0
- ? nexthop_select_path+0x197/0xbf0
- ? lock_is_held_type+0xe7/0x140
- vxlan_xmit+0x5b2/0x2340
- ? __lock_acquire+0x92b/0x3370
- ? __pfx_vxlan_xmit+0x10/0x10
- ? __pfx___lock_acquire+0x10/0x10
- ? __pfx_register_lock_class+0x10/0x10
- ? skb_network_protocol+0xce/0x2d0
- ? dev_hard_start_xmit+0xca/0x350
- ? __pfx_vxlan_xmit+0x10/0x10
- dev_hard_start_xmit+0xca/0x350
- __dev_queue_xmit+0x513/0x1e20
- ? __pfx___dev_queue_xmit+0x10/0x10
- ? __pfx_lock_release+0x10/0x10
- ? mark_held_locks+0x44/0x90
- ? skb_push+0x4c/0x80
- ? eth_header+0x81/0xe0
- ? __pfx_eth_header+0x10/0x10
- ? neigh_resolve_output+0x215/0x310
- ? ip6_finish_output2+0x2ba/0xc90
- ip6_finish_output2+0x2ba/0xc90
- ? lock_release+0x236/0x3e0
- ? ip6_mtu+0xbb/0x240
- ? __pfx_ip6_finish_output2+0x10/0x10
- ? find_held_lock+0x83/0xa0
- ? lock_is_held_type+0xe7/0x140
- ip6_finish_output+0x1ee/0x780
- ip6_output+0x138/0x460
- ? __pfx_ip6_output+0x10/0x10
- ? __pfx___lock_acquire+0x10/0x10
- ? __pfx_ip6_finish_output+0x10/0x10
- NF_HOOK.constprop.0+0xc0/0x420
- ? __pfx_NF_HOOK.constprop.0+0x10/0x10
- ? ndisc_send_skb+0x2c0/0x960
- ? __pfx_lock_release+0x10/0x10
- ? __local_bh_enable_ip+0x93/0x110
- ? lock_is_held_type+0xe7/0x140
- ndisc_send_skb+0x4be/0x960
- ? __pfx_ndisc_send_skb+0x10/0x10
- ? mark_held_locks+0x65/0x90
- ? find_held_lock+0x83/0xa0
- ndisc_send_ns+0xb0/0x110
- ? __pfx_ndisc_send_ns+0x10/0x10
- addrconf_dad_work+0x631/0x8e0
- ? lock_acquire+0x180/0x3f0
- ? __pfx_addrconf_dad_work+0x10/0x10
- ? mark_held_locks+0x24/0x90
- process_one_work+0x582/0x9c0
- ? __pfx_process_one_work+0x10/0x10
- ? __pfx_do_raw_spin_lock+0x10/0x10
- ? mark_held_locks+0x24/0x90
- worker_thread+0x93/0x630
- ? __kthread_parkme+0xdc/0x100
- ? __pfx_worker_thread+0x10/0x10
- kthread+0x1a5/0x1e0
- ? __pfx_kthread+0x10/0x10
- ret_from_fork+0x34/0x60
- ? __pfx_kthread+0x10/0x10
- ret_from_fork_asm+0x1b/0x30
-RIP: 0000:0x0
-Code: Unable to access opcode bytes at 0xffffffffffffffd6.
-RSP: 0000:0000000000000000 EFLAGS: 00000000 ORIG_RAX: 0000000000000000
-RAX: 0000000000000000 RBX: 0000000000000000 RCX: 0000000000000000
-RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
-RBP: 0000000000000000 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000000 R12: 0000000000000000
-R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
- </TASK>
-Modules linked in:
-CR2: ffffc900025910c8
----[ end trace 0000000000000000 ]---
-RIP: 0010:nexthop_select_path+0x197/0xbf0
-Code: c1 e4 05 be 08 00 00 00 4c 8b 35 a4 14 7e 01 4e 8d 6c 25 00 4a 8d 7c 25 08 48 01 dd e8 c2 25 15 ff 49 8d 7d 08 e8 39 13 15 ff <4d> 89 75 08 48 89 ef e8 7d 12 15 ff 48 8b 5d 00 e8 14 55 2f 00 85
-RSP: 0018:ffff88810c36f260 EFLAGS: 00010246
-RAX: 0000000000000000 RBX: 00000000002000c0 RCX: ffffffffaf02dd77
-RDX: dffffc0000000000 RSI: 0000000000000008 RDI: ffffc900025910c8
-RBP: ffffc900025910c0 R08: 0000000000000001 R09: fffff520004b2219
-R10: ffffc900025910cf R11: 31392d2068736168 R12: 00000000002000c0
-R13: ffffc900025910c0 R14: 00000000fffef608 R15: ffff88811840e900
-FS:  0000000000000000(0000) GS:ffff8881f7000000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: ffffffffffffffd6 CR3: 0000000129d00000 CR4: 0000000000750ee0
-PKRU: 55555554
-Kernel panic - not syncing: Fatal exception in interrupt
-Kernel Offset: 0x2ca00000 from 0xffffffff81000000 (relocation range: 0xffffffff80000000-0xffffffffbfffffff)
----[ end Kernel panic - not syncing: Fatal exception in interrupt ]---
-
-Fix this problem by ensuring the MSB of hash is 0 using a right shift - the
-same approach used in fib_multipath_hash() and rt6_multipath_hash().
-
-Fixes: 1274e1cc4226 ("vxlan: ecmp support for mac fdb entries")
-Signed-off-by: Benjamin Poirier <bpoirier@nvidia.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Guiting Shen <aarongt.shen@gmail.com>
+Cc: stable <stable@kernel.org>
+Reviewed-by: Alan Stern <stern@rowland.harvard.edu>
+Link: https://lore.kernel.org/r/20230626152713.18950-1-aarongt.shen@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/vxlan.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/usb/host/ohci-at91.c |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/include/net/vxlan.h b/include/net/vxlan.h
-index cf1d870f7b9a8..e149a0b6f9a3c 100644
---- a/include/net/vxlan.h
-+++ b/include/net/vxlan.h
-@@ -497,12 +497,12 @@ static inline void vxlan_flag_attr_error(int attrtype,
+--- a/drivers/usb/host/ohci-at91.c
++++ b/drivers/usb/host/ohci-at91.c
+@@ -647,7 +647,13 @@ ohci_hcd_at91_drv_resume(struct device *
+ 	else
+ 		at91_start_clock(ohci_at91);
+ 
+-	ohci_resume(hcd, false);
++	/*
++	 * According to the comment in ohci_hcd_at91_drv_suspend()
++	 * we need to do a reset if the 48Mhz clock was stopped,
++	 * that is, if ohci_at91->wakeup is clear. Tell ohci_resume()
++	 * to reset in this case by setting its "hibernated" flag.
++	 */
++	ohci_resume(hcd, !ohci_at91->wakeup);
+ 
+ 	return 0;
  }
- 
- static inline bool vxlan_fdb_nh_path_select(struct nexthop *nh,
--					    int hash,
-+					    u32 hash,
- 					    struct vxlan_rdst *rdst)
- {
- 	struct fib_nh_common *nhc;
- 
--	nhc = nexthop_path_fdb_result(nh, hash);
-+	nhc = nexthop_path_fdb_result(nh, hash >> 1);
- 	if (unlikely(!nhc))
- 		return false;
- 
--- 
-2.40.1
-
 
 
