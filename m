@@ -2,44 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C9D90775987
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:01:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B883477588B
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:53:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232891AbjHILBT (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:01:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34130 "EHLO
+        id S232628AbjHIKxp (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 06:53:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37794 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232890AbjHILBT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:01:19 -0400
+        with ESMTP id S232634AbjHIKxd (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:53:33 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7332FED
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:01:18 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E845211D
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:51:31 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 10F4562496
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:01:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22410C433C8;
-        Wed,  9 Aug 2023 11:01:16 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 410B363128
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:51:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B128C433C7;
+        Wed,  9 Aug 2023 10:51:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691578877;
-        bh=34IZI6J+9VCtP2DJwMSfurinIzc9SPD1ACQoE9wPedw=;
+        s=korg; t=1691578290;
+        bh=yMuxpVUPJ9x0mdWLUmMz2TxM+XlrPvkPIR/KXfL/sZc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=kz81zBBVGgPAO9DGykUupr54k57J7x0a+c1DSy+6Rso5nPsP4zTXUdD3dbOpBpbK5
-         eZdNXVtOVsBVBWS6ykGbBJj9oY/pRlnYKnpJtw1N10pmAYqbtEqlJgTa3Wp3gN8K0O
-         lOnNFyccGKmHHCn7J2Ebdko3WSryCr/Jkv8jj28Q=
+        b=YpUxYfq6xuweb9LHWRUR9P8clA+KvSXdGDrzLLT3u4FMnHvMQhreYHLZbkomk01JL
+         3gR4z+18TJpsO+/PR1YqpkqZ/Soj4P9TxvxVpa9K7YKF6vfCBwPBBa4a2knkfJi0fw
+         DAPlw2q6FdG4sMiMSzXjjoFkV7HMam3pGH/xbNI0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, gaoming <gaoming20@hihonor.com>,
-        Namjae Jeon <linkinjeon@kernel.org>
-Subject: [PATCH 5.15 60/92] exfat: use kvmalloc_array/kvfree instead of kmalloc_array/kfree
+        patches@lists.linux.dev, Andi Shyti <andi.shyti@linux.intel.com>,
+        Jonathan Cavitt <jonathan.cavitt@intel.com>,
+        Nirmoy Das <nirmoy.das@intel.com>,
+        Matt Roper <matthew.d.roper@intel.com>,
+        Andrzej Hajda <andrzej.hajda@intel.com>,
+        Tvrtko Ursulin <tvrtko.ursulin@intel.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 165/165] drm/i915/gt: Enable the CCS_FLUSH bit in the pipe control and in the CS
 Date:   Wed,  9 Aug 2023 12:41:36 +0200
-Message-ID: <20230809103635.663586380@linuxfoundation.org>
+Message-ID: <20230809103648.174968049@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103633.485906560@linuxfoundation.org>
-References: <20230809103633.485906560@linuxfoundation.org>
+In-Reply-To: <20230809103642.720851262@linuxfoundation.org>
+References: <20230809103642.720851262@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,81 +59,78 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: gaoming <gaoming20@hihonor.com>
+From: Andi Shyti <andi.shyti@linux.intel.com>
 
-commit daf60d6cca26e50d65dac374db92e58de745ad26 upstream.
+[ Upstream commit 824df77ab2107d8d4740b834b276681a41ae1ac8 ]
 
-The call stack shown below is a scenario in the Linux 4.19 kernel.
-Allocating memory failed where exfat fs use kmalloc_array due to
-system memory fragmentation, while the u-disk was inserted without
-recognition.
-Devices such as u-disk using the exfat file system are pluggable and
-may be insert into the system at any time.
-However, long-term running systems cannot guarantee the continuity of
-physical memory. Therefore, it's necessary to address this issue.
+Enable the CCS_FLUSH bit 13 in the control pipe for render and
+compute engines in platforms starting from Meteor Lake (BSPEC
+43904 and 47112).
 
-Binder:2632_6: page allocation failure: order:4,
- mode:0x6040c0(GFP_KERNEL|__GFP_COMP), nodemask=(null)
-Call trace:
-[242178.097582]  dump_backtrace+0x0/0x4
-[242178.097589]  dump_stack+0xf4/0x134
-[242178.097598]  warn_alloc+0xd8/0x144
-[242178.097603]  __alloc_pages_nodemask+0x1364/0x1384
-[242178.097608]  kmalloc_order+0x2c/0x510
-[242178.097612]  kmalloc_order_trace+0x40/0x16c
-[242178.097618]  __kmalloc+0x360/0x408
-[242178.097624]  load_alloc_bitmap+0x160/0x284
-[242178.097628]  exfat_fill_super+0xa3c/0xe7c
-[242178.097635]  mount_bdev+0x2e8/0x3a0
-[242178.097638]  exfat_fs_mount+0x40/0x50
-[242178.097643]  mount_fs+0x138/0x2e8
-[242178.097649]  vfs_kern_mount+0x90/0x270
-[242178.097655]  do_mount+0x798/0x173c
-[242178.097659]  ksys_mount+0x114/0x1ac
-[242178.097665]  __arm64_sys_mount+0x24/0x34
-[242178.097671]  el0_svc_common+0xb8/0x1b8
-[242178.097676]  el0_svc_handler+0x74/0x90
-[242178.097681]  el0_svc+0x8/0x340
+For the copy engine add MI_FLUSH_DW_CCS (bit 16) in the command
+streamer.
 
-By analyzing the exfat code,we found that continuous physical memory
-is not required here,so kvmalloc_array is used can solve this problem.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: gaoming <gaoming20@hihonor.com>
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 972282c4cf24 ("drm/i915/gen12: Add aux table invalidate for all engines")
+Requires: 8da173db894a ("drm/i915/gt: Rename flags with bit_group_X according to the datasheet")
+Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
+Cc: Jonathan Cavitt <jonathan.cavitt@intel.com>
+Cc: Nirmoy Das <nirmoy.das@intel.com>
+Cc: <stable@vger.kernel.org> # v5.8+
+Reviewed-by: Matt Roper <matthew.d.roper@intel.com>
+Reviewed-by: Andrzej Hajda <andrzej.hajda@intel.com>
+Reviewed-by: Nirmoy Das <nirmoy.das@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230725001950.1014671-6-andi.shyti@linux.intel.com
+(cherry picked from commit b70df82b428774875c7c56d3808102165891547c)
+Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/exfat/balloc.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/i915/gt/gen8_engine_cs.c     | 11 +++++++++++
+ drivers/gpu/drm/i915/gt/intel_gpu_commands.h |  1 +
+ 2 files changed, 12 insertions(+)
 
---- a/fs/exfat/balloc.c
-+++ b/fs/exfat/balloc.c
-@@ -69,7 +69,7 @@ static int exfat_allocate_bitmap(struct
+diff --git a/drivers/gpu/drm/i915/gt/gen8_engine_cs.c b/drivers/gpu/drm/i915/gt/gen8_engine_cs.c
+index 024e212b5f80d..2702ad4c26c88 100644
+--- a/drivers/gpu/drm/i915/gt/gen8_engine_cs.c
++++ b/drivers/gpu/drm/i915/gt/gen8_engine_cs.c
+@@ -264,6 +264,13 @@ int gen12_emit_flush_rcs(struct i915_request *rq, u32 mode)
+ 
+ 		bit_group_0 |= PIPE_CONTROL0_HDC_PIPELINE_FLUSH;
+ 
++		/*
++		 * When required, in MTL and beyond platforms we
++		 * need to set the CCS_FLUSH bit in the pipe control
++		 */
++		if (GRAPHICS_VER_FULL(rq->i915) >= IP_VER(12, 70))
++			bit_group_0 |= PIPE_CONTROL_CCS_FLUSH;
++
+ 		bit_group_1 |= PIPE_CONTROL_TILE_CACHE_FLUSH;
+ 		bit_group_1 |= PIPE_CONTROL_FLUSH_L3;
+ 		bit_group_1 |= PIPE_CONTROL_RENDER_TARGET_CACHE_FLUSH;
+@@ -378,6 +385,10 @@ int gen12_emit_flush_xcs(struct i915_request *rq, u32 mode)
+ 		cmd |= MI_INVALIDATE_TLB;
+ 		if (rq->engine->class == VIDEO_DECODE_CLASS)
+ 			cmd |= MI_INVALIDATE_BSD;
++
++		if (gen12_needs_ccs_aux_inv(rq->engine) &&
++		    rq->engine->class == COPY_ENGINE_CLASS)
++			cmd |= MI_FLUSH_DW_CCS;
  	}
- 	sbi->map_sectors = ((need_map_size - 1) >>
- 			(sb->s_blocksize_bits)) + 1;
--	sbi->vol_amap = kmalloc_array(sbi->map_sectors,
-+	sbi->vol_amap = kvmalloc_array(sbi->map_sectors,
- 				sizeof(struct buffer_head *), GFP_KERNEL);
- 	if (!sbi->vol_amap)
- 		return -ENOMEM;
-@@ -84,7 +84,7 @@ static int exfat_allocate_bitmap(struct
- 			while (j < i)
- 				brelse(sbi->vol_amap[j++]);
  
--			kfree(sbi->vol_amap);
-+			kvfree(sbi->vol_amap);
- 			sbi->vol_amap = NULL;
- 			return -EIO;
- 		}
-@@ -138,7 +138,7 @@ void exfat_free_bitmap(struct exfat_sb_i
- 	for (i = 0; i < sbi->map_sectors; i++)
- 		__brelse(sbi->vol_amap[i]);
- 
--	kfree(sbi->vol_amap);
-+	kvfree(sbi->vol_amap);
- }
- 
- int exfat_set_bitmap(struct inode *inode, unsigned int clu, bool sync)
+ 	*cs++ = cmd;
+diff --git a/drivers/gpu/drm/i915/gt/intel_gpu_commands.h b/drivers/gpu/drm/i915/gt/intel_gpu_commands.h
+index 02125a1db2796..2bd8d98d21102 100644
+--- a/drivers/gpu/drm/i915/gt/intel_gpu_commands.h
++++ b/drivers/gpu/drm/i915/gt/intel_gpu_commands.h
+@@ -300,6 +300,7 @@
+ #define   PIPE_CONTROL_QW_WRITE				(1<<14)
+ #define   PIPE_CONTROL_POST_SYNC_OP_MASK                (3<<14)
+ #define   PIPE_CONTROL_DEPTH_STALL			(1<<13)
++#define   PIPE_CONTROL_CCS_FLUSH			(1<<13) /* MTL+ */
+ #define   PIPE_CONTROL_WRITE_FLUSH			(1<<12)
+ #define   PIPE_CONTROL_RENDER_TARGET_CACHE_FLUSH	(1<<12) /* gen6+ */
+ #define   PIPE_CONTROL_INSTRUCTION_CACHE_INVALIDATE	(1<<11) /* MBZ on ILK */
+-- 
+2.40.1
+
 
 
