@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 429EF7757C0
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:49:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 24D11775A2F
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:06:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232276AbjHIKtk (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 06:49:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59388 "EHLO
+        id S233101AbjHILGF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:06:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51602 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232266AbjHIKtj (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:49:39 -0400
+        with ESMTP id S233097AbjHILGE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:06:04 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69C3A10F3
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:49:39 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB4F91FCE
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:06:03 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0965C63123
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:49:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14FB7C433C7;
-        Wed,  9 Aug 2023 10:49:37 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7440C62BC8
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:06:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EE06C433C8;
+        Wed,  9 Aug 2023 11:06:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691578178;
-        bh=34IZI6J+9VCtP2DJwMSfurinIzc9SPD1ACQoE9wPedw=;
+        s=korg; t=1691579162;
+        bh=ZW+I683meoPZIsCvFI8i9djiCwjQtP2utXCxwadsZiw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=COmtBdXguGazj3uQWmQsBx5QGVGSSRr6/F2QRDb7UOTUo3hnG775sCJhXsG1GztRW
-         hnBSbZmow64ESfVoOah3F9el83LJX+aOOpbboaaVaoBtVNeslK9fUnjFcI6HNaor00
-         w2WLf1BW52auUfWJwMLtCo6z+n3tMTlB4W8YF9nY=
+        b=rOqlZvUvu1kpWDv1limQOeZo0vdZC9tIUtptaioF3tZj2y9JhyrShNVa6nROYiBvg
+         1WNsXnBkVSRrRnF+txlEa5TUhoScT11R/k+tbnLCgbCZ2SOUM1xrfeDPKArMCRTXX3
+         m1cw6Y2w2QjOec965PICHxejdHSpBFJcqB/CieCg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, gaoming <gaoming20@hihonor.com>,
-        Namjae Jeon <linkinjeon@kernel.org>
-Subject: [PATCH 6.4 104/165] exfat: use kvmalloc_array/kvfree instead of kmalloc_array/kfree
+        patches@lists.linux.dev, Yuan Can <yuancan@huawei.com>,
+        Dave Jiang <dave.jiang@intel.com>,
+        Jon Mason <jdmason@kudzu.us>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.14 097/204] ntb: intel: Fix error handling in intel_ntb_pci_driver_init()
 Date:   Wed,  9 Aug 2023 12:40:35 +0200
-Message-ID: <20230809103646.179080005@linuxfoundation.org>
+Message-ID: <20230809103645.883130218@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103642.720851262@linuxfoundation.org>
-References: <20230809103642.720851262@linuxfoundation.org>
+In-Reply-To: <20230809103642.552405807@linuxfoundation.org>
+References: <20230809103642.552405807@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,81 +55,65 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: gaoming <gaoming20@hihonor.com>
+From: Yuan Can <yuancan@huawei.com>
 
-commit daf60d6cca26e50d65dac374db92e58de745ad26 upstream.
+[ Upstream commit 4c3c796aca02883ad35bb117468938cc4022ca41 ]
 
-The call stack shown below is a scenario in the Linux 4.19 kernel.
-Allocating memory failed where exfat fs use kmalloc_array due to
-system memory fragmentation, while the u-disk was inserted without
-recognition.
-Devices such as u-disk using the exfat file system are pluggable and
-may be insert into the system at any time.
-However, long-term running systems cannot guarantee the continuity of
-physical memory. Therefore, it's necessary to address this issue.
+A problem about ntb_hw_intel create debugfs failed is triggered with the
+following log given:
 
-Binder:2632_6: page allocation failure: order:4,
- mode:0x6040c0(GFP_KERNEL|__GFP_COMP), nodemask=(null)
-Call trace:
-[242178.097582]  dump_backtrace+0x0/0x4
-[242178.097589]  dump_stack+0xf4/0x134
-[242178.097598]  warn_alloc+0xd8/0x144
-[242178.097603]  __alloc_pages_nodemask+0x1364/0x1384
-[242178.097608]  kmalloc_order+0x2c/0x510
-[242178.097612]  kmalloc_order_trace+0x40/0x16c
-[242178.097618]  __kmalloc+0x360/0x408
-[242178.097624]  load_alloc_bitmap+0x160/0x284
-[242178.097628]  exfat_fill_super+0xa3c/0xe7c
-[242178.097635]  mount_bdev+0x2e8/0x3a0
-[242178.097638]  exfat_fs_mount+0x40/0x50
-[242178.097643]  mount_fs+0x138/0x2e8
-[242178.097649]  vfs_kern_mount+0x90/0x270
-[242178.097655]  do_mount+0x798/0x173c
-[242178.097659]  ksys_mount+0x114/0x1ac
-[242178.097665]  __arm64_sys_mount+0x24/0x34
-[242178.097671]  el0_svc_common+0xb8/0x1b8
-[242178.097676]  el0_svc_handler+0x74/0x90
-[242178.097681]  el0_svc+0x8/0x340
+ [  273.112733] Intel(R) PCI-E Non-Transparent Bridge Driver 2.0
+ [  273.115342] debugfs: Directory 'ntb_hw_intel' with parent '/' already present!
 
-By analyzing the exfat code,we found that continuous physical memory
-is not required here,so kvmalloc_array is used can solve this problem.
+The reason is that intel_ntb_pci_driver_init() returns
+pci_register_driver() directly without checking its return value, if
+pci_register_driver() failed, it returns without destroy the newly created
+debugfs, resulting the debugfs of ntb_hw_intel can never be created later.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: gaoming <gaoming20@hihonor.com>
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+ intel_ntb_pci_driver_init()
+   debugfs_create_dir() # create debugfs directory
+   pci_register_driver()
+     driver_register()
+       bus_add_driver()
+         priv = kzalloc(...) # OOM happened
+   # return without destroy debugfs directory
+
+Fix by removing debugfs when pci_register_driver() returns error.
+
+Fixes: e26a5843f7f5 ("NTB: Split ntb_hw_intel and ntb_transport drivers")
+Signed-off-by: Yuan Can <yuancan@huawei.com>
+Acked-by: Dave Jiang <dave.jiang@intel.com>
+Signed-off-by: Jon Mason <jdmason@kudzu.us>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/exfat/balloc.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/ntb/hw/intel/ntb_hw_intel.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/fs/exfat/balloc.c
-+++ b/fs/exfat/balloc.c
-@@ -69,7 +69,7 @@ static int exfat_allocate_bitmap(struct
- 	}
- 	sbi->map_sectors = ((need_map_size - 1) >>
- 			(sb->s_blocksize_bits)) + 1;
--	sbi->vol_amap = kmalloc_array(sbi->map_sectors,
-+	sbi->vol_amap = kvmalloc_array(sbi->map_sectors,
- 				sizeof(struct buffer_head *), GFP_KERNEL);
- 	if (!sbi->vol_amap)
- 		return -ENOMEM;
-@@ -84,7 +84,7 @@ static int exfat_allocate_bitmap(struct
- 			while (j < i)
- 				brelse(sbi->vol_amap[j++]);
+diff --git a/drivers/ntb/hw/intel/ntb_hw_intel.c b/drivers/ntb/hw/intel/ntb_hw_intel.c
+index 58068f1447bb2..6b1484b4351d8 100644
+--- a/drivers/ntb/hw/intel/ntb_hw_intel.c
++++ b/drivers/ntb/hw/intel/ntb_hw_intel.c
+@@ -3041,12 +3041,17 @@ static struct pci_driver intel_ntb_pci_driver = {
  
--			kfree(sbi->vol_amap);
-+			kvfree(sbi->vol_amap);
- 			sbi->vol_amap = NULL;
- 			return -EIO;
- 		}
-@@ -138,7 +138,7 @@ void exfat_free_bitmap(struct exfat_sb_i
- 	for (i = 0; i < sbi->map_sectors; i++)
- 		__brelse(sbi->vol_amap[i]);
+ static int __init intel_ntb_pci_driver_init(void)
+ {
++	int ret;
+ 	pr_info("%s %s\n", NTB_DESC, NTB_VER);
  
--	kfree(sbi->vol_amap);
-+	kvfree(sbi->vol_amap);
+ 	if (debugfs_initialized())
+ 		debugfs_dir = debugfs_create_dir(KBUILD_MODNAME, NULL);
+ 
+-	return pci_register_driver(&intel_ntb_pci_driver);
++	ret = pci_register_driver(&intel_ntb_pci_driver);
++	if (ret)
++		debugfs_remove_recursive(debugfs_dir);
++
++	return ret;
  }
+ module_init(intel_ntb_pci_driver_init);
  
- int exfat_set_bitmap(struct inode *inode, unsigned int clu, bool sync)
+-- 
+2.39.2
+
 
 
