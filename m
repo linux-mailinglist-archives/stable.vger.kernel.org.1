@@ -2,48 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F576775BF9
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:22:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 159CD7758EF
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:56:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233594AbjHILWh (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:22:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46674 "EHLO
+        id S232499AbjHIK4J (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 06:56:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35014 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233557AbjHILWg (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:22:36 -0400
+        with ESMTP id S232636AbjHIKzz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:55:55 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 06D4919A1
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:22:34 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 790DF30DC
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:55:50 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 93B32631F8
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:22:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A43FEC433C8;
-        Wed,  9 Aug 2023 11:22:32 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0E22762E4A
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:55:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AAE6C433C9;
+        Wed,  9 Aug 2023 10:55:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691580153;
-        bh=TwZrQsxypMl0Y2TTwNtd8l639hoeIQLenVliggWzqVo=;
+        s=korg; t=1691578549;
+        bh=yFK9MqHpniH5+YMgJlsLI+kV6d6L3e0BBwr+RHpd1QA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jfpsHxhTRptvaYyaHjX85eKuvGe9ppN8eyXrzpYPGSraPfmVmxMXkFxNbFYHGj0Y7
-         rR9OgvEvJWVcOUeU1WXG+kdm+T2s03xh39i/FQxnDddpWyYOcUdU1ZM8XF2cxjx22R
-         ZtXk6v0u5WFgx3KyjzWecU/7+WNBGLzjUdEtuKQU=
+        b=LoYBtaMN5X8MoPqzRO3j7QUO7yjmWFFxG+QlAa2xnlorRcQl215IME+ylBUWQEQD7
+         +VwUKcsRQazzbDkjNimH2jDSuR44C7QfpshhKHIHFFmA0znaV9fx4Vw/j188GXqLMn
+         EheI8+cD8fERg6COHXVPaAn01CVrMJbeSnN7fOK4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Vladimir Oltean <vladimir.oltean@nxp.com>,
-        Ferenc Fejes <fejes@inf.elte.hu>,
-        Simon Horman <simon.horman@corigine.com>,
-        Jamal Hadi Salim <jhs@mojatatu.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 247/323] net/sched: mqprio: add extack to mqprio_parse_nlattr()
+        patches@lists.linux.dev, Hou Tao <houtao1@huawei.com>,
+        Pu Lehui <pulehui@huawei.com>,
+        Jesper Dangaard Brouer <hawk@kernel.org>,
+        Martin KaFai Lau <martin.lau@kernel.org>
+Subject: [PATCH 6.1 098/127] bpf, cpumap: Make sure kthread is running before map update returns
 Date:   Wed,  9 Aug 2023 12:41:25 +0200
-Message-ID: <20230809103709.373362805@linuxfoundation.org>
+Message-ID: <20230809103639.875099551@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
-References: <20230809103658.104386911@linuxfoundation.org>
+In-Reply-To: <20230809103636.615294317@linuxfoundation.org>
+References: <20230809103636.615294317@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -58,110 +56,137 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
+From: Hou Tao <houtao1@huawei.com>
 
-[ Upstream commit 57f21bf85400abadac0cb2a4db5de1d663f8863f ]
+commit 640a604585aa30f93e39b17d4d6ba69fcb1e66c9 upstream.
 
-Netlink attribute parsing in mqprio is a minesweeper game, with many
-options having the possibility of being passed incorrectly and the user
-being none the wiser.
+The following warning was reported when running stress-mode enabled
+xdp_redirect_cpu with some RT threads:
 
-Try to make errors less sour by giving user space some information
-regarding what went wrong.
+  ------------[ cut here ]------------
+  WARNING: CPU: 4 PID: 65 at kernel/bpf/cpumap.c:135
+  CPU: 4 PID: 65 Comm: kworker/4:1 Not tainted 6.5.0-rc2+ #1
+  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996)
+  Workqueue: events cpu_map_kthread_stop
+  RIP: 0010:put_cpu_map_entry+0xda/0x220
+  ......
+  Call Trace:
+   <TASK>
+   ? show_regs+0x65/0x70
+   ? __warn+0xa5/0x240
+   ......
+   ? put_cpu_map_entry+0xda/0x220
+   cpu_map_kthread_stop+0x41/0x60
+   process_one_work+0x6b0/0xb80
+   worker_thread+0x96/0x720
+   kthread+0x1a5/0x1f0
+   ret_from_fork+0x3a/0x70
+   ret_from_fork_asm+0x1b/0x30
+   </TASK>
 
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Reviewed-by: Ferenc Fejes <fejes@inf.elte.hu>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 6c58c8816abb ("net/sched: mqprio: Add length check for TCA_MQPRIO_{MAX/MIN}_RATE64")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The root cause is the same as commit 436901649731 ("bpf: cpumap: Fix memory
+leak in cpu_map_update_elem"). The kthread is stopped prematurely by
+kthread_stop() in cpu_map_kthread_stop(), and kthread() doesn't call
+cpu_map_kthread_run() at all but XDP program has already queued some
+frames or skbs into ptr_ring. So when __cpu_map_ring_cleanup() checks
+the ptr_ring, it will find it was not emptied and report a warning.
+
+An alternative fix is to use __cpu_map_ring_cleanup() to drop these
+pending frames or skbs when kthread_stop() returns -EINTR, but it may
+confuse the user, because these frames or skbs have been handled
+correctly by XDP program. So instead of dropping these frames or skbs,
+just make sure the per-cpu kthread is running before
+__cpu_map_entry_alloc() returns.
+
+After apply the fix, the error handle for kthread_stop() will be
+unnecessary because it will always return 0, so just remove it.
+
+Fixes: 6710e1126934 ("bpf: introduce new bpf cpu map type BPF_MAP_TYPE_CPUMAP")
+Signed-off-by: Hou Tao <houtao1@huawei.com>
+Reviewed-by: Pu Lehui <pulehui@huawei.com>
+Acked-by: Jesper Dangaard Brouer <hawk@kernel.org>
+Link: https://lore.kernel.org/r/20230729095107.1722450-2-houtao@huaweicloud.com
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/sch_mqprio.c | 30 +++++++++++++++++++++++-------
- 1 file changed, 23 insertions(+), 7 deletions(-)
+ kernel/bpf/cpumap.c |   21 +++++++++++----------
+ 1 file changed, 11 insertions(+), 10 deletions(-)
 
-diff --git a/net/sched/sch_mqprio.c b/net/sched/sch_mqprio.c
-index 7726d8f623027..c9bdb4476a5bc 100644
---- a/net/sched/sch_mqprio.c
-+++ b/net/sched/sch_mqprio.c
-@@ -133,7 +133,8 @@ static int parse_attr(struct nlattr *tb[], int maxtype, struct nlattr *nla,
+--- a/kernel/bpf/cpumap.c
++++ b/kernel/bpf/cpumap.c
+@@ -26,6 +26,7 @@
+ #include <linux/workqueue.h>
+ #include <linux/kthread.h>
+ #include <linux/capability.h>
++#include <linux/completion.h>
+ #include <trace/events/xdp.h>
+ #include <linux/btf_ids.h>
+ 
+@@ -71,6 +72,7 @@ struct bpf_cpu_map_entry {
+ 	struct rcu_head rcu;
+ 
+ 	struct work_struct kthread_stop_wq;
++	struct completion kthread_running;
+ };
+ 
+ struct bpf_cpu_map {
+@@ -164,7 +166,6 @@ static void put_cpu_map_entry(struct bpf
+ static void cpu_map_kthread_stop(struct work_struct *work)
+ {
+ 	struct bpf_cpu_map_entry *rcpu;
+-	int err;
+ 
+ 	rcpu = container_of(work, struct bpf_cpu_map_entry, kthread_stop_wq);
+ 
+@@ -174,14 +175,7 @@ static void cpu_map_kthread_stop(struct
+ 	rcu_barrier();
+ 
+ 	/* kthread_stop will wake_up_process and wait for it to complete */
+-	err = kthread_stop(rcpu->kthread);
+-	if (err) {
+-		/* kthread_stop may be called before cpu_map_kthread_run
+-		 * is executed, so we need to release the memory related
+-		 * to rcpu.
+-		 */
+-		put_cpu_map_entry(rcpu);
+-	}
++	kthread_stop(rcpu->kthread);
  }
  
- static int mqprio_parse_nlattr(struct Qdisc *sch, struct tc_mqprio_qopt *qopt,
--			       struct nlattr *opt)
-+			       struct nlattr *opt,
-+			       struct netlink_ext_ack *extack)
+ static void cpu_map_bpf_prog_run_skb(struct bpf_cpu_map_entry *rcpu,
+@@ -309,11 +303,11 @@ static int cpu_map_bpf_prog_run(struct b
+ 	return nframes;
+ }
+ 
+-
+ static int cpu_map_kthread_run(void *data)
  {
- 	struct mqprio_sched *priv = qdisc_priv(sch);
- 	struct nlattr *tb[TCA_MQPRIO_MAX + 1];
-@@ -145,8 +146,11 @@ static int mqprio_parse_nlattr(struct Qdisc *sch, struct tc_mqprio_qopt *qopt,
- 	if (err < 0)
- 		return err;
+ 	struct bpf_cpu_map_entry *rcpu = data;
  
--	if (!qopt->hw)
-+	if (!qopt->hw) {
-+		NL_SET_ERR_MSG(extack,
-+			       "mqprio TCA_OPTIONS can only contain netlink attributes in hardware mode");
- 		return -EINVAL;
-+	}
++	complete(&rcpu->kthread_running);
+ 	set_current_state(TASK_INTERRUPTIBLE);
  
- 	if (tb[TCA_MQPRIO_MODE]) {
- 		priv->flags |= TC_MQPRIO_F_MODE;
-@@ -159,13 +163,19 @@ static int mqprio_parse_nlattr(struct Qdisc *sch, struct tc_mqprio_qopt *qopt,
- 	}
+ 	/* When kthread gives stop order, then rcpu have been disconnected
+@@ -478,6 +472,7 @@ __cpu_map_entry_alloc(struct bpf_map *ma
+ 		goto free_ptr_ring;
  
- 	if (tb[TCA_MQPRIO_MIN_RATE64]) {
--		if (priv->shaper != TC_MQPRIO_SHAPER_BW_RATE)
-+		if (priv->shaper != TC_MQPRIO_SHAPER_BW_RATE) {
-+			NL_SET_ERR_MSG_ATTR(extack, tb[TCA_MQPRIO_MIN_RATE64],
-+					    "min_rate accepted only when shaper is in bw_rlimit mode");
- 			return -EINVAL;
-+		}
- 		i = 0;
- 		nla_for_each_nested(attr, tb[TCA_MQPRIO_MIN_RATE64],
- 				    rem) {
--			if (nla_type(attr) != TCA_MQPRIO_MIN_RATE64)
-+			if (nla_type(attr) != TCA_MQPRIO_MIN_RATE64) {
-+				NL_SET_ERR_MSG_ATTR(extack, attr,
-+						    "Attribute type expected to be TCA_MQPRIO_MIN_RATE64");
- 				return -EINVAL;
-+			}
- 			if (i >= qopt->num_tc)
- 				break;
- 			priv->min_rate[i] = *(u64 *)nla_data(attr);
-@@ -175,13 +185,19 @@ static int mqprio_parse_nlattr(struct Qdisc *sch, struct tc_mqprio_qopt *qopt,
- 	}
+ 	/* Setup kthread */
++	init_completion(&rcpu->kthread_running);
+ 	rcpu->kthread = kthread_create_on_node(cpu_map_kthread_run, rcpu, numa,
+ 					       "cpumap/%d/map:%d", cpu,
+ 					       map->id);
+@@ -491,6 +486,12 @@ __cpu_map_entry_alloc(struct bpf_map *ma
+ 	kthread_bind(rcpu->kthread, cpu);
+ 	wake_up_process(rcpu->kthread);
  
- 	if (tb[TCA_MQPRIO_MAX_RATE64]) {
--		if (priv->shaper != TC_MQPRIO_SHAPER_BW_RATE)
-+		if (priv->shaper != TC_MQPRIO_SHAPER_BW_RATE) {
-+			NL_SET_ERR_MSG_ATTR(extack, tb[TCA_MQPRIO_MAX_RATE64],
-+					    "max_rate accepted only when shaper is in bw_rlimit mode");
- 			return -EINVAL;
-+		}
- 		i = 0;
- 		nla_for_each_nested(attr, tb[TCA_MQPRIO_MAX_RATE64],
- 				    rem) {
--			if (nla_type(attr) != TCA_MQPRIO_MAX_RATE64)
-+			if (nla_type(attr) != TCA_MQPRIO_MAX_RATE64) {
-+				NL_SET_ERR_MSG_ATTR(extack, attr,
-+						    "Attribute type expected to be TCA_MQPRIO_MAX_RATE64");
- 				return -EINVAL;
-+			}
- 			if (i >= qopt->num_tc)
- 				break;
- 			priv->max_rate[i] = *(u64 *)nla_data(attr);
-@@ -226,7 +242,7 @@ static int mqprio_init(struct Qdisc *sch, struct nlattr *opt,
++	/* Make sure kthread has been running, so kthread_stop() will not
++	 * stop the kthread prematurely and all pending frames or skbs
++	 * will be handled by the kthread before kthread_stop() returns.
++	 */
++	wait_for_completion(&rcpu->kthread_running);
++
+ 	return rcpu;
  
- 	len = nla_len(opt) - NLA_ALIGN(sizeof(*qopt));
- 	if (len > 0) {
--		err = mqprio_parse_nlattr(sch, qopt, opt);
-+		err = mqprio_parse_nlattr(sch, qopt, opt, extack);
- 		if (err)
- 			return err;
- 	}
--- 
-2.39.2
-
+ free_prog:
 
 
