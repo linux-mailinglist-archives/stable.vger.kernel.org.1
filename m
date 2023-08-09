@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1F63F775BB3
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:20:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F1887775D33
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:34:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233518AbjHILUG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:20:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53246 "EHLO
+        id S234021AbjHILeq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:34:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60692 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233511AbjHILUG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:20:06 -0400
+        with ESMTP id S234035AbjHILep (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:34:45 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B0F94ED
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:20:05 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E8D1E3
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:34:45 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5036D631D2
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:20:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33638C433C8;
-        Wed,  9 Aug 2023 11:20:04 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id F129F634B5
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:34:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FCF1C433C7;
+        Wed,  9 Aug 2023 11:34:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691580004;
-        bh=aRXvuTZ2zHDghIG/zviEQRO+NfjgHykfFjwamo1L5jM=;
+        s=korg; t=1691580884;
+        bh=T95akOJIojtk6X5Ift3hmugnevUBEMpgUNgJ08h3gNc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=SeGKlfQRAlRagSyS6P05k6DwL82n3xYtpG4Te1mjt0xzLNbB1os+V7I8AcswCv87E
-         NkHhKvEKMQjy1TCF+Oh/cqJ82FLF4xR28ZtkDtMdLGgxKYw8M70zDmOm5FWLUia/u8
-         2erVsZAhugABP7YWc7BAuC9rjSe8WX/WUEfUFPPw=
+        b=Uw9YjMxKs2gsV9k4sKDtv7EEW45QPJPEDHzm0/ozMVzQmnKepjWTjwHcAH7HoIzlX
+         MNoLJjM70RP7pRUydwl3uZVpmwosbMywd4+dbDe9Q7w8tXHPyo+rnbffHQzE8UrmcY
+         hOlSsIyKQs8wDLSLbSDacKSzX/Oaqal+LS0uuC5s=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Peter Neuwirth <reddunur@online.de>,
-        Yu Kuai <yukuai3@huawei.com>, Song Liu <song@kernel.org>,
+        patches@lists.linux.dev, Jiawen Wu <jiawenwu@trustnetic.com>,
+        "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 193/323] md: fix data corruption for raid456 when reshape restart while grow up
+Subject: [PATCH 5.10 029/201] net: phy: marvell10g: fix 88x3310 power up
 Date:   Wed,  9 Aug 2023 12:40:31 +0200
-Message-ID: <20230809103707.004248072@linuxfoundation.org>
+Message-ID: <20230809103644.815398492@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
-References: <20230809103658.104386911@linuxfoundation.org>
+In-Reply-To: <20230809103643.799166053@linuxfoundation.org>
+References: <20230809103643.799166053@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,57 +56,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Yu Kuai <yukuai3@huawei.com>
+From: Jiawen Wu <jiawenwu@trustnetic.com>
 
-[ Upstream commit 873f50ece41aad5c4f788a340960c53774b5526e ]
+[ Upstream commit c7b75bea853daeb64fc831dbf39a6bbabcc402ac ]
 
-Currently, if reshape is interrupted, echo "reshape" to sync_action will
-restart reshape from scratch, for example:
+Clear MV_V2_PORT_CTRL_PWRDOWN bit to set power up for 88x3310 PHY,
+it sometimes does not take effect immediately. And a read of this
+register causes the bit not to clear. This will cause mv3310_reset()
+to time out, which will fail the config initialization. So add a delay
+before the next access.
 
-echo frozen > sync_action
-echo reshape > sync_action
-
-This will corrupt data before reshape_position if the array is growing,
-fix the problem by continue reshape from reshape_position.
-
-Reported-by: Peter Neuwirth <reddunur@online.de>
-Link: https://lore.kernel.org/linux-raid/e2f96772-bfbc-f43b-6da1-f520e5164536@online.de/
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
-Signed-off-by: Song Liu <song@kernel.org>
-Link: https://lore.kernel.org/r/20230512015610.821290-3-yukuai1@huaweicloud.com
+Fixes: c9cc1c815d36 ("net: phy: marvell10g: place in powersave mode at probe")
+Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
+Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/md.c | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ drivers/net/phy/marvell10g.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/md/md.c b/drivers/md/md.c
-index 2e23a898fc978..6b074c2202d5a 100644
---- a/drivers/md/md.c
-+++ b/drivers/md/md.c
-@@ -4639,11 +4639,21 @@ action_store(struct mddev *mddev, const char *page, size_t len)
- 			return -EINVAL;
- 		err = mddev_lock(mddev);
- 		if (!err) {
--			if (test_bit(MD_RECOVERY_RUNNING, &mddev->recovery))
-+			if (test_bit(MD_RECOVERY_RUNNING, &mddev->recovery)) {
- 				err =  -EBUSY;
--			else {
-+			} else if (mddev->reshape_position == MaxSector ||
-+				   mddev->pers->check_reshape == NULL ||
-+				   mddev->pers->check_reshape(mddev)) {
- 				clear_bit(MD_RECOVERY_FROZEN, &mddev->recovery);
- 				err = mddev->pers->start_reshape(mddev);
-+			} else {
-+				/*
-+				 * If reshape is still in progress, and
-+				 * md_check_recovery() can continue to reshape,
-+				 * don't restart reshape because data can be
-+				 * corrupted for raid456.
-+				 */
-+				clear_bit(MD_RECOVERY_FROZEN, &mddev->recovery);
- 			}
- 			mddev_unlock(mddev);
- 		}
+diff --git a/drivers/net/phy/marvell10g.c b/drivers/net/phy/marvell10g.c
+index 2b64318efdba6..42b48d0d0c4ed 100644
+--- a/drivers/net/phy/marvell10g.c
++++ b/drivers/net/phy/marvell10g.c
+@@ -263,6 +263,13 @@ static int mv3310_power_up(struct phy_device *phydev)
+ 	ret = phy_clear_bits_mmd(phydev, MDIO_MMD_VEND2, MV_V2_PORT_CTRL,
+ 				 MV_V2_PORT_CTRL_PWRDOWN);
+ 
++	/* Sometimes, the power down bit doesn't clear immediately, and
++	 * a read of this register causes the bit not to clear. Delay
++	 * 100us to allow the PHY to come out of power down mode before
++	 * the next access.
++	 */
++	udelay(100);
++
+ 	if (phydev->drv->phy_id != MARVELL_PHY_ID_88X3310 ||
+ 	    priv->firmware_ver < 0x00030000)
+ 		return ret;
 -- 
 2.39.2
 
