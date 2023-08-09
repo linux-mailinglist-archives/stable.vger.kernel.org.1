@@ -2,140 +2,171 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 443A4775D74
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:37:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F042F775C04
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:23:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234114AbjHILhn (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:37:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59630 "EHLO
+        id S233612AbjHILXG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:23:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38064 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234110AbjHILhm (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:37:42 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45EFEE3
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:37:42 -0700 (PDT)
+        with ESMTP id S233605AbjHILXF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:23:05 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA7111BF7
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:23:04 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CEA0D63576
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:37:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA712C433C9;
-        Wed,  9 Aug 2023 11:37:40 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8982963220
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:23:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 965AFC433C7;
+        Wed,  9 Aug 2023 11:23:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691581061;
-        bh=fsQLgh5fBbSXM4GjCiryUIBMx4SSAbka1yZ9henrX1M=;
+        s=korg; t=1691580184;
+        bh=jdx9Eglzl1XYswc2joIxJNEQbqWMC0+tYWZFH+sQy3s=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=AL9/dQltFgmGvvX07DKBNH6WSP4gQMRj+YdyGAHqVKV60XiKhDkz5ikVFbpIiUGNN
-         wRdo1qmPUYPVxY2Aj3HPx4xBtLsZUZV7k2tKinz6YxbcXFX3+fNIqPzYlLBe7mL4RA
-         fGOvGWGjyIsL0vC2Wu79lPNN1eLyxjAVZwl7uV54=
+        b=V2xZaF7N0trg/8LBPQVlete1ITkURpg20YHOpWzAH+x6LvDuuHinZ5aaOo0GC/k34
+         l59M/1tcS24l2dlUCZt7uhsRIF8ggR1UHLS5UoyWCbQMiN2oSJxMstGtvMa8/W9kmH
+         NjC/fZDesBuvNHpL5C6O4kH46mmivZ2+Tm8TxGnU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jonas Gorski <jonas.gorski@gmail.com>,
-        =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
-        Florian Fainelli <florian.fainelli@broadcom.com>,
-        Marc Zyngier <maz@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 092/201] irq-bcm6345-l1: Do not assume a fixed block to cpu mapping
-Date:   Wed,  9 Aug 2023 12:41:34 +0200
-Message-ID: <20230809103646.895471841@linuxfoundation.org>
+        patches@lists.linux.dev, mhiramat@kernel.org,
+        Zheng Yejian <zhengyejian1@huawei.com>,
+        "Steven Rostedt (Google)" <rostedt@goodmis.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 257/323] tracing: Fix warning in trace_buffered_event_disable()
+Date:   Wed,  9 Aug 2023 12:41:35 +0200
+Message-ID: <20230809103709.850133595@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103643.799166053@linuxfoundation.org>
-References: <20230809103643.799166053@linuxfoundation.org>
+In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
+References: <20230809103658.104386911@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jonas Gorski <jonas.gorski@gmail.com>
+From: Zheng Yejian <zhengyejian1@huawei.com>
 
-[ Upstream commit 55ad24857341c36616ecc1d9580af5626c226cf1 ]
+[ Upstream commit dea499781a1150d285c62b26659f62fb00824fce ]
 
-The irq to block mapping is fixed, and interrupts from the first block
-will always be routed to the first parent IRQ. But the parent interrupts
-themselves can be routed to any available CPU.
+Warning happened in trace_buffered_event_disable() at
+  WARN_ON_ONCE(!trace_buffered_event_ref)
 
-This is used by the bootloader to map the first parent interrupt to the
-boot CPU, regardless wether the boot CPU is the first one or the second
-one.
+  Call Trace:
+   ? __warn+0xa5/0x1b0
+   ? trace_buffered_event_disable+0x189/0x1b0
+   __ftrace_event_enable_disable+0x19e/0x3e0
+   free_probe_data+0x3b/0xa0
+   unregister_ftrace_function_probe_func+0x6b8/0x800
+   event_enable_func+0x2f0/0x3d0
+   ftrace_process_regex.isra.0+0x12d/0x1b0
+   ftrace_filter_write+0xe6/0x140
+   vfs_write+0x1c9/0x6f0
+   [...]
 
-When booting from the second CPU, the assumption that the first block's
-IRQ is mapped to the first CPU breaks, and the system hangs because
-interrupts do not get routed correctly.
+The cause of the warning is in __ftrace_event_enable_disable(),
+trace_buffered_event_enable() was called once while
+trace_buffered_event_disable() was called twice.
+Reproduction script show as below, for analysis, see the comments:
+ ```
+ #!/bin/bash
 
-Fix this by passing the appropriate bcm6434_l1_cpu to the interrupt
-handler instead of the chip itself, so the handler always has the right
-block.
+ cd /sys/kernel/tracing/
 
-Fixes: c7c42ec2baa1 ("irqchips/bmips: Add bcm6345-l1 interrupt controller")
-Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-Link: https://lore.kernel.org/r/20230629072620.62527-1-jonas.gorski@gmail.com
+ # 1. Register a 'disable_event' command, then:
+ #    1) SOFT_DISABLED_BIT was set;
+ #    2) trace_buffered_event_enable() was called first time;
+ echo 'cmdline_proc_show:disable_event:initcall:initcall_finish' > \
+     set_ftrace_filter
+
+ # 2. Enable the event registered, then:
+ #    1) SOFT_DISABLED_BIT was cleared;
+ #    2) trace_buffered_event_disable() was called first time;
+ echo 1 > events/initcall/initcall_finish/enable
+
+ # 3. Try to call into cmdline_proc_show(), then SOFT_DISABLED_BIT was
+ #    set again!!!
+ cat /proc/cmdline
+
+ # 4. Unregister the 'disable_event' command, then:
+ #    1) SOFT_DISABLED_BIT was cleared again;
+ #    2) trace_buffered_event_disable() was called second time!!!
+ echo '!cmdline_proc_show:disable_event:initcall:initcall_finish' > \
+     set_ftrace_filter
+ ```
+
+To fix it, IIUC, we can change to call trace_buffered_event_enable() at
+fist time soft-mode enabled, and call trace_buffered_event_disable() at
+last time soft-mode disabled.
+
+Link: https://lore.kernel.org/linux-trace-kernel/20230726095804.920457-1-zhengyejian1@huawei.com
+
+Cc: <mhiramat@kernel.org>
+Fixes: 0fc1b09ff1ff ("tracing: Use temp buffer when filtering events")
+Signed-off-by: Zheng Yejian <zhengyejian1@huawei.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/irqchip/irq-bcm6345-l1.c | 14 +++++---------
- 1 file changed, 5 insertions(+), 9 deletions(-)
+ kernel/trace/trace_events.c | 14 ++++----------
+ 1 file changed, 4 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/irqchip/irq-bcm6345-l1.c b/drivers/irqchip/irq-bcm6345-l1.c
-index 1bd0621c4ce2a..4827a11832478 100644
---- a/drivers/irqchip/irq-bcm6345-l1.c
-+++ b/drivers/irqchip/irq-bcm6345-l1.c
-@@ -82,6 +82,7 @@ struct bcm6345_l1_chip {
- };
- 
- struct bcm6345_l1_cpu {
-+	struct bcm6345_l1_chip	*intc;
- 	void __iomem		*map_base;
- 	unsigned int		parent_irq;
- 	u32			enable_cache[];
-@@ -115,17 +116,11 @@ static inline unsigned int cpu_for_irq(struct bcm6345_l1_chip *intc,
- 
- static void bcm6345_l1_irq_handle(struct irq_desc *desc)
+diff --git a/kernel/trace/trace_events.c b/kernel/trace/trace_events.c
+index d2f9146d1ad74..a3dc6c126b3ee 100644
+--- a/kernel/trace/trace_events.c
++++ b/kernel/trace/trace_events.c
+@@ -372,7 +372,6 @@ static int __ftrace_event_enable_disable(struct trace_event_file *file,
  {
--	struct bcm6345_l1_chip *intc = irq_desc_get_handler_data(desc);
--	struct bcm6345_l1_cpu *cpu;
-+	struct bcm6345_l1_cpu *cpu = irq_desc_get_handler_data(desc);
-+	struct bcm6345_l1_chip *intc = cpu->intc;
- 	struct irq_chip *chip = irq_desc_get_chip(desc);
- 	unsigned int idx;
+ 	struct trace_event_call *call = file->event_call;
+ 	struct trace_array *tr = file->tr;
+-	unsigned long file_flags = file->flags;
+ 	int ret = 0;
+ 	int disable;
  
--#ifdef CONFIG_SMP
--	cpu = intc->cpus[cpu_logical_map(smp_processor_id())];
--#else
--	cpu = intc->cpus[0];
--#endif
--
- 	chained_irq_enter(chip, desc);
+@@ -396,6 +395,8 @@ static int __ftrace_event_enable_disable(struct trace_event_file *file,
+ 				break;
+ 			disable = file->flags & EVENT_FILE_FL_SOFT_DISABLED;
+ 			clear_bit(EVENT_FILE_FL_SOFT_MODE_BIT, &file->flags);
++			/* Disable use of trace_buffered_event */
++			trace_buffered_event_disable();
+ 		} else
+ 			disable = !(file->flags & EVENT_FILE_FL_SOFT_MODE);
  
- 	for (idx = 0; idx < intc->n_words; idx++) {
-@@ -257,6 +252,7 @@ static int __init bcm6345_l1_init_one(struct device_node *dn,
- 	if (!cpu)
- 		return -ENOMEM;
+@@ -434,6 +435,8 @@ static int __ftrace_event_enable_disable(struct trace_event_file *file,
+ 			if (atomic_inc_return(&file->sm_ref) > 1)
+ 				break;
+ 			set_bit(EVENT_FILE_FL_SOFT_MODE_BIT, &file->flags);
++			/* Enable use of trace_buffered_event */
++			trace_buffered_event_enable();
+ 		}
  
-+	cpu->intc = intc;
- 	cpu->map_base = ioremap(res.start, sz);
- 	if (!cpu->map_base)
- 		return -ENOMEM;
-@@ -272,7 +268,7 @@ static int __init bcm6345_l1_init_one(struct device_node *dn,
- 		return -EINVAL;
+ 		if (!(file->flags & EVENT_FILE_FL_ENABLED)) {
+@@ -473,15 +476,6 @@ static int __ftrace_event_enable_disable(struct trace_event_file *file,
+ 		break;
  	}
- 	irq_set_chained_handler_and_data(cpu->parent_irq,
--						bcm6345_l1_irq_handle, intc);
-+						bcm6345_l1_irq_handle, cpu);
  
- 	return 0;
+-	/* Enable or disable use of trace_buffered_event */
+-	if ((file_flags & EVENT_FILE_FL_SOFT_DISABLED) !=
+-	    (file->flags & EVENT_FILE_FL_SOFT_DISABLED)) {
+-		if (file->flags & EVENT_FILE_FL_SOFT_DISABLED)
+-			trace_buffered_event_enable();
+-		else
+-			trace_buffered_event_disable();
+-	}
+-
+ 	return ret;
  }
+ 
 -- 
 2.40.1
 
