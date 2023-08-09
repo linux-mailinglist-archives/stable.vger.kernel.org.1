@@ -2,132 +2,123 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 886D1775C84
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:28:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C4AA17757C7
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:49:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233775AbjHIL2O (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:28:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37748 "EHLO
+        id S230216AbjHIKt5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 06:49:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43080 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233788AbjHIL2N (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:28:13 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 936372111
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:28:03 -0700 (PDT)
+        with ESMTP id S232283AbjHIKt5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:49:57 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 997371BF2
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:49:56 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 75F81632CD
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:28:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88F1EC433C9;
-        Wed,  9 Aug 2023 11:28:02 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2E1F6630F7
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:49:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 385A8C433C7;
+        Wed,  9 Aug 2023 10:49:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691580482;
-        bh=NNSGxKrDbuhcyX5wdq1hV2DeSjsnKp+QjZ20Z33GBJQ=;
+        s=korg; t=1691578195;
+        bh=UKUEdsspYwOBuFHYxWq3/aW4IdQa46sQ7xP4/TcyL/A=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rcgVqT2Y6CTEtuGuJtLAG4DsfGS9hzGsjnYrtiLTFHDjx0g5VpMkkmSi3W6nYlZc+
-         AAc5rdxdnSIHfJigPD8wxTKw4qPk/NPAsxPXjH4ZHVEdZUQVZdQ+GSzKX/5D/wRt3C
-         SpfiWkCqz2J54BgIkjvZSFNfczcWOrvZOy902Fgw=
+        b=V95TqQ9yQR2OjzIKkXQAlq6GkDeD4MgefS8nXTquerMEts+ijhUUbo4DS1wp7j+ml
+         /dypjutOZsAE1A/0Z8/PvKKnbyqxtsNGSEWKgtgw0ubBw+7P//u65VBdL4ZPtftIf0
+         hBVVEsg9AsQzT05rzJwQJw0HuqRu3yPmAzz/m04w=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Maxim Mikityanskiy <maxtram95@gmail.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 040/154] platform/x86: msi-laptop: Fix rfkill out-of-sync on MSI Wind U100
+        patches@lists.linux.dev,
+        syzbot <syzbot+7937ba6a50bdd00fffdf@syzkaller.appspotmail.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Subject: [PATCH 6.4 140/165] debugobjects: Recheck debug_objects_enabled before reporting
 Date:   Wed,  9 Aug 2023 12:41:11 +0200
-Message-ID: <20230809103638.348101576@linuxfoundation.org>
+Message-ID: <20230809103647.388007737@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103636.887175326@linuxfoundation.org>
-References: <20230809103636.887175326@linuxfoundation.org>
+In-Reply-To: <20230809103642.720851262@linuxfoundation.org>
+References: <20230809103642.720851262@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Maxim Mikityanskiy <maxtram95@gmail.com>
+From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
 
-[ Upstream commit ad084a6d99bc182bf109c190c808e2ea073ec57b ]
+commit 8b64d420fe2450f82848178506d3e3a0bd195539 upstream.
 
-Only the HW rfkill state is toggled on laptops with quirks->ec_read_only
-(so far only MSI Wind U90/U100). There are, however, a few issues with
-the implementation:
+syzbot is reporting false a positive ODEBUG message immediately after
+ODEBUG was disabled due to OOM.
 
-1. The initial HW state is always unblocked, regardless of the actual
-   state on boot, because msi_init_rfkill only sets the SW state,
-   regardless of ec_read_only.
+  [ 1062.309646][T22911] ODEBUG: Out of memory. ODEBUG disabled
+  [ 1062.886755][ T5171] ------------[ cut here ]------------
+  [ 1062.892770][ T5171] ODEBUG: assert_init not available (active state 0) object: ffffc900056afb20 object type: timer_list hint: process_timeout+0x0/0x40
 
-2. The initial SW state corresponds to the actual state on boot, but it
-   can't be changed afterwards, because set_device_state returns
-   -EOPNOTSUPP. It confuses the userspace, making Wi-Fi and/or Bluetooth
-   unusable if it was blocked on boot, and breaking the airplane mode if
-   the rfkill was unblocked on boot.
+  CPU 0 [ T5171]                CPU 1 [T22911]
+  --------------                --------------
+  debug_object_assert_init() {
+    if (!debug_objects_enabled)
+      return;
+    db = get_bucket(addr);
+                                lookup_object_or_alloc() {
+                                  debug_objects_enabled = 0;
+                                  return NULL;
+                                }
+                                debug_objects_oom() {
+                                  pr_warn("Out of memory. ODEBUG disabled\n");
+                                  // all buckets get emptied here, and
+                                }
+    lookup_object_or_alloc(addr, db, descr, false, true) {
+      // this bucket is already empty.
+      return ERR_PTR(-ENOENT);
+    }
+    // Emits false positive warning.
+    debug_print_object(&o, "assert_init");
+  }
 
-Address the above issues by properly initializing the HW state on
-ec_read_only laptops and by allowing the userspace to toggle the SW
-state. Don't set the SW state ourselves and let the userspace fully
-control it. Toggling the SW state is a no-op, however, it allows the
-userspace to properly toggle the airplane mode. The actual SW radio
-disablement is handled by the corresponding rtl818x_pci and btusb
-drivers that have their own rfkills.
+Recheck debug_object_enabled in debug_print_object() to avoid that.
 
-Tested on MSI Wind U100 Plus, BIOS ver 1.0G, EC ver 130.
-
-Fixes: 0816392b97d4 ("msi-laptop: merge quirk tables to one")
-Fixes: 0de6575ad0a8 ("msi-laptop: Add MSI Wind U90/U100 support")
-Signed-off-by: Maxim Mikityanskiy <maxtram95@gmail.com>
-Link: https://lore.kernel.org/r/20230721145423.161057-1-maxtram95@gmail.com
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: syzbot <syzbot+7937ba6a50bdd00fffdf@syzkaller.appspotmail.com>
+Suggested-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/r/492fe2ae-5141-d548-ebd5-62f5fe2e57f7@I-love.SAKURA.ne.jp
+Closes: https://syzkaller.appspot.com/bug?extid=7937ba6a50bdd00fffdf
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/msi-laptop.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ lib/debugobjects.c |    9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/platform/x86/msi-laptop.c b/drivers/platform/x86/msi-laptop.c
-index 0e804b6c2d242..dfb4af759aa75 100644
---- a/drivers/platform/x86/msi-laptop.c
-+++ b/drivers/platform/x86/msi-laptop.c
-@@ -210,7 +210,7 @@ static ssize_t set_device_state(const char *buf, size_t count, u8 mask)
- 		return -EINVAL;
+--- a/lib/debugobjects.c
++++ b/lib/debugobjects.c
+@@ -498,6 +498,15 @@ static void debug_print_object(struct de
+ 	const struct debug_obj_descr *descr = obj->descr;
+ 	static int limit;
  
- 	if (quirks->ec_read_only)
--		return -EOPNOTSUPP;
-+		return 0;
- 
- 	/* read current device state */
- 	result = ec_read(MSI_STANDARD_EC_COMMAND_ADDRESS, &rdata);
-@@ -841,15 +841,15 @@ static bool msi_laptop_i8042_filter(unsigned char data, unsigned char str,
- static void msi_init_rfkill(struct work_struct *ignored)
- {
- 	if (rfk_wlan) {
--		rfkill_set_sw_state(rfk_wlan, !wlan_s);
-+		msi_rfkill_set_state(rfk_wlan, !wlan_s);
- 		rfkill_wlan_set(NULL, !wlan_s);
- 	}
- 	if (rfk_bluetooth) {
--		rfkill_set_sw_state(rfk_bluetooth, !bluetooth_s);
-+		msi_rfkill_set_state(rfk_bluetooth, !bluetooth_s);
- 		rfkill_bluetooth_set(NULL, !bluetooth_s);
- 	}
- 	if (rfk_threeg) {
--		rfkill_set_sw_state(rfk_threeg, !threeg_s);
-+		msi_rfkill_set_state(rfk_threeg, !threeg_s);
- 		rfkill_threeg_set(NULL, !threeg_s);
- 	}
- }
--- 
-2.39.2
-
++	/*
++	 * Don't report if lookup_object_or_alloc() by the current thread
++	 * failed because lookup_object_or_alloc()/debug_objects_oom() by a
++	 * concurrent thread turned off debug_objects_enabled and cleared
++	 * the hash buckets.
++	 */
++	if (!debug_objects_enabled)
++		return;
++
+ 	if (limit < 5 && descr != descr_test) {
+ 		void *hint = descr->debug_hint ?
+ 			descr->debug_hint(obj->object) : NULL;
 
 
