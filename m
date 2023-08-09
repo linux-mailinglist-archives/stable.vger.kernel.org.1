@@ -2,203 +2,171 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 40A097757C6
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:49:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 64410775A5C
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:07:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232280AbjHIKtz (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 06:49:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43026 "EHLO
+        id S233152AbjHILHo (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:07:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51806 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232283AbjHIKty (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:49:54 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A791A1BFE
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:49:53 -0700 (PDT)
+        with ESMTP id S233149AbjHILHo (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:07:44 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A04AA2111
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:07:41 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 484BB63124
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:49:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 534FEC433C7;
-        Wed,  9 Aug 2023 10:49:52 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3863961FA9
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:07:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49867C433C9;
+        Wed,  9 Aug 2023 11:07:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691578192;
-        bh=V8H3eBaCy/p3eDckBOWD7WUcGeIbUJfLjymIgyJ6m68=;
+        s=korg; t=1691579260;
+        bh=09GqMt05XsMA4chiJqgKrE8nX8SgCDAI5shmy9Hl7ZU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=s9nCKqnLGJgg9q+2cA+NfZePoHtIprlWWCQVpuIETESngzfNA5jdPkhclmgh2tIuj
-         ISFvXaBwi6IedPAfsJbpxv0pCYqEJYaZBOtSkiyUmO7Okl8sdAnBWHBT0g9yC92x6q
-         g6qpLXB7T+Pq/wsXj0dbn2YRIbDENCf6AQ0xCrU8=
+        b=LTQGcFh0EYEglEyQDY89KqAh8P+Qer6Hzxyj6SQEPXCzlUJJU8KPqdMBUPPHEjOwT
+         0L1zJzDkMghBcTOYgY3tF1eAGSvtkmWLTHDdq/zmA/fPDsfNtx2HwjaOiYfSk0hzQD
+         9MbphUqB04ee29zr6iqhTqgwoV+foS53x8C8ZGZI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Sungwoo Kim <iam@sung-woo.kim>,
-        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-        Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.4 139/165] Bluetooth: L2CAP: Fix use-after-free in l2cap_sock_ready_cb
+        patches@lists.linux.dev,
+        syzbot+5c54bd3eb218bb595aa9@syzkaller.appspotmail.com,
+        Dmitry Vyukov <dvyukov@google.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Frederic Weisbecker <frederic@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.14 132/204] posix-timers: Ensure timer ID search-loop limit is valid
 Date:   Wed,  9 Aug 2023 12:41:10 +0200
-Message-ID: <20230809103647.358785430@linuxfoundation.org>
+Message-ID: <20230809103647.011073086@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103642.720851262@linuxfoundation.org>
-References: <20230809103642.720851262@linuxfoundation.org>
+In-Reply-To: <20230809103642.552405807@linuxfoundation.org>
+References: <20230809103642.552405807@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Sungwoo Kim <iam@sung-woo.kim>
+From: Thomas Gleixner <tglx@linutronix.de>
 
-commit 1728137b33c00d5a2b5110ed7aafb42e7c32e4a1 upstream.
+[ Upstream commit 8ce8849dd1e78dadcee0ec9acbd259d239b7069f ]
 
-l2cap_sock_release(sk) frees sk. However, sk's children are still alive
-and point to the already free'd sk's address.
-To fix this, l2cap_sock_release(sk) also cleans sk's children.
+posix_timer_add() tries to allocate a posix timer ID by starting from the
+cached ID which was stored by the last successful allocation.
 
-==================================================================
-BUG: KASAN: use-after-free in l2cap_sock_ready_cb+0xb7/0x100 net/bluetooth/l2cap_sock.c:1650
-Read of size 8 at addr ffff888104617aa8 by task kworker/u3:0/276
+This is done in a loop searching the ID space for a free slot one by
+one. The loop has to terminate when the search wrapped around to the
+starting point.
 
-CPU: 0 PID: 276 Comm: kworker/u3:0 Not tainted 6.2.0-00001-gef397bd4d5fb-dirty #59
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
-Workqueue: hci2 hci_rx_work
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:88 [inline]
- dump_stack_lvl+0x72/0x95 lib/dump_stack.c:106
- print_address_description mm/kasan/report.c:306 [inline]
- print_report+0x175/0x478 mm/kasan/report.c:417
- kasan_report+0xb1/0x130 mm/kasan/report.c:517
- l2cap_sock_ready_cb+0xb7/0x100 net/bluetooth/l2cap_sock.c:1650
- l2cap_chan_ready+0x10e/0x1e0 net/bluetooth/l2cap_core.c:1386
- l2cap_config_req+0x753/0x9f0 net/bluetooth/l2cap_core.c:4480
- l2cap_bredr_sig_cmd net/bluetooth/l2cap_core.c:5739 [inline]
- l2cap_sig_channel net/bluetooth/l2cap_core.c:6509 [inline]
- l2cap_recv_frame+0xe2e/0x43c0 net/bluetooth/l2cap_core.c:7788
- l2cap_recv_acldata+0x6ed/0x7e0 net/bluetooth/l2cap_core.c:8506
- hci_acldata_packet net/bluetooth/hci_core.c:3813 [inline]
- hci_rx_work+0x66e/0xbc0 net/bluetooth/hci_core.c:4048
- process_one_work+0x4ea/0x8e0 kernel/workqueue.c:2289
- worker_thread+0x364/0x8e0 kernel/workqueue.c:2436
- kthread+0x1b9/0x200 kernel/kthread.c:376
- ret_from_fork+0x2c/0x50 arch/x86/entry/entry_64.S:308
- </TASK>
+But that's racy vs. establishing the starting point. That is read out
+lockless, which leads to the following problem:
 
-Allocated by task 288:
- kasan_save_stack+0x22/0x50 mm/kasan/common.c:45
- kasan_set_track+0x25/0x30 mm/kasan/common.c:52
- ____kasan_kmalloc mm/kasan/common.c:374 [inline]
- __kasan_kmalloc+0x82/0x90 mm/kasan/common.c:383
- kasan_kmalloc include/linux/kasan.h:211 [inline]
- __do_kmalloc_node mm/slab_common.c:968 [inline]
- __kmalloc+0x5a/0x140 mm/slab_common.c:981
- kmalloc include/linux/slab.h:584 [inline]
- sk_prot_alloc+0x113/0x1f0 net/core/sock.c:2040
- sk_alloc+0x36/0x3c0 net/core/sock.c:2093
- l2cap_sock_alloc.constprop.0+0x39/0x1c0 net/bluetooth/l2cap_sock.c:1852
- l2cap_sock_create+0x10d/0x220 net/bluetooth/l2cap_sock.c:1898
- bt_sock_create+0x183/0x290 net/bluetooth/af_bluetooth.c:132
- __sock_create+0x226/0x380 net/socket.c:1518
- sock_create net/socket.c:1569 [inline]
- __sys_socket_create net/socket.c:1606 [inline]
- __sys_socket_create net/socket.c:1591 [inline]
- __sys_socket+0x112/0x200 net/socket.c:1639
- __do_sys_socket net/socket.c:1652 [inline]
- __se_sys_socket net/socket.c:1650 [inline]
- __x64_sys_socket+0x40/0x50 net/socket.c:1650
- do_syscall_x64 arch/x86/entry/common.c:50 [inline]
- do_syscall_64+0x3f/0x90 arch/x86/entry/common.c:80
- entry_SYSCALL_64_after_hwframe+0x72/0xdc
+CPU0	  	      	     	   CPU1
+posix_timer_add()
+  start = sig->posix_timer_id;
+  lock(hash_lock);
+  ...				   posix_timer_add()
+  if (++sig->posix_timer_id < 0)
+      			             start = sig->posix_timer_id;
+     sig->posix_timer_id = 0;
 
-Freed by task 288:
- kasan_save_stack+0x22/0x50 mm/kasan/common.c:45
- kasan_set_track+0x25/0x30 mm/kasan/common.c:52
- kasan_save_free_info+0x2e/0x50 mm/kasan/generic.c:523
- ____kasan_slab_free mm/kasan/common.c:236 [inline]
- ____kasan_slab_free mm/kasan/common.c:200 [inline]
- __kasan_slab_free+0x10a/0x190 mm/kasan/common.c:244
- kasan_slab_free include/linux/kasan.h:177 [inline]
- slab_free_hook mm/slub.c:1781 [inline]
- slab_free_freelist_hook mm/slub.c:1807 [inline]
- slab_free mm/slub.c:3787 [inline]
- __kmem_cache_free+0x88/0x1f0 mm/slub.c:3800
- sk_prot_free net/core/sock.c:2076 [inline]
- __sk_destruct+0x347/0x430 net/core/sock.c:2168
- sk_destruct+0x9c/0xb0 net/core/sock.c:2183
- __sk_free+0x82/0x220 net/core/sock.c:2194
- sk_free+0x7c/0xa0 net/core/sock.c:2205
- sock_put include/net/sock.h:1991 [inline]
- l2cap_sock_kill+0x256/0x2b0 net/bluetooth/l2cap_sock.c:1257
- l2cap_sock_release+0x1a7/0x220 net/bluetooth/l2cap_sock.c:1428
- __sock_release+0x80/0x150 net/socket.c:650
- sock_close+0x19/0x30 net/socket.c:1368
- __fput+0x17a/0x5c0 fs/file_table.c:320
- task_work_run+0x132/0x1c0 kernel/task_work.c:179
- resume_user_mode_work include/linux/resume_user_mode.h:49 [inline]
- exit_to_user_mode_loop kernel/entry/common.c:171 [inline]
- exit_to_user_mode_prepare+0x113/0x120 kernel/entry/common.c:203
- __syscall_exit_to_user_mode_work kernel/entry/common.c:285 [inline]
- syscall_exit_to_user_mode+0x21/0x50 kernel/entry/common.c:296
- do_syscall_64+0x4c/0x90 arch/x86/entry/common.c:86
- entry_SYSCALL_64_after_hwframe+0x72/0xdc
+So CPU1 can observe a negative start value, i.e. -1, and the loop break
+never happens because the condition can never be true:
 
-The buggy address belongs to the object at ffff888104617800
- which belongs to the cache kmalloc-1k of size 1024
-The buggy address is located 680 bytes inside of
- 1024-byte region [ffff888104617800, ffff888104617c00)
+  if (sig->posix_timer_id == start)
+     break;
 
-The buggy address belongs to the physical page:
-page:00000000dbca6a80 refcount:1 mapcount:0 mapping:0000000000000000 index:0xffff888104614000 pfn:0x104614
-head:00000000dbca6a80 order:2 compound_mapcount:0 subpages_mapcount:0 compound_pincount:0
-flags: 0x200000000010200(slab|head|node=0|zone=2)
-raw: 0200000000010200 ffff888100041dc0 ffffea0004212c10 ffffea0004234b10
-raw: ffff888104614000 0000000000080002 00000001ffffffff 0000000000000000
-page dumped because: kasan: bad access detected
+While this is unlikely to ever turn into an endless loop as the ID space is
+huge (INT_MAX), the racy read of the start value caught the attention of
+KCSAN and Dmitry unearthed that incorrectness.
 
-Memory state around the buggy address:
- ffff888104617980: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
- ffff888104617a00: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
->ffff888104617a80: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-                                  ^
- ffff888104617b00: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
- ffff888104617b80: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-==================================================================
+Rewrite it so that all id operations are under the hash lock.
 
-Ack: This bug is found by FuzzBT with a modified Syzkaller. Other
-contributors are Ruoyu Wu and Hui Peng.
-Signed-off-by: Sungwoo Kim <iam@sung-woo.kim>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: syzbot+5c54bd3eb218bb595aa9@syzkaller.appspotmail.com
+Reported-by: Dmitry Vyukov <dvyukov@google.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
+Link: https://lore.kernel.org/r/87bkhzdn6g.ffs@tglx
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/l2cap_sock.c |    2 ++
- 1 file changed, 2 insertions(+)
+ include/linux/sched/signal.h |  2 +-
+ kernel/time/posix-timers.c   | 31 ++++++++++++++++++-------------
+ 2 files changed, 19 insertions(+), 14 deletions(-)
 
---- a/net/bluetooth/l2cap_sock.c
-+++ b/net/bluetooth/l2cap_sock.c
-@@ -46,6 +46,7 @@ static const struct proto_ops l2cap_sock
- static void l2cap_sock_init(struct sock *sk, struct sock *parent);
- static struct sock *l2cap_sock_alloc(struct net *net, struct socket *sock,
- 				     int proto, gfp_t prio, int kern);
-+static void l2cap_sock_cleanup_listen(struct sock *parent);
+diff --git a/include/linux/sched/signal.h b/include/linux/sched/signal.h
+index bcaba7e8ca6ea..916f4807cc9a6 100644
+--- a/include/linux/sched/signal.h
++++ b/include/linux/sched/signal.h
+@@ -119,7 +119,7 @@ struct signal_struct {
+ #ifdef CONFIG_POSIX_TIMERS
  
- bool l2cap_is_socket(struct socket *sock)
+ 	/* POSIX.1b Interval Timers */
+-	int			posix_timer_id;
++	unsigned int		next_posix_timer_id;
+ 	struct list_head	posix_timers;
+ 
+ 	/* ITIMER_REAL timer for the process */
+diff --git a/kernel/time/posix-timers.c b/kernel/time/posix-timers.c
+index 8b90abd690730..309c551ac18fd 100644
+--- a/kernel/time/posix-timers.c
++++ b/kernel/time/posix-timers.c
+@@ -168,25 +168,30 @@ static struct k_itimer *posix_timer_by_id(timer_t id)
+ static int posix_timer_add(struct k_itimer *timer)
  {
-@@ -1415,6 +1416,7 @@ static int l2cap_sock_release(struct soc
- 	if (!sk)
- 		return 0;
+ 	struct signal_struct *sig = current->signal;
+-	int first_free_id = sig->posix_timer_id;
+ 	struct hlist_head *head;
+-	int ret = -ENOENT;
++	unsigned int cnt, id;
  
-+	l2cap_sock_cleanup_listen(sk);
- 	bt_sock_unlink(&l2cap_sk_list, sk);
+-	do {
++	/*
++	 * FIXME: Replace this by a per signal struct xarray once there is
++	 * a plan to handle the resulting CRIU regression gracefully.
++	 */
++	for (cnt = 0; cnt <= INT_MAX; cnt++) {
+ 		spin_lock(&hash_lock);
+-		head = &posix_timers_hashtable[hash(sig, sig->posix_timer_id)];
+-		if (!__posix_timers_find(head, sig, sig->posix_timer_id)) {
++		id = sig->next_posix_timer_id;
++
++		/* Write the next ID back. Clamp it to the positive space */
++		sig->next_posix_timer_id = (id + 1) & INT_MAX;
++
++		head = &posix_timers_hashtable[hash(sig, id)];
++		if (!__posix_timers_find(head, sig, id)) {
+ 			hlist_add_head_rcu(&timer->t_hash, head);
+-			ret = sig->posix_timer_id;
++			spin_unlock(&hash_lock);
++			return id;
+ 		}
+-		if (++sig->posix_timer_id < 0)
+-			sig->posix_timer_id = 0;
+-		if ((sig->posix_timer_id == first_free_id) && (ret == -ENOENT))
+-			/* Loop over all possible ids completed */
+-			ret = -EAGAIN;
+ 		spin_unlock(&hash_lock);
+-	} while (ret == -ENOENT);
+-	return ret;
++	}
++	/* POSIX return code when no timer ID could be allocated */
++	return -EAGAIN;
+ }
  
- 	err = l2cap_sock_shutdown(sock, SHUT_RDWR);
+ static inline void unlock_timer(struct k_itimer *timr, unsigned long flags)
+-- 
+2.39.2
+
 
 
