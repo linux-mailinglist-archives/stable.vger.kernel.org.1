@@ -2,92 +2,156 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 16E7B775A30
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:06:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A33F1775C66
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:27:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233100AbjHILGH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:06:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51692 "EHLO
+        id S233736AbjHIL1B (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:27:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59606 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233097AbjHILGH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:06:07 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 945C21702
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:06:06 -0700 (PDT)
+        with ESMTP id S233773AbjHIL1A (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:27:00 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A27B2ED
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:26:59 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3392C63146
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:06:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45354C433C7;
-        Wed,  9 Aug 2023 11:06:05 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3879963286
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:26:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A32EC433C7;
+        Wed,  9 Aug 2023 11:26:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691579165;
-        bh=C7wbw4ld1mLUGb/sr/ZejqoY62a8lzqk/jSj2qfiQpA=;
+        s=korg; t=1691580418;
+        bh=6zPNgIGkzoRWs5wmD+bzGo2ZH3OR2GPvx2iCWQLbT14=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=LjrIwGr20iw1LjIQecWXj+nv8k2Jor2kX0EFBFzlfk7yVRVdqC3rN1+2t4HsnfMET
-         wfdBISek/+LK8xu6TiM+DMcWvxnuu5nks/A4BFKt+dFZAztLGi0Pc9f3qKY9vGntha
-         2GUX6cjnF8sL7S6l0Lz6BtTYNIrWrfo81hyZOn4c=
+        b=AOHKzNIJ87G+UGfL+4g5Uho9HpFL7oQw59iWJJyzbJFcMZNk2TXp95YW9BLMhGYFK
+         5iUjA+8YZdU/VPX2TKKabf27XEgYIkDrGLk8gNfVu6m76rYPL3qgROr6w+0/OuVQcZ
+         rGy22UhHVRJEnsz2UUIaKIy+SPdyoniLDocw8X0M=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yang Yingliang <yangyingliang@huawei.com>,
-        Dave Jiang <dave.jiang@intel.com>,
-        Jon Mason <jdmason@kudzu.us>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 098/204] NTB: ntb_transport: fix possible memory leak while device_register() fails
+        patches@lists.linux.dev, Zhihao Cheng <chengzhihao1@huawei.com>,
+        Zhang Yi <yi.zhang@huawei.com>, Jan Kara <jack@suse.cz>,
+        Theodore Tso <tytso@mit.edu>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 005/154] jbd2: Fix wrongly judgement for buffer head removing while doing checkpoint
 Date:   Wed,  9 Aug 2023 12:40:36 +0200
-Message-ID: <20230809103645.913053731@linuxfoundation.org>
+Message-ID: <20230809103637.095401063@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103642.552405807@linuxfoundation.org>
-References: <20230809103642.552405807@linuxfoundation.org>
+In-Reply-To: <20230809103636.887175326@linuxfoundation.org>
+References: <20230809103636.887175326@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Yang Yingliang <yangyingliang@huawei.com>
+From: Zhihao Cheng <chengzhihao1@huawei.com>
 
-[ Upstream commit 8623ccbfc55d962e19a3537652803676ad7acb90 ]
+[ Upstream commit e34c8dd238d0c9368b746480f313055f5bab5040 ]
 
-If device_register() returns error, the name allocated by
-dev_set_name() need be freed. As comment of device_register()
-says, it should use put_device() to give up the reference in
-the error path. So fix this by calling put_device(), then the
-name can be freed in kobject_cleanup(), and client_dev is freed
-in ntb_transport_client_release().
+Following process,
 
-Fixes: fce8a7bb5b4b ("PCI-Express Non-Transparent Bridge Support")
-Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-Signed-off-by: Jon Mason <jdmason@kudzu.us>
+jbd2_journal_commit_transaction
+// there are several dirty buffer heads in transaction->t_checkpoint_list
+          P1                   wb_workfn
+jbd2_log_do_checkpoint
+ if (buffer_locked(bh)) // false
+                            __block_write_full_page
+                             trylock_buffer(bh)
+                             test_clear_buffer_dirty(bh)
+ if (!buffer_dirty(bh))
+  __jbd2_journal_remove_checkpoint(jh)
+   if (buffer_write_io_error(bh)) // false
+                             >> bh IO error occurs <<
+ jbd2_cleanup_journal_tail
+  __jbd2_update_log_tail
+   jbd2_write_superblock
+   // The bh won't be replayed in next mount.
+, which could corrupt the ext4 image, fetch a reproducer in [Link].
+
+Since writeback process clears buffer dirty after locking buffer head,
+we can fix it by try locking buffer and check dirtiness while buffer is
+locked, the buffer head can be removed if it is neither dirty nor locked.
+
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=217490
+Fixes: 470decc613ab ("[PATCH] jbd2: initial copy of files from jbd")
+Signed-off-by: Zhihao Cheng <chengzhihao1@huawei.com>
+Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/r/20230606135928.434610-5-yi.zhang@huaweicloud.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ntb/ntb_transport.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/jbd2/checkpoint.c | 32 +++++++++++++++++---------------
+ 1 file changed, 17 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/ntb/ntb_transport.c b/drivers/ntb/ntb_transport.c
-index 18339b7e88a46..a58ced5d60433 100644
---- a/drivers/ntb/ntb_transport.c
-+++ b/drivers/ntb/ntb_transport.c
-@@ -395,7 +395,7 @@ int ntb_transport_register_client_dev(char *device_name)
+diff --git a/fs/jbd2/checkpoint.c b/fs/jbd2/checkpoint.c
+index 587b89b67c1c6..edb17822f8e6b 100644
+--- a/fs/jbd2/checkpoint.c
++++ b/fs/jbd2/checkpoint.c
+@@ -228,20 +228,6 @@ int jbd2_log_do_checkpoint(journal_t *journal)
+ 		jh = transaction->t_checkpoint_list;
+ 		bh = jh2bh(jh);
  
- 		rc = device_register(dev);
- 		if (rc) {
--			kfree(client_dev);
-+			put_device(dev);
- 			goto err;
+-		/*
+-		 * The buffer may be writing back, or flushing out in the
+-		 * last couple of cycles, or re-adding into a new transaction,
+-		 * need to check it again until it's unlocked.
+-		 */
+-		if (buffer_locked(bh)) {
+-			get_bh(bh);
+-			spin_unlock(&journal->j_list_lock);
+-			wait_on_buffer(bh);
+-			/* the journal_head may have gone by now */
+-			BUFFER_TRACE(bh, "brelse");
+-			__brelse(bh);
+-			goto retry;
+-		}
+ 		if (jh->b_transaction != NULL) {
+ 			transaction_t *t = jh->b_transaction;
+ 			tid_t tid = t->t_tid;
+@@ -276,7 +262,22 @@ int jbd2_log_do_checkpoint(journal_t *journal)
+ 			spin_lock(&journal->j_list_lock);
+ 			goto restart;
  		}
- 
+-		if (!buffer_dirty(bh)) {
++		if (!trylock_buffer(bh)) {
++			/*
++			 * The buffer is locked, it may be writing back, or
++			 * flushing out in the last couple of cycles, or
++			 * re-adding into a new transaction, need to check
++			 * it again until it's unlocked.
++			 */
++			get_bh(bh);
++			spin_unlock(&journal->j_list_lock);
++			wait_on_buffer(bh);
++			/* the journal_head may have gone by now */
++			BUFFER_TRACE(bh, "brelse");
++			__brelse(bh);
++			goto retry;
++		} else if (!buffer_dirty(bh)) {
++			unlock_buffer(bh);
+ 			BUFFER_TRACE(bh, "remove from checkpoint");
+ 			/*
+ 			 * If the transaction was released or the checkpoint
+@@ -286,6 +287,7 @@ int jbd2_log_do_checkpoint(journal_t *journal)
+ 			    !transaction->t_checkpoint_list)
+ 				goto out;
+ 		} else {
++			unlock_buffer(bh);
+ 			/*
+ 			 * We are about to write the buffer, it could be
+ 			 * raced by some other transaction shrink or buffer
 -- 
 2.39.2
 
