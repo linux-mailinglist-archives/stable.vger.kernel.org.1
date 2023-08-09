@@ -2,44 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 35E9A775757
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:44:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 310D777577F
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:46:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230260AbjHIKow (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 06:44:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35470 "EHLO
+        id S232165AbjHIKqn (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 06:46:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48344 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231769AbjHIKov (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:44:51 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D0EA51702
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:44:50 -0700 (PDT)
+        with ESMTP id S232135AbjHIKqm (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:46:42 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 51E761BF0
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:46:42 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 68C0363124
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:44:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79F5BC433C8;
-        Wed,  9 Aug 2023 10:44:49 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E68566310A
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:46:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 015FCC433C9;
+        Wed,  9 Aug 2023 10:46:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691577889;
-        bh=x+6X6Jdft4FF0tkqsNGZ2MCyo210Eu4hV9zaZQGUfhY=;
+        s=korg; t=1691578001;
+        bh=cEFrovUpODJ9Me2MpVn34kR0EHHWvYL0JiiEzpkC6A8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=YtahFrcbI3jrmrXXjXqFMRex/yoGPBDkxwpVSIA0qQlvuulV3xDKnXLGhxD05GObj
-         QW2bUKePxVsS09RFqX6KQoSZBmLvZN+w2+kaPLbw1+PZlGV7SEkS2HaIFFgQdwl1qC
-         H/D5zQ/3yGPAXfuLV1XhCz8XzlUv7cXQv7XFUz3I=
+        b=LzEk0KDTwg52qkbpujihNC9/8H/hwmkXA/Rb1yf7DVyCnfHe1w/YHmNKmKPkHId9+
+         5IthkcMu6f2ZIY6PuQlh5oSAc3c19KSiSFOgOkYAmdQt8Uj3gJbCTn0jPR2492ZfSn
+         L1PkRIo9D9pxRbCkc2ebwnS+oJ7igEEwxH/lQJVU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zhengchao Shao <shaozhengchao@huawei.com>,
-        Simon Horman <simon.horman@corigine.com>,
-        Tariq Toukan <tariqt@nvidia.com>,
+        patches@lists.linux.dev, Yuanjun Gong <ruc_gongyuanjun@163.com>,
+        Leon Romanovsky <leonro@nvidia.com>,
         Saeed Mahameed <saeedm@nvidia.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 030/165] net/mlx5: fix potential memory leak in mlx5e_init_rep_rx
-Date:   Wed,  9 Aug 2023 12:39:21 +0200
-Message-ID: <20230809103643.796937137@linuxfoundation.org>
+Subject: [PATCH 6.4 031/165] net/mlx5e: fix return value check in mlx5e_ipsec_remove_trailer()
+Date:   Wed,  9 Aug 2023 12:39:22 +0200
+Message-ID: <20230809103643.839461681@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230809103642.720851262@linuxfoundation.org>
 References: <20230809103642.720851262@linuxfoundation.org>
@@ -47,56 +46,47 @@ User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Zhengchao Shao <shaozhengchao@huawei.com>
+From: Yuanjun Gong <ruc_gongyuanjun@163.com>
 
-[ Upstream commit c6cf0b6097bf1bf1b2a89b521e9ecd26b581a93a ]
+[ Upstream commit e5bcb7564d3bd0c88613c76963c5349be9c511c5 ]
 
-The memory pointed to by the priv->rx_res pointer is not freed in the error
-path of mlx5e_init_rep_rx, which can lead to a memory leak. Fix by freeing
-the memory in the error path, thereby making the error path identical to
-mlx5e_cleanup_rep_rx().
+mlx5e_ipsec_remove_trailer() should return an error code if function
+pskb_trim() returns an unexpected value.
 
-Fixes: af8bbf730068 ("net/mlx5e: Convert mlx5e_flow_steering member of mlx5e_priv to pointer")
-Signed-off-by: Zhengchao Shao <shaozhengchao@huawei.com>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
+Fixes: 2ac9cfe78223 ("net/mlx5e: IPSec, Add Innova IPSec offload TX data path")
+Signed-off-by: Yuanjun Gong <ruc_gongyuanjun@163.com>
+Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
 Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en_rep.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_rxtx.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_rep.c b/drivers/net/ethernet/mellanox/mlx5/core/en_rep.c
-index 3e7041bd5705e..95d8714765f70 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_rep.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_rep.c
-@@ -964,7 +964,7 @@ static int mlx5e_init_rep_rx(struct mlx5e_priv *priv)
- 	err = mlx5e_open_drop_rq(priv, &priv->drop_rq);
- 	if (err) {
- 		mlx5_core_err(mdev, "open drop rq failed, %d\n", err);
--		return err;
-+		goto err_rx_res_free;
- 	}
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_rxtx.c b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_rxtx.c
+index eab5bc718771f..8d995e3048692 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_rxtx.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_rxtx.c
+@@ -58,7 +58,9 @@ static int mlx5e_ipsec_remove_trailer(struct sk_buff *skb, struct xfrm_state *x)
  
- 	err = mlx5e_rx_res_init(priv->rx_res, priv->mdev, 0,
-@@ -998,6 +998,7 @@ static int mlx5e_init_rep_rx(struct mlx5e_priv *priv)
- 	mlx5e_rx_res_destroy(priv->rx_res);
- err_close_drop_rq:
- 	mlx5e_close_drop_rq(&priv->drop_rq);
-+err_rx_res_free:
- 	mlx5e_rx_res_free(priv->rx_res);
- 	priv->rx_res = NULL;
- err_free_fs:
+ 	trailer_len = alen + plen + 2;
+ 
+-	pskb_trim(skb, skb->len - trailer_len);
++	ret = pskb_trim(skb, skb->len - trailer_len);
++	if (unlikely(ret))
++		return ret;
+ 	if (skb->protocol == htons(ETH_P_IP)) {
+ 		ipv4hdr->tot_len = htons(ntohs(ipv4hdr->tot_len) - trailer_len);
+ 		ip_send_check(ipv4hdr);
 -- 
 2.40.1
 
