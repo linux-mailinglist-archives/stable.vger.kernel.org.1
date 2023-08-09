@@ -2,46 +2,71 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4422D775B56
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:16:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BF9177759AC
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:02:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231416AbjHILQr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:16:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43266 "EHLO
+        id S232960AbjHILCn (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:02:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56206 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229751AbjHILQr (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:16:47 -0400
+        with ESMTP id S232941AbjHILCm (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:02:42 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6081ED
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:16:46 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E94F2107
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:02:31 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4F01F61FA9
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:16:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63EF7C433C7;
-        Wed,  9 Aug 2023 11:16:45 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 06BC163146
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:02:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4DA7C433CB;
+        Wed,  9 Aug 2023 11:02:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691579805;
-        bh=XrdkNDoIq2yvrGccPxLw9yteSjjPHvRpviM85Fy9Yy4=;
+        s=korg; t=1691578950;
+        bh=QCMR0Y0pDMdTGpacH3SGf7aIlgLru36UAy93NxRtEzI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=biDvAA7pl7uxJz+h37okWy4IjkXj6rpVfjcGmP+OHYxMHdmVm/UfYU1M/mmH3gyWr
-         qwTAg8sgH2+bouDC+vwLKkdPwPjWbqlEkzxYCQZrsa7ViOOM13I6yJKc7VHKRh39RM
-         zWFgxNM9gXrold55hX1R1FOmx8H5v9D/bmQRibkI=
+        b=njEaGVNoOYxF9c2h+RjwazfFh7cQ62Rw2olMa3kwF7N5paIxZiC1Sv/2NA/uTXPWB
+         3KcafAXfMuIkbLKRHsp0DNVBxzvDPS0vQqexNVsgmL1cJEt1Wij2YLufCTW/0qn0KB
+         IjQ8+S+vuyU7UmjTHFESW9WAwmq7gb0zyQe7qf4A=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Rasmus Villemoes <rasmus.villemoes@prevas.dk>,
-        Mark Brown <broonie@kernel.org>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH 4.19 122/323] spi: spi-fsl-spi: relax message sanity checking a little
+        patches@lists.linux.dev, Douglas Anderson <dianders@chromium.org>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Petr Mladek <pmladek@suse.com>,
+        Andi Kleen <ak@linux.intel.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Chen-Yu Tsai <wens@csie.org>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Guenter Roeck <groeck@chromium.org>,
+        Ian Rogers <irogers@google.com>,
+        Lecopzer Chen <lecopzer.chen@mediatek.com>,
+        Marc Zyngier <maz@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Masayoshi Mizuma <msys.mizuma@gmail.com>,
+        Matthias Kaehlcke <mka@chromium.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Pingfan Liu <kernelfans@gmail.com>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        "Ravi V. Shankar" <ravi.v.shankar@intel.com>,
+        Ricardo Neri <ricardo.neri@intel.com>,
+        Stephane Eranian <eranian@google.com>,
+        Stephen Boyd <swboyd@chromium.org>,
+        Sumit Garg <sumit.garg@linaro.org>,
+        Tzung-Bi Shih <tzungbi@chromium.org>,
+        Will Deacon <will@kernel.org>,
+        Colin Cross <ccross@android.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.14 022/204] watchdog/perf: define dummy watchdog_update_hrtimer_threshold() on correct config
 Date:   Wed,  9 Aug 2023 12:39:20 +0200
-Message-ID: <20230809103703.700221478@linuxfoundation.org>
+Message-ID: <20230809103643.311467576@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
-References: <20230809103658.104386911@linuxfoundation.org>
+In-Reply-To: <20230809103642.552405807@linuxfoundation.org>
+References: <20230809103642.552405807@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,46 +81,88 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Rasmus Villemoes <rasmus.villemoes@prevas.dk>
+From: Douglas Anderson <dianders@chromium.org>
 
-commit 17ecffa289489e8442306bbc62ebb964e235cdad upstream.
+[ Upstream commit 5e008df11c55228a86a1bae692cc2002503572c9 ]
 
-The comment says that we should not allow changes (to
-bits_per_word/speed_hz) while CS is active, and indeed the code below
-does fsl_spi_setup_transfer() when the ->cs_change of the previous
-spi_transfer was set (and for the very first transfer).
+Patch series "watchdog/hardlockup: Add the buddy hardlockup detector", v5.
 
-So the sanity checking is a bit too strict - we can change it to
-follow the same logic as is used by the actual transfer loop.
+This patch series adds the "buddy" hardlockup detector.  In brief, the
+buddy hardlockup detector can detect hardlockups without arch-level
+support by having CPUs checkup on a "buddy" CPU periodically.
 
-Signed-off-by: Rasmus Villemoes <rasmus.villemoes@prevas.dk>
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Given the new design of this patch series, testing all combinations is
+fairly difficult. I've attempted to make sure that all combinations of
+CONFIG_ options are good, but it wouldn't surprise me if I missed
+something. I apologize in advance and I'll do my best to fix any
+problems that are found.
+
+This patch (of 18):
+
+The real watchdog_update_hrtimer_threshold() is defined in
+kernel/watchdog_hld.c.  That file is included if
+CONFIG_HARDLOCKUP_DETECTOR_PERF and the function is defined in that file
+if CONFIG_HARDLOCKUP_CHECK_TIMESTAMP.
+
+The dummy version of the function in "nmi.h" didn't get that quite right.
+While this doesn't appear to be a huge deal, it's nice to make it
+consistent.
+
+It doesn't break builds because CHECK_TIMESTAMP is only defined by x86 so
+others don't get a double definition, and x86 uses perf lockup detector,
+so it gets the out of line version.
+
+Link: https://lkml.kernel.org/r/20230519101840.v5.18.Ia44852044cdcb074f387e80df6b45e892965d4a1@changeid
+Link: https://lkml.kernel.org/r/20230519101840.v5.1.I8cbb2f4fa740528fcfade4f5439b6cdcdd059251@changeid
+Fixes: 7edaeb6841df ("kernel/watchdog: Prevent false positives with turbo modes")
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
+Reviewed-by: Petr Mladek <pmladek@suse.com>
+Cc: Andi Kleen <ak@linux.intel.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Chen-Yu Tsai <wens@csie.org>
 Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Daniel Thompson <daniel.thompson@linaro.org>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Guenter Roeck <groeck@chromium.org>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Lecopzer Chen <lecopzer.chen@mediatek.com>
+Cc: Marc Zyngier <maz@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Masayoshi Mizuma <msys.mizuma@gmail.com>
+Cc: Matthias Kaehlcke <mka@chromium.org>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Pingfan Liu <kernelfans@gmail.com>
+Cc: Randy Dunlap <rdunlap@infradead.org>
+Cc: "Ravi V. Shankar" <ravi.v.shankar@intel.com>
+Cc: Ricardo Neri <ricardo.neri@intel.com>
+Cc: Stephane Eranian <eranian@google.com>
+Cc: Stephen Boyd <swboyd@chromium.org>
+Cc: Sumit Garg <sumit.garg@linaro.org>
+Cc: Tzung-Bi Shih <tzungbi@chromium.org>
+Cc: Will Deacon <will@kernel.org>
+Cc: Colin Cross <ccross@android.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-fsl-spi.c |    8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ include/linux/nmi.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/spi/spi-fsl-spi.c
-+++ b/drivers/spi/spi-fsl-spi.c
-@@ -373,13 +373,15 @@ static int fsl_spi_do_one_msg(struct spi
- 	}
+diff --git a/include/linux/nmi.h b/include/linux/nmi.h
+index 50d1439953385..5ef76f8cf0800 100644
+--- a/include/linux/nmi.h
++++ b/include/linux/nmi.h
+@@ -189,7 +189,7 @@ u64 hw_nmi_get_sample_period(int watchdog_thresh);
+ #endif
  
- 	/* Don't allow changes if CS is active */
--	first = list_first_entry(&m->transfers, struct spi_transfer,
--			transfer_list);
-+	cs_change = 1;
- 	list_for_each_entry(t, &m->transfers, transfer_list) {
-+		if (cs_change)
-+			first = t;
-+		cs_change = t->cs_change;
- 		if ((first->bits_per_word != t->bits_per_word) ||
- 			(first->speed_hz != t->speed_hz)) {
- 			dev_err(&spi->dev,
--				"bits_per_word/speed_hz should be same for the same SPI transfer\n");
-+				"bits_per_word/speed_hz cannot change while CS is active\n");
- 			return -EINVAL;
- 		}
- 	}
+ #if defined(CONFIG_HARDLOCKUP_CHECK_TIMESTAMP) && \
+-    defined(CONFIG_HARDLOCKUP_DETECTOR)
++    defined(CONFIG_HARDLOCKUP_DETECTOR_PERF)
+ void watchdog_update_hrtimer_threshold(u64 period);
+ #else
+ static inline void watchdog_update_hrtimer_threshold(u64 period) { }
+-- 
+2.39.2
+
 
 
