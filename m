@@ -2,116 +2,150 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6F1727758C9
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:55:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 11FCF775C5E
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:26:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232604AbjHIKzY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 06:55:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35014 "EHLO
+        id S233732AbjHIL0j (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:26:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45632 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232439AbjHIKzK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:55:10 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A20782126
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:53:48 -0700 (PDT)
+        with ESMTP id S233729AbjHIL0i (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:26:38 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 16A2B1FD8
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:26:37 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 12DA26312B
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:53:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21E8CC433C8;
-        Wed,  9 Aug 2023 10:53:43 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id AA3D063255
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:26:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B74D6C433C7;
+        Wed,  9 Aug 2023 11:26:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691578424;
-        bh=BWBHVwQ/t7DedSsyjB8g+CDCyBqUUCRriLGgeFsxa88=;
+        s=korg; t=1691580396;
+        bh=4vO7TP1O+UKlJm4nlGCP6wtRwRBbXlKCUd7ou7u8a98=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ljyb0TmQnRJmN2djzuZ/0sX0aRICp2RMr0SwomMh5X/k/9r+A9y7+4l93dKcrIOkD
-         pWw1Hv+6WCndmvXNnOAL6ZGxUyhginnAru3BzZ74EkBVL6pucx9ZgfeEc3oMH0Jfq7
-         H43NETbz1m666V7UA/dIhzBw3wlVNklZsnXAPZeY=
+        b=VCItTg1j5lF+lbQ2Kw3Xt3/Qzclb3OKgPeQIytvYvdH3Ent0DUYeKJkVMJ0GNJ3f5
+         w9sAmhugIPHAiu5s29K+zkzI9F19WjivkQGThQd1H0JC030TWALzSQBPE0WpReUZJg
+         TBozrv1cQ9bEvDzELzSGlIog2fHfWQ7LFDFBi348=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Mark Brown <broonie@kernel.org>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-        Andrew Lunn <andrew@lunn.ch>, Jakub Kicinski <kuba@kernel.org>,
+        patches@lists.linux.dev, Filipe Manana <fdmanana@suse.com>,
+        David Sterba <dsterba@suse.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 054/127] net: netsec: Ignore phy-mode on SynQuacer in DT mode
+Subject: [PATCH 5.4 010/154] btrfs: fix race between quota disable and relocation
 Date:   Wed,  9 Aug 2023 12:40:41 +0200
-Message-ID: <20230809103638.472736286@linuxfoundation.org>
+Message-ID: <20230809103637.266686722@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103636.615294317@linuxfoundation.org>
-References: <20230809103636.615294317@linuxfoundation.org>
+In-Reply-To: <20230809103636.887175326@linuxfoundation.org>
+References: <20230809103636.887175326@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Mark Brown <broonie@kernel.org>
+From: Filipe Manana <fdmanana@suse.com>
 
-[ Upstream commit f3bb7759a924713bc54d15f6d0d70733b5935fad ]
+[ Upstream commit 8a4a0b2a3eaf75ca8854f856ef29690c12b2f531 ]
 
-As documented in acd7aaf51b20 ("netsec: ignore 'phy-mode' device
-property on ACPI systems") the SocioNext SynQuacer platform ships with
-firmware defining the PHY mode as RGMII even though the physical
-configuration of the PHY is for TX and RX delays.  Since bbc4d71d63549bc
-("net: phy: realtek: fix rtl8211e rx/tx delay config") this has caused
-misconfiguration of the PHY, rendering the network unusable.
+If we disable quotas while we have a relocation of a metadata block group
+that has extents belonging to the quota root, we can cause the relocation
+to fail with -ENOENT. This is because relocation builds backref nodes for
+extents of the quota root and later needs to walk the backrefs and access
+the quota root - however if in between a task disables quotas, it results
+in deleting the quota root from the root tree (with btrfs_del_root(),
+called from btrfs_quota_disable().
 
-This was worked around for ACPI by ignoring the phy-mode property but
-the system is also used with DT.  For DT instead if we're running on a
-SynQuacer force a working PHY mode, as well as the standard EDK2
-firmware with DT there are also some of these systems that use u-boot
-and might not initialise the PHY if not netbooting.  Newer firmware
-imagaes for at least EDK2 are available from Linaro so print a warning
-when doing this.
+This can be sporadically triggered by test case btrfs/255 from fstests:
 
-Fixes: 533dd11a12f6 ("net: socionext: Add Synquacer NetSec driver")
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Acked-by: Ard Biesheuvel <ardb@kernel.org>
-Acked-by: Ilias Apalodimas <ilias.apalodimas@linaro.org>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://lore.kernel.org/r/20230731-synquacer-net-v3-1-944be5f06428@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+  $ ./check btrfs/255
+  FSTYP         -- btrfs
+  PLATFORM      -- Linux/x86_64 debian0 6.4.0-rc6-btrfs-next-134+ #1 SMP PREEMPT_DYNAMIC Thu Jun 15 11:59:28 WEST 2023
+  MKFS_OPTIONS  -- /dev/sdc
+  MOUNT_OPTIONS -- /dev/sdc /home/fdmanana/btrfs-tests/scratch_1
+
+  btrfs/255 6s ... _check_dmesg: something found in dmesg (see /home/fdmanana/git/hub/xfstests/results//btrfs/255.dmesg)
+  - output mismatch (see /home/fdmanana/git/hub/xfstests/results//btrfs/255.out.bad)
+#      --- tests/btrfs/255.out	2023-03-02 21:47:53.876609426 +0000
+#      +++ /home/fdmanana/git/hub/xfstests/results//btrfs/255.out.bad	2023-06-16 10:20:39.267563212 +0100
+#      @@ -1,2 +1,4 @@
+#       QA output created by 255
+#      +ERROR: error during balancing '/home/fdmanana/btrfs-tests/scratch_1': No such file or directory
+#      +There may be more info in syslog - try dmesg | tail
+#       Silence is golden
+#      ...
+      (Run 'diff -u /home/fdmanana/git/hub/xfstests/tests/btrfs/255.out /home/fdmanana/git/hub/xfstests/results//btrfs/255.out.bad'  to see the entire diff)
+  Ran: btrfs/255
+  Failures: btrfs/255
+  Failed 1 of 1 tests
+
+To fix this make the quota disable operation take the cleaner mutex, as
+relocation of a block group also takes this mutex. This is also what we
+do when deleting a subvolume/snapshot, we take the cleaner mutex in the
+cleaner kthread (at cleaner_kthread()) and then we call btrfs_del_root()
+at btrfs_drop_snapshot() while under the protection of the cleaner mutex.
+
+Fixes: bed92eae26cc ("Btrfs: qgroup implementation and prototypes")
+CC: stable@vger.kernel.org # 5.4+
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/socionext/netsec.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ fs/btrfs/qgroup.c | 18 +++++++++++++++---
+ 1 file changed, 15 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/socionext/netsec.c b/drivers/net/ethernet/socionext/netsec.c
-index 9b46579b5a103..b130e978366c1 100644
---- a/drivers/net/ethernet/socionext/netsec.c
-+++ b/drivers/net/ethernet/socionext/netsec.c
-@@ -1851,6 +1851,17 @@ static int netsec_of_probe(struct platform_device *pdev,
- 		return err;
- 	}
+diff --git a/fs/btrfs/qgroup.c b/fs/btrfs/qgroup.c
+index 7821bef061fe6..b6cce67520f04 100644
+--- a/fs/btrfs/qgroup.c
++++ b/fs/btrfs/qgroup.c
+@@ -1164,12 +1164,23 @@ int btrfs_quota_disable(struct btrfs_fs_info *fs_info)
+ 	int ret = 0;
+ 
+ 	/*
+-	 * We need to have subvol_sem write locked, to prevent races between
+-	 * concurrent tasks trying to disable quotas, because we will unlock
+-	 * and relock qgroup_ioctl_lock across BTRFS_FS_QUOTA_ENABLED changes.
++	 * We need to have subvol_sem write locked to prevent races with
++	 * snapshot creation.
+ 	 */
+ 	lockdep_assert_held_write(&fs_info->subvol_sem);
  
 +	/*
-+	 * SynQuacer is physically configured with TX and RX delays
-+	 * but the standard firmware claimed otherwise for a long
-+	 * time, ignore it.
++	 * Lock the cleaner mutex to prevent races with concurrent relocation,
++	 * because relocation may be building backrefs for blocks of the quota
++	 * root while we are deleting the root. This is like dropping fs roots
++	 * of deleted snapshots/subvolumes, we need the same protection.
++	 *
++	 * This also prevents races between concurrent tasks trying to disable
++	 * quotas, because we will unlock and relock qgroup_ioctl_lock across
++	 * BTRFS_FS_QUOTA_ENABLED changes.
 +	 */
-+	if (of_machine_is_compatible("socionext,developer-box") &&
-+	    priv->phy_interface != PHY_INTERFACE_MODE_RGMII_ID) {
-+		dev_warn(&pdev->dev, "Outdated firmware reports incorrect PHY mode, overriding\n");
-+		priv->phy_interface = PHY_INTERFACE_MODE_RGMII_ID;
-+	}
++	mutex_lock(&fs_info->cleaner_mutex);
 +
- 	priv->phy_np = of_parse_phandle(pdev->dev.of_node, "phy-handle", 0);
- 	if (!priv->phy_np) {
- 		dev_err(&pdev->dev, "missing required property 'phy-handle'\n");
+ 	mutex_lock(&fs_info->qgroup_ioctl_lock);
+ 	if (!fs_info->quota_root)
+ 		goto out;
+@@ -1251,6 +1262,7 @@ int btrfs_quota_disable(struct btrfs_fs_info *fs_info)
+ 		btrfs_end_transaction(trans);
+ 	else if (trans)
+ 		ret = btrfs_end_transaction(trans);
++	mutex_unlock(&fs_info->cleaner_mutex);
+ 
+ 	return ret;
+ }
 -- 
-2.40.1
+2.39.2
 
 
 
