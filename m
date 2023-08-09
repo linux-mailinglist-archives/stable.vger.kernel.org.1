@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 19BAF775CB8
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:30:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7C64F775948
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:59:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233842AbjHILaO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:30:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40614 "EHLO
+        id S232798AbjHIK7J (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 06:59:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59558 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233870AbjHILaL (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:30:11 -0400
+        with ESMTP id S232680AbjHIK7I (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:59:08 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9D084210C
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:30:09 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 11712ED
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:59:08 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1415663355
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:30:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 233FAC433C7;
-        Wed,  9 Aug 2023 11:30:07 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A5D0C62DC8
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:59:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B82A3C433C7;
+        Wed,  9 Aug 2023 10:59:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691580608;
-        bh=b1JltFsDS8pZU/BREqghDy4F6kNw2qUw677MfruGTuA=;
+        s=korg; t=1691578747;
+        bh=22IxmQ5bqN2fwbXT7iIs1aDEVw7lXsw+KhPzF2kldCo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=y6qHKkSRkg0O9AmEkyLRjlxrJunA+MFI0FQck+QvU2ybZ8dNe3rpfZJmrieCfjXYP
-         ncjtl2dj0WaUH9fkIVc5gt5eTl14F+fVdRNBfR51lYuqph7IArueLtXS+31B8lKJAB
-         cYipSzQ5GLFYaqErU9Y/ZUac8t+NVbLTMSM8cFug=
+        b=Sos3CkXdULkH4ino7PlPksHZMc3zXWXSS/a9gghxgoGhJT6lPcUuPDa0npSa4XPkf
+         XYrsR7aoUUj5lFMf7r+F0J4Md9qZLNaQU3NPoBPZvlCsx1ymTOQoDLbOl2ixKJQeB7
+         9gE9nvuN/hndBZwU76iEzoZlZgk8FhUdz4ODwTg8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Rob Clark <robdclark@chromium.org>,
-        Akhil P Oommen <quic_akhilpo@quicinc.com>,
+        patches@lists.linux.dev, Alexandra Winter <wintera@linux.ibm.com>,
+        Wenjia Zhang <wenjia@linux.ibm.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 047/154] drm/msm/adreno: Fix snapshot BINDLESS_DATA size
+Subject: [PATCH 5.15 42/92] s390/qeth: Dont call dev_close/dev_open (DOWN/UP)
 Date:   Wed,  9 Aug 2023 12:41:18 +0200
-Message-ID: <20230809103638.567321274@linuxfoundation.org>
+Message-ID: <20230809103635.075826857@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103636.887175326@linuxfoundation.org>
-References: <20230809103636.887175326@linuxfoundation.org>
+In-Reply-To: <20230809103633.485906560@linuxfoundation.org>
+References: <20230809103633.485906560@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,36 +56,102 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Rob Clark <robdclark@chromium.org>
+From: Alexandra Winter <wintera@linux.ibm.com>
 
-[ Upstream commit bd846ceee9c478d0397428f02696602ba5eb264a ]
+[ Upstream commit 1cfef80d4c2b2c599189f36f36320b205d9447d9 ]
 
-The incorrect size was causing "CP | AHB bus error" when snapshotting
-the GPU state on a6xx gen4 (a660 family).
+dev_close() and dev_open() are issued to change the interface state to DOWN
+or UP (dev->flags IFF_UP). When the netdev is set DOWN it loses e.g its
+Ipv6 addresses and routes. We don't want this in cases of device recovery
+(triggered by hardware or software) or when the qeth device is set
+offline.
 
-Closes: https://gitlab.freedesktop.org/drm/msm/-/issues/26
-Signed-off-by: Rob Clark <robdclark@chromium.org>
-Reviewed-by: Akhil P Oommen <quic_akhilpo@quicinc.com>
-Fixes: 1707add81551 ("drm/msm/a6xx: Add a6xx gpu state")
-Patchwork: https://patchwork.freedesktop.org/patch/546763/
+Setting a qeth device offline or online and device recovery actions call
+netif_device_detach() and/or netif_device_attach(). That will reset or
+set the LOWER_UP indication i.e. change the dev->state Bit
+__LINK_STATE_PRESENT. That is enough to e.g. cause bond failovers, and
+still preserves the interface settings that are handled by the network
+stack.
+
+Don't call dev_open() nor dev_close() from the qeth device driver. Let the
+network stack handle this.
+
+Fixes: d4560150cb47 ("s390/qeth: call dev_close() during recovery")
+Signed-off-by: Alexandra Winter <wintera@linux.ibm.com>
+Reviewed-by: Wenjia Zhang <wenjia@linux.ibm.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/adreno/a6xx_gpu_state.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/s390/net/qeth_core.h      | 1 -
+ drivers/s390/net/qeth_core_main.c | 2 --
+ drivers/s390/net/qeth_l2_main.c   | 9 ++++++---
+ drivers/s390/net/qeth_l3_main.c   | 8 +++++---
+ 4 files changed, 11 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/adreno/a6xx_gpu_state.h b/drivers/gpu/drm/msm/adreno/a6xx_gpu_state.h
-index 68cccfa2870a3..9c8eb1ae4acfc 100644
---- a/drivers/gpu/drm/msm/adreno/a6xx_gpu_state.h
-+++ b/drivers/gpu/drm/msm/adreno/a6xx_gpu_state.h
-@@ -200,7 +200,7 @@ static const struct a6xx_shader_block {
- 	SHADER(A6XX_SP_LB_3_DATA, 0x800),
- 	SHADER(A6XX_SP_LB_4_DATA, 0x800),
- 	SHADER(A6XX_SP_LB_5_DATA, 0x200),
--	SHADER(A6XX_SP_CB_BINDLESS_DATA, 0x2000),
-+	SHADER(A6XX_SP_CB_BINDLESS_DATA, 0x800),
- 	SHADER(A6XX_SP_CB_LEGACY_DATA, 0x280),
- 	SHADER(A6XX_SP_UAV_DATA, 0x80),
- 	SHADER(A6XX_SP_INST_TAG, 0x80),
+diff --git a/drivers/s390/net/qeth_core.h b/drivers/s390/net/qeth_core.h
+index a5aa0bdc61d69..e8c360879883b 100644
+--- a/drivers/s390/net/qeth_core.h
++++ b/drivers/s390/net/qeth_core.h
+@@ -717,7 +717,6 @@ struct qeth_card_info {
+ 	u16 chid;
+ 	u8 ids_valid:1; /* cssid,iid,chid */
+ 	u8 dev_addr_is_registered:1;
+-	u8 open_when_online:1;
+ 	u8 promisc_mode:1;
+ 	u8 use_v1_blkt:1;
+ 	u8 is_vm_nic:1;
+diff --git a/drivers/s390/net/qeth_core_main.c b/drivers/s390/net/qeth_core_main.c
+index e9807d2996a9d..62e7576bff536 100644
+--- a/drivers/s390/net/qeth_core_main.c
++++ b/drivers/s390/net/qeth_core_main.c
+@@ -5459,8 +5459,6 @@ int qeth_set_offline(struct qeth_card *card, const struct qeth_discipline *disc,
+ 	qeth_clear_ipacmd_list(card);
+ 
+ 	rtnl_lock();
+-	card->info.open_when_online = card->dev->flags & IFF_UP;
+-	dev_close(card->dev);
+ 	netif_device_detach(card->dev);
+ 	netif_carrier_off(card->dev);
+ 	rtnl_unlock();
+diff --git a/drivers/s390/net/qeth_l2_main.c b/drivers/s390/net/qeth_l2_main.c
+index d694e3ff80865..7cdf3274cf964 100644
+--- a/drivers/s390/net/qeth_l2_main.c
++++ b/drivers/s390/net/qeth_l2_main.c
+@@ -2373,9 +2373,12 @@ static int qeth_l2_set_online(struct qeth_card *card, bool carrier_ok)
+ 		qeth_enable_hw_features(dev);
+ 		qeth_l2_enable_brport_features(card);
+ 
+-		if (card->info.open_when_online) {
+-			card->info.open_when_online = 0;
+-			dev_open(dev, NULL);
++		if (netif_running(dev)) {
++			local_bh_disable();
++			napi_schedule(&card->napi);
++			/* kick-start the NAPI softirq: */
++			local_bh_enable();
++			qeth_l2_set_rx_mode(dev);
+ 		}
+ 		rtnl_unlock();
+ 	}
+diff --git a/drivers/s390/net/qeth_l3_main.c b/drivers/s390/net/qeth_l3_main.c
+index 6fd3e288f0595..93f55c7348026 100644
+--- a/drivers/s390/net/qeth_l3_main.c
++++ b/drivers/s390/net/qeth_l3_main.c
+@@ -2029,9 +2029,11 @@ static int qeth_l3_set_online(struct qeth_card *card, bool carrier_ok)
+ 		netif_device_attach(dev);
+ 		qeth_enable_hw_features(dev);
+ 
+-		if (card->info.open_when_online) {
+-			card->info.open_when_online = 0;
+-			dev_open(dev, NULL);
++		if (netif_running(dev)) {
++			local_bh_disable();
++			napi_schedule(&card->napi);
++			/* kick-start the NAPI softirq: */
++			local_bh_enable();
+ 		}
+ 		rtnl_unlock();
+ 	}
 -- 
 2.40.1
 
