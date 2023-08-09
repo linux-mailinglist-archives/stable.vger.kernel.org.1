@@ -2,43 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4B832775B46
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:16:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1B0CA775B22
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:14:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231931AbjHILQI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:16:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43422 "EHLO
+        id S233385AbjHILOm (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:14:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51340 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230118AbjHILQH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:16:07 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 83D50FA
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:16:07 -0700 (PDT)
+        with ESMTP id S233384AbjHILOl (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:14:41 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0ED471BFE
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:14:41 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 246A261FA9
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:16:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F3CFC433C8;
-        Wed,  9 Aug 2023 11:16:06 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9A6046315D
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:14:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8BCEC433C8;
+        Wed,  9 Aug 2023 11:14:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691579766;
-        bh=pBzAAvJrnHhhOPZfaPYZSyopdALrtcOEUXu5zV4SqpY=;
+        s=korg; t=1691579680;
+        bh=Cx+oHc5C1/TLQN/ZEoNlJ80KiHNwabEJ1ixRT3W8pY4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=c2FC4tWz/oxOo7SmmDsw1/7uSUEEVRa5taRt+L9ISvRYePmXLxRT1ht2lztlGYuUO
-         OAEv6lueHGnT6q5Fju6DE072JjjDaUUmqWTim0lPzztGGx0lLmgwsO9VQFbPduZPqJ
-         3MAKemAyqMiGPjWeERtVdPR2D25ntcmCniyucIDI=
+        b=aSL3JtNvGk7p+HquK/JpbbF5JM9oB037qU4w+IqzD/JQEaxgFgD8aJJV2UUhrn9nv
+         4iGJTPezQsO2zypvX+UUGbi1IdyLM6KekZixCIHC2y+xFit8sNZ7bp3v+dun6IDtVL
+         bzZPhyJr4B95HgW2mURzGmuD22lSZj/y2R7znR1A=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        patches@lists.linux.dev, Namhyung Kim <namhyung@kernel.org>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Ian Rogers <irogers@google.com>,
+        Ingo Molnar <mingo@kernel.org>, Jiri Olsa <jolsa@kernel.org>,
+        Masami Hiramatsu <mhiramat@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 069/323] pinctrl: cherryview: Return correct value if pin in push-pull mode
-Date:   Wed,  9 Aug 2023 12:38:27 +0200
-Message-ID: <20230809103701.305376750@linuxfoundation.org>
+Subject: [PATCH 4.19 070/323] perf dwarf-aux: Fix off-by-one in die_get_varname()
+Date:   Wed,  9 Aug 2023 12:38:28 +0200
+Message-ID: <20230809103701.347409607@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
 References: <20230809103658.104386911@linuxfoundation.org>
@@ -46,65 +50,53 @@ User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Namhyung Kim <namhyung@kernel.org>
 
-[ Upstream commit 5835196a17be5cfdcad0b617f90cf4abe16951a4 ]
+[ Upstream commit 3abfcfd847717d232e36963f31a361747c388fe7 ]
 
-Currently the getter returns ENOTSUPP on pin configured in
-the push-pull mode. Fix this by adding the missed switch case.
+The die_get_varname() returns "(unknown_type)" string if it failed to
+find a type for the variable.  But it had a space before the opening
+parenthesis and it made the closing parenthesis cut off due to the
+off-by-one in the string length (14).
 
-Fixes: ccdf81d08dbe ("pinctrl: cherryview: add option to set open-drain pin config")
-Fixes: 6e08d6bbebeb ("pinctrl: Add Intel Cherryview/Braswell pin controller support")
-Acked-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Fixes: 88fd633cdfa19060 ("perf probe: No need to use formatting strbuf method")
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Ingo Molnar <mingo@kernel.org>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20230612234102.3909116-1-namhyung@kernel.org
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/intel/pinctrl-cherryview.c | 15 ++++++++++-----
- 1 file changed, 10 insertions(+), 5 deletions(-)
+ tools/perf/util/dwarf-aux.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/pinctrl/intel/pinctrl-cherryview.c b/drivers/pinctrl/intel/pinctrl-cherryview.c
-index 25932d2a71547..ef8eb42e4d383 100644
---- a/drivers/pinctrl/intel/pinctrl-cherryview.c
-+++ b/drivers/pinctrl/intel/pinctrl-cherryview.c
-@@ -1032,11 +1032,6 @@ static int chv_config_get(struct pinctrl_dev *pctldev, unsigned pin,
- 
- 		break;
- 
--	case PIN_CONFIG_DRIVE_OPEN_DRAIN:
--		if (!(ctrl1 & CHV_PADCTRL1_ODEN))
--			return -EINVAL;
--		break;
--
- 	case PIN_CONFIG_BIAS_HIGH_IMPEDANCE: {
- 		u32 cfg;
- 
-@@ -1046,6 +1041,16 @@ static int chv_config_get(struct pinctrl_dev *pctldev, unsigned pin,
- 			return -EINVAL;
- 
- 		break;
-+
-+	case PIN_CONFIG_DRIVE_PUSH_PULL:
-+		if (ctrl1 & CHV_PADCTRL1_ODEN)
-+			return -EINVAL;
-+		break;
-+
-+	case PIN_CONFIG_DRIVE_OPEN_DRAIN:
-+		if (!(ctrl1 & CHV_PADCTRL1_ODEN))
-+			return -EINVAL;
-+		break;
+diff --git a/tools/perf/util/dwarf-aux.c b/tools/perf/util/dwarf-aux.c
+index 6de57d9ee7cc2..db099dc20a682 100644
+--- a/tools/perf/util/dwarf-aux.c
++++ b/tools/perf/util/dwarf-aux.c
+@@ -1020,7 +1020,7 @@ int die_get_varname(Dwarf_Die *vr_die, struct strbuf *buf)
+ 	ret = die_get_typename(vr_die, buf);
+ 	if (ret < 0) {
+ 		pr_debug("Failed to get type, make it unknown.\n");
+-		ret = strbuf_add(buf, " (unknown_type)", 14);
++		ret = strbuf_add(buf, "(unknown_type)", 14);
  	}
  
- 	default:
+ 	return ret < 0 ? ret : strbuf_addf(buf, "\t%s", dwarf_diename(vr_die));
 -- 
 2.39.2
 
