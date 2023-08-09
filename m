@@ -2,46 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2C4427758D5
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:55:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A20CD775D46
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:35:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232492AbjHIKzk (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 06:55:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43068 "EHLO
+        id S234058AbjHILfh (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:35:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40386 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232564AbjHIKzT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:55:19 -0400
+        with ESMTP id S234057AbjHILfg (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:35:36 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C55783AAF
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:54:04 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB578E3
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:35:35 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8F07C63126
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:54:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99D60C433C8;
-        Wed,  9 Aug 2023 10:54:03 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 89EA96336A
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:35:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EBDAC433C7;
+        Wed,  9 Aug 2023 11:35:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691578444;
-        bh=WW5/VMujNgJgEX5KrNYTxgt6GOA6dMoKnDNkQCH+/6c=;
+        s=korg; t=1691580935;
+        bh=MjS7szhwt4eZbtsTc8VHrzn8mYK/yeqIsUTF0FsxBSk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=0UDgpVxuoUxrqcTxg4hPtPitsEahezc7fqWyCmOJMcKxcBpv6d4zyfl9dAL/Q+1/0
-         cKz6dQ0y0hQzOBFqtcxtFtT52uSwOZdtHSGWlxsecXH/LeepgTu3x9AfGO8O0OF7WQ
-         9Xq3EzoGlliIvxvBxxaiSR8FxqpXMttx/mUQum7k=
+        b=Tw77Njr2CafT45tKzPAp6paLZb0W6bG5GDxDqXz5zP7tODKS4eYFQ/QBWKmWmSp83
+         33SmA9e5EnoEddSJVbYXQlhvg5CtV8P/k0YVXZ4REapCo3YakW/YNoPeJ/1FZ4ewx0
+         6R0qgQV/E+d52c53dqwh4PE1nUOPXe2sLcieSBfg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jianbo Liu <jianbol@nvidia.com>,
-        Leon Romanovsky <leonro@nvidia.com>,
-        Jakub Kicinski <kuba@kernel.org>,
+        patches@lists.linux.dev, Vladimir Oltean <vladimir.oltean@nxp.com>,
+        Jacob Keller <jacob.e.keller@intel.com>,
+        Simon Horman <simon.horman@corigine.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 061/127] net/mlx5: fs_core: Make find_closest_ft more generic
+Subject: [PATCH 5.10 046/201] net/sched: mqprio: refactor nlattr parsing to a separate function
 Date:   Wed,  9 Aug 2023 12:40:48 +0200
-Message-ID: <20230809103638.691641266@linuxfoundation.org>
+Message-ID: <20230809103645.376883867@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103636.615294317@linuxfoundation.org>
-References: <20230809103636.615294317@linuxfoundation.org>
+In-Reply-To: <20230809103643.799166053@linuxfoundation.org>
+References: <20230809103643.799166053@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,120 +57,165 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jianbo Liu <jianbol@nvidia.com>
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-[ Upstream commit 618d28a535a0582617465d14e05f3881736a2962 ]
+[ Upstream commit feb2cf3dcfb930aec2ca65c66d1365543d5ba943 ]
 
-As find_closest_ft_recursive is called to find the closest FT, the
-first parameter of find_closest_ft can be changed from fs_prio to
-fs_node. Thus this function is extended to find the closest FT for the
-nodes of any type, not only prios, but also the sub namespaces.
+mqprio_init() is quite large and unwieldy to add more code to.
+Split the netlink attribute parsing to a dedicated function.
 
-Signed-off-by: Jianbo Liu <jianbol@nvidia.com>
-Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
-Link: https://lore.kernel.org/r/d3962c2b443ec8dde7a740dc742a1f052d5e256c.1690803944.git.leonro@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: c635ca45a7a2 ("net/mlx5: fs_core: Skip the FTs in the same FS_TYPE_PRIO_CHAINS fs_prio")
+Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: 6c58c8816abb ("net/sched: mqprio: Add length check for TCA_MQPRIO_{MAX/MIN}_RATE64")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/ethernet/mellanox/mlx5/core/fs_core.c | 29 +++++++++----------
- 1 file changed, 14 insertions(+), 15 deletions(-)
+ net/sched/sch_mqprio.c | 114 +++++++++++++++++++++++------------------
+ 1 file changed, 63 insertions(+), 51 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c b/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c
-index d53749248fa09..73ef771d6a4a4 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c
-@@ -876,18 +876,17 @@ static struct mlx5_flow_table *find_closest_ft_recursive(struct fs_node  *root,
- 	return ft;
+diff --git a/net/sched/sch_mqprio.c b/net/sched/sch_mqprio.c
+index 50e15add6068f..a5df5604e0150 100644
+--- a/net/sched/sch_mqprio.c
++++ b/net/sched/sch_mqprio.c
+@@ -130,6 +130,67 @@ static int parse_attr(struct nlattr *tb[], int maxtype, struct nlattr *nla,
+ 	return 0;
  }
  
--/* If reverse is false then return the first flow table in next priority of
-- * prio in the tree, else return the last flow table in the previous priority
-- * of prio in the tree.
-+/* If reverse is false then return the first flow table next to the passed node
-+ * in the tree, else return the last flow table before the node in the tree.
-  */
--static struct mlx5_flow_table *find_closest_ft(struct fs_prio *prio, bool reverse)
-+static struct mlx5_flow_table *find_closest_ft(struct fs_node *node, bool reverse)
++static int mqprio_parse_nlattr(struct Qdisc *sch, struct tc_mqprio_qopt *qopt,
++			       struct nlattr *opt)
++{
++	struct mqprio_sched *priv = qdisc_priv(sch);
++	struct nlattr *tb[TCA_MQPRIO_MAX + 1];
++	struct nlattr *attr;
++	int i, rem, err;
++
++	err = parse_attr(tb, TCA_MQPRIO_MAX, opt, mqprio_policy,
++			 sizeof(*qopt));
++	if (err < 0)
++		return err;
++
++	if (!qopt->hw)
++		return -EINVAL;
++
++	if (tb[TCA_MQPRIO_MODE]) {
++		priv->flags |= TC_MQPRIO_F_MODE;
++		priv->mode = *(u16 *)nla_data(tb[TCA_MQPRIO_MODE]);
++	}
++
++	if (tb[TCA_MQPRIO_SHAPER]) {
++		priv->flags |= TC_MQPRIO_F_SHAPER;
++		priv->shaper = *(u16 *)nla_data(tb[TCA_MQPRIO_SHAPER]);
++	}
++
++	if (tb[TCA_MQPRIO_MIN_RATE64]) {
++		if (priv->shaper != TC_MQPRIO_SHAPER_BW_RATE)
++			return -EINVAL;
++		i = 0;
++		nla_for_each_nested(attr, tb[TCA_MQPRIO_MIN_RATE64],
++				    rem) {
++			if (nla_type(attr) != TCA_MQPRIO_MIN_RATE64)
++				return -EINVAL;
++			if (i >= qopt->num_tc)
++				break;
++			priv->min_rate[i] = *(u64 *)nla_data(attr);
++			i++;
++		}
++		priv->flags |= TC_MQPRIO_F_MIN_RATE;
++	}
++
++	if (tb[TCA_MQPRIO_MAX_RATE64]) {
++		if (priv->shaper != TC_MQPRIO_SHAPER_BW_RATE)
++			return -EINVAL;
++		i = 0;
++		nla_for_each_nested(attr, tb[TCA_MQPRIO_MAX_RATE64],
++				    rem) {
++			if (nla_type(attr) != TCA_MQPRIO_MAX_RATE64)
++				return -EINVAL;
++			if (i >= qopt->num_tc)
++				break;
++			priv->max_rate[i] = *(u64 *)nla_data(attr);
++			i++;
++		}
++		priv->flags |= TC_MQPRIO_F_MAX_RATE;
++	}
++
++	return 0;
++}
++
+ static int mqprio_init(struct Qdisc *sch, struct nlattr *opt,
+ 		       struct netlink_ext_ack *extack)
  {
- 	struct mlx5_flow_table *ft = NULL;
- 	struct fs_node *curr_node;
- 	struct fs_node *parent;
+@@ -139,9 +200,6 @@ static int mqprio_init(struct Qdisc *sch, struct nlattr *opt,
+ 	struct Qdisc *qdisc;
+ 	int i, err = -EOPNOTSUPP;
+ 	struct tc_mqprio_qopt *qopt = NULL;
+-	struct nlattr *tb[TCA_MQPRIO_MAX + 1];
+-	struct nlattr *attr;
+-	int rem;
+ 	int len;
  
--	parent = prio->node.parent;
--	curr_node = &prio->node;
-+	parent = node->parent;
-+	curr_node = node;
- 	while (!ft && parent) {
- 		ft = find_closest_ft_recursive(parent, &curr_node->list, reverse);
- 		curr_node = parent;
-@@ -897,15 +896,15 @@ static struct mlx5_flow_table *find_closest_ft(struct fs_prio *prio, bool revers
- }
+ 	BUILD_BUG_ON(TC_MAX_QUEUE != TC_QOPT_MAX_QUEUE);
+@@ -166,55 +224,9 @@ static int mqprio_init(struct Qdisc *sch, struct nlattr *opt,
  
- /* Assuming all the tree is locked by mutex chain lock */
--static struct mlx5_flow_table *find_next_chained_ft(struct fs_prio *prio)
-+static struct mlx5_flow_table *find_next_chained_ft(struct fs_node *node)
- {
--	return find_closest_ft(prio, false);
-+	return find_closest_ft(node, false);
- }
- 
- /* Assuming all the tree is locked by mutex chain lock */
--static struct mlx5_flow_table *find_prev_chained_ft(struct fs_prio *prio)
-+static struct mlx5_flow_table *find_prev_chained_ft(struct fs_node *node)
- {
--	return find_closest_ft(prio, true);
-+	return find_closest_ft(node, true);
- }
- 
- static struct mlx5_flow_table *find_next_fwd_ft(struct mlx5_flow_table *ft,
-@@ -917,7 +916,7 @@ static struct mlx5_flow_table *find_next_fwd_ft(struct mlx5_flow_table *ft,
- 	next_ns = flow_act->action & MLX5_FLOW_CONTEXT_ACTION_FWD_NEXT_NS;
- 	fs_get_obj(prio, next_ns ? ft->ns->node.parent : ft->node.parent);
- 
--	return find_next_chained_ft(prio);
-+	return find_next_chained_ft(&prio->node);
- }
- 
- static int connect_fts_in_prio(struct mlx5_core_dev *dev,
-@@ -948,7 +947,7 @@ static int connect_prev_fts(struct mlx5_core_dev *dev,
- {
- 	struct mlx5_flow_table *prev_ft;
- 
--	prev_ft = find_prev_chained_ft(prio);
-+	prev_ft = find_prev_chained_ft(&prio->node);
- 	if (prev_ft) {
- 		struct fs_prio *prev_prio;
- 
-@@ -1094,7 +1093,7 @@ static int connect_flow_table(struct mlx5_core_dev *dev, struct mlx5_flow_table
- 		if (err)
+ 	len = nla_len(opt) - NLA_ALIGN(sizeof(*qopt));
+ 	if (len > 0) {
+-		err = parse_attr(tb, TCA_MQPRIO_MAX, opt, mqprio_policy,
+-				 sizeof(*qopt));
+-		if (err < 0)
++		err = mqprio_parse_nlattr(sch, qopt, opt);
++		if (err)
  			return err;
+-
+-		if (!qopt->hw)
+-			return -EINVAL;
+-
+-		if (tb[TCA_MQPRIO_MODE]) {
+-			priv->flags |= TC_MQPRIO_F_MODE;
+-			priv->mode = *(u16 *)nla_data(tb[TCA_MQPRIO_MODE]);
+-		}
+-
+-		if (tb[TCA_MQPRIO_SHAPER]) {
+-			priv->flags |= TC_MQPRIO_F_SHAPER;
+-			priv->shaper = *(u16 *)nla_data(tb[TCA_MQPRIO_SHAPER]);
+-		}
+-
+-		if (tb[TCA_MQPRIO_MIN_RATE64]) {
+-			if (priv->shaper != TC_MQPRIO_SHAPER_BW_RATE)
+-				return -EINVAL;
+-			i = 0;
+-			nla_for_each_nested(attr, tb[TCA_MQPRIO_MIN_RATE64],
+-					    rem) {
+-				if (nla_type(attr) != TCA_MQPRIO_MIN_RATE64)
+-					return -EINVAL;
+-				if (i >= qopt->num_tc)
+-					break;
+-				priv->min_rate[i] = *(u64 *)nla_data(attr);
+-				i++;
+-			}
+-			priv->flags |= TC_MQPRIO_F_MIN_RATE;
+-		}
+-
+-		if (tb[TCA_MQPRIO_MAX_RATE64]) {
+-			if (priv->shaper != TC_MQPRIO_SHAPER_BW_RATE)
+-				return -EINVAL;
+-			i = 0;
+-			nla_for_each_nested(attr, tb[TCA_MQPRIO_MAX_RATE64],
+-					    rem) {
+-				if (nla_type(attr) != TCA_MQPRIO_MAX_RATE64)
+-					return -EINVAL;
+-				if (i >= qopt->num_tc)
+-					break;
+-				priv->max_rate[i] = *(u64 *)nla_data(attr);
+-				i++;
+-			}
+-			priv->flags |= TC_MQPRIO_F_MAX_RATE;
+-		}
+ 	}
  
--		next_ft = first_ft ? first_ft : find_next_chained_ft(prio);
-+		next_ft = first_ft ? first_ft : find_next_chained_ft(&prio->node);
- 		err = connect_fwd_rules(dev, ft, next_ft);
- 		if (err)
- 			return err;
-@@ -1169,7 +1168,7 @@ static struct mlx5_flow_table *__mlx5_create_flow_table(struct mlx5_flow_namespa
- 
- 	tree_init_node(&ft->node, del_hw_flow_table, del_sw_flow_table);
- 	next_ft = unmanaged ? ft_attr->next_ft :
--			      find_next_chained_ft(fs_prio);
-+			      find_next_chained_ft(&fs_prio->node);
- 	ft->def_miss_action = ns->def_miss_action;
- 	ft->ns = ns;
- 	err = root->cmds->create_flow_table(root, ft, ft_attr, next_ft);
-@@ -2163,7 +2162,7 @@ static struct mlx5_flow_table *find_next_ft(struct mlx5_flow_table *ft)
- 
- 	if (!list_is_last(&ft->node.list, &prio->node.children))
- 		return list_next_entry(ft, node.list);
--	return find_next_chained_ft(prio);
-+	return find_next_chained_ft(&prio->node);
- }
- 
- static int update_root_ft_destroy(struct mlx5_flow_table *ft)
+ 	/* pre-allocate qdisc, attachment can't fail */
 -- 
-2.40.1
+2.39.2
 
 
 
