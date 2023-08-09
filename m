@@ -2,95 +2,124 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5EB7A775D24
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:34:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7309B7758A6
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:54:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234004AbjHILeU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:34:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40714 "EHLO
+        id S232641AbjHIKyr (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 06:54:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35030 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234001AbjHILeU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:34:20 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9D722E3
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:34:19 -0700 (PDT)
+        with ESMTP id S232647AbjHIKyf (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:54:35 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 503F44EF8
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:52:50 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3354D63491
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:34:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43326C433C8;
-        Wed,  9 Aug 2023 11:34:18 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 51CC9630D2
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:52:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 636E6C433C8;
+        Wed,  9 Aug 2023 10:52:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691580858;
-        bh=d1ZAlTI9uhU7W9fDSrct5ECdfzuzf0UCNoBPnbmkhJk=;
+        s=korg; t=1691578326;
+        bh=bFTHgUWNfETKxPox3TszkA8or4AZrJYY4e2J7v1ZDLM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=kpOBCnW7/FPibQS69KGSTemicrbG/EcDdBOk9L1V+VU406Gh6FelJDLlYRkeyL9qG
-         rGNZXk6e+ceYUXsuTkRrBT7Zh3GQUbREIfJhiSFp3quw0SOj5JQd/IW+wa8/25joFw
-         BKutIKHyoBX9oYMQA4bwPWn4lhWf4NbZA3f6jqac=
+        b=H3KAS54NQJVeYPVL8jzr3Aq/ePsLcte1j47j3fPh78DY0jRAh6koxMr0ebWJm2KZ3
+         0xPxJ6SQLmeVUGICjIyrDkU66GzESd1A2eAooKLOZcwAXrl4YrGOnwWc5xxd+aG664
+         P9KQX7mXWHDE11iA2qhvn5FNsGEyckJs/uJxKk2A=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Qu Wenruo <wqu@suse.com>,
-        Filipe Manana <fdmanana@suse.com>,
-        David Sterba <dsterba@suse.com>,
+        patches@lists.linux.dev, Shijie Sun <sunshijie@xiaomi.com>,
+        Yue Hu <huyue2@coolpad.com>, Chao Yu <chao@kernel.org>,
+        Gao Xiang <hsiangkao@linux.alibaba.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 005/201] btrfs: fix extent buffer leak after tree mod log failure at split_node()
+Subject: [PATCH 6.1 020/127] erofs: fix wrong primary bvec selection on deduplicated extents
 Date:   Wed,  9 Aug 2023 12:40:07 +0200
-Message-ID: <20230809103643.980511568@linuxfoundation.org>
+Message-ID: <20230809103637.320084458@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103643.799166053@linuxfoundation.org>
-References: <20230809103643.799166053@linuxfoundation.org>
+In-Reply-To: <20230809103636.615294317@linuxfoundation.org>
+References: <20230809103636.615294317@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Gao Xiang <hsiangkao@linux.alibaba.com>
 
-[ Upstream commit ede600e497b1461d06d22a7d17703d9096868bc3 ]
+[ Upstream commit 94c43de73521d8ed7ebcfc6191d9dace1cbf7caa ]
 
-At split_node(), if we fail to log the tree mod log copy operation, we
-return without unlocking the split extent buffer we just allocated and
-without decrementing the reference we own on it. Fix this by unlocking
-it and decrementing the ref count before returning.
+When handling deduplicated compressed data, there can be multiple
+decompressed extents pointing to the same compressed data in one shot.
 
-Fixes: 5de865eebb83 ("Btrfs: fix tree mod logging")
-CC: stable@vger.kernel.org # 5.4+
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+In such cases, the bvecs which belong to the longest extent will be
+selected as the primary bvecs for real decompressors to decode and the
+other duplicated bvecs will be directly copied from the primary bvecs.
+
+Previously, only relative offsets of the longest extent were checked to
+decompress the primary bvecs.  On rare occasions, it can be incorrect
+if there are several extents with the same start relative offset.
+As a result, some short bvecs could be selected for decompression and
+then cause data corruption.
+
+For example, as Shijie Sun reported off-list, considering the following
+extents of a file:
+ 117:   903345..  915250 |   11905 :     385024..    389120 |    4096
+...
+ 119:   919729..  930323 |   10594 :     385024..    389120 |    4096
+...
+ 124:   968881..  980786 |   11905 :     385024..    389120 |    4096
+
+The start relative offset is the same: 2225, but extent 119 (919729..
+930323) is shorter than the others.
+
+Let's restrict the bvec length in addition to the start offset if bvecs
+are not full.
+
+Reported-by: Shijie Sun <sunshijie@xiaomi.com>
+Fixes: 5c2a64252c5d ("erofs: introduce partial-referenced pclusters")
+Tested-by Shijie Sun <sunshijie@xiaomi.com>
+Reviewed-by: Yue Hu <huyue2@coolpad.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Link: https://lore.kernel.org/r/20230719065459.60083-1-hsiangkao@linux.alibaba.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/ctree.c | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/erofs/zdata.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/fs/btrfs/ctree.c b/fs/btrfs/ctree.c
-index 41a7ace9998e4..814f2f07e74c4 100644
---- a/fs/btrfs/ctree.c
-+++ b/fs/btrfs/ctree.c
-@@ -3589,6 +3589,8 @@ static noinline int split_node(struct btrfs_trans_handle *trans,
+diff --git a/fs/erofs/zdata.c b/fs/erofs/zdata.c
+index 533e612b6a486..361f3c29897e8 100644
+--- a/fs/erofs/zdata.c
++++ b/fs/erofs/zdata.c
+@@ -989,10 +989,11 @@ static void z_erofs_do_decompressed_bvec(struct z_erofs_decompress_backend *be,
+ 					 struct z_erofs_bvec *bvec)
+ {
+ 	struct z_erofs_bvec_item *item;
++	unsigned int pgnr;
  
- 	ret = tree_mod_log_eb_copy(split, c, 0, mid, c_nritems - mid);
- 	if (ret) {
-+		btrfs_tree_unlock(split);
-+		free_extent_buffer(split);
- 		btrfs_abort_transaction(trans, ret);
- 		return ret;
- 	}
+-	if (!((bvec->offset + be->pcl->pageofs_out) & ~PAGE_MASK)) {
+-		unsigned int pgnr;
+-
++	if (!((bvec->offset + be->pcl->pageofs_out) & ~PAGE_MASK) &&
++	    (bvec->end == PAGE_SIZE ||
++	     bvec->offset + bvec->end == be->pcl->length)) {
+ 		pgnr = (bvec->offset + be->pcl->pageofs_out) >> PAGE_SHIFT;
+ 		DBG_BUGON(pgnr >= be->nr_pages);
+ 		if (!be->decompressed_pages[pgnr]) {
 -- 
-2.39.2
+2.40.1
 
 
 
