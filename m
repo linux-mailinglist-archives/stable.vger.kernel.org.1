@@ -2,96 +2,102 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 390BE7757BB
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:49:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E3D95775A29
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:05:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232271AbjHIKt0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 06:49:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32862 "EHLO
+        id S233093AbjHILFu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:05:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57978 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232266AbjHIKt0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:49:26 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AE0F510F3
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:49:25 -0700 (PDT)
+        with ESMTP id S233073AbjHILFu (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:05:50 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 090D0ED
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:05:50 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4333063124
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:49:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F965C433C8;
-        Wed,  9 Aug 2023 10:49:24 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9CCB663118
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:05:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB063C433C8;
+        Wed,  9 Aug 2023 11:05:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691578164;
-        bh=r3OlAe0GEBBzMp+cus2sFSlrwgZqQ5yG3CW6lq3ObE8=;
+        s=korg; t=1691579149;
+        bh=KBNP6UbnvbOXT6KYqktiJdCO42fG3aQodSQOTcSpxCo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Sz62opNQqPXRvB72T8k9t8s7QPE8z2/Sad84wNNhSU/10xs5sLjANJ3oTx1VSb/ca
-         juMBUoeAr+bt41GZ3xvQDXDXxvqGUca8ull2HuZdE6P2Jov8rqPjHtOkkItwsSFF4D
-         Ltnj+qUshxlkwLHWj/AxCOM9bAaS9p8O4HJajwpA=
+        b=sGwPOVZcZ5IOe1WS3Ct1NltahKwJA85Pn/aelP++jbjaNYVZpiiuI6nnFDKrRTWA1
+         YmG09tt9djfeEQIOUxXbBupEcvnUaCAH6eMvww/mRZjWhUEIuAiRDprnCs93p5b3nl
+         Gs6RFxn+N+3ShfKobH5J1qdbIY+vc6XHmfpbCGzA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Song Shuai <suagrfillet@gmail.com>,
-        Alexandre Ghiti <alexghiti@rivosinc.com>,
-        Palmer Dabbelt <palmer@rivosinc.com>
-Subject: [PATCH 6.4 099/165] Documentation: kdump: Add va_kernel_pa_offset for RISCV64
-Date:   Wed,  9 Aug 2023 12:40:30 +0200
-Message-ID: <20230809103646.019961791@linuxfoundation.org>
+        patches@lists.linux.dev, Klaus Kudielka <klaus.kudielka@gmail.com>,
+        Michal Kubiak <michal.kubiak@intel.com>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.14 093/204] net: mvneta: fix txq_map in case of txq_number==1
+Date:   Wed,  9 Aug 2023 12:40:31 +0200
+Message-ID: <20230809103645.746370644@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103642.720851262@linuxfoundation.org>
-References: <20230809103642.720851262@linuxfoundation.org>
+In-Reply-To: <20230809103642.552405807@linuxfoundation.org>
+References: <20230809103642.552405807@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Song Shuai <suagrfillet@gmail.com>
+From: Klaus Kudielka <klaus.kudielka@gmail.com>
 
-commit 640c503d7dbd7d34a62099c933f4db0ed77ccbec upstream.
+[ Upstream commit 21327f81db6337c8843ce755b01523c7d3df715b ]
 
-RISC-V Linux exports "va_kernel_pa_offset" in vmcoreinfo to help
-Crash-utility translate the kernel virtual address correctly.
+If we boot with mvneta.txq_number=1, the txq_map is set incorrectly:
+MVNETA_CPU_TXQ_ACCESS(1) refers to TX queue 1, but only TX queue 0 is
+initialized. Fix this.
 
-Here adds the definition of "va_kernel_pa_offset".
-
-Fixes: 3335068f8721 ("riscv: Use PUD/P4D/PGD pages for the linear mapping")
-Link: https://lore.kernel.org/linux-riscv/20230724040649.220279-1-suagrfillet@gmail.com/
-Signed-off-by: Song Shuai <suagrfillet@gmail.com>
-Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Link: https://lore.kernel.org/r/20230724100917.309061-2-suagrfillet@gmail.com
-Cc: stable@vger.kernel.org
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 50bf8cb6fc9c ("net: mvneta: Configure XPS support")
+Signed-off-by: Klaus Kudielka <klaus.kudielka@gmail.com>
+Reviewed-by: Michal Kubiak <michal.kubiak@intel.com>
+Link: https://lore.kernel.org/r/20230705053712.3914-1-klaus.kudielka@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/admin-guide/kdump/vmcoreinfo.rst | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/net/ethernet/marvell/mvneta.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/Documentation/admin-guide/kdump/vmcoreinfo.rst b/Documentation/admin-guide/kdump/vmcoreinfo.rst
-index c18d94fa6470..f8ebb63b6c5d 100644
---- a/Documentation/admin-guide/kdump/vmcoreinfo.rst
-+++ b/Documentation/admin-guide/kdump/vmcoreinfo.rst
-@@ -624,3 +624,9 @@ Used to get the correct ranges:
-   * VMALLOC_START ~ VMALLOC_END : vmalloc() / ioremap() space.
-   * VMEMMAP_START ~ VMEMMAP_END : vmemmap space, used for struct page array.
-   * KERNEL_LINK_ADDR : start address of Kernel link and BPF
-+
-+va_kernel_pa_offset
-+-------------------
-+
-+Indicates the offset between the kernel virtual and physical mappings.
-+Used to translate virtual to physical addresses.
+diff --git a/drivers/net/ethernet/marvell/mvneta.c b/drivers/net/ethernet/marvell/mvneta.c
+index dbed8fbedd8a8..eff7c65fbe3c7 100644
+--- a/drivers/net/ethernet/marvell/mvneta.c
++++ b/drivers/net/ethernet/marvell/mvneta.c
+@@ -1402,7 +1402,7 @@ static void mvneta_defaults_set(struct mvneta_port *pp)
+ 			 */
+ 			if (txq_number == 1)
+ 				txq_map = (cpu == pp->rxq_def) ?
+-					MVNETA_CPU_TXQ_ACCESS(1) : 0;
++					MVNETA_CPU_TXQ_ACCESS(0) : 0;
+ 
+ 		} else {
+ 			txq_map = MVNETA_CPU_TXQ_ACCESS_ALL_MASK;
+@@ -3387,7 +3387,7 @@ static void mvneta_percpu_elect(struct mvneta_port *pp)
+ 		 */
+ 		if (txq_number == 1)
+ 			txq_map = (cpu == elected_cpu) ?
+-				MVNETA_CPU_TXQ_ACCESS(1) : 0;
++				MVNETA_CPU_TXQ_ACCESS(0) : 0;
+ 		else
+ 			txq_map = mvreg_read(pp, MVNETA_CPU_MAP(cpu)) &
+ 				MVNETA_CPU_TXQ_ACCESS_ALL_MASK;
 -- 
-2.41.0
+2.39.2
 
 
 
