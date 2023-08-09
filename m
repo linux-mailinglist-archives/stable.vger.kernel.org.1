@@ -2,49 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DABD7775D22
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:34:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E6A87775A04
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:04:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234003AbjHILeP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:34:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42154 "EHLO
+        id S233034AbjHILEl (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:04:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44506 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234001AbjHILeO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:34:14 -0400
+        with ESMTP id S233041AbjHILEk (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:04:40 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F23E2173A
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:34:13 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7446F1724
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:04:40 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 910A063489
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:34:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A18ABC433C8;
-        Wed,  9 Aug 2023 11:34:12 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1455162BD5
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:04:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 237BCC433C8;
+        Wed,  9 Aug 2023 11:04:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691580853;
-        bh=/b8ZxgOBLhdEfBczTIuNocqx+K3bQ16KGdVzpeJ/fVs=;
+        s=korg; t=1691579079;
+        bh=RsoMg+K2J/fBRgIYfizAwc1xLXeJlItwfzoFl2oMbZ8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=EqOsLzAkqkpmbYsFvJnjqfyLXJmQEgeq4KSFpsV+7qnZh86Af7kPbIo8a7dwKtUhP
-         8O3cOn7ccCMg20pyk5LEs0Q12/TeEmU81vjFRhjTpBWfHtEFg09i0Evl3t0p8AGfGD
-         e4+BhxD71kdYcbX39gx5p0w9wupoah5907xsjQ88=
+        b=OJ3p1A0hUXk+WXx3inknxWjR6aCXVuZZdJvftNt3IzlSzRe/E1TVNXyOJa5wxO+0X
+         j0bRYD8QkmWxoC8i1DA5u2QCl4ASxIVqVTSjao3zGtf3HMSJAybfulrMpgPX0NZe02
+         U3jxUBzo2H7TRBxobVhMsf8fVKhnGWWpPZ4Is3OM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Daniel Scally <dan.scally@ideasonboard.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 003/201] gpio: tps68470: Make tps68470_gpio_output() always set the initial value
+Subject: [PATCH 4.14 067/204] rtc: st-lpc: Release some resources in st_rtc_probe() in case of error
 Date:   Wed,  9 Aug 2023 12:40:05 +0200
-Message-ID: <20230809103643.911719979@linuxfoundation.org>
+Message-ID: <20230809103644.892506770@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103643.799166053@linuxfoundation.org>
-References: <20230809103643.799166053@linuxfoundation.org>
+In-Reply-To: <20230809103642.552405807@linuxfoundation.org>
+References: <20230809103642.552405807@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -59,47 +56,37 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit 5a7adc6c1069ce31ef4f606ae9c05592c80a6ab5 ]
+[ Upstream commit 06c6e1b01d9261f03629cefd1f3553503291e6cf ]
 
-Make tps68470_gpio_output() call tps68470_gpio_set() for output-only pins
-too, so that the initial value passed to gpiod_direction_output() is
-honored for these pins too.
+If an error occurs after clk_get(), the corresponding resources should be
+released.
 
-Fixes: 275b13a65547 ("gpio: Add support for TPS68470 GPIOs")
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-Reviewed-by: Daniel Scally <dan.scally@ideasonboard.com>
-Tested-by: Daniel Scally <dan.scally@ideasonboard.com>
-Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Use devm_clk_get() to fix it.
+
+Fixes: b5b2bdfc2893 ("rtc: st: Add new driver for ST's LPC RTC")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Link: https://lore.kernel.org/r/866af6adbc7454a7b4505eb6c28fbdc86ccff39e.1686251455.git.christophe.jaillet@wanadoo.fr
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpio-tps68470.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/rtc/rtc-st-lpc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpio/gpio-tps68470.c b/drivers/gpio/gpio-tps68470.c
-index f7f5f770e0fbb..e19eb7c982a13 100644
---- a/drivers/gpio/gpio-tps68470.c
-+++ b/drivers/gpio/gpio-tps68470.c
-@@ -91,13 +91,13 @@ static int tps68470_gpio_output(struct gpio_chip *gc, unsigned int offset,
- 	struct tps68470_gpio_data *tps68470_gpio = gpiochip_get_data(gc);
- 	struct regmap *regmap = tps68470_gpio->tps68470_regmap;
+diff --git a/drivers/rtc/rtc-st-lpc.c b/drivers/rtc/rtc-st-lpc.c
+index 6f33e705928f4..9044c2851a1f2 100644
+--- a/drivers/rtc/rtc-st-lpc.c
++++ b/drivers/rtc/rtc-st-lpc.c
+@@ -236,7 +236,7 @@ static int st_rtc_probe(struct platform_device *pdev)
+ 	enable_irq_wake(rtc->irq);
+ 	disable_irq(rtc->irq);
  
-+	/* Set the initial value */
-+	tps68470_gpio_set(gc, offset, value);
-+
- 	/* rest are always outputs */
- 	if (offset >= TPS68470_N_REGULAR_GPIO)
- 		return 0;
- 
--	/* Set the initial value */
--	tps68470_gpio_set(gc, offset, value);
--
- 	return regmap_update_bits(regmap, TPS68470_GPIO_CTL_REG_A(offset),
- 				 TPS68470_GPIO_MODE_MASK,
- 				 TPS68470_GPIO_MODE_OUT_CMOS);
+-	rtc->clk = clk_get(&pdev->dev, NULL);
++	rtc->clk = devm_clk_get(&pdev->dev, NULL);
+ 	if (IS_ERR(rtc->clk)) {
+ 		dev_err(&pdev->dev, "Unable to request clock\n");
+ 		return PTR_ERR(rtc->clk);
 -- 
 2.39.2
 
