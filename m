@@ -2,46 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E35DB775D6C
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:37:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 982167757BA
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:49:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234100AbjHILhX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:37:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55556 "EHLO
+        id S232269AbjHIKtX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 06:49:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32818 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234095AbjHILhW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:37:22 -0400
+        with ESMTP id S232267AbjHIKtX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:49:23 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 417F0E3
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:37:22 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D70481702
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:49:22 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D4E9863566
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:37:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF8FCC433C8;
-        Wed,  9 Aug 2023 11:37:20 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7724F63120
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:49:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 849FFC433C8;
+        Wed,  9 Aug 2023 10:49:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691581041;
-        bh=WuRcf7NTsT+vMms9zLqIZ851iIGflwb13qu7kPnfZKM=;
+        s=korg; t=1691578161;
+        bh=45H3qdFufe7+Z2hcJRyLfXzKsuvd/80K7z6JYFAkOU8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=KHCQR48NPyQ5S3iG1GhczMMhykNx2i+2X5axrI746DCdqQB49q0gnBOPhqDFg7yk3
-         bkvCcbFwo7swgg4zlQN1gZejNai3WYrsEf9NuX9JphBPi05j/FOxeSTitCjSW92jK8
-         sj+y3U4L7Swom0+maxC85YdL5icWAsdj+J8Bcw6A=
+        b=LQRDenU8t6tWxcSljxmb9PypJVzrOAu6UyuIfuN886P9ePbcGr9zBJ/yRHvyHSV5/
+         SUjpZSsn96Pyc0lXT5fV0MnPKtOdAgXw3qBzRY97HnWe65JKGYmFzaumCNF+QL2iB5
+         9VIimsUap9mOWB8//ae4VR5NJ/Z3zBng5TGsKtWE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Thomas Bogendoerfer <tbogendoerfer@suse.de>,
-        Leon Romanovsky <leon@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 055/201] RDMA/mthca: Fix crash when polling CQ for shared QPs
+        patches@lists.linux.dev, Mark Brown <broonie@kernel.org>,
+        Catalin Marinas <catalin.marinas@arm.com>
+Subject: [PATCH 6.4 126/165] arm64/ptrace: Dont enable SVE when setting streaming SVE
 Date:   Wed,  9 Aug 2023 12:40:57 +0200
-Message-ID: <20230809103645.683635667@linuxfoundation.org>
+Message-ID: <20230809103646.927259911@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103643.799166053@linuxfoundation.org>
-References: <20230809103643.799166053@linuxfoundation.org>
+In-Reply-To: <20230809103642.720851262@linuxfoundation.org>
+References: <20230809103642.720851262@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,40 +54,57 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Thomas Bogendoerfer <tbogendoerfer@suse.de>
+From: Mark Brown <broonie@kernel.org>
 
-[ Upstream commit dc52aadbc1849cbe3fcf6bc54d35f6baa396e0a1 ]
+commit 045aecdfcb2e060db142d83a0f4082380c465d2c upstream.
 
-Commit 21c2fe94abb2 ("RDMA/mthca: Combine special QP struct with mthca QP")
-introduced a new struct mthca_sqp which doesn't contain struct mthca_qp
-any longer. Placing a pointer of this new struct into qptable leads
-to crashes, because mthca_poll_one() expects a qp pointer. Fix this
-by putting the correct pointer into qptable.
+Systems which implement SME without also implementing SVE are
+architecturally valid but were not initially supported by the kernel,
+unfortunately we missed one issue in the ptrace code.
 
-Fixes: 21c2fe94abb2 ("RDMA/mthca: Combine special QP struct with mthca QP")
-Signed-off-by: Thomas Bogendoerfer <tbogendoerfer@suse.de>
-Link: https://lore.kernel.org/r/20230713141658.9426-1-tbogendoerfer@suse.de
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The SVE register setting code is shared between SVE and streaming mode
+SVE. When we set full SVE register state we currently enable TIF_SVE
+unconditionally, in the case where streaming SVE is being configured on a
+system that supports vanilla SVE this is not an issue since we always
+initialise enough state for both vector lengths but on a system which only
+support SME it will result in us attempting to restore the SVE vector
+length after having set streaming SVE registers.
+
+Fix this by making the enabling of SVE conditional on setting SVE vector
+state. If we set streaming SVE state and SVE was not already enabled this
+will result in a SVE access trap on next use of normal SVE, this will cause
+us to flush our register state but this is fine since the only way to
+trigger a SVE access trap would be to exit streaming mode which will cause
+the in register state to be flushed anyway.
+
+Fixes: e12310a0d30f ("arm64/sme: Implement ptrace support for streaming mode SVE registers")
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20230803-arm64-fix-ptrace-ssve-no-sve-v1-1-49df214bfb3e@kernel.org
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/mthca/mthca_qp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/kernel/ptrace.c |    8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/infiniband/hw/mthca/mthca_qp.c b/drivers/infiniband/hw/mthca/mthca_qp.c
-index 08a2a7afafd3d..3f57f7dfb822f 100644
---- a/drivers/infiniband/hw/mthca/mthca_qp.c
-+++ b/drivers/infiniband/hw/mthca/mthca_qp.c
-@@ -1390,7 +1390,7 @@ int mthca_alloc_sqp(struct mthca_dev *dev,
- 	if (mthca_array_get(&dev->qp_table.qp, mqpn))
- 		err = -EBUSY;
- 	else
--		mthca_array_set(&dev->qp_table.qp, mqpn, qp->sqp);
-+		mthca_array_set(&dev->qp_table.qp, mqpn, qp);
- 	spin_unlock_irq(&dev->qp_table.lock);
+--- a/arch/arm64/kernel/ptrace.c
++++ b/arch/arm64/kernel/ptrace.c
+@@ -932,11 +932,13 @@ static int sve_set_common(struct task_st
+ 	/*
+ 	 * Ensure target->thread.sve_state is up to date with target's
+ 	 * FPSIMD regs, so that a short copyin leaves trailing
+-	 * registers unmodified.  Always enable SVE even if going into
+-	 * streaming mode.
++	 * registers unmodified.  Only enable SVE if we are
++	 * configuring normal SVE, a system with streaming SVE may not
++	 * have normal SVE.
+ 	 */
+ 	fpsimd_sync_to_sve(target);
+-	set_tsk_thread_flag(target, TIF_SVE);
++	if (type == ARM64_VEC_SVE)
++		set_tsk_thread_flag(target, TIF_SVE);
+ 	target->thread.fp_type = FP_STATE_SVE;
  
- 	if (err)
--- 
-2.40.1
-
+ 	BUILD_BUG_ON(SVE_PT_SVE_OFFSET != sizeof(header));
 
 
