@@ -2,142 +2,198 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E5F607759DF
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:03:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DFFFA775B98
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:19:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233030AbjHILDd (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:03:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38378 "EHLO
+        id S233487AbjHILTD (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:19:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41830 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233011AbjHILD0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:03:26 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A76A1FD8
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:03:25 -0700 (PDT)
+        with ESMTP id S233482AbjHILTC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:19:02 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9179BED
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:19:01 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E72C063118
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:03:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED96FC433D9;
-        Wed,  9 Aug 2023 11:03:23 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2F2F463193
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:19:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FC54C433C8;
+        Wed,  9 Aug 2023 11:19:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691579004;
-        bh=KkqpjLlg8MVBheYvhzn2RF14G2iBoE895dphAR2TZ7w=;
+        s=korg; t=1691579940;
+        bh=jGJLnxhojWiKBHQwtvho6VGxFAX1SzaKzKWIpKYVKzs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=b7ynOnx8qqNfhXe/w9+ufbeE/knJLjzn9EK0MxhDRmWU4cKYKo5d8cU2rm9QVhX1/
-         h14M+yy4w7tghMUtQdU7e1U9ok6w54qEwiPfK/keGyhl0Faqw3L9geuB8QuNVVQm1R
-         mZHbLnWQVhExO9DUcXwcxcnwQk/z5TNrtxi7f+ds=
+        b=pe7KHkRRMmx9AzBgmYA7otxM24G3y+DCSPPbzkqr0XgnjLmK+b7qyNiU/fzfzoRqv
+         O2O91bexuryY6wQ9KLIecnLW/NQivh0Zm0xkDKCpU3i52gPmtOqo04SzMaKnrVsIW/
+         YYgVFJrw9EmQbx+FUcG0EU5vKvyAdHYJGVRVFHy0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
-        Mark Brown <broonie@kernel.org>,
+        patches@lists.linux.dev, Wang Yufen <wangyufen@huawei.com>,
+        Kuniyuki Iwashima <kuniyu@amazon.com>,
+        David Ahern <dsahern@kernel.org>,
+        Eric Dumazet <edumazet@google.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 040/204] ASoC: es8316: Increment max value for ALC Capture Target Volume control
+Subject: [PATCH 4.19 140/323] icmp6: Fix null-ptr-deref of ip6_null_entry->rt6i_idev in icmp6_dev().
 Date:   Wed,  9 Aug 2023 12:39:38 +0200
-Message-ID: <20230809103643.910794865@linuxfoundation.org>
+Message-ID: <20230809103704.551679210@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103642.552405807@linuxfoundation.org>
-References: <20230809103642.552405807@linuxfoundation.org>
+In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
+References: <20230809103658.104386911@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit 6f073429037cd79d7311cd8236311c53f5ea8f01 ]
+[ Upstream commit 2aaa8a15de73874847d62eb595c6683bface80fd ]
 
-The following error occurs when trying to restore a previously saved
-ALSA mixer state (tested on a Rock 5B board):
+With some IPv6 Ext Hdr (RPL, SRv6, etc.), we can send a packet that
+has the link-local address as src and dst IP and will be forwarded to
+an external IP in the IPv6 Ext Hdr.
 
-  $ alsactl --no-ucm -f /tmp/asound.state store hw:Analog
-  $ alsactl --no-ucm -I -f /tmp/asound.state restore hw:Analog
-  alsactl: set_control:1475: Cannot write control '2:0:0:ALC Capture Target Volume:0' : Invalid argument
+For example, the script below generates a packet whose src IP is the
+link-local address and dst is updated to 11::.
 
-According to ES8316 datasheet, the register at address 0x2B, which is
-related to the above mixer control, contains by default the value 0xB0.
-Considering the corresponding ALC target bits (ALCLVL) are 7:4, the
-control is initialized with 11, which is one step above the maximum
-value allowed by the driver:
+  # for f in $(find /proc/sys/net/ -name *seg6_enabled*); do echo 1 > $f; done
+  # python3
+  >>> from socket import *
+  >>> from scapy.all import *
+  >>>
+  >>> SRC_ADDR = DST_ADDR = "fe80::5054:ff:fe12:3456"
+  >>>
+  >>> pkt = IPv6(src=SRC_ADDR, dst=DST_ADDR)
+  >>> pkt /= IPv6ExtHdrSegmentRouting(type=4, addresses=["11::", "22::"], segleft=1)
+  >>>
+  >>> sk = socket(AF_INET6, SOCK_RAW, IPPROTO_RAW)
+  >>> sk.sendto(bytes(pkt), (DST_ADDR, 0))
 
- ALCLVL | dB gain
- -------+--------
-  0000  |  -16.5
-  0001  |  -15.0
-  0010  |  -13.5
-  ....  |  .....
-  0111  |   -6.0
-  1000  |   -4.5
-  1001  |   -3.0
-  1010  |   -1.5
-  ....  |  .....
-  1111  |   -1.5
+For such a packet, we call ip6_route_input() to look up a route for the
+next destination in these three functions depending on the header type.
 
-The tests performed using the VU meter feature (--vumeter=TYPE) of
-arecord/aplay confirm the specs are correct and there is no measured
-gain if the 1011-1111 range would have been mapped to 0 dB:
+  * ipv6_rthdr_rcv()
+  * ipv6_rpl_srh_rcv()
+  * ipv6_srh_rcv()
 
- dB gain | VU meter %
- --------+-----------
-   -6.0  |  30-31
-   -4.5  |  35-36
-   -3.0  |  42-43
-   -1.5  |  50-51
-    0.0  |  50-51
+If no route is found, ip6_null_entry is set to skb, and the following
+dst_input(skb) calls ip6_pkt_drop().
 
-Increment the max value allowed for ALC Capture Target Volume control,
-so that it matches the hardware default.  Additionally, update the
-related TLV to prevent an artificial extension of the dB gain range.
+Finally, in icmp6_dev(), we dereference skb_rt6_info(skb)->rt6i_idev->dev
+as the input device is the loopback interface.  Then, we have to check if
+skb_rt6_info(skb)->rt6i_idev is NULL or not to avoid NULL pointer deref
+for ip6_null_entry.
 
-Fixes: b8b88b70875a ("ASoC: add es8316 codec driver")
-Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
-Link: https://lore.kernel.org/r/20230530181140.483936-2-cristian.ciocaltea@collabora.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+BUG: kernel NULL pointer dereference, address: 0000000000000000
+ PF: supervisor read access in kernel mode
+ PF: error_code(0x0000) - not-present page
+PGD 0 P4D 0
+Oops: 0000 [#1] PREEMPT SMP PTI
+CPU: 0 PID: 157 Comm: python3 Not tainted 6.4.0-11996-gb121d614371c #35
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.0-0-gd239552ce722-prebuilt.qemu.org 04/01/2014
+RIP: 0010:icmp6_send (net/ipv6/icmp.c:436 net/ipv6/icmp.c:503)
+Code: fe ff ff 48 c7 40 30 c0 86 5d 83 e8 c6 44 1c 00 e9 c8 fc ff ff 49 8b 46 58 48 83 e0 fe 0f 84 4a fb ff ff 48 8b 80 d0 00 00 00 <48> 8b 00 44 8b 88 e0 00 00 00 e9 34 fb ff ff 4d 85 ed 0f 85 69 01
+RSP: 0018:ffffc90000003c70 EFLAGS: 00000286
+RAX: 0000000000000000 RBX: 0000000000000001 RCX: 00000000000000e0
+RDX: 0000000000000021 RSI: 0000000000000000 RDI: ffff888006d72a18
+RBP: ffffc90000003d80 R08: 0000000000000000 R09: 0000000000000001
+R10: ffffc90000003d98 R11: 0000000000000040 R12: ffff888006d72a10
+R13: 0000000000000000 R14: ffff8880057fb800 R15: ffffffff835d86c0
+FS:  00007f9dc72ee740(0000) GS:ffff88807dc00000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000000000000000 CR3: 00000000057b2000 CR4: 00000000007506f0
+PKRU: 55555554
+Call Trace:
+ <IRQ>
+ ip6_pkt_drop (net/ipv6/route.c:4513)
+ ipv6_rthdr_rcv (net/ipv6/exthdrs.c:640 net/ipv6/exthdrs.c:686)
+ ip6_protocol_deliver_rcu (net/ipv6/ip6_input.c:437 (discriminator 5))
+ ip6_input_finish (./include/linux/rcupdate.h:781 net/ipv6/ip6_input.c:483)
+ __netif_receive_skb_one_core (net/core/dev.c:5455)
+ process_backlog (./include/linux/rcupdate.h:781 net/core/dev.c:5895)
+ __napi_poll (net/core/dev.c:6460)
+ net_rx_action (net/core/dev.c:6529 net/core/dev.c:6660)
+ __do_softirq (./arch/x86/include/asm/jump_label.h:27 ./include/linux/jump_label.h:207 ./include/trace/events/irq.h:142 kernel/softirq.c:554)
+ do_softirq (kernel/softirq.c:454 kernel/softirq.c:441)
+ </IRQ>
+ <TASK>
+ __local_bh_enable_ip (kernel/softirq.c:381)
+ __dev_queue_xmit (net/core/dev.c:4231)
+ ip6_finish_output2 (./include/net/neighbour.h:544 net/ipv6/ip6_output.c:135)
+ rawv6_sendmsg (./include/net/dst.h:458 ./include/linux/netfilter.h:303 net/ipv6/raw.c:656 net/ipv6/raw.c:914)
+ sock_sendmsg (net/socket.c:725 net/socket.c:748)
+ __sys_sendto (net/socket.c:2134)
+ __x64_sys_sendto (net/socket.c:2146 net/socket.c:2142 net/socket.c:2142)
+ do_syscall_64 (arch/x86/entry/common.c:50 arch/x86/entry/common.c:80)
+ entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:120)
+RIP: 0033:0x7f9dc751baea
+Code: d8 64 89 02 48 c7 c0 ff ff ff ff eb b8 0f 1f 00 f3 0f 1e fa 41 89 ca 64 8b 04 25 18 00 00 00 85 c0 75 15 b8 2c 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 7e c3 0f 1f 44 00 00 41 54 48 83 ec 30 44 89
+RSP: 002b:00007ffe98712c38 EFLAGS: 00000246 ORIG_RAX: 000000000000002c
+RAX: ffffffffffffffda RBX: 00007ffe98712cf8 RCX: 00007f9dc751baea
+RDX: 0000000000000060 RSI: 00007f9dc6460b90 RDI: 0000000000000003
+RBP: 00007f9dc56e8be0 R08: 00007ffe98712d70 R09: 000000000000001c
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: ffffffffc4653600 R14: 0000000000000001 R15: 00007f9dc6af5d1b
+ </TASK>
+Modules linked in:
+CR2: 0000000000000000
+ ---[ end trace 0000000000000000 ]---
+RIP: 0010:icmp6_send (net/ipv6/icmp.c:436 net/ipv6/icmp.c:503)
+Code: fe ff ff 48 c7 40 30 c0 86 5d 83 e8 c6 44 1c 00 e9 c8 fc ff ff 49 8b 46 58 48 83 e0 fe 0f 84 4a fb ff ff 48 8b 80 d0 00 00 00 <48> 8b 00 44 8b 88 e0 00 00 00 e9 34 fb ff ff 4d 85 ed 0f 85 69 01
+RSP: 0018:ffffc90000003c70 EFLAGS: 00000286
+RAX: 0000000000000000 RBX: 0000000000000001 RCX: 00000000000000e0
+RDX: 0000000000000021 RSI: 0000000000000000 RDI: ffff888006d72a18
+RBP: ffffc90000003d80 R08: 0000000000000000 R09: 0000000000000001
+R10: ffffc90000003d98 R11: 0000000000000040 R12: ffff888006d72a10
+R13: 0000000000000000 R14: ffff8880057fb800 R15: ffffffff835d86c0
+FS:  00007f9dc72ee740(0000) GS:ffff88807dc00000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000000000000000 CR3: 00000000057b2000 CR4: 00000000007506f0
+PKRU: 55555554
+Kernel panic - not syncing: Fatal exception in interrupt
+Kernel Offset: disabled
+
+Fixes: 4832c30d5458 ("net: ipv6: put host and anycast routes on device with address")
+Reported-by: Wang Yufen <wangyufen@huawei.com>
+Closes: https://lore.kernel.org/netdev/c41403a9-c2f6-3b7e-0c96-e1901e605cd0@huawei.com/
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/es8316.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ net/ipv6/icmp.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/sound/soc/codecs/es8316.c b/sound/soc/codecs/es8316.c
-index 0410f2e5183c3..fad918c44ec97 100644
---- a/sound/soc/codecs/es8316.c
-+++ b/sound/soc/codecs/es8316.c
-@@ -45,7 +45,12 @@ static const SNDRV_CTL_TLVD_DECLARE_DB_SCALE(dac_vol_tlv, -9600, 50, 1);
- static const SNDRV_CTL_TLVD_DECLARE_DB_SCALE(adc_vol_tlv, -9600, 50, 1);
- static const SNDRV_CTL_TLVD_DECLARE_DB_SCALE(alc_max_gain_tlv, -650, 150, 0);
- static const SNDRV_CTL_TLVD_DECLARE_DB_SCALE(alc_min_gain_tlv, -1200, 150, 0);
--static const SNDRV_CTL_TLVD_DECLARE_DB_SCALE(alc_target_tlv, -1650, 150, 0);
-+
-+static const SNDRV_CTL_TLVD_DECLARE_DB_RANGE(alc_target_tlv,
-+	0, 10, TLV_DB_SCALE_ITEM(-1650, 150, 0),
-+	11, 11, TLV_DB_SCALE_ITEM(-150, 0, 0),
-+);
-+
- static const SNDRV_CTL_TLVD_DECLARE_DB_RANGE(hpmixer_gain_tlv,
- 	0, 4, TLV_DB_SCALE_ITEM(-1200, 150, 0),
- 	8, 11, TLV_DB_SCALE_ITEM(-450, 150, 0),
-@@ -107,7 +112,7 @@ static const struct snd_kcontrol_new es8316_snd_controls[] = {
- 		       alc_max_gain_tlv),
- 	SOC_SINGLE_TLV("ALC Capture Min Volume", ES8316_ADC_ALC2, 0, 28, 0,
- 		       alc_min_gain_tlv),
--	SOC_SINGLE_TLV("ALC Capture Target Volume", ES8316_ADC_ALC3, 4, 10, 0,
-+	SOC_SINGLE_TLV("ALC Capture Target Volume", ES8316_ADC_ALC3, 4, 11, 0,
- 		       alc_target_tlv),
- 	SOC_SINGLE("ALC Capture Hold Time", ES8316_ADC_ALC3, 0, 10, 0),
- 	SOC_SINGLE("ALC Capture Decay Time", ES8316_ADC_ALC4, 4, 10, 0),
+diff --git a/net/ipv6/icmp.c b/net/ipv6/icmp.c
+index 1b86a2e03d049..bfafd7649ccb3 100644
+--- a/net/ipv6/icmp.c
++++ b/net/ipv6/icmp.c
+@@ -407,7 +407,10 @@ static struct net_device *icmp6_dev(const struct sk_buff *skb)
+ 	if (unlikely(dev->ifindex == LOOPBACK_IFINDEX || netif_is_l3_master(skb->dev))) {
+ 		const struct rt6_info *rt6 = skb_rt6_info(skb);
+ 
+-		if (rt6)
++		/* The destination could be an external IP in Ext Hdr (SRv6, RPL, etc.),
++		 * and ip6_null_entry could be set to skb if no route is found.
++		 */
++		if (rt6 && rt6->rt6i_idev)
+ 			dev = rt6->rt6i_idev->dev;
+ 	}
+ 
 -- 
 2.39.2
 
