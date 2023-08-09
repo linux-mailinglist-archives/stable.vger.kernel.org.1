@@ -2,94 +2,96 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0D1BB775D30
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:34:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 390BE7757BB
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:49:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234037AbjHILep (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:34:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60678 "EHLO
+        id S232271AbjHIKt0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 06:49:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32862 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234038AbjHILep (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:34:45 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 461D01FD8
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:34:42 -0700 (PDT)
+        with ESMTP id S232266AbjHIKt0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:49:26 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AE0F510F3
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:49:25 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D88C5634B2
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:34:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2F99C433C8;
-        Wed,  9 Aug 2023 11:34:40 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4333063124
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:49:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F965C433C8;
+        Wed,  9 Aug 2023 10:49:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691580881;
-        bh=agvgRHZmyKRmXpSvXtIUw1iLHyuOxyDW+qAn2i98W5Y=;
+        s=korg; t=1691578164;
+        bh=r3OlAe0GEBBzMp+cus2sFSlrwgZqQ5yG3CW6lq3ObE8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=akAYW/yh4C50da6inCXgXaf1pqP1OzAHNz4vnkMXWX3LHssQuM8dqACF0ml3Lg4fO
-         T406hHSoTdeuTt+tA9aSixMbZsR0MPaSivPAwnTbaEwwF2MdvAG5trac9z+bSgwZOq
-         vs6NnbgtOha3LBfzQq5gO5u5Z4xLaG/vh0Dy10r8=
+        b=Sz62opNQqPXRvB72T8k9t8s7QPE8z2/Sad84wNNhSU/10xs5sLjANJ3oTx1VSb/ca
+         juMBUoeAr+bt41GZ3xvQDXDXxvqGUca8ull2HuZdE6P2Jov8rqPjHtOkkItwsSFF4D
+         Ltnj+qUshxlkwLHWj/AxCOM9bAaS9p8O4HJajwpA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Wang Ming <machel@vivo.com>,
-        Tony Nguyen <anthony.l.nguyen@intel.com>,
-        Sasha Levin <sashal@kernel.org>,
-        Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
-Subject: [PATCH 5.10 028/201] i40e: Fix an NULL vs IS_ERR() bug for debugfs_create_dir()
+        patches@lists.linux.dev, Song Shuai <suagrfillet@gmail.com>,
+        Alexandre Ghiti <alexghiti@rivosinc.com>,
+        Palmer Dabbelt <palmer@rivosinc.com>
+Subject: [PATCH 6.4 099/165] Documentation: kdump: Add va_kernel_pa_offset for RISCV64
 Date:   Wed,  9 Aug 2023 12:40:30 +0200
-Message-ID: <20230809103644.785804198@linuxfoundation.org>
+Message-ID: <20230809103646.019961791@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103643.799166053@linuxfoundation.org>
-References: <20230809103643.799166053@linuxfoundation.org>
+In-Reply-To: <20230809103642.720851262@linuxfoundation.org>
+References: <20230809103642.720851262@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Wang Ming <machel@vivo.com>
+From: Song Shuai <suagrfillet@gmail.com>
 
-[ Upstream commit 043b1f185fb0f3939b7427f634787706f45411c4 ]
+commit 640c503d7dbd7d34a62099c933f4db0ed77ccbec upstream.
 
-The debugfs_create_dir() function returns error pointers.
-It never returns NULL. Most incorrect error checks were fixed,
-but the one in i40e_dbg_init() was forgotten.
+RISC-V Linux exports "va_kernel_pa_offset" in vmcoreinfo to help
+Crash-utility translate the kernel virtual address correctly.
 
-Fix the remaining error check.
+Here adds the definition of "va_kernel_pa_offset".
 
-Fixes: 02e9c290814c ("i40e: debugfs interface")
-Signed-off-by: Wang Ming <machel@vivo.com>
-Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 3335068f8721 ("riscv: Use PUD/P4D/PGD pages for the linear mapping")
+Link: https://lore.kernel.org/linux-riscv/20230724040649.220279-1-suagrfillet@gmail.com/
+Signed-off-by: Song Shuai <suagrfillet@gmail.com>
+Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Link: https://lore.kernel.org/r/20230724100917.309061-2-suagrfillet@gmail.com
+Cc: stable@vger.kernel.org
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/i40e/i40e_debugfs.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ Documentation/admin-guide/kdump/vmcoreinfo.rst | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_debugfs.c b/drivers/net/ethernet/intel/i40e/i40e_debugfs.c
-index 989d5c7263d7c..8bcf5902babf7 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_debugfs.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_debugfs.c
-@@ -1839,7 +1839,7 @@ void i40e_dbg_pf_exit(struct i40e_pf *pf)
- void i40e_dbg_init(void)
- {
- 	i40e_dbg_root = debugfs_create_dir(i40e_driver_name, NULL);
--	if (!i40e_dbg_root)
-+	if (IS_ERR(i40e_dbg_root))
- 		pr_info("init of debugfs failed\n");
- }
- 
+diff --git a/Documentation/admin-guide/kdump/vmcoreinfo.rst b/Documentation/admin-guide/kdump/vmcoreinfo.rst
+index c18d94fa6470..f8ebb63b6c5d 100644
+--- a/Documentation/admin-guide/kdump/vmcoreinfo.rst
++++ b/Documentation/admin-guide/kdump/vmcoreinfo.rst
+@@ -624,3 +624,9 @@ Used to get the correct ranges:
+   * VMALLOC_START ~ VMALLOC_END : vmalloc() / ioremap() space.
+   * VMEMMAP_START ~ VMEMMAP_END : vmemmap space, used for struct page array.
+   * KERNEL_LINK_ADDR : start address of Kernel link and BPF
++
++va_kernel_pa_offset
++-------------------
++
++Indicates the offset between the kernel virtual and physical mappings.
++Used to translate virtual to physical addresses.
 -- 
-2.39.2
+2.41.0
 
 
 
