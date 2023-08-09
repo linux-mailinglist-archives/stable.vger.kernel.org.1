@@ -2,45 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 214FE775CC6
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:30:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 54DFA775AAD
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:10:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233865AbjHILaw (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:30:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44120 "EHLO
+        id S233253AbjHILKf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:10:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54840 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233862AbjHILav (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:30:51 -0400
+        with ESMTP id S233260AbjHILKf (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:10:35 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7CCCF10D4
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:30:51 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 804DF172A
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:10:34 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1361263385
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:30:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 213D8C433C7;
-        Wed,  9 Aug 2023 11:30:49 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1638D62457
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:10:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 261D4C433C8;
+        Wed,  9 Aug 2023 11:10:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691580650;
-        bh=anoDc0vbCcXzQThJN5h7bKM21xJ0Yz4y/q5VG5xNEts=;
+        s=korg; t=1691579433;
+        bh=YtNCZvDaltpLcd/hEPArT8AfDR0oCHlsufM4f5BPc6Y=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=njs18JXOpaTI/BdiOhm9F357HQdccpLz7LbTgt/3yuDq6xZbCL+8H3j7NjthG7who
-         OiorDGJmjt4bDfHgGWIHZ5TBnfEDaK83Bv3z+IURFweZS8V96zwM7hxpGVvd9UbMD3
-         HfDtiROVQhGEpSsY7dPLru3BuqWtG0LVJcW6ehNY=
+        b=ZzBD2SpFQkLl3OV/5uPPM9f5HktLk3dmVXJIGP/CBXZxA7hFknaPMhKOIYT+DTiK3
+         odrMrImxfwytaQtsPphxP3iBl0sNUoWNq5JrFYWOqKSh45rp3FiltkEjqJY5vI9oFg
+         y/JvZCwr+VV9Z28xb1yWv18hDlA+nQ3hcOcmiZTM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Chengfeng Ye <dg573847474@gmail.com>,
+        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
+        David Ahern <dsahern@kernel.org>,
+        Kuniyuki Iwashima <kuniyu@amazon.com>,
         Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 100/154] mISDN: hfcpci: Fix potential deadlock on &hc->lock
-Date:   Wed,  9 Aug 2023 12:42:11 +0200
-Message-ID: <20230809103640.283342147@linuxfoundation.org>
+Subject: [PATCH 4.14 194/204] tcp_metrics: annotate data-races around tm->tcpm_net
+Date:   Wed,  9 Aug 2023 12:42:12 +0200
+Message-ID: <20230809103648.983705015@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103636.887175326@linuxfoundation.org>
-References: <20230809103636.887175326@linuxfoundation.org>
+In-Reply-To: <20230809103642.552405807@linuxfoundation.org>
+References: <20230809103642.552405807@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,86 +57,64 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Chengfeng Ye <dg573847474@gmail.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 56c6be35fcbed54279df0a2c9e60480a61841d6f ]
+[ Upstream commit d5d986ce42c71a7562d32c4e21e026b0f87befec ]
 
-As &hc->lock is acquired by both timer _hfcpci_softirq() and hardirq
-hfcpci_int(), the timer should disable irq before lock acquisition
-otherwise deadlock could happen if the timmer is preemtped by the hadr irq.
+tm->tcpm_net can be read or written locklessly.
 
-Possible deadlock scenario:
-hfcpci_softirq() (timer)
-    -> _hfcpci_softirq()
-    -> spin_lock(&hc->lock);
-        <irq interruption>
-        -> hfcpci_int()
-        -> spin_lock(&hc->lock); (deadlock here)
+Instead of changing write_pnet() and read_pnet() and potentially
+hurt performance, add the needed READ_ONCE()/WRITE_ONCE()
+in tm_net() and tcpm_new().
 
-This flaw was found by an experimental static analysis tool I am developing
-for irq-related deadlock.
-
-The tentative patch fixes the potential deadlock by spin_lock_irq()
-in timer.
-
-Fixes: b36b654a7e82 ("mISDN: Create /sys/class/mISDN")
-Signed-off-by: Chengfeng Ye <dg573847474@gmail.com>
-Link: https://lore.kernel.org/r/20230727085619.7419-1-dg573847474@gmail.com
+Fixes: 849e8a0ca8d5 ("tcp_metrics: Add a field tcpm_net and verify it matches on lookup")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Link: https://lore.kernel.org/r/20230802131500.1478140-6-edumazet@google.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/isdn/hardware/mISDN/hfcpci.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ net/ipv4/tcp_metrics.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/isdn/hardware/mISDN/hfcpci.c b/drivers/isdn/hardware/mISDN/hfcpci.c
-index 41ff2e3dc8430..0a683a66fc612 100644
---- a/drivers/isdn/hardware/mISDN/hfcpci.c
-+++ b/drivers/isdn/hardware/mISDN/hfcpci.c
-@@ -839,7 +839,7 @@ hfcpci_fill_fifo(struct bchannel *bch)
- 		*z1t = cpu_to_le16(new_z1);	/* now send data */
- 		if (bch->tx_idx < bch->tx_skb->len)
- 			return;
--		dev_kfree_skb(bch->tx_skb);
-+		dev_kfree_skb_any(bch->tx_skb);
- 		if (get_next_bframe(bch))
- 			goto next_t_frame;
- 		return;
-@@ -895,7 +895,7 @@ hfcpci_fill_fifo(struct bchannel *bch)
- 	}
- 	bz->za[new_f1].z1 = cpu_to_le16(new_z1);	/* for next buffer */
- 	bz->f1 = new_f1;	/* next frame */
--	dev_kfree_skb(bch->tx_skb);
-+	dev_kfree_skb_any(bch->tx_skb);
- 	get_next_bframe(bch);
+diff --git a/net/ipv4/tcp_metrics.c b/net/ipv4/tcp_metrics.c
+index 13b92573aadd3..14f8b29892c97 100644
+--- a/net/ipv4/tcp_metrics.c
++++ b/net/ipv4/tcp_metrics.c
+@@ -42,7 +42,7 @@ struct tcp_fastopen_metrics {
+ 
+ struct tcp_metrics_block {
+ 	struct tcp_metrics_block __rcu	*tcpm_next;
+-	possible_net_t			tcpm_net;
++	struct net			*tcpm_net;
+ 	struct inetpeer_addr		tcpm_saddr;
+ 	struct inetpeer_addr		tcpm_daddr;
+ 	unsigned long			tcpm_stamp;
+@@ -53,9 +53,10 @@ struct tcp_metrics_block {
+ 	struct rcu_head			rcu_head;
+ };
+ 
+-static inline struct net *tm_net(struct tcp_metrics_block *tm)
++static inline struct net *tm_net(const struct tcp_metrics_block *tm)
+ {
+-	return read_pnet(&tm->tcpm_net);
++	/* Paired with the WRITE_ONCE() in tcpm_new() */
++	return READ_ONCE(tm->tcpm_net);
  }
  
-@@ -1119,7 +1119,7 @@ tx_birq(struct bchannel *bch)
- 	if (bch->tx_skb && bch->tx_idx < bch->tx_skb->len)
- 		hfcpci_fill_fifo(bch);
- 	else {
--		dev_kfree_skb(bch->tx_skb);
-+		dev_kfree_skb_any(bch->tx_skb);
- 		if (get_next_bframe(bch))
- 			hfcpci_fill_fifo(bch);
+ static bool tcp_metric_locked(struct tcp_metrics_block *tm,
+@@ -199,7 +200,9 @@ static struct tcp_metrics_block *tcpm_new(struct dst_entry *dst,
+ 		if (!tm)
+ 			goto out_unlock;
  	}
-@@ -2272,7 +2272,7 @@ _hfcpci_softirq(struct device *dev, void *unused)
- 		return 0;
+-	write_pnet(&tm->tcpm_net, net);
++	/* Paired with the READ_ONCE() in tm_net() */
++	WRITE_ONCE(tm->tcpm_net, net);
++
+ 	tm->tcpm_saddr = *saddr;
+ 	tm->tcpm_daddr = *daddr;
  
- 	if (hc->hw.int_m2 & HFCPCI_IRQ_ENABLE) {
--		spin_lock(&hc->lock);
-+		spin_lock_irq(&hc->lock);
- 		bch = Sel_BCS(hc, hc->hw.bswapped ? 2 : 1);
- 		if (bch && bch->state == ISDN_P_B_RAW) { /* B1 rx&tx */
- 			main_rec_hfcpci(bch);
-@@ -2283,7 +2283,7 @@ _hfcpci_softirq(struct device *dev, void *unused)
- 			main_rec_hfcpci(bch);
- 			tx_birq(bch);
- 		}
--		spin_unlock(&hc->lock);
-+		spin_unlock_irq(&hc->lock);
- 	}
- 	return 0;
- }
 -- 
 2.40.1
 
