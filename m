@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C2F30775C14
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:23:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ACEB9775D64
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:37:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233639AbjHILXm (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:23:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38496 "EHLO
+        id S234089AbjHILhP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:37:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47176 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233644AbjHILXl (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:23:41 -0400
+        with ESMTP id S234131AbjHILhA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:37:00 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8132E1FD7
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:23:41 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF4BA173A
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:36:59 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 16FC863230
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:23:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1ECB7C433C8;
-        Wed,  9 Aug 2023 11:23:39 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 859CD6354B
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:36:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96847C433C8;
+        Wed,  9 Aug 2023 11:36:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691580220;
-        bh=Dx+GMRpnrb+FWn6zG/ZfBmQbicBDDcI1nE4EX4LqUOQ=;
+        s=korg; t=1691581019;
+        bh=pfjoqx3NcF89T/cocrcYuy1MPxEynQ4imbNYlwc/Foo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=vNQgf71woJheqqDbU985oDlh7dHBjtCfmt4+gOmmliKUtAyQ1vknibLy1IHgvP4ev
-         SLY1APXR0y+0KHKiKEdD9t7B6ylXvtiJPvGGQzOAcgb2W+eZqHuOEBfbvrbeA8dOCF
-         oJ/qcNOAYp4WDMlpzqQ8ryesaYsBgLCoe0wDEuD0=
+        b=v916eCtMXotcNsfxdXGF8dAq3y8JpdTCgS1VzJkWQmDLB/24CKsC9pdnRc9dkydDF
+         XqSMPHp07gRpD9YEjJhUNvltzkEhHgvqywXaPZJL9CWTLKEGkFgWccD03Gi8GVYAwq
+         yqRd9dXHcouq1NFbzhoMR43U5NoZQDRx3taSkna4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yuanjun Gong <ruc_gongyuanjun@163.com>,
-        Simon Horman <simon.horman@corigine.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 240/323] ethernet: atheros: fix return value check in atl1e_tso_csum()
+        patches@lists.linux.dev, stable <stable@kernel.org>,
+        Gratian Crisan <gratian.crisan@ni.com>,
+        Hans de Goede <hdegoede@redhat.com>
+Subject: [PATCH 5.10 076/201] usb: dwc3: pci: skip BYT GPIO lookup table for hardwired phy
 Date:   Wed,  9 Aug 2023 12:41:18 +0200
-Message-ID: <20230809103709.061790819@linuxfoundation.org>
+Message-ID: <20230809103646.353811961@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
-References: <20230809103658.104386911@linuxfoundation.org>
+In-Reply-To: <20230809103643.799166053@linuxfoundation.org>
+References: <20230809103643.799166053@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,44 +55,69 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Yuanjun Gong <ruc_gongyuanjun@163.com>
+From: Gratian Crisan <gratian.crisan@ni.com>
 
-[ Upstream commit 69a184f7a372aac588babfb0bd681aaed9779f5b ]
+commit b32b8f2b9542d8039f5468303a6ca78c1b5611a5 upstream.
 
-in atl1e_tso_csum, it should check the return value of pskb_trim(),
-and return an error code if an unexpected value is returned
-by pskb_trim().
+Hardware based on the Bay Trail / BYT SoCs require an external ULPI phy for
+USB device-mode. The phy chip usually has its 'reset' and 'chip select'
+lines connected to GPIOs described by ACPI fwnodes in the DSDT table.
 
-Fixes: a6a5325239c2 ("atl1e: Atheros L1E Gigabit Ethernet driver")
-Signed-off-by: Yuanjun Gong <ruc_gongyuanjun@163.com>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Link: https://lore.kernel.org/r/20230720144219.39285-1-ruc_gongyuanjun@163.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Because of hardware with missing ACPI resources for the 'reset' and 'chip
+select' GPIOs commit 5741022cbdf3 ("usb: dwc3: pci: Add GPIO lookup table
+on platforms without ACPI GPIO resources") introduced a fallback
+gpiod_lookup_table with hard-coded mappings for Bay Trail devices.
+
+However there are existing Bay Trail based devices, like the National
+Instruments cRIO-903x series, where the phy chip has its 'reset' and
+'chip-select' lines always asserted in hardware via resistor pull-ups. On
+this hardware the phy chip is always enabled and the ACPI dsdt table is
+missing information not only for the 'chip-select' and 'reset' lines but
+also for the BYT GPIO controller itself "INT33FC".
+
+With the introduction of the gpiod_lookup_table initializing the USB
+device-mode on these hardware now errors out. The error comes from the
+gpiod_get_optional() calls in dwc3_pci_quirks() which will now return an
+-ENOENT error due to the missing ACPI entry for the INT33FC gpio controller
+used in the aforementioned table.
+
+This hardware used to work before because gpiod_get_optional() will return
+NULL instead of -ENOENT if no GPIO has been assigned to the requested
+function. The dwc3_pci_quirks() code for setting the 'cs' and 'reset' GPIOs
+was then skipped (due to the NULL return). This is the correct behavior in
+cases where the phy chip is hardwired and there are no GPIOs to control.
+
+Since the gpiod_lookup_table relies on the presence of INT33FC fwnode
+in ACPI tables only add the table if we know the entry for the INT33FC
+gpio controller is present. This allows Bay Trail based devices with
+hardwired dwc3 ULPI phys to continue working.
+
+Fixes: 5741022cbdf3 ("usb: dwc3: pci: Add GPIO lookup table on platforms without ACPI GPIO resources")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Gratian Crisan <gratian.crisan@ni.com>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/r/20230726184555.218091-2-gratian.crisan@ni.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/atheros/atl1e/atl1e_main.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/usb/dwc3/dwc3-pci.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/atheros/atl1e/atl1e_main.c b/drivers/net/ethernet/atheros/atl1e/atl1e_main.c
-index 3164aad29bcf8..e4d58c7aeaf82 100644
---- a/drivers/net/ethernet/atheros/atl1e/atl1e_main.c
-+++ b/drivers/net/ethernet/atheros/atl1e/atl1e_main.c
-@@ -1651,8 +1651,11 @@ static int atl1e_tso_csum(struct atl1e_adapter *adapter,
- 			real_len = (((unsigned char *)ip_hdr(skb) - skb->data)
- 					+ ntohs(ip_hdr(skb)->tot_len));
+--- a/drivers/usb/dwc3/dwc3-pci.c
++++ b/drivers/usb/dwc3/dwc3-pci.c
+@@ -173,10 +173,12 @@ static int dwc3_pci_quirks(struct dwc3_p
  
--			if (real_len < skb->len)
--				pskb_trim(skb, real_len);
-+			if (real_len < skb->len) {
-+				err = pskb_trim(skb, real_len);
-+				if (err)
-+					return err;
-+			}
+ 			/*
+ 			 * A lot of BYT devices lack ACPI resource entries for
+-			 * the GPIOs, add a fallback mapping to the reference
++			 * the GPIOs. If the ACPI entry for the GPIO controller
++			 * is present add a fallback mapping to the reference
+ 			 * design GPIOs which all boards seem to use.
+ 			 */
+-			gpiod_add_lookup_table(&platform_bytcr_gpios);
++			if (acpi_dev_present("INT33FC", NULL, -1))
++				gpiod_add_lookup_table(&platform_bytcr_gpios);
  
- 			hdr_len = (skb_transport_offset(skb) + tcp_hdrlen(skb));
- 			if (unlikely(skb->len == hdr_len)) {
--- 
-2.39.2
-
+ 			/*
+ 			 * These GPIOs will turn on the USB2 PHY. Note that we have to
 
 
