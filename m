@@ -2,357 +2,93 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 794ED77574A
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:44:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 93CAA7759B9
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:02:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232056AbjHIKo1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 06:44:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51206 "EHLO
+        id S232931AbjHILC6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:02:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60188 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231765AbjHIKoV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:44:21 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7DE0A1999
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:44:19 -0700 (PDT)
+        with ESMTP id S232944AbjHILC6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:02:58 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D80951FFE
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:02:56 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0628163122
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:44:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17D7AC433C7;
-        Wed,  9 Aug 2023 10:44:17 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7891561FA9
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:02:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87AE0C433C7;
+        Wed,  9 Aug 2023 11:02:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691577858;
-        bh=9iWuxtR3XoIcgS9o/ZEXtSGaLKz1lGXIqWlogCgiojY=;
+        s=korg; t=1691578975;
+        bh=Gw3ueeG8xgQsFn26viLDJJvO6y6+E1nOpEnokn4qqm4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=VILoksocyc/6gdxs6j8cx64tS03kyAGCFD5RVidODlQNXY1vdhwQuHlrOLM655WV2
-         0ICjNgXo7f6RJFxC/j/gvAqwqExVETTQnkWrF/jXCtbxLT+dPjllk8SZeHSspnteMQ
-         kQnENlS9Q57ilfxFKIHStbSFqYQ5lGOdfsBVP10s=
+        b=Mi3r5W4dxnz7Esv31uyj0BY/CQI4RW6/y8J8COTBcOGtAoiwkC+UmqFkSnvm5Km0d
+         7TRfvRZOo0c27Bc7gvTIAHt94FRmh7iDbbbo/zqaAVjmGFUuN8A9sND89nPTLkRrJ6
+         VSZ3crb5rxQ8Ga2AVks3un+ama4eVNiIgtZWO+0A=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Claudiu Beznea <claudiu.beznea@microchip.com>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        patches@lists.linux.dev, Roberto Sassu <roberto.sassu@huawei.com>,
+        Stefan Berger <stefanb@linux.ibm.com>,
+        Mimi Zohar <zohar@linux.ibm.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 020/165] ARM: dts: at91: use generic name for shutdown controller
+Subject: [PATCH 4.14 013/204] evm: Complete description of evm_inode_setattr()
 Date:   Wed,  9 Aug 2023 12:39:11 +0200
-Message-ID: <20230809103643.446233082@linuxfoundation.org>
+Message-ID: <20230809103643.029150193@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103642.720851262@linuxfoundation.org>
-References: <20230809103642.720851262@linuxfoundation.org>
+In-Reply-To: <20230809103642.552405807@linuxfoundation.org>
+References: <20230809103642.552405807@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Claudiu Beznea <claudiu.beznea@microchip.com>
+From: Roberto Sassu <roberto.sassu@huawei.com>
 
-[ Upstream commit 327ca228e58be498446244eb7cf39b892adda5d7 ]
+[ Upstream commit b1de86d4248b273cb12c4cd7d20c08d459519f7d ]
 
-Use poweroff generic name for shdwc node to cope with device tree
-specifications.
+Add the description for missing parameters of evm_inode_setattr() to
+avoid the warning arising with W=n compile option.
 
-Signed-off-by: Claudiu Beznea <claudiu.beznea@microchip.com>
-Acked-by: Nicolas Ferre <nicolas.ferre@microchip.com>
-Link: https://lore.kernel.org/r/20230616101646.879480-2-claudiu.beznea@microchip.com
-Stable-dep-of: f6ad3c13f1b8 ("ARM: dts: at91: sam9x60: fix the SOC detection")
+Fixes: 817b54aa45db ("evm: add evm_inode_setattr to prevent updating an invalid security.evm") # v3.2+
+Fixes: c1632a0f1120 ("fs: port ->setattr() to pass mnt_idmap") # v6.3+
+Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
+Reviewed-by: Stefan Berger <stefanb@linux.ibm.com>
+Signed-off-by: Mimi Zohar <zohar@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/at91-qil_a9260.dts        | 2 +-
- arch/arm/boot/dts/at91-sama5d27_som1_ek.dts | 2 +-
- arch/arm/boot/dts/at91-sama5d2_ptc_ek.dts   | 2 +-
- arch/arm/boot/dts/at91-sama5d2_xplained.dts | 2 +-
- arch/arm/boot/dts/at91sam9260.dtsi          | 2 +-
- arch/arm/boot/dts/at91sam9260ek.dts         | 2 +-
- arch/arm/boot/dts/at91sam9261.dtsi          | 2 +-
- arch/arm/boot/dts/at91sam9263.dtsi          | 2 +-
- arch/arm/boot/dts/at91sam9g20ek_common.dtsi | 2 +-
- arch/arm/boot/dts/at91sam9g45.dtsi          | 2 +-
- arch/arm/boot/dts/at91sam9n12.dtsi          | 2 +-
- arch/arm/boot/dts/at91sam9rl.dtsi           | 2 +-
- arch/arm/boot/dts/at91sam9x5.dtsi           | 2 +-
- arch/arm/boot/dts/sam9x60.dtsi              | 2 +-
- arch/arm/boot/dts/sama5d2.dtsi              | 2 +-
- arch/arm/boot/dts/sama5d3.dtsi              | 2 +-
- arch/arm/boot/dts/sama5d4.dtsi              | 2 +-
- arch/arm/boot/dts/sama7g5.dtsi              | 2 +-
- arch/arm/boot/dts/usb_a9260.dts             | 2 +-
- arch/arm/boot/dts/usb_a9263.dts             | 2 +-
- 20 files changed, 20 insertions(+), 20 deletions(-)
+ security/integrity/evm/evm_main.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/arm/boot/dts/at91-qil_a9260.dts b/arch/arm/boot/dts/at91-qil_a9260.dts
-index 9d26f99963483..5ccb3c139592d 100644
---- a/arch/arm/boot/dts/at91-qil_a9260.dts
-+++ b/arch/arm/boot/dts/at91-qil_a9260.dts
-@@ -108,7 +108,7 @@
- 				status = "okay";
- 			};
+diff --git a/security/integrity/evm/evm_main.c b/security/integrity/evm/evm_main.c
+index 6e761b07cb3f0..9b75166619236 100644
+--- a/security/integrity/evm/evm_main.c
++++ b/security/integrity/evm/evm_main.c
+@@ -427,7 +427,9 @@ void evm_inode_post_removexattr(struct dentry *dentry, const char *xattr_name)
  
--			shdwc@fffffd10 {
-+			shdwc: poweroff@fffffd10 {
- 				atmel,wakeup-counter = <10>;
- 				atmel,wakeup-rtt-timer;
- 			};
-diff --git a/arch/arm/boot/dts/at91-sama5d27_som1_ek.dts b/arch/arm/boot/dts/at91-sama5d27_som1_ek.dts
-index 52ddd0571f1c0..d0a6dbd377dfa 100644
---- a/arch/arm/boot/dts/at91-sama5d27_som1_ek.dts
-+++ b/arch/arm/boot/dts/at91-sama5d27_som1_ek.dts
-@@ -139,7 +139,7 @@
- 				};
- 			};
- 
--			shdwc@f8048010 {
-+			poweroff@f8048010 {
- 				debounce-delay-us = <976>;
- 				atmel,wakeup-rtc-timer;
- 
-diff --git a/arch/arm/boot/dts/at91-sama5d2_ptc_ek.dts b/arch/arm/boot/dts/at91-sama5d2_ptc_ek.dts
-index bf1c9ca72a9f3..200b20515ab12 100644
---- a/arch/arm/boot/dts/at91-sama5d2_ptc_ek.dts
-+++ b/arch/arm/boot/dts/at91-sama5d2_ptc_ek.dts
-@@ -204,7 +204,7 @@
- 				};
- 			};
- 
--			shdwc@f8048010 {
-+			poweroff@f8048010 {
- 				debounce-delay-us = <976>;
- 
- 				input@0 {
-diff --git a/arch/arm/boot/dts/at91-sama5d2_xplained.dts b/arch/arm/boot/dts/at91-sama5d2_xplained.dts
-index 2d53c47d7cc86..6680031387e8c 100644
---- a/arch/arm/boot/dts/at91-sama5d2_xplained.dts
-+++ b/arch/arm/boot/dts/at91-sama5d2_xplained.dts
-@@ -348,7 +348,7 @@
- 				};
- 			};
- 
--			shdwc@f8048010 {
-+			poweroff@f8048010 {
- 				debounce-delay-us = <976>;
- 				atmel,wakeup-rtc-timer;
- 
-diff --git a/arch/arm/boot/dts/at91sam9260.dtsi b/arch/arm/boot/dts/at91sam9260.dtsi
-index 16e3b24b4dddb..35a007365b6a5 100644
---- a/arch/arm/boot/dts/at91sam9260.dtsi
-+++ b/arch/arm/boot/dts/at91sam9260.dtsi
-@@ -130,7 +130,7 @@
- 				clocks = <&pmc PMC_TYPE_CORE PMC_SLOW>;
- 			};
- 
--			shdwc@fffffd10 {
-+			shdwc: poweroff@fffffd10 {
- 				compatible = "atmel,at91sam9260-shdwc";
- 				reg = <0xfffffd10 0x10>;
- 				clocks = <&pmc PMC_TYPE_CORE PMC_SLOW>;
-diff --git a/arch/arm/boot/dts/at91sam9260ek.dts b/arch/arm/boot/dts/at91sam9260ek.dts
-index bb72f050a4fef..720c15472c4a5 100644
---- a/arch/arm/boot/dts/at91sam9260ek.dts
-+++ b/arch/arm/boot/dts/at91sam9260ek.dts
-@@ -112,7 +112,7 @@
- 				};
- 			};
- 
--			shdwc@fffffd10 {
-+			shdwc: poweroff@fffffd10 {
- 				atmel,wakeup-counter = <10>;
- 				atmel,wakeup-rtt-timer;
- 			};
-diff --git a/arch/arm/boot/dts/at91sam9261.dtsi b/arch/arm/boot/dts/at91sam9261.dtsi
-index fe9ead867e2ab..528ffc6f6f962 100644
---- a/arch/arm/boot/dts/at91sam9261.dtsi
-+++ b/arch/arm/boot/dts/at91sam9261.dtsi
-@@ -614,7 +614,7 @@
- 				clocks = <&slow_xtal>;
- 			};
- 
--			shdwc@fffffd10 {
-+			poweroff@fffffd10 {
- 				compatible = "atmel,at91sam9260-shdwc";
- 				reg = <0xfffffd10 0x10>;
- 				clocks = <&slow_xtal>;
-diff --git a/arch/arm/boot/dts/at91sam9263.dtsi b/arch/arm/boot/dts/at91sam9263.dtsi
-index ee5e6ed44dd40..75d8ff2d12c8a 100644
---- a/arch/arm/boot/dts/at91sam9263.dtsi
-+++ b/arch/arm/boot/dts/at91sam9263.dtsi
-@@ -158,7 +158,7 @@
- 				clocks = <&slow_xtal>;
- 			};
- 
--			shdwc@fffffd10 {
-+			poweroff@fffffd10 {
- 				compatible = "atmel,at91sam9260-shdwc";
- 				reg = <0xfffffd10 0x10>;
- 				clocks = <&slow_xtal>;
-diff --git a/arch/arm/boot/dts/at91sam9g20ek_common.dtsi b/arch/arm/boot/dts/at91sam9g20ek_common.dtsi
-index 024af2db638eb..565b99e79c520 100644
---- a/arch/arm/boot/dts/at91sam9g20ek_common.dtsi
-+++ b/arch/arm/boot/dts/at91sam9g20ek_common.dtsi
-@@ -126,7 +126,7 @@
- 				};
- 			};
- 
--			shdwc@fffffd10 {
-+			shdwc: poweroff@fffffd10 {
- 				atmel,wakeup-counter = <10>;
- 				atmel,wakeup-rtt-timer;
- 			};
-diff --git a/arch/arm/boot/dts/at91sam9g45.dtsi b/arch/arm/boot/dts/at91sam9g45.dtsi
-index 498cb92b29f96..7cccc606e36cd 100644
---- a/arch/arm/boot/dts/at91sam9g45.dtsi
-+++ b/arch/arm/boot/dts/at91sam9g45.dtsi
-@@ -152,7 +152,7 @@
- 			};
- 
- 
--			shdwc@fffffd10 {
-+			poweroff@fffffd10 {
- 				compatible = "atmel,at91sam9rl-shdwc";
- 				reg = <0xfffffd10 0x10>;
- 				clocks = <&clk32k>;
-diff --git a/arch/arm/boot/dts/at91sam9n12.dtsi b/arch/arm/boot/dts/at91sam9n12.dtsi
-index c2e7460fb7ff6..16a9a908985da 100644
---- a/arch/arm/boot/dts/at91sam9n12.dtsi
-+++ b/arch/arm/boot/dts/at91sam9n12.dtsi
-@@ -140,7 +140,7 @@
- 				clocks = <&pmc PMC_TYPE_CORE PMC_MCK>;
- 			};
- 
--			shdwc@fffffe10 {
-+			poweroff@fffffe10 {
- 				compatible = "atmel,at91sam9x5-shdwc";
- 				reg = <0xfffffe10 0x10>;
- 				clocks = <&clk32k>;
-diff --git a/arch/arm/boot/dts/at91sam9rl.dtsi b/arch/arm/boot/dts/at91sam9rl.dtsi
-index d7e8a115c916c..3d089ffbe1626 100644
---- a/arch/arm/boot/dts/at91sam9rl.dtsi
-+++ b/arch/arm/boot/dts/at91sam9rl.dtsi
-@@ -778,7 +778,7 @@
- 				clocks = <&clk32k>;
- 			};
- 
--			shdwc@fffffd10 {
-+			poweroff@fffffd10 {
- 				compatible = "atmel,at91sam9260-shdwc";
- 				reg = <0xfffffd10 0x10>;
- 				clocks = <&clk32k>;
-diff --git a/arch/arm/boot/dts/at91sam9x5.dtsi b/arch/arm/boot/dts/at91sam9x5.dtsi
-index 0123ee47151cb..a1fed912f2eea 100644
---- a/arch/arm/boot/dts/at91sam9x5.dtsi
-+++ b/arch/arm/boot/dts/at91sam9x5.dtsi
-@@ -141,7 +141,7 @@
- 				clocks = <&clk32k>;
- 			};
- 
--			shutdown_controller: shdwc@fffffe10 {
-+			shutdown_controller: poweroff@fffffe10 {
- 				compatible = "atmel,at91sam9x5-shdwc";
- 				reg = <0xfffffe10 0x10>;
- 				clocks = <&clk32k>;
-diff --git a/arch/arm/boot/dts/sam9x60.dtsi b/arch/arm/boot/dts/sam9x60.dtsi
-index c8bedfa987e57..8b53997675e75 100644
---- a/arch/arm/boot/dts/sam9x60.dtsi
-+++ b/arch/arm/boot/dts/sam9x60.dtsi
-@@ -1297,7 +1297,7 @@
- 				clocks = <&clk32k 0>;
- 			};
- 
--			shutdown_controller: shdwc@fffffe10 {
-+			shutdown_controller: poweroff@fffffe10 {
- 				compatible = "microchip,sam9x60-shdwc";
- 				reg = <0xfffffe10 0x10>;
- 				clocks = <&clk32k 0>;
-diff --git a/arch/arm/boot/dts/sama5d2.dtsi b/arch/arm/boot/dts/sama5d2.dtsi
-index 5f632e3f039e6..8ae270fabfa82 100644
---- a/arch/arm/boot/dts/sama5d2.dtsi
-+++ b/arch/arm/boot/dts/sama5d2.dtsi
-@@ -680,7 +680,7 @@
- 				clocks = <&clk32k>;
- 			};
- 
--			shutdown_controller: shdwc@f8048010 {
-+			shutdown_controller: poweroff@f8048010 {
- 				compatible = "atmel,sama5d2-shdwc";
- 				reg = <0xf8048010 0x10>;
- 				clocks = <&clk32k>;
-diff --git a/arch/arm/boot/dts/sama5d3.dtsi b/arch/arm/boot/dts/sama5d3.dtsi
-index 0eebf6c760b3d..d9e66700d1c20 100644
---- a/arch/arm/boot/dts/sama5d3.dtsi
-+++ b/arch/arm/boot/dts/sama5d3.dtsi
-@@ -1016,7 +1016,7 @@
- 				clocks = <&clk32k>;
- 			};
- 
--			shutdown_controller: shutdown-controller@fffffe10 {
-+			shutdown_controller: poweroff@fffffe10 {
- 				compatible = "atmel,at91sam9x5-shdwc";
- 				reg = <0xfffffe10 0x10>;
- 				clocks = <&clk32k>;
-diff --git a/arch/arm/boot/dts/sama5d4.dtsi b/arch/arm/boot/dts/sama5d4.dtsi
-index de6c829692327..41284e013f531 100644
---- a/arch/arm/boot/dts/sama5d4.dtsi
-+++ b/arch/arm/boot/dts/sama5d4.dtsi
-@@ -740,7 +740,7 @@
- 				clocks = <&clk32k>;
- 			};
- 
--			shutdown_controller: shdwc@fc068610 {
-+			shutdown_controller: poweroff@fc068610 {
- 				compatible = "atmel,at91sam9x5-shdwc";
- 				reg = <0xfc068610 0x10>;
- 				clocks = <&clk32k>;
-diff --git a/arch/arm/boot/dts/sama7g5.dtsi b/arch/arm/boot/dts/sama7g5.dtsi
-index b55adb96a06ec..9642a42d84e60 100644
---- a/arch/arm/boot/dts/sama7g5.dtsi
-+++ b/arch/arm/boot/dts/sama7g5.dtsi
-@@ -257,7 +257,7 @@
- 			clocks = <&clk32k 0>;
- 		};
- 
--		shdwc: shdwc@e001d010 {
-+		shdwc: poweroff@e001d010 {
- 			compatible = "microchip,sama7g5-shdwc", "syscon";
- 			reg = <0xe001d010 0x10>;
- 			clocks = <&clk32k 0>;
-diff --git a/arch/arm/boot/dts/usb_a9260.dts b/arch/arm/boot/dts/usb_a9260.dts
-index 6cfa83921ac26..66f8da89007db 100644
---- a/arch/arm/boot/dts/usb_a9260.dts
-+++ b/arch/arm/boot/dts/usb_a9260.dts
-@@ -22,7 +22,7 @@
- 
- 	ahb {
- 		apb {
--			shdwc@fffffd10 {
-+			shdwc: poweroff@fffffd10 {
- 				atmel,wakeup-counter = <10>;
- 				atmel,wakeup-rtt-timer;
- 			};
-diff --git a/arch/arm/boot/dts/usb_a9263.dts b/arch/arm/boot/dts/usb_a9263.dts
-index b6cb9cdf81973..45745915b2e16 100644
---- a/arch/arm/boot/dts/usb_a9263.dts
-+++ b/arch/arm/boot/dts/usb_a9263.dts
-@@ -67,7 +67,7 @@
- 				};
- 			};
- 
--			shdwc@fffffd10 {
-+			poweroff@fffffd10 {
- 				atmel,wakeup-counter = <10>;
- 				atmel,wakeup-rtt-timer;
- 			};
+ /**
+  * evm_inode_setattr - prevent updating an invalid EVM extended attribute
++ * @idmap: idmap of the mount
+  * @dentry: pointer to the affected dentry
++ * @attr: iattr structure containing the new file attributes
+  *
+  * Permit update of file attributes when files have a valid EVM signature,
+  * except in the case of them having an immutable portable signature.
 -- 
-2.40.1
+2.39.2
 
 
 
