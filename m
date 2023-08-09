@@ -2,100 +2,143 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C7621775D21
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:34:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0A08A7758A1
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:54:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233993AbjHILeM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:34:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42040 "EHLO
+        id S232422AbjHIKyn (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 06:54:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40158 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234003AbjHILeL (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:34:11 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F6F81BFE
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:34:11 -0700 (PDT)
+        with ESMTP id S232503AbjHIKyc (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:54:32 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D3103AB9
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:52:43 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D2CA563485
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:34:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E49D3C433C8;
-        Wed,  9 Aug 2023 11:34:09 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 136076312C
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:51:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 269C5C433C7;
+        Wed,  9 Aug 2023 10:51:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691580850;
-        bh=OO2f11G/Odzh/TvI0Pw6397Vj1U5v8I9q279GTOfN2g=;
+        s=korg; t=1691578318;
+        bh=KLHxyIfove8co41ZqW2w2HZBguBQ3LJUZ8bWyb2oW0o=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=QBjzcSSpvzjlPM9sFIh9fdruhyx1KDDb23+HXoho6/8Mj4xPSIawNSj51KPVIE/pO
-         5EXMdPC8T1OD4jm3oq+4UvtlQ3MOtKtMjrrI+KTXVNTEN6oHBtmDDiXVhNLcZ1jpqt
-         ckT7TadhWMVPVWcavhf1y87DJtQx9KPPnxd8xwxU=
+        b=l2NfsNMPq08rZKX7pyBXwrxomeOnoc+epr4LRoGJV+u7Grm3cLS11u1cSSKXVrf8M
+         uVCVfS7+liG0SWQmRnf7oNXJO1Eh0rO1vs3AwmKBD66qpGPciL4mCXC0UGP7KFPQGQ
+         rP9j3snmkvn6nmE95RNiRbxBXCWpUSr+PDRLERos=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ondrej Mosnacek <omosnace@redhat.com>,
-        Jeff Moyer <jmoyer@redhat.com>, Jens Axboe <axboe@kernel.dk>,
+        patches@lists.linux.dev, Bjorn Andersson <andersson@kernel.org>,
+        Cristian Marussi <cristian.marussi@arm.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 002/201] io_uring: dont audit the capability check in io_uring_create()
+Subject: [PATCH 6.1 017/127] firmware: arm_scmi: Fix chan_free cleanup on SMC
 Date:   Wed,  9 Aug 2023 12:40:04 +0200
-Message-ID: <20230809103643.876541279@linuxfoundation.org>
+Message-ID: <20230809103637.219995004@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103643.799166053@linuxfoundation.org>
-References: <20230809103643.799166053@linuxfoundation.org>
+In-Reply-To: <20230809103636.615294317@linuxfoundation.org>
+References: <20230809103636.615294317@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ondrej Mosnacek <omosnace@redhat.com>
+From: Cristian Marussi <cristian.marussi@arm.com>
 
-[ Upstream commit 6adc2272aaaf84f34b652cf77f770c6fcc4b8336 ]
+[ Upstream commit d1ff11d7ad8704f8d615f6446041c221b2d2ec4d ]
 
-The check being unconditional may lead to unwanted denials reported by
-LSMs when a process has the capability granted by DAC, but denied by an
-LSM. In the case of SELinux such denials are a problem, since they can't
-be effectively filtered out via the policy and when not silenced, they
-produce noise that may hide a true problem or an attack.
+SCMI transport based on SMC can optionally use an additional IRQ to
+signal message completion. The associated interrupt handler is currently
+allocated using devres but on shutdown the core SCMI stack will call
+.chan_free() well before any managed cleanup is invoked by devres.
+As a consequence, the arrival of a late reply to an in-flight pending
+transaction could still trigger the interrupt handler well after the
+SCMI core has cleaned up the channels, with unpleasant results.
 
-Since not having the capability merely means that the created io_uring
-context will be accounted against the current user's RLIMIT_MEMLOCK
-limit, we can disable auditing of denials for this check by using
-ns_capable_noaudit() instead of capable().
+Inhibit further message processing on the IRQ path by explicitly freeing
+the IRQ inside .chan_free() callback itself.
 
-Fixes: 2b188cc1bb85 ("Add io_uring IO interface")
-Link: https://bugzilla.redhat.com/show_bug.cgi?id=2193317
-Signed-off-by: Ondrej Mosnacek <omosnace@redhat.com>
-Reviewed-by: Jeff Moyer <jmoyer@redhat.com>
-Link: https://lore.kernel.org/r/20230718115607.65652-1-omosnace@redhat.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fixes: dd820ee21d5e ("firmware: arm_scmi: Augment SMC/HVC to allow optional interrupt")
+Reported-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Cristian Marussi <cristian.marussi@arm.com>
+Link: https://lore.kernel.org/r/20230719173533.2739319-1-cristian.marussi@arm.com
+Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/io_uring.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/firmware/arm_scmi/smc.c | 17 +++++++++++------
+ 1 file changed, 11 insertions(+), 6 deletions(-)
 
-diff --git a/io_uring/io_uring.c b/io_uring/io_uring.c
-index 51e6ebe72caf9..f84584b762d09 100644
---- a/io_uring/io_uring.c
-+++ b/io_uring/io_uring.c
-@@ -10431,7 +10431,7 @@ static int io_uring_create(unsigned entries, struct io_uring_params *p,
- 	if (!ctx)
- 		return -ENOMEM;
- 	ctx->compat = in_compat_syscall();
--	if (!capable(CAP_IPC_LOCK))
-+	if (!ns_capable_noaudit(&init_user_ns, CAP_IPC_LOCK))
- 		ctx->user = get_uid(current_user());
+diff --git a/drivers/firmware/arm_scmi/smc.c b/drivers/firmware/arm_scmi/smc.c
+index 87a7b13cf868b..dc383d874ee3a 100644
+--- a/drivers/firmware/arm_scmi/smc.c
++++ b/drivers/firmware/arm_scmi/smc.c
+@@ -23,6 +23,7 @@
+ /**
+  * struct scmi_smc - Structure representing a SCMI smc transport
+  *
++ * @irq: An optional IRQ for completion
+  * @cinfo: SCMI channel info
+  * @shmem: Transmit/Receive shared memory area
+  * @shmem_lock: Lock to protect access to Tx/Rx shared memory area.
+@@ -33,6 +34,7 @@
+  */
  
- 	/*
+ struct scmi_smc {
++	int irq;
+ 	struct scmi_chan_info *cinfo;
+ 	struct scmi_shared_mem __iomem *shmem;
+ 	/* Protect access to shmem area */
+@@ -106,7 +108,7 @@ static int smc_chan_setup(struct scmi_chan_info *cinfo, struct device *dev,
+ 	struct resource res;
+ 	struct device_node *np;
+ 	u32 func_id;
+-	int ret, irq;
++	int ret;
+ 
+ 	if (!tx)
+ 		return -ENODEV;
+@@ -142,11 +144,10 @@ static int smc_chan_setup(struct scmi_chan_info *cinfo, struct device *dev,
+ 	 * completion of a message is signaled by an interrupt rather than by
+ 	 * the return of the SMC call.
+ 	 */
+-	irq = of_irq_get_byname(cdev->of_node, "a2p");
+-	if (irq > 0) {
+-		ret = devm_request_irq(dev, irq, smc_msg_done_isr,
+-				       IRQF_NO_SUSPEND,
+-				       dev_name(dev), scmi_info);
++	scmi_info->irq = of_irq_get_byname(cdev->of_node, "a2p");
++	if (scmi_info->irq > 0) {
++		ret = request_irq(scmi_info->irq, smc_msg_done_isr,
++				  IRQF_NO_SUSPEND, dev_name(dev), scmi_info);
+ 		if (ret) {
+ 			dev_err(dev, "failed to setup SCMI smc irq\n");
+ 			return ret;
+@@ -168,6 +169,10 @@ static int smc_chan_free(int id, void *p, void *data)
+ 	struct scmi_chan_info *cinfo = p;
+ 	struct scmi_smc *scmi_info = cinfo->transport_info;
+ 
++	/* Ignore any possible further reception on the IRQ path */
++	if (scmi_info->irq > 0)
++		free_irq(scmi_info->irq, scmi_info);
++
+ 	cinfo->transport_info = NULL;
+ 	scmi_info->cinfo = NULL;
+ 
 -- 
-2.39.2
+2.40.1
 
 
 
