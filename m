@@ -2,43 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C5F5E775D89
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:38:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BE577775CD6
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:31:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234134AbjHILim (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:38:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59768 "EHLO
+        id S233873AbjHILbX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:31:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59560 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234132AbjHILil (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:38:41 -0400
+        with ESMTP id S233894AbjHILbW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:31:22 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C0EA1FD2
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:38:41 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 847EB19A1
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:31:22 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E0ACE6359C
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:38:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEAD0C433C7;
-        Wed,  9 Aug 2023 11:38:39 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 233B0633A8
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:31:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34B4DC433C7;
+        Wed,  9 Aug 2023 11:31:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691581120;
-        bh=XQC8+iGxxE9zBySSBhy5e8kBDg4YBjsFmK52LaxctyQ=;
+        s=korg; t=1691580681;
+        bh=neC51Y0PDL9Aw9f6ud1M8ut0384NXKPeGvxiEUROiD8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=BcCnwpq0vv69kAA3Fwhvx0eBd2ljZ1rVHGxmh4m6z2HJiLcTEc7RQ/XwdYxWEjoe+
-         WaGcvY7HtZ3SfoM/0YavGGjw3Kkp1mB1qarSZmixehcrgCY39tQHPI1Clwz75IlzzW
-         lyDXwAMs5Vk7D4J+G9Zl3YD4y0ze+JxSsFCmY0Yo=
+        b=EJSAyVqP7C6NcBrOQcA8PUWsF/6UH4SWR7EOpBGKOjvNigK5mBeFwr69INKzwzOqV
+         CKX209QVpId4xZoQ8oZwHLKukuS5uSzWA5yYt8JIipv6qAju0E3eCGCw3xkFpHs+4A
+         Yzjz1DG1M7aVUcWU+xHnbw8uhH7IbayO82PsHmEU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 5.10 111/201] io_uring: treat -EAGAIN for REQ_F_NOWAIT as final for io-wq
+        patches@lists.linux.dev,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Hagar Hemdan <hagarhem@amazon.de>
+Subject: [PATCH 5.4 082/154] ACPI: processor: perflib: Avoid updating frequency QoS unnecessarily
 Date:   Wed,  9 Aug 2023 12:41:53 +0200
-Message-ID: <20230809103647.508267884@linuxfoundation.org>
+Message-ID: <20230809103639.705410704@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103643.799166053@linuxfoundation.org>
-References: <20230809103643.799166053@linuxfoundation.org>
+In-Reply-To: <20230809103636.887175326@linuxfoundation.org>
+References: <20230809103636.887175326@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,39 +55,67 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-commit a9be202269580ca611c6cebac90eaf1795497800 upstream.
+commit 99387b016022c29234c4ebf9abd34358c6e56532 upstream.
 
-io-wq assumes that an issue is blocking, but it may not be if the
-request type has asked for a non-blocking attempt. If we get
--EAGAIN for that case, then we need to treat it as a final result
-and not retry or arm poll for it.
+Modify acpi_processor_get_platform_limit() to avoid updating its
+frequency QoS request when the _PPC return value has not changed
+by comparing that value to the previous _PPC return value stored in
+the performance_platform_limit field of the struct acpi_processor
+corresponding to the given CPU.
 
-Cc: stable@vger.kernel.org # 5.10+
-Link: https://github.com/axboe/liburing/issues/897
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+While at it, do the _PPC return value check against the state count
+earlier, to avoid setting performance_platform_limit to an invalid
+value, and make acpi_processor_ppc_init() use FREQ_QOS_MAX_DEFAULT_VALUE
+as the "no limit" frequency QoS for consistency.
+
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Tested-by: Hagar Hemdan <hagarhem@amazon.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- io_uring/io_uring.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/acpi/processor_perflib.c |   18 ++++++++++++++----
+ 1 file changed, 14 insertions(+), 4 deletions(-)
 
---- a/io_uring/io_uring.c
-+++ b/io_uring/io_uring.c
-@@ -6895,6 +6895,14 @@ static void io_wq_submit_work(struct io_
- 			 */
- 			if (ret != -EAGAIN || !(req->ctx->flags & IORING_SETUP_IOPOLL))
- 				break;
+--- a/drivers/acpi/processor_perflib.c
++++ b/drivers/acpi/processor_perflib.c
+@@ -79,13 +79,16 @@ static int acpi_processor_get_platform_l
+ 
+ 	index = ppc;
+ 
++	if (pr->performance_platform_limit == index ||
++	    ppc >= pr->performance->state_count)
++		return 0;
 +
-+			/*
-+			 * If REQ_F_NOWAIT is set, then don't wait or retry with
-+			 * poll. -EAGAIN is final for that case.
-+			 */
-+			if (req->flags & REQ_F_NOWAIT)
-+				break;
+ 	pr_debug("CPU %d: _PPC is %d - frequency %s limited\n", pr->id,
+ 		 index, index ? "is" : "is not");
+ 
+ 	pr->performance_platform_limit = index;
+ 
+-	if (ppc >= pr->performance->state_count ||
+-	    unlikely(!freq_qos_request_active(&pr->perflib_req)))
++	if (unlikely(!freq_qos_request_active(&pr->perflib_req)))
+ 		return 0;
+ 
+ 	/*
+@@ -180,9 +183,16 @@ void acpi_processor_ppc_init(struct cpuf
+ 		if (!pr)
+ 			continue;
+ 
++		/*
++		 * Reset performance_platform_limit in case there is a stale
++		 * value in it, so as to make it match the "no limit" QoS value
++		 * below.
++		 */
++		pr->performance_platform_limit = 0;
 +
- 			cond_resched();
- 		} while (1);
- 	}
+ 		ret = freq_qos_add_request(&policy->constraints,
+-					   &pr->perflib_req,
+-					   FREQ_QOS_MAX, INT_MAX);
++					   &pr->perflib_req, FREQ_QOS_MAX,
++					   FREQ_QOS_MAX_DEFAULT_VALUE);
+ 		if (ret < 0)
+ 			pr_err("Failed to add freq constraint for CPU%d (%d)\n",
+ 			       cpu, ret);
 
 
