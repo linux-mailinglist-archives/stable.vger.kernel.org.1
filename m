@@ -2,47 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 55688775BB7
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:20:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1A9677758B4
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:55:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233520AbjHILUR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:20:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39110 "EHLO
+        id S232479AbjHIKzI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 06:55:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35362 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233511AbjHILUR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:20:17 -0400
+        with ESMTP id S232699AbjHIKy5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:54:57 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C26F2ED
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:20:16 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A9DB2D4D
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:53:22 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6108F62B34
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:20:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DF95C433C7;
-        Wed,  9 Aug 2023 11:20:15 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7D0B9630D2
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:53:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BCBBC433C7;
+        Wed,  9 Aug 2023 10:53:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691580015;
-        bh=cpSv4+Lk7XBQmO+cIQVLRwN15733Bhf+ir2o2QpLTRw=;
+        s=korg; t=1691578401;
+        bh=ZDRv62iHnx15vR5/unuhXh0ZVIK1FV3ojU97Kwd0vUE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=bQW6L3hu6a3NBezvh1f1KtX+4LWv561KaMSTw88rbvoKbFX7AZW21Xq0DBjfbFz9j
-         btCGxjFV+1PwenF0OiM7rD1CMMPTFDNFFlWM2xsy+T4vAL8XDoyI5PXVhMYUeQKrYO
-         xhustWN2+D8LapjPeGlMHRuMcTquLqKMRpPVDxt4=
+        b=nQbIRxPcqU9jT4kK3OIOyp9qV20YWQ0pqdK4lO+21q1IzvgMK7ISOZ2vPNM5eGh4q
+         eHgjrpOAoX3/Ns6i9x0MO1/fM4sfv9YoK3NIErO8B11x2lrHCk0zE6KGl/zD8FOS6t
+         vDqLugMB4GmPYILK+Na/y8haqRmC0tp2EDDItSsA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Vincent Guittot <vincent.guittot@linaro.org>,
-        Yicong Yang <yangyicong@hisilicon.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        patches@lists.linux.dev, Hou Tao <houtao1@huawei.com>,
+        Jesper Dangaard Brouer <hawk@kernel.org>,
+        Martin KaFai Lau <martin.lau@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 196/323] sched/fair: Dont balance task to its current running CPU
+Subject: [PATCH 6.1 047/127] bpf, cpumap: Handle skb as well when clean up ptr_ring
 Date:   Wed,  9 Aug 2023 12:40:34 +0200
-Message-ID: <20230809103707.137007280@linuxfoundation.org>
+Message-ID: <20230809103638.242033030@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
-References: <20230809103658.104386911@linuxfoundation.org>
+In-Reply-To: <20230809103636.615294317@linuxfoundation.org>
+References: <20230809103636.615294317@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,96 +56,85 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Yicong Yang <yangyicong@hisilicon.com>
+From: Hou Tao <houtao1@huawei.com>
 
-[ Upstream commit 0dd37d6dd33a9c23351e6115ae8cdac7863bc7de ]
+[ Upstream commit 7c62b75cd1a792e14b037fa4f61f9b18914e7de1 ]
 
-We've run into the case that the balancer tries to balance a migration
-disabled task and trigger the warning in set_task_cpu() like below:
+The following warning was reported when running xdp_redirect_cpu with
+both skb-mode and stress-mode enabled:
 
- ------------[ cut here ]------------
- WARNING: CPU: 7 PID: 0 at kernel/sched/core.c:3115 set_task_cpu+0x188/0x240
- Modules linked in: hclgevf xt_CHECKSUM ipt_REJECT nf_reject_ipv4 <...snip>
- CPU: 7 PID: 0 Comm: swapper/7 Kdump: loaded Tainted: G           O       6.1.0-rc4+ #1
- Hardware name: Huawei TaiShan 2280 V2/BC82AMDC, BIOS 2280-V2 CS V5.B221.01 12/09/2021
- pstate: 604000c9 (nZCv daIF +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
- pc : set_task_cpu+0x188/0x240
- lr : load_balance+0x5d0/0xc60
- sp : ffff80000803bc70
- x29: ffff80000803bc70 x28: ffff004089e190e8 x27: ffff004089e19040
- x26: ffff007effcabc38 x25: 0000000000000000 x24: 0000000000000001
- x23: ffff80000803be84 x22: 000000000000000c x21: ffffb093e79e2a78
- x20: 000000000000000c x19: ffff004089e19040 x18: 0000000000000000
- x17: 0000000000001fad x16: 0000000000000030 x15: 0000000000000000
- x14: 0000000000000003 x13: 0000000000000000 x12: 0000000000000000
- x11: 0000000000000001 x10: 0000000000000400 x9 : ffffb093e4cee530
- x8 : 00000000fffffffe x7 : 0000000000ce168a x6 : 000000000000013e
- x5 : 00000000ffffffe1 x4 : 0000000000000001 x3 : 0000000000000b2a
- x2 : 0000000000000b2a x1 : ffffb093e6d6c510 x0 : 0000000000000001
- Call trace:
-  set_task_cpu+0x188/0x240
-  load_balance+0x5d0/0xc60
-  rebalance_domains+0x26c/0x380
-  _nohz_idle_balance.isra.0+0x1e0/0x370
-  run_rebalance_domains+0x6c/0x80
-  __do_softirq+0x128/0x3d8
-  ____do_softirq+0x18/0x24
-  call_on_irq_stack+0x2c/0x38
-  do_softirq_own_stack+0x24/0x3c
-  __irq_exit_rcu+0xcc/0xf4
-  irq_exit_rcu+0x18/0x24
-  el1_interrupt+0x4c/0xe4
-  el1h_64_irq_handler+0x18/0x2c
-  el1h_64_irq+0x74/0x78
-  arch_cpu_idle+0x18/0x4c
-  default_idle_call+0x58/0x194
-  do_idle+0x244/0x2b0
-  cpu_startup_entry+0x30/0x3c
-  secondary_start_kernel+0x14c/0x190
-  __secondary_switched+0xb0/0xb4
- ---[ end trace 0000000000000000 ]---
+  ------------[ cut here ]------------
+  Incorrect XDP memory type (-2128176192) usage
+  WARNING: CPU: 7 PID: 1442 at net/core/xdp.c:405
+  Modules linked in:
+  CPU: 7 PID: 1442 Comm: kworker/7:0 Tainted: G  6.5.0-rc2+ #1
+  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996)
+  Workqueue: events __cpu_map_entry_free
+  RIP: 0010:__xdp_return+0x1e4/0x4a0
+  ......
+  Call Trace:
+   <TASK>
+   ? show_regs+0x65/0x70
+   ? __warn+0xa5/0x240
+   ? __xdp_return+0x1e4/0x4a0
+   ......
+   xdp_return_frame+0x4d/0x150
+   __cpu_map_entry_free+0xf9/0x230
+   process_one_work+0x6b0/0xb80
+   worker_thread+0x96/0x720
+   kthread+0x1a5/0x1f0
+   ret_from_fork+0x3a/0x70
+   ret_from_fork_asm+0x1b/0x30
+   </TASK>
 
-Further investigation shows that the warning is superfluous, the migration
-disabled task is just going to be migrated to its current running CPU.
-This is because that on load balance if the dst_cpu is not allowed by the
-task, we'll re-select a new_dst_cpu as a candidate. If no task can be
-balanced to dst_cpu we'll try to balance the task to the new_dst_cpu
-instead. In this case when the migration disabled task is not on CPU it
-only allows to run on its current CPU, load balance will select its
-current CPU as new_dst_cpu and later triggers the warning above.
+The reason for the warning is twofold. One is due to the kthread
+cpu_map_kthread_run() is stopped prematurely. Another one is
+__cpu_map_ring_cleanup() doesn't handle skb mode and treats skbs in
+ptr_ring as XDP frames.
 
-The new_dst_cpu is chosen from the env->dst_grpmask. Currently it
-contains CPUs in sched_group_span() and if we have overlapped groups it's
-possible to run into this case. This patch makes env->dst_grpmask of
-group_balance_mask() which exclude any CPUs from the busiest group and
-solve the issue. For balancing in a domain with no overlapped groups
-the behaviour keeps same as before.
+Prematurely-stopped kthread will be fixed by the preceding patch and
+ptr_ring will be empty when __cpu_map_ring_cleanup() is called. But
+as the comments in __cpu_map_ring_cleanup() said, handling and freeing
+skbs in ptr_ring as well to "catch any broken behaviour gracefully".
 
-Suggested-by: Vincent Guittot <vincent.guittot@linaro.org>
-Signed-off-by: Yicong Yang <yangyicong@hisilicon.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Vincent Guittot <vincent.guittot@linaro.org>
-Link: https://lore.kernel.org/r/20230530082507.10444-1-yangyicong@huawei.com
+Fixes: 11941f8a8536 ("bpf: cpumap: Implement generic cpumap")
+Signed-off-by: Hou Tao <houtao1@huawei.com>
+Acked-by: Jesper Dangaard Brouer <hawk@kernel.org>
+Link: https://lore.kernel.org/r/20230729095107.1722450-3-houtao@huaweicloud.com
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/sched/fair.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/bpf/cpumap.c | 14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index eb67f42fb96ba..09f82c84474b8 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -8721,7 +8721,7 @@ static int load_balance(int this_cpu, struct rq *this_rq,
- 		.sd		= sd,
- 		.dst_cpu	= this_cpu,
- 		.dst_rq		= this_rq,
--		.dst_grpmask    = sched_group_span(sd->groups),
-+		.dst_grpmask    = group_balance_mask(sd->groups),
- 		.idle		= idle,
- 		.loop_break	= sched_nr_migrate_break,
- 		.cpus		= cpus,
+diff --git a/kernel/bpf/cpumap.c b/kernel/bpf/cpumap.c
+index 09141351d5457..e5888d401d799 100644
+--- a/kernel/bpf/cpumap.c
++++ b/kernel/bpf/cpumap.c
+@@ -134,11 +134,17 @@ static void __cpu_map_ring_cleanup(struct ptr_ring *ring)
+ 	 * invoked cpu_map_kthread_stop(). Catch any broken behaviour
+ 	 * gracefully and warn once.
+ 	 */
+-	struct xdp_frame *xdpf;
++	void *ptr;
+ 
+-	while ((xdpf = ptr_ring_consume(ring)))
+-		if (WARN_ON_ONCE(xdpf))
+-			xdp_return_frame(xdpf);
++	while ((ptr = ptr_ring_consume(ring))) {
++		WARN_ON_ONCE(1);
++		if (unlikely(__ptr_test_bit(0, &ptr))) {
++			__ptr_clear_bit(0, &ptr);
++			kfree_skb(ptr);
++			continue;
++		}
++		xdp_return_frame(ptr);
++	}
+ }
+ 
+ static void put_cpu_map_entry(struct bpf_cpu_map_entry *rcpu)
 -- 
-2.39.2
+2.40.1
 
 
 
