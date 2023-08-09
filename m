@@ -2,97 +2,117 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8E275775A7F
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:08:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 59F9E775C06
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:23:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233208AbjHILI6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:08:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45524 "EHLO
+        id S233624AbjHILXL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:23:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59274 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233207AbjHILI5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:08:57 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4B0A1FD8
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:08:56 -0700 (PDT)
+        with ESMTP id S233605AbjHILXK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:23:10 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B996FA
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:23:10 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 44A076311B
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:08:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5704CC433C8;
-        Wed,  9 Aug 2023 11:08:55 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1305963228
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:23:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2693AC433C7;
+        Wed,  9 Aug 2023 11:23:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691579335;
-        bh=gKVFHwSXSmOUO+wu0kP45q87sKnNRbCF9coSPjK/g+Y=;
+        s=korg; t=1691580189;
+        bh=y2X+6Ws0RSAnwqIEIVnYHSMjoQ/u0fwlQxWXNh1VjCc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=P+cF8kbWB21io+/lsf9egOIghNRzhpkQwM+XsAPkf2GPo6upMqNFA+n7tiIEXq6B2
-         OfjjB1KdfZjylTilfEMJg1MRHk+l/sTclsKpmEXoSIMc3Jv3oRlxjEvjttqz98h74t
-         w7uFlEg+OuIHabR5qSQFtpzswu3+OCY25G55g58w=
+        b=dOh9cCXtGKaz/bZWYRNLqRdAdRL8VeT3FeVE6mYdCMmkKFHFfLVybjKdwQfSqb+Mj
+         /JMdBO7URQ+ufnJ8pYwvW4SuS9IcMwivEgErJpVhAgLEDOfYIu6zOzOXRkgVk/BN5+
+         HWEBdbSKAqhSgpPYL2UOkj268L3HIJziCAAZp8lk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Sergey Shtylyov <s.shtylyov@omp.ru>,
-        Serge Semin <fancer.lancer@gmail.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Damien Le Moal <dlemoal@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 159/204] ata: pata_ns87415: mark ns87560_tf_read static
+        patches@lists.linux.dev, Mohsen Tahmasebi <moh53n@moh53n.ir>,
+        Mostafa Ghofrani <mostafaghrr@gmail.com>,
+        Johan Hovold <johan@kernel.org>
+Subject: [PATCH 4.19 259/323] USB: serial: option: add Quectel EC200A module support
 Date:   Wed,  9 Aug 2023 12:41:37 +0200
-Message-ID: <20230809103647.854374757@linuxfoundation.org>
+Message-ID: <20230809103709.931481264@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103642.552405807@linuxfoundation.org>
-References: <20230809103642.552405807@linuxfoundation.org>
+In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
+References: <20230809103658.104386911@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Mohsen Tahmasebi <moh53n@moh53n.ir>
 
-[ Upstream commit 3fc2febb0f8ffae354820c1772ec008733237cfa ]
+commit 857ea9005806e2a458016880278f98715873e977 upstream.
 
-The global function triggers a warning because of the missing prototype
+Add Quectel EC200A "DIAG, AT, MODEM":
 
-drivers/ata/pata_ns87415.c:263:6: warning: no previous prototype for 'ns87560_tf_read' [-Wmissing-prototypes]
-  263 | void ns87560_tf_read(struct ata_port *ap, struct ata_taskfile *tf)
+0x6005: ECM / RNDIS + DIAG + AT + MODEM
 
-There are no other references to this, so just make it static.
+T:  Bus=01 Lev=01 Prnt=02 Port=05 Cnt=01 Dev#=  8 Spd=480  MxCh= 0
+D:  Ver= 2.00 Cls=ef(misc ) Sub=02 Prot=01 MxPS=64 #Cfgs=  1
+P:  Vendor=2c7c ProdID=6005 Rev=03.18
+S:  Manufacturer=Android
+S:  Product=Android
+S:  SerialNumber=0000
+C:  #Ifs= 5 Cfg#= 1 Atr=e0 MxPwr=500mA
+I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=06 Prot=00 Driver=cdc_ether
+E:  Ad=87(I) Atr=03(Int.) MxPS=  64 Ivl=4096ms
+I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=00 Driver=cdc_ether
+E:  Ad=0c(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=0b(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=0f(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=89(I) Atr=03(Int.) MxPS=  64 Ivl=4096ms
+I:  If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=0a(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=88(I) Atr=03(Int.) MxPS=  64 Ivl=4096ms
 
-Fixes: c4b5b7b6c4423 ("pata_ns87415: Initial cut at 87415/87560 IDE support")
-Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
-Reviewed-by: Serge Semin <fancer.lancer@gmail.com>
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Mohsen Tahmasebi <moh53n@moh53n.ir>
+Tested-by: Mostafa Ghofrani <mostafaghrr@gmail.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ata/pata_ns87415.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/serial/option.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/ata/pata_ns87415.c b/drivers/ata/pata_ns87415.c
-index 84c6b225b56e9..9ee4aefca8675 100644
---- a/drivers/ata/pata_ns87415.c
-+++ b/drivers/ata/pata_ns87415.c
-@@ -260,7 +260,7 @@ static u8 ns87560_check_status(struct ata_port *ap)
-  *	LOCKING:
-  *	Inherited from caller.
-  */
--void ns87560_tf_read(struct ata_port *ap, struct ata_taskfile *tf)
-+static void ns87560_tf_read(struct ata_port *ap, struct ata_taskfile *tf)
- {
- 	struct ata_ioports *ioaddr = &ap->ioaddr;
- 
--- 
-2.40.1
-
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -269,6 +269,7 @@ static void option_instat_callback(struc
+ #define QUECTEL_PRODUCT_RM520N			0x0801
+ #define QUECTEL_PRODUCT_EC200U			0x0901
+ #define QUECTEL_PRODUCT_EC200S_CN		0x6002
++#define QUECTEL_PRODUCT_EC200A			0x6005
+ #define QUECTEL_PRODUCT_EM061K_LWW		0x6008
+ #define QUECTEL_PRODUCT_EM061K_LCN		0x6009
+ #define QUECTEL_PRODUCT_EC200T			0x6026
+@@ -1229,6 +1230,7 @@ static const struct usb_device_id option
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_RM520N, 0xff, 0, 0) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, 0x0900, 0xff, 0, 0), /* RM500U-CN */
+ 	  .driver_info = ZLP },
++	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EC200A, 0xff, 0, 0) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EC200U, 0xff, 0, 0) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EC200S_CN, 0xff, 0, 0) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EC200T, 0xff, 0, 0) },
 
 
