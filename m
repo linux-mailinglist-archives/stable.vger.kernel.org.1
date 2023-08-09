@@ -2,46 +2,54 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5BF76775D4C
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:35:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E79B5775BAB
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:19:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234065AbjHILfx (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:35:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49130 "EHLO
+        id S233510AbjHILTt (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:19:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47606 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234068AbjHILfx (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:35:53 -0400
+        with ESMTP id S233505AbjHILTt (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:19:49 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D18C11BFE
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:35:52 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 10E8B1BFE
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:19:49 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7154B63508
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:35:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76923C433C8;
-        Wed,  9 Aug 2023 11:35:51 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A12A2631C8
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:19:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8758EC433C7;
+        Wed,  9 Aug 2023 11:19:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691580951;
-        bh=4fJDMZTYfFaPEwz8wir+h/3ybU5pVKMyEQ4m+0vJAio=;
+        s=korg; t=1691579988;
+        bh=SP7FcrL/n/JbIPYcqAj06Y4gPl8RVIcWqAmrAHKcOK0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=xYqO/QgBgniK/ADLxjtQ91fClAvbI4JzEnAcYTQhiKHrC1ooVgpl4B7T2KunqiNSP
-         /ST/KdCMX1kWArL9nVm0XV/hkih6f1whvaTtumefQUXN6bTOTFAtXVDaFZM3RDXG7b
-         NKftIwVyn1TqZmHYdqblxKVoq4DXfyhzYkaO5oG4=
+        b=QcavQlKiBdbMLD4lP9TyzHfoeQMLQNV+A4/yEpw17MCkDPeMNjyNsx96xYKNwzug1
+         y8Kot2rKX1HUaQJAGcBhV193k9y3eLmCg+GwWhvlPc6btBTlvE1CxKbW4S93g5+YfY
+         pljUryUsZZte/Xfejc35HWAGB4bb5PEcGj4tHej8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yuan Can <yuancan@huawei.com>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Andrew Halaney <ahalaney@redhat.com>,
-        Vinod Koul <vkoul@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 023/201] phy: qcom-snps: Use dev_err_probe() to simplify code
+        patches@lists.linux.dev,
+        =?UTF-8?q?Georg=20M=C3=BCller?= <georgmueller@gmx.net>,
+        "Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Ian Rogers <irogers@google.com>,
+        Ingo Molnar <mingo@redhat.com>, Jiri Olsa <jolsa@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        regressions@lists.linux.dev,
+        Arnaldo Carvalho de Melo <acme@redhat.com>
+Subject: [PATCH 4.19 187/323] perf probe: Add test for regression introduced by switch to die_get_decl_file()
 Date:   Wed,  9 Aug 2023 12:40:25 +0200
-Message-ID: <20230809103644.601730710@linuxfoundation.org>
+Message-ID: <20230809103706.730699027@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103643.799166053@linuxfoundation.org>
-References: <20230809103643.799166053@linuxfoundation.org>
+In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
+References: <20230809103658.104386911@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,64 +64,112 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Yuan Can <yuancan@huawei.com>
+From: Georg Müller <georgmueller@gmx.net>
 
-[ Upstream commit 668dc8afce43d4bc01feb3e929d6d5ffcb14f899 ]
+commit 56cbeacf143530576905623ac72ae0964f3293a6 upstream.
 
-In the probe path, dev_err() can be replaced with dev_err_probe()
-which will check if error code is -EPROBE_DEFER and prints the
-error name. It also sets the defer probe reason which can be
-checked later through debugfs.
+This patch adds a test to validate that 'perf probe' works for binaries
+where DWARF info is split into multiple CUs
 
-Signed-off-by: Yuan Can <yuancan@huawei.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Andrew Halaney <ahalaney@redhat.com>
-Link: https://lore.kernel.org/r/20220922111228.36355-8-yuancan@huawei.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Stable-dep-of: 8a0eb8f9b9a0 ("phy: qcom-snps-femto-v2: properly enable ref clock")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Georg Müller <georgmueller@gmx.net>
+Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: regressions@lists.linux.dev
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20230628084551.1860532-5-georgmueller@gmx.net
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/phy/qualcomm/phy-qcom-snps-femto-v2.c | 18 ++++++------------
- 1 file changed, 6 insertions(+), 12 deletions(-)
+ tools/perf/tests/shell/test_uprobe_from_different_cu.sh |   77 ++++++++++++++++
+ 1 file changed, 77 insertions(+)
+ create mode 100755 tools/perf/tests/shell/test_uprobe_from_different_cu.sh
 
-diff --git a/drivers/phy/qualcomm/phy-qcom-snps-femto-v2.c b/drivers/phy/qualcomm/phy-qcom-snps-femto-v2.c
-index 7e61202aa234e..54846259405a9 100644
---- a/drivers/phy/qualcomm/phy-qcom-snps-femto-v2.c
-+++ b/drivers/phy/qualcomm/phy-qcom-snps-femto-v2.c
-@@ -304,12 +304,9 @@ static int qcom_snps_hsphy_probe(struct platform_device *pdev)
- 		return PTR_ERR(hsphy->base);
- 
- 	hsphy->ref_clk = devm_clk_get(dev, "ref");
--	if (IS_ERR(hsphy->ref_clk)) {
--		ret = PTR_ERR(hsphy->ref_clk);
--		if (ret != -EPROBE_DEFER)
--			dev_err(dev, "failed to get ref clk, %d\n", ret);
--		return ret;
--	}
-+	if (IS_ERR(hsphy->ref_clk))
-+		return dev_err_probe(dev, PTR_ERR(hsphy->ref_clk),
-+				     "failed to get ref clk\n");
- 
- 	hsphy->phy_reset = devm_reset_control_get_exclusive(&pdev->dev, NULL);
- 	if (IS_ERR(hsphy->phy_reset)) {
-@@ -322,12 +319,9 @@ static int qcom_snps_hsphy_probe(struct platform_device *pdev)
- 		hsphy->vregs[i].supply = qcom_snps_hsphy_vreg_names[i];
- 
- 	ret = devm_regulator_bulk_get(dev, num, hsphy->vregs);
--	if (ret) {
--		if (ret != -EPROBE_DEFER)
--			dev_err(dev, "failed to get regulator supplies: %d\n",
--				ret);
--		return ret;
--	}
-+	if (ret)
-+		return dev_err_probe(dev, ret,
-+				     "failed to get regulator supplies\n");
- 
- 	pm_runtime_set_active(dev);
- 	pm_runtime_enable(dev);
--- 
-2.39.2
-
+--- /dev/null
++++ b/tools/perf/tests/shell/test_uprobe_from_different_cu.sh
+@@ -0,0 +1,77 @@
++#!/bin/bash
++# test perf probe of function from different CU
++# SPDX-License-Identifier: GPL-2.0
++
++set -e
++
++temp_dir=$(mktemp -d /tmp/perf-uprobe-different-cu-sh.XXXXXXXXXX)
++
++cleanup()
++{
++	trap - EXIT TERM INT
++	if [[ "${temp_dir}" =~ ^/tmp/perf-uprobe-different-cu-sh.*$ ]]; then
++		echo "--- Cleaning up ---"
++		perf probe -x ${temp_dir}/testfile -d foo
++		rm -f "${temp_dir}/"*
++		rmdir "${temp_dir}"
++	fi
++}
++
++trap_cleanup()
++{
++        cleanup
++        exit 1
++}
++
++trap trap_cleanup EXIT TERM INT
++
++cat > ${temp_dir}/testfile-foo.h << EOF
++struct t
++{
++  int *p;
++  int c;
++};
++
++extern int foo (int i, struct t *t);
++EOF
++
++cat > ${temp_dir}/testfile-foo.c << EOF
++#include "testfile-foo.h"
++
++int
++foo (int i, struct t *t)
++{
++  int j, res = 0;
++  for (j = 0; j < i && j < t->c; j++)
++    res += t->p[j];
++
++  return res;
++}
++EOF
++
++cat > ${temp_dir}/testfile-main.c << EOF
++#include "testfile-foo.h"
++
++static struct t g;
++
++int
++main (int argc, char **argv)
++{
++  int i;
++  int j[argc];
++  g.c = argc;
++  g.p = j;
++  for (i = 0; i < argc; i++)
++    j[i] = (int) argv[i][0];
++  return foo (3, &g);
++}
++EOF
++
++gcc -g -Og -flto -c ${temp_dir}/testfile-foo.c -o ${temp_dir}/testfile-foo.o
++gcc -g -Og -c ${temp_dir}/testfile-main.c -o ${temp_dir}/testfile-main.o
++gcc -g -Og -o ${temp_dir}/testfile ${temp_dir}/testfile-foo.o ${temp_dir}/testfile-main.o
++
++perf probe -x ${temp_dir}/testfile --funcs foo
++perf probe -x ${temp_dir}/testfile foo
++
++cleanup
 
 
