@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 644A6775AB9
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:11:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0BC43775C3D
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:25:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233276AbjHILLD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:11:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53206 "EHLO
+        id S233685AbjHILZT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:25:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45102 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233269AbjHILLD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:11:03 -0400
+        with ESMTP id S233677AbjHILZT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:25:19 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4E081BFE
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:11:02 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BBAC1FA
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:25:18 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4278A630F0
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:11:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51090C433C8;
-        Wed,  9 Aug 2023 11:11:01 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5B0876325C
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:25:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C17CC433C8;
+        Wed,  9 Aug 2023 11:25:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691579461;
-        bh=ZZLjs4ulXEe4bxDrT+5K+MxlppHVhjaKQ34ECfN4xeA=;
+        s=korg; t=1691580317;
+        bh=4DhusKSN2G+jhIZ0p/wGdwRAM9Ax38fH1UDkqq2F19k=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=A5g7ILjJrNSeP/NklaxLU9lRLICtVnOAqDN/eM5FSBQnwdoRfl48IHkawrVPxcUVu
-         39Xr4T694vwqezcMHsM3hunkU99Z46p+/7lFSL5WLmluneIi9KI+ghtNj3v5sAhbkB
-         385zg29CsSIeVim8NsaDohzPh0+T9yNjcF+BKHRk=
+        b=qeNCCGwq/YaLfbX7ZTG853P6vKytiaKKwEUJveg3K2se0WZQxYvbbg1KmC9I6hMeO
+         Em1izfi2ZjgVCmJWaukDNq2NTYALfI4hN0SyZajgkdpi1lW0OZkvGIJLy9sV1jquGl
+         TZ/IR5YCfPzce6T4cOFHx5AURio1twlJ9H30PBmI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Charles Keepax <ckeepax@opensource.cirrus.com>,
-        Mark Brown <broonie@kernel.org>
-Subject: [PATCH 4.14 175/204] ASoC: wm8904: Fill the cache for WM8904_ADC_TEST_0 register
+        patches@lists.linux.dev, Jonas Gorski <jonas.gorski@gmail.com>,
+        =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+        Florian Fainelli <florian.fainelli@broadcom.com>,
+        Marc Zyngier <maz@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 275/323] irq-bcm6345-l1: Do not assume a fixed block to cpu mapping
 Date:   Wed,  9 Aug 2023 12:41:53 +0200
-Message-ID: <20230809103648.369486211@linuxfoundation.org>
+Message-ID: <20230809103710.638145102@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103642.552405807@linuxfoundation.org>
-References: <20230809103642.552405807@linuxfoundation.org>
+In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
+References: <20230809103658.104386911@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,40 +56,88 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Mark Brown <broonie@kernel.org>
+From: Jonas Gorski <jonas.gorski@gmail.com>
 
-commit f061e2be8689057cb4ec0dbffa9f03e1a23cdcb2 upstream.
+[ Upstream commit 55ad24857341c36616ecc1d9580af5626c226cf1 ]
 
-The WM8904_ADC_TEST_0 register is modified as part of updating the OSR
-controls but does not have a cache default, leading to errors when we try
-to modify these controls in cache only mode with no prior read:
+The irq to block mapping is fixed, and interrupts from the first block
+will always be routed to the first parent IRQ. But the parent interrupts
+themselves can be routed to any available CPU.
 
-wm8904 3-001a: ASoC: error at snd_soc_component_update_bits on wm8904.3-001a for register: [0x000000c6] -16
+This is used by the bootloader to map the first parent interrupt to the
+boot CPU, regardless wether the boot CPU is the first one or the second
+one.
 
-Add a read of the register to probe() to fill the cache and avoid both the
-error messages and the misconfiguration of the chip which will result.
+When booting from the second CPU, the assumption that the first block's
+IRQ is mapped to the first CPU breaks, and the system hangs because
+interrupts do not get routed correctly.
 
-Acked-by: Charles Keepax <ckeepax@opensource.cirrus.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20230723-asoc-fix-wm8904-adc-test-read-v1-1-2cdf2edd83fd@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix this by passing the appropriate bcm6434_l1_cpu to the interrupt
+handler instead of the chip itself, so the handler always has the right
+block.
+
+Fixes: c7c42ec2baa1 ("irqchips/bmips: Add bcm6345-l1 interrupt controller")
+Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Link: https://lore.kernel.org/r/20230629072620.62527-1-jonas.gorski@gmail.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/wm8904.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/irqchip/irq-bcm6345-l1.c | 14 +++++---------
+ 1 file changed, 5 insertions(+), 9 deletions(-)
 
---- a/sound/soc/codecs/wm8904.c
-+++ b/sound/soc/codecs/wm8904.c
-@@ -2261,6 +2261,9 @@ static int wm8904_i2c_probe(struct i2c_c
- 	regmap_update_bits(wm8904->regmap, WM8904_BIAS_CONTROL_0,
- 			    WM8904_POBCTRL, 0);
+diff --git a/drivers/irqchip/irq-bcm6345-l1.c b/drivers/irqchip/irq-bcm6345-l1.c
+index 31ea6332ecb83..60dc64b4ac6d2 100644
+--- a/drivers/irqchip/irq-bcm6345-l1.c
++++ b/drivers/irqchip/irq-bcm6345-l1.c
+@@ -85,6 +85,7 @@ struct bcm6345_l1_chip {
+ };
  
-+	/* Fill the cache for the ADC test register */
-+	regmap_read(wm8904->regmap, WM8904_ADC_TEST_0, &val);
-+
- 	/* Can leave the device powered off until we need it */
- 	regcache_cache_only(wm8904->regmap, true);
- 	regulator_bulk_disable(ARRAY_SIZE(wm8904->supplies), wm8904->supplies);
+ struct bcm6345_l1_cpu {
++	struct bcm6345_l1_chip	*intc;
+ 	void __iomem		*map_base;
+ 	unsigned int		parent_irq;
+ 	u32			enable_cache[];
+@@ -118,17 +119,11 @@ static inline unsigned int cpu_for_irq(struct bcm6345_l1_chip *intc,
+ 
+ static void bcm6345_l1_irq_handle(struct irq_desc *desc)
+ {
+-	struct bcm6345_l1_chip *intc = irq_desc_get_handler_data(desc);
+-	struct bcm6345_l1_cpu *cpu;
++	struct bcm6345_l1_cpu *cpu = irq_desc_get_handler_data(desc);
++	struct bcm6345_l1_chip *intc = cpu->intc;
+ 	struct irq_chip *chip = irq_desc_get_chip(desc);
+ 	unsigned int idx;
+ 
+-#ifdef CONFIG_SMP
+-	cpu = intc->cpus[cpu_logical_map(smp_processor_id())];
+-#else
+-	cpu = intc->cpus[0];
+-#endif
+-
+ 	chained_irq_enter(chip, desc);
+ 
+ 	for (idx = 0; idx < intc->n_words; idx++) {
+@@ -260,6 +255,7 @@ static int __init bcm6345_l1_init_one(struct device_node *dn,
+ 	if (!cpu)
+ 		return -ENOMEM;
+ 
++	cpu->intc = intc;
+ 	cpu->map_base = ioremap(res.start, sz);
+ 	if (!cpu->map_base)
+ 		return -ENOMEM;
+@@ -275,7 +271,7 @@ static int __init bcm6345_l1_init_one(struct device_node *dn,
+ 		return -EINVAL;
+ 	}
+ 	irq_set_chained_handler_and_data(cpu->parent_irq,
+-						bcm6345_l1_irq_handle, intc);
++						bcm6345_l1_irq_handle, cpu);
+ 
+ 	return 0;
+ }
+-- 
+2.40.1
+
 
 
