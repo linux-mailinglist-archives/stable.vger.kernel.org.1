@@ -2,174 +2,101 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4394177597B
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:00:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 115A2775C1D
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:24:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232876AbjHILAz (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:00:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47012 "EHLO
+        id S233648AbjHILYC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:24:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60064 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232874AbjHILAz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:00:55 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9D6EBED
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:00:54 -0700 (PDT)
+        with ESMTP id S233576AbjHILYB (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:24:01 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 30D451BF7
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:24:01 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3C49061FA9
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:00:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F6E0C433C8;
-        Wed,  9 Aug 2023 11:00:53 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id AA3C36323D
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:24:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8625C433C8;
+        Wed,  9 Aug 2023 11:23:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691578853;
-        bh=5POxHhB0Z04IzAiPpMEy5t8RPgLEqM/thKY64jWUWqg=;
+        s=korg; t=1691580240;
+        bh=6fMmdnFMHW5YyS4kIZagbjZ1uqkSkifd2MOgy1vbNoU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=LPy+80kGEO4mCobWY+v4rZGZ6uetBgjb80HShybB/AJmMHvTVzEt3J0SAVawxO2yK
-         ZUZs3PbDgEiAaYh6RW4ZBwi4xnoEIV7xWAZVRyOfsTG16phtlDxEAuYwHxcoBta5S3
-         wLv7SoKnSE7UEVxCFBY9Q56RG0jhekuZGLk+MTX0=
+        b=OS9RqfnCRR3GJFkf4FN+yBqmAoS97YaKVmfDr3w3PDrtTEXzHSAX/mBEE6gIaf9M2
+         iVJeouCKwM40uOLl/ELkzOu4dqXoMg+GIb5G57viO6w0UKy/zKdL1sOAW2YP0hya69
+         MKHWYz/ldQAJn38tPYX8CXnwO+PtndCc79M1mCIY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, kernel test robot <lkp@intel.com>,
-        Roger Quadros <rogerq@kernel.org>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 80/92] mtd: rawnand: omap_elm: Fix incorrect type in assignment
+        patches@lists.linux.dev, Jason Wang <jasowang@redhat.com>,
+        "Michael S. Tsirkin" <mst@redhat.com>,
+        Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+        Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 4.19 278/323] virtio-net: fix race between set queues and probe
 Date:   Wed,  9 Aug 2023 12:41:56 +0200
-Message-ID: <20230809103636.318503153@linuxfoundation.org>
+Message-ID: <20230809103710.770240593@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103633.485906560@linuxfoundation.org>
-References: <20230809103633.485906560@linuxfoundation.org>
+In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
+References: <20230809103658.104386911@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Roger Quadros <rogerq@kernel.org>
+From: Jason Wang <jasowang@redhat.com>
 
-[ Upstream commit d8403b9eeee66d5dd81ecb9445800b108c267ce3 ]
+commit 25266128fe16d5632d43ada34c847d7b8daba539 upstream.
 
-Once the ECC word endianness is converted to BE32, we force cast it
-to u32 so we can use elm_write_reg() which in turn uses writel().
+A race were found where set_channels could be called after registering
+but before virtnet_set_queues() in virtnet_probe(). Fixing this by
+moving the virtnet_set_queues() before netdevice registering. While at
+it, use _virtnet_set_queues() to avoid holding rtnl as the device is
+not even registered at that time.
 
-Fixes below sparse warnings:
-
-   drivers/mtd/nand/raw/omap_elm.c:180:37: sparse:     expected unsigned int [usertype] val
-   drivers/mtd/nand/raw/omap_elm.c:180:37: sparse:     got restricted __be32 [usertype]
-   drivers/mtd/nand/raw/omap_elm.c:185:37: sparse:     expected unsigned int [usertype] val
-   drivers/mtd/nand/raw/omap_elm.c:185:37: sparse:     got restricted __be32 [usertype]
-   drivers/mtd/nand/raw/omap_elm.c:190:37: sparse:     expected unsigned int [usertype] val
-   drivers/mtd/nand/raw/omap_elm.c:190:37: sparse:     got restricted __be32 [usertype]
->> drivers/mtd/nand/raw/omap_elm.c:200:40: sparse: sparse: restricted __be32 degrades to integer
-   drivers/mtd/nand/raw/omap_elm.c:206:39: sparse: sparse: restricted __be32 degrades to integer
-   drivers/mtd/nand/raw/omap_elm.c:210:37: sparse:     expected unsigned int [assigned] [usertype] val
-   drivers/mtd/nand/raw/omap_elm.c:210:37: sparse:     got restricted __be32 [usertype]
-   drivers/mtd/nand/raw/omap_elm.c:213:37: sparse:     expected unsigned int [assigned] [usertype] val
-   drivers/mtd/nand/raw/omap_elm.c:213:37: sparse:     got restricted __be32 [usertype]
-   drivers/mtd/nand/raw/omap_elm.c:216:37: sparse:     expected unsigned int [assigned] [usertype] val
-   drivers/mtd/nand/raw/omap_elm.c:216:37: sparse:     got restricted __be32 [usertype]
-   drivers/mtd/nand/raw/omap_elm.c:219:37: sparse:     expected unsigned int [assigned] [usertype] val
-   drivers/mtd/nand/raw/omap_elm.c:219:37: sparse:     got restricted __be32 [usertype]
-   drivers/mtd/nand/raw/omap_elm.c:222:37: sparse:     expected unsigned int [assigned] [usertype] val
-   drivers/mtd/nand/raw/omap_elm.c:222:37: sparse:     got restricted __be32 [usertype]
-   drivers/mtd/nand/raw/omap_elm.c:225:37: sparse:     expected unsigned int [assigned] [usertype] val
-   drivers/mtd/nand/raw/omap_elm.c:225:37: sparse:     got restricted __be32 [usertype]
-   drivers/mtd/nand/raw/omap_elm.c:228:39: sparse: sparse: restricted __be32 degrades to integer
-
-Fixes: bf22433575ef ("mtd: devices: elm: Add support for ELM error correction")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202306212211.WDXokuWh-lkp@intel.com/
-Signed-off-by: Roger Quadros <rogerq@kernel.org>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://lore.kernel.org/linux-mtd/20230624184021.7740-1-rogerq@kernel.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: a220871be66f ("virtio-net: correctly enable multiqueue")
+Signed-off-by: Jason Wang <jasowang@redhat.com>
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Reviewed-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+Link: https://lore.kernel.org/r/20230725072049.617289-1-jasowang@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mtd/nand/raw/omap_elm.c | 24 ++++++++++++------------
- 1 file changed, 12 insertions(+), 12 deletions(-)
+ drivers/net/virtio_net.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/mtd/nand/raw/omap_elm.c b/drivers/mtd/nand/raw/omap_elm.c
-index 2b21ce04b3ec6..1a48347be3fe4 100644
---- a/drivers/mtd/nand/raw/omap_elm.c
-+++ b/drivers/mtd/nand/raw/omap_elm.c
-@@ -177,17 +177,17 @@ static void elm_load_syndrome(struct elm_info *info,
- 			switch (info->bch_type) {
- 			case BCH8_ECC:
- 				/* syndrome fragment 0 = ecc[9-12B] */
--				val = cpu_to_be32(*(u32 *) &ecc[9]);
-+				val = (__force u32)cpu_to_be32(*(u32 *)&ecc[9]);
- 				elm_write_reg(info, offset, val);
+--- a/drivers/net/virtio_net.c
++++ b/drivers/net/virtio_net.c
+@@ -3120,6 +3120,8 @@ static int virtnet_probe(struct virtio_d
+ 		}
+ 	}
  
- 				/* syndrome fragment 1 = ecc[5-8B] */
- 				offset += 4;
--				val = cpu_to_be32(*(u32 *) &ecc[5]);
-+				val = (__force u32)cpu_to_be32(*(u32 *)&ecc[5]);
- 				elm_write_reg(info, offset, val);
++	_virtnet_set_queues(vi, vi->curr_queue_pairs);
++
+ 	/* serialize netdev register + virtio_device_ready() with ndo_open() */
+ 	rtnl_lock();
  
- 				/* syndrome fragment 2 = ecc[1-4B] */
- 				offset += 4;
--				val = cpu_to_be32(*(u32 *) &ecc[1]);
-+				val = (__force u32)cpu_to_be32(*(u32 *)&ecc[1]);
- 				elm_write_reg(info, offset, val);
+@@ -3140,8 +3142,6 @@ static int virtnet_probe(struct virtio_d
+ 		goto free_unregister_netdev;
+ 	}
  
- 				/* syndrome fragment 3 = ecc[0B] */
-@@ -197,35 +197,35 @@ static void elm_load_syndrome(struct elm_info *info,
- 				break;
- 			case BCH4_ECC:
- 				/* syndrome fragment 0 = ecc[20-52b] bits */
--				val = (cpu_to_be32(*(u32 *) &ecc[3]) >> 4) |
-+				val = ((__force u32)cpu_to_be32(*(u32 *)&ecc[3]) >> 4) |
- 					((ecc[2] & 0xf) << 28);
- 				elm_write_reg(info, offset, val);
- 
- 				/* syndrome fragment 1 = ecc[0-20b] bits */
- 				offset += 4;
--				val = cpu_to_be32(*(u32 *) &ecc[0]) >> 12;
-+				val = (__force u32)cpu_to_be32(*(u32 *)&ecc[0]) >> 12;
- 				elm_write_reg(info, offset, val);
- 				break;
- 			case BCH16_ECC:
--				val = cpu_to_be32(*(u32 *) &ecc[22]);
-+				val = (__force u32)cpu_to_be32(*(u32 *)&ecc[22]);
- 				elm_write_reg(info, offset, val);
- 				offset += 4;
--				val = cpu_to_be32(*(u32 *) &ecc[18]);
-+				val = (__force u32)cpu_to_be32(*(u32 *)&ecc[18]);
- 				elm_write_reg(info, offset, val);
- 				offset += 4;
--				val = cpu_to_be32(*(u32 *) &ecc[14]);
-+				val = (__force u32)cpu_to_be32(*(u32 *)&ecc[14]);
- 				elm_write_reg(info, offset, val);
- 				offset += 4;
--				val = cpu_to_be32(*(u32 *) &ecc[10]);
-+				val = (__force u32)cpu_to_be32(*(u32 *)&ecc[10]);
- 				elm_write_reg(info, offset, val);
- 				offset += 4;
--				val = cpu_to_be32(*(u32 *) &ecc[6]);
-+				val = (__force u32)cpu_to_be32(*(u32 *)&ecc[6]);
- 				elm_write_reg(info, offset, val);
- 				offset += 4;
--				val = cpu_to_be32(*(u32 *) &ecc[2]);
-+				val = (__force u32)cpu_to_be32(*(u32 *)&ecc[2]);
- 				elm_write_reg(info, offset, val);
- 				offset += 4;
--				val = cpu_to_be32(*(u32 *) &ecc[0]) >> 16;
-+				val = (__force u32)cpu_to_be32(*(u32 *)&ecc[0]) >> 16;
- 				elm_write_reg(info, offset, val);
- 				break;
- 			default:
--- 
-2.40.1
-
+-	virtnet_set_queues(vi, vi->curr_queue_pairs);
+-
+ 	/* Assume link up if device can't report link status,
+ 	   otherwise get link status from config. */
+ 	netif_carrier_off(dev);
 
 
