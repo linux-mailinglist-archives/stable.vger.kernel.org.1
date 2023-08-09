@@ -2,130 +2,104 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A3868775CBF
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:30:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1AC9C775AA4
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:10:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233860AbjHILaf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:30:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52874 "EHLO
+        id S233241AbjHILKN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:10:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42784 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233879AbjHILac (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:30:32 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4BBD172A
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:30:31 -0700 (PDT)
+        with ESMTP id S233245AbjHILKM (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:10:12 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A7AF1FCE
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:10:12 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4566963369
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:30:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A65AC433C8;
-        Wed,  9 Aug 2023 11:30:30 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B649A62415
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:10:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7BCAC433C9;
+        Wed,  9 Aug 2023 11:10:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691580630;
-        bh=q1dFmBdX9mZSx1VitoctepFLja5YGhOK6ollODksYHk=;
+        s=korg; t=1691579411;
+        bh=XoXqVPI2PELrrucaFDP1BVbC04TlvPP5fAFvnKTmcxs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=PRdpfdOqa6k80DkQNsI9i40yR4Rgc6GzU+ksQLdg2J3CBSQocGJYraoMNR20YAB6J
-         PNVY7dpTzuyRV8vAXgVovo0jiQv1yk50hMPG+Uumh70OSzTRjKN0KiRv4z2a4/F9J3
-         a6GWvBi5j9Z9CMrHoyGa0MQZSV3CSWnZkz280qiY=
+        b=cTBuaStQarnZPA8kK4RmJ2kP4u3IhNjGMKwtPwgS73DxOYNBx7jDsccAnlWsg+V5G
+         RZoqeQC5jTaY2TaPmefI3YKi5pc+akmO+7vqVpw9KHIoeMa516ZO3+r5THV8NdK0af
+         GQQc0yYZsKwvo8zi30Li1ikQ3KqfeKOEmDaImc0M=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Heiko Carstens <hca@linux.ibm.com>,
+        patches@lists.linux.dev, valis <sec@valis.email>,
+        M A Ramdhan <ramdhan@starlabs.sg>,
+        Jamal Hadi Salim <jhs@mojatatu.com>,
+        Victor Nogueira <victor@mojatatu.com>,
+        Pedro Tammela <pctammela@mojatatu.com>,
+        Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 094/154] KVM: s390: fix sthyi error handling
+Subject: [PATCH 4.14 187/204] net/sched: cls_u32: No longer copy tcf_result on update to avoid use-after-free
 Date:   Wed,  9 Aug 2023 12:42:05 +0200
-Message-ID: <20230809103640.094395959@linuxfoundation.org>
+Message-ID: <20230809103648.741675220@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103636.887175326@linuxfoundation.org>
-References: <20230809103636.887175326@linuxfoundation.org>
+In-Reply-To: <20230809103642.552405807@linuxfoundation.org>
+References: <20230809103642.552405807@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Heiko Carstens <hca@linux.ibm.com>
+From: valis <sec@valis.email>
 
-[ Upstream commit 0c02cc576eac161601927b41634f80bfd55bfa9e ]
+[ Upstream commit 3044b16e7c6fe5d24b1cdbcf1bd0a9d92d1ebd81 ]
 
-Commit 9fb6c9b3fea1 ("s390/sthyi: add cache to store hypervisor info")
-added cache handling for store hypervisor info. This also changed the
-possible return code for sthyi_fill().
+When u32_change() is called on an existing filter, the whole
+tcf_result struct is always copied into the new instance of the filter.
 
-Instead of only returning a condition code like the sthyi instruction would
-do, it can now also return a negative error value (-ENOMEM). handle_styhi()
-was not changed accordingly. In case of an error, the negative error value
-would incorrectly injected into the guest PSW.
+This causes a problem when updating a filter bound to a class,
+as tcf_unbind_filter() is always called on the old instance in the
+success path, decreasing filter_cnt of the still referenced class
+and allowing it to be deleted, leading to a use-after-free.
 
-Add proper error handling to prevent this, and update the comment which
-describes the possible return values of sthyi_fill().
+Fix this by no longer copying the tcf_result struct from the old filter.
 
-Fixes: 9fb6c9b3fea1 ("s390/sthyi: add cache to store hypervisor info")
-Reviewed-by: Christian Borntraeger <borntraeger@linux.ibm.com>
-Link: https://lore.kernel.org/r/20230727182939.2050744-1-hca@linux.ibm.com
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Fixes: de5df63228fc ("net: sched: cls_u32 changes to knode must appear atomic to readers")
+Reported-by: valis <sec@valis.email>
+Reported-by: M A Ramdhan <ramdhan@starlabs.sg>
+Signed-off-by: valis <sec@valis.email>
+Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Reviewed-by: Victor Nogueira <victor@mojatatu.com>
+Reviewed-by: Pedro Tammela <pctammela@mojatatu.com>
+Reviewed-by: M A Ramdhan <ramdhan@starlabs.sg>
+Link: https://lore.kernel.org/r/20230729123202.72406-2-jhs@mojatatu.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/kernel/sthyi.c  | 6 +++---
- arch/s390/kvm/intercept.c | 9 ++++++---
- 2 files changed, 9 insertions(+), 6 deletions(-)
+ net/sched/cls_u32.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/arch/s390/kernel/sthyi.c b/arch/s390/kernel/sthyi.c
-index 888cc2f166db7..ce6084e28d904 100644
---- a/arch/s390/kernel/sthyi.c
-+++ b/arch/s390/kernel/sthyi.c
-@@ -460,9 +460,9 @@ static int sthyi_update_cache(u64 *rc)
-  *
-  * Fills the destination with system information returned by the STHYI
-  * instruction. The data is generated by emulation or execution of STHYI,
-- * if available. The return value is the condition code that would be
-- * returned, the rc parameter is the return code which is passed in
-- * register R2 + 1.
-+ * if available. The return value is either a negative error value or
-+ * the condition code that would be returned, the rc parameter is the
-+ * return code which is passed in register R2 + 1.
-  */
- int sthyi_fill(void *dst, u64 *rc)
- {
-diff --git a/arch/s390/kvm/intercept.c b/arch/s390/kvm/intercept.c
-index a389fa85cca2d..5450d43d26ea5 100644
---- a/arch/s390/kvm/intercept.c
-+++ b/arch/s390/kvm/intercept.c
-@@ -360,8 +360,8 @@ static int handle_partial_execution(struct kvm_vcpu *vcpu)
-  */
- int handle_sthyi(struct kvm_vcpu *vcpu)
- {
--	int reg1, reg2, r = 0;
--	u64 code, addr, cc = 0, rc = 0;
-+	int reg1, reg2, cc = 0, r = 0;
-+	u64 code, addr, rc = 0;
- 	struct sthyi_sctns *sctns = NULL;
+diff --git a/net/sched/cls_u32.c b/net/sched/cls_u32.c
+index a4e01220a53a1..8a2fc40ae8402 100644
+--- a/net/sched/cls_u32.c
++++ b/net/sched/cls_u32.c
+@@ -870,7 +870,6 @@ static struct tc_u_knode *u32_init_knode(struct tcf_proto *tp,
+ 	new->ifindex = n->ifindex;
+ #endif
+ 	new->fshift = n->fshift;
+-	new->res = n->res;
+ 	new->flags = n->flags;
+ 	RCU_INIT_POINTER(new->ht_down, n->ht_down);
  
- 	if (!test_kvm_facility(vcpu->kvm, 74))
-@@ -392,7 +392,10 @@ int handle_sthyi(struct kvm_vcpu *vcpu)
- 		return -ENOMEM;
- 
- 	cc = sthyi_fill(sctns, &rc);
--
-+	if (cc < 0) {
-+		free_page((unsigned long)sctns);
-+		return cc;
-+	}
- out:
- 	if (!cc) {
- 		r = write_guest(vcpu, addr, reg2, sctns, PAGE_SIZE);
 -- 
 2.40.1
 
