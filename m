@@ -2,83 +2,119 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A68A177551E
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 10:24:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5390177556D
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 10:32:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230047AbjHIIYF (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 04:24:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56474 "EHLO
+        id S229596AbjHIIcx (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 04:32:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58240 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229541AbjHIIYE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 04:24:04 -0400
-Received: from eu-smtp-delivery-151.mimecast.com (eu-smtp-delivery-151.mimecast.com [185.58.85.151])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 60A1699
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 01:24:03 -0700 (PDT)
-Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) by
- relay.mimecast.com with ESMTP with both STARTTLS and AUTH (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
- uk-mta-258-oV41YQSUPSmBcZSspKOtjg-1; Wed, 09 Aug 2023 09:23:49 +0100
-X-MC-Unique: oV41YQSUPSmBcZSspKOtjg-1
-Received: from AcuMS.Aculab.com (10.202.163.6) by AcuMS.aculab.com
- (10.202.163.6) with Microsoft SMTP Server (TLS) id 15.0.1497.48; Wed, 9 Aug
- 2023 09:23:46 +0100
-Received: from AcuMS.Aculab.com ([::1]) by AcuMS.aculab.com ([::1]) with mapi
- id 15.00.1497.048; Wed, 9 Aug 2023 09:23:46 +0100
-From:   David Laight <David.Laight@ACULAB.COM>
-To:     "'Martin K. Petersen'" <martin.petersen@oracle.com>,
-        Ranjan Kumar <ranjan.kumar@broadcom.com>
-CC:     "linux-scsi@vger.kernel.org" <linux-scsi@vger.kernel.org>,
-        "sathya.prakash@broadcom.com" <sathya.prakash@broadcom.com>,
-        "sreekanth.reddy@broadcom.com" <sreekanth.reddy@broadcom.com>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: RE: [PATCH v3 1/2] Perform additional retries if Doorbell read
- returns 0
-Thread-Topic: [PATCH v3 1/2] Perform additional retries if Doorbell read
- returns 0
-Thread-Index: AQHZymB3zD70idl4qkOVizLGETk6/K/hn8Ag
-Date:   Wed, 9 Aug 2023 08:23:46 +0000
-Message-ID: <f89c7dea130842c4bb0089bd2d5a07d9@AcuMS.aculab.com>
-References: <20230726112527.14987-1-ranjan.kumar@broadcom.com>
-        <20230726112527.14987-2-ranjan.kumar@broadcom.com>
-        <yq1o7jsq9lq.fsf@ca-mkp.ca.oracle.com>
-        <CAMFBP8MS0hwd9-bfVrPi8yTB3Es-w7ugHwEMyxtb8R-mj8PPCg@mail.gmail.com>
-        <yq1sf8ujmf2.fsf@ca-mkp.ca.oracle.com>
-        <CAMFBP8Nf6ifVxJnNBv=zq+WyJRZR-2Hiuo4AejLAguE-GWuzJg@mail.gmail.com>
- <yq1a5v1ja8a.fsf@ca-mkp.ca.oracle.com>
-In-Reply-To: <yq1a5v1ja8a.fsf@ca-mkp.ca.oracle.com>
-Accept-Language: en-GB, en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.202.205.107]
+        with ESMTP id S229504AbjHIIcn (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 04:32:43 -0400
+Received: from mail-ed1-x541.google.com (mail-ed1-x541.google.com [IPv6:2a00:1450:4864:20::541])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 52ED41B6
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 01:32:42 -0700 (PDT)
+Received: by mail-ed1-x541.google.com with SMTP id 4fb4d7f45d1cf-51e2a6a3768so8983418a12.0
+        for <stable@vger.kernel.org>; Wed, 09 Aug 2023 01:32:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1691569961; x=1692174761;
+        h=to:subject:message-id:date:from:sender:mime-version:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=jyhs5hTT5MeT5V/Vc0XE1BRhRiV+/c3PYb9DvcHP9Kc=;
+        b=g5Tcbozj96VaxGm2JG046qDRTOy5SPbyW702MdW1uYxUD3z+ERPdBO2BQlnZSQWn6x
+         0CPZX1O6CWanFF3HOlVU0lk6iU/Axe1u/T7lGzebbD16T+p9Cd6D/kdA5GPN3RmiitNI
+         EPE3HeU6nxl98ZpklpTl7Ttu+7SvVvqmd6n1wxSyMGH01nxhCFI9ldbU5pUp8JWxgZ31
+         Z2fzkz4WVKAhmJldYc/d1h+dg4SXiUgTG3CVr0tTbthHaSd6jYHbEETgjU6DGWfLTHzf
+         IclvPzpakqaQEHOrgqR5dG6AIKSxompKMnbAtsVsefF6wivTpm1OYUVHr0UBlkqAQyeP
+         PT5A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1691569961; x=1692174761;
+        h=to:subject:message-id:date:from:sender:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=jyhs5hTT5MeT5V/Vc0XE1BRhRiV+/c3PYb9DvcHP9Kc=;
+        b=Qh8uLLeuo4by+yxym7MxYHVyQYgTu04PBYDlhl88zWD+Ydb+smPR3SmmlRHJBSn0cv
+         DGmd5yappMFpRnhLVP3NtpIZ2+lLn0rO6kkOAbjriCalwvqStN8nRzcLBY7+POHcuZFq
+         1HCCBuazNBnIrWormb86L16q04xjKi7S2UW7Wcg2AF0ZrigpOWP400vzMX8GVQdUPkhf
+         PAwxonnM8qMUFM8lu99svjiyKkF0i1pX1Vn2oLZTF9GbnFOoQvdQPYdNQKQM5Cx3H7lw
+         nnvj9GS6xTZLV9petOL9FOUm87xWog5FY085lscLWzh1DUDHpldWlLiinogZsACi86H5
+         a1mQ==
+X-Gm-Message-State: AOJu0YwtJ05g7Ktkozgie1PI2JCma2c/W/2RjJL4wTt7A3PwrX8DMBMG
+        BCaMsEncUFoKhOswrs6QFcHs12KRSTbgSVJdT6g=
+X-Google-Smtp-Source: AGHT+IEFi4EfIqfzg3AC7A7JUlESOHmgBPjBaIKR+cMU7jOpE3HDGG7TuErUXzyHN1jEZ5wozd13lVoayHj9tF47vy4=
+X-Received: by 2002:aa7:d1c4:0:b0:51e:1643:5ad0 with SMTP id
+ g4-20020aa7d1c4000000b0051e16435ad0mr1810845edp.8.1691569960295; Wed, 09 Aug
+ 2023 01:32:40 -0700 (PDT)
 MIME-Version: 1.0
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: aculab.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: base64
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Sender: aishagadaffi200@gmail.com
+Received: by 2002:a05:6f02:a95:b0:55:e598:5a37 with HTTP; Wed, 9 Aug 2023
+ 01:32:39 -0700 (PDT)
+From:   AISHA GADAFFI <gaisha851@gmail.com>
+Date:   Wed, 9 Aug 2023 09:32:39 +0100
+X-Google-Sender-Auth: SB54IkIC-gpta0ODT6W9VWkgmxg
+Message-ID: <CAPeOZw5UHyWpuUQte0QJPkyYo-braduRri7qkGWiY38+_oiX9A@mail.gmail.com>
+Subject: Gold for Sale
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: Yes, score=7.5 required=5.0 tests=BAYES_99,BAYES_999,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,LOTS_OF_MONEY,MILLION_HUNDRED,
+        MILLION_USD,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,UNDISC_MONEY,
+        URG_BIZ autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2a00:1450:4864:20:0:0:0:541 listed in]
+        [list.dnswl.org]
+        *  3.5 BAYES_99 BODY: Bayes spam probability is 99 to 100%
+        *      [score: 1.0000]
+        *  0.2 BAYES_999 BODY: Bayes spam probability is 99.9 to 100%
+        *      [score: 1.0000]
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [gaisha851[at]gmail.com]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
+        *       in digit
+        *      [aishagadaffi200[at]gmail.com]
+        *  0.0 MILLION_HUNDRED BODY: Million "One to Nine" Hundred
+        *  0.4 MILLION_USD BODY: Talks about millions of dollars
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        *  0.0 LOTS_OF_MONEY Huge... sums of money
+        *  0.6 URG_BIZ Contains urgent matter
+        *  2.8 UNDISC_MONEY Undisclosed recipients + money/fraud signs
+X-Spam-Level: *******
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-RnJvbTogTWFydGluIEsuIFBldGVyc2VuDQo+IFNlbnQ6IDA5IEF1Z3VzdCAyMDIzIDAyOjI2DQo+
-IA0KPiANCj4gSGkgUmFuamFuLA0KPiANCj4gPiBCdXQgZm9yIGZldyByZWdpc3RlcnMgemVybyBt
-YXkgYmUgYSB2YWxpZCB2YWx1ZSBhbmQgd2UgZG9u4oCZdCB3YW50DQo+ID4gdGhvc2UgcmVnaXN0
-ZXJzIHRvIGdldCBwZW5hbGl6ZWQgd2l0aCAzMCByZWFkIHJldHJpZXMgd2hlcmUgMS8zIHJlYWRz
-DQo+ID4gd291bGQgaGF2ZSBzdWZmaWNlZC4NCj4gDQo+IElmIDAgaXMgYSB2YWxpZCByZWdpc3Rl
-ciB2YWx1ZSB5b3UnbGwgZW5kIHVwIGFsd2F5cyBkb2luZyAzIHJldHJpZXMNCj4gYmVmb3JlIHJl
-dHVybmluZy4gRXZlbiBpZiB0aGUgZmlyc3QgcmVnaXN0ZXIgcmVhZHMgd2VyZSAic3VjY2Vzc2Z1
-bCIuDQo+IFBlY3VsaWFyIQ0KDQpMb29rcyBsaWtlIHRoZSBjb3JyZWN0IHNvbHV0aW9uIGlzIHRv
-IGNvbXBsZXRlbHkgZGlzYWJsZSB0aGUgQk1DLg0KSXQgY2xlYXJseSBpc24ndCBjb21wYXRpYmxl
-IHdpdGggdXNpbmcgdGhlIGRyaXZlciBhcyB3ZWxsLg0KDQpJZiB0aGF0IGlzbid0IHBvc3NpYmxl
-IGlzIHNlZW1zIGl0IG5lZWRzIHRvIGJlIG1hcmtlZCBCUk9LRU4gOi0pDQoNCk11Y2ggbGlrZSB0
-aGUgbWFpbiBldGhlcm5ldCBpbnRlcmZhY2Ugb24gbXkgSXZ5IGJyaWRnZSBpNy4NCg0KCURhdmlk
-DQoNCi0NClJlZ2lzdGVyZWQgQWRkcmVzcyBMYWtlc2lkZSwgQnJhbWxleSBSb2FkLCBNb3VudCBG
-YXJtLCBNaWx0b24gS2V5bmVzLCBNSzEgMVBULCBVSw0KUmVnaXN0cmF0aW9uIE5vOiAxMzk3Mzg2
-IChXYWxlcykNCg==
+Gold for Sale
+Dear Friend,
+Greetings and Nice Day.
+Assalamu Alaikum
+May i  use this medium to open a mutual communication with you seeking
+your acceptance towards investing in your country under your
+management as my partner, My name is Aisha  Gaddafi and presently
+living in Oman, i am a Widow and single Mother with three Children,
+the only biological Daughter of late Libyan President (Late Colonel
+Muammar Gaddafi) and presently i am under political asylum protection
+by the Omani Government.
 
+I have funds worth "Twenty Seven Million Five Hundred Thousand United
+State Dollars" -USD$7M.500.000.00 US Dollars which i want to entrust
+on you for investment project in your country.If you are willing to
+handle this project on my behalf, kindly reply urgent to enable me
+provide you more details to start the transfer process.
+I shall appreciate your urgent response through my email address below:
+
+gaisha851@gmail.com
+
+Best Regards
+Aisha Gaddafi
