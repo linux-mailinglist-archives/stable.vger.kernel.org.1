@@ -2,94 +2,180 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A4FD1775C91
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:28:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6DAD1775A46
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:07:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233778AbjHIL2l (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:28:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58040 "EHLO
+        id S233118AbjHILG7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:06:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47458 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233795AbjHIL2k (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:28:40 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A00E1BFE
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:28:40 -0700 (PDT)
+        with ESMTP id S233144AbjHILG5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:06:57 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18D061724
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:06:57 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BDD32632E9
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:28:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAF41C433C7;
-        Wed,  9 Aug 2023 11:28:38 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A311762BD5
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:06:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0F5FC433C8;
+        Wed,  9 Aug 2023 11:06:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691580519;
-        bh=f7obBiLJDvI6Lh9qJbRR6Pg6GuyNDfAulUmJjWocjn8=;
+        s=korg; t=1691579216;
+        bh=wVIFm+c24cNwlC5s5rWH9/DEdjQ+6jthcsPCVtEmbwQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=oQdOrSrvwTEvzSGSfLIIWYaeq4dTZGessT3EHuf+5hPYSV5R5A0q/FwuiauANCN/q
-         geArrY3BeKYp7vANkBRHS9T5mDhaI5rMSouvHEzwal44672rFbVG9dVcwtSkB1GQiY
-         EOX22HFbnUAw1L6I1BfShXqJRrgApguDvtGkns6c=
+        b=YJ7k0atnCDVTiLutu9kstMUU0KoiXccP9GI2ZgO43qDPCQof/j1lEUgkRO7dhwqmL
+         tW+CMSYTaod2rNScLxWXtoEqc/yx7yvseTB4Kec8X6Wq1eFmJSpppJ7ij3X/H/aLxD
+         SnDpaimo/E5NcxZEzjPUeGuuc2fivgal/U27Av4w=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Colin Ian King <colin.king@canonical.com>,
-        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 024/154] pwm: meson: Remove redundant assignment to variable fin_freq
+        patches@lists.linux.dev, Zheng Yejian <zhengyejian1@huawei.com>,
+        "Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 4.14 117/204] ring-buffer: Fix deadloop issue on reading trace_pipe
 Date:   Wed,  9 Aug 2023 12:40:55 +0200
-Message-ID: <20230809103637.781836989@linuxfoundation.org>
+Message-ID: <20230809103646.518518590@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103636.887175326@linuxfoundation.org>
-References: <20230809103636.887175326@linuxfoundation.org>
+In-Reply-To: <20230809103642.552405807@linuxfoundation.org>
+References: <20230809103642.552405807@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+From: Zheng Yejian <zhengyejian1@huawei.com>
 
-[ Upstream commit 437fb760d046340d0dee3b4307e1cf4578fd8ca8 ]
+commit 7e42907f3a7b4ce3a2d1757f6d78336984daf8f5 upstream.
 
-The variable fin_freq is being initialized with a value that is never
-read and it is being updated later with a new value. The initialization
-is redundant and can be removed.
+Soft lockup occurs when reading file 'trace_pipe':
 
-Addresses-Coverity: ("Unused value")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
-Acked-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Signed-off-by: Thierry Reding <thierry.reding@gmail.com>
-Stable-dep-of: 87a2cbf02d77 ("pwm: meson: fix handling of period/duty if greater than UINT_MAX")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  watchdog: BUG: soft lockup - CPU#6 stuck for 22s! [cat:4488]
+  [...]
+  RIP: 0010:ring_buffer_empty_cpu+0xed/0x170
+  RSP: 0018:ffff88810dd6fc48 EFLAGS: 00000246
+  RAX: 0000000000000000 RBX: 0000000000000246 RCX: ffffffff93d1aaeb
+  RDX: ffff88810a280040 RSI: 0000000000000008 RDI: ffff88811164b218
+  RBP: ffff88811164b218 R08: 0000000000000000 R09: ffff88815156600f
+  R10: ffffed102a2acc01 R11: 0000000000000001 R12: 0000000051651901
+  R13: 0000000000000000 R14: ffff888115e49500 R15: 0000000000000000
+  [...]
+  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+  CR2: 00007f8d853c2000 CR3: 000000010dcd8000 CR4: 00000000000006e0
+  DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+  DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+  Call Trace:
+   __find_next_entry+0x1a8/0x4b0
+   ? peek_next_entry+0x250/0x250
+   ? down_write+0xa5/0x120
+   ? down_write_killable+0x130/0x130
+   trace_find_next_entry_inc+0x3b/0x1d0
+   tracing_read_pipe+0x423/0xae0
+   ? tracing_splice_read_pipe+0xcb0/0xcb0
+   vfs_read+0x16b/0x490
+   ksys_read+0x105/0x210
+   ? __ia32_sys_pwrite64+0x200/0x200
+   ? switch_fpu_return+0x108/0x220
+   do_syscall_64+0x33/0x40
+   entry_SYSCALL_64_after_hwframe+0x61/0xc6
+
+Through the vmcore, I found it's because in tracing_read_pipe(),
+ring_buffer_empty_cpu() found some buffer is not empty but then it
+cannot read anything due to "rb_num_of_entries() == 0" always true,
+Then it infinitely loop the procedure due to user buffer not been
+filled, see following code path:
+
+  tracing_read_pipe() {
+    ... ...
+    waitagain:
+      tracing_wait_pipe() // 1. find non-empty buffer here
+      trace_find_next_entry_inc()  // 2. loop here try to find an entry
+        __find_next_entry()
+          ring_buffer_empty_cpu();  // 3. find non-empty buffer
+          peek_next_entry()  // 4. but peek always return NULL
+            ring_buffer_peek()
+              rb_buffer_peek()
+                rb_get_reader_page()
+                  // 5. because rb_num_of_entries() == 0 always true here
+                  //    then return NULL
+      // 6. user buffer not been filled so goto 'waitgain'
+      //    and eventually leads to an deadloop in kernel!!!
+  }
+
+By some analyzing, I found that when resetting ringbuffer, the 'entries'
+of its pages are not all cleared (see rb_reset_cpu()). Then when reducing
+the ringbuffer, and if some reduced pages exist dirty 'entries' data, they
+will be added into 'cpu_buffer->overrun' (see rb_remove_pages()), which
+cause wrong 'overrun' count and eventually cause the deadloop issue.
+
+To fix it, we need to clear every pages in rb_reset_cpu().
+
+Link: https://lore.kernel.org/linux-trace-kernel/20230708225144.3785600-1-zhengyejian1@huawei.com
+
+Cc: stable@vger.kernel.org
+Fixes: a5fb833172eca ("ring-buffer: Fix uninitialized read_stamp")
+Signed-off-by: Zheng Yejian <zhengyejian1@huawei.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pwm/pwm-meson.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/trace/ring_buffer.c |   24 +++++++++++++++---------
+ 1 file changed, 15 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/pwm/pwm-meson.c b/drivers/pwm/pwm-meson.c
-index 9fc08d1de34c2..5cab720d50680 100644
---- a/drivers/pwm/pwm-meson.c
-+++ b/drivers/pwm/pwm-meson.c
-@@ -163,7 +163,7 @@ static int meson_pwm_calc(struct meson_pwm *meson, struct pwm_device *pwm,
- {
- 	struct meson_pwm_channel *channel = pwm_get_chip_data(pwm);
- 	unsigned int duty, period, pre_div, cnt, duty_cnt;
--	unsigned long fin_freq = -1;
-+	unsigned long fin_freq;
+--- a/kernel/trace/ring_buffer.c
++++ b/kernel/trace/ring_buffer.c
+@@ -4277,28 +4277,34 @@ unsigned long ring_buffer_size(struct ri
+ }
+ EXPORT_SYMBOL_GPL(ring_buffer_size);
  
- 	duty = state->duty_cycle;
- 	period = state->period;
--- 
-2.39.2
-
++static void rb_clear_buffer_page(struct buffer_page *page)
++{
++	local_set(&page->write, 0);
++	local_set(&page->entries, 0);
++	rb_init_page(page->page);
++	page->read = 0;
++}
++
+ static void
+ rb_reset_cpu(struct ring_buffer_per_cpu *cpu_buffer)
+ {
++	struct buffer_page *page;
++
+ 	rb_head_page_deactivate(cpu_buffer);
+ 
+ 	cpu_buffer->head_page
+ 		= list_entry(cpu_buffer->pages, struct buffer_page, list);
+-	local_set(&cpu_buffer->head_page->write, 0);
+-	local_set(&cpu_buffer->head_page->entries, 0);
+-	local_set(&cpu_buffer->head_page->page->commit, 0);
+-
+-	cpu_buffer->head_page->read = 0;
++	rb_clear_buffer_page(cpu_buffer->head_page);
++	list_for_each_entry(page, cpu_buffer->pages, list) {
++		rb_clear_buffer_page(page);
++	}
+ 
+ 	cpu_buffer->tail_page = cpu_buffer->head_page;
+ 	cpu_buffer->commit_page = cpu_buffer->head_page;
+ 
+ 	INIT_LIST_HEAD(&cpu_buffer->reader_page->list);
+ 	INIT_LIST_HEAD(&cpu_buffer->new_pages);
+-	local_set(&cpu_buffer->reader_page->write, 0);
+-	local_set(&cpu_buffer->reader_page->entries, 0);
+-	local_set(&cpu_buffer->reader_page->page->commit, 0);
+-	cpu_buffer->reader_page->read = 0;
++	rb_clear_buffer_page(cpu_buffer->reader_page);
+ 
+ 	local_set(&cpu_buffer->entries_bytes, 0);
+ 	local_set(&cpu_buffer->overrun, 0);
 
 
