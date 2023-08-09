@@ -2,199 +2,102 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2EB1C775765
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:45:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 76998775B96
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:18:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231782AbjHIKpb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 06:45:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39060 "EHLO
+        id S233478AbjHILS4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:18:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55012 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229596AbjHIKpa (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:45:30 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D668E10F3
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:45:29 -0700 (PDT)
+        with ESMTP id S233482AbjHILS4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:18:56 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D0BB6FA
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:18:55 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6840E63118
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:45:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 772B5C433C8;
-        Wed,  9 Aug 2023 10:45:28 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 671A06319C
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:18:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 773DDC433C8;
+        Wed,  9 Aug 2023 11:18:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691577928;
-        bh=yWzzgJy+J9SMT3pq8rPKkcsqQUjrDcxavqZPhd03S78=;
+        s=korg; t=1691579934;
+        bh=fGeovoFhlI+GA4ikgjCjGOE/jQvGD87dRSJljQv41MQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=p21Oq9jSNkhoT90goAeZ6iaDIKWFLtDMJU1zhpcjqHdzDZ/3dWBRV5Y6eF520vZGW
-         nGwdrUIqcLWD1FJV1ESFuPG5LQOt3ES6WmVuhlKohbACuY3fHc77z3VBATq+IkP40F
-         a13bQbVl3/Pe0g+xT324CIpzB5SPmNxSLnd3whSM=
+        b=R9RtRZbzwEkTFuf0c3nhC5QjFCsBFWjSNjTEnoQ4XuA4bq/YtWmTSNtsXy0poQuQf
+         5FTlkfKzpF2PCzXHHIZzWoDF0ROIxVRF0T7ZyiXL2sIyKRP++KdCPeMb12h7nZ5eTB
+         qXtyDKs6TCcgmZ+cHih7Zyz+TMfn65eXzpXR7/Jw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Mingi Cho <mgcho.minic@gmail.com>,
-        Jamal Hadi Salim <jhs@mojatatu.com>,
-        Jakub Kicinski <kuba@kernel.org>,
+        patches@lists.linux.dev, Klaus Kudielka <klaus.kudielka@gmail.com>,
+        Michal Kubiak <michal.kubiak@intel.com>,
+        Paolo Abeni <pabeni@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 045/165] net: sched: cls_u32: Fix match key mis-addressing
+Subject: [PATCH 4.19 138/323] net: mvneta: fix txq_map in case of txq_number==1
 Date:   Wed,  9 Aug 2023 12:39:36 +0200
-Message-ID: <20230809103644.296938557@linuxfoundation.org>
+Message-ID: <20230809103704.455070745@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103642.720851262@linuxfoundation.org>
-References: <20230809103642.720851262@linuxfoundation.org>
+In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
+References: <20230809103658.104386911@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jamal Hadi Salim <jhs@mojatatu.com>
+From: Klaus Kudielka <klaus.kudielka@gmail.com>
 
-[ Upstream commit e68409db995380d1badacba41ff24996bd396171 ]
+[ Upstream commit 21327f81db6337c8843ce755b01523c7d3df715b ]
 
-A match entry is uniquely identified with an "address" or "path" in the
-form of: hashtable ID(12b):bucketid(8b):nodeid(12b).
+If we boot with mvneta.txq_number=1, the txq_map is set incorrectly:
+MVNETA_CPU_TXQ_ACCESS(1) refers to TX queue 1, but only TX queue 0 is
+initialized. Fix this.
 
-When creating table match entries all of hash table id, bucket id and
-node (match entry id) are needed to be either specified by the user or
-reasonable in-kernel defaults are used. The in-kernel default for a table id is
-0x800(omnipresent root table); for bucketid it is 0x0. Prior to this fix there
-was none for a nodeid i.e. the code assumed that the user passed the correct
-nodeid and if the user passes a nodeid of 0 (as Mingi Cho did) then that is what
-was used. But nodeid of 0 is reserved for identifying the table. This is not
-a problem until we dump. The dump code notices that the nodeid is zero and
-assumes it is referencing a table and therefore references table struct
-tc_u_hnode instead of what was created i.e match entry struct tc_u_knode.
-
-Ming does an equivalent of:
-tc filter add dev dummy0 parent 10: prio 1 handle 0x1000 \
-protocol ip u32 match ip src 10.0.0.1/32 classid 10:1 action ok
-
-Essentially specifying a table id 0, bucketid 1 and nodeid of zero
-Tableid 0 is remapped to the default of 0x800.
-Bucketid 1 is ignored and defaults to 0x00.
-Nodeid was assumed to be what Ming passed - 0x000
-
-dumping before fix shows:
-~$ tc filter ls dev dummy0 parent 10:
-filter protocol ip pref 1 u32 chain 0
-filter protocol ip pref 1 u32 chain 0 fh 800: ht divisor 1
-filter protocol ip pref 1 u32 chain 0 fh 800: ht divisor -30591
-
-Note that the last line reports a table instead of a match entry
-(you can tell this because it says "ht divisor...").
-As a result of reporting the wrong data type (misinterpretting of struct
-tc_u_knode as being struct tc_u_hnode) the divisor is reported with value
-of -30591. Ming identified this as part of the heap address
-(physmap_base is 0xffff8880 (-30591 - 1)).
-
-The fix is to ensure that when table entry matches are added and no
-nodeid is specified (i.e nodeid == 0) then we get the next available
-nodeid from the table's pool.
-
-After the fix, this is what the dump shows:
-$ tc filter ls dev dummy0 parent 10:
-filter protocol ip pref 1 u32 chain 0
-filter protocol ip pref 1 u32 chain 0 fh 800: ht divisor 1
-filter protocol ip pref 1 u32 chain 0 fh 800::800 order 2048 key ht 800 bkt 0 flowid 10:1 not_in_hw
-  match 0a000001/ffffffff at 12
-	action order 1: gact action pass
-	 random type none pass val 0
-	 index 1 ref 1 bind 1
-
-Reported-by: Mingi Cho <mgcho.minic@gmail.com>
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Link: https://lore.kernel.org/r/20230726135151.416917-1-jhs@mojatatu.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 50bf8cb6fc9c ("net: mvneta: Configure XPS support")
+Signed-off-by: Klaus Kudielka <klaus.kudielka@gmail.com>
+Reviewed-by: Michal Kubiak <michal.kubiak@intel.com>
+Link: https://lore.kernel.org/r/20230705053712.3914-1-klaus.kudielka@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/cls_u32.c | 56 ++++++++++++++++++++++++++++++++++++++++-----
- 1 file changed, 50 insertions(+), 6 deletions(-)
+ drivers/net/ethernet/marvell/mvneta.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/sched/cls_u32.c b/net/sched/cls_u32.c
-index 5abf31e432caf..907e58841fe80 100644
---- a/net/sched/cls_u32.c
-+++ b/net/sched/cls_u32.c
-@@ -1024,18 +1024,62 @@ static int u32_change(struct net *net, struct sk_buff *in_skb,
- 		return -EINVAL;
- 	}
+diff --git a/drivers/net/ethernet/marvell/mvneta.c b/drivers/net/ethernet/marvell/mvneta.c
+index f1a4b11ce0d19..512f9cd68070a 100644
+--- a/drivers/net/ethernet/marvell/mvneta.c
++++ b/drivers/net/ethernet/marvell/mvneta.c
+@@ -1415,7 +1415,7 @@ static void mvneta_defaults_set(struct mvneta_port *pp)
+ 			 */
+ 			if (txq_number == 1)
+ 				txq_map = (cpu == pp->rxq_def) ?
+-					MVNETA_CPU_TXQ_ACCESS(1) : 0;
++					MVNETA_CPU_TXQ_ACCESS(0) : 0;
  
-+	/* At this point, we need to derive the new handle that will be used to
-+	 * uniquely map the identity of this table match entry. The
-+	 * identity of the entry that we need to construct is 32 bits made of:
-+	 *     htid(12b):bucketid(8b):node/entryid(12b)
-+	 *
-+	 * At this point _we have the table(ht)_ in which we will insert this
-+	 * entry. We carry the table's id in variable "htid".
-+	 * Note that earlier code picked the ht selection either by a) the user
-+	 * providing the htid specified via TCA_U32_HASH attribute or b) when
-+	 * no such attribute is passed then the root ht, is default to at ID
-+	 * 0x[800][00][000]. Rule: the root table has a single bucket with ID 0.
-+	 * If OTOH the user passed us the htid, they may also pass a bucketid of
-+	 * choice. 0 is fine. For example a user htid is 0x[600][01][000] it is
-+	 * indicating hash bucketid of 1. Rule: the entry/node ID _cannot_ be
-+	 * passed via the htid, so even if it was non-zero it will be ignored.
-+	 *
-+	 * We may also have a handle, if the user passed one. The handle also
-+	 * carries the same addressing of htid(12b):bucketid(8b):node/entryid(12b).
-+	 * Rule: the bucketid on the handle is ignored even if one was passed;
-+	 * rather the value on "htid" is always assumed to be the bucketid.
-+	 */
- 	if (handle) {
-+		/* Rule: The htid from handle and tableid from htid must match */
- 		if (TC_U32_HTID(handle) && TC_U32_HTID(handle ^ htid)) {
- 			NL_SET_ERR_MSG_MOD(extack, "Handle specified hash table address mismatch");
- 			return -EINVAL;
- 		}
--		handle = htid | TC_U32_NODE(handle);
--		err = idr_alloc_u32(&ht->handle_idr, NULL, &handle, handle,
--				    GFP_KERNEL);
--		if (err)
--			return err;
--	} else
-+		/* Ok, so far we have a valid htid(12b):bucketid(8b) but we
-+		 * need to finalize the table entry identification with the last
-+		 * part - the node/entryid(12b)). Rule: Nodeid _cannot be 0_ for
-+		 * entries. Rule: nodeid of 0 is reserved only for tables(see
-+		 * earlier code which processes TC_U32_DIVISOR attribute).
-+		 * Rule: The nodeid can only be derived from the handle (and not
-+		 * htid).
-+		 * Rule: if the handle specified zero for the node id example
-+		 * 0x60000000, then pick a new nodeid from the pool of IDs
-+		 * this hash table has been allocating from.
-+		 * If OTOH it is specified (i.e for example the user passed a
-+		 * handle such as 0x60000123), then we use it generate our final
-+		 * handle which is used to uniquely identify the match entry.
-+		 */
-+		if (!TC_U32_NODE(handle)) {
-+			handle = gen_new_kid(ht, htid);
-+		} else {
-+			handle = htid | TC_U32_NODE(handle);
-+			err = idr_alloc_u32(&ht->handle_idr, NULL, &handle,
-+					    handle, GFP_KERNEL);
-+			if (err)
-+				return err;
-+		}
-+	} else {
-+		/* The user did not give us a handle; lets just generate one
-+		 * from the table's pool of nodeids.
-+		 */
- 		handle = gen_new_kid(ht, htid);
-+	}
- 
- 	if (tb[TCA_U32_SEL] == NULL) {
- 		NL_SET_ERR_MSG_MOD(extack, "Selector not specified");
+ 		} else {
+ 			txq_map = MVNETA_CPU_TXQ_ACCESS_ALL_MASK;
+@@ -3665,7 +3665,7 @@ static void mvneta_percpu_elect(struct mvneta_port *pp)
+ 		 */
+ 		if (txq_number == 1)
+ 			txq_map = (cpu == elected_cpu) ?
+-				MVNETA_CPU_TXQ_ACCESS(1) : 0;
++				MVNETA_CPU_TXQ_ACCESS(0) : 0;
+ 		else
+ 			txq_map = mvreg_read(pp, MVNETA_CPU_MAP(cpu)) &
+ 				MVNETA_CPU_TXQ_ACCESS_ALL_MASK;
 -- 
-2.40.1
+2.39.2
 
 
 
