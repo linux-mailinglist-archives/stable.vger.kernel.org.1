@@ -2,163 +2,174 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 69612775DC1
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:41:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 705F2775CF6
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:32:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234218AbjHILlF (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:41:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50748 "EHLO
+        id S233936AbjHILcd (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:32:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46094 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234209AbjHILlE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:41:04 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 311581FD2
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:41:04 -0700 (PDT)
+        with ESMTP id S233894AbjHILcd (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:32:33 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD16610DC
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:32:32 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C54AD63662
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:41:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D673BC433C7;
-        Wed,  9 Aug 2023 11:41:02 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4469B63403
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:32:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 535BAC433C8;
+        Wed,  9 Aug 2023 11:32:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691581263;
-        bh=lDrp53wHGiA6GHEG7Ra3SHKe3ejrjp0ycdmdJrfeLXw=;
+        s=korg; t=1691580751;
+        bh=vIBOtVhz4Or+TQ61Uz8Z+yN2PsZ++mOpY6WoUgwi8Ao=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=LU170Yw8k47wypbBvQ2k9ZGIiPvAVmotNtQU4T6R288Am6yvQc1h97h4z/U/5T39B
-         CB17bqR2WxawByYEtOrdJ290dsC+BcE4p9uBROi7/QtwCb6nt+IajnH4ok+f61mEjr
-         O0OYLNwAYTEpnK1py8pUAEjJOT7MWWKs7E6KV59s=
+        b=yJtVlvg6K/lXx6NCrPcu87ThTmgG4n5sjYntZaKMeu7/RHmiH/GhHmJuo8FGSuHVt
+         WWnS/MeJ1EtqW1k5xnLL3SLbb9pFzdzwlMdnRHt7gDFXIo+C1DiC1lf0QucAStgh0m
+         L5j84Q1VCKkCyPugAl050oiSZUHC9hxABbvRNP0I=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ross Maynard <bids.7405@bigpond.com>,
-        Andrew Lunn <andrew@lunn.ch>, Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.10 164/201] USB: zaurus: Add ID for A-300/B-500/C-700
-Date:   Wed,  9 Aug 2023 12:42:46 +0200
-Message-ID: <20230809103649.219493808@linuxfoundation.org>
+        patches@lists.linux.dev, kernel test robot <lkp@intel.com>,
+        Roger Quadros <rogerq@kernel.org>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 136/154] mtd: rawnand: omap_elm: Fix incorrect type in assignment
+Date:   Wed,  9 Aug 2023 12:42:47 +0200
+Message-ID: <20230809103641.383130054@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103643.799166053@linuxfoundation.org>
-References: <20230809103643.799166053@linuxfoundation.org>
+In-Reply-To: <20230809103636.887175326@linuxfoundation.org>
+References: <20230809103636.887175326@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ross Maynard <bids.7405@bigpond.com>
+From: Roger Quadros <rogerq@kernel.org>
 
-commit b99225b4fe297d07400f9e2332ecd7347b224f8d upstream.
+[ Upstream commit d8403b9eeee66d5dd81ecb9445800b108c267ce3 ]
 
-The SL-A300, B500/5600, and C700 devices no longer auto-load because of
-"usbnet: Remove over-broad module alias from zaurus."
-This patch adds IDs for those 3 devices.
+Once the ECC word endianness is converted to BE32, we force cast it
+to u32 so we can use elm_write_reg() which in turn uses writel().
 
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=217632
-Fixes: 16adf5d07987 ("usbnet: Remove over-broad module alias from zaurus.")
-Signed-off-by: Ross Maynard <bids.7405@bigpond.com>
-Cc: stable@vger.kernel.org
-Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://lore.kernel.org/r/69b5423b-2013-9fc9-9569-58e707d9bafb@bigpond.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes below sparse warnings:
+
+   drivers/mtd/nand/raw/omap_elm.c:180:37: sparse:     expected unsigned int [usertype] val
+   drivers/mtd/nand/raw/omap_elm.c:180:37: sparse:     got restricted __be32 [usertype]
+   drivers/mtd/nand/raw/omap_elm.c:185:37: sparse:     expected unsigned int [usertype] val
+   drivers/mtd/nand/raw/omap_elm.c:185:37: sparse:     got restricted __be32 [usertype]
+   drivers/mtd/nand/raw/omap_elm.c:190:37: sparse:     expected unsigned int [usertype] val
+   drivers/mtd/nand/raw/omap_elm.c:190:37: sparse:     got restricted __be32 [usertype]
+>> drivers/mtd/nand/raw/omap_elm.c:200:40: sparse: sparse: restricted __be32 degrades to integer
+   drivers/mtd/nand/raw/omap_elm.c:206:39: sparse: sparse: restricted __be32 degrades to integer
+   drivers/mtd/nand/raw/omap_elm.c:210:37: sparse:     expected unsigned int [assigned] [usertype] val
+   drivers/mtd/nand/raw/omap_elm.c:210:37: sparse:     got restricted __be32 [usertype]
+   drivers/mtd/nand/raw/omap_elm.c:213:37: sparse:     expected unsigned int [assigned] [usertype] val
+   drivers/mtd/nand/raw/omap_elm.c:213:37: sparse:     got restricted __be32 [usertype]
+   drivers/mtd/nand/raw/omap_elm.c:216:37: sparse:     expected unsigned int [assigned] [usertype] val
+   drivers/mtd/nand/raw/omap_elm.c:216:37: sparse:     got restricted __be32 [usertype]
+   drivers/mtd/nand/raw/omap_elm.c:219:37: sparse:     expected unsigned int [assigned] [usertype] val
+   drivers/mtd/nand/raw/omap_elm.c:219:37: sparse:     got restricted __be32 [usertype]
+   drivers/mtd/nand/raw/omap_elm.c:222:37: sparse:     expected unsigned int [assigned] [usertype] val
+   drivers/mtd/nand/raw/omap_elm.c:222:37: sparse:     got restricted __be32 [usertype]
+   drivers/mtd/nand/raw/omap_elm.c:225:37: sparse:     expected unsigned int [assigned] [usertype] val
+   drivers/mtd/nand/raw/omap_elm.c:225:37: sparse:     got restricted __be32 [usertype]
+   drivers/mtd/nand/raw/omap_elm.c:228:39: sparse: sparse: restricted __be32 degrades to integer
+
+Fixes: bf22433575ef ("mtd: devices: elm: Add support for ELM error correction")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202306212211.WDXokuWh-lkp@intel.com/
+Signed-off-by: Roger Quadros <rogerq@kernel.org>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://lore.kernel.org/linux-mtd/20230624184021.7740-1-rogerq@kernel.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/cdc_ether.c |   21 +++++++++++++++++++++
- drivers/net/usb/zaurus.c    |   21 +++++++++++++++++++++
- 2 files changed, 42 insertions(+)
+ drivers/mtd/nand/raw/omap_elm.c | 24 ++++++++++++------------
+ 1 file changed, 12 insertions(+), 12 deletions(-)
 
---- a/drivers/net/usb/cdc_ether.c
-+++ b/drivers/net/usb/cdc_ether.c
-@@ -604,6 +604,13 @@ static const struct usb_device_id	produc
- 	.match_flags	=   USB_DEVICE_ID_MATCH_INT_INFO
- 			  | USB_DEVICE_ID_MATCH_DEVICE,
- 	.idVendor		= 0x04DD,
-+	.idProduct		= 0x8005,   /* A-300 */
-+	ZAURUS_FAKE_INTERFACE,
-+	.driver_info        = 0,
-+}, {
-+	.match_flags    =   USB_DEVICE_ID_MATCH_INT_INFO
-+			  | USB_DEVICE_ID_MATCH_DEVICE,
-+	.idVendor		= 0x04DD,
- 	.idProduct		= 0x8006,	/* B-500/SL-5600 */
- 	ZAURUS_MASTER_INTERFACE,
- 	.driver_info		= 0,
-@@ -611,11 +618,25 @@ static const struct usb_device_id	produc
- 	.match_flags    =   USB_DEVICE_ID_MATCH_INT_INFO
- 			  | USB_DEVICE_ID_MATCH_DEVICE,
- 	.idVendor		= 0x04DD,
-+	.idProduct		= 0x8006,   /* B-500/SL-5600 */
-+	ZAURUS_FAKE_INTERFACE,
-+	.driver_info        = 0,
-+}, {
-+	.match_flags    =   USB_DEVICE_ID_MATCH_INT_INFO
-+			  | USB_DEVICE_ID_MATCH_DEVICE,
-+	.idVendor		= 0x04DD,
- 	.idProduct		= 0x8007,	/* C-700 */
- 	ZAURUS_MASTER_INTERFACE,
- 	.driver_info		= 0,
- }, {
- 	.match_flags    =   USB_DEVICE_ID_MATCH_INT_INFO
-+			  | USB_DEVICE_ID_MATCH_DEVICE,
-+	.idVendor		= 0x04DD,
-+	.idProduct		= 0x8007,   /* C-700 */
-+	ZAURUS_FAKE_INTERFACE,
-+	.driver_info        = 0,
-+}, {
-+	.match_flags    =   USB_DEVICE_ID_MATCH_INT_INFO
- 		 | USB_DEVICE_ID_MATCH_DEVICE,
- 	.idVendor               = 0x04DD,
- 	.idProduct              = 0x9031,	/* C-750 C-760 */
---- a/drivers/net/usb/zaurus.c
-+++ b/drivers/net/usb/zaurus.c
-@@ -289,11 +289,25 @@ static const struct usb_device_id	produc
- 	.match_flags	=   USB_DEVICE_ID_MATCH_INT_INFO
- 			  | USB_DEVICE_ID_MATCH_DEVICE,
- 	.idVendor		= 0x04DD,
-+	.idProduct		= 0x8005,	/* A-300 */
-+	ZAURUS_FAKE_INTERFACE,
-+	.driver_info = (unsigned long)&bogus_mdlm_info,
-+}, {
-+	.match_flags    =   USB_DEVICE_ID_MATCH_INT_INFO
-+			  | USB_DEVICE_ID_MATCH_DEVICE,
-+	.idVendor		= 0x04DD,
- 	.idProduct		= 0x8006,	/* B-500/SL-5600 */
- 	ZAURUS_MASTER_INTERFACE,
- 	.driver_info = ZAURUS_PXA_INFO,
- }, {
- 	.match_flags    =   USB_DEVICE_ID_MATCH_INT_INFO
-+			  | USB_DEVICE_ID_MATCH_DEVICE,
-+	.idVendor		= 0x04DD,
-+	.idProduct		= 0x8006,	/* B-500/SL-5600 */
-+	ZAURUS_FAKE_INTERFACE,
-+	.driver_info = (unsigned long)&bogus_mdlm_info,
-+}, {
-+	.match_flags    =   USB_DEVICE_ID_MATCH_INT_INFO
- 	          | USB_DEVICE_ID_MATCH_DEVICE,
- 	.idVendor		= 0x04DD,
- 	.idProduct		= 0x8007,	/* C-700 */
-@@ -301,6 +315,13 @@ static const struct usb_device_id	produc
- 	.driver_info = ZAURUS_PXA_INFO,
- }, {
- 	.match_flags    =   USB_DEVICE_ID_MATCH_INT_INFO
-+			  | USB_DEVICE_ID_MATCH_DEVICE,
-+	.idVendor		= 0x04DD,
-+	.idProduct		= 0x8007,	/* C-700 */
-+	ZAURUS_FAKE_INTERFACE,
-+	.driver_info = (unsigned long)&bogus_mdlm_info,
-+}, {
-+	.match_flags    =   USB_DEVICE_ID_MATCH_INT_INFO
- 		 | USB_DEVICE_ID_MATCH_DEVICE,
- 	.idVendor               = 0x04DD,
- 	.idProduct              = 0x9031,	/* C-750 C-760 */
+diff --git a/drivers/mtd/nand/raw/omap_elm.c b/drivers/mtd/nand/raw/omap_elm.c
+index 6e0e31eab7cce..c4064f8fd6118 100644
+--- a/drivers/mtd/nand/raw/omap_elm.c
++++ b/drivers/mtd/nand/raw/omap_elm.c
+@@ -174,17 +174,17 @@ static void elm_load_syndrome(struct elm_info *info,
+ 			switch (info->bch_type) {
+ 			case BCH8_ECC:
+ 				/* syndrome fragment 0 = ecc[9-12B] */
+-				val = cpu_to_be32(*(u32 *) &ecc[9]);
++				val = (__force u32)cpu_to_be32(*(u32 *)&ecc[9]);
+ 				elm_write_reg(info, offset, val);
+ 
+ 				/* syndrome fragment 1 = ecc[5-8B] */
+ 				offset += 4;
+-				val = cpu_to_be32(*(u32 *) &ecc[5]);
++				val = (__force u32)cpu_to_be32(*(u32 *)&ecc[5]);
+ 				elm_write_reg(info, offset, val);
+ 
+ 				/* syndrome fragment 2 = ecc[1-4B] */
+ 				offset += 4;
+-				val = cpu_to_be32(*(u32 *) &ecc[1]);
++				val = (__force u32)cpu_to_be32(*(u32 *)&ecc[1]);
+ 				elm_write_reg(info, offset, val);
+ 
+ 				/* syndrome fragment 3 = ecc[0B] */
+@@ -194,35 +194,35 @@ static void elm_load_syndrome(struct elm_info *info,
+ 				break;
+ 			case BCH4_ECC:
+ 				/* syndrome fragment 0 = ecc[20-52b] bits */
+-				val = (cpu_to_be32(*(u32 *) &ecc[3]) >> 4) |
++				val = ((__force u32)cpu_to_be32(*(u32 *)&ecc[3]) >> 4) |
+ 					((ecc[2] & 0xf) << 28);
+ 				elm_write_reg(info, offset, val);
+ 
+ 				/* syndrome fragment 1 = ecc[0-20b] bits */
+ 				offset += 4;
+-				val = cpu_to_be32(*(u32 *) &ecc[0]) >> 12;
++				val = (__force u32)cpu_to_be32(*(u32 *)&ecc[0]) >> 12;
+ 				elm_write_reg(info, offset, val);
+ 				break;
+ 			case BCH16_ECC:
+-				val = cpu_to_be32(*(u32 *) &ecc[22]);
++				val = (__force u32)cpu_to_be32(*(u32 *)&ecc[22]);
+ 				elm_write_reg(info, offset, val);
+ 				offset += 4;
+-				val = cpu_to_be32(*(u32 *) &ecc[18]);
++				val = (__force u32)cpu_to_be32(*(u32 *)&ecc[18]);
+ 				elm_write_reg(info, offset, val);
+ 				offset += 4;
+-				val = cpu_to_be32(*(u32 *) &ecc[14]);
++				val = (__force u32)cpu_to_be32(*(u32 *)&ecc[14]);
+ 				elm_write_reg(info, offset, val);
+ 				offset += 4;
+-				val = cpu_to_be32(*(u32 *) &ecc[10]);
++				val = (__force u32)cpu_to_be32(*(u32 *)&ecc[10]);
+ 				elm_write_reg(info, offset, val);
+ 				offset += 4;
+-				val = cpu_to_be32(*(u32 *) &ecc[6]);
++				val = (__force u32)cpu_to_be32(*(u32 *)&ecc[6]);
+ 				elm_write_reg(info, offset, val);
+ 				offset += 4;
+-				val = cpu_to_be32(*(u32 *) &ecc[2]);
++				val = (__force u32)cpu_to_be32(*(u32 *)&ecc[2]);
+ 				elm_write_reg(info, offset, val);
+ 				offset += 4;
+-				val = cpu_to_be32(*(u32 *) &ecc[0]) >> 16;
++				val = (__force u32)cpu_to_be32(*(u32 *)&ecc[0]) >> 16;
+ 				elm_write_reg(info, offset, val);
+ 				break;
+ 			default:
+-- 
+2.40.1
+
 
 
