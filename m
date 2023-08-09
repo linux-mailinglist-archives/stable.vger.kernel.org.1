@@ -2,143 +2,117 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 24887775953
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:59:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2FE66775916
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:57:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232824AbjHIK73 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 06:59:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53332 "EHLO
+        id S232782AbjHIK5h (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 06:57:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55388 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232829AbjHIK71 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:59:27 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E0A01FFE
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:59:27 -0700 (PDT)
+        with ESMTP id S232755AbjHIK5f (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:57:35 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D002A2106
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:57:30 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1584962DC8
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:59:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 271E9C433C8;
-        Wed,  9 Aug 2023 10:59:25 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 705B56238A
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:57:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81CBDC433B8;
+        Wed,  9 Aug 2023 10:57:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691578766;
-        bh=GwHaJBZ0fx9Pxm2yPctKMdnVlFWLNg+NmChJh2szrfI=;
+        s=korg; t=1691578649;
+        bh=VyamkGxHw20EZnr6NfjS7vn1NEbDOapFJzrIPRFpVuM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=BhuM0ZiVXN9MfDz5CWMRO1qBgkBxhIjHp81CZy416wFYnvvMm1TSvobTz6lRq1dIJ
-         kN/fR/WQ0/4JLL9ONvuwtrPLlm2kXAtN5WAYhNiYT3189iB7eGp+76GAFNzNUPUmsg
-         kgetEbMpZL5VFXHmYo6MEiNals4LMr1NaO7Qk9iI=
+        b=tdkb0o5NLt0gYHKtFKJmV9z3E48n7MEKsq2kImypIF36DybGoSDEdcm4EZMbKmqf1
+         5owFQb4qu3WiQ4C9ydE9+1Up0kIHB9ubYJu3vrqk/Q8Kc2hreiSTqocd14UCWmqleg
+         HeBpMRPHA6oEFScQ/kXM/V2uRAdEBkS9YWSo0gk8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
-        David Ahern <dsahern@kernel.org>,
-        Kuniyuki Iwashima <kuniyu@amazon.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 49/92] tcp_metrics: annotate data-races around tm->tcpm_stamp
-Date:   Wed,  9 Aug 2023 12:41:25 +0200
-Message-ID: <20230809103635.291390858@linuxfoundation.org>
+        patches@lists.linux.dev, Mateusz Guzik <mjguzik@gmail.com>,
+        Christian Brauner <brauner@kernel.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>
+Subject: [PATCH 6.1 099/127] file: reinstate f_pos locking optimization for regular files
+Date:   Wed,  9 Aug 2023 12:41:26 +0200
+Message-ID: <20230809103639.904565867@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103633.485906560@linuxfoundation.org>
-References: <20230809103633.485906560@linuxfoundation.org>
+In-Reply-To: <20230809103636.615294317@linuxfoundation.org>
+References: <20230809103636.615294317@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Eric Dumazet <edumazet@google.com>
+From: Linus Torvalds <torvalds@linux-foundation.org>
 
-[ Upstream commit 949ad62a5d5311d36fce2e14fe5fed3f936da51c ]
+commit 797964253d358cf8d705614dda394dbe30120223 upstream.
 
-tm->tcpm_stamp can be read or written locklessly.
+In commit 20ea1e7d13c1 ("file: always lock position for
+FMODE_ATOMIC_POS") we ended up always taking the file pos lock, because
+pidfd_getfd() could get a reference to the file even when it didn't have
+an elevated file count due to threading of other sharing cases.
 
-Add needed READ_ONCE()/WRITE_ONCE() to document this.
+But Mateusz Guzik reports that the extra locking is actually measurable,
+so let's re-introduce the optimization, and only force the locking for
+directory traversal.
 
-Also constify tcpm_check_stamp() dst argument.
+Directories need the lock for correctness reasons, while regular files
+only need it for "POSIX semantics".  Since pidfd_getfd() is about
+debuggers etc special things that are _way_ outside of POSIX, we can
+relax the rules for that case.
 
-Fixes: 51c5d0c4b169 ("tcp: Maintain dynamic metrics in local cache.")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Link: https://lore.kernel.org/r/20230802131500.1478140-3-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Mateusz Guzik <mjguzik@gmail.com>
+Cc: Christian Brauner <brauner@kernel.org>
+Link: https://lore.kernel.org/linux-fsdevel/20230803095311.ijpvhx3fyrbkasul@f/
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/tcp_metrics.c | 19 +++++++++++++------
- 1 file changed, 13 insertions(+), 6 deletions(-)
+ fs/file.c |   18 +++++++++++++++++-
+ 1 file changed, 17 insertions(+), 1 deletion(-)
 
-diff --git a/net/ipv4/tcp_metrics.c b/net/ipv4/tcp_metrics.c
-index 6a06d2e0e11db..cac6548340906 100644
---- a/net/ipv4/tcp_metrics.c
-+++ b/net/ipv4/tcp_metrics.c
-@@ -97,7 +97,7 @@ static void tcpm_suck_dst(struct tcp_metrics_block *tm,
- 	u32 msval;
- 	u32 val;
+--- a/fs/file.c
++++ b/fs/file.c
+@@ -1036,12 +1036,28 @@ unsigned long __fdget_raw(unsigned int f
+ 	return __fget_light(fd, 0);
+ }
  
--	tm->tcpm_stamp = jiffies;
-+	WRITE_ONCE(tm->tcpm_stamp, jiffies);
- 
- 	val = 0;
- 	if (dst_metric_locked(dst, RTAX_RTT))
-@@ -131,9 +131,15 @@ static void tcpm_suck_dst(struct tcp_metrics_block *tm,
- 
- #define TCP_METRICS_TIMEOUT		(60 * 60 * HZ)
- 
--static void tcpm_check_stamp(struct tcp_metrics_block *tm, struct dst_entry *dst)
-+static void tcpm_check_stamp(struct tcp_metrics_block *tm,
-+			     const struct dst_entry *dst)
- {
--	if (tm && unlikely(time_after(jiffies, tm->tcpm_stamp + TCP_METRICS_TIMEOUT)))
-+	unsigned long limit;
++/*
++ * Try to avoid f_pos locking. We only need it if the
++ * file is marked for FMODE_ATOMIC_POS, and it can be
++ * accessed multiple ways.
++ *
++ * Always do it for directories, because pidfd_getfd()
++ * can make a file accessible even if it otherwise would
++ * not be, and for directories this is a correctness
++ * issue, not a "POSIX requirement".
++ */
++static inline bool file_needs_f_pos_lock(struct file *file)
++{
++	return (file->f_mode & FMODE_ATOMIC_POS) &&
++		(file_count(file) > 1 || S_ISDIR(file_inode(file)->i_mode));
++}
 +
-+	if (!tm)
-+		return;
-+	limit = READ_ONCE(tm->tcpm_stamp) + TCP_METRICS_TIMEOUT;
-+	if (unlikely(time_after(jiffies, limit)))
- 		tcpm_suck_dst(tm, dst, false);
- }
+ unsigned long __fdget_pos(unsigned int fd)
+ {
+ 	unsigned long v = __fdget(fd);
+ 	struct file *file = (struct file *)(v & ~3);
  
-@@ -174,7 +180,8 @@ static struct tcp_metrics_block *tcpm_new(struct dst_entry *dst,
- 		oldest = deref_locked(tcp_metrics_hash[hash].chain);
- 		for (tm = deref_locked(oldest->tcpm_next); tm;
- 		     tm = deref_locked(tm->tcpm_next)) {
--			if (time_before(tm->tcpm_stamp, oldest->tcpm_stamp))
-+			if (time_before(READ_ONCE(tm->tcpm_stamp),
-+					READ_ONCE(oldest->tcpm_stamp)))
- 				oldest = tm;
- 		}
- 		tm = oldest;
-@@ -434,7 +441,7 @@ void tcp_update_metrics(struct sock *sk)
- 					       tp->reordering);
- 		}
+-	if (file && (file->f_mode & FMODE_ATOMIC_POS)) {
++	if (file && file_needs_f_pos_lock(file)) {
+ 		v |= FDPUT_POS_UNLOCK;
+ 		mutex_lock(&file->f_pos_lock);
  	}
--	tm->tcpm_stamp = jiffies;
-+	WRITE_ONCE(tm->tcpm_stamp, jiffies);
- out_unlock:
- 	rcu_read_unlock();
- }
-@@ -647,7 +654,7 @@ static int tcp_metrics_fill_info(struct sk_buff *msg,
- 	}
- 
- 	if (nla_put_msecs(msg, TCP_METRICS_ATTR_AGE,
--			  jiffies - tm->tcpm_stamp,
-+			  jiffies - READ_ONCE(tm->tcpm_stamp),
- 			  TCP_METRICS_ATTR_PAD) < 0)
- 		goto nla_put_failure;
- 
--- 
-2.40.1
-
 
 
