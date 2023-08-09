@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3B8FD775DDB
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:42:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CF39D775C4A
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:25:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234248AbjHILmQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:42:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40664 "EHLO
+        id S233702AbjHILZx (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:25:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59908 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234276AbjHILl7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:41:59 -0400
+        with ESMTP id S233699AbjHILZw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:25:52 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 341971FEB
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:41:58 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F1CAFA
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:25:52 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BF75263473
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:41:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEF1CC433C7;
-        Wed,  9 Aug 2023 11:41:56 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B91F56326F
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:25:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C51C3C433C7;
+        Wed,  9 Aug 2023 11:25:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691581317;
-        bh=ipHSi8hxeSSQJfGvBHQ9b0S+Co7RKHe+ZBOw38kuLvo=;
+        s=korg; t=1691580351;
+        bh=ptEUBx7NXouPTs9vL8NHlnPpdkt6EHNCSTVer9zT52c=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=iT6zX3NYRiPHglNEgvhy7kwewdDUczt8PeY9hUravqYBEMyx8LashYXvBJpME4L3Q
-         LbaoEXXEP0cQxqVjUwKKECAuh7Dokl0K2OrA/xnBEwP4hxfnOCBY8P7v0nJ1zHxVJc
-         mZKnZ5gBphKruVWOxKg4Qs2SW1URfEUp/QuYM+eA=
+        b=YVZOZAxSqyJsSIYwS7XxUAPR+es/xg70xrR0yx8oYlVLw/m2tUU27jMdTFe4puYjH
+         1sr51NS/itDv6BiGMnWVt+ajzNlxiwloCejFXkO42mnteX6dL+CJCxaF4khwIiJNWN
+         1Tw67b/90vu04RMBD1KxRL4NUV0a9Y94gDxFxCk8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jianbo Liu <jianbol@nvidia.com>,
-        Leon Romanovsky <leonro@nvidia.com>,
-        Jakub Kicinski <kuba@kernel.org>,
+        patches@lists.linux.dev, Shengjiu Wang <shengjiu.wang@nxp.com>,
+        Shawn Guo <shawnguo@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 154/201] net/mlx5: fs_core: Make find_closest_ft more generic
+Subject: [PATCH 4.19 318/323] ARM: dts: imx6sll: Make ssi node name same as other platforms
 Date:   Wed,  9 Aug 2023 12:42:36 +0200
-Message-ID: <20230809103648.876985873@linuxfoundation.org>
+Message-ID: <20230809103712.625522815@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103643.799166053@linuxfoundation.org>
-References: <20230809103643.799166053@linuxfoundation.org>
+In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
+References: <20230809103658.104386911@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,118 +55,58 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jianbo Liu <jianbol@nvidia.com>
+From: Shengjiu Wang <shengjiu.wang@nxp.com>
 
-[ Upstream commit 618d28a535a0582617465d14e05f3881736a2962 ]
+[ Upstream commit 5da1b522cf7dc51f7fde2cca8d90406b0291c503 ]
 
-As find_closest_ft_recursive is called to find the closest FT, the
-first parameter of find_closest_ft can be changed from fs_prio to
-fs_node. Thus this function is extended to find the closest FT for the
-nodes of any type, not only prios, but also the sub namespaces.
+In imx6sll.dtsi, the ssi node name is different with other
+platforms (imx6qdl, imx6sl, imx6sx), but the
+sound/soc/fsl/fsl-asoc-card.c machine driver needs to check
+ssi node name for audmux configuration, then different ssi
+node name causes issue on imx6sll platform.
 
-Signed-off-by: Jianbo Liu <jianbol@nvidia.com>
-Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
-Link: https://lore.kernel.org/r/d3962c2b443ec8dde7a740dc742a1f052d5e256c.1690803944.git.leonro@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: c635ca45a7a2 ("net/mlx5: fs_core: Skip the FTs in the same FS_TYPE_PRIO_CHAINS fs_prio")
+So we change ssi node name to make all platforms have same
+name.
+
+Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Stable-dep-of: ee70b908f77a ("ARM: dts: nxp/imx6sll: fix wrong property name in usbphy node")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/ethernet/mellanox/mlx5/core/fs_core.c | 29 +++++++++----------
- 1 file changed, 14 insertions(+), 15 deletions(-)
+ arch/arm/boot/dts/imx6sll.dtsi | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c b/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c
-index 4bdcceffe9d38..692fe3e5d0763 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c
-@@ -818,18 +818,17 @@ static struct mlx5_flow_table *find_closest_ft_recursive(struct fs_node  *root,
- 	return ft;
- }
+diff --git a/arch/arm/boot/dts/imx6sll.dtsi b/arch/arm/boot/dts/imx6sll.dtsi
+index d7d092a5522a3..8197767de69d7 100644
+--- a/arch/arm/boot/dts/imx6sll.dtsi
++++ b/arch/arm/boot/dts/imx6sll.dtsi
+@@ -271,7 +271,7 @@ uart2: serial@2024000 {
+ 					status = "disabled";
+ 				};
  
--/* If reverse is false then return the first flow table in next priority of
-- * prio in the tree, else return the last flow table in the previous priority
-- * of prio in the tree.
-+/* If reverse is false then return the first flow table next to the passed node
-+ * in the tree, else return the last flow table before the node in the tree.
-  */
--static struct mlx5_flow_table *find_closest_ft(struct fs_prio *prio, bool reverse)
-+static struct mlx5_flow_table *find_closest_ft(struct fs_node *node, bool reverse)
- {
- 	struct mlx5_flow_table *ft = NULL;
- 	struct fs_node *curr_node;
- 	struct fs_node *parent;
+-				ssi1: ssi-controller@2028000 {
++				ssi1: ssi@2028000 {
+ 					compatible = "fsl,imx6sl-ssi", "fsl,imx51-ssi";
+ 					reg = <0x02028000 0x4000>;
+ 					interrupts = <GIC_SPI 46 IRQ_TYPE_LEVEL_HIGH>;
+@@ -284,7 +284,7 @@ ssi1: ssi-controller@2028000 {
+ 					status = "disabled";
+ 				};
  
--	parent = prio->node.parent;
--	curr_node = &prio->node;
-+	parent = node->parent;
-+	curr_node = node;
- 	while (!ft && parent) {
- 		ft = find_closest_ft_recursive(parent, &curr_node->list, reverse);
- 		curr_node = parent;
-@@ -839,15 +838,15 @@ static struct mlx5_flow_table *find_closest_ft(struct fs_prio *prio, bool revers
- }
+-				ssi2: ssi-controller@202c000 {
++				ssi2: ssi@202c000 {
+ 					compatible = "fsl,imx6sl-ssi", "fsl,imx51-ssi";
+ 					reg = <0x0202c000 0x4000>;
+ 					interrupts = <GIC_SPI 47 IRQ_TYPE_LEVEL_HIGH>;
+@@ -297,7 +297,7 @@ ssi2: ssi-controller@202c000 {
+ 					status = "disabled";
+ 				};
  
- /* Assuming all the tree is locked by mutex chain lock */
--static struct mlx5_flow_table *find_next_chained_ft(struct fs_prio *prio)
-+static struct mlx5_flow_table *find_next_chained_ft(struct fs_node *node)
- {
--	return find_closest_ft(prio, false);
-+	return find_closest_ft(node, false);
- }
- 
- /* Assuming all the tree is locked by mutex chain lock */
--static struct mlx5_flow_table *find_prev_chained_ft(struct fs_prio *prio)
-+static struct mlx5_flow_table *find_prev_chained_ft(struct fs_node *node)
- {
--	return find_closest_ft(prio, true);
-+	return find_closest_ft(node, true);
- }
- 
- static struct mlx5_flow_table *find_next_fwd_ft(struct mlx5_flow_table *ft,
-@@ -859,7 +858,7 @@ static struct mlx5_flow_table *find_next_fwd_ft(struct mlx5_flow_table *ft,
- 	next_ns = flow_act->action & MLX5_FLOW_CONTEXT_ACTION_FWD_NEXT_NS;
- 	fs_get_obj(prio, next_ns ? ft->ns->node.parent : ft->node.parent);
- 
--	return find_next_chained_ft(prio);
-+	return find_next_chained_ft(&prio->node);
- }
- 
- static int connect_fts_in_prio(struct mlx5_core_dev *dev,
-@@ -890,7 +889,7 @@ static int connect_prev_fts(struct mlx5_core_dev *dev,
- {
- 	struct mlx5_flow_table *prev_ft;
- 
--	prev_ft = find_prev_chained_ft(prio);
-+	prev_ft = find_prev_chained_ft(&prio->node);
- 	if (prev_ft) {
- 		struct fs_prio *prev_prio;
- 
-@@ -1036,7 +1035,7 @@ static int connect_flow_table(struct mlx5_core_dev *dev, struct mlx5_flow_table
- 		if (err)
- 			return err;
- 
--		next_ft = first_ft ? first_ft : find_next_chained_ft(prio);
-+		next_ft = first_ft ? first_ft : find_next_chained_ft(&prio->node);
- 		err = connect_fwd_rules(dev, ft, next_ft);
- 		if (err)
- 			return err;
-@@ -1114,7 +1113,7 @@ static struct mlx5_flow_table *__mlx5_create_flow_table(struct mlx5_flow_namespa
- 	tree_init_node(&ft->node, del_hw_flow_table, del_sw_flow_table);
- 	log_table_sz = ft->max_fte ? ilog2(ft->max_fte) : 0;
- 	next_ft = unmanaged ? ft_attr->next_ft :
--			      find_next_chained_ft(fs_prio);
-+			      find_next_chained_ft(&fs_prio->node);
- 	ft->def_miss_action = ns->def_miss_action;
- 	ft->ns = ns;
- 	err = root->cmds->create_flow_table(root, ft, log_table_sz, next_ft);
-@@ -2079,7 +2078,7 @@ static struct mlx5_flow_table *find_next_ft(struct mlx5_flow_table *ft)
- 
- 	if (!list_is_last(&ft->node.list, &prio->node.children))
- 		return list_next_entry(ft, node.list);
--	return find_next_chained_ft(prio);
-+	return find_next_chained_ft(&prio->node);
- }
- 
- static int update_root_ft_destroy(struct mlx5_flow_table *ft)
+-				ssi3: ssi-controller@2030000 {
++				ssi3: ssi@2030000 {
+ 					compatible = "fsl,imx6sl-ssi", "fsl,imx51-ssi";
+ 					reg = <0x02030000 0x4000>;
+ 					interrupts = <GIC_SPI 48 IRQ_TYPE_LEVEL_HIGH>;
 -- 
 2.40.1
 
