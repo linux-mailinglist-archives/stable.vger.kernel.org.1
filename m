@@ -2,168 +2,118 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 048F4776ABD
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 23:07:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C7781776ADC
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 23:20:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233136AbjHIVHs (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 17:07:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40848 "EHLO
+        id S230375AbjHIVUV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 17:20:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55484 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233219AbjHIVHr (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 17:07:47 -0400
-Received: from mail-oa1-x31.google.com (mail-oa1-x31.google.com [IPv6:2001:4860:4864:20::31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A33AA1724;
-        Wed,  9 Aug 2023 14:07:46 -0700 (PDT)
-Received: by mail-oa1-x31.google.com with SMTP id 586e51a60fabf-1c034312675so181385fac.3;
-        Wed, 09 Aug 2023 14:07:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1691615266; x=1692220066;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :references:in-reply-to:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=VQhPymUQatLez9OhAXnkjteLBnvrlDrlwzKYnLXCkIU=;
-        b=EUnhMb2XtpgZMeivppTYpKUPHU/1tJTVNBvx8vjB6hgiPMyGsMKylvyif+u5Dy9rTO
-         MbQnLpB9E25ZjsusJDPz5b2JQva54uSYWYx+1c4sA6X4S0vkJkRcrz01EIBvZMxr57Zl
-         srRkBKI4gD1LySDPQnA8AFHo8eQclUdgOBu5zQe0t6UHyPNBGHga2x38AT3tJopFblRM
-         /wolOhfa4YMk3v7GqzGSVnmS01EF8XvsSnMK4eMdDmRPLskyVcvqMA2jHa5XPkMH7CaF
-         wrnnPYbeFBNeFTymBA7lA6EtgvuuWWPGNhHBn4V9roF47dPo0wrijxcmSVNKIse63GnY
-         Eupw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691615266; x=1692220066;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :references:in-reply-to:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=VQhPymUQatLez9OhAXnkjteLBnvrlDrlwzKYnLXCkIU=;
-        b=F9+GPqKHORhV/3dRmkBUQXnEh6DGAUkuTgikpmdXhrhWxoeqxqta0WGAFZmcWvgwJh
-         vgCC7cSIi4qDp7wJ+LPSX8m3vuVmLobggXu44fzcjJ+qANJlFE0Kyan20M/yjGPmNrl7
-         uPZfPCF20qtj3JIId8SDIRLwPsdS10OeOcbeg4GxZREMINuyPu8WVqYlhJcc/QQkAgCX
-         X7MdqJ5jT4tu0rDtV8XS0FBbkhteQGQ7ABz9RmxLt2l9U8JDBQqbRvhHyntsSA5OWbb1
-         s5+gqIy9jomAg4plTEqSwDNohKJ2eX1bdYABUZVd0tV+HPgxag3UpAKfhj9BdIgwetYW
-         3Nng==
-X-Gm-Message-State: AOJu0Yz76vZEjWz2DhEhk2uqNpqmB7juuf54RyC7gz+SS2cXtoiA8JDr
-        zSQG7TFnXqgNPUXlG8/zB6C9B1KKiRsDCZ3K3b0=
-X-Google-Smtp-Source: AGHT+IEfcjCJMWcdPFDkWHU7lh8NId2uR9ZSbF4zjNWL5iX3wKgvPA5uGM4+ivUnywUPI0zMEhF9Oh8mRWxuJA61RBA=
-X-Received: by 2002:a05:6870:88a9:b0:1b4:7411:5c0c with SMTP id
- m41-20020a05687088a900b001b474115c0cmr443843oam.13.1691615265775; Wed, 09 Aug
- 2023 14:07:45 -0700 (PDT)
-MIME-Version: 1.0
-Received: by 2002:a8a:129a:0:b0:4f0:1250:dd51 with HTTP; Wed, 9 Aug 2023
- 14:07:45 -0700 (PDT)
-In-Reply-To: <CAJuCfpE6K6x7EKAr2rtW1Gn+1oht6w2qZSZ2bGATfoe8C8fJhA@mail.gmail.com>
-References: <20230708191212.4147700-1-surenb@google.com> <20230708191212.4147700-3-surenb@google.com>
- <20230804214620.btgwhsszsd7rh6nf@f> <CAHk-=wiy125k1dBmQFTGpHwiOqEyrD6xnd4xKWfe97H_HodgDA@mail.gmail.com>
- <CAGudoHFsAU_BDCOuz8UgDBLGEM8xg=aUGjaVoqkM_Zvxo2Re_g@mail.gmail.com>
- <CAHk-=wiG9xaVvBJXHqTxtop0=mW9KxPS9C54ED23p59VNEKdWg@mail.gmail.com>
- <CAGudoHFsxmiezZREyVkrPYBBij3u9SNaxLWipOOPy5S+5pJcZA@mail.gmail.com> <CAJuCfpE6K6x7EKAr2rtW1Gn+1oht6w2qZSZ2bGATfoe8C8fJhA@mail.gmail.com>
-From:   Mateusz Guzik <mjguzik@gmail.com>
-Date:   Wed, 9 Aug 2023 23:07:45 +0200
-Message-ID: <CAGudoHEU62Rpp+uJakCFgKC36y3th=Qx+jE+b7KJh6_jeH7cNg@mail.gmail.com>
-Subject: Re: [PATCH v2 3/3] fork: lock VMAs of the parent process when forking
-To:     Suren Baghdasaryan <surenb@google.com>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        akpm@linux-foundation.org, regressions@leemhuis.info,
-        bagasdotme@gmail.com, jacobly.alt@gmail.com, willy@infradead.org,
-        liam.howlett@oracle.com, david@redhat.com, peterx@redhat.com,
-        ldufour@linux.ibm.com, linux-kernel@vger.kernel.org,
-        linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org,
-        linux-arm-kernel@lists.infradead.org, gregkh@linuxfoundation.org,
-        regressions@lists.linux.dev, Jiri Slaby <jirislaby@kernel.org>,
-        =?UTF-8?Q?Holger_Hoffst=C3=A4tte?= <holger@applied-asynchrony.com>,
+        with ESMTP id S229478AbjHIVUV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 17:20:21 -0400
+Received: from progateway7-pub.mail.pro1.eigbox.com (gproxy5-pub.mail.unifiedlayer.com [67.222.38.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5AEEF1724
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 14:20:20 -0700 (PDT)
+Received: from cmgw15.mail.unifiedlayer.com (unknown [10.0.90.130])
+        by progateway7.mail.pro1.eigbox.com (Postfix) with ESMTP id BA36110044429
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 21:20:18 +0000 (UTC)
+Received: from box5620.bluehost.com ([162.241.219.59])
+        by cmsmtp with ESMTP
+        id TqbKqgfphMOiZTqbKq9KO7; Wed, 09 Aug 2023 21:20:18 +0000
+X-Authority-Reason: nr=8
+X-Authority-Analysis: v=2.4 cv=XMr19StE c=1 sm=1 tr=0 ts=64d40312
+ a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
+ a=OWjo9vPv0XrRhIrVQ50Ab3nP57M=:19 a=dLZJa+xiwSxG16/P+YVxDGlgEgI=:19
+ a=IkcTkHD0fZMA:10:nop_charset_1 a=UttIx32zK-AA:10:nop_rcvd_month_year
+ a=-Ou01B_BuAIA:10:endurance_base64_authed_username_1 a=VwQbUJbxAAAA:8
+ a=HaFmDPmJAAAA:8 a=49j0FZ7RFL9ueZfULrUA:9 a=QEXdDO2ut3YA:10:nop_charset_2
+ a=AjGcO6oz07-iQ99wixmX:22 a=nmWuMzfKamIsx3l42hEX:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
+        s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Date:
+        Message-ID:From:In-Reply-To:References:Cc:To:Subject:Sender:Reply-To:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=OmflWR9Rs/Kj5bBm24+p4pzVYIwYRLMaHAWgfu4vcFw=; b=lMioxHZmL8MnCd4xQGm6CWpjJh
+        6GWJU3zvG4xnIcVZqL8PiVc9RYPdb4kPNZZ1mrr/i9kIyyAheVEJv2790Vi8J9qaPmQPEISgjoxVk
+        rU1qQ3RW5es3NoKgkK1oEjCBJNM+NijzICGStMsoMa4PjWxXhe+RIH063dE2ifk7pKsdcszQlLM70
+        fmI1G0Fl5RkO+boWCs1vhet1IuvMzW8PdYCqvcmfn4pXzJdrgP6R0EW4l3a81t8XYK8LkFT8AXUOS
+        eydO17FycC7qmHDpX6r2oJw6wyW2w35BKkR9BQN6c45JTrOWpoP9vdJ8towchLQDod4EjgmpJpfRu
+        f6mWfF5A==;
+Received: from c-73-162-232-9.hsd1.ca.comcast.net ([73.162.232.9]:51250 helo=[10.0.1.47])
+        by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+        (Exim 4.96)
+        (envelope-from <re@w6rz.net>)
+        id 1qTqbJ-000lRu-0y;
+        Wed, 09 Aug 2023 15:20:17 -0600
+Subject: Re: [PATCH 6.4 000/165] 6.4.10-rc1 review
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+        torvalds@linux-foundation.org, akpm@linux-foundation.org,
+        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
+References: <20230809103642.720851262@linuxfoundation.org>
+In-Reply-To: <20230809103642.720851262@linuxfoundation.org>
+From:   Ron Economos <re@w6rz.net>
+Message-ID: <0d356b19-37b0-8bd5-1119-6b0d53b0e644@w6rz.net>
+Date:   Wed, 9 Aug 2023 14:20:15 -0700
+User-Agent: Mozilla/5.0 (X11; Linux armv7l; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - box5620.bluehost.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - w6rz.net
+X-BWhitelist: no
+X-Source-IP: 73.162.232.9
+X-Source-L: No
+X-Exim-ID: 1qTqbJ-000lRu-0y
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: c-73-162-232-9.hsd1.ca.comcast.net ([10.0.1.47]) [73.162.232.9]:51250
+X-Source-Auth: re@w6rz.net
+X-Email-Count: 2
+X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
+X-Local-Domain: yes
+X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 8/5/23, Suren Baghdasaryan <surenb@google.com> wrote:
-> On Fri, Aug 4, 2023 at 6:06=E2=80=AFPM Mateusz Guzik <mjguzik@gmail.com> =
-wrote:
->>
->> On 8/5/23, Linus Torvalds <torvalds@linux-foundation.org> wrote:
->> > On Fri, 4 Aug 2023 at 16:25, Mateusz Guzik <mjguzik@gmail.com> wrote:
->> >>
->> >> I know of these guys, I think they are excluded as is -- they go
->> >> through access_remote_vm, starting with:
->> >>         if (mmap_read_lock_killable(mm))
->> >>                 return 0;
->> >>
->> >> while dup_mmap already write locks the parent's mm.
->> >
->> > Oh, you're only worried about vma_start_write()?
->> >
->> > That's a non-issue. It doesn't take the lock normally, since it starts
->> > off
->> > with
->> >
->> >         if (__is_vma_write_locked(vma, &mm_lock_seq))
->> >                 return;
->> >
->> > which catches on the lock sequence number already being set.
->> >
->> > So no extra locking there.
->> >
->> > Well, technically there's extra locking because the code stupidly
->> > doesn't initialize new vma allocations to the right sequence number,
->> > but that was talked about here:
->> >
->> >
->> > https://lore.kernel.org/all/CAHk-=3DwiCrWAoEesBuoGoqqufvesicbGp3cX0LyK=
-gEvsFaZNpDA@mail.gmail.com/
->> >
->> > and it's a separate issue.
->> >
->>
->> I'm going to bet one beer this is the issue.
->>
->> The patch I'm responding to only consists of adding the call to
->> vma_start_write and claims the 5% slowdown from it, while fixing
->> crashes if the forking process is multithreaded.
->>
->> For the fix to work it has to lock something against the parent.
->>
->>         VMA_ITERATOR(old_vmi, oldmm, 0);
->> [..]
->>         for_each_vma(old_vmi, mpnt) {
->> [..]
->>                 vma_start_write(mpnt);
->>
->> the added line locks an obj in the parent's vm space.
->>
->> The problem you linked looks like pessimization for freshly allocated
->> vmas, but that's what is being operated on here.
+On 8/9/23 3:38 AM, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.4.10 release.
+> There are 165 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 >
-> Sorry, now I'm having trouble understanding the problem you are
-> describing. We are locking the parent's vma before copying it and the
-> newly created vma is locked before it's added into the vma tree. What
-> is the problem then?
+> Responses should be made by Fri, 11 Aug 2023 10:36:10 +0000.
+> Anything received after that time might be too late.
 >
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.4.10-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.4.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-Sorry for the late reply!
+Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
 
-Looks there has been a bunch of weird talking past one another in this
-thread and I don't think trying to straighten it all out is worth any
-time.
+Tested-by: Ron Economos <re@w6rz.net>
 
-I think at least the two of us agree that if a single-threaded process
-enters dup_mmap an
-down_writes the mmap semaphore, then no new thread can pop up in said
-process, thus no surprise page faults from that angle. 3rd parties are
-supposed to interfaces like access_remote_vm, which down_read said
-semaphore and are consequently also not a problem. The only worry here
-is that someone is messing with another process memory without the
-semaphore, but is very unlikely and patchable in the worst case -- but
-someone(tm) has to audit. With all these conditions satisfied one can
-elide vma_start_write for a perf win.
-
-Finally, I think we agreed you are going to do the audit ;)
-
-Cheers,
---=20
-Mateusz Guzik <mjguzik gmail.com>
