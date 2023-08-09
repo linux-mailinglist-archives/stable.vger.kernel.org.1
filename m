@@ -2,45 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F2EEC7758D9
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:55:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4AA257757C1
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:49:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232749AbjHIKzp (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 06:55:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35044 "EHLO
+        id S232278AbjHIKtn (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 06:49:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59432 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232763AbjHIKzX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:55:23 -0400
+        with ESMTP id S232266AbjHIKtn (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:49:43 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 319573C1D
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:54:24 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 892541FF5
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:49:42 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1285A63129
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:54:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26DBBC433C8;
-        Wed,  9 Aug 2023 10:54:22 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2082663124
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:49:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1F26C433C7;
+        Wed,  9 Aug 2023 10:49:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691578463;
-        bh=ixvebLpgwLauFrrHgYIMvHqjpednPK90Q4zs9VVaJ6U=;
+        s=korg; t=1691578181;
+        bh=8ubs4RcrbBIeXpq2NzUn76EDHrR9zFkXbvjB4VCqmUA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=mOd1ZbdRDYBlCEqW4mXW3HYPbOP2cJohyNMkVz5ay576PnV0lnMUBCb/L6SqrgOFo
-         mpZZdI3N83ZH/T0aYpWiGsxD8X3DblgvKTqRLAYzULeQ/VQxq18+D6c32QSNJwTZSn
-         W6/wIwL272Vi1J00Tb94LoYkenI0Js+C0gXv0cII=
+        b=E45eH7rvCwyCoV9PgOXP4u0KGAGlYkWdHbj15Lrw7yzZrsLUI59lZIkdwtNyv9+o6
+         hy7Tk9ym0DAYoBUc3D+mOZeLpgPgKrW6iDwqmt8dSu94JzyL3t5cQLmo9Gfib+DwKd
+         l0Es9/1YrDJ9+1N10HU6w+WUCQyX1RT8UNwZeZMk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev, AVKrasnov@sberdevices.ru,
+        Stefano Garzarella <sgarzare@redhat.com>,
+        Simon Horman <horms@kernel.org>,
+        Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 039/127] net: add missing READ_ONCE(sk->sk_sndbuf) annotation
+Subject: [PATCH 6.4 095/165] test/vsock: remove vsock_perf executable on `make clean`
 Date:   Wed,  9 Aug 2023 12:40:26 +0200
-Message-ID: <20230809103637.970953345@linuxfoundation.org>
+Message-ID: <20230809103645.891726314@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103636.615294317@linuxfoundation.org>
-References: <20230809103636.615294317@linuxfoundation.org>
+In-Reply-To: <20230809103642.720851262@linuxfoundation.org>
+References: <20230809103642.720851262@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,34 +57,37 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Eric Dumazet <edumazet@google.com>
+From: Stefano Garzarella <sgarzare@redhat.com>
 
-[ Upstream commit 74bc084327c643499474ba75df485607da37dd6e ]
+[ Upstream commit 3c50c8b240390907c9a33c86d25d850520db6dfa ]
 
-In a prior commit, I forgot to change sk_getsockopt()
-when reading sk->sk_sndbuf locklessly.
+We forgot to add vsock_perf to the rm command in the `clean`
+target, so now we have a left over after `make clean` in
+tools/testing/vsock.
 
-Fixes: e292f05e0df7 ("tcp: annotate sk->sk_sndbuf lockless reads")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 8abbffd27ced ("test/vsock: vsock_perf utility")
+Cc: AVKrasnov@sberdevices.ru
+Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Simon Horman <horms@kernel.org> # build-tested
+Link: https://lore.kernel.org/r/20230803085454.30897-1-sgarzare@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/sock.c | 2 +-
+ tools/testing/vsock/Makefile | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/core/sock.c b/net/core/sock.c
-index 1b1fe67b94d4f..04306ccdf9081 100644
---- a/net/core/sock.c
-+++ b/net/core/sock.c
-@@ -1624,7 +1624,7 @@ int sk_getsockopt(struct sock *sk, int level, int optname,
- 		break;
- 
- 	case SO_SNDBUF:
--		v.val = sk->sk_sndbuf;
-+		v.val = READ_ONCE(sk->sk_sndbuf);
- 		break;
- 
- 	case SO_RCVBUF:
+diff --git a/tools/testing/vsock/Makefile b/tools/testing/vsock/Makefile
+index 43a254f0e14dd..21a98ba565ab5 100644
+--- a/tools/testing/vsock/Makefile
++++ b/tools/testing/vsock/Makefile
+@@ -8,5 +8,5 @@ vsock_perf: vsock_perf.o
+ CFLAGS += -g -O2 -Werror -Wall -I. -I../../include -I../../../usr/include -Wno-pointer-sign -fno-strict-overflow -fno-strict-aliasing -fno-common -MMD -U_FORTIFY_SOURCE -D_GNU_SOURCE
+ .PHONY: all test clean
+ clean:
+-	${RM} *.o *.d vsock_test vsock_diag_test
++	${RM} *.o *.d vsock_test vsock_diag_test vsock_perf
+ -include *.d
 -- 
 2.40.1
 
