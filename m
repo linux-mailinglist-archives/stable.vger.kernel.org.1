@@ -2,46 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6AFD57758EE
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:56:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2E94E775874
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:53:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232446AbjHIK4H (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 06:56:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40194 "EHLO
+        id S232365AbjHIKvh (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 06:51:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52872 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232791AbjHIKzx (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:55:53 -0400
+        with ESMTP id S232523AbjHIKuz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:50:55 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D264830C0
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:55:47 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A0E01FF5
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:50:38 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 41AED62E4A
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:55:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5062DC433C9;
-        Wed,  9 Aug 2023 10:55:46 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 94DFB63126
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:50:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92F14C433CD;
+        Wed,  9 Aug 2023 10:50:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691578546;
-        bh=AUSJjO8iLedBWXK4Qln94xwvLx2VeLDBhdpx6dI/S/M=;
+        s=korg; t=1691578237;
+        bh=UJhYG8pKUHM/sKeTu2c8qcYku3wg7l9vazqzpc+KNIU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ZysiIXAoUjokQUu2xAHZ55ztlRR2LKQVfHvphdMk4o/xa7L63acxddb5LImQhZb/K
-         yXkAMukur0+Foxs6VRF9D8ZQ85AcrCjzpkCkurC9Xg9ZgUQ22dHhJEttjELRGVWDae
-         5RiTA0yHJDPNEyezOFw4mfQJ/iRIgXbYb/py9c0c=
+        b=mbthw0dCMfng4aW/vKWrMxufycXYnMKWWwkZ8dl0kKMMR7/6eexZ8jPyjNCfkdjBH
+         9oYXnM2biTlOoEROxn443WK1HXLvvBHpRWuvUFO0BxELxLVTWVkkvyaSbjNKgPjhvS
+         qI3JyML+GtrqvlOsPW8lw++WZ9WOt8DF+P24Mwic=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
-        kernel test robot <lkp@intel.com>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Peng Fan <peng.fan@nxp.com>, Stephen Boyd <sboyd@kernel.org>
-Subject: [PATCH 6.1 097/127] clk: imx93: Propagate correct error in imx93_clocks_probe()
+        patches@lists.linux.dev,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        Dan Carpenter <dan.carpenter@linaro.org>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 153/165] mtd: rawnand: fsl_upm: Fix an off-by one test in fun_exec_op()
 Date:   Wed,  9 Aug 2023 12:41:24 +0200
-Message-ID: <20230809103639.846155263@linuxfoundation.org>
+Message-ID: <20230809103647.782033389@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103636.615294317@linuxfoundation.org>
-References: <20230809103636.615294317@linuxfoundation.org>
+In-Reply-To: <20230809103642.720851262@linuxfoundation.org>
+References: <20230809103642.720851262@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,42 +57,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-commit a29b2fccf5f2689a9637be85ff1f51c834c6fb33 upstream.
+[ Upstream commit c6abce60338aa2080973cd95be0aedad528bb41f ]
 
-smatch reports:
+'op-cs' is copied in 'fun->mchip_number' which is used to access the
+'mchip_offsets' and the 'rnb_gpio' arrays.
+These arrays have NAND_MAX_CHIPS elements, so the index must be below this
+limit.
 
-    drivers/clk/imx/clk-imx93.c:294 imx93_clocks_probe() error: uninitialized symbol 'base'.
+Fix the sanity check in order to avoid the NAND_MAX_CHIPS value. This
+would lead to out-of-bound accesses.
 
-Indeed, in case of an error, the wrong (yet uninitialized) variable is
-converted to an error code and returned.
-Fix this by propagating the error code in the correct variable.
-
-Fixes: e02ba11b45764705 ("clk: imx93: fix memory leak and missing unwind goto in imx93_clocks_probe")
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Closes: https://lore.kernel.org/all/9c2acd81-3ad8-485d-819e-9e4201277831@kadam.mountain
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/all/202306161533.4YDmL22b-lkp@intel.com/
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/r/20230711150812.3562221-1-geert+renesas@glider.be
-Reviewed-by: Peng Fan <peng.fan@nxp.com>
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 54309d657767 ("mtd: rawnand: fsl_upm: Implement exec_op()")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://lore.kernel.org/linux-mtd/cd01cba1c7eda58bdabaae174c78c067325803d2.1689803636.git.christophe.jaillet@wanadoo.fr
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/imx/clk-imx93.c |    2 +-
+ drivers/mtd/nand/raw/fsl_upm.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/clk/imx/clk-imx93.c
-+++ b/drivers/clk/imx/clk-imx93.c
-@@ -288,7 +288,7 @@ static int imx93_clocks_probe(struct pla
- 	anatop_base = devm_of_iomap(dev, np, 0, NULL);
- 	of_node_put(np);
- 	if (WARN_ON(IS_ERR(anatop_base))) {
--		ret = PTR_ERR(base);
-+		ret = PTR_ERR(anatop_base);
- 		goto unregister_hws;
- 	}
+diff --git a/drivers/mtd/nand/raw/fsl_upm.c b/drivers/mtd/nand/raw/fsl_upm.c
+index 086426139173f..7366e85c09fd9 100644
+--- a/drivers/mtd/nand/raw/fsl_upm.c
++++ b/drivers/mtd/nand/raw/fsl_upm.c
+@@ -135,7 +135,7 @@ static int fun_exec_op(struct nand_chip *chip, const struct nand_operation *op,
+ 	unsigned int i;
+ 	int ret;
  
+-	if (op->cs > NAND_MAX_CHIPS)
++	if (op->cs >= NAND_MAX_CHIPS)
+ 		return -EINVAL;
+ 
+ 	if (check_only)
+-- 
+2.40.1
+
 
 
