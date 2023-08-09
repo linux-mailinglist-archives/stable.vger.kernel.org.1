@@ -2,49 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3976A77593B
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:58:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 923ED775C81
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:28:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232773AbjHIK6n (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 06:58:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38720 "EHLO
+        id S233746AbjHIL2M (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:28:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37704 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232805AbjHIK6l (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:58:41 -0400
+        with ESMTP id S233765AbjHIL2K (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:28:10 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F3C6ED
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:58:40 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79C731FD7
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:27:58 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 357CD63118
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:58:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 464FCC433C7;
-        Wed,  9 Aug 2023 10:58:39 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 11180632AD
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:27:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 236BDC433C8;
+        Wed,  9 Aug 2023 11:27:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691578719;
-        bh=U8k87gTGSxZsv1kIdSgE8u35dETXdMJZk6m93iM9IrM=;
+        s=korg; t=1691580477;
+        bh=sL+4NPSGFLajeoMdjwsdmNn6xF051QebE4iZkT3XX3M=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=xnfsbyZfiXWiBOUxoiOY3vL0OT5RCUpQzv/UKLrVDF6hhpDGD2gmtIkJ+rVpNL4zR
-         HfJgUCchKvDyAYtxHlm1pwmvpXLZKKv3+EgGXHyb9JDMbgd7GTSeyq+6kNggJ6cFu4
-         GWW46W8Za9hfSbL6UPcEJaCk8NlQPkvTzK8GLbdQ=
+        b=eXJ1CBJdbsfEhG0lQx/Zy1HOiQNPuMBTjy7lS2qUl6WMT3+Slv1nQIknQJBP9NTsA
+         bLEGAiWOq0a7pkvL82/PE5oJdlWJzGqRn5BrJfUuGr3NYcfeWAqFvA1mphmLLQzEmJ
+         MgaQUHkHxLvZtit85r/3emIRk/jV1AjozgYiwp4c=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, valis <sec@valis.email>,
-        M A Ramdhan <ramdhan@starlabs.sg>,
-        Jamal Hadi Salim <jhs@mojatatu.com>,
-        Victor Nogueira <victor@mojatatu.com>,
-        Pedro Tammela <pctammela@mojatatu.com>,
-        Jakub Kicinski <kuba@kernel.org>,
+        patches@lists.linux.dev, Liang Li <liali@redhat.com>,
+        Hangbin Liu <liuhangbin@gmail.com>,
+        Paolo Abeni <pabeni@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 33/92] net/sched: cls_u32: No longer copy tcf_result on update to avoid use-after-free
+Subject: [PATCH 5.4 038/154] bonding: reset bonds flags when down link is P2P device
 Date:   Wed,  9 Aug 2023 12:41:09 +0200
-Message-ID: <20230809103634.756154277@linuxfoundation.org>
+Message-ID: <20230809103638.287074458@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103633.485906560@linuxfoundation.org>
-References: <20230809103633.485906560@linuxfoundation.org>
+In-Reply-To: <20230809103636.887175326@linuxfoundation.org>
+References: <20230809103636.887175326@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -59,49 +56,61 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: valis <sec@valis.email>
+From: Hangbin Liu <liuhangbin@gmail.com>
 
-[ Upstream commit 3044b16e7c6fe5d24b1cdbcf1bd0a9d92d1ebd81 ]
+[ Upstream commit da19a2b967cf1e2c426f50d28550d1915214a81d ]
 
-When u32_change() is called on an existing filter, the whole
-tcf_result struct is always copied into the new instance of the filter.
+When adding a point to point downlink to the bond, we neglected to reset
+the bond's flags, which were still using flags like BROADCAST and
+MULTICAST. Consequently, this would initiate ARP/DAD for P2P downlink
+interfaces, such as when adding a GRE device to the bonding.
 
-This causes a problem when updating a filter bound to a class,
-as tcf_unbind_filter() is always called on the old instance in the
-success path, decreasing filter_cnt of the still referenced class
-and allowing it to be deleted, leading to a use-after-free.
+To address this issue, let's reset the bond's flags for P2P interfaces.
 
-Fix this by no longer copying the tcf_result struct from the old filter.
+Before fix:
+7: gre0@NONE: <POINTOPOINT,NOARP,SLAVE,UP,LOWER_UP> mtu 1500 qdisc noqueue master bond0 state UNKNOWN group default qlen 1000
+    link/gre6 2006:70:10::1 peer 2006:70:10::2 permaddr 167f:18:f188::
+8: bond0: <BROADCAST,MULTICAST,MASTER,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default qlen 1000
+    link/gre6 2006:70:10::1 brd 2006:70:10::2
+    inet6 fe80::200:ff:fe00:0/64 scope link
+       valid_lft forever preferred_lft forever
 
-Fixes: de5df63228fc ("net: sched: cls_u32 changes to knode must appear atomic to readers")
-Reported-by: valis <sec@valis.email>
-Reported-by: M A Ramdhan <ramdhan@starlabs.sg>
-Signed-off-by: valis <sec@valis.email>
-Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Reviewed-by: Victor Nogueira <victor@mojatatu.com>
-Reviewed-by: Pedro Tammela <pctammela@mojatatu.com>
-Reviewed-by: M A Ramdhan <ramdhan@starlabs.sg>
-Link: https://lore.kernel.org/r/20230729123202.72406-2-jhs@mojatatu.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+After fix:
+7: gre0@NONE: <POINTOPOINT,NOARP,SLAVE,UP,LOWER_UP> mtu 1500 qdisc noqueue master bond2 state UNKNOWN group default qlen 1000
+    link/gre6 2006:70:10::1 peer 2006:70:10::2 permaddr c29e:557a:e9d9::
+8: bond0: <POINTOPOINT,NOARP,MASTER,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default qlen 1000
+    link/gre6 2006:70:10::1 peer 2006:70:10::2
+    inet6 fe80::1/64 scope link
+       valid_lft forever preferred_lft forever
+
+Reported-by: Liang Li <liali@redhat.com>
+Closes: https://bugzilla.redhat.com/show_bug.cgi?id=2221438
+Fixes: 872254dd6b1f ("net/bonding: Enable bonding to enslave non ARPHRD_ETHER")
+Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/cls_u32.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/net/bonding/bond_main.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/net/sched/cls_u32.c b/net/sched/cls_u32.c
-index e4e38aa75111e..17edcf1d1c3b6 100644
---- a/net/sched/cls_u32.c
-+++ b/net/sched/cls_u32.c
-@@ -812,7 +812,6 @@ static struct tc_u_knode *u32_init_knode(struct net *net, struct tcf_proto *tp,
+diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
+index cdb9efae6032d..dcaefb47d1f2d 100644
+--- a/drivers/net/bonding/bond_main.c
++++ b/drivers/net/bonding/bond_main.c
+@@ -1153,6 +1153,11 @@ static void bond_setup_by_slave(struct net_device *bond_dev,
  
- 	new->ifindex = n->ifindex;
- 	new->fshift = n->fshift;
--	new->res = n->res;
- 	new->flags = n->flags;
- 	RCU_INIT_POINTER(new->ht_down, ht);
+ 	memcpy(bond_dev->broadcast, slave_dev->broadcast,
+ 		slave_dev->addr_len);
++
++	if (slave_dev->flags & IFF_POINTOPOINT) {
++		bond_dev->flags &= ~(IFF_BROADCAST | IFF_MULTICAST);
++		bond_dev->flags |= (IFF_POINTOPOINT | IFF_NOARP);
++	}
+ }
  
+ /* On bonding slaves other than the currently active slave, suppress
 -- 
-2.40.1
+2.39.2
 
 
 
