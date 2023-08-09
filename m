@@ -2,46 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C4E4F775CB3
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:30:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A4AFF775950
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:59:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233846AbjHIL37 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:29:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41556 "EHLO
+        id S232821AbjHIK7Z (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 06:59:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53212 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233839AbjHIL37 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:29:59 -0400
+        with ESMTP id S232819AbjHIK7Z (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:59:25 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7CC2C172A
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:29:58 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B00EF171E
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:59:24 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1B59863341
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:29:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 268FEC433C7;
-        Wed,  9 Aug 2023 11:29:56 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 484CD62DC8
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:59:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57462C433C7;
+        Wed,  9 Aug 2023 10:59:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691580597;
-        bh=Ud2shwKldsfHRsaaDOQk4zbV+8tLMKLGC/LLfKL6YK4=;
+        s=korg; t=1691578763;
+        bh=qIgf2Nh/zO7TYCNzaF5xKpYy0vFOaG7wNC/PREuHGjE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=0FbPVNMbu8101w1RTboC2mXZkdPYwIyz2TdNOCkQz53SUmHmMANeRm34SYghiHO2J
-         2uKY93NTHMczprSqn26NIwdzSo7q+LSFeI8nflipmaVxsDPiyvsRuLGpyAQUhthu6t
-         o9nuuOaoFX1sE27r9rcMdf85ZX+dnSgFzyjzt80Q=
+        b=NkBh3pHGHCZLor+j9WwlyUAYZ87gh4NIDln4HudMTyozlhSYRgEfn7enZ6MJk6QSK
+         wylLyGk90Niq+sHlN5QW5QJnQOelDkRmiFHV5qWvwD68aREgze7mhm4MASJnUTlEUp
+         zHGJFFo7a5sx1CnSML+Xfj2BxPvzrhJRwRotQFPw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, mhiramat@kernel.org,
-        vnagarnaik@google.com, Zheng Yejian <zhengyejian1@huawei.com>,
-        "Steven Rostedt (Google)" <rostedt@goodmis.org>,
+        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
+        David Ahern <dsahern@kernel.org>,
+        Kuniyuki Iwashima <kuniyu@amazon.com>,
+        Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 053/154] ring-buffer: Fix wrong stat of cpu_buffer->read
+Subject: [PATCH 5.15 48/92] tcp_metrics: fix addr_same() helper
 Date:   Wed,  9 Aug 2023 12:41:24 +0200
-Message-ID: <20230809103638.767187654@linuxfoundation.org>
+Message-ID: <20230809103635.260542631@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103636.887175326@linuxfoundation.org>
-References: <20230809103636.887175326@linuxfoundation.org>
+In-Reply-To: <20230809103633.485906560@linuxfoundation.org>
+References: <20230809103633.485906560@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,128 +57,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Zheng Yejian <zhengyejian1@huawei.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 2d093282b0d4357373497f65db6a05eb0c28b7c8 ]
+[ Upstream commit e6638094d7af6c7b9dcca05ad009e79e31b4f670 ]
 
-When pages are removed in rb_remove_pages(), 'cpu_buffer->read' is set
-to 0 in order to make sure any read iterators reset themselves. However,
-this will mess 'entries' stating, see following steps:
+Because v4 and v6 families use separate inetpeer trees (respectively
+net->ipv4.peers and net->ipv6.peers), inetpeer_addr_cmp(a, b) assumes
+a & b share the same family.
 
-  # cd /sys/kernel/tracing/
-  # 1. Enlarge ring buffer prepare for later reducing:
-  # echo 20 > per_cpu/cpu0/buffer_size_kb
-  # 2. Write a log into ring buffer of cpu0:
-  # taskset -c 0 echo "hello1" > trace_marker
-  # 3. Read the log:
-  # cat per_cpu/cpu0/trace_pipe
-       <...>-332     [000] .....    62.406844: tracing_mark_write: hello1
-  # 4. Stop reading and see the stats, now 0 entries, and 1 event readed:
-  # cat per_cpu/cpu0/stats
-   entries: 0
-   [...]
-   read events: 1
-  # 5. Reduce the ring buffer
-  # echo 7 > per_cpu/cpu0/buffer_size_kb
-  # 6. Now entries became unexpected 1 because actually no entries!!!
-  # cat per_cpu/cpu0/stats
-   entries: 1
-   [...]
-   read events: 0
+tcp_metrics use a common hash table, where entries can have different
+families.
 
-To fix it, introduce 'page_removed' field to count total removed pages
-since last reset, then use it to let read iterators reset themselves
-instead of changing the 'read' pointer.
+We must therefore make sure to not call inetpeer_addr_cmp()
+if the families do not match.
 
-Link: https://lore.kernel.org/linux-trace-kernel/20230724054040.3489499-1-zhengyejian1@huawei.com
-
-Cc: <mhiramat@kernel.org>
-Cc: <vnagarnaik@google.com>
-Fixes: 83f40318dab0 ("ring-buffer: Make removal of ring buffer pages atomic")
-Signed-off-by: Zheng Yejian <zhengyejian1@huawei.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Fixes: d39d14ffa24c ("net: Add helper function to compare inetpeer addresses")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Link: https://lore.kernel.org/r/20230802131500.1478140-2-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/ring_buffer.c | 22 ++++++++++++----------
- 1 file changed, 12 insertions(+), 10 deletions(-)
+ net/ipv4/tcp_metrics.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/trace/ring_buffer.c b/kernel/trace/ring_buffer.c
-index afd7f3a51485e..445475c229b3a 100644
---- a/kernel/trace/ring_buffer.c
-+++ b/kernel/trace/ring_buffer.c
-@@ -485,6 +485,8 @@ struct ring_buffer_per_cpu {
- 	unsigned long			read_bytes;
- 	u64				write_stamp;
- 	u64				read_stamp;
-+	/* pages removed since last reset */
-+	unsigned long			pages_removed;
- 	/* ring buffer pages to update, > 0 to add, < 0 to remove */
- 	long				nr_pages_to_update;
- 	struct list_head		new_pages; /* new pages to add */
-@@ -520,6 +522,7 @@ struct ring_buffer_iter {
- 	struct buffer_page		*head_page;
- 	struct buffer_page		*cache_reader_page;
- 	unsigned long			cache_read;
-+	unsigned long			cache_pages_removed;
- 	u64				read_stamp;
- };
- 
-@@ -1581,6 +1584,8 @@ rb_remove_pages(struct ring_buffer_per_cpu *cpu_buffer, unsigned long nr_pages)
- 		to_remove = rb_list_head(to_remove)->next;
- 		head_bit |= (unsigned long)to_remove & RB_PAGE_HEAD;
- 	}
-+	/* Read iterators need to reset themselves when some pages removed */
-+	cpu_buffer->pages_removed += nr_removed;
- 
- 	next_page = rb_list_head(to_remove)->next;
- 
-@@ -1602,12 +1607,6 @@ rb_remove_pages(struct ring_buffer_per_cpu *cpu_buffer, unsigned long nr_pages)
- 		cpu_buffer->head_page = list_entry(next_page,
- 						struct buffer_page, list);
- 
--	/*
--	 * change read pointer to make sure any read iterators reset
--	 * themselves
--	 */
--	cpu_buffer->read = 0;
--
- 	/* pages are removed, resume tracing and then free the pages */
- 	atomic_dec(&cpu_buffer->record_disabled);
- 	raw_spin_unlock_irq(&cpu_buffer->reader_lock);
-@@ -3659,6 +3658,7 @@ static void rb_iter_reset(struct ring_buffer_iter *iter)
- 
- 	iter->cache_reader_page = iter->head_page;
- 	iter->cache_read = cpu_buffer->read;
-+	iter->cache_pages_removed = cpu_buffer->pages_removed;
- 
- 	if (iter->head)
- 		iter->read_stamp = cpu_buffer->read_stamp;
-@@ -4101,12 +4101,13 @@ rb_iter_peek(struct ring_buffer_iter *iter, u64 *ts)
- 	buffer = cpu_buffer->buffer;
- 
- 	/*
--	 * Check if someone performed a consuming read to
--	 * the buffer. A consuming read invalidates the iterator
--	 * and we need to reset the iterator in this case.
-+	 * Check if someone performed a consuming read to the buffer
-+	 * or removed some pages from the buffer. In these cases,
-+	 * iterator was invalidated and we need to reset it.
- 	 */
- 	if (unlikely(iter->cache_read != cpu_buffer->read ||
--		     iter->cache_reader_page != cpu_buffer->reader_page))
-+		     iter->cache_reader_page != cpu_buffer->reader_page ||
-+		     iter->cache_pages_removed != cpu_buffer->pages_removed))
- 		rb_iter_reset(iter);
- 
-  again:
-@@ -4538,6 +4539,7 @@ rb_reset_cpu(struct ring_buffer_per_cpu *cpu_buffer)
- 	cpu_buffer->last_overrun = 0;
- 
- 	rb_head_page_activate(cpu_buffer);
-+	cpu_buffer->pages_removed = 0;
+diff --git a/net/ipv4/tcp_metrics.c b/net/ipv4/tcp_metrics.c
+index d58e672be31c7..6a06d2e0e11db 100644
+--- a/net/ipv4/tcp_metrics.c
++++ b/net/ipv4/tcp_metrics.c
+@@ -78,7 +78,7 @@ static void tcp_metric_set(struct tcp_metrics_block *tm,
+ static bool addr_same(const struct inetpeer_addr *a,
+ 		      const struct inetpeer_addr *b)
+ {
+-	return inetpeer_addr_cmp(a, b) == 0;
++	return (a->family == b->family) && !inetpeer_addr_cmp(a, b);
  }
  
- /**
+ struct tcpm_hash_bucket {
 -- 
 2.40.1
 
