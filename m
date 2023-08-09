@@ -2,88 +2,164 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 463C3775D69
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:37:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0B2F177582B
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:51:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234094AbjHILhR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:37:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33926 "EHLO
+        id S232518AbjHIKuv (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 06:50:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52884 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234259AbjHILhO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:37:14 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F1D36173A
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:37:13 -0700 (PDT)
+        with ESMTP id S232339AbjHIKud (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:50:33 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 170331FF5
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:50:32 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 902176354B
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:37:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A177FC433C9;
-        Wed,  9 Aug 2023 11:37:12 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8E4616312F
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:50:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67625C0760F;
+        Wed,  9 Aug 2023 10:50:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691581033;
-        bh=hZp+OfZSYO2mfW41snT6cvFO4hkyAArhPBLfnaVUHno=;
+        s=korg; t=1691578230;
+        bh=rEOiI8k5Szh/jR8bd9HQQ9Yf2LVJmgeAEpeDgZIvWsU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=mH/QG6qXA27jmyviunHsUfJNfZrrefTRjcYdDdwwld0F8yjI6ymwRveJeKdgqodJA
-         QJ6AXQlX1/kNZpS27sXTmPh9GweJlq2B8xUqX76NKmUtMU2L+Q76Sa3rMpkPyVEE1y
-         1O3fmlsyp8G39LouMe+BcOfDimVIh4C4KojV6WaA=
+        b=hTZKSCVNTFkeF3aFE2PDAH0LHo0yHSD++j7aUNA7+FLiAZAhsqB7omUZr4df2rrzN
+         qMfYWshIcS5g/wB3RdSl9MKS3EM48wsDK7lFPDllsOvdHFwtUV+wm/h/nFY1zzItHx
+         EewpEmooLekd3YPaTEpn/1z7Wb6Si3/hNvX4Y7Ng=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, stable <stable@kernel.org>,
-        Zubin Mithra <zsm@chromium.org>,
-        Ricardo Ribalda <ribalda@chromium.org>
-Subject: [PATCH 5.10 080/201] usb: xhci-mtk: set the dma max_seg_size
+        patches@lists.linux.dev, Chen-Yu Tsai <wenst@chromium.org>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 151/165] clk: mediatek: mt8183: Add back SSPM related clocks
 Date:   Wed,  9 Aug 2023 12:41:22 +0200
-Message-ID: <20230809103646.481356273@linuxfoundation.org>
+Message-ID: <20230809103647.720532884@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103643.799166053@linuxfoundation.org>
-References: <20230809103643.799166053@linuxfoundation.org>
+In-Reply-To: <20230809103642.720851262@linuxfoundation.org>
+References: <20230809103642.720851262@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ricardo Ribalda <ribalda@chromium.org>
+From: Chen-Yu Tsai <wenst@chromium.org>
 
-commit 9fd10829a9eb482e192a845675ecc5480e0bfa10 upstream.
+[ Upstream commit 1eb8d61ac5c9c7ec56bb96d433532807509b9288 ]
 
-Allow devices to have dma operations beyond 64K, and avoid warnings such
-as:
+This reverts commit 860690a93ef23b567f781c1b631623e27190f101.
 
-DMA-API: xhci-mtk 11200000.usb: mapping sg segment longer than device claims to support [len=98304] [max=65536]
+On the MT8183, the SSPM related clocks were removed claiming a lack of
+usage. This however causes some issues when the driver was converted to
+the new simple-probe mechanism. This mechanism allocates enough space
+for all the clocks defined in the clock driver, not the highest index
+in the DT binding. This leads to out-of-bound writes if their are holes
+in the DT binding or the driver (due to deprecated or unimplemented
+clocks). These errors can go unnoticed and cause memory corruption,
+leading to crashes in unrelated areas, or nothing at all. KASAN will
+detect them.
 
-Fixes: 0cbd4b34cda9 ("xhci: mediatek: support MTK xHCI host controller")
-Cc: stable <stable@kernel.org>
-Tested-by: Zubin Mithra <zsm@chromium.org>
-Reported-by: Zubin Mithra <zsm@chromium.org>
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-Link: https://lore.kernel.org/r/20230628-mtk-usb-v2-1-c8c34eb9f229@chromium.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Add the SSPM related clocks back to the MT8183 clock driver to fully
+implement the DT binding. The SSPM clocks are for the power management
+co-processor, and should never be turned off. They are marked as such.
+
+Fixes: 3f37ba7cc385 ("clk: mediatek: mt8183: Convert all remaining clocks to common probe")
+Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
+Link: https://lore.kernel.org/r/20230719074251.1219089-1-wenst@chromium.org
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/xhci-mtk.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/clk/mediatek/clk-mt8183.c | 27 +++++++++++++++++++++++++++
+ 1 file changed, 27 insertions(+)
 
---- a/drivers/usb/host/xhci-mtk.c
-+++ b/drivers/usb/host/xhci-mtk.c
-@@ -535,6 +535,7 @@ static int xhci_mtk_probe(struct platfor
- 	}
+diff --git a/drivers/clk/mediatek/clk-mt8183.c b/drivers/clk/mediatek/clk-mt8183.c
+index 2336a1b69c093..3b605c30e8494 100644
+--- a/drivers/clk/mediatek/clk-mt8183.c
++++ b/drivers/clk/mediatek/clk-mt8183.c
+@@ -328,6 +328,14 @@ static const char * const atb_parents[] = {
+ 	"syspll_d5"
+ };
  
- 	device_init_wakeup(dev, true);
-+	dma_set_max_seg_size(dev, UINT_MAX);
++static const char * const sspm_parents[] = {
++	"clk26m",
++	"univpll_d2_d4",
++	"syspll_d2_d2",
++	"univpll_d2_d2",
++	"syspll_d3"
++};
++
+ static const char * const dpi0_parents[] = {
+ 	"clk26m",
+ 	"tvdpll_d2",
+@@ -506,6 +514,9 @@ static const struct mtk_mux top_muxes[] = {
+ 	/* CLK_CFG_6 */
+ 	MUX_GATE_CLR_SET_UPD(CLK_TOP_MUX_ATB, "atb_sel",
+ 		atb_parents, 0xa0, 0xa4, 0xa8, 0, 2, 7, 0x004, 24),
++	MUX_GATE_CLR_SET_UPD_FLAGS(CLK_TOP_MUX_SSPM, "sspm_sel",
++				   sspm_parents, 0xa0, 0xa4, 0xa8, 8, 3, 15, 0x004, 25,
++				   CLK_IS_CRITICAL | CLK_SET_RATE_PARENT),
+ 	MUX_GATE_CLR_SET_UPD(CLK_TOP_MUX_DPI0, "dpi0_sel",
+ 		dpi0_parents, 0xa0, 0xa4, 0xa8, 16, 4, 23, 0x004, 26),
+ 	MUX_GATE_CLR_SET_UPD(CLK_TOP_MUX_SCAM, "scam_sel",
+@@ -671,10 +682,18 @@ static const struct mtk_gate_regs infra3_cg_regs = {
+ 	GATE_MTK(_id, _name, _parent, &infra2_cg_regs, _shift,	\
+ 		&mtk_clk_gate_ops_setclr)
  
- 	xhci = hcd_to_xhci(hcd);
- 	xhci->main_hcd = hcd;
++#define GATE_INFRA2_FLAGS(_id, _name, _parent, _shift, _flag)	\
++	GATE_MTK_FLAGS(_id, _name, _parent, &infra2_cg_regs, 	\
++		       _shift, &mtk_clk_gate_ops_setclr, _flag)
++
+ #define GATE_INFRA3(_id, _name, _parent, _shift)		\
+ 	GATE_MTK(_id, _name, _parent, &infra3_cg_regs, _shift,	\
+ 		&mtk_clk_gate_ops_setclr)
+ 
++#define GATE_INFRA3_FLAGS(_id, _name, _parent, _shift, _flag)	\
++	GATE_MTK_FLAGS(_id, _name, _parent, &infra3_cg_regs, 	\
++		       _shift, &mtk_clk_gate_ops_setclr, _flag)
++
+ static const struct mtk_gate infra_clks[] = {
+ 	/* INFRA0 */
+ 	GATE_INFRA0(CLK_INFRA_PMIC_TMR, "infra_pmic_tmr", "axi_sel", 0),
+@@ -746,7 +765,11 @@ static const struct mtk_gate infra_clks[] = {
+ 	GATE_INFRA2(CLK_INFRA_UNIPRO_TICK, "infra_unipro_tick", "fufs_sel", 12),
+ 	GATE_INFRA2(CLK_INFRA_UFS_MP_SAP_BCLK, "infra_ufs_mp_sap_bck", "fufs_sel", 13),
+ 	GATE_INFRA2(CLK_INFRA_MD32_BCLK, "infra_md32_bclk", "axi_sel", 14),
++	/* infra_sspm is main clock in co-processor, should not be closed in Linux. */
++	GATE_INFRA2_FLAGS(CLK_INFRA_SSPM, "infra_sspm", "sspm_sel", 15, CLK_IS_CRITICAL),
+ 	GATE_INFRA2(CLK_INFRA_UNIPRO_MBIST, "infra_unipro_mbist", "axi_sel", 16),
++	/* infra_sspm_bus_hclk is main clock in co-processor, should not be closed in Linux. */
++	GATE_INFRA2_FLAGS(CLK_INFRA_SSPM_BUS_HCLK, "infra_sspm_bus_hclk", "axi_sel", 17, CLK_IS_CRITICAL),
+ 	GATE_INFRA2(CLK_INFRA_I2C5, "infra_i2c5", "i2c_sel", 18),
+ 	GATE_INFRA2(CLK_INFRA_I2C5_ARBITER, "infra_i2c5_arbiter", "i2c_sel", 19),
+ 	GATE_INFRA2(CLK_INFRA_I2C5_IMM, "infra_i2c5_imm", "i2c_sel", 20),
+@@ -764,6 +787,10 @@ static const struct mtk_gate infra_clks[] = {
+ 	GATE_INFRA3(CLK_INFRA_MSDC0_SELF, "infra_msdc0_self", "msdc50_0_sel", 0),
+ 	GATE_INFRA3(CLK_INFRA_MSDC1_SELF, "infra_msdc1_self", "msdc50_0_sel", 1),
+ 	GATE_INFRA3(CLK_INFRA_MSDC2_SELF, "infra_msdc2_self", "msdc50_0_sel", 2),
++	/* infra_sspm_26m_self is main clock in co-processor, should not be closed in Linux. */
++	GATE_INFRA3_FLAGS(CLK_INFRA_SSPM_26M_SELF, "infra_sspm_26m_self", "f_f26m_ck", 3, CLK_IS_CRITICAL),
++	/* infra_sspm_32k_self is main clock in co-processor, should not be closed in Linux. */
++	GATE_INFRA3_FLAGS(CLK_INFRA_SSPM_32K_SELF, "infra_sspm_32k_self", "f_f26m_ck", 4, CLK_IS_CRITICAL),
+ 	GATE_INFRA3(CLK_INFRA_UFS_AXI, "infra_ufs_axi", "axi_sel", 5),
+ 	GATE_INFRA3(CLK_INFRA_I2C6, "infra_i2c6", "i2c_sel", 6),
+ 	GATE_INFRA3(CLK_INFRA_AP_MSDC0, "infra_ap_msdc0", "msdc50_hclk_sel", 7),
+-- 
+2.40.1
+
 
 
