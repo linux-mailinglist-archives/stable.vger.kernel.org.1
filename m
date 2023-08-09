@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B8B5F7758A2
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:54:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 35EA1775A05
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:04:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232427AbjHIKyn (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 06:54:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43010 "EHLO
+        id S233041AbjHILEo (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:04:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44542 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232717AbjHIKyc (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:54:32 -0400
+        with ESMTP id S233044AbjHILEn (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:04:43 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 54F624ED0
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:52:44 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E97F10F3
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:04:43 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9111C63132
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:52:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A25CAC433C8;
-        Wed,  9 Aug 2023 10:52:03 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C80C363148
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:04:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7204C433C8;
+        Wed,  9 Aug 2023 11:04:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691578324;
-        bh=28fG5fkPGJQDb2cdOhFHY3gRKl2EyeLtsvT7ucTWlc0=;
+        s=korg; t=1691579082;
+        bh=OMxmlDIyHCdyVfjS5OeTKFDau1uKl8/EKFdi90vMSlQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=UksCGVkBper9Bg4PvLtLHku5ywifIm9pbW/D3ijn3g7W25KnTWGcXjyUawfWQiDRu
-         U2NFVPGZ7o6VywpZ4TROkrzbU0asZZeeEnoncExGeIMCsFJvuO97CVl0qBaNUrJ8K7
-         byMgLVdcMxZSpX2yNsCJQ4MWaoxQQRsPBvpYWYPU=
+        b=GsaRdaagYvD4bKKW50qvpxYA55Nw6+upJNRStiU32domPzO1TfnIUhmSNg4e5DheR
+         vlbif9DG4IK6HKIw7ZUcXZxXqZ/qVmD7xe+lvAVTt4zzmX6MDZQmbUhZviiIGp1JEL
+         WriVO6Hdw5FLpMDAfxRDIU+oOmVwApjz5v8uEQ3U=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Heiko Carstens <hca@linux.ibm.com>,
+        patches@lists.linux.dev, Chengfeng Ye <dg573847474@gmail.com>,
+        Xin Long <lucien.xin@gmail.com>,
+        Paolo Abeni <pabeni@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 019/127] KVM: s390: fix sthyi error handling
+Subject: [PATCH 4.14 068/204] sctp: fix potential deadlock on &net->sctp.addr_wq_lock
 Date:   Wed,  9 Aug 2023 12:40:06 +0200
-Message-ID: <20230809103637.290188474@linuxfoundation.org>
+Message-ID: <20230809103644.922049354@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103636.615294317@linuxfoundation.org>
-References: <20230809103636.615294317@linuxfoundation.org>
+In-Reply-To: <20230809103642.552405807@linuxfoundation.org>
+References: <20230809103642.552405807@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,78 +56,57 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Heiko Carstens <hca@linux.ibm.com>
+From: Chengfeng Ye <dg573847474@gmail.com>
 
-[ Upstream commit 0c02cc576eac161601927b41634f80bfd55bfa9e ]
+[ Upstream commit 6feb37b3b06e9049e20dcf7e23998f92c9c5be9a ]
 
-Commit 9fb6c9b3fea1 ("s390/sthyi: add cache to store hypervisor info")
-added cache handling for store hypervisor info. This also changed the
-possible return code for sthyi_fill().
+As &net->sctp.addr_wq_lock is also acquired by the timer
+sctp_addr_wq_timeout_handler() in protocal.c, the same lock acquisition
+at sctp_auto_asconf_init() seems should disable irq since it is called
+from sctp_accept() under process context.
 
-Instead of only returning a condition code like the sthyi instruction would
-do, it can now also return a negative error value (-ENOMEM). handle_styhi()
-was not changed accordingly. In case of an error, the negative error value
-would incorrectly injected into the guest PSW.
+Possible deadlock scenario:
+sctp_accept()
+    -> sctp_sock_migrate()
+    -> sctp_auto_asconf_init()
+    -> spin_lock(&net->sctp.addr_wq_lock)
+        <timer interrupt>
+        -> sctp_addr_wq_timeout_handler()
+        -> spin_lock_bh(&net->sctp.addr_wq_lock); (deadlock here)
 
-Add proper error handling to prevent this, and update the comment which
-describes the possible return values of sthyi_fill().
+This flaw was found using an experimental static analysis tool we are
+developing for irq-related deadlock.
 
-Fixes: 9fb6c9b3fea1 ("s390/sthyi: add cache to store hypervisor info")
-Reviewed-by: Christian Borntraeger <borntraeger@linux.ibm.com>
-Link: https://lore.kernel.org/r/20230727182939.2050744-1-hca@linux.ibm.com
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+The tentative patch fix the potential deadlock by spin_lock_bh().
+
+Signed-off-by: Chengfeng Ye <dg573847474@gmail.com>
+Fixes: 34e5b0118685 ("sctp: delay auto_asconf init until binding the first addr")
+Acked-by: Xin Long <lucien.xin@gmail.com>
+Link: https://lore.kernel.org/r/20230627120340.19432-1-dg573847474@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/kernel/sthyi.c  | 6 +++---
- arch/s390/kvm/intercept.c | 9 ++++++---
- 2 files changed, 9 insertions(+), 6 deletions(-)
+ net/sctp/socket.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/s390/kernel/sthyi.c b/arch/s390/kernel/sthyi.c
-index 4d141e2c132e5..2ea7f208f0e73 100644
---- a/arch/s390/kernel/sthyi.c
-+++ b/arch/s390/kernel/sthyi.c
-@@ -459,9 +459,9 @@ static int sthyi_update_cache(u64 *rc)
-  *
-  * Fills the destination with system information returned by the STHYI
-  * instruction. The data is generated by emulation or execution of STHYI,
-- * if available. The return value is the condition code that would be
-- * returned, the rc parameter is the return code which is passed in
-- * register R2 + 1.
-+ * if available. The return value is either a negative error value or
-+ * the condition code that would be returned, the rc parameter is the
-+ * return code which is passed in register R2 + 1.
-  */
- int sthyi_fill(void *dst, u64 *rc)
- {
-diff --git a/arch/s390/kvm/intercept.c b/arch/s390/kvm/intercept.c
-index ee7478a601442..b37bb960bfaf0 100644
---- a/arch/s390/kvm/intercept.c
-+++ b/arch/s390/kvm/intercept.c
-@@ -389,8 +389,8 @@ static int handle_partial_execution(struct kvm_vcpu *vcpu)
-  */
- int handle_sthyi(struct kvm_vcpu *vcpu)
- {
--	int reg1, reg2, r = 0;
--	u64 code, addr, cc = 0, rc = 0;
-+	int reg1, reg2, cc = 0, r = 0;
-+	u64 code, addr, rc = 0;
- 	struct sthyi_sctns *sctns = NULL;
+diff --git a/net/sctp/socket.c b/net/sctp/socket.c
+index 8dd368168a84a..9414dcb376d26 100644
+--- a/net/sctp/socket.c
++++ b/net/sctp/socket.c
+@@ -374,9 +374,9 @@ static void sctp_auto_asconf_init(struct sctp_sock *sp)
+ 	struct net *net = sock_net(&sp->inet.sk);
  
- 	if (!test_kvm_facility(vcpu->kvm, 74))
-@@ -421,7 +421,10 @@ int handle_sthyi(struct kvm_vcpu *vcpu)
- 		return -ENOMEM;
- 
- 	cc = sthyi_fill(sctns, &rc);
--
-+	if (cc < 0) {
-+		free_page((unsigned long)sctns);
-+		return cc;
-+	}
- out:
- 	if (!cc) {
- 		if (kvm_s390_pv_cpu_is_protected(vcpu)) {
+ 	if (net->sctp.default_auto_asconf) {
+-		spin_lock(&net->sctp.addr_wq_lock);
++		spin_lock_bh(&net->sctp.addr_wq_lock);
+ 		list_add_tail(&sp->auto_asconf_list, &net->sctp.auto_asconf_splist);
+-		spin_unlock(&net->sctp.addr_wq_lock);
++		spin_unlock_bh(&net->sctp.addr_wq_lock);
+ 		sp->do_auto_asconf = 1;
+ 	}
+ }
 -- 
-2.40.1
+2.39.2
 
 
 
