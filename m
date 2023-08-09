@@ -2,106 +2,98 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 63D65775BC7
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:21:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CE70A77591F
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:58:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233537AbjHILVA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:21:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33620 "EHLO
+        id S232771AbjHIK55 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 06:57:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40862 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233530AbjHILU7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:20:59 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4245CED
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:20:59 -0700 (PDT)
+        with ESMTP id S232810AbjHIK5y (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:57:54 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB34E26AA
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:57:50 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CC182631DD
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:20:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAED8C433C8;
-        Wed,  9 Aug 2023 11:20:57 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3FC1962DC8
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:57:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F1D9C433C7;
+        Wed,  9 Aug 2023 10:57:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691580058;
-        bh=Bep+K8XuISJoshbNZRdiMFLSSK8fBqtCThsq5emjGgE=;
+        s=korg; t=1691578669;
+        bh=QqFe12zINeiu/sTvjxQZ/h6CFTR0yYNClsSAnZA6RSI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=s9N5hsgvIcIDdHqTIVzRN2pAxpwzbYcPt3IOiuhUJR9MOXQ0PdQ/WVkdqqaBbImCP
-         R/grZ8vpKR+EYeqrjG8RU/agyfPXGRqIRCR9jgRPUBox8Od2D32vGz+SbKExvpXHQY
-         K4sBFFXcV7W2nQfTIX8BxKabQIEkwxmOBYS2vW5U=
+        b=ZijjbnNYHS44UTbG9m+yiZhUptLT8AAiWWTe6paTGRmU1ylqSoqM72SRYhkLVeB+v
+         ykvnyJ+CEDuahLUnXl37QtEQWBb09rqePFO16Gq+X/jI2WX8agCDSGeJjCtOgZZfgT
+         7qhSbE4ZBz/n10gwdTW2W0c8k9zi38NGlXGXdxvg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
+        patches@lists.linux.dev, Zhengchao Shao <shaozhengchao@huawei.com>,
+        Leon Romanovsky <leonro@nvidia.com>,
+        Saeed Mahameed <saeedm@nvidia.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 213/323] tcp: annotate data-races around rskq_defer_accept
+Subject: [PATCH 5.15 15/92] net/mlx5: DR, fix memory leak in mlx5dr_cmd_create_reformat_ctx
 Date:   Wed,  9 Aug 2023 12:40:51 +0200
-Message-ID: <20230809103707.868005356@linuxfoundation.org>
+Message-ID: <20230809103634.122229081@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
-References: <20230809103658.104386911@linuxfoundation.org>
+In-Reply-To: <20230809103633.485906560@linuxfoundation.org>
+References: <20230809103633.485906560@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Eric Dumazet <edumazet@google.com>
+From: Zhengchao Shao <shaozhengchao@huawei.com>
 
-[ Upstream commit ae488c74422fb1dcd807c0201804b3b5e8a322a3 ]
+[ Upstream commit 5dd77585dd9d0e03dd1bceb95f0269a7eaf6b936 ]
 
-do_tcp_getsockopt() reads rskq_defer_accept while another cpu
-might change its value.
+when mlx5_cmd_exec failed in mlx5dr_cmd_create_reformat_ctx, the memory
+pointed by 'in' is not released, which will cause memory leak. Move memory
+release after mlx5_cmd_exec.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://lore.kernel.org/r/20230719212857.3943972-9-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 1d9186476e12 ("net/mlx5: DR, Add direct rule command utilities")
+Signed-off-by: Zhengchao Shao <shaozhengchao@huawei.com>
+Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
+Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/tcp.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/steering/dr_cmd.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
-index 4711963413a49..853a33bf8863e 100644
---- a/net/ipv4/tcp.c
-+++ b/net/ipv4/tcp.c
-@@ -3009,9 +3009,9 @@ static int do_tcp_setsockopt(struct sock *sk, int level,
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/steering/dr_cmd.c b/drivers/net/ethernet/mellanox/mlx5/core/steering/dr_cmd.c
+index fcf705ce421f3..aa003a75946bb 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/steering/dr_cmd.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/steering/dr_cmd.c
+@@ -528,11 +528,12 @@ int mlx5dr_cmd_create_reformat_ctx(struct mlx5_core_dev *mdev,
  
- 	case TCP_DEFER_ACCEPT:
- 		/* Translate value in seconds to number of retransmits */
--		icsk->icsk_accept_queue.rskq_defer_accept =
--			secs_to_retrans(val, TCP_TIMEOUT_INIT / HZ,
--					TCP_RTO_MAX / HZ);
-+		WRITE_ONCE(icsk->icsk_accept_queue.rskq_defer_accept,
-+			   secs_to_retrans(val, TCP_TIMEOUT_INIT / HZ,
-+					   TCP_RTO_MAX / HZ));
- 		break;
+ 	err = mlx5_cmd_exec(mdev, in, inlen, out, sizeof(out));
+ 	if (err)
+-		return err;
++		goto err_free_in;
  
- 	case TCP_WINDOW_CLAMP:
-@@ -3406,8 +3406,9 @@ static int do_tcp_getsockopt(struct sock *sk, int level,
- 			val = (val ? : READ_ONCE(net->ipv4.sysctl_tcp_fin_timeout)) / HZ;
- 		break;
- 	case TCP_DEFER_ACCEPT:
--		val = retrans_to_secs(icsk->icsk_accept_queue.rskq_defer_accept,
--				      TCP_TIMEOUT_INIT / HZ, TCP_RTO_MAX / HZ);
-+		val = READ_ONCE(icsk->icsk_accept_queue.rskq_defer_accept);
-+		val = retrans_to_secs(val, TCP_TIMEOUT_INIT / HZ,
-+				      TCP_RTO_MAX / HZ);
- 		break;
- 	case TCP_WINDOW_CLAMP:
- 		val = tp->window_clamp;
+ 	*reformat_id = MLX5_GET(alloc_packet_reformat_context_out, out, packet_reformat_id);
+-	kvfree(in);
+ 
++err_free_in:
++	kvfree(in);
+ 	return err;
+ }
+ 
 -- 
-2.39.2
+2.40.1
 
 
 
