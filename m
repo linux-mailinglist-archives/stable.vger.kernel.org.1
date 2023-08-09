@@ -2,48 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2E75B77577B
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:46:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C92F7775B68
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:17:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232156AbjHIKqc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 06:46:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38642 "EHLO
+        id S233426AbjHILRL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:17:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38992 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232135AbjHIKqb (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:46:31 -0400
+        with ESMTP id S233428AbjHILRK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:17:10 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E4B61999
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:46:31 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A57C1FCE;
+        Wed,  9 Aug 2023 04:17:09 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C179C630EF
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:46:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEFD0C433C8;
-        Wed,  9 Aug 2023 10:46:29 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 101266316D;
+        Wed,  9 Aug 2023 11:17:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F0A9C433C7;
+        Wed,  9 Aug 2023 11:17:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691577990;
-        bh=TDXgYBB5XxbNkhrQ/4gRaEFxKoAWAv7UCn8odu/LZxw=;
+        s=korg; t=1691579828;
+        bh=FutleaIwIsS7DgTOfN5HB8Zu1BpPa4bDOzb7URiRQ4Y=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=cN7svZayRb/uSeBNeQ46UsKu7CfSW88CVcz8CiUjm8NZpNm2BwwpTkQR2uw6pDDqM
-         k9dPaVHt7rOsKEUEonFcVGasxtTgW2ye+XRAlDOvokTNObLMpjo71OTuxRvS/F1D13
-         M2tep1SqOK86CUXvigCTv6HaKvMK8aew8zkg+WEk=
+        b=kXW2JUKxbYymPQCzfYX0Vh1qbSngpa3HpltVDtSToGnfCyLo4llXFwKOj8z4LS+IN
+         c9CiplGXwT7UF+lAIKnLX17bzbZIEShgRtm20Vpp7pltKjJ/OODrLBQopH1gVQTAyE
+         ljBW18Xlz7h33U2czi5F6rHUXlh+f6A6++CWJWi0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     stable@vger.kernel.org
+To:     stable@vger.kernel.org, netfilter-devel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Kal Cutter Conley <kal.conley@dectris.com>,
-        Dragos Tatulea <dtatulea@nvidia.com>,
-        Tariq Toukan <tariqt@nvidia.com>,
-        Saeed Mahameed <saeedm@nvidia.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 037/165] net/mlx5e: xsk: Fix crash on regular rq reactivation
+        patches@lists.linux.dev, Pablo Neira Ayuso <pablo@netfilter.org>
+Subject: [PATCH 4.19 130/323] netfilter: nf_tables: add NFT_TRANS_PREPARE_ERROR to deal with bound set/chain
 Date:   Wed,  9 Aug 2023 12:39:28 +0200
-Message-ID: <20230809103644.027542174@linuxfoundation.org>
+Message-ID: <20230809103704.077981780@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103642.720851262@linuxfoundation.org>
-References: <20230809103642.720851262@linuxfoundation.org>
+In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
+References: <20230809103658.104386911@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -58,90 +53,98 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Dragos Tatulea <dtatulea@nvidia.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit 39646d9bcd1a65d2396328026626859a1dab59d7 ]
+[ 26b5a5712eb85e253724e56a54c17f8519bd8e4e ]
 
-When the regular rq is reactivated after the XSK socket is closed
-it could be reading stale cqes which eventually corrupts the rq.
-This leads to no more traffic being received on the regular rq and a
-crash on the next close or deactivation of the rq.
+Add a new state to deal with rule expressions deactivation from the
+newrule error path, otherwise the anonymous set remains in the list in
+inactive state for the next generation. Mark the set/chain transaction
+as unbound so the abort path releases this object, set it as inactive in
+the next generation so it is not reachable anymore from this transaction
+and reference counter is dropped.
 
-Kal Cuttler Conely reported this issue as a crash on the release
-path when the xdpsock sample program is stopped (killed) and restarted
-in sequence while traffic is running.
-
-This patch flushes all cqes when during the rq flush. The cqe flushing
-is done in the reset state of the rq. mlx5e_rq_to_ready code is moved
-into the flush function to allow for this.
-
-Fixes: 082a9edf12fe ("net/mlx5e: xsk: Flush RQ on XSK activation to save memory")
-Reported-by: Kal Cutter Conley <kal.conley@dectris.com>
-Closes: https://lore.kernel.org/xdp-newbies/CAHApi-nUAs4TeFWUDV915CZJo07XVg2Vp63-no7UDfj6wur9nQ@mail.gmail.com
-Signed-off-by: Dragos Tatulea <dtatulea@nvidia.com>
-Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 1240eb93f061 ("netfilter: nf_tables: incorrect error path handling with NFT_MSG_NEWRULE")
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../net/ethernet/mellanox/mlx5/core/en_main.c | 29 ++++++++++++++-----
- 1 file changed, 21 insertions(+), 8 deletions(-)
+ include/net/netfilter/nf_tables.h |    1 +
+ net/netfilter/nf_tables_api.c     |   26 ++++++++++++++++++++++----
+ 2 files changed, 23 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-index a5bdf78955d76..f084513fbead4 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-@@ -1036,7 +1036,23 @@ static int mlx5e_modify_rq_state(struct mlx5e_rq *rq, int curr_state, int next_s
- 	return err;
+--- a/include/net/netfilter/nf_tables.h
++++ b/include/net/netfilter/nf_tables.h
+@@ -736,6 +736,7 @@ struct nft_expr_type {
+ 
+ enum nft_trans_phase {
+ 	NFT_TRANS_PREPARE,
++	NFT_TRANS_PREPARE_ERROR,
+ 	NFT_TRANS_ABORT,
+ 	NFT_TRANS_COMMIT,
+ 	NFT_TRANS_RELEASE
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -120,7 +120,8 @@ static void nft_trans_destroy(struct nft
+ 	kfree(trans);
  }
  
--static int mlx5e_rq_to_ready(struct mlx5e_rq *rq, int curr_state)
-+static void mlx5e_flush_rq_cq(struct mlx5e_rq *rq)
+-static void nft_set_trans_bind(const struct nft_ctx *ctx, struct nft_set *set)
++static void __nft_set_trans_bind(const struct nft_ctx *ctx, struct nft_set *set,
++				 bool bind)
+ {
+ 	struct nftables_pernet *nft_net;
+ 	struct net *net = ctx->net;
+@@ -134,16 +135,26 @@ static void nft_set_trans_bind(const str
+ 		switch (trans->msg_type) {
+ 		case NFT_MSG_NEWSET:
+ 			if (nft_trans_set(trans) == set)
+-				nft_trans_set_bound(trans) = true;
++				nft_trans_set_bound(trans) = bind;
+ 			break;
+ 		case NFT_MSG_NEWSETELEM:
+ 			if (nft_trans_elem_set(trans) == set)
+-				nft_trans_elem_set_bound(trans) = true;
++				nft_trans_elem_set_bound(trans) = bind;
+ 			break;
+ 		}
+ 	}
+ }
+ 
++static void nft_set_trans_bind(const struct nft_ctx *ctx, struct nft_set *set)
 +{
-+	struct mlx5_cqwq *cqwq = &rq->cq.wq;
-+	struct mlx5_cqe64 *cqe;
-+
-+	if (test_bit(MLX5E_RQ_STATE_MINI_CQE_ENHANCED, &rq->state)) {
-+		while ((cqe = mlx5_cqwq_get_cqe_enahnced_comp(cqwq)))
-+			mlx5_cqwq_pop(cqwq);
-+	} else {
-+		while ((cqe = mlx5_cqwq_get_cqe(cqwq)))
-+			mlx5_cqwq_pop(cqwq);
-+	}
-+
-+	mlx5_cqwq_update_db_record(cqwq);
++	return __nft_set_trans_bind(ctx, set, true);
 +}
 +
-+int mlx5e_flush_rq(struct mlx5e_rq *rq, int curr_state)
++static void nft_set_trans_unbind(const struct nft_ctx *ctx, struct nft_set *set)
++{
++	return __nft_set_trans_bind(ctx, set, false);
++}
++
+ static void nft_trans_commit_list_add_tail(struct net *net, struct nft_trans *trans)
  {
- 	struct net_device *dev = rq->netdev;
- 	int err;
-@@ -1046,6 +1062,10 @@ static int mlx5e_rq_to_ready(struct mlx5e_rq *rq, int curr_state)
- 		netdev_err(dev, "Failed to move rq 0x%x to reset\n", rq->rqn);
- 		return err;
- 	}
-+
-+	mlx5e_free_rx_descs(rq);
-+	mlx5e_flush_rq_cq(rq);
-+
- 	err = mlx5e_modify_rq_state(rq, MLX5_RQC_STATE_RST, MLX5_RQC_STATE_RDY);
- 	if (err) {
- 		netdev_err(dev, "Failed to move rq 0x%x to ready\n", rq->rqn);
-@@ -1055,13 +1075,6 @@ static int mlx5e_rq_to_ready(struct mlx5e_rq *rq, int curr_state)
- 	return 0;
- }
+ 	struct nftables_pernet *nft_net;
+@@ -2784,7 +2795,7 @@ static int nf_tables_newrule(struct net
  
--int mlx5e_flush_rq(struct mlx5e_rq *rq, int curr_state)
--{
--	mlx5e_free_rx_descs(rq);
--
--	return mlx5e_rq_to_ready(rq, curr_state);
--}
--
- static int mlx5e_modify_rq_vsd(struct mlx5e_rq *rq, bool vsd)
+ 	return 0;
+ err2:
+-	nft_rule_expr_deactivate(&ctx, rule, NFT_TRANS_PREPARE);
++	nft_rule_expr_deactivate(&ctx, rule, NFT_TRANS_PREPARE_ERROR);
+ 	nf_tables_rule_destroy(&ctx, rule);
+ err1:
+ 	for (i = 0; i < n; i++) {
+@@ -3809,6 +3820,13 @@ void nf_tables_deactivate_set(const stru
+ 			      enum nft_trans_phase phase)
  {
- 	struct mlx5_core_dev *mdev = rq->mdev;
--- 
-2.40.1
-
+ 	switch (phase) {
++	case NFT_TRANS_PREPARE_ERROR:
++		nft_set_trans_unbind(ctx, set);
++		if (nft_set_is_anonymous(set))
++			nft_deactivate_next(ctx->net, set);
++
++		set->use--;
++		break;
+ 	case NFT_TRANS_PREPARE:
+ 		if (nft_set_is_anonymous(set))
+ 			nft_deactivate_next(ctx->net, set);
 
 
