@@ -2,46 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1D778775907
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:56:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0DC60775C34
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:24:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232696AbjHIK4w (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 06:56:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33156 "EHLO
+        id S233672AbjHILYz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:24:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45742 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232673AbjHIK4v (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:56:51 -0400
+        with ESMTP id S233674AbjHILYy (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:24:54 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3535C268C
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:56:49 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F1B761FCE
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:24:53 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BE4CA6312F
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:56:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB54FC433C8;
-        Wed,  9 Aug 2023 10:56:47 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 70B2A6324A
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:24:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E301C433C8;
+        Wed,  9 Aug 2023 11:24:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691578608;
-        bh=ts0HoAKwS5L6WNsMqhyS/jSb8UGdVxG5F7XAFrVNKIs=;
+        s=korg; t=1691580292;
+        bh=kUdY39Vvl+59gv1C/dT/69binvhxB0iX9AyhSAiRqyk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=p2tQQTil/ZvXwQRMN4ixdqd59VoTaZZyA/adQV1AnqIc+Mi2IUYdWTvdJIcX7Ozia
-         sb+uCZACMe/PM+rS3u3joFpRT03QLSeaVijNscu+TdL7avLyPxDh9mTxnnaXptpqfV
-         addzQEWWwF5c13/r8EdfXXeRBX7wIPT8s2fEZO6Q=
+        b=lIhgPJwuw8cenUqPQ9KVgCpL9JZru5bEQhbHMiLr8SmGAa3WCaYcPIeKQfdHq7z4Y
+         NOyCSYEdcI+O/+P2vCDxFVACwcjepRfDwjeN9J/AU7/nHS5TScc3a8tIiv8/nXtIPQ
+         XTyPKnnK8sljpesMrSOf/VU5bVpQ7t9mkzQTzZOo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Chao Yu <chao@kernel.org>,
-        Yangtao Li <frank.li@vivo.com>,
-        Jaegeuk Kim <jaegeuk@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 120/127] f2fs: fix to set flush_merge opt and show noflush_merge
+        patches@lists.linux.dev, Kees Cook <keescook@chromium.org>
+Subject: [PATCH 4.19 269/323] Documentation: security-bugs.rst: update preferences when dealing with the linux-distros group
 Date:   Wed,  9 Aug 2023 12:41:47 +0200
-Message-ID: <20230809103640.581982648@linuxfoundation.org>
+Message-ID: <20230809103710.369119739@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103636.615294317@linuxfoundation.org>
-References: <20230809103636.615294317@linuxfoundation.org>
+In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
+References: <20230809103658.104386911@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,66 +53,56 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Yangtao Li <frank.li@vivo.com>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-[ Upstream commit 967eaad1fed5f6335ea97a47d45214744dc57925 ]
+commit 4fee0915e649bd0cea56dece6d96f8f4643df33c upstream.
 
-Some minor modifications to flush_merge and related parameters:
+Because the linux-distros group forces reporters to release information
+about reported bugs, and they impose arbitrary deadlines in having those
+bugs fixed despite not actually being kernel developers, the kernel
+security team recommends not interacting with them at all as this just
+causes confusion and the early-release of reported security problems.
 
-  1.The FLUSH_MERGE opt is set by default only in non-ro mode.
-  2.When ro and merge are set at the same time, an error is reported.
-  3.Display noflush_merge mount opt.
-
-Suggested-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Yangtao Li <frank.li@vivo.com>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-Stable-dep-of: 458c15dfbce6 ("f2fs: don't reset unchangable mount option in f2fs_remount()")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reviewed-by: Kees Cook <keescook@chromium.org>
+Link: https://lore.kernel.org/r/2023063020-throat-pantyhose-f110@gregkh
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/f2fs/super.c | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+ Documentation/admin-guide/security-bugs.rst |   24 +++++++++++-------------
+ 1 file changed, 11 insertions(+), 13 deletions(-)
 
-diff --git a/fs/f2fs/super.c b/fs/f2fs/super.c
-index b6dad389fa144..36bb1c969e8bb 100644
---- a/fs/f2fs/super.c
-+++ b/fs/f2fs/super.c
-@@ -1347,6 +1347,12 @@ static int parse_options(struct super_block *sb, char *options, bool is_remount)
- 		return -EINVAL;
- 	}
+--- a/Documentation/admin-guide/security-bugs.rst
++++ b/Documentation/admin-guide/security-bugs.rst
+@@ -56,20 +56,18 @@ information submitted to the security li
+ of the report are treated confidentially even after the embargo has been
+ lifted, in perpetuity.
  
-+	if ((f2fs_sb_has_readonly(sbi) || f2fs_readonly(sbi->sb)) &&
-+		test_opt(sbi, FLUSH_MERGE)) {
-+		f2fs_err(sbi, "FLUSH_MERGE not compatible with readonly mode");
-+		return -EINVAL;
-+	}
+-Coordination
+-------------
++Coordination with other groups
++------------------------------
+ 
+-Fixes for sensitive bugs, such as those that might lead to privilege
+-escalations, may need to be coordinated with the private
+-<linux-distros@vs.openwall.org> mailing list so that distribution vendors
+-are well prepared to issue a fixed kernel upon public disclosure of the
+-upstream fix. Distros will need some time to test the proposed patch and
+-will generally request at least a few days of embargo, and vendor update
+-publication prefers to happen Tuesday through Thursday. When appropriate,
+-the security team can assist with this coordination, or the reporter can
+-include linux-distros from the start. In this case, remember to prefix
+-the email Subject line with "[vs]" as described in the linux-distros wiki:
+-<http://oss-security.openwall.org/wiki/mailing-lists/distros#how-to-use-the-lists>
++The kernel security team strongly recommends that reporters of potential
++security issues NEVER contact the "linux-distros" mailing list until
++AFTER discussing it with the kernel security team.  Do not Cc: both
++lists at once.  You may contact the linux-distros mailing list after a
++fix has been agreed on and you fully understand the requirements that
++doing so will impose on you and the kernel community.
 +
- 	if (f2fs_sb_has_readonly(sbi) && !f2fs_readonly(sbi->sb)) {
- 		f2fs_err(sbi, "Allow to mount readonly mode only");
- 		return -EROFS;
-@@ -1933,8 +1939,10 @@ static int f2fs_show_options(struct seq_file *seq, struct dentry *root)
- 		seq_puts(seq, ",inline_dentry");
- 	else
- 		seq_puts(seq, ",noinline_dentry");
--	if (!f2fs_readonly(sbi->sb) && test_opt(sbi, FLUSH_MERGE))
-+	if (test_opt(sbi, FLUSH_MERGE))
- 		seq_puts(seq, ",flush_merge");
-+	else
-+		seq_puts(seq, ",noflush_merge");
- 	if (test_opt(sbi, NOBARRIER))
- 		seq_puts(seq, ",nobarrier");
- 	if (test_opt(sbi, FASTBOOT))
-@@ -2063,7 +2071,8 @@ static void default_options(struct f2fs_sb_info *sbi)
- 	set_opt(sbi, MERGE_CHECKPOINT);
- 	F2FS_OPTION(sbi).unusable_cap = 0;
- 	sbi->sb->s_flags |= SB_LAZYTIME;
--	set_opt(sbi, FLUSH_MERGE);
-+	if (!f2fs_sb_has_readonly(sbi) && !f2fs_readonly(sbi->sb))
-+		set_opt(sbi, FLUSH_MERGE);
- 	if (f2fs_hw_support_discard(sbi) || f2fs_hw_should_discard(sbi))
- 		set_opt(sbi, DISCARD);
- 	if (f2fs_sb_has_blkzoned(sbi)) {
--- 
-2.40.1
-
++The different lists have different goals and the linux-distros rules do
++not contribute to actually fixing any potential security problems.
+ 
+ CVE assignment
+ --------------
 
 
