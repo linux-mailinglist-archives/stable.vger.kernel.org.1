@@ -2,133 +2,98 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 19CE8775DC7
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:41:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A26CE775CF8
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:32:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234228AbjHILlO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:41:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57884 "EHLO
+        id S233934AbjHILcj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:32:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46170 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234224AbjHILlN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:41:13 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB88B1FF2
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:41:12 -0700 (PDT)
+        with ESMTP id S233935AbjHILci (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:32:38 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5992D172A
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:32:38 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 40B1A6366D
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:41:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 508EFC433C8;
-        Wed,  9 Aug 2023 11:41:11 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id EE1766340C
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:32:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DDEDC433C7;
+        Wed,  9 Aug 2023 11:32:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691581271;
-        bh=EUk601PggebqOuW2vRU61JwiZbHquPBH5MGhVYsjvC4=;
+        s=korg; t=1691580757;
+        bh=vva/hb3ixTg8jmfM+Plf+S54kvTGNDLdObk1XvjQAZI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=PJUGLLKKzfjZBfBDxi4ubHXN+LU7KtAFrlX6BUne/0uATX53gY7neDlnW9P/f743G
-         6rPMYtS0+f17B12IfVbdTiZj2w6h+9W3s43V78ClEOfVvv9N8yl96KaIowulAzxEO0
-         EhE+zvWtGHYkR99GHp91E+NhRPy5vZivcPuT2Sys=
+        b=q/aevx6Q+n5GT/4qQZXdI/SJB0Hmvl0FmCpX2VxkDj7T7IfP2V1gWIMo5n3JucG2j
+         Cp+astzmpX884ZdWuIwXl+N6W77b23c+40W1484n2uLZZ3QdcX06wskGvsxlCPaiLz
+         4SQw8msfutIKpmNKY5U/j9ouWvhoWJIalTNUkaF0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, gaoming <gaoming20@hihonor.com>,
-        Namjae Jeon <linkinjeon@kernel.org>
-Subject: [PATCH 5.10 166/201] exfat: use kvmalloc_array/kvfree instead of kmalloc_array/kfree
-Date:   Wed,  9 Aug 2023 12:42:48 +0200
-Message-ID: <20230809103649.288538826@linuxfoundation.org>
+        patches@lists.linux.dev, Michael Jeanson <mjeanson@efficios.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 138/154] selftests/rseq: check if libc rseq support is registered
+Date:   Wed,  9 Aug 2023 12:42:49 +0200
+Message-ID: <20230809103641.442648332@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103643.799166053@linuxfoundation.org>
-References: <20230809103643.799166053@linuxfoundation.org>
+In-Reply-To: <20230809103636.887175326@linuxfoundation.org>
+References: <20230809103636.887175326@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: gaoming <gaoming20@hihonor.com>
+From: Michael Jeanson <mjeanson@efficios.com>
 
-commit daf60d6cca26e50d65dac374db92e58de745ad26 upstream.
+[ Upstream commit d1a997ba4c1bf65497d956aea90de42a6398f73a ]
 
-The call stack shown below is a scenario in the Linux 4.19 kernel.
-Allocating memory failed where exfat fs use kmalloc_array due to
-system memory fragmentation, while the u-disk was inserted without
-recognition.
-Devices such as u-disk using the exfat file system are pluggable and
-may be insert into the system at any time.
-However, long-term running systems cannot guarantee the continuity of
-physical memory. Therefore, it's necessary to address this issue.
+When checking for libc rseq support in the library constructor, don't
+only depend on the symbols presence, check that the registration was
+completed.
 
-Binder:2632_6: page allocation failure: order:4,
- mode:0x6040c0(GFP_KERNEL|__GFP_COMP), nodemask=(null)
-Call trace:
-[242178.097582]  dump_backtrace+0x0/0x4
-[242178.097589]  dump_stack+0xf4/0x134
-[242178.097598]  warn_alloc+0xd8/0x144
-[242178.097603]  __alloc_pages_nodemask+0x1364/0x1384
-[242178.097608]  kmalloc_order+0x2c/0x510
-[242178.097612]  kmalloc_order_trace+0x40/0x16c
-[242178.097618]  __kmalloc+0x360/0x408
-[242178.097624]  load_alloc_bitmap+0x160/0x284
-[242178.097628]  exfat_fill_super+0xa3c/0xe7c
-[242178.097635]  mount_bdev+0x2e8/0x3a0
-[242178.097638]  exfat_fs_mount+0x40/0x50
-[242178.097643]  mount_fs+0x138/0x2e8
-[242178.097649]  vfs_kern_mount+0x90/0x270
-[242178.097655]  do_mount+0x798/0x173c
-[242178.097659]  ksys_mount+0x114/0x1ac
-[242178.097665]  __arm64_sys_mount+0x24/0x34
-[242178.097671]  el0_svc_common+0xb8/0x1b8
-[242178.097676]  el0_svc_handler+0x74/0x90
-[242178.097681]  el0_svc+0x8/0x340
+This targets a scenario where the libc has rseq support but it is not
+wired for the current architecture in 'bits/rseq.h', we want to fallback
+to our internal registration mechanism.
 
-By analyzing the exfat code,we found that continuous physical memory
-is not required here,so kvmalloc_array is used can solve this problem.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: gaoming <gaoming20@hihonor.com>
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Michael Jeanson <mjeanson@efficios.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Link: https://lore.kernel.org/r/20220614154830.1367382-4-mjeanson@efficios.com
+Stable-dep-of: 3bcbc20942db ("selftests/rseq: Play nice with binaries statically linked against glibc 2.35+")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/exfat/balloc.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ tools/testing/selftests/rseq/rseq.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/fs/exfat/balloc.c
-+++ b/fs/exfat/balloc.c
-@@ -69,7 +69,7 @@ static int exfat_allocate_bitmap(struct
- 	}
- 	sbi->map_sectors = ((need_map_size - 1) >>
- 			(sb->s_blocksize_bits)) + 1;
--	sbi->vol_amap = kmalloc_array(sbi->map_sectors,
-+	sbi->vol_amap = kvmalloc_array(sbi->map_sectors,
- 				sizeof(struct buffer_head *), GFP_KERNEL);
- 	if (!sbi->vol_amap)
- 		return -ENOMEM;
-@@ -84,7 +84,7 @@ static int exfat_allocate_bitmap(struct
- 			while (j < i)
- 				brelse(sbi->vol_amap[j++]);
- 
--			kfree(sbi->vol_amap);
-+			kvfree(sbi->vol_amap);
- 			sbi->vol_amap = NULL;
- 			return -EIO;
- 		}
-@@ -138,7 +138,7 @@ void exfat_free_bitmap(struct exfat_sb_i
- 	for (i = 0; i < sbi->map_sectors; i++)
- 		__brelse(sbi->vol_amap[i]);
- 
--	kfree(sbi->vol_amap);
-+	kvfree(sbi->vol_amap);
- }
- 
- int exfat_set_bitmap(struct inode *inode, unsigned int clu)
+diff --git a/tools/testing/selftests/rseq/rseq.c b/tools/testing/selftests/rseq/rseq.c
+index 986b9458efb26..4177f9507bbee 100644
+--- a/tools/testing/selftests/rseq/rseq.c
++++ b/tools/testing/selftests/rseq/rseq.c
+@@ -111,7 +111,8 @@ void rseq_init(void)
+ 	libc_rseq_offset_p = dlsym(RTLD_NEXT, "__rseq_offset");
+ 	libc_rseq_size_p = dlsym(RTLD_NEXT, "__rseq_size");
+ 	libc_rseq_flags_p = dlsym(RTLD_NEXT, "__rseq_flags");
+-	if (libc_rseq_size_p && libc_rseq_offset_p && libc_rseq_flags_p) {
++	if (libc_rseq_size_p && libc_rseq_offset_p && libc_rseq_flags_p &&
++			*libc_rseq_size_p != 0) {
+ 		/* rseq registration owned by glibc */
+ 		rseq_offset = *libc_rseq_offset_p;
+ 		rseq_size = *libc_rseq_size_p;
+-- 
+2.40.1
+
 
 
