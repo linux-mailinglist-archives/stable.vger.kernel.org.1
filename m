@@ -2,102 +2,183 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B2A18775BEF
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:22:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D8B947757A2
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:48:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233601AbjHILW1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:22:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46742 "EHLO
+        id S232243AbjHIKsW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 06:48:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33690 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233603AbjHILW0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:22:26 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 52E18212C
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:22:17 -0700 (PDT)
+        with ESMTP id S232242AbjHIKsV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:48:21 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C711D10F3
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:48:20 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DBB54631EE
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:22:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6FA8C433C8;
-        Wed,  9 Aug 2023 11:22:15 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 65E7463124
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:48:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51696C433C8;
+        Wed,  9 Aug 2023 10:48:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691580136;
-        bh=6v/IFeuYC6RkNIxMW8tpxe6/qo0FAIgF1YGp+FB5FzA=;
+        s=korg; t=1691578099;
+        bh=cBUAw2310hWYFKlERpks9J9yJTjEw2ELRM3qh9FfV1s=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=RXEMWl2Tzfq/T6/qi6ONr28NWI89tKJ5tk2SFs8HSKuyd23PjZBFXe+omrS8EYHvc
-         jWZBvbcx7eIKo+byrx0QJAH3km8X5ig8v68e7SjbxHGcEmIevAJeoDFR3WLXhUmDPF
-         ralKAwgtFa2FI8MbXU/RmJ2E3sGbZqFiZWjI+qx8=
+        b=S3L1bdC/k0CLLPuTZbl7hWNHuUW5SZtj5Snt8bk3tt7WFewiaWHjP/sDsGJEf9kUd
+         pN8Q6IfAIZhNCG6cZn5F2RMlU5qauqbyN17wJdpZrLS+hkUqRpJaQvpaIP4tk/Sfj6
+         kHluW+Bamn9qO4/OASDh3nYZz8G0heeAfKgZPi8A=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Roee Goldfiner <roee.h.goldfiner@intel.com>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Gregory Greenman <gregory.greenman@intel.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 199/323] wifi: iwlwifi: mvm: avoid baid size integer overflow
+        syzbot+1741a5d9b79989c10bdc@syzkaller.appspotmail.com,
+        Sungjong Seo <sj1557.seo@samsung.com>,
+        Namjae Jeon <linkinjeon@kernel.org>
+Subject: [PATCH 6.4 106/165] exfat: release s_lock before calling dir_emit()
 Date:   Wed,  9 Aug 2023 12:40:37 +0200
-Message-ID: <20230809103707.268096868@linuxfoundation.org>
+Message-ID: <20230809103646.263299538@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
-References: <20230809103658.104386911@linuxfoundation.org>
+In-Reply-To: <20230809103642.720851262@linuxfoundation.org>
+References: <20230809103642.720851262@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Sungjong Seo <sj1557.seo@samsung.com>
 
-[ Upstream commit 1a528ab1da324d078ec60283c34c17848580df24 ]
+commit ff84772fd45d486e4fc78c82e2f70ce5333543e6 upstream.
 
-Roee reported various hard-to-debug crashes with pings in
-EHT aggregation scenarios. Enabling KASAN showed that we
-access the BAID allocation out of bounds, and looking at
-the code a bit shows that since the reorder buffer entry
-(struct iwl_mvm_reorder_buf_entry) is 128 bytes if debug
-such as lockdep is enabled, then staring from an agg size
-512 we overflow the size calculation, and allocate a much
-smaller structure than we should, causing slab corruption
-once we initialize this.
+There is a potential deadlock reported by syzbot as below:
 
-Fix this by simply using u32 instead of u16.
+======================================================
+WARNING: possible circular locking dependency detected
+6.4.0-next-20230707-syzkaller #0 Not tainted
+------------------------------------------------------
+syz-executor330/5073 is trying to acquire lock:
+ffff8880218527a0 (&mm->mmap_lock){++++}-{3:3}, at: mmap_read_lock_killable include/linux/mmap_lock.h:151 [inline]
+ffff8880218527a0 (&mm->mmap_lock){++++}-{3:3}, at: get_mmap_lock_carefully mm/memory.c:5293 [inline]
+ffff8880218527a0 (&mm->mmap_lock){++++}-{3:3}, at: lock_mm_and_find_vma+0x369/0x510 mm/memory.c:5344
+but task is already holding lock:
+ffff888019f760e0 (&sbi->s_lock){+.+.}-{3:3}, at: exfat_iterate+0x117/0xb50 fs/exfat/dir.c:232
 
-Reported-by: Roee Goldfiner <roee.h.goldfiner@intel.com>
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
-Link: https://lore.kernel.org/r/20230620125813.f428c856030d.I2c2bb808e945adb71bc15f5b2bac2d8957ea90eb@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+which lock already depends on the new lock.
+
+Chain exists of:
+  &mm->mmap_lock --> mapping.invalidate_lock#3 --> &sbi->s_lock
+
+ Possible unsafe locking scenario:
+
+       CPU0                    CPU1
+       ----                    ----
+  lock(&sbi->s_lock);
+                               lock(mapping.invalidate_lock#3);
+                               lock(&sbi->s_lock);
+  rlock(&mm->mmap_lock);
+
+Let's try to avoid above potential deadlock condition by moving dir_emit*()
+out of sbi->s_lock coverage.
+
+Fixes: ca06197382bd ("exfat: add directory operations")
+Cc: stable@vger.kernel.org #v5.7+
+Reported-by: syzbot+1741a5d9b79989c10bdc@syzkaller.appspotmail.com
+Link: https://lore.kernel.org/lkml/00000000000078ee7e060066270b@google.com/T/#u
+Tested-by: syzbot+1741a5d9b79989c10bdc@syzkaller.appspotmail.com
+Signed-off-by: Sungjong Seo <sj1557.seo@samsung.com>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/sta.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/exfat/dir.c |   27 ++++++++++++---------------
+ 1 file changed, 12 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/sta.c b/drivers/net/wireless/intel/iwlwifi/mvm/sta.c
-index 373ace38edab7..83883ce7f55dc 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/sta.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/sta.c
-@@ -2237,7 +2237,7 @@ int iwl_mvm_sta_rx_agg(struct iwl_mvm *mvm, struct ieee80211_sta *sta,
+--- a/fs/exfat/dir.c
++++ b/fs/exfat/dir.c
+@@ -218,7 +218,10 @@ static void exfat_free_namebuf(struct ex
+ 	exfat_init_namebuf(nb);
+ }
+ 
+-/* skip iterating emit_dots when dir is empty */
++/*
++ * Before calling dir_emit*(), sbi->s_lock should be released
++ * because page fault can occur in dir_emit*().
++ */
+ #define ITER_POS_FILLED_DOTS    (2)
+ static int exfat_iterate(struct file *file, struct dir_context *ctx)
+ {
+@@ -233,11 +236,10 @@ static int exfat_iterate(struct file *fi
+ 	int err = 0, fake_offset = 0;
+ 
+ 	exfat_init_namebuf(nb);
+-	mutex_lock(&EXFAT_SB(sb)->s_lock);
+ 
+ 	cpos = ctx->pos;
+ 	if (!dir_emit_dots(file, ctx))
+-		goto unlock;
++		goto out;
+ 
+ 	if (ctx->pos == ITER_POS_FILLED_DOTS) {
+ 		cpos = 0;
+@@ -249,16 +251,18 @@ static int exfat_iterate(struct file *fi
+ 	/* name buffer should be allocated before use */
+ 	err = exfat_alloc_namebuf(nb);
+ 	if (err)
+-		goto unlock;
++		goto out;
+ get_new:
++	mutex_lock(&EXFAT_SB(sb)->s_lock);
++
+ 	if (ei->flags == ALLOC_NO_FAT_CHAIN && cpos >= i_size_read(inode))
+ 		goto end_of_dir;
+ 
+ 	err = exfat_readdir(inode, &cpos, &de);
+ 	if (err) {
+ 		/*
+-		 * At least we tried to read a sector.  Move cpos to next sector
+-		 * position (should be aligned).
++		 * At least we tried to read a sector.
++		 * Move cpos to next sector position (should be aligned).
+ 		 */
+ 		if (err == -EIO) {
+ 			cpos += 1 << (sb->s_blocksize_bits);
+@@ -281,16 +285,10 @@ get_new:
+ 		inum = iunique(sb, EXFAT_ROOT_INO);
  	}
  
- 	if (iwl_mvm_has_new_rx_api(mvm) && start) {
--		u16 reorder_buf_size = buf_size * sizeof(baid_data->entries[0]);
-+		u32 reorder_buf_size = buf_size * sizeof(baid_data->entries[0]);
+-	/*
+-	 * Before calling dir_emit(), sb_lock should be released.
+-	 * Because page fault can occur in dir_emit() when the size
+-	 * of buffer given from user is larger than one page size.
+-	 */
+ 	mutex_unlock(&EXFAT_SB(sb)->s_lock);
+ 	if (!dir_emit(ctx, nb->lfn, strlen(nb->lfn), inum,
+ 			(de.attr & ATTR_SUBDIR) ? DT_DIR : DT_REG))
+-		goto out_unlocked;
+-	mutex_lock(&EXFAT_SB(sb)->s_lock);
++		goto out;
+ 	ctx->pos = cpos;
+ 	goto get_new;
  
- 		/* sparse doesn't like the __align() so don't check */
- #ifndef __CHECKER__
--- 
-2.39.2
-
+@@ -298,9 +296,8 @@ end_of_dir:
+ 	if (!cpos && fake_offset)
+ 		cpos = ITER_POS_FILLED_DOTS;
+ 	ctx->pos = cpos;
+-unlock:
+ 	mutex_unlock(&EXFAT_SB(sb)->s_lock);
+-out_unlocked:
++out:
+ 	/*
+ 	 * To improve performance, free namebuf after unlock sb_lock.
+ 	 * If namebuf is not allocated, this function do nothing
 
 
