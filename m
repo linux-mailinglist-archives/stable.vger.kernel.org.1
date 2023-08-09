@@ -2,145 +2,132 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3A8917757B0
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:49:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 856D477591E
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:58:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231205AbjHIKtA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 06:49:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46280 "EHLO
+        id S232743AbjHIK5z (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 06:57:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40820 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232271AbjHIKs6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:48:58 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AABCF1FF5
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:48:57 -0700 (PDT)
+        with ESMTP id S232745AbjHIK5x (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:57:53 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA4802133
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:57:44 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4777763123
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:48:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F55BC433C9;
-        Wed,  9 Aug 2023 10:48:56 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 602496238A
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:57:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67D3CC433C7;
+        Wed,  9 Aug 2023 10:57:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691578136;
-        bh=bKykhrVBkcgAeTxdZkxZD+WdT182djLJIMhQCuuI34Y=;
+        s=korg; t=1691578663;
+        bh=2gnhwqaX2lcIgtGs5sZ7X8VKJeyAHu0yQGjGIFxrE6U=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=laOpvo1DZEbXt1QNzPLOAiMQnhYHpJ9WULw1voEWlDbtm5WG6D+d0qcY4d+ZaWZHY
-         Sj7UOzD96/5+BT9kPNJMliZ/+YHqcd1XWdJ0+3qwoC7orEoRzWF81P1OaxrPMSUgkP
-         nJksLIRk/MY4gNy+EF0iG3l+2fM4Xj4HtsUBCPyI=
+        b=xcq3QhFWRj0TTM9E0fOBSH1zM9U2JvxuyUYdp52WHhAaX3+h5n0YRPisn18BDCMQA
+         iH3+12r+1Y2T1C026pe232/Oe9XyYeiuJx/zD4D5TZtDd7Y9AoSrHYFR20YFlUaZGx
+         DOiGvBsj5Jf309aofL65ksuibBB4otfSSHgZvYbM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        =?UTF-8?q?Oleg=20 livelace =20Popov?= <o.popov@livelace.ru>,
-        Hou Tao <houtao1@huawei.com>, Jiri Olsa <jolsa@kernel.org>,
-        Alexei Starovoitov <ast@kernel.org>
-Subject: [PATCH 6.4 118/165] bpf: Disable preemption in bpf_event_output
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 13/92] KVM: s390: fix sthyi error handling
 Date:   Wed,  9 Aug 2023 12:40:49 +0200
-Message-ID: <20230809103646.659922575@linuxfoundation.org>
+Message-ID: <20230809103634.049801284@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103642.720851262@linuxfoundation.org>
-References: <20230809103642.720851262@linuxfoundation.org>
+In-Reply-To: <20230809103633.485906560@linuxfoundation.org>
+References: <20230809103633.485906560@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAD_ENC_HEADER,BAYES_00,
-        DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jiri Olsa <jolsa@kernel.org>
+From: Heiko Carstens <hca@linux.ibm.com>
 
-commit d62cc390c2e99ae267ffe4b8d7e2e08b6c758c32 upstream.
+[ Upstream commit 0c02cc576eac161601927b41634f80bfd55bfa9e ]
 
-We received report [1] of kernel crash, which is caused by
-using nesting protection without disabled preemption.
+Commit 9fb6c9b3fea1 ("s390/sthyi: add cache to store hypervisor info")
+added cache handling for store hypervisor info. This also changed the
+possible return code for sthyi_fill().
 
-The bpf_event_output can be called by programs executed by
-bpf_prog_run_array_cg function that disabled migration but
-keeps preemption enabled.
+Instead of only returning a condition code like the sthyi instruction would
+do, it can now also return a negative error value (-ENOMEM). handle_styhi()
+was not changed accordingly. In case of an error, the negative error value
+would incorrectly injected into the guest PSW.
 
-This can cause task to be preempted by another one inside the
-nesting protection and lead eventually to two tasks using same
-perf_sample_data buffer and cause crashes like:
+Add proper error handling to prevent this, and update the comment which
+describes the possible return values of sthyi_fill().
 
-  BUG: kernel NULL pointer dereference, address: 0000000000000001
-  #PF: supervisor instruction fetch in kernel mode
-  #PF: error_code(0x0010) - not-present page
-  ...
-  ? perf_output_sample+0x12a/0x9a0
-  ? finish_task_switch.isra.0+0x81/0x280
-  ? perf_event_output+0x66/0xa0
-  ? bpf_event_output+0x13a/0x190
-  ? bpf_event_output_data+0x22/0x40
-  ? bpf_prog_dfc84bbde731b257_cil_sock4_connect+0x40a/0xacb
-  ? xa_load+0x87/0xe0
-  ? __cgroup_bpf_run_filter_sock_addr+0xc1/0x1a0
-  ? release_sock+0x3e/0x90
-  ? sk_setsockopt+0x1a1/0x12f0
-  ? udp_pre_connect+0x36/0x50
-  ? inet_dgram_connect+0x93/0xa0
-  ? __sys_connect+0xb4/0xe0
-  ? udp_setsockopt+0x27/0x40
-  ? __pfx_udp_push_pending_frames+0x10/0x10
-  ? __sys_setsockopt+0xdf/0x1a0
-  ? __x64_sys_connect+0xf/0x20
-  ? do_syscall_64+0x3a/0x90
-  ? entry_SYSCALL_64_after_hwframe+0x72/0xdc
-
-Fixing this by disabling preemption in bpf_event_output.
-
-[1] https://github.com/cilium/cilium/issues/26756
-Cc: stable@vger.kernel.org
-Reported-by: Oleg "livelace" Popov <o.popov@livelace.ru>
-Closes: https://github.com/cilium/cilium/issues/26756
-Fixes: 2a916f2f546c ("bpf: Use migrate_disable/enable in array macros and cgroup/lirc code.")
-Acked-by: Hou Tao <houtao1@huawei.com>
-Signed-off-by: Jiri Olsa <jolsa@kernel.org>
-Link: https://lore.kernel.org/r/20230725084206.580930-3-jolsa@kernel.org
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 9fb6c9b3fea1 ("s390/sthyi: add cache to store hypervisor info")
+Reviewed-by: Christian Borntraeger <borntraeger@linux.ibm.com>
+Link: https://lore.kernel.org/r/20230727182939.2050744-1-hca@linux.ibm.com
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/bpf_trace.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ arch/s390/kernel/sthyi.c  | 6 +++---
+ arch/s390/kvm/intercept.c | 9 ++++++---
+ 2 files changed, 9 insertions(+), 6 deletions(-)
 
---- a/kernel/trace/bpf_trace.c
-+++ b/kernel/trace/bpf_trace.c
-@@ -718,7 +718,6 @@ static DEFINE_PER_CPU(struct bpf_trace_s
- u64 bpf_event_output(struct bpf_map *map, u64 flags, void *meta, u64 meta_size,
- 		     void *ctx, u64 ctx_size, bpf_ctx_copy_t ctx_copy)
+diff --git a/arch/s390/kernel/sthyi.c b/arch/s390/kernel/sthyi.c
+index 4d141e2c132e5..2ea7f208f0e73 100644
+--- a/arch/s390/kernel/sthyi.c
++++ b/arch/s390/kernel/sthyi.c
+@@ -459,9 +459,9 @@ static int sthyi_update_cache(u64 *rc)
+  *
+  * Fills the destination with system information returned by the STHYI
+  * instruction. The data is generated by emulation or execution of STHYI,
+- * if available. The return value is the condition code that would be
+- * returned, the rc parameter is the return code which is passed in
+- * register R2 + 1.
++ * if available. The return value is either a negative error value or
++ * the condition code that would be returned, the rc parameter is the
++ * return code which is passed in register R2 + 1.
+  */
+ int sthyi_fill(void *dst, u64 *rc)
  {
--	int nest_level = this_cpu_inc_return(bpf_event_output_nest_level);
- 	struct perf_raw_frag frag = {
- 		.copy		= ctx_copy,
- 		.size		= ctx_size,
-@@ -735,8 +734,12 @@ u64 bpf_event_output(struct bpf_map *map
- 	};
- 	struct perf_sample_data *sd;
- 	struct pt_regs *regs;
-+	int nest_level;
- 	u64 ret;
+diff --git a/arch/s390/kvm/intercept.c b/arch/s390/kvm/intercept.c
+index aeb0e0865e890..458b42b50b8cb 100644
+--- a/arch/s390/kvm/intercept.c
++++ b/arch/s390/kvm/intercept.c
+@@ -389,8 +389,8 @@ static int handle_partial_execution(struct kvm_vcpu *vcpu)
+  */
+ int handle_sthyi(struct kvm_vcpu *vcpu)
+ {
+-	int reg1, reg2, r = 0;
+-	u64 code, addr, cc = 0, rc = 0;
++	int reg1, reg2, cc = 0, r = 0;
++	u64 code, addr, rc = 0;
+ 	struct sthyi_sctns *sctns = NULL;
  
-+	preempt_disable();
-+	nest_level = this_cpu_inc_return(bpf_event_output_nest_level);
-+
- 	if (WARN_ON_ONCE(nest_level > ARRAY_SIZE(bpf_misc_sds.sds))) {
- 		ret = -EBUSY;
- 		goto out;
-@@ -751,6 +754,7 @@ u64 bpf_event_output(struct bpf_map *map
- 	ret = __bpf_perf_event_output(regs, map, flags, sd);
+ 	if (!test_kvm_facility(vcpu->kvm, 74))
+@@ -421,7 +421,10 @@ int handle_sthyi(struct kvm_vcpu *vcpu)
+ 		return -ENOMEM;
+ 
+ 	cc = sthyi_fill(sctns, &rc);
+-
++	if (cc < 0) {
++		free_page((unsigned long)sctns);
++		return cc;
++	}
  out:
- 	this_cpu_dec(bpf_event_output_nest_level);
-+	preempt_enable();
- 	return ret;
- }
- 
+ 	if (!cc) {
+ 		if (kvm_s390_pv_cpu_is_protected(vcpu)) {
+-- 
+2.40.1
+
 
 
