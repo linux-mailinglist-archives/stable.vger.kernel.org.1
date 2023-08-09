@@ -2,109 +2,114 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 009A2775C73
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:27:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5FF767758F1
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:56:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233810AbjHIL1c (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:27:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46606 "EHLO
+        id S232579AbjHIK4L (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 06:56:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37616 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233769AbjHIL13 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:27:29 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BDDB72111
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:27:24 -0700 (PDT)
+        with ESMTP id S232775AbjHIKz6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:55:58 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA5D12103
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:55:55 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 558D6632B3
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:27:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67C19C433C8;
-        Wed,  9 Aug 2023 11:27:23 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 89F4B62C35
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:55:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98D45C433C9;
+        Wed,  9 Aug 2023 10:55:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691580443;
-        bh=uuL0Tnp+F0egPRq1qTxImzMhl/kJcr01rrNzVlkn6oU=;
+        s=korg; t=1691578555;
+        bh=1g4NKE7ziG5yB3fVf2fTsDUzYjCajxUhRMOqE15E93E=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=MQTIGTWP0K85bmyMDkBBXHbtXK79Qf12sJqVcGgZNc39AG7iOfvVPEdj2fupuMIDF
-         isI6OLNcEVhLpBB/0ijbEGZ4DEWqHtPM+585oYlO5rediBXbedqPeoxxH2BVfYcbZ4
-         p5A9Sb9uSlfTcnA3YJmLcZT/6LuD13+PBviEMu2s=
+        b=gPWAEmF/dZs/Y1vsSAf7z7LB6Yoc2y30JMeFBN17GoFmOYoFDhGydkQZcU9U66WBh
+         B7cGnRPbZkpjyTD4NA/u+ko7IOO+n6aRj4PlRHoHaVZQxTKq9kPdKzOomTp6za2de4
+         v/3E+uCXz4B9KTpMchI0912QGapJvMWccU4CyAPs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hulk Robot <hulkci@huawei.com>,
-        Himanshu Madhani <himanshu.madhani@oracle.com>,
-        Nilesh Javali <njavali@marvell.com>,
-        Ye Bin <yebin10@huawei.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 027/154] scsi: qla2xxx: Fix inconsistent format argument type in qla_os.c
+        patches@lists.linux.dev, Benjamin Block <bblock@linux.ibm.com>,
+        Fedor Loshakov <loshakov@linux.ibm.com>,
+        Steffen Maier <maier@linux.ibm.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.1 071/127] scsi: zfcp: Defer fc_rport blocking until after ADISC response
 Date:   Wed,  9 Aug 2023 12:40:58 +0200
-Message-ID: <20230809103637.894802352@linuxfoundation.org>
+Message-ID: <20230809103639.002540082@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103636.887175326@linuxfoundation.org>
-References: <20230809103636.887175326@linuxfoundation.org>
+In-Reply-To: <20230809103636.615294317@linuxfoundation.org>
+References: <20230809103636.615294317@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ye Bin <yebin10@huawei.com>
+From: Steffen Maier <maier@linux.ibm.com>
 
-[ Upstream commit 250bd00923c72c846092271a9e51ee373db081b6 ]
+commit e65851989001c0c9ba9177564b13b38201c0854c upstream.
 
-Fix the following warnings:
+Storage devices are free to send RSCNs, e.g. for internal state changes. If
+this happens on all connected paths, zfcp risks temporarily losing all
+paths at the same time. This has strong requirements on multipath
+configuration such as "no_path_retry queue".
 
-[drivers/scsi/qla2xxx/qla_os.c:4882]: (warning) %ld in format string (no. 2)
-	requires 'long' but the argument type is 'unsigned long'.
-[drivers/scsi/qla2xxx/qla_os.c:5011]: (warning) %ld in format string (no. 1)
-	requires 'long' but the argument type is 'unsigned long'.
+Avoid such situations by deferring fc_rport blocking until after the ADISC
+response, when any actual state change of the remote port became clear.
+The already existing port recovery triggers explicitly block the fc_rport.
+The triggers are: on ADISC reject or timeout (typical cable pull case), and
+on ADISC indicating that the remote port has changed its WWPN or
+the port is meanwhile no longer open.
 
-Link: https://lore.kernel.org/r/20200930022515.2862532-3-yebin10@huawei.com
-Reported-by: Hulk Robot <hulkci@huawei.com>
-Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
-Reviewed-by: Nilesh Javali <njavali@marvell.com>
-Signed-off-by: Ye Bin <yebin10@huawei.com>
+As a side effect, this also removes a confusing direct function call to
+another work item function zfcp_scsi_rport_work() instead of scheduling
+that other work item. It was probably done that way to have the rport block
+side effect immediate and synchronous to the caller.
+
+Fixes: a2fa0aede07c ("[SCSI] zfcp: Block FC transport rports early on errors")
+Cc: stable@vger.kernel.org #v2.6.30+
+Reviewed-by: Benjamin Block <bblock@linux.ibm.com>
+Reviewed-by: Fedor Loshakov <loshakov@linux.ibm.com>
+Signed-off-by: Steffen Maier <maier@linux.ibm.com>
+Link: https://lore.kernel.org/r/20230724145156.3920244-1-maier@linux.ibm.com
 Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Stable-dep-of: d721b591b95c ("scsi: qla2xxx: Array index may go out of bound")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/qla2xxx/qla_os.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/s390/scsi/zfcp_fc.c |    6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-diff --git a/drivers/scsi/qla2xxx/qla_os.c b/drivers/scsi/qla2xxx/qla_os.c
-index 30a5ca9c5a8d4..9bd73a5a722b4 100644
---- a/drivers/scsi/qla2xxx/qla_os.c
-+++ b/drivers/scsi/qla2xxx/qla_os.c
-@@ -4831,7 +4831,7 @@ struct scsi_qla_host *qla2x00_create_host(struct scsi_host_template *sht,
- 	}
- 	INIT_DELAYED_WORK(&vha->scan.scan_work, qla_scan_work_fn);
+--- a/drivers/s390/scsi/zfcp_fc.c
++++ b/drivers/s390/scsi/zfcp_fc.c
+@@ -534,8 +534,7 @@ static void zfcp_fc_adisc_handler(void *
  
--	sprintf(vha->host_str, "%s_%ld", QLA2XXX_DRIVER_NAME, vha->host_no);
-+	sprintf(vha->host_str, "%s_%lu", QLA2XXX_DRIVER_NAME, vha->host_no);
- 	ql_dbg(ql_dbg_init, vha, 0x0041,
- 	    "Allocated the host=%p hw=%p vha=%p dev_name=%s",
- 	    vha->host, vha->hw, vha,
-@@ -4961,7 +4961,7 @@ qla2x00_uevent_emit(struct scsi_qla_host *vha, u32 code)
+ 	/* re-init to undo drop from zfcp_fc_adisc() */
+ 	port->d_id = ntoh24(adisc_resp->adisc_port_id);
+-	/* port is good, unblock rport without going through erp */
+-	zfcp_scsi_schedule_rport_register(port);
++	/* port is still good, nothing to do */
+  out:
+ 	atomic_andnot(ZFCP_STATUS_PORT_LINK_TEST, &port->status);
+ 	put_device(&port->dev);
+@@ -595,9 +594,6 @@ void zfcp_fc_link_test_work(struct work_
+ 	int retval;
  
- 	switch (code) {
- 	case QLA_UEVENT_CODE_FW_DUMP:
--		snprintf(event_string, sizeof(event_string), "FW_DUMP=%ld",
-+		snprintf(event_string, sizeof(event_string), "FW_DUMP=%lu",
- 		    vha->host_no);
- 		break;
- 	default:
--- 
-2.39.2
-
+ 	set_worker_desc("zadisc%16llx", port->wwpn); /* < WORKER_DESC_LEN=24 */
+-	get_device(&port->dev);
+-	port->rport_task = RPORT_DEL;
+-	zfcp_scsi_rport_work(&port->rport_work);
+ 
+ 	/* only issue one test command at one time per port */
+ 	if (atomic_read(&port->status) & ZFCP_STATUS_PORT_LINK_TEST)
 
 
