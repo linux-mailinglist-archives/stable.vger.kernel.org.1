@@ -2,43 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 13DE1775AFA
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:13:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0A4E2775AD6
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:12:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233349AbjHILNL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:13:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41342 "EHLO
+        id S233295AbjHILMD (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:12:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33744 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233342AbjHILNK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:13:10 -0400
+        with ESMTP id S233301AbjHILLv (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:11:51 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CFBEDED
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:13:09 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BFE1D1FCE
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:11:50 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6F6F6619FA
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:13:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B354C433C9;
-        Wed,  9 Aug 2023 11:13:08 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5F3E16314D
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:11:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FDDAC433C8;
+        Wed,  9 Aug 2023 11:11:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691579588;
-        bh=dB4i023ufZ1dnK0w1/jujlQDKggac9FZJ6Xs3fHcVvQ=;
+        s=korg; t=1691579509;
+        bh=hVlhQO2gGJaYqNJMuzMXoxWt1IZMnjQuMTasPh0nN/4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=o4Zpti0Qv3Pe497CVhP/i3AFj3t7MlTltQYMDKijXeWzjBwqF8gdQ763aKFu802d7
-         g5bclVx1Mq3VmbXZXBI4b370mFJWz+6Rv+QPPtMw+vhlbdGe4lDFckVPr/YvM8GT29
-         vrzL5pWQ6pYdftVv+SM/SsG+77W07HtJwvQ4E+Ak=
+        b=bb19Z8LhZcJnKnRkfSYSTI8qjkRdULnvVJcJKJ7KxIEDRe2LWZULZzq0/afwr/mYG
+         t6H2akbtwSQ2cBaVknbIlI9GXczemspWPNC/G4P5268y3uZzLz5qZzGG//CbP/zQcq
+         SvkKZSFLzge/z+vBw+ZvRs7lgjSYB+ImGp49Pixw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Rajan Vaja <rajan.vaja@xilinx.com>,
-        Michal Simek <michal.simek@xilinx.com>,
+        patches@lists.linux.dev, Feng Mingxi <m202271825@hust.edu.cn>,
+        Dongliang Mu <dzm91@hust.edu.cn>,
+        Michal Simek <michal.simek@amd.com>,
         Daniel Lezcano <daniel.lezcano@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 016/323] clocksource/drivers/cadence-ttc: Use ttc driver as platform driver
-Date:   Wed,  9 Aug 2023 12:37:34 +0200
-Message-ID: <20230809103658.838891209@linuxfoundation.org>
+Subject: [PATCH 4.19 017/323] clocksource/drivers/cadence-ttc: Fix memory leak in ttc_timer_probe
+Date:   Wed,  9 Aug 2023 12:37:35 +0200
+Message-ID: <20230809103658.893734915@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
 References: <20230809103658.104386911@linuxfoundation.org>
@@ -56,84 +57,79 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Rajan Vaja <rajan.vaja@xilinx.com>
+From: Feng Mingxi <m202271825@hust.edu.cn>
 
-[ Upstream commit f5ac896b6a23eb46681cdbef440c1d991b04e519 ]
+[ Upstream commit 8b5bf64c89c7100c921bd807ba39b2eb003061ab ]
 
-Currently TTC driver is TIMER_OF_DECLARE type driver. Because of
-that, TTC driver may be initialized before other clock drivers. If
-TTC driver is dependent on that clock driver then initialization of
-TTC driver will failed.
+Smatch reports:
+drivers/clocksource/timer-cadence-ttc.c:529 ttc_timer_probe()
+warn: 'timer_baseaddr' from of_iomap() not released on lines: 498,508,516.
 
-So use TTC driver as platform driver instead of using
-TIMER_OF_DECLARE.
+timer_baseaddr may have the problem of not being released after use,
+I replaced it with the devm_of_iomap() function and added the clk_put()
+function to cleanup the "clk_ce" and "clk_cs".
 
-Signed-off-by: Rajan Vaja <rajan.vaja@xilinx.com>
-Tested-by: Michal Simek <michal.simek@xilinx.com>
-Acked-by: Michal Simek <michal.simek@xilinx.com>
+Fixes: e932900a3279 ("arm: zynq: Use standard timer binding")
+Fixes: 70504f311d4b ("clocksource/drivers/cadence_ttc: Convert init function to return error")
+Signed-off-by: Feng Mingxi <m202271825@hust.edu.cn>
+Reviewed-by: Dongliang Mu <dzm91@hust.edu.cn>
+Acked-by: Michal Simek <michal.simek@amd.com>
 Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Link: https://lore.kernel.org/r/1573122988-18399-1-git-send-email-rajan.vaja@xilinx.com
-Stable-dep-of: 8b5bf64c89c7 ("clocksource/drivers/cadence-ttc: Fix memory leak in ttc_timer_probe")
+Link: https://lore.kernel.org/r/20230425065611.702917-1-m202271825@hust.edu.cn
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clocksource/timer-cadence-ttc.c | 26 +++++++++++++++++--------
- 1 file changed, 18 insertions(+), 8 deletions(-)
+ drivers/clocksource/timer-cadence-ttc.c | 19 +++++++++++++------
+ 1 file changed, 13 insertions(+), 6 deletions(-)
 
 diff --git a/drivers/clocksource/timer-cadence-ttc.c b/drivers/clocksource/timer-cadence-ttc.c
-index a7eb858a84a0f..b1df0ded8f521 100644
+index b1df0ded8f521..16b9bfb257564 100644
 --- a/drivers/clocksource/timer-cadence-ttc.c
 +++ b/drivers/clocksource/timer-cadence-ttc.c
-@@ -23,6 +23,8 @@
- #include <linux/of_irq.h>
- #include <linux/slab.h>
- #include <linux/sched_clock.h>
-+#include <linux/module.h>
-+#include <linux/of_platform.h>
+@@ -494,10 +494,10 @@ static int __init ttc_timer_probe(struct platform_device *pdev)
+ 	 * and use it. Note that the event timer uses the interrupt and it's the
+ 	 * 2nd TTC hence the irq_of_parse_and_map(,1)
+ 	 */
+-	timer_baseaddr = of_iomap(timer, 0);
+-	if (!timer_baseaddr) {
++	timer_baseaddr = devm_of_iomap(&pdev->dev, timer, 0, NULL);
++	if (IS_ERR(timer_baseaddr)) {
+ 		pr_err("ERROR: invalid timer base address\n");
+-		return -ENXIO;
++		return PTR_ERR(timer_baseaddr);
+ 	}
  
- /*
-  * This driver configures the 2 16/32-bit count-up timers as follows:
-@@ -472,13 +474,7 @@ static int __init ttc_setup_clockevent(struct clk *clk,
- 	return err;
- }
+ 	irq = irq_of_parse_and_map(timer, 1);
+@@ -521,20 +521,27 @@ static int __init ttc_timer_probe(struct platform_device *pdev)
+ 	clk_ce = of_clk_get(timer, clksel);
+ 	if (IS_ERR(clk_ce)) {
+ 		pr_err("ERROR: timer input clock not found\n");
+-		return PTR_ERR(clk_ce);
++		ret = PTR_ERR(clk_ce);
++		goto put_clk_cs;
+ 	}
  
--/**
-- * ttc_timer_init - Initialize the timer
-- *
-- * Initializes the timer hardware and register the clock source and clock event
-- * timers with Linux kernal timer framework
-- */
--static int __init ttc_timer_init(struct device_node *timer)
-+static int __init ttc_timer_probe(struct platform_device *pdev)
- {
- 	unsigned int irq;
- 	void __iomem *timer_baseaddr;
-@@ -486,6 +482,7 @@ static int __init ttc_timer_init(struct device_node *timer)
- 	static int initialized;
- 	int clksel, ret;
- 	u32 timer_width = 16;
-+	struct device_node *timer = pdev->dev.of_node;
+ 	ret = ttc_setup_clocksource(clk_cs, timer_baseaddr, timer_width);
+ 	if (ret)
+-		return ret;
++		goto put_clk_ce;
  
- 	if (initialized)
- 		return 0;
-@@ -540,4 +537,17 @@ static int __init ttc_timer_init(struct device_node *timer)
+ 	ret = ttc_setup_clockevent(clk_ce, timer_baseaddr + 4, irq);
+ 	if (ret)
+-		return ret;
++		goto put_clk_ce;
+ 
+ 	pr_info("%s #0 at %p, irq=%d\n", timer->name, timer_baseaddr, irq);
+ 
  	return 0;
++
++put_clk_ce:
++	clk_put(clk_ce);
++put_clk_cs:
++	clk_put(clk_cs);
++	return ret;
  }
  
--TIMER_OF_DECLARE(ttc, "cdns,ttc", ttc_timer_init);
-+static const struct of_device_id ttc_timer_of_match[] = {
-+	{.compatible = "cdns,ttc"},
-+	{},
-+};
-+
-+MODULE_DEVICE_TABLE(of, ttc_timer_of_match);
-+
-+static struct platform_driver ttc_timer_driver = {
-+	.driver = {
-+		.name	= "cdns_ttc_timer",
-+		.of_match_table = ttc_timer_of_match,
-+	},
-+};
-+builtin_platform_driver_probe(ttc_timer_driver, ttc_timer_probe);
+ static const struct of_device_id ttc_timer_of_match[] = {
 -- 
 2.39.2
 
