@@ -2,154 +2,95 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5ED5C77592A
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:58:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C42C6775C5F
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:26:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232745AbjHIK6P (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 06:58:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47722 "EHLO
+        id S233731AbjHIL0n (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:26:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45612 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232756AbjHIK6O (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:58:14 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BEBE81FD8
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:58:12 -0700 (PDT)
+        with ESMTP id S233738AbjHIL0l (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:26:41 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CEBB4210B
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:26:39 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 546E163118
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:58:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6368EC433C8;
-        Wed,  9 Aug 2023 10:58:11 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6DC7663283
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:26:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 804ABC433C7;
+        Wed,  9 Aug 2023 11:26:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691578691;
-        bh=E+DEBQzJIeaw4fQPbBFaIK+VtUFl3QZldK8CutYbKwY=;
+        s=korg; t=1691580398;
+        bh=H3dHbyUUPcLq6mEgqYGT5CV0otHbyT8ujY10rOgRC44=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=xU7GzHx8LqjWJxfLJnH2/ljj4+NsbVOhlrr3gOTBzNOI1wRAf54oO+no0jBbXtqrQ
-         /565cLWQitWKyclhE8tyqbSRo34+7BHlGSI3jkOGX+xi+JU4DelZa0W46vZlz+8fGP
-         9j+sK4VZA3QzpQFE5Rd0wsvmuIqm0t4X6WNCwJTc=
+        b=LsVyGTQ3/tvU/aq/fCH148uaQ+OkI2rj9UtpglR7yeaQHMuEZPCB0BG0/xZh9+iK2
+         rUORkygATM1uM2mzRLmdmgIxrVXM0Fv+jmvUlYx+X3aINVjeAZ8VzF5f3Jzt/8/cax
+         iJQj9ZnjmCOrFOJwdSdEdpk1+Xv7li6bJOPT3hk0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Robin Murphy <robin.murphy@arm.com>,
-        Nicolin Chen <nicolinc@nvidia.com>,
-        Will Deacon <will@kernel.org>,
-        Easwar Hariharan <eahariha@linux.microsoft.com>
-Subject: [PATCH 5.15 06/92] iommu/arm-smmu-v3: Work around MMU-600 erratum 1076982
+        patches@lists.linux.dev, Qu Wenruo <wqu@suse.com>,
+        Filipe Manana <fdmanana@suse.com>,
+        David Sterba <dsterba@suse.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 011/154] btrfs: fix extent buffer leak after tree mod log failure at split_node()
 Date:   Wed,  9 Aug 2023 12:40:42 +0200
-Message-ID: <20230809103633.743352060@linuxfoundation.org>
+Message-ID: <20230809103637.302284349@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103633.485906560@linuxfoundation.org>
-References: <20230809103633.485906560@linuxfoundation.org>
+In-Reply-To: <20230809103636.887175326@linuxfoundation.org>
+References: <20230809103636.887175326@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Robin Murphy <robin.murphy@arm.com>
+From: Filipe Manana <fdmanana@suse.com>
 
-commit f322e8af35c7f23a8c08b595c38d6c855b2d836f upstream
+[ Upstream commit ede600e497b1461d06d22a7d17703d9096868bc3 ]
 
-MMU-600 versions prior to r1p0 fail to correctly generate a WFE wakeup
-event when the command queue transitions fom full to non-full. We can
-easily work around this by simply hiding the SEV capability such that we
-fall back to polling for space in the queue - since MMU-600 implements
-MSIs we wouldn't expect to need SEV for sync completion either, so this
-should have little to no impact.
+At split_node(), if we fail to log the tree mod log copy operation, we
+return without unlocking the split extent buffer we just allocated and
+without decrementing the reference we own on it. Fix this by unlocking
+it and decrementing the ref count before returning.
 
-Signed-off-by: Robin Murphy <robin.murphy@arm.com>
-Reviewed-by: Nicolin Chen <nicolinc@nvidia.com>
-Tested-by: Nicolin Chen <nicolinc@nvidia.com>
-Link: https://lore.kernel.org/r/08adbe3d01024d8382a478325f73b56851f76e49.1683731256.git.robin.murphy@arm.com
-Signed-off-by: Will Deacon <will@kernel.org>
-Signed-off-by: Easwar Hariharan <eahariha@linux.microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 5de865eebb83 ("Btrfs: fix tree mod logging")
+CC: stable@vger.kernel.org # 5.4+
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/arm64/silicon-errata.rst      |    2 +
- drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c |   29 ++++++++++++++++++++++++++++
- drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.h |    6 +++++
- 3 files changed, 37 insertions(+)
+ fs/btrfs/ctree.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/Documentation/arm64/silicon-errata.rst
-+++ b/Documentation/arm64/silicon-errata.rst
-@@ -122,6 +122,8 @@ stable kernels.
- +----------------+-----------------+-----------------+-----------------------------+
- | ARM            | MMU-500         | #841119,826419  | N/A                         |
- +----------------+-----------------+-----------------+-----------------------------+
-+| ARM            | MMU-600         | #1076982        | N/A                         |
-++----------------+-----------------+-----------------+-----------------------------+
- +----------------+-----------------+-----------------+-----------------------------+
- | Broadcom       | Brahma-B53      | N/A             | ARM64_ERRATUM_845719        |
- +----------------+-----------------+-----------------+-----------------------------+
---- a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
-+++ b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
-@@ -3459,6 +3459,33 @@ static int arm_smmu_device_reset(struct
- 	return 0;
- }
+diff --git a/fs/btrfs/ctree.c b/fs/btrfs/ctree.c
+index 1420df997485a..608e41b61689c 100644
+--- a/fs/btrfs/ctree.c
++++ b/fs/btrfs/ctree.c
+@@ -3589,6 +3589,8 @@ static noinline int split_node(struct btrfs_trans_handle *trans,
  
-+#define IIDR_IMPLEMENTER_ARM		0x43b
-+#define IIDR_PRODUCTID_ARM_MMU_600	0x483
-+
-+static void arm_smmu_device_iidr_probe(struct arm_smmu_device *smmu)
-+{
-+	u32 reg;
-+	unsigned int implementer, productid, variant, revision;
-+
-+	reg = readl_relaxed(smmu->base + ARM_SMMU_IIDR);
-+	implementer = FIELD_GET(IIDR_IMPLEMENTER, reg);
-+	productid = FIELD_GET(IIDR_PRODUCTID, reg);
-+	variant = FIELD_GET(IIDR_VARIANT, reg);
-+	revision = FIELD_GET(IIDR_REVISION, reg);
-+
-+	switch (implementer) {
-+	case IIDR_IMPLEMENTER_ARM:
-+		switch (productid) {
-+		case IIDR_PRODUCTID_ARM_MMU_600:
-+			/* Arm erratum 1076982 */
-+			if (variant == 0 && revision <= 2)
-+				smmu->features &= ~ARM_SMMU_FEAT_SEV;
-+			break;
-+		}
-+		break;
-+	}
-+}
-+
- static int arm_smmu_device_hw_probe(struct arm_smmu_device *smmu)
- {
- 	u32 reg;
-@@ -3664,6 +3691,8 @@ static int arm_smmu_device_hw_probe(stru
- 
- 	smmu->ias = max(smmu->ias, smmu->oas);
- 
-+	arm_smmu_device_iidr_probe(smmu);
-+
- 	if (arm_smmu_sva_supported(smmu))
- 		smmu->features |= ARM_SMMU_FEAT_SVA;
- 
---- a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.h
-+++ b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.h
-@@ -69,6 +69,12 @@
- #define IDR5_VAX			GENMASK(11, 10)
- #define IDR5_VAX_52_BIT			1
- 
-+#define ARM_SMMU_IIDR			0x18
-+#define IIDR_PRODUCTID			GENMASK(31, 20)
-+#define IIDR_VARIANT			GENMASK(19, 16)
-+#define IIDR_REVISION			GENMASK(15, 12)
-+#define IIDR_IMPLEMENTER		GENMASK(11, 0)
-+
- #define ARM_SMMU_CR0			0x20
- #define CR0_ATSCHK			(1 << 4)
- #define CR0_CMDQEN			(1 << 3)
+ 	ret = tree_mod_log_eb_copy(split, c, 0, mid, c_nritems - mid);
+ 	if (ret) {
++		btrfs_tree_unlock(split);
++		free_extent_buffer(split);
+ 		btrfs_abort_transaction(trans, ret);
+ 		return ret;
+ 	}
+-- 
+2.39.2
+
 
 
