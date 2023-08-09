@@ -2,115 +2,123 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 834D2775BF4
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:22:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 604407758EA
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:56:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233622AbjHILWa (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:22:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46812 "EHLO
+        id S232809AbjHIK4A (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 06:56:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55360 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233614AbjHILW1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:22:27 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7CCBB2683
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:22:22 -0700 (PDT)
+        with ESMTP id S232647AbjHIKzt (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:55:49 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 950B12137
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:55:36 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5CEE1631F8
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:22:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CCCBC433C8;
-        Wed,  9 Aug 2023 11:22:21 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 303FF63118
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:55:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39B89C433C8;
+        Wed,  9 Aug 2023 10:55:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691580141;
-        bh=1f2CzCxWgO+NAKN7Mnq3dm77xwPTZyMhjxr9cmXjI2o=;
+        s=korg; t=1691578535;
+        bh=2aWB3gU7X6NtYXfDX9pde5ZUi6gsgHqxac/KJqsdpp0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=lf2xTFD7y53QFMZYvnlYdpnIHPPE4YPH0X9yRmgVXM/vRNSxzpVrB4Tu0vyZFbfzR
-         X0A7vzKK+D8AKCaGJZ/VRsA9ECNcfMUhkCIFVeUntAbCJzR3cj716AnptXSXBFcIgu
-         /Mtsky8AhB5HOd5MxDmu+H4gcvByDfAgzTrM0Uq0=
+        b=PPAZDtfyJVsQKfpL6OWANG8TUulwjPAn0lUmyVOGp5m1+uwjolBasIFABLfBFbnhu
+         Vkgj/RTO5CenDAuRih2TzadVLEAa8oBNUmpuuuvOSHNQWYYyruNdBCMwf94c6huxpi
+         ogsOwMvTIf3zN83kfXMBIkGjBRrVNG6MDm6dVOP4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Liang Li <liali@redhat.com>,
-        Hangbin Liu <liuhangbin@gmail.com>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 243/323] bonding: reset bonds flags when down link is P2P device
+        patches@lists.linux.dev,
+        Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>,
+        Guchun Chen <guchun.chen@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>
+Subject: [PATCH 6.1 094/127] drm/ttm: check null pointer before accessing when swapping
 Date:   Wed,  9 Aug 2023 12:41:21 +0200
-Message-ID: <20230809103709.192568159@linuxfoundation.org>
+Message-ID: <20230809103639.745729882@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
-References: <20230809103658.104386911@linuxfoundation.org>
+In-Reply-To: <20230809103636.615294317@linuxfoundation.org>
+References: <20230809103636.615294317@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Hangbin Liu <liuhangbin@gmail.com>
+From: Guchun Chen <guchun.chen@amd.com>
 
-[ Upstream commit da19a2b967cf1e2c426f50d28550d1915214a81d ]
+commit 2dedcf414bb01b8d966eb445db1d181d92304fb2 upstream.
 
-When adding a point to point downlink to the bond, we neglected to reset
-the bond's flags, which were still using flags like BROADCAST and
-MULTICAST. Consequently, this would initiate ARP/DAD for P2P downlink
-interfaces, such as when adding a GRE device to the bonding.
+Add a check to avoid null pointer dereference as below:
 
-To address this issue, let's reset the bond's flags for P2P interfaces.
+[   90.002283] general protection fault, probably for non-canonical
+address 0xdffffc0000000000: 0000 [#1] PREEMPT SMP KASAN NOPTI
+[   90.002292] KASAN: null-ptr-deref in range
+[0x0000000000000000-0x0000000000000007]
+[   90.002346]  ? exc_general_protection+0x159/0x240
+[   90.002352]  ? asm_exc_general_protection+0x26/0x30
+[   90.002357]  ? ttm_bo_evict_swapout_allowable+0x322/0x5e0 [ttm]
+[   90.002365]  ? ttm_bo_evict_swapout_allowable+0x42e/0x5e0 [ttm]
+[   90.002373]  ttm_bo_swapout+0x134/0x7f0 [ttm]
+[   90.002383]  ? __pfx_ttm_bo_swapout+0x10/0x10 [ttm]
+[   90.002391]  ? lock_acquire+0x44d/0x4f0
+[   90.002398]  ? ttm_device_swapout+0xa5/0x260 [ttm]
+[   90.002412]  ? lock_acquired+0x355/0xa00
+[   90.002416]  ? do_raw_spin_trylock+0xb6/0x190
+[   90.002421]  ? __pfx_lock_acquired+0x10/0x10
+[   90.002426]  ? ttm_global_swapout+0x25/0x210 [ttm]
+[   90.002442]  ttm_device_swapout+0x198/0x260 [ttm]
+[   90.002456]  ? __pfx_ttm_device_swapout+0x10/0x10 [ttm]
+[   90.002472]  ttm_global_swapout+0x75/0x210 [ttm]
+[   90.002486]  ttm_tt_populate+0x187/0x3f0 [ttm]
+[   90.002501]  ttm_bo_handle_move_mem+0x437/0x590 [ttm]
+[   90.002517]  ttm_bo_validate+0x275/0x430 [ttm]
+[   90.002530]  ? __pfx_ttm_bo_validate+0x10/0x10 [ttm]
+[   90.002544]  ? kasan_save_stack+0x33/0x60
+[   90.002550]  ? kasan_set_track+0x25/0x30
+[   90.002554]  ? __kasan_kmalloc+0x8f/0xa0
+[   90.002558]  ? amdgpu_gtt_mgr_new+0x81/0x420 [amdgpu]
+[   90.003023]  ? ttm_resource_alloc+0xf6/0x220 [ttm]
+[   90.003038]  amdgpu_bo_pin_restricted+0x2dd/0x8b0 [amdgpu]
+[   90.003210]  ? __x64_sys_ioctl+0x131/0x1a0
+[   90.003210]  ? do_syscall_64+0x60/0x90
 
-Before fix:
-7: gre0@NONE: <POINTOPOINT,NOARP,SLAVE,UP,LOWER_UP> mtu 1500 qdisc noqueue master bond0 state UNKNOWN group default qlen 1000
-    link/gre6 2006:70:10::1 peer 2006:70:10::2 permaddr 167f:18:f188::
-8: bond0: <BROADCAST,MULTICAST,MASTER,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default qlen 1000
-    link/gre6 2006:70:10::1 brd 2006:70:10::2
-    inet6 fe80::200:ff:fe00:0/64 scope link
-       valid_lft forever preferred_lft forever
-
-After fix:
-7: gre0@NONE: <POINTOPOINT,NOARP,SLAVE,UP,LOWER_UP> mtu 1500 qdisc noqueue master bond2 state UNKNOWN group default qlen 1000
-    link/gre6 2006:70:10::1 peer 2006:70:10::2 permaddr c29e:557a:e9d9::
-8: bond0: <POINTOPOINT,NOARP,MASTER,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default qlen 1000
-    link/gre6 2006:70:10::1 peer 2006:70:10::2
-    inet6 fe80::1/64 scope link
-       valid_lft forever preferred_lft forever
-
-Reported-by: Liang Li <liali@redhat.com>
-Closes: https://bugzilla.redhat.com/show_bug.cgi?id=2221438
-Fixes: 872254dd6b1f ("net/bonding: Enable bonding to enslave non ARPHRD_ETHER")
-Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: a2848d08742c ("drm/ttm: never consider pinned BOs for eviction&swap")
+Tested-by: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
+Signed-off-by: Guchun Chen <guchun.chen@amd.com>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Cc: stable@vger.kernel.org
+Link: https://patchwork.freedesktop.org/patch/msgid/20230724024229.1118444-1-guchun.chen@amd.com
+Signed-off-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/bonding/bond_main.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/gpu/drm/ttm/ttm_bo.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
-index 4e4adacb5c2c1..47e02c5342b28 100644
---- a/drivers/net/bonding/bond_main.c
-+++ b/drivers/net/bonding/bond_main.c
-@@ -1128,6 +1128,11 @@ static void bond_setup_by_slave(struct net_device *bond_dev,
+--- a/drivers/gpu/drm/ttm/ttm_bo.c
++++ b/drivers/gpu/drm/ttm/ttm_bo.c
+@@ -552,7 +552,8 @@ static bool ttm_bo_evict_swapout_allowab
  
- 	memcpy(bond_dev->broadcast, slave_dev->broadcast,
- 		slave_dev->addr_len);
-+
-+	if (slave_dev->flags & IFF_POINTOPOINT) {
-+		bond_dev->flags &= ~(IFF_BROADCAST | IFF_MULTICAST);
-+		bond_dev->flags |= (IFF_POINTOPOINT | IFF_NOARP);
-+	}
- }
+ 	if (bo->pin_count) {
+ 		*locked = false;
+-		*busy = false;
++		if (busy)
++			*busy = false;
+ 		return false;
+ 	}
  
- /* On bonding slaves other than the currently active slave, suppress
--- 
-2.39.2
-
 
 
