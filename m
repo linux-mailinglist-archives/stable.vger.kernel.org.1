@@ -2,113 +2,162 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F0295775B93
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:18:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D5DE47758A4
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:54:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233480AbjHILSs (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:18:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42010 "EHLO
+        id S232607AbjHIKyq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 06:54:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53022 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233482AbjHILSr (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:18:47 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5FA42ED
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:18:47 -0700 (PDT)
+        with ESMTP id S232627AbjHIKye (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:54:34 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE00C4EE4
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:52:47 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id EA27B6319E
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:18:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04B1EC433C8;
-        Wed,  9 Aug 2023 11:18:45 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 55CCB63122
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:51:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AF40C433C8;
+        Wed,  9 Aug 2023 10:51:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691579926;
-        bh=tXN2i4iaFDpDRoWkt5TKaGFKaH4DQHSeWpZsFdu8oRE=;
+        s=korg; t=1691578315;
+        bh=i+Wyuf2ihGUIbQ+jf9qHIatb0ECYuRajE/rWuuGKUxM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Qio5Yz8ljprIMiwuVWGt+JtngsZxsbgqAPUxaTPI5woOANTn22yqrVv8bZ1K0V6Kn
-         MmY+QFRwV5uH4SDMvK9mtnlVgYDTLA6EDWk1aEKIo+QiL9Xf6PKZ7w+LhMkL0L2b3Y
-         C/rmCgZilhd1So1cssFFVpia11H+ZmgONl6UvesQ=
+        b=cc4lvjDOtE7FuaQWQqhn4BIVSCpiWXk3VjhtFKe6jNm3g0KWYath6LAlvtkGdLSIb
+         Z9RtBaMfFHNs0t99K6CjONzTMfP/bptmL4owXH+SuSPm0JJp/Ea5EqK/XP8Ns3RlgX
+         aP+g2W1trnHQDMKNPHYDa7V/PbEu2yA6peTTIERo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Damien Le Moal <dlemoal@kernel.org>,
-        Rick Wertenbroek <rick.wertenbroek@gmail.com>,
-        Lorenzo Pieralisi <lpieralisi@kernel.org>
-Subject: [PATCH 4.19 164/323] PCI: rockchip: Write PCI Device ID to correct register
-Date:   Wed,  9 Aug 2023 12:40:02 +0200
-Message-ID: <20230809103705.657012610@linuxfoundation.org>
+        patches@lists.linux.dev, kernel test robot <lkp@intel.com>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Yury Norov <yury.norov@gmail.com>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Alexander Lobakin <aleksander.lobakin@intel.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 016/127] lib/bitmap: workaround const_eval test build failure
+Date:   Wed,  9 Aug 2023 12:40:03 +0200
+Message-ID: <20230809103637.180809899@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
-References: <20230809103658.104386911@linuxfoundation.org>
+In-Reply-To: <20230809103636.615294317@linuxfoundation.org>
+References: <20230809103636.615294317@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Rick Wertenbroek <rick.wertenbroek@gmail.com>
+From: Yury Norov <yury.norov@gmail.com>
 
-commit 1f1c42ece18de365c976a060f3c8eb481b038e3a upstream.
+[ Upstream commit 2356d198d2b4ddec24efea98271cb3be230bc787 ]
 
-Write PCI Device ID (DID) to the correct register. The Device ID was not
-updated through the correct register. Device ID was written to a read-only
-register and therefore did not work. The Device ID is now set through the
-correct register. This is documented in the RK3399 TRM section 17.6.6.1.1
+When building with Clang, and when KASAN and GCOV_PROFILE_ALL are both
+enabled, the test fails to build [1]:
 
-Link: https://lore.kernel.org/r/20230418074700.1083505-3-rick.wertenbroek@gmail.com
-Fixes: cf590b078391 ("PCI: rockchip: Add EP driver for Rockchip PCIe controller")
-Tested-by: Damien Le Moal <dlemoal@kernel.org>
-Signed-off-by: Rick Wertenbroek <rick.wertenbroek@gmail.com>
-Signed-off-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+>> lib/test_bitmap.c:920:2: error: call to '__compiletime_assert_239' declared with 'error' attribute: BUILD_BUG_ON failed: !__builtin_constant_p(res)
+           BUILD_BUG_ON(!__builtin_constant_p(res));
+           ^
+   include/linux/build_bug.h:50:2: note: expanded from macro 'BUILD_BUG_ON'
+           BUILD_BUG_ON_MSG(condition, "BUILD_BUG_ON failed: " #condition)
+           ^
+   include/linux/build_bug.h:39:37: note: expanded from macro 'BUILD_BUG_ON_MSG'
+   #define BUILD_BUG_ON_MSG(cond, msg) compiletime_assert(!(cond), msg)
+                                       ^
+   include/linux/compiler_types.h:352:2: note: expanded from macro 'compiletime_assert'
+           _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
+           ^
+   include/linux/compiler_types.h:340:2: note: expanded from macro '_compiletime_assert'
+           __compiletime_assert(condition, msg, prefix, suffix)
+           ^
+   include/linux/compiler_types.h:333:4: note: expanded from macro '__compiletime_assert'
+                           prefix ## suffix();                             \
+                           ^
+   <scratch space>:185:1: note: expanded from here
+   __compiletime_assert_239
+
+Originally it was attributed to s390, which now looks seemingly wrong. The
+issue is not related to bitmap code itself, but it breaks build for a given
+configuration.
+
+Disabling the const_eval test under that config may potentially hide other
+bugs. Instead, workaround it by disabling GCOV for the test_bitmap unless
+the compiler will get fixed.
+
+[1] https://github.com/ClangBuiltLinux/linux/issues/1874
+
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202307171254.yFcH97ej-lkp@intel.com/
+Fixes: dc34d5036692 ("lib: test_bitmap: add compile-time optimization/evaluations assertions")
+Co-developed-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Yury Norov <yury.norov@gmail.com>
+Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
+Reviewed-by: Alexander Lobakin <aleksander.lobakin@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/pcie-rockchip-ep.c |    6 ++++--
- drivers/pci/controller/pcie-rockchip.h    |    2 ++
- 2 files changed, 6 insertions(+), 2 deletions(-)
+ lib/Makefile      | 6 ++++++
+ lib/test_bitmap.c | 8 ++++----
+ 2 files changed, 10 insertions(+), 4 deletions(-)
 
---- a/drivers/pci/controller/pcie-rockchip-ep.c
-+++ b/drivers/pci/controller/pcie-rockchip-ep.c
-@@ -124,6 +124,7 @@ static void rockchip_pcie_prog_ep_ob_atu
- static int rockchip_pcie_ep_write_header(struct pci_epc *epc, u8 fn,
- 					 struct pci_epf_header *hdr)
- {
-+	u32 reg;
- 	struct rockchip_pcie_ep *ep = epc_get_drvdata(epc);
- 	struct rockchip_pcie *rockchip = &ep->rockchip;
- 
-@@ -136,8 +137,9 @@ static int rockchip_pcie_ep_write_header
- 				    PCIE_CORE_CONFIG_VENDOR);
+diff --git a/lib/Makefile b/lib/Makefile
+index 59bd7c2f793a7..5ffe72ec99797 100644
+--- a/lib/Makefile
++++ b/lib/Makefile
+@@ -81,8 +81,14 @@ obj-$(CONFIG_TEST_STATIC_KEYS) += test_static_key_base.o
+ obj-$(CONFIG_TEST_DYNAMIC_DEBUG) += test_dynamic_debug.o
+ obj-$(CONFIG_TEST_PRINTF) += test_printf.o
+ obj-$(CONFIG_TEST_SCANF) += test_scanf.o
++
+ obj-$(CONFIG_TEST_BITMAP) += test_bitmap.o
+ obj-$(CONFIG_TEST_STRSCPY) += test_strscpy.o
++ifeq ($(CONFIG_CC_IS_CLANG)$(CONFIG_KASAN),yy)
++# FIXME: Clang breaks test_bitmap_const_eval when KASAN and GCOV are enabled
++GCOV_PROFILE_test_bitmap.o := n
++endif
++
+ obj-$(CONFIG_TEST_UUID) += test_uuid.o
+ obj-$(CONFIG_TEST_XARRAY) += test_xarray.o
+ obj-$(CONFIG_TEST_MAPLE_TREE) += test_maple_tree.o
+diff --git a/lib/test_bitmap.c b/lib/test_bitmap.c
+index a8005ad3bd589..37a9108c4f588 100644
+--- a/lib/test_bitmap.c
++++ b/lib/test_bitmap.c
+@@ -1149,6 +1149,10 @@ static void __init test_bitmap_print_buf(void)
  	}
+ }
  
--	rockchip_pcie_write(rockchip, hdr->deviceid << 16,
--			    ROCKCHIP_PCIE_EP_FUNC_BASE(fn) + PCI_VENDOR_ID);
-+	reg = rockchip_pcie_read(rockchip, PCIE_EP_CONFIG_DID_VID);
-+	reg = (reg & 0xFFFF) | (hdr->deviceid << 16);
-+	rockchip_pcie_write(rockchip, reg, PCIE_EP_CONFIG_DID_VID);
++/*
++ * FIXME: Clang breaks compile-time evaluations when KASAN and GCOV are enabled.
++ * To workaround it, GCOV is force-disabled in Makefile for this configuration.
++ */
+ static void __init test_bitmap_const_eval(void)
+ {
+ 	DECLARE_BITMAP(bitmap, BITS_PER_LONG);
+@@ -1174,11 +1178,7 @@ static void __init test_bitmap_const_eval(void)
+ 	 * the compiler is fixed.
+ 	 */
+ 	bitmap_clear(bitmap, 0, BITS_PER_LONG);
+-#if defined(__s390__) && defined(__clang__)
+-	if (!const_test_bit(7, bitmap))
+-#else
+ 	if (!test_bit(7, bitmap))
+-#endif
+ 		bitmap_set(bitmap, 5, 2);
  
- 	rockchip_pcie_write(rockchip,
- 			    hdr->revid |
---- a/drivers/pci/controller/pcie-rockchip.h
-+++ b/drivers/pci/controller/pcie-rockchip.h
-@@ -132,6 +132,8 @@
- #define PCIE_RC_RP_ATS_BASE		0x400000
- #define PCIE_RC_CONFIG_NORMAL_BASE	0x800000
- #define PCIE_RC_CONFIG_BASE		0xa00000
-+#define PCIE_EP_CONFIG_BASE		0xa00000
-+#define PCIE_EP_CONFIG_DID_VID		(PCIE_EP_CONFIG_BASE + 0x00)
- #define PCIE_RC_CONFIG_RID_CCR		(PCIE_RC_CONFIG_BASE + 0x08)
- #define   PCIE_RC_CONFIG_SCC_SHIFT		16
- #define PCIE_RC_CONFIG_DCR		(PCIE_RC_CONFIG_BASE + 0xc4)
+ 	/* Equals to `unsigned long bitopvar = BIT(20)` */
+-- 
+2.40.1
+
 
 
