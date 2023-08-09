@@ -2,145 +2,147 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 65202775BAF
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:19:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 58E90775D4E
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:36:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233505AbjHILTz (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:19:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37518 "EHLO
+        id S234070AbjHILf7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:35:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49222 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233506AbjHILTz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:19:55 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A1AB1FA
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:19:54 -0700 (PDT)
+        with ESMTP id S234068AbjHILf7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:35:59 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71EE0E3
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:35:58 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 36FFE631CC
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:19:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4530DC433C8;
-        Wed,  9 Aug 2023 11:19:53 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1009C63507
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:35:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2021BC433C8;
+        Wed,  9 Aug 2023 11:35:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691579993;
-        bh=eypUSl1/c7hqNgZBXc/EePBe/xpjL2lNZgQwK/f+5l0=;
+        s=korg; t=1691580957;
+        bh=8XYO5Fs3XGCJan3ht12nOXKFKl4/FYRTCY3Bo75DSgI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=YMfPUBlRYzlDY+I7r6iAp+EVdDFyIVYkoUG3iPlTuewXJNDkBXS6xEB79HqIpjVN5
-         dMsdmP5kLr+Z6ATdFb0ma4eWg59SbkfTOpGccIClMoKUWaYsqnfTgT0UWOlGD+Rf4d
-         zF8sRboiD4ZOcQEKDRSZiWWn42uXySUSKIuSWB3U=
+        b=Wxb0KKlPJ+upH7CMYOA+qwbhl2OvF0J0Qwe6OHYEF8nNz0F0QWn2/yHd7dIi9Nrfb
+         C9kFh9BhlUyJI3OgwMTqcMQWGhEflUjgz343+aiLhIjB2AoE8oBjEY7PfmMAIpAkGu
+         F+1Jp5NwNVC9SUHu8vfsua6S1znRBoYe59K5lKro=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, YueHaibing <yuehaibing@huawei.com>,
-        Oliver Hartkopp <socketcan@hartkopp.net>,
-        Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH 4.19 189/323] can: bcm: Fix UAF in bcm_proc_show()
+        patches@lists.linux.dev, Adrien Thierry <athierry@redhat.com>,
+        Vinod Koul <vkoul@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 025/201] phy: qcom-snps-femto-v2: keep cfg_ahb_clk enabled during runtime suspend
 Date:   Wed,  9 Aug 2023 12:40:27 +0200
-Message-ID: <20230809103706.822869600@linuxfoundation.org>
+Message-ID: <20230809103644.665617590@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
-References: <20230809103658.104386911@linuxfoundation.org>
+In-Reply-To: <20230809103643.799166053@linuxfoundation.org>
+References: <20230809103643.799166053@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: YueHaibing <yuehaibing@huawei.com>
+From: Adrien Thierry <athierry@redhat.com>
 
-commit 55c3b96074f3f9b0aee19bf93cd71af7516582bb upstream.
+[ Upstream commit 45d89a344eb46db9dce851c28e14f5e3c635c251 ]
 
-BUG: KASAN: slab-use-after-free in bcm_proc_show+0x969/0xa80
-Read of size 8 at addr ffff888155846230 by task cat/7862
+In the dwc3 core, both system and runtime suspend end up calling
+dwc3_suspend_common(). From there, what happens for the PHYs depends on
+the USB mode and whether the controller is entering system or runtime
+suspend.
 
-CPU: 1 PID: 7862 Comm: cat Not tainted 6.5.0-rc1-00153-gc8746099c197 #230
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
-Call Trace:
- <TASK>
- dump_stack_lvl+0xd5/0x150
- print_report+0xc1/0x5e0
- kasan_report+0xba/0xf0
- bcm_proc_show+0x969/0xa80
- seq_read_iter+0x4f6/0x1260
- seq_read+0x165/0x210
- proc_reg_read+0x227/0x300
- vfs_read+0x1d5/0x8d0
- ksys_read+0x11e/0x240
- do_syscall_64+0x35/0xb0
- entry_SYSCALL_64_after_hwframe+0x63/0xcd
+HOST mode:
+  (1) system suspend on a non-wakeup-capable controller
 
-Allocated by task 7846:
- kasan_save_stack+0x1e/0x40
- kasan_set_track+0x21/0x30
- __kasan_kmalloc+0x9e/0xa0
- bcm_sendmsg+0x264b/0x44e0
- sock_sendmsg+0xda/0x180
- ____sys_sendmsg+0x735/0x920
- ___sys_sendmsg+0x11d/0x1b0
- __sys_sendmsg+0xfa/0x1d0
- do_syscall_64+0x35/0xb0
- entry_SYSCALL_64_after_hwframe+0x63/0xcd
+  The [1] if branch is taken. dwc3_core_exit() is called, which ends up
+  calling phy_power_off() and phy_exit(). Those two functions decrease the
+  PM runtime count at some point, so they will trigger the PHY runtime
+  sleep (assuming the count is right).
 
-Freed by task 7846:
- kasan_save_stack+0x1e/0x40
- kasan_set_track+0x21/0x30
- kasan_save_free_info+0x27/0x40
- ____kasan_slab_free+0x161/0x1c0
- slab_free_freelist_hook+0x119/0x220
- __kmem_cache_free+0xb4/0x2e0
- rcu_core+0x809/0x1bd0
+  (2) runtime suspend / system suspend on a wakeup-capable controller
 
-bcm_op is freed before procfs entry be removed in bcm_release(),
-this lead to bcm_proc_show() may read the freed bcm_op.
+  The [1] branch is not taken. dwc3_suspend_common() calls
+  phy_pm_runtime_put_sync(). Assuming the ref count is right, the PHY
+  runtime suspend op is called.
 
-Fixes: ffd980f976e7 ("[CAN]: Add broadcast manager (bcm) protocol")
-Signed-off-by: YueHaibing <yuehaibing@huawei.com>
-Reviewed-by: Oliver Hartkopp <socketcan@hartkopp.net>
-Acked-by: Oliver Hartkopp <socketcan@hartkopp.net>
-Link: https://lore.kernel.org/all/20230715092543.15548-1-yuehaibing@huawei.com
-Cc: stable@vger.kernel.org
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+DEVICE mode:
+  dwc3_core_exit() is called on both runtime and system sleep
+  unless the controller is already runtime suspended.
+
+OTG mode:
+  (1) system suspend : dwc3_core_exit() is called
+
+  (2) runtime suspend : do nothing
+
+In host mode, the code seems to make a distinction between 1) runtime
+sleep / system sleep for wakeup-capable controller, and 2) system sleep
+for non-wakeup-capable controller, where phy_power_off() and phy_exit()
+are only called for the latter. This suggests the PHY is not supposed to
+be in a fully powered-off state for runtime sleep and system sleep for
+wakeup-capable controller.
+
+Moreover, downstream, cfg_ahb_clk only gets disabled for system suspend.
+The clocks are disabled by phy->set_suspend() [2] which is only called
+in the system sleep path through dwc3_core_exit() [3].
+
+With that in mind, don't disable the clocks during the femto PHY runtime
+suspend callback. The clocks will only be disabled during system suspend
+for non-wakeup-capable controllers, through dwc3_core_exit().
+
+[1] https://elixir.bootlin.com/linux/v6.4/source/drivers/usb/dwc3/core.c#L1988
+[2] https://git.codelinaro.org/clo/la/kernel/msm-5.4/-/blob/LV.AU.1.2.1.r2-05300-gen3meta.0/drivers/usb/phy/phy-msm-snps-hs.c#L524
+[3] https://git.codelinaro.org/clo/la/kernel/msm-5.4/-/blob/LV.AU.1.2.1.r2-05300-gen3meta.0/drivers/usb/dwc3/core.c#L1915
+
+Signed-off-by: Adrien Thierry <athierry@redhat.com>
+Link: https://lore.kernel.org/r/20230629144542.14906-2-athierry@redhat.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Stable-dep-of: 8a0eb8f9b9a0 ("phy: qcom-snps-femto-v2: properly enable ref clock")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/can/bcm.c |   12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/phy/qualcomm/phy-qcom-snps-femto-v2.c | 9 ---------
+ 1 file changed, 9 deletions(-)
 
---- a/net/can/bcm.c
-+++ b/net/can/bcm.c
-@@ -1520,6 +1520,12 @@ static int bcm_release(struct socket *so
+diff --git a/drivers/phy/qualcomm/phy-qcom-snps-femto-v2.c b/drivers/phy/qualcomm/phy-qcom-snps-femto-v2.c
+index 136b45903c798..dfe5f09449100 100644
+--- a/drivers/phy/qualcomm/phy-qcom-snps-femto-v2.c
++++ b/drivers/phy/qualcomm/phy-qcom-snps-femto-v2.c
+@@ -122,22 +122,13 @@ static int qcom_snps_hsphy_suspend(struct qcom_snps_hsphy *hsphy)
+ 					   0, USB2_AUTO_RESUME);
+ 	}
  
- 	lock_sock(sk);
+-	clk_disable_unprepare(hsphy->cfg_ahb_clk);
+ 	return 0;
+ }
  
-+#if IS_ENABLED(CONFIG_PROC_FS)
-+	/* remove procfs entry */
-+	if (net->can.bcmproc_dir && bo->bcm_proc_read)
-+		remove_proc_entry(bo->procname, net->can.bcmproc_dir);
-+#endif /* CONFIG_PROC_FS */
-+
- 	list_for_each_entry_safe(op, next, &bo->tx_ops, list)
- 		bcm_remove_op(op);
- 
-@@ -1555,12 +1561,6 @@ static int bcm_release(struct socket *so
- 	list_for_each_entry_safe(op, next, &bo->rx_ops, list)
- 		bcm_remove_op(op);
- 
--#if IS_ENABLED(CONFIG_PROC_FS)
--	/* remove procfs entry */
--	if (net->can.bcmproc_dir && bo->bcm_proc_read)
--		remove_proc_entry(bo->procname, net->can.bcmproc_dir);
--#endif /* CONFIG_PROC_FS */
+ static int qcom_snps_hsphy_resume(struct qcom_snps_hsphy *hsphy)
+ {
+-	int ret;
 -
- 	/* remove device reference */
- 	if (bo->bound) {
- 		bo->bound   = 0;
+ 	dev_dbg(&hsphy->phy->dev, "Resume QCOM SNPS PHY, mode\n");
+ 
+-	ret = clk_prepare_enable(hsphy->cfg_ahb_clk);
+-	if (ret) {
+-		dev_err(&hsphy->phy->dev, "failed to enable cfg ahb clock\n");
+-		return ret;
+-	}
+-
+ 	return 0;
+ }
+ 
+-- 
+2.39.2
+
 
 
