@@ -2,131 +2,107 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B9898775AB7
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:11:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 130E7775CD7
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:31:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233272AbjHILK6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:10:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56178 "EHLO
+        id S233879AbjHILbS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:31:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40090 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233269AbjHILK5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:10:57 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E865172A
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:10:57 -0700 (PDT)
+        with ESMTP id S233873AbjHILbR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:31:17 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E41E910DC
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:31:16 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A755462415
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:10:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6531C433C8;
-        Wed,  9 Aug 2023 11:10:55 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 82E72633A0
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:31:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F936C433CA;
+        Wed,  9 Aug 2023 11:31:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691579456;
-        bh=tDRfuayXCET3oGj5nmHXPih/VgT/NxLGFh8CnbOXiR0=;
+        s=korg; t=1691580675;
+        bh=C26m9QNtAk5c1ikrIGckr4mcgTLN0m3srO6IIB2+MX4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=o8vMcddeI8Szh5DkWn+J6oNfkkIcN+bOG6AMdwOEe1YWHw9xrIgLd9dxC3uWGGw3C
-         WlS/WKQ15LcMEvpfVV6ca4WZb6VAJGAgnVwoq03LobgKCRYLcPKCrF8zYwAQAFXnOF
-         agfaEJtJqUecdXT/LdzL08cl0XwurBCa3mlN6eM4=
+        b=mkcPsYMxXGvRurIiaMDbpiBHuug13EByKXxdxj21tkcqXPe1SmgqCZ5yzbuV45hjq
+         mJvSBeDSaFaggNAdJwgzlKZ1EOe6M3oHLC3iPYHou02Tjn+fAK76bUsw5TUpULtwXR
+         X5P7IDEbAoJDZbEr1gvxeOH3hB1F7V3uq8tBdDr8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Alan Stern <stern@rowland.harvard.edu>,
-        Oliver Neukum <oneukum@suse.com>,
+        patches@lists.linux.dev, valis <sec@valis.email>,
+        Bing-Jhong Billy Jheng <billy@starlabs.sg>,
+        Jamal Hadi Salim <jhs@mojatatu.com>,
+        Victor Nogueira <victor@mojatatu.com>,
+        Pedro Tammela <pctammela@mojatatu.com>,
+        M A Ramdhan <ramdhan@starlabs.sg>,
         Jakub Kicinski <kuba@kernel.org>,
-        syzbot+63ee658b9a100ffadbe2@syzkaller.appspotmail.com
-Subject: [PATCH 4.14 201/204] net: usbnet: Fix WARNING in usbnet_start_xmit/usb_submit_urb
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 108/154] net/sched: cls_fw: No longer copy tcf_result on update to avoid use-after-free
 Date:   Wed,  9 Aug 2023 12:42:19 +0200
-Message-ID: <20230809103649.234537954@linuxfoundation.org>
+Message-ID: <20230809103640.526968022@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103642.552405807@linuxfoundation.org>
-References: <20230809103642.552405807@linuxfoundation.org>
+In-Reply-To: <20230809103636.887175326@linuxfoundation.org>
+References: <20230809103636.887175326@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Alan Stern <stern@rowland.harvard.edu>
+From: valis <sec@valis.email>
 
-commit 5e1627cb43ddf1b24b92eb26f8d958a3f5676ccb upstream.
+[ Upstream commit 76e42ae831991c828cffa8c37736ebfb831ad5ec ]
 
-The syzbot fuzzer identified a problem in the usbnet driver:
+When fw_change() is called on an existing filter, the whole
+tcf_result struct is always copied into the new instance of the filter.
 
-usb 1-1: BOGUS urb xfer, pipe 3 != type 1
-WARNING: CPU: 0 PID: 754 at drivers/usb/core/urb.c:504 usb_submit_urb+0xed6/0x1880 drivers/usb/core/urb.c:504
-Modules linked in:
-CPU: 0 PID: 754 Comm: kworker/0:2 Not tainted 6.4.0-rc7-syzkaller-00014-g692b7dc87ca6 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 05/27/2023
-Workqueue: mld mld_ifc_work
-RIP: 0010:usb_submit_urb+0xed6/0x1880 drivers/usb/core/urb.c:504
-Code: 7c 24 18 e8 2c b4 5b fb 48 8b 7c 24 18 e8 42 07 f0 fe 41 89 d8 44 89 e1 4c 89 ea 48 89 c6 48 c7 c7 a0 c9 fc 8a e8 5a 6f 23 fb <0f> 0b e9 58 f8 ff ff e8 fe b3 5b fb 48 81 c5 c0 05 00 00 e9 84 f7
-RSP: 0018:ffffc9000463f568 EFLAGS: 00010086
-RAX: 0000000000000000 RBX: 0000000000000001 RCX: 0000000000000000
-RDX: ffff88801eb28000 RSI: ffffffff814c03b7 RDI: 0000000000000001
-RBP: ffff8881443b7190 R08: 0000000000000001 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000001 R12: 0000000000000003
-R13: ffff88802a77cb18 R14: 0000000000000003 R15: ffff888018262500
-FS:  0000000000000000(0000) GS:ffff8880b9800000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000556a99c15a18 CR3: 0000000028c71000 CR4: 0000000000350ef0
-Call Trace:
- <TASK>
- usbnet_start_xmit+0xfe5/0x2190 drivers/net/usb/usbnet.c:1453
- __netdev_start_xmit include/linux/netdevice.h:4918 [inline]
- netdev_start_xmit include/linux/netdevice.h:4932 [inline]
- xmit_one net/core/dev.c:3578 [inline]
- dev_hard_start_xmit+0x187/0x700 net/core/dev.c:3594
-...
+This causes a problem when updating a filter bound to a class,
+as tcf_unbind_filter() is always called on the old instance in the
+success path, decreasing filter_cnt of the still referenced class
+and allowing it to be deleted, leading to a use-after-free.
 
-This bug is caused by the fact that usbnet trusts the bulk endpoint
-addresses its probe routine receives in the driver_info structure, and
-it does not check to see that these endpoints actually exist and have
-the expected type and directions.
+Fix this by no longer copying the tcf_result struct from the old filter.
 
-The fix is simply to add such a check.
-
-Reported-and-tested-by: syzbot+63ee658b9a100ffadbe2@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/linux-usb/000000000000a56e9105d0cec021@google.com/
-Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
-CC: Oliver Neukum <oneukum@suse.com>
-Link: https://lore.kernel.org/r/ea152b6d-44df-4f8a-95c6-4db51143dcc1@rowland.harvard.edu
+Fixes: e35a8ee5993b ("net: sched: fw use RCU")
+Reported-by: valis <sec@valis.email>
+Reported-by: Bing-Jhong Billy Jheng <billy@starlabs.sg>
+Signed-off-by: valis <sec@valis.email>
+Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Reviewed-by: Victor Nogueira <victor@mojatatu.com>
+Reviewed-by: Pedro Tammela <pctammela@mojatatu.com>
+Reviewed-by: M A Ramdhan <ramdhan@starlabs.sg>
+Link: https://lore.kernel.org/r/20230729123202.72406-3-jhs@mojatatu.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/usbnet.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ net/sched/cls_fw.c | 1 -
+ 1 file changed, 1 deletion(-)
 
---- a/drivers/net/usb/usbnet.c
-+++ b/drivers/net/usb/usbnet.c
-@@ -1771,6 +1771,10 @@ usbnet_probe (struct usb_interface *udev
- 	} else if (!info->in || !info->out)
- 		status = usbnet_get_endpoints (dev, udev);
- 	else {
-+		u8 ep_addrs[3] = {
-+			info->in + USB_DIR_IN, info->out + USB_DIR_OUT, 0
-+		};
-+
- 		dev->in = usb_rcvbulkpipe (xdev, info->in);
- 		dev->out = usb_sndbulkpipe (xdev, info->out);
- 		if (!(info->flags & FLAG_NO_SETINT))
-@@ -1780,6 +1784,8 @@ usbnet_probe (struct usb_interface *udev
- 		else
- 			status = 0;
+diff --git a/net/sched/cls_fw.c b/net/sched/cls_fw.c
+index 41f0898a5a565..08c41f1976c47 100644
+--- a/net/sched/cls_fw.c
++++ b/net/sched/cls_fw.c
+@@ -266,7 +266,6 @@ static int fw_change(struct net *net, struct sk_buff *in_skb,
+ 			return -ENOBUFS;
  
-+		if (status == 0 && !usb_check_bulk_endpoints(udev, ep_addrs))
-+			status = -EINVAL;
- 	}
- 	if (status >= 0 && dev->status)
- 		status = init_status (dev, udev);
+ 		fnew->id = f->id;
+-		fnew->res = f->res;
+ 		fnew->ifindex = f->ifindex;
+ 		fnew->tp = f->tp;
+ 
+-- 
+2.40.1
+
 
 
