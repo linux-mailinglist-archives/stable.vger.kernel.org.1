@@ -2,47 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BC5AB7759D8
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:03:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5C60B775761
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:45:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232982AbjHILD1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:03:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38378 "EHLO
+        id S231658AbjHIKpT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 06:45:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57566 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233014AbjHILDL (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:03:11 -0400
+        with ESMTP id S231634AbjHIKpT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:45:19 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2824211D
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:03:08 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BDFDE10F3
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:45:18 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3916662496
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:03:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C1BCC433C7;
-        Wed,  9 Aug 2023 11:03:07 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5679963118
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:45:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65ABFC433C7;
+        Wed,  9 Aug 2023 10:45:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691578987;
-        bh=oZ0njOSllwzZJnj6E9qy2zVGuMeVDFIhbAksutuJop0=;
+        s=korg; t=1691577917;
+        bh=dozIg0AI47gtc5ZGFjZMCyWuX7KZFonahf6NewkCQLo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=DPOb4VQB2HPadWsNRC+CpAd/7Tomy1xIdamHbWMHTioNIqiURY5ICcNO/rcsqHikE
-         jIEl1EukoKVMdjE6M6W+O8mO+bZMCLelGzvV7RdAMHRPNAuz76ZNMo7urGEZ3yrzSZ
-         4gWECyFgGiLKiXNYaITDT4wpkVNbxCiRQj31YkDg=
+        b=ntSOALiGWpgUNDdslEKHE53igm6ImYbZE5WoTCFp8dgr/lLHe5ynxnypNflaN8jn0
+         xSYb+ABC1dgUGTTQ3rAZzPRaeJdKn6uPqIW9LS9MNFYS5QI3hQkwwMokLsCxtm94Dh
+         gqUbLTyqsYdDY9THAhNtMDJp3Zv0rV/CtstfokFo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        Sasha Levin <sashal@kernel.org>,
-        Natalia Petrova <n.petrova@fintech.ru>
-Subject: [PATCH 4.14 034/204] radeon: avoid double free in ci_dpm_init()
+        patches@lists.linux.dev, Jakub Kicinski <kuba@kernel.org>,
+        Lin Ma <linma@zju.edu.cn>,
+        Martin KaFai Lau <martin.lau@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 041/165] bpf: Add length check for SK_DIAG_BPF_STORAGE_REQ_MAP_FD parsing
 Date:   Wed,  9 Aug 2023 12:39:32 +0200
-Message-ID: <20230809103643.718162051@linuxfoundation.org>
+Message-ID: <20230809103644.153793014@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103642.552405807@linuxfoundation.org>
-References: <20230809103642.552405807@linuxfoundation.org>
+In-Reply-To: <20230809103642.720851262@linuxfoundation.org>
+References: <20230809103642.720851262@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,110 +56,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+From: Lin Ma <linma@zju.edu.cn>
 
-[ Upstream commit 20c3dffdccbd494e0dd631d1660aeecbff6775f2 ]
+[ Upstream commit bcc29b7f5af6797702c2306a7aacb831fc5ce9cb ]
 
-Several calls to ci_dpm_fini() will attempt to free resources that
-either have been freed before or haven't been allocated yet. This
-may lead to undefined or dangerous behaviour.
+The nla_for_each_nested parsing in function bpf_sk_storage_diag_alloc
+does not check the length of the nested attribute. This can lead to an
+out-of-attribute read and allow a malformed nlattr (e.g., length 0) to
+be viewed as a 4 byte integer.
 
-For instance, if r600_parse_extended_power_table() fails, it might
-call r600_free_extended_power_table() as will ci_dpm_fini() later
-during error handling.
+This patch adds an additional check when the nlattr is getting counted.
+This makes sure the latter nla_get_u32 can access the attributes with
+the correct length.
 
-Fix this by only freeing pointers to objects previously allocated.
-
-Found by Linux Verification Center (linuxtesting.org) with static
-analysis tool SVACE.
-
-Fixes: cc8dbbb4f62a ("drm/radeon: add dpm support for CI dGPUs (v2)")
-Co-developed-by: Natalia Petrova <n.petrova@fintech.ru>
-Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: 1ed4d92458a9 ("bpf: INET_DIAG support in bpf_sk_storage")
+Suggested-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Lin Ma <linma@zju.edu.cn>
+Reviewed-by: Jakub Kicinski <kuba@kernel.org>
+Link: https://lore.kernel.org/r/20230725023330.422856-1-linma@zju.edu.cn
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/radeon/ci_dpm.c | 28 ++++++++++++++++++++--------
- 1 file changed, 20 insertions(+), 8 deletions(-)
+ net/core/bpf_sk_storage.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/radeon/ci_dpm.c b/drivers/gpu/drm/radeon/ci_dpm.c
-index 81bc2b89222f2..0403924a2ca6b 100644
---- a/drivers/gpu/drm/radeon/ci_dpm.c
-+++ b/drivers/gpu/drm/radeon/ci_dpm.c
-@@ -5530,6 +5530,7 @@ static int ci_parse_power_table(struct radeon_device *rdev)
- 	u8 frev, crev;
- 	u8 *power_state_offset;
- 	struct ci_ps *ps;
-+	int ret;
+diff --git a/net/core/bpf_sk_storage.c b/net/core/bpf_sk_storage.c
+index d4172534dfa8d..cca7594be92ec 100644
+--- a/net/core/bpf_sk_storage.c
++++ b/net/core/bpf_sk_storage.c
+@@ -496,8 +496,11 @@ bpf_sk_storage_diag_alloc(const struct nlattr *nla_stgs)
+ 		return ERR_PTR(-EPERM);
  
- 	if (!atom_parse_data_header(mode_info->atom_context, index, NULL,
- 				   &frev, &crev, &data_offset))
-@@ -5558,11 +5559,15 @@ static int ci_parse_power_table(struct radeon_device *rdev)
- 		non_clock_array_index = power_state->v2.nonClockInfoIndex;
- 		non_clock_info = (struct _ATOM_PPLIB_NONCLOCK_INFO *)
- 			&non_clock_info_array->nonClockInfo[non_clock_array_index];
--		if (!rdev->pm.power_state[i].clock_info)
--			return -EINVAL;
-+		if (!rdev->pm.power_state[i].clock_info) {
-+			ret = -EINVAL;
-+			goto err_free_ps;
+ 	nla_for_each_nested(nla, nla_stgs, rem) {
+-		if (nla_type(nla) == SK_DIAG_BPF_STORAGE_REQ_MAP_FD)
++		if (nla_type(nla) == SK_DIAG_BPF_STORAGE_REQ_MAP_FD) {
++			if (nla_len(nla) != sizeof(u32))
++				return ERR_PTR(-EINVAL);
+ 			nr_maps++;
 +		}
- 		ps = kzalloc(sizeof(struct ci_ps), GFP_KERNEL);
--		if (ps == NULL)
--			return -ENOMEM;
-+		if (ps == NULL) {
-+			ret = -ENOMEM;
-+			goto err_free_ps;
-+		}
- 		rdev->pm.dpm.ps[i].ps_priv = ps;
- 		ci_parse_pplib_non_clock_info(rdev, &rdev->pm.dpm.ps[i],
- 					      non_clock_info,
-@@ -5602,6 +5607,12 @@ static int ci_parse_power_table(struct radeon_device *rdev)
  	}
  
- 	return 0;
-+
-+err_free_ps:
-+	for (i = 0; i < rdev->pm.dpm.num_ps; i++)
-+		kfree(rdev->pm.dpm.ps[i].ps_priv);
-+	kfree(rdev->pm.dpm.ps);
-+	return ret;
- }
- 
- static int ci_get_vbios_boot_values(struct radeon_device *rdev,
-@@ -5679,25 +5690,26 @@ int ci_dpm_init(struct radeon_device *rdev)
- 
- 	ret = ci_get_vbios_boot_values(rdev, &pi->vbios_boot_state);
- 	if (ret) {
--		ci_dpm_fini(rdev);
-+		kfree(rdev->pm.dpm.priv);
- 		return ret;
- 	}
- 
- 	ret = r600_get_platform_caps(rdev);
- 	if (ret) {
--		ci_dpm_fini(rdev);
-+		kfree(rdev->pm.dpm.priv);
- 		return ret;
- 	}
- 
- 	ret = r600_parse_extended_power_table(rdev);
- 	if (ret) {
--		ci_dpm_fini(rdev);
-+		kfree(rdev->pm.dpm.priv);
- 		return ret;
- 	}
- 
- 	ret = ci_parse_power_table(rdev);
- 	if (ret) {
--		ci_dpm_fini(rdev);
-+		kfree(rdev->pm.dpm.priv);
-+		r600_free_extended_power_table(rdev);
- 		return ret;
- 	}
- 
+ 	diag = kzalloc(struct_size(diag, maps, nr_maps), GFP_KERNEL);
 -- 
-2.39.2
+2.40.1
 
 
 
