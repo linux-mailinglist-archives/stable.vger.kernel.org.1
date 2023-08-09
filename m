@@ -2,41 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 45805775A7A
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:08:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4E02A775A87
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:09:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233199AbjHILIr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:08:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46710 "EHLO
+        id S233207AbjHILJR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:09:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60956 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233207AbjHILIq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:08:46 -0400
+        with ESMTP id S233200AbjHILJR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:09:17 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8FF15ED
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:08:45 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8AEB210F3
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:09:16 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2EA4B6314A
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:08:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43351C433C8;
-        Wed,  9 Aug 2023 11:08:44 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2A9D661FA9
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:09:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 388FAC433C8;
+        Wed,  9 Aug 2023 11:09:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691579324;
-        bh=r2g0r+AVtV3T/pFrOS2ua/Wj+0eN1uatMQD/LRAxT8E=;
+        s=korg; t=1691579355;
+        bh=98/SW1TaQhTG1o/tAMMFjjkpLc5Xugrna2t/92Hcnao=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=R9ad+sE/hb1BKs5w0/agVcGEOtjXjvmPSyhyvrv3BWSNPZgzfpvEWIoiMi0qLo2pN
-         8v0zxRSdeWA3GV3jlXTKwK8EaUZACi+FeL6h1JbL1zb1LPW5YLS1W8Scj0x7234i07
-         fS0xCzpSVe6weK+pYX+SjwTQSKiRrXZIPrVZb5W0=
+        b=KGfjvzLywP7aCsk2wGKnZW1+uvYz+40BKqbwzE6GHI4lrpIwnLW4lb9AukEl9Q4JN
+         KilRtWiFPQ6894HDHArXeAgi6oFuZovwfE0t9clV79w4j3RdgXj6CI3jksoYqqa2qp
+         Wznq8jY1aGF9Rkernf4bzf83xPnByYPtZ/J1O2ws=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Martin Kaiser <martin@kaiser.cx>,
-        Helge Deller <deller@gmx.de>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 138/204] fbdev: imxfb: warn about invalid left/right margin
-Date:   Wed,  9 Aug 2023 12:41:16 +0200
-Message-ID: <20230809103647.197548469@linuxfoundation.org>
+        patches@lists.linux.dev, Nik P <npliashechnikov@gmail.com>,
+        Nathan Schulte <nmschulte@gmail.com>,
+        Friedrich Vock <friedrich.vock@gmx.de>, dridri85@gmail.com,
+        Jan Visser <starquake@linuxeverywhere.org>,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.14 139/204] pinctrl: amd: Use amd_pinconf_set() for all config options
+Date:   Wed,  9 Aug 2023 12:41:17 +0200
+Message-ID: <20230809103647.234645927@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230809103642.552405807@linuxfoundation.org>
 References: <20230809103642.552405807@linuxfoundation.org>
@@ -54,41 +60,106 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Martin Kaiser <martin@kaiser.cx>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-[ Upstream commit 4e47382fbca916d7db95cbf9e2d7ca2e9d1ca3fe ]
+[ Upstream commit 635a750d958e158e17af0f524bedc484b27fbb93 ]
 
-Warn about invalid var->left_margin or var->right_margin. Their values
-are read from the device tree.
+On ASUS TUF A16 it is reported that the ITE5570 ACPI device connected to
+GPIO 7 is causing an interrupt storm.  This issue doesn't happen on
+Windows.
 
-We store var->left_margin-3 and var->right_margin-1 in register
-fields. These fields should be >= 0.
+Comparing the GPIO register configuration between Windows and Linux
+bit 20 has been configured as a pull up on Windows, but not on Linux.
+Checking GPIO declaration from the firmware it is clear it *should* have
+been a pull up on Linux as well.
 
-Fixes: 7e8549bcee00 ("imxfb: Fix margin settings")
-Signed-off-by: Martin Kaiser <martin@kaiser.cx>
-Signed-off-by: Helge Deller <deller@gmx.de>
+```
+GpioInt (Level, ActiveLow, Exclusive, PullUp, 0x0000,
+	 "\\_SB.GPIO", 0x00, ResourceConsumer, ,)
+{   // Pin list
+0x0007
+}
+```
+
+On Linux amd_gpio_set_config() is currently only used for programming
+the debounce. Actually the GPIO core calls it with all the arguments
+that are supported by a GPIO, pinctrl-amd just responds `-ENOTSUPP`.
+
+To solve this issue expand amd_gpio_set_config() to support the other
+arguments amd_pinconf_set() supports, namely `PIN_CONFIG_BIAS_PULL_DOWN`,
+`PIN_CONFIG_BIAS_PULL_UP`, and `PIN_CONFIG_DRIVE_STRENGTH`.
+
+Reported-by: Nik P <npliashechnikov@gmail.com>
+Reported-by: Nathan Schulte <nmschulte@gmail.com>
+Reported-by: Friedrich Vock <friedrich.vock@gmx.de>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217336
+Reported-by: dridri85@gmail.com
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217493
+Link: https://lore.kernel.org/linux-input/20230530154058.17594-1-friedrich.vock@gmx.de/
+Tested-by: Jan Visser <starquake@linuxeverywhere.org>
+Fixes: 2956b5d94a76 ("pinctrl / gpio: Introduce .set_config() callback for GPIO chips")
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/r/20230705133005.577-3-mario.limonciello@amd.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/imxfb.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/pinctrl/pinctrl-amd.c | 28 +++++++++++++++-------------
+ 1 file changed, 15 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/video/fbdev/imxfb.c b/drivers/video/fbdev/imxfb.c
-index ba82f97fb42b2..a4dc25fbdd1ba 100644
---- a/drivers/video/fbdev/imxfb.c
-+++ b/drivers/video/fbdev/imxfb.c
-@@ -601,10 +601,10 @@ static int imxfb_activate_var(struct fb_var_screeninfo *var, struct fb_info *inf
- 	if (var->hsync_len < 1    || var->hsync_len > 64)
- 		printk(KERN_ERR "%s: invalid hsync_len %d\n",
- 			info->fix.id, var->hsync_len);
--	if (var->left_margin > 255)
-+	if (var->left_margin < 3  || var->left_margin > 255)
- 		printk(KERN_ERR "%s: invalid left_margin %d\n",
- 			info->fix.id, var->left_margin);
--	if (var->right_margin > 255)
-+	if (var->right_margin < 1 || var->right_margin > 255)
- 		printk(KERN_ERR "%s: invalid right_margin %d\n",
- 			info->fix.id, var->right_margin);
- 	if (var->yres < 1 || var->yres > ymax_mask)
+diff --git a/drivers/pinctrl/pinctrl-amd.c b/drivers/pinctrl/pinctrl-amd.c
+index c57f91f484235..fbec8a07e942e 100644
+--- a/drivers/pinctrl/pinctrl-amd.c
++++ b/drivers/pinctrl/pinctrl-amd.c
+@@ -169,18 +169,6 @@ static int amd_gpio_set_debounce(struct gpio_chip *gc, unsigned offset,
+ 	return ret;
+ }
+ 
+-static int amd_gpio_set_config(struct gpio_chip *gc, unsigned offset,
+-			       unsigned long config)
+-{
+-	u32 debounce;
+-
+-	if (pinconf_to_config_param(config) != PIN_CONFIG_INPUT_DEBOUNCE)
+-		return -ENOTSUPP;
+-
+-	debounce = pinconf_to_config_argument(config);
+-	return amd_gpio_set_debounce(gc, offset, debounce);
+-}
+-
+ #ifdef CONFIG_DEBUG_FS
+ static void amd_gpio_dbg_show(struct seq_file *s, struct gpio_chip *gc)
+ {
+@@ -632,7 +620,7 @@ static int amd_pinconf_get(struct pinctrl_dev *pctldev,
+ }
+ 
+ static int amd_pinconf_set(struct pinctrl_dev *pctldev, unsigned int pin,
+-				unsigned long *configs, unsigned num_configs)
++			   unsigned long *configs, unsigned int num_configs)
+ {
+ 	int i;
+ 	u32 arg;
+@@ -722,6 +710,20 @@ static int amd_pinconf_group_set(struct pinctrl_dev *pctldev,
+ 	return 0;
+ }
+ 
++static int amd_gpio_set_config(struct gpio_chip *gc, unsigned int pin,
++			       unsigned long config)
++{
++	struct amd_gpio *gpio_dev = gpiochip_get_data(gc);
++
++	if (pinconf_to_config_param(config) == PIN_CONFIG_INPUT_DEBOUNCE) {
++		u32 debounce = pinconf_to_config_argument(config);
++
++		return amd_gpio_set_debounce(gc, pin, debounce);
++	}
++
++	return amd_pinconf_set(gpio_dev->pctrl, pin, &config, 1);
++}
++
+ static const struct pinconf_ops amd_pinconf_ops = {
+ 	.pin_config_get		= amd_pinconf_get,
+ 	.pin_config_set		= amd_pinconf_set,
 -- 
 2.39.2
 
