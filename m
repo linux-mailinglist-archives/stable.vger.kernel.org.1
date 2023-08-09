@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CF39D775C4A
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:25:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 79810775CE6
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:32:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233702AbjHILZx (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:25:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59908 "EHLO
+        id S233911AbjHILcK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:32:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60432 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233699AbjHILZw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:25:52 -0400
+        with ESMTP id S233996AbjHILcC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:32:02 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F1CAFA
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:25:52 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08C1F10DC
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:32:02 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B91F56326F
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:25:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C51C3C433C7;
-        Wed,  9 Aug 2023 11:25:50 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 92C60633D2
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:32:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A46E8C433C8;
+        Wed,  9 Aug 2023 11:32:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691580351;
-        bh=ptEUBx7NXouPTs9vL8NHlnPpdkt6EHNCSTVer9zT52c=;
+        s=korg; t=1691580721;
+        bh=o4XvyzxS8+kuJ5Os7qTVa1Oc2UMnarGcaFG3Yn6j+MQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=YVZOZAxSqyJsSIYwS7XxUAPR+es/xg70xrR0yx8oYlVLw/m2tUU27jMdTFe4puYjH
-         1sr51NS/itDv6BiGMnWVt+ajzNlxiwloCejFXkO42mnteX6dL+CJCxaF4khwIiJNWN
-         1Tw67b/90vu04RMBD1KxRL4NUV0a9Y94gDxFxCk8=
+        b=1t+46dYxOI+3h+lqobcyLrz4wiEVstu9aWlfJTxb/y0ZYnrNoKvTV6D0P/L8nH2E8
+         0LRtTP4rDuM8lXK0IJ3ivzbCLQ48gYK78+x218PbWvVJzOQLKg5ikAyQjuZwfns3+S
+         XdzJwZpD+4daHAsmDqLBxcMtGh0yMpN4UBs3d3PM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Shengjiu Wang <shengjiu.wang@nxp.com>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 318/323] ARM: dts: imx6sll: Make ssi node name same as other platforms
-Date:   Wed,  9 Aug 2023 12:42:36 +0200
-Message-ID: <20230809103712.625522815@linuxfoundation.org>
+        patches@lists.linux.dev, Stable@vger.kernel.org,
+        Arseniy Krasnov <AVKrasnov@sberdevices.ru>,
+        Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH 5.4 126/154] mtd: rawnand: meson: fix OOB available bytes for ECC
+Date:   Wed,  9 Aug 2023 12:42:37 +0200
+Message-ID: <20230809103641.069518507@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
-References: <20230809103658.104386911@linuxfoundation.org>
+In-Reply-To: <20230809103636.887175326@linuxfoundation.org>
+References: <20230809103636.887175326@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,60 +55,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Shengjiu Wang <shengjiu.wang@nxp.com>
+From: Arseniy Krasnov <AVKrasnov@sberdevices.ru>
 
-[ Upstream commit 5da1b522cf7dc51f7fde2cca8d90406b0291c503 ]
+commit 7e6b04f9238eab0f684fafd158c1f32ea65b9eaa upstream.
 
-In imx6sll.dtsi, the ssi node name is different with other
-platforms (imx6qdl, imx6sl, imx6sx), but the
-sound/soc/fsl/fsl-asoc-card.c machine driver needs to check
-ssi node name for audmux configuration, then different ssi
-node name causes issue on imx6sll platform.
+It is incorrect to calculate number of OOB bytes for ECC engine using
+some "already known" ECC step size (1024 bytes here). Number of such
+bytes for ECC engine must be whole OOB except 2 bytes for bad block
+marker, while proper ECC step size and strength will be selected by
+ECC logic.
 
-So we change ssi node name to make all platforms have same
-name.
-
-Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
-Stable-dep-of: ee70b908f77a ("ARM: dts: nxp/imx6sll: fix wrong property name in usbphy node")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 8fae856c5350 ("mtd: rawnand: meson: add support for Amlogic NAND flash controller")
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Arseniy Krasnov <AVKrasnov@sberdevices.ru>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://lore.kernel.org/linux-mtd/20230705065211.293500-1-AVKrasnov@sberdevices.ru
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm/boot/dts/imx6sll.dtsi | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/mtd/nand/raw/meson_nand.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/arch/arm/boot/dts/imx6sll.dtsi b/arch/arm/boot/dts/imx6sll.dtsi
-index d7d092a5522a3..8197767de69d7 100644
---- a/arch/arm/boot/dts/imx6sll.dtsi
-+++ b/arch/arm/boot/dts/imx6sll.dtsi
-@@ -271,7 +271,7 @@ uart2: serial@2024000 {
- 					status = "disabled";
- 				};
+--- a/drivers/mtd/nand/raw/meson_nand.c
++++ b/drivers/mtd/nand/raw/meson_nand.c
+@@ -1177,7 +1177,6 @@ static int meson_nand_attach_chip(struct
+ 	struct meson_nfc *nfc = nand_get_controller_data(nand);
+ 	struct meson_nfc_nand_chip *meson_chip = to_meson_nand(nand);
+ 	struct mtd_info *mtd = nand_to_mtd(nand);
+-	int nsectors = mtd->writesize / 1024;
+ 	int ret;
  
--				ssi1: ssi-controller@2028000 {
-+				ssi1: ssi@2028000 {
- 					compatible = "fsl,imx6sl-ssi", "fsl,imx51-ssi";
- 					reg = <0x02028000 0x4000>;
- 					interrupts = <GIC_SPI 46 IRQ_TYPE_LEVEL_HIGH>;
-@@ -284,7 +284,7 @@ ssi1: ssi-controller@2028000 {
- 					status = "disabled";
- 				};
+ 	if (!mtd->name) {
+@@ -1195,7 +1194,7 @@ static int meson_nand_attach_chip(struct
+ 	nand->options |= NAND_NO_SUBPAGE_WRITE;
  
--				ssi2: ssi-controller@202c000 {
-+				ssi2: ssi@202c000 {
- 					compatible = "fsl,imx6sl-ssi", "fsl,imx51-ssi";
- 					reg = <0x0202c000 0x4000>;
- 					interrupts = <GIC_SPI 47 IRQ_TYPE_LEVEL_HIGH>;
-@@ -297,7 +297,7 @@ ssi2: ssi-controller@202c000 {
- 					status = "disabled";
- 				};
- 
--				ssi3: ssi-controller@2030000 {
-+				ssi3: ssi@2030000 {
- 					compatible = "fsl,imx6sl-ssi", "fsl,imx51-ssi";
- 					reg = <0x02030000 0x4000>;
- 					interrupts = <GIC_SPI 48 IRQ_TYPE_LEVEL_HIGH>;
--- 
-2.40.1
-
+ 	ret = nand_ecc_choose_conf(nand, nfc->data->ecc_caps,
+-				   mtd->oobsize - 2 * nsectors);
++				   mtd->oobsize - 2);
+ 	if (ret) {
+ 		dev_err(nfc->dev, "failed to ECC init\n");
+ 		return -EINVAL;
 
 
