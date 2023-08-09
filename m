@@ -2,160 +2,68 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2309E775050
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 03:26:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1245A775056
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 03:28:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229929AbjHIB0C (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 8 Aug 2023 21:26:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33984 "EHLO
+        id S230147AbjHIB2E (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 8 Aug 2023 21:28:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49938 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229527AbjHIB0B (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 8 Aug 2023 21:26:01 -0400
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8095B1986;
-        Tue,  8 Aug 2023 18:26:01 -0700 (PDT)
-Received: from pps.filterd (m0333521.ppops.net [127.0.0.1])
-        by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 378MiFoj031317;
-        Wed, 9 Aug 2023 01:26:00 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=to : cc : subject :
- from : message-id : references : date : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=corp-2023-03-30;
- bh=+39RsJava5utt82jDxGPjkPDjvQ4V8Qbs689HFgwx8g=;
- b=O2vMP6lPN5qWiasYyZZFBru06M+SJxzW+Qm/dxSsYoQTBIO4lCdAc2zSMrLvsYlgVLVF
- oMPxyAsBbVCC2AgOHVm3GA7hs/C6ufwrKwqvissKWKmCxM8waTWit0NmXdJGIdRlVj4Q
- aIdOicR3FkK1TNxrQH+v9lKdeh2Oq99C2Z8pwQ+4tdyhOB9btHY5eaMH05wVWPat8ynd
- w+lSj07UZ9IOneeEfSXbmIy/ycGGq7OVNBlasPrGD5Jwb6QpLftuDLmCu/qUr3lDBVPP
- 3CAUjrB0vZI46T7Sjt/uLQdqKR7+JhlTA28O7cpPngQFlfGEVGhZp/7rEfO1LVY6vR4L dw== 
-Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
-        by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3s9dbc7728-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 09 Aug 2023 01:25:59 +0000
-Received: from pps.filterd (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-        by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19) with ESMTP id 3790LIaE021415;
-        Wed, 9 Aug 2023 01:25:59 GMT
-Received: from nam10-bn7-obe.outbound.protection.outlook.com (mail-bn7nam10lp2108.outbound.protection.outlook.com [104.47.70.108])
-        by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 3s9cvdbdu0-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 09 Aug 2023 01:25:59 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=MgSjSXYxk5IKmYkReJiU3bV2yiNR9KY3Je9fTuZJ2oVEBAwZvWyDxGJTc8YCopFwzhI3ZWM/824WMOKbiVT8hTzh0DkCN+3orNcncxvZHNPf5KwZ/QGDjoyM9/yGAzfZHrS62vSg3624wsbhv57dumTxVJ1NApC6OTeug5exS0OKTFVbV9PqCdabpe4L/K3PqKdOjMkibt2TgAf8Jzq+/+4HjgD2+v2wfkPcBjO0aGjmBQK+YlxtZUBqzM+0E/LdZdJD2WeuGsaP5nGkbR7mb7G9EtsjdupOpVBQwTVZsson4TEGgGpTv5VTY7bihZTykJRyiTCmarAWS52KJ5FnpA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=+39RsJava5utt82jDxGPjkPDjvQ4V8Qbs689HFgwx8g=;
- b=VfJGSrtqzksGc6ou33PLqH7+L5KN0C5+0ZsUvne7LUg0kOWXagGqenFE8vxdHa2FC5UrMNbi/rU4Rr5vsQ9zel3yEg8NWlpU7z5xi5+Kus56SQADg7zAQT0qWjMZKYz7Enl/98J+XmwiL1y+mnmRS8aOpz65yL7QHMNP4IQIQ8VCzW03hJHIkPRRHr+YVTFClemCgn8gvVPFHo4khBC1+nPKH1ugqFZUju7eFSziJINbXE6b8u4gnCOIeIpGJlZiQAH22r86boBatnZFvvKbfyYN3C703e4i9chk9mGHnsOeuuX8xvA0TNhEwY2ocFVhcaZ/j8XaZBk4s9Prkc1Z0g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
+        with ESMTP id S229527AbjHIB2B (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 8 Aug 2023 21:28:01 -0400
+Received: from mail-yb1-xb2d.google.com (mail-yb1-xb2d.google.com [IPv6:2607:f8b0:4864:20::b2d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 451B81FEA
+        for <stable@vger.kernel.org>; Tue,  8 Aug 2023 18:27:58 -0700 (PDT)
+Received: by mail-yb1-xb2d.google.com with SMTP id 3f1490d57ef6-d4b74a4a6daso3892103276.2
+        for <stable@vger.kernel.org>; Tue, 08 Aug 2023 18:27:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=+39RsJava5utt82jDxGPjkPDjvQ4V8Qbs689HFgwx8g=;
- b=HgcTcRfEn3WPgEC1MiyqOhVzo5ZoB5+lzzS+yW4f/DKlO4Jlmyt2v9IYMYY+t4q10BMgUSqIn9fwQ3ea3D8SdFPOnwm2Lr1QITxjLvkg01m/XQuK+BOpAP+uRvos5fKK5fQXU3HGbhhv03KxFXX0PnSK9ypCodCOCM+5M/m0iI4=
-Received: from PH0PR10MB4759.namprd10.prod.outlook.com (2603:10b6:510:3d::12)
- by DM6PR10MB4137.namprd10.prod.outlook.com (2603:10b6:5:217::24) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6652.27; Wed, 9 Aug
- 2023 01:25:57 +0000
-Received: from PH0PR10MB4759.namprd10.prod.outlook.com
- ([fe80::59f3:b30d:a592:36be]) by PH0PR10MB4759.namprd10.prod.outlook.com
- ([fe80::59f3:b30d:a592:36be%6]) with mapi id 15.20.6652.026; Wed, 9 Aug 2023
- 01:25:56 +0000
-To:     Ranjan Kumar <ranjan.kumar@broadcom.com>
-Cc:     "Martin K. Petersen" <martin.petersen@oracle.com>,
-        linux-scsi@vger.kernel.org, sathya.prakash@broadcom.com,
-        sreekanth.reddy@broadcom.com, stable@vger.kernel.org
-Subject: Re: [PATCH v3 1/2] Perform additional retries if Doorbell read
- returns 0
-From:   "Martin K. Petersen" <martin.petersen@oracle.com>
-Organization: Oracle Corporation
-Message-ID: <yq1a5v1ja8a.fsf@ca-mkp.ca.oracle.com>
-References: <20230726112527.14987-1-ranjan.kumar@broadcom.com>
-        <20230726112527.14987-2-ranjan.kumar@broadcom.com>
-        <yq1o7jsq9lq.fsf@ca-mkp.ca.oracle.com>
-        <CAMFBP8MS0hwd9-bfVrPi8yTB3Es-w7ugHwEMyxtb8R-mj8PPCg@mail.gmail.com>
-        <yq1sf8ujmf2.fsf@ca-mkp.ca.oracle.com>
-        <CAMFBP8Nf6ifVxJnNBv=zq+WyJRZR-2Hiuo4AejLAguE-GWuzJg@mail.gmail.com>
-Date:   Tue, 08 Aug 2023 21:25:55 -0400
-In-Reply-To: <CAMFBP8Nf6ifVxJnNBv=zq+WyJRZR-2Hiuo4AejLAguE-GWuzJg@mail.gmail.com>
-        (Ranjan Kumar's message of "Tue, 8 Aug 2023 12:42:38 +0530")
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-ClientProxiedBy: SA9PR13CA0091.namprd13.prod.outlook.com
- (2603:10b6:806:24::6) To PH0PR10MB4759.namprd10.prod.outlook.com
- (2603:10b6:510:3d::12)
+        d=kernelci-org.20221208.gappssmtp.com; s=20221208; t=1691544477; x=1692149277;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=Zvai9aXosReTZNpKg4qfsgTh3CwzpOq6TMHrudXxE3g=;
+        b=uafdZLZAgBpP14YX0uSDKrSrRiItjSY+UHJu6EI2PWxLSY3zgIuxMy+9TCPkycxkXr
+         jFke4iLfJ7B1oLG0PNc9ptmQTTgfUGUYos6EhvpLax6aTvdNwEFdkL67Jyf9g9nG+oI5
+         pRcvPnoFtrT2y9AIHx3XQcqCfQm6+4PqYvUPwbJcmwHeGGB1IB1NitVv+h2f+zEVUGFI
+         qBzuCgilTSuzXfc1HgBuyraiLrl7yLNr3pphfsBjyrIURGV6SHKoX8XLeMRMNIY6EgRd
+         FoD9h5GsAPVcbPGSIGyXGI+Uc8IfFsSjs4DfAUEu5CvWF/uyYoNtsbpCg30aAyx09r25
+         5Fcw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1691544477; x=1692149277;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Zvai9aXosReTZNpKg4qfsgTh3CwzpOq6TMHrudXxE3g=;
+        b=Q/F34kEqLTpSCXzQY2Ly2Dk6nwXTdasqiNTuvG0rMha6/XWNaoqcrOpU9cyby3EIHL
+         zZRXySHcX7BAaYFrKMINM5Qgi2fviMkEHLshaIib6mJgdUYkOiyrXX4hOVqr08DNaPvl
+         UVs1lZC3wYucypQH/s3nAb4XVcrG0sW/dRUm0V+betyKiiI7SVAd/11DplI1l77AJnQw
+         RZ/rVvJIbkT6C0koCIKNlH9nVgL5XN79DtDi25kmCpm0JqhrsF1yICZljkbvDAheYgt8
+         fHzCd8Qjp4mfjJlcJV8Woks5T66o0MRhdRjX+qzP+PhOxeRD1AMRRgCd+xfrbDjUv37X
+         nzlg==
+X-Gm-Message-State: AOJu0YzMB3pMSy3nnJSRgs8PUJay5J4u+sEnETZgegJ5SVXd1WSwXzzW
+        RQcjoRLr8P0U5YxZwCl+MmAj73I6hTkjEKhZ6I0ncw==
+X-Google-Smtp-Source: AGHT+IFWkei09TxfWIQqJ3KjwHsEnEVh2NqAFdwMzpaFEiAyBEQCb6XWwSz0Tkt5gyy+UtqIFqdhsQ==
+X-Received: by 2002:a25:ab71:0:b0:d07:707c:1106 with SMTP id u104-20020a25ab71000000b00d07707c1106mr1227029ybi.56.1691544476356;
+        Tue, 08 Aug 2023 18:27:56 -0700 (PDT)
+Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
+        by smtp.gmail.com with ESMTPSA id i5-20020a639d05000000b005637030d00csm7262916pgd.30.2023.08.08.18.27.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 08 Aug 2023 18:27:55 -0700 (PDT)
+Message-ID: <64d2eb9b.630a0220.c60f5.d468@mx.google.com>
+Date:   Tue, 08 Aug 2023 18:27:55 -0700 (PDT)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH0PR10MB4759:EE_|DM6PR10MB4137:EE_
-X-MS-Office365-Filtering-Correlation-Id: e5287fb0-d9a7-4b77-55ce-08db987794c1
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: T2pPK9o/2/lW2N1KRJuWsI3+joHfhocGVYbVONxi9AisQTSr2FDeU853XGusSkg9Vd6wgv0GUxLrHRTXwYb6UcbaUAFhAxSh9DdHSVkUlgLbjK7AM+RtHmjDnE7v24WLON+C73mf5walDP7rz1Z+4A3UPbyLPSiBxpGF2OsadPQWtbVGbm5qOrn/APppQ8Ht1De8NaDNe7o7GOcB3KGH/b1nUAGu9iv44PWfJR8Yhs0oAJJLWbkSUdW2LhGdwcU01Bt89QVJC6L8HyhstUyKJtJCTeJzDiLSMV5KY2S0bE4h7zzWLMANnwqLRpYbddDP/sXiSUqlzhmDMD5ala0zv2pEzVHdHOY1b80lzWHAGS1wC6l1SdUKZ5ukBIPjcuWsPYRNPXrSPIfYcGY0LODnMJat6gmizDZsvt/+ZOoWZKLUQgvcdNeZ5RNft4DSyqgoCwHTY+kupyRibEWEEAdUiUGWLGcf3a1kTkVRLa1q6T1IzroMDcV2XB//BnkvC/UnFiaTTDV/5bGMV+Wiv+wh3uom19cOqXi+AKtZRfy07o43k9oGbq7ar9pR9hi3L44i
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR10MB4759.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(346002)(376002)(136003)(39860400002)(396003)(366004)(186006)(1800799006)(451199021)(6506007)(26005)(6486002)(36916002)(6512007)(478600001)(38100700002)(66556008)(66946007)(66476007)(4326008)(316002)(41300700001)(8676002)(5660300002)(8936002)(6916009)(4744005)(2906002)(86362001);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?UXZZYTdQNGxadCtKYUtOM2xHVnk0bGxmK3N3ekpjR29LQkhML2o0UGI4N3lo?=
- =?utf-8?B?NlQ2UFJzQVB2TkgrZFlmRi80WWREcXkvNlU0QmFMaCsvOEd4cGhzQmJSd1pH?=
- =?utf-8?B?K1BCd0R4bWtRR05hWDFSQkVXSU9UVithWkxKRTZkTmtseUhnSnJMSVplZXln?=
- =?utf-8?B?Zmo2TWYwcXBsdnNMaFNvTkVXWHlYR0I5MjlrS0kxbGErdzV0TmhraHYvelBW?=
- =?utf-8?B?ZVd2S0J1aElHUHZNWkJnT2ZrNjFwTUVmS0VqWXo3QmsvbHM4aHYzdjl6RW1j?=
- =?utf-8?B?MFFvYlFtNzVrcXNHdTVQVFFoWVFibmNGTEg1ZGx2VHFTS0VxZ0FxdysvN05y?=
- =?utf-8?B?U2gyeXZCWlVKeTRVTUUyT01mRTkyNmlZNXluNUJyaE5pRzFJekV4enFxaGtt?=
- =?utf-8?B?QjRGK0lnbHR0ZnZ3WmZsS2FNY21tQTBvbDFqMXRKOWxseS9WdDdWbyt5RnIx?=
- =?utf-8?B?VzBFOUN5cTRQTGNibU5nM0xaZjRUN2hSMlczc1pRN0RUOXRNR05US3k2bUto?=
- =?utf-8?B?NzBpRUJKT0x4TVUxbWVmQ3hRS2xVb2JZOTJFZkdTT3poMXk4aUtCcExoVXJK?=
- =?utf-8?B?VjFwRU52Y1NoVHBzVjAyeU1jQ3FoNjZMZXpKc0d3dUYyTnpZRmRjblNoQUxO?=
- =?utf-8?B?UG4yTlJMajlSS0NwUEZMdzNpNG5HZDBibzlKV0RKYmVDUUxhMitPN3Vibnl0?=
- =?utf-8?B?MjNnZHN4aG9QbDM4alBaVW1NQ2ZJc3VhRHRaUjRWTmEvTnVsZVhFVnUzYlFX?=
- =?utf-8?B?ZUhPamVQaE1sNVhZQnRtZUNIWGprS2tOMGhSdklES3Q4RnRJQlQ3bklJOGQ3?=
- =?utf-8?B?dHM0NGcwbkRJWjVsaHdRTHprNUdTWFlEMGJtNlNvTnJ4V0hqeWdaUG1vTVJx?=
- =?utf-8?B?b3pBd2xiK3A3L1MyRDRHeUFyb3lYMTkrZVBlbXBwcWcwZEpMQm9WR3B2bjRu?=
- =?utf-8?B?SlpBYVVNMkpIRXl2NUpHNC9neG1YMi9ldFhrZUhqY0krSFI1b2E2MEhOMVdY?=
- =?utf-8?B?ZU5uUVdvQmlteGl5cWNWUTBYYjBVQUw1N08wdTIrQmxkTGdNdEljV3lxWGZq?=
- =?utf-8?B?aStJT1BYaTdVTEZlelJ4dTBSVmwwSnBOZDVYTVBwQU8zVWRVY2NWeFNRWTN1?=
- =?utf-8?B?OXg3M2tUdFJXOVFRM1pibDMrZmdtUWFqSDNGalc1SlVwS2ZjdTVmbGx3RnUr?=
- =?utf-8?B?RWRteGpKbG5VOHIzRGdHRm0zMXVJSjFuZno1NVdDK1JJMFllemlmNm9iQXNp?=
- =?utf-8?B?TWRzcWE0cWtMU1JCb1ZzU1FRMHE3cG1GeGxRY05qdmtUZFdKZTAvamk3Q082?=
- =?utf-8?B?SFNycCszT1NVNktlOXYxbHJmMFg2TS9HamQyZmlhbTdSS2Npb200MktYcUcx?=
- =?utf-8?B?TFA3QWxSbWJpUHRyYVUyQmxKUGNJa1MzN0lGN1F1am9hTVRmeXV3WDFMc21J?=
- =?utf-8?B?QnNwN2hGcU1RU0xSdURkd2g0MmQyMDMydWwxdm13eS9ad1R5M1BuUmp2czk4?=
- =?utf-8?B?Q21tYnVkRy96WlNkZVJpTWt0K2owdnIvc2lqSmg1Z0V6dFhMU25XQ21hL0RX?=
- =?utf-8?B?RlRFV3Z4Nk5LTW9iMjdLRDd1SjhUSzdNeWFQSmw2VmlHWU92RHNmRmpQY1J0?=
- =?utf-8?B?U1hYMmNLWmxOVm45S0d1YnFnbjNBMlJzdHZEcCtLdWlKMEpvamorMXNuWnRD?=
- =?utf-8?B?VHFLMDhidmdaSUVRQjZLUmlDOHRORG1oeWhPcFR2NmEzTWFuTkZzSWtxV2hP?=
- =?utf-8?B?RlJnN0p6WVJIa1N6bU1mNXYrNjZEOVp0MzViT0wrWnJISkxtLzUrUS90dDlU?=
- =?utf-8?B?NEFnTUYxNm81eEdWNFpXb0hMaUtUQTQzdEdmN3ovOEpCVUNhQ0pWSFNmVWpm?=
- =?utf-8?B?bzZaQmFlVUxVdFlpSGtyZGtEMnluK24vbVlHV0N2T292YUVYUkNFVlZ2NjF2?=
- =?utf-8?B?YWUzYlNsU0NsYWRhQkFNeDVucTZtRjVJek9pMU1zMCtjeUU5ZngzOStVRHZx?=
- =?utf-8?B?ZTdlcEhVVzJwcE9xdFFzQTVwZW0zdkdtVGFDT3lYdGJoTkVrc0M3SUNRNXZ0?=
- =?utf-8?B?N0pEVmNqSEl3WXdXQUJlVC9qSUVWK3FLZlJhUW5UcjI2SW9DanIrb2FudEtv?=
- =?utf-8?B?T1ozc0hNMEtqS0NZTkQ2OG5KS21lLzNQWTZUNy8vOFJWWGNYOUZVMXB3WExW?=
- =?utf-8?B?U1E9PQ==?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: Ff1wB665R22dHR8YXE7bC0bJWOLMikGvC7g3x5MUNAXsWNuDtGdLeKOgiQhAtnEjjs+G2v9RGEG1uHiSeKMpparrb4FKlcK7xCdq3CIEK2QHReRydTpoabgNJNktBwsQgsFMTrVz03r5V73FieRO8DKFKB3DfqLn6af30uc/dlD1QwhxSWF5w11YOpGk/byxj/ZcgqTl6H5jojaguyWVXi6mqax9LDBE+Uq/aQJIk9rDbtSvlUZ6nIVIXr3LQWOEyu5Q2ZnVpVJZopjxCvffR/zY9xXwgVeHUpGKCRGr3TV4BG7pP5ybpoBeZSAQQcSMJ6uoZ8hghYOEISBcvp03YW254vdH5uf5BpazGDCYwiXnOOu9HcdIK5rFAn7KN0t7DNnlAOftLgp6zG+XCHUnfZLjWHy6EtPRoqJSfwImFIX96UTUyrR/4okyeY/Hfaq0ESzhYr7ErERbuXA6qE8yyfdW1rnPP74z8JY/a0gpBmMyBQNqjtlOBbWZ+iQ2ZLfxK6TJaGA7estx5IOuZ8tmxo3K2BH3iRvktSORfqJmZ15tuO9sVSbwcdpJ8JUDv+6GjJajQYIJ+Q/0r2QD2SvKgmPA+GA2zscHS21ZTXKH8d04TXqsZ+rKm9ALKGGUPvU+XfMrI9YjL3Fc+RpnS1bWtaNyX7gJ9oclcrvPrzGErf9Y8V7ljHtG+J+F+5/LufiNoXjMIpwoQk44OlxMDR01MwhAJRpVOJgcEpvxfAayOjM6Z3IkbvKFzlP/x3VrdwUJbLLaV5b+WCAVBK5L1+5Oa0r1QW/7ufTCJLRfYl9dofY=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e5287fb0-d9a7-4b77-55ce-08db987794c1
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR10MB4759.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Aug 2023 01:25:56.8366
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Yi8xK9TyGipvJTIsJXsH1zJPmERkWNLNAROsOUv9alRE+8zsIxJdTm8jz9OBEt62UBsB8h56EMZHzJKN2OEQKs9DXgSSrcv/yVMhVap1T/0=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR10MB4137
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-08-08_24,2023-08-08_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 malwarescore=0 spamscore=0
- adultscore=0 mlxlogscore=697 bulkscore=0 phishscore=0 suspectscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2306200000
- definitions=main-2308090011
-X-Proofpoint-ORIG-GUID: bjiNgK19I9ZEF25hwYq433J1o0vyZ3hH
-X-Proofpoint-GUID: bjiNgK19I9ZEF25hwYq433J1o0vyZ3hH
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
+Content-Transfer-Encoding: quoted-printable
+X-Kernelci-Report-Type: test
+X-Kernelci-Kernel: v5.15.125-87-g976c140e8e74d
+X-Kernelci-Tree: stable-rc
+X-Kernelci-Branch: linux-5.15.y
+Subject: stable-rc/linux-5.15.y baseline: 52 runs,
+ 8 regressions (v5.15.125-87-g976c140e8e74d)
+To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+        kernelci-results@groups.io
+From:   "kernelci.org bot" <bot@kernelci.org>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -163,16 +71,524 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+stable-rc/linux-5.15.y baseline: 52 runs, 8 regressions (v5.15.125-87-g976c=
+140e8e74d)
 
-Hi Ranjan,
+Regressions Summary
+-------------------
 
-> But for few registers zero may be a valid value and we don=E2=80=99t want
-> those registers to get penalized with 30 read retries where 1/3 reads
-> would have sufficed.
+platform                     | arch   | lab           | compiler | defconfi=
+g                    | regressions
+-----------------------------+--------+---------------+----------+---------=
+---------------------+------------
+asus-C436FA-Flip-hatch       | x86_64 | lab-collabora | gcc-10   | x86_64_d=
+efcon...6-chromebook | 1          =
 
-If 0 is a valid register value you'll end up always doing 3 retries
-before returning. Even if the first register reads were "successful".
-Peculiar!
+asus-CM1400CXA-dalboz        | x86_64 | lab-collabora | gcc-10   | x86_64_d=
+efcon...6-chromebook | 1          =
 
---=20
-Martin K. Petersen	Oracle Linux Engineering
+asus-cx9400-volteer          | x86_64 | lab-collabora | gcc-10   | x86_64_d=
+efcon...6-chromebook | 1          =
+
+beagle-xm                    | arm    | lab-baylibre  | gcc-10   | omap2plu=
+s_defconfig          | 1          =
+
+hp-x360-12b-c...4020-octopus | x86_64 | lab-collabora | gcc-10   | x86_64_d=
+efcon...6-chromebook | 1          =
+
+hp-x360-14-G1-sona           | x86_64 | lab-collabora | gcc-10   | x86_64_d=
+efcon...6-chromebook | 1          =
+
+hp-x360-14a-cb0001xx-zork    | x86_64 | lab-collabora | gcc-10   | x86_64_d=
+efcon...6-chromebook | 1          =
+
+lenovo-TPad-C13-Yoga-zork    | x86_64 | lab-collabora | gcc-10   | x86_64_d=
+efcon...6-chromebook | 1          =
+
+
+  Details:  https://kernelci.org/test/job/stable-rc/branch/linux-5.15.y/ker=
+nel/v5.15.125-87-g976c140e8e74d/plan/baseline/
+
+  Test:     baseline
+  Tree:     stable-rc
+  Branch:   linux-5.15.y
+  Describe: v5.15.125-87-g976c140e8e74d
+  URL:      https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-st=
+able-rc.git
+  SHA:      976c140e8e74d70e726e90031451db14373cdec1 =
+
+
+
+Test Regressions
+---------------- =
+
+
+
+platform                     | arch   | lab           | compiler | defconfi=
+g                    | regressions
+-----------------------------+--------+---------------+----------+---------=
+---------------------+------------
+asus-C436FA-Flip-hatch       | x86_64 | lab-collabora | gcc-10   | x86_64_d=
+efcon...6-chromebook | 1          =
+
+
+  Details:     https://kernelci.org/test/plan/id/64d2b6ca4e592ae80b35b20c
+
+  Results:     6 PASS, 1 FAIL, 0 SKIP
+  Full config: x86_64_defconfig+x86-chromebook
+  Compiler:    gcc-10 (gcc (Debian 10.2.1-6) 10.2.1 20210110)
+  Plain log:   https://storage.kernelci.org//stable-rc/linux-5.15.y/v5.15.1=
+25-87-g976c140e8e74d/x86_64/x86_64_defconfig+x86-chromebook/gcc-10/lab-coll=
+abora/baseline-asus-C436FA-Flip-hatch.txt
+  HTML log:    https://storage.kernelci.org//stable-rc/linux-5.15.y/v5.15.1=
+25-87-g976c140e8e74d/x86_64/x86_64_defconfig+x86-chromebook/gcc-10/lab-coll=
+abora/baseline-asus-C436FA-Flip-hatch.html
+  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
+t-baseline/20230623.0/x86/rootfs.cpio.gz =
+
+
+
+  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
+/64d2b6ca4e592ae80b35b211
+        failing since 133 days (last pass: v5.15.104, first fail: v5.15.104=
+-147-gea115396267e)
+
+    2023-08-08T21:42:27.891970  + set +x
+
+    2023-08-08T21:42:27.898798  <8>[   10.309043] <LAVA_SIGNAL_ENDRUN 0_dme=
+sg 11237124_1.4.2.3.1>
+
+    2023-08-08T21:42:28.002341  #
+
+    2023-08-08T21:42:28.103432  / # #export SHELL=3D/bin/sh
+
+    2023-08-08T21:42:28.103595  =
+
+
+    2023-08-08T21:42:28.204074  / # export SHELL=3D/bin/sh. /lava-11237124/=
+environment
+
+    2023-08-08T21:42:28.204287  =
+
+
+    2023-08-08T21:42:28.304825  / # . /lava-11237124/environment/lava-11237=
+124/bin/lava-test-runner /lava-11237124/1
+
+    2023-08-08T21:42:28.305189  =
+
+
+    2023-08-08T21:42:28.311071  / # /lava-11237124/bin/lava-test-runner /la=
+va-11237124/1
+ =
+
+    ... (12 line(s) more)  =
+
+ =
+
+
+
+platform                     | arch   | lab           | compiler | defconfi=
+g                    | regressions
+-----------------------------+--------+---------------+----------+---------=
+---------------------+------------
+asus-CM1400CXA-dalboz        | x86_64 | lab-collabora | gcc-10   | x86_64_d=
+efcon...6-chromebook | 1          =
+
+
+  Details:     https://kernelci.org/test/plan/id/64d2b6b5f66524e7a435b238
+
+  Results:     6 PASS, 1 FAIL, 0 SKIP
+  Full config: x86_64_defconfig+x86-chromebook
+  Compiler:    gcc-10 (gcc (Debian 10.2.1-6) 10.2.1 20210110)
+  Plain log:   https://storage.kernelci.org//stable-rc/linux-5.15.y/v5.15.1=
+25-87-g976c140e8e74d/x86_64/x86_64_defconfig+x86-chromebook/gcc-10/lab-coll=
+abora/baseline-asus-CM1400CXA-dalboz.txt
+  HTML log:    https://storage.kernelci.org//stable-rc/linux-5.15.y/v5.15.1=
+25-87-g976c140e8e74d/x86_64/x86_64_defconfig+x86-chromebook/gcc-10/lab-coll=
+abora/baseline-asus-CM1400CXA-dalboz.html
+  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
+t-baseline/20230623.0/x86/rootfs.cpio.gz =
+
+
+
+  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
+/64d2b6b5f66524e7a435b23d
+        failing since 133 days (last pass: v5.15.104, first fail: v5.15.104=
+-147-gea115396267e)
+
+    2023-08-08T21:42:03.808078  + set<8>[   11.316185] <LAVA_SIGNAL_ENDRUN =
+0_dmesg 11237130_1.4.2.3.1>
+
+    2023-08-08T21:42:03.808652   +x
+
+    2023-08-08T21:42:03.916660  / # #
+
+    2023-08-08T21:42:04.019321  export SHELL=3D/bin/sh
+
+    2023-08-08T21:42:04.020104  #
+
+    2023-08-08T21:42:04.121717  / # export SHELL=3D/bin/sh. /lava-11237130/=
+environment
+
+    2023-08-08T21:42:04.122511  =
+
+
+    2023-08-08T21:42:04.224154  / # . /lava-11237130/environment/lava-11237=
+130/bin/lava-test-runner /lava-11237130/1
+
+    2023-08-08T21:42:04.225449  =
+
+
+    2023-08-08T21:42:04.230474  / # /lava-11237130/bin/lava-test-runner /la=
+va-11237130/1
+ =
+
+    ... (12 line(s) more)  =
+
+ =
+
+
+
+platform                     | arch   | lab           | compiler | defconfi=
+g                    | regressions
+-----------------------------+--------+---------------+----------+---------=
+---------------------+------------
+asus-cx9400-volteer          | x86_64 | lab-collabora | gcc-10   | x86_64_d=
+efcon...6-chromebook | 1          =
+
+
+  Details:     https://kernelci.org/test/plan/id/64d2b6c4ac33e9880235b1df
+
+  Results:     6 PASS, 1 FAIL, 0 SKIP
+  Full config: x86_64_defconfig+x86-chromebook
+  Compiler:    gcc-10 (gcc (Debian 10.2.1-6) 10.2.1 20210110)
+  Plain log:   https://storage.kernelci.org//stable-rc/linux-5.15.y/v5.15.1=
+25-87-g976c140e8e74d/x86_64/x86_64_defconfig+x86-chromebook/gcc-10/lab-coll=
+abora/baseline-asus-cx9400-volteer.txt
+  HTML log:    https://storage.kernelci.org//stable-rc/linux-5.15.y/v5.15.1=
+25-87-g976c140e8e74d/x86_64/x86_64_defconfig+x86-chromebook/gcc-10/lab-coll=
+abora/baseline-asus-cx9400-volteer.html
+  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
+t-baseline/20230623.0/x86/rootfs.cpio.gz =
+
+
+
+  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
+/64d2b6c4ac33e9880235b1e4
+        failing since 133 days (last pass: v5.15.104, first fail: v5.15.104=
+-147-gea115396267e)
+
+    2023-08-08T21:42:05.632878  <8>[   11.067351] <LAVA_SIGNAL_ENDRUN 0_dme=
+sg 11237119_1.4.2.3.1>
+
+    2023-08-08T21:42:05.637061  + set +x
+
+    2023-08-08T21:42:05.742947  #
+
+    2023-08-08T21:42:05.744276  =
+
+
+    2023-08-08T21:42:05.846054  / # #export SHELL=3D/bin/sh
+
+    2023-08-08T21:42:05.846867  =
+
+
+    2023-08-08T21:42:05.948444  / # export SHELL=3D/bin/sh. /lava-11237119/=
+environment
+
+    2023-08-08T21:42:05.949252  =
+
+
+    2023-08-08T21:42:06.050809  / # . /lava-11237119/environment/lava-11237=
+119/bin/lava-test-runner /lava-11237119/1
+
+    2023-08-08T21:42:06.052133  =
+
+ =
+
+    ... (13 line(s) more)  =
+
+ =
+
+
+
+platform                     | arch   | lab           | compiler | defconfi=
+g                    | regressions
+-----------------------------+--------+---------------+----------+---------=
+---------------------+------------
+beagle-xm                    | arm    | lab-baylibre  | gcc-10   | omap2plu=
+s_defconfig          | 1          =
+
+
+  Details:     https://kernelci.org/test/plan/id/64d2bbad04b8ddd33b35b1d9
+
+  Results:     0 PASS, 1 FAIL, 0 SKIP
+  Full config: omap2plus_defconfig
+  Compiler:    gcc-10 (arm-linux-gnueabihf-gcc (Debian 10.2.1-6) 10.2.1 202=
+10110)
+  Plain log:   https://storage.kernelci.org//stable-rc/linux-5.15.y/v5.15.1=
+25-87-g976c140e8e74d/arm/omap2plus_defconfig/gcc-10/lab-baylibre/baseline-b=
+eagle-xm.txt
+  HTML log:    https://storage.kernelci.org//stable-rc/linux-5.15.y/v5.15.1=
+25-87-g976c140e8e74d/arm/omap2plus_defconfig/gcc-10/lab-baylibre/baseline-b=
+eagle-xm.html
+  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
+t-baseline/20230623.0/armel/rootfs.cpio.gz =
+
+
+
+  * baseline.login: https://kernelci.org/test/case/id/64d2bbad04b8ddd33b35b=
+1da
+        failing since 14 days (last pass: v5.15.120, first fail: v5.15.122-=
+79-g3bef1500d246a) =
+
+ =
+
+
+
+platform                     | arch   | lab           | compiler | defconfi=
+g                    | regressions
+-----------------------------+--------+---------------+----------+---------=
+---------------------+------------
+hp-x360-12b-c...4020-octopus | x86_64 | lab-collabora | gcc-10   | x86_64_d=
+efcon...6-chromebook | 1          =
+
+
+  Details:     https://kernelci.org/test/plan/id/64d2b6c04e592ae80b35b1e8
+
+  Results:     6 PASS, 1 FAIL, 0 SKIP
+  Full config: x86_64_defconfig+x86-chromebook
+  Compiler:    gcc-10 (gcc (Debian 10.2.1-6) 10.2.1 20210110)
+  Plain log:   https://storage.kernelci.org//stable-rc/linux-5.15.y/v5.15.1=
+25-87-g976c140e8e74d/x86_64/x86_64_defconfig+x86-chromebook/gcc-10/lab-coll=
+abora/baseline-hp-x360-12b-ca0010nr-n4020-octopus.txt
+  HTML log:    https://storage.kernelci.org//stable-rc/linux-5.15.y/v5.15.1=
+25-87-g976c140e8e74d/x86_64/x86_64_defconfig+x86-chromebook/gcc-10/lab-coll=
+abora/baseline-hp-x360-12b-ca0010nr-n4020-octopus.html
+  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
+t-baseline/20230623.0/x86/rootfs.cpio.gz =
+
+
+
+  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
+/64d2b6c04e592ae80b35b1ed
+        failing since 133 days (last pass: v5.15.104, first fail: v5.15.104=
+-147-gea115396267e)
+
+    2023-08-08T21:42:36.604527  + <8>[   10.295850] <LAVA_SIGNAL_ENDRUN 0_d=
+mesg 11237111_1.4.2.3.1>
+
+    2023-08-08T21:42:36.604636  set +x
+
+    2023-08-08T21:42:36.706108  #
+
+    2023-08-08T21:42:36.806878  / # #export SHELL=3D/bin/sh
+
+    2023-08-08T21:42:36.807151  =
+
+
+    2023-08-08T21:42:36.907720  / # export SHELL=3D/bin/sh. /lava-11237111/=
+environment
+
+    2023-08-08T21:42:36.907927  =
+
+
+    2023-08-08T21:42:37.008418  / # . /lava-11237111/environment/lava-11237=
+111/bin/lava-test-runner /lava-11237111/1
+
+    2023-08-08T21:42:37.008703  =
+
+
+    2023-08-08T21:42:37.013147  / # /lava-11237111/bin/lava-test-runner /la=
+va-11237111/1
+ =
+
+    ... (12 line(s) more)  =
+
+ =
+
+
+
+platform                     | arch   | lab           | compiler | defconfi=
+g                    | regressions
+-----------------------------+--------+---------------+----------+---------=
+---------------------+------------
+hp-x360-14-G1-sona           | x86_64 | lab-collabora | gcc-10   | x86_64_d=
+efcon...6-chromebook | 1          =
+
+
+  Details:     https://kernelci.org/test/plan/id/64d2b69e1ebd5bab1735b209
+
+  Results:     6 PASS, 1 FAIL, 0 SKIP
+  Full config: x86_64_defconfig+x86-chromebook
+  Compiler:    gcc-10 (gcc (Debian 10.2.1-6) 10.2.1 20210110)
+  Plain log:   https://storage.kernelci.org//stable-rc/linux-5.15.y/v5.15.1=
+25-87-g976c140e8e74d/x86_64/x86_64_defconfig+x86-chromebook/gcc-10/lab-coll=
+abora/baseline-hp-x360-14-G1-sona.txt
+  HTML log:    https://storage.kernelci.org//stable-rc/linux-5.15.y/v5.15.1=
+25-87-g976c140e8e74d/x86_64/x86_64_defconfig+x86-chromebook/gcc-10/lab-coll=
+abora/baseline-hp-x360-14-G1-sona.html
+  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
+t-baseline/20230623.0/x86/rootfs.cpio.gz =
+
+
+
+  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
+/64d2b69e1ebd5bab1735b20e
+        failing since 133 days (last pass: v5.15.104, first fail: v5.15.104=
+-147-gea115396267e)
+
+    2023-08-08T21:41:39.701260  <8>[   10.699041] <LAVA_SIGNAL_ENDRUN 0_dme=
+sg 11237101_1.4.2.3.1>
+
+    2023-08-08T21:41:39.704659  + set +x
+
+    2023-08-08T21:41:39.808683  / # #
+
+    2023-08-08T21:41:39.909229  export SHELL=3D/bin/sh
+
+    2023-08-08T21:41:39.909415  #
+
+    2023-08-08T21:41:40.009920  / # export SHELL=3D/bin/sh. /lava-11237101/=
+environment
+
+    2023-08-08T21:41:40.010081  =
+
+
+    2023-08-08T21:41:40.110545  / # . /lava-11237101/environment/lava-11237=
+101/bin/lava-test-runner /lava-11237101/1
+
+    2023-08-08T21:41:40.110860  =
+
+
+    2023-08-08T21:41:40.115948  / # /lava-11237101/bin/lava-test-runner /la=
+va-11237101/1
+ =
+
+    ... (12 line(s) more)  =
+
+ =
+
+
+
+platform                     | arch   | lab           | compiler | defconfi=
+g                    | regressions
+-----------------------------+--------+---------------+----------+---------=
+---------------------+------------
+hp-x360-14a-cb0001xx-zork    | x86_64 | lab-collabora | gcc-10   | x86_64_d=
+efcon...6-chromebook | 1          =
+
+
+  Details:     https://kernelci.org/test/plan/id/64d2b6b41ebd5bab1735b250
+
+  Results:     6 PASS, 1 FAIL, 0 SKIP
+  Full config: x86_64_defconfig+x86-chromebook
+  Compiler:    gcc-10 (gcc (Debian 10.2.1-6) 10.2.1 20210110)
+  Plain log:   https://storage.kernelci.org//stable-rc/linux-5.15.y/v5.15.1=
+25-87-g976c140e8e74d/x86_64/x86_64_defconfig+x86-chromebook/gcc-10/lab-coll=
+abora/baseline-hp-x360-14a-cb0001xx-zork.txt
+  HTML log:    https://storage.kernelci.org//stable-rc/linux-5.15.y/v5.15.1=
+25-87-g976c140e8e74d/x86_64/x86_64_defconfig+x86-chromebook/gcc-10/lab-coll=
+abora/baseline-hp-x360-14a-cb0001xx-zork.html
+  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
+t-baseline/20230623.0/x86/rootfs.cpio.gz =
+
+
+
+  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
+/64d2b6b41ebd5bab1735b255
+        failing since 133 days (last pass: v5.15.104, first fail: v5.15.104=
+-147-gea115396267e)
+
+    2023-08-08T21:42:04.357268  + set<8>[   11.092697] <LAVA_SIGNAL_ENDRUN =
+0_dmesg 11237136_1.4.2.3.1>
+
+    2023-08-08T21:42:04.357881   +x
+
+    2023-08-08T21:42:04.465626  / # #
+
+    2023-08-08T21:42:04.568116  export SHELL=3D/bin/sh
+
+    2023-08-08T21:42:04.569070  #
+
+    2023-08-08T21:42:04.670879  / # export SHELL=3D/bin/sh. /lava-11237136/=
+environment
+
+    2023-08-08T21:42:04.671667  =
+
+
+    2023-08-08T21:42:04.773347  / # . /lava-11237136/environment/lava-11237=
+136/bin/lava-test-runner /lava-11237136/1
+
+    2023-08-08T21:42:04.774785  =
+
+
+    2023-08-08T21:42:04.779723  / # /lava-11237136/bin/lava-test-runner /la=
+va-11237136/1
+ =
+
+    ... (12 line(s) more)  =
+
+ =
+
+
+
+platform                     | arch   | lab           | compiler | defconfi=
+g                    | regressions
+-----------------------------+--------+---------------+----------+---------=
+---------------------+------------
+lenovo-TPad-C13-Yoga-zork    | x86_64 | lab-collabora | gcc-10   | x86_64_d=
+efcon...6-chromebook | 1          =
+
+
+  Details:     https://kernelci.org/test/plan/id/64d2b6b34e592ae80b35b1dc
+
+  Results:     6 PASS, 1 FAIL, 0 SKIP
+  Full config: x86_64_defconfig+x86-chromebook
+  Compiler:    gcc-10 (gcc (Debian 10.2.1-6) 10.2.1 20210110)
+  Plain log:   https://storage.kernelci.org//stable-rc/linux-5.15.y/v5.15.1=
+25-87-g976c140e8e74d/x86_64/x86_64_defconfig+x86-chromebook/gcc-10/lab-coll=
+abora/baseline-lenovo-TPad-C13-Yoga-zork.txt
+  HTML log:    https://storage.kernelci.org//stable-rc/linux-5.15.y/v5.15.1=
+25-87-g976c140e8e74d/x86_64/x86_64_defconfig+x86-chromebook/gcc-10/lab-coll=
+abora/baseline-lenovo-TPad-C13-Yoga-zork.html
+  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
+t-baseline/20230623.0/x86/rootfs.cpio.gz =
+
+
+
+  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
+/64d2b6b44e592ae80b35b1e1
+        failing since 133 days (last pass: v5.15.104, first fail: v5.15.104=
+-147-gea115396267e)
+
+    2023-08-08T21:41:52.202416  + set<8>[   12.266162] <LAVA_SIGNAL_ENDRUN =
+0_dmesg 11237127_1.4.2.3.1>
+
+    2023-08-08T21:41:52.202535   +x
+
+    2023-08-08T21:41:52.306848  / # #
+
+    2023-08-08T21:41:52.407448  export SHELL=3D/bin/sh
+
+    2023-08-08T21:41:52.407644  #
+
+    2023-08-08T21:41:52.508176  / # export SHELL=3D/bin/sh. /lava-11237127/=
+environment
+
+    2023-08-08T21:41:52.508385  =
+
+
+    2023-08-08T21:41:52.608934  / # . /lava-11237127/environment/lava-11237=
+127/bin/lava-test-runner /lava-11237127/1
+
+    2023-08-08T21:41:52.609208  =
+
+
+    2023-08-08T21:41:52.613978  / # /lava-11237127/bin/lava-test-runner /la=
+va-11237127/1
+ =
+
+    ... (12 line(s) more)  =
+
+ =20
