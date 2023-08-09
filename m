@@ -2,48 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 67A5C7758F9
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:56:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A05B7775A71
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:08:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232332AbjHIK4U (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 06:56:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37708 "EHLO
+        id S233181AbjHILI3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:08:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56264 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232627AbjHIK4N (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:56:13 -0400
+        with ESMTP id S233166AbjHILI0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:08:26 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0BF7E2107
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:56:13 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 20451ED
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:08:26 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 96A006238A
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:56:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7878C433C7;
-        Wed,  9 Aug 2023 10:56:11 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id AB76462BC8
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:08:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBA9CC433C9;
+        Wed,  9 Aug 2023 11:08:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691578572;
-        bh=M/LwTgNLjt1aUTp3kcuKb+mD1DNqRtFq1Gl4/iXPMFo=;
+        s=korg; t=1691579305;
+        bh=pilLk7AeoPRZGxOCVHz0Rnxa6mt8v2W7nl6GIwDMYNI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=bI1iQ+Sads5VBWsRgcNraL/J/WhjsWYYlHXColih17e4artz+epBGGmupyO/6vsxK
-         TviNHQ1mLUjmvvnnFKMmJ8cmrEd3P7Y7tH4P54zAlZX3kGXD2VpTlHBfW1yHgFctP8
-         fbhsos0Pjd1Jc1yFhhZW9FdqiQZinD7i/ZMfIX9o=
+        b=rbnhBIRkU29OBzJQ6C0HWj7ZVEr4v2T+Jh34Z7mZ8LZ7zhY6So7FqbjK1gBawtFor
+         ckafvckFx7I1bb3fXNivoIrSSjRkUk/cUM/bl2aQPNEyWqNfroVEDbbpPEoSMx9XvH
+         RvmRiC248wkXKwyAFz1kaKoPCEueedOh8nhBHbP8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Roman Gushchin <roman.gushchin@linux.dev>,
-        syzbot+774c29891415ab0fd29d@syzkaller.appspotmail.com,
-        Dmitry Vyukov <dvyukov@google.com>,
-        Yosry Ahmed <yosryahmed@google.com>,
-        Shakeel Butt <shakeelb@google.com>,
-        Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 100/127] mm: kmem: fix a NULL pointer dereference in obj_stock_flush_required()
+        patches@lists.linux.dev, Yuanjun Gong <ruc_gongyuanjun@163.com>,
+        Simon Horman <simon.horman@corigine.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.14 149/204] ethernet: atheros: fix return value check in atl1e_tso_csum()
 Date:   Wed,  9 Aug 2023 12:41:27 +0200
-Message-ID: <20230809103639.937159103@linuxfoundation.org>
+Message-ID: <20230809103647.553404641@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103636.615294317@linuxfoundation.org>
-References: <20230809103636.615294317@linuxfoundation.org>
+In-Reply-To: <20230809103642.552405807@linuxfoundation.org>
+References: <20230809103642.552405807@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -58,153 +56,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Roman Gushchin <roman.gushchin@linux.dev>
+From: Yuanjun Gong <ruc_gongyuanjun@163.com>
 
-commit 3b8abb3239530c423c0b97e42af7f7e856e1ee96 upstream.
+[ Upstream commit 69a184f7a372aac588babfb0bd681aaed9779f5b ]
 
-KCSAN found an issue in obj_stock_flush_required():
-stock->cached_objcg can be reset between the check and dereference:
+in atl1e_tso_csum, it should check the return value of pskb_trim(),
+and return an error code if an unexpected value is returned
+by pskb_trim().
 
-==================================================================
-BUG: KCSAN: data-race in drain_all_stock / drain_obj_stock
-
-write to 0xffff888237c2a2f8 of 8 bytes by task 19625 on cpu 0:
- drain_obj_stock+0x408/0x4e0 mm/memcontrol.c:3306
- refill_obj_stock+0x9c/0x1e0 mm/memcontrol.c:3340
- obj_cgroup_uncharge+0xe/0x10 mm/memcontrol.c:3408
- memcg_slab_free_hook mm/slab.h:587 [inline]
- __cache_free mm/slab.c:3373 [inline]
- __do_kmem_cache_free mm/slab.c:3577 [inline]
- kmem_cache_free+0x105/0x280 mm/slab.c:3602
- __d_free fs/dcache.c:298 [inline]
- dentry_free fs/dcache.c:375 [inline]
- __dentry_kill+0x422/0x4a0 fs/dcache.c:621
- dentry_kill+0x8d/0x1e0
- dput+0x118/0x1f0 fs/dcache.c:913
- __fput+0x3bf/0x570 fs/file_table.c:329
- ____fput+0x15/0x20 fs/file_table.c:349
- task_work_run+0x123/0x160 kernel/task_work.c:179
- resume_user_mode_work include/linux/resume_user_mode.h:49 [inline]
- exit_to_user_mode_loop+0xcf/0xe0 kernel/entry/common.c:171
- exit_to_user_mode_prepare+0x6a/0xa0 kernel/entry/common.c:203
- __syscall_exit_to_user_mode_work kernel/entry/common.c:285 [inline]
- syscall_exit_to_user_mode+0x26/0x140 kernel/entry/common.c:296
- do_syscall_64+0x4d/0xc0 arch/x86/entry/common.c:86
- entry_SYSCALL_64_after_hwframe+0x63/0xcd
-
-read to 0xffff888237c2a2f8 of 8 bytes by task 19632 on cpu 1:
- obj_stock_flush_required mm/memcontrol.c:3319 [inline]
- drain_all_stock+0x174/0x2a0 mm/memcontrol.c:2361
- try_charge_memcg+0x6d0/0xd10 mm/memcontrol.c:2703
- try_charge mm/memcontrol.c:2837 [inline]
- mem_cgroup_charge_skmem+0x51/0x140 mm/memcontrol.c:7290
- sock_reserve_memory+0xb1/0x390 net/core/sock.c:1025
- sk_setsockopt+0x800/0x1e70 net/core/sock.c:1525
- udp_lib_setsockopt+0x99/0x6c0 net/ipv4/udp.c:2692
- udp_setsockopt+0x73/0xa0 net/ipv4/udp.c:2817
- sock_common_setsockopt+0x61/0x70 net/core/sock.c:3668
- __sys_setsockopt+0x1c3/0x230 net/socket.c:2271
- __do_sys_setsockopt net/socket.c:2282 [inline]
- __se_sys_setsockopt net/socket.c:2279 [inline]
- __x64_sys_setsockopt+0x66/0x80 net/socket.c:2279
- do_syscall_x64 arch/x86/entry/common.c:50 [inline]
- do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
- entry_SYSCALL_64_after_hwframe+0x63/0xcd
-
-value changed: 0xffff8881382d52c0 -> 0xffff888138893740
-
-Reported by Kernel Concurrency Sanitizer on:
-CPU: 1 PID: 19632 Comm: syz-executor.0 Not tainted 6.3.0-rc2-syzkaller-00387-g534293368afa #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 03/02/2023
-
-Fix it by using READ_ONCE()/WRITE_ONCE() for all accesses to
-stock->cached_objcg.
-
-Link: https://lkml.kernel.org/r/20230502160839.361544-1-roman.gushchin@linux.dev
-Fixes: bf4f059954dc ("mm: memcg/slab: obj_cgroup API")
-Signed-off-by: Roman Gushchin <roman.gushchin@linux.dev>
-Reported-by: syzbot+774c29891415ab0fd29d@syzkaller.appspotmail.com
-Reported-by: Dmitry Vyukov <dvyukov@google.com>
-  Link: https://lore.kernel.org/linux-mm/CACT4Y+ZfucZhM60YPphWiCLJr6+SGFhT+jjm8k1P-a_8Kkxsjg@mail.gmail.com/T/#t
-Reviewed-by: Yosry Ahmed <yosryahmed@google.com>
-Acked-by: Shakeel Butt <shakeelb@google.com>
-Reviewed-by: Dmitry Vyukov <dvyukov@google.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: a6a5325239c2 ("atl1e: Atheros L1E Gigabit Ethernet driver")
+Signed-off-by: Yuanjun Gong <ruc_gongyuanjun@163.com>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Link: https://lore.kernel.org/r/20230720144219.39285-1-ruc_gongyuanjun@163.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/memcontrol.c |   19 ++++++++++---------
- 1 file changed, 10 insertions(+), 9 deletions(-)
+ drivers/net/ethernet/atheros/atl1e/atl1e_main.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/mm/memcontrol.c
-+++ b/mm/memcontrol.c
-@@ -3165,12 +3165,12 @@ void mod_objcg_state(struct obj_cgroup *
- 	 * accumulating over a page of vmstat data or when pgdat or idx
- 	 * changes.
- 	 */
--	if (stock->cached_objcg != objcg) {
-+	if (READ_ONCE(stock->cached_objcg) != objcg) {
- 		old = drain_obj_stock(stock);
- 		obj_cgroup_get(objcg);
- 		stock->nr_bytes = atomic_read(&objcg->nr_charged_bytes)
- 				? atomic_xchg(&objcg->nr_charged_bytes, 0) : 0;
--		stock->cached_objcg = objcg;
-+		WRITE_ONCE(stock->cached_objcg, objcg);
- 		stock->cached_pgdat = pgdat;
- 	} else if (stock->cached_pgdat != pgdat) {
- 		/* Flush the existing cached vmstat data */
-@@ -3224,7 +3224,7 @@ static bool consume_obj_stock(struct obj
- 	local_lock_irqsave(&memcg_stock.stock_lock, flags);
+diff --git a/drivers/net/ethernet/atheros/atl1e/atl1e_main.c b/drivers/net/ethernet/atheros/atl1e/atl1e_main.c
+index 0d08039981b54..33a688d8aaba9 100644
+--- a/drivers/net/ethernet/atheros/atl1e/atl1e_main.c
++++ b/drivers/net/ethernet/atheros/atl1e/atl1e_main.c
+@@ -1650,8 +1650,11 @@ static int atl1e_tso_csum(struct atl1e_adapter *adapter,
+ 			real_len = (((unsigned char *)ip_hdr(skb) - skb->data)
+ 					+ ntohs(ip_hdr(skb)->tot_len));
  
- 	stock = this_cpu_ptr(&memcg_stock);
--	if (objcg == stock->cached_objcg && stock->nr_bytes >= nr_bytes) {
-+	if (objcg == READ_ONCE(stock->cached_objcg) && stock->nr_bytes >= nr_bytes) {
- 		stock->nr_bytes -= nr_bytes;
- 		ret = true;
- 	}
-@@ -3236,7 +3236,7 @@ static bool consume_obj_stock(struct obj
+-			if (real_len < skb->len)
+-				pskb_trim(skb, real_len);
++			if (real_len < skb->len) {
++				err = pskb_trim(skb, real_len);
++				if (err)
++					return err;
++			}
  
- static struct obj_cgroup *drain_obj_stock(struct memcg_stock_pcp *stock)
- {
--	struct obj_cgroup *old = stock->cached_objcg;
-+	struct obj_cgroup *old = READ_ONCE(stock->cached_objcg);
- 
- 	if (!old)
- 		return NULL;
-@@ -3289,7 +3289,7 @@ static struct obj_cgroup *drain_obj_stoc
- 		stock->cached_pgdat = NULL;
- 	}
- 
--	stock->cached_objcg = NULL;
-+	WRITE_ONCE(stock->cached_objcg, NULL);
- 	/*
- 	 * The `old' objects needs to be released by the caller via
- 	 * obj_cgroup_put() outside of memcg_stock_pcp::stock_lock.
-@@ -3300,10 +3300,11 @@ static struct obj_cgroup *drain_obj_stoc
- static bool obj_stock_flush_required(struct memcg_stock_pcp *stock,
- 				     struct mem_cgroup *root_memcg)
- {
-+	struct obj_cgroup *objcg = READ_ONCE(stock->cached_objcg);
- 	struct mem_cgroup *memcg;
- 
--	if (stock->cached_objcg) {
--		memcg = obj_cgroup_memcg(stock->cached_objcg);
-+	if (objcg) {
-+		memcg = obj_cgroup_memcg(objcg);
- 		if (memcg && mem_cgroup_is_descendant(memcg, root_memcg))
- 			return true;
- 	}
-@@ -3322,10 +3323,10 @@ static void refill_obj_stock(struct obj_
- 	local_lock_irqsave(&memcg_stock.stock_lock, flags);
- 
- 	stock = this_cpu_ptr(&memcg_stock);
--	if (stock->cached_objcg != objcg) { /* reset if necessary */
-+	if (READ_ONCE(stock->cached_objcg) != objcg) { /* reset if necessary */
- 		old = drain_obj_stock(stock);
- 		obj_cgroup_get(objcg);
--		stock->cached_objcg = objcg;
-+		WRITE_ONCE(stock->cached_objcg, objcg);
- 		stock->nr_bytes = atomic_read(&objcg->nr_charged_bytes)
- 				? atomic_xchg(&objcg->nr_charged_bytes, 0) : 0;
- 		allow_uncharge = true;	/* Allow uncharge when objcg changes */
+ 			hdr_len = (skb_transport_offset(skb) + tcp_hdrlen(skb));
+ 			if (unlikely(skb->len == hdr_len)) {
+-- 
+2.39.2
+
 
 
