@@ -2,45 +2,55 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ECEB17758E0
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:55:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B8E7A7757C3
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:49:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232664AbjHIKzx (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 06:55:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40160 "EHLO
+        id S232281AbjHIKtu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 06:49:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59544 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232739AbjHIKzj (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:55:39 -0400
+        with ESMTP id S232284AbjHIKts (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:49:48 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F17262690
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:54:57 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25DD110FF
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:49:48 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 65FE4630D2
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:54:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79BFCC433C7;
-        Wed,  9 Aug 2023 10:54:56 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A274C630D2
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:49:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E7EFC433C7;
+        Wed,  9 Aug 2023 10:49:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691578496;
-        bh=HZf9mBn7XGBdhhFooDESb4q+iPzkiKPMUHuXqIYTE1M=;
+        s=korg; t=1691578187;
+        bh=cyiCJhAjrEvCmmdDk6LeUkn/43xZoWgsNe7RPfTE/Kg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=G8WwozjwvHEd732ydG8ChNDeqcpmj8mGN1DaU22+3OYtdFwwa/x042tKSScvWev0U
-         Kx2rbosVmgf+09B2brLX0aelG39yiRKBW+Gum8uJQGU/5DthCtagQZUewFJSkPI7we
-         i6rEcE4AjHyb0U/0FtmDaBFbnTIKhfh9xknN0tWQ=
+        b=G4P5UcTOy/q/wtRD0zjWEmueG9Jb+iy3x2iejjextNMQXas8/qUqDO0TfPy4hMALn
+         tovFjZK16SD20JV0X/p1h4u5dVeKSwwsqQqCwBpTyrdpT4AMRjDh72K7d1JsryufbR
+         hj7f2+6m/iZmWEZIoYjCea2dKTemDjkMgnZ91CZs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hou Tao <houtao1@huawei.com>,
-        Jiri Olsa <jolsa@kernel.org>,
-        Alexei Starovoitov <ast@kernel.org>
-Subject: [PATCH 6.1 081/127] bpf: Disable preemption in bpf_perf_event_output
+        patches@lists.linux.dev,
+        Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+        syzbot <syzbot+ece2915262061d6e0ac1@syzkaller.appspotmail.com>,
+        "Huang, Ying" <ying.huang@intel.com>,
+        Alexander Potapenko <glider@google.com>,
+        Andrey Konovalov <andreyknvl@gmail.com>,
+        Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+        Dmitry Vyukov <dvyukov@google.com>,
+        Marco Elver <elver@google.com>,
+        Mel Gorman <mgorman@techsingularity.net>,
+        Vincenzo Frascino <vincenzo.frascino@arm.com>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.4 137/165] kasan,kmsan: remove __GFP_KSWAPD_RECLAIM usage from kasan/kmsan
 Date:   Wed,  9 Aug 2023 12:41:08 +0200
-Message-ID: <20230809103639.333605569@linuxfoundation.org>
+Message-ID: <20230809103647.299809609@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103636.615294317@linuxfoundation.org>
-References: <20230809103636.615294317@linuxfoundation.org>
+In-Reply-To: <20230809103642.720851262@linuxfoundation.org>
+References: <20230809103642.720851262@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,89 +65,115 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jiri Olsa <jolsa@kernel.org>
+From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
 
-commit f2c67a3e60d1071b65848efaa8c3b66c363dd025 upstream.
+commit 726ccdba1521007fab4b2b7565d255fa0f2b770c upstream.
 
-The nesting protection in bpf_perf_event_output relies on disabled
-preemption, which is guaranteed for kprobes and tracepoints.
+syzbot is reporting lockdep warning in __stack_depot_save(), for
+the caller of __stack_depot_save() (i.e. __kasan_record_aux_stack() in
+this report) is responsible for masking __GFP_KSWAPD_RECLAIM flag in
+order not to wake kswapd which in turn wakes kcompactd.
 
-However bpf_perf_event_output can be also called from uprobes context
-through bpf_prog_run_array_sleepable function which disables migration,
-but keeps preemption enabled.
+Since kasan/kmsan functions might be called with arbitrary locks held,
+mask __GFP_KSWAPD_RECLAIM flag from all GFP_NOWAIT/GFP_ATOMIC allocations
+in kasan/kmsan.
 
-This can cause task to be preempted by another one inside the nesting
-protection and lead eventually to two tasks using same perf_sample_data
-buffer and cause crashes like:
+Note that kmsan_save_stack_with_flags() is changed to mask both
+__GFP_DIRECT_RECLAIM flag and __GFP_KSWAPD_RECLAIM flag, for
+wakeup_kswapd() from wake_all_kswapds() from __alloc_pages_slowpath()
+calls wakeup_kcompactd() if __GFP_KSWAPD_RECLAIM flag is set and
+__GFP_DIRECT_RECLAIM flag is not set.
 
-  kernel tried to execute NX-protected page - exploit attempt? (uid: 0)
-  BUG: unable to handle page fault for address: ffffffff82be3eea
-  ...
-  Call Trace:
-   ? __die+0x1f/0x70
-   ? page_fault_oops+0x176/0x4d0
-   ? exc_page_fault+0x132/0x230
-   ? asm_exc_page_fault+0x22/0x30
-   ? perf_output_sample+0x12b/0x910
-   ? perf_event_output+0xd0/0x1d0
-   ? bpf_perf_event_output+0x162/0x1d0
-   ? bpf_prog_c6271286d9a4c938_krava1+0x76/0x87
-   ? __uprobe_perf_func+0x12b/0x540
-   ? uprobe_dispatcher+0x2c4/0x430
-   ? uprobe_notify_resume+0x2da/0xce0
-   ? atomic_notifier_call_chain+0x7b/0x110
-   ? exit_to_user_mode_prepare+0x13e/0x290
-   ? irqentry_exit_to_user_mode+0x5/0x30
-   ? asm_exc_int3+0x35/0x40
-
-Fixing this by disabling preemption in bpf_perf_event_output.
-
-Cc: stable@vger.kernel.org
-Fixes: 8c7dcb84e3b7 ("bpf: implement sleepable uprobes by chaining gps")
-Acked-by: Hou Tao <houtao1@huawei.com>
-Signed-off-by: Jiri Olsa <jolsa@kernel.org>
-Link: https://lore.kernel.org/r/20230725084206.580930-2-jolsa@kernel.org
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Link: https://lkml.kernel.org/r/656cb4f5-998b-c8d7-3c61-c2d37aa90f9a@I-love.SAKURA.ne.jp
+Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Reported-by: syzbot <syzbot+ece2915262061d6e0ac1@syzkaller.appspotmail.com>
+Closes: https://syzkaller.appspot.com/bug?extid=ece2915262061d6e0ac1
+Reviewed-by: "Huang, Ying" <ying.huang@intel.com>
+Reviewed-by: Alexander Potapenko <glider@google.com>
+Cc: Andrey Konovalov <andreyknvl@gmail.com>
+Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>
+Cc: Dmitry Vyukov <dvyukov@google.com>
+Cc: Marco Elver <elver@google.com>
+Cc: Mel Gorman <mgorman@techsingularity.net>
+Cc: Vincenzo Frascino <vincenzo.frascino@arm.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/bpf_trace.c |   11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ mm/kasan/generic.c         |    4 ++--
+ mm/kasan/tags.c            |    2 +-
+ mm/kmsan/core.c            |    6 +++---
+ mm/kmsan/instrumentation.c |    2 +-
+ 4 files changed, 7 insertions(+), 7 deletions(-)
 
---- a/kernel/trace/bpf_trace.c
-+++ b/kernel/trace/bpf_trace.c
-@@ -662,8 +662,7 @@ static DEFINE_PER_CPU(int, bpf_trace_nes
- BPF_CALL_5(bpf_perf_event_output, struct pt_regs *, regs, struct bpf_map *, map,
- 	   u64, flags, void *, data, u64, size)
- {
--	struct bpf_trace_sample_data *sds = this_cpu_ptr(&bpf_trace_sds);
--	int nest_level = this_cpu_inc_return(bpf_trace_nest_level);
-+	struct bpf_trace_sample_data *sds;
- 	struct perf_raw_record raw = {
- 		.frag = {
- 			.size = size,
-@@ -671,7 +670,11 @@ BPF_CALL_5(bpf_perf_event_output, struct
- 		},
- 	};
- 	struct perf_sample_data *sd;
--	int err;
-+	int nest_level, err;
-+
-+	preempt_disable();
-+	sds = this_cpu_ptr(&bpf_trace_sds);
-+	nest_level = this_cpu_inc_return(bpf_trace_nest_level);
+--- a/mm/kasan/generic.c
++++ b/mm/kasan/generic.c
+@@ -489,7 +489,7 @@ static void __kasan_record_aux_stack(voi
+ 		return;
  
- 	if (WARN_ON_ONCE(nest_level > ARRAY_SIZE(sds->sds))) {
- 		err = -EBUSY;
-@@ -690,9 +693,9 @@ BPF_CALL_5(bpf_perf_event_output, struct
- 	sd->sample_flags |= PERF_SAMPLE_RAW;
- 
- 	err = __bpf_perf_event_output(regs, map, flags, sd);
--
- out:
- 	this_cpu_dec(bpf_trace_nest_level);
-+	preempt_enable();
- 	return err;
+ 	alloc_meta->aux_stack[1] = alloc_meta->aux_stack[0];
+-	alloc_meta->aux_stack[0] = kasan_save_stack(GFP_NOWAIT, can_alloc);
++	alloc_meta->aux_stack[0] = kasan_save_stack(0, can_alloc);
  }
  
+ void kasan_record_aux_stack(void *addr)
+@@ -519,7 +519,7 @@ void kasan_save_free_info(struct kmem_ca
+ 	if (!free_meta)
+ 		return;
+ 
+-	kasan_set_track(&free_meta->free_track, GFP_NOWAIT);
++	kasan_set_track(&free_meta->free_track, 0);
+ 	/* The object was freed and has free track set. */
+ 	*(u8 *)kasan_mem_to_shadow(object) = KASAN_SLAB_FREETRACK;
+ }
+--- a/mm/kasan/tags.c
++++ b/mm/kasan/tags.c
+@@ -140,5 +140,5 @@ void kasan_save_alloc_info(struct kmem_c
+ 
+ void kasan_save_free_info(struct kmem_cache *cache, void *object)
+ {
+-	save_stack_info(cache, object, GFP_NOWAIT, true);
++	save_stack_info(cache, object, 0, true);
+ }
+--- a/mm/kmsan/core.c
++++ b/mm/kmsan/core.c
+@@ -74,7 +74,7 @@ depot_stack_handle_t kmsan_save_stack_wi
+ 	nr_entries = stack_trace_save(entries, KMSAN_STACK_DEPTH, 0);
+ 
+ 	/* Don't sleep. */
+-	flags &= ~__GFP_DIRECT_RECLAIM;
++	flags &= ~(__GFP_DIRECT_RECLAIM | __GFP_KSWAPD_RECLAIM);
+ 
+ 	handle = __stack_depot_save(entries, nr_entries, flags, true);
+ 	return stack_depot_set_extra_bits(handle, extra);
+@@ -245,7 +245,7 @@ depot_stack_handle_t kmsan_internal_chai
+ 	extra_bits = kmsan_extra_bits(depth, uaf);
+ 
+ 	entries[0] = KMSAN_CHAIN_MAGIC_ORIGIN;
+-	entries[1] = kmsan_save_stack_with_flags(GFP_ATOMIC, 0);
++	entries[1] = kmsan_save_stack_with_flags(__GFP_HIGH, 0);
+ 	entries[2] = id;
+ 	/*
+ 	 * @entries is a local var in non-instrumented code, so KMSAN does not
+@@ -253,7 +253,7 @@ depot_stack_handle_t kmsan_internal_chai
+ 	 * positives when __stack_depot_save() passes it to instrumented code.
+ 	 */
+ 	kmsan_internal_unpoison_memory(entries, sizeof(entries), false);
+-	handle = __stack_depot_save(entries, ARRAY_SIZE(entries), GFP_ATOMIC,
++	handle = __stack_depot_save(entries, ARRAY_SIZE(entries), __GFP_HIGH,
+ 				    true);
+ 	return stack_depot_set_extra_bits(handle, extra_bits);
+ }
+--- a/mm/kmsan/instrumentation.c
++++ b/mm/kmsan/instrumentation.c
+@@ -282,7 +282,7 @@ void __msan_poison_alloca(void *address,
+ 
+ 	/* stack_depot_save() may allocate memory. */
+ 	kmsan_enter_runtime();
+-	handle = stack_depot_save(entries, ARRAY_SIZE(entries), GFP_ATOMIC);
++	handle = stack_depot_save(entries, ARRAY_SIZE(entries), __GFP_HIGH);
+ 	kmsan_leave_runtime();
+ 
+ 	kmsan_internal_set_shadow_origin(address, size, -1, handle,
 
 
