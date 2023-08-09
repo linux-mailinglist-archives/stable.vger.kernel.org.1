@@ -2,87 +2,197 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0950E775B90
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:18:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 53FA677579B
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:48:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233473AbjHILSk (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:18:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37604 "EHLO
+        id S232234AbjHIKsC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 06:48:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58496 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233479AbjHILSj (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:18:39 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F345A1724
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:18:38 -0700 (PDT)
+        with ESMTP id S232239AbjHIKsC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:48:02 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 19FCB10FF
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:48:01 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9366263194
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:18:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A835CC433C8;
-        Wed,  9 Aug 2023 11:18:37 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A553D630D2
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:48:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8713C433C7;
+        Wed,  9 Aug 2023 10:47:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691579918;
-        bh=14HfLpqt8CF1VgRt7g6fsHBbMVs6qAmkoudDqkGz2Jw=;
+        s=korg; t=1691578080;
+        bh=DlxghmVUkJR6OMqrDqh0R4b8BolZSyiTuUNxst6EnHc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=nXWgoU2UqjylA0jmn6ANt4nUMdXIhc+kGCC7CuGR1IxBLqndzj87jji4Etlebv3PO
-         /Zq9ikSmGP3/4+lyZGiCDYO0/PB7e5cES7AAFqOoMDoIiZmreBLTcGyobYItHrxOdc
-         pdEebVFotbkeE8nvGumGk+290H9ywku+deWkMrHc=
+        b=C0V2a2F0+lm/UD0CTmIibET+IT8KCJX6Bn7+nabofvKh4MS8NuzGa80pkfGZ0rxeu
+         KzOPahI/FxXi5vlY6vSxBnrXYyvQjLB9jnz1VxVWBjUPnUhH0Tu7oVdw2P7pSkCZ6m
+         BYuO7+ed5J+kKb7ebIG6I6OO4InChXBh3IifSQ9o=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-        Lorenzo Pieralisi <lpieralisi@kernel.org>
-Subject: [PATCH 4.19 162/323] PCI: qcom: Disable write access to read only registers for IP v2.3.3
+        patches@lists.linux.dev, Hou Tao <houtao1@huawei.com>,
+        Pu Lehui <pulehui@huawei.com>,
+        Jesper Dangaard Brouer <hawk@kernel.org>,
+        Martin KaFai Lau <martin.lau@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 069/165] bpf, cpumap: Make sure kthread is running before map update returns
 Date:   Wed,  9 Aug 2023 12:40:00 +0200
-Message-ID: <20230809103705.564586110@linuxfoundation.org>
+Message-ID: <20230809103645.066020813@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
-References: <20230809103658.104386911@linuxfoundation.org>
+In-Reply-To: <20230809103642.720851262@linuxfoundation.org>
+References: <20230809103642.720851262@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+From: Hou Tao <houtao1@huawei.com>
 
-commit a33d700e8eea76c62120cb3dbf5e01328f18319a upstream.
+[ Upstream commit 640a604585aa30f93e39b17d4d6ba69fcb1e66c9 ]
 
-In the post init sequence of v2.9.0, write access to read only registers
-are not disabled after updating the registers. Fix it by disabling the
-access after register update.
+The following warning was reported when running stress-mode enabled
+xdp_redirect_cpu with some RT threads:
 
-Link: https://lore.kernel.org/r/20230619150408.8468-2-manivannan.sadhasivam@linaro.org
-Fixes: 5d76117f070d ("PCI: qcom: Add support for IPQ8074 PCIe controller")
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Signed-off-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+  ------------[ cut here ]------------
+  WARNING: CPU: 4 PID: 65 at kernel/bpf/cpumap.c:135
+  CPU: 4 PID: 65 Comm: kworker/4:1 Not tainted 6.5.0-rc2+ #1
+  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996)
+  Workqueue: events cpu_map_kthread_stop
+  RIP: 0010:put_cpu_map_entry+0xda/0x220
+  ......
+  Call Trace:
+   <TASK>
+   ? show_regs+0x65/0x70
+   ? __warn+0xa5/0x240
+   ......
+   ? put_cpu_map_entry+0xda/0x220
+   cpu_map_kthread_stop+0x41/0x60
+   process_one_work+0x6b0/0xb80
+   worker_thread+0x96/0x720
+   kthread+0x1a5/0x1f0
+   ret_from_fork+0x3a/0x70
+   ret_from_fork_asm+0x1b/0x30
+   </TASK>
+
+The root cause is the same as commit 436901649731 ("bpf: cpumap: Fix memory
+leak in cpu_map_update_elem"). The kthread is stopped prematurely by
+kthread_stop() in cpu_map_kthread_stop(), and kthread() doesn't call
+cpu_map_kthread_run() at all but XDP program has already queued some
+frames or skbs into ptr_ring. So when __cpu_map_ring_cleanup() checks
+the ptr_ring, it will find it was not emptied and report a warning.
+
+An alternative fix is to use __cpu_map_ring_cleanup() to drop these
+pending frames or skbs when kthread_stop() returns -EINTR, but it may
+confuse the user, because these frames or skbs have been handled
+correctly by XDP program. So instead of dropping these frames or skbs,
+just make sure the per-cpu kthread is running before
+__cpu_map_entry_alloc() returns.
+
+After apply the fix, the error handle for kthread_stop() will be
+unnecessary because it will always return 0, so just remove it.
+
+Fixes: 6710e1126934 ("bpf: introduce new bpf cpu map type BPF_MAP_TYPE_CPUMAP")
+Signed-off-by: Hou Tao <houtao1@huawei.com>
+Reviewed-by: Pu Lehui <pulehui@huawei.com>
+Acked-by: Jesper Dangaard Brouer <hawk@kernel.org>
+Link: https://lore.kernel.org/r/20230729095107.1722450-2-houtao@huaweicloud.com
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/dwc/pcie-qcom.c |    2 ++
- 1 file changed, 2 insertions(+)
+ kernel/bpf/cpumap.c | 21 +++++++++++----------
+ 1 file changed, 11 insertions(+), 10 deletions(-)
 
---- a/drivers/pci/controller/dwc/pcie-qcom.c
-+++ b/drivers/pci/controller/dwc/pcie-qcom.c
-@@ -758,6 +758,8 @@ static int qcom_pcie_get_resources_2_4_0
- 	if (IS_ERR(res->phy_ahb_reset))
- 		return PTR_ERR(res->phy_ahb_reset);
+diff --git a/kernel/bpf/cpumap.c b/kernel/bpf/cpumap.c
+index 6ae02be7a48e3..7eeb200251640 100644
+--- a/kernel/bpf/cpumap.c
++++ b/kernel/bpf/cpumap.c
+@@ -28,6 +28,7 @@
+ #include <linux/sched.h>
+ #include <linux/workqueue.h>
+ #include <linux/kthread.h>
++#include <linux/completion.h>
+ #include <trace/events/xdp.h>
+ #include <linux/btf_ids.h>
  
-+	dw_pcie_dbi_ro_wr_dis(pci);
-+
- 	return 0;
+@@ -73,6 +74,7 @@ struct bpf_cpu_map_entry {
+ 	struct rcu_head rcu;
+ 
+ 	struct work_struct kthread_stop_wq;
++	struct completion kthread_running;
+ };
+ 
+ struct bpf_cpu_map {
+@@ -153,7 +155,6 @@ static void put_cpu_map_entry(struct bpf_cpu_map_entry *rcpu)
+ static void cpu_map_kthread_stop(struct work_struct *work)
+ {
+ 	struct bpf_cpu_map_entry *rcpu;
+-	int err;
+ 
+ 	rcpu = container_of(work, struct bpf_cpu_map_entry, kthread_stop_wq);
+ 
+@@ -163,14 +164,7 @@ static void cpu_map_kthread_stop(struct work_struct *work)
+ 	rcu_barrier();
+ 
+ 	/* kthread_stop will wake_up_process and wait for it to complete */
+-	err = kthread_stop(rcpu->kthread);
+-	if (err) {
+-		/* kthread_stop may be called before cpu_map_kthread_run
+-		 * is executed, so we need to release the memory related
+-		 * to rcpu.
+-		 */
+-		put_cpu_map_entry(rcpu);
+-	}
++	kthread_stop(rcpu->kthread);
  }
  
+ static void cpu_map_bpf_prog_run_skb(struct bpf_cpu_map_entry *rcpu,
+@@ -298,11 +292,11 @@ static int cpu_map_bpf_prog_run(struct bpf_cpu_map_entry *rcpu, void **frames,
+ 	return nframes;
+ }
+ 
+-
+ static int cpu_map_kthread_run(void *data)
+ {
+ 	struct bpf_cpu_map_entry *rcpu = data;
+ 
++	complete(&rcpu->kthread_running);
+ 	set_current_state(TASK_INTERRUPTIBLE);
+ 
+ 	/* When kthread gives stop order, then rcpu have been disconnected
+@@ -467,6 +461,7 @@ __cpu_map_entry_alloc(struct bpf_map *map, struct bpf_cpumap_val *value,
+ 		goto free_ptr_ring;
+ 
+ 	/* Setup kthread */
++	init_completion(&rcpu->kthread_running);
+ 	rcpu->kthread = kthread_create_on_node(cpu_map_kthread_run, rcpu, numa,
+ 					       "cpumap/%d/map:%d", cpu,
+ 					       map->id);
+@@ -480,6 +475,12 @@ __cpu_map_entry_alloc(struct bpf_map *map, struct bpf_cpumap_val *value,
+ 	kthread_bind(rcpu->kthread, cpu);
+ 	wake_up_process(rcpu->kthread);
+ 
++	/* Make sure kthread has been running, so kthread_stop() will not
++	 * stop the kthread prematurely and all pending frames or skbs
++	 * will be handled by the kthread before kthread_stop() returns.
++	 */
++	wait_for_completion(&rcpu->kthread_running);
++
+ 	return rcpu;
+ 
+ free_prog:
+-- 
+2.40.1
+
 
 
