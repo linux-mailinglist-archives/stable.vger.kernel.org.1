@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E9D4B7759BD
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:03:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1652B77592E
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:58:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232951AbjHILDH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:03:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38100 "EHLO
+        id S232756AbjHIK6X (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 06:58:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37030 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232982AbjHILDE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:03:04 -0400
+        with ESMTP id S232762AbjHIK6W (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:58:22 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4183C3589
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:53:56 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 66C5FED
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:58:21 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 236B562835
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:53:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3656AC433C8;
-        Wed,  9 Aug 2023 10:53:55 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 06E406312F
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:58:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1360CC433C8;
+        Wed,  9 Aug 2023 10:58:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691578435;
-        bh=d7wx/1Q53bZSKT3WK86VXHNNAct+yVw6z+K94eOa/j0=;
+        s=korg; t=1691578700;
+        bh=AdBK4lV/4VfebT2P5xydP8CDuj8fxXCcTMuLELqE/4o=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=o8tw+GhOPGsE8Bvokv+7hmdBLeyWBInCODSVUDvp12d1NMEOeFzbaPZZVHL7SXwAP
-         W2ly+vpP5xYMn4Td/I9ROH7H6sWyDM56MiGuQYw4vmc50sYPxBBQMqgF2mK6CXroTo
-         Vc8glRXOcRPxBZsG/tAOHpvherlh7loVLkElek1c=
+        b=CF4GUNgS6jwl//6tBhSgazJvpohathWLTqPCU+pgiI91x9N5Toyb0W9n5Bvnfj26Q
+         0k50wfX25TjNx1TOdZR4ZwmW0MPSNr9k7v8rYs+vh/CuMJ/FPU2QeXQhrU6c8Xej84
+         JivSqJlqGmE6aTEEsM4+kbs9jvsX547f9eB7+m0M=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Alexandra Winter <wintera@linux.ibm.com>,
-        Wenjia Zhang <wenjia@linux.ibm.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 058/127] s390/qeth: Dont call dev_close/dev_open (DOWN/UP)
+        patches@lists.linux.dev, Robin Murphy <robin.murphy@arm.com>,
+        Nicolin Chen <nicolinc@nvidia.com>,
+        Will Deacon <will@kernel.org>,
+        Easwar Hariharan <eahariha@linux.microsoft.com>
+Subject: [PATCH 5.15 09/92] iommu/arm-smmu-v3: Document nesting-related errata
 Date:   Wed,  9 Aug 2023 12:40:45 +0200
-Message-ID: <20230809103638.595089211@linuxfoundation.org>
+Message-ID: <20230809103633.870874013@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103636.615294317@linuxfoundation.org>
-References: <20230809103636.615294317@linuxfoundation.org>
+In-Reply-To: <20230809103633.485906560@linuxfoundation.org>
+References: <20230809103633.485906560@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,104 +56,59 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Alexandra Winter <wintera@linux.ibm.com>
+From: Robin Murphy <robin.murphy@arm.com>
 
-[ Upstream commit 1cfef80d4c2b2c599189f36f36320b205d9447d9 ]
+commit 0bfbfc526c70606bf0fad302e4821087cbecfaf4 upstream
 
-dev_close() and dev_open() are issued to change the interface state to DOWN
-or UP (dev->flags IFF_UP). When the netdev is set DOWN it loses e.g its
-Ipv6 addresses and routes. We don't want this in cases of device recovery
-(triggered by hardware or software) or when the qeth device is set
-offline.
+Both MMU-600 and MMU-700 have similar errata around TLB invalidation
+while both stages of translation are active, which will need some
+consideration once nesting support is implemented. For now, though,
+it's very easy to make our implicit lack of nesting support explicit
+for those cases, so they're less likely to be missed in future.
 
-Setting a qeth device offline or online and device recovery actions call
-netif_device_detach() and/or netif_device_attach(). That will reset or
-set the LOWER_UP indication i.e. change the dev->state Bit
-__LINK_STATE_PRESENT. That is enough to e.g. cause bond failovers, and
-still preserves the interface settings that are handled by the network
-stack.
-
-Don't call dev_open() nor dev_close() from the qeth device driver. Let the
-network stack handle this.
-
-Fixes: d4560150cb47 ("s390/qeth: call dev_close() during recovery")
-Signed-off-by: Alexandra Winter <wintera@linux.ibm.com>
-Reviewed-by: Wenjia Zhang <wenjia@linux.ibm.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Robin Murphy <robin.murphy@arm.com>
+Reviewed-by: Nicolin Chen <nicolinc@nvidia.com>
+Link: https://lore.kernel.org/r/696da78d32bb4491f898f11b0bb4d850a8aa7c6a.1683731256.git.robin.murphy@arm.com
+Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Easwar Hariharan <eahariha@linux.microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/s390/net/qeth_core.h      | 1 -
- drivers/s390/net/qeth_core_main.c | 2 --
- drivers/s390/net/qeth_l2_main.c   | 9 ++++++---
- drivers/s390/net/qeth_l3_main.c   | 8 +++++---
- 4 files changed, 11 insertions(+), 9 deletions(-)
+ Documentation/arm64/silicon-errata.rst      |    4 ++--
+ drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c |    5 +++++
+ 2 files changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/s390/net/qeth_core.h b/drivers/s390/net/qeth_core.h
-index 1d195429753dd..613eab7297046 100644
---- a/drivers/s390/net/qeth_core.h
-+++ b/drivers/s390/net/qeth_core.h
-@@ -716,7 +716,6 @@ struct qeth_card_info {
- 	u16 chid;
- 	u8 ids_valid:1; /* cssid,iid,chid */
- 	u8 dev_addr_is_registered:1;
--	u8 open_when_online:1;
- 	u8 promisc_mode:1;
- 	u8 use_v1_blkt:1;
- 	u8 is_vm_nic:1;
-diff --git a/drivers/s390/net/qeth_core_main.c b/drivers/s390/net/qeth_core_main.c
-index 8bd9fd51208c9..ae4b6d24bc902 100644
---- a/drivers/s390/net/qeth_core_main.c
-+++ b/drivers/s390/net/qeth_core_main.c
-@@ -5371,8 +5371,6 @@ int qeth_set_offline(struct qeth_card *card, const struct qeth_discipline *disc,
- 	qeth_clear_ipacmd_list(card);
- 
- 	rtnl_lock();
--	card->info.open_when_online = card->dev->flags & IFF_UP;
--	dev_close(card->dev);
- 	netif_device_detach(card->dev);
- 	netif_carrier_off(card->dev);
- 	rtnl_unlock();
-diff --git a/drivers/s390/net/qeth_l2_main.c b/drivers/s390/net/qeth_l2_main.c
-index c6ded3fdd715c..9ef2118fc7a2a 100644
---- a/drivers/s390/net/qeth_l2_main.c
-+++ b/drivers/s390/net/qeth_l2_main.c
-@@ -2387,9 +2387,12 @@ static int qeth_l2_set_online(struct qeth_card *card, bool carrier_ok)
- 		qeth_enable_hw_features(dev);
- 		qeth_l2_enable_brport_features(card);
- 
--		if (card->info.open_when_online) {
--			card->info.open_when_online = 0;
--			dev_open(dev, NULL);
-+		if (netif_running(dev)) {
-+			local_bh_disable();
-+			napi_schedule(&card->napi);
-+			/* kick-start the NAPI softirq: */
-+			local_bh_enable();
-+			qeth_l2_set_rx_mode(dev);
+--- a/Documentation/arm64/silicon-errata.rst
++++ b/Documentation/arm64/silicon-errata.rst
+@@ -122,9 +122,9 @@ stable kernels.
+ +----------------+-----------------+-----------------+-----------------------------+
+ | ARM            | MMU-500         | #841119,826419  | N/A                         |
+ +----------------+-----------------+-----------------+-----------------------------+
+-| ARM            | MMU-600         | #1076982        | N/A                         |
++| ARM            | MMU-600         | #1076982,1209401| N/A                         |
+ +----------------+-----------------+-----------------+-----------------------------+
+-| ARM            | MMU-700         | #2812531        | N/A                         |
++| ARM            | MMU-700         | #2268618,2812531| N/A                         |
+ +----------------+-----------------+-----------------+-----------------------------+
+ +----------------+-----------------+-----------------+-----------------------------+
+ | Broadcom       | Brahma-B53      | N/A             | ARM64_ERRATUM_845719        |
+--- a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
++++ b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
+@@ -3487,11 +3487,16 @@ static void arm_smmu_device_iidr_probe(s
+ 			/* Arm erratum 1076982 */
+ 			if (variant == 0 && revision <= 2)
+ 				smmu->features &= ~ARM_SMMU_FEAT_SEV;
++			/* Arm erratum 1209401 */
++			if (variant < 2)
++				smmu->features &= ~ARM_SMMU_FEAT_NESTING;
+ 			break;
+ 		case IIDR_PRODUCTID_ARM_MMU_700:
+ 			/* Arm erratum 2812531 */
+ 			smmu->features &= ~ARM_SMMU_FEAT_BTM;
+ 			smmu->options |= ARM_SMMU_OPT_CMDQ_FORCE_SYNC;
++			/* Arm errata 2268618, 2812531 */
++			smmu->features &= ~ARM_SMMU_FEAT_NESTING;
+ 			break;
  		}
- 		rtnl_unlock();
- 	}
-diff --git a/drivers/s390/net/qeth_l3_main.c b/drivers/s390/net/qeth_l3_main.c
-index d8487a10cd555..c0f30cefec102 100644
---- a/drivers/s390/net/qeth_l3_main.c
-+++ b/drivers/s390/net/qeth_l3_main.c
-@@ -2017,9 +2017,11 @@ static int qeth_l3_set_online(struct qeth_card *card, bool carrier_ok)
- 		netif_device_attach(dev);
- 		qeth_enable_hw_features(dev);
- 
--		if (card->info.open_when_online) {
--			card->info.open_when_online = 0;
--			dev_open(dev, NULL);
-+		if (netif_running(dev)) {
-+			local_bh_disable();
-+			napi_schedule(&card->napi);
-+			/* kick-start the NAPI softirq: */
-+			local_bh_enable();
- 		}
- 		rtnl_unlock();
- 	}
--- 
-2.40.1
-
+ 		break;
 
 
