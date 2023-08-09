@@ -2,128 +2,129 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 29745775C2B
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:24:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 44ECE775AA6
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:10:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233665AbjHILYf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:24:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53210 "EHLO
+        id S233249AbjHILKT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:10:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42944 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233663AbjHILYf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:24:35 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 981E419A1
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:24:34 -0700 (PDT)
+        with ESMTP id S233252AbjHILKS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:10:18 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B0D681FF5
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:10:17 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 212B06324A
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:24:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33904C433C9;
-        Wed,  9 Aug 2023 11:24:33 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 51BBA62457
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:10:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 648ABC433C7;
+        Wed,  9 Aug 2023 11:10:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691580273;
-        bh=C+1EicSQJNvZOGbCeipkQKbPcfoFEiSfRLYh9vWU/54=;
+        s=korg; t=1691579416;
+        bh=UWxusRfBmPtGpLX1xQEAyrL9nuCFZCEJ+Gb1tAWpqMo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=LW1nB2qCvk52qLOp/bjl/Mbb6iMTRQmUGM1whpA7pcTjC0K79OI1WkFF4+McFhlAC
-         JNRhnFN88l60JkrcmjLXY9LQ0hxz/jLU/q/vjnosCXMjbmWAGSHOBMvkmAe9Kt3HzZ
-         lHFspTP31tWf79PlUPar33FAiNL8vTpjZ90kKw8E=
+        b=c/V4BjfL+0hV7DCZDzA3KvyHgpcAVIBp34iNy1YmsMdaj5oSbcKDHV5pOIO6g9oso
+         Xb+UNIdHfhSq/mSSv3TQ4ZcPuzU42PCxzPAwMwjp1MxLEwD9uPfn48dImdG8heTZQn
+         k+aEwyki7NNHsLI42IlLQxq80r3RZS10shDKMgeM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Sasha Levin <sashal@kernel.org>,
-        Nathan Chancellor <nathan@kernel.org>
-Subject: [PATCH 4.19 289/323] word-at-a-time: use the same return type for has_zero regardless of endianness
+        patches@lists.linux.dev, Yue Haibing <yuehaibing@huawei.com>,
+        Eric Dumazet <edumazet@google.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.14 189/204] ip6mr: Fix skb_under_panic in ip6mr_cache_report()
 Date:   Wed,  9 Aug 2023 12:42:07 +0200
-Message-ID: <20230809103711.274375212@linuxfoundation.org>
+Message-ID: <20230809103648.801555336@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
-References: <20230809103658.104386911@linuxfoundation.org>
+In-Reply-To: <20230809103642.552405807@linuxfoundation.org>
+References: <20230809103642.552405807@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: ndesaulniers@google.com <ndesaulniers@google.com>
+From: Yue Haibing <yuehaibing@huawei.com>
 
-[ Upstream commit 79e8328e5acbe691bbde029a52c89d70dcbc22f3 ]
+[ Upstream commit 30e0191b16e8a58e4620fa3e2839ddc7b9d4281c ]
 
-Compiling big-endian targets with Clang produces the diagnostic:
+skbuff: skb_under_panic: text:ffffffff88771f69 len:56 put:-4
+ head:ffff88805f86a800 data:ffff887f5f86a850 tail:0x88 end:0x2c0 dev:pim6reg
+ ------------[ cut here ]------------
+ kernel BUG at net/core/skbuff.c:192!
+ invalid opcode: 0000 [#1] PREEMPT SMP KASAN
+ CPU: 2 PID: 22968 Comm: kworker/2:11 Not tainted 6.5.0-rc3-00044-g0a8db05b571a #236
+ Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
+ Workqueue: ipv6_addrconf addrconf_dad_work
+ RIP: 0010:skb_panic+0x152/0x1d0
+ Call Trace:
+  <TASK>
+  skb_push+0xc4/0xe0
+  ip6mr_cache_report+0xd69/0x19b0
+  reg_vif_xmit+0x406/0x690
+  dev_hard_start_xmit+0x17e/0x6e0
+  __dev_queue_xmit+0x2d6a/0x3d20
+  vlan_dev_hard_start_xmit+0x3ab/0x5c0
+  dev_hard_start_xmit+0x17e/0x6e0
+  __dev_queue_xmit+0x2d6a/0x3d20
+  neigh_connected_output+0x3ed/0x570
+  ip6_finish_output2+0x5b5/0x1950
+  ip6_finish_output+0x693/0x11c0
+  ip6_output+0x24b/0x880
+  NF_HOOK.constprop.0+0xfd/0x530
+  ndisc_send_skb+0x9db/0x1400
+  ndisc_send_rs+0x12a/0x6c0
+  addrconf_dad_completed+0x3c9/0xea0
+  addrconf_dad_work+0x849/0x1420
+  process_one_work+0xa22/0x16e0
+  worker_thread+0x679/0x10c0
+  ret_from_fork+0x28/0x60
+  ret_from_fork_asm+0x11/0x20
 
-  fs/namei.c:2173:13: warning: use of bitwise '|' with boolean operands [-Wbitwise-instead-of-logical]
-	} while (!(has_zero(a, &adata, &constants) | has_zero(b, &bdata, &constants)));
-	          ~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-                                               ||
-  fs/namei.c:2173:13: note: cast one or both operands to int to silence this warning
+When setup a vlan device on dev pim6reg, DAD ns packet may sent on reg_vif_xmit().
+reg_vif_xmit()
+    ip6mr_cache_report()
+        skb_push(skb, -skb_network_offset(pkt));//skb_network_offset(pkt) is 4
+And skb_push declared as:
+	void *skb_push(struct sk_buff *skb, unsigned int len);
+		skb->data -= len;
+		//0xffff88805f86a84c - 0xfffffffc = 0xffff887f5f86a850
+skb->data is set to 0xffff887f5f86a850, which is invalid mem addr, lead to skb_push() fails.
 
-It appears that when has_zero was introduced, two definitions were
-produced with different signatures (in particular different return
-types).
-
-Looking at the usage in hash_name() in fs/namei.c, I suspect that
-has_zero() is meant to be invoked twice per while loop iteration; using
-logical-or would not update `bdata` when `a` did not have zeros.  So I
-think it's preferred to always return an unsigned long rather than a
-bool than update the while loop in hash_name() to use a logical-or
-rather than bitwise-or.
-
-[ Also changed powerpc version to do the same  - Linus ]
-
-Link: https://github.com/ClangBuiltLinux/linux/issues/1832
-Link: https://lore.kernel.org/lkml/20230801-bitwise-v1-1-799bec468dc4@google.com/
-Fixes: 36126f8f2ed8 ("word-at-a-time: make the interfaces truly generic")
-Debugged-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Nick Desaulniers <ndesaulniers@google.com>
-Acked-by: Heiko Carstens <hca@linux.ibm.com>
-Cc: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Fixes: 14fb64e1f449 ("[IPV6] MROUTE: Support PIM-SM (SSM).")
+Signed-off-by: Yue Haibing <yuehaibing@huawei.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/include/asm/word-at-a-time.h | 2 +-
- include/asm-generic/word-at-a-time.h      | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ net/ipv6/ip6mr.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/include/asm/word-at-a-time.h b/arch/powerpc/include/asm/word-at-a-time.h
-index f3f4710d4ff52..99129b0cd8b8a 100644
---- a/arch/powerpc/include/asm/word-at-a-time.h
-+++ b/arch/powerpc/include/asm/word-at-a-time.h
-@@ -34,7 +34,7 @@ static inline long find_zero(unsigned long mask)
- 	return leading_zero_bits >> 3;
- }
+diff --git a/net/ipv6/ip6mr.c b/net/ipv6/ip6mr.c
+index f8d60d511d3ed..40dfb9bddb21a 100644
+--- a/net/ipv6/ip6mr.c
++++ b/net/ipv6/ip6mr.c
+@@ -1166,7 +1166,7 @@ static int ip6mr_cache_report(struct mr6_table *mrt, struct sk_buff *pkt,
+ 		   And all this only to mangle msg->im6_msgtype and
+ 		   to set msg->im6_mbz to "mbz" :-)
+ 		 */
+-		skb_push(skb, -skb_network_offset(pkt));
++		__skb_pull(skb, skb_network_offset(pkt));
  
--static inline bool has_zero(unsigned long val, unsigned long *data, const struct word_at_a_time *c)
-+static inline unsigned long has_zero(unsigned long val, unsigned long *data, const struct word_at_a_time *c)
- {
- 	unsigned long rhs = val | c->low_bits;
- 	*data = rhs;
-diff --git a/include/asm-generic/word-at-a-time.h b/include/asm-generic/word-at-a-time.h
-index 20c93f08c9933..95a1d214108a5 100644
---- a/include/asm-generic/word-at-a-time.h
-+++ b/include/asm-generic/word-at-a-time.h
-@@ -38,7 +38,7 @@ static inline long find_zero(unsigned long mask)
- 	return (mask >> 8) ? byte : byte + 1;
- }
- 
--static inline bool has_zero(unsigned long val, unsigned long *data, const struct word_at_a_time *c)
-+static inline unsigned long has_zero(unsigned long val, unsigned long *data, const struct word_at_a_time *c)
- {
- 	unsigned long rhs = val | c->low_bits;
- 	*data = rhs;
+ 		skb_push(skb, sizeof(*msg));
+ 		skb_reset_transport_header(skb);
 -- 
 2.40.1
 
