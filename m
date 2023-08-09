@@ -2,166 +2,157 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4E02A775A87
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:09:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3D47E775947
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:59:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233207AbjHILJR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:09:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60956 "EHLO
+        id S232511AbjHIK7H (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 06:59:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59498 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233200AbjHILJR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:09:17 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8AEB210F3
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:09:16 -0700 (PDT)
+        with ESMTP id S232812AbjHIK7F (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:59:05 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C72E1724
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:59:05 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2A9D661FA9
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:09:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 388FAC433C8;
-        Wed,  9 Aug 2023 11:09:15 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D7E3962DC8
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:59:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8962C433C8;
+        Wed,  9 Aug 2023 10:59:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691579355;
-        bh=98/SW1TaQhTG1o/tAMMFjjkpLc5Xugrna2t/92Hcnao=;
+        s=korg; t=1691578744;
+        bh=9opQW3mhR3qd7E0c/wpJlIun4dCB8V6v/twdVEbfSpw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=KGfjvzLywP7aCsk2wGKnZW1+uvYz+40BKqbwzE6GHI4lrpIwnLW4lb9AukEl9Q4JN
-         KilRtWiFPQ6894HDHArXeAgi6oFuZovwfE0t9clV79w4j3RdgXj6CI3jksoYqqa2qp
-         Wznq8jY1aGF9Rkernf4bzf83xPnByYPtZ/J1O2ws=
+        b=fNdwLzxmH/Sv4Z+mXzdd7U04Ic5bBWe4yXJTSnd8s9VWVKF0hsAQnNzE7ynSYCHmD
+         MRiguQHC6Nj9MzWmE32vwUqKdzgxlsGbTo1+4hJ9LPJalXnIIv/tM2lnb9IdOMxFqP
+         AH/YRuD7APFUdQQ7L2Vu5VS0CuMczjK/Q+1NlBWk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Nik P <npliashechnikov@gmail.com>,
-        Nathan Schulte <nmschulte@gmail.com>,
-        Friedrich Vock <friedrich.vock@gmx.de>, dridri85@gmail.com,
-        Jan Visser <starquake@linuxeverywhere.org>,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
+        patches@lists.linux.dev, Lin Ma <linma@zju.edu.cn>,
+        Simon Horman <horms@kernel.org>,
+        Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 139/204] pinctrl: amd: Use amd_pinconf_set() for all config options
+Subject: [PATCH 5.15 41/92] net: dcb: choose correct policy to parse DCB_ATTR_BCN
 Date:   Wed,  9 Aug 2023 12:41:17 +0200
-Message-ID: <20230809103647.234645927@linuxfoundation.org>
+Message-ID: <20230809103635.040163170@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103642.552405807@linuxfoundation.org>
-References: <20230809103642.552405807@linuxfoundation.org>
+In-Reply-To: <20230809103633.485906560@linuxfoundation.org>
+References: <20230809103633.485906560@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Lin Ma <linma@zju.edu.cn>
 
-[ Upstream commit 635a750d958e158e17af0f524bedc484b27fbb93 ]
+[ Upstream commit 31d49ba033095f6e8158c60f69714a500922e0c3 ]
 
-On ASUS TUF A16 it is reported that the ITE5570 ACPI device connected to
-GPIO 7 is causing an interrupt storm.  This issue doesn't happen on
-Windows.
+The dcbnl_bcn_setcfg uses erroneous policy to parse tb[DCB_ATTR_BCN],
+which is introduced in commit 859ee3c43812 ("DCB: Add support for DCB
+BCN"). Please see the comment in below code
 
-Comparing the GPIO register configuration between Windows and Linux
-bit 20 has been configured as a pull up on Windows, but not on Linux.
-Checking GPIO declaration from the firmware it is clear it *should* have
-been a pull up on Linux as well.
-
-```
-GpioInt (Level, ActiveLow, Exclusive, PullUp, 0x0000,
-	 "\\_SB.GPIO", 0x00, ResourceConsumer, ,)
-{   // Pin list
-0x0007
+static int dcbnl_bcn_setcfg(...)
+{
+  ...
+  ret = nla_parse_nested_deprecated(..., dcbnl_pfc_up_nest, .. )
+  // !!! dcbnl_pfc_up_nest for attributes
+  //  DCB_PFC_UP_ATTR_0 to DCB_PFC_UP_ATTR_ALL in enum dcbnl_pfc_up_attrs
+  ...
+  for (i = DCB_BCN_ATTR_RP_0; i <= DCB_BCN_ATTR_RP_7; i++) {
+  // !!! DCB_BCN_ATTR_RP_0 to DCB_BCN_ATTR_RP_7 in enum dcbnl_bcn_attrs
+    ...
+    value_byte = nla_get_u8(data[i]);
+    ...
+  }
+  ...
+  for (i = DCB_BCN_ATTR_BCNA_0; i <= DCB_BCN_ATTR_RI; i++) {
+  // !!! DCB_BCN_ATTR_BCNA_0 to DCB_BCN_ATTR_RI in enum dcbnl_bcn_attrs
+  ...
+    value_int = nla_get_u32(data[i]);
+  ...
+  }
+  ...
 }
-```
 
-On Linux amd_gpio_set_config() is currently only used for programming
-the debounce. Actually the GPIO core calls it with all the arguments
-that are supported by a GPIO, pinctrl-amd just responds `-ENOTSUPP`.
+That is, the nla_parse_nested_deprecated uses dcbnl_pfc_up_nest
+attributes to parse nlattr defined in dcbnl_pfc_up_attrs. But the
+following access code fetch each nlattr as dcbnl_bcn_attrs attributes.
+By looking up the associated nla_policy for dcbnl_bcn_attrs. We can find
+the beginning part of these two policies are "same".
 
-To solve this issue expand amd_gpio_set_config() to support the other
-arguments amd_pinconf_set() supports, namely `PIN_CONFIG_BIAS_PULL_DOWN`,
-`PIN_CONFIG_BIAS_PULL_UP`, and `PIN_CONFIG_DRIVE_STRENGTH`.
+static const struct nla_policy dcbnl_pfc_up_nest[...] = {
+        [DCB_PFC_UP_ATTR_0]   = {.type = NLA_U8},
+        [DCB_PFC_UP_ATTR_1]   = {.type = NLA_U8},
+        [DCB_PFC_UP_ATTR_2]   = {.type = NLA_U8},
+        [DCB_PFC_UP_ATTR_3]   = {.type = NLA_U8},
+        [DCB_PFC_UP_ATTR_4]   = {.type = NLA_U8},
+        [DCB_PFC_UP_ATTR_5]   = {.type = NLA_U8},
+        [DCB_PFC_UP_ATTR_6]   = {.type = NLA_U8},
+        [DCB_PFC_UP_ATTR_7]   = {.type = NLA_U8},
+        [DCB_PFC_UP_ATTR_ALL] = {.type = NLA_FLAG},
+};
 
-Reported-by: Nik P <npliashechnikov@gmail.com>
-Reported-by: Nathan Schulte <nmschulte@gmail.com>
-Reported-by: Friedrich Vock <friedrich.vock@gmx.de>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217336
-Reported-by: dridri85@gmail.com
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217493
-Link: https://lore.kernel.org/linux-input/20230530154058.17594-1-friedrich.vock@gmx.de/
-Tested-by: Jan Visser <starquake@linuxeverywhere.org>
-Fixes: 2956b5d94a76 ("pinctrl / gpio: Introduce .set_config() callback for GPIO chips")
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/r/20230705133005.577-3-mario.limonciello@amd.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+static const struct nla_policy dcbnl_bcn_nest[...] = {
+        [DCB_BCN_ATTR_RP_0]         = {.type = NLA_U8},
+        [DCB_BCN_ATTR_RP_1]         = {.type = NLA_U8},
+        [DCB_BCN_ATTR_RP_2]         = {.type = NLA_U8},
+        [DCB_BCN_ATTR_RP_3]         = {.type = NLA_U8},
+        [DCB_BCN_ATTR_RP_4]         = {.type = NLA_U8},
+        [DCB_BCN_ATTR_RP_5]         = {.type = NLA_U8},
+        [DCB_BCN_ATTR_RP_6]         = {.type = NLA_U8},
+        [DCB_BCN_ATTR_RP_7]         = {.type = NLA_U8},
+        [DCB_BCN_ATTR_RP_ALL]       = {.type = NLA_FLAG},
+        // from here is somewhat different
+        [DCB_BCN_ATTR_BCNA_0]       = {.type = NLA_U32},
+        ...
+        [DCB_BCN_ATTR_ALL]          = {.type = NLA_FLAG},
+};
+
+Therefore, the current code is buggy and this
+nla_parse_nested_deprecated could overflow the dcbnl_pfc_up_nest and use
+the adjacent nla_policy to parse attributes from DCB_BCN_ATTR_BCNA_0.
+
+Hence use the correct policy dcbnl_bcn_nest to parse the nested
+tb[DCB_ATTR_BCN] TLV.
+
+Fixes: 859ee3c43812 ("DCB: Add support for DCB BCN")
+Signed-off-by: Lin Ma <linma@zju.edu.cn>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/20230801013248.87240-1-linma@zju.edu.cn
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/pinctrl-amd.c | 28 +++++++++++++++-------------
- 1 file changed, 15 insertions(+), 13 deletions(-)
+ net/dcb/dcbnl.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/pinctrl/pinctrl-amd.c b/drivers/pinctrl/pinctrl-amd.c
-index c57f91f484235..fbec8a07e942e 100644
---- a/drivers/pinctrl/pinctrl-amd.c
-+++ b/drivers/pinctrl/pinctrl-amd.c
-@@ -169,18 +169,6 @@ static int amd_gpio_set_debounce(struct gpio_chip *gc, unsigned offset,
- 	return ret;
- }
+diff --git a/net/dcb/dcbnl.c b/net/dcb/dcbnl.c
+index dc4fb699b56c3..d2981e89d3638 100644
+--- a/net/dcb/dcbnl.c
++++ b/net/dcb/dcbnl.c
+@@ -946,7 +946,7 @@ static int dcbnl_bcn_setcfg(struct net_device *netdev, struct nlmsghdr *nlh,
+ 		return -EOPNOTSUPP;
  
--static int amd_gpio_set_config(struct gpio_chip *gc, unsigned offset,
--			       unsigned long config)
--{
--	u32 debounce;
--
--	if (pinconf_to_config_param(config) != PIN_CONFIG_INPUT_DEBOUNCE)
--		return -ENOTSUPP;
--
--	debounce = pinconf_to_config_argument(config);
--	return amd_gpio_set_debounce(gc, offset, debounce);
--}
--
- #ifdef CONFIG_DEBUG_FS
- static void amd_gpio_dbg_show(struct seq_file *s, struct gpio_chip *gc)
- {
-@@ -632,7 +620,7 @@ static int amd_pinconf_get(struct pinctrl_dev *pctldev,
- }
- 
- static int amd_pinconf_set(struct pinctrl_dev *pctldev, unsigned int pin,
--				unsigned long *configs, unsigned num_configs)
-+			   unsigned long *configs, unsigned int num_configs)
- {
- 	int i;
- 	u32 arg;
-@@ -722,6 +710,20 @@ static int amd_pinconf_group_set(struct pinctrl_dev *pctldev,
- 	return 0;
- }
- 
-+static int amd_gpio_set_config(struct gpio_chip *gc, unsigned int pin,
-+			       unsigned long config)
-+{
-+	struct amd_gpio *gpio_dev = gpiochip_get_data(gc);
-+
-+	if (pinconf_to_config_param(config) == PIN_CONFIG_INPUT_DEBOUNCE) {
-+		u32 debounce = pinconf_to_config_argument(config);
-+
-+		return amd_gpio_set_debounce(gc, pin, debounce);
-+	}
-+
-+	return amd_pinconf_set(gpio_dev->pctrl, pin, &config, 1);
-+}
-+
- static const struct pinconf_ops amd_pinconf_ops = {
- 	.pin_config_get		= amd_pinconf_get,
- 	.pin_config_set		= amd_pinconf_set,
+ 	ret = nla_parse_nested_deprecated(data, DCB_BCN_ATTR_MAX,
+-					  tb[DCB_ATTR_BCN], dcbnl_pfc_up_nest,
++					  tb[DCB_ATTR_BCN], dcbnl_bcn_nest,
+ 					  NULL);
+ 	if (ret)
+ 		return ret;
 -- 
-2.39.2
+2.40.1
 
 
 
