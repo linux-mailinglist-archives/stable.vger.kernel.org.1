@@ -2,49 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0F2A0775885
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:53:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3893E775D92
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:39:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232660AbjHIKxe (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 06:53:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43010 "EHLO
+        id S234151AbjHILjC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:39:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48248 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232657AbjHIKxW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:53:22 -0400
+        with ESMTP id S234150AbjHILjB (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:39:01 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 86BE630E7
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:51:17 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E58F3173A
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:39:00 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 53CE063136
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:51:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64E1BC433C7;
-        Wed,  9 Aug 2023 10:51:16 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 855A76357A
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:39:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94AF4C433C8;
+        Wed,  9 Aug 2023 11:38:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691578276;
-        bh=mQ6prVLlLK6mIl/u46607q4NZkfys8D0FvBUrmR/n4k=;
+        s=korg; t=1691581140;
+        bh=xI7tUpXiEioH4kiYsvdPspS8wMK6On5hF2ELWJg0nwI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rGcp8gF07xOIU1k3oPxMOmZy8tRUoFmgXYdOo6lM/cKx3btOr5fizrgNForq7+Y6S
-         1VD92kSqXbHE/ZpRpSUcYl6HmE5rpXBfanCc1bYaNNRQ0Pgy4JfE+I6NywmrSsJm3b
-         55UwLsK6Al4UoAyUX06Lda3nwrFhYK2Uo2l6idYc=
+        b=ilY6sEALfvF1Q/OuR3O3RawkgO0txkmczGzyBVrhAg1Z5ykYghmQ8iB0mNDE5sAnL
+         36BbODV+GfD1la6tqeoUxlPPdMRPJOZE3FILDqIEZtggFUfepNr4wCXIlTquE3jha2
+         de8OJrJy/cXckCOH3PfRWPilAYOc9xwSGcKx1Txg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Jonathan Cavitt <jonathan.cavitt@intel.com>,
-        Andi Shyti <andi.shyti@linux.intel.com>,
-        Nirmoy Das <nirmoy.das@intel.com>,
-        Andrzej Hajda <andrzej.hajda@intel.com>,
-        Tvrtko Ursulin <tvrtko.ursulin@intel.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 160/165] drm/i915/gt: Ensure memory quiesced before invalidation
+        patches@lists.linux.dev, stable@kernel.org,
+        Christian Brauner <brauner@kernel.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>
+Subject: [PATCH 5.10 089/201] file: always lock position for FMODE_ATOMIC_POS
 Date:   Wed,  9 Aug 2023 12:41:31 +0200
-Message-ID: <20230809103648.010951136@linuxfoundation.org>
+Message-ID: <20230809103646.797089106@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103642.720851262@linuxfoundation.org>
-References: <20230809103642.720851262@linuxfoundation.org>
+In-Reply-To: <20230809103643.799166053@linuxfoundation.org>
+References: <20230809103643.799166053@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -59,47 +55,57 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jonathan Cavitt <jonathan.cavitt@intel.com>
+From: Christian Brauner <brauner@kernel.org>
 
-[ Upstream commit 78a6ccd65fa3a7cc697810db079cc4b84dff03d5 ]
+commit 20ea1e7d13c1b544fe67c4a8dc3943bb1ab33e6f upstream.
 
-All memory traffic must be quiesced before requesting
-an aux invalidation on platforms that use Aux CCS.
+The pidfd_getfd() system call allows a caller with ptrace_may_access()
+abilities on another process to steal a file descriptor from this
+process. This system call is used by debuggers, container runtimes,
+system call supervisors, networking proxies etc. So while it is a
+special interest system call it is used in common tools.
 
-Fixes: 972282c4cf24 ("drm/i915/gen12: Add aux table invalidate for all engines")
-Requires: a2a4aa0eef3b ("drm/i915: Add the gen12_needs_ccs_aux_inv helper")
-Signed-off-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
-Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
-Cc: <stable@vger.kernel.org> # v5.8+
-Reviewed-by: Nirmoy Das <nirmoy.das@intel.com>
-Reviewed-by: Andrzej Hajda <andrzej.hajda@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230725001950.1014671-4-andi.shyti@linux.intel.com
-(cherry picked from commit ad8ebf12217e451cd19804b1c3e97ad56491c74a)
-Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+That ability ends up breaking our long-time optimization in fdget_pos(),
+which "knew" that if we had exclusive access to the file descriptor
+nobody else could access it, and we didn't need the lock for the file
+position.
+
+That check for file_count(file) was always fairly subtle - it depended
+on __fdget() not incrementing the file count for single-threaded
+processes and thus included that as part of the rule - but it did mean
+that we didn't need to take the lock in all those traditional unix
+process contexts.
+
+So it's sad to see this go, and I'd love to have some way to re-instate
+the optimization. At the same time, the lock obviously isn't ever
+contended in the case we optimized, so all we were optimizing away is
+the atomics and the cacheline dirtying. Let's see if anybody even
+notices that the optimization is gone.
+
+Link: https://lore.kernel.org/linux-fsdevel/20230724-vfs-fdget_pos-v1-1-a4abfd7103f3@kernel.org/
+Fixes: 8649c322f75c ("pid: Implement pidfd_getfd syscall")
+Cc: stable@kernel.org
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/i915/gt/gen8_engine_cs.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ fs/file.c |    6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/gt/gen8_engine_cs.c b/drivers/gpu/drm/i915/gt/gen8_engine_cs.c
-index c5b926e3f20d7..6e914c3f5019a 100644
---- a/drivers/gpu/drm/i915/gt/gen8_engine_cs.c
-+++ b/drivers/gpu/drm/i915/gt/gen8_engine_cs.c
-@@ -193,7 +193,11 @@ int gen12_emit_flush_rcs(struct i915_request *rq, u32 mode)
- {
- 	struct intel_engine_cs *engine = rq->engine;
+--- a/fs/file.c
++++ b/fs/file.c
+@@ -1013,10 +1013,8 @@ unsigned long __fdget_pos(unsigned int f
+ 	struct file *file = (struct file *)(v & ~3);
  
--	if (mode & EMIT_FLUSH) {
-+	/*
-+	 * On Aux CCS platforms the invalidation of the Aux
-+	 * table requires quiescing memory traffic beforehand
-+	 */
-+	if (mode & EMIT_FLUSH || gen12_needs_ccs_aux_inv(engine)) {
- 		u32 flags = 0;
- 		u32 *cs;
- 
--- 
-2.40.1
-
+ 	if (file && (file->f_mode & FMODE_ATOMIC_POS)) {
+-		if (file_count(file) > 1) {
+-			v |= FDPUT_POS_UNLOCK;
+-			mutex_lock(&file->f_pos_lock);
+-		}
++		v |= FDPUT_POS_UNLOCK;
++		mutex_lock(&file->f_pos_lock);
+ 	}
+ 	return v;
+ }
 
 
