@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 03E09775D95
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:39:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5C19577597E
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:01:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234154AbjHILjK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:39:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60286 "EHLO
+        id S232884AbjHILBB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:01:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50158 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234147AbjHILjJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:39:09 -0400
+        with ESMTP id S232874AbjHILBA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:01:00 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E6E81FD7
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:39:09 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4995C1FD8
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:01:00 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0E22C635DB
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:39:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EE66C433C8;
-        Wed,  9 Aug 2023 11:39:07 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DC500619FA
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:00:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8654C433C8;
+        Wed,  9 Aug 2023 11:00:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691581148;
-        bh=2YsowY+ZjkQKN7sO5bqU4qmT5hqnlEUOIZVxQZ0Sq0U=;
+        s=korg; t=1691578859;
+        bh=dUKuDLoNj7wfdgXFXgIKH5EXeHj+vm3a1UtLcZ3z43A=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=G4sJu/fiAg58vApL71hCN3O/fEiQ5dahz3pj1F3tA2J7JpR1sQuIV1qKpat86O0Rr
-         5zt5YoqKOUckHju3b29eQLTMG4KShS47vHDMu0eAAxMZ4aJ0tFSwCUxJB3yGrADzaz
-         HM1OZlQI1eDOqERPB7O8Ao/s/BSosSR+Ja0qQWmo=
+        b=Zm1WY7oy3/LELWicRqam0hlNy5h8qDY7MTpxAdE6fg4Nsu8n2WLJu2vcWme6+SL0G
+         CEujg59dAZncA+LoR5QuMBb0lLyEZBalpmhAPK5B6Gu6kw7i4en7hQFGTf/XQbpYO9
+         xFdKbVGdPhwHVH6f2L5IPhkCW9slH1BxnqIk40Oo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Masami Hiramatsu <mhiramat@kernel.org>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Li Huafei <lihuafei1@huawei.com>
-Subject: [PATCH 5.10 115/201] x86/kprobes: Retrieve correct opcode for group instruction
+        patches@lists.linux.dev, Johan Jonker <jbx6244@gmail.com>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 81/92] mtd: rawnand: rockchip: fix oobfree offset and description
 Date:   Wed,  9 Aug 2023 12:41:57 +0200
-Message-ID: <20230809103647.626120665@linuxfoundation.org>
+Message-ID: <20230809103636.348196448@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103643.799166053@linuxfoundation.org>
-References: <20230809103643.799166053@linuxfoundation.org>
+In-Reply-To: <20230809103633.485906560@linuxfoundation.org>
+References: <20230809103633.485906560@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,41 +55,65 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Masami Hiramatsu <mhiramat@kernel.org>
+From: Johan Jonker <jbx6244@gmail.com>
 
-[ Upstream commit d60ad3d46f1d04a282c56159f1deb675c12733fd ]
+[ Upstream commit d0ca3b92b7a6f42841ea9da8492aaf649db79780 ]
 
-Since the opcodes start from 0xff are group5 instruction group which is
-not 2 bytes opcode but the extended opcode determined by the MOD/RM byte.
+Rockchip boot blocks are written per 4 x 512 byte sectors per page.
+Each page with boot blocks must have a page address (PA) pointer in OOB
+to the next page.
 
-The commit abd82e533d88 ("x86/kprobes: Do not decode opcode in resume_execution()")
-used insn->opcode.bytes[1], but that is not correct. We have to refer
-the insn->modrm.bytes[1] instead.
+The currently advertised free OOB area starts at offset 6, like
+if 4 PA bytes were located right after the BBM. This is wrong as the
+PA bytes are located right before the ECC bytes.
 
-Fixes: abd82e533d88 ("x86/kprobes: Do not decode opcode in resume_execution()")
-Signed-off-by: Masami Hiramatsu <mhiramat@kernel.org>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/161469872400.49483.18214724458034233166.stgit@devnote2
-Signed-off-by: Li Huafei <lihuafei1@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix the layout by allowing access to all bytes between the BBM and the
+PA bytes instead of reserving 4 bytes right after the BBM.
+
+This change breaks existing jffs2 users.
+
+Fixes: 058e0e847d54 ("mtd: rawnand: rockchip: NFC driver for RK3308, RK2928 and others")
+Signed-off-by: Johan Jonker <jbx6244@gmail.com>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://lore.kernel.org/linux-mtd/d202f12d-188c-20e8-f2c2-9cc874ad4d22@gmail.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/kprobes/core.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/mtd/nand/raw/rockchip-nand-controller.c | 11 ++++-------
+ 1 file changed, 4 insertions(+), 7 deletions(-)
 
---- a/arch/x86/kernel/kprobes/core.c
-+++ b/arch/x86/kernel/kprobes/core.c
-@@ -464,7 +464,11 @@ static void set_resume_flags(struct kpro
- 		break;
- #endif
- 	case 0xff:
--		opcode = insn->opcode.bytes[1];
-+		/*
-+		 * Since the 0xff is an extended group opcode, the instruction
-+		 * is determined by the MOD/RM byte.
-+		 */
-+		opcode = insn->modrm.bytes[0];
- 		if ((opcode & 0x30) == 0x10) {
- 			/*
- 			 * call absolute, indirect
+diff --git a/drivers/mtd/nand/raw/rockchip-nand-controller.c b/drivers/mtd/nand/raw/rockchip-nand-controller.c
+index b5405bc7ca3a3..45cdc6ca210ca 100644
+--- a/drivers/mtd/nand/raw/rockchip-nand-controller.c
++++ b/drivers/mtd/nand/raw/rockchip-nand-controller.c
+@@ -562,9 +562,10 @@ static int rk_nfc_write_page_raw(struct nand_chip *chip, const u8 *buf,
+ 		 *    BBM  OOB1 OOB2 OOB3 |......|  PA0  PA1  PA2  PA3
+ 		 *
+ 		 * The rk_nfc_ooblayout_free() function already has reserved
+-		 * these 4 bytes with:
++		 * these 4 bytes together with 2 bytes for BBM
++		 * by reducing it's length:
+ 		 *
+-		 * oob_region->offset = NFC_SYS_DATA_SIZE + 2;
++		 * oob_region->length = rknand->metadata_size - NFC_SYS_DATA_SIZE - 2;
+ 		 */
+ 		if (!i)
+ 			memcpy(rk_nfc_oob_ptr(chip, i),
+@@ -935,12 +936,8 @@ static int rk_nfc_ooblayout_free(struct mtd_info *mtd, int section,
+ 	if (section)
+ 		return -ERANGE;
+ 
+-	/*
+-	 * The beginning of the OOB area stores the reserved data for the NFC,
+-	 * the size of the reserved data is NFC_SYS_DATA_SIZE bytes.
+-	 */
+ 	oob_region->length = rknand->metadata_size - NFC_SYS_DATA_SIZE - 2;
+-	oob_region->offset = NFC_SYS_DATA_SIZE + 2;
++	oob_region->offset = 2;
+ 
+ 	return 0;
+ }
+-- 
+2.40.1
+
 
 
