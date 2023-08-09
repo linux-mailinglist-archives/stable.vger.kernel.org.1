@@ -2,48 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 77A12775967
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:00:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 59BF9775C0C
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:23:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232844AbjHILAM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:00:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58218 "EHLO
+        id S233630AbjHILXZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:23:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41002 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232846AbjHILAK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:00:10 -0400
+        with ESMTP id S233627AbjHILXZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:23:25 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A6D01FFE
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:00:10 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 742EDED
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:23:24 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 95A48630D6
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:00:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A80A9C433C8;
-        Wed,  9 Aug 2023 11:00:08 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0ABD763228
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:23:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1ADC1C433C7;
+        Wed,  9 Aug 2023 11:23:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691578809;
-        bh=YUYDitf/Z523izm81gCjRH4eEjq8XoUSL/2dUowb/gM=;
+        s=korg; t=1691580203;
+        bh=cZxK5e943p6fBdYK/TgG5EldoVeRR0x66YyqhtYeyNA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=VGghoCrxb5rfZKsOmDKfUrgcYDcD5mkjHjf9c7fRhKoHIb6WeSbHlrJQIBQ8PdaBH
-         Y5snOaBrEnLHrlEgqohKuNuG2OGADA8tjtKMru2zQUkXBv7S9pwIT8nwyoK41ty+Vg
-         CrL2MOJWomuIqeB4yFZYfZQjXhAA/BoO8Ma5oraE=
+        b=PuYAN9sJZE4pMkDStd2Xg6JiAelp/VNkqUqNU27Fs6p6pbUOxbBqswIAYcLarKzjF
+         JDO4jaTEcEZSS7AXcJjTCs1oTTuS3QIKUrwR7cbhiT8UFP8nE3uQ0Sl1h/Dtc0nY97
+         YyIOvyqatXMIsItpKW4zbgTDLQC5oXZ2jZnDbpZE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
-        Lorenzo Colitti <lorenzo@google.com>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Pietro Borrello <borrello@diag.uniroma1.it>,
-        netdev@vger.kernel.org, Laszlo Ersek <lersek@redhat.com>,
-        "David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 5.15 65/92] net: tun_chr_open(): set sk_uid from current_fsuid()
+        patches@lists.linux.dev,
+        Mauro Ribeiro <mauro.ribeiro@hardkernel.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
+        Jakub Vanek <linuxtardis@gmail.com>
+Subject: [PATCH 4.19 263/323] Revert "usb: dwc3: core: Enable AutoRetry feature in the controller"
 Date:   Wed,  9 Aug 2023 12:41:41 +0200
-Message-ID: <20230809103635.837589732@linuxfoundation.org>
+Message-ID: <20230809103710.100974422@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103633.485906560@linuxfoundation.org>
-References: <20230809103633.485906560@linuxfoundation.org>
+In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
+References: <20230809103658.104386911@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -58,55 +57,98 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Laszlo Ersek <lersek@redhat.com>
+From: Jakub Vanek <linuxtardis@gmail.com>
 
-commit 9bc3047374d5bec163e83e743709e23753376f0c upstream.
+commit 734ae15ab95a18d3d425fc9cb38b7a627d786f08 upstream.
 
-Commit a096ccca6e50 initializes the "sk_uid" field in the protocol socket
-(struct sock) from the "/dev/net/tun" device node's owner UID. Per
-original commit 86741ec25462 ("net: core: Add a UID field to struct
-sock.", 2016-11-04), that's wrong: the idea is to cache the UID of the
-userspace process that creates the socket. Commit 86741ec25462 mentions
-socket() and accept(); with "tun", the action that creates the socket is
-open("/dev/net/tun").
+This reverts commit b138e23d3dff90c0494925b4c1874227b81bddf7.
 
-Therefore the device node's owner UID is irrelevant. In most cases,
-"/dev/net/tun" will be owned by root, so in practice, commit a096ccca6e50
-has no observable effect:
+AutoRetry has been found to sometimes cause controller freezes when
+communicating with buggy USB devices.
 
-- before, "sk_uid" would be zero, due to undefined behavior
-  (CVE-2023-1076),
+This controller feature allows the controller in host mode to send
+non-terminating/burst retry ACKs instead of terminating retry ACKs
+to devices when a transaction error (CRC error or overflow) occurs.
 
-- after, "sk_uid" would be zero, due to "/dev/net/tun" being owned by root.
+Unfortunately, if the USB device continues to respond with a CRC error,
+the controller will not complete endpoint-related commands while it
+keeps trying to auto-retry. [3] The xHCI driver will notice this once
+it tries to abort the transfer using a Stop Endpoint command and
+does not receive a completion in time. [1]
+This situation is reported to dmesg:
 
-What matters is the (fs)UID of the process performing the open(), so cache
-that in "sk_uid".
+[sda] tag#29 uas_eh_abort_handler 0 uas-tag 1 inflight: CMD IN
+[sda] tag#29 CDB: opcode=0x28 28 00 00 69 42 80 00 00 48 00
+xhci-hcd: xHCI host not responding to stop endpoint command
+xhci-hcd: xHCI host controller not responding, assume dead
+xhci-hcd: HC died; cleaning up
 
-Cc: Eric Dumazet <edumazet@google.com>
-Cc: Lorenzo Colitti <lorenzo@google.com>
-Cc: Paolo Abeni <pabeni@redhat.com>
-Cc: Pietro Borrello <borrello@diag.uniroma1.it>
-Cc: netdev@vger.kernel.org
+Some users observed this problem on an Odroid HC2 with the JMS578
+USB3-to-SATA bridge. The issue can be triggered by starting
+a read-heavy workload on an attached SSD. After a while, the host
+controller would die and the SSD would disappear from the system. [1]
+
+Further analysis by Synopsys determined that controller revisions
+other than the one in Odroid HC2 are also affected by this.
+The recommended solution was to disable AutoRetry altogether.
+This change does not have a noticeable performance impact. [2]
+
+Revert the enablement commit. This will keep the AutoRetry bit in
+the default state configured during SoC design [2].
+
+Fixes: b138e23d3dff ("usb: dwc3: core: Enable AutoRetry feature in the controller")
+Link: https://lore.kernel.org/r/a21f34c04632d250cd0a78c7c6f4a1c9c7a43142.camel@gmail.com/ [1]
+Link: https://lore.kernel.org/r/20230711214834.kyr6ulync32d4ktk@synopsys.com/ [2]
+Link: https://lore.kernel.org/r/20230712225518.2smu7wse6djc7l5o@synopsys.com/ [3]
 Cc: stable@vger.kernel.org
-Fixes: a096ccca6e50 ("tun: tun_chr_open(): correctly initialize socket uid")
-Bugzilla: https://bugzilla.redhat.com/show_bug.cgi?id=2173435
-Signed-off-by: Laszlo Ersek <lersek@redhat.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Cc: Mauro Ribeiro <mauro.ribeiro@hardkernel.com>
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Suggested-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Signed-off-by: Jakub Vanek <linuxtardis@gmail.com>
+Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Link: https://lore.kernel.org/r/20230714122419.27741-1-linuxtardis@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/tun.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/dwc3/core.c |   16 ----------------
+ drivers/usb/dwc3/core.h |    3 ---
+ 2 files changed, 19 deletions(-)
 
---- a/drivers/net/tun.c
-+++ b/drivers/net/tun.c
-@@ -3411,7 +3411,7 @@ static int tun_chr_open(struct inode *in
- 	tfile->socket.file = file;
- 	tfile->socket.ops = &tun_socket_ops;
+--- a/drivers/usb/dwc3/core.c
++++ b/drivers/usb/dwc3/core.c
+@@ -993,22 +993,6 @@ static int dwc3_core_init(struct dwc3 *d
+ 		dwc3_writel(dwc->regs, DWC3_GUCTL1, reg);
+ 	}
  
--	sock_init_data_uid(&tfile->socket, &tfile->sk, inode->i_uid);
-+	sock_init_data_uid(&tfile->socket, &tfile->sk, current_fsuid());
+-	if (dwc->dr_mode == USB_DR_MODE_HOST ||
+-	    dwc->dr_mode == USB_DR_MODE_OTG) {
+-		reg = dwc3_readl(dwc->regs, DWC3_GUCTL);
+-
+-		/*
+-		 * Enable Auto retry Feature to make the controller operating in
+-		 * Host mode on seeing transaction errors(CRC errors or internal
+-		 * overrun scenerios) on IN transfers to reply to the device
+-		 * with a non-terminating retry ACK (i.e, an ACK transcation
+-		 * packet with Retry=1 & Nump != 0)
+-		 */
+-		reg |= DWC3_GUCTL_HSTINAUTORETRY;
+-
+-		dwc3_writel(dwc->regs, DWC3_GUCTL, reg);
+-	}
+-
+ 	/*
+ 	 * Must config both number of packets and max burst settings to enable
+ 	 * RX and/or TX threshold.
+--- a/drivers/usb/dwc3/core.h
++++ b/drivers/usb/dwc3/core.h
+@@ -238,9 +238,6 @@
+ #define DWC3_GCTL_GBLHIBERNATIONEN	BIT(1)
+ #define DWC3_GCTL_DSBLCLKGTNG		BIT(0)
  
- 	tfile->sk.sk_write_space = tun_sock_write_space;
- 	tfile->sk.sk_sndbuf = INT_MAX;
+-/* Global User Control Register */
+-#define DWC3_GUCTL_HSTINAUTORETRY	BIT(14)
+-
+ /* Global User Control 1 Register */
+ #define DWC3_GUCTL1_PARKMODE_DISABLE_SS	BIT(17)
+ #define DWC3_GUCTL1_TX_IPGAP_LINECHECK_DIS	BIT(28)
 
 
