@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 11C25775B37
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:15:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 59B6277573D
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:43:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233401AbjHILPc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:15:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40204 "EHLO
+        id S230188AbjHIKnw (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 06:43:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56722 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233384AbjHILPb (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:15:31 -0400
+        with ESMTP id S229864AbjHIKnv (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:43:51 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8389DED
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:15:31 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F6A910F3
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:43:51 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2182162903
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:15:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DC43C433C8;
-        Wed,  9 Aug 2023 11:15:30 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BAB4F630D2
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:43:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCDD3C433C8;
+        Wed,  9 Aug 2023 10:43:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691579730;
-        bh=MMu78flPHn8+xSr74qdSQGrTfy9J+9xYfcz+1Bys2V0=;
+        s=korg; t=1691577830;
+        bh=QVFIyZG/GqkO1ivYyfPx42VvhK+Ld1dEwLdSIc+epRw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rO7N0JVj0kK4dxGIoUCcVVSAis3AmVQnyZClqYVjwVE1P8+yEQ2Y2pYPwZOGyFCcg
-         5SwWIg0kOOgCaRU9KJkUjYo3yxuv6wWGsNWzshS16/K0VkWSTY/n8Rje1f7zkqt5nR
-         QuCy08DliWBxpDvEqNgbVOIOX9D8hjKz/vVX7+BY=
+        b=GNbjDfBy0h+HrmMTCF1c+HJ1rfQHjzNZfGO60i8vRvImgBeQ6v4SWKE99arXlOWV5
+         RF3rQBxNqua+d++UgSMXlmKHNupfTupGSizZU5dZPj7vzb2IpnREUCOcagV6jQZi9R
+         ejo6Ch2PhMfoc1+n6qDReDbnYsiCPtC0u3bbW0rs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Stephan Gerhold <stephan@gerhold.net>,
-        Jakob Hauser <jahau@rocketmail.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Lee Jones <lee@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 095/323] mfd: rt5033: Drop rt5033-battery sub-device
+        patches@lists.linux.dev, Robin Murphy <robin.murphy@arm.com>,
+        Nicolin Chen <nicolinc@nvidia.com>,
+        Will Deacon <will@kernel.org>,
+        Easwar Hariharan <eahariha@linux.microsoft.com>
+Subject: [PATCH 6.4 002/165] iommu/arm-smmu-v3: Work around MMU-600 erratum 1076982
 Date:   Wed,  9 Aug 2023 12:38:53 +0200
-Message-ID: <20230809103702.403647176@linuxfoundation.org>
+Message-ID: <20230809103642.809440049@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
-References: <20230809103658.104386911@linuxfoundation.org>
+In-Reply-To: <20230809103642.720851262@linuxfoundation.org>
+References: <20230809103642.720851262@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,41 +56,100 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Stephan Gerhold <stephan@gerhold.net>
+From: Robin Murphy <robin.murphy@arm.com>
 
-[ Upstream commit 43db1344e0f8c1eb687a1d6cd5b0de3009ab66cb ]
+commit f322e8af35c7f23a8c08b595c38d6c855b2d836f upstream
 
-The fuel gauge in the RT5033 PMIC (rt5033-battery) has its own I2C bus
-and interrupt lines. Therefore, it is not part of the MFD device
-and needs to be specified separately in the device tree.
+MMU-600 versions prior to r1p0 fail to correctly generate a WFE wakeup
+event when the command queue transitions fom full to non-full. We can
+easily work around this by simply hiding the SEV capability such that we
+fall back to polling for space in the queue - since MMU-600 implements
+MSIs we wouldn't expect to need SEV for sync completion either, so this
+should have little to no impact.
 
-Fixes: 0b271258544b ("mfd: rt5033: Add Richtek RT5033 driver core.")
-Signed-off-by: Stephan Gerhold <stephan@gerhold.net>
-Signed-off-by: Jakob Hauser <jahau@rocketmail.com>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Lee Jones <lee@kernel.org>
-Link: https://lore.kernel.org/r/6a8a19bc67b5be3732882e8131ad2ffcb546ac03.1684182964.git.jahau@rocketmail.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Robin Murphy <robin.murphy@arm.com>
+Reviewed-by: Nicolin Chen <nicolinc@nvidia.com>
+Tested-by: Nicolin Chen <nicolinc@nvidia.com>
+Link: https://lore.kernel.org/r/08adbe3d01024d8382a478325f73b56851f76e49.1683731256.git.robin.murphy@arm.com
+Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Easwar Hariharan <eahariha@linux.microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mfd/rt5033.c | 3 ---
- 1 file changed, 3 deletions(-)
+ Documentation/arm64/silicon-errata.rst      |    2 +
+ drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c |   29 ++++++++++++++++++++++++++++
+ drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.h |    6 +++++
+ 3 files changed, 37 insertions(+)
 
-diff --git a/drivers/mfd/rt5033.c b/drivers/mfd/rt5033.c
-index 9bd089c563753..94cdad91c0657 100644
---- a/drivers/mfd/rt5033.c
-+++ b/drivers/mfd/rt5033.c
-@@ -44,9 +44,6 @@ static const struct mfd_cell rt5033_devs[] = {
- 	{
- 		.name = "rt5033-charger",
- 		.of_compatible = "richtek,rt5033-charger",
--	}, {
--		.name = "rt5033-battery",
--		.of_compatible = "richtek,rt5033-battery",
- 	}, {
- 		.name = "rt5033-led",
- 		.of_compatible = "richtek,rt5033-led",
--- 
-2.39.2
-
+--- a/Documentation/arm64/silicon-errata.rst
++++ b/Documentation/arm64/silicon-errata.rst
+@@ -143,6 +143,8 @@ stable kernels.
+ +----------------+-----------------+-----------------+-----------------------------+
+ | ARM            | MMU-500         | #841119,826419  | N/A                         |
+ +----------------+-----------------+-----------------+-----------------------------+
++| ARM            | MMU-600         | #1076982        | N/A                         |
+++----------------+-----------------+-----------------+-----------------------------+
+ +----------------+-----------------+-----------------+-----------------------------+
+ | Broadcom       | Brahma-B53      | N/A             | ARM64_ERRATUM_845719        |
+ +----------------+-----------------+-----------------+-----------------------------+
+--- a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
++++ b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
+@@ -3429,6 +3429,33 @@ static int arm_smmu_device_reset(struct
+ 	return 0;
+ }
+ 
++#define IIDR_IMPLEMENTER_ARM		0x43b
++#define IIDR_PRODUCTID_ARM_MMU_600	0x483
++
++static void arm_smmu_device_iidr_probe(struct arm_smmu_device *smmu)
++{
++	u32 reg;
++	unsigned int implementer, productid, variant, revision;
++
++	reg = readl_relaxed(smmu->base + ARM_SMMU_IIDR);
++	implementer = FIELD_GET(IIDR_IMPLEMENTER, reg);
++	productid = FIELD_GET(IIDR_PRODUCTID, reg);
++	variant = FIELD_GET(IIDR_VARIANT, reg);
++	revision = FIELD_GET(IIDR_REVISION, reg);
++
++	switch (implementer) {
++	case IIDR_IMPLEMENTER_ARM:
++		switch (productid) {
++		case IIDR_PRODUCTID_ARM_MMU_600:
++			/* Arm erratum 1076982 */
++			if (variant == 0 && revision <= 2)
++				smmu->features &= ~ARM_SMMU_FEAT_SEV;
++			break;
++		}
++		break;
++	}
++}
++
+ static int arm_smmu_device_hw_probe(struct arm_smmu_device *smmu)
+ {
+ 	u32 reg;
+@@ -3635,6 +3662,8 @@ static int arm_smmu_device_hw_probe(stru
+ 
+ 	smmu->ias = max(smmu->ias, smmu->oas);
+ 
++	arm_smmu_device_iidr_probe(smmu);
++
+ 	if (arm_smmu_sva_supported(smmu))
+ 		smmu->features |= ARM_SMMU_FEAT_SVA;
+ 
+--- a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.h
++++ b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.h
+@@ -69,6 +69,12 @@
+ #define IDR5_VAX			GENMASK(11, 10)
+ #define IDR5_VAX_52_BIT			1
+ 
++#define ARM_SMMU_IIDR			0x18
++#define IIDR_PRODUCTID			GENMASK(31, 20)
++#define IIDR_VARIANT			GENMASK(19, 16)
++#define IIDR_REVISION			GENMASK(15, 12)
++#define IIDR_IMPLEMENTER		GENMASK(11, 0)
++
+ #define ARM_SMMU_CR0			0x20
+ #define CR0_ATSCHK			(1 << 4)
+ #define CR0_CMDQEN			(1 << 3)
 
 
