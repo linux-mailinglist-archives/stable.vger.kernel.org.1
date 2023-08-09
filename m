@@ -2,99 +2,90 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 605187759FD
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:04:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2BFD9775B8F
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:18:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233027AbjHILEW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:04:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50844 "EHLO
+        id S233475AbjHILSh (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:18:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37532 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233025AbjHILEV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:04:21 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 129561BFA
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:04:21 -0700 (PDT)
+        with ESMTP id S233473AbjHILSg (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:18:36 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4DDDB172A
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:18:36 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A511263148
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:04:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B48DCC433C7;
-        Wed,  9 Aug 2023 11:04:19 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D8D326318B
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:18:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E83C0C433C8;
+        Wed,  9 Aug 2023 11:18:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691579060;
-        bh=EWKXjWnyc/jznaLEdIkG6Z9Sx6eFUlDAmab2iG67LqQ=;
+        s=korg; t=1691579915;
+        bh=Lef9RLFHQK+flhjA8ejjIB5QezkhujfhYQhr/mKAvQU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=zM3ozSLyTvzjHOB093AORvFT+vXtLJ0lq6c0OkGT3oRdLBsFlkt5ose8YdBWkFGon
-         BRY8p+6GdssE5nInhQn6YPeHNqqgZ0PjnsY83q34lAZWTMubAMj/RZ+Hq9n2rVqQm2
-         W2BBazIMBdxSOzuKr4Go7sVQPHfhKnmiUScZC2mU=
+        b=hgSvf9sDQUMXIZqEkxeBs1jNvF6fnJcHyB80JTZtt14c2dvKJO9buYmCmR0d6lj3S
+         5xsF7i3ncplg7v2Qzs6vIYWL9xw7J05x/isucX82P/eIyi4hZVIRx9egNsYm0buP0c
+         OhxAmo5DUzzxN1K7GL+V5KxdPyS4V4Mk8I8SHJ4c=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Chanwoo Choi <cw00.choi@samsung.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 061/204] extcon: Fix kernel doc of property fields to avoid warnings
+        patches@lists.linux.dev, Jason Adriaanse <jason_a69@yahoo.co.uk>,
+        Robin Murphy <robin.murphy@arm.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Christoph Hellwig <hch@lst.de>
+Subject: [PATCH 4.19 161/323] PCI: Add function 1 DMA alias quirk for Marvell 88SE9235
 Date:   Wed,  9 Aug 2023 12:39:59 +0200
-Message-ID: <20230809103644.673999137@linuxfoundation.org>
+Message-ID: <20230809103705.512274938@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103642.552405807@linuxfoundation.org>
-References: <20230809103642.552405807@linuxfoundation.org>
+In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
+References: <20230809103658.104386911@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Robin Murphy <robin.murphy@arm.com>
 
-[ Upstream commit 7e77e0b7a9f4cdf91cb0950749b40c840ea63efc ]
+commit 88d341716b83abd355558523186ca488918627ee upstream.
 
-Kernel documentation has to be synchronized with a code, otherwise
-the validator is not happy:
+Marvell's own product brief implies the 92xx series are a closely related
+family, and sure enough it turns out that 9235 seems to need the same quirk
+as the other three, although possibly only when certain ports are used.
 
-     Function parameter or member 'usb_propval' not described in 'extcon_cable'
-     Function parameter or member 'chg_propval' not described in 'extcon_cable'
-     Function parameter or member 'jack_propval' not described in 'extcon_cable'
-     Function parameter or member 'disp_propval' not described in 'extcon_cable'
-
-Describe the fields added in the past.
-
-Fixes: 067c1652e7a7 ("extcon: Add the support for extcon property according to extcon type")
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Signed-off-by: Chanwoo Choi <cw00.choi@samsung.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lore.kernel.org/linux-iommu/2a699a99-545c-1324-e052-7d2f41fed1ae@yahoo.co.uk/
+Link: https://lore.kernel.org/r/731507e05d70239aec96fcbfab6e65d8ce00edd2.1686157165.git.robin.murphy@arm.com
+Reported-by: Jason Adriaanse <jason_a69@yahoo.co.uk>
+Signed-off-by: Robin Murphy <robin.murphy@arm.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/extcon/extcon.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/pci/quirks.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/extcon/extcon.c b/drivers/extcon/extcon.c
-index 81a552654cc7f..e131d3287c5d0 100644
---- a/drivers/extcon/extcon.c
-+++ b/drivers/extcon/extcon.c
-@@ -204,6 +204,10 @@ struct __extcon_info {
-  * @attr_name:		"name" sysfs entry
-  * @attr_state:		"state" sysfs entry
-  * @attrs:		the array pointing to attr_name and attr_state for attr_g
-+ * @usb_propval:	the array of USB connector properties
-+ * @chg_propval:	the array of charger connector properties
-+ * @jack_propval:	the array of jack connector properties
-+ * @disp_propval:	the array of display connector properties
-  */
- struct extcon_cable {
- 	struct extcon_dev *edev;
--- 
-2.39.2
-
+--- a/drivers/pci/quirks.c
++++ b/drivers/pci/quirks.c
+@@ -4074,6 +4074,8 @@ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_M
+ /* https://bugzilla.kernel.org/show_bug.cgi?id=42679#c49 */
+ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_MARVELL_EXT, 0x9230,
+ 			 quirk_dma_func1_alias);
++DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_MARVELL_EXT, 0x9235,
++			 quirk_dma_func1_alias);
+ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_TTI, 0x0642,
+ 			 quirk_dma_func1_alias);
+ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_TTI, 0x0645,
 
 
