@@ -2,47 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 18306775989
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:01:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 471C7775A9C
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:09:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232893AbjHILBZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:01:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41930 "EHLO
+        id S233233AbjHILJ4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:09:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38694 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232895AbjHILBY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:01:24 -0400
+        with ESMTP id S233231AbjHILJ4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:09:56 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F5C51724
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:01:24 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C3C91FD8
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:09:55 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A2F4B62496
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:01:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE0BDC433C7;
-        Wed,  9 Aug 2023 11:01:22 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id EF8CA63118
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:09:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FD7FC433C8;
+        Wed,  9 Aug 2023 11:09:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691578883;
-        bh=J8Etr6OZ8uVTd0lbk93PmgOhB8ZasD1aff4i4QOaYh0=;
+        s=korg; t=1691579394;
+        bh=PgjhwPLYP5jOm44p94E9F9pmfdytYFX0Vmf54UeqlhU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=qYtA+DI17p3GTn6aY9P4Ed3lU2EloinRWOO0vOeKgNgW5A/Vrbu/yGN1pX9k3UB9X
-         cBFt0f+Y+phRnXOUC4TwixYw0ue3GNlq8MS4bTwOtZeuUhqxKDFfBiwbC+sN8QRsiZ
-         1Jn5VlSsKHCJM4PSUQZ8Rk3qk6HWTgcn0Xuu+7VI=
+        b=TV7LisvcHB91LxPcJsqGAb7QjdqHnFb51hcHtGFcC1WuczyUrmNJyxRyqbbM5Uv0l
+         vDSijvJdEDJeOPfBL/OKVIiT7L0e/5RpMFCHuDQP7B8lCjOXqW0VcSJ/TP5PSZ+mdc
+         rH5q8OZVxv5EPfo7P0g49+LNuMEcBxk1LLItEAKA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Dan Carpenter <dan.carpenter@linaro.org>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 83/92] mtd: rawnand: fsl_upm: Fix an off-by one test in fun_exec_op()
+        patches@lists.linux.dev, kernel test robot <lkp@intel.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Cixi Geng <cixi.geng1@unisoc.com>
+Subject: [PATCH 4.14 181/204] perf: Fix function pointer case
 Date:   Wed,  9 Aug 2023 12:41:59 +0200
-Message-ID: <20230809103636.408576920@linuxfoundation.org>
+Message-ID: <20230809103648.560886963@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103633.485906560@linuxfoundation.org>
-References: <20230809103633.485906560@linuxfoundation.org>
+In-Reply-To: <20230809103642.552405807@linuxfoundation.org>
+References: <20230809103642.552405807@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,43 +55,48 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Peter Zijlstra <peterz@infradead.org>
 
-[ Upstream commit c6abce60338aa2080973cd95be0aedad528bb41f ]
+commit 1af6239d1d3e61d33fd2f0ba53d3d1a67cc50574 upstream.
 
-'op-cs' is copied in 'fun->mchip_number' which is used to access the
-'mchip_offsets' and the 'rnb_gpio' arrays.
-These arrays have NAND_MAX_CHIPS elements, so the index must be below this
-limit.
+With the advent of CFI it is no longer acceptible to cast function
+pointers.
 
-Fix the sanity check in order to avoid the NAND_MAX_CHIPS value. This
-would lead to out-of-bound accesses.
+The robot complains thusly:
 
-Fixes: 54309d657767 ("mtd: rawnand: fsl_upm: Implement exec_op()")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://lore.kernel.org/linux-mtd/cd01cba1c7eda58bdabaae174c78c067325803d2.1689803636.git.christophe.jaillet@wanadoo.fr
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  kernel-events-core.c:warning:cast-from-int-(-)(struct-perf_cpu_pmu_context-)-to-remote_function_f-(aka-int-(-)(void-)-)-converts-to-incompatible-function-type
+
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Signed-off-by: Cixi Geng <cixi.geng1@unisoc.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mtd/nand/raw/fsl_upm.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/events/core.c |    8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/mtd/nand/raw/fsl_upm.c b/drivers/mtd/nand/raw/fsl_upm.c
-index b3cc427100a22..636e65328bb32 100644
---- a/drivers/mtd/nand/raw/fsl_upm.c
-+++ b/drivers/mtd/nand/raw/fsl_upm.c
-@@ -135,7 +135,7 @@ static int fun_exec_op(struct nand_chip *chip, const struct nand_operation *op,
- 	unsigned int i;
- 	int ret;
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -1096,6 +1096,11 @@ static int perf_mux_hrtimer_restart(stru
+ 	return 0;
+ }
  
--	if (op->cs > NAND_MAX_CHIPS)
-+	if (op->cs >= NAND_MAX_CHIPS)
- 		return -EINVAL;
++static int perf_mux_hrtimer_restart_ipi(void *arg)
++{
++	return perf_mux_hrtimer_restart(arg);
++}
++
+ void perf_pmu_disable(struct pmu *pmu)
+ {
+ 	int *count = this_cpu_ptr(pmu->pmu_disable_count);
+@@ -9142,8 +9147,7 @@ perf_event_mux_interval_ms_store(struct
+ 		cpuctx = per_cpu_ptr(pmu->pmu_cpu_context, cpu);
+ 		cpuctx->hrtimer_interval = ns_to_ktime(NSEC_PER_MSEC * timer);
  
- 	if (check_only)
--- 
-2.40.1
-
+-		cpu_function_call(cpu,
+-			(remote_function_f)perf_mux_hrtimer_restart, cpuctx);
++		cpu_function_call(cpu, perf_mux_hrtimer_restart_ipi, cpuctx);
+ 	}
+ 	cpus_read_unlock();
+ 	mutex_unlock(&mux_interval_mutex);
 
 
