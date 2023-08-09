@@ -2,46 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2F1C27757AC
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:48:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BFC21775BB1
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:20:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232249AbjHIKsr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 06:48:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46444 "EHLO
+        id S233512AbjHILUB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:20:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53194 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231205AbjHIKsq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:48:46 -0400
+        with ESMTP id S233511AbjHILUA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:20:00 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 72EBF10F3
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:48:46 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E948FA
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:20:00 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 05AA56310A
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:48:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE414C433D9;
-        Wed,  9 Aug 2023 10:48:44 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A9AEB631CF
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:19:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE0E8C433C8;
+        Wed,  9 Aug 2023 11:19:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691578125;
-        bh=1g4NKE7ziG5yB3fVf2fTsDUzYjCajxUhRMOqE15E93E=;
+        s=korg; t=1691579999;
+        bh=gedNbu5Fo2qv7/gxRsyidpC0NOd2iWfkpR/WxYHuAJI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=1h5rTCje9bNJyChu0Kal3OrqU6AqzPKQDQmv90Wf/b9AMLAuRCzphYTz7OSB0Ct3I
-         ceJ+yxDJUaafulVEm4Wh8Eu6+aCIFJrrhze9/6du8Ex9B2lulowDK4BeiJuhd1LrF1
-         /XViTnWm4c5weDgOSG4utdepr8HXtttn8v+WH38g=
+        b=tTbsRK3UQ0TSaLyMmP5gsewlYx9LxLXfQPPQCxoBY5brr8GY9z5koShpdGTDXQIrK
+         oY473ID1N0w4/HHX0vMaU3KTlQoPYnR+AsSCaZ/cyqoLBxcfl/uLYTZsOqNfW9XCFx
+         IEBlILzJkA0aUkURSumG7M3tPJXy61FGCQfQJS+E=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Benjamin Block <bblock@linux.ibm.com>,
-        Fedor Loshakov <loshakov@linux.ibm.com>,
-        Steffen Maier <maier@linux.ibm.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.4 097/165] scsi: zfcp: Defer fc_rport blocking until after ADISC response
-Date:   Wed,  9 Aug 2023 12:40:28 +0200
-Message-ID: <20230809103645.952154656@linuxfoundation.org>
+        patches@lists.linux.dev,
+        syzbot <syzbot+7937ba6a50bdd00fffdf@syzkaller.appspotmail.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 191/323] debugobjects: Recheck debug_objects_enabled before reporting
+Date:   Wed,  9 Aug 2023 12:40:29 +0200
+Message-ID: <20230809103706.921209533@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103642.720851262@linuxfoundation.org>
-References: <20230809103642.720851262@linuxfoundation.org>
+In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
+References: <20230809103658.104386911@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,60 +57,74 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Steffen Maier <maier@linux.ibm.com>
+From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
 
-commit e65851989001c0c9ba9177564b13b38201c0854c upstream.
+[ Upstream commit 8b64d420fe2450f82848178506d3e3a0bd195539 ]
 
-Storage devices are free to send RSCNs, e.g. for internal state changes. If
-this happens on all connected paths, zfcp risks temporarily losing all
-paths at the same time. This has strong requirements on multipath
-configuration such as "no_path_retry queue".
+syzbot is reporting false a positive ODEBUG message immediately after
+ODEBUG was disabled due to OOM.
 
-Avoid such situations by deferring fc_rport blocking until after the ADISC
-response, when any actual state change of the remote port became clear.
-The already existing port recovery triggers explicitly block the fc_rport.
-The triggers are: on ADISC reject or timeout (typical cable pull case), and
-on ADISC indicating that the remote port has changed its WWPN or
-the port is meanwhile no longer open.
+  [ 1062.309646][T22911] ODEBUG: Out of memory. ODEBUG disabled
+  [ 1062.886755][ T5171] ------------[ cut here ]------------
+  [ 1062.892770][ T5171] ODEBUG: assert_init not available (active state 0) object: ffffc900056afb20 object type: timer_list hint: process_timeout+0x0/0x40
 
-As a side effect, this also removes a confusing direct function call to
-another work item function zfcp_scsi_rport_work() instead of scheduling
-that other work item. It was probably done that way to have the rport block
-side effect immediate and synchronous to the caller.
+  CPU 0 [ T5171]                CPU 1 [T22911]
+  --------------                --------------
+  debug_object_assert_init() {
+    if (!debug_objects_enabled)
+      return;
+    db = get_bucket(addr);
+                                lookup_object_or_alloc() {
+                                  debug_objects_enabled = 0;
+                                  return NULL;
+                                }
+                                debug_objects_oom() {
+                                  pr_warn("Out of memory. ODEBUG disabled\n");
+                                  // all buckets get emptied here, and
+                                }
+    lookup_object_or_alloc(addr, db, descr, false, true) {
+      // this bucket is already empty.
+      return ERR_PTR(-ENOENT);
+    }
+    // Emits false positive warning.
+    debug_print_object(&o, "assert_init");
+  }
 
-Fixes: a2fa0aede07c ("[SCSI] zfcp: Block FC transport rports early on errors")
-Cc: stable@vger.kernel.org #v2.6.30+
-Reviewed-by: Benjamin Block <bblock@linux.ibm.com>
-Reviewed-by: Fedor Loshakov <loshakov@linux.ibm.com>
-Signed-off-by: Steffen Maier <maier@linux.ibm.com>
-Link: https://lore.kernel.org/r/20230724145156.3920244-1-maier@linux.ibm.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Recheck debug_object_enabled in debug_print_object() to avoid that.
+
+Reported-by: syzbot <syzbot+7937ba6a50bdd00fffdf@syzkaller.appspotmail.com>
+Suggested-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/r/492fe2ae-5141-d548-ebd5-62f5fe2e57f7@I-love.SAKURA.ne.jp
+Closes: https://syzkaller.appspot.com/bug?extid=7937ba6a50bdd00fffdf
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/s390/scsi/zfcp_fc.c |    6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ lib/debugobjects.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
---- a/drivers/s390/scsi/zfcp_fc.c
-+++ b/drivers/s390/scsi/zfcp_fc.c
-@@ -534,8 +534,7 @@ static void zfcp_fc_adisc_handler(void *
+diff --git a/lib/debugobjects.c b/lib/debugobjects.c
+index 5f23d896df55a..62d095fd0c52a 100644
+--- a/lib/debugobjects.c
++++ b/lib/debugobjects.c
+@@ -371,6 +371,15 @@ static void debug_print_object(struct debug_obj *obj, char *msg)
+ 	struct debug_obj_descr *descr = obj->descr;
+ 	static int limit;
  
- 	/* re-init to undo drop from zfcp_fc_adisc() */
- 	port->d_id = ntoh24(adisc_resp->adisc_port_id);
--	/* port is good, unblock rport without going through erp */
--	zfcp_scsi_schedule_rport_register(port);
-+	/* port is still good, nothing to do */
-  out:
- 	atomic_andnot(ZFCP_STATUS_PORT_LINK_TEST, &port->status);
- 	put_device(&port->dev);
-@@ -595,9 +594,6 @@ void zfcp_fc_link_test_work(struct work_
- 	int retval;
- 
- 	set_worker_desc("zadisc%16llx", port->wwpn); /* < WORKER_DESC_LEN=24 */
--	get_device(&port->dev);
--	port->rport_task = RPORT_DEL;
--	zfcp_scsi_rport_work(&port->rport_work);
- 
- 	/* only issue one test command at one time per port */
- 	if (atomic_read(&port->status) & ZFCP_STATUS_PORT_LINK_TEST)
++	/*
++	 * Don't report if lookup_object_or_alloc() by the current thread
++	 * failed because lookup_object_or_alloc()/debug_objects_oom() by a
++	 * concurrent thread turned off debug_objects_enabled and cleared
++	 * the hash buckets.
++	 */
++	if (!debug_objects_enabled)
++		return;
++
+ 	if (limit < 5 && descr != descr_test) {
+ 		void *hint = descr->debug_hint ?
+ 			descr->debug_hint(obj->object) : NULL;
+-- 
+2.39.2
+
 
 
