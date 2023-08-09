@@ -2,45 +2,54 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B6E5F775D53
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:36:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9EDBF775A4F
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:07:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233885AbjHILgO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:36:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37412 "EHLO
+        id S233131AbjHILHR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:07:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45518 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234074AbjHILgN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:36:13 -0400
+        with ESMTP id S233135AbjHILHQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:07:16 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D4CCB1FD7
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:36:12 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E4A21FCE
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:07:16 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2FD5F6351D
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:36:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EAF2C433C8;
-        Wed,  9 Aug 2023 11:36:11 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0BC1A6309F
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:07:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5131C433C8;
+        Wed,  9 Aug 2023 11:07:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691580971;
-        bh=NcppRsAV0r2CxNwhBx1xRioA3ldRN6To9+yfWlxObek=;
+        s=korg; t=1691579235;
+        bh=SP7FcrL/n/JbIPYcqAj06Y4gPl8RVIcWqAmrAHKcOK0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=iivz91Vr8U2gOGYYr6uOpADkgHCbp/B/o0xtDmQS4vVmEJyd9VGV0d/19uoQDEm4W
-         edCB0v7UuFIWSDqbyzKjYjiLaXdRoKH0jfORzUhBCHP1lNySSCB6cOQurCdyVcd0vB
-         Tgl6PQuvCqE9bXdPFqXct/0KN3fY+SXWj63oOiM4=
+        b=SMoV/HFqqhCVj8b1gMQ3x9AdUk7ya2sGae/9Su6NjtY5S74aEqimQHYIfEznJMhwq
+         AdWH8huMEXrIWCb41Ny0Nb4rMe2a60/CURjXpLi1JnTuuWY0u3nCNvBRdBZaoTFJoY
+         03LmrAFbyjOCCLhRR9i8MZPpDufeNvg3DQpEZejk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yu Kuai <yukuai3@huawei.com>,
-        Mike Snitzer <snitzer@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 060/201] dm raid: clean up four equivalent goto tags in raid_ctr()
+        patches@lists.linux.dev,
+        =?UTF-8?q?Georg=20M=C3=BCller?= <georgmueller@gmx.net>,
+        "Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Ian Rogers <irogers@google.com>,
+        Ingo Molnar <mingo@redhat.com>, Jiri Olsa <jolsa@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        regressions@lists.linux.dev,
+        Arnaldo Carvalho de Melo <acme@redhat.com>
+Subject: [PATCH 4.14 124/204] perf probe: Add test for regression introduced by switch to die_get_decl_file()
 Date:   Wed,  9 Aug 2023 12:41:02 +0200
-Message-ID: <20230809103645.850008655@linuxfoundation.org>
+Message-ID: <20230809103646.752555655@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103643.799166053@linuxfoundation.org>
-References: <20230809103643.799166053@linuxfoundation.org>
+In-Reply-To: <20230809103642.552405807@linuxfoundation.org>
+References: <20230809103642.552405807@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,97 +64,112 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Yu Kuai <yukuai3@huawei.com>
+From: Georg Müller <georgmueller@gmx.net>
 
-[ Upstream commit e74c874eabe2e9173a8fbdad616cd89c70eb8ffd ]
+commit 56cbeacf143530576905623ac72ae0964f3293a6 upstream.
 
-There are four equivalent goto tags in raid_ctr(), clean them up to
-use just one.
+This patch adds a test to validate that 'perf probe' works for binaries
+where DWARF info is split into multiple CUs
 
-There is no functional change and this is preparation to fix
-raid_ctr()'s unprotected md_stop().
-
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
-Signed-off-by: Mike Snitzer <snitzer@kernel.org>
-Stable-dep-of: 7d5fff8982a2 ("dm raid: protect md_stop() with 'reconfig_mutex'")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Georg Müller <georgmueller@gmx.net>
+Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: regressions@lists.linux.dev
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20230628084551.1860532-5-georgmueller@gmx.net
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/dm-raid.c | 27 +++++++++------------------
- 1 file changed, 9 insertions(+), 18 deletions(-)
+ tools/perf/tests/shell/test_uprobe_from_different_cu.sh |   77 ++++++++++++++++
+ 1 file changed, 77 insertions(+)
+ create mode 100755 tools/perf/tests/shell/test_uprobe_from_different_cu.sh
 
-diff --git a/drivers/md/dm-raid.c b/drivers/md/dm-raid.c
-index 1a25c8b01b6aa..f3a489b1b6e9a 100644
---- a/drivers/md/dm-raid.c
-+++ b/drivers/md/dm-raid.c
-@@ -3258,8 +3258,7 @@ static int raid_ctr(struct dm_target *ti, unsigned int argc, char **argv)
- 	r = md_start(&rs->md);
- 	if (r) {
- 		ti->error = "Failed to start raid array";
--		mddev_unlock(&rs->md);
--		goto bad_md_start;
-+		goto bad_unlock;
- 	}
- 
- 	/* If raid4/5/6 journal mode explicitly requested (only possible with journal dev) -> set it */
-@@ -3267,8 +3266,7 @@ static int raid_ctr(struct dm_target *ti, unsigned int argc, char **argv)
- 		r = r5c_journal_mode_set(&rs->md, rs->journal_dev.mode);
- 		if (r) {
- 			ti->error = "Failed to set raid4/5/6 journal mode";
--			mddev_unlock(&rs->md);
--			goto bad_journal_mode_set;
-+			goto bad_unlock;
- 		}
- 	}
- 
-@@ -3278,19 +3276,15 @@ static int raid_ctr(struct dm_target *ti, unsigned int argc, char **argv)
- 	/* Try to adjust the raid4/5/6 stripe cache size to the stripe size */
- 	if (rs_is_raid456(rs)) {
- 		r = rs_set_raid456_stripe_cache(rs);
--		if (r) {
--			mddev_unlock(&rs->md);
--			goto bad_stripe_cache;
--		}
-+		if (r)
-+			goto bad_unlock;
- 	}
- 
- 	/* Now do an early reshape check */
- 	if (test_bit(RT_FLAG_RESHAPE_RS, &rs->runtime_flags)) {
- 		r = rs_check_reshape(rs);
--		if (r) {
--			mddev_unlock(&rs->md);
--			goto bad_check_reshape;
--		}
-+		if (r)
-+			goto bad_unlock;
- 
- 		/* Restore new, ctr requested layout to perform check */
- 		rs_config_restore(rs, &rs_layout);
-@@ -3299,8 +3293,7 @@ static int raid_ctr(struct dm_target *ti, unsigned int argc, char **argv)
- 			r = rs->md.pers->check_reshape(&rs->md);
- 			if (r) {
- 				ti->error = "Reshape check failed";
--				mddev_unlock(&rs->md);
--				goto bad_check_reshape;
-+				goto bad_unlock;
- 			}
- 		}
- 	}
-@@ -3311,10 +3304,8 @@ static int raid_ctr(struct dm_target *ti, unsigned int argc, char **argv)
- 	mddev_unlock(&rs->md);
- 	return 0;
- 
--bad_md_start:
--bad_journal_mode_set:
--bad_stripe_cache:
--bad_check_reshape:
-+bad_unlock:
-+	mddev_unlock(&rs->md);
- 	md_stop(&rs->md);
- bad:
- 	raid_set_free(rs);
--- 
-2.40.1
-
+--- /dev/null
++++ b/tools/perf/tests/shell/test_uprobe_from_different_cu.sh
+@@ -0,0 +1,77 @@
++#!/bin/bash
++# test perf probe of function from different CU
++# SPDX-License-Identifier: GPL-2.0
++
++set -e
++
++temp_dir=$(mktemp -d /tmp/perf-uprobe-different-cu-sh.XXXXXXXXXX)
++
++cleanup()
++{
++	trap - EXIT TERM INT
++	if [[ "${temp_dir}" =~ ^/tmp/perf-uprobe-different-cu-sh.*$ ]]; then
++		echo "--- Cleaning up ---"
++		perf probe -x ${temp_dir}/testfile -d foo
++		rm -f "${temp_dir}/"*
++		rmdir "${temp_dir}"
++	fi
++}
++
++trap_cleanup()
++{
++        cleanup
++        exit 1
++}
++
++trap trap_cleanup EXIT TERM INT
++
++cat > ${temp_dir}/testfile-foo.h << EOF
++struct t
++{
++  int *p;
++  int c;
++};
++
++extern int foo (int i, struct t *t);
++EOF
++
++cat > ${temp_dir}/testfile-foo.c << EOF
++#include "testfile-foo.h"
++
++int
++foo (int i, struct t *t)
++{
++  int j, res = 0;
++  for (j = 0; j < i && j < t->c; j++)
++    res += t->p[j];
++
++  return res;
++}
++EOF
++
++cat > ${temp_dir}/testfile-main.c << EOF
++#include "testfile-foo.h"
++
++static struct t g;
++
++int
++main (int argc, char **argv)
++{
++  int i;
++  int j[argc];
++  g.c = argc;
++  g.p = j;
++  for (i = 0; i < argc; i++)
++    j[i] = (int) argv[i][0];
++  return foo (3, &g);
++}
++EOF
++
++gcc -g -Og -flto -c ${temp_dir}/testfile-foo.c -o ${temp_dir}/testfile-foo.o
++gcc -g -Og -c ${temp_dir}/testfile-main.c -o ${temp_dir}/testfile-main.o
++gcc -g -Og -o ${temp_dir}/testfile ${temp_dir}/testfile-foo.o ${temp_dir}/testfile-main.o
++
++perf probe -x ${temp_dir}/testfile --funcs foo
++perf probe -x ${temp_dir}/testfile foo
++
++cleanup
 
 
