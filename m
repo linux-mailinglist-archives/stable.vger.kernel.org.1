@@ -2,101 +2,98 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 15BB7775BC3
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:20:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5E7BF775A62
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:07:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233536AbjHILUt (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:20:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52518 "EHLO
+        id S233159AbjHILH4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:07:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45912 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233530AbjHILUs (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:20:48 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D8C0ED
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:20:48 -0700 (PDT)
+        with ESMTP id S233150AbjHILH4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:07:56 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ADA9C10F3
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:07:55 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 981C8631DF
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:20:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1FDEC433C7;
-        Wed,  9 Aug 2023 11:20:46 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4CEBB63142
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:07:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 584A0C433C8;
+        Wed,  9 Aug 2023 11:07:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691580047;
-        bh=o55XrKVm5ppVeLVzq/eueCjL+sp/Va0Dcwr+MSFVrzE=;
+        s=korg; t=1691579274;
+        bh=0uoQadGXqKg72MEMLeUI1ip4qqlU8NKMsNuFi3rjqA8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=H1y7De5g8uQdFTAOYxXWW5ClQzmsPfxzXiu4TTREkvThaCdA7x8NrvwYgnqp6K+RK
-         03WxHJcHBVEEZem0SfhCfTIfcSWhg6+G7ImS7LCD3GD0xlIiJfi/JJn2Om7G+GPOl+
-         SQnhC2eb0OlZ1m2kGiGLNsF1KPR5Xk4f8di8zUec=
+        b=eRb+NVgCTG0nsvFXLn+2XVZIgxiWK+ExcN9WDUfxIt3caw7LNp2vSK3rNiYEPPKxm
+         FM4G9b6lzA+V5cZbq+K6phXxmo77nlXL5FJRqaqQOysztZcfAg/8QS1zcwZDUowHbR
+         7xQ8keGsXneqtldVAaqhGnb07DGtmjX72tG96UTk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Florian Westphal <fw@strlen.de>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 209/323] netfilter: nf_tables: fix spurious set element insertion failure
+        patches@lists.linux.dev, Damien Le Moal <dlemoal@kernel.org>,
+        Lorenzo Pieralisi <lpieralisi@kernel.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Manivannan Sadhasivam <mani@kernel.org>
+Subject: [PATCH 4.14 109/204] misc: pci_endpoint_test: Re-init completion for every test
 Date:   Wed,  9 Aug 2023 12:40:47 +0200
-Message-ID: <20230809103707.700401706@linuxfoundation.org>
+Message-ID: <20230809103646.252544785@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
-References: <20230809103658.104386911@linuxfoundation.org>
+In-Reply-To: <20230809103642.552405807@linuxfoundation.org>
+References: <20230809103642.552405807@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Florian Westphal <fw@strlen.de>
+From: Damien Le Moal <dlemoal@kernel.org>
 
-[ Upstream commit ddbd8be68941985f166f5107109a90ce13147c44 ]
+commit fb620ae73b70c2f57b9d3e911fc24c024ba2324f upstream.
 
-On some platforms there is a padding hole in the nft_verdict
-structure, between the verdict code and the chain pointer.
+The irq_raised completion used to detect the end of a test case is
+initialized when the test device is probed, but never reinitialized again
+before a test case. As a result, the irq_raised completion synchronization
+is effective only for the first ioctl test case executed. Any subsequent
+call to wait_for_completion() by another ioctl() call will immediately
+return, potentially too early, leading to false positive failures.
 
-On element insertion, if the new element clashes with an existing one and
-NLM_F_EXCL flag isn't set, we want to ignore the -EEXIST error as long as
-the data associated with duplicated element is the same as the existing
-one.  The data equality check uses memcmp.
+Fix this by reinitializing the irq_raised completion before starting a new
+ioctl() test command.
 
-For normal data (NFT_DATA_VALUE) this works fine, but for NFT_DATA_VERDICT
-padding area leads to spurious failure even if the verdict data is the
-same.
-
-This then makes the insertion fail with 'already exists' error, even
-though the new "key : data" matches an existing entry and userspace
-told the kernel that it doesn't want to receive an error indication.
-
-Fixes: c016c7e45ddf ("netfilter: nf_tables: honor NLM_F_EXCL flag in set element insertion")
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lore.kernel.org/r/20230415023542.77601-16-dlemoal@kernel.org
+Fixes: 2c156ac71c6b ("misc: Add host side PCI driver for PCI test function device")
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Signed-off-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Manivannan Sadhasivam <mani@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nf_tables_api.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/misc/pci_endpoint_test.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index 16405e71a6780..f25b6337f150a 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -7248,6 +7248,9 @@ static int nft_verdict_init(const struct nft_ctx *ctx, struct nft_data *data,
+--- a/drivers/misc/pci_endpoint_test.c
++++ b/drivers/misc/pci_endpoint_test.c
+@@ -425,6 +425,10 @@ static long pci_endpoint_test_ioctl(stru
+ 	struct pci_endpoint_test *test = to_endpoint_test(file->private_data);
  
- 	if (!tb[NFTA_VERDICT_CODE])
- 		return -EINVAL;
+ 	mutex_lock(&test->mutex);
 +
-+	/* zero padding hole for memcmp */
-+	memset(data, 0, sizeof(*data));
- 	data->verdict.code = ntohl(nla_get_be32(tb[NFTA_VERDICT_CODE]));
- 
- 	switch (data->verdict.code) {
--- 
-2.39.2
-
++	reinit_completion(&test->irq_raised);
++	test->last_irq = -ENODATA;
++
+ 	switch (cmd) {
+ 	case PCITEST_BAR:
+ 		bar = arg;
 
 
