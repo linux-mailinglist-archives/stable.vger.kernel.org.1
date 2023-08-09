@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0AEA377589D
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:54:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 77FBD775A18
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:05:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232724AbjHIKyf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 06:54:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40218 "EHLO
+        id S233077AbjHILFX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:05:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33996 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232638AbjHIKyN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:54:13 -0400
+        with ESMTP id S233074AbjHILFW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:05:22 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 013AC49F3
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:52:27 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4761D1724
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:05:22 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C9EC86312B
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:52:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D76B1C433C7;
-        Wed,  9 Aug 2023 10:52:25 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D43CF63142
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:05:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBA5AC433C7;
+        Wed,  9 Aug 2023 11:05:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691578346;
-        bh=iTnnX3OC5vcKNl7qEsmrQqC732q4InTfn4rldMu+0bI=;
+        s=korg; t=1691579121;
+        bh=d4BwS+PL2j32Y9VE6SET67FPx9R8F+LwC9dnFqjxodg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Qkbx1u17dCYJPgVs9V3fvRPvZ3kLv5hFdldE5jy68vMzruSOBPm6hak3y49U3g3/O
-         Lr/j+ANrhwrRGj2rtC7IhTunfxeTTM5MfsLK/xAL1RvZpBsAepVh6Bl4BE2zHINlII
-         2QqLj7B1D+sf1iw6He8ddQsjD4o5jGwegz8uGY0o=
+        b=mlkzs4bWQvRTtPERfsWsiMpE6uoKLK1CtJ+fNYpO4uKC+hIaJ6XwgxAObE0glM85A
+         OV7GdwAogjIFamRo1Psk2mJl0fc6gT2GW4wDm4u9n8YVvqRtLhMgFuAMrJ9oesisve
+         GMf6OBfCC4OEa9U3Osi8ECK7rDYdx19zMAhAOCZg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Amir Tzin <amirtz@nvidia.com>,
-        Aya Levin <ayal@nvidia.com>,
-        Saeed Mahameed <saeedm@nvidia.com>,
+        patches@lists.linux.dev, Lin Ma <linma@zju.edu.cn>,
+        Pedro Tammela <pctammela@mojatatu.com>,
+        Paolo Abeni <pabeni@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 026/127] net/mlx5e: Fix crash moving to switchdev mode when ntuple offload is set
+Subject: [PATCH 4.14 075/204] net/sched: act_pedit: Add size check for TCA_PEDIT_PARMS_EX
 Date:   Wed,  9 Aug 2023 12:40:13 +0200
-Message-ID: <20230809103637.509494872@linuxfoundation.org>
+Message-ID: <20230809103645.162625199@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103636.615294317@linuxfoundation.org>
-References: <20230809103636.615294317@linuxfoundation.org>
+In-Reply-To: <20230809103642.552405807@linuxfoundation.org>
+References: <20230809103642.552405807@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,81 +56,57 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Amir Tzin <amirtz@nvidia.com>
+From: Lin Ma <linma@zju.edu.cn>
 
-[ Upstream commit 3ec43c1b082a8804472430e1253544d75f4b540e ]
+[ Upstream commit 30c45b5361d39b4b793780ffac5538090b9e2eb1 ]
 
-Moving to switchdev mode with ntuple offload on causes the kernel to
-crash since fs->arfs is freed during nic profile cleanup flow.
+The attribute TCA_PEDIT_PARMS_EX is not be included in pedit_policy and
+one malicious user could fake a TCA_PEDIT_PARMS_EX whose length is
+smaller than the intended sizeof(struct tc_pedit). Hence, the
+dereference in tcf_pedit_init() could access dirty heap data.
 
-Ntuple offload is not supported in switchdev mode and it is already
-unset by mlx5 fix feature ndo in switchdev mode. Verify fs->arfs is
-valid before disabling it.
+static int tcf_pedit_init(...)
+{
+  // ...
+  pattr = tb[TCA_PEDIT_PARMS]; // TCA_PEDIT_PARMS is included
+  if (!pattr)
+    pattr = tb[TCA_PEDIT_PARMS_EX]; // but this is not
 
-trace:
-[] RIP: 0010:_raw_spin_lock_bh+0x17/0x30
-[] arfs_del_rules+0x44/0x1a0 [mlx5_core]
-[] mlx5e_arfs_disable+0xe/0x20 [mlx5_core]
-[] mlx5e_handle_feature+0x3d/0xb0 [mlx5_core]
-[] ? __rtnl_unlock+0x25/0x50
-[] mlx5e_set_features+0xfe/0x160 [mlx5_core]
-[] __netdev_update_features+0x278/0xa50
-[] ? netdev_run_todo+0x5e/0x2a0
-[] netdev_update_features+0x22/0x70
-[] ? _cond_resched+0x15/0x30
-[] mlx5e_attach_netdev+0x12a/0x1e0 [mlx5_core]
-[] mlx5e_netdev_attach_profile+0xa1/0xc0 [mlx5_core]
-[] mlx5e_netdev_change_profile+0x77/0xe0 [mlx5_core]
-[] mlx5e_vport_rep_load+0x1ed/0x290 [mlx5_core]
-[] mlx5_esw_offloads_rep_load+0x88/0xd0 [mlx5_core]
-[] esw_offloads_load_rep.part.38+0x31/0x50 [mlx5_core]
-[] esw_offloads_enable+0x6c5/0x710 [mlx5_core]
-[] mlx5_eswitch_enable_locked+0x1bb/0x290 [mlx5_core]
-[] mlx5_devlink_eswitch_mode_set+0x14f/0x320 [mlx5_core]
-[] devlink_nl_cmd_eswitch_set_doit+0x94/0x120
-[] genl_family_rcv_msg_doit.isra.17+0x113/0x150
-[] genl_family_rcv_msg+0xb7/0x170
-[] ? devlink_nl_cmd_port_split_doit+0x100/0x100
-[] genl_rcv_msg+0x47/0xa0
-[] ? genl_family_rcv_msg+0x170/0x170
-[] netlink_rcv_skb+0x4c/0x130
-[] genl_rcv+0x24/0x40
-[] netlink_unicast+0x19a/0x230
-[] netlink_sendmsg+0x204/0x3d0
-[] sock_sendmsg+0x50/0x60
+  // ...
+  parm = nla_data(pattr);
 
-Fixes: 90b22b9bcd24 ("net/mlx5e: Disable Rx ntuple offload for uplink representor")
-Signed-off-by: Amir Tzin <amirtz@nvidia.com>
-Reviewed-by: Aya Levin <ayal@nvidia.com>
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+  index = parm->index; // parm is able to be smaller than 4 bytes
+                       // and this dereference gets dirty skb_buff
+                       // data created in netlink_sendmsg
+}
+
+This commit adds TCA_PEDIT_PARMS_EX length in pedit_policy which avoid
+the above case, just like the TCA_PEDIT_PARMS.
+
+Fixes: 71d0ed7079df ("net/act_pedit: Support using offset relative to the conventional network headers")
+Signed-off-by: Lin Ma <linma@zju.edu.cn>
+Reviewed-by: Pedro Tammela <pctammela@mojatatu.com>
+Link: https://lore.kernel.org/r/20230703110842.590282-1-linma@zju.edu.cn
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en_arfs.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ net/sched/act_pedit.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_arfs.c b/drivers/net/ethernet/mellanox/mlx5/core/en_arfs.c
-index 0ae1865086ff1..dc0a0a27ac84a 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_arfs.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_arfs.c
-@@ -136,6 +136,16 @@ static void arfs_del_rules(struct mlx5e_flow_steering *fs);
+diff --git a/net/sched/act_pedit.c b/net/sched/act_pedit.c
+index fb0caa500ac88..d14c31129e083 100644
+--- a/net/sched/act_pedit.c
++++ b/net/sched/act_pedit.c
+@@ -29,6 +29,7 @@ static struct tc_action_ops act_pedit_ops;
  
- int mlx5e_arfs_disable(struct mlx5e_flow_steering *fs)
- {
-+	/* Moving to switchdev mode, fs->arfs is freed by mlx5e_nic_profile
-+	 * cleanup_rx callback and it is not recreated when
-+	 * mlx5e_uplink_rep_profile is loaded as mlx5e_create_flow_steering()
-+	 * is not called by the uplink_rep profile init_rx callback. Thus, if
-+	 * ntuple is set, moving to switchdev flow will enter this function
-+	 * with fs->arfs nullified.
-+	 */
-+	if (!mlx5e_fs_get_arfs(fs))
-+		return 0;
-+
- 	arfs_del_rules(fs);
+ static const struct nla_policy pedit_policy[TCA_PEDIT_MAX + 1] = {
+ 	[TCA_PEDIT_PARMS]	= { .len = sizeof(struct tc_pedit) },
++	[TCA_PEDIT_PARMS_EX]	= { .len = sizeof(struct tc_pedit) },
+ 	[TCA_PEDIT_KEYS_EX]   = { .type = NLA_NESTED },
+ };
  
- 	return arfs_disable(fs);
 -- 
-2.40.1
+2.39.2
 
 
 
