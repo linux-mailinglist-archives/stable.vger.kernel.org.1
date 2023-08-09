@@ -2,179 +2,119 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A86F3775C61
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:26:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ED6D4775A50
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:07:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233733AbjHIL0q (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:26:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47886 "EHLO
+        id S233132AbjHILHU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:07:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45598 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233729AbjHIL0p (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:26:45 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 748EF1FD8
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:26:45 -0700 (PDT)
+        with ESMTP id S233136AbjHILHT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:07:19 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3305810F3
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:07:19 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0BA5E6328E
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:26:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A9EEC433C7;
-        Wed,  9 Aug 2023 11:26:43 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C6E466309F
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:07:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D31C3C433C7;
+        Wed,  9 Aug 2023 11:07:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691580404;
-        bh=dLFqI7tnUfM9m/yQeQ+8ISAGfPb/AYxM1NjfAyXTGuo=;
+        s=korg; t=1691579238;
+        bh=lkhUxhy61uW8P0bPLPvndZLu+Wlp2DuCOPG4mnQCbCw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=RcN2p7QQ6tr3UhlYAroQozLlgQfRtKHcxTckmjGqijzbQvXJLy9R9LFSton+cERb4
-         rNSLiPZpIrR/j0nDoTaOkNJEOY64hflndJ/5kIiTj5Z18TCMxxosS+aqoNLawmOl2s
-         //9TL01euQNJTI27dT0YHMRuLX2HT/krJ5TLAnwA=
+        b=fFofBoNJtfKjWTetNbNVeEj6LU7JBcFvbjMldctOmDRIzg4TDzJT0Pzbx9uB9AFBw
+         PdBFCRd17aUcOkaS3jhkk4QUrumGkRevFAm3ap2cG0fNCdP/Ckr1c2fYx+1FzsTxBh
+         OdAiNpXfNxFAjHwXYOelPEfLrMTLI9xscy99Kt5E=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zhihao Cheng <chengzhihao1@huawei.com>,
-        Jan Kara <jack@suse.cz>, Theodore Tso <tytso@mit.edu>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 013/154] ext4: Fix reusing stale buffer heads from last failed mounting
-Date:   Wed,  9 Aug 2023 12:40:44 +0200
-Message-ID: <20230809103637.371479386@linuxfoundation.org>
+        patches@lists.linux.dev, Dave Kleikamp <dave.kleikamp@oracle.com>,
+        Siddh Raman Pant <code@siddh.me>,
+        syzbot+d2cd27dcf8e04b232eb2@syzkaller.appspotmail.com
+Subject: [PATCH 4.14 107/204] jfs: jfs_dmap: Validate db_l2nbperpage while mounting
+Date:   Wed,  9 Aug 2023 12:40:45 +0200
+Message-ID: <20230809103646.192870500@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103636.887175326@linuxfoundation.org>
-References: <20230809103636.887175326@linuxfoundation.org>
+In-Reply-To: <20230809103642.552405807@linuxfoundation.org>
+References: <20230809103642.552405807@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Zhihao Cheng <chengzhihao1@huawei.com>
+From: Siddh Raman Pant <code@siddh.me>
 
-[ Upstream commit 26fb5290240dc31cae99b8b4dd2af7f46dfcba6b ]
+commit 11509910c599cbd04585ec35a6d5e1a0053d84c1 upstream.
 
-Following process makes ext4 load stale buffer heads from last failed
-mounting in a new mounting operation:
-mount_bdev
- ext4_fill_super
- | ext4_load_and_init_journal
- |  ext4_load_journal
- |   jbd2_journal_load
- |    load_superblock
- |     journal_get_superblock
- |      set_buffer_verified(bh) // buffer head is verified
- |   jbd2_journal_recover // failed caused by EIO
- | goto failed_mount3a // skip 'sb->s_root' initialization
- deactivate_locked_super
-  kill_block_super
-   generic_shutdown_super
-    if (sb->s_root)
-    // false, skip ext4_put_super->invalidate_bdev->
-    // invalidate_mapping_pages->mapping_evict_folio->
-    // filemap_release_folio->try_to_free_buffers, which
-    // cannot drop buffer head.
-   blkdev_put
-    blkdev_put_whole
-     if (atomic_dec_and_test(&bdev->bd_openers))
-     // false, systemd-udev happens to open the device. Then
-     // blkdev_flush_mapping->kill_bdev->truncate_inode_pages->
-     // truncate_inode_folio->truncate_cleanup_folio->
-     // folio_invalidate->block_invalidate_folio->
-     // filemap_release_folio->try_to_free_buffers will be skipped,
-     // dropping buffer head is missed again.
+In jfs_dmap.c at line 381, BLKTODMAP is used to get a logical block
+number inside dbFree(). db_l2nbperpage, which is the log2 number of
+blocks per page, is passed as an argument to BLKTODMAP which uses it
+for shifting.
 
-Second mount:
-ext4_fill_super
- ext4_load_and_init_journal
-  ext4_load_journal
-   ext4_get_journal
-    jbd2_journal_init_inode
-     journal_init_common
-      bh = getblk_unmovable
-       bh = __find_get_block // Found stale bh in last failed mounting
-      journal->j_sb_buffer = bh
-   jbd2_journal_load
-    load_superblock
-     journal_get_superblock
-      if (buffer_verified(bh))
-      // true, skip journal->j_format_version = 2, value is 0
-    jbd2_journal_recover
-     do_one_pass
-      next_log_block += count_tags(journal, bh)
-      // According to journal_tag_bytes(), 'tag_bytes' calculating is
-      // affected by jbd2_has_feature_csum3(), jbd2_has_feature_csum3()
-      // returns false because 'j->j_format_version >= 2' is not true,
-      // then we get wrong next_log_block. The do_one_pass may exit
-      // early whenoccuring non JBD2_MAGIC_NUMBER in 'next_log_block'.
+Syzbot reported a shift out-of-bounds crash because db_l2nbperpage is
+too big. This happens because the large value is set without any
+validation in dbMount() at line 181.
 
-The filesystem is corrupted here, journal is partially replayed, and
-new journal sequence number actually is already used by last mounting.
+Thus, make sure that db_l2nbperpage is correct while mounting.
 
-The invalidate_bdev() can drop all buffer heads even racing with bare
-reading block device(eg. systemd-udev), so we can fix it by invalidating
-bdev in error handling path in __ext4_fill_super().
+Max number of blocks per page = Page size / Min block size
+=> log2(Max num_block per page) = log2(Page size / Min block size)
+				= log2(Page size) - log2(Min block size)
 
-Fetch a reproducer in [Link].
+=> Max db_l2nbperpage = L2PSIZE - L2MINBLOCKSIZE
 
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=217171
-Fixes: 25ed6e8a54df ("jbd2: enable journal clients to enable v2 checksumming")
-Cc: stable@vger.kernel.org # v3.5
-Signed-off-by: Zhihao Cheng <chengzhihao1@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20230315013128.3911115-2-chengzhihao1@huawei.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-and-tested-by: syzbot+d2cd27dcf8e04b232eb2@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?id=2a70a453331db32ed491f5cbb07e81bf2d225715
+Cc: stable@vger.kernel.org
+Suggested-by: Dave Kleikamp <dave.kleikamp@oracle.com>
+Signed-off-by: Siddh Raman Pant <code@siddh.me>
+Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/super.c | 13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+ fs/jfs/jfs_dmap.c   |    6 ++++++
+ fs/jfs/jfs_filsys.h |    2 ++
+ 2 files changed, 8 insertions(+)
 
-diff --git a/fs/ext4/super.c b/fs/ext4/super.c
-index 03b50cd1f4572..8ad3de7846c54 100644
---- a/fs/ext4/super.c
-+++ b/fs/ext4/super.c
-@@ -908,6 +908,12 @@ static void ext4_blkdev_remove(struct ext4_sb_info *sbi)
- 	struct block_device *bdev;
- 	bdev = sbi->s_journal_bdev;
- 	if (bdev) {
-+		/*
-+		 * Invalidate the journal device's buffers.  We don't want them
-+		 * floating about in memory - the physical journal device may
-+		 * hotswapped, and it breaks the `ro-after' testing code.
-+		 */
-+		invalidate_bdev(bdev);
- 		ext4_blkdev_put(bdev);
- 		sbi->s_journal_bdev = NULL;
- 	}
-@@ -1035,13 +1041,7 @@ static void ext4_put_super(struct super_block *sb)
- 	sync_blockdev(sb->s_bdev);
- 	invalidate_bdev(sb->s_bdev);
- 	if (sbi->s_journal_bdev && sbi->s_journal_bdev != sb->s_bdev) {
--		/*
--		 * Invalidate the journal device's buffers.  We don't want them
--		 * floating about in memory - the physical journal device may
--		 * hotswapped, and it breaks the `ro-after' testing code.
--		 */
- 		sync_blockdev(sbi->s_journal_bdev);
--		invalidate_bdev(sbi->s_journal_bdev);
- 		ext4_blkdev_remove(sbi);
- 	}
+--- a/fs/jfs/jfs_dmap.c
++++ b/fs/jfs/jfs_dmap.c
+@@ -191,7 +191,13 @@ int dbMount(struct inode *ipbmap)
+ 	dbmp_le = (struct dbmap_disk *) mp->data;
+ 	bmp->db_mapsize = le64_to_cpu(dbmp_le->dn_mapsize);
+ 	bmp->db_nfree = le64_to_cpu(dbmp_le->dn_nfree);
++
+ 	bmp->db_l2nbperpage = le32_to_cpu(dbmp_le->dn_l2nbperpage);
++	if (bmp->db_l2nbperpage > L2PSIZE - L2MINBLOCKSIZE) {
++		err = -EINVAL;
++		goto err_release_metapage;
++	}
++
+ 	bmp->db_numag = le32_to_cpu(dbmp_le->dn_numag);
+ 	if (!bmp->db_numag) {
+ 		err = -EINVAL;
+--- a/fs/jfs/jfs_filsys.h
++++ b/fs/jfs/jfs_filsys.h
+@@ -135,7 +135,9 @@
+ #define NUM_INODE_PER_IAG	INOSPERIAG
  
-@@ -4777,6 +4777,7 @@ static int ext4_fill_super(struct super_block *sb, void *data, int silent)
- 	ext4_blkdev_remove(sbi);
- 	brelse(bh);
- out_fail:
-+	invalidate_bdev(sb->s_bdev);
- 	sb->s_fs_info = NULL;
- 	kfree(sbi->s_blockgroup_lock);
- out_free_base:
--- 
-2.39.2
-
+ #define MINBLOCKSIZE		512
++#define L2MINBLOCKSIZE		9
+ #define MAXBLOCKSIZE		4096
++#define L2MAXBLOCKSIZE		12
+ #define	MAXFILESIZE		((s64)1 << 52)
+ 
+ #define JFS_LINK_MAX		0xffffffff
 
 
