@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0F20C775C19
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:23:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C89B4775CD3
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:31:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233650AbjHILXz (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:23:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41932 "EHLO
+        id S233892AbjHILbQ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:31:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40076 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233648AbjHILXy (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:23:54 -0400
-Received: from madras.collabora.co.uk (madras.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e5ab])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E1FC81FEB;
-        Wed,  9 Aug 2023 04:23:53 -0700 (PDT)
+        with ESMTP id S233878AbjHILbP (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:31:15 -0400
+Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 333191BFA;
+        Wed,  9 Aug 2023 04:31:14 -0700 (PDT)
 Received: from localhost.localdomain (unknown [IPv6:2a01:e0a:2c:6930:5cf4:84a1:2763:fe0d])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
         (No client certificate requested)
         (Authenticated sender: bbrezillon)
-        by madras.collabora.co.uk (Postfix) with ESMTPSA id D749066071A7;
-        Wed,  9 Aug 2023 12:23:51 +0100 (BST)
+        by madras.collabora.co.uk (Postfix) with ESMTPSA id A91B666071A7;
+        Wed,  9 Aug 2023 12:31:12 +0100 (BST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1691580232;
-        bh=pBm4NFjocF1ZWPAuyRdBDN01SrOO9oFGZdF9gRZlNhY=;
+        s=mail; t=1691580672;
+        bh=Ueh2Uw7nXcphuWCsjKcDvV+Ppt4f4sMX9TxcRQ3TAoU=;
         h=From:To:Cc:Subject:Date:From;
-        b=Blai+4b+/eEbFNBthBiIyf2I/WD/XU5WOEekbPwFkJ+a449OuqYg9iLQ/bCmMO2Ph
-         fOnIxvOYTdnoSZQr/mvihytRR9kvd3zqeFLFoSRwm2AY2JNENG1YdK0rQy4KrBqSiM
-         9q2nl9lyJ8V4/SZnzEcTXmoP6/rrjF5lyfAiH7bKnEr4k3aj3Bg62sT4I7WiD2W2HB
-         KKEnlR71AdYld/zjMuiTB6LhrKtUIRqJbseXBJ8BEo3dEDjyrC6jpdCKWpq+dLQYsK
-         urqaW8XMxCP8UY97JPNeVMC2RWpuZB2I+BTFkFVqd/UhBx43hbzq6YOxIMJqJGDgIc
-         1XgS63rjdGu4A==
+        b=bZoiysaTqew8tc880iInXchIazEHzOOEQ99/Qxsxs5Eop9pQRsw2lMRBnrLC98yNO
+         QBAvmmwpA9yIeyJYyqmclV7d9eLi50JVtPoNYwPRWUBUgr9DWDDuMUIHysM6kDzj3M
+         7rbnjivRIIhPjsmFfBHmfmVSXZDBtsW8NxZBGCz0jkft1FgLvMBUYYgdSKeXmjMv1e
+         HWofiQuRqYcCnFopvDxre62HXUT5CL5OkNONQjZ/N1oE5KQX+8cFVAp/aUO43M7/gu
+         FQC7l24PYXBZac5SThHdVrK56tWNEV0K3fYllR3D7WGIQHD3TSPiSpTRryV49rzKw+
+         2YRB00dNKSPdw==
 From:   Boris Brezillon <boris.brezillon@collabora.com>
-To:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Amit Kucheria <amitk@kernel.org>,
-        Zhang Rui <rui.zhang@intel.com>, linux-pm@vger.kernel.org
+To:     MyungJoo Ham <myungjoo.ham@samsung.com>,
+        Kyungmin Park <kyungmin.park@samsung.com>,
+        Chanwoo Choi <cw00.choi@samsung.com>, linux-pm@vger.kernel.org
 Cc:     Boris Brezillon <boris.brezillon@collabora.com>,
         stable@vger.kernel.org
-Subject: [PATCH] thermal/of: Fix a leak in thermal_of_zone_register()
-Date:   Wed,  9 Aug 2023 13:23:48 +0200
-Message-ID: <20230809112348.2302384-1-boris.brezillon@collabora.com>
+Subject: [PATCH] PM / devfreq: Fix leak in devfreq_dev_release()
+Date:   Wed,  9 Aug 2023 13:31:08 +0200
+Message-ID: <20230809113108.2306272-1-boris.brezillon@collabora.com>
 X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -54,49 +53,30 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-thermal_zone_device_register_with_trips() copies the tzp info. After
-calling this function, we should free the tzp object, otherwise it's
-leaked.
+srcu_init_notifier_head() allocates resources that need to be released
+with a srcu_cleanup_notifier_head() call.
 
-Fixes: 3d439b1a2ad3 ("thermal/core: Alloc-copy-free the thermal zone parameters structure")
+Reported by kmemleak.
+
+Fixes: 0fe3a66410a3 ("PM / devfreq: Add new DEVFREQ_TRANSITION_NOTIFIER notifier")
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Boris Brezillon <boris.brezillon@collabora.com>
 ---
- drivers/thermal/thermal_of.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ drivers/devfreq/devfreq.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/thermal/thermal_of.c b/drivers/thermal/thermal_of.c
-index 6fb14e521197..e74ef4fa576b 100644
---- a/drivers/thermal/thermal_of.c
-+++ b/drivers/thermal/thermal_of.c
-@@ -524,10 +524,17 @@ static struct thermal_zone_device *thermal_of_zone_register(struct device_node *
- 	tz = thermal_zone_device_register_with_trips(np->name, trips, ntrips,
- 						     mask, data, of_ops, tzp,
- 						     pdelay, delay);
-+
-+	/*
-+	 * thermal_zone_device_register_with_trips() copies the tzp info.
-+	 * We don't need it after that point.
-+	 */
-+	kfree(tzp);
-+
- 	if (IS_ERR(tz)) {
- 		ret = PTR_ERR(tz);
- 		pr_err("Failed to register thermal zone %pOFn: %d\n", np, ret);
--		goto out_kfree_tzp;
-+		goto out_kfree_trips;
- 	}
+diff --git a/drivers/devfreq/devfreq.c b/drivers/devfreq/devfreq.c
+index e36cbb920ec8..9464f8d3cb5b 100644
+--- a/drivers/devfreq/devfreq.c
++++ b/drivers/devfreq/devfreq.c
+@@ -763,6 +763,7 @@ static void devfreq_dev_release(struct device *dev)
+ 		dev_pm_opp_put_opp_table(devfreq->opp_table);
  
- 	ret = thermal_zone_device_enable(tz);
-@@ -540,8 +547,6 @@ static struct thermal_zone_device *thermal_of_zone_register(struct device_node *
+ 	mutex_destroy(&devfreq->lock);
++	srcu_cleanup_notifier_head(&devfreq->transition_notifier_list);
+ 	kfree(devfreq);
+ }
  
- 	return tz;
- 
--out_kfree_tzp:
--	kfree(tzp);
- out_kfree_trips:
- 	kfree(trips);
- out_kfree_of_ops:
 -- 
 2.41.0
 
