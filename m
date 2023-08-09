@@ -2,46 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 726B4775CB2
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:30:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5F69D775A6D
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:08:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233841AbjHILaC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:30:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50544 "EHLO
+        id S233139AbjHILIV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:08:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56194 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233853AbjHILaC (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:30:02 -0400
+        with ESMTP id S233166AbjHILIV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:08:21 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 406871FDE
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:30:01 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 726411724
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:08:20 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D43A163346
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:30:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF0E1C433C7;
-        Wed,  9 Aug 2023 11:29:59 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1156863118
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:08:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22CEBC433C8;
+        Wed,  9 Aug 2023 11:08:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691580600;
-        bh=ApIShz2nO/3GuNEbJ+1fjR/8f6FRyVrA7SFUA8NtrIs=;
+        s=korg; t=1691579299;
+        bh=Lu4XoM+wvV3Soqh/HoHeQmhR3rM2n9U9YYj1LGoTgOY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=WFFsTUCibLJ/YIwWyN/LHodPPVAqqZ0NcU60C/V66RZi68jcjkPfuuzT8a/YPI70r
-         49DhKi1PPY958PeJGPP5+ldid6dxcf1P1eN6CGhFceW/3wWSIYk3MLj7HN+/mdjyDK
-         I2VE2QScU6bspVsekNh8o/OPKslV90GW7f1k7uHQ=
+        b=FXnBvFfAie1uGCCwU36dxonJJHiwGDFKIKI34QOK3ID7Qjl+2rR3ZYLuujxlCpbbu
+         AVSw4XUGBqToMQ+7qj8gqS8GMrfgIlhbYS0HRIpDBUswlN+S+kOipGCV8y6HOJ31At
+         XzaCez9+KoGAFJnGV/UnMh1UQwHbxG/lhoj04zTE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, mhiramat@kernel.org,
-        Zheng Yejian <zhengyejian1@huawei.com>,
-        "Steven Rostedt (Google)" <rostedt@goodmis.org>,
+        patches@lists.linux.dev,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Daniel Scally <dan.scally@ideasonboard.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 054/154] tracing: Fix warning in trace_buffered_event_disable()
+Subject: [PATCH 4.14 147/204] gpio: tps68470: Make tps68470_gpio_output() always set the initial value
 Date:   Wed,  9 Aug 2023 12:41:25 +0200
-Message-ID: <20230809103638.795602117@linuxfoundation.org>
+Message-ID: <20230809103647.494146612@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103636.887175326@linuxfoundation.org>
-References: <20230809103636.887175326@linuxfoundation.org>
+In-Reply-To: <20230809103642.552405807@linuxfoundation.org>
+References: <20230809103642.552405807@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,119 +59,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Zheng Yejian <zhengyejian1@huawei.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit dea499781a1150d285c62b26659f62fb00824fce ]
+[ Upstream commit 5a7adc6c1069ce31ef4f606ae9c05592c80a6ab5 ]
 
-Warning happened in trace_buffered_event_disable() at
-  WARN_ON_ONCE(!trace_buffered_event_ref)
+Make tps68470_gpio_output() call tps68470_gpio_set() for output-only pins
+too, so that the initial value passed to gpiod_direction_output() is
+honored for these pins too.
 
-  Call Trace:
-   ? __warn+0xa5/0x1b0
-   ? trace_buffered_event_disable+0x189/0x1b0
-   __ftrace_event_enable_disable+0x19e/0x3e0
-   free_probe_data+0x3b/0xa0
-   unregister_ftrace_function_probe_func+0x6b8/0x800
-   event_enable_func+0x2f0/0x3d0
-   ftrace_process_regex.isra.0+0x12d/0x1b0
-   ftrace_filter_write+0xe6/0x140
-   vfs_write+0x1c9/0x6f0
-   [...]
-
-The cause of the warning is in __ftrace_event_enable_disable(),
-trace_buffered_event_enable() was called once while
-trace_buffered_event_disable() was called twice.
-Reproduction script show as below, for analysis, see the comments:
- ```
- #!/bin/bash
-
- cd /sys/kernel/tracing/
-
- # 1. Register a 'disable_event' command, then:
- #    1) SOFT_DISABLED_BIT was set;
- #    2) trace_buffered_event_enable() was called first time;
- echo 'cmdline_proc_show:disable_event:initcall:initcall_finish' > \
-     set_ftrace_filter
-
- # 2. Enable the event registered, then:
- #    1) SOFT_DISABLED_BIT was cleared;
- #    2) trace_buffered_event_disable() was called first time;
- echo 1 > events/initcall/initcall_finish/enable
-
- # 3. Try to call into cmdline_proc_show(), then SOFT_DISABLED_BIT was
- #    set again!!!
- cat /proc/cmdline
-
- # 4. Unregister the 'disable_event' command, then:
- #    1) SOFT_DISABLED_BIT was cleared again;
- #    2) trace_buffered_event_disable() was called second time!!!
- echo '!cmdline_proc_show:disable_event:initcall:initcall_finish' > \
-     set_ftrace_filter
- ```
-
-To fix it, IIUC, we can change to call trace_buffered_event_enable() at
-fist time soft-mode enabled, and call trace_buffered_event_disable() at
-last time soft-mode disabled.
-
-Link: https://lore.kernel.org/linux-trace-kernel/20230726095804.920457-1-zhengyejian1@huawei.com
-
-Cc: <mhiramat@kernel.org>
-Fixes: 0fc1b09ff1ff ("tracing: Use temp buffer when filtering events")
-Signed-off-by: Zheng Yejian <zhengyejian1@huawei.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Fixes: 275b13a65547 ("gpio: Add support for TPS68470 GPIOs")
+Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+Reviewed-by: Daniel Scally <dan.scally@ideasonboard.com>
+Tested-by: Daniel Scally <dan.scally@ideasonboard.com>
+Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace_events.c | 14 ++++----------
- 1 file changed, 4 insertions(+), 10 deletions(-)
+ drivers/gpio/gpio-tps68470.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/kernel/trace/trace_events.c b/kernel/trace/trace_events.c
-index a0675ecc8142e..0c21da12b650c 100644
---- a/kernel/trace/trace_events.c
-+++ b/kernel/trace/trace_events.c
-@@ -365,7 +365,6 @@ static int __ftrace_event_enable_disable(struct trace_event_file *file,
- {
- 	struct trace_event_call *call = file->event_call;
- 	struct trace_array *tr = file->tr;
--	unsigned long file_flags = file->flags;
- 	int ret = 0;
- 	int disable;
+diff --git a/drivers/gpio/gpio-tps68470.c b/drivers/gpio/gpio-tps68470.c
+index fa2662f8b0268..773c7426fd227 100644
+--- a/drivers/gpio/gpio-tps68470.c
++++ b/drivers/gpio/gpio-tps68470.c
+@@ -99,13 +99,13 @@ static int tps68470_gpio_output(struct gpio_chip *gc, unsigned int offset,
+ 	struct tps68470_gpio_data *tps68470_gpio = gpiochip_get_data(gc);
+ 	struct regmap *regmap = tps68470_gpio->tps68470_regmap;
  
-@@ -389,6 +388,8 @@ static int __ftrace_event_enable_disable(struct trace_event_file *file,
- 				break;
- 			disable = file->flags & EVENT_FILE_FL_SOFT_DISABLED;
- 			clear_bit(EVENT_FILE_FL_SOFT_MODE_BIT, &file->flags);
-+			/* Disable use of trace_buffered_event */
-+			trace_buffered_event_disable();
- 		} else
- 			disable = !(file->flags & EVENT_FILE_FL_SOFT_MODE);
++	/* Set the initial value */
++	tps68470_gpio_set(gc, offset, value);
++
+ 	/* rest are always outputs */
+ 	if (offset >= TPS68470_N_REGULAR_GPIO)
+ 		return 0;
  
-@@ -427,6 +428,8 @@ static int __ftrace_event_enable_disable(struct trace_event_file *file,
- 			if (atomic_inc_return(&file->sm_ref) > 1)
- 				break;
- 			set_bit(EVENT_FILE_FL_SOFT_MODE_BIT, &file->flags);
-+			/* Enable use of trace_buffered_event */
-+			trace_buffered_event_enable();
- 		}
- 
- 		if (!(file->flags & EVENT_FILE_FL_ENABLED)) {
-@@ -466,15 +469,6 @@ static int __ftrace_event_enable_disable(struct trace_event_file *file,
- 		break;
- 	}
- 
--	/* Enable or disable use of trace_buffered_event */
--	if ((file_flags & EVENT_FILE_FL_SOFT_DISABLED) !=
--	    (file->flags & EVENT_FILE_FL_SOFT_DISABLED)) {
--		if (file->flags & EVENT_FILE_FL_SOFT_DISABLED)
--			trace_buffered_event_enable();
--		else
--			trace_buffered_event_disable();
--	}
+-	/* Set the initial value */
+-	tps68470_gpio_set(gc, offset, value);
 -
- 	return ret;
- }
- 
+ 	return regmap_update_bits(regmap, TPS68470_GPIO_CTL_REG_A(offset),
+ 				 TPS68470_GPIO_MODE_MASK,
+ 				 TPS68470_GPIO_MODE_OUT_CMOS);
 -- 
-2.40.1
+2.39.2
 
 
 
