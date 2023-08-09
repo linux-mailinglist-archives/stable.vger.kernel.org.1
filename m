@@ -2,96 +2,114 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 438C0775C47
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:25:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E0C0C775CE5
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:32:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233696AbjHILZo (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:25:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42524 "EHLO
+        id S233908AbjHILbz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:31:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37834 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233695AbjHILZo (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:25:44 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B679AED
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:25:43 -0700 (PDT)
+        with ESMTP id S233905AbjHILby (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:31:54 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DCE531BFE
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:31:50 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 563756326A
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:25:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64EF5C433C8;
-        Wed,  9 Aug 2023 11:25:42 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 73D6C633D1
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:31:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DF2AC433C7;
+        Wed,  9 Aug 2023 11:31:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691580342;
-        bh=TUZ1rWQUcs8XCRhOo3RezvnaYoDZBgFg8qyRmLkNMh8=;
+        s=korg; t=1691580709;
+        bh=1g4NKE7ziG5yB3fVf2fTsDUzYjCajxUhRMOqE15E93E=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=QkjWVxBlQNVPDOvoyPvNM/1TRf7PU64OnAqjcMzst57u3n+yXBmANUPQwBzTyTWLN
-         mvTlpmjApK1C1XGOA1ejkfobiacGU0YHDoq6Z0LUPW+qLzdwLnaXBgR4gXOVJQBdLC
-         vrQ8zxBp4SZkUzmWyrRflBKJMfIdtuLUnDJqzhr4=
+        b=VTQr/dBYkl+eBiEgYlK01yZEtyPfAcVmU23Ut/44N2LKjlkiyf05P1xKhdoro2g55
+         12jGuLvy2+pwM42jnT93oemtECIPbG4NiXviEOOPh7mr+dpdJLsaRqh0d3gzHms+DG
+         5LWjliJzxsjmeHi62fqdX5/Q6F6o2GPckwDhzuu8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
-        David Hildenbrand <david@redhat.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 315/323] powerpc/mm/altmap: Fix altmap boundary check
+        patches@lists.linux.dev, Benjamin Block <bblock@linux.ibm.com>,
+        Fedor Loshakov <loshakov@linux.ibm.com>,
+        Steffen Maier <maier@linux.ibm.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 5.4 122/154] scsi: zfcp: Defer fc_rport blocking until after ADISC response
 Date:   Wed,  9 Aug 2023 12:42:33 +0200
-Message-ID: <20230809103712.492443030@linuxfoundation.org>
+Message-ID: <20230809103640.947937818@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
-References: <20230809103658.104386911@linuxfoundation.org>
+In-Reply-To: <20230809103636.887175326@linuxfoundation.org>
+References: <20230809103636.887175326@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+From: Steffen Maier <maier@linux.ibm.com>
 
-[ Upstream commit 6722b25712054c0f903b839b8f5088438dd04df3 ]
+commit e65851989001c0c9ba9177564b13b38201c0854c upstream.
 
-altmap->free includes the entire free space from which altmap blocks
-can be allocated. So when checking whether the kernel is doing altmap
-block free, compute the boundary correctly, otherwise memory hotunplug
-can fail.
+Storage devices are free to send RSCNs, e.g. for internal state changes. If
+this happens on all connected paths, zfcp risks temporarily losing all
+paths at the same time. This has strong requirements on multipath
+configuration such as "no_path_retry queue".
 
-Fixes: 9ef34630a461 ("powerpc/mm: Fallback to RAM if the altmap is unusable")
-Signed-off-by: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-Reviewed-by: David Hildenbrand <david@redhat.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20230724181320.471386-1-aneesh.kumar@linux.ibm.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Avoid such situations by deferring fc_rport blocking until after the ADISC
+response, when any actual state change of the remote port became clear.
+The already existing port recovery triggers explicitly block the fc_rport.
+The triggers are: on ADISC reject or timeout (typical cable pull case), and
+on ADISC indicating that the remote port has changed its WWPN or
+the port is meanwhile no longer open.
+
+As a side effect, this also removes a confusing direct function call to
+another work item function zfcp_scsi_rport_work() instead of scheduling
+that other work item. It was probably done that way to have the rport block
+side effect immediate and synchronous to the caller.
+
+Fixes: a2fa0aede07c ("[SCSI] zfcp: Block FC transport rports early on errors")
+Cc: stable@vger.kernel.org #v2.6.30+
+Reviewed-by: Benjamin Block <bblock@linux.ibm.com>
+Reviewed-by: Fedor Loshakov <loshakov@linux.ibm.com>
+Signed-off-by: Steffen Maier <maier@linux.ibm.com>
+Link: https://lore.kernel.org/r/20230724145156.3920244-1-maier@linux.ibm.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/mm/init_64.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/s390/scsi/zfcp_fc.c |    6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-diff --git a/arch/powerpc/mm/init_64.c b/arch/powerpc/mm/init_64.c
-index a5091c0347475..aff86679af961 100644
---- a/arch/powerpc/mm/init_64.c
-+++ b/arch/powerpc/mm/init_64.c
-@@ -266,8 +266,7 @@ void __ref vmemmap_free(unsigned long start, unsigned long end,
- 	start = _ALIGN_DOWN(start, page_size);
- 	if (altmap) {
- 		alt_start = altmap->base_pfn;
--		alt_end = altmap->base_pfn + altmap->reserve +
--			  altmap->free + altmap->alloc + altmap->align;
-+		alt_end = altmap->base_pfn + altmap->reserve + altmap->free;
- 	}
+--- a/drivers/s390/scsi/zfcp_fc.c
++++ b/drivers/s390/scsi/zfcp_fc.c
+@@ -534,8 +534,7 @@ static void zfcp_fc_adisc_handler(void *
  
- 	pr_debug("vmemmap_free %lx...%lx\n", start, end);
--- 
-2.40.1
-
+ 	/* re-init to undo drop from zfcp_fc_adisc() */
+ 	port->d_id = ntoh24(adisc_resp->adisc_port_id);
+-	/* port is good, unblock rport without going through erp */
+-	zfcp_scsi_schedule_rport_register(port);
++	/* port is still good, nothing to do */
+  out:
+ 	atomic_andnot(ZFCP_STATUS_PORT_LINK_TEST, &port->status);
+ 	put_device(&port->dev);
+@@ -595,9 +594,6 @@ void zfcp_fc_link_test_work(struct work_
+ 	int retval;
+ 
+ 	set_worker_desc("zadisc%16llx", port->wwpn); /* < WORKER_DESC_LEN=24 */
+-	get_device(&port->dev);
+-	port->rport_task = RPORT_DEL;
+-	zfcp_scsi_rport_work(&port->rport_work);
+ 
+ 	/* only issue one test command at one time per port */
+ 	if (atomic_read(&port->status) & ZFCP_STATUS_PORT_LINK_TEST)
 
 
