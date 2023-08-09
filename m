@@ -2,145 +2,179 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 66DFA775A42
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:06:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A86F3775C61
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:26:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233113AbjHILGt (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:06:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41956 "EHLO
+        id S233733AbjHIL0q (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:26:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47886 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233122AbjHILGt (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:06:49 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 96DC11FCE
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:06:48 -0700 (PDT)
+        with ESMTP id S233729AbjHIL0p (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:26:45 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 748EF1FD8
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:26:45 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 20BAC62B6A
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:06:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32F65C433C9;
-        Wed,  9 Aug 2023 11:06:47 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0BA5E6328E
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:26:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A9EEC433C7;
+        Wed,  9 Aug 2023 11:26:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691579207;
-        bh=kI1IM5uVWAjpVbj+TIZ8qJl4PPqz/z03YTvbyZYKBUw=;
+        s=korg; t=1691580404;
+        bh=dLFqI7tnUfM9m/yQeQ+8ISAGfPb/AYxM1NjfAyXTGuo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=KKjnsJfvEAVUJMk4rY/mocqu2ToeZvIwH3YvNZlQSkAZXyX4V/UBRYSXgotR+mCC0
-         LWUSs0LZmMnxaUtAkS1kY+gL5yO+tlqV2OoHCKzyRHwz0fRRKZJJ2d1O8926myLv36
-         EhXG/4LNHPh7PAv/TM+Wykv+AcXSOZXP/UJ3d7OM=
+        b=RcN2p7QQ6tr3UhlYAroQozLlgQfRtKHcxTckmjGqijzbQvXJLy9R9LFSton+cERb4
+         rNSLiPZpIrR/j0nDoTaOkNJEOY64hflndJ/5kIiTj5Z18TCMxxosS+aqoNLawmOl2s
+         //9TL01euQNJTI27dT0YHMRuLX2HT/krJ5TLAnwA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, stable@kernel.org,
-        Baokun Li <libaokun1@huawei.com>, Jan Kara <jack@suse.cz>,
-        Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 4.14 106/204] ext4: only update i_reserved_data_blocks on successful block allocation
+        patches@lists.linux.dev, Zhihao Cheng <chengzhihao1@huawei.com>,
+        Jan Kara <jack@suse.cz>, Theodore Tso <tytso@mit.edu>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 013/154] ext4: Fix reusing stale buffer heads from last failed mounting
 Date:   Wed,  9 Aug 2023 12:40:44 +0200
-Message-ID: <20230809103646.159715376@linuxfoundation.org>
+Message-ID: <20230809103637.371479386@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103642.552405807@linuxfoundation.org>
-References: <20230809103642.552405807@linuxfoundation.org>
+In-Reply-To: <20230809103636.887175326@linuxfoundation.org>
+References: <20230809103636.887175326@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Baokun Li <libaokun1@huawei.com>
+From: Zhihao Cheng <chengzhihao1@huawei.com>
 
-commit de25d6e9610a8b30cce9bbb19b50615d02ebca02 upstream.
+[ Upstream commit 26fb5290240dc31cae99b8b4dd2af7f46dfcba6b ]
 
-In our fault injection test, we create an ext4 file, migrate it to
-non-extent based file, then punch a hole and finally trigger a WARN_ON
-in the ext4_da_update_reserve_space():
+Following process makes ext4 load stale buffer heads from last failed
+mounting in a new mounting operation:
+mount_bdev
+ ext4_fill_super
+ | ext4_load_and_init_journal
+ |  ext4_load_journal
+ |   jbd2_journal_load
+ |    load_superblock
+ |     journal_get_superblock
+ |      set_buffer_verified(bh) // buffer head is verified
+ |   jbd2_journal_recover // failed caused by EIO
+ | goto failed_mount3a // skip 'sb->s_root' initialization
+ deactivate_locked_super
+  kill_block_super
+   generic_shutdown_super
+    if (sb->s_root)
+    // false, skip ext4_put_super->invalidate_bdev->
+    // invalidate_mapping_pages->mapping_evict_folio->
+    // filemap_release_folio->try_to_free_buffers, which
+    // cannot drop buffer head.
+   blkdev_put
+    blkdev_put_whole
+     if (atomic_dec_and_test(&bdev->bd_openers))
+     // false, systemd-udev happens to open the device. Then
+     // blkdev_flush_mapping->kill_bdev->truncate_inode_pages->
+     // truncate_inode_folio->truncate_cleanup_folio->
+     // folio_invalidate->block_invalidate_folio->
+     // filemap_release_folio->try_to_free_buffers will be skipped,
+     // dropping buffer head is missed again.
 
-EXT4-fs warning (device sda): ext4_da_update_reserve_space:369:
-ino 14, used 11 with only 10 reserved data blocks
+Second mount:
+ext4_fill_super
+ ext4_load_and_init_journal
+  ext4_load_journal
+   ext4_get_journal
+    jbd2_journal_init_inode
+     journal_init_common
+      bh = getblk_unmovable
+       bh = __find_get_block // Found stale bh in last failed mounting
+      journal->j_sb_buffer = bh
+   jbd2_journal_load
+    load_superblock
+     journal_get_superblock
+      if (buffer_verified(bh))
+      // true, skip journal->j_format_version = 2, value is 0
+    jbd2_journal_recover
+     do_one_pass
+      next_log_block += count_tags(journal, bh)
+      // According to journal_tag_bytes(), 'tag_bytes' calculating is
+      // affected by jbd2_has_feature_csum3(), jbd2_has_feature_csum3()
+      // returns false because 'j->j_format_version >= 2' is not true,
+      // then we get wrong next_log_block. The do_one_pass may exit
+      // early whenoccuring non JBD2_MAGIC_NUMBER in 'next_log_block'.
 
-When writing back a non-extent based file, if we enable delalloc, the
-number of reserved blocks will be subtracted from the number of blocks
-mapped by ext4_ind_map_blocks(), and the extent status tree will be
-updated. We update the extent status tree by first removing the old
-extent_status and then inserting the new extent_status. If the block range
-we remove happens to be in an extent, then we need to allocate another
-extent_status with ext4_es_alloc_extent().
+The filesystem is corrupted here, journal is partially replayed, and
+new journal sequence number actually is already used by last mounting.
 
-       use old    to remove   to add new
-    |----------|------------|------------|
-              old extent_status
+The invalidate_bdev() can drop all buffer heads even racing with bare
+reading block device(eg. systemd-udev), so we can fix it by invalidating
+bdev in error handling path in __ext4_fill_super().
 
-The problem is that the allocation of a new extent_status failed due to a
-fault injection, and __es_shrink() did not get free memory, resulting in
-a return of -ENOMEM. Then do_writepages() retries after receiving -ENOMEM,
-we map to the same extent again, and the number of reserved blocks is again
-subtracted from the number of blocks in that extent. Since the blocks in
-the same extent are subtracted twice, we end up triggering WARN_ON at
-ext4_da_update_reserve_space() because used > ei->i_reserved_data_blocks.
+Fetch a reproducer in [Link].
 
-For non-extent based file, we update the number of reserved blocks after
-ext4_ind_map_blocks() is executed, which causes a problem that when we call
-ext4_ind_map_blocks() to create a block, it doesn't always create a block,
-but we always reduce the number of reserved blocks. So we move the logic
-for updating reserved blocks to ext4_ind_map_blocks() to ensure that the
-number of reserved blocks is updated only after we do succeed in allocating
-some new blocks.
-
-Fixes: 5f634d064c70 ("ext4: Fix quota accounting error with fallocate")
-Cc: stable@kernel.org
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=217171
+Fixes: 25ed6e8a54df ("jbd2: enable journal clients to enable v2 checksumming")
+Cc: stable@vger.kernel.org # v3.5
+Signed-off-by: Zhihao Cheng <chengzhihao1@huawei.com>
 Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20230424033846.4732-2-libaokun1@huawei.com
+Link: https://lore.kernel.org/r/20230315013128.3911115-2-chengzhihao1@huawei.com
 Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/indirect.c |    8 ++++++++
- fs/ext4/inode.c    |   10 ----------
- 2 files changed, 8 insertions(+), 10 deletions(-)
+ fs/ext4/super.c | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
---- a/fs/ext4/indirect.c
-+++ b/fs/ext4/indirect.c
-@@ -642,6 +642,14 @@ int ext4_ind_map_blocks(handle_t *handle
- 
- 	ext4_update_inode_fsync_trans(handle, inode, 1);
- 	count = ar.len;
-+
-+	/*
-+	 * Update reserved blocks/metadata blocks after successful block
-+	 * allocation which had been deferred till now.
-+	 */
-+	if (flags & EXT4_GET_BLOCKS_DELALLOC_RESERVE)
-+		ext4_da_update_reserve_space(inode, count, 1);
-+
- got_it:
- 	map->m_flags |= EXT4_MAP_MAPPED;
- 	map->m_pblk = le32_to_cpu(chain[depth-1].key);
---- a/fs/ext4/inode.c
-+++ b/fs/ext4/inode.c
-@@ -665,16 +665,6 @@ found:
- 			 */
- 			ext4_clear_inode_state(inode, EXT4_STATE_EXT_MIGRATE);
- 		}
--
+diff --git a/fs/ext4/super.c b/fs/ext4/super.c
+index 03b50cd1f4572..8ad3de7846c54 100644
+--- a/fs/ext4/super.c
++++ b/fs/ext4/super.c
+@@ -908,6 +908,12 @@ static void ext4_blkdev_remove(struct ext4_sb_info *sbi)
+ 	struct block_device *bdev;
+ 	bdev = sbi->s_journal_bdev;
+ 	if (bdev) {
++		/*
++		 * Invalidate the journal device's buffers.  We don't want them
++		 * floating about in memory - the physical journal device may
++		 * hotswapped, and it breaks the `ro-after' testing code.
++		 */
++		invalidate_bdev(bdev);
+ 		ext4_blkdev_put(bdev);
+ 		sbi->s_journal_bdev = NULL;
+ 	}
+@@ -1035,13 +1041,7 @@ static void ext4_put_super(struct super_block *sb)
+ 	sync_blockdev(sb->s_bdev);
+ 	invalidate_bdev(sb->s_bdev);
+ 	if (sbi->s_journal_bdev && sbi->s_journal_bdev != sb->s_bdev) {
 -		/*
--		 * Update reserved blocks/metadata blocks after successful
--		 * block allocation which had been deferred till now. We don't
--		 * support fallocate for non extent files. So we can update
--		 * reserve space here.
+-		 * Invalidate the journal device's buffers.  We don't want them
+-		 * floating about in memory - the physical journal device may
+-		 * hotswapped, and it breaks the `ro-after' testing code.
 -		 */
--		if ((retval > 0) &&
--			(flags & EXT4_GET_BLOCKS_DELALLOC_RESERVE))
--			ext4_da_update_reserve_space(inode, retval, 1);
+ 		sync_blockdev(sbi->s_journal_bdev);
+-		invalidate_bdev(sbi->s_journal_bdev);
+ 		ext4_blkdev_remove(sbi);
  	}
  
- 	if (retval > 0) {
+@@ -4777,6 +4777,7 @@ static int ext4_fill_super(struct super_block *sb, void *data, int silent)
+ 	ext4_blkdev_remove(sbi);
+ 	brelse(bh);
+ out_fail:
++	invalidate_bdev(sb->s_bdev);
+ 	sb->s_fs_info = NULL;
+ 	kfree(sbi->s_blockgroup_lock);
+ out_free_base:
+-- 
+2.39.2
+
 
 
