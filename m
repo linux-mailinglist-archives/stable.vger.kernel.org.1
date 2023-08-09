@@ -2,44 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5FA4F7759A2
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:02:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C3495775742
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:44:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232916AbjHILCN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:02:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43668 "EHLO
+        id S229989AbjHIKoD (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 06:44:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34370 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232917AbjHILCM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:02:12 -0400
+        with ESMTP id S231282AbjHIKoD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:44:03 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E5F51FD8
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:02:11 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 876A11FEA
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:44:02 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 055B663118
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:02:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15CE2C433C8;
-        Wed,  9 Aug 2023 11:02:09 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1E4B663118
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:44:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3200FC433C7;
+        Wed,  9 Aug 2023 10:44:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691578930;
-        bh=MkjWwhlPWgLrOJ4MNuKArkGuM9h79tqyoDFgMaMk4h8=;
+        s=korg; t=1691577841;
+        bh=+lFRoqUltJpmdAn9VZ07BAf6NuATGqxd7JhU+g1DU+k=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=IKi+uphSfLI2+Xf8InhjZ5Mzy4eLuVDwrDhyJgwbum7OeUXo/z12I+erKpNimF64j
-         o12FW53dKrroxyIdujwsy4MLCcaA0PAfUOeDvkYzEd0bNbDACR47gm5Dr5tMxdh6qh
-         xuvD487u0Ale4SywdHvnCLRhBe3R4nk4TXoMCDHg=
+        b=I4CjTNFS3ez1lKUK9rvSCcCCOo+2IRasBrnnF1z1bmCkmEfxYVs2dDSku4S3KCTxL
+         8IgGyBUzyQphaBliEDYA3KBnSKU28HAODGEDaxtgWtBwyus5HYzeiO5fnrTZ1d89oF
+         3ypNcWmEwJ73uIgyDGoALxNNybydNfH7fT9qsSt4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, "Ahmed S. Darwish" <darwi@linutronix.de>,
-        Masahiro Yamada <masahiroy@kernel.org>
-Subject: [PATCH 4.14 006/204] scripts/tags.sh: Resolve gtags empty index generation
-Date:   Wed,  9 Aug 2023 12:39:04 +0200
-Message-ID: <20230809103642.773270455@linuxfoundation.org>
+        patches@lists.linux.dev, kernel test robot <lkp@intel.com>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Yury Norov <yury.norov@gmail.com>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Alexander Lobakin <aleksander.lobakin@intel.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 014/165] lib/bitmap: workaround const_eval test build failure
+Date:   Wed,  9 Aug 2023 12:39:05 +0200
+Message-ID: <20230809103643.239137468@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103642.552405807@linuxfoundation.org>
-References: <20230809103642.552405807@linuxfoundation.org>
+In-Reply-To: <20230809103642.720851262@linuxfoundation.org>
+References: <20230809103642.720851262@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,65 +58,105 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ahmed S. Darwish <darwi@linutronix.de>
+From: Yury Norov <yury.norov@gmail.com>
 
-commit e1b37563caffc410bb4b55f153ccb14dede66815 upstream.
+[ Upstream commit 2356d198d2b4ddec24efea98271cb3be230bc787 ]
 
-gtags considers any file outside of its current working directory
-"outside the source tree" and refuses to index it. For O= kernel builds,
-or when "make" is invoked from a directory other then the kernel source
-tree, gtags ignores the entire kernel source and generates an empty
-index.
+When building with Clang, and when KASAN and GCOV_PROFILE_ALL are both
+enabled, the test fails to build [1]:
 
-Force-set gtags current working directory to the kernel source tree.
+>> lib/test_bitmap.c:920:2: error: call to '__compiletime_assert_239' declared with 'error' attribute: BUILD_BUG_ON failed: !__builtin_constant_p(res)
+           BUILD_BUG_ON(!__builtin_constant_p(res));
+           ^
+   include/linux/build_bug.h:50:2: note: expanded from macro 'BUILD_BUG_ON'
+           BUILD_BUG_ON_MSG(condition, "BUILD_BUG_ON failed: " #condition)
+           ^
+   include/linux/build_bug.h:39:37: note: expanded from macro 'BUILD_BUG_ON_MSG'
+   #define BUILD_BUG_ON_MSG(cond, msg) compiletime_assert(!(cond), msg)
+                                       ^
+   include/linux/compiler_types.h:352:2: note: expanded from macro 'compiletime_assert'
+           _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
+           ^
+   include/linux/compiler_types.h:340:2: note: expanded from macro '_compiletime_assert'
+           __compiletime_assert(condition, msg, prefix, suffix)
+           ^
+   include/linux/compiler_types.h:333:4: note: expanded from macro '__compiletime_assert'
+                           prefix ## suffix();                             \
+                           ^
+   <scratch space>:185:1: note: expanded from here
+   __compiletime_assert_239
 
-Due to commit 9da0763bdd82 ("kbuild: Use relative path when building in
-a subdir of the source tree"), if the kernel build is done in a
-sub-directory of the kernel source tree, the kernel Makefile will set
-the kernel's $srctree to ".." for shorter compile-time and run-time
-warnings. Consequently, the list of files to be indexed will be in the
-"../*" form, rendering all such paths invalid once gtags switches to the
-kernel source tree as its current working directory.
+Originally it was attributed to s390, which now looks seemingly wrong. The
+issue is not related to bitmap code itself, but it breaks build for a given
+configuration.
 
-If gtags indexing is requested and the build directory is not the kernel
-source tree, index all files in absolute-path form.
+Disabling the const_eval test under that config may potentially hide other
+bugs. Instead, workaround it by disabling GCOV for the test_bitmap unless
+the compiler will get fixed.
 
-Note, indexing in absolute-path form will not affect the generated
-index, as paths in gtags indices are always relative to the gtags "root
-directory" anyway (as evidenced by "gtags --dump").
+[1] https://github.com/ClangBuiltLinux/linux/issues/1874
 
-Signed-off-by: Ahmed S. Darwish <darwi@linutronix.de>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202307171254.yFcH97ej-lkp@intel.com/
+Fixes: dc34d5036692 ("lib: test_bitmap: add compile-time optimization/evaluations assertions")
+Co-developed-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Yury Norov <yury.norov@gmail.com>
+Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
+Reviewed-by: Alexander Lobakin <aleksander.lobakin@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/tags.sh |    9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ lib/Makefile      | 6 ++++++
+ lib/test_bitmap.c | 8 ++++----
+ 2 files changed, 10 insertions(+), 4 deletions(-)
 
---- a/scripts/tags.sh
-+++ b/scripts/tags.sh
-@@ -37,6 +37,13 @@ find_all_archs()
- 	done
- }
- 
-+# gtags(1) refuses to index any file outside of its current working dir.
-+# If gtags indexing is requested and the build output directory is not
-+# the kernel source tree, index all files in absolute-path form.
-+if [[ "$1" == "gtags" && -n "${tree}" ]]; then
-+	tree=$(realpath "$tree")/
-+fi
+diff --git a/lib/Makefile b/lib/Makefile
+index 876fcdeae34ec..05d8ec332baac 100644
+--- a/lib/Makefile
++++ b/lib/Makefile
+@@ -82,7 +82,13 @@ obj-$(CONFIG_TEST_STATIC_KEYS) += test_static_key_base.o
+ obj-$(CONFIG_TEST_DYNAMIC_DEBUG) += test_dynamic_debug.o
+ obj-$(CONFIG_TEST_PRINTF) += test_printf.o
+ obj-$(CONFIG_TEST_SCANF) += test_scanf.o
 +
- # Detect if ALLSOURCE_ARCHS is set. If not, we assume SRCARCH
- if [ "${ALLSOURCE_ARCHS}" = "" ]; then
- 	ALLSOURCE_ARCHS=${SRCARCH}
-@@ -145,7 +152,7 @@ docscope()
- 
- dogtags()
- {
--	all_target_sources | gtags -i -f -
-+	all_target_sources | gtags -i -C "${tree:-.}" -f - "$PWD"
+ obj-$(CONFIG_TEST_BITMAP) += test_bitmap.o
++ifeq ($(CONFIG_CC_IS_CLANG)$(CONFIG_KASAN),yy)
++# FIXME: Clang breaks test_bitmap_const_eval when KASAN and GCOV are enabled
++GCOV_PROFILE_test_bitmap.o := n
++endif
++
+ obj-$(CONFIG_TEST_UUID) += test_uuid.o
+ obj-$(CONFIG_TEST_XARRAY) += test_xarray.o
+ obj-$(CONFIG_TEST_MAPLE_TREE) += test_maple_tree.o
+diff --git a/lib/test_bitmap.c b/lib/test_bitmap.c
+index a8005ad3bd589..37a9108c4f588 100644
+--- a/lib/test_bitmap.c
++++ b/lib/test_bitmap.c
+@@ -1149,6 +1149,10 @@ static void __init test_bitmap_print_buf(void)
+ 	}
  }
  
- # Basic regular expressions with an optional /kind-spec/ for ctags and
++/*
++ * FIXME: Clang breaks compile-time evaluations when KASAN and GCOV are enabled.
++ * To workaround it, GCOV is force-disabled in Makefile for this configuration.
++ */
+ static void __init test_bitmap_const_eval(void)
+ {
+ 	DECLARE_BITMAP(bitmap, BITS_PER_LONG);
+@@ -1174,11 +1178,7 @@ static void __init test_bitmap_const_eval(void)
+ 	 * the compiler is fixed.
+ 	 */
+ 	bitmap_clear(bitmap, 0, BITS_PER_LONG);
+-#if defined(__s390__) && defined(__clang__)
+-	if (!const_test_bit(7, bitmap))
+-#else
+ 	if (!test_bit(7, bitmap))
+-#endif
+ 		bitmap_set(bitmap, 5, 2);
+ 
+ 	/* Equals to `unsigned long bitopvar = BIT(20)` */
+-- 
+2.40.1
+
 
 
