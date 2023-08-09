@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6AA87775C8A
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:28:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E44FA775C12
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:23:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233782AbjHIL2V (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:28:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50574 "EHLO
+        id S233642AbjHILXh (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:23:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49910 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233773AbjHIL2V (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:28:21 -0400
+        with ESMTP id S233641AbjHILXg (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:23:36 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AFE72ED
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:28:20 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D3B172103
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:23:35 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4F656632E5
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:28:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CF9BC433C7;
-        Wed,  9 Aug 2023 11:28:19 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 73FF663228
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:23:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81CF9C433C9;
+        Wed,  9 Aug 2023 11:23:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691580499;
-        bh=xBH/tG141jmPTLoCMD5zyciakySYrBEF2Fzz85AglRk=;
+        s=korg; t=1691580214;
+        bh=FCLMibFVuhFZ3Zi1V5QfhvJNRA5jhOqFvSwHWIv8tI0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=wgx8nXX7sqceSktEfCH7OW3VC/UWtRoUFmM/Ro4V2HL4nqOdH4Hg60SJKTg7ntl4s
-         83hBaiR2ZoKaehkXuLxL+/lHee1A+6c9ecYKeW/JO0rFxur76ZSkCM/YczyAC9UNiG
-         JZaNqY0iQiR0NT2OavdwosS1GD5InEgkOwWwuvxw=
+        b=nex16sOBXXFx3B2jnqWbaAGKo7eOyhp6AkJ1TOFK4xcy98jjPtTdmDr6dj9IiioAs
+         i6imFlzKQEai1CVzMhvzg5UaAoHRoK+1f16ElHW+N4QmQpCBfsVKSWCXFDTAl6gHkM
+         WNwDzdV6tOeMEnf14TBVxpRiR+WUw//FfxPbolBE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
-        Leon Romanovsky <leon@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 045/154] RDMA/mlx4: Make check for invalid flags stricter
+        patches@lists.linux.dev, Wang Ming <machel@vivo.com>,
+        Tony Nguyen <anthony.l.nguyen@intel.com>,
+        Sasha Levin <sashal@kernel.org>,
+        Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
+Subject: [PATCH 4.19 238/323] i40e: Fix an NULL vs IS_ERR() bug for debugfs_create_dir()
 Date:   Wed,  9 Aug 2023 12:41:16 +0200
-Message-ID: <20230809103638.507385609@linuxfoundation.org>
+Message-ID: <20230809103708.968560234@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103636.887175326@linuxfoundation.org>
-References: <20230809103636.887175326@linuxfoundation.org>
+In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
+References: <20230809103658.104386911@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,55 +56,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Wang Ming <machel@vivo.com>
 
-[ Upstream commit d64b1ee12a168030fbb3e0aebf7bce49e9a07589 ]
+[ Upstream commit 043b1f185fb0f3939b7427f634787706f45411c4 ]
 
-This code is trying to ensure that only the flags specified in the list
-are allowed.  The problem is that ucmd->rx_hash_fields_mask is a u64 and
-the flags are an enum which is treated as a u32 in this context.  That
-means the test doesn't check whether the highest 32 bits are zero.
+The debugfs_create_dir() function returns error pointers.
+It never returns NULL. Most incorrect error checks were fixed,
+but the one in i40e_dbg_init() was forgotten.
 
-Fixes: 4d02ebd9bbbd ("IB/mlx4: Fix RSS hash fields restrictions")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://lore.kernel.org/r/233ed975-982d-422a-b498-410f71d8a101@moroto.mountain
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Fix the remaining error check.
+
+Fixes: 02e9c290814c ("i40e: debugfs interface")
+Signed-off-by: Wang Ming <machel@vivo.com>
+Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/mlx4/qp.c | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ drivers/net/ethernet/intel/i40e/i40e_debugfs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/hw/mlx4/qp.c b/drivers/infiniband/hw/mlx4/qp.c
-index 02caf9a439cf1..395d8a99b12e4 100644
---- a/drivers/infiniband/hw/mlx4/qp.c
-+++ b/drivers/infiniband/hw/mlx4/qp.c
-@@ -556,15 +556,15 @@ static int set_qp_rss(struct mlx4_ib_dev *dev, struct mlx4_ib_rss *rss_ctx,
- 		return (-EOPNOTSUPP);
- 	}
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_debugfs.c b/drivers/net/ethernet/intel/i40e/i40e_debugfs.c
+index a66492b9403c4..5b82c89330e30 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_debugfs.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_debugfs.c
+@@ -1798,7 +1798,7 @@ void i40e_dbg_pf_exit(struct i40e_pf *pf)
+ void i40e_dbg_init(void)
+ {
+ 	i40e_dbg_root = debugfs_create_dir(i40e_driver_name, NULL);
+-	if (!i40e_dbg_root)
++	if (IS_ERR(i40e_dbg_root))
+ 		pr_info("init of debugfs failed\n");
+ }
  
--	if (ucmd->rx_hash_fields_mask & ~(MLX4_IB_RX_HASH_SRC_IPV4	|
--					  MLX4_IB_RX_HASH_DST_IPV4	|
--					  MLX4_IB_RX_HASH_SRC_IPV6	|
--					  MLX4_IB_RX_HASH_DST_IPV6	|
--					  MLX4_IB_RX_HASH_SRC_PORT_TCP	|
--					  MLX4_IB_RX_HASH_DST_PORT_TCP	|
--					  MLX4_IB_RX_HASH_SRC_PORT_UDP	|
--					  MLX4_IB_RX_HASH_DST_PORT_UDP  |
--					  MLX4_IB_RX_HASH_INNER)) {
-+	if (ucmd->rx_hash_fields_mask & ~(u64)(MLX4_IB_RX_HASH_SRC_IPV4	|
-+					       MLX4_IB_RX_HASH_DST_IPV4	|
-+					       MLX4_IB_RX_HASH_SRC_IPV6	|
-+					       MLX4_IB_RX_HASH_DST_IPV6	|
-+					       MLX4_IB_RX_HASH_SRC_PORT_TCP |
-+					       MLX4_IB_RX_HASH_DST_PORT_TCP |
-+					       MLX4_IB_RX_HASH_SRC_PORT_UDP |
-+					       MLX4_IB_RX_HASH_DST_PORT_UDP |
-+					       MLX4_IB_RX_HASH_INNER)) {
- 		pr_debug("RX Hash fields_mask has unsupported mask (0x%llx)\n",
- 			 ucmd->rx_hash_fields_mask);
- 		return (-EOPNOTSUPP);
 -- 
-2.40.1
+2.39.2
 
 
 
