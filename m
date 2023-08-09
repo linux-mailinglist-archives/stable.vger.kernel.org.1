@@ -2,49 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8817A775A9D
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:09:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4BAF2775CBA
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:30:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233237AbjHILJ6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:09:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38738 "EHLO
+        id S233858AbjHILaT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:30:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40698 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233231AbjHILJ6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:09:58 -0400
+        with ESMTP id S233853AbjHILaS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:30:18 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 17DA7172A
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:09:58 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB0FD10D4
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:30:17 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id AC69863153
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:09:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCC15C433C8;
-        Wed,  9 Aug 2023 11:09:56 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8AFD66314C
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:30:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93A67C433C8;
+        Wed,  9 Aug 2023 11:30:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691579397;
-        bh=C+1EicSQJNvZOGbCeipkQKbPcfoFEiSfRLYh9vWU/54=;
+        s=korg; t=1691580617;
+        bh=AVeDOUDWGSLu12toBHYtubFriRDGhczyHiMbxxOFsZM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=a0EiH/jtVmIFbVeGDMUkw4bGyHr4UvFlMiuztAz0/w2NMK4EaDDS728yd0FlH9IUg
-         CygPIbj42Wk5uwWHaRKdGMWl7Qnyixvd67YW+aStzrMY9epVKr0cq0HrUqBTiCLEKa
-         XdJCHvQQ/TR26UhhWo7eBeVf6/y/fZwlyqZOgCyw=
+        b=OV9opa6DEfrNDoNu1itJo4mJwP41OqizZh+oq/F+WItFFhQgK4N6xXaChujWBYk5R
+         /xl8gyhio4gvFFZ+K57m2eXepuGunHkj51CeChi0ku39grPWruQg6ljn5lhjBSEIzG
+         By8iymYx+HYppBmJMNVAJ79ecj+dn5ucQz8s/dWQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Sasha Levin <sashal@kernel.org>,
-        Nathan Chancellor <nathan@kernel.org>
-Subject: [PATCH 4.14 182/204] word-at-a-time: use the same return type for has_zero regardless of endianness
+        D Scott Phillips <scott@os.amperecomputing.com>,
+        James Morse <james.morse@arm.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Ovidiu Panait <ovidiu.panait@windriver.com>
+Subject: [PATCH 5.4 089/154] arm64: Add AMPERE1 to the Spectre-BHB affected list
 Date:   Wed,  9 Aug 2023 12:42:00 +0200
-Message-ID: <20230809103648.590422238@linuxfoundation.org>
+Message-ID: <20230809103639.934666719@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103642.552405807@linuxfoundation.org>
-References: <20230809103642.552405807@linuxfoundation.org>
+In-Reply-To: <20230809103636.887175326@linuxfoundation.org>
+References: <20230809103636.887175326@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -59,73 +57,74 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: ndesaulniers@google.com <ndesaulniers@google.com>
+From: D Scott Phillips <scott@os.amperecomputing.com>
 
-[ Upstream commit 79e8328e5acbe691bbde029a52c89d70dcbc22f3 ]
+commit 0e5d5ae837c8ce04d2ddb874ec5f920118bd9d31 upstream.
 
-Compiling big-endian targets with Clang produces the diagnostic:
+Per AmpereOne erratum AC03_CPU_12, "Branch history may allow control of
+speculative execution across software contexts," the AMPERE1 core needs the
+bhb clearing loop to mitigate Spectre-BHB, with a loop iteration count of
+11.
 
-  fs/namei.c:2173:13: warning: use of bitwise '|' with boolean operands [-Wbitwise-instead-of-logical]
-	} while (!(has_zero(a, &adata, &constants) | has_zero(b, &bdata, &constants)));
-	          ~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-                                               ||
-  fs/namei.c:2173:13: note: cast one or both operands to int to silence this warning
-
-It appears that when has_zero was introduced, two definitions were
-produced with different signatures (in particular different return
-types).
-
-Looking at the usage in hash_name() in fs/namei.c, I suspect that
-has_zero() is meant to be invoked twice per while loop iteration; using
-logical-or would not update `bdata` when `a` did not have zeros.  So I
-think it's preferred to always return an unsigned long rather than a
-bool than update the while loop in hash_name() to use a logical-or
-rather than bitwise-or.
-
-[ Also changed powerpc version to do the same  - Linus ]
-
-Link: https://github.com/ClangBuiltLinux/linux/issues/1832
-Link: https://lore.kernel.org/lkml/20230801-bitwise-v1-1-799bec468dc4@google.com/
-Fixes: 36126f8f2ed8 ("word-at-a-time: make the interfaces truly generic")
-Debugged-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Nick Desaulniers <ndesaulniers@google.com>
-Acked-by: Heiko Carstens <hca@linux.ibm.com>
-Cc: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: D Scott Phillips <scott@os.amperecomputing.com>
+Link: https://lore.kernel.org/r/20221011022140.432370-1-scott@os.amperecomputing.com
+Reviewed-by: James Morse <james.morse@arm.com>
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Signed-off-by: Ovidiu Panait <ovidiu.panait@windriver.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/include/asm/word-at-a-time.h | 2 +-
- include/asm-generic/word-at-a-time.h      | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ arch/arm64/include/asm/cputype.h |    4 ++++
+ arch/arm64/kernel/cpu_errata.c   |    6 ++++++
+ 2 files changed, 10 insertions(+)
 
-diff --git a/arch/powerpc/include/asm/word-at-a-time.h b/arch/powerpc/include/asm/word-at-a-time.h
-index f3f4710d4ff52..99129b0cd8b8a 100644
---- a/arch/powerpc/include/asm/word-at-a-time.h
-+++ b/arch/powerpc/include/asm/word-at-a-time.h
-@@ -34,7 +34,7 @@ static inline long find_zero(unsigned long mask)
- 	return leading_zero_bits >> 3;
- }
+--- a/arch/arm64/include/asm/cputype.h
++++ b/arch/arm64/include/asm/cputype.h
+@@ -59,6 +59,7 @@
+ #define ARM_CPU_IMP_NVIDIA		0x4E
+ #define ARM_CPU_IMP_FUJITSU		0x46
+ #define ARM_CPU_IMP_HISI		0x48
++#define ARM_CPU_IMP_AMPERE		0xC0
  
--static inline bool has_zero(unsigned long val, unsigned long *data, const struct word_at_a_time *c)
-+static inline unsigned long has_zero(unsigned long val, unsigned long *data, const struct word_at_a_time *c)
- {
- 	unsigned long rhs = val | c->low_bits;
- 	*data = rhs;
-diff --git a/include/asm-generic/word-at-a-time.h b/include/asm-generic/word-at-a-time.h
-index 20c93f08c9933..95a1d214108a5 100644
---- a/include/asm-generic/word-at-a-time.h
-+++ b/include/asm-generic/word-at-a-time.h
-@@ -38,7 +38,7 @@ static inline long find_zero(unsigned long mask)
- 	return (mask >> 8) ? byte : byte + 1;
- }
+ #define ARM_CPU_PART_AEM_V8		0xD0F
+ #define ARM_CPU_PART_FOUNDATION		0xD00
+@@ -101,6 +102,8 @@
  
--static inline bool has_zero(unsigned long val, unsigned long *data, const struct word_at_a_time *c)
-+static inline unsigned long has_zero(unsigned long val, unsigned long *data, const struct word_at_a_time *c)
- {
- 	unsigned long rhs = val | c->low_bits;
- 	*data = rhs;
--- 
-2.40.1
-
+ #define HISI_CPU_PART_TSV110		0xD01
+ 
++#define AMPERE_CPU_PART_AMPERE1		0xAC3
++
+ #define MIDR_CORTEX_A53 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A53)
+ #define MIDR_CORTEX_A57 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A57)
+ #define MIDR_CORTEX_A72 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A72)
+@@ -131,6 +134,7 @@
+ #define MIDR_NVIDIA_CARMEL MIDR_CPU_MODEL(ARM_CPU_IMP_NVIDIA, NVIDIA_CPU_PART_CARMEL)
+ #define MIDR_FUJITSU_A64FX MIDR_CPU_MODEL(ARM_CPU_IMP_FUJITSU, FUJITSU_CPU_PART_A64FX)
+ #define MIDR_HISI_TSV110 MIDR_CPU_MODEL(ARM_CPU_IMP_HISI, HISI_CPU_PART_TSV110)
++#define MIDR_AMPERE1 MIDR_CPU_MODEL(ARM_CPU_IMP_AMPERE, AMPERE_CPU_PART_AMPERE1)
+ 
+ /* Fujitsu Erratum 010001 affects A64FX 1.0 and 1.1, (v0r0 and v1r0) */
+ #define MIDR_FUJITSU_ERRATUM_010001		MIDR_FUJITSU_A64FX
+--- a/arch/arm64/kernel/cpu_errata.c
++++ b/arch/arm64/kernel/cpu_errata.c
+@@ -1145,6 +1145,10 @@ u8 spectre_bhb_loop_affected(int scope)
+ 			MIDR_ALL_VERSIONS(MIDR_NEOVERSE_N1),
+ 			{},
+ 		};
++		static const struct midr_range spectre_bhb_k11_list[] = {
++			MIDR_ALL_VERSIONS(MIDR_AMPERE1),
++			{},
++		};
+ 		static const struct midr_range spectre_bhb_k8_list[] = {
+ 			MIDR_ALL_VERSIONS(MIDR_CORTEX_A72),
+ 			MIDR_ALL_VERSIONS(MIDR_CORTEX_A57),
+@@ -1155,6 +1159,8 @@ u8 spectre_bhb_loop_affected(int scope)
+ 			k = 32;
+ 		else if (is_midr_in_range_list(read_cpuid_id(), spectre_bhb_k24_list))
+ 			k = 24;
++		else if (is_midr_in_range_list(read_cpuid_id(), spectre_bhb_k11_list))
++			k = 11;
+ 		else if (is_midr_in_range_list(read_cpuid_id(), spectre_bhb_k8_list))
+ 			k =  8;
+ 
 
 
