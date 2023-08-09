@@ -2,96 +2,78 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0229177534F
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 08:56:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9158877535F
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 08:59:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229533AbjHIG4a convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+stable@lfdr.de>); Wed, 9 Aug 2023 02:56:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41750 "EHLO
+        id S229814AbjHIG74 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 02:59:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39896 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230358AbjHIG43 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 02:56:29 -0400
-Received: from mail-yb1-f180.google.com (mail-yb1-f180.google.com [209.85.219.180])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1162F1FD4;
-        Tue,  8 Aug 2023 23:56:29 -0700 (PDT)
-Received: by mail-yb1-f180.google.com with SMTP id 3f1490d57ef6-d3563cb41e9so5515386276.0;
-        Tue, 08 Aug 2023 23:56:29 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691564188; x=1692168988;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=7c2ojFzdHZ+liacKOpIuuI9b60nNWMmDP0BaH1HEZBI=;
-        b=DnQTZR37/3m+L3SwSibUcDnpVdTBElkzZpATAdYl211W0IOTILw9hlXr5qcHi041N2
-         RIryC/cp/3V7xBj+ApkgTLQY664RlETPLSefcNr7akBRyO36oKPOCF5ZvhRP+ZKhe3DM
-         OiB1deguQ72pNNY9ffIOqDGbjDwqeBRcaaWqkocxQL8BLmJve1hBso7MV8SVc9EGm5Mb
-         Ur/K13XXa0M3L0Mbw0VN0wDYb2GhnEnFo86qw2cr/HiL8DJDJovw9qgWnknoiyzLxgVL
-         L6qnVKbQTh7TEHAxvEN57yBtdyhFrvC2H4+03qyNheFIp8VbxPdShtPz0/wWenMHStR9
-         M4kg==
-X-Gm-Message-State: AOJu0Yy16oTxlpMZ7eZaUNlPnS8jlywYDldT5SGam+wBj2iVtr+JiSsp
-        S2No8IEBlcz5P1y4xDHWTFnavsHA2mOokY4XPvE=
-X-Google-Smtp-Source: AGHT+IGdOZaA22wipBCNYsAFwmB08/wQlkuzZlmn/whmGXM8cJnVESICn4GS3578VkWMZZdkEquBdZxVr5R9z+p+raQ=
-X-Received: by 2002:a05:6902:102c:b0:d07:fd29:d752 with SMTP id
- x12-20020a056902102c00b00d07fd29d752mr2106251ybt.6.1691564188235; Tue, 08 Aug
- 2023 23:56:28 -0700 (PDT)
+        with ESMTP id S231305AbjHIG7z (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 02:59:55 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 615E31FD8
+        for <stable@vger.kernel.org>; Tue,  8 Aug 2023 23:59:49 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E1CEA62FBE
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 06:59:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFC52C433C8;
+        Wed,  9 Aug 2023 06:59:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1691564388;
+        bh=TFLpQyOx2gb3MAoTaV5+qtIzRQFdo+3Tas6F/w521r0=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=s9CnfD5TYsEW0YY9W7zl4d7N2n7IYwpmHZVmTj7Mc6Xz2vaUpNTMfea09cuSEGmox
+         ojoUQKRBO3xIWcXgxaJW3id8VaB9Jaf68zA3QTY9ANwBuYLKbdpPHhSkEcTC3cpjzi
+         eqwnUkdtpPtVZJOjeCl76PdymXn0Shm185wzmB/E=
+Date:   Wed, 9 Aug 2023 08:59:39 +0200
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Naresh Kamboju <naresh.kamboju@linaro.org>
+Cc:     linux-stable <stable@vger.kernel.org>,
+        lkft-triage@lists.linaro.org, Sasha Levin <sashal@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Cristian Marussi <cristian.marussi@arm.com>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Anders Roxell <anders.roxell@linaro.org>
+Subject: Re: stable-rc: 5.15: arm: fsl_dcu_drm_plane.c:176:20: error:
+ 'drm_plane_helper_destroy' undeclared here
+Message-ID: <2023080946-wow-cross-1079@gregkh>
+References: <CA+G9fYvTjm2oa6mXR=HUe6gYuVaS2nFb_otuvPfmPeKHDoC+Tw@mail.gmail.com>
 MIME-Version: 1.0
-References: <20230728022447.1323563-1-namhyung@kernel.org> <ZMPMHNjX2IxsLbAe@kernel.org>
-In-Reply-To: <ZMPMHNjX2IxsLbAe@kernel.org>
-From:   Namhyung Kim <namhyung@kernel.org>
-Date:   Wed, 9 Aug 2023 15:56:17 +0900
-Message-ID: <CAM9d7cgqJatFn0tQVOxoQymFUruSzniPi5Okb1sotb6VLt+X_g@mail.gmail.com>
-Subject: Re: [PATCH v2 1/2] perf build: Update build rule for generated files
-To:     Arnaldo Carvalho de Melo <acme@kernel.org>
-Cc:     Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Ingo Molnar <mingo@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        linux-perf-users@vger.kernel.org,
-        Anup Sharma <anupnewsmail@gmail.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-        autolearn=no autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CA+G9fYvTjm2oa6mXR=HUe6gYuVaS2nFb_otuvPfmPeKHDoC+Tw@mail.gmail.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi Arnaldo,
+On Wed, Aug 09, 2023 at 11:47:45AM +0530, Naresh Kamboju wrote:
+> While building Linux stable rc 5.15 arm with gcc-13 failed due to
+> following warnings / errors.
 
-On Fri, Jul 28, 2023 at 11:09 PM Arnaldo Carvalho de Melo
-<acme@kernel.org> wrote:
->
-> Em Thu, Jul 27, 2023 at 07:24:46PM -0700, Namhyung Kim escreveu:
-> > The bison and flex generate C files from the source (.y and .l)
-> > files.  When O= option is used, they are saved in a separate directory
-> > but the default build rule assumes the .C files are in the source
-> > directory.  So it might read invalid file if there are generated files
-> > from an old version.  The same is true for the pmu-events files.
-> >
-> > For example, the following command would cause a build failure:
-> >
-> >   $ git checkout v6.3
-> >   $ make -C tools/perf  # build in the same directory
-> >
-> >   $ git checkout v6.5-rc2
-> >   $ mkdir build  # create a build directory
-> >   $ make -C tools/perf O=build  # build in a different directory but it
-> >                                 # refers files in the source directory
-> >
-> > Let's update the build rule to specify those cases explicitly to depend
-> > on the files in the output directory.
-> >
-> > Note that it's not a complete fix and it needs the next patch for the
-> > include path too.
->
-> Applied, testing it on the container builds.
+I appreciate you attempting to build older LTS trees with newer
+compilers, but note that usually, as you are finding out, this doesn't
+work.
 
-I don't see these commits in the perf-tools{,-next} yet.
+Right now I've finally gotten support for gcc-12 in all active stable
+kernel trees, gcc-13 takes more work as you are finding out so I'm only
+testing with newer trees (6.1 and newer).
 
-Thanks,
-Namhyung
+So when you run into issues like this, that obviously work in newer
+kernel releases, a report doesn't do much, BUT a git commit id of what
+the commit that needs to be backported IS appreciated.
+
+thanks,
+
+greg k-h
