@@ -2,50 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4FEFF775C36
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:25:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E2E28775DA2
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:39:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233674AbjHILZA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:25:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46346 "EHLO
+        id S234176AbjHILjk (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:39:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58604 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233677AbjHILY7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:24:59 -0400
+        with ESMTP id S234186AbjHILjj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:39:39 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B7491BFA
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:24:59 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80E051FF5
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:39:37 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E6EA06323F
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:24:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01B4DC433C8;
-        Wed,  9 Aug 2023 11:24:57 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 16907635F8
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:39:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21C67C433C8;
+        Wed,  9 Aug 2023 11:39:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691580298;
-        bh=mpcXgRsh1nvIrmTn5KcbhwRHmQJl4vncAkJHoYTy9gc=;
+        s=korg; t=1691581176;
+        bh=wy+5osNJQMe9QBfwVoB5QDYWjRw1Lc5XJM2gmh7IYJM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=V21kOEL4WtPncXhyuWCs1vdCftVso0jJQEOQe0kn/R+vwkYpkUrtyra0TIshhRK1w
-         kUxeBWyq33qYtCk3hyWI9/61OBgrJr0fjRzWRpDOhXLuTQA5E12SklFl+3tSmUrAqi
-         YUne08vrB85rg5f5qcVVtkgdZxgrcgLyCecXOzkw=
+        b=Yyzz68yiCR7yA8WSeYEpe7D1GrelaAc7WlYSCqsNTEcCZ2keutP25DhNfi3WZRfpL
+         rRsxbqFDVM/Y57aZjO0PaJhlLwYXyCP/aYWq90/pyfqe423dhlDmf+AStuU3rviP94
+         SbeOI1YTdD2CKt8vO06sqAmMkb+wliGXEHdfK/o8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, valis <sec@valis.email>,
-        Bing-Jhong Billy Jheng <billy@starlabs.sg>,
-        Jamal Hadi Salim <jhs@mojatatu.com>,
-        Victor Nogueira <victor@mojatatu.com>,
-        Pedro Tammela <pctammela@mojatatu.com>,
-        M A Ramdhan <ramdhan@starlabs.sg>,
+        patches@lists.linux.dev, Yuanjun Gong <ruc_gongyuanjun@163.com>,
+        Florian Fainelli <florian.fainelli@broadcom.com>,
         Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 297/323] net/sched: cls_route: No longer copy tcf_result on update to avoid use-after-free
+Subject: [PATCH 5.10 133/201] net: dsa: fix value check in bcm_sf2_sw_probe()
 Date:   Wed,  9 Aug 2023 12:42:15 +0200
-Message-ID: <20230809103711.661374154@linuxfoundation.org>
+Message-ID: <20230809103648.183395836@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
-References: <20230809103658.104386911@linuxfoundation.org>
+In-Reply-To: <20230809103643.799166053@linuxfoundation.org>
+References: <20230809103643.799166053@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -60,47 +56,50 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: valis <sec@valis.email>
+From: Yuanjun Gong <ruc_gongyuanjun@163.com>
 
-[ Upstream commit b80b829e9e2c1b3f7aae34855e04d8f6ecaf13c8 ]
+[ Upstream commit dadc5b86cc9459581f37fe755b431adc399ea393 ]
 
-When route4_change() is called on an existing filter, the whole
-tcf_result struct is always copied into the new instance of the filter.
+in bcm_sf2_sw_probe(), check the return value of clk_prepare_enable()
+and return the error code if clk_prepare_enable() returns an
+unexpected value.
 
-This causes a problem when updating a filter bound to a class,
-as tcf_unbind_filter() is always called on the old instance in the
-success path, decreasing filter_cnt of the still referenced class
-and allowing it to be deleted, leading to a use-after-free.
-
-Fix this by no longer copying the tcf_result struct from the old filter.
-
-Fixes: 1109c00547fc ("net: sched: RCU cls_route")
-Reported-by: valis <sec@valis.email>
-Reported-by: Bing-Jhong Billy Jheng <billy@starlabs.sg>
-Signed-off-by: valis <sec@valis.email>
-Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Reviewed-by: Victor Nogueira <victor@mojatatu.com>
-Reviewed-by: Pedro Tammela <pctammela@mojatatu.com>
-Reviewed-by: M A Ramdhan <ramdhan@starlabs.sg>
-Link: https://lore.kernel.org/r/20230729123202.72406-4-jhs@mojatatu.com
+Fixes: e9ec5c3bd238 ("net: dsa: bcm_sf2: request and handle clocks")
+Signed-off-by: Yuanjun Gong <ruc_gongyuanjun@163.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Link: https://lore.kernel.org/r/20230726170506.16547-1-ruc_gongyuanjun@163.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/cls_route.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/net/dsa/bcm_sf2.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/net/sched/cls_route.c b/net/sched/cls_route.c
-index 4c7fa1cfd8e38..a924292623ecf 100644
---- a/net/sched/cls_route.c
-+++ b/net/sched/cls_route.c
-@@ -513,7 +513,6 @@ static int route4_change(struct net *net, struct sk_buff *in_skb,
- 	if (fold) {
- 		f->id = fold->id;
- 		f->iif = fold->iif;
--		f->res = fold->res;
- 		f->handle = fold->handle;
+diff --git a/drivers/net/dsa/bcm_sf2.c b/drivers/net/dsa/bcm_sf2.c
+index c6563d212476a..f2f890e559f3a 100644
+--- a/drivers/net/dsa/bcm_sf2.c
++++ b/drivers/net/dsa/bcm_sf2.c
+@@ -1301,7 +1301,9 @@ static int bcm_sf2_sw_probe(struct platform_device *pdev)
+ 	if (IS_ERR(priv->clk))
+ 		return PTR_ERR(priv->clk);
  
- 		f->tp = fold->tp;
+-	clk_prepare_enable(priv->clk);
++	ret = clk_prepare_enable(priv->clk);
++	if (ret)
++		return ret;
+ 
+ 	priv->clk_mdiv = devm_clk_get_optional(&pdev->dev, "sw_switch_mdiv");
+ 	if (IS_ERR(priv->clk_mdiv)) {
+@@ -1309,7 +1311,9 @@ static int bcm_sf2_sw_probe(struct platform_device *pdev)
+ 		goto out_clk;
+ 	}
+ 
+-	clk_prepare_enable(priv->clk_mdiv);
++	ret = clk_prepare_enable(priv->clk_mdiv);
++	if (ret)
++		goto out_clk;
+ 
+ 	ret = bcm_sf2_sw_rst(priv);
+ 	if (ret) {
 -- 
 2.40.1
 
