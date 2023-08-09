@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1B69C775CC8
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:30:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ECDC5775C32
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:24:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233862AbjHILaz (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:30:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44166 "EHLO
+        id S233670AbjHILYt (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:24:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35072 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233866AbjHILay (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:30:54 -0400
+        with ESMTP id S233672AbjHILYs (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:24:48 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 53252172A
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:30:54 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 569B61BFE
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:24:48 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DD1816338B
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:30:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E92CFC433C8;
-        Wed,  9 Aug 2023 11:30:52 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E1A256323F
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:24:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1F19C433C7;
+        Wed,  9 Aug 2023 11:24:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691580653;
-        bh=f45O86Cx/AR9G7cJfPcNgmdNfX8pxWJAn6MY+EoqXjw=;
+        s=korg; t=1691580287;
+        bh=lyCT77xzH4dwjhA0JcfnnwMroyD8RjAxphpKAlVC7ns=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=1QC2WzYz+kub+21n9Oe3SwDggawA+Unrh2pYmbVBbYKVLHZkNIbjf7t9YUgrq8sn5
-         UJnB2LEg+9O/lCiVs2aMpzOh0J5RC0HH2zkfGV+6GgI5zWZAGHAGk/M6vV25g1OUOh
-         q9vNKJLznfBfHcbA5seq3c314wtWz2sI/5D0vjUA=
+        b=Bs0Xa6be/5BiDPX9Agnw7ejjb1p09/6sYId4FoyvKaK9LPz5p16YgrvSVION0x/1e
+         Wh73DuDdkDsKKxoWbH7jGJSnYiLMy7Fr6E+ymH0LjdpUS1/gQVarHFUXLQjrwt+dsA
+         PGheVe2n/eBXb9rKNwbTEDqPHvkcd/57qbTcqFkQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
+        Willem de Bruijn <willemb@google.com>,
         "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 101/154] net: annotate data-races around sk->sk_max_pacing_rate
+Subject: [PATCH 4.19 294/323] net: add missing data-race annotations around sk->sk_peek_off
 Date:   Wed,  9 Aug 2023 12:42:12 +0200
-Message-ID: <20230809103640.313066931@linuxfoundation.org>
+Message-ID: <20230809103711.515187860@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103636.887175326@linuxfoundation.org>
-References: <20230809103636.887175326@linuxfoundation.org>
+In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
+References: <20230809103658.104386911@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,50 +58,59 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit ea7f45ef77b39e72244d282e47f6cb1ef4135cd2 ]
+[ Upstream commit 11695c6e966b0ec7ed1d16777d294cef865a5c91 ]
 
-sk_getsockopt() runs locklessly. This means sk->sk_max_pacing_rate
-can be read while other threads are changing its value.
+sk_getsockopt() runs locklessly, thus we need to annotate the read
+of sk->sk_peek_off.
 
-Fixes: 62748f32d501 ("net: introduce SO_MAX_PACING_RATE")
+While we are at it, add corresponding annotations to sk_set_peek_off()
+and unix_set_peek_off().
+
+Fixes: b9bb53f3836f ("sock: convert sk_peek_offset functions to WRITE_ONCE")
 Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Willem de Bruijn <willemb@google.com>
 Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/sock.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ net/core/sock.c    | 4 ++--
+ net/unix/af_unix.c | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/net/core/sock.c b/net/core/sock.c
-index d55eea5538bce..539c39ad1e488 100644
+index 5b31f3446fc7a..f112862fe0682 100644
 --- a/net/core/sock.c
 +++ b/net/core/sock.c
-@@ -1117,7 +1117,8 @@ int sock_setsockopt(struct socket *sock, int level, int optname,
- 			cmpxchg(&sk->sk_pacing_status,
- 				SK_PACING_NONE,
- 				SK_PACING_NEEDED);
--		sk->sk_max_pacing_rate = ulval;
-+		/* Pairs with READ_ONCE() from sk_getsockopt() */
-+		WRITE_ONCE(sk->sk_max_pacing_rate, ulval);
- 		sk->sk_pacing_rate = min(sk->sk_pacing_rate, ulval);
- 		break;
- 		}
-@@ -1478,12 +1479,14 @@ int sock_getsockopt(struct socket *sock, int level, int optname,
- #endif
+@@ -1319,7 +1319,7 @@ int sock_getsockopt(struct socket *sock, int level, int optname,
+ 		if (!sock->ops->set_peek_off)
+ 			return -EOPNOTSUPP;
  
- 	case SO_MAX_PACING_RATE:
-+		/* The READ_ONCE() pair with the WRITE_ONCE() in sk_setsockopt() */
- 		if (sizeof(v.ulval) != sizeof(v.val) && len >= sizeof(v.ulval)) {
- 			lv = sizeof(v.ulval);
--			v.ulval = sk->sk_max_pacing_rate;
-+			v.ulval = READ_ONCE(sk->sk_max_pacing_rate);
- 		} else {
- 			/* 32bit version */
--			v.val = min_t(unsigned long, sk->sk_max_pacing_rate, ~0U);
-+			v.val = min_t(unsigned long, ~0U,
-+				      READ_ONCE(sk->sk_max_pacing_rate));
- 		}
+-		v.val = sk->sk_peek_off;
++		v.val = READ_ONCE(sk->sk_peek_off);
  		break;
+ 	case SO_NOFCS:
+ 		v.val = sock_flag(sk, SOCK_NOFCS);
+@@ -2559,7 +2559,7 @@ EXPORT_SYMBOL(__sk_mem_reclaim);
  
+ int sk_set_peek_off(struct sock *sk, int val)
+ {
+-	sk->sk_peek_off = val;
++	WRITE_ONCE(sk->sk_peek_off, val);
+ 	return 0;
+ }
+ EXPORT_SYMBOL_GPL(sk_set_peek_off);
+diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
+index b0dcbb08e60db..8971341c4f8af 100644
+--- a/net/unix/af_unix.c
++++ b/net/unix/af_unix.c
+@@ -706,7 +706,7 @@ static int unix_set_peek_off(struct sock *sk, int val)
+ 	if (mutex_lock_interruptible(&u->iolock))
+ 		return -EINTR;
+ 
+-	sk->sk_peek_off = val;
++	WRITE_ONCE(sk->sk_peek_off, val);
+ 	mutex_unlock(&u->iolock);
+ 
+ 	return 0;
 -- 
 2.40.1
 
