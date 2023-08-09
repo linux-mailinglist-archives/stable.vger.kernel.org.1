@@ -2,145 +2,159 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5ACA2775890
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:53:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 87978775914
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:57:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232623AbjHIKx5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 06:53:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52990 "EHLO
+        id S232738AbjHIK5c (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 06:57:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53836 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232706AbjHIKxp (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:53:45 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4155B448C
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:51:48 -0700 (PDT)
+        with ESMTP id S232549AbjHIK50 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:57:26 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 582CE1FD8
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:57:25 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9BC3F630F7
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:51:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAB7FC433C7;
-        Wed,  9 Aug 2023 10:51:24 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E40BC6238A
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:57:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01673C433C7;
+        Wed,  9 Aug 2023 10:57:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691578285;
-        bh=mc7USRSog4ie/B+VMI6WqAySttT1mfXxnFeNMrfEQgc=;
+        s=korg; t=1691578644;
+        bh=sP1DYyQo8k9yVAgXGQ6HrN1Rxo7+PkXcKsJfyvaNi8c=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Zg+0Ys9BQxI92XIpZVaQSCacYfhcQfZLMVi2GVf9zqugeHabLcqwnnzrKLsD3mUcr
-         FDE4/yVjhpNYYuoPOPGNppDImGIiRmfbQ8OspoPGlQwAv2OYebqnNQoc6bcjLKi/h4
-         IoXGjdoY3ba6RSLbse0LGnr70Uubr+c7djyEiE/w=
+        b=0R2txT4OxQxGrfm5+oXWtQnp7y0IWO8jS1kAPYMw/kR8PF9EAElaFlKQChA9dgYOC
+         wiwS3L515bak1d7ycigbZlF+3rDZkY3zW0dK56oTcr95QmCflRxx+/ZeZVnyCDoqgR
+         OwjasS5AdoINTHr0zfbqbEiGGjfAWIxCRTUTYRU4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Jonathan Cavitt <jonathan.cavitt@intel.com>,
-        Andi Shyti <andi.shyti@linux.intel.com>,
-        Nirmoy Das <nirmoy.das@intel.com>,
-        Andrzej Hajda <andrzej.hajda@intel.com>,
-        Matt Roper <matthew.d.roper@intel.com>,
-        Tvrtko Ursulin <tvrtko.ursulin@intel.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 163/165] drm/i915/gt: Poll aux invalidation register bit on invalidation
+        syzbot+af5e10f73dbff48f70af@syzkaller.appspotmail.com,
+        Jan Kara <jack@suse.cz>
+Subject: [PATCH 6.1 107/127] ext2: Drop fragment support
 Date:   Wed,  9 Aug 2023 12:41:34 +0200
-Message-ID: <20230809103648.113995081@linuxfoundation.org>
+Message-ID: <20230809103640.164312971@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103642.720851262@linuxfoundation.org>
-References: <20230809103642.720851262@linuxfoundation.org>
+In-Reply-To: <20230809103636.615294317@linuxfoundation.org>
+References: <20230809103636.615294317@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jonathan Cavitt <jonathan.cavitt@intel.com>
+From: Jan Kara <jack@suse.cz>
 
-[ Upstream commit 0fde2f23516a00fd90dfb980b66b4665fcbfa659 ]
+commit 404615d7f1dcd4cca200e9a7a9df3a1dcae1dd62 upstream.
 
-For platforms that use Aux CCS, wait for aux invalidation to
-complete by checking the aux invalidation register bit is
-cleared.
+Ext2 has fields in superblock reserved for subblock allocation support.
+However that never landed. Drop the many years dead code.
 
-Fixes: 972282c4cf24 ("drm/i915/gen12: Add aux table invalidate for all engines")
-Signed-off-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
-Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
-Cc: <stable@vger.kernel.org> # v5.8+
-Reviewed-by: Nirmoy Das <nirmoy.das@intel.com>
-Reviewed-by: Andrzej Hajda <andrzej.hajda@intel.com>
-Reviewed-by: Matt Roper <matthew.d.roper@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230725001950.1014671-7-andi.shyti@linux.intel.com
-(cherry picked from commit d459c86f00aa98028d155a012c65dc42f7c37e76)
-Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: syzbot+af5e10f73dbff48f70af@syzkaller.appspotmail.com
+Signed-off-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/i915/gt/gen8_engine_cs.c     | 17 ++++++++++++-----
- drivers/gpu/drm/i915/gt/intel_gpu_commands.h |  1 +
- 2 files changed, 13 insertions(+), 5 deletions(-)
+ fs/ext2/ext2.h  |   12 ------------
+ fs/ext2/super.c |   23 ++++-------------------
+ 2 files changed, 4 insertions(+), 31 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/gt/gen8_engine_cs.c b/drivers/gpu/drm/i915/gt/gen8_engine_cs.c
-index 5d2175e918dd2..b2d69ce4a749b 100644
---- a/drivers/gpu/drm/i915/gt/gen8_engine_cs.c
-+++ b/drivers/gpu/drm/i915/gt/gen8_engine_cs.c
-@@ -184,7 +184,15 @@ u32 *gen12_emit_aux_table_inv(struct intel_gt *gt, u32 *cs, const i915_reg_t inv
- 	*cs++ = MI_LOAD_REGISTER_IMM(1) | MI_LRI_MMIO_REMAP_EN;
- 	*cs++ = i915_mmio_reg_offset(inv_reg) + gsi_offset;
- 	*cs++ = AUX_INV;
--	*cs++ = MI_NOOP;
-+
-+	*cs++ = MI_SEMAPHORE_WAIT_TOKEN |
-+		MI_SEMAPHORE_REGISTER_POLL |
-+		MI_SEMAPHORE_POLL |
-+		MI_SEMAPHORE_SAD_EQ_SDD;
-+	*cs++ = 0;
-+	*cs++ = i915_mmio_reg_offset(inv_reg) + gsi_offset;
-+	*cs++ = 0;
-+	*cs++ = 0;
+--- a/fs/ext2/ext2.h
++++ b/fs/ext2/ext2.h
+@@ -70,10 +70,7 @@ struct mb_cache;
+  * second extended-fs super-block data in memory
+  */
+ struct ext2_sb_info {
+-	unsigned long s_frag_size;	/* Size of a fragment in bytes */
+-	unsigned long s_frags_per_block;/* Number of fragments per block */
+ 	unsigned long s_inodes_per_block;/* Number of inodes per block */
+-	unsigned long s_frags_per_group;/* Number of fragments in a group */
+ 	unsigned long s_blocks_per_group;/* Number of blocks in a group */
+ 	unsigned long s_inodes_per_group;/* Number of inodes in a group */
+ 	unsigned long s_itb_per_group;	/* Number of inode table blocks per group */
+@@ -189,15 +186,6 @@ static inline struct ext2_sb_info *EXT2_
+ #define EXT2_FIRST_INO(s)		(EXT2_SB(s)->s_first_ino)
  
- 	return cs;
- }
-@@ -285,10 +293,9 @@ int gen12_emit_flush_rcs(struct i915_request *rq, u32 mode)
- 		else if (engine->class == COMPUTE_CLASS)
- 			flags &= ~PIPE_CONTROL_3D_ENGINE_FLAGS;
- 
-+		count = 8;
- 		if (gen12_needs_ccs_aux_inv(rq->engine))
--			count = 8 + 4;
--		else
--			count = 8;
-+			count += 8;
- 
- 		cs = intel_ring_begin(rq, count);
- 		if (IS_ERR(cs))
-@@ -331,7 +338,7 @@ int gen12_emit_flush_xcs(struct i915_request *rq, u32 mode)
- 			aux_inv = rq->engine->mask &
- 				~GENMASK(_BCS(I915_MAX_BCS - 1), BCS0);
- 			if (aux_inv)
--				cmd += 4;
-+				cmd += 8;
+ /*
+- * Macro-instructions used to manage fragments
+- */
+-#define EXT2_MIN_FRAG_SIZE		1024
+-#define	EXT2_MAX_FRAG_SIZE		4096
+-#define EXT2_MIN_FRAG_LOG_SIZE		  10
+-#define EXT2_FRAG_SIZE(s)		(EXT2_SB(s)->s_frag_size)
+-#define EXT2_FRAGS_PER_BLOCK(s)		(EXT2_SB(s)->s_frags_per_block)
+-
+-/*
+  * Structure of a blocks group descriptor
+  */
+ struct ext2_group_desc
+--- a/fs/ext2/super.c
++++ b/fs/ext2/super.c
+@@ -668,10 +668,9 @@ static int ext2_setup_super (struct supe
+ 		es->s_max_mnt_count = cpu_to_le16(EXT2_DFL_MAX_MNT_COUNT);
+ 	le16_add_cpu(&es->s_mnt_count, 1);
+ 	if (test_opt (sb, DEBUG))
+-		ext2_msg(sb, KERN_INFO, "%s, %s, bs=%lu, fs=%lu, gc=%lu, "
++		ext2_msg(sb, KERN_INFO, "%s, %s, bs=%lu, gc=%lu, "
+ 			"bpg=%lu, ipg=%lu, mo=%04lx]",
+ 			EXT2FS_VERSION, EXT2FS_DATE, sb->s_blocksize,
+-			sbi->s_frag_size,
+ 			sbi->s_groups_count,
+ 			EXT2_BLOCKS_PER_GROUP(sb),
+ 			EXT2_INODES_PER_GROUP(sb),
+@@ -1012,14 +1011,7 @@ static int ext2_fill_super(struct super_
  		}
  	}
  
-diff --git a/drivers/gpu/drm/i915/gt/intel_gpu_commands.h b/drivers/gpu/drm/i915/gt/intel_gpu_commands.h
-index 5d143e2a8db03..02125a1db2796 100644
---- a/drivers/gpu/drm/i915/gt/intel_gpu_commands.h
-+++ b/drivers/gpu/drm/i915/gt/intel_gpu_commands.h
-@@ -121,6 +121,7 @@
- #define   MI_SEMAPHORE_TARGET(engine)	((engine)<<15)
- #define MI_SEMAPHORE_WAIT	MI_INSTR(0x1c, 2) /* GEN8+ */
- #define MI_SEMAPHORE_WAIT_TOKEN	MI_INSTR(0x1c, 3) /* GEN12+ */
-+#define   MI_SEMAPHORE_REGISTER_POLL	(1 << 16)
- #define   MI_SEMAPHORE_POLL		(1 << 15)
- #define   MI_SEMAPHORE_SAD_GT_SDD	(0 << 12)
- #define   MI_SEMAPHORE_SAD_GTE_SDD	(1 << 12)
--- 
-2.40.1
-
+-	sbi->s_frag_size = EXT2_MIN_FRAG_SIZE <<
+-				   le32_to_cpu(es->s_log_frag_size);
+-	if (sbi->s_frag_size == 0)
+-		goto cantfind_ext2;
+-	sbi->s_frags_per_block = sb->s_blocksize / sbi->s_frag_size;
+-
+ 	sbi->s_blocks_per_group = le32_to_cpu(es->s_blocks_per_group);
+-	sbi->s_frags_per_group = le32_to_cpu(es->s_frags_per_group);
+ 	sbi->s_inodes_per_group = le32_to_cpu(es->s_inodes_per_group);
+ 
+ 	sbi->s_inodes_per_block = sb->s_blocksize / EXT2_INODE_SIZE(sb);
+@@ -1045,11 +1037,10 @@ static int ext2_fill_super(struct super_
+ 		goto failed_mount;
+ 	}
+ 
+-	if (sb->s_blocksize != sbi->s_frag_size) {
++	if (es->s_log_frag_size != es->s_log_block_size) {
+ 		ext2_msg(sb, KERN_ERR,
+-			"error: fragsize %lu != blocksize %lu"
+-			"(not supported yet)",
+-			sbi->s_frag_size, sb->s_blocksize);
++			"error: fragsize log %u != blocksize log %u",
++			le32_to_cpu(es->s_log_frag_size), sb->s_blocksize_bits);
+ 		goto failed_mount;
+ 	}
+ 
+@@ -1066,12 +1057,6 @@ static int ext2_fill_super(struct super_
+ 			sbi->s_blocks_per_group, sbi->s_inodes_per_group + 3);
+ 		goto failed_mount;
+ 	}
+-	if (sbi->s_frags_per_group > sb->s_blocksize * 8) {
+-		ext2_msg(sb, KERN_ERR,
+-			"error: #fragments per group too big: %lu",
+-			sbi->s_frags_per_group);
+-		goto failed_mount;
+-	}
+ 	if (sbi->s_inodes_per_group < sbi->s_inodes_per_block ||
+ 	    sbi->s_inodes_per_group > sb->s_blocksize * 8) {
+ 		ext2_msg(sb, KERN_ERR,
 
 
