@@ -2,171 +2,145 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 57D7E775A81
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:09:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8C076775D79
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:37:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233193AbjHILJD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:09:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46540 "EHLO
+        id S234117AbjHILh5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:37:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58506 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233200AbjHILJC (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:09:02 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A7FBED
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:09:02 -0700 (PDT)
+        with ESMTP id S234119AbjHILh5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:37:57 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69024173A
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:37:56 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C037063153
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:09:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFD8CC433C8;
-        Wed,  9 Aug 2023 11:09:00 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id F3BD663578
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:37:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1068BC433C7;
+        Wed,  9 Aug 2023 11:37:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691579341;
-        bh=3T6uB5o0DUVTznaYZU4gnMlBwHp2cDTi5LQtUmyOcjU=;
+        s=korg; t=1691581075;
+        bh=OZXxHmHGhsPZfKhw6WGIknHj8bu56fsZ+gst+f8YR0w=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=wCzZx0Ic4oRKOvCel/40C8Lm0E3cQfpkvcF/0DyCMr170HFya+cuADT0WIIO294DB
-         lJ8u31ded5lrqynbgEGce8Bujjz3aokZrVjyS0oW/E/vOG4/kIwC81h41cucbfKLyf
-         qgOOCYT9ShiExE9cGiC7kTMiVx+0XvVkbRzizPcY=
+        b=DKtUz2EBEgSSenVZtsrVfetQyBnDYBDBmL2v9S9VzE3cDhi/Ih81mbypt08Ic30/E
+         I5IyDUcA7Vhpnt4e6aKsYOoNT04x+QHfx8MerY3ouRZUPpxRb6dzvD8IqgnlZxqM5V
+         CURybA4xG8lhhXHyZlciRqA8jwi4PKF4CTZOWgoM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, mhiramat@kernel.org,
-        Zheng Yejian <zhengyejian1@huawei.com>,
-        "Steven Rostedt (Google)" <rostedt@goodmis.org>,
+        patches@lists.linux.dev, Jim Mattson <jmattson@google.com>,
+        Sean Christopherson <seanjc@google.com>,
+        Paolo Bonzini <pbonzini@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 161/204] tracing: Fix warning in trace_buffered_event_disable()
+Subject: [PATCH 5.10 097/201] KVM: VMX: Dont fudge CR0 and CR4 for restricted L2 guest
 Date:   Wed,  9 Aug 2023 12:41:39 +0200
-Message-ID: <20230809103647.912620201@linuxfoundation.org>
+Message-ID: <20230809103647.061493781@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103642.552405807@linuxfoundation.org>
-References: <20230809103642.552405807@linuxfoundation.org>
+In-Reply-To: <20230809103643.799166053@linuxfoundation.org>
+References: <20230809103643.799166053@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Zheng Yejian <zhengyejian1@huawei.com>
+From: Sean Christopherson <seanjc@google.com>
 
-[ Upstream commit dea499781a1150d285c62b26659f62fb00824fce ]
+[ Upstream commit c4abd7352023aa96114915a0bb2b88016a425cda ]
 
-Warning happened in trace_buffered_event_disable() at
-  WARN_ON_ONCE(!trace_buffered_event_ref)
+Stuff CR0 and/or CR4 to be compliant with a restricted guest if and only
+if KVM itself is not configured to utilize unrestricted guests, i.e. don't
+stuff CR0/CR4 for a restricted L2 that is running as the guest of an
+unrestricted L1.  Any attempt to VM-Enter a restricted guest with invalid
+CR0/CR4 values should fail, i.e. in a nested scenario, KVM (as L0) should
+never observe a restricted L2 with incompatible CR0/CR4, since nested
+VM-Enter from L1 should have failed.
 
-  Call Trace:
-   ? __warn+0xa5/0x1b0
-   ? trace_buffered_event_disable+0x189/0x1b0
-   __ftrace_event_enable_disable+0x19e/0x3e0
-   free_probe_data+0x3b/0xa0
-   unregister_ftrace_function_probe_func+0x6b8/0x800
-   event_enable_func+0x2f0/0x3d0
-   ftrace_process_regex.isra.0+0x12d/0x1b0
-   ftrace_filter_write+0xe6/0x140
-   vfs_write+0x1c9/0x6f0
-   [...]
+And if KVM does observe an active, restricted L2 with incompatible state,
+e.g. due to a KVM bug, fudging CR0/CR4 instead of letting VM-Enter fail
+does more harm than good, as KVM will often neglect to undo the side
+effects, e.g. won't clear rmode.vm86_active on nested VM-Exit, and thus
+the damage can easily spill over to L1.  On the other hand, letting
+VM-Enter fail due to bad guest state is more likely to contain the damage
+to L2 as KVM relies on hardware to perform most guest state consistency
+checks, i.e. KVM needs to be able to reflect a failed nested VM-Enter into
+L1 irrespective of (un)restricted guest behavior.
 
-The cause of the warning is in __ftrace_event_enable_disable(),
-trace_buffered_event_enable() was called once while
-trace_buffered_event_disable() was called twice.
-Reproduction script show as below, for analysis, see the comments:
- ```
- #!/bin/bash
-
- cd /sys/kernel/tracing/
-
- # 1. Register a 'disable_event' command, then:
- #    1) SOFT_DISABLED_BIT was set;
- #    2) trace_buffered_event_enable() was called first time;
- echo 'cmdline_proc_show:disable_event:initcall:initcall_finish' > \
-     set_ftrace_filter
-
- # 2. Enable the event registered, then:
- #    1) SOFT_DISABLED_BIT was cleared;
- #    2) trace_buffered_event_disable() was called first time;
- echo 1 > events/initcall/initcall_finish/enable
-
- # 3. Try to call into cmdline_proc_show(), then SOFT_DISABLED_BIT was
- #    set again!!!
- cat /proc/cmdline
-
- # 4. Unregister the 'disable_event' command, then:
- #    1) SOFT_DISABLED_BIT was cleared again;
- #    2) trace_buffered_event_disable() was called second time!!!
- echo '!cmdline_proc_show:disable_event:initcall:initcall_finish' > \
-     set_ftrace_filter
- ```
-
-To fix it, IIUC, we can change to call trace_buffered_event_enable() at
-fist time soft-mode enabled, and call trace_buffered_event_disable() at
-last time soft-mode disabled.
-
-Link: https://lore.kernel.org/linux-trace-kernel/20230726095804.920457-1-zhengyejian1@huawei.com
-
-Cc: <mhiramat@kernel.org>
-Fixes: 0fc1b09ff1ff ("tracing: Use temp buffer when filtering events")
-Signed-off-by: Zheng Yejian <zhengyejian1@huawei.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Cc: Jim Mattson <jmattson@google.com>
+Cc: stable@vger.kernel.org
+Fixes: bddd82d19e2e ("KVM: nVMX: KVM needs to unset "unrestricted guest" VM-execution control in vmcs02 if vmcs12 doesn't set it")
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Message-Id: <20230613203037.1968489-3-seanjc@google.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace_events.c | 14 ++++----------
- 1 file changed, 4 insertions(+), 10 deletions(-)
+ arch/x86/kvm/vmx/vmx.c | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
-diff --git a/kernel/trace/trace_events.c b/kernel/trace/trace_events.c
-index 1285ef6e2d140..37be6913cfb27 100644
---- a/kernel/trace/trace_events.c
-+++ b/kernel/trace/trace_events.c
-@@ -370,7 +370,6 @@ static int __ftrace_event_enable_disable(struct trace_event_file *file,
- {
- 	struct trace_event_call *call = file->event_call;
- 	struct trace_array *tr = file->tr;
--	unsigned long file_flags = file->flags;
- 	int ret = 0;
- 	int disable;
+diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+index ca51df0df3f94..2445c61038954 100644
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -1519,6 +1519,11 @@ void vmx_set_rflags(struct kvm_vcpu *vcpu, unsigned long rflags)
+ 	struct vcpu_vmx *vmx = to_vmx(vcpu);
+ 	unsigned long old_rflags;
  
-@@ -394,6 +393,8 @@ static int __ftrace_event_enable_disable(struct trace_event_file *file,
- 				break;
- 			disable = file->flags & EVENT_FILE_FL_SOFT_DISABLED;
- 			clear_bit(EVENT_FILE_FL_SOFT_MODE_BIT, &file->flags);
-+			/* Disable use of trace_buffered_event */
-+			trace_buffered_event_disable();
- 		} else
- 			disable = !(file->flags & EVENT_FILE_FL_SOFT_MODE);
++	/*
++	 * Unlike CR0 and CR4, RFLAGS handling requires checking if the vCPU
++	 * is an unrestricted guest in order to mark L2 as needing emulation
++	 * if L1 runs L2 as a restricted guest.
++	 */
+ 	if (is_unrestricted_guest(vcpu)) {
+ 		kvm_register_mark_available(vcpu, VCPU_EXREG_RFLAGS);
+ 		vmx->rflags = rflags;
+@@ -3073,7 +3078,7 @@ void vmx_set_cr0(struct kvm_vcpu *vcpu, unsigned long cr0)
+ 	u32 tmp;
  
-@@ -432,6 +433,8 @@ static int __ftrace_event_enable_disable(struct trace_event_file *file,
- 			if (atomic_inc_return(&file->sm_ref) > 1)
- 				break;
- 			set_bit(EVENT_FILE_FL_SOFT_MODE_BIT, &file->flags);
-+			/* Enable use of trace_buffered_event */
-+			trace_buffered_event_enable();
- 		}
- 
- 		if (!(file->flags & EVENT_FILE_FL_ENABLED)) {
-@@ -471,15 +474,6 @@ static int __ftrace_event_enable_disable(struct trace_event_file *file,
- 		break;
+ 	hw_cr0 = (cr0 & ~KVM_VM_CR0_ALWAYS_OFF);
+-	if (is_unrestricted_guest(vcpu))
++	if (enable_unrestricted_guest)
+ 		hw_cr0 |= KVM_VM_CR0_ALWAYS_ON_UNRESTRICTED_GUEST;
+ 	else {
+ 		hw_cr0 |= KVM_VM_CR0_ALWAYS_ON;
+@@ -3096,7 +3101,7 @@ void vmx_set_cr0(struct kvm_vcpu *vcpu, unsigned long cr0)
  	}
+ #endif
  
--	/* Enable or disable use of trace_buffered_event */
--	if ((file_flags & EVENT_FILE_FL_SOFT_DISABLED) !=
--	    (file->flags & EVENT_FILE_FL_SOFT_DISABLED)) {
--		if (file->flags & EVENT_FILE_FL_SOFT_DISABLED)
--			trace_buffered_event_enable();
--		else
--			trace_buffered_event_disable();
--	}
--
- 	return ret;
- }
+-	if (enable_ept && !is_unrestricted_guest(vcpu)) {
++	if (enable_ept && !enable_unrestricted_guest) {
+ 		/*
+ 		 * Ensure KVM has an up-to-date snapshot of the guest's CR3.  If
+ 		 * the below code _enables_ CR3 exiting, vmx_cache_reg() will
+@@ -3231,7 +3236,7 @@ void vmx_set_cr4(struct kvm_vcpu *vcpu, unsigned long cr4)
+ 	unsigned long hw_cr4;
  
+ 	hw_cr4 = (cr4_read_shadow() & X86_CR4_MCE) | (cr4 & ~X86_CR4_MCE);
+-	if (is_unrestricted_guest(vcpu))
++	if (enable_unrestricted_guest)
+ 		hw_cr4 |= KVM_VM_CR4_ALWAYS_ON_UNRESTRICTED_GUEST;
+ 	else if (vmx->rmode.vm86_active)
+ 		hw_cr4 |= KVM_RMODE_VM_CR4_ALWAYS_ON;
+@@ -3251,7 +3256,7 @@ void vmx_set_cr4(struct kvm_vcpu *vcpu, unsigned long cr4)
+ 	vcpu->arch.cr4 = cr4;
+ 	kvm_register_mark_available(vcpu, VCPU_EXREG_CR4);
+ 
+-	if (!is_unrestricted_guest(vcpu)) {
++	if (!enable_unrestricted_guest) {
+ 		if (enable_ept) {
+ 			if (!is_paging(vcpu)) {
+ 				hw_cr4 &= ~X86_CR4_PAE;
 -- 
 2.40.1
 
