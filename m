@@ -2,184 +2,108 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0A69C775A80
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:09:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EB42A775C08
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:23:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233203AbjHILJA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:09:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46422 "EHLO
+        id S233619AbjHILXO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:23:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59280 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233193AbjHILJA (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:09:00 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 763391FCE
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:08:59 -0700 (PDT)
+        with ESMTP id S233605AbjHILXN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:23:13 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F939FA
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:23:13 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0E21D630F0
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:08:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FA3CC433C8;
-        Wed,  9 Aug 2023 11:08:57 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D36E663223
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:23:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E24A0C433C8;
+        Wed,  9 Aug 2023 11:23:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691579338;
-        bh=tlCISQvpeuRCJ2Kpg8mJ2ZZIkSSYmiRArHOEBSY27Ak=;
+        s=korg; t=1691580192;
+        bh=9ONyQ4ihBn7mfC8UgUwyjEKAdvj/wr1Iu5ByNyvxK8Y=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Ofj2ZxTr/JdW5QvB0dCMN2p6UjRkyD1P61cC4YRIP8j1ODO5WHvrTCaekg1X1FeNX
-         NWPw7xOCjaREI7u8qM7Cb/aTO2SNtc+Ltr5c0eKMYi/unL/sQKIhqrpJ2uwNTO8gGr
-         zmh5MiOal1C04Ab4UqilPdDAwzDp1MUmvsoAZSYE=
+        b=UoCGGPNZ+oIyEI5lIsaGhJOKy/hsSQil1oUh94mjxsed4ReerwzYNsNPwXuodLv/4
+         8EhRCT/CfGGNPW1Yr46Wbk91J1cSjC04yMlMSeIVa0ytxP7s1UJUFnme5q5nAxgjxY
+         SFHHhCa6rDbJhn2JnVpruESntwe86eCcjXUjyzyU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, mhiramat@kernel.org,
-        vnagarnaik@google.com, Zheng Yejian <zhengyejian1@huawei.com>,
-        "Steven Rostedt (Google)" <rostedt@goodmis.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 160/204] ring-buffer: Fix wrong stat of cpu_buffer->read
+        patches@lists.linux.dev,
+        Kaufmann Automotive GmbH <info@kaufmann-automotive.ch>,
+        Oliver Neukum <oneukum@suse.com>,
+        Johan Hovold <johan@kernel.org>
+Subject: [PATCH 4.19 260/323] USB: serial: simple: add Kaufmann RKS+CAN VCP
 Date:   Wed,  9 Aug 2023 12:41:38 +0200
-Message-ID: <20230809103647.883433474@linuxfoundation.org>
+Message-ID: <20230809103709.969319478@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103642.552405807@linuxfoundation.org>
-References: <20230809103642.552405807@linuxfoundation.org>
+In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
+References: <20230809103658.104386911@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Zheng Yejian <zhengyejian1@huawei.com>
+From: Oliver Neukum <oneukum@suse.com>
 
-[ Upstream commit 2d093282b0d4357373497f65db6a05eb0c28b7c8 ]
+commit dd92c8a1f99bcd166204ffc219ea5a23dd65d64f upstream.
 
-When pages are removed in rb_remove_pages(), 'cpu_buffer->read' is set
-to 0 in order to make sure any read iterators reset themselves. However,
-this will mess 'entries' stating, see following steps:
+Add the device and product ID for this CAN bus interface / license
+dongle. The device is usable either directly from user space or can be
+attached to a kernel CAN interface with slcan_attach.
 
-  # cd /sys/kernel/tracing/
-  # 1. Enlarge ring buffer prepare for later reducing:
-  # echo 20 > per_cpu/cpu0/buffer_size_kb
-  # 2. Write a log into ring buffer of cpu0:
-  # taskset -c 0 echo "hello1" > trace_marker
-  # 3. Read the log:
-  # cat per_cpu/cpu0/trace_pipe
-       <...>-332     [000] .....    62.406844: tracing_mark_write: hello1
-  # 4. Stop reading and see the stats, now 0 entries, and 1 event readed:
-  # cat per_cpu/cpu0/stats
-   entries: 0
-   [...]
-   read events: 1
-  # 5. Reduce the ring buffer
-  # echo 7 > per_cpu/cpu0/buffer_size_kb
-  # 6. Now entries became unexpected 1 because actually no entries!!!
-  # cat per_cpu/cpu0/stats
-   entries: 1
-   [...]
-   read events: 0
-
-To fix it, introduce 'page_removed' field to count total removed pages
-since last reset, then use it to let read iterators reset themselves
-instead of changing the 'read' pointer.
-
-Link: https://lore.kernel.org/linux-trace-kernel/20230724054040.3489499-1-zhengyejian1@huawei.com
-
-Cc: <mhiramat@kernel.org>
-Cc: <vnagarnaik@google.com>
-Fixes: 83f40318dab0 ("ring-buffer: Make removal of ring buffer pages atomic")
-Signed-off-by: Zheng Yejian <zhengyejian1@huawei.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Kaufmann Automotive GmbH <info@kaufmann-automotive.ch>
+Tested-by: Kaufmann Automotive GmbH <info@kaufmann-automotive.ch>
+Signed-off-by: Oliver Neukum <oneukum@suse.com>
+[ johan: amend commit message and move entries in sort order ]
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/ring_buffer.c | 22 ++++++++++++----------
- 1 file changed, 12 insertions(+), 10 deletions(-)
+ drivers/usb/serial/usb-serial-simple.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/kernel/trace/ring_buffer.c b/kernel/trace/ring_buffer.c
-index d0fed522bf23a..1949d7bbe145d 100644
---- a/kernel/trace/ring_buffer.c
-+++ b/kernel/trace/ring_buffer.c
-@@ -464,6 +464,8 @@ struct ring_buffer_per_cpu {
- 	unsigned long			read_bytes;
- 	u64				write_stamp;
- 	u64				read_stamp;
-+	/* pages removed since last reset */
-+	unsigned long			pages_removed;
- 	/* ring buffer pages to update, > 0 to add, < 0 to remove */
- 	long				nr_pages_to_update;
- 	struct list_head		new_pages; /* new pages to add */
-@@ -498,6 +500,7 @@ struct ring_buffer_iter {
- 	struct buffer_page		*head_page;
- 	struct buffer_page		*cache_reader_page;
- 	unsigned long			cache_read;
-+	unsigned long			cache_pages_removed;
- 	u64				read_stamp;
- };
+--- a/drivers/usb/serial/usb-serial-simple.c
++++ b/drivers/usb/serial/usb-serial-simple.c
+@@ -63,6 +63,11 @@ DEVICE(flashloader, FLASHLOADER_IDS);
+ 					0x01) }
+ DEVICE(google, GOOGLE_IDS);
  
-@@ -1447,6 +1450,8 @@ rb_remove_pages(struct ring_buffer_per_cpu *cpu_buffer, unsigned long nr_pages)
- 		to_remove = rb_list_head(to_remove)->next;
- 		head_bit |= (unsigned long)to_remove & RB_PAGE_HEAD;
- 	}
-+	/* Read iterators need to reset themselves when some pages removed */
-+	cpu_buffer->pages_removed += nr_removed;
- 
- 	next_page = rb_list_head(to_remove)->next;
- 
-@@ -1468,12 +1473,6 @@ rb_remove_pages(struct ring_buffer_per_cpu *cpu_buffer, unsigned long nr_pages)
- 		cpu_buffer->head_page = list_entry(next_page,
- 						struct buffer_page, list);
- 
--	/*
--	 * change read pointer to make sure any read iterators reset
--	 * themselves
--	 */
--	cpu_buffer->read = 0;
--
- 	/* pages are removed, resume tracing and then free the pages */
- 	atomic_dec(&cpu_buffer->record_disabled);
- 	raw_spin_unlock_irq(&cpu_buffer->reader_lock);
-@@ -3464,6 +3463,7 @@ static void rb_iter_reset(struct ring_buffer_iter *iter)
- 
- 	iter->cache_reader_page = iter->head_page;
- 	iter->cache_read = cpu_buffer->read;
-+	iter->cache_pages_removed = cpu_buffer->pages_removed;
- 
- 	if (iter->head)
- 		iter->read_stamp = cpu_buffer->read_stamp;
-@@ -3896,12 +3896,13 @@ rb_iter_peek(struct ring_buffer_iter *iter, u64 *ts)
- 	buffer = cpu_buffer->buffer;
- 
- 	/*
--	 * Check if someone performed a consuming read to
--	 * the buffer. A consuming read invalidates the iterator
--	 * and we need to reset the iterator in this case.
-+	 * Check if someone performed a consuming read to the buffer
-+	 * or removed some pages from the buffer. In these cases,
-+	 * iterator was invalidated and we need to reset it.
- 	 */
- 	if (unlikely(iter->cache_read != cpu_buffer->read ||
--		     iter->cache_reader_page != cpu_buffer->reader_page))
-+		     iter->cache_reader_page != cpu_buffer->reader_page ||
-+		     iter->cache_pages_removed != cpu_buffer->pages_removed))
- 		rb_iter_reset(iter);
- 
-  again:
-@@ -4323,6 +4324,7 @@ rb_reset_cpu(struct ring_buffer_per_cpu *cpu_buffer)
- 	cpu_buffer->last_overrun = 0;
- 
- 	rb_head_page_activate(cpu_buffer);
-+	cpu_buffer->pages_removed = 0;
- }
- 
- /**
--- 
-2.40.1
-
++/* KAUFMANN RKS+CAN VCP */
++#define KAUFMANN_IDS()			\
++	{ USB_DEVICE(0x16d0, 0x0870) }
++DEVICE(kaufmann, KAUFMANN_IDS);
++
+ /* Libtransistor USB console */
+ #define LIBTRANSISTOR_IDS()			\
+ 	{ USB_DEVICE(0x1209, 0x8b00) }
+@@ -124,6 +129,7 @@ static struct usb_serial_driver * const
+ 	&funsoft_device,
+ 	&flashloader_device,
+ 	&google_device,
++	&kaufmann_device,
+ 	&libtransistor_device,
+ 	&vivopay_device,
+ 	&moto_modem_device,
+@@ -142,6 +148,7 @@ static const struct usb_device_id id_tab
+ 	FUNSOFT_IDS(),
+ 	FLASHLOADER_IDS(),
+ 	GOOGLE_IDS(),
++	KAUFMANN_IDS(),
+ 	LIBTRANSISTOR_IDS(),
+ 	VIVOPAY_IDS(),
+ 	MOTO_IDS(),
 
 
