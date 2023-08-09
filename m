@@ -2,45 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 81272775C7D
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:28:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DBA5F77591C
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:58:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233769AbjHIL2B (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:28:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56116 "EHLO
+        id S232536AbjHIK5p (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 06:57:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55390 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233761AbjHIL17 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:27:59 -0400
+        with ESMTP id S232762AbjHIK5n (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:57:43 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1BF801BFA
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:27:47 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 01770268B
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:57:42 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E0D3D632B7
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:27:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0067C433C7;
-        Wed,  9 Aug 2023 11:27:45 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9693E630D6
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:57:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7B54C433C7;
+        Wed,  9 Aug 2023 10:57:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691580466;
-        bh=bv2PSAVRbGg+3oRSYoBHnwRRW2OdEbYtYDgnpivWkmk=;
+        s=korg; t=1691578661;
+        bh=C+1EicSQJNvZOGbCeipkQKbPcfoFEiSfRLYh9vWU/54=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=U7xJ3kMyHqHMeV0HEhooOG2bQpsc5VaYx2lbZfaqs7QebcQBfGcVtmjFPV8H/32VU
-         D010ZOVTgJdkdXpsc1e9MzgQKUg1AqqLToMYJqOM44AsPLTQ7Dwkx/dk+lKaehTKiP
-         RBaRT+1DU5u1cjSc9G71Nx1T6Hv3lrcaxlr847vU=
+        b=xAsxJp/PTePbMfQYqOy8D582p1O0tBk8Q8sPzkFPY9zKwQ3ETKmJQCED7vSXK5jDD
+         5mMeBcpdxaJ6/H/lowRwYy8CF+UVkKhBpAVtzfI744XJM0i96ZAODBU969GUkm180g
+         YGbxcZ+JWve+C3rpymGaQsWWWABEywHWTpdVXeCY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Alexander Aring <aahringo@redhat.com>,
-        David Teigland <teigland@redhat.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 017/154] dlm: cleanup plock_op vs plock_xop
+        patches@lists.linux.dev,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Sasha Levin <sashal@kernel.org>,
+        Nathan Chancellor <nathan@kernel.org>
+Subject: [PATCH 5.15 12/92] word-at-a-time: use the same return type for has_zero regardless of endianness
 Date:   Wed,  9 Aug 2023 12:40:48 +0200
-Message-ID: <20230809103637.508216500@linuxfoundation.org>
+Message-ID: <20230809103634.000762571@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103636.887175326@linuxfoundation.org>
-References: <20230809103636.887175326@linuxfoundation.org>
+In-Reply-To: <20230809103633.485906560@linuxfoundation.org>
+References: <20230809103633.485906560@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,233 +59,73 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Alexander Aring <aahringo@redhat.com>
+From: ndesaulniers@google.com <ndesaulniers@google.com>
 
-[ Upstream commit bcbb4ba6c9ba81e6975b642a2cade68044cd8a66 ]
+[ Upstream commit 79e8328e5acbe691bbde029a52c89d70dcbc22f3 ]
 
-Lately the different casting between plock_op and plock_xop and list
-holders which was involved showed some issues which were hard to see.
-This patch removes the "plock_xop" structure and introduces a
-"struct plock_async_data". This structure will be set in "struct plock_op"
-in case of asynchronous lock handling as the original "plock_xop" was
-made for. There is no need anymore to cast pointers around for
-additional fields in case of asynchronous lock handling.  As disadvantage
-another allocation was introduces but only needed in the asynchronous
-case which is currently only used in combination with nfs lockd.
+Compiling big-endian targets with Clang produces the diagnostic:
 
-Signed-off-by: Alexander Aring <aahringo@redhat.com>
-Signed-off-by: David Teigland <teigland@redhat.com>
-Stable-dep-of: 59e45c758ca1 ("fs: dlm: interrupt posix locks only when process is killed")
+  fs/namei.c:2173:13: warning: use of bitwise '|' with boolean operands [-Wbitwise-instead-of-logical]
+	} while (!(has_zero(a, &adata, &constants) | has_zero(b, &bdata, &constants)));
+	          ~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                                               ||
+  fs/namei.c:2173:13: note: cast one or both operands to int to silence this warning
+
+It appears that when has_zero was introduced, two definitions were
+produced with different signatures (in particular different return
+types).
+
+Looking at the usage in hash_name() in fs/namei.c, I suspect that
+has_zero() is meant to be invoked twice per while loop iteration; using
+logical-or would not update `bdata` when `a` did not have zeros.  So I
+think it's preferred to always return an unsigned long rather than a
+bool than update the while loop in hash_name() to use a logical-or
+rather than bitwise-or.
+
+[ Also changed powerpc version to do the same  - Linus ]
+
+Link: https://github.com/ClangBuiltLinux/linux/issues/1832
+Link: https://lore.kernel.org/lkml/20230801-bitwise-v1-1-799bec468dc4@google.com/
+Fixes: 36126f8f2ed8 ("word-at-a-time: make the interfaces truly generic")
+Debugged-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Nick Desaulniers <ndesaulniers@google.com>
+Acked-by: Heiko Carstens <hca@linux.ibm.com>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/dlm/plock.c | 77 ++++++++++++++++++++++++++++++--------------------
- 1 file changed, 46 insertions(+), 31 deletions(-)
+ arch/powerpc/include/asm/word-at-a-time.h | 2 +-
+ include/asm-generic/word-at-a-time.h      | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/dlm/plock.c b/fs/dlm/plock.c
-index edce0b25cd90e..e70e23eca03ec 100644
---- a/fs/dlm/plock.c
-+++ b/fs/dlm/plock.c
-@@ -19,20 +19,20 @@ static struct list_head recv_list;
- static wait_queue_head_t send_wq;
- static wait_queue_head_t recv_wq;
- 
--struct plock_op {
--	struct list_head list;
--	int done;
--	struct dlm_plock_info info;
--	int (*callback)(struct file_lock *fl, int result);
--};
--
--struct plock_xop {
--	struct plock_op xop;
-+struct plock_async_data {
- 	void *fl;
- 	void *file;
- 	struct file_lock flc;
-+	int (*callback)(struct file_lock *fl, int result);
- };
- 
-+struct plock_op {
-+	struct list_head list;
-+	int done;
-+	struct dlm_plock_info info;
-+	/* if set indicates async handling */
-+	struct plock_async_data *data;
-+};
- 
- static inline void set_version(struct dlm_plock_info *info)
- {
-@@ -58,6 +58,12 @@ static int check_version(struct dlm_plock_info *info)
- 	return 0;
+diff --git a/arch/powerpc/include/asm/word-at-a-time.h b/arch/powerpc/include/asm/word-at-a-time.h
+index f3f4710d4ff52..99129b0cd8b8a 100644
+--- a/arch/powerpc/include/asm/word-at-a-time.h
++++ b/arch/powerpc/include/asm/word-at-a-time.h
+@@ -34,7 +34,7 @@ static inline long find_zero(unsigned long mask)
+ 	return leading_zero_bits >> 3;
  }
  
-+static void dlm_release_plock_op(struct plock_op *op)
-+{
-+	kfree(op->data);
-+	kfree(op);
-+}
-+
- static void send_op(struct plock_op *op)
+-static inline bool has_zero(unsigned long val, unsigned long *data, const struct word_at_a_time *c)
++static inline unsigned long has_zero(unsigned long val, unsigned long *data, const struct word_at_a_time *c)
  {
- 	set_version(&op->info);
-@@ -101,22 +107,21 @@ static void do_unlock_close(struct dlm_ls *ls, u64 number,
- int dlm_posix_lock(dlm_lockspace_t *lockspace, u64 number, struct file *file,
- 		   int cmd, struct file_lock *fl)
- {
-+	struct plock_async_data *op_data;
- 	struct dlm_ls *ls;
- 	struct plock_op *op;
--	struct plock_xop *xop;
- 	int rv;
- 
- 	ls = dlm_find_lockspace_local(lockspace);
- 	if (!ls)
- 		return -EINVAL;
- 
--	xop = kzalloc(sizeof(*xop), GFP_NOFS);
--	if (!xop) {
-+	op = kzalloc(sizeof(*op), GFP_NOFS);
-+	if (!op) {
- 		rv = -ENOMEM;
- 		goto out;
- 	}
- 
--	op = &xop->xop;
- 	op->info.optype		= DLM_PLOCK_OP_LOCK;
- 	op->info.pid		= fl->fl_pid;
- 	op->info.ex		= (fl->fl_type == F_WRLCK);
-@@ -125,22 +130,32 @@ int dlm_posix_lock(dlm_lockspace_t *lockspace, u64 number, struct file *file,
- 	op->info.number		= number;
- 	op->info.start		= fl->fl_start;
- 	op->info.end		= fl->fl_end;
-+	/* async handling */
- 	if (fl->fl_lmops && fl->fl_lmops->lm_grant) {
-+		op_data = kzalloc(sizeof(*op_data), GFP_NOFS);
-+		if (!op_data) {
-+			dlm_release_plock_op(op);
-+			rv = -ENOMEM;
-+			goto out;
-+		}
-+
- 		/* fl_owner is lockd which doesn't distinguish
- 		   processes on the nfs client */
- 		op->info.owner	= (__u64) fl->fl_pid;
--		op->callback	= fl->fl_lmops->lm_grant;
--		locks_init_lock(&xop->flc);
--		locks_copy_lock(&xop->flc, fl);
--		xop->fl		= fl;
--		xop->file	= file;
-+		op_data->callback = fl->fl_lmops->lm_grant;
-+		locks_init_lock(&op_data->flc);
-+		locks_copy_lock(&op_data->flc, fl);
-+		op_data->fl		= fl;
-+		op_data->file	= file;
-+
-+		op->data = op_data;
- 	} else {
- 		op->info.owner	= (__u64)(long) fl->fl_owner;
- 	}
- 
- 	send_op(op);
- 
--	if (!op->callback) {
-+	if (!op->data) {
- 		rv = wait_event_interruptible(recv_wq, (op->done != 0));
- 		if (rv == -ERESTARTSYS) {
- 			log_debug(ls, "dlm_posix_lock: wait killed %llx",
-@@ -148,7 +163,7 @@ int dlm_posix_lock(dlm_lockspace_t *lockspace, u64 number, struct file *file,
- 			spin_lock(&ops_lock);
- 			list_del(&op->list);
- 			spin_unlock(&ops_lock);
--			kfree(xop);
-+			dlm_release_plock_op(op);
- 			do_unlock_close(ls, number, file, fl);
- 			goto out;
- 		}
-@@ -173,7 +188,7 @@ int dlm_posix_lock(dlm_lockspace_t *lockspace, u64 number, struct file *file,
- 				  (unsigned long long)number);
- 	}
- 
--	kfree(xop);
-+	dlm_release_plock_op(op);
- out:
- 	dlm_put_lockspace(ls);
- 	return rv;
-@@ -183,11 +198,11 @@ EXPORT_SYMBOL_GPL(dlm_posix_lock);
- /* Returns failure iff a successful lock operation should be canceled */
- static int dlm_plock_callback(struct plock_op *op)
- {
-+	struct plock_async_data *op_data = op->data;
- 	struct file *file;
- 	struct file_lock *fl;
- 	struct file_lock *flc;
- 	int (*notify)(struct file_lock *fl, int result) = NULL;
--	struct plock_xop *xop = (struct plock_xop *)op;
- 	int rv = 0;
- 
- 	spin_lock(&ops_lock);
-@@ -199,10 +214,10 @@ static int dlm_plock_callback(struct plock_op *op)
- 	spin_unlock(&ops_lock);
- 
- 	/* check if the following 2 are still valid or make a copy */
--	file = xop->file;
--	flc = &xop->flc;
--	fl = xop->fl;
--	notify = op->callback;
-+	file = op_data->file;
-+	flc = &op_data->flc;
-+	fl = op_data->fl;
-+	notify = op_data->callback;
- 
- 	if (op->info.rv) {
- 		notify(fl, op->info.rv);
-@@ -233,7 +248,7 @@ static int dlm_plock_callback(struct plock_op *op)
- 	}
- 
- out:
--	kfree(xop);
-+	dlm_release_plock_op(op);
- 	return rv;
+ 	unsigned long rhs = val | c->low_bits;
+ 	*data = rhs;
+diff --git a/include/asm-generic/word-at-a-time.h b/include/asm-generic/word-at-a-time.h
+index 20c93f08c9933..95a1d214108a5 100644
+--- a/include/asm-generic/word-at-a-time.h
++++ b/include/asm-generic/word-at-a-time.h
+@@ -38,7 +38,7 @@ static inline long find_zero(unsigned long mask)
+ 	return (mask >> 8) ? byte : byte + 1;
  }
  
-@@ -303,7 +318,7 @@ int dlm_posix_unlock(dlm_lockspace_t *lockspace, u64 number, struct file *file,
- 		rv = 0;
- 
- out_free:
--	kfree(op);
-+	dlm_release_plock_op(op);
- out:
- 	dlm_put_lockspace(ls);
- 	fl->fl_flags = fl_flags;
-@@ -371,7 +386,7 @@ int dlm_posix_get(dlm_lockspace_t *lockspace, u64 number, struct file *file,
- 		rv = 0;
- 	}
- 
--	kfree(op);
-+	dlm_release_plock_op(op);
- out:
- 	dlm_put_lockspace(ls);
- 	return rv;
-@@ -407,7 +422,7 @@ static ssize_t dev_read(struct file *file, char __user *u, size_t count,
- 	   (the process did not make an unlock call). */
- 
- 	if (op->info.flags & DLM_PLOCK_FL_CLOSE)
--		kfree(op);
-+		dlm_release_plock_op(op);
- 
- 	if (copy_to_user(u, &info, sizeof(info)))
- 		return -EFAULT;
-@@ -439,7 +454,7 @@ static ssize_t dev_write(struct file *file, const char __user *u, size_t count,
- 		    op->info.owner == info.owner) {
- 			list_del_init(&op->list);
- 			memcpy(&op->info, &info, sizeof(info));
--			if (op->callback)
-+			if (op->data)
- 				do_callback = 1;
- 			else
- 				op->done = 1;
+-static inline bool has_zero(unsigned long val, unsigned long *data, const struct word_at_a_time *c)
++static inline unsigned long has_zero(unsigned long val, unsigned long *data, const struct word_at_a_time *c)
+ {
+ 	unsigned long rhs = val | c->low_bits;
+ 	*data = rhs;
 -- 
-2.39.2
+2.40.1
 
 
 
