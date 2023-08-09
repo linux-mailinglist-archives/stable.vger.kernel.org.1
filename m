@@ -2,48 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BEC12775C93
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:28:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 023A0775D65
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:37:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233801AbjHIL2r (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:28:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58130 "EHLO
+        id S234091AbjHILhQ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:37:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47188 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233793AbjHIL2q (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:28:46 -0400
+        with ESMTP id S234160AbjHILhD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:37:03 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 30946ED
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:28:46 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D5441E3
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:37:02 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B9C6E632F6
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:28:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC4BCC433C7;
-        Wed,  9 Aug 2023 11:28:44 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 69C7E63547
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:37:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77422C433C8;
+        Wed,  9 Aug 2023 11:37:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691580525;
-        bh=sKx8U7hKkA7P7iEjnCeFXEoD91iSuFfhE0nT1fM+Azg=;
+        s=korg; t=1691581021;
+        bh=2ZAgWxFFDNJ1Ecg1q5Ivvkui9ZuQkNELJi6W3qHWkb4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=S/5xRCjyMnKC1FVHPEQeoB8RFMSeT5SKE+kDOD1rGO7XFLqXc50ojyV6XC7Ff850l
-         y7Zfmj4U/QJ75Z1/ADVWyQBOgtQ1vUfe452V2qyN4uA6To3bDC8HKWEmozejdsb08V
-         t95Hs33j9uUlfiwO3FHsHZsyTWvpSqYtAmDXr7Dg=
+        b=x/2FzKRGpp08f7XROaxQtAJIsKnw1hK4WyW/9FuQfHY3qTwTDzWv3ZOKEai0DQKCt
+         Il/6FxetCi+g6xlRXqzElgc+C35QSMakQSeUbqG8nAIRHWLLzGzueSVHyVpABzie3K
+         Ab5kOcjWsNC1sdzjbNwfOt53pNs+pPJ+HxTPvIFI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Gaosheng Cui <cuigaosheng1@huawei.com>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Abhinav Kumar <quic_abhinavk@quicinc.com>,
-        Akhil P Oommen <quic_akhilpo@quicinc.com>,
-        Rob Clark <robdclark@chromium.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 048/154] drm/msm: Fix IS_ERR_OR_NULL() vs NULL check in a5xx_submit_in_rb()
+        patches@lists.linux.dev, stable <stable@kernel.org>,
+        Jisheng Zhang <jszhang@kernel.org>,
+        Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Subject: [PATCH 5.10 077/201] usb: dwc3: dont reset device side if dwc3 was configured as host-only
 Date:   Wed,  9 Aug 2023 12:41:19 +0200
-Message-ID: <20230809103638.609680539@linuxfoundation.org>
+Message-ID: <20230809103646.382138065@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103636.887175326@linuxfoundation.org>
-References: <20230809103636.887175326@linuxfoundation.org>
+In-Reply-To: <20230809103643.799166053@linuxfoundation.org>
+References: <20230809103643.799166053@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -58,41 +55,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Gaosheng Cui <cuigaosheng1@huawei.com>
+From: Jisheng Zhang <jszhang@kernel.org>
 
-[ Upstream commit 6e8a996563ecbe68e49c49abd4aaeef69f11f2dc ]
+commit e835c0a4e23c38531dcee5ef77e8d1cf462658c7 upstream.
 
-The msm_gem_get_vaddr() returns an ERR_PTR() on failure, and a null
-is catastrophic here, so we should use IS_ERR_OR_NULL() to check
-the return value.
+Commit c4a5153e87fd ("usb: dwc3: core: Power-off core/PHYs on
+system_suspend in host mode") replaces check for HOST only dr_mode with
+current_dr_role. But during booting, the current_dr_role isn't
+initialized, thus the device side reset is always issued even if dwc3
+was configured as host-only. What's more, on some platforms with host
+only dwc3, aways issuing device side reset by accessing device register
+block can cause kernel panic.
 
-Fixes: 6a8bd08d0465 ("drm/msm: add sudo flag to submit ioctl")
-Signed-off-by: Gaosheng Cui <cuigaosheng1@huawei.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
-Reviewed-by: Akhil P Oommen <quic_akhilpo@quicinc.com>
-Patchwork: https://patchwork.freedesktop.org/patch/547712/
-Signed-off-by: Rob Clark <robdclark@chromium.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: c4a5153e87fd ("usb: dwc3: core: Power-off core/PHYs on system_suspend in host mode")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Jisheng Zhang <jszhang@kernel.org>
+Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Link: https://lore.kernel.org/r/20230627162018.739-1-jszhang@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/msm/adreno/a5xx_gpu.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/dwc3/core.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/adreno/a5xx_gpu.c b/drivers/gpu/drm/msm/adreno/a5xx_gpu.c
-index 593b8d83179c9..65c2c5361e5fc 100644
---- a/drivers/gpu/drm/msm/adreno/a5xx_gpu.c
-+++ b/drivers/gpu/drm/msm/adreno/a5xx_gpu.c
-@@ -71,7 +71,7 @@ static void a5xx_submit_in_rb(struct msm_gpu *gpu, struct msm_gem_submit *submit
- 			 * since we've already mapped it once in
- 			 * submit_reloc()
- 			 */
--			if (WARN_ON(!ptr))
-+			if (WARN_ON(IS_ERR_OR_NULL(ptr)))
- 				return;
+--- a/drivers/usb/dwc3/core.c
++++ b/drivers/usb/dwc3/core.c
+@@ -275,9 +275,9 @@ int dwc3_core_soft_reset(struct dwc3 *dw
+ 	/*
+ 	 * We're resetting only the device side because, if we're in host mode,
+ 	 * XHCI driver will reset the host block. If dwc3 was configured for
+-	 * host-only mode, then we can return early.
++	 * host-only mode or current role is host, then we can return early.
+ 	 */
+-	if (dwc->current_dr_role == DWC3_GCTL_PRTCAP_HOST)
++	if (dwc->dr_mode == USB_DR_MODE_HOST || dwc->current_dr_role == DWC3_GCTL_PRTCAP_HOST)
+ 		return 0;
  
- 			for (i = 0; i < dwords; i++) {
--- 
-2.40.1
-
+ 	reg = dwc3_readl(dwc->regs, DWC3_DCTL);
 
 
