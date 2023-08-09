@@ -2,97 +2,145 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6110977578B
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:47:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A7B69775B8B
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:18:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232217AbjHIKrR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 06:47:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41186 "EHLO
+        id S233461AbjHILS3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:18:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50608 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232221AbjHIKrQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:47:16 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2AE4F1702
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:47:16 -0700 (PDT)
+        with ESMTP id S233472AbjHILS2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:18:28 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25071ED
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:18:28 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BEF4C630EF
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:47:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD2F9C433C8;
-        Wed,  9 Aug 2023 10:47:14 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id AF4F96318F
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:18:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDF8CC433C8;
+        Wed,  9 Aug 2023 11:18:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691578035;
-        bh=9VHrt+L8rNe4Qpv9B12Cut+rRuGtchd64uTYLUE4csY=;
+        s=korg; t=1691579907;
+        bh=Z4RGLk2+EUDgUYs9ki2npOLda8/R28f3wtmTI2eE0+0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=JnW9+mYp7fZcagP1sSlEDcTNkHSfZbd8sIbyqAFeBPEvRfyC7g4Peta5qjFcGUgrN
-         38oa9fyDGpHi58mRNsfMvMdvD9Ydqq4MksRSxJSuI+fzTP8v/PGoZNn8qWee4peim/
-         5CMDmlQtKs6A2VAB0w9mpHCbLiMOlKk57VfaPYtw=
+        b=KDQnljupzCnIyRfvPuD0qTDYAvDEX5wVRhER/KM0dMyAWw3Zp8sWmakZaex9tNdzY
+         9fA+YgBMJi7ran69B2Ifd2L2yPn/IlNwPn2emjtfS3ww6LlSoA2oq+vtCL/Fcc2uMb
+         SOtv6tK4UegpL4jnqSEndFLu1EMlveGWNpTWrAKg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Michal Schmidt <mschmidt@redhat.com>,
-        Leon Romanovsky <leonro@nvidia.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 065/165] octeon_ep: initialize mbox mutexes
+        patches@lists.linux.dev, stable@kernel.org,
+        Baokun Li <libaokun1@huawei.com>, Jan Kara <jack@suse.cz>,
+        Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 4.19 158/323] ext4: only update i_reserved_data_blocks on successful block allocation
 Date:   Wed,  9 Aug 2023 12:39:56 +0200
-Message-ID: <20230809103644.948716568@linuxfoundation.org>
+Message-ID: <20230809103705.373442628@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103642.720851262@linuxfoundation.org>
-References: <20230809103642.720851262@linuxfoundation.org>
+In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
+References: <20230809103658.104386911@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Michal Schmidt <mschmidt@redhat.com>
+From: Baokun Li <libaokun1@huawei.com>
 
-[ Upstream commit 611e1b016c7beceec5ae82ac62d4a7ca224c8f9d ]
+commit de25d6e9610a8b30cce9bbb19b50615d02ebca02 upstream.
 
-The two mbox-related mutexes are destroyed in octep_ctrl_mbox_uninit(),
-but the corresponding mutex_init calls were missing.
-A "DEBUG_LOCKS_WARN_ON(lock->magic != lock)" warning was emitted with
-CONFIG_DEBUG_MUTEXES on.
+In our fault injection test, we create an ext4 file, migrate it to
+non-extent based file, then punch a hole and finally trigger a WARN_ON
+in the ext4_da_update_reserve_space():
 
-Initialize the two mutexes in octep_ctrl_mbox_init().
+EXT4-fs warning (device sda): ext4_da_update_reserve_space:369:
+ino 14, used 11 with only 10 reserved data blocks
 
-Fixes: 577f0d1b1c5f ("octeon_ep: add separate mailbox command and response queues")
-Signed-off-by: Michal Schmidt <mschmidt@redhat.com>
-Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
-Link: https://lore.kernel.org/r/20230729151516.24153-1-mschmidt@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+When writing back a non-extent based file, if we enable delalloc, the
+number of reserved blocks will be subtracted from the number of blocks
+mapped by ext4_ind_map_blocks(), and the extent status tree will be
+updated. We update the extent status tree by first removing the old
+extent_status and then inserting the new extent_status. If the block range
+we remove happens to be in an extent, then we need to allocate another
+extent_status with ext4_es_alloc_extent().
+
+       use old    to remove   to add new
+    |----------|------------|------------|
+              old extent_status
+
+The problem is that the allocation of a new extent_status failed due to a
+fault injection, and __es_shrink() did not get free memory, resulting in
+a return of -ENOMEM. Then do_writepages() retries after receiving -ENOMEM,
+we map to the same extent again, and the number of reserved blocks is again
+subtracted from the number of blocks in that extent. Since the blocks in
+the same extent are subtracted twice, we end up triggering WARN_ON at
+ext4_da_update_reserve_space() because used > ei->i_reserved_data_blocks.
+
+For non-extent based file, we update the number of reserved blocks after
+ext4_ind_map_blocks() is executed, which causes a problem that when we call
+ext4_ind_map_blocks() to create a block, it doesn't always create a block,
+but we always reduce the number of reserved blocks. So we move the logic
+for updating reserved blocks to ext4_ind_map_blocks() to ensure that the
+number of reserved blocks is updated only after we do succeed in allocating
+some new blocks.
+
+Fixes: 5f634d064c70 ("ext4: Fix quota accounting error with fallocate")
+Cc: stable@kernel.org
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/r/20230424033846.4732-2-libaokun1@huawei.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/marvell/octeon_ep/octep_ctrl_mbox.c | 3 +++
- 1 file changed, 3 insertions(+)
+ fs/ext4/indirect.c |    8 ++++++++
+ fs/ext4/inode.c    |   10 ----------
+ 2 files changed, 8 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeon_ep/octep_ctrl_mbox.c b/drivers/net/ethernet/marvell/octeon_ep/octep_ctrl_mbox.c
-index 035ead7935c74..dab61cc1acb57 100644
---- a/drivers/net/ethernet/marvell/octeon_ep/octep_ctrl_mbox.c
-+++ b/drivers/net/ethernet/marvell/octeon_ep/octep_ctrl_mbox.c
-@@ -98,6 +98,9 @@ int octep_ctrl_mbox_init(struct octep_ctrl_mbox *mbox)
- 	writeq(OCTEP_CTRL_MBOX_STATUS_INIT,
- 	       OCTEP_CTRL_MBOX_INFO_HOST_STATUS(mbox->barmem));
+--- a/fs/ext4/indirect.c
++++ b/fs/ext4/indirect.c
+@@ -642,6 +642,14 @@ int ext4_ind_map_blocks(handle_t *handle
  
-+	mutex_init(&mbox->h2fq_lock);
-+	mutex_init(&mbox->f2hq_lock);
+ 	ext4_update_inode_fsync_trans(handle, inode, 1);
+ 	count = ar.len;
 +
- 	mbox->h2fq.sz = readl(OCTEP_CTRL_MBOX_H2FQ_SZ(mbox->barmem));
- 	mbox->h2fq.hw_prod = OCTEP_CTRL_MBOX_H2FQ_PROD(mbox->barmem);
- 	mbox->h2fq.hw_cons = OCTEP_CTRL_MBOX_H2FQ_CONS(mbox->barmem);
--- 
-2.40.1
-
++	/*
++	 * Update reserved blocks/metadata blocks after successful block
++	 * allocation which had been deferred till now.
++	 */
++	if (flags & EXT4_GET_BLOCKS_DELALLOC_RESERVE)
++		ext4_da_update_reserve_space(inode, count, 1);
++
+ got_it:
+ 	map->m_flags |= EXT4_MAP_MAPPED;
+ 	map->m_pblk = le32_to_cpu(chain[depth-1].key);
+--- a/fs/ext4/inode.c
++++ b/fs/ext4/inode.c
+@@ -668,16 +668,6 @@ found:
+ 			 */
+ 			ext4_clear_inode_state(inode, EXT4_STATE_EXT_MIGRATE);
+ 		}
+-
+-		/*
+-		 * Update reserved blocks/metadata blocks after successful
+-		 * block allocation which had been deferred till now. We don't
+-		 * support fallocate for non extent files. So we can update
+-		 * reserve space here.
+-		 */
+-		if ((retval > 0) &&
+-			(flags & EXT4_GET_BLOCKS_DELALLOC_RESERVE))
+-			ext4_da_update_reserve_space(inode, retval, 1);
+ 	}
+ 
+ 	if (retval > 0) {
 
 
