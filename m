@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A0F93775BA3
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:19:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EC925775D50
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:36:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233489AbjHILTa (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:19:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57660 "EHLO
+        id S234071AbjHILgF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:36:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34210 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233498AbjHILT3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:19:29 -0400
+        with ESMTP id S234069AbjHILgE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:36:04 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 320C21BFA
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:19:29 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 317BD1FD2
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:36:04 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C54DC631C9
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:19:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6B9CC433C9;
-        Wed,  9 Aug 2023 11:19:27 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B193763515
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:36:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB11FC433C8;
+        Wed,  9 Aug 2023 11:36:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691579968;
-        bh=WsihX3i0EM7tfAvl4LfznGl+eyhzY8XaPCqudJrueJ8=;
+        s=korg; t=1691580963;
+        bh=7iVtdQOXVNuAZZ8zJA6u6WZZEjRDGGgfPcy9t4San+Y=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=JO507Z8klcD0BAy48lZdDNzhCbwekS9Xa9JTWduzwDXRQJC8png641GplykCO7UD1
-         tQu8r6gSjSUe4nHhSV/jr9LKyAiveC+iAQGndF9dtoNS4zfcBHqiT2nMrqP21zcREp
-         iOFRM4jjfEEaZTLfZhyAdhAKQL8Nnrma1VAwgLRI=
+        b=OlM79G2AWfaEaeMxuignBh5scHGrGpCW2qdhk2XfVSk3L3SabYBUEy9uZ+RbyEVLc
+         BQeLApZxnrIl3HKPUNJioOk0V2wahSnNc/0JyUb5bRxHGRNcaWjrssRMNErcSGyxlK
+         L5oGHIefDePiCkeS2Um71P/ttd6a7WmtIxJN+LZQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Quinn Tran <qutran@marvell.com>,
-        Nilesh Javali <njavali@marvell.com>,
-        Himanshu Madhani <himanshu.madhani@oracle.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 4.19 181/323] scsi: qla2xxx: Wait for io return on terminate rport
+        patches@lists.linux.dev,
+        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+        Dave Airlie <airlied@redhat.com>,
+        Huang Rui <ray.huang@amd.com>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 017/201] drm/ttm: add ttm_bo_pin()/ttm_bo_unpin() v2
 Date:   Wed,  9 Aug 2023 12:40:19 +0200
-Message-ID: <20230809103706.438554819@linuxfoundation.org>
+Message-ID: <20230809103644.406751041@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
-References: <20230809103658.104386911@linuxfoundation.org>
+In-Reply-To: <20230809103643.799166053@linuxfoundation.org>
+References: <20230809103643.799166053@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,71 +56,135 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Quinn Tran <qutran@marvell.com>
+From: Christian König <christian.koenig@amd.com>
 
-commit fc0cba0c7be8261a1625098bd1d695077ec621c9 upstream.
+[ Upstream commit deb0814b43f370a448a498409d949e38c9d8f02e ]
 
-System crash due to use after free.
-Current code allows terminate_rport_io to exit before making
-sure all IOs has returned. For FCP-2 device, IO's can hang
-on in HW because driver has not tear down the session in FW at
-first sign of cable pull. When dev_loss_tmo timer pops,
-terminate_rport_io is called and upper layer is about to
-free various resources. Terminate_rport_io trigger qla to do
-the final cleanup, but the cleanup might not be fast enough where it
-leave qla still holding on to the same resource.
+As an alternative to the placement flag add a
+pin count to the ttm buffer object.
 
-Wait for IO's to return to upper layer before resources are freed.
+v2: add dma_resv_assert_help() calls
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Quinn Tran <qutran@marvell.com>
-Signed-off-by: Nilesh Javali <njavali@marvell.com>
-Link: https://lore.kernel.org/r/20230428075339.32551-7-njavali@marvell.com
-Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Christian König <christian.koenig@amd.com>
+Reviewed-by: Dave Airlie <airlied@redhat.com>
+Reviewed-by: Huang Rui <ray.huang@amd.com>
+Link: https://patchwork.freedesktop.org/patch/391596/?series=81973&rev=1
+Stable-dep-of: a2848d08742c ("drm/ttm: never consider pinned BOs for eviction&swap")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/qla2xxx/qla_attr.c |   13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ drivers/gpu/drm/ttm/ttm_bo.c      |  9 ++++++---
+ drivers/gpu/drm/ttm/ttm_bo_util.c |  2 +-
+ include/drm/ttm/ttm_bo_api.h      | 26 ++++++++++++++++++++++++++
+ 3 files changed, 33 insertions(+), 4 deletions(-)
 
---- a/drivers/scsi/qla2xxx/qla_attr.c
-+++ b/drivers/scsi/qla2xxx/qla_attr.c
-@@ -1800,6 +1800,7 @@ static void
- qla2x00_terminate_rport_io(struct fc_rport *rport)
- {
- 	fc_port_t *fcport = *(fc_port_t **)rport->dd_data;
-+	scsi_qla_host_t *vha;
+diff --git a/drivers/gpu/drm/ttm/ttm_bo.c b/drivers/gpu/drm/ttm/ttm_bo.c
+index f673292eec9db..9a05caec3c996 100644
+--- a/drivers/gpu/drm/ttm/ttm_bo.c
++++ b/drivers/gpu/drm/ttm/ttm_bo.c
+@@ -115,7 +115,7 @@ static void ttm_bo_add_mem_to_lru(struct ttm_buffer_object *bo,
+ 	struct ttm_bo_device *bdev = bo->bdev;
+ 	struct ttm_resource_manager *man;
  
- 	if (!fcport)
+-	if (!list_empty(&bo->lru))
++	if (!list_empty(&bo->lru) || bo->pin_count)
  		return;
-@@ -1809,9 +1810,12 @@ qla2x00_terminate_rport_io(struct fc_rpo
  
- 	if (test_bit(ABORT_ISP_ACTIVE, &fcport->vha->dpc_flags))
- 		return;
-+	vha = fcport->vha;
+ 	if (mem->placement & TTM_PL_FLAG_NO_EVICT)
+@@ -165,7 +165,8 @@ void ttm_bo_move_to_lru_tail(struct ttm_buffer_object *bo,
+ 	ttm_bo_del_from_lru(bo);
+ 	ttm_bo_add_mem_to_lru(bo, &bo->mem);
  
- 	if (unlikely(pci_channel_offline(fcport->vha->hw->pdev))) {
- 		qla2x00_abort_all_cmds(fcport->vha, DID_NO_CONNECT << 16);
-+		qla2x00_eh_wait_for_pending_commands(fcport->vha, fcport->d_id.b24,
-+			0, WAIT_TARGET);
- 		return;
- 	}
- 	/*
-@@ -1826,6 +1830,15 @@ qla2x00_terminate_rport_io(struct fc_rpo
- 		else
- 			qla2x00_port_logout(fcport->vha, fcport);
- 	}
-+
-+	/* check for any straggling io left behind */
-+	if (qla2x00_eh_wait_for_pending_commands(fcport->vha, fcport->d_id.b24, 0, WAIT_TARGET)) {
-+		ql_log(ql_log_warn, vha, 0x300b,
-+		       "IO not return.  Resetting. \n");
-+		set_bit(ISP_ABORT_NEEDED, &vha->dpc_flags);
-+		qla2xxx_wake_dpc(vha);
-+		qla2x00_wait_for_chip_reset(vha);
-+	}
+-	if (bulk && !(bo->mem.placement & TTM_PL_FLAG_NO_EVICT)) {
++	if (bulk && !(bo->mem.placement & TTM_PL_FLAG_NO_EVICT) &&
++	    !bo->pin_count) {
+ 		switch (bo->mem.mem_type) {
+ 		case TTM_PL_TT:
+ 			ttm_bo_bulk_move_set_pos(&bulk->tt[bo->priority], bo);
+@@ -544,8 +545,9 @@ static void ttm_bo_release(struct kref *kref)
+ 		 * shrinkers, now that they are queued for
+ 		 * destruction.
+ 		 */
+-		if (bo->mem.placement & TTM_PL_FLAG_NO_EVICT) {
++		if (bo->mem.placement & TTM_PL_FLAG_NO_EVICT || bo->pin_count) {
+ 			bo->mem.placement &= ~TTM_PL_FLAG_NO_EVICT;
++			bo->pin_count = 0;
+ 			ttm_bo_del_from_lru(bo);
+ 			ttm_bo_add_mem_to_lru(bo, &bo->mem);
+ 		}
+@@ -1174,6 +1176,7 @@ int ttm_bo_init_reserved(struct ttm_bo_device *bdev,
+ 	bo->moving = NULL;
+ 	bo->mem.placement = TTM_PL_FLAG_CACHED;
+ 	bo->acc_size = acc_size;
++	bo->pin_count = 0;
+ 	bo->sg = sg;
+ 	if (resv) {
+ 		bo->base.resv = resv;
+diff --git a/drivers/gpu/drm/ttm/ttm_bo_util.c b/drivers/gpu/drm/ttm/ttm_bo_util.c
+index fb2a25f8408fc..1968df9743fcb 100644
+--- a/drivers/gpu/drm/ttm/ttm_bo_util.c
++++ b/drivers/gpu/drm/ttm/ttm_bo_util.c
+@@ -352,7 +352,6 @@ static int ttm_buffer_object_transfer(struct ttm_buffer_object *bo,
+ 		return -ENOMEM;
+ 
+ 	fbo->base = *bo;
+-	fbo->base.mem.placement |= TTM_PL_FLAG_NO_EVICT;
+ 
+ 	ttm_bo_get(bo);
+ 	fbo->bo = bo;
+@@ -372,6 +371,7 @@ static int ttm_buffer_object_transfer(struct ttm_buffer_object *bo,
+ 	kref_init(&fbo->base.kref);
+ 	fbo->base.destroy = &ttm_transfered_destroy;
+ 	fbo->base.acc_size = 0;
++	fbo->base.pin_count = 1;
+ 	if (bo->type != ttm_bo_type_sg)
+ 		fbo->base.base.resv = &fbo->base.base._resv;
+ 
+diff --git a/include/drm/ttm/ttm_bo_api.h b/include/drm/ttm/ttm_bo_api.h
+index 0f7cd21d6d748..33aca60870e26 100644
+--- a/include/drm/ttm/ttm_bo_api.h
++++ b/include/drm/ttm/ttm_bo_api.h
+@@ -157,6 +157,7 @@ struct ttm_buffer_object {
+ 
+ 	struct dma_fence *moving;
+ 	unsigned priority;
++	unsigned pin_count;
+ 
+ 	/**
+ 	 * Special members that are protected by the reserve lock
+@@ -606,6 +607,31 @@ static inline bool ttm_bo_uses_embedded_gem_object(struct ttm_buffer_object *bo)
+ 	return bo->base.dev != NULL;
  }
  
- static int
++/**
++ * ttm_bo_pin - Pin the buffer object.
++ * @bo: The buffer object to pin
++ *
++ * Make sure the buffer is not evicted any more during memory pressure.
++ */
++static inline void ttm_bo_pin(struct ttm_buffer_object *bo)
++{
++	dma_resv_assert_held(bo->base.resv);
++	++bo->pin_count;
++}
++
++/**
++ * ttm_bo_unpin - Unpin the buffer object.
++ * @bo: The buffer object to unpin
++ *
++ * Allows the buffer object to be evicted again during memory pressure.
++ */
++static inline void ttm_bo_unpin(struct ttm_buffer_object *bo)
++{
++	dma_resv_assert_held(bo->base.resv);
++	WARN_ON_ONCE(!bo->pin_count);
++	--bo->pin_count;
++}
++
+ int ttm_mem_evict_first(struct ttm_bo_device *bdev,
+ 			struct ttm_resource_manager *man,
+ 			const struct ttm_place *place,
+-- 
+2.39.2
+
 
 
