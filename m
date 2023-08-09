@@ -2,93 +2,95 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A823B775D62
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:36:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 45805775A7A
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:08:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234086AbjHILgz (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:36:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39918 "EHLO
+        id S233199AbjHILIr (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:08:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46710 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234088AbjHILgy (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:36:54 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E3F2173A
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:36:54 -0700 (PDT)
+        with ESMTP id S233207AbjHILIq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:08:46 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8FF15ED
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:08:45 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E8A7A63547
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:36:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03356C433C8;
-        Wed,  9 Aug 2023 11:36:52 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2EA4B6314A
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:08:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43351C433C8;
+        Wed,  9 Aug 2023 11:08:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691581013;
-        bh=tTxCWegzfyMd49qUmnIJdIIE/aw1dK+tlXQPmddkrAI=;
+        s=korg; t=1691579324;
+        bh=r2g0r+AVtV3T/pFrOS2ua/Wj+0eN1uatMQD/LRAxT8E=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=txn+UiWBRHxXBj2u1LCHwBS8ALzr5PH5kkv+WnWscvONL+oh/pZHwQi/0yO4yvbi+
-         G8onZ8a8Hy7DNP5aywPru5VnFrz/LCFyEel7nLVvZ7r50MnJ7UMDEj634m+Bu2lWe2
-         s2GKI3gYjfqKeuZxn/3490T8tH+PqwEgWkqCOp+g=
+        b=R9ad+sE/hb1BKs5w0/agVcGEOtjXjvmPSyhyvrv3BWSNPZgzfpvEWIoiMi0qLo2pN
+         8v0zxRSdeWA3GV3jlXTKwK8EaUZACi+FeL6h1JbL1zb1LPW5YLS1W8Scj0x7234i07
+         fS0xCzpSVe6weK+pYX+SjwTQSKiRrXZIPrVZb5W0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH 5.10 074/201] can: gs_usb: gs_can_close(): add missing set of CAN state to CAN_STATE_STOPPED
+        patches@lists.linux.dev, Martin Kaiser <martin@kaiser.cx>,
+        Helge Deller <deller@gmx.de>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.14 138/204] fbdev: imxfb: warn about invalid left/right margin
 Date:   Wed,  9 Aug 2023 12:41:16 +0200
-Message-ID: <20230809103646.293756607@linuxfoundation.org>
+Message-ID: <20230809103647.197548469@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103643.799166053@linuxfoundation.org>
-References: <20230809103643.799166053@linuxfoundation.org>
+In-Reply-To: <20230809103642.552405807@linuxfoundation.org>
+References: <20230809103642.552405807@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Marc Kleine-Budde <mkl@pengutronix.de>
+From: Martin Kaiser <martin@kaiser.cx>
 
-commit f8a2da6ec2417cca169fa85a8ab15817bccbb109 upstream.
+[ Upstream commit 4e47382fbca916d7db95cbf9e2d7ca2e9d1ca3fe ]
 
-After an initial link up the CAN device is in ERROR-ACTIVE mode. Due
-to a missing CAN_STATE_STOPPED in gs_can_close() it doesn't change to
-STOPPED after a link down:
+Warn about invalid var->left_margin or var->right_margin. Their values
+are read from the device tree.
 
-| ip link set dev can0 up
-| ip link set dev can0 down
-| ip --details link show can0
-| 13: can0: <NOARP,ECHO> mtu 16 qdisc pfifo_fast state DOWN mode DEFAULT group default qlen 10
-|     link/can  promiscuity 0 allmulti 0 minmtu 0 maxmtu 0
-|     can state ERROR-ACTIVE restart-ms 1000
+We store var->left_margin-3 and var->right_margin-1 in register
+fields. These fields should be >= 0.
 
-Add missing assignment of CAN_STATE_STOPPED in gs_can_close().
-
-Cc: stable@vger.kernel.org
-Fixes: d08e973a77d1 ("can: gs_usb: Added support for the GS_USB CAN devices")
-Link: https://lore.kernel.org/all/20230718-gs_usb-fix-can-state-v1-1-f19738ae2c23@pengutronix.de
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 7e8549bcee00 ("imxfb: Fix margin settings")
+Signed-off-by: Martin Kaiser <martin@kaiser.cx>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/can/usb/gs_usb.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/video/fbdev/imxfb.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/net/can/usb/gs_usb.c
-+++ b/drivers/net/can/usb/gs_usb.c
-@@ -732,6 +732,8 @@ static int gs_can_close(struct net_devic
- 	usb_kill_anchored_urbs(&dev->tx_submitted);
- 	atomic_set(&dev->active_tx_urbs, 0);
- 
-+	dev->can.state = CAN_STATE_STOPPED;
-+
- 	/* reset the device */
- 	rc = gs_cmd_reset(dev);
- 	if (rc < 0)
+diff --git a/drivers/video/fbdev/imxfb.c b/drivers/video/fbdev/imxfb.c
+index ba82f97fb42b2..a4dc25fbdd1ba 100644
+--- a/drivers/video/fbdev/imxfb.c
++++ b/drivers/video/fbdev/imxfb.c
+@@ -601,10 +601,10 @@ static int imxfb_activate_var(struct fb_var_screeninfo *var, struct fb_info *inf
+ 	if (var->hsync_len < 1    || var->hsync_len > 64)
+ 		printk(KERN_ERR "%s: invalid hsync_len %d\n",
+ 			info->fix.id, var->hsync_len);
+-	if (var->left_margin > 255)
++	if (var->left_margin < 3  || var->left_margin > 255)
+ 		printk(KERN_ERR "%s: invalid left_margin %d\n",
+ 			info->fix.id, var->left_margin);
+-	if (var->right_margin > 255)
++	if (var->right_margin < 1 || var->right_margin > 255)
+ 		printk(KERN_ERR "%s: invalid right_margin %d\n",
+ 			info->fix.id, var->right_margin);
+ 	if (var->yres < 1 || var->yres > ymax_mask)
+-- 
+2.39.2
+
 
 
