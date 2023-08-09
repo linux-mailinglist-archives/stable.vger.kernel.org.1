@@ -2,138 +2,139 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B42BA775913
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:57:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 206FF775D8A
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:38:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232706AbjHIK5b (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 06:57:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51608 "EHLO
+        id S234132AbjHILip (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:38:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59818 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232885AbjHIK5J (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:57:09 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2BF81FD4
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:57:08 -0700 (PDT)
+        with ESMTP id S234135AbjHILio (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:38:44 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D259173A
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:38:44 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3A7C162DC8
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:57:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C579C433C8;
-        Wed,  9 Aug 2023 10:57:07 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B6B23635B9
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:38:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4D59C433C7;
+        Wed,  9 Aug 2023 11:38:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691578627;
-        bh=FrDkZ6Lwbx9XAR5PnwuSfBzCGjvu884ya+ON1ddBC38=;
+        s=korg; t=1691581123;
+        bh=1rW1SLtWYeCfO26de2Wl5M45zQ10bYqD50J1yyTPJbQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=VV8GEhQfZO1MBkvRBH7kmeB3yt2nuDHOjVGKCohZEjvApwl9d4EiL0nU+YG0x29n4
-         bMWrsJ/89nO/Kf6Bx6LvhE/o3m750qb78Q62efUHJWNDnH8QDP1+FO67LuXLqJl8Rx
-         Zb0bqCcuxCt0JZHSw/r1ZqPhPL7T3CgqQD6Ftogc=
+        b=kq8teSLRT1jWnggqqWG8PepCtUd4zU8yRh3F7keRivZvU5OE1XOc5ErPvTbVuIZgo
+         R9ryrBP1UGDLEtODxrC50D6OqtmQETRczGEIAUDAPIOhvR0C/5UMAn32UIPC2mP73u
+         YyEHMvKH3jWE+AHwqWvYptemwcC7t8Zl9wkzIkIY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Thorsten Leemhuis <regressions@leemhuis.info>,
-        Manasi Navare <navaremanasi@google.com>,
-        Drew Davenport <ddavenport@chromium.org>,
-        =?UTF-8?q?Jouni=20H=C3=B6gander?= <jouni.hogander@intel.com>,
-        Imre Deak <imre.deak@intel.com>,
-        =?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= 
-        <ville.syrjala@linux.intel.com>,
-        Jani Nikula <jani.nikula@intel.com>
-Subject: [PATCH 6.1 127/127] Revert "drm/i915: Disable DC states for all commits"
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        Mark Brown <broonie@kernel.org>
+Subject: [PATCH 5.10 112/201] ASoC: cs42l51: fix driver to properly autoload with automatic module loading
 Date:   Wed,  9 Aug 2023 12:41:54 +0200
-Message-ID: <20230809103640.795291713@linuxfoundation.org>
+Message-ID: <20230809103647.537914958@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103636.615294317@linuxfoundation.org>
-References: <20230809103636.615294317@linuxfoundation.org>
+In-Reply-To: <20230809103643.799166053@linuxfoundation.org>
+References: <20230809103643.799166053@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
 
-This reverts commit 0fc6fea41c7122aa5f2088117f50144b507e13d7 which is
-commit a2b6e99d8a623544f3bdccd28ee35b9c1b00daa5 upstream.
+commit e51df4f81b02bcdd828a04de7c1eb6a92988b61e upstream.
 
-It is reported to cause regression issues, so it should be reverted from
-the 6.1.y tree for now.
+In commit 2cb1e0259f50 ("ASoC: cs42l51: re-hook of_match_table
+pointer"), 9 years ago, some random guy fixed the cs42l51 after it was
+split into a core part and an I2C part to properly match based on a
+Device Tree compatible string.
 
-Reported-by: Thorsten Leemhuis <regressions@leemhuis.info>
-Link: https://lore.kernel.org/r/f0870e8f-0c66-57fd-f95d-18d014a11939@leemhuis.info
-Link: https://gitlab.freedesktop.org/drm/intel/-/issues/8419
-Cc: Manasi Navare <navaremanasi@google.com>
-Cc: Drew Davenport <ddavenport@chromium.org>
-Cc: Jouni Högander <jouni.hogander@intel.com>
-Cc: Imre Deak <imre.deak@intel.com>
-Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Cc: Jani Nikula <jani.nikula@intel.com>
+However, the fix in this commit is wrong: the MODULE_DEVICE_TABLE(of,
+....) is in the core part of the driver, not the I2C part. Therefore,
+automatic module loading based on module.alias, based on matching with
+the DT compatible string, loads the core part of the driver, but not
+the I2C part. And threfore, the i2c_driver is not registered, and the
+codec is not known to the system, nor matched with a DT node with the
+corresponding compatible string.
+
+In order to fix that, we move the MODULE_DEVICE_TABLE(of, ...) into
+the I2C part of the driver. The cs42l51_of_match[] array is also moved
+as well, as it is not possible to have this definition in one file,
+and the MODULE_DEVICE_TABLE(of, ...) invocation in another file, due
+to how MODULE_DEVICE_TABLE works.
+
+Thanks to this commit, the I2C part of the driver now properly
+autoloads, and thanks to its dependency on the core part, the core
+part gets autoloaded as well, resulting in a functional sound card
+without having to manually load kernel modules.
+
+Fixes: 2cb1e0259f50 ("ASoC: cs42l51: re-hook of_match_table pointer")
+Cc: stable@vger.kernel.org
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Link: https://lore.kernel.org/r/20230713112112.778576-1-thomas.petazzoni@bootlin.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/i915/display/intel_display.c |   28 ++-------------------------
- 1 file changed, 3 insertions(+), 25 deletions(-)
+ sound/soc/codecs/cs42l51-i2c.c |    6 ++++++
+ sound/soc/codecs/cs42l51.c     |    7 -------
+ sound/soc/codecs/cs42l51.h     |    1 -
+ 3 files changed, 6 insertions(+), 8 deletions(-)
 
---- a/drivers/gpu/drm/i915/display/intel_display.c
-+++ b/drivers/gpu/drm/i915/display/intel_display.c
-@@ -7123,8 +7123,6 @@ static void intel_update_crtc(struct int
+--- a/sound/soc/codecs/cs42l51-i2c.c
++++ b/sound/soc/codecs/cs42l51-i2c.c
+@@ -19,6 +19,12 @@ static struct i2c_device_id cs42l51_i2c_
+ };
+ MODULE_DEVICE_TABLE(i2c, cs42l51_i2c_id);
  
- 	intel_fbc_update(state, crtc);
++const struct of_device_id cs42l51_of_match[] = {
++	{ .compatible = "cirrus,cs42l51", },
++	{ }
++};
++MODULE_DEVICE_TABLE(of, cs42l51_of_match);
++
+ static int cs42l51_i2c_probe(struct i2c_client *i2c,
+ 			     const struct i2c_device_id *id)
+ {
+--- a/sound/soc/codecs/cs42l51.c
++++ b/sound/soc/codecs/cs42l51.c
+@@ -825,13 +825,6 @@ int __maybe_unused cs42l51_resume(struct
+ }
+ EXPORT_SYMBOL_GPL(cs42l51_resume);
  
--	drm_WARN_ON(&i915->drm, !intel_display_power_is_enabled(i915, POWER_DOMAIN_DC_OFF));
+-const struct of_device_id cs42l51_of_match[] = {
+-	{ .compatible = "cirrus,cs42l51", },
+-	{ }
+-};
+-MODULE_DEVICE_TABLE(of, cs42l51_of_match);
+-EXPORT_SYMBOL_GPL(cs42l51_of_match);
 -
- 	if (!modeset &&
- 	    (new_crtc_state->uapi.color_mgmt_changed ||
- 	     new_crtc_state->update_pipe))
-@@ -7501,28 +7499,8 @@ static void intel_atomic_commit_tail(str
- 	drm_atomic_helper_wait_for_dependencies(&state->base);
- 	drm_dp_mst_atomic_wait_for_dependencies(&state->base);
+ MODULE_AUTHOR("Arnaud Patard <arnaud.patard@rtp-net.org>");
+ MODULE_DESCRIPTION("Cirrus Logic CS42L51 ALSA SoC Codec Driver");
+ MODULE_LICENSE("GPL");
+--- a/sound/soc/codecs/cs42l51.h
++++ b/sound/soc/codecs/cs42l51.h
+@@ -16,7 +16,6 @@ int cs42l51_probe(struct device *dev, st
+ int cs42l51_remove(struct device *dev);
+ int __maybe_unused cs42l51_suspend(struct device *dev);
+ int __maybe_unused cs42l51_resume(struct device *dev);
+-extern const struct of_device_id cs42l51_of_match[];
  
--	/*
--	 * During full modesets we write a lot of registers, wait
--	 * for PLLs, etc. Doing that while DC states are enabled
--	 * is not a good idea.
--	 *
--	 * During fastsets and other updates we also need to
--	 * disable DC states due to the following scenario:
--	 * 1. DC5 exit and PSR exit happen
--	 * 2. Some or all _noarm() registers are written
--	 * 3. Due to some long delay PSR is re-entered
--	 * 4. DC5 entry -> DMC saves the already written new
--	 *    _noarm() registers and the old not yet written
--	 *    _arm() registers
--	 * 5. DC5 exit -> DMC restores a mixture of old and
--	 *    new register values and arms the update
--	 * 6. PSR exit -> hardware latches a mixture of old and
--	 *    new register values -> corrupted frame, or worse
--	 * 7. New _arm() registers are finally written
--	 * 8. Hardware finally latches a complete set of new
--	 *    register values, and subsequent frames will be OK again
--	 */
--	wakeref = intel_display_power_get(dev_priv, POWER_DOMAIN_DC_OFF);
-+	if (state->modeset)
-+		wakeref = intel_display_power_get(dev_priv, POWER_DOMAIN_MODESET);
- 
- 	intel_atomic_prepare_plane_clear_colors(state);
- 
-@@ -7661,8 +7639,8 @@ static void intel_atomic_commit_tail(str
- 		 * the culprit.
- 		 */
- 		intel_uncore_arm_unclaimed_mmio_detection(&dev_priv->uncore);
-+		intel_display_power_put(dev_priv, POWER_DOMAIN_MODESET, wakeref);
- 	}
--	intel_display_power_put(dev_priv, POWER_DOMAIN_DC_OFF, wakeref);
- 	intel_runtime_pm_put(&dev_priv->runtime_pm, state->wakeref);
- 
- 	/*
+ #define CS42L51_CHIP_ID			0x1B
+ #define CS42L51_CHIP_REV_A		0x00
 
 
