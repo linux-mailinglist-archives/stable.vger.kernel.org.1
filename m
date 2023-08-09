@@ -2,124 +2,165 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7F88077577E
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:46:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BC5AB7759D8
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:03:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230295AbjHIKql (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 06:46:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48304 "EHLO
+        id S232982AbjHILD1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:03:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38378 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232135AbjHIKql (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:46:41 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 82E091BCF
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:46:39 -0700 (PDT)
+        with ESMTP id S233014AbjHILDL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:03:11 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2824211D
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:03:08 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2367963123
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:46:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 356EDC433C7;
-        Wed,  9 Aug 2023 10:46:38 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3916662496
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:03:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C1BCC433C7;
+        Wed,  9 Aug 2023 11:03:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691577998;
-        bh=w4I5AQglVYeviVzOg3Rd/c3IvqIv22X4qNiJrdYbujY=;
+        s=korg; t=1691578987;
+        bh=oZ0njOSllwzZJnj6E9qy2zVGuMeVDFIhbAksutuJop0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=urrUmfves0oEHsfsuNhnObY6RCma307VmYo/RLL4N3X15sL0amETlMOeqVYDiFmUK
-         IltzhL+dFEBk7AG+1I1/gQ8NKomMQV8LrGG+0m+rj17clFz20Y4naIW2aSRylkeFy2
-         ex3AuY9GHeWmzsjLzGCPaSesVaY1pcjvT2M42YQo=
+        b=DPOb4VQB2HPadWsNRC+CpAd/7Tomy1xIdamHbWMHTioNIqiURY5ICcNO/rcsqHikE
+         jIEl1EukoKVMdjE6M6W+O8mO+bZMCLelGzvV7RdAMHRPNAuz76ZNMo7urGEZ3yrzSZ
+         4gWECyFgGiLKiXNYaITDT4wpkVNbxCiRQj31YkDg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Shay Drory <shayd@nvidia.com>,
-        Maher Sanalla <msanalla@nvidia.com>,
-        Saeed Mahameed <saeedm@nvidia.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 040/165] net/mlx5: Unregister devlink params in case interface is down
-Date:   Wed,  9 Aug 2023 12:39:31 +0200
-Message-ID: <20230809103644.124193789@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        Sasha Levin <sashal@kernel.org>,
+        Natalia Petrova <n.petrova@fintech.ru>
+Subject: [PATCH 4.14 034/204] radeon: avoid double free in ci_dpm_init()
+Date:   Wed,  9 Aug 2023 12:39:32 +0200
+Message-ID: <20230809103643.718162051@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103642.720851262@linuxfoundation.org>
-References: <20230809103642.720851262@linuxfoundation.org>
+In-Reply-To: <20230809103642.552405807@linuxfoundation.org>
+References: <20230809103642.552405807@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Shay Drory <shayd@nvidia.com>
+From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
 
-[ Upstream commit 53d737dfd3d7b023fa9fa445ea3f3db0ac9da402 ]
+[ Upstream commit 20c3dffdccbd494e0dd631d1660aeecbff6775f2 ]
 
-Currently, in case an interface is down, mlx5 driver doesn't
-unregister its devlink params, which leads to this WARN[1].
-Fix it by unregistering devlink params in that case as well.
+Several calls to ci_dpm_fini() will attempt to free resources that
+either have been freed before or haven't been allocated yet. This
+may lead to undefined or dangerous behaviour.
 
-[1]
-[  295.244769 ] WARNING: CPU: 15 PID: 1 at net/core/devlink.c:9042 devlink_free+0x174/0x1fc
-[  295.488379 ] CPU: 15 PID: 1 Comm: shutdown Tainted: G S         OE 5.15.0-1017.19.3.g0677e61-bluefield #g0677e61
-[  295.509330 ] Hardware name: https://www.mellanox.com BlueField SoC/BlueField SoC, BIOS 4.2.0.12761 Jun  6 2023
-[  295.543096 ] pc : devlink_free+0x174/0x1fc
-[  295.551104 ] lr : mlx5_devlink_free+0x18/0x2c [mlx5_core]
-[  295.561816 ] sp : ffff80000809b850
-[  295.711155 ] Call trace:
-[  295.716030 ]  devlink_free+0x174/0x1fc
-[  295.723346 ]  mlx5_devlink_free+0x18/0x2c [mlx5_core]
-[  295.733351 ]  mlx5_sf_dev_remove+0x98/0xb0 [mlx5_core]
-[  295.743534 ]  auxiliary_bus_remove+0x2c/0x50
-[  295.751893 ]  __device_release_driver+0x19c/0x280
-[  295.761120 ]  device_release_driver+0x34/0x50
-[  295.769649 ]  bus_remove_device+0xdc/0x170
-[  295.777656 ]  device_del+0x17c/0x3a4
-[  295.784620 ]  mlx5_sf_dev_remove+0x28/0xf0 [mlx5_core]
-[  295.794800 ]  mlx5_sf_dev_table_destroy+0x98/0x110 [mlx5_core]
-[  295.806375 ]  mlx5_unload+0x34/0xd0 [mlx5_core]
-[  295.815339 ]  mlx5_unload_one+0x70/0xe4 [mlx5_core]
-[  295.824998 ]  shutdown+0xb0/0xd8 [mlx5_core]
-[  295.833439 ]  pci_device_shutdown+0x3c/0xa0
-[  295.841651 ]  device_shutdown+0x170/0x340
-[  295.849486 ]  __do_sys_reboot+0x1f4/0x2a0
-[  295.857322 ]  __arm64_sys_reboot+0x2c/0x40
-[  295.865329 ]  invoke_syscall+0x78/0x100
-[  295.872817 ]  el0_svc_common.constprop.0+0x54/0x184
-[  295.882392 ]  do_el0_svc+0x30/0xac
-[  295.889008 ]  el0_svc+0x48/0x160
-[  295.895278 ]  el0t_64_sync_handler+0xa4/0x130
-[  295.903807 ]  el0t_64_sync+0x1a4/0x1a8
-[  295.911120 ] ---[ end trace 4f1d2381d00d9dce  ]---
+For instance, if r600_parse_extended_power_table() fails, it might
+call r600_free_extended_power_table() as will ci_dpm_fini() later
+during error handling.
 
-Fixes: fe578cbb2f05 ("net/mlx5: Move devlink registration before mlx5_load")
-Signed-off-by: Shay Drory <shayd@nvidia.com>
-Reviewed-by: Maher Sanalla <msanalla@nvidia.com>
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+Fix this by only freeing pointers to objects previously allocated.
+
+Found by Linux Verification Center (linuxtesting.org) with static
+analysis tool SVACE.
+
+Fixes: cc8dbbb4f62a ("drm/radeon: add dpm support for CI dGPUs (v2)")
+Co-developed-by: Natalia Petrova <n.petrova@fintech.ru>
+Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/main.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/radeon/ci_dpm.c | 28 ++++++++++++++++++++--------
+ 1 file changed, 20 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/main.c b/drivers/net/ethernet/mellanox/mlx5/core/main.c
-index d6ee016deae17..c7a06c8bbb7a3 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/main.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/main.c
-@@ -1456,6 +1456,7 @@ void mlx5_uninit_one(struct mlx5_core_dev *dev)
- 	if (!test_bit(MLX5_INTERFACE_STATE_UP, &dev->intf_state)) {
- 		mlx5_core_warn(dev, "%s: interface is down, NOP\n",
- 			       __func__);
-+		mlx5_devlink_params_unregister(priv_to_devlink(dev));
- 		mlx5_cleanup_once(dev);
- 		goto out;
+diff --git a/drivers/gpu/drm/radeon/ci_dpm.c b/drivers/gpu/drm/radeon/ci_dpm.c
+index 81bc2b89222f2..0403924a2ca6b 100644
+--- a/drivers/gpu/drm/radeon/ci_dpm.c
++++ b/drivers/gpu/drm/radeon/ci_dpm.c
+@@ -5530,6 +5530,7 @@ static int ci_parse_power_table(struct radeon_device *rdev)
+ 	u8 frev, crev;
+ 	u8 *power_state_offset;
+ 	struct ci_ps *ps;
++	int ret;
+ 
+ 	if (!atom_parse_data_header(mode_info->atom_context, index, NULL,
+ 				   &frev, &crev, &data_offset))
+@@ -5558,11 +5559,15 @@ static int ci_parse_power_table(struct radeon_device *rdev)
+ 		non_clock_array_index = power_state->v2.nonClockInfoIndex;
+ 		non_clock_info = (struct _ATOM_PPLIB_NONCLOCK_INFO *)
+ 			&non_clock_info_array->nonClockInfo[non_clock_array_index];
+-		if (!rdev->pm.power_state[i].clock_info)
+-			return -EINVAL;
++		if (!rdev->pm.power_state[i].clock_info) {
++			ret = -EINVAL;
++			goto err_free_ps;
++		}
+ 		ps = kzalloc(sizeof(struct ci_ps), GFP_KERNEL);
+-		if (ps == NULL)
+-			return -ENOMEM;
++		if (ps == NULL) {
++			ret = -ENOMEM;
++			goto err_free_ps;
++		}
+ 		rdev->pm.dpm.ps[i].ps_priv = ps;
+ 		ci_parse_pplib_non_clock_info(rdev, &rdev->pm.dpm.ps[i],
+ 					      non_clock_info,
+@@ -5602,6 +5607,12 @@ static int ci_parse_power_table(struct radeon_device *rdev)
  	}
+ 
+ 	return 0;
++
++err_free_ps:
++	for (i = 0; i < rdev->pm.dpm.num_ps; i++)
++		kfree(rdev->pm.dpm.ps[i].ps_priv);
++	kfree(rdev->pm.dpm.ps);
++	return ret;
+ }
+ 
+ static int ci_get_vbios_boot_values(struct radeon_device *rdev,
+@@ -5679,25 +5690,26 @@ int ci_dpm_init(struct radeon_device *rdev)
+ 
+ 	ret = ci_get_vbios_boot_values(rdev, &pi->vbios_boot_state);
+ 	if (ret) {
+-		ci_dpm_fini(rdev);
++		kfree(rdev->pm.dpm.priv);
+ 		return ret;
+ 	}
+ 
+ 	ret = r600_get_platform_caps(rdev);
+ 	if (ret) {
+-		ci_dpm_fini(rdev);
++		kfree(rdev->pm.dpm.priv);
+ 		return ret;
+ 	}
+ 
+ 	ret = r600_parse_extended_power_table(rdev);
+ 	if (ret) {
+-		ci_dpm_fini(rdev);
++		kfree(rdev->pm.dpm.priv);
+ 		return ret;
+ 	}
+ 
+ 	ret = ci_parse_power_table(rdev);
+ 	if (ret) {
+-		ci_dpm_fini(rdev);
++		kfree(rdev->pm.dpm.priv);
++		r600_free_extended_power_table(rdev);
+ 		return ret;
+ 	}
+ 
 -- 
-2.40.1
+2.39.2
 
 
 
