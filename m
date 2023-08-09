@@ -2,123 +2,159 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E2FD9775ABC
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:11:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8B95277597A
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:00:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233274AbjHILLJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:11:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53386 "EHLO
+        id S232879AbjHILAx (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:00:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46964 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233269AbjHILLI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:11:08 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1EFFC1724
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:11:08 -0700 (PDT)
+        with ESMTP id S232876AbjHILAw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:00:52 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DCBCFED
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:00:51 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B096D62347
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:11:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C174EC433C7;
-        Wed,  9 Aug 2023 11:11:06 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7384561FA9
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:00:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 874FDC433C7;
+        Wed,  9 Aug 2023 11:00:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691579467;
-        bh=F4DG/9CPpBBSe3WFuB9X4t3IEXxaZt8yTLR4kpZuK64=;
+        s=korg; t=1691578850;
+        bh=CvHExSaMfH2Dez1QrMtLEYfUhD1oNBjtzRketZK4CuE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ezM3solCI+Jhk60BgFs4b8rZiYpIXWI5ccMjPw8zo0yZh3DO5ySrF7wPRaUMgXACC
-         cxPdNv3lZl33QgoRs/0s5RjDNXYpiDP/bQbGivGn2QJpKUCTlzArEbNOrswc2opyRx
-         Cdn2LPz3DHtZHUH/nztCpWDGFKOsPTjstm7m/7/s=
+        b=atIowG0eXPSJRU+hrlH7Flf3HO1ju8CD3fwtCrVkB9J/H/J6mipJjNntOobheKTQc
+         SArZQzdOZ+hw8fXTOfNdEx76vMB1Qe9cvo6+IfkfpvfyKLyOt2WT+fcZKDM8U1+uOT
+         BIicG+EKbUL7BnvTgqMsQznW/JzvKHqS5DqLOMRM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zhang Yi <yizhan@redhat.com>,
-        Jocelyn Falempe <jfalempe@redhat.com>,
-        Javier Martinez Canillas <javierm@redhat.com>,
-        Thomas Zimmermann <tzimmermann@suse.de>
-Subject: [PATCH 4.14 177/204] drm/client: Fix memory leak in drm_client_target_cloned
+        patches@lists.linux.dev,
+        syzbot+af5e10f73dbff48f70af@syzkaller.appspotmail.com,
+        Jan Kara <jack@suse.cz>
+Subject: [PATCH 5.15 79/92] ext2: Drop fragment support
 Date:   Wed,  9 Aug 2023 12:41:55 +0200
-Message-ID: <20230809103648.432229069@linuxfoundation.org>
+Message-ID: <20230809103636.288457442@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103642.552405807@linuxfoundation.org>
-References: <20230809103642.552405807@linuxfoundation.org>
+In-Reply-To: <20230809103633.485906560@linuxfoundation.org>
+References: <20230809103633.485906560@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jocelyn Falempe <jfalempe@redhat.com>
+From: Jan Kara <jack@suse.cz>
 
-commit c2a88e8bdf5f6239948d75283d0ae7e0c7945b03 upstream.
+commit 404615d7f1dcd4cca200e9a7a9df3a1dcae1dd62 upstream.
 
-dmt_mode is allocated and never freed in this function.
-It was found with the ast driver, but most drivers using generic fbdev
-setup are probably affected.
+Ext2 has fields in superblock reserved for subblock allocation support.
+However that never landed. Drop the many years dead code.
 
-This fixes the following kmemleak report:
-  backtrace:
-    [<00000000b391296d>] drm_mode_duplicate+0x45/0x220 [drm]
-    [<00000000e45bb5b3>] drm_client_target_cloned.constprop.0+0x27b/0x480 [drm]
-    [<00000000ed2d3a37>] drm_client_modeset_probe+0x6bd/0xf50 [drm]
-    [<0000000010e5cc9d>] __drm_fb_helper_initial_config_and_unlock+0xb4/0x2c0 [drm_kms_helper]
-    [<00000000909f82ca>] drm_fbdev_client_hotplug+0x2bc/0x4d0 [drm_kms_helper]
-    [<00000000063a69aa>] drm_client_register+0x169/0x240 [drm]
-    [<00000000a8c61525>] ast_pci_probe+0x142/0x190 [ast]
-    [<00000000987f19bb>] local_pci_probe+0xdc/0x180
-    [<000000004fca231b>] work_for_cpu_fn+0x4e/0xa0
-    [<0000000000b85301>] process_one_work+0x8b7/0x1540
-    [<000000003375b17c>] worker_thread+0x70a/0xed0
-    [<00000000b0d43cd9>] kthread+0x29f/0x340
-    [<000000008d770833>] ret_from_fork+0x1f/0x30
-unreferenced object 0xff11000333089a00 (size 128):
-
-cc: <stable@vger.kernel.org>
-Fixes: 1d42bbc8f7f9 ("drm/fbdev: fix cloning on fbcon")
-Reported-by: Zhang Yi <yizhan@redhat.com>
-Signed-off-by: Jocelyn Falempe <jfalempe@redhat.com>
-Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
-Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230711092203.68157-2-jfalempe@redhat.com
-Signed-off-by: Jocelyn Falempe <jfalempe@redhat.com>
+Reported-by: syzbot+af5e10f73dbff48f70af@syzkaller.appspotmail.com
+Signed-off-by: Jan Kara <jack@suse.cz>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/drm_fb_helper.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ fs/ext2/ext2.h  |   12 ------------
+ fs/ext2/super.c |   23 ++++-------------------
+ 2 files changed, 4 insertions(+), 31 deletions(-)
 
---- a/drivers/gpu/drm/drm_fb_helper.c
-+++ b/drivers/gpu/drm/drm_fb_helper.c
-@@ -2112,6 +2112,9 @@ static bool drm_target_cloned(struct drm
- 	can_clone = true;
- 	dmt_mode = drm_mode_find_dmt(fb_helper->dev, 1024, 768, 60, false);
+--- a/fs/ext2/ext2.h
++++ b/fs/ext2/ext2.h
+@@ -70,10 +70,7 @@ struct mb_cache;
+  * second extended-fs super-block data in memory
+  */
+ struct ext2_sb_info {
+-	unsigned long s_frag_size;	/* Size of a fragment in bytes */
+-	unsigned long s_frags_per_block;/* Number of fragments per block */
+ 	unsigned long s_inodes_per_block;/* Number of inodes per block */
+-	unsigned long s_frags_per_group;/* Number of fragments in a group */
+ 	unsigned long s_blocks_per_group;/* Number of blocks in a group */
+ 	unsigned long s_inodes_per_group;/* Number of inodes in a group */
+ 	unsigned long s_itb_per_group;	/* Number of inode table blocks per group */
+@@ -188,15 +185,6 @@ static inline struct ext2_sb_info *EXT2_
+ #define EXT2_FIRST_INO(s)		(EXT2_SB(s)->s_first_ino)
  
-+	if (!dmt_mode)
-+		goto fail;
-+
- 	drm_fb_helper_for_each_connector(fb_helper, i) {
- 		if (!enabled[i])
- 			continue;
-@@ -2124,11 +2127,13 @@ static bool drm_target_cloned(struct drm
- 		if (!modes[i])
- 			can_clone = false;
+ /*
+- * Macro-instructions used to manage fragments
+- */
+-#define EXT2_MIN_FRAG_SIZE		1024
+-#define	EXT2_MAX_FRAG_SIZE		4096
+-#define EXT2_MIN_FRAG_LOG_SIZE		  10
+-#define EXT2_FRAG_SIZE(s)		(EXT2_SB(s)->s_frag_size)
+-#define EXT2_FRAGS_PER_BLOCK(s)		(EXT2_SB(s)->s_frags_per_block)
+-
+-/*
+  * Structure of a blocks group descriptor
+  */
+ struct ext2_group_desc
+--- a/fs/ext2/super.c
++++ b/fs/ext2/super.c
+@@ -670,10 +670,9 @@ static int ext2_setup_super (struct supe
+ 		es->s_max_mnt_count = cpu_to_le16(EXT2_DFL_MAX_MNT_COUNT);
+ 	le16_add_cpu(&es->s_mnt_count, 1);
+ 	if (test_opt (sb, DEBUG))
+-		ext2_msg(sb, KERN_INFO, "%s, %s, bs=%lu, fs=%lu, gc=%lu, "
++		ext2_msg(sb, KERN_INFO, "%s, %s, bs=%lu, gc=%lu, "
+ 			"bpg=%lu, ipg=%lu, mo=%04lx]",
+ 			EXT2FS_VERSION, EXT2FS_DATE, sb->s_blocksize,
+-			sbi->s_frag_size,
+ 			sbi->s_groups_count,
+ 			EXT2_BLOCKS_PER_GROUP(sb),
+ 			EXT2_INODES_PER_GROUP(sb),
+@@ -1012,14 +1011,7 @@ static int ext2_fill_super(struct super_
+ 		}
  	}
-+	kfree(dmt_mode);
  
- 	if (can_clone) {
- 		DRM_DEBUG_KMS("can clone using 1024x768\n");
- 		return true;
+-	sbi->s_frag_size = EXT2_MIN_FRAG_SIZE <<
+-				   le32_to_cpu(es->s_log_frag_size);
+-	if (sbi->s_frag_size == 0)
+-		goto cantfind_ext2;
+-	sbi->s_frags_per_block = sb->s_blocksize / sbi->s_frag_size;
+-
+ 	sbi->s_blocks_per_group = le32_to_cpu(es->s_blocks_per_group);
+-	sbi->s_frags_per_group = le32_to_cpu(es->s_frags_per_group);
+ 	sbi->s_inodes_per_group = le32_to_cpu(es->s_inodes_per_group);
+ 
+ 	sbi->s_inodes_per_block = sb->s_blocksize / EXT2_INODE_SIZE(sb);
+@@ -1045,11 +1037,10 @@ static int ext2_fill_super(struct super_
+ 		goto failed_mount;
  	}
-+fail:
- 	DRM_INFO("kms: can't enable cloning when we probably wanted to.\n");
- 	return false;
- }
+ 
+-	if (sb->s_blocksize != sbi->s_frag_size) {
++	if (es->s_log_frag_size != es->s_log_block_size) {
+ 		ext2_msg(sb, KERN_ERR,
+-			"error: fragsize %lu != blocksize %lu"
+-			"(not supported yet)",
+-			sbi->s_frag_size, sb->s_blocksize);
++			"error: fragsize log %u != blocksize log %u",
++			le32_to_cpu(es->s_log_frag_size), sb->s_blocksize_bits);
+ 		goto failed_mount;
+ 	}
+ 
+@@ -1059,12 +1050,6 @@ static int ext2_fill_super(struct super_
+ 			sbi->s_blocks_per_group);
+ 		goto failed_mount;
+ 	}
+-	if (sbi->s_frags_per_group > sb->s_blocksize * 8) {
+-		ext2_msg(sb, KERN_ERR,
+-			"error: #fragments per group too big: %lu",
+-			sbi->s_frags_per_group);
+-		goto failed_mount;
+-	}
+ 	if (sbi->s_inodes_per_group < sbi->s_inodes_per_block ||
+ 	    sbi->s_inodes_per_group > sb->s_blocksize * 8) {
+ 		ext2_msg(sb, KERN_ERR,
 
 
