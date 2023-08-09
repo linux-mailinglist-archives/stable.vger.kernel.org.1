@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2FE66775916
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:57:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E427A775D88
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:38:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232782AbjHIK5h (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 06:57:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55388 "EHLO
+        id S234130AbjHILij (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:38:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33606 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232755AbjHIK5f (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:57:35 -0400
+        with ESMTP id S234132AbjHILii (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:38:38 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D002A2106
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:57:30 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6FB821FD2
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:38:38 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 705B56238A
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:57:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81CBDC433B8;
-        Wed,  9 Aug 2023 10:57:29 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0E705635B7
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:38:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B5B7C433C7;
+        Wed,  9 Aug 2023 11:38:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691578649;
-        bh=VyamkGxHw20EZnr6NfjS7vn1NEbDOapFJzrIPRFpVuM=;
+        s=korg; t=1691581117;
+        bh=klIyRPhZk1qjMfAf/bEyH2s8w7OPj8rpn0B/fHo3njE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=tdkb0o5NLt0gYHKtFKJmV9z3E48n7MEKsq2kImypIF36DybGoSDEdcm4EZMbKmqf1
-         5owFQb4qu3WiQ4C9ydE9+1Up0kIHB9ubYJu3vrqk/Q8Kc2hreiSTqocd14UCWmqleg
-         HeBpMRPHA6oEFScQ/kXM/V2uRAdEBkS9YWSo0gk8=
+        b=KabHQ0M75hTc1Ch8gAJOKcsJVEvIHORmgLky2MKsoWxiirNn4CBnLxkwP9WcXBw0P
+         s57w44lkKI2zfgXNni7KFlrc+OplnlNBouMJHAjijHQd2z0sOiOenXoxzPvbROb5oj
+         lFRhllVnpT+44QeXLC7OJ7mgyv5f0c8IL0+Ac/sY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Mateusz Guzik <mjguzik@gmail.com>,
-        Christian Brauner <brauner@kernel.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH 6.1 099/127] file: reinstate f_pos locking optimization for regular files
+        patches@lists.linux.dev, stable <stable@kernel.org>,
+        Zhang Shurong <zhang_shurong@foxmail.com>,
+        Dan Carpenter <dan.carpenter@linaro.org>
+Subject: [PATCH 5.10 084/201] staging: ks7010: potential buffer overflow in ks_wlan_set_encode_ext()
 Date:   Wed,  9 Aug 2023 12:41:26 +0200
-Message-ID: <20230809103639.904565867@linuxfoundation.org>
+Message-ID: <20230809103646.617931408@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103636.615294317@linuxfoundation.org>
-References: <20230809103636.615294317@linuxfoundation.org>
+In-Reply-To: <20230809103643.799166053@linuxfoundation.org>
+References: <20230809103643.799166053@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,64 +55,37 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Linus Torvalds <torvalds@linux-foundation.org>
+From: Zhang Shurong <zhang_shurong@foxmail.com>
 
-commit 797964253d358cf8d705614dda394dbe30120223 upstream.
+commit 5f1c7031e044cb2fba82836d55cc235e2ad619dc upstream.
 
-In commit 20ea1e7d13c1 ("file: always lock position for
-FMODE_ATOMIC_POS") we ended up always taking the file pos lock, because
-pidfd_getfd() could get a reference to the file even when it didn't have
-an elevated file count due to threading of other sharing cases.
+The "exc->key_len" is a u16 that comes from the user.  If it's over
+IW_ENCODING_TOKEN_MAX (64) that could lead to memory corruption.
 
-But Mateusz Guzik reports that the extra locking is actually measurable,
-so let's re-introduce the optimization, and only force the locking for
-directory traversal.
-
-Directories need the lock for correctness reasons, while regular files
-only need it for "POSIX semantics".  Since pidfd_getfd() is about
-debuggers etc special things that are _way_ outside of POSIX, we can
-relax the rules for that case.
-
-Reported-by: Mateusz Guzik <mjguzik@gmail.com>
-Cc: Christian Brauner <brauner@kernel.org>
-Link: https://lore.kernel.org/linux-fsdevel/20230803095311.ijpvhx3fyrbkasul@f/
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Fixes: b121d84882b9 ("staging: ks7010: simplify calls to memcpy()")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Zhang Shurong <zhang_shurong@foxmail.com>
+Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://lore.kernel.org/r/tencent_5153B668C0283CAA15AA518325346E026A09@qq.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/file.c |   18 +++++++++++++++++-
- 1 file changed, 17 insertions(+), 1 deletion(-)
+ drivers/staging/ks7010/ks_wlan_net.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/fs/file.c
-+++ b/fs/file.c
-@@ -1036,12 +1036,28 @@ unsigned long __fdget_raw(unsigned int f
- 	return __fget_light(fd, 0);
- }
- 
-+/*
-+ * Try to avoid f_pos locking. We only need it if the
-+ * file is marked for FMODE_ATOMIC_POS, and it can be
-+ * accessed multiple ways.
-+ *
-+ * Always do it for directories, because pidfd_getfd()
-+ * can make a file accessible even if it otherwise would
-+ * not be, and for directories this is a correctness
-+ * issue, not a "POSIX requirement".
-+ */
-+static inline bool file_needs_f_pos_lock(struct file *file)
-+{
-+	return (file->f_mode & FMODE_ATOMIC_POS) &&
-+		(file_count(file) > 1 || S_ISDIR(file_inode(file)->i_mode));
-+}
+--- a/drivers/staging/ks7010/ks_wlan_net.c
++++ b/drivers/staging/ks7010/ks_wlan_net.c
+@@ -1584,8 +1584,10 @@ static int ks_wlan_set_encode_ext(struct
+ 			commit |= SME_WEP_FLAG;
+ 		}
+ 		if (enc->key_len) {
+-			memcpy(&key->key_val[0], &enc->key[0], enc->key_len);
+-			key->key_len = enc->key_len;
++			int key_len = clamp_val(enc->key_len, 0, IW_ENCODING_TOKEN_MAX);
 +
- unsigned long __fdget_pos(unsigned int fd)
- {
- 	unsigned long v = __fdget(fd);
- 	struct file *file = (struct file *)(v & ~3);
- 
--	if (file && (file->f_mode & FMODE_ATOMIC_POS)) {
-+	if (file && file_needs_f_pos_lock(file)) {
- 		v |= FDPUT_POS_UNLOCK;
- 		mutex_lock(&file->f_pos_lock);
- 	}
++			memcpy(&key->key_val[0], &enc->key[0], key_len);
++			key->key_len = key_len;
+ 			commit |= (SME_WEP_VAL1 << index);
+ 		}
+ 		break;
 
 
