@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 73D34775A63
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:08:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 81272775C7D
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:28:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233150AbjHILH7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:07:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46032 "EHLO
+        id S233769AbjHIL2B (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:28:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56116 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233160AbjHILH7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:07:59 -0400
+        with ESMTP id S233761AbjHIL17 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:27:59 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E350ED
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:07:58 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1BF801BFA
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:27:47 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 101726314A
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:07:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F96AC433C7;
-        Wed,  9 Aug 2023 11:07:56 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E0D3D632B7
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:27:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0067C433C7;
+        Wed,  9 Aug 2023 11:27:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691579277;
-        bh=O1pc/PUQY1F/qXJeG/7EGZmrtk6o9vw9Y2TldX8M2G4=;
+        s=korg; t=1691580466;
+        bh=bv2PSAVRbGg+3oRSYoBHnwRRW2OdEbYtYDgnpivWkmk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=VKcVo/u6mPb1LzO8bgZqYIzK1bJSK4hVXXf0F0xy9P3sAUQwdlDN8Wjye+XwaNM9+
-         k3oq1fKiVsBO8qbgfiakeLLLaWlLkKVy2FicO9UMZiZyNEPi6czZjVwIg7onMUty+v
-         F97nqKe2S1+y8Uwa0rAWOBUPZPo5fT0RuQ3hwaFg=
+        b=U7xJ3kMyHqHMeV0HEhooOG2bQpsc5VaYx2lbZfaqs7QebcQBfGcVtmjFPV8H/32VU
+         D010ZOVTgJdkdXpsc1e9MzgQKUg1AqqLToMYJqOM44AsPLTQ7Dwkx/dk+lKaehTKiP
+         RBaRT+1DU5u1cjSc9G71Nx1T6Hv3lrcaxlr847vU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, NeilBrown <neilb@suse.de>,
-        Song Liu <song@kernel.org>, Jason Baron <jbaron@akamai.com>
-Subject: [PATCH 4.14 110/204] md/raid0: add discard support for the original layout
+        patches@lists.linux.dev, Alexander Aring <aahringo@redhat.com>,
+        David Teigland <teigland@redhat.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 017/154] dlm: cleanup plock_op vs plock_xop
 Date:   Wed,  9 Aug 2023 12:40:48 +0200
-Message-ID: <20230809103646.282050591@linuxfoundation.org>
+Message-ID: <20230809103637.508216500@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103642.552405807@linuxfoundation.org>
-References: <20230809103642.552405807@linuxfoundation.org>
+In-Reply-To: <20230809103636.887175326@linuxfoundation.org>
+References: <20230809103636.887175326@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,203 +55,233 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jason Baron <jbaron@akamai.com>
+From: Alexander Aring <aahringo@redhat.com>
 
-commit e836007089ba8fdf24e636ef2b007651fb4582e6 upstream.
+[ Upstream commit bcbb4ba6c9ba81e6975b642a2cade68044cd8a66 ]
 
-We've found that using raid0 with the 'original' layout and discard
-enabled with different disk sizes (such that at least two zones are
-created) can result in data corruption. This is due to the fact that
-the discard handling in 'raid0_handle_discard()' assumes the 'alternate'
-layout. We've seen this corruption using ext4 but other filesystems are
-likely susceptible as well.
+Lately the different casting between plock_op and plock_xop and list
+holders which was involved showed some issues which were hard to see.
+This patch removes the "plock_xop" structure and introduces a
+"struct plock_async_data". This structure will be set in "struct plock_op"
+in case of asynchronous lock handling as the original "plock_xop" was
+made for. There is no need anymore to cast pointers around for
+additional fields in case of asynchronous lock handling.  As disadvantage
+another allocation was introduces but only needed in the asynchronous
+case which is currently only used in combination with nfs lockd.
 
-More specifically, while multiple zones are necessary to create the
-corruption, the corruption may not occur with multiple zones if they
-layout in such a way the layout matches what the 'alternate' layout
-would have produced. Thus, not all raid0 devices with the 'original'
-layout, different size disks and discard enabled will encounter this
-corruption.
-
-The 3.14 kernel inadvertently changed the raid0 disk layout for different
-size disks. Thus, running a pre-3.14 kernel and post-3.14 kernel on the
-same raid0 array could corrupt data. This lead to the creation of the
-'original' layout (to match the pre-3.14 layout) and the 'alternate' layout
-(to match the post 3.14 layout) in the 5.4 kernel time frame and an option
-to tell the kernel which layout to use (since it couldn't be autodetected).
-However, when the 'original' layout was added back to 5.4 discard support
-for the 'original' layout was not added leading this issue.
-
-I've been able to reliably reproduce the corruption with the following
-test case:
-
-1. create raid0 array with different size disks using original layout
-2. mkfs
-3. mount -o discard
-4. create lots of files
-5. remove 1/2 the files
-6. fstrim -a (or just the mount point for the raid0 array)
-7. umount
-8. fsck -fn /dev/md0 (spews all sorts of corruptions)
-
-Let's fix this by adding proper discard support to the 'original' layout.
-The fix 'maps' the 'original' layout disks to the order in which they are
-read/written such that we can compare the disks in the same way that the
-current 'alternate' layout does. A 'disk_shift' field is added to
-'struct strip_zone'. This could be computed on the fly in
-raid0_handle_discard() but by adding this field, we save some computation
-in the discard path.
-
-Note we could also potentially fix this by re-ordering the disks in the
-zones that follow the first one, and then always read/writing them using
-the 'alternate' layout. However, that is seen as a more substantial change,
-and we are attempting the least invasive fix at this time to remedy the
-corruption.
-
-I've verified the change using the reproducer mentioned above. Typically,
-the corruption is seen after less than 3 iterations, while the patch has
-run 500+ iterations.
-
-Cc: NeilBrown <neilb@suse.de>
-Cc: Song Liu <song@kernel.org>
-Fixes: c84a1372df92 ("md/raid0: avoid RAID0 data corruption due to layout confusion.")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jason Baron <jbaron@akamai.com>
-Signed-off-by: Song Liu <song@kernel.org>
-Link: https://lore.kernel.org/r/20230623180523.1901230-1-jbaron@akamai.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Alexander Aring <aahringo@redhat.com>
+Signed-off-by: David Teigland <teigland@redhat.com>
+Stable-dep-of: 59e45c758ca1 ("fs: dlm: interrupt posix locks only when process is killed")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/raid0.c |   62 ++++++++++++++++++++++++++++++++++++++++++++++-------
- drivers/md/raid0.h |    1 
- 2 files changed, 55 insertions(+), 8 deletions(-)
+ fs/dlm/plock.c | 77 ++++++++++++++++++++++++++++++--------------------
+ 1 file changed, 46 insertions(+), 31 deletions(-)
 
---- a/drivers/md/raid0.c
-+++ b/drivers/md/raid0.c
-@@ -294,6 +294,18 @@ static int create_strip_zones(struct mdd
- 		goto abort;
- 	}
+diff --git a/fs/dlm/plock.c b/fs/dlm/plock.c
+index edce0b25cd90e..e70e23eca03ec 100644
+--- a/fs/dlm/plock.c
++++ b/fs/dlm/plock.c
+@@ -19,20 +19,20 @@ static struct list_head recv_list;
+ static wait_queue_head_t send_wq;
+ static wait_queue_head_t recv_wq;
  
-+	if (conf->layout == RAID0_ORIG_LAYOUT) {
-+		for (i = 1; i < conf->nr_strip_zones; i++) {
-+			sector_t first_sector = conf->strip_zone[i-1].zone_end;
-+
-+			sector_div(first_sector, mddev->chunk_sectors);
-+			zone = conf->strip_zone + i;
-+			/* disk_shift is first disk index used in the zone */
-+			zone->disk_shift = sector_div(first_sector,
-+						      zone->nb_dev);
-+		}
-+	}
-+
- 	pr_debug("md/raid0:%s: done.\n", mdname(mddev));
- 	*private_conf = conf;
- 
-@@ -480,6 +492,20 @@ static inline int is_io_in_chunk_boundar
- 	}
- }
- 
-+/*
-+ * Convert disk_index to the disk order in which it is read/written.
-+ *  For example, if we have 4 disks, they are numbered 0,1,2,3. If we
-+ *  write the disks starting at disk 3, then the read/write order would
-+ *  be disk 3, then 0, then 1, and then disk 2 and we want map_disk_shift()
-+ *  to map the disks as follows 0,1,2,3 => 1,2,3,0. So disk 0 would map
-+ *  to 1, 1 to 2, 2 to 3, and 3 to 0. That way we can compare disks in
-+ *  that 'output' space to understand the read/write disk ordering.
-+ */
-+static int map_disk_shift(int disk_index, int num_disks, int disk_shift)
-+{
-+	return ((disk_index + num_disks - disk_shift) % num_disks);
-+}
-+
- static void raid0_handle_discard(struct mddev *mddev, struct bio *bio)
- {
- 	struct r0conf *conf = mddev->private;
-@@ -493,7 +519,9 @@ static void raid0_handle_discard(struct
- 	sector_t end_disk_offset;
- 	unsigned int end_disk_index;
- 	unsigned int disk;
-+	sector_t orig_start, orig_end;
- 
-+	orig_start = start;
- 	zone = find_zone(conf, &start);
- 
- 	if (bio_end_sector(bio) > zone->zone_end) {
-@@ -507,6 +535,7 @@ static void raid0_handle_discard(struct
- 	} else
- 		end = bio_end_sector(bio);
- 
-+	orig_end = end;
- 	if (zone != conf->strip_zone)
- 		end = end - zone[-1].zone_end;
- 
-@@ -518,13 +547,26 @@ static void raid0_handle_discard(struct
- 	last_stripe_index = end;
- 	sector_div(last_stripe_index, stripe_size);
- 
--	start_disk_index = (int)(start - first_stripe_index * stripe_size) /
--		mddev->chunk_sectors;
-+	/* In the first zone the original and alternate layouts are the same */
-+	if ((conf->layout == RAID0_ORIG_LAYOUT) && (zone != conf->strip_zone)) {
-+		sector_div(orig_start, mddev->chunk_sectors);
-+		start_disk_index = sector_div(orig_start, zone->nb_dev);
-+		start_disk_index = map_disk_shift(start_disk_index,
-+						  zone->nb_dev,
-+						  zone->disk_shift);
-+		sector_div(orig_end, mddev->chunk_sectors);
-+		end_disk_index = sector_div(orig_end, zone->nb_dev);
-+		end_disk_index = map_disk_shift(end_disk_index,
-+						zone->nb_dev, zone->disk_shift);
-+	} else {
-+		start_disk_index = (int)(start - first_stripe_index * stripe_size) /
-+			mddev->chunk_sectors;
-+		end_disk_index = (int)(end - last_stripe_index * stripe_size) /
-+			mddev->chunk_sectors;
-+	}
- 	start_disk_offset = ((int)(start - first_stripe_index * stripe_size) %
- 		mddev->chunk_sectors) +
- 		first_stripe_index * mddev->chunk_sectors;
--	end_disk_index = (int)(end - last_stripe_index * stripe_size) /
--		mddev->chunk_sectors;
- 	end_disk_offset = ((int)(end - last_stripe_index * stripe_size) %
- 		mddev->chunk_sectors) +
- 		last_stripe_index * mddev->chunk_sectors;
-@@ -533,18 +575,22 @@ static void raid0_handle_discard(struct
- 		sector_t dev_start, dev_end;
- 		struct bio *discard_bio = NULL;
- 		struct md_rdev *rdev;
-+		int compare_disk;
-+
-+		compare_disk = map_disk_shift(disk, zone->nb_dev,
-+					      zone->disk_shift);
- 
--		if (disk < start_disk_index)
-+		if (compare_disk < start_disk_index)
- 			dev_start = (first_stripe_index + 1) *
- 				mddev->chunk_sectors;
--		else if (disk > start_disk_index)
-+		else if (compare_disk > start_disk_index)
- 			dev_start = first_stripe_index * mddev->chunk_sectors;
- 		else
- 			dev_start = start_disk_offset;
- 
--		if (disk < end_disk_index)
-+		if (compare_disk < end_disk_index)
- 			dev_end = (last_stripe_index + 1) * mddev->chunk_sectors;
--		else if (disk > end_disk_index)
-+		else if (compare_disk > end_disk_index)
- 			dev_end = last_stripe_index * mddev->chunk_sectors;
- 		else
- 			dev_end = end_disk_offset;
---- a/drivers/md/raid0.h
-+++ b/drivers/md/raid0.h
-@@ -6,6 +6,7 @@ struct strip_zone {
- 	sector_t zone_end;	/* Start of the next zone (in sectors) */
- 	sector_t dev_start;	/* Zone offset in real dev (in sectors) */
- 	int	 nb_dev;	/* # of devices attached to the zone */
-+	int	 disk_shift;	/* start disk for the original layout */
+-struct plock_op {
+-	struct list_head list;
+-	int done;
+-	struct dlm_plock_info info;
+-	int (*callback)(struct file_lock *fl, int result);
+-};
+-
+-struct plock_xop {
+-	struct plock_op xop;
++struct plock_async_data {
+ 	void *fl;
+ 	void *file;
+ 	struct file_lock flc;
++	int (*callback)(struct file_lock *fl, int result);
  };
  
- /* Linux 3.14 (20d0189b101) made an unintended change to
++struct plock_op {
++	struct list_head list;
++	int done;
++	struct dlm_plock_info info;
++	/* if set indicates async handling */
++	struct plock_async_data *data;
++};
+ 
+ static inline void set_version(struct dlm_plock_info *info)
+ {
+@@ -58,6 +58,12 @@ static int check_version(struct dlm_plock_info *info)
+ 	return 0;
+ }
+ 
++static void dlm_release_plock_op(struct plock_op *op)
++{
++	kfree(op->data);
++	kfree(op);
++}
++
+ static void send_op(struct plock_op *op)
+ {
+ 	set_version(&op->info);
+@@ -101,22 +107,21 @@ static void do_unlock_close(struct dlm_ls *ls, u64 number,
+ int dlm_posix_lock(dlm_lockspace_t *lockspace, u64 number, struct file *file,
+ 		   int cmd, struct file_lock *fl)
+ {
++	struct plock_async_data *op_data;
+ 	struct dlm_ls *ls;
+ 	struct plock_op *op;
+-	struct plock_xop *xop;
+ 	int rv;
+ 
+ 	ls = dlm_find_lockspace_local(lockspace);
+ 	if (!ls)
+ 		return -EINVAL;
+ 
+-	xop = kzalloc(sizeof(*xop), GFP_NOFS);
+-	if (!xop) {
++	op = kzalloc(sizeof(*op), GFP_NOFS);
++	if (!op) {
+ 		rv = -ENOMEM;
+ 		goto out;
+ 	}
+ 
+-	op = &xop->xop;
+ 	op->info.optype		= DLM_PLOCK_OP_LOCK;
+ 	op->info.pid		= fl->fl_pid;
+ 	op->info.ex		= (fl->fl_type == F_WRLCK);
+@@ -125,22 +130,32 @@ int dlm_posix_lock(dlm_lockspace_t *lockspace, u64 number, struct file *file,
+ 	op->info.number		= number;
+ 	op->info.start		= fl->fl_start;
+ 	op->info.end		= fl->fl_end;
++	/* async handling */
+ 	if (fl->fl_lmops && fl->fl_lmops->lm_grant) {
++		op_data = kzalloc(sizeof(*op_data), GFP_NOFS);
++		if (!op_data) {
++			dlm_release_plock_op(op);
++			rv = -ENOMEM;
++			goto out;
++		}
++
+ 		/* fl_owner is lockd which doesn't distinguish
+ 		   processes on the nfs client */
+ 		op->info.owner	= (__u64) fl->fl_pid;
+-		op->callback	= fl->fl_lmops->lm_grant;
+-		locks_init_lock(&xop->flc);
+-		locks_copy_lock(&xop->flc, fl);
+-		xop->fl		= fl;
+-		xop->file	= file;
++		op_data->callback = fl->fl_lmops->lm_grant;
++		locks_init_lock(&op_data->flc);
++		locks_copy_lock(&op_data->flc, fl);
++		op_data->fl		= fl;
++		op_data->file	= file;
++
++		op->data = op_data;
+ 	} else {
+ 		op->info.owner	= (__u64)(long) fl->fl_owner;
+ 	}
+ 
+ 	send_op(op);
+ 
+-	if (!op->callback) {
++	if (!op->data) {
+ 		rv = wait_event_interruptible(recv_wq, (op->done != 0));
+ 		if (rv == -ERESTARTSYS) {
+ 			log_debug(ls, "dlm_posix_lock: wait killed %llx",
+@@ -148,7 +163,7 @@ int dlm_posix_lock(dlm_lockspace_t *lockspace, u64 number, struct file *file,
+ 			spin_lock(&ops_lock);
+ 			list_del(&op->list);
+ 			spin_unlock(&ops_lock);
+-			kfree(xop);
++			dlm_release_plock_op(op);
+ 			do_unlock_close(ls, number, file, fl);
+ 			goto out;
+ 		}
+@@ -173,7 +188,7 @@ int dlm_posix_lock(dlm_lockspace_t *lockspace, u64 number, struct file *file,
+ 				  (unsigned long long)number);
+ 	}
+ 
+-	kfree(xop);
++	dlm_release_plock_op(op);
+ out:
+ 	dlm_put_lockspace(ls);
+ 	return rv;
+@@ -183,11 +198,11 @@ EXPORT_SYMBOL_GPL(dlm_posix_lock);
+ /* Returns failure iff a successful lock operation should be canceled */
+ static int dlm_plock_callback(struct plock_op *op)
+ {
++	struct plock_async_data *op_data = op->data;
+ 	struct file *file;
+ 	struct file_lock *fl;
+ 	struct file_lock *flc;
+ 	int (*notify)(struct file_lock *fl, int result) = NULL;
+-	struct plock_xop *xop = (struct plock_xop *)op;
+ 	int rv = 0;
+ 
+ 	spin_lock(&ops_lock);
+@@ -199,10 +214,10 @@ static int dlm_plock_callback(struct plock_op *op)
+ 	spin_unlock(&ops_lock);
+ 
+ 	/* check if the following 2 are still valid or make a copy */
+-	file = xop->file;
+-	flc = &xop->flc;
+-	fl = xop->fl;
+-	notify = op->callback;
++	file = op_data->file;
++	flc = &op_data->flc;
++	fl = op_data->fl;
++	notify = op_data->callback;
+ 
+ 	if (op->info.rv) {
+ 		notify(fl, op->info.rv);
+@@ -233,7 +248,7 @@ static int dlm_plock_callback(struct plock_op *op)
+ 	}
+ 
+ out:
+-	kfree(xop);
++	dlm_release_plock_op(op);
+ 	return rv;
+ }
+ 
+@@ -303,7 +318,7 @@ int dlm_posix_unlock(dlm_lockspace_t *lockspace, u64 number, struct file *file,
+ 		rv = 0;
+ 
+ out_free:
+-	kfree(op);
++	dlm_release_plock_op(op);
+ out:
+ 	dlm_put_lockspace(ls);
+ 	fl->fl_flags = fl_flags;
+@@ -371,7 +386,7 @@ int dlm_posix_get(dlm_lockspace_t *lockspace, u64 number, struct file *file,
+ 		rv = 0;
+ 	}
+ 
+-	kfree(op);
++	dlm_release_plock_op(op);
+ out:
+ 	dlm_put_lockspace(ls);
+ 	return rv;
+@@ -407,7 +422,7 @@ static ssize_t dev_read(struct file *file, char __user *u, size_t count,
+ 	   (the process did not make an unlock call). */
+ 
+ 	if (op->info.flags & DLM_PLOCK_FL_CLOSE)
+-		kfree(op);
++		dlm_release_plock_op(op);
+ 
+ 	if (copy_to_user(u, &info, sizeof(info)))
+ 		return -EFAULT;
+@@ -439,7 +454,7 @@ static ssize_t dev_write(struct file *file, const char __user *u, size_t count,
+ 		    op->info.owner == info.owner) {
+ 			list_del_init(&op->list);
+ 			memcpy(&op->info, &info, sizeof(info));
+-			if (op->callback)
++			if (op->data)
+ 				do_callback = 1;
+ 			else
+ 				op->done = 1;
+-- 
+2.39.2
+
 
 
