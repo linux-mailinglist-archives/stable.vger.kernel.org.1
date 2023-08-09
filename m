@@ -2,46 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 159CD7758EF
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:56:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 24887775953
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:59:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232499AbjHIK4J (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 06:56:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35014 "EHLO
+        id S232824AbjHIK73 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 06:59:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53332 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232636AbjHIKzz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:55:55 -0400
+        with ESMTP id S232829AbjHIK71 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:59:27 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 790DF30DC
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:55:50 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E0A01FFE
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:59:27 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0E22762E4A
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:55:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AAE6C433C9;
-        Wed,  9 Aug 2023 10:55:48 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1584962DC8
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:59:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 271E9C433C8;
+        Wed,  9 Aug 2023 10:59:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691578549;
-        bh=yFK9MqHpniH5+YMgJlsLI+kV6d6L3e0BBwr+RHpd1QA=;
+        s=korg; t=1691578766;
+        bh=GwHaJBZ0fx9Pxm2yPctKMdnVlFWLNg+NmChJh2szrfI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=LoYBtaMN5X8MoPqzRO3j7QUO7yjmWFFxG+QlAa2xnlorRcQl215IME+ylBUWQEQD7
-         +VwUKcsRQazzbDkjNimH2jDSuR44C7QfpshhKHIHFFmA0znaV9fx4Vw/j188GXqLMn
-         EheI8+cD8fERg6COHXVPaAn01CVrMJbeSnN7fOK4=
+        b=BhuM0ZiVXN9MfDz5CWMRO1qBgkBxhIjHp81CZy416wFYnvvMm1TSvobTz6lRq1dIJ
+         kN/fR/WQ0/4JLL9ONvuwtrPLlm2kXAtN5WAYhNiYT3189iB7eGp+76GAFNzNUPUmsg
+         kgetEbMpZL5VFXHmYo6MEiNals4LMr1NaO7Qk9iI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hou Tao <houtao1@huawei.com>,
-        Pu Lehui <pulehui@huawei.com>,
-        Jesper Dangaard Brouer <hawk@kernel.org>,
-        Martin KaFai Lau <martin.lau@kernel.org>
-Subject: [PATCH 6.1 098/127] bpf, cpumap: Make sure kthread is running before map update returns
+        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
+        David Ahern <dsahern@kernel.org>,
+        Kuniyuki Iwashima <kuniyu@amazon.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 49/92] tcp_metrics: annotate data-races around tm->tcpm_stamp
 Date:   Wed,  9 Aug 2023 12:41:25 +0200
-Message-ID: <20230809103639.875099551@linuxfoundation.org>
+Message-ID: <20230809103635.291390858@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103636.615294317@linuxfoundation.org>
-References: <20230809103636.615294317@linuxfoundation.org>
+In-Reply-To: <20230809103633.485906560@linuxfoundation.org>
+References: <20230809103633.485906560@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,137 +57,88 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Hou Tao <houtao1@huawei.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 640a604585aa30f93e39b17d4d6ba69fcb1e66c9 upstream.
+[ Upstream commit 949ad62a5d5311d36fce2e14fe5fed3f936da51c ]
 
-The following warning was reported when running stress-mode enabled
-xdp_redirect_cpu with some RT threads:
+tm->tcpm_stamp can be read or written locklessly.
 
-  ------------[ cut here ]------------
-  WARNING: CPU: 4 PID: 65 at kernel/bpf/cpumap.c:135
-  CPU: 4 PID: 65 Comm: kworker/4:1 Not tainted 6.5.0-rc2+ #1
-  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996)
-  Workqueue: events cpu_map_kthread_stop
-  RIP: 0010:put_cpu_map_entry+0xda/0x220
-  ......
-  Call Trace:
-   <TASK>
-   ? show_regs+0x65/0x70
-   ? __warn+0xa5/0x240
-   ......
-   ? put_cpu_map_entry+0xda/0x220
-   cpu_map_kthread_stop+0x41/0x60
-   process_one_work+0x6b0/0xb80
-   worker_thread+0x96/0x720
-   kthread+0x1a5/0x1f0
-   ret_from_fork+0x3a/0x70
-   ret_from_fork_asm+0x1b/0x30
-   </TASK>
+Add needed READ_ONCE()/WRITE_ONCE() to document this.
 
-The root cause is the same as commit 436901649731 ("bpf: cpumap: Fix memory
-leak in cpu_map_update_elem"). The kthread is stopped prematurely by
-kthread_stop() in cpu_map_kthread_stop(), and kthread() doesn't call
-cpu_map_kthread_run() at all but XDP program has already queued some
-frames or skbs into ptr_ring. So when __cpu_map_ring_cleanup() checks
-the ptr_ring, it will find it was not emptied and report a warning.
+Also constify tcpm_check_stamp() dst argument.
 
-An alternative fix is to use __cpu_map_ring_cleanup() to drop these
-pending frames or skbs when kthread_stop() returns -EINTR, but it may
-confuse the user, because these frames or skbs have been handled
-correctly by XDP program. So instead of dropping these frames or skbs,
-just make sure the per-cpu kthread is running before
-__cpu_map_entry_alloc() returns.
-
-After apply the fix, the error handle for kthread_stop() will be
-unnecessary because it will always return 0, so just remove it.
-
-Fixes: 6710e1126934 ("bpf: introduce new bpf cpu map type BPF_MAP_TYPE_CPUMAP")
-Signed-off-by: Hou Tao <houtao1@huawei.com>
-Reviewed-by: Pu Lehui <pulehui@huawei.com>
-Acked-by: Jesper Dangaard Brouer <hawk@kernel.org>
-Link: https://lore.kernel.org/r/20230729095107.1722450-2-houtao@huaweicloud.com
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 51c5d0c4b169 ("tcp: Maintain dynamic metrics in local cache.")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Link: https://lore.kernel.org/r/20230802131500.1478140-3-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/cpumap.c |   21 +++++++++++----------
- 1 file changed, 11 insertions(+), 10 deletions(-)
+ net/ipv4/tcp_metrics.c | 19 +++++++++++++------
+ 1 file changed, 13 insertions(+), 6 deletions(-)
 
---- a/kernel/bpf/cpumap.c
-+++ b/kernel/bpf/cpumap.c
-@@ -26,6 +26,7 @@
- #include <linux/workqueue.h>
- #include <linux/kthread.h>
- #include <linux/capability.h>
-+#include <linux/completion.h>
- #include <trace/events/xdp.h>
- #include <linux/btf_ids.h>
+diff --git a/net/ipv4/tcp_metrics.c b/net/ipv4/tcp_metrics.c
+index 6a06d2e0e11db..cac6548340906 100644
+--- a/net/ipv4/tcp_metrics.c
++++ b/net/ipv4/tcp_metrics.c
+@@ -97,7 +97,7 @@ static void tcpm_suck_dst(struct tcp_metrics_block *tm,
+ 	u32 msval;
+ 	u32 val;
  
-@@ -71,6 +72,7 @@ struct bpf_cpu_map_entry {
- 	struct rcu_head rcu;
+-	tm->tcpm_stamp = jiffies;
++	WRITE_ONCE(tm->tcpm_stamp, jiffies);
  
- 	struct work_struct kthread_stop_wq;
-+	struct completion kthread_running;
- };
+ 	val = 0;
+ 	if (dst_metric_locked(dst, RTAX_RTT))
+@@ -131,9 +131,15 @@ static void tcpm_suck_dst(struct tcp_metrics_block *tm,
  
- struct bpf_cpu_map {
-@@ -164,7 +166,6 @@ static void put_cpu_map_entry(struct bpf
- static void cpu_map_kthread_stop(struct work_struct *work)
+ #define TCP_METRICS_TIMEOUT		(60 * 60 * HZ)
+ 
+-static void tcpm_check_stamp(struct tcp_metrics_block *tm, struct dst_entry *dst)
++static void tcpm_check_stamp(struct tcp_metrics_block *tm,
++			     const struct dst_entry *dst)
  {
- 	struct bpf_cpu_map_entry *rcpu;
--	int err;
- 
- 	rcpu = container_of(work, struct bpf_cpu_map_entry, kthread_stop_wq);
- 
-@@ -174,14 +175,7 @@ static void cpu_map_kthread_stop(struct
- 	rcu_barrier();
- 
- 	/* kthread_stop will wake_up_process and wait for it to complete */
--	err = kthread_stop(rcpu->kthread);
--	if (err) {
--		/* kthread_stop may be called before cpu_map_kthread_run
--		 * is executed, so we need to release the memory related
--		 * to rcpu.
--		 */
--		put_cpu_map_entry(rcpu);
--	}
-+	kthread_stop(rcpu->kthread);
- }
- 
- static void cpu_map_bpf_prog_run_skb(struct bpf_cpu_map_entry *rcpu,
-@@ -309,11 +303,11 @@ static int cpu_map_bpf_prog_run(struct b
- 	return nframes;
- }
- 
--
- static int cpu_map_kthread_run(void *data)
- {
- 	struct bpf_cpu_map_entry *rcpu = data;
- 
-+	complete(&rcpu->kthread_running);
- 	set_current_state(TASK_INTERRUPTIBLE);
- 
- 	/* When kthread gives stop order, then rcpu have been disconnected
-@@ -478,6 +472,7 @@ __cpu_map_entry_alloc(struct bpf_map *ma
- 		goto free_ptr_ring;
- 
- 	/* Setup kthread */
-+	init_completion(&rcpu->kthread_running);
- 	rcpu->kthread = kthread_create_on_node(cpu_map_kthread_run, rcpu, numa,
- 					       "cpumap/%d/map:%d", cpu,
- 					       map->id);
-@@ -491,6 +486,12 @@ __cpu_map_entry_alloc(struct bpf_map *ma
- 	kthread_bind(rcpu->kthread, cpu);
- 	wake_up_process(rcpu->kthread);
- 
-+	/* Make sure kthread has been running, so kthread_stop() will not
-+	 * stop the kthread prematurely and all pending frames or skbs
-+	 * will be handled by the kthread before kthread_stop() returns.
-+	 */
-+	wait_for_completion(&rcpu->kthread_running);
+-	if (tm && unlikely(time_after(jiffies, tm->tcpm_stamp + TCP_METRICS_TIMEOUT)))
++	unsigned long limit;
 +
- 	return rcpu;
++	if (!tm)
++		return;
++	limit = READ_ONCE(tm->tcpm_stamp) + TCP_METRICS_TIMEOUT;
++	if (unlikely(time_after(jiffies, limit)))
+ 		tcpm_suck_dst(tm, dst, false);
+ }
  
- free_prog:
+@@ -174,7 +180,8 @@ static struct tcp_metrics_block *tcpm_new(struct dst_entry *dst,
+ 		oldest = deref_locked(tcp_metrics_hash[hash].chain);
+ 		for (tm = deref_locked(oldest->tcpm_next); tm;
+ 		     tm = deref_locked(tm->tcpm_next)) {
+-			if (time_before(tm->tcpm_stamp, oldest->tcpm_stamp))
++			if (time_before(READ_ONCE(tm->tcpm_stamp),
++					READ_ONCE(oldest->tcpm_stamp)))
+ 				oldest = tm;
+ 		}
+ 		tm = oldest;
+@@ -434,7 +441,7 @@ void tcp_update_metrics(struct sock *sk)
+ 					       tp->reordering);
+ 		}
+ 	}
+-	tm->tcpm_stamp = jiffies;
++	WRITE_ONCE(tm->tcpm_stamp, jiffies);
+ out_unlock:
+ 	rcu_read_unlock();
+ }
+@@ -647,7 +654,7 @@ static int tcp_metrics_fill_info(struct sk_buff *msg,
+ 	}
+ 
+ 	if (nla_put_msecs(msg, TCP_METRICS_ATTR_AGE,
+-			  jiffies - tm->tcpm_stamp,
++			  jiffies - READ_ONCE(tm->tcpm_stamp),
+ 			  TCP_METRICS_ATTR_PAD) < 0)
+ 		goto nla_put_failure;
+ 
+-- 
+2.40.1
+
 
 
