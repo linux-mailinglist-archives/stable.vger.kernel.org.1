@@ -2,132 +2,139 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8826E775D59
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:36:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EC73A77593A
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:58:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234079AbjHILgb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:36:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51126 "EHLO
+        id S232816AbjHIK6n (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 06:58:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35420 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234082AbjHILgb (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:36:31 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4750D173A
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:36:29 -0700 (PDT)
+        with ESMTP id S232819AbjHIK6k (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:58:40 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D16A0213B
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:58:37 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D3F5B6352B
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:36:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E294FC433C9;
-        Wed,  9 Aug 2023 11:36:27 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 70D68630D6
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:58:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82A90C433C7;
+        Wed,  9 Aug 2023 10:58:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691580988;
-        bh=zYbQvoSXJftc+j4C3DJoD5vVaoqDu47gv60GVM/z4tc=;
+        s=korg; t=1691578716;
+        bh=LqfAj6TXgrvCVG67E2Iu0XiUOxKNonVzjiDz1lXHoH4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=QqHUn0IJMNa94zkrae7klzX63WFh3jQZRx4RgtAs4+tKIzqQKS1RymDruUv5eoKyQ
-         f19SCtJbnCF53WyPQqZkHIJtgDuCktsE9cvkcXh/wA+h2tmeoGv/P6n5tPYo1dXtu3
-         IC37b+bTg9ODPgKSd59th+SzZsnKWQJ3I8BVS2Rw=
+        b=wdqgaTeiz+7MAEQUd3m4WJK5VA53QQFb0IsJ81R5GnccuQ6cXOqCbnjmnw9L9LoHU
+         F9S1YsP95hj8I2qUVQiHPsaUirZeDae4g8fy07VLUjOCxAupkNSKkS33BnGkpOZTjs
+         tkQaDc2Lht8AbFViJ2/1+Am0wOpHHm4KlHmgP6MQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        syzbot+feb045d335c1fdde5bf7@syzkaller.appspotmail.com,
-        stable <stable@kernel.org>, Zqiang <qiang.zhang1211@gmail.com>,
-        Andrey Konovalov <andreyknvl@gmail.com>
-Subject: [PATCH 5.10 066/201] USB: gadget: Fix the memory leak in raw_gadget driver
+        patches@lists.linux.dev, Hou Tao <houtao1@huawei.com>,
+        Jesper Dangaard Brouer <hawk@kernel.org>,
+        Martin KaFai Lau <martin.lau@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 32/92] bpf, cpumap: Handle skb as well when clean up ptr_ring
 Date:   Wed,  9 Aug 2023 12:41:08 +0200
-Message-ID: <20230809103646.033185609@linuxfoundation.org>
+Message-ID: <20230809103634.726216023@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103643.799166053@linuxfoundation.org>
-References: <20230809103643.799166053@linuxfoundation.org>
+In-Reply-To: <20230809103633.485906560@linuxfoundation.org>
+References: <20230809103633.485906560@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Zqiang <qiang.zhang1211@gmail.com>
+From: Hou Tao <houtao1@huawei.com>
 
-commit 83e30f2bf86ef7c38fbd476ed81a88522b620628 upstream.
+[ Upstream commit 7c62b75cd1a792e14b037fa4f61f9b18914e7de1 ]
 
-Currently, increasing raw_dev->count happens before invoke the
-raw_queue_event(), if the raw_queue_event() return error, invoke
-raw_release() will not trigger the dev_free() to be called.
+The following warning was reported when running xdp_redirect_cpu with
+both skb-mode and stress-mode enabled:
 
-[  268.905865][ T5067] raw-gadget.0 gadget.0: failed to queue event
-[  268.912053][ T5067] udc dummy_udc.0: failed to start USB Raw Gadget: -12
-[  268.918885][ T5067] raw-gadget.0: probe of gadget.0 failed with error -12
-[  268.925956][ T5067] UDC core: USB Raw Gadget: couldn't find an available UDC or it's busy
-[  268.934657][ T5067] misc raw-gadget: fail, usb_gadget_register_driver returned -16
+  ------------[ cut here ]------------
+  Incorrect XDP memory type (-2128176192) usage
+  WARNING: CPU: 7 PID: 1442 at net/core/xdp.c:405
+  Modules linked in:
+  CPU: 7 PID: 1442 Comm: kworker/7:0 Tainted: G  6.5.0-rc2+ #1
+  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996)
+  Workqueue: events __cpu_map_entry_free
+  RIP: 0010:__xdp_return+0x1e4/0x4a0
+  ......
+  Call Trace:
+   <TASK>
+   ? show_regs+0x65/0x70
+   ? __warn+0xa5/0x240
+   ? __xdp_return+0x1e4/0x4a0
+   ......
+   xdp_return_frame+0x4d/0x150
+   __cpu_map_entry_free+0xf9/0x230
+   process_one_work+0x6b0/0xb80
+   worker_thread+0x96/0x720
+   kthread+0x1a5/0x1f0
+   ret_from_fork+0x3a/0x70
+   ret_from_fork_asm+0x1b/0x30
+   </TASK>
 
-BUG: memory leak
+The reason for the warning is twofold. One is due to the kthread
+cpu_map_kthread_run() is stopped prematurely. Another one is
+__cpu_map_ring_cleanup() doesn't handle skb mode and treats skbs in
+ptr_ring as XDP frames.
 
-[<ffffffff8154bf94>] kmalloc_trace+0x24/0x90 mm/slab_common.c:1076
-[<ffffffff8347eb55>] kmalloc include/linux/slab.h:582 [inline]
-[<ffffffff8347eb55>] kzalloc include/linux/slab.h:703 [inline]
-[<ffffffff8347eb55>] dev_new drivers/usb/gadget/legacy/raw_gadget.c:191 [inline]
-[<ffffffff8347eb55>] raw_open+0x45/0x110 drivers/usb/gadget/legacy/raw_gadget.c:385
-[<ffffffff827d1d09>] misc_open+0x1a9/0x1f0 drivers/char/misc.c:165
+Prematurely-stopped kthread will be fixed by the preceding patch and
+ptr_ring will be empty when __cpu_map_ring_cleanup() is called. But
+as the comments in __cpu_map_ring_cleanup() said, handling and freeing
+skbs in ptr_ring as well to "catch any broken behaviour gracefully".
 
-[<ffffffff8154bf94>] kmalloc_trace+0x24/0x90 mm/slab_common.c:1076
-[<ffffffff8347cd2f>] kmalloc include/linux/slab.h:582 [inline]
-[<ffffffff8347cd2f>] raw_ioctl_init+0xdf/0x410 drivers/usb/gadget/legacy/raw_gadget.c:460
-[<ffffffff8347dfe9>] raw_ioctl+0x5f9/0x1120 drivers/usb/gadget/legacy/raw_gadget.c:1250
-[<ffffffff81685173>] vfs_ioctl fs/ioctl.c:51 [inline]
-
-[<ffffffff8154bf94>] kmalloc_trace+0x24/0x90 mm/slab_common.c:1076
-[<ffffffff833ecc6a>] kmalloc include/linux/slab.h:582 [inline]
-[<ffffffff833ecc6a>] kzalloc include/linux/slab.h:703 [inline]
-[<ffffffff833ecc6a>] dummy_alloc_request+0x5a/0xe0 drivers/usb/gadget/udc/dummy_hcd.c:665
-[<ffffffff833e9132>] usb_ep_alloc_request+0x22/0xd0 drivers/usb/gadget/udc/core.c:196
-[<ffffffff8347f13d>] gadget_bind+0x6d/0x370 drivers/usb/gadget/legacy/raw_gadget.c:292
-
-This commit therefore invoke kref_get() under the condition that
-raw_queue_event() return success.
-
-Reported-by: syzbot+feb045d335c1fdde5bf7@syzkaller.appspotmail.com
-Cc: stable <stable@kernel.org>
-Closes: https://syzkaller.appspot.com/bug?extid=feb045d335c1fdde5bf7
-Signed-off-by: Zqiang <qiang.zhang1211@gmail.com>
-Reviewed-by: Andrey Konovalov <andreyknvl@gmail.com>
-Tested-by: Andrey Konovalov <andreyknvl@gmail.com>
-Link: https://lore.kernel.org/r/20230714074011.20989-1-qiang.zhang1211@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 11941f8a8536 ("bpf: cpumap: Implement generic cpumap")
+Signed-off-by: Hou Tao <houtao1@huawei.com>
+Acked-by: Jesper Dangaard Brouer <hawk@kernel.org>
+Link: https://lore.kernel.org/r/20230729095107.1722450-3-houtao@huaweicloud.com
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/legacy/raw_gadget.c |   10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ kernel/bpf/cpumap.c | 14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
---- a/drivers/usb/gadget/legacy/raw_gadget.c
-+++ b/drivers/usb/gadget/legacy/raw_gadget.c
-@@ -309,13 +309,15 @@ static int gadget_bind(struct usb_gadget
- 	dev->eps_num = i;
- 	spin_unlock_irqrestore(&dev->lock, flags);
+diff --git a/kernel/bpf/cpumap.c b/kernel/bpf/cpumap.c
+index db6221773e43f..17f52efba1c80 100644
+--- a/kernel/bpf/cpumap.c
++++ b/kernel/bpf/cpumap.c
+@@ -133,11 +133,17 @@ static void __cpu_map_ring_cleanup(struct ptr_ring *ring)
+ 	 * invoked cpu_map_kthread_stop(). Catch any broken behaviour
+ 	 * gracefully and warn once.
+ 	 */
+-	struct xdp_frame *xdpf;
++	void *ptr;
  
--	/* Matches kref_put() in gadget_unbind(). */
--	kref_get(&dev->count);
--
- 	ret = raw_queue_event(dev, USB_RAW_EVENT_CONNECT, 0, NULL);
--	if (ret < 0)
-+	if (ret < 0) {
- 		dev_err(&gadget->dev, "failed to queue event\n");
-+		set_gadget_data(gadget, NULL);
-+		return ret;
+-	while ((xdpf = ptr_ring_consume(ring)))
+-		if (WARN_ON_ONCE(xdpf))
+-			xdp_return_frame(xdpf);
++	while ((ptr = ptr_ring_consume(ring))) {
++		WARN_ON_ONCE(1);
++		if (unlikely(__ptr_test_bit(0, &ptr))) {
++			__ptr_clear_bit(0, &ptr);
++			kfree_skb(ptr);
++			continue;
++		}
++		xdp_return_frame(ptr);
 +	}
- 
-+	/* Matches kref_put() in gadget_unbind(). */
-+	kref_get(&dev->count);
- 	return ret;
  }
  
+ static void put_cpu_map_entry(struct bpf_cpu_map_entry *rcpu)
+-- 
+2.40.1
+
 
 
