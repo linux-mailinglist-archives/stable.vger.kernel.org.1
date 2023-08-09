@@ -2,48 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 66813775D3D
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:35:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5B58B7757A4
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:48:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234049AbjHILfN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:35:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34842 "EHLO
+        id S232244AbjHIKs1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 06:48:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33750 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234051AbjHILfN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:35:13 -0400
+        with ESMTP id S232248AbjHIKs0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:48:26 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 74786173A
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:35:10 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7858A1702
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:48:26 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0B97F60D24
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:35:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E968C433C7;
-        Wed,  9 Aug 2023 11:35:08 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0E0DB6310A
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:48:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F4BAC433C8;
+        Wed,  9 Aug 2023 10:48:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691580909;
-        bh=5rKkfLKPUSTN/DIvAIKog5KyPq3/0EhyhSD58ZMZzAQ=;
+        s=korg; t=1691578105;
+        bh=P1HFONah273a4XTIibG8t+qqj6C/fwPJw+aExfAFl48=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=TM/VhHxNot6TvNWk3CKb4YR4MQt0u7lsMvF1duHyUdgp25enezCrVts2qSLLX2N4z
-         yEidx8EmfXFFe/T8Y1pyTmmWzOH7DMqDxJt9kO9eMzAFS40D5fq9Lf239MrLNYKr0e
-         I9/YI8gDAG9H6yzvlEpTm1mKXJQsWkuSMKbcpky4=
+        b=pZSfB3de+KbYw0c1poKqrZ2nyi5yAqsazvyk6/+svgWmXpJyx6l0CywxPfIX8OFnL
+         sGbEq+hmEPb8+SY8Pqs/GdtL3FN6+SNdutjrZw79EjZK4S51IbSnijrZy6HSArLOul
+         hG+ZvgoXz+8QjrY5cHcxU0Gmct5hbsr2vF/yydII=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Stewart Smith <trawets@amazon.com>,
-        Samuel Mendoza-Jonas <samjonas@amazon.com>,
-        Eric Dumazet <edumazet@google.com>,
-        Kuniyuki Iwashima <kuniyu@amazon.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 037/201] tcp: Reduce chance of collisions in inet6_hashfn().
+        patches@lists.linux.dev,
+        Olivier Maignial <olivier.maignial@hotmail.fr>,
+        Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH 6.4 108/165] mtd: spinand: winbond: Fix ecc_get_status
 Date:   Wed,  9 Aug 2023 12:40:39 +0200
-Message-ID: <20230809103645.089542156@linuxfoundation.org>
+Message-ID: <20230809103646.323540461@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103643.799166053@linuxfoundation.org>
-References: <20230809103643.799166053@linuxfoundation.org>
+In-Reply-To: <20230809103642.720851262@linuxfoundation.org>
+References: <20230809103642.720851262@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -58,75 +55,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Stewart Smith <trawets@amazon.com>
+From: Olivier Maignial <olivier.maignial@hotmail.fr>
 
-[ Upstream commit d11b0df7ddf1831f3e170972f43186dad520bfcc ]
+commit f5a05060670a4d8d6523afc7963eb559c2e3615f upstream.
 
-For both IPv4 and IPv6 incoming TCP connections are tracked in a hash
-table with a hash over the source & destination addresses and ports.
-However, the IPv6 hash is insufficient and can lead to a high rate of
-collisions.
+Reading ECC status is failing.
 
-The IPv6 hash used an XOR to fit everything into the 96 bits for the
-fast jenkins hash, meaning it is possible for an external entity to
-ensure the hash collides, thus falling back to a linear search in the
-bucket, which is slow.
+w25n02kv_ecc_get_status() is using on-stack buffer for
+SPINAND_GET_FEATURE_OP() output. It is not suitable for
+DMA needs of spi-mem.
 
-We take the approach of hash the full length of IPv6 address in
-__ipv6_addr_jhash() so that all users can benefit from a more secure
-version.
+Fix this by using the spi-mem operations dedicated buffer
+spinand->scratchbuf.
 
-While this may look like it adds overhead, the reality of modern CPUs
-means that this is unmeasurable in real world scenarios.
+See
+spinand->scratchbuf:
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/include/linux/mtd/spinand.h?h=v6.3#n418
+spi_mem_check_op():
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/spi/spi-mem.c?h=v6.3#n199
 
-In simulating with llvm-mca, the increase in cycles for the hashing
-code was ~16 cycles on Skylake (from a base of ~155), and an extra ~9
-on Nehalem (base of ~173).
-
-In commit dd6d2910c5e0 ("netfilter: conntrack: switch to siphash")
-netfilter switched from a jenkins hash to a siphash, but even the faster
-hsiphash is a more significant overhead (~20-30%) in some preliminary
-testing.  So, in this patch, we keep to the more conservative approach to
-ensure we don't add much overhead per SYN.
-
-In testing, this results in a consistently even spread across the
-connection buckets.  In both testing and real-world scenarios, we have
-not found any measurable performance impact.
-
-Fixes: 08dcdbf6a7b9 ("ipv6: use a stronger hash for tcp")
-Signed-off-by: Stewart Smith <trawets@amazon.com>
-Signed-off-by: Samuel Mendoza-Jonas <samjonas@amazon.com>
-Suggested-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://lore.kernel.org/r/20230721222410.17914-1-kuniyu@amazon.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 6154c7a58348 ("mtd: spinand: winbond: add Winbond W25N02KV flash support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Olivier Maignial <olivier.maignial@hotmail.fr>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://lore.kernel.org/linux-mtd/DB4P250MB1032EDB9E36B764A33769039FE23A@DB4P250MB1032.EURP250.PROD.OUTLOOK.COM
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/ipv6.h | 8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
+ drivers/mtd/nand/spi/winbond.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/net/ipv6.h b/include/net/ipv6.h
-index 8879c0ab0b89d..4c8f97a6da5a7 100644
---- a/include/net/ipv6.h
-+++ b/include/net/ipv6.h
-@@ -663,12 +663,8 @@ static inline u32 ipv6_addr_hash(const struct in6_addr *a)
- /* more secured version of ipv6_addr_hash() */
- static inline u32 __ipv6_addr_jhash(const struct in6_addr *a, const u32 initval)
+--- a/drivers/mtd/nand/spi/winbond.c
++++ b/drivers/mtd/nand/spi/winbond.c
+@@ -108,7 +108,7 @@ static int w25n02kv_ecc_get_status(struc
  {
--	u32 v = (__force u32)a->s6_addr32[0] ^ (__force u32)a->s6_addr32[1];
--
--	return jhash_3words(v,
--			    (__force u32)a->s6_addr32[2],
--			    (__force u32)a->s6_addr32[3],
--			    initval);
-+	return jhash2((__force const u32 *)a->s6_addr32,
-+		      ARRAY_SIZE(a->s6_addr32), initval);
- }
+ 	struct nand_device *nand = spinand_to_nand(spinand);
+ 	u8 mbf = 0;
+-	struct spi_mem_op op = SPINAND_GET_FEATURE_OP(0x30, &mbf);
++	struct spi_mem_op op = SPINAND_GET_FEATURE_OP(0x30, spinand->scratchbuf);
  
- static inline bool ipv6_addr_loopback(const struct in6_addr *a)
--- 
-2.39.2
-
+ 	switch (status & STATUS_ECC_MASK) {
+ 	case STATUS_ECC_NO_BITFLIPS:
+@@ -126,7 +126,7 @@ static int w25n02kv_ecc_get_status(struc
+ 		if (spi_mem_exec_op(spinand->spimem, &op))
+ 			return nanddev_get_ecc_conf(nand)->strength;
+ 
+-		mbf >>= 4;
++		mbf = *(spinand->scratchbuf) >> 4;
+ 
+ 		if (WARN_ON(mbf > nanddev_get_ecc_conf(nand)->strength || !mbf))
+ 			return nanddev_get_ecc_conf(nand)->strength;
 
 
