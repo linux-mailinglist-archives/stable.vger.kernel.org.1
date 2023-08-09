@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 705F2775CF6
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:32:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6D76F775DC8
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:41:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233936AbjHILcd (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:32:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46094 "EHLO
+        id S234237AbjHILlL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:41:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50818 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233894AbjHILcd (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:32:33 -0400
+        with ESMTP id S234228AbjHILlH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:41:07 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD16610DC
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:32:32 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0DE9A1FD8
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:41:07 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4469B63403
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:32:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 535BAC433C8;
-        Wed,  9 Aug 2023 11:32:31 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 986A463663
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:41:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7D34C433C7;
+        Wed,  9 Aug 2023 11:41:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691580751;
-        bh=vIBOtVhz4Or+TQ61Uz8Z+yN2PsZ++mOpY6WoUgwi8Ao=;
+        s=korg; t=1691581266;
+        bh=zxzhvY/D/PYJEspPjj4s+zTdSCY4VjdWjAMx6CTSzSU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=yJtVlvg6K/lXx6NCrPcu87ThTmgG4n5sjYntZaKMeu7/RHmiH/GhHmJuo8FGSuHVt
-         WWnS/MeJ1EtqW1k5xnLL3SLbb9pFzdzwlMdnRHt7gDFXIo+C1DiC1lf0QucAStgh0m
-         L5j84Q1VCKkCyPugAl050oiSZUHC9hxABbvRNP0I=
+        b=eRUQPpHJly5NQ/UyO2prk+n7dW9fnKFrnNx2zsug6LKrvSlbLO412VS6R1Ud3EH/F
+         re25cwTNLns9ZEGKOQsYem2AgcgPAJ053aUyBpeGGsi0yumcuv7KBFQ3BtSxfu8l4H
+         nFX69hNWazILFggpduhCs+0/8TJJXL7pi/vkaBxA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, kernel test robot <lkp@intel.com>,
-        Roger Quadros <rogerq@kernel.org>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 136/154] mtd: rawnand: omap_elm: Fix incorrect type in assignment
+        patches@lists.linux.dev, Xiubo Li <xiubli@redhat.com>,
+        Milind Changire <mchangir@redhat.com>,
+        Ilya Dryomov <idryomov@gmail.com>
+Subject: [PATCH 5.10 165/201] ceph: defer stopping mdsc delayed_work
 Date:   Wed,  9 Aug 2023 12:42:47 +0200
-Message-ID: <20230809103641.383130054@linuxfoundation.org>
+Message-ID: <20230809103649.258742973@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103636.887175326@linuxfoundation.org>
-References: <20230809103636.887175326@linuxfoundation.org>
+In-Reply-To: <20230809103643.799166053@linuxfoundation.org>
+References: <20230809103643.799166053@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,120 +55,79 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Roger Quadros <rogerq@kernel.org>
+From: Xiubo Li <xiubli@redhat.com>
 
-[ Upstream commit d8403b9eeee66d5dd81ecb9445800b108c267ce3 ]
+commit e7e607bd00481745550389a29ecabe33e13d67cf upstream.
 
-Once the ECC word endianness is converted to BE32, we force cast it
-to u32 so we can use elm_write_reg() which in turn uses writel().
+Flushing the dirty buffer may take a long time if the cluster is
+overloaded or if there is network issue. So we should ping the
+MDSs periodically to keep alive, else the MDS will blocklist
+the kclient.
 
-Fixes below sparse warnings:
-
-   drivers/mtd/nand/raw/omap_elm.c:180:37: sparse:     expected unsigned int [usertype] val
-   drivers/mtd/nand/raw/omap_elm.c:180:37: sparse:     got restricted __be32 [usertype]
-   drivers/mtd/nand/raw/omap_elm.c:185:37: sparse:     expected unsigned int [usertype] val
-   drivers/mtd/nand/raw/omap_elm.c:185:37: sparse:     got restricted __be32 [usertype]
-   drivers/mtd/nand/raw/omap_elm.c:190:37: sparse:     expected unsigned int [usertype] val
-   drivers/mtd/nand/raw/omap_elm.c:190:37: sparse:     got restricted __be32 [usertype]
->> drivers/mtd/nand/raw/omap_elm.c:200:40: sparse: sparse: restricted __be32 degrades to integer
-   drivers/mtd/nand/raw/omap_elm.c:206:39: sparse: sparse: restricted __be32 degrades to integer
-   drivers/mtd/nand/raw/omap_elm.c:210:37: sparse:     expected unsigned int [assigned] [usertype] val
-   drivers/mtd/nand/raw/omap_elm.c:210:37: sparse:     got restricted __be32 [usertype]
-   drivers/mtd/nand/raw/omap_elm.c:213:37: sparse:     expected unsigned int [assigned] [usertype] val
-   drivers/mtd/nand/raw/omap_elm.c:213:37: sparse:     got restricted __be32 [usertype]
-   drivers/mtd/nand/raw/omap_elm.c:216:37: sparse:     expected unsigned int [assigned] [usertype] val
-   drivers/mtd/nand/raw/omap_elm.c:216:37: sparse:     got restricted __be32 [usertype]
-   drivers/mtd/nand/raw/omap_elm.c:219:37: sparse:     expected unsigned int [assigned] [usertype] val
-   drivers/mtd/nand/raw/omap_elm.c:219:37: sparse:     got restricted __be32 [usertype]
-   drivers/mtd/nand/raw/omap_elm.c:222:37: sparse:     expected unsigned int [assigned] [usertype] val
-   drivers/mtd/nand/raw/omap_elm.c:222:37: sparse:     got restricted __be32 [usertype]
-   drivers/mtd/nand/raw/omap_elm.c:225:37: sparse:     expected unsigned int [assigned] [usertype] val
-   drivers/mtd/nand/raw/omap_elm.c:225:37: sparse:     got restricted __be32 [usertype]
-   drivers/mtd/nand/raw/omap_elm.c:228:39: sparse: sparse: restricted __be32 degrades to integer
-
-Fixes: bf22433575ef ("mtd: devices: elm: Add support for ELM error correction")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202306212211.WDXokuWh-lkp@intel.com/
-Signed-off-by: Roger Quadros <rogerq@kernel.org>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://lore.kernel.org/linux-mtd/20230624184021.7740-1-rogerq@kernel.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://tracker.ceph.com/issues/61843
+Signed-off-by: Xiubo Li <xiubli@redhat.com>
+Reviewed-by: Milind Changire <mchangir@redhat.com>
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mtd/nand/raw/omap_elm.c | 24 ++++++++++++------------
- 1 file changed, 12 insertions(+), 12 deletions(-)
+ fs/ceph/mds_client.c |    4 ++--
+ fs/ceph/mds_client.h |    5 +++++
+ fs/ceph/super.c      |   10 ++++++++++
+ 3 files changed, 17 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/mtd/nand/raw/omap_elm.c b/drivers/mtd/nand/raw/omap_elm.c
-index 6e0e31eab7cce..c4064f8fd6118 100644
---- a/drivers/mtd/nand/raw/omap_elm.c
-+++ b/drivers/mtd/nand/raw/omap_elm.c
-@@ -174,17 +174,17 @@ static void elm_load_syndrome(struct elm_info *info,
- 			switch (info->bch_type) {
- 			case BCH8_ECC:
- 				/* syndrome fragment 0 = ecc[9-12B] */
--				val = cpu_to_be32(*(u32 *) &ecc[9]);
-+				val = (__force u32)cpu_to_be32(*(u32 *)&ecc[9]);
- 				elm_write_reg(info, offset, val);
+--- a/fs/ceph/mds_client.c
++++ b/fs/ceph/mds_client.c
+@@ -4511,7 +4511,7 @@ static void delayed_work(struct work_str
  
- 				/* syndrome fragment 1 = ecc[5-8B] */
- 				offset += 4;
--				val = cpu_to_be32(*(u32 *) &ecc[5]);
-+				val = (__force u32)cpu_to_be32(*(u32 *)&ecc[5]);
- 				elm_write_reg(info, offset, val);
+ 	dout("mdsc delayed_work\n");
  
- 				/* syndrome fragment 2 = ecc[1-4B] */
- 				offset += 4;
--				val = cpu_to_be32(*(u32 *) &ecc[1]);
-+				val = (__force u32)cpu_to_be32(*(u32 *)&ecc[1]);
- 				elm_write_reg(info, offset, val);
+-	if (mdsc->stopping)
++	if (mdsc->stopping >= CEPH_MDSC_STOPPING_FLUSHED)
+ 		return;
  
- 				/* syndrome fragment 3 = ecc[0B] */
-@@ -194,35 +194,35 @@ static void elm_load_syndrome(struct elm_info *info,
- 				break;
- 			case BCH4_ECC:
- 				/* syndrome fragment 0 = ecc[20-52b] bits */
--				val = (cpu_to_be32(*(u32 *) &ecc[3]) >> 4) |
-+				val = ((__force u32)cpu_to_be32(*(u32 *)&ecc[3]) >> 4) |
- 					((ecc[2] & 0xf) << 28);
- 				elm_write_reg(info, offset, val);
+ 	mutex_lock(&mdsc->mutex);
+@@ -4701,7 +4701,7 @@ void send_flush_mdlog(struct ceph_mds_se
+ void ceph_mdsc_pre_umount(struct ceph_mds_client *mdsc)
+ {
+ 	dout("pre_umount\n");
+-	mdsc->stopping = 1;
++	mdsc->stopping = CEPH_MDSC_STOPPING_BEGIN;
  
- 				/* syndrome fragment 1 = ecc[0-20b] bits */
- 				offset += 4;
--				val = cpu_to_be32(*(u32 *) &ecc[0]) >> 12;
-+				val = (__force u32)cpu_to_be32(*(u32 *)&ecc[0]) >> 12;
- 				elm_write_reg(info, offset, val);
- 				break;
- 			case BCH16_ECC:
--				val = cpu_to_be32(*(u32 *) &ecc[22]);
-+				val = (__force u32)cpu_to_be32(*(u32 *)&ecc[22]);
- 				elm_write_reg(info, offset, val);
- 				offset += 4;
--				val = cpu_to_be32(*(u32 *) &ecc[18]);
-+				val = (__force u32)cpu_to_be32(*(u32 *)&ecc[18]);
- 				elm_write_reg(info, offset, val);
- 				offset += 4;
--				val = cpu_to_be32(*(u32 *) &ecc[14]);
-+				val = (__force u32)cpu_to_be32(*(u32 *)&ecc[14]);
- 				elm_write_reg(info, offset, val);
- 				offset += 4;
--				val = cpu_to_be32(*(u32 *) &ecc[10]);
-+				val = (__force u32)cpu_to_be32(*(u32 *)&ecc[10]);
- 				elm_write_reg(info, offset, val);
- 				offset += 4;
--				val = cpu_to_be32(*(u32 *) &ecc[6]);
-+				val = (__force u32)cpu_to_be32(*(u32 *)&ecc[6]);
- 				elm_write_reg(info, offset, val);
- 				offset += 4;
--				val = cpu_to_be32(*(u32 *) &ecc[2]);
-+				val = (__force u32)cpu_to_be32(*(u32 *)&ecc[2]);
- 				elm_write_reg(info, offset, val);
- 				offset += 4;
--				val = cpu_to_be32(*(u32 *) &ecc[0]) >> 16;
-+				val = (__force u32)cpu_to_be32(*(u32 *)&ecc[0]) >> 16;
- 				elm_write_reg(info, offset, val);
- 				break;
- 			default:
--- 
-2.40.1
-
+ 	ceph_mdsc_iterate_sessions(mdsc, send_flush_mdlog, true);
+ 	ceph_mdsc_iterate_sessions(mdsc, lock_unlock_session, false);
+--- a/fs/ceph/mds_client.h
++++ b/fs/ceph/mds_client.h
+@@ -372,6 +372,11 @@ struct cap_wait {
+ 	int			want;
+ };
+ 
++enum {
++       CEPH_MDSC_STOPPING_BEGIN = 1,
++       CEPH_MDSC_STOPPING_FLUSHED = 2,
++};
++
+ /*
+  * mds client state
+  */
+--- a/fs/ceph/super.c
++++ b/fs/ceph/super.c
+@@ -1222,6 +1222,16 @@ static void ceph_kill_sb(struct super_bl
+ 	ceph_mdsc_pre_umount(fsc->mdsc);
+ 	flush_fs_workqueues(fsc);
+ 
++	/*
++	 * Though the kill_anon_super() will finally trigger the
++	 * sync_filesystem() anyway, we still need to do it here
++	 * and then bump the stage of shutdown to stop the work
++	 * queue as earlier as possible.
++	 */
++	sync_filesystem(s);
++
++	fsc->mdsc->stopping = CEPH_MDSC_STOPPING_FLUSHED;
++
+ 	kill_anon_super(s);
+ 
+ 	fsc->client->extra_mon_dispatch = NULL;
 
 
