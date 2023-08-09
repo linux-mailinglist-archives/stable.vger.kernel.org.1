@@ -2,45 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0863E775A96
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:09:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 54E2D77594E
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:59:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233225AbjHILJn (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:09:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40868 "EHLO
+        id S232815AbjHIK7U (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 06:59:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53114 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233230AbjHILJm (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:09:42 -0400
+        with ESMTP id S232817AbjHIK7U (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:59:20 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C1DD1FD8
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:09:41 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D013171E
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:59:19 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2CC0863118
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:09:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38518C433C8;
-        Wed,  9 Aug 2023 11:09:40 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A132862DC8
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:59:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5EECC433C7;
+        Wed,  9 Aug 2023 10:59:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691579380;
-        bh=Cn3kESZGYOk/T94iCGLxH/uEkKoHjTeOWvty7oRO/mA=;
+        s=korg; t=1691578758;
+        bh=esuiLNyMcaKFaHo/Qv6LTeHe8Eq54CAjibN5DZFjFKs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=v6BzMF3yuTXI8c99XDjjTsbfi1q67A8Lee7Y1ChpUif772VZmfLmOUrrg19FL//Mj
-         EBZ0DRrqtbuyPnz/lbMe/pMk7nrxbBRHakicA6jjehAozpvNThy+CiFCFoJIBSqzru
-         9GUqjJCHIiN/jdFuCD4D5m1xmPJUv0FoVoQKf94M=
+        b=dCsGxwpVGWwyCR++ATA0Vh0V7oIzLcSvfoG8T/cA9VHSjAtZGjygpP5gt0loFhNCX
+         yZSLaPC/6iBvpbB9S9cnL/dl+AWLtdLekAUQDjG3CXGgiQSh64zdz0w+3FT+FFPytm
+         3ifK6grgL/yEFJU/8RJH5wcdDyrSVJUwIi6dl3sM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
+        patches@lists.linux.dev, Jianbo Liu <jianbol@nvidia.com>,
+        Paul Blakey <paulb@nvidia.com>,
+        Leon Romanovsky <leonro@nvidia.com>,
         Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 144/204] tcp: annotate data-races around rskq_defer_accept
+Subject: [PATCH 5.15 46/92] net/mlx5: fs_core: Skip the FTs in the same FS_TYPE_PRIO_CHAINS fs_prio
 Date:   Wed,  9 Aug 2023 12:41:22 +0200
-Message-ID: <20230809103647.405649906@linuxfoundation.org>
+Message-ID: <20230809103635.200543036@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103642.552405807@linuxfoundation.org>
-References: <20230809103642.552405807@linuxfoundation.org>
+In-Reply-To: <20230809103633.485906560@linuxfoundation.org>
+References: <20230809103633.485906560@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,53 +57,195 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Eric Dumazet <edumazet@google.com>
+From: Jianbo Liu <jianbol@nvidia.com>
 
-[ Upstream commit ae488c74422fb1dcd807c0201804b3b5e8a322a3 ]
+[ Upstream commit c635ca45a7a2023904a1f851e99319af7b87017d ]
 
-do_tcp_getsockopt() reads rskq_defer_accept while another cpu
-might change its value.
+In the cited commit, new type of FS_TYPE_PRIO_CHAINS fs_prio was added
+to support multiple parallel namespaces for multi-chains. And we skip
+all the flow tables under the fs_node of this type unconditionally,
+when searching for the next or previous flow table to connect for a
+new table.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://lore.kernel.org/r/20230719212857.3943972-9-edumazet@google.com
+As this search function is also used for find new root table when the
+old one is being deleted, it will skip the entire FS_TYPE_PRIO_CHAINS
+fs_node next to the old root. However, new root table should be chosen
+from it if there is any table in it. Fix it by skipping only the flow
+tables in the same FS_TYPE_PRIO_CHAINS fs_node when finding the
+closest FT for a fs_node.
+
+Besides, complete the connecting from FTs of previous priority of prio
+because there should be multiple prevs after this fs_prio type is
+introduced. And also the next FT should be chosen from the first flow
+table next to the prio in the same FS_TYPE_PRIO_CHAINS fs_prio, if
+this prio is the first child.
+
+Fixes: 328edb499f99 ("net/mlx5: Split FDB fast path prio to multiple namespaces")
+Signed-off-by: Jianbo Liu <jianbol@nvidia.com>
+Reviewed-by: Paul Blakey <paulb@nvidia.com>
+Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+Link: https://lore.kernel.org/r/7a95754df479e722038996c97c97b062b372591f.1690803944.git.leonro@nvidia.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/tcp.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ .../net/ethernet/mellanox/mlx5/core/fs_core.c | 80 +++++++++++++++++--
+ 1 file changed, 72 insertions(+), 8 deletions(-)
 
-diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
-index c93aa6542d43b..98811b5f2451a 100644
---- a/net/ipv4/tcp.c
-+++ b/net/ipv4/tcp.c
-@@ -2729,9 +2729,9 @@ static int do_tcp_setsockopt(struct sock *sk, int level,
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c b/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c
+index 8b1a5f5637597..161ad2ae40196 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c
+@@ -802,7 +802,7 @@ static struct mlx5_flow_table *find_closest_ft_recursive(struct fs_node  *root,
+ 	struct fs_node *iter = list_entry(start, struct fs_node, list);
+ 	struct mlx5_flow_table *ft = NULL;
  
- 	case TCP_DEFER_ACCEPT:
- 		/* Translate value in seconds to number of retransmits */
--		icsk->icsk_accept_queue.rskq_defer_accept =
--			secs_to_retrans(val, TCP_TIMEOUT_INIT / HZ,
--					TCP_RTO_MAX / HZ);
-+		WRITE_ONCE(icsk->icsk_accept_queue.rskq_defer_accept,
-+			   secs_to_retrans(val, TCP_TIMEOUT_INIT / HZ,
-+					   TCP_RTO_MAX / HZ));
- 		break;
+-	if (!root || root->type == FS_TYPE_PRIO_CHAINS)
++	if (!root)
+ 		return NULL;
  
- 	case TCP_WINDOW_CLAMP:
-@@ -3067,8 +3067,9 @@ static int do_tcp_getsockopt(struct sock *sk, int level,
- 			val = (val ? : net->ipv4.sysctl_tcp_fin_timeout) / HZ;
- 		break;
- 	case TCP_DEFER_ACCEPT:
--		val = retrans_to_secs(icsk->icsk_accept_queue.rskq_defer_accept,
--				      TCP_TIMEOUT_INIT / HZ, TCP_RTO_MAX / HZ);
-+		val = READ_ONCE(icsk->icsk_accept_queue.rskq_defer_accept);
-+		val = retrans_to_secs(val, TCP_TIMEOUT_INIT / HZ,
-+				      TCP_RTO_MAX / HZ);
- 		break;
- 	case TCP_WINDOW_CLAMP:
- 		val = tp->window_clamp;
+ 	list_for_each_advance_continue(iter, &root->children, reverse) {
+@@ -818,19 +818,42 @@ static struct mlx5_flow_table *find_closest_ft_recursive(struct fs_node  *root,
+ 	return ft;
+ }
+ 
++static struct fs_node *find_prio_chains_parent(struct fs_node *parent,
++					       struct fs_node **child)
++{
++	struct fs_node *node = NULL;
++
++	while (parent && parent->type != FS_TYPE_PRIO_CHAINS) {
++		node = parent;
++		parent = parent->parent;
++	}
++
++	if (child)
++		*child = node;
++
++	return parent;
++}
++
+ /* If reverse is false then return the first flow table next to the passed node
+  * in the tree, else return the last flow table before the node in the tree.
++ * If skip is true, skip the flow tables in the same prio_chains prio.
+  */
+-static struct mlx5_flow_table *find_closest_ft(struct fs_node *node, bool reverse)
++static struct mlx5_flow_table *find_closest_ft(struct fs_node *node, bool reverse,
++					       bool skip)
+ {
++	struct fs_node *prio_chains_parent = NULL;
+ 	struct mlx5_flow_table *ft = NULL;
+ 	struct fs_node *curr_node;
+ 	struct fs_node *parent;
+ 
++	if (skip)
++		prio_chains_parent = find_prio_chains_parent(node, NULL);
+ 	parent = node->parent;
+ 	curr_node = node;
+ 	while (!ft && parent) {
+-		ft = find_closest_ft_recursive(parent, &curr_node->list, reverse);
++		if (parent != prio_chains_parent)
++			ft = find_closest_ft_recursive(parent, &curr_node->list,
++						       reverse);
+ 		curr_node = parent;
+ 		parent = curr_node->parent;
+ 	}
+@@ -840,13 +863,13 @@ static struct mlx5_flow_table *find_closest_ft(struct fs_node *node, bool revers
+ /* Assuming all the tree is locked by mutex chain lock */
+ static struct mlx5_flow_table *find_next_chained_ft(struct fs_node *node)
+ {
+-	return find_closest_ft(node, false);
++	return find_closest_ft(node, false, true);
+ }
+ 
+ /* Assuming all the tree is locked by mutex chain lock */
+ static struct mlx5_flow_table *find_prev_chained_ft(struct fs_node *node)
+ {
+-	return find_closest_ft(node, true);
++	return find_closest_ft(node, true, true);
+ }
+ 
+ static struct mlx5_flow_table *find_next_fwd_ft(struct mlx5_flow_table *ft,
+@@ -882,21 +905,55 @@ static int connect_fts_in_prio(struct mlx5_core_dev *dev,
+ 	return 0;
+ }
+ 
++static struct mlx5_flow_table *find_closet_ft_prio_chains(struct fs_node *node,
++							  struct fs_node *parent,
++							  struct fs_node **child,
++							  bool reverse)
++{
++	struct mlx5_flow_table *ft;
++
++	ft = find_closest_ft(node, reverse, false);
++
++	if (ft && parent == find_prio_chains_parent(&ft->node, child))
++		return ft;
++
++	return NULL;
++}
++
+ /* Connect flow tables from previous priority of prio to ft */
+ static int connect_prev_fts(struct mlx5_core_dev *dev,
+ 			    struct mlx5_flow_table *ft,
+ 			    struct fs_prio *prio)
+ {
++	struct fs_node *prio_parent, *parent = NULL, *child, *node;
+ 	struct mlx5_flow_table *prev_ft;
++	int err = 0;
++
++	prio_parent = find_prio_chains_parent(&prio->node, &child);
++
++	/* return directly if not under the first sub ns of prio_chains prio */
++	if (prio_parent && !list_is_first(&child->list, &prio_parent->children))
++		return 0;
+ 
+ 	prev_ft = find_prev_chained_ft(&prio->node);
+-	if (prev_ft) {
++	while (prev_ft) {
+ 		struct fs_prio *prev_prio;
+ 
+ 		fs_get_obj(prev_prio, prev_ft->node.parent);
+-		return connect_fts_in_prio(dev, prev_prio, ft);
++		err = connect_fts_in_prio(dev, prev_prio, ft);
++		if (err)
++			break;
++
++		if (!parent) {
++			parent = find_prio_chains_parent(&prev_prio->node, &child);
++			if (!parent)
++				break;
++		}
++
++		node = child;
++		prev_ft = find_closet_ft_prio_chains(node, parent, &child, true);
+ 	}
+-	return 0;
++	return err;
+ }
+ 
+ static int update_root_ft_create(struct mlx5_flow_table *ft, struct fs_prio
+@@ -2079,12 +2136,19 @@ EXPORT_SYMBOL(mlx5_del_flow_rules);
+ /* Assuming prio->node.children(flow tables) is sorted by level */
+ static struct mlx5_flow_table *find_next_ft(struct mlx5_flow_table *ft)
+ {
++	struct fs_node *prio_parent, *child;
+ 	struct fs_prio *prio;
+ 
+ 	fs_get_obj(prio, ft->node.parent);
+ 
+ 	if (!list_is_last(&ft->node.list, &prio->node.children))
+ 		return list_next_entry(ft, node.list);
++
++	prio_parent = find_prio_chains_parent(&prio->node, &child);
++
++	if (prio_parent && list_is_first(&child->list, &prio_parent->children))
++		return find_closest_ft(&prio->node, false, false);
++
+ 	return find_next_chained_ft(&prio->node);
+ }
+ 
 -- 
-2.39.2
+2.40.1
 
 
 
