@@ -2,47 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 32F16775A55
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:07:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 676897759C4
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:03:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233144AbjHILHc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:07:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44624 "EHLO
+        id S233046AbjHILDI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:03:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38130 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233152AbjHILHa (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:07:30 -0400
+        with ESMTP id S232954AbjHILDE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:03:04 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32F4B1FD8
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:07:30 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A535423F
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:54:52 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C208963142
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:07:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0BEDC433CC;
-        Wed,  9 Aug 2023 11:07:28 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E587C63126
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:54:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 008C5C433C9;
+        Wed,  9 Aug 2023 10:54:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691579249;
-        bh=rkaZj6OX91dzWLu+RQ8mn7ezGZqVz24/ckZySYJX/f0=;
+        s=korg; t=1691578491;
+        bh=ogEyB2jafn+lL0XcfemZLOnlaxUvSvCl+NBfFQsP8A8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=g9PMw/YBI8HADKsdb8JjAtDC3qwaP1h/9LaD45xVix02XofbG5mj2blftCi2RX6g4
-         14DaxeZn3TIKIiRUrPlfcqWoKbVJtd2Zjzhesf7UjHhNGYxbycG2acW7kbRZ6kHUpu
-         Z1RVoqw+WAi91mNKkdx6XRTL9W8vumB9l3yHwtcI=
+        b=f1I+d+kQJczcP+lgFFxQkcPnCCukEv+reQM9CBjAHcHaX/tCrwWM0eRnO/UWCJC5N
+         7JPnVMo7c98k4PKwoj6Mgvk+XDcz2WodZCu62mUbivGgDddD9fgqR2oOm7UOX4dZvP
+         iLTlX8B1QbvnS20EPpdLo5ir6d7ZrFx5B54V2080=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        syzbot <syzbot+7937ba6a50bdd00fffdf@syzkaller.appspotmail.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 128/204] debugobjects: Recheck debug_objects_enabled before reporting
+        Olivier Maignial <olivier.maignial@hotmail.fr>,
+        Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH 6.1 079/127] mtd: spinand: toshiba: Fix ecc_get_status
 Date:   Wed,  9 Aug 2023 12:41:06 +0200
-Message-ID: <20230809103646.884012192@linuxfoundation.org>
+Message-ID: <20230809103639.268420058@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103642.552405807@linuxfoundation.org>
-References: <20230809103642.552405807@linuxfoundation.org>
+In-Reply-To: <20230809103636.615294317@linuxfoundation.org>
+References: <20230809103636.615294317@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,74 +55,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+From: Olivier Maignial <olivier.maignial@hotmail.fr>
 
-[ Upstream commit 8b64d420fe2450f82848178506d3e3a0bd195539 ]
+commit 8544cda94dae6be3f1359539079c68bb731428b1 upstream.
 
-syzbot is reporting false a positive ODEBUG message immediately after
-ODEBUG was disabled due to OOM.
+Reading ECC status is failing.
 
-  [ 1062.309646][T22911] ODEBUG: Out of memory. ODEBUG disabled
-  [ 1062.886755][ T5171] ------------[ cut here ]------------
-  [ 1062.892770][ T5171] ODEBUG: assert_init not available (active state 0) object: ffffc900056afb20 object type: timer_list hint: process_timeout+0x0/0x40
+tx58cxgxsxraix_ecc_get_status() is using on-stack buffer
+for SPINAND_GET_FEATURE_OP() output. It is not suitable
+for DMA needs of spi-mem.
 
-  CPU 0 [ T5171]                CPU 1 [T22911]
-  --------------                --------------
-  debug_object_assert_init() {
-    if (!debug_objects_enabled)
-      return;
-    db = get_bucket(addr);
-                                lookup_object_or_alloc() {
-                                  debug_objects_enabled = 0;
-                                  return NULL;
-                                }
-                                debug_objects_oom() {
-                                  pr_warn("Out of memory. ODEBUG disabled\n");
-                                  // all buckets get emptied here, and
-                                }
-    lookup_object_or_alloc(addr, db, descr, false, true) {
-      // this bucket is already empty.
-      return ERR_PTR(-ENOENT);
-    }
-    // Emits false positive warning.
-    debug_print_object(&o, "assert_init");
-  }
+Fix this by using the spi-mem operations dedicated buffer
+spinand->scratchbuf.
 
-Recheck debug_object_enabled in debug_print_object() to avoid that.
+See
+spinand->scratchbuf:
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/include/linux/mtd/spinand.h?h=v6.3#n418
+spi_mem_check_op():
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/spi/spi-mem.c?h=v6.3#n199
 
-Reported-by: syzbot <syzbot+7937ba6a50bdd00fffdf@syzkaller.appspotmail.com>
-Suggested-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/492fe2ae-5141-d548-ebd5-62f5fe2e57f7@I-love.SAKURA.ne.jp
-Closes: https://syzkaller.appspot.com/bug?extid=7937ba6a50bdd00fffdf
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 10949af1681d ("mtd: spinand: Add initial support for Toshiba TC58CVG2S0H")
+Cc: stable@vger.kernel.org
+Signed-off-by: Olivier Maignial <olivier.maignial@hotmail.fr>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://lore.kernel.org/linux-mtd/DB4P250MB1032553D05FBE36DEE0D311EFE23A@DB4P250MB1032.EURP250.PROD.OUTLOOK.COM
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- lib/debugobjects.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/mtd/nand/spi/toshiba.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/lib/debugobjects.c b/lib/debugobjects.c
-index bacb00a9cd9f9..b6217c797554b 100644
---- a/lib/debugobjects.c
-+++ b/lib/debugobjects.c
-@@ -280,6 +280,15 @@ static void debug_print_object(struct debug_obj *obj, char *msg)
- 	struct debug_obj_descr *descr = obj->descr;
- 	static int limit;
+--- a/drivers/mtd/nand/spi/toshiba.c
++++ b/drivers/mtd/nand/spi/toshiba.c
+@@ -73,7 +73,7 @@ static int tx58cxgxsxraix_ecc_get_status
+ {
+ 	struct nand_device *nand = spinand_to_nand(spinand);
+ 	u8 mbf = 0;
+-	struct spi_mem_op op = SPINAND_GET_FEATURE_OP(0x30, &mbf);
++	struct spi_mem_op op = SPINAND_GET_FEATURE_OP(0x30, spinand->scratchbuf);
  
-+	/*
-+	 * Don't report if lookup_object_or_alloc() by the current thread
-+	 * failed because lookup_object_or_alloc()/debug_objects_oom() by a
-+	 * concurrent thread turned off debug_objects_enabled and cleared
-+	 * the hash buckets.
-+	 */
-+	if (!debug_objects_enabled)
-+		return;
-+
- 	if (limit < 5 && descr != descr_test) {
- 		void *hint = descr->debug_hint ?
- 			descr->debug_hint(obj->object) : NULL;
--- 
-2.39.2
-
+ 	switch (status & STATUS_ECC_MASK) {
+ 	case STATUS_ECC_NO_BITFLIPS:
+@@ -92,7 +92,7 @@ static int tx58cxgxsxraix_ecc_get_status
+ 		if (spi_mem_exec_op(spinand->spimem, &op))
+ 			return nanddev_get_ecc_conf(nand)->strength;
+ 
+-		mbf >>= 4;
++		mbf = *(spinand->scratchbuf) >> 4;
+ 
+ 		if (WARN_ON(mbf > nanddev_get_ecc_conf(nand)->strength || !mbf))
+ 			return nanddev_get_ecc_conf(nand)->strength;
 
 
