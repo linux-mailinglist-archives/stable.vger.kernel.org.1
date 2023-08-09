@@ -2,98 +2,144 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 79B78776467
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 17:51:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F316577646D
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 17:53:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233046AbjHIPvc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 11:51:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45332 "EHLO
+        id S231143AbjHIPxR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 11:53:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48612 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231838AbjHIPvb (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 11:51:31 -0400
-Received: from mail-oa1-x2e.google.com (mail-oa1-x2e.google.com [IPv6:2001:4860:4864:20::2e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 371B61BD9
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 08:51:29 -0700 (PDT)
-Received: by mail-oa1-x2e.google.com with SMTP id 586e51a60fabf-1bb782974f4so5443249fac.3
-        for <stable@vger.kernel.org>; Wed, 09 Aug 2023 08:51:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxtx.org; s=google; t=1691596288; x=1692201088;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=lzEMa2xi1YHE1YCoFHllP02NIOrQ2JqY6Z4i2GNEvKA=;
-        b=JREU2qwdrGKaOLF7DEkk+0a7FTW3TnWUQZybq26KM5Ttn9XP/o1JZq2j9lATYRiupm
-         N8AsPminfb4+emBT3n6alpAYwKyoFVb9H6lI6G9+JhQyGsgftfuiDfiZVV1FNzfV1SbF
-         IAmrva3UT1hIBKdTT5VYhFdDJ8nLqvHX8CZFY=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691596288; x=1692201088;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=lzEMa2xi1YHE1YCoFHllP02NIOrQ2JqY6Z4i2GNEvKA=;
-        b=LaQMI8izBDjqpHyDcUSDzb5cqWt1U0oNss95SxaM4KMskMrZiD7hAR5YuUIp3AMBAP
-         UNHCGZeqfF5iOm8QuOxmcO9//QcfLsG+jcxL3PPMg9W/Ara4DcOgv2eLldDqZY2lU1DT
-         boRv1fFCpgZInsiV9yduv6IUiExFIK8tf5VA1vUOn/iae2Bt7o+2lDXYuvUWS5vt5Zvk
-         QOSIfXzUdwkfzA+6LAp5LT2HoiO87wbIImq85jUNnM5RHfM5n1MnkOjGRb09O3J+Ys0L
-         KGnSQwEuXQ8tenL98yh1ulb71mnZuMx6ncCkCbqEAA7G/YHXV/pLszfpcsLZzXxcZkf2
-         LTug==
-X-Gm-Message-State: AOJu0Yy7VPMwya4C8ngPqC6Git+CU3BgAJSEVPDl9EF4SrRcD36fzn9U
-        9v00QKng2Uzqwnh7i+WljRG2+w==
-X-Google-Smtp-Source: AGHT+IEXa9hX+zGrGRLhTmQcnBjAWVIlo+QyRqclBP/uRgPtWl5gGR3XE8xfr3gDFkmGMpxb5iaxZA==
-X-Received: by 2002:a05:6870:b293:b0:1bf:2ab5:3ae7 with SMTP id c19-20020a056870b29300b001bf2ab53ae7mr4074035oao.50.1691596288546;
-        Wed, 09 Aug 2023 08:51:28 -0700 (PDT)
-Received: from fedora64.linuxtx.org ([99.47.93.78])
-        by smtp.gmail.com with ESMTPSA id xv9-20020a05687121c900b0019e6b96f909sm7230769oab.22.2023.08.09.08.51.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 09 Aug 2023 08:51:27 -0700 (PDT)
-Sender: Justin Forbes <jmforbes@linuxtx.org>
-Date:   Wed, 9 Aug 2023 10:51:26 -0500
-From:   Justin Forbes <jforbes@fedoraproject.org>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-        jonathanh@nvidia.com, f.fainelli@gmail.com,
-        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-        conor@kernel.org
-Subject: Re: [PATCH 6.4 000/165] 6.4.10-rc1 review
-Message-ID: <ZNO1/oJe3OwRG5gb@fedora64.linuxtx.org>
-References: <20230809103642.720851262@linuxfoundation.org>
+        with ESMTP id S229766AbjHIPxR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 11:53:17 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D80E21729
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 08:53:16 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6E58763F8A
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 15:53:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AF8DC433C7;
+        Wed,  9 Aug 2023 15:53:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1691596395;
+        bh=ALLjYqZbkmaGE+rNCuSF7+oeLIjD7AcQvqF7AIT3qqs=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=UVzbUwHl+K6Nn8L5+3YuHWczmQEg73MEzwODZHOixeOvmqhrNBpEk7hQAL7mm+YRI
+         0mYMuBCQSjAr59mWtSokDYqA8lAdk0xGiAaUXXKlwrEmZ6isAQowzmi8sWW7N+ZlGd
+         zOoarJtHXOtTCYsEO1TWaMxMSwUmuU/IDwajwgTKXRSgEHsjZxScc6u9a76t6bRvY3
+         rpf0joPfv2kjB7ZZXb/x3L42kRgpJVQqBwUH6EVlTcqHiwJYANHRQ+Y/QkBpMvt+vF
+         KEm6QMY7L0ZCziC0IB9PDWXod1HlexoJCE4uUI7s16ZkxQtmJLCrRTIoMdr+jmaBo+
+         TbPqxk4rkhkLg==
+Date:   Wed, 9 Aug 2023 08:53:13 -0700
+From:   Nathan Chancellor <nathan@kernel.org>
+To:     Nick Desaulniers <ndesaulniers@google.com>
+Cc:     Naresh Kamboju <naresh.kamboju@linaro.org>,
+        linux-stable <stable@vger.kernel.org>,
+        clang-built-linux <llvm@lists.linux.dev>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Sasha Levin <sashal@kernel.org>,
+        Anders Roxell <anders.roxell@linaro.org>,
+        Arnd Bergmann <arnd@arndb.de>, Borislav Petkov <bp@alien8.de>,
+        Peter Zijlstra <peterz@infradead.org>
+Subject: Re: ld.lld: error: ./arch/x86/kernel/vmlinux.lds:191: at least one
+ side of the expression must be absolute
+Message-ID: <20230809155313.GA835802@dev-arch.thelio-3990X>
+References: <CA+G9fYsdUeNu-gwbs0+T6XHi4hYYk=Y9725-wFhZ7gJMspLDRA@mail.gmail.com>
+ <CA+G9fYvDa-u22+gXt7VRWcQkCJFHvt2FPnjFmbwLX0bY__QrLg@mail.gmail.com>
+ <CAKwvOdmjAZ9BacrNYHEgGcs=6PExfZkNYe4VWrCwkDCk_pOmyg@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20230809103642.720851262@linuxfoundation.org>
-X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=no autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAKwvOdmjAZ9BacrNYHEgGcs=6PExfZkNYe4VWrCwkDCk_pOmyg@mail.gmail.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, Aug 09, 2023 at 12:38:51PM +0200, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.4.10 release.
-> There are 165 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Fri, 11 Aug 2023 10:36:10 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.4.10-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.4.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
+On Wed, Aug 09, 2023 at 08:47:08AM -0700, Nick Desaulniers wrote:
+> Thanks for the report. We're tracking this here
+> https://github.com/ClangBuiltLinux/linux/issues/1907
+> It was pointed out that PeterZ has a series reworking this code entirely:
+> https://lore.kernel.org/lkml/20230809071218.000335006@infradead.org/
 
-Tested rc1 against the Fedora build system (aarch64, ppc64le, s390x,
-x86_64), and boot tested x86_64. No regressions noted.
+As I pointed out in that issue, I don't think that series helps us with
+this issue but I will try to test shortly (the patches did not apply
+cleanly but I have not looked into why yet).
 
-Tested-by: Justin M. Forbes <jforbes@fedoraproject.org>
+> On Tue, Aug 8, 2023 at 11:25 PM Naresh Kamboju
+> <naresh.kamboju@linaro.org> wrote:
+> >
+> > also noticed on stable-rc 5.15 and 5.10.
+> 
+> That's troubling if stable is already picking up patches that are
+> breaking the build!
+
+Those patches are already released in stable, they were basically
+released at the same time as they were merged into mainline:
+
+https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/log/?h=linux-6.4.y
+https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/log/?h=linux-6.1.y
+https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/log/?h=linux-5.15.y
+https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/log/?h=linux-5.10.y
+
+Cheers,
+Nathan
+
+> > On Wed, 9 Aug 2023 at 11:40, Naresh Kamboju <naresh.kamboju@linaro.org> wrote:
+> > >
+> > > While building Linux stable rc 6.1 x86_64 with clang-17 failed due to
+> > > following warnings / errors.
+> > >
+> > > make --silent --keep-going --jobs=8
+> > > O=/home/tuxbuild/.cache/tuxmake/builds/2/build ARCH=x86_64 SRCARCH=x86
+> > > CROSS_COMPILE=x86_64-linux-gnu- 'HOSTCC=sccache clang' 'CC=sccache
+> > > clang' LLVM=1 LLVM_IAS=1
+> > >
+> > > arch/x86/lib/retpoline.o: warning: objtool: .altinstr_replacement:
+> > > unexpected end of section
+> > > ld.lld: error: ./arch/x86/kernel/vmlinux.lds:191: at least one side of
+> > > the expression must be absolute
+> > > ld.lld: error: ./arch/x86/kernel/vmlinux.lds:192: at least one side of
+> > > the expression must be absolute
+> > > ld.lld: error: ./arch/x86/kernel/vmlinux.lds:191: at least one side of
+> > > the expression must be absolute
+> > > ld.lld: error: ./arch/x86/kernel/vmlinux.lds:192: at least one side of
+> > > the expression must be absolute
+> > > ld.lld: error: ./arch/x86/kernel/vmlinux.lds:191: at least one side of
+> > > the expression must be absolute
+> > > ld.lld: error: ./arch/x86/kernel/vmlinux.lds:192: at least one side of
+> > > the expression must be absolute
+> > > make[2]: *** [scripts/Makefile.vmlinux:34: vmlinux] Error 1
+> > > make[2]: Target '__default' not remade because of errors.
+> > > make[1]: *** [Makefile:1255: vmlinux] Error 2
+> > >
+> > >
+> > > Build links,
+> > >  - https://storage.tuxsuite.com/public/linaro/lkft/builds/2TiTUgExGs7SrTm9Lb4fakgeTfw/
+> > >  - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.1.y/build/v6.1.44-117-g74848b090997/testrun/18917095/suite/build/test/clang-lkftconfig/details/
+> > >  - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.1.y/build/v6.1.44-117-g74848b090997/testrun/18917095/suite/build/test/clang-lkftconfig/history/
+> > >
+> > > Steps to reproduce:
+> > >   tuxmake --runtime podman --target-arch x86_64 --toolchain clang-17
+> > > --kconfig https://storage.tuxsuite.com/public/linaro/lkft/builds/2TiTUgExGs7SrTm9Lb4fakgeTfw/config
+> > > LLVM=1 LLVM_IAS=1
+> > >   https://storage.tuxsuite.com/public/linaro/lkft/builds/2TiTUgExGs7SrTm9Lb4fakgeTfw/tuxmake_reproducer.sh
+> > >
+> > >
+> > > --
+> > > Linaro LKFT
+> > > https://lkft.linaro.org
+> 
+> 
+> 
+> -- 
+> Thanks,
+> ~Nick Desaulniers
