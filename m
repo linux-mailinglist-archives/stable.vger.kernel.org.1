@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0095A7758C5
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:55:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DA4E1775BE4
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:22:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232729AbjHIKzV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 06:55:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40202 "EHLO
+        id S233572AbjHILVr (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:21:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49806 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232501AbjHIKzJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:55:09 -0400
+        with ESMTP id S229640AbjHILVr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:21:47 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2AB8E211D
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:53:47 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B8D319A1
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:21:46 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7AD1D63142
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:53:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 893F7C433C7;
-        Wed,  9 Aug 2023 10:53:38 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D853C631F9
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:21:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E86ACC433C8;
+        Wed,  9 Aug 2023 11:21:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691578418;
-        bh=eZrklH5sZ77N4MIS5E+KpLGufMYlpx9j5J25AaEjfYA=;
+        s=korg; t=1691580105;
+        bh=tbmgvXGtuXRAZSFw/ZMQLE6Ym2s3C03kTOC1meUZgbA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=omibVwYugPHgfnk7uUzxuAEmUS3Bm4fhoLmSxRs2fQdfuRH+DEtmYhRDYFiHEsZ06
-         bL+8LLUS20as/rtPZXNbP2tt8F+o+YDDDq0Ic2oRmg2sHBDzaDlZWfFYXqRqYWZBe8
-         JMEDCUTGNh3S8Fa7wEEsA0QmQ4vqSQQWd8QUNUPo=
+        b=tzwQvRHl3AhQBnD3d8Ib5pKMVuBNw9YZWHlx7l4a/0PGt+ISEsWKhah/LRlT9NXG/
+         ivDwZkjBBLS9CL2oRKE6+UEalndoW3q+0vXg2d71c6xQdNBf+d6OYLN9IVLDQx8uR+
+         XrUYWEcPAFNeleSgIra01xEZhnPvWU+s2NkAx1tY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yuanjun Gong <ruc_gongyuanjun@163.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 053/127] net: korina: handle clk prepare error in korina_probe()
+        patches@lists.linux.dev, Martin Kaiser <martin@kaiser.cx>,
+        Helge Deller <deller@gmx.de>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 202/323] fbdev: imxfb: warn about invalid left/right margin
 Date:   Wed,  9 Aug 2023 12:40:40 +0200
-Message-ID: <20230809103638.433778100@linuxfoundation.org>
+Message-ID: <20230809103707.387925147@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103636.615294317@linuxfoundation.org>
-References: <20230809103636.615294317@linuxfoundation.org>
+In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
+References: <20230809103658.104386911@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,43 +54,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Yuanjun Gong <ruc_gongyuanjun@163.com>
+From: Martin Kaiser <martin@kaiser.cx>
 
-[ Upstream commit 0b6291ad1940c403734312d0e453e8dac9148f69 ]
+[ Upstream commit 4e47382fbca916d7db95cbf9e2d7ca2e9d1ca3fe ]
 
-in korina_probe(), the return value of clk_prepare_enable()
-should be checked since it might fail. we can use
-devm_clk_get_optional_enabled() instead of devm_clk_get_optional()
-and clk_prepare_enable() to automatically handle the error.
+Warn about invalid var->left_margin or var->right_margin. Their values
+are read from the device tree.
 
-Fixes: e4cd854ec487 ("net: korina: Get mdio input clock via common clock framework")
-Signed-off-by: Yuanjun Gong <ruc_gongyuanjun@163.com>
-Link: https://lore.kernel.org/r/20230731090535.21416-1-ruc_gongyuanjun@163.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+We store var->left_margin-3 and var->right_margin-1 in register
+fields. These fields should be >= 0.
+
+Fixes: 7e8549bcee00 ("imxfb: Fix margin settings")
+Signed-off-by: Martin Kaiser <martin@kaiser.cx>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/korina.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/video/fbdev/imxfb.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/korina.c b/drivers/net/ethernet/korina.c
-index 2b9335cb4bb3a..8537578e1cf1d 100644
---- a/drivers/net/ethernet/korina.c
-+++ b/drivers/net/ethernet/korina.c
-@@ -1302,11 +1302,10 @@ static int korina_probe(struct platform_device *pdev)
- 	else if (of_get_ethdev_address(pdev->dev.of_node, dev) < 0)
- 		eth_hw_addr_random(dev);
- 
--	clk = devm_clk_get_optional(&pdev->dev, "mdioclk");
-+	clk = devm_clk_get_optional_enabled(&pdev->dev, "mdioclk");
- 	if (IS_ERR(clk))
- 		return PTR_ERR(clk);
- 	if (clk) {
--		clk_prepare_enable(clk);
- 		lp->mii_clock_freq = clk_get_rate(clk);
- 	} else {
- 		lp->mii_clock_freq = 200000000; /* max possible input clk */
+diff --git a/drivers/video/fbdev/imxfb.c b/drivers/video/fbdev/imxfb.c
+index c4eb8661f7516..8ec260ed9a6f6 100644
+--- a/drivers/video/fbdev/imxfb.c
++++ b/drivers/video/fbdev/imxfb.c
+@@ -601,10 +601,10 @@ static int imxfb_activate_var(struct fb_var_screeninfo *var, struct fb_info *inf
+ 	if (var->hsync_len < 1    || var->hsync_len > 64)
+ 		printk(KERN_ERR "%s: invalid hsync_len %d\n",
+ 			info->fix.id, var->hsync_len);
+-	if (var->left_margin > 255)
++	if (var->left_margin < 3  || var->left_margin > 255)
+ 		printk(KERN_ERR "%s: invalid left_margin %d\n",
+ 			info->fix.id, var->left_margin);
+-	if (var->right_margin > 255)
++	if (var->right_margin < 1 || var->right_margin > 255)
+ 		printk(KERN_ERR "%s: invalid right_margin %d\n",
+ 			info->fix.id, var->right_margin);
+ 	if (var->yres < 1 || var->yres > ymax_mask)
 -- 
-2.40.1
+2.39.2
 
 
 
