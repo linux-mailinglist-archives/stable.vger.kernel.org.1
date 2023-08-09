@@ -2,171 +2,257 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F042F775C04
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:23:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F1297775889
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:53:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233612AbjHILXG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:23:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38064 "EHLO
+        id S232598AbjHIKxn (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 06:53:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50666 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233605AbjHILXF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:23:05 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA7111BF7
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:23:04 -0700 (PDT)
+        with ESMTP id S232599AbjHIKxa (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:53:30 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A23CA1FEB
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:51:28 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8982963220
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:23:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 965AFC433C7;
-        Wed,  9 Aug 2023 11:23:03 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6560F630D2
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:51:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 702A3C433C8;
+        Wed,  9 Aug 2023 10:51:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691580184;
-        bh=jdx9Eglzl1XYswc2joIxJNEQbqWMC0+tYWZFH+sQy3s=;
+        s=korg; t=1691578287;
+        bh=nHf3ZtN0+6d6A1CZzHsCyIGMrtQFDDkyVyoEFFacZyw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=V2xZaF7N0trg/8LBPQVlete1ITkURpg20YHOpWzAH+x6LvDuuHinZ5aaOo0GC/k34
-         l59M/1tcS24l2dlUCZt7uhsRIF8ggR1UHLS5UoyWCbQMiN2oSJxMstGtvMa8/W9kmH
-         NjC/fZDesBuvNHpL5C6O4kH46mmivZ2+Tm8TxGnU=
+        b=VOL2bSBto2hqE8/y0wV7qMk0WCxhuYVHgwJwqhAUaGTM7Rc/fOgu4yQk5bHay4Gv1
+         Wl8qKi8uEJi9+7FAVdoj6S6PNY83QGCMk8/OOu30jjhxnYARyYRovLzV3Mu7sImU/a
+         txKCXEyoDUvFpLkKl2TUoml2fexT7/YIMoSDomxA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, mhiramat@kernel.org,
-        Zheng Yejian <zhengyejian1@huawei.com>,
-        "Steven Rostedt (Google)" <rostedt@goodmis.org>,
+        patches@lists.linux.dev, Andi Shyti <andi.shyti@linux.intel.com>,
+        Jonathan Cavitt <jonathan.cavitt@intel.com>,
+        Matt Roper <matthew.d.roper@intel.com>,
+        Andrzej Hajda <andrzej.hajda@intel.com>,
+        Tvrtko Ursulin <tvrtko.ursulin@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 257/323] tracing: Fix warning in trace_buffered_event_disable()
+Subject: [PATCH 6.4 164/165] drm/i915/gt: Support aux invalidation on all engines
 Date:   Wed,  9 Aug 2023 12:41:35 +0200
-Message-ID: <20230809103709.850133595@linuxfoundation.org>
+Message-ID: <20230809103648.144830307@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
-References: <20230809103658.104386911@linuxfoundation.org>
+In-Reply-To: <20230809103642.720851262@linuxfoundation.org>
+References: <20230809103642.720851262@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Zheng Yejian <zhengyejian1@huawei.com>
+From: Andi Shyti <andi.shyti@linux.intel.com>
 
-[ Upstream commit dea499781a1150d285c62b26659f62fb00824fce ]
+[ Upstream commit 6a35f22d222528e1b157c6978c9424d2f8cbe0a1 ]
 
-Warning happened in trace_buffered_event_disable() at
-  WARN_ON_ONCE(!trace_buffered_event_ref)
+Perform some refactoring with the purpose of keeping in one
+single place all the operations around the aux table
+invalidation.
 
-  Call Trace:
-   ? __warn+0xa5/0x1b0
-   ? trace_buffered_event_disable+0x189/0x1b0
-   __ftrace_event_enable_disable+0x19e/0x3e0
-   free_probe_data+0x3b/0xa0
-   unregister_ftrace_function_probe_func+0x6b8/0x800
-   event_enable_func+0x2f0/0x3d0
-   ftrace_process_regex.isra.0+0x12d/0x1b0
-   ftrace_filter_write+0xe6/0x140
-   vfs_write+0x1c9/0x6f0
-   [...]
+With this refactoring add more engines where the invalidation
+should be performed.
 
-The cause of the warning is in __ftrace_event_enable_disable(),
-trace_buffered_event_enable() was called once while
-trace_buffered_event_disable() was called twice.
-Reproduction script show as below, for analysis, see the comments:
- ```
- #!/bin/bash
-
- cd /sys/kernel/tracing/
-
- # 1. Register a 'disable_event' command, then:
- #    1) SOFT_DISABLED_BIT was set;
- #    2) trace_buffered_event_enable() was called first time;
- echo 'cmdline_proc_show:disable_event:initcall:initcall_finish' > \
-     set_ftrace_filter
-
- # 2. Enable the event registered, then:
- #    1) SOFT_DISABLED_BIT was cleared;
- #    2) trace_buffered_event_disable() was called first time;
- echo 1 > events/initcall/initcall_finish/enable
-
- # 3. Try to call into cmdline_proc_show(), then SOFT_DISABLED_BIT was
- #    set again!!!
- cat /proc/cmdline
-
- # 4. Unregister the 'disable_event' command, then:
- #    1) SOFT_DISABLED_BIT was cleared again;
- #    2) trace_buffered_event_disable() was called second time!!!
- echo '!cmdline_proc_show:disable_event:initcall:initcall_finish' > \
-     set_ftrace_filter
- ```
-
-To fix it, IIUC, we can change to call trace_buffered_event_enable() at
-fist time soft-mode enabled, and call trace_buffered_event_disable() at
-last time soft-mode disabled.
-
-Link: https://lore.kernel.org/linux-trace-kernel/20230726095804.920457-1-zhengyejian1@huawei.com
-
-Cc: <mhiramat@kernel.org>
-Fixes: 0fc1b09ff1ff ("tracing: Use temp buffer when filtering events")
-Signed-off-by: Zheng Yejian <zhengyejian1@huawei.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Fixes: 972282c4cf24 ("drm/i915/gen12: Add aux table invalidate for all engines")
+Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
+Cc: Jonathan Cavitt <jonathan.cavitt@intel.com>
+Cc: Matt Roper <matthew.d.roper@intel.com>
+Cc: <stable@vger.kernel.org> # v5.8+
+Reviewed-by: Andrzej Hajda <andrzej.hajda@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230725001950.1014671-8-andi.shyti@linux.intel.com
+(cherry picked from commit 76ff7789d6e63d1a10b3b58f5c70b2e640c7a880)
+Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace_events.c | 14 ++++----------
- 1 file changed, 4 insertions(+), 10 deletions(-)
+ drivers/gpu/drm/i915/gt/gen8_engine_cs.c | 66 +++++++++++++-----------
+ drivers/gpu/drm/i915/gt/gen8_engine_cs.h |  3 +-
+ drivers/gpu/drm/i915/gt/intel_lrc.c      | 17 +-----
+ 3 files changed, 41 insertions(+), 45 deletions(-)
 
-diff --git a/kernel/trace/trace_events.c b/kernel/trace/trace_events.c
-index d2f9146d1ad74..a3dc6c126b3ee 100644
---- a/kernel/trace/trace_events.c
-+++ b/kernel/trace/trace_events.c
-@@ -372,7 +372,6 @@ static int __ftrace_event_enable_disable(struct trace_event_file *file,
- {
- 	struct trace_event_call *call = file->event_call;
- 	struct trace_array *tr = file->tr;
--	unsigned long file_flags = file->flags;
- 	int ret = 0;
- 	int disable;
- 
-@@ -396,6 +395,8 @@ static int __ftrace_event_enable_disable(struct trace_event_file *file,
- 				break;
- 			disable = file->flags & EVENT_FILE_FL_SOFT_DISABLED;
- 			clear_bit(EVENT_FILE_FL_SOFT_MODE_BIT, &file->flags);
-+			/* Disable use of trace_buffered_event */
-+			trace_buffered_event_disable();
- 		} else
- 			disable = !(file->flags & EVENT_FILE_FL_SOFT_MODE);
- 
-@@ -434,6 +435,8 @@ static int __ftrace_event_enable_disable(struct trace_event_file *file,
- 			if (atomic_inc_return(&file->sm_ref) > 1)
- 				break;
- 			set_bit(EVENT_FILE_FL_SOFT_MODE_BIT, &file->flags);
-+			/* Enable use of trace_buffered_event */
-+			trace_buffered_event_enable();
- 		}
- 
- 		if (!(file->flags & EVENT_FILE_FL_ENABLED)) {
-@@ -473,15 +476,6 @@ static int __ftrace_event_enable_disable(struct trace_event_file *file,
- 		break;
- 	}
- 
--	/* Enable or disable use of trace_buffered_event */
--	if ((file_flags & EVENT_FILE_FL_SOFT_DISABLED) !=
--	    (file->flags & EVENT_FILE_FL_SOFT_DISABLED)) {
--		if (file->flags & EVENT_FILE_FL_SOFT_DISABLED)
--			trace_buffered_event_enable();
--		else
--			trace_buffered_event_disable();
--	}
--
- 	return ret;
+diff --git a/drivers/gpu/drm/i915/gt/gen8_engine_cs.c b/drivers/gpu/drm/i915/gt/gen8_engine_cs.c
+index b2d69ce4a749b..024e212b5f80d 100644
+--- a/drivers/gpu/drm/i915/gt/gen8_engine_cs.c
++++ b/drivers/gpu/drm/i915/gt/gen8_engine_cs.c
+@@ -165,21 +165,47 @@ static u32 preparser_disable(bool state)
+ 	return MI_ARB_CHECK | 1 << 8 | state;
  }
  
++static i915_reg_t gen12_get_aux_inv_reg(struct intel_engine_cs *engine)
++{
++	switch (engine->id) {
++	case RCS0:
++		return GEN12_CCS_AUX_INV;
++	case BCS0:
++		return GEN12_BCS0_AUX_INV;
++	case VCS0:
++		return GEN12_VD0_AUX_INV;
++	case VCS2:
++		return GEN12_VD2_AUX_INV;
++	case VECS0:
++		return GEN12_VE0_AUX_INV;
++	case CCS0:
++		return GEN12_CCS0_AUX_INV;
++	default:
++		return INVALID_MMIO_REG;
++	}
++}
++
+ static bool gen12_needs_ccs_aux_inv(struct intel_engine_cs *engine)
+ {
++	i915_reg_t reg = gen12_get_aux_inv_reg(engine);
++
+ 	if (IS_PONTEVECCHIO(engine->i915))
+ 		return false;
+ 
+ 	/*
+-	 * so far platforms supported by i915 having
+-	 * flat ccs do not require AUX invalidation
++	 * So far platforms supported by i915 having flat ccs do not require
++	 * AUX invalidation. Check also whether the engine requires it.
+ 	 */
+-	return !HAS_FLAT_CCS(engine->i915);
++	return i915_mmio_reg_valid(reg) && !HAS_FLAT_CCS(engine->i915);
+ }
+ 
+-u32 *gen12_emit_aux_table_inv(struct intel_gt *gt, u32 *cs, const i915_reg_t inv_reg)
++u32 *gen12_emit_aux_table_inv(struct intel_engine_cs *engine, u32 *cs)
+ {
+-	u32 gsi_offset = gt->uncore->gsi_offset;
++	i915_reg_t inv_reg = gen12_get_aux_inv_reg(engine);
++	u32 gsi_offset = engine->gt->uncore->gsi_offset;
++
++	if (!gen12_needs_ccs_aux_inv(engine))
++		return cs;
+ 
+ 	*cs++ = MI_LOAD_REGISTER_IMM(1) | MI_LRI_MMIO_REMAP_EN;
+ 	*cs++ = i915_mmio_reg_offset(inv_reg) + gsi_offset;
+@@ -310,11 +336,7 @@ int gen12_emit_flush_rcs(struct i915_request *rq, u32 mode)
+ 
+ 		cs = gen8_emit_pipe_control(cs, flags, LRC_PPHWSP_SCRATCH_ADDR);
+ 
+-		if (gen12_needs_ccs_aux_inv(rq->engine)) {
+-			/* hsdes: 1809175790 */
+-			cs = gen12_emit_aux_table_inv(rq->engine->gt, cs,
+-						      GEN12_CCS_AUX_INV);
+-		}
++		cs = gen12_emit_aux_table_inv(engine, cs);
+ 
+ 		*cs++ = preparser_disable(false);
+ 		intel_ring_advance(rq, cs);
+@@ -325,21 +347,14 @@ int gen12_emit_flush_rcs(struct i915_request *rq, u32 mode)
+ 
+ int gen12_emit_flush_xcs(struct i915_request *rq, u32 mode)
+ {
+-	intel_engine_mask_t aux_inv = 0;
+-	u32 cmd, *cs;
++	u32 cmd = 4;
++	u32 *cs;
+ 
+-	cmd = 4;
+ 	if (mode & EMIT_INVALIDATE) {
+ 		cmd += 2;
+ 
+-		if (gen12_needs_ccs_aux_inv(rq->engine) &&
+-		    (rq->engine->class == VIDEO_DECODE_CLASS ||
+-		     rq->engine->class == VIDEO_ENHANCEMENT_CLASS)) {
+-			aux_inv = rq->engine->mask &
+-				~GENMASK(_BCS(I915_MAX_BCS - 1), BCS0);
+-			if (aux_inv)
+-				cmd += 8;
+-		}
++		if (gen12_needs_ccs_aux_inv(rq->engine))
++			cmd += 8;
+ 	}
+ 
+ 	cs = intel_ring_begin(rq, cmd);
+@@ -370,14 +385,7 @@ int gen12_emit_flush_xcs(struct i915_request *rq, u32 mode)
+ 	*cs++ = 0; /* upper addr */
+ 	*cs++ = 0; /* value */
+ 
+-	if (aux_inv) { /* hsdes: 1809175790 */
+-		if (rq->engine->class == VIDEO_DECODE_CLASS)
+-			cs = gen12_emit_aux_table_inv(rq->engine->gt,
+-						      cs, GEN12_VD0_AUX_INV);
+-		else
+-			cs = gen12_emit_aux_table_inv(rq->engine->gt,
+-						      cs, GEN12_VE0_AUX_INV);
+-	}
++	cs = gen12_emit_aux_table_inv(rq->engine, cs);
+ 
+ 	if (mode & EMIT_INVALIDATE)
+ 		*cs++ = preparser_disable(false);
+diff --git a/drivers/gpu/drm/i915/gt/gen8_engine_cs.h b/drivers/gpu/drm/i915/gt/gen8_engine_cs.h
+index a44eda096557c..867ba697aceb8 100644
+--- a/drivers/gpu/drm/i915/gt/gen8_engine_cs.h
++++ b/drivers/gpu/drm/i915/gt/gen8_engine_cs.h
+@@ -13,6 +13,7 @@
+ #include "intel_gt_regs.h"
+ #include "intel_gpu_commands.h"
+ 
++struct intel_engine_cs;
+ struct intel_gt;
+ struct i915_request;
+ 
+@@ -46,7 +47,7 @@ u32 *gen8_emit_fini_breadcrumb_rcs(struct i915_request *rq, u32 *cs);
+ u32 *gen11_emit_fini_breadcrumb_rcs(struct i915_request *rq, u32 *cs);
+ u32 *gen12_emit_fini_breadcrumb_rcs(struct i915_request *rq, u32 *cs);
+ 
+-u32 *gen12_emit_aux_table_inv(struct intel_gt *gt, u32 *cs, const i915_reg_t inv_reg);
++u32 *gen12_emit_aux_table_inv(struct intel_engine_cs *engine, u32 *cs);
+ 
+ static inline u32 *
+ __gen8_emit_pipe_control(u32 *batch, u32 bit_group_0,
+diff --git a/drivers/gpu/drm/i915/gt/intel_lrc.c b/drivers/gpu/drm/i915/gt/intel_lrc.c
+index c0c16c06eb29e..502a1c0093aab 100644
+--- a/drivers/gpu/drm/i915/gt/intel_lrc.c
++++ b/drivers/gpu/drm/i915/gt/intel_lrc.c
+@@ -1364,10 +1364,7 @@ gen12_emit_indirect_ctx_rcs(const struct intel_context *ce, u32 *cs)
+ 	    IS_DG2_G11(ce->engine->i915))
+ 		cs = gen8_emit_pipe_control(cs, PIPE_CONTROL_INSTRUCTION_CACHE_INVALIDATE, 0);
+ 
+-	/* hsdes: 1809175790 */
+-	if (!HAS_FLAT_CCS(ce->engine->i915))
+-		cs = gen12_emit_aux_table_inv(ce->engine->gt,
+-					      cs, GEN12_CCS_AUX_INV);
++	cs = gen12_emit_aux_table_inv(ce->engine, cs);
+ 
+ 	/* Wa_16014892111 */
+ 	if (IS_DG2(ce->engine->i915))
+@@ -1390,17 +1387,7 @@ gen12_emit_indirect_ctx_xcs(const struct intel_context *ce, u32 *cs)
+ 						    PIPE_CONTROL_INSTRUCTION_CACHE_INVALIDATE,
+ 						    0);
+ 
+-	/* hsdes: 1809175790 */
+-	if (!HAS_FLAT_CCS(ce->engine->i915)) {
+-		if (ce->engine->class == VIDEO_DECODE_CLASS)
+-			cs = gen12_emit_aux_table_inv(ce->engine->gt,
+-						      cs, GEN12_VD0_AUX_INV);
+-		else if (ce->engine->class == VIDEO_ENHANCEMENT_CLASS)
+-			cs = gen12_emit_aux_table_inv(ce->engine->gt,
+-						      cs, GEN12_VE0_AUX_INV);
+-	}
+-
+-	return cs;
++	return gen12_emit_aux_table_inv(ce->engine, cs);
+ }
+ 
+ static void
 -- 
 2.40.1
 
