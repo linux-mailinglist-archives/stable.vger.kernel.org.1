@@ -2,44 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4649C7758E6
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:55:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 74914775BFF
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:22:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232746AbjHIKz5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 06:55:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42336 "EHLO
+        id S233603AbjHILWv (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:22:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50798 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232742AbjHIKzn (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:55:43 -0400
+        with ESMTP id S233612AbjHILWv (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:22:51 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8FE2F26AE
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:55:14 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D72C51FCE
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:22:50 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2D68562DC8
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:55:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CEC4C433C8;
-        Wed,  9 Aug 2023 10:55:13 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 76B416321B
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:22:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86115C433C9;
+        Wed,  9 Aug 2023 11:22:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691578513;
-        bh=dSIXtpwQccNx6XL9tjwjKF+Q5tQEyFk3ShF24MCk+j4=;
+        s=korg; t=1691580169;
+        bh=ZGj42isl13P3QjbjoK9zqVUaG+jSy7GXtgp31VMvfb4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=RVcdzTv3dRptOk96+wXZoKPud7pUmBO9d77/NZHubvu8bLQeDJ5qGCgLktWmSo8cw
-         kOvZXssa/dG/OjFhhib1/LBCz8tMyEUFgV4fveJukueioQg2wCcMQ3wW/YIUim690b
-         PyIgeTxf9x/vzKG8T+YZKHkc38rzNhAd0nMabspc=
+        b=0ywW2YZ8wNw6h5ZiQTNWkOHf89Ph1E+qE4jXcJnMbhAoEE/vu8GVqb+zM9iosko7G
+         M0/ucnyuf6YnMiqZMrKWgOYPL9Kv54oMgjnsEVKFfsJz/NnGdGGySehwe3viZFwp5s
+         QgOvMCIPPTeqxDGF2PMcFx1ue/VlXSgZPH2icwXE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Michael Kelley <mikelley@microsoft.com>,
-        Wei Liu <wei.liu@kernel.org>
-Subject: [PATCH 6.1 086/127] x86/hyperv: Disable IBT when hypercall page lacks ENDBR instruction
+        patches@lists.linux.dev, Hulk Robot <hulkci@huawei.com>,
+        Himanshu Madhani <himanshu.madhani@oracle.com>,
+        Nilesh Javali <njavali@marvell.com>,
+        Ye Bin <yebin10@huawei.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 235/323] scsi: qla2xxx: Fix inconsistent format argument type in qla_os.c
 Date:   Wed,  9 Aug 2023 12:41:13 +0200
-Message-ID: <20230809103639.502150626@linuxfoundation.org>
+Message-ID: <20230809103708.836378273@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103636.615294317@linuxfoundation.org>
-References: <20230809103636.615294317@linuxfoundation.org>
+In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
+References: <20230809103658.104386911@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,70 +58,53 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Michael Kelley <mikelley@microsoft.com>
+From: Ye Bin <yebin10@huawei.com>
 
-commit d5ace2a776442d80674eff9ed42e737f7dd95056 upstream.
+[ Upstream commit 250bd00923c72c846092271a9e51ee373db081b6 ]
 
-On hardware that supports Indirect Branch Tracking (IBT), Hyper-V VMs
-with ConfigVersion 9.3 or later support IBT in the guest. However,
-current versions of Hyper-V have a bug in that there's not an ENDBR64
-instruction at the beginning of the hypercall page. Since hypercalls are
-made with an indirect call to the hypercall page, all hypercall attempts
-fail with an exception and Linux panics.
+Fix the following warnings:
 
-A Hyper-V fix is in progress to add ENDBR64. But guard against the Linux
-panic by clearing X86_FEATURE_IBT if the hypercall page doesn't start
-with ENDBR. The VM will boot and run without IBT.
+[drivers/scsi/qla2xxx/qla_os.c:4882]: (warning) %ld in format string (no. 2)
+	requires 'long' but the argument type is 'unsigned long'.
+[drivers/scsi/qla2xxx/qla_os.c:5011]: (warning) %ld in format string (no. 1)
+	requires 'long' but the argument type is 'unsigned long'.
 
-If future Linux 32-bit kernels were to support IBT, additional hypercall
-page hackery would be needed to make IBT work for such kernels in a
-Hyper-V VM.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Michael Kelley <mikelley@microsoft.com>
-Link: https://lore.kernel.org/r/1690001476-98594-1-git-send-email-mikelley@microsoft.com
-Signed-off-by: Wei Liu <wei.liu@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/r/20200930022515.2862532-3-yebin10@huawei.com
+Reported-by: Hulk Robot <hulkci@huawei.com>
+Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
+Reviewed-by: Nilesh Javali <njavali@marvell.com>
+Signed-off-by: Ye Bin <yebin10@huawei.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Stable-dep-of: d721b591b95c ("scsi: qla2xxx: Array index may go out of bound")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/hyperv/hv_init.c |   21 +++++++++++++++++++++
- 1 file changed, 21 insertions(+)
+ drivers/scsi/qla2xxx/qla_os.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/arch/x86/hyperv/hv_init.c
-+++ b/arch/x86/hyperv/hv_init.c
-@@ -14,6 +14,7 @@
- #include <asm/apic.h>
- #include <asm/desc.h>
- #include <asm/sev.h>
-+#include <asm/ibt.h>
- #include <asm/hypervisor.h>
- #include <asm/hyperv-tlfs.h>
- #include <asm/mshyperv.h>
-@@ -468,6 +469,26 @@ void __init hyperv_init(void)
+diff --git a/drivers/scsi/qla2xxx/qla_os.c b/drivers/scsi/qla2xxx/qla_os.c
+index 7863ad1390f8a..73f3e51ce9798 100644
+--- a/drivers/scsi/qla2xxx/qla_os.c
++++ b/drivers/scsi/qla2xxx/qla_os.c
+@@ -4604,7 +4604,7 @@ struct scsi_qla_host *qla2x00_create_host(struct scsi_host_template *sht,
  	}
+ 	INIT_DELAYED_WORK(&vha->scan.scan_work, qla_scan_work_fn);
  
- 	/*
-+	 * Some versions of Hyper-V that provide IBT in guest VMs have a bug
-+	 * in that there's no ENDBR64 instruction at the entry to the
-+	 * hypercall page. Because hypercalls are invoked via an indirect call
-+	 * to the hypercall page, all hypercall attempts fail when IBT is
-+	 * enabled, and Linux panics. For such buggy versions, disable IBT.
-+	 *
-+	 * Fixed versions of Hyper-V always provide ENDBR64 on the hypercall
-+	 * page, so if future Linux kernel versions enable IBT for 32-bit
-+	 * builds, additional hypercall page hackery will be required here
-+	 * to provide an ENDBR32.
-+	 */
-+#ifdef CONFIG_X86_KERNEL_IBT
-+	if (cpu_feature_enabled(X86_FEATURE_IBT) &&
-+	    *(u32 *)hv_hypercall_pg != gen_endbr()) {
-+		setup_clear_cpu_cap(X86_FEATURE_IBT);
-+		pr_warn("Hyper-V: Disabling IBT because of Hyper-V bug\n");
-+	}
-+#endif
-+
-+	/*
- 	 * hyperv_init() is called before LAPIC is initialized: see
- 	 * apic_intr_mode_init() -> x86_platform.apic_post_init() and
- 	 * apic_bsp_setup() -> setup_local_APIC(). The direct-mode STIMER
+-	sprintf(vha->host_str, "%s_%ld", QLA2XXX_DRIVER_NAME, vha->host_no);
++	sprintf(vha->host_str, "%s_%lu", QLA2XXX_DRIVER_NAME, vha->host_no);
+ 	ql_dbg(ql_dbg_init, vha, 0x0041,
+ 	    "Allocated the host=%p hw=%p vha=%p dev_name=%s",
+ 	    vha->host, vha->hw, vha,
+@@ -4735,7 +4735,7 @@ qla2x00_uevent_emit(struct scsi_qla_host *vha, u32 code)
+ 
+ 	switch (code) {
+ 	case QLA_UEVENT_CODE_FW_DUMP:
+-		snprintf(event_string, sizeof(event_string), "FW_DUMP=%ld",
++		snprintf(event_string, sizeof(event_string), "FW_DUMP=%lu",
+ 		    vha->host_no);
+ 		break;
+ 	default:
+-- 
+2.39.2
+
 
 
