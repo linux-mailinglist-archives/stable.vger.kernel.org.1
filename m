@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5616B775D31
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:34:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D354A775C64
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:26:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234041AbjHILev (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:34:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52510 "EHLO
+        id S233718AbjHIL0z (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:26:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52200 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234038AbjHILev (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:34:51 -0400
+        with ESMTP id S233734AbjHIL0y (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:26:54 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D307A1FCE
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:34:50 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18646FA
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:26:54 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 733A3634CA
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:34:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85FF5C433C7;
-        Wed,  9 Aug 2023 11:34:49 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A8BD663210
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:26:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4AC6C433C7;
+        Wed,  9 Aug 2023 11:26:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691580889;
-        bh=PNi+3aq38jtP/BUJxclgI/QMY/QD7DfoaBsotEq+jak=;
+        s=korg; t=1691580413;
+        bh=UFz5Mza013pJESPhVYR1HRHfw90tCssGdw1v5/v+nUc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=aO37yX7dsqOH2GxtRac7R5pyEZ2+dpJiluR3vvM8l7IcEV7E0EGxoCp7kEikvMHHs
-         Qgb9RCWiLsmBUqC7n9YbyaAanurPkahmJlGc2V+zIVFs4cRYml+G+lvVoHCSkHHkN+
-         5ivTMnAQnrXy1eiX0CG+WLWdvbMEPtuDR3r6OIC8=
+        b=QFtr+j6c5fuvP7SIR8xXWvh63M5TYof6tga769Ao4b304Mc/RrLRxdukqbWzJbl4u
+         4Sr2RmBQlSt4gLG9K1UAu/KBGVH8YYS58FaAfxaLPvl+GNmNFYpyN+Hsq3IAe/wM00
+         nfzz89kgHCpwDEu3JMxHkTfQJ5t8b0n4lHftx0Oo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jie Wang <wangjie125@huawei.com>,
-        Jijie Shao <shaojijie@huawei.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev, Zhang Yi <yi.zhang@huawei.com>,
+        Jan Kara <jack@suse.cz>, Theodore Tso <tytso@mit.edu>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 031/201] net: hns3: fix wrong bw weight of disabled tc issue
-Date:   Wed,  9 Aug 2023 12:40:33 +0200
-Message-ID: <20230809103644.876109832@linuxfoundation.org>
+Subject: [PATCH 5.4 003/154] jbd2: remove redundant buffer io error checks
+Date:   Wed,  9 Aug 2023 12:40:34 +0200
+Message-ID: <20230809103637.024533147@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103643.799166053@linuxfoundation.org>
-References: <20230809103643.799166053@linuxfoundation.org>
+In-Reply-To: <20230809103636.887175326@linuxfoundation.org>
+References: <20230809103636.887175326@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,96 +55,77 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jijie Shao <shaojijie@huawei.com>
+From: Zhang Yi <yi.zhang@huawei.com>
 
-[ Upstream commit 882481b1c55fc44861d7e2d54b4e0936b1b39f2c ]
+[ Upstream commit 214eb5a4d8a2032fb9f0711d1b202eb88ee02920 ]
 
-In dwrr mode, the default bandwidth weight of disabled tc is set to 0.
-If the bandwidth weight is 0, the mode will change to sp.
-Therefore, disabled tc default bandwidth weight need changed to 1,
-and 0 is returned when query the bandwidth weight of disabled tc.
-In addition, driver need stop configure bandwidth weight if tc is disabled.
+Now that __jbd2_journal_remove_checkpoint() can detect buffer io error
+and mark journal checkpoint error, then we abort the journal later
+before updating log tail to ensure the filesystem works consistently.
+So we could remove other redundant buffer io error checkes.
 
-Fixes: 848440544b41 ("net: hns3: Add support of TX Scheduler & Shaper to HNS3 driver")
-Signed-off-by: Jie Wang <wangjie125@huawei.com>
-Signed-off-by: Jijie Shao <shaojijie@huawei.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/r/20210610112440.3438139-5-yi.zhang@huawei.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Stable-dep-of: e34c8dd238d0 ("jbd2: Fix wrongly judgement for buffer head removing while doing checkpoint")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../ethernet/hisilicon/hns3/hns3pf/hclge_dcb.c  | 17 ++++++++++++++---
- .../ethernet/hisilicon/hns3/hns3pf/hclge_tm.c   |  3 ++-
- 2 files changed, 16 insertions(+), 4 deletions(-)
+ fs/jbd2/checkpoint.c | 13 ++-----------
+ 1 file changed, 2 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_dcb.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_dcb.c
-index c75794552a1a7..d60b8dfe38727 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_dcb.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_dcb.c
-@@ -53,7 +53,10 @@ static void hclge_tm_info_to_ieee_ets(struct hclge_dev *hdev,
+diff --git a/fs/jbd2/checkpoint.c b/fs/jbd2/checkpoint.c
+index 5ef99b9ec8be7..c5f7b7a455fa4 100644
+--- a/fs/jbd2/checkpoint.c
++++ b/fs/jbd2/checkpoint.c
+@@ -91,8 +91,7 @@ static int __try_to_free_cp_buf(struct journal_head *jh)
+ 	int ret = 0;
+ 	struct buffer_head *bh = jh2bh(jh);
  
- 	for (i = 0; i < HNAE3_MAX_TC; i++) {
- 		ets->prio_tc[i] = hdev->tm_info.prio_tc[i];
--		ets->tc_tx_bw[i] = hdev->tm_info.pg_info[0].tc_dwrr[i];
-+		if (i < hdev->tm_info.num_tc)
-+			ets->tc_tx_bw[i] = hdev->tm_info.pg_info[0].tc_dwrr[i];
-+		else
-+			ets->tc_tx_bw[i] = 0;
- 
- 		if (hdev->tm_info.tc_info[i].tc_sch_mode ==
- 		    HCLGE_SCH_MODE_SP)
-@@ -124,7 +127,8 @@ static u8 hclge_ets_tc_changed(struct hclge_dev *hdev, struct ieee_ets *ets,
- }
- 
- static int hclge_ets_sch_mode_validate(struct hclge_dev *hdev,
--				       struct ieee_ets *ets, bool *changed)
-+				       struct ieee_ets *ets, bool *changed,
-+				       u8 tc_num)
- {
- 	bool has_ets_tc = false;
- 	u32 total_ets_bw = 0;
-@@ -138,6 +142,13 @@ static int hclge_ets_sch_mode_validate(struct hclge_dev *hdev,
- 				*changed = true;
- 			break;
- 		case IEEE_8021QAZ_TSA_ETS:
-+			if (i >= tc_num) {
-+				dev_err(&hdev->pdev->dev,
-+					"tc%u is disabled, cannot set ets bw\n",
-+					i);
-+				return -EINVAL;
-+			}
-+
- 			/* The hardware will switch to sp mode if bandwidth is
- 			 * 0, so limit ets bandwidth must be greater than 0.
- 			 */
-@@ -177,7 +188,7 @@ static int hclge_ets_validate(struct hclge_dev *hdev, struct ieee_ets *ets,
- 	if (ret)
- 		return ret;
- 
--	ret = hclge_ets_sch_mode_validate(hdev, ets, changed);
-+	ret = hclge_ets_sch_mode_validate(hdev, ets, changed, tc_num);
- 	if (ret)
- 		return ret;
- 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_tm.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_tm.c
-index b3ceaaaeacaeb..8c5c5562c0a73 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_tm.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_tm.c
-@@ -651,6 +651,7 @@ static void hclge_tm_tc_info_init(struct hclge_dev *hdev)
- static void hclge_tm_pg_info_init(struct hclge_dev *hdev)
- {
- #define BW_PERCENT	100
-+#define DEFAULT_BW_WEIGHT	1
- 
- 	u8 i;
- 
-@@ -672,7 +673,7 @@ static void hclge_tm_pg_info_init(struct hclge_dev *hdev)
- 		for (k = 0; k < hdev->tm_info.num_tc; k++)
- 			hdev->tm_info.pg_info[i].tc_dwrr[k] = BW_PERCENT;
- 		for (; k < HNAE3_MAX_TC; k++)
--			hdev->tm_info.pg_info[i].tc_dwrr[k] = 0;
-+			hdev->tm_info.pg_info[i].tc_dwrr[k] = DEFAULT_BW_WEIGHT;
+-	if (jh->b_transaction == NULL && !buffer_locked(bh) &&
+-	    !buffer_dirty(bh) && !buffer_write_io_error(bh)) {
++	if (!jh->b_transaction && !buffer_locked(bh) && !buffer_dirty(bh)) {
+ 		JBUFFER_TRACE(jh, "remove from checkpoint list");
+ 		ret = __jbd2_journal_remove_checkpoint(jh) + 1;
  	}
- }
+@@ -228,7 +227,6 @@ int jbd2_log_do_checkpoint(journal_t *journal)
+ 	 * OK, we need to start writing disk blocks.  Take one transaction
+ 	 * and write it.
+ 	 */
+-	result = 0;
+ 	spin_lock(&journal->j_list_lock);
+ 	if (!journal->j_checkpoint_transactions)
+ 		goto out;
+@@ -295,8 +293,6 @@ int jbd2_log_do_checkpoint(journal_t *journal)
+ 			goto restart;
+ 		}
+ 		if (!buffer_dirty(bh)) {
+-			if (unlikely(buffer_write_io_error(bh)) && !result)
+-				result = -EIO;
+ 			BUFFER_TRACE(bh, "remove from checkpoint");
+ 			if (__jbd2_journal_remove_checkpoint(jh))
+ 				/* The transaction was released; we're done */
+@@ -356,8 +352,6 @@ int jbd2_log_do_checkpoint(journal_t *journal)
+ 			spin_lock(&journal->j_list_lock);
+ 			goto restart2;
+ 		}
+-		if (unlikely(buffer_write_io_error(bh)) && !result)
+-			result = -EIO;
  
+ 		/*
+ 		 * Now in whatever state the buffer currently is, we
+@@ -369,10 +363,7 @@ int jbd2_log_do_checkpoint(journal_t *journal)
+ 	}
+ out:
+ 	spin_unlock(&journal->j_list_lock);
+-	if (result < 0)
+-		jbd2_journal_abort(journal, result);
+-	else
+-		result = jbd2_cleanup_journal_tail(journal);
++	result = jbd2_cleanup_journal_tail(journal);
+ 
+ 	return (result < 0) ? result : 0;
+ }
 -- 
 2.39.2
 
