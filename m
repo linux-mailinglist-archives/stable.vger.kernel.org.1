@@ -2,47 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BFC21775BB1
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:20:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 401F37759C9
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:03:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233512AbjHILUB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:20:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53194 "EHLO
+        id S232979AbjHILDM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:03:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38206 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233511AbjHILUA (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:20:00 -0400
+        with ESMTP id S233019AbjHILDG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:03:06 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E948FA
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:20:00 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 932814206
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:54:32 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A9AEB631CF
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:19:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE0E8C433C8;
-        Wed,  9 Aug 2023 11:19:58 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 746DA630F7
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:54:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83C2FC433C8;
+        Wed,  9 Aug 2023 10:54:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691579999;
-        bh=gedNbu5Fo2qv7/gxRsyidpC0NOd2iWfkpR/WxYHuAJI=;
+        s=korg; t=1691578471;
+        bh=1Q5MlC2CYKTi6zYzHJeVzd1aXO9+ca2Mj0fzcvl8wcE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=tTbsRK3UQ0TSaLyMmP5gsewlYx9LxLXfQPPQCxoBY5brr8GY9z5koShpdGTDXQIrK
-         oY473ID1N0w4/HHX0vMaU3KTlQoPYnR+AsSCaZ/cyqoLBxcfl/uLYTZsOqNfW9XCFx
-         IEBlILzJkA0aUkURSumG7M3tPJXy61FGCQfQJS+E=
+        b=EVFKUXFjF0I+VkHUtZl5e5Sf4z/9uG2A/XV8RoPLuy0LD3Lrwt3kUkYcWS+XDkUu5
+         JaaK2T4RrKRPUz6Tfywfu12WJKLPqp8QMmjkR05vgLOWFFSmJYPfLbo3/CVwjNcwfG
+         8BsUtd7KsP7n5zMmiM1ylonVsq666PRPqAPGZNkE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        syzbot <syzbot+7937ba6a50bdd00fffdf@syzkaller.appspotmail.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
+        Willem de Bruijn <willemb@google.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 191/323] debugobjects: Recheck debug_objects_enabled before reporting
+Subject: [PATCH 6.1 042/127] net: add missing data-race annotations around sk->sk_peek_off
 Date:   Wed,  9 Aug 2023 12:40:29 +0200
-Message-ID: <20230809103706.921209533@linuxfoundation.org>
+Message-ID: <20230809103638.071833404@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
-References: <20230809103658.104386911@linuxfoundation.org>
+In-Reply-To: <20230809103636.615294317@linuxfoundation.org>
+References: <20230809103636.615294317@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,74 +56,63 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 8b64d420fe2450f82848178506d3e3a0bd195539 ]
+[ Upstream commit 11695c6e966b0ec7ed1d16777d294cef865a5c91 ]
 
-syzbot is reporting false a positive ODEBUG message immediately after
-ODEBUG was disabled due to OOM.
+sk_getsockopt() runs locklessly, thus we need to annotate the read
+of sk->sk_peek_off.
 
-  [ 1062.309646][T22911] ODEBUG: Out of memory. ODEBUG disabled
-  [ 1062.886755][ T5171] ------------[ cut here ]------------
-  [ 1062.892770][ T5171] ODEBUG: assert_init not available (active state 0) object: ffffc900056afb20 object type: timer_list hint: process_timeout+0x0/0x40
+While we are at it, add corresponding annotations to sk_set_peek_off()
+and unix_set_peek_off().
 
-  CPU 0 [ T5171]                CPU 1 [T22911]
-  --------------                --------------
-  debug_object_assert_init() {
-    if (!debug_objects_enabled)
-      return;
-    db = get_bucket(addr);
-                                lookup_object_or_alloc() {
-                                  debug_objects_enabled = 0;
-                                  return NULL;
-                                }
-                                debug_objects_oom() {
-                                  pr_warn("Out of memory. ODEBUG disabled\n");
-                                  // all buckets get emptied here, and
-                                }
-    lookup_object_or_alloc(addr, db, descr, false, true) {
-      // this bucket is already empty.
-      return ERR_PTR(-ENOENT);
-    }
-    // Emits false positive warning.
-    debug_print_object(&o, "assert_init");
-  }
-
-Recheck debug_object_enabled in debug_print_object() to avoid that.
-
-Reported-by: syzbot <syzbot+7937ba6a50bdd00fffdf@syzkaller.appspotmail.com>
-Suggested-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/492fe2ae-5141-d548-ebd5-62f5fe2e57f7@I-love.SAKURA.ne.jp
-Closes: https://syzkaller.appspot.com/bug?extid=7937ba6a50bdd00fffdf
+Fixes: b9bb53f3836f ("sock: convert sk_peek_offset functions to WRITE_ONCE")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Willem de Bruijn <willemb@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/debugobjects.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ net/core/sock.c    | 4 ++--
+ net/unix/af_unix.c | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/lib/debugobjects.c b/lib/debugobjects.c
-index 5f23d896df55a..62d095fd0c52a 100644
---- a/lib/debugobjects.c
-+++ b/lib/debugobjects.c
-@@ -371,6 +371,15 @@ static void debug_print_object(struct debug_obj *obj, char *msg)
- 	struct debug_obj_descr *descr = obj->descr;
- 	static int limit;
+diff --git a/net/core/sock.c b/net/core/sock.c
+index 4dd13d34e4740..61bbe6263f98e 100644
+--- a/net/core/sock.c
++++ b/net/core/sock.c
+@@ -1815,7 +1815,7 @@ int sk_getsockopt(struct sock *sk, int level, int optname,
+ 		if (!sock->ops->set_peek_off)
+ 			return -EOPNOTSUPP;
  
-+	/*
-+	 * Don't report if lookup_object_or_alloc() by the current thread
-+	 * failed because lookup_object_or_alloc()/debug_objects_oom() by a
-+	 * concurrent thread turned off debug_objects_enabled and cleared
-+	 * the hash buckets.
-+	 */
-+	if (!debug_objects_enabled)
-+		return;
-+
- 	if (limit < 5 && descr != descr_test) {
- 		void *hint = descr->debug_hint ?
- 			descr->debug_hint(obj->object) : NULL;
+-		v.val = sk->sk_peek_off;
++		v.val = READ_ONCE(sk->sk_peek_off);
+ 		break;
+ 	case SO_NOFCS:
+ 		v.val = sock_flag(sk, SOCK_NOFCS);
+@@ -3119,7 +3119,7 @@ EXPORT_SYMBOL(__sk_mem_reclaim);
+ 
+ int sk_set_peek_off(struct sock *sk, int val)
+ {
+-	sk->sk_peek_off = val;
++	WRITE_ONCE(sk->sk_peek_off, val);
+ 	return 0;
+ }
+ EXPORT_SYMBOL_GPL(sk_set_peek_off);
+diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
+index 5b19b6c53a2cb..78fa620a63981 100644
+--- a/net/unix/af_unix.c
++++ b/net/unix/af_unix.c
+@@ -779,7 +779,7 @@ static int unix_set_peek_off(struct sock *sk, int val)
+ 	if (mutex_lock_interruptible(&u->iolock))
+ 		return -EINTR;
+ 
+-	sk->sk_peek_off = val;
++	WRITE_ONCE(sk->sk_peek_off, val);
+ 	mutex_unlock(&u->iolock);
+ 
+ 	return 0;
 -- 
-2.39.2
+2.40.1
 
 
 
