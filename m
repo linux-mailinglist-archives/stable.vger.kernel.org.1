@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 82203775DB6
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:40:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A3868775CBF
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:30:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234204AbjHILke (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:40:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36590 "EHLO
+        id S233860AbjHILaf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:30:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52874 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234199AbjHILke (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:40:34 -0400
+        with ESMTP id S233879AbjHILac (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:30:32 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E505173A
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:40:33 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4BBD172A
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:30:31 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1E9D163638
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:40:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2822AC433C7;
-        Wed,  9 Aug 2023 11:40:31 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4566963369
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:30:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A65AC433C8;
+        Wed,  9 Aug 2023 11:30:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691581232;
-        bh=fR2xMZAHk90cgC/L7PUwBYaNvZEI8bBlCnbHz5CdL00=;
+        s=korg; t=1691580630;
+        bh=q1dFmBdX9mZSx1VitoctepFLja5YGhOK6ollODksYHk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=q1Q/QxZF/ykpqXTqflI3GPxnnStRkK4Rmr7anYj/pYhDJRrNKs7EJTSFJ566oBxCE
-         e0jzvEfZibM7UWRULYjtIS9uTPUK/CNYzjWE+f5CqnZJHte26AROeAmPsFqODqhDyc
-         KHE3JkHyi85H2rFnAuNsQpsBnSNMH0n6rJD+4hHk=
+        b=PRdpfdOqa6k80DkQNsI9i40yR4Rgc6GzU+ksQLdg2J3CBSQocGJYraoMNR20YAB6J
+         PNVY7dpTzuyRV8vAXgVovo0jiQv1yk50hMPG+Uumh70OSzTRjKN0KiRv4z2a4/F9J3
+         a6GWvBi5j9Z9CMrHoyGa0MQZSV3CSWnZkz280qiY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, kernel test robot <lkp@intel.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Cixi Geng <cixi.geng1@unisoc.com>
-Subject: [PATCH 5.10 123/201] perf: Fix function pointer case
+        patches@lists.linux.dev,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 094/154] KVM: s390: fix sthyi error handling
 Date:   Wed,  9 Aug 2023 12:42:05 +0200
-Message-ID: <20230809103647.866517370@linuxfoundation.org>
+Message-ID: <20230809103640.094395959@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103643.799166053@linuxfoundation.org>
-References: <20230809103643.799166053@linuxfoundation.org>
+In-Reply-To: <20230809103636.887175326@linuxfoundation.org>
+References: <20230809103636.887175326@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,48 +56,78 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Peter Zijlstra <peterz@infradead.org>
+From: Heiko Carstens <hca@linux.ibm.com>
 
-commit 1af6239d1d3e61d33fd2f0ba53d3d1a67cc50574 upstream.
+[ Upstream commit 0c02cc576eac161601927b41634f80bfd55bfa9e ]
 
-With the advent of CFI it is no longer acceptible to cast function
-pointers.
+Commit 9fb6c9b3fea1 ("s390/sthyi: add cache to store hypervisor info")
+added cache handling for store hypervisor info. This also changed the
+possible return code for sthyi_fill().
 
-The robot complains thusly:
+Instead of only returning a condition code like the sthyi instruction would
+do, it can now also return a negative error value (-ENOMEM). handle_styhi()
+was not changed accordingly. In case of an error, the negative error value
+would incorrectly injected into the guest PSW.
 
-  kernel-events-core.c:warning:cast-from-int-(-)(struct-perf_cpu_pmu_context-)-to-remote_function_f-(aka-int-(-)(void-)-)-converts-to-incompatible-function-type
+Add proper error handling to prevent this, and update the comment which
+describes the possible return values of sthyi_fill().
 
-Reported-by: kernel test robot <lkp@intel.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Signed-off-by: Cixi Geng <cixi.geng1@unisoc.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 9fb6c9b3fea1 ("s390/sthyi: add cache to store hypervisor info")
+Reviewed-by: Christian Borntraeger <borntraeger@linux.ibm.com>
+Link: https://lore.kernel.org/r/20230727182939.2050744-1-hca@linux.ibm.com
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/events/core.c |    8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ arch/s390/kernel/sthyi.c  | 6 +++---
+ arch/s390/kvm/intercept.c | 9 ++++++---
+ 2 files changed, 9 insertions(+), 6 deletions(-)
 
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -1222,6 +1222,11 @@ static int perf_mux_hrtimer_restart(stru
- 	return 0;
- }
- 
-+static int perf_mux_hrtimer_restart_ipi(void *arg)
-+{
-+	return perf_mux_hrtimer_restart(arg);
-+}
-+
- void perf_pmu_disable(struct pmu *pmu)
+diff --git a/arch/s390/kernel/sthyi.c b/arch/s390/kernel/sthyi.c
+index 888cc2f166db7..ce6084e28d904 100644
+--- a/arch/s390/kernel/sthyi.c
++++ b/arch/s390/kernel/sthyi.c
+@@ -460,9 +460,9 @@ static int sthyi_update_cache(u64 *rc)
+  *
+  * Fills the destination with system information returned by the STHYI
+  * instruction. The data is generated by emulation or execution of STHYI,
+- * if available. The return value is the condition code that would be
+- * returned, the rc parameter is the return code which is passed in
+- * register R2 + 1.
++ * if available. The return value is either a negative error value or
++ * the condition code that would be returned, the rc parameter is the
++ * return code which is passed in register R2 + 1.
+  */
+ int sthyi_fill(void *dst, u64 *rc)
  {
- 	int *count = this_cpu_ptr(pmu->pmu_disable_count);
-@@ -10772,8 +10777,7 @@ perf_event_mux_interval_ms_store(struct
- 		cpuctx = per_cpu_ptr(pmu->pmu_cpu_context, cpu);
- 		cpuctx->hrtimer_interval = ns_to_ktime(NSEC_PER_MSEC * timer);
+diff --git a/arch/s390/kvm/intercept.c b/arch/s390/kvm/intercept.c
+index a389fa85cca2d..5450d43d26ea5 100644
+--- a/arch/s390/kvm/intercept.c
++++ b/arch/s390/kvm/intercept.c
+@@ -360,8 +360,8 @@ static int handle_partial_execution(struct kvm_vcpu *vcpu)
+  */
+ int handle_sthyi(struct kvm_vcpu *vcpu)
+ {
+-	int reg1, reg2, r = 0;
+-	u64 code, addr, cc = 0, rc = 0;
++	int reg1, reg2, cc = 0, r = 0;
++	u64 code, addr, rc = 0;
+ 	struct sthyi_sctns *sctns = NULL;
  
--		cpu_function_call(cpu,
--			(remote_function_f)perf_mux_hrtimer_restart, cpuctx);
-+		cpu_function_call(cpu, perf_mux_hrtimer_restart_ipi, cpuctx);
- 	}
- 	cpus_read_unlock();
- 	mutex_unlock(&mux_interval_mutex);
+ 	if (!test_kvm_facility(vcpu->kvm, 74))
+@@ -392,7 +392,10 @@ int handle_sthyi(struct kvm_vcpu *vcpu)
+ 		return -ENOMEM;
+ 
+ 	cc = sthyi_fill(sctns, &rc);
+-
++	if (cc < 0) {
++		free_page((unsigned long)sctns);
++		return cc;
++	}
+ out:
+ 	if (!cc) {
+ 		r = write_guest(vcpu, addr, reg2, sctns, PAGE_SIZE);
+-- 
+2.40.1
+
 
 
