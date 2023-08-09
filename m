@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DBF0E775DAC
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:40:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CA549775C59
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:26:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234189AbjHILkG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:40:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35576 "EHLO
+        id S233720AbjHIL0Y (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:26:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60604 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234179AbjHILkF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:40:05 -0400
+        with ESMTP id S233718AbjHIL0X (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:26:23 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 837D6173A
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:40:05 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3FC1819A1
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:26:23 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 232076361B
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:40:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31453C433C8;
-        Wed,  9 Aug 2023 11:40:04 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CB2FF63275
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:26:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8E09C433C9;
+        Wed,  9 Aug 2023 11:26:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691581204;
-        bh=sAT4MrXXhCpLoXZXcpuJeXFtTCZ6fawC3gcrdoxEf8c=;
+        s=korg; t=1691580382;
+        bh=JsGghG11bIcezQvDbMqfL8Pjf7cg8zu4qiQpHOGVTA4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Y7oqcgEMuDCvR7A/1rBgxHuZORkioiLnD9KW/NjSKe/RSG5xw9XOYKAqXb5YYMu3O
-         wLN3Wx4eNr9jrkI/WwUykKgP7OvgBKIVi2tTfSAYIgrUfTZ6Zhm1J9HM6Wg5OTQjxq
-         jUZdRPSDhx0q2URjqtbepir2zPxA2TGRuKGi05/o=
+        b=OtdxIRwVAZVmTUH4EpCMf08Isxsakx0l4sb/OTbwE5nae5/Ti9fCKGhjqNZREVHc4
+         vzS8i2zuJlXD74uww7Y13xAhw2IeUO0EHRZ14QROh0obuCmyuhR7CSNE9QVRhbfk/1
+         W4K/lFrya8rI4Lh09CK72ib/wwB0MGHKT88BAmTM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 142/201] net: add missing data-race annotation for sk_ll_usec
+        patches@lists.linux.dev, Ilya Dryomov <idryomov@gmail.com>,
+        Dongsheng Yang <dongsheng.yang@easystack.cn>,
+        Xiubo Li <xiubli@redhat.com>
+Subject: [PATCH 4.19 306/323] libceph: fix potential hang in ceph_osdc_notify()
 Date:   Wed,  9 Aug 2023 12:42:24 +0200
-Message-ID: <20230809103648.479153965@linuxfoundation.org>
+Message-ID: <20230809103712.048258857@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103643.799166053@linuxfoundation.org>
-References: <20230809103643.799166053@linuxfoundation.org>
+In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
+References: <20230809103658.104386911@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,36 +55,69 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Eric Dumazet <edumazet@google.com>
+From: Ilya Dryomov <idryomov@gmail.com>
 
-[ Upstream commit e5f0d2dd3c2faa671711dac6d3ff3cef307bcfe3 ]
+commit e6e2843230799230fc5deb8279728a7218b0d63c upstream.
 
-In a prior commit I forgot that sk_getsockopt() reads
-sk->sk_ll_usec without holding a lock.
+If the cluster becomes unavailable, ceph_osdc_notify() may hang even
+with osd_request_timeout option set because linger_notify_finish_wait()
+waits for MWatchNotify NOTIFY_COMPLETE message with no associated OSD
+request in flight -- it's completely asynchronous.
 
-Fixes: 0dbffbb5335a ("net: annotate data race around sk_ll_usec")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Introduce an additional timeout, derived from the specified notify
+timeout.  While at it, switch both waits to killable which is more
+correct.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+Reviewed-by: Dongsheng Yang <dongsheng.yang@easystack.cn>
+Reviewed-by: Xiubo Li <xiubli@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/sock.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/ceph/osd_client.c |   20 ++++++++++++++------
+ 1 file changed, 14 insertions(+), 6 deletions(-)
 
-diff --git a/net/core/sock.c b/net/core/sock.c
-index a241734b10240..98f4b4a80de42 100644
---- a/net/core/sock.c
-+++ b/net/core/sock.c
-@@ -1547,7 +1547,7 @@ int sock_getsockopt(struct socket *sock, int level, int optname,
+--- a/net/ceph/osd_client.c
++++ b/net/ceph/osd_client.c
+@@ -3137,17 +3137,24 @@ static int linger_reg_commit_wait(struct
+ 	int ret;
  
- #ifdef CONFIG_NET_RX_BUSY_POLL
- 	case SO_BUSY_POLL:
--		v.val = sk->sk_ll_usec;
-+		v.val = READ_ONCE(sk->sk_ll_usec);
- 		break;
- #endif
+ 	dout("%s lreq %p linger_id %llu\n", __func__, lreq, lreq->linger_id);
+-	ret = wait_for_completion_interruptible(&lreq->reg_commit_wait);
++	ret = wait_for_completion_killable(&lreq->reg_commit_wait);
+ 	return ret ?: lreq->reg_commit_error;
+ }
  
--- 
-2.40.1
-
+-static int linger_notify_finish_wait(struct ceph_osd_linger_request *lreq)
++static int linger_notify_finish_wait(struct ceph_osd_linger_request *lreq,
++				     unsigned long timeout)
+ {
+-	int ret;
++	long left;
+ 
+ 	dout("%s lreq %p linger_id %llu\n", __func__, lreq, lreq->linger_id);
+-	ret = wait_for_completion_interruptible(&lreq->notify_finish_wait);
+-	return ret ?: lreq->notify_finish_error;
++	left = wait_for_completion_killable_timeout(&lreq->notify_finish_wait,
++						ceph_timeout_jiffies(timeout));
++	if (left <= 0)
++		left = left ?: -ETIMEDOUT;
++	else
++		left = lreq->notify_finish_error; /* completed */
++
++	return left;
+ }
+ 
+ /*
+@@ -4760,7 +4767,8 @@ int ceph_osdc_notify(struct ceph_osd_cli
+ 
+ 	ret = linger_reg_commit_wait(lreq);
+ 	if (!ret)
+-		ret = linger_notify_finish_wait(lreq);
++		ret = linger_notify_finish_wait(lreq,
++				 msecs_to_jiffies(2 * timeout * MSEC_PER_SEC));
+ 	else
+ 		dout("lreq %p failed to initiate notify %d\n", lreq, ret);
+ 
 
 
