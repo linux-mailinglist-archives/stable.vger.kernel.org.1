@@ -2,97 +2,93 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 02BFB775D20
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:34:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 351FC775790
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:47:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234000AbjHILeK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:34:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41992 "EHLO
+        id S232218AbjHIKrb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 06:47:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60066 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234001AbjHILeJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:34:09 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 73CB51BFE
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:34:08 -0700 (PDT)
+        with ESMTP id S232227AbjHIKra (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:47:30 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24E101999
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:47:30 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 13EA563486
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:34:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FE3DC433C7;
-        Wed,  9 Aug 2023 11:34:06 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B07ED6283F
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:47:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C448AC433C8;
+        Wed,  9 Aug 2023 10:47:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691580847;
-        bh=9X6dGSt48HQhRg93b1piqbxRQPQyjkj9oKRBXmYNEcA=;
+        s=korg; t=1691578049;
+        bh=k5GvgFSBRFg9FOfphDpohELqQvflHGlywHSB04rntLg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=xl5jcJX/jzeBaaHBZT5kji5m4A0ZRsiSzoKapG4OHiRqQykJQGkDxlPfuD0ONNhqW
-         UpsheBqDjClPWq6NOLXRNKuyxQcbJnZ8snVSfDOCTPtWAukAvACvZB4kVlVCpBVWd9
-         Hxd0/9WjaQA8NyYNfbGppOMJuFOmIFkHCPchkup4=
+        b=UZcrMS1bkbt+kC5NA7fIeRgHhuexQS2J6Z5Cs3giiOyfZStpprqssTAadnL1aYVDs
+         b7I1gvDwppjL8kQUoy/gkllob+60FH+KUVhzBSVWGNxNePh8p+mHX6ZW2xyaLGCg9r
+         w7sxg340GLt1jrRHUcDGQv0M5qAL6gw8oHP578oc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Alexander Aring <aahringo@redhat.com>,
-        David Teigland <teigland@redhat.com>,
+        patches@lists.linux.dev, Leon Romanovsky <leonro@nvidia.com>,
+        Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 016/201] fs: dlm: interrupt posix locks only when process is killed
+Subject: [PATCH 6.4 087/165] net/mlx5e: Set proper IPsec source port in L4 selector
 Date:   Wed,  9 Aug 2023 12:40:18 +0200
-Message-ID: <20230809103644.359053178@linuxfoundation.org>
+Message-ID: <20230809103645.655725901@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103643.799166053@linuxfoundation.org>
-References: <20230809103643.799166053@linuxfoundation.org>
+In-Reply-To: <20230809103642.720851262@linuxfoundation.org>
+References: <20230809103642.720851262@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Alexander Aring <aahringo@redhat.com>
+From: Leon Romanovsky <leonro@nvidia.com>
 
-[ Upstream commit 59e45c758ca1b9893ac923dd63536da946ac333b ]
+[ Upstream commit 62da08331f1a2bef9d0148613133ce8e640a2f8d ]
 
-If a posix lock request is waiting for a result from user space
-(dlm_controld), do not let it be interrupted unless the process
-is killed. This reverts commit a6b1533e9a57 ("dlm: make posix locks
-interruptible"). The problem with the interruptible change is
-that all locks were cleared on any signal interrupt. If a signal
-was received that did not terminate the process, the process
-could continue running after all its dlm posix locks had been
-cleared. A future patch will add cancelation to allow proper
-interruption.
+Fix typo in setup_fte_upper_proto_match() where destination UDP port
+was used instead of source port.
 
-Cc: stable@vger.kernel.org
-Fixes: a6b1533e9a57 ("dlm: make posix locks interruptible")
-Signed-off-by: Alexander Aring <aahringo@redhat.com>
-Signed-off-by: David Teigland <teigland@redhat.com>
+Fixes: a7385187a386 ("net/mlx5e: IPsec, support upper protocol selector field offload")
+Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+Link: https://lore.kernel.org/r/ffc024a4d192113103f392b0502688366ca88c1f.1690803944.git.leonro@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/dlm/plock.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_fs.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/dlm/plock.c b/fs/dlm/plock.c
-index 01fb7d8c0bca5..f3482e936cc25 100644
---- a/fs/dlm/plock.c
-+++ b/fs/dlm/plock.c
-@@ -159,7 +159,7 @@ int dlm_posix_lock(dlm_lockspace_t *lockspace, u64 number, struct file *file,
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_fs.c b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_fs.c
+index dbe87bf89c0dd..832d36be4a17b 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_fs.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_fs.c
+@@ -808,9 +808,9 @@ static void setup_fte_upper_proto_match(struct mlx5_flow_spec *spec, struct upsp
+ 	}
  
- 	send_op(op);
+ 	if (upspec->sport) {
+-		MLX5_SET(fte_match_set_lyr_2_4, spec->match_criteria, udp_dport,
++		MLX5_SET(fte_match_set_lyr_2_4, spec->match_criteria, udp_sport,
+ 			 upspec->sport_mask);
+-		MLX5_SET(fte_match_set_lyr_2_4, spec->match_value, udp_dport, upspec->sport);
++		MLX5_SET(fte_match_set_lyr_2_4, spec->match_value, udp_sport, upspec->sport);
+ 	}
+ }
  
--	rv = wait_event_interruptible(recv_wq, (op->done != 0));
-+	rv = wait_event_killable(recv_wq, (op->done != 0));
- 	if (rv == -ERESTARTSYS) {
- 		log_debug(ls, "%s: wait killed %llx", __func__,
- 			  (unsigned long long)number);
 -- 
-2.39.2
+2.40.1
 
 
 
