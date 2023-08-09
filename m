@@ -2,95 +2,129 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 93A99775BE0
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:22:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E1040775C80
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:28:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233580AbjHILV7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:21:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45592 "EHLO
+        id S233761AbjHIL2I (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:28:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32858 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233586AbjHILVy (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:21:54 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD3BA2129
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:21:51 -0700 (PDT)
+        with ESMTP id S233770AbjHIL2H (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:28:07 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6719B2130
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:27:55 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6E6DD631F8
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:21:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D718C433C7;
-        Wed,  9 Aug 2023 11:21:50 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 48C07632AC
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:27:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5793FC433C9;
+        Wed,  9 Aug 2023 11:27:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691580110;
-        bh=bstnWSVLzdZRowKMJai/fU4rOhHPAqGlyHXpaBRYI34=;
+        s=korg; t=1691580474;
+        bh=nKPRrR4j3xUPcaJc/bF7Yzy78Ho44KZhEBgYkFe0f3U=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=FvlBTQn1EptfImsZeQ5dbIUKmeTGNmJmm0yp2sSjkrMl8xYUH8y3OjQ4SV7UhkGSK
-         bzOXBCuF+QUyCuKvci8XsC2jYzN+4YjSOe/7mLQ8L3bAOSFAopGEjd3KhKi2Dd7j1D
-         mxCHMUyUM8AHhgkPXAbXR8AhAzBMSSOFtjiRuiqc=
+        b=wgkbF/WTgYnOVK5IPBVxbO8L5wJdI4t7/XlyZQ04fUZku4W/+N43kZ77gZNvqGG1B
+         a1Krfqcd6fcwSfUyI5Fm4gzX6lcKfvuz1yeN1y04ifmma43mNeCrji36AB8sTtwek8
+         r5RH3Mzm8nb+PsXbO97a5YYLRv1AgD1klwimVhOM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Alexander Aring <aahringo@redhat.com>,
-        David Teigland <teigland@redhat.com>,
+        patches@lists.linux.dev, Stewart Smith <trawets@amazon.com>,
+        Samuel Mendoza-Jonas <samjonas@amazon.com>,
+        Eric Dumazet <edumazet@google.com>,
+        Kuniyuki Iwashima <kuniyu@amazon.com>,
+        Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 230/323] fs: dlm: interrupt posix locks only when process is killed
+Subject: [PATCH 5.4 037/154] tcp: Reduce chance of collisions in inet6_hashfn().
 Date:   Wed,  9 Aug 2023 12:41:08 +0200
-Message-ID: <20230809103708.621775058@linuxfoundation.org>
+Message-ID: <20230809103638.257528003@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
-References: <20230809103658.104386911@linuxfoundation.org>
+In-Reply-To: <20230809103636.887175326@linuxfoundation.org>
+References: <20230809103636.887175326@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Alexander Aring <aahringo@redhat.com>
+From: Stewart Smith <trawets@amazon.com>
 
-[ Upstream commit 59e45c758ca1b9893ac923dd63536da946ac333b ]
+[ Upstream commit d11b0df7ddf1831f3e170972f43186dad520bfcc ]
 
-If a posix lock request is waiting for a result from user space
-(dlm_controld), do not let it be interrupted unless the process
-is killed. This reverts commit a6b1533e9a57 ("dlm: make posix locks
-interruptible"). The problem with the interruptible change is
-that all locks were cleared on any signal interrupt. If a signal
-was received that did not terminate the process, the process
-could continue running after all its dlm posix locks had been
-cleared. A future patch will add cancelation to allow proper
-interruption.
+For both IPv4 and IPv6 incoming TCP connections are tracked in a hash
+table with a hash over the source & destination addresses and ports.
+However, the IPv6 hash is insufficient and can lead to a high rate of
+collisions.
 
-Cc: stable@vger.kernel.org
-Fixes: a6b1533e9a57 ("dlm: make posix locks interruptible")
-Signed-off-by: Alexander Aring <aahringo@redhat.com>
-Signed-off-by: David Teigland <teigland@redhat.com>
+The IPv6 hash used an XOR to fit everything into the 96 bits for the
+fast jenkins hash, meaning it is possible for an external entity to
+ensure the hash collides, thus falling back to a linear search in the
+bucket, which is slow.
+
+We take the approach of hash the full length of IPv6 address in
+__ipv6_addr_jhash() so that all users can benefit from a more secure
+version.
+
+While this may look like it adds overhead, the reality of modern CPUs
+means that this is unmeasurable in real world scenarios.
+
+In simulating with llvm-mca, the increase in cycles for the hashing
+code was ~16 cycles on Skylake (from a base of ~155), and an extra ~9
+on Nehalem (base of ~173).
+
+In commit dd6d2910c5e0 ("netfilter: conntrack: switch to siphash")
+netfilter switched from a jenkins hash to a siphash, but even the faster
+hsiphash is a more significant overhead (~20-30%) in some preliminary
+testing.  So, in this patch, we keep to the more conservative approach to
+ensure we don't add much overhead per SYN.
+
+In testing, this results in a consistently even spread across the
+connection buckets.  In both testing and real-world scenarios, we have
+not found any measurable performance impact.
+
+Fixes: 08dcdbf6a7b9 ("ipv6: use a stronger hash for tcp")
+Signed-off-by: Stewart Smith <trawets@amazon.com>
+Signed-off-by: Samuel Mendoza-Jonas <samjonas@amazon.com>
+Suggested-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://lore.kernel.org/r/20230721222410.17914-1-kuniyu@amazon.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/dlm/plock.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/net/ipv6.h | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
-diff --git a/fs/dlm/plock.c b/fs/dlm/plock.c
-index 54ed11013d062..9fef426ce6f41 100644
---- a/fs/dlm/plock.c
-+++ b/fs/dlm/plock.c
-@@ -162,7 +162,7 @@ int dlm_posix_lock(dlm_lockspace_t *lockspace, u64 number, struct file *file,
+diff --git a/include/net/ipv6.h b/include/net/ipv6.h
+index 0e031a4fef408..8c454509f299f 100644
+--- a/include/net/ipv6.h
++++ b/include/net/ipv6.h
+@@ -660,12 +660,8 @@ static inline u32 ipv6_addr_hash(const struct in6_addr *a)
+ /* more secured version of ipv6_addr_hash() */
+ static inline u32 __ipv6_addr_jhash(const struct in6_addr *a, const u32 initval)
+ {
+-	u32 v = (__force u32)a->s6_addr32[0] ^ (__force u32)a->s6_addr32[1];
+-
+-	return jhash_3words(v,
+-			    (__force u32)a->s6_addr32[2],
+-			    (__force u32)a->s6_addr32[3],
+-			    initval);
++	return jhash2((__force const u32 *)a->s6_addr32,
++		      ARRAY_SIZE(a->s6_addr32), initval);
+ }
  
- 	send_op(op);
- 
--	rv = wait_event_interruptible(recv_wq, (op->done != 0));
-+	rv = wait_event_killable(recv_wq, (op->done != 0));
- 	if (rv == -ERESTARTSYS) {
- 		log_debug(ls, "%s: wait killed %llx", __func__,
- 			  (unsigned long long)number);
+ static inline bool ipv6_addr_loopback(const struct in6_addr *a)
 -- 
 2.39.2
 
