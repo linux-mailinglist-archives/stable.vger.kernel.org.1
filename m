@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8C350775D93
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:39:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 71308775BFE
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:22:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234149AbjHILjA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:39:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60510 "EHLO
+        id S233557AbjHILWs (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:22:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60052 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234150AbjHILi7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:38:59 -0400
+        with ESMTP id S233613AbjHILWs (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:22:48 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2DB90173A
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:38:58 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24FD51FCE
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:22:48 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B54B36357A
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:38:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3882C433C8;
-        Wed,  9 Aug 2023 11:38:56 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B06EF6321D
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:22:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3891C433C8;
+        Wed,  9 Aug 2023 11:22:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691581137;
-        bh=GCLxDoEtHAV2WhOdjxedXUmAyJKNm3XJIYWA/GkFfk0=;
+        s=korg; t=1691580167;
+        bh=MDU65qV/4mWCS3/X7rvA1K81aDxGyiA70wmRk/MW+CM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ADznsLXFHQL85CpzaQJElUoGiuC+jjakc1tHkraE2s9liscdm5Xn4lmlNBfW1f7os
-         8CrMyjVuvhf46UBCucT0uUhs+E78h/i4xkvuGaz7H0HVx2GLxGrPFC05LOwGsQCcXP
-         J6PS0kGNnIYH2u4kpfU0F7aT1Bs/zjcA9ZyfYiFM=
+        b=Dh95pDQ6ig0kq+/dhQODLKg4eqfNYi0uDs2bieIsL++0n1Ch38PmyUhMCtOU5WuZi
+         jziveHYveljVjEkjhCAzTyMzB3Q7j/p94urFZkvxi4Q3tyu0xvxttFGpkKICuarprv
+         QkYEMcOm3hRS4HbaQSUbPeQEKyzKhLyfe31j0EYs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Qu Wenruo <wqu@suse.com>,
-        Filipe Manana <fdmanana@suse.com>,
-        David Sterba <dsterba@suse.com>
-Subject: [PATCH 5.10 088/201] btrfs: check for commit error at btrfs_attach_transaction_barrier()
+        patches@lists.linux.dev, Matus Gajdos <matuszpd@gmail.com>,
+        Fabio Estevam <festevam@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 252/323] ASoC: fsl_spdif: Silence output on stop
 Date:   Wed,  9 Aug 2023 12:41:30 +0200
-Message-ID: <20230809103646.757947301@linuxfoundation.org>
+Message-ID: <20230809103709.614540153@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103643.799166053@linuxfoundation.org>
-References: <20230809103643.799166053@linuxfoundation.org>
+In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
+References: <20230809103658.104386911@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,53 +56,38 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Matus Gajdos <matuszpd@gmail.com>
 
-commit b28ff3a7d7e97456fd86b68d24caa32e1cfa7064 upstream.
+[ Upstream commit 0e4c2b6b0c4a4b4014d9424c27e5e79d185229c5 ]
 
-btrfs_attach_transaction_barrier() is used to get a handle pointing to the
-current running transaction if the transaction has not started its commit
-yet (its state is < TRANS_STATE_COMMIT_START). If the transaction commit
-has started, then we wait for the transaction to commit and finish before
-returning - however we completely ignore if the transaction was aborted
-due to some error during its commit, we simply return ERR_PT(-ENOENT),
-which makes the caller assume everything is fine and no errors happened.
+Clear TX registers on stop to prevent the SPDIF interface from sending
+last written word over and over again.
 
-This could make an fsync return success (0) to user space when in fact we
-had a transaction abort and the target inode changes were therefore not
-persisted.
-
-Fix this by checking for the return value from btrfs_wait_for_commit(),
-and if it returned an error, return it back to the caller.
-
-Fixes: d4edf39bd5db ("Btrfs: fix uncompleted transaction")
-CC: stable@vger.kernel.org # 4.19+
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: a2388a498ad2 ("ASoC: fsl: Add S/PDIF CPU DAI driver")
+Signed-off-by: Matus Gajdos <matuszpd@gmail.com>
+Reviewed-by: Fabio Estevam <festevam@gmail.com>
+Link: https://lore.kernel.org/r/20230719164729.19969-1-matuszpd@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/transaction.c |    9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ sound/soc/fsl/fsl_spdif.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/fs/btrfs/transaction.c
-+++ b/fs/btrfs/transaction.c
-@@ -821,8 +821,13 @@ btrfs_attach_transaction_barrier(struct
- 
- 	trans = start_transaction(root, 0, TRANS_ATTACH,
- 				  BTRFS_RESERVE_NO_FLUSH, true);
--	if (trans == ERR_PTR(-ENOENT))
--		btrfs_wait_for_commit(root->fs_info, 0);
-+	if (trans == ERR_PTR(-ENOENT)) {
-+		int ret;
-+
-+		ret = btrfs_wait_for_commit(root->fs_info, 0);
-+		if (ret)
-+			return ERR_PTR(ret);
-+	}
- 
- 	return trans;
- }
+diff --git a/sound/soc/fsl/fsl_spdif.c b/sound/soc/fsl/fsl_spdif.c
+index 740b90df44bb5..0a1ba64ed63cf 100644
+--- a/sound/soc/fsl/fsl_spdif.c
++++ b/sound/soc/fsl/fsl_spdif.c
+@@ -614,6 +614,8 @@ static int fsl_spdif_trigger(struct snd_pcm_substream *substream,
+ 	case SNDRV_PCM_TRIGGER_PAUSE_PUSH:
+ 		regmap_update_bits(regmap, REG_SPDIF_SCR, dmaen, 0);
+ 		regmap_update_bits(regmap, REG_SPDIF_SIE, intr, 0);
++		regmap_write(regmap, REG_SPDIF_STL, 0x0);
++		regmap_write(regmap, REG_SPDIF_STR, 0x0);
+ 		break;
+ 	default:
+ 		return -EINVAL;
+-- 
+2.40.1
+
 
 
