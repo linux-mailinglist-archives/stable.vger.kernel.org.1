@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F3A07775879
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:53:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6211A775C77
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:27:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232653AbjHIKxH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 06:53:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37748 "EHLO
+        id S233785AbjHIL1p (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:27:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56212 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232655AbjHIKvc (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:51:32 -0400
+        with ESMTP id S233793AbjHIL1h (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:27:37 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 889C42706
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:50:49 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 56CD9268B
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:27:33 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1D2BB63126
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:50:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27BA0C433C9;
-        Wed,  9 Aug 2023 10:50:47 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E1E63632B0
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:27:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01564C433C9;
+        Wed,  9 Aug 2023 11:27:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691578248;
-        bh=feLQySvwu0wxk7o6rmeceHGz43t0uldhn1T2ZYJD+AU=;
+        s=korg; t=1691580452;
+        bh=DDL0sNACxlWLCo5OoHmg+z4rP9wJsJDnj8w0Be9tRVo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=DoFJXKu59hy047IAbvXg8/nVROq2NsfPOvZShCKw21zaFWK954Jy0FqasyfDq/Poz
-         tH5eU7dA1RtEd5CdfMoT4eUw22Cell5i9iG8zdm5F84Ykw8uYKRJdoAxPuPktI2QzZ
-         1GysgmsECTNdLqFhKcNS18M2tyOwCrKCHRT1ifN4=
+        b=XrADcpfq0A03PBX3D5USyvZOU5P5yuhnWEfplBrH6ZrQd7z3MTI9idJNUfUTi/MPX
+         E6qIjJtUzaReApz/4YBcUwAaGKxMj+pDM7BFWJJ2k60CzzU6PgZbWTecaQygmB+iW6
+         jUYbIk34pZkxVgFKUimEIqOYtHrMAGwi94vtQw+g=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Andi Shyti <andi.shyti@linux.intel.com>,
-        Nirmoy Das <nirmoy.das@intel.com>,
-        Andrzej Hajda <andrzej.hajda@intel.com>,
-        Tvrtko Ursulin <tvrtko.ursulin@intel.com>
-Subject: [PATCH 6.4 130/165] drm/i915/gt: Cleanup aux invalidation registers
+        patches@lists.linux.dev, Petr Pavlu <petr.pavlu@suse.com>,
+        Joey Lee <jlee@suse.com>, Jarkko Sakkinen <jarkko@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 030/154] keys: Fix linking a duplicate key to a keyrings assoc_array
 Date:   Wed,  9 Aug 2023 12:41:01 +0200
-Message-ID: <20230809103647.072825010@linuxfoundation.org>
+Message-ID: <20230809103637.989020222@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103642.720851262@linuxfoundation.org>
-References: <20230809103642.720851262@linuxfoundation.org>
+In-Reply-To: <20230809103636.887175326@linuxfoundation.org>
+References: <20230809103636.887175326@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,117 +55,182 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Andi Shyti <andi.shyti@linux.intel.com>
+From: Petr Pavlu <petr.pavlu@suse.com>
 
-commit d14560ac1b595aa2e792365e91fea6aeaee66c2b upstream.
+[ Upstream commit d55901522f96082a43b9842d34867363c0cdbac5 ]
 
-Fix the 'NV' definition postfix that is supposed to be INV.
+When making a DNS query inside the kernel using dns_query(), the request
+code can in rare cases end up creating a duplicate index key in the
+assoc_array of the destination keyring. It is eventually found by
+a BUG_ON() check in the assoc_array implementation and results in
+a crash.
 
-Take the chance to also order properly the registers based on
-their address and call the GEN12_GFX_CCS_AUX_INV address as
-GEN12_CCS_AUX_INV like all the other similar registers.
+Example report:
+[2158499.700025] kernel BUG at ../lib/assoc_array.c:652!
+[2158499.700039] invalid opcode: 0000 [#1] SMP PTI
+[2158499.700065] CPU: 3 PID: 31985 Comm: kworker/3:1 Kdump: loaded Not tainted 5.3.18-150300.59.90-default #1 SLE15-SP3
+[2158499.700096] Hardware name: VMware, Inc. VMware Virtual Platform/440BX Desktop Reference Platform, BIOS 6.00 11/12/2020
+[2158499.700351] Workqueue: cifsiod cifs_resolve_server [cifs]
+[2158499.700380] RIP: 0010:assoc_array_insert+0x85f/0xa40
+[2158499.700401] Code: ff 74 2b 48 8b 3b 49 8b 45 18 4c 89 e6 48 83 e7 fe e8 95 ec 74 00 3b 45 88 7d db 85 c0 79 d4 0f 0b 0f 0b 0f 0b e8 41 f2 be ff <0f> 0b 0f 0b 81 7d 88 ff ff ff 7f 4c 89 eb 4c 8b ad 58 ff ff ff 0f
+[2158499.700448] RSP: 0018:ffffc0bd6187faf0 EFLAGS: 00010282
+[2158499.700470] RAX: ffff9f1ea7da2fe8 RBX: ffff9f1ea7da2fc1 RCX: 0000000000000005
+[2158499.700492] RDX: 0000000000000000 RSI: 0000000000000005 RDI: 0000000000000000
+[2158499.700515] RBP: ffffc0bd6187fbb0 R08: ffff9f185faf1100 R09: 0000000000000000
+[2158499.700538] R10: ffff9f1ea7da2cc0 R11: 000000005ed8cec8 R12: ffffc0bd6187fc28
+[2158499.700561] R13: ffff9f15feb8d000 R14: ffff9f1ea7da2fc0 R15: ffff9f168dc0d740
+[2158499.700585] FS:  0000000000000000(0000) GS:ffff9f185fac0000(0000) knlGS:0000000000000000
+[2158499.700610] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[2158499.700630] CR2: 00007fdd94fca238 CR3: 0000000809d8c006 CR4: 00000000003706e0
+[2158499.700702] Call Trace:
+[2158499.700741]  ? key_alloc+0x447/0x4b0
+[2158499.700768]  ? __key_link_begin+0x43/0xa0
+[2158499.700790]  __key_link_begin+0x43/0xa0
+[2158499.700814]  request_key_and_link+0x2c7/0x730
+[2158499.700847]  ? dns_resolver_read+0x20/0x20 [dns_resolver]
+[2158499.700873]  ? key_default_cmp+0x20/0x20
+[2158499.700898]  request_key_tag+0x43/0xa0
+[2158499.700926]  dns_query+0x114/0x2ca [dns_resolver]
+[2158499.701127]  dns_resolve_server_name_to_ip+0x194/0x310 [cifs]
+[2158499.701164]  ? scnprintf+0x49/0x90
+[2158499.701190]  ? __switch_to_asm+0x40/0x70
+[2158499.701211]  ? __switch_to_asm+0x34/0x70
+[2158499.701405]  reconn_set_ipaddr_from_hostname+0x81/0x2a0 [cifs]
+[2158499.701603]  cifs_resolve_server+0x4b/0xd0 [cifs]
+[2158499.701632]  process_one_work+0x1f8/0x3e0
+[2158499.701658]  worker_thread+0x2d/0x3f0
+[2158499.701682]  ? process_one_work+0x3e0/0x3e0
+[2158499.701703]  kthread+0x10d/0x130
+[2158499.701723]  ? kthread_park+0xb0/0xb0
+[2158499.701746]  ret_from_fork+0x1f/0x40
 
-Remove also VD1, VD3 and VE1 registers that don't exist and add
-BCS0 and CCS0.
+The situation occurs as follows:
+* Some kernel facility invokes dns_query() to resolve a hostname, for
+  example, "abcdef". The function registers its global DNS resolver
+  cache as current->cred.thread_keyring and passes the query to
+  request_key_net() -> request_key_tag() -> request_key_and_link().
+* Function request_key_and_link() creates a keyring_search_context
+  object. Its match_data.cmp method gets set via a call to
+  type->match_preparse() (resolves to dns_resolver_match_preparse()) to
+  dns_resolver_cmp().
+* Function request_key_and_link() continues and invokes
+  search_process_keyrings_rcu() which returns that a given key was not
+  found. The control is then passed to request_key_and_link() ->
+  construct_alloc_key().
+* Concurrently to that, a second task similarly makes a DNS query for
+  "abcdef." and its result gets inserted into the DNS resolver cache.
+* Back on the first task, function construct_alloc_key() first runs
+  __key_link_begin() to determine an assoc_array_edit operation to
+  insert a new key. Index keys in the array are compared exactly as-is,
+  using keyring_compare_object(). The operation finds that "abcdef" is
+  not yet present in the destination keyring.
+* Function construct_alloc_key() continues and checks if a given key is
+  already present on some keyring by again calling
+  search_process_keyrings_rcu(). This search is done using
+  dns_resolver_cmp() and "abcdef" gets matched with now present key
+  "abcdef.".
+* The found key is linked on the destination keyring by calling
+  __key_link() and using the previously calculated assoc_array_edit
+  operation. This inserts the "abcdef." key in the array but creates
+  a duplicity because the same index key is already present.
 
-Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
-Cc: <stable@vger.kernel.org> # v5.8+
-Reviewed-by: Nirmoy Das <nirmoy.das@intel.com>
-Reviewed-by: Andrzej Hajda <andrzej.hajda@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230725001950.1014671-2-andi.shyti@linux.intel.com
-(cherry picked from commit 2f0b927d3ca3440445975ebde27f3df1c3ed6f76)
-Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix the problem by postponing __key_link_begin() in
+construct_alloc_key() until an actual key which should be linked into
+the destination keyring is determined.
+
+[jarkko@kernel.org: added a fixes tag and cc to stable]
+Cc: stable@vger.kernel.org # v5.3+
+Fixes: df593ee23e05 ("keys: Hoist locking out of __key_link_begin()")
+Signed-off-by: Petr Pavlu <petr.pavlu@suse.com>
+Reviewed-by: Joey Lee <jlee@suse.com>
+Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/gt/gen8_engine_cs.c |    8 ++++----
- drivers/gpu/drm/i915/gt/intel_gt_regs.h  |   16 ++++++++--------
- drivers/gpu/drm/i915/gt/intel_lrc.c      |    6 +++---
- 3 files changed, 15 insertions(+), 15 deletions(-)
+ security/keys/request_key.c | 35 ++++++++++++++++++++++++-----------
+ 1 file changed, 24 insertions(+), 11 deletions(-)
 
---- a/drivers/gpu/drm/i915/gt/gen8_engine_cs.c
-+++ b/drivers/gpu/drm/i915/gt/gen8_engine_cs.c
-@@ -256,8 +256,8 @@ int gen12_emit_flush_rcs(struct i915_req
+diff --git a/security/keys/request_key.c b/security/keys/request_key.c
+index 17c9c0cfb6f59..964e2456f34da 100644
+--- a/security/keys/request_key.c
++++ b/security/keys/request_key.c
+@@ -401,17 +401,21 @@ static int construct_alloc_key(struct keyring_search_context *ctx,
+ 	set_bit(KEY_FLAG_USER_CONSTRUCT, &key->flags);
  
- 		if (!HAS_FLAT_CCS(rq->engine->i915)) {
- 			/* hsdes: 1809175790 */
--			cs = gen12_emit_aux_table_inv(rq->engine->gt,
--						      cs, GEN12_GFX_CCS_AUX_NV);
-+			cs = gen12_emit_aux_table_inv(rq->engine->gt, cs,
-+						      GEN12_CCS_AUX_INV);
- 		}
- 
- 		*cs++ = preparser_disable(false);
-@@ -317,10 +317,10 @@ int gen12_emit_flush_xcs(struct i915_req
- 	if (aux_inv) { /* hsdes: 1809175790 */
- 		if (rq->engine->class == VIDEO_DECODE_CLASS)
- 			cs = gen12_emit_aux_table_inv(rq->engine->gt,
--						      cs, GEN12_VD0_AUX_NV);
-+						      cs, GEN12_VD0_AUX_INV);
- 		else
- 			cs = gen12_emit_aux_table_inv(rq->engine->gt,
--						      cs, GEN12_VE0_AUX_NV);
-+						      cs, GEN12_VE0_AUX_INV);
+ 	if (dest_keyring) {
+-		ret = __key_link_lock(dest_keyring, &ctx->index_key);
++		ret = __key_link_lock(dest_keyring, &key->index_key);
+ 		if (ret < 0)
+ 			goto link_lock_failed;
+-		ret = __key_link_begin(dest_keyring, &ctx->index_key, &edit);
+-		if (ret < 0)
+-			goto link_prealloc_failed;
  	}
  
- 	if (mode & EMIT_INVALIDATE)
---- a/drivers/gpu/drm/i915/gt/intel_gt_regs.h
-+++ b/drivers/gpu/drm/i915/gt/intel_gt_regs.h
-@@ -331,9 +331,11 @@
- #define GEN8_PRIVATE_PAT_HI			_MMIO(0x40e0 + 4)
- #define GEN10_PAT_INDEX(index)			_MMIO(0x40e0 + (index) * 4)
- #define BSD_HWS_PGA_GEN7			_MMIO(0x4180)
--#define GEN12_GFX_CCS_AUX_NV			_MMIO(0x4208)
--#define GEN12_VD0_AUX_NV			_MMIO(0x4218)
--#define GEN12_VD1_AUX_NV			_MMIO(0x4228)
-+
-+#define GEN12_CCS_AUX_INV			_MMIO(0x4208)
-+#define GEN12_VD0_AUX_INV			_MMIO(0x4218)
-+#define GEN12_VE0_AUX_INV			_MMIO(0x4238)
-+#define GEN12_BCS0_AUX_INV			_MMIO(0x4248)
+-	/* attach the key to the destination keyring under lock, but we do need
++	/*
++	 * Attach the key to the destination keyring under lock, but we do need
+ 	 * to do another check just in case someone beat us to it whilst we
+-	 * waited for locks */
++	 * waited for locks.
++	 *
++	 * The caller might specify a comparison function which looks for keys
++	 * that do not exactly match but are still equivalent from the caller's
++	 * perspective. The __key_link_begin() operation must be done only after
++	 * an actual key is determined.
++	 */
+ 	mutex_lock(&key_construction_mutex);
  
- #define GEN8_RTCR				_MMIO(0x4260)
- #define GEN8_M1TCR				_MMIO(0x4264)
-@@ -341,14 +343,12 @@
- #define GEN8_BTCR				_MMIO(0x426c)
- #define GEN8_VTCR				_MMIO(0x4270)
+ 	rcu_read_lock();
+@@ -420,12 +424,16 @@ static int construct_alloc_key(struct keyring_search_context *ctx,
+ 	if (!IS_ERR(key_ref))
+ 		goto key_already_present;
  
--#define GEN12_VD2_AUX_NV			_MMIO(0x4298)
--#define GEN12_VD3_AUX_NV			_MMIO(0x42a8)
--#define GEN12_VE0_AUX_NV			_MMIO(0x4238)
--
- #define BLT_HWS_PGA_GEN7			_MMIO(0x4280)
+-	if (dest_keyring)
++	if (dest_keyring) {
++		ret = __key_link_begin(dest_keyring, &key->index_key, &edit);
++		if (ret < 0)
++			goto link_alloc_failed;
+ 		__key_link(key, &edit);
++	}
  
--#define GEN12_VE1_AUX_NV			_MMIO(0x42b8)
-+#define GEN12_VD2_AUX_INV			_MMIO(0x4298)
-+#define GEN12_CCS0_AUX_INV			_MMIO(0x42c8)
- #define   AUX_INV				REG_BIT(0)
-+
- #define VEBOX_HWS_PGA_GEN7			_MMIO(0x4380)
- 
- #define GEN12_AUX_ERR_DBG			_MMIO(0x43f4)
---- a/drivers/gpu/drm/i915/gt/intel_lrc.c
-+++ b/drivers/gpu/drm/i915/gt/intel_lrc.c
-@@ -1367,7 +1367,7 @@ gen12_emit_indirect_ctx_rcs(const struct
- 	/* hsdes: 1809175790 */
- 	if (!HAS_FLAT_CCS(ce->engine->i915))
- 		cs = gen12_emit_aux_table_inv(ce->engine->gt,
--					      cs, GEN12_GFX_CCS_AUX_NV);
-+					      cs, GEN12_CCS_AUX_INV);
- 
- 	/* Wa_16014892111 */
- 	if (IS_DG2(ce->engine->i915))
-@@ -1394,10 +1394,10 @@ gen12_emit_indirect_ctx_xcs(const struct
- 	if (!HAS_FLAT_CCS(ce->engine->i915)) {
- 		if (ce->engine->class == VIDEO_DECODE_CLASS)
- 			cs = gen12_emit_aux_table_inv(ce->engine->gt,
--						      cs, GEN12_VD0_AUX_NV);
-+						      cs, GEN12_VD0_AUX_INV);
- 		else if (ce->engine->class == VIDEO_ENHANCEMENT_CLASS)
- 			cs = gen12_emit_aux_table_inv(ce->engine->gt,
--						      cs, GEN12_VE0_AUX_NV);
-+						      cs, GEN12_VE0_AUX_INV);
+ 	mutex_unlock(&key_construction_mutex);
+ 	if (dest_keyring)
+-		__key_link_end(dest_keyring, &ctx->index_key, edit);
++		__key_link_end(dest_keyring, &key->index_key, edit);
+ 	mutex_unlock(&user->cons_lock);
+ 	*_key = key;
+ 	kleave(" = 0 [%d]", key_serial(key));
+@@ -438,10 +446,13 @@ static int construct_alloc_key(struct keyring_search_context *ctx,
+ 	mutex_unlock(&key_construction_mutex);
+ 	key = key_ref_to_ptr(key_ref);
+ 	if (dest_keyring) {
++		ret = __key_link_begin(dest_keyring, &key->index_key, &edit);
++		if (ret < 0)
++			goto link_alloc_failed_unlocked;
+ 		ret = __key_link_check_live_key(dest_keyring, key);
+ 		if (ret == 0)
+ 			__key_link(key, &edit);
+-		__key_link_end(dest_keyring, &ctx->index_key, edit);
++		__key_link_end(dest_keyring, &key->index_key, edit);
+ 		if (ret < 0)
+ 			goto link_check_failed;
  	}
+@@ -456,8 +467,10 @@ static int construct_alloc_key(struct keyring_search_context *ctx,
+ 	kleave(" = %d [linkcheck]", ret);
+ 	return ret;
  
- 	return cs;
+-link_prealloc_failed:
+-	__key_link_end(dest_keyring, &ctx->index_key, edit);
++link_alloc_failed:
++	mutex_unlock(&key_construction_mutex);
++link_alloc_failed_unlocked:
++	__key_link_end(dest_keyring, &key->index_key, edit);
+ link_lock_failed:
+ 	mutex_unlock(&user->cons_lock);
+ 	key_put(key);
+-- 
+2.39.2
+
 
 
