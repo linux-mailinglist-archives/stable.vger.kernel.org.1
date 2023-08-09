@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 74AC07758BA
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:55:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3F53A775B83
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:18:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232637AbjHIKzM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 06:55:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53022 "EHLO
+        id S233463AbjHILSS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:18:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58832 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232593AbjHIKy7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:54:59 -0400
+        with ESMTP id S233451AbjHILSR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:18:17 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 28CE92D64
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:53:27 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 09C7AED
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:18:17 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 522E46312F
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:52:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64C75C433C7;
-        Wed,  9 Aug 2023 10:52:42 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9EFDA63155
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:18:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2A17C433C8;
+        Wed,  9 Aug 2023 11:18:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691578362;
-        bh=UiaCMuCVGz9274qc5gu7dqJkCUGmGxq6AdgH9Bcoeo8=;
+        s=korg; t=1691579896;
+        bh=yHWbn/RL8yIza8MZ9dgybLm6YbLHKM42ZYXuDCIOum4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=mKXSuFrsoEeMU08Dp0vS3+J+wrvKmPXjsDdZVxYwTlZlJL4tP3Rd2qcm7I0UO1fJ4
-         24sGBOlSlLrS8tUvXuTEzqj8sSrG8hjbPqfqyA/HOgpgpimu+JO+C3TsH4pfY/BEEV
-         qZINi6MOUBcY7lBVMdwVtmorc3FHZWNfvy1QHCK0=
+        b=Vo57yCAE5USbyvaxHgKgs1JuhqS+YqeQLjdKGNbXFmW5u7vHpYiK1aX1XnnWnCTgm
+         G0EKdINtPyqFvx1OZHEEM+vhfzvRBC3qw0bP59y+axuV1ltzjHMO7X8NpsiZ788JqF
+         FGNKu8d0mMBdju7fG8ZbXVR1zsdDJXXQiBt/t0M4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Robin Murphy <robin.murphy@arm.com>,
-        Nicolin Chen <nicolinc@nvidia.com>,
-        Will Deacon <will@kernel.org>,
-        Easwar Hariharan <eahariha@linux.microsoft.com>
-Subject: [PATCH 6.1 005/127] iommu/arm-smmu-v3: Work around MMU-600 erratum 1076982
+        patches@lists.linux.dev,
+        Florian Fainelli <florian.fainelli@broadcom.com>,
+        Andrew Lunn <andrew@lunn.ch>, Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 4.19 154/323] net: bcmgenet: Ensure MDIO unregistration has clocks enabled
 Date:   Wed,  9 Aug 2023 12:39:52 +0200
-Message-ID: <20230809103636.802481326@linuxfoundation.org>
+Message-ID: <20230809103705.205006474@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103636.615294317@linuxfoundation.org>
-References: <20230809103636.615294317@linuxfoundation.org>
+In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
+References: <20230809103658.104386911@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,100 +55,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Robin Murphy <robin.murphy@arm.com>
+From: Florian Fainelli <florian.fainelli@broadcom.com>
 
-commit f322e8af35c7f23a8c08b595c38d6c855b2d836f upstream
+commit 1b5ea7ffb7a3bdfffb4b7f40ce0d20a3372ee405 upstream.
 
-MMU-600 versions prior to r1p0 fail to correctly generate a WFE wakeup
-event when the command queue transitions fom full to non-full. We can
-easily work around this by simply hiding the SEV capability such that we
-fall back to polling for space in the queue - since MMU-600 implements
-MSIs we wouldn't expect to need SEV for sync completion either, so this
-should have little to no impact.
+With support for Ethernet PHY LEDs having been added, while
+unregistering a MDIO bus and its child device liks PHYs there may be
+"late" accesses to the MDIO bus. One typical use case is setting the PHY
+LEDs brightness to OFF for instance.
 
-Signed-off-by: Robin Murphy <robin.murphy@arm.com>
-Reviewed-by: Nicolin Chen <nicolinc@nvidia.com>
-Tested-by: Nicolin Chen <nicolinc@nvidia.com>
-Link: https://lore.kernel.org/r/08adbe3d01024d8382a478325f73b56851f76e49.1683731256.git.robin.murphy@arm.com
-Signed-off-by: Will Deacon <will@kernel.org>
-Signed-off-by: Easwar Hariharan <eahariha@linux.microsoft.com>
+We need to ensure that the MDIO bus controller remains entirely
+functional since it runs off the main GENET adapter clock.
+
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/all/20230617155500.4005881-1-andrew@lunn.ch/
+Fixes: 9a4e79697009 ("net: bcmgenet: utilize generic Broadcom UniMAC MDIO controller driver")
+Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://lore.kernel.org/r/20230622103107.1760280-1-florian.fainelli@broadcom.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/arm64/silicon-errata.rst      |    2 +
- drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c |   29 ++++++++++++++++++++++++++++
- drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.h |    6 +++++
- 3 files changed, 37 insertions(+)
+ drivers/net/ethernet/broadcom/genet/bcmmii.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/Documentation/arm64/silicon-errata.rst
-+++ b/Documentation/arm64/silicon-errata.rst
-@@ -141,6 +141,8 @@ stable kernels.
- +----------------+-----------------+-----------------+-----------------------------+
- | ARM            | MMU-500         | #841119,826419  | N/A                         |
- +----------------+-----------------+-----------------+-----------------------------+
-+| ARM            | MMU-600         | #1076982        | N/A                         |
-++----------------+-----------------+-----------------+-----------------------------+
- +----------------+-----------------+-----------------+-----------------------------+
- | Broadcom       | Brahma-B53      | N/A             | ARM64_ERRATUM_845719        |
- +----------------+-----------------+-----------------+-----------------------------+
---- a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
-+++ b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
-@@ -3410,6 +3410,33 @@ static int arm_smmu_device_reset(struct
- 	return 0;
+--- a/drivers/net/ethernet/broadcom/genet/bcmmii.c
++++ b/drivers/net/ethernet/broadcom/genet/bcmmii.c
+@@ -620,5 +620,7 @@ void bcmgenet_mii_exit(struct net_device
+ 	if (of_phy_is_fixed_link(dn))
+ 		of_phy_deregister_fixed_link(dn);
+ 	of_node_put(priv->phy_dn);
++	clk_prepare_enable(priv->clk);
+ 	platform_device_unregister(priv->mii_pdev);
++	clk_disable_unprepare(priv->clk);
  }
- 
-+#define IIDR_IMPLEMENTER_ARM		0x43b
-+#define IIDR_PRODUCTID_ARM_MMU_600	0x483
-+
-+static void arm_smmu_device_iidr_probe(struct arm_smmu_device *smmu)
-+{
-+	u32 reg;
-+	unsigned int implementer, productid, variant, revision;
-+
-+	reg = readl_relaxed(smmu->base + ARM_SMMU_IIDR);
-+	implementer = FIELD_GET(IIDR_IMPLEMENTER, reg);
-+	productid = FIELD_GET(IIDR_PRODUCTID, reg);
-+	variant = FIELD_GET(IIDR_VARIANT, reg);
-+	revision = FIELD_GET(IIDR_REVISION, reg);
-+
-+	switch (implementer) {
-+	case IIDR_IMPLEMENTER_ARM:
-+		switch (productid) {
-+		case IIDR_PRODUCTID_ARM_MMU_600:
-+			/* Arm erratum 1076982 */
-+			if (variant == 0 && revision <= 2)
-+				smmu->features &= ~ARM_SMMU_FEAT_SEV;
-+			break;
-+		}
-+		break;
-+	}
-+}
-+
- static int arm_smmu_device_hw_probe(struct arm_smmu_device *smmu)
- {
- 	u32 reg;
-@@ -3615,6 +3642,8 @@ static int arm_smmu_device_hw_probe(stru
- 
- 	smmu->ias = max(smmu->ias, smmu->oas);
- 
-+	arm_smmu_device_iidr_probe(smmu);
-+
- 	if (arm_smmu_sva_supported(smmu))
- 		smmu->features |= ARM_SMMU_FEAT_SVA;
- 
---- a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.h
-+++ b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.h
-@@ -69,6 +69,12 @@
- #define IDR5_VAX			GENMASK(11, 10)
- #define IDR5_VAX_52_BIT			1
- 
-+#define ARM_SMMU_IIDR			0x18
-+#define IIDR_PRODUCTID			GENMASK(31, 20)
-+#define IIDR_VARIANT			GENMASK(19, 16)
-+#define IIDR_REVISION			GENMASK(15, 12)
-+#define IIDR_IMPLEMENTER		GENMASK(11, 0)
-+
- #define ARM_SMMU_CR0			0x20
- #define CR0_ATSCHK			(1 << 4)
- #define CR0_CMDQEN			(1 << 3)
 
 
