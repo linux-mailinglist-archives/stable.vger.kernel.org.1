@@ -2,45 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7F20B775959
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:59:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DE84377587C
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:53:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232839AbjHIK7n (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 06:59:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55328 "EHLO
+        id S232700AbjHIKxN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 06:53:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40224 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232840AbjHIK7m (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:59:42 -0400
+        with ESMTP id S232704AbjHIKvw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:51:52 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 005BF1FD8
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:59:41 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C55092735
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:50:54 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8B5BE63118
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:59:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A7F2C433C7;
-        Wed,  9 Aug 2023 10:59:40 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A6BE763138
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:50:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE29EC433C8;
+        Wed,  9 Aug 2023 10:50:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691578781;
-        bh=K9FJGd2o2pRrOrC4J1YUUQvn977VUmI6A+uS9mCHx70=;
+        s=korg; t=1691578254;
+        bh=vy0OOD+YSoZmSiOgeeQwh8tKBFm1C0IeJLb3ivRcqOg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=bqPTtN+uhtKnT07GPRRNxOUccV2PS2hQ+9+DgX1NRYHu8hLnjFsYXiQd/khIs463H
-         TiqyF83DP89/qeUu7NdF+Sw4OdAG7T8RBzBq3VJzCtlZwWnWh9DeDu7axhcbm2KaQ2
-         EFa7OftP+7ZAYOOd6KWm5l/P8XpdoG5vbPZHBwJM=
+        b=NQqJMSGIUi+tElF5KVE5ucV3IJ4gf23sR6sz8CM4XowqF+tDmSjJ5cuDBKW631OoC
+         AeCcuv+xEiV/8fLj08PeuDapJNEz5zCvNIPVoTFZaZ4x/0/QwrD6DMQE81nxa59ou6
+         q7tjqQ4kmTLfIR2jZ8bBRMtPCdRB2+u/hfmDfNic=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 26/92] net: add missing READ_ONCE(sk->sk_rcvlowat) annotation
+        patches@lists.linux.dev, Mike Kravetz <mike.kravetz@oracle.com>,
+        kernel test robot <oliver.sang@intel.com>,
+        Sidhartha Kumar <sidhartha.kumar@oracle.com>,
+        Ackerley Tng <ackerleytng@google.com>,
+        Erdem Aktas <erdemaktas@google.com>,
+        Matthew Wilcox <willy@infradead.org>,
+        Muchun Song <songmuchun@bytedance.com>,
+        Vishal Annapurve <vannapurve@google.com>,
+        Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.4 131/165] Revert "page cache: fix page_cache_next/prev_miss off by one"
 Date:   Wed,  9 Aug 2023 12:41:02 +0200
-Message-ID: <20230809103634.523780700@linuxfoundation.org>
+Message-ID: <20230809103647.102352796@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103633.485906560@linuxfoundation.org>
-References: <20230809103633.485906560@linuxfoundation.org>
+In-Reply-To: <20230809103642.720851262@linuxfoundation.org>
+References: <20230809103642.720851262@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,36 +61,96 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Eric Dumazet <edumazet@google.com>
+From: Mike Kravetz <mike.kravetz@oracle.com>
 
-[ Upstream commit e6d12bdb435d23ff6c1890c852d85408a2f496ee ]
+commit 16f8eb3eea9eb2a1568279d64ca4dc977e7aa538 upstream.
 
-In a prior commit, I forgot to change sk_getsockopt()
-when reading sk->sk_rcvlowat locklessly.
+This reverts commit 9425c591e06a9ab27a145ba655fb50532cf0bcc9
 
-Fixes: eac66402d1c3 ("net: annotate sk->sk_rcvlowat lockless reads")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The reverted commit fixed up routines primarily used by readahead code
+such that they could also be used by hugetlb.  Unfortunately, this
+caused a performance regression as pointed out by the Closes: tag.
+
+The hugetlb code which uses page_cache_next_miss will be addressed in
+a subsequent patch.
+
+Link: https://lkml.kernel.org/r/20230621212403.174710-1-mike.kravetz@oracle.com
+Fixes: 9425c591e06a ("page cache: fix page_cache_next/prev_miss off by one")
+Signed-off-by: Mike Kravetz <mike.kravetz@oracle.com>
+Reported-by: kernel test robot <oliver.sang@intel.com>
+Closes: https://lore.kernel.org/oe-lkp/202306211346.1e9ff03e-oliver.sang@intel.com
+Reviewed-by: Sidhartha Kumar <sidhartha.kumar@oracle.com>
+Cc: Ackerley Tng <ackerleytng@google.com>
+Cc: Erdem Aktas <erdemaktas@google.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Matthew Wilcox <willy@infradead.org>
+Cc: Muchun Song <songmuchun@bytedance.com>
+Cc: Vishal Annapurve <vannapurve@google.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/sock.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ mm/filemap.c |   26 ++++++++++----------------
+ 1 file changed, 10 insertions(+), 16 deletions(-)
 
-diff --git a/net/core/sock.c b/net/core/sock.c
-index d392efa0d9551..ffd566d52eec3 100644
---- a/net/core/sock.c
-+++ b/net/core/sock.c
-@@ -1549,7 +1549,7 @@ int sock_getsockopt(struct socket *sock, int level, int optname,
- 		break;
+--- a/mm/filemap.c
++++ b/mm/filemap.c
+@@ -1760,9 +1760,7 @@ bool __folio_lock_or_retry(struct folio
+  *
+  * Return: The index of the gap if found, otherwise an index outside the
+  * range specified (in which case 'return - index >= max_scan' will be true).
+- * In the rare case of index wrap-around, 0 will be returned.  0 will also
+- * be returned if index == 0 and there is a gap at the index.  We can not
+- * wrap-around if passed index == 0.
++ * In the rare case of index wrap-around, 0 will be returned.
+  */
+ pgoff_t page_cache_next_miss(struct address_space *mapping,
+ 			     pgoff_t index, unsigned long max_scan)
+@@ -1772,13 +1770,12 @@ pgoff_t page_cache_next_miss(struct addr
+ 	while (max_scan--) {
+ 		void *entry = xas_next(&xas);
+ 		if (!entry || xa_is_value(entry))
+-			return xas.xa_index;
+-		if (xas.xa_index == 0 && index != 0)
+-			return xas.xa_index;
++			break;
++		if (xas.xa_index == 0)
++			break;
+ 	}
  
- 	case SO_RCVLOWAT:
--		v.val = sk->sk_rcvlowat;
-+		v.val = READ_ONCE(sk->sk_rcvlowat);
- 		break;
+-	/* No gaps in range and no wrap-around, return index beyond range */
+-	return xas.xa_index + 1;
++	return xas.xa_index;
+ }
+ EXPORT_SYMBOL(page_cache_next_miss);
  
- 	case SO_SNDLOWAT:
--- 
-2.40.1
-
+@@ -1799,9 +1796,7 @@ EXPORT_SYMBOL(page_cache_next_miss);
+  *
+  * Return: The index of the gap if found, otherwise an index outside the
+  * range specified (in which case 'index - return >= max_scan' will be true).
+- * In the rare case of wrap-around, ULONG_MAX will be returned.  ULONG_MAX
+- * will also be returned if index == ULONG_MAX and there is a gap at the
+- * index.  We can not wrap-around if passed index == ULONG_MAX.
++ * In the rare case of wrap-around, ULONG_MAX will be returned.
+  */
+ pgoff_t page_cache_prev_miss(struct address_space *mapping,
+ 			     pgoff_t index, unsigned long max_scan)
+@@ -1811,13 +1806,12 @@ pgoff_t page_cache_prev_miss(struct addr
+ 	while (max_scan--) {
+ 		void *entry = xas_prev(&xas);
+ 		if (!entry || xa_is_value(entry))
+-			return xas.xa_index;
+-		if (xas.xa_index == ULONG_MAX && index != ULONG_MAX)
+-			return xas.xa_index;
++			break;
++		if (xas.xa_index == ULONG_MAX)
++			break;
+ 	}
+ 
+-	/* No gaps in range and no wrap-around, return index beyond range */
+-	return xas.xa_index - 1;
++	return xas.xa_index;
+ }
+ EXPORT_SYMBOL(page_cache_prev_miss);
+ 
 
 
