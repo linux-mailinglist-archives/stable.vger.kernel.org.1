@@ -2,33 +2,33 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CAF57775C5C
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:26:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 58DEB775C3F
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:25:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233728AbjHIL0d (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:26:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45338 "EHLO
+        id S233686AbjHILZZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:25:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60412 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233718AbjHIL0c (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:26:32 -0400
+        with ESMTP id S233677AbjHILZY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:25:24 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8AFF11FF5
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:26:31 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D37FED
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:25:24 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2B79663255
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:26:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A36AC433C8;
-        Wed,  9 Aug 2023 11:26:30 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CF7E663234
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:25:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF1C1C433C8;
+        Wed,  9 Aug 2023 11:25:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691580390;
-        bh=V3FzVpkdCbIr9BO7MyLoBnq5FGnjJiyDhg6qQJQPq4k=;
+        s=korg; t=1691580323;
+        bh=CtRVQ1HArlvmOiHPI06ZSmMPFmraF5erJhSN72kI8X8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=KbRTKVQRPjx9GkcytDWnZnq9ajJH4oY+HiZPUVWaOv37wD766o43le+J+VLUMXHbu
-         LzFrhThirgKWBBuhiAqsHPv1lMdlhvMw/EJJ8iWyOsdxMhg3kAJ250hiCi2nQPEkTB
-         vSNuIPHROW8bo7y71CxZeZEBqMMmJj3i5dcjE028=
+        b=Qs2TTKBq/PBRVI07YO/NsxPowtgHGRwM90Z/g7RKeTGEje+dljTLIFlPrVxwg6ySp
+         qZuupSGbpYmQ1fNp7OTz8pYxELeZNlqS8BJVawh6oMje91h/JF+W1R3/YYUdqM/rxm
+         PaxmPVUtjiocbvBBdKl9gT1Z4O4RVO25Fw231oYY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -37,9 +37,9 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Kuniyuki Iwashima <kuniyu@amazon.com>,
         Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 299/323] tcp_metrics: fix addr_same() helper
-Date:   Wed,  9 Aug 2023 12:42:17 +0200
-Message-ID: <20230809103711.750217726@linuxfoundation.org>
+Subject: [PATCH 4.19 300/323] tcp_metrics: annotate data-races around tm->tcpm_stamp
+Date:   Wed,  9 Aug 2023 12:42:18 +0200
+Message-ID: <20230809103711.795347363@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
 References: <20230809103658.104386911@linuxfoundation.org>
@@ -59,42 +59,84 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit e6638094d7af6c7b9dcca05ad009e79e31b4f670 ]
+[ Upstream commit 949ad62a5d5311d36fce2e14fe5fed3f936da51c ]
 
-Because v4 and v6 families use separate inetpeer trees (respectively
-net->ipv4.peers and net->ipv6.peers), inetpeer_addr_cmp(a, b) assumes
-a & b share the same family.
+tm->tcpm_stamp can be read or written locklessly.
 
-tcp_metrics use a common hash table, where entries can have different
-families.
+Add needed READ_ONCE()/WRITE_ONCE() to document this.
 
-We must therefore make sure to not call inetpeer_addr_cmp()
-if the families do not match.
+Also constify tcpm_check_stamp() dst argument.
 
-Fixes: d39d14ffa24c ("net: Add helper function to compare inetpeer addresses")
+Fixes: 51c5d0c4b169 ("tcp: Maintain dynamic metrics in local cache.")
 Signed-off-by: Eric Dumazet <edumazet@google.com>
 Reviewed-by: David Ahern <dsahern@kernel.org>
 Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Link: https://lore.kernel.org/r/20230802131500.1478140-2-edumazet@google.com
+Link: https://lore.kernel.org/r/20230802131500.1478140-3-edumazet@google.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/tcp_metrics.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/ipv4/tcp_metrics.c | 19 +++++++++++++------
+ 1 file changed, 13 insertions(+), 6 deletions(-)
 
 diff --git a/net/ipv4/tcp_metrics.c b/net/ipv4/tcp_metrics.c
-index 4960e2b6bd7f7..c3e133c0510ea 100644
+index c3e133c0510ea..2d9d95559f5fa 100644
 --- a/net/ipv4/tcp_metrics.c
 +++ b/net/ipv4/tcp_metrics.c
-@@ -78,7 +78,7 @@ static void tcp_metric_set(struct tcp_metrics_block *tm,
- static bool addr_same(const struct inetpeer_addr *a,
- 		      const struct inetpeer_addr *b)
+@@ -97,7 +97,7 @@ static void tcpm_suck_dst(struct tcp_metrics_block *tm,
+ 	u32 msval;
+ 	u32 val;
+ 
+-	tm->tcpm_stamp = jiffies;
++	WRITE_ONCE(tm->tcpm_stamp, jiffies);
+ 
+ 	val = 0;
+ 	if (dst_metric_locked(dst, RTAX_RTT))
+@@ -131,9 +131,15 @@ static void tcpm_suck_dst(struct tcp_metrics_block *tm,
+ 
+ #define TCP_METRICS_TIMEOUT		(60 * 60 * HZ)
+ 
+-static void tcpm_check_stamp(struct tcp_metrics_block *tm, struct dst_entry *dst)
++static void tcpm_check_stamp(struct tcp_metrics_block *tm,
++			     const struct dst_entry *dst)
  {
--	return inetpeer_addr_cmp(a, b) == 0;
-+	return (a->family == b->family) && !inetpeer_addr_cmp(a, b);
+-	if (tm && unlikely(time_after(jiffies, tm->tcpm_stamp + TCP_METRICS_TIMEOUT)))
++	unsigned long limit;
++
++	if (!tm)
++		return;
++	limit = READ_ONCE(tm->tcpm_stamp) + TCP_METRICS_TIMEOUT;
++	if (unlikely(time_after(jiffies, limit)))
+ 		tcpm_suck_dst(tm, dst, false);
  }
  
- struct tcpm_hash_bucket {
+@@ -174,7 +180,8 @@ static struct tcp_metrics_block *tcpm_new(struct dst_entry *dst,
+ 		oldest = deref_locked(tcp_metrics_hash[hash].chain);
+ 		for (tm = deref_locked(oldest->tcpm_next); tm;
+ 		     tm = deref_locked(tm->tcpm_next)) {
+-			if (time_before(tm->tcpm_stamp, oldest->tcpm_stamp))
++			if (time_before(READ_ONCE(tm->tcpm_stamp),
++					READ_ONCE(oldest->tcpm_stamp)))
+ 				oldest = tm;
+ 		}
+ 		tm = oldest;
+@@ -431,7 +438,7 @@ void tcp_update_metrics(struct sock *sk)
+ 					       tp->reordering);
+ 		}
+ 	}
+-	tm->tcpm_stamp = jiffies;
++	WRITE_ONCE(tm->tcpm_stamp, jiffies);
+ out_unlock:
+ 	rcu_read_unlock();
+ }
+@@ -652,7 +659,7 @@ static int tcp_metrics_fill_info(struct sk_buff *msg,
+ 	}
+ 
+ 	if (nla_put_msecs(msg, TCP_METRICS_ATTR_AGE,
+-			  jiffies - tm->tcpm_stamp,
++			  jiffies - READ_ONCE(tm->tcpm_stamp),
+ 			  TCP_METRICS_ATTR_PAD) < 0)
+ 		goto nla_put_failure;
+ 
 -- 
 2.40.1
 
