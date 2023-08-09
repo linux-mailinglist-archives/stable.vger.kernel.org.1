@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 79055775D85
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:38:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3A737775912
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:57:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234128AbjHILia (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:38:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33480 "EHLO
+        id S232733AbjHIK5a (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 06:57:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51358 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234129AbjHILia (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:38:30 -0400
+        with ESMTP id S232762AbjHIK5A (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:57:00 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 15E3A173A
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:38:30 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70F582106
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:56:57 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9F458635A7
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:38:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A90F9C433C8;
-        Wed,  9 Aug 2023 11:38:28 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 06E5362E4A
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:56:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 109A8C433C8;
+        Wed,  9 Aug 2023 10:56:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691581109;
-        bh=neC51Y0PDL9Aw9f6ud1M8ut0384NXKPeGvxiEUROiD8=;
+        s=korg; t=1691578616;
+        bh=KG2uNkAEqoDSoAwq4eQnzbpCe5wkgpvQvAStaEeR5Xk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=AG4NmAlJyxfrBKH1zo/PFcEFKPbG6WcEpBoBmcAuJHKUS85mQzKysQEykaVhJPou5
-         nO29jP8OfMj7L/45nC+DSSlY9bX0nfoDmeIxInwERSkKGDc64Cy0i9JXIXvFwqagzc
-         zv5MCitDiaSR8U890y6Bm0RIVn9tGAH3EaSRwA2E=
+        b=eqZBYcvpuhZXXe9oCMEfUa/cUTFfLpO8cfJGqef1sGAS3ZsLIWKiDHxm/SB0NXjnL
+         HlAlJfVe0gMPLmgaZM4L2fzikXexiLcIeDNF78GPRil+KxIqn9yVLWZxJXaa1hsJf9
+         2eK7T+Pa7NQXuBqIFr9uUNCe95kAJKZhBURIiHtM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Hagar Hemdan <hagarhem@amazon.de>
-Subject: [PATCH 5.10 108/201] ACPI: processor: perflib: Avoid updating frequency QoS unnecessarily
+        patches@lists.linux.dev, Mark Brown <broonie@kernel.org>,
+        Catalin Marinas <catalin.marinas@arm.com>
+Subject: [PATCH 6.1 123/127] arm64/ptrace: Dont enable SVE when setting streaming SVE
 Date:   Wed,  9 Aug 2023 12:41:50 +0200
-Message-ID: <20230809103647.410546805@linuxfoundation.org>
+Message-ID: <20230809103640.671527167@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103643.799166053@linuxfoundation.org>
-References: <20230809103643.799166053@linuxfoundation.org>
+In-Reply-To: <20230809103636.615294317@linuxfoundation.org>
+References: <20230809103636.615294317@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,67 +54,59 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Mark Brown <broonie@kernel.org>
 
-commit 99387b016022c29234c4ebf9abd34358c6e56532 upstream.
+commit 045aecdfcb2e060db142d83a0f4082380c465d2c upstream.
 
-Modify acpi_processor_get_platform_limit() to avoid updating its
-frequency QoS request when the _PPC return value has not changed
-by comparing that value to the previous _PPC return value stored in
-the performance_platform_limit field of the struct acpi_processor
-corresponding to the given CPU.
+Systems which implement SME without also implementing SVE are
+architecturally valid but were not initially supported by the kernel,
+unfortunately we missed one issue in the ptrace code.
 
-While at it, do the _PPC return value check against the state count
-earlier, to avoid setting performance_platform_limit to an invalid
-value, and make acpi_processor_ppc_init() use FREQ_QOS_MAX_DEFAULT_VALUE
-as the "no limit" frequency QoS for consistency.
+The SVE register setting code is shared between SVE and streaming mode
+SVE. When we set full SVE register state we currently enable TIF_SVE
+unconditionally, in the case where streaming SVE is being configured on a
+system that supports vanilla SVE this is not an issue since we always
+initialise enough state for both vector lengths but on a system which only
+support SME it will result in us attempting to restore the SVE vector
+length after having set streaming SVE registers.
 
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Tested-by: Hagar Hemdan <hagarhem@amazon.de>
+Fix this by making the enabling of SVE conditional on setting SVE vector
+state. If we set streaming SVE state and SVE was not already enabled this
+will result in a SVE access trap on next use of normal SVE, this will cause
+us to flush our register state but this is fine since the only way to
+trigger a SVE access trap would be to exit streaming mode which will cause
+the in register state to be flushed anyway.
+
+Fixes: e12310a0d30f ("arm64/sme: Implement ptrace support for streaming mode SVE registers")
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20230803-arm64-fix-ptrace-ssve-no-sve-v1-1-49df214bfb3e@kernel.org
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+[Fix up backport -- broonie]
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/processor_perflib.c |   18 ++++++++++++++----
- 1 file changed, 14 insertions(+), 4 deletions(-)
+ arch/arm64/kernel/ptrace.c |    8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
---- a/drivers/acpi/processor_perflib.c
-+++ b/drivers/acpi/processor_perflib.c
-@@ -79,13 +79,16 @@ static int acpi_processor_get_platform_l
- 
- 	index = ppc;
- 
-+	if (pr->performance_platform_limit == index ||
-+	    ppc >= pr->performance->state_count)
-+		return 0;
-+
- 	pr_debug("CPU %d: _PPC is %d - frequency %s limited\n", pr->id,
- 		 index, index ? "is" : "is not");
- 
- 	pr->performance_platform_limit = index;
- 
--	if (ppc >= pr->performance->state_count ||
--	    unlikely(!freq_qos_request_active(&pr->perflib_req)))
-+	if (unlikely(!freq_qos_request_active(&pr->perflib_req)))
- 		return 0;
- 
+--- a/arch/arm64/kernel/ptrace.c
++++ b/arch/arm64/kernel/ptrace.c
+@@ -937,11 +937,13 @@ static int sve_set_common(struct task_st
  	/*
-@@ -180,9 +183,16 @@ void acpi_processor_ppc_init(struct cpuf
- 		if (!pr)
- 			continue;
+ 	 * Ensure target->thread.sve_state is up to date with target's
+ 	 * FPSIMD regs, so that a short copyin leaves trailing
+-	 * registers unmodified.  Always enable SVE even if going into
+-	 * streaming mode.
++	 * registers unmodified.  Only enable SVE if we are
++	 * configuring normal SVE, a system with streaming SVE may not
++	 * have normal SVE.
+ 	 */
+ 	fpsimd_sync_to_sve(target);
+-	set_tsk_thread_flag(target, TIF_SVE);
++	if (type == ARM64_VEC_SVE)
++		set_tsk_thread_flag(target, TIF_SVE);
  
-+		/*
-+		 * Reset performance_platform_limit in case there is a stale
-+		 * value in it, so as to make it match the "no limit" QoS value
-+		 * below.
-+		 */
-+		pr->performance_platform_limit = 0;
-+
- 		ret = freq_qos_add_request(&policy->constraints,
--					   &pr->perflib_req,
--					   FREQ_QOS_MAX, INT_MAX);
-+					   &pr->perflib_req, FREQ_QOS_MAX,
-+					   FREQ_QOS_MAX_DEFAULT_VALUE);
- 		if (ret < 0)
- 			pr_err("Failed to add freq constraint for CPU%d (%d)\n",
- 			       cpu, ret);
+ 	BUILD_BUG_ON(SVE_PT_SVE_OFFSET != sizeof(header));
+ 	start = SVE_PT_SVE_OFFSET;
 
 
