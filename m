@@ -2,149 +2,117 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5C2BA776A65
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 22:40:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 98D85776AB5
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 23:07:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234727AbjHIUkG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 16:40:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55344 "EHLO
+        id S229480AbjHIVG6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 17:06:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54724 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234744AbjHIUj5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 16:39:57 -0400
-Received: from mail-lj1-x236.google.com (mail-lj1-x236.google.com [IPv6:2a00:1450:4864:20::236])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 19FDE2D7D
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 13:39:40 -0700 (PDT)
-Received: by mail-lj1-x236.google.com with SMTP id 38308e7fff4ca-2b9cbaee7a9so3796781fa.0
-        for <stable@vger.kernel.org>; Wed, 09 Aug 2023 13:39:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=joelfernandes.org; s=google; t=1691613578; x=1692218378;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=0TSYHDp/bGdSV83cYMojLR3N70tOMtA0XRESFOp2abM=;
-        b=U1tdU+M/xgMilj8lcoHb5Sun+oVgQywgVRPPUdjM1j3Kk4ftceez2F8OryRkqKuAzR
-         Zcq3rwP0m4jxoY/CtDmBK002Z/crYWRYtlEvNHl+MjlHFQUt2Hasmy6xO76Pj5Bw6Nuj
-         RuH7/ax7BE8Fx8M6TPcGlvbGK5p3jAJR45sl4=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691613578; x=1692218378;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=0TSYHDp/bGdSV83cYMojLR3N70tOMtA0XRESFOp2abM=;
-        b=OZHO9GRUbPcxKagptrD9Tc8SMOFG/wHAnT25ZW+vRD3VgwNopklbTByqu2Ru9nTlC5
-         thQF+c8+fUJjP5WvRf/Tsp5YyeP2OLiuuDD+qsYyPny2TUAZXmowDG+3MMUsBPwetVki
-         xCeoL9kvW2YdMqqsG1BivY7Z0CoKKXp2bes2GT9B/6LCt+TO3mifkKppuKn2NQfSlZKZ
-         rAz7cvvgcgsepd0N+xMlBDPZDjB7dNCe9YrcBG6I6tJ2KiXrxWWdz0lgvtnpMlAYIiUO
-         lrikRx6RyKBpMZevCLhhXDDTh1BiKzxuJXo87zbf7bTwRYr08OT9P2/CMBMkCl924S/3
-         DZBg==
-X-Gm-Message-State: AOJu0Yz5lY8sjvvaq1vpXbLkAtyNNKXebpeQ1NzX0V9Ab9MngpPh6mhq
-        iEHcMF4Rfu/rQmVBZLk2L90P/Jk3Hc1QI7tUQU+bOA==
-X-Google-Smtp-Source: AGHT+IFhr2UBSAua/2aL1dFLqsuIdLLwE7M0o8NS9ZIohgmDqTjZWGSzXSxQxhLLo8IwCL8P6Zt0X74T9yetTzgYa5c=
-X-Received: by 2002:a2e:9084:0:b0:2b9:e230:25d0 with SMTP id
- l4-20020a2e9084000000b002b9e23025d0mr242971ljg.14.1691613578096; Wed, 09 Aug
- 2023 13:39:38 -0700 (PDT)
+        with ESMTP id S229472AbjHIVG6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 17:06:58 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E64E5138;
+        Wed,  9 Aug 2023 14:06:56 -0700 (PDT)
+Date:   Wed, 09 Aug 2023 21:06:54 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1691615215;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=8iC6K4qMca1HxvCjZ+227qIOOBi29M4/B4ry0PMUGMM=;
+        b=lGWbP+0kYVNSySa3BRb4DJv8qEN/FE/dh+bZIhuSWyJ/OrljPzjIdOihfEw65n8rTk29iE
+        7ZKlJO+9u6bPCcBWtRo+JfiSQr7w7915dNwwhIyS7UDXFMzEYNfR8Qlnju9aCovEM0gd49
+        H9ZmcSyH2KHE72/w5EdGOXaQ/0fMP/aHHa32Vlhm4jgZsGA5U7WGMfwDFfTEQ9rkFaeBHO
+        loLs/SNY6zn+2/KBzlDHwyezIKpr9kGEwzB7sBHQVH5rrNFUBL0tZlBR9mG0XXhI8P+3PH
+        Jb1nqqvAh5rKZqHrCWg614+jhtt4dCKOPgJvoEfBnNvhp3ulEVsHX47fLesQow==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1691615215;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=8iC6K4qMca1HxvCjZ+227qIOOBi29M4/B4ry0PMUGMM=;
+        b=8vqZKJqY3mB6hBcbwK9jhkZFRORLgSUeTBeLp3m4kqRrbVSzPtIPZNjFpY9Hx5RhRkDE4O
+        BBE3C9EnprNJm4DQ==
+From:   "tip-bot2 for Kirill A. Shutemov" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: x86/urgent] x86/mm: Fix VDSO and VVAR placement on 5-level
+ paging machines
+Cc:     Yingcong Wu <yingcong.wu@intel.com>,
+        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        stable@vger.kernel.org, x86@kernel.org,
+        linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-References: <20230809103633.485906560@linuxfoundation.org> <20230809135326.GE3031656@google.com>
- <f47340c6-3c41-1f91-d0f9-fe0b59a23aac@roeck-us.net> <CAEXW_YQ4GqPwvUF8=8CWmdj=cD56v_eEVK-EirsObQXyBDFVpg@mail.gmail.com>
- <35e4b770-2ead-4a19-ad01-fa75996adef4@roeck-us.net> <20230809201413.GA3374446@google.com>
- <6b05a082-41a7-f0cf-c0a4-1cced8d5a230@roeck-us.net>
-In-Reply-To: <6b05a082-41a7-f0cf-c0a4-1cced8d5a230@roeck-us.net>
-From:   Joel Fernandes <joel@joelfernandes.org>
-Date:   Wed, 9 Aug 2023 16:39:27 -0400
-Message-ID: <CAEXW_YT-7epvu4uUS19aDAcM0X63j9_L2aa-XGGFGSLceLu8bA@mail.gmail.com>
-Subject: Re: [PATCH 5.15 00/92] 5.15.126-rc1 review
-To:     Guenter Roeck <linux@roeck-us.net>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
-        paulmck@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Message-ID: <169161521427.27769.11895332773100602883.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
-        autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, Aug 9, 2023 at 4:38=E2=80=AFPM Guenter Roeck <linux@roeck-us.net> w=
-rote:
->
-> On 8/9/23 13:14, Joel Fernandes wrote:
-> > On Wed, Aug 09, 2023 at 12:25:48PM -0700, Guenter Roeck wrote:
-> >> On Wed, Aug 09, 2023 at 02:35:59PM -0400, Joel Fernandes wrote:
-> >>> On Wed, Aug 9, 2023 at 12:18=E2=80=AFPM Guenter Roeck <linux@roeck-us=
-.net> wrote:
-> >>>>
-> >>>> On 8/9/23 06:53, Joel Fernandes wrote:
-> >>>>> On Wed, Aug 09, 2023 at 12:40:36PM +0200, Greg Kroah-Hartman wrote:
-> >>>>>> This is the start of the stable review cycle for the 5.15.126 rele=
-ase.
-> >>>>>> There are 92 patches in this series, all will be posted as a respo=
-nse
-> >>>>>> to this one.  If anyone has any issues with these being applied, p=
-lease
-> >>>>>> let me know.
-> >>>>>>
-> >>>>>> Responses should be made by Fri, 11 Aug 2023 10:36:10 +0000.
-> >>>>>> Anything received after that time might be too late.
-> >>>>>>
-> >>>>>> The whole patch series can be found in one patch at:
-> >>>>>>       https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/p=
-atch-5.15.126-rc1.gz
-> >>>>>> or in the git tree and branch at:
-> >>>>>>       git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-s=
-table-rc.git linux-5.15.y
-> >>>>>> and the diffstat can be found below.
-> >>>>>
-> >>>>> Not necesscarily new with 5.15 stable but 3 of the 19 rcutorture sc=
-enarios
-> >>>>> hang with this -rc: TREE04, TREE07, TASKS03.
-> >>>>>
-> >>>>> 5.15 has a known stop machine issue where it hangs after 1.5 hours =
-with cpu
-> >>>>> hotplug rcutorture testing. Me and tglx are continuing to debug thi=
-s. The
-> >>>>> issue does not show up on anything but 5.15 stable kernels and neit=
-her on
-> >>>>> mainline.
-> >>>>>
-> >>>>
-> >>>> Do you by any have a crash pattern that we could possibly use to fin=
-d the crash
-> >>>> in ChromeOS crash logs ? No idea if that would help, but it could pr=
-ovide some
-> >>>> additional data points.
-> >>>
-> >>> The pattern shows as a hard hang, the system is unresponsive and all =
-CPUs
-> >>> are stuck in stop_machine. Sometimes it recovers on its own from the
-> >>> hang and then RCU immediately gives stall warnings. It takes 1.5 hour
-> >>> to reproduce and sometimes never happens for several hours.
-> >>>
-> >>> It appears related to CPU hotplug since gdb showed me most of the CPU=
-s
-> >>> are spinning in multi_cpu_stop() / stop machine after the hang.
-> >>>
-> >>
-> >> Hmm, we do see lots of soft lockups with multi_cpu_stop() in the backt=
-race,
-> >> but not with v5.15.y but with v5.4.y. The actual hang is in stop_machi=
-ne_yield().
-> >
-> > Interesting. It looks similar as far as the stack dump in gdb goes, her=
-e are
-> > the stacks I dumped with the hang I referred to:
-> > https://paste.debian.net/1288308/
-> >
->
-> That link gives me "Entry not found".
+The following commit has been merged into the x86/urgent branch of tip:
 
-Yeah that was weird. Here it is again: https://pastebin.com/raw/L3nv1kH2
+Commit-ID:     1b8b1aa90c9c0e825b181b98b8d9e249dc395470
+Gitweb:        https://git.kernel.org/tip/1b8b1aa90c9c0e825b181b98b8d9e249dc395470
+Author:        Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+AuthorDate:    Thu, 03 Aug 2023 18:16:09 +03:00
+Committer:     Dave Hansen <dave.hansen@linux.intel.com>
+CommitterDate: Wed, 09 Aug 2023 13:38:48 -07:00
+
+x86/mm: Fix VDSO and VVAR placement on 5-level paging machines
+
+Yingcong has noticed that on the 5-level paging machine, VDSO and VVAR
+VMAs are placed above the 47-bit border:
+
+8000001a9000-8000001ad000 r--p 00000000 00:00 0                          [vvar]
+8000001ad000-8000001af000 r-xp 00000000 00:00 0                          [vdso]
+
+This might confuse users who are not aware of 5-level paging and expect
+all userspace addresses to be under the 47-bit border.
+
+So far problem has only been triggered with ASLR disabled, although it
+may also occur with ASLR enabled if the layout is randomized in a just
+right way.
+
+The problem happens due to custom placement for the VMAs in the VDSO
+code: vdso_addr() tries to place them above the stack and checks the
+result against TASK_SIZE_MAX, which is wrong. TASK_SIZE_MAX is set to
+the 56-bit border on 5-level paging machines. Use DEFAULT_MAP_WINDOW
+instead.
+
+Fixes: b569bab78d8d ("x86/mm: Prepare to expose larger address space to userspace")
+Reported-by: Yingcong Wu <yingcong.wu@intel.com>
+Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/all/20230803151609.22141-1-kirill.shutemov%40linux.intel.com
+---
+ arch/x86/entry/vdso/vma.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/arch/x86/entry/vdso/vma.c b/arch/x86/entry/vdso/vma.c
+index 11a5c68..7645730 100644
+--- a/arch/x86/entry/vdso/vma.c
++++ b/arch/x86/entry/vdso/vma.c
+@@ -299,8 +299,8 @@ static unsigned long vdso_addr(unsigned long start, unsigned len)
+ 
+ 	/* Round the lowest possible end address up to a PMD boundary. */
+ 	end = (start + len + PMD_SIZE - 1) & PMD_MASK;
+-	if (end >= TASK_SIZE_MAX)
+-		end = TASK_SIZE_MAX;
++	if (end >= DEFAULT_MAP_WINDOW)
++		end = DEFAULT_MAP_WINDOW;
+ 	end -= len;
+ 
+ 	if (end > start) {
