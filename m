@@ -2,89 +2,118 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9DF187759CD
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:03:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5BF76775D4C
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:35:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232992AbjHILDQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:03:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38280 "EHLO
+        id S234065AbjHILfx (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:35:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49130 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233040AbjHILDI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:03:08 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C63203C11
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:54:21 -0700 (PDT)
+        with ESMTP id S234068AbjHILfx (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:35:53 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D18C11BFE
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:35:52 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 54CF863125
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:54:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B87AC433C7;
-        Wed,  9 Aug 2023 10:54:20 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7154B63508
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:35:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76923C433C8;
+        Wed,  9 Aug 2023 11:35:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691578460;
-        bh=lCrw2pmBuwjI6uZyEZg59JggqsoMoyvtG8ZeARrhmWc=;
+        s=korg; t=1691580951;
+        bh=4fJDMZTYfFaPEwz8wir+h/3ybU5pVKMyEQ4m+0vJAio=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=QbtrGuIFTfBUXlaUG0vgiEL2JG/tAi07J3wvegt4RelISqtGTA23yx8pZAxYFWq26
-         8LhYfuREkGfsKG04ubQocVIAnVgxR1h/zbaMfnzHiE7oUW7gUQVWMgcQGKeyOdj7H2
-         0RcoX7NcKNNPEkuaRadVMpAU5uhg+o9zeNokcT2U=
+        b=xYqO/QgBgniK/ADLxjtQ91fClAvbI4JzEnAcYTQhiKHrC1ooVgpl4B7T2KunqiNSP
+         /ST/KdCMX1kWArL9nVm0XV/hkih6f1whvaTtumefQUXN6bTOTFAtXVDaFZM3RDXG7b
+         NKftIwVyn1TqZmHYdqblxKVoq4DXfyhzYkaO5oG4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 038/127] net: add missing READ_ONCE(sk->sk_rcvlowat) annotation
+        patches@lists.linux.dev, Yuan Can <yuancan@huawei.com>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Andrew Halaney <ahalaney@redhat.com>,
+        Vinod Koul <vkoul@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 023/201] phy: qcom-snps: Use dev_err_probe() to simplify code
 Date:   Wed,  9 Aug 2023 12:40:25 +0200
-Message-ID: <20230809103637.941213082@linuxfoundation.org>
+Message-ID: <20230809103644.601730710@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103636.615294317@linuxfoundation.org>
-References: <20230809103636.615294317@linuxfoundation.org>
+In-Reply-To: <20230809103643.799166053@linuxfoundation.org>
+References: <20230809103643.799166053@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Eric Dumazet <edumazet@google.com>
+From: Yuan Can <yuancan@huawei.com>
 
-[ Upstream commit e6d12bdb435d23ff6c1890c852d85408a2f496ee ]
+[ Upstream commit 668dc8afce43d4bc01feb3e929d6d5ffcb14f899 ]
 
-In a prior commit, I forgot to change sk_getsockopt()
-when reading sk->sk_rcvlowat locklessly.
+In the probe path, dev_err() can be replaced with dev_err_probe()
+which will check if error code is -EPROBE_DEFER and prints the
+error name. It also sets the defer probe reason which can be
+checked later through debugfs.
 
-Fixes: eac66402d1c3 ("net: annotate sk->sk_rcvlowat lockless reads")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Yuan Can <yuancan@huawei.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Andrew Halaney <ahalaney@redhat.com>
+Link: https://lore.kernel.org/r/20220922111228.36355-8-yuancan@huawei.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Stable-dep-of: 8a0eb8f9b9a0 ("phy: qcom-snps-femto-v2: properly enable ref clock")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/sock.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/phy/qualcomm/phy-qcom-snps-femto-v2.c | 18 ++++++------------
+ 1 file changed, 6 insertions(+), 12 deletions(-)
 
-diff --git a/net/core/sock.c b/net/core/sock.c
-index 86e88de1238b1..1b1fe67b94d4f 100644
---- a/net/core/sock.c
-+++ b/net/core/sock.c
-@@ -1717,7 +1717,7 @@ int sk_getsockopt(struct sock *sk, int level, int optname,
- 		break;
+diff --git a/drivers/phy/qualcomm/phy-qcom-snps-femto-v2.c b/drivers/phy/qualcomm/phy-qcom-snps-femto-v2.c
+index 7e61202aa234e..54846259405a9 100644
+--- a/drivers/phy/qualcomm/phy-qcom-snps-femto-v2.c
++++ b/drivers/phy/qualcomm/phy-qcom-snps-femto-v2.c
+@@ -304,12 +304,9 @@ static int qcom_snps_hsphy_probe(struct platform_device *pdev)
+ 		return PTR_ERR(hsphy->base);
  
- 	case SO_RCVLOWAT:
--		v.val = sk->sk_rcvlowat;
-+		v.val = READ_ONCE(sk->sk_rcvlowat);
- 		break;
+ 	hsphy->ref_clk = devm_clk_get(dev, "ref");
+-	if (IS_ERR(hsphy->ref_clk)) {
+-		ret = PTR_ERR(hsphy->ref_clk);
+-		if (ret != -EPROBE_DEFER)
+-			dev_err(dev, "failed to get ref clk, %d\n", ret);
+-		return ret;
+-	}
++	if (IS_ERR(hsphy->ref_clk))
++		return dev_err_probe(dev, PTR_ERR(hsphy->ref_clk),
++				     "failed to get ref clk\n");
  
- 	case SO_SNDLOWAT:
+ 	hsphy->phy_reset = devm_reset_control_get_exclusive(&pdev->dev, NULL);
+ 	if (IS_ERR(hsphy->phy_reset)) {
+@@ -322,12 +319,9 @@ static int qcom_snps_hsphy_probe(struct platform_device *pdev)
+ 		hsphy->vregs[i].supply = qcom_snps_hsphy_vreg_names[i];
+ 
+ 	ret = devm_regulator_bulk_get(dev, num, hsphy->vregs);
+-	if (ret) {
+-		if (ret != -EPROBE_DEFER)
+-			dev_err(dev, "failed to get regulator supplies: %d\n",
+-				ret);
+-		return ret;
+-	}
++	if (ret)
++		return dev_err_probe(dev, ret,
++				     "failed to get regulator supplies\n");
+ 
+ 	pm_runtime_set_active(dev);
+ 	pm_runtime_enable(dev);
 -- 
-2.40.1
+2.39.2
 
 
 
