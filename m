@@ -2,128 +2,144 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0EE63775B54
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:16:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 01ED677599D
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:02:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230052AbjHILQm (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:16:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33598 "EHLO
+        id S232919AbjHILCE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:02:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41252 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232029AbjHILQl (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:16:41 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA4541BFA
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:16:40 -0700 (PDT)
+        with ESMTP id S232927AbjHILCD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:02:03 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B33BA210A
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:02:02 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 619AD62903
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:16:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FA9DC433C7;
-        Wed,  9 Aug 2023 11:16:39 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 543FF6313C
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:02:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6696BC433C8;
+        Wed,  9 Aug 2023 11:02:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691579799;
-        bh=T/y0l6N58k8RbchRa8PChcGugPYW48Qa9sCRgQ/A0Ic=;
+        s=korg; t=1691578921;
+        bh=0vIWfL4YBb/DOhwa7H1jBUpkwOSYe1H/k7bcsN3MC5I=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=KeSdpZeVDzT7wOuedaE2jUTeilEIO5JpkWEhVTy2P+IvPn67R/u+KLPwhebd0UyOM
-         SWeK2Qd7e2+gYko73YFvZ+w6p8E4dcez1IFfFjrk91I2PMnhe+lv1ywCOeQU5sC+qb
-         vKZD0IiTaSVxtw3F1hmyj7qi31VVHwg2gPWRv2wQ=
+        b=piZTD1It4UTNqwuF6HPCPgEQ1lhhH6lWOHS6oWpFUPZa8/sb7T8wJ1cYzyN2HwaWk
+         IpdVQhc7PlwZsemDHG8xQZoN3wktQY/SwPSCkdHjf328OysB6+ztaWAqeTw8LXci7U
+         hsavFfCWcYFH1w/qJHkL6KWmbRh8qSbV63+qWrMQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Nishanth Menon <nm@ti.com>,
-        Jassi Brar <jaswinder.singh@linaro.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 103/323] mailbox: ti-msgmgr: Fill non-message tx data fields with 0x0
+        patches@lists.linux.dev, Thomas Gleixner <tglx@linutronix.de>,
+        Ashok Raj <ashok.raj@intel.com>,
+        "Borislav Petkov (AMD)" <bp@alien8.de>
+Subject: [PATCH 4.14 003/204] x86/smp: Use dedicated cache-line for mwait_play_dead()
 Date:   Wed,  9 Aug 2023 12:39:01 +0200
-Message-ID: <20230809103702.781237429@linuxfoundation.org>
+Message-ID: <20230809103642.671195573@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
-References: <20230809103658.104386911@linuxfoundation.org>
+In-Reply-To: <20230809103642.552405807@linuxfoundation.org>
+References: <20230809103642.552405807@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Nishanth Menon <nm@ti.com>
+From: Thomas Gleixner <tglx@linutronix.de>
 
-[ Upstream commit 1b712f18c461bd75f018033a15cf381e712806b5 ]
+commit f9c9987bf52f4e42e940ae217333ebb5a4c3b506 upstream.
 
-Sec proxy/message manager data buffer is 60 bytes with the last of the
-registers indicating transmission completion. This however poses a bit
-of a challenge.
+Monitoring idletask::thread_info::flags in mwait_play_dead() has been an
+obvious choice as all what is needed is a cache line which is not written
+by other CPUs.
 
-The backing memory for sec_proxy / message manager is regular memory,
-and all sec proxy does is to trigger a burst of all 60 bytes of data
-over to the target thread backing ring accelerator. It doesn't do a
-memory scrub when it moves data out in the burst. When we transmit
-multiple messages, remnants of previous message is also transmitted
-which results in some random data being set in TISCI fields of
-messages that have been expanded forward.
+But there is a use case where a "dead" CPU needs to be brought out of
+MWAIT: kexec().
 
-The entire concept of backward compatibility hinges on the fact that
-the unused message fields remain 0x0 allowing for 0x0 value to be
-specially considered when backward compatibility of message extension
-is done.
+This is required as kexec() can overwrite text, pagetables, stacks and the
+monitored cacheline of the original kernel. The latter causes MWAIT to
+resume execution which obviously causes havoc on the kexec kernel which
+results usually in triple faults.
 
-So, instead of just writing the completion register, we continue
-to fill the message buffer up with 0x0 (note: for partial message
-involving completion, we already do this).
+Use a dedicated per CPU storage to prepare for that.
 
-This allows us to scale and introduce ABI changes back also work with
-other boot stages that may have left data in the internal memory.
-
-While at this, be consistent and explicit with the data_reg pointer
-increment.
-
-Fixes: aace66b170ce ("mailbox: Introduce TI message manager driver")
-Signed-off-by: Nishanth Menon <nm@ti.com>
-Signed-off-by: Jassi Brar <jaswinder.singh@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Ashok Raj <ashok.raj@intel.com>
+Reviewed-by: Borislav Petkov (AMD) <bp@alien8.de>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20230615193330.434553750@linutronix.de
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mailbox/ti-msgmgr.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ arch/x86/kernel/smpboot.c |   24 ++++++++++++++----------
+ 1 file changed, 14 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/mailbox/ti-msgmgr.c b/drivers/mailbox/ti-msgmgr.c
-index 01e9e462512b7..eb1e9771037f2 100644
---- a/drivers/mailbox/ti-msgmgr.c
-+++ b/drivers/mailbox/ti-msgmgr.c
-@@ -385,14 +385,20 @@ static int ti_msgmgr_send_data(struct mbox_chan *chan, void *data)
- 		/* Ensure all unused data is 0 */
- 		data_trail &= 0xFFFFFFFF >> (8 * (sizeof(u32) - trail_bytes));
- 		writel(data_trail, data_reg);
--		data_reg++;
-+		data_reg += sizeof(u32);
- 	}
-+
- 	/*
- 	 * 'data_reg' indicates next register to write. If we did not already
- 	 * write on tx complete reg(last reg), we must do so for transmit
-+	 * In addition, we also need to make sure all intermediate data
-+	 * registers(if any required), are reset to 0 for TISCI backward
-+	 * compatibility to be maintained.
- 	 */
--	if (data_reg <= qinst->queue_buff_end)
--		writel(0, qinst->queue_buff_end);
-+	while (data_reg <= qinst->queue_buff_end) {
-+		writel(0, data_reg);
-+		data_reg += sizeof(u32);
-+	}
+--- a/arch/x86/kernel/smpboot.c
++++ b/arch/x86/kernel/smpboot.c
+@@ -94,6 +94,17 @@ DEFINE_PER_CPU_READ_MOSTLY(cpumask_var_t
+ DEFINE_PER_CPU_READ_MOSTLY(struct cpuinfo_x86, cpu_info);
+ EXPORT_PER_CPU_SYMBOL(cpu_info);
  
- 	return 0;
- }
--- 
-2.39.2
-
++struct mwait_cpu_dead {
++	unsigned int	control;
++	unsigned int	status;
++};
++
++/*
++ * Cache line aligned data for mwait_play_dead(). Separate on purpose so
++ * that it's unlikely to be touched by other CPUs.
++ */
++static DEFINE_PER_CPU_ALIGNED(struct mwait_cpu_dead, mwait_cpu_dead);
++
+ /* Logical package management. We might want to allocate that dynamically */
+ static int *physical_to_logical_pkg __read_mostly;
+ static unsigned long *physical_package_map __read_mostly;;
+@@ -1638,10 +1649,10 @@ static bool wakeup_cpu0(void)
+  */
+ static inline void mwait_play_dead(void)
+ {
++	struct mwait_cpu_dead *md = this_cpu_ptr(&mwait_cpu_dead);
+ 	unsigned int eax, ebx, ecx, edx;
+ 	unsigned int highest_cstate = 0;
+ 	unsigned int highest_subcstate = 0;
+-	void *mwait_ptr;
+ 	int i;
+ 
+ 	if (boot_cpu_data.x86_vendor == X86_VENDOR_AMD)
+@@ -1675,13 +1686,6 @@ static inline void mwait_play_dead(void)
+ 			(highest_subcstate - 1);
+ 	}
+ 
+-	/*
+-	 * This should be a memory location in a cache line which is
+-	 * unlikely to be touched by other processors.  The actual
+-	 * content is immaterial as it is not actually modified in any way.
+-	 */
+-	mwait_ptr = &current_thread_info()->flags;
+-
+ 	wbinvd();
+ 
+ 	while (1) {
+@@ -1693,9 +1697,9 @@ static inline void mwait_play_dead(void)
+ 		 * case where we return around the loop.
+ 		 */
+ 		mb();
+-		clflush(mwait_ptr);
++		clflush(md);
+ 		mb();
+-		__monitor(mwait_ptr, 0, 0);
++		__monitor(md, 0, 0);
+ 		mb();
+ 		__mwait(eax, 0);
+ 		/*
 
 
