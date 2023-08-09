@@ -2,47 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 60D7E775BB9
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:20:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0A2AB7758B9
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:55:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233525AbjHILUX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:20:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52222 "EHLO
+        id S230088AbjHIKzL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 06:55:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53026 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233524AbjHILUX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:20:23 -0400
+        with ESMTP id S232579AbjHIKy7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:54:59 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 732281BFA
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:20:22 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 66FC72D71
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:53:28 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 089BE631D5
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:20:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14ADAC433C8;
-        Wed,  9 Aug 2023 11:20:20 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4874963122
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:53:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55425C433C8;
+        Wed,  9 Aug 2023 10:53:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691580021;
-        bh=m5V4VViDpcT/XNsvqKaxlZt8RzBckQhvVeebGBjQ6bc=;
+        s=korg; t=1691578407;
+        bh=G325CJet+jbI17OiqtNBB3U1arVJau4qtIIxqK8iRP4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=UHbtVsvW/v5ScvF4a1GItLFxlx0fBzDt8fQqM2+GeVgwj2sMvWdtJIJyZBUalfR0B
-         8FDPeE3ZPI0I7GhWwP/EahAIZbtC03GI74QGcLMKO88vnbUI9dN5XpBoY3L9xR0EJ0
-         TgU2GfIN+LS+S6FlyZcc+rngK0CEGWsS1KmnMfEQ=
+        b=aOxXQ0Yn2fIH7kNMi7ITtWm5zMs0erMaYDJCghNoP3YRoBrvyrniE9P2/odXvaEtU
+         aKh74IEOzSk5n4TIm7CyDN1rOGzGtO5g+TlBVkTUO6MtVJuHUKq8IKDRwfPgbnerHG
+         7k3czzcgOu13O1v6p88yUCW7gVTcyB0XhHdRN1JU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        Simon Horman <simon.horman@corigine.com>,
-        Johannes Berg <johannes.berg@intel.com>,
+        patches@lists.linux.dev, valis <sec@valis.email>,
+        Bing-Jhong Billy Jheng <billy@starlabs.sg>,
+        Jamal Hadi Salim <jhs@mojatatu.com>,
+        Victor Nogueira <victor@mojatatu.com>,
+        Pedro Tammela <pctammela@mojatatu.com>,
+        M A Ramdhan <ramdhan@starlabs.sg>,
+        Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 198/323] wifi: wext-core: Fix -Wstringop-overflow warning in ioctl_standard_iw_point()
+Subject: [PATCH 6.1 049/127] net/sched: cls_fw: No longer copy tcf_result on update to avoid use-after-free
 Date:   Wed,  9 Aug 2023 12:40:36 +0200
-Message-ID: <20230809103707.227677651@linuxfoundation.org>
+Message-ID: <20230809103638.306734085@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
-References: <20230809103658.104386911@linuxfoundation.org>
+In-Reply-To: <20230809103636.615294317@linuxfoundation.org>
+References: <20230809103636.615294317@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,70 +60,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Gustavo A. R. Silva <gustavoars@kernel.org>
+From: valis <sec@valis.email>
 
-[ Upstream commit 71e7552c90db2a2767f5c17c7ec72296b0d92061 ]
+[ Upstream commit 76e42ae831991c828cffa8c37736ebfb831ad5ec ]
 
--Wstringop-overflow is legitimately warning us about extra_size
-pontentially being zero at some point, hence potenially ending
-up _allocating_ zero bytes of memory for extra pointer and then
-trying to access such object in a call to copy_from_user().
+When fw_change() is called on an existing filter, the whole
+tcf_result struct is always copied into the new instance of the filter.
 
-Fix this by adding a sanity check to ensure we never end up
-trying to allocate zero bytes of data for extra pointer, before
-continue executing the rest of the code in the function.
+This causes a problem when updating a filter bound to a class,
+as tcf_unbind_filter() is always called on the old instance in the
+success path, decreasing filter_cnt of the still referenced class
+and allowing it to be deleted, leading to a use-after-free.
 
-Address the following -Wstringop-overflow warning seen when built
-m68k architecture with allyesconfig configuration:
-                 from net/wireless/wext-core.c:11:
-In function '_copy_from_user',
-    inlined from 'copy_from_user' at include/linux/uaccess.h:183:7,
-    inlined from 'ioctl_standard_iw_point' at net/wireless/wext-core.c:825:7:
-arch/m68k/include/asm/string.h:48:25: warning: '__builtin_memset' writing 1 or more bytes into a region of size 0 overflows the destination [-Wstringop-overflow=]
-   48 | #define memset(d, c, n) __builtin_memset(d, c, n)
-      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~
-include/linux/uaccess.h:153:17: note: in expansion of macro 'memset'
-  153 |                 memset(to + (n - res), 0, res);
-      |                 ^~~~~~
-In function 'kmalloc',
-    inlined from 'kzalloc' at include/linux/slab.h:694:9,
-    inlined from 'ioctl_standard_iw_point' at net/wireless/wext-core.c:819:10:
-include/linux/slab.h:577:16: note: at offset 1 into destination object of size 0 allocated by '__kmalloc'
-  577 |         return __kmalloc(size, flags);
-      |                ^~~~~~~~~~~~~~~~~~~~~~
+Fix this by no longer copying the tcf_result struct from the old filter.
 
-This help with the ongoing efforts to globally enable
--Wstringop-overflow.
-
-Link: https://github.com/KSPP/linux/issues/315
-Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Link: https://lore.kernel.org/r/ZItSlzvIpjdjNfd8@work
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: e35a8ee5993b ("net: sched: fw use RCU")
+Reported-by: valis <sec@valis.email>
+Reported-by: Bing-Jhong Billy Jheng <billy@starlabs.sg>
+Signed-off-by: valis <sec@valis.email>
+Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Reviewed-by: Victor Nogueira <victor@mojatatu.com>
+Reviewed-by: Pedro Tammela <pctammela@mojatatu.com>
+Reviewed-by: M A Ramdhan <ramdhan@starlabs.sg>
+Link: https://lore.kernel.org/r/20230729123202.72406-3-jhs@mojatatu.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/wireless/wext-core.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ net/sched/cls_fw.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/net/wireless/wext-core.c b/net/wireless/wext-core.c
-index 76a80a41615be..a57f54bc0e1a7 100644
---- a/net/wireless/wext-core.c
-+++ b/net/wireless/wext-core.c
-@@ -796,6 +796,12 @@ static int ioctl_standard_iw_point(struct iw_point *iwp, unsigned int cmd,
- 		}
- 	}
+diff --git a/net/sched/cls_fw.c b/net/sched/cls_fw.c
+index 1212b057b129c..6160ef7d646ac 100644
+--- a/net/sched/cls_fw.c
++++ b/net/sched/cls_fw.c
+@@ -265,7 +265,6 @@ static int fw_change(struct net *net, struct sk_buff *in_skb,
+ 			return -ENOBUFS;
  
-+	/* Sanity-check to ensure we never end up _allocating_ zero
-+	 * bytes of data for extra.
-+	 */
-+	if (extra_size <= 0)
-+		return -EFAULT;
-+
- 	/* kzalloc() ensures NULL-termination for essid_compat. */
- 	extra = kzalloc(extra_size, GFP_KERNEL);
- 	if (!extra)
+ 		fnew->id = f->id;
+-		fnew->res = f->res;
+ 		fnew->ifindex = f->ifindex;
+ 		fnew->tp = f->tp;
+ 
 -- 
-2.39.2
+2.40.1
 
 
 
