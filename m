@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 34256775A7D
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:08:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AC838775D75
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:37:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233212AbjHILIx (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:08:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45506 "EHLO
+        id S234110AbjHILhq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:37:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59712 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233207AbjHILIw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:08:52 -0400
+        with ESMTP id S234111AbjHILhp (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:37:45 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 273321BFE
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:08:51 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 09C7C1BFA
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:37:45 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BB80B6314E
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:08:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCB13C433C7;
-        Wed,  9 Aug 2023 11:08:49 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9C8F163580
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:37:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA217C433C7;
+        Wed,  9 Aug 2023 11:37:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691579330;
-        bh=ZCT4LCtgIL+ozaXHuwB9ZxucNuWZbN1dfId7DRMdSCQ=;
+        s=korg; t=1691581064;
+        bh=5u/D3ArNmHqIDpCkBJ186gF0t2XzKvfOpUT/sCf6hZE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=YwYyipnn+4JZXZepnka4ulchEM3zyN0AN51KzBIBa0K2+n27C+Z/YIr/gRiH8DG+v
-         0BFL+SmtceR28AoyRhEwUG5Ykxk6TTWmKb08cku1UMwn0HASV/Bn0Gm3gO0wLFEpqR
-         jlkDsUI/Hh2ynzoywKnn1uUG8QwxyUb2tugNw9lY=
+        b=Fn15iC1ES6iAdCK2C4QOBU+zJiXZ2wr4RgnqmsKTRUsITinheVueLWsEIkRuco3ep
+         CWY6GOU3du7cLU+CAijdPHqZd7+5HK0wa4GXRoZ5IhjyQyI3IBKWleb023ArVTZthO
+         d+VeSrg6i7Re4zWB5aJwcWvEnrKHw7C+nT5AFqfg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hannes Reinecke <hare@suse.de>,
-        Damien Le Moal <dlemoal@kernel.org>,
-        Bart Van Assche <bvanassche@acm.org>,
-        Jens Axboe <axboe@kernel.dk>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 157/204] block: Fix a source code comment in include/uapi/linux/blkzoned.h
+        patches@lists.linux.dev, Kunkun Jiang <jiangkunkun@huawei.com>,
+        Marc Zyngier <maz@kernel.org>,
+        Zenghui Yu <yuzenghui@huawei.com>, wanghaibin.wang@huawei.com,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 093/201] irqchip/gic-v4.1: Properly lock VPEs when doing a directLPI invalidation
 Date:   Wed,  9 Aug 2023 12:41:35 +0200
-Message-ID: <20230809103647.795677074@linuxfoundation.org>
+Message-ID: <20230809103646.929638606@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103642.552405807@linuxfoundation.org>
-References: <20230809103642.552405807@linuxfoundation.org>
+In-Reply-To: <20230809103643.799166053@linuxfoundation.org>
+References: <20230809103643.799166053@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,48 +56,158 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Bart Van Assche <bvanassche@acm.org>
+From: Marc Zyngier <maz@kernel.org>
 
-[ Upstream commit e0933b526fbfd937c4a8f4e35fcdd49f0e22d411 ]
+[ Upstream commit 926846a703cbf5d0635cc06e67d34b228746554b ]
 
-Fix the symbolic names for zone conditions in the blkzoned.h header
-file.
+We normally rely on the irq_to_cpuid_[un]lock() primitives to make
+sure nothing will change col->idx while performing a LPI invalidation.
 
-Cc: Hannes Reinecke <hare@suse.de>
-Cc: Damien Le Moal <dlemoal@kernel.org>
-Fixes: 6a0cb1bc106f ("block: Implement support for zoned block devices")
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-Link: https://lore.kernel.org/r/20230706201422.3987341-1-bvanassche@acm.org
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+However, these primitives do not cover VPE doorbells, and we have
+some open-coded locking for that. Unfortunately, this locking is
+pretty bogus.
+
+Instead, extend the above primitives to cover VPE doorbells and
+convert the whole thing to it.
+
+Fixes: f3a059219bc7 ("irqchip/gic-v4.1: Ensure mutual exclusion between vPE affinity change and RD access")
+Reported-by: Kunkun Jiang <jiangkunkun@huawei.com>
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Cc: Zenghui Yu <yuzenghui@huawei.com>
+Cc: wanghaibin.wang@huawei.com
+Tested-by: Kunkun Jiang <jiangkunkun@huawei.com>
+Reviewed-by: Zenghui Yu <yuzenghui@huawei.com>
+Link: https://lore.kernel.org/r/20230617073242.3199746-1-maz@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/uapi/linux/blkzoned.h | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/irqchip/irq-gic-v3-its.c | 75 ++++++++++++++++++++------------
+ 1 file changed, 46 insertions(+), 29 deletions(-)
 
-diff --git a/include/uapi/linux/blkzoned.h b/include/uapi/linux/blkzoned.h
-index e3c70fe6bf0fb..f5e619abcc9a6 100644
---- a/include/uapi/linux/blkzoned.h
-+++ b/include/uapi/linux/blkzoned.h
-@@ -51,13 +51,13 @@ enum blk_zone_type {
-  *
-  * The Zone Condition state machine in the ZBC/ZAC standards maps the above
-  * deinitions as:
-- *   - ZC1: Empty         | BLK_ZONE_EMPTY
-+ *   - ZC1: Empty         | BLK_ZONE_COND_EMPTY
-  *   - ZC2: Implicit Open | BLK_ZONE_COND_IMP_OPEN
-  *   - ZC3: Explicit Open | BLK_ZONE_COND_EXP_OPEN
-- *   - ZC4: Closed        | BLK_ZONE_CLOSED
-- *   - ZC5: Full          | BLK_ZONE_FULL
-- *   - ZC6: Read Only     | BLK_ZONE_READONLY
-- *   - ZC7: Offline       | BLK_ZONE_OFFLINE
-+ *   - ZC4: Closed        | BLK_ZONE_COND_CLOSED
-+ *   - ZC5: Full          | BLK_ZONE_COND_FULL
-+ *   - ZC6: Read Only     | BLK_ZONE_COND_READONLY
-+ *   - ZC7: Offline       | BLK_ZONE_COND_OFFLINE
-  *
-  * Conditions 0x5 to 0xC are reserved by the current ZBC/ZAC spec and should
-  * be considered invalid.
+diff --git a/drivers/irqchip/irq-gic-v3-its.c b/drivers/irqchip/irq-gic-v3-its.c
+index 5ec091c64d47f..f1fa98e5ea13f 100644
+--- a/drivers/irqchip/irq-gic-v3-its.c
++++ b/drivers/irqchip/irq-gic-v3-its.c
+@@ -267,13 +267,23 @@ static void vpe_to_cpuid_unlock(struct its_vpe *vpe, unsigned long flags)
+ 	raw_spin_unlock_irqrestore(&vpe->vpe_lock, flags);
+ }
+ 
++static struct irq_chip its_vpe_irq_chip;
++
+ static int irq_to_cpuid_lock(struct irq_data *d, unsigned long *flags)
+ {
+-	struct its_vlpi_map *map = get_vlpi_map(d);
++	struct its_vpe *vpe = NULL;
+ 	int cpu;
+ 
+-	if (map) {
+-		cpu = vpe_to_cpuid_lock(map->vpe, flags);
++	if (d->chip == &its_vpe_irq_chip) {
++		vpe = irq_data_get_irq_chip_data(d);
++	} else {
++		struct its_vlpi_map *map = get_vlpi_map(d);
++		if (map)
++			vpe = map->vpe;
++	}
++
++	if (vpe) {
++		cpu = vpe_to_cpuid_lock(vpe, flags);
+ 	} else {
+ 		/* Physical LPIs are already locked via the irq_desc lock */
+ 		struct its_device *its_dev = irq_data_get_irq_chip_data(d);
+@@ -287,10 +297,18 @@ static int irq_to_cpuid_lock(struct irq_data *d, unsigned long *flags)
+ 
+ static void irq_to_cpuid_unlock(struct irq_data *d, unsigned long flags)
+ {
+-	struct its_vlpi_map *map = get_vlpi_map(d);
++	struct its_vpe *vpe = NULL;
++
++	if (d->chip == &its_vpe_irq_chip) {
++		vpe = irq_data_get_irq_chip_data(d);
++	} else {
++		struct its_vlpi_map *map = get_vlpi_map(d);
++		if (map)
++			vpe = map->vpe;
++	}
+ 
+-	if (map)
+-		vpe_to_cpuid_unlock(map->vpe, flags);
++	if (vpe)
++		vpe_to_cpuid_unlock(vpe, flags);
+ }
+ 
+ static struct its_collection *valid_col(struct its_collection *col)
+@@ -1422,14 +1440,29 @@ static void wait_for_syncr(void __iomem *rdbase)
+ 		cpu_relax();
+ }
+ 
+-static void direct_lpi_inv(struct irq_data *d)
++static void __direct_lpi_inv(struct irq_data *d, u64 val)
+ {
+-	struct its_vlpi_map *map = get_vlpi_map(d);
+ 	void __iomem *rdbase;
+ 	unsigned long flags;
+-	u64 val;
+ 	int cpu;
+ 
++	/* Target the redistributor this LPI is currently routed to */
++	cpu = irq_to_cpuid_lock(d, &flags);
++	raw_spin_lock(&gic_data_rdist_cpu(cpu)->rd_lock);
++
++	rdbase = per_cpu_ptr(gic_rdists->rdist, cpu)->rd_base;
++	gic_write_lpir(val, rdbase + GICR_INVLPIR);
++	wait_for_syncr(rdbase);
++
++	raw_spin_unlock(&gic_data_rdist_cpu(cpu)->rd_lock);
++	irq_to_cpuid_unlock(d, flags);
++}
++
++static void direct_lpi_inv(struct irq_data *d)
++{
++	struct its_vlpi_map *map = get_vlpi_map(d);
++	u64 val;
++
+ 	if (map) {
+ 		struct its_device *its_dev = irq_data_get_irq_chip_data(d);
+ 
+@@ -1442,15 +1475,7 @@ static void direct_lpi_inv(struct irq_data *d)
+ 		val = d->hwirq;
+ 	}
+ 
+-	/* Target the redistributor this LPI is currently routed to */
+-	cpu = irq_to_cpuid_lock(d, &flags);
+-	raw_spin_lock(&gic_data_rdist_cpu(cpu)->rd_lock);
+-	rdbase = per_cpu_ptr(gic_rdists->rdist, cpu)->rd_base;
+-	gic_write_lpir(val, rdbase + GICR_INVLPIR);
+-
+-	wait_for_syncr(rdbase);
+-	raw_spin_unlock(&gic_data_rdist_cpu(cpu)->rd_lock);
+-	irq_to_cpuid_unlock(d, flags);
++	__direct_lpi_inv(d, val);
+ }
+ 
+ static void lpi_update_config(struct irq_data *d, u8 clr, u8 set)
+@@ -3916,18 +3941,10 @@ static void its_vpe_send_inv(struct irq_data *d)
+ {
+ 	struct its_vpe *vpe = irq_data_get_irq_chip_data(d);
+ 
+-	if (gic_rdists->has_direct_lpi) {
+-		void __iomem *rdbase;
+-
+-		/* Target the redistributor this VPE is currently known on */
+-		raw_spin_lock(&gic_data_rdist_cpu(vpe->col_idx)->rd_lock);
+-		rdbase = per_cpu_ptr(gic_rdists->rdist, vpe->col_idx)->rd_base;
+-		gic_write_lpir(d->parent_data->hwirq, rdbase + GICR_INVLPIR);
+-		wait_for_syncr(rdbase);
+-		raw_spin_unlock(&gic_data_rdist_cpu(vpe->col_idx)->rd_lock);
+-	} else {
++	if (gic_rdists->has_direct_lpi)
++		__direct_lpi_inv(d, d->parent_data->hwirq);
++	else
+ 		its_vpe_send_cmd(vpe, its_send_inv);
+-	}
+ }
+ 
+ static void its_vpe_mask_irq(struct irq_data *d)
 -- 
 2.40.1
 
