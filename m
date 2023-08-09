@@ -2,133 +2,174 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E8A46775CDD
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:31:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4394177597B
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:00:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233916AbjHILbe (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:31:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60358 "EHLO
+        id S232876AbjHILAz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:00:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47012 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233901AbjHILbb (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:31:31 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 029E410DC
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:31:31 -0700 (PDT)
+        with ESMTP id S232874AbjHILAz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:00:55 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9D6EBED
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:00:54 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8BFF2633BD
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:31:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C8A3C433C8;
-        Wed,  9 Aug 2023 11:31:29 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3C49061FA9
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:00:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F6E0C433C8;
+        Wed,  9 Aug 2023 11:00:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691580690;
-        bh=oVfaT3LyWREIPZg0lWZrLgphT+bY5TTA3LUodind8S0=;
+        s=korg; t=1691578853;
+        bh=5POxHhB0Z04IzAiPpMEy5t8RPgLEqM/thKY64jWUWqg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=nKGkkXaAKqr8UO6gOlzDsLjbpJMaqL0Kfdmyicmqy8GYOo+IhQ8p01l1Bu86zt20y
-         mpyataz/L3/iOjIzTgVYUIQzW8mHP+nMf5St1hdV9E0YDKsc9DxSFJ741obnUKlJB/
-         /c+Xp6HuU+UHztYP7JH4pdwboM/haDJ8TOoTmCn4=
+        b=LPy+80kGEO4mCobWY+v4rZGZ6uetBgjb80HShybB/AJmMHvTVzEt3J0SAVawxO2yK
+         ZUZs3PbDgEiAaYh6RW4ZBwi4xnoEIV7xWAZVRyOfsTG16phtlDxEAuYwHxcoBta5S3
+         wLv7SoKnSE7UEVxCFBY9Q56RG0jhekuZGLk+MTX0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Qu Wenruo <wqu@suse.com>,
-        Marcos Paulo de Souza <mpdesouza@suse.com>,
-        David Sterba <dsterba@suse.com>,
-        Harshvardhan Jha <harshvardhan.j.jha@oracle.com>
-Subject: [PATCH 5.4 085/154] btrfs: qgroup: return ENOTCONN instead of EINVAL when quotas are not enabled
+        patches@lists.linux.dev, kernel test robot <lkp@intel.com>,
+        Roger Quadros <rogerq@kernel.org>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 80/92] mtd: rawnand: omap_elm: Fix incorrect type in assignment
 Date:   Wed,  9 Aug 2023 12:41:56 +0200
-Message-ID: <20230809103639.803346761@linuxfoundation.org>
+Message-ID: <20230809103636.318503153@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103636.887175326@linuxfoundation.org>
-References: <20230809103636.887175326@linuxfoundation.org>
+In-Reply-To: <20230809103633.485906560@linuxfoundation.org>
+References: <20230809103633.485906560@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Marcos Paulo de Souza <mpdesouza@suse.com>
+From: Roger Quadros <rogerq@kernel.org>
 
-commit 8a36e408d40606e21cd4e2dd9601004a67b14868 upstream.
+[ Upstream commit d8403b9eeee66d5dd81ecb9445800b108c267ce3 ]
 
-[PROBLEM]
-qgroup create/remove code is currently returning EINVAL when the user
-tries to create a qgroup on a subvolume without quota enabled. EINVAL is
-already being used for too many error scenarios so that is hard to
-depict what is the problem.
+Once the ECC word endianness is converted to BE32, we force cast it
+to u32 so we can use elm_write_reg() which in turn uses writel().
 
-[FIX]
-Currently scrub and balance code return -ENOTCONN when the user tries to
-cancel/pause and no scrub or balance is currently running for the
-desired subvolume. Do the same here by returning -ENOTCONN  when a user
-tries to create/delete/assing/list a qgroup on a subvolume without quota
-enabled.
+Fixes below sparse warnings:
 
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Marcos Paulo de Souza <mpdesouza@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Harshvardhan Jha <harshvardhan.j.jha@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+   drivers/mtd/nand/raw/omap_elm.c:180:37: sparse:     expected unsigned int [usertype] val
+   drivers/mtd/nand/raw/omap_elm.c:180:37: sparse:     got restricted __be32 [usertype]
+   drivers/mtd/nand/raw/omap_elm.c:185:37: sparse:     expected unsigned int [usertype] val
+   drivers/mtd/nand/raw/omap_elm.c:185:37: sparse:     got restricted __be32 [usertype]
+   drivers/mtd/nand/raw/omap_elm.c:190:37: sparse:     expected unsigned int [usertype] val
+   drivers/mtd/nand/raw/omap_elm.c:190:37: sparse:     got restricted __be32 [usertype]
+>> drivers/mtd/nand/raw/omap_elm.c:200:40: sparse: sparse: restricted __be32 degrades to integer
+   drivers/mtd/nand/raw/omap_elm.c:206:39: sparse: sparse: restricted __be32 degrades to integer
+   drivers/mtd/nand/raw/omap_elm.c:210:37: sparse:     expected unsigned int [assigned] [usertype] val
+   drivers/mtd/nand/raw/omap_elm.c:210:37: sparse:     got restricted __be32 [usertype]
+   drivers/mtd/nand/raw/omap_elm.c:213:37: sparse:     expected unsigned int [assigned] [usertype] val
+   drivers/mtd/nand/raw/omap_elm.c:213:37: sparse:     got restricted __be32 [usertype]
+   drivers/mtd/nand/raw/omap_elm.c:216:37: sparse:     expected unsigned int [assigned] [usertype] val
+   drivers/mtd/nand/raw/omap_elm.c:216:37: sparse:     got restricted __be32 [usertype]
+   drivers/mtd/nand/raw/omap_elm.c:219:37: sparse:     expected unsigned int [assigned] [usertype] val
+   drivers/mtd/nand/raw/omap_elm.c:219:37: sparse:     got restricted __be32 [usertype]
+   drivers/mtd/nand/raw/omap_elm.c:222:37: sparse:     expected unsigned int [assigned] [usertype] val
+   drivers/mtd/nand/raw/omap_elm.c:222:37: sparse:     got restricted __be32 [usertype]
+   drivers/mtd/nand/raw/omap_elm.c:225:37: sparse:     expected unsigned int [assigned] [usertype] val
+   drivers/mtd/nand/raw/omap_elm.c:225:37: sparse:     got restricted __be32 [usertype]
+   drivers/mtd/nand/raw/omap_elm.c:228:39: sparse: sparse: restricted __be32 degrades to integer
+
+Fixes: bf22433575ef ("mtd: devices: elm: Add support for ELM error correction")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202306212211.WDXokuWh-lkp@intel.com/
+Signed-off-by: Roger Quadros <rogerq@kernel.org>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://lore.kernel.org/linux-mtd/20230624184021.7740-1-rogerq@kernel.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/qgroup.c |   10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/mtd/nand/raw/omap_elm.c | 24 ++++++++++++------------
+ 1 file changed, 12 insertions(+), 12 deletions(-)
 
---- a/fs/btrfs/qgroup.c
-+++ b/fs/btrfs/qgroup.c
-@@ -1411,7 +1411,7 @@ int btrfs_add_qgroup_relation(struct btr
+diff --git a/drivers/mtd/nand/raw/omap_elm.c b/drivers/mtd/nand/raw/omap_elm.c
+index 2b21ce04b3ec6..1a48347be3fe4 100644
+--- a/drivers/mtd/nand/raw/omap_elm.c
++++ b/drivers/mtd/nand/raw/omap_elm.c
+@@ -177,17 +177,17 @@ static void elm_load_syndrome(struct elm_info *info,
+ 			switch (info->bch_type) {
+ 			case BCH8_ECC:
+ 				/* syndrome fragment 0 = ecc[9-12B] */
+-				val = cpu_to_be32(*(u32 *) &ecc[9]);
++				val = (__force u32)cpu_to_be32(*(u32 *)&ecc[9]);
+ 				elm_write_reg(info, offset, val);
  
- 	mutex_lock(&fs_info->qgroup_ioctl_lock);
- 	if (!fs_info->quota_root) {
--		ret = -EINVAL;
-+		ret = -ENOTCONN;
- 		goto out;
- 	}
- 	member = find_qgroup_rb(fs_info, src);
-@@ -1470,7 +1470,7 @@ static int __del_qgroup_relation(struct
- 		return -ENOMEM;
+ 				/* syndrome fragment 1 = ecc[5-8B] */
+ 				offset += 4;
+-				val = cpu_to_be32(*(u32 *) &ecc[5]);
++				val = (__force u32)cpu_to_be32(*(u32 *)&ecc[5]);
+ 				elm_write_reg(info, offset, val);
  
- 	if (!fs_info->quota_root) {
--		ret = -EINVAL;
-+		ret = -ENOTCONN;
- 		goto out;
- 	}
+ 				/* syndrome fragment 2 = ecc[1-4B] */
+ 				offset += 4;
+-				val = cpu_to_be32(*(u32 *) &ecc[1]);
++				val = (__force u32)cpu_to_be32(*(u32 *)&ecc[1]);
+ 				elm_write_reg(info, offset, val);
  
-@@ -1536,7 +1536,7 @@ int btrfs_create_qgroup(struct btrfs_tra
+ 				/* syndrome fragment 3 = ecc[0B] */
+@@ -197,35 +197,35 @@ static void elm_load_syndrome(struct elm_info *info,
+ 				break;
+ 			case BCH4_ECC:
+ 				/* syndrome fragment 0 = ecc[20-52b] bits */
+-				val = (cpu_to_be32(*(u32 *) &ecc[3]) >> 4) |
++				val = ((__force u32)cpu_to_be32(*(u32 *)&ecc[3]) >> 4) |
+ 					((ecc[2] & 0xf) << 28);
+ 				elm_write_reg(info, offset, val);
  
- 	mutex_lock(&fs_info->qgroup_ioctl_lock);
- 	if (!fs_info->quota_root) {
--		ret = -EINVAL;
-+		ret = -ENOTCONN;
- 		goto out;
- 	}
- 	quota_root = fs_info->quota_root;
-@@ -1570,7 +1570,7 @@ int btrfs_remove_qgroup(struct btrfs_tra
- 
- 	mutex_lock(&fs_info->qgroup_ioctl_lock);
- 	if (!fs_info->quota_root) {
--		ret = -EINVAL;
-+		ret = -ENOTCONN;
- 		goto out;
- 	}
- 
-@@ -1621,7 +1621,7 @@ int btrfs_limit_qgroup(struct btrfs_tran
- 
- 	mutex_lock(&fs_info->qgroup_ioctl_lock);
- 	if (!fs_info->quota_root) {
--		ret = -EINVAL;
-+		ret = -ENOTCONN;
- 		goto out;
- 	}
- 
+ 				/* syndrome fragment 1 = ecc[0-20b] bits */
+ 				offset += 4;
+-				val = cpu_to_be32(*(u32 *) &ecc[0]) >> 12;
++				val = (__force u32)cpu_to_be32(*(u32 *)&ecc[0]) >> 12;
+ 				elm_write_reg(info, offset, val);
+ 				break;
+ 			case BCH16_ECC:
+-				val = cpu_to_be32(*(u32 *) &ecc[22]);
++				val = (__force u32)cpu_to_be32(*(u32 *)&ecc[22]);
+ 				elm_write_reg(info, offset, val);
+ 				offset += 4;
+-				val = cpu_to_be32(*(u32 *) &ecc[18]);
++				val = (__force u32)cpu_to_be32(*(u32 *)&ecc[18]);
+ 				elm_write_reg(info, offset, val);
+ 				offset += 4;
+-				val = cpu_to_be32(*(u32 *) &ecc[14]);
++				val = (__force u32)cpu_to_be32(*(u32 *)&ecc[14]);
+ 				elm_write_reg(info, offset, val);
+ 				offset += 4;
+-				val = cpu_to_be32(*(u32 *) &ecc[10]);
++				val = (__force u32)cpu_to_be32(*(u32 *)&ecc[10]);
+ 				elm_write_reg(info, offset, val);
+ 				offset += 4;
+-				val = cpu_to_be32(*(u32 *) &ecc[6]);
++				val = (__force u32)cpu_to_be32(*(u32 *)&ecc[6]);
+ 				elm_write_reg(info, offset, val);
+ 				offset += 4;
+-				val = cpu_to_be32(*(u32 *) &ecc[2]);
++				val = (__force u32)cpu_to_be32(*(u32 *)&ecc[2]);
+ 				elm_write_reg(info, offset, val);
+ 				offset += 4;
+-				val = cpu_to_be32(*(u32 *) &ecc[0]) >> 16;
++				val = (__force u32)cpu_to_be32(*(u32 *)&ecc[0]) >> 16;
+ 				elm_write_reg(info, offset, val);
+ 				break;
+ 			default:
+-- 
+2.40.1
+
 
 
