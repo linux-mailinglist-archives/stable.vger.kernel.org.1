@@ -2,148 +2,113 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 11FCF775C5E
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:26:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8AD85775D3F
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:35:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233732AbjHIL0j (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:26:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45632 "EHLO
+        id S234055AbjHILfT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:35:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35048 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233729AbjHIL0i (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:26:38 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 16A2B1FD8
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:26:37 -0700 (PDT)
+        with ESMTP id S234054AbjHILfS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:35:18 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C84C2103
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:35:16 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id AA3D063255
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:26:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B74D6C433C7;
-        Wed,  9 Aug 2023 11:26:35 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 982ED62BFE
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:35:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A536DC433C8;
+        Wed,  9 Aug 2023 11:35:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691580396;
-        bh=4vO7TP1O+UKlJm4nlGCP6wtRwRBbXlKCUd7ou7u8a98=;
+        s=korg; t=1691580915;
+        bh=TgoMOz8BqJIL1481uM9Dgf5slBrJZ5pC6RSMcVOKUdY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=VCItTg1j5lF+lbQ2Kw3Xt3/Qzclb3OKgPeQIytvYvdH3Ent0DUYeKJkVMJ0GNJ3f5
-         w9sAmhugIPHAiu5s29K+zkzI9F19WjivkQGThQd1H0JC030TWALzSQBPE0WpReUZJg
-         TBozrv1cQ9bEvDzELzSGlIog2fHfWQ7LFDFBi348=
+        b=xeNinPTVeEfDaGdOQ6NNZ+E4bGL+t3fC2PjP0mE7fdYfmgZd8J2s/Q14GgtzN0zse
+         oTaR6PdIi6+4TOvFN5HXfJjDC/eSPF8uqR34f/cbZvJ5PtzYHkFsUV4Mc7fIH29Ad+
+         kfJWbo3mn41KiXLKPZrkBFQ//KuxRMbl1PjvKBf4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Filipe Manana <fdmanana@suse.com>,
-        David Sterba <dsterba@suse.com>,
+        patches@lists.linux.dev, Liang Li <liali@redhat.com>,
+        Hangbin Liu <liuhangbin@gmail.com>,
+        Paolo Abeni <pabeni@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 010/154] btrfs: fix race between quota disable and relocation
+Subject: [PATCH 5.10 039/201] bonding: reset bonds flags when down link is P2P device
 Date:   Wed,  9 Aug 2023 12:40:41 +0200
-Message-ID: <20230809103637.266686722@linuxfoundation.org>
+Message-ID: <20230809103645.164285558@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103636.887175326@linuxfoundation.org>
-References: <20230809103636.887175326@linuxfoundation.org>
+In-Reply-To: <20230809103643.799166053@linuxfoundation.org>
+References: <20230809103643.799166053@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Hangbin Liu <liuhangbin@gmail.com>
 
-[ Upstream commit 8a4a0b2a3eaf75ca8854f856ef29690c12b2f531 ]
+[ Upstream commit da19a2b967cf1e2c426f50d28550d1915214a81d ]
 
-If we disable quotas while we have a relocation of a metadata block group
-that has extents belonging to the quota root, we can cause the relocation
-to fail with -ENOENT. This is because relocation builds backref nodes for
-extents of the quota root and later needs to walk the backrefs and access
-the quota root - however if in between a task disables quotas, it results
-in deleting the quota root from the root tree (with btrfs_del_root(),
-called from btrfs_quota_disable().
+When adding a point to point downlink to the bond, we neglected to reset
+the bond's flags, which were still using flags like BROADCAST and
+MULTICAST. Consequently, this would initiate ARP/DAD for P2P downlink
+interfaces, such as when adding a GRE device to the bonding.
 
-This can be sporadically triggered by test case btrfs/255 from fstests:
+To address this issue, let's reset the bond's flags for P2P interfaces.
 
-  $ ./check btrfs/255
-  FSTYP         -- btrfs
-  PLATFORM      -- Linux/x86_64 debian0 6.4.0-rc6-btrfs-next-134+ #1 SMP PREEMPT_DYNAMIC Thu Jun 15 11:59:28 WEST 2023
-  MKFS_OPTIONS  -- /dev/sdc
-  MOUNT_OPTIONS -- /dev/sdc /home/fdmanana/btrfs-tests/scratch_1
+Before fix:
+7: gre0@NONE: <POINTOPOINT,NOARP,SLAVE,UP,LOWER_UP> mtu 1500 qdisc noqueue master bond0 state UNKNOWN group default qlen 1000
+    link/gre6 2006:70:10::1 peer 2006:70:10::2 permaddr 167f:18:f188::
+8: bond0: <BROADCAST,MULTICAST,MASTER,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default qlen 1000
+    link/gre6 2006:70:10::1 brd 2006:70:10::2
+    inet6 fe80::200:ff:fe00:0/64 scope link
+       valid_lft forever preferred_lft forever
 
-  btrfs/255 6s ... _check_dmesg: something found in dmesg (see /home/fdmanana/git/hub/xfstests/results//btrfs/255.dmesg)
-  - output mismatch (see /home/fdmanana/git/hub/xfstests/results//btrfs/255.out.bad)
-#      --- tests/btrfs/255.out	2023-03-02 21:47:53.876609426 +0000
-#      +++ /home/fdmanana/git/hub/xfstests/results//btrfs/255.out.bad	2023-06-16 10:20:39.267563212 +0100
-#      @@ -1,2 +1,4 @@
-#       QA output created by 255
-#      +ERROR: error during balancing '/home/fdmanana/btrfs-tests/scratch_1': No such file or directory
-#      +There may be more info in syslog - try dmesg | tail
-#       Silence is golden
-#      ...
-      (Run 'diff -u /home/fdmanana/git/hub/xfstests/tests/btrfs/255.out /home/fdmanana/git/hub/xfstests/results//btrfs/255.out.bad'  to see the entire diff)
-  Ran: btrfs/255
-  Failures: btrfs/255
-  Failed 1 of 1 tests
+After fix:
+7: gre0@NONE: <POINTOPOINT,NOARP,SLAVE,UP,LOWER_UP> mtu 1500 qdisc noqueue master bond2 state UNKNOWN group default qlen 1000
+    link/gre6 2006:70:10::1 peer 2006:70:10::2 permaddr c29e:557a:e9d9::
+8: bond0: <POINTOPOINT,NOARP,MASTER,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default qlen 1000
+    link/gre6 2006:70:10::1 peer 2006:70:10::2
+    inet6 fe80::1/64 scope link
+       valid_lft forever preferred_lft forever
 
-To fix this make the quota disable operation take the cleaner mutex, as
-relocation of a block group also takes this mutex. This is also what we
-do when deleting a subvolume/snapshot, we take the cleaner mutex in the
-cleaner kthread (at cleaner_kthread()) and then we call btrfs_del_root()
-at btrfs_drop_snapshot() while under the protection of the cleaner mutex.
-
-Fixes: bed92eae26cc ("Btrfs: qgroup implementation and prototypes")
-CC: stable@vger.kernel.org # 5.4+
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Reported-by: Liang Li <liali@redhat.com>
+Closes: https://bugzilla.redhat.com/show_bug.cgi?id=2221438
+Fixes: 872254dd6b1f ("net/bonding: Enable bonding to enslave non ARPHRD_ETHER")
+Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/qgroup.c | 18 +++++++++++++++---
- 1 file changed, 15 insertions(+), 3 deletions(-)
+ drivers/net/bonding/bond_main.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/fs/btrfs/qgroup.c b/fs/btrfs/qgroup.c
-index 7821bef061fe6..b6cce67520f04 100644
---- a/fs/btrfs/qgroup.c
-+++ b/fs/btrfs/qgroup.c
-@@ -1164,12 +1164,23 @@ int btrfs_quota_disable(struct btrfs_fs_info *fs_info)
- 	int ret = 0;
+diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
+index 381e6cdd603a1..a260740269e9f 100644
+--- a/drivers/net/bonding/bond_main.c
++++ b/drivers/net/bonding/bond_main.c
+@@ -1442,6 +1442,11 @@ static void bond_setup_by_slave(struct net_device *bond_dev,
  
- 	/*
--	 * We need to have subvol_sem write locked, to prevent races between
--	 * concurrent tasks trying to disable quotas, because we will unlock
--	 * and relock qgroup_ioctl_lock across BTRFS_FS_QUOTA_ENABLED changes.
-+	 * We need to have subvol_sem write locked to prevent races with
-+	 * snapshot creation.
- 	 */
- 	lockdep_assert_held_write(&fs_info->subvol_sem);
- 
-+	/*
-+	 * Lock the cleaner mutex to prevent races with concurrent relocation,
-+	 * because relocation may be building backrefs for blocks of the quota
-+	 * root while we are deleting the root. This is like dropping fs roots
-+	 * of deleted snapshots/subvolumes, we need the same protection.
-+	 *
-+	 * This also prevents races between concurrent tasks trying to disable
-+	 * quotas, because we will unlock and relock qgroup_ioctl_lock across
-+	 * BTRFS_FS_QUOTA_ENABLED changes.
-+	 */
-+	mutex_lock(&fs_info->cleaner_mutex);
+ 	memcpy(bond_dev->broadcast, slave_dev->broadcast,
+ 		slave_dev->addr_len);
 +
- 	mutex_lock(&fs_info->qgroup_ioctl_lock);
- 	if (!fs_info->quota_root)
- 		goto out;
-@@ -1251,6 +1262,7 @@ int btrfs_quota_disable(struct btrfs_fs_info *fs_info)
- 		btrfs_end_transaction(trans);
- 	else if (trans)
- 		ret = btrfs_end_transaction(trans);
-+	mutex_unlock(&fs_info->cleaner_mutex);
- 
- 	return ret;
++	if (slave_dev->flags & IFF_POINTOPOINT) {
++		bond_dev->flags &= ~(IFF_BROADCAST | IFF_MULTICAST);
++		bond_dev->flags |= (IFF_POINTOPOINT | IFF_NOARP);
++	}
  }
+ 
+ /* On bonding slaves other than the currently active slave, suppress
 -- 
 2.39.2
 
