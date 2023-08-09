@@ -2,99 +2,208 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C23D477596A
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:00:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D0C38775A86
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:09:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232856AbjHILAR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:00:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58358 "EHLO
+        id S233197AbjHILJP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:09:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60922 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232853AbjHILAQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:00:16 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0759F171E
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:00:16 -0700 (PDT)
+        with ESMTP id S233200AbjHILJO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:09:14 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB2F8ED
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:09:13 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 91BD36312F
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:00:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C054C433D9;
-        Wed,  9 Aug 2023 11:00:14 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 651796314D
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:09:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76BF0C433C8;
+        Wed,  9 Aug 2023 11:09:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691578815;
-        bh=3dEDVbdhzYppG5QtshsMYo3jqNivFQ9szDW09FHrRAE=;
+        s=korg; t=1691579352;
+        bh=Abm8rZvBiLy5+tBL4LcLiiGfrik4KtzTOZjgbtTCtoE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Vo2/xNcRsAvmc0ya3aDL73t74BpsEELduvw9ZPsbAjeU15WTTjpS1BUL1aaZPdPGv
-         xMDWZevjYynJ/zTUxxlw53FohEFdnsRlQq9GoALKOmU6sNsP5tdwzJE4Sxw7Cak/CQ
-         Bhy6/oITv21M6+s9K+S+ctuAjsBwCdY+rRONOXx0=
+        b=TilzfdG0EfZMDxI1fWxA7GcTBOECrPkyvQ6qeT13rP4OTGyvdg0UpnYDxdQxftCWC
+         jYQvi7OkxBVhbaHPlHrRoFWJgFTDgxApLH0hN8JXWg64UMIM3E7NzkXQlg0kDzL5sW
+         VEj7RCZJYtOy9ETBNdbvM9czq/zBb7WjmIJ+1yJA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Rani Hod <rani.hod@gmail.com>,
-        Paul Fertser <fercerpav@gmail.com>,
-        Simon Horman <simon.horman@corigine.com>,
-        Felix Fietkau <nbd@nbd.name>, Kalle Valo <kvalo@kernel.org>
-Subject: [PATCH 5.15 67/92] wifi: mt76: mt7615: do not advertise 5 GHz on first phy of MT7615D (DBDC)
+        patches@lists.linux.dev, Johan Hovold <johan@kernel.org>
+Subject: [PATCH 4.14 165/204] USB: serial: simple: sort driver entries
 Date:   Wed,  9 Aug 2023 12:41:43 +0200
-Message-ID: <20230809103635.902246557@linuxfoundation.org>
+Message-ID: <20230809103648.034122351@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103633.485906560@linuxfoundation.org>
-References: <20230809103633.485906560@linuxfoundation.org>
+In-Reply-To: <20230809103642.552405807@linuxfoundation.org>
+References: <20230809103642.552405807@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Paul Fertser <fercerpav@gmail.com>
+From: Johan Hovold <johan@kernel.org>
 
-commit 421033deb91521aa6a9255e495cb106741a52275 upstream.
+commit d245aedc00775c4d7265a9f4522cc4e1fd34d102 upstream.
 
-On DBDC devices the first (internal) phy is only capable of using
-2.4 GHz band, and the 5 GHz band is exposed via a separate phy object,
-so avoid the false advertising.
+Sort the driver symbols alphabetically in order to make it more obvious
+where new driver entries should be added.
 
-Reported-by: Rani Hod <rani.hod@gmail.com>
-Closes: https://github.com/openwrt/openwrt/pull/12361
-Fixes: 7660a1bd0c22 ("mt76: mt7615: register ext_phy if DBDC is detected")
 Cc: stable@vger.kernel.org
-Signed-off-by: Paul Fertser <fercerpav@gmail.com>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Acked-by: Felix Fietkau <nbd@nbd.name>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://lore.kernel.org/r/20230605073408.8699-1-fercerpav@gmail.com
+Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7615/eeprom.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/usb/serial/usb-serial-simple.c |   66 ++++++++++++++++-----------------
+ 1 file changed, 33 insertions(+), 33 deletions(-)
 
---- a/drivers/net/wireless/mediatek/mt76/mt7615/eeprom.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/eeprom.c
-@@ -123,12 +123,12 @@ mt7615_eeprom_parse_hw_band_cap(struct m
- 	case MT_EE_5GHZ:
- 		dev->mphy.cap.has_5ghz = true;
- 		break;
--	case MT_EE_2GHZ:
--		dev->mphy.cap.has_2ghz = true;
--		break;
- 	case MT_EE_DBDC:
- 		dev->dbdc_support = true;
- 		fallthrough;
-+	case MT_EE_2GHZ:
-+		dev->mphy.cap.has_2ghz = true;
-+		break;
- 	default:
- 		dev->mphy.cap.has_2ghz = true;
- 		dev->mphy.cap.has_5ghz = true;
+--- a/drivers/usb/serial/usb-serial-simple.c
++++ b/drivers/usb/serial/usb-serial-simple.c
+@@ -41,16 +41,6 @@ static struct usb_serial_driver vendor##
+ 	{ USB_DEVICE(0x0a21, 0x8001) }	/* MMT-7305WW */
+ DEVICE(carelink, CARELINK_IDS);
+ 
+-/* ZIO Motherboard USB driver */
+-#define ZIO_IDS()			\
+-	{ USB_DEVICE(0x1CBE, 0x0103) }
+-DEVICE(zio, ZIO_IDS);
+-
+-/* Funsoft Serial USB driver */
+-#define FUNSOFT_IDS()			\
+-	{ USB_DEVICE(0x1404, 0xcddc) }
+-DEVICE(funsoft, FUNSOFT_IDS);
+-
+ /* Infineon Flashloader driver */
+ #define FLASHLOADER_IDS()		\
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x058b, 0x0041, USB_CLASS_CDC_DATA) }, \
+@@ -58,6 +48,11 @@ DEVICE(funsoft, FUNSOFT_IDS);
+ 	{ USB_DEVICE(0x8087, 0x0801) }
+ DEVICE(flashloader, FLASHLOADER_IDS);
+ 
++/* Funsoft Serial USB driver */
++#define FUNSOFT_IDS()			\
++	{ USB_DEVICE(0x1404, 0xcddc) }
++DEVICE(funsoft, FUNSOFT_IDS);
++
+ /* Google Serial USB SubClass */
+ #define GOOGLE_IDS()						\
+ 	{ USB_VENDOR_AND_INTERFACE_INFO(0x18d1,			\
+@@ -66,6 +61,11 @@ DEVICE(flashloader, FLASHLOADER_IDS);
+ 					0x01) }
+ DEVICE(google, GOOGLE_IDS);
+ 
++/* HP4x (48/49) Generic Serial driver */
++#define HP4X_IDS()			\
++	{ USB_DEVICE(0x03f0, 0x0121) }
++DEVICE(hp4x, HP4X_IDS);
++
+ /* KAUFMANN RKS+CAN VCP */
+ #define KAUFMANN_IDS()			\
+ 	{ USB_DEVICE(0x16d0, 0x0870) }
+@@ -76,11 +76,6 @@ DEVICE(kaufmann, KAUFMANN_IDS);
+ 	{ USB_DEVICE(0x1209, 0x8b00) }
+ DEVICE(libtransistor, LIBTRANSISTOR_IDS);
+ 
+-/* ViVOpay USB Serial Driver */
+-#define VIVOPAY_IDS()			\
+-	{ USB_DEVICE(0x1d5f, 0x1004) }	/* ViVOpay 8800 */
+-DEVICE(vivopay, VIVOPAY_IDS);
+-
+ /* Motorola USB Phone driver */
+ #define MOTO_IDS()			\
+ 	{ USB_DEVICE(0x05c6, 0x3197) },	/* unknown Motorola phone */	\
+@@ -109,10 +104,10 @@ DEVICE(nokia, NOKIA_IDS);
+ 	{ USB_DEVICE(0x09d7, 0x0100) }	/* NovAtel FlexPack GPS */
+ DEVICE_N(novatel_gps, NOVATEL_IDS, 3);
+ 
+-/* HP4x (48/49) Generic Serial driver */
+-#define HP4X_IDS()			\
+-	{ USB_DEVICE(0x03f0, 0x0121) }
+-DEVICE(hp4x, HP4X_IDS);
++/* Siemens USB/MPI adapter */
++#define SIEMENS_IDS()			\
++	{ USB_DEVICE(0x908, 0x0004) }
++DEVICE(siemens_mpi, SIEMENS_IDS);
+ 
+ /* Suunto ANT+ USB Driver */
+ #define SUUNTO_IDS()			\
+@@ -120,47 +115,52 @@ DEVICE(hp4x, HP4X_IDS);
+ 	{ USB_DEVICE(0x0fcf, 0x1009) } /* Dynastream ANT USB-m Stick */
+ DEVICE(suunto, SUUNTO_IDS);
+ 
+-/* Siemens USB/MPI adapter */
+-#define SIEMENS_IDS()			\
+-	{ USB_DEVICE(0x908, 0x0004) }
+-DEVICE(siemens_mpi, SIEMENS_IDS);
++/* ViVOpay USB Serial Driver */
++#define VIVOPAY_IDS()			\
++	{ USB_DEVICE(0x1d5f, 0x1004) }	/* ViVOpay 8800 */
++DEVICE(vivopay, VIVOPAY_IDS);
++
++/* ZIO Motherboard USB driver */
++#define ZIO_IDS()			\
++	{ USB_DEVICE(0x1CBE, 0x0103) }
++DEVICE(zio, ZIO_IDS);
+ 
+ /* All of the above structures mushed into two lists */
+ static struct usb_serial_driver * const serial_drivers[] = {
+ 	&carelink_device,
+-	&zio_device,
+-	&funsoft_device,
+ 	&flashloader_device,
++	&funsoft_device,
+ 	&google_device,
++	&hp4x_device,
+ 	&kaufmann_device,
+ 	&libtransistor_device,
+-	&vivopay_device,
+ 	&moto_modem_device,
+ 	&motorola_tetra_device,
+ 	&nokia_device,
+ 	&novatel_gps_device,
+-	&hp4x_device,
+-	&suunto_device,
+ 	&siemens_mpi_device,
++	&suunto_device,
++	&vivopay_device,
++	&zio_device,
+ 	NULL
+ };
+ 
+ static const struct usb_device_id id_table[] = {
+ 	CARELINK_IDS(),
+-	ZIO_IDS(),
+-	FUNSOFT_IDS(),
+ 	FLASHLOADER_IDS(),
++	FUNSOFT_IDS(),
+ 	GOOGLE_IDS(),
++	HP4X_IDS(),
+ 	KAUFMANN_IDS(),
+ 	LIBTRANSISTOR_IDS(),
+-	VIVOPAY_IDS(),
+ 	MOTO_IDS(),
+ 	MOTOROLA_TETRA_IDS(),
+ 	NOKIA_IDS(),
+ 	NOVATEL_IDS(),
+-	HP4X_IDS(),
+-	SUUNTO_IDS(),
+ 	SIEMENS_IDS(),
++	SUUNTO_IDS(),
++	VIVOPAY_IDS(),
++	ZIO_IDS(),
+ 	{ },
+ };
+ MODULE_DEVICE_TABLE(usb, id_table);
 
 
