@@ -2,45 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 58E7A7757BE
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:49:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B88FC7758C3
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:55:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232273AbjHIKte (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 06:49:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45552 "EHLO
+        id S232543AbjHIKzS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 06:55:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40142 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232266AbjHIKte (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:49:34 -0400
+        with ESMTP id S232306AbjHIKzG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:55:06 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E488910FF
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:49:33 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 06EAF30FE
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:53:40 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 75A9263124
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:49:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87F3FC433C7;
-        Wed,  9 Aug 2023 10:49:32 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B46CF63146
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:53:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0E83C433CB;
+        Wed,  9 Aug 2023 10:53:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691578172;
-        bh=naHCkN39sn/xC4MwydPG6sQHTM2pf4nQMXtbvgTN+aA=;
+        s=korg; t=1691578399;
+        bh=bFh9oKDwHV7x8q00ixcvvXKUZEMEW2UN3qe2ajmoysU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=VHwL0BuxIEXf4CtCM1WgDrGHgXM6WdAHDMRkBNVJb11oh5tTaKFcwlx7dcbFzOq3x
-         2CDcSxurxcJzZkQLxzbqHbDjL+SmFgLU7MzGU5G/DBO2dIWm7PNgKzQ/OvxhGUXvg/
-         XfqJGJjbECk+E+rwcRXOTlFl9DQqExkPocVK+p0A=
+        b=YRwH7Byd/Cl1d42jKuxYqTlAUNeUjIWuqma2Xqn9xdYRQDZGrsv5zG/lXJ03yws9D
+         iocNY5jw/Fh9nMhzb7MJH/i+PAIoLgR8tJUk4NUiizXqgJZZ5jpDSxTjqDPgP0LND+
+         8n47LYH64PMncmTp5RSgc5BQDlPcjw0Rnd45UTSo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Xiubo Li <xiubli@redhat.com>,
-        Milind Changire <mchangir@redhat.com>,
-        Ilya Dryomov <idryomov@gmail.com>
-Subject: [PATCH 6.4 102/165] ceph: defer stopping mdsc delayed_work
+        patches@lists.linux.dev,
+        Rafal Rogalski <rafalx.rogalski@intel.com>,
+        Mateusz Palczewski <mateusz.palczewski@intel.com>,
+        Kamil Maziarz <kamil.maziarz@intel.com>,
+        Bharathi Sreenivas <bharathi.sreenivas@intel.com>,
+        Tony Nguyen <anthony.l.nguyen@intel.com>,
+        Leon Romanovsky <leonro@nvidia.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 046/127] ice: Fix RDMA VSI removal during queue rebuild
 Date:   Wed,  9 Aug 2023 12:40:33 +0200
-Message-ID: <20230809103646.112117545@linuxfoundation.org>
+Message-ID: <20230809103638.210726045@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103642.720851262@linuxfoundation.org>
-References: <20230809103642.720851262@linuxfoundation.org>
+In-Reply-To: <20230809103636.615294317@linuxfoundation.org>
+References: <20230809103636.615294317@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,79 +61,73 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Xiubo Li <xiubli@redhat.com>
+From: Rafal Rogalski <rafalx.rogalski@intel.com>
 
-commit e7e607bd00481745550389a29ecabe33e13d67cf upstream.
+[ Upstream commit 4b31fd4d77ffa430d0b74ba1885ea0a41594f202 ]
 
-Flushing the dirty buffer may take a long time if the cluster is
-overloaded or if there is network issue. So we should ping the
-MDSs periodically to keep alive, else the MDS will blocklist
-the kclient.
+During qdisc create/delete, it is necessary to rebuild the queue
+of VSIs. An error occurred because the VSIs created by RDMA were
+still active.
 
-Cc: stable@vger.kernel.org
-Link: https://tracker.ceph.com/issues/61843
-Signed-off-by: Xiubo Li <xiubli@redhat.com>
-Reviewed-by: Milind Changire <mchangir@redhat.com>
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Added check if RDMA is active. If yes, it disallows qdisc changes
+and writes a message in the system logs.
+
+Fixes: 348048e724a0 ("ice: Implement iidc operations")
+Signed-off-by: Rafal Rogalski <rafalx.rogalski@intel.com>
+Signed-off-by: Mateusz Palczewski <mateusz.palczewski@intel.com>
+Signed-off-by: Kamil Maziarz <kamil.maziarz@intel.com>
+Tested-by: Bharathi Sreenivas <bharathi.sreenivas@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
+Link: https://lore.kernel.org/r/20230728171243.2446101-1-anthony.l.nguyen@intel.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ceph/mds_client.c |    4 ++--
- fs/ceph/mds_client.h |    5 +++++
- fs/ceph/super.c      |   10 ++++++++++
- 3 files changed, 17 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_main.c | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
---- a/fs/ceph/mds_client.c
-+++ b/fs/ceph/mds_client.c
-@@ -4762,7 +4762,7 @@ static void delayed_work(struct work_str
- 
- 	dout("mdsc delayed_work\n");
- 
--	if (mdsc->stopping)
-+	if (mdsc->stopping >= CEPH_MDSC_STOPPING_FLUSHED)
- 		return;
- 
- 	mutex_lock(&mdsc->mutex);
-@@ -4941,7 +4941,7 @@ void send_flush_mdlog(struct ceph_mds_se
- void ceph_mdsc_pre_umount(struct ceph_mds_client *mdsc)
+diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
+index 8f77088900e94..a771e597795d3 100644
+--- a/drivers/net/ethernet/intel/ice/ice_main.c
++++ b/drivers/net/ethernet/intel/ice/ice_main.c
+@@ -8777,6 +8777,7 @@ ice_setup_tc(struct net_device *netdev, enum tc_setup_type type,
  {
- 	dout("pre_umount\n");
--	mdsc->stopping = 1;
-+	mdsc->stopping = CEPH_MDSC_STOPPING_BEGIN;
+ 	struct ice_netdev_priv *np = netdev_priv(netdev);
+ 	struct ice_pf *pf = np->vsi->back;
++	bool locked = false;
+ 	int err;
  
- 	ceph_mdsc_iterate_sessions(mdsc, send_flush_mdlog, true);
- 	ceph_mdsc_iterate_sessions(mdsc, lock_unlock_session, false);
---- a/fs/ceph/mds_client.h
-+++ b/fs/ceph/mds_client.h
-@@ -380,6 +380,11 @@ struct cap_wait {
- 	int			want;
- };
- 
-+enum {
-+       CEPH_MDSC_STOPPING_BEGIN = 1,
-+       CEPH_MDSC_STOPPING_FLUSHED = 2,
-+};
+ 	switch (type) {
+@@ -8786,10 +8787,27 @@ ice_setup_tc(struct net_device *netdev, enum tc_setup_type type,
+ 						  ice_setup_tc_block_cb,
+ 						  np, np, true);
+ 	case TC_SETUP_QDISC_MQPRIO:
++		if (pf->adev) {
++			mutex_lock(&pf->adev_mutex);
++			device_lock(&pf->adev->dev);
++			locked = true;
++			if (pf->adev->dev.driver) {
++				netdev_err(netdev, "Cannot change qdisc when RDMA is active\n");
++				err = -EBUSY;
++				goto adev_unlock;
++			}
++		}
 +
- /*
-  * mds client state
-  */
---- a/fs/ceph/super.c
-+++ b/fs/ceph/super.c
-@@ -1374,6 +1374,16 @@ static void ceph_kill_sb(struct super_bl
- 	ceph_mdsc_pre_umount(fsc->mdsc);
- 	flush_fs_workqueues(fsc);
- 
-+	/*
-+	 * Though the kill_anon_super() will finally trigger the
-+	 * sync_filesystem() anyway, we still need to do it here
-+	 * and then bump the stage of shutdown to stop the work
-+	 * queue as earlier as possible.
-+	 */
-+	sync_filesystem(s);
+ 		/* setup traffic classifier for receive side */
+ 		mutex_lock(&pf->tc_mutex);
+ 		err = ice_setup_tc_mqprio_qdisc(netdev, type_data);
+ 		mutex_unlock(&pf->tc_mutex);
 +
-+	fsc->mdsc->stopping = CEPH_MDSC_STOPPING_FLUSHED;
-+
- 	kill_anon_super(s);
- 
- 	fsc->client->extra_mon_dispatch = NULL;
++adev_unlock:
++		if (locked) {
++			device_unlock(&pf->adev->dev);
++			mutex_unlock(&pf->adev_mutex);
++		}
+ 		return err;
+ 	default:
+ 		return -EOPNOTSUPP;
+-- 
+2.40.1
+
 
 
