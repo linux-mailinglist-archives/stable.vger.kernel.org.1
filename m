@@ -2,48 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 16362775BB5
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:20:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5616B775D31
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:34:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233519AbjHILUM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:20:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39082 "EHLO
+        id S234041AbjHILev (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:34:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52510 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233511AbjHILUL (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:20:11 -0400
+        with ESMTP id S234038AbjHILev (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:34:51 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B6F2ED
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:20:11 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D307A1FCE
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:34:50 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CD33B631CB
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:20:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCE69C433C8;
-        Wed,  9 Aug 2023 11:20:09 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 733A3634CA
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:34:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85FF5C433C7;
+        Wed,  9 Aug 2023 11:34:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691580010;
-        bh=Ia4fmT+Si/PFwr2soXt58gSzgoBhlcuIetIqaM4LkSk=;
+        s=korg; t=1691580889;
+        bh=PNi+3aq38jtP/BUJxclgI/QMY/QD7DfoaBsotEq+jak=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=E4C2gcZ2RTPA5sEWrWl21LQQ93E0+MorG/KAKkrT3yjGq5NMc/Axi1BhjT+UCTM2a
-         1g6WGzAm+etZ88u8jlhoDzCNL2JC1jOs1T+tcRFwO1XwUpOBfvteRUi4W0qjbKQT/1
-         FCxwNj0ohhw0yEotejqjrxSi2ChSk9i3pjep5ADI=
+        b=aO37yX7dsqOH2GxtRac7R5pyEZ2+dpJiluR3vvM8l7IcEV7E0EGxoCp7kEikvMHHs
+         Qgb9RCWiLsmBUqC7n9YbyaAanurPkahmJlGc2V+zIVFs4cRYml+G+lvVoHCSkHHkN+
+         5ivTMnAQnrXy1eiX0CG+WLWdvbMEPtuDR3r6OIC8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        syzbot+5c54bd3eb218bb595aa9@syzkaller.appspotmail.com,
-        Dmitry Vyukov <dvyukov@google.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Frederic Weisbecker <frederic@kernel.org>,
+        patches@lists.linux.dev, Jie Wang <wangjie125@huawei.com>,
+        Jijie Shao <shaojijie@huawei.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 195/323] posix-timers: Ensure timer ID search-loop limit is valid
+Subject: [PATCH 5.10 031/201] net: hns3: fix wrong bw weight of disabled tc issue
 Date:   Wed,  9 Aug 2023 12:40:33 +0200
-Message-ID: <20230809103707.099243376@linuxfoundation.org>
+Message-ID: <20230809103644.876109832@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
-References: <20230809103658.104386911@linuxfoundation.org>
+In-Reply-To: <20230809103643.799166053@linuxfoundation.org>
+References: <20230809103643.799166053@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -58,113 +56,96 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Thomas Gleixner <tglx@linutronix.de>
+From: Jijie Shao <shaojijie@huawei.com>
 
-[ Upstream commit 8ce8849dd1e78dadcee0ec9acbd259d239b7069f ]
+[ Upstream commit 882481b1c55fc44861d7e2d54b4e0936b1b39f2c ]
 
-posix_timer_add() tries to allocate a posix timer ID by starting from the
-cached ID which was stored by the last successful allocation.
+In dwrr mode, the default bandwidth weight of disabled tc is set to 0.
+If the bandwidth weight is 0, the mode will change to sp.
+Therefore, disabled tc default bandwidth weight need changed to 1,
+and 0 is returned when query the bandwidth weight of disabled tc.
+In addition, driver need stop configure bandwidth weight if tc is disabled.
 
-This is done in a loop searching the ID space for a free slot one by
-one. The loop has to terminate when the search wrapped around to the
-starting point.
-
-But that's racy vs. establishing the starting point. That is read out
-lockless, which leads to the following problem:
-
-CPU0	  	      	     	   CPU1
-posix_timer_add()
-  start = sig->posix_timer_id;
-  lock(hash_lock);
-  ...				   posix_timer_add()
-  if (++sig->posix_timer_id < 0)
-      			             start = sig->posix_timer_id;
-     sig->posix_timer_id = 0;
-
-So CPU1 can observe a negative start value, i.e. -1, and the loop break
-never happens because the condition can never be true:
-
-  if (sig->posix_timer_id == start)
-     break;
-
-While this is unlikely to ever turn into an endless loop as the ID space is
-huge (INT_MAX), the racy read of the start value caught the attention of
-KCSAN and Dmitry unearthed that incorrectness.
-
-Rewrite it so that all id operations are under the hash lock.
-
-Reported-by: syzbot+5c54bd3eb218bb595aa9@syzkaller.appspotmail.com
-Reported-by: Dmitry Vyukov <dvyukov@google.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
-Link: https://lore.kernel.org/r/87bkhzdn6g.ffs@tglx
+Fixes: 848440544b41 ("net: hns3: Add support of TX Scheduler & Shaper to HNS3 driver")
+Signed-off-by: Jie Wang <wangjie125@huawei.com>
+Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/sched/signal.h |  2 +-
- kernel/time/posix-timers.c   | 31 ++++++++++++++++++-------------
- 2 files changed, 19 insertions(+), 14 deletions(-)
+ .../ethernet/hisilicon/hns3/hns3pf/hclge_dcb.c  | 17 ++++++++++++++---
+ .../ethernet/hisilicon/hns3/hns3pf/hclge_tm.c   |  3 ++-
+ 2 files changed, 16 insertions(+), 4 deletions(-)
 
-diff --git a/include/linux/sched/signal.h b/include/linux/sched/signal.h
-index 660d78c9af6c8..6a55b30ae742b 100644
---- a/include/linux/sched/signal.h
-+++ b/include/linux/sched/signal.h
-@@ -127,7 +127,7 @@ struct signal_struct {
- #ifdef CONFIG_POSIX_TIMERS
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_dcb.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_dcb.c
+index c75794552a1a7..d60b8dfe38727 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_dcb.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_dcb.c
+@@ -53,7 +53,10 @@ static void hclge_tm_info_to_ieee_ets(struct hclge_dev *hdev,
  
- 	/* POSIX.1b Interval Timers */
--	int			posix_timer_id;
-+	unsigned int		next_posix_timer_id;
- 	struct list_head	posix_timers;
+ 	for (i = 0; i < HNAE3_MAX_TC; i++) {
+ 		ets->prio_tc[i] = hdev->tm_info.prio_tc[i];
+-		ets->tc_tx_bw[i] = hdev->tm_info.pg_info[0].tc_dwrr[i];
++		if (i < hdev->tm_info.num_tc)
++			ets->tc_tx_bw[i] = hdev->tm_info.pg_info[0].tc_dwrr[i];
++		else
++			ets->tc_tx_bw[i] = 0;
  
- 	/* ITIMER_REAL timer for the process */
-diff --git a/kernel/time/posix-timers.c b/kernel/time/posix-timers.c
-index 1234868b3b03e..8768ce2c4bf52 100644
---- a/kernel/time/posix-timers.c
-+++ b/kernel/time/posix-timers.c
-@@ -159,25 +159,30 @@ static struct k_itimer *posix_timer_by_id(timer_t id)
- static int posix_timer_add(struct k_itimer *timer)
- {
- 	struct signal_struct *sig = current->signal;
--	int first_free_id = sig->posix_timer_id;
- 	struct hlist_head *head;
--	int ret = -ENOENT;
-+	unsigned int cnt, id;
- 
--	do {
-+	/*
-+	 * FIXME: Replace this by a per signal struct xarray once there is
-+	 * a plan to handle the resulting CRIU regression gracefully.
-+	 */
-+	for (cnt = 0; cnt <= INT_MAX; cnt++) {
- 		spin_lock(&hash_lock);
--		head = &posix_timers_hashtable[hash(sig, sig->posix_timer_id)];
--		if (!__posix_timers_find(head, sig, sig->posix_timer_id)) {
-+		id = sig->next_posix_timer_id;
-+
-+		/* Write the next ID back. Clamp it to the positive space */
-+		sig->next_posix_timer_id = (id + 1) & INT_MAX;
-+
-+		head = &posix_timers_hashtable[hash(sig, id)];
-+		if (!__posix_timers_find(head, sig, id)) {
- 			hlist_add_head_rcu(&timer->t_hash, head);
--			ret = sig->posix_timer_id;
-+			spin_unlock(&hash_lock);
-+			return id;
- 		}
--		if (++sig->posix_timer_id < 0)
--			sig->posix_timer_id = 0;
--		if ((sig->posix_timer_id == first_free_id) && (ret == -ENOENT))
--			/* Loop over all possible ids completed */
--			ret = -EAGAIN;
- 		spin_unlock(&hash_lock);
--	} while (ret == -ENOENT);
--	return ret;
-+	}
-+	/* POSIX return code when no timer ID could be allocated */
-+	return -EAGAIN;
+ 		if (hdev->tm_info.tc_info[i].tc_sch_mode ==
+ 		    HCLGE_SCH_MODE_SP)
+@@ -124,7 +127,8 @@ static u8 hclge_ets_tc_changed(struct hclge_dev *hdev, struct ieee_ets *ets,
  }
  
- static inline void unlock_timer(struct k_itimer *timr, unsigned long flags)
+ static int hclge_ets_sch_mode_validate(struct hclge_dev *hdev,
+-				       struct ieee_ets *ets, bool *changed)
++				       struct ieee_ets *ets, bool *changed,
++				       u8 tc_num)
+ {
+ 	bool has_ets_tc = false;
+ 	u32 total_ets_bw = 0;
+@@ -138,6 +142,13 @@ static int hclge_ets_sch_mode_validate(struct hclge_dev *hdev,
+ 				*changed = true;
+ 			break;
+ 		case IEEE_8021QAZ_TSA_ETS:
++			if (i >= tc_num) {
++				dev_err(&hdev->pdev->dev,
++					"tc%u is disabled, cannot set ets bw\n",
++					i);
++				return -EINVAL;
++			}
++
+ 			/* The hardware will switch to sp mode if bandwidth is
+ 			 * 0, so limit ets bandwidth must be greater than 0.
+ 			 */
+@@ -177,7 +188,7 @@ static int hclge_ets_validate(struct hclge_dev *hdev, struct ieee_ets *ets,
+ 	if (ret)
+ 		return ret;
+ 
+-	ret = hclge_ets_sch_mode_validate(hdev, ets, changed);
++	ret = hclge_ets_sch_mode_validate(hdev, ets, changed, tc_num);
+ 	if (ret)
+ 		return ret;
+ 
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_tm.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_tm.c
+index b3ceaaaeacaeb..8c5c5562c0a73 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_tm.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_tm.c
+@@ -651,6 +651,7 @@ static void hclge_tm_tc_info_init(struct hclge_dev *hdev)
+ static void hclge_tm_pg_info_init(struct hclge_dev *hdev)
+ {
+ #define BW_PERCENT	100
++#define DEFAULT_BW_WEIGHT	1
+ 
+ 	u8 i;
+ 
+@@ -672,7 +673,7 @@ static void hclge_tm_pg_info_init(struct hclge_dev *hdev)
+ 		for (k = 0; k < hdev->tm_info.num_tc; k++)
+ 			hdev->tm_info.pg_info[i].tc_dwrr[k] = BW_PERCENT;
+ 		for (; k < HNAE3_MAX_TC; k++)
+-			hdev->tm_info.pg_info[i].tc_dwrr[k] = 0;
++			hdev->tm_info.pg_info[i].tc_dwrr[k] = DEFAULT_BW_WEIGHT;
+ 	}
+ }
+ 
 -- 
 2.39.2
 
