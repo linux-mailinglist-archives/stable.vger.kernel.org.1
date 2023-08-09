@@ -2,133 +2,161 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7D0EB775A35
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:06:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8FFE5775D3E
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:35:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233106AbjHILGS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:06:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44356 "EHLO
+        id S234050AbjHILfR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:35:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34934 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233097AbjHILGS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:06:18 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF19D1FEB
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:06:17 -0700 (PDT)
+        with ESMTP id S234046AbjHILfQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:35:16 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B7B2210C
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:35:13 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7F5D562BD5
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:06:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9405CC433C9;
-        Wed,  9 Aug 2023 11:06:16 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C168E634DE
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:35:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2F52C433C8;
+        Wed,  9 Aug 2023 11:35:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691579176;
-        bh=h3eCyERTzNdjXRZTxvGHXInrl1OBWlykxQMqCXbe1v0=;
+        s=korg; t=1691580912;
+        bh=Thg+zncokL3pE3ftedusitXN7t7V4BYpC5VTPvyJUFE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=NjwnO5MVXMoVkWOmB38JbA9pmZRdQww1QiroTAOEfPU8H8u7NMwPKNI7fQsdCLVlm
-         Evcr2Pgp1+pYvURzWJXuorAVQ1//sCVHm1MDtPJ4fIEKaWpnr3LM8XkMZ1fO5emkfe
-         EYMZhxPjCat9McAf/IDFzw75GE28KhHkYg3gZgHc=
+        b=0eCa4ZBLTxRKMMRpfE+91JM098Oli8/aYU5BkkOApltGUZ2JQzUuYEVGyKYZkKB4I
+         Q0EZHgJ4/mo4Ehf5d1c7IKK3k0i+CyV+WD8Dm8sOWuuobEutiqoW366TCGzaJMByq4
+         09wECumfJrTh/dawkyXsBIsZ9jb9PInbb0qyvBGs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Stefan Berger <stefanb@linux.ibm.com>,
-        Jarkko Sakkinen <jarkko.sakkinen@tuni.fi>,
-        Jarkko Sakkinen <jarkko@kernel.org>
-Subject: [PATCH 4.14 102/204] tpm: tpm_vtpm_proxy: fix a race condition in /dev/vtpmx creation
+        patches@lists.linux.dev, Michal Schmidt <mschmidt@redhat.com>,
+        Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+        Jedrzej Jagielski <jedrzej.jagielski@intel.com>,
+        Leon Romanovsky <leonro@nvidia.com>,
+        Tony Nguyen <anthony.l.nguyen@intel.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Sasha Levin <sashal@kernel.org>,
+        Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
+Subject: [PATCH 5.10 038/201] ice: Fix memory management in ice_ethtool_fdir.c
 Date:   Wed,  9 Aug 2023 12:40:40 +0200
-Message-ID: <20230809103646.042930488@linuxfoundation.org>
+Message-ID: <20230809103645.130341380@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103642.552405807@linuxfoundation.org>
-References: <20230809103642.552405807@linuxfoundation.org>
+In-Reply-To: <20230809103643.799166053@linuxfoundation.org>
+References: <20230809103643.799166053@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jarkko Sakkinen <jarkko.sakkinen@tuni.fi>
+From: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
 
-commit f4032d615f90970d6c3ac1d9c0bce3351eb4445c upstream.
+[ Upstream commit a3336056504d780590ac6d6ac94fbba829994594 ]
 
-/dev/vtpmx is made visible before 'workqueue' is initialized, which can
-lead to a memory corruption in the worst case scenario.
+Fix ethtool FDIR logic to not use memory after its release.
+In the ice_ethtool_fdir.c file there are 2 spots where code can
+refer to pointers which may be missing.
 
-Address this by initializing 'workqueue' as the very first step of the
-driver initialization.
+In the ice_cfg_fdir_xtrct_seq() function seg may be freed but
+even then may be still used by memcpy(&tun_seg[1], seg, sizeof(*seg)).
 
-Cc: stable@vger.kernel.org
-Fixes: 6f99612e2500 ("tpm: Proxy driver for supporting multiple emulated TPMs")
-Reviewed-by: Stefan Berger <stefanb@linux.ibm.com>
-Signed-off-by: Jarkko Sakkinen <jarkko.sakkinen@tuni.fi>
-Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+In the ice_add_fdir_ethtool() function struct ice_fdir_fltr *input
+may first fail to be added via ice_fdir_update_list_entry() but then
+may be deleted by ice_fdir_update_list_entry.
+
+Terminate in both cases when the returned value of the previous
+operation is other than 0, free memory and don't use it anymore.
+
+Reported-by: Michal Schmidt <mschmidt@redhat.com>
+Link: https://bugzilla.redhat.com/show_bug.cgi?id=2208423
+Fixes: cac2a27cd9ab ("ice: Support IPv4 Flow Director filters")
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Signed-off-by: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
+Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
+Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Link: https://lore.kernel.org/r/20230721155854.1292805-1-anthony.l.nguyen@intel.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/char/tpm/tpm_vtpm_proxy.c |   30 +++++++-----------------------
- 1 file changed, 7 insertions(+), 23 deletions(-)
+ .../net/ethernet/intel/ice/ice_ethtool_fdir.c | 26 ++++++++++---------
+ 1 file changed, 14 insertions(+), 12 deletions(-)
 
---- a/drivers/char/tpm/tpm_vtpm_proxy.c
-+++ b/drivers/char/tpm/tpm_vtpm_proxy.c
-@@ -700,37 +700,21 @@ static struct miscdevice vtpmx_miscdev =
- 	.fops = &vtpmx_fops,
- };
- 
--static int vtpmx_init(void)
--{
--	return misc_register(&vtpmx_miscdev);
--}
--
--static void vtpmx_cleanup(void)
--{
--	misc_deregister(&vtpmx_miscdev);
--}
--
- static int __init vtpm_module_init(void)
- {
- 	int rc;
- 
--	rc = vtpmx_init();
--	if (rc) {
--		pr_err("couldn't create vtpmx device\n");
--		return rc;
--	}
--
- 	workqueue = create_workqueue("tpm-vtpm");
- 	if (!workqueue) {
- 		pr_err("couldn't create workqueue\n");
--		rc = -ENOMEM;
--		goto err_vtpmx_cleanup;
-+		return -ENOMEM;
+diff --git a/drivers/net/ethernet/intel/ice/ice_ethtool_fdir.c b/drivers/net/ethernet/intel/ice/ice_ethtool_fdir.c
+index 192729546bbfc..a122a267ede53 100644
+--- a/drivers/net/ethernet/intel/ice/ice_ethtool_fdir.c
++++ b/drivers/net/ethernet/intel/ice/ice_ethtool_fdir.c
+@@ -1135,16 +1135,21 @@ ice_cfg_fdir_xtrct_seq(struct ice_pf *pf, struct ethtool_rx_flow_spec *fsp,
+ 				     ICE_FLOW_FLD_OFF_INVAL);
  	}
  
--	return 0;
--
--err_vtpmx_cleanup:
--	vtpmx_cleanup();
-+	rc = misc_register(&vtpmx_miscdev);
-+	if (rc) {
-+		pr_err("couldn't create vtpmx device\n");
-+		destroy_workqueue(workqueue);
+-	/* add filter for outer headers */
+ 	fltr_idx = ice_ethtool_flow_to_fltr(fsp->flow_type & ~FLOW_EXT);
++
++	assign_bit(fltr_idx, hw->fdir_perfect_fltr, perfect_filter);
++
++	/* add filter for outer headers */
+ 	ret = ice_fdir_set_hw_fltr_rule(pf, seg, fltr_idx,
+ 					ICE_FD_HW_SEG_NON_TUN);
+-	if (ret == -EEXIST)
+-		/* Rule already exists, free memory and continue */
+-		devm_kfree(dev, seg);
+-	else if (ret)
++	if (ret == -EEXIST) {
++		/* Rule already exists, free memory and count as success */
++		ret = 0;
++		goto err_exit;
++	} else if (ret) {
+ 		/* could not write filter, free memory */
+ 		goto err_exit;
 +	}
  
- 	return rc;
- }
-@@ -738,7 +722,7 @@ err_vtpmx_cleanup:
- static void __exit vtpm_module_exit(void)
- {
- 	destroy_workqueue(workqueue);
--	vtpmx_cleanup();
-+	misc_deregister(&vtpmx_miscdev);
+ 	/* make tunneled filter HW entries if possible */
+ 	memcpy(&tun_seg[1], seg, sizeof(*seg));
+@@ -1159,18 +1164,13 @@ ice_cfg_fdir_xtrct_seq(struct ice_pf *pf, struct ethtool_rx_flow_spec *fsp,
+ 		devm_kfree(dev, tun_seg);
+ 	}
+ 
+-	if (perfect_filter)
+-		set_bit(fltr_idx, hw->fdir_perfect_fltr);
+-	else
+-		clear_bit(fltr_idx, hw->fdir_perfect_fltr);
+-
+ 	return ret;
+ 
+ err_exit:
+ 	devm_kfree(dev, tun_seg);
+ 	devm_kfree(dev, seg);
+ 
+-	return -EOPNOTSUPP;
++	return ret;
  }
  
- module_init(vtpm_module_init);
+ /**
+@@ -1680,7 +1680,9 @@ int ice_add_fdir_ethtool(struct ice_vsi *vsi, struct ethtool_rxnfc *cmd)
+ 	}
+ 
+ 	/* input struct is added to the HW filter list */
+-	ice_fdir_update_list_entry(pf, input, fsp->location);
++	ret = ice_fdir_update_list_entry(pf, input, fsp->location);
++	if (ret)
++		goto release_lock;
+ 
+ 	ret = ice_fdir_write_all_fltr(pf, input, true);
+ 	if (ret)
+-- 
+2.39.2
+
 
 
