@@ -2,45 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 64C19775778
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:46:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 72EB27759F4
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:04:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232113AbjHIKqY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 06:46:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58804 "EHLO
+        id S233029AbjHILEF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:04:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37550 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231936AbjHIKqX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:46:23 -0400
+        with ESMTP id S233033AbjHILEE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:04:04 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DBA6D1702
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:46:22 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 48DDD1BFA
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:04:04 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7B92063118
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:46:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89037C433C8;
-        Wed,  9 Aug 2023 10:46:21 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DC2006309F
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:04:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5571C433C9;
+        Wed,  9 Aug 2023 11:04:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691577981;
-        bh=+w5/Zduul5tnSgpVFEGA9PFKCeV/Xgi+eD0DUWXoz70=;
+        s=korg; t=1691579043;
+        bh=W9lKpO2hpnjOaCep9TJPM21+VDoQMnHx66l/UlLwexw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=foNwaT4ikoM1SYW9c68vIV83FayER8hNOPFdB7nU+Q0UYKrN2ulLsnFA85fTLfWwO
-         BkGszNqAbfg46nzL0QgYau9trNN2TPzTNcf71WP+rNrFJNNjRTAmhwDAZ1PTvrZ+kC
-         CAHv2gkpD3UDLVJ90ZRXZujJlHmDg4KKC5WBjo2w=
+        b=UA0crWUkUegfwJCADxLhorbJXy9qtrhGJKGfNYsTSyXaAUy6j0U89qEF43FlyVwUq
+         O9PRvSb1SP6e4VRrqFoKzMUn+kzyy7CpCnNSfh33/mk2gVcmm2yHyAl6jeQ1Ccz0wg
+         Ar1HHSQfdQJVlQnS5ppmOezIqtnL5Hz1SZMQxmEo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Duoming Zhou <duoming@zju.edu.cn>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 062/165] net: usb: lan78xx: reorder cleanup operations to avoid UAF bugs
+        patches@lists.linux.dev, Martin Steigerwald <Martin@lichtvoll.de>,
+        Michael Schmitz <schmitzmic@gmail.com>,
+        Christoph Hellwig <hch@lst.de>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 4.14 055/204] block: change all __u32 annotations to __be32 in affs_hardblocks.h
 Date:   Wed,  9 Aug 2023 12:39:53 +0200
-Message-ID: <20230809103644.851543936@linuxfoundation.org>
+Message-ID: <20230809103644.442244448@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103642.720851262@linuxfoundation.org>
-References: <20230809103642.720851262@linuxfoundation.org>
+In-Reply-To: <20230809103642.552405807@linuxfoundation.org>
+References: <20230809103642.552405807@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,103 +57,142 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Duoming Zhou <duoming@zju.edu.cn>
+From: Michael Schmitz <schmitzmic@gmail.com>
 
-[ Upstream commit 1e7417c188d0a83fb385ba2dbe35fd2563f2b6f3 ]
+commit 95a55437dc49fb3342c82e61f5472a71c63d9ed0 upstream.
 
-The timer dev->stat_monitor can schedule the delayed work dev->wq and
-the delayed work dev->wq can also arm the dev->stat_monitor timer.
+The Amiga partition parser module uses signed int for partition sector
+address and count, which will overflow for disks larger than 1 TB.
 
-When the device is detaching, the net_device will be deallocated. but
-the net_device private data could still be dereferenced in delayed work
-or timer handler. As a result, the UAF bugs will happen.
+Use u64 as type for sector address and size to allow using disks up to
+2 TB without LBD support, and disks larger than 2 TB with LBD. The RBD
+format allows to specify disk sizes up to 2^128 bytes (though native
+OS limitations reduce this somewhat, to max 2^68 bytes), so check for
+u64 overflow carefully to protect against overflowing sector_t.
 
-One racy situation is shown below:
+This bug was reported originally in 2012, and the fix was created by
+the RDB author, Joanne Dow <jdow@earthlink.net>. A patch had been
+discussed and reviewed on linux-m68k at that time but never officially
+submitted (now resubmitted as patch 1 of this series).
 
-      (Thread 1)                 |      (Thread 2)
-lan78xx_stat_monitor()           |
- ...                             |  lan78xx_disconnect()
- lan78xx_defer_kevent()          |    ...
-  ...                            |    cancel_delayed_work_sync(&dev->wq);
-  schedule_delayed_work()        |    ...
-  (wait some time)               |    free_netdev(net); //free net_device
-  lan78xx_delayedwork()          |
-  //use net_device private data  |
-  dev-> //use                    |
+Patch 3 (this series) adds additional error checking and warning
+messages. One of the error checks now makes use of the previously
+unused rdb_CylBlocks field, which causes a 'sparse' warning
+(cast to restricted __be32).
 
-Although we use cancel_delayed_work_sync() to cancel the delayed work
-in lan78xx_disconnect(), it could still be scheduled in timer handler
-lan78xx_stat_monitor().
+Annotate all 32 bit fields in affs_hardblocks.h as __be32, as the
+on-disk format of RDB and partition blocks is always big endian.
 
-Another racy situation is shown below:
-
-      (Thread 1)                |      (Thread 2)
-lan78xx_delayedwork             |
- mod_timer()                    |  lan78xx_disconnect()
-                                |   cancel_delayed_work_sync()
- (wait some time)               |   if (timer_pending(&dev->stat_monitor))
-             	                |       del_timer_sync(&dev->stat_monitor);
- lan78xx_stat_monitor()         |   ...
-  lan78xx_defer_kevent()        |   free_netdev(net); //free
-   //use net_device private data|
-   dev-> //use                  |
-
-Although we use del_timer_sync() to delete the timer, the function
-timer_pending() returns 0 when the timer is activated. As a result,
-the del_timer_sync() will not be executed and the timer could be
-re-armed.
-
-In order to mitigate this bug, We use timer_shutdown_sync() to shutdown
-the timer and then use cancel_delayed_work_sync() to cancel the delayed
-work. As a result, the net_device could be deallocated safely.
-
-What's more, the dev->flags is set to EVENT_DEV_DISCONNECT in
-lan78xx_disconnect(). But it could still be set to EVENT_STAT_UPDATE
-in lan78xx_stat_monitor(). So this patch put the set_bit() behind
-timer_shutdown_sync().
-
-Fixes: 77dfff5bb7e2 ("lan78xx: Fix race condition in disconnect handling")
-Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Martin Steigerwald <Martin@lichtvoll.de>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=43511
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Message-ID: <201206192146.09327.Martin@lichtvoll.de>
+Cc: <stable@vger.kernel.org> # 5.2
+Signed-off-by: Michael Schmitz <schmitzmic@gmail.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Link: https://lore.kernel.org/r/20230620201725.7020-3-schmitzmic@gmail.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/usb/lan78xx.c | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+ include/uapi/linux/affs_hardblocks.h |   68 +++++++++++++++++------------------
+ 1 file changed, 34 insertions(+), 34 deletions(-)
 
-diff --git a/drivers/net/usb/lan78xx.c b/drivers/net/usb/lan78xx.c
-index c458c030fadf6..59cde06aa7f60 100644
---- a/drivers/net/usb/lan78xx.c
-+++ b/drivers/net/usb/lan78xx.c
-@@ -4224,8 +4224,6 @@ static void lan78xx_disconnect(struct usb_interface *intf)
- 	if (!dev)
- 		return;
+--- a/include/uapi/linux/affs_hardblocks.h
++++ b/include/uapi/linux/affs_hardblocks.h
+@@ -7,42 +7,42 @@
+ /* Just the needed definitions for the RDB of an Amiga HD. */
  
--	set_bit(EVENT_DEV_DISCONNECT, &dev->flags);
--
- 	netif_napi_del(&dev->napi);
+ struct RigidDiskBlock {
+-	__u32	rdb_ID;
++	__be32	rdb_ID;
+ 	__be32	rdb_SummedLongs;
+-	__s32	rdb_ChkSum;
+-	__u32	rdb_HostID;
++	__be32	rdb_ChkSum;
++	__be32	rdb_HostID;
+ 	__be32	rdb_BlockBytes;
+-	__u32	rdb_Flags;
+-	__u32	rdb_BadBlockList;
++	__be32	rdb_Flags;
++	__be32	rdb_BadBlockList;
+ 	__be32	rdb_PartitionList;
+-	__u32	rdb_FileSysHeaderList;
+-	__u32	rdb_DriveInit;
+-	__u32	rdb_Reserved1[6];
+-	__u32	rdb_Cylinders;
+-	__u32	rdb_Sectors;
+-	__u32	rdb_Heads;
+-	__u32	rdb_Interleave;
+-	__u32	rdb_Park;
+-	__u32	rdb_Reserved2[3];
+-	__u32	rdb_WritePreComp;
+-	__u32	rdb_ReducedWrite;
+-	__u32	rdb_StepRate;
+-	__u32	rdb_Reserved3[5];
+-	__u32	rdb_RDBBlocksLo;
+-	__u32	rdb_RDBBlocksHi;
+-	__u32	rdb_LoCylinder;
+-	__u32	rdb_HiCylinder;
+-	__u32	rdb_CylBlocks;
+-	__u32	rdb_AutoParkSeconds;
+-	__u32	rdb_HighRDSKBlock;
+-	__u32	rdb_Reserved4;
++	__be32	rdb_FileSysHeaderList;
++	__be32	rdb_DriveInit;
++	__be32	rdb_Reserved1[6];
++	__be32	rdb_Cylinders;
++	__be32	rdb_Sectors;
++	__be32	rdb_Heads;
++	__be32	rdb_Interleave;
++	__be32	rdb_Park;
++	__be32	rdb_Reserved2[3];
++	__be32	rdb_WritePreComp;
++	__be32	rdb_ReducedWrite;
++	__be32	rdb_StepRate;
++	__be32	rdb_Reserved3[5];
++	__be32	rdb_RDBBlocksLo;
++	__be32	rdb_RDBBlocksHi;
++	__be32	rdb_LoCylinder;
++	__be32	rdb_HiCylinder;
++	__be32	rdb_CylBlocks;
++	__be32	rdb_AutoParkSeconds;
++	__be32	rdb_HighRDSKBlock;
++	__be32	rdb_Reserved4;
+ 	char	rdb_DiskVendor[8];
+ 	char	rdb_DiskProduct[16];
+ 	char	rdb_DiskRevision[4];
+ 	char	rdb_ControllerVendor[8];
+ 	char	rdb_ControllerProduct[16];
+ 	char	rdb_ControllerRevision[4];
+-	__u32	rdb_Reserved5[10];
++	__be32	rdb_Reserved5[10];
+ };
  
- 	udev = interface_to_usbdev(intf);
-@@ -4233,6 +4231,8 @@ static void lan78xx_disconnect(struct usb_interface *intf)
+ #define	IDNAME_RIGIDDISK	0x5244534B	/* "RDSK" */
+@@ -50,16 +50,16 @@ struct RigidDiskBlock {
+ struct PartitionBlock {
+ 	__be32	pb_ID;
+ 	__be32	pb_SummedLongs;
+-	__s32	pb_ChkSum;
+-	__u32	pb_HostID;
++	__be32	pb_ChkSum;
++	__be32	pb_HostID;
+ 	__be32	pb_Next;
+-	__u32	pb_Flags;
+-	__u32	pb_Reserved1[2];
+-	__u32	pb_DevFlags;
++	__be32	pb_Flags;
++	__be32	pb_Reserved1[2];
++	__be32	pb_DevFlags;
+ 	__u8	pb_DriveName[32];
+-	__u32	pb_Reserved2[15];
++	__be32	pb_Reserved2[15];
+ 	__be32	pb_Environment[17];
+-	__u32	pb_EReserved[15];
++	__be32	pb_EReserved[15];
+ };
  
- 	unregister_netdev(net);
- 
-+	timer_shutdown_sync(&dev->stat_monitor);
-+	set_bit(EVENT_DEV_DISCONNECT, &dev->flags);
- 	cancel_delayed_work_sync(&dev->wq);
- 
- 	phydev = net->phydev;
-@@ -4247,9 +4247,6 @@ static void lan78xx_disconnect(struct usb_interface *intf)
- 
- 	usb_scuttle_anchored_urbs(&dev->deferred);
- 
--	if (timer_pending(&dev->stat_monitor))
--		del_timer_sync(&dev->stat_monitor);
--
- 	lan78xx_unbind(dev, intf);
- 
- 	lan78xx_free_tx_resources(dev);
--- 
-2.40.1
-
+ #define	IDNAME_PARTITION	0x50415254	/* "PART" */
 
 
