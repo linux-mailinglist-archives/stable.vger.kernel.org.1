@@ -2,45 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8E360775AA1
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:10:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B3F40775CBE
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:30:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233242AbjHILKK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:10:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35680 "EHLO
+        id S233857AbjHILad (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:30:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52798 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233241AbjHILKJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:10:09 -0400
+        with ESMTP id S233859AbjHILa3 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:30:29 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5893AED
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:10:09 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 38B0B2103
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:30:29 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id ED6906311B
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:10:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EFD6C433C7;
-        Wed,  9 Aug 2023 11:10:07 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8D77063364
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:30:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F06CC433C8;
+        Wed,  9 Aug 2023 11:30:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691579408;
-        bh=j0YQz9AIiVhJO/AanZ5uQmh8cSP2OegfTpjz5CJFV1k=;
+        s=korg; t=1691580628;
+        bh=C+1EicSQJNvZOGbCeipkQKbPcfoFEiSfRLYh9vWU/54=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=YXdkFv6euiv3s/7J9SJ+Oa3ZSvM2tqyP/xn5Q8ZuSq92DvaVBf5JFR1fCurztyWt4
-         n1QtOE69Jgyr62kVaLzOmcQdpcDRZ3MvXMbfjr4LcMNPZ23n+WBU2OX9mIEWrd/60O
-         69bXBgVZ7a351UhYyMjL8izSVVAgiKidLYvkLsVo=
+        b=0hzaWb+iKpBo3M3s8seXN2wEHAjfFVcghB14Fnq8GxbIzbhcObqpHMDI375NabtUd
+         4gIVqxlJJiqcr52Y7bglArEIU2Ek9KOI5cp5CVSQDuKLRN4T48wBWJT6u126Lo1mlQ
+         QFme5UFGB41Op7EWRpWZbnloS0GFBW/sX71Cki3I=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 186/204] net: add missing data-race annotation for sk_ll_usec
+        patches@lists.linux.dev,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Sasha Levin <sashal@kernel.org>,
+        Nathan Chancellor <nathan@kernel.org>
+Subject: [PATCH 5.4 093/154] word-at-a-time: use the same return type for has_zero regardless of endianness
 Date:   Wed,  9 Aug 2023 12:42:04 +0200
-Message-ID: <20230809103648.711202702@linuxfoundation.org>
+Message-ID: <20230809103640.064797685@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103642.552405807@linuxfoundation.org>
-References: <20230809103642.552405807@linuxfoundation.org>
+In-Reply-To: <20230809103636.887175326@linuxfoundation.org>
+References: <20230809103636.887175326@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,34 +59,71 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Eric Dumazet <edumazet@google.com>
+From: ndesaulniers@google.com <ndesaulniers@google.com>
 
-[ Upstream commit e5f0d2dd3c2faa671711dac6d3ff3cef307bcfe3 ]
+[ Upstream commit 79e8328e5acbe691bbde029a52c89d70dcbc22f3 ]
 
-In a prior commit I forgot that sk_getsockopt() reads
-sk->sk_ll_usec without holding a lock.
+Compiling big-endian targets with Clang produces the diagnostic:
 
-Fixes: 0dbffbb5335a ("net: annotate data race around sk_ll_usec")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+  fs/namei.c:2173:13: warning: use of bitwise '|' with boolean operands [-Wbitwise-instead-of-logical]
+	} while (!(has_zero(a, &adata, &constants) | has_zero(b, &bdata, &constants)));
+	          ~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                                               ||
+  fs/namei.c:2173:13: note: cast one or both operands to int to silence this warning
+
+It appears that when has_zero was introduced, two definitions were
+produced with different signatures (in particular different return
+types).
+
+Looking at the usage in hash_name() in fs/namei.c, I suspect that
+has_zero() is meant to be invoked twice per while loop iteration; using
+logical-or would not update `bdata` when `a` did not have zeros.  So I
+think it's preferred to always return an unsigned long rather than a
+bool than update the while loop in hash_name() to use a logical-or
+rather than bitwise-or.
+
+[ Also changed powerpc version to do the same  - Linus ]
+
+Link: https://github.com/ClangBuiltLinux/linux/issues/1832
+Link: https://lore.kernel.org/lkml/20230801-bitwise-v1-1-799bec468dc4@google.com/
+Fixes: 36126f8f2ed8 ("word-at-a-time: make the interfaces truly generic")
+Debugged-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Nick Desaulniers <ndesaulniers@google.com>
+Acked-by: Heiko Carstens <hca@linux.ibm.com>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/sock.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/powerpc/include/asm/word-at-a-time.h | 2 +-
+ include/asm-generic/word-at-a-time.h      | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/core/sock.c b/net/core/sock.c
-index d938b7f2bac32..0ff80718f194d 100644
---- a/net/core/sock.c
-+++ b/net/core/sock.c
-@@ -1359,7 +1359,7 @@ int sock_getsockopt(struct socket *sock, int level, int optname,
+diff --git a/arch/powerpc/include/asm/word-at-a-time.h b/arch/powerpc/include/asm/word-at-a-time.h
+index f3f4710d4ff52..99129b0cd8b8a 100644
+--- a/arch/powerpc/include/asm/word-at-a-time.h
++++ b/arch/powerpc/include/asm/word-at-a-time.h
+@@ -34,7 +34,7 @@ static inline long find_zero(unsigned long mask)
+ 	return leading_zero_bits >> 3;
+ }
  
- #ifdef CONFIG_NET_RX_BUSY_POLL
- 	case SO_BUSY_POLL:
--		v.val = sk->sk_ll_usec;
-+		v.val = READ_ONCE(sk->sk_ll_usec);
- 		break;
- #endif
+-static inline bool has_zero(unsigned long val, unsigned long *data, const struct word_at_a_time *c)
++static inline unsigned long has_zero(unsigned long val, unsigned long *data, const struct word_at_a_time *c)
+ {
+ 	unsigned long rhs = val | c->low_bits;
+ 	*data = rhs;
+diff --git a/include/asm-generic/word-at-a-time.h b/include/asm-generic/word-at-a-time.h
+index 20c93f08c9933..95a1d214108a5 100644
+--- a/include/asm-generic/word-at-a-time.h
++++ b/include/asm-generic/word-at-a-time.h
+@@ -38,7 +38,7 @@ static inline long find_zero(unsigned long mask)
+ 	return (mask >> 8) ? byte : byte + 1;
+ }
  
+-static inline bool has_zero(unsigned long val, unsigned long *data, const struct word_at_a_time *c)
++static inline unsigned long has_zero(unsigned long val, unsigned long *data, const struct word_at_a_time *c)
+ {
+ 	unsigned long rhs = val | c->low_bits;
+ 	*data = rhs;
 -- 
 2.40.1
 
