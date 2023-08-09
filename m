@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8B6FD7758C0
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:55:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0E6BD775A16
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:05:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232730AbjHIKzO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 06:55:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37566 "EHLO
+        id S233070AbjHILFS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:05:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33980 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232719AbjHIKzC (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:55:02 -0400
+        with ESMTP id S233079AbjHILFR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:05:17 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4916B30CB
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:53:31 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A117E1FD8
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:05:16 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7ECA06312C
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:53:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A2B6C433CB;
-        Wed,  9 Aug 2023 10:53:07 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 37F9263142
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:05:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 411E2C433C8;
+        Wed,  9 Aug 2023 11:05:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691578387;
-        bh=Sw/llUOb9mYICqypP9MOg/n7HwrSCiawYlYdmdYQdeg=;
+        s=korg; t=1691579115;
+        bh=82vH+mQza3r1MFPhjG7fLWgeWO4GxMITtrDeCcpsaxQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=zbplwxFAz85BdXacAplegAYyMh+zqnIkouYfCDRyp2vlhaOX3hl2ruhgFjZ+FOyX1
-         OYm3Lu+8/BU+nGjsBHliHQgUoBa53RfWWOLlmG+hJKkwabLEWMoIucBeqSRFiRfsFV
-         lM2h3fHc3H8Ta7lWaM2EJCbqRLUoBLj4DLRt4XMw=
+        b=AAErUpNvA3XGGULlf5L0jTizhrANTiEsSRWn/3si6Sj7kb8OGGfRg7IrQRCGjoXzi
+         ueO5HbSWV9mze8bdp45V2ALiJQwpAfzSnsnLFZpCl1iN7FIBGcuQkNfZt2AZFGyWD3
+         oMEcaukdUZdX5j5YwJv2NgqDsJ+AoytydWlGzzMw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, kernel test robot <lkp@intel.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Cixi Geng <cixi.geng1@unisoc.com>
-Subject: [PATCH 6.1 002/127] perf: Fix function pointer case
+        patches@lists.linux.dev, Masahiro Yamada <masahiroy@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.14 051/204] modpost: fix section mismatch message for R_ARM_ABS32
 Date:   Wed,  9 Aug 2023 12:39:49 +0200
-Message-ID: <20230809103636.699171662@linuxfoundation.org>
+Message-ID: <20230809103644.297388354@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103636.615294317@linuxfoundation.org>
-References: <20230809103636.615294317@linuxfoundation.org>
+In-Reply-To: <20230809103642.552405807@linuxfoundation.org>
+References: <20230809103642.552405807@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,48 +54,133 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Peter Zijlstra <peterz@infradead.org>
+From: Masahiro Yamada <masahiroy@kernel.org>
 
-commit 1af6239d1d3e61d33fd2f0ba53d3d1a67cc50574 upstream.
+[ Upstream commit b7c63520f6703a25eebb4f8138fed764fcae1c6f ]
 
-With the advent of CFI it is no longer acceptible to cast function
-pointers.
+addend_arm_rel() processes R_ARM_ABS32 in a wrong way.
 
-The robot complains thusly:
+Here, test code.
 
-  kernel-events-core.c:warning:cast-from-int-(-)(struct-perf_cpu_pmu_context-)-to-remote_function_f-(aka-int-(-)(void-)-)-converts-to-incompatible-function-type
+  [test code 1]
 
-Reported-by: kernel test robot <lkp@intel.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Signed-off-by: Cixi Geng <cixi.geng1@unisoc.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+    #include <linux/init.h>
+
+    int __initdata foo;
+    int get_foo(void) { return foo; }
+
+If you compile it with ARM versatile_defconfig, modpost will show the
+symbol name, (unknown).
+
+  WARNING: modpost: vmlinux.o: section mismatch in reference: get_foo (section: .text) -> (unknown) (section: .init.data)
+
+(You need to use GNU linker instead of LLD to reproduce it.)
+
+If you compile it for other architectures, modpost will show the correct
+symbol name.
+
+  WARNING: modpost: vmlinux.o: section mismatch in reference: get_foo (section: .text) -> foo (section: .init.data)
+
+For R_ARM_ABS32, addend_arm_rel() sets r->r_addend to a wrong value.
+
+I just mimicked the code in arch/arm/kernel/module.c.
+
+However, there is more difficulty for ARM.
+
+Here, test code.
+
+  [test code 2]
+
+    #include <linux/init.h>
+
+    int __initdata foo;
+    int get_foo(void) { return foo; }
+
+    int __initdata bar;
+    int get_bar(void) { return bar; }
+
+With this commit applied, modpost will show the following messages
+for ARM versatile_defconfig:
+
+  WARNING: modpost: vmlinux.o: section mismatch in reference: get_foo (section: .text) -> foo (section: .init.data)
+  WARNING: modpost: vmlinux.o: section mismatch in reference: get_bar (section: .text) -> foo (section: .init.data)
+
+The reference from 'get_bar' to 'foo' seems wrong.
+
+I have no solution for this because it is true in assembly level.
+
+In the following output, relocation at 0x1c is no longer associated
+with 'bar'. The two relocation entries point to the same symbol, and
+the offset to 'bar' is encoded in the instruction 'r0, [r3, #4]'.
+
+  Disassembly of section .text:
+
+  00000000 <get_foo>:
+     0: e59f3004          ldr     r3, [pc, #4]   @ c <get_foo+0xc>
+     4: e5930000          ldr     r0, [r3]
+     8: e12fff1e          bx      lr
+     c: 00000000          .word   0x00000000
+
+  00000010 <get_bar>:
+    10: e59f3004          ldr     r3, [pc, #4]   @ 1c <get_bar+0xc>
+    14: e5930004          ldr     r0, [r3, #4]
+    18: e12fff1e          bx      lr
+    1c: 00000000          .word   0x00000000
+
+  Relocation section '.rel.text' at offset 0x244 contains 2 entries:
+   Offset     Info    Type            Sym.Value  Sym. Name
+  0000000c  00000c02 R_ARM_ABS32       00000000   .init.data
+  0000001c  00000c02 R_ARM_ABS32       00000000   .init.data
+
+When find_elf_symbol() gets into a situation where relsym->st_name is
+zero, there is no guarantee to get the symbol name as written in C.
+
+I am keeping the current logic because it is useful in many architectures,
+but the symbol name is not always correct depending on the optimization.
+I left some comments in find_tosym().
+
+Fixes: 56a974fa2d59 ("kbuild: make better section mismatch reports on arm")
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/events/core.c |    8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ scripts/mod/modpost.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -1133,6 +1133,11 @@ static int perf_mux_hrtimer_restart(stru
- 	return 0;
- }
+diff --git a/scripts/mod/modpost.c b/scripts/mod/modpost.c
+index ed2b7a16554e8..f8bb964961b83 100644
+--- a/scripts/mod/modpost.c
++++ b/scripts/mod/modpost.c
+@@ -1271,6 +1271,10 @@ static Elf_Sym *find_elf_symbol(struct elf_info *elf, Elf64_Sword addr,
+ 	if (relsym->st_name != 0)
+ 		return relsym;
  
-+static int perf_mux_hrtimer_restart_ipi(void *arg)
-+{
-+	return perf_mux_hrtimer_restart(arg);
-+}
-+
- void perf_pmu_disable(struct pmu *pmu)
++	/*
++	 * Strive to find a better symbol name, but the resulting name may not
++	 * match the symbol referenced in the original code.
++	 */
+ 	relsym_secindex = get_secindex(elf, relsym);
+ 	for (sym = elf->symtab_start; sym < elf->symtab_stop; sym++) {
+ 		if (get_secindex(elf, sym) != relsym_secindex)
+@@ -1762,12 +1766,14 @@ static int addend_386_rel(struct elf_info *elf, Elf_Shdr *sechdr, Elf_Rela *r)
+ static int addend_arm_rel(struct elf_info *elf, Elf_Shdr *sechdr, Elf_Rela *r)
  {
- 	int *count = this_cpu_ptr(pmu->pmu_disable_count);
-@@ -11155,8 +11160,7 @@ perf_event_mux_interval_ms_store(struct
- 		cpuctx = per_cpu_ptr(pmu->pmu_cpu_context, cpu);
- 		cpuctx->hrtimer_interval = ns_to_ktime(NSEC_PER_MSEC * timer);
+ 	unsigned int r_typ = ELF_R_TYPE(r->r_info);
++	Elf_Sym *sym = elf->symtab_start + ELF_R_SYM(r->r_info);
++	void *loc = reloc_location(elf, sechdr, r);
++	uint32_t inst;
  
--		cpu_function_call(cpu,
--			(remote_function_f)perf_mux_hrtimer_restart, cpuctx);
-+		cpu_function_call(cpu, perf_mux_hrtimer_restart_ipi, cpuctx);
- 	}
- 	cpus_read_unlock();
- 	mutex_unlock(&mux_interval_mutex);
+ 	switch (r_typ) {
+ 	case R_ARM_ABS32:
+-		/* From ARM ABI: (S + A) | T */
+-		r->r_addend = (int)(long)
+-			      (elf->symtab_start + ELF_R_SYM(r->r_info));
++		inst = TO_NATIVE(*(uint32_t *)loc);
++		r->r_addend = inst + sym->st_value;
+ 		break;
+ 	case R_ARM_PC24:
+ 	case R_ARM_CALL:
+-- 
+2.39.2
+
 
 
