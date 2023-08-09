@@ -2,90 +2,116 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4CE83775C9F
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:29:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E20C8775831
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:51:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233817AbjHIL3S (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:29:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53006 "EHLO
+        id S232349AbjHIKux (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 06:50:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35362 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233804AbjHIL3R (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:29:17 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E18A7ED
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:29:16 -0700 (PDT)
+        with ESMTP id S232363AbjHIKua (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:50:30 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D6087210A
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:50:25 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7F44E63313
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:29:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F257C433C7;
-        Wed,  9 Aug 2023 11:29:15 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 67A7A63122
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:50:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E134C433C9;
+        Wed,  9 Aug 2023 10:50:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691580555;
-        bh=2LLDDKUg2Ww0IzYscdsVU+L2osfz5L7izTZI+UfUaJU=;
+        s=korg; t=1691578224;
+        bh=jL1leHMJktxPG3/6qS0W6FYTDR3ZCBsU9WeLaaO7vBs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=U8gnRoFpvbLD9v+gV/bQVJfeiKOi+UQNJJGz9OEmVEXELqfMrPCqca8R/kQwYM6wR
-         ADAJXx7ww2QFABl4yH9bqjMVdtA4MJLFUhTn/fwejjsWM/Qh8BtsV+Ldx0rXh0umxO
-         YPr1W9AGi6VAhZ8TNUzfYGR/0QSOxsdK46YSpZ1A=
+        b=0BIz5z6DDcWfvptsKXXl6BAFI1A3QhhJwhvGiPRkzBy5Y3aAP5bQbTlnq8McudKVh
+         IOW+4NkCdaXRKHKnqCH5H9JFeRA7gLoj+se3vrAzVJ1NeZPkR6uRtDksoPaW4K+Vqq
+         QhG/ww2iueG/VQVm7cXOrzd4Ly6mdc5/x2SC2taE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Matus Gajdos <matuszpd@gmail.com>,
-        Fabio Estevam <festevam@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
+        patches@lists.linux.dev, Johan Jonker <jbx6244@gmail.com>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 049/154] ASoC: fsl_spdif: Silence output on stop
+Subject: [PATCH 6.4 149/165] mtd: rawnand: rockchip: fix oobfree offset and description
 Date:   Wed,  9 Aug 2023 12:41:20 +0200
-Message-ID: <20230809103638.639343654@linuxfoundation.org>
+Message-ID: <20230809103647.657035992@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103636.887175326@linuxfoundation.org>
-References: <20230809103636.887175326@linuxfoundation.org>
+In-Reply-To: <20230809103642.720851262@linuxfoundation.org>
+References: <20230809103642.720851262@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Matus Gajdos <matuszpd@gmail.com>
+From: Johan Jonker <jbx6244@gmail.com>
 
-[ Upstream commit 0e4c2b6b0c4a4b4014d9424c27e5e79d185229c5 ]
+[ Upstream commit d0ca3b92b7a6f42841ea9da8492aaf649db79780 ]
 
-Clear TX registers on stop to prevent the SPDIF interface from sending
-last written word over and over again.
+Rockchip boot blocks are written per 4 x 512 byte sectors per page.
+Each page with boot blocks must have a page address (PA) pointer in OOB
+to the next page.
 
-Fixes: a2388a498ad2 ("ASoC: fsl: Add S/PDIF CPU DAI driver")
-Signed-off-by: Matus Gajdos <matuszpd@gmail.com>
-Reviewed-by: Fabio Estevam <festevam@gmail.com>
-Link: https://lore.kernel.org/r/20230719164729.19969-1-matuszpd@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+The currently advertised free OOB area starts at offset 6, like
+if 4 PA bytes were located right after the BBM. This is wrong as the
+PA bytes are located right before the ECC bytes.
+
+Fix the layout by allowing access to all bytes between the BBM and the
+PA bytes instead of reserving 4 bytes right after the BBM.
+
+This change breaks existing jffs2 users.
+
+Fixes: 058e0e847d54 ("mtd: rawnand: rockchip: NFC driver for RK3308, RK2928 and others")
+Signed-off-by: Johan Jonker <jbx6244@gmail.com>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://lore.kernel.org/linux-mtd/d202f12d-188c-20e8-f2c2-9cc874ad4d22@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/fsl/fsl_spdif.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/mtd/nand/raw/rockchip-nand-controller.c | 11 ++++-------
+ 1 file changed, 4 insertions(+), 7 deletions(-)
 
-diff --git a/sound/soc/fsl/fsl_spdif.c b/sound/soc/fsl/fsl_spdif.c
-index 7858a5499ac5d..4fd4ba9972afd 100644
---- a/sound/soc/fsl/fsl_spdif.c
-+++ b/sound/soc/fsl/fsl_spdif.c
-@@ -615,6 +615,8 @@ static int fsl_spdif_trigger(struct snd_pcm_substream *substream,
- 	case SNDRV_PCM_TRIGGER_PAUSE_PUSH:
- 		regmap_update_bits(regmap, REG_SPDIF_SCR, dmaen, 0);
- 		regmap_update_bits(regmap, REG_SPDIF_SIE, intr, 0);
-+		regmap_write(regmap, REG_SPDIF_STL, 0x0);
-+		regmap_write(regmap, REG_SPDIF_STR, 0x0);
- 		break;
- 	default:
- 		return -EINVAL;
+diff --git a/drivers/mtd/nand/raw/rockchip-nand-controller.c b/drivers/mtd/nand/raw/rockchip-nand-controller.c
+index 2312e27362cbe..37fc07ba57aab 100644
+--- a/drivers/mtd/nand/raw/rockchip-nand-controller.c
++++ b/drivers/mtd/nand/raw/rockchip-nand-controller.c
+@@ -562,9 +562,10 @@ static int rk_nfc_write_page_raw(struct nand_chip *chip, const u8 *buf,
+ 		 *    BBM  OOB1 OOB2 OOB3 |......|  PA0  PA1  PA2  PA3
+ 		 *
+ 		 * The rk_nfc_ooblayout_free() function already has reserved
+-		 * these 4 bytes with:
++		 * these 4 bytes together with 2 bytes for BBM
++		 * by reducing it's length:
+ 		 *
+-		 * oob_region->offset = NFC_SYS_DATA_SIZE + 2;
++		 * oob_region->length = rknand->metadata_size - NFC_SYS_DATA_SIZE - 2;
+ 		 */
+ 		if (!i)
+ 			memcpy(rk_nfc_oob_ptr(chip, i),
+@@ -933,12 +934,8 @@ static int rk_nfc_ooblayout_free(struct mtd_info *mtd, int section,
+ 	if (section)
+ 		return -ERANGE;
+ 
+-	/*
+-	 * The beginning of the OOB area stores the reserved data for the NFC,
+-	 * the size of the reserved data is NFC_SYS_DATA_SIZE bytes.
+-	 */
+ 	oob_region->length = rknand->metadata_size - NFC_SYS_DATA_SIZE - 2;
+-	oob_region->offset = NFC_SYS_DATA_SIZE + 2;
++	oob_region->offset = 2;
+ 
+ 	return 0;
+ }
 -- 
 2.40.1
 
