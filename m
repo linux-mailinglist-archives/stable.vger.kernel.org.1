@@ -2,101 +2,115 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EA5EC775CEC
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:32:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 45D7D775DAB
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:40:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233917AbjHILcP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:32:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43788 "EHLO
+        id S234187AbjHILkG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:40:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35562 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233920AbjHILcO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:32:14 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 556C31724
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:32:13 -0700 (PDT)
+        with ESMTP id S234194AbjHILkF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:40:05 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC4531FDE
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:40:02 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E952B633EF
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:32:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0424FC433C9;
-        Wed,  9 Aug 2023 11:32:11 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 51A5263617
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:40:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D1EEC433C8;
+        Wed,  9 Aug 2023 11:40:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691580732;
-        bh=qXYJKnC7KHUmX80gqMcuVnvamBaTgyuKGRWI7SldRAA=;
+        s=korg; t=1691581201;
+        bh=dkS9YoxsD0MTKpj+A9Q/Pmtf+6QWvC886+H0ocqd7A8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=VEqv5C3JEu/6hKW88RZIz4QzJtrwYJyc0gO1nRnIVvBBjFKA/jUooFFdqSs9W0Xfs
-         c2pBIF9wI8eWhQhafcOU/5RyCxw54699ZACEk4Q/qY3WmLapWGCQc3mgaykoeF1lx/
-         Vtv0Dy6JQQX28ujPIGfVbt5fbFIA9HvkVy8o6Qq0=
+        b=r9jlsLSfHa1zuKV3Xlr/dP9tyzq1OZwL22d8GyIG9wuhnva3BxS4UC+GrKSNzju0a
+         tpBQMZk3s2hZ7UazCbHKJdsrGGgAOEoRAanncr33QmYGwcDz/ZrKb6Pf4PVY+kJ0cl
+         zww5YmyT6fYaWS4vTrhbMoaYlfXeknS/B7gDRuaM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yang Yingliang <yangyingliang@huawei.com>,
+        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
+        Willem de Bruijn <willemb@google.com>,
         "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 112/154] net: ll_temac: Switch to use dev_err_probe() helper
+Subject: [PATCH 5.10 141/201] net: add missing data-race annotations around sk->sk_peek_off
 Date:   Wed,  9 Aug 2023 12:42:23 +0200
-Message-ID: <20230809103640.645524581@linuxfoundation.org>
+Message-ID: <20230809103648.449114442@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103636.887175326@linuxfoundation.org>
-References: <20230809103636.887175326@linuxfoundation.org>
+In-Reply-To: <20230809103643.799166053@linuxfoundation.org>
+References: <20230809103643.799166053@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Yang Yingliang <yangyingliang@huawei.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 75ae8c284c00dc3584b7c173f6fcf96ee15bd02c ]
+[ Upstream commit 11695c6e966b0ec7ed1d16777d294cef865a5c91 ]
 
-dev_err() can be replace with dev_err_probe() which will check if error
-code is -EPROBE_DEFER.
+sk_getsockopt() runs locklessly, thus we need to annotate the read
+of sk->sk_peek_off.
 
-Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
+While we are at it, add corresponding annotations to sk_set_peek_off()
+and unix_set_peek_off().
+
+Fixes: b9bb53f3836f ("sock: convert sk_peek_offset functions to WRITE_ONCE")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Willem de Bruijn <willemb@google.com>
 Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: ef45e8400f5b ("net: ll_temac: fix error checking of irq_of_parse_and_map()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/xilinx/ll_temac_main.c | 16 ++++++----------
- 1 file changed, 6 insertions(+), 10 deletions(-)
+ net/core/sock.c    | 4 ++--
+ net/unix/af_unix.c | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/xilinx/ll_temac_main.c b/drivers/net/ethernet/xilinx/ll_temac_main.c
-index a109438f4a78e..9756d83994fca 100644
---- a/drivers/net/ethernet/xilinx/ll_temac_main.c
-+++ b/drivers/net/ethernet/xilinx/ll_temac_main.c
-@@ -1481,16 +1481,12 @@ static int temac_probe(struct platform_device *pdev)
- 	}
+diff --git a/net/core/sock.c b/net/core/sock.c
+index 708018b58e906..a241734b10240 100644
+--- a/net/core/sock.c
++++ b/net/core/sock.c
+@@ -1517,7 +1517,7 @@ int sock_getsockopt(struct socket *sock, int level, int optname,
+ 		if (!sock->ops->set_peek_off)
+ 			return -EOPNOTSUPP;
  
- 	/* Error handle returned DMA RX and TX interrupts */
--	if (lp->rx_irq < 0) {
--		if (lp->rx_irq != -EPROBE_DEFER)
--			dev_err(&pdev->dev, "could not get DMA RX irq\n");
--		return lp->rx_irq;
--	}
--	if (lp->tx_irq < 0) {
--		if (lp->tx_irq != -EPROBE_DEFER)
--			dev_err(&pdev->dev, "could not get DMA TX irq\n");
--		return lp->tx_irq;
--	}
-+	if (lp->rx_irq < 0)
-+		return dev_err_probe(&pdev->dev, lp->rx_irq,
-+				     "could not get DMA RX irq\n");
-+	if (lp->tx_irq < 0)
-+		return dev_err_probe(&pdev->dev, lp->tx_irq,
-+				     "could not get DMA TX irq\n");
+-		v.val = sk->sk_peek_off;
++		v.val = READ_ONCE(sk->sk_peek_off);
+ 		break;
+ 	case SO_NOFCS:
+ 		v.val = sock_flag(sk, SOCK_NOFCS);
+@@ -2745,7 +2745,7 @@ EXPORT_SYMBOL(__sk_mem_reclaim);
  
- 	if (temac_np) {
- 		/* Retrieve the MAC address */
+ int sk_set_peek_off(struct sock *sk, int val)
+ {
+-	sk->sk_peek_off = val;
++	WRITE_ONCE(sk->sk_peek_off, val);
+ 	return 0;
+ }
+ EXPORT_SYMBOL_GPL(sk_set_peek_off);
+diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
+index 2fe0efcbfed16..3aa783a23c5f6 100644
+--- a/net/unix/af_unix.c
++++ b/net/unix/af_unix.c
+@@ -697,7 +697,7 @@ static int unix_set_peek_off(struct sock *sk, int val)
+ 	if (mutex_lock_interruptible(&u->iolock))
+ 		return -EINTR;
+ 
+-	sk->sk_peek_off = val;
++	WRITE_ONCE(sk->sk_peek_off, val);
+ 	mutex_unlock(&u->iolock);
+ 
+ 	return 0;
 -- 
 2.40.1
 
