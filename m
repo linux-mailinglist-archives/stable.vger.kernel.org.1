@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 34CC5775BC1
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:20:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 99BEF775A03
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:04:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233173AbjHILUn (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:20:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52470 "EHLO
+        id S233043AbjHILEj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:04:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40198 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233533AbjHILUn (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:20:43 -0400
+        with ESMTP id S233041AbjHILEi (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:04:38 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 712BEFA
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:20:42 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB69F1702
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:04:37 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 10571631DE
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:20:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F944C433C7;
-        Wed,  9 Aug 2023 11:20:40 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5B9526309F
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:04:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D622C433C7;
+        Wed,  9 Aug 2023 11:04:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691580041;
-        bh=201jJYxxD13Lo3iHBMxpxzZcHPgTs9n9hCDf361ujKk=;
+        s=korg; t=1691579076;
+        bh=6JDC17LJIuuzIteAkk6FYq4riJuhw3qeR9tzdTmUCn8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=EJXisLmZsMPXVtW3PYMTkaie2u50uSNzG5a79TzpsGbCqVvNjc8kMCem7gM/jIdeS
-         YOpaldJDulyamI9l0wJhkF0WvAw19yv0Y8oVxyhfwYtxqV0YiJKkbQjb9hGSYbNhcU
-         5KJOw+kj3AhBdupMo8ybwG7sD7+OhhEJk46EaKxg=
+        b=yuJl8Ws4ilhRAlFPouQuzOpq3xjbe1P5Ax/U7/iBN/VYIVcZpv6jn1se21hXQn09n
+         uXasaEcdCH7zSgIgDsUxmeBFQ8/1w4IgdygfAIzUXlHamCrVyR5lcrwXRQu2WCC6C1
+         pQijmDS8WmMK2vne6azky8AmfFnHPxIgXUL71iXw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Damien Le Moal <dlemoal@kernel.org>,
-        Rick Wertenbroek <rick.wertenbroek@gmail.com>,
-        Lorenzo Pieralisi <lpieralisi@kernel.org>
-Subject: [PATCH 4.19 166/323] PCI: rockchip: Fix legacy IRQ generation for RK3399 PCIe endpoint core
+        patches@lists.linux.dev,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Lee Jones <lee@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.14 066/204] mfd: stmpe: Only disable the regulators if they are enabled
 Date:   Wed,  9 Aug 2023 12:40:04 +0200
-Message-ID: <20230809103705.744809579@linuxfoundation.org>
+Message-ID: <20230809103644.855300462@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
-References: <20230809103658.104386911@linuxfoundation.org>
+In-Reply-To: <20230809103642.552405807@linuxfoundation.org>
+References: <20230809103642.552405807@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,113 +56,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Rick Wertenbroek <rick.wertenbroek@gmail.com>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-commit 166e89d99dd85a856343cca51eee781b793801f2 upstream.
+[ Upstream commit 104d32bd81f620bb9f67fbf7d1159c414e89f05f ]
 
-Fix legacy IRQ generation for RK3399 PCIe endpoint core according to
-the technical reference manual (TRM). Assert and deassert legacy
-interrupt (INTx) through the legacy interrupt control register
-("PCIE_CLIENT_LEGACY_INT_CTRL") instead of manually generating a PCIe
-message. The generation of the legacy interrupt was tested and validated
-with the PCIe endpoint test driver.
+In stmpe_probe(), if some regulator_enable() calls fail, probing continues
+and there is only a dev_warn().
 
-Link: https://lore.kernel.org/r/20230418074700.1083505-8-rick.wertenbroek@gmail.com
-Fixes: cf590b078391 ("PCI: rockchip: Add EP driver for Rockchip PCIe controller")
-Tested-by: Damien Le Moal <dlemoal@kernel.org>
-Signed-off-by: Rick Wertenbroek <rick.wertenbroek@gmail.com>
-Signed-off-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+So, if stmpe_probe() is called the regulator may not be enabled. It is
+cleaner to test it before calling regulator_disable() in the remove
+function.
+
+Fixes: 9c9e321455fb ("mfd: stmpe: add optional regulators")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Link: https://lore.kernel.org/r/8de3aaf297931d655b9ad6aed548f4de8b85425a.1686998575.git.christophe.jaillet@wanadoo.fr
+Signed-off-by: Lee Jones <lee@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/pcie-rockchip-ep.c |   45 +++++++-----------------------
- drivers/pci/controller/pcie-rockchip.h    |    6 +++-
- 2 files changed, 16 insertions(+), 35 deletions(-)
+ drivers/mfd/stmpe.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/pci/controller/pcie-rockchip-ep.c
-+++ b/drivers/pci/controller/pcie-rockchip-ep.c
-@@ -346,48 +346,25 @@ static int rockchip_pcie_ep_get_msi(stru
- }
+diff --git a/drivers/mfd/stmpe.c b/drivers/mfd/stmpe.c
+index 722ad2c368a56..d752c56d60e42 100644
+--- a/drivers/mfd/stmpe.c
++++ b/drivers/mfd/stmpe.c
+@@ -1428,9 +1428,9 @@ int stmpe_probe(struct stmpe_client_info *ci, enum stmpe_partnum partnum)
  
- static void rockchip_pcie_ep_assert_intx(struct rockchip_pcie_ep *ep, u8 fn,
--					 u8 intx, bool is_asserted)
-+					 u8 intx, bool do_assert)
+ int stmpe_remove(struct stmpe *stmpe)
  {
- 	struct rockchip_pcie *rockchip = &ep->rockchip;
--	u32 r = ep->max_regions - 1;
--	u32 offset;
--	u32 status;
--	u8 msg_code;
--
--	if (unlikely(ep->irq_pci_addr != ROCKCHIP_PCIE_EP_PCI_LEGACY_IRQ_ADDR ||
--		     ep->irq_pci_fn != fn)) {
--		rockchip_pcie_prog_ep_ob_atu(rockchip, fn, r,
--					     AXI_WRAPPER_NOR_MSG,
--					     ep->irq_phys_addr, 0, 0);
--		ep->irq_pci_addr = ROCKCHIP_PCIE_EP_PCI_LEGACY_IRQ_ADDR;
--		ep->irq_pci_fn = fn;
--	}
+-	if (!IS_ERR(stmpe->vio))
++	if (!IS_ERR(stmpe->vio) && regulator_is_enabled(stmpe->vio))
+ 		regulator_disable(stmpe->vio);
+-	if (!IS_ERR(stmpe->vcc))
++	if (!IS_ERR(stmpe->vcc) && regulator_is_enabled(stmpe->vcc))
+ 		regulator_disable(stmpe->vcc);
  
- 	intx &= 3;
--	if (is_asserted) {
-+
-+	if (do_assert) {
- 		ep->irq_pending |= BIT(intx);
--		msg_code = ROCKCHIP_PCIE_MSG_CODE_ASSERT_INTA + intx;
-+		rockchip_pcie_write(rockchip,
-+				    PCIE_CLIENT_INT_IN_ASSERT |
-+				    PCIE_CLIENT_INT_PEND_ST_PEND,
-+				    PCIE_CLIENT_LEGACY_INT_CTRL);
- 	} else {
- 		ep->irq_pending &= ~BIT(intx);
--		msg_code = ROCKCHIP_PCIE_MSG_CODE_DEASSERT_INTA + intx;
-+		rockchip_pcie_write(rockchip,
-+				    PCIE_CLIENT_INT_IN_DEASSERT |
-+				    PCIE_CLIENT_INT_PEND_ST_NORMAL,
-+				    PCIE_CLIENT_LEGACY_INT_CTRL);
- 	}
--
--	status = rockchip_pcie_read(rockchip,
--				    ROCKCHIP_PCIE_EP_FUNC_BASE(fn) +
--				    ROCKCHIP_PCIE_EP_CMD_STATUS);
--	status &= ROCKCHIP_PCIE_EP_CMD_STATUS_IS;
--
--	if ((status != 0) ^ (ep->irq_pending != 0)) {
--		status ^= ROCKCHIP_PCIE_EP_CMD_STATUS_IS;
--		rockchip_pcie_write(rockchip, status,
--				    ROCKCHIP_PCIE_EP_FUNC_BASE(fn) +
--				    ROCKCHIP_PCIE_EP_CMD_STATUS);
--	}
--
--	offset =
--	   ROCKCHIP_PCIE_MSG_ROUTING(ROCKCHIP_PCIE_MSG_ROUTING_LOCAL_INTX) |
--	   ROCKCHIP_PCIE_MSG_CODE(msg_code) | ROCKCHIP_PCIE_MSG_NO_DATA;
--	writel(0, ep->irq_cpu_addr + offset);
- }
- 
- static int rockchip_pcie_ep_send_legacy_irq(struct rockchip_pcie_ep *ep, u8 fn,
---- a/drivers/pci/controller/pcie-rockchip.h
-+++ b/drivers/pci/controller/pcie-rockchip.h
-@@ -37,6 +37,11 @@
- #define   PCIE_CLIENT_MODE_EP            HIWORD_UPDATE(0x0040, 0)
- #define   PCIE_CLIENT_GEN_SEL_1		  HIWORD_UPDATE(0x0080, 0)
- #define   PCIE_CLIENT_GEN_SEL_2		  HIWORD_UPDATE_BIT(0x0080)
-+#define PCIE_CLIENT_LEGACY_INT_CTRL	(PCIE_CLIENT_BASE + 0x0c)
-+#define   PCIE_CLIENT_INT_IN_ASSERT		HIWORD_UPDATE_BIT(0x0002)
-+#define   PCIE_CLIENT_INT_IN_DEASSERT		HIWORD_UPDATE(0x0002, 0)
-+#define   PCIE_CLIENT_INT_PEND_ST_PEND		HIWORD_UPDATE_BIT(0x0001)
-+#define   PCIE_CLIENT_INT_PEND_ST_NORMAL	HIWORD_UPDATE(0x0001, 0)
- #define PCIE_CLIENT_SIDE_BAND_STATUS	(PCIE_CLIENT_BASE + 0x20)
- #define   PCIE_CLIENT_PHY_ST			BIT(12)
- #define PCIE_CLIENT_DEBUG_OUT_0		(PCIE_CLIENT_BASE + 0x3c)
-@@ -234,7 +239,6 @@
- #define   ROCKCHIP_PCIE_EP_MSI_CTRL_ME				BIT(16)
- #define   ROCKCHIP_PCIE_EP_MSI_CTRL_MASK_MSI_CAP	BIT(24)
- #define ROCKCHIP_PCIE_EP_DUMMY_IRQ_ADDR				0x1
--#define ROCKCHIP_PCIE_EP_PCI_LEGACY_IRQ_ADDR		0x3
- #define ROCKCHIP_PCIE_EP_FUNC_BASE(fn)	(((fn) << 12) & GENMASK(19, 12))
- #define ROCKCHIP_PCIE_AT_IB_EP_FUNC_BAR_ADDR0(fn, bar) \
- 	(PCIE_RC_RP_ATS_BASE + 0x0840 + (fn) * 0x0040 + (bar) * 0x0008)
+ 	mfd_remove_devices(stmpe->dev);
+-- 
+2.39.2
+
 
 
