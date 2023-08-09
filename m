@@ -2,123 +2,103 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5D76A77590C
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:57:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 444B277597F
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:01:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232692AbjHIK51 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 06:57:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53332 "EHLO
+        id S232882AbjHILBE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:01:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50276 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232968AbjHIK5R (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:57:17 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 07D731FD4
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:57:17 -0700 (PDT)
+        with ESMTP id S232874AbjHILBD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:01:03 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12B93ED
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:01:03 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 90A18630D6
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:57:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1FA5C433C9;
-        Wed,  9 Aug 2023 10:57:15 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A5F2A619FA
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:01:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B448BC433C8;
+        Wed,  9 Aug 2023 11:01:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691578636;
-        bh=UKUEdsspYwOBuFHYxWq3/aW4IdQa46sQ7xP4/TcyL/A=;
+        s=korg; t=1691578862;
+        bh=Ik+ghPQqkPSmjaiWevm6ZqF0nzHDk4Xm0ex2O5u8ZzU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=hdINgk4uFb145pAwrZ9/wMqdJzwhdyUxEpEUv1vjVLLXstdsrPc3vk+to+bsEf+i2
-         Gp0V0Kcb44jp/Fj8GOa4kLIx2XVllynEMl3mKqSO8ecwmcPVqIX8KSkBc2VTC76EvP
-         SgUdBXVTmSlU+IU+L+Y0IJ31MbWNKF/qaig7i6hY=
+        b=N1aFOi2+V/NGF4XXBUfIb238K5Sryw8f7TipDmU10ZZ+HukDYkkvdRP3Vl60t2LIV
+         mxK3+yWw0kSX+CE8fPbXALROTGbxUi2ORFT3qRDuVf88XAqZRZFnmqHP3ZL8h6Z6lg
+         CGRh1bOFIMLgYNoGTTsOYv3KCXaGdbd0uk1a6xnQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        syzbot <syzbot+7937ba6a50bdd00fffdf@syzkaller.appspotmail.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-Subject: [PATCH 6.1 104/127] debugobjects: Recheck debug_objects_enabled before reporting
+        patches@lists.linux.dev, Michael Kelley <mikelley@microsoft.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 5.15 55/92] scsi: storvsc: Limit max_sectors for virtual Fibre Channel devices
 Date:   Wed,  9 Aug 2023 12:41:31 +0200
-Message-ID: <20230809103640.067035361@linuxfoundation.org>
+Message-ID: <20230809103635.515666805@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103636.615294317@linuxfoundation.org>
-References: <20230809103636.615294317@linuxfoundation.org>
+In-Reply-To: <20230809103633.485906560@linuxfoundation.org>
+References: <20230809103633.485906560@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+From: Michael Kelley <mikelley@microsoft.com>
 
-commit 8b64d420fe2450f82848178506d3e3a0bd195539 upstream.
+commit 010c1e1c5741365dbbf44a5a5bb9f30192875c4c upstream.
 
-syzbot is reporting false a positive ODEBUG message immediately after
-ODEBUG was disabled due to OOM.
+The Hyper-V host is queried to get the max transfer size that it supports,
+and this value is used to set max_sectors for the synthetic SCSI
+controller.  However, this max transfer size may be too large for virtual
+Fibre Channel devices, which are limited to 512 Kbytes.  If a larger
+transfer size is used with a vFC device, Hyper-V always returns an error,
+and storvsc logs a message like this where the SRB status and SCSI status
+are both zero:
 
-  [ 1062.309646][T22911] ODEBUG: Out of memory. ODEBUG disabled
-  [ 1062.886755][ T5171] ------------[ cut here ]------------
-  [ 1062.892770][ T5171] ODEBUG: assert_init not available (active state 0) object: ffffc900056afb20 object type: timer_list hint: process_timeout+0x0/0x40
+hv_storvsc <GUID>: tag#197 cmd 0x8a status: scsi 0x0 srb 0x0 hv 0xc0000001
 
-  CPU 0 [ T5171]                CPU 1 [T22911]
-  --------------                --------------
-  debug_object_assert_init() {
-    if (!debug_objects_enabled)
-      return;
-    db = get_bucket(addr);
-                                lookup_object_or_alloc() {
-                                  debug_objects_enabled = 0;
-                                  return NULL;
-                                }
-                                debug_objects_oom() {
-                                  pr_warn("Out of memory. ODEBUG disabled\n");
-                                  // all buckets get emptied here, and
-                                }
-    lookup_object_or_alloc(addr, db, descr, false, true) {
-      // this bucket is already empty.
-      return ERR_PTR(-ENOENT);
-    }
-    // Emits false positive warning.
-    debug_print_object(&o, "assert_init");
-  }
+Add logic to limit the max transfer size to 512 Kbytes for vFC devices.
 
-Recheck debug_object_enabled in debug_print_object() to avoid that.
-
-Reported-by: syzbot <syzbot+7937ba6a50bdd00fffdf@syzkaller.appspotmail.com>
-Suggested-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/492fe2ae-5141-d548-ebd5-62f5fe2e57f7@I-love.SAKURA.ne.jp
-Closes: https://syzkaller.appspot.com/bug?extid=7937ba6a50bdd00fffdf
+Fixes: 1d3e0980782f ("scsi: storvsc: Correct reporting of Hyper-V I/O size limits")
+Cc: stable@vger.kernel.org
+Signed-off-by: Michael Kelley <mikelley@microsoft.com>
+Link: https://lore.kernel.org/r/1689887102-32806-1-git-send-email-mikelley@microsoft.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- lib/debugobjects.c |    9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/scsi/storvsc_drv.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/lib/debugobjects.c
-+++ b/lib/debugobjects.c
-@@ -498,6 +498,15 @@ static void debug_print_object(struct de
- 	const struct debug_obj_descr *descr = obj->descr;
- 	static int limit;
+--- a/drivers/scsi/storvsc_drv.c
++++ b/drivers/scsi/storvsc_drv.c
+@@ -406,6 +406,7 @@ static void storvsc_on_channel_callback(
+ #define STORVSC_FC_MAX_LUNS_PER_TARGET			255
+ #define STORVSC_FC_MAX_TARGETS				128
+ #define STORVSC_FC_MAX_CHANNELS				8
++#define STORVSC_FC_MAX_XFER_SIZE			((u32)(512 * 1024))
  
-+	/*
-+	 * Don't report if lookup_object_or_alloc() by the current thread
-+	 * failed because lookup_object_or_alloc()/debug_objects_oom() by a
-+	 * concurrent thread turned off debug_objects_enabled and cleared
-+	 * the hash buckets.
-+	 */
-+	if (!debug_objects_enabled)
-+		return;
+ #define STORVSC_IDE_MAX_LUNS_PER_TARGET			64
+ #define STORVSC_IDE_MAX_TARGETS				1
+@@ -2071,6 +2072,9 @@ static int storvsc_probe(struct hv_devic
+ 	 * protecting it from any weird value.
+ 	 */
+ 	max_xfer_bytes = round_down(stor_device->max_transfer_bytes, HV_HYP_PAGE_SIZE);
++	if (is_fc)
++		max_xfer_bytes = min(max_xfer_bytes, STORVSC_FC_MAX_XFER_SIZE);
 +
- 	if (limit < 5 && descr != descr_test) {
- 		void *hint = descr->debug_hint ?
- 			descr->debug_hint(obj->object) : NULL;
+ 	/* max_hw_sectors_kb */
+ 	host->max_sectors = max_xfer_bytes >> 9;
+ 	/*
 
 
