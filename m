@@ -2,203 +2,115 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E4B49775911
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:57:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 24402775A74
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:08:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232728AbjHIK53 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 06:57:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53300 "EHLO
+        id S233166AbjHILIg (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:08:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47258 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232950AbjHIK5P (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:57:15 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 485051FD8
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:57:14 -0700 (PDT)
+        with ESMTP id S233178AbjHILIf (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:08:35 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 91289ED
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:08:34 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DC46E630D6
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:57:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E759BC433C8;
-        Wed,  9 Aug 2023 10:57:12 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2A0E262BC8
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:08:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EF29C433C7;
+        Wed,  9 Aug 2023 11:08:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691578633;
-        bh=V8H3eBaCy/p3eDckBOWD7WUcGeIbUJfLjymIgyJ6m68=;
+        s=korg; t=1691579313;
+        bh=mx49CFDPxV0D3Mq3x+EVnwtwxn0Ov0tavysK04wgVzk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=RC2XjR972+WASGBGk/cdYaJVEq2izEQB6Kb4s7+GaX15t4cfPCgKfkqFPuilPUVA8
-         YlRhhUBbg3XJ+x0Ax4kv2EM7BxsFJUzejXleWYRt2EDc5jsm1cLNB8tW9XXchyaxT4
-         xeFePkomnsi7nzXrAU4P1EBYb/i2zsDh0go+/N0U=
+        b=WFY5obYz4sjXV2EvX01mhazYsCTOSIka1CJBWggSF0sD5d/KbcekUGxhGU3GgQT/n
+         9UGD+Ffh8qyp29yKh+qGNbsxhO3PZsKcDjOLqjJ52c9/QGecKByE2E6Ty2wm0/mquG
+         d9eomjJwTRUyDDMdCePKjWmXVFU94WX1iHkGl+ms=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Sungwoo Kim <iam@sung-woo.kim>,
-        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-        Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 103/127] Bluetooth: L2CAP: Fix use-after-free in l2cap_sock_ready_cb
+        patches@lists.linux.dev, Liang Li <liali@redhat.com>,
+        Hangbin Liu <liuhangbin@gmail.com>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.14 152/204] bonding: reset bonds flags when down link is P2P device
 Date:   Wed,  9 Aug 2023 12:41:30 +0200
-Message-ID: <20230809103640.036518761@linuxfoundation.org>
+Message-ID: <20230809103647.641560739@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103636.615294317@linuxfoundation.org>
-References: <20230809103636.615294317@linuxfoundation.org>
+In-Reply-To: <20230809103642.552405807@linuxfoundation.org>
+References: <20230809103642.552405807@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Sungwoo Kim <iam@sung-woo.kim>
+From: Hangbin Liu <liuhangbin@gmail.com>
 
-commit 1728137b33c00d5a2b5110ed7aafb42e7c32e4a1 upstream.
+[ Upstream commit da19a2b967cf1e2c426f50d28550d1915214a81d ]
 
-l2cap_sock_release(sk) frees sk. However, sk's children are still alive
-and point to the already free'd sk's address.
-To fix this, l2cap_sock_release(sk) also cleans sk's children.
+When adding a point to point downlink to the bond, we neglected to reset
+the bond's flags, which were still using flags like BROADCAST and
+MULTICAST. Consequently, this would initiate ARP/DAD for P2P downlink
+interfaces, such as when adding a GRE device to the bonding.
 
-==================================================================
-BUG: KASAN: use-after-free in l2cap_sock_ready_cb+0xb7/0x100 net/bluetooth/l2cap_sock.c:1650
-Read of size 8 at addr ffff888104617aa8 by task kworker/u3:0/276
+To address this issue, let's reset the bond's flags for P2P interfaces.
 
-CPU: 0 PID: 276 Comm: kworker/u3:0 Not tainted 6.2.0-00001-gef397bd4d5fb-dirty #59
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
-Workqueue: hci2 hci_rx_work
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:88 [inline]
- dump_stack_lvl+0x72/0x95 lib/dump_stack.c:106
- print_address_description mm/kasan/report.c:306 [inline]
- print_report+0x175/0x478 mm/kasan/report.c:417
- kasan_report+0xb1/0x130 mm/kasan/report.c:517
- l2cap_sock_ready_cb+0xb7/0x100 net/bluetooth/l2cap_sock.c:1650
- l2cap_chan_ready+0x10e/0x1e0 net/bluetooth/l2cap_core.c:1386
- l2cap_config_req+0x753/0x9f0 net/bluetooth/l2cap_core.c:4480
- l2cap_bredr_sig_cmd net/bluetooth/l2cap_core.c:5739 [inline]
- l2cap_sig_channel net/bluetooth/l2cap_core.c:6509 [inline]
- l2cap_recv_frame+0xe2e/0x43c0 net/bluetooth/l2cap_core.c:7788
- l2cap_recv_acldata+0x6ed/0x7e0 net/bluetooth/l2cap_core.c:8506
- hci_acldata_packet net/bluetooth/hci_core.c:3813 [inline]
- hci_rx_work+0x66e/0xbc0 net/bluetooth/hci_core.c:4048
- process_one_work+0x4ea/0x8e0 kernel/workqueue.c:2289
- worker_thread+0x364/0x8e0 kernel/workqueue.c:2436
- kthread+0x1b9/0x200 kernel/kthread.c:376
- ret_from_fork+0x2c/0x50 arch/x86/entry/entry_64.S:308
- </TASK>
+Before fix:
+7: gre0@NONE: <POINTOPOINT,NOARP,SLAVE,UP,LOWER_UP> mtu 1500 qdisc noqueue master bond0 state UNKNOWN group default qlen 1000
+    link/gre6 2006:70:10::1 peer 2006:70:10::2 permaddr 167f:18:f188::
+8: bond0: <BROADCAST,MULTICAST,MASTER,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default qlen 1000
+    link/gre6 2006:70:10::1 brd 2006:70:10::2
+    inet6 fe80::200:ff:fe00:0/64 scope link
+       valid_lft forever preferred_lft forever
 
-Allocated by task 288:
- kasan_save_stack+0x22/0x50 mm/kasan/common.c:45
- kasan_set_track+0x25/0x30 mm/kasan/common.c:52
- ____kasan_kmalloc mm/kasan/common.c:374 [inline]
- __kasan_kmalloc+0x82/0x90 mm/kasan/common.c:383
- kasan_kmalloc include/linux/kasan.h:211 [inline]
- __do_kmalloc_node mm/slab_common.c:968 [inline]
- __kmalloc+0x5a/0x140 mm/slab_common.c:981
- kmalloc include/linux/slab.h:584 [inline]
- sk_prot_alloc+0x113/0x1f0 net/core/sock.c:2040
- sk_alloc+0x36/0x3c0 net/core/sock.c:2093
- l2cap_sock_alloc.constprop.0+0x39/0x1c0 net/bluetooth/l2cap_sock.c:1852
- l2cap_sock_create+0x10d/0x220 net/bluetooth/l2cap_sock.c:1898
- bt_sock_create+0x183/0x290 net/bluetooth/af_bluetooth.c:132
- __sock_create+0x226/0x380 net/socket.c:1518
- sock_create net/socket.c:1569 [inline]
- __sys_socket_create net/socket.c:1606 [inline]
- __sys_socket_create net/socket.c:1591 [inline]
- __sys_socket+0x112/0x200 net/socket.c:1639
- __do_sys_socket net/socket.c:1652 [inline]
- __se_sys_socket net/socket.c:1650 [inline]
- __x64_sys_socket+0x40/0x50 net/socket.c:1650
- do_syscall_x64 arch/x86/entry/common.c:50 [inline]
- do_syscall_64+0x3f/0x90 arch/x86/entry/common.c:80
- entry_SYSCALL_64_after_hwframe+0x72/0xdc
+After fix:
+7: gre0@NONE: <POINTOPOINT,NOARP,SLAVE,UP,LOWER_UP> mtu 1500 qdisc noqueue master bond2 state UNKNOWN group default qlen 1000
+    link/gre6 2006:70:10::1 peer 2006:70:10::2 permaddr c29e:557a:e9d9::
+8: bond0: <POINTOPOINT,NOARP,MASTER,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default qlen 1000
+    link/gre6 2006:70:10::1 peer 2006:70:10::2
+    inet6 fe80::1/64 scope link
+       valid_lft forever preferred_lft forever
 
-Freed by task 288:
- kasan_save_stack+0x22/0x50 mm/kasan/common.c:45
- kasan_set_track+0x25/0x30 mm/kasan/common.c:52
- kasan_save_free_info+0x2e/0x50 mm/kasan/generic.c:523
- ____kasan_slab_free mm/kasan/common.c:236 [inline]
- ____kasan_slab_free mm/kasan/common.c:200 [inline]
- __kasan_slab_free+0x10a/0x190 mm/kasan/common.c:244
- kasan_slab_free include/linux/kasan.h:177 [inline]
- slab_free_hook mm/slub.c:1781 [inline]
- slab_free_freelist_hook mm/slub.c:1807 [inline]
- slab_free mm/slub.c:3787 [inline]
- __kmem_cache_free+0x88/0x1f0 mm/slub.c:3800
- sk_prot_free net/core/sock.c:2076 [inline]
- __sk_destruct+0x347/0x430 net/core/sock.c:2168
- sk_destruct+0x9c/0xb0 net/core/sock.c:2183
- __sk_free+0x82/0x220 net/core/sock.c:2194
- sk_free+0x7c/0xa0 net/core/sock.c:2205
- sock_put include/net/sock.h:1991 [inline]
- l2cap_sock_kill+0x256/0x2b0 net/bluetooth/l2cap_sock.c:1257
- l2cap_sock_release+0x1a7/0x220 net/bluetooth/l2cap_sock.c:1428
- __sock_release+0x80/0x150 net/socket.c:650
- sock_close+0x19/0x30 net/socket.c:1368
- __fput+0x17a/0x5c0 fs/file_table.c:320
- task_work_run+0x132/0x1c0 kernel/task_work.c:179
- resume_user_mode_work include/linux/resume_user_mode.h:49 [inline]
- exit_to_user_mode_loop kernel/entry/common.c:171 [inline]
- exit_to_user_mode_prepare+0x113/0x120 kernel/entry/common.c:203
- __syscall_exit_to_user_mode_work kernel/entry/common.c:285 [inline]
- syscall_exit_to_user_mode+0x21/0x50 kernel/entry/common.c:296
- do_syscall_64+0x4c/0x90 arch/x86/entry/common.c:86
- entry_SYSCALL_64_after_hwframe+0x72/0xdc
-
-The buggy address belongs to the object at ffff888104617800
- which belongs to the cache kmalloc-1k of size 1024
-The buggy address is located 680 bytes inside of
- 1024-byte region [ffff888104617800, ffff888104617c00)
-
-The buggy address belongs to the physical page:
-page:00000000dbca6a80 refcount:1 mapcount:0 mapping:0000000000000000 index:0xffff888104614000 pfn:0x104614
-head:00000000dbca6a80 order:2 compound_mapcount:0 subpages_mapcount:0 compound_pincount:0
-flags: 0x200000000010200(slab|head|node=0|zone=2)
-raw: 0200000000010200 ffff888100041dc0 ffffea0004212c10 ffffea0004234b10
-raw: ffff888104614000 0000000000080002 00000001ffffffff 0000000000000000
-page dumped because: kasan: bad access detected
-
-Memory state around the buggy address:
- ffff888104617980: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
- ffff888104617a00: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
->ffff888104617a80: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-                                  ^
- ffff888104617b00: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
- ffff888104617b80: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-==================================================================
-
-Ack: This bug is found by FuzzBT with a modified Syzkaller. Other
-contributors are Ruoyu Wu and Hui Peng.
-Signed-off-by: Sungwoo Kim <iam@sung-woo.kim>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Liang Li <liali@redhat.com>
+Closes: https://bugzilla.redhat.com/show_bug.cgi?id=2221438
+Fixes: 872254dd6b1f ("net/bonding: Enable bonding to enslave non ARPHRD_ETHER")
+Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/l2cap_sock.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/bonding/bond_main.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/net/bluetooth/l2cap_sock.c
-+++ b/net/bluetooth/l2cap_sock.c
-@@ -46,6 +46,7 @@ static const struct proto_ops l2cap_sock
- static void l2cap_sock_init(struct sock *sk, struct sock *parent);
- static struct sock *l2cap_sock_alloc(struct net *net, struct socket *sock,
- 				     int proto, gfp_t prio, int kern);
-+static void l2cap_sock_cleanup_listen(struct sock *parent);
+diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
+index 0ffca2890e9a3..e86b21f097b68 100644
+--- a/drivers/net/bonding/bond_main.c
++++ b/drivers/net/bonding/bond_main.c
+@@ -1134,6 +1134,11 @@ static void bond_setup_by_slave(struct net_device *bond_dev,
  
- bool l2cap_is_socket(struct socket *sock)
- {
-@@ -1415,6 +1416,7 @@ static int l2cap_sock_release(struct soc
- 	if (!sk)
- 		return 0;
+ 	memcpy(bond_dev->broadcast, slave_dev->broadcast,
+ 		slave_dev->addr_len);
++
++	if (slave_dev->flags & IFF_POINTOPOINT) {
++		bond_dev->flags &= ~(IFF_BROADCAST | IFF_MULTICAST);
++		bond_dev->flags |= (IFF_POINTOPOINT | IFF_NOARP);
++	}
+ }
  
-+	l2cap_sock_cleanup_listen(sk);
- 	bt_sock_unlink(&l2cap_sk_list, sk);
- 
- 	err = l2cap_sock_shutdown(sock, SHUT_RDWR);
+ /* On bonding slaves other than the currently active slave, suppress
+-- 
+2.39.2
+
 
 
