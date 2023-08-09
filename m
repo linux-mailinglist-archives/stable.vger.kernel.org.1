@@ -2,87 +2,159 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1D8C277596F
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:00:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 56075775D82
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:38:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232861AbjHILAZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:00:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44044 "EHLO
+        id S234126AbjHILiW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:38:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45928 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232858AbjHILAY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:00:24 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 41A71ED
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:00:24 -0700 (PDT)
+        with ESMTP id S234124AbjHILiW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:38:22 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A169310DC
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:38:21 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D61F3625AD
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:00:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6BFCC433C9;
-        Wed,  9 Aug 2023 11:00:22 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 36C9C635A5
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:38:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46B08C433C8;
+        Wed,  9 Aug 2023 11:38:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691578823;
-        bh=v5h+tYdujvm5cFiK8gO0xrMsONU7KRDjBCSvajPtnQQ=;
+        s=korg; t=1691581100;
+        bh=6hIdId1yqY9QBdbekgub2Y2doSMGNu3qzrtXTVKKTDU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=RxKZL0aWHXNFr4dGEdVHv6b7MK+GpPVJH0PqRTIYrkn29kCqd9pUnv0CcQvBfWWQv
-         9W0H1dA51Z7KPj6hpk/qJDra0rpiFmFPMZs+FJLYkxLHLnX74kYQT0k54nTVasWqL1
-         H/M3EKjlgdESYeDMwGHpAVefS66vjrZb40M3fk4o=
+        b=jcXnpuYabqKvgHOA0QV7V2W4qNdx02Ko16DRquNcAqeRb7l0uJH6f8tF6uO6tpW9u
+         noyJC2LC8dMdyYloa05MbD4UO0elMJU+q7GfI+XmAlIl3Mb99+I+MSSmi94VkUL3p1
+         Skep1xnUmcI8KaHgRIyhwE/42acKFRo+z6zTrYy8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Aleksa Sarai <cyphar@cyphar.com>,
-        Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 5.15 70/92] open: make RESOLVE_CACHED correctly test for O_TMPFILE
-Date:   Wed,  9 Aug 2023 12:41:46 +0200
-Message-ID: <20230809103635.992572073@linuxfoundation.org>
+        patches@lists.linux.dev, David Jeffery <djeffery@redhat.com>,
+        Joe Thornber <ejt@redhat.com>,
+        Mike Snitzer <snitzer@kernel.org>
+Subject: [PATCH 5.10 105/201] dm cache policy smq: ensure IO doesnt prevent cleaner policy progress
+Date:   Wed,  9 Aug 2023 12:41:47 +0200
+Message-ID: <20230809103647.319891193@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103633.485906560@linuxfoundation.org>
-References: <20230809103633.485906560@linuxfoundation.org>
+In-Reply-To: <20230809103643.799166053@linuxfoundation.org>
+References: <20230809103643.799166053@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Aleksa Sarai <cyphar@cyphar.com>
+From: Joe Thornber <ejt@redhat.com>
 
-commit a0fc452a5d7fed986205539259df1d60546f536c upstream.
+commit 1e4ab7b4c881cf26c1c72b3f56519e03475486fb upstream.
 
-O_TMPFILE is actually __O_TMPFILE|O_DIRECTORY. This means that the old
-fast-path check for RESOLVE_CACHED would reject all users passing
-O_DIRECTORY with -EAGAIN, when in fact the intended test was to check
-for __O_TMPFILE.
+When using the cleaner policy to decommission the cache, there is
+never any writeback started from the cache as it is constantly delayed
+due to normal I/O keeping the device busy. Meaning @idle=false was
+always being passed to clean_target_met()
 
-Cc: stable@vger.kernel.org # v5.12+
-Fixes: 99668f618062 ("fs: expose LOOKUP_CACHED through openat2() RESOLVE_CACHED")
-Signed-off-by: Aleksa Sarai <cyphar@cyphar.com>
-Message-Id: <20230806-resolve_cached-o_tmpfile-v1-1-7ba16308465e@cyphar.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Fix this by adding a specific 'cleaner' flag that is set when the
+cleaner policy is configured. This flag serves to always allow the
+cleaner's writeback work to be queued until the cache is
+decommissioned (even if the cache isn't idle).
+
+Reported-by: David Jeffery <djeffery@redhat.com>
+Fixes: b29d4986d0da ("dm cache: significant rework to leverage dm-bio-prison-v2")
+Cc: stable@vger.kernel.org
+Signed-off-by: Joe Thornber <ejt@redhat.com>
+Signed-off-by: Mike Snitzer <snitzer@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/open.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/md/dm-cache-policy-smq.c |   28 ++++++++++++++++++----------
+ 1 file changed, 18 insertions(+), 10 deletions(-)
 
---- a/fs/open.c
-+++ b/fs/open.c
-@@ -1126,7 +1126,7 @@ inline int build_open_flags(const struct
- 		lookup_flags |= LOOKUP_IN_ROOT;
- 	if (how->resolve & RESOLVE_CACHED) {
- 		/* Don't bother even trying for create/truncate/tmpfile open */
--		if (flags & (O_TRUNC | O_CREAT | O_TMPFILE))
-+		if (flags & (O_TRUNC | O_CREAT | __O_TMPFILE))
- 			return -EAGAIN;
- 		lookup_flags |= LOOKUP_CACHED;
- 	}
+--- a/drivers/md/dm-cache-policy-smq.c
++++ b/drivers/md/dm-cache-policy-smq.c
+@@ -854,7 +854,13 @@ struct smq_policy {
+ 
+ 	struct background_tracker *bg_work;
+ 
+-	bool migrations_allowed;
++	bool migrations_allowed:1;
++
++	/*
++	 * If this is set the policy will try and clean the whole cache
++	 * even if the device is not idle.
++	 */
++	bool cleaner:1;
+ };
+ 
+ /*----------------------------------------------------------------*/
+@@ -1133,7 +1139,7 @@ static bool clean_target_met(struct smq_
+ 	 * Cache entries may not be populated.  So we cannot rely on the
+ 	 * size of the clean queue.
+ 	 */
+-	if (idle) {
++	if (idle || mq->cleaner) {
+ 		/*
+ 		 * We'd like to clean everything.
+ 		 */
+@@ -1716,11 +1722,9 @@ static void calc_hotspot_params(sector_t
+ 		*hotspot_block_size /= 2u;
+ }
+ 
+-static struct dm_cache_policy *__smq_create(dm_cblock_t cache_size,
+-					    sector_t origin_size,
+-					    sector_t cache_block_size,
+-					    bool mimic_mq,
+-					    bool migrations_allowed)
++static struct dm_cache_policy *
++__smq_create(dm_cblock_t cache_size, sector_t origin_size, sector_t cache_block_size,
++	     bool mimic_mq, bool migrations_allowed, bool cleaner)
+ {
+ 	unsigned i;
+ 	unsigned nr_sentinels_per_queue = 2u * NR_CACHE_LEVELS;
+@@ -1807,6 +1811,7 @@ static struct dm_cache_policy *__smq_cre
+ 		goto bad_btracker;
+ 
+ 	mq->migrations_allowed = migrations_allowed;
++	mq->cleaner = cleaner;
+ 
+ 	return &mq->policy;
+ 
+@@ -1830,21 +1835,24 @@ static struct dm_cache_policy *smq_creat
+ 					  sector_t origin_size,
+ 					  sector_t cache_block_size)
+ {
+-	return __smq_create(cache_size, origin_size, cache_block_size, false, true);
++	return __smq_create(cache_size, origin_size, cache_block_size,
++			    false, true, false);
+ }
+ 
+ static struct dm_cache_policy *mq_create(dm_cblock_t cache_size,
+ 					 sector_t origin_size,
+ 					 sector_t cache_block_size)
+ {
+-	return __smq_create(cache_size, origin_size, cache_block_size, true, true);
++	return __smq_create(cache_size, origin_size, cache_block_size,
++			    true, true, false);
+ }
+ 
+ static struct dm_cache_policy *cleaner_create(dm_cblock_t cache_size,
+ 					      sector_t origin_size,
+ 					      sector_t cache_block_size)
+ {
+-	return __smq_create(cache_size, origin_size, cache_block_size, false, false);
++	return __smq_create(cache_size, origin_size, cache_block_size,
++			    false, false, true);
+ }
+ 
+ /*----------------------------------------------------------------*/
 
 
