@@ -2,129 +2,149 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 17E42775BB4
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:20:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A8EC2775D32
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:34:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233517AbjHILUK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:20:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53294 "EHLO
+        id S234039AbjHILet (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:34:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60826 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233511AbjHILUJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:20:09 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79483FA
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:20:08 -0700 (PDT)
+        with ESMTP id S234038AbjHILes (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:34:48 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1AD821FD8
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:34:48 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 17A77631D2
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:20:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24C76C433C7;
-        Wed,  9 Aug 2023 11:20:06 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A67CA634B7
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:34:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC8C6C433C9;
+        Wed,  9 Aug 2023 11:34:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691580007;
-        bh=GkTnCfG9CqE9cItvm7MTBbPF8bOrujndLn7AK3y/aow=;
+        s=korg; t=1691580887;
+        bh=URYyrGHGWo8Jp4kN9fMZ1jLdgXcNjrTwQWaG7ZbdGpQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ew8kAnZ2vBNWWTrNVnKTVB5Ws7S0CbAjIclX3/LHDooulat9s9XpHNT+Nib20xjdE
-         A7Ib488bN1DGD5UUvHu1vT8dslK3ak93+q3goSfPL58p6aaoJkw0KSDYxTa5EQKvyr
-         W5z7/KjMRC1awfy/ln8hgJmDVzTV7V3ADgx+wzes=
+        b=p9S9/DPY4xG+5N+Pn0O507qoemEYKffokX9a7uzWyLeQ9fzAWMbnMFfK/qjK3Eid1
+         Tb+x+ElrQxjtHilt9fRoLOCxSG/59oM9p9n0z1TRTT6E7eK0wqCvWoKUFzYcUsKvEH
+         +dx0smXJm3d5I++BFRXrWU9oP3HPSYrwAE4kLQhw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yu Kuai <yukuai3@huawei.com>,
-        Song Liu <song@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 194/323] md/raid10: prevent soft lockup while flush writes
+        patches@lists.linux.dev,
+        Guangbin Huang <huangguangbin2@huawei.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 030/201] net: hns3: reconstruct function hclge_ets_validate()
 Date:   Wed,  9 Aug 2023 12:40:32 +0200
-Message-ID: <20230809103707.052098422@linuxfoundation.org>
+Message-ID: <20230809103644.844736199@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
-References: <20230809103658.104386911@linuxfoundation.org>
+In-Reply-To: <20230809103643.799166053@linuxfoundation.org>
+References: <20230809103643.799166053@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Yu Kuai <yukuai3@huawei.com>
+From: Guangbin Huang <huangguangbin2@huawei.com>
 
-[ Upstream commit 010444623e7f4da6b4a4dd603a7da7469981e293 ]
+[ Upstream commit 161ad669e6c23529415bffed5cb3bfa012e46cb4 ]
 
-Currently, there is no limit for raid1/raid10 plugged bio. While flushing
-writes, raid1 has cond_resched() while raid10 doesn't, and too many
-writes can cause soft lockup.
+This patch reconstructs function hclge_ets_validate() to reduce the code
+cycle complexity and make code more concise.
 
-Follow up soft lockup can be triggered easily with writeback test for
-raid10 with ramdisks:
-
-watchdog: BUG: soft lockup - CPU#10 stuck for 27s! [md0_raid10:1293]
-Call Trace:
- <TASK>
- call_rcu+0x16/0x20
- put_object+0x41/0x80
- __delete_object+0x50/0x90
- delete_object_full+0x2b/0x40
- kmemleak_free+0x46/0xa0
- slab_free_freelist_hook.constprop.0+0xed/0x1a0
- kmem_cache_free+0xfd/0x300
- mempool_free_slab+0x1f/0x30
- mempool_free+0x3a/0x100
- bio_free+0x59/0x80
- bio_put+0xcf/0x2c0
- free_r10bio+0xbf/0xf0
- raid_end_bio_io+0x78/0xb0
- one_write_done+0x8a/0xa0
- raid10_end_write_request+0x1b4/0x430
- bio_endio+0x175/0x320
- brd_submit_bio+0x3b9/0x9b7 [brd]
- __submit_bio+0x69/0xe0
- submit_bio_noacct_nocheck+0x1e6/0x5a0
- submit_bio_noacct+0x38c/0x7e0
- flush_pending_writes+0xf0/0x240
- raid10d+0xac/0x1ed0
-
-Fix the problem by adding cond_resched() to raid10 like what raid1 did.
-
-Note that unlimited plugged bio still need to be optimized, for example,
-in the case of lots of dirty pages writeback, this will take lots of
-memory and io will spend a long time in plug, hence io latency is bad.
-
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
-Signed-off-by: Song Liu <song@kernel.org>
-Link: https://lore.kernel.org/r/20230529131106.2123367-2-yukuai1@huaweicloud.com
+Signed-off-by: Guangbin Huang <huangguangbin2@huawei.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: 882481b1c55f ("net: hns3: fix wrong bw weight of disabled tc issue")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/raid10.c | 2 ++
- 1 file changed, 2 insertions(+)
+ .../hisilicon/hns3/hns3pf/hclge_dcb.c         | 47 ++++++++++++++-----
+ 1 file changed, 35 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/md/raid10.c b/drivers/md/raid10.c
-index d46056b07c079..bee694be20132 100644
---- a/drivers/md/raid10.c
-+++ b/drivers/md/raid10.c
-@@ -942,6 +942,7 @@ static void flush_pending_writes(struct r10conf *conf)
- 			else
- 				generic_make_request(bio);
- 			bio = next;
-+			cond_resched();
- 		}
- 		blk_finish_plug(&plug);
- 	} else
-@@ -1127,6 +1128,7 @@ static void raid10_unplug(struct blk_plug_cb *cb, bool from_schedule)
- 		else
- 			generic_make_request(bio);
- 		bio = next;
-+		cond_resched();
- 	}
- 	kfree(plug);
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_dcb.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_dcb.c
+index 5bab885744fc8..c75794552a1a7 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_dcb.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_dcb.c
+@@ -105,26 +105,30 @@ static int hclge_dcb_common_validate(struct hclge_dev *hdev, u8 num_tc,
+ 	return 0;
  }
+ 
+-static int hclge_ets_validate(struct hclge_dev *hdev, struct ieee_ets *ets,
+-			      u8 *tc, bool *changed)
++static u8 hclge_ets_tc_changed(struct hclge_dev *hdev, struct ieee_ets *ets,
++			       bool *changed)
+ {
+-	bool has_ets_tc = false;
+-	u32 total_ets_bw = 0;
+-	u8 max_tc = 0;
+-	int ret;
++	u8 max_tc_id = 0;
+ 	u8 i;
+ 
+ 	for (i = 0; i < HNAE3_MAX_USER_PRIO; i++) {
+ 		if (ets->prio_tc[i] != hdev->tm_info.prio_tc[i])
+ 			*changed = true;
+ 
+-		if (ets->prio_tc[i] > max_tc)
+-			max_tc = ets->prio_tc[i];
++		if (ets->prio_tc[i] > max_tc_id)
++			max_tc_id = ets->prio_tc[i];
+ 	}
+ 
+-	ret = hclge_dcb_common_validate(hdev, max_tc + 1, ets->prio_tc);
+-	if (ret)
+-		return ret;
++	/* return max tc number, max tc id need to plus 1 */
++	return max_tc_id + 1;
++}
++
++static int hclge_ets_sch_mode_validate(struct hclge_dev *hdev,
++				       struct ieee_ets *ets, bool *changed)
++{
++	bool has_ets_tc = false;
++	u32 total_ets_bw = 0;
++	u8 i;
+ 
+ 	for (i = 0; i < HNAE3_MAX_TC; i++) {
+ 		switch (ets->tc_tsa[i]) {
+@@ -158,7 +162,26 @@ static int hclge_ets_validate(struct hclge_dev *hdev, struct ieee_ets *ets,
+ 	if (has_ets_tc && total_ets_bw != BW_PERCENT)
+ 		return -EINVAL;
+ 
+-	*tc = max_tc + 1;
++	return 0;
++}
++
++static int hclge_ets_validate(struct hclge_dev *hdev, struct ieee_ets *ets,
++			      u8 *tc, bool *changed)
++{
++	u8 tc_num;
++	int ret;
++
++	tc_num = hclge_ets_tc_changed(hdev, ets, changed);
++
++	ret = hclge_dcb_common_validate(hdev, tc_num, ets->prio_tc);
++	if (ret)
++		return ret;
++
++	ret = hclge_ets_sch_mode_validate(hdev, ets, changed);
++	if (ret)
++		return ret;
++
++	*tc = tc_num;
+ 	if (*tc != hdev->tm_info.num_tc)
+ 		*changed = true;
+ 
 -- 
 2.39.2
 
