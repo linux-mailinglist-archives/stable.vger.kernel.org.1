@@ -2,97 +2,153 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 234AF775C02
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:23:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B5760775C9A
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:29:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233614AbjHILXA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:23:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37968 "EHLO
+        id S233808AbjHIL3E (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:29:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42802 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233605AbjHILW7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:22:59 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3CB31FA
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:22:59 -0700 (PDT)
+        with ESMTP id S233804AbjHIL3D (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:29:03 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D827610D4
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:29:02 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D07526317E
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:22:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4D46C433C8;
-        Wed,  9 Aug 2023 11:22:57 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6D28C63307
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:29:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7647EC433C8;
+        Wed,  9 Aug 2023 11:29:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691580178;
-        bh=gKVFHwSXSmOUO+wu0kP45q87sKnNRbCF9coSPjK/g+Y=;
+        s=korg; t=1691580541;
+        bh=ftL66v6tpbr7JHeHa/t8K+XsWO91jDhSHt5WpNqZJvc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=QbGpBpalmH2WYNrkC9rKc+BG258RIsum73VZ16kSXGNoY2WTAXzq0l85D3aCANqKv
-         mF+9NkHKH67bG54ws5eTO4KDTvzU84dl72RWxmAA5arBHyLS8ZsXGTyZWMOlfoHqKL
-         YqeIm7+UQMocmG1K+ccoMq/XJJdhbnyGOWuf0yNc=
+        b=vnw2ogufsxrh9MX7gVNVGCnoYHg/G8VYybMDqsmPIOAc+YoYDSW3RbBPPOI0o1hFl
+         0L/beXUSmri+KYzFMj74rLAZYGirL4B5DQz+oeFpTJIY2SbQZNsrxJxDTpFfR4QKbe
+         Krjs80iyhs6PMRgHWnFEGCd7q9c2ZIl2kRIXrrWU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Sergey Shtylyov <s.shtylyov@omp.ru>,
-        Serge Semin <fancer.lancer@gmail.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Damien Le Moal <dlemoal@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 255/323] ata: pata_ns87415: mark ns87560_tf_read static
+        patches@lists.linux.dev,
+        Mauro Ribeiro <mauro.ribeiro@hardkernel.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
+        Jakub Vanek <linuxtardis@gmail.com>
+Subject: [PATCH 5.4 062/154] Revert "usb: dwc3: core: Enable AutoRetry feature in the controller"
 Date:   Wed,  9 Aug 2023 12:41:33 +0200
-Message-ID: <20230809103709.752208269@linuxfoundation.org>
+Message-ID: <20230809103639.051358136@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
-References: <20230809103658.104386911@linuxfoundation.org>
+In-Reply-To: <20230809103636.887175326@linuxfoundation.org>
+References: <20230809103636.887175326@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Jakub Vanek <linuxtardis@gmail.com>
 
-[ Upstream commit 3fc2febb0f8ffae354820c1772ec008733237cfa ]
+commit 734ae15ab95a18d3d425fc9cb38b7a627d786f08 upstream.
 
-The global function triggers a warning because of the missing prototype
+This reverts commit b138e23d3dff90c0494925b4c1874227b81bddf7.
 
-drivers/ata/pata_ns87415.c:263:6: warning: no previous prototype for 'ns87560_tf_read' [-Wmissing-prototypes]
-  263 | void ns87560_tf_read(struct ata_port *ap, struct ata_taskfile *tf)
+AutoRetry has been found to sometimes cause controller freezes when
+communicating with buggy USB devices.
 
-There are no other references to this, so just make it static.
+This controller feature allows the controller in host mode to send
+non-terminating/burst retry ACKs instead of terminating retry ACKs
+to devices when a transaction error (CRC error or overflow) occurs.
 
-Fixes: c4b5b7b6c4423 ("pata_ns87415: Initial cut at 87415/87560 IDE support")
-Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
-Reviewed-by: Serge Semin <fancer.lancer@gmail.com>
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Unfortunately, if the USB device continues to respond with a CRC error,
+the controller will not complete endpoint-related commands while it
+keeps trying to auto-retry. [3] The xHCI driver will notice this once
+it tries to abort the transfer using a Stop Endpoint command and
+does not receive a completion in time. [1]
+This situation is reported to dmesg:
+
+[sda] tag#29 uas_eh_abort_handler 0 uas-tag 1 inflight: CMD IN
+[sda] tag#29 CDB: opcode=0x28 28 00 00 69 42 80 00 00 48 00
+xhci-hcd: xHCI host not responding to stop endpoint command
+xhci-hcd: xHCI host controller not responding, assume dead
+xhci-hcd: HC died; cleaning up
+
+Some users observed this problem on an Odroid HC2 with the JMS578
+USB3-to-SATA bridge. The issue can be triggered by starting
+a read-heavy workload on an attached SSD. After a while, the host
+controller would die and the SSD would disappear from the system. [1]
+
+Further analysis by Synopsys determined that controller revisions
+other than the one in Odroid HC2 are also affected by this.
+The recommended solution was to disable AutoRetry altogether.
+This change does not have a noticeable performance impact. [2]
+
+Revert the enablement commit. This will keep the AutoRetry bit in
+the default state configured during SoC design [2].
+
+Fixes: b138e23d3dff ("usb: dwc3: core: Enable AutoRetry feature in the controller")
+Link: https://lore.kernel.org/r/a21f34c04632d250cd0a78c7c6f4a1c9c7a43142.camel@gmail.com/ [1]
+Link: https://lore.kernel.org/r/20230711214834.kyr6ulync32d4ktk@synopsys.com/ [2]
+Link: https://lore.kernel.org/r/20230712225518.2smu7wse6djc7l5o@synopsys.com/ [3]
+Cc: stable@vger.kernel.org
+Cc: Mauro Ribeiro <mauro.ribeiro@hardkernel.com>
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Suggested-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Signed-off-by: Jakub Vanek <linuxtardis@gmail.com>
+Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Link: https://lore.kernel.org/r/20230714122419.27741-1-linuxtardis@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ata/pata_ns87415.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/dwc3/core.c |   16 ----------------
+ drivers/usb/dwc3/core.h |    3 ---
+ 2 files changed, 19 deletions(-)
 
-diff --git a/drivers/ata/pata_ns87415.c b/drivers/ata/pata_ns87415.c
-index 84c6b225b56e9..9ee4aefca8675 100644
---- a/drivers/ata/pata_ns87415.c
-+++ b/drivers/ata/pata_ns87415.c
-@@ -260,7 +260,7 @@ static u8 ns87560_check_status(struct ata_port *ap)
-  *	LOCKING:
-  *	Inherited from caller.
-  */
--void ns87560_tf_read(struct ata_port *ap, struct ata_taskfile *tf)
-+static void ns87560_tf_read(struct ata_port *ap, struct ata_taskfile *tf)
- {
- 	struct ata_ioports *ioaddr = &ap->ioaddr;
+--- a/drivers/usb/dwc3/core.c
++++ b/drivers/usb/dwc3/core.c
+@@ -1010,22 +1010,6 @@ static int dwc3_core_init(struct dwc3 *d
+ 		dwc3_writel(dwc->regs, DWC3_GUCTL1, reg);
+ 	}
  
--- 
-2.40.1
-
+-	if (dwc->dr_mode == USB_DR_MODE_HOST ||
+-	    dwc->dr_mode == USB_DR_MODE_OTG) {
+-		reg = dwc3_readl(dwc->regs, DWC3_GUCTL);
+-
+-		/*
+-		 * Enable Auto retry Feature to make the controller operating in
+-		 * Host mode on seeing transaction errors(CRC errors or internal
+-		 * overrun scenerios) on IN transfers to reply to the device
+-		 * with a non-terminating retry ACK (i.e, an ACK transcation
+-		 * packet with Retry=1 & Nump != 0)
+-		 */
+-		reg |= DWC3_GUCTL_HSTINAUTORETRY;
+-
+-		dwc3_writel(dwc->regs, DWC3_GUCTL, reg);
+-	}
+-
+ 	/*
+ 	 * Must config both number of packets and max burst settings to enable
+ 	 * RX and/or TX threshold.
+--- a/drivers/usb/dwc3/core.h
++++ b/drivers/usb/dwc3/core.h
+@@ -246,9 +246,6 @@
+ #define DWC3_GCTL_GBLHIBERNATIONEN	BIT(1)
+ #define DWC3_GCTL_DSBLCLKGTNG		BIT(0)
+ 
+-/* Global User Control Register */
+-#define DWC3_GUCTL_HSTINAUTORETRY	BIT(14)
+-
+ /* Global User Control 1 Register */
+ #define DWC3_GUCTL1_PARKMODE_DISABLE_SS	BIT(17)
+ #define DWC3_GUCTL1_TX_IPGAP_LINECHECK_DIS	BIT(28)
 
 
