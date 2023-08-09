@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5C60B775761
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:45:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 07584775B75
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:17:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231658AbjHIKpT (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 06:45:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57566 "EHLO
+        id S233438AbjHILRl (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:17:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35172 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231634AbjHIKpT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:45:19 -0400
+        with ESMTP id S233444AbjHILRk (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:17:40 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BDFDE10F3
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:45:18 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 72D53FA
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:17:40 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5679963118
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:45:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65ABFC433C7;
-        Wed,  9 Aug 2023 10:45:17 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0A04C6317D
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:17:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14A5EC433C8;
+        Wed,  9 Aug 2023 11:17:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691577917;
-        bh=dozIg0AI47gtc5ZGFjZMCyWuX7KZFonahf6NewkCQLo=;
+        s=korg; t=1691579859;
+        bh=buP/FGRKPUxJthJElta5nZpJM7nRhZYn9P09UrslmWw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ntSOALiGWpgUNDdslEKHE53igm6ImYbZE5WoTCFp8dgr/lLHe5ynxnypNflaN8jn0
-         xSYb+ABC1dgUGTTQ3rAZzPRaeJdKn6uPqIW9LS9MNFYS5QI3hQkwwMokLsCxtm94Dh
-         gqUbLTyqsYdDY9THAhNtMDJp3Zv0rV/CtstfokFo=
+        b=T43JR+kPxDRe0SrXPKR5wSH2Qzd7J/Fo0pXx1d5NOr/xNGl4dJDbzNkjKieRz0U+a
+         M9uCyU3WfMPA1dN2ywTioWukqLrsqMKZ6Z73Muhf3Kq8RREB5RwXosA2OejL80Z5zL
+         O4Bqbk2y2ycN4DK1R5lPVlmlyaJRWcYgtK0wKAFA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jakub Kicinski <kuba@kernel.org>,
-        Lin Ma <linma@zju.edu.cn>,
-        Martin KaFai Lau <martin.lau@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 041/165] bpf: Add length check for SK_DIAG_BPF_STORAGE_REQ_MAP_FD parsing
+        patches@lists.linux.dev, Florent Revest <revest@chromium.org>,
+        Florian Westphal <fw@strlen.de>,
+        Pablo Neira Ayuso <pablo@netfilter.org>
+Subject: [PATCH 4.19 134/323] netfilter: conntrack: Avoid nf_ct_helper_hash uses after free
 Date:   Wed,  9 Aug 2023 12:39:32 +0200
-Message-ID: <20230809103644.153793014@linuxfoundation.org>
+Message-ID: <20230809103704.265098017@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103642.720851262@linuxfoundation.org>
-References: <20230809103642.720851262@linuxfoundation.org>
+In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
+References: <20230809103658.104386911@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,49 +55,51 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Lin Ma <linma@zju.edu.cn>
+From: Florent Revest <revest@chromium.org>
 
-[ Upstream commit bcc29b7f5af6797702c2306a7aacb831fc5ce9cb ]
+commit 6eef7a2b933885a17679eb8ed0796ddf0ee5309b upstream.
 
-The nla_for_each_nested parsing in function bpf_sk_storage_diag_alloc
-does not check the length of the nested attribute. This can lead to an
-out-of-attribute read and allow a malformed nlattr (e.g., length 0) to
-be viewed as a 4 byte integer.
+If nf_conntrack_init_start() fails (for example due to a
+register_nf_conntrack_bpf() failure), the nf_conntrack_helper_fini()
+clean-up path frees the nf_ct_helper_hash map.
 
-This patch adds an additional check when the nlattr is getting counted.
-This makes sure the latter nla_get_u32 can access the attributes with
-the correct length.
+When built with NF_CONNTRACK=y, further netfilter modules (e.g:
+netfilter_conntrack_ftp) can still be loaded and call
+nf_conntrack_helpers_register(), independently of whether nf_conntrack
+initialized correctly. This accesses the nf_ct_helper_hash dangling
+pointer and causes a uaf, possibly leading to random memory corruption.
 
-Fixes: 1ed4d92458a9 ("bpf: INET_DIAG support in bpf_sk_storage")
-Suggested-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Lin Ma <linma@zju.edu.cn>
-Reviewed-by: Jakub Kicinski <kuba@kernel.org>
-Link: https://lore.kernel.org/r/20230725023330.422856-1-linma@zju.edu.cn
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This patch guards nf_conntrack_helper_register() from accessing a freed
+or uninitialized nf_ct_helper_hash pointer and fixes possible
+uses-after-free when loading a conntrack module.
+
+Cc: stable@vger.kernel.org
+Fixes: 12f7a505331e ("netfilter: add user-space connection tracking helper infrastructure")
+Signed-off-by: Florent Revest <revest@chromium.org>
+Reviewed-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/bpf_sk_storage.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ net/netfilter/nf_conntrack_helper.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/net/core/bpf_sk_storage.c b/net/core/bpf_sk_storage.c
-index d4172534dfa8d..cca7594be92ec 100644
---- a/net/core/bpf_sk_storage.c
-+++ b/net/core/bpf_sk_storage.c
-@@ -496,8 +496,11 @@ bpf_sk_storage_diag_alloc(const struct nlattr *nla_stgs)
- 		return ERR_PTR(-EPERM);
+--- a/net/netfilter/nf_conntrack_helper.c
++++ b/net/netfilter/nf_conntrack_helper.c
+@@ -400,6 +400,9 @@ int nf_conntrack_helper_register(struct
+ 	BUG_ON(me->expect_class_max >= NF_CT_MAX_EXPECT_CLASSES);
+ 	BUG_ON(strlen(me->name) > NF_CT_HELPER_NAME_LEN - 1);
  
- 	nla_for_each_nested(nla, nla_stgs, rem) {
--		if (nla_type(nla) == SK_DIAG_BPF_STORAGE_REQ_MAP_FD)
-+		if (nla_type(nla) == SK_DIAG_BPF_STORAGE_REQ_MAP_FD) {
-+			if (nla_len(nla) != sizeof(u32))
-+				return ERR_PTR(-EINVAL);
- 			nr_maps++;
-+		}
- 	}
++	if (!nf_ct_helper_hash)
++		return -ENOENT;
++
+ 	if (me->expect_policy->max_expected > NF_CT_EXPECT_MAX_CNT)
+ 		return -EINVAL;
  
- 	diag = kzalloc(struct_size(diag, maps, nr_maps), GFP_KERNEL);
--- 
-2.40.1
-
+@@ -570,4 +573,5 @@ void nf_conntrack_helper_fini(void)
+ {
+ 	nf_ct_extend_unregister(&helper_extend);
+ 	kvfree(nf_ct_helper_hash);
++	nf_ct_helper_hash = NULL;
+ }
 
 
