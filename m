@@ -2,48 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 63538775994
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:01:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5C904775CC0
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:30:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232908AbjHILBq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:01:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33294 "EHLO
+        id S233853AbjHILaf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:30:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52798 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232903AbjHILBp (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:01:45 -0400
+        with ESMTP id S233855AbjHILae (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:30:34 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 757A11FD8
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:01:43 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 90B841724
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:30:34 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0B51862496
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:01:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DECCC433C7;
-        Wed,  9 Aug 2023 11:01:41 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 26DCA6336D
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:30:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37083C433CA;
+        Wed,  9 Aug 2023 11:30:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691578902;
-        bh=5XPJXTNE/wYZRo/ACyYJAp1PDhNx6zXcO8dtZTkicE4=;
+        s=korg; t=1691580633;
+        bh=yeCj+cu0WTpcJuybK+JcehKxFnsCFcdMLJJYTrY8kVw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=UQ8a0dh7l9inJLPaEIIjDLMHZJk70xLbdpfHxkUmSz4cFupHZosDelFtSXBaMjau3
-         +7gy57NDk/Od5V4IrlQGoxMlWHSwFNTMMgPQbdRSDfoAU3O8mtw2q0r7aTyLYxoxz8
-         kGkH8iMVab8Xqq9KHEXnI87esj549mY5taIvNB7M=
+        b=e6A6n1ZwEo6GO7kfnq+4nAkm2/mB4ffb1Ui5h4k+2Obx5huOFmy9B9su1MbOTv2ht
+         dKZkJ9dDRTeiUbisjtqvgI5ANG1Uz+PTPtzLJDtJTgvV7V6SjW+NW7u4z/5QKvh1tx
+         z1ESCgU2ZtSVfcdc6s5o+K/DrBi+MbuM7xPfhwVQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-        Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
-        Rander Wang <rander.wang@intel.com>,
-        Bard Liao <yung-chuan.liao@linux.intel.com>,
-        Vinod Koul <vkoul@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 89/92] soundwire: bus: pm_runtime_request_resume on peripheral attachment
-Date:   Wed,  9 Aug 2023 12:42:05 +0200
-Message-ID: <20230809103636.604257036@linuxfoundation.org>
+        patches@lists.linux.dev, Zhengchao Shao <shaozhengchao@huawei.com>,
+        Leon Romanovsky <leonro@nvidia.com>,
+        Saeed Mahameed <saeedm@nvidia.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 095/154] net/mlx5: DR, fix memory leak in mlx5dr_cmd_create_reformat_ctx
+Date:   Wed,  9 Aug 2023 12:42:06 +0200
+Message-ID: <20230809103640.123863475@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103633.485906560@linuxfoundation.org>
-References: <20230809103633.485906560@linuxfoundation.org>
+In-Reply-To: <20230809103636.887175326@linuxfoundation.org>
+References: <20230809103636.887175326@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -58,65 +56,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+From: Zhengchao Shao <shaozhengchao@huawei.com>
 
-[ Upstream commit e557bca49b812908f380c56b5b4b2f273848b676 ]
+[ Upstream commit 5dd77585dd9d0e03dd1bceb95f0269a7eaf6b936 ]
 
-In typical use cases, the peripheral becomes pm_runtime active as a
-result of the ALSA/ASoC framework starting up a DAI. The parent/child
-hierarchy guarantees that the manager device will be fully resumed
-beforehand.
+when mlx5_cmd_exec failed in mlx5dr_cmd_create_reformat_ctx, the memory
+pointed by 'in' is not released, which will cause memory leak. Move memory
+release after mlx5_cmd_exec.
 
-There is however a corner case where the manager device may become
-pm_runtime active, but without ALSA/ASoC requesting any functionality
-from the peripherals. In this case, the hardware peripheral device
-will report as ATTACHED and its initialization routine will be
-executed. If this initialization routine initiates any sort of
-deferred processing, there is a possibility that the manager could
-suspend without the peripheral suspend sequence being invoked: from
-the pm_runtime framework perspective, the peripheral is *already*
-suspended.
-
-To avoid such disconnects between hardware state and pm_runtime state,
-this patch adds an asynchronous pm_request_resume() upon successful
-attach/initialization which will result in the proper resume/suspend
-sequence to be followed on the peripheral side.
-
-BugLink: https://github.com/thesofproject/linux/issues/3459
-Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
-Reviewed-by: Rander Wang <rander.wang@intel.com>
-Signed-off-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-Link: https://lore.kernel.org/r/20220420023241.14335-4-yung-chuan.liao@linux.intel.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Stable-dep-of: c40d6b3249b1 ("soundwire: fix enumeration completion")
+Fixes: 1d9186476e12 ("net/mlx5: DR, Add direct rule command utilities")
+Signed-off-by: Zhengchao Shao <shaozhengchao@huawei.com>
+Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
+Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soundwire/bus.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ drivers/net/ethernet/mellanox/mlx5/core/steering/dr_cmd.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/soundwire/bus.c b/drivers/soundwire/bus.c
-index b7cdfa65157c6..cc4cca0325b98 100644
---- a/drivers/soundwire/bus.c
-+++ b/drivers/soundwire/bus.c
-@@ -1841,6 +1841,18 @@ int sdw_handle_slave_status(struct sdw_bus *bus,
- 				__func__, slave->dev_num);
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/steering/dr_cmd.c b/drivers/net/ethernet/mellanox/mlx5/core/steering/dr_cmd.c
+index 64f6f529f6eb1..45b90c7698787 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/steering/dr_cmd.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/steering/dr_cmd.c
+@@ -423,11 +423,12 @@ int mlx5dr_cmd_create_reformat_ctx(struct mlx5_core_dev *mdev,
  
- 			complete(&slave->initialization_complete);
-+
-+			/*
-+			 * If the manager became pm_runtime active, the peripherals will be
-+			 * restarted and attach, but their pm_runtime status may remain
-+			 * suspended. If the 'update_slave_status' callback initiates
-+			 * any sort of deferred processing, this processing would not be
-+			 * cancelled on pm_runtime suspend.
-+			 * To avoid such zombie states, we queue a request to resume.
-+			 * This would be a no-op in case the peripheral was being resumed
-+			 * by e.g. the ALSA/ASoC framework.
-+			 */
-+			pm_request_resume(&slave->dev);
- 		}
- 	}
+ 	err = mlx5_cmd_exec(mdev, in, inlen, out, sizeof(out));
+ 	if (err)
+-		return err;
++		goto err_free_in;
+ 
+ 	*reformat_id = MLX5_GET(alloc_packet_reformat_context_out, out, packet_reformat_id);
+-	kvfree(in);
+ 
++err_free_in:
++	kvfree(in);
+ 	return err;
+ }
  
 -- 
 2.40.1
