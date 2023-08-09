@@ -2,144 +2,103 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F316577646D
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 17:53:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3F55C776498
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 17:58:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231143AbjHIPxR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 11:53:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48612 "EHLO
+        id S231151AbjHIP6p (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 11:58:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45652 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229766AbjHIPxR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 11:53:17 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D80E21729
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 08:53:16 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6E58763F8A
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 15:53:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AF8DC433C7;
-        Wed,  9 Aug 2023 15:53:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1691596395;
-        bh=ALLjYqZbkmaGE+rNCuSF7+oeLIjD7AcQvqF7AIT3qqs=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=UVzbUwHl+K6Nn8L5+3YuHWczmQEg73MEzwODZHOixeOvmqhrNBpEk7hQAL7mm+YRI
-         0mYMuBCQSjAr59mWtSokDYqA8lAdk0xGiAaUXXKlwrEmZ6isAQowzmi8sWW7N+ZlGd
-         zOoarJtHXOtTCYsEO1TWaMxMSwUmuU/IDwajwgTKXRSgEHsjZxScc6u9a76t6bRvY3
-         rpf0joPfv2kjB7ZZXb/x3L42kRgpJVQqBwUH6EVlTcqHiwJYANHRQ+Y/QkBpMvt+vF
-         KEm6QMY7L0ZCziC0IB9PDWXod1HlexoJCE4uUI7s16ZkxQtmJLCrRTIoMdr+jmaBo+
-         TbPqxk4rkhkLg==
-Date:   Wed, 9 Aug 2023 08:53:13 -0700
-From:   Nathan Chancellor <nathan@kernel.org>
-To:     Nick Desaulniers <ndesaulniers@google.com>
-Cc:     Naresh Kamboju <naresh.kamboju@linaro.org>,
-        linux-stable <stable@vger.kernel.org>,
-        clang-built-linux <llvm@lists.linux.dev>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Sasha Levin <sashal@kernel.org>,
-        Anders Roxell <anders.roxell@linaro.org>,
-        Arnd Bergmann <arnd@arndb.de>, Borislav Petkov <bp@alien8.de>,
-        Peter Zijlstra <peterz@infradead.org>
-Subject: Re: ld.lld: error: ./arch/x86/kernel/vmlinux.lds:191: at least one
- side of the expression must be absolute
-Message-ID: <20230809155313.GA835802@dev-arch.thelio-3990X>
-References: <CA+G9fYsdUeNu-gwbs0+T6XHi4hYYk=Y9725-wFhZ7gJMspLDRA@mail.gmail.com>
- <CA+G9fYvDa-u22+gXt7VRWcQkCJFHvt2FPnjFmbwLX0bY__QrLg@mail.gmail.com>
- <CAKwvOdmjAZ9BacrNYHEgGcs=6PExfZkNYe4VWrCwkDCk_pOmyg@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAKwvOdmjAZ9BacrNYHEgGcs=6PExfZkNYe4VWrCwkDCk_pOmyg@mail.gmail.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+        with ESMTP id S230133AbjHIP6o (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 11:58:44 -0400
+Received: from abi149hd127.arn1.oracleemaildelivery.com (abi149hd127.arn1.oracleemaildelivery.com [129.149.84.127])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B03ED1FFE
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 08:58:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=oci-arn1-20220924;
+ d=augustwikerfors.se;
+ h=Date:To:From:Subject:Message-Id:MIME-Version:Sender;
+ bh=wJbRNyHi8yoNQasim14sSnWXoA8mCY7kOtEKklhD9LI=;
+ b=ALcv05k++y44xeffdk0vwwr4NJDRAm33D0wA93M2I4QUaWQw4IzW2T0FKWvYT3UC+VhuI4CLqWZr
+   KuEFHQ4PyDaLSSGWQ9aIPg+2lMDz0EnAJzMYAoDfr0MP5SclJkfbXSpJCFJbDaZB2uYgwmgeAEZm
+   lxdJcVWkPZyF1oAeQxqzYA6jxoqQODjKD1ONYK9CbpTpovARSlxcR8cBEAY+J/nxPkUODvwgEjz5
+   oNbW5yWxOJWRxasW/kSQVyDLZy4lKMwiAmo6tVPNT9TLgd1Qj+FCJhBE77+A8mJTMoK+KbQ5q9Vc
+   9VvRtsII3sEe1ARJikRih3h1Kxk1FwEIq8Cdhw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=prod-arn-20211201;
+ d=arn1.rp.oracleemaildelivery.com;
+ h=Date:To:From:Subject:Message-Id:MIME-Version:Sender;
+ bh=wJbRNyHi8yoNQasim14sSnWXoA8mCY7kOtEKklhD9LI=;
+ b=N2gBetHlAq0OqxQQCFmtN/Wvw3AbVpd9totApijuZcCblmppefqRzehXgWWMNZ2Kh0YIZ7jD+6MT
+   jY3JQ/X9QobD0hiROTPXSr/mOne0Oj3aqFmhzQCbhyI7Ojzv4DVCh79szptimVh2rv/sgFIsrXI4
+   0QE9Rki/wDvawFUIqBkpb4rVLqGVwjosYSQxLxoFaJHwzoruCk2AbLO592+0g/6jQOzRpLF3mwdq
+   As4cv2RvHl0DZJOVdENVv5BIv6hdHZYhG96PMAToPc1B+9laoCijS7bRRnl1LbaO+Sx64d8r/05g
+   6YFm4PbWqFykqf2p13DC4IDi8NjZHOJ9XU0lpQ==
+Received: by omta-ad1-fd2-401-eu-stockholm-1.omtaad1.vcndparn.oraclevcn.com
+ (Oracle Communications Messaging Server 8.1.0.1.20230707 64bit (built Jul  7
+ 2023))
+ with ESMTPS id <0RZ4004QESDHNXD0@omta-ad1-fd2-401-eu-stockholm-1.omtaad1.vcndparn.oraclevcn.com>
+ for stable@vger.kernel.org; Wed, 09 Aug 2023 15:58:29 +0000 (GMT)
+Message-id: <6a6fa2ba-c07d-45b2-96c5-b0f44f5f288b@augustwikerfors.se>
+Date:   Wed, 9 Aug 2023 17:58:25 +0200
+MIME-version: 1.0
+Subject: Re: [PATCH v3 3/3] ACPI: resource: Honor MADT INT_SRC_OVR settings for
+ IRQ1 on AMD Zen
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        Linux regressions mailing list <regressions@lists.linux.dev>,
+        stable@vger.kernel.org, linux-acpi@vger.kernel.org, x86@kernel.org
+References: <20230809085526.84913-1-hdegoede@redhat.com>
+ <20230809085526.84913-4-hdegoede@redhat.com>
+Content-language: en-US
+From:   August Wikerfors <git@augustwikerfors.se>
+In-reply-to: <20230809085526.84913-4-hdegoede@redhat.com>
+Content-type: text/plain; charset=UTF-8; format=flowed
+Content-transfer-encoding: 7bit
+Reporting-Meta: AAEnYWVjk7Vvuxio3PH4r2Bu30R2r5iymG9J69E5kFnUIZYVKHhD1P6r9DekHpXi
+ KOBUp4dsB38XhXFLQyPh7AxmivqcTZlDoZlgZJ709zSTK2OcwgF/ZfinuA30Iz4l
+ V4RgzLHDSoEbmQvJ4vSNEExb09BadRwb5xyoVkWwMQS25T1yJGcyf61LKjV49jgE
+ fB3pp55Z9V7LCyV2Dinct8EEG0UC7zVQBWYZd1seaCN+vEUM0yKdTH8KK18+0omg
+ 4fVQxSYtXkIGFyc+pkUdskH5lNQuNzd9g+tq0DeOvU14VOOGfzAZwi7Ylxs0E6Gm
+ lzLA69+pN+2+JEaudAQWjriEcRsz3zZFZ0IVG7hGGjYpjAHkIgEk2aTYQ8+I16ZW
+ GP3thOt70HVlzYV/V7aGVxgWWuEbbiVw92ByPytg62aVTHPbMMkQOuQEws1PqOhW vQ==
+X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, Aug 09, 2023 at 08:47:08AM -0700, Nick Desaulniers wrote:
-> Thanks for the report. We're tracking this here
-> https://github.com/ClangBuiltLinux/linux/issues/1907
-> It was pointed out that PeterZ has a series reworking this code entirely:
-> https://lore.kernel.org/lkml/20230809071218.000335006@infradead.org/
-
-As I pointed out in that issue, I don't think that series helps us with
-this issue but I will try to test shortly (the patches did not apply
-cleanly but I have not looked into why yet).
-
-> On Tue, Aug 8, 2023 at 11:25 PM Naresh Kamboju
-> <naresh.kamboju@linaro.org> wrote:
-> >
-> > also noticed on stable-rc 5.15 and 5.10.
+On 2023-08-09 10:55, Hans de Goede wrote:
+> On AMD Zen acpi_dev_irq_override() by default prefers the DSDT IRQ 1
+> settings over the MADT settings.
 > 
-> That's troubling if stable is already picking up patches that are
-> breaking the build!
-
-Those patches are already released in stable, they were basically
-released at the same time as they were merged into mainline:
-
-https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/log/?h=linux-6.4.y
-https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/log/?h=linux-6.1.y
-https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/log/?h=linux-5.15.y
-https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/log/?h=linux-5.10.y
-
-Cheers,
-Nathan
-
-> > On Wed, 9 Aug 2023 at 11:40, Naresh Kamboju <naresh.kamboju@linaro.org> wrote:
-> > >
-> > > While building Linux stable rc 6.1 x86_64 with clang-17 failed due to
-> > > following warnings / errors.
-> > >
-> > > make --silent --keep-going --jobs=8
-> > > O=/home/tuxbuild/.cache/tuxmake/builds/2/build ARCH=x86_64 SRCARCH=x86
-> > > CROSS_COMPILE=x86_64-linux-gnu- 'HOSTCC=sccache clang' 'CC=sccache
-> > > clang' LLVM=1 LLVM_IAS=1
-> > >
-> > > arch/x86/lib/retpoline.o: warning: objtool: .altinstr_replacement:
-> > > unexpected end of section
-> > > ld.lld: error: ./arch/x86/kernel/vmlinux.lds:191: at least one side of
-> > > the expression must be absolute
-> > > ld.lld: error: ./arch/x86/kernel/vmlinux.lds:192: at least one side of
-> > > the expression must be absolute
-> > > ld.lld: error: ./arch/x86/kernel/vmlinux.lds:191: at least one side of
-> > > the expression must be absolute
-> > > ld.lld: error: ./arch/x86/kernel/vmlinux.lds:192: at least one side of
-> > > the expression must be absolute
-> > > ld.lld: error: ./arch/x86/kernel/vmlinux.lds:191: at least one side of
-> > > the expression must be absolute
-> > > ld.lld: error: ./arch/x86/kernel/vmlinux.lds:192: at least one side of
-> > > the expression must be absolute
-> > > make[2]: *** [scripts/Makefile.vmlinux:34: vmlinux] Error 1
-> > > make[2]: Target '__default' not remade because of errors.
-> > > make[1]: *** [Makefile:1255: vmlinux] Error 2
-> > >
-> > >
-> > > Build links,
-> > >  - https://storage.tuxsuite.com/public/linaro/lkft/builds/2TiTUgExGs7SrTm9Lb4fakgeTfw/
-> > >  - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.1.y/build/v6.1.44-117-g74848b090997/testrun/18917095/suite/build/test/clang-lkftconfig/details/
-> > >  - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.1.y/build/v6.1.44-117-g74848b090997/testrun/18917095/suite/build/test/clang-lkftconfig/history/
-> > >
-> > > Steps to reproduce:
-> > >   tuxmake --runtime podman --target-arch x86_64 --toolchain clang-17
-> > > --kconfig https://storage.tuxsuite.com/public/linaro/lkft/builds/2TiTUgExGs7SrTm9Lb4fakgeTfw/config
-> > > LLVM=1 LLVM_IAS=1
-> > >   https://storage.tuxsuite.com/public/linaro/lkft/builds/2TiTUgExGs7SrTm9Lb4fakgeTfw/tuxmake_reproducer.sh
-> > >
-> > >
-> > > --
-> > > Linaro LKFT
-> > > https://lkft.linaro.org
+> This causes the keyboard to malfunction on some laptop models
+> (see Links), all models from the Links have an INT_SRC_OVR MADT entry
+> for IRQ 1.
 > 
-> 
-> 
-> -- 
-> Thanks,
-> ~Nick Desaulniers
+> Fixes: a9c4a912b7dc ("ACPI: resource: Remove "Zen" specific match and quirks")
+> Link: https://bugzilla.kernel.org/show_bug.cgi?id=217336
+> Link: https://bugzilla.kernel.org/show_bug.cgi?id=217394
+> Link: https://bugzilla.kernel.org/show_bug.cgi?id=217406
+> Cc: Mario Limonciello <mario.limonciello@amd.com>
+> Cc: Linux regressions mailing list <regressions@lists.linux.dev>
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+
+One of the laptops fixed by a9c4a912b7dc, PCSpecialist Elimina Pro 16 M 
+[1], seems to have no INT_SRC_OVR entry for IRQ 1 [2]:
+
+> [    0.084265] ACPI: INT_SRC_OVR (bus 0 bus_irq 0 global_irq 2 dfl dfl)
+> [    0.084266] ACPI: INT_SRC_OVR (bus 0 bus_irq 9 global_irq 9 low level)
+
+I'm not sure if it was IRQ 1 that needed to be overridden for that model 
+though, so it may work anyway with patch 2 of this series.
+
+[1] https://bugzilla.kernel.org/show_bug.cgi?id=217394#c18
+[2] https://bugzilla.kernel.org/attachment.cgi?id=304338
+
+Regards,
+August Wikerfors
