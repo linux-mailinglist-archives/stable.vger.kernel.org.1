@@ -2,180 +2,97 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A859D775BA1
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:19:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 02BFB775D20
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:34:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233499AbjHILTZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:19:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57516 "EHLO
+        id S234000AbjHILeK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:34:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41992 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233489AbjHILTY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:19:24 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB385ED
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:19:23 -0700 (PDT)
+        with ESMTP id S234001AbjHILeJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:34:09 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 73CB51BFE
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:34:08 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 51FA4631A7
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:19:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6300BC433C8;
-        Wed,  9 Aug 2023 11:19:22 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 13EA563486
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:34:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FE3DC433C7;
+        Wed,  9 Aug 2023 11:34:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691579962;
-        bh=sX0Zht94Q2STCWy2LnNTRo8cLf4aOeFVCLT0o6khzZg=;
+        s=korg; t=1691580847;
+        bh=9X6dGSt48HQhRg93b1piqbxRQPQyjkj9oKRBXmYNEcA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=eInmpcH1qDF1bs+fKb3QzgE8fAWzxG2+eRTcm+jF1ShwnYBN01cBjGxMzO5Jngu5g
-         9EGOIZ6UJe/lYP3u+96q12Wgo4QslJGwh++srnOEnLxxmc5kzI46fC2+FQs+Nt1jxZ
-         WYaN2dOi2n7FLMeZT1kkBPa7tbDfO6crOSUn9vrg=
+        b=xl5jcJX/jzeBaaHBZT5kji5m4A0ZRsiSzoKapG4OHiRqQykJQGkDxlPfuD0ONNhqW
+         UpsheBqDjClPWq6NOLXRNKuyxQcbJnZ8snVSfDOCTPtWAukAvACvZB4kVlVCpBVWd9
+         Hxd0/9WjaQA8NyYNfbGppOMJuFOmIFkHCPchkup4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zheng Yejian <zhengyejian1@huawei.com>,
-        "Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 4.19 179/323] ring-buffer: Fix deadloop issue on reading trace_pipe
-Date:   Wed,  9 Aug 2023 12:40:17 +0200
-Message-ID: <20230809103706.339331251@linuxfoundation.org>
+        patches@lists.linux.dev, Alexander Aring <aahringo@redhat.com>,
+        David Teigland <teigland@redhat.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 016/201] fs: dlm: interrupt posix locks only when process is killed
+Date:   Wed,  9 Aug 2023 12:40:18 +0200
+Message-ID: <20230809103644.359053178@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
-References: <20230809103658.104386911@linuxfoundation.org>
+In-Reply-To: <20230809103643.799166053@linuxfoundation.org>
+References: <20230809103643.799166053@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Zheng Yejian <zhengyejian1@huawei.com>
+From: Alexander Aring <aahringo@redhat.com>
 
-commit 7e42907f3a7b4ce3a2d1757f6d78336984daf8f5 upstream.
+[ Upstream commit 59e45c758ca1b9893ac923dd63536da946ac333b ]
 
-Soft lockup occurs when reading file 'trace_pipe':
-
-  watchdog: BUG: soft lockup - CPU#6 stuck for 22s! [cat:4488]
-  [...]
-  RIP: 0010:ring_buffer_empty_cpu+0xed/0x170
-  RSP: 0018:ffff88810dd6fc48 EFLAGS: 00000246
-  RAX: 0000000000000000 RBX: 0000000000000246 RCX: ffffffff93d1aaeb
-  RDX: ffff88810a280040 RSI: 0000000000000008 RDI: ffff88811164b218
-  RBP: ffff88811164b218 R08: 0000000000000000 R09: ffff88815156600f
-  R10: ffffed102a2acc01 R11: 0000000000000001 R12: 0000000051651901
-  R13: 0000000000000000 R14: ffff888115e49500 R15: 0000000000000000
-  [...]
-  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-  CR2: 00007f8d853c2000 CR3: 000000010dcd8000 CR4: 00000000000006e0
-  DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-  DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-  Call Trace:
-   __find_next_entry+0x1a8/0x4b0
-   ? peek_next_entry+0x250/0x250
-   ? down_write+0xa5/0x120
-   ? down_write_killable+0x130/0x130
-   trace_find_next_entry_inc+0x3b/0x1d0
-   tracing_read_pipe+0x423/0xae0
-   ? tracing_splice_read_pipe+0xcb0/0xcb0
-   vfs_read+0x16b/0x490
-   ksys_read+0x105/0x210
-   ? __ia32_sys_pwrite64+0x200/0x200
-   ? switch_fpu_return+0x108/0x220
-   do_syscall_64+0x33/0x40
-   entry_SYSCALL_64_after_hwframe+0x61/0xc6
-
-Through the vmcore, I found it's because in tracing_read_pipe(),
-ring_buffer_empty_cpu() found some buffer is not empty but then it
-cannot read anything due to "rb_num_of_entries() == 0" always true,
-Then it infinitely loop the procedure due to user buffer not been
-filled, see following code path:
-
-  tracing_read_pipe() {
-    ... ...
-    waitagain:
-      tracing_wait_pipe() // 1. find non-empty buffer here
-      trace_find_next_entry_inc()  // 2. loop here try to find an entry
-        __find_next_entry()
-          ring_buffer_empty_cpu();  // 3. find non-empty buffer
-          peek_next_entry()  // 4. but peek always return NULL
-            ring_buffer_peek()
-              rb_buffer_peek()
-                rb_get_reader_page()
-                  // 5. because rb_num_of_entries() == 0 always true here
-                  //    then return NULL
-      // 6. user buffer not been filled so goto 'waitgain'
-      //    and eventually leads to an deadloop in kernel!!!
-  }
-
-By some analyzing, I found that when resetting ringbuffer, the 'entries'
-of its pages are not all cleared (see rb_reset_cpu()). Then when reducing
-the ringbuffer, and if some reduced pages exist dirty 'entries' data, they
-will be added into 'cpu_buffer->overrun' (see rb_remove_pages()), which
-cause wrong 'overrun' count and eventually cause the deadloop issue.
-
-To fix it, we need to clear every pages in rb_reset_cpu().
-
-Link: https://lore.kernel.org/linux-trace-kernel/20230708225144.3785600-1-zhengyejian1@huawei.com
+If a posix lock request is waiting for a result from user space
+(dlm_controld), do not let it be interrupted unless the process
+is killed. This reverts commit a6b1533e9a57 ("dlm: make posix locks
+interruptible"). The problem with the interruptible change is
+that all locks were cleared on any signal interrupt. If a signal
+was received that did not terminate the process, the process
+could continue running after all its dlm posix locks had been
+cleared. A future patch will add cancelation to allow proper
+interruption.
 
 Cc: stable@vger.kernel.org
-Fixes: a5fb833172eca ("ring-buffer: Fix uninitialized read_stamp")
-Signed-off-by: Zheng Yejian <zhengyejian1@huawei.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: a6b1533e9a57 ("dlm: make posix locks interruptible")
+Signed-off-by: Alexander Aring <aahringo@redhat.com>
+Signed-off-by: David Teigland <teigland@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/ring_buffer.c |   24 +++++++++++++++---------
- 1 file changed, 15 insertions(+), 9 deletions(-)
+ fs/dlm/plock.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/kernel/trace/ring_buffer.c
-+++ b/kernel/trace/ring_buffer.c
-@@ -4408,28 +4408,34 @@ unsigned long ring_buffer_size(struct ri
- }
- EXPORT_SYMBOL_GPL(ring_buffer_size);
+diff --git a/fs/dlm/plock.c b/fs/dlm/plock.c
+index 01fb7d8c0bca5..f3482e936cc25 100644
+--- a/fs/dlm/plock.c
++++ b/fs/dlm/plock.c
+@@ -159,7 +159,7 @@ int dlm_posix_lock(dlm_lockspace_t *lockspace, u64 number, struct file *file,
  
-+static void rb_clear_buffer_page(struct buffer_page *page)
-+{
-+	local_set(&page->write, 0);
-+	local_set(&page->entries, 0);
-+	rb_init_page(page->page);
-+	page->read = 0;
-+}
-+
- static void
- rb_reset_cpu(struct ring_buffer_per_cpu *cpu_buffer)
- {
-+	struct buffer_page *page;
-+
- 	rb_head_page_deactivate(cpu_buffer);
+ 	send_op(op);
  
- 	cpu_buffer->head_page
- 		= list_entry(cpu_buffer->pages, struct buffer_page, list);
--	local_set(&cpu_buffer->head_page->write, 0);
--	local_set(&cpu_buffer->head_page->entries, 0);
--	local_set(&cpu_buffer->head_page->page->commit, 0);
--
--	cpu_buffer->head_page->read = 0;
-+	rb_clear_buffer_page(cpu_buffer->head_page);
-+	list_for_each_entry(page, cpu_buffer->pages, list) {
-+		rb_clear_buffer_page(page);
-+	}
- 
- 	cpu_buffer->tail_page = cpu_buffer->head_page;
- 	cpu_buffer->commit_page = cpu_buffer->head_page;
- 
- 	INIT_LIST_HEAD(&cpu_buffer->reader_page->list);
- 	INIT_LIST_HEAD(&cpu_buffer->new_pages);
--	local_set(&cpu_buffer->reader_page->write, 0);
--	local_set(&cpu_buffer->reader_page->entries, 0);
--	local_set(&cpu_buffer->reader_page->page->commit, 0);
--	cpu_buffer->reader_page->read = 0;
-+	rb_clear_buffer_page(cpu_buffer->reader_page);
- 
- 	local_set(&cpu_buffer->entries_bytes, 0);
- 	local_set(&cpu_buffer->overrun, 0);
+-	rv = wait_event_interruptible(recv_wq, (op->done != 0));
++	rv = wait_event_killable(recv_wq, (op->done != 0));
+ 	if (rv == -ERESTARTSYS) {
+ 		log_debug(ls, "%s: wait killed %llx", __func__,
+ 			  (unsigned long long)number);
+-- 
+2.39.2
+
 
 
