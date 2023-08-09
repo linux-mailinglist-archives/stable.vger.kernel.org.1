@@ -2,50 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0A2AB7758B9
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:55:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B897A7757A1
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:48:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230088AbjHIKzL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 06:55:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53026 "EHLO
+        id S232245AbjHIKsT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 06:48:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36398 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232579AbjHIKy7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:54:59 -0400
+        with ESMTP id S232242AbjHIKsS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:48:18 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 66FC72D71
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:53:28 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DDD5E10FF
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:48:17 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4874963122
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:53:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55425C433C8;
-        Wed,  9 Aug 2023 10:53:27 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 735336283F
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:48:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 829E6C433C7;
+        Wed,  9 Aug 2023 10:48:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691578407;
-        bh=G325CJet+jbI17OiqtNBB3U1arVJau4qtIIxqK8iRP4=;
+        s=korg; t=1691578096;
+        bh=o6IYe8pyfZVMw0/EKhv5aaXTGf+3/tRuJHs4ZVNwbAM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=aOxXQ0Yn2fIH7kNMi7ITtWm5zMs0erMaYDJCghNoP3YRoBrvyrniE9P2/odXvaEtU
-         aKh74IEOzSk5n4TIm7CyDN1rOGzGtO5g+TlBVkTUO6MtVJuHUKq8IKDRwfPgbnerHG
-         7k3czzcgOu13O1v6p88yUCW7gVTcyB0XhHdRN1JU=
+        b=ib7VcisZSe4chUP2GNOGKWi4Puia9VBOnv5EZ/hx3TdBGqLc9SaMwMOABzsLpPhyS
+         bX9vDN63nQCC78E104tMwirq6jdeS3GLWRZKLZMBHjPC732nWb+Oszjy3KXOPKPgnw
+         So2Z6aa813LDKKAXu/EVI7tZ1iobRtcXPI4nJzjE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, valis <sec@valis.email>,
-        Bing-Jhong Billy Jheng <billy@starlabs.sg>,
-        Jamal Hadi Salim <jhs@mojatatu.com>,
-        Victor Nogueira <victor@mojatatu.com>,
-        Pedro Tammela <pctammela@mojatatu.com>,
-        M A Ramdhan <ramdhan@starlabs.sg>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 049/127] net/sched: cls_fw: No longer copy tcf_result on update to avoid use-after-free
+        patches@lists.linux.dev, Yuezhang Mo <Yuezhang.Mo@sony.com>,
+        Maxim Suhanov <dfirblog@gmail.com>,
+        Sungjong Seo <sj1557.seo@samsung.com>,
+        Namjae Jeon <linkinjeon@kernel.org>
+Subject: [PATCH 6.4 105/165] exfat: check if filename entries exceeds max filename length
 Date:   Wed,  9 Aug 2023 12:40:36 +0200
-Message-ID: <20230809103638.306734085@linuxfoundation.org>
+Message-ID: <20230809103646.222639563@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103636.615294317@linuxfoundation.org>
-References: <20230809103636.615294317@linuxfoundation.org>
+In-Reply-To: <20230809103642.720851262@linuxfoundation.org>
+References: <20230809103642.720851262@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -60,49 +56,60 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: valis <sec@valis.email>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-[ Upstream commit 76e42ae831991c828cffa8c37736ebfb831ad5ec ]
+commit d42334578eba1390859012ebb91e1e556d51db49 upstream.
 
-When fw_change() is called on an existing filter, the whole
-tcf_result struct is always copied into the new instance of the filter.
+exfat_extract_uni_name copies characters from a given file name entry into
+the 'uniname' variable. This variable is actually defined on the stack of
+the exfat_readdir() function. According to the definition of
+the 'exfat_uni_name' type, the file name should be limited 255 characters
+(+ null teminator space), but the exfat_get_uniname_from_ext_entry()
+function can write more characters because there is no check if filename
+entries exceeds max filename length. This patch add the check not to copy
+filename characters when exceeding max filename length.
 
-This causes a problem when updating a filter bound to a class,
-as tcf_unbind_filter() is always called on the old instance in the
-success path, decreasing filter_cnt of the still referenced class
-and allowing it to be deleted, leading to a use-after-free.
-
-Fix this by no longer copying the tcf_result struct from the old filter.
-
-Fixes: e35a8ee5993b ("net: sched: fw use RCU")
-Reported-by: valis <sec@valis.email>
-Reported-by: Bing-Jhong Billy Jheng <billy@starlabs.sg>
-Signed-off-by: valis <sec@valis.email>
-Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Reviewed-by: Victor Nogueira <victor@mojatatu.com>
-Reviewed-by: Pedro Tammela <pctammela@mojatatu.com>
-Reviewed-by: M A Ramdhan <ramdhan@starlabs.sg>
-Link: https://lore.kernel.org/r/20230729123202.72406-3-jhs@mojatatu.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Cc: Yuezhang Mo <Yuezhang.Mo@sony.com>
+Reported-by: Maxim Suhanov <dfirblog@gmail.com>
+Reviewed-by: Sungjong Seo <sj1557.seo@samsung.com>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/cls_fw.c | 1 -
- 1 file changed, 1 deletion(-)
+ fs/exfat/dir.c |    9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/net/sched/cls_fw.c b/net/sched/cls_fw.c
-index 1212b057b129c..6160ef7d646ac 100644
---- a/net/sched/cls_fw.c
-+++ b/net/sched/cls_fw.c
-@@ -265,7 +265,6 @@ static int fw_change(struct net *net, struct sk_buff *in_skb,
- 			return -ENOBUFS;
+--- a/fs/exfat/dir.c
++++ b/fs/exfat/dir.c
+@@ -34,6 +34,7 @@ static int exfat_get_uniname_from_ext_en
+ {
+ 	int i, err;
+ 	struct exfat_entry_set_cache es;
++	unsigned int uni_len = 0, len;
  
- 		fnew->id = f->id;
--		fnew->res = f->res;
- 		fnew->ifindex = f->ifindex;
- 		fnew->tp = f->tp;
+ 	err = exfat_get_dentry_set(&es, sb, p_dir, entry, ES_ALL_ENTRIES);
+ 	if (err)
+@@ -52,7 +53,10 @@ static int exfat_get_uniname_from_ext_en
+ 		if (exfat_get_entry_type(ep) != TYPE_EXTEND)
+ 			break;
  
--- 
-2.40.1
-
+-		exfat_extract_uni_name(ep, uniname);
++		len = exfat_extract_uni_name(ep, uniname);
++		uni_len += len;
++		if (len != EXFAT_FILE_NAME_LEN || uni_len >= MAX_NAME_LENGTH)
++			break;
+ 		uniname += EXFAT_FILE_NAME_LEN;
+ 	}
+ 
+@@ -1079,7 +1083,8 @@ rewind:
+ 			if (entry_type == TYPE_EXTEND) {
+ 				unsigned short entry_uniname[16], unichar;
+ 
+-				if (step != DIRENT_STEP_NAME) {
++				if (step != DIRENT_STEP_NAME ||
++				    name_len >= MAX_NAME_LENGTH) {
+ 					step = DIRENT_STEP_FILE;
+ 					continue;
+ 				}
 
 
