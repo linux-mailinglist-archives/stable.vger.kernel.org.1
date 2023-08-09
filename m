@@ -2,122 +2,93 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ACEB9775D64
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:37:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ABE4F7759C6
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:03:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234089AbjHILhP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:37:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47176 "EHLO
+        id S233066AbjHILDK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:03:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38340 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234131AbjHILhA (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:37:00 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF4BA173A
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:36:59 -0700 (PDT)
+        with ESMTP id S232975AbjHILDF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:03:05 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6305F2707
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:55:28 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 859CD6354B
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:36:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96847C433C8;
-        Wed,  9 Aug 2023 11:36:58 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 013D662DC8
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:55:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10E7EC433C7;
+        Wed,  9 Aug 2023 10:55:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691581019;
-        bh=pfjoqx3NcF89T/cocrcYuy1MPxEynQ4imbNYlwc/Foo=;
+        s=korg; t=1691578527;
+        bh=V+Es6sw2et+jc5Mjmz9BIcuvmXJlzm/WGvxFMcOn2/Y=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=v916eCtMXotcNsfxdXGF8dAq3y8JpdTCgS1VzJkWQmDLB/24CKsC9pdnRc9dkydDF
-         XqSMPHp07gRpD9YEjJhUNvltzkEhHgvqywXaPZJL9CWTLKEGkFgWccD03Gi8GVYAwq
-         yqRd9dXHcouq1NFbzhoMR43U5NoZQDRx3taSkna4=
+        b=UDY+DQjCb1leDLG3XrvKZAzA4228t56GSUutPqvKDk1W5bzhILu1m9HDJpPIo4lTa
+         oG8huQN12BV6xw0MBlFo84VRQQFs4wmpM/0//rrdk1/GCeuS2yJOIGdXhiIF3+42dm
+         PsiJScIQ4vyo77iVPcOwdlBasQFyccB4McZTdDV8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, stable <stable@kernel.org>,
-        Gratian Crisan <gratian.crisan@ni.com>,
-        Hans de Goede <hdegoede@redhat.com>
-Subject: [PATCH 5.10 076/201] usb: dwc3: pci: skip BYT GPIO lookup table for hardwired phy
+        patches@lists.linux.dev, David Spickett <David.Spickett@arm.com>,
+        Mark Brown <broonie@kernel.org>,
+        Catalin Marinas <catalin.marinas@arm.com>
+Subject: [PATCH 6.1 091/127] arm64/fpsimd: Clear SME state in the target task when setting the VL
 Date:   Wed,  9 Aug 2023 12:41:18 +0200
-Message-ID: <20230809103646.353811961@linuxfoundation.org>
+Message-ID: <20230809103639.657173735@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103643.799166053@linuxfoundation.org>
-References: <20230809103643.799166053@linuxfoundation.org>
+In-Reply-To: <20230809103636.615294317@linuxfoundation.org>
+References: <20230809103636.615294317@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Gratian Crisan <gratian.crisan@ni.com>
+From: Mark Brown <broonie@kernel.org>
 
-commit b32b8f2b9542d8039f5468303a6ca78c1b5611a5 upstream.
+commit c9bb40b7f786662e33d71afe236442b0b61f0446 upstream.
 
-Hardware based on the Bay Trail / BYT SoCs require an external ULPI phy for
-USB device-mode. The phy chip usually has its 'reset' and 'chip select'
-lines connected to GPIOs described by ACPI fwnodes in the DSDT table.
+When setting SME vector lengths we clear TIF_SME to reenable SME traps,
+doing a reallocation of the backing storage on next use. We do this using
+clear_thread_flag() which operates on the current thread, meaning that when
+setting the vector length via ptrace we may both not force traps for the
+target task and force a spurious flush of any SME state that the tracing
+task may have.
 
-Because of hardware with missing ACPI resources for the 'reset' and 'chip
-select' GPIOs commit 5741022cbdf3 ("usb: dwc3: pci: Add GPIO lookup table
-on platforms without ACPI GPIO resources") introduced a fallback
-gpiod_lookup_table with hard-coded mappings for Bay Trail devices.
+Clear the flag in the target task.
 
-However there are existing Bay Trail based devices, like the National
-Instruments cRIO-903x series, where the phy chip has its 'reset' and
-'chip-select' lines always asserted in hardware via resistor pull-ups. On
-this hardware the phy chip is always enabled and the ACPI dsdt table is
-missing information not only for the 'chip-select' and 'reset' lines but
-also for the BYT GPIO controller itself "INT33FC".
-
-With the introduction of the gpiod_lookup_table initializing the USB
-device-mode on these hardware now errors out. The error comes from the
-gpiod_get_optional() calls in dwc3_pci_quirks() which will now return an
--ENOENT error due to the missing ACPI entry for the INT33FC gpio controller
-used in the aforementioned table.
-
-This hardware used to work before because gpiod_get_optional() will return
-NULL instead of -ENOENT if no GPIO has been assigned to the requested
-function. The dwc3_pci_quirks() code for setting the 'cs' and 'reset' GPIOs
-was then skipped (due to the NULL return). This is the correct behavior in
-cases where the phy chip is hardwired and there are no GPIOs to control.
-
-Since the gpiod_lookup_table relies on the presence of INT33FC fwnode
-in ACPI tables only add the table if we know the entry for the INT33FC
-gpio controller is present. This allows Bay Trail based devices with
-hardwired dwc3 ULPI phys to continue working.
-
-Fixes: 5741022cbdf3 ("usb: dwc3: pci: Add GPIO lookup table on platforms without ACPI GPIO resources")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Gratian Crisan <gratian.crisan@ni.com>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20230726184555.218091-2-gratian.crisan@ni.com
+Fixes: e12310a0d30f ("arm64/sme: Implement ptrace support for streaming mode SVE registers")
+Reported-by: David Spickett <David.Spickett@arm.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20230803-arm64-fix-ptrace-tif-sme-v1-1-88312fd6fbfd@kernel.org
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/dwc3/dwc3-pci.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ arch/arm64/kernel/fpsimd.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/dwc3/dwc3-pci.c
-+++ b/drivers/usb/dwc3/dwc3-pci.c
-@@ -173,10 +173,12 @@ static int dwc3_pci_quirks(struct dwc3_p
- 
- 			/*
- 			 * A lot of BYT devices lack ACPI resource entries for
--			 * the GPIOs, add a fallback mapping to the reference
-+			 * the GPIOs. If the ACPI entry for the GPIO controller
-+			 * is present add a fallback mapping to the reference
- 			 * design GPIOs which all boards seem to use.
+--- a/arch/arm64/kernel/fpsimd.c
++++ b/arch/arm64/kernel/fpsimd.c
+@@ -864,7 +864,7 @@ int vec_set_vector_length(struct task_st
  			 */
--			gpiod_add_lookup_table(&platform_bytcr_gpios);
-+			if (acpi_dev_present("INT33FC", NULL, -1))
-+				gpiod_add_lookup_table(&platform_bytcr_gpios);
- 
- 			/*
- 			 * These GPIOs will turn on the USB2 PHY. Note that we have to
+ 			task->thread.svcr &= ~(SVCR_SM_MASK |
+ 					       SVCR_ZA_MASK);
+-			clear_thread_flag(TIF_SME);
++			clear_tsk_thread_flag(task, TIF_SME);
+ 			free_sme = true;
+ 		}
+ 	}
 
 
