@@ -2,138 +2,119 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 82E317758DD
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:55:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 02B6B775922
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:58:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232783AbjHIKzv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 06:55:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40120 "EHLO
+        id S232755AbjHIK6B (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 06:58:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41010 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232311AbjHIKzg (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:55:36 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 09476421E
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:54:41 -0700 (PDT)
+        with ESMTP id S232781AbjHIK57 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:57:59 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F41EA268F
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:57:58 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DFE4763129
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:54:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED5D3C433C7;
-        Wed,  9 Aug 2023 10:54:39 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 86C7E6312C
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:57:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D5EDC433C7;
+        Wed,  9 Aug 2023 10:57:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691578480;
-        bh=GrrhLshHlUq7TpMPhhcL1vaxnPxupLHT9ww0CF7Ahzo=;
+        s=korg; t=1691578677;
+        bh=a79A/tL9TIDh6QOe9Mc4x9qYqeaBI+ep9heK96Qp7D0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=AB+mZnxfp+STZ3pPu1FGkzcb3iyxuRrX3Vfw3F7F1ObSnWR9D0XzHP0ldiAxGvWnB
-         p/c50G+EnCYDT45OxvVO0K5paHg8l+7Ly7rut1lQPfOdCVFajqnSZPMpfTyKVMv4SC
-         2csJxZX+ReXa6Nek37HOKPDlWnP8yVfV6ri6+Zuc=
+        b=ni5tkl4vzRhzK/4jLh7gbJvl8i9pusDP2PCRwCd4mXeiHwCZqCtfy3DEYijzYOXl+
+         U2CdtW5x7zA3S5DLDoANVmG5wErRCDt2tBXf9enENk6z2SUjVQOZGQ9bzZyTywj/Qm
+         PCAlI4SSHWZB+OGpZ8qsJgsqWDeOds7hx5AXNiKQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
-        David Ahern <dsahern@kernel.org>,
-        Kuniyuki Iwashima <kuniyu@amazon.com>,
-        Jakub Kicinski <kuba@kernel.org>,
+        patches@lists.linux.dev, Jakub Kicinski <kuba@kernel.org>,
+        Lin Ma <linma@zju.edu.cn>,
+        Nikolay Aleksandrov <razor@blackwall.org>,
+        Hangbin Liu <liuhangbin@gmail.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 067/127] tcp_metrics: annotate data-races around tm->tcpm_vals[]
+Subject: [PATCH 5.15 18/92] rtnetlink: let rtnl_bridge_setlink checks IFLA_BRIDGE_MODE length
 Date:   Wed,  9 Aug 2023 12:40:54 +0200
-Message-ID: <20230809103638.881840677@linuxfoundation.org>
+Message-ID: <20230809103634.236175469@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103636.615294317@linuxfoundation.org>
-References: <20230809103636.615294317@linuxfoundation.org>
+In-Reply-To: <20230809103633.485906560@linuxfoundation.org>
+References: <20230809103633.485906560@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Eric Dumazet <edumazet@google.com>
+From: Lin Ma <linma@zju.edu.cn>
 
-[ Upstream commit 8c4d04f6b443869d25e59822f7cec88d647028a9 ]
+[ Upstream commit d73ef2d69c0dba5f5a1cb9600045c873bab1fb7f ]
 
-tm->tcpm_vals[] values can be read or written locklessly.
+There are totally 9 ndo_bridge_setlink handlers in the current kernel,
+which are 1) bnxt_bridge_setlink, 2) be_ndo_bridge_setlink 3)
+i40e_ndo_bridge_setlink 4) ice_bridge_setlink 5)
+ixgbe_ndo_bridge_setlink 6) mlx5e_bridge_setlink 7)
+nfp_net_bridge_setlink 8) qeth_l2_bridge_setlink 9) br_setlink.
 
-Add needed READ_ONCE()/WRITE_ONCE() to document this,
-and force use of tcp_metric_get() and tcp_metric_set()
+By investigating the code, we find that 1-7 parse and use nlattr
+IFLA_BRIDGE_MODE but 3 and 4 forget to do the nla_len check. This can
+lead to an out-of-attribute read and allow a malformed nlattr (e.g.,
+length 0) to be viewed as a 2 byte integer.
 
-Fixes: 51c5d0c4b169 ("tcp: Maintain dynamic metrics in local cache.")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+To avoid such issues, also for other ndo_bridge_setlink handlers in the
+future. This patch adds the nla_len check in rtnl_bridge_setlink and
+does an early error return if length mismatches. To make it works, the
+break is removed from the parsing for IFLA_BRIDGE_FLAGS to make sure
+this nla_for_each_nested iterates every attribute.
+
+Fixes: b1edc14a3fbf ("ice: Implement ice_bridge_getlink and ice_bridge_setlink")
+Fixes: 51616018dd1b ("i40e: Add support for getlink, setlink ndo ops")
+Suggested-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Lin Ma <linma@zju.edu.cn>
+Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
+Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
+Link: https://lore.kernel.org/r/20230726075314.1059224-1-linma@zju.edu.cn
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/tcp_metrics.c | 23 ++++++++++++++---------
- 1 file changed, 14 insertions(+), 9 deletions(-)
+ net/core/rtnetlink.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/net/ipv4/tcp_metrics.c b/net/ipv4/tcp_metrics.c
-index 131fa30049691..fd4ab7a51cef2 100644
---- a/net/ipv4/tcp_metrics.c
-+++ b/net/ipv4/tcp_metrics.c
-@@ -63,17 +63,19 @@ static bool tcp_metric_locked(struct tcp_metrics_block *tm,
- 	return READ_ONCE(tm->tcpm_lock) & (1 << idx);
- }
+diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
+index 49766446797c1..b055e196f5306 100644
+--- a/net/core/rtnetlink.c
++++ b/net/core/rtnetlink.c
+@@ -4919,13 +4919,17 @@ static int rtnl_bridge_setlink(struct sk_buff *skb, struct nlmsghdr *nlh,
+ 	br_spec = nlmsg_find_attr(nlh, sizeof(struct ifinfomsg), IFLA_AF_SPEC);
+ 	if (br_spec) {
+ 		nla_for_each_nested(attr, br_spec, rem) {
+-			if (nla_type(attr) == IFLA_BRIDGE_FLAGS) {
++			if (nla_type(attr) == IFLA_BRIDGE_FLAGS && !have_flags) {
+ 				if (nla_len(attr) < sizeof(flags))
+ 					return -EINVAL;
  
--static u32 tcp_metric_get(struct tcp_metrics_block *tm,
-+static u32 tcp_metric_get(const struct tcp_metrics_block *tm,
- 			  enum tcp_metric_index idx)
- {
--	return tm->tcpm_vals[idx];
-+	/* Paired with WRITE_ONCE() in tcp_metric_set() */
-+	return READ_ONCE(tm->tcpm_vals[idx]);
- }
- 
- static void tcp_metric_set(struct tcp_metrics_block *tm,
- 			   enum tcp_metric_index idx,
- 			   u32 val)
- {
--	tm->tcpm_vals[idx] = val;
-+	/* Paired with READ_ONCE() in tcp_metric_get() */
-+	WRITE_ONCE(tm->tcpm_vals[idx], val);
- }
- 
- static bool addr_same(const struct inetpeer_addr *a,
-@@ -115,13 +117,16 @@ static void tcpm_suck_dst(struct tcp_metrics_block *tm,
- 	WRITE_ONCE(tm->tcpm_lock, val);
- 
- 	msval = dst_metric_raw(dst, RTAX_RTT);
--	tm->tcpm_vals[TCP_METRIC_RTT] = msval * USEC_PER_MSEC;
-+	tcp_metric_set(tm, TCP_METRIC_RTT, msval * USEC_PER_MSEC);
- 
- 	msval = dst_metric_raw(dst, RTAX_RTTVAR);
--	tm->tcpm_vals[TCP_METRIC_RTTVAR] = msval * USEC_PER_MSEC;
--	tm->tcpm_vals[TCP_METRIC_SSTHRESH] = dst_metric_raw(dst, RTAX_SSTHRESH);
--	tm->tcpm_vals[TCP_METRIC_CWND] = dst_metric_raw(dst, RTAX_CWND);
--	tm->tcpm_vals[TCP_METRIC_REORDERING] = dst_metric_raw(dst, RTAX_REORDERING);
-+	tcp_metric_set(tm, TCP_METRIC_RTTVAR, msval * USEC_PER_MSEC);
-+	tcp_metric_set(tm, TCP_METRIC_SSTHRESH,
-+		       dst_metric_raw(dst, RTAX_SSTHRESH));
-+	tcp_metric_set(tm, TCP_METRIC_CWND,
-+		       dst_metric_raw(dst, RTAX_CWND));
-+	tcp_metric_set(tm, TCP_METRIC_REORDERING,
-+		       dst_metric_raw(dst, RTAX_REORDERING));
- 	if (fastopen_clear) {
- 		tm->tcpm_fastopen.mss = 0;
- 		tm->tcpm_fastopen.syn_loss = 0;
-@@ -667,7 +672,7 @@ static int tcp_metrics_fill_info(struct sk_buff *msg,
- 		if (!nest)
- 			goto nla_put_failure;
- 		for (i = 0; i < TCP_METRIC_MAX_KERNEL + 1; i++) {
--			u32 val = tm->tcpm_vals[i];
-+			u32 val = tcp_metric_get(tm, i);
- 
- 			if (!val)
- 				continue;
+ 				have_flags = true;
+ 				flags = nla_get_u16(attr);
+-				break;
++			}
++
++			if (nla_type(attr) == IFLA_BRIDGE_MODE) {
++				if (nla_len(attr) < sizeof(u16))
++					return -EINVAL;
+ 			}
+ 		}
+ 	}
 -- 
 2.40.1
 
