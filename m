@@ -2,117 +2,166 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 85DD3775D5F
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:36:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4FE96775C86
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:28:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234084AbjHILgq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:36:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55530 "EHLO
+        id S233692AbjHIL2Q (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:28:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37700 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234085AbjHILgq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:36:46 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08F241BFE
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:36:46 -0700 (PDT)
+        with ESMTP id S233773AbjHIL2P (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:28:15 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A78B2100
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:28:09 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9C5D46353C
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:36:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABD23C433C8;
-        Wed,  9 Aug 2023 11:36:44 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 31664632AC
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:28:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44D2EC433C8;
+        Wed,  9 Aug 2023 11:28:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691581005;
-        bh=y2X+6Ws0RSAnwqIEIVnYHSMjoQ/u0fwlQxWXNh1VjCc=;
+        s=korg; t=1691580488;
+        bh=zt8m6+ocboRYsXwshUSV93BTHV3fnqjyRhJaoxtWpzw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=haGGjFpV9E+lxKCDHBC+a9Tscz31MsE1Nr9+x2B0g6rxnKOnN4pjVaOchw0N3ugVB
-         670XzFmVJkfFY6RAU1f/wKeQTsj8/scuVpRWHKUKPf6PvSEiG8gXA3yYSKx5wyNDuI
-         tILU3+JTwj6C4Rlg8ziYW+nYNFKLR0To5iiEITc4=
+        b=DofD38jAfYjlRZ9IguO2mMEs+ETttfrC54oB4UI3CMTJDJeuaQ8JDINLOz3sgS5dt
+         BbkwhxBO6xqTlo8wiTL2KLpbt8XPnWa2HImItfnbfFInoZKrk7O8jIPrvdcn5vzuBt
+         27K5qKKS7hIDyTgrJH7wWx/1PKYwne+12i6L4ZJ4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Mohsen Tahmasebi <moh53n@moh53n.ir>,
-        Mostafa Ghofrani <mostafaghrr@gmail.com>,
-        Johan Hovold <johan@kernel.org>
-Subject: [PATCH 5.10 071/201] USB: serial: option: add Quectel EC200A module support
+        patches@lists.linux.dev, Vladimir Oltean <vladimir.oltean@nxp.com>,
+        Ferenc Fejes <fejes@inf.elte.hu>,
+        Simon Horman <simon.horman@corigine.com>,
+        Jamal Hadi Salim <jhs@mojatatu.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 042/154] net/sched: mqprio: add extack to mqprio_parse_nlattr()
 Date:   Wed,  9 Aug 2023 12:41:13 +0200
-Message-ID: <20230809103646.197162092@linuxfoundation.org>
+Message-ID: <20230809103638.415971942@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103643.799166053@linuxfoundation.org>
-References: <20230809103643.799166053@linuxfoundation.org>
+In-Reply-To: <20230809103636.887175326@linuxfoundation.org>
+References: <20230809103636.887175326@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Mohsen Tahmasebi <moh53n@moh53n.ir>
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-commit 857ea9005806e2a458016880278f98715873e977 upstream.
+[ Upstream commit 57f21bf85400abadac0cb2a4db5de1d663f8863f ]
 
-Add Quectel EC200A "DIAG, AT, MODEM":
+Netlink attribute parsing in mqprio is a minesweeper game, with many
+options having the possibility of being passed incorrectly and the user
+being none the wiser.
 
-0x6005: ECM / RNDIS + DIAG + AT + MODEM
+Try to make errors less sour by giving user space some information
+regarding what went wrong.
 
-T:  Bus=01 Lev=01 Prnt=02 Port=05 Cnt=01 Dev#=  8 Spd=480  MxCh= 0
-D:  Ver= 2.00 Cls=ef(misc ) Sub=02 Prot=01 MxPS=64 #Cfgs=  1
-P:  Vendor=2c7c ProdID=6005 Rev=03.18
-S:  Manufacturer=Android
-S:  Product=Android
-S:  SerialNumber=0000
-C:  #Ifs= 5 Cfg#= 1 Atr=e0 MxPwr=500mA
-I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=06 Prot=00 Driver=cdc_ether
-E:  Ad=87(I) Atr=03(Int.) MxPS=  64 Ivl=4096ms
-I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=00 Driver=cdc_ether
-E:  Ad=0c(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=0b(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=0f(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=89(I) Atr=03(Int.) MxPS=  64 Ivl=4096ms
-I:  If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=0a(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=88(I) Atr=03(Int.) MxPS=  64 Ivl=4096ms
-
-Signed-off-by: Mohsen Tahmasebi <moh53n@moh53n.ir>
-Tested-by: Mostafa Ghofrani <mostafaghrr@gmail.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Reviewed-by: Ferenc Fejes <fejes@inf.elte.hu>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 6c58c8816abb ("net/sched: mqprio: Add length check for TCA_MQPRIO_{MAX/MIN}_RATE64")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/serial/option.c |    2 ++
- 1 file changed, 2 insertions(+)
+ net/sched/sch_mqprio.c | 30 +++++++++++++++++++++++-------
+ 1 file changed, 23 insertions(+), 7 deletions(-)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -269,6 +269,7 @@ static void option_instat_callback(struc
- #define QUECTEL_PRODUCT_RM520N			0x0801
- #define QUECTEL_PRODUCT_EC200U			0x0901
- #define QUECTEL_PRODUCT_EC200S_CN		0x6002
-+#define QUECTEL_PRODUCT_EC200A			0x6005
- #define QUECTEL_PRODUCT_EM061K_LWW		0x6008
- #define QUECTEL_PRODUCT_EM061K_LCN		0x6009
- #define QUECTEL_PRODUCT_EC200T			0x6026
-@@ -1229,6 +1230,7 @@ static const struct usb_device_id option
- 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_RM520N, 0xff, 0, 0) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, 0x0900, 0xff, 0, 0), /* RM500U-CN */
- 	  .driver_info = ZLP },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EC200A, 0xff, 0, 0) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EC200U, 0xff, 0, 0) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EC200S_CN, 0xff, 0, 0) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EC200T, 0xff, 0, 0) },
+diff --git a/net/sched/sch_mqprio.c b/net/sched/sch_mqprio.c
+index a5df5604e0150..4ec222a5530d1 100644
+--- a/net/sched/sch_mqprio.c
++++ b/net/sched/sch_mqprio.c
+@@ -131,7 +131,8 @@ static int parse_attr(struct nlattr *tb[], int maxtype, struct nlattr *nla,
+ }
+ 
+ static int mqprio_parse_nlattr(struct Qdisc *sch, struct tc_mqprio_qopt *qopt,
+-			       struct nlattr *opt)
++			       struct nlattr *opt,
++			       struct netlink_ext_ack *extack)
+ {
+ 	struct mqprio_sched *priv = qdisc_priv(sch);
+ 	struct nlattr *tb[TCA_MQPRIO_MAX + 1];
+@@ -143,8 +144,11 @@ static int mqprio_parse_nlattr(struct Qdisc *sch, struct tc_mqprio_qopt *qopt,
+ 	if (err < 0)
+ 		return err;
+ 
+-	if (!qopt->hw)
++	if (!qopt->hw) {
++		NL_SET_ERR_MSG(extack,
++			       "mqprio TCA_OPTIONS can only contain netlink attributes in hardware mode");
+ 		return -EINVAL;
++	}
+ 
+ 	if (tb[TCA_MQPRIO_MODE]) {
+ 		priv->flags |= TC_MQPRIO_F_MODE;
+@@ -157,13 +161,19 @@ static int mqprio_parse_nlattr(struct Qdisc *sch, struct tc_mqprio_qopt *qopt,
+ 	}
+ 
+ 	if (tb[TCA_MQPRIO_MIN_RATE64]) {
+-		if (priv->shaper != TC_MQPRIO_SHAPER_BW_RATE)
++		if (priv->shaper != TC_MQPRIO_SHAPER_BW_RATE) {
++			NL_SET_ERR_MSG_ATTR(extack, tb[TCA_MQPRIO_MIN_RATE64],
++					    "min_rate accepted only when shaper is in bw_rlimit mode");
+ 			return -EINVAL;
++		}
+ 		i = 0;
+ 		nla_for_each_nested(attr, tb[TCA_MQPRIO_MIN_RATE64],
+ 				    rem) {
+-			if (nla_type(attr) != TCA_MQPRIO_MIN_RATE64)
++			if (nla_type(attr) != TCA_MQPRIO_MIN_RATE64) {
++				NL_SET_ERR_MSG_ATTR(extack, attr,
++						    "Attribute type expected to be TCA_MQPRIO_MIN_RATE64");
+ 				return -EINVAL;
++			}
+ 			if (i >= qopt->num_tc)
+ 				break;
+ 			priv->min_rate[i] = *(u64 *)nla_data(attr);
+@@ -173,13 +183,19 @@ static int mqprio_parse_nlattr(struct Qdisc *sch, struct tc_mqprio_qopt *qopt,
+ 	}
+ 
+ 	if (tb[TCA_MQPRIO_MAX_RATE64]) {
+-		if (priv->shaper != TC_MQPRIO_SHAPER_BW_RATE)
++		if (priv->shaper != TC_MQPRIO_SHAPER_BW_RATE) {
++			NL_SET_ERR_MSG_ATTR(extack, tb[TCA_MQPRIO_MAX_RATE64],
++					    "max_rate accepted only when shaper is in bw_rlimit mode");
+ 			return -EINVAL;
++		}
+ 		i = 0;
+ 		nla_for_each_nested(attr, tb[TCA_MQPRIO_MAX_RATE64],
+ 				    rem) {
+-			if (nla_type(attr) != TCA_MQPRIO_MAX_RATE64)
++			if (nla_type(attr) != TCA_MQPRIO_MAX_RATE64) {
++				NL_SET_ERR_MSG_ATTR(extack, attr,
++						    "Attribute type expected to be TCA_MQPRIO_MAX_RATE64");
+ 				return -EINVAL;
++			}
+ 			if (i >= qopt->num_tc)
+ 				break;
+ 			priv->max_rate[i] = *(u64 *)nla_data(attr);
+@@ -224,7 +240,7 @@ static int mqprio_init(struct Qdisc *sch, struct nlattr *opt,
+ 
+ 	len = nla_len(opt) - NLA_ALIGN(sizeof(*qopt));
+ 	if (len > 0) {
+-		err = mqprio_parse_nlattr(sch, qopt, opt);
++		err = mqprio_parse_nlattr(sch, qopt, opt, extack);
+ 		if (err)
+ 			return err;
+ 	}
+-- 
+2.39.2
+
 
 
