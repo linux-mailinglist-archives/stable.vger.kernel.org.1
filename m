@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7BFA0775AB2
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:10:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 21573775CCE
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:31:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233263AbjHILKt (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:10:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39888 "EHLO
+        id S233745AbjHILbJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:31:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40804 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233262AbjHILKt (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:10:49 -0400
+        with ESMTP id S233872AbjHILbI (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:31:08 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B3A511724
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:10:48 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 59E4F10D4
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:31:08 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 523FB6245A
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:10:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 624AAC433C7;
-        Wed,  9 Aug 2023 11:10:47 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id EE58463396
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:31:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05FB4C433C8;
+        Wed,  9 Aug 2023 11:31:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691579447;
-        bh=EQ4ZQNWXbrWOvn9E46s0iU/rYrE5RbLdcOQhsusyyiE=;
+        s=korg; t=1691580667;
+        bh=DjX2+ceV5JVWb8grSZC7dBWZqxSjRqi6AtMhnIfwvYU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ZkB/askh2YI0HEQcUtq5HP4+0BqSpkCezYqrD5Lg9U7S4deeT1vAbRJjyo0yoHiKj
-         R7TTEw9nZuEgjRgVhItxQY48c8S4LyVGSof9Wv1MRnB2AUOPn98UFqwr9mCjqmW0Ew
-         pfdSncqnzIP4MvSUoge+9pwNhbkSGFD6rLitngIQ=
+        b=wYfYNOReVxRK7bnMi2YWJ4exlXsTTtU3i6nyBWWy7mcztCwljPPCxfD3PtiJWl86S
+         9MXIXCIlbl0Y7r72UBqVzZv4r+c9V0is6cubizoS7JpCMPWZ9wh1g3ISdyUe35bsgv
+         F7uNsukXFvvLzemu1gBvaF5zq9ahaFP2Ogs0S+GE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        syzbot+aad58150cbc64ba41bdc@syzkaller.appspotmail.com,
-        Prince Kumar Maurya <princekumarmaurya06@gmail.com>,
-        Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 4.14 199/204] fs/sysv: Null check to prevent null-ptr-deref bug
+        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 106/154] net: add missing data-race annotation for sk_ll_usec
 Date:   Wed,  9 Aug 2023 12:42:17 +0200
-Message-ID: <20230809103649.158452680@linuxfoundation.org>
+Message-ID: <20230809103640.468434588@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103642.552405807@linuxfoundation.org>
-References: <20230809103642.552405807@linuxfoundation.org>
+In-Reply-To: <20230809103636.887175326@linuxfoundation.org>
+References: <20230809103636.887175326@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,35 +55,36 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Prince Kumar Maurya <princekumarmaurya06@gmail.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit ea2b62f305893992156a798f665847e0663c9f41 upstream.
+[ Upstream commit e5f0d2dd3c2faa671711dac6d3ff3cef307bcfe3 ]
 
-sb_getblk(inode->i_sb, parent) return a null ptr and taking lock on
-that leads to the null-ptr-deref bug.
+In a prior commit I forgot that sk_getsockopt() reads
+sk->sk_ll_usec without holding a lock.
 
-Reported-by: syzbot+aad58150cbc64ba41bdc@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=aad58150cbc64ba41bdc
-Signed-off-by: Prince Kumar Maurya <princekumarmaurya06@gmail.com>
-Message-Id: <20230531013141.19487-1-princekumarmaurya06@gmail.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 0dbffbb5335a ("net: annotate data race around sk_ll_usec")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/sysv/itree.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ net/core/sock.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/sysv/itree.c
-+++ b/fs/sysv/itree.c
-@@ -145,6 +145,10 @@ static int alloc_branch(struct inode *in
- 		 */
- 		parent = block_to_cpu(SYSV_SB(inode->i_sb), branch[n-1].key);
- 		bh = sb_getblk(inode->i_sb, parent);
-+		if (!bh) {
-+			sysv_free_block(inode->i_sb, branch[n].key);
-+			break;
-+		}
- 		lock_buffer(bh);
- 		memset(bh->b_data, 0, blocksize);
- 		branch[n].bh = bh;
+diff --git a/net/core/sock.c b/net/core/sock.c
+index e1204da609a1b..636427d400d7f 100644
+--- a/net/core/sock.c
++++ b/net/core/sock.c
+@@ -1474,7 +1474,7 @@ int sock_getsockopt(struct socket *sock, int level, int optname,
+ 
+ #ifdef CONFIG_NET_RX_BUSY_POLL
+ 	case SO_BUSY_POLL:
+-		v.val = sk->sk_ll_usec;
++		v.val = READ_ONCE(sk->sk_ll_usec);
+ 		break;
+ #endif
+ 
+-- 
+2.40.1
+
 
 
