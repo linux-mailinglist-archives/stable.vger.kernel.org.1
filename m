@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D24EA7757A3
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:48:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0B4B0775C68
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:27:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232242AbjHIKsY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 06:48:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33728 "EHLO
+        id S233738AbjHIL1G (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:27:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59672 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232248AbjHIKsY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:48:24 -0400
+        with ESMTP id S233734AbjHIL1F (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:27:05 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 945EC1999
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:48:23 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36B3CFA
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:27:05 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3470C6310A
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:48:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 395C4C433C7;
-        Wed,  9 Aug 2023 10:48:22 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CA3516329D
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:27:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9619C433C9;
+        Wed,  9 Aug 2023 11:27:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691578102;
-        bh=ogEyB2jafn+lL0XcfemZLOnlaxUvSvCl+NBfFQsP8A8=;
+        s=korg; t=1691580424;
+        bh=7Gv+UVZKJeEaQq5jp5g4EnbH3kU45LnAtmJ5Iu7EVO4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ICtQVy5k1DaWDuCzwfu7/pqDIjXpw9c5QB0cGhmxn7/wfgy6+ufjrCGJLBqa/Pc/t
-         GudnwZuLPzD2/dwtw7VoK2x8I9ghSBrYMFNIqmGMcqB5eWp/92MdnsOJoe9Hg4gXrM
-         E5lqGdLwCUfOyXaRLCaLyeSTyae3Rlth1+/o3lWM=
+        b=PWk/rQYmpUmLAV6IaqgHA0w75gfenmxw2vcfJRPCdv92/B7QlaQdN4vgLErcQxZbi
+         vPw4HtnjTWrVfmtB9LlRm6HggAKpFDq7sqJ3+EBBkFZ+JGRmEqGA0i80e+FkD0LU2P
+         zpbrR/M22KErujHWC4NL+DHgwug48G2GnDNFNrmk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Olivier Maignial <olivier.maignial@hotmail.fr>,
-        Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 6.4 107/165] mtd: spinand: toshiba: Fix ecc_get_status
+        patches@lists.linux.dev, Coly Li <colyli@suse.de>,
+        Hannes Reinecke <hare@suse.de>, Jens Axboe <axboe@kernel.dk>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 007/154] bcache: remove int n from parameter list of bch_bucket_alloc_set()
 Date:   Wed,  9 Aug 2023 12:40:38 +0200
-Message-ID: <20230809103646.293594828@linuxfoundation.org>
+Message-ID: <20230809103637.156267592@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103642.720851262@linuxfoundation.org>
-References: <20230809103642.720851262@linuxfoundation.org>
+In-Reply-To: <20230809103636.887175326@linuxfoundation.org>
+References: <20230809103636.887175326@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,54 +55,158 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Olivier Maignial <olivier.maignial@hotmail.fr>
+From: Coly Li <colyli@suse.de>
 
-commit 8544cda94dae6be3f1359539079c68bb731428b1 upstream.
+[ Upstream commit 17e4aed8309ff28670271546c2c3263eb12f5eb6 ]
 
-Reading ECC status is failing.
+The parameter 'int n' from bch_bucket_alloc_set() is not cleared
+defined. From the code comments n is the number of buckets to alloc, but
+from the code itself 'n' is the maximum cache to iterate. Indeed all the
+locations where bch_bucket_alloc_set() is called, 'n' is alwasy 1.
 
-tx58cxgxsxraix_ecc_get_status() is using on-stack buffer
-for SPINAND_GET_FEATURE_OP() output. It is not suitable
-for DMA needs of spi-mem.
+This patch removes the confused and unnecessary 'int n' from parameter
+list of  bch_bucket_alloc_set(), and explicitly allocates only 1 bucket
+for its caller.
 
-Fix this by using the spi-mem operations dedicated buffer
-spinand->scratchbuf.
-
-See
-spinand->scratchbuf:
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/include/linux/mtd/spinand.h?h=v6.3#n418
-spi_mem_check_op():
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/spi/spi-mem.c?h=v6.3#n199
-
-Fixes: 10949af1681d ("mtd: spinand: Add initial support for Toshiba TC58CVG2S0H")
-Cc: stable@vger.kernel.org
-Signed-off-by: Olivier Maignial <olivier.maignial@hotmail.fr>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://lore.kernel.org/linux-mtd/DB4P250MB1032553D05FBE36DEE0D311EFE23A@DB4P250MB1032.EURP250.PROD.OUTLOOK.COM
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Coly Li <colyli@suse.de>
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Stable-dep-of: 80fca8a10b60 ("bcache: Fix __bch_btree_node_alloc to make the failure behavior consistent")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/nand/spi/toshiba.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/md/bcache/alloc.c  | 35 +++++++++++++++--------------------
+ drivers/md/bcache/bcache.h |  4 ++--
+ drivers/md/bcache/btree.c  |  2 +-
+ drivers/md/bcache/super.c  |  2 +-
+ 4 files changed, 19 insertions(+), 24 deletions(-)
 
---- a/drivers/mtd/nand/spi/toshiba.c
-+++ b/drivers/mtd/nand/spi/toshiba.c
-@@ -73,7 +73,7 @@ static int tx58cxgxsxraix_ecc_get_status
+diff --git a/drivers/md/bcache/alloc.c b/drivers/md/bcache/alloc.c
+index a1df0d95151c6..5310e1f4a2826 100644
+--- a/drivers/md/bcache/alloc.c
++++ b/drivers/md/bcache/alloc.c
+@@ -49,7 +49,7 @@
+  *
+  * bch_bucket_alloc() allocates a single bucket from a specific cache.
+  *
+- * bch_bucket_alloc_set() allocates one or more buckets from different caches
++ * bch_bucket_alloc_set() allocates one  bucket from different caches
+  * out of a cache set.
+  *
+  * free_some_buckets() drives all the processes described above. It's called
+@@ -488,34 +488,29 @@ void bch_bucket_free(struct cache_set *c, struct bkey *k)
+ }
+ 
+ int __bch_bucket_alloc_set(struct cache_set *c, unsigned int reserve,
+-			   struct bkey *k, int n, bool wait)
++			   struct bkey *k, bool wait)
  {
- 	struct nand_device *nand = spinand_to_nand(spinand);
- 	u8 mbf = 0;
--	struct spi_mem_op op = SPINAND_GET_FEATURE_OP(0x30, &mbf);
-+	struct spi_mem_op op = SPINAND_GET_FEATURE_OP(0x30, spinand->scratchbuf);
+-	int i;
++	struct cache *ca;
++	long b;
  
- 	switch (status & STATUS_ECC_MASK) {
- 	case STATUS_ECC_NO_BITFLIPS:
-@@ -92,7 +92,7 @@ static int tx58cxgxsxraix_ecc_get_status
- 		if (spi_mem_exec_op(spinand->spimem, &op))
- 			return nanddev_get_ecc_conf(nand)->strength;
+ 	/* No allocation if CACHE_SET_IO_DISABLE bit is set */
+ 	if (unlikely(test_bit(CACHE_SET_IO_DISABLE, &c->flags)))
+ 		return -1;
  
--		mbf >>= 4;
-+		mbf = *(spinand->scratchbuf) >> 4;
+ 	lockdep_assert_held(&c->bucket_lock);
+-	BUG_ON(!n || n > c->caches_loaded || n > MAX_CACHES_PER_SET);
  
- 		if (WARN_ON(mbf > nanddev_get_ecc_conf(nand)->strength || !mbf))
- 			return nanddev_get_ecc_conf(nand)->strength;
+ 	bkey_init(k);
+ 
+-	/* sort by free space/prio of oldest data in caches */
+-
+-	for (i = 0; i < n; i++) {
+-		struct cache *ca = c->cache_by_alloc[i];
+-		long b = bch_bucket_alloc(ca, reserve, wait);
++	ca = c->cache_by_alloc[0];
++	b = bch_bucket_alloc(ca, reserve, wait);
++	if (b == -1)
++		goto err;
+ 
+-		if (b == -1)
+-			goto err;
++	k->ptr[0] = MAKE_PTR(ca->buckets[b].gen,
++			     bucket_to_sector(c, b),
++			     ca->sb.nr_this_dev);
+ 
+-		k->ptr[i] = MAKE_PTR(ca->buckets[b].gen,
+-				bucket_to_sector(c, b),
+-				ca->sb.nr_this_dev);
+-
+-		SET_KEY_PTRS(k, i + 1);
+-	}
++	SET_KEY_PTRS(k, 1);
+ 
+ 	return 0;
+ err:
+@@ -525,12 +520,12 @@ int __bch_bucket_alloc_set(struct cache_set *c, unsigned int reserve,
+ }
+ 
+ int bch_bucket_alloc_set(struct cache_set *c, unsigned int reserve,
+-			 struct bkey *k, int n, bool wait)
++			 struct bkey *k, bool wait)
+ {
+ 	int ret;
+ 
+ 	mutex_lock(&c->bucket_lock);
+-	ret = __bch_bucket_alloc_set(c, reserve, k, n, wait);
++	ret = __bch_bucket_alloc_set(c, reserve, k, wait);
+ 	mutex_unlock(&c->bucket_lock);
+ 	return ret;
+ }
+@@ -638,7 +633,7 @@ bool bch_alloc_sectors(struct cache_set *c,
+ 
+ 		spin_unlock(&c->data_bucket_lock);
+ 
+-		if (bch_bucket_alloc_set(c, watermark, &alloc.key, 1, wait))
++		if (bch_bucket_alloc_set(c, watermark, &alloc.key, wait))
+ 			return false;
+ 
+ 		spin_lock(&c->data_bucket_lock);
+diff --git a/drivers/md/bcache/bcache.h b/drivers/md/bcache/bcache.h
+index 36de6f7ddf221..1dd9298cb0e02 100644
+--- a/drivers/md/bcache/bcache.h
++++ b/drivers/md/bcache/bcache.h
+@@ -970,9 +970,9 @@ void bch_bucket_free(struct cache_set *c, struct bkey *k);
+ 
+ long bch_bucket_alloc(struct cache *ca, unsigned int reserve, bool wait);
+ int __bch_bucket_alloc_set(struct cache_set *c, unsigned int reserve,
+-			   struct bkey *k, int n, bool wait);
++			   struct bkey *k, bool wait);
+ int bch_bucket_alloc_set(struct cache_set *c, unsigned int reserve,
+-			 struct bkey *k, int n, bool wait);
++			 struct bkey *k, bool wait);
+ bool bch_alloc_sectors(struct cache_set *c, struct bkey *k,
+ 		       unsigned int sectors, unsigned int write_point,
+ 		       unsigned int write_prio, bool wait);
+diff --git a/drivers/md/bcache/btree.c b/drivers/md/bcache/btree.c
+index b7fea84d19ad9..df33062746304 100644
+--- a/drivers/md/bcache/btree.c
++++ b/drivers/md/bcache/btree.c
+@@ -1141,7 +1141,7 @@ struct btree *__bch_btree_node_alloc(struct cache_set *c, struct btree_op *op,
+ 
+ 	mutex_lock(&c->bucket_lock);
+ retry:
+-	if (__bch_bucket_alloc_set(c, RESERVE_BTREE, &k.key, 1, wait))
++	if (__bch_bucket_alloc_set(c, RESERVE_BTREE, &k.key, wait))
+ 		goto err;
+ 
+ 	bkey_put(c, &k.key);
+diff --git a/drivers/md/bcache/super.c b/drivers/md/bcache/super.c
+index 70e46e0d2f1ac..6afaa5e852837 100644
+--- a/drivers/md/bcache/super.c
++++ b/drivers/md/bcache/super.c
+@@ -428,7 +428,7 @@ static int __uuid_write(struct cache_set *c)
+ 	closure_init_stack(&cl);
+ 	lockdep_assert_held(&bch_register_lock);
+ 
+-	if (bch_bucket_alloc_set(c, RESERVE_BTREE, &k.key, 1, true))
++	if (bch_bucket_alloc_set(c, RESERVE_BTREE, &k.key, true))
+ 		return 1;
+ 
+ 	SET_KEY_SIZE(&k.key, c->sb.bucket_size);
+-- 
+2.39.2
+
 
 
