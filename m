@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 423637757AD
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:48:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6963C775BEE
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:22:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232256AbjHIKsu (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 06:48:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46480 "EHLO
+        id S233600AbjHILW1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:22:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46708 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231205AbjHIKst (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:48:49 -0400
+        with ESMTP id S233628AbjHILWZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:22:25 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1ABB510F3
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:48:49 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 327A11FFA
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:22:14 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A74A063123
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:48:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B14BBC433C7;
-        Wed,  9 Aug 2023 10:48:47 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1366D6320C
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:22:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CFBFC433C8;
+        Wed,  9 Aug 2023 11:22:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691578128;
-        bh=HrLJv5CHEXEZye7nf+ZWk4xLjtdLwahWPBddOkNAsHE=;
+        s=korg; t=1691580133;
+        bh=DDt+tKU63snw0uZUGRLpM/0mQ1YBeLXD0yQis9FtCwE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=0iZrK5ac2ur0CfjJMQm2kSSkuPb16DdOrjI2pTphSAv/n6hmBnwzXE6VJGC1ImwKG
-         WVP6RgeBGwqSV8dNbhrGH60wLUlzCYsIbT1635JPtcuvgvEw0r3EgvWD3WRirNj0gX
-         zxpR2Rx5gSNhL1z9Lh4Bs5riXguSd7bie33eOK7w=
+        b=XoYWKneFLW//dKsQEdukrotjoIW/mfkTkDbsmdFNKbP1Rx+GkwyR3oJxLIbDA45+L
+         fOekp5wu6gtqftGTZhJqpO/88tXL+HfcoCagdYQURv/O2A2jtlHpjS5mJ7zerliMv2
+         I+Vpv3qw3crIdWRfO7d5uqBn685vEAyrCQap5IuA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Rani Hod <rani.hod@gmail.com>,
-        Paul Fertser <fercerpav@gmail.com>,
-        Simon Horman <simon.horman@corigine.com>,
-        Felix Fietkau <nbd@nbd.name>, Kalle Valo <kvalo@kernel.org>
-Subject: [PATCH 6.4 115/165] wifi: mt76: mt7615: do not advertise 5 GHz on first phy of MT7615D (DBDC)
+        patches@lists.linux.dev, Kuniyuki Iwashima <kuniyu@amazon.com>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 208/323] llc: Dont drop packet from non-root netns.
 Date:   Wed,  9 Aug 2023 12:40:46 +0200
-Message-ID: <20230809103646.560595847@linuxfoundation.org>
+Message-ID: <20230809103707.659010487@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103642.720851262@linuxfoundation.org>
-References: <20230809103642.720851262@linuxfoundation.org>
+In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
+References: <20230809103658.104386911@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,45 +55,50 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Paul Fertser <fercerpav@gmail.com>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-commit 421033deb91521aa6a9255e495cb106741a52275 upstream.
+[ Upstream commit 6631463b6e6673916d2481f692938f393148aa82 ]
 
-On DBDC devices the first (internal) phy is only capable of using
-2.4 GHz band, and the 5 GHz band is exposed via a separate phy object,
-so avoid the false advertising.
+Now these upper layer protocol handlers can be called from llc_rcv()
+as sap->rcv_func(), which is registered by llc_sap_open().
 
-Reported-by: Rani Hod <rani.hod@gmail.com>
-Closes: https://github.com/openwrt/openwrt/pull/12361
-Fixes: 7660a1bd0c22 ("mt76: mt7615: register ext_phy if DBDC is detected")
-Cc: stable@vger.kernel.org
-Signed-off-by: Paul Fertser <fercerpav@gmail.com>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Acked-by: Felix Fietkau <nbd@nbd.name>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://lore.kernel.org/r/20230605073408.8699-1-fercerpav@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+  * function which is passed to register_8022_client()
+    -> no in-kernel user calls register_8022_client().
+
+  * snap_rcv()
+    `- proto->rcvfunc() : registered by register_snap_client()
+       -> aarp_rcv() and atalk_rcv() drop packets from non-root netns
+
+  * stp_pdu_rcv()
+    `- garp_protos[]->rcv() : registered by stp_proto_register()
+       -> garp_pdu_rcv() and br_stp_rcv() are netns-aware
+
+So, we can safely remove the netns restriction in llc_rcv().
+
+Fixes: e730c15519d0 ("[NET]: Make packet reception network namespace safe")
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7615/eeprom.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ net/llc/llc_input.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
---- a/drivers/net/wireless/mediatek/mt76/mt7615/eeprom.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/eeprom.c
-@@ -128,12 +128,12 @@ mt7615_eeprom_parse_hw_band_cap(struct m
- 	case MT_EE_5GHZ:
- 		dev->mphy.cap.has_5ghz = true;
- 		break;
--	case MT_EE_2GHZ:
--		dev->mphy.cap.has_2ghz = true;
--		break;
- 	case MT_EE_DBDC:
- 		dev->dbdc_support = true;
- 		fallthrough;
-+	case MT_EE_2GHZ:
-+		dev->mphy.cap.has_2ghz = true;
-+		break;
- 	default:
- 		dev->mphy.cap.has_2ghz = true;
- 		dev->mphy.cap.has_5ghz = true;
+diff --git a/net/llc/llc_input.c b/net/llc/llc_input.c
+index 82cb93f66b9bd..f9e801cc50f5e 100644
+--- a/net/llc/llc_input.c
++++ b/net/llc/llc_input.c
+@@ -162,9 +162,6 @@ int llc_rcv(struct sk_buff *skb, struct net_device *dev,
+ 	void (*sta_handler)(struct sk_buff *skb);
+ 	void (*sap_handler)(struct llc_sap *sap, struct sk_buff *skb);
+ 
+-	if (!net_eq(dev_net(dev), &init_net))
+-		goto drop;
+-
+ 	/*
+ 	 * When the interface is in promisc. mode, drop all the crap that it
+ 	 * receives, do not try to analyse it.
+-- 
+2.39.2
+
 
 
