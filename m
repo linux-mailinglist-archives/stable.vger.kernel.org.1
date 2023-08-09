@@ -2,36 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 15223776618
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 19:05:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 96C96776622
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 19:09:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229545AbjHIRF1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 13:05:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56918 "EHLO
+        id S229489AbjHIRJA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 13:09:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38140 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232638AbjHIRFT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 13:05:19 -0400
+        with ESMTP id S229472AbjHIRI7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 13:08:59 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57191213D;
-        Wed,  9 Aug 2023 10:05:15 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A78EC1FD4;
+        Wed,  9 Aug 2023 10:08:58 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D2B4B61534;
-        Wed,  9 Aug 2023 17:05:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA116C433C8;
-        Wed,  9 Aug 2023 17:05:12 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 44323641E0;
+        Wed,  9 Aug 2023 17:08:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45BBDC433C8;
+        Wed,  9 Aug 2023 17:08:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1691600714;
-        bh=2f0W3NcNjV1j4avoEGTZkd6zteRKgy72/PqLXiSMKCg=;
+        s=k20201202; t=1691600937;
+        bh=USf2CNe+vFO69oOfDz0XeOn7FuniUtUriqfKItXgvK4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=R8NepVIc5ytHOhMwB4WlHRTOUe3NUTfa4mNiJvrm3DteUZ00K8kMEXkYw8UdwjCrs
-         /ipXEM2LK2TorG6suKTOFqn9Ew2MLBgfdLIG2yiNovnQ2sqSvIifXHVwMohg+RSHY5
-         +rQUKYFktjprYzVk2ULTRGgiVjMkIJT5eukxS7fULWhQL5PnRrMEtSk0OOpBfjtpIo
-         H7OhdAhsC5XQgy84U1x+/J0Y+q0baTHUIemHbzhrk8iuLzrkJilDzJ+Qn8ZIDEm7Gl
-         JD40ZINcYZlQBxvH+yhqVfnMLGpjpf/9pSNeFBO1sx+y213ag4MnrN3sP5PdyibGiK
-         1nbz26n8BWjqA==
+        b=NXwJo2LgnroqBwTpqLtCkwwTTCIYQLvxPfr7dlQDtc5YcUDZB+minjxD3eoA6Xj3h
+         d7x3QIT0qm6wSuGF1tL72qwEQZcaZZ4Kd5HP+Ov/MOEo9DBQFXiS7oBtFAp1TV9Sb9
+         WZDulZyxy/XEj5OyuZ4RICAnWuG1UGuVt7+brQdOu2z1mNcR37I7xJT30x9iya7xqh
+         EJ75Xyt8FPjnYRXLB+MWsgK3D/zPMXtRegBjX6ReT0FTnurWMav0HVd9d/zRSThYQ5
+         zGLE2k9XNwBbBQd+9s7z6sBFHMZrzwvBcQRo6gg8SmBmrHra56RJDdkGa6A2cStGHQ
+         3RFUPZdtYH8+Q==
 From:   SeongJae Park <sj@kernel.org>
 To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
@@ -42,11 +42,11 @@ Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
         sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
         conor@kernel.org, damon@lists.linux.dev,
         SeongJae Park <sj@kernel.org>
-Subject: Re: [PATCH 5.15 00/92] 5.15.126-rc1 review
-Date:   Wed,  9 Aug 2023 17:05:11 +0000
-Message-Id: <20230809170511.90647-1-sj@kernel.org>
+Subject: Re: [PATCH 6.1 000/127] 6.1.45-rc1 review
+Date:   Wed,  9 Aug 2023 17:08:54 +0000
+Message-Id: <20230809170854.90727-1-sj@kernel.org>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20230809103633.485906560@linuxfoundation.org>
+In-Reply-To: <20230809103636.615294317@linuxfoundation.org>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -62,10 +62,10 @@ X-Mailing-List: stable@vger.kernel.org
 
 Hello,
 
-On 2023-08-09T12:40:36+02:00   Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
+On 2023-08-09T12:39:47+02:00   Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
 
-> This is the start of the stable review cycle for the 5.15.126 release.
-> There are 92 patches in this series, all will be posted as a response
+> This is the start of the stable review cycle for the 6.1.45 release.
+> There are 127 patches in this series, all will be posted as a response
 > to this one.  If anyone has any issues with these being applied, please
 > let me know.
 > 
@@ -73,9 +73,9 @@ On 2023-08-09T12:40:36+02:00   Greg Kroah-Hartman <gregkh@linuxfoundation.org> w
 > Anything received after that time might be too late.
 > 
 > The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.126-rc1.gz
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.45-rc1.gz
 > or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
 > and the diffstat can be found below.
 
 This rc kernel passes DAMON functionality test[1] on my test machine.
@@ -85,7 +85,7 @@ kernel from linux-stable-rc tree[2].
 Tested-by: SeongJae Park <sj@kernel.org>
 
 [1] https://github.com/awslabs/damon-tests/tree/next/corr
-[2] ae7f23cbf199 ("Linux 5.15.126-rc1")
+[2] 02a4c6c322d1 ("Linux 6.1.45-rc1")
 
 
 Thanks,
@@ -96,6 +96,12 @@ SJ
 ---
 
 ok 1 selftests: damon: debugfs_attrs.sh
+ok 2 selftests: damon: debugfs_schemes.sh
+ok 3 selftests: damon: debugfs_target_ids.sh
+ok 4 selftests: damon: debugfs_empty_targets.sh
+ok 5 selftests: damon: debugfs_huge_count_read_write.sh
+ok 6 selftests: damon: debugfs_duplicate_context_creation.sh
+ok 7 selftests: damon: sysfs.sh
 ok 1 selftests: damon-tests: kunit.sh
 ok 2 selftests: damon-tests: huge_count_read_write.sh
 ok 3 selftests: damon-tests: buffer_overflow.sh
