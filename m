@@ -2,44 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0E6BD775A16
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:05:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EFAFC775B80
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:18:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233070AbjHILFS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:05:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33980 "EHLO
+        id S233453AbjHILSJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:18:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54874 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233079AbjHILFR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:05:17 -0400
+        with ESMTP id S233451AbjHILSJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:18:09 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A117E1FD8
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:05:16 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9D08CFA
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:18:08 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 37F9263142
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:05:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 411E2C433C8;
-        Wed,  9 Aug 2023 11:05:15 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 327CD63189
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:18:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43372C433C8;
+        Wed,  9 Aug 2023 11:18:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691579115;
-        bh=82vH+mQza3r1MFPhjG7fLWgeWO4GxMITtrDeCcpsaxQ=;
+        s=korg; t=1691579887;
+        bh=IE3BhxxXJeuUVVI7/ihUZmXnHS1wMhaw7rHdJsxLGPA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=AAErUpNvA3XGGULlf5L0jTizhrANTiEsSRWn/3si6Sj7kb8OGGfRg7IrQRCGjoXzi
-         ueO5HbSWV9mze8bdp45V2ALiJQwpAfzSnsnLFZpCl1iN7FIBGcuQkNfZt2AZFGyWD3
-         oMEcaukdUZdX5j5YwJv2NgqDsJ+AoytydWlGzzMw=
+        b=1R2Te9hX0KhDATwQIPnwUch5e7YCsRcybl1FobsTs/Bbj7zCVwN8tyipN0S5hSV2m
+         ru8iAsZY9CCLdpkqVI18fmI4mRceEk19RJkzpYwuJuqwUI74P4z0u5VRE4dAscR1pN
+         EkjWBYWVP0us7LHAbG7ozbXZC9bbXRcbDmMvWQqA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Masahiro Yamada <masahiroy@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 051/204] modpost: fix section mismatch message for R_ARM_ABS32
-Date:   Wed,  9 Aug 2023 12:39:49 +0200
-Message-ID: <20230809103644.297388354@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Jan Visser <starquake@linuxeverywhere.org>,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        Linus Walleij <linus.walleij@linaro.org>
+Subject: [PATCH 4.19 152/323] pinctrl: amd: Only use special debounce behavior for GPIO 0
+Date:   Wed,  9 Aug 2023 12:39:50 +0200
+Message-ID: <20230809103705.113036900@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103642.552405807@linuxfoundation.org>
-References: <20230809103642.552405807@linuxfoundation.org>
+In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
+References: <20230809103658.104386911@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,133 +56,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Masahiro Yamada <masahiroy@kernel.org>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-[ Upstream commit b7c63520f6703a25eebb4f8138fed764fcae1c6f ]
+commit 0d5ace1a07f7e846d0f6d972af60d05515599d0b upstream.
 
-addend_arm_rel() processes R_ARM_ABS32 in a wrong way.
+It's uncommon to use debounce on any other pin, but technically
+we should only set debounce to 0 when working off GPIO0.
 
-Here, test code.
-
-  [test code 1]
-
-    #include <linux/init.h>
-
-    int __initdata foo;
-    int get_foo(void) { return foo; }
-
-If you compile it with ARM versatile_defconfig, modpost will show the
-symbol name, (unknown).
-
-  WARNING: modpost: vmlinux.o: section mismatch in reference: get_foo (section: .text) -> (unknown) (section: .init.data)
-
-(You need to use GNU linker instead of LLD to reproduce it.)
-
-If you compile it for other architectures, modpost will show the correct
-symbol name.
-
-  WARNING: modpost: vmlinux.o: section mismatch in reference: get_foo (section: .text) -> foo (section: .init.data)
-
-For R_ARM_ABS32, addend_arm_rel() sets r->r_addend to a wrong value.
-
-I just mimicked the code in arch/arm/kernel/module.c.
-
-However, there is more difficulty for ARM.
-
-Here, test code.
-
-  [test code 2]
-
-    #include <linux/init.h>
-
-    int __initdata foo;
-    int get_foo(void) { return foo; }
-
-    int __initdata bar;
-    int get_bar(void) { return bar; }
-
-With this commit applied, modpost will show the following messages
-for ARM versatile_defconfig:
-
-  WARNING: modpost: vmlinux.o: section mismatch in reference: get_foo (section: .text) -> foo (section: .init.data)
-  WARNING: modpost: vmlinux.o: section mismatch in reference: get_bar (section: .text) -> foo (section: .init.data)
-
-The reference from 'get_bar' to 'foo' seems wrong.
-
-I have no solution for this because it is true in assembly level.
-
-In the following output, relocation at 0x1c is no longer associated
-with 'bar'. The two relocation entries point to the same symbol, and
-the offset to 'bar' is encoded in the instruction 'r0, [r3, #4]'.
-
-  Disassembly of section .text:
-
-  00000000 <get_foo>:
-     0: e59f3004          ldr     r3, [pc, #4]   @ c <get_foo+0xc>
-     4: e5930000          ldr     r0, [r3]
-     8: e12fff1e          bx      lr
-     c: 00000000          .word   0x00000000
-
-  00000010 <get_bar>:
-    10: e59f3004          ldr     r3, [pc, #4]   @ 1c <get_bar+0xc>
-    14: e5930004          ldr     r0, [r3, #4]
-    18: e12fff1e          bx      lr
-    1c: 00000000          .word   0x00000000
-
-  Relocation section '.rel.text' at offset 0x244 contains 2 entries:
-   Offset     Info    Type            Sym.Value  Sym. Name
-  0000000c  00000c02 R_ARM_ABS32       00000000   .init.data
-  0000001c  00000c02 R_ARM_ABS32       00000000   .init.data
-
-When find_elf_symbol() gets into a situation where relsym->st_name is
-zero, there is no guarantee to get the symbol name as written in C.
-
-I am keeping the current logic because it is useful in many architectures,
-but the symbol name is not always correct depending on the optimization.
-I left some comments in find_tosym().
-
-Fixes: 56a974fa2d59 ("kbuild: make better section mismatch reports on arm")
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Tested-by: Jan Visser <starquake@linuxeverywhere.org>
+Fixes: 968ab9261627 ("pinctrl: amd: Detect internal GPIO0 debounce handling")
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Link: https://lore.kernel.org/r/20230705133005.577-2-mario.limonciello@amd.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- scripts/mod/modpost.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ drivers/pinctrl/pinctrl-amd.c |    8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/scripts/mod/modpost.c b/scripts/mod/modpost.c
-index ed2b7a16554e8..f8bb964961b83 100644
---- a/scripts/mod/modpost.c
-+++ b/scripts/mod/modpost.c
-@@ -1271,6 +1271,10 @@ static Elf_Sym *find_elf_symbol(struct elf_info *elf, Elf64_Sword addr,
- 	if (relsym->st_name != 0)
- 		return relsym;
+--- a/drivers/pinctrl/pinctrl-amd.c
++++ b/drivers/pinctrl/pinctrl-amd.c
+@@ -129,9 +129,11 @@ static int amd_gpio_set_debounce(struct
+ 	raw_spin_lock_irqsave(&gpio_dev->lock, flags);
  
-+	/*
-+	 * Strive to find a better symbol name, but the resulting name may not
-+	 * match the symbol referenced in the original code.
-+	 */
- 	relsym_secindex = get_secindex(elf, relsym);
- 	for (sym = elf->symtab_start; sym < elf->symtab_stop; sym++) {
- 		if (get_secindex(elf, sym) != relsym_secindex)
-@@ -1762,12 +1766,14 @@ static int addend_386_rel(struct elf_info *elf, Elf_Shdr *sechdr, Elf_Rela *r)
- static int addend_arm_rel(struct elf_info *elf, Elf_Shdr *sechdr, Elf_Rela *r)
- {
- 	unsigned int r_typ = ELF_R_TYPE(r->r_info);
-+	Elf_Sym *sym = elf->symtab_start + ELF_R_SYM(r->r_info);
-+	void *loc = reloc_location(elf, sechdr, r);
-+	uint32_t inst;
+ 	/* Use special handling for Pin0 debounce */
+-	pin_reg = readl(gpio_dev->base + WAKE_INT_MASTER_REG);
+-	if (pin_reg & INTERNAL_GPIO0_DEBOUNCE)
+-		debounce = 0;
++	if (offset == 0) {
++		pin_reg = readl(gpio_dev->base + WAKE_INT_MASTER_REG);
++		if (pin_reg & INTERNAL_GPIO0_DEBOUNCE)
++			debounce = 0;
++	}
  
- 	switch (r_typ) {
- 	case R_ARM_ABS32:
--		/* From ARM ABI: (S + A) | T */
--		r->r_addend = (int)(long)
--			      (elf->symtab_start + ELF_R_SYM(r->r_info));
-+		inst = TO_NATIVE(*(uint32_t *)loc);
-+		r->r_addend = inst + sym->st_value;
- 		break;
- 	case R_ARM_PC24:
- 	case R_ARM_CALL:
--- 
-2.39.2
-
+ 	pin_reg = readl(gpio_dev->base + offset * 4);
+ 
 
 
