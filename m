@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3634C775C7A
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:27:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C21E277595A
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:59:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233771AbjHIL1v (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:27:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56172 "EHLO
+        id S232829AbjHIK7r (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 06:59:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55384 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233782AbjHIL1p (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:27:45 -0400
+        with ESMTP id S232840AbjHIK7p (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:59:45 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D637026A1
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:27:38 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C94631FFE
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:59:44 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6D32B632BF
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:27:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77E98C433C9;
-        Wed,  9 Aug 2023 11:27:37 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 69C69630D6
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:59:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79976C433C8;
+        Wed,  9 Aug 2023 10:59:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691580457;
-        bh=Vpi+MLiUEhchUpzqFWJtF9+AMg+fHe/OX0X+0gs13wQ=;
+        s=korg; t=1691578783;
+        bh=w//nSNihTTFBmtiT1V0dtCjQRTPd0fnZz57Ib/B/sFo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=bKRb6UFoylnFMgFGd5Rdi6aMazW2fZtE1zIhP+F0d6J1n/JS2nvMKyQ/wz85MrHtW
-         Y+Q1bDZiw9ui+AV4a43buGYsQQRg1cY6YlLlQSnWj0wTOZVpQLH8FRl5fJePk3QLTV
-         wgXTFypndo0epcVcUL+zc4VlFTWjP5jA0kZVEIwk=
+        b=KyDLxavGkr3TWuJfks23K6vcXCG4pcbVrUNLlCFkVhbndMA53P1FK4CXICnwZg+oA
+         pa6fP/tOD1bHVRm66GXPyjgPjyIfaozSjBg/5ynMX/9SHtldeXY/Z9RFaIT3Co9rkz
+         9vxendqI9wfehuSc5Pmtv0m+jISu16cQ8XeE2XHE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Wang Ming <machel@vivo.com>,
-        Tony Nguyen <anthony.l.nguyen@intel.com>,
-        Sasha Levin <sashal@kernel.org>,
-        Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
-Subject: [PATCH 5.4 032/154] i40e: Fix an NULL vs IS_ERR() bug for debugfs_create_dir()
+        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 27/92] net: add missing READ_ONCE(sk->sk_sndbuf) annotation
 Date:   Wed,  9 Aug 2023 12:41:03 +0200
-Message-ID: <20230809103638.068337606@linuxfoundation.org>
+Message-ID: <20230809103634.555330672@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103636.887175326@linuxfoundation.org>
-References: <20230809103636.887175326@linuxfoundation.org>
+In-Reply-To: <20230809103633.485906560@linuxfoundation.org>
+References: <20230809103633.485906560@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,40 +55,36 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Wang Ming <machel@vivo.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 043b1f185fb0f3939b7427f634787706f45411c4 ]
+[ Upstream commit 74bc084327c643499474ba75df485607da37dd6e ]
 
-The debugfs_create_dir() function returns error pointers.
-It never returns NULL. Most incorrect error checks were fixed,
-but the one in i40e_dbg_init() was forgotten.
+In a prior commit, I forgot to change sk_getsockopt()
+when reading sk->sk_sndbuf locklessly.
 
-Fix the remaining error check.
-
-Fixes: 02e9c290814c ("i40e: debugfs interface")
-Signed-off-by: Wang Ming <machel@vivo.com>
-Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Fixes: e292f05e0df7 ("tcp: annotate sk->sk_sndbuf lockless reads")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/i40e/i40e_debugfs.c | 2 +-
+ net/core/sock.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_debugfs.c b/drivers/net/ethernet/intel/i40e/i40e_debugfs.c
-index 276f04c0e51d6..31f60657f5321 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_debugfs.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_debugfs.c
-@@ -1755,7 +1755,7 @@ void i40e_dbg_pf_exit(struct i40e_pf *pf)
- void i40e_dbg_init(void)
- {
- 	i40e_dbg_root = debugfs_create_dir(i40e_driver_name, NULL);
--	if (!i40e_dbg_root)
-+	if (IS_ERR(i40e_dbg_root))
- 		pr_info("init of debugfs failed\n");
- }
+diff --git a/net/core/sock.c b/net/core/sock.c
+index ffd566d52eec3..0e480ac6c4de5 100644
+--- a/net/core/sock.c
++++ b/net/core/sock.c
+@@ -1456,7 +1456,7 @@ int sock_getsockopt(struct socket *sock, int level, int optname,
+ 		break;
  
+ 	case SO_SNDBUF:
+-		v.val = sk->sk_sndbuf;
++		v.val = READ_ONCE(sk->sk_sndbuf);
+ 		break;
+ 
+ 	case SO_RCVBUF:
 -- 
-2.39.2
+2.40.1
 
 
 
