@@ -2,85 +2,76 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 970867768F8
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 21:42:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6912E776999
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 22:14:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231962AbjHITmB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 15:42:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49590 "EHLO
+        id S233537AbjHIUOR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 16:14:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45874 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230391AbjHITl6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 15:41:58 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA9C410DC
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 12:41:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1691610072;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=5ldcQW9LZSQnCOkarDxdnYKtVsXTHlqQEYP12HWE3Go=;
-        b=Rjk6/zkWlwHd0i3G7jD0EXv96tzUyZwy8akUmuxgYx1kgssSmi1+8imPXvdcAoJly0zfSP
-        AKIAYjmzTrMWCGkWfVMt1bF8OcgmpvEsuJydcMaxhv+Uk5o9dxUz8DOF+3n1fqJgs7urL3
-        hL190Nd90QsEGGGyRPTq/j0u/UDC81g=
-Received: from mail-lj1-f199.google.com (mail-lj1-f199.google.com
- [209.85.208.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-170-18KBJUjNPvOlYtPye9pMyQ-1; Wed, 09 Aug 2023 15:41:10 -0400
-X-MC-Unique: 18KBJUjNPvOlYtPye9pMyQ-1
-Received: by mail-lj1-f199.google.com with SMTP id 38308e7fff4ca-2b9ce397ef1so2062311fa.1
-        for <stable@vger.kernel.org>; Wed, 09 Aug 2023 12:41:10 -0700 (PDT)
+        with ESMTP id S230075AbjHIUOR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 16:14:17 -0400
+Received: from mail-il1-x12a.google.com (mail-il1-x12a.google.com [IPv6:2607:f8b0:4864:20::12a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F36AA10CF
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 13:14:14 -0700 (PDT)
+Received: by mail-il1-x12a.google.com with SMTP id e9e14a558f8ab-34977c2dc27so752815ab.2
+        for <stable@vger.kernel.org>; Wed, 09 Aug 2023 13:14:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=joelfernandes.org; s=google; t=1691612054; x=1692216854;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=guZ5vpqqJqA9daPfYYnKXLU14D1mpOwdXtcKs7C1O6E=;
+        b=teRQ96U/IkC6y31VwU1NjtwjZdh80fpd032mGixaFIjCCO+6DahLSaWhjFgwyX+D0s
+         7xRN+Sng3LnCEh0nCfXyr3x+CDQfV8BGwj/0ILM/ErxHnOnPzHOafQSHWHEo2t26Z43A
+         vLYFxhySi1w09JWBgEBF0tV1pLt8s+pU8wCZQ=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691610069; x=1692214869;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20221208; t=1691612054; x=1692216854;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=5ldcQW9LZSQnCOkarDxdnYKtVsXTHlqQEYP12HWE3Go=;
-        b=Ieq5pQPTskF1NQEvap+iiaMpEUGoWKDDEHW2uHf9fZR6P+RB2PE/NstvRJyv4PkDhE
-         KgfaABK6NvaSJNf+YTlF6nxa51rdR9fHKfUSH5ssrMHp0kverZbcccD/Q4qWO49XTISe
-         dGAySZrq8H6ndvZK41xlbPzbEa+F1OHXMzdhdjYTcDeG702IibXGXbBSJNUcE//8Yl8m
-         Si0Z+ePwz0kjL4r8GHlipFeXU/hXBTO6qO8iu0yt2+g+mSrlFJfF82DvEOjXQVXYCQxY
-         CwCMbm8npo/TminLiomUmQjL5OEIj2HGbwCEOYhfP3lAT/iFJDwBiJ7K8pYTDnx2nscs
-         kwiw==
-X-Gm-Message-State: AOJu0Yy1JcGePfIG9wspKN4EZ6qNUdTrvU+xHMA9kDxj8oLzj3XxeE8f
-        XV/74kRc4Ad5b14obL6/7wHzX8DXa01zckJSsT25lCrCZU25US7mI9CC9QYmCAmSp54DOl7dOCu
-        v1JqkRMIpbStwIJO0
-X-Received: by 2002:a2e:84d6:0:b0:2b9:a6a1:f20 with SMTP id q22-20020a2e84d6000000b002b9a6a10f20mr116791ljh.42.1691610068978;
-        Wed, 09 Aug 2023 12:41:08 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHKhGcVNXI/xOj0RQWT12121DSgH3gup/E/JQgK5hG1TahqXQggy6jTPzFlInE6TkM8pUzBhQ==
-X-Received: by 2002:a2e:84d6:0:b0:2b9:a6a1:f20 with SMTP id q22-20020a2e84d6000000b002b9a6a10f20mr116778ljh.42.1691610068686;
-        Wed, 09 Aug 2023 12:41:08 -0700 (PDT)
-Received: from ?IPV6:2001:1c00:c32:7800:5bfa:a036:83f0:f9ec? (2001-1c00-0c32-7800-5bfa-a036-83f0-f9ec.cable.dynamic.v6.ziggo.nl. [2001:1c00:c32:7800:5bfa:a036:83f0:f9ec])
-        by smtp.gmail.com with ESMTPSA id j26-20020a170906475a00b009930c80b87csm8507289ejs.142.2023.08.09.12.41.07
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 09 Aug 2023 12:41:08 -0700 (PDT)
-Message-ID: <e0dd9065-6dd8-af33-29a0-ae21f82063a2@redhat.com>
-Date:   Wed, 9 Aug 2023 21:41:07 +0200
+        bh=guZ5vpqqJqA9daPfYYnKXLU14D1mpOwdXtcKs7C1O6E=;
+        b=k08M+MnZ8oC8X2zDXP+xImX5kynpFRhMYkwq6dXW4lENCnici4kesau7d/RpbXsxis
+         kSUowL0odOAUatq9wt/HlYUuu4sdUeBwtStyNBajdGtRCAQ0gIyTp3w/q3ySD8owKgiC
+         XjdnmK5moArlg/aqQDbpx5bscll7dxT7+Wdj2Hdo1IKSouK5QscOYRqClmGupatD68sd
+         O79Vm9HZNflS8Oh/a3+eRpo5iXX+u/yEWPX2tihsqjDheFKM97VKEs1XQv+75arpWGTJ
+         P4DwluiCiud8bh31GlUHc1TDFR4vNQIvS1ChnkYLOhIoZA+beJikymIVg5FQUPsCc7O9
+         P2SA==
+X-Gm-Message-State: AOJu0YyRURZDqhcaIHFdWfGh5NIURlS4sbeQi4gt3ap85eZN7hfzgVKG
+        gZSBsvzr+PvWjCOvt8y3Ut5LaQ==
+X-Google-Smtp-Source: AGHT+IHFssVCaalC7OaCchaWhg7XXfx3K1aZGh4DfLLnCZfW44BE6qugHkyqKK6ivgJmigJ1V78RCA==
+X-Received: by 2002:a05:6e02:20c8:b0:347:693a:a52b with SMTP id 8-20020a056e0220c800b00347693aa52bmr199791ilq.6.1691612054245;
+        Wed, 09 Aug 2023 13:14:14 -0700 (PDT)
+Received: from localhost (254.82.172.34.bc.googleusercontent.com. [34.172.82.254])
+        by smtp.gmail.com with ESMTPSA id j10-20020a02cb0a000000b0042b8566a982sm4189018jap.41.2023.08.09.13.14.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 09 Aug 2023 13:14:13 -0700 (PDT)
+Date:   Wed, 9 Aug 2023 20:14:13 +0000
+From:   Joel Fernandes <joel@joelfernandes.org>
+To:     Guenter Roeck <linux@roeck-us.net>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
+        paulmck@kernel.org
+Subject: Re: [PATCH 5.15 00/92] 5.15.126-rc1 review
+Message-ID: <20230809201413.GA3374446@google.com>
+References: <20230809103633.485906560@linuxfoundation.org>
+ <20230809135326.GE3031656@google.com>
+ <f47340c6-3c41-1f91-d0f9-fe0b59a23aac@roeck-us.net>
+ <CAEXW_YQ4GqPwvUF8=8CWmdj=cD56v_eEVK-EirsObQXyBDFVpg@mail.gmail.com>
+ <35e4b770-2ead-4a19-ad01-fa75996adef4@roeck-us.net>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v3 3/3] ACPI: resource: Honor MADT INT_SRC_OVR settings
- for IRQ1 on AMD Zen
-Content-Language: en-US, nl
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     August Wikerfors <git@augustwikerfors.se>,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        Linux regressions mailing list <regressions@lists.linux.dev>,
-        stable@vger.kernel.org, linux-acpi@vger.kernel.org, x86@kernel.org
-References: <20230809085526.84913-1-hdegoede@redhat.com>
- <20230809085526.84913-4-hdegoede@redhat.com>
- <6a6fa2ba-c07d-45b2-96c5-b0f44f5f288b@augustwikerfors.se>
- <c3684f00-27bd-d4dd-93dd-18936c006de9@redhat.com>
- <CAJZ5v0gx_vu_Pip3rkUo_78mNnUbp++hpRfpa-iDaZP9r6_4sw@mail.gmail.com>
-From:   Hans de Goede <hdegoede@redhat.com>
-In-Reply-To: <CAJZ5v0gx_vu_Pip3rkUo_78mNnUbp++hpRfpa-iDaZP9r6_4sw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+In-Reply-To: <35e4b770-2ead-4a19-ad01-fa75996adef4@roeck-us.net>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -88,57 +79,91 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi,
-
-On 8/9/23 21:25, Rafael J. Wysocki wrote:
-> On Wed, Aug 9, 2023 at 9:20 PM Hans de Goede <hdegoede@redhat.com> wrote:
->>
->> Hi,
->>
->> On 8/9/23 17:58, August Wikerfors wrote:
->>> On 2023-08-09 10:55, Hans de Goede wrote:
->>>> On AMD Zen acpi_dev_irq_override() by default prefers the DSDT IRQ 1
->>>> settings over the MADT settings.
->>>>
->>>> This causes the keyboard to malfunction on some laptop models
->>>> (see Links), all models from the Links have an INT_SRC_OVR MADT entry
->>>> for IRQ 1.
->>>>
->>>> Fixes: a9c4a912b7dc ("ACPI: resource: Remove "Zen" specific match and quirks")
->>>> Link: https://bugzilla.kernel.org/show_bug.cgi?id=217336
->>>> Link: https://bugzilla.kernel.org/show_bug.cgi?id=217394
->>>> Link: https://bugzilla.kernel.org/show_bug.cgi?id=217406
->>>> Cc: Mario Limonciello <mario.limonciello@amd.com>
->>>> Cc: Linux regressions mailing list <regressions@lists.linux.dev>
->>>> Cc: stable@vger.kernel.org
->>>> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
->>>
->>> One of the laptops fixed by a9c4a912b7dc, PCSpecialist Elimina Pro 16 M [1], seems to have no INT_SRC_OVR entry for IRQ 1 [2]:
->>>
->>>> [    0.084265] ACPI: INT_SRC_OVR (bus 0 bus_irq 0 global_irq 2 dfl dfl)
->>>> [    0.084266] ACPI: INT_SRC_OVR (bus 0 bus_irq 9 global_irq 9 low level)
->>>
->>> I'm not sure if it was IRQ 1 that needed to be overridden for that model though, so it may work anyway with patch 2 of this series.
->>>
->>> [1] https://bugzilla.kernel.org/show_bug.cgi?id=217394#c18
->>> [2] https://bugzilla.kernel.org/attachment.cgi?id=304338
->>
->> Good catch, thanks. So it looks like this one needs a DMI quirk (until we have a better generic solution.
->>
->> I'll reach out to the reporter and ask for dmidecode output and prepare a follow-up patch. Still I think
->> that we should move forward with this series to fix the 6 bugs which are linked to from PAtch 1's
->> commitmsg and those are likely just the top of the iceberg.
+On Wed, Aug 09, 2023 at 12:25:48PM -0700, Guenter Roeck wrote:
+> On Wed, Aug 09, 2023 at 02:35:59PM -0400, Joel Fernandes wrote:
+> > On Wed, Aug 9, 2023 at 12:18 PM Guenter Roeck <linux@roeck-us.net> wrote:
+> > >
+> > > On 8/9/23 06:53, Joel Fernandes wrote:
+> > > > On Wed, Aug 09, 2023 at 12:40:36PM +0200, Greg Kroah-Hartman wrote:
+> > > >> This is the start of the stable review cycle for the 5.15.126 release.
+> > > >> There are 92 patches in this series, all will be posted as a response
+> > > >> to this one.  If anyone has any issues with these being applied, please
+> > > >> let me know.
+> > > >>
+> > > >> Responses should be made by Fri, 11 Aug 2023 10:36:10 +0000.
+> > > >> Anything received after that time might be too late.
+> > > >>
+> > > >> The whole patch series can be found in one patch at:
+> > > >>      https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.126-rc1.gz
+> > > >> or in the git tree and branch at:
+> > > >>      git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
+> > > >> and the diffstat can be found below.
+> > > >
+> > > > Not necesscarily new with 5.15 stable but 3 of the 19 rcutorture scenarios
+> > > > hang with this -rc: TREE04, TREE07, TASKS03.
+> > > >
+> > > > 5.15 has a known stop machine issue where it hangs after 1.5 hours with cpu
+> > > > hotplug rcutorture testing. Me and tglx are continuing to debug this. The
+> > > > issue does not show up on anything but 5.15 stable kernels and neither on
+> > > > mainline.
+> > > >
+> > >
+> > > Do you by any have a crash pattern that we could possibly use to find the crash
+> > > in ChromeOS crash logs ? No idea if that would help, but it could provide some
+> > > additional data points.
+> > 
+> > The pattern shows as a hard hang, the system is unresponsive and all CPUs
+> > are stuck in stop_machine. Sometimes it recovers on its own from the
+> > hang and then RCU immediately gives stall warnings. It takes 1.5 hour
+> > to reproduce and sometimes never happens for several hours.
+> > 
+> > It appears related to CPU hotplug since gdb showed me most of the CPUs
+> > are spinning in multi_cpu_stop() / stop machine after the hang.
+> > 
 > 
-> You are probably right, but it would be good to get a fix for this
-> ASAP, as I would prefer it to go in along with the series, if
-> possible.
+> Hmm, we do see lots of soft lockups with multi_cpu_stop() in the backtrace,
+> but not with v5.15.y but with v5.4.y. The actual hang is in stop_machine_yield().
 
-Agreed I've asked in the bugzilla for dmidecode output for the laptop model in question (I checked  https://linux-hardware.org/ and it does not have this model).
+Interesting. It looks similar as far as the stack dump in gdb goes, here are
+the stacks I dumped with the hang I referred to:
+https://paste.debian.net/1288308/
 
-As soon as I've dmidecode info I'll prepare the follow-up patch as well as a Fedora kernel with the entire series + qurik patch for the reporter to test.
+But in dmesg, it prints nothing for about 20-30 mins before recovering, then
+I get RCU stalls. It looks like this:
 
-Regards,
+[  682.721962] kvm-clock: cpu 7, msr 199981c1, secondary cpu clock
+[  682.736830] kvm-guest: stealtime: cpu 7, msr 1f5db140
+[  684.445875] smpboot: Booting Node 0 Processor 5 APIC 0x5
+[  684.467831] kvm-clock: cpu 5, msr 19998141, secondary cpu clock
+[  684.555766] kvm-guest: stealtime: cpu 5, msr 1f55b140
+[  687.356637] smpboot: Booting Node 0 Processor 4 APIC 0x4
+[  687.377214] kvm-clock: cpu 4, msr 19998101, secondary cpu clock
+[ 2885.473742] kvm-guest: stealtime: cpu 4, msr 1f51b140
+[ 2886.456408] rcu: INFO: rcu_sched self-detected stall on CPU
+[ 2886.457590] rcu_torture_fwd_prog_nr: Duration 15423 cver 170 gps 337
+[ 2886.464934] rcu: 0-...!: (2 ticks this GP) idle=7eb/0/0x1 softirq=118271/118271 fqs=0 last_accelerate: e3cd/71c0 dyntick_enabled: 1
+[ 2886.490837] (t=2199034 jiffies g=185489 q=4)
+[ 2886.497297] rcu: rcu_sched kthread timer wakeup didn't happen for 2199031 jiffies! g185489 f0x0 RCU_GP_WAIT_FQS(5) ->state=0x402
+[ 2886.514201] rcu: Possible timer handling issue on cpu=0 timer-softirq=441616
+[ 2886.524593] rcu: rcu_sched kthread starved for 2199034 jiffies! g185489 f0x0 RCU_GP_WAIT_FQS(5) ->state=0x402 ->cpu=0
+[ 2886.540067] rcu: Unless rcu_sched kthread gets sufficient CPU time, OOM is now expected behavior.
+[ 2886.551967] rcu: RCU grace-period kthread stack dump:
+[ 2886.558644] task:rcu_sched       state:I stack:14896 pid:   15 ppid:     2 flags:0x00004000
+[ 2886.569640] Call Trace:
+[ 2886.572940]  <TASK>
+[ 2886.575902]  __schedule+0x284/0x6e0
+[ 2886.580969]  schedule+0x53/0xa0
+[ 2886.585231]  schedule_timeout+0x8f/0x130
 
-Hans
+In that huge gap, I connect gdb and dumped those stacks in above link.
 
+On 5.15 stable you could repro it in about an hour and a half most of the time by running something like:
+tools/testing/selftests/rcutorture/bin/kvm.sh --cpus 48 --duration 60 --configs TREE04
+
+Let me know if you saw anything like this. I am currently trying to panic the
+kernel when the hang happens so I can get better traces.
+
+thanks,
+
+ - Joel
 
