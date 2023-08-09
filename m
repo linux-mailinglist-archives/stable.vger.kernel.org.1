@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3CB8377574F
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:44:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 170457759E8
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:03:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231159AbjHIKof (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 06:44:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47232 "EHLO
+        id S232999AbjHILDn (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:03:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40312 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230234AbjHIKoe (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:44:34 -0400
+        with ESMTP id S232994AbjHILDl (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:03:41 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD74E1BCF
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:44:33 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 21BDA1FFE
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:03:39 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4DE976311F
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:44:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C53EC433C7;
-        Wed,  9 Aug 2023 10:44:32 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B632C6314C
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:03:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFCBFC433C7;
+        Wed,  9 Aug 2023 11:03:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691577872;
-        bh=V2SB2LsD4lFKJ5VoGROBSLi6PNzGr4vLlwu7dCMvycU=;
+        s=korg; t=1691579018;
+        bh=795XjNeKTIUuV2hjpNON2NWXeeZ7ellz9oGaPgUy2ug=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=IYuNWTLtonUaHK2osxvtNw2YVmuAdODNNdNTftGuoRroIUPBEku2gLQyT+AiKFf6a
-         Ijz5wuLg8PW8uHNV5ZCqiRZB/02akItGHElIncpnRQ1JAIIFKPvGTEFH2un/yZKDgd
-         HaiIaZ108GtTuExqmhQKdQBVVjj396C7NIMUAZj4=
+        b=h6ZJ+on88rFCqzgtTQfQJG9a0jwuj/ozw18J/+Bn/ETuKTBW44/jFrdDobwilxXrO
+         9UuG9m9VNyUiTRqTPjTclsUeKieetUhAljGvr/dX9E7mpBChe9P34u3X8a7Yb1slXm
+         YMflTUUhCM+yEwpZHnaIUMNPklwgMRt0T+vS9RNE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 024/165] KVM: s390: fix sthyi error handling
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        Kalle Valo <kvalo@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.14 017/204] wifi: orinoco: Fix an error handling path in orinoco_cs_probe()
 Date:   Wed,  9 Aug 2023 12:39:15 +0200
-Message-ID: <20230809103643.604005825@linuxfoundation.org>
+Message-ID: <20230809103643.157842668@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103642.720851262@linuxfoundation.org>
-References: <20230809103642.720851262@linuxfoundation.org>
+In-Reply-To: <20230809103642.552405807@linuxfoundation.org>
+References: <20230809103642.552405807@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,78 +55,58 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Heiko Carstens <hca@linux.ibm.com>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit 0c02cc576eac161601927b41634f80bfd55bfa9e ]
+[ Upstream commit 67a81d911c01225f426cc6bee2373df044c1a9b7 ]
 
-Commit 9fb6c9b3fea1 ("s390/sthyi: add cache to store hypervisor info")
-added cache handling for store hypervisor info. This also changed the
-possible return code for sthyi_fill().
+Should orinoco_cs_config() fail, some resources need to be released as
+already done in the remove function.
 
-Instead of only returning a condition code like the sthyi instruction would
-do, it can now also return a negative error value (-ENOMEM). handle_styhi()
-was not changed accordingly. In case of an error, the negative error value
-would incorrectly injected into the guest PSW.
+While at it, remove a useless and erroneous comment. The probe is
+orinoco_cs_probe(), not orinoco_cs_attach().
 
-Add proper error handling to prevent this, and update the comment which
-describes the possible return values of sthyi_fill().
-
-Fixes: 9fb6c9b3fea1 ("s390/sthyi: add cache to store hypervisor info")
-Reviewed-by: Christian Borntraeger <borntraeger@linux.ibm.com>
-Link: https://lore.kernel.org/r/20230727182939.2050744-1-hca@linux.ibm.com
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Fixes: 15b99ac17295 ("[PATCH] pcmcia: add return value to _config() functions")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://lore.kernel.org/r/e24735ce4d82901d5f7ea08419eea53bfdde3d65.1684568286.git.christophe.jaillet@wanadoo.fr
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/kernel/sthyi.c  | 6 +++---
- arch/s390/kvm/intercept.c | 9 ++++++---
- 2 files changed, 9 insertions(+), 6 deletions(-)
+ drivers/net/wireless/intersil/orinoco/orinoco_cs.c | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
-diff --git a/arch/s390/kernel/sthyi.c b/arch/s390/kernel/sthyi.c
-index 4d141e2c132e5..2ea7f208f0e73 100644
---- a/arch/s390/kernel/sthyi.c
-+++ b/arch/s390/kernel/sthyi.c
-@@ -459,9 +459,9 @@ static int sthyi_update_cache(u64 *rc)
-  *
-  * Fills the destination with system information returned by the STHYI
-  * instruction. The data is generated by emulation or execution of STHYI,
-- * if available. The return value is the condition code that would be
-- * returned, the rc parameter is the return code which is passed in
-- * register R2 + 1.
-+ * if available. The return value is either a negative error value or
-+ * the condition code that would be returned, the rc parameter is the
-+ * return code which is passed in register R2 + 1.
-  */
- int sthyi_fill(void *dst, u64 *rc)
+diff --git a/drivers/net/wireless/intersil/orinoco/orinoco_cs.c b/drivers/net/wireless/intersil/orinoco/orinoco_cs.c
+index a956f965a1e5e..03bfd2482656c 100644
+--- a/drivers/net/wireless/intersil/orinoco/orinoco_cs.c
++++ b/drivers/net/wireless/intersil/orinoco/orinoco_cs.c
+@@ -96,6 +96,7 @@ orinoco_cs_probe(struct pcmcia_device *link)
  {
-diff --git a/arch/s390/kvm/intercept.c b/arch/s390/kvm/intercept.c
-index 2cda8d9d7c6ef..f817006f9f936 100644
---- a/arch/s390/kvm/intercept.c
-+++ b/arch/s390/kvm/intercept.c
-@@ -389,8 +389,8 @@ static int handle_partial_execution(struct kvm_vcpu *vcpu)
-  */
- int handle_sthyi(struct kvm_vcpu *vcpu)
+ 	struct orinoco_private *priv;
+ 	struct orinoco_pccard *card;
++	int ret;
+ 
+ 	priv = alloc_orinocodev(sizeof(*card), &link->dev,
+ 				orinoco_cs_hard_reset, NULL);
+@@ -107,8 +108,16 @@ orinoco_cs_probe(struct pcmcia_device *link)
+ 	card->p_dev = link;
+ 	link->priv = priv;
+ 
+-	return orinoco_cs_config(link);
+-}				/* orinoco_cs_attach */
++	ret = orinoco_cs_config(link);
++	if (ret)
++		goto err_free_orinocodev;
++
++	return 0;
++
++err_free_orinocodev:
++	free_orinocodev(priv);
++	return ret;
++}
+ 
+ static void orinoco_cs_detach(struct pcmcia_device *link)
  {
--	int reg1, reg2, r = 0;
--	u64 code, addr, cc = 0, rc = 0;
-+	int reg1, reg2, cc = 0, r = 0;
-+	u64 code, addr, rc = 0;
- 	struct sthyi_sctns *sctns = NULL;
- 
- 	if (!test_kvm_facility(vcpu->kvm, 74))
-@@ -421,7 +421,10 @@ int handle_sthyi(struct kvm_vcpu *vcpu)
- 		return -ENOMEM;
- 
- 	cc = sthyi_fill(sctns, &rc);
--
-+	if (cc < 0) {
-+		free_page((unsigned long)sctns);
-+		return cc;
-+	}
- out:
- 	if (!cc) {
- 		if (kvm_s390_pv_cpu_is_protected(vcpu)) {
 -- 
-2.40.1
+2.39.2
 
 
 
