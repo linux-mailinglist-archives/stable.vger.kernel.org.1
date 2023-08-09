@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 87978775914
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:57:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5B2BC775985
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:01:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232738AbjHIK5c (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 06:57:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53836 "EHLO
+        id S232887AbjHILBR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:01:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34078 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232549AbjHIK50 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:57:26 -0400
+        with ESMTP id S232890AbjHILBN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:01:13 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 582CE1FD8
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:57:25 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C03841724
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:01:12 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E40BC6238A
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:57:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01673C433C7;
-        Wed,  9 Aug 2023 10:57:23 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 55F0962496
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:01:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 625E5C433C8;
+        Wed,  9 Aug 2023 11:01:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691578644;
-        bh=sP1DYyQo8k9yVAgXGQ6HrN1Rxo7+PkXcKsJfyvaNi8c=;
+        s=korg; t=1691578871;
+        bh=n9yW3vHEBYWHJt57wCREk0x+INAOtbPlgIB80uiHSZ8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=0R2txT4OxQxGrfm5+oXWtQnp7y0IWO8jS1kAPYMw/kR8PF9EAElaFlKQChA9dgYOC
-         wiwS3L515bak1d7ycigbZlF+3rDZkY3zW0dK56oTcr95QmCflRxx+/ZeZVnyCDoqgR
-         OwjasS5AdoINTHr0zfbqbEiGGjfAWIxCRTUTYRU4=
+        b=fz3AcpA38zLDcFHkaLHkU8wGjne1fxDGwfxGFB+z4bYhZtZvdd0Cm9O7QMoUK3FpG
+         hT1XDWkm312IgnbZ2PpRsUn5SsKC9Qdxtjhh/fo0Iiw2OZwkh9m/jfR6jZnut3skbD
+         YYrk66T9vvlHTp39ATrPUQfcPcmuTOWSAuTlNVjA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        syzbot+af5e10f73dbff48f70af@syzkaller.appspotmail.com,
-        Jan Kara <jack@suse.cz>
-Subject: [PATCH 6.1 107/127] ext2: Drop fragment support
+        patches@lists.linux.dev, Xiubo Li <xiubli@redhat.com>,
+        Milind Changire <mchangir@redhat.com>,
+        Ilya Dryomov <idryomov@gmail.com>
+Subject: [PATCH 5.15 58/92] ceph: defer stopping mdsc delayed_work
 Date:   Wed,  9 Aug 2023 12:41:34 +0200
-Message-ID: <20230809103640.164312971@linuxfoundation.org>
+Message-ID: <20230809103635.604787088@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103636.615294317@linuxfoundation.org>
-References: <20230809103636.615294317@linuxfoundation.org>
+In-Reply-To: <20230809103633.485906560@linuxfoundation.org>
+References: <20230809103633.485906560@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,106 +55,79 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jan Kara <jack@suse.cz>
+From: Xiubo Li <xiubli@redhat.com>
 
-commit 404615d7f1dcd4cca200e9a7a9df3a1dcae1dd62 upstream.
+commit e7e607bd00481745550389a29ecabe33e13d67cf upstream.
 
-Ext2 has fields in superblock reserved for subblock allocation support.
-However that never landed. Drop the many years dead code.
+Flushing the dirty buffer may take a long time if the cluster is
+overloaded or if there is network issue. So we should ping the
+MDSs periodically to keep alive, else the MDS will blocklist
+the kclient.
 
-Reported-by: syzbot+af5e10f73dbff48f70af@syzkaller.appspotmail.com
-Signed-off-by: Jan Kara <jack@suse.cz>
+Cc: stable@vger.kernel.org
+Link: https://tracker.ceph.com/issues/61843
+Signed-off-by: Xiubo Li <xiubli@redhat.com>
+Reviewed-by: Milind Changire <mchangir@redhat.com>
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext2/ext2.h  |   12 ------------
- fs/ext2/super.c |   23 ++++-------------------
- 2 files changed, 4 insertions(+), 31 deletions(-)
+ fs/ceph/mds_client.c |    4 ++--
+ fs/ceph/mds_client.h |    5 +++++
+ fs/ceph/super.c      |   10 ++++++++++
+ 3 files changed, 17 insertions(+), 2 deletions(-)
 
---- a/fs/ext2/ext2.h
-+++ b/fs/ext2/ext2.h
-@@ -70,10 +70,7 @@ struct mb_cache;
-  * second extended-fs super-block data in memory
-  */
- struct ext2_sb_info {
--	unsigned long s_frag_size;	/* Size of a fragment in bytes */
--	unsigned long s_frags_per_block;/* Number of fragments per block */
- 	unsigned long s_inodes_per_block;/* Number of inodes per block */
--	unsigned long s_frags_per_group;/* Number of fragments in a group */
- 	unsigned long s_blocks_per_group;/* Number of blocks in a group */
- 	unsigned long s_inodes_per_group;/* Number of inodes in a group */
- 	unsigned long s_itb_per_group;	/* Number of inode table blocks per group */
-@@ -189,15 +186,6 @@ static inline struct ext2_sb_info *EXT2_
- #define EXT2_FIRST_INO(s)		(EXT2_SB(s)->s_first_ino)
+--- a/fs/ceph/mds_client.c
++++ b/fs/ceph/mds_client.c
+@@ -4607,7 +4607,7 @@ static void delayed_work(struct work_str
  
+ 	dout("mdsc delayed_work\n");
+ 
+-	if (mdsc->stopping)
++	if (mdsc->stopping >= CEPH_MDSC_STOPPING_FLUSHED)
+ 		return;
+ 
+ 	mutex_lock(&mdsc->mutex);
+@@ -4786,7 +4786,7 @@ void send_flush_mdlog(struct ceph_mds_se
+ void ceph_mdsc_pre_umount(struct ceph_mds_client *mdsc)
+ {
+ 	dout("pre_umount\n");
+-	mdsc->stopping = 1;
++	mdsc->stopping = CEPH_MDSC_STOPPING_BEGIN;
+ 
+ 	ceph_mdsc_iterate_sessions(mdsc, send_flush_mdlog, true);
+ 	ceph_mdsc_iterate_sessions(mdsc, lock_unlock_session, false);
+--- a/fs/ceph/mds_client.h
++++ b/fs/ceph/mds_client.h
+@@ -370,6 +370,11 @@ struct cap_wait {
+ 	int			want;
+ };
+ 
++enum {
++       CEPH_MDSC_STOPPING_BEGIN = 1,
++       CEPH_MDSC_STOPPING_FLUSHED = 2,
++};
++
  /*
-- * Macro-instructions used to manage fragments
-- */
--#define EXT2_MIN_FRAG_SIZE		1024
--#define	EXT2_MAX_FRAG_SIZE		4096
--#define EXT2_MIN_FRAG_LOG_SIZE		  10
--#define EXT2_FRAG_SIZE(s)		(EXT2_SB(s)->s_frag_size)
--#define EXT2_FRAGS_PER_BLOCK(s)		(EXT2_SB(s)->s_frags_per_block)
--
--/*
-  * Structure of a blocks group descriptor
+  * mds client state
   */
- struct ext2_group_desc
---- a/fs/ext2/super.c
-+++ b/fs/ext2/super.c
-@@ -668,10 +668,9 @@ static int ext2_setup_super (struct supe
- 		es->s_max_mnt_count = cpu_to_le16(EXT2_DFL_MAX_MNT_COUNT);
- 	le16_add_cpu(&es->s_mnt_count, 1);
- 	if (test_opt (sb, DEBUG))
--		ext2_msg(sb, KERN_INFO, "%s, %s, bs=%lu, fs=%lu, gc=%lu, "
-+		ext2_msg(sb, KERN_INFO, "%s, %s, bs=%lu, gc=%lu, "
- 			"bpg=%lu, ipg=%lu, mo=%04lx]",
- 			EXT2FS_VERSION, EXT2FS_DATE, sb->s_blocksize,
--			sbi->s_frag_size,
- 			sbi->s_groups_count,
- 			EXT2_BLOCKS_PER_GROUP(sb),
- 			EXT2_INODES_PER_GROUP(sb),
-@@ -1012,14 +1011,7 @@ static int ext2_fill_super(struct super_
- 		}
- 	}
+--- a/fs/ceph/super.c
++++ b/fs/ceph/super.c
+@@ -1227,6 +1227,16 @@ static void ceph_kill_sb(struct super_bl
+ 	ceph_mdsc_pre_umount(fsc->mdsc);
+ 	flush_fs_workqueues(fsc);
  
--	sbi->s_frag_size = EXT2_MIN_FRAG_SIZE <<
--				   le32_to_cpu(es->s_log_frag_size);
--	if (sbi->s_frag_size == 0)
--		goto cantfind_ext2;
--	sbi->s_frags_per_block = sb->s_blocksize / sbi->s_frag_size;
--
- 	sbi->s_blocks_per_group = le32_to_cpu(es->s_blocks_per_group);
--	sbi->s_frags_per_group = le32_to_cpu(es->s_frags_per_group);
- 	sbi->s_inodes_per_group = le32_to_cpu(es->s_inodes_per_group);
++	/*
++	 * Though the kill_anon_super() will finally trigger the
++	 * sync_filesystem() anyway, we still need to do it here
++	 * and then bump the stage of shutdown to stop the work
++	 * queue as earlier as possible.
++	 */
++	sync_filesystem(s);
++
++	fsc->mdsc->stopping = CEPH_MDSC_STOPPING_FLUSHED;
++
+ 	kill_anon_super(s);
  
- 	sbi->s_inodes_per_block = sb->s_blocksize / EXT2_INODE_SIZE(sb);
-@@ -1045,11 +1037,10 @@ static int ext2_fill_super(struct super_
- 		goto failed_mount;
- 	}
- 
--	if (sb->s_blocksize != sbi->s_frag_size) {
-+	if (es->s_log_frag_size != es->s_log_block_size) {
- 		ext2_msg(sb, KERN_ERR,
--			"error: fragsize %lu != blocksize %lu"
--			"(not supported yet)",
--			sbi->s_frag_size, sb->s_blocksize);
-+			"error: fragsize log %u != blocksize log %u",
-+			le32_to_cpu(es->s_log_frag_size), sb->s_blocksize_bits);
- 		goto failed_mount;
- 	}
- 
-@@ -1066,12 +1057,6 @@ static int ext2_fill_super(struct super_
- 			sbi->s_blocks_per_group, sbi->s_inodes_per_group + 3);
- 		goto failed_mount;
- 	}
--	if (sbi->s_frags_per_group > sb->s_blocksize * 8) {
--		ext2_msg(sb, KERN_ERR,
--			"error: #fragments per group too big: %lu",
--			sbi->s_frags_per_group);
--		goto failed_mount;
--	}
- 	if (sbi->s_inodes_per_group < sbi->s_inodes_per_block ||
- 	    sbi->s_inodes_per_group > sb->s_blocksize * 8) {
- 		ext2_msg(sb, KERN_ERR,
+ 	fsc->client->extra_mon_dispatch = NULL;
 
 
