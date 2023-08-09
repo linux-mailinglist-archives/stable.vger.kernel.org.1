@@ -2,110 +2,150 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EE922775783
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:46:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 09B1B775D23
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:34:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232207AbjHIKq4 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 06:46:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34630 "EHLO
+        id S233998AbjHILeR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:34:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42212 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231171AbjHIKqy (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:46:54 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8CA191BF0
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:46:53 -0700 (PDT)
+        with ESMTP id S234001AbjHILeR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:34:17 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB768173A
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:34:16 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 23EDF63124
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:46:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FC9DC433C8;
-        Wed,  9 Aug 2023 10:46:51 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5B87263491
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:34:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D113C433C7;
+        Wed,  9 Aug 2023 11:34:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691578012;
-        bh=yheo+al2dAj+T1836xwY/C5kA47mT5hsM5VZ8UwTxis=;
+        s=korg; t=1691580855;
+        bh=nDpWQFNmQonVzqavfzVuG+CmSZ5vsZSlCiQILpDqbd4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=XX7r2A6FqvDklsCpI128Sx2P24rClt19cMeVnAtHrbr3ftlkl8jPpdlOwt4k5IeQ5
-         CAVDs2W3Y84eH0uBurSzjbS5mQrPXtM84lfn800wGo4WabISmf5dl35e7JBlOpAWht
-         s1CK3/h6Nv3g2T+bOzKhCXPQeplb/FJ2ka6UHgp0=
+        b=Myz56GtTu1+nyLkMMxPWO0UfDMGgCY5LsDALpyNFIqNm1Mz7cuEGlJZZb0HM+bDW0
+         c4v/Okuba2A+OXbnKMTgsKjyf7784qhdYF4o8vWtEMGMxWZgj9xIQyn1/S/8ikhV7G
+         yTHZ0WHawFjrBp5/xeVHsAf9V2SPxio9sQxlelGI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
-        Esben Haabendal <esben@geanix.com>,
-        Yang Yingliang <yangyingliang@huawei.com>,
-        Harini Katakam <harini.katakam@amd.com>,
-        Jakub Kicinski <kuba@kernel.org>,
+        patches@lists.linux.dev, Filipe Manana <fdmanana@suse.com>,
+        David Sterba <dsterba@suse.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 075/165] net: ll_temac: fix error checking of irq_of_parse_and_map()
+Subject: [PATCH 5.10 004/201] btrfs: fix race between quota disable and relocation
 Date:   Wed,  9 Aug 2023 12:40:06 +0200
-Message-ID: <20230809103645.254797791@linuxfoundation.org>
+Message-ID: <20230809103643.950079499@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103642.720851262@linuxfoundation.org>
-References: <20230809103642.720851262@linuxfoundation.org>
+In-Reply-To: <20230809103643.799166053@linuxfoundation.org>
+References: <20230809103643.799166053@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Filipe Manana <fdmanana@suse.com>
 
-[ Upstream commit ef45e8400f5bb66b03cc949f76c80e2a118447de ]
+[ Upstream commit 8a4a0b2a3eaf75ca8854f856ef29690c12b2f531 ]
 
-Most kernel functions return negative error codes but some irq functions
-return zero on error.  In this code irq_of_parse_and_map(), returns zero
-and platform_get_irq() returns negative error codes.  We need to handle
-both cases appropriately.
+If we disable quotas while we have a relocation of a metadata block group
+that has extents belonging to the quota root, we can cause the relocation
+to fail with -ENOENT. This is because relocation builds backref nodes for
+extents of the quota root and later needs to walk the backrefs and access
+the quota root - however if in between a task disables quotas, it results
+in deleting the quota root from the root tree (with btrfs_del_root(),
+called from btrfs_quota_disable().
 
-Fixes: 8425c41d1ef7 ("net: ll_temac: Extend support to non-device-tree platforms")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Acked-by: Esben Haabendal <esben@geanix.com>
-Reviewed-by: Yang Yingliang <yangyingliang@huawei.com>
-Reviewed-by: Harini Katakam <harini.katakam@amd.com>
-Link: https://lore.kernel.org/r/3d0aef75-06e0-45a5-a2a6-2cc4738d4143@moroto.mountain
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+This can be sporadically triggered by test case btrfs/255 from fstests:
+
+  $ ./check btrfs/255
+  FSTYP         -- btrfs
+  PLATFORM      -- Linux/x86_64 debian0 6.4.0-rc6-btrfs-next-134+ #1 SMP PREEMPT_DYNAMIC Thu Jun 15 11:59:28 WEST 2023
+  MKFS_OPTIONS  -- /dev/sdc
+  MOUNT_OPTIONS -- /dev/sdc /home/fdmanana/btrfs-tests/scratch_1
+
+  btrfs/255 6s ... _check_dmesg: something found in dmesg (see /home/fdmanana/git/hub/xfstests/results//btrfs/255.dmesg)
+  - output mismatch (see /home/fdmanana/git/hub/xfstests/results//btrfs/255.out.bad)
+#      --- tests/btrfs/255.out	2023-03-02 21:47:53.876609426 +0000
+#      +++ /home/fdmanana/git/hub/xfstests/results//btrfs/255.out.bad	2023-06-16 10:20:39.267563212 +0100
+#      @@ -1,2 +1,4 @@
+#       QA output created by 255
+#      +ERROR: error during balancing '/home/fdmanana/btrfs-tests/scratch_1': No such file or directory
+#      +There may be more info in syslog - try dmesg | tail
+#       Silence is golden
+#      ...
+      (Run 'diff -u /home/fdmanana/git/hub/xfstests/tests/btrfs/255.out /home/fdmanana/git/hub/xfstests/results//btrfs/255.out.bad'  to see the entire diff)
+  Ran: btrfs/255
+  Failures: btrfs/255
+  Failed 1 of 1 tests
+
+To fix this make the quota disable operation take the cleaner mutex, as
+relocation of a block group also takes this mutex. This is also what we
+do when deleting a subvolume/snapshot, we take the cleaner mutex in the
+cleaner kthread (at cleaner_kthread()) and then we call btrfs_del_root()
+at btrfs_drop_snapshot() while under the protection of the cleaner mutex.
+
+Fixes: bed92eae26cc ("Btrfs: qgroup implementation and prototypes")
+CC: stable@vger.kernel.org # 5.4+
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/xilinx/ll_temac_main.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ fs/btrfs/qgroup.c | 18 +++++++++++++++---
+ 1 file changed, 15 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/xilinx/ll_temac_main.c b/drivers/net/ethernet/xilinx/ll_temac_main.c
-index e0ac1bcd9925c..49f303353ecb0 100644
---- a/drivers/net/ethernet/xilinx/ll_temac_main.c
-+++ b/drivers/net/ethernet/xilinx/ll_temac_main.c
-@@ -1567,12 +1567,16 @@ static int temac_probe(struct platform_device *pdev)
- 	}
+diff --git a/fs/btrfs/qgroup.c b/fs/btrfs/qgroup.c
+index 828a7ff4aebe7..a67323c2d41f7 100644
+--- a/fs/btrfs/qgroup.c
++++ b/fs/btrfs/qgroup.c
+@@ -1202,12 +1202,23 @@ int btrfs_quota_disable(struct btrfs_fs_info *fs_info)
+ 	int ret = 0;
  
- 	/* Error handle returned DMA RX and TX interrupts */
--	if (lp->rx_irq < 0)
--		return dev_err_probe(&pdev->dev, lp->rx_irq,
-+	if (lp->rx_irq <= 0) {
-+		rc = lp->rx_irq ?: -EINVAL;
-+		return dev_err_probe(&pdev->dev, rc,
- 				     "could not get DMA RX irq\n");
--	if (lp->tx_irq < 0)
--		return dev_err_probe(&pdev->dev, lp->tx_irq,
-+	}
-+	if (lp->tx_irq <= 0) {
-+		rc = lp->tx_irq ?: -EINVAL;
-+		return dev_err_probe(&pdev->dev, rc,
- 				     "could not get DMA TX irq\n");
-+	}
+ 	/*
+-	 * We need to have subvol_sem write locked, to prevent races between
+-	 * concurrent tasks trying to disable quotas, because we will unlock
+-	 * and relock qgroup_ioctl_lock across BTRFS_FS_QUOTA_ENABLED changes.
++	 * We need to have subvol_sem write locked to prevent races with
++	 * snapshot creation.
+ 	 */
+ 	lockdep_assert_held_write(&fs_info->subvol_sem);
  
- 	if (temac_np) {
- 		/* Retrieve the MAC address */
++	/*
++	 * Lock the cleaner mutex to prevent races with concurrent relocation,
++	 * because relocation may be building backrefs for blocks of the quota
++	 * root while we are deleting the root. This is like dropping fs roots
++	 * of deleted snapshots/subvolumes, we need the same protection.
++	 *
++	 * This also prevents races between concurrent tasks trying to disable
++	 * quotas, because we will unlock and relock qgroup_ioctl_lock across
++	 * BTRFS_FS_QUOTA_ENABLED changes.
++	 */
++	mutex_lock(&fs_info->cleaner_mutex);
++
+ 	mutex_lock(&fs_info->qgroup_ioctl_lock);
+ 	if (!fs_info->quota_root)
+ 		goto out;
+@@ -1287,6 +1298,7 @@ int btrfs_quota_disable(struct btrfs_fs_info *fs_info)
+ 		btrfs_end_transaction(trans);
+ 	else if (trans)
+ 		ret = btrfs_end_transaction(trans);
++	mutex_unlock(&fs_info->cleaner_mutex);
+ 
+ 	return ret;
+ }
 -- 
-2.40.1
+2.39.2
 
 
 
