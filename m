@@ -2,46 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3B31E7758DE
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:55:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D0530775A57
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:07:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232792AbjHIKzx (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 06:55:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40158 "EHLO
+        id S233133AbjHILH2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:07:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40980 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232545AbjHIKzi (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:55:38 -0400
+        with ESMTP id S233144AbjHILH2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:07:28 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4DF614239
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:54:49 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F838ED
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:07:27 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2EEC163136
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:54:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FE3CC433D9;
-        Wed,  9 Aug 2023 10:54:48 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1837A62BD5
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:07:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A3A1C433C8;
+        Wed,  9 Aug 2023 11:07:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691578488;
-        bh=O38RnuJtVCndqE2B8niICJhT8BJhVdp5sBmeTgJtnj4=;
+        s=korg; t=1691579246;
+        bh=E7lYeDajVPC9k1njXFk9w/Uxb4Etf5SuZ4G0+uW4A24=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=GJfUdyZaSZ6b38O4hEAFD+padfEgPqeq/eHwCb9LVOXc9fnQXPg00dCjqYmpVrRS8
-         E/W9MDxp0A++xDnqt3SpLaFKq2UbV5jie01VjPXIE/PG8eNyDQB0jwDMkIKVVzhaVH
-         DrXmxHB+LNSeDURrvmLJhqZBak9mG6DgXLBD/P/s=
+        b=Nnukh+0XVB7p4VsQcSrFs6ewaG/SuHW+1oNDucUogt3t/yZ5f0lbxRUiODFTta2di
+         3x8SWKbckOxUOKW5BDcgAS2FaaezuuoQL6jFP9D3bN40wB8BdKu5tpinSSNPyFsnAJ
+         TSH2X0jkyclDYxIyyulw10k/qDF6fAP0LyHkEo78=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        syzbot+1741a5d9b79989c10bdc@syzkaller.appspotmail.com,
-        Sungjong Seo <sj1557.seo@samsung.com>,
-        Namjae Jeon <linkinjeon@kernel.org>
-Subject: [PATCH 6.1 078/127] exfat: release s_lock before calling dir_emit()
+        patches@lists.linux.dev, stable@kernel.org,
+        Eric Whitney <enwlinux@gmail.com>, Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 4.14 127/204] ext4: correct inline offset when handling xattrs in inode body
 Date:   Wed,  9 Aug 2023 12:41:05 +0200
-Message-ID: <20230809103639.228105890@linuxfoundation.org>
+Message-ID: <20230809103646.854455487@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103636.615294317@linuxfoundation.org>
-References: <20230809103636.615294317@linuxfoundation.org>
+In-Reply-To: <20230809103642.552405807@linuxfoundation.org>
+References: <20230809103642.552405807@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,129 +54,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Sungjong Seo <sj1557.seo@samsung.com>
+From: Eric Whitney <enwlinux@gmail.com>
 
-commit ff84772fd45d486e4fc78c82e2f70ce5333543e6 upstream.
+commit 6909cf5c4101214f4305a62d582a5b93c7e1eb9a upstream.
 
-There is a potential deadlock reported by syzbot as below:
+When run on a file system where the inline_data feature has been
+enabled, xfstests generic/269, generic/270, and generic/476 cause ext4
+to emit error messages indicating that inline directory entries are
+corrupted.  This occurs because the inline offset used to locate
+inline directory entries in the inode body is not updated when an
+xattr in that shared region is deleted and the region is shifted in
+memory to recover the space it occupied.  If the deleted xattr precedes
+the system.data attribute, which points to the inline directory entries,
+that attribute will be moved further up in the region.  The inline
+offset continues to point to whatever is located in system.data's former
+location, with unfortunate effects when used to access directory entries
+or (presumably) inline data in the inode body.
 
-======================================================
-WARNING: possible circular locking dependency detected
-6.4.0-next-20230707-syzkaller #0 Not tainted
-------------------------------------------------------
-syz-executor330/5073 is trying to acquire lock:
-ffff8880218527a0 (&mm->mmap_lock){++++}-{3:3}, at: mmap_read_lock_killable include/linux/mmap_lock.h:151 [inline]
-ffff8880218527a0 (&mm->mmap_lock){++++}-{3:3}, at: get_mmap_lock_carefully mm/memory.c:5293 [inline]
-ffff8880218527a0 (&mm->mmap_lock){++++}-{3:3}, at: lock_mm_and_find_vma+0x369/0x510 mm/memory.c:5344
-but task is already holding lock:
-ffff888019f760e0 (&sbi->s_lock){+.+.}-{3:3}, at: exfat_iterate+0x117/0xb50 fs/exfat/dir.c:232
-
-which lock already depends on the new lock.
-
-Chain exists of:
-  &mm->mmap_lock --> mapping.invalidate_lock#3 --> &sbi->s_lock
-
- Possible unsafe locking scenario:
-
-       CPU0                    CPU1
-       ----                    ----
-  lock(&sbi->s_lock);
-                               lock(mapping.invalidate_lock#3);
-                               lock(&sbi->s_lock);
-  rlock(&mm->mmap_lock);
-
-Let's try to avoid above potential deadlock condition by moving dir_emit*()
-out of sbi->s_lock coverage.
-
-Fixes: ca06197382bd ("exfat: add directory operations")
-Cc: stable@vger.kernel.org #v5.7+
-Reported-by: syzbot+1741a5d9b79989c10bdc@syzkaller.appspotmail.com
-Link: https://lore.kernel.org/lkml/00000000000078ee7e060066270b@google.com/T/#u
-Tested-by: syzbot+1741a5d9b79989c10bdc@syzkaller.appspotmail.com
-Signed-off-by: Sungjong Seo <sj1557.seo@samsung.com>
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Cc: stable@kernel.org
+Signed-off-by: Eric Whitney <enwlinux@gmail.com>
+Link: https://lore.kernel.org/r/20230522181520.1570360-1-enwlinux@gmail.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/exfat/dir.c |   27 ++++++++++++---------------
- 1 file changed, 12 insertions(+), 15 deletions(-)
+ fs/ext4/xattr.c |   14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
---- a/fs/exfat/dir.c
-+++ b/fs/exfat/dir.c
-@@ -210,7 +210,10 @@ static void exfat_free_namebuf(struct ex
- 	exfat_init_namebuf(nb);
- }
- 
--/* skip iterating emit_dots when dir is empty */
-+/*
-+ * Before calling dir_emit*(), sbi->s_lock should be released
-+ * because page fault can occur in dir_emit*().
-+ */
- #define ITER_POS_FILLED_DOTS    (2)
- static int exfat_iterate(struct file *file, struct dir_context *ctx)
- {
-@@ -225,11 +228,10 @@ static int exfat_iterate(struct file *fi
- 	int err = 0, fake_offset = 0;
- 
- 	exfat_init_namebuf(nb);
--	mutex_lock(&EXFAT_SB(sb)->s_lock);
- 
- 	cpos = ctx->pos;
- 	if (!dir_emit_dots(file, ctx))
--		goto unlock;
-+		goto out;
- 
- 	if (ctx->pos == ITER_POS_FILLED_DOTS) {
- 		cpos = 0;
-@@ -241,16 +243,18 @@ static int exfat_iterate(struct file *fi
- 	/* name buffer should be allocated before use */
- 	err = exfat_alloc_namebuf(nb);
- 	if (err)
--		goto unlock;
-+		goto out;
- get_new:
-+	mutex_lock(&EXFAT_SB(sb)->s_lock);
+--- a/fs/ext4/xattr.c
++++ b/fs/ext4/xattr.c
+@@ -1757,6 +1757,20 @@ static int ext4_xattr_set_entry(struct e
+ 		memmove(here, (void *)here + size,
+ 			(void *)last - (void *)here + sizeof(__u32));
+ 		memset(last, 0, size);
 +
- 	if (ei->flags == ALLOC_NO_FAT_CHAIN && cpos >= i_size_read(inode))
- 		goto end_of_dir;
- 
- 	err = exfat_readdir(inode, &cpos, &de);
- 	if (err) {
- 		/*
--		 * At least we tried to read a sector.  Move cpos to next sector
--		 * position (should be aligned).
-+		 * At least we tried to read a sector.
-+		 * Move cpos to next sector position (should be aligned).
- 		 */
- 		if (err == -EIO) {
- 			cpos += 1 << (sb->s_blocksize_bits);
-@@ -273,16 +277,10 @@ get_new:
- 		inum = iunique(sb, EXFAT_ROOT_INO);
- 	}
- 
--	/*
--	 * Before calling dir_emit(), sb_lock should be released.
--	 * Because page fault can occur in dir_emit() when the size
--	 * of buffer given from user is larger than one page size.
--	 */
- 	mutex_unlock(&EXFAT_SB(sb)->s_lock);
- 	if (!dir_emit(ctx, nb->lfn, strlen(nb->lfn), inum,
- 			(de.attr & ATTR_SUBDIR) ? DT_DIR : DT_REG))
--		goto out_unlocked;
--	mutex_lock(&EXFAT_SB(sb)->s_lock);
-+		goto out;
- 	ctx->pos = cpos;
- 	goto get_new;
- 
-@@ -290,9 +288,8 @@ end_of_dir:
- 	if (!cpos && fake_offset)
- 		cpos = ITER_POS_FILLED_DOTS;
- 	ctx->pos = cpos;
--unlock:
- 	mutex_unlock(&EXFAT_SB(sb)->s_lock);
--out_unlocked:
-+out:
- 	/*
- 	 * To improve performance, free namebuf after unlock sb_lock.
- 	 * If namebuf is not allocated, this function do nothing
++		/*
++		 * Update i_inline_off - moved ibody region might contain
++		 * system.data attribute.  Handling a failure here won't
++		 * cause other complications for setting an xattr.
++		 */
++		if (!is_block && ext4_has_inline_data(inode)) {
++			ret = ext4_find_inline_data_nolock(inode);
++			if (ret) {
++				ext4_warning_inode(inode,
++					"unable to update i_inline_off");
++				goto out;
++			}
++		}
+ 	} else if (s->not_found) {
+ 		/* Insert new name. */
+ 		size_t size = EXT4_XATTR_LEN(name_len);
 
 
