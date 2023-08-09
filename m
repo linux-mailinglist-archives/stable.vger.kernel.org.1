@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9B8AE775A3F
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:06:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 859B57758B8
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:55:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233115AbjHILGl (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:06:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41676 "EHLO
+        id S232424AbjHIKzL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 06:55:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40224 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233117AbjHILGl (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:06:41 -0400
+        with ESMTP id S230088AbjHIKy7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:54:59 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 742881FCE
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:06:40 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 52A3C2D66
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:53:27 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C6A5F6309F
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:06:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D72E9C433C7;
-        Wed,  9 Aug 2023 11:06:38 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BDD196312B
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:52:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCF39C433C8;
+        Wed,  9 Aug 2023 10:52:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691579199;
-        bh=kZV9KqAB3ofV8Wl92P41r4V8FUI8LK2U1HxJ13naw7Q=;
+        s=korg; t=1691578368;
+        bh=AqAh7YCAiUeU0r707uGxMBwKEUx2DmtY4bG0LN6OTqI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=TDiaFqdDRPXjPBxjdPdP1WKPtQX9+OIGz56ZLSmznoFB0L6yruqyu4ZXJsWYgtJ3v
-         HbXIiryJraEvlc0Y6/9WEHkwJYziSHEPmQKLtdXba3GoWnL7/XJ7PRk9ikzhXYswxb
-         HTQUjxB6cUga01d+4OLSwsQtNsEZ/lT7FQs8PBzg=
+        b=ZCPGFe6B4wbHu7MPRegeIU5Me1MWAGIfX2tTCZ0oj/Hi2CjDGFGVxkIEhaUv15ftD
+         qNyW1Q+T8eZVbes1xjOhGJVkJafzuyGmeg9y8L2GUNWPpRIWcNNAijgnCxleSu/UR/
+         a2NpDpf5i2MR2TqA8Ap5LFvoKND13MlSKzruRbZI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Filipe Manana <fdmanana@suse.com>,
-        David Sterba <dsterba@suse.com>
-Subject: [PATCH 4.14 082/204] btrfs: fix race when deleting quota root from the dirty cow roots list
+        patches@lists.linux.dev, Chengfeng Ye <dg573847474@gmail.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 033/127] mISDN: hfcpci: Fix potential deadlock on &hc->lock
 Date:   Wed,  9 Aug 2023 12:40:20 +0200
-Message-ID: <20230809103645.408286880@linuxfoundation.org>
+Message-ID: <20230809103637.760403953@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103642.552405807@linuxfoundation.org>
-References: <20230809103642.552405807@linuxfoundation.org>
+In-Reply-To: <20230809103636.615294317@linuxfoundation.org>
+References: <20230809103636.615294317@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,84 +55,88 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Chengfeng Ye <dg573847474@gmail.com>
 
-commit b31cb5a6eb7a48b0a7bfdf06832b1fd5088d8c79 upstream.
+[ Upstream commit 56c6be35fcbed54279df0a2c9e60480a61841d6f ]
 
-When disabling quotas we are deleting the quota root from the list
-fs_info->dirty_cowonly_roots without taking the lock that protects it,
-which is struct btrfs_fs_info::trans_lock. This unsynchronized list
-manipulation may cause chaos if there's another concurrent manipulation
-of this list, such as when adding a root to it with
-ctree.c:add_root_to_dirty_list().
+As &hc->lock is acquired by both timer _hfcpci_softirq() and hardirq
+hfcpci_int(), the timer should disable irq before lock acquisition
+otherwise deadlock could happen if the timmer is preemtped by the hadr irq.
 
-This can result in all sorts of weird failures caused by a race, such as
-the following crash:
+Possible deadlock scenario:
+hfcpci_softirq() (timer)
+    -> _hfcpci_softirq()
+    -> spin_lock(&hc->lock);
+        <irq interruption>
+        -> hfcpci_int()
+        -> spin_lock(&hc->lock); (deadlock here)
 
-  [337571.278245] general protection fault, probably for non-canonical address 0xdead000000000108: 0000 [#1] PREEMPT SMP PTI
-  [337571.278933] CPU: 1 PID: 115447 Comm: btrfs Tainted: G        W          6.4.0-rc6-btrfs-next-134+ #1
-  [337571.279153] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.14.0-0-g155821a1990b-prebuilt.qemu.org 04/01/2014
-  [337571.279572] RIP: 0010:commit_cowonly_roots+0x11f/0x250 [btrfs]
-  [337571.279928] Code: 85 38 06 00 (...)
-  [337571.280363] RSP: 0018:ffff9f63446efba0 EFLAGS: 00010206
-  [337571.280582] RAX: ffff942d98ec2638 RBX: ffff9430b82b4c30 RCX: 0000000449e1c000
-  [337571.280798] RDX: dead000000000100 RSI: ffff9430021e4900 RDI: 0000000000036070
-  [337571.281015] RBP: ffff942d98ec2000 R08: ffff942d98ec2000 R09: 000000000000015b
-  [337571.281254] R10: 0000000000000009 R11: 0000000000000001 R12: ffff942fe8fbf600
-  [337571.281476] R13: ffff942dabe23040 R14: ffff942dabe20800 R15: ffff942d92cf3b48
-  [337571.281723] FS:  00007f478adb7340(0000) GS:ffff94349fa40000(0000) knlGS:0000000000000000
-  [337571.281950] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-  [337571.282184] CR2: 00007f478ab9a3d5 CR3: 000000001e02c001 CR4: 0000000000370ee0
-  [337571.282416] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-  [337571.282647] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-  [337571.282874] Call Trace:
-  [337571.283101]  <TASK>
-  [337571.283327]  ? __die_body+0x1b/0x60
-  [337571.283570]  ? die_addr+0x39/0x60
-  [337571.283796]  ? exc_general_protection+0x22e/0x430
-  [337571.284022]  ? asm_exc_general_protection+0x22/0x30
-  [337571.284251]  ? commit_cowonly_roots+0x11f/0x250 [btrfs]
-  [337571.284531]  btrfs_commit_transaction+0x42e/0xf90 [btrfs]
-  [337571.284803]  ? _raw_spin_unlock+0x15/0x30
-  [337571.285031]  ? release_extent_buffer+0x103/0x130 [btrfs]
-  [337571.285305]  reset_balance_state+0x152/0x1b0 [btrfs]
-  [337571.285578]  btrfs_balance+0xa50/0x11e0 [btrfs]
-  [337571.285864]  ? __kmem_cache_alloc_node+0x14a/0x410
-  [337571.286086]  btrfs_ioctl+0x249a/0x3320 [btrfs]
-  [337571.286358]  ? mod_objcg_state+0xd2/0x360
-  [337571.286577]  ? refill_obj_stock+0xb0/0x160
-  [337571.286798]  ? seq_release+0x25/0x30
-  [337571.287016]  ? __rseq_handle_notify_resume+0x3ba/0x4b0
-  [337571.287235]  ? percpu_counter_add_batch+0x2e/0xa0
-  [337571.287455]  ? __x64_sys_ioctl+0x88/0xc0
-  [337571.287675]  __x64_sys_ioctl+0x88/0xc0
-  [337571.287901]  do_syscall_64+0x38/0x90
-  [337571.288126]  entry_SYSCALL_64_after_hwframe+0x72/0xdc
-  [337571.288352] RIP: 0033:0x7f478aaffe9b
+This flaw was found by an experimental static analysis tool I am developing
+for irq-related deadlock.
 
-So fix this by locking struct btrfs_fs_info::trans_lock before deleting
-the quota root from that list.
+The tentative patch fixes the potential deadlock by spin_lock_irq()
+in timer.
 
-Fixes: bed92eae26cc ("Btrfs: qgroup implementation and prototypes")
-CC: stable@vger.kernel.org # 4.14+
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: b36b654a7e82 ("mISDN: Create /sys/class/mISDN")
+Signed-off-by: Chengfeng Ye <dg573847474@gmail.com>
+Link: https://lore.kernel.org/r/20230727085619.7419-1-dg573847474@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/qgroup.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/isdn/hardware/mISDN/hfcpci.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
---- a/fs/btrfs/qgroup.c
-+++ b/fs/btrfs/qgroup.c
-@@ -969,7 +969,9 @@ int btrfs_quota_disable(struct btrfs_tra
- 	if (ret)
- 		goto out;
+diff --git a/drivers/isdn/hardware/mISDN/hfcpci.c b/drivers/isdn/hardware/mISDN/hfcpci.c
+index c0331b2680108..fe391de1aba32 100644
+--- a/drivers/isdn/hardware/mISDN/hfcpci.c
++++ b/drivers/isdn/hardware/mISDN/hfcpci.c
+@@ -839,7 +839,7 @@ hfcpci_fill_fifo(struct bchannel *bch)
+ 		*z1t = cpu_to_le16(new_z1);	/* now send data */
+ 		if (bch->tx_idx < bch->tx_skb->len)
+ 			return;
+-		dev_kfree_skb(bch->tx_skb);
++		dev_kfree_skb_any(bch->tx_skb);
+ 		if (get_next_bframe(bch))
+ 			goto next_t_frame;
+ 		return;
+@@ -895,7 +895,7 @@ hfcpci_fill_fifo(struct bchannel *bch)
+ 	}
+ 	bz->za[new_f1].z1 = cpu_to_le16(new_z1);	/* for next buffer */
+ 	bz->f1 = new_f1;	/* next frame */
+-	dev_kfree_skb(bch->tx_skb);
++	dev_kfree_skb_any(bch->tx_skb);
+ 	get_next_bframe(bch);
+ }
  
-+	spin_lock(&fs_info->trans_lock);
- 	list_del(&quota_root->dirty_list);
-+	spin_unlock(&fs_info->trans_lock);
+@@ -1119,7 +1119,7 @@ tx_birq(struct bchannel *bch)
+ 	if (bch->tx_skb && bch->tx_idx < bch->tx_skb->len)
+ 		hfcpci_fill_fifo(bch);
+ 	else {
+-		dev_kfree_skb(bch->tx_skb);
++		dev_kfree_skb_any(bch->tx_skb);
+ 		if (get_next_bframe(bch))
+ 			hfcpci_fill_fifo(bch);
+ 	}
+@@ -2277,7 +2277,7 @@ _hfcpci_softirq(struct device *dev, void *unused)
+ 		return 0;
  
- 	btrfs_tree_lock(quota_root->node);
- 	clean_tree_block(fs_info, quota_root->node);
+ 	if (hc->hw.int_m2 & HFCPCI_IRQ_ENABLE) {
+-		spin_lock(&hc->lock);
++		spin_lock_irq(&hc->lock);
+ 		bch = Sel_BCS(hc, hc->hw.bswapped ? 2 : 1);
+ 		if (bch && bch->state == ISDN_P_B_RAW) { /* B1 rx&tx */
+ 			main_rec_hfcpci(bch);
+@@ -2288,7 +2288,7 @@ _hfcpci_softirq(struct device *dev, void *unused)
+ 			main_rec_hfcpci(bch);
+ 			tx_birq(bch);
+ 		}
+-		spin_unlock(&hc->lock);
++		spin_unlock_irq(&hc->lock);
+ 	}
+ 	return 0;
+ }
+-- 
+2.40.1
+
 
 
