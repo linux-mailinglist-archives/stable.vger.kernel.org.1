@@ -2,47 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C0D727758C2
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:55:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 702FE775D3A
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:35:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232449AbjHIKzP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 06:55:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37596 "EHLO
+        id S234048AbjHILfK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:35:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38522 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232343AbjHIKzE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:55:04 -0400
+        with ESMTP id S234057AbjHILfJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:35:09 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1856130E6
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:53:33 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 06E941FD7
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:35:05 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D1C3563132
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:53:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0C7EC433C8;
-        Wed,  9 Aug 2023 10:53:32 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7CCC160D24
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:35:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A0F7C433C9;
+        Wed,  9 Aug 2023 11:35:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691578413;
-        bh=QHnAsdTwt6iTvDspyAhM/hx3JwlIKEavjdheFmuAnTE=;
+        s=korg; t=1691580903;
+        bh=AnT4vH8zRzmhHFQ3W+4lIrqyOqjGQ22EeCVD2dnM+bA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=vCTljbcWxMQ38e3MukrIxVobux1HtQDklMyvaLN/keyb7n7gRyhr58h4kRpjCMSYh
-         u2DoyCStrb/JGmS+8sS0n7gTeQqipnKQqdQ77R5LkxgbO4+hntvuK8VmnOU6x3vYUT
-         16qVN7eqURtunTUGmlFfmOtVesdjMyzOd/C+EEUk=
+        b=wTw8PZsUHf0DAXB3oR+DCpM4aOnKlqJ/FlYIzstqQOT4ZD43J4LttFVnCIcASvjBH
+         EZU4VNys1v98LXcFolq6TW6Yho+8sQ/iagnFXh/24oIuuxUEDXm72/qABz45TczwKJ
+         95CCkSMVxqKG8Y42vXovlo8cCZcE7TQI9HiE6DEA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Tomas Glozar <tglozar@redhat.com>,
-        Jakub Sitnicki <jakub@cloudflare.com>,
-        John Fastabend <john.fastabend@gmail.com>,
-        Paolo Abeni <pabeni@redhat.com>,
+        patches@lists.linux.dev, Jiri Pirko <jiri@resnulli.us>,
+        Xiao Ma <xiaom@google.com>,
+        =?UTF-8?q?Maciej=20=C5=BBenczykowski?= <maze@google.com>,
+        David Ahern <dsahern@kernel.org>,
+        Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 051/127] bpf: sockmap: Remove preempt_disable in sock_map_sk_acquire
+Subject: [PATCH 5.10 036/201] ipv6 addrconf: fix bug where deleting a mngtmpaddr can create a new temporary address
 Date:   Wed,  9 Aug 2023 12:40:38 +0200
-Message-ID: <20230809103638.373931254@linuxfoundation.org>
+Message-ID: <20230809103645.050924717@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103636.615294317@linuxfoundation.org>
-References: <20230809103636.615294317@linuxfoundation.org>
+In-Reply-To: <20230809103643.799166053@linuxfoundation.org>
+References: <20230809103643.799166053@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,59 +58,92 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Tomas Glozar <tglozar@redhat.com>
+From: Maciej Żenczykowski <maze@google.com>
 
-[ Upstream commit 13d2618b48f15966d1adfe1ff6a1985f5eef40ba ]
+[ Upstream commit 69172f0bcb6a09110c5d2a6d792627f5095a9018 ]
 
-Disabling preemption in sock_map_sk_acquire conflicts with GFP_ATOMIC
-allocation later in sk_psock_init_link on PREEMPT_RT kernels, since
-GFP_ATOMIC might sleep on RT (see bpf: Make BPF and PREEMPT_RT co-exist
-patchset notes for details).
+currently on 6.4 net/main:
 
-This causes calling bpf_map_update_elem on BPF_MAP_TYPE_SOCKMAP maps to
-BUG (sleeping function called from invalid context) on RT kernels.
+  # ip link add dummy1 type dummy
+  # echo 1 > /proc/sys/net/ipv6/conf/dummy1/use_tempaddr
+  # ip link set dummy1 up
+  # ip -6 addr add 2000::1/64 mngtmpaddr dev dummy1
+  # ip -6 addr show dev dummy1
 
-preempt_disable was introduced together with lock_sk and rcu_read_lock
-in commit 99ba2b5aba24e ("bpf: sockhash, disallow bpf_tcp_close and update
-in parallel"), probably to match disabled migration of BPF programs, and
-is no longer necessary.
+  11: dummy1: <BROADCAST,NOARP,UP,LOWER_UP> mtu 1500 qdisc noqueue state UNKNOWN group default qlen 1000
+      inet6 2000::44f3:581c:8ca:3983/64 scope global temporary dynamic
+         valid_lft 604800sec preferred_lft 86172sec
+      inet6 2000::1/64 scope global mngtmpaddr
+         valid_lft forever preferred_lft forever
+      inet6 fe80::e8a8:a6ff:fed5:56d4/64 scope link
+         valid_lft forever preferred_lft forever
 
-Remove preempt_disable to fix BUG in sock_map_update_common on RT.
+  # ip -6 addr del 2000::44f3:581c:8ca:3983/64 dev dummy1
 
-Signed-off-by: Tomas Glozar <tglozar@redhat.com>
-Reviewed-by: Jakub Sitnicki <jakub@cloudflare.com>
-Link: https://lore.kernel.org/all/20200224140131.461979697@linutronix.de/
-Fixes: 99ba2b5aba24 ("bpf: sockhash, disallow bpf_tcp_close and update in parallel")
-Reviewed-by: John Fastabend <john.fastabend@gmail.com>
-Link: https://lore.kernel.org/r/20230728064411.305576-1-tglozar@redhat.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+  (can wait a few seconds if you want to, the above delete isn't [directly] the problem)
+
+  # ip -6 addr show dev dummy1
+
+  11: dummy1: <BROADCAST,NOARP,UP,LOWER_UP> mtu 1500 qdisc noqueue state UNKNOWN group default qlen 1000
+      inet6 2000::1/64 scope global mngtmpaddr
+         valid_lft forever preferred_lft forever
+      inet6 fe80::e8a8:a6ff:fed5:56d4/64 scope link
+         valid_lft forever preferred_lft forever
+
+  # ip -6 addr del 2000::1/64 mngtmpaddr dev dummy1
+  # ip -6 addr show dev dummy1
+
+  11: dummy1: <BROADCAST,NOARP,UP,LOWER_UP> mtu 1500 qdisc noqueue state UNKNOWN group default qlen 1000
+      inet6 2000::81c9:56b7:f51a:b98f/64 scope global temporary dynamic
+         valid_lft 604797sec preferred_lft 86169sec
+      inet6 fe80::e8a8:a6ff:fed5:56d4/64 scope link
+         valid_lft forever preferred_lft forever
+
+This patch prevents this new 'global temporary dynamic' address from being
+created by the deletion of the related (same subnet prefix) 'mngtmpaddr'
+(which is triggered by there already being no temporary addresses).
+
+Cc: Jiri Pirko <jiri@resnulli.us>
+Fixes: 53bd67491537 ("ipv6 addrconf: introduce IFA_F_MANAGETEMPADDR to tell kernel to manage temporary addresses")
+Reported-by: Xiao Ma <xiaom@google.com>
+Signed-off-by: Maciej Żenczykowski <maze@google.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://lore.kernel.org/r/20230720160022.1887942-1-maze@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/sock_map.c | 2 --
- 1 file changed, 2 deletions(-)
+ net/ipv6/addrconf.c | 14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
-diff --git a/net/core/sock_map.c b/net/core/sock_map.c
-index d382672018928..c84e5073c0b66 100644
---- a/net/core/sock_map.c
-+++ b/net/core/sock_map.c
-@@ -117,7 +117,6 @@ static void sock_map_sk_acquire(struct sock *sk)
- 	__acquires(&sk->sk_lock.slock)
- {
- 	lock_sock(sk);
--	preempt_disable();
- 	rcu_read_lock();
- }
+diff --git a/net/ipv6/addrconf.c b/net/ipv6/addrconf.c
+index d5d10496b4aef..9b414681500a5 100644
+--- a/net/ipv6/addrconf.c
++++ b/net/ipv6/addrconf.c
+@@ -2555,12 +2555,18 @@ static void manage_tempaddrs(struct inet6_dev *idev,
+ 			ipv6_ifa_notify(0, ift);
+ 	}
  
-@@ -125,7 +124,6 @@ static void sock_map_sk_release(struct sock *sk)
- 	__releases(&sk->sk_lock.slock)
- {
- 	rcu_read_unlock();
--	preempt_enable();
- 	release_sock(sk);
- }
- 
+-	if ((create || list_empty(&idev->tempaddr_list)) &&
+-	    idev->cnf.use_tempaddr > 0) {
++	/* Also create a temporary address if it's enabled but no temporary
++	 * address currently exists.
++	 * However, we get called with valid_lft == 0, prefered_lft == 0, create == false
++	 * as part of cleanup (ie. deleting the mngtmpaddr).
++	 * We don't want that to result in creating a new temporary ip address.
++	 */
++	if (list_empty(&idev->tempaddr_list) && (valid_lft || prefered_lft))
++		create = true;
++
++	if (create && idev->cnf.use_tempaddr > 0) {
+ 		/* When a new public address is created as described
+ 		 * in [ADDRCONF], also create a new temporary address.
+-		 * Also create a temporary address if it's enabled but
+-		 * no temporary address currently exists.
+ 		 */
+ 		read_unlock_bh(&idev->lock);
+ 		ipv6_create_tempaddr(ifp, false);
 -- 
-2.40.1
+2.39.2
 
 
 
