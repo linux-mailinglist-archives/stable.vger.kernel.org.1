@@ -2,106 +2,126 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C11EF775763
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:45:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 834E0775B91
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:18:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231671AbjHIKpZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 06:45:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41296 "EHLO
+        id S233479AbjHILSm (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:18:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41776 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231782AbjHIKpZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:45:25 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45C1410F3
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:45:24 -0700 (PDT)
+        with ESMTP id S233481AbjHILSm (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:18:42 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D729C1BFE
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:18:41 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DA24B6283F
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:45:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC327C433C8;
-        Wed,  9 Aug 2023 10:45:22 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6E63C63194
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:18:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E193C433C7;
+        Wed,  9 Aug 2023 11:18:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691577923;
-        bh=ZuyOmiYij5xC3a6HX90W7ItMYe7QSxKV6ddJBoSIejQ=;
+        s=korg; t=1691579920;
+        bh=bODkoiT2slns5eDs7hKURVdtm4JhUSM8yxH87bwyfMg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=JaDHsKzYdSVGLvhknnwwGa9HwX7L9itMmbNnzdmLdOOpewKS4xy1RHxc+v8PgE2VD
-         4yXN6EpV7SM1U58kzm6NaXx1zJnLJKrAGUpGurzgRYZyk28HRbWQjg6ISmTPdNJmU0
-         snCiEflfWFt8WQCCGkkIF+DrntECAR3KEFeVSMIU=
+        b=g7nXM2IRvbBs3u4iuPW1Opa51ZK7WEBAaI8031bj0ISTUzm9lZJCsMGqvWIX0j/R4
+         7r9hDdwUrtj0Mxouh6kok0HtnRmSz6CrCpP+iRlHHtJ7deM544d0//MMdPkdorHGhW
+         vpAtTgLvrhiCziaC2/ZLxUQ2OvFwgEeP8syJqH4g=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yuanjun Gong <ruc_gongyuanjun@163.com>,
-        Florian Fainelli <florian.fainelli@broadcom.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 043/165] net: dsa: fix value check in bcm_sf2_sw_probe()
+        patches@lists.linux.dev,
+        Bryan Whitehead <bryan.whitehead@microchip.com>,
+        UNGLinuxDriver@microchip.com, Moritz Fischer <moritzf@google.com>,
+        Andrew Lunn <andrew@lunn.ch>, Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 4.19 136/323] net: lan743x: Dont sleep in atomic context
 Date:   Wed,  9 Aug 2023 12:39:34 +0200
-Message-ID: <20230809103644.233619203@linuxfoundation.org>
+Message-ID: <20230809103704.362309898@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103642.720851262@linuxfoundation.org>
-References: <20230809103642.720851262@linuxfoundation.org>
+In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
+References: <20230809103658.104386911@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Yuanjun Gong <ruc_gongyuanjun@163.com>
+From: Moritz Fischer <moritzf@google.com>
 
-[ Upstream commit dadc5b86cc9459581f37fe755b431adc399ea393 ]
+commit 7a8227b2e76be506b2ac64d2beac950ca04892a5 upstream.
 
-in bcm_sf2_sw_probe(), check the return value of clk_prepare_enable()
-and return the error code if clk_prepare_enable() returns an
-unexpected value.
+dev_set_rx_mode() grabs a spin_lock, and the lan743x implementation
+proceeds subsequently to go to sleep using readx_poll_timeout().
 
-Fixes: e9ec5c3bd238 ("net: dsa: bcm_sf2: request and handle clocks")
-Signed-off-by: Yuanjun Gong <ruc_gongyuanjun@163.com>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Link: https://lore.kernel.org/r/20230726170506.16547-1-ruc_gongyuanjun@163.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Introduce a helper wrapping the readx_poll_timeout_atomic() function
+and use it to replace the calls to readx_polL_timeout().
+
+Fixes: 23f0703c125b ("lan743x: Add main source files for new lan743x driver")
+Cc: stable@vger.kernel.org
+Cc: Bryan Whitehead <bryan.whitehead@microchip.com>
+Cc: UNGLinuxDriver@microchip.com
+Signed-off-by: Moritz Fischer <moritzf@google.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://lore.kernel.org/r/20230627035000.1295254-1-moritzf@google.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/dsa/bcm_sf2.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/microchip/lan743x_main.c |   21 +++++++++++++++++----
+ 1 file changed, 17 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/dsa/bcm_sf2.c b/drivers/net/dsa/bcm_sf2.c
-index cde253d27bd08..72374b066f64a 100644
---- a/drivers/net/dsa/bcm_sf2.c
-+++ b/drivers/net/dsa/bcm_sf2.c
-@@ -1436,7 +1436,9 @@ static int bcm_sf2_sw_probe(struct platform_device *pdev)
- 	if (IS_ERR(priv->clk))
- 		return PTR_ERR(priv->clk);
+--- a/drivers/net/ethernet/microchip/lan743x_main.c
++++ b/drivers/net/ethernet/microchip/lan743x_main.c
+@@ -80,6 +80,18 @@ static int lan743x_csr_light_reset(struc
+ 				  !(data & HW_CFG_LRST_), 100000, 10000000);
+ }
  
--	clk_prepare_enable(priv->clk);
-+	ret = clk_prepare_enable(priv->clk);
-+	if (ret)
-+		return ret;
++static int lan743x_csr_wait_for_bit_atomic(struct lan743x_adapter *adapter,
++					   int offset, u32 bit_mask,
++					   int target_value, int udelay_min,
++					   int udelay_max, int count)
++{
++	u32 data;
++
++	return readx_poll_timeout_atomic(LAN743X_CSR_READ_OP, offset, data,
++					 target_value == !!(data & bit_mask),
++					 udelay_max, udelay_min * count);
++}
++
+ static int lan743x_csr_wait_for_bit(struct lan743x_adapter *adapter,
+ 				    int offset, u32 bit_mask,
+ 				    int target_value, int usleep_min,
+@@ -675,8 +687,8 @@ static int lan743x_dp_write(struct lan74
+ 	u32 dp_sel;
+ 	int i;
  
- 	priv->clk_mdiv = devm_clk_get_optional(&pdev->dev, "sw_switch_mdiv");
- 	if (IS_ERR(priv->clk_mdiv)) {
-@@ -1444,7 +1446,9 @@ static int bcm_sf2_sw_probe(struct platform_device *pdev)
- 		goto out_clk;
+-	if (lan743x_csr_wait_for_bit(adapter, DP_SEL, DP_SEL_DPRDY_,
+-				     1, 40, 100, 100))
++	if (lan743x_csr_wait_for_bit_atomic(adapter, DP_SEL, DP_SEL_DPRDY_,
++					    1, 40, 100, 100))
+ 		return -EIO;
+ 	dp_sel = lan743x_csr_read(adapter, DP_SEL);
+ 	dp_sel &= ~DP_SEL_MASK_;
+@@ -687,8 +699,9 @@ static int lan743x_dp_write(struct lan74
+ 		lan743x_csr_write(adapter, DP_ADDR, addr + i);
+ 		lan743x_csr_write(adapter, DP_DATA_0, buf[i]);
+ 		lan743x_csr_write(adapter, DP_CMD, DP_CMD_WRITE_);
+-		if (lan743x_csr_wait_for_bit(adapter, DP_SEL, DP_SEL_DPRDY_,
+-					     1, 40, 100, 100))
++		if (lan743x_csr_wait_for_bit_atomic(adapter, DP_SEL,
++						    DP_SEL_DPRDY_,
++						    1, 40, 100, 100))
+ 			return -EIO;
  	}
  
--	clk_prepare_enable(priv->clk_mdiv);
-+	ret = clk_prepare_enable(priv->clk_mdiv);
-+	if (ret)
-+		goto out_clk;
- 
- 	ret = bcm_sf2_sw_rst(priv);
- 	if (ret) {
--- 
-2.40.1
-
 
 
