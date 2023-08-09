@@ -2,171 +2,168 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6B1C07758ED
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:56:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7A4FA775859
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:52:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232496AbjHIK4F (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 06:56:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37764 "EHLO
+        id S232617AbjHIKva (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 06:51:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52944 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232311AbjHIKzw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:55:52 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF4D72D67
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:55:44 -0700 (PDT)
+        with ESMTP id S232428AbjHIKug (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:50:36 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 461992115
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:50:35 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 787B362C35
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:55:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C498C433C7;
-        Wed,  9 Aug 2023 10:55:43 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C165E63133
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:50:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A079C433CD;
+        Wed,  9 Aug 2023 10:50:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691578543;
-        bh=4DWjEd7YS3jv/zrqFsmL5H1ZPV55s1rtosvskZZIr2w=;
+        s=korg; t=1691578234;
+        bh=IVLw9HovPgCuV1Tf/77/xhoIXai5GRjBQEuDX77P+64=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=hxa3+7heUN2lVpxhLJHlx1Sfy4Ib7AJXoN1S9ktr5ulUVNcJX0t+QfFJvw5ZJBwux
-         Heg2kl5kRFP+zqE78Wyg76zTf3UwhPer73HfRIToR6oHxoX7jItoBbKCoza7duzheD
-         wJUQhoPbhTFJEFGc/PweF7gstv+j2okZN2ertcA8=
+        b=b6wb8H27/ZWahmHGjmwxb1wfykxsnVrJ0Yw3qrVjLwHoY23v1mY+AIjtES0qWYQg/
+         mlLs7O30NpWYHkzZIBAXoEoKFMZDUHou3xVGoh85qyqHUq3ISbjnRDIzOFf3QNqjoH
+         W+nr+zjwqwTnXt+VdGhRsaJ7D7eS/aE99hB9SMmE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Andi Shyti <andi.shyti@linux.intel.com>,
-        Nirmoy Das <nirmoy.das@intel.com>,
-        Andrzej Hajda <andrzej.hajda@intel.com>,
-        Tvrtko Ursulin <tvrtko.ursulin@intel.com>
-Subject: [PATCH 6.1 096/127] drm/i915/gt: Cleanup aux invalidation registers
+        patches@lists.linux.dev, Peter Foley <pefoley2@pefoley.com>,
+        Pedro Falcato <pedro.falcato@gmail.com>,
+        Arnd Bergmann <arnd@arndb.de>, Mark Brown <broonie@kernel.org>,
+        Tudor Ambarus <tudor.ambarus@linaro.org>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 152/165] mtd: spi-nor: avoid holes in struct spi_mem_op
 Date:   Wed,  9 Aug 2023 12:41:23 +0200
-Message-ID: <20230809103639.816150560@linuxfoundation.org>
+Message-ID: <20230809103647.751896668@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103636.615294317@linuxfoundation.org>
-References: <20230809103636.615294317@linuxfoundation.org>
+In-Reply-To: <20230809103642.720851262@linuxfoundation.org>
+References: <20230809103642.720851262@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Andi Shyti <andi.shyti@linux.intel.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-commit d14560ac1b595aa2e792365e91fea6aeaee66c2b upstream.
+[ Upstream commit 71c8f9cf2623d0db79665f876b95afcdd8214aec ]
 
-Fix the 'NV' definition postfix that is supposed to be INV.
+gcc gets confused when -ftrivial-auto-var-init=pattern is used on sparse
+bit fields such as 'struct spi_mem_op', which caused the previous false
+positive warning about an uninitialized variable:
 
-Take the chance to also order properly the registers based on
-their address and call the GEN12_GFX_CCS_AUX_INV address as
-GEN12_CCS_AUX_INV like all the other similar registers.
+drivers/mtd/spi-nor/spansion.c: error: 'op' is used uninitialized [-Werror=uninitialized]
 
-Remove also VD1, VD3 and VE1 registers that don't exist and add
-BCS0 and CCS0.
+In fact, the variable is fully initialized and gcc does not see it being
+used, so the warning is entirely bogus. The problem appears to be
+a misoptimization in the initialization of single bit fields when the
+rest of the bytes are not initialized.
 
-Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
-Cc: <stable@vger.kernel.org> # v5.8+
-Reviewed-by: Nirmoy Das <nirmoy.das@intel.com>
-Reviewed-by: Andrzej Hajda <andrzej.hajda@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230725001950.1014671-2-andi.shyti@linux.intel.com
-(cherry picked from commit 2f0b927d3ca3440445975ebde27f3df1c3ed6f76)
-Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+A previous workaround added another initialization, which ended up
+shutting up the warning in spansion.c, though it apparently still happens
+in other files as reported by Peter Foley in the gcc bugzilla. The
+workaround of adding a fake initialization seems particularly bad
+because it would set values that can never be correct but prevent the
+compiler from warning about actually missing initializations.
+
+Revert the broken workaround and instead pad the structure to only
+have bitfields that add up to full bytes, which should avoid this
+behavior in all drivers.
+
+I also filed a new bug against gcc with what I found, so this can
+hopefully be addressed in future gcc releases. At the moment, only
+gcc-12 and gcc-13 are affected.
+
+Cc: Peter Foley <pefoley2@pefoley.com>
+Cc: Pedro Falcato <pedro.falcato@gmail.com>
+Link: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=110743
+Link: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=108402
+Link: https://godbolt.org/z/efMMsG1Kx
+Fixes: 420c4495b5e56 ("mtd: spi-nor: spansion: make sure local struct does not contain garbage")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Acked-by: Mark Brown <broonie@kernel.org>
+Acked-by: Tudor Ambarus <tudor.ambarus@linaro.org>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://lore.kernel.org/linux-mtd/20230719190045.4007391-1-arnd@kernel.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/gt/gen8_engine_cs.c |    8 ++++----
- drivers/gpu/drm/i915/gt/intel_gt_regs.h  |   16 ++++++++--------
- drivers/gpu/drm/i915/gt/intel_lrc.c      |    6 +++---
- 3 files changed, 15 insertions(+), 15 deletions(-)
+ drivers/mtd/spi-nor/spansion.c | 4 ++--
+ include/linux/spi/spi-mem.h    | 4 ++++
+ 2 files changed, 6 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/i915/gt/gen8_engine_cs.c
-+++ b/drivers/gpu/drm/i915/gt/gen8_engine_cs.c
-@@ -256,8 +256,8 @@ int gen12_emit_flush_rcs(struct i915_req
+diff --git a/drivers/mtd/spi-nor/spansion.c b/drivers/mtd/spi-nor/spansion.c
+index 36876aa849ede..15f9a80c10b9b 100644
+--- a/drivers/mtd/spi-nor/spansion.c
++++ b/drivers/mtd/spi-nor/spansion.c
+@@ -361,7 +361,7 @@ static int cypress_nor_determine_addr_mode_by_sr1(struct spi_nor *nor,
+  */
+ static int cypress_nor_set_addr_mode_nbytes(struct spi_nor *nor)
+ {
+-	struct spi_mem_op op = {};
++	struct spi_mem_op op;
+ 	u8 addr_mode;
+ 	int ret;
  
- 		if (!HAS_FLAT_CCS(rq->engine->i915)) {
- 			/* hsdes: 1809175790 */
--			cs = gen12_emit_aux_table_inv(rq->engine->gt,
--						      cs, GEN12_GFX_CCS_AUX_NV);
-+			cs = gen12_emit_aux_table_inv(rq->engine->gt, cs,
-+						      GEN12_CCS_AUX_INV);
- 		}
+@@ -492,7 +492,7 @@ s25fs256t_post_bfpt_fixup(struct spi_nor *nor,
+ 			  const struct sfdp_parameter_header *bfpt_header,
+ 			  const struct sfdp_bfpt *bfpt)
+ {
+-	struct spi_mem_op op = {};
++	struct spi_mem_op op;
+ 	int ret;
  
- 		*cs++ = preparser_disable(false);
-@@ -317,10 +317,10 @@ int gen12_emit_flush_xcs(struct i915_req
- 	if (aux_inv) { /* hsdes: 1809175790 */
- 		if (rq->engine->class == VIDEO_DECODE_CLASS)
- 			cs = gen12_emit_aux_table_inv(rq->engine->gt,
--						      cs, GEN12_VD0_AUX_NV);
-+						      cs, GEN12_VD0_AUX_INV);
- 		else
- 			cs = gen12_emit_aux_table_inv(rq->engine->gt,
--						      cs, GEN12_VE0_AUX_NV);
-+						      cs, GEN12_VE0_AUX_INV);
- 	}
+ 	ret = cypress_nor_set_addr_mode_nbytes(nor);
+diff --git a/include/linux/spi/spi-mem.h b/include/linux/spi/spi-mem.h
+index 8e984d75f5b6c..6b0a7dc48a4b7 100644
+--- a/include/linux/spi/spi-mem.h
++++ b/include/linux/spi/spi-mem.h
+@@ -101,6 +101,7 @@ struct spi_mem_op {
+ 		u8 nbytes;
+ 		u8 buswidth;
+ 		u8 dtr : 1;
++		u8 __pad : 7;
+ 		u16 opcode;
+ 	} cmd;
  
- 	if (mode & EMIT_INVALIDATE)
---- a/drivers/gpu/drm/i915/gt/intel_gt_regs.h
-+++ b/drivers/gpu/drm/i915/gt/intel_gt_regs.h
-@@ -301,9 +301,11 @@
- #define GEN8_PRIVATE_PAT_HI			_MMIO(0x40e0 + 4)
- #define GEN10_PAT_INDEX(index)			_MMIO(0x40e0 + (index) * 4)
- #define BSD_HWS_PGA_GEN7			_MMIO(0x4180)
--#define GEN12_GFX_CCS_AUX_NV			_MMIO(0x4208)
--#define GEN12_VD0_AUX_NV			_MMIO(0x4218)
--#define GEN12_VD1_AUX_NV			_MMIO(0x4228)
-+
-+#define GEN12_CCS_AUX_INV			_MMIO(0x4208)
-+#define GEN12_VD0_AUX_INV			_MMIO(0x4218)
-+#define GEN12_VE0_AUX_INV			_MMIO(0x4238)
-+#define GEN12_BCS0_AUX_INV			_MMIO(0x4248)
+@@ -108,6 +109,7 @@ struct spi_mem_op {
+ 		u8 nbytes;
+ 		u8 buswidth;
+ 		u8 dtr : 1;
++		u8 __pad : 7;
+ 		u64 val;
+ 	} addr;
  
- #define GEN8_RTCR				_MMIO(0x4260)
- #define GEN8_M1TCR				_MMIO(0x4264)
-@@ -311,14 +313,12 @@
- #define GEN8_BTCR				_MMIO(0x426c)
- #define GEN8_VTCR				_MMIO(0x4270)
+@@ -115,12 +117,14 @@ struct spi_mem_op {
+ 		u8 nbytes;
+ 		u8 buswidth;
+ 		u8 dtr : 1;
++		u8 __pad : 7;
+ 	} dummy;
  
--#define GEN12_VD2_AUX_NV			_MMIO(0x4298)
--#define GEN12_VD3_AUX_NV			_MMIO(0x42a8)
--#define GEN12_VE0_AUX_NV			_MMIO(0x4238)
--
- #define BLT_HWS_PGA_GEN7			_MMIO(0x4280)
- 
--#define GEN12_VE1_AUX_NV			_MMIO(0x42b8)
-+#define GEN12_VD2_AUX_INV			_MMIO(0x4298)
-+#define GEN12_CCS0_AUX_INV			_MMIO(0x42c8)
- #define   AUX_INV				REG_BIT(0)
-+
- #define VEBOX_HWS_PGA_GEN7			_MMIO(0x4380)
- 
- #define GEN12_AUX_ERR_DBG			_MMIO(0x43f4)
---- a/drivers/gpu/drm/i915/gt/intel_lrc.c
-+++ b/drivers/gpu/drm/i915/gt/intel_lrc.c
-@@ -1299,7 +1299,7 @@ gen12_emit_indirect_ctx_rcs(const struct
- 	/* hsdes: 1809175790 */
- 	if (!HAS_FLAT_CCS(ce->engine->i915))
- 		cs = gen12_emit_aux_table_inv(ce->engine->gt,
--					      cs, GEN12_GFX_CCS_AUX_NV);
-+					      cs, GEN12_CCS_AUX_INV);
- 
- 	/* Wa_16014892111 */
- 	if (IS_DG2(ce->engine->i915))
-@@ -1326,10 +1326,10 @@ gen12_emit_indirect_ctx_xcs(const struct
- 	if (!HAS_FLAT_CCS(ce->engine->i915)) {
- 		if (ce->engine->class == VIDEO_DECODE_CLASS)
- 			cs = gen12_emit_aux_table_inv(ce->engine->gt,
--						      cs, GEN12_VD0_AUX_NV);
-+						      cs, GEN12_VD0_AUX_INV);
- 		else if (ce->engine->class == VIDEO_ENHANCEMENT_CLASS)
- 			cs = gen12_emit_aux_table_inv(ce->engine->gt,
--						      cs, GEN12_VE0_AUX_NV);
-+						      cs, GEN12_VE0_AUX_INV);
- 	}
- 
- 	return cs;
+ 	struct {
+ 		u8 buswidth;
+ 		u8 dtr : 1;
+ 		u8 ecc : 1;
++		u8 __pad : 6;
+ 		enum spi_mem_data_dir dir;
+ 		unsigned int nbytes;
+ 		union {
+-- 
+2.40.1
+
 
 
