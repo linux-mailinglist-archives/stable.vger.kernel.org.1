@@ -2,86 +2,93 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8C065775CA7
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:29:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 49D86775A88
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:09:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233824AbjHIL3e (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:29:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35714 "EHLO
+        id S233209AbjHILJU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:09:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42756 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233820AbjHIL3d (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:29:33 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F222ED
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:29:33 -0700 (PDT)
+        with ESMTP id S233200AbjHILJT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:09:19 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 59CB210F3
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:09:19 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2D77F63315
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:29:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AA18C433C8;
-        Wed,  9 Aug 2023 11:29:32 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E39CA630F0
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:09:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 009FCC433C7;
+        Wed,  9 Aug 2023 11:09:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691580572;
-        bh=uGvdWJCsFNbf5m4VfhCqMqS0rCknEsFqq072qKtJ14I=;
+        s=korg; t=1691579358;
+        bh=Iis8/QwiIQV66BJkAfti8pEHPAYQNXJji++l6bf+3ic=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Jl7x0OBQnPbW1UNbojU1Eiv1l23t0oxCWdvyWXCh6QMXG8PSObHCRcNmhWIUFz0va
-         jJFHqFTpYH+PDzr66erx8rzTkSyD/Rnr+f2mIuQIiTjQMmOb7j0yI1LWbfrmFKFn5N
-         j2wIf1oaGdoIz/S/ARetMsSP76pE3ocvh7EQY/Ec=
+        b=hHpb1Xl6IWFwg5bCilIEn6wOZjt8pbe0EhtXpf8EZft0ox80wI3qPvG3wN/IVpw7R
+         H+85CjxD8Uej/X3poDs2oMUlu4dOFEPo4omNf54jyfTeUPt8Hpk/L1q58ow2D9+abe
+         QtGKVxKSEYzuxtoKRghQuG3atK0s41UpltN3AOQw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Gilles Buloz <gilles.buloz@kontron.com>,
-        Guenter Roeck <linux@roeck-us.net>
-Subject: [PATCH 5.4 072/154] hwmon: (nct7802) Fix for temp6 (PECI1) processed even if PECI1 disabled
-Date:   Wed,  9 Aug 2023 12:41:43 +0200
-Message-ID: <20230809103639.369489545@linuxfoundation.org>
+        patches@lists.linux.dev, Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH 4.14 166/204] can: gs_usb: gs_can_close(): add missing set of CAN state to CAN_STATE_STOPPED
+Date:   Wed,  9 Aug 2023 12:41:44 +0200
+Message-ID: <20230809103648.072918878@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103636.887175326@linuxfoundation.org>
-References: <20230809103636.887175326@linuxfoundation.org>
+In-Reply-To: <20230809103642.552405807@linuxfoundation.org>
+References: <20230809103642.552405807@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Gilles Buloz <Gilles.Buloz@kontron.com>
+From: Marc Kleine-Budde <mkl@pengutronix.de>
 
-commit 54685abe660a59402344d5045ce08c43c6a5ac42 upstream.
+commit f8a2da6ec2417cca169fa85a8ab15817bccbb109 upstream.
 
-Because of hex value 0x46 used instead of decimal 46, the temp6
-(PECI1) temperature is always declared visible and then displayed
-even if disabled in the chip
+After an initial link up the CAN device is in ERROR-ACTIVE mode. Due
+to a missing CAN_STATE_STOPPED in gs_can_close() it doesn't change to
+STOPPED after a link down:
 
-Signed-off-by: Gilles Buloz <gilles.buloz@kontron.com>
-Link: https://lore.kernel.org/r/DU0PR10MB62526435ADBC6A85243B90E08002A@DU0PR10MB6252.EURPRD10.PROD.OUTLOOK.COM
-Fixes: fcdc5739dce03 ("hwmon: (nct7802) add temperature sensor type attribute")
+| ip link set dev can0 up
+| ip link set dev can0 down
+| ip --details link show can0
+| 13: can0: <NOARP,ECHO> mtu 16 qdisc pfifo_fast state DOWN mode DEFAULT group default qlen 10
+|     link/can  promiscuity 0 allmulti 0 minmtu 0 maxmtu 0
+|     can state ERROR-ACTIVE restart-ms 1000
+
+Add missing assignment of CAN_STATE_STOPPED in gs_can_close().
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Fixes: d08e973a77d1 ("can: gs_usb: Added support for the GS_USB CAN devices")
+Link: https://lore.kernel.org/all/20230718-gs_usb-fix-can-state-v1-1-f19738ae2c23@pengutronix.de
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hwmon/nct7802.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/can/usb/gs_usb.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/hwmon/nct7802.c
-+++ b/drivers/hwmon/nct7802.c
-@@ -708,7 +708,7 @@ static umode_t nct7802_temp_is_visible(s
- 	if (index >= 38 && index < 46 && !(reg & 0x01))		/* PECI 0 */
- 		return 0;
+--- a/drivers/net/can/usb/gs_usb.c
++++ b/drivers/net/can/usb/gs_usb.c
+@@ -740,6 +740,8 @@ static int gs_can_close(struct net_devic
+ 	usb_kill_anchored_urbs(&dev->tx_submitted);
+ 	atomic_set(&dev->active_tx_urbs, 0);
  
--	if (index >= 0x46 && (!(reg & 0x02)))			/* PECI 1 */
-+	if (index >= 46 && !(reg & 0x02))			/* PECI 1 */
- 		return 0;
- 
- 	return attr->mode;
++	dev->can.state = CAN_STATE_STOPPED;
++
+ 	/* reset the device */
+ 	rc = gs_cmd_reset(parent, dev);
+ 	if (rc < 0)
 
 
