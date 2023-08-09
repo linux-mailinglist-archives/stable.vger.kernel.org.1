@@ -2,47 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C92B37759F2
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:04:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D9C3B7758BB
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:55:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233024AbjHILEK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:04:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60392 "EHLO
+        id S232444AbjHIKzN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 06:55:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47630 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233025AbjHILEK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:04:10 -0400
+        with ESMTP id S232624AbjHIKzA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:55:00 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D30D91BFE
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:04:09 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A1442D79
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:53:29 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 69C776309F
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:04:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77D37C433C7;
-        Wed,  9 Aug 2023 11:04:08 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 543B06313F
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:52:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D37BC433C8;
+        Wed,  9 Aug 2023 10:52:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691579048;
-        bh=GsWm+AhUU0ytkmuDUgF+CMjfi5rFL/AOwPwMdfi9y1w=;
+        s=korg; t=1691578376;
+        bh=ZOppM/Yb8HS5OYtwntvMTzbppEp6iqchXTwxvSKaxS8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=hGxtnVefrb9GC8uSMJkUQtDvMl9peqr3VeJ2oA1Yz7d0r2o7eh8ex0LIF7cW7MVh5
-         yiezb0dmSOYefsECSWWYrbjMX94DmJPLUBotqxKxRNgmHkzwVSG4IySFG7/ukEPW6o
-         fxbCkAZW8AHk37/PHYurlzE3ACarmIc3hE/YNr2E=
+        b=jqF+6TeDnzLwSRr/UdZpF3NMARax9R44RwPfVgsQQzJ02P3JustIBhoMdUhLa/psU
+         vGCFV+cr16Ymsk//oQmUBlFYhKXi1qcba4BnAqqyV/tGFhcjMfFa46QlwruDpL7yWG
+         +a/JKqvMeJMVreKt0uklPkg+nq+eJhbnKgrjgFec=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Rob Landley <rob@landley.net>,
-        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 057/204] sh: j2: Use ioremap() to translate device tree address into kernel memory
+        patches@lists.linux.dev, Robin Murphy <robin.murphy@arm.com>,
+        Nicolin Chen <nicolinc@nvidia.com>,
+        Will Deacon <will@kernel.org>,
+        Easwar Hariharan <eahariha@linux.microsoft.com>
+Subject: [PATCH 6.1 008/127] iommu/arm-smmu-v3: Document nesting-related errata
 Date:   Wed,  9 Aug 2023 12:39:55 +0200
-Message-ID: <20230809103644.521452742@linuxfoundation.org>
+Message-ID: <20230809103636.904049271@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103642.552405807@linuxfoundation.org>
-References: <20230809103642.552405807@linuxfoundation.org>
+In-Reply-To: <20230809103636.615294317@linuxfoundation.org>
+References: <20230809103636.615294317@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,43 +56,59 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+From: Robin Murphy <robin.murphy@arm.com>
 
-[ Upstream commit bc9d1f0cecd2407cfb2364a7d4be2f52d1d46a9d ]
+commit 0bfbfc526c70606bf0fad302e4821087cbecfaf4 upstream
 
-Addresses the following warning when building j2_defconfig:
+Both MMU-600 and MMU-700 have similar errata around TLB invalidation
+while both stages of translation are active, which will need some
+consideration once nesting support is implemented. For now, though,
+it's very easy to make our implicit lack of nesting support explicit
+for those cases, so they're less likely to be missed in future.
 
-arch/sh/kernel/cpu/sh2/probe.c: In function 'scan_cache':
-arch/sh/kernel/cpu/sh2/probe.c:24:16: warning: cast to pointer from integer of different size [-Wint-to-pointer-cast]
-   24 |  j2_ccr_base = (u32 __iomem *)of_flat_dt_translate_address(node);
-      |
-
-Fixes: 5a846abad07f ("sh: add support for J-Core J2 processor")
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Tested-by: Rob Landley <rob@landley.net>
-Signed-off-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Link: https://lore.kernel.org/r/20230503125746.331835-1-glaubitz@physik.fu-berlin.de
-Signed-off-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Robin Murphy <robin.murphy@arm.com>
+Reviewed-by: Nicolin Chen <nicolinc@nvidia.com>
+Link: https://lore.kernel.org/r/696da78d32bb4491f898f11b0bb4d850a8aa7c6a.1683731256.git.robin.murphy@arm.com
+Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Easwar Hariharan <eahariha@linux.microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/sh/kernel/cpu/sh2/probe.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ Documentation/arm64/silicon-errata.rst      |    4 ++--
+ drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c |    5 +++++
+ 2 files changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/arch/sh/kernel/cpu/sh2/probe.c b/arch/sh/kernel/cpu/sh2/probe.c
-index a5bd036426789..75dcb1d6bc62f 100644
---- a/arch/sh/kernel/cpu/sh2/probe.c
-+++ b/arch/sh/kernel/cpu/sh2/probe.c
-@@ -24,7 +24,7 @@ static int __init scan_cache(unsigned long node, const char *uname,
- 	if (!of_flat_dt_is_compatible(node, "jcore,cache"))
- 		return 0;
- 
--	j2_ccr_base = (u32 __iomem *)of_flat_dt_translate_address(node);
-+	j2_ccr_base = ioremap(of_flat_dt_translate_address(node), 4);
- 
- 	return 1;
- }
--- 
-2.39.2
-
+--- a/Documentation/arm64/silicon-errata.rst
++++ b/Documentation/arm64/silicon-errata.rst
+@@ -141,9 +141,9 @@ stable kernels.
+ +----------------+-----------------+-----------------+-----------------------------+
+ | ARM            | MMU-500         | #841119,826419  | N/A                         |
+ +----------------+-----------------+-----------------+-----------------------------+
+-| ARM            | MMU-600         | #1076982        | N/A                         |
++| ARM            | MMU-600         | #1076982,1209401| N/A                         |
+ +----------------+-----------------+-----------------+-----------------------------+
+-| ARM            | MMU-700         | #2812531        | N/A                         |
++| ARM            | MMU-700         | #2268618,2812531| N/A                         |
+ +----------------+-----------------+-----------------+-----------------------------+
+ +----------------+-----------------+-----------------+-----------------------------+
+ | Broadcom       | Brahma-B53      | N/A             | ARM64_ERRATUM_845719        |
+--- a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
++++ b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
+@@ -3438,11 +3438,16 @@ static void arm_smmu_device_iidr_probe(s
+ 			/* Arm erratum 1076982 */
+ 			if (variant == 0 && revision <= 2)
+ 				smmu->features &= ~ARM_SMMU_FEAT_SEV;
++			/* Arm erratum 1209401 */
++			if (variant < 2)
++				smmu->features &= ~ARM_SMMU_FEAT_NESTING;
+ 			break;
+ 		case IIDR_PRODUCTID_ARM_MMU_700:
+ 			/* Arm erratum 2812531 */
+ 			smmu->features &= ~ARM_SMMU_FEAT_BTM;
+ 			smmu->options |= ARM_SMMU_OPT_CMDQ_FORCE_SYNC;
++			/* Arm errata 2268618, 2812531 */
++			smmu->features &= ~ARM_SMMU_FEAT_NESTING;
+ 			break;
+ 		}
+ 		break;
 
 
