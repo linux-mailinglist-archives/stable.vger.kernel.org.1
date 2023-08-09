@@ -2,47 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BF922775D3B
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:35:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9DD26775931
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:58:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234045AbjHILfF (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:35:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38400 "EHLO
+        id S232763AbjHIK6b (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 06:58:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37164 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234046AbjHILfF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:35:05 -0400
+        with ESMTP id S232768AbjHIK63 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:58:29 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F0441FF5
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:35:02 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DDC471FFB
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:58:26 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A396C634CB
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:35:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4348C433C7;
-        Wed,  9 Aug 2023 11:35:00 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7B5AC63137
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:58:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8574DC433C8;
+        Wed,  9 Aug 2023 10:58:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691580901;
-        bh=8zvLb5IpRLAWb2Ji0xIu2olkQ+nqg/6myGoieKoXcsY=;
+        s=korg; t=1691578705;
+        bh=GXqGhnLt4xJRGT2DNn9pmvJ0byxo4tddCFaDbYeDtAM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=2Ozk1lcHAYrW75PunvlMmsZob5B5o2Qtc79gxedFRZHkTbMGl4/ACdhwYrqnOmHSj
-         cN4Xz9HqdicIpAugNuxg3BMFojoKq/ZzFo+XwRFffGsoTROJdiwfO9hw0cYdUV9CBF
-         dXOfvM6I+gWzmMyvRjOZ3Y00vmuBbC9xxYkUuY9I=
+        b=Pa8owROvznooUMr/kGyziTm/uyTej10z14lfySv7brenKYnxN2f4Eaz8sK9g7/EFg
+         yNokAzhsGAw0lsbIV0m/dDVkwN+V/8Ou6wfqoxVn5mgRoC8sfF+hSt2c/Ts/o1SH9Z
+         iQXsc+ypV9BP0XhDADFnReBEWCJ/wq9BLRhkbS2A=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yuanjun Gong <ruc_gongyuanjun@163.com>,
-        Simon Horman <simon.horman@corigine.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 035/201] ethernet: atheros: fix return value check in atl1e_tso_csum()
+        patches@lists.linux.dev,
+        Oleksandr Natalenko <oleksandr@natalenko.name>,
+        Phil Elwell <phil@raspberrypi.com>,
+        Andres Freund <andres@anarazel.de>,
+        Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 5.15 01/92] io_uring: gate iowait schedule on having pending requests
 Date:   Wed,  9 Aug 2023 12:40:37 +0200
-Message-ID: <20230809103645.020269580@linuxfoundation.org>
+Message-ID: <20230809103633.545449838@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103643.799166053@linuxfoundation.org>
-References: <20230809103643.799166053@linuxfoundation.org>
+In-Reply-To: <20230809103633.485906560@linuxfoundation.org>
+References: <20230809103633.485906560@linuxfoundation.org>
 User-Agent: quilt/0.67
+X-stable: review
+X-Patchwork-Hint: ignore
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -56,44 +59,81 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Yuanjun Gong <ruc_gongyuanjun@163.com>
+From: Jens Axboe <axboe@kernel.dk>
 
-[ Upstream commit 69a184f7a372aac588babfb0bd681aaed9779f5b ]
+Commit 7b72d661f1f2f950ab8c12de7e2bc48bdac8ed69 upstream.
 
-in atl1e_tso_csum, it should check the return value of pskb_trim(),
-and return an error code if an unexpected value is returned
-by pskb_trim().
+A previous commit made all cqring waits marked as iowait, as a way to
+improve performance for short schedules with pending IO. However, for
+use cases that have a special reaper thread that does nothing but
+wait on events on the ring, this causes a cosmetic issue where we
+know have one core marked as being "busy" with 100% iowait.
 
-Fixes: a6a5325239c2 ("atl1e: Atheros L1E Gigabit Ethernet driver")
-Signed-off-by: Yuanjun Gong <ruc_gongyuanjun@163.com>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Link: https://lore.kernel.org/r/20230720144219.39285-1-ruc_gongyuanjun@163.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+While this isn't a grave issue, it is confusing to users. Rather than
+always mark us as being in iowait, gate setting of current->in_iowait
+to 1 by whether or not the waiting task has pending requests.
+
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/io-uring/CAMEGJJ2RxopfNQ7GNLhr7X9=bHXKo+G5OOe0LUq=+UgLXsv1Xg@mail.gmail.com/
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=217699
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=217700
+Reported-by: Oleksandr Natalenko <oleksandr@natalenko.name>
+Reported-by: Phil Elwell <phil@raspberrypi.com>
+Tested-by: Andres Freund <andres@anarazel.de>
+Fixes: 8a796565cec3 ("io_uring: Use io_schedule* in cqring wait")
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/atheros/atl1e/atl1e_main.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ io_uring/io_uring.c |   23 +++++++++++++++++------
+ 1 file changed, 17 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/ethernet/atheros/atl1e/atl1e_main.c b/drivers/net/ethernet/atheros/atl1e/atl1e_main.c
-index ff9f96de74b81..696ce3c5a8ba3 100644
---- a/drivers/net/ethernet/atheros/atl1e/atl1e_main.c
-+++ b/drivers/net/ethernet/atheros/atl1e/atl1e_main.c
-@@ -1642,8 +1642,11 @@ static int atl1e_tso_csum(struct atl1e_adapter *adapter,
- 			real_len = (((unsigned char *)ip_hdr(skb) - skb->data)
- 					+ ntohs(ip_hdr(skb)->tot_len));
+--- a/io_uring/io_uring.c
++++ b/io_uring/io_uring.c
+@@ -7802,12 +7802,21 @@ static int io_run_task_work_sig(void)
+ 	return -EINTR;
+ }
  
--			if (real_len < skb->len)
--				pskb_trim(skb, real_len);
-+			if (real_len < skb->len) {
-+				err = pskb_trim(skb, real_len);
-+				if (err)
-+					return err;
-+			}
++static bool current_pending_io(void)
++{
++	struct io_uring_task *tctx = current->io_uring;
++
++	if (!tctx)
++		return false;
++	return percpu_counter_read_positive(&tctx->inflight);
++}
++
+ /* when returns >0, the caller should retry */
+ static inline int io_cqring_wait_schedule(struct io_ring_ctx *ctx,
+ 					  struct io_wait_queue *iowq,
+ 					  ktime_t *timeout)
+ {
+-	int token, ret;
++	int io_wait, ret;
  
- 			hdr_len = (skb_transport_offset(skb) + tcp_hdrlen(skb));
- 			if (unlikely(skb->len == hdr_len)) {
--- 
-2.39.2
-
+ 	/* make sure we run task_work before checking for signals */
+ 	ret = io_run_task_work_sig();
+@@ -7818,15 +7827,17 @@ static inline int io_cqring_wait_schedul
+ 		return 1;
+ 
+ 	/*
+-	 * Use io_schedule_prepare/finish, so cpufreq can take into account
+-	 * that the task is waiting for IO - turns out to be important for low
+-	 * QD IO.
++	 * Mark us as being in io_wait if we have pending requests, so cpufreq
++	 * can take into account that the task is waiting for IO - turns out
++	 * to be important for low QD IO.
+ 	 */
+-	token = io_schedule_prepare();
++	io_wait = current->in_iowait;
++	if (current_pending_io())
++		current->in_iowait = 1;
+ 	ret = 1;
+ 	if (!schedule_hrtimeout(timeout, HRTIMER_MODE_ABS))
+ 		ret = -ETIME;
+-	io_schedule_finish(token);
++	current->in_iowait = io_wait;
+ 	return ret;
+ }
+ 
 
 
