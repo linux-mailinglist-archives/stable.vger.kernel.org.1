@@ -2,67 +2,62 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0AAB377541D
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 09:29:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A4C91775439
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 09:34:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231683AbjHIH3r (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 03:29:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56538 "EHLO
+        id S230090AbjHIHeg (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 03:34:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34100 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231804AbjHIH32 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 03:29:28 -0400
-Received: from mail-vs1-xe2d.google.com (mail-vs1-xe2d.google.com [IPv6:2607:f8b0:4864:20::e2d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D0D330F7
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 00:28:45 -0700 (PDT)
-Received: by mail-vs1-xe2d.google.com with SMTP id ada2fe7eead31-4475af775c7so2331749137.0
-        for <stable@vger.kernel.org>; Wed, 09 Aug 2023 00:28:45 -0700 (PDT)
+        with ESMTP id S229852AbjHIHeg (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 03:34:36 -0400
+Received: from mail-ua1-x92f.google.com (mail-ua1-x92f.google.com [IPv6:2607:f8b0:4864:20::92f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80771172A
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 00:34:35 -0700 (PDT)
+Received: by mail-ua1-x92f.google.com with SMTP id a1e0cc1a2514c-79acc14c09eso1777954241.1
+        for <stable@vger.kernel.org>; Wed, 09 Aug 2023 00:34:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1691566124; x=1692170924;
+        d=linaro.org; s=google; t=1691566474; x=1692171274;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=2riTaNH77REtC6ISF+fVAqJEx7oqvwPWkrXn1kOuBK8=;
-        b=PWvV301jbVil1DtF60FMURdXOddxmyoVSFZJgS3QNp4S8Srgpr/oCuzUHAlEXUbC58
-         J4Q5+MjSELlQ21knjzKllEQfQH6y/1m2mCRnMmQxUbCUK7TiG7ycdCklSYJuIPQKw/yy
-         HT5ya9s/6nKNwFuFE0XXq240lUB1aaTAI/26v2l4jUURDBEac1zN0QeiuYMQ+I+W1RtC
-         dqPp7IX6DFfCzT/jIgWkjT+owGT04mn1Mhncahb/zlN6NBNjbQN2hTSJ1vvtIcr7TqIq
-         a8VvCE+M42NW5jEr1RD/wCSZG7o0Yf4OjNsrjoUe5sTl+/xT5nMcrWjP0c2tv36a3jNR
-         /1pQ==
+        bh=Oyhg2pANKD68dgMgU9DabYU5m+ytOR6lQNIOfsZ9UzI=;
+        b=g0tKX2DCyORwzEhoeazVPVOaGIy2uWwv3HedMFwoKSZJLtz+Iy7iyju0sBSoLONO7c
+         jfJH4kjW/4GXCN8MaeSWer1nMtst0bZMRFfTQkdUkQxy7zAks1PABdEh+fPX/HK462dN
+         bSeaFw8wGfwM9/zMCcFyo/4KoYTGD+sC95HM6Bv/zwxZDrg4ThDoMiluKVGLn8RCoeFH
+         lKdqS2Wg5yf/JrhcebkljDFRPMmFLLb7RO0snqi31iEqB7j7jZM3AY930jCW7xrJkAef
+         R3fyfkprNiUK9EX7QbuUtvC8Vgn5AqcGKFkk1nvis6zMrOFVzPDUPY2Eu9QXh9woBtjn
+         DAtQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691566124; x=1692170924;
+        d=1e100.net; s=20221208; t=1691566474; x=1692171274;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=2riTaNH77REtC6ISF+fVAqJEx7oqvwPWkrXn1kOuBK8=;
-        b=VPGRrnm5/Hizn+Ujd/QylQyJ4QK2S8eHCKRGSOQBbWXrWOYB2QGSHlKf4VD12l5DzP
-         rxDvXsNZQp6sW3LhViG3r54zR3ZDqt66jUMla2FNBNG7/iNlfU0rperkRu7ghiciSO0y
-         RzZ10M3Xu6U471Vtcrbapgy4mVPbpKcL738QHYCjnF3GVjTkUKn07WoZVHtROg3X0rnv
-         T1+J35gomE/bxAvAHsDJFAM90EW1gZGrzUMEcC2WoPvq2Oh7Zj3qYVHQQLS1RFvmx0ij
-         8KNTls0ahenaWuZqNvx4EPDrIawB5xGLqEW5l4Ey5etosiV62viLNt32ZGNDmHaz5hZQ
-         YFlA==
-X-Gm-Message-State: AOJu0Yx1qCdloqhqBf5dSe4o31EiDT4SbUL/CrgeGyV04iY6qBEOxUu8
-        IrGQi2mdgte15+9qHP0GMwJ81xHAB7hmgunkPBW/E2xV5iLiBFQTIKo=
-X-Google-Smtp-Source: AGHT+IGi8QKuheDujgueBRGKYpW4EWIGdylquyRRi2A2MNYXskPK46jPAVdeF9LzAfEHYy60Mc7X+3DVojqxYpsduAM=
-X-Received: by 2002:a67:e441:0:b0:443:6449:479e with SMTP id
- n1-20020a67e441000000b004436449479emr1609634vsm.8.1691566123735; Wed, 09 Aug
- 2023 00:28:43 -0700 (PDT)
+        bh=Oyhg2pANKD68dgMgU9DabYU5m+ytOR6lQNIOfsZ9UzI=;
+        b=Tgryxap1ooj+N+wn8wGa1Ppb737y+qqd4YHHDX/LwJwOOv7NFvD7eJ826UNc95YQMo
+         ICiEMBILi6VHVEXj5/Llh8EFdLU3M8r867MFgqUrGdZBtTnH7KmnQFbceyMD5QIpV329
+         6K4cHZMYdgxlshkPdX75wHGdoQzTMz9N22X0mCGXGXBijhazibHUrkY/EjyE+ylAd6tS
+         cjgRFXMBw9fH9v41vFdJ3AsC/x3k1jLL+9q3zYDiQqfqjoHYxaxgUdXn/AJVRmYrg/RB
+         kr5sJmL60buA6bpAz2SdgY9iTRN/swdNNjg6mCbzIcwqcggNBL/tIn4VrX3ZyoR4h3oI
+         S3fQ==
+X-Gm-Message-State: AOJu0Yz1JljhdxUL2NcA9FLYGZlx3UxeQy18odR9C6MNiQkyIGeOUXSb
+        dfmkl2L/+or/w45RIow2a1dYxtdqLJi+RjNfm8ivFw==
+X-Google-Smtp-Source: AGHT+IHUHomkKQLuc2ockx5qqoKtNjm8EUSuGamSC4pxg/F8ldsdG3lijuTReykUZ/A/lSn4lW2qUkjfcLC9xGb/+sg=
+X-Received: by 2002:a05:6102:446:b0:447:68a0:a11a with SMTP id
+ e6-20020a056102044600b0044768a0a11amr1211673vsq.2.1691566474521; Wed, 09 Aug
+ 2023 00:34:34 -0700 (PDT)
 MIME-Version: 1.0
-References: <CA+G9fYvTjm2oa6mXR=HUe6gYuVaS2nFb_otuvPfmPeKHDoC+Tw@mail.gmail.com>
- <2023080946-wow-cross-1079@gregkh>
-In-Reply-To: <2023080946-wow-cross-1079@gregkh>
+References: <CA+G9fYt86w3Z+XeZjbjcOq_hvpkx=uUZS3ecH_nQGfBn9KaX3A@mail.gmail.com>
+ <2023080953-boxcar-dart-6ac7@gregkh>
+In-Reply-To: <2023080953-boxcar-dart-6ac7@gregkh>
 From:   Naresh Kamboju <naresh.kamboju@linaro.org>
-Date:   Wed, 9 Aug 2023 12:58:32 +0530
-Message-ID: <CA+G9fYtVRda6y+vGptPnG+G11TGa=F7+Qw72+xZF9qhddT=vgg@mail.gmail.com>
-Subject: Re: stable-rc: 5.15: arm: fsl_dcu_drm_plane.c:176:20: error:
- 'drm_plane_helper_destroy' undeclared here
+Date:   Wed, 9 Aug 2023 13:04:20 +0530
+Message-ID: <CA+G9fYuHmZuAscesHQsGYz_aG-6nUkCBXWuMgxem=_8Ln60-Eg@mail.gmail.com>
+Subject: Re: stable-rc: 4.19: i386: build warnings / errors
 To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc:     linux-stable <stable@vger.kernel.org>,
         lkft-triage@lists.linaro.org, Sasha Levin <sashal@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Cristian Marussi <cristian.marussi@arm.com>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Anders Roxell <anders.roxell@linaro.org>
+        Anders Roxell <anders.roxell@linaro.org>,
+        Arnd Bergmann <arnd@arndb.de>
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
@@ -74,43 +69,24 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, 9 Aug 2023 at 12:29, Greg Kroah-Hartman
+On Wed, 9 Aug 2023 at 12:58, Greg Kroah-Hartman
 <gregkh@linuxfoundation.org> wrote:
 >
-> On Wed, Aug 09, 2023 at 11:47:45AM +0530, Naresh Kamboju wrote:
-> > While building Linux stable rc 5.15 arm with gcc-13 failed due to
+> On Wed, Aug 09, 2023 at 12:44:00PM +0530, Naresh Kamboju wrote:
+> > LKFT build plans updated with toolchain gcc-13 and here is the report.
+> >
+> > While building Linux stable rc 4.19 i386 with gcc-13 failed due to
 > > following warnings / errors.
 >
-> I appreciate you attempting to build older LTS trees with newer
-> compilers, but note that usually, as you are finding out, this doesn't
-> work.
-
-These reports make us aware that we have found new issues with
-newer tool chains on older LTS trees  / branches.
-
+> I'm amazed that this is all the issues you found, I gave up due to all
+> of the build issues.
 >
-> Right now I've finally gotten support for gcc-12 in all active stable
-> kernel trees, gcc-13 takes more work as you are finding out so I'm only
-> testing with newer trees (6.1 and newer).
+> If you care about 4.19 (and any other kernel tree) with newer compilers,
+> I will gladly take patches/backports for these issues.  But to just
+> report them like this isn't going to get very far as I doubt anyone who
+> actually uses 4.19 will ever use gcc-13.
 
-We have seen great work (fixes) for gcc-12 when it got released.
-I think I / We should not expect this with gcc-13 since it takes more work.
+I totally agree with this old tree and the latest toolchains builds are not a
+great combination. I will not send any reports like this in the future.
 
-As I understand, stable-rc 6.1 testing with gcc-13 would be ok.
-other than stable-rc 6.1 branches 5.x and 4.x should be built with gcc-12.
-
->
-> So when you run into issues like this, that obviously work in newer
-> kernel releases, a report doesn't do much, BUT a git commit id of what
-> the commit that needs to be backported IS appreciated.
-
-Thanks for explaining the details here.
-If I come across any fixed patch / commit id then I will share that information.
-
->
-> thanks,
->
-> greg k-h
-
-thanks,
-Naresh Kamboju
+- Naresh
