@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 44ECE775AA6
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:10:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EA58C775997
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:01:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233249AbjHILKT (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:10:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42944 "EHLO
+        id S232911AbjHILBu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 07:01:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52598 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233252AbjHILKS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:10:18 -0400
+        with ESMTP id S232913AbjHILBt (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:01:49 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B0D681FF5
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:10:17 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EEFA01FD8
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:01:48 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 51BBA62457
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:10:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 648ABC433C7;
-        Wed,  9 Aug 2023 11:10:16 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 80F60625AD
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:01:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A93CC433C7;
+        Wed,  9 Aug 2023 11:01:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691579416;
-        bh=UWxusRfBmPtGpLX1xQEAyrL9nuCFZCEJ+Gb1tAWpqMo=;
+        s=korg; t=1691578907;
+        bh=yZ6l8IJB1VpAG3zHoDu9zP78SYwKcEvGisgxfR/ceHA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=c/V4BjfL+0hV7DCZDzA3KvyHgpcAVIBp34iNy1YmsMdaj5oSbcKDHV5pOIO6g9oso
-         Xb+UNIdHfhSq/mSSv3TQ4ZcPuzU42PCxzPAwMwjp1MxLEwD9uPfn48dImdG8heTZQn
-         k+aEwyki7NNHsLI42IlLQxq80r3RZS10shDKMgeM=
+        b=2irxW9hA1QKwIg5lhN2RhlIKo7oYr0ueeRQb8Tbb1pkoS692DvKxFz/LdNtpTsp47
+         xMezpbDXybZA1Nk5m2TFTb9ZsvqIPYBqaV/tin8ikYuSeOw3zdlLlIlArfD1sJPGiF
+         nfP32lFFdlIhC3uxXxtsJP3e7n2qAEIWCV4d6ek4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yue Haibing <yuehaibing@huawei.com>,
-        Eric Dumazet <edumazet@google.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Chunfeng Yun <chunfeng.yun@mediatek.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 189/204] ip6mr: Fix skb_under_panic in ip6mr_cache_report()
+Subject: [PATCH 5.15 91/92] PM / wakeirq: support enabling wake-up irq after runtime_suspend called
 Date:   Wed,  9 Aug 2023 12:42:07 +0200
-Message-ID: <20230809103648.801555336@linuxfoundation.org>
+Message-ID: <20230809103636.664680698@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103642.552405807@linuxfoundation.org>
-References: <20230809103642.552405807@linuxfoundation.org>
+In-Reply-To: <20230809103633.485906560@linuxfoundation.org>
+References: <20230809103633.485906560@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,75 +56,287 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Yue Haibing <yuehaibing@huawei.com>
+From: Chunfeng Yun <chunfeng.yun@mediatek.com>
 
-[ Upstream commit 30e0191b16e8a58e4620fa3e2839ddc7b9d4281c ]
+[ Upstream commit 259714100d98b50bf04d36a21bf50ca8b829fc11 ]
 
-skbuff: skb_under_panic: text:ffffffff88771f69 len:56 put:-4
- head:ffff88805f86a800 data:ffff887f5f86a850 tail:0x88 end:0x2c0 dev:pim6reg
- ------------[ cut here ]------------
- kernel BUG at net/core/skbuff.c:192!
- invalid opcode: 0000 [#1] PREEMPT SMP KASAN
- CPU: 2 PID: 22968 Comm: kworker/2:11 Not tainted 6.5.0-rc3-00044-g0a8db05b571a #236
- Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
- Workqueue: ipv6_addrconf addrconf_dad_work
- RIP: 0010:skb_panic+0x152/0x1d0
- Call Trace:
-  <TASK>
-  skb_push+0xc4/0xe0
-  ip6mr_cache_report+0xd69/0x19b0
-  reg_vif_xmit+0x406/0x690
-  dev_hard_start_xmit+0x17e/0x6e0
-  __dev_queue_xmit+0x2d6a/0x3d20
-  vlan_dev_hard_start_xmit+0x3ab/0x5c0
-  dev_hard_start_xmit+0x17e/0x6e0
-  __dev_queue_xmit+0x2d6a/0x3d20
-  neigh_connected_output+0x3ed/0x570
-  ip6_finish_output2+0x5b5/0x1950
-  ip6_finish_output+0x693/0x11c0
-  ip6_output+0x24b/0x880
-  NF_HOOK.constprop.0+0xfd/0x530
-  ndisc_send_skb+0x9db/0x1400
-  ndisc_send_rs+0x12a/0x6c0
-  addrconf_dad_completed+0x3c9/0xea0
-  addrconf_dad_work+0x849/0x1420
-  process_one_work+0xa22/0x16e0
-  worker_thread+0x679/0x10c0
-  ret_from_fork+0x28/0x60
-  ret_from_fork_asm+0x11/0x20
+When the dedicated wake IRQ is level trigger, and it uses the
+device's low-power status as the wakeup source, that means if the
+device is not in low-power state, the wake IRQ will be triggered
+if enabled; For this case, need enable the wake IRQ after running
+the device's ->runtime_suspend() which make it enter low-power state.
 
-When setup a vlan device on dev pim6reg, DAD ns packet may sent on reg_vif_xmit().
-reg_vif_xmit()
-    ip6mr_cache_report()
-        skb_push(skb, -skb_network_offset(pkt));//skb_network_offset(pkt) is 4
-And skb_push declared as:
-	void *skb_push(struct sk_buff *skb, unsigned int len);
-		skb->data -= len;
-		//0xffff88805f86a84c - 0xfffffffc = 0xffff887f5f86a850
-skb->data is set to 0xffff887f5f86a850, which is invalid mem addr, lead to skb_push() fails.
+e.g.
+Assume the wake IRQ is a low level trigger type, and the wakeup
+signal comes from the low-power status of the device.
+The wakeup signal is low level at running time (0), and becomes
+high level when the device enters low-power state (runtime_suspend
+(1) is called), a wakeup event at (2) make the device exit low-power
+state, then the wakeup signal also becomes low level.
 
-Fixes: 14fb64e1f449 ("[IPV6] MROUTE: Support PIM-SM (SSM).")
-Signed-off-by: Yue Haibing <yuehaibing@huawei.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+                ------------------
+               |           ^     ^|
+----------------           |     | --------------
+ |<---(0)--->|<--(1)--|   (3)   (2)    (4)
+
+if enable the wake IRQ before running runtime_suspend during (0),
+a wake IRQ will arise, it causes resume immediately;
+it works if enable wake IRQ ( e.g. at (3) or (4)) after running
+->runtime_suspend().
+
+This patch introduces a new status WAKE_IRQ_DEDICATED_REVERSE to
+optionally support enabling wake IRQ after running ->runtime_suspend().
+
+Suggested-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Chunfeng Yun <chunfeng.yun@mediatek.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Stable-dep-of: 8527beb12087 ("PM: sleep: wakeirq: fix wake irq arming")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/ip6mr.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/base/power/power.h   |   7 ++-
+ drivers/base/power/runtime.c |   6 ++-
+ drivers/base/power/wakeirq.c | 101 +++++++++++++++++++++++++++--------
+ include/linux/pm_wakeirq.h   |   9 +++-
+ 4 files changed, 96 insertions(+), 27 deletions(-)
 
-diff --git a/net/ipv6/ip6mr.c b/net/ipv6/ip6mr.c
-index f8d60d511d3ed..40dfb9bddb21a 100644
---- a/net/ipv6/ip6mr.c
-+++ b/net/ipv6/ip6mr.c
-@@ -1166,7 +1166,7 @@ static int ip6mr_cache_report(struct mr6_table *mrt, struct sk_buff *pkt,
- 		   And all this only to mangle msg->im6_msgtype and
- 		   to set msg->im6_mbz to "mbz" :-)
- 		 */
--		skb_push(skb, -skb_network_offset(pkt));
-+		__skb_pull(skb, skb_network_offset(pkt));
+diff --git a/drivers/base/power/power.h b/drivers/base/power/power.h
+index 54292cdd7808b..0eb7f02b3ad59 100644
+--- a/drivers/base/power/power.h
++++ b/drivers/base/power/power.h
+@@ -25,8 +25,10 @@ extern u64 pm_runtime_active_time(struct device *dev);
  
- 		skb_push(skb, sizeof(*msg));
- 		skb_reset_transport_header(skb);
+ #define WAKE_IRQ_DEDICATED_ALLOCATED	BIT(0)
+ #define WAKE_IRQ_DEDICATED_MANAGED	BIT(1)
++#define WAKE_IRQ_DEDICATED_REVERSE	BIT(2)
+ #define WAKE_IRQ_DEDICATED_MASK		(WAKE_IRQ_DEDICATED_ALLOCATED | \
+-					 WAKE_IRQ_DEDICATED_MANAGED)
++					 WAKE_IRQ_DEDICATED_MANAGED | \
++					 WAKE_IRQ_DEDICATED_REVERSE)
+ 
+ struct wake_irq {
+ 	struct device *dev;
+@@ -39,7 +41,8 @@ extern void dev_pm_arm_wake_irq(struct wake_irq *wirq);
+ extern void dev_pm_disarm_wake_irq(struct wake_irq *wirq);
+ extern void dev_pm_enable_wake_irq_check(struct device *dev,
+ 					 bool can_change_status);
+-extern void dev_pm_disable_wake_irq_check(struct device *dev);
++extern void dev_pm_disable_wake_irq_check(struct device *dev, bool cond_disable);
++extern void dev_pm_enable_wake_irq_complete(struct device *dev);
+ 
+ #ifdef CONFIG_PM_SLEEP
+ 
+diff --git a/drivers/base/power/runtime.c b/drivers/base/power/runtime.c
+index c1142a7a4fe65..5824d41a0b745 100644
+--- a/drivers/base/power/runtime.c
++++ b/drivers/base/power/runtime.c
+@@ -673,6 +673,8 @@ static int rpm_suspend(struct device *dev, int rpmflags)
+ 	if (retval)
+ 		goto fail;
+ 
++	dev_pm_enable_wake_irq_complete(dev);
++
+  no_callback:
+ 	__update_runtime_status(dev, RPM_SUSPENDED);
+ 	pm_runtime_deactivate_timer(dev);
+@@ -718,7 +720,7 @@ static int rpm_suspend(struct device *dev, int rpmflags)
+ 	return retval;
+ 
+  fail:
+-	dev_pm_disable_wake_irq_check(dev);
++	dev_pm_disable_wake_irq_check(dev, true);
+ 	__update_runtime_status(dev, RPM_ACTIVE);
+ 	dev->power.deferred_resume = false;
+ 	wake_up_all(&dev->power.wait_queue);
+@@ -901,7 +903,7 @@ static int rpm_resume(struct device *dev, int rpmflags)
+ 
+ 	callback = RPM_GET_CALLBACK(dev, runtime_resume);
+ 
+-	dev_pm_disable_wake_irq_check(dev);
++	dev_pm_disable_wake_irq_check(dev, false);
+ 	retval = rpm_callback(callback, dev);
+ 	if (retval) {
+ 		__update_runtime_status(dev, RPM_SUSPENDED);
+diff --git a/drivers/base/power/wakeirq.c b/drivers/base/power/wakeirq.c
+index b91a3a9bf9f6d..0004db4a9d3b9 100644
+--- a/drivers/base/power/wakeirq.c
++++ b/drivers/base/power/wakeirq.c
+@@ -142,24 +142,7 @@ static irqreturn_t handle_threaded_wake_irq(int irq, void *_wirq)
+ 	return IRQ_HANDLED;
+ }
+ 
+-/**
+- * dev_pm_set_dedicated_wake_irq - Request a dedicated wake-up interrupt
+- * @dev: Device entry
+- * @irq: Device wake-up interrupt
+- *
+- * Unless your hardware has separate wake-up interrupts in addition
+- * to the device IO interrupts, you don't need this.
+- *
+- * Sets up a threaded interrupt handler for a device that has
+- * a dedicated wake-up interrupt in addition to the device IO
+- * interrupt.
+- *
+- * The interrupt starts disabled, and needs to be managed for
+- * the device by the bus code or the device driver using
+- * dev_pm_enable_wake_irq() and dev_pm_disable_wake_irq()
+- * functions.
+- */
+-int dev_pm_set_dedicated_wake_irq(struct device *dev, int irq)
++static int __dev_pm_set_dedicated_wake_irq(struct device *dev, int irq, unsigned int flag)
+ {
+ 	struct wake_irq *wirq;
+ 	int err;
+@@ -197,7 +180,7 @@ int dev_pm_set_dedicated_wake_irq(struct device *dev, int irq)
+ 	if (err)
+ 		goto err_free_irq;
+ 
+-	wirq->status = WAKE_IRQ_DEDICATED_ALLOCATED;
++	wirq->status = WAKE_IRQ_DEDICATED_ALLOCATED | flag;
+ 
+ 	return err;
+ 
+@@ -210,8 +193,57 @@ int dev_pm_set_dedicated_wake_irq(struct device *dev, int irq)
+ 
+ 	return err;
+ }
++
++
++/**
++ * dev_pm_set_dedicated_wake_irq - Request a dedicated wake-up interrupt
++ * @dev: Device entry
++ * @irq: Device wake-up interrupt
++ *
++ * Unless your hardware has separate wake-up interrupts in addition
++ * to the device IO interrupts, you don't need this.
++ *
++ * Sets up a threaded interrupt handler for a device that has
++ * a dedicated wake-up interrupt in addition to the device IO
++ * interrupt.
++ *
++ * The interrupt starts disabled, and needs to be managed for
++ * the device by the bus code or the device driver using
++ * dev_pm_enable_wake_irq*() and dev_pm_disable_wake_irq*()
++ * functions.
++ */
++int dev_pm_set_dedicated_wake_irq(struct device *dev, int irq)
++{
++	return __dev_pm_set_dedicated_wake_irq(dev, irq, 0);
++}
+ EXPORT_SYMBOL_GPL(dev_pm_set_dedicated_wake_irq);
+ 
++/**
++ * dev_pm_set_dedicated_wake_irq_reverse - Request a dedicated wake-up interrupt
++ *                                         with reverse enable ordering
++ * @dev: Device entry
++ * @irq: Device wake-up interrupt
++ *
++ * Unless your hardware has separate wake-up interrupts in addition
++ * to the device IO interrupts, you don't need this.
++ *
++ * Sets up a threaded interrupt handler for a device that has a dedicated
++ * wake-up interrupt in addition to the device IO interrupt. It sets
++ * the status of WAKE_IRQ_DEDICATED_REVERSE to tell rpm_suspend()
++ * to enable dedicated wake-up interrupt after running the runtime suspend
++ * callback for @dev.
++ *
++ * The interrupt starts disabled, and needs to be managed for
++ * the device by the bus code or the device driver using
++ * dev_pm_enable_wake_irq*() and dev_pm_disable_wake_irq*()
++ * functions.
++ */
++int dev_pm_set_dedicated_wake_irq_reverse(struct device *dev, int irq)
++{
++	return __dev_pm_set_dedicated_wake_irq(dev, irq, WAKE_IRQ_DEDICATED_REVERSE);
++}
++EXPORT_SYMBOL_GPL(dev_pm_set_dedicated_wake_irq_reverse);
++
+ /**
+  * dev_pm_enable_wake_irq - Enable device wake-up interrupt
+  * @dev: Device
+@@ -282,27 +314,54 @@ void dev_pm_enable_wake_irq_check(struct device *dev,
+ 	return;
+ 
+ enable:
+-	enable_irq(wirq->irq);
++	if (!can_change_status || !(wirq->status & WAKE_IRQ_DEDICATED_REVERSE))
++		enable_irq(wirq->irq);
+ }
+ 
+ /**
+  * dev_pm_disable_wake_irq_check - Checks and disables wake-up interrupt
+  * @dev: Device
++ * @cond_disable: if set, also check WAKE_IRQ_DEDICATED_REVERSE
+  *
+  * Disables wake-up interrupt conditionally based on status.
+  * Should be only called from rpm_suspend() and rpm_resume() path.
+  */
+-void dev_pm_disable_wake_irq_check(struct device *dev)
++void dev_pm_disable_wake_irq_check(struct device *dev, bool cond_disable)
+ {
+ 	struct wake_irq *wirq = dev->power.wakeirq;
+ 
+ 	if (!wirq || !(wirq->status & WAKE_IRQ_DEDICATED_MASK))
+ 		return;
+ 
++	if (cond_disable && (wirq->status & WAKE_IRQ_DEDICATED_REVERSE))
++		return;
++
+ 	if (wirq->status & WAKE_IRQ_DEDICATED_MANAGED)
+ 		disable_irq_nosync(wirq->irq);
+ }
+ 
++/**
++ * dev_pm_enable_wake_irq_complete - enable wake IRQ not enabled before
++ * @dev: Device using the wake IRQ
++ *
++ * Enable wake IRQ conditionally based on status, mainly used if want to
++ * enable wake IRQ after running ->runtime_suspend() which depends on
++ * WAKE_IRQ_DEDICATED_REVERSE.
++ *
++ * Should be only called from rpm_suspend() path.
++ */
++void dev_pm_enable_wake_irq_complete(struct device *dev)
++{
++	struct wake_irq *wirq = dev->power.wakeirq;
++
++	if (!wirq || !(wirq->status & WAKE_IRQ_DEDICATED_MASK))
++		return;
++
++	if (wirq->status & WAKE_IRQ_DEDICATED_MANAGED &&
++	    wirq->status & WAKE_IRQ_DEDICATED_REVERSE)
++		enable_irq(wirq->irq);
++}
++
+ /**
+  * dev_pm_arm_wake_irq - Arm device wake-up
+  * @wirq: Device wake-up interrupt
+diff --git a/include/linux/pm_wakeirq.h b/include/linux/pm_wakeirq.h
+index cd5b62db90845..e63a63aa47a37 100644
+--- a/include/linux/pm_wakeirq.h
++++ b/include/linux/pm_wakeirq.h
+@@ -17,8 +17,8 @@
+ #ifdef CONFIG_PM
+ 
+ extern int dev_pm_set_wake_irq(struct device *dev, int irq);
+-extern int dev_pm_set_dedicated_wake_irq(struct device *dev,
+-					 int irq);
++extern int dev_pm_set_dedicated_wake_irq(struct device *dev, int irq);
++extern int dev_pm_set_dedicated_wake_irq_reverse(struct device *dev, int irq);
+ extern void dev_pm_clear_wake_irq(struct device *dev);
+ extern void dev_pm_enable_wake_irq(struct device *dev);
+ extern void dev_pm_disable_wake_irq(struct device *dev);
+@@ -35,6 +35,11 @@ static inline int dev_pm_set_dedicated_wake_irq(struct device *dev, int irq)
+ 	return 0;
+ }
+ 
++static inline int dev_pm_set_dedicated_wake_irq_reverse(struct device *dev, int irq)
++{
++	return 0;
++}
++
+ static inline void dev_pm_clear_wake_irq(struct device *dev)
+ {
+ }
 -- 
 2.40.1
 
