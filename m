@@ -2,44 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BFD73775D58
-	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 13:36:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0B017775882
+	for <lists+stable@lfdr.de>; Wed,  9 Aug 2023 12:53:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234077AbjHILg3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 07:36:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36078 "EHLO
+        id S232396AbjHIKx2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 06:53:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50646 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234079AbjHILg2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 07:36:28 -0400
+        with ESMTP id S232501AbjHIKxQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 06:53:16 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6713F1BFF
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 04:36:26 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF0B9358A
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 03:51:10 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 07BD763529
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 11:36:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19C0FC433C7;
-        Wed,  9 Aug 2023 11:36:24 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7B9D9630D2
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 10:51:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FEFAC433C7;
+        Wed,  9 Aug 2023 10:51:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691580985;
-        bh=B6kdf/sxv/SWBwuB2sur8vob7OUKtMYMmOUag1KDMX8=;
+        s=korg; t=1691578267;
+        bh=ldIHsHWBIL20Eu1g1t8jASQBmtybSnCfPApNXoURqq0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=s06DbIR91GxbLTDmll0B/rNosAzDGtC216lJDJWFfIzYmwUEm9NiEzOxV+ouIR8+7
-         IeDIB4nUHIW0v2gaxY2hOHHF1vV0hmlMeY89eaeEbWlDqZr7vbes1ObqHZba4wbMsf
-         dlfmoE5KNAqJEo2LSrssdeefXMgdpz7sN1Bi9qpo=
+        b=BzrG2M483MPu3R/oKI0D7TG1HQQ/2FvzhgnBRfaCBBZaf9dgcWTbi7ixzjYoqBY9a
+         cl8XFjNIoBqmMbHNs1zlbpg6y06Dqlp+1zVZjwHX8yRGHyAV6WKjt2DNyns9JkB7l+
+         Y4IRdFH/zxalC34x81//DUdjQSRpqgeA2dw5IgWg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
-        stable <stable@kernel.org>
-Subject: [PATCH 5.10 065/201] Revert "usb: gadget: tegra-xudc: Fix error check in tegra_xudc_powerdomain_init()"
+        patches@lists.linux.dev,
+        syzbot <syzbot+89dbb3a789a5b9711793@syzkaller.appspotmail.com>,
+        Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+        Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Subject: [PATCH 6.4 136/165] fs/ntfs3: Use __GFP_NOWARN allocation at ntfs_load_attr_list()
 Date:   Wed,  9 Aug 2023 12:41:07 +0200
-Message-ID: <20230809103646.004423059@linuxfoundation.org>
+Message-ID: <20230809103647.268671233@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809103643.799166053@linuxfoundation.org>
-References: <20230809103643.799166053@linuxfoundation.org>
+In-Reply-To: <20230809103642.720851262@linuxfoundation.org>
+References: <20230809103642.720851262@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,54 +56,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
 
-commit a8291be6b5dd465c22af229483dbac543a91e24e upstream.
+commit ea303f72d70ce2f0b0aa94ab127085289768c5a6 upstream.
 
-This reverts commit f08aa7c80dac27ee00fa6827f447597d2fba5465.
+syzbot is reporting too large allocation at ntfs_load_attr_list(), for
+a crafted filesystem can have huge data_size.
 
-The reverted commit was based on static analysis and a misunderstanding
-of how PTR_ERR() and NULLs are supposed to work.  When a function
-returns both pointer errors and NULL then normally the NULL means
-"continue operating without a feature because it was deliberately
-turned off".  The NULL should not be treated as a failure.  If a driver
-cannot work when that feature is disabled then the KConfig should
-enforce that the function cannot return NULL.  We should not need to
-test for it.
-
-In this driver, the bug means that probe cannot succeed when CONFIG_PM
-is disabled.
-
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Fixes: f08aa7c80dac ("usb: gadget: tegra-xudc: Fix error check in tegra_xudc_powerdomain_init()")
-Cc: stable <stable@kernel.org>
-Link: https://lore.kernel.org/r/ZKQoBa84U/ykEh3C@moroto
+Reported-by: syzbot <syzbot+89dbb3a789a5b9711793@syzkaller.appspotmail.com>
+Link: https://syzkaller.appspot.com/bug?extid=89dbb3a789a5b9711793
+Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/gadget/udc/tegra-xudc.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ fs/ntfs3/attrlist.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/gadget/udc/tegra-xudc.c
-+++ b/drivers/usb/gadget/udc/tegra-xudc.c
-@@ -3693,15 +3693,15 @@ static int tegra_xudc_powerdomain_init(s
- 	int err;
+--- a/fs/ntfs3/attrlist.c
++++ b/fs/ntfs3/attrlist.c
+@@ -52,7 +52,7 @@ int ntfs_load_attr_list(struct ntfs_inod
  
- 	xudc->genpd_dev_device = dev_pm_domain_attach_by_name(dev, "dev");
--	if (IS_ERR_OR_NULL(xudc->genpd_dev_device)) {
--		err = PTR_ERR(xudc->genpd_dev_device) ? : -ENODATA;
-+	if (IS_ERR(xudc->genpd_dev_device)) {
-+		err = PTR_ERR(xudc->genpd_dev_device);
- 		dev_err(dev, "failed to get device power domain: %d\n", err);
- 		return err;
- 	}
+ 	if (!attr->non_res) {
+ 		lsize = le32_to_cpu(attr->res.data_size);
+-		le = kmalloc(al_aligned(lsize), GFP_NOFS);
++		le = kmalloc(al_aligned(lsize), GFP_NOFS | __GFP_NOWARN);
+ 		if (!le) {
+ 			err = -ENOMEM;
+ 			goto out;
+@@ -80,7 +80,7 @@ int ntfs_load_attr_list(struct ntfs_inod
+ 		if (err < 0)
+ 			goto out;
  
- 	xudc->genpd_dev_ss = dev_pm_domain_attach_by_name(dev, "ss");
--	if (IS_ERR_OR_NULL(xudc->genpd_dev_ss)) {
--		err = PTR_ERR(xudc->genpd_dev_ss) ? : -ENODATA;
-+	if (IS_ERR(xudc->genpd_dev_ss)) {
-+		err = PTR_ERR(xudc->genpd_dev_ss);
- 		dev_err(dev, "failed to get SuperSpeed power domain: %d\n", err);
- 		return err;
- 	}
+-		le = kmalloc(al_aligned(lsize), GFP_NOFS);
++		le = kmalloc(al_aligned(lsize), GFP_NOFS | __GFP_NOWARN);
+ 		if (!le) {
+ 			err = -ENOMEM;
+ 			goto out;
 
 
