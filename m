@@ -2,20 +2,20 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8A86E777892
+	by mail.lfdr.de (Postfix) with ESMTP id 40BEF777891
 	for <lists+stable@lfdr.de>; Thu, 10 Aug 2023 14:36:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232278AbjHJMgG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        id S233722AbjHJMgG (ORCPT <rfc822;lists+stable@lfdr.de>);
         Thu, 10 Aug 2023 08:36:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53756 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53752 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233488AbjHJMgF (ORCPT
+        with ESMTP id S232467AbjHJMgF (ORCPT
         <rfc822;stable@vger.kernel.org>); Thu, 10 Aug 2023 08:36:05 -0400
 Received: from air.basealt.ru (air.basealt.ru [194.107.17.39])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C98F32130
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C3598212F
         for <stable@vger.kernel.org>; Thu, 10 Aug 2023 05:36:04 -0700 (PDT)
 Received: by air.basealt.ru (Postfix, from userid 490)
-        id 464392F20236; Thu, 10 Aug 2023 11:56:50 +0000 (UTC)
+        id 1098E2F20239; Thu, 10 Aug 2023 11:59:56 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 X-Spam-Level: 
@@ -23,8 +23,8 @@ X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
         autolearn_force=no version=3.4.6
 Received: from shell.ipa.basealt.ru (unknown [176.12.98.74])
-        by air.basealt.ru (Postfix) with ESMTPSA id 846782F20245;
-        Thu, 10 Aug 2023 11:56:30 +0000 (UTC)
+        by air.basealt.ru (Postfix) with ESMTPSA id 697832F20226;
+        Thu, 10 Aug 2023 11:59:54 +0000 (UTC)
 From:   Alexander Ofitserov <oficerovas@altlinux.org>
 To:     oficerovas@altlinux.org, stable@vger.kernel.org,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>
@@ -34,8 +34,8 @@ Cc:     Jean Delvare <jdelvare@suse.com>, linux-i2c@vger.kernel.org,
         Andy Shevchenko <andy@kernel.org>,
         Mika Westerberg <mika.westerberg@linux.intel.com>
 Subject: [PATCH 0/3] Add support for Intel Alder Lake PCH
-Date:   Thu, 10 Aug 2023 14:56:21 +0300
-Message-Id: <20230810115624.3740622-1-oficerovas@altlinux.org>
+Date:   Thu, 10 Aug 2023 14:59:34 +0300
+Message-Id: <20230810115938.3741058-1-oficerovas@altlinux.org>
 X-Mailer: git-send-email 2.33.8
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
