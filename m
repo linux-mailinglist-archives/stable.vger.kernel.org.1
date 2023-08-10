@@ -2,108 +2,81 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B47DF7773E7
-	for <lists+stable@lfdr.de>; Thu, 10 Aug 2023 11:13:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1FC7A777456
+	for <lists+stable@lfdr.de>; Thu, 10 Aug 2023 11:21:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233666AbjHJJNM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 10 Aug 2023 05:13:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49016 "EHLO
+        id S234832AbjHJJVt (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 10 Aug 2023 05:21:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41740 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232940AbjHJJMr (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 10 Aug 2023 05:12:47 -0400
-Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EDD8D2717;
-        Thu, 10 Aug 2023 02:12:43 -0700 (PDT)
-Received: from [192.168.0.125] (unknown [82.76.24.202])
-        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        (Authenticated sender: ehristev)
-        by madras.collabora.co.uk (Postfix) with ESMTPSA id 969606607217;
-        Thu, 10 Aug 2023 10:12:41 +0100 (BST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1691658762;
-        bh=0Iq8D34Lbklgdl/9jdr8DFLgHMB7aekBr8AJu2XlV50=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=VerEY/cM1db+oPVxME0Q0OW16JQXahZtGoZtorW3gNTu7iVDPYgMe+ssBYklK6br6
-         mZrCxKjoGOJIYy4q2nMMt4lfeDiNRDl1/BW3+AdbGVRdh8KuXTWbUlnuxKvQ55GsSo
-         IXB5sCWsF10W1YYMs3vIZACJNA28yPd8aHMuFkltth0QFS6x/vctNvATIQXF/J42pB
-         eBodvnmQe8zkxCathdhkxEY5st4ZrdO80hB6utUhP5lFfiAjs95Hizbctlr8dKFPiD
-         UtNdSvHYFIJjHHE2nBdb9uPPkrrT1s81NYo0cjrnjOto7HOTgiW6WarIUqdGYlBb5/
-         72J4fNOYiiU9Q==
-Message-ID: <45d0f538-9769-f4eb-7479-cf676337ff55@collabora.com>
-Date:   Thu, 10 Aug 2023 12:12:39 +0300
+        with ESMTP id S234838AbjHJJVi (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 10 Aug 2023 05:21:38 -0400
+Received: from aposti.net (aposti.net [89.234.176.197])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 414545273;
+        Thu, 10 Aug 2023 02:20:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net;
+        s=mail; t=1691659207;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=Cxvgd7KEPdRFvLppPHwdt3/66MA1MYdo2I92LCsqcJw=;
+        b=yJmYb7pXHr2AwACbS3+BVJGdag/qTfZ+8AVnC3mjDxldrx/mxTJMwP9jwvGwnjNAGJE1XX
+        o/MxaYG4zJh2olZ/32e48x5Z17uWbu2GxftPPa4qsFBuC33pmmE+Ro1WRLORwcOTeIKmhp
+        iAadRqo8Aka0JuPQBlCq7e5Rc90c5ZM=
+Message-ID: <a4c76fa5f119fcc93c3b87a11dd6de973387e72e.camel@crapouillou.net>
+Subject: Re: [PATCH] ARM: dts: exynos/i9100: Unconditionally enable LDO12
+From:   Paul Cercueil <paul@crapouillou.net>
+To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Alim Akhtar <alim.akhtar@samsung.com>
+Cc:     devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-samsung-soc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org
+Date:   Thu, 10 Aug 2023 11:20:05 +0200
+In-Reply-To: <a1545e38-62fc-b5a1-e4c2-9f32b28e40f1@linaro.org>
+References: <20230808110341.57891-1-paul@crapouillou.net>
+         <a1545e38-62fc-b5a1-e4c2-9f32b28e40f1@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v2] media: vcodec: Fix potential array out-of-bounds in
- encoder queue_setup
-Content-Language: en-US
-To:     Wei Chen <harperchen1110@gmail.com>, tiffany.lin@mediatek.com
-Cc:     andrew-ct.chen@mediatek.com, yunfei.dong@mediatek.com,
-        mchehab@kernel.org, matthias.bgg@gmail.com,
-        angelogioacchino.delregno@collabora.com,
-        linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, stable@vger.kernel.org
-References: <20230810082333.972165-1-harperchen1110@gmail.com>
-From:   Eugen Hristev <eugen.hristev@collabora.com>
-In-Reply-To: <20230810082333.972165-1-harperchen1110@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi Wei,
+Le jeudi 10 ao=C3=BBt 2023 =C3=A0 08:21 +0200, Krzysztof Kozlowski a =C3=A9=
+crit=C2=A0:
+> On 08/08/2023 13:03, Paul Cercueil wrote:
+> > The kernel hangs for a good 12 seconds without any info being
+> > printed to
+> > dmesg, very early in the boot process, if this regulator is not
+> > enabled.
+> >=20
+> > Force-enable it to work around this issue, until we know more about
+> > the
+> > underlying problem.
+> >=20
+> > Signed-off-by: Paul Cercueil <paul@crapouillou.net>
+> > Fixes: 8620cc2f99b7 ("ARM: dts: exynos: Add devicetree file for the
+> > Galaxy S2")
+> > Cc: <stable@vger.kernel.org> # v5.8+
+> > ---
+> > =C2=A0arch/arm/boot/dts/exynos4210-i9100.dts | 8 ++++++++
+>=20
+> The path changed long time ago. Really, please do not work on some
+> outdated pmOS or whatever downstream drivers.
 
-On 8/10/23 11:23, Wei Chen wrote:
-> variable *nplanes is provided by user via system call argument. The
-> possible value of q_data->fmt->num_planes is 1-3, while the value
-> of *nplanes can be 1-8. The array access by index i can cause array
-> out-of-bounds.
-> 
-> Fix this bug by checking *nplanes against the array size.
-> 
-> Fixes: 4e855a6efa54 ("[media] vcodec: mediatek: Add Mediatek V4L2 Video Encoder Driver")
-> Signed-off-by: Wei Chen <harperchen1110@gmail.com>
-> Cc: stable@vger.kernel.org
-> ---
-> Changes in v2:
-> - Add Fixes tag and CC stable email address
-I guess stable needs to be added by the maintainer, not by the submitter
+That was on v6.4.2 yes. I simply forgot to rebase on the latest RC,
+sorry about that.
 
-> - Change the title to be more expressive
+I'll send a V2, and I now have some more patches touching that file
+that I can bundle with.
 
-Subject message should include mediatek I believe, as `media: vcodec:` 
-does not reference the mediatek vcodec.
-
-> 
->   drivers/media/platform/mediatek/vcodec/mtk_vcodec_enc.c | 2 ++
->   1 file changed, 2 insertions(+)
-> 
-> diff --git a/drivers/media/platform/mediatek/vcodec/mtk_vcodec_enc.c b/drivers/media/platform/mediatek/vcodec/mtk_vcodec_enc.c
-> index 9ff439a50f53..9e8817863cb8 100644
-> --- a/drivers/media/platform/mediatek/vcodec/mtk_vcodec_enc.c
-> +++ b/drivers/media/platform/mediatek/vcodec/mtk_vcodec_enc.c
-> @@ -821,6 +821,8 @@ static int vb2ops_venc_queue_setup(struct vb2_queue *vq,
->   		return -EINVAL;
->   
->   	if (*nplanes) {
-> +		if (*nplanes != q_data->fmt->num_planes)
-> +			return -EINVAL;
-
-Have you run v4l2-compliance on the device to make sure nothing is broken ?
-
->   		for (i = 0; i < *nplanes; i++)
->   			if (sizes[i] < q_data->sizeimage[i])
->   				return -EINVAL;
-
-
-Greetings,
+-Paul
