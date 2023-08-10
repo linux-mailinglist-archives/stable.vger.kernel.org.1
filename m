@@ -2,121 +2,112 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0DA8D7770EB
-	for <lists+stable@lfdr.de>; Thu, 10 Aug 2023 09:06:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 749FB7770F2
+	for <lists+stable@lfdr.de>; Thu, 10 Aug 2023 09:08:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233652AbjHJHGN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 10 Aug 2023 03:06:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54894 "EHLO
+        id S231411AbjHJHIh (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 10 Aug 2023 03:08:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54398 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233313AbjHJHGM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 10 Aug 2023 03:06:12 -0400
-Received: from qproxy4-pub.mail.unifiedlayer.com (qproxy4-pub.mail.unifiedlayer.com [66.147.248.250])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C9BD6E2
-        for <stable@vger.kernel.org>; Thu, 10 Aug 2023 00:06:11 -0700 (PDT)
-Received: from gproxy3-pub.mail.unifiedlayer.com (gproxy3-pub.mail.unifiedlayer.com [69.89.30.42])
-        by qproxy4.mail.unifiedlayer.com (Postfix) with ESMTP id 6B51F8037D4F
-        for <stable@vger.kernel.org>; Thu, 10 Aug 2023 07:06:11 +0000 (UTC)
-Received: from cmgw14.mail.unifiedlayer.com (unknown [10.0.90.129])
-        by progateway5.mail.pro1.eigbox.com (Postfix) with ESMTP id 78FD510041C85
-        for <stable@vger.kernel.org>; Thu, 10 Aug 2023 07:06:10 +0000 (UTC)
-Received: from box5620.bluehost.com ([162.241.219.59])
-        by cmsmtp with ESMTP
-        id TzkIqPfU9LyrhTzkIq27Ie; Thu, 10 Aug 2023 07:06:10 +0000
-X-Authority-Reason: nr=8
-X-Authority-Analysis: v=2.4 cv=GrmHRm5C c=1 sm=1 tr=0 ts=64d48c62
- a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
- a=OWjo9vPv0XrRhIrVQ50Ab3nP57M=:19 a=dLZJa+xiwSxG16/P+YVxDGlgEgI=:19
- a=IkcTkHD0fZMA:10:nop_charset_1 a=UttIx32zK-AA:10:nop_rcvd_month_year
- a=-Ou01B_BuAIA:10:endurance_base64_authed_username_1 a=VwQbUJbxAAAA:8
- a=HaFmDPmJAAAA:8 a=49j0FZ7RFL9ueZfULrUA:9 a=QEXdDO2ut3YA:10:nop_charset_2
- a=AjGcO6oz07-iQ99wixmX:22 a=nmWuMzfKamIsx3l42hEX:22
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
-        s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Date:
-        Message-ID:From:In-Reply-To:References:Cc:To:Subject:Sender:Reply-To:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=PcaoYWpWcllD4NNNClbatCKQYcE+mEs29o4oCA7XY7A=; b=BYZ6lGy4034dcnKu7XYczOmLvR
-        Shpv3HrWtpq7tjoDCpXMxLu3dqbHT/tEcIz+SkGPmn5qbjFA3ukm22vQ2T+eX0k3LtSCPs+S1MyLM
-        Cu/57You1/zE8qFwfOGzKC2vevTAe5d31uFcDGBx3wRdlMdKH5zczxcBmkIgTgIST8DfPdFqmyZC8
-        gcu913xocFA45SckslpxB8S4l/BiAWvVnZHs7/SLOMmCMbkxBwTSMezUkYphDWBrq05uIDrSqIM4S
-        tLC+UiwMJf1g4CJ5vbrdCMQVj3qOCq+YFxMJ+tYF8L3jMlhn0mw0Wi/FK8guImgbtD3vF3s4DvQ5a
-        RxGjKFVA==;
-Received: from c-73-162-232-9.hsd1.ca.comcast.net ([73.162.232.9]:51310 helo=[10.0.1.47])
-        by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-        (Exim 4.96)
-        (envelope-from <re@w6rz.net>)
-        id 1qTzkH-0045AQ-2E;
-        Thu, 10 Aug 2023 01:06:09 -0600
-Subject: Re: [PATCH 6.1 000/127] 6.1.45-rc1 review
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org
-Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-        torvalds@linux-foundation.org, akpm@linux-foundation.org,
-        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
-References: <20230809103636.615294317@linuxfoundation.org>
-In-Reply-To: <20230809103636.615294317@linuxfoundation.org>
-From:   Ron Economos <re@w6rz.net>
-Message-ID: <2292affc-4f34-62ec-3324-18e4c1d7d989@w6rz.net>
-Date:   Thu, 10 Aug 2023 00:06:07 -0700
-User-Agent: Mozilla/5.0 (X11; Linux armv7l; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
+        with ESMTP id S229472AbjHJHIh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 10 Aug 2023 03:08:37 -0400
+Received: from mail.netfilter.org (mail.netfilter.org [217.70.188.207])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 44468F3;
+        Thu, 10 Aug 2023 00:08:36 -0700 (PDT)
+From:   Pablo Neira Ayuso <pablo@netfilter.org>
+To:     netfilter-devel@vger.kernel.org
+Cc:     davem@davemloft.net, netdev@vger.kernel.org, kuba@kernel.org,
+        pabeni@redhat.com, edumazet@google.com, stable@vger.kernel.org
+Subject: [PATCH net 0/5] Netfilter fixes for net
+Date:   Thu, 10 Aug 2023 09:08:25 +0200
+Message-Id: <20230810070830.24064-1-pablo@netfilter.org>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - box5620.bluehost.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - w6rz.net
-X-BWhitelist: no
-X-Source-IP: 73.162.232.9
-X-Source-L: No
-X-Exim-ID: 1qTzkH-0045AQ-2E
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: c-73-162-232-9.hsd1.ca.comcast.net ([10.0.1.47]) [73.162.232.9]:51310
-X-Source-Auth: re@w6rz.net
-X-Email-Count: 2
-X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
-X-Local-Domain: yes
-X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 8/9/23 3:39 AM, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.1.45 release.
-> There are 127 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Fri, 11 Aug 2023 10:36:10 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.45-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+Hi,
 
-Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
+The following patchset contains Netfilter fixes for net.
 
-Tested-by: Ron Economos <re@w6rz.net>
+The existing attempt to resolve races between control plane and GC work
+is error prone, as reported by Bien Pham <phamnnb@sea.com>, some places
+forgot to call nft_set_elem_mark_busy(), leading to double-deactivation
+of elements.
 
+This series contains the following patches:
+
+1) Do not skip expired elements during walk otherwise elements might
+   never decrement the reference counter on data, leading to memleak.
+
+2) Add a GC transaction API to replace the former attempt to deal with
+   races between control plane and GC. GC worker sets on NFT_SET_ELEM_DEAD_BIT
+   on elements and it creates a GC transaction to remove the expired
+   elements, GC transaction could abort in case of interference with
+   control plane and retried later (GC async). Set backends such as
+   rbtree and pipapo also perform GC from control plane (GC sync), in
+   such case, element deactivation and removal is safe because mutex
+   is held then collected elements are released via call_rcu().
+
+3) Adapt existing set backends to use the GC transaction API.
+
+4) Update rhash set backend to set on _DEAD bit to report deleted
+   elements from datapath for GC.
+
+5) Remove old GC batch API and the NFT_SET_ELEM_BUSY_BIT.
+
+Florian Westphal (1):
+  netfilter: nf_tables: don't skip expired elements during walk
+
+Pablo Neira Ayuso (4):
+  netfilter: nf_tables: GC transaction API to avoid race with control plane
+  netfilter: nf_tables: adapt set backend to use GC transaction API
+  netfilter: nft_set_hash: mark set element as dead when deleting from packet path
+  netfilter: nf_tables: remove busy mark and gc batch API
+
+Please, pull these changes from:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/netfilter/nf.git nf-23-08-10
+
+Thanks.
+
+----------------------------------------------------------------
+
+The following changes since commit c5ccff70501d92db445a135fa49cf9bc6b98c444:
+
+  Merge branch 'net-sched-bind-logic-fixes-for-cls_fw-cls_u32-and-cls_route' (2023-07-31 20:10:39 -0700)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/netfilter/nf.git tags/nf-23-08-10
+
+for you to fetch changes up to a2dd0233cbc4d8a0abb5f64487487ffc9265beb5:
+
+  netfilter: nf_tables: remove busy mark and gc batch API (2023-08-10 08:25:27 +0200)
+
+----------------------------------------------------------------
+netfilter pull request 23-08-10
+
+----------------------------------------------------------------
+Florian Westphal (1):
+      netfilter: nf_tables: don't skip expired elements during walk
+
+Pablo Neira Ayuso (4):
+      netfilter: nf_tables: GC transaction API to avoid race with control plane
+      netfilter: nf_tables: adapt set backend to use GC transaction API
+      netfilter: nft_set_hash: mark set element as dead when deleting from packet path
+      netfilter: nf_tables: remove busy mark and gc batch API
+
+ include/net/netfilter/nf_tables.h | 120 ++++++---------
+ net/netfilter/nf_tables_api.c     | 307 ++++++++++++++++++++++++++++++--------
+ net/netfilter/nft_set_hash.c      |  85 +++++++----
+ net/netfilter/nft_set_pipapo.c    |  66 +++++---
+ net/netfilter/nft_set_rbtree.c    | 146 ++++++++++--------
+ 5 files changed, 476 insertions(+), 248 deletions(-)
