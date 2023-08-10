@@ -2,70 +2,79 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C377D77822B
-	for <lists+stable@lfdr.de>; Thu, 10 Aug 2023 22:31:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ED1C077822C
+	for <lists+stable@lfdr.de>; Thu, 10 Aug 2023 22:32:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235141AbjHJUbU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 10 Aug 2023 16:31:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57896 "EHLO
+        id S235335AbjHJUcB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 10 Aug 2023 16:32:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49442 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234901AbjHJUbT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 10 Aug 2023 16:31:19 -0400
-Received: from mail-pf1-x429.google.com (mail-pf1-x429.google.com [IPv6:2607:f8b0:4864:20::429])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AEFA32738
-        for <stable@vger.kernel.org>; Thu, 10 Aug 2023 13:31:18 -0700 (PDT)
-Received: by mail-pf1-x429.google.com with SMTP id d2e1a72fcca58-686bea20652so1175548b3a.1
-        for <stable@vger.kernel.org>; Thu, 10 Aug 2023 13:31:18 -0700 (PDT)
+        with ESMTP id S234901AbjHJUcB (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 10 Aug 2023 16:32:01 -0400
+Received: from mail-yb1-xb29.google.com (mail-yb1-xb29.google.com [IPv6:2607:f8b0:4864:20::b29])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C2122735
+        for <stable@vger.kernel.org>; Thu, 10 Aug 2023 13:32:01 -0700 (PDT)
+Received: by mail-yb1-xb29.google.com with SMTP id 3f1490d57ef6-d45caf42d73so1242353276.2
+        for <stable@vger.kernel.org>; Thu, 10 Aug 2023 13:32:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1691699478; x=1692304278;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=rmA0D0ppBgmOjczk4CVHcUSDpPugaWM3Kx84P6qwgeI=;
-        b=RfrtqqouriqrOh/vkxrdmy9bYEqBy9qQgW7CCwSBrS5NXDhE7/ojyQ5KH0dm5dadLq
-         pgGoZcwmhkg02tN/XqtGtmO58xICSjojaFi9OyTtdSuEGEhIxLggKZzlE+500nuUEuzI
-         oRvRf7mzTUVKfQuuk/QxB+3cEfZxBU0cM+BIU=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691699478; x=1692304278;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+        d=google.com; s=20221208; t=1691699519; x=1692304319;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=rmA0D0ppBgmOjczk4CVHcUSDpPugaWM3Kx84P6qwgeI=;
-        b=Oj3BIrOCQlG+Gr7dsMr78rgPhJHZThil7c32aK2pg2d/oOGQ/5VCWBXxGc68rNB88X
-         ErWXFS/xHcffHcsnWowrkAlTZsi6V7TT7VwNyyFXxHCc+pjDfTWlkZ016riuOxIH8hOo
-         /DKcrCvqjROdG9JgLqnHGtLglDjnwZy4NyIRSJgXgI5JoeyDdk/NE67RHlrPrNsL1Vqu
-         uAzIvUe9hMmpc5VQ1jPq9LEmZsgHrCRXcsw+yo8I0AuZIM+zPSn+021s8nMmLOIAMIxG
-         ixzvuT5tPlFak/PYuk8nsQQh0mT6PmmdUZg1pL8tgfMf0SsuBNxdtop6GekNdj5UBNML
-         Xw9w==
-X-Gm-Message-State: AOJu0YzvCJYx8dmwmCN9AVKE62k5svvPz9G8a4FhqgFVGycSMRiQ/pz7
-        G+YUqtrsPnsbt4+GKyBgpeK7qw==
-X-Google-Smtp-Source: AGHT+IE0gnsgv/pJpfLOEYU0Fzxm+6j4x/w8nvcxBTo64Odro0Cux1tbhbVaHKEPWstRET+1An19hw==
-X-Received: by 2002:a05:6a20:8e06:b0:135:8a65:a772 with SMTP id y6-20020a056a208e0600b001358a65a772mr66652pzj.50.1691699478169;
-        Thu, 10 Aug 2023 13:31:18 -0700 (PDT)
-Received: from www.outflux.net (198-0-35-241-static.hfc.comcastbusiness.net. [198.0.35.241])
-        by smtp.gmail.com with ESMTPSA id i20-20020a633c54000000b00564670fea62sm1950771pgn.21.2023.08.10.13.31.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 10 Aug 2023 13:31:17 -0700 (PDT)
-Date:   Thu, 10 Aug 2023 13:31:16 -0700
-From:   Kees Cook <keescook@chromium.org>
-To:     Naresh Kamboju <naresh.kamboju@linaro.org>
-Cc:     linux-stable <stable@vger.kernel.org>,
-        lkft-triage@lists.linaro.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Sasha Levin <sashal@kernel.org>,
-        Anders Roxell <anders.roxell@linaro.org>,
-        linux-hardening@vger.kernel.org,
-        Palmer Dabbelt <palmer@rivosinc.com>
-Subject: Re: stable-rc: 6.1: gcc-plugins: Reorganize gimple includes for GCC
- 13
-Message-ID: <202308101328.40620220CB@keescook>
-References: <CA+G9fYsf0jePDO3VPz0pb1sURdefpYCAYH-y+OdsAf3HuzbeRw@mail.gmail.com>
+        bh=g59HiU23KR/p51M+HUju4XZbajYYWPrjBLvP531ccBY=;
+        b=sQJbvYiD2y8zgmqroUUInNm5qo+9svPvMKGI2Q5EosMEVYq8fVpXbepiuBmM8UHsu5
+         1xA3VsZZ74iKcPdDnDhxZC4uSHJK54aT4DlNWO8hwfA4JiuD7t4CWPxiXrP/nbUOHo0Q
+         yT7umT2X5oKCRGZ0takoWpPqSlsZp0v9MrOa7YHwyPU0B+IqdvprJriglT/mbQ+sHNxD
+         UMiNvorIcqNnTefZhdQ/k6OBDOutLULbBDm66lgBSHMzlUCl+hCesN16wLAgGaphn/wz
+         PxDkPKB3lDFs+LRlcoBwp7Zp/Zw7wNOABXSpvJcfjHw/n52956z3zBvb0UYdl2a6nkaO
+         Z6LQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1691699519; x=1692304319;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=g59HiU23KR/p51M+HUju4XZbajYYWPrjBLvP531ccBY=;
+        b=RXJ/AQF5bNAf2/T5vrtowlplMG7jd6kiLRdhbcUSA94VPVlEbilnJbCEt7Y4hs/rjM
+         ON6XgCS4TayFEkeJ4xmRBhz57QFdPJTBNosORifLKpJIyuw0jwU3YbgwZSfES2A4HmZF
+         IVy8Pp4SK8JUoh7+Vfo9q/TbC2la52msfp/H7BqmTVGHzTLnf/o9mELBs0fa2gQnyElU
+         wq5Ov53MCtFDCv3g5P9BdIDAkYIFWzE2Ynr3qX4C2sA8W2YTqZ+TJjk3siwnpVPOHgnm
+         OCgvbuZ459qTG+/kcpQH7xiozZ78VXOU4fbNa1HDR7HNpXDwdC1/lorJj1GjJKa/Rm6I
+         630w==
+X-Gm-Message-State: AOJu0YwlhTEH5Y5gvGSPxH90JCO6yaf8k356s3yiDfCjkZQK8p/IA4fp
+        4d+RpjHBO/nYqKJCJBxjEJHgywD9CSCGxGp49ihmRkUYCe5qiV2VepI=
+X-Google-Smtp-Source: AGHT+IF8GAFo+XXfl6EEGjTASUeLQcv985qmMnxxeDdunk/11wQEl8xfkhkwuBI70mFIU+5epiXdNgUabufZRRazq9w=
+X-Received: by 2002:a25:c7c6:0:b0:d06:ae7d:8664 with SMTP id
+ w189-20020a25c7c6000000b00d06ae7d8664mr3581227ybe.29.1691699519368; Thu, 10
+ Aug 2023 13:31:59 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CA+G9fYsf0jePDO3VPz0pb1sURdefpYCAYH-y+OdsAf3HuzbeRw@mail.gmail.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+References: <20230708191212.4147700-1-surenb@google.com> <20230708191212.4147700-3-surenb@google.com>
+ <20230804214620.btgwhsszsd7rh6nf@f> <CAHk-=wiy125k1dBmQFTGpHwiOqEyrD6xnd4xKWfe97H_HodgDA@mail.gmail.com>
+ <CAGudoHFsAU_BDCOuz8UgDBLGEM8xg=aUGjaVoqkM_Zvxo2Re_g@mail.gmail.com>
+ <CAHk-=wiG9xaVvBJXHqTxtop0=mW9KxPS9C54ED23p59VNEKdWg@mail.gmail.com>
+ <CAGudoHFsxmiezZREyVkrPYBBij3u9SNaxLWipOOPy5S+5pJcZA@mail.gmail.com>
+ <CAJuCfpE6K6x7EKAr2rtW1Gn+1oht6w2qZSZ2bGATfoe8C8fJhA@mail.gmail.com> <CAGudoHEU62Rpp+uJakCFgKC36y3th=Qx+jE+b7KJh6_jeH7cNg@mail.gmail.com>
+In-Reply-To: <CAGudoHEU62Rpp+uJakCFgKC36y3th=Qx+jE+b7KJh6_jeH7cNg@mail.gmail.com>
+From:   Suren Baghdasaryan <surenb@google.com>
+Date:   Thu, 10 Aug 2023 13:31:48 -0700
+Message-ID: <CAJuCfpF=Y4DfOcb8YzU5eLpcxyTEP+houL1ud1k25_qweiV4-g@mail.gmail.com>
+Subject: Re: [PATCH v2 3/3] fork: lock VMAs of the parent process when forking
+To:     Mateusz Guzik <mjguzik@gmail.com>
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        akpm@linux-foundation.org, regressions@leemhuis.info,
+        bagasdotme@gmail.com, jacobly.alt@gmail.com, willy@infradead.org,
+        liam.howlett@oracle.com, david@redhat.com, peterx@redhat.com,
+        ldufour@linux.ibm.com, linux-kernel@vger.kernel.org,
+        linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org,
+        linux-arm-kernel@lists.infradead.org, gregkh@linuxfoundation.org,
+        regressions@lists.linux.dev, Jiri Slaby <jirislaby@kernel.org>,
+        =?UTF-8?Q?Holger_Hoffst=C3=A4tte?= <holger@applied-asynchrony.com>,
+        stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
+        USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -73,36 +82,96 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, Aug 08, 2023 at 10:57:30AM +0530, Naresh Kamboju wrote:
-> LKFT build plans updated with toolchain gcc-13 and here is the report.
-> 
-> Stable rc 6.1 arm64 builds with gcc-13 failed and the bisection is pointing
-> to this as first bad commit,
-> 
-> # first fixed commit: [e6a71160cc145e18ab45195abf89884112e02dfb]
->    gcc-plugins: Reorganize gimple includes for GCC 13
-> 
-> Thanks Anders for bisecting this problem against Linux 6.2-rc6.
-> 
-> Build errors:
-> ---------------
-> In file included from /builds/linux/scripts/gcc-plugins/gcc-common.h:75,
->                  from /builds/linux/scripts/gcc-plugins/stackleak_plugin.c:30:
-> /usr/lib/gcc-cross/aarch64-linux-gnu/13/plugin/include/gimple-fold.h:72:32:
-> error: use of enum 'gsi_iterator_update' without previous declaration
->    72 |                           enum gsi_iterator_update,
->       |                                ^~~~~~~~~~~~~~~~~~
-> 
-> Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+On Wed, Aug 9, 2023 at 2:07=E2=80=AFPM Mateusz Guzik <mjguzik@gmail.com> wr=
+ote:
+>
+> On 8/5/23, Suren Baghdasaryan <surenb@google.com> wrote:
+> > On Fri, Aug 4, 2023 at 6:06=E2=80=AFPM Mateusz Guzik <mjguzik@gmail.com=
+> wrote:
+> >>
+> >> On 8/5/23, Linus Torvalds <torvalds@linux-foundation.org> wrote:
+> >> > On Fri, 4 Aug 2023 at 16:25, Mateusz Guzik <mjguzik@gmail.com> wrote=
+:
+> >> >>
+> >> >> I know of these guys, I think they are excluded as is -- they go
+> >> >> through access_remote_vm, starting with:
+> >> >>         if (mmap_read_lock_killable(mm))
+> >> >>                 return 0;
+> >> >>
+> >> >> while dup_mmap already write locks the parent's mm.
+> >> >
+> >> > Oh, you're only worried about vma_start_write()?
+> >> >
+> >> > That's a non-issue. It doesn't take the lock normally, since it star=
+ts
+> >> > off
+> >> > with
+> >> >
+> >> >         if (__is_vma_write_locked(vma, &mm_lock_seq))
+> >> >                 return;
+> >> >
+> >> > which catches on the lock sequence number already being set.
+> >> >
+> >> > So no extra locking there.
+> >> >
+> >> > Well, technically there's extra locking because the code stupidly
+> >> > doesn't initialize new vma allocations to the right sequence number,
+> >> > but that was talked about here:
+> >> >
+> >> >
+> >> > https://lore.kernel.org/all/CAHk-=3DwiCrWAoEesBuoGoqqufvesicbGp3cX0L=
+yKgEvsFaZNpDA@mail.gmail.com/
+> >> >
+> >> > and it's a separate issue.
+> >> >
+> >>
+> >> I'm going to bet one beer this is the issue.
+> >>
+> >> The patch I'm responding to only consists of adding the call to
+> >> vma_start_write and claims the 5% slowdown from it, while fixing
+> >> crashes if the forking process is multithreaded.
+> >>
+> >> For the fix to work it has to lock something against the parent.
+> >>
+> >>         VMA_ITERATOR(old_vmi, oldmm, 0);
+> >> [..]
+> >>         for_each_vma(old_vmi, mpnt) {
+> >> [..]
+> >>                 vma_start_write(mpnt);
+> >>
+> >> the added line locks an obj in the parent's vm space.
+> >>
+> >> The problem you linked looks like pessimization for freshly allocated
+> >> vmas, but that's what is being operated on here.
+> >
+> > Sorry, now I'm having trouble understanding the problem you are
+> > describing. We are locking the parent's vma before copying it and the
+> > newly created vma is locked before it's added into the vma tree. What
+> > is the problem then?
+> >
+>
+> Sorry for the late reply!
+>
+> Looks there has been a bunch of weird talking past one another in this
+> thread and I don't think trying to straighten it all out is worth any
+> time.
+>
+> I think at least the two of us agree that if a single-threaded process
+> enters dup_mmap an
+> down_writes the mmap semaphore, then no new thread can pop up in said
+> process, thus no surprise page faults from that angle. 3rd parties are
+> supposed to interfaces like access_remote_vm, which down_read said
+> semaphore and are consequently also not a problem. The only worry here
+> is that someone is messing with another process memory without the
+> semaphore, but is very unlikely and patchable in the worst case -- but
+> someone(tm) has to audit. With all these conditions satisfied one can
+> elide vma_start_write for a perf win.
+>
+> Finally, I think we agreed you are going to do the audit ;)
 
-I'm slightly confused by this report. Is it the build of v6.1 that is
-failing? Commit e6a71160cc14 ("gcc-plugins: Reorganize gimple includes
-for GCC 13") was added in v6.2.
+Ack. I'll look into this once the dust settles. Thanks!
 
-I think you're saying you need it backported to the v6.1 stable tree?
-("First bad commit" is really the first good commit?)
-
--Kees
-
--- 
-Kees Cook
+>
+> Cheers,
+> --
+> Mateusz Guzik <mjguzik gmail.com>
