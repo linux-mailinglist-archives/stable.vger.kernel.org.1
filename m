@@ -2,78 +2,69 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7F1E37782E9
-	for <lists+stable@lfdr.de>; Thu, 10 Aug 2023 23:54:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BE15E778361
+	for <lists+stable@lfdr.de>; Fri, 11 Aug 2023 00:01:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231284AbjHJVy1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 10 Aug 2023 17:54:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43210 "EHLO
+        id S231636AbjHJWBW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 10 Aug 2023 18:01:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50834 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231311AbjHJVyU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 10 Aug 2023 17:54:20 -0400
-Received: from mail-io1-xd30.google.com (mail-io1-xd30.google.com [IPv6:2607:f8b0:4864:20::d30])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BEA4E2728
-        for <stable@vger.kernel.org>; Thu, 10 Aug 2023 14:54:18 -0700 (PDT)
-Received: by mail-io1-xd30.google.com with SMTP id ca18e2360f4ac-790f0276911so47582739f.2
-        for <stable@vger.kernel.org>; Thu, 10 Aug 2023 14:54:18 -0700 (PDT)
+        with ESMTP id S229907AbjHJWBH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 10 Aug 2023 18:01:07 -0400
+Received: from mail-vk1-xa2d.google.com (mail-vk1-xa2d.google.com [IPv6:2607:f8b0:4864:20::a2d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 22D1F2684
+        for <stable@vger.kernel.org>; Thu, 10 Aug 2023 15:01:06 -0700 (PDT)
+Received: by mail-vk1-xa2d.google.com with SMTP id 71dfb90a1353d-4872462d9fbso398151e0c.2
+        for <stable@vger.kernel.org>; Thu, 10 Aug 2023 15:01:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=joelfernandes.org; s=google; t=1691704458; x=1692309258;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=d14ni5Xwha4b5W9oszHP598tb2kfEa4V0TQw+xddRLI=;
-        b=sk6RGOXZlyzBLUxRikbrhW9UAO6qkV/Xz+zONz6SwWTI8aV5MGE2KOSRoSOiZrAb1w
-         6cyYKG5P/tZUMDBWjMKrTNfAbAx+eb0z775vqOOcYWZwyuTbXvLU8NnDmMYgPDuZOv9L
-         7rJdC2K72lt3lhOU0h3tfTdk9nD5Oo+ADK+xs=
+        d=linaro.org; s=google; t=1691704866; x=1692309666;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=KaWOwFxP8NeV5qZedju52jWrRv0oTxVWbWYYg0K/4Gg=;
+        b=YMahL25m3XKqYTF4tno5ua0W4dOvsnqIBvCUMy2x8KZZyTsT8BlW54NZUHEQ30RPdB
+         4TcVqCTYMgn7zpITd125wpcm2gqyyyD78jEnJ6l2ZqROunAxjFi8jtY/8BPih8B2ObZi
+         Uxx7U7CZJL9+yG0d8RC6Doh5QmiZjfMYs419H8f4W8MYmVhrLSSdQFyl8VWtsjWcN5qa
+         8DEsnl57f08go0qLD6ck5Ods4ap+675acDCdGvyqqctEkRBwuXjM/viFqix8LOyUrQnS
+         zxOe7SOwZDKJ7wXziY6SHf7jttqli38B+OsUKIB1iiWu8Vl2Unh5BKb+T6iIwKMV902k
+         7fgg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691704458; x=1692309258;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=d14ni5Xwha4b5W9oszHP598tb2kfEa4V0TQw+xddRLI=;
-        b=FCdjdd+T0KkpP5SU5lmQyZEgjyT1B5mGvByq8cLxtQ1KmmIlkVjHrmccQ1Z09zhuA1
-         rI+WefUK+NS3Je2etRU8NYFPrAK8gA5SzHelVhyRyQW7QwagdDYYmb3612VEDmdg6qBd
-         BJXCfBEtU+OiJE4qfTDyCu7l93JBknicR9shV6Gf1/nEW/zT+RB6GSuH5PnDJOC7AbZs
-         aiX1QeSgXRNkvcdFKrgDSpk+9t5ihpd5TlGpkgVNSRxlBrpFeyo4FzxYp90gPghpdJ/E
-         HWbBMM55e+SxcjFWnw/0ZzbuqRy1V4+MA17FpHA6dLefbSONXv35ef5Pyb/C2J2zktd5
-         srgg==
-X-Gm-Message-State: AOJu0Yz5+nhxmViK5xZloOZ29YX92ux6pa/1RZdG2sBTfK3jGr214G2S
-        EBl8H061xOsa+SlXd5jfU2zUpQ==
-X-Google-Smtp-Source: AGHT+IGLuAl1KNMSS1xa6rv6PHxjZOWO+/xYanI4+8mudFtV7iuFx1l2FmZz3RioEc2UFfg3nig2lg==
-X-Received: by 2002:a6b:3108:0:b0:785:cfa1:fcac with SMTP id j8-20020a6b3108000000b00785cfa1fcacmr288189ioa.20.1691704458060;
-        Thu, 10 Aug 2023 14:54:18 -0700 (PDT)
-Received: from localhost (156.190.123.34.bc.googleusercontent.com. [34.123.190.156])
-        by smtp.gmail.com with ESMTPSA id s10-20020a02cf2a000000b00430996b3604sm660842jar.125.2023.08.10.14.54.17
+        d=1e100.net; s=20221208; t=1691704866; x=1692309666;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=KaWOwFxP8NeV5qZedju52jWrRv0oTxVWbWYYg0K/4Gg=;
+        b=X36V6igdVFCUAjV7sXiS5QG8aUGpaRGwJ6VrUAsTd7HLPGuThvIXWimbDciUaT93Ft
+         NQbffrPtTaiupfH9eIKlOuro7HaeTfFdfe8QYsujjcY9M0rmxn9GaD42yNvsGBZ0Ov31
+         imFRAqkuzFPtru9gQZ7ExUkcnIkFdLYe2SkOC83Djwhcu5hUVgOtJCaTO0zcD2XjJ89q
+         FlO8fA9T/pSVUS4+wgqx++MLNs/lM+VhsIWTZhLIk0TrsXNAF/CWuafnEPrBAXmzqJ8S
+         q1//p2+LgU5z9qROcd0k0B1wLx8NZMhvHUXQiLMP023iJQOnf25L0k1n3tWCJs5tFmnD
+         gI0Q==
+X-Gm-Message-State: AOJu0YxNgU7GNFbrD9lsE0amaU5rDlvBU/HkHlDmIzZiajSiXL3rA+xR
+        of7r8yaTj1BEdtXXAWiGQKsyFjNC4UV8M3klmEM=
+X-Google-Smtp-Source: AGHT+IEYwVf7B0V1B4z6z76aZNmEVOl6H78RqiHn2wkqhFTp4uAfBB2ZrQMHIsgHiejBcL6+A1R0vQ==
+X-Received: by 2002:a1f:c305:0:b0:486:de54:b11 with SMTP id t5-20020a1fc305000000b00486de540b11mr158396vkf.16.1691704866069;
+        Thu, 10 Aug 2023 15:01:06 -0700 (PDT)
+Received: from fedora.. (072-189-067-006.res.spectrum.com. [72.189.67.6])
+        by smtp.gmail.com with ESMTPSA id r17-20020a056122009100b004872b997d3bsm387105vka.1.2023.08.10.15.01.05
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 10 Aug 2023 14:54:17 -0700 (PDT)
-Date:   Thu, 10 Aug 2023 21:54:16 +0000
-From:   Joel Fernandes <joel@joelfernandes.org>
-To:     "Paul E. McKenney" <paulmck@kernel.org>
-Cc:     Guenter Roeck <linux@roeck-us.net>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
-Subject: Re: [PATCH 5.15 00/92] 5.15.126-rc1 review
-Message-ID: <20230810215416.GA562211@google.com>
-References: <20230809103633.485906560@linuxfoundation.org>
- <20230809135326.GE3031656@google.com>
- <f47340c6-3c41-1f91-d0f9-fe0b59a23aac@roeck-us.net>
- <CAEXW_YQ4GqPwvUF8=8CWmdj=cD56v_eEVK-EirsObQXyBDFVpg@mail.gmail.com>
- <35e4b770-2ead-4a19-ad01-fa75996adef4@roeck-us.net>
- <20230809201413.GA3374446@google.com>
- <6b05a082-41a7-f0cf-c0a4-1cced8d5a230@roeck-us.net>
- <CAEXW_YT-7epvu4uUS19aDAcM0X63j9_L2aa-XGGFGSLceLu8bA@mail.gmail.com>
- <4dbe72a3-50ea-051c-96ba-d709b33d3a98@roeck-us.net>
- <882a606f-5776-46d1-a423-2c5ea0a1cd8f@paulmck-laptop>
+        Thu, 10 Aug 2023 15:01:05 -0700 (PDT)
+From:   William Breathitt Gray <william.gray@linaro.org>
+To:     Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+        Linus Walleij <linus.walleij@linaro.org>
+Cc:     linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        William Breathitt Gray <william.gray@linaro.org>,
+        stable@vger.kernel.org,
+        Paul Demetrotion <pdemetrotion@winsystems.com>
+Subject: [RESEND PATCH 7/7] gpio: ws16c48: Fix off-by-one error in WS16C48 resource region extent
+Date:   Thu, 10 Aug 2023 18:00:44 -0400
+Message-ID: <f20243853e94264534927f2cdf9288b869e7e03b.1691703928.git.william.gray@linaro.org>
+X-Mailer: git-send-email 2.41.0
+In-Reply-To: <cover.1691703927.git.william.gray@linaro.org>
+References: <cover.1691703927.git.william.gray@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <882a606f-5776-46d1-a423-2c5ea0a1cd8f@paulmck-laptop>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -83,88 +74,33 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, Aug 10, 2023 at 10:55:16AM -0700, Paul E. McKenney wrote:
-> On Wed, Aug 09, 2023 at 02:45:44PM -0700, Guenter Roeck wrote:
-> > On 8/9/23 13:39, Joel Fernandes wrote:
-> > > On Wed, Aug 9, 2023 at 4:38 PM Guenter Roeck <linux@roeck-us.net> wrote:
-> > > > 
-> > > > On 8/9/23 13:14, Joel Fernandes wrote:
-> > > > > On Wed, Aug 09, 2023 at 12:25:48PM -0700, Guenter Roeck wrote:
-> > > > > > On Wed, Aug 09, 2023 at 02:35:59PM -0400, Joel Fernandes wrote:
-> > > > > > > On Wed, Aug 9, 2023 at 12:18 PM Guenter Roeck <linux@roeck-us.net> wrote:
-> > > > > > > > 
-> > > > > > > > On 8/9/23 06:53, Joel Fernandes wrote:
-> > > > > > > > > On Wed, Aug 09, 2023 at 12:40:36PM +0200, Greg Kroah-Hartman wrote:
-> > > > > > > > > > This is the start of the stable review cycle for the 5.15.126 release.
-> > > > > > > > > > There are 92 patches in this series, all will be posted as a response
-> > > > > > > > > > to this one.  If anyone has any issues with these being applied, please
-> > > > > > > > > > let me know.
-> > > > > > > > > > 
-> > > > > > > > > > Responses should be made by Fri, 11 Aug 2023 10:36:10 +0000.
-> > > > > > > > > > Anything received after that time might be too late.
-> > > > > > > > > > 
-> > > > > > > > > > The whole patch series can be found in one patch at:
-> > > > > > > > > >        https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.126-rc1.gz
-> > > > > > > > > > or in the git tree and branch at:
-> > > > > > > > > >        git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
-> > > > > > > > > > and the diffstat can be found below.
-> > > > > > > > > 
-> > > > > > > > > Not necesscarily new with 5.15 stable but 3 of the 19 rcutorture scenarios
-> > > > > > > > > hang with this -rc: TREE04, TREE07, TASKS03.
-> > > > > > > > > 
-> > > > > > > > > 5.15 has a known stop machine issue where it hangs after 1.5 hours with cpu
-> > > > > > > > > hotplug rcutorture testing. Me and tglx are continuing to debug this. The
-> > > > > > > > > issue does not show up on anything but 5.15 stable kernels and neither on
-> > > > > > > > > mainline.
-> > > > > > > > > 
-> > > > > > > > 
-> > > > > > > > Do you by any have a crash pattern that we could possibly use to find the crash
-> > > > > > > > in ChromeOS crash logs ? No idea if that would help, but it could provide some
-> > > > > > > > additional data points.
-> > > > > > > 
-> > > > > > > The pattern shows as a hard hang, the system is unresponsive and all CPUs
-> > > > > > > are stuck in stop_machine. Sometimes it recovers on its own from the
-> > > > > > > hang and then RCU immediately gives stall warnings. It takes 1.5 hour
-> > > > > > > to reproduce and sometimes never happens for several hours.
-> > > > > > > 
-> > > > > > > It appears related to CPU hotplug since gdb showed me most of the CPUs
-> > > > > > > are spinning in multi_cpu_stop() / stop machine after the hang.
-> > > > > > > 
-> > > > > > 
-> > > > > > Hmm, we do see lots of soft lockups with multi_cpu_stop() in the backtrace,
-> > > > > > but not with v5.15.y but with v5.4.y. The actual hang is in stop_machine_yield().
-> > > > > 
-> > > > > Interesting. It looks similar as far as the stack dump in gdb goes, here are
-> > > > > the stacks I dumped with the hang I referred to:
-> > > > > https://paste.debian.net/1288308/
-> > > > > 
-> > > > 
-> > > > That link gives me "Entry not found".
-> > > 
-> > > Yeah that was weird. Here it is again: https://pastebin.com/raw/L3nv1kH2
-> > 
-> > I found a couple of crash reports from chromeos-5.10, one of them complaining
-> > about RCU issues. I sent you links via IM. Nothing from 5.15 or later, though.
-> 
-> Is the crash showing the eternally refiring timer fixed by this commit?
-> 
-> 53e87e3cdc15 ("timers/nohz: Last resort update jiffies on nohz_full IRQ entry")
+The WinSystems WS16C48 I/O address region spans offsets 0x0 through 0xA,
+which is a total of 11 bytes. Fix the WS16C48_EXTENT define to the
+correct value of 11 so that access to necessary device registers is
+properly requested in the ws16c48_probe() callback by the
+devm_request_region() function call.
 
-Ah I was just replying, I have been seeing really good results after applying
-the following 3 commits since yesterday:
+Fixes: 2c05a0f29f41 ("gpio: ws16c48: Implement and utilize register structures")
+Cc: stable@vger.kernel.org
+Cc: Paul Demetrotion <pdemetrotion@winsystems.com>
+Signed-off-by: William Breathitt Gray <william.gray@linaro.org>
+---
+ drivers/gpio/gpio-ws16c48.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-53e87e3cdc15 ("timers/nohz: Last resort update jiffies on nohz_full IRQ entry")
-5417ddc1cf1f ("timers/nohz: Switch to ONESHOT_STOPPED in the low-res handler when the tick is stopped")
-a1ff03cd6fb9 ("tick: Detect and fix jiffies update stall")
-
-5417ddc1cf1f also mentioned a "tick storm" which is exactly what I was
-seeing.
-
-I did a lengthy test and everything is looking good. I'll send these out to
-the stable list.
-
-thanks,
-
- - Joel
-
+diff --git a/drivers/gpio/gpio-ws16c48.c b/drivers/gpio/gpio-ws16c48.c
+index 701847508e94..6289b0510cf2 100644
+--- a/drivers/gpio/gpio-ws16c48.c
++++ b/drivers/gpio/gpio-ws16c48.c
+@@ -17,7 +17,7 @@
+ #include <linux/regmap.h>
+ #include <linux/types.h>
+ 
+-#define WS16C48_EXTENT 10
++#define WS16C48_EXTENT 11
+ #define MAX_NUM_WS16C48 max_num_isa_dev(WS16C48_EXTENT)
+ 
+ static unsigned int base[MAX_NUM_WS16C48];
+-- 
+2.41.0
 
