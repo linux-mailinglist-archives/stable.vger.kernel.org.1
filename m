@@ -2,247 +2,81 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 107C17770FC
-	for <lists+stable@lfdr.de>; Thu, 10 Aug 2023 09:08:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 14F33777119
+	for <lists+stable@lfdr.de>; Thu, 10 Aug 2023 09:11:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233688AbjHJHIm (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 10 Aug 2023 03:08:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58910 "EHLO
+        id S233803AbjHJHL1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 10 Aug 2023 03:11:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50718 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233155AbjHJHIk (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 10 Aug 2023 03:08:40 -0400
-Received: from mail.netfilter.org (mail.netfilter.org [217.70.188.207])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id EE9481702;
-        Thu, 10 Aug 2023 00:08:39 -0700 (PDT)
-From:   Pablo Neira Ayuso <pablo@netfilter.org>
-To:     netfilter-devel@vger.kernel.org
-Cc:     davem@davemloft.net, netdev@vger.kernel.org, kuba@kernel.org,
-        pabeni@redhat.com, edumazet@google.com, stable@vger.kernel.org
-Subject: [PATCH net 5/5] netfilter: nf_tables: remove busy mark and gc batch API
-Date:   Thu, 10 Aug 2023 09:08:30 +0200
-Message-Id: <20230810070830.24064-6-pablo@netfilter.org>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20230810070830.24064-1-pablo@netfilter.org>
-References: <20230810070830.24064-1-pablo@netfilter.org>
+        with ESMTP id S233816AbjHJHLK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 10 Aug 2023 03:11:10 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A73E1982
+        for <stable@vger.kernel.org>; Thu, 10 Aug 2023 00:11:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1691651464; x=1723187464;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   in-reply-to;
+  bh=XBEEZGw754pa/yEjtog8E1K4vPKE3iLtCaMnZp1I31E=;
+  b=T3i3krzYisS4JyeT9EFsYp8Iy6qTX8jUB+cV9vw2Xd7zfnYZXwKSKZhI
+   9Xh5xhYaj+WnIHC2KJYc8yMi2vo4qZKqHEkialV34uB7C5K/XsOsFmPRI
+   a0hTzk2wCHBlpfkAuti2jBSyAi2ElJG9MWeX0fEqMse1WbKn3zfTDlaNx
+   w9Gi5ctIrRiFsHa5LlHGGoaGJLKPuvOHyREz02uPnacCMHsvaRDV/wHDC
+   onBluCpfaWhu9JxLHw1LvZ8wsLi7aXFsZzBdOy8DN07u85L5LTqx8oSSs
+   eUv/NK9raB/FaEkc6dfvAr8xtm9i9+BZPJwBlAHvbSrH6K/NYSt6gWI0u
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10797"; a="375035450"
+X-IronPort-AV: E=Sophos;i="6.01,161,1684825200"; 
+   d="scan'208";a="375035450"
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Aug 2023 00:11:04 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10797"; a="709019093"
+X-IronPort-AV: E=Sophos;i="6.01,161,1684825200"; 
+   d="scan'208";a="709019093"
+Received: from lkp-server01.sh.intel.com (HELO d1ccc7e87e8f) ([10.239.97.150])
+  by orsmga006.jf.intel.com with ESMTP; 10 Aug 2023 00:11:03 -0700
+Received: from kbuild by d1ccc7e87e8f with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1qTzp0-0006os-0m;
+        Thu, 10 Aug 2023 07:11:02 +0000
+Date:   Thu, 10 Aug 2023 15:10:04 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Pablo Neira Ayuso <pablo@netfilter.org>
+Cc:     stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH net 1/5] netfilter: nf_tables: don't skip expired
+ elements during walk
+Message-ID: <ZNSNTI+r/EPb0ll/@11d7ca01dc46>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230810070830.24064-2-pablo@netfilter.org>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Ditch it, it has been replace it by the GC transaction API and it has no
-clients anymore.
+Hi,
 
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
----
- include/net/netfilter/nf_tables.h | 98 +------------------------------
- net/netfilter/nf_tables_api.c     | 48 +--------------
- 2 files changed, 4 insertions(+), 142 deletions(-)
+Thanks for your patch.
 
-diff --git a/include/net/netfilter/nf_tables.h b/include/net/netfilter/nf_tables.h
-index 7256e9c80477..35870858ddf2 100644
---- a/include/net/netfilter/nf_tables.h
-+++ b/include/net/netfilter/nf_tables.h
-@@ -599,7 +599,6 @@ struct nft_set *nft_set_lookup_global(const struct net *net,
- 
- struct nft_set_ext *nft_set_catchall_lookup(const struct net *net,
- 					    const struct nft_set *set);
--void *nft_set_catchall_gc(const struct nft_set *set);
- 
- static inline unsigned long nft_set_gc_interval(const struct nft_set *set)
- {
-@@ -816,62 +815,6 @@ void nft_set_elem_destroy(const struct nft_set *set, void *elem,
- void nf_tables_set_elem_destroy(const struct nft_ctx *ctx,
- 				const struct nft_set *set, void *elem);
- 
--/**
-- *	struct nft_set_gc_batch_head - nf_tables set garbage collection batch
-- *
-- *	@rcu: rcu head
-- *	@set: set the elements belong to
-- *	@cnt: count of elements
-- */
--struct nft_set_gc_batch_head {
--	struct rcu_head			rcu;
--	const struct nft_set		*set;
--	unsigned int			cnt;
--};
--
--#define NFT_SET_GC_BATCH_SIZE	((PAGE_SIZE -				  \
--				  sizeof(struct nft_set_gc_batch_head)) / \
--				 sizeof(void *))
--
--/**
-- *	struct nft_set_gc_batch - nf_tables set garbage collection batch
-- *
-- * 	@head: GC batch head
-- * 	@elems: garbage collection elements
-- */
--struct nft_set_gc_batch {
--	struct nft_set_gc_batch_head	head;
--	void				*elems[NFT_SET_GC_BATCH_SIZE];
--};
--
--struct nft_set_gc_batch *nft_set_gc_batch_alloc(const struct nft_set *set,
--						gfp_t gfp);
--void nft_set_gc_batch_release(struct rcu_head *rcu);
--
--static inline void nft_set_gc_batch_complete(struct nft_set_gc_batch *gcb)
--{
--	if (gcb != NULL)
--		call_rcu(&gcb->head.rcu, nft_set_gc_batch_release);
--}
--
--static inline struct nft_set_gc_batch *
--nft_set_gc_batch_check(const struct nft_set *set, struct nft_set_gc_batch *gcb,
--		       gfp_t gfp)
--{
--	if (gcb != NULL) {
--		if (gcb->head.cnt + 1 < ARRAY_SIZE(gcb->elems))
--			return gcb;
--		nft_set_gc_batch_complete(gcb);
--	}
--	return nft_set_gc_batch_alloc(set, gfp);
--}
--
--static inline void nft_set_gc_batch_add(struct nft_set_gc_batch *gcb,
--					void *elem)
--{
--	gcb->elems[gcb->head.cnt++] = elem;
--}
--
- struct nft_expr_ops;
- /**
-  *	struct nft_expr_type - nf_tables expression type
-@@ -1560,47 +1503,12 @@ static inline void nft_set_elem_change_active(const struct net *net,
- 
- #endif /* IS_ENABLED(CONFIG_NF_TABLES) */
- 
--/*
-- * We use a free bit in the genmask field to indicate the element
-- * is busy, meaning it is currently being processed either by
-- * the netlink API or GC.
-- *
-- * Even though the genmask is only a single byte wide, this works
-- * because the extension structure if fully constant once initialized,
-- * so there are no non-atomic write accesses unless it is already
-- * marked busy.
-- */
--#define NFT_SET_ELEM_BUSY_MASK	(1 << 2)
--
--#if defined(__LITTLE_ENDIAN_BITFIELD)
--#define NFT_SET_ELEM_BUSY_BIT	2
--#elif defined(__BIG_ENDIAN_BITFIELD)
--#define NFT_SET_ELEM_BUSY_BIT	(BITS_PER_LONG - BITS_PER_BYTE + 2)
--#else
--#error
--#endif
--
--static inline int nft_set_elem_mark_busy(struct nft_set_ext *ext)
--{
--	unsigned long *word = (unsigned long *)ext;
--
--	BUILD_BUG_ON(offsetof(struct nft_set_ext, genmask) != 0);
--	return test_and_set_bit(NFT_SET_ELEM_BUSY_BIT, word);
--}
--
--static inline void nft_set_elem_clear_busy(struct nft_set_ext *ext)
--{
--	unsigned long *word = (unsigned long *)ext;
--
--	clear_bit(NFT_SET_ELEM_BUSY_BIT, word);
--}
--
--#define NFT_SET_ELEM_DEAD_MASK	(1 << 3)
-+#define NFT_SET_ELEM_DEAD_MASK	(1 << 2)
- 
- #if defined(__LITTLE_ENDIAN_BITFIELD)
--#define NFT_SET_ELEM_DEAD_BIT	3
-+#define NFT_SET_ELEM_DEAD_BIT	2
- #elif defined(__BIG_ENDIAN_BITFIELD)
--#define NFT_SET_ELEM_DEAD_BIT	(BITS_PER_LONG - BITS_PER_BYTE + 3)
-+#define NFT_SET_ELEM_DEAD_BIT	(BITS_PER_LONG - BITS_PER_BYTE + 2)
- #else
- #error
- #endif
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index fd4b5da7ac3c..c62227ae7746 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -6296,29 +6296,6 @@ struct nft_set_ext *nft_set_catchall_lookup(const struct net *net,
- }
- EXPORT_SYMBOL_GPL(nft_set_catchall_lookup);
- 
--void *nft_set_catchall_gc(const struct nft_set *set)
--{
--	struct nft_set_elem_catchall *catchall, *next;
--	struct nft_set_ext *ext;
--	void *elem = NULL;
--
--	list_for_each_entry_safe(catchall, next, &set->catchall_list, list) {
--		ext = nft_set_elem_ext(set, catchall->elem);
--
--		if (!nft_set_elem_expired(ext) ||
--		    nft_set_elem_mark_busy(ext))
--			continue;
--
--		elem = catchall->elem;
--		list_del_rcu(&catchall->list);
--		kfree_rcu(catchall, rcu);
--		break;
--	}
--
--	return elem;
--}
--EXPORT_SYMBOL_GPL(nft_set_catchall_gc);
--
- static int nft_setelem_catchall_insert(const struct net *net,
- 				       struct nft_set *set,
- 				       const struct nft_set_elem *elem,
-@@ -6789,7 +6766,7 @@ static int nft_add_set_elem(struct nft_ctx *ctx, struct nft_set *set,
- 		goto err_elem_free;
- 	}
- 
--	ext->genmask = nft_genmask_cur(ctx->net) | NFT_SET_ELEM_BUSY_MASK;
-+	ext->genmask = nft_genmask_cur(ctx->net);
- 
- 	err = nft_setelem_insert(ctx->net, set, &elem, &ext2, flags);
- 	if (err) {
-@@ -7181,29 +7158,6 @@ static int nf_tables_delsetelem(struct sk_buff *skb,
- 	return err;
- }
- 
--void nft_set_gc_batch_release(struct rcu_head *rcu)
--{
--	struct nft_set_gc_batch *gcb;
--	unsigned int i;
--
--	gcb = container_of(rcu, struct nft_set_gc_batch, head.rcu);
--	for (i = 0; i < gcb->head.cnt; i++)
--		nft_set_elem_destroy(gcb->head.set, gcb->elems[i], true);
--	kfree(gcb);
--}
--
--struct nft_set_gc_batch *nft_set_gc_batch_alloc(const struct nft_set *set,
--						gfp_t gfp)
--{
--	struct nft_set_gc_batch *gcb;
--
--	gcb = kzalloc(sizeof(*gcb), gfp);
--	if (gcb == NULL)
--		return gcb;
--	gcb->head.set = set;
--	return gcb;
--}
--
- /*
-  * Stateful objects
-  */
+FYI: kernel test robot notices the stable kernel rule is not satisfied.
+
+Rule: 'Cc: stable@vger.kernel.org' or 'commit <sha1> upstream.'
+Subject: [PATCH net 1/5] netfilter: nf_tables: don't skip expired elements during walk
+Link: https://lore.kernel.org/stable/20230810070830.24064-2-pablo%40netfilter.org
+
+The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
+
 -- 
-2.30.2
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
+
+
 
