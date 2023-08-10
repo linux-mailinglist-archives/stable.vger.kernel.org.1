@@ -2,117 +2,97 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A084F777343
-	for <lists+stable@lfdr.de>; Thu, 10 Aug 2023 10:45:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6357C77737A
+	for <lists+stable@lfdr.de>; Thu, 10 Aug 2023 10:56:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233284AbjHJIpi (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 10 Aug 2023 04:45:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37742 "EHLO
+        id S232403AbjHJI4a (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 10 Aug 2023 04:56:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41844 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234329AbjHJIpf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 10 Aug 2023 04:45:35 -0400
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 6C3532127
-        for <stable@vger.kernel.org>; Thu, 10 Aug 2023 01:45:34 -0700 (PDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 30D1AD75;
-        Thu, 10 Aug 2023 01:46:16 -0700 (PDT)
-Received: from bogus (e103737-lin.cambridge.arm.com [10.1.197.49])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 899C13F59C;
-        Thu, 10 Aug 2023 01:45:32 -0700 (PDT)
-Date:   Thu, 10 Aug 2023 09:45:29 +0100
-From:   Sudeep Holla <sudeep.holla@arm.com>
-To:     Florian Fainelli <f.fainelli@gmail.com>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Jim Quinlan <james.quinlan@broadcom.com>,
-        patches@lists.linux.dev, Bjorn Andersson <andersson@kernel.org>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Cristian Marussi <cristian.marussi@arm.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 5.15 11/92] firmware: arm_scmi: Fix chan_free cleanup on
- SMC
-Message-ID: <20230810084529.53thk6dmlejbma3t@bogus>
-References: <20230809103633.485906560@linuxfoundation.org>
- <20230809103633.950016368@linuxfoundation.org>
- <cf831d49-ebdc-d132-9b8e-189e9688a9f2@gmail.com>
+        with ESMTP id S231774AbjHJI43 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 10 Aug 2023 04:56:29 -0400
+Received: from mail-yb1-xb36.google.com (mail-yb1-xb36.google.com [IPv6:2607:f8b0:4864:20::b36])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A3A610E7
+        for <stable@vger.kernel.org>; Thu, 10 Aug 2023 01:56:29 -0700 (PDT)
+Received: by mail-yb1-xb36.google.com with SMTP id 3f1490d57ef6-d0548cf861aso569140276.3
+        for <stable@vger.kernel.org>; Thu, 10 Aug 2023 01:56:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1691657788; x=1692262588;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Y4xzhtgK2ZzvOYUDyqNSbtvklnaYEVyirCJgKwWKjKc=;
+        b=r96+eZWbRyq6nfaVV7VksEHYdO4rbmkXKvs1TzZmcvoJqoo9rzhy4biR7Cah7jgdOo
+         od5JiHxyra3MzW6c03d8sWhGe5I5u9R+IkSr1ce55lrsx+q8bMVHQWt5wLtep/NMzr6q
+         Cf3sGJVKXJ63hdOBtPNTk3tgDtZV+R9rtq70IVXjIDDtDwWLfdU2cp/zdWJf6c+RVETx
+         xvH2vUGFpmVLpLSmXb6LU2IE10mD16h5o06cfRo+a6VkiJfxI+f9GXy5mU1LbN1aIC4j
+         DUgWbFv1QgGDsQdHXi7fsnjDH3JTojWshdIURjrDWHaKkyLuDH+WS1iLfXTR6qdSpIbk
+         4lfg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1691657788; x=1692262588;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Y4xzhtgK2ZzvOYUDyqNSbtvklnaYEVyirCJgKwWKjKc=;
+        b=klsMAQm4f49u+1zZ/TWFp/mVzkiSov5z0UxhGvpRy3Q14unuvoIupRww3reTg4QPXL
+         4zGabrSKa9n3zYbZbKGCTjUGQIEdgnip6WG14R5IVleBtxyn5EtYfknOTXK3Y+c5C+6W
+         yQ0gMacYRMnXKDym9oeX7sPuTNGoQxN0NyMYcLLzvenJX6WWnd6vsUzr6eeqs2qr+0hN
+         U+2inqfa8RwH7FAhKoU60L9izGmVFWNEEcN/VLuhzoBmj7OO4Xy26CxHOPxuL7bVZluD
+         jG/aDB/DuFxu5YF/ze/rKUJimsRHViDO4OlwKqVxPf/MSCoET2bM9qnPVTxMfNs6lYqi
+         pz2A==
+X-Gm-Message-State: AOJu0Yzpqb/lEp1VT4lipUfp6IWP2QTIc1vdwoRundaB/PPjUkcs28Z7
+        4q5kqZkuFm0zVquS2RnzjUE80Wp6z8cDe1WYVneIKQ==
+X-Google-Smtp-Source: AGHT+IHLVKgLS+yA12n4e4oVR00qirPsOIQHxKivvEYUO3GDX4h6o1R1JjXDTABXln2G48Ua37dLjT4kf/I4MTOSdhU=
+X-Received: by 2002:a25:76d0:0:b0:cef:e2c4:d366 with SMTP id
+ r199-20020a2576d0000000b00cefe2c4d366mr2018376ybc.48.1691657788682; Thu, 10
+ Aug 2023 01:56:28 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cf831d49-ebdc-d132-9b8e-189e9688a9f2@gmail.com>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <20220524075448.140238-1-linus.walleij@linaro.org> <20230809134337.28224-1-bavishimithil@gmail.com>
+In-Reply-To: <20230809134337.28224-1-bavishimithil@gmail.com>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Thu, 10 Aug 2023 10:56:17 +0200
+Message-ID: <CACRpkdah22hgM6VruErJedWM7apAuO7BGdFeSz4Hz0c2Nx3kjg@mail.gmail.com>
+Subject: Re: [PATCH] iio: afe: rescale: Fix logic bug
+To:     Mighty <bavishimithil@gmail.com>
+Cc:     jic23@kernel.org, lars@metafoo.de, liambeguin@gmail.com,
+        linux-iio@vger.kernel.org, peda@axentia.se, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=0.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SORTED_RECIPS,SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, Aug 09, 2023 at 12:33:17PM -0700, Florian Fainelli wrote:
-> On 8/9/23 03:40, Greg Kroah-Hartman wrote:
-> > From: Cristian Marussi <cristian.marussi@arm.com>
-> > 
-> > [ Upstream commit d1ff11d7ad8704f8d615f6446041c221b2d2ec4d ]
-> > 
-> > SCMI transport based on SMC can optionally use an additional IRQ to
-> > signal message completion. The associated interrupt handler is currently
-> > allocated using devres but on shutdown the core SCMI stack will call
-> > .chan_free() well before any managed cleanup is invoked by devres.
-> > As a consequence, the arrival of a late reply to an in-flight pending
-> > transaction could still trigger the interrupt handler well after the
-> > SCMI core has cleaned up the channels, with unpleasant results.
-> > 
-> > Inhibit further message processing on the IRQ path by explicitly freeing
-> > the IRQ inside .chan_free() callback itself.
-> > 
-> > Fixes: dd820ee21d5e ("firmware: arm_scmi: Augment SMC/HVC to allow optional interrupt")
-> > Reported-by: Bjorn Andersson <andersson@kernel.org>
-> > Signed-off-by: Cristian Marussi <cristian.marussi@arm.com>
-> > Link: https://lore.kernel.org/r/20230719173533.2739319-1-cristian.marussi@arm.com
-> > Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
-> > Signed-off-by: Sasha Levin <sashal@kernel.org>
-> > ---
-> >   drivers/firmware/arm_scmi/smc.c | 17 +++++++++++------
-> >   1 file changed, 11 insertions(+), 6 deletions(-)
-> > 
-> > diff --git a/drivers/firmware/arm_scmi/smc.c b/drivers/firmware/arm_scmi/smc.c
-> > index 4effecc3bb463..f529004f1922e 100644
-> > --- a/drivers/firmware/arm_scmi/smc.c
-> > +++ b/drivers/firmware/arm_scmi/smc.c
-> > @@ -21,6 +21,7 @@
-> >   /**
-> >    * struct scmi_smc - Structure representing a SCMI smc transport
-> >    *
-> > + * @irq: An optional IRQ for completion
-> >    * @cinfo: SCMI channel info
-> >    * @shmem: Transmit/Receive shared memory area
-> >    * @shmem_lock: Lock to protect access to Tx/Rx shared memory area
-> > @@ -30,6 +31,7 @@
-> >    */
-> >   struct scmi_smc {
-> > +	int irq;
-> 
-> For this backport to apply as-is and not define a duplicate "int irq" field
-> we need to take in f716cbd33f038af87824c30e165b3b70e4c6be1e ("firmware:
-> arm_scmi: Make smc transport use common completions") which did remove the
-> "int irq" from struct scmi_smc.
-> 
-> Alternatively, we can just omit this hunk adding the "int irq" member from
-> the back port.
+On Wed, Aug 9, 2023 at 3:48=E2=80=AFPM Mighty <bavishimithil@gmail.com> wro=
+te:
+
+> > The current code "mostly works" because we have not run into
+> > systems supporting only raw but not scale or only scale but not
+> > raw, and I doubt there are few using the rescaler on anything
+> > such, but let's fix the logic.
 >
+> This does break the logic for twl6030/6032 boards as the seem to
+> only have only raw and processed masks[1]. What would a probable
+> solution for it be, to modify the twl gpadc to include scale+raw or just
+> revert back to the OR?
+>
+> [1] https://github.com/torvalds/linux/blob/master/drivers/iio/adc/twl6030=
+-gpadc.c#L808-L840
 
-There is a bit disconnect in the communication here. I didn't see Greg was
-not cc-ed on the earlier email to Sasha[1]. The request to drop it was also
-made here[2].
+How does it break it?
 
-> This is a 5.15 stable kernel problem only because
-> f716cbd33f038af87824c30e165b3b70e4c6be1e is in v5.18 and newer.
+It's a change to the AFE rescaler driver so it can't really "break"
+twl6030-gpadc.
 
--- 
-Regards,
-Sudeep
+Isn't the complete picture involving some device tree using the prescaler
+etc?
 
-[1] https://marc.info/?l=linux-stable-commits&m=169159392424103&w=2
-(couldn't find a lore link for the above)
-[2] https://lore.kernel.org/all/ZNIdrd+SQ0KjYWKA@e120937-lin/
+Can you try to dig out that so we can see the whole situation?
 
+Yours,
+Linus Walleij
