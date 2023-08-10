@@ -2,33 +2,76 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 55938776FC8
-	for <lists+stable@lfdr.de>; Thu, 10 Aug 2023 07:48:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D515B777039
+	for <lists+stable@lfdr.de>; Thu, 10 Aug 2023 08:21:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230107AbjHJFsO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 10 Aug 2023 01:48:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43702 "EHLO
+        id S232414AbjHJGVi (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 10 Aug 2023 02:21:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51258 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232496AbjHJFsL (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 10 Aug 2023 01:48:11 -0400
-Received: from www.linuxtv.org (www.linuxtv.org [130.149.80.248])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F07561704
-        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 22:48:09 -0700 (PDT)
-Received: from mchehab by www.linuxtv.org with local (Exim 4.92)
-        (envelope-from <mchehab@linuxtv.org>)
-        id 1qTyWm-00ERow-0h; Thu, 10 Aug 2023 05:48:08 +0000
-From:   Mauro Carvalho Chehab <mchehab@kernel.org>
-Date:   Thu, 10 Aug 2023 05:47:40 +0000
-Subject: [git:media_stage/master] media: i2c: ccs: Check rules is non-NULL
-To:     linuxtv-commits@linuxtv.org
-Cc:     stable@vger.kernel.org, Sakari Ailus <sakari.ailus@linux.intel.com>
-Mail-followup-to: linux-media@vger.kernel.org
-Forward-to: linux-media@vger.kernel.org
-Reply-to: linux-media@vger.kernel.org
-Message-Id: <E1qTyWm-00ERow-0h@www.linuxtv.org>
-X-Spam-Status: No, score=-1.6 required=5.0 tests=BAYES_00,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,
-        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE autolearn=no
+        with ESMTP id S230202AbjHJGVi (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 10 Aug 2023 02:21:38 -0400
+Received: from mail-ed1-x52c.google.com (mail-ed1-x52c.google.com [IPv6:2a00:1450:4864:20::52c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 529C1E5F
+        for <stable@vger.kernel.org>; Wed,  9 Aug 2023 23:21:37 -0700 (PDT)
+Received: by mail-ed1-x52c.google.com with SMTP id 4fb4d7f45d1cf-52340d9187aso610760a12.3
+        for <stable@vger.kernel.org>; Wed, 09 Aug 2023 23:21:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1691648496; x=1692253296;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=5KGBV5nb6p4yPHUwdCPzMc/o3J23+nmIfdlWDVvQhtE=;
+        b=dtR16Eu+ffBLTlPzjZEiufh3uLvlptbLi+dN5pZd6XTR3dCgfkkUQms9MBcUi2sq3l
+         BggBI51u1RVPYVVYimgaVugYO0pjmF+zF+UZKxBwGGZwLDFf+7kOtrpYU6gWr+Gm62mv
+         0H+GJrXjuz9Eweo3UkytVDZKWG3kMvTXQ9IVi2hWDhG+58euJ1wpwg23iHsq7iNlcG2S
+         mz0bVsf6pliUaDvm27zJd619eUm7+GIJIZBVrM8ookFl9M+mljn75xdBq090qkYHWvnc
+         U2M2X0aUNcDCktqnoaKj79CAHsqNgssSpcDdqyMAnm4UNx1HYdAJjB4E6Sw2KifVUbiM
+         Hs6g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1691648496; x=1692253296;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=5KGBV5nb6p4yPHUwdCPzMc/o3J23+nmIfdlWDVvQhtE=;
+        b=I1O68shEIUVYapF9qv5Ka+jLrxveLym3bl8DVelU0EP/RSF+m/UpDTho6XV+Y2h3dn
+         I130LcfB/8V7ys++1QOSMGDoSbh7BBmi8tCsj7P+qbe2UNrex/61NKZ7BBgD6XTboEUf
+         PJw84RMZXcGAMFRj4LshRk4LuyWAb5LuN+mfXB/QlWU/zWc1k2T7HZVJVTTvF/PzAmOx
+         5nC1QT6W5Hvi6p3kDzt0DNav5yWALvCkNervPCv+PkqS3KXS3+fm3UQWfhuRAn+5N2+w
+         psySYFVu7HyDGe6uxt9IYAaBUuWW9+WV9um0j9/t7tV2hAggMcdI+SjbxHr55yD1Yo0n
+         AVFw==
+X-Gm-Message-State: AOJu0YxqWtPU519BxXtPFUBIxqyyVvFsrPx6Ke/GbRdCqIVX6KQ922jG
+        Z3aUulLqYmmEHr/AsfwVdvenVA==
+X-Google-Smtp-Source: AGHT+IGP2gOp/IwE3JkY3x07NPNLX11aABuD7Bquej0WMUPMvXxR5A87VXfKZVNYOdFGRa1TKYiPdg==
+X-Received: by 2002:a05:6402:57:b0:523:3f1e:68c4 with SMTP id f23-20020a056402005700b005233f1e68c4mr1169796edu.34.1691648495834;
+        Wed, 09 Aug 2023 23:21:35 -0700 (PDT)
+Received: from [192.168.1.20] ([178.197.222.113])
+        by smtp.gmail.com with ESMTPSA id t9-20020aa7d709000000b0051df54c6a27sm369321edq.56.2023.08.09.23.21.34
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 09 Aug 2023 23:21:35 -0700 (PDT)
+Message-ID: <a1545e38-62fc-b5a1-e4c2-9f32b28e40f1@linaro.org>
+Date:   Thu, 10 Aug 2023 08:21:33 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.14.0
+Subject: Re: [PATCH] ARM: dts: exynos/i9100: Unconditionally enable LDO12
+Content-Language: en-US
+To:     Paul Cercueil <paul@crapouillou.net>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Alim Akhtar <alim.akhtar@samsung.com>
+Cc:     devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-samsung-soc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org
+References: <20230808110341.57891-1-paul@crapouillou.net>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20230808110341.57891-1-paul@crapouillou.net>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -36,149 +79,22 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-This is an automatic generated email to let you know that the following patch were queued:
+On 08/08/2023 13:03, Paul Cercueil wrote:
+> The kernel hangs for a good 12 seconds without any info being printed to
+> dmesg, very early in the boot process, if this regulator is not enabled.
+> 
+> Force-enable it to work around this issue, until we know more about the
+> underlying problem.
+> 
+> Signed-off-by: Paul Cercueil <paul@crapouillou.net>
+> Fixes: 8620cc2f99b7 ("ARM: dts: exynos: Add devicetree file for the Galaxy S2")
+> Cc: <stable@vger.kernel.org> # v5.8+
+> ---
+>  arch/arm/boot/dts/exynos4210-i9100.dts | 8 ++++++++
 
-Subject: media: i2c: ccs: Check rules is non-NULL
-Author:  Sakari Ailus <sakari.ailus@linux.intel.com>
-Date:    Sat Jul 29 20:59:25 2023 +0200
+The path changed long time ago. Really, please do not work on some
+outdated pmOS or whatever downstream drivers.
 
-Fix the following smatch warning:
+Best regards,
+Krzysztof
 
-drivers/media/i2c/ccs/ccs-data.c:524 ccs_data_parse_rules() warn: address
-of NULL pointer 'rules'
-
-The CCS static data rule parser does not check an if rule has been
-obtained before checking for other rule types (which depend on the if
-rule). In practice this means parsing invalid CCS static data could lead
-to dereferencing a NULL pointer.
-
-Reported-by: Hans Verkuil <hverkuil@xs4all.nl>
-Fixes: a6b396f410b1 ("media: ccs: Add CCS static data parser library")
-Cc: stable@vger.kernel.org # for 5.11 and up
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
-
- drivers/media/i2c/ccs/ccs-data.c | 101 ++++++++++++++++++++++-----------------
- 1 file changed, 56 insertions(+), 45 deletions(-)
-
----
-
-diff --git a/drivers/media/i2c/ccs/ccs-data.c b/drivers/media/i2c/ccs/ccs-data.c
-index 45f2b2f55ec5..08400edf77ce 100644
---- a/drivers/media/i2c/ccs/ccs-data.c
-+++ b/drivers/media/i2c/ccs/ccs-data.c
-@@ -464,8 +464,7 @@ static int ccs_data_parse_rules(struct bin_container *bin,
- 		rule_payload = __rule_type + 1;
- 		rule_plen2 = rule_plen - sizeof(*__rule_type);
- 
--		switch (*__rule_type) {
--		case CCS_DATA_BLOCK_RULE_ID_IF: {
-+		if (*__rule_type == CCS_DATA_BLOCK_RULE_ID_IF) {
- 			const struct __ccs_data_block_rule_if *__if_rules =
- 				rule_payload;
- 			const size_t __num_if_rules =
-@@ -514,49 +513,61 @@ static int ccs_data_parse_rules(struct bin_container *bin,
- 				rules->if_rules = if_rule;
- 				rules->num_if_rules = __num_if_rules;
- 			}
--			break;
--		}
--		case CCS_DATA_BLOCK_RULE_ID_READ_ONLY_REGS:
--			rval = ccs_data_parse_reg_rules(bin, &rules->read_only_regs,
--							&rules->num_read_only_regs,
--							rule_payload,
--							rule_payload + rule_plen2,
--							dev);
--			if (rval)
--				return rval;
--			break;
--		case CCS_DATA_BLOCK_RULE_ID_FFD:
--			rval = ccs_data_parse_ffd(bin, &rules->frame_format,
--						  rule_payload,
--						  rule_payload + rule_plen2,
--						  dev);
--			if (rval)
--				return rval;
--			break;
--		case CCS_DATA_BLOCK_RULE_ID_MSR:
--			rval = ccs_data_parse_reg_rules(bin,
--							&rules->manufacturer_regs,
--							&rules->num_manufacturer_regs,
--							rule_payload,
--							rule_payload + rule_plen2,
--							dev);
--			if (rval)
--				return rval;
--			break;
--		case CCS_DATA_BLOCK_RULE_ID_PDAF_READOUT:
--			rval = ccs_data_parse_pdaf_readout(bin,
--							   &rules->pdaf_readout,
--							   rule_payload,
--							   rule_payload + rule_plen2,
--							   dev);
--			if (rval)
--				return rval;
--			break;
--		default:
--			dev_dbg(dev,
--				"Don't know how to handle rule type %u!\n",
--				*__rule_type);
--			return -EINVAL;
-+		} else {
-+			/* Check there was an if rule before any other rules */
-+			if (bin->base && !rules)
-+				return -EINVAL;
-+
-+			switch (*__rule_type) {
-+			case CCS_DATA_BLOCK_RULE_ID_READ_ONLY_REGS:
-+				rval = ccs_data_parse_reg_rules(bin,
-+								rules ?
-+								&rules->read_only_regs : NULL,
-+								rules ?
-+								&rules->num_read_only_regs : NULL,
-+								rule_payload,
-+								rule_payload + rule_plen2,
-+								dev);
-+				if (rval)
-+					return rval;
-+				break;
-+			case CCS_DATA_BLOCK_RULE_ID_FFD:
-+				rval = ccs_data_parse_ffd(bin, rules ?
-+							  &rules->frame_format : NULL,
-+							  rule_payload,
-+							  rule_payload + rule_plen2,
-+							  dev);
-+				if (rval)
-+					return rval;
-+				break;
-+			case CCS_DATA_BLOCK_RULE_ID_MSR:
-+				rval = ccs_data_parse_reg_rules(bin,
-+								rules ?
-+								&rules->manufacturer_regs : NULL,
-+								rules ?
-+								&rules->num_manufacturer_regs : NULL,
-+								rule_payload,
-+								rule_payload + rule_plen2,
-+								dev);
-+				if (rval)
-+					return rval;
-+				break;
-+			case CCS_DATA_BLOCK_RULE_ID_PDAF_READOUT:
-+				rval = ccs_data_parse_pdaf_readout(bin,
-+								   rules ?
-+								   &rules->pdaf_readout : NULL,
-+								   rule_payload,
-+								   rule_payload + rule_plen2,
-+								   dev);
-+				if (rval)
-+					return rval;
-+				break;
-+			default:
-+				dev_dbg(dev,
-+					"Don't know how to handle rule type %u!\n",
-+					*__rule_type);
-+				return -EINVAL;
-+			}
- 		}
- 		__next_rule = __next_rule + rule_hlen + rule_plen;
- 	}
