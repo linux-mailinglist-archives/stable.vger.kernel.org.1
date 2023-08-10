@@ -2,135 +2,98 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0B2477775C6
-	for <lists+stable@lfdr.de>; Thu, 10 Aug 2023 12:29:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AFEAD7775D9
+	for <lists+stable@lfdr.de>; Thu, 10 Aug 2023 12:31:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230419AbjHJK3V (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 10 Aug 2023 06:29:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56450 "EHLO
+        id S234931AbjHJKbU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 10 Aug 2023 06:31:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42620 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231963AbjHJK3U (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 10 Aug 2023 06:29:20 -0400
-Received: from ganesha.gnumonks.org (ganesha.gnumonks.org [IPv6:2001:780:45:1d:225:90ff:fe52:c662])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EDA8D11F;
-        Thu, 10 Aug 2023 03:29:16 -0700 (PDT)
-Received: from [78.30.34.192] (port=33176 helo=gnumonks.org)
-        by ganesha.gnumonks.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.94.2)
-        (envelope-from <pablo@gnumonks.org>)
-        id 1qU2ul-009Krh-D2; Thu, 10 Aug 2023 12:29:13 +0200
-Date:   Thu, 10 Aug 2023 12:29:10 +0200
-From:   Pablo Neira Ayuso <pablo@netfilter.org>
-To:     Greg KH <gregkh@linuxfoundation.org>
-Cc:     netfilter-devel@vger.kernel.org, davem@davemloft.net,
-        netdev@vger.kernel.org, kuba@kernel.org, pabeni@redhat.com,
-        edumazet@google.com, stable@vger.kernel.org
-Subject: Re: [PATCH net 0/5] Netfilter fixes for net
-Message-ID: <ZNS79p44qv1zpl+X@calendula>
-References: <20230810070830.24064-1-pablo@netfilter.org>
- <2023081006-nurture-landside-fb56@gregkh>
+        with ESMTP id S235115AbjHJKbB (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 10 Aug 2023 06:31:01 -0400
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF85A271C;
+        Thu, 10 Aug 2023 03:30:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1691663455; x=1723199455;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=K8+CPDli4Ehy/vOFiQqyKURorvhcyrbCWewNPDz4/QA=;
+  b=qGCDFZcXrnQxz4JbX+5Wu/Q1NAHUGxGDX9smF0tyIkzNJo+pK+BqbGE7
+   mpUpXxVxRz65mLNDLgjdW40RMuGg4no+pSbMmMJepIAeOeLHU98a9TxV7
+   Y1TG14mrBKbyzWIeQS3HNMviyXhzTTechB9Oj7j5i0Rb06/sbDzC2hzEn
+   1yynGLUt+0oyBJqiLgy1eaGm3zaMuf+z3fSLvo0Yx+r37jcbVY7LLvaYR
+   hvdUCtSwCRZVtetxso42BGitbGBlpIXzVKTdIZjLCgYWa7QnPRQdPubqF
+   x0PA8yh4/mXl38EJMhqGcVfJsvi//ufHLvVdjo8ZohonT23bmcjUWSJ0E
+   Q==;
+X-IronPort-AV: E=Sophos;i="6.01,162,1684825200"; 
+   d="asc'?scan'208";a="165807604"
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa6.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 10 Aug 2023 03:30:54 -0700
+Received: from chn-vm-ex03.mchp-main.com (10.10.85.151) by
+ chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.21; Thu, 10 Aug 2023 03:30:45 -0700
+Received: from wendy (10.10.115.15) by chn-vm-ex03.mchp-main.com
+ (10.10.85.151) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.21 via Frontend
+ Transport; Thu, 10 Aug 2023 03:30:42 -0700
+Date:   Thu, 10 Aug 2023 11:30:05 +0100
+From:   Conor Dooley <conor.dooley@microchip.com>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+CC:     <stable@vger.kernel.org>, <patches@lists.linux.dev>,
+        <linux-kernel@vger.kernel.org>, <torvalds@linux-foundation.org>,
+        <akpm@linux-foundation.org>, <linux@roeck-us.net>,
+        <shuah@kernel.org>, <patches@kernelci.org>,
+        <lkft-triage@lists.linaro.org>, <pavel@denx.de>,
+        <jonathanh@nvidia.com>, <f.fainelli@gmail.com>,
+        <sudipm.mukherjee@gmail.com>, <srw@sladewatkins.net>,
+        <rwarsow@gmx.de>, <conor@kernel.org>
+Subject: Re: [PATCH 6.4 000/165] 6.4.10-rc1 review
+Message-ID: <20230810-shininess-pencil-d32bad9520b4@wendy>
+References: <20230809103642.720851262@linuxfoundation.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="sxSleVhRSRfmoBMa"
 Content-Disposition: inline
-In-Reply-To: <2023081006-nurture-landside-fb56@gregkh>
-X-Spam-Score: -1.9 (-)
-X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,
-        HEADER_FROM_DIFFERENT_DOMAINS,SPF_HELO_NONE,SPF_PASS autolearn=no
-        autolearn_force=no version=3.4.6
+In-Reply-To: <20230809103642.720851262@linuxfoundation.org>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_NONE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, Aug 10, 2023 at 09:49:11AM +0200, Greg KH wrote:
-> On Thu, Aug 10, 2023 at 09:08:25AM +0200, Pablo Neira Ayuso wrote:
-> > Hi,
-> > 
-> > The following patchset contains Netfilter fixes for net.
-> > 
-> > The existing attempt to resolve races between control plane and GC work
-> > is error prone, as reported by Bien Pham <phamnnb@sea.com>, some places
-> > forgot to call nft_set_elem_mark_busy(), leading to double-deactivation
-> > of elements.
-> > 
-> > This series contains the following patches:
-> > 
-> > 1) Do not skip expired elements during walk otherwise elements might
-> >    never decrement the reference counter on data, leading to memleak.
-> > 
-> > 2) Add a GC transaction API to replace the former attempt to deal with
-> >    races between control plane and GC. GC worker sets on NFT_SET_ELEM_DEAD_BIT
-> >    on elements and it creates a GC transaction to remove the expired
-> >    elements, GC transaction could abort in case of interference with
-> >    control plane and retried later (GC async). Set backends such as
-> >    rbtree and pipapo also perform GC from control plane (GC sync), in
-> >    such case, element deactivation and removal is safe because mutex
-> >    is held then collected elements are released via call_rcu().
-> > 
-> > 3) Adapt existing set backends to use the GC transaction API.
-> > 
-> > 4) Update rhash set backend to set on _DEAD bit to report deleted
-> >    elements from datapath for GC.
-> > 
-> > 5) Remove old GC batch API and the NFT_SET_ELEM_BUSY_BIT.
-> > 
-> > Florian Westphal (1):
-> >   netfilter: nf_tables: don't skip expired elements during walk
-> > 
-> > Pablo Neira Ayuso (4):
-> >   netfilter: nf_tables: GC transaction API to avoid race with control plane
-> >   netfilter: nf_tables: adapt set backend to use GC transaction API
-> >   netfilter: nft_set_hash: mark set element as dead when deleting from packet path
-> >   netfilter: nf_tables: remove busy mark and gc batch API
-> > 
-> > Please, pull these changes from:
-> > 
-> >   git://git.kernel.org/pub/scm/linux/kernel/git/netfilter/nf.git nf-23-08-10
-> > 
-> > Thanks.
-> > 
-> > ----------------------------------------------------------------
-> > 
-> > The following changes since commit c5ccff70501d92db445a135fa49cf9bc6b98c444:
-> > 
-> >   Merge branch 'net-sched-bind-logic-fixes-for-cls_fw-cls_u32-and-cls_route' (2023-07-31 20:10:39 -0700)
-> > 
-> > are available in the Git repository at:
-> > 
-> >   git://git.kernel.org/pub/scm/linux/kernel/git/netfilter/nf.git tags/nf-23-08-10
-> > 
-> > for you to fetch changes up to a2dd0233cbc4d8a0abb5f64487487ffc9265beb5:
-> > 
-> >   netfilter: nf_tables: remove busy mark and gc batch API (2023-08-10 08:25:27 +0200)
-> > 
-> > ----------------------------------------------------------------
-> > netfilter pull request 23-08-10
-> > 
-> > ----------------------------------------------------------------
-> > Florian Westphal (1):
-> >       netfilter: nf_tables: don't skip expired elements during walk
-> > 
-> > Pablo Neira Ayuso (4):
-> >       netfilter: nf_tables: GC transaction API to avoid race with control plane
-> >       netfilter: nf_tables: adapt set backend to use GC transaction API
-> >       netfilter: nft_set_hash: mark set element as dead when deleting from packet path
-> >       netfilter: nf_tables: remove busy mark and gc batch API
-> > 
-> >  include/net/netfilter/nf_tables.h | 120 ++++++---------
-> >  net/netfilter/nf_tables_api.c     | 307 ++++++++++++++++++++++++++++++--------
-> >  net/netfilter/nft_set_hash.c      |  85 +++++++----
-> >  net/netfilter/nft_set_pipapo.c    |  66 +++++---
-> >  net/netfilter/nft_set_rbtree.c    | 146 ++++++++++--------
-> >  5 files changed, 476 insertions(+), 248 deletions(-)
-> 
-> <formletter>
-> 
-> This is not the correct way to submit patches for inclusion in the
-> stable kernel tree.  Please read:
->     https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
-> for how to do this properly.
+--sxSleVhRSRfmoBMa
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-I will re-submit this once this hit upstream.
+On Wed, Aug 09, 2023 at 12:38:51PM +0200, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.4.10 release.
+> There are 165 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-Thanks.
+Tested-by: Conor Dooley <conor.dooley@microchip.com>
+
+Thanks,
+Conor.
+
+--sxSleVhRSRfmoBMa
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZNS8LQAKCRB4tDGHoIJi
+0mpuAP4lfrQF+M+wLtrvRmu8MfKJX2IAaxZCrsAhQyWhcHVr6QEAk8NooObFnEJd
+HYWMi88u2ahlbgJibZ6YugmXbp0rZwg=
+=tqQ2
+-----END PGP SIGNATURE-----
+
+--sxSleVhRSRfmoBMa--
