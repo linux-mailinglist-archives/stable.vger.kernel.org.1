@@ -2,94 +2,121 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D9DE6777FCE
-	for <lists+stable@lfdr.de>; Thu, 10 Aug 2023 20:00:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2217D778020
+	for <lists+stable@lfdr.de>; Thu, 10 Aug 2023 20:20:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235758AbjHJSAe (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 10 Aug 2023 14:00:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35798 "EHLO
+        id S232642AbjHJSUx (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 10 Aug 2023 14:20:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58046 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235714AbjHJSA2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 10 Aug 2023 14:00:28 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D0DE22D60;
-        Thu, 10 Aug 2023 11:00:23 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2BB8262C17;
-        Thu, 10 Aug 2023 18:00:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 8D2D0C433C7;
-        Thu, 10 Aug 2023 18:00:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1691690422;
-        bh=uvSuZ13YW1WPt7fE/E72Bjy5V5Eusa9pHgu2Ss+Db6Q=;
-        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-        b=SMUaMeedci5RbmQkLkAqI9gj6YWYwct3+Nfnop2nS97dk9OWYD4RzltXGJGNTet17
-         x13ZJWm2vKWAxyTxYqemW6sgIN6Ee8orZh0FOTGQjjuMqeID2dYKbGh0y7cb+ChVVr
-         Fwo84lH/ROW+QdfyCiQrZZJyaLcFTaHzN916Ug8/V95WiVICFU0IE51i/i5VYLVEPq
-         QXfxp2NC45iNejuQI/G/a160aKmrlPGF9r715WIAACJdGLVHWIXBhktLgOsUtbsHkZ
-         UJ1I8SyOlDtUlwfisnnzKtElZVNt5Ox6/m9XqQ4hIUXbzrLY8RTr4hA1A0wYkuMMHX
-         O7otfIG6P47Aw==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 726EFC64459;
-        Thu, 10 Aug 2023 18:00:22 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+        with ESMTP id S231330AbjHJSUx (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 10 Aug 2023 14:20:53 -0400
+Received: from mail-pf1-x429.google.com (mail-pf1-x429.google.com [IPv6:2607:f8b0:4864:20::429])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C23A0E4B
+        for <stable@vger.kernel.org>; Thu, 10 Aug 2023 11:20:52 -0700 (PDT)
+Received: by mail-pf1-x429.google.com with SMTP id d2e1a72fcca58-68706d67ed9so926022b3a.2
+        for <stable@vger.kernel.org>; Thu, 10 Aug 2023 11:20:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1691691652; x=1692296452;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=a92NBeJNU7kmNJxtb6OxiUYppen1ETPcAG+MO1xgGG8=;
+        b=Yfn3GdIvCwu2oEr/UdGSalfoJE76m9VGVWRUPpvJWnMx4rafovziTfk+ZFJ3xu6rIh
+         /YuUMm6n0YNcztvyDek/olgJAfjTMwfss5mycHlsNUq4t5RBCssIg50ZtAO/yv7kvEHb
+         0fqPDOV9LdJhufu2nExnkrUjMa/fhSS8OgrO4EeDUENbENeQwBb1mZQnG8IncbjYffnE
+         fSpRCBsk5G478/eI+M1xCmC2UKD4rFtFgBC7hG3lRblDlmn75hOu2ESLkn/k2wxdP+fm
+         hP4wt+q4NA13fea/zBz1AN+4G79PnOf8kPuyCASnelWWU/ADVHfXVk3fQHAK66MAJ7FH
+         Q7SQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1691691652; x=1692296452;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=a92NBeJNU7kmNJxtb6OxiUYppen1ETPcAG+MO1xgGG8=;
+        b=l5glT6lYy7kpS6vZ0RoNCEnqW1xRr06B5b5olv0NNxti6WLN0QSCtmtCZ6oZIKwG1y
+         HeTRhpKly441HOY9Ff6iKL7W4ZBBp1zl0qeWAZ4GwqOC5mRh0cY5M9pl31S1aVeHizOW
+         4E6OUTVgesAt2iHGFzI+0vCW9yX+SRYqGpwwXKsRxHaENE6pqP54S5jjqPvOmo0AxDmX
+         meleF31bn0R/nGUTvXAmylg+p6DO7hSPDPkUrPw3p9Z/VaaC3SwN1hQXUAxtOf22M+Yr
+         Yah0Ne2tpk+KwfHpcOz7n25EwXy+HdtJEcdL3kiEsGgr+CW90MUSQQn6AHsQtdWe6HVe
+         uukQ==
+X-Gm-Message-State: AOJu0Ywva0l6QsEK5e/kfE1MW6MOBC4nNfcdK6Ze2F9WSq2NYLXl/rcF
+        XgThf0SBDU0QZJxHbolfSelzlOKDeFzhKdJ35ryi0w==
+X-Google-Smtp-Source: AGHT+IF/11sgXt4jPq8ZgakJoFsFCLSUEZHUnWjift/2DZe4VQ1NGIh/RCBkVITu8qUtWOSUuQQypF/G7+VleZ6kXgg=
+X-Received: by 2002:a05:6a00:130b:b0:686:2668:796f with SMTP id
+ j11-20020a056a00130b00b006862668796fmr3808106pfu.32.1691691652250; Thu, 10
+ Aug 2023 11:20:52 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net 1/5] netfilter: nf_tables: don't skip expired elements
- during walk
-From:   patchwork-bot+netdevbpf@kernel.org
-Message-Id: <169169042246.11500.14866835870797630076.git-patchwork-notify@kernel.org>
-Date:   Thu, 10 Aug 2023 18:00:22 +0000
-References: <20230810070830.24064-2-pablo@netfilter.org>
-In-Reply-To: <20230810070830.24064-2-pablo@netfilter.org>
-To:     Pablo Neira Ayuso <pablo@netfilter.org>
-Cc:     netfilter-devel@vger.kernel.org, davem@davemloft.net,
-        netdev@vger.kernel.org, kuba@kernel.org, pabeni@redhat.com,
-        edumazet@google.com, stable@vger.kernel.org
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <20230809103642.552405807@linuxfoundation.org>
+In-Reply-To: <20230809103642.552405807@linuxfoundation.org>
+From:   =?UTF-8?B?RGFuaWVsIETDrWF6?= <daniel.diaz@linaro.org>
+Date:   Thu, 10 Aug 2023 12:20:40 -0600
+Message-ID: <CAEUSe7-etoOT0ox2byNnKwmLaFQAE4j5dWnO2G2T_JuRHgr_3g@mail.gmail.com>
+Subject: Re: [PATCH 4.14 000/204] 4.14.322-rc1 review
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+        jonathanh@nvidia.com, f.fainelli@gmail.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+        conor@kernel.org, lyude@redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hello:
+Hello!
 
-This series was applied to netdev/net.git (main)
-by Pablo Neira Ayuso <pablo@netfilter.org>:
+On Wed, 9 Aug 2023 at 05:02, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+> This is the start of the stable review cycle for the 4.14.322 release.
+> There are 204 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Fri, 11 Aug 2023 10:36:10 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v4.x/stable-review/patch-=
+4.14.322-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-4.14.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
+>
+> -------------
+> Pseudo-Shortlog of commits:
+>
+> Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+>     Linux 4.14.322-rc1
+[...]
+> Lyude Paul <lyude@redhat.com>
+>     drm/edid: Fix uninitialized variable in drm_cvt_modes()
+[...]
 
-On Thu, 10 Aug 2023 09:08:26 +0200 you wrote:
-> From: Florian Westphal <fw@strlen.de>
-> 
-> There is an asymmetry between commit/abort and preparation phase if the
-> following conditions are met:
-> 
-> 1. set is a verdict map ("1.2.3.4 : jump foo")
-> 2. timeouts are enabled
-> 
-> [...]
+Two new warnings are introduced on x86_64 with GCC-8 (defconfig):
 
-Here is the summary with links:
-  - [net,1/5] netfilter: nf_tables: don't skip expired elements during walk
-    https://git.kernel.org/netdev/net/c/24138933b97b
-  - [net,2/5] netfilter: nf_tables: GC transaction API to avoid race with control plane
-    https://git.kernel.org/netdev/net/c/5f68718b34a5
-  - [net,3/5] netfilter: nf_tables: adapt set backend to use GC transaction API
-    https://git.kernel.org/netdev/net/c/f6c383b8c31a
-  - [net,4/5] netfilter: nft_set_hash: mark set element as dead when deleting from packet path
-    https://git.kernel.org/netdev/net/c/c92db3030492
-  - [net,5/5] netfilter: nf_tables: remove busy mark and gc batch API
-    https://git.kernel.org/netdev/net/c/a2dd0233cbc4
+  drivers/gpu/drm/drm_edid.o: warning: objtool:
+drm_mode_std.isra.30()+0x98: return with modified stack frame
+  drivers/gpu/drm/drm_edid.o: warning: objtool:
+drm_mode_std.isra.30()+0x0: stack state mismatch: cfa1=3D7+104 cfa2=3D7+8
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+Bisection points to the quoted commit ("drm/edid: Fix uninitialized
+variable in drm_cvt_modes()"), 991fcb77f490 upstream.
 
+Greetings!
 
+Daniel D=C3=ADaz
+daniel.diaz@linaro.org
