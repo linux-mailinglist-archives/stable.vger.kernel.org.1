@@ -2,56 +2,79 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E15257779E9
-	for <lists+stable@lfdr.de>; Thu, 10 Aug 2023 15:50:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 757DD7779EF
+	for <lists+stable@lfdr.de>; Thu, 10 Aug 2023 15:55:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234363AbjHJNuV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 10 Aug 2023 09:50:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45148 "EHLO
+        id S233701AbjHJNzM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 10 Aug 2023 09:55:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49560 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230446AbjHJNuU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 10 Aug 2023 09:50:20 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 63BE62686;
-        Thu, 10 Aug 2023 06:50:20 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 017E0630D3;
-        Thu, 10 Aug 2023 13:50:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23FBCC433C7;
-        Thu, 10 Aug 2023 13:50:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1691675419;
-        bh=lk+n0r3C9A2P72n/Yr2l25n+DKj31xtX4dComhMn9W4=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=S0eeBT9h+cKYrieeHQghAKv2s3stzvqW86scqcbRsO+QvTv3xUPB/O7cBEzJcrSkC
-         lBaB2eK7sdaySqqKRglaqqhM+fdxbZ9nU+geuKI6KgmTHeibZaVD3L8gu+1SDEl8QI
-         Iscbu7Q6Yn+4Efr4HjTlfMhGzyrA8nU/WZOJC1HC4LX5y3KJHrEjLmJzTUecJv+Zto
-         wPYL32F0hxkJfzvAnsDopxQ1pVxW2ydWxToM48scPtO2meZbUbZi0JpSyLxZRuiy3j
-         dZY6cDbcSg75pamaepeeTmf7eKNX0doiSEreeTfQoxErgA47aZbmKmZjW+v8KF69A9
-         rjyGyXfX7p0lg==
-Message-ID: <b98f9097-6968-c7a2-27e0-ec2f17722644@kernel.org>
-Date:   Thu, 10 Aug 2023 22:50:16 +0900
+        with ESMTP id S230446AbjHJNzL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 10 Aug 2023 09:55:11 -0400
+Received: from mail-pf1-x42e.google.com (mail-pf1-x42e.google.com [IPv6:2607:f8b0:4864:20::42e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E3D8212B;
+        Thu, 10 Aug 2023 06:55:10 -0700 (PDT)
+Received: by mail-pf1-x42e.google.com with SMTP id d2e1a72fcca58-686bc261111so678400b3a.3;
+        Thu, 10 Aug 2023 06:55:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1691675710; x=1692280510;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=0FFT4Yj3m1Fx8gSEUta6Yy87BbswMA7bP4LX2BOsNOo=;
+        b=HTR4WuxCQgLw34Fu/f7F9IIN7w1GPtSh+s61h0N1iOhtaVSeRutK8QCMjdKTquHWLB
+         CJxvv16tKKNOaEEZ4VKyW8hha/AzG6hzbpnM2bM/9sjmAvKGF9ztZtU3k6xqJ1Q/n2LP
+         C+hEvjDQUHTu6EE8vjZQDWKOvHaM+qwn9Ouxr+zBejIn5FO4P0bbLv53ve5eKB8gmMRG
+         Y4NamyPFTuMcSf4kt6ZRge2J4cxFVFBFM5GMqni75MW8FyeFBTNWdcfxyXaEBuIAYJOR
+         kWPyeZWApPNNU8N07L63RSvqlevyw4Jp8Gpq2NN/eahycBhy4AVZOSho0ksAkwhSHyAJ
+         NQPA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1691675710; x=1692280510;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=0FFT4Yj3m1Fx8gSEUta6Yy87BbswMA7bP4LX2BOsNOo=;
+        b=XA6RAT5MOOsusUDGrsXV4N23dagG0hvR8J/dHG6/n/vMrFQwIwZVZGjS/mPsC1I/+g
+         Xjfcts5f87OqcSuTaKWD5stMI759Lf7rpLrsUmtcIr8dM8O+4/Z3Dn7lx5y0Ix9Sh6BF
+         iil5ZM65//moz40TwuX9y4Eunm6QGGhYRC8IE+/n/tVD/7nd9oX9kwBOnrs5XTNNFjnF
+         Sp2kMJioDdDAW8jT/mmI6I/+14iX5wI7dCURUNxduI1s0Ob+N1n0m4l9Nki7oNQU9GS+
+         FpbircAy57f3cz2BaEcbkww0kxMDDQD4ajfcLa5bHJbEShvnjZ4Q0qc7NRd7Sz2IjbL8
+         TYlg==
+X-Gm-Message-State: AOJu0Yyu4NV33F3YIYDZkK6pcfyxUas4r/NNBlmAW5Pe3f8iNUYl9UJk
+        o6kJq7ZvwBTKGyjhCDTEPQQ=
+X-Google-Smtp-Source: AGHT+IGHvjKMCqXkTKHNNLW0ZoM8HQZLa2wjK3Qu3aLpOGqLf8ZY3pHoB5TkPlNQOFbsCueBFpzjmQ==
+X-Received: by 2002:a05:6a20:3d14:b0:140:fab7:4d14 with SMTP id y20-20020a056a203d1400b00140fab74d14mr2832645pzi.15.1691675709742;
+        Thu, 10 Aug 2023 06:55:09 -0700 (PDT)
+Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id h5-20020a62b405000000b00687494a59bfsm1537456pfn.61.2023.08.10.06.55.08
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 10 Aug 2023 06:55:09 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Message-ID: <252c7673-53ee-4c4b-e5ef-5bb2c0416154@roeck-us.net>
+Date:   Thu, 10 Aug 2023 06:55:07 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: [PATCH] PM / devfreq: Fix leak in devfreq_dev_release()
+Subject: Re: [PATCH 4.19 000/323] 4.19.291-rc1 review
 Content-Language: en-US
-To:     Boris Brezillon <boris.brezillon@collabora.com>,
-        MyungJoo Ham <myungjoo.ham@samsung.com>,
-        Kyungmin Park <kyungmin.park@samsung.com>,
-        Chanwoo Choi <cw00.choi@samsung.com>, linux-pm@vger.kernel.org
-Cc:     stable@vger.kernel.org
-References: <20230809113108.2306272-1-boris.brezillon@collabora.com>
-From:   Chanwoo Choi <chanwoo@kernel.org>
-In-Reply-To: <20230809113108.2306272-1-boris.brezillon@collabora.com>
-Content-Type: text/plain; charset=UTF-8
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org
+Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+        torvalds@linux-foundation.org, akpm@linux-foundation.org,
+        shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
+References: <20230809103658.104386911@linuxfoundation.org>
+From:   Guenter Roeck <linux@roeck-us.net>
+In-Reply-To: <20230809103658.104386911@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-9.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS autolearn=ham
+X-Spam-Status: No, score=-3.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -59,36 +82,34 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 23. 8. 9. 20:31, Boris Brezillon wrote:
-> srcu_init_notifier_head() allocates resources that need to be released
-> with a srcu_cleanup_notifier_head() call.
+On 8/9/23 03:37, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 4.19.291 release.
+> There are 323 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 > 
-> Reported by kmemleak.
+> Responses should be made by Fri, 11 Aug 2023 10:36:10 +0000.
+> Anything received after that time might be too late.
 > 
-> Fixes: 0fe3a66410a3 ("PM / devfreq: Add new DEVFREQ_TRANSITION_NOTIFIER notifier")
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Boris Brezillon <boris.brezillon@collabora.com>
-> ---
->  drivers/devfreq/devfreq.c | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/drivers/devfreq/devfreq.c b/drivers/devfreq/devfreq.c
-> index e36cbb920ec8..9464f8d3cb5b 100644
-> --- a/drivers/devfreq/devfreq.c
-> +++ b/drivers/devfreq/devfreq.c
-> @@ -763,6 +763,7 @@ static void devfreq_dev_release(struct device *dev)
->  		dev_pm_opp_put_opp_table(devfreq->opp_table);
->  
->  	mutex_destroy(&devfreq->lock);
-> +	srcu_cleanup_notifier_head(&devfreq->transition_notifier_list);
->  	kfree(devfreq);
->  }
->  
 
-Applied it. Thanks.
+Building sparc64:allnoconfig ... failed
+--------------
+Error log:
+<stdin>:1335:2: warning: #warning syscall rseq not implemented [-Wcpp]
+/opt/kernel/gcc-11.4.0-2.40-nolibc/sparc64-linux/bin/../lib/gcc/sparc64-linux/11.4.0/../../../../sparc64-linux/bin/ld: warning: arch/sparc/vdso/vdso-note.o: missing .note.GNU-stack section implies executable stack
+/opt/kernel/gcc-11.4.0-2.40-nolibc/sparc64-linux/bin/../lib/gcc/sparc64-linux/11.4.0/../../../../sparc64-linux/bin/ld: NOTE: This behaviour is deprecated and will be removed in a future version of the linker
+/opt/kernel/gcc-11.4.0-2.40-nolibc/sparc64-linux/bin/../lib/gcc/sparc64-linux/11.4.0/../../../../sparc64-linux/bin/ld: warning: arch/sparc/vdso/vdso32/vdso-note.o: missing .note.GNU-stack section implies executable stack
+/opt/kernel/gcc-11.4.0-2.40-nolibc/sparc64-linux/bin/../lib/gcc/sparc64-linux/11.4.0/../../../../sparc64-linux/bin/ld: NOTE: This behaviour is deprecated and will be removed in a future version of the linker
+sparc64-linux-ld: init/main.o: in function `start_kernel':
+main.c:(.init.text+0x77c): undefined reference to `arch_cpu_finalize_init'
 
--- 
-Best Regards,
-Samsung Electronics
-Chanwoo Choi
-
+Building sparc64:tinyconfig ... failed
+--------------
+Error log:
+<stdin>:1335:2: warning: #warning syscall rseq not implemented [-Wcpp]
+/opt/kernel/gcc-11.4.0-2.40-nolibc/sparc64-linux/bin/../lib/gcc/sparc64-linux/11.4.0/../../../../sparc64-linux/bin/ld: warning: arch/sparc/vdso/vdso-note.o: missing .note.GNU-stack section implies executable stack
+/opt/kernel/gcc-11.4.0-2.40-nolibc/sparc64-linux/bin/../lib/gcc/sparc64-linux/11.4.0/../../../../sparc64-linux/bin/ld: NOTE: This behaviour is deprecated and will be removed in a future version of the linker
+/opt/kernel/gcc-11.4.0-2.40-nolibc/sparc64-linux/bin/../lib/gcc/sparc64-linux/11.4.0/../../../../sparc64-linux/bin/ld: warning: arch/sparc/vdso/vdso32/vdso-note.o: missing .note.GNU-stack section implies executable stack
+/opt/kernel/gcc-11.4.0-2.40-nolibc/sparc64-linux/bin/../lib/gcc/sparc64-linux/11.4.0/../../../../sparc64-linux/bin/ld: NOTE: This behaviour is deprecated and will be removed in a future version of the linker
+sparc64-linux-ld: init/main.o: in function `start_kernel':
+main.c:(.init.text+0x764): undefined reference to `arch_cpu_finalize_init'
