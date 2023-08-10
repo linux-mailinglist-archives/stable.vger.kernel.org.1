@@ -2,119 +2,122 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D854D777A98
-	for <lists+stable@lfdr.de>; Thu, 10 Aug 2023 16:24:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6F11B777AC8
+	for <lists+stable@lfdr.de>; Thu, 10 Aug 2023 16:31:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232642AbjHJOYg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 10 Aug 2023 10:24:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58792 "EHLO
+        id S233669AbjHJOb1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 10 Aug 2023 10:31:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43788 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233706AbjHJOYf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 10 Aug 2023 10:24:35 -0400
-Received: from mail-pl1-x62a.google.com (mail-pl1-x62a.google.com [IPv6:2607:f8b0:4864:20::62a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8214A26BA;
-        Thu, 10 Aug 2023 07:24:35 -0700 (PDT)
-Received: by mail-pl1-x62a.google.com with SMTP id d9443c01a7336-1bda9207132so3417025ad.0;
-        Thu, 10 Aug 2023 07:24:35 -0700 (PDT)
+        with ESMTP id S235581AbjHJObZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 10 Aug 2023 10:31:25 -0400
+Received: from mail-pl1-x62b.google.com (mail-pl1-x62b.google.com [IPv6:2607:f8b0:4864:20::62b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2278526BA
+        for <stable@vger.kernel.org>; Thu, 10 Aug 2023 07:31:24 -0700 (PDT)
+Received: by mail-pl1-x62b.google.com with SMTP id d9443c01a7336-1bc76cdf0cbso1365215ad.1
+        for <stable@vger.kernel.org>; Thu, 10 Aug 2023 07:31:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1691677475; x=1692282275;
-        h=content-transfer-encoding:in-reply-to:references:cc:to:from
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=g7aVWMgiSCY8pbrReUeQfTDqSM2NOWq1Su86uIhB8xM=;
-        b=ShmnbVqmdpWKk1Bgj5jhiPZZm9hzZaSTST7U59fSdo73Q6AsKb3l3uzMBfg1SHwa4H
-         efQtrx3M6oCkAl1Kcbd2XhjWxPqDp1FmuDFthIlU6GL8OAVc+/W4a4l2RBtvEFL3XVlb
-         xt/nYX4BredPMGzeqm97k1/GuPQ4EbiBqGVxf3rfIAxcc3ipaftpESMGbgFEhmvpcbpl
-         Wp2/O00i11o+vWbxXlC+tkRo79lXtPzwwxXYhSWmQhQjzu6lPi155Iyzypzk4Qami/Y0
-         FzSxDoqIE/j2eN0zG+aqovTnrOHGKS4QhXoXc2yOrPte0TD3vnYzdpTCqCR6DcwTx9nd
-         JHvQ==
+        d=kernel-dk.20221208.gappssmtp.com; s=20221208; t=1691677883; x=1692282683;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=dfLCCDH2lJon3gk1O7dp3FF9gazCYdPkfMfgDUEDf8E=;
+        b=EURAVQYADIX4U/Ql2uJtC/SU+5E2wBUfGEFDWz/1HAwDr/V4yhjOCF8yS5rsc+OfOE
+         KshHTsDt0VhhqpXNJRnWJf/e9xJD1BoLo+31KPek7eTtx/8OX4aIr+hwmK+i5UrAB9wr
+         KSNDXe20E6RXxyRayLXgbEWFHw7lRPC4q6F6bhwpFa8Jn/YHZI3R2jHTtPBNOELFEknI
+         /JY55dBisMhXA8wMeM16EQ7wuI92SGwgltoQ+wM8CCU1DIjCuj4sB0057q6STpVXbqHF
+         GoGtPHUR9F/CY1263HsJoX/9tvLa+OAd5jMfGtwpsAtgo+/Lthyp4vt5kd+e9GxqmAqB
+         p7KA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691677475; x=1692282275;
-        h=content-transfer-encoding:in-reply-to:references:cc:to:from
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=g7aVWMgiSCY8pbrReUeQfTDqSM2NOWq1Su86uIhB8xM=;
-        b=eqt0jtmSYbLZOXEm+QpCJPasTJQe0HHwiMtn7wQSbdcQo1v3hNzHNGAoUKNFbzVK7V
-         I9ze4Vw9RpJQTrXgtasSSJY3PsP0cTpthnS8cQIyM2PnswqE/0pVbs4IZDKpk2ll41ls
-         S2b/q1L3OW/Enlp0zGtGkaJUzSsMT2uLFDSCHhGkNetvCA/puOqlQ/Qd55Yv88xRYuKA
-         7X35+KVC7p3cTXTMU9X27CHoeZFv4mY3RER/n8p8D5cfzfM8p2Mj51LGYYVCBjpH3Clk
-         DGVcP793Te1Lczny1T/OlJLtrINaRB3AUQzXG6JC1e/+xieVhIAJoHufTQAxZf74Pb4e
-         PHAA==
-X-Gm-Message-State: AOJu0YwUXSwrfI6FA+G1rikXWBx/z2HrQzcPJlYRsM4AlTU0xyj/Nr9D
-        bk9ix2TfEsgbVeWikTmUq8c=
-X-Google-Smtp-Source: AGHT+IH3n1zkaG/y/IW0v36I+eu+pJIzWmUs6Wme5ATrsdqnMBHOIrtY+Pb3D3QfBp+9lBTHE8YmvQ==
-X-Received: by 2002:a17:903:11c9:b0:1bc:48d7:f29b with SMTP id q9-20020a17090311c900b001bc48d7f29bmr3008767plh.27.1691677474846;
-        Thu, 10 Aug 2023 07:24:34 -0700 (PDT)
-Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id t3-20020a170902e84300b001bc59cd718asm1819355plg.278.2023.08.10.07.24.33
+        d=1e100.net; s=20221208; t=1691677883; x=1692282683;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=dfLCCDH2lJon3gk1O7dp3FF9gazCYdPkfMfgDUEDf8E=;
+        b=a3ZMF9bKbmsenwuxnu8HIcMkixqrMdEpvKxlvw/2dkmBRQkfzEsvPikC/ME8+DYL/A
+         KYi+rT9lxlSaUm1VJmSPcoW9aJjiZD92pEYvDPfIc0oNoXSYnp432Cwm56MlVHOIhzLZ
+         hqx1wtPcKljXcETnK+j3OVfRzKlsdknrLfdbNKbl/4Wvsiky2mgdm9SkCxv3c1KKYrbK
+         fbWCeD82tUqWsN4ZuVXWdMKMOkcxrAIwVvgFxlrNKHvwEuYEaD9JcxBSKmU5TNIHM9cE
+         vCRVBdQMyM4cwKbrMoMsyu4Hr3nOt3B1IUzr3PfmQ5uH1KZkhTF50s3AdLS4le4SLfZ/
+         wMdg==
+X-Gm-Message-State: AOJu0YzQMDCGz6gT1kWEV4hwjlDng6734KxNV8h5APFuEARWeDpIj6if
+        yd57zeBjDMJEMNLkfaj5NsBFNw==
+X-Google-Smtp-Source: AGHT+IEJKGKRmPFBh/HK/d/ybnf411GaUAWNPEHIf+c1xUoCsq390IUfmMTKN5FrekqzYNVsivOudA==
+X-Received: by 2002:a17:902:e847:b0:1bb:d7d4:e2b with SMTP id t7-20020a170902e84700b001bbd7d40e2bmr3169371plg.0.1691677883527;
+        Thu, 10 Aug 2023 07:31:23 -0700 (PDT)
+Received: from [192.168.1.136] ([198.8.77.157])
+        by smtp.gmail.com with ESMTPSA id c18-20020a170903235200b001b8b07bc600sm1824836plh.186.2023.08.10.07.31.22
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 10 Aug 2023 07:24:34 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <fff0f61e-4260-f91a-2254-65daaffae45d@roeck-us.net>
-Date:   Thu, 10 Aug 2023 07:24:32 -0700
+        Thu, 10 Aug 2023 07:31:22 -0700 (PDT)
+Message-ID: <59c108b9-ac20-400a-804d-92e0c6a982ad@kernel.dk>
+Date:   Thu, 10 Aug 2023 08:31:21 -0600
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH 4.19 000/323] 4.19.291-rc1 review
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] blk-crypto: dynamically allocate fallback profile
+To:     Greg KH <gregkh@linuxfoundation.org>
+Cc:     Sweet Tea Dorminy <sweettea-kernel@dorminy.me>,
+        Satya Tangirala <satyat@google.com>,
+        linux-block@vger.kernel.org, kernel-team@meta.com,
+        ebiggers@kernel.org, stable@vger.kernel.org
+References: <20230809125628.529884-1-sweettea-kernel@dorminy.me>
+ <94c661a6-442b-4ca2-b9e8-198069d8b635@kernel.dk>
+ <2023081023-parsnip-limb-dcd4@gregkh>
+ <29a213de-d7c7-4e53-8b5c-eb742dcf23ea@kernel.dk>
+ <2023081007-poise-zeppelin-df6a@gregkh>
 Content-Language: en-US
-From:   Guenter Roeck <linux@roeck-us.net>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org
-Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-        torvalds@linux-foundation.org, akpm@linux-foundation.org,
-        shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
-References: <20230809103658.104386911@linuxfoundation.org>
- <252c7673-53ee-4c4b-e5ef-5bb2c0416154@roeck-us.net>
-In-Reply-To: <252c7673-53ee-4c4b-e5ef-5bb2c0416154@roeck-us.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-3.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        NICE_REPLY_A,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+From:   Jens Axboe <axboe@kernel.dk>
+In-Reply-To: <2023081007-poise-zeppelin-df6a@gregkh>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 8/10/23 06:55, Guenter Roeck wrote:
-> On 8/9/23 03:37, Greg Kroah-Hartman wrote:
->> This is the start of the stable review cycle for the 4.19.291 release.
->> There are 323 patches in this series, all will be posted as a response
->> to this one.  If anyone has any issues with these being applied, please
->> let me know.
+On 8/10/23 7:41 AM, Greg KH wrote:
+> On Thu, Aug 10, 2023 at 07:18:27AM -0600, Jens Axboe wrote:
+>> On 8/9/23 10:53 PM, Greg KH wrote:
+>>> On Wed, Aug 09, 2023 at 04:08:52PM -0600, Jens Axboe wrote:
+>>>> On 8/9/23 6:56 AM, Sweet Tea Dorminy wrote:
+>>>>> blk_crypto_profile_init() calls lockdep_register_key(), which warns and
+>>>>> does not register if the provided memory is a static object.
+>>>>> blk-crypto-fallback currently has a static blk_crypto_profile and calls
+>>>>> blk_crypto_profile_init() thereupon, resulting in the warning and
+>>>>> failure to register.
+>>>>>
+>>>>> Fortunately it is simple enough to use a dynamically allocated profile
+>>>>> and make lockdep function correctly.
+>>>>>
+>>>>> Fixes: 2fb48d88e77f ("blk-crypto: use dynamic lock class for blk_crypto_profile::lock")
+>>>>> Cc: stable@vger.kernel.org
+>>>>> Signed-off-by: Sweet Tea Dorminy <sweettea-kernel@dorminy.me>
+>>>>
+>>>> The offending commit went into 6.5, so there should be no need for a
+>>>> stable tag on this one. But I can edit that while applying, waiting on
+>>>> Eric to ack it.
+>>>
+>>> That commit has been backported to stable releases, so it would be nice
+>>> to keep it there so our tools automatically pick it up properly.  Once
+>>> the authorship name is fixed up of course.
 >>
->> Responses should be made by Fri, 11 Aug 2023 10:36:10 +0000.
->> Anything received after that time might be too late.
+>> But that stable tag should not be necessary? If stable has backported a
+>> commit, surely it'll pick a commit that has that in Fixes? Otherwise
+>> that seems broken and implies that people need to potentially check
+>> every commit for a stable presence.
 >>
+>> I can keep the tag, just a bit puzzled as to why that would be
+>> necessary.
 > 
-> Building sparc64:allnoconfig ... failed
-> --------------
-> Error log:
-> <stdin>:1335:2: warning: #warning syscall rseq not implemented [-Wcpp]
-> /opt/kernel/gcc-11.4.0-2.40-nolibc/sparc64-linux/bin/../lib/gcc/sparc64-linux/11.4.0/../../../../sparc64-linux/bin/ld: warning: arch/sparc/vdso/vdso-note.o: missing .note.GNU-stack section implies executable stack
-> /opt/kernel/gcc-11.4.0-2.40-nolibc/sparc64-linux/bin/../lib/gcc/sparc64-linux/11.4.0/../../../../sparc64-linux/bin/ld: NOTE: This behaviour is deprecated and will be removed in a future version of the linker
-> /opt/kernel/gcc-11.4.0-2.40-nolibc/sparc64-linux/bin/../lib/gcc/sparc64-linux/11.4.0/../../../../sparc64-linux/bin/ld: warning: arch/sparc/vdso/vdso32/vdso-note.o: missing .note.GNU-stack section implies executable stack
-> /opt/kernel/gcc-11.4.0-2.40-nolibc/sparc64-linux/bin/../lib/gcc/sparc64-linux/11.4.0/../../../../sparc64-linux/bin/ld: NOTE: This behaviour is deprecated and will be removed in a future version of the linker
-> sparc64-linux-ld: init/main.o: in function `start_kernel':
-> main.c:(.init.text+0x77c): undefined reference to `arch_cpu_finalize_init'
-> 
-> Building sparc64:tinyconfig ... failed
-> --------------
-> Error log:
-> <stdin>:1335:2: warning: #warning syscall rseq not implemented [-Wcpp]
-> /opt/kernel/gcc-11.4.0-2.40-nolibc/sparc64-linux/bin/../lib/gcc/sparc64-linux/11.4.0/../../../../sparc64-linux/bin/ld: warning: arch/sparc/vdso/vdso-note.o: missing .note.GNU-stack section implies executable stack
-> /opt/kernel/gcc-11.4.0-2.40-nolibc/sparc64-linux/bin/../lib/gcc/sparc64-linux/11.4.0/../../../../sparc64-linux/bin/ld: NOTE: This behaviour is deprecated and will be removed in a future version of the linker
-> /opt/kernel/gcc-11.4.0-2.40-nolibc/sparc64-linux/bin/../lib/gcc/sparc64-linux/11.4.0/../../../../sparc64-linux/bin/ld: warning: arch/sparc/vdso/vdso32/vdso-note.o: missing .note.GNU-stack section implies executable stack
-> /opt/kernel/gcc-11.4.0-2.40-nolibc/sparc64-linux/bin/../lib/gcc/sparc64-linux/11.4.0/../../../../sparc64-linux/bin/ld: NOTE: This behaviour is deprecated and will be removed in a future version of the linker
-> sparc64-linux-ld: init/main.o: in function `start_kernel':
-> main.c:(.init.text+0x764): undefined reference to `arch_cpu_finalize_init'
+> It's not necessary, no, our scripts will pick it out and get it merged
+> eventually.  But if you know it's needed to start with, it's always nice
+> to add it if possible, saves me the extra work :)
 
-Introduced with v4.19.290.
+OK, makes sense.
+
+-- 
+Jens Axboe
 
