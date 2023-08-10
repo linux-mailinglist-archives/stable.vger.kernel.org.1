@@ -2,205 +2,217 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0F8997773A6
-	for <lists+stable@lfdr.de>; Thu, 10 Aug 2023 11:05:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 383727773B1
+	for <lists+stable@lfdr.de>; Thu, 10 Aug 2023 11:08:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232714AbjHJJEw (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 10 Aug 2023 05:04:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43682 "EHLO
+        id S230323AbjHJJIH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 10 Aug 2023 05:08:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45420 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233826AbjHJJEp (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 10 Aug 2023 05:04:45 -0400
-Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 63A662107;
-        Thu, 10 Aug 2023 02:04:36 -0700 (PDT)
-X-UUID: eb566ffc375c11ee9cb5633481061a41-20230810
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-        h=MIME-Version:Content-Transfer-Encoding:Content-ID:Content-Type:In-Reply-To:References:Message-ID:Date:Subject:CC:To:From; bh=/ZgIKJKjeWlN7K+eCvFjebQ1LIJ2wSVBbNJZJcCLk8U=;
-        b=UF4GURGElVG8golA6U4NF7vOpUVHuibm2DNMy7UJrV4P2v0VUNK4Fy+O1UvFMFuCmYDtLP3Nctl/wZT61OXfkTYbnW4Fg4ERIkHxw3+T69bOsMDAGi45GsHYQB+DOeC8mGATQ63piosZcvFAt+c/9gc8jSSu2mEBxR8Z59/VUu4=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.31,REQID:b358690f-1607-44f4-b98f-eed8924fa609,IP:0,U
-        RL:0,TC:0,Content:0,EDM:0,RT:0,SF:45,FILE:0,BULK:0,RULE:Release_Ham,ACTION
-        :release,TS:45
-X-CID-INFO: VERSION:1.1.31,REQID:b358690f-1607-44f4-b98f-eed8924fa609,IP:0,URL
-        :0,TC:0,Content:0,EDM:0,RT:0,SF:45,FILE:0,BULK:0,RULE:Release_Ham,ACTION:r
-        elease,TS:45
-X-CID-META: VersionHash:0ad78a4,CLOUDID:5c549d12-4929-4845-9571-38c601e9c3c9,B
-        ulkID:230810170433L3YSGDY7,BulkQuantity:0,Recheck:0,SF:19|48|38|29|28|17|1
-        02,TC:nil,Content:0,EDM:-3,IP:nil,URL:11|1,File:nil,Bulk:nil,QS:nil,BEC:ni
-        l,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:PA,DKP:0,BRR:0,BRE:0
-X-CID-BVR: 0
-X-CID-BAS: 0,_,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_SDM,TF_CID_SPAM_FAS,TF_CID_SPAM_FSD,
-        TF_CID_SPAM_ULN
-X-UUID: eb566ffc375c11ee9cb5633481061a41-20230810
-Received: from mtkmbs14n2.mediatek.inc [(172.21.101.76)] by mailgw01.mediatek.com
-        (envelope-from <peter.wang@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-        with ESMTP id 1989039216; Thu, 10 Aug 2023 17:04:31 +0800
-Received: from mtkmbs10n2.mediatek.inc (172.21.101.183) by
- mtkmbs13n1.mediatek.inc (172.21.101.193) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.26; Thu, 10 Aug 2023 17:04:30 +0800
-Received: from APC01-TYZ-obe.outbound.protection.outlook.com (172.21.101.237)
- by mtkmbs10n2.mediatek.inc (172.21.101.183) with Microsoft SMTP Server id
- 15.2.1118.26 via Frontend Transport; Thu, 10 Aug 2023 17:04:30 +0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=l2QmiSgCMAKw68S9W/WrX/wZHaPcFBDky7l8scD4/HPqqsS5185NMGS6P+bw8I7WTmQyPrntzTLNj6Lhhh/ulfMpNokRnPMJbvHXMbyBbUFGWL6FXXanNCaDO1FCbTwFXp87cTzmzkaf1lY1yAikmHlRcys05xXny49jj6OPdDaYU7uPjRgUrCNonBc3EzB7Lxr224R57NamrCzDHH4WCtagUYFjgFt48LeBn/DjgH/zZIhFTy2SSQqM59Q78hoz43tdPZrdiI+hxEt5bTxuuU3x58LgrhIquAa+RRlK52sF4ad1aoMmH6LDVTxgIJbsqkpkke2lNNpUufIcUrt50g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=/ZgIKJKjeWlN7K+eCvFjebQ1LIJ2wSVBbNJZJcCLk8U=;
- b=UJrU9z3DPM0umvQzv66WTLYAA/Ycu09ag4bdoV/edAq2OtiZb2WcnVz7yhsXXOtqiJRS5dBeq2nCrHxH4PS/IMbs274c376F5twlQlAQsibUbWAH+xuYl3BFM1KUgDjcFUeauLSx9HACe+5v1L6/rgjHtPcqkhE8NDjse40V/Kn39/Gz+AyGlDk4XV06vWp9mwjwd9PfNipNpzPKnVQNer9pyoi39GvWQog9mPhBXnsl8f+274bccY4df45MPjWu3Mz08O9a0LFcoJDrc/YBpXJFxTO31L+NQ2+dc+j75FgynwTXGJmQjDaa1dOqAyJUZGSHQhfdLR/VejM24Oc9zg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=mediatek.com; dmarc=pass action=none header.from=mediatek.com;
- dkim=pass header.d=mediatek.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=mediateko365.onmicrosoft.com; s=selector2-mediateko365-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=/ZgIKJKjeWlN7K+eCvFjebQ1LIJ2wSVBbNJZJcCLk8U=;
- b=Vhpzt6WKKV6HuKsUqgsPfXy1YrKy18IcMWPHX0xI4OuLMxFf9O1qS6Q6yqhO0cuJtRPpMnAAdGqFNmr+bSVCc+kKhYUYsqkbmvVb402c4qo4ujlyHLnbO/odLvdPZQfHzXn0Le0zthicMxP69LRCviXpPiA+GS19RVwAvWChOvc=
-Received: from PSAPR03MB5605.apcprd03.prod.outlook.com (2603:1096:301:66::6)
- by TYZPR03MB8216.apcprd03.prod.outlook.com (2603:1096:405:28::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6652.30; Thu, 10 Aug
- 2023 09:04:28 +0000
-Received: from PSAPR03MB5605.apcprd03.prod.outlook.com
- ([fe80::1275:329f:a1a6:a9a1]) by PSAPR03MB5605.apcprd03.prod.outlook.com
- ([fe80::1275:329f:a1a6:a9a1%2]) with mapi id 15.20.6652.029; Thu, 10 Aug 2023
- 09:04:28 +0000
-From:   =?utf-8?B?UGV0ZXIgV2FuZyAo546L5L+h5Y+LKQ==?= 
-        <peter.wang@mediatek.com>
-To:     "linux-scsi@vger.kernel.org" <linux-scsi@vger.kernel.org>,
-        "avri.altman@wdc.com" <avri.altman@wdc.com>,
-        "alim.akhtar@samsung.com" <alim.akhtar@samsung.com>,
-        =?utf-8?B?U3RhbmxleSBDaHUgKOacseWOn+mZnik=?= 
-        <stanley.chu@mediatek.com>,
-        "jejb@linux.ibm.com" <jejb@linux.ibm.com>,
-        "martin.petersen@oracle.com" <martin.petersen@oracle.com>
-CC:     "linux-mediatek@lists.infradead.org" 
-        <linux-mediatek@lists.infradead.org>,
-        =?utf-8?B?SmlhamllIEhhbyAo6YOd5Yqg6IqCKQ==?= 
-        <jiajie.hao@mediatek.com>,
-        =?utf-8?B?Q0MgQ2hvdSAo5ZGo5b+X5p2wKQ==?= <cc.chou@mediatek.com>,
-        =?utf-8?B?RWRkaWUgSHVhbmcgKOm7g+aZuuWCkSk=?= 
-        <eddie.huang@mediatek.com>,
-        =?utf-8?B?QWxpY2UgQ2hhbyAo6LaZ54+u5Z2HKQ==?= 
-        <Alice.Chao@mediatek.com>,
-        wsd_upstream <wsd_upstream@mediatek.com>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>,
-        =?utf-8?B?TGluIEd1aSAo5qGC5p6XKQ==?= <Lin.Gui@mediatek.com>,
-        =?utf-8?B?Q2h1bi1IdW5nIFd1ICjlt6vpp7/lro8p?= 
-        <Chun-hung.Wu@mediatek.com>,
-        =?utf-8?B?VHVuLXl1IFl1ICjmuLjmlabogb8p?= <Tun-yu.Yu@mediatek.com>,
-        =?utf-8?B?Q2hhb3RpYW4gSmluZyAo5LqV5pyd5aSpKQ==?= 
-        <Chaotian.Jing@mediatek.com>,
-        =?utf-8?B?UG93ZW4gS2FvICjpq5jkvK/mlocp?= <Powen.Kao@mediatek.com>,
-        =?utf-8?B?TmFvbWkgQ2h1ICjmnLHoqaDnlLAp?= <Naomi.Chu@mediatek.com>,
-        =?utf-8?B?UWlsaW4gVGFuICjosK3pupLpup8p?= <Qilin.Tan@mediatek.com>
-Subject: Re: [PATCH v1] ufs: core: only suspend clock scaling if scale down
-Thread-Topic: [PATCH v1] ufs: core: only suspend clock scaling if scale down
-Thread-Index: AQHZxHz720OxxTdKwkSM3XR67WC7o6/jSlqA
-Date:   Thu, 10 Aug 2023 09:04:28 +0000
-Message-ID: <3ad406db04438955ee521230d79c613904fca5a4.camel@mediatek.com>
-References: <20230801133458.6837-1-peter.wang@mediatek.com>
-In-Reply-To: <20230801133458.6837-1-peter.wang@mediatek.com>
-Accept-Language: zh-TW, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-mailer: Evolution 3.28.5-0ubuntu0.18.04.2 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=mediatek.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PSAPR03MB5605:EE_|TYZPR03MB8216:EE_
-x-ms-office365-filtering-correlation-id: 6b1cb458-83f5-4c45-909b-08db9980cd4e
-x-ld-processed: a7687ede-7a6b-4ef6-bace-642f677fbe31,ExtAddr
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: bC5241d6NlBmszbfxs8ghpgx4TAbdSkZbRG+Fsk78avp6s/sl6WCkfiNAoNANP3a99W2EcKjdVRCAdrfEzyJzj2ES6uGtaclUYPoGtdjgvbf0lPrAL8+S/+Yz6KLt9q3rBDj2IWwnnsPSevjM1FUCGhTlj4CrlAZKKQvfmpeoCy8H+lKpYXYGf5tRPuXBf+Z2Da5AaPzoB4nI1uE2U6xxIAMdXqItnA1XAggtHu2PslIWMIcHDODY1DCXHyg59NUxbz1EHcI4/m33MztKBb5TshteuCFmewdVjNtWjFDKp9vqUaNfbLMytckroAFGEcC2LIp+gYJ5IZgfOAVlwgVdBd9522SI47yHdlO8mXwudbt4Air4EcBqcxAQpMlPdsCS6Tbh/Q30dxoyQVQQQcvykPsmcun7Ow0vh2edon0IeN82xIgdxe/M8NCbMCaR1PfkpwjqSuA9Lhq1YqwHNzr7dZ4yxb0SvsYMmQCHUdy9AyKjDftO2affANqT/IcTPixdXPzOXqe4lULMqW7sJAcBd8lHBw5Im81uBIfQMGQCY/imer2KagaGh1q9q69M8VOkSjDm8BuTlsnkoJTUQWy3Naj9sFwKC43uP2e0cwPt84n2YgkQJIfW9OPiMYIho3G8swUunNwisghfTFli4qFdlLbmzFmD+Ox03urYPZ2yE23UyKeE9IZ9mR9kgVgkvmnkw7/X/JOd67cHtC2NoIbcC8JdkqYSBjS61WvNpPC81k=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PSAPR03MB5605.apcprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(136003)(346002)(376002)(366004)(39860400002)(396003)(451199021)(186006)(1800799006)(85182001)(36756003)(76116006)(478600001)(71200400001)(91956017)(64756008)(66946007)(66556008)(66446008)(54906003)(66476007)(26005)(6486002)(107886003)(6506007)(110136005)(6512007)(4326008)(2906002)(41300700001)(316002)(15650500001)(5660300002)(8676002)(122000001)(8936002)(38100700002)(38070700005)(83380400001)(2616005)(12101799016)(86362001)(99106002);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?Sks4VW4yYlhlaTNJMUNHSlN3eUZNVHR3OTJmd3E3c3NWTUxSV3dKNmJFV2tp?=
- =?utf-8?B?RitBUW93QklTNzZHZjRNMGZwYkJXbFFraDhNUWV1b0ZlZDZRekEzUXhPa1Y5?=
- =?utf-8?B?Uy8va1dQeGhodFF6UVVrRkVHcVRXY3lsM1cvT014TTQ5RWppQ2JNUlVmdlZV?=
- =?utf-8?B?aGtrMlpRNHZqQjlHMDhmZmhvWHUwQ21EVGpreTM1UFFOTVlYU2wwSzc2eXBz?=
- =?utf-8?B?MW5oS2ZLZmVKSzhWRTAyelpzV0N5eXV4Umxpei9Yay9HaGRDRG9kK3hsUHA1?=
- =?utf-8?B?Z3ZJdWZUSUs1UXpiVSt0OEVncWU5dTFCUlVVaVhRd1RvOTloRHlDbnFPSzFz?=
- =?utf-8?B?SmZrb0RGRjdodFhtbzdLTC9ZdjFPVmlIVjlOZmFCVkt3WGM3QzdRZzdSMGla?=
- =?utf-8?B?dWNIM0ZtdDIrYi9ZQ0kxUWNuM3RiQ21SbHZJYnFqL3FERkcvUTNiTVl3bzdS?=
- =?utf-8?B?UGxVZDlIbXVudW9oNms4ZjBiN215djhLZEFYM2FFdzhOUkM2RlpML1ZGTlNi?=
- =?utf-8?B?aGJjVUhOcGFzRWhEN2doSjB2SU4zU3QrUmtueDJMaWFteVFvbmkyemJpNWln?=
- =?utf-8?B?dHRCWnpvR1p5WDZ2VmViaVlya3VjOEFyN0piSitsUE4yRHBuMzZ3M0tyN050?=
- =?utf-8?B?WUo0bEtqZ1VzRDdOT2lKbUtHV1IzeXd6S3ZRdkRkYWpPeTBhUzBqUEVGYlRh?=
- =?utf-8?B?bjJkRE40UVNxRCtYUWhuMFF3cHR0eVNCVExsZVJqeVpDM3paaS9US2N3YVZ0?=
- =?utf-8?B?Q0NyT1hXMDAxTGdheHVJbkNGM244UmZzMjA3VTIrV3g4a3BZYlU1a2E3U0Vm?=
- =?utf-8?B?b0VWaWpteUFJTnVsM3JjQVFJNE9QSVpQQ0hXNk5VOHNJZEVMTlErV2tRUlpa?=
- =?utf-8?B?M3dVZjAyenVyTjZLM2tTMDhpQXpqWVpCV0FSdERLSlZ4d3JiS1VZTzMwK0xz?=
- =?utf-8?B?bm1pZlRJaDRKTWw4Z1lKeWJoMmxhcjJROGprSHdIWEZsMHduVC81S29uaUhP?=
- =?utf-8?B?S1J1QlRnSUVLK3JheTd2MEdxVDZERzk3T25Ld0FQWmFKTmx2RGRvV2dCVksy?=
- =?utf-8?B?Yis0T0VUZU91Umg0OXk1WllYUEpleVhaMjNKSk1Ya2JkQ0NMRkpkYkJ3TlRU?=
- =?utf-8?B?ODhOVXg3YjBudTQxbmZWUk5ES2UwM0s2UFdYOHFMMk82T29NbUFvb0lKQ3Zi?=
- =?utf-8?B?YTh6RWUrbHJEbG40T1NTd0JWajZmY0RWTThsL0FpR2wvV3VuVktWVkY1TWFq?=
- =?utf-8?B?WWljeFdPMytVV2kwbVFNZ2VRV3IvOHRnZStUdW11bmNjbWhLVG94eFF6dm9r?=
- =?utf-8?B?Vk1CREZiMzhiYXhQKzAybUgvbERtdEJtWVcrdElHNVc3Y0gwSUFpMG1ZeW9X?=
- =?utf-8?B?OWdqb1BhNmN6UVJXVWsyajVJRU5YQnBFa2Nsa2gzOWg0OXd0NVp1MStkU3Z3?=
- =?utf-8?B?NWd3NnJSbzRMUit0aVVvaTJRdytsdFJkWUNXQUtRLzU4V2xGK09UNVRuUmYw?=
- =?utf-8?B?dkUrcEhocVFZcDZvQ2ZlQlQwLzdwcDZPVFFIZHlDQUV5UEN5cmgrdmRkWSs2?=
- =?utf-8?B?U3JyU3dzcEkvUVJWZFYxa2xRSGJEY2tmaHgxU20wL0YwbHdmY0JrdVBPdy9V?=
- =?utf-8?B?QTlkWTVHQWNudU0wOXAvM0FKaFIxaTZKa01qdlNQd01rTzBhaHlhOU5GWTdi?=
- =?utf-8?B?R09qanFjY014c3hQTytrcC80SFJLRVRaUU9Ta21jMzVVOFoySStZYk9yZlk3?=
- =?utf-8?B?MS95QjJEdmJyWG1leElmRjByb0NXdlFXd3hkK3d1TWpvWmtCWUNscm0vUk55?=
- =?utf-8?B?RzY0VWd0Z0NTK0NML2hEVVhZOWJyeGFlRkR3VHM4dGdpajJyVmFnTW1lSWZO?=
- =?utf-8?B?c0kxZHhtcEdKcDdaOTh1cGo1cG1LMjMzSGtlRjZyd2RyMkM4SVg2eXpCNFRM?=
- =?utf-8?B?TndJcUpsdlFLbnA3bS9JNTJsWlAvL3lIVllUOXdkQWpSYzMrKytGbEJTcjZm?=
- =?utf-8?B?NG5GVFJmME13ZWZWYU8rMlpjczNJZms1aUZKS1ltNDF4VE9XaDdyR3BTQXQr?=
- =?utf-8?B?OUVwR3UzdThzaDBwY3FXV3pBeWNxNTJxSnl0UXR3ZUNEUUNyZXZ1UThNcEVy?=
- =?utf-8?B?d1QvU1dVZ2dDbHVQOEt6RzFpUzNXZDNqRnMxSnc5b1krdmFYems4VDY4OW1p?=
- =?utf-8?B?THc9PQ==?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <F57D7F97C5B60F46B87880AD01958255@apcprd03.prod.outlook.com>
-Content-Transfer-Encoding: base64
+        with ESMTP id S231617AbjHJJHy (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 10 Aug 2023 05:07:54 -0400
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 27A6D211F;
+        Thu, 10 Aug 2023 02:07:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1691658473; x=1723194473;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=XjNuV56YbluVNxCDCUR+x11NSBYonlIx/g3LtAfg0tM=;
+  b=orB2eVNhzWWOSwqEJYoZCWmdlFTv+WxAlwbB2QCuRtgsGrlPYnmdMwiI
+   DmmFKHxnvOKa4rTgXPf28iObDlDtbwjCoz45tlMeEqLRVdDtWWfPrncq4
+   6/g1ESPxDoVNIWsL6EWQp06jzJCHjCYBBoq2aMVtZgt9wMHTL89CBoAYd
+   ZegiGVXbOkfneRAPB0CFWsZbZkmpjsmkR5FzPZ66e3cbjma0LSobs/Q/7
+   bjh2aAohRsTOFO8zdI2EcxtvNQIXQQX1P4ZC5xFP8vhJngOP+NPqNSQbF
+   LViT1lskVlpFiyvwV0ufy6tsvK7kvf3JjRX9Z/awPFEsEiUgcj4K7ngdB
+   g==;
+X-IronPort-AV: E=Sophos;i="6.01,161,1684825200"; 
+   d="asc'?scan'208";a="165797387"
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa6.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 10 Aug 2023 02:07:51 -0700
+Received: from chn-vm-ex01.mchp-main.com (10.10.85.143) by
+ chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.21; Thu, 10 Aug 2023 02:07:50 -0700
+Received: from wendy (10.10.115.15) by chn-vm-ex01.mchp-main.com
+ (10.10.85.143) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.21 via Frontend
+ Transport; Thu, 10 Aug 2023 02:07:48 -0700
+Date:   Thu, 10 Aug 2023 10:07:10 +0100
+From:   Conor Dooley <conor.dooley@microchip.com>
+To:     Atish Kumar Patra <atishp@rivosinc.com>
+CC:     Conor Dooley <conor@kernel.org>, <palmer@dabbelt.com>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Anup Patel <apatel@ventanamicro.com>,
+        Alexandre Ghiti <alexghiti@rivosinc.com>,
+        =?iso-8859-1?Q?Bj=F6rn_T=F6pel?= <bjorn@rivosinc.com>,
+        Song Shuai <suagrfillet@gmail.com>,
+        JeeHeng Sia <jeeheng.sia@starfivetech.com>,
+        Petr Tesarik <petrtesarik@huaweicloud.com>,
+        <linux-riscv@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+        <stable@vger.kernel.org>
+Subject: Re: [RFT 1/2] RISC-V: handle missing "no-map" properties for
+ OpenSBI's PMP protected regions
+Message-ID: <20230810-crewless-pampers-6f51aafb8cff@wendy>
+References: <20230802-purse-hydrant-6f44f77364b0@wendy>
+ <20230802-detention-second-82ab2b53e07a@wendy>
+ <CAHBxVyGgSJ66zMj65tRup2u23KP4=RJ5zN7hj5=K9e91NA9eog@mail.gmail.com>
+ <20230808-handbag-mushily-f884178d29f5@spud>
+ <CAHBxVyFNng2JOAQNfJSnabeq=+NYCSefk7OJEzkGMXEFY1tmFg@mail.gmail.com>
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PSAPR03MB5605.apcprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6b1cb458-83f5-4c45-909b-08db9980cd4e
-X-MS-Exchange-CrossTenant-originalarrivaltime: 10 Aug 2023 09:04:28.1782
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: a7687ede-7a6b-4ef6-bace-642f677fbe31
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: O2CZNQCIhjljl0G9M++DyTvS8nWrWYf19Zthsta8+VHHw3pwG7mCMI49iKULNm3rXChxNrqKTXVCOR7vuOmwlw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYZPR03MB8216
-X-MTK:  N
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_PASS,T_SPF_TEMPERROR,
-        UNPARSEABLE_RELAY autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="zgJmOBen9W7e17Dn"
+Content-Disposition: inline
+In-Reply-To: <CAHBxVyFNng2JOAQNfJSnabeq=+NYCSefk7OJEzkGMXEFY1tmFg@mail.gmail.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_PASS,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-SGkgYWxsLA0KDQpHZW50bGUgcGluZyBmb3IgdGhpcyBidWcgZml4IHJldmlldy4NCg0KVGhhbmtz
-Lg0KDQoNCg0KT24gVHVlLCAyMDIzLTA4LTAxIGF0IDIxOjM0ICswODAwLCBwZXRlci53YW5nQG1l
-ZGlhdGVrLmNvbSB3cm90ZToNCj4gRnJvbTogUGV0ZXIgV2FuZyA8cGV0ZXIud2FuZ0BtZWRpYXRl
-ay5jb20+DQo+IA0KPiBJZiBjbG9jayBzY2FsZSB1cCBhbmQgc3VzcGVuZCBjbG9jayBzY2FsaW5n
-LCB1ZnMgd2lsbCBrZWVwIGhpZ2gNCj4gcGVyZm9ybWFuY2UvcG93ZXIgbW9kZSBidXQgbm8gcmVh
-ZC93cml0ZSByZXF1ZXN0cyBvbiBnb2luZy4NCj4gSXQgaXMgbG9naWMgd3JvbmcgYW5kIGhhdmUg
-cG93ZXIgY29uY2Vybi4NCj4gDQo+IEZpeGVzOiA0MDFmMWU0NDkwZWUgKCJzY3NpOiB1ZnM6IGRv
-bid0IHN1c3BlbmQgY2xvY2sgc2NhbGluZyBkdXJpbmcNCj4gY2xvY2sgZ2F0aW5nIikNCj4gQ2M6
-IDxzdGFibGVAdmdlci5rZXJuZWwub3JnPg0KPiBTaWduZWQtb2ZmLWJ5OiBQZXRlciBXYW5nIDxw
-ZXRlci53YW5nQG1lZGlhdGVrLmNvbT4NCj4gLS0tDQo+ICBkcml2ZXJzL3Vmcy9jb3JlL3Vmc2hj
-ZC5jIHwgMiArLQ0KPiAgMSBmaWxlIGNoYW5nZWQsIDEgaW5zZXJ0aW9uKCspLCAxIGRlbGV0aW9u
-KC0pDQo+IA0KPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy91ZnMvY29yZS91ZnNoY2QuYyBiL2RyaXZl
-cnMvdWZzL2NvcmUvdWZzaGNkLmMNCj4gaW5kZXggMTI5NDQ2Nzc1Nzk2Li5lMzY3MmU1NWVmYWUg
-MTAwNjQ0DQo+IC0tLSBhL2RyaXZlcnMvdWZzL2NvcmUvdWZzaGNkLmMNCj4gKysrIGIvZHJpdmVy
-cy91ZnMvY29yZS91ZnNoY2QuYw0KPiBAQCAtMTQ1OCw3ICsxNDU4LDcgQEAgc3RhdGljIGludCB1
-ZnNoY2RfZGV2ZnJlcV90YXJnZXQoc3RydWN0IGRldmljZQ0KPiAqZGV2LA0KPiAgCQlrdGltZV90
-b191cyhrdGltZV9zdWIoa3RpbWVfZ2V0KCksIHN0YXJ0KSksIHJldCk7DQo+ICANCj4gIG91dDoN
-Cj4gLQlpZiAoc2NoZWRfY2xrX3NjYWxpbmdfc3VzcGVuZF93b3JrKQ0KPiArCWlmIChzY2hlZF9j
-bGtfc2NhbGluZ19zdXNwZW5kX3dvcmsgJiYgIXNjYWxlX3VwKQ0KPiAgCQlxdWV1ZV93b3JrKGhi
-YS0+Y2xrX3NjYWxpbmcud29ya3EsDQo+ICAJCQkgICAmaGJhLT5jbGtfc2NhbGluZy5zdXNwZW5k
-X3dvcmspOw0KPiAgDQo=
+--zgJmOBen9W7e17Dn
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Wed, Aug 09, 2023 at 02:01:07AM -0700, Atish Kumar Patra wrote:
+> On Tue, Aug 8, 2023 at 6:39=E2=80=AFAM Conor Dooley <conor@kernel.org> wr=
+ote:
+> >
+> > On Tue, Aug 08, 2023 at 12:54:11AM -0700, Atish Kumar Patra wrote:
+> > > On Wed, Aug 2, 2023 at 4:14=E2=80=AFAM Conor Dooley <conor.dooley@mic=
+rochip.com> wrote:
+> > > >
+> > > > Add an erratum for versions [v0.8 to v1.3) of OpenSBI which fail to=
+ add
+> > > > the "no-map" property to the reserved memory nodes for the regions =
+it
+> > > > has protected using PMPs.
+> > > >
+> > > > Our existing fix sweeping hibernation under the carpet by marking it
+> > > > NONPORTABLE is insufficient as there are other ways to generate
+> > > > accesses to these reserved memory regions, as Petr discovered [1]
+> > > > while testing crash kernels & kdump.
+> > > >
+> > > > Intercede during the boot process when the afflicted versions of Op=
+enSBI
+> > > > are present & set the "no-map" property in all "mmode_resv" nodes b=
+efore
+> > > > the kernel does its reserved memory region initialisation.
+> > > >
+> > >
+> > > We have different mechanisms of DT being passed to the kernel.
+> > >
+> > > 1. A prior stage(e.g U-Boot SPL) to M-mode runtime firmware (e.g.
+> > > OpenSBI, rustSBI) passes the DT to M-mode runtime firmware and it
+> > > passes to the next stage.
+> > > In this case, M-mode runtime firmware gets a chance to update the
+> > > no-map property in DT that the kernel can parse.
+> > >
+> > > 2. User loads the DT from the boot loader (e.g EDK2, U-Boot proper).
+> > > Any DT patching done by the M-mode firmware is useless. If these DTBs
+> > > don't have the no-map
+> > > property, hibernation or EFI booting will have issues as well.
+> > >
+> >
+> > > We are trying to solve only one part of problem #1 in this patch.
+> >
+> > Correct.
+> >
+> > If someone's second stage is also providing an incorrect devicetree
+> > then, yeah, this approach would fall apart - but it's the firmware
+> > provided devicetree being incorrect that I am trying to account for
+> > here. If a person incorrectly constructed one, I am not really sure what
+> > we can do for them, they incorrect described their hardware /shrug
+> > My patch should of course help in some of the scenarios you mention abo=
+ve
+> > if the name of the reserved memory region from OpenSBI is propagated by
+> > the second-stage bootloader, but that is just an extension of case 1,
+> > not case 2.
+> >
+> > > I
+> > > don't think any other M-mode runtime firmware patches DT with no-map
+> > > property as well.
+> > > Please let me know if I am wrong about that. The problem is not
+> > > restricted to [v0.8 to v1.3) of OpenSBI.
+> >
+> > It comes down to Alex's question - do we want to fix this kind of
+> > firmware issue in the kernel? Ultimately this is a policy decision that
+> > "somebody" has to make. Maybe the list of firmwares that need this
+>=20
+> IMO, we shouldn't as this is a slippery slope. Kernel can't fix every
+> firmware bug by having erratas.
+> I agree with your point below about firmware in shipping products. I
+> am not aware of any official products shipping anything other than
+> OpenSBI either.
+
+> However, I have seen users using other firmwares in their dev
+> environment.
+
+If someone's already changed their boards firmware, I have less sympathy
+for them, as they should be able to make further changes. Punters buying
+SBCs to install Fedora or Debian w/o having to consider their firmware
+are who I am more interested in helping.
+
+> IMHO, this approach sets a bad precedent for the future especially
+> when it only solves one part of the problem.
+
+Yeah, I'm certainly wary of setting an unwise precedent here.
+Inevitably we will need to have firmware-related errata and it'd be good
+to have a policy for what is (or more importantly what isn't
+acceptable). Certainly we have said that known-broken version of OpenSBI
+that T-Head puts in their SDK is not supported by the mainline kernel.
+On the latter part, I'm perfectly happy to expand the erratum to cover
+all affected firmwares, but I wasn't even sure if my fix worked
+properly, hence the request for testing from those who encountered the
+problem.
+
+> We shouldn't hide firmware bugs in the kernel when an upgraded
+> firmware is already available.
+
+Just to note, availability of an updated firmware upstream does not
+necessarily mean that corresponding update is possible for affected
+hardware.
+
+> This bug is well documented in various threads and fixed in the latest
+> version of OpenSBI.
+> I am assuming other firmwares will follow it as well.
+>=20
+> Anybody facing hibernation or efi related booting issues should just
+> upgrade to the latest version of firmware (e.g OpenSBI v1.3)
+> Latest version of Qemu will support(if not happened already) the
+> latest version of OpenSBI.
+>=20
+> This issue will only manifest in kernels 6.4 or higher. Any user
+> facing these with the latest kernel can also upgrade the firmware.
+> Do you see any issue with that ?
+
+I don't think it is fair to compare the ease of upgrading the kernel
+to that required to upgrade a boards firmware, with the latter being
+far, far more inconvenient on pretty much all of the boards that I have.
+
+I'm perfectly happy to drop this series though, if people generally are
+of the opinion that this sort of firmware workaround is ill-advised.
+We are unaffected by it, so I certainly have no pressure to have
+something working here. It's my desire not to be user-hostile that
+motivated this patch.
+
+--zgJmOBen9W7e17Dn
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZNSougAKCRB4tDGHoIJi
+0q6bAP48E8ofWxr0+xY4r2c1p/SzPcfP2e5RyZz2ZPahAqStFgD/eXdLG4FbmUeV
+2e8kchwIWBo7MYPA1++yKqsUa5xgUgA=
+=HRr4
+-----END PGP SIGNATURE-----
+
+--zgJmOBen9W7e17Dn--
