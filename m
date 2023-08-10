@@ -2,217 +2,154 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 383727773B1
-	for <lists+stable@lfdr.de>; Thu, 10 Aug 2023 11:08:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F02497773B4
+	for <lists+stable@lfdr.de>; Thu, 10 Aug 2023 11:09:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230323AbjHJJIH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 10 Aug 2023 05:08:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45420 "EHLO
+        id S231617AbjHJJIj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 10 Aug 2023 05:08:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45410 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231617AbjHJJHy (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 10 Aug 2023 05:07:54 -0400
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 27A6D211F;
-        Thu, 10 Aug 2023 02:07:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1691658473; x=1723194473;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=XjNuV56YbluVNxCDCUR+x11NSBYonlIx/g3LtAfg0tM=;
-  b=orB2eVNhzWWOSwqEJYoZCWmdlFTv+WxAlwbB2QCuRtgsGrlPYnmdMwiI
-   DmmFKHxnvOKa4rTgXPf28iObDlDtbwjCoz45tlMeEqLRVdDtWWfPrncq4
-   6/g1ESPxDoVNIWsL6EWQp06jzJCHjCYBBoq2aMVtZgt9wMHTL89CBoAYd
-   ZegiGVXbOkfneRAPB0CFWsZbZkmpjsmkR5FzPZ66e3cbjma0LSobs/Q/7
-   bjh2aAohRsTOFO8zdI2EcxtvNQIXQQX1P4ZC5xFP8vhJngOP+NPqNSQbF
-   LViT1lskVlpFiyvwV0ufy6tsvK7kvf3JjRX9Z/awPFEsEiUgcj4K7ngdB
-   g==;
-X-IronPort-AV: E=Sophos;i="6.01,161,1684825200"; 
-   d="asc'?scan'208";a="165797387"
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa6.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 10 Aug 2023 02:07:51 -0700
-Received: from chn-vm-ex01.mchp-main.com (10.10.85.143) by
- chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.21; Thu, 10 Aug 2023 02:07:50 -0700
-Received: from wendy (10.10.115.15) by chn-vm-ex01.mchp-main.com
- (10.10.85.143) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.21 via Frontend
- Transport; Thu, 10 Aug 2023 02:07:48 -0700
-Date:   Thu, 10 Aug 2023 10:07:10 +0100
-From:   Conor Dooley <conor.dooley@microchip.com>
-To:     Atish Kumar Patra <atishp@rivosinc.com>
-CC:     Conor Dooley <conor@kernel.org>, <palmer@dabbelt.com>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Anup Patel <apatel@ventanamicro.com>,
-        Alexandre Ghiti <alexghiti@rivosinc.com>,
-        =?iso-8859-1?Q?Bj=F6rn_T=F6pel?= <bjorn@rivosinc.com>,
-        Song Shuai <suagrfillet@gmail.com>,
-        JeeHeng Sia <jeeheng.sia@starfivetech.com>,
-        Petr Tesarik <petrtesarik@huaweicloud.com>,
-        <linux-riscv@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
-        <stable@vger.kernel.org>
-Subject: Re: [RFT 1/2] RISC-V: handle missing "no-map" properties for
- OpenSBI's PMP protected regions
-Message-ID: <20230810-crewless-pampers-6f51aafb8cff@wendy>
-References: <20230802-purse-hydrant-6f44f77364b0@wendy>
- <20230802-detention-second-82ab2b53e07a@wendy>
- <CAHBxVyGgSJ66zMj65tRup2u23KP4=RJ5zN7hj5=K9e91NA9eog@mail.gmail.com>
- <20230808-handbag-mushily-f884178d29f5@spud>
- <CAHBxVyFNng2JOAQNfJSnabeq=+NYCSefk7OJEzkGMXEFY1tmFg@mail.gmail.com>
+        with ESMTP id S233970AbjHJJIe (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 10 Aug 2023 05:08:34 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C832211E
+        for <stable@vger.kernel.org>; Thu, 10 Aug 2023 02:07:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1691658469;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=HvsQTU+s0yg5fJsIHyPTwlq37yneMxzeYu4hOdW9o58=;
+        b=TglEYu8wdDdP25lKmOv3/skFrL5dOz/2Kz7Kqqm0EuZ4z+oz15sK3UKQtA3fZGIxAYf35g
+        /uQnMXCd04B2XFDScUCfC7rt/TizXwI6HT9q6e2kE3YauMRVs7ZRIKZVshjWEHCuXwWIqz
+        Go7Wr1dKHtQRVxupg6Nsv3hnNt/j2co=
+Received: from mail-lf1-f72.google.com (mail-lf1-f72.google.com
+ [209.85.167.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-348-PDVfms91MnaWk1VXa7yY0Q-1; Thu, 10 Aug 2023 05:07:45 -0400
+X-MC-Unique: PDVfms91MnaWk1VXa7yY0Q-1
+Received: by mail-lf1-f72.google.com with SMTP id 2adb3069b0e04-4fe52cd625aso584745e87.0
+        for <stable@vger.kernel.org>; Thu, 10 Aug 2023 02:07:45 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1691658464; x=1692263264;
+        h=content-transfer-encoding:in-reply-to:references:cc:to:from
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=HvsQTU+s0yg5fJsIHyPTwlq37yneMxzeYu4hOdW9o58=;
+        b=BSB2gD0sWhAF3Fa2U8zF9h7phquVxhZ6NFyuA5cpYGHed+lRM89Iay+MAPbfcDw74Y
+         uKL1z77aoNxdoWqdzDiCETSbxi5sikp3LsOFw3xrM6rAAq3I8cnLzQ/cWw9T2xcNe+T5
+         sYc2GGqI5eUN0aSC/XnXAnY3IVILjYu1No5V4Ypm+dMJxycyS64RqDN5GXX3fzfGnr15
+         LMyg+9CC8A12iXfvObFanePi54Iq7DBCthjqoumiN/bqNctvN2lUXBg2DjbCsyl9yoon
+         +7RwsMjJhti9kWr8sLtnA2oWSc5OZdvW4P8slTW8Hj0NPS9EUhUgtpqSTjgqZ5LOleJK
+         p9VQ==
+X-Gm-Message-State: AOJu0YzfieFdQKY6E4qYvH4Fr1tI9SMB+vDgAx5Mn1zQTsZq7cHTnkdq
+        c9/u/YU2HwZF0G4K5YMC2BGs98DZcfdn5/oYWJ6qafqK8x/hA7BP++UmLQ6XOcDylAP91xeWdEx
+        f3jVJJQXbeCgTk0MZ
+X-Received: by 2002:a05:6512:224c:b0:4fe:167e:9f04 with SMTP id i12-20020a056512224c00b004fe167e9f04mr1495940lfu.61.1691658464350;
+        Thu, 10 Aug 2023 02:07:44 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEMz5tsMomC2dZDvww3SHQAA28ffSlWI+EH25V7an7RGKZkIiAxT7W0QM3DOYw3FQxvUfceCA==
+X-Received: by 2002:a05:6512:224c:b0:4fe:167e:9f04 with SMTP id i12-20020a056512224c00b004fe167e9f04mr1495918lfu.61.1691658463972;
+        Thu, 10 Aug 2023 02:07:43 -0700 (PDT)
+Received: from ?IPV6:2001:1c00:c32:7800:5bfa:a036:83f0:f9ec? (2001-1c00-0c32-7800-5bfa-a036-83f0-f9ec.cable.dynamic.v6.ziggo.nl. [2001:1c00:c32:7800:5bfa:a036:83f0:f9ec])
+        by smtp.gmail.com with ESMTPSA id u25-20020ac243d9000000b004fb8a2b9485sm204964lfl.248.2023.08.10.02.07.42
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 10 Aug 2023 02:07:43 -0700 (PDT)
+Message-ID: <666f794b-89fe-6aff-463e-2a150fd0712e@redhat.com>
+Date:   Thu, 10 Aug 2023 11:07:42 +0200
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="zgJmOBen9W7e17Dn"
-Content-Disposition: inline
-In-Reply-To: <CAHBxVyFNng2JOAQNfJSnabeq=+NYCSefk7OJEzkGMXEFY1tmFg@mail.gmail.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_PASS,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH v3 3/3] ACPI: resource: Honor MADT INT_SRC_OVR settings
+ for IRQ1 on AMD Zen
+Content-Language: en-US, nl
+From:   Hans de Goede <hdegoede@redhat.com>
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     August Wikerfors <git@augustwikerfors.se>,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        Linux regressions mailing list <regressions@lists.linux.dev>,
+        stable@vger.kernel.org, linux-acpi@vger.kernel.org, x86@kernel.org
+References: <20230809085526.84913-1-hdegoede@redhat.com>
+ <20230809085526.84913-4-hdegoede@redhat.com>
+ <6a6fa2ba-c07d-45b2-96c5-b0f44f5f288b@augustwikerfors.se>
+ <c3684f00-27bd-d4dd-93dd-18936c006de9@redhat.com>
+ <CAJZ5v0gx_vu_Pip3rkUo_78mNnUbp++hpRfpa-iDaZP9r6_4sw@mail.gmail.com>
+ <e0dd9065-6dd8-af33-29a0-ae21f82063a2@redhat.com>
+In-Reply-To: <e0dd9065-6dd8-af33-29a0-ae21f82063a2@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
---zgJmOBen9W7e17Dn
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Hi,
 
-On Wed, Aug 09, 2023 at 02:01:07AM -0700, Atish Kumar Patra wrote:
-> On Tue, Aug 8, 2023 at 6:39=E2=80=AFAM Conor Dooley <conor@kernel.org> wr=
-ote:
-> >
-> > On Tue, Aug 08, 2023 at 12:54:11AM -0700, Atish Kumar Patra wrote:
-> > > On Wed, Aug 2, 2023 at 4:14=E2=80=AFAM Conor Dooley <conor.dooley@mic=
-rochip.com> wrote:
-> > > >
-> > > > Add an erratum for versions [v0.8 to v1.3) of OpenSBI which fail to=
- add
-> > > > the "no-map" property to the reserved memory nodes for the regions =
-it
-> > > > has protected using PMPs.
-> > > >
-> > > > Our existing fix sweeping hibernation under the carpet by marking it
-> > > > NONPORTABLE is insufficient as there are other ways to generate
-> > > > accesses to these reserved memory regions, as Petr discovered [1]
-> > > > while testing crash kernels & kdump.
-> > > >
-> > > > Intercede during the boot process when the afflicted versions of Op=
-enSBI
-> > > > are present & set the "no-map" property in all "mmode_resv" nodes b=
-efore
-> > > > the kernel does its reserved memory region initialisation.
-> > > >
-> > >
-> > > We have different mechanisms of DT being passed to the kernel.
-> > >
-> > > 1. A prior stage(e.g U-Boot SPL) to M-mode runtime firmware (e.g.
-> > > OpenSBI, rustSBI) passes the DT to M-mode runtime firmware and it
-> > > passes to the next stage.
-> > > In this case, M-mode runtime firmware gets a chance to update the
-> > > no-map property in DT that the kernel can parse.
-> > >
-> > > 2. User loads the DT from the boot loader (e.g EDK2, U-Boot proper).
-> > > Any DT patching done by the M-mode firmware is useless. If these DTBs
-> > > don't have the no-map
-> > > property, hibernation or EFI booting will have issues as well.
-> > >
-> >
-> > > We are trying to solve only one part of problem #1 in this patch.
-> >
-> > Correct.
-> >
-> > If someone's second stage is also providing an incorrect devicetree
-> > then, yeah, this approach would fall apart - but it's the firmware
-> > provided devicetree being incorrect that I am trying to account for
-> > here. If a person incorrectly constructed one, I am not really sure what
-> > we can do for them, they incorrect described their hardware /shrug
-> > My patch should of course help in some of the scenarios you mention abo=
-ve
-> > if the name of the reserved memory region from OpenSBI is propagated by
-> > the second-stage bootloader, but that is just an extension of case 1,
-> > not case 2.
-> >
-> > > I
-> > > don't think any other M-mode runtime firmware patches DT with no-map
-> > > property as well.
-> > > Please let me know if I am wrong about that. The problem is not
-> > > restricted to [v0.8 to v1.3) of OpenSBI.
-> >
-> > It comes down to Alex's question - do we want to fix this kind of
-> > firmware issue in the kernel? Ultimately this is a policy decision that
-> > "somebody" has to make. Maybe the list of firmwares that need this
->=20
-> IMO, we shouldn't as this is a slippery slope. Kernel can't fix every
-> firmware bug by having erratas.
-> I agree with your point below about firmware in shipping products. I
-> am not aware of any official products shipping anything other than
-> OpenSBI either.
+On 8/9/23 21:41, Hans de Goede wrote:
+> Hi,
+> 
+> On 8/9/23 21:25, Rafael J. Wysocki wrote:
+>> On Wed, Aug 9, 2023 at 9:20 PM Hans de Goede <hdegoede@redhat.com> wrote:
+>>>
+>>> Hi,
+>>>
+>>> On 8/9/23 17:58, August Wikerfors wrote:
+>>>> On 2023-08-09 10:55, Hans de Goede wrote:
+>>>>> On AMD Zen acpi_dev_irq_override() by default prefers the DSDT IRQ 1
+>>>>> settings over the MADT settings.
+>>>>>
+>>>>> This causes the keyboard to malfunction on some laptop models
+>>>>> (see Links), all models from the Links have an INT_SRC_OVR MADT entry
+>>>>> for IRQ 1.
+>>>>>
+>>>>> Fixes: a9c4a912b7dc ("ACPI: resource: Remove "Zen" specific match and quirks")
+>>>>> Link: https://bugzilla.kernel.org/show_bug.cgi?id=217336
+>>>>> Link: https://bugzilla.kernel.org/show_bug.cgi?id=217394
+>>>>> Link: https://bugzilla.kernel.org/show_bug.cgi?id=217406
+>>>>> Cc: Mario Limonciello <mario.limonciello@amd.com>
+>>>>> Cc: Linux regressions mailing list <regressions@lists.linux.dev>
+>>>>> Cc: stable@vger.kernel.org
+>>>>> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+>>>>
+>>>> One of the laptops fixed by a9c4a912b7dc, PCSpecialist Elimina Pro 16 M [1], seems to have no INT_SRC_OVR entry for IRQ 1 [2]:
+>>>>
+>>>>> [    0.084265] ACPI: INT_SRC_OVR (bus 0 bus_irq 0 global_irq 2 dfl dfl)
+>>>>> [    0.084266] ACPI: INT_SRC_OVR (bus 0 bus_irq 9 global_irq 9 low level)
+>>>>
+>>>> I'm not sure if it was IRQ 1 that needed to be overridden for that model though, so it may work anyway with patch 2 of this series.
+>>>>
+>>>> [1] https://bugzilla.kernel.org/show_bug.cgi?id=217394#c18
+>>>> [2] https://bugzilla.kernel.org/attachment.cgi?id=304338
+>>>
+>>> Good catch, thanks. So it looks like this one needs a DMI quirk (until we have a better generic solution.
+>>>
+>>> I'll reach out to the reporter and ask for dmidecode output and prepare a follow-up patch. Still I think
+>>> that we should move forward with this series to fix the 6 bugs which are linked to from PAtch 1's
+>>> commitmsg and those are likely just the top of the iceberg.
+>>
+>> You are probably right, but it would be good to get a fix for this
+>> ASAP, as I would prefer it to go in along with the series, if
+>> possible.
+> 
+> Agreed I've asked in the bugzilla for dmidecode output for the laptop model in question (I checked  https://linux-hardware.org/ and it does not have this model).
+> 
+> As soon as I've dmidecode info I'll prepare the follow-up patch as well as a Fedora kernel with the entire series + qurik patch for the reporter to test.
 
-> However, I have seen users using other firmwares in their dev
-> environment.
+I have just send out the follow up patch with the DMI quirk:
 
-If someone's already changed their boards firmware, I have less sympathy
-for them, as they should be able to make further changes. Punters buying
-SBCs to install Fedora or Debian w/o having to consider their firmware
-are who I am more interested in helping.
+https://lore.kernel.org/linux-acpi/20230810090011.104770-1-hdegoede@redhat.com/
 
-> IMHO, this approach sets a bad precedent for the future especially
-> when it only solves one part of the problem.
+And I have started a Fedora kernel test build with this series + the quirk for the reporter to test:
 
-Yeah, I'm certainly wary of setting an unwise precedent here.
-Inevitably we will need to have firmware-related errata and it'd be good
-to have a policy for what is (or more importantly what isn't
-acceptable). Certainly we have said that known-broken version of OpenSBI
-that T-Head puts in their SDK is not supported by the mainline kernel.
-On the latter part, I'm perfectly happy to expand the erratum to cover
-all affected firmwares, but I wasn't even sure if my fix worked
-properly, hence the request for testing from those who encountered the
-problem.
+https://bugzilla.kernel.org/show_bug.cgi?id=217394#c33
 
-> We shouldn't hide firmware bugs in the kernel when an upgraded
-> firmware is already available.
+Regards,
 
-Just to note, availability of an updated firmware upstream does not
-necessarily mean that corresponding update is possible for affected
-hardware.
+Hans
 
-> This bug is well documented in various threads and fixed in the latest
-> version of OpenSBI.
-> I am assuming other firmwares will follow it as well.
->=20
-> Anybody facing hibernation or efi related booting issues should just
-> upgrade to the latest version of firmware (e.g OpenSBI v1.3)
-> Latest version of Qemu will support(if not happened already) the
-> latest version of OpenSBI.
->=20
-> This issue will only manifest in kernels 6.4 or higher. Any user
-> facing these with the latest kernel can also upgrade the firmware.
-> Do you see any issue with that ?
-
-I don't think it is fair to compare the ease of upgrading the kernel
-to that required to upgrade a boards firmware, with the latter being
-far, far more inconvenient on pretty much all of the boards that I have.
-
-I'm perfectly happy to drop this series though, if people generally are
-of the opinion that this sort of firmware workaround is ill-advised.
-We are unaffected by it, so I certainly have no pressure to have
-something working here. It's my desire not to be user-hostile that
-motivated this patch.
-
---zgJmOBen9W7e17Dn
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZNSougAKCRB4tDGHoIJi
-0q6bAP48E8ofWxr0+xY4r2c1p/SzPcfP2e5RyZz2ZPahAqStFgD/eXdLG4FbmUeV
-2e8kchwIWBo7MYPA1++yKqsUa5xgUgA=
-=HRr4
------END PGP SIGNATURE-----
-
---zgJmOBen9W7e17Dn--
