@@ -2,76 +2,142 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0B302777E0D
-	for <lists+stable@lfdr.de>; Thu, 10 Aug 2023 18:22:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1BFC0777E1C
+	for <lists+stable@lfdr.de>; Thu, 10 Aug 2023 18:23:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236705AbjHJQVo (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 10 Aug 2023 12:21:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52024 "EHLO
+        id S234290AbjHJQXm (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 10 Aug 2023 12:23:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50738 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236675AbjHJQVm (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 10 Aug 2023 12:21:42 -0400
-Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 03A8F270A;
-        Thu, 10 Aug 2023 09:21:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
-        :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=nzbm7zQ6piDxhfyPXbFOtMIzi1rH9tl9eRtCZrp6e/g=; b=0tuO6XmD/1avgiWMDtNwlVC9G2
-        mO72eTVDQn19DyCZkHq0Gk0RSvpuoXidwIkEvJn0/WVgOfSx1/TFzcCSxJsIOJ6p1vCg1KGEzsXEu
-        QjMsO+P+W3ACg2gwHJFi3gRy6QUPFvrgNprH54dILqMZ2A+9oneHnyCEW+DzL69zRqEDzvu7XuRQX
-        uCXUxNamWuxzQUkst1DRE5y/wbFjnHuJ5VKINnWvHGShkpE6PYAhiOrN1HzEQyrhmMfuUma7d37x0
-        QUxtcAib1rzB992eb7lcU+MVGVqZZWZLI9bVUukHCV+NjpSmyQjjfur6XMdrrpslKX532GYZ1cy1P
-        lbQdzGfQ==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.96 #2 (Red Hat Linux))
-        id 1qU8Pl-008AuS-1j;
-        Thu, 10 Aug 2023 16:21:33 +0000
-Date:   Thu, 10 Aug 2023 09:21:33 -0700
-From:   Christoph Hellwig <hch@infradead.org>
-To:     Richard Weinberger <richard@nod.at>
-Cc:     Christoph Hellwig <hch@infradead.org>,
-        linux-mtd <linux-mtd@lists.infradead.org>,
-        Stephan Wurm <stephan.wurm@a-eberle.de>,
-        stable <stable@vger.kernel.org>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Oliver Neukum <oliver@neukum.org>,
-        Ali Akcaagac <aliakc@web.de>,
-        Jamie Lenehan <lenehan@twibble.org>,
-        James Bottomley <jejb@linux.ibm.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        linux-scsi <linux-scsi@vger.kernel.org>
-Subject: Re: [PATCH 1/7] ubi: block: Refactor sg list processing for highmem
-Message-ID: <ZNUOjQVivR/5pFKE@infradead.org>
-References: <20230810160019.16977-1-richard@nod.at>
- <20230810160019.16977-2-richard@nod.at>
- <ZNUK8nWnUYB6B4Kg@infradead.org>
- <298860961.5257332.1691684136772.JavaMail.zimbra@nod.at>
+        with ESMTP id S234307AbjHJQXk (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 10 Aug 2023 12:23:40 -0400
+Received: from us-smtp-delivery-162.mimecast.com (us-smtp-delivery-162.mimecast.com [170.10.133.162])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 134D42696
+        for <stable@vger.kernel.org>; Thu, 10 Aug 2023 09:22:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hp.com; s=mimecast20180716;
+        t=1691684575;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=GHgpc2yvaH3cx+hIFH5Da9fIQ8/pQvNfUhlxlMcCc+E=;
+        b=l3KNNnot2aCtwvcOqK/g5wwKhO19AN5wLABypqzuNk9nsaBKlsdOZQjZRluIGnuKeOq2S5
+        OyHux3Xn+loUCG0EhxaG+JNHMvorREGrUhLKUVlKvunira9fD3kixqpvIHJOwl5NkffAnq
+        rKzCM5PrBixv5LHCbxk+mOzluuVSnaQ=
+Received: from g7t14360s.inc.hp.com (g7t14360s.inc.hp.com [15.73.128.135])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-142-MKOFfla3Np2FCTU5nHI3EA-1; Thu, 10 Aug 2023 12:22:53 -0400
+X-MC-Unique: MKOFfla3Np2FCTU5nHI3EA-1
+Received: from g7t14407g.inc.hpicorp.net (g7t14407g.inc.hpicorp.net [15.63.19.131])
+        (using TLSv1.2 with cipher ADH-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by g7t14360s.inc.hp.com (Postfix) with ESMTPS id 5D9AB40;
+        Thu, 10 Aug 2023 16:22:51 +0000 (UTC)
+Received: from localhost.localdomain (unknown [15.53.255.151])
+        by g7t14407g.inc.hpicorp.net (Postfix) with ESMTP id 137C814;
+        Thu, 10 Aug 2023 16:22:50 +0000 (UTC)
+From:   Alexandru Gagniuc <alexandru.gagniuc@hp.com>
+To:     stern@rowland.harvard.edu,
+        Alexandru Gagniuc <alexandru.gagniuc@hp.com>
+Cc:     bjorn@mork.no, davem@davemloft.net, edumazet@google.com,
+        eniac-xw.zhang@hp.com, hayeswang@realtek.com, jflf_kernel@gmx.com,
+        kuba@kernel.org, linux-kernel@vger.kernel.org,
+        linux-usb@vger.kernel.org, netdev@vger.kernel.org,
+        pabeni@redhat.com, stable@vger.kernel.org, svenva@chromium.org
+Subject: Re: [PATCH v2] r8152: Suspend USB device before shutdown when WoL is enabled
+Date:   Thu, 10 Aug 2023 16:22:16 +0000
+Message-Id: <20230810162216.13455-1-alexandru.gagniuc@hp.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <3c4fd3d8-2b0b-492e-aacc-afafcea98417@rowland.harvard.edu>
+References: <3c4fd3d8-2b0b-492e-aacc-afafcea98417@rowland.harvard.edu>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <298860961.5257332.1691684136772.JavaMail.zimbra@nod.at>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: hp.com
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=WINDOWS-1252; x-default=true
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, Aug 10, 2023 at 06:15:36PM +0200, Richard Weinberger wrote:
-> >> The followup patches in this series will switch to kmap_sg()
-> >> and we can remove our own helper and the bounce buffer.
-> > 
-> > Please just use kmap_local and avoid the bounce buffering.
-> 
-> Patch 6 does this.
+From: Alan Stern <stern@rowland.harvard.edu>
 
-But why add the bounce buffering first if you can avoid it from the
-very beginning by just using kmap_local instead of adding a new
-caller for the deprecate kmap_atomic?
+On Wed, Aug 02, 2023 at 11:23:46AM -0400, Alan Stern wrote:
+> On Wed, Aug 02, 2023 at 02:56:43PM +0000, Gagniuc, Alexandru wrote:
+> > On Wed, Jul 19, 2023 at 02:36:25PM -0400, Alan Stern wrote:
+> > > How do you know that the link will _remain_ in the correct state?
+> >=20
+> > The objective is to get to xhci_set_link_state() with the USB_SS_PORT_L=
+S_U3
+> > argument. This is achieved through usb_port_suspend() in drivers/usb/ho=
+st/hub.c,
+> > and the function is implemented in drivers/usb/host/xhci-hub.c.
+> >=20
+> > This is the only path in the kernel that I am aware of for setting the =
+U3 link
+> > state. Given that it is part of the USB subsystem, I am fairly confiden=
+t it will
+> > show consistent behavior across platforms.
+>=20
+> That does not answer my question.  I agree that making this change will=
+=20
+> put the link into the U3 state.  But I don't have any reason to think=20
+> that some other software won't later put the link into some other state.
+
+I don't have a rigurous proof that the link will remain in the correct stat=
+e.
+The only conjecture that I can make is that no other software besides the k=
+ernel
+will be running at this time. Thus, if the kernel manages to not break the =
+link
+state, things should work as intended.
+
+> > > That is, how do you know that the shutdown processing for the USB hos=
+t=20
+> > > controller won't disable the link entirely, thereby preventing WoL fr=
+om=20
+> > > working?
+> >=20
+> > We are talking to the USB hub in order to set the link state. I don't s=
+ee how
+> > specifics of the host controller would influence behavior.
+>=20
+> Specifics of the host controller probably won't influence behavior. =20
+> However, specifics of the _software_ can make a big difference.
+>=20
+> >  I do expect a
+> > controller which advertises S4/S5 in /proc/acpi/wakeup to not do anythi=
+ng that
+> > would sabotage this capability. Disabling the link entirely would proba=
+lby
+> > violate that promise.
+>=20
+> Not if the kernel _tells_ the controller to disable the link.
+>=20
+> > Think of USB-C docks with a power button showing up as a HID class. The=
+ scenario
+> > herein would disable the power button. I would take that to be a bug in=
+ the host
+> > controller driver if the S4/S5 capability is advertised.
+>=20
+> Indeed.  And I am asking how you can be sure the host controller driver=
+=20
+> (or some other part of the software stack) doesn't have this bug.
+
+The only way that I have to show that is empirical. I observe that WoL from=
+ S5
+does not work on a device with an r8153 chip. I apply the change, and verif=
+y
+that WoL from S5 now works in this scenario. What are you thinking of in te=
+rms
+of being sure no current or future bug exists?
+
+Alex
+
