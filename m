@@ -2,121 +2,110 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DAA70778031
-	for <lists+stable@lfdr.de>; Thu, 10 Aug 2023 20:24:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8DDD277807F
+	for <lists+stable@lfdr.de>; Thu, 10 Aug 2023 20:41:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232426AbjHJSYn (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 10 Aug 2023 14:24:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50520 "EHLO
+        id S236053AbjHJSk7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 10 Aug 2023 14:40:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57888 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233190AbjHJSYn (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 10 Aug 2023 14:24:43 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E0BE8128;
-        Thu, 10 Aug 2023 11:24:42 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 80EF9665C4;
-        Thu, 10 Aug 2023 18:24:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A025C433C7;
-        Thu, 10 Aug 2023 18:24:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1691691881;
-        bh=czylyOg9wVKVXz+1ynqLtwzRuhlhf3XOTcyXD0fa8gw=;
-        h=From:To:Cc:Subject:Date:From;
-        b=jW7AsVU+LdkOSneIGoW9k+7Wt+lS8Cc+SW2VXuTppoScN/vOq8cUpkwJuoOUbGAsx
-         5S6amd7/YaMWHm2BFfFMqXFmUVam1CrKcx7CJ0UERNwMre1q68fKlrspsmdsKpyvQ6
-         sMobct+rslQquiz9jStWof0YztZ6hJ34Xaf53kA7ePA4xi0ODTgm1PlPM/4j1hqkyr
-         FJRyctepqSFNNNh+Gdjm4fAI+eXUvWCnAMaetGIKpTEkx8UXOo/qNewJ/8sdXiaUYx
-         Z6/5gqW9gpuVlgl8YcVSaHWOnBtyXdOoll5Mf6ord86z6zgUwt0nGGFrOz4UEPtgan
-         kWVwH0TiqqjNw==
-From:   Jarkko Sakkinen <jarkko@kernel.org>
-To:     linux-integrity@vger.kernel.org
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        Jarkko Sakkinen <jarkko@kernel.org>, stable@vger.kernel.org,
-        "Takashi Iwai" <tiwai@suse.de>,
-        Lino Sanfilippo <l.sanfilippo@kunbus.com>,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH] tpm/tpm_tis: Disable interrupts categorically for Lenovo
-Date:   Thu, 10 Aug 2023 21:24:33 +0300
-Message-Id: <20230810182433.518523-1-jarkko@kernel.org>
-X-Mailer: git-send-email 2.39.2
+        with ESMTP id S236052AbjHJSkn (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 10 Aug 2023 14:40:43 -0400
+Received: from mail-ej1-x62b.google.com (mail-ej1-x62b.google.com [IPv6:2a00:1450:4864:20::62b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 841413C1D
+        for <stable@vger.kernel.org>; Thu, 10 Aug 2023 11:39:57 -0700 (PDT)
+Received: by mail-ej1-x62b.google.com with SMTP id a640c23a62f3a-99bfcf4c814so175926366b.0
+        for <stable@vger.kernel.org>; Thu, 10 Aug 2023 11:39:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google; t=1691692771; x=1692297571;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=4XjBV0qXXp37wiVyXtpMqkFIhm8hlMYH3y9Bd3d4SgY=;
+        b=Y820onkS7q0gvE2DiiLiBvn4MlVr42biwd5fACjdg/gRbZUP/zrOVtQAaZ8gMPfpHL
+         VUMhrbvWNJ1yd7fLgZ1K3EI0TiITo7RPJuV+Kk19fpYOPNTNYmcOd+pamOilg/M6Vuxp
+         6az6LtqPKUTDuIlH4Sr7ozIQK4YNGZ4eS1bF0=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1691692771; x=1692297571;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=4XjBV0qXXp37wiVyXtpMqkFIhm8hlMYH3y9Bd3d4SgY=;
+        b=Rwu+xRG+aKmdfxa+mikLMHY6LpfKlfp5l4hY/sB1huqCPMNk7AszPlHpHeLFyOHiI9
+         ZiJfWkL11rYTWapU8EZuJ2k870kaxzT1bM8JfwXgdZSDeNVRzDGbOixN72KBqmUlc+aN
+         gqvOj381CGFcyVb7vJTMZy/Ud1AJTdILmyN/ZNy65MvQjkyQ/7RVkN3c5SesK+S3m5Df
+         SiXyUqxVjsV2yrw1AJL4tBbDGDYeCV6TVcCPT/mK0/8xfnnZ/eipQbOuNmSSH6jehXP6
+         U98rM+HGXJAtIOAnVKQjk+mMIV0X9gRQGrVsfQGgX0hOD5cAXdTcWrAITjSkssLc89jm
+         3Xpw==
+X-Gm-Message-State: AOJu0YwMdIOqFfdCoXdFR63XRLtKfOc0T22wkYugbxq3EXSXCpiHt9KN
+        my2satIshrjPpktGspx0fmLYrLQmMBplmJ5S2PkvxYX7
+X-Google-Smtp-Source: AGHT+IFF18BVM4kIhHs+TT6BEIalkyADS7LaGuXkFniFrPXoRHzymk7Zf48BfQZHXKQGymZ+WNzvCA==
+X-Received: by 2002:a17:907:75e7:b0:99c:441:ffa with SMTP id jz7-20020a17090775e700b0099c04410ffamr2683263ejc.29.1691692771161;
+        Thu, 10 Aug 2023 11:39:31 -0700 (PDT)
+Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com. [209.85.208.53])
+        by smtp.gmail.com with ESMTPSA id lf6-20020a170906ae4600b0099cf840527csm1255993ejb.153.2023.08.10.11.39.30
+        for <stable@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 10 Aug 2023 11:39:30 -0700 (PDT)
+Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-5236a9788a7so1578154a12.0
+        for <stable@vger.kernel.org>; Thu, 10 Aug 2023 11:39:30 -0700 (PDT)
+X-Received: by 2002:a05:6402:31eb:b0:523:3609:d3ca with SMTP id
+ dy11-20020a05640231eb00b005233609d3camr2930836edb.20.1691692769886; Thu, 10
+ Aug 2023 11:39:29 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+References: <20230809144600.13721-1-kirill.shutemov@linux.intel.com>
+ <CAHk-=whaGTq11x_F1Y+J85j+Eh7JxVqH1sWpqgH+-7wQZ1ZE2A@mail.gmail.com> <CY4PR11MB2005976F49613E20BC072ECCF913A@CY4PR11MB2005.namprd11.prod.outlook.com>
+In-Reply-To: <CY4PR11MB2005976F49613E20BC072ECCF913A@CY4PR11MB2005.namprd11.prod.outlook.com>
+From:   Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Thu, 10 Aug 2023 11:39:12 -0700
+X-Gmail-Original-Message-ID: <CAHk-=whS19C=y32vNMRp7UfQMVw38HOfzhs9v5rjLayEFjMNPA@mail.gmail.com>
+Message-ID: <CAHk-=whS19C=y32vNMRp7UfQMVw38HOfzhs9v5rjLayEFjMNPA@mail.gmail.com>
+Subject: Re: [PATCH] mm: Fix access_remote_vm() regression on tagged addresses
+To:     "Schimpe, Christina" <christina.schimpe@intel.com>
+Cc:     "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Kostya Serebryany <kcc@google.com>,
+        Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+        Andrey Konovalov <andreyknvl@gmail.com>,
+        Alexander Potapenko <glider@google.com>,
+        Taras Madan <tarasmadan@google.com>,
+        Dmitry Vyukov <dvyukov@google.com>,
+        "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
+        "linux-mm@kvack.org" <linux-mm@kvack.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-By large most of the entries in tpm_tis_dmi_table[] are for Lenovo laptops,
-and they keep on coming. Therefore, disable IRQs categorically for Lenovo.
+On Thu, 10 Aug 2023 at 05:42, Schimpe, Christina
+<christina.schimpe@intel.com> wrote:
+>
+> We don't have any LAM support in GDB yet, we are just working on it.
+> We currently rely on that feature, but could still change it. We don't
+> necessarily require /proc/PID/mem to support tagged addresses.
+>
+> ARM's TBI support in GDB does not rely on /proc/PID/mem to support tagged
+> addresses AFAIK.
 
-Fixes: e644b2f498d2 ("tpm, tpm_tis: Enable interrupt test")
-Cc: <stable@vger.kernel.org> # v6.4+
-Reported-by: "Takashi Iwai" <tiwai@suse.de>
-Closes: https://lore.kernel.org/linux-integrity/87il9qhxjq.wl-tiwai@suse.de/
-Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
----
-This will be included into v6.5-rc6 PR, as long as Takashi ack's it. I'm
-planning to send tomorrow morning (GMT+3).
+Ahh. That would explain why nobody noticed.
 
-BR, Jarkko
- drivers/char/tpm/tpm_tis.c | 34 ----------------------------------
- 1 file changed, 34 deletions(-)
+I do wonder if perhaps /proc/<pid>/mem should just match the real
+addresses (ie the ones you would see in /proc/<pid>/maps).
 
-diff --git a/drivers/char/tpm/tpm_tis.c b/drivers/char/tpm/tpm_tis.c
-index 3c0f68b9e44f..dd0f52d35073 100644
---- a/drivers/char/tpm/tpm_tis.c
-+++ b/drivers/char/tpm/tpm_tis.c
-@@ -132,42 +132,8 @@ static const struct dmi_system_id tpm_tis_dmi_table[] = {
- 	},
- 	{
- 		.callback = tpm_tis_disable_irq,
--		.ident = "ThinkPad T490s",
- 		.matches = {
- 			DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
--			DMI_MATCH(DMI_PRODUCT_VERSION, "ThinkPad T490s"),
--		},
--	},
--	{
--		.callback = tpm_tis_disable_irq,
--		.ident = "ThinkStation P360 Tiny",
--		.matches = {
--			DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
--			DMI_MATCH(DMI_PRODUCT_VERSION, "ThinkStation P360 Tiny"),
--		},
--	},
--	{
--		.callback = tpm_tis_disable_irq,
--		.ident = "ThinkPad L490",
--		.matches = {
--			DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
--			DMI_MATCH(DMI_PRODUCT_VERSION, "ThinkPad L490"),
--		},
--	},
--	{
--		.callback = tpm_tis_disable_irq,
--		.ident = "ThinkPad L590",
--		.matches = {
--			DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
--			DMI_MATCH(DMI_PRODUCT_VERSION, "ThinkPad L590"),
--		},
--	},
--	{
--		.callback = tpm_tis_disable_irq,
--		.ident = "ThinkStation P620",
--		.matches = {
--			DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
--			DMI_MATCH(DMI_PRODUCT_VERSION, "ThinkStation P620"),
- 		},
- 	},
- 	{
--- 
-2.39.2
+The main reason GUP does the untagging is that obviously people will
+pass in their own virtual addresses when doing direct-IO etc.
 
+So /proc/<pid>/mem is a bit different.
+
+That said, untagging does make some things easier, so I think it's
+probably the right thing to do.
+
+             Linus
