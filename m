@@ -2,67 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 642237772EA
-	for <lists+stable@lfdr.de>; Thu, 10 Aug 2023 10:32:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B5375777314
+	for <lists+stable@lfdr.de>; Thu, 10 Aug 2023 10:36:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233844AbjHJIcP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 10 Aug 2023 04:32:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40342 "EHLO
+        id S233043AbjHJIge (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 10 Aug 2023 04:36:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44956 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233424AbjHJIcP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 10 Aug 2023 04:32:15 -0400
-Received: from mail-vk1-xa36.google.com (mail-vk1-xa36.google.com [IPv6:2607:f8b0:4864:20::a36])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 35576F3
-        for <stable@vger.kernel.org>; Thu, 10 Aug 2023 01:32:14 -0700 (PDT)
-Received: by mail-vk1-xa36.google.com with SMTP id 71dfb90a1353d-48727371106so274602e0c.3
-        for <stable@vger.kernel.org>; Thu, 10 Aug 2023 01:32:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1691656333; x=1692261133;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=HF11CqYi6NhL1F8GJzpfBHOcQOn7pKc9CrEEDQPOQak=;
-        b=I0fKn04m8+Eyq0QX1m7Kkl9rGpbcEnD86MqXqh7egTNhVO2uUjrA87G/6hJcmnV7jp
-         tYp5fjDk+XvCkFJZtgm9LVtiNBCLHbAiTZLAGLucAQdv7X3CU2A1dmqrA6g/UYm6JfFM
-         9pVjj7WoW0+Vdsf8isGAEja7UdoHzvETea4nM=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691656333; x=1692261133;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=HF11CqYi6NhL1F8GJzpfBHOcQOn7pKc9CrEEDQPOQak=;
-        b=Tk18Hpa9Y8gfbE8gJmhDUwg7YWRHY71bUn9HEak3wcZGtIBXsXTNpC5Ro0IVIbQpri
-         ByjtFSL2+3Vz/WquVvnN7K28thkI3OeHtkXmlg/V8sTa+Rz54zDeQCy/6uFK0zWWCmkE
-         SC9AymzHBl0e3t3+/DDDmJArihDHL3KBo7awL6P6eW5v8Jh2bUaUL99zqNgyrqx4eZrA
-         exKJ+KyCjo7C6sP6/FJqdB4eqUsvgng+R7xtw6nNq2mDrFmb2yFld7hWqIB2jMW2EUAn
-         NuiRtDiSn1KUMuE1cVRjNRAYdAR8hp8oIVE07xbJJyV/yMh7wOWrUUiBUhjVXr8olOBS
-         iy1Q==
-X-Gm-Message-State: AOJu0Yz2uUtYM5cDICG61NfsJCwzg7OjMZX2Hi3zKUOvKl6SM2ThtV/n
-        tNkk8ddJtORv2pSPrWi5XlJ7sy19Bp1ht9r2WsGa5A==
-X-Google-Smtp-Source: AGHT+IFZUfyXIrF6NX6XHtpQ1aRnF9OycIBf0Ukf4jcjAWkHaOt4TORLmdHUVCNyTHszLlmzibhIj00QuOu2mU1+FY4=
-X-Received: by 2002:a1f:bf58:0:b0:486:4b43:b94a with SMTP id
- p85-20020a1fbf58000000b004864b43b94amr1593934vkf.6.1691656333217; Thu, 10 Aug
- 2023 01:32:13 -0700 (PDT)
+        with ESMTP id S230416AbjHJIgd (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 10 Aug 2023 04:36:33 -0400
+Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::222])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 247EC1BFA;
+        Thu, 10 Aug 2023 01:36:30 -0700 (PDT)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 3484240003;
+        Thu, 10 Aug 2023 08:36:27 +0000 (UTC)
+From:   Remi Pommarel <repk@triplefau.lt>
+To:     Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        Jose Abreu <joabreu@synopsys.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>
+Cc:     Sabrina Dubroca <sd@queasysnail.net>, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Remi Pommarel <repk@triplefau.lt>,
+        stable@vger.kernel.org
+Subject: [PATCH net] net: stmmac: remove disable_irq() from ->ndo_poll_controller()
+Date:   Thu, 10 Aug 2023 10:37:16 +0200
+Message-Id: <20230810083716.29653-1-repk@triplefau.lt>
+X-Mailer: git-send-email 2.40.0
 MIME-Version: 1.0
-References: <20230810082333.972165-1-harperchen1110@gmail.com>
-In-Reply-To: <20230810082333.972165-1-harperchen1110@gmail.com>
-From:   Chen-Yu Tsai <wenst@chromium.org>
-Date:   Thu, 10 Aug 2023 16:32:02 +0800
-Message-ID: <CAGXv+5EOwT4ZvTLkvT_26UFk4Eg1Hi0iERp=NpmtQ63g3dZ+qw@mail.gmail.com>
-Subject: Re: [PATCH v2] media: vcodec: Fix potential array out-of-bounds in
- encoder queue_setup
-To:     Wei Chen <harperchen1110@gmail.com>
-Cc:     tiffany.lin@mediatek.com, andrew-ct.chen@mediatek.com,
-        yunfei.dong@mediatek.com, mchehab@kernel.org,
-        matthias.bgg@gmail.com, angelogioacchino.delregno@collabora.com,
-        linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
+Content-Transfer-Encoding: 8bit
+X-GND-Sasl: repk@triplefau.lt
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_PASS,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -70,19 +42,71 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, Aug 10, 2023 at 4:23=E2=80=AFPM Wei Chen <harperchen1110@gmail.com>=
- wrote:
->
-> variable *nplanes is provided by user via system call argument. The
-> possible value of q_data->fmt->num_planes is 1-3, while the value
-> of *nplanes can be 1-8. The array access by index i can cause array
-> out-of-bounds.
->
-> Fix this bug by checking *nplanes against the array size.
->
-> Fixes: 4e855a6efa54 ("[media] vcodec: mediatek: Add Mediatek V4L2 Video E=
-ncoder Driver")
-> Signed-off-by: Wei Chen <harperchen1110@gmail.com>
-> Cc: stable@vger.kernel.org
+Using netconsole netpoll_poll_dev could be called from interrupt
+context, thus using disable_irq() would cause the following kernel
+warning with CONFIG_DEBUG_ATOMIC_SLEEP enabled:
 
-Reviewed-by: Chen-Yu Tsai <wenst@chromium.org>
+  BUG: sleeping function called from invalid context at kernel/irq/manage.c:137
+  in_atomic(): 1, irqs_disabled(): 128, non_block: 0, pid: 10, name: ksoftirqd/0
+  CPU: 0 PID: 10 Comm: ksoftirqd/0 Tainted: G        W         5.15.42-00075-g816b502b2298-dirty #117
+  Hardware name: aml (r1) (DT)
+  Call trace:
+   dump_backtrace+0x0/0x270
+   show_stack+0x14/0x20
+   dump_stack_lvl+0x8c/0xac
+   dump_stack+0x18/0x30
+   ___might_sleep+0x150/0x194
+   __might_sleep+0x64/0xbc
+   synchronize_irq+0x8c/0x150
+   disable_irq+0x2c/0x40
+   stmmac_poll_controller+0x140/0x1a0
+   netpoll_poll_dev+0x6c/0x220
+   netpoll_send_skb+0x308/0x390
+   netpoll_send_udp+0x418/0x760
+   write_msg+0x118/0x140 [netconsole]
+   console_unlock+0x404/0x500
+   vprintk_emit+0x118/0x250
+   dev_vprintk_emit+0x19c/0x1cc
+   dev_printk_emit+0x90/0xa8
+   __dev_printk+0x78/0x9c
+   _dev_warn+0xa4/0xbc
+   ath10k_warn+0xe8/0xf0 [ath10k_core]
+   ath10k_htt_txrx_compl_task+0x790/0x7fc [ath10k_core]
+   ath10k_pci_napi_poll+0x98/0x1f4 [ath10k_pci]
+   __napi_poll+0x58/0x1f4
+   net_rx_action+0x504/0x590
+   _stext+0x1b8/0x418
+   run_ksoftirqd+0x74/0xa4
+   smpboot_thread_fn+0x210/0x3c0
+   kthread+0x1fc/0x210
+   ret_from_fork+0x10/0x20
+
+Commit [0] introcuded disable_hardirq() to address this situation, so
+use it here to avoid above warning.
+
+[0] 02cea395866 ("genirq: Provide disable_hardirq()")
+
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Remi Pommarel <repk@triplefau.lt>
+---
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+index 4727f7be4f86..bbe509abc5dc 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -5958,8 +5958,8 @@ static void stmmac_poll_controller(struct net_device *dev)
+ 		for (i = 0; i < priv->plat->tx_queues_to_use; i++)
+ 			stmmac_msi_intr_tx(0, &priv->dma_conf.tx_queue[i]);
+ 	} else {
+-		disable_irq(dev->irq);
+-		stmmac_interrupt(dev->irq, dev);
++		if (disable_hardirq(dev->irq))
++			stmmac_interrupt(dev->irq, dev);
+ 		enable_irq(dev->irq);
+ 	}
+ }
+-- 
+2.40.0
+
