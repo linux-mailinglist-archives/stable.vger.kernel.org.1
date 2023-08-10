@@ -2,64 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 17A7F777C1E
-	for <lists+stable@lfdr.de>; Thu, 10 Aug 2023 17:26:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5F33A777C3A
+	for <lists+stable@lfdr.de>; Thu, 10 Aug 2023 17:32:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236098AbjHJP0d (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 10 Aug 2023 11:26:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52532 "EHLO
+        id S236159AbjHJPcD (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 10 Aug 2023 11:32:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42328 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236032AbjHJP0d (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 10 Aug 2023 11:26:33 -0400
-Received: from mail-pj1-x102d.google.com (mail-pj1-x102d.google.com [IPv6:2607:f8b0:4864:20::102d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A14C826B6
-        for <stable@vger.kernel.org>; Thu, 10 Aug 2023 08:26:32 -0700 (PDT)
-Received: by mail-pj1-x102d.google.com with SMTP id 98e67ed59e1d1-2685bcd046eso600163a91.3
-        for <stable@vger.kernel.org>; Thu, 10 Aug 2023 08:26:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1691681191; x=1692285991;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=p4iFOjbhlpDEoOd7aM1ql5J2UbSjoE4+yRevM56Z8Aw=;
-        b=Y7+O9GhshaM8GKnAHJZhLOX+SqpQ/zcdEgpbbUG1ZOvDUdQhHwZtR3mAygCEzt9ELl
-         BjxATYkJSTHsiErGyEulLfy8SXxvhZxcVMBHoYzJF+Z0nnq3vOYkIToqUt6dcPh/WDsp
-         5qXEycgP39i32xPQ4D+wG6np6YJu2cbVVhH9rpE6nqQVwg7aeb7yNfiHeTbc00srlM31
-         LMvRTkGx4k0nl98G/p102jMrPMpK4oj77D7VweRAbIrwfVh8kAEXqtkBySgHMIMF7Tht
-         z0c8M7By3+E01CfffPCOVGR/UrE+/GWGSqXP6JPcZCvbQ0enCX7RpX/aqI05ggVcz0bq
-         jn5A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691681191; x=1692285991;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=p4iFOjbhlpDEoOd7aM1ql5J2UbSjoE4+yRevM56Z8Aw=;
-        b=YKWZZtlPA896RjFUtLiFRfIHWco3BDTsdjKoDWQbzFUd0NQf0C3DOPRqhdEOyQPAWQ
-         LVZ8xAJkjXV4PJL9AX6mi9sK0Q/coxCEfrn8JrrE6p7nH3iWhru38re+Zw1+MMSX6eIz
-         ccrQKHNMp7lsrln7O1AoGmQ3WPkpin+gT7HAZ1cie1/w3Z62CjitY4NpLYc4snN3QbI/
-         4dkwz5bDcf1w+EacYf+YQFsBrpV3f9UMkBjhwJHP0EzYgthd5EaWNHko4liakU1alM3n
-         1yolIs6stl2hj+m7jg1G0iWCOP5ZCI7h+KWGrshd4qsTB3cC3FfuE9VdwLUB0JVIDM56
-         yHrg==
-X-Gm-Message-State: AOJu0YzR15FP0XmgfT5Qh1iGKSmHFEF9ehOUI1PWGs4C6q6GySdK7qi0
-        8Wqmpd/t03Pu87EcUYMW+OoO0Yjew+FY/RliR4Lr5X2JGy4WQw==
-X-Google-Smtp-Source: AGHT+IEFbD7yDYExmhc0uHNK/MoCkav6WZGCH0HtPokKRgrVPQUqh6zM4l0iqfHIAhqZPxSZfdvFU/K6ELC80A5Ykbo=
-X-Received: by 2002:a17:90a:9512:b0:268:5d00:3751 with SMTP id
- t18-20020a17090a951200b002685d003751mr2174275pjo.10.1691681191456; Thu, 10
- Aug 2023 08:26:31 -0700 (PDT)
+        with ESMTP id S236178AbjHJPcC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 10 Aug 2023 11:32:02 -0400
+Received: from smtp-relay-canonical-1.canonical.com (smtp-relay-canonical-1.canonical.com [185.125.188.121])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4815410F3
+        for <stable@vger.kernel.org>; Thu, 10 Aug 2023 08:31:59 -0700 (PDT)
+Received: from localhost.localdomain (1.general.cascardo.us.vpn [10.172.70.58])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by smtp-relay-canonical-1.canonical.com (Postfix) with ESMTPSA id CF86C3F16F;
+        Thu, 10 Aug 2023 15:31:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+        s=20210705; t=1691681517;
+        bh=gGqfsd30PlPyCv4HGotmPSOPFFtwKjwFLIUg3yKRzZo=;
+        h=From:To:Cc:Subject:Date:Message-Id:MIME-Version;
+        b=cNKSKsca9XuUX6in31O28UH4t/ZOXNvJqMQ0aAwOImDAuCVdlq4EmZwCodEqtyWBP
+         eTXWmQuTa63TGbvyeticMLxgrTcVqdCONSVOjiPZYhFnREQRnnpODLfFOk2yacHRYr
+         WbetHjHfRWiDOWOfFw2j4S0C7DPdrMuzZOfQ7ilcvQHNRlcMj8t/dvtbxzEKvPPfUG
+         C9Oi6WcYDo4ndfDj7skOAsavC0NsKTImfyw5N3pBvl7eUIUH3pYWx+CoqAaNY5U/gi
+         HmhtEl5XBVE2Lu0lTQeHciwAvJG6iuV45j9lSr17hylLIhibp0KHfj9reFtqKmJYlc
+         fUQT1kPNJc33Q==
+From:   Thadeu Lima de Souza Cascardo <cascardo@canonical.com>
+To:     stable@vger.kernel.org
+Cc:     RAJESH DASARI <raajeshdasari@gmail.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Borislav Petkov <bp@alien8.de>
+Subject: [PATCH 5.4,5.10] x86/pkeys: Revert a5eff7259790 ("x86/pkeys: Add PKRU value to init_fpstate")
+Date:   Thu, 10 Aug 2023 12:31:06 -0300
+Message-Id: <20230810153106.172292-1-cascardo@canonical.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-References: <CAPXMrf9Q7JGCwEnCKM8i0wi3oY9VH2V0fDYX_+6U9jfjzPeZ8Q@mail.gmail.com>
- <ZNTx5TXekM/szrmR@quatroqueijos.cascardo.eti.br>
-In-Reply-To: <ZNTx5TXekM/szrmR@quatroqueijos.cascardo.eti.br>
-From:   RAJESH DASARI <raajeshdasari@gmail.com>
-Date:   Thu, 10 Aug 2023 18:26:20 +0300
-Message-ID: <CAPXMrf-Ztbj5X=EQan6Jsq__pbnWgdn7SzFN48zYc424scgXbg@mail.gmail.com>
-Subject: Re: WARNING: CPU: 0 PID: 0 at arch/x86/kernel/fpu/xstate.c in 5.4.252 kernel
-To:     Thadeu Lima de Souza Cascardo <cascardo@canonical.com>
-Cc:     stable@vger.kernel.org, tglx@linutronix.de
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -68,42 +51,89 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Thanks,
-Rajesh Dasari.
+From: Thomas Gleixner <tglx@linutronix.de>
 
+Commit b3607269ff57fd3c9690cb25962c5e4b91a0fd3b upstream.
 
-On Thu, Aug 10, 2023 at 5:19=E2=80=AFPM Thadeu Lima de Souza Cascardo
-<cascardo@canonical.com> wrote:
->
-> On Thu, Aug 10, 2023 at 12:58:53PM +0300, RAJESH DASARI wrote:
-> > Hi ,
-> >
-> > We are noticing the below warning in the latest 5.4.252 kernel bootup l=
-ogs.
-> >
-> > WARNING: CPU: 0 PID: 0 at arch/x86/kernel/fpu/xstate.c:878
-> > get_xsave_addr+0x83/0x90
-> >
-> > and relevant call trace in the logs , after updating to kernel 5.4.252.
-> >
-> > I see that issue is due to this commit
-> > https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit=
-/?h=3Dv5.4.252&id=3D6e60443668978131a442df485db3deccb31d5651
-> >
-> > This is seen in the qemu instance  which  is emulating the host cpu
-> > and was deployed on Intel(R) Xeon(R) Gold 5218 processor.
-> >
-> > I revert the commit and there is no WARNING and call trace in the logs
-> > , Is this issue already reported and a fix is available? Could you
-> > please provide your inputs.
-> >
-> > Regards,
-> > Rajesh.
->
-> Does applying b3607269ff57 ("x86/pkeys: Revert a5eff7259790 ("x86/pkeys:
-> Add PKRU value to init_fpstate")") fixes it for you?
->
-Thanks for the quick response. Yes this patch works, WARNING is not
-seen now.  any plans to backport this patch to 5.4.x kernel releases?
+This cannot work and it's unclear how that ever made a difference.
 
-> Cascardo.
+init_fpstate.xsave.header.xfeatures is always 0 so get_xsave_addr() will
+always return a NULL pointer, which will prevent storing the default PKRU
+value in init_fpstate.
+
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Reviewed-by: Borislav Petkov <bp@suse.de>
+Link: https://lkml.kernel.org/r/20210623121451.451391598@linutronix.de
+Reported-by: RAJESH DASARI <raajeshdasari@gmail.com>
+Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@canonical.com>
+---
+
+This has been reported to cause a WARNing since the backport of b81fac906a8f
+("x86/fpu: Move FPU initialization into arch_cpu_finalize_init()").
+
+a5eff7259790 was part of 5.2 and no older LTS kernels carry it, so not
+necessary on 4.19 or 4.14.
+
+---
+ arch/x86/kernel/cpu/common.c | 5 -----
+ arch/x86/mm/pkeys.c          | 6 ------
+ 2 files changed, 11 deletions(-)
+
+diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
+index fcfe891c1e8e..0c0c2cb038ad 100644
+--- a/arch/x86/kernel/cpu/common.c
++++ b/arch/x86/kernel/cpu/common.c
+@@ -450,8 +450,6 @@ static bool pku_disabled;
+ 
+ static __always_inline void setup_pku(struct cpuinfo_x86 *c)
+ {
+-	struct pkru_state *pk;
+-
+ 	/* check the boot processor, plus compile options for PKU: */
+ 	if (!cpu_feature_enabled(X86_FEATURE_PKU))
+ 		return;
+@@ -462,9 +460,6 @@ static __always_inline void setup_pku(struct cpuinfo_x86 *c)
+ 		return;
+ 
+ 	cr4_set_bits(X86_CR4_PKE);
+-	pk = get_xsave_addr(&init_fpstate.xsave, XFEATURE_PKRU);
+-	if (pk)
+-		pk->pkru = init_pkru_value;
+ 	/*
+ 	 * Seting X86_CR4_PKE will cause the X86_FEATURE_OSPKE
+ 	 * cpuid bit to be set.  We need to ensure that we
+diff --git a/arch/x86/mm/pkeys.c b/arch/x86/mm/pkeys.c
+index c6f84c0b5d7a..ca77af96033b 100644
+--- a/arch/x86/mm/pkeys.c
++++ b/arch/x86/mm/pkeys.c
+@@ -10,7 +10,6 @@
+ 
+ #include <asm/cpufeature.h>             /* boot_cpu_has, ...            */
+ #include <asm/mmu_context.h>            /* vma_pkey()                   */
+-#include <asm/fpu/internal.h>		/* init_fpstate			*/
+ 
+ int __execute_only_pkey(struct mm_struct *mm)
+ {
+@@ -154,7 +153,6 @@ static ssize_t init_pkru_read_file(struct file *file, char __user *user_buf,
+ static ssize_t init_pkru_write_file(struct file *file,
+ 		 const char __user *user_buf, size_t count, loff_t *ppos)
+ {
+-	struct pkru_state *pk;
+ 	char buf[32];
+ 	ssize_t len;
+ 	u32 new_init_pkru;
+@@ -177,10 +175,6 @@ static ssize_t init_pkru_write_file(struct file *file,
+ 		return -EINVAL;
+ 
+ 	WRITE_ONCE(init_pkru_value, new_init_pkru);
+-	pk = get_xsave_addr(&init_fpstate.xsave, XFEATURE_PKRU);
+-	if (!pk)
+-		return -EINVAL;
+-	pk->pkru = new_init_pkru;
+ 	return count;
+ }
+ 
+-- 
+2.34.1
+
