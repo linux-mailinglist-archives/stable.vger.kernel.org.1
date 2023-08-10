@@ -2,105 +2,143 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0981D7779F1
-	for <lists+stable@lfdr.de>; Thu, 10 Aug 2023 15:56:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C83337779F9
+	for <lists+stable@lfdr.de>; Thu, 10 Aug 2023 15:58:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235452AbjHJN4F (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 10 Aug 2023 09:56:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39748 "EHLO
+        id S235505AbjHJN6V (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 10 Aug 2023 09:58:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32770 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230446AbjHJN4E (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 10 Aug 2023 09:56:04 -0400
-Received: from mail-pg1-x534.google.com (mail-pg1-x534.google.com [IPv6:2607:f8b0:4864:20::534])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4F9B212B;
-        Thu, 10 Aug 2023 06:56:03 -0700 (PDT)
-Received: by mail-pg1-x534.google.com with SMTP id 41be03b00d2f7-5650ef42f6dso651964a12.0;
-        Thu, 10 Aug 2023 06:56:03 -0700 (PDT)
+        with ESMTP id S230446AbjHJN6U (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 10 Aug 2023 09:58:20 -0400
+Received: from mail-qv1-xf2b.google.com (mail-qv1-xf2b.google.com [IPv6:2607:f8b0:4864:20::f2b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E7EDAEA
+        for <stable@vger.kernel.org>; Thu, 10 Aug 2023 06:58:19 -0700 (PDT)
+Received: by mail-qv1-xf2b.google.com with SMTP id 6a1803df08f44-63d0d38ff97so4186816d6.1
+        for <stable@vger.kernel.org>; Thu, 10 Aug 2023 06:58:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1691675763; x=1692280563;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=/qNf1jUmQ5AJ3ccwof1ni8PVa5vG7hwpnzsTFeeHHG0=;
-        b=mQxrpYaxk7oymnkuSRRBt6hvoyB3PlaFaVSzOKMz2cuQ2wRS1xqg6/Ttw9afs2d7qD
-         vgpvfEJFQfdNBJc3WXfwUtOY2rED0nAlpSyurnywHPr21PNbjeboPBz6axYAU/gL2Wxv
-         /o5wqw8/I98QxnrDy+CdxnuFFq9PDi8A7iRna4BMmp03gCTjdX7JLACmjGseF7gdvpbq
-         btONHKzb74515L6Q0uyneuNDekF9JpwzI8b4KdbQyhEh9jcUnh0f3aGt8aSziFJsw+na
-         yLZydGT2gkd3Sw5+/NyqLCscM9R1pvIqWh04bNGRm4JGvSkbW1xqjhW0OxyDPQR68tCT
-         Ogaw==
+        d=ndufresne-ca.20221208.gappssmtp.com; s=20221208; t=1691675899; x=1692280699;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=1rJTz5bg4rzwnI3ff4rWN2qUwfmBH27c5Qh2BAvyn5w=;
+        b=ndjuLFarKWmxp0QE3j1BO1vhYb4/6pLnad8C4kQcrHaNNL88TKuLQ2SHjDEgt7l443
+         aI5Krkq3C5BHh/B/BhChf+P5jqieFmbgL0r75qd30KDOFJGLBdXoFPnGKQ7/5XyBPaWd
+         KgkF3cIkg6+HlWTUvoCLuhb2GSjAY2SffLX2d+8bbCy1aLKL7h93+OGBseelXC26cO0V
+         90vgtnJ+OqIZI1kHXmFraAd510MMGIf/X7wG/q8v7g6StOnSATFU6/IqUcSHMvqmgJma
+         r8E9ge5QwC45LQawKQbILJIoaKFnQmkDB4dmz6UnFLf+1EDLH1x/VIHX3XsCj6eLVWkt
+         NYFg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691675763; x=1692280563;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=/qNf1jUmQ5AJ3ccwof1ni8PVa5vG7hwpnzsTFeeHHG0=;
-        b=cIzbWJYRwsGOl0R06W4b2LCsTteNULUvSI+q9fPJETFfYhflvx7PDOW2NwI8Y2RhJG
-         WQINNcs9qhvvDPcZj8AXsXdNhqWoL2KUbkEDAVbcJXz/l4JLp8DOMLEf3SyAJ20uVcXB
-         yfS3ACAI2Bnu4f0xP8gk8BarG1Zzo2nxdnfmPo7E8AlEhLGQM0TwpMazJvu3X8HdmzL6
-         apH8/h2xu0CjtV04GZgAYGrkm0rscZqeIui5FO+86qHTEOOIWqguqE7W2+O0g4AXbpv9
-         gAHFJaYuTxZtVMzTw1HaZtXIl+hYG57cx5g5f/jBssI1T2Z6d6NbF6kDwvKDE2Ub0624
-         jguw==
-X-Gm-Message-State: AOJu0YwHQWzHkdeFP1qsXy9Sm1sffDci7m0M3l4kxTINQSDERWgINdDP
-        sGBBIR9qjOnUqSnVDodasvw=
-X-Google-Smtp-Source: AGHT+IHpn8ltlBnxjIjjir8pQSNqOUUTXlXgA/HNA4ErfhqunG4YVK+HSA0MsAc1vBuj2xsf0nKG/w==
-X-Received: by 2002:a17:90a:4f86:b0:26b:e80:11de with SMTP id q6-20020a17090a4f8600b0026b0e8011demr1110779pjh.25.1691675763346;
-        Thu, 10 Aug 2023 06:56:03 -0700 (PDT)
-Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id x16-20020a170902821000b001b3fb2f0296sm1774123pln.120.2023.08.10.06.56.01
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 10 Aug 2023 06:56:02 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <9d35afea-e1b4-72d0-9559-1eccdfd069a8@roeck-us.net>
-Date:   Thu, 10 Aug 2023 06:56:01 -0700
+        d=1e100.net; s=20221208; t=1691675899; x=1692280699;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=1rJTz5bg4rzwnI3ff4rWN2qUwfmBH27c5Qh2BAvyn5w=;
+        b=CBggAprqIFG8tmX8kLqP2ZM9p4y8oxuAvntw/hFr910JAMMyjuHYMp7gQDoilZdP2E
+         jMqoLategNFBAyBSlXDpnQ8gvhun7B+tE3D9n9dSkmISYoi2bPK9NN7C9F0gBH+ZTD6r
+         YAQcrauWZ/J/39noniGpGmBL/uxXSDR8Z8S3QUMbNHS7KVM0F9L0nMdcXlNcUewjoL+X
+         X9faY6ZnUWwIfsZNMhcvTRcaQq+h6kyfFnNQRqbF2ANFqMBI5aMQhbB658jhMIj6cXYg
+         rYmoEbhAT9ugJQCs4hPRaEuN7ECRmaQWvtRkuVU0p80emJ5xYmhGw6+97zOQ48aI0a2t
+         GHcQ==
+X-Gm-Message-State: AOJu0Yy8/0Y5S7wrZoql1D7VIL114794lzyRDJwO5IL8xDI2OWb9BJCy
+        vOcQBThp9EbIz9nZQo1XZA6SQw==
+X-Google-Smtp-Source: AGHT+IGy90htbxaGVBLfMsqw9TjY9f1KySdKUMqiW6L1VOLB4Zx6hUjqKjFiwiogcvkiBUNYIqIvVg==
+X-Received: by 2002:a0c:e54f:0:b0:63f:c070:492f with SMTP id n15-20020a0ce54f000000b0063fc070492fmr1963509qvm.8.1691675898960;
+        Thu, 10 Aug 2023 06:58:18 -0700 (PDT)
+Received: from nicolas-tpx395.localdomain ([2606:6d00:15:bae9::7a9])
+        by smtp.gmail.com with ESMTPSA id y3-20020a0cf143000000b0063d4631d1e4sm173766qvl.68.2023.08.10.06.58.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 10 Aug 2023 06:58:18 -0700 (PDT)
+Message-ID: <5a70c141736e91f635f71d9922a3bbe993a76c69.camel@ndufresne.ca>
+Subject: Re: [PATCH v2] media: vcodec: Fix potential array out-of-bounds in
+ encoder queue_setup
+From:   Nicolas Dufresne <nicolas@ndufresne.ca>
+To:     Wei Chen <harperchen1110@gmail.com>, tiffany.lin@mediatek.com
+Cc:     andrew-ct.chen@mediatek.com, yunfei.dong@mediatek.com,
+        mchehab@kernel.org, matthias.bgg@gmail.com,
+        angelogioacchino.delregno@collabora.com,
+        linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, stable@vger.kernel.org
+Date:   Thu, 10 Aug 2023 09:58:17 -0400
+In-Reply-To: <20230810082333.972165-1-harperchen1110@gmail.com>
+References: <20230810082333.972165-1-harperchen1110@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH 4.14 000/204] 4.14.322-rc1 review
-Content-Language: en-US
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org
-Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-        torvalds@linux-foundation.org, akpm@linux-foundation.org,
-        shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
-References: <20230809103642.552405807@linuxfoundation.org>
-From:   Guenter Roeck <linux@roeck-us.net>
-In-Reply-To: <20230809103642.552405807@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-3.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        NICE_REPLY_A,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 8/9/23 03:38, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 4.14.322 release.
-> There are 204 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
+Hi,
 
-Building sparc64:allnoconfig ... failed
---------------
-Error log:
-sparc64-linux-ld: init/main.o: in function `start_kernel':
-main.c:(.init.text+0x77c): undefined reference to `arch_cpu_finalize_init'
-make[1]: *** [Makefile:1049: vmlinux] Error 1
-make: *** [Makefile:153: sub-make] Error 2
---------------
-Building sparc64:tinyconfig ... failed
---------------
-Error log:
-sparc64-linux-ld: init/main.o: in function `start_kernel':
-main.c:(.init.text+0x764): undefined reference to `arch_cpu_finalize_init'
-make[1]: *** [Makefile:1049: vmlinux] Error 1
-make: *** [Makefile:153: sub-make] Error 2
+Le jeudi 10 ao=C3=BBt 2023 =C3=A0 08:23 +0000, Wei Chen a =C3=A9crit=C2=A0:
+> variable *nplanes is provided by user via system call argument. The
+> possible value of q_data->fmt->num_planes is 1-3, while the value
+> of *nplanes can be 1-8. The array access by index i can cause array
+> out-of-bounds.
+>=20
+> Fix this bug by checking *nplanes against the array size.
+>=20
+> Fixes: 4e855a6efa54 ("[media] vcodec: mediatek: Add Mediatek V4L2 Video E=
+ncoder Driver")
+> Signed-off-by: Wei Chen <harperchen1110@gmail.com>
+> Cc: stable@vger.kernel.org
+> ---
+> Changes in v2:
+> - Add Fixes tag and CC stable email address
+> - Change the title to be more expressive
+>=20
+>  drivers/media/platform/mediatek/vcodec/mtk_vcodec_enc.c | 2 ++
+>  1 file changed, 2 insertions(+)
+>=20
+> diff --git a/drivers/media/platform/mediatek/vcodec/mtk_vcodec_enc.c b/dr=
+ivers/media/platform/mediatek/vcodec/mtk_vcodec_enc.c
+> index 9ff439a50f53..9e8817863cb8 100644
+> --- a/drivers/media/platform/mediatek/vcodec/mtk_vcodec_enc.c
+> +++ b/drivers/media/platform/mediatek/vcodec/mtk_vcodec_enc.c
+> @@ -821,6 +821,8 @@ static int vb2ops_venc_queue_setup(struct vb2_queue *=
+vq,
+>  		return -EINVAL;
+> =20
+>  	if (*nplanes) {
+> +		if (*nplanes !=3D q_data->fmt->num_planes)
+> +			return -EINVAL;
+
+I don't think the claim really exists. 	For this driver, when *nplane is se=
+t,
+it will be:
+
+
+        case V4L2_BUF_TYPE_VIDEO_OUTPUT_MPLANE:
+                requested_planes =3D f->fmt.pix_mp.num_planes;
+                if (requested_planes =3D=3D 0 ||
+                    requested_planes > VIDEO_MAX_PLANES)
+                        return -EINVAL;
+                for (i =3D 0; i < requested_planes; i++)
+                        requested_sizes[i] =3D
+                                f->fmt.pix_mp.plane_fmt[i].sizeimage;
+                break;
+
+Or the value the driver have set it in the previous call with *nplane =3D=
+=3D 0. So
+unless there is a bug, this should not happen, and more importantly, the co=
+re
+should not let that happen, meaning it should not be driver jobs to validat=
+e
+this.
+
+my 2 cents,
+Nicolas
+
+
+>  		for (i =3D 0; i < *nplanes; i++)
+>  			if (sizes[i] < q_data->sizeimage[i])
+>  				return -EINVAL;
+
