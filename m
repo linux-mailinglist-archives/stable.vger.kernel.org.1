@@ -2,110 +2,123 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8DDD277807F
-	for <lists+stable@lfdr.de>; Thu, 10 Aug 2023 20:41:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1F77B7780A6
+	for <lists+stable@lfdr.de>; Thu, 10 Aug 2023 20:47:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236053AbjHJSk7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 10 Aug 2023 14:40:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57888 "EHLO
+        id S236127AbjHJSrT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 10 Aug 2023 14:47:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50386 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236052AbjHJSkn (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 10 Aug 2023 14:40:43 -0400
-Received: from mail-ej1-x62b.google.com (mail-ej1-x62b.google.com [IPv6:2a00:1450:4864:20::62b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 841413C1D
-        for <stable@vger.kernel.org>; Thu, 10 Aug 2023 11:39:57 -0700 (PDT)
-Received: by mail-ej1-x62b.google.com with SMTP id a640c23a62f3a-99bfcf4c814so175926366b.0
-        for <stable@vger.kernel.org>; Thu, 10 Aug 2023 11:39:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1691692771; x=1692297571;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=4XjBV0qXXp37wiVyXtpMqkFIhm8hlMYH3y9Bd3d4SgY=;
-        b=Y820onkS7q0gvE2DiiLiBvn4MlVr42biwd5fACjdg/gRbZUP/zrOVtQAaZ8gMPfpHL
-         VUMhrbvWNJ1yd7fLgZ1K3EI0TiITo7RPJuV+Kk19fpYOPNTNYmcOd+pamOilg/M6Vuxp
-         6az6LtqPKUTDuIlH4Sr7ozIQK4YNGZ4eS1bF0=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691692771; x=1692297571;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=4XjBV0qXXp37wiVyXtpMqkFIhm8hlMYH3y9Bd3d4SgY=;
-        b=Rwu+xRG+aKmdfxa+mikLMHY6LpfKlfp5l4hY/sB1huqCPMNk7AszPlHpHeLFyOHiI9
-         ZiJfWkL11rYTWapU8EZuJ2k870kaxzT1bM8JfwXgdZSDeNVRzDGbOixN72KBqmUlc+aN
-         gqvOj381CGFcyVb7vJTMZy/Ud1AJTdILmyN/ZNy65MvQjkyQ/7RVkN3c5SesK+S3m5Df
-         SiXyUqxVjsV2yrw1AJL4tBbDGDYeCV6TVcCPT/mK0/8xfnnZ/eipQbOuNmSSH6jehXP6
-         U98rM+HGXJAtIOAnVKQjk+mMIV0X9gRQGrVsfQGgX0hOD5cAXdTcWrAITjSkssLc89jm
-         3Xpw==
-X-Gm-Message-State: AOJu0YwMdIOqFfdCoXdFR63XRLtKfOc0T22wkYugbxq3EXSXCpiHt9KN
-        my2satIshrjPpktGspx0fmLYrLQmMBplmJ5S2PkvxYX7
-X-Google-Smtp-Source: AGHT+IFF18BVM4kIhHs+TT6BEIalkyADS7LaGuXkFniFrPXoRHzymk7Zf48BfQZHXKQGymZ+WNzvCA==
-X-Received: by 2002:a17:907:75e7:b0:99c:441:ffa with SMTP id jz7-20020a17090775e700b0099c04410ffamr2683263ejc.29.1691692771161;
-        Thu, 10 Aug 2023 11:39:31 -0700 (PDT)
-Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com. [209.85.208.53])
-        by smtp.gmail.com with ESMTPSA id lf6-20020a170906ae4600b0099cf840527csm1255993ejb.153.2023.08.10.11.39.30
-        for <stable@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 10 Aug 2023 11:39:30 -0700 (PDT)
-Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-5236a9788a7so1578154a12.0
-        for <stable@vger.kernel.org>; Thu, 10 Aug 2023 11:39:30 -0700 (PDT)
-X-Received: by 2002:a05:6402:31eb:b0:523:3609:d3ca with SMTP id
- dy11-20020a05640231eb00b005233609d3camr2930836edb.20.1691692769886; Thu, 10
- Aug 2023 11:39:29 -0700 (PDT)
+        with ESMTP id S236488AbjHJSrR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 10 Aug 2023 14:47:17 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8743C271B;
+        Thu, 10 Aug 2023 11:47:17 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 27A896667E;
+        Thu, 10 Aug 2023 18:47:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F88DC433C7;
+        Thu, 10 Aug 2023 18:47:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1691693236;
+        bh=MI9uA1gPyDnlzeAssRrd1QMSMWY9aArciSGRIr3kqK4=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=NeQCgZ4lJ5NLzZkzbwQGFThnLvvxX9FDvSS9qK5+xyyWBCRwW1dDDO1VTdCyyDdmm
+         QHnDWXey4AB8UI5tDnapUfxtxBDWkFEVOGkvCuNJIW3YVul9lopEeDgutRqken9Kv8
+         +ag9EVbe8PWr3fe8a6Lg5B3ztfggob3/tkhHo6Vc7WKFl669KMdGDH81cnBU8Ittv7
+         QfinEeffixpXG7XlykynfpXCriPN/snKt3scSyOW/Hac4c5z72krzz6HdjxCq+DKhq
+         HSLr5MVrXtvFdFKhLpFZAN4tvOryZ8ZgKDDDwbE8bUQS975cev+u7vjxR0seeXohta
+         wUYjU8YEa5YBg==
+Date:   Thu, 10 Aug 2023 11:47:15 -0700
+From:   Jakub Kicinski <kuba@kernel.org>
+To:     Kees Cook <keescook@chromium.org>
+Cc:     Jijie Shao <shaojijie@huawei.com>,
+        Leon Romanovsky <leon@kernel.org>, yisen.zhuang@huawei.com,
+        salil.mehta@huawei.com, davem@davemloft.net, edumazet@google.com,
+        pabeni@redhat.com, shenjian15@huawei.com, wangjie125@huawei.com,
+        liuyonglong@huawei.com, chenhao418@huawei.com,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org
+Subject: Re: [PATCH net] net: hns3: fix strscpy causing content truncation
+ issue
+Message-ID: <20230810114715.32c8d525@kernel.org>
+In-Reply-To: <202308101103.D0827667B@keescook>
+References: <20230809020902.1941471-1-shaojijie@huawei.com>
+        <20230809070302.GR94631@unreal>
+        <7c44c161-9c86-8c60-f031-6d77d6c28c20@huawei.com>
+        <20230810102247.699ddc14@kernel.org>
+        <202308101103.D0827667B@keescook>
 MIME-Version: 1.0
-References: <20230809144600.13721-1-kirill.shutemov@linux.intel.com>
- <CAHk-=whaGTq11x_F1Y+J85j+Eh7JxVqH1sWpqgH+-7wQZ1ZE2A@mail.gmail.com> <CY4PR11MB2005976F49613E20BC072ECCF913A@CY4PR11MB2005.namprd11.prod.outlook.com>
-In-Reply-To: <CY4PR11MB2005976F49613E20BC072ECCF913A@CY4PR11MB2005.namprd11.prod.outlook.com>
-From:   Linus Torvalds <torvalds@linux-foundation.org>
-Date:   Thu, 10 Aug 2023 11:39:12 -0700
-X-Gmail-Original-Message-ID: <CAHk-=whS19C=y32vNMRp7UfQMVw38HOfzhs9v5rjLayEFjMNPA@mail.gmail.com>
-Message-ID: <CAHk-=whS19C=y32vNMRp7UfQMVw38HOfzhs9v5rjLayEFjMNPA@mail.gmail.com>
-Subject: Re: [PATCH] mm: Fix access_remote_vm() regression on tagged addresses
-To:     "Schimpe, Christina" <christina.schimpe@intel.com>
-Cc:     "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Kostya Serebryany <kcc@google.com>,
-        Andrey Ryabinin <ryabinin.a.a@gmail.com>,
-        Andrey Konovalov <andreyknvl@gmail.com>,
-        Alexander Potapenko <glider@google.com>,
-        Taras Madan <tarasmadan@google.com>,
-        Dmitry Vyukov <dvyukov@google.com>,
-        "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
-        "linux-mm@kvack.org" <linux-mm@kvack.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=no
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, 10 Aug 2023 at 05:42, Schimpe, Christina
-<christina.schimpe@intel.com> wrote:
->
-> We don't have any LAM support in GDB yet, we are just working on it.
-> We currently rely on that feature, but could still change it. We don't
-> necessarily require /proc/PID/mem to support tagged addresses.
->
-> ARM's TBI support in GDB does not rely on /proc/PID/mem to support tagged
-> addresses AFAIK.
+On Thu, 10 Aug 2023 11:23:46 -0700 Kees Cook wrote:
+> tldr: use memcpy() instead of strscpy().
+> 
+> 
+> Okay, I went to go read up on the history here. For my own notes, here's
+> the original code, prior to 1cf3d5567f27 ("net: hns3: fix strncpy()
+> not using dest-buf length as length issue"):
+> 
+> static void hns3_dbg_fill_content(char *content, u16 len,
+> 				  const struct hns3_dbg_item *items,
+> 				  const char **result, u16 size)
+> {
+> 	char *pos = content;
+> 	u16 i;
+> 
+> 	memset(content, ' ', len);
+> 	for (i = 0; i < size; i++) {
+> 		if (result)
+> 			strncpy(pos, result[i], strlen(result[i]));
+> 		else
+> 			strncpy(pos, items[i].name, strlen(items[i].name));
+> 
+> 		pos += strlen(items[i].name) + items[i].interval;
+> 	}
+> 
+> 	*pos++ = '\n';
+> 	*pos++ = '\0';
+> }
+> 
+> The warning to be fixed was:
+> 
+> hclge_debugfs.c:90:25: warning: 'strncpy' output truncated before terminating nul copying as many bytes from a string as its length [-Wstringop-truncation]
+> 
+> There are a few extra checks added in 1cf3d5567f27, but I'm more curious
+> about this original code's intent. It seems very confusing to me.
+> 
+> Firstly, why is "pos" updated based on "strlen(items[i].name)" even when
+> "result[i]" is used? Secondly, why is "interval" used? (These concerns
+> are mostly addressed in 1cf3d5567f27.)
+> 
+> I guess I'd just like to take a step back and ask, "What is this
+> function trying to do?" It seems to be building a series of strings in a
+> " "-padding buffer, and it intends that the buffer be newline and %NUL
+> terminated.
+> 
+> It looks very much like it wants to _avoid_ adding %NUL termination when
+> doing copies, which is why it's using strncpy with a length argument of
+> the source string length: it's _forcing_ the copy to not be terminated.
+> This is just memcpy.
+> 
+> strtomem() is designed for buffer sizes that can be known at compile
+> time, so it's not useful here (as was found), since a string is being
+> built up and uses a moving pointer.
+> 
+> I think the correct fix is to use memcpy() instead of strscpy(). No
+> %NUL-truncation is desired, the sizes are already determined and bounds
+> checked. (And the latter is what likely silenced the compiler warning.)
 
-Ahh. That would explain why nobody noticed.
-
-I do wonder if perhaps /proc/<pid>/mem should just match the real
-addresses (ie the ones you would see in /proc/<pid>/maps).
-
-The main reason GUP does the untagging is that obviously people will
-pass in their own virtual addresses when doing direct-IO etc.
-
-So /proc/<pid>/mem is a bit different.
-
-That said, untagging does make some things easier, so I think it's
-probably the right thing to do.
-
-             Linus
+Got it, thanks!
