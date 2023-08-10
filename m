@@ -2,76 +2,67 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 06B097776EA
-	for <lists+stable@lfdr.de>; Thu, 10 Aug 2023 13:26:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9C5D07776F9
+	for <lists+stable@lfdr.de>; Thu, 10 Aug 2023 13:28:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234465AbjHJL02 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 10 Aug 2023 07:26:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54014 "EHLO
+        id S234748AbjHJL21 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 10 Aug 2023 07:28:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42784 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234425AbjHJL01 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 10 Aug 2023 07:26:27 -0400
-Received: from mail-wm1-x32e.google.com (mail-wm1-x32e.google.com [IPv6:2a00:1450:4864:20::32e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 81C3B2696
-        for <stable@vger.kernel.org>; Thu, 10 Aug 2023 04:26:26 -0700 (PDT)
-Received: by mail-wm1-x32e.google.com with SMTP id 5b1f17b1804b1-3fe4b95c371so4409595e9.1
-        for <stable@vger.kernel.org>; Thu, 10 Aug 2023 04:26:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1691666785; x=1692271585;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=0tTnJRznSRZRdOph0O6zcCrYZpGpbt3RxvxZjdVmHkE=;
-        b=fKJ+XgKfS6t6OZDf5M7jPUsCyW9CxjMy/rf5IpsMyVGixbslL5/c8+CUJ+pDk7tHoa
-         V/JUS2s0qjrb8TP01tAcL0IcZ8nIuK0TX3bIQ4J6vUorWnmDmJDtpOR6R8JQSNFzDZlY
-         LOYoRSc3UzkxNvrE4Sebp/Frl0mAnRt4+H5sX1rsq/Lx1iMtyq9MakfrVXzpxSOnzjUH
-         PaeH7rWr9u4HkiJdSbkqvoCKE4IArcLZU6ef/2qZVCpIj4e7Spx4VTAmVcIswwyLIyrS
-         ZMRjj5yg3V4yGMTXu4mys6kQi65osuj0z7DD+ZvJkDiStuGoigYzxgr4n7zmr8qu0pmR
-         2m7g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691666785; x=1692271585;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=0tTnJRznSRZRdOph0O6zcCrYZpGpbt3RxvxZjdVmHkE=;
-        b=COOhdK6tednIsd8S6LGDlWcSmkYT1CRhdM2+aUmqmaHozwlEoUzzd7vH7jRUsiwQ4D
-         z1o/KCWKm32kv8ZHRSoQO/jHtyvcPgWR/3iuX2MEaWzbONxOOLfgENk7l3zbU4/XqTQx
-         G2AR0Tz7c3GAseB6D52SwTydrGGj4QiyvvqvulF31/0w7SRW449eG14f03Z0iUazYOO/
-         6yOHr1uQMUuQeuJm3jhZUyxnkXp98w0JTT6DQ3gzwVYdkHrgx1TFHFIgqtvaO2D27pIr
-         rxn2q0bNSffzoYCzxNvJvpsFIglzwlaNREZxpTmtZAItk/hhMOFp/IAyAwqehk6cTmGL
-         HtQA==
-X-Gm-Message-State: AOJu0YycSQ9mxVUV48uuAIdbhJ6l0djyUmpfPt6fn926H31jpewdkmNI
-        mEQe3ZgAZ4ijGSm7ojgaYa/j3g==
-X-Google-Smtp-Source: AGHT+IHdFYAAEgnvQD6jGM2SnDVCS+3Wzj/A1stVZmaHIXLVFIBuw9so+aEaH6Q6sDmmr8ES3lrCEw==
-X-Received: by 2002:a05:600c:a3a1:b0:3fb:b18a:f32d with SMTP id hn33-20020a05600ca3a100b003fbb18af32dmr1453763wmb.17.1691666785048;
-        Thu, 10 Aug 2023 04:26:25 -0700 (PDT)
-Received: from [192.168.0.162] (188-141-3-169.dynamic.upc.ie. [188.141.3.169])
-        by smtp.gmail.com with ESMTPSA id o13-20020a05600c378d00b003fe2de3f94fsm1839494wmr.12.2023.08.10.04.26.23
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 10 Aug 2023 04:26:24 -0700 (PDT)
-Message-ID: <e8b53000-8640-5345-1d8f-2a75f2ee0805@linaro.org>
-Date:   Thu, 10 Aug 2023 12:26:23 +0100
+        with ESMTP id S234187AbjHJL20 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 10 Aug 2023 07:28:26 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1A2359C;
+        Thu, 10 Aug 2023 04:28:26 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A533165984;
+        Thu, 10 Aug 2023 11:28:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12BBBC433C8;
+        Thu, 10 Aug 2023 11:28:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1691666905;
+        bh=Me+e9ML6CgkKjftPxzYhGhgVehw49yScpv6EvPjDSgs=;
+        h=From:Date:Subject:To:Cc:From;
+        b=a5UHdsmxhL25LF7SfAKBucfNreOSVU2r5hR7/QhIYrt/S2Ac319sUwGnoQ6/3225M
+         JVVmQc+5oOJKeMZGT7+NGARLiefZ80ewxBGElqR9LvjPcMrqALukfIZNGxDRLbNvqZ
+         ao0DYx9WEc5CxxUEIqzRf0d8xvAUZRqeb2AeXsLjZiyCG/TZF1IgWDRZtaNOPLWD9m
+         I/OrX4/8zcEVjz4M92Ek9/jp5OFlMSXm03jqM0XO5zaEbOzek5NQ7utW9ttZazalCm
+         v0DReiS+JE4rr3GYHVGl2cotS2LP+wATZUU0EYo2NoJ0ahOHGaFnTIQF9vFL+w59dV
+         whLpmbS3XRJRQ==
+From:   Mark Brown <broonie@kernel.org>
+Date:   Thu, 10 Aug 2023 12:28:19 +0100
+Subject: [PATCH] arm64/ptrace: Ensure that SME is set up for target when
+ writing SSVE state
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.8.0
-Subject: Re: [PATCH v2 2/4] venus: hfi: fix the check to handle session buffer
- requirement
-Content-Language: en-US
-To:     Vikash Garodia <quic_vgarodia@quicinc.com>,
-        stanimir.k.varbanov@gmail.com, agross@kernel.org,
-        andersson@kernel.org, konrad.dybcio@linaro.org, mchehab@kernel.org,
-        hans.verkuil@cisco.com, tfiga@chromium.org
-Cc:     linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <1691634304-2158-1-git-send-email-quic_vgarodia@quicinc.com>
- <1691634304-2158-3-git-send-email-quic_vgarodia@quicinc.com>
-From:   Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-In-Reply-To: <1691634304-2158-3-git-send-email-quic_vgarodia@quicinc.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
+Message-Id: <20230810-arm64-fix-ptrace-race-v1-1-a5361fad2bd6@kernel.org>
+X-B4-Tracking: v=1; b=H4sIANLJ1GQC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDI2MDCwNL3cSiXDMT3bTMCt2CkqLE5FRdMJGSZGFqapSWZGlhmqQE1FtQlAp
+ UAjY3Ora2FgDKZd0tZwAAAA==
+To:     Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>, Oleg Nesterov <oleg@redhat.com>
+Cc:     David Spickett <David.Spickett@arm.com>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        Mark Brown <broonie@kernel.org>, stable@vger.kernel.org
+X-Mailer: b4 0.13-dev-034f2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4947; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=Me+e9ML6CgkKjftPxzYhGhgVehw49yScpv6EvPjDSgs=;
+ b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBk1MnWH0qCwoS0bpMXisFIifer56zHw9jZfo6+nuhk
+ A/m/gCCJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCZNTJ1gAKCRAk1otyXVSH0HBAB/
+ 97WesYrytvtvoryIpbQZyJuhPczQLMBmqXVKp6CccgFwKaimR1AlycJRNa5NEyn3c2zWWn1lBcksXK
+ p+F0fpPTM+jWb54GxE9wmpM28jsevBrdKD2iDaMIUCPgvK7Haa1MbczPqRFxC8Dd0CXxdgei/qXsmN
+ DyR1jJDlRm7s0s+kV+sawmZET3SykEd1GjGkGpSZe2bCRxyFeu9St1wKPI243n82hFmRKTx6SH4UvV
+ 87J3WACkkY7FZ0gmFrfRyfMGEvWLvTnv3bYiqLYrX5lHkmfRCvD6E9sU3H/yd/vDQOIdBFEh+h06cE
+ YCSqYRX3x+uhYKuK6fJamFurAZs+G4
+X-Developer-Key: i=broonie@kernel.org; a=openpgp;
+ fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -79,32 +70,133 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 10/08/2023 03:25, Vikash Garodia wrote:
-> Buffer requirement, for different buffer type, comes from video firmware.
-> While copying these requirements, there is an OOB possibility when the
-> payload from firmware is more than expected size. Fix the check to avoid
-> the OOB possibility.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 09c2845e8fe4 ("[media] media: venus: hfi: add Host Firmware Interface (HFI)")
-> Reviewed-by: Nathan Hebert <nhebert@chromium.org>
-> Signed-off-by: Vikash Garodia <quic_vgarodia@quicinc.com>
-> ---
->   drivers/media/platform/qcom/venus/hfi_msgs.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/media/platform/qcom/venus/hfi_msgs.c b/drivers/media/platform/qcom/venus/hfi_msgs.c
-> index 3d5dadf..3e85bd8 100644
-> --- a/drivers/media/platform/qcom/venus/hfi_msgs.c
-> +++ b/drivers/media/platform/qcom/venus/hfi_msgs.c
-> @@ -398,7 +398,7 @@ session_get_prop_buf_req(struct hfi_msg_session_property_info_pkt *pkt,
->   		memcpy(&bufreq[idx], buf_req, sizeof(*bufreq));
->   		idx++;
->   
-> -		if (idx > HFI_BUFFER_TYPE_MAX)
-> +		if (idx >= HFI_BUFFER_TYPE_MAX)
->   			return HFI_ERR_SESSION_INVALID_PARAMETER;
->   
->   		req_bytes -= sizeof(struct hfi_buffer_requirements);
+When we use NT_ARM_SSVE to either enable streaming mode or change the
+vector length for a process we do not currently do anything to ensure that
+there is storage allocated for the SME specific register state.  If the
+task had not previously used SME or we changed the vector length then
+the task will not have had TIF_SME set or backing storage for ZA/ZT
+allocated, resulting in inconsistent register sizes when saving state
+and spurious traps which flush the newly set register state.
 
-Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+We should set TIF_SME to disable traps and ensure that storage is
+allocated for ZA and ZT if it is not already allocated.  This requires
+modifying sme_alloc() to make the flush of any existing register state
+optional so we don't disturb existing state for ZA and ZT.
+
+Fixes: e12310a0d30f ("arm64/sme: Implement ptrace support for streaming mode SVE registers")
+Reported-by: David Spickett <David.Spickett@arm.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Cc: stable@vger.kernel.org
+---
+ arch/arm64/include/asm/fpsimd.h |  4 ++--
+ arch/arm64/kernel/fpsimd.c      |  6 +++---
+ arch/arm64/kernel/ptrace.c      | 12 ++++++++++--
+ arch/arm64/kernel/signal.c      |  2 +-
+ 4 files changed, 16 insertions(+), 8 deletions(-)
+
+diff --git a/arch/arm64/include/asm/fpsimd.h b/arch/arm64/include/asm/fpsimd.h
+index 67f2fb781f59..8df46f186c64 100644
+--- a/arch/arm64/include/asm/fpsimd.h
++++ b/arch/arm64/include/asm/fpsimd.h
+@@ -356,7 +356,7 @@ static inline int sme_max_virtualisable_vl(void)
+ 	return vec_max_virtualisable_vl(ARM64_VEC_SME);
+ }
+ 
+-extern void sme_alloc(struct task_struct *task);
++extern void sme_alloc(struct task_struct *task, bool flush);
+ extern unsigned int sme_get_vl(void);
+ extern int sme_set_current_vl(unsigned long arg);
+ extern int sme_get_current_vl(void);
+@@ -388,7 +388,7 @@ static inline void sme_smstart_sm(void) { }
+ static inline void sme_smstop_sm(void) { }
+ static inline void sme_smstop(void) { }
+ 
+-static inline void sme_alloc(struct task_struct *task) { }
++static inline void sme_alloc(struct task_struct *task, bool flush) { }
+ static inline void sme_setup(void) { }
+ static inline unsigned int sme_get_vl(void) { return 0; }
+ static inline int sme_max_vl(void) { return 0; }
+diff --git a/arch/arm64/kernel/fpsimd.c b/arch/arm64/kernel/fpsimd.c
+index 75c37b1c55aa..087c05aa960e 100644
+--- a/arch/arm64/kernel/fpsimd.c
++++ b/arch/arm64/kernel/fpsimd.c
+@@ -1285,9 +1285,9 @@ void fpsimd_release_task(struct task_struct *dead_task)
+  * the interest of testability and predictability, the architecture
+  * guarantees that when ZA is enabled it will be zeroed.
+  */
+-void sme_alloc(struct task_struct *task)
++void sme_alloc(struct task_struct *task, bool flush)
+ {
+-	if (task->thread.sme_state) {
++	if (task->thread.sme_state && flush) {
+ 		memset(task->thread.sme_state, 0, sme_state_size(task));
+ 		return;
+ 	}
+@@ -1515,7 +1515,7 @@ void do_sme_acc(unsigned long esr, struct pt_regs *regs)
+ 	}
+ 
+ 	sve_alloc(current, false);
+-	sme_alloc(current);
++	sme_alloc(current, true);
+ 	if (!current->thread.sve_state || !current->thread.sme_state) {
+ 		force_sig(SIGKILL);
+ 		return;
+diff --git a/arch/arm64/kernel/ptrace.c b/arch/arm64/kernel/ptrace.c
+index 5b9b4305248b..95568e865ae1 100644
+--- a/arch/arm64/kernel/ptrace.c
++++ b/arch/arm64/kernel/ptrace.c
+@@ -881,6 +881,14 @@ static int sve_set_common(struct task_struct *target,
+ 			break;
+ 		case ARM64_VEC_SME:
+ 			target->thread.svcr |= SVCR_SM_MASK;
++
++			/*
++			 * Disable tramsp and ensure there is SME
++			 * storage but preserve any currently set
++			 * values in ZA/ZT.
++			 */
++			sme_alloc(target, false);
++			set_tsk_thread_flag(target, TIF_SME);
+ 			break;
+ 		default:
+ 			WARN_ON_ONCE(1);
+@@ -1100,7 +1108,7 @@ static int za_set(struct task_struct *target,
+ 	}
+ 
+ 	/* Allocate/reinit ZA storage */
+-	sme_alloc(target);
++	sme_alloc(target, true);
+ 	if (!target->thread.sme_state) {
+ 		ret = -ENOMEM;
+ 		goto out;
+@@ -1171,7 +1179,7 @@ static int zt_set(struct task_struct *target,
+ 		return -EINVAL;
+ 
+ 	if (!thread_za_enabled(&target->thread)) {
+-		sme_alloc(target);
++		sme_alloc(target, true);
+ 		if (!target->thread.sme_state)
+ 			return -ENOMEM;
+ 	}
+diff --git a/arch/arm64/kernel/signal.c b/arch/arm64/kernel/signal.c
+index e304f7ebec2a..c7ebe744c64e 100644
+--- a/arch/arm64/kernel/signal.c
++++ b/arch/arm64/kernel/signal.c
+@@ -475,7 +475,7 @@ static int restore_za_context(struct user_ctxs *user)
+ 	fpsimd_flush_task_state(current);
+ 	/* From now, fpsimd_thread_switch() won't touch thread.sve_state */
+ 
+-	sme_alloc(current);
++	sme_alloc(current, true);
+ 	if (!current->thread.sme_state) {
+ 		current->thread.svcr &= ~SVCR_ZA_MASK;
+ 		clear_thread_flag(TIF_SME);
+
+---
+base-commit: 52a93d39b17dc7eb98b6aa3edb93943248e03b2f
+change-id: 20230809-arm64-fix-ptrace-race-db8552fb985b
+
+Best regards,
+-- 
+Mark Brown <broonie@kernel.org>
+
