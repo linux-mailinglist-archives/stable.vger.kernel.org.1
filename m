@@ -2,66 +2,104 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 650F3777F13
-	for <lists+stable@lfdr.de>; Thu, 10 Aug 2023 19:25:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 82078777F3B
+	for <lists+stable@lfdr.de>; Thu, 10 Aug 2023 19:34:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231956AbjHJRZB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 10 Aug 2023 13:25:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34516 "EHLO
+        id S234413AbjHJRem (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 10 Aug 2023 13:34:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54236 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229693AbjHJRZA (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 10 Aug 2023 13:25:00 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F104A211C;
-        Thu, 10 Aug 2023 10:24:59 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8F3AF66446;
-        Thu, 10 Aug 2023 17:24:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D32A3C433C8;
-        Thu, 10 Aug 2023 17:24:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1691688299;
-        bh=/Zv74iuYLIGvIl2fwN2rzFt5+sonZn4dvwTGENTN3Q8=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=e1ubrhY3Lvnofjcb2mBNUF+T6cw7W7HF8bfyW4IgfDUTmY0Rrr08K0FZVq+mMIZdS
-         CDqllhxkWbyFwgcWkXNI+Wb0e63kiWOTj3OpUTntUVxRn/421VWQcMwgTp/xCUPrfJ
-         hOBdpy72+fIHMD8AObZ0VG7Aj8svdaDwmcEiimZnTOCBM0gyDpJgS8VLdbhoDUWV8g
-         2l3GjQ7t90keiPpIgynR4woYo0TCVxg5qFChItqNI4dbc+C0PRE/FN/8J7PVuDEqTv
-         2YVIcFLv8nGsoT0xOJtmOZjXG04jEbIlPC36EI8G+8iS9gD6ZQAw7IfHz1XHUr5YhN
-         ydpfXNmnp9v/A==
-Date:   Thu, 10 Aug 2023 17:24:57 +0000
-From:   Eric Biggers <ebiggers@kernel.org>
-To:     Sweet Tea Dorminy <sweettea-kernel@dorminy.me>
-Cc:     Jens Axboe <axboe@kernel.dk>, Satya Tangirala <satyat@google.com>,
-        linux-block@vger.kernel.org, kernel-team@meta.com,
-        stable@vger.kernel.org
-Subject: Re: [PATCH v4] blk-crypto: dynamically allocate fallback profile
-Message-ID: <20230810172457.GC701926@google.com>
-References: <20230810142346.96772-1-sweettea-kernel@dorminy.me>
+        with ESMTP id S231330AbjHJRel (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 10 Aug 2023 13:34:41 -0400
+Received: from netrider.rowland.org (netrider.rowland.org [192.131.102.5])
+        by lindbergh.monkeyblade.net (Postfix) with SMTP id 4B4A92705
+        for <stable@vger.kernel.org>; Thu, 10 Aug 2023 10:34:40 -0700 (PDT)
+Received: (qmail 243746 invoked by uid 1000); 10 Aug 2023 13:34:39 -0400
+Date:   Thu, 10 Aug 2023 13:34:39 -0400
+From:   Alan Stern <stern@rowland.harvard.edu>
+To:     Alexandru Gagniuc <alexandru.gagniuc@hp.com>
+Cc:     bjorn@mork.no, davem@davemloft.net, edumazet@google.com,
+        eniac-xw.zhang@hp.com, hayeswang@realtek.com, jflf_kernel@gmx.com,
+        kuba@kernel.org, linux-kernel@vger.kernel.org,
+        linux-usb@vger.kernel.org, netdev@vger.kernel.org,
+        pabeni@redhat.com, stable@vger.kernel.org, svenva@chromium.org
+Subject: Re: [PATCH v2] r8152: Suspend USB device before shutdown when WoL is
+ enabled
+Message-ID: <78e3aade-2a88-42f4-9991-8e245f3eb9b9@rowland.harvard.edu>
+References: <3c4fd3d8-2b0b-492e-aacc-afafcea98417@rowland.harvard.edu>
+ <20230810162216.13455-1-alexandru.gagniuc@hp.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230810142346.96772-1-sweettea-kernel@dorminy.me>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+In-Reply-To: <20230810162216.13455-1-alexandru.gagniuc@hp.com>
+X-Spam-Status: No, score=0.8 required=5.0 tests=BAYES_00,
+        HEADER_FROM_DIFFERENT_DOMAINS,SORTED_RECIPS,SPF_HELO_PASS,SPF_PASS
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, Aug 10, 2023 at 10:21:16AM -0400, Sweet Tea Dorminy wrote:
-> +	/* Dynamic allocation is needed because of lockdep_register_key(). */
-> +	blk_crypto_fallback_profile =
-> +		kzalloc(sizeof(*blk_crypto_fallback_profile), GFP_KERNEL);
-> +	if (!blk_crypto_fallback_profile)
->  		goto fail_free_bioset;
+On Thu, Aug 10, 2023 at 04:22:16PM +0000, Alexandru Gagniuc wrote:
+> From: Alan Stern <stern@rowland.harvard.edu>
+> 
+> On Wed, Aug 02, 2023 at 11:23:46AM -0400, Alan Stern wrote:
+> > On Wed, Aug 02, 2023 at 02:56:43PM +0000, Gagniuc, Alexandru wrote:
+> > > On Wed, Jul 19, 2023 at 02:36:25PM -0400, Alan Stern wrote:
+> > > > How do you know that the link will _remain_ in the correct state?
+> > > 
+> > > The objective is to get to xhci_set_link_state() with the USB_SS_PORT_LS_U3
+> > > argument. This is achieved through usb_port_suspend() in drivers/usb/host/hub.c,
+> > > and the function is implemented in drivers/usb/host/xhci-hub.c.
+> > > 
+> > > This is the only path in the kernel that I am aware of for setting the U3 link
+> > > state. Given that it is part of the USB subsystem, I am fairly confident it will
+> > > show consistent behavior across platforms.
+> > 
+> > That does not answer my question.  I agree that making this change will 
+> > put the link into the U3 state.  But I don't have any reason to think 
+> > that some other software won't later put the link into some other state.
+> 
+> I don't have a rigurous proof that the link will remain in the correct state.
+> The only conjecture that I can make is that no other software besides the kernel
+> will be running at this time. Thus, if the kernel manages to not break the link
+> state, things should work as intended.
+> 
+> > > > That is, how do you know that the shutdown processing for the USB host 
+> > > > controller won't disable the link entirely, thereby preventing WoL from 
+> > > > working?
+> > > 
+> > > We are talking to the USB hub in order to set the link state. I don't see how
+> > > specifics of the host controller would influence behavior.
+> > 
+> > Specifics of the host controller probably won't influence behavior.  
+> > However, specifics of the _software_ can make a big difference.
+> > 
+> > >  I do expect a
+> > > controller which advertises S4/S5 in /proc/acpi/wakeup to not do anything that
+> > > would sabotage this capability. Disabling the link entirely would probalby
+> > > violate that promise.
+> > 
+> > Not if the kernel _tells_ the controller to disable the link.
+> > 
+> > > Think of USB-C docks with a power button showing up as a HID class. The scenario
+> > > herein would disable the power button. I would take that to be a bug in the host
+> > > controller driver if the S4/S5 capability is advertised.
+> > 
+> > Indeed.  And I am asking how you can be sure the host controller driver 
+> > (or some other part of the software stack) doesn't have this bug.
+> 
+> The only way that I have to show that is empirical. I observe that WoL from S5
+> does not work on a device with an r8153 chip. I apply the change, and verify
+> that WoL from S5 now works in this scenario. What are you thinking of in terms
+> of being sure no current or future bug exists?
 
-err needs to be set to -ENOMEM on failure here.  See the suggestion I gave in v1
+I was thinking that the host controller driver's shutdown method might 
+turn off power to all of the ports.
 
-- Eric
+For example, in the ehci-hcd driver, ehci_shutdown() calls 
+ehci_silence_controller(), which calls ehci_turn_off_all_ports().  I 
+don't know if xhci-hcd does anything similar.
+
+Alan Stern
