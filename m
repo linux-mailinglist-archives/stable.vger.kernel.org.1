@@ -2,39 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B5375777314
-	for <lists+stable@lfdr.de>; Thu, 10 Aug 2023 10:36:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A084F777343
+	for <lists+stable@lfdr.de>; Thu, 10 Aug 2023 10:45:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233043AbjHJIge (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 10 Aug 2023 04:36:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44956 "EHLO
+        id S233284AbjHJIpi (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 10 Aug 2023 04:45:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37742 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230416AbjHJIgd (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 10 Aug 2023 04:36:33 -0400
-Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::222])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 247EC1BFA;
-        Thu, 10 Aug 2023 01:36:30 -0700 (PDT)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 3484240003;
-        Thu, 10 Aug 2023 08:36:27 +0000 (UTC)
-From:   Remi Pommarel <repk@triplefau.lt>
-To:     Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        Jose Abreu <joabreu@synopsys.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>
-Cc:     Sabrina Dubroca <sd@queasysnail.net>, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Remi Pommarel <repk@triplefau.lt>,
-        stable@vger.kernel.org
-Subject: [PATCH net] net: stmmac: remove disable_irq() from ->ndo_poll_controller()
-Date:   Thu, 10 Aug 2023 10:37:16 +0200
-Message-Id: <20230810083716.29653-1-repk@triplefau.lt>
-X-Mailer: git-send-email 2.40.0
+        with ESMTP id S234329AbjHJIpf (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 10 Aug 2023 04:45:35 -0400
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 6C3532127
+        for <stable@vger.kernel.org>; Thu, 10 Aug 2023 01:45:34 -0700 (PDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 30D1AD75;
+        Thu, 10 Aug 2023 01:46:16 -0700 (PDT)
+Received: from bogus (e103737-lin.cambridge.arm.com [10.1.197.49])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 899C13F59C;
+        Thu, 10 Aug 2023 01:45:32 -0700 (PDT)
+Date:   Thu, 10 Aug 2023 09:45:29 +0100
+From:   Sudeep Holla <sudeep.holla@arm.com>
+To:     Florian Fainelli <f.fainelli@gmail.com>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org, Jim Quinlan <james.quinlan@broadcom.com>,
+        patches@lists.linux.dev, Bjorn Andersson <andersson@kernel.org>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Cristian Marussi <cristian.marussi@arm.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 5.15 11/92] firmware: arm_scmi: Fix chan_free cleanup on
+ SMC
+Message-ID: <20230810084529.53thk6dmlejbma3t@bogus>
+References: <20230809103633.485906560@linuxfoundation.org>
+ <20230809103633.950016368@linuxfoundation.org>
+ <cf831d49-ebdc-d132-9b8e-189e9688a9f2@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-GND-Sasl: repk@triplefau.lt
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <cf831d49-ebdc-d132-9b8e-189e9688a9f2@gmail.com>
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_PASS,SPF_PASS autolearn=ham
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -42,71 +48,71 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Using netconsole netpoll_poll_dev could be called from interrupt
-context, thus using disable_irq() would cause the following kernel
-warning with CONFIG_DEBUG_ATOMIC_SLEEP enabled:
+On Wed, Aug 09, 2023 at 12:33:17PM -0700, Florian Fainelli wrote:
+> On 8/9/23 03:40, Greg Kroah-Hartman wrote:
+> > From: Cristian Marussi <cristian.marussi@arm.com>
+> > 
+> > [ Upstream commit d1ff11d7ad8704f8d615f6446041c221b2d2ec4d ]
+> > 
+> > SCMI transport based on SMC can optionally use an additional IRQ to
+> > signal message completion. The associated interrupt handler is currently
+> > allocated using devres but on shutdown the core SCMI stack will call
+> > .chan_free() well before any managed cleanup is invoked by devres.
+> > As a consequence, the arrival of a late reply to an in-flight pending
+> > transaction could still trigger the interrupt handler well after the
+> > SCMI core has cleaned up the channels, with unpleasant results.
+> > 
+> > Inhibit further message processing on the IRQ path by explicitly freeing
+> > the IRQ inside .chan_free() callback itself.
+> > 
+> > Fixes: dd820ee21d5e ("firmware: arm_scmi: Augment SMC/HVC to allow optional interrupt")
+> > Reported-by: Bjorn Andersson <andersson@kernel.org>
+> > Signed-off-by: Cristian Marussi <cristian.marussi@arm.com>
+> > Link: https://lore.kernel.org/r/20230719173533.2739319-1-cristian.marussi@arm.com
+> > Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
+> > Signed-off-by: Sasha Levin <sashal@kernel.org>
+> > ---
+> >   drivers/firmware/arm_scmi/smc.c | 17 +++++++++++------
+> >   1 file changed, 11 insertions(+), 6 deletions(-)
+> > 
+> > diff --git a/drivers/firmware/arm_scmi/smc.c b/drivers/firmware/arm_scmi/smc.c
+> > index 4effecc3bb463..f529004f1922e 100644
+> > --- a/drivers/firmware/arm_scmi/smc.c
+> > +++ b/drivers/firmware/arm_scmi/smc.c
+> > @@ -21,6 +21,7 @@
+> >   /**
+> >    * struct scmi_smc - Structure representing a SCMI smc transport
+> >    *
+> > + * @irq: An optional IRQ for completion
+> >    * @cinfo: SCMI channel info
+> >    * @shmem: Transmit/Receive shared memory area
+> >    * @shmem_lock: Lock to protect access to Tx/Rx shared memory area
+> > @@ -30,6 +31,7 @@
+> >    */
+> >   struct scmi_smc {
+> > +	int irq;
+> 
+> For this backport to apply as-is and not define a duplicate "int irq" field
+> we need to take in f716cbd33f038af87824c30e165b3b70e4c6be1e ("firmware:
+> arm_scmi: Make smc transport use common completions") which did remove the
+> "int irq" from struct scmi_smc.
+> 
+> Alternatively, we can just omit this hunk adding the "int irq" member from
+> the back port.
+>
 
-  BUG: sleeping function called from invalid context at kernel/irq/manage.c:137
-  in_atomic(): 1, irqs_disabled(): 128, non_block: 0, pid: 10, name: ksoftirqd/0
-  CPU: 0 PID: 10 Comm: ksoftirqd/0 Tainted: G        W         5.15.42-00075-g816b502b2298-dirty #117
-  Hardware name: aml (r1) (DT)
-  Call trace:
-   dump_backtrace+0x0/0x270
-   show_stack+0x14/0x20
-   dump_stack_lvl+0x8c/0xac
-   dump_stack+0x18/0x30
-   ___might_sleep+0x150/0x194
-   __might_sleep+0x64/0xbc
-   synchronize_irq+0x8c/0x150
-   disable_irq+0x2c/0x40
-   stmmac_poll_controller+0x140/0x1a0
-   netpoll_poll_dev+0x6c/0x220
-   netpoll_send_skb+0x308/0x390
-   netpoll_send_udp+0x418/0x760
-   write_msg+0x118/0x140 [netconsole]
-   console_unlock+0x404/0x500
-   vprintk_emit+0x118/0x250
-   dev_vprintk_emit+0x19c/0x1cc
-   dev_printk_emit+0x90/0xa8
-   __dev_printk+0x78/0x9c
-   _dev_warn+0xa4/0xbc
-   ath10k_warn+0xe8/0xf0 [ath10k_core]
-   ath10k_htt_txrx_compl_task+0x790/0x7fc [ath10k_core]
-   ath10k_pci_napi_poll+0x98/0x1f4 [ath10k_pci]
-   __napi_poll+0x58/0x1f4
-   net_rx_action+0x504/0x590
-   _stext+0x1b8/0x418
-   run_ksoftirqd+0x74/0xa4
-   smpboot_thread_fn+0x210/0x3c0
-   kthread+0x1fc/0x210
-   ret_from_fork+0x10/0x20
+There is a bit disconnect in the communication here. I didn't see Greg was
+not cc-ed on the earlier email to Sasha[1]. The request to drop it was also
+made here[2].
 
-Commit [0] introcuded disable_hardirq() to address this situation, so
-use it here to avoid above warning.
+> This is a 5.15 stable kernel problem only because
+> f716cbd33f038af87824c30e165b3b70e4c6be1e is in v5.18 and newer.
 
-[0] 02cea395866 ("genirq: Provide disable_hardirq()")
-
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Remi Pommarel <repk@triplefau.lt>
----
- drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index 4727f7be4f86..bbe509abc5dc 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -5958,8 +5958,8 @@ static void stmmac_poll_controller(struct net_device *dev)
- 		for (i = 0; i < priv->plat->tx_queues_to_use; i++)
- 			stmmac_msi_intr_tx(0, &priv->dma_conf.tx_queue[i]);
- 	} else {
--		disable_irq(dev->irq);
--		stmmac_interrupt(dev->irq, dev);
-+		if (disable_hardirq(dev->irq))
-+			stmmac_interrupt(dev->irq, dev);
- 		enable_irq(dev->irq);
- 	}
- }
 -- 
-2.40.0
+Regards,
+Sudeep
+
+[1] https://marc.info/?l=linux-stable-commits&m=169159392424103&w=2
+(couldn't find a lore link for the above)
+[2] https://lore.kernel.org/all/ZNIdrd+SQ0KjYWKA@e120937-lin/
 
