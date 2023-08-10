@@ -2,111 +2,130 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2219E776E0D
-	for <lists+stable@lfdr.de>; Thu, 10 Aug 2023 04:26:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CA61A776E4B
+	for <lists+stable@lfdr.de>; Thu, 10 Aug 2023 05:03:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232414AbjHJC0P (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 9 Aug 2023 22:26:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40418 "EHLO
+        id S229620AbjHJDDr (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 9 Aug 2023 23:03:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55950 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232363AbjHJC0O (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 22:26:14 -0400
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F9AA2132;
-        Wed,  9 Aug 2023 19:26:07 -0700 (PDT)
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 37A27wbd013577;
-        Thu, 10 Aug 2023 02:26:03 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
- subject : date : message-id : in-reply-to : references : mime-version :
- content-type; s=qcppdkim1;
- bh=qnnfa/E2csSoEJfzcMjz6VRCrhnXshNrlw1QRh2X2YU=;
- b=ggcipcEMktPwU5XxEfwvspOlXm1GSbPGBkV62okWvwekGlEeh8zs06blBJnFiDCdVnmV
- aV9YqxdBB+gdOLekoGwIZzwLhVQxDbuUzQWqs42P6D0nzDJMLEd12Jff62ghp1uofjAt
- Mq7pgDUlNstjyAwjZUGEhY947db1qkZtHPeANXejQUka0cHuRxu0yAmmpX/fyAZDDGbW
- ie3iTVh0efBPqx5/TvAJePMcNPqFuxJUh4kfoaHppUI2hIM86/JDHecTi9oelHV0cmHv
- X7cwpdVd9WCw3gXXqGCEZeqCbDAUx4YOOTJYLeis3qwtekqGO53A+nY3zyn0rfNFJEVz Tg== 
-Received: from nasanppmta01.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3scbcghbrn-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 10 Aug 2023 02:26:03 +0000
-Received: from nasanex01a.na.qualcomm.com (nasanex01a.na.qualcomm.com [10.52.223.231])
-        by NASANPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 37A2Q0Jd008904
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 10 Aug 2023 02:26:00 GMT
-Received: from hu-vgarodia-hyd.qualcomm.com (10.80.80.8) by
- nasanex01a.na.qualcomm.com (10.52.223.231) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.30; Wed, 9 Aug 2023 19:25:56 -0700
-From:   Vikash Garodia <quic_vgarodia@quicinc.com>
-To:     <stanimir.k.varbanov@gmail.com>, <bryan.odonoghue@linaro.org>,
-        <agross@kernel.org>, <andersson@kernel.org>,
-        <konrad.dybcio@linaro.org>, <mchehab@kernel.org>,
-        <hans.verkuil@cisco.com>, <tfiga@chromium.org>
-CC:     <linux-media@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>,
-        Vikash Garodia <quic_vgarodia@quicinc.com>
-Subject: [PATCH v2 4/4] venus: hfi_parser: Add check to keep the number of codecs within range
-Date:   Thu, 10 Aug 2023 07:55:04 +0530
-Message-ID: <1691634304-2158-5-git-send-email-quic_vgarodia@quicinc.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1691634304-2158-1-git-send-email-quic_vgarodia@quicinc.com>
-References: <1691634304-2158-1-git-send-email-quic_vgarodia@quicinc.com>
+        with ESMTP id S229489AbjHJDDq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 9 Aug 2023 23:03:46 -0400
+Received: from mail-oo1-xc33.google.com (mail-oo1-xc33.google.com [IPv6:2607:f8b0:4864:20::c33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9D7D91BFB;
+        Wed,  9 Aug 2023 20:03:45 -0700 (PDT)
+Received: by mail-oo1-xc33.google.com with SMTP id 006d021491bc7-56c74961e0cso399092eaf.3;
+        Wed, 09 Aug 2023 20:03:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1691636625; x=1692241425;
+        h=content-transfer-encoding:subject:from:cc:to:content-language
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/mqIn1UxvvxNgWiVAxgUjE9nunV+x1Ajw+4mnlJTJ2U=;
+        b=WNBWdcyt8GmLswbKFdavF/RRxcjB8H9Ndg+oRoiWchhneNSVpQlS6RHec6/ympBFJe
+         FWHW/UlLcXifYRrvNjNLHfVzzwu/pmZdgy89xgYTSW5C3iVOo/6QlDttftUVk2JoUV5N
+         nT/09vw131HU5ZSuk9pkzXPdvzolaTsL/PrOV9UUQ5Q1neoAJHPUhKltz4DJFTB5vqvF
+         hThWEzmOOfsKG1YAK/+IKK9GGuQGbmcP6h8TlzxN/O4D6TzVb9pi6NPX6hKCk+DUpHL4
+         0k47pSB9gCoHwD9YjICcJQOegmti6N3yiXYAXJR8aXWFwyxVJAueDwrEZBt8xmaoJrUJ
+         kKkg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1691636625; x=1692241425;
+        h=content-transfer-encoding:subject:from:cc:to:content-language
+         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=/mqIn1UxvvxNgWiVAxgUjE9nunV+x1Ajw+4mnlJTJ2U=;
+        b=Q8xhVzVt5rbL2Ox8k6Paxq+ia6mUzrt6YD3La7vr79Tqo65AcghQPCmZW2DV/893aB
+         1Z5JfPxSDfak+MTh+xXRMW0Oohssu4tjcDECC+LdmXU9Z19W/rAhTJXBcQG/M/7E3JY2
+         zNSOmAjFqS3I9V9TqQA8HI9PlgM7lFK80Su6g0FmjMJdq3RkBAz94X+gntCBEHzUWQtz
+         8YcGgpF3PvOWHgnA/X2MqEQwHpSrefJrObIJ0uPwXcapW4XvJ0u6jEP8Qc7h1uJYXsEp
+         61+rlImJYvM2LRJRda/UT4d9TXivsCOpweNpk9iEoVvYO5cZ92U878HKTCEGBOXwFAZc
+         1wlw==
+X-Gm-Message-State: AOJu0Yz6dwRh8uF5fmfSbjuvCnjWrs74ozXZF+hyzXCRB/8JrBwTfEut
+        sinSTWWH+j9drdfnjz0PusvPigf1X/w=
+X-Google-Smtp-Source: AGHT+IF5FU/JqU6UdZo+3G+ycZQ/zMVVJwtMWzxJGHt8Fe4jF3F8mmZ5iIWq3IoZaC0yDjckn2dghg==
+X-Received: by 2002:a05:6808:14c8:b0:3a7:8a1:9cdd with SMTP id f8-20020a05680814c800b003a708a19cddmr1414926oiw.28.1691636624853;
+        Wed, 09 Aug 2023 20:03:44 -0700 (PDT)
+Received: from [192.168.0.105] ([103.131.18.64])
+        by smtp.gmail.com with ESMTPSA id i8-20020a17090a2ac800b0026307fa0442sm2334344pjg.49.2023.08.09.20.03.41
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 09 Aug 2023 20:03:44 -0700 (PDT)
+Message-ID: <4b0c06ba-b05c-071c-d494-67775bd7250f@gmail.com>
+Date:   Thu, 10 Aug 2023 10:03:38 +0700
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nasanex01a.na.qualcomm.com (10.52.223.231)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: ZYW-dGODzw6ay9RIlfUHdLJyQ7XjRCKE
-X-Proofpoint-ORIG-GUID: ZYW-dGODzw6ay9RIlfUHdLJyQ7XjRCKE
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-08-10_01,2023-08-09_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 malwarescore=0
- adultscore=0 phishscore=0 mlxlogscore=925 mlxscore=0 spamscore=0
- priorityscore=1501 suspectscore=0 impostorscore=0 clxscore=1015
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2306200000 definitions=main-2308100019
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.14.0
+Content-Language: en-US
+To:     Ben Skeggs <bskeggs@redhat.com>, Karol Herbst <kherbst@redhat.com>,
+        Lyude Paul <lyude@redhat.com>,
+        Peter Bottomley <peebee@gmx.com>, peter@peebee.org.uk
+Cc:     Linux DRI Development <dri-devel@lists.freedesktop.org>,
+        Linux Nouveau <nouveau@lists.freedesktop.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux Regressions <regressions@lists.linux.dev>,
+        Linux Stable <stable@vger.kernel.org>
+From:   Bagas Sanjaya <bagasdotme@gmail.com>
+Subject: Fwd: System (Xeon Nvidia) hangs at boot terminal after kernel 6.4.7
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Supported codec bitmask is populated from the payload from venus firmware.
-There is a possible case when all the bits in the codec bitmask is set. In
-such case, core cap for decoder is filled  and MAX_CODEC_NUM is utilized.
-Now while filling the caps for encoder, it can lead to access the caps
-array beyong 32 index. Hence leading to OOB write.
-The fix counts the supported encoder and decoder. If the count is more than
-max, then it skips accessing the caps.
+Hi,
 
-Cc: stable@vger.kernel.org
-Fixes: 1a73374a04e5 ("media: venus: hfi_parser: add common capability parser")
-Signed-off-by: Vikash Garodia <quic_vgarodia@quicinc.com>
----
- drivers/media/platform/qcom/venus/hfi_parser.c | 3 +++
- 1 file changed, 3 insertions(+)
+I notice a regression report on Bugzilla [1]. Quoting from it:
 
-diff --git a/drivers/media/platform/qcom/venus/hfi_parser.c b/drivers/media/platform/qcom/venus/hfi_parser.c
-index 9d6ba22..c438395 100644
---- a/drivers/media/platform/qcom/venus/hfi_parser.c
-+++ b/drivers/media/platform/qcom/venus/hfi_parser.c
-@@ -19,6 +19,9 @@ static void init_codecs(struct venus_core *core)
- 	struct hfi_plat_caps *caps = core->caps, *cap;
- 	unsigned long bit;
- 
-+	if (hweight_long(core->dec_codecs) + hweight_long(core->enc_codecs) > MAX_CODEC_NUM)
-+		return;
-+
- 	for_each_set_bit(bit, &core->dec_codecs, MAX_CODEC_NUM) {
- 		cap = &caps[core->codecs_count++];
- 		cap->codec = BIT(bit);
+> Kernel 6.4.6 compiled from source worked AOK on my desktop with Intel Xeon cpu and Nvidia graphics - see below for system specs.
+> 
+> Kernels 6.4.7 & 6.4.8 also compiled from source with identical configs hang with a frozen boot terminal screen after a significant way through the boot sequence (e.g. whilst running /etc/profile). The system may still be running as a sound is emitted when the power button is pressed (only way to escape from the system hang).
+> 
+> The issue seems to be specific to the hardware of this desktop as the problem kernels do boot through to completion on other machines.
+> 
+> A test was done with a different build (from Porteus) of kernel 6.5-RC4 and that did not hang - but kernel 6.4.7 from the same builder hung just like my build.
+> 
+> I apologise that I cannot provide any detailed diagnostics - but I can put diagnostics into /etc/profile and provide screenshots if requested.
+> 
+> Forum thread with more details and screenshots:
+> https://forum.puppylinux.com/viewtopic.php?p=95733#p95733
+> 
+> Computer Profile:
+>  Machine                    Dell Inc. Precision WorkStation T5400   (version: Not Specified)
+>  Mainboard                  Dell Inc. 0RW203 (version: NA)
+>  • BIOS                     Dell Inc. A11 | Date: 04/30/2012 | Type: Legacy
+>  • CPU                      Intel(R) Xeon(R) CPU E5450 @ 3.00GHz (4 cores)
+>  • RAM                      Total: 7955 MB | Used: 1555 MB (19.5%) | Actual Used: 775 MB (9.7%)
+>  Graphics                   Resolution: 1366x768 pixels | Display Server: X.Org 21.1.8
+>  • device-0                 NVIDIA Corporation GT218 [NVS 300] [10de:10d8] (rev a2)
+>  Audio                      ALSA
+>  • device-0                 Intel Corporation 631xESB/632xESB High Definition Audio Controller [8086:269a] (rev 09)
+>  • device-1                 NVIDIA Corporation High Definition Audio Controller [10de:0be3] (rev a1)
+>  Network                    wlan1
+>  • device-0                 Ethernet: Broadcom Inc. and subsidiaries NetXtreme BCM5754 Gigabit Ethernet PCI Express [14e4:167a] (rev 02)
+
+See Bugzilla for the full thread.
+
+FYI, this is stable-specific regression since it doesn't appear on mainline.
+Also, I have asked the reporter to also open the issue on gitlab.freedesktop.org
+tracker (as it is the standard for DRM subsystem).
+
+To the reporter (on To: list): It'd been great if you also have netconsole
+output on your Bugzilla report, providing that you have another machine
+connecting to your problematic one.
+
+Anyway, I'm adding this regression to be tracked by regzbot:
+
+#regzbot introduced: v6.4.6..v6.4.7 https://bugzilla.kernel.org/show_bug.cgi?id=217776
+#regzbot link: https://forum.puppylinux.com/viewtopic.php?p=95733#p95733
+
+Thanks.
+
+[1]: https://bugzilla.kernel.org/show_bug.cgi?id=217776
+
 -- 
-2.7.4
-
+An old man doll... just what I always wanted! - Clara
