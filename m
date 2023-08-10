@@ -2,201 +2,162 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9C5D07776F9
-	for <lists+stable@lfdr.de>; Thu, 10 Aug 2023 13:28:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 23F657776FF
+	for <lists+stable@lfdr.de>; Thu, 10 Aug 2023 13:30:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234748AbjHJL21 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 10 Aug 2023 07:28:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42784 "EHLO
+        id S234850AbjHJLaf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 10 Aug 2023 07:30:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36114 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234187AbjHJL20 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 10 Aug 2023 07:28:26 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1A2359C;
-        Thu, 10 Aug 2023 04:28:26 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A533165984;
-        Thu, 10 Aug 2023 11:28:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12BBBC433C8;
-        Thu, 10 Aug 2023 11:28:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1691666905;
-        bh=Me+e9ML6CgkKjftPxzYhGhgVehw49yScpv6EvPjDSgs=;
-        h=From:Date:Subject:To:Cc:From;
-        b=a5UHdsmxhL25LF7SfAKBucfNreOSVU2r5hR7/QhIYrt/S2Ac319sUwGnoQ6/3225M
-         JVVmQc+5oOJKeMZGT7+NGARLiefZ80ewxBGElqR9LvjPcMrqALukfIZNGxDRLbNvqZ
-         ao0DYx9WEc5CxxUEIqzRf0d8xvAUZRqeb2AeXsLjZiyCG/TZF1IgWDRZtaNOPLWD9m
-         I/OrX4/8zcEVjz4M92Ek9/jp5OFlMSXm03jqM0XO5zaEbOzek5NQ7utW9ttZazalCm
-         v0DReiS+JE4rr3GYHVGl2cotS2LP+wATZUU0EYo2NoJ0ahOHGaFnTIQF9vFL+w59dV
-         whLpmbS3XRJRQ==
-From:   Mark Brown <broonie@kernel.org>
-Date:   Thu, 10 Aug 2023 12:28:19 +0100
-Subject: [PATCH] arm64/ptrace: Ensure that SME is set up for target when
- writing SSVE state
+        with ESMTP id S233829AbjHJLaf (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 10 Aug 2023 07:30:35 -0400
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 466FD9C;
+        Thu, 10 Aug 2023 04:30:31 -0700 (PDT)
+Received: from dggpeml500021.china.huawei.com (unknown [172.30.72.56])
+        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4RM4Sq2jh7zkX8h;
+        Thu, 10 Aug 2023 19:29:15 +0800 (CST)
+Received: from [10.174.177.174] (10.174.177.174) by
+ dggpeml500021.china.huawei.com (7.185.36.21) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.27; Thu, 10 Aug 2023 19:30:28 +0800
+Message-ID: <ef8850fe-545d-7729-92f4-0e1d726b2827@huawei.com>
+Date:   Thu, 10 Aug 2023 19:30:27 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20230810-arm64-fix-ptrace-race-v1-1-a5361fad2bd6@kernel.org>
-X-B4-Tracking: v=1; b=H4sIANLJ1GQC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDI2MDCwNL3cSiXDMT3bTMCt2CkqLE5FRdMJGSZGFqapSWZGlhmqQE1FtQlAp
- UAjY3Ora2FgDKZd0tZwAAAA==
-To:     Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>, Oleg Nesterov <oleg@redhat.com>
-Cc:     David Spickett <David.Spickett@arm.com>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        Mark Brown <broonie@kernel.org>, stable@vger.kernel.org
-X-Mailer: b4 0.13-dev-034f2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4947; i=broonie@kernel.org;
- h=from:subject:message-id; bh=Me+e9ML6CgkKjftPxzYhGhgVehw49yScpv6EvPjDSgs=;
- b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBk1MnWH0qCwoS0bpMXisFIifer56zHw9jZfo6+nuhk
- A/m/gCCJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCZNTJ1gAKCRAk1otyXVSH0HBAB/
- 97WesYrytvtvoryIpbQZyJuhPczQLMBmqXVKp6CccgFwKaimR1AlycJRNa5NEyn3c2zWWn1lBcksXK
- p+F0fpPTM+jWb54GxE9wmpM28jsevBrdKD2iDaMIUCPgvK7Haa1MbczPqRFxC8Dd0CXxdgei/qXsmN
- DyR1jJDlRm7s0s+kV+sawmZET3SykEd1GjGkGpSZe2bCRxyFeu9St1wKPI243n82hFmRKTx6SH4UvV
- 87J3WACkkY7FZ0gmFrfRyfMGEvWLvTnv3bYiqLYrX5lHkmfRCvD6E9sU3H/yd/vDQOIdBFEh+h06cE
- YCSqYRX3x+uhYKuK6fJamFurAZs+G4
-X-Developer-Key: i=broonie@kernel.org; a=openpgp;
- fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.1.2
+Subject: Re: [v6.1] kernel BUG in ext4_writepages
+Content-Language: en-US
+To:     Muhammad Usama Anjum <usama.anjum@collabora.com>,
+        syzbot <syzbot+a8068dd81edde0186829@syzkaller.appspotmail.com>,
+        <syzkaller-lts-bugs@googlegroups.com>, Jan Kara <jack@suse.cz>,
+        Theodore Ts'o <tytso@mit.edu>,
+        Andreas Dilger <adilger.kernel@dilger.ca>
+CC:     <linux-ext4@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        linux-stable <stable@vger.kernel.org>,
+        Baokun Li <libaokun1@huawei.com>
+References: <00000000000081f8c905f6c24e0d@google.com>
+ <87dcdf62-8a74-1fbf-5f10-f4f3231f774f@collabora.com>
+From:   Baokun Li <libaokun1@huawei.com>
+In-Reply-To: <87dcdf62-8a74-1fbf-5f10-f4f3231f774f@collabora.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.174.177.174]
+X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
+ dggpeml500021.china.huawei.com (7.185.36.21)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.1 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-When we use NT_ARM_SSVE to either enable streaming mode or change the
-vector length for a process we do not currently do anything to ensure that
-there is storage allocated for the SME specific register state.  If the
-task had not previously used SME or we changed the vector length then
-the task will not have had TIF_SME set or backing storage for ZA/ZT
-allocated, resulting in inconsistent register sizes when saving state
-and spurious traps which flush the newly set register state.
+Hello!
 
-We should set TIF_SME to disable traps and ensure that storage is
-allocated for ZA and ZT if it is not already allocated.  This requires
-modifying sme_alloc() to make the flush of any existing register state
-optional so we don't disturb existing state for ZA and ZT.
+On 2023/8/10 18:49, Muhammad Usama Anjum wrote:
+> Hi,
+>
+> Syzbot has reporting hitting this bug on 6.1.18 and 5.15.101 LTS kernels
+> and provided reproducer as well.
+>
+> 	BUG_ON(ext4_test_inode_state(inode, EXT4_STATE_MAY_INLINE_DATA));
+>
+> I've copied the same config and reproduced the bug on 6.1.18, 6.1.44 and
+> next-20230809.
+>
+> This part of code hasn't been changed from the time it was introduced
+> 4e7ea81db53465 ("ext4: restructure writeback path"). I'm not sure why the
+> inlined data is being destroyed before copying it somewhere else.
+>
+> Please consider this a report.
+>
+> Regards,
+> Muhammad Usama Anjum
 
-Fixes: e12310a0d30f ("arm64/sme: Implement ptrace support for streaming mode SVE registers")
-Reported-by: David Spickett <David.Spickett@arm.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Cc: stable@vger.kernel.org
----
- arch/arm64/include/asm/fpsimd.h |  4 ++--
- arch/arm64/kernel/fpsimd.c      |  6 +++---
- arch/arm64/kernel/ptrace.c      | 12 ++++++++++--
- arch/arm64/kernel/signal.c      |  2 +-
- 4 files changed, 16 insertions(+), 8 deletions(-)
+We've already noticed this problem, which is caused by the fact that
 
-diff --git a/arch/arm64/include/asm/fpsimd.h b/arch/arm64/include/asm/fpsimd.h
-index 67f2fb781f59..8df46f186c64 100644
---- a/arch/arm64/include/asm/fpsimd.h
-+++ b/arch/arm64/include/asm/fpsimd.h
-@@ -356,7 +356,7 @@ static inline int sme_max_virtualisable_vl(void)
- 	return vec_max_virtualisable_vl(ARM64_VEC_SME);
- }
- 
--extern void sme_alloc(struct task_struct *task);
-+extern void sme_alloc(struct task_struct *task, bool flush);
- extern unsigned int sme_get_vl(void);
- extern int sme_set_current_vl(unsigned long arg);
- extern int sme_get_current_vl(void);
-@@ -388,7 +388,7 @@ static inline void sme_smstart_sm(void) { }
- static inline void sme_smstop_sm(void) { }
- static inline void sme_smstop(void) { }
- 
--static inline void sme_alloc(struct task_struct *task) { }
-+static inline void sme_alloc(struct task_struct *task, bool flush) { }
- static inline void sme_setup(void) { }
- static inline unsigned int sme_get_vl(void) { return 0; }
- static inline int sme_max_vl(void) { return 0; }
-diff --git a/arch/arm64/kernel/fpsimd.c b/arch/arm64/kernel/fpsimd.c
-index 75c37b1c55aa..087c05aa960e 100644
---- a/arch/arm64/kernel/fpsimd.c
-+++ b/arch/arm64/kernel/fpsimd.c
-@@ -1285,9 +1285,9 @@ void fpsimd_release_task(struct task_struct *dead_task)
-  * the interest of testability and predictability, the architecture
-  * guarantees that when ZA is enabled it will be zeroed.
-  */
--void sme_alloc(struct task_struct *task)
-+void sme_alloc(struct task_struct *task, bool flush)
- {
--	if (task->thread.sme_state) {
-+	if (task->thread.sme_state && flush) {
- 		memset(task->thread.sme_state, 0, sme_state_size(task));
- 		return;
- 	}
-@@ -1515,7 +1515,7 @@ void do_sme_acc(unsigned long esr, struct pt_regs *regs)
- 	}
- 
- 	sve_alloc(current, false);
--	sme_alloc(current);
-+	sme_alloc(current, true);
- 	if (!current->thread.sve_state || !current->thread.sme_state) {
- 		force_sig(SIGKILL);
- 		return;
-diff --git a/arch/arm64/kernel/ptrace.c b/arch/arm64/kernel/ptrace.c
-index 5b9b4305248b..95568e865ae1 100644
---- a/arch/arm64/kernel/ptrace.c
-+++ b/arch/arm64/kernel/ptrace.c
-@@ -881,6 +881,14 @@ static int sve_set_common(struct task_struct *target,
- 			break;
- 		case ARM64_VEC_SME:
- 			target->thread.svcr |= SVCR_SM_MASK;
-+
-+			/*
-+			 * Disable tramsp and ensure there is SME
-+			 * storage but preserve any currently set
-+			 * values in ZA/ZT.
-+			 */
-+			sme_alloc(target, false);
-+			set_tsk_thread_flag(target, TIF_SME);
- 			break;
- 		default:
- 			WARN_ON_ONCE(1);
-@@ -1100,7 +1108,7 @@ static int za_set(struct task_struct *target,
- 	}
- 
- 	/* Allocate/reinit ZA storage */
--	sme_alloc(target);
-+	sme_alloc(target, true);
- 	if (!target->thread.sme_state) {
- 		ret = -ENOMEM;
- 		goto out;
-@@ -1171,7 +1179,7 @@ static int zt_set(struct task_struct *target,
- 		return -EINVAL;
- 
- 	if (!thread_za_enabled(&target->thread)) {
--		sme_alloc(target);
-+		sme_alloc(target, true);
- 		if (!target->thread.sme_state)
- 			return -ENOMEM;
- 	}
-diff --git a/arch/arm64/kernel/signal.c b/arch/arm64/kernel/signal.c
-index e304f7ebec2a..c7ebe744c64e 100644
---- a/arch/arm64/kernel/signal.c
-+++ b/arch/arm64/kernel/signal.c
-@@ -475,7 +475,7 @@ static int restore_za_context(struct user_ctxs *user)
- 	fpsimd_flush_task_state(current);
- 	/* From now, fpsimd_thread_switch() won't touch thread.sve_state */
- 
--	sme_alloc(current);
-+	sme_alloc(current, true);
- 	if (!current->thread.sme_state) {
- 		current->thread.svcr &= ~SVCR_ZA_MASK;
- 		clear_thread_flag(TIF_SME);
+ext4_convert_inline_data() in ext4_page_mkwrite() is not protected by
 
----
-base-commit: 52a93d39b17dc7eb98b6aa3edb93943248e03b2f
-change-id: 20230809-arm64-fix-ptrace-race-db8552fb985b
+an inode_lock, so it can modify the state of the inode while someone
 
-Best regards,
+else is holding the lock.
+
+Unfortunately we don't have a good solution for this at the moment,
+
+as adding inode_lock here could easily form an ABBA deadlock with
+
+mmap_lock. For a more detailed discussion see:
+
+      https://lkml.org/lkml/2023/5/30/894
+
+
+>
+> On 3/13/23 11:34 AM, syzbot wrote:
+>> syzbot has found a reproducer for the following issue on:
+>>
+>> HEAD commit: 1cc3fcf63192 Linux 6.1.18
+>> git tree: linux-6.1.y
+>> console output: https://syzkaller.appspot.com/x/log.txt?x=10d4b342c80000
+>> kernel config: https://syzkaller.appspot.com/x/.config?x=157296d36f92ea19
+> ^ Kernel config
+>
+>> dashboard link: https://syzkaller.appspot.com/bug?extid=a8068dd81edde0186829
+>> compiler: Debian clang version 15.0.7, GNU ld (GNU Binutils for Debian) 2.35.2
+>> userspace arch: arm64
+>> syz repro: https://syzkaller.appspot.com/x/repro.syz?x=13512ec6c80000
+>> C reproducer: https://syzkaller.appspot.com/x/repro.c?x=15ca0ff4c80000
+> ^ reproducers. C reproducer reproduces the bug easily.
+>
+>> Downloadable assets:
+>> disk image: https://storage.googleapis.com/syzbot-assets/0e4c0d43698b/disk-1cc3fcf6.raw.xz
+>> vmlinux: https://storage.googleapis.com/syzbot-assets/a4de39d735de/vmlinux-1cc3fcf6.xz
+>> kernel image: https://storage.googleapis.com/syzbot-assets/82bab928f6e3/Image-1cc3fcf6.gz.xz
+>> mounted in repro: https://storage.googleapis.com/syzbot-assets/bf2e21b96210/mount_0.gz
+>>
+>> IMPORTANT: if you fix the issue, please add the following tag to the commit:
+>> Reported-by: syzbot+a8068dd81edde0186829@syzkaller.appspotmail.com
+>>
+>> ------------[ cut here ]------------
+>> kernel BUG at fs/ext4/inode.c:2746!
+>> Internal error: Oops - BUG: 00000000f2000800 [#1] PREEMPT SMP
+>> Modules linked in:
+>> CPU: 0 PID: 11 Comm: kworker/u4:1 Not tainted 6.1.18-syzkaller #0
+>> Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 03/02/2023
+>> Workqueue: writeback wb_workfn (flush-7:0)
+>> pstate: 80400005 (Nzcv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+>> pc : ext4_writepages+0x35f4/0x35f8 fs/ext4/inode.c:2745
+>> lr : ext4_writepages+0x35f4/0x35f8 fs/ext4/inode.c:2745
+>> sp : ffff800019d16d40
+>> x29: ffff800019d17120 x28: ffff800008e691e4 x27: dfff800000000000
+>> x26: ffff0000de1f3ee0 x25: ffff800019d17590 x24: ffff800019d17020
+>> x23: ffff0000dd616000 x22: ffff800019d16f40 x21: ffff0000de1f4108
+>> x20: 0000008410000000 x19: 0000000000000001 x18: ffff800019d16a20
+>> x17: ffff80001572d000 x16: ffff8000083099b4 x15: 000000000000ba31
+>> x14: 00000000ffffffff x13: dfff800000000000 x12: 0000000000000001
+>> x11: ff80800008e6c7d8 x10: 0000000000000000 x9 : ffff800008e6c7d8
+>> x8 : ffff0000c099b680 x7 : 0000000000000000 x6 : 0000000000000000
+>> x5 : 0000000000000080 x4 : 0000000000000000 x3 : 0000000000000001
+>> x2 : 0000000000000000 x1 : 0000008000000000 x0 : 0000000000000000
+>> Call trace:
+>> ext4_writepages+0x35f4/0x35f8 fs/ext4/inode.c:2745
+>> do_writepages+0x2e8/0x56c mm/page-writeback.c:2469
+>> __writeback_single_inode+0x228/0x1ec8 fs/fs-writeback.c:1587
+>> writeback_sb_inodes+0x9c0/0x1844 fs/fs-writeback.c:1878
+>> wb_writeback+0x4f8/0x1580 fs/fs-writeback.c:2052
+>> wb_do_writeback fs/fs-writeback.c:2195 [inline]
+>> wb_workfn+0x460/0x11b8 fs/fs-writeback.c:2235
+>> process_one_work+0x868/0x16f4 kernel/workqueue.c:2289
+>> worker_thread+0x8e4/0xfec kernel/workqueue.c:2436
+>> kthread+0x24c/0x2d4 kernel/kthread.c:376
+>> ret_from_fork+0x10/0x20 arch/arm64/kernel/entry.S:860
+>> Code: d4210000 97da5cfa d4210000 97da5cf8 (d4210000)
+>> ---[ end trace 0000000000000000 ]---
+>>
+>>
 -- 
-Mark Brown <broonie@kernel.org>
-
+With Best Regards,
+Baokun Li
+.
