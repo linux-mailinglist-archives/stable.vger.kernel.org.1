@@ -2,88 +2,116 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DA852777D2F
-	for <lists+stable@lfdr.de>; Thu, 10 Aug 2023 18:03:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 74AC8777DB9
+	for <lists+stable@lfdr.de>; Thu, 10 Aug 2023 18:09:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236384AbjHJQDQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 10 Aug 2023 12:03:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58278 "EHLO
+        id S236600AbjHJQIF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 10 Aug 2023 12:08:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34518 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236391AbjHJQCn (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 10 Aug 2023 12:02:43 -0400
-Received: from outgoing.mit.edu (outgoing-auth-1.mit.edu [18.9.28.11])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B9180272C
-        for <stable@vger.kernel.org>; Thu, 10 Aug 2023 09:02:23 -0700 (PDT)
-Received: from cwcc.thunk.org (pool-173-48-112-65.bstnma.fios.verizon.net [173.48.112.65])
-        (authenticated bits=0)
-        (User authenticated as tytso@ATHENA.MIT.EDU)
-        by outgoing.mit.edu (8.14.7/8.12.4) with ESMTP id 37AG1q0Q030767
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 10 Aug 2023 12:01:53 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mit.edu; s=outgoing;
-        t=1691683314; bh=rD724fSSexNAtLAwTBj5GC0Srk6wDTCwff8Hnm4ZRXw=;
-        h=Date:From:Subject:Message-ID:MIME-Version:Content-Type;
-        b=YRLvoSttR80p2QSVJcS/Alz9SbFDmj85v8cV00bxzw7Xzr68StZZICNTuME8ri9et
-         PGAt/GFzw6gyK6Wye7/7kOh3tPZ9YRlIhJ6rTrEMZ7UxLWyzTEFQR0bZBwQFOFxD8D
-         UEHsbkrW2OroeIwJgbBWsFyAIqXO2yTGPi1kVg3wRZ1ZsmdPkBjeT7pOg+1klqf6HI
-         eScDo1osg1sKx40VRNfM4FJpwJN7Pfis7eVoDLXF39zaNFxon1SjeP0UeVjpIrlCT6
-         CciNq1wlhRInOn07x4jXXTl5OJKEOOiC4IE3pzSCX78fQw+4o20Ducx65ZwqKz3kLa
-         qsJe+WUQXkRpg==
-Received: by cwcc.thunk.org (Postfix, from userid 15806)
-        id 8705C15C04FF; Thu, 10 Aug 2023 12:01:52 -0400 (EDT)
-Date:   Thu, 10 Aug 2023 12:01:52 -0400
-From:   "Theodore Ts'o" <tytso@mit.edu>
-To:     Mark Brown <broonie@kernel.org>
-Cc:     Nick Desaulniers <ndesaulniers@google.com>,
-        Joe Perches <joe@perches.com>,
-        Konstantin Ryabitsev <konstantin@linuxfoundation.org>,
-        "Kernel.org Tools" <tools@linux.kernel.org>,
-        "# 3.4.x" <stable@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-Subject: Re: get_maintainer, b4, and CC: stable
-Message-ID: <20230810160152.GA2247938@mit.edu>
-References: <CAKwvOdmOVnhKws_6DdakK9SDxiCCCR1d6VJwvz94Ng_y3V8QCg@mail.gmail.com>
- <6dabeab8-d013-40fc-a705-d2d202510549@sirena.org.uk>
+        with ESMTP id S232115AbjHJQHk (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 10 Aug 2023 12:07:40 -0400
+Received: from mail-pg1-x52b.google.com (mail-pg1-x52b.google.com [IPv6:2607:f8b0:4864:20::52b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF6682705;
+        Thu, 10 Aug 2023 09:06:27 -0700 (PDT)
+Received: by mail-pg1-x52b.google.com with SMTP id 41be03b00d2f7-56546b45f30so856149a12.3;
+        Thu, 10 Aug 2023 09:06:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1691683563; x=1692288363;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=7QTlvRoNFyRkX134ok9OXAI5i34/aitXtvtzRW1b4zY=;
+        b=c1uli04YlC1QuVJyrnAyDUG1dktQfEbYV5+ruAVTnx8APe45u26qzq22tpvrFSa7Ji
+         9LsFSCkQ1YVNAocfwIqISiw1/XWQr7acau6ys3HEjIocGbqaIITvriakFIMhIcVGckpG
+         h71GJ98iZmp+FAax/QUIEO/+njb+FoztpoY4NyekEhVw3Mof6jyHVUubWo1gCzsTLO6l
+         4viT+RsV53XY5HjoESUYXKAtOON1uyys0xgiTz01IINMw1UrnctBgJDFH3dVmO4qCB10
+         Dd8sL0asyPXPy91dVOCcYQk4R2FZ6bQbo/LbtEV8kHrTQIKopbaeR/RV2uQTZJ0zGTUv
+         LPjQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1691683563; x=1692288363;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=7QTlvRoNFyRkX134ok9OXAI5i34/aitXtvtzRW1b4zY=;
+        b=HY4R6mDtcou1LGM6Y8KDYbOv4xNPDaEjLe0YOhmd1YgT0nHCJ26pOQZqrUEQOZ7Oh4
+         XoJt3KkjKQd7RRvfVMI0pTWx32YzXwu0vdbJxoT1qjs3Y1a08EdVoYQ/k4fP4U//zQb9
+         ar03SWxLzMjMjSL1xSW45gZJT54QP5VFpTYGK8Q7cVmQ+sdQGKm+hrR7jp9/zQJRR9V0
+         eNfAUmUg1in+vYYjZBYSIEN0VCF7OG8KA0lLHxOrBqIGbAEIj9KSH2Kb74SJLYUqNETo
+         2hd4dQTEQg8WbpTKxJOnOh/Oc3kskNWxH54CjoEtesYrERSYntrUQasK+xCez6S0cq6u
+         2lzQ==
+X-Gm-Message-State: AOJu0YwkrgOs30NcrG5D/xUjnjFzhA1QrZJJEX3ylPGKsoMY9SsLt0of
+        ufSe2ztZfcxZZQ5/82BAdCU=
+X-Google-Smtp-Source: AGHT+IFYuzGXk0YLQzgsucbh6baCPkIJDrQ80m5KaFMbG7JdAt8Ixv2BouUHDvkq9z5yklEglcqWKw==
+X-Received: by 2002:a17:90b:4d8b:b0:261:1141:b716 with SMTP id oj11-20020a17090b4d8b00b002611141b716mr2564311pjb.33.1691683562805;
+        Thu, 10 Aug 2023 09:06:02 -0700 (PDT)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id n20-20020a17090ade9400b002682523653asm1685322pjv.49.2023.08.10.09.06.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 10 Aug 2023 09:06:02 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Date:   Thu, 10 Aug 2023 09:06:01 -0700
+From:   Guenter Roeck <linux@roeck-us.net>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
+Subject: Re: [PATCH 5.15 00/92] 5.15.126-rc1 review
+Message-ID: <681f8e2c-df72-4a54-bef8-803ac0bc69f6@roeck-us.net>
+References: <20230809103633.485906560@linuxfoundation.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <6dabeab8-d013-40fc-a705-d2d202510549@sirena.org.uk>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+In-Reply-To: <20230809103633.485906560@linuxfoundation.org>
+X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, Aug 09, 2023 at 06:21:51PM +0100, Mark Brown wrote:
-> On Wed, Aug 09, 2023 at 09:50:00AM -0700, Nick Desaulniers wrote:
+On Wed, Aug 09, 2023 at 12:40:36PM +0200, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 5.15.126 release.
+> There are 92 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 > 
-> > I suspect that either b4 or get_maintainer could see the Fixes tag and
-> > then suggest to Cc stable for me.
+> Responses should be made by Fri, 11 Aug 2023 10:36:10 +0000.
+> Anything received after that time might be too late.
 > 
-> > Should get_maintainer.pl make such recommendations?
-> 
-> People use the Fixes tag all the time for bugs that never made it into a
-> release...
 
-I agree that it probably shouldn't.
+Build results:
+	total: 160 pass: 157 fail: 3
+Failed builds:
+	arm:allmodconfig
+	arm64:defconfig
+	arm64:allmodconfig
+Qemu test results:
+	total: 501 pass: 423 fail: 78
+Failed tests:
+	<most arm>
+	<all arm64/arm64be>
 
-Sometimes the bug was introduced by a commit that didn't have a Cc:
-stable@kernel.org, but it gets automatically pulled into a LTS kernel
-due to dependency reasons, or otherwise gets auto-selected into an LTS
-kernel.  So I try to add Fixes tags even for bugs that never make it
-into the stable kernel --- but that doesn't mean that it should
-automatically get a cc stable tag.
+As already reported, plus:
 
-(Of course, it might be that the AUTOSEL process will automatically
-pull in such commit, and then pull in something probably should not
-been pulled into a stable tree, but this is why XFS has stable
-backports maintainers --- because they don't trust the LTS automation.
-For ext4, we probably see one of those sorts of the auto-backports
-caused a regression maybe once a year?  But that's a different
-debate.)
+Error log:
+drivers/gpu/drm/fsl-dcu/fsl_dcu_drm_plane.c:176:20: error: 'drm_plane_helper_destroy' undeclared here
 
-	    	    	       	 	     - Ted
+for arm:multi_v7_defconfig
+
+Side note: I am surprised about successful arm64 tests/builds
+since arm64:defconfig fails to build with obvious code errors.
+
+drivers/firmware/arm_scmi/smc.c:39:13: error: duplicate member 'irq'
+
+drivers/firmware/arm_scmi/smc.c: In function 'smc_chan_setup':
+drivers/firmware/arm_scmi/smc.c:118:34: error: 'irq' undeclared
+
+Guenter
