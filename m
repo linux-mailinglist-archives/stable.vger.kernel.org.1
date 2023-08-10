@@ -2,104 +2,92 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 82078777F3B
-	for <lists+stable@lfdr.de>; Thu, 10 Aug 2023 19:34:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EFC3D777F48
+	for <lists+stable@lfdr.de>; Thu, 10 Aug 2023 19:40:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234413AbjHJRem (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 10 Aug 2023 13:34:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54236 "EHLO
+        id S232997AbjHJRkX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 10 Aug 2023 13:40:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52392 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231330AbjHJRel (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 10 Aug 2023 13:34:41 -0400
-Received: from netrider.rowland.org (netrider.rowland.org [192.131.102.5])
-        by lindbergh.monkeyblade.net (Postfix) with SMTP id 4B4A92705
-        for <stable@vger.kernel.org>; Thu, 10 Aug 2023 10:34:40 -0700 (PDT)
-Received: (qmail 243746 invoked by uid 1000); 10 Aug 2023 13:34:39 -0400
-Date:   Thu, 10 Aug 2023 13:34:39 -0400
-From:   Alan Stern <stern@rowland.harvard.edu>
-To:     Alexandru Gagniuc <alexandru.gagniuc@hp.com>
-Cc:     bjorn@mork.no, davem@davemloft.net, edumazet@google.com,
-        eniac-xw.zhang@hp.com, hayeswang@realtek.com, jflf_kernel@gmx.com,
-        kuba@kernel.org, linux-kernel@vger.kernel.org,
-        linux-usb@vger.kernel.org, netdev@vger.kernel.org,
-        pabeni@redhat.com, stable@vger.kernel.org, svenva@chromium.org
-Subject: Re: [PATCH v2] r8152: Suspend USB device before shutdown when WoL is
- enabled
-Message-ID: <78e3aade-2a88-42f4-9991-8e245f3eb9b9@rowland.harvard.edu>
-References: <3c4fd3d8-2b0b-492e-aacc-afafcea98417@rowland.harvard.edu>
- <20230810162216.13455-1-alexandru.gagniuc@hp.com>
+        with ESMTP id S231365AbjHJRkW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 10 Aug 2023 13:40:22 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D36F2700;
+        Thu, 10 Aug 2023 10:40:22 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BF437619C4;
+        Thu, 10 Aug 2023 17:40:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 08B72C433C7;
+        Thu, 10 Aug 2023 17:40:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1691689221;
+        bh=DgGIQxm9T3j5F5GS/tDZyHr6yrkokRMtYqyjFvotMd4=;
+        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+        b=qQqjUiW47BPOFQCeCERwTvIkf4E83TbWzVQC/CRQofvOEhCOo4/tYWQbCTpKzmDg6
+         oSw9fW1LGx2qMZovEja3J8zzS68C4bG1TCs2Ri9H93HNCvlVIPPvWF47AL2GW+/WUB
+         MeQW1wjxowULzaKhkpd/NJgRK+lFdrCO4rM6TjViuDGXoBNPS3p414WgwlKXlQZuWA
+         jBiOqAT/B+SOYO4Rfb+lhyjS8vVx+fSHG5DkSC9V8WBemgTaFd7XZx2/ZFt5BhSI/d
+         kzuMp3GXzJHDz6j/COgR5ewWIrx/5EnQsQLAonkbScbwyEKYrIGYkg0pu53US4dvHF
+         /QTk4NgBdwpMw==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id DE717C64459;
+        Thu, 10 Aug 2023 17:40:20 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230810162216.13455-1-alexandru.gagniuc@hp.com>
-X-Spam-Status: No, score=0.8 required=5.0 tests=BAYES_00,
-        HEADER_FROM_DIFFERENT_DOMAINS,SORTED_RECIPS,SPF_HELO_PASS,SPF_PASS
-        autolearn=no autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH V8 net] net: mana: Fix MANA VF unload when hardware is
+ unresponsive
+From:   patchwork-bot+netdevbpf@kernel.org
+Message-Id: <169168922090.685.4553491279994848251.git-patchwork-notify@kernel.org>
+Date:   Thu, 10 Aug 2023 17:40:20 +0000
+References: <1691576525-24271-1-git-send-email-schakrabarti@linux.microsoft.com>
+In-Reply-To: <1691576525-24271-1-git-send-email-schakrabarti@linux.microsoft.com>
+To:     Souradeep Chakrabarti <schakrabarti@linux.microsoft.com>
+Cc:     kys@microsoft.com, haiyangz@microsoft.com, wei.liu@kernel.org,
+        decui@microsoft.com, davem@davemloft.net, edumazet@google.com,
+        kuba@kernel.org, pabeni@redhat.com, longli@microsoft.com,
+        sharmaajay@microsoft.com, leon@kernel.org, cai.huoqing@linux.dev,
+        ssengar@linux.microsoft.com, vkuznets@redhat.com,
+        tglx@linutronix.de, linux-hyperv@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-rdma@vger.kernel.org, schakrabarti@microsoft.com,
+        stable@vger.kernel.org
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, Aug 10, 2023 at 04:22:16PM +0000, Alexandru Gagniuc wrote:
-> From: Alan Stern <stern@rowland.harvard.edu>
-> 
-> On Wed, Aug 02, 2023 at 11:23:46AM -0400, Alan Stern wrote:
-> > On Wed, Aug 02, 2023 at 02:56:43PM +0000, Gagniuc, Alexandru wrote:
-> > > On Wed, Jul 19, 2023 at 02:36:25PM -0400, Alan Stern wrote:
-> > > > How do you know that the link will _remain_ in the correct state?
-> > > 
-> > > The objective is to get to xhci_set_link_state() with the USB_SS_PORT_LS_U3
-> > > argument. This is achieved through usb_port_suspend() in drivers/usb/host/hub.c,
-> > > and the function is implemented in drivers/usb/host/xhci-hub.c.
-> > > 
-> > > This is the only path in the kernel that I am aware of for setting the U3 link
-> > > state. Given that it is part of the USB subsystem, I am fairly confident it will
-> > > show consistent behavior across platforms.
-> > 
-> > That does not answer my question.  I agree that making this change will 
-> > put the link into the U3 state.  But I don't have any reason to think 
-> > that some other software won't later put the link into some other state.
-> 
-> I don't have a rigurous proof that the link will remain in the correct state.
-> The only conjecture that I can make is that no other software besides the kernel
-> will be running at this time. Thus, if the kernel manages to not break the link
-> state, things should work as intended.
-> 
-> > > > That is, how do you know that the shutdown processing for the USB host 
-> > > > controller won't disable the link entirely, thereby preventing WoL from 
-> > > > working?
-> > > 
-> > > We are talking to the USB hub in order to set the link state. I don't see how
-> > > specifics of the host controller would influence behavior.
-> > 
-> > Specifics of the host controller probably won't influence behavior.  
-> > However, specifics of the _software_ can make a big difference.
-> > 
-> > >  I do expect a
-> > > controller which advertises S4/S5 in /proc/acpi/wakeup to not do anything that
-> > > would sabotage this capability. Disabling the link entirely would probalby
-> > > violate that promise.
-> > 
-> > Not if the kernel _tells_ the controller to disable the link.
-> > 
-> > > Think of USB-C docks with a power button showing up as a HID class. The scenario
-> > > herein would disable the power button. I would take that to be a bug in the host
-> > > controller driver if the S4/S5 capability is advertised.
-> > 
-> > Indeed.  And I am asking how you can be sure the host controller driver 
-> > (or some other part of the software stack) doesn't have this bug.
-> 
-> The only way that I have to show that is empirical. I observe that WoL from S5
-> does not work on a device with an r8153 chip. I apply the change, and verify
-> that WoL from S5 now works in this scenario. What are you thinking of in terms
-> of being sure no current or future bug exists?
+Hello:
 
-I was thinking that the host controller driver's shutdown method might 
-turn off power to all of the ports.
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-For example, in the ehci-hcd driver, ehci_shutdown() calls 
-ehci_silence_controller(), which calls ehci_turn_off_all_ports().  I 
-don't know if xhci-hcd does anything similar.
+On Wed,  9 Aug 2023 03:22:05 -0700 you wrote:
+> When unloading the MANA driver, mana_dealloc_queues() waits for the MANA
+> hardware to complete any inflight packets and set the pending send count
+> to zero. But if the hardware has failed, mana_dealloc_queues()
+> could wait forever.
+> 
+> Fix this by adding a timeout to the wait. Set the timeout to 120 seconds,
+> which is a somewhat arbitrary value that is more than long enough for
+> functional hardware to complete any sends.
+> 
+> [...]
 
-Alan Stern
+Here is the summary with links:
+  - [V8,net] net: mana: Fix MANA VF unload when hardware is unresponsive
+    https://git.kernel.org/netdev/net/c/a7dfeda6fdec
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
