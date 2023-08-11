@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CE877779315
-	for <lists+stable@lfdr.de>; Fri, 11 Aug 2023 17:29:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E02D9779316
+	for <lists+stable@lfdr.de>; Fri, 11 Aug 2023 17:29:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234924AbjHKP31 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 11 Aug 2023 11:29:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43234 "EHLO
+        id S236047AbjHKP3b (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 11 Aug 2023 11:29:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39544 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234567AbjHKP31 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 11 Aug 2023 11:29:27 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ECB74103
-        for <stable@vger.kernel.org>; Fri, 11 Aug 2023 08:29:26 -0700 (PDT)
+        with ESMTP id S234567AbjHKP3a (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 11 Aug 2023 11:29:30 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12A37103
+        for <stable@vger.kernel.org>; Fri, 11 Aug 2023 08:29:30 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 89C7567548
-        for <stable@vger.kernel.org>; Fri, 11 Aug 2023 15:29:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 994B7C433C8;
-        Fri, 11 Aug 2023 15:29:25 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9C6EB6754D
+        for <stable@vger.kernel.org>; Fri, 11 Aug 2023 15:29:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B014BC433C7;
+        Fri, 11 Aug 2023 15:29:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691767766;
-        bh=1nMlq5uJdBJLStEO6CBiCnUt8InLe51mn79QXV+vr0M=;
+        s=korg; t=1691767769;
+        bh=8G06m2jGyPA2ni4QcI3+ga72R5Ogmwk1DhBaCSDqIpM=;
         h=Subject:To:Cc:From:Date:From;
-        b=lD9y0myHAoDQTzXfx1Ivctth6s35FX59Jx5hcv9HtJ8WtEM7R2aEFXbYZIeCrbpws
-         PoQ/q6kuNrO8vMAe2lTfI83YMTDTF1t3ApXkuvZtgrJfgVtGRem8BMhGuoeRU7fMK9
-         CbO2brMAdBSTizGVH3YLiKlRpNkdtC5HI3mYu6YU=
-Subject: FAILED: patch "[PATCH] mmc: sdhci-f-sdh30: Replace with sdhci_pltfm" failed to apply to 5.15-stable tree
+        b=nvX2dOk70to4EFyCfkoUP3vI7rH4SbHiBUAjjgSKJIHTwIKyAN2TouQBfEWA37zdZ
+         0kYt7EtE34LU5KdwirN/OOC66pkrtJ8kl5PugMD0fA/yrWGGDIQ95cqlulOWKBcjWt
+         nZXv0u85MOrZtmTmbUR2cMKeVtimjF+maom1gSw8=
+Subject: FAILED: patch "[PATCH] mmc: sdhci-f-sdh30: Replace with sdhci_pltfm" failed to apply to 5.10-stable tree
 To:     hayashi.kunihiko@socionext.com, adrian.hunter@intel.com,
         ulf.hansson@linaro.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Fri, 11 Aug 2023 17:29:21 +0200
-Message-ID: <2023081120-graveness-delta-1e7c@gregkh>
+Date:   Fri, 11 Aug 2023 17:29:22 +0200
+Message-ID: <2023081121-aflutter-nanny-779c@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -50,19 +50,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x 5def5c1c15bf22934ee227af85c1716762f3829f
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023081120-graveness-delta-1e7c@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023081121-aflutter-nanny-779c@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
