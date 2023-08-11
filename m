@@ -2,230 +2,143 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B5B3E77931A
-	for <lists+stable@lfdr.de>; Fri, 11 Aug 2023 17:29:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2D04E779355
+	for <lists+stable@lfdr.de>; Fri, 11 Aug 2023 17:38:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234567AbjHKP36 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 11 Aug 2023 11:29:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44834 "EHLO
+        id S233624AbjHKPin (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 11 Aug 2023 11:38:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44194 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236442AbjHKP3j (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 11 Aug 2023 11:29:39 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 20B3B103
-        for <stable@vger.kernel.org>; Fri, 11 Aug 2023 08:29:39 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id AE29967559
-        for <stable@vger.kernel.org>; Fri, 11 Aug 2023 15:29:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD40BC433C7;
-        Fri, 11 Aug 2023 15:29:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691767778;
-        bh=q5RhpB1PktO0bZV54Z5yAsurcNzEnhqnszTUeIACB80=;
-        h=Subject:To:Cc:From:Date:From;
-        b=w4eGd1ZzLWaJvXTPI9N8OEi0P/sGCDkBZdtbk7Zc7PpG7f3f2FJS6ZTB5T8gUKzoY
-         hrJQtbCGVFuvqfbOqKRLNmnMl2HH7D/pk6+tPqK5jj4VGxQlFBejoqybtTsrmzH2vZ
-         3EU/4f/ekU6vwWecUlMcTJMg8HW9psrsaXXzFQjo=
-Subject: FAILED: patch "[PATCH] mmc: sdhci-f-sdh30: Replace with sdhci_pltfm" failed to apply to 4.14-stable tree
-To:     hayashi.kunihiko@socionext.com, adrian.hunter@intel.com,
-        ulf.hansson@linaro.org
-Cc:     <stable@vger.kernel.org>
-From:   <gregkh@linuxfoundation.org>
-Date:   Fri, 11 Aug 2023 17:29:25 +0200
-Message-ID: <2023081125-jet-ascertain-01eb@gregkh>
+        with ESMTP id S230419AbjHKPin (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 11 Aug 2023 11:38:43 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE2D5127
+        for <stable@vger.kernel.org>; Fri, 11 Aug 2023 08:38:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1691768322; x=1723304322;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=a21IUUMRF8btD1SHvo3z2b2mV15i0jdE4/BK1I911V0=;
+  b=XrJ/WsGacFpEy93h5ZUvFnv4kMD4iCSlE/WTwGq+KJ+dFGG8GnMwziPJ
+   V1Zlhog8Cuf1oV/G+HrmoL/4qF+gXnAa9/Ld4u+dqfA8vcnciOzEUMabR
+   9tpbqr880ltTG0S4XKmchY7ELbQE6EXBXfhUVfawzFSkfwoy7W3iS95Ov
+   R+jVbLGnP+Dzd8VAOa21PirQlbtKO5SiwGV1Jdwt2To3sCYpDX/X0hvWp
+   e6ynN2SXSy0qGBvtdDoek/yH+Rlt6gGrAHJ1TjFWSYMfZ2FCSZTF9HUB3
+   FLLL8ypE4cMqJ8Z4Cp8RTDHpVMSgGjJfL9BYb2oaQPTEuvPhMJg0N/KgR
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10799"; a="402673040"
+X-IronPort-AV: E=Sophos;i="6.01,166,1684825200"; 
+   d="scan'208";a="402673040"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Aug 2023 08:38:42 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10799"; a="682581766"
+X-IronPort-AV: E=Sophos;i="6.01,166,1684825200"; 
+   d="scan'208";a="682581766"
+Received: from ideak-desk.fi.intel.com ([10.237.72.78])
+  by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Aug 2023 08:38:40 -0700
+From:   Imre Deak <imre.deak@intel.com>
+To:     intel-gfx@lists.freedesktop.org
+Cc:     stable@vger.kernel.org
+Subject: [PATCH] drm/i915/skl+: Disable DC states on DSI ports
+Date:   Fri, 11 Aug 2023 18:38:54 +0300
+Message-Id: <20230811153854.2211050-1-imre.deak@intel.com>
+X-Mailer: git-send-email 2.37.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+DC*co/5/6 is not supported on DSI ports active in video mode (Bspec
+4234, 49193).
 
-The patch below does not apply to the 4.14-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+On GLK for DSI command mode the "Enter/Exit Low Power Mode" sequence
+would need to be programmed around each frame update (Bspec 21356) and
+presumedly the same is required on BXT and SKL, even though it's not
+stated for those explicitly (BXT: Bspec 13756). The driver doesn't run
+these sequences, but command mode on BXT-GLK is not implemented either.
 
-To reproduce the conflict and resubmit, you may use the following commands:
+On ICL+ for DSI command mode DC*co/DSI is supported by the HW (Bspec
+49195), but this is not implemented in the driver.
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
-git checkout FETCH_HEAD
-git cherry-pick -x 5def5c1c15bf22934ee227af85c1716762f3829f
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023081125-jet-ascertain-01eb@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
+Based on the above disable DC states while DSI ports are active.
 
-Possible dependencies:
+References: https://gitlab.freedesktop.org/drm/intel/-/issues/8419
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Imre Deak <imre.deak@intel.com>
+---
+ drivers/gpu/drm/i915/display/intel_display_power_map.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-5def5c1c15bf ("mmc: sdhci-f-sdh30: Replace with sdhci_pltfm")
-dbf90a178cdc ("mmc: sdhci_f_sdh30: convert to devm_platform_ioremap_resource")
-9a7957d0c955 ("mmc: Remove dev_err() usage after platform_get_irq()")
-bb364890323c ("mmc: meson-gx: Free irq in release() callback")
-3fd784f745dd ("mmc: uniphier-sd: add UniPhier SD/eMMC controller driver")
-90e1d8ccdbdb ("mmc: sdhci_f_sdh30: add ACPI support")
-c813e10a6bba ("mmc: renesas_sdhi: consolidate DMAC CONFIG options")
-928635c114ad ("mmc: s3cmci: Fix platform_get_irq's error checking")
-cbcaac6d7dd2 ("mmc: meson-gx-mmc: Fix platform_get_irq's error checking")
-06641e8deae6 ("sdhci-fujitsu: add support for setting the CMD_DAT_DELAY attribute")
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 5def5c1c15bf22934ee227af85c1716762f3829f Mon Sep 17 00:00:00 2001
-From: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
-Date: Fri, 30 Jun 2023 09:45:33 +0900
-Subject: [PATCH] mmc: sdhci-f-sdh30: Replace with sdhci_pltfm
-
-Even if sdhci_pltfm_pmops is specified for PM, this driver doesn't apply
-sdhci_pltfm, so the structure is not correctly referenced in PM functions.
-This applies sdhci_pltfm to this driver to fix this issue.
-
-- Call sdhci_pltfm_init() instead of sdhci_alloc_host() and
-  other functions that covered by sdhci_pltfm.
-- Move ops and quirks to sdhci_pltfm_data
-- Replace sdhci_priv() with own private function sdhci_f_sdh30_priv().
-
-Fixes: 87a507459f49 ("mmc: sdhci: host: add new f_sdh30")
-Signed-off-by: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20230630004533.26644-1-hayashi.kunihiko@socionext.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-
-diff --git a/drivers/mmc/host/sdhci_f_sdh30.c b/drivers/mmc/host/sdhci_f_sdh30.c
-index a202a69a4b08..b01ffb4d0973 100644
---- a/drivers/mmc/host/sdhci_f_sdh30.c
-+++ b/drivers/mmc/host/sdhci_f_sdh30.c
-@@ -29,9 +29,16 @@ struct f_sdhost_priv {
- 	bool enable_cmd_dat_delay;
- };
+diff --git a/drivers/gpu/drm/i915/display/intel_display_power_map.c b/drivers/gpu/drm/i915/display/intel_display_power_map.c
+index 5ad04cd42c158..1950dae4a7649 100644
+--- a/drivers/gpu/drm/i915/display/intel_display_power_map.c
++++ b/drivers/gpu/drm/i915/display/intel_display_power_map.c
+@@ -331,6 +331,7 @@ I915_DECL_PW_DOMAINS(skl_pwdoms_pw_2,
  
-+static void *sdhci_f_sdhost_priv(struct sdhci_host *host)
-+{
-+	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
-+
-+	return sdhci_pltfm_priv(pltfm_host);
-+}
-+
- static void sdhci_f_sdh30_soft_voltage_switch(struct sdhci_host *host)
- {
--	struct f_sdhost_priv *priv = sdhci_priv(host);
-+	struct f_sdhost_priv *priv = sdhci_f_sdhost_priv(host);
- 	u32 ctrl = 0;
+ I915_DECL_PW_DOMAINS(skl_pwdoms_dc_off,
+ 	SKL_PW_2_POWER_DOMAINS,
++	POWER_DOMAIN_PORT_DSI,
+ 	POWER_DOMAIN_AUX_A,
+ 	POWER_DOMAIN_MODESET,
+ 	POWER_DOMAIN_GT_IRQ,
+@@ -435,6 +436,7 @@ I915_DECL_PW_DOMAINS(bxt_pwdoms_pw_2,
  
- 	usleep_range(2500, 3000);
-@@ -64,7 +71,7 @@ static unsigned int sdhci_f_sdh30_get_min_clock(struct sdhci_host *host)
+ I915_DECL_PW_DOMAINS(bxt_pwdoms_dc_off,
+ 	BXT_PW_2_POWER_DOMAINS,
++	POWER_DOMAIN_PORT_DSI,
+ 	POWER_DOMAIN_AUX_A,
+ 	POWER_DOMAIN_GMBUS,
+ 	POWER_DOMAIN_MODESET,
+@@ -517,6 +519,7 @@ I915_DECL_PW_DOMAINS(glk_pwdoms_pw_2,
  
- static void sdhci_f_sdh30_reset(struct sdhci_host *host, u8 mask)
- {
--	struct f_sdhost_priv *priv = sdhci_priv(host);
-+	struct f_sdhost_priv *priv = sdhci_f_sdhost_priv(host);
- 	u32 ctl;
+ I915_DECL_PW_DOMAINS(glk_pwdoms_dc_off,
+ 	GLK_PW_2_POWER_DOMAINS,
++	POWER_DOMAIN_PORT_DSI,
+ 	POWER_DOMAIN_AUX_A,
+ 	POWER_DOMAIN_GMBUS,
+ 	POWER_DOMAIN_MODESET,
+@@ -684,6 +687,7 @@ I915_DECL_PW_DOMAINS(icl_pwdoms_pw_2,
  
- 	if (sdhci_readw(host, SDHCI_CLOCK_CONTROL) == 0)
-@@ -95,30 +102,32 @@ static const struct sdhci_ops sdhci_f_sdh30_ops = {
- 	.set_uhs_signaling = sdhci_set_uhs_signaling,
- };
+ I915_DECL_PW_DOMAINS(icl_pwdoms_dc_off,
+ 	ICL_PW_2_POWER_DOMAINS,
++	POWER_DOMAIN_PORT_DSI,
+ 	POWER_DOMAIN_AUX_A,
+ 	POWER_DOMAIN_MODESET,
+ 	POWER_DOMAIN_DC_OFF,
+@@ -858,6 +862,7 @@ I915_DECL_PW_DOMAINS(tgl_pwdoms_pw_2,
  
-+static const struct sdhci_pltfm_data sdhci_f_sdh30_pltfm_data = {
-+	.ops = &sdhci_f_sdh30_ops,
-+	.quirks = SDHCI_QUIRK_NO_ENDATTR_IN_NOPDESC
-+		| SDHCI_QUIRK_INVERTED_WRITE_PROTECT,
-+	.quirks2 = SDHCI_QUIRK2_SUPPORT_SINGLE
-+		|  SDHCI_QUIRK2_TUNING_WORK_AROUND,
-+};
-+
- static int sdhci_f_sdh30_probe(struct platform_device *pdev)
- {
- 	struct sdhci_host *host;
- 	struct device *dev = &pdev->dev;
--	int irq, ctrl = 0, ret = 0;
-+	int ctrl = 0, ret = 0;
- 	struct f_sdhost_priv *priv;
-+	struct sdhci_pltfm_host *pltfm_host;
- 	u32 reg = 0;
+ I915_DECL_PW_DOMAINS(tgl_pwdoms_dc_off,
+ 	TGL_PW_3_POWER_DOMAINS,
++	POWER_DOMAIN_PORT_DSI,
+ 	POWER_DOMAIN_AUX_A,
+ 	POWER_DOMAIN_AUX_B,
+ 	POWER_DOMAIN_AUX_C,
+@@ -1056,6 +1061,7 @@ I915_DECL_PW_DOMAINS(rkl_pwdoms_pw_3,
  
--	irq = platform_get_irq(pdev, 0);
--	if (irq < 0)
--		return irq;
--
--	host = sdhci_alloc_host(dev, sizeof(struct f_sdhost_priv));
-+	host = sdhci_pltfm_init(pdev, &sdhci_f_sdh30_pltfm_data,
-+				sizeof(struct f_sdhost_priv));
- 	if (IS_ERR(host))
- 		return PTR_ERR(host);
+ I915_DECL_PW_DOMAINS(rkl_pwdoms_dc_off,
+ 	RKL_PW_3_POWER_DOMAINS,
++	POWER_DOMAIN_PORT_DSI,
+ 	POWER_DOMAIN_AUX_A,
+ 	POWER_DOMAIN_AUX_B,
+ 	POWER_DOMAIN_MODESET,
+@@ -1138,6 +1144,7 @@ I915_DECL_PW_DOMAINS(dg1_pwdoms_pw_3,
  
--	priv = sdhci_priv(host);
-+	pltfm_host = sdhci_priv(host);
-+	priv = sdhci_pltfm_priv(pltfm_host);
- 	priv->dev = dev;
- 
--	host->quirks = SDHCI_QUIRK_NO_ENDATTR_IN_NOPDESC |
--		       SDHCI_QUIRK_INVERTED_WRITE_PROTECT;
--	host->quirks2 = SDHCI_QUIRK2_SUPPORT_SINGLE |
--			SDHCI_QUIRK2_TUNING_WORK_AROUND;
--
- 	priv->enable_cmd_dat_delay = device_property_read_bool(dev,
- 						"fujitsu,cmd-dat-delay-select");
- 
-@@ -126,18 +135,6 @@ static int sdhci_f_sdh30_probe(struct platform_device *pdev)
- 	if (ret)
- 		goto err;
- 
--	platform_set_drvdata(pdev, host);
--
--	host->hw_name = "f_sdh30";
--	host->ops = &sdhci_f_sdh30_ops;
--	host->irq = irq;
--
--	host->ioaddr = devm_platform_ioremap_resource(pdev, 0);
--	if (IS_ERR(host->ioaddr)) {
--		ret = PTR_ERR(host->ioaddr);
--		goto err;
--	}
--
- 	if (dev_of_node(dev)) {
- 		sdhci_get_of_property(pdev);
- 
-@@ -204,24 +201,21 @@ static int sdhci_f_sdh30_probe(struct platform_device *pdev)
- err_clk:
- 	clk_disable_unprepare(priv->clk_iface);
- err:
--	sdhci_free_host(host);
-+	sdhci_pltfm_free(pdev);
-+
- 	return ret;
- }
- 
- static int sdhci_f_sdh30_remove(struct platform_device *pdev)
- {
- 	struct sdhci_host *host = platform_get_drvdata(pdev);
--	struct f_sdhost_priv *priv = sdhci_priv(host);
--
--	sdhci_remove_host(host, readl(host->ioaddr + SDHCI_INT_STATUS) ==
--			  0xffffffff);
-+	struct f_sdhost_priv *priv = sdhci_f_sdhost_priv(host);
- 
- 	reset_control_assert(priv->rst);
- 	clk_disable_unprepare(priv->clk);
- 	clk_disable_unprepare(priv->clk_iface);
- 
--	sdhci_free_host(host);
--	platform_set_drvdata(pdev, NULL);
-+	sdhci_pltfm_unregister(pdev);
- 
- 	return 0;
- }
+ I915_DECL_PW_DOMAINS(dg1_pwdoms_dc_off,
+ 	DG1_PW_3_POWER_DOMAINS,
++	POWER_DOMAIN_PORT_DSI,
+ 	POWER_DOMAIN_AUDIO_MMIO,
+ 	POWER_DOMAIN_AUX_A,
+ 	POWER_DOMAIN_AUX_B,
+-- 
+2.37.2
 
