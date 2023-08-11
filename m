@@ -2,80 +2,84 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A398D778C28
-	for <lists+stable@lfdr.de>; Fri, 11 Aug 2023 12:41:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6EBB5778C34
+	for <lists+stable@lfdr.de>; Fri, 11 Aug 2023 12:44:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234240AbjHKKlm (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 11 Aug 2023 06:41:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46634 "EHLO
+        id S234852AbjHKKor (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 11 Aug 2023 06:44:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54042 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231279AbjHKKll (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 11 Aug 2023 06:41:41 -0400
-Received: from mail-wr1-x430.google.com (mail-wr1-x430.google.com [IPv6:2a00:1450:4864:20::430])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B03D211F
-        for <stable@vger.kernel.org>; Fri, 11 Aug 2023 03:41:40 -0700 (PDT)
-Received: by mail-wr1-x430.google.com with SMTP id ffacd0b85a97d-3159d5e409dso1763210f8f.0
-        for <stable@vger.kernel.org>; Fri, 11 Aug 2023 03:41:40 -0700 (PDT)
+        with ESMTP id S229882AbjHKKoo (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 11 Aug 2023 06:44:44 -0400
+Received: from mail-lf1-x132.google.com (mail-lf1-x132.google.com [IPv6:2a00:1450:4864:20::132])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EAF9E127;
+        Fri, 11 Aug 2023 03:44:42 -0700 (PDT)
+Received: by mail-lf1-x132.google.com with SMTP id 2adb3069b0e04-4fe44955decso2139243e87.1;
+        Fri, 11 Aug 2023 03:44:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1691750499; x=1692355299;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=RncF6ccyWdgiKANFFFDRTdDe2RHMHSG6x0t3CEmTPBc=;
-        b=zgFghbc3TnB5zV77tCtSvgULe6XORX612ZhELOiTxS9Z5kCfXgFNkcEPGmf3vd5c5y
-         idLe7HgE7ZUhRka5QdwCgjZCG20AbjSKAsgmivGH97AkCxyg4o9dqSAEiKDlIY5shZ0c
-         1lOu86MGtyqvb/sIRqg9VIHKHWRtBltIHDqx5V1dKV6aNCmxdXL9eLOuv3DGVwnpkukt
-         LrhMsEeMG4FmC5N9u9do2SQi7FfBTVS05cXBZqqFPfCB0SfwLz4SG4dxoFMN5CgiC0O6
-         1JHwJMGYR8ibZRRk5xYmXfOidPhdbH/wKsGKIOSZzHuWk9nx/ldtksRgUqUh+r+mp/QY
-         av1Q==
+        d=gmail.com; s=20221208; t=1691750681; x=1692355481;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=/KHTf1iExmrDmR1L307QMJ8Ss20ebDX4ev01rwBTDq0=;
+        b=YTSJ6caXyJUQG4faDg2n6Ln4Dtd/B9OnNexQk/mHIjhGdc5yA/SwXIEnQpeuyrWOzp
+         OT+sTscgllDETksfT9MK0oAGif8QVqgAXcDKHYxHojzsRPpCqvNwKR9COq/OyG05mYo1
+         ZnSS6bsFf3+UM+miacAwC8Ev5TBANHxVPipFcXSPzBhNzi/1P+Z1Oru3MY/gwa8L5g6F
+         5d2CjKAzu2pha0kuHJh2If9Mm9yQlrP19X4ea45mrhP5SuDKJh6pV06CUEO9Ie12CPte
+         v8B3mR7XQYo5fPoX06RXUwSFHzWtXNKWdIoHmLsLgM/w4wsEVps/PP3+FbWGJUbkvjve
+         z1eA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691750499; x=1692355299;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=RncF6ccyWdgiKANFFFDRTdDe2RHMHSG6x0t3CEmTPBc=;
-        b=SD0hohIHaJeTMLuasKZTjStr3qMY+VbiMPn4f5Ce0VcWb2fCY5bKi6PuQBL3SYv6NE
-         b8HKEonGT0LdbGmut2ohUB2HE24gW5V9J9f9Cp3jfw+QzJaZNRTg2Vw/E3wSw7GTJVs+
-         PTUeE5L1ouXOMcjueiYLCIQ0fWLbYDtVaeic3aSz0MSptQf9BvV8zitzjmwcM81ckfM5
-         8RnSYLGNzXSHBg1HsDyzt0cICDo6EPDq0vijMS/nNtRdj8oqmqrt0JZ+gD1xojvnBxz0
-         cJ9PYubmH+tftivLs6OWUSGWyMce/4RHs1asOvsC2j6pDeIcrp54Jt/GE3MEztXKu9nK
-         SZJw==
-X-Gm-Message-State: AOJu0YxeJ/+kCm8cA5LFcC0zhYST2z03ewoscsjYR6UEsOV6kF3F+wNK
-        4UGJ69ASZ1Mz0L7F0sGlXunl1Q==
-X-Google-Smtp-Source: AGHT+IHHj4vcpFwgQZNe6OP5GFfkkYEm8iojN1TMcxqbt4fTf8CpEhLGaCo/Aq6a/Tws9yLqCchyHw==
-X-Received: by 2002:adf:f384:0:b0:317:de66:259b with SMTP id m4-20020adff384000000b00317de66259bmr4206750wro.15.1691750499215;
-        Fri, 11 Aug 2023 03:41:39 -0700 (PDT)
-Received: from [192.168.0.162] (188-141-3-169.dynamic.upc.ie. [188.141.3.169])
-        by smtp.gmail.com with ESMTPSA id o11-20020a056000010b00b0031431fb40fasm5007824wrx.89.2023.08.11.03.41.38
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 11 Aug 2023 03:41:38 -0700 (PDT)
-Message-ID: <8f1a4ca0-dde8-fa5d-bca3-d317886609de@linaro.org>
-Date:   Fri, 11 Aug 2023 11:41:37 +0100
+        d=1e100.net; s=20221208; t=1691750681; x=1692355481;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=/KHTf1iExmrDmR1L307QMJ8Ss20ebDX4ev01rwBTDq0=;
+        b=VOwBuHMSH1B+tyCc59Q2EabKabfpt5VBkGqXDFSIou96ZHQ0MMveyyTTtoOcimJzEB
+         ZF/XUlZbOJgGhM4JoyeYHbxrC719nFoYvgvpi14PkVr0zwLxmlupARKWSs7lqIqxQPqO
+         AzOxMgYEfsWaZs53zjHocRnIiIuYoboXFADQEhKJWdt2ngxVXi2fmk2y/OAgcVdZkqqu
+         yALUmwxo3FEp8HwwBaLGN63peGsYFA1FKIT4GEjTrTm2yx+m7SBT+7A6jm23ALuGtQvR
+         cGhKbTDAUx0iDFiDTmr7/+yTI/y17w8Q2ETMgiYk2xYfsST8mkqejfP0oJbeFFU6F+Eh
+         n9bQ==
+X-Gm-Message-State: AOJu0YySbWXVkQGJqNmfD8b567s24nwEwGLsHI9OOEGeikImQhLmthAa
+        acSFVeqRyaqgr0bxMk8pTvc=
+X-Google-Smtp-Source: AGHT+IFG0c7hEB4PsXcVn4DHs9+Fm7ucRIN8zARsyGXaMgVeVY7AswFWuFWIB0BOjnjOk941cuLoBQ==
+X-Received: by 2002:a05:6512:33d2:b0:4fe:8ba8:66c2 with SMTP id d18-20020a05651233d200b004fe8ba866c2mr1995309lfg.18.1691750680752;
+        Fri, 11 Aug 2023 03:44:40 -0700 (PDT)
+Received: from [192.168.1.23] ([176.232.63.90])
+        by smtp.gmail.com with ESMTPSA id f22-20020ac251b6000000b004edc72be17csm674986lfk.2.2023.08.11.03.44.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 11 Aug 2023 03:44:40 -0700 (PDT)
+Message-ID: <fed7ec9d048c26e9526ccd909132c51e8e3e78cc.camel@gmail.com>
+Subject: Re: [PATCH v2 1/2] tpm/tpm_tis: Disable interrupts for Framework
+ Laptop Intel 12th gen
+From:   Grundik <ggrundik@gmail.com>
+To:     Thorsten Leemhuis <regressions@leemhuis.info>,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        Lino Sanfilippo <LinoSanfilippo@gmx.de>
+Cc:     Linux kernel regressions list <regressions@lists.linux.dev>,
+        Peter Huewe <peterhuewe@gmx.de>,
+        Christian Hesse <mail@eworm.de>, stable@vger.kernel.org,
+        roubro1991@gmail.com,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Christian Hesse <list@eworm.de>,
+        linux-integrity@vger.kernel.org
+Date:   Fri, 11 Aug 2023 13:44:37 +0300
+In-Reply-To: <a588d1d3-12e0-b078-b6cc-b0a63c54ab37@leemhuis.info>
+References: <20230710133836.4367-1-mail@eworm.de>
+         <20230710142916.18162-1-mail@eworm.de>
+         <20230710231315.4ef54679@leda.eworm.net>
+         <bd0587e16d55ef38277ab1f6169909ae7cde3542.camel@kernel.org>
+         <bb5580e93d244400c3330d7091bf64868aa2053f.camel@gmail.com>
+         <0f272843a33a1706dbcbb2d84b02e3951ee60cbb.camel@kernel.org>
+         <fdd5fd9ece045ebd1888672a75f157e64ade98fb.camel@gmail.com>
+         <a588d1d3-12e0-b078-b6cc-b0a63c54ab37@leemhuis.info>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.48.4 (by Flathub.org) 
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.8.0
-Subject: Re: [PATCH v2 4/4] venus: hfi_parser: Add check to keep the number of
- codecs within range
-Content-Language: en-US
-To:     Vikash Garodia <quic_vgarodia@quicinc.com>,
-        stanimir.k.varbanov@gmail.com, agross@kernel.org,
-        andersson@kernel.org, konrad.dybcio@linaro.org, mchehab@kernel.org,
-        hans.verkuil@cisco.com, tfiga@chromium.org
-Cc:     linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <1691634304-2158-1-git-send-email-quic_vgarodia@quicinc.com>
- <1691634304-2158-5-git-send-email-quic_vgarodia@quicinc.com>
- <fec4a8c7-206f-7af8-4ea9-c919a677bf7e@linaro.org>
- <2214c31b-eca2-012e-a100-21252a724e7c@quicinc.com>
- <8b72ce47-c338-2061-f11a-c0a608686d8c@linaro.org>
- <e880da07-ccd4-e427-ed34-20b284dc7838@quicinc.com>
-From:   Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-In-Reply-To: <e880da07-ccd4-e427-ed34-20b284dc7838@quicinc.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-3.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -83,44 +87,33 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 11/08/2023 09:49, Vikash Garodia wrote:
-> 
-> On 8/11/2023 2:12 PM, Bryan O'Donoghue wrote:
->> On 11/08/2023 07:04, Vikash Garodia wrote:
->>>
->>> On 8/10/2023 5:03 PM, Bryan O'Donoghue wrote:
->>>> On 10/08/2023 03:25, Vikash Garodia wrote:
->>>>> +    if (hweight_long(core->dec_codecs) + hweight_long(core->enc_codecs) >
->>>>> MAX_CODEC_NUM)
->>>>> +        return;
->>>>> +
->>>>
->>>> Shouldn't this be >= ?
->>> Not needed. Lets take a hypothetical case when core->dec_codecs has initial 16
->>> (0-15) bits set and core->enc_codecs has next 16 bits (16-31) set. The bit count
->>> would be 32. The codec loop after this check would run on caps array index 0-31.
->>> I do not see a possibility for OOB access in this case.
->>>
->>>>
->>>> struct hfi_plat_caps caps[MAX_CODEC_NUM];
->>>>
->>>> ---
->>>> bod
->>>>
->>
->> Are you not doing a general defensive coding pass in this series ie
->>
->> "[PATCH v2 2/4] venus: hfi: fix the check to handle session buffer requirement"
-> 
-> In "PATCH v2 2/4", there is a possibility if the check does not consider "=".
-> Here in this patch, I do not see a possibility.
-> 
->>
->> ---
->> bod
+On Fri, 2023-08-11 at 10:18 +0200, Thorsten Leemhuis wrote:
+> Jarkko & Lino, did you see this msg Grundik posted that about a week
+> ago? It looks like there is still something wrong there that need
+> attention. Or am I missing something?
+>=20
+> FWIW, two more users reported that they still see similar problems
+> with
+> recent 6.4.y kernels that contain the "tpm,tpm_tis: Disable
+> interrupts
+> after 1000 unhandled IRQs" patch. Both also with MSI laptops:
+>=20
+> https://bugzilla.kernel.org/show_bug.cgi?id=3D217631#c18
+> https://bugzilla.kernel.org/show_bug.cgi?id=3D217631#c20
+>=20
+> No reply either afaics.
 
-But surely hweight_long(core->dec_codecs) + 
-hweight_long(core->enc_codecs) == MAX_CODEC_NUM is an invalid offset ?
+As I said before: it does not looks like blacklisting is a good
+solution at all.
 
----
-bod
+If there are general fix, then blacklisting only makes testing of that
+fix more difficult. If general fix works, why blacklist? If it does not
+work and its impossible to figure out why =E2=80=94 maybe there should be
+kernel boot option to select between polling/irq instead of/in addition
+to hard-coded blacklist.
+
+Unfortunately, its very hard to test this fixes on my side: since TPM
+is not a module, but compiled into kernel itself, it requires
+recompiling a whole kernel, which is quite a task for a laptop. But I
+will try my best, if needed.
+
