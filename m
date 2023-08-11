@@ -2,105 +2,90 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 041A9778936
-	for <lists+stable@lfdr.de>; Fri, 11 Aug 2023 10:51:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 06A4B77899D
+	for <lists+stable@lfdr.de>; Fri, 11 Aug 2023 11:20:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232555AbjHKIvg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 11 Aug 2023 04:51:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44146 "EHLO
+        id S234833AbjHKJUC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 11 Aug 2023 05:20:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39802 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231681AbjHKIvf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 11 Aug 2023 04:51:35 -0400
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 73907213B;
-        Fri, 11 Aug 2023 01:51:35 -0700 (PDT)
-Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 37B5LVhm024129;
-        Fri, 11 Aug 2023 08:51:29 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=cPInmwqs5+QXx/2dVUgAsg/a21Oe5AE2IF9PbDcPk8Q=;
- b=Athp63qEvOBLE5QTaKKh6YTM05fwTNmtixa70wlA/W0pAEVt1W3uUQplffKtcdKwBqbB
- 198SkSLbM9RirVZn41G+UI4xDtYyUih7ydoAJt33awX0Q3kSOWBB6M9k1ikOjOVs6661
- YswpX3Lei1p5LE8DAGnynazr0LItToxTy3pdLnRrP9ANNDdCQCMb+79vcIxSfSy694Kf
- /SgdhLlh+HGZ97Xea7BWqegs0FYsDDywbtJ4l7X40QeJDVwT/69+X73a6ZdoKNF89aFi
- YhQQLMCkZwGr+ODZuET+WEaMcKBTt4uNjdwt3iEAXcqQkcgjRiCO3Vvwm3kj/dxcaaRq 2Q== 
-Received: from nasanppmta01.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3sd904s502-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 11 Aug 2023 08:51:29 +0000
-Received: from nasanex01a.na.qualcomm.com (nasanex01a.na.qualcomm.com [10.52.223.231])
-        by NASANPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 37B8pSON020000
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 11 Aug 2023 08:51:28 GMT
-Received: from [10.50.43.50] (10.80.80.8) by nasanex01a.na.qualcomm.com
- (10.52.223.231) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.30; Fri, 11 Aug
- 2023 01:51:24 -0700
-Message-ID: <f1bbcd06-f888-b466-1b7e-7034ab4004e7@quicinc.com>
-Date:   Fri, 11 Aug 2023 14:21:21 +0530
+        with ESMTP id S234841AbjHKJT6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 11 Aug 2023 05:19:58 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.24])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99EB32D78;
+        Fri, 11 Aug 2023 02:19:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1691745598; x=1723281598;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=5cLnojzw8GwJQeVPk+d6p7jnvKD0oM2DncTUym4BGQU=;
+  b=EzunvH/GqXvzrrG5RSv/vLwW4JASmhyEAstXHmgc4HYv0upUvU05b/+l
+   wgDfFs6M+kk2XEVE+CHWlKrAp9QqOs4LczOot/aqkasR6NOWVl9INAvC4
+   t8bPysJ1Vhg4FP3UvWabSa63Nc0njlMms5JvsOraGSEqXjesxpoZi7zrY
+   252Ej2MOuQz+43w/oxM602NCyUhFQ8AmWUAHIKppxoE9tBd253lbD2A3b
+   mQ9OOeq5otzKFu9T66Cb07oDyw/n3zgDOxgLj2g6xozLMbsRUKgIaL5dR
+   IUqdEr8OIML1sx+CX8zEcXGCU1cptR2WCn09MLc0Y4rhs4tp8o/nFCl04
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10798"; a="374406319"
+X-IronPort-AV: E=Sophos;i="6.01,165,1684825200"; 
+   d="scan'208";a="374406319"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Aug 2023 02:19:58 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10798"; a="726197121"
+X-IronPort-AV: E=Sophos;i="6.01,165,1684825200"; 
+   d="scan'208";a="726197121"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by orsmga007.jf.intel.com with ESMTP; 11 Aug 2023 02:19:56 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1qUOJG-008FZl-35;
+        Fri, 11 Aug 2023 12:19:54 +0300
+Date:   Fri, 11 Aug 2023 12:19:54 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     William Breathitt Gray <william.gray@linaro.org>
+Cc:     Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org,
+        Paul Demetrotion <pdemetrotion@winsystems.com>
+Subject: Re: [RESEND PATCH 7/7] gpio: ws16c48: Fix off-by-one error in
+ WS16C48 resource region extent
+Message-ID: <ZNX9Oo2AOASHKOPZ@smile.fi.intel.com>
+References: <cover.1691703927.git.william.gray@linaro.org>
+ <f20243853e94264534927f2cdf9288b869e7e03b.1691703928.git.william.gray@linaro.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v2 3/4] venus: hfi: add checks to handle capabilities from
- firmware
-Content-Language: en-US
-To:     Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
-        <stanimir.k.varbanov@gmail.com>, <agross@kernel.org>,
-        <andersson@kernel.org>, <konrad.dybcio@linaro.org>,
-        <mchehab@kernel.org>, <hans.verkuil@cisco.com>,
-        <tfiga@chromium.org>
-CC:     <linux-media@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>
-References: <1691634304-2158-1-git-send-email-quic_vgarodia@quicinc.com>
- <1691634304-2158-4-git-send-email-quic_vgarodia@quicinc.com>
- <59b61d65-a827-d252-cdc2-a256f99cb4d9@linaro.org>
- <a1713beb-e1bc-4118-ab58-b5d8e7fb3cbf@quicinc.com>
- <e763934d-dd4b-9cee-9992-eb24dce0435f@linaro.org>
-From:   Vikash Garodia <quic_vgarodia@quicinc.com>
-In-Reply-To: <e763934d-dd4b-9cee-9992-eb24dce0435f@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nasanex01a.na.qualcomm.com (10.52.223.231)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: n7Hjr16suun1C8yejsBTSTh0VXsZxFLj
-X-Proofpoint-ORIG-GUID: n7Hjr16suun1C8yejsBTSTh0VXsZxFLj
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-08-10_20,2023-08-10_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 phishscore=0
- priorityscore=1501 adultscore=0 spamscore=0 lowpriorityscore=0
- mlxlogscore=588 impostorscore=0 mlxscore=0 clxscore=1015 malwarescore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2306200000 definitions=main-2308110080
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <f20243853e94264534927f2cdf9288b869e7e03b.1691703928.git.william.gray@linaro.org>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-
-On 8/11/2023 2:11 PM, Bryan O'Donoghue wrote:
-> On 11/08/2023 06:54, Vikash Garodia wrote:
->> The case is all about rogue firmware. If there is a need to fill the same cap
->> again, that itself indicates that the payload from firmware is not correct. In
->> such cases, the old as well as new cap data are not reliable. Though the
->> authenticity of the data cannot be ensured, the check would avoid any OOB during
->> such rogue firmware case.
+On Thu, Aug 10, 2023 at 06:00:44PM -0400, William Breathitt Gray wrote:
+> The WinSystems WS16C48 I/O address region spans offsets 0x0 through 0xA,
+> which is a total of 11 bytes. Fix the WS16C48_EXTENT define to the
+> correct value of 11 so that access to necessary device registers is
+> properly requested in the ws16c48_probe() callback by the
+> devm_request_region() function call.
 > 
-> Then why favour the old cap report over the new ?
+> Fixes: 2c05a0f29f41 ("gpio: ws16c48: Implement and utilize register structures")
 
-When the driver hits the case for OOB, thats when it knows that something has
-gone wrong. Keeping old or new, both are invalid values in such case, nothing to
-favor any value.
+Fixes should go first in the series, but I see no conflict here, I hope Bart
+can manage this when applying.
 
-Regards,
-Vikash
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
