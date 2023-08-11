@@ -2,67 +2,125 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1C14D77851C
-	for <lists+stable@lfdr.de>; Fri, 11 Aug 2023 03:51:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 10B2A778565
+	for <lists+stable@lfdr.de>; Fri, 11 Aug 2023 04:28:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231289AbjHKBvQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 10 Aug 2023 21:51:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56548 "EHLO
+        id S229475AbjHKC2P (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 10 Aug 2023 22:28:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56330 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231250AbjHKBvO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 10 Aug 2023 21:51:14 -0400
-Received: from netrider.rowland.org (netrider.rowland.org [192.131.102.5])
-        by lindbergh.monkeyblade.net (Postfix) with SMTP id E75F62132
-        for <stable@vger.kernel.org>; Thu, 10 Aug 2023 18:51:12 -0700 (PDT)
-Received: (qmail 263409 invoked by uid 1000); 10 Aug 2023 21:51:11 -0400
-Date:   Thu, 10 Aug 2023 21:51:11 -0400
-From:   Alan Stern <stern@rowland.harvard.edu>
-To:     Alexandru Gagniuc <alexandru.gagniuc@hp.com>
-Cc:     bjorn@mork.no, davem@davemloft.net, edumazet@google.com,
-        eniac-xw.zhang@hp.com, hayeswang@realtek.com, jflf_kernel@gmx.com,
-        kuba@kernel.org, linux-kernel@vger.kernel.org,
-        linux-usb@vger.kernel.org, netdev@vger.kernel.org,
-        pabeni@redhat.com, stable@vger.kernel.org, svenva@chromium.org
-Subject: Re: [PATCH v2] r8152: Suspend USB device before shutdown when WoL is
- enabled
-Message-ID: <cce11aea-166e-4d4b-84c0-a7fafb666aba@rowland.harvard.edu>
-References: <78e3aade-2a88-42f4-9991-8e245f3eb9b9@rowland.harvard.edu>
- <20230810225109.13973-1-alexandru.gagniuc@hp.com>
+        with ESMTP id S229723AbjHKC2O (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 10 Aug 2023 22:28:14 -0400
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F3141FD;
+        Thu, 10 Aug 2023 19:28:12 -0700 (PDT)
+Received: from kwepemm600007.china.huawei.com (unknown [172.30.72.57])
+        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4RMSNb6WSRzrSDr;
+        Fri, 11 Aug 2023 10:26:55 +0800 (CST)
+Received: from [10.69.136.139] (10.69.136.139) by
+ kwepemm600007.china.huawei.com (7.193.23.208) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.27; Fri, 11 Aug 2023 10:28:09 +0800
+Message-ID: <85802fb2-bf8f-e03e-1690-b05c34de9254@huawei.com>
+Date:   Fri, 11 Aug 2023 10:28:08 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230810225109.13973-1-alexandru.gagniuc@hp.com>
-X-Spam-Status: No, score=0.8 required=5.0 tests=BAYES_00,
-        HEADER_FROM_DIFFERENT_DOMAINS,SORTED_RECIPS,SPF_HELO_PASS,SPF_PASS
-        autolearn=no autolearn_force=no version=3.4.6
+User-Agent: Mozilla Thunderbird
+CC:     <shaojijie@huawei.com>, Leon Romanovsky <leon@kernel.org>,
+        <yisen.zhuang@huawei.com>, <salil.mehta@huawei.com>,
+        <davem@davemloft.net>, <edumazet@google.com>, <pabeni@redhat.com>,
+        <shenjian15@huawei.com>, <wangjie125@huawei.com>,
+        <liuyonglong@huawei.com>, <chenhao418@huawei.com>,
+        <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <stable@vger.kernel.org>, Jakub Kicinski <kuba@kernel.org>
+Subject: Re: [PATCH net] net: hns3: fix strscpy causing content truncation
+ issue
+To:     Kees Cook <keescook@chromium.org>
+References: <20230809020902.1941471-1-shaojijie@huawei.com>
+ <20230809070302.GR94631@unreal>
+ <7c44c161-9c86-8c60-f031-6d77d6c28c20@huawei.com>
+ <20230810102247.699ddc14@kernel.org> <202308101103.D0827667B@keescook>
+From:   Jijie Shao <shaojijie@huawei.com>
+In-Reply-To: <202308101103.D0827667B@keescook>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.69.136.139]
+X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
+ kwepemm600007.china.huawei.com (7.193.23.208)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, Aug 10, 2023 at 10:51:09PM +0000, Alexandru Gagniuc wrote:
-> On Thu, Aug 10, 2023 at 01:34:39PM -0400, Alan Stern wrote:
-> > I was thinking that the host controller driver's shutdown method might 
-> > turn off power to all of the ports.
-> > 
-> > For example, in the ehci-hcd driver, ehci_shutdown() calls 
-> > ehci_silence_controller(), which calls ehci_turn_off_all_ports().  I 
-> > don't know if xhci-hcd does anything similar.
-> 
-> EHCI is a different beast. I don't think EHCI (USB2.0) has the U3 link state.
 
-USB-2 doesn't have link states, but it does have the notion of a 
-downstream port being suspended, which is effectively the same as U3.
+on 2023/8/11 2:23, Kees Cook wrote:
+>> Let's add Kees in case he has a immediate recommendation on use of
+>> strtomem() vs memcpy() for this case..
+> tldr: use memcpy() instead of strscpy().
+>
+>
+> Okay, I went to go read up on the history here. For my own notes, here's
+> the original code, prior to 1cf3d5567f27 ("net: hns3: fix strncpy()
+> not using dest-buf length as length issue"):
+>
+> static void hns3_dbg_fill_content(char *content, u16 len,
+> 				  const struct hns3_dbg_item *items,
+> 				  const char **result, u16 size)
+> {
+> 	char *pos = content;
+> 	u16 i;
+>
+> 	memset(content, ' ', len);
+> 	for (i = 0; i < size; i++) {
+> 		if (result)
+> 			strncpy(pos, result[i], strlen(result[i]));
+> 		else
+> 			strncpy(pos, items[i].name, strlen(items[i].name));
+>
+> 		pos += strlen(items[i].name) + items[i].interval;
+> 	}
+>
+> 	*pos++ = '\n';
+> 	*pos++ = '\0';
+> }
+>
+> The warning to be fixed was:
+>
+> hclge_debugfs.c:90:25: warning: 'strncpy' output truncated before terminating nul copying as many bytes from a string as its length [-Wstringop-truncation]
+>
+> There are a few extra checks added in 1cf3d5567f27, but I'm more curious
+> about this original code's intent. It seems very confusing to me.
+>
+> Firstly, why is "pos" updated based on "strlen(items[i].name)" even when
+> "result[i]" is used? Secondly, why is "interval" used? (These concerns
+> are mostly addressed in 1cf3d5567f27.)
+>
+> I guess I'd just like to take a step back and ask, "What is this
+> function trying to do?" It seems to be building a series of strings in a
+> " "-padding buffer, and it intends that the buffer be newline and %NUL
+> terminated.
+>
+> It looks very much like it wants to _avoid_ adding %NUL termination when
+> doing copies, which is why it's using strncpy with a length argument of
+> the source string length: it's _forcing_ the copy to not be terminated.
+> This is just memcpy.
+>
+> strtomem() is designed for buffer sizes that can be known at compile
+> time, so it's not useful here (as was found), since a string is being
+> built up and uses a moving pointer.
+>
+> I think the correct fix is to use memcpy() instead of strscpy(). No
+> %NUL-truncation is desired, the sizes are already determined and bounds
+> checked. (And the latter is what likely silenced the compiler warning.)
+>
+> -Kees
+Yes, your guess is right, we want to copy the string without termination.
+Thanks for your introduction, we understand why strtomem() is not 
+userful here.
 
-> The equivalent for would be xhci_shutdown(). It makes a call to
-> usb_disable_xhci_ports() for XHCI_SPURIOUS_REBOOT quirk. As I have not
-> encountered it, I don't know how it will affect the link state of other ports.
-> The quirk appears to switch ports to EHCI mode, rather than turn off power.
-
-All right.  The important point is that the patch works for your 
-situation.  I was just trying to find out how much thought you had given 
-to the possibilities other people might face, if their systems aren't 
-quite the same as yours.
-
-Alan Stern
+Regards
+Jijie Shao
