@@ -2,224 +2,154 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B33A67785D3
-	for <lists+stable@lfdr.de>; Fri, 11 Aug 2023 05:14:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 845BD7785EF
+	for <lists+stable@lfdr.de>; Fri, 11 Aug 2023 05:18:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229445AbjHKDOl (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 10 Aug 2023 23:14:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37174 "EHLO
+        id S232879AbjHKDSO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 10 Aug 2023 23:18:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44214 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230296AbjHKDOj (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 10 Aug 2023 23:14:39 -0400
-Received: from mail-lj1-x229.google.com (mail-lj1-x229.google.com [IPv6:2a00:1450:4864:20::229])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C3B5C2D73
-        for <stable@vger.kernel.org>; Thu, 10 Aug 2023 20:14:37 -0700 (PDT)
-Received: by mail-lj1-x229.google.com with SMTP id 38308e7fff4ca-2b95d5ee18dso23714421fa.1
-        for <stable@vger.kernel.org>; Thu, 10 Aug 2023 20:14:37 -0700 (PDT)
+        with ESMTP id S233073AbjHKDSK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 10 Aug 2023 23:18:10 -0400
+Received: from mail-vk1-xa2e.google.com (mail-vk1-xa2e.google.com [IPv6:2607:f8b0:4864:20::a2e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 60F1E2D7F
+        for <stable@vger.kernel.org>; Thu, 10 Aug 2023 20:18:05 -0700 (PDT)
+Received: by mail-vk1-xa2e.google.com with SMTP id 71dfb90a1353d-48726442294so636914e0c.0
+        for <stable@vger.kernel.org>; Thu, 10 Aug 2023 20:18:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=joelfernandes.org; s=google; t=1691723676; x=1692328476;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=o0D9WJUot3cqeEy6rgSjf5yjuJfqkTGC9ej0izSbIes=;
-        b=ne7LUAX3bhqKymLiIomwpVcP21D7tVSGgNocUPFwN0WNN3vr52Fo+ewGAPI2QTWzOn
-         XWjSfljCOb2c81Frlvmb0KCp1+s3dwRqWptuAHkl70WRsgs7ORPEFKXN/97NUZf58HTa
-         YmggdgGH6LdnBNPkvsKtvVejowS4ShdKmMlUc=
+        d=linaro.org; s=google; t=1691723884; x=1692328684;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=NWa1OLkDORI1sFVlYnxo6RPV3TWv31BScuGRKjWt/R4=;
+        b=pVNQ7PD9BrEFTfSYVzq/2ZgPsbl2ALglT3PYDymOB7AODtOlUs1WU7GjuA/wGfULSO
+         7rTsCnogtjR/dY3u8s/mAOj5SlWvM36IXryiN4daD0SNULGjQv2gn6EDoY0/N/0ZxiGa
+         4s6tkhd0sr98EVg/4pZUg5IY9J3SxE1CzGOJeE2aeV7ysnLyc3WKn7nZpxLr+HSAPgDC
+         KDzismsv6v5MBwiLGKz3as0t5zID7JZo/bcJq4NWWRSexqUQjMUMW0MNvboVxMUw7zce
+         dvPqqW/xRmELqB/9s4IxsNZeavqzspje3rG75qht+krvmdLgrZXMyIvOIfeQnUdadS9i
+         MLbw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691723676; x=1692328476;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=o0D9WJUot3cqeEy6rgSjf5yjuJfqkTGC9ej0izSbIes=;
-        b=jiIkeFliUd56b2MQ+sRfeM+rFTWdqyh/sdSkmmqBCgWneNUlwzbKdmoPIleFrNb3Ch
-         pnpn7feOlLr49uzFcNmPkF4TedqE9VmWjdmuHYVsizRnd1lmXL69B+1pwzZQ8VOOcmG/
-         shHDzLL47u1KdBEFGkoIPMLQ3jYzheEnWq72LWvhidDb9Q++H56sks9sTUrQns+YAi0X
-         XvdR0+TjZ5HJg2yY0G6D44MHcWppd+Q8nIiE9USogOAlrLiOMNFBvyfjWeuaATSN8Cq6
-         j3IfdxyJkRHp0a48iEZLNKVg2Q/F8JkOMv6dfMGdGWY6lMVxSyvwVh89ZUooLtCgGKIi
-         chgg==
-X-Gm-Message-State: AOJu0Yzte6mpSt0FoQu5suvEZJAkOpkK+O+kDkj+96c69JtiQXX3Oihs
-        1K8s0tvMWgUGoKhx+BYHfw9K9tSkC1MGq/QbQayCEngo2lM/sTjIPyY=
-X-Google-Smtp-Source: AGHT+IHRc2yEV8rCtbXNse8Ejz6onynZzUgkOSXYpQbud0dVzNgraSk+FogYxYQCDwFeBQa9RmTfaPpgKpIdsOcAlyo=
-X-Received: by 2002:a2e:9157:0:b0:2b9:e93e:65d9 with SMTP id
- q23-20020a2e9157000000b002b9e93e65d9mr569308ljg.40.1691723675451; Thu, 10 Aug
- 2023 20:14:35 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1691723884; x=1692328684;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=NWa1OLkDORI1sFVlYnxo6RPV3TWv31BScuGRKjWt/R4=;
+        b=C387CnPo1ymU27smqh1rE+ZWGCcL2ma6S6ruETEgkyEZHD4nT768qzK+Yv1WKetkaq
+         DYn0YW6Vnn8NuqeIajzq0z6xty6DlmjZ26peUn79Ln0PTBnsyCvze0MEY4vbmt7jvxfi
+         7f8yUoChtSiSbl6S02wdgB4tER6waCHThLErfMaKYbpTvbZhDLpsinoPavgXNzKYn5EC
+         XVPhnjgvRD6xCwDWLQcotOQ172+ZF26V473FoOxGVkKQdToGO3KE/0YqW4LgQaQuWSxD
+         cvLwMrh7yu3gUwwSdhWngNwLSpUx8BTsUPiO803v74v7HCNRYM/swEyHbhnoDBubKY96
+         j8SQ==
+X-Gm-Message-State: AOJu0YyEAb3E6PvMCDew0L/EJdt6yvioXUHUnB/8Jizk+RWW/lVdBMH1
+        7xs5JZeqaEBxT8NxvO/paBGqMqdE/G6sN3M3QDyG3aE/tyijvladFAk=
+X-Google-Smtp-Source: AGHT+IFz7uTfy59964S+IdElKv3sTs60h9FhAFCrxlWi7+8GZ3QWKcfLauypG3jdBd+GQ4hKBvz4al5R0T+5oPk9Yl8=
+X-Received: by 2002:a67:f486:0:b0:444:57aa:571 with SMTP id
+ o6-20020a67f486000000b0044457aa0571mr550289vsn.15.1691723884366; Thu, 10 Aug
+ 2023 20:18:04 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230810223137.596671-1-joel@joelfernandes.org>
-In-Reply-To: <20230810223137.596671-1-joel@joelfernandes.org>
-From:   Joel Fernandes <joel@joelfernandes.org>
-Date:   Thu, 10 Aug 2023 23:14:24 -0400
-Message-ID: <CAEXW_YRL9FgepcG_=-F3HdS-h-Y9rRerM9nfxRsECfg2p9GJFQ@mail.gmail.com>
-Subject: Re: [PATCH 5.15 1/3] tick: Detect and fix jiffies update stall
-To:     stable@vger.kernel.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     Guenter Roeck <linux@roeck-us.net>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Frederic Weisbecker <frederic@kernel.org>,
-        "Paul E . McKenney" <paulmck@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>
+References: <CA+G9fYsf0jePDO3VPz0pb1sURdefpYCAYH-y+OdsAf3HuzbeRw@mail.gmail.com>
+ <202308101328.40620220CB@keescook>
+In-Reply-To: <202308101328.40620220CB@keescook>
+From:   Naresh Kamboju <naresh.kamboju@linaro.org>
+Date:   Fri, 11 Aug 2023 08:47:53 +0530
+Message-ID: <CA+G9fYugggRyxJFgxRwb0GvgXPerCE928S5vVW7ZnzfTJCRnZA@mail.gmail.com>
+Subject: Re: stable-rc: 6.1: gcc-plugins: Reorganize gimple includes for GCC 13
+To:     Kees Cook <keescook@chromium.org>
+Cc:     linux-stable <stable@vger.kernel.org>,
+        lkft-triage@lists.linaro.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Sasha Levin <sashal@kernel.org>,
+        Anders Roxell <anders.roxell@linaro.org>,
+        linux-hardening@vger.kernel.org,
+        Palmer Dabbelt <palmer@rivosinc.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi,
-Unfortunately, One of my tests showed the following after 10 minutes
-of running the TREE01 scenario (even though TREE04 got fixed). Let us
-hold off on these 3 patches. I need to be sure there's absolutely no
-new issue introduced. So more work to do.
+On Fri, 11 Aug 2023 at 02:01, Kees Cook <keescook@chromium.org> wrote:
+>
+> On Tue, Aug 08, 2023 at 10:57:30AM +0530, Naresh Kamboju wrote:
+> > LKFT build plans updated with toolchain gcc-13 and here is the report.
+> >
+> > Stable rc 6.1 arm64 builds with gcc-13 failed and the bisection is pointing
+> > to this as first bad commit,
+> >
+> > # first fixed commit: [e6a71160cc145e18ab45195abf89884112e02dfb]
+> >    gcc-plugins: Reorganize gimple includes for GCC 13
+> >
+> > Thanks Anders for bisecting this problem against Linux 6.2-rc6.
+> >
+> > Build errors:
+> > ---------------
+> > In file included from /builds/linux/scripts/gcc-plugins/gcc-common.h:75,
+> >                  from /builds/linux/scripts/gcc-plugins/stackleak_plugin.c:30:
+> > /usr/lib/gcc-cross/aarch64-linux-gnu/13/plugin/include/gimple-fold.h:72:32:
+> > error: use of enum 'gsi_iterator_update' without previous declaration
+> >    72 |                           enum gsi_iterator_update,
+> >       |                                ^~~~~~~~~~~~~~~~~~
+> >
+> > Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+>
+> I'm slightly confused by this report.
 
-Thank you!
+Sorry. I should have provided full details.
 
-[  667.823113] CPU: 2 PID: 27 Comm: migration/2 Not tainted 5.15.126-rc1+ #=
-26
-[  667.904999] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009),
-BIOS 1.16.2-debian-1.16.2-1 04/01/2014
-[  668.063061] Stopper: multi_cpu_stop+0x0/0x170 <-
-stop_machine_from_inactive_cpu+0x118/0x170
-[  668.179708] RIP: 0010:multi_cpu_stop+0x150/0x170
-[  668.231838] Code: 35 49 dd a1 01 48 c7 c7 60 51 95 bc 49 c7 c6 60
-51 95 bc e8 62 c0 31 00 39 44 24 04 41 0f 94 c7 e9 ed fe ff ff e8 10
-82 fc ff <48> 8b 0d 89 69 0e 45 8b 74 24 04 48 c7 c7 6d c4 35 bc 48 29
-c8 48
-[  668.563146] RSP: 0000:ffffb28f0023be68 EFLAGS: 00010216
-[  668.646854] RAX: 0000009b1b04be30 RBX: 0000000000000001 RCX: 00000000000=
-00017
-[  668.733241] RDX: 00000ef798000000 RSI: 00000000000e4546 RDI: 0001d5f2688=
-00000
-[  668.851846] RBP: ffffb28f000c7e90 R08: 0000009c17aaf41a R09: 7ffffffffff=
-fffff
-[  668.966445] R10: 0000009aa37f6a00 R11: 00000000012679f7 R12: 00000000000=
-1e7c0
-[  669.056865] R13: 0000000000000002 R14: ffff8ec49ffb4f00 R15: ffffb28f000=
-c7e01
-[  669.172537] FS:  0000000000000000(0000) GS:ffff8ec49ea80000(0000)
-knlGS:0000000000000000
-[  669.318440] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[  669.395012] CR2: 000000000001e7c0 CR3: 0000000019e0c000 CR4: 00000000000=
-006e0
-[  669.505733] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 00000000000=
-00000
-[  669.588303] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 00000000000=
-00400
-[  669.702863] Call Trace:
-[  669.742668]  <TASK>
-[  669.789840]  ? __die_body.cold+0x1a/0x1f
-[  669.836098]  ? page_fault_oops+0xcd/0x210
-[  669.922700]  ? exc_page_fault+0x60/0x140
-[  669.968411]  ? asm_exc_page_fault+0x22/0x30
-[  670.012394]  ? multi_cpu_stop+0x150/0x170
-[  670.115211]  ? multi_cpu_stop+0x150/0x170
-[  670.153099]  ? stop_machine_yield+0x10/0x10
-[  670.236328]  cpu_stopper_thread+0x85/0x130
-[  670.288173]  smpboot_thread_fn+0x183/0x220
-[  670.398452]  ? smpboot_register_percpu_thread+0xd0/0xd0
-[  670.482244]  kthread+0x12d/0x160
-[  670.527783]  ? set_kthread_struct+0x40/0x40
-[  670.606296]  ret_from_fork+0x22/0x30
-[  670.651658]  </TASK>
-[  670.695138] Modules linked in:
-[  670.740198] CR2: 000000000001e7c0
+> Is it the build of v6.1 that is failing?
 
-On Thu, Aug 10, 2023 at 6:31=E2=80=AFPM Joel Fernandes (Google)
-<joel@joelfernandes.org> wrote:
+Linux-stable-rc linux.6.1.y failing with gcc-13.
+
+> Commit e6a71160cc14 ("gcc-plugins: Reorganize gimple includes
+> for GCC 13") was added in v6.2.
+
+This commit is needed.
+
 >
-> From: Frederic Weisbecker <frederic@kernel.org>
->
-> [ Upstream commit a1ff03cd6fb9c501fff63a4a2bface9adcfa81cd ]
->
-> tick: Detect and fix jiffies update stall
->
-> On some rare cases, the timekeeper CPU may be delaying its jiffies
-> update duty for a while. Known causes include:
->
-> * The timekeeper is waiting on stop_machine in a MULTI_STOP_DISABLE_IRQ
->   or MULTI_STOP_RUN state. Disabled interrupts prevent from timekeeping
->   updates while waiting for the target CPU to complete its
->   stop_machine() callback.
->
-> * The timekeeper vcpu has VMEXIT'ed for a long while due to some overload
->   on the host.
->
-> Detect and fix these situations with emergency timekeeping catchups.
->
-> Original-patch-by: Paul E. McKenney <paulmck@kernel.org>
-> Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
-> Cc: Thomas Gleixner <tglx@linutronix.de>
-> Signed-off-by: Joel Fernandes (Google) <joel@joelfernandes.org>
-> ---
->  kernel/time/tick-sched.c | 17 +++++++++++++++++
->  kernel/time/tick-sched.h |  4 ++++
->  2 files changed, 21 insertions(+)
->
-> diff --git a/kernel/time/tick-sched.c b/kernel/time/tick-sched.c
-> index f42d0776bc84..7701c720dc1f 100644
-> --- a/kernel/time/tick-sched.c
-> +++ b/kernel/time/tick-sched.c
-> @@ -180,6 +180,8 @@ static ktime_t tick_init_jiffy_update(void)
->         return period;
->  }
->
-> +#define MAX_STALLED_JIFFIES 5
-> +
->  static void tick_sched_do_timer(struct tick_sched *ts, ktime_t now)
->  {
->         int cpu =3D smp_processor_id();
-> @@ -207,6 +209,21 @@ static void tick_sched_do_timer(struct tick_sched *t=
-s, ktime_t now)
->         if (tick_do_timer_cpu =3D=3D cpu)
->                 tick_do_update_jiffies64(now);
->
-> +       /*
-> +        * If jiffies update stalled for too long (timekeeper in stop_mac=
-hine()
-> +        * or VMEXIT'ed for several msecs), force an update.
-> +        */
-> +       if (ts->last_tick_jiffies !=3D jiffies) {
-> +               ts->stalled_jiffies =3D 0;
-> +               ts->last_tick_jiffies =3D READ_ONCE(jiffies);
-> +       } else {
-> +               if (++ts->stalled_jiffies =3D=3D MAX_STALLED_JIFFIES) {
-> +                       tick_do_update_jiffies64(now);
-> +                       ts->stalled_jiffies =3D 0;
-> +                       ts->last_tick_jiffies =3D READ_ONCE(jiffies);
-> +               }
-> +       }
-> +
->         if (ts->inidle)
->                 ts->got_idle_tick =3D 1;
->  }
-> diff --git a/kernel/time/tick-sched.h b/kernel/time/tick-sched.h
-> index d952ae393423..504649513399 100644
-> --- a/kernel/time/tick-sched.h
-> +++ b/kernel/time/tick-sched.h
-> @@ -49,6 +49,8 @@ enum tick_nohz_mode {
->   * @timer_expires_base:        Base time clock monotonic for @timer_expi=
-res
->   * @next_timer:                Expiry time of next expiring timer for de=
-bugging purpose only
->   * @tick_dep_mask:     Tick dependency mask - is set, if someone needs t=
-he tick
-> + * @last_tick_jiffies: Value of jiffies seen on last tick
-> + * @stalled_jiffies:   Number of stalled jiffies detected across ticks
->   */
->  struct tick_sched {
->         struct hrtimer                  sched_timer;
-> @@ -77,6 +79,8 @@ struct tick_sched {
->         u64                             next_timer;
->         ktime_t                         idle_expires;
->         atomic_t                        tick_dep_mask;
-> +       unsigned long                   last_tick_jiffies;
-> +       unsigned int                    stalled_jiffies;
->  };
->
->  extern struct tick_sched *tick_get_tick_sched(int cpu);
-> --
-> 2.41.0.640.ga95def55d0-goog
->
+> I think you're saying you need it backported to the v6.1 stable tree?
+> ("First bad commit" is really the first good commit?)
+
+First good commit.
+We need to backport this patch for linux.6.1.y
+
+Bisect log:
+------
+# fixed: [6d796c50f84ca79f1722bb131799e5a5710c4700] Linux 6.2-rc6
+# unfixed: [2241ab53cbb5cdb08a6b2d4688feb13971058f65] Linux 6.2-rc5
+git bisect start '--term-new=fixed' '--term-old=unfixed' 'v6.2-rc6' 'v6.2-rc5'
+# unfixed: [9f4d0bd24e6b42555c02e137763f12c106572e63] Merge tag
+'linux-kselftest-fixes-6.2-rc6' of
+git://git.kernel.org/pub/scm/linux/kernel/git/shuah/linux-kselftest
+git bisect unfixed 9f4d0bd24e6b42555c02e137763f12c106572e63
+# unfixed: [37d0be6a7d7d6fede952c439f8d8b9d1df5c756f] Merge tag
+'gpio-fixes-for-v6.2-rc6' of
+git://git.kernel.org/pub/scm/linux/kernel/git/brgl/linux
+git bisect unfixed 37d0be6a7d7d6fede952c439f8d8b9d1df5c756f
+# fixed: [f851453bf19554a42eb480b65436b9500c3cf392] Merge tag
+'io_uring-6.2-2023-01-27' of git://git.kernel.dk/linux
+git bisect fixed f851453bf19554a42eb480b65436b9500c3cf392
+# unfixed: [78020233418518faa72fba11f40e1d53b9e88a2e] bootconfig:
+Update MAINTAINERS file to add tree and mailing list
+git bisect unfixed 78020233418518faa72fba11f40e1d53b9e88a2e
+# unfixed: [e6f2f6ac500c67164f6f6b47299aece579277c14] Merge tag
+'i2c-for-6.2-rc6' of
+git://git.kernel.org/pub/scm/linux/kernel/git/wsa/linux
+git bisect unfixed e6f2f6ac500c67164f6f6b47299aece579277c14
+# fixed: [be0d8f48ad97f5b775b0af3310343f676dbf318a] bcache: Silence
+memcpy() run-time false positive warnings
+git bisect fixed be0d8f48ad97f5b775b0af3310343f676dbf318a
+# fixed: [e6a71160cc145e18ab45195abf89884112e02dfb] gcc-plugins:
+Reorganize gimple includes for GCC 13
+git bisect fixed e6a71160cc145e18ab45195abf89884112e02dfb
+# unfixed: [4acf1de35f41549e60c3c02a8defa7cb95eabdf2] kunit: memcpy:
+Split slow memcpy tests into MEMCPY_SLOW_KUNIT_TEST
+git bisect unfixed 4acf1de35f41549e60c3c02a8defa7cb95eabdf2
+# first fixed commit: [e6a71160cc145e18ab45195abf89884112e02dfb]
+gcc-plugins: Reorganize gimple includes for GCC 13
+
+
+- Naresh
