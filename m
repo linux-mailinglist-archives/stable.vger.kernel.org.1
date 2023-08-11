@@ -2,128 +2,165 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9D0BF779741
-	for <lists+stable@lfdr.de>; Fri, 11 Aug 2023 20:47:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 760EB779744
+	for <lists+stable@lfdr.de>; Fri, 11 Aug 2023 20:48:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229927AbjHKSrN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 11 Aug 2023 14:47:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53504 "EHLO
+        id S233609AbjHKSsJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 11 Aug 2023 14:48:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48128 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229577AbjHKSrN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 11 Aug 2023 14:47:13 -0400
-Received: from mail-wm1-x32f.google.com (mail-wm1-x32f.google.com [IPv6:2a00:1450:4864:20::32f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8AEF630E6;
-        Fri, 11 Aug 2023 11:47:12 -0700 (PDT)
-Received: by mail-wm1-x32f.google.com with SMTP id 5b1f17b1804b1-3fbea14706eso20006235e9.2;
-        Fri, 11 Aug 2023 11:47:12 -0700 (PDT)
+        with ESMTP id S231890AbjHKSsJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 11 Aug 2023 14:48:09 -0400
+Received: from mail-yb1-xb4a.google.com (mail-yb1-xb4a.google.com [IPv6:2607:f8b0:4864:20::b4a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB39F30ED
+        for <stable@vger.kernel.org>; Fri, 11 Aug 2023 11:48:08 -0700 (PDT)
+Received: by mail-yb1-xb4a.google.com with SMTP id 3f1490d57ef6-d4b1ec7e918so2432997276.2
+        for <stable@vger.kernel.org>; Fri, 11 Aug 2023 11:48:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1691779631; x=1692384431;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+        d=google.com; s=20221208; t=1691779688; x=1692384488;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=Lxiy661bwby5aRoESXiqAzZ+scVqqbirnP6RZhCnFMM=;
-        b=A7ILmlQA5bAiH10V7GlC8sTxKLx9opJQGSJL4IhDwDxykOuY/Xwk67uZzoN8yINKvL
-         8b0JyhV9U1ExuK970841hQyGd9FsSkEI5XiTF+THXpZwJpzs+oOG+lTgXpwZtJMInL25
-         dE+Y1qIrKLCG2/VGZNMXUWxWnEqEuXaOqpdwPGrdG/hlT09iWJ25oyo/FbIKBf3zVV0e
-         Mve9jAMHREhI8RexUeM5LQrBUaj2nyuUoisi5YXP0HxSo6YfeN/zG3ef1HVRShRhOyAq
-         owhy8i1hRoeWRQTXKk+25PDQS0RTihMyO0pZeVEe4qFALQjqvAMvIveboGH1BGWVk4Kl
-         znSw==
+        bh=ZJJ8UdAIxIsw1LkzQ8Bf6m1ij6K720NrGCKMd7eniDM=;
+        b=oZKX9eh/oR9Kkzl97al4UScWBn7jnrWuhJe5205va1AhljySM2gHSaH1yj7tV/v3T9
+         aS1NbtndUEeMUBFsb8BNrkCG3ADshR1Qr/8RHv8SiMeasr711vA+HCF655Bfs+fKp4Ae
+         wKCf4xI9ILtCQqA/nd3FZXXl8+KxttPoD8W9TFJM9CQXz6niVgstQCNTBANbR2MPKK7N
+         gba7m0SMNqO8IeUG+y7voRqfyMF9IMss5oeEk7ziuFi6rM99EvX/tz4EOaCjJdKMqxof
+         3ZmDfA0WaWkSxuU7cGN9n8rPaq3NrupxQwx8VG3MNnq3PBzvFyvI3FlR+75ocnGUDTP+
+         QCyA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691779631; x=1692384431;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+        d=1e100.net; s=20221208; t=1691779688; x=1692384488;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=Lxiy661bwby5aRoESXiqAzZ+scVqqbirnP6RZhCnFMM=;
-        b=DxegkZw7xv48vSTgjiSsRalCIqbYu3A1C3mavMUFv5V+ozSbV7VVPKoG7jgLY2VlzA
-         s/dY4KoJPLfLnfq1iVdISNJb4yGcZ+cQ3zB2OMlqWB3VpCwU4W2lZTVITCqxrBU3uIeC
-         GTLDMiskcvQbButQI6YJwsXICt46gQsBAMa/Tm+1QeG/OYr+s5ZX/mIsAz3bGWO6OQ+q
-         21UVubjzecbXIbjTSq7GHvr1uSQY75k8E497JYQKErr8gjPbyXTgb/2ueWdXJdiGjL2d
-         hqdnMoaEbp3QP6R/1gdB5h/Bw6yRJf/dTXNaUSlDu2Um8k16gEOBSpaK7lELxh6hcf+0
-         IIOw==
-X-Gm-Message-State: AOJu0YwsHMo5DZtqJTtkiQK/fgbFj7d/i67AtSj9BX39OEmwCwNPxktE
-        v0dt5lUjD2cnfaZ3LSJFp3Y=
-X-Google-Smtp-Source: AGHT+IH6iK08CJx3BF9fpDiBYtjrGSt7m8PU976946+kY85EA3t09QFl/CIA8khqPgbgmBL9w1BNUw==
-X-Received: by 2002:a05:600c:2946:b0:3fe:1f2c:df2b with SMTP id n6-20020a05600c294600b003fe1f2cdf2bmr2410275wmd.11.1691779630782;
-        Fri, 11 Aug 2023 11:47:10 -0700 (PDT)
-Received: from [192.168.1.23] ([176.232.63.90])
-        by smtp.gmail.com with ESMTPSA id a9-20020a5d5089000000b0031434c08bb7sm6236129wrt.105.2023.08.11.11.47.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 11 Aug 2023 11:47:09 -0700 (PDT)
-Message-ID: <5806ebf113d52c660e1c70e8a57cc047ab039aff.camel@gmail.com>
-Subject: Re: [PATCH v2 1/2] tpm/tpm_tis: Disable interrupts for Framework
- Laptop Intel 12th gen
-From:   Grundik <ggrundik@gmail.com>
-To:     Jarkko Sakkinen <jarkko@kernel.org>,
-        Thorsten Leemhuis <regressions@leemhuis.info>,
-        Lino Sanfilippo <LinoSanfilippo@gmx.de>
-Cc:     Linux kernel regressions list <regressions@lists.linux.dev>,
-        Peter Huewe <peterhuewe@gmx.de>,
-        Christian Hesse <mail@eworm.de>, stable@vger.kernel.org,
-        roubro1991@gmail.com,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Christian Hesse <list@eworm.de>,
-        linux-integrity@vger.kernel.org
-Date:   Fri, 11 Aug 2023 21:47:07 +0300
-In-Reply-To: <CUPWEV9HSGHY.MLO0B4RRH4RR@suppilovahvero>
-References: <20230710133836.4367-1-mail@eworm.de>
-         <20230710142916.18162-1-mail@eworm.de>
-         <20230710231315.4ef54679@leda.eworm.net>
-         <bd0587e16d55ef38277ab1f6169909ae7cde3542.camel@kernel.org>
-         <bb5580e93d244400c3330d7091bf64868aa2053f.camel@gmail.com>
-         <0f272843a33a1706dbcbb2d84b02e3951ee60cbb.camel@kernel.org>
-         <fdd5fd9ece045ebd1888672a75f157e64ade98fb.camel@gmail.com>
-         <a588d1d3-12e0-b078-b6cc-b0a63c54ab37@leemhuis.info>
-         <CUPW0XP1RFXI.162GZ78E46TBJ@suppilovahvero>
-         <CUPWEV9HSGHY.MLO0B4RRH4RR@suppilovahvero>
+        bh=ZJJ8UdAIxIsw1LkzQ8Bf6m1ij6K720NrGCKMd7eniDM=;
+        b=iQkaWugWppUXmQu+CisLOhPFcb3lZR//cfEviBHt9DGoDZEnoLHEtKtOkEuDkaBxyr
+         7sgY4KOCb3Y2yBVnYDDT3CgTQsy8LBM5DsQkEB7dLFM0jwrBNrro1MibX4f1z3dVTU0Q
+         yDIu457TS/Rhq3/9mU4CYnQont7aJ7191NL9Ii3pmz+20wlExP6U3QSvVz2RWMsOe+TU
+         MF2JDQkp0mWg9zI2xjwlj68xi2I9cpzELoluTt1Lp3skp9Kpz5lfN9Nawt5rTNBkjiic
+         yI1qZNZur6gW0T+G8bXtmDK2tk0M6/n86e5XEybcsLiSK/AgPO9NM0ITL7IgvkkinJ3N
+         gk4g==
+X-Gm-Message-State: AOJu0YwNnSBDnXAr2306qxQGM7V0Q35kpfxjGBMNYJPM9mufS6+xjxa+
+        nh2PU7953l0m8ddXUGGWQnGDxwWTalf9Lgc=
+X-Google-Smtp-Source: AGHT+IEnRj3XgadHnPY0JsCnuxHjF2khkZv3Wyf3q91Z5QvsEE5u2YoEPQOSwguVfdhtyYW/HmP8lMT6za6KB+g=
+X-Received: from rdbabiera.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:18a8])
+ (user=rdbabiera job=sendgmr) by 2002:a25:d153:0:b0:d3f:3186:2296 with SMTP id
+ i80-20020a25d153000000b00d3f31862296mr49820ybg.3.1691779687961; Fri, 11 Aug
+ 2023 11:48:07 -0700 (PDT)
+Date:   Fri, 11 Aug 2023 18:47:54 +0000
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.41.0.640.ga95def55d0-goog
+Message-ID: <20230811184754.1886458-1-rdbabiera@google.com>
+Subject: [PATCH v2] usb: typec: bus: verify partner exists in typec_altmode_attention
+From:   RD Babiera <rdbabiera@google.com>
+To:     heikki.krogerus@linux.intel.com, gregkh@linuxfoundation.org,
+        linux@roeck-us.net
+Cc:     badhri@google.com, linux-usb@vger.kernel.org,
+        linux-kernel@vger.kernel.org, RD Babiera <rdbabiera@google.com>,
+        stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.4 (by Flathub.org) 
-MIME-Version: 1.0
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Fri, 2023-08-11 at 20:40 +0300, Jarkko Sakkinen wrote:
-> On Fri Aug 11, 2023 at 8:22 PM EEST, Jarkko Sakkinen wrote:
-> > On Fri Aug 11, 2023 at 11:18 AM EEST, Thorsten Leemhuis wrote:
-> >=20
-> >=20
-> > I see two long-standing options:
-> >=20
-> > A. Move from deny list to allow list when considering using IRQs.
-> > This
-> > =C2=A0=C2=A0 can be supplemented with a kernel command-line parameter t=
-o
-> > enforce
-> > =C2=A0=C2=A0 IRQs and ignore the allow list (and IRQ storm detection pr=
-ovides
-> > =C2=A0=C2=A0 additional measure in case you try to enforce)
-> > B. Change deny list to match only vendors for the time being. This
-> > can
-> > =C2=A0=C2=A0 be supplemented with a allow list that is processed after =
-the
-> > deny
-> > =C2=A0=C2=A0 list for models where IRQs are known to work.
-[...]
->=20
-> This is also super time consuming and takes the focus away from more
-> important matters (like most likely the AMD rng fix would have gone
-> smoother without these getting in the way all the time).
+Some usb hubs will negotiate DisplayPort Alt mode with the device
+but will then negotiate a data role swap after entering the alt
+mode. The data role swap causes the device to unregister all alt
+modes, however the usb hub will still send Attention messages
+even after failing to reregister the Alt Mode. type_altmode_attention
+currently does not verify whether or not a device's altmode partner
+exists, which results in a NULL pointer error when dereferencing
+the typec_altmode and typec_altmode_ops belonging to the altmode
+partner.
 
-Main problem of any list is maintaining of them. So, I think there
-should not be any black or white lists at all. Module should work with
-reasonable default (polling is the one, which lived without problems
-for years and years due to bug, as I understand), and probably a boot
-option to force IRQ. Maybe module should warn user to try that option.
+This patch verifies the presence of a device's altmode partner
+before sending the Attention message to the Alt Mode driver.
 
-I don't know: is it even worth it to use IRQ, if it so problematic? Are
-there any significant advantages of that? I understand, polling is a
-resource consumer, but its just TPM, which is used mainly at the boot
-time, is it worth it?
+Fixes: 8a37d87d72f0 ("usb: typec: Bus type for alternate modes")
+Cc: stable@vger.kernel.org
+Signed-off-by: RD Babiera <rdbabiera@google.com>
+---
+Changes since v1:
+* Only assigns pdev if altmode partner exists in typec_altmode_attention
+* Removed error return in typec_altmode_attention if Alt Mode does
+  not implement Attention messages.
+* Changed tcpm_log message to indicate that altmode partner does not exist,
+  as it only logs in that case.
+---
+ drivers/usb/typec/bus.c           | 12 ++++++++++--
+ drivers/usb/typec/tcpm/tcpm.c     |  5 ++++-
+ include/linux/usb/typec_altmode.h |  2 +-
+ 3 files changed, 15 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/usb/typec/bus.c b/drivers/usb/typec/bus.c
+index fe5b9a2e61f5..e95ec7e382bb 100644
+--- a/drivers/usb/typec/bus.c
++++ b/drivers/usb/typec/bus.c
+@@ -183,12 +183,20 @@ EXPORT_SYMBOL_GPL(typec_altmode_exit);
+  *
+  * Notifies the partner of @adev about Attention command.
+  */
+-void typec_altmode_attention(struct typec_altmode *adev, u32 vdo)
++int typec_altmode_attention(struct typec_altmode *adev, u32 vdo)
+ {
+-	struct typec_altmode *pdev = &to_altmode(adev)->partner->adev;
++	struct altmode *partner = to_altmode(adev)->partner;
++	struct typec_altmode *pdev;
++
++	if (!partner)
++		return -ENODEV;
++
++	pdev = &partner->adev;
+ 
+ 	if (pdev->ops && pdev->ops->attention)
+ 		pdev->ops->attention(pdev, vdo);
++
++	return 0;
+ }
+ EXPORT_SYMBOL_GPL(typec_altmode_attention);
+ 
+diff --git a/drivers/usb/typec/tcpm/tcpm.c b/drivers/usb/typec/tcpm/tcpm.c
+index 5a7d8cc04628..b0328e922989 100644
+--- a/drivers/usb/typec/tcpm/tcpm.c
++++ b/drivers/usb/typec/tcpm/tcpm.c
+@@ -1791,6 +1791,7 @@ static void tcpm_handle_vdm_request(struct tcpm_port *port,
+ 	u32 p[PD_MAX_PAYLOAD];
+ 	u32 response[8] = { };
+ 	int i, rlen = 0;
++	int ret;
+ 
+ 	for (i = 0; i < cnt; i++)
+ 		p[i] = le32_to_cpu(payload[i]);
+@@ -1877,7 +1878,9 @@ static void tcpm_handle_vdm_request(struct tcpm_port *port,
+ 			}
+ 			break;
+ 		case ADEV_ATTENTION:
+-			typec_altmode_attention(adev, p[1]);
++			ret = typec_altmode_attention(adev, p[1]);
++			if (ret)
++				tcpm_log(port, "typec_altmode_attention invalid port partner");
+ 			break;
+ 		}
+ 	}
+diff --git a/include/linux/usb/typec_altmode.h b/include/linux/usb/typec_altmode.h
+index 350d49012659..28aeef8f9e7b 100644
+--- a/include/linux/usb/typec_altmode.h
++++ b/include/linux/usb/typec_altmode.h
+@@ -67,7 +67,7 @@ struct typec_altmode_ops {
+ 
+ int typec_altmode_enter(struct typec_altmode *altmode, u32 *vdo);
+ int typec_altmode_exit(struct typec_altmode *altmode);
+-void typec_altmode_attention(struct typec_altmode *altmode, u32 vdo);
++int typec_altmode_attention(struct typec_altmode *altmode, u32 vdo);
+ int typec_altmode_vdm(struct typec_altmode *altmode,
+ 		      const u32 header, const u32 *vdo, int count);
+ int typec_altmode_notify(struct typec_altmode *altmode, unsigned long conf,
+
+base-commit: f176638af476c6d46257cc3303f5c7cf47d5967d
+-- 
+2.41.0.640.ga95def55d0-goog
 
