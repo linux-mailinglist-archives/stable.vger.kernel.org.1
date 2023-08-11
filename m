@@ -2,71 +2,67 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 456EC7785F7
-	for <lists+stable@lfdr.de>; Fri, 11 Aug 2023 05:22:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 280927785F9
+	for <lists+stable@lfdr.de>; Fri, 11 Aug 2023 05:25:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230287AbjHKDWQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 10 Aug 2023 23:22:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41620 "EHLO
+        id S229789AbjHKDZV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 10 Aug 2023 23:25:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34064 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229707AbjHKDWO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 10 Aug 2023 23:22:14 -0400
-Received: from mail-vs1-xe2d.google.com (mail-vs1-xe2d.google.com [IPv6:2607:f8b0:4864:20::e2d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 451212D6B
-        for <stable@vger.kernel.org>; Thu, 10 Aug 2023 20:22:13 -0700 (PDT)
-Received: by mail-vs1-xe2d.google.com with SMTP id ada2fe7eead31-447684c4283so634683137.2
-        for <stable@vger.kernel.org>; Thu, 10 Aug 2023 20:22:13 -0700 (PDT)
+        with ESMTP id S229610AbjHKDZU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 10 Aug 2023 23:25:20 -0400
+Received: from mail-vs1-xe2c.google.com (mail-vs1-xe2c.google.com [IPv6:2607:f8b0:4864:20::e2c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 545282D69
+        for <stable@vger.kernel.org>; Thu, 10 Aug 2023 20:25:20 -0700 (PDT)
+Received: by mail-vs1-xe2c.google.com with SMTP id ada2fe7eead31-447abb2f228so643058137.0
+        for <stable@vger.kernel.org>; Thu, 10 Aug 2023 20:25:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1691724132; x=1692328932;
+        d=linaro.org; s=google; t=1691724319; x=1692329119;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=KkEumRtohfNhdpoDJhISnRDZoUTmKUHTcuDpxxAC/Sg=;
-        b=Eo5nhrXDsAnH1q7CsKSmGOuuVDevVflsD5wtRA8azJF2t/k6TG2IiHq8J2hQzNem+D
-         yWipkJzcdPI5UI0uM5M3jBMnJJ4GzDgMIHKCoFZHGv+2TAxecoaMqYY4zmSJ0dFyhvPw
-         cWi1oBa1/J16JenF5yU7gFwxGmVkLi6PlDO7nnUOkF+Mxkc+u9WNLCe0PsdTxP8Ft70y
-         7ksHt0DbT9R1vl2m1AURytAIF+KEMCSC5iGnXQ+09B/z7l0+S8YeUWnkGvrbTFG2/uSo
-         8N0PZv6Ekp0ZdPwKVsTEjpp56aCr1nSjZugxapRQkdeiZBXUnOM9mR09xAT3FQ071f1H
-         D7Lg==
+        bh=5H5DjO75P8j92IjkeuHxrJ9MnSor8v3ZGILNI6rwMcg=;
+        b=XmIhtWnZYMYWQEcHT0gSuEBB9pPa3Rbv+R5XM4EzKh+fxyVs3FocWoAFex1NZmMrv+
+         hAg7os2LEmpLyIue7R7VHgqAIMV/uxlGDI1Y2pNNh9bkQhnB3HcpjpK9cHUP5GZnkqQ2
+         9/sMsESfzIb6Ybmd/i/GBi8wrsvVV2T2P6bEkrzirfHXB81Gbw+XiWv8WTI/I7zv+bN+
+         CB4tWlYIH8s8dwOBbHKXWmCU6V6P+QUemdg4RLB1Y2vn71bk+DTI8yOaeV8ORCjSRbZo
+         hT2pQ1u95gTQxCEPuKREGaULdW8jlC8ea8cMVJl8Q5llXGo8IrQGUB1/yixC8ZxqODEu
+         Kj1g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691724132; x=1692328932;
+        d=1e100.net; s=20221208; t=1691724319; x=1692329119;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=KkEumRtohfNhdpoDJhISnRDZoUTmKUHTcuDpxxAC/Sg=;
-        b=SsIgKtj7Z9yoC+gNSyISck6TRwwcAv/cAcAIvIXvhkAZ1iQjnJifX6WpznUvOFhXM0
-         WcnA2Om2t5sXozwYPYtG5yKtZzWR74LP/vKwq0I/pHFKZk8Y9bKhzapWHhJKn0Bnih5w
-         LFpOxO11AVR6ociHQkwez+Z5MqDhbioX4lfNW0VoueaprqgRfXjrmmGgHMRUtnRKorbS
-         1fHxRmT+pfzTwWjd9q2GvWBjEJRgNBJJZG7/T7CmNL9FZ2M9ley7I8nMgH2bZVsemH+x
-         nWhkj6rFUGXR/kOOR004DRVA5iLzOpQnzhT9FVYax5o6i2esXI+DGP70cYN9imAYRKjt
-         KHmw==
-X-Gm-Message-State: AOJu0Yw8Xf/DD7/pfrnYdy1WReWZmO1OkXk4QdmYXKHG8d5n3WwoqVIV
-        q5203X3kA4BhMjVmyoC/WQSRQUjHvlyiznsFJ4/uDg==
-X-Google-Smtp-Source: AGHT+IGU2fdD5KxBGFfmZ5YbVmA1pRJtMv3ZrL5R8YMkBxBVSZmyFFNwjjWgXkEN553/+Et76M4Xg8624ZbdFTF4TIY=
-X-Received: by 2002:a05:6102:3d4:b0:447:4b52:5c8 with SMTP id
- n20-20020a05610203d400b004474b5205c8mr576067vsq.26.1691724132286; Thu, 10 Aug
- 2023 20:22:12 -0700 (PDT)
+        bh=5H5DjO75P8j92IjkeuHxrJ9MnSor8v3ZGILNI6rwMcg=;
+        b=knpyoG5v4L2/Gi3eM8RENaRCVJpLgoc8RA4o3CRZni2uWog1Nh+66OL6eUgJ2MWiSV
+         HQOts6AFaLzhPhZo6TA/2vUOITfVmxV0H9tiBRKdfM1GmaY2v89H6Kz+7Zfnfln26Ajn
+         7x1wBM4CnkNUZz1r1EJ3TzYCvZvX+oOPl135XDngyye+4Xe0WXJyCVf19vhqwaHW5V1i
+         CtZ1Yaq8xXL9g4DRtSXJSpNNkyaqOuxSwBw28pKVccg87SRYfGkCvanIchMcSLa+CT9b
+         R/CVyUo2HrUI3dXFb3n0Iox1hVPgIirLQ4bBD/L69rNuwv9uCQ4hXO+fCiJm82u73Eb/
+         6zQA==
+X-Gm-Message-State: AOJu0YzfQJsXO2IqTlpsPcxYEKeKjHrRRtfbl5PXtJ875pJE+qazKGRX
+        qFxMRjskkHIEZWAlejalHot3ADV25dl4cdNjbIr1NQ==
+X-Google-Smtp-Source: AGHT+IFoHFOGmN7FsYeiOFT1p95g7zR879og5YZfXKv5JacrXceSlCef+qw5DrFCNAVB4CXBO4XRLf3Mbdins//hbF0=
+X-Received: by 2002:a67:ebd7:0:b0:447:ba64:7e40 with SMTP id
+ y23-20020a67ebd7000000b00447ba647e40mr656018vso.8.1691724319385; Thu, 10 Aug
+ 2023 20:25:19 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230809103636.615294317@linuxfoundation.org>
-In-Reply-To: <20230809103636.615294317@linuxfoundation.org>
+References: <20230809103642.720851262@linuxfoundation.org>
+In-Reply-To: <20230809103642.720851262@linuxfoundation.org>
 From:   Naresh Kamboju <naresh.kamboju@linaro.org>
-Date:   Fri, 11 Aug 2023 08:52:01 +0530
-Message-ID: <CA+G9fYvQdQqTqCgbS4sit_Y2AtKtDiWMOkGZjoeSEFhc=M_jKw@mail.gmail.com>
-Subject: Re: [PATCH 6.1 000/127] 6.1.45-rc1 review
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        clang-built-linux <llvm@lists.linux.dev>
+Date:   Fri, 11 Aug 2023 08:55:08 +0530
+Message-ID: <CA+G9fYuoajK0n7RNhSqm-ycO6Md3W4ah_Sc=b_KVAQwY=Rt6YQ@mail.gmail.com>
+Subject: Re: [PATCH 6.4 000/165] 6.4.10-rc1 review
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
         linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
         akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
         patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
         jonathanh@nvidia.com, f.fainelli@gmail.com,
         sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-        conor@kernel.org, Nathan Chancellor <nathan@kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Sven Volkinsfeld <thyrc@gmx.net>,
-        Daniel Kolesa <daniel@octaforge.org>
+        conor@kernel.org
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -75,11 +71,11 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, 9 Aug 2023 at 16:21, Greg Kroah-Hartman
+On Wed, 9 Aug 2023 at 16:13, Greg Kroah-Hartman
 <gregkh@linuxfoundation.org> wrote:
 >
-> This is the start of the stable review cycle for the 6.1.45 release.
-> There are 127 patches in this series, all will be posted as a response
+> This is the start of the stable review cycle for the 6.4.10 release.
+> There are 165 patches in this series, all will be posted as a response
 > to this one.  If anyone has any issues with these being applied, please
 > let me know.
 >
@@ -87,9 +83,9 @@ On Wed, 9 Aug 2023 at 16:21, Greg Kroah-Hartman
 > Anything received after that time might be too late.
 >
 > The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.45-rc1.gz
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.4.10-rc1.gz
 > or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.4.y
 > and the diffstat can be found below.
 >
 > thanks,
@@ -97,7 +93,7 @@ On Wed, 9 Aug 2023 at 16:21, Greg Kroah-Hartman
 > greg k-h
 
 
-While building Linux stable rc 6.1 x86_64 with clang-17 failed due to
+While building Linux stable rc 6.4 x86_64 with clang-17 failed due to
 following warnings / errors.
 
 Regressions found on x86_64:
@@ -126,8 +122,6 @@ Proposed fix patch:
 -----
   [PATCH] x86/srso: fix build breakage for LD=ld.lld
   - https://lore.kernel.org/lkml/20230809-gds-v1-1-eaac90b0cbcc@google.com/T/
-
-This patch is yet to be backported and CC to stable.
 
   --
 Linaro LKFT
