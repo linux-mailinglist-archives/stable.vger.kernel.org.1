@@ -2,154 +2,133 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 845BD7785EF
-	for <lists+stable@lfdr.de>; Fri, 11 Aug 2023 05:18:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 456EC7785F7
+	for <lists+stable@lfdr.de>; Fri, 11 Aug 2023 05:22:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232879AbjHKDSO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 10 Aug 2023 23:18:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44214 "EHLO
+        id S230287AbjHKDWQ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 10 Aug 2023 23:22:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41620 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233073AbjHKDSK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 10 Aug 2023 23:18:10 -0400
-Received: from mail-vk1-xa2e.google.com (mail-vk1-xa2e.google.com [IPv6:2607:f8b0:4864:20::a2e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 60F1E2D7F
-        for <stable@vger.kernel.org>; Thu, 10 Aug 2023 20:18:05 -0700 (PDT)
-Received: by mail-vk1-xa2e.google.com with SMTP id 71dfb90a1353d-48726442294so636914e0c.0
-        for <stable@vger.kernel.org>; Thu, 10 Aug 2023 20:18:05 -0700 (PDT)
+        with ESMTP id S229707AbjHKDWO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 10 Aug 2023 23:22:14 -0400
+Received: from mail-vs1-xe2d.google.com (mail-vs1-xe2d.google.com [IPv6:2607:f8b0:4864:20::e2d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 451212D6B
+        for <stable@vger.kernel.org>; Thu, 10 Aug 2023 20:22:13 -0700 (PDT)
+Received: by mail-vs1-xe2d.google.com with SMTP id ada2fe7eead31-447684c4283so634683137.2
+        for <stable@vger.kernel.org>; Thu, 10 Aug 2023 20:22:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1691723884; x=1692328684;
+        d=linaro.org; s=google; t=1691724132; x=1692328932;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=NWa1OLkDORI1sFVlYnxo6RPV3TWv31BScuGRKjWt/R4=;
-        b=pVNQ7PD9BrEFTfSYVzq/2ZgPsbl2ALglT3PYDymOB7AODtOlUs1WU7GjuA/wGfULSO
-         7rTsCnogtjR/dY3u8s/mAOj5SlWvM36IXryiN4daD0SNULGjQv2gn6EDoY0/N/0ZxiGa
-         4s6tkhd0sr98EVg/4pZUg5IY9J3SxE1CzGOJeE2aeV7ysnLyc3WKn7nZpxLr+HSAPgDC
-         KDzismsv6v5MBwiLGKz3as0t5zID7JZo/bcJq4NWWRSexqUQjMUMW0MNvboVxMUw7zce
-         dvPqqW/xRmELqB/9s4IxsNZeavqzspje3rG75qht+krvmdLgrZXMyIvOIfeQnUdadS9i
-         MLbw==
+        bh=KkEumRtohfNhdpoDJhISnRDZoUTmKUHTcuDpxxAC/Sg=;
+        b=Eo5nhrXDsAnH1q7CsKSmGOuuVDevVflsD5wtRA8azJF2t/k6TG2IiHq8J2hQzNem+D
+         yWipkJzcdPI5UI0uM5M3jBMnJJ4GzDgMIHKCoFZHGv+2TAxecoaMqYY4zmSJ0dFyhvPw
+         cWi1oBa1/J16JenF5yU7gFwxGmVkLi6PlDO7nnUOkF+Mxkc+u9WNLCe0PsdTxP8Ft70y
+         7ksHt0DbT9R1vl2m1AURytAIF+KEMCSC5iGnXQ+09B/z7l0+S8YeUWnkGvrbTFG2/uSo
+         8N0PZv6Ekp0ZdPwKVsTEjpp56aCr1nSjZugxapRQkdeiZBXUnOM9mR09xAT3FQ071f1H
+         D7Lg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691723884; x=1692328684;
+        d=1e100.net; s=20221208; t=1691724132; x=1692328932;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=NWa1OLkDORI1sFVlYnxo6RPV3TWv31BScuGRKjWt/R4=;
-        b=C387CnPo1ymU27smqh1rE+ZWGCcL2ma6S6ruETEgkyEZHD4nT768qzK+Yv1WKetkaq
-         DYn0YW6Vnn8NuqeIajzq0z6xty6DlmjZ26peUn79Ln0PTBnsyCvze0MEY4vbmt7jvxfi
-         7f8yUoChtSiSbl6S02wdgB4tER6waCHThLErfMaKYbpTvbZhDLpsinoPavgXNzKYn5EC
-         XVPhnjgvRD6xCwDWLQcotOQ172+ZF26V473FoOxGVkKQdToGO3KE/0YqW4LgQaQuWSxD
-         cvLwMrh7yu3gUwwSdhWngNwLSpUx8BTsUPiO803v74v7HCNRYM/swEyHbhnoDBubKY96
-         j8SQ==
-X-Gm-Message-State: AOJu0YyEAb3E6PvMCDew0L/EJdt6yvioXUHUnB/8Jizk+RWW/lVdBMH1
-        7xs5JZeqaEBxT8NxvO/paBGqMqdE/G6sN3M3QDyG3aE/tyijvladFAk=
-X-Google-Smtp-Source: AGHT+IFz7uTfy59964S+IdElKv3sTs60h9FhAFCrxlWi7+8GZ3QWKcfLauypG3jdBd+GQ4hKBvz4al5R0T+5oPk9Yl8=
-X-Received: by 2002:a67:f486:0:b0:444:57aa:571 with SMTP id
- o6-20020a67f486000000b0044457aa0571mr550289vsn.15.1691723884366; Thu, 10 Aug
- 2023 20:18:04 -0700 (PDT)
+        bh=KkEumRtohfNhdpoDJhISnRDZoUTmKUHTcuDpxxAC/Sg=;
+        b=SsIgKtj7Z9yoC+gNSyISck6TRwwcAv/cAcAIvIXvhkAZ1iQjnJifX6WpznUvOFhXM0
+         WcnA2Om2t5sXozwYPYtG5yKtZzWR74LP/vKwq0I/pHFKZk8Y9bKhzapWHhJKn0Bnih5w
+         LFpOxO11AVR6ociHQkwez+Z5MqDhbioX4lfNW0VoueaprqgRfXjrmmGgHMRUtnRKorbS
+         1fHxRmT+pfzTwWjd9q2GvWBjEJRgNBJJZG7/T7CmNL9FZ2M9ley7I8nMgH2bZVsemH+x
+         nWhkj6rFUGXR/kOOR004DRVA5iLzOpQnzhT9FVYax5o6i2esXI+DGP70cYN9imAYRKjt
+         KHmw==
+X-Gm-Message-State: AOJu0Yw8Xf/DD7/pfrnYdy1WReWZmO1OkXk4QdmYXKHG8d5n3WwoqVIV
+        q5203X3kA4BhMjVmyoC/WQSRQUjHvlyiznsFJ4/uDg==
+X-Google-Smtp-Source: AGHT+IGU2fdD5KxBGFfmZ5YbVmA1pRJtMv3ZrL5R8YMkBxBVSZmyFFNwjjWgXkEN553/+Et76M4Xg8624ZbdFTF4TIY=
+X-Received: by 2002:a05:6102:3d4:b0:447:4b52:5c8 with SMTP id
+ n20-20020a05610203d400b004474b5205c8mr576067vsq.26.1691724132286; Thu, 10 Aug
+ 2023 20:22:12 -0700 (PDT)
 MIME-Version: 1.0
-References: <CA+G9fYsf0jePDO3VPz0pb1sURdefpYCAYH-y+OdsAf3HuzbeRw@mail.gmail.com>
- <202308101328.40620220CB@keescook>
-In-Reply-To: <202308101328.40620220CB@keescook>
+References: <20230809103636.615294317@linuxfoundation.org>
+In-Reply-To: <20230809103636.615294317@linuxfoundation.org>
 From:   Naresh Kamboju <naresh.kamboju@linaro.org>
-Date:   Fri, 11 Aug 2023 08:47:53 +0530
-Message-ID: <CA+G9fYugggRyxJFgxRwb0GvgXPerCE928S5vVW7ZnzfTJCRnZA@mail.gmail.com>
-Subject: Re: stable-rc: 6.1: gcc-plugins: Reorganize gimple includes for GCC 13
-To:     Kees Cook <keescook@chromium.org>
-Cc:     linux-stable <stable@vger.kernel.org>,
-        lkft-triage@lists.linaro.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Sasha Levin <sashal@kernel.org>,
-        Anders Roxell <anders.roxell@linaro.org>,
-        linux-hardening@vger.kernel.org,
-        Palmer Dabbelt <palmer@rivosinc.com>
+Date:   Fri, 11 Aug 2023 08:52:01 +0530
+Message-ID: <CA+G9fYvQdQqTqCgbS4sit_Y2AtKtDiWMOkGZjoeSEFhc=M_jKw@mail.gmail.com>
+Subject: Re: [PATCH 6.1 000/127] 6.1.45-rc1 review
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        clang-built-linux <llvm@lists.linux.dev>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+        jonathanh@nvidia.com, f.fainelli@gmail.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+        conor@kernel.org, Nathan Chancellor <nathan@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Sven Volkinsfeld <thyrc@gmx.net>,
+        Daniel Kolesa <daniel@octaforge.org>
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
-        autolearn_force=no version=3.4.6
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Fri, 11 Aug 2023 at 02:01, Kees Cook <keescook@chromium.org> wrote:
+On Wed, 9 Aug 2023 at 16:21, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
 >
-> On Tue, Aug 08, 2023 at 10:57:30AM +0530, Naresh Kamboju wrote:
-> > LKFT build plans updated with toolchain gcc-13 and here is the report.
-> >
-> > Stable rc 6.1 arm64 builds with gcc-13 failed and the bisection is pointing
-> > to this as first bad commit,
-> >
-> > # first fixed commit: [e6a71160cc145e18ab45195abf89884112e02dfb]
-> >    gcc-plugins: Reorganize gimple includes for GCC 13
-> >
-> > Thanks Anders for bisecting this problem against Linux 6.2-rc6.
-> >
-> > Build errors:
-> > ---------------
-> > In file included from /builds/linux/scripts/gcc-plugins/gcc-common.h:75,
-> >                  from /builds/linux/scripts/gcc-plugins/stackleak_plugin.c:30:
-> > /usr/lib/gcc-cross/aarch64-linux-gnu/13/plugin/include/gimple-fold.h:72:32:
-> > error: use of enum 'gsi_iterator_update' without previous declaration
-> >    72 |                           enum gsi_iterator_update,
-> >       |                                ^~~~~~~~~~~~~~~~~~
-> >
-> > Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+> This is the start of the stable review cycle for the 6.1.45 release.
+> There are 127 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 >
-> I'm slightly confused by this report.
-
-Sorry. I should have provided full details.
-
-> Is it the build of v6.1 that is failing?
-
-Linux-stable-rc linux.6.1.y failing with gcc-13.
-
-> Commit e6a71160cc14 ("gcc-plugins: Reorganize gimple includes
-> for GCC 13") was added in v6.2.
-
-This commit is needed.
-
+> Responses should be made by Fri, 11 Aug 2023 10:36:10 +0000.
+> Anything received after that time might be too late.
 >
-> I think you're saying you need it backported to the v6.1 stable tree?
-> ("First bad commit" is really the first good commit?)
-
-First good commit.
-We need to backport this patch for linux.6.1.y
-
-Bisect log:
-------
-# fixed: [6d796c50f84ca79f1722bb131799e5a5710c4700] Linux 6.2-rc6
-# unfixed: [2241ab53cbb5cdb08a6b2d4688feb13971058f65] Linux 6.2-rc5
-git bisect start '--term-new=fixed' '--term-old=unfixed' 'v6.2-rc6' 'v6.2-rc5'
-# unfixed: [9f4d0bd24e6b42555c02e137763f12c106572e63] Merge tag
-'linux-kselftest-fixes-6.2-rc6' of
-git://git.kernel.org/pub/scm/linux/kernel/git/shuah/linux-kselftest
-git bisect unfixed 9f4d0bd24e6b42555c02e137763f12c106572e63
-# unfixed: [37d0be6a7d7d6fede952c439f8d8b9d1df5c756f] Merge tag
-'gpio-fixes-for-v6.2-rc6' of
-git://git.kernel.org/pub/scm/linux/kernel/git/brgl/linux
-git bisect unfixed 37d0be6a7d7d6fede952c439f8d8b9d1df5c756f
-# fixed: [f851453bf19554a42eb480b65436b9500c3cf392] Merge tag
-'io_uring-6.2-2023-01-27' of git://git.kernel.dk/linux
-git bisect fixed f851453bf19554a42eb480b65436b9500c3cf392
-# unfixed: [78020233418518faa72fba11f40e1d53b9e88a2e] bootconfig:
-Update MAINTAINERS file to add tree and mailing list
-git bisect unfixed 78020233418518faa72fba11f40e1d53b9e88a2e
-# unfixed: [e6f2f6ac500c67164f6f6b47299aece579277c14] Merge tag
-'i2c-for-6.2-rc6' of
-git://git.kernel.org/pub/scm/linux/kernel/git/wsa/linux
-git bisect unfixed e6f2f6ac500c67164f6f6b47299aece579277c14
-# fixed: [be0d8f48ad97f5b775b0af3310343f676dbf318a] bcache: Silence
-memcpy() run-time false positive warnings
-git bisect fixed be0d8f48ad97f5b775b0af3310343f676dbf318a
-# fixed: [e6a71160cc145e18ab45195abf89884112e02dfb] gcc-plugins:
-Reorganize gimple includes for GCC 13
-git bisect fixed e6a71160cc145e18ab45195abf89884112e02dfb
-# unfixed: [4acf1de35f41549e60c3c02a8defa7cb95eabdf2] kunit: memcpy:
-Split slow memcpy tests into MEMCPY_SLOW_KUNIT_TEST
-git bisect unfixed 4acf1de35f41549e60c3c02a8defa7cb95eabdf2
-# first fixed commit: [e6a71160cc145e18ab45195abf89884112e02dfb]
-gcc-plugins: Reorganize gimple includes for GCC 13
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.45-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
 
-- Naresh
+While building Linux stable rc 6.1 x86_64 with clang-17 failed due to
+following warnings / errors.
+
+Regressions found on x86_64:
+
+  - build/clang-nightly-lkftconfig-kselftest
+  - build/clang-nightly-x86_64_defconfig
+  - build/clang-nightly-lkftconfig
+  - build/clang-lkftconfig
+  - build/clang-nightly-allmodconfig
+
+
+Build errors:
+-----
+ld.lld: error: ./arch/x86/kernel/vmlinux.lds:193: at least one side of
+the expression must be absolute
+make[2]: *** [scripts/Makefile.vmlinux:34: vmlinux] Error 1
+
+
+  Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+
+upstream report:
+-----
+    - https://lore.kernel.org/llvm/CA+G9fYsdUeNu-gwbs0+T6XHi4hYYk=Y9725-wFhZ7gJMspLDRA@mail.gmail.com/
+
+Proposed fix patch:
+-----
+  [PATCH] x86/srso: fix build breakage for LD=ld.lld
+  - https://lore.kernel.org/lkml/20230809-gds-v1-1-eaac90b0cbcc@google.com/T/
+
+This patch is yet to be backported and CC to stable.
+
+  --
+Linaro LKFT
+https://lkft.linaro.org
