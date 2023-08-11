@@ -2,68 +2,86 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 934B27793E6
-	for <lists+stable@lfdr.de>; Fri, 11 Aug 2023 18:09:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9FAD37793F8
+	for <lists+stable@lfdr.de>; Fri, 11 Aug 2023 18:11:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231426AbjHKQJf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 11 Aug 2023 12:09:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56396 "EHLO
+        id S233570AbjHKQLK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 11 Aug 2023 12:11:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47698 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229503AbjHKQJe (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 11 Aug 2023 12:09:34 -0400
-Received: from mail-pl1-x629.google.com (mail-pl1-x629.google.com [IPv6:2607:f8b0:4864:20::629])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89951100
-        for <stable@vger.kernel.org>; Fri, 11 Aug 2023 09:09:34 -0700 (PDT)
-Received: by mail-pl1-x629.google.com with SMTP id d9443c01a7336-1bd9b4f8e0eso14320245ad.1
-        for <stable@vger.kernel.org>; Fri, 11 Aug 2023 09:09:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20221208.gappssmtp.com; s=20221208; t=1691770173; x=1692374973;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=jGqwGaSjSjsdKZr3TeySEESx4k9eEiWNUkUJLvcKpb0=;
-        b=g1dFi0EuMh/oem58iH7QqZwc1ninUaXMYPxF2i+apBE0fvrZrzvwq+YJ5slTPZKqil
-         u0o//YIzfWwluqOp7jIDjkxjmnp25rOuWWq9iZ+h3oiwfZMKkD5k7UEPmRN3nlLSYXFD
-         EMh/jaV8jFiwvEy6rSE8QMtG1lsv0FAIrDpHmFw1aQfN288kh7VR4D4ZWbONacRP6X5u
-         LzzLB2VQgxFmuc0Mt3TfQMqUZYDnCc5njwIHr/E1ar/EE5IljJpC2QrdOFLDZMjkOBZs
-         GrGFWEq7iQ1Zp3YqWiC09Yiid7yG2nF7aL72iGZIGak4etHNGaTZKavnZBaIc1Vopc3I
-         7+Dw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691770173; x=1692374973;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=jGqwGaSjSjsdKZr3TeySEESx4k9eEiWNUkUJLvcKpb0=;
-        b=hRpinDtpzH1AsScw4Yj2IklD2CWFf04NxEbyLAhNPwWGhr2m15FSStz0FeLqZZ6ouX
-         F5Nz9dGYtRzCx89NtTZcUZWGCGbwJjj//kJpbKUNRhDWeRvYM5bepA6ISybqiiimReW/
-         z1GZaxGXp3LYgez75edrW/LIUkHCircw5uk6Xc9OXj1EMl9rlbLMEU4Y1LO6G7Z4l4sy
-         rl+nzOOVmy8/Zl9XtX6CuHGMJaJMudMl4WpxfKe0lvnAqneGyv+XPfg1C5a4+9gzjo8j
-         /GJE0N9nj37YHxGgmY232uEzEnQ4RVZOiAml0N6k8wlrqRS+TQolzSrO0F8P6WrMIlLs
-         1MDw==
-X-Gm-Message-State: AOJu0YwG86yVLJ8SQRct3hvm+CP6TyFPWibDGal0dgsxvHAguP8s2hEN
-        OGS4j9kZk2xJlpc7hD/SKrbwhSIgI3N+i8TmkULnmg==
-X-Google-Smtp-Source: AGHT+IHCyRcvTCZukkcsk4YeFPBQRpPcOauESoVXtpp6e231k1NAisUthUur3frWQFtI5UAhoQ5rgA==
-X-Received: by 2002:a17:902:be08:b0:1bc:3504:de2f with SMTP id r8-20020a170902be0800b001bc3504de2fmr1606358pls.32.1691770173520;
-        Fri, 11 Aug 2023 09:09:33 -0700 (PDT)
-Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id l18-20020a170902d35200b001b54d064a4bsm4102875plk.259.2023.08.11.09.09.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 11 Aug 2023 09:09:33 -0700 (PDT)
-Message-ID: <64d65d3d.170a0220.83208.7a60@mx.google.com>
-Date:   Fri, 11 Aug 2023 09:09:33 -0700 (PDT)
-Content-Type: text/plain; charset="utf-8"
+        with ESMTP id S234142AbjHKQLJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 11 Aug 2023 12:11:09 -0400
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 31CF410DE;
+        Fri, 11 Aug 2023 09:11:09 -0700 (PDT)
+Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 37BE8lKK008274;
+        Fri, 11 Aug 2023 16:11:02 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=T+wIitqVu6ytDiF8h1G0zm1EvusIJ4jblCwk9yLSF3g=;
+ b=CeVmymOAElAJ2enLFi70QP14H0Xc10YPlmKWETKNKBiehGYE+NZ52suJog7XtZ8YPdMM
+ o0Y0SWtplUJBk+VxR6D+U9AMjacNGJiRo4geCqlYW+dqEqrBeh8AwkDRp7sUvMt763sH
+ H5lnmKeMytNqZACZzYhR6HzYFeJRgs397Au+ZbyCexrnBeTx0GV7jYnY8hKohHaTu1vm
+ WWk8M9b1dLQANGAutmVQLzV5Bw40T64V9x9HYHW2FLNYtNz5XTmBlm8t4Uhxtmeg5Et6
+ sI5ad6PafX7bVTXkL/NhLq5rbY9hJjoPxQQIQSZCRhOc/fVJxc38+Nd/iLOnODNPl/je mw== 
+Received: from nasanppmta01.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3sd904t73d-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 11 Aug 2023 16:11:02 +0000
+Received: from nasanex01a.na.qualcomm.com (nasanex01a.na.qualcomm.com [10.52.223.231])
+        by NASANPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 37BGB0ZQ032520
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 11 Aug 2023 16:11:00 GMT
+Received: from [10.50.43.50] (10.80.80.8) by nasanex01a.na.qualcomm.com
+ (10.52.223.231) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.30; Fri, 11 Aug
+ 2023 09:10:56 -0700
+Message-ID: <ffdc4c02-724a-2e8a-feff-6dd07b14b0f2@quicinc.com>
+Date:   Fri, 11 Aug 2023 21:40:53 +0530
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Report-Type: build
-X-Kernelci-Kernel: v5.15.126
-X-Kernelci-Tree: stable-rc
-X-Kernelci-Branch: linux-5.15.y
-Subject: stable-rc/linux-5.15.y build: 20 builds: 0 failed, 20 passed,
- 5 warnings (v5.15.126)
-To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
-        kernelci-results@groups.io
-From:   "kernelci.org bot" <bot@kernelci.org>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH v2 3/4] venus: hfi: add checks to handle capabilities from
+ firmware
+Content-Language: en-US
+To:     Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
+        <stanimir.k.varbanov@gmail.com>, <agross@kernel.org>,
+        <andersson@kernel.org>, <konrad.dybcio@linaro.org>,
+        <mchehab@kernel.org>, <hans.verkuil@cisco.com>,
+        <tfiga@chromium.org>
+CC:     <linux-media@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>
+References: <1691634304-2158-1-git-send-email-quic_vgarodia@quicinc.com>
+ <1691634304-2158-4-git-send-email-quic_vgarodia@quicinc.com>
+ <59b61d65-a827-d252-cdc2-a256f99cb4d9@linaro.org>
+ <a1713beb-e1bc-4118-ab58-b5d8e7fb3cbf@quicinc.com>
+ <e763934d-dd4b-9cee-9992-eb24dce0435f@linaro.org>
+ <f1bbcd06-f888-b466-1b7e-7034ab4004e7@quicinc.com>
+ <2fe4e8f0-5aa5-a89b-2f42-e179b218e7cc@linaro.org>
+From:   Vikash Garodia <quic_vgarodia@quicinc.com>
+In-Reply-To: <2fe4e8f0-5aa5-a89b-2f42-e179b218e7cc@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nasanex01a.na.qualcomm.com (10.52.223.231)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: 2IEo5dJ_KmDnW5q8xR9J4_0GKBKkcPwo
+X-Proofpoint-ORIG-GUID: 2IEo5dJ_KmDnW5q8xR9J4_0GKBKkcPwo
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-08-11_07,2023-08-10_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 phishscore=0
+ priorityscore=1501 adultscore=0 spamscore=0 lowpriorityscore=0
+ mlxlogscore=421 impostorscore=0 mlxscore=0 clxscore=1015 malwarescore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2306200000 definitions=main-2308110148
+X-Spam-Status: No, score=-3.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -71,173 +89,34 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-stable-rc/linux-5.15.y build: 20 builds: 0 failed, 20 passed, 5 warnings (v=
-5.15.126)
-
-Full Build Summary: https://kernelci.org/build/stable-rc/branch/linux-5.15.=
-y/kernel/v5.15.126/
-
-Tree: stable-rc
-Branch: linux-5.15.y
-Git Describe: v5.15.126
-Git Commit: 24c4de4069cbce796a1c71166240807d617cd652
-Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
-e-rc.git
-Built: 7 unique architectures
-
-Warnings Detected:
-
-arc:
-
-arm64:
-
-arm:
-
-i386:
-
-mips:
-    32r2el_defconfig (gcc-10): 1 warning
-
-riscv:
-
-x86_64:
-    x86_64_defconfig (gcc-10): 2 warnings
-    x86_64_defconfig+x86-chromebook (gcc-10): 2 warnings
 
 
-Warnings summary:
+On 8/11/2023 4:09 PM, Bryan O'Donoghue wrote:
+> On 11/08/2023 09:51, Vikash Garodia wrote:
+>>
+>> On 8/11/2023 2:11 PM, Bryan O'Donoghue wrote:
+>>> On 11/08/2023 06:54, Vikash Garodia wrote:
+>>>> The case is all about rogue firmware. If there is a need to fill the same cap
+>>>> again, that itself indicates that the payload from firmware is not correct. In
+>>>> such cases, the old as well as new cap data are not reliable. Though the
+>>>> authenticity of the data cannot be ensured, the check would avoid any OOB
+>>>> during
+>>>> such rogue firmware case.
+>>>
+>>> Then why favour the old cap report over the new ?
+>>
+>> When the driver hits the case for OOB, thats when it knows that something has
+>> gone wrong. Keeping old or new, both are invalid values in such case, nothing to
+>> favor any value.
+>>
+>> Regards,
+>> Vikash
+> 
+> Is this hypothetical or a real bug you are actually working to mitigate ?
 
-    2    arch/x86/lib/retpoline.o: warning: objtool: .altinstr_replacement:=
- unexpected end of section
-    2    arch/x86/kernel/smp.o: warning: objtool: sysvec_reboot()+0x45: unr=
-eachable instruction
-    1    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_devic=
-e_reg): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expec=
-ted "0,0"
+These are theoretical bugs, not reported during any video usecase so far. At the
+same time, these are quite possible when the packets from firmware goes
+different than expected.
 
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D
-
-Detailed per-defconfig build reports:
-
----------------------------------------------------------------------------=
------
-32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sect=
-ion mismatches
-
-Warnings:
-    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_device_reg=
-): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expected "=
-0,0"
-
----------------------------------------------------------------------------=
------
-allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
-mismatches
-
----------------------------------------------------------------------------=
------
-allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
-n mismatches
-
----------------------------------------------------------------------------=
------
-defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warn=
-ings, 0 section mismatches
-
----------------------------------------------------------------------------=
------
-haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
- section mismatches
-
----------------------------------------------------------------------------=
------
-i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
-on mismatches
-
----------------------------------------------------------------------------=
------
-imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-nommu_k210_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, =
-0 section mismatches
-
----------------------------------------------------------------------------=
------
-nommu_k210_sdcard_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 war=
-nings, 0 section mismatches
-
----------------------------------------------------------------------------=
------
-omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-rv32_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
-ion mismatches
-
----------------------------------------------------------------------------=
------
-tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section=
- mismatches
-
----------------------------------------------------------------------------=
------
-tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 s=
-ection mismatches
-
-Warnings:
-    arch/x86/kernel/smp.o: warning: objtool: sysvec_reboot()+0x45: unreacha=
-ble instruction
-    arch/x86/lib/retpoline.o: warning: objtool: .altinstr_replacement: unex=
-pected end of section
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig+x86-chromebook (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, =
-2 warnings, 0 section mismatches
-
-Warnings:
-    arch/x86/kernel/smp.o: warning: objtool: sysvec_reboot()+0x45: unreacha=
-ble instruction
-    arch/x86/lib/retpoline.o: warning: objtool: .altinstr_replacement: unex=
-pected end of section
-
----
-For more info write to <info@kernelci.org>
+> ---
+> bod
