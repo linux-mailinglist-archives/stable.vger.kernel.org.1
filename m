@@ -2,186 +2,143 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DBC46779ABF
-	for <lists+stable@lfdr.de>; Sat, 12 Aug 2023 00:39:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3F578779AE8
+	for <lists+stable@lfdr.de>; Sat, 12 Aug 2023 01:00:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235501AbjHKWju (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 11 Aug 2023 18:39:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56462 "EHLO
+        id S236937AbjHKXAE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 11 Aug 2023 19:00:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38548 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235243AbjHKWju (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 11 Aug 2023 18:39:50 -0400
-Received: from mail-io1-xd36.google.com (mail-io1-xd36.google.com [IPv6:2607:f8b0:4864:20::d36])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C49A2130;
-        Fri, 11 Aug 2023 15:39:49 -0700 (PDT)
-Received: by mail-io1-xd36.google.com with SMTP id ca18e2360f4ac-77acb04309dso88828039f.2;
-        Fri, 11 Aug 2023 15:39:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1691793588; x=1692398388;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=c+TXqEV8NQu771kL5LazpAJWWfJlDPxJd37NT7uHUws=;
-        b=rhDboyym/dDLwCLkY8camD0FzQ1GzN8Lp7Yhwa3KZk7SlnftdJpbZkwAThK+UDqnVO
-         ohgwRuqSQXu8Dx8q8KRmj7LRYUNmKLIMV1aLEM/RA5+jUCF0llaNCbDZN6f5tI3CqBh0
-         IeN09H3Cy4Z1U9jgpLNUdFcK0IQrdxAN1UopJs4/eYjYrgVOWqOFhOLFYOEAwCToy00S
-         qDGuE2gepzYFZ2VQ28RwnVUOupcgo+sNHiwqUKaydO0MILctn2GBiRPvphJN3pllAB1/
-         CeTm9W8b3zAQD+9PKF734vLkMg/Qj2Hldv58DYtrn0RDyageJnvwEJmLAAsuTPhM9+Lt
-         jdbw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691793588; x=1692398388;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=c+TXqEV8NQu771kL5LazpAJWWfJlDPxJd37NT7uHUws=;
-        b=blvzv+CbJsIJv2NywOWml6PUtY6coMue/8ZVm5VmYWuGLprZ4tGM9kx1xSjpJl83wR
-         MzxbPnETCXNGE8nvmqQvFZ3yIw/o996jcYyv5t/yLPzQMqPf3RIoaQTG0kdmYozqyps4
-         gWbKmy/Cyo2vkiXoAOObVxxL9IBzv6c5L26UVh+cDdX0qHMLTwNRFUazd01FDfKzw+UG
-         PaBCmu//VUdKs0OWFfoSWuNEtAlCzoZFViKEvsyj05TPx8M7BAxnYopSLgkmRCmrfWgo
-         xLoD19BLr/0RdiaQ/mGQea2vJPRh4hc1ZqDu16XZSFjbWEu9ZQxKnU9yu2EuVuskow4l
-         r/Jg==
-X-Gm-Message-State: AOJu0YxFrw1rkWy8kQgjZe6Iz0E4H3wKd/GY42rph9vCaSNqlc2mlosb
-        tmC0tQKUlTehD+oNoQ/Oeqs=
-X-Google-Smtp-Source: AGHT+IEo3qqY3Mv6Vl/VL1zlRqHZmYuFZipqU30ULf2l9nVXJr5KFRxUlam+bLfJi+WolG9KsJCXcA==
-X-Received: by 2002:a05:6e02:1b0f:b0:349:1bcc:922a with SMTP id i15-20020a056e021b0f00b003491bcc922amr5221989ilv.5.1691793588548;
-        Fri, 11 Aug 2023 15:39:48 -0700 (PDT)
-Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id i17-20020a92c951000000b00348a5e95d47sm1406690ilq.14.2023.08.11.15.39.46
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 11 Aug 2023 15:39:48 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <5d97cb3a-aec4-1f53-0f33-fb31a9e598b2@roeck-us.net>
-Date:   Fri, 11 Aug 2023 15:39:46 -0700
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v3] usb: typec: bus: verify partner exists in
- typec_altmode_attention
-Content-Language: en-US
-To:     RD Babiera <rdbabiera@google.com>, heikki.krogerus@linux.intel.com,
-        gregkh@linuxfoundation.org
-Cc:     badhri@google.com, linux-usb@vger.kernel.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20230811213732.3325896-1-rdbabiera@google.com>
-From:   Guenter Roeck <linux@roeck-us.net>
-In-Reply-To: <20230811213732.3325896-1-rdbabiera@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        NICE_REPLY_A,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S236776AbjHKW7h (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 11 Aug 2023 18:59:37 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 145B03A89;
+        Fri, 11 Aug 2023 15:59:23 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9FF23676A6;
+        Fri, 11 Aug 2023 22:59:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 024F8C433C8;
+        Fri, 11 Aug 2023 22:59:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+        s=korg; t=1691794762;
+        bh=oNdle7nmOAZ1yCoqJ0/drzH9iPVe08TvFIklaOrPTnw=;
+        h=Date:To:From:Subject:From;
+        b=xWC4Lu6AmT41LJImgItWPb8XMJiUoNcQTO9sd4ZS0c9grlrdaOg0XPcN7NXT+3cJq
+         jKXZ5dcvU6eVLQ3SRZTT3gnULu+aC1hywSYRciN3OEonxJhdmL8HjPcvJSAMeAx1UI
+         JC1Meqwp8xF69Uv4snf2etCF4Z7VN/k+ouW71lEs=
+Date:   Fri, 11 Aug 2023 15:59:21 -0700
+To:     mm-commits@vger.kernel.org, tj@kernel.org, stable@vger.kernel.org,
+        shakeelb@google.com, roman.gushchin@linux.dev,
+        muchun.song@linux.dev, hannes@cmpxchg.org, mhocko@suse.com,
+        akpm@linux-foundation.org
+From:   Andrew Morton <akpm@linux-foundation.org>
+Subject: [merged mm-stable] memcg-drop-kmemlimit_in_bytes.patch removed from -mm tree
+Message-Id: <20230811225922.024F8C433C8@smtp.kernel.org>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 8/11/23 14:37, RD Babiera wrote:
-> Some usb hubs will negotiate DisplayPort Alt mode with the device
-> but will then negotiate a data role swap after entering the alt
-> mode. The data role swap causes the device to unregister all alt
-> modes, however the usb hub will still send Attention messages
-> even after failing to reregister the Alt Mode. type_altmode_attention
-> currently does not verify whether or not a device's altmode partner
-> exists, which results in a NULL pointer error when dereferencing
-> the typec_altmode and typec_altmode_ops belonging to the altmode
-> partner.
-> 
-> Verify the presence of a device's altmode partner before sending
-> the Attention message to the Alt Mode driver.
-> 
-> Fixes: 8a37d87d72f0 ("usb: typec: Bus type for alternate modes")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: RD Babiera <rdbabiera@google.com>
-> ---
-> Changes since v1:
-> * Only assigns pdev if altmode partner exists in typec_altmode_attention
-> * Removed error return in typec_altmode_attention if Alt Mode does
->    not implement Attention messages.
-> * Changed tcpm_log message to indicate that altmode partner does not exist,
->    as it only logs in that case.
-> ---
-> Changes since v2:
-> * Changed tcpm_log message to accurately reflect error
-> * Revised commit message
 
-IMO the log message should be "no port partner", but I don't want this
-to go on forever.
+The quilt patch titled
+     Subject: memcg: drop kmem.limit_in_bytes
+has been removed from the -mm tree.  Its filename was
+     memcg-drop-kmemlimit_in_bytes.patch
 
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+This patch was dropped because it was merged into the mm-stable branch
+of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-> ---
->   drivers/usb/typec/bus.c           | 12 ++++++++++--
->   drivers/usb/typec/tcpm/tcpm.c     |  5 ++++-
->   include/linux/usb/typec_altmode.h |  2 +-
->   3 files changed, 15 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/usb/typec/bus.c b/drivers/usb/typec/bus.c
-> index fe5b9a2e61f5..e95ec7e382bb 100644
-> --- a/drivers/usb/typec/bus.c
-> +++ b/drivers/usb/typec/bus.c
-> @@ -183,12 +183,20 @@ EXPORT_SYMBOL_GPL(typec_altmode_exit);
->    *
->    * Notifies the partner of @adev about Attention command.
->    */
-> -void typec_altmode_attention(struct typec_altmode *adev, u32 vdo)
-> +int typec_altmode_attention(struct typec_altmode *adev, u32 vdo)
->   {
-> -	struct typec_altmode *pdev = &to_altmode(adev)->partner->adev;
-> +	struct altmode *partner = to_altmode(adev)->partner;
-> +	struct typec_altmode *pdev;
-> +
-> +	if (!partner)
-> +		return -ENODEV;
-> +
-> +	pdev = &partner->adev;
->   
->   	if (pdev->ops && pdev->ops->attention)
->   		pdev->ops->attention(pdev, vdo);
-> +
-> +	return 0;
->   }
->   EXPORT_SYMBOL_GPL(typec_altmode_attention);
->   
-> diff --git a/drivers/usb/typec/tcpm/tcpm.c b/drivers/usb/typec/tcpm/tcpm.c
-> index 5a7d8cc04628..97b7b22e9cf1 100644
-> --- a/drivers/usb/typec/tcpm/tcpm.c
-> +++ b/drivers/usb/typec/tcpm/tcpm.c
-> @@ -1791,6 +1791,7 @@ static void tcpm_handle_vdm_request(struct tcpm_port *port,
->   	u32 p[PD_MAX_PAYLOAD];
->   	u32 response[8] = { };
->   	int i, rlen = 0;
-> +	int ret;
->   
->   	for (i = 0; i < cnt; i++)
->   		p[i] = le32_to_cpu(payload[i]);
-> @@ -1877,7 +1878,9 @@ static void tcpm_handle_vdm_request(struct tcpm_port *port,
->   			}
->   			break;
->   		case ADEV_ATTENTION:
-> -			typec_altmode_attention(adev, p[1]);
-> +			ret = typec_altmode_attention(adev, p[1]);
-> +			if (ret)
-> +				tcpm_log(port, "typec_altmode_attention NULL port partner altmode");
->   			break;
->   		}
->   	}
-> diff --git a/include/linux/usb/typec_altmode.h b/include/linux/usb/typec_altmode.h
-> index 350d49012659..28aeef8f9e7b 100644
-> --- a/include/linux/usb/typec_altmode.h
-> +++ b/include/linux/usb/typec_altmode.h
-> @@ -67,7 +67,7 @@ struct typec_altmode_ops {
->   
->   int typec_altmode_enter(struct typec_altmode *altmode, u32 *vdo);
->   int typec_altmode_exit(struct typec_altmode *altmode);
-> -void typec_altmode_attention(struct typec_altmode *altmode, u32 vdo);
-> +int typec_altmode_attention(struct typec_altmode *altmode, u32 vdo);
->   int typec_altmode_vdm(struct typec_altmode *altmode,
->   		      const u32 header, const u32 *vdo, int count);
->   int typec_altmode_notify(struct typec_altmode *altmode, unsigned long conf,
-> 
-> base-commit: f176638af476c6d46257cc3303f5c7cf47d5967d
+------------------------------------------------------
+From: Michal Hocko <mhocko@suse.com>
+Subject: memcg: drop kmem.limit_in_bytes
+Date: Tue, 4 Jul 2023 13:52:40 +0200
+
+kmem.limit_in_bytes (v1 way to limit kernel memory usage) has been
+deprecated since 58056f77502f ("memcg, kmem: further deprecate
+kmem.limit_in_bytes") merged in 5.16.  We haven't heard about any serious
+users since then but it seems that the mere presence of the file is
+causing more harm thatn good.  We (SUSE) have had several bug reports from
+customers where Docker based containers started to fail because a write to
+kmem.limit_in_bytes has failed.
+
+This was unexpected because runc code only expects ENOENT (kmem disabled)
+or EBUSY (tasks already running within cgroup).  So a new error code was
+unexpected and the whole container startup failed.  This has been later
+addressed by
+https://github.com/opencontainers/runc/commit/52390d68040637dfc77f9fda6bbe70952423d380
+so current Docker runtimes do not suffer from the problem anymore.  There
+are still older version of Docker in use and likely hard to get rid of
+completely.
+
+Address this by wiping out the file completely and effectively get back to
+pre 4.5 era and CONFIG_MEMCG_KMEM=n configuration.
+
+I would recommend backporting to stable trees which have picked up
+58056f77502f ("memcg, kmem: further deprecate kmem.limit_in_bytes").
+
+[mhocko@suse.com: restore _KMEM switch case]
+  Link: https://lkml.kernel.org/r/ZKe5wxdbvPi5Cwd7@dhcp22.suse.cz
+Link: https://lkml.kernel.org/r/20230704115240.14672-1-mhocko@kernel.org
+Signed-off-by: Michal Hocko <mhocko@suse.com>
+Acked-by: Shakeel Butt <shakeelb@google.com>
+Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+Acked-by: Roman Gushchin <roman.gushchin@linux.dev>
+Cc: Muchun Song <muchun.song@linux.dev>
+Cc: Tejun Heo <tj@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ Documentation/admin-guide/cgroup-v1/memory.rst |    2 --
+ mm/memcontrol.c                                |   10 ----------
+ 2 files changed, 12 deletions(-)
+
+--- a/Documentation/admin-guide/cgroup-v1/memory.rst~memcg-drop-kmemlimit_in_bytes
++++ a/Documentation/admin-guide/cgroup-v1/memory.rst
+@@ -92,8 +92,6 @@ Brief summary of control files.
+  memory.oom_control		     set/show oom controls.
+  memory.numa_stat		     show the number of memory usage per numa
+ 				     node
+- memory.kmem.limit_in_bytes          This knob is deprecated and writing to
+-                                     it will return -ENOTSUPP.
+  memory.kmem.usage_in_bytes          show current kernel memory allocation
+  memory.kmem.failcnt                 show the number of kernel memory usage
+ 				     hits limits
+--- a/mm/memcontrol.c~memcg-drop-kmemlimit_in_bytes
++++ a/mm/memcontrol.c
+@@ -3871,10 +3871,6 @@ static ssize_t mem_cgroup_write(struct k
+ 		case _MEMSWAP:
+ 			ret = mem_cgroup_resize_max(memcg, nr_pages, true);
+ 			break;
+-		case _KMEM:
+-			/* kmem.limit_in_bytes is deprecated. */
+-			ret = -EOPNOTSUPP;
+-			break;
+ 		case _TCP:
+ 			ret = memcg_update_tcp_max(memcg, nr_pages);
+ 			break;
+@@ -5086,12 +5082,6 @@ static struct cftype mem_cgroup_legacy_f
+ 	},
+ #endif
+ 	{
+-		.name = "kmem.limit_in_bytes",
+-		.private = MEMFILE_PRIVATE(_KMEM, RES_LIMIT),
+-		.write = mem_cgroup_write,
+-		.read_u64 = mem_cgroup_read_u64,
+-	},
+-	{
+ 		.name = "kmem.usage_in_bytes",
+ 		.private = MEMFILE_PRIVATE(_KMEM, RES_USAGE),
+ 		.read_u64 = mem_cgroup_read_u64,
+_
+
+Patches currently in -mm which might be from mhocko@suse.com are
+
 
