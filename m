@@ -2,41 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2E7BE7794E8
-	for <lists+stable@lfdr.de>; Fri, 11 Aug 2023 18:41:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2D8C97794E7
+	for <lists+stable@lfdr.de>; Fri, 11 Aug 2023 18:41:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235890AbjHKQlB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 11 Aug 2023 12:41:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57230 "EHLO
+        id S235203AbjHKQlA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 11 Aug 2023 12:41:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47456 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230083AbjHKQlA (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 11 Aug 2023 12:41:00 -0400
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2061.outbound.protection.outlook.com [40.107.94.61])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 66895E65
-        for <stable@vger.kernel.org>; Fri, 11 Aug 2023 09:40:59 -0700 (PDT)
+        with ESMTP id S230083AbjHKQk7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 11 Aug 2023 12:40:59 -0400
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2045.outbound.protection.outlook.com [40.107.94.45])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E34E18F
+        for <stable@vger.kernel.org>; Fri, 11 Aug 2023 09:40:58 -0700 (PDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=TOVLJuBXJ63k8zk/z6wYOQEyNMpE4mue0QgUv6tafFYWOzZW9wmC1z2qJBuoYQc+ANZq70dKEEUwrXGzYlAVsEwakVxVztoR3o3qQjZoh5AWDNVuERenoJBIzK3LL1xxodCcxmFYycjxP/cX/RhxFYb7pnv7VQ78bqKJuoKu43W5OwLxl38wzMTVFrpqk1g+1DkSus1ZWVknll33DC/y1RbStsqqAQFVFb6VA+14BsXDDAoZ81OJQfeFoy0JV7rIYcm1GfK5b6y4wnEMrW9n9UFoDYtlwDSWyoWsgcMMhtuCxpxKOTNXILFBWnClfNjGJFcwk9kGWM3a2/w9jEnThA==
+ b=AU59SLX3zkVheyuobRXikhAjOKY9oJwwPW6DRfZlLaT2c/ivJPBAmQFZcpLMhcXBwyk0AcgA1XOs/Fs0Elvhn6acgetyzq1w1nUHG4U8ofEVkPgl5i0JSSk2LM/UvLFtRJVnMP6UvG5DeP5nNGnp/dKmBpNeddzL0zxpVwByGAAHaitWa9+QUNDAtZ3lnYz8zUS5cNd3j1qPfII+dHQz8h0PvBTq64hAFlbCjmpD7rkjy3EyRhREIXTiX7RUgEZqX7OZv3l4X99CvnAwzfzB52ZYxS36ARC1SftnIVCLZIpFCLLDwLjQmf6I92SYxHozdpzITzq58KWwnlWcxdWk7w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=mJZDl0F7q7DeJUpfNLki8MqnMPiQiMTLbZcSEbrZbVo=;
- b=Etc9KnWqxFRxQBeiQU93WJpRzdbSKg3l/XXtePTCfLE8fzQri+qTFuweC5LSFu+Ns7EUmEIUqqjcVLLuNEmzjwJ07s0U4ZPELSFmEAoCjjc2MvXluzTlPvDKJNspIsxUSDzuCf6bEwqH8T7O/N8/8lMFDFUG47GFpEdikm8dsD3wd125RAYhAnPEGgWuW7QTRVGnvkAMPKP/mFcE9GzEcaaE5z90rCp8kFciVqCQNWw9hDi5ke6TUksPhks+v9Uf3nVDk9s9wPBN1fxJbuHqQiWjV2qcIab5YmPmv51jpnlFmTZpW1vKg2F8yoa2lBn+GOMGe4zwPX3bHvjXmesoTg==
+ bh=XOKhhhbGhyUt428KSa8X95xcp+woNENtnywUDe7T3ZU=;
+ b=f2j0uO4zCDe5F38svu7DaR7deTdm7SxF5f16pzJ07rr2NdBZI7scE0QoUakQNHE1G23wZoZIbUJqHqp/85MFfEqx6xoYZvJ92Ol4+g2T4rd1lF7ANZ0pyHjFi8jdpMeryGqil061woq0HJd9F4qJ0TSxSAGOG9AcTEMZJ67iIU9Miq3mI/FA5wlNDh1pXnKRQvX/BR0FC0hfRI7Af/HCk6MLULKu3G5JQHqrqGU2P5yzDu+bVMh+/T6tO0Gg4yAeS+IT7g7BBFQSLB+94R2ZageK+2tlb1o6nPy6KfEjn/m81qnny86RJ0Hgonuu+BgDOq7IjRuPkeDRoloHOuTkUg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
  dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
  header.from=amd.com; dkim=none (message not signed); arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=mJZDl0F7q7DeJUpfNLki8MqnMPiQiMTLbZcSEbrZbVo=;
- b=CVc0fLZ8jjAJBhuA7EJlxLHq9xqVURwwtipw8tPFoq/t1X/GqOFUM17eg06mWKXm1HoT3Oy8npefCGyTPqtzv6QPQ+nVdxnA1sHpnkLDJh3aFT1sEzztZzpE5arioSgYuM/ffg7G/lnoa5+dNorw+duX94Te1MKU1uKNhb5Ax1Q=
-Received: from CH0P223CA0015.NAMP223.PROD.OUTLOOK.COM (2603:10b6:610:116::33)
- by IA1PR12MB7735.namprd12.prod.outlook.com (2603:10b6:208:421::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6652.30; Fri, 11 Aug
- 2023 16:40:54 +0000
-Received: from SA2PEPF0000150B.namprd04.prod.outlook.com
- (2603:10b6:610:116:cafe::40) by CH0P223CA0015.outlook.office365.com
- (2603:10b6:610:116::33) with Microsoft SMTP Server (version=TLS1_2,
+ bh=XOKhhhbGhyUt428KSa8X95xcp+woNENtnywUDe7T3ZU=;
+ b=5TNUdeqoT5aTW1kJpYAtBSLXdPDdCfkoRtyz3nWbhsb1lBc5vujv1a/Cx80XGbGGXAXN7R7QFUSds/IVSdw3YtHMijdNtXalUd7nunmr1TTmc3tVCI200kv7ukGhtbynQSplLSf6/fvYGK2aHnHNzBNn//5v7Ey+rYYqlyJ5QFw=
+Received: from SA1PR03CA0006.namprd03.prod.outlook.com (2603:10b6:806:2d3::19)
+ by DM4PR12MB5962.namprd12.prod.outlook.com (2603:10b6:8:69::7) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.6678.20; Fri, 11 Aug 2023 16:40:55 +0000
+Received: from SA2PEPF00001504.namprd04.prod.outlook.com
+ (2603:10b6:806:2d3:cafe::ac) by SA1PR03CA0006.outlook.office365.com
+ (2603:10b6:806:2d3::19) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6652.31 via Frontend
  Transport; Fri, 11 Aug 2023 16:40:54 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
@@ -46,19 +45,19 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
 Received: from SATLEXMB04.amd.com (165.204.84.17) by
- SA2PEPF0000150B.mail.protection.outlook.com (10.167.242.43) with Microsoft
+ SA2PEPF00001504.mail.protection.outlook.com (10.167.242.36) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.6652.20 via Frontend Transport; Fri, 11 Aug 2023 16:40:54 +0000
+ 15.20.6652.19 via Frontend Transport; Fri, 11 Aug 2023 16:40:54 +0000
 Received: from AUS-LX-MLIMONCI.amd.com (10.180.168.240) by SATLEXMB04.amd.com
  (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Fri, 11 Aug
- 2023 11:40:53 -0500
+ 2023 11:40:54 -0500
 From:   Mario Limonciello <mario.limonciello@amd.com>
 To:     <stable@vger.kernel.org>
 CC:     Mario Limonciello <mario.limonciello@amd.com>
-Subject: [PATCH 6.1.y 3/4] drm/amd/pm: fulfill powerplay peak profiling mode shader/memory clock settings
-Date:   Fri, 11 Aug 2023 11:40:30 -0500
-Message-ID: <20230811164031.24687-4-mario.limonciello@amd.com>
+Subject: [PATCH 6.1.y 4/4] drm/amd/pm: avoid unintentional shutdown due to temperature momentary fluctuation
+Date:   Fri, 11 Aug 2023 11:40:31 -0500
+Message-ID: <20230811164031.24687-5-mario.limonciello@amd.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20230811164031.24687-1-mario.limonciello@amd.com>
 References: <20230811164031.24687-1-mario.limonciello@amd.com>
@@ -70,26 +69,26 @@ X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
  (10.181.40.145)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA2PEPF0000150B:EE_|IA1PR12MB7735:EE_
-X-MS-Office365-Filtering-Correlation-Id: 59bc9cd7-e6aa-40fc-f612-08db9a89bb3e
+X-MS-TrafficTypeDiagnostic: SA2PEPF00001504:EE_|DM4PR12MB5962:EE_
+X-MS-Office365-Filtering-Correlation-Id: e4c9a53a-bac3-48a6-2fa0-08db9a89bb71
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: OQYy+i+91n+VFgLWZruiPxOETY1IU5V0weGwqIQoCSzftCey5UospaPSDVlW0nWtKs/+foigw76okis32GLZFdyyfHAV18tjNoXVPTSZ2Azb951AF7Y4YuCScJqDjaC8nKkCjedOkYiwa1I4kKM2yeBqoF5cp0SFyCiVsxNBL2FDrzVgjcMX1MuIDl0AhzHuWDHUgVwnUbdRN57j0K1QxI2cbIlV7ZUQsGwwqMyXXD+CG+BmcJqxNLoXqtHmv/G9N2xMLJH7+pjin2ucx2A8vFGvxdW4pnWf1TZOqz4v/F9hhskG99O4ZfcRh0zDjIesRFc9iWlVRR/5/DxSQjvUGFVvYN2MZ6cH9QVs2bO/CB9Yu16QQmf52YKJhVS3oE6XCDzCqE8LUaimm36oWy/8XSmHAqvw6v2jmkaSk6jvFByy+vmX38bi8TnM0ySIwA0JBL3sjbb6cAdLkr7QjpxVTARjUkxXejTTPwKk6ssvrzeez1uvlKaZobhp9dVr5yJDuktSaPxqmszy2qdFKLE1rIdfbT+8z6cq1g9/WHcXxBYrZna0l8zR3dm7UvYfI3lB4AC+Bk1qqTugJEudBG3oEAwDULU8qnTvqHjVIiBYwbOO4HmCU+BbxxYRoMr0yrvzoZ2x202bRaDb3mKFrVVDhat1Mq9wHw2jPVk3JL3atYemSbR6L/uR4QeBawlchC8OVAJozB9xFyhU9qiMNspkAziUq7y79+8/hbtRlKw3CzPNHJr1kqqt03gUyLm3pENb063+0v9bOsnfFBijoGt+bg==
-X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230028)(4636009)(346002)(396003)(39860400002)(376002)(136003)(1800799006)(82310400008)(186006)(451199021)(40470700004)(46966006)(36840700001)(44832011)(5660300002)(4326008)(70586007)(2906002)(70206006)(6916009)(82740400003)(316002)(30864003)(8676002)(41300700001)(478600001)(8936002)(86362001)(40460700003)(6666004)(7696005)(356005)(36860700001)(336012)(16526019)(83380400001)(81166007)(26005)(2616005)(426003)(47076005)(1076003)(40480700001)(36756003)(36900700001);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam-Message-Info: yiqWrG4YYo3Jf+TQiqPqFY0TOusVK7jDSvbTfhKbf27KTH/kzy9lYcEFE6CrsjM9As3Og5815S1NNHn+CBD5ctE46mUuVbtGw19v5LQeWAgu5LmwQ5bxieLzPD5gpAdOPnwuYQhZHbG1Pez66I63Z21/5aAxAl7Sg/bGjEOyZFjyzEguwUmv+E5OVhYCEKnFO/80xyYXCdNeuWZdk5XDNfGYc3YuKluv0KsAlFOHr0titkcmWb0MifpuMV48jeCoituOTucWP8KBqcOUOAp0EUm5G+iuAF4SAym4VbkxY88sThrcT1thx5ZnZCVIuF8rzDnQxQDTZmwpnWsD7B/wk038ctjAfNbgkEYmISMJO5V8rxAxWeYR8rOfX6+Bk9+2Vzo8Ghgym50uxPxhbSx5LvcLtcrhhKauEn4XR/ZKiDc8XznXQnN9CWg/ytmBYD7iknGpbXn+RqHKjD30TZ7Cvc26FhWHgxxKcQsisWJJO3IAmdptxLYmOMGmYZ1ZU02X2s4U37ebPiBqemhFy6PI3BuMH8neI6MoaiUM8utETWUYj1tobb968x+HygOxoBaODSAwHqf3ynC+oOfttNYnJgcoP7gngHtRdhNhKjHYkzDGrIB3laqblK3isNo5LEI2UMTJffKa+pm584X0m/Ehawe6WOqnfVHQOkjShp0bhU4=
+X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230028)(4636009)(1800799006)(186006)(451199021)(82310400008)(46966006)(36840700001)(83380400001)(16526019)(70206006)(508600001)(47076005)(86362001)(70586007)(30864003)(44832011)(36860700001)(2906002)(6916009)(7696005)(26005)(316002)(966005)(336012)(426003)(1076003)(2616005)(36756003)(5660300002)(6666004)(356005)(8936002)(8676002)(4326008)(81166007)(36900700001);DIR:OUT;SFP:1101;
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Aug 2023 16:40:54.5094
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Aug 2023 16:40:54.8542
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 59bc9cd7-e6aa-40fc-f612-08db9a89bb3e
+X-MS-Exchange-CrossTenant-Network-Message-Id: e4c9a53a-bac3-48a6-2fa0-08db9a89bb71
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: SA2PEPF0000150B.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthSource: SA2PEPF00001504.namprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB7735
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB5962
 X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
         URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -99,427 +98,318 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Evan Quan <evan.quan@amd.com>
 
-Enable peak profiling mode shader/memory clock reporting for powerplay
-framework.
+An intentional delay is added on soft ctf triggered. Then there will
+be a double check for the GPU temperature before taking further
+action. This can avoid unintended shutdown due to temperature
+momentary fluctuation.
 
 Signed-off-by: Evan Quan <evan.quan@amd.com>
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Lijo Lazar <lijo.lazar@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit b1a9557a7d00c758ed9e701fbb3445a13a49506f)
+(cherry picked from commit b75efe88b20c2be28b67e2821a794cc183e32374)
+Hand-modified because:
+* XCP support added to amdgpu.h in kernel 6.5
+  and is not necessary for this fix.
+* SMU microcode initialization moved in
+  32806038aa76 ("drm/amd: Load SMU microcode during early_init")
+Link: https://gitlab.freedesktop.org/drm/amd/-/issues/1267
+Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2779
 Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
 ---
- .../gpu/drm/amd/pm/powerplay/amd_powerplay.c  | 10 ++-
- .../drm/amd/pm/powerplay/hwmgr/smu10_hwmgr.c  | 16 +++-
- .../drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c   | 76 +++++++++++++++----
- .../drm/amd/pm/powerplay/hwmgr/smu8_hwmgr.c   | 16 +++-
- .../drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c | 31 ++++++--
- .../drm/amd/pm/powerplay/hwmgr/vega12_hwmgr.c | 22 ++++++
- .../drm/amd/pm/powerplay/hwmgr/vega20_hwmgr.c | 20 ++---
+ drivers/gpu/drm/amd/amdgpu/amdgpu.h           |  3 ++
+ .../gpu/drm/amd/pm/powerplay/amd_powerplay.c  | 48 +++++++++++++++++++
+ .../drm/amd/pm/powerplay/hwmgr/smu_helper.c   | 27 ++++-------
  drivers/gpu/drm/amd/pm/powerplay/inc/hwmgr.h  |  2 +
- 8 files changed, 155 insertions(+), 38 deletions(-)
+ drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c     | 34 +++++++++++++
+ drivers/gpu/drm/amd/pm/swsmu/inc/amdgpu_smu.h |  2 +
+ .../gpu/drm/amd/pm/swsmu/smu11/smu_v11_0.c    |  9 +---
+ .../gpu/drm/amd/pm/swsmu/smu13/smu_v13_0.c    |  9 +---
+ 8 files changed, 102 insertions(+), 32 deletions(-)
 
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu.h b/drivers/gpu/drm/amd/amdgpu/amdgpu.h
+index c0e782a95e72..43eb3a3dadff 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu.h
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu.h
+@@ -283,6 +283,9 @@ extern int amdgpu_vcnfw_log;
+ #define AMDGPU_SMARTSHIFT_MAX_BIAS (100)
+ #define AMDGPU_SMARTSHIFT_MIN_BIAS (-100)
+ 
++/* Extra time delay(in ms) to eliminate the influence of temperature momentary fluctuation */
++#define AMDGPU_SWCTF_EXTRA_DELAY		50
++
+ struct amdgpu_device;
+ struct amdgpu_irq_src;
+ struct amdgpu_fpriv;
 diff --git a/drivers/gpu/drm/amd/pm/powerplay/amd_powerplay.c b/drivers/gpu/drm/amd/pm/powerplay/amd_powerplay.c
-index 1159ae114dd0..3f4a476d7802 100644
+index 3f4a476d7802..179e1c593a53 100644
 --- a/drivers/gpu/drm/amd/pm/powerplay/amd_powerplay.c
 +++ b/drivers/gpu/drm/amd/pm/powerplay/amd_powerplay.c
-@@ -769,10 +769,16 @@ static int pp_dpm_read_sensor(void *handle, int idx,
- 
- 	switch (idx) {
- 	case AMDGPU_PP_SENSOR_STABLE_PSTATE_SCLK:
--		*((uint32_t *)value) = hwmgr->pstate_sclk;
-+		*((uint32_t *)value) = hwmgr->pstate_sclk * 100;
- 		return 0;
- 	case AMDGPU_PP_SENSOR_STABLE_PSTATE_MCLK:
--		*((uint32_t *)value) = hwmgr->pstate_mclk;
-+		*((uint32_t *)value) = hwmgr->pstate_mclk * 100;
-+		return 0;
-+	case AMDGPU_PP_SENSOR_PEAK_PSTATE_SCLK:
-+		*((uint32_t *)value) = hwmgr->pstate_sclk_peak * 100;
-+		return 0;
-+	case AMDGPU_PP_SENSOR_PEAK_PSTATE_MCLK:
-+		*((uint32_t *)value) = hwmgr->pstate_mclk_peak * 100;
- 		return 0;
- 	case AMDGPU_PP_SENSOR_MIN_FAN_RPM:
- 		*((uint32_t *)value) = hwmgr->thermal_controller.fanInfo.ulMinRPM;
-diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu10_hwmgr.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu10_hwmgr.c
-index ede71de2343d..86d6e88c7386 100644
---- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu10_hwmgr.c
-+++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu10_hwmgr.c
-@@ -375,6 +375,17 @@ static int smu10_enable_gfx_off(struct pp_hwmgr *hwmgr)
+@@ -26,6 +26,7 @@
+ #include <linux/gfp.h>
+ #include <linux/slab.h>
+ #include <linux/firmware.h>
++#include <linux/reboot.h>
+ #include "amd_shared.h"
+ #include "amd_powerplay.h"
+ #include "power_state.h"
+@@ -91,6 +92,45 @@ static int pp_early_init(void *handle)
  	return 0;
  }
  
-+static void smu10_populate_umdpstate_clocks(struct pp_hwmgr *hwmgr)
++static void pp_swctf_delayed_work_handler(struct work_struct *work)
 +{
-+	hwmgr->pstate_sclk = SMU10_UMD_PSTATE_GFXCLK;
-+	hwmgr->pstate_mclk = SMU10_UMD_PSTATE_FCLK;
++	struct pp_hwmgr *hwmgr =
++		container_of(work, struct pp_hwmgr, swctf_delayed_work.work);
++	struct amdgpu_device *adev = hwmgr->adev;
++	struct amdgpu_dpm_thermal *range =
++				&adev->pm.dpm.thermal;
++	uint32_t gpu_temperature, size;
++	int ret;
 +
-+	smum_send_msg_to_smc(hwmgr,
-+			     PPSMC_MSG_GetMaxGfxclkFrequency,
-+			     &hwmgr->pstate_sclk_peak);
-+	hwmgr->pstate_mclk_peak = SMU10_UMD_PSTATE_PEAK_FCLK;
++	/*
++	 * If the hotspot/edge temperature is confirmed as below SW CTF setting point
++	 * after the delay enforced, nothing will be done.
++	 * Otherwise, a graceful shutdown will be performed to prevent further damage.
++	 */
++	if (range->sw_ctf_threshold &&
++	    hwmgr->hwmgr_func->read_sensor) {
++		ret = hwmgr->hwmgr_func->read_sensor(hwmgr,
++						     AMDGPU_PP_SENSOR_HOTSPOT_TEMP,
++						     &gpu_temperature,
++						     &size);
++		/*
++		 * For some legacy ASICs, hotspot temperature retrieving might be not
++		 * supported. Check the edge temperature instead then.
++		 */
++		if (ret == -EOPNOTSUPP)
++			ret = hwmgr->hwmgr_func->read_sensor(hwmgr,
++							     AMDGPU_PP_SENSOR_EDGE_TEMP,
++							     &gpu_temperature,
++							     &size);
++		if (!ret && gpu_temperature / 1000 < range->sw_ctf_threshold)
++			return;
++	}
++
++	dev_emerg(adev->dev, "ERROR: GPU over temperature range(SW CTF) detected!\n");
++	dev_emerg(adev->dev, "ERROR: System is going to shutdown due to GPU SW CTF!\n");
++	orderly_poweroff(true);
 +}
 +
- static int smu10_enable_dpm_tasks(struct pp_hwmgr *hwmgr)
+ static int pp_sw_init(void *handle)
  {
- 	struct amdgpu_device *adev = hwmgr->adev;
-@@ -398,6 +409,8 @@ static int smu10_enable_dpm_tasks(struct pp_hwmgr *hwmgr)
- 			return ret;
- 	}
+ 	struct amdgpu_device *adev = handle;
+@@ -101,6 +141,10 @@ static int pp_sw_init(void *handle)
  
-+	smu10_populate_umdpstate_clocks(hwmgr);
+ 	pr_debug("powerplay sw init %s\n", ret ? "failed" : "successfully");
+ 
++	if (!ret)
++		INIT_DELAYED_WORK(&hwmgr->swctf_delayed_work,
++				  pp_swctf_delayed_work_handler);
 +
- 	return 0;
- }
- 
-@@ -574,9 +587,6 @@ static int smu10_hwmgr_backend_init(struct pp_hwmgr *hwmgr)
- 
- 	hwmgr->platform_descriptor.minimumClocksReductionPercentage = 50;
- 
--	hwmgr->pstate_sclk = SMU10_UMD_PSTATE_GFXCLK * 100;
--	hwmgr->pstate_mclk = SMU10_UMD_PSTATE_FCLK * 100;
--
- 	/* enable the pp_od_clk_voltage sysfs file */
- 	hwmgr->od_enabled = 1;
- 	/* disabled fine grain tuning function by default */
-diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
-index b9e6e49ba4f0..44ec238cfeff 100644
---- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
-+++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
-@@ -1501,6 +1501,65 @@ static int smu7_populate_edc_leakage_registers(struct pp_hwmgr *hwmgr)
  	return ret;
  }
  
-+static void smu7_populate_umdpstate_clocks(struct pp_hwmgr *hwmgr)
-+{
-+	struct smu7_hwmgr *data = (struct smu7_hwmgr *)(hwmgr->backend);
-+	struct smu7_dpm_table *golden_dpm_table = &data->golden_dpm_table;
-+	struct phm_clock_voltage_dependency_table *vddc_dependency_on_sclk =
-+			hwmgr->dyn_state.vddc_dependency_on_sclk;
-+	struct phm_ppt_v1_information *table_info =
-+			(struct phm_ppt_v1_information *)(hwmgr->pptable);
-+	struct phm_ppt_v1_clock_voltage_dependency_table *vdd_dep_on_sclk =
-+			table_info->vdd_dep_on_sclk;
-+	int32_t tmp_sclk, count, percentage;
-+
-+	if (golden_dpm_table->mclk_table.count == 1) {
-+		percentage = 70;
-+		hwmgr->pstate_mclk = golden_dpm_table->mclk_table.dpm_levels[0].value;
-+	} else {
-+		percentage = 100 * golden_dpm_table->sclk_table.dpm_levels[golden_dpm_table->sclk_table.count - 1].value /
-+				golden_dpm_table->mclk_table.dpm_levels[golden_dpm_table->mclk_table.count - 1].value;
-+		hwmgr->pstate_mclk = golden_dpm_table->mclk_table.dpm_levels[golden_dpm_table->mclk_table.count - 2].value;
-+	}
-+
-+	tmp_sclk = hwmgr->pstate_mclk * percentage / 100;
-+
-+	if (hwmgr->pp_table_version == PP_TABLE_V0) {
-+		for (count = vddc_dependency_on_sclk->count - 1; count >= 0; count--) {
-+			if (tmp_sclk >= vddc_dependency_on_sclk->entries[count].clk) {
-+				hwmgr->pstate_sclk = vddc_dependency_on_sclk->entries[count].clk;
-+				break;
-+			}
-+		}
-+		if (count < 0)
-+			hwmgr->pstate_sclk = vddc_dependency_on_sclk->entries[0].clk;
-+
-+		hwmgr->pstate_sclk_peak =
-+			vddc_dependency_on_sclk->entries[vddc_dependency_on_sclk->count - 1].clk;
-+	} else if (hwmgr->pp_table_version == PP_TABLE_V1) {
-+		for (count = vdd_dep_on_sclk->count - 1; count >= 0; count--) {
-+			if (tmp_sclk >= vdd_dep_on_sclk->entries[count].clk) {
-+				hwmgr->pstate_sclk = vdd_dep_on_sclk->entries[count].clk;
-+				break;
-+			}
-+		}
-+		if (count < 0)
-+			hwmgr->pstate_sclk = vdd_dep_on_sclk->entries[0].clk;
-+
-+		hwmgr->pstate_sclk_peak =
-+			vdd_dep_on_sclk->entries[vdd_dep_on_sclk->count - 1].clk;
-+	}
-+
-+	hwmgr->pstate_mclk_peak =
-+		golden_dpm_table->mclk_table.dpm_levels[golden_dpm_table->mclk_table.count - 1].value;
-+
-+	/* make sure the output is in Mhz */
-+	hwmgr->pstate_sclk /= 100;
-+	hwmgr->pstate_mclk /= 100;
-+	hwmgr->pstate_sclk_peak /= 100;
-+	hwmgr->pstate_mclk_peak /= 100;
-+}
-+
- static int smu7_enable_dpm_tasks(struct pp_hwmgr *hwmgr)
- {
- 	int tmp_result = 0;
-@@ -1625,6 +1684,8 @@ static int smu7_enable_dpm_tasks(struct pp_hwmgr *hwmgr)
- 	PP_ASSERT_WITH_CODE((0 == tmp_result),
- 			"pcie performance request failed!", result = tmp_result);
+@@ -136,6 +180,8 @@ static int pp_hw_fini(void *handle)
+ 	struct amdgpu_device *adev = handle;
+ 	struct pp_hwmgr *hwmgr = adev->powerplay.pp_handle;
  
-+	smu7_populate_umdpstate_clocks(hwmgr);
++	cancel_delayed_work_sync(&hwmgr->swctf_delayed_work);
 +
+ 	hwmgr_hw_fini(hwmgr);
+ 
  	return 0;
+@@ -222,6 +268,8 @@ static int pp_suspend(void *handle)
+ 	struct amdgpu_device *adev = handle;
+ 	struct pp_hwmgr *hwmgr = adev->powerplay.pp_handle;
+ 
++	cancel_delayed_work_sync(&hwmgr->swctf_delayed_work);
++
+ 	return hwmgr_suspend(hwmgr);
  }
  
-@@ -3143,15 +3204,12 @@ static int smu7_get_profiling_clk(struct pp_hwmgr *hwmgr, enum amd_dpm_forced_le
- 		for (count = hwmgr->dyn_state.vddc_dependency_on_sclk->count-1;
- 			count >= 0; count--) {
- 			if (tmp_sclk >= hwmgr->dyn_state.vddc_dependency_on_sclk->entries[count].clk) {
--				tmp_sclk = hwmgr->dyn_state.vddc_dependency_on_sclk->entries[count].clk;
- 				*sclk_mask = count;
- 				break;
- 			}
+diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu_helper.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu_helper.c
+index bfe80ac0ad8c..d0b1ab6c4523 100644
+--- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu_helper.c
++++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu_helper.c
+@@ -603,21 +603,17 @@ int phm_irq_process(struct amdgpu_device *adev,
+ 			   struct amdgpu_irq_src *source,
+ 			   struct amdgpu_iv_entry *entry)
+ {
++	struct pp_hwmgr *hwmgr = adev->powerplay.pp_handle;
+ 	uint32_t client_id = entry->client_id;
+ 	uint32_t src_id = entry->src_id;
+ 
+ 	if (client_id == AMDGPU_IRQ_CLIENTID_LEGACY) {
+ 		if (src_id == VISLANDS30_IV_SRCID_CG_TSS_THERMAL_LOW_TO_HIGH) {
+-			dev_emerg(adev->dev, "ERROR: GPU over temperature range(SW CTF) detected!\n");
+-			/*
+-			 * SW CTF just occurred.
+-			 * Try to do a graceful shutdown to prevent further damage.
+-			 */
+-			dev_emerg(adev->dev, "ERROR: System is going to shutdown due to GPU SW CTF!\n");
+-			orderly_poweroff(true);
+-		} else if (src_id == VISLANDS30_IV_SRCID_CG_TSS_THERMAL_HIGH_TO_LOW)
++			schedule_delayed_work(&hwmgr->swctf_delayed_work,
++					      msecs_to_jiffies(AMDGPU_SWCTF_EXTRA_DELAY));
++		} else if (src_id == VISLANDS30_IV_SRCID_CG_TSS_THERMAL_HIGH_TO_LOW) {
+ 			dev_emerg(adev->dev, "ERROR: GPU under temperature range detected!\n");
+-		else if (src_id == VISLANDS30_IV_SRCID_GPIO_19) {
++		} else if (src_id == VISLANDS30_IV_SRCID_GPIO_19) {
+ 			dev_emerg(adev->dev, "ERROR: GPU HW Critical Temperature Fault(aka CTF) detected!\n");
+ 			/*
+ 			 * HW CTF just occurred. Shutdown to prevent further damage.
+@@ -626,15 +622,10 @@ int phm_irq_process(struct amdgpu_device *adev,
+ 			orderly_poweroff(true);
  		}
--		if (count < 0 || level == AMD_DPM_FORCED_LEVEL_PROFILE_MIN_SCLK) {
-+		if (count < 0 || level == AMD_DPM_FORCED_LEVEL_PROFILE_MIN_SCLK)
- 			*sclk_mask = 0;
--			tmp_sclk = hwmgr->dyn_state.vddc_dependency_on_sclk->entries[0].clk;
--		}
- 
- 		if (level == AMD_DPM_FORCED_LEVEL_PROFILE_PEAK)
- 			*sclk_mask = hwmgr->dyn_state.vddc_dependency_on_sclk->count-1;
-@@ -3161,15 +3219,12 @@ static int smu7_get_profiling_clk(struct pp_hwmgr *hwmgr, enum amd_dpm_forced_le
- 
- 		for (count = table_info->vdd_dep_on_sclk->count-1; count >= 0; count--) {
- 			if (tmp_sclk >= table_info->vdd_dep_on_sclk->entries[count].clk) {
--				tmp_sclk = table_info->vdd_dep_on_sclk->entries[count].clk;
- 				*sclk_mask = count;
- 				break;
- 			}
- 		}
--		if (count < 0 || level == AMD_DPM_FORCED_LEVEL_PROFILE_MIN_SCLK) {
-+		if (count < 0 || level == AMD_DPM_FORCED_LEVEL_PROFILE_MIN_SCLK)
- 			*sclk_mask = 0;
--			tmp_sclk =  table_info->vdd_dep_on_sclk->entries[0].clk;
--		}
- 
- 		if (level == AMD_DPM_FORCED_LEVEL_PROFILE_PEAK)
- 			*sclk_mask = table_info->vdd_dep_on_sclk->count - 1;
-@@ -3181,8 +3236,6 @@ static int smu7_get_profiling_clk(struct pp_hwmgr *hwmgr, enum amd_dpm_forced_le
- 		*mclk_mask = golden_dpm_table->mclk_table.count - 1;
- 
- 	*pcie_mask = data->dpm_table.pcie_speed_table.count - 1;
--	hwmgr->pstate_sclk = tmp_sclk;
--	hwmgr->pstate_mclk = tmp_mclk;
- 
- 	return 0;
- }
-@@ -3195,9 +3248,6 @@ static int smu7_force_dpm_level(struct pp_hwmgr *hwmgr,
- 	uint32_t mclk_mask = 0;
- 	uint32_t pcie_mask = 0;
- 
--	if (hwmgr->pstate_sclk == 0)
--		smu7_get_profiling_clk(hwmgr, level, &sclk_mask, &mclk_mask, &pcie_mask);
--
- 	switch (level) {
- 	case AMD_DPM_FORCED_LEVEL_HIGH:
- 		ret = smu7_force_dpm_highest(hwmgr);
-diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu8_hwmgr.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu8_hwmgr.c
-index b50fd4a4a3d1..b015a601b385 100644
---- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu8_hwmgr.c
-+++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu8_hwmgr.c
-@@ -1016,6 +1016,18 @@ static void smu8_reset_acp_boot_level(struct pp_hwmgr *hwmgr)
- 	data->acp_boot_level = 0xff;
- }
- 
-+static void smu8_populate_umdpstate_clocks(struct pp_hwmgr *hwmgr)
-+{
-+	struct phm_clock_voltage_dependency_table *table =
-+				hwmgr->dyn_state.vddc_dependency_on_sclk;
-+
-+	hwmgr->pstate_sclk = table->entries[0].clk / 100;
-+	hwmgr->pstate_mclk = 0;
-+
-+	hwmgr->pstate_sclk_peak = table->entries[table->count - 1].clk / 100;
-+	hwmgr->pstate_mclk_peak = 0;
-+}
-+
- static int smu8_enable_dpm_tasks(struct pp_hwmgr *hwmgr)
- {
- 	smu8_program_voting_clients(hwmgr);
-@@ -1024,6 +1036,8 @@ static int smu8_enable_dpm_tasks(struct pp_hwmgr *hwmgr)
- 	smu8_program_bootup_state(hwmgr);
- 	smu8_reset_acp_boot_level(hwmgr);
- 
-+	smu8_populate_umdpstate_clocks(hwmgr);
-+
- 	return 0;
- }
- 
-@@ -1167,8 +1181,6 @@ static int smu8_phm_unforce_dpm_levels(struct pp_hwmgr *hwmgr)
- 
- 	data->sclk_dpm.soft_min_clk = table->entries[0].clk;
- 	data->sclk_dpm.hard_min_clk = table->entries[0].clk;
--	hwmgr->pstate_sclk = table->entries[0].clk;
--	hwmgr->pstate_mclk = 0;
- 
- 	level = smu8_get_max_sclk_level(hwmgr) - 1;
- 
-diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c
-index c78f8b2b056d..d8cd23438b76 100644
---- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c
-+++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c
-@@ -3008,6 +3008,30 @@ static int vega10_enable_disable_PCC_limit_feature(struct pp_hwmgr *hwmgr, bool
- 	return 0;
- }
- 
-+static void vega10_populate_umdpstate_clocks(struct pp_hwmgr *hwmgr)
-+{
-+	struct phm_ppt_v2_information *table_info =
-+			(struct phm_ppt_v2_information *)(hwmgr->pptable);
-+
-+	if (table_info->vdd_dep_on_sclk->count > VEGA10_UMD_PSTATE_GFXCLK_LEVEL &&
-+	    table_info->vdd_dep_on_mclk->count > VEGA10_UMD_PSTATE_MCLK_LEVEL) {
-+		hwmgr->pstate_sclk = table_info->vdd_dep_on_sclk->entries[VEGA10_UMD_PSTATE_GFXCLK_LEVEL].clk;
-+		hwmgr->pstate_mclk = table_info->vdd_dep_on_mclk->entries[VEGA10_UMD_PSTATE_MCLK_LEVEL].clk;
-+	} else {
-+		hwmgr->pstate_sclk = table_info->vdd_dep_on_sclk->entries[0].clk;
-+		hwmgr->pstate_mclk = table_info->vdd_dep_on_mclk->entries[0].clk;
-+	}
-+
-+	hwmgr->pstate_sclk_peak = table_info->vdd_dep_on_sclk->entries[table_info->vdd_dep_on_sclk->count - 1].clk;
-+	hwmgr->pstate_mclk_peak = table_info->vdd_dep_on_mclk->entries[table_info->vdd_dep_on_mclk->count - 1].clk;
-+
-+	/* make sure the output is in Mhz */
-+	hwmgr->pstate_sclk /= 100;
-+	hwmgr->pstate_mclk /= 100;
-+	hwmgr->pstate_sclk_peak /= 100;
-+	hwmgr->pstate_mclk_peak /= 100;
-+}
-+
- static int vega10_enable_dpm_tasks(struct pp_hwmgr *hwmgr)
- {
- 	struct vega10_hwmgr *data = hwmgr->backend;
-@@ -3082,6 +3106,8 @@ static int vega10_enable_dpm_tasks(struct pp_hwmgr *hwmgr)
- 				    result = tmp_result);
- 	}
- 
-+	vega10_populate_umdpstate_clocks(hwmgr);
-+
- 	return result;
- }
- 
-@@ -4169,8 +4195,6 @@ static int vega10_get_profiling_clk_mask(struct pp_hwmgr *hwmgr, enum amd_dpm_fo
- 		*sclk_mask = VEGA10_UMD_PSTATE_GFXCLK_LEVEL;
- 		*soc_mask = VEGA10_UMD_PSTATE_SOCCLK_LEVEL;
- 		*mclk_mask = VEGA10_UMD_PSTATE_MCLK_LEVEL;
--		hwmgr->pstate_sclk = table_info->vdd_dep_on_sclk->entries[VEGA10_UMD_PSTATE_GFXCLK_LEVEL].clk;
--		hwmgr->pstate_mclk = table_info->vdd_dep_on_mclk->entries[VEGA10_UMD_PSTATE_MCLK_LEVEL].clk;
- 	}
- 
- 	if (level == AMD_DPM_FORCED_LEVEL_PROFILE_MIN_SCLK) {
-@@ -4281,9 +4305,6 @@ static int vega10_dpm_force_dpm_level(struct pp_hwmgr *hwmgr,
- 	uint32_t mclk_mask = 0;
- 	uint32_t soc_mask = 0;
- 
--	if (hwmgr->pstate_sclk == 0)
--		vega10_get_profiling_clk_mask(hwmgr, level, &sclk_mask, &mclk_mask, &soc_mask);
--
- 	switch (level) {
- 	case AMD_DPM_FORCED_LEVEL_HIGH:
- 		ret = vega10_force_dpm_highest(hwmgr);
-diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega12_hwmgr.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega12_hwmgr.c
-index 0fe821dff0a4..1069eaaae2f8 100644
---- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega12_hwmgr.c
-+++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega12_hwmgr.c
-@@ -1026,6 +1026,25 @@ static int vega12_get_all_clock_ranges(struct pp_hwmgr *hwmgr)
- 	return 0;
- }
- 
-+static void vega12_populate_umdpstate_clocks(struct pp_hwmgr *hwmgr)
-+{
-+	struct vega12_hwmgr *data = (struct vega12_hwmgr *)(hwmgr->backend);
-+	struct vega12_single_dpm_table *gfx_dpm_table = &(data->dpm_table.gfx_table);
-+	struct vega12_single_dpm_table *mem_dpm_table = &(data->dpm_table.mem_table);
-+
-+	if (gfx_dpm_table->count > VEGA12_UMD_PSTATE_GFXCLK_LEVEL &&
-+	    mem_dpm_table->count > VEGA12_UMD_PSTATE_MCLK_LEVEL) {
-+		hwmgr->pstate_sclk = gfx_dpm_table->dpm_levels[VEGA12_UMD_PSTATE_GFXCLK_LEVEL].value;
-+		hwmgr->pstate_mclk = mem_dpm_table->dpm_levels[VEGA12_UMD_PSTATE_MCLK_LEVEL].value;
-+	} else {
-+		hwmgr->pstate_sclk = gfx_dpm_table->dpm_levels[0].value;
-+		hwmgr->pstate_mclk = mem_dpm_table->dpm_levels[0].value;
-+	}
-+
-+	hwmgr->pstate_sclk_peak = gfx_dpm_table->dpm_levels[gfx_dpm_table->count].value;
-+	hwmgr->pstate_mclk_peak = mem_dpm_table->dpm_levels[mem_dpm_table->count].value;
-+}
-+
- static int vega12_enable_dpm_tasks(struct pp_hwmgr *hwmgr)
- {
- 	int tmp_result, result = 0;
-@@ -1077,6 +1096,9 @@ static int vega12_enable_dpm_tasks(struct pp_hwmgr *hwmgr)
- 	PP_ASSERT_WITH_CODE(!result,
- 			"Failed to setup default DPM tables!",
- 			return result);
-+
-+	vega12_populate_umdpstate_clocks(hwmgr);
-+
- 	return result;
- }
- 
-diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega20_hwmgr.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega20_hwmgr.c
-index 8e4743cb7443..ff77a3683efd 100644
---- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega20_hwmgr.c
-+++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega20_hwmgr.c
-@@ -1555,26 +1555,23 @@ static int vega20_set_mclk_od(
- 	return 0;
- }
- 
--static int vega20_populate_umdpstate_clocks(
--		struct pp_hwmgr *hwmgr)
-+static void vega20_populate_umdpstate_clocks(struct pp_hwmgr *hwmgr)
- {
- 	struct vega20_hwmgr *data = (struct vega20_hwmgr *)(hwmgr->backend);
- 	struct vega20_single_dpm_table *gfx_table = &(data->dpm_table.gfx_table);
- 	struct vega20_single_dpm_table *mem_table = &(data->dpm_table.mem_table);
- 
--	hwmgr->pstate_sclk = gfx_table->dpm_levels[0].value;
--	hwmgr->pstate_mclk = mem_table->dpm_levels[0].value;
--
- 	if (gfx_table->count > VEGA20_UMD_PSTATE_GFXCLK_LEVEL &&
- 	    mem_table->count > VEGA20_UMD_PSTATE_MCLK_LEVEL) {
- 		hwmgr->pstate_sclk = gfx_table->dpm_levels[VEGA20_UMD_PSTATE_GFXCLK_LEVEL].value;
- 		hwmgr->pstate_mclk = mem_table->dpm_levels[VEGA20_UMD_PSTATE_MCLK_LEVEL].value;
-+	} else {
-+		hwmgr->pstate_sclk = gfx_table->dpm_levels[0].value;
-+		hwmgr->pstate_mclk = mem_table->dpm_levels[0].value;
- 	}
- 
--	hwmgr->pstate_sclk = hwmgr->pstate_sclk * 100;
--	hwmgr->pstate_mclk = hwmgr->pstate_mclk * 100;
--
--	return 0;
-+	hwmgr->pstate_sclk_peak = gfx_table->dpm_levels[gfx_table->count - 1].value;
-+	hwmgr->pstate_mclk_peak = mem_table->dpm_levels[mem_table->count - 1].value;
- }
- 
- static int vega20_get_max_sustainable_clock(struct pp_hwmgr *hwmgr,
-@@ -1753,10 +1750,7 @@ static int vega20_enable_dpm_tasks(struct pp_hwmgr *hwmgr)
- 			"[EnableDPMTasks] Failed to initialize odn settings!",
- 			return result);
- 
--	result = vega20_populate_umdpstate_clocks(hwmgr);
--	PP_ASSERT_WITH_CODE(!result,
--			"[EnableDPMTasks] Failed to populate umdpstate clocks!",
--			return result);
-+	vega20_populate_umdpstate_clocks(hwmgr);
- 
- 	result = smum_send_msg_to_smc_with_parameter(hwmgr, PPSMC_MSG_GetPptLimit,
- 			POWER_SOURCE_AC << 16, &hwmgr->default_power_limit);
+ 	} else if (client_id == SOC15_IH_CLIENTID_THM) {
+-		if (src_id == 0) {
+-			dev_emerg(adev->dev, "ERROR: GPU over temperature range(SW CTF) detected!\n");
+-			/*
+-			 * SW CTF just occurred.
+-			 * Try to do a graceful shutdown to prevent further damage.
+-			 */
+-			dev_emerg(adev->dev, "ERROR: System is going to shutdown due to GPU SW CTF!\n");
+-			orderly_poweroff(true);
+-		} else
++		if (src_id == 0)
++			schedule_delayed_work(&hwmgr->swctf_delayed_work,
++					      msecs_to_jiffies(AMDGPU_SWCTF_EXTRA_DELAY));
++		else
+ 			dev_emerg(adev->dev, "ERROR: GPU under temperature range detected!\n");
+ 	} else if (client_id == SOC15_IH_CLIENTID_ROM_SMUIO) {
+ 		dev_emerg(adev->dev, "ERROR: GPU HW Critical Temperature Fault(aka CTF) detected!\n");
 diff --git a/drivers/gpu/drm/amd/pm/powerplay/inc/hwmgr.h b/drivers/gpu/drm/amd/pm/powerplay/inc/hwmgr.h
-index 27f8d0e0e6a8..5ce433e2c16a 100644
+index 5ce433e2c16a..ec10643edea3 100644
 --- a/drivers/gpu/drm/amd/pm/powerplay/inc/hwmgr.h
 +++ b/drivers/gpu/drm/amd/pm/powerplay/inc/hwmgr.h
-@@ -809,6 +809,8 @@ struct pp_hwmgr {
- 	uint32_t workload_prority[Workload_Policy_Max];
- 	uint32_t workload_setting[Workload_Policy_Max];
+@@ -811,6 +811,8 @@ struct pp_hwmgr {
  	bool gfxoff_state_changed_by_workload;
-+	uint32_t pstate_sclk_peak;
-+	uint32_t pstate_mclk_peak;
+ 	uint32_t pstate_sclk_peak;
+ 	uint32_t pstate_mclk_peak;
++
++	struct delayed_work swctf_delayed_work;
  };
  
  int hwmgr_early_init(struct pp_hwmgr *hwmgr);
+diff --git a/drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c b/drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c
+index 6d90ab55cea3..d191ff52d4f0 100644
+--- a/drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c
+@@ -24,6 +24,7 @@
+ 
+ #include <linux/firmware.h>
+ #include <linux/pci.h>
++#include <linux/reboot.h>
+ 
+ #include "amdgpu.h"
+ #include "amdgpu_smu.h"
+@@ -1061,6 +1062,34 @@ static void smu_interrupt_work_fn(struct work_struct *work)
+ 		smu->ppt_funcs->interrupt_work(smu);
+ }
+ 
++static void smu_swctf_delayed_work_handler(struct work_struct *work)
++{
++	struct smu_context *smu =
++		container_of(work, struct smu_context, swctf_delayed_work.work);
++	struct smu_temperature_range *range =
++				&smu->thermal_range;
++	struct amdgpu_device *adev = smu->adev;
++	uint32_t hotspot_tmp, size;
++
++	/*
++	 * If the hotspot temperature is confirmed as below SW CTF setting point
++	 * after the delay enforced, nothing will be done.
++	 * Otherwise, a graceful shutdown will be performed to prevent further damage.
++	 */
++	if (range->software_shutdown_temp &&
++	    smu->ppt_funcs->read_sensor &&
++	    !smu->ppt_funcs->read_sensor(smu,
++					 AMDGPU_PP_SENSOR_HOTSPOT_TEMP,
++					 &hotspot_tmp,
++					 &size) &&
++	    hotspot_tmp / 1000 < range->software_shutdown_temp)
++		return;
++
++	dev_emerg(adev->dev, "ERROR: GPU over temperature range(SW CTF) detected!\n");
++	dev_emerg(adev->dev, "ERROR: System is going to shutdown due to GPU SW CTF!\n");
++	orderly_poweroff(true);
++}
++
+ static int smu_sw_init(void *handle)
+ {
+ 	struct amdgpu_device *adev = (struct amdgpu_device *)handle;
+@@ -1109,6 +1138,9 @@ static int smu_sw_init(void *handle)
+ 		return ret;
+ 	}
+ 
++	INIT_DELAYED_WORK(&smu->swctf_delayed_work,
++			  smu_swctf_delayed_work_handler);
++
+ 	ret = smu_smc_table_sw_init(smu);
+ 	if (ret) {
+ 		dev_err(adev->dev, "Failed to sw init smc table!\n");
+@@ -1581,6 +1613,8 @@ static int smu_smc_hw_cleanup(struct smu_context *smu)
+ 		return ret;
+ 	}
+ 
++	cancel_delayed_work_sync(&smu->swctf_delayed_work);
++
+ 	ret = smu_disable_dpms(smu);
+ 	if (ret) {
+ 		dev_err(adev->dev, "Fail to disable dpm features!\n");
+diff --git a/drivers/gpu/drm/amd/pm/swsmu/inc/amdgpu_smu.h b/drivers/gpu/drm/amd/pm/swsmu/inc/amdgpu_smu.h
+index 3bc4128a22ac..1ab77a6cdb65 100644
+--- a/drivers/gpu/drm/amd/pm/swsmu/inc/amdgpu_smu.h
++++ b/drivers/gpu/drm/amd/pm/swsmu/inc/amdgpu_smu.h
+@@ -573,6 +573,8 @@ struct smu_context
+ 	u32 debug_param_reg;
+ 	u32 debug_msg_reg;
+ 	u32 debug_resp_reg;
++
++	struct delayed_work		swctf_delayed_work;
+ };
+ 
+ struct i2c_adapter;
+diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu11/smu_v11_0.c b/drivers/gpu/drm/amd/pm/swsmu/smu11/smu_v11_0.c
+index ad5f6a15a1d7..d490b571c8ff 100644
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu11/smu_v11_0.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu11/smu_v11_0.c
+@@ -1438,13 +1438,8 @@ static int smu_v11_0_irq_process(struct amdgpu_device *adev,
+ 	if (client_id == SOC15_IH_CLIENTID_THM) {
+ 		switch (src_id) {
+ 		case THM_11_0__SRCID__THM_DIG_THERM_L2H:
+-			dev_emerg(adev->dev, "ERROR: GPU over temperature range(SW CTF) detected!\n");
+-			/*
+-			 * SW CTF just occurred.
+-			 * Try to do a graceful shutdown to prevent further damage.
+-			 */
+-			dev_emerg(adev->dev, "ERROR: System is going to shutdown due to GPU SW CTF!\n");
+-			orderly_poweroff(true);
++			schedule_delayed_work(&smu->swctf_delayed_work,
++					      msecs_to_jiffies(AMDGPU_SWCTF_EXTRA_DELAY));
+ 		break;
+ 		case THM_11_0__SRCID__THM_DIG_THERM_H2L:
+ 			dev_emerg(adev->dev, "ERROR: GPU under temperature range detected\n");
+diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0.c b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0.c
+index 47fafb1fa608..3104d4937909 100644
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0.c
+@@ -1386,13 +1386,8 @@ static int smu_v13_0_irq_process(struct amdgpu_device *adev,
+ 	if (client_id == SOC15_IH_CLIENTID_THM) {
+ 		switch (src_id) {
+ 		case THM_11_0__SRCID__THM_DIG_THERM_L2H:
+-			dev_emerg(adev->dev, "ERROR: GPU over temperature range(SW CTF) detected!\n");
+-			/*
+-			 * SW CTF just occurred.
+-			 * Try to do a graceful shutdown to prevent further damage.
+-			 */
+-			dev_emerg(adev->dev, "ERROR: System is going to shutdown due to GPU SW CTF!\n");
+-			orderly_poweroff(true);
++			schedule_delayed_work(&smu->swctf_delayed_work,
++					      msecs_to_jiffies(AMDGPU_SWCTF_EXTRA_DELAY));
+ 			break;
+ 		case THM_11_0__SRCID__THM_DIG_THERM_H2L:
+ 			dev_emerg(adev->dev, "ERROR: GPU under temperature range detected\n");
 -- 
 2.34.1
 
