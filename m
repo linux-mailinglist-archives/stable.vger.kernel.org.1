@@ -2,81 +2,91 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 341E27788C7
-	for <lists+stable@lfdr.de>; Fri, 11 Aug 2023 10:12:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1AC5F7788D8
+	for <lists+stable@lfdr.de>; Fri, 11 Aug 2023 10:18:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230526AbjHKIMt (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 11 Aug 2023 04:12:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53328 "EHLO
+        id S229809AbjHKISb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 11 Aug 2023 04:18:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42964 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229544AbjHKIMt (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 11 Aug 2023 04:12:49 -0400
-Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 95CE5110;
-        Fri, 11 Aug 2023 01:12:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
-        :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=EB04r0U/QOmdPdeA69z+u0e9s4yi58XP6YzRO4akQCo=; b=PGKp/ttpJ0pZ+eqqer+Ecb5IUC
-        Z+n8VqpiX/Vri8Kde3QcTZ5BIMjCMu7gt7rTQ+Mw06uU9dLCPeEYkEsSvPrq2h1aqlfYR/zUYyGPe
-        f9oCN/Av6JIltFyS/xVT6Bx05MU+GGKO+2g4Hg8rN/xxKLZ1jf7lXghpSJaaJX3RWIddvYzFFhHXy
-        NQWam5Ord/sA2l1ru5vrrQPpBpetCOVlFVpbmutHCQAn/9+kpd3pAlJTybY7fEDReGYuxOkf8t8/u
-        2f1INfljKC0F7bXdWu4lJTIuma1K1Z4mbPho884BFl8N8NjS0ValUJ2N3DxWHQp77PqDLcMy4lhyK
-        Doe11v7g==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.96 #2 (Red Hat Linux))
-        id 1qUNGA-009pPe-39;
-        Fri, 11 Aug 2023 08:12:38 +0000
-Date:   Fri, 11 Aug 2023 01:12:38 -0700
-From:   Christoph Hellwig <hch@infradead.org>
-To:     Richard Weinberger <richard@nod.at>
-Cc:     Christoph Hellwig <hch@infradead.org>,
-        linux-mtd <linux-mtd@lists.infradead.org>,
-        Stephan Wurm <stephan.wurm@a-eberle.de>,
-        stable <stable@vger.kernel.org>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Oliver Neukum <oliver@neukum.org>,
-        Ali Akcaagac <aliakc@web.de>,
-        Jamie Lenehan <lenehan@twibble.org>,
-        James Bottomley <jejb@linux.ibm.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        linux-scsi <linux-scsi@vger.kernel.org>
-Subject: Re: [PATCH 1/7] ubi: block: Refactor sg list processing for highmem
-Message-ID: <ZNXtdpUbhj7mVu11@infradead.org>
-References: <20230810160019.16977-1-richard@nod.at>
- <20230810160019.16977-2-richard@nod.at>
- <ZNUK8nWnUYB6B4Kg@infradead.org>
- <298860961.5257332.1691684136772.JavaMail.zimbra@nod.at>
- <ZNUOjQVivR/5pFKE@infradead.org>
- <164102534.5258032.1691697286622.JavaMail.zimbra@nod.at>
+        with ESMTP id S229719AbjHKISb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 11 Aug 2023 04:18:31 -0400
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EDF7AE40;
+        Fri, 11 Aug 2023 01:18:29 -0700 (PDT)
+Received: from 46.183.103.8.relaix.net ([46.183.103.8] helo=[172.18.99.178]); authenticated
+        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        id 1qUNLo-0002DU-3L; Fri, 11 Aug 2023 10:18:28 +0200
+Message-ID: <a588d1d3-12e0-b078-b6cc-b0a63c54ab37@leemhuis.info>
+Date:   Fri, 11 Aug 2023 10:18:25 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <164102534.5258032.1691697286622.JavaMail.zimbra@nod.at>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/2] tpm/tpm_tis: Disable interrupts for Framework
+ Laptop Intel 12th gen
+Content-Language: en-US, de-DE
+To:     Jarkko Sakkinen <jarkko@kernel.org>,
+        Lino Sanfilippo <LinoSanfilippo@gmx.de>
+Cc:     Linux kernel regressions list <regressions@lists.linux.dev>,
+        Peter Huewe <peterhuewe@gmx.de>,
+        Christian Hesse <mail@eworm.de>, stable@vger.kernel.org,
+        roubro1991@gmail.com,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Linux kernel regressions list <regressions@lists.linux.dev>,
+        Grundik <ggrundik@gmail.com>, Christian Hesse <list@eworm.de>,
+        linux-integrity@vger.kernel.org
+References: <20230710133836.4367-1-mail@eworm.de>
+ <20230710142916.18162-1-mail@eworm.de>
+ <20230710231315.4ef54679@leda.eworm.net>
+ <bd0587e16d55ef38277ab1f6169909ae7cde3542.camel@kernel.org>
+ <bb5580e93d244400c3330d7091bf64868aa2053f.camel@gmail.com>
+ <0f272843a33a1706dbcbb2d84b02e3951ee60cbb.camel@kernel.org>
+ <fdd5fd9ece045ebd1888672a75f157e64ade98fb.camel@gmail.com>
+From:   Thorsten Leemhuis <regressions@leemhuis.info>
+In-Reply-To: <fdd5fd9ece045ebd1888672a75f157e64ade98fb.camel@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1691741910;edc95982;
+X-HE-SMSGID: 1qUNLo-0002DU-3L
+X-Spam-Status: No, score=1.4 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_SBL_CSS,SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no
         version=3.4.6
+X-Spam-Level: *
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, Aug 10, 2023 at 09:54:46PM +0200, Richard Weinberger wrote:
-> > But why add the bounce buffering first if you can avoid it from the
-> > very beginning by just using kmap_local instead of adding a new
-> > caller for the deprecate kmap_atomic?
+On 06.08.23 18:30, Grundik wrote:
+> On Wed, 2023-07-12 at 00:50 +0300, Jarkko Sakkinen wrote:
+>>> I want to say: this issue is NOT limited to Framework laptops.
+>>>
+>>> For example this MSI gen12 i5-1240P laptop also suffers from same
+>>> problem:
+>>>         Manufacturer: Micro-Star International Co., Ltd.
+>>>         Product Name: Summit E13FlipEvo A12MT
+> [...]
+>>
+>> It will be supplemented with
+>> https://lore.kernel.org/linux-integrity/CTYXI8TL7C36.2SCWH82FAZWBO@suppilovahvero/T/#me895f1920ca6983f791b58a6fa0c157161a33849
+>>
+>> Together they should fairly sustainable framework.
 > 
-> Because I want this fix also in all stable trees. kmap_local() is rather
-> new. When back porting patch 1/7, bounce buffers and kmap_atomic()
-> are needed anyway.
-> By doing this in patch 1/7 I avoid backport troubles and keep the
-> delta between upstream and stable trees minimal.
+> Unfortunately, they dont. Problem still occurs in debian 6.5-rc4
+> kernel, with forementioned laptop. According to sources, these patches
+> are applied in that kernel version.
 
-Just use plain kmap for the historic backports.
+Jarkko & Lino, did you see this msg Grundik posted that about a week
+ago? It looks like there is still something wrong there that need
+attention. Or am I missing something?
 
+FWIW, two more users reported that they still see similar problems with
+recent 6.4.y kernels that contain the "tpm,tpm_tis: Disable interrupts
+after 1000 unhandled IRQs" patch. Both also with MSI laptops:
+
+https://bugzilla.kernel.org/show_bug.cgi?id=217631#c18
+https://bugzilla.kernel.org/show_bug.cgi?id=217631#c20
+
+No reply either afaics.
+
+Ciao, Thorsten
