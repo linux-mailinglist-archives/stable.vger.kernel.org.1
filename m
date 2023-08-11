@@ -2,34 +2,34 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0B9E1778A9B
-	for <lists+stable@lfdr.de>; Fri, 11 Aug 2023 12:05:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 529A9778AA1
+	for <lists+stable@lfdr.de>; Fri, 11 Aug 2023 12:06:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231173AbjHKKFL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 11 Aug 2023 06:05:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34196 "EHLO
+        id S229577AbjHKKGU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 11 Aug 2023 06:06:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53578 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229577AbjHKKFJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 11 Aug 2023 06:05:09 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D2F2F19AC;
-        Fri, 11 Aug 2023 03:05:06 -0700 (PDT)
+        with ESMTP id S234509AbjHKKGT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 11 Aug 2023 06:06:19 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ACC45E3;
+        Fri, 11 Aug 2023 03:06:19 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 729C966E06;
-        Fri, 11 Aug 2023 10:05:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 236C3C433C7;
-        Fri, 11 Aug 2023 10:05:05 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 42695611E8;
+        Fri, 11 Aug 2023 10:06:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C195C433C9;
+        Fri, 11 Aug 2023 10:06:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691748305;
-        bh=S+D3mzGhZ7WrusRlU/dEJf4r8+kJ8neVZRDfQ8Db7E0=;
+        s=korg; t=1691748378;
+        bh=pQM9paCYuFL+5tn+eVihZ7qtEqyTnXlqJRdwgIwFhiE=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=DBzebsmcS/1rdhgOjaafoWHNa6e25g9KvhodiXQIszFcXfaqC7KnZ7pCTaxKChqyN
-         CuJ3UW3Htro7ci169Ab+pOVgIiU6bb5GRaUndAXS3co+kKg+7GL1R5tvB+qrlOi0RF
-         I673OXH7fxVysFqH+Y7UdivXMzkzhWF5LpeU1xFA=
-Date:   Fri, 11 Aug 2023 12:05:02 +0200
+        b=ul1GouuQNSEW4tPzH+EheXgpIqcQfVY+CfRKmJAwEZFfRnyTe/Zq0H0KJ3Sh4M4zl
+         8ZVXIFDbtcN+XsolGDY85dGTnYkxOCl7vf6eiV9u8/s1r0cFuUbRxecZcdw87mKt/E
+         WEBAkxk22kbY9Y/3uW/H4NIw/NsNrgq5iOBefXE4=
+Date:   Fri, 11 Aug 2023 12:06:16 +0200
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     Guenter Roeck <linux@roeck-us.net>
 Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
@@ -38,28 +38,28 @@ Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
         lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
         f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
         srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
-Subject: Re: [PATCH 5.15 00/92] 5.15.126-rc1 review
-Message-ID: <2023081124-resupply-tidings-740f@gregkh>
-References: <20230809103633.485906560@linuxfoundation.org>
- <681f8e2c-df72-4a54-bef8-803ac0bc69f6@roeck-us.net>
+Subject: Re: [PATCH 6.1 000/127] 6.1.45-rc1 review
+Message-ID: <2023081105-gentleman-greyhound-75c4@gregkh>
+References: <20230809103636.615294317@linuxfoundation.org>
+ <fcd7b764-9047-22ba-a040-41b6ff99959c@roeck-us.net>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <681f8e2c-df72-4a54-bef8-803ac0bc69f6@roeck-us.net>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+In-Reply-To: <fcd7b764-9047-22ba-a040-41b6ff99959c@roeck-us.net>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, Aug 10, 2023 at 09:06:01AM -0700, Guenter Roeck wrote:
-> On Wed, Aug 09, 2023 at 12:40:36PM +0200, Greg Kroah-Hartman wrote:
-> > This is the start of the stable review cycle for the 5.15.126 release.
-> > There are 92 patches in this series, all will be posted as a response
+On Thu, Aug 10, 2023 at 03:15:28AM -0700, Guenter Roeck wrote:
+> On 8/9/23 03:39, Greg Kroah-Hartman wrote:
+> > This is the start of the stable review cycle for the 6.1.45 release.
+> > There are 127 patches in this series, all will be posted as a response
 > > to this one.  If anyone has any issues with these being applied, please
 > > let me know.
 > > 
@@ -67,36 +67,19 @@ On Thu, Aug 10, 2023 at 09:06:01AM -0700, Guenter Roeck wrote:
 > > Anything received after that time might be too late.
 > > 
 > 
-> Build results:
-> 	total: 160 pass: 157 fail: 3
-> Failed builds:
-> 	arm:allmodconfig
-> 	arm64:defconfig
-> 	arm64:allmodconfig
-> Qemu test results:
-> 	total: 501 pass: 423 fail: 78
-> Failed tests:
-> 	<most arm>
-> 	<all arm64/arm64be>
 > 
-> As already reported, plus:
-> 
+> Building loongarch:defconfig ... failed
+> --------------
 > Error log:
-> drivers/gpu/drm/fsl-dcu/fsl_dcu_drm_plane.c:176:20: error: 'drm_plane_helper_destroy' undeclared here
-
-Offending commit now dropped, Sasha's dep-bot went a little crazy there,
-and this wasn't needed, sorry for not catching that sooner.
-
-> for arm:multi_v7_defconfig
+> <stdin>:569:2: warning: #warning syscall fstat not implemented [-Wcpp]
+> arch/loongarch/kernel/setup.c: In function 'arch_cpu_finalize_init':
+> arch/loongarch/kernel/setup.c:86:9: error: implicit declaration of function 'alternative_instructions'
 > 
-> Side note: I am surprised about successful arm64 tests/builds
-> since arm64:defconfig fails to build with obvious code errors.
-> 
-> drivers/firmware/arm_scmi/smc.c:39:13: error: duplicate member 'irq'
-> 
-> drivers/firmware/arm_scmi/smc.c: In function 'smc_chan_setup':
-> drivers/firmware/arm_scmi/smc.c:118:34: error: 'irq' undeclared
+> Actually introduced in v6.1.44 with commit 08e86d42e2c9 ("loongarch/cpu:
+> Switch to arch_cpu_finalize_init()"). Alternative instruction support
+> was only introduced for loongarch in v6.2 with commit 19e5eb15b00c
+> ("LoongArch: Add alternative runtime patching mechanism").
 
-Should now be fixed, thanks.
+Thanks for the report, I'll fix this after this release.
 
 greg k-h
