@@ -2,90 +2,98 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 06A4B77899D
-	for <lists+stable@lfdr.de>; Fri, 11 Aug 2023 11:20:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1ADEB7789C2
+	for <lists+stable@lfdr.de>; Fri, 11 Aug 2023 11:30:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234833AbjHKJUC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 11 Aug 2023 05:20:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39802 "EHLO
+        id S234935AbjHKJ37 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 11 Aug 2023 05:29:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45748 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234841AbjHKJT6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 11 Aug 2023 05:19:58 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.24])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99EB32D78;
-        Fri, 11 Aug 2023 02:19:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1691745598; x=1723281598;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=5cLnojzw8GwJQeVPk+d6p7jnvKD0oM2DncTUym4BGQU=;
-  b=EzunvH/GqXvzrrG5RSv/vLwW4JASmhyEAstXHmgc4HYv0upUvU05b/+l
-   wgDfFs6M+kk2XEVE+CHWlKrAp9QqOs4LczOot/aqkasR6NOWVl9INAvC4
-   t8bPysJ1Vhg4FP3UvWabSa63Nc0njlMms5JvsOraGSEqXjesxpoZi7zrY
-   252Ej2MOuQz+43w/oxM602NCyUhFQ8AmWUAHIKppxoE9tBd253lbD2A3b
-   mQ9OOeq5otzKFu9T66Cb07oDyw/n3zgDOxgLj2g6xozLMbsRUKgIaL5dR
-   IUqdEr8OIML1sx+CX8zEcXGCU1cptR2WCn09MLc0Y4rhs4tp8o/nFCl04
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10798"; a="374406319"
-X-IronPort-AV: E=Sophos;i="6.01,165,1684825200"; 
-   d="scan'208";a="374406319"
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Aug 2023 02:19:58 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10798"; a="726197121"
-X-IronPort-AV: E=Sophos;i="6.01,165,1684825200"; 
-   d="scan'208";a="726197121"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by orsmga007.jf.intel.com with ESMTP; 11 Aug 2023 02:19:56 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1qUOJG-008FZl-35;
-        Fri, 11 Aug 2023 12:19:54 +0300
-Date:   Fri, 11 Aug 2023 12:19:54 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     William Breathitt Gray <william.gray@linaro.org>
-Cc:     Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org,
-        Paul Demetrotion <pdemetrotion@winsystems.com>
-Subject: Re: [RESEND PATCH 7/7] gpio: ws16c48: Fix off-by-one error in
- WS16C48 resource region extent
-Message-ID: <ZNX9Oo2AOASHKOPZ@smile.fi.intel.com>
-References: <cover.1691703927.git.william.gray@linaro.org>
- <f20243853e94264534927f2cdf9288b869e7e03b.1691703928.git.william.gray@linaro.org>
+        with ESMTP id S234953AbjHKJ36 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 11 Aug 2023 05:29:58 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA26A2D7D;
+        Fri, 11 Aug 2023 02:29:57 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5074666D04;
+        Fri, 11 Aug 2023 09:29:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30406C433C8;
+        Fri, 11 Aug 2023 09:29:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1691746196;
+        bh=v6D48UKTGegLfjLTlU1nSeUP+3kTAFFYh/SkxueOLkM=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=MZIEAaR7vzgIbUi75wxr1306a5tqHH2rbBWo6jt8pqwuRMSqp+G7ieHBuepAaXR80
+         I9BwPjvQhjdiUeOYSX20g1qJJtmsKYtczo9RV11acFFSZdzsVJ8b/Zu9ib2SuDVAeU
+         zjQno2ID/hEnrK8Jz7r/X1CWTPNEXoFMDXBmArQ4=
+Date:   Fri, 11 Aug 2023 11:29:53 +0200
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Guenter Roeck <linux@roeck-us.net>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
+Subject: Re: [PATCH 4.19 000/323] 4.19.291-rc1 review
+Message-ID: <2023081139-cozily-untaxed-ca9c@gregkh>
+References: <20230809103658.104386911@linuxfoundation.org>
+ <252c7673-53ee-4c4b-e5ef-5bb2c0416154@roeck-us.net>
+ <fff0f61e-4260-f91a-2254-65daaffae45d@roeck-us.net>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <f20243853e94264534927f2cdf9288b869e7e03b.1691703928.git.william.gray@linaro.org>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <fff0f61e-4260-f91a-2254-65daaffae45d@roeck-us.net>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, Aug 10, 2023 at 06:00:44PM -0400, William Breathitt Gray wrote:
-> The WinSystems WS16C48 I/O address region spans offsets 0x0 through 0xA,
-> which is a total of 11 bytes. Fix the WS16C48_EXTENT define to the
-> correct value of 11 so that access to necessary device registers is
-> properly requested in the ws16c48_probe() callback by the
-> devm_request_region() function call.
+On Thu, Aug 10, 2023 at 07:24:32AM -0700, Guenter Roeck wrote:
+> On 8/10/23 06:55, Guenter Roeck wrote:
+> > On 8/9/23 03:37, Greg Kroah-Hartman wrote:
+> > > This is the start of the stable review cycle for the 4.19.291 release.
+> > > There are 323 patches in this series, all will be posted as a response
+> > > to this one.  If anyone has any issues with these being applied, please
+> > > let me know.
+> > > 
+> > > Responses should be made by Fri, 11 Aug 2023 10:36:10 +0000.
+> > > Anything received after that time might be too late.
+> > > 
+> > 
+> > Building sparc64:allnoconfig ... failed
+> > --------------
+> > Error log:
+> > <stdin>:1335:2: warning: #warning syscall rseq not implemented [-Wcpp]
+> > /opt/kernel/gcc-11.4.0-2.40-nolibc/sparc64-linux/bin/../lib/gcc/sparc64-linux/11.4.0/../../../../sparc64-linux/bin/ld: warning: arch/sparc/vdso/vdso-note.o: missing .note.GNU-stack section implies executable stack
+> > /opt/kernel/gcc-11.4.0-2.40-nolibc/sparc64-linux/bin/../lib/gcc/sparc64-linux/11.4.0/../../../../sparc64-linux/bin/ld: NOTE: This behaviour is deprecated and will be removed in a future version of the linker
+> > /opt/kernel/gcc-11.4.0-2.40-nolibc/sparc64-linux/bin/../lib/gcc/sparc64-linux/11.4.0/../../../../sparc64-linux/bin/ld: warning: arch/sparc/vdso/vdso32/vdso-note.o: missing .note.GNU-stack section implies executable stack
+> > /opt/kernel/gcc-11.4.0-2.40-nolibc/sparc64-linux/bin/../lib/gcc/sparc64-linux/11.4.0/../../../../sparc64-linux/bin/ld: NOTE: This behaviour is deprecated and will be removed in a future version of the linker
+> > sparc64-linux-ld: init/main.o: in function `start_kernel':
+> > main.c:(.init.text+0x77c): undefined reference to `arch_cpu_finalize_init'
+> > 
+> > Building sparc64:tinyconfig ... failed
+> > --------------
+> > Error log:
+> > <stdin>:1335:2: warning: #warning syscall rseq not implemented [-Wcpp]
+> > /opt/kernel/gcc-11.4.0-2.40-nolibc/sparc64-linux/bin/../lib/gcc/sparc64-linux/11.4.0/../../../../sparc64-linux/bin/ld: warning: arch/sparc/vdso/vdso-note.o: missing .note.GNU-stack section implies executable stack
+> > /opt/kernel/gcc-11.4.0-2.40-nolibc/sparc64-linux/bin/../lib/gcc/sparc64-linux/11.4.0/../../../../sparc64-linux/bin/ld: NOTE: This behaviour is deprecated and will be removed in a future version of the linker
+> > /opt/kernel/gcc-11.4.0-2.40-nolibc/sparc64-linux/bin/../lib/gcc/sparc64-linux/11.4.0/../../../../sparc64-linux/bin/ld: warning: arch/sparc/vdso/vdso32/vdso-note.o: missing .note.GNU-stack section implies executable stack
+> > /opt/kernel/gcc-11.4.0-2.40-nolibc/sparc64-linux/bin/../lib/gcc/sparc64-linux/11.4.0/../../../../sparc64-linux/bin/ld: NOTE: This behaviour is deprecated and will be removed in a future version of the linker
+> > sparc64-linux-ld: init/main.o: in function `start_kernel':
+> > main.c:(.init.text+0x764): undefined reference to `arch_cpu_finalize_init'
 > 
-> Fixes: 2c05a0f29f41 ("gpio: ws16c48: Implement and utilize register structures")
+> Introduced with v4.19.290.
 
-Fixes should go first in the series, but I see no conflict here, I hope Bart
-can manage this when applying.
+Thanks for the report, I'll fix these up separately after this release.
 
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+greg k-h
