@@ -2,41 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8F17F7794E6
-	for <lists+stable@lfdr.de>; Fri, 11 Aug 2023 18:40:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2E7BE7794E8
+	for <lists+stable@lfdr.de>; Fri, 11 Aug 2023 18:41:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235870AbjHKQk6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 11 Aug 2023 12:40:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47438 "EHLO
+        id S235890AbjHKQlB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 11 Aug 2023 12:41:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57230 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235890AbjHKQk5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 11 Aug 2023 12:40:57 -0400
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2043.outbound.protection.outlook.com [40.107.93.43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA9D3E65
-        for <stable@vger.kernel.org>; Fri, 11 Aug 2023 09:40:56 -0700 (PDT)
+        with ESMTP id S230083AbjHKQlA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 11 Aug 2023 12:41:00 -0400
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2061.outbound.protection.outlook.com [40.107.94.61])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 66895E65
+        for <stable@vger.kernel.org>; Fri, 11 Aug 2023 09:40:59 -0700 (PDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=oJg1aLBXoj/v2kMhLEsPqO4AqBpBEA72MCs4ji9/mXX6RnM16aVDhpJjgotZq7oY49URHAwoJ9JzWsHf9VGoySiifHDaCbKECxzIOcVIPqzw8AdhP+tfrKTZBjwzWhtV2UhCe2k/Dgpez/rr2/ClIBIq1ACnZlgx6oRKf2RMnHYRihrrIwqSGsiBVFZQEJpIX4nCIeXNM7joN38834JKD87i86aqT21A+gzsGDgBwi6DTv/qh8JZvF8ye3OHnFJd7jxaMp0lwZQgch1X2rsuVXdtEQHBf2Kk0afQjFFXEDgQNBr7/9m0mKIhcXZR9TSjNOM8y4fpeSZj3glDA6ZomQ==
+ b=TOVLJuBXJ63k8zk/z6wYOQEyNMpE4mue0QgUv6tafFYWOzZW9wmC1z2qJBuoYQc+ANZq70dKEEUwrXGzYlAVsEwakVxVztoR3o3qQjZoh5AWDNVuERenoJBIzK3LL1xxodCcxmFYycjxP/cX/RhxFYb7pnv7VQ78bqKJuoKu43W5OwLxl38wzMTVFrpqk1g+1DkSus1ZWVknll33DC/y1RbStsqqAQFVFb6VA+14BsXDDAoZ81OJQfeFoy0JV7rIYcm1GfK5b6y4wnEMrW9n9UFoDYtlwDSWyoWsgcMMhtuCxpxKOTNXILFBWnClfNjGJFcwk9kGWM3a2/w9jEnThA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Rxi70BROMjiA915vvnb4mUSw/J3YJnEZl1/tK+kVFxA=;
- b=KDulT5WRJCpgV1NpN2f+M6J3xR6vArDzvhWNRF4axy725c6vkVKJTJ0YvbFg2X65kfdJeniBPcCL7Hlc8SthIVUhI9qlE8R+1AnqoS07ODCazSFeB9+J6A9hQ1nkTmGVWMEUfDbptFVg9LCAQxArdA6Bgf3AE/niCIfX7PYuKIK8TbXhBPwgbpGIkDJ2NRokJAE70lSIhwIplmd2/dcev1TGhIfPag0mnP5iNK2J/E7i+/jn4U6xBBj84/bOy928fwDloRv7GcrM2rQKo6Cbf1gg7BUDAQ2lJOYnYq/Gj6KyxOrtfujAdKRPoLt19j+1713WX8sgCLn71r8UUljNrg==
+ bh=mJZDl0F7q7DeJUpfNLki8MqnMPiQiMTLbZcSEbrZbVo=;
+ b=Etc9KnWqxFRxQBeiQU93WJpRzdbSKg3l/XXtePTCfLE8fzQri+qTFuweC5LSFu+Ns7EUmEIUqqjcVLLuNEmzjwJ07s0U4ZPELSFmEAoCjjc2MvXluzTlPvDKJNspIsxUSDzuCf6bEwqH8T7O/N8/8lMFDFUG47GFpEdikm8dsD3wd125RAYhAnPEGgWuW7QTRVGnvkAMPKP/mFcE9GzEcaaE5z90rCp8kFciVqCQNWw9hDi5ke6TUksPhks+v9Uf3nVDk9s9wPBN1fxJbuHqQiWjV2qcIab5YmPmv51jpnlFmTZpW1vKg2F8yoa2lBn+GOMGe4zwPX3bHvjXmesoTg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
  dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
  header.from=amd.com; dkim=none (message not signed); arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Rxi70BROMjiA915vvnb4mUSw/J3YJnEZl1/tK+kVFxA=;
- b=SzippFz5lu+SoBRjoULvYRK8oHn7+OSEJYwOKCr5meDsF9raEOm0RQKeiB5jmOk6sJFwujayAOHpP6DFYYxUa16VLMwazB0Cvnof4ekE0ZUQCQTx+Y4CGbiRaHaENKaowkvWTwU+69n2pVeGR+Bjyn3OMTuVNGBM81sIpLvvBT0=
-Received: from SN7PR04CA0086.namprd04.prod.outlook.com (2603:10b6:806:121::31)
- by CO6PR12MB5426.namprd12.prod.outlook.com (2603:10b6:5:35d::9) with
+ bh=mJZDl0F7q7DeJUpfNLki8MqnMPiQiMTLbZcSEbrZbVo=;
+ b=CVc0fLZ8jjAJBhuA7EJlxLHq9xqVURwwtipw8tPFoq/t1X/GqOFUM17eg06mWKXm1HoT3Oy8npefCGyTPqtzv6QPQ+nVdxnA1sHpnkLDJh3aFT1sEzztZzpE5arioSgYuM/ffg7G/lnoa5+dNorw+duX94Te1MKU1uKNhb5Ax1Q=
+Received: from CH0P223CA0015.NAMP223.PROD.OUTLOOK.COM (2603:10b6:610:116::33)
+ by IA1PR12MB7735.namprd12.prod.outlook.com (2603:10b6:208:421::8) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6678.19; Fri, 11 Aug
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6652.30; Fri, 11 Aug
  2023 16:40:54 +0000
-Received: from SA2PEPF00001508.namprd04.prod.outlook.com
- (2603:10b6:806:121:cafe::68) by SN7PR04CA0086.outlook.office365.com
- (2603:10b6:806:121::31) with Microsoft SMTP Server (version=TLS1_2,
+Received: from SA2PEPF0000150B.namprd04.prod.outlook.com
+ (2603:10b6:610:116:cafe::40) by CH0P223CA0015.outlook.office365.com
+ (2603:10b6:610:116::33) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6652.31 via Frontend
  Transport; Fri, 11 Aug 2023 16:40:54 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
@@ -46,9 +46,9 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
 Received: from SATLEXMB04.amd.com (165.204.84.17) by
- SA2PEPF00001508.mail.protection.outlook.com (10.167.242.40) with Microsoft
+ SA2PEPF0000150B.mail.protection.outlook.com (10.167.242.43) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.6652.20 via Frontend Transport; Fri, 11 Aug 2023 16:40:53 +0000
+ 15.20.6652.20 via Frontend Transport; Fri, 11 Aug 2023 16:40:54 +0000
 Received: from AUS-LX-MLIMONCI.amd.com (10.180.168.240) by SATLEXMB04.amd.com
  (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Fri, 11 Aug
@@ -56,9 +56,9 @@ Received: from AUS-LX-MLIMONCI.amd.com (10.180.168.240) by SATLEXMB04.amd.com
 From:   Mario Limonciello <mario.limonciello@amd.com>
 To:     <stable@vger.kernel.org>
 CC:     Mario Limonciello <mario.limonciello@amd.com>
-Subject: [PATCH 6.1.y 2/4] drm/amd/pm: expose swctf threshold setting for legacy powerplay
-Date:   Fri, 11 Aug 2023 11:40:29 -0500
-Message-ID: <20230811164031.24687-3-mario.limonciello@amd.com>
+Subject: [PATCH 6.1.y 3/4] drm/amd/pm: fulfill powerplay peak profiling mode shader/memory clock settings
+Date:   Fri, 11 Aug 2023 11:40:30 -0500
+Message-ID: <20230811164031.24687-4-mario.limonciello@amd.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20230811164031.24687-1-mario.limonciello@amd.com>
 References: <20230811164031.24687-1-mario.limonciello@amd.com>
@@ -70,23 +70,23 @@ X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
  (10.181.40.145)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA2PEPF00001508:EE_|CO6PR12MB5426:EE_
-X-MS-Office365-Filtering-Correlation-Id: 91ff2470-6d78-473f-fcb0-08db9a89bae9
+X-MS-TrafficTypeDiagnostic: SA2PEPF0000150B:EE_|IA1PR12MB7735:EE_
+X-MS-Office365-Filtering-Correlation-Id: 59bc9cd7-e6aa-40fc-f612-08db9a89bb3e
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: WxDm5zHS76yaE7GPU+PjkS5qG1rPVYk9LlDorCN8pDomEW4NfoAMYR3YTameZ8nyWPfssTrv31gUoBudZV98JxH41gIYt9AWdQ7hWuH45g4/INNCvpkT1JMIbg/QXXvrUPlIQ55Z5V3Rti99GX3UIuFMV8pUGeoGv5ASHSXKc62ff33zIzZBDqO3P/5lGmpXdpcwl3en7JLo757l3OM6sBszv33TK3Q5Q/gEha8RbwntZkvmd3nVZBJ1L1h/VJh8RoCYNIDke1a08LBgvCnGm6wphGATZxSoI6UTYESCD/WKA9iq0pQ36tiGG6mBVUowR+KRz2tDk5n19PiLJsEjpZ5OxdJ94zQyL5WJwRchhg7tNpYCxvUd/Xd0V1/hN873j6t3Bv/fXXblseE0en+tq8wZ9SJQlV5aezcBlC50ZSFeVx781md49yI4rrRGhHdcF46LeJOEFJH6SsKZGSIdWIo1e1vcroNF3b8mVzvuHmfdt24DTxAr9m9KHdkSCbi6BZA+5Y5Nb63fk2fZgsD6A42vuoyG6a5H4novVv0obUOgEnwz2MMqP0ZQwtgZAJ5P9viabq0fVLKUpagZoQE+ZPGZDuM0EWd2Dv4BE1DfNtOQFajhzyI4UPhru5e7v94BnCOXrkHQgFYBo/bhfsdCYUZgDXcvvvr0KdjBO33IsOxSY//TXBbbenKC1zk8aZqhjJDFwFAF5giJPnAcbpYtB57ooe+IWg7RxSQI5OXK7rrtSEWNxPAYB0CUbCKD1gpG1xKcySjBmG3KmlD3ocms0Q==
-X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230028)(4636009)(376002)(346002)(39860400002)(136003)(396003)(451199021)(82310400008)(1800799006)(186006)(46966006)(36840700001)(40470700004)(4326008)(70206006)(70586007)(6916009)(41300700001)(86362001)(316002)(36756003)(82740400003)(336012)(26005)(1076003)(81166007)(356005)(6666004)(7696005)(16526019)(36860700001)(40480700001)(2616005)(47076005)(83380400001)(426003)(478600001)(40460700003)(2906002)(5660300002)(8676002)(8936002)(44832011)(36900700001);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam-Message-Info: OQYy+i+91n+VFgLWZruiPxOETY1IU5V0weGwqIQoCSzftCey5UospaPSDVlW0nWtKs/+foigw76okis32GLZFdyyfHAV18tjNoXVPTSZ2Azb951AF7Y4YuCScJqDjaC8nKkCjedOkYiwa1I4kKM2yeBqoF5cp0SFyCiVsxNBL2FDrzVgjcMX1MuIDl0AhzHuWDHUgVwnUbdRN57j0K1QxI2cbIlV7ZUQsGwwqMyXXD+CG+BmcJqxNLoXqtHmv/G9N2xMLJH7+pjin2ucx2A8vFGvxdW4pnWf1TZOqz4v/F9hhskG99O4ZfcRh0zDjIesRFc9iWlVRR/5/DxSQjvUGFVvYN2MZ6cH9QVs2bO/CB9Yu16QQmf52YKJhVS3oE6XCDzCqE8LUaimm36oWy/8XSmHAqvw6v2jmkaSk6jvFByy+vmX38bi8TnM0ySIwA0JBL3sjbb6cAdLkr7QjpxVTARjUkxXejTTPwKk6ssvrzeez1uvlKaZobhp9dVr5yJDuktSaPxqmszy2qdFKLE1rIdfbT+8z6cq1g9/WHcXxBYrZna0l8zR3dm7UvYfI3lB4AC+Bk1qqTugJEudBG3oEAwDULU8qnTvqHjVIiBYwbOO4HmCU+BbxxYRoMr0yrvzoZ2x202bRaDb3mKFrVVDhat1Mq9wHw2jPVk3JL3atYemSbR6L/uR4QeBawlchC8OVAJozB9xFyhU9qiMNspkAziUq7y79+8/hbtRlKw3CzPNHJr1kqqt03gUyLm3pENb063+0v9bOsnfFBijoGt+bg==
+X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230028)(4636009)(346002)(396003)(39860400002)(376002)(136003)(1800799006)(82310400008)(186006)(451199021)(40470700004)(46966006)(36840700001)(44832011)(5660300002)(4326008)(70586007)(2906002)(70206006)(6916009)(82740400003)(316002)(30864003)(8676002)(41300700001)(478600001)(8936002)(86362001)(40460700003)(6666004)(7696005)(356005)(36860700001)(336012)(16526019)(83380400001)(81166007)(26005)(2616005)(426003)(47076005)(1076003)(40480700001)(36756003)(36900700001);DIR:OUT;SFP:1101;
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Aug 2023 16:40:53.9369
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Aug 2023 16:40:54.5094
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 91ff2470-6d78-473f-fcb0-08db9a89bae9
+X-MS-Exchange-CrossTenant-Network-Message-Id: 59bc9cd7-e6aa-40fc-f612-08db9a89bb3e
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: SA2PEPF00001508.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthSource: SA2PEPF0000150B.namprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CO6PR12MB5426
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB7735
 X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
         RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
@@ -99,156 +99,427 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Evan Quan <evan.quan@amd.com>
 
-Preparation for coming optimization which eliminates the influence of
-GPU temperature momentary fluctuation.
+Enable peak profiling mode shader/memory clock reporting for powerplay
+framework.
 
 Signed-off-by: Evan Quan <evan.quan@amd.com>
-Reviewed-by: Lijo Lazar <lijo.lazar@amd.com>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 064329c595da56eff6d7a7e7760660c726433139)
+(cherry picked from commit b1a9557a7d00c758ed9e701fbb3445a13a49506f)
 Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
 ---
- drivers/gpu/drm/amd/pm/inc/amdgpu_dpm.h                |  2 ++
- .../gpu/drm/amd/pm/powerplay/hwmgr/hardwaremanager.c   |  4 +++-
- drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c    |  2 ++
- drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c  | 10 ++++++++++
- drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega12_hwmgr.c  |  4 ++++
- drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega20_hwmgr.c  |  4 ++++
- drivers/gpu/drm/amd/pm/powerplay/inc/power_state.h     |  1 +
- 7 files changed, 26 insertions(+), 1 deletion(-)
+ .../gpu/drm/amd/pm/powerplay/amd_powerplay.c  | 10 ++-
+ .../drm/amd/pm/powerplay/hwmgr/smu10_hwmgr.c  | 16 +++-
+ .../drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c   | 76 +++++++++++++++----
+ .../drm/amd/pm/powerplay/hwmgr/smu8_hwmgr.c   | 16 +++-
+ .../drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c | 31 ++++++--
+ .../drm/amd/pm/powerplay/hwmgr/vega12_hwmgr.c | 22 ++++++
+ .../drm/amd/pm/powerplay/hwmgr/vega20_hwmgr.c | 20 ++---
+ drivers/gpu/drm/amd/pm/powerplay/inc/hwmgr.h  |  2 +
+ 8 files changed, 155 insertions(+), 38 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/pm/inc/amdgpu_dpm.h b/drivers/gpu/drm/amd/pm/inc/amdgpu_dpm.h
-index cb5b9df78b4d..338fce249f5a 100644
---- a/drivers/gpu/drm/amd/pm/inc/amdgpu_dpm.h
-+++ b/drivers/gpu/drm/amd/pm/inc/amdgpu_dpm.h
-@@ -89,6 +89,8 @@ struct amdgpu_dpm_thermal {
- 	int                max_mem_crit_temp;
- 	/* memory max emergency(shutdown) temp */
- 	int                max_mem_emergency_temp;
-+	/* SWCTF threshold */
-+	int                sw_ctf_threshold;
- 	/* was last interrupt low to high or high to low */
- 	bool               high_to_low;
- 	/* interrupt source */
-diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/hardwaremanager.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/hardwaremanager.c
-index 981dc8c7112d..90452b66e107 100644
---- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/hardwaremanager.c
-+++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/hardwaremanager.c
-@@ -241,7 +241,8 @@ int phm_start_thermal_controller(struct pp_hwmgr *hwmgr)
- 		TEMP_RANGE_MAX,
- 		TEMP_RANGE_MIN,
- 		TEMP_RANGE_MAX,
--		TEMP_RANGE_MAX};
-+		TEMP_RANGE_MAX,
-+		0};
- 	struct amdgpu_device *adev = hwmgr->adev;
+diff --git a/drivers/gpu/drm/amd/pm/powerplay/amd_powerplay.c b/drivers/gpu/drm/amd/pm/powerplay/amd_powerplay.c
+index 1159ae114dd0..3f4a476d7802 100644
+--- a/drivers/gpu/drm/amd/pm/powerplay/amd_powerplay.c
++++ b/drivers/gpu/drm/amd/pm/powerplay/amd_powerplay.c
+@@ -769,10 +769,16 @@ static int pp_dpm_read_sensor(void *handle, int idx,
  
- 	if (!hwmgr->not_vf)
-@@ -265,6 +266,7 @@ int phm_start_thermal_controller(struct pp_hwmgr *hwmgr)
- 	adev->pm.dpm.thermal.min_mem_temp = range.mem_min;
- 	adev->pm.dpm.thermal.max_mem_crit_temp = range.mem_crit_max;
- 	adev->pm.dpm.thermal.max_mem_emergency_temp = range.mem_emergency_max;
-+	adev->pm.dpm.thermal.sw_ctf_threshold = range.sw_ctf_threshold;
- 
- 	return ret;
+ 	switch (idx) {
+ 	case AMDGPU_PP_SENSOR_STABLE_PSTATE_SCLK:
+-		*((uint32_t *)value) = hwmgr->pstate_sclk;
++		*((uint32_t *)value) = hwmgr->pstate_sclk * 100;
+ 		return 0;
+ 	case AMDGPU_PP_SENSOR_STABLE_PSTATE_MCLK:
+-		*((uint32_t *)value) = hwmgr->pstate_mclk;
++		*((uint32_t *)value) = hwmgr->pstate_mclk * 100;
++		return 0;
++	case AMDGPU_PP_SENSOR_PEAK_PSTATE_SCLK:
++		*((uint32_t *)value) = hwmgr->pstate_sclk_peak * 100;
++		return 0;
++	case AMDGPU_PP_SENSOR_PEAK_PSTATE_MCLK:
++		*((uint32_t *)value) = hwmgr->pstate_mclk_peak * 100;
+ 		return 0;
+ 	case AMDGPU_PP_SENSOR_MIN_FAN_RPM:
+ 		*((uint32_t *)value) = hwmgr->thermal_controller.fanInfo.ulMinRPM;
+diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu10_hwmgr.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu10_hwmgr.c
+index ede71de2343d..86d6e88c7386 100644
+--- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu10_hwmgr.c
++++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu10_hwmgr.c
+@@ -375,6 +375,17 @@ static int smu10_enable_gfx_off(struct pp_hwmgr *hwmgr)
+ 	return 0;
  }
+ 
++static void smu10_populate_umdpstate_clocks(struct pp_hwmgr *hwmgr)
++{
++	hwmgr->pstate_sclk = SMU10_UMD_PSTATE_GFXCLK;
++	hwmgr->pstate_mclk = SMU10_UMD_PSTATE_FCLK;
++
++	smum_send_msg_to_smc(hwmgr,
++			     PPSMC_MSG_GetMaxGfxclkFrequency,
++			     &hwmgr->pstate_sclk_peak);
++	hwmgr->pstate_mclk_peak = SMU10_UMD_PSTATE_PEAK_FCLK;
++}
++
+ static int smu10_enable_dpm_tasks(struct pp_hwmgr *hwmgr)
+ {
+ 	struct amdgpu_device *adev = hwmgr->adev;
+@@ -398,6 +409,8 @@ static int smu10_enable_dpm_tasks(struct pp_hwmgr *hwmgr)
+ 			return ret;
+ 	}
+ 
++	smu10_populate_umdpstate_clocks(hwmgr);
++
+ 	return 0;
+ }
+ 
+@@ -574,9 +587,6 @@ static int smu10_hwmgr_backend_init(struct pp_hwmgr *hwmgr)
+ 
+ 	hwmgr->platform_descriptor.minimumClocksReductionPercentage = 50;
+ 
+-	hwmgr->pstate_sclk = SMU10_UMD_PSTATE_GFXCLK * 100;
+-	hwmgr->pstate_mclk = SMU10_UMD_PSTATE_FCLK * 100;
+-
+ 	/* enable the pp_od_clk_voltage sysfs file */
+ 	hwmgr->od_enabled = 1;
+ 	/* disabled fine grain tuning function by default */
 diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
-index 7ef7e81525a3..b9e6e49ba4f0 100644
+index b9e6e49ba4f0..44ec238cfeff 100644
 --- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
 +++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
-@@ -5381,6 +5381,8 @@ static int smu7_get_thermal_temperature_range(struct pp_hwmgr *hwmgr,
- 		thermal_data->max = data->thermal_temp_setting.temperature_shutdown *
- 			PP_TEMPERATURE_UNITS_PER_CENTIGRADES;
+@@ -1501,6 +1501,65 @@ static int smu7_populate_edc_leakage_registers(struct pp_hwmgr *hwmgr)
+ 	return ret;
+ }
  
-+	thermal_data->sw_ctf_threshold = thermal_data->max;
++static void smu7_populate_umdpstate_clocks(struct pp_hwmgr *hwmgr)
++{
++	struct smu7_hwmgr *data = (struct smu7_hwmgr *)(hwmgr->backend);
++	struct smu7_dpm_table *golden_dpm_table = &data->golden_dpm_table;
++	struct phm_clock_voltage_dependency_table *vddc_dependency_on_sclk =
++			hwmgr->dyn_state.vddc_dependency_on_sclk;
++	struct phm_ppt_v1_information *table_info =
++			(struct phm_ppt_v1_information *)(hwmgr->pptable);
++	struct phm_ppt_v1_clock_voltage_dependency_table *vdd_dep_on_sclk =
++			table_info->vdd_dep_on_sclk;
++	int32_t tmp_sclk, count, percentage;
++
++	if (golden_dpm_table->mclk_table.count == 1) {
++		percentage = 70;
++		hwmgr->pstate_mclk = golden_dpm_table->mclk_table.dpm_levels[0].value;
++	} else {
++		percentage = 100 * golden_dpm_table->sclk_table.dpm_levels[golden_dpm_table->sclk_table.count - 1].value /
++				golden_dpm_table->mclk_table.dpm_levels[golden_dpm_table->mclk_table.count - 1].value;
++		hwmgr->pstate_mclk = golden_dpm_table->mclk_table.dpm_levels[golden_dpm_table->mclk_table.count - 2].value;
++	}
++
++	tmp_sclk = hwmgr->pstate_mclk * percentage / 100;
++
++	if (hwmgr->pp_table_version == PP_TABLE_V0) {
++		for (count = vddc_dependency_on_sclk->count - 1; count >= 0; count--) {
++			if (tmp_sclk >= vddc_dependency_on_sclk->entries[count].clk) {
++				hwmgr->pstate_sclk = vddc_dependency_on_sclk->entries[count].clk;
++				break;
++			}
++		}
++		if (count < 0)
++			hwmgr->pstate_sclk = vddc_dependency_on_sclk->entries[0].clk;
++
++		hwmgr->pstate_sclk_peak =
++			vddc_dependency_on_sclk->entries[vddc_dependency_on_sclk->count - 1].clk;
++	} else if (hwmgr->pp_table_version == PP_TABLE_V1) {
++		for (count = vdd_dep_on_sclk->count - 1; count >= 0; count--) {
++			if (tmp_sclk >= vdd_dep_on_sclk->entries[count].clk) {
++				hwmgr->pstate_sclk = vdd_dep_on_sclk->entries[count].clk;
++				break;
++			}
++		}
++		if (count < 0)
++			hwmgr->pstate_sclk = vdd_dep_on_sclk->entries[0].clk;
++
++		hwmgr->pstate_sclk_peak =
++			vdd_dep_on_sclk->entries[vdd_dep_on_sclk->count - 1].clk;
++	}
++
++	hwmgr->pstate_mclk_peak =
++		golden_dpm_table->mclk_table.dpm_levels[golden_dpm_table->mclk_table.count - 1].value;
++
++	/* make sure the output is in Mhz */
++	hwmgr->pstate_sclk /= 100;
++	hwmgr->pstate_mclk /= 100;
++	hwmgr->pstate_sclk_peak /= 100;
++	hwmgr->pstate_mclk_peak /= 100;
++}
++
+ static int smu7_enable_dpm_tasks(struct pp_hwmgr *hwmgr)
+ {
+ 	int tmp_result = 0;
+@@ -1625,6 +1684,8 @@ static int smu7_enable_dpm_tasks(struct pp_hwmgr *hwmgr)
+ 	PP_ASSERT_WITH_CODE((0 == tmp_result),
+ 			"pcie performance request failed!", result = tmp_result);
+ 
++	smu7_populate_umdpstate_clocks(hwmgr);
 +
  	return 0;
  }
+ 
+@@ -3143,15 +3204,12 @@ static int smu7_get_profiling_clk(struct pp_hwmgr *hwmgr, enum amd_dpm_forced_le
+ 		for (count = hwmgr->dyn_state.vddc_dependency_on_sclk->count-1;
+ 			count >= 0; count--) {
+ 			if (tmp_sclk >= hwmgr->dyn_state.vddc_dependency_on_sclk->entries[count].clk) {
+-				tmp_sclk = hwmgr->dyn_state.vddc_dependency_on_sclk->entries[count].clk;
+ 				*sclk_mask = count;
+ 				break;
+ 			}
+ 		}
+-		if (count < 0 || level == AMD_DPM_FORCED_LEVEL_PROFILE_MIN_SCLK) {
++		if (count < 0 || level == AMD_DPM_FORCED_LEVEL_PROFILE_MIN_SCLK)
+ 			*sclk_mask = 0;
+-			tmp_sclk = hwmgr->dyn_state.vddc_dependency_on_sclk->entries[0].clk;
+-		}
+ 
+ 		if (level == AMD_DPM_FORCED_LEVEL_PROFILE_PEAK)
+ 			*sclk_mask = hwmgr->dyn_state.vddc_dependency_on_sclk->count-1;
+@@ -3161,15 +3219,12 @@ static int smu7_get_profiling_clk(struct pp_hwmgr *hwmgr, enum amd_dpm_forced_le
+ 
+ 		for (count = table_info->vdd_dep_on_sclk->count-1; count >= 0; count--) {
+ 			if (tmp_sclk >= table_info->vdd_dep_on_sclk->entries[count].clk) {
+-				tmp_sclk = table_info->vdd_dep_on_sclk->entries[count].clk;
+ 				*sclk_mask = count;
+ 				break;
+ 			}
+ 		}
+-		if (count < 0 || level == AMD_DPM_FORCED_LEVEL_PROFILE_MIN_SCLK) {
++		if (count < 0 || level == AMD_DPM_FORCED_LEVEL_PROFILE_MIN_SCLK)
+ 			*sclk_mask = 0;
+-			tmp_sclk =  table_info->vdd_dep_on_sclk->entries[0].clk;
+-		}
+ 
+ 		if (level == AMD_DPM_FORCED_LEVEL_PROFILE_PEAK)
+ 			*sclk_mask = table_info->vdd_dep_on_sclk->count - 1;
+@@ -3181,8 +3236,6 @@ static int smu7_get_profiling_clk(struct pp_hwmgr *hwmgr, enum amd_dpm_forced_le
+ 		*mclk_mask = golden_dpm_table->mclk_table.count - 1;
+ 
+ 	*pcie_mask = data->dpm_table.pcie_speed_table.count - 1;
+-	hwmgr->pstate_sclk = tmp_sclk;
+-	hwmgr->pstate_mclk = tmp_mclk;
+ 
+ 	return 0;
+ }
+@@ -3195,9 +3248,6 @@ static int smu7_force_dpm_level(struct pp_hwmgr *hwmgr,
+ 	uint32_t mclk_mask = 0;
+ 	uint32_t pcie_mask = 0;
+ 
+-	if (hwmgr->pstate_sclk == 0)
+-		smu7_get_profiling_clk(hwmgr, level, &sclk_mask, &mclk_mask, &pcie_mask);
+-
+ 	switch (level) {
+ 	case AMD_DPM_FORCED_LEVEL_HIGH:
+ 		ret = smu7_force_dpm_highest(hwmgr);
+diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu8_hwmgr.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu8_hwmgr.c
+index b50fd4a4a3d1..b015a601b385 100644
+--- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu8_hwmgr.c
++++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu8_hwmgr.c
+@@ -1016,6 +1016,18 @@ static void smu8_reset_acp_boot_level(struct pp_hwmgr *hwmgr)
+ 	data->acp_boot_level = 0xff;
+ }
+ 
++static void smu8_populate_umdpstate_clocks(struct pp_hwmgr *hwmgr)
++{
++	struct phm_clock_voltage_dependency_table *table =
++				hwmgr->dyn_state.vddc_dependency_on_sclk;
++
++	hwmgr->pstate_sclk = table->entries[0].clk / 100;
++	hwmgr->pstate_mclk = 0;
++
++	hwmgr->pstate_sclk_peak = table->entries[table->count - 1].clk / 100;
++	hwmgr->pstate_mclk_peak = 0;
++}
++
+ static int smu8_enable_dpm_tasks(struct pp_hwmgr *hwmgr)
+ {
+ 	smu8_program_voting_clients(hwmgr);
+@@ -1024,6 +1036,8 @@ static int smu8_enable_dpm_tasks(struct pp_hwmgr *hwmgr)
+ 	smu8_program_bootup_state(hwmgr);
+ 	smu8_reset_acp_boot_level(hwmgr);
+ 
++	smu8_populate_umdpstate_clocks(hwmgr);
++
+ 	return 0;
+ }
+ 
+@@ -1167,8 +1181,6 @@ static int smu8_phm_unforce_dpm_levels(struct pp_hwmgr *hwmgr)
+ 
+ 	data->sclk_dpm.soft_min_clk = table->entries[0].clk;
+ 	data->sclk_dpm.hard_min_clk = table->entries[0].clk;
+-	hwmgr->pstate_sclk = table->entries[0].clk;
+-	hwmgr->pstate_mclk = 0;
+ 
+ 	level = smu8_get_max_sclk_level(hwmgr) - 1;
  
 diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c
-index c8c9fb827bda..c78f8b2b056d 100644
+index c78f8b2b056d..d8cd23438b76 100644
 --- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c
 +++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c
-@@ -5221,6 +5221,9 @@ static int vega10_get_thermal_temperature_range(struct pp_hwmgr *hwmgr,
+@@ -3008,6 +3008,30 @@ static int vega10_enable_disable_PCC_limit_feature(struct pp_hwmgr *hwmgr, bool
+ 	return 0;
+ }
+ 
++static void vega10_populate_umdpstate_clocks(struct pp_hwmgr *hwmgr)
++{
++	struct phm_ppt_v2_information *table_info =
++			(struct phm_ppt_v2_information *)(hwmgr->pptable);
++
++	if (table_info->vdd_dep_on_sclk->count > VEGA10_UMD_PSTATE_GFXCLK_LEVEL &&
++	    table_info->vdd_dep_on_mclk->count > VEGA10_UMD_PSTATE_MCLK_LEVEL) {
++		hwmgr->pstate_sclk = table_info->vdd_dep_on_sclk->entries[VEGA10_UMD_PSTATE_GFXCLK_LEVEL].clk;
++		hwmgr->pstate_mclk = table_info->vdd_dep_on_mclk->entries[VEGA10_UMD_PSTATE_MCLK_LEVEL].clk;
++	} else {
++		hwmgr->pstate_sclk = table_info->vdd_dep_on_sclk->entries[0].clk;
++		hwmgr->pstate_mclk = table_info->vdd_dep_on_mclk->entries[0].clk;
++	}
++
++	hwmgr->pstate_sclk_peak = table_info->vdd_dep_on_sclk->entries[table_info->vdd_dep_on_sclk->count - 1].clk;
++	hwmgr->pstate_mclk_peak = table_info->vdd_dep_on_mclk->entries[table_info->vdd_dep_on_mclk->count - 1].clk;
++
++	/* make sure the output is in Mhz */
++	hwmgr->pstate_sclk /= 100;
++	hwmgr->pstate_mclk /= 100;
++	hwmgr->pstate_sclk_peak /= 100;
++	hwmgr->pstate_mclk_peak /= 100;
++}
++
+ static int vega10_enable_dpm_tasks(struct pp_hwmgr *hwmgr)
  {
  	struct vega10_hwmgr *data = hwmgr->backend;
- 	PPTable_t *pp_table = &(data->smc_state_table.pp_table);
-+	struct phm_ppt_v2_information *pp_table_info =
-+		(struct phm_ppt_v2_information *)(hwmgr->pptable);
-+	struct phm_tdp_table *tdp_table = pp_table_info->tdp_table;
+@@ -3082,6 +3106,8 @@ static int vega10_enable_dpm_tasks(struct pp_hwmgr *hwmgr)
+ 				    result = tmp_result);
+ 	}
  
- 	memcpy(thermal_data, &SMU7ThermalWithDelayPolicy[0], sizeof(struct PP_TemperatureRange));
- 
-@@ -5237,6 +5240,13 @@ static int vega10_get_thermal_temperature_range(struct pp_hwmgr *hwmgr,
- 	thermal_data->mem_emergency_max = (pp_table->ThbmLimit + CTF_OFFSET_HBM)*
- 		PP_TEMPERATURE_UNITS_PER_CENTIGRADES;
- 
-+	if (tdp_table->usSoftwareShutdownTemp > pp_table->ThotspotLimit &&
-+	    tdp_table->usSoftwareShutdownTemp < VEGA10_THERMAL_MAXIMUM_ALERT_TEMP)
-+		thermal_data->sw_ctf_threshold = tdp_table->usSoftwareShutdownTemp;
-+	else
-+		thermal_data->sw_ctf_threshold = VEGA10_THERMAL_MAXIMUM_ALERT_TEMP;
-+	thermal_data->sw_ctf_threshold *= PP_TEMPERATURE_UNITS_PER_CENTIGRADES;
++	vega10_populate_umdpstate_clocks(hwmgr);
 +
- 	return 0;
+ 	return result;
  }
  
+@@ -4169,8 +4195,6 @@ static int vega10_get_profiling_clk_mask(struct pp_hwmgr *hwmgr, enum amd_dpm_fo
+ 		*sclk_mask = VEGA10_UMD_PSTATE_GFXCLK_LEVEL;
+ 		*soc_mask = VEGA10_UMD_PSTATE_SOCCLK_LEVEL;
+ 		*mclk_mask = VEGA10_UMD_PSTATE_MCLK_LEVEL;
+-		hwmgr->pstate_sclk = table_info->vdd_dep_on_sclk->entries[VEGA10_UMD_PSTATE_GFXCLK_LEVEL].clk;
+-		hwmgr->pstate_mclk = table_info->vdd_dep_on_mclk->entries[VEGA10_UMD_PSTATE_MCLK_LEVEL].clk;
+ 	}
+ 
+ 	if (level == AMD_DPM_FORCED_LEVEL_PROFILE_MIN_SCLK) {
+@@ -4281,9 +4305,6 @@ static int vega10_dpm_force_dpm_level(struct pp_hwmgr *hwmgr,
+ 	uint32_t mclk_mask = 0;
+ 	uint32_t soc_mask = 0;
+ 
+-	if (hwmgr->pstate_sclk == 0)
+-		vega10_get_profiling_clk_mask(hwmgr, level, &sclk_mask, &mclk_mask, &soc_mask);
+-
+ 	switch (level) {
+ 	case AMD_DPM_FORCED_LEVEL_HIGH:
+ 		ret = vega10_force_dpm_highest(hwmgr);
 diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega12_hwmgr.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega12_hwmgr.c
-index a2f4d6773d45..0fe821dff0a4 100644
+index 0fe821dff0a4..1069eaaae2f8 100644
 --- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega12_hwmgr.c
 +++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega12_hwmgr.c
-@@ -2742,6 +2742,8 @@ static int vega12_notify_cac_buffer_info(struct pp_hwmgr *hwmgr,
- static int vega12_get_thermal_temperature_range(struct pp_hwmgr *hwmgr,
- 		struct PP_TemperatureRange *thermal_data)
- {
-+	struct phm_ppt_v3_information *pptable_information =
-+		(struct phm_ppt_v3_information *)hwmgr->pptable;
- 	struct vega12_hwmgr *data =
- 			(struct vega12_hwmgr *)(hwmgr->backend);
- 	PPTable_t *pp_table = &(data->smc_state_table.pp_table);
-@@ -2760,6 +2762,8 @@ static int vega12_get_thermal_temperature_range(struct pp_hwmgr *hwmgr,
- 		PP_TEMPERATURE_UNITS_PER_CENTIGRADES;
- 	thermal_data->mem_emergency_max = (pp_table->ThbmLimit + CTF_OFFSET_HBM)*
- 		PP_TEMPERATURE_UNITS_PER_CENTIGRADES;
-+	thermal_data->sw_ctf_threshold = pptable_information->us_software_shutdown_temp *
-+		PP_TEMPERATURE_UNITS_PER_CENTIGRADES;
- 
+@@ -1026,6 +1026,25 @@ static int vega12_get_all_clock_ranges(struct pp_hwmgr *hwmgr)
  	return 0;
  }
+ 
++static void vega12_populate_umdpstate_clocks(struct pp_hwmgr *hwmgr)
++{
++	struct vega12_hwmgr *data = (struct vega12_hwmgr *)(hwmgr->backend);
++	struct vega12_single_dpm_table *gfx_dpm_table = &(data->dpm_table.gfx_table);
++	struct vega12_single_dpm_table *mem_dpm_table = &(data->dpm_table.mem_table);
++
++	if (gfx_dpm_table->count > VEGA12_UMD_PSTATE_GFXCLK_LEVEL &&
++	    mem_dpm_table->count > VEGA12_UMD_PSTATE_MCLK_LEVEL) {
++		hwmgr->pstate_sclk = gfx_dpm_table->dpm_levels[VEGA12_UMD_PSTATE_GFXCLK_LEVEL].value;
++		hwmgr->pstate_mclk = mem_dpm_table->dpm_levels[VEGA12_UMD_PSTATE_MCLK_LEVEL].value;
++	} else {
++		hwmgr->pstate_sclk = gfx_dpm_table->dpm_levels[0].value;
++		hwmgr->pstate_mclk = mem_dpm_table->dpm_levels[0].value;
++	}
++
++	hwmgr->pstate_sclk_peak = gfx_dpm_table->dpm_levels[gfx_dpm_table->count].value;
++	hwmgr->pstate_mclk_peak = mem_dpm_table->dpm_levels[mem_dpm_table->count].value;
++}
++
+ static int vega12_enable_dpm_tasks(struct pp_hwmgr *hwmgr)
+ {
+ 	int tmp_result, result = 0;
+@@ -1077,6 +1096,9 @@ static int vega12_enable_dpm_tasks(struct pp_hwmgr *hwmgr)
+ 	PP_ASSERT_WITH_CODE(!result,
+ 			"Failed to setup default DPM tables!",
+ 			return result);
++
++	vega12_populate_umdpstate_clocks(hwmgr);
++
+ 	return result;
+ }
+ 
 diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega20_hwmgr.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega20_hwmgr.c
-index b30684c84e20..8e4743cb7443 100644
+index 8e4743cb7443..ff77a3683efd 100644
 --- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega20_hwmgr.c
 +++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega20_hwmgr.c
-@@ -4213,6 +4213,8 @@ static int vega20_notify_cac_buffer_info(struct pp_hwmgr *hwmgr,
- static int vega20_get_thermal_temperature_range(struct pp_hwmgr *hwmgr,
- 		struct PP_TemperatureRange *thermal_data)
- {
-+	struct phm_ppt_v3_information *pptable_information =
-+		(struct phm_ppt_v3_information *)hwmgr->pptable;
- 	struct vega20_hwmgr *data =
- 			(struct vega20_hwmgr *)(hwmgr->backend);
- 	PPTable_t *pp_table = &(data->smc_state_table.pp_table);
-@@ -4231,6 +4233,8 @@ static int vega20_get_thermal_temperature_range(struct pp_hwmgr *hwmgr,
- 		PP_TEMPERATURE_UNITS_PER_CENTIGRADES;
- 	thermal_data->mem_emergency_max = (pp_table->ThbmLimit + CTF_OFFSET_HBM)*
- 		PP_TEMPERATURE_UNITS_PER_CENTIGRADES;
-+	thermal_data->sw_ctf_threshold = pptable_information->us_software_shutdown_temp *
-+		PP_TEMPERATURE_UNITS_PER_CENTIGRADES;
- 
+@@ -1555,26 +1555,23 @@ static int vega20_set_mclk_od(
  	return 0;
  }
-diff --git a/drivers/gpu/drm/amd/pm/powerplay/inc/power_state.h b/drivers/gpu/drm/amd/pm/powerplay/inc/power_state.h
-index a5f2227a3971..0ffc2347829d 100644
---- a/drivers/gpu/drm/amd/pm/powerplay/inc/power_state.h
-+++ b/drivers/gpu/drm/amd/pm/powerplay/inc/power_state.h
-@@ -131,6 +131,7 @@ struct PP_TemperatureRange {
- 	int mem_min;
- 	int mem_crit_max;
- 	int mem_emergency_max;
-+	int sw_ctf_threshold;
+ 
+-static int vega20_populate_umdpstate_clocks(
+-		struct pp_hwmgr *hwmgr)
++static void vega20_populate_umdpstate_clocks(struct pp_hwmgr *hwmgr)
+ {
+ 	struct vega20_hwmgr *data = (struct vega20_hwmgr *)(hwmgr->backend);
+ 	struct vega20_single_dpm_table *gfx_table = &(data->dpm_table.gfx_table);
+ 	struct vega20_single_dpm_table *mem_table = &(data->dpm_table.mem_table);
+ 
+-	hwmgr->pstate_sclk = gfx_table->dpm_levels[0].value;
+-	hwmgr->pstate_mclk = mem_table->dpm_levels[0].value;
+-
+ 	if (gfx_table->count > VEGA20_UMD_PSTATE_GFXCLK_LEVEL &&
+ 	    mem_table->count > VEGA20_UMD_PSTATE_MCLK_LEVEL) {
+ 		hwmgr->pstate_sclk = gfx_table->dpm_levels[VEGA20_UMD_PSTATE_GFXCLK_LEVEL].value;
+ 		hwmgr->pstate_mclk = mem_table->dpm_levels[VEGA20_UMD_PSTATE_MCLK_LEVEL].value;
++	} else {
++		hwmgr->pstate_sclk = gfx_table->dpm_levels[0].value;
++		hwmgr->pstate_mclk = mem_table->dpm_levels[0].value;
+ 	}
+ 
+-	hwmgr->pstate_sclk = hwmgr->pstate_sclk * 100;
+-	hwmgr->pstate_mclk = hwmgr->pstate_mclk * 100;
+-
+-	return 0;
++	hwmgr->pstate_sclk_peak = gfx_table->dpm_levels[gfx_table->count - 1].value;
++	hwmgr->pstate_mclk_peak = mem_table->dpm_levels[mem_table->count - 1].value;
+ }
+ 
+ static int vega20_get_max_sustainable_clock(struct pp_hwmgr *hwmgr,
+@@ -1753,10 +1750,7 @@ static int vega20_enable_dpm_tasks(struct pp_hwmgr *hwmgr)
+ 			"[EnableDPMTasks] Failed to initialize odn settings!",
+ 			return result);
+ 
+-	result = vega20_populate_umdpstate_clocks(hwmgr);
+-	PP_ASSERT_WITH_CODE(!result,
+-			"[EnableDPMTasks] Failed to populate umdpstate clocks!",
+-			return result);
++	vega20_populate_umdpstate_clocks(hwmgr);
+ 
+ 	result = smum_send_msg_to_smc_with_parameter(hwmgr, PPSMC_MSG_GetPptLimit,
+ 			POWER_SOURCE_AC << 16, &hwmgr->default_power_limit);
+diff --git a/drivers/gpu/drm/amd/pm/powerplay/inc/hwmgr.h b/drivers/gpu/drm/amd/pm/powerplay/inc/hwmgr.h
+index 27f8d0e0e6a8..5ce433e2c16a 100644
+--- a/drivers/gpu/drm/amd/pm/powerplay/inc/hwmgr.h
++++ b/drivers/gpu/drm/amd/pm/powerplay/inc/hwmgr.h
+@@ -809,6 +809,8 @@ struct pp_hwmgr {
+ 	uint32_t workload_prority[Workload_Policy_Max];
+ 	uint32_t workload_setting[Workload_Policy_Max];
+ 	bool gfxoff_state_changed_by_workload;
++	uint32_t pstate_sclk_peak;
++	uint32_t pstate_mclk_peak;
  };
  
- struct PP_StateValidationBlock {
+ int hwmgr_early_init(struct pp_hwmgr *hwmgr);
 -- 
 2.34.1
 
