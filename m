@@ -2,118 +2,87 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CBE3B779802
-	for <lists+stable@lfdr.de>; Fri, 11 Aug 2023 22:02:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5CCEA779871
+	for <lists+stable@lfdr.de>; Fri, 11 Aug 2023 22:19:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234530AbjHKUCA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 11 Aug 2023 16:02:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39776 "EHLO
+        id S229959AbjHKUTp (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 11 Aug 2023 16:19:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40768 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229719AbjHKUCA (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 11 Aug 2023 16:02:00 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 746F930DE;
-        Fri, 11 Aug 2023 13:01:59 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0A738647AF;
-        Fri, 11 Aug 2023 20:01:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D64BC433C8;
-        Fri, 11 Aug 2023 20:01:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1691784118;
-        bh=UGeRy4kLv1Yj8E1RIf2OqaKJS9+bUxuImBDCoJL5HU0=;
-        h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-        b=H8miYJcl51YWHF2csAydYJQUkKKHzXsVUALhwxhFOTo4h9lyerhLx6EGirlj2N4i+
-         uWFG5gYxZ9SsZ7zWmiHt9SwND5jlo4rVikcBUn6m0nnbuNaLtcFRWeNsKxMzB3wFhT
-         qYswuT77+lkervYtfN+kTXtbb5mzQVafF8f3hzIDunNw6V3FnVpLTcnKjFAjCJtSCM
-         ekElFAgbpMStakJ1xm43G/nyKTC8GqG+UgsNlbtt4Yi8mLFmdvnbMcombOxoGWzZRz
-         MM0/lTfdeeOoWrMRi2ueRTg7C+ebUuJwZoCnNXKLRS0W6NN4cd+X8GM8kdfgUxAe3B
-         EWoTCokoWI6FQ==
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date:   Fri, 11 Aug 2023 23:01:53 +0300
-Message-Id: <CUPZF09RGD86.VQN9BOMEYZX5@suppilovahvero>
-Subject: Re: [PATCH v2 1/2] tpm/tpm_tis: Disable interrupts for Framework
- Laptop Intel 12th gen
-From:   "Jarkko Sakkinen" <jarkko@kernel.org>
-To:     "Grundik" <ggrundik@gmail.com>,
-        "Thorsten Leemhuis" <regressions@leemhuis.info>,
-        "Lino Sanfilippo" <LinoSanfilippo@gmx.de>
-Cc:     "Linux kernel regressions list" <regressions@lists.linux.dev>,
-        "Peter Huewe" <peterhuewe@gmx.de>,
-        "Christian Hesse" <mail@eworm.de>, <stable@vger.kernel.org>,
-        <roubro1991@gmail.com>,
-        "Linus Torvalds" <torvalds@linux-foundation.org>,
-        "Christian Hesse" <list@eworm.de>,
-        <linux-integrity@vger.kernel.org>
-X-Mailer: aerc 0.14.0
-References: <20230710133836.4367-1-mail@eworm.de>
- <20230710142916.18162-1-mail@eworm.de>
- <20230710231315.4ef54679@leda.eworm.net>
- <bd0587e16d55ef38277ab1f6169909ae7cde3542.camel@kernel.org>
- <bb5580e93d244400c3330d7091bf64868aa2053f.camel@gmail.com>
- <0f272843a33a1706dbcbb2d84b02e3951ee60cbb.camel@kernel.org>
- <fdd5fd9ece045ebd1888672a75f157e64ade98fb.camel@gmail.com>
- <a588d1d3-12e0-b078-b6cc-b0a63c54ab37@leemhuis.info>
- <CUPW0XP1RFXI.162GZ78E46TBJ@suppilovahvero>
- <CUPWEV9HSGHY.MLO0B4RRH4RR@suppilovahvero>
- <5806ebf113d52c660e1c70e8a57cc047ab039aff.camel@gmail.com>
-In-Reply-To: <5806ebf113d52c660e1c70e8a57cc047ab039aff.camel@gmail.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        with ESMTP id S229927AbjHKUTo (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 11 Aug 2023 16:19:44 -0400
+Received: from abi149hd127.arn1.oracleemaildelivery.com (abi149hd127.arn1.oracleemaildelivery.com [129.149.84.127])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33C14D3
+        for <stable@vger.kernel.org>; Fri, 11 Aug 2023 13:19:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=oci-arn1-20220924;
+ d=augustwikerfors.se;
+ h=Date:To:From:Subject:Message-Id:MIME-Version:Sender;
+ bh=UYee5eYiAK39Q1z3nNQNBRUkESDlag9nZFyEI55xUb4=;
+ b=PX+CzZOP3TYoeq/XPPc4KeU/taJiCtEtliip0vS4MaZryizYEnEp5yJEv68I8r1FbRV7hVO1l3N3
+   6H+lmrST4xSxhep31t7zZZJh1Mv1riwNewos1mTsEYhpMVVzIC3gA3LGgNFBzj3AYPkSwX61QQy5
+   QTMjgpBG4GMsz79/GzBSDhJbz9ctqJoohcGg7tdd+ZuFerCVL+ddGkt4dM0QeNRAvwHdyUecJefa
+   L5TJ6VNclbRdaar704a0U6RluBUn6nvZtPyZbtzQ2Los7f13BvCTyMqhKFWohiKHmfFvl4ODlsw4
+   3/g7f/OLajuueRYYzhf4eTND/Y+udqlvJlbdYQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=prod-arn-20211201;
+ d=arn1.rp.oracleemaildelivery.com;
+ h=Date:To:From:Subject:Message-Id:MIME-Version:Sender;
+ bh=UYee5eYiAK39Q1z3nNQNBRUkESDlag9nZFyEI55xUb4=;
+ b=W+3rx2WSYISvmXfUUCd1AylM3T0PMXsoyIBlxYHyZUlYbIsLuh57hR5/woSLh1Ph1kQh44en+LOR
+   RihA1cLXP8kF0n7aZeMwYMev/XpXTen96ukmgqOLXOFRIfxRkPJye9IKQwf3R2WMCs6i93SDrFzk
+   fG7GdFO8oDvmH8JkugqbDyVERNGoscQBnx6MWsdhKtqiP5G3ixQxpbTtirdj1d04b5C4EtbNQOi8
+   qNYvLTMKjDuDXe4R78OqvSYa7MRiZUWQ+nWV2z03a+JV8RTHoWQPj6EAAntlz+IbCcJFoEduCaDN
+   votXaqcBN0dnx+7H/B2PFzniWjzssSFjstTKRg==
+Received: by omta-ad1-fd2-401-eu-stockholm-1.omtaad1.vcndparn.oraclevcn.com
+ (Oracle Communications Messaging Server 8.1.0.1.20230707 64bit (built Jul  7
+ 2023))
+ with ESMTPS id <0RZ80042PTSQFN40@omta-ad1-fd2-401-eu-stockholm-1.omtaad1.vcndparn.oraclevcn.com>
+ for stable@vger.kernel.org; Fri, 11 Aug 2023 20:19:38 +0000 (GMT)
+Message-id: <0f422dbe-2e3f-4401-be87-2963cbbc1234@augustwikerfors.se>
+Date:   Fri, 11 Aug 2023 22:19:35 +0200
+MIME-version: 1.0
+From:   August Wikerfors <git@augustwikerfors.se>
+Subject: Re: [PATCH] nvme: Don't fail to resume if NSIDs change
+To:     stable@vger.kernel.org
+Cc:     Mario Limonciello <mario.limonciello@amd.com>,
+        Keith Busch <kbusch@kernel.org>,
+        Christoph Hellwig <hch@lst.de>, axboe@fb.com, sagi@grimberg.me,
+        linux-nvme@lists.infradead.org, linux-kernel@vger.kernel.org,
+        nilskruse97@gmail.com, David.Chang@amd.com
+References: <20230731185103.18436-1-mario.limonciello@amd.com>
+ <ZMgHE2wu4T4OfrTR@kbusch-mbp>
+ <040c5788-1a7b-26ea-23cc-ba239c76efa9@augustwikerfors.se>
+ <39697f68-9dc8-7692-7210-b75cce32c6ce@amd.com> <20230731201047.GA14034@lst.de>
+ <36319a0f-34a6-9353-bc52-4d4d0fac27a5@amd.com> <20230801112403.GA3972@lst.de>
+ <ae7fb9b2-d692-f9b8-5130-4555cc489846@amd.com>
+ <ZMlrGNw5OMW3yxId@kbusch-mbp.dhcp.thefacebook.com>
+ <b2e741b3-b581-40fe-2c28-e4660f52003d@amd.com>
+Content-language: en-US
+In-reply-to: <b2e741b3-b581-40fe-2c28-e4660f52003d@amd.com>
+Content-type: text/plain; charset=UTF-8; format=flowed
+Content-transfer-encoding: 7bit
+Reporting-Meta: AAE8DGuEMYrf45lHTdh54TgMaNY8+iRJQTe9hY+5T0LFf3+29Cv+oDRjYT9Xx6Yl
+ nrJvLuvW/4wHxW/x225L0uH+OgeGKGJw2N7fIIzJ6UrAKTvXTq8oqNSb5ephTORm
+ gqok+QMQVFWexLo0GnibyzN6oFK/z60vHfIIRIe2/qJiZHMbKl1Hj/W/kUMewVvc
+ P5JrAz61Kd9rfQa9AHbPmryIwcz8VjgGqlMrJfrRdGODoW2Yxx4KWem+V15kz5FW
+ Cf/CCv6d/vNQv/ZtCQMMWAxeXNFKGQMcnoynubaQlGxhLsnZ4mtwsUBPC8kjKp/+
+ oEiEhrFOks/bZIpmTWxhLt4emr0Hc58Eqdbh9m5CuZpY8UmJSj0HKJ+Kc0o4mXCm
+ mv7WtDF9HwRnXbzeBkqzGNEn3iy/UFxUDzzC0wZuVNzx7hK+QR5o0AuwrpO2sQQE neY=
+X-Spam-Status: No, score=-1.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,SPF_HELO_NONE,SPF_PASS,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Fri Aug 11, 2023 at 9:47 PM EEST, Grundik wrote:
-> On Fri, 2023-08-11 at 20:40 +0300, Jarkko Sakkinen wrote:
-> > On Fri Aug 11, 2023 at 8:22 PM EEST, Jarkko Sakkinen wrote:
-> > > On Fri Aug 11, 2023 at 11:18 AM EEST, Thorsten Leemhuis wrote:
-> > >=20
-> > >=20
-> > > I see two long-standing options:
-> > >=20
-> > > A. Move from deny list to allow list when considering using IRQs.
-> > > This
-> > > =C2=A0=C2=A0 can be supplemented with a kernel command-line parameter=
- to
-> > > enforce
-> > > =C2=A0=C2=A0 IRQs and ignore the allow list (and IRQ storm detection =
-provides
-> > > =C2=A0=C2=A0 additional measure in case you try to enforce)
-> > > B. Change deny list to match only vendors for the time being. This
-> > > can
-> > > =C2=A0=C2=A0 be supplemented with a allow list that is processed afte=
-r the
-> > > deny
-> > > =C2=A0=C2=A0 list for models where IRQs are known to work.
-> [...]
-> >=20
-> > This is also super time consuming and takes the focus away from more
-> > important matters (like most likely the AMD rng fix would have gone
-> > smoother without these getting in the way all the time).
->
-> Main problem of any list is maintaining of them. So, I think there
-> should not be any black or white lists at all. Module should work with
-> reasonable default (polling is the one, which lived without problems
-> for years and years due to bug, as I understand), and probably a boot
-> option to force IRQ. Maybe module should warn user to try that option.
->
-> I don't know: is it even worth it to use IRQ, if it so problematic? Are
-> there any significant advantages of that? I understand, polling is a
-> resource consumer, but its just TPM, which is used mainly at the boot
-> time, is it worth it?
+On 2023-08-01 22:34, Mario Limonciello wrote:
+> If you can still change it before sending out can you add a stable tag 
+> as well?
 
-+1
+This didn't get added in time, so, stable team, please backport:
 
-Thanks for sharing your opinion. I'll take the necessary steps.
+688b419c57c1 ("nvme-pci: add NVME_QUIRK_BOGUS_NID for Samsung PM9B1 256G and 512G")
 
-BR, Jarkko
+Regards,
+August Wikerfors
