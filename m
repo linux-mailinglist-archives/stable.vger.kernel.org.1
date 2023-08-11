@@ -2,48 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D529B779312
-	for <lists+stable@lfdr.de>; Fri, 11 Aug 2023 17:28:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2FE8F779314
+	for <lists+stable@lfdr.de>; Fri, 11 Aug 2023 17:29:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234033AbjHKP2k (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 11 Aug 2023 11:28:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43946 "EHLO
+        id S235128AbjHKP3Y (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 11 Aug 2023 11:29:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43216 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236057AbjHKP2j (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 11 Aug 2023 11:28:39 -0400
+        with ESMTP id S234567AbjHKP3Y (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 11 Aug 2023 11:29:24 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D16230CA
-        for <stable@vger.kernel.org>; Fri, 11 Aug 2023 08:28:39 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0F4119A5
+        for <stable@vger.kernel.org>; Fri, 11 Aug 2023 08:29:23 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D6BAB67542
-        for <stable@vger.kernel.org>; Fri, 11 Aug 2023 15:28:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE5BBC433C7;
-        Fri, 11 Aug 2023 15:28:37 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6010367542
+        for <stable@vger.kernel.org>; Fri, 11 Aug 2023 15:29:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73CBDC433C8;
+        Fri, 11 Aug 2023 15:29:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691767718;
-        bh=cVPLCQEZcOF2CPEaXnCDnfwvFz5tTtMXZxVWhmlFDT8=;
+        s=korg; t=1691767762;
+        bh=iJPuWaVvv+0Y/7iG8gaygby0+a4kkALTIY35YXg1QeU=;
         h=Subject:To:Cc:From:Date:From;
-        b=gxYQp3L+I+ldxL5H0Gc0Gb4geUPBIZme/rb6d6NfPmYJrsH+pdscQ6DZfauDvQZlp
-         c2IwJ0qUUusX96fjAGNW8r9rIE5CV+6r0MsawOohjIPX+yrTqAkDbLb4UhBASBGWQZ
-         pV82kkKYPGtX0uIulUSb4vn1HNuHp63HrOqcLr0Y=
-Subject: FAILED: patch "[PATCH] selftests: forwarding: Set default IPv6 traceroute utility" failed to apply to 5.4-stable tree
-To:     idosch@nvidia.com, kuba@kernel.org, liuhangbin@gmail.com,
-        mirsad.todorovac@alu.unizg.hr, petrm@nvidia.com,
-        razor@blackwall.org
+        b=JtwV1seWJKxpunyWdfvS57dTFtLv8dn5AquUWNNO5HW1qIyn2iVvVasWnLamk/vP6
+         9MyPOmebO/lBQeooPNsmCvrxIDGIkFbJdH6x7Jfc6xvk0/XE01jS25/cX3xWImA41w
+         8VRv6NO0mR55ODSVzxBW+J1lsPbqyU/Ht65yY+NQ=
+Subject: FAILED: patch "[PATCH] mmc: sdhci-f-sdh30: Replace with sdhci_pltfm" failed to apply to 6.1-stable tree
+To:     hayashi.kunihiko@socionext.com, adrian.hunter@intel.com,
+        ulf.hansson@linaro.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Fri, 11 Aug 2023 17:28:27 +0200
-Message-ID: <2023081127-cargo-stash-6a41@gregkh>
+Date:   Fri, 11 Aug 2023 17:29:20 +0200
+Message-ID: <2023081119-coke-handoff-8964@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=0.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SORTED_RECIPS,SPF_HELO_NONE,SPF_PASS,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -51,31 +50,23 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
-git cherry-pick -x 38f7c44d6e760a8513557e27340d61b820c91b8f
+git cherry-pick -x 5def5c1c15bf22934ee227af85c1716762f3829f
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023081127-cargo-stash-6a41@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023081119-coke-handoff-8964@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
-38f7c44d6e76 ("selftests: forwarding: Set default IPv6 traceroute utility")
-fe32dffdcd33 ("selftests: forwarding: add TCPDUMP_EXTRA_FLAGS to lib.sh")
-b343734ee265 ("selftests: forwarding: add option to run tests with stable MAC addresses")
-016748961ba5 ("selftests: lib: forwarding: allow tests to not require mz and jq")
-0857d6f8c759 ("ipv6: When forwarding count rx stats on the orig netdev")
-8cd6b020b644 ("selftests: ocelot: add some example VCAP IS1, IS2 and ES0 tc offloads")
-6e701c299469 ("MAINTAINERS: merge entries for felix and ocelot drivers")
-4400b7d68f6e ("MAINTAINERS: sort entries by entry name")
-f365ab31efac ("Merge tag 'drm-next-2020-04-01' of git://anongit.freedesktop.org/drm/drm")
+5def5c1c15bf ("mmc: sdhci-f-sdh30: Replace with sdhci_pltfm")
 
 thanks,
 
@@ -83,59 +74,149 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 38f7c44d6e760a8513557e27340d61b820c91b8f Mon Sep 17 00:00:00 2001
-From: Ido Schimmel <idosch@nvidia.com>
-Date: Tue, 8 Aug 2023 17:14:51 +0300
-Subject: [PATCH] selftests: forwarding: Set default IPv6 traceroute utility
+From 5def5c1c15bf22934ee227af85c1716762f3829f Mon Sep 17 00:00:00 2001
+From: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
+Date: Fri, 30 Jun 2023 09:45:33 +0900
+Subject: [PATCH] mmc: sdhci-f-sdh30: Replace with sdhci_pltfm
 
-The test uses the 'TROUTE6' environment variable to encode the name of
-the IPv6 traceroute utility. By default (without a configuration file),
-this variable is not set, resulting in failures:
+Even if sdhci_pltfm_pmops is specified for PM, this driver doesn't apply
+sdhci_pltfm, so the structure is not correctly referenced in PM functions.
+This applies sdhci_pltfm to this driver to fix this issue.
 
- # ./ip6_forward_instats_vrf.sh
- TEST: ping6                                                         [ OK ]
- TEST: Ip6InTooBigErrors                                             [ OK ]
- TEST: Ip6InHdrErrors                                                [FAIL]
- TEST: Ip6InAddrErrors                                               [ OK ]
- TEST: Ip6InDiscards                                                 [ OK ]
+- Call sdhci_pltfm_init() instead of sdhci_alloc_host() and
+  other functions that covered by sdhci_pltfm.
+- Move ops and quirks to sdhci_pltfm_data
+- Replace sdhci_priv() with own private function sdhci_f_sdh30_priv().
 
-Fix by setting a default utility name and skip the test if the utility
-is not present.
+Fixes: 87a507459f49 ("mmc: sdhci: host: add new f_sdh30")
+Signed-off-by: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20230630004533.26644-1-hayashi.kunihiko@socionext.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 
-Fixes: 0857d6f8c759 ("ipv6: When forwarding count rx stats on the orig netdev")
-Reported-by: Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>
-Closes: https://lore.kernel.org/netdev/adc5e40d-d040-a65e-eb26-edf47dac5b02@alu.unizg.hr/
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: Petr Machata <petrm@nvidia.com>
-Tested-by: Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>
-Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
-Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
-Link: https://lore.kernel.org/r/20230808141503.4060661-6-idosch@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-
-diff --git a/tools/testing/selftests/net/forwarding/ip6_forward_instats_vrf.sh b/tools/testing/selftests/net/forwarding/ip6_forward_instats_vrf.sh
-index 9f5b3e2e5e95..49fa94b53a1c 100755
---- a/tools/testing/selftests/net/forwarding/ip6_forward_instats_vrf.sh
-+++ b/tools/testing/selftests/net/forwarding/ip6_forward_instats_vrf.sh
-@@ -14,6 +14,8 @@ ALL_TESTS="
- NUM_NETIFS=4
- source lib.sh
+diff --git a/drivers/mmc/host/sdhci_f_sdh30.c b/drivers/mmc/host/sdhci_f_sdh30.c
+index a202a69a4b08..b01ffb4d0973 100644
+--- a/drivers/mmc/host/sdhci_f_sdh30.c
++++ b/drivers/mmc/host/sdhci_f_sdh30.c
+@@ -29,9 +29,16 @@ struct f_sdhost_priv {
+ 	bool enable_cmd_dat_delay;
+ };
  
-+require_command $TROUTE6
++static void *sdhci_f_sdhost_priv(struct sdhci_host *host)
++{
++	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
 +
- h1_create()
++	return sdhci_pltfm_priv(pltfm_host);
++}
++
+ static void sdhci_f_sdh30_soft_voltage_switch(struct sdhci_host *host)
  {
- 	simple_if_init $h1 2001:1:1::2/64
-diff --git a/tools/testing/selftests/net/forwarding/lib.sh b/tools/testing/selftests/net/forwarding/lib.sh
-index 975fc5168c63..40a8c1541b7f 100755
---- a/tools/testing/selftests/net/forwarding/lib.sh
-+++ b/tools/testing/selftests/net/forwarding/lib.sh
-@@ -30,6 +30,7 @@ REQUIRE_MZ=${REQUIRE_MZ:=yes}
- REQUIRE_MTOOLS=${REQUIRE_MTOOLS:=no}
- STABLE_MAC_ADDRS=${STABLE_MAC_ADDRS:=no}
- TCPDUMP_EXTRA_FLAGS=${TCPDUMP_EXTRA_FLAGS:=}
-+TROUTE6=${TROUTE6:=traceroute6}
+-	struct f_sdhost_priv *priv = sdhci_priv(host);
++	struct f_sdhost_priv *priv = sdhci_f_sdhost_priv(host);
+ 	u32 ctrl = 0;
  
- relative_path="${BASH_SOURCE%/*}"
- if [[ "$relative_path" == "${BASH_SOURCE}" ]]; then
+ 	usleep_range(2500, 3000);
+@@ -64,7 +71,7 @@ static unsigned int sdhci_f_sdh30_get_min_clock(struct sdhci_host *host)
+ 
+ static void sdhci_f_sdh30_reset(struct sdhci_host *host, u8 mask)
+ {
+-	struct f_sdhost_priv *priv = sdhci_priv(host);
++	struct f_sdhost_priv *priv = sdhci_f_sdhost_priv(host);
+ 	u32 ctl;
+ 
+ 	if (sdhci_readw(host, SDHCI_CLOCK_CONTROL) == 0)
+@@ -95,30 +102,32 @@ static const struct sdhci_ops sdhci_f_sdh30_ops = {
+ 	.set_uhs_signaling = sdhci_set_uhs_signaling,
+ };
+ 
++static const struct sdhci_pltfm_data sdhci_f_sdh30_pltfm_data = {
++	.ops = &sdhci_f_sdh30_ops,
++	.quirks = SDHCI_QUIRK_NO_ENDATTR_IN_NOPDESC
++		| SDHCI_QUIRK_INVERTED_WRITE_PROTECT,
++	.quirks2 = SDHCI_QUIRK2_SUPPORT_SINGLE
++		|  SDHCI_QUIRK2_TUNING_WORK_AROUND,
++};
++
+ static int sdhci_f_sdh30_probe(struct platform_device *pdev)
+ {
+ 	struct sdhci_host *host;
+ 	struct device *dev = &pdev->dev;
+-	int irq, ctrl = 0, ret = 0;
++	int ctrl = 0, ret = 0;
+ 	struct f_sdhost_priv *priv;
++	struct sdhci_pltfm_host *pltfm_host;
+ 	u32 reg = 0;
+ 
+-	irq = platform_get_irq(pdev, 0);
+-	if (irq < 0)
+-		return irq;
+-
+-	host = sdhci_alloc_host(dev, sizeof(struct f_sdhost_priv));
++	host = sdhci_pltfm_init(pdev, &sdhci_f_sdh30_pltfm_data,
++				sizeof(struct f_sdhost_priv));
+ 	if (IS_ERR(host))
+ 		return PTR_ERR(host);
+ 
+-	priv = sdhci_priv(host);
++	pltfm_host = sdhci_priv(host);
++	priv = sdhci_pltfm_priv(pltfm_host);
+ 	priv->dev = dev;
+ 
+-	host->quirks = SDHCI_QUIRK_NO_ENDATTR_IN_NOPDESC |
+-		       SDHCI_QUIRK_INVERTED_WRITE_PROTECT;
+-	host->quirks2 = SDHCI_QUIRK2_SUPPORT_SINGLE |
+-			SDHCI_QUIRK2_TUNING_WORK_AROUND;
+-
+ 	priv->enable_cmd_dat_delay = device_property_read_bool(dev,
+ 						"fujitsu,cmd-dat-delay-select");
+ 
+@@ -126,18 +135,6 @@ static int sdhci_f_sdh30_probe(struct platform_device *pdev)
+ 	if (ret)
+ 		goto err;
+ 
+-	platform_set_drvdata(pdev, host);
+-
+-	host->hw_name = "f_sdh30";
+-	host->ops = &sdhci_f_sdh30_ops;
+-	host->irq = irq;
+-
+-	host->ioaddr = devm_platform_ioremap_resource(pdev, 0);
+-	if (IS_ERR(host->ioaddr)) {
+-		ret = PTR_ERR(host->ioaddr);
+-		goto err;
+-	}
+-
+ 	if (dev_of_node(dev)) {
+ 		sdhci_get_of_property(pdev);
+ 
+@@ -204,24 +201,21 @@ static int sdhci_f_sdh30_probe(struct platform_device *pdev)
+ err_clk:
+ 	clk_disable_unprepare(priv->clk_iface);
+ err:
+-	sdhci_free_host(host);
++	sdhci_pltfm_free(pdev);
++
+ 	return ret;
+ }
+ 
+ static int sdhci_f_sdh30_remove(struct platform_device *pdev)
+ {
+ 	struct sdhci_host *host = platform_get_drvdata(pdev);
+-	struct f_sdhost_priv *priv = sdhci_priv(host);
+-
+-	sdhci_remove_host(host, readl(host->ioaddr + SDHCI_INT_STATUS) ==
+-			  0xffffffff);
++	struct f_sdhost_priv *priv = sdhci_f_sdhost_priv(host);
+ 
+ 	reset_control_assert(priv->rst);
+ 	clk_disable_unprepare(priv->clk);
+ 	clk_disable_unprepare(priv->clk_iface);
+ 
+-	sdhci_free_host(host);
+-	platform_set_drvdata(pdev, NULL);
++	sdhci_pltfm_unregister(pdev);
+ 
+ 	return 0;
+ }
 
