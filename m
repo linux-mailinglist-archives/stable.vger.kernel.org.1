@@ -2,92 +2,78 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8111C7798A5
-	for <lists+stable@lfdr.de>; Fri, 11 Aug 2023 22:37:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9EFE977990C
+	for <lists+stable@lfdr.de>; Fri, 11 Aug 2023 22:59:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232779AbjHKUhN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 11 Aug 2023 16:37:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51506 "EHLO
+        id S229802AbjHKU7x (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 11 Aug 2023 16:59:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56350 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229771AbjHKUhN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 11 Aug 2023 16:37:13 -0400
-Received: from madras.collabora.co.uk (madras.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e5ab])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71345120;
-        Fri, 11 Aug 2023 13:37:12 -0700 (PDT)
-Received: from localhost (unknown [86.122.17.29])
+        with ESMTP id S231634AbjHKU7w (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 11 Aug 2023 16:59:52 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5CB5035AC;
+        Fri, 11 Aug 2023 13:59:37 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        (Authenticated sender: cristicc)
-        by madras.collabora.co.uk (Postfix) with ESMTPSA id 659C266071A1;
-        Fri, 11 Aug 2023 21:37:10 +0100 (BST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1691786230;
-        bh=mtF0mCsh4R/MZePtjuIheuk3+v28lUM1yrXv3yXp1jQ=;
-        h=From:To:Cc:Subject:Date:From;
-        b=dzFp1qFm0XV6kq4YGRuxCTmeLxZ7DiFsmH45CbDchgvXl46jP8q7mg7X1enhBaM37
-         ucvVjNcMBgZ/g0znpcLqLevXgpAB34ZaTFL+aYPTolEMGrS3SEJoceCaNjFARafEXy
-         kZ/p/AgECnLWDy/B4pk/EU475IM4zKsPZmNXxeK0T80+YtgOanxaaz1fOVq7GnDtbq
-         TPzvFHY9ieXOuVg/5MrUa/z86aNRN5Gxj8MUOO01n8hRxgaL/dUtwKjj0cuNio4Xa5
-         Nm/b6qUiC7uwcXcMtEhK90Mg1pMPDv69dNESTJ/iragpDTox4RsZh6QAH5RPFw/32k
-         B2Z/s3ZAOS/mQ==
-From:   Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
-To:     Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Alexey Kardashevskiy <aik@amd.com>,
-        "Jason A. Donenfeld" <Jason@zx2c4.com>,
-        Chuck Lever <chuck.lever@oracle.com>,
-        Juergen Gross <jgross@suse.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Kim Phillips <kim.phillips@amd.com>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Andrew Cooper <andrew.cooper3@citrix.com>
-Cc:     x86@kernel.org, linux-kernel@vger.kernel.org, kernel@collabora.com,
-        stable@vger.kernel.org
-Subject: [PATCH] x86/cpu/amd: Enable Zenbleed fix for AMD Custom APU 0405
-Date:   Fri, 11 Aug 2023 23:37:05 +0300
-Message-ID: <20230811203705.1699914-1-cristian.ciocaltea@collabora.com>
-X-Mailer: git-send-email 2.41.0
+        by dfw.source.kernel.org (Postfix) with ESMTPS id F0E2965AA5;
+        Fri, 11 Aug 2023 20:59:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0393C433C7;
+        Fri, 11 Aug 2023 20:59:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1691787576;
+        bh=kdOkYOLUIHXvpGrXXLNbvMVFBY5bjHVGpejjL6TXi+w=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=UdYSsKSDT5puBMDQgCfso6AoxmNYinDHjhuqqDe0ajCer3AbOx8YVG8iQi3HsMbV+
+         o57KmNkTGERDZIVfzA2xXXI9PFMJuhaRDLa68W5mvO/XcF/8UNghtfLdyGab0cbYfQ
+         GiYVsHpCdhyjR+aTo3GPhp+Ev/fsfTtf1zq2O3sYqetbmtCT6KIAHTFYtUH53IMABj
+         7R9Pm2I5bYbN9QaX/mdlKvL+8f3l7rOvJmi1RmfX3E9wMdxO2xssUlWG6oi1j+qGXZ
+         WhnObYYeFf+8HK7QXm3zweML0JPQc6s2Kq0fdfvQuzzdt0OURKyHP9CxlB0a/drdky
+         WRq50273Bcwgw==
+Date:   Fri, 11 Aug 2023 14:59:33 -0600
+From:   Keith Busch <kbusch@kernel.org>
+To:     August Wikerfors <git@augustwikerfors.se>
+Cc:     stable@vger.kernel.org,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        Christoph Hellwig <hch@lst.de>, axboe@fb.com, sagi@grimberg.me,
+        linux-nvme@lists.infradead.org, linux-kernel@vger.kernel.org,
+        nilskruse97@gmail.com, David.Chang@amd.com
+Subject: Re: [PATCH] nvme: Don't fail to resume if NSIDs change
+Message-ID: <ZNahNYGd3L8YYtiQ@kbusch-mbp.dhcp.thefacebook.com>
+References: <ZMgHE2wu4T4OfrTR@kbusch-mbp>
+ <040c5788-1a7b-26ea-23cc-ba239c76efa9@augustwikerfors.se>
+ <39697f68-9dc8-7692-7210-b75cce32c6ce@amd.com>
+ <20230731201047.GA14034@lst.de>
+ <36319a0f-34a6-9353-bc52-4d4d0fac27a5@amd.com>
+ <20230801112403.GA3972@lst.de>
+ <ae7fb9b2-d692-f9b8-5130-4555cc489846@amd.com>
+ <ZMlrGNw5OMW3yxId@kbusch-mbp.dhcp.thefacebook.com>
+ <b2e741b3-b581-40fe-2c28-e4660f52003d@amd.com>
+ <0f422dbe-2e3f-4401-be87-2963cbbc1234@augustwikerfors.se>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <0f422dbe-2e3f-4401-be87-2963cbbc1234@augustwikerfors.se>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Commit 522b1d69219d ("x86/cpu/amd: Add a Zenbleed fix") provided a fix
-for the Zen2 VZEROUPPER data corruption bug affecting a range of CPU
-models, but the AMD Custom APU 0405 found on SteamDeck was not listed,
-although it is clearly affected by the vulnerability.
+On Fri, Aug 11, 2023 at 10:19:35PM +0200, August Wikerfors wrote:
+> On 2023-08-01 22:34, Mario Limonciello wrote:
+> > If you can still change it before sending out can you add a stable tag
+> > as well?
+> 
+> This didn't get added in time, so, stable team, please backport:
+> 
+> 688b419c57c1 ("nvme-pci: add NVME_QUIRK_BOGUS_NID for Samsung PM9B1 256G and 512G")
 
-Add this CPU variant to the Zenbleed erratum list, in order to
-unconditionally enable the fallback fix until a proper microcode update
-is available.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
----
- arch/x86/kernel/cpu/amd.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/arch/x86/kernel/cpu/amd.c b/arch/x86/kernel/cpu/amd.c
-index b55d8f82b621..70f9d56f9305 100644
---- a/arch/x86/kernel/cpu/amd.c
-+++ b/arch/x86/kernel/cpu/amd.c
-@@ -73,6 +73,7 @@ static const int amd_erratum_1054[] =
- static const int amd_zenbleed[] =
- 	AMD_LEGACY_ERRATUM(AMD_MODEL_RANGE(0x17, 0x30, 0x0, 0x4f, 0xf),
- 			   AMD_MODEL_RANGE(0x17, 0x60, 0x0, 0x7f, 0xf),
-+			   AMD_MODEL_RANGE(0x17, 0x90, 0x0, 0x91, 0xf),
- 			   AMD_MODEL_RANGE(0x17, 0xa0, 0x0, 0xaf, 0xf));
- 
- static const int amd_div0[] =
--- 
-2.41.0
-
+Perhaps bad form on my end for relying on it, but in my experience, the
+stable bot has a great record on auto selecting nvme quirks.
