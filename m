@@ -2,87 +2,92 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5CCEA779871
-	for <lists+stable@lfdr.de>; Fri, 11 Aug 2023 22:19:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8111C7798A5
+	for <lists+stable@lfdr.de>; Fri, 11 Aug 2023 22:37:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229959AbjHKUTp (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 11 Aug 2023 16:19:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40768 "EHLO
+        id S232779AbjHKUhN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 11 Aug 2023 16:37:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51506 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229927AbjHKUTo (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 11 Aug 2023 16:19:44 -0400
-Received: from abi149hd127.arn1.oracleemaildelivery.com (abi149hd127.arn1.oracleemaildelivery.com [129.149.84.127])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33C14D3
-        for <stable@vger.kernel.org>; Fri, 11 Aug 2023 13:19:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=oci-arn1-20220924;
- d=augustwikerfors.se;
- h=Date:To:From:Subject:Message-Id:MIME-Version:Sender;
- bh=UYee5eYiAK39Q1z3nNQNBRUkESDlag9nZFyEI55xUb4=;
- b=PX+CzZOP3TYoeq/XPPc4KeU/taJiCtEtliip0vS4MaZryizYEnEp5yJEv68I8r1FbRV7hVO1l3N3
-   6H+lmrST4xSxhep31t7zZZJh1Mv1riwNewos1mTsEYhpMVVzIC3gA3LGgNFBzj3AYPkSwX61QQy5
-   QTMjgpBG4GMsz79/GzBSDhJbz9ctqJoohcGg7tdd+ZuFerCVL+ddGkt4dM0QeNRAvwHdyUecJefa
-   L5TJ6VNclbRdaar704a0U6RluBUn6nvZtPyZbtzQ2Los7f13BvCTyMqhKFWohiKHmfFvl4ODlsw4
-   3/g7f/OLajuueRYYzhf4eTND/Y+udqlvJlbdYQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=prod-arn-20211201;
- d=arn1.rp.oracleemaildelivery.com;
- h=Date:To:From:Subject:Message-Id:MIME-Version:Sender;
- bh=UYee5eYiAK39Q1z3nNQNBRUkESDlag9nZFyEI55xUb4=;
- b=W+3rx2WSYISvmXfUUCd1AylM3T0PMXsoyIBlxYHyZUlYbIsLuh57hR5/woSLh1Ph1kQh44en+LOR
-   RihA1cLXP8kF0n7aZeMwYMev/XpXTen96ukmgqOLXOFRIfxRkPJye9IKQwf3R2WMCs6i93SDrFzk
-   fG7GdFO8oDvmH8JkugqbDyVERNGoscQBnx6MWsdhKtqiP5G3ixQxpbTtirdj1d04b5C4EtbNQOi8
-   qNYvLTMKjDuDXe4R78OqvSYa7MRiZUWQ+nWV2z03a+JV8RTHoWQPj6EAAntlz+IbCcJFoEduCaDN
-   votXaqcBN0dnx+7H/B2PFzniWjzssSFjstTKRg==
-Received: by omta-ad1-fd2-401-eu-stockholm-1.omtaad1.vcndparn.oraclevcn.com
- (Oracle Communications Messaging Server 8.1.0.1.20230707 64bit (built Jul  7
- 2023))
- with ESMTPS id <0RZ80042PTSQFN40@omta-ad1-fd2-401-eu-stockholm-1.omtaad1.vcndparn.oraclevcn.com>
- for stable@vger.kernel.org; Fri, 11 Aug 2023 20:19:38 +0000 (GMT)
-Message-id: <0f422dbe-2e3f-4401-be87-2963cbbc1234@augustwikerfors.se>
-Date:   Fri, 11 Aug 2023 22:19:35 +0200
-MIME-version: 1.0
-From:   August Wikerfors <git@augustwikerfors.se>
-Subject: Re: [PATCH] nvme: Don't fail to resume if NSIDs change
-To:     stable@vger.kernel.org
-Cc:     Mario Limonciello <mario.limonciello@amd.com>,
-        Keith Busch <kbusch@kernel.org>,
-        Christoph Hellwig <hch@lst.de>, axboe@fb.com, sagi@grimberg.me,
-        linux-nvme@lists.infradead.org, linux-kernel@vger.kernel.org,
-        nilskruse97@gmail.com, David.Chang@amd.com
-References: <20230731185103.18436-1-mario.limonciello@amd.com>
- <ZMgHE2wu4T4OfrTR@kbusch-mbp>
- <040c5788-1a7b-26ea-23cc-ba239c76efa9@augustwikerfors.se>
- <39697f68-9dc8-7692-7210-b75cce32c6ce@amd.com> <20230731201047.GA14034@lst.de>
- <36319a0f-34a6-9353-bc52-4d4d0fac27a5@amd.com> <20230801112403.GA3972@lst.de>
- <ae7fb9b2-d692-f9b8-5130-4555cc489846@amd.com>
- <ZMlrGNw5OMW3yxId@kbusch-mbp.dhcp.thefacebook.com>
- <b2e741b3-b581-40fe-2c28-e4660f52003d@amd.com>
-Content-language: en-US
-In-reply-to: <b2e741b3-b581-40fe-2c28-e4660f52003d@amd.com>
-Content-type: text/plain; charset=UTF-8; format=flowed
-Content-transfer-encoding: 7bit
-Reporting-Meta: AAE8DGuEMYrf45lHTdh54TgMaNY8+iRJQTe9hY+5T0LFf3+29Cv+oDRjYT9Xx6Yl
- nrJvLuvW/4wHxW/x225L0uH+OgeGKGJw2N7fIIzJ6UrAKTvXTq8oqNSb5ephTORm
- gqok+QMQVFWexLo0GnibyzN6oFK/z60vHfIIRIe2/qJiZHMbKl1Hj/W/kUMewVvc
- P5JrAz61Kd9rfQa9AHbPmryIwcz8VjgGqlMrJfrRdGODoW2Yxx4KWem+V15kz5FW
- Cf/CCv6d/vNQv/ZtCQMMWAxeXNFKGQMcnoynubaQlGxhLsnZ4mtwsUBPC8kjKp/+
- oEiEhrFOks/bZIpmTWxhLt4emr0Hc58Eqdbh9m5CuZpY8UmJSj0HKJ+Kc0o4mXCm
- mv7WtDF9HwRnXbzeBkqzGNEn3iy/UFxUDzzC0wZuVNzx7hK+QR5o0AuwrpO2sQQE neY=
-X-Spam-Status: No, score=-1.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,SPF_HELO_NONE,SPF_PASS,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.6
+        with ESMTP id S229771AbjHKUhN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 11 Aug 2023 16:37:13 -0400
+Received: from madras.collabora.co.uk (madras.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e5ab])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71345120;
+        Fri, 11 Aug 2023 13:37:12 -0700 (PDT)
+Received: from localhost (unknown [86.122.17.29])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        (Authenticated sender: cristicc)
+        by madras.collabora.co.uk (Postfix) with ESMTPSA id 659C266071A1;
+        Fri, 11 Aug 2023 21:37:10 +0100 (BST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+        s=mail; t=1691786230;
+        bh=mtF0mCsh4R/MZePtjuIheuk3+v28lUM1yrXv3yXp1jQ=;
+        h=From:To:Cc:Subject:Date:From;
+        b=dzFp1qFm0XV6kq4YGRuxCTmeLxZ7DiFsmH45CbDchgvXl46jP8q7mg7X1enhBaM37
+         ucvVjNcMBgZ/g0znpcLqLevXgpAB34ZaTFL+aYPTolEMGrS3SEJoceCaNjFARafEXy
+         kZ/p/AgECnLWDy/B4pk/EU475IM4zKsPZmNXxeK0T80+YtgOanxaaz1fOVq7GnDtbq
+         TPzvFHY9ieXOuVg/5MrUa/z86aNRN5Gxj8MUOO01n8hRxgaL/dUtwKjj0cuNio4Xa5
+         Nm/b6qUiC7uwcXcMtEhK90Mg1pMPDv69dNESTJ/iragpDTox4RsZh6QAH5RPFw/32k
+         B2Z/s3ZAOS/mQ==
+From:   Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+To:     Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Alexey Kardashevskiy <aik@amd.com>,
+        "Jason A. Donenfeld" <Jason@zx2c4.com>,
+        Chuck Lever <chuck.lever@oracle.com>,
+        Juergen Gross <jgross@suse.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Kim Phillips <kim.phillips@amd.com>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Andrew Cooper <andrew.cooper3@citrix.com>
+Cc:     x86@kernel.org, linux-kernel@vger.kernel.org, kernel@collabora.com,
+        stable@vger.kernel.org
+Subject: [PATCH] x86/cpu/amd: Enable Zenbleed fix for AMD Custom APU 0405
+Date:   Fri, 11 Aug 2023 23:37:05 +0300
+Message-ID: <20230811203705.1699914-1-cristian.ciocaltea@collabora.com>
+X-Mailer: git-send-email 2.41.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 2023-08-01 22:34, Mario Limonciello wrote:
-> If you can still change it before sending out can you add a stable tag 
-> as well?
+Commit 522b1d69219d ("x86/cpu/amd: Add a Zenbleed fix") provided a fix
+for the Zen2 VZEROUPPER data corruption bug affecting a range of CPU
+models, but the AMD Custom APU 0405 found on SteamDeck was not listed,
+although it is clearly affected by the vulnerability.
 
-This didn't get added in time, so, stable team, please backport:
+Add this CPU variant to the Zenbleed erratum list, in order to
+unconditionally enable the fallback fix until a proper microcode update
+is available.
 
-688b419c57c1 ("nvme-pci: add NVME_QUIRK_BOGUS_NID for Samsung PM9B1 256G and 512G")
+Cc: stable@vger.kernel.org
+Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+---
+ arch/x86/kernel/cpu/amd.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-Regards,
-August Wikerfors
+diff --git a/arch/x86/kernel/cpu/amd.c b/arch/x86/kernel/cpu/amd.c
+index b55d8f82b621..70f9d56f9305 100644
+--- a/arch/x86/kernel/cpu/amd.c
++++ b/arch/x86/kernel/cpu/amd.c
+@@ -73,6 +73,7 @@ static const int amd_erratum_1054[] =
+ static const int amd_zenbleed[] =
+ 	AMD_LEGACY_ERRATUM(AMD_MODEL_RANGE(0x17, 0x30, 0x0, 0x4f, 0xf),
+ 			   AMD_MODEL_RANGE(0x17, 0x60, 0x0, 0x7f, 0xf),
++			   AMD_MODEL_RANGE(0x17, 0x90, 0x0, 0x91, 0xf),
+ 			   AMD_MODEL_RANGE(0x17, 0xa0, 0x0, 0xaf, 0xf));
+ 
+ static const int amd_div0[] =
+-- 
+2.41.0
+
