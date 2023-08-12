@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 31CFF77A1D4
-	for <lists+stable@lfdr.de>; Sat, 12 Aug 2023 20:36:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E6CE777A1D5
+	for <lists+stable@lfdr.de>; Sat, 12 Aug 2023 20:36:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229684AbjHLSgK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 12 Aug 2023 14:36:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45530 "EHLO
+        id S229698AbjHLSgV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 12 Aug 2023 14:36:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34680 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229447AbjHLSgK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 12 Aug 2023 14:36:10 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70A0E10C0
-        for <stable@vger.kernel.org>; Sat, 12 Aug 2023 11:36:13 -0700 (PDT)
+        with ESMTP id S229447AbjHLSgV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 12 Aug 2023 14:36:21 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 047B010C2
+        for <stable@vger.kernel.org>; Sat, 12 Aug 2023 11:36:23 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id EB61561E62
-        for <stable@vger.kernel.org>; Sat, 12 Aug 2023 18:36:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 088F0C433C8;
-        Sat, 12 Aug 2023 18:36:11 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9758661E69
+        for <stable@vger.kernel.org>; Sat, 12 Aug 2023 18:36:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8905C433C7;
+        Sat, 12 Aug 2023 18:36:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691865372;
-        bh=R/x856RgpuAI1iU7w0YrOWAsAAqCaiCmDhpQXI/t68U=;
+        s=korg; t=1691865382;
+        bh=0ucyIxdYXf4YJgS77TLooDq/pHqyvqt3cyJEHvK+dKg=;
         h=Subject:To:Cc:From:Date:From;
-        b=OiQZ4HTnzHlh4qsC7QtiPJ7EckI1fD8wky6uGVzupCSLVn6dEiuYu1u98bFopw/K0
-         UrWbFAYHq8COAAF5RvaGvwhMe7VOUPgJdcZdjML/YKC9MGZj/E3Z2XJG1jV4X+x9fi
-         IQC3KuKgxPcW7Hid99BA7tDoq/AOjMmHJnGPlUiE=
-Subject: FAILED: patch "[PATCH] ibmvnic: Enforce stronger sanity checks on login response" failed to apply to 5.4-stable tree
+        b=yGkbk0PcCKzcE8PYlfzMEeBHoxH0lIAYcaosQj7D0BL+HdwYMqjCWD0EgO4SC7sh4
+         sDYrCcSRQoSuxSVaVAFVpQxahYKnqZ1w/PLbGY+xlP7OmG1Qg2jDVFYeNIRJHK7yHk
+         aRwXo08QFzkNdmWxC/CjoT8GT4VxnMSrGGMKzCsM=
+Subject: FAILED: patch "[PATCH] ibmvnic: Enforce stronger sanity checks on login response" failed to apply to 4.19-stable tree
 To:     nnac123@linux.ibm.com, horms@kernel.org, kuba@kernel.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 12 Aug 2023 20:36:09 +0200
-Message-ID: <2023081209-kinfolk-coauthor-9bba@gregkh>
+Date:   Sat, 12 Aug 2023 20:36:11 +0200
+Message-ID: <2023081211-outbreak-unwarlike-3ea6@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -49,25 +49,28 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 4.19-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
 git checkout FETCH_HEAD
 git cherry-pick -x db17ba719bceb52f0ae4ebca0e4c17d9a3bebf05
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023081209-kinfolk-coauthor-9bba@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023081211-outbreak-unwarlike-3ea6@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
 
 Possible dependencies:
 
 db17ba719bce ("ibmvnic: Enforce stronger sanity checks on login response")
 507ebe6444a4 ("ibmvnic: Fix use-after-free of VNIC login response buffer")
 f3ae59c0c015 ("ibmvnic: store RX and TX subCRQ handle array in ibmvnic_adapter struct")
+7c940b1a5291 ("ibmvnic: Fix unchecked return codes of memory allocations")
+e56e2515669a ("ibmvnic: Add device identification to requested IRQs")
+94b2bb28dbb4 ("net: ibm: fix return type of ndo_start_xmit function")
 
 thanks,
 
