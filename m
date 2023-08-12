@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9102B77A16D
-	for <lists+stable@lfdr.de>; Sat, 12 Aug 2023 19:30:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4A1E177A16E
+	for <lists+stable@lfdr.de>; Sat, 12 Aug 2023 19:30:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229839AbjHLRaE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 12 Aug 2023 13:30:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52722 "EHLO
+        id S229555AbjHLRaN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 12 Aug 2023 13:30:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41134 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229826AbjHLRaD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 12 Aug 2023 13:30:03 -0400
+        with ESMTP id S229698AbjHLRaN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 12 Aug 2023 13:30:13 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 646A710C4
-        for <stable@vger.kernel.org>; Sat, 12 Aug 2023 10:30:05 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 568AD1BD1
+        for <stable@vger.kernel.org>; Sat, 12 Aug 2023 10:30:14 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DCD0F619B2
-        for <stable@vger.kernel.org>; Sat, 12 Aug 2023 17:30:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E757DC433C7;
-        Sat, 12 Aug 2023 17:30:03 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D09DA619AC
+        for <stable@vger.kernel.org>; Sat, 12 Aug 2023 17:30:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1692C433C7;
+        Sat, 12 Aug 2023 17:30:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691861404;
-        bh=OYKB4/mPqJIXDRhWnPUM9XE2sKYWatUEerDcm+EifBA=;
+        s=korg; t=1691861413;
+        bh=fwUrjVVTvQdHMPNJEkjc8HAkSphBLVnt5svyrxHiJWY=;
         h=Subject:To:Cc:From:Date:From;
-        b=p7A/raMDFqnJb5WRH50VQgPhhz5YA2Of3rZbf3lSrNa7M1WK6l790DmI3XK6DLJtx
-         YsJzj8aosZuVljlcSGqYcLZQxNLyY1UrtwKFqXiv3dGmDJ9z5orDERAx3hX8IVhHoD
-         wdeuMuVDfnvNcYkxp6wunjuoslpxxWBSSwiKAQmU=
-Subject: FAILED: patch "[PATCH] netfilter: nf_tables: adapt set backend to use GC transaction" failed to apply to 5.15-stable tree
+        b=DjNzO+fJQhSgSkAPgQqndbSFYbH397sq5/ocryDsbQA2VbkVRd+bzvuoci3SOqBt7
+         S5ApoT+FIVzWgPFo5sFnklu4RBHcdCLBLmzRXNHdoSKf3LU+4qcs4xeW2HUrgi0f+f
+         hPFlpIHDGqRfaIWDvOszXq6Vm02k3KclK7XIoKjw=
+Subject: FAILED: patch "[PATCH] netfilter: nf_tables: adapt set backend to use GC transaction" failed to apply to 6.1-stable tree
 To:     pablo@netfilter.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 12 Aug 2023 19:30:01 +0200
-Message-ID: <2023081201-sanitizer-uncross-fcbd@gregkh>
+Date:   Sat, 12 Aug 2023 19:30:02 +0200
+Message-ID: <2023081202-unseemly-stony-b3c5@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -49,19 +49,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
 git cherry-pick -x f6c383b8c31a93752a52697f8430a71dcbc46adf
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023081201-sanitizer-uncross-fcbd@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023081202-unseemly-stony-b3c5@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
@@ -71,7 +71,6 @@ f718863aca46 ("netfilter: nft_set_rbtree: fix overlap expiration walk")
 61ae320a29b0 ("netfilter: nft_set_rbtree: fix null deref on element insertion")
 5d235d6ce75c ("netfilter: nft_set_rbtree: skip elements in transaction from garbage collection")
 c9e6978e2725 ("netfilter: nft_set_rbtree: Switch to node list walk for overlap detection")
-babc3dc9524f ("netfilter: nft_set_rbtree: overlap detection with element re-addition after deletion")
 
 thanks,
 
