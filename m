@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1C56577A319
-	for <lists+stable@lfdr.de>; Sat, 12 Aug 2023 23:42:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BB1C377A31A
+	for <lists+stable@lfdr.de>; Sat, 12 Aug 2023 23:44:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229688AbjHLVmB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 12 Aug 2023 17:42:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37784 "EHLO
+        id S229589AbjHLVoB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 12 Aug 2023 17:44:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60276 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229589AbjHLVmB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 12 Aug 2023 17:42:01 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 392481706
-        for <stable@vger.kernel.org>; Sat, 12 Aug 2023 14:42:04 -0700 (PDT)
+        with ESMTP id S229499AbjHLVoA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 12 Aug 2023 17:44:00 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E61FD10DB
+        for <stable@vger.kernel.org>; Sat, 12 Aug 2023 14:44:03 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C1B046209E
-        for <stable@vger.kernel.org>; Sat, 12 Aug 2023 21:42:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC040C433C7;
-        Sat, 12 Aug 2023 21:42:02 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5F74C620A6
+        for <stable@vger.kernel.org>; Sat, 12 Aug 2023 21:44:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6540BC433C7;
+        Sat, 12 Aug 2023 21:44:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691876523;
-        bh=AzXycMGdHUs0hPgzkAtUzj9Ajqyl6YuEhu3qfpnd71U=;
+        s=korg; t=1691876642;
+        bh=ubnCisUZ6f+ZkHf5LwomoU3H/KqoX+hPpD3YlGY2Wxg=;
         h=Subject:To:Cc:From:Date:From;
-        b=G0iaODYm5+iJ4jqOdfga+o1tKj9dojnxuGRQ6CfbuUXtTveYQnLZdXwoOXLj8Qu1b
-         IWL404OJomajzPZuf5TPKVTuTEZGIs9LXAuZqRJciSw2fuCbeU+QSodiemQCXT4Npl
-         KO/tED6HrQSsfdEnFsF1IRfK9ZQTccwr5l/EIMFY=
-Subject: FAILED: patch "[PATCH] btrfs: don't wait for writeback on clean pages in" failed to apply to 4.14-stable tree
-To:     hch@lst.de, dsterba@suse.com, josef@toxicpanda.com
+        b=Z53kGSxKqIVGslLqQlacwK+5RCHa0wCAnQNmg0XpkCYipNWEXwg9EbqTa6B3wXz4a
+         BH5EABXOnswr69mrhcqWo+985cAYrE+ID0JLIIwIRSxRyIicuLr8+PPZ83nB0iAv03
+         VJYi2CCvn9boHoAMqY/1V/SLQRMp4ZiPr3tK2ri8=
+Subject: FAILED: patch "[PATCH] btrfs: set cache_block_group_error if we find an error" failed to apply to 4.14-stable tree
+To:     josef@toxicpanda.com, dsterba@suse.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 12 Aug 2023 23:41:48 +0200
-Message-ID: <2023081248-stuffed-rematch-3c0b@gregkh>
+Date:   Sat, 12 Aug 2023 23:44:00 +0200
+Message-ID: <2023081259-hammock-private-d316@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -58,10 +58,10 @@ To reproduce the conflict and resubmit, you may use the following commands:
 
 git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
 git checkout FETCH_HEAD
-git cherry-pick -x 5c25699871112853f231e52d51c576d5c759a020
+git cherry-pick -x 92fb94b69c6accf1e49fff699640fa0ce03dc910
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023081248-stuffed-rematch-3c0b@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023081259-hammock-private-d316@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
 
 Possible dependencies:
 
@@ -73,44 +73,45 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 5c25699871112853f231e52d51c576d5c759a020 Mon Sep 17 00:00:00 2001
-From: Christoph Hellwig <hch@lst.de>
-Date: Mon, 24 Jul 2023 06:26:54 -0700
-Subject: [PATCH] btrfs: don't wait for writeback on clean pages in
- extent_write_cache_pages
+From 92fb94b69c6accf1e49fff699640fa0ce03dc910 Mon Sep 17 00:00:00 2001
+From: Josef Bacik <josef@toxicpanda.com>
+Date: Wed, 2 Aug 2023 09:20:24 -0400
+Subject: [PATCH] btrfs: set cache_block_group_error if we find an error
 
-__extent_writepage could have started on more pages than the one it was
-called for.  This happens regularly for zoned file systems, and in theory
-could happen for compressed I/O if the worker thread was executed very
-quickly. For such pages extent_write_cache_pages waits for writeback
-to complete before moving on to the next page, which is highly inefficient
-as it blocks the flusher thread.
+We set cache_block_group_error if btrfs_cache_block_group() returns an
+error, this is because we could end up not finding space to allocate and
+mistakenly return -ENOSPC, and which could then abort the transaction
+with the incorrect errno, and in the case of ENOSPC result in a
+WARN_ON() that will trip up tests like generic/475.
 
-Port over the PageDirty check that was added to write_cache_pages in
-commit 515f4a037fb ("mm: write_cache_pages optimise page cleaning") to
-fix this.
+However there's the case where multiple threads can be racing, one
+thread gets the proper error, and the other thread doesn't actually call
+btrfs_cache_block_group(), it instead sees ->cached ==
+BTRFS_CACHE_ERROR.  Again the result is the same, we fail to allocate
+our space and return -ENOSPC.  Instead we need to set
+cache_block_group_error to -EIO in this case to make sure that if we do
+not make our allocation we get the appropriate error returned back to
+the caller.
 
 CC: stable@vger.kernel.org # 4.14+
-Reviewed-by: Josef Bacik <josef@toxicpanda.com>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
 Signed-off-by: David Sterba <dsterba@suse.com>
 
-diff --git a/fs/btrfs/extent_io.c b/fs/btrfs/extent_io.c
-index c36eb4956f81..ca765d62324f 100644
---- a/fs/btrfs/extent_io.c
-+++ b/fs/btrfs/extent_io.c
-@@ -2145,6 +2145,12 @@ static int extent_write_cache_pages(struct address_space *mapping,
- 				continue;
- 			}
+diff --git a/fs/btrfs/extent-tree.c b/fs/btrfs/extent-tree.c
+index 911908ea5f6f..f396a9afa403 100644
+--- a/fs/btrfs/extent-tree.c
++++ b/fs/btrfs/extent-tree.c
+@@ -4310,8 +4310,11 @@ static noinline int find_free_extent(struct btrfs_root *root,
+ 			ret = 0;
+ 		}
  
-+			if (!folio_test_dirty(folio)) {
-+				/* Someone wrote it for us. */
-+				folio_unlock(folio);
-+				continue;
-+			}
-+
- 			if (wbc->sync_mode != WB_SYNC_NONE) {
- 				if (folio_test_writeback(folio))
- 					submit_write_bio(bio_ctrl, 0);
+-		if (unlikely(block_group->cached == BTRFS_CACHE_ERROR))
++		if (unlikely(block_group->cached == BTRFS_CACHE_ERROR)) {
++			if (!cache_block_group_error)
++				cache_block_group_error = -EIO;
+ 			goto loop;
++		}
+ 
+ 		if (!find_free_extent_check_size_class(ffe_ctl, block_group))
+ 			goto loop;
 
