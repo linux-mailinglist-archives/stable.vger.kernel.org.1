@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E952A77A1D7
-	for <lists+stable@lfdr.de>; Sat, 12 Aug 2023 20:36:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 453AC77A1DA
+	for <lists+stable@lfdr.de>; Sat, 12 Aug 2023 20:37:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229630AbjHLSgs (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 12 Aug 2023 14:36:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58994 "EHLO
+        id S229740AbjHLSgx (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 12 Aug 2023 14:36:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59080 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229582AbjHLSgs (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 12 Aug 2023 14:36:48 -0400
+        with ESMTP id S229690AbjHLSgw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 12 Aug 2023 14:36:52 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2193E1716
-        for <stable@vger.kernel.org>; Sat, 12 Aug 2023 11:36:51 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE50410C2
+        for <stable@vger.kernel.org>; Sat, 12 Aug 2023 11:36:54 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B478161E74
-        for <stable@vger.kernel.org>; Sat, 12 Aug 2023 18:36:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5B97C433C7;
-        Sat, 12 Aug 2023 18:36:49 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 670DC61E90
+        for <stable@vger.kernel.org>; Sat, 12 Aug 2023 18:36:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73593C433C7;
+        Sat, 12 Aug 2023 18:36:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691865410;
-        bh=5NRrfSyAvVycDmQSs92GyiFyYG0tRL1iC/URehx/4Tc=;
+        s=korg; t=1691865413;
+        bh=awehS8xFc37Ln68rvsIwxSPlIRu0pcB5yzycr7VZGl8=;
         h=Subject:To:Cc:From:Date:From;
-        b=zGFHEzlIESipJBUX27m6xRoG2pKa9CwfuZb9rDBtMTDVmkm/sBXNbR7tsi13m54tN
-         6lOKUj9LDOLVhJfmjSgmsEI96Xxq6qK978y/d/DeQB+veQi8LR14TCJRRmusiEKHxv
-         6UI8rsLdq2yw2kK50sWFmpb0BSjNCNZUV8TqIBrI=
-Subject: FAILED: patch "[PATCH] ibmvnic: Do partial reset on login failure" failed to apply to 5.15-stable tree
+        b=yJD2Gj0SGOIfxUQulJ8CHbGATBBBFsggU1HQ7tDL3JSExbk1Tq6AMCQ9EHR1ZrSEf
+         +Qky0leaEL6Vrjz2ejnKCJjFYaJSZfk1tEujWh+HuUl/h1d2lwi2ZywQeXWa0UvjpD
+         ksuqp/NLQ0xuOKF97C1tFrBTi/LK66qYNQESRydU=
+Subject: FAILED: patch "[PATCH] ibmvnic: Do partial reset on login failure" failed to apply to 5.10-stable tree
 To:     nnac123@linux.ibm.com, horms@kernel.org, kuba@kernel.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 12 Aug 2023 20:36:47 +0200
-Message-ID: <2023081247-overplay-mullets-63db@gregkh>
+Date:   Sat, 12 Aug 2023 20:36:49 +0200
+Message-ID: <2023081249-throat-simply-db92@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -49,19 +49,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x 23cc5f667453ca7645a24c8d21bf84dbf61107b2
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023081247-overplay-mullets-63db@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023081249-throat-simply-db92@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
@@ -76,6 +76,15 @@ f8ac0bfa7d7a ("ibmvnic: Reuse LTB when possible")
 0df7b9ad8f84 ("ibmvnic: Use/rename local vars in init_rx_pools")
 0f2bf3188c43 ("ibmvnic: Fix up some comments and messages")
 38106b2c433e ("ibmvnic: Consolidate code in replenish_rx_pool()")
+f6ebca8efa52 ("ibmvnic: free tx_pool if tso_pool alloc fails")
+552a33729f1a ("ibmvnic: set ltb->buff to NULL after freeing")
+72368f8b2b9e ("ibmvnic: account for bufs already saved in indir_buf")
+65d6470d139a ("ibmvnic: clean pending indirect buffs during reset")
+0ec13aff058a ("Revert "ibmvnic: simplify reset_long_term_buff function"")
+d3a6abccbd27 ("ibmvnic: remove duplicate napi_schedule call in do_reset function")
+8f1c0fd2c84c ("ibmvnic: fix a race between open and reset")
+1c7d45e7b2c2 ("ibmvnic: simplify reset_long_term_buff function")
+91dc5d2553fb ("ibmvnic: fix miscellaneous checks")
 
 thanks,
 
