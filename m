@@ -2,160 +2,169 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 50306779D56
-	for <lists+stable@lfdr.de>; Sat, 12 Aug 2023 07:46:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5192D779D5B
+	for <lists+stable@lfdr.de>; Sat, 12 Aug 2023 07:52:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230023AbjHLFqr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 12 Aug 2023 01:46:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45774 "EHLO
+        id S233918AbjHLFwe (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 12 Aug 2023 01:52:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42624 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229670AbjHLFqq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 12 Aug 2023 01:46:46 -0400
-Received: from domac.alu.hr (domac.alu.unizg.hr [IPv6:2001:b68:2:2800::3])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 963322712;
-        Fri, 11 Aug 2023 22:46:45 -0700 (PDT)
-Received: from localhost (localhost [127.0.0.1])
-        by domac.alu.hr (Postfix) with ESMTP id 5A0E16015E;
-        Sat, 12 Aug 2023 07:46:43 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=alu.unizg.hr; s=mail;
-        t=1691819203; bh=YZBcXmmJnd5USNFvIod8cr+dIcpfsOLq31FsgTOIxVg=;
-        h=From:To:Cc:Subject:Date:From;
-        b=XAcW+GJlv7E0K+7kajDHdHF7LTeDnB1AUTq43mcSREkdhZYi3tnHwSJORb37gKpOb
-         jJvTic/GjeRhtpsvwHmFIYa6GgwXhM972OFw9kI2q5cFYUyOj3drdPcTE39us7YR5E
-         bIDQBNf/VT/Oq563dSBwQcsvULauOUTaGmN5eE4/7CuVNE8rkml7a8Ve4FUf5ab1S3
-         OU6SpnNc+PdpNc6dOaJbkKEfr6z2dRkWoyx3Z6rAS/fn2tK89VMyxSYkylScjZYeIA
-         Fj764HFUe45P3d6I+b8LZ3UHEkfy5pS6NeqLLuEdYMCfK8kKMJ0nXlq1A3+SSmBqRC
-         MQ7PZKny/l1vg==
-X-Virus-Scanned: Debian amavisd-new at domac.alu.hr
-Received: from domac.alu.hr ([127.0.0.1])
-        by localhost (domac.alu.hr [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id Xud7GHiPjFbs; Sat, 12 Aug 2023 07:46:40 +0200 (CEST)
-Received: from defiant.. (unknown [94.250.191.183])
-        by domac.alu.hr (Postfix) with ESMTPSA id 821A46015F;
-        Sat, 12 Aug 2023 07:46:26 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=alu.unizg.hr; s=mail;
-        t=1691819200; bh=YZBcXmmJnd5USNFvIod8cr+dIcpfsOLq31FsgTOIxVg=;
-        h=From:To:Cc:Subject:Date:From;
-        b=i3gCIaL+iUSwCLda2vi/oe85P9G1sGUWf8UNZwUrUZ8i/Mr5togCSvC4iV/YwD05e
-         n8xW2pBE92h7L7ZwlfZliMFJuuaeKzQc8eOM4PxWjP8RVW3cU9QDNeL++H9Mf9ezdv
-         ADbCOjA9iN5PDuYzhk4CIeoWKgU9lqoFxbJKDFTp0HphEFWVGn5pkOXSxbb+AvQp9v
-         HUR9uS0v6d31ptiOS/CLFuiHS42PyA9bhg323b/NAvDMvj6n9sLpyGDhWCnllDcKZa
-         HQA4WUQEPB4gBW0yErKeePT070/Iv1RW9Otd76bAM5GVrJysOxHXbFN7VSZ9Ws5Qvv
-         FZ2XUoZ6drotg==
-From:   Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>
-To:     Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>,
-        linux-kernel@vger.kernel.org
-Cc:     Dan Carpenter <error27@gmail.com>, Takashi Iwai <tiwai@suse.de>,
-        Kees Cook <keescook@chromium.org>,
-        "Luis R . Rodriguez" <mcgrof@kernel.org>,
-        Brian Norris <computersforpeace@gmail.com>,
-        stable@vger.kernel.org
-Subject: [PATCH v4 1/1] test_fimware: return -ENOMEM instead of -ENOSPC on failed memory allocation
-Date:   Sat, 12 Aug 2023 07:43:47 +0200
-Message-Id: <20230812054346.168223-1-mirsad.todorovac@alu.unizg.hr>
-X-Mailer: git-send-email 2.34.1
+        with ESMTP id S229670AbjHLFwe (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 12 Aug 2023 01:52:34 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1DF972712
+        for <stable@vger.kernel.org>; Fri, 11 Aug 2023 22:52:32 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9FF496149D
+        for <stable@vger.kernel.org>; Sat, 12 Aug 2023 05:52:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C45DC433C8;
+        Sat, 12 Aug 2023 05:52:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1691819551;
+        bh=aGL8QAeLVDNp+O6ihOU9SFyaVtjMXtol03f8c2rUFRE=;
+        h=Subject:To:Cc:From:Date:From;
+        b=PncL40UT7/PnRJNXIcTBGWnD/PdpiREwg6546Xg5olNRBGp1qeRNAGCI+ar2tqpYs
+         94t+D+BzJstpmw9j+jJETD4QutwXcTKVWnxzExEK81ot6rC2Rt5ksJDcqgGocmBSuz
+         6mNrt1eRZgtQ+gfpvYuNK1vm7U9I1+SqmbmQU+BE=
+Subject: FAILED: patch "[PATCH] net: mana: Fix MANA VF unload when hardware is unresponsive" failed to apply to 5.15-stable tree
+To:     schakrabarti@linux.microsoft.com, kuba@kernel.org
+Cc:     <stable@vger.kernel.org>
+From:   <gregkh@linuxfoundation.org>
+Date:   Sat, 12 Aug 2023 07:52:27 +0200
+Message-ID: <2023081227-rogue-smasher-f54b@gregkh>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,FILL_THIS_FORM,SPF_HELO_NONE,SPF_PASS,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-[ Upstream commit 7dae593cd226a0bca61201cf85ceb9335cf63682 ]
 
-In a couple of situations like
+The patch below does not apply to the 5.15-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-	name = kstrndup(buf, count, GFP_KERNEL);
-	if (!name)
-		return -ENOSPC;
+To reproduce the conflict and resubmit, you may use the following commands:
 
-the error is not actually "No space left on device", but "Out of memory".
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git checkout FETCH_HEAD
+git cherry-pick -x a7dfeda6fdeccab4c7c3dce9a72c4262b9530c80
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023081227-rogue-smasher-f54b@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
-It is semantically correct to return -ENOMEM in all failed kstrndup()
-and kzalloc() cases in this driver, as it is not a problem with disk
-space, but with kernel memory allocator failing allocation.
+Possible dependencies:
 
-The semantically correct should be:
+a7dfeda6fdec ("net: mana: Fix MANA VF unload when hardware is unresponsive")
+1566e7d6206f ("net: mana: Add the Linux MANA PF driver")
+ed5356b53f07 ("net: mana: Add XDP support")
+635096a86edb ("net: mana: Support hibernation and kexec")
+62ea8b77ed3b ("net: mana: Improve the HWC error handling")
 
-        name = kstrndup(buf, count, GFP_KERNEL);
-        if (!name)
-                return -ENOMEM;
+thanks,
 
-Cc: Dan Carpenter <error27@gmail.com>
-Cc: Takashi Iwai <tiwai@suse.de>
-Cc: Kees Cook <keescook@chromium.org>
-Cc: Luis R. Rodriguez <mcgrof@kernel.org>
-Cc: Brian Norris <computersforpeace@gmail.com>
-Cc: stable@vger.kernel.org # 4.14
-Fixes: c92316bf8e948 ("test_firmware: add batched firmware tests")
-Fixes: 0a8adf584759c ("test: add firmware_class loader test")
-Fixes: eb910947c82f9 ("test: firmware_class: add asynchronous request trigger")
-Fixes: 061132d2b9c95 ("test_firmware: add test custom fallback trigger")
-Link: https://lore.kernel.org/all/20230606070808.9300-1-mirsad.todorovac@alu.unizg.hr/
-Signed-off-by: Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>
+greg k-h
 
-[ This is the backport of the patch to 4.19 and 4.14 branches. There are no	]
-[ semantic differences in the commit. Backport is provided for completenes sake	]
-[ so it would apply to all of the supported LTS kernels				]
+------------------ original commit in Linus's tree ------------------
 
----
-v3 -> v4:
- no changes. resubmitting for 4.14 because the patchwork didn't apply to the 4.14 tree.
+From a7dfeda6fdeccab4c7c3dce9a72c4262b9530c80 Mon Sep 17 00:00:00 2001
+From: Souradeep Chakrabarti <schakrabarti@linux.microsoft.com>
+Date: Wed, 9 Aug 2023 03:22:05 -0700
+Subject: [PATCH] net: mana: Fix MANA VF unload when hardware is unresponsive
 
-v2 -> v3:
- minor clarifications with the versioning for the patchwork. no change to commit.
+When unloading the MANA driver, mana_dealloc_queues() waits for the MANA
+hardware to complete any inflight packets and set the pending send count
+to zero. But if the hardware has failed, mana_dealloc_queues()
+could wait forever.
 
-v1 -> v2:
- removed the Reviewed-by: and Acked-by tags, as this is a slightly different patch and
- those need to be reacquired
+Fix this by adding a timeout to the wait. Set the timeout to 120 seconds,
+which is a somewhat arbitrary value that is more than long enough for
+functional hardware to complete any sends.
 
- lib/test_firmware.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+Cc: stable@vger.kernel.org
+Fixes: ca9c54d2d6a5 ("net: mana: Add a driver for Microsoft Azure Network Adapter (MANA)")
+Signed-off-by: Souradeep Chakrabarti <schakrabarti@linux.microsoft.com>
+Link: https://lore.kernel.org/r/1691576525-24271-1-git-send-email-schakrabarti@linux.microsoft.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 
-diff --git a/lib/test_firmware.c b/lib/test_firmware.c
-index 5318c5e18acf..34210306ea66 100644
---- a/lib/test_firmware.c
-+++ b/lib/test_firmware.c
-@@ -159,7 +159,7 @@ static int __kstrncpy(char **dst, const char *name, size_t count, gfp_t gfp)
+diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c b/drivers/net/ethernet/microsoft/mana/mana_en.c
+index a499e460594b..c2ad0921e893 100644
+--- a/drivers/net/ethernet/microsoft/mana/mana_en.c
++++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
+@@ -8,6 +8,7 @@
+ #include <linux/ethtool.h>
+ #include <linux/filter.h>
+ #include <linux/mm.h>
++#include <linux/pci.h>
+ 
+ #include <net/checksum.h>
+ #include <net/ip6_checksum.h>
+@@ -2345,9 +2346,12 @@ int mana_attach(struct net_device *ndev)
+ static int mana_dealloc_queues(struct net_device *ndev)
  {
- 	*dst = kstrndup(name, count, gfp);
- 	if (!*dst)
--		return -ENOSPC;
-+		return -ENOMEM;
- 	return count;
- }
+ 	struct mana_port_context *apc = netdev_priv(ndev);
++	unsigned long timeout = jiffies + 120 * HZ;
+ 	struct gdma_dev *gd = apc->ac->gdma_dev;
+ 	struct mana_txq *txq;
++	struct sk_buff *skb;
+ 	int i, err;
++	u32 tsleep;
  
-@@ -459,7 +459,7 @@ static ssize_t trigger_request_store(struct device *dev,
+ 	if (apc->port_is_up)
+ 		return -EINVAL;
+@@ -2363,15 +2367,40 @@ static int mana_dealloc_queues(struct net_device *ndev)
+ 	 * to false, but it doesn't matter since mana_start_xmit() drops any
+ 	 * new packets due to apc->port_is_up being false.
+ 	 *
+-	 * Drain all the in-flight TX packets
++	 * Drain all the in-flight TX packets.
++	 * A timeout of 120 seconds for all the queues is used.
++	 * This will break the while loop when h/w is not responding.
++	 * This value of 120 has been decided here considering max
++	 * number of queues.
+ 	 */
++
+ 	for (i = 0; i < apc->num_queues; i++) {
+ 		txq = &apc->tx_qp[i].txq;
+-
+-		while (atomic_read(&txq->pending_sends) > 0)
+-			usleep_range(1000, 2000);
++		tsleep = 1000;
++		while (atomic_read(&txq->pending_sends) > 0 &&
++		       time_before(jiffies, timeout)) {
++			usleep_range(tsleep, tsleep + 1000);
++			tsleep <<= 1;
++		}
++		if (atomic_read(&txq->pending_sends)) {
++			err = pcie_flr(to_pci_dev(gd->gdma_context->dev));
++			if (err) {
++				netdev_err(ndev, "flr failed %d with %d pkts pending in txq %u\n",
++					   err, atomic_read(&txq->pending_sends),
++					   txq->gdma_txq_id);
++			}
++			break;
++		}
+ 	}
  
- 	name = kstrndup(buf, count, GFP_KERNEL);
- 	if (!name)
--		return -ENOSPC;
-+		return -ENOMEM;
- 
- 	pr_info("loading '%s'\n", name);
- 
-@@ -500,7 +500,7 @@ static ssize_t trigger_async_request_store(struct device *dev,
- 
- 	name = kstrndup(buf, count, GFP_KERNEL);
- 	if (!name)
--		return -ENOSPC;
-+		return -ENOMEM;
- 
- 	pr_info("loading '%s'\n", name);
- 
-@@ -543,7 +543,7 @@ static ssize_t trigger_custom_fallback_store(struct device *dev,
- 
- 	name = kstrndup(buf, count, GFP_KERNEL);
- 	if (!name)
--		return -ENOSPC;
-+		return -ENOMEM;
- 
- 	pr_info("loading '%s' using custom fallback mechanism\n", name);
- 
--- 
-2.34.1
++	for (i = 0; i < apc->num_queues; i++) {
++		txq = &apc->tx_qp[i].txq;
++		while ((skb = skb_dequeue(&txq->pending_skbs))) {
++			mana_unmap_skb(skb, apc);
++			dev_kfree_skb_any(skb);
++		}
++		atomic_set(&txq->pending_sends, 0);
++	}
+ 	/* We're 100% sure the queues can no longer be woken up, because
+ 	 * we're sure now mana_poll_tx_cq() can't be running.
+ 	 */
 
