@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 98C7877A1DB
-	for <lists+stable@lfdr.de>; Sat, 12 Aug 2023 20:37:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 98A9377A1DF
+	for <lists+stable@lfdr.de>; Sat, 12 Aug 2023 20:37:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229690AbjHLShC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 12 Aug 2023 14:37:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38694 "EHLO
+        id S229834AbjHLShT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 12 Aug 2023 14:37:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60846 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229745AbjHLShB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 12 Aug 2023 14:37:01 -0400
+        with ESMTP id S229766AbjHLShP (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 12 Aug 2023 14:37:15 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 108FD1735
-        for <stable@vger.kernel.org>; Sat, 12 Aug 2023 11:37:01 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E68541BD1
+        for <stable@vger.kernel.org>; Sat, 12 Aug 2023 11:37:12 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9862B61EA2
-        for <stable@vger.kernel.org>; Sat, 12 Aug 2023 18:37:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5100C433C8;
-        Sat, 12 Aug 2023 18:36:59 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6EA0361EBC
+        for <stable@vger.kernel.org>; Sat, 12 Aug 2023 18:37:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AE28C433C7;
+        Sat, 12 Aug 2023 18:37:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691865420;
-        bh=IF2vrsR292RDu/xdxTgHwavB+W7a+xR+pQAhnJV0lgM=;
+        s=korg; t=1691865431;
+        bh=Lx+CLWJ2vTTZeFB4UT6L1FnKpWSQWHMY9njfgEEWOBg=;
         h=Subject:To:Cc:From:Date:From;
-        b=LACkbD6j/OvtNbdov/Ocof2v0SlpRzUUrjLKb7hEDUhDvBdwcDT8VEpTwTWsaqqws
-         OJPljEaOWYYuP8JKwbbVNaURs5gOTwj0xkPr6gGmVcfq5OGQwyKwFURm+46jqcr4a1
-         ywHbtaOrCdYcV7L21XMegfQYG/JpEHBERreHExFg=
-Subject: FAILED: patch "[PATCH] ibmvnic: Do partial reset on login failure" failed to apply to 4.19-stable tree
+        b=2tlFUxu9t53sqwzTvhmRuKVzreFgzZ+zUhddmCAXJ+HsOh35V622zeUV3iYIcJu66
+         /QmzJJKTrpWABLpwTIkw8FMFPGb1PgtBH1zdzkQv4CvvKURZTLklhGc0KDc/Glnyzq
+         iYkker0nYisMQvGPw3uF4aX7N/ouzntlRywWmvrU=
+Subject: FAILED: patch "[PATCH] ibmvnic: Ensure login failure recovery is safe from other" failed to apply to 5.15-stable tree
 To:     nnac123@linux.ibm.com, horms@kernel.org, kuba@kernel.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 12 Aug 2023 20:36:52 +0200
-Message-ID: <2023081252-sanction-juice-f652@gregkh>
+Date:   Sat, 12 Aug 2023 20:37:09 +0200
+Message-ID: <2023081208-trinity-upfront-c2e1@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -49,23 +49,25 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 4.19-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x 23cc5f667453ca7645a24c8d21bf84dbf61107b2
+git cherry-pick -x 6db541ae279bd4e76dbd939e5fbf298396166242
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023081252-sanction-juice-f652@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023081208-trinity-upfront-c2e1@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
+6db541ae279b ("ibmvnic: Ensure login failure recovery is safe from other resets")
 23cc5f667453 ("ibmvnic: Do partial reset on login failure")
+61772b0908c6 ("ibmvnic: don't release napi in __ibmvnic_open()")
 b6ee566cf394 ("ibmvnic: Update driver return codes")
 bbd809305bc7 ("ibmvnic: Reuse tx pools when possible")
 489de956e7a2 ("ibmvnic: Reuse rx pools when possible")
@@ -76,15 +78,6 @@ f8ac0bfa7d7a ("ibmvnic: Reuse LTB when possible")
 0df7b9ad8f84 ("ibmvnic: Use/rename local vars in init_rx_pools")
 0f2bf3188c43 ("ibmvnic: Fix up some comments and messages")
 38106b2c433e ("ibmvnic: Consolidate code in replenish_rx_pool()")
-f6ebca8efa52 ("ibmvnic: free tx_pool if tso_pool alloc fails")
-552a33729f1a ("ibmvnic: set ltb->buff to NULL after freeing")
-72368f8b2b9e ("ibmvnic: account for bufs already saved in indir_buf")
-65d6470d139a ("ibmvnic: clean pending indirect buffs during reset")
-0ec13aff058a ("Revert "ibmvnic: simplify reset_long_term_buff function"")
-d3a6abccbd27 ("ibmvnic: remove duplicate napi_schedule call in do_reset function")
-8f1c0fd2c84c ("ibmvnic: fix a race between open and reset")
-1c7d45e7b2c2 ("ibmvnic: simplify reset_long_term_buff function")
-91dc5d2553fb ("ibmvnic: fix miscellaneous checks")
 
 thanks,
 
@@ -92,110 +85,142 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 23cc5f667453ca7645a24c8d21bf84dbf61107b2 Mon Sep 17 00:00:00 2001
+From 6db541ae279bd4e76dbd939e5fbf298396166242 Mon Sep 17 00:00:00 2001
 From: Nick Child <nnac123@linux.ibm.com>
-Date: Wed, 9 Aug 2023 17:10:37 -0500
-Subject: [PATCH] ibmvnic: Do partial reset on login failure
+Date: Wed, 9 Aug 2023 17:10:38 -0500
+Subject: [PATCH] ibmvnic: Ensure login failure recovery is safe from other
+ resets
 
-Perform a partial reset before sending a login request if any of the
-following are true:
- 1. If a previous request times out. This can be dangerous because the
- 	VIOS could still receive the old login request at any point after
- 	the timeout. Therefore, it is best to re-register the CRQ's  and
- 	sub-CRQ's before retrying.
- 2. If the previous request returns an error that is not described in
- 	PAPR. PAPR provides procedures if the login returns with partial
- 	success or aborted return codes (section L.5.1) but other values
-	do not have a defined procedure. Previously, these conditions
-	just returned error from the login function rather than trying
-	to resolve the issue.
- 	This can cause further issues since most callers of the login
- 	function are not prepared to handle an error when logging in. This
- 	improper cleanup can lead to the device being permanently DOWN'd.
- 	For example, if the VIOS believes that the device is already logged
- 	in then it will return INVALID_STATE (-7). If we never re-register
- 	CRQ's then it will always think that the device is already logged
- 	in. This leaves the device inoperable.
+If a login request fails, the recovery process should be protected
+against parallel resets. It is a known issue that freeing and
+registering CRQ's in quick succession can result in a failover CRQ from
+the VIOS. Processing a failover during login recovery is dangerous for
+two reasons:
+ 1. This will result in two parallel initialization processes, this can
+ cause serious issues during login.
+ 2. It is possible that the failover CRQ is received but never executed.
+ We get notified of a pending failover through a transport event CRQ.
+ The reset is not performed until a INIT CRQ request is received.
+ Previously, if CRQ init fails during login recovery, then the ibmvnic
+ irq is freed and the login process returned error. If failover_pending
+ is true (a transport event was received), then the ibmvnic device
+ would never be able to process the reset since it cannot receive the
+ CRQ_INIT request due to the irq being freed. This leaved the device
+ in a inoperable state.
 
-The partial reset involves freeing the sub-CRQs, freeing the CRQ then
-registering and initializing a new CRQ and sub-CRQs. This essentially
-restarts all communication with VIOS to allow for a fresh login attempt
-that will be unhindered by any previous failed attempts.
+Therefore, the login failure recovery process must be hardened against
+these possible issues. Possible failovers (due to quick CRQ free and
+init) must be avoided and any issues during re-initialization should be
+dealt with instead of being propagated up the stack. This logic is
+similar to that of ibmvnic_probe().
 
 Fixes: dff515a3e71d ("ibmvnic: Harden device login requests")
 Signed-off-by: Nick Child <nnac123@linux.ibm.com>
 Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20230809221038.51296-4-nnac123@linux.ibm.com
+Link: https://lore.kernel.org/r/20230809221038.51296-5-nnac123@linux.ibm.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 
 diff --git a/drivers/net/ethernet/ibm/ibmvnic.c b/drivers/net/ethernet/ibm/ibmvnic.c
-index 77b0a744fa88..e9619957d58a 100644
+index e9619957d58a..df76cdaddcfb 100644
 --- a/drivers/net/ethernet/ibm/ibmvnic.c
 +++ b/drivers/net/ethernet/ibm/ibmvnic.c
-@@ -97,6 +97,8 @@ static int pending_scrq(struct ibmvnic_adapter *,
- static union sub_crq *ibmvnic_next_scrq(struct ibmvnic_adapter *,
- 					struct ibmvnic_sub_crq_queue *);
- static int ibmvnic_poll(struct napi_struct *napi, int data);
-+static int reset_sub_crq_queues(struct ibmvnic_adapter *adapter);
-+static inline void reinit_init_done(struct ibmvnic_adapter *adapter);
- static void send_query_map(struct ibmvnic_adapter *adapter);
- static int send_request_map(struct ibmvnic_adapter *, dma_addr_t, u32, u8);
- static int send_request_unmap(struct ibmvnic_adapter *, u8);
-@@ -1527,11 +1529,9 @@ static int ibmvnic_login(struct net_device *netdev)
+@@ -116,6 +116,7 @@ static void ibmvnic_tx_scrq_clean_buffer(struct ibmvnic_adapter *adapter,
+ static void free_long_term_buff(struct ibmvnic_adapter *adapter,
+ 				struct ibmvnic_long_term_buff *ltb);
+ static void ibmvnic_disable_irqs(struct ibmvnic_adapter *adapter);
++static void flush_reset_queue(struct ibmvnic_adapter *adapter);
  
- 		if (!wait_for_completion_timeout(&adapter->init_done,
- 						 timeout)) {
--			netdev_warn(netdev, "Login timed out, retrying...\n");
--			retry = true;
--			adapter->init_done_rc = 0;
--			retry_count++;
--			continue;
-+			netdev_warn(netdev, "Login timed out\n");
-+			adapter->login_pending = false;
-+			goto partial_reset;
- 		}
+ struct ibmvnic_stat {
+ 	char name[ETH_GSTRING_LEN];
+@@ -1507,8 +1508,8 @@ static const char *adapter_state_to_string(enum vnic_state state)
  
- 		if (adapter->init_done_rc == ABORTED) {
-@@ -1576,7 +1576,41 @@ static int ibmvnic_login(struct net_device *netdev)
+ static int ibmvnic_login(struct net_device *netdev)
+ {
++	unsigned long flags, timeout = msecs_to_jiffies(20000);
+ 	struct ibmvnic_adapter *adapter = netdev_priv(netdev);
+-	unsigned long timeout = msecs_to_jiffies(20000);
+ 	int retry_count = 0;
+ 	int retries = 10;
+ 	bool retry;
+@@ -1573,6 +1574,7 @@ static int ibmvnic_login(struct net_device *netdev)
+ 					    "SCRQ irq initialization failed\n");
+ 				return rc;
+ 			}
++		/* Default/timeout error handling, reset and start fresh */
  		} else if (adapter->init_done_rc) {
  			netdev_warn(netdev, "Adapter login failed, init_done_rc = %d\n",
  				    adapter->init_done_rc);
--			return -EIO;
+@@ -1588,29 +1590,53 @@ static int ibmvnic_login(struct net_device *netdev)
+ 				    "Freeing and re-registering CRQs before attempting to login again\n");
+ 			retry = true;
+ 			adapter->init_done_rc = 0;
+-			retry_count++;
+ 			release_sub_crqs(adapter, true);
+-			reinit_init_done(adapter);
+-			release_crq_queue(adapter);
+-			/* If we don't sleep here then we risk an unnecessary
+-			 * failover event from the VIOS. This is a known VIOS
+-			 * issue caused by a vnic device freeing and registering
+-			 * a CRQ too quickly.
++			/* Much of this is similar logic as ibmvnic_probe(),
++			 * we are essentially re-initializing communication
++			 * with the server. We really should not run any
++			 * resets/failovers here because this is already a form
++			 * of reset and we do not want parallel resets occurring
+ 			 */
+-			msleep(1500);
+-			rc = init_crq_queue(adapter);
+-			if (rc) {
+-				netdev_err(netdev, "login recovery: init CRQ failed %d\n",
+-					   rc);
+-				return -EIO;
+-			}
++			do {
++				reinit_init_done(adapter);
++				/* Clear any failovers we got in the previous
++				 * pass since we are re-initializing the CRQ
++				 */
++				adapter->failover_pending = false;
++				release_crq_queue(adapter);
++				/* If we don't sleep here then we risk an
++				 * unnecessary failover event from the VIOS.
++				 * This is a known VIOS issue caused by a vnic
++				 * device freeing and registering a CRQ too
++				 * quickly.
++				 */
++				msleep(1500);
++				/* Avoid any resets, since we are currently
++				 * resetting.
++				 */
++				spin_lock_irqsave(&adapter->rwi_lock, flags);
++				flush_reset_queue(adapter);
++				spin_unlock_irqrestore(&adapter->rwi_lock,
++						       flags);
+ 
+-			rc = ibmvnic_reset_init(adapter, false);
+-			if (rc) {
+-				netdev_err(netdev, "login recovery: Reset init failed %d\n",
+-					   rc);
+-				return -EIO;
+-			}
++				rc = init_crq_queue(adapter);
++				if (rc) {
++					netdev_err(netdev, "login recovery: init CRQ failed %d\n",
++						   rc);
++					return -EIO;
++				}
 +
-+partial_reset:
-+			/* adapter login failed, so free any CRQs or sub-CRQs
-+			 * and register again before attempting to login again.
-+			 * If we don't do this then the VIOS may think that
-+			 * we are already logged in and reject any subsequent
-+			 * attempts
-+			 */
-+			netdev_warn(netdev,
-+				    "Freeing and re-registering CRQs before attempting to login again\n");
-+			retry = true;
-+			adapter->init_done_rc = 0;
-+			retry_count++;
-+			release_sub_crqs(adapter, true);
-+			reinit_init_done(adapter);
-+			release_crq_queue(adapter);
-+			/* If we don't sleep here then we risk an unnecessary
-+			 * failover event from the VIOS. This is a known VIOS
-+			 * issue caused by a vnic device freeing and registering
-+			 * a CRQ too quickly.
-+			 */
-+			msleep(1500);
-+			rc = init_crq_queue(adapter);
-+			if (rc) {
-+				netdev_err(netdev, "login recovery: init CRQ failed %d\n",
-+					   rc);
-+				return -EIO;
-+			}
-+
-+			rc = ibmvnic_reset_init(adapter, false);
-+			if (rc) {
-+				netdev_err(netdev, "login recovery: Reset init failed %d\n",
-+					   rc);
-+				return -EIO;
-+			}
++				rc = ibmvnic_reset_init(adapter, false);
++				if (rc)
++					netdev_err(netdev, "login recovery: Reset init failed %d\n",
++						   rc);
++				/* IBMVNIC_CRQ_INIT will return EAGAIN if it
++				 * fails, since ibmvnic_reset_init will free
++				 * irq's in failure, we won't be able to receive
++				 * new CRQs so we need to keep trying. probe()
++				 * handles this similarly.
++				 */
++			} while (rc == -EAGAIN && retry_count++ < retries);
  		}
  	} while (retry);
  
