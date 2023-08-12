@@ -2,41 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E294677A181
-	for <lists+stable@lfdr.de>; Sat, 12 Aug 2023 19:51:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6A26577A182
+	for <lists+stable@lfdr.de>; Sat, 12 Aug 2023 19:51:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229662AbjHLRvY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 12 Aug 2023 13:51:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60548 "EHLO
+        id S229745AbjHLRvZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 12 Aug 2023 13:51:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60564 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229626AbjHLRvX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 12 Aug 2023 13:51:23 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 815A41712
-        for <stable@vger.kernel.org>; Sat, 12 Aug 2023 10:51:24 -0700 (PDT)
+        with ESMTP id S229626AbjHLRvZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 12 Aug 2023 13:51:25 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 43EC11709
+        for <stable@vger.kernel.org>; Sat, 12 Aug 2023 10:51:28 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1C21061C7B
-        for <stable@vger.kernel.org>; Sat, 12 Aug 2023 17:51:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DDDDC433C8;
-        Sat, 12 Aug 2023 17:51:23 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C8D0E61C7B
+        for <stable@vger.kernel.org>; Sat, 12 Aug 2023 17:51:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9BB6C433C7;
+        Sat, 12 Aug 2023 17:51:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691862683;
-        bh=kwaZHn3XciDUmCoQXhOLRCmuFkuseEP/iOEA12mnBO0=;
+        s=korg; t=1691862687;
+        bh=P1s3emojjeqL0bC/tNIa8ipsNXosYVutN/HAU/q3Qyo=;
         h=Subject:To:Cc:From:Date:From;
-        b=fSjjVhCFsf5qnqn4GET0UY2xyynMI6SSSx6w0uNeXbiWl8AyY30t5dj6NexueZj2x
-         bA+tseAeAcVnZ+DXmsXdubdaZXXvyDWlAZuzftvOE3crnD0k9y/t24pFMNBLFG5oSw
-         +P6enmiqW0DrbF2oDbGSShUiJWF6UmrQ3Q9dZuRs=
-Subject: FAILED: patch "[PATCH] selftests: forwarding: tc_actions: Use ncat instead of nc" failed to apply to 6.1-stable tree
+        b=piftk+dtfkr1DkbWw4/t3wTM6zqUXvm17lWV3NiLU9VWlY1ytV7/Z5GD2NRYcX+9w
+         lxGUyNiN6nPolnmv5DTaqEoBEwn8rVfNZy2qNNIvauBtIjmZII3esOJpHBcYkNSfkX
+         4+m/pDw8roNXw+GqMYP9bzgKqifqqQwZ/Jq/LpMw=
+Subject: FAILED: patch "[PATCH] selftests: forwarding: tc_actions: Use ncat instead of nc" failed to apply to 5.15-stable tree
 To:     idosch@nvidia.com, kuba@kernel.org, liuhangbin@gmail.com,
         mirsad.todorovac@alu.unizg.hr, petrm@nvidia.com,
         razor@blackwall.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 12 Aug 2023 19:51:21 +0200
-Message-ID: <2023081220-craving-study-08fe@gregkh>
+Date:   Sat, 12 Aug 2023 19:51:22 +0200
+Message-ID: <2023081222-relight-annoying-ed13@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -51,25 +51,26 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x 5e8670610b93158ffacc3241f835454ff26a3469
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023081220-craving-study-08fe@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023081222-relight-annoying-ed13@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
 5e8670610b93 ("selftests: forwarding: tc_actions: Use ncat instead of nc")
 f58531716ced ("selftests: forwarding: tc_actions: cleanup temporary files when test is aborted")
 ca22da2fbd69 ("act_mirred: use the backlog for nested calls to mirred ingress")
+1d127effdc17 ("selftests: add a test case for mirred egress to ingress")
 
 thanks,
 
