@@ -2,63 +2,63 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A386877A304
-	for <lists+stable@lfdr.de>; Sat, 12 Aug 2023 23:13:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 546BB77A306
+	for <lists+stable@lfdr.de>; Sat, 12 Aug 2023 23:16:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230118AbjHLVNf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 12 Aug 2023 17:13:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59066 "EHLO
+        id S230016AbjHLVQg (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 12 Aug 2023 17:16:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35402 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229563AbjHLVNe (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 12 Aug 2023 17:13:34 -0400
-Received: from mail-pf1-x42b.google.com (mail-pf1-x42b.google.com [IPv6:2607:f8b0:4864:20::42b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D7434198B
-        for <stable@vger.kernel.org>; Sat, 12 Aug 2023 14:13:36 -0700 (PDT)
-Received: by mail-pf1-x42b.google.com with SMTP id d2e1a72fcca58-686ba29ccb1so2135722b3a.1
-        for <stable@vger.kernel.org>; Sat, 12 Aug 2023 14:13:37 -0700 (PDT)
+        with ESMTP id S229563AbjHLVQg (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 12 Aug 2023 17:16:36 -0400
+Received: from mail-pf1-x435.google.com (mail-pf1-x435.google.com [IPv6:2607:f8b0:4864:20::435])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D64B198B
+        for <stable@vger.kernel.org>; Sat, 12 Aug 2023 14:16:38 -0700 (PDT)
+Received: by mail-pf1-x435.google.com with SMTP id d2e1a72fcca58-686ba29ccb1so2136342b3a.1
+        for <stable@vger.kernel.org>; Sat, 12 Aug 2023 14:16:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20221208.gappssmtp.com; s=20221208; t=1691874817; x=1692479617;
+        d=kernelci-org.20221208.gappssmtp.com; s=20221208; t=1691874998; x=1692479798;
         h=from:to:subject:content-transfer-encoding:mime-version:date
          :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=qwvCKXrkZVAXil5LpC1M2ssHw36B7j4vvd+IfhYTE6g=;
-        b=hT0pBXbjRS6SRI4WJa98ePDDQf9b+534ohOQS+N243C5oqS6i6FOBQxt+fO26DEouG
-         rzDZ4BxcRnEFRIlflX1jwuqcXcM/hPERB4HqzKv9ChK3KgbPliv3UXc0DtKcVK488BdK
-         rtgot8TjovCb0bzymseVBVxeYTB3aJ5D0cr8kcn469uLoXvP7BLBsGNQz7BN3AB3i55C
-         pIYndrqnABhJ/wpDCORUWRS0y7z1V5GoD9y3yUj8Brgt3RJ28DdVd5hguI9eArcga/Mv
-         gWXAvMUQODlu2WdwV4axe33pAYItQn5QKbdt5zFKKwn2U9TOE8c1ZsLdmaT6imtP65iu
-         s22g==
+        bh=HVWOnxKZyvatHk2pUbu+IAi6YVSbyL9tfHOuY2ELZHs=;
+        b=CTopTsP/eX6KGJPtm/vghc830mZRapoudqG7cELcV28e0N1zdPrTU5SwCM1lIQskj/
+         u6QoIyLd+aDJt4Jw30OBqvvc/v9UwG4ne4LLIRgXizWpNTQG85CUkMQ9eRmEodIEi+d+
+         vcAOXRo6m7+o2csfY1z2e04NjI/oO/Q782BTkoMLj5a1gDirz/h8mVdRAqOAE/Rw8LHb
+         YLkRUj5I4fRFhOWrpA+cWzOxAx8wm4hUvJSK165Am/zjlUiPI35aHhiQOEEOZ3yguH2O
+         QMIagp7ziKWKj5uGRiLhaQvWj26Jbgeu83YmvFT6Px4JIPLjAcmYI1dRMf5UCgpGSCa0
+         RM8A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691874817; x=1692479617;
+        d=1e100.net; s=20221208; t=1691874998; x=1692479798;
         h=from:to:subject:content-transfer-encoding:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=qwvCKXrkZVAXil5LpC1M2ssHw36B7j4vvd+IfhYTE6g=;
-        b=Y/4Xhvi/TQ0v+yk8vMDaBp9O4vxpNkXp3AnkMlPjdVXDchmYdHY6b7oXfDf7pjxbc3
-         ZYAcXT8Uz1KFBtyCyX1STDwJl8KFRKg8god2ZMyg8VcZ4PGeQnw1RzpXAqfCufcoGuUd
-         KWI35A9W6JzEKBuReHHUffymDkFMZmSdfOwS2U4XJ3VdKeboWiXZ27K2Vi9wTkCfvri5
-         t0nLHZ5YSQ9oYtN5KFia27+b5rt+WmNaYyk2p/RlKqkWtF4RKx5Dv8y4PmhK/F1NKd5u
-         ml58kVA66naifde2YFLVERi1hBYjBb5o1CBjBxI1Tujp2Cj1xe/Apw52pdbOqLDS6aZW
-         8aLQ==
-X-Gm-Message-State: AOJu0Yw6IucB47yaM7H7cCyKoLAXd1GfEqpqKk7NUxMSPTm/kKlyJwwn
-        d8viQEgWKtPrcQqdVopMr5VlqMDmk0jk4qcgDb1weA==
-X-Google-Smtp-Source: AGHT+IEDtPAT6+cpTwsUpjOi0fYB5rRGuTRuA3qO3cgVIkGunGHiM3KhW185yA6bfeIfXrD7U80YrA==
-X-Received: by 2002:a05:6a20:7d8b:b0:125:4d74:cd6a with SMTP id v11-20020a056a207d8b00b001254d74cd6amr10794544pzj.3.1691874816741;
-        Sat, 12 Aug 2023 14:13:36 -0700 (PDT)
+        bh=HVWOnxKZyvatHk2pUbu+IAi6YVSbyL9tfHOuY2ELZHs=;
+        b=Iu+6tUtFZPdz4xF14lXOFyfIL+xufu79RVQrx7FU/YQ/0y1m19AR0nRIr81DJqGII0
+         Gxu5R6Uh8sr2qhnGV1wy/kQuJpx1p/K1/aPeJzoUJ+lOT5PYEzE1PtxEZU1r4RD/hWkM
+         4X7TwLjKd6JxBBbabwT9mpVqWO8ulpmNHZW83eVd6PyLK3SJwAnzD4zkDdToVzTQkFYM
+         FNER4Sj1D5G6LBqQTyfvlXJsggTMHKyYuXeLINfTH0/HrZm+9fN5gY7bzv+cdyhdk6f3
+         t6ijzl9sq1BoM28GI+chyoLlhadp1RpTCPIhk9Y9uCaeq+TyifBD9ytPQsyAXVc+2sIV
+         SyJg==
+X-Gm-Message-State: AOJu0YwEMqy+0Euzqzuu/vwynw7l6DK8xB1u9t8v9n6/6OtpKyyX0CFg
+        BLeB5hgbLeolvBebLp6mveNGpi1qlOt+c0dlfw1Qbw==
+X-Google-Smtp-Source: AGHT+IEAlA38rKAvzC63k912scX7a3J2Tw3oDpQC4C0/KhhRFWJpFCYSWxwFGQ9HqZT9Vj+QXv0+eQ==
+X-Received: by 2002:a05:6a20:8f0f:b0:13e:b6b0:72a2 with SMTP id b15-20020a056a208f0f00b0013eb6b072a2mr7427284pzk.6.1691874998414;
+        Sat, 12 Aug 2023 14:16:38 -0700 (PDT)
 Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id z20-20020a63ac54000000b0054fd46531a1sm5666747pgn.5.2023.08.12.14.13.35
+        by smtp.gmail.com with ESMTPSA id w9-20020a63af09000000b00563deb296bbsm5534037pge.22.2023.08.12.14.16.37
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 12 Aug 2023 14:13:36 -0700 (PDT)
-Message-ID: <64d7f600.630a0220.546ea.9ae9@mx.google.com>
-Date:   Sat, 12 Aug 2023 14:13:36 -0700 (PDT)
+        Sat, 12 Aug 2023 14:16:37 -0700 (PDT)
+Message-ID: <64d7f6b5.630a0220.ffcea.8d6f@mx.google.com>
+Date:   Sat, 12 Aug 2023 14:16:37 -0700 (PDT)
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 X-Kernelci-Report-Type: build
-X-Kernelci-Kernel: v5.15.126-71-ge089901a2a7ef
+X-Kernelci-Kernel: v5.10.190-56-g3dbd538340c6
 X-Kernelci-Tree: stable-rc
-X-Kernelci-Branch: linux-5.15.y
-Subject: stable-rc/linux-5.15.y build: 20 builds: 0 failed, 20 passed,
- 5 warnings (v5.15.126-71-ge089901a2a7ef)
+X-Kernelci-Branch: linux-5.10.y
+Subject: stable-rc/linux-5.10.y build: 19 builds: 0 failed, 19 passed,
+ 7 warnings (v5.10.190-56-g3dbd538340c6)
 To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
         kernelci-results@groups.io
 From:   "kernelci.org bot" <bot@kernelci.org>
@@ -71,16 +71,16 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-stable-rc/linux-5.15.y build: 20 builds: 0 failed, 20 passed, 5 warnings (v=
-5.15.126-71-ge089901a2a7ef)
+stable-rc/linux-5.10.y build: 19 builds: 0 failed, 19 passed, 7 warnings (v=
+5.10.190-56-g3dbd538340c6)
 
-Full Build Summary: https://kernelci.org/build/stable-rc/branch/linux-5.15.=
-y/kernel/v5.15.126-71-ge089901a2a7ef/
+Full Build Summary: https://kernelci.org/build/stable-rc/branch/linux-5.10.=
+y/kernel/v5.10.190-56-g3dbd538340c6/
 
 Tree: stable-rc
-Branch: linux-5.15.y
-Git Describe: v5.15.126-71-ge089901a2a7ef
-Git Commit: e089901a2a7efb6b0a441ce72a1a1d6ed9ee9755
+Branch: linux-5.10.y
+Git Describe: v5.10.190-56-g3dbd538340c6
+Git Commit: 3dbd538340c63540e85e51e9946f4f37288e415d
 Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
 e-rc.git
 Built: 7 unique architectures
@@ -99,21 +99,23 @@ mips:
     32r2el_defconfig (gcc-10): 1 warning
 
 riscv:
+    rv32_defconfig (gcc-10): 4 warnings
 
 x86_64:
-    x86_64_defconfig (gcc-10): 2 warnings
-    x86_64_defconfig+x86-chromebook (gcc-10): 2 warnings
+    x86_64_defconfig (gcc-10): 1 warning
+    x86_64_defconfig+x86-chromebook (gcc-10): 1 warning
 
 
 Warnings summary:
 
     2    arch/x86/lib/retpoline.o: warning: objtool: .altinstr_replacement:=
  unexpected end of section
-    2    arch/x86/kernel/smp.o: warning: objtool: sysvec_reboot()+0x45: unr=
-eachable instruction
-    1    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_devic=
-e_reg): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expec=
-ted "0,0"
+    2    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [=
+-Wcpp]
+    2    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemente=
+d [-Wcpp]
+    1    WARNING: modpost: Symbol info of vmlinux is missing. Unresolved sy=
+mbol check will be entirely skipped.
 
 =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
 =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
@@ -128,9 +130,8 @@ Detailed per-defconfig build reports:
 ion mismatches
 
 Warnings:
-    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_device_reg=
-): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expected "=
-0,0"
+    WARNING: modpost: Symbol info of vmlinux is missing. Unresolved symbol =
+check will be entirely skipped.
 
 ---------------------------------------------------------------------------=
 -----
@@ -189,23 +190,21 @@ nommu_k210_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, =
 
 ---------------------------------------------------------------------------=
 -----
-nommu_k210_sdcard_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 war=
-nings, 0 section mismatches
-
----------------------------------------------------------------------------=
------
 omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
 ection mismatches
 
 ---------------------------------------------------------------------------=
 -----
-rv32_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
+rv32_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 sect=
 ion mismatches
 
----------------------------------------------------------------------------=
------
-tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
+Warnings:
+    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [-Wcpp]
+    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemented [-W=
+cpp]
+    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [-Wcpp]
+    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemented [-W=
+cpp]
 
 ---------------------------------------------------------------------------=
 -----
@@ -214,28 +213,29 @@ tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section=
 
 ---------------------------------------------------------------------------=
 -----
+tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
 vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
 ction mismatches
 
 ---------------------------------------------------------------------------=
 -----
-x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 s=
-ection mismatches
+x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 se=
+ction mismatches
 
 Warnings:
-    arch/x86/kernel/smp.o: warning: objtool: sysvec_reboot()+0x45: unreacha=
-ble instruction
     arch/x86/lib/retpoline.o: warning: objtool: .altinstr_replacement: unex=
 pected end of section
 
 ---------------------------------------------------------------------------=
 -----
 x86_64_defconfig+x86-chromebook (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, =
-2 warnings, 0 section mismatches
+1 warning, 0 section mismatches
 
 Warnings:
-    arch/x86/kernel/smp.o: warning: objtool: sysvec_reboot()+0x45: unreacha=
-ble instruction
     arch/x86/lib/retpoline.o: warning: objtool: .altinstr_replacement: unex=
 pected end of section
 
