@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1656A77A111
-	for <lists+stable@lfdr.de>; Sat, 12 Aug 2023 18:35:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D63B977A112
+	for <lists+stable@lfdr.de>; Sat, 12 Aug 2023 18:35:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229766AbjHLQez (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 12 Aug 2023 12:34:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47304 "EHLO
+        id S229552AbjHLQfE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 12 Aug 2023 12:35:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47356 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229547AbjHLQey (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 12 Aug 2023 12:34:54 -0400
+        with ESMTP id S229547AbjHLQfD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 12 Aug 2023 12:35:03 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D20CF1702
-        for <stable@vger.kernel.org>; Sat, 12 Aug 2023 09:34:57 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EBE7F1702
+        for <stable@vger.kernel.org>; Sat, 12 Aug 2023 09:35:06 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6F5176268C
-        for <stable@vger.kernel.org>; Sat, 12 Aug 2023 16:34:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81FB1C433C8;
-        Sat, 12 Aug 2023 16:34:56 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7286962651
+        for <stable@vger.kernel.org>; Sat, 12 Aug 2023 16:35:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D0DAC433C7;
+        Sat, 12 Aug 2023 16:35:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691858096;
-        bh=RCgDVF8S3l5OS88qhxCUAmckliWFxVFNSLG6fGYtEow=;
+        s=korg; t=1691858105;
+        bh=KB8dIZuXBQcn1BGIqLpuMXbA3gBfaasww6n/pohZvNU=;
         h=Subject:To:Cc:From:Date:From;
-        b=Qup4her8Xu3eTfAIOyS8x60BkGcbf6Ic/vt4l3D+FWXv0unjNpHRVO7jZFVbfKLvg
-         qXHXuEhu2mB5cu0vpCLBoPUDi2Xs65ldJzOpIEbD3EG14XgXZ7eaQKwmUoOrKM6ZX3
-         JtH/us/rz8jc2p1OC0ivnxbeWWVK4oQ/1pt++BIw=
-Subject: FAILED: patch "[PATCH] iio: adc: meson: fix core clock enable/disable moment" failed to apply to 6.1-stable tree
+        b=K9zpLSNsQ7721flPM9q8ZXQauhzMqPD0q9f6MKt+urhzWKsI+7EIpNRgKY7FLLD0Z
+         96sWmmuqNDMVZTVG5NqGTUAd5yll/haaL6OD3re66OdbQgg0JAeT/NRok9vdYYzaMV
+         4n5dCJ2Quz2JxJn/V2IpKuCa2H/ozwtWOYyFNzAc=
+Subject: FAILED: patch "[PATCH] iio: adc: meson: fix core clock enable/disable moment" failed to apply to 5.15-stable tree
 To:     gnstark@sberdevices.ru, Jonathan.Cameron@huawei.com,
         stable@vger.kernel.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 12 Aug 2023 18:34:54 +0200
-Message-ID: <2023081254-dreadful-twine-ea63@gregkh>
+Date:   Sat, 12 Aug 2023 18:34:55 +0200
+Message-ID: <2023081255-cinch-backside-03c0@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -50,19 +50,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x 09738ccbc4148c62d6c8c4644ff4a099d57f49ad
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023081254-dreadful-twine-ea63@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023081255-cinch-backside-03c0@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
