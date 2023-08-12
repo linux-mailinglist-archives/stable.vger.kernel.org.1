@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CFF35779D61
-	for <lists+stable@lfdr.de>; Sat, 12 Aug 2023 07:56:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 61F08779D62
+	for <lists+stable@lfdr.de>; Sat, 12 Aug 2023 07:56:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234418AbjHLF4h (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 12 Aug 2023 01:56:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34000 "EHLO
+        id S234620AbjHLF4k (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 12 Aug 2023 01:56:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44934 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229670AbjHLF4h (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 12 Aug 2023 01:56:37 -0400
+        with ESMTP id S229670AbjHLF4k (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 12 Aug 2023 01:56:40 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB4052D44
-        for <stable@vger.kernel.org>; Fri, 11 Aug 2023 22:56:36 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D0912D44
+        for <stable@vger.kernel.org>; Fri, 11 Aug 2023 22:56:39 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5AE7A6413B
-        for <stable@vger.kernel.org>; Sat, 12 Aug 2023 05:56:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39B80C433C7;
-        Sat, 12 Aug 2023 05:56:35 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1D54864165
+        for <stable@vger.kernel.org>; Sat, 12 Aug 2023 05:56:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2830FC433C8;
+        Sat, 12 Aug 2023 05:56:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691819795;
-        bh=QA75m3qwHDqiPJkyvPWKUlpKRe6xCuvMo8euYsdFfq8=;
+        s=korg; t=1691819798;
+        bh=6bEh79rht1m4onS0KGIOymQ70hQX+9W34reDW5jrSLo=;
         h=Subject:To:Cc:From:Date:From;
-        b=NE3tEZCkpt4Ft9BoO6r1hdTrGQcBjgpVL0WRwJgbd9MFaCZuissj4LkcR59NCxLUj
-         uC7fNBFfLC4EUEhb46UfCSEnrZC5o7u8MqSjvcEZu2tvcP1vF9YWR/4oHPNIsz5+M1
-         p9BRHdvcZrERGCgXlGsh8Hzc+48W2ExdTLov7zbA=
-Subject: FAILED: patch "[PATCH] nvme-tcp: fix potential unbalanced freeze & unfreeze" failed to apply to 5.10-stable tree
+        b=Sq4Cc0awYg0cnIjP3fWWVmqRDcavCvEifZLWTIk9qCIDAP5O2Z82UHw4BzrCvAl34
+         TNdZaSgcrlQaD3p4p8OwwVTc+kJUGe1VzmlOMFWUK7JIg2eRjHISzqXIzSgD7ct7hl
+         klyxfH2TkiCLAZqBGiFcR9c1hAsYwgpayyA1H88E=
+Subject: FAILED: patch "[PATCH] nvme-tcp: fix potential unbalanced freeze & unfreeze" failed to apply to 5.4-stable tree
 To:     ming.lei@redhat.com, kbusch@kernel.org, sagi@grimberg.me,
         yi.zhang@redhat.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 12 Aug 2023 07:56:28 +0200
-Message-ID: <2023081227-freeing-squeak-4a28@gregkh>
+Date:   Sat, 12 Aug 2023 07:56:29 +0200
+Message-ID: <2023081229-semicolon-uplifting-ffd6@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -50,19 +50,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
 git cherry-pick -x 99dc264014d5aed66ee37ddf136a38b5a2b1b529
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023081227-freeing-squeak-4a28@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023081229-semicolon-uplifting-ffd6@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
