@@ -2,48 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2139377A183
-	for <lists+stable@lfdr.de>; Sat, 12 Aug 2023 19:51:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A219C77A185
+	for <lists+stable@lfdr.de>; Sat, 12 Aug 2023 19:52:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229841AbjHLRv2 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 12 Aug 2023 13:51:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32876 "EHLO
+        id S229862AbjHLRwj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 12 Aug 2023 13:52:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44392 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229626AbjHLRv2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 12 Aug 2023 13:51:28 -0400
+        with ESMTP id S229810AbjHLRwi (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 12 Aug 2023 13:52:38 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 128391709
-        for <stable@vger.kernel.org>; Sat, 12 Aug 2023 10:51:31 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 885731709
+        for <stable@vger.kernel.org>; Sat, 12 Aug 2023 10:52:41 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A421961CA0
-        for <stable@vger.kernel.org>; Sat, 12 Aug 2023 17:51:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2B53C433C7;
-        Sat, 12 Aug 2023 17:51:29 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0D4D161CAC
+        for <stable@vger.kernel.org>; Sat, 12 Aug 2023 17:52:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8C6AC433C8;
+        Sat, 12 Aug 2023 17:52:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691862690;
-        bh=bqWzhce2qVKC161bjvujByDw5lvdBNeUPUXyqOMDVW4=;
+        s=korg; t=1691862760;
+        bh=Nt+M20FOWsqJBzMGxMOeI7Zb8shOhH516RhKSdkuRws=;
         h=Subject:To:Cc:From:Date:From;
-        b=Sv6/bFiQ9qqgjDQa/THcFvcaoaB5ij3zNEDocW9ee2EgMIEfWtfLFAhCcjSSPjaxm
-         DTBxCJuA22tu/enFYXGv9/vVvkgVhPhUgHmujnj0gtAVzlIu9xtOWTeqVolMoWwjzc
-         YAQu5OE+yDBLfSJ24Ub/wNub+EEkO40TW57ceGOw=
-Subject: FAILED: patch "[PATCH] selftests: forwarding: tc_actions: Use ncat instead of nc" failed to apply to 5.10-stable tree
-To:     idosch@nvidia.com, kuba@kernel.org, liuhangbin@gmail.com,
-        mirsad.todorovac@alu.unizg.hr, petrm@nvidia.com,
-        razor@blackwall.org
+        b=dvxas4QiYlPIUGV6Z29S1Gu3yRyFuiAE3xaFn5Qf88WFXM41U/WHCNWGk4AS1tqfQ
+         67tI0dLKRLJOTcR2rwI7KSv4+/LCwoMs3VR19M2yEMMQxWlNTEeAx/nhV4ka/JRrRI
+         HmnNzWbkFu/lLunCJo4WRSU/Tf4yX9UP4jwegDU8=
+Subject: FAILED: patch "[PATCH] bpf, sockmap: Fix map type error in sock_map_del_link" failed to apply to 5.10-stable tree
+To:     xukuohai@huawei.com, john.fastabend@gmail.com,
+        martin.lau@kernel.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 12 Aug 2023 19:51:24 +0200
-Message-ID: <2023081224-yarn-motto-eb6f@gregkh>
+Date:   Sat, 12 Aug 2023 19:52:37 +0200
+Message-ID: <2023081237-letdown-passable-ed46@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=0.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SORTED_RECIPS,SPF_HELO_NONE,SPF_PASS,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -60,20 +59,21 @@ To reproduce the conflict and resubmit, you may use the following commands:
 
 git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
-git cherry-pick -x 5e8670610b93158ffacc3241f835454ff26a3469
+git cherry-pick -x 7e96ec0e6605b69bb21bbf6c0ff9051e656ec2b1
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023081224-yarn-motto-eb6f@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023081237-letdown-passable-ed46@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
-5e8670610b93 ("selftests: forwarding: tc_actions: Use ncat instead of nc")
-f58531716ced ("selftests: forwarding: tc_actions: cleanup temporary files when test is aborted")
-ca22da2fbd69 ("act_mirred: use the backlog for nested calls to mirred ingress")
-1d127effdc17 ("selftests: add a test case for mirred egress to ingress")
-41fdfffd5783 ("selftests: forwarding: Add MPLS L2VPN test")
-c129412f74e9 ("net/sched: sch_frag: add generic packet fragment support.")
-fa6d639930ee ("net/sched: act_mirred: refactor the handle of xmit")
+7e96ec0e6605 ("bpf, sockmap: Fix map type error in sock_map_del_link")
+a7ba4558e69a ("sock_map: Introduce BPF_SK_SKB_VERDICT")
+b017055255d6 ("sock_map: Kill sock_map_link_no_progs()")
+2004fdbd8a2b ("sock_map: Simplify sock_map_link() a bit")
+4675e234b9e1 ("sock_map: Make sock_map_prog_update() static")
+ae8b8332fbb5 ("sock_map: Rename skb_parser and skb_verdict")
+5a685cd94b21 ("skmsg: Get rid of struct sk_psock_parser")
+887596095ec2 ("bpf: Clean up sockmap related Kconfigs")
 
 thanks,
 
@@ -81,77 +81,43 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 5e8670610b93158ffacc3241f835454ff26a3469 Mon Sep 17 00:00:00 2001
-From: Ido Schimmel <idosch@nvidia.com>
-Date: Tue, 8 Aug 2023 17:14:57 +0300
-Subject: [PATCH] selftests: forwarding: tc_actions: Use ncat instead of nc
+From 7e96ec0e6605b69bb21bbf6c0ff9051e656ec2b1 Mon Sep 17 00:00:00 2001
+From: Xu Kuohai <xukuohai@huawei.com>
+Date: Fri, 4 Aug 2023 03:37:37 -0400
+Subject: [PATCH] bpf, sockmap: Fix map type error in sock_map_del_link
 
-The test relies on 'nc' being the netcat version from the nmap project.
-While this seems to be the case on Fedora, it is not the case on Ubuntu,
-resulting in failures such as [1].
+sock_map_del_link() operates on both SOCKMAP and SOCKHASH, although
+both types have member named "progs", the offset of "progs" member in
+these two types is different, so "progs" should be accessed with the
+real map type.
 
-Fix by explicitly using the 'ncat' utility from the nmap project and the
-skip the test in case it is not installed.
+Fixes: 604326b41a6f ("bpf, sockmap: convert to generic sk_msg interface")
+Signed-off-by: Xu Kuohai <xukuohai@huawei.com>
+Reviewed-by: John Fastabend <john.fastabend@gmail.com>
+Link: https://lore.kernel.org/r/20230804073740.194770-2-xukuohai@huaweicloud.com
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
 
-[1]
- # timeout set to 0
- # selftests: net/forwarding: tc_actions.sh
- # TEST: gact drop and ok (skip_hw)                                    [ OK ]
- # TEST: mirred egress flower redirect (skip_hw)                       [ OK ]
- # TEST: mirred egress flower mirror (skip_hw)                         [ OK ]
- # TEST: mirred egress matchall mirror (skip_hw)                       [ OK ]
- # TEST: mirred_egress_to_ingress (skip_hw)                            [ OK ]
- # nc: invalid option -- '-'
- # usage: nc [-46CDdFhklNnrStUuvZz] [-I length] [-i interval] [-M ttl]
- #         [-m minttl] [-O length] [-P proxy_username] [-p source_port]
- #         [-q seconds] [-s sourceaddr] [-T keyword] [-V rtable] [-W recvlimit]
- #         [-w timeout] [-X proxy_protocol] [-x proxy_address[:port]]
- #         [destination] [port]
- # nc: invalid option -- '-'
- # usage: nc [-46CDdFhklNnrStUuvZz] [-I length] [-i interval] [-M ttl]
- #         [-m minttl] [-O length] [-P proxy_username] [-p source_port]
- #         [-q seconds] [-s sourceaddr] [-T keyword] [-V rtable] [-W recvlimit]
- #         [-w timeout] [-X proxy_protocol] [-x proxy_address[:port]]
- #         [destination] [port]
- # TEST: mirred_egress_to_ingress_tcp (skip_hw)                        [FAIL]
- #       server output check failed
- # INFO: Could not test offloaded functionality
- not ok 80 selftests: net/forwarding: tc_actions.sh # exit=1
-
-Fixes: ca22da2fbd69 ("act_mirred: use the backlog for nested calls to mirred ingress")
-Reported-by: Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>
-Closes: https://lore.kernel.org/netdev/adc5e40d-d040-a65e-eb26-edf47dac5b02@alu.unizg.hr/
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: Petr Machata <petrm@nvidia.com>
-Tested-by: Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>
-Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
-Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
-Link: https://lore.kernel.org/r/20230808141503.4060661-12-idosch@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-
-diff --git a/tools/testing/selftests/net/forwarding/tc_actions.sh b/tools/testing/selftests/net/forwarding/tc_actions.sh
-index a96cff8e7219..b0f5e55d2d0b 100755
---- a/tools/testing/selftests/net/forwarding/tc_actions.sh
-+++ b/tools/testing/selftests/net/forwarding/tc_actions.sh
-@@ -9,6 +9,8 @@ NUM_NETIFS=4
- source tc_common.sh
- source lib.sh
- 
-+require_command ncat
+diff --git a/net/core/sock_map.c b/net/core/sock_map.c
+index 08ab108206bf..8f07fea39d9e 100644
+--- a/net/core/sock_map.c
++++ b/net/core/sock_map.c
+@@ -146,13 +146,13 @@ static void sock_map_del_link(struct sock *sk,
+ 	list_for_each_entry_safe(link, tmp, &psock->link, list) {
+ 		if (link->link_raw == link_raw) {
+ 			struct bpf_map *map = link->map;
+-			struct bpf_stab *stab = container_of(map, struct bpf_stab,
+-							     map);
+-			if (psock->saved_data_ready && stab->progs.stream_parser)
++			struct sk_psock_progs *progs = sock_map_progs(map);
 +
- tcflags="skip_hw"
- 
- h1_create()
-@@ -220,9 +222,9 @@ mirred_egress_to_ingress_tcp_test()
- 		ip_proto icmp \
- 			action drop
- 
--	ip vrf exec v$h1 nc --recv-only -w10 -l -p 12345 -o $mirred_e2i_tf2  &
-+	ip vrf exec v$h1 ncat --recv-only -w10 -l -p 12345 -o $mirred_e2i_tf2 &
- 	local rpid=$!
--	ip vrf exec v$h1 nc -w1 --send-only 192.0.2.2 12345 <$mirred_e2i_tf1
-+	ip vrf exec v$h1 ncat -w1 --send-only 192.0.2.2 12345 <$mirred_e2i_tf1
- 	wait -n $rpid
- 	cmp -s $mirred_e2i_tf1 $mirred_e2i_tf2
- 	check_err $? "server output check failed"
++			if (psock->saved_data_ready && progs->stream_parser)
+ 				strp_stop = true;
+-			if (psock->saved_data_ready && stab->progs.stream_verdict)
++			if (psock->saved_data_ready && progs->stream_verdict)
+ 				verdict_stop = true;
+-			if (psock->saved_data_ready && stab->progs.skb_verdict)
++			if (psock->saved_data_ready && progs->skb_verdict)
+ 				verdict_stop = true;
+ 			list_del(&link->list);
+ 			sk_psock_free_link(link);
 
