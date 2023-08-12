@@ -2,34 +2,34 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7106F779D81
-	for <lists+stable@lfdr.de>; Sat, 12 Aug 2023 08:10:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8A977779D82
+	for <lists+stable@lfdr.de>; Sat, 12 Aug 2023 08:10:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229816AbjHLGKI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 12 Aug 2023 02:10:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45168 "EHLO
+        id S233757AbjHLGKL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 12 Aug 2023 02:10:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33070 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229649AbjHLGKH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 12 Aug 2023 02:10:07 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D7052D7
-        for <stable@vger.kernel.org>; Fri, 11 Aug 2023 23:10:06 -0700 (PDT)
+        with ESMTP id S229649AbjHLGKL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 12 Aug 2023 02:10:11 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7046FD7
+        for <stable@vger.kernel.org>; Fri, 11 Aug 2023 23:10:10 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5921264505
-        for <stable@vger.kernel.org>; Sat, 12 Aug 2023 06:10:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F5FEC433C7;
-        Sat, 12 Aug 2023 06:10:05 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id F12D06451F
+        for <stable@vger.kernel.org>; Sat, 12 Aug 2023 06:10:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D6EAC433C7;
+        Sat, 12 Aug 2023 06:10:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691820605;
-        bh=wgkhfMM3XoTSk0En3pqt+hwNd6+GkjiHE0GNGtg54aE=;
+        s=korg; t=1691820609;
+        bh=7E+W0UBZjOKD83kLfYKpADTo+9gUzLSnHjGm7xaku2I=;
         h=Subject:To:Cc:From:Date:From;
-        b=HEqngW6jYz9IcBQEqP/qwCMwITevLzTGVEPWg5H+nxE1umMeUaDm0WbyfP6YIeZrX
-         JFZu0+tABpDqW+d9hA3sV1Z1+gl46dY4ADndIYCkwZvEKWbD3vwWBPUStGaPJbKn2K
-         yj9KhM4Kn4UDmL1L4eqhgL8alRzba8n5OvxMk83s=
-Subject: FAILED: patch "[PATCH] hugetlb: do not clear hugetlb dtor until allocating vmemmap" failed to apply to 6.1-stable tree
+        b=2PHhI1z3fKTL0jXu2QhQPGScs1gm+k6C3oZ5Y4jx1sf67nn/w3ccczoSTaaqc4Hw4
+         pDwRfM2/8M5wWf2XVgcKAob6vTzsJP8TD7HE4EbewjDaZDdZYPxtwpaL99NwlATMSi
+         i5YYXAKRMW07vaYMQT4l7+nF67KBJ26hYtCw3i9g=
+Subject: FAILED: patch "[PATCH] hugetlb: do not clear hugetlb dtor until allocating vmemmap" failed to apply to 5.15-stable tree
 To:     mike.kravetz@oracle.com, akpm@linux-foundation.org,
         axelrasmussen@google.com, jiaqiyan@google.com,
         jthoughton@google.com, linmiaohe@huawei.com, mhocko@suse.com,
@@ -37,8 +37,8 @@ To:     mike.kravetz@oracle.com, akpm@linux-foundation.org,
         stable@vger.kernel.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 12 Aug 2023 08:10:03 +0200
-Message-ID: <2023081202-unloader-t-shirt-eb23@gregkh>
+Date:   Sat, 12 Aug 2023 08:10:06 +0200
+Message-ID: <2023081206-asleep-slain-4704@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -53,19 +53,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x 32c877191e022b55fe3a374f3d7e9fb5741c514d
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023081202-unloader-t-shirt-eb23@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023081206-asleep-slain-4704@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
@@ -83,6 +83,12 @@ a098c977722c ("mm/hugetlb_cgroup: convert __set_hugetlb_cgroup() to folios")
 4781593d5dba ("mm/hugetlb: unify clearing of RestoreReserve for private pages")
 149562f75094 ("mm/hugetlb: add hugetlb_folio_subpool() helpers")
 d340625f4849 ("mm: add private field of first tail to struct page and struct folio")
+71e2d666ef85 ("mm/huge_memory: do not clobber swp_entry_t during THP split")
+8346d69d8bcb ("mm/hugetlb: add available_huge_pages() func")
+2b21624fc232 ("hugetlb: freeze allocated pages before creating hugetlb pages")
+14455eabd840 ("mm: use nth_page instead of mem_map_offset mem_map_next")
+379708ffde1b ("mm: add the first tail page to struct folio")
+6d751329e761 ("Merge branch 'mm-hotfixes-stable' into mm-stable")
 
 thanks,
 
