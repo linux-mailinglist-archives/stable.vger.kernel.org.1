@@ -2,42 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6FF2477A18B
-	for <lists+stable@lfdr.de>; Sat, 12 Aug 2023 19:54:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A636A77A18F
+	for <lists+stable@lfdr.de>; Sat, 12 Aug 2023 19:56:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229920AbjHLRyX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 12 Aug 2023 13:54:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33972 "EHLO
+        id S229488AbjHLR4u (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 12 Aug 2023 13:56:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39088 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229501AbjHLRyW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 12 Aug 2023 13:54:22 -0400
+        with ESMTP id S229452AbjHLR4t (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 12 Aug 2023 13:56:49 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B4EB1709
-        for <stable@vger.kernel.org>; Sat, 12 Aug 2023 10:54:25 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1505C10E5
+        for <stable@vger.kernel.org>; Sat, 12 Aug 2023 10:56:52 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D68DE60C41
-        for <stable@vger.kernel.org>; Sat, 12 Aug 2023 17:54:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5A9AC433C7;
-        Sat, 12 Aug 2023 17:54:23 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8FD8D61BC2
+        for <stable@vger.kernel.org>; Sat, 12 Aug 2023 17:56:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EA0FC433C8;
+        Sat, 12 Aug 2023 17:56:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691862864;
-        bh=CC8ZJF1lEVRCT2akN8WLbKwMpyWE13SFTVtZtS05WD8=;
+        s=korg; t=1691863011;
+        bh=XcrKew2yAce9/XJeYYMH4udaDBTIDWZVzo/EfhcNcV0=;
         h=Subject:To:Cc:From:Date:From;
-        b=QS4ejALjCLZgsQ2Z+4bwDME6NAxan6g6J5ca4iK1z2maycfYJfYK76zcEYFGI79zU
-         x9damyaMcCkB/s1ESK+yOuI0aCnvYMYeSss/Wd6wSKzUK+ID2uD0mwdHAGC9oVWWyi
-         TXS33dkWoH/ALbHEwOfUHQKsLhIBPgB+Ging9xyM=
-Subject: FAILED: patch "[PATCH] macsec: use DEV_STATS_INC()" failed to apply to 5.10-stable tree
-To:     edumazet@google.com, davem@davemloft.net, sd@queasysnail.net,
-        syzkaller@googlegroups.com
+        b=SuxXnjbOwEphtBtD8O/OfPxGpvw4MD74JSehGWxkPT6NJoGhSQHDWZGLfZJ7bEaxJ
+         bUJBLHpbX3RYQWAkfVNz941vP/E2LpAShSOyOQjJyX+osMYJPF8EEBGkWnkOLj+1XH
+         MODBj0eARS7iQR6cRlT2tRF672d5n12uvsKpINGw=
+Subject: FAILED: patch "[PATCH] net/smc: Fix setsockopt and sysctl to specify same buffer" failed to apply to 6.1-stable tree
+To:     gbayer@linux.ibm.com, davem@davemloft.net, jaka@linux.ibm.com,
+        tonylu@linux.alibaba.com, wenjia@linux.ibm.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 12 Aug 2023 19:54:13 +0200
-Message-ID: <2023081213-squeamish-uninsured-f712@gregkh>
+Date:   Sat, 12 Aug 2023 19:56:48 +0200
+Message-ID: <2023081248-gamma-ice-ed79@gregkh>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -50,24 +50,24 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
-git cherry-pick -x 32d0a49d36a2a306c2e47fe5659361e424f0ed3f
+git cherry-pick -x 833bac7ec392bf75053c8a4fa4c36d4148dac77d
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023081213-squeamish-uninsured-f712@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023081248-gamma-ice-ed79@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
-32d0a49d36a2 ("macsec: use DEV_STATS_INC()")
-91ec9bd57f35 ("macsec: Fix traffic counters/statistics")
+833bac7ec392 ("net/smc: Fix setsockopt and sysctl to specify same buffer size again")
+aff7bfed9097 ("net/smc: replace mutex rmbs_lock and sndbufs_lock with rw_semaphore")
 
 thanks,
 
@@ -75,138 +75,229 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 32d0a49d36a2a306c2e47fe5659361e424f0ed3f Mon Sep 17 00:00:00 2001
-From: Eric Dumazet <edumazet@google.com>
-Date: Fri, 4 Aug 2023 17:26:52 +0000
-Subject: [PATCH] macsec: use DEV_STATS_INC()
+From 833bac7ec392bf75053c8a4fa4c36d4148dac77d Mon Sep 17 00:00:00 2001
+From: Gerd Bayer <gbayer@linux.ibm.com>
+Date: Fri, 4 Aug 2023 19:06:23 +0200
+Subject: [PATCH] net/smc: Fix setsockopt and sysctl to specify same buffer
+ size again
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-syzbot/KCSAN reported data-races in macsec whenever dev->stats fields
-are updated.
+Commit 0227f058aa29 ("net/smc: Unbind r/w buffer size from clcsock
+and make them tunable") introduced the net.smc.rmem and net.smc.wmem
+sysctls to specify the size of buffers to be used for SMC type
+connections. This created a regression for users that specified the
+buffer size via setsockopt() as the effective buffer size was now
+doubled.
 
-It appears all of these updates can happen from multiple cpus.
+Re-introduce the division by 2 in the SMC buffer create code and level
+this out by duplicating the net.smc.[rw]mem values used for initializing
+sk_rcvbuf/sk_sndbuf at socket creation time. This gives users of both
+methods (setsockopt or sysctl) the effective buffer size that they
+expect.
 
-Adopt SMP safe DEV_STATS_INC() to update dev->stats fields.
+Initialize net.smc.[rw]mem from its own constant of 64kB, respectively.
+Internal performance tests show that this value is a good compromise
+between throughput/latency and memory consumption. Also, this decouples
+it from any tuning that was done to net.ipv4.tcp_[rw]mem[1] before the
+module for SMC protocol was loaded. Check that no more than INT_MAX / 2
+is assigned to net.smc.[rw]mem, in order to avoid any overflow condition
+when that is doubled for use in sk_sndbuf or sk_rcvbuf.
 
-Fixes: c09440f7dcb3 ("macsec: introduce IEEE 802.1AE driver")
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Sabrina Dubroca <sd@queasysnail.net>
+While at it, drop the confusing sk_buf_size variable from
+__smc_buf_create and name "compressed" buffer size variables more
+consistently.
+
+Background:
+
+Before the commit mentioned above, SMC's buffer allocator in
+__smc_buf_create() always used half of the sockets' sk_rcvbuf/sk_sndbuf
+value as initial value to search for appropriate buffers. If the search
+resorted to using a bigger buffer when all buffers of the specified
+size were busy, the duplicate of the used effective buffer size is
+stored back to sk_rcvbuf/sk_sndbuf.
+
+When available, buffers of exactly the size that a user had specified as
+input to setsockopt() were used, despite setsockopt()'s documentation in
+"man 7 socket" talking of a mandatory duplication:
+
+[...]
+       SO_SNDBUF
+              Sets  or  gets the maximum socket send buffer in bytes.
+              The kernel doubles this value (to allow space for book‐
+              keeping  overhead)  when it is set using setsockopt(2),
+              and this doubled value is  returned  by  getsockopt(2).
+              The     default     value     is     set     by     the
+              /proc/sys/net/core/wmem_default file  and  the  maximum
+              allowed value is set by the /proc/sys/net/core/wmem_max
+              file.  The minimum (doubled) value for this  option  is
+              2048.
+[...]
+
+Fixes: 0227f058aa29 ("net/smc: Unbind r/w buffer size from clcsock and make them tunable")
+Co-developed-by: Jan Karcher <jaka@linux.ibm.com>
+Signed-off-by: Jan Karcher <jaka@linux.ibm.com>
+Reviewed-by: Wenjia Zhang <wenjia@linux.ibm.com>
+Reviewed-by: Tony Lu <tonylu@linux.alibaba.com>
+Signed-off-by: Gerd Bayer <gbayer@linux.ibm.com>
 Signed-off-by: David S. Miller <davem@davemloft.net>
 
-diff --git a/drivers/net/macsec.c b/drivers/net/macsec.c
-index 984dfa5d6c11..144ec756c796 100644
---- a/drivers/net/macsec.c
-+++ b/drivers/net/macsec.c
-@@ -743,7 +743,7 @@ static bool macsec_post_decrypt(struct sk_buff *skb, struct macsec_secy *secy, u
- 		u64_stats_update_begin(&rxsc_stats->syncp);
- 		rxsc_stats->stats.InPktsLate++;
- 		u64_stats_update_end(&rxsc_stats->syncp);
--		secy->netdev->stats.rx_dropped++;
-+		DEV_STATS_INC(secy->netdev, rx_dropped);
- 		return false;
- 	}
+diff --git a/net/smc/af_smc.c b/net/smc/af_smc.c
+index 0c013d2b5d8f..5b878e523abf 100644
+--- a/net/smc/af_smc.c
++++ b/net/smc/af_smc.c
+@@ -378,8 +378,8 @@ static struct sock *smc_sock_alloc(struct net *net, struct socket *sock,
+ 	sk->sk_state = SMC_INIT;
+ 	sk->sk_destruct = smc_destruct;
+ 	sk->sk_protocol = protocol;
+-	WRITE_ONCE(sk->sk_sndbuf, READ_ONCE(net->smc.sysctl_wmem));
+-	WRITE_ONCE(sk->sk_rcvbuf, READ_ONCE(net->smc.sysctl_rmem));
++	WRITE_ONCE(sk->sk_sndbuf, 2 * READ_ONCE(net->smc.sysctl_wmem));
++	WRITE_ONCE(sk->sk_rcvbuf, 2 * READ_ONCE(net->smc.sysctl_rmem));
+ 	smc = smc_sk(sk);
+ 	INIT_WORK(&smc->tcp_listen_work, smc_tcp_listen_work);
+ 	INIT_WORK(&smc->connect_work, smc_connect_work);
+diff --git a/net/smc/smc.h b/net/smc/smc.h
+index 2eeea4cdc718..1f2b912c43d1 100644
+--- a/net/smc/smc.h
++++ b/net/smc/smc.h
+@@ -161,7 +161,7 @@ struct smc_connection {
  
-@@ -767,7 +767,7 @@ static bool macsec_post_decrypt(struct sk_buff *skb, struct macsec_secy *secy, u
- 			rxsc_stats->stats.InPktsNotValid++;
- 			u64_stats_update_end(&rxsc_stats->syncp);
- 			this_cpu_inc(rx_sa->stats->InPktsNotValid);
--			secy->netdev->stats.rx_errors++;
-+			DEV_STATS_INC(secy->netdev, rx_errors);
- 			return false;
+ 	struct smc_buf_desc	*sndbuf_desc;	/* send buffer descriptor */
+ 	struct smc_buf_desc	*rmb_desc;	/* RMBE descriptor */
+-	int			rmbe_size_short;/* compressed notation */
++	int                     rmbe_size_comp; /* compressed notation */
+ 	int			rmbe_update_limit;
+ 						/* lower limit for consumer
+ 						 * cursor update
+diff --git a/net/smc/smc_clc.c b/net/smc/smc_clc.c
+index b9b8b07aa702..c90d9e5dda54 100644
+--- a/net/smc/smc_clc.c
++++ b/net/smc/smc_clc.c
+@@ -1007,7 +1007,7 @@ static int smc_clc_send_confirm_accept(struct smc_sock *smc,
+ 		clc->d0.gid =
+ 			conn->lgr->smcd->ops->get_local_gid(conn->lgr->smcd);
+ 		clc->d0.token = conn->rmb_desc->token;
+-		clc->d0.dmbe_size = conn->rmbe_size_short;
++		clc->d0.dmbe_size = conn->rmbe_size_comp;
+ 		clc->d0.dmbe_idx = 0;
+ 		memcpy(&clc->d0.linkid, conn->lgr->id, SMC_LGR_ID_SIZE);
+ 		if (version == SMC_V1) {
+@@ -1050,7 +1050,7 @@ static int smc_clc_send_confirm_accept(struct smc_sock *smc,
+ 			clc->r0.qp_mtu = min(link->path_mtu, link->peer_mtu);
+ 			break;
  		}
+-		clc->r0.rmbe_size = conn->rmbe_size_short;
++		clc->r0.rmbe_size = conn->rmbe_size_comp;
+ 		clc->r0.rmb_dma_addr = conn->rmb_desc->is_vm ?
+ 			cpu_to_be64((uintptr_t)conn->rmb_desc->cpu_addr) :
+ 			cpu_to_be64((u64)sg_dma_address
+diff --git a/net/smc/smc_core.c b/net/smc/smc_core.c
+index 3f465faf2b68..6b78075404d7 100644
+--- a/net/smc/smc_core.c
++++ b/net/smc/smc_core.c
+@@ -2309,31 +2309,30 @@ static int __smc_buf_create(struct smc_sock *smc, bool is_smcd, bool is_rmb)
+ 	struct smc_connection *conn = &smc->conn;
+ 	struct smc_link_group *lgr = conn->lgr;
+ 	struct list_head *buf_list;
+-	int bufsize, bufsize_short;
++	int bufsize, bufsize_comp;
+ 	struct rw_semaphore *lock;	/* lock buffer list */
+ 	bool is_dgraded = false;
+-	int sk_buf_size;
  
-@@ -1069,7 +1069,7 @@ static enum rx_handler_result handle_not_macsec(struct sk_buff *skb)
- 			u64_stats_update_begin(&secy_stats->syncp);
- 			secy_stats->stats.InPktsNoTag++;
- 			u64_stats_update_end(&secy_stats->syncp);
--			macsec->secy.netdev->stats.rx_dropped++;
-+			DEV_STATS_INC(macsec->secy.netdev, rx_dropped);
- 			continue;
- 		}
- 
-@@ -1179,7 +1179,7 @@ static rx_handler_result_t macsec_handle_frame(struct sk_buff **pskb)
- 		u64_stats_update_begin(&secy_stats->syncp);
- 		secy_stats->stats.InPktsBadTag++;
- 		u64_stats_update_end(&secy_stats->syncp);
--		secy->netdev->stats.rx_errors++;
-+		DEV_STATS_INC(secy->netdev, rx_errors);
- 		goto drop_nosa;
- 	}
- 
-@@ -1196,7 +1196,7 @@ static rx_handler_result_t macsec_handle_frame(struct sk_buff **pskb)
- 			u64_stats_update_begin(&rxsc_stats->syncp);
- 			rxsc_stats->stats.InPktsNotUsingSA++;
- 			u64_stats_update_end(&rxsc_stats->syncp);
--			secy->netdev->stats.rx_errors++;
-+			DEV_STATS_INC(secy->netdev, rx_errors);
- 			if (active_rx_sa)
- 				this_cpu_inc(active_rx_sa->stats->InPktsNotUsingSA);
- 			goto drop_nosa;
-@@ -1230,7 +1230,7 @@ static rx_handler_result_t macsec_handle_frame(struct sk_buff **pskb)
- 			u64_stats_update_begin(&rxsc_stats->syncp);
- 			rxsc_stats->stats.InPktsLate++;
- 			u64_stats_update_end(&rxsc_stats->syncp);
--			macsec->secy.netdev->stats.rx_dropped++;
-+			DEV_STATS_INC(macsec->secy.netdev, rx_dropped);
- 			goto drop;
- 		}
- 	}
-@@ -1271,7 +1271,7 @@ static rx_handler_result_t macsec_handle_frame(struct sk_buff **pskb)
- 	if (ret == NET_RX_SUCCESS)
- 		count_rx(dev, len);
+ 	if (is_rmb)
+ 		/* use socket recv buffer size (w/o overhead) as start value */
+-		sk_buf_size = smc->sk.sk_rcvbuf;
++		bufsize = smc->sk.sk_rcvbuf / 2;
  	else
--		macsec->secy.netdev->stats.rx_dropped++;
-+		DEV_STATS_INC(macsec->secy.netdev, rx_dropped);
+ 		/* use socket send buffer size (w/o overhead) as start value */
+-		sk_buf_size = smc->sk.sk_sndbuf;
++		bufsize = smc->sk.sk_sndbuf / 2;
  
- 	rcu_read_unlock();
- 
-@@ -1308,7 +1308,7 @@ static rx_handler_result_t macsec_handle_frame(struct sk_buff **pskb)
- 			u64_stats_update_begin(&secy_stats->syncp);
- 			secy_stats->stats.InPktsNoSCI++;
- 			u64_stats_update_end(&secy_stats->syncp);
--			macsec->secy.netdev->stats.rx_errors++;
-+			DEV_STATS_INC(macsec->secy.netdev, rx_errors);
- 			continue;
- 		}
- 
-@@ -1327,7 +1327,7 @@ static rx_handler_result_t macsec_handle_frame(struct sk_buff **pskb)
- 			secy_stats->stats.InPktsUnknownSCI++;
- 			u64_stats_update_end(&secy_stats->syncp);
+-	for (bufsize_short = smc_compress_bufsize(sk_buf_size, is_smcd, is_rmb);
+-	     bufsize_short >= 0; bufsize_short--) {
++	for (bufsize_comp = smc_compress_bufsize(bufsize, is_smcd, is_rmb);
++	     bufsize_comp >= 0; bufsize_comp--) {
+ 		if (is_rmb) {
+ 			lock = &lgr->rmbs_lock;
+-			buf_list = &lgr->rmbs[bufsize_short];
++			buf_list = &lgr->rmbs[bufsize_comp];
  		} else {
--			macsec->secy.netdev->stats.rx_dropped++;
-+			DEV_STATS_INC(macsec->secy.netdev, rx_dropped);
+ 			lock = &lgr->sndbufs_lock;
+-			buf_list = &lgr->sndbufs[bufsize_short];
++			buf_list = &lgr->sndbufs[bufsize_comp];
  		}
+-		bufsize = smc_uncompress_bufsize(bufsize_short);
++		bufsize = smc_uncompress_bufsize(bufsize_comp);
+ 
+ 		/* check for reusable slot in the link group */
+-		buf_desc = smc_buf_get_slot(bufsize_short, lock, buf_list);
++		buf_desc = smc_buf_get_slot(bufsize_comp, lock, buf_list);
+ 		if (buf_desc) {
+ 			buf_desc->is_dma_need_sync = 0;
+ 			SMC_STAT_RMB_SIZE(smc, is_smcd, is_rmb, bufsize);
+@@ -2377,8 +2376,8 @@ static int __smc_buf_create(struct smc_sock *smc, bool is_smcd, bool is_rmb)
+ 
+ 	if (is_rmb) {
+ 		conn->rmb_desc = buf_desc;
+-		conn->rmbe_size_short = bufsize_short;
+-		smc->sk.sk_rcvbuf = bufsize;
++		conn->rmbe_size_comp = bufsize_comp;
++		smc->sk.sk_rcvbuf = bufsize * 2;
+ 		atomic_set(&conn->bytes_to_rcv, 0);
+ 		conn->rmbe_update_limit =
+ 			smc_rmb_wnd_update_limit(buf_desc->len);
+@@ -2386,7 +2385,7 @@ static int __smc_buf_create(struct smc_sock *smc, bool is_smcd, bool is_rmb)
+ 			smc_ism_set_conn(conn); /* map RMB/smcd_dev to conn */
+ 	} else {
+ 		conn->sndbuf_desc = buf_desc;
+-		smc->sk.sk_sndbuf = bufsize;
++		smc->sk.sk_sndbuf = bufsize * 2;
+ 		atomic_set(&conn->sndbuf_space, bufsize);
  	}
+ 	return 0;
+diff --git a/net/smc/smc_sysctl.c b/net/smc/smc_sysctl.c
+index b6f79fabb9d3..0b2a957ca5f5 100644
+--- a/net/smc/smc_sysctl.c
++++ b/net/smc/smc_sysctl.c
+@@ -21,6 +21,10 @@
  
-@@ -3422,7 +3422,7 @@ static netdev_tx_t macsec_start_xmit(struct sk_buff *skb,
+ static int min_sndbuf = SMC_BUF_MIN_SIZE;
+ static int min_rcvbuf = SMC_BUF_MIN_SIZE;
++static int max_sndbuf = INT_MAX / 2;
++static int max_rcvbuf = INT_MAX / 2;
++static const int net_smc_wmem_init = (64 * 1024);
++static const int net_smc_rmem_init = (64 * 1024);
  
- 	if (!secy->operational) {
- 		kfree_skb(skb);
--		dev->stats.tx_dropped++;
-+		DEV_STATS_INC(dev, tx_dropped);
- 		return NETDEV_TX_OK;
- 	}
+ static struct ctl_table smc_table[] = {
+ 	{
+@@ -53,6 +57,7 @@ static struct ctl_table smc_table[] = {
+ 		.mode		= 0644,
+ 		.proc_handler	= proc_dointvec_minmax,
+ 		.extra1		= &min_sndbuf,
++		.extra2		= &max_sndbuf,
+ 	},
+ 	{
+ 		.procname	= "rmem",
+@@ -61,6 +66,7 @@ static struct ctl_table smc_table[] = {
+ 		.mode		= 0644,
+ 		.proc_handler	= proc_dointvec_minmax,
+ 		.extra1		= &min_rcvbuf,
++		.extra2		= &max_rcvbuf,
+ 	},
+ 	{  }
+ };
+@@ -88,8 +94,8 @@ int __net_init smc_sysctl_net_init(struct net *net)
+ 	net->smc.sysctl_autocorking_size = SMC_AUTOCORKING_DEFAULT_SIZE;
+ 	net->smc.sysctl_smcr_buf_type = SMCR_PHYS_CONT_BUFS;
+ 	net->smc.sysctl_smcr_testlink_time = SMC_LLC_TESTLINK_DEFAULT_TIME;
+-	WRITE_ONCE(net->smc.sysctl_wmem, READ_ONCE(net->ipv4.sysctl_tcp_wmem[1]));
+-	WRITE_ONCE(net->smc.sysctl_rmem, READ_ONCE(net->ipv4.sysctl_tcp_rmem[1]));
++	WRITE_ONCE(net->smc.sysctl_wmem, net_smc_wmem_init);
++	WRITE_ONCE(net->smc.sysctl_rmem, net_smc_rmem_init);
  
-@@ -3430,7 +3430,7 @@ static netdev_tx_t macsec_start_xmit(struct sk_buff *skb,
- 	skb = macsec_encrypt(skb, dev);
- 	if (IS_ERR(skb)) {
- 		if (PTR_ERR(skb) != -EINPROGRESS)
--			dev->stats.tx_dropped++;
-+			DEV_STATS_INC(dev, tx_dropped);
- 		return NETDEV_TX_OK;
- 	}
+ 	return 0;
  
-@@ -3667,9 +3667,9 @@ static void macsec_get_stats64(struct net_device *dev,
- 
- 	dev_fetch_sw_netstats(s, dev->tstats);
- 
--	s->rx_dropped = dev->stats.rx_dropped;
--	s->tx_dropped = dev->stats.tx_dropped;
--	s->rx_errors = dev->stats.rx_errors;
-+	s->rx_dropped = atomic_long_read(&dev->stats.__rx_dropped);
-+	s->tx_dropped = atomic_long_read(&dev->stats.__tx_dropped);
-+	s->rx_errors = atomic_long_read(&dev->stats.__rx_errors);
- }
- 
- static int macsec_get_iflink(const struct net_device *dev)
 
