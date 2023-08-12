@@ -2,57 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C1E8F779D69
-	for <lists+stable@lfdr.de>; Sat, 12 Aug 2023 07:57:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 00F2E779D73
+	for <lists+stable@lfdr.de>; Sat, 12 Aug 2023 08:01:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235184AbjHLF5w (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 12 Aug 2023 01:57:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53070 "EHLO
+        id S229499AbjHLGBN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 12 Aug 2023 02:01:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52778 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233647AbjHLF5v (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 12 Aug 2023 01:57:51 -0400
+        with ESMTP id S235018AbjHLGBM (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 12 Aug 2023 02:01:12 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A6D6F2D44;
-        Fri, 11 Aug 2023 22:57:51 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0CA02D44
+        for <stable@vger.kernel.org>; Fri, 11 Aug 2023 23:01:10 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 451FB60EB2;
-        Sat, 12 Aug 2023 05:57:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58012C433C7;
-        Sat, 12 Aug 2023 05:57:50 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8E4ED6424A
+        for <stable@vger.kernel.org>; Sat, 12 Aug 2023 06:01:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 735BEC433C8;
+        Sat, 12 Aug 2023 06:01:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691819870;
-        bh=ZThS3z/Cr+ADxRaKGfkjS2bncKPUrhLfkLKGIPqXyLM=;
+        s=korg; t=1691820070;
+        bh=ZcDOCVYHuKnNJg23bk93W+OEAJjw1vc4qXQlPr8PTSc=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=tC4fybrKzzSIpZkP6LpWo0wc5dCoYRMOxtLlRsCz5BEpNnK+aghoJXG2w5NJ2pDlK
-         1rw5+GJQtMzHq927M990P8aQpmHbs4F7CuunUc7TKGyK+ZJM/YnvN1Or9hEYmQZmLc
-         Bn1xTrEBhh4Lw4d5H2xpQV/egVolQyHxfKEALo4w=
-Date:   Sat, 12 Aug 2023 07:57:47 +0200
+        b=O9tduuzCqOss7J58tvdGiSbRhr8n1pJoHL28aYqFZEcj2onN2GIrsZSAMKPS8egJH
+         FDskXF95OmWrOZtw/I+GMvsPUC3qVFRkGO99PxfDR/UilZSex8+taQTTjSjhrm0bRh
+         09aHpPUXD0Qmh5syEXHxeLFFnvDUmBaGzJPoksvY=
+Date:   Sat, 12 Aug 2023 08:01:06 +0200
 From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Keith Busch <kbusch@kernel.org>
-Cc:     August Wikerfors <git@augustwikerfors.se>, stable@vger.kernel.org,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        Christoph Hellwig <hch@lst.de>, axboe@fb.com, sagi@grimberg.me,
-        linux-nvme@lists.infradead.org, linux-kernel@vger.kernel.org,
-        nilskruse97@gmail.com, David.Chang@amd.com
-Subject: Re: [PATCH] nvme: Don't fail to resume if NSIDs change
-Message-ID: <2023081215-stock-huddling-03c9@gregkh>
-References: <040c5788-1a7b-26ea-23cc-ba239c76efa9@augustwikerfors.se>
- <39697f68-9dc8-7692-7210-b75cce32c6ce@amd.com>
- <20230731201047.GA14034@lst.de>
- <36319a0f-34a6-9353-bc52-4d4d0fac27a5@amd.com>
- <20230801112403.GA3972@lst.de>
- <ae7fb9b2-d692-f9b8-5130-4555cc489846@amd.com>
- <ZMlrGNw5OMW3yxId@kbusch-mbp.dhcp.thefacebook.com>
- <b2e741b3-b581-40fe-2c28-e4660f52003d@amd.com>
- <0f422dbe-2e3f-4401-be87-2963cbbc1234@augustwikerfors.se>
- <ZNahNYGd3L8YYtiQ@kbusch-mbp.dhcp.thefacebook.com>
+To:     Mario Limonciello <mario.limonciello@amd.com>
+Cc:     stable@vger.kernel.org, Peichen Huang <peichen.huang@amd.com>
+Subject: Re: [PATCH 6.1.y] drm/amd/display: limit DPIA link rate to HBR3
+Message-ID: <2023081249-uninstall-pamperer-33a3@gregkh>
+References: <20230807140047.9410-1-mario.limonciello@amd.com>
+ <2023080911-shortage-slicing-6ef8@gregkh>
+ <c85fa930-65e8-47e2-ade6-001566fe9f88@amd.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ZNahNYGd3L8YYtiQ@kbusch-mbp.dhcp.thefacebook.com>
+In-Reply-To: <c85fa930-65e8-47e2-ade6-001566fe9f88@amd.com>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
@@ -63,23 +52,48 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Fri, Aug 11, 2023 at 02:59:33PM -0600, Keith Busch wrote:
-> On Fri, Aug 11, 2023 at 10:19:35PM +0200, August Wikerfors wrote:
-> > On 2023-08-01 22:34, Mario Limonciello wrote:
-> > > If you can still change it before sending out can you add a stable tag
-> > > as well?
+On Wed, Aug 09, 2023 at 06:18:23AM -0500, Mario Limonciello wrote:
+> On 8/9/23 04:05, Greg KH wrote:
+> > On Mon, Aug 07, 2023 at 09:00:47AM -0500, Mario Limonciello wrote:
+> > > From: Peichen Huang <peichen.huang@amd.com>
+> > > 
+> > > [Why]
+> > > DPIA doesn't support UHBR, driver should not enable UHBR
+> > > for dp tunneling
+> > > 
+> > > [How]
+> > > limit DPIA link rate to HBR3
+> > > 
+> > > Cc: Mario Limonciello <mario.limonciello@amd.com>
+> > > Cc: Alex Deucher <alexander.deucher@amd.com>
+> > > Cc: stable@vger.kernel.org
+> > > Acked-by: Stylon Wang <stylon.wang@amd.com>
+> > > Signed-off-by: Peichen Huang <peichen.huang@amd.com>
+> > > Reviewed-by: Mustapha Ghaddar <Mustapha.Ghaddar@amd.com>
+> > > Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+> > > Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+> > > (cherry picked from commit 0e69ef6ea82e8eece7d2b2b45a0da9670eaaefff)
+> > > This was CC to stable, but failed to apply because the file was
+> > > renamed in 6.3-rc1 as part of
+> > > 54618888d1ea ("drm/amd/display: break down dc_link.c")
 > > 
-> > This didn't get added in time, so, stable team, please backport:
+> > It also is not in 6.4.y, why not?  I can't take it for 6.1.y only,
+> > otherwise people will have a regression when they move to a new kernel.
 > > 
-> > 688b419c57c1 ("nvme-pci: add NVME_QUIRK_BOGUS_NID for Samsung PM9B1 256G and 512G")
+> > thanks,
+> > 
+> > greg k-h
 > 
-> Perhaps bad form on my end for relying on it, but in my experience, the
-> stable bot has a great record on auto selecting nvme quirks.
+> This is one of those cases that the same commit landed in the tree twice as
+> two hashes.
+> 
+> Here's the 6.4 hash (which is identical):
+> 
+> $ git describe --contains 7c5835bcb9176df94683396f1c0e5df6bf5094b3
+> v6.4-rc7~9^2~2^2
 
-It's better for everyone if you mark it for stable, so you know it will
-get reviewed, otherwise you are at the mercy of our scripts and free
-time to dig for patches :)
+Ah, what a mess, the drm tree never ceases to amaze me...
 
-thanks,
+now queued up, thanks.
 
 greg k-h
