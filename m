@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5192D779D5B
-	for <lists+stable@lfdr.de>; Sat, 12 Aug 2023 07:52:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ECFC4779D5C
+	for <lists+stable@lfdr.de>; Sat, 12 Aug 2023 07:54:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233918AbjHLFwe (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 12 Aug 2023 01:52:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42624 "EHLO
+        id S234300AbjHLFyr (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 12 Aug 2023 01:54:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39754 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229670AbjHLFwe (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 12 Aug 2023 01:52:34 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1DF972712
-        for <stable@vger.kernel.org>; Fri, 11 Aug 2023 22:52:32 -0700 (PDT)
+        with ESMTP id S229670AbjHLFyq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 12 Aug 2023 01:54:46 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32E702D44
+        for <stable@vger.kernel.org>; Fri, 11 Aug 2023 22:54:46 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9FF496149D
-        for <stable@vger.kernel.org>; Sat, 12 Aug 2023 05:52:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C45DC433C8;
-        Sat, 12 Aug 2023 05:52:30 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B8572640AE
+        for <stable@vger.kernel.org>; Sat, 12 Aug 2023 05:54:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7892C433C8;
+        Sat, 12 Aug 2023 05:54:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691819551;
-        bh=aGL8QAeLVDNp+O6ihOU9SFyaVtjMXtol03f8c2rUFRE=;
+        s=korg; t=1691819685;
+        bh=AnP4nSN25ecTr3qRAmwMs5nJuD+I9cwGaffiJJs9DH8=;
         h=Subject:To:Cc:From:Date:From;
-        b=PncL40UT7/PnRJNXIcTBGWnD/PdpiREwg6546Xg5olNRBGp1qeRNAGCI+ar2tqpYs
-         94t+D+BzJstpmw9j+jJETD4QutwXcTKVWnxzExEK81ot6rC2Rt5ksJDcqgGocmBSuz
-         6mNrt1eRZgtQ+gfpvYuNK1vm7U9I1+SqmbmQU+BE=
-Subject: FAILED: patch "[PATCH] net: mana: Fix MANA VF unload when hardware is unresponsive" failed to apply to 5.15-stable tree
-To:     schakrabarti@linux.microsoft.com, kuba@kernel.org
+        b=tWcmMuAynUeqi0dZ4fgjfiNCbrmJI9Y+/n82BYzulJ1YbxhugFxTCH6X9fevIVUiH
+         9GIb3v3Y4kgEFH7m1KvIeI0Ahnq+HLFsGXtZWRkmXEGf/Su4AD1h0mnoBK+LIlh507
+         Fzw3gwPCIgIPFvaCaquJZF9gXe+c0ZPyulS685po=
+Subject: FAILED: patch "[PATCH] riscv,mmio: Fix readX()-to-delay() ordering" failed to apply to 5.4-stable tree
+To:     parri.andrea@gmail.com, palmer@rivosinc.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 12 Aug 2023 07:52:27 +0200
-Message-ID: <2023081227-rogue-smasher-f54b@gregkh>
+Date:   Sat, 12 Aug 2023 07:54:41 +0200
+Message-ID: <2023081241-crisped-travesty-dcc8@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -49,27 +49,24 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
-git cherry-pick -x a7dfeda6fdeccab4c7c3dce9a72c4262b9530c80
+git cherry-pick -x 4eb2eb1b4c0eb07793c240744843498564a67b83
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023081227-rogue-smasher-f54b@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023081241-crisped-travesty-dcc8@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
-a7dfeda6fdec ("net: mana: Fix MANA VF unload when hardware is unresponsive")
-1566e7d6206f ("net: mana: Add the Linux MANA PF driver")
-ed5356b53f07 ("net: mana: Add XDP support")
-635096a86edb ("net: mana: Support hibernation and kexec")
-62ea8b77ed3b ("net: mana: Improve the HWC error handling")
+4eb2eb1b4c0e ("riscv,mmio: Fix readX()-to-delay() ordering")
+0c3ac28931d5 ("riscv: separate MMIO functions into their own header file")
 
 thanks,
 
@@ -77,94 +74,66 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From a7dfeda6fdeccab4c7c3dce9a72c4262b9530c80 Mon Sep 17 00:00:00 2001
-From: Souradeep Chakrabarti <schakrabarti@linux.microsoft.com>
-Date: Wed, 9 Aug 2023 03:22:05 -0700
-Subject: [PATCH] net: mana: Fix MANA VF unload when hardware is unresponsive
+From 4eb2eb1b4c0eb07793c240744843498564a67b83 Mon Sep 17 00:00:00 2001
+From: Andrea Parri <parri.andrea@gmail.com>
+Date: Thu, 3 Aug 2023 06:27:38 +0200
+Subject: [PATCH] riscv,mmio: Fix readX()-to-delay() ordering
 
-When unloading the MANA driver, mana_dealloc_queues() waits for the MANA
-hardware to complete any inflight packets and set the pending send count
-to zero. But if the hardware has failed, mana_dealloc_queues()
-could wait forever.
+Section 2.1 of the Platform Specification [1] states:
 
-Fix this by adding a timeout to the wait. Set the timeout to 120 seconds,
-which is a somewhat arbitrary value that is more than long enough for
-functional hardware to complete any sends.
+  Unless otherwise specified by a given I/O device, I/O devices are on
+  ordering channel 0 (i.e., they are point-to-point strongly ordered).
 
+which is not sufficient to guarantee that a readX() by a hart completes
+before a subsequent delay() on the same hart (cf. memory-barriers.txt,
+"Kernel I/O barrier effects").
+
+Set the I(nput) bit in __io_ar() to restore the ordering, align inline
+comments.
+
+[1] https://github.com/riscv/riscv-platform-specs
+
+Signed-off-by: Andrea Parri <parri.andrea@gmail.com>
+Link: https://lore.kernel.org/r/20230803042738.5937-1-parri.andrea@gmail.com
+Fixes: fab957c11efe ("RISC-V: Atomic and Locking Code")
 Cc: stable@vger.kernel.org
-Fixes: ca9c54d2d6a5 ("net: mana: Add a driver for Microsoft Azure Network Adapter (MANA)")
-Signed-off-by: Souradeep Chakrabarti <schakrabarti@linux.microsoft.com>
-Link: https://lore.kernel.org/r/1691576525-24271-1-git-send-email-schakrabarti@linux.microsoft.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 
-diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c b/drivers/net/ethernet/microsoft/mana/mana_en.c
-index a499e460594b..c2ad0921e893 100644
---- a/drivers/net/ethernet/microsoft/mana/mana_en.c
-+++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
-@@ -8,6 +8,7 @@
- #include <linux/ethtool.h>
- #include <linux/filter.h>
- #include <linux/mm.h>
-+#include <linux/pci.h>
+diff --git a/arch/riscv/include/asm/mmio.h b/arch/riscv/include/asm/mmio.h
+index aff6c33ab0c0..4c58ee7f95ec 100644
+--- a/arch/riscv/include/asm/mmio.h
++++ b/arch/riscv/include/asm/mmio.h
+@@ -101,9 +101,9 @@ static inline u64 __raw_readq(const volatile void __iomem *addr)
+  * Relaxed I/O memory access primitives. These follow the Device memory
+  * ordering rules but do not guarantee any ordering relative to Normal memory
+  * accesses.  These are defined to order the indicated access (either a read or
+- * write) with all other I/O memory accesses. Since the platform specification
+- * defines that all I/O regions are strongly ordered on channel 2, no explicit
+- * fences are required to enforce this ordering.
++ * write) with all other I/O memory accesses to the same peripheral. Since the
++ * platform specification defines that all I/O regions are strongly ordered on
++ * channel 0, no explicit fences are required to enforce this ordering.
+  */
+ /* FIXME: These are now the same as asm-generic */
+ #define __io_rbr()		do {} while (0)
+@@ -125,14 +125,14 @@ static inline u64 __raw_readq(const volatile void __iomem *addr)
+ #endif
  
- #include <net/checksum.h>
- #include <net/ip6_checksum.h>
-@@ -2345,9 +2346,12 @@ int mana_attach(struct net_device *ndev)
- static int mana_dealloc_queues(struct net_device *ndev)
- {
- 	struct mana_port_context *apc = netdev_priv(ndev);
-+	unsigned long timeout = jiffies + 120 * HZ;
- 	struct gdma_dev *gd = apc->ac->gdma_dev;
- 	struct mana_txq *txq;
-+	struct sk_buff *skb;
- 	int i, err;
-+	u32 tsleep;
+ /*
+- * I/O memory access primitives. Reads are ordered relative to any
+- * following Normal memory access. Writes are ordered relative to any prior
+- * Normal memory access.  The memory barriers here are necessary as RISC-V
++ * I/O memory access primitives.  Reads are ordered relative to any following
++ * Normal memory read and delay() loop.  Writes are ordered relative to any
++ * prior Normal memory write.  The memory barriers here are necessary as RISC-V
+  * doesn't define any ordering between the memory space and the I/O space.
+  */
+ #define __io_br()	do {} while (0)
+-#define __io_ar(v)	__asm__ __volatile__ ("fence i,r" : : : "memory")
+-#define __io_bw()	__asm__ __volatile__ ("fence w,o" : : : "memory")
++#define __io_ar(v)	({ __asm__ __volatile__ ("fence i,ir" : : : "memory"); })
++#define __io_bw()	({ __asm__ __volatile__ ("fence w,o" : : : "memory"); })
+ #define __io_aw()	mmiowb_set_pending()
  
- 	if (apc->port_is_up)
- 		return -EINVAL;
-@@ -2363,15 +2367,40 @@ static int mana_dealloc_queues(struct net_device *ndev)
- 	 * to false, but it doesn't matter since mana_start_xmit() drops any
- 	 * new packets due to apc->port_is_up being false.
- 	 *
--	 * Drain all the in-flight TX packets
-+	 * Drain all the in-flight TX packets.
-+	 * A timeout of 120 seconds for all the queues is used.
-+	 * This will break the while loop when h/w is not responding.
-+	 * This value of 120 has been decided here considering max
-+	 * number of queues.
- 	 */
-+
- 	for (i = 0; i < apc->num_queues; i++) {
- 		txq = &apc->tx_qp[i].txq;
--
--		while (atomic_read(&txq->pending_sends) > 0)
--			usleep_range(1000, 2000);
-+		tsleep = 1000;
-+		while (atomic_read(&txq->pending_sends) > 0 &&
-+		       time_before(jiffies, timeout)) {
-+			usleep_range(tsleep, tsleep + 1000);
-+			tsleep <<= 1;
-+		}
-+		if (atomic_read(&txq->pending_sends)) {
-+			err = pcie_flr(to_pci_dev(gd->gdma_context->dev));
-+			if (err) {
-+				netdev_err(ndev, "flr failed %d with %d pkts pending in txq %u\n",
-+					   err, atomic_read(&txq->pending_sends),
-+					   txq->gdma_txq_id);
-+			}
-+			break;
-+		}
- 	}
- 
-+	for (i = 0; i < apc->num_queues; i++) {
-+		txq = &apc->tx_qp[i].txq;
-+		while ((skb = skb_dequeue(&txq->pending_skbs))) {
-+			mana_unmap_skb(skb, apc);
-+			dev_kfree_skb_any(skb);
-+		}
-+		atomic_set(&txq->pending_sends, 0);
-+	}
- 	/* We're 100% sure the queues can no longer be woken up, because
- 	 * we're sure now mana_poll_tx_cq() can't be running.
- 	 */
+ #define readb(c)	({ u8  __v; __io_br(); __v = readb_cpu(c); __io_ar(__v); __v; })
 
