@@ -2,47 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F2DC277A121
-	for <lists+stable@lfdr.de>; Sat, 12 Aug 2023 18:43:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AE77D77A126
+	for <lists+stable@lfdr.de>; Sat, 12 Aug 2023 18:50:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229706AbjHLQnu (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 12 Aug 2023 12:43:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56900 "EHLO
+        id S229649AbjHLQuw (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 12 Aug 2023 12:50:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36180 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229708AbjHLQnt (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 12 Aug 2023 12:43:49 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 16BB410D0
-        for <stable@vger.kernel.org>; Sat, 12 Aug 2023 09:43:53 -0700 (PDT)
+        with ESMTP id S229454AbjHLQuw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 12 Aug 2023 12:50:52 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8062610E3
+        for <stable@vger.kernel.org>; Sat, 12 Aug 2023 09:50:55 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A09E460AF9
-        for <stable@vger.kernel.org>; Sat, 12 Aug 2023 16:43:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1D4AC433C8;
-        Sat, 12 Aug 2023 16:43:51 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1F24660C2B
+        for <stable@vger.kernel.org>; Sat, 12 Aug 2023 16:50:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFB50C433C8;
+        Sat, 12 Aug 2023 16:50:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691858632;
-        bh=VlVLef7sDnhzdRPIZrQzwGZEFjZ3n28uNcQfALelYXo=;
+        s=korg; t=1691859054;
+        bh=5gDvQ2Uu48lLnS4cXFXQkKRyMNp3U/NsIZN33mRQfz4=;
         h=Subject:To:Cc:From:Date:From;
-        b=p4efnZOrHjKRB6kjp3dwB/sZtmPEzUC3+sifEP6HWOsD/buip5E6BUPkTnn1ImV03
-         Div4t8WHubPLjIrl4EwRX4f/xy3UgrFgN2g100bBS1gW/ZkbmpKOELAKDtLvc+aQbQ
-         eSlbIzafQTKrmepcCxdjqxS22Q7irg7Ua7e5PSwM=
-Subject: FAILED: patch "[PATCH] usb: typec: altmodes/displayport: Signal hpd when configuring" failed to apply to 4.19-stable tree
-To:     rdbabiera@google.com, gregkh@linuxfoundation.org,
-        heikki.krogerus@linux.intel.com
+        b=qmKCTLiCj8Uh6j0/FiwtaPbCyWEFEIdAhPJgXnYXMPfSZg/xztF1jfT9Koti1BkLW
+         4uTMFjcshEpK1PUGOAxRpCi8pOR8cQxLrr76QJV27HQdj/eFcqsVvUAVIXNkX7RexA
+         wtbHlB240LmdtV5hWjIvzapf9AxT4uUDZtxnIXD0=
+Subject: FAILED: patch "[PATCH] Revert "perf report: Append inlines to non-DWARF callchains"" failed to apply to 6.4-stable tree
+To:     acme@kernel.org, acme@redhat.com, adrian.hunter@intel.com,
+        alexander.shishkin@linux.intel.com, andrii.nakryiko@gmail.com,
+        asavkov@redhat.com, hawk@kernel.org, irogers@google.com,
+        jolsa@kernel.org, mark.rutland@arm.com, mhiramat@kernel.org,
+        milian.wolff@kdab.com, mingo@redhat.com, namhyung@kernel.org,
+        peterz@infradead.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 12 Aug 2023 18:43:44 +0200
-Message-ID: <2023081243-germproof-pursuable-2ade@gregkh>
+Date:   Sat, 12 Aug 2023 18:50:51 +0200
+Message-ID: <2023081251-conceal-stool-53f1@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=0.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_BLOCKED,SORTED_RECIPS,SPF_HELO_NONE,SPF_PASS,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -50,19 +54,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 4.19-stable tree.
+The patch below does not apply to the 6.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.4.y
 git checkout FETCH_HEAD
-git cherry-pick -x 5a5ccd61cfd76156cb3e0373c300c509d05448ce
+git cherry-pick -x c0b067588a4836b762cfc6a4c83f122ca1dbb93a
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023081243-germproof-pursuable-2ade@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023081251-conceal-stool-53f1@gregkh' --subject-prefix 'PATCH 6.4.y' HEAD^..
 
 Possible dependencies:
 
@@ -74,72 +78,57 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 5a5ccd61cfd76156cb3e0373c300c509d05448ce Mon Sep 17 00:00:00 2001
-From: RD Babiera <rdbabiera@google.com>
-Date: Wed, 26 Jul 2023 02:09:02 +0000
-Subject: [PATCH] usb: typec: altmodes/displayport: Signal hpd when configuring
- pin assignment
+From c0b067588a4836b762cfc6a4c83f122ca1dbb93a Mon Sep 17 00:00:00 2001
+From: Arnaldo Carvalho de Melo <acme@kernel.org>
+Date: Tue, 1 Aug 2023 18:42:47 -0300
+Subject: [PATCH] Revert "perf report: Append inlines to non-DWARF callchains"
 
-When connecting to some DisplayPort partners, the initial status update
-after entering DisplayPort Alt Mode notifies that the DFP_D/UFP_D is not in
-the connected state. This leads to sending a configure message that keeps
-the device in USB mode. The port partner then sets DFP_D/UFP_D to the
-connected state and HPD to high in the same Attention message. Currently,
-the HPD signal is dropped in order to handle configuration.
+This reverts commit 46d21ec067490ab9cdcc89b9de5aae28786a8b8e.
 
-This patch saves changes to the HPD signal when the device chooses to
-configure during dp_altmode_status_update, and invokes sysfs_notify if
-necessary for HPD after configuring.
+The tests were made with a specific workload, further tests on a
+recently updated fedora 38 system with a system wide perf.data file
+shows 'perf report' taking excessive time resolving inlines in vmlinux,
+so lets revert this until a full investigation and improvement on the
+addr2line support code is made.
 
-Fixes: 0e3bb7d6894d ("usb: typec: Add driver for DisplayPort alternate mode")
-Cc: stable@vger.kernel.org
-Signed-off-by: RD Babiera <rdbabiera@google.com>
-Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/20230726020903.1409072-1-rdbabiera@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Jesper Dangaard Brouer <hawk@kernel.org>
+Acked-by: Artem Savkov <asavkov@redhat.com>
+Tested-by: Jesper Dangaard Brouer <hawk@kernel.org>
+Cc: Andrii Nakryiko <andrii.nakryiko@gmail.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Milian Wolff <milian.wolff@kdab.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Link: https://lore.kernel.org/r/ZMl8VyhdwhClTM5g@kernel.org
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 
-diff --git a/drivers/usb/typec/altmodes/displayport.c b/drivers/usb/typec/altmodes/displayport.c
-index 66de880b28d0..cdf8261e22db 100644
---- a/drivers/usb/typec/altmodes/displayport.c
-+++ b/drivers/usb/typec/altmodes/displayport.c
-@@ -60,6 +60,7 @@ struct dp_altmode {
+diff --git a/tools/perf/util/machine.c b/tools/perf/util/machine.c
+index 4e62843d51b7..f4cb41ee23cd 100644
+--- a/tools/perf/util/machine.c
++++ b/tools/perf/util/machine.c
+@@ -45,7 +45,6 @@
  
- 	enum dp_state state;
- 	bool hpd;
-+	bool pending_hpd;
+ static void __machine__remove_thread(struct machine *machine, struct thread_rb_node *nd,
+ 				     struct thread *th, bool lock);
+-static int append_inlines(struct callchain_cursor *cursor, struct map_symbol *ms, u64 ip);
  
- 	struct mutex lock; /* device lock */
- 	struct work_struct work;
-@@ -144,8 +145,13 @@ static int dp_altmode_status_update(struct dp_altmode *dp)
- 		dp->state = DP_STATE_EXIT;
- 	} else if (!(con & DP_CONF_CURRENTLY(dp->data.conf))) {
- 		ret = dp_altmode_configure(dp, con);
--		if (!ret)
-+		if (!ret) {
- 			dp->state = DP_STATE_CONFIGURE;
-+			if (dp->hpd != hpd) {
-+				dp->hpd = hpd;
-+				dp->pending_hpd = true;
-+			}
-+		}
- 	} else {
- 		if (dp->hpd != hpd) {
- 			drm_connector_oob_hotplug_event(dp->connector_fwnode);
-@@ -161,6 +167,16 @@ static int dp_altmode_configured(struct dp_altmode *dp)
+ static struct dso *machine__kernel_dso(struct machine *machine)
  {
- 	sysfs_notify(&dp->alt->dev.kobj, "displayport", "configuration");
- 	sysfs_notify(&dp->alt->dev.kobj, "displayport", "pin_assignment");
-+	/*
-+	 * If the DFP_D/UFP_D sends a change in HPD when first notifying the
-+	 * DisplayPort driver that it is connected, then we wait until
-+	 * configuration is complete to signal HPD.
-+	 */
-+	if (dp->pending_hpd) {
-+		drm_connector_oob_hotplug_event(dp->connector_fwnode);
-+		sysfs_notify(&dp->alt->dev.kobj, "displayport", "hpd");
-+		dp->pending_hpd = false;
-+	}
- 
- 	return dp_altmode_notify(dp);
- }
+@@ -2385,10 +2384,6 @@ static int add_callchain_ip(struct thread *thread,
+ 	ms.maps = maps__get(al.maps);
+ 	ms.map = map__get(al.map);
+ 	ms.sym = al.sym;
+-
+-	if (!branch && append_inlines(cursor, &ms, ip) == 0)
+-		goto out;
+-
+ 	srcline = callchain_srcline(&ms, al.addr);
+ 	err = callchain_cursor_append(cursor, ip, &ms,
+ 				      branch, flags, nr_loop_iter,
 
