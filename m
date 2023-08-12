@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E92FD77A1C5
-	for <lists+stable@lfdr.de>; Sat, 12 Aug 2023 20:32:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 53F5177A1C9
+	for <lists+stable@lfdr.de>; Sat, 12 Aug 2023 20:33:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229630AbjHLSck (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 12 Aug 2023 14:32:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56356 "EHLO
+        id S229596AbjHLSdZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 12 Aug 2023 14:33:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46094 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229596AbjHLSck (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 12 Aug 2023 14:32:40 -0400
+        with ESMTP id S229493AbjHLSdZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 12 Aug 2023 14:33:25 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C580BE77
-        for <stable@vger.kernel.org>; Sat, 12 Aug 2023 11:32:42 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C40C5110
+        for <stable@vger.kernel.org>; Sat, 12 Aug 2023 11:33:27 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4794361DD8
-        for <stable@vger.kernel.org>; Sat, 12 Aug 2023 18:32:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C234C433C7;
-        Sat, 12 Aug 2023 18:32:41 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4DF2461DE7
+        for <stable@vger.kernel.org>; Sat, 12 Aug 2023 18:33:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60FF9C433C8;
+        Sat, 12 Aug 2023 18:33:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691865161;
-        bh=A/RJk7OHHf04NpmkpaOS0Rg1PQ7CnYYeIakIIWpT4Aw=;
+        s=korg; t=1691865206;
+        bh=3NY1pU3eSXSXtE3VoiOWpdzUVM2udvWRtsfkDNMZ/YU=;
         h=Subject:To:Cc:From:Date:From;
-        b=gj6MHJUgRT2I0gvVI3yTpiFEr/yP/rtZonQQ49YD7+W3PzEQYhsJRWxsXVujc0R8Z
-         T4ptE0LSBQjdhG7DZq+2HY+1wWztgrEwsyjemSgJX6qawVok12RxBj1bijE1H+4jwB
-         vk8zsJFFikKIWbUPzkRBilfGRTV2DvupXuurZb+U=
-Subject: FAILED: patch "[PATCH] net: dsa: ocelot: call dsa_tag_8021q_unregister() under" failed to apply to 5.15-stable tree
-To:     vladimir.oltean@nxp.com, kuba@kernel.org
+        b=T3nL8q9wHWd0z2/Wb2JVzuVQGpTqE03p8N59bZ1uBtic1jiosfcUKAAIji7qwx0uf
+         Osj1PsdWmZO2QWZ2fgbCKSJPcqfhbmswHe/6HMjaswzBFZyG8u0CDWEMlZwNFMs6QF
+         mH9CkjmsDtQYH5Tz+l1a+VjGFtPJqviRRoGyEGX4=
+Subject: FAILED: patch "[PATCH] nexthop: Fix infinite nexthop dump when using maximum nexthop" failed to apply to 5.15-stable tree
+To:     idosch@nvidia.com, dsahern@kernel.org, kuba@kernel.org,
+        petrm@nvidia.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 12 Aug 2023 20:32:39 +0200
-Message-ID: <2023081238-boasting-willing-c15b@gregkh>
+Date:   Sat, 12 Aug 2023 20:33:23 +0200
+Message-ID: <2023081223-cabbie-agonize-af78@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -58,33 +59,14 @@ To reproduce the conflict and resubmit, you may use the following commands:
 
 git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x a94c16a2fda010866b8858a386a8bfbeba4f72c5
+git cherry-pick -x 913f60cacda73ccac8eead94983e5884c03e04cd
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023081238-boasting-willing-c15b@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023081223-cabbie-agonize-af78@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
-a94c16a2fda0 ("net: dsa: ocelot: call dsa_tag_8021q_unregister() under rtnl_lock() on driver remove")
-7a29d220f4c0 ("net: dsa: felix: reimplement tagging protocol change with function pointers")
-bacf93b05619 ("net: dsa: remove port argument from ->change_tag_protocol()")
-72c3b0c7359a ("net: dsa: felix: manage host flooding using a specific driver callback")
-28de0f9fec5a ("net: dsa: felix: perform MDB migration based on ocelot->multicast list")
-a51c1c3f3218 ("net: dsa: felix: stop migrating FDBs back and forth on tag proto change")
-2c110abc4616 ("net: dsa: felix: use PGID_CPU for FDB entry migration on NPI port")
-7c762e70c50b ("net: dsa: flood multicast to CPU when slave has IFF_PROMISC")
-00fa91bc9cc2 ("net: dsa: felix: fix tagging protocol changes with multiple CPU ports")
-8e6598a7b0fa ("net: dsa: Pass VLAN MSTI migration notifications to driver")
-332afc4c8c0d ("net: dsa: Validate hardware support for MST")
-978777d0fb06 ("net: dsa: felix: configure default-prio and dscp priorities")
-f2e2662ccf48 ("net: dsa: felix: actually disable flooding towards NPI port")
-c69f40ac6006 ("net: dsa: felix: drop "bool change" from felix_set_tag_protocol")
-59dc7b4f7f45 ("net: dsa: realtek: rtl8365mb: add support for rtl8_4t")
-0cc369800e5f ("net: dsa: felix: stop clearing CPU flooding in felix_setup_tag_8021q")
-90897569beb1 ("net: dsa: felix: start off with flooding disabled on the CPU port")
-b903a6bd2e19 ("net: dsa: felix: migrate flood settings from NPI to tag_8021q CPU port")
-f9cef64fa23f ("net: dsa: felix: migrate host FDB and MDB entries when changing tag proto")
-7569459a52c9 ("net: dsa: manage flooding on the CPU ports")
+913f60cacda7 ("nexthop: Fix infinite nexthop dump when using maximum nexthop ID")
 
 thanks,
 
@@ -92,90 +74,119 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From a94c16a2fda010866b8858a386a8bfbeba4f72c5 Mon Sep 17 00:00:00 2001
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
-Date: Thu, 3 Aug 2023 16:42:53 +0300
-Subject: [PATCH] net: dsa: ocelot: call dsa_tag_8021q_unregister() under
- rtnl_lock() on driver remove
+From 913f60cacda73ccac8eead94983e5884c03e04cd Mon Sep 17 00:00:00 2001
+From: Ido Schimmel <idosch@nvidia.com>
+Date: Tue, 8 Aug 2023 10:52:31 +0300
+Subject: [PATCH] nexthop: Fix infinite nexthop dump when using maximum nexthop
+ ID
 
-When the tagging protocol in current use is "ocelot-8021q" and we unbind
-the driver, we see this splat:
+A netlink dump callback can return a positive number to signal that more
+information needs to be dumped or zero to signal that the dump is
+complete. In the second case, the core netlink code will append the
+NLMSG_DONE message to the skb in order to indicate to user space that
+the dump is complete.
 
-$ echo '0000:00:00.2' > /sys/bus/pci/drivers/fsl_enetc/unbind
-mscc_felix 0000:00:00.5 swp0: left promiscuous mode
-sja1105 spi2.0: Link is Down
-DSA: tree 1 torn down
-mscc_felix 0000:00:00.5 swp2: left promiscuous mode
-sja1105 spi2.2: Link is Down
-DSA: tree 3 torn down
-fsl_enetc 0000:00:00.2 eno2: left promiscuous mode
-mscc_felix 0000:00:00.5: Link is Down
-------------[ cut here ]------------
-RTNL: assertion failed at net/dsa/tag_8021q.c (409)
-WARNING: CPU: 1 PID: 329 at net/dsa/tag_8021q.c:409 dsa_tag_8021q_unregister+0x12c/0x1a0
-Modules linked in:
-CPU: 1 PID: 329 Comm: bash Not tainted 6.5.0-rc3+ #771
-pc : dsa_tag_8021q_unregister+0x12c/0x1a0
-lr : dsa_tag_8021q_unregister+0x12c/0x1a0
-Call trace:
- dsa_tag_8021q_unregister+0x12c/0x1a0
- felix_tag_8021q_teardown+0x130/0x150
- felix_teardown+0x3c/0xd8
- dsa_tree_teardown_switches+0xbc/0xe0
- dsa_unregister_switch+0x168/0x260
- felix_pci_remove+0x30/0x60
- pci_device_remove+0x4c/0x100
- device_release_driver_internal+0x188/0x288
- device_links_unbind_consumers+0xfc/0x138
- device_release_driver_internal+0xe0/0x288
- device_driver_detach+0x24/0x38
- unbind_store+0xd8/0x108
- drv_attr_store+0x30/0x50
----[ end trace 0000000000000000 ]---
-------------[ cut here ]------------
-RTNL: assertion failed at net/8021q/vlan_core.c (376)
-WARNING: CPU: 1 PID: 329 at net/8021q/vlan_core.c:376 vlan_vid_del+0x1b8/0x1f0
-CPU: 1 PID: 329 Comm: bash Tainted: G        W          6.5.0-rc3+ #771
-pc : vlan_vid_del+0x1b8/0x1f0
-lr : vlan_vid_del+0x1b8/0x1f0
- dsa_tag_8021q_unregister+0x8c/0x1a0
- felix_tag_8021q_teardown+0x130/0x150
- felix_teardown+0x3c/0xd8
- dsa_tree_teardown_switches+0xbc/0xe0
- dsa_unregister_switch+0x168/0x260
- felix_pci_remove+0x30/0x60
- pci_device_remove+0x4c/0x100
- device_release_driver_internal+0x188/0x288
- device_links_unbind_consumers+0xfc/0x138
- device_release_driver_internal+0xe0/0x288
- device_driver_detach+0x24/0x38
- unbind_store+0xd8/0x108
- drv_attr_store+0x30/0x50
-DSA: tree 0 torn down
+The nexthop dump callback always returns a positive number if nexthops
+were filled in the provided skb, even if the dump is complete. This
+means that a dump will span at least two recvmsg() calls as long as
+nexthops are present. In the last recvmsg() call the dump callback will
+not fill in any nexthops because the previous call indicated that the
+dump should restart from the last dumped nexthop ID plus one.
 
-This was somewhat not so easy to spot, because "ocelot-8021q" is not the
-default tagging protocol, and thus, not everyone who tests the unbinding
-path may have switched to it beforehand. The default
-felix_tag_npi_teardown() does not require rtnl_lock() to be held.
+ # ip nexthop add id 1 blackhole
+ # strace -e sendto,recvmsg -s 5 ip nexthop
+ sendto(3, [[{nlmsg_len=24, nlmsg_type=RTM_GETNEXTHOP, nlmsg_flags=NLM_F_REQUEST|NLM_F_DUMP, nlmsg_seq=1691394315, nlmsg_pid=0}, {nh_family=AF_UNSPEC, nh_scope=RT_SCOPE_UNIVERSE, nh_protocol=RTPROT_UNSPEC, nh_flags=0}], {nlmsg_len=0, nlmsg_type=0 /* NLMSG_??? */, nlmsg_flags=0, nlmsg_seq=0, nlmsg_pid=0}], 152, 0, NULL, 0) = 152
+ recvmsg(3, {msg_name={sa_family=AF_NETLINK, nl_pid=0, nl_groups=00000000}, msg_namelen=12, msg_iov=[{iov_base=NULL, iov_len=0}], msg_iovlen=1, msg_controllen=0, msg_flags=MSG_TRUNC}, MSG_PEEK|MSG_TRUNC) = 36
+ recvmsg(3, {msg_name={sa_family=AF_NETLINK, nl_pid=0, nl_groups=00000000}, msg_namelen=12, msg_iov=[{iov_base=[{nlmsg_len=36, nlmsg_type=RTM_NEWNEXTHOP, nlmsg_flags=NLM_F_MULTI, nlmsg_seq=1691394315, nlmsg_pid=343}, {nh_family=AF_INET, nh_scope=RT_SCOPE_UNIVERSE, nh_protocol=RTPROT_UNSPEC, nh_flags=0}, [[{nla_len=8, nla_type=NHA_ID}, 1], {nla_len=4, nla_type=NHA_BLACKHOLE}]], iov_len=32768}], msg_iovlen=1, msg_controllen=0, msg_flags=0}, 0) = 36
+ id 1 blackhole
+ recvmsg(3, {msg_name={sa_family=AF_NETLINK, nl_pid=0, nl_groups=00000000}, msg_namelen=12, msg_iov=[{iov_base=NULL, iov_len=0}], msg_iovlen=1, msg_controllen=0, msg_flags=MSG_TRUNC}, MSG_PEEK|MSG_TRUNC) = 20
+ recvmsg(3, {msg_name={sa_family=AF_NETLINK, nl_pid=0, nl_groups=00000000}, msg_namelen=12, msg_iov=[{iov_base=[{nlmsg_len=20, nlmsg_type=NLMSG_DONE, nlmsg_flags=NLM_F_MULTI, nlmsg_seq=1691394315, nlmsg_pid=343}, 0], iov_len=32768}], msg_iovlen=1, msg_controllen=0, msg_flags=0}, 0) = 20
+ +++ exited with 0 +++
 
-Fixes: 7c83a7c539ab ("net: dsa: add a second tagger for Ocelot switches based on tag_8021q")
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Link: https://lore.kernel.org/r/20230803134253.2711124-1-vladimir.oltean@nxp.com
+This behavior is both inefficient and buggy. If the last nexthop to be
+dumped had the maximum ID of 0xffffffff, then the dump will restart from
+0 (0xffffffff + 1) and never end:
+
+ # ip nexthop add id $((2**32-1)) blackhole
+ # ip nexthop
+ id 4294967295 blackhole
+ id 4294967295 blackhole
+ [...]
+
+Fix by adjusting the dump callback to return zero when the dump is
+complete. After the fix only one recvmsg() call is made and the
+NLMSG_DONE message is appended to the RTM_NEWNEXTHOP response:
+
+ # ip nexthop add id $((2**32-1)) blackhole
+ # strace -e sendto,recvmsg -s 5 ip nexthop
+ sendto(3, [[{nlmsg_len=24, nlmsg_type=RTM_GETNEXTHOP, nlmsg_flags=NLM_F_REQUEST|NLM_F_DUMP, nlmsg_seq=1691394080, nlmsg_pid=0}, {nh_family=AF_UNSPEC, nh_scope=RT_SCOPE_UNIVERSE, nh_protocol=RTPROT_UNSPEC, nh_flags=0}], {nlmsg_len=0, nlmsg_type=0 /* NLMSG_??? */, nlmsg_flags=0, nlmsg_seq=0, nlmsg_pid=0}], 152, 0, NULL, 0) = 152
+ recvmsg(3, {msg_name={sa_family=AF_NETLINK, nl_pid=0, nl_groups=00000000}, msg_namelen=12, msg_iov=[{iov_base=NULL, iov_len=0}], msg_iovlen=1, msg_controllen=0, msg_flags=MSG_TRUNC}, MSG_PEEK|MSG_TRUNC) = 56
+ recvmsg(3, {msg_name={sa_family=AF_NETLINK, nl_pid=0, nl_groups=00000000}, msg_namelen=12, msg_iov=[{iov_base=[[{nlmsg_len=36, nlmsg_type=RTM_NEWNEXTHOP, nlmsg_flags=NLM_F_MULTI, nlmsg_seq=1691394080, nlmsg_pid=342}, {nh_family=AF_INET, nh_scope=RT_SCOPE_UNIVERSE, nh_protocol=RTPROT_UNSPEC, nh_flags=0}, [[{nla_len=8, nla_type=NHA_ID}, 4294967295], {nla_len=4, nla_type=NHA_BLACKHOLE}]], [{nlmsg_len=20, nlmsg_type=NLMSG_DONE, nlmsg_flags=NLM_F_MULTI, nlmsg_seq=1691394080, nlmsg_pid=342}, 0]], iov_len=32768}], msg_iovlen=1, msg_controllen=0, msg_flags=0}, 0) = 56
+ id 4294967295 blackhole
+ +++ exited with 0 +++
+
+Note that if the NLMSG_DONE message cannot be appended because of size
+limitations, then another recvmsg() will be needed, but the core netlink
+code will not invoke the dump callback and simply reply with a
+NLMSG_DONE message since it knows that the callback previously returned
+zero.
+
+Add a test that fails before the fix:
+
+ # ./fib_nexthops.sh -t basic
+ [...]
+ TEST: Maximum nexthop ID dump                                       [FAIL]
+ [...]
+
+And passes after it:
+
+ # ./fib_nexthops.sh -t basic
+ [...]
+ TEST: Maximum nexthop ID dump                                       [ OK ]
+ [...]
+
+Fixes: ab84be7e54fc ("net: Initial nexthop code")
+Reported-by: Petr Machata <petrm@nvidia.com>
+Closes: https://lore.kernel.org/netdev/87sf91enuf.fsf@nvidia.com/
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: Petr Machata <petrm@nvidia.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://lore.kernel.org/r/20230808075233.3337922-2-idosch@nvidia.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 
-diff --git a/drivers/net/dsa/ocelot/felix.c b/drivers/net/dsa/ocelot/felix.c
-index 8da46d284e35..bef879c6d500 100644
---- a/drivers/net/dsa/ocelot/felix.c
-+++ b/drivers/net/dsa/ocelot/felix.c
-@@ -1625,8 +1625,10 @@ static void felix_teardown(struct dsa_switch *ds)
- 	struct felix *felix = ocelot_to_felix(ocelot);
- 	struct dsa_port *dp;
+diff --git a/net/ipv4/nexthop.c b/net/ipv4/nexthop.c
+index f95142e56da0..179e50d8fe07 100644
+--- a/net/ipv4/nexthop.c
++++ b/net/ipv4/nexthop.c
+@@ -3221,13 +3221,9 @@ static int rtm_dump_nexthop(struct sk_buff *skb, struct netlink_callback *cb)
+ 				     &rtm_dump_nexthop_cb, &filter);
+ 	if (err < 0) {
+ 		if (likely(skb->len))
+-			goto out;
+-		goto out_err;
++			err = skb->len;
+ 	}
  
-+	rtnl_lock();
- 	if (felix->tag_proto_ops)
- 		felix->tag_proto_ops->teardown(ds);
-+	rtnl_unlock();
+-out:
+-	err = skb->len;
+-out_err:
+ 	cb->seq = net->nexthop.seq;
+ 	nl_dump_check_consistent(cb, nlmsg_hdr(skb));
+ 	return err;
+diff --git a/tools/testing/selftests/net/fib_nexthops.sh b/tools/testing/selftests/net/fib_nexthops.sh
+index 0f5e88c8f4ff..10aa059b9f06 100755
+--- a/tools/testing/selftests/net/fib_nexthops.sh
++++ b/tools/testing/selftests/net/fib_nexthops.sh
+@@ -1981,6 +1981,11 @@ basic()
  
- 	dsa_switch_for_each_available_port(dp, ds)
- 		ocelot_deinit_port(ocelot, dp->index);
+ 	run_cmd "$IP link set dev lo up"
+ 
++	# Dump should not loop endlessly when maximum nexthop ID is configured.
++	run_cmd "$IP nexthop add id $((2**32-1)) blackhole"
++	run_cmd "timeout 5 $IP nexthop"
++	log_test $? 0 "Maximum nexthop ID dump"
++
+ 	#
+ 	# groups
+ 	#
 
