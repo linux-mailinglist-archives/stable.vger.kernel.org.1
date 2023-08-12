@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 897B8779D63
-	for <lists+stable@lfdr.de>; Sat, 12 Aug 2023 07:56:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 03B71779D64
+	for <lists+stable@lfdr.de>; Sat, 12 Aug 2023 07:56:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234637AbjHLF4q (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 12 Aug 2023 01:56:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44942 "EHLO
+        id S234748AbjHLF4u (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 12 Aug 2023 01:56:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58248 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229670AbjHLF4p (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 12 Aug 2023 01:56:45 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8864D2D44
-        for <stable@vger.kernel.org>; Fri, 11 Aug 2023 22:56:45 -0700 (PDT)
+        with ESMTP id S229670AbjHLF4t (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 12 Aug 2023 01:56:49 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 105202D52
+        for <stable@vger.kernel.org>; Fri, 11 Aug 2023 22:56:49 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1C988642B9
-        for <stable@vger.kernel.org>; Sat, 12 Aug 2023 05:56:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CBA8C433C7;
-        Sat, 12 Aug 2023 05:56:44 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A3A9964326
+        for <stable@vger.kernel.org>; Sat, 12 Aug 2023 05:56:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B266CC433C8;
+        Sat, 12 Aug 2023 05:56:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691819804;
-        bh=RuoQF2sEknrTc3l7ZVXRBxOvdMAiLHFvJKxf3C90sFc=;
+        s=korg; t=1691819808;
+        bh=naBTiOpSG0GLpqYBaCvSVmKP/GFKl38VT1L8PtzhFMg=;
         h=Subject:To:Cc:From:Date:From;
-        b=FAFRBk3eMtMPlbXwRoe4b+X95O59VvzdiYmOloBCZctM8sJ3DFVboF9K05IlJxQBT
-         AMIcdkrpcT8oJxOH7OtWN5bKVzLH0u/+UGQJfxr0DUvsbguXC7rh9A281w60FCQ7mV
-         y4NQkChiS7xAxjsHjiwH/wAisg4oRDaBYwF6JVac=
-Subject: FAILED: patch "[PATCH] nvme-rdma: fix potential unbalanced freeze & unfreeze" failed to apply to 6.1-stable tree
+        b=xN3HdWEEiuQPhj/a5HFJAVz7x3Sjpn7jmlG+x4vloDbg0Gbe+QKJWh5/yx4SM8oyx
+         wWPO3Tic6N8FoWaK62kFRwmibT9XwP7zN6atEeO85CdlteVejbzSGKn8G22c2Hs+f7
+         ttz+l6qutzsSYCPz283V0Yyrc/2OlhYBnSAsHgJU=
+Subject: FAILED: patch "[PATCH] nvme-rdma: fix potential unbalanced freeze & unfreeze" failed to apply to 5.15-stable tree
 To:     ming.lei@redhat.com, kbusch@kernel.org, sagi@grimberg.me,
         yi.zhang@redhat.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 12 Aug 2023 07:56:41 +0200
-Message-ID: <2023081240-wharf-throwing-7cf7@gregkh>
+Date:   Sat, 12 Aug 2023 07:56:42 +0200
+Message-ID: <2023081242-sage-caddy-ebf9@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -50,19 +50,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x 29b434d1e49252b3ad56ad3197e47fafff5356a1
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023081240-wharf-throwing-7cf7@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023081242-sage-caddy-ebf9@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
@@ -80,6 +80,12 @@ cd50f9b24726 ("nvme: split nvme_kill_queues")
 6bcd5089ee13 ("nvme: don't unquiesce the admin queue in nvme_kill_queues")
 0ffc7e98bfaa ("nvme-pci: refactor the tagset handling in nvme_reset_work")
 71b26083d59c ("block: set the disk capacity to 0 in blk_mark_disk_dead")
+6dfba1c09c10 ("nvme-fc: use the tagset alloc/free helpers")
+1864ea46155c ("nvme-fc: store the generic nvme_ctrl in set->driver_data")
+cefa1032f111 ("nvme-rdma: use the tagset alloc/free helpers")
+2d60738c8f80 ("nvme-rdma: store the generic nvme_ctrl in set->driver_data")
+fe60e8c53411 ("nvme: add common helpers to allocate and free tagsets")
+61ce339f19fa ("nvme-pci: set min_align_mask before calculating max_hw_sectors")
 
 thanks,
 
