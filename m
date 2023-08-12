@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3D65777A1DE
-	for <lists+stable@lfdr.de>; Sat, 12 Aug 2023 20:37:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 43E4377A1E1
+	for <lists+stable@lfdr.de>; Sat, 12 Aug 2023 20:37:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229832AbjHLShW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 12 Aug 2023 14:37:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60042 "EHLO
+        id S229766AbjHLShY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 12 Aug 2023 14:37:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60062 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229814AbjHLShS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 12 Aug 2023 14:37:18 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B1F010C2
-        for <stable@vger.kernel.org>; Sat, 12 Aug 2023 11:37:19 -0700 (PDT)
+        with ESMTP id S229810AbjHLShT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 12 Aug 2023 14:37:19 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 22A3C10C0
+        for <stable@vger.kernel.org>; Sat, 12 Aug 2023 11:37:22 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A308D61EB1
-        for <stable@vger.kernel.org>; Sat, 12 Aug 2023 18:37:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC856C433C8;
-        Sat, 12 Aug 2023 18:37:17 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E156D61EA5
+        for <stable@vger.kernel.org>; Sat, 12 Aug 2023 18:37:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0295DC433C7;
+        Sat, 12 Aug 2023 18:37:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691865438;
-        bh=JKl7y9SrQ87XzAfZjQw0KdRgtN0lPC8dSvxIdck9kNI=;
+        s=korg; t=1691865441;
+        bh=rLxheWCgyN4pSo7Eae0MACtcEGJB5q382DybzPDnGHg=;
         h=Subject:To:Cc:From:Date:From;
-        b=KpezRcgUHSvT80CubrROcdleQI8+njhZgfJVn1Ubrr3NHNKuwnFc3uwnhaZt4PKcG
-         JeCFrQN9chj4v2cF1YB0ExhrxuvNNiyA/oD+n3QXIm+SWOXWqFRPlH2SfEF44+SVR5
-         YzH0pt7yvU4XTtuduPtO/SMAtDCrnqwgfxxxkHgI=
-Subject: FAILED: patch "[PATCH] ibmvnic: Ensure login failure recovery is safe from other" failed to apply to 5.4-stable tree
+        b=kEoabAqZet81HbaNEHIsW7LUnLc0ILxuZLN0u9GJkcyeZxMthoBuCXbnRFholQQvq
+         zyxREPvzlRw54a8Gm1q4kEq/fr4H+zlEVa3+L1m7dBPek71osfvWZx34VDMkI/NUG6
+         RZY8aWfjrCw12Uu1M3/Rjtw6lrPZVKbEec9H5itU=
+Subject: FAILED: patch "[PATCH] ibmvnic: Ensure login failure recovery is safe from other" failed to apply to 4.19-stable tree
 To:     nnac123@linux.ibm.com, horms@kernel.org, kuba@kernel.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 12 Aug 2023 20:37:12 +0200
-Message-ID: <2023081212-elevation-cape-98ef@gregkh>
+Date:   Sat, 12 Aug 2023 20:37:17 +0200
+Message-ID: <2023081217-unrest-trusting-66a9@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -49,19 +49,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 4.19-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
 git checkout FETCH_HEAD
 git cherry-pick -x 6db541ae279bd4e76dbd939e5fbf298396166242
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023081212-elevation-cape-98ef@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023081217-unrest-trusting-66a9@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
 
 Possible dependencies:
 
