@@ -2,147 +2,242 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0176677A2FC
-	for <lists+stable@lfdr.de>; Sat, 12 Aug 2023 22:59:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A386877A304
+	for <lists+stable@lfdr.de>; Sat, 12 Aug 2023 23:13:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230236AbjHLU7J convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+stable@lfdr.de>); Sat, 12 Aug 2023 16:59:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58004 "EHLO
+        id S230118AbjHLVNf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 12 Aug 2023 17:13:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59066 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229727AbjHLU7J (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 12 Aug 2023 16:59:09 -0400
-X-Greylist: delayed 305 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sat, 12 Aug 2023 13:59:12 PDT
-Received: from irl.hu (irl.hu [95.85.9.111])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 518F41709
-        for <stable@vger.kernel.org>; Sat, 12 Aug 2023 13:59:12 -0700 (PDT)
-Received: from [192.168.2.4] (51b68fab.dsl.pool.telekom.hu [::ffff:81.182.143.171])
-  (AUTH: CRAM-MD5 soyer@irl.hu, )
-  by irl.hu with ESMTPSA
-  id 0000000000072C5F.0000000064D7F03A.0002FD28; Sat, 12 Aug 2023 22:48:58 +0200
-Message-ID: <3d4143b70eaeb45e6feabde0c9d90c1a07312163.camel@irl.hu>
-Subject: Re: [PATCH] platform/x86: lenovo-ymc: Only bind on machines with a
- convertible DMI chassis-type
-From:   =?UTF-8?Q?Gerg=C5=91_K=C3=B6teles?= <soyer@irl.hu>
-To:     Hans de Goede <hdegoede@redhat.com>,
-        Ilpo =?ISO-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-        Andy Shevchenko <andy@kernel.org>
-Cc:     platform-driver-x86@vger.kernel.org,
-        Andrew Kallmeyer <kallmeyeras@gmail.com>,
-        =?ISO-8859-1?Q?Andr=E9?= Apitzsch <git@apitzsch.eu>,
-        stable@vger.kernel.org
-Date:   Sat, 12 Aug 2023 22:48:57 +0200
-In-Reply-To: <20230812144818.383230-1-hdegoede@redhat.com>
-References: <20230812144818.383230-1-hdegoede@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
+        with ESMTP id S229563AbjHLVNe (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 12 Aug 2023 17:13:34 -0400
+Received: from mail-pf1-x42b.google.com (mail-pf1-x42b.google.com [IPv6:2607:f8b0:4864:20::42b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D7434198B
+        for <stable@vger.kernel.org>; Sat, 12 Aug 2023 14:13:36 -0700 (PDT)
+Received: by mail-pf1-x42b.google.com with SMTP id d2e1a72fcca58-686ba29ccb1so2135722b3a.1
+        for <stable@vger.kernel.org>; Sat, 12 Aug 2023 14:13:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernelci-org.20221208.gappssmtp.com; s=20221208; t=1691874817; x=1692479617;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=qwvCKXrkZVAXil5LpC1M2ssHw36B7j4vvd+IfhYTE6g=;
+        b=hT0pBXbjRS6SRI4WJa98ePDDQf9b+534ohOQS+N243C5oqS6i6FOBQxt+fO26DEouG
+         rzDZ4BxcRnEFRIlflX1jwuqcXcM/hPERB4HqzKv9ChK3KgbPliv3UXc0DtKcVK488BdK
+         rtgot8TjovCb0bzymseVBVxeYTB3aJ5D0cr8kcn469uLoXvP7BLBsGNQz7BN3AB3i55C
+         pIYndrqnABhJ/wpDCORUWRS0y7z1V5GoD9y3yUj8Brgt3RJ28DdVd5hguI9eArcga/Mv
+         gWXAvMUQODlu2WdwV4axe33pAYItQn5QKbdt5zFKKwn2U9TOE8c1ZsLdmaT6imtP65iu
+         s22g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1691874817; x=1692479617;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=qwvCKXrkZVAXil5LpC1M2ssHw36B7j4vvd+IfhYTE6g=;
+        b=Y/4Xhvi/TQ0v+yk8vMDaBp9O4vxpNkXp3AnkMlPjdVXDchmYdHY6b7oXfDf7pjxbc3
+         ZYAcXT8Uz1KFBtyCyX1STDwJl8KFRKg8god2ZMyg8VcZ4PGeQnw1RzpXAqfCufcoGuUd
+         KWI35A9W6JzEKBuReHHUffymDkFMZmSdfOwS2U4XJ3VdKeboWiXZ27K2Vi9wTkCfvri5
+         t0nLHZ5YSQ9oYtN5KFia27+b5rt+WmNaYyk2p/RlKqkWtF4RKx5Dv8y4PmhK/F1NKd5u
+         ml58kVA66naifde2YFLVERi1hBYjBb5o1CBjBxI1Tujp2Cj1xe/Apw52pdbOqLDS6aZW
+         8aLQ==
+X-Gm-Message-State: AOJu0Yw6IucB47yaM7H7cCyKoLAXd1GfEqpqKk7NUxMSPTm/kKlyJwwn
+        d8viQEgWKtPrcQqdVopMr5VlqMDmk0jk4qcgDb1weA==
+X-Google-Smtp-Source: AGHT+IEDtPAT6+cpTwsUpjOi0fYB5rRGuTRuA3qO3cgVIkGunGHiM3KhW185yA6bfeIfXrD7U80YrA==
+X-Received: by 2002:a05:6a20:7d8b:b0:125:4d74:cd6a with SMTP id v11-20020a056a207d8b00b001254d74cd6amr10794544pzj.3.1691874816741;
+        Sat, 12 Aug 2023 14:13:36 -0700 (PDT)
+Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
+        by smtp.gmail.com with ESMTPSA id z20-20020a63ac54000000b0054fd46531a1sm5666747pgn.5.2023.08.12.14.13.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 12 Aug 2023 14:13:36 -0700 (PDT)
+Message-ID: <64d7f600.630a0220.546ea.9ae9@mx.google.com>
+Date:   Sat, 12 Aug 2023 14:13:36 -0700 (PDT)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_PASS,SPF_PASS autolearn=unavailable
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+X-Kernelci-Report-Type: build
+X-Kernelci-Kernel: v5.15.126-71-ge089901a2a7ef
+X-Kernelci-Tree: stable-rc
+X-Kernelci-Branch: linux-5.15.y
+Subject: stable-rc/linux-5.15.y build: 20 builds: 0 failed, 20 passed,
+ 5 warnings (v5.15.126-71-ge089901a2a7ef)
+To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+        kernelci-results@groups.io
+From:   "kernelci.org bot" <bot@kernelci.org>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi,
+stable-rc/linux-5.15.y build: 20 builds: 0 failed, 20 passed, 5 warnings (v=
+5.15.126-71-ge089901a2a7ef)
 
-On Sat, 2023-08-12 at 16:48 +0200, Hans de Goede wrote:
-> The lenovo-ymc driver is causing the keyboard + touchpad to stop working
-> on some regular laptop models such as the Lenovo ThinkBook 13s G2 ITL 20V9.
-> 
-> The problem is that there are YMC WMI GUID methods in the ACPI tables
-> of these laptops, despite them not being Yogas and lenovo-ymc loading
-> causes libinput to see a SW_TABLET_MODE switch with state 1.
-> 
-> This in turn causes libinput to ignore events from the builtin keyboard
-> and touchpad, since it filters those out for a Yoga in tablet mode.
-> 
-> Similar issues with false-positive SW_TABLET_MODE=1 reporting have
-> been seen with the intel-hid driver.
-> 
-> Copy the intel-hid driver approach to fix this and only bind to the WMI
-> device on machines where the DMI chassis-type indicates the machine
-> is a convertible.
-> 
-> Add a 'force' module parameter to allow overriding the chassis-type check
-> so that users can easily test if the YMC interface works on models which
-> report an unexpected chassis-type.
-> 
-> Fixes: e82882cdd241 ("platform/x86: Add driver for Yoga Tablet Mode switch")
-> Link: https://bugzilla.redhat.com/show_bug.cgi?id=2229373
-> Cc: Gergo Koteles <soyer@irl.hu>
-> Cc: Andrew Kallmeyer <kallmeyeras@gmail.com>
-> Cc: André Apitzsch <git@apitzsch.eu>
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Full Build Summary: https://kernelci.org/build/stable-rc/branch/linux-5.15.=
+y/kernel/v5.15.126-71-ge089901a2a7ef/
 
-Thanks for fixing this!
-It works on Yoga 7 14ARB7.
+Tree: stable-rc
+Branch: linux-5.15.y
+Git Describe: v5.15.126-71-ge089901a2a7ef
+Git Commit: e089901a2a7efb6b0a441ce72a1a1d6ed9ee9755
+Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
+e-rc.git
+Built: 7 unique architectures
 
-Tested-by: Gergő Köteles <soyer@irl.hu>
+Warnings Detected:
 
-Regards,
-Gergő
+arc:
 
-> ---
-> Note: The chassis-type can be checked by doing:
-> cat /sys/class/dmi/id/chassis_type
-> if this reports 31 or 32 then this patch should not have any impact
-> on your machine.
-> ---
->  drivers/platform/x86/lenovo-ymc.c | 25 +++++++++++++++++++++++++
->  1 file changed, 25 insertions(+)
-> 
-> diff --git a/drivers/platform/x86/lenovo-ymc.c b/drivers/platform/x86/lenovo-ymc.c
-> index 41676188b373..f360370d5002 100644
-> --- a/drivers/platform/x86/lenovo-ymc.c
-> +++ b/drivers/platform/x86/lenovo-ymc.c
-> @@ -24,6 +24,10 @@ static bool ec_trigger __read_mostly;
->  module_param(ec_trigger, bool, 0444);
->  MODULE_PARM_DESC(ec_trigger, "Enable EC triggering work-around to force emitting tablet mode events");
->  
-> +static bool force;
-> +module_param(force, bool, 0444);
-> +MODULE_PARM_DESC(force, "Force loading on boards without a convertible DMI chassis-type");
-> +
->  static const struct dmi_system_id ec_trigger_quirk_dmi_table[] = {
->  	{
->  		/* Lenovo Yoga 7 14ARB7 */
-> @@ -35,6 +39,20 @@ static const struct dmi_system_id ec_trigger_quirk_dmi_table[] = {
->  	{ }
->  };
->  
-> +static const struct dmi_system_id allowed_chasis_types_dmi_table[] = {
-> +	{
-> +		.matches = {
-> +			DMI_EXACT_MATCH(DMI_CHASSIS_TYPE, "31" /* Convertible */),
-> +		},
-> +	},
-> +	{
-> +		.matches = {
-> +			DMI_EXACT_MATCH(DMI_CHASSIS_TYPE, "32" /* Detachable */),
-> +		},
-> +	},
-> +	{ }
-> +};
-> +
->  struct lenovo_ymc_private {
->  	struct input_dev *input_dev;
->  	struct acpi_device *ec_acpi_dev;
-> @@ -111,6 +129,13 @@ static int lenovo_ymc_probe(struct wmi_device *wdev, const void *ctx)
->  	struct input_dev *input_dev;
->  	int err;
->  
-> +	if (!dmi_check_system(allowed_chasis_types_dmi_table)) {
-> +		if (force)
-> +			dev_info(&wdev->dev, "Force loading Lenovo YMC support\n");
-> +		else
-> +			return -ENODEV;
-> +	}
-> +
->  	ec_trigger |= dmi_check_system(ec_trigger_quirk_dmi_table);
->  
->  	priv = devm_kzalloc(&wdev->dev, sizeof(*priv), GFP_KERNEL);
+arm64:
 
+arm:
+
+i386:
+
+mips:
+    32r2el_defconfig (gcc-10): 1 warning
+
+riscv:
+
+x86_64:
+    x86_64_defconfig (gcc-10): 2 warnings
+    x86_64_defconfig+x86-chromebook (gcc-10): 2 warnings
+
+
+Warnings summary:
+
+    2    arch/x86/lib/retpoline.o: warning: objtool: .altinstr_replacement:=
+ unexpected end of section
+    2    arch/x86/kernel/smp.o: warning: objtool: sysvec_reboot()+0x45: unr=
+eachable instruction
+    1    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_devic=
+e_reg): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expec=
+ted "0,0"
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
+
+Detailed per-defconfig build reports:
+
+---------------------------------------------------------------------------=
+-----
+32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sect=
+ion mismatches
+
+Warnings:
+    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_device_reg=
+): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expected "=
+0,0"
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
+mismatches
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
+n mismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warn=
+ings, 0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
+ section mismatches
+
+---------------------------------------------------------------------------=
+-----
+i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
+on mismatches
+
+---------------------------------------------------------------------------=
+-----
+imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+nommu_k210_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, =
+0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+nommu_k210_sdcard_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 war=
+nings, 0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+rv32_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
+ion mismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section=
+ mismatches
+
+---------------------------------------------------------------------------=
+-----
+vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 s=
+ection mismatches
+
+Warnings:
+    arch/x86/kernel/smp.o: warning: objtool: sysvec_reboot()+0x45: unreacha=
+ble instruction
+    arch/x86/lib/retpoline.o: warning: objtool: .altinstr_replacement: unex=
+pected end of section
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig+x86-chromebook (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, =
+2 warnings, 0 section mismatches
+
+Warnings:
+    arch/x86/kernel/smp.o: warning: objtool: sysvec_reboot()+0x45: unreacha=
+ble instruction
+    arch/x86/lib/retpoline.o: warning: objtool: .altinstr_replacement: unex=
+pected end of section
+
+---
+For more info write to <info@kernelci.org>
