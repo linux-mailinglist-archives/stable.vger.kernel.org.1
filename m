@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 98B1377A115
-	for <lists+stable@lfdr.de>; Sat, 12 Aug 2023 18:35:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8641A77A116
+	for <lists+stable@lfdr.de>; Sat, 12 Aug 2023 18:35:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229903AbjHLQfg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 12 Aug 2023 12:35:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59366 "EHLO
+        id S229931AbjHLQfi (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 12 Aug 2023 12:35:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35782 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229841AbjHLQff (ORCPT
-        <rfc822;Stable@vger.kernel.org>); Sat, 12 Aug 2023 12:35:35 -0400
+        with ESMTP id S229841AbjHLQfi (ORCPT
+        <rfc822;Stable@vger.kernel.org>); Sat, 12 Aug 2023 12:35:38 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 91A791702
-        for <Stable@vger.kernel.org>; Sat, 12 Aug 2023 09:35:38 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E9CF1702
+        for <Stable@vger.kernel.org>; Sat, 12 Aug 2023 09:35:41 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3109161EDD
-        for <Stable@vger.kernel.org>; Sat, 12 Aug 2023 16:35:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41DB1C433C7;
-        Sat, 12 Aug 2023 16:35:37 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1E30A61EF0
+        for <Stable@vger.kernel.org>; Sat, 12 Aug 2023 16:35:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C337C433C8;
+        Sat, 12 Aug 2023 16:35:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691858137;
-        bh=c74ZwymlyKQ8LxopLC/ggpbi3cZ/XTR+76bWLpJlRTI=;
+        s=korg; t=1691858140;
+        bh=LH8ux4zRlehMASIOdYDJOPUdjGXLC/ZKbUb8+prnP5k=;
         h=Subject:To:Cc:From:Date:From;
-        b=OIzvt/+t7FNueJrq2qS0b+mUSYDutkJPKU/BaVP3o521lzfeYWtv+JdY32oqg6Pi/
-         DfZn2a9u5vdjrX+tx9EU6qvcKW8UHCLq8bSPtCtncIDn/zICoyS96NLlyv5pmUl5qK
-         VecixDqdft1+z4N8kfsVQSk2/FqvqV8nJzNByFow=
-Subject: FAILED: patch "[PATCH] iio: adc: ina2xx: avoid NULL pointer dereference on OF device" failed to apply to 4.19-stable tree
+        b=MDwESPRwynISOU93Ror9DbvAeE00whEksPA1tyzqqroxth8Ih6/8GDOOlY/PD01ti
+         nwOM24qmarU1Rku3WiqEnND3BgzN6O/yq0ysrZ3G/3iYNAp+CA4edSjSSHMPQPGjkY
+         UA+XtMqegQYn163h0nxeowOlhfAbi8sC3afde44o=
+Subject: FAILED: patch "[PATCH] iio: adc: ina2xx: avoid NULL pointer dereference on OF device" failed to apply to 4.14-stable tree
 To:     alsi@bang-olufsen.dk, Jonathan.Cameron@huawei.com,
         Stable@vger.kernel.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 12 Aug 2023 18:35:30 +0200
-Message-ID: <2023081230-surfboard-jolliness-59a2@gregkh>
+Date:   Sat, 12 Aug 2023 18:35:32 +0200
+Message-ID: <2023081231-floss-backless-fbe5@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -50,19 +50,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 4.19-stable tree.
+The patch below does not apply to the 4.14-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
 git checkout FETCH_HEAD
 git cherry-pick -x a41e19cc0d6b6a445a4133170b90271e4a2553dc
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023081230-surfboard-jolliness-59a2@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023081231-floss-backless-fbe5@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
 
 Possible dependencies:
 
