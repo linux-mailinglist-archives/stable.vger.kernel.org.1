@@ -2,44 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2EF4A779D8F
-	for <lists+stable@lfdr.de>; Sat, 12 Aug 2023 08:11:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8C2F2779DE9
+	for <lists+stable@lfdr.de>; Sat, 12 Aug 2023 09:29:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236078AbjHLGLr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 12 Aug 2023 02:11:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35814 "EHLO
+        id S232026AbjHLH3n (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 12 Aug 2023 03:29:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36128 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233777AbjHLGLr (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 12 Aug 2023 02:11:47 -0400
+        with ESMTP id S229959AbjHLH3n (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 12 Aug 2023 03:29:43 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A4AFD7
-        for <stable@vger.kernel.org>; Fri, 11 Aug 2023 23:11:47 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C40E41B5;
+        Sat, 12 Aug 2023 00:29:46 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B3D3A64349
-        for <stable@vger.kernel.org>; Sat, 12 Aug 2023 06:11:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4E79C433C8;
-        Sat, 12 Aug 2023 06:11:45 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4CD9D61011;
+        Sat, 12 Aug 2023 07:29:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 188A4C433C8;
+        Sat, 12 Aug 2023 07:29:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691820706;
-        bh=WkRDRG9yLhbjKpaLTzuwEvj1opT9qsqOeWySUSwzdjM=;
-        h=Subject:To:Cc:From:Date:From;
-        b=agwU1qEk4yMNywrWUcVmR1mgL7svSuPRrVkQC2J6ndcls6juHj6WMNvuXfUob63OY
-         sfxPX2MU/ufkt+ApJ5Fo8CvPK1oGA/7UWDi9Ve7IO40r0NzqtOLeLzS8yfmlJ+nZhU
-         bTJ3AdrkQ1NXJw+FMIaBxrQsv97tAuVwZ4VpRXZc=
-Subject: FAILED: patch "[PATCH] mm: memory-failure: avoid false hwpoison page mapped error" failed to apply to 4.14-stable tree
-To:     linmiaohe@huawei.com, akpm@linux-foundation.org,
-        naoya.horiguchi@nec.com, stable@vger.kernel.org,
-        wangkefeng.wang@huawei.com, willy@infradead.org
-Cc:     <stable@vger.kernel.org>
-From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 12 Aug 2023 08:11:33 +0200
-Message-ID: <2023081233-bash-pushing-dce6@gregkh>
+        s=korg; t=1691825385;
+        bh=5mv/Qe6HbdjVE5i1Dz+Ml4OmoUQl8Eg1gB3kzSufA88=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=aCcRDefgKUJyZTq4tgROwt3pVVTLBWA5KE5tfu9/cmJbuVvH/Mr3f2HwvIcPulXCT
+         mpXC1pHmtmjXCyMkxeEY3rmYQvlQKajsx0wafciK2j9kmO3hPfypyhJo8rKjvkaOeg
+         31nYlPubA6eUxpOsCd0m5NMV1fBba4m5PNl7dVTc=
+Date:   Sat, 12 Aug 2023 09:29:42 +0200
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>
+Cc:     linux-kernel@vger.kernel.org, Dan Carpenter <error27@gmail.com>,
+        Takashi Iwai <tiwai@suse.de>,
+        Kees Cook <keescook@chromium.org>,
+        "Luis R . Rodriguez" <mcgrof@kernel.org>,
+        Brian Norris <computersforpeace@gmail.com>,
+        stable@vger.kernel.org
+Subject: Re: [PATCH v4 1/1] test_fimware: return -ENOMEM instead of -ENOSPC
+ on failed memory allocation
+Message-ID: <2023081213-reset-tadpole-fc94@gregkh>
+References: <20230812054346.168223-1-mirsad.todorovac@alu.unizg.hr>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230812054346.168223-1-mirsad.todorovac@alu.unizg.hr>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
@@ -50,96 +56,47 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+On Sat, Aug 12, 2023 at 07:43:47AM +0200, Mirsad Todorovac wrote:
+> [ Upstream commit 7dae593cd226a0bca61201cf85ceb9335cf63682 ]
+> 
+> In a couple of situations like
+> 
+> 	name = kstrndup(buf, count, GFP_KERNEL);
+> 	if (!name)
+> 		return -ENOSPC;
+> 
+> the error is not actually "No space left on device", but "Out of memory".
+> 
+> It is semantically correct to return -ENOMEM in all failed kstrndup()
+> and kzalloc() cases in this driver, as it is not a problem with disk
+> space, but with kernel memory allocator failing allocation.
+> 
+> The semantically correct should be:
+> 
+>         name = kstrndup(buf, count, GFP_KERNEL);
+>         if (!name)
+>                 return -ENOMEM;
+> 
+> Cc: Dan Carpenter <error27@gmail.com>
+> Cc: Takashi Iwai <tiwai@suse.de>
+> Cc: Kees Cook <keescook@chromium.org>
+> Cc: Luis R. Rodriguez <mcgrof@kernel.org>
+> Cc: Brian Norris <computersforpeace@gmail.com>
+> Cc: stable@vger.kernel.org # 4.14
+> Fixes: c92316bf8e948 ("test_firmware: add batched firmware tests")
+> Fixes: 0a8adf584759c ("test: add firmware_class loader test")
+> Fixes: eb910947c82f9 ("test: firmware_class: add asynchronous request trigger")
+> Fixes: 061132d2b9c95 ("test_firmware: add test custom fallback trigger")
+> Link: https://lore.kernel.org/all/20230606070808.9300-1-mirsad.todorovac@alu.unizg.hr/
+> Signed-off-by: Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>
+> 
+> [ This is the backport of the patch to 4.19 and 4.14 branches. There are no	]
+> [ semantic differences in the commit. Backport is provided for completenes sake	]
+> [ so it would apply to all of the supported LTS kernels				]
 
-The patch below does not apply to the 4.14-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
-
-To reproduce the conflict and resubmit, you may use the following commands:
-
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
-git checkout FETCH_HEAD
-git cherry-pick -x faeb2ff2c1c5cb60ce0da193580b256c941f99ca
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023081233-bash-pushing-dce6@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
-
-Possible dependencies:
-
-faeb2ff2c1c5 ("mm: memory-failure: avoid false hwpoison page mapped error info")
-f29623e4a599 ("mm: memory-failure: fix potential unexpected return value from unpoison_memory()")
-a6fddef49eef ("mm/memory-failure: convert unpoison_memory() to folios")
-9637d7dfb19c ("mm/memory-failure: convert free_raw_hwp_pages() to folios")
-2ff6cecee669 ("mm/memory-failure: convert hugetlb_clear_page_hwpoison to folios")
-bc1cfde19467 ("mm/memory-failure: convert try_memory_failure_hugetlb() to folios")
-911565b82853 ("mm/hugetlb: convert destroy_compound_gigantic_page() to folios")
-e0ff42804233 ("mm/memory-failure.c: cleanup in unpoison_memory")
-cb67f4282bf9 ("mm,thp,rmap: simplify compound page mapcount handling")
-dad6a5eb5556 ("mm,hugetlb: use folio fields in second tail page")
-f074732d599e ("mm/hugetlb_cgroup: convert hugetlb_cgroup_from_page() to folios")
-a098c977722c ("mm/hugetlb_cgroup: convert __set_hugetlb_cgroup() to folios")
-5033091de814 ("mm/hwpoison: introduce per-memory_block hwpoison counter")
-a46c9304b4bb ("mm/hwpoison: pass pfn to num_poisoned_pages_*()")
-d027122d8363 ("mm/hwpoison: move definitions of num_poisoned_pages_* to memory-failure.c")
-e591ef7d96d6 ("mm,hwpoison,hugetlb,memory_hotplug: hotremove memory section with hwpoisoned hugepage")
-b66d00dfebe7 ("mm: memory-failure: make action_result() return int")
-4781593d5dba ("mm/hugetlb: unify clearing of RestoreReserve for private pages")
-149562f75094 ("mm/hugetlb: add hugetlb_folio_subpool() helpers")
-d340625f4849 ("mm: add private field of first tail to struct page and struct folio")
+This commit is already in the 4.19.291 release, does it need to be
+included in there again for some reason?
 
 thanks,
 
 greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From faeb2ff2c1c5cb60ce0da193580b256c941f99ca Mon Sep 17 00:00:00 2001
-From: Miaohe Lin <linmiaohe@huawei.com>
-Date: Thu, 27 Jul 2023 19:56:42 +0800
-Subject: [PATCH] mm: memory-failure: avoid false hwpoison page mapped error
- info
-
-folio->_mapcount is overloaded in SLAB, so folio_mapped() has to be done
-after folio_test_slab() is checked. Otherwise slab folio might be treated
-as a mapped folio leading to false 'Someone maps the hwpoison page' error
-info.
-
-Link: https://lkml.kernel.org/r/20230727115643.639741-4-linmiaohe@huawei.com
-Fixes: 230ac719c500 ("mm/hwpoison: don't try to unpoison containment-failed pages")
-Signed-off-by: Miaohe Lin <linmiaohe@huawei.com>
-Reviewed-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Acked-by: Naoya Horiguchi <naoya.horiguchi@nec.com>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-
-diff --git a/mm/memory-failure.c b/mm/memory-failure.c
-index b32d370b5d43..9a285038d765 100644
---- a/mm/memory-failure.c
-+++ b/mm/memory-failure.c
-@@ -2499,6 +2499,13 @@ int unpoison_memory(unsigned long pfn)
- 		goto unlock_mutex;
- 	}
- 
-+	if (folio_test_slab(folio) || PageTable(&folio->page) || folio_test_reserved(folio))
-+		goto unlock_mutex;
-+
-+	/*
-+	 * Note that folio->_mapcount is overloaded in SLAB, so the simple test
-+	 * in folio_mapped() has to be done after folio_test_slab() is checked.
-+	 */
- 	if (folio_mapped(folio)) {
- 		unpoison_pr_info("Unpoison: Someone maps the hwpoison page %#lx\n",
- 				 pfn, &unpoison_rs);
-@@ -2511,9 +2518,6 @@ int unpoison_memory(unsigned long pfn)
- 		goto unlock_mutex;
- 	}
- 
--	if (folio_test_slab(folio) || PageTable(&folio->page) || folio_test_reserved(folio))
--		goto unlock_mutex;
--
- 	ghp = get_hwpoison_page(p, MF_UNPOISON);
- 	if (!ghp) {
- 		if (PageHuge(p)) {
-
