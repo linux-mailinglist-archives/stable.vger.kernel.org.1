@@ -2,242 +2,115 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 546BB77A306
-	for <lists+stable@lfdr.de>; Sat, 12 Aug 2023 23:16:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4342277A314
+	for <lists+stable@lfdr.de>; Sat, 12 Aug 2023 23:41:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230016AbjHLVQg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 12 Aug 2023 17:16:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35402 "EHLO
+        id S229447AbjHLVlp (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 12 Aug 2023 17:41:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40532 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229563AbjHLVQg (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 12 Aug 2023 17:16:36 -0400
-Received: from mail-pf1-x435.google.com (mail-pf1-x435.google.com [IPv6:2607:f8b0:4864:20::435])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D64B198B
-        for <stable@vger.kernel.org>; Sat, 12 Aug 2023 14:16:38 -0700 (PDT)
-Received: by mail-pf1-x435.google.com with SMTP id d2e1a72fcca58-686ba29ccb1so2136342b3a.1
-        for <stable@vger.kernel.org>; Sat, 12 Aug 2023 14:16:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20221208.gappssmtp.com; s=20221208; t=1691874998; x=1692479798;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=HVWOnxKZyvatHk2pUbu+IAi6YVSbyL9tfHOuY2ELZHs=;
-        b=CTopTsP/eX6KGJPtm/vghc830mZRapoudqG7cELcV28e0N1zdPrTU5SwCM1lIQskj/
-         u6QoIyLd+aDJt4Jw30OBqvvc/v9UwG4ne4LLIRgXizWpNTQG85CUkMQ9eRmEodIEi+d+
-         vcAOXRo6m7+o2csfY1z2e04NjI/oO/Q782BTkoMLj5a1gDirz/h8mVdRAqOAE/Rw8LHb
-         YLkRUj5I4fRFhOWrpA+cWzOxAx8wm4hUvJSK165Am/zjlUiPI35aHhiQOEEOZ3yguH2O
-         QMIagp7ziKWKj5uGRiLhaQvWj26Jbgeu83YmvFT6Px4JIPLjAcmYI1dRMf5UCgpGSCa0
-         RM8A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691874998; x=1692479798;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=HVWOnxKZyvatHk2pUbu+IAi6YVSbyL9tfHOuY2ELZHs=;
-        b=Iu+6tUtFZPdz4xF14lXOFyfIL+xufu79RVQrx7FU/YQ/0y1m19AR0nRIr81DJqGII0
-         Gxu5R6Uh8sr2qhnGV1wy/kQuJpx1p/K1/aPeJzoUJ+lOT5PYEzE1PtxEZU1r4RD/hWkM
-         4X7TwLjKd6JxBBbabwT9mpVqWO8ulpmNHZW83eVd6PyLK3SJwAnzD4zkDdToVzTQkFYM
-         FNER4Sj1D5G6LBqQTyfvlXJsggTMHKyYuXeLINfTH0/HrZm+9fN5gY7bzv+cdyhdk6f3
-         t6ijzl9sq1BoM28GI+chyoLlhadp1RpTCPIhk9Y9uCaeq+TyifBD9ytPQsyAXVc+2sIV
-         SyJg==
-X-Gm-Message-State: AOJu0YwEMqy+0Euzqzuu/vwynw7l6DK8xB1u9t8v9n6/6OtpKyyX0CFg
-        BLeB5hgbLeolvBebLp6mveNGpi1qlOt+c0dlfw1Qbw==
-X-Google-Smtp-Source: AGHT+IEAlA38rKAvzC63k912scX7a3J2Tw3oDpQC4C0/KhhRFWJpFCYSWxwFGQ9HqZT9Vj+QXv0+eQ==
-X-Received: by 2002:a05:6a20:8f0f:b0:13e:b6b0:72a2 with SMTP id b15-20020a056a208f0f00b0013eb6b072a2mr7427284pzk.6.1691874998414;
-        Sat, 12 Aug 2023 14:16:38 -0700 (PDT)
-Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id w9-20020a63af09000000b00563deb296bbsm5534037pge.22.2023.08.12.14.16.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 12 Aug 2023 14:16:37 -0700 (PDT)
-Message-ID: <64d7f6b5.630a0220.ffcea.8d6f@mx.google.com>
-Date:   Sat, 12 Aug 2023 14:16:37 -0700 (PDT)
-Content-Type: text/plain; charset="utf-8"
+        with ESMTP id S229446AbjHLVlo (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 12 Aug 2023 17:41:44 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5646510DB
+        for <stable@vger.kernel.org>; Sat, 12 Aug 2023 14:41:47 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E75AA60F37
+        for <stable@vger.kernel.org>; Sat, 12 Aug 2023 21:41:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E450FC433C7;
+        Sat, 12 Aug 2023 21:41:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1691876506;
+        bh=QXPYck5CSdYWWxYcsnHIB5YIDhubfi9WkB0LNPX+t9Q=;
+        h=Subject:To:Cc:From:Date:From;
+        b=qaMdqwOXd16sVvELyxIhHMDd9wQfngqaExpvIhdYZ4qbtoJC4di6m2vVdhgSnazpW
+         xLDGoCxBig9pOadAvsjTfNAXFhfLiQxJ0d5w2N5baiqCeTbnX0sz7lXMVruSe831D8
+         iqm0xvYJhGIXUsSsxbh7aFQyEHKWw6tdxb8wtk3w=
+Subject: FAILED: patch "[PATCH] btrfs: don't wait for writeback on clean pages in" failed to apply to 6.1-stable tree
+To:     hch@lst.de, dsterba@suse.com, josef@toxicpanda.com
+Cc:     <stable@vger.kernel.org>
+From:   <gregkh@linuxfoundation.org>
+Date:   Sat, 12 Aug 2023 23:41:43 +0200
+Message-ID: <2023081243-resolute-juggle-2b21@gregkh>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Report-Type: build
-X-Kernelci-Kernel: v5.10.190-56-g3dbd538340c6
-X-Kernelci-Tree: stable-rc
-X-Kernelci-Branch: linux-5.10.y
-Subject: stable-rc/linux-5.10.y build: 19 builds: 0 failed, 19 passed,
- 7 warnings (v5.10.190-56-g3dbd538340c6)
-To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
-        kernelci-results@groups.io
-From:   "kernelci.org bot" <bot@kernelci.org>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-stable-rc/linux-5.10.y build: 19 builds: 0 failed, 19 passed, 7 warnings (v=
-5.10.190-56-g3dbd538340c6)
 
-Full Build Summary: https://kernelci.org/build/stable-rc/branch/linux-5.10.=
-y/kernel/v5.10.190-56-g3dbd538340c6/
+The patch below does not apply to the 6.1-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-Tree: stable-rc
-Branch: linux-5.10.y
-Git Describe: v5.10.190-56-g3dbd538340c6
-Git Commit: 3dbd538340c63540e85e51e9946f4f37288e415d
-Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
-e-rc.git
-Built: 7 unique architectures
+To reproduce the conflict and resubmit, you may use the following commands:
 
-Warnings Detected:
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git checkout FETCH_HEAD
+git cherry-pick -x 5c25699871112853f231e52d51c576d5c759a020
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023081243-resolute-juggle-2b21@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
-arc:
-
-arm64:
-
-arm:
-
-i386:
-
-mips:
-    32r2el_defconfig (gcc-10): 1 warning
-
-riscv:
-    rv32_defconfig (gcc-10): 4 warnings
-
-x86_64:
-    x86_64_defconfig (gcc-10): 1 warning
-    x86_64_defconfig+x86-chromebook (gcc-10): 1 warning
+Possible dependencies:
 
 
-Warnings summary:
 
-    2    arch/x86/lib/retpoline.o: warning: objtool: .altinstr_replacement:=
- unexpected end of section
-    2    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [=
--Wcpp]
-    2    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemente=
-d [-Wcpp]
-    1    WARNING: modpost: Symbol info of vmlinux is missing. Unresolved sy=
-mbol check will be entirely skipped.
+thanks,
 
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D
+greg k-h
 
-Detailed per-defconfig build reports:
+------------------ original commit in Linus's tree ------------------
 
----------------------------------------------------------------------------=
------
-32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sect=
-ion mismatches
+From 5c25699871112853f231e52d51c576d5c759a020 Mon Sep 17 00:00:00 2001
+From: Christoph Hellwig <hch@lst.de>
+Date: Mon, 24 Jul 2023 06:26:54 -0700
+Subject: [PATCH] btrfs: don't wait for writeback on clean pages in
+ extent_write_cache_pages
 
-Warnings:
-    WARNING: modpost: Symbol info of vmlinux is missing. Unresolved symbol =
-check will be entirely skipped.
+__extent_writepage could have started on more pages than the one it was
+called for.  This happens regularly for zoned file systems, and in theory
+could happen for compressed I/O if the worker thread was executed very
+quickly. For such pages extent_write_cache_pages waits for writeback
+to complete before moving on to the next page, which is highly inefficient
+as it blocks the flusher thread.
 
----------------------------------------------------------------------------=
------
-allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
-mismatches
+Port over the PageDirty check that was added to write_cache_pages in
+commit 515f4a037fb ("mm: write_cache_pages optimise page cleaning") to
+fix this.
 
----------------------------------------------------------------------------=
------
-allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
-n mismatches
+CC: stable@vger.kernel.org # 4.14+
+Reviewed-by: Josef Bacik <josef@toxicpanda.com>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 
----------------------------------------------------------------------------=
------
-defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
+diff --git a/fs/btrfs/extent_io.c b/fs/btrfs/extent_io.c
+index c36eb4956f81..ca765d62324f 100644
+--- a/fs/btrfs/extent_io.c
++++ b/fs/btrfs/extent_io.c
+@@ -2145,6 +2145,12 @@ static int extent_write_cache_pages(struct address_space *mapping,
+ 				continue;
+ 			}
+ 
++			if (!folio_test_dirty(folio)) {
++				/* Someone wrote it for us. */
++				folio_unlock(folio);
++				continue;
++			}
++
+ 			if (wbc->sync_mode != WB_SYNC_NONE) {
+ 				if (folio_test_writeback(folio))
+ 					submit_write_bio(bio_ctrl, 0);
 
----------------------------------------------------------------------------=
------
-defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warn=
-ings, 0 section mismatches
-
----------------------------------------------------------------------------=
------
-haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
- section mismatches
-
----------------------------------------------------------------------------=
------
-i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
-on mismatches
-
----------------------------------------------------------------------------=
------
-imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-nommu_k210_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, =
-0 section mismatches
-
----------------------------------------------------------------------------=
------
-omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-rv32_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 sect=
-ion mismatches
-
-Warnings:
-    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [-Wcpp]
-    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemented [-W=
-cpp]
-    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [-Wcpp]
-    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemented [-W=
-cpp]
-
----------------------------------------------------------------------------=
------
-tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section=
- mismatches
-
----------------------------------------------------------------------------=
------
-tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 se=
-ction mismatches
-
-Warnings:
-    arch/x86/lib/retpoline.o: warning: objtool: .altinstr_replacement: unex=
-pected end of section
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig+x86-chromebook (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, =
-1 warning, 0 section mismatches
-
-Warnings:
-    arch/x86/lib/retpoline.o: warning: objtool: .altinstr_replacement: unex=
-pected end of section
-
----
-For more info write to <info@kernelci.org>
