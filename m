@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 98A9377A1DF
+	by mail.lfdr.de (Postfix) with ESMTP id E870D77A1E0
 	for <lists+stable@lfdr.de>; Sat, 12 Aug 2023 20:37:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229834AbjHLShT (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 12 Aug 2023 14:37:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60846 "EHLO
+        id S229727AbjHLShU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 12 Aug 2023 14:37:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60004 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229766AbjHLShP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 12 Aug 2023 14:37:15 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E68541BD1
-        for <stable@vger.kernel.org>; Sat, 12 Aug 2023 11:37:12 -0700 (PDT)
+        with ESMTP id S229626AbjHLShR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 12 Aug 2023 14:37:17 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B6D619A5
+        for <stable@vger.kernel.org>; Sat, 12 Aug 2023 11:37:16 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6EA0361EBC
-        for <stable@vger.kernel.org>; Sat, 12 Aug 2023 18:37:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AE28C433C7;
-        Sat, 12 Aug 2023 18:37:11 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BE31F61EB4
+        for <stable@vger.kernel.org>; Sat, 12 Aug 2023 18:37:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7D2EC433C7;
+        Sat, 12 Aug 2023 18:37:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691865431;
-        bh=Lx+CLWJ2vTTZeFB4UT6L1FnKpWSQWHMY9njfgEEWOBg=;
+        s=korg; t=1691865435;
+        bh=mYawpJxAmfYzVPulkRp0WD9ozDNiUnm+L9+xVVkSnOY=;
         h=Subject:To:Cc:From:Date:From;
-        b=2tlFUxu9t53sqwzTvhmRuKVzreFgzZ+zUhddmCAXJ+HsOh35V622zeUV3iYIcJu66
-         /QmzJJKTrpWABLpwTIkw8FMFPGb1PgtBH1zdzkQv4CvvKURZTLklhGc0KDc/Glnyzq
-         iYkker0nYisMQvGPw3uF4aX7N/ouzntlRywWmvrU=
-Subject: FAILED: patch "[PATCH] ibmvnic: Ensure login failure recovery is safe from other" failed to apply to 5.15-stable tree
+        b=t2/HNXgW/N5PiXWah4QZud6JNcpNJ5vNK+PwlNvjTrTRjWILCe/9kuUhKlKXBc0z8
+         8Ag/nKWyz3Zx5OPjCithtGr5PtaPmEP6v05yGMbjnr+GcuTsd3ZuinPClk83BBfdXB
+         ZOnmcDeN1bEVSFVfJCeUFr1ryxCZLYi1o/MyM5ZA=
+Subject: FAILED: patch "[PATCH] ibmvnic: Ensure login failure recovery is safe from other" failed to apply to 5.10-stable tree
 To:     nnac123@linux.ibm.com, horms@kernel.org, kuba@kernel.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 12 Aug 2023 20:37:09 +0200
-Message-ID: <2023081208-trinity-upfront-c2e1@gregkh>
+Date:   Sat, 12 Aug 2023 20:37:10 +0200
+Message-ID: <2023081210-robbing-common-f106@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -49,19 +49,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x 6db541ae279bd4e76dbd939e5fbf298396166242
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023081208-trinity-upfront-c2e1@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023081210-robbing-common-f106@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
@@ -78,6 +78,13 @@ f8ac0bfa7d7a ("ibmvnic: Reuse LTB when possible")
 0df7b9ad8f84 ("ibmvnic: Use/rename local vars in init_rx_pools")
 0f2bf3188c43 ("ibmvnic: Fix up some comments and messages")
 38106b2c433e ("ibmvnic: Consolidate code in replenish_rx_pool()")
+f6ebca8efa52 ("ibmvnic: free tx_pool if tso_pool alloc fails")
+552a33729f1a ("ibmvnic: set ltb->buff to NULL after freeing")
+72368f8b2b9e ("ibmvnic: account for bufs already saved in indir_buf")
+65d6470d139a ("ibmvnic: clean pending indirect buffs during reset")
+0ec13aff058a ("Revert "ibmvnic: simplify reset_long_term_buff function"")
+d3a6abccbd27 ("ibmvnic: remove duplicate napi_schedule call in do_reset function")
+0775ebc4cf85 ("ibmvnic: avoid calling napi_disable() twice")
 
 thanks,
 
