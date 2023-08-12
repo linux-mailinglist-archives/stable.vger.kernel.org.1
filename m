@@ -2,41 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 23023779D8D
-	for <lists+stable@lfdr.de>; Sat, 12 Aug 2023 08:11:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 43C12779D8E
+	for <lists+stable@lfdr.de>; Sat, 12 Aug 2023 08:11:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234928AbjHLGLl (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 12 Aug 2023 02:11:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35760 "EHLO
+        id S236047AbjHLGLp (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 12 Aug 2023 02:11:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35802 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229649AbjHLGLl (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 12 Aug 2023 02:11:41 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 07614D7
-        for <stable@vger.kernel.org>; Fri, 11 Aug 2023 23:11:41 -0700 (PDT)
+        with ESMTP id S229649AbjHLGLo (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 12 Aug 2023 02:11:44 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 67612D7
+        for <stable@vger.kernel.org>; Fri, 11 Aug 2023 23:11:44 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9990E645AD
-        for <stable@vger.kernel.org>; Sat, 12 Aug 2023 06:11:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A78BAC433C7;
-        Sat, 12 Aug 2023 06:11:39 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id F1335645F8
+        for <stable@vger.kernel.org>; Sat, 12 Aug 2023 06:11:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BEF0C433C9;
+        Sat, 12 Aug 2023 06:11:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691820700;
-        bh=2nOratI1U81E2zyXjfOaqMlOMQVCgeu6EogNmVVi2mM=;
+        s=korg; t=1691820703;
+        bh=GChV4jZTc96YUuzBASeyzPonE+OFJWQj0dnhLHLd750=;
         h=Subject:To:Cc:From:Date:From;
-        b=PJi8onOMUQ2SMmaAA/C+jJ1gOTWlGX9RWXtSmIrwTzUEAWNkP+h1Gd2YNmT5UFAvC
-         RoGgP/b5erYswniy5VSY2LQcKHLOlStJ9drEzNOaSTn9NduEjcCaA0G3haXP1YmxjO
-         gLqy6KU9MmIqNRE2jBi2exapw763ikdUQ/gPbD/k=
-Subject: FAILED: patch "[PATCH] mm: memory-failure: avoid false hwpoison page mapped error" failed to apply to 5.4-stable tree
+        b=HAQuNfc5FfFJS2ARTUDPm9nUedM4si4D1nDXTLfO75zobhevwGNXPDBMLf8GGi3Wr
+         cqkmDUXXEWOjwThkkdp5AEacMuhXSlgNmDsW0m65I4/+pVAsUcjI4gB8uzukUYCZls
+         HT6ZEXcjFP/Y6uEAm251CK9nZjeNhGjEyAb6BkSc=
+Subject: FAILED: patch "[PATCH] mm: memory-failure: avoid false hwpoison page mapped error" failed to apply to 4.19-stable tree
 To:     linmiaohe@huawei.com, akpm@linux-foundation.org,
         naoya.horiguchi@nec.com, stable@vger.kernel.org,
         wangkefeng.wang@huawei.com, willy@infradead.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 12 Aug 2023 08:11:31 +0200
-Message-ID: <2023081231-daintily-hurry-4b95@gregkh>
+Date:   Sat, 12 Aug 2023 08:11:32 +0200
+Message-ID: <2023081232-tanned-coma-3bd6@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -51,19 +51,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 4.19-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
 git checkout FETCH_HEAD
 git cherry-pick -x faeb2ff2c1c5cb60ce0da193580b256c941f99ca
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023081231-daintily-hurry-4b95@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023081232-tanned-coma-3bd6@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
 
 Possible dependencies:
 
