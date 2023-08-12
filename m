@@ -2,41 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3F3F5779D8B
-	for <lists+stable@lfdr.de>; Sat, 12 Aug 2023 08:11:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E448F779D8C
+	for <lists+stable@lfdr.de>; Sat, 12 Aug 2023 08:11:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233512AbjHLGLg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 12 Aug 2023 02:11:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38934 "EHLO
+        id S234276AbjHLGLj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 12 Aug 2023 02:11:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38946 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229649AbjHLGLf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 12 Aug 2023 02:11:35 -0400
+        with ESMTP id S229649AbjHLGLi (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 12 Aug 2023 02:11:38 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 282E8129
-        for <stable@vger.kernel.org>; Fri, 11 Aug 2023 23:11:35 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F404FD7
+        for <stable@vger.kernel.org>; Fri, 11 Aug 2023 23:11:37 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B729F63A41
-        for <stable@vger.kernel.org>; Sat, 12 Aug 2023 06:11:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C46B0C433C7;
-        Sat, 12 Aug 2023 06:11:33 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 91CDF642E5
+        for <stable@vger.kernel.org>; Sat, 12 Aug 2023 06:11:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4B33C433C7;
+        Sat, 12 Aug 2023 06:11:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691820694;
-        bh=zZ/SGjm4ibXQyyhm4Tu7Dd69fJRVPJETTqEUrl3eT9s=;
+        s=korg; t=1691820697;
+        bh=CoQ5yEK0EkMNFXt5M4GBAFWo9u7N1E2rNxNfv0sweuo=;
         h=Subject:To:Cc:From:Date:From;
-        b=l+EOdrO+ncX/mHdZ+5OASw6cIRbNcUr+c/cSX6z38D8UtCAKihpk3rsZr2KyGF9AU
-         eDIGXs3eNY4RbbALoSYSpNEOS7MYbDRGYEF1WHQUsgRGYyhpj5SpzL2i4I0gFRsGvu
-         4ua7baWbhcwi0tJ/WBPOhQHhriq8j+xX+uydR/DI=
-Subject: FAILED: patch "[PATCH] mm: memory-failure: avoid false hwpoison page mapped error" failed to apply to 5.15-stable tree
+        b=QaQdoSCBrOrvDCYjjlDxwxuXYHcgLEPjHxgf+UVvt9jtm8DgxcbXdJ/GzybfjrOLs
+         CK/ZYth0dFhJYik5k8fLdM+CEqi76z+egcIFoTplN4W3G5BUYlm+nBKyXYn0J4tbaS
+         40nwW5N3O46t94ow85mHt9Hbj2OD14T6TRShLz3M=
+Subject: FAILED: patch "[PATCH] mm: memory-failure: avoid false hwpoison page mapped error" failed to apply to 5.10-stable tree
 To:     linmiaohe@huawei.com, akpm@linux-foundation.org,
         naoya.horiguchi@nec.com, stable@vger.kernel.org,
         wangkefeng.wang@huawei.com, willy@infradead.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 12 Aug 2023 08:11:29 +0200
-Message-ID: <2023081229-culinary-gliding-61fd@gregkh>
+Date:   Sat, 12 Aug 2023 08:11:30 +0200
+Message-ID: <2023081230-tapered-gestate-666f@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -51,19 +51,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x faeb2ff2c1c5cb60ce0da193580b256c941f99ca
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023081229-culinary-gliding-61fd@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023081230-tapered-gestate-666f@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
