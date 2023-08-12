@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4787977A1BF
-	for <lists+stable@lfdr.de>; Sat, 12 Aug 2023 20:32:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 24C8F77A1C3
+	for <lists+stable@lfdr.de>; Sat, 12 Aug 2023 20:32:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229452AbjHLScU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 12 Aug 2023 14:32:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40762 "EHLO
+        id S229568AbjHLScY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 12 Aug 2023 14:32:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40784 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229446AbjHLScT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 12 Aug 2023 14:32:19 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E8943E77
-        for <stable@vger.kernel.org>; Sat, 12 Aug 2023 11:32:22 -0700 (PDT)
+        with ESMTP id S229499AbjHLScX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 12 Aug 2023 14:32:23 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B918BE77
+        for <stable@vger.kernel.org>; Sat, 12 Aug 2023 11:32:26 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8763260B31
-        for <stable@vger.kernel.org>; Sat, 12 Aug 2023 18:32:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99900C433C8;
-        Sat, 12 Aug 2023 18:32:21 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4DB7861044
+        for <stable@vger.kernel.org>; Sat, 12 Aug 2023 18:32:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5ECEEC433C7;
+        Sat, 12 Aug 2023 18:32:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691865142;
-        bh=n6kDt9BrEKOy5LScWr9QLnD1HxYfXfuL1QZX2/4VmAI=;
+        s=korg; t=1691865145;
+        bh=FrjansJW6GX8qpwU13BSdrUMJ0ub3yQQFJOesP5QGEk=;
         h=Subject:To:Cc:From:Date:From;
-        b=Nltf+4WcBxgrjoXgwGpBy2SN0Xeiuz0HzcwcN9qyRLhFuzVC7ptpQVHypl2kXIvFN
-         yiYaGb+6ZbfQFy72FhVI2OgyhHYSO4l9MLvWUw4LnKALJ6lkEmo3cJUd9CjgYoinbw
-         0sbz58VkMWXrrD7Hg8z8y+eemXE0JpCNZ5EZpICM=
-Subject: FAILED: patch "[PATCH] net: phy: at803x: fix the wol setting functions" failed to apply to 6.4-stable tree
+        b=c/F9AlvbMxprBSc+7JcJe6kkNRvh/QjJBGnXrVXJn6Wwbx1bM89WiwhYrGgd5YU6i
+         j1QMmqyKY7zROA6EDil3NLtJ7rTr0dn5Fjl9RfuliuNzpjCMK+R6J3YjGA+rTAd6/M
+         11wC3CpwUeZd1C3dLWBAYYHpWKFcfl1EUE66n1JU=
+Subject: FAILED: patch "[PATCH] net: phy: at803x: fix the wol setting functions" failed to apply to 6.1-stable tree
 To:     leoyang.li@nxp.com, davem@davemloft.net,
         rmk+kernel@armlinux.org.uk, viorel.suman@nxp.com, wei.fang@nxp.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 12 Aug 2023 20:32:19 +0200
-Message-ID: <2023081219-shucking-purist-bd23@gregkh>
+Date:   Sat, 12 Aug 2023 20:32:20 +0200
+Message-ID: <2023081220-shale-dropper-4012@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -50,23 +50,24 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.4-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
 git cherry-pick -x e58f30246c35c126c7571065b33bee4b3b1d2ef8
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023081219-shucking-purist-bd23@gregkh' --subject-prefix 'PATCH 6.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023081220-shale-dropper-4012@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
-
+e58f30246c35 ("net: phy: at803x: fix the wol setting functions")
+988e8d90b3dc ("net: phy: at803x: Use devm_regulator_get_enable_optional()")
 
 thanks,
 
