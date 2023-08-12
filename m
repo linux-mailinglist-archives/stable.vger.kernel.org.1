@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9CEBE77A1C4
+	by mail.lfdr.de (Postfix) with ESMTP id E92FD77A1C5
 	for <lists+stable@lfdr.de>; Sat, 12 Aug 2023 20:32:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229582AbjHLSc3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 12 Aug 2023 14:32:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56922 "EHLO
+        id S229630AbjHLSck (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 12 Aug 2023 14:32:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56356 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229446AbjHLSc3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 12 Aug 2023 14:32:29 -0400
+        with ESMTP id S229596AbjHLSck (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 12 Aug 2023 14:32:40 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A09EE77
-        for <stable@vger.kernel.org>; Sat, 12 Aug 2023 11:32:32 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C580BE77
+        for <stable@vger.kernel.org>; Sat, 12 Aug 2023 11:32:42 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id F3C4361044
-        for <stable@vger.kernel.org>; Sat, 12 Aug 2023 18:32:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 156B6C433C7;
-        Sat, 12 Aug 2023 18:32:30 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4794361DD8
+        for <stable@vger.kernel.org>; Sat, 12 Aug 2023 18:32:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C234C433C7;
+        Sat, 12 Aug 2023 18:32:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691865151;
-        bh=xgabjlbLC6JsFg3T4+UVAnQUO4E20OmxGAYwkhvgyBc=;
+        s=korg; t=1691865161;
+        bh=A/RJk7OHHf04NpmkpaOS0Rg1PQ7CnYYeIakIIWpT4Aw=;
         h=Subject:To:Cc:From:Date:From;
-        b=UCSTtmciYnGESPuZK/w6hejWv6k8T2jj2Ff1QSxP7rt6Skh8CJY335QGZTWzEVlko
-         eqGaKrayz1xi0EE5W3OrY+o5pUWigV+UrjeoAXNYshd92i3cQ17ju1hV0IAKpJPaM/
-         emYwKH7p18OMMOXT0povyOQetYxTQaTCaqw+C4rU=
-Subject: FAILED: patch "[PATCH] net: phy: at803x: fix the wol setting functions" failed to apply to 5.10-stable tree
-To:     leoyang.li@nxp.com, davem@davemloft.net,
-        rmk+kernel@armlinux.org.uk, viorel.suman@nxp.com, wei.fang@nxp.com
+        b=gj6MHJUgRT2I0gvVI3yTpiFEr/yP/rtZonQQ49YD7+W3PzEQYhsJRWxsXVujc0R8Z
+         T4ptE0LSBQjdhG7DZq+2HY+1wWztgrEwsyjemSgJX6qawVok12RxBj1bijE1H+4jwB
+         vk8zsJFFikKIWbUPzkRBilfGRTV2DvupXuurZb+U=
+Subject: FAILED: patch "[PATCH] net: dsa: ocelot: call dsa_tag_8021q_unregister() under" failed to apply to 5.15-stable tree
+To:     vladimir.oltean@nxp.com, kuba@kernel.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 12 Aug 2023 20:32:23 +0200
-Message-ID: <2023081222-fringe-afloat-d3ca@gregkh>
+Date:   Sat, 12 Aug 2023 20:32:39 +0200
+Message-ID: <2023081238-boasting-willing-c15b@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -50,42 +49,42 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x e58f30246c35c126c7571065b33bee4b3b1d2ef8
+git cherry-pick -x a94c16a2fda010866b8858a386a8bfbeba4f72c5
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023081222-fringe-afloat-d3ca@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023081238-boasting-willing-c15b@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
-e58f30246c35 ("net: phy: at803x: fix the wol setting functions")
-988e8d90b3dc ("net: phy: at803x: Use devm_regulator_get_enable_optional()")
-1f0dd412e34e ("net: phy: at803x: fix error return code in at803x_probe()")
-9926de7315be ("net: phy: at803x: fix NULL pointer dereference on AR9331 PHY")
-d7cd5e06c9dd ("net: phy: at803x: disable WOL at probe")
-3265f4218878 ("net: phy: at803x: add fiber support")
-4f3a00c7f5b2 ("net: phy: at803x: move page selection fix to config_init")
-edcb501e543c ("net: phy: at803x: make array offsets static")
-8c84d7528d8d ("net: phy: add qca8081 cdt feature")
-9d4dae29624f ("net: phy: add qca8081 soft_reset and enable master/slave seed")
-2acdd43fe009 ("net: phy: add qca8081 config_init")
-f884d449bf28 ("net: phy: add qca8081 config_aneg")
-765c22aad157 ("net: phy: add qca8081 get_features")
-79c7bc052154 ("net: phy: add qca8081 read_status")
-daf61732a49a ("net: phy: add qca8081 ethernet phy driver")
-9540cdda9113 ("net: phy: at803x: use GENMASK() for speed status")
-7beecaf7d507 ("net: phy: at803x: improve the WOL feature")
-2d4284e88a59 ("net: phy: at803x: use phy_modify()")
-c0f0b563f8c0 ("net: phy: at803x: replace AT803X_DEVICE_ADDR with MDIO_MMD_PCS")
-ba3c01ee02ed ("net: phy: at803x: fix resume for QCA8327 phy")
+a94c16a2fda0 ("net: dsa: ocelot: call dsa_tag_8021q_unregister() under rtnl_lock() on driver remove")
+7a29d220f4c0 ("net: dsa: felix: reimplement tagging protocol change with function pointers")
+bacf93b05619 ("net: dsa: remove port argument from ->change_tag_protocol()")
+72c3b0c7359a ("net: dsa: felix: manage host flooding using a specific driver callback")
+28de0f9fec5a ("net: dsa: felix: perform MDB migration based on ocelot->multicast list")
+a51c1c3f3218 ("net: dsa: felix: stop migrating FDBs back and forth on tag proto change")
+2c110abc4616 ("net: dsa: felix: use PGID_CPU for FDB entry migration on NPI port")
+7c762e70c50b ("net: dsa: flood multicast to CPU when slave has IFF_PROMISC")
+00fa91bc9cc2 ("net: dsa: felix: fix tagging protocol changes with multiple CPU ports")
+8e6598a7b0fa ("net: dsa: Pass VLAN MSTI migration notifications to driver")
+332afc4c8c0d ("net: dsa: Validate hardware support for MST")
+978777d0fb06 ("net: dsa: felix: configure default-prio and dscp priorities")
+f2e2662ccf48 ("net: dsa: felix: actually disable flooding towards NPI port")
+c69f40ac6006 ("net: dsa: felix: drop "bool change" from felix_set_tag_protocol")
+59dc7b4f7f45 ("net: dsa: realtek: rtl8365mb: add support for rtl8_4t")
+0cc369800e5f ("net: dsa: felix: stop clearing CPU flooding in felix_setup_tag_8021q")
+90897569beb1 ("net: dsa: felix: start off with flooding disabled on the CPU port")
+b903a6bd2e19 ("net: dsa: felix: migrate flood settings from NPI to tag_8021q CPU port")
+f9cef64fa23f ("net: dsa: felix: migrate host FDB and MDB entries when changing tag proto")
+7569459a52c9 ("net: dsa: manage flooding on the CPU ports")
 
 thanks,
 
@@ -93,113 +92,90 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From e58f30246c35c126c7571065b33bee4b3b1d2ef8 Mon Sep 17 00:00:00 2001
-From: Li Yang <leoyang.li@nxp.com>
-Date: Wed, 2 Aug 2023 14:13:46 -0500
-Subject: [PATCH] net: phy: at803x: fix the wol setting functions
+From a94c16a2fda010866b8858a386a8bfbeba4f72c5 Mon Sep 17 00:00:00 2001
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
+Date: Thu, 3 Aug 2023 16:42:53 +0300
+Subject: [PATCH] net: dsa: ocelot: call dsa_tag_8021q_unregister() under
+ rtnl_lock() on driver remove
 
-In commit 7beecaf7d507 ("net: phy: at803x: improve the WOL feature"), it
-seems not correct to use a wol_en bit in a 1588 Control Register which is
-only available on AR8031/AR8033(share the same phy_id) to determine if WoL
-is enabled.  Change it back to use AT803X_INTR_ENABLE_WOL for determining
-the WoL status which is applicable on all chips supporting wol. Also update
-the at803x_set_wol() function to only update the 1588 register on chips
-having it.  After this change, disabling wol at probe from commit
-d7cd5e06c9dd ("net: phy: at803x: disable WOL at probe") is no longer
-needed.  Change it to just disable the WoL bit in 1588 register for
-AR8031/AR8033 to be aligned with AT803X_INTR_ENABLE_WOL in probe.
+When the tagging protocol in current use is "ocelot-8021q" and we unbind
+the driver, we see this splat:
 
-Fixes: 7beecaf7d507 ("net: phy: at803x: improve the WOL feature")
-Signed-off-by: Li Yang <leoyang.li@nxp.com>
-Reviewed-by: Viorel Suman <viorel.suman@nxp.com>
-Reviewed-by: Wei Fang <wei.fang@nxp.com>
-Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+$ echo '0000:00:00.2' > /sys/bus/pci/drivers/fsl_enetc/unbind
+mscc_felix 0000:00:00.5 swp0: left promiscuous mode
+sja1105 spi2.0: Link is Down
+DSA: tree 1 torn down
+mscc_felix 0000:00:00.5 swp2: left promiscuous mode
+sja1105 spi2.2: Link is Down
+DSA: tree 3 torn down
+fsl_enetc 0000:00:00.2 eno2: left promiscuous mode
+mscc_felix 0000:00:00.5: Link is Down
+------------[ cut here ]------------
+RTNL: assertion failed at net/dsa/tag_8021q.c (409)
+WARNING: CPU: 1 PID: 329 at net/dsa/tag_8021q.c:409 dsa_tag_8021q_unregister+0x12c/0x1a0
+Modules linked in:
+CPU: 1 PID: 329 Comm: bash Not tainted 6.5.0-rc3+ #771
+pc : dsa_tag_8021q_unregister+0x12c/0x1a0
+lr : dsa_tag_8021q_unregister+0x12c/0x1a0
+Call trace:
+ dsa_tag_8021q_unregister+0x12c/0x1a0
+ felix_tag_8021q_teardown+0x130/0x150
+ felix_teardown+0x3c/0xd8
+ dsa_tree_teardown_switches+0xbc/0xe0
+ dsa_unregister_switch+0x168/0x260
+ felix_pci_remove+0x30/0x60
+ pci_device_remove+0x4c/0x100
+ device_release_driver_internal+0x188/0x288
+ device_links_unbind_consumers+0xfc/0x138
+ device_release_driver_internal+0xe0/0x288
+ device_driver_detach+0x24/0x38
+ unbind_store+0xd8/0x108
+ drv_attr_store+0x30/0x50
+---[ end trace 0000000000000000 ]---
+------------[ cut here ]------------
+RTNL: assertion failed at net/8021q/vlan_core.c (376)
+WARNING: CPU: 1 PID: 329 at net/8021q/vlan_core.c:376 vlan_vid_del+0x1b8/0x1f0
+CPU: 1 PID: 329 Comm: bash Tainted: G        W          6.5.0-rc3+ #771
+pc : vlan_vid_del+0x1b8/0x1f0
+lr : vlan_vid_del+0x1b8/0x1f0
+ dsa_tag_8021q_unregister+0x8c/0x1a0
+ felix_tag_8021q_teardown+0x130/0x150
+ felix_teardown+0x3c/0xd8
+ dsa_tree_teardown_switches+0xbc/0xe0
+ dsa_unregister_switch+0x168/0x260
+ felix_pci_remove+0x30/0x60
+ pci_device_remove+0x4c/0x100
+ device_release_driver_internal+0x188/0x288
+ device_links_unbind_consumers+0xfc/0x138
+ device_release_driver_internal+0xe0/0x288
+ device_driver_detach+0x24/0x38
+ unbind_store+0xd8/0x108
+ drv_attr_store+0x30/0x50
+DSA: tree 0 torn down
 
-diff --git a/drivers/net/phy/at803x.c b/drivers/net/phy/at803x.c
-index c1f307d90518..9c2c2e2ee94b 100644
---- a/drivers/net/phy/at803x.c
-+++ b/drivers/net/phy/at803x.c
-@@ -459,21 +459,27 @@ static int at803x_set_wol(struct phy_device *phydev,
- 			phy_write_mmd(phydev, MDIO_MMD_PCS, offsets[i],
- 				      mac[(i * 2) + 1] | (mac[(i * 2)] << 8));
+This was somewhat not so easy to spot, because "ocelot-8021q" is not the
+default tagging protocol, and thus, not everyone who tests the unbinding
+path may have switched to it beforehand. The default
+felix_tag_npi_teardown() does not require rtnl_lock() to be held.
+
+Fixes: 7c83a7c539ab ("net: dsa: add a second tagger for Ocelot switches based on tag_8021q")
+Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Link: https://lore.kernel.org/r/20230803134253.2711124-1-vladimir.oltean@nxp.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+
+diff --git a/drivers/net/dsa/ocelot/felix.c b/drivers/net/dsa/ocelot/felix.c
+index 8da46d284e35..bef879c6d500 100644
+--- a/drivers/net/dsa/ocelot/felix.c
++++ b/drivers/net/dsa/ocelot/felix.c
+@@ -1625,8 +1625,10 @@ static void felix_teardown(struct dsa_switch *ds)
+ 	struct felix *felix = ocelot_to_felix(ocelot);
+ 	struct dsa_port *dp;
  
--		/* Enable WOL function */
--		ret = phy_modify_mmd(phydev, MDIO_MMD_PCS, AT803X_PHY_MMD3_WOL_CTRL,
--				0, AT803X_WOL_EN);
--		if (ret)
--			return ret;
-+		/* Enable WOL function for 1588 */
-+		if (phydev->drv->phy_id == ATH8031_PHY_ID) {
-+			ret = phy_modify_mmd(phydev, MDIO_MMD_PCS,
-+					     AT803X_PHY_MMD3_WOL_CTRL,
-+					     0, AT803X_WOL_EN);
-+			if (ret)
-+				return ret;
-+		}
- 		/* Enable WOL interrupt */
- 		ret = phy_modify(phydev, AT803X_INTR_ENABLE, 0, AT803X_INTR_ENABLE_WOL);
- 		if (ret)
- 			return ret;
- 	} else {
--		/* Disable WoL function */
--		ret = phy_modify_mmd(phydev, MDIO_MMD_PCS, AT803X_PHY_MMD3_WOL_CTRL,
--				AT803X_WOL_EN, 0);
--		if (ret)
--			return ret;
-+		/* Disable WoL function for 1588 */
-+		if (phydev->drv->phy_id == ATH8031_PHY_ID) {
-+			ret = phy_modify_mmd(phydev, MDIO_MMD_PCS,
-+					     AT803X_PHY_MMD3_WOL_CTRL,
-+					     AT803X_WOL_EN, 0);
-+			if (ret)
-+				return ret;
-+		}
- 		/* Disable WOL interrupt */
- 		ret = phy_modify(phydev, AT803X_INTR_ENABLE, AT803X_INTR_ENABLE_WOL, 0);
- 		if (ret)
-@@ -508,11 +514,11 @@ static void at803x_get_wol(struct phy_device *phydev,
- 	wol->supported = WAKE_MAGIC;
- 	wol->wolopts = 0;
++	rtnl_lock();
+ 	if (felix->tag_proto_ops)
+ 		felix->tag_proto_ops->teardown(ds);
++	rtnl_unlock();
  
--	value = phy_read_mmd(phydev, MDIO_MMD_PCS, AT803X_PHY_MMD3_WOL_CTRL);
-+	value = phy_read(phydev, AT803X_INTR_ENABLE);
- 	if (value < 0)
- 		return;
- 
--	if (value & AT803X_WOL_EN)
-+	if (value & AT803X_INTR_ENABLE_WOL)
- 		wol->wolopts |= WAKE_MAGIC;
- }
- 
-@@ -858,9 +864,6 @@ static int at803x_probe(struct phy_device *phydev)
- 	if (phydev->drv->phy_id == ATH8031_PHY_ID) {
- 		int ccr = phy_read(phydev, AT803X_REG_CHIP_CONFIG);
- 		int mode_cfg;
--		struct ethtool_wolinfo wol = {
--			.wolopts = 0,
--		};
- 
- 		if (ccr < 0)
- 			return ccr;
-@@ -877,12 +880,14 @@ static int at803x_probe(struct phy_device *phydev)
- 			break;
- 		}
- 
--		/* Disable WOL by default */
--		ret = at803x_set_wol(phydev, &wol);
--		if (ret < 0) {
--			phydev_err(phydev, "failed to disable WOL on probe: %d\n", ret);
-+		/* Disable WoL in 1588 register which is enabled
-+		 * by default
-+		 */
-+		ret = phy_modify_mmd(phydev, MDIO_MMD_PCS,
-+				     AT803X_PHY_MMD3_WOL_CTRL,
-+				     AT803X_WOL_EN, 0);
-+		if (ret)
- 			return ret;
--		}
- 	}
- 
- 	return 0;
+ 	dsa_switch_for_each_available_port(dp, ds)
+ 		ocelot_deinit_port(ocelot, dp->index);
 
