@@ -2,44 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6365C779D74
-	for <lists+stable@lfdr.de>; Sat, 12 Aug 2023 08:02:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1A924779D75
+	for <lists+stable@lfdr.de>; Sat, 12 Aug 2023 08:02:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235018AbjHLGCP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 12 Aug 2023 02:02:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55252 "EHLO
+        id S233392AbjHLGCn (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 12 Aug 2023 02:02:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54592 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229709AbjHLGCP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 12 Aug 2023 02:02:15 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E901127
-        for <stable@vger.kernel.org>; Fri, 11 Aug 2023 23:02:14 -0700 (PDT)
+        with ESMTP id S229709AbjHLGCn (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 12 Aug 2023 02:02:43 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA416127
+        for <stable@vger.kernel.org>; Fri, 11 Aug 2023 23:02:42 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 01A796424F
-        for <stable@vger.kernel.org>; Sat, 12 Aug 2023 06:02:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB64AC433C9;
-        Sat, 12 Aug 2023 06:02:12 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4806E64366
+        for <stable@vger.kernel.org>; Sat, 12 Aug 2023 06:02:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51C1AC433C9;
+        Sat, 12 Aug 2023 06:02:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691820133;
-        bh=bOdPVYbutPJ/9TuDz9FEsJSdOHiCjSx4ja6QnXGm0MI=;
+        s=korg; t=1691820161;
+        bh=lv2uKChWNGwh11BkK35edDREkdvZK/bssTV4O8VXXzs=;
         h=Subject:To:Cc:From:Date:From;
-        b=WhUM1VDmPqoxQMWMbnuC8Ktr4V/szXHooyfMYNPv66c+OsOssVNNxZV4F/TXUWUXD
-         qVWruAGZ3bvdEs5ASBmjffbmw8ibjCMwyVMETwn0pxTjWbsI3kYsKPel0fSphWTACH
-         3H2YX8vcH3dY/LSbdVTxai8ZPHwvsujcRSL+k1uc=
-Subject: FAILED: patch "[PATCH] crypto, cifs: fix error handling in extract_iter_to_sg()" failed to apply to 6.4-stable tree
-To:     dhowells@redhat.com, akpm@linux-foundation.org, axboe@kernel.dk,
-        davem@davemloft.net, david@redhat.com, edumazet@google.com,
-        herbert@gondor.apana.org.au, jlayton@kernel.org, kuba@kernel.org,
-        nspmangalore@gmail.com, pabeni@redhat.com, rohiths.msft@gmail.com,
-        stable@vger.kernel.org, stfrench@microsoft.com,
-        svens@linux.ibm.com, willy@infradead.org
+        b=UUAdNspMWTFnSLWNoRSHHz9u4nrhRtr5bwEfMoYHzUYR9AksbSQeSjQBAms7hqO3a
+         QUt6vkG6nr3Ntq93XDAG9sVrB7khxU2gj04vsjY6Ks2ZRhjmmQHUp0q/cQGocn0rjK
+         CxxPuA0BZfxgzm0wfzf1iFjOgh+Itfkpqe9AEprk=
+Subject: FAILED: patch "[PATCH] cpuidle: psci: Move enabling OSI mode after power domains" failed to apply to 6.1-stable tree
+To:     quic_mkshah@quicinc.com, ulf.hansson@linaro.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 12 Aug 2023 08:02:09 +0200
-Message-ID: <2023081209-reopen-fantasy-7692@gregkh>
+Date:   Sat, 12 Aug 2023 08:02:38 +0200
+Message-ID: <2023081238-transform-anybody-0d1c@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -54,23 +49,24 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.4-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
-git cherry-pick -x f443fd5af5dbd531f880d3645d5dd36976cf087f
+git cherry-pick -x 12acb348fa4528a4203edf1cce7a3be2c9af2279
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023081209-reopen-fantasy-7692@gregkh' --subject-prefix 'PATCH 6.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023081238-transform-anybody-0d1c@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
-
+12acb348fa45 ("cpuidle: psci: Move enabling OSI mode after power domains creation")
+668057b07db0 ("cpuidle: psci: Extend information in log about OSI/PC mode")
 
 thanks,
 
@@ -78,94 +74,117 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From f443fd5af5dbd531f880d3645d5dd36976cf087f Mon Sep 17 00:00:00 2001
-From: David Howells <dhowells@redhat.com>
-Date: Wed, 26 Jul 2023 11:57:56 +0100
-Subject: [PATCH] crypto, cifs: fix error handling in extract_iter_to_sg()
+From 12acb348fa4528a4203edf1cce7a3be2c9af2279 Mon Sep 17 00:00:00 2001
+From: Maulik Shah <quic_mkshah@quicinc.com>
+Date: Mon, 3 Jul 2023 14:25:54 +0530
+Subject: [PATCH] cpuidle: psci: Move enabling OSI mode after power domains
+ creation
 
-Fix error handling in extract_iter_to_sg().  Pages need to be unpinned, not
-put in extract_user_to_sg() when handling IOVEC/UBUF sources.
+A switch from OSI to PC mode is only possible if all CPUs other than the
+calling one are OFF, either through a call to CPU_OFF or not yet booted.
 
-The bug may result in a warning like the following:
+Currently OSI mode is enabled before power domains are created. In cases
+where CPUidle states are not using hierarchical CPU topology the bail out
+path tries to switch back to PC mode which gets denied by firmware since
+other CPUs are online at this point and creates inconsistent state as
+firmware is in OSI mode and Linux in PC mode.
 
-  WARNING: CPU: 1 PID: 20384 at mm/gup.c:229 __lse_atomic_add arch/arm64/include/asm/atomic_lse.h:27 [inline]
-  WARNING: CPU: 1 PID: 20384 at mm/gup.c:229 arch_atomic_add arch/arm64/include/asm/atomic.h:28 [inline]
-  WARNING: CPU: 1 PID: 20384 at mm/gup.c:229 raw_atomic_add include/linux/atomic/atomic-arch-fallback.h:537 [inline]
-  WARNING: CPU: 1 PID: 20384 at mm/gup.c:229 atomic_add include/linux/atomic/atomic-instrumented.h:105 [inline]
-  WARNING: CPU: 1 PID: 20384 at mm/gup.c:229 try_grab_page+0x108/0x160 mm/gup.c:252
-  ...
-  pc : try_grab_page+0x108/0x160 mm/gup.c:229
-  lr : follow_page_pte+0x174/0x3e4 mm/gup.c:651
-  ...
-  Call trace:
-   __lse_atomic_add arch/arm64/include/asm/atomic_lse.h:27 [inline]
-   arch_atomic_add arch/arm64/include/asm/atomic.h:28 [inline]
-   raw_atomic_add include/linux/atomic/atomic-arch-fallback.h:537 [inline]
-   atomic_add include/linux/atomic/atomic-instrumented.h:105 [inline]
-   try_grab_page+0x108/0x160 mm/gup.c:252
-   follow_pmd_mask mm/gup.c:734 [inline]
-   follow_pud_mask mm/gup.c:765 [inline]
-   follow_p4d_mask mm/gup.c:782 [inline]
-   follow_page_mask+0x12c/0x2e4 mm/gup.c:839
-   __get_user_pages+0x174/0x30c mm/gup.c:1217
-   __get_user_pages_locked mm/gup.c:1448 [inline]
-   __gup_longterm_locked+0x94/0x8f4 mm/gup.c:2142
-   internal_get_user_pages_fast+0x970/0xb60 mm/gup.c:3140
-   pin_user_pages_fast+0x4c/0x60 mm/gup.c:3246
-   iov_iter_extract_user_pages lib/iov_iter.c:1768 [inline]
-   iov_iter_extract_pages+0xc8/0x54c lib/iov_iter.c:1831
-   extract_user_to_sg lib/scatterlist.c:1123 [inline]
-   extract_iter_to_sg lib/scatterlist.c:1349 [inline]
-   extract_iter_to_sg+0x26c/0x6fc lib/scatterlist.c:1339
-   hash_sendmsg+0xc0/0x43c crypto/algif_hash.c:117
-   sock_sendmsg_nosec net/socket.c:725 [inline]
-   sock_sendmsg+0x54/0x60 net/socket.c:748
-   ____sys_sendmsg+0x270/0x2ac net/socket.c:2494
-   ___sys_sendmsg+0x80/0xdc net/socket.c:2548
-   __sys_sendmsg+0x68/0xc4 net/socket.c:2577
-   __do_sys_sendmsg net/socket.c:2586 [inline]
-   __se_sys_sendmsg net/socket.c:2584 [inline]
-   __arm64_sys_sendmsg+0x24/0x30 net/socket.c:2584
-   __invoke_syscall arch/arm64/kernel/syscall.c:38 [inline]
-   invoke_syscall+0x48/0x114 arch/arm64/kernel/syscall.c:52
-   el0_svc_common.constprop.0+0x44/0xe4 arch/arm64/kernel/syscall.c:142
-   do_el0_svc+0x38/0xa4 arch/arm64/kernel/syscall.c:191
-   el0_svc+0x2c/0xb0 arch/arm64/kernel/entry-common.c:647
-   el0t_64_sync_handler+0xc0/0xc4 arch/arm64/kernel/entry-common.c:665
-   el0t_64_sync+0x19c/0x1a0 arch/arm64/kernel/entry.S:591
+This change moves enabling OSI mode after power domains are created,
+this would makes sure that hierarchical CPU topology is used before
+switching firmware to OSI mode.
 
-Link: https://lkml.kernel.org/r/20571.1690369076@warthog.procyon.org.uk
-Fixes: 018584697533 ("netfs: Add a function to extract an iterator into a scatterlist")
-Reported-by: syzbot+9b82859567f2e50c123e@syzkaller.appspotmail.com
-Link: https://lore.kernel.org/linux-mm/000000000000273d0105ff97bf56@google.com/
-Signed-off-by: David Howells <dhowells@redhat.com>
-Reviewed-by: David Hildenbrand <david@redhat.com>
-Acked-by: Steve French <stfrench@microsoft.com>
-Cc: Sven Schnelle <svens@linux.ibm.com>
-Cc: Herbert Xu <herbert@gondor.apana.org.au>
-Cc: Jeff Layton <jlayton@kernel.org>
-Cc: Shyam Prasad N <nspmangalore@gmail.com>
-Cc: Rohith Surabattula <rohiths.msft@gmail.com>
-Cc: Jens Axboe <axboe@kernel.dk>
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: Eric Dumazet <edumazet@google.com>
-Cc: Jakub Kicinski <kuba@kernel.org>
-Cc: Paolo Abeni <pabeni@redhat.com>
-Cc: Matthew Wilcox <willy@infradead.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: stable@vger.kernel.org
+Fixes: 70c179b49870 ("cpuidle: psci: Allow PM domain to be initialized even if no OSI mode")
+Signed-off-by: Maulik Shah <quic_mkshah@quicinc.com>
+Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 
-diff --git a/lib/scatterlist.c b/lib/scatterlist.c
-index e86231a44c3d..c65566b4dc66 100644
---- a/lib/scatterlist.c
-+++ b/lib/scatterlist.c
-@@ -1148,7 +1148,7 @@ static ssize_t extract_user_to_sg(struct iov_iter *iter,
+diff --git a/drivers/cpuidle/cpuidle-psci-domain.c b/drivers/cpuidle/cpuidle-psci-domain.c
+index c2d6d9c3c930..b88af1262f1a 100644
+--- a/drivers/cpuidle/cpuidle-psci-domain.c
++++ b/drivers/cpuidle/cpuidle-psci-domain.c
+@@ -120,20 +120,6 @@ static void psci_pd_remove(void)
+ 	}
+ }
  
- failed:
- 	while (sgtable->nents > sgtable->orig_nents)
--		put_page(sg_page(&sgtable->sgl[--sgtable->nents]));
-+		unpin_user_page(sg_page(&sgtable->sgl[--sgtable->nents]));
- 	return res;
+-static bool psci_pd_try_set_osi_mode(void)
+-{
+-	int ret;
+-
+-	if (!psci_has_osi_support())
+-		return false;
+-
+-	ret = psci_set_osi_mode(true);
+-	if (ret)
+-		return false;
+-
+-	return true;
+-}
+-
+ static void psci_cpuidle_domain_sync_state(struct device *dev)
+ {
+ 	/*
+@@ -152,15 +138,12 @@ static int psci_cpuidle_domain_probe(struct platform_device *pdev)
+ {
+ 	struct device_node *np = pdev->dev.of_node;
+ 	struct device_node *node;
+-	bool use_osi;
++	bool use_osi = psci_has_osi_support();
+ 	int ret = 0, pd_count = 0;
+ 
+ 	if (!np)
+ 		return -ENODEV;
+ 
+-	/* If OSI mode is supported, let's try to enable it. */
+-	use_osi = psci_pd_try_set_osi_mode();
+-
+ 	/*
+ 	 * Parse child nodes for the "#power-domain-cells" property and
+ 	 * initialize a genpd/genpd-of-provider pair when it's found.
+@@ -170,33 +153,37 @@ static int psci_cpuidle_domain_probe(struct platform_device *pdev)
+ 			continue;
+ 
+ 		ret = psci_pd_init(node, use_osi);
+-		if (ret)
+-			goto put_node;
++		if (ret) {
++			of_node_put(node);
++			goto exit;
++		}
+ 
+ 		pd_count++;
+ 	}
+ 
+ 	/* Bail out if not using the hierarchical CPU topology. */
+ 	if (!pd_count)
+-		goto no_pd;
++		return 0;
+ 
+ 	/* Link genpd masters/subdomains to model the CPU topology. */
+ 	ret = dt_idle_pd_init_topology(np);
+ 	if (ret)
+ 		goto remove_pd;
+ 
++	/* let's try to enable OSI. */
++	ret = psci_set_osi_mode(use_osi);
++	if (ret)
++		goto remove_pd;
++
+ 	pr_info("Initialized CPU PM domain topology using %s mode\n",
+ 		use_osi ? "OSI" : "PC");
+ 	return 0;
+ 
+-put_node:
+-	of_node_put(node);
+ remove_pd:
++	dt_idle_pd_remove_topology(np);
+ 	psci_pd_remove();
++exit:
+ 	pr_err("failed to create CPU PM domains ret=%d\n", ret);
+-no_pd:
+-	if (use_osi)
+-		psci_set_osi_mode(false);
+ 	return ret;
  }
  
 
