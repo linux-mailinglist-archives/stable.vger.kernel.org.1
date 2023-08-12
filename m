@@ -2,152 +2,80 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 49BDB77A090
-	for <lists+stable@lfdr.de>; Sat, 12 Aug 2023 16:49:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 53E0B77A109
+	for <lists+stable@lfdr.de>; Sat, 12 Aug 2023 18:28:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229745AbjHLOtD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 12 Aug 2023 10:49:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57276 "EHLO
+        id S229703AbjHLQ2y (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 12 Aug 2023 12:28:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51764 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230004AbjHLOtD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 12 Aug 2023 10:49:03 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0829DE5C
-        for <stable@vger.kernel.org>; Sat, 12 Aug 2023 07:48:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1691851705;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=0IMICko4vpPXMALZSiPlQBtZlh1R3KvvhQyqt0ZWgw8=;
-        b=DeUEluCDHO40mFDdouQpH3FrjzSOEfqMXDb7LWIFc0pykxiNFXkPfFS29gsaHNveH6baOc
-        Af7MXHerHENTfFjsAydnsVlIXl9q33BJgo5DUogz9DVdMwVkGvYFaEfnl7QGczw6Aj/Q+e
-        2LkWD8Cq5TS3R4uqeqR7UbvbSe9T4b4=
-Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-139-XheCZIocN56g1KMa4tjP1Q-1; Sat, 12 Aug 2023 10:48:21 -0400
-X-MC-Unique: XheCZIocN56g1KMa4tjP1Q-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com [10.11.54.4])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        with ESMTP id S229903AbjHLQ2x (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 12 Aug 2023 12:28:53 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 31B2C1BEE
+        for <stable@vger.kernel.org>; Sat, 12 Aug 2023 09:28:57 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 1AAA01C05155;
-        Sat, 12 Aug 2023 14:48:21 +0000 (UTC)
-Received: from shalem.redhat.com (unknown [10.39.192.5])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 430A72026D4B;
-        Sat, 12 Aug 2023 14:48:19 +0000 (UTC)
-From:   Hans de Goede <hdegoede@redhat.com>
-To:     =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-        Andy Shevchenko <andy@kernel.org>
-Cc:     Hans de Goede <hdegoede@redhat.com>,
-        platform-driver-x86@vger.kernel.org, Gergo Koteles <soyer@irl.hu>,
-        Andrew Kallmeyer <kallmeyeras@gmail.com>,
-        =?UTF-8?q?Andr=C3=A9=20Apitzsch?= <git@apitzsch.eu>,
-        stable@vger.kernel.org
-Subject: [PATCH] platform/x86: lenovo-ymc: Only bind on machines with a convertible DMI chassis-type
-Date:   Sat, 12 Aug 2023 16:48:18 +0200
-Message-ID: <20230812144818.383230-1-hdegoede@redhat.com>
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BBC4961FED
+        for <stable@vger.kernel.org>; Sat, 12 Aug 2023 16:28:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCAFDC433C8;
+        Sat, 12 Aug 2023 16:28:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1691857736;
+        bh=PvUCO4UNhIYwKiYWKtm9FueSWdFPZXv89XLTivdk3tw=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=r4JE5szf7NO8F2kw7zI5rvXueIZ+/HVqP6CcyXG0VlEQGvj/7S0y5W7+AqBWJxU5o
+         vcrYyR/A1FW4X63AI8f9LYVe9LR2mhJSF92VxwNFRI+jZBj6maATPCqvuwsLmVUOo7
+         oWHRFcpyzWSn8uuVZNfTg64Su4XxUY35RmggunAo=
+Date:   Sat, 12 Aug 2023 18:28:53 +0200
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Jens Axboe <axboe@kernel.dk>
+Cc:     cyphar@cyphar.com, stable@vger.kernel.org
+Subject: Re: FAILED: patch "[PATCH] io_uring: correct check for O_TMPFILE"
+ failed to apply to 5.15-stable tree
+Message-ID: <2023081246-pledge-record-7c35@gregkh>
+References: <2023081258-sturdy-retying-2572@gregkh>
+ <ec4f5e8f-d1db-4278-a144-ddedca0ae5ca@kernel.dk>
+ <b2efb91d-6b4b-40fa-bbc9-9511d0a70f27@kernel.dk>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.4
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <b2efb91d-6b4b-40fa-bbc9-9511d0a70f27@kernel.dk>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-The lenovo-ymc driver is causing the keyboard + touchpad to stop working
-on some regular laptop models such as the Lenovo ThinkBook 13s G2 ITL 20V9.
+On Sat, Aug 12, 2023 at 07:33:03AM -0600, Jens Axboe wrote:
+> On 8/12/23 7:20 AM, Jens Axboe wrote:
+> > On 8/12/23 12:02 AM, gregkh@linuxfoundation.org wrote:
+> >>
+> >> The patch below does not apply to the 5.15-stable tree.
+> >> If someone wants it applied there, or to any other stable or longterm
+> >> tree, then please email the backport, including the original git commit
+> >> id to <stable@vger.kernel.org>.
+> >>
+> >> To reproduce the conflict and resubmit, you may use the following commands:
+> >>
+> >> git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+> >> git checkout FETCH_HEAD
+> >> git cherry-pick -x 72dbde0f2afbe4af8e8595a89c650ae6b9d9c36f
+> >> # <resolve conflicts, build, test, etc.>
+> >> git commit -s
+> >> git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023081258-sturdy-retying-2572@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+> > 
+> > Here's one for 5.15-stable.
+> 
+> Oh, and the 5.15-stable one also applies to 5.10-stable. 5.10-stable
+> needs it as well, would be great if you could queue it up there as well.
 
-The problem is that there are YMC WMI GUID methods in the ACPI tables
-of these laptops, despite them not being Yogas and lenovo-ymc loading
-causes libinput to see a SW_TABLET_MODE switch with state 1.
+All now queued up, thanks!
 
-This in turn causes libinput to ignore events from the builtin keyboard
-and touchpad, since it filters those out for a Yoga in tablet mode.
-
-Similar issues with false-positive SW_TABLET_MODE=1 reporting have
-been seen with the intel-hid driver.
-
-Copy the intel-hid driver approach to fix this and only bind to the WMI
-device on machines where the DMI chassis-type indicates the machine
-is a convertible.
-
-Add a 'force' module parameter to allow overriding the chassis-type check
-so that users can easily test if the YMC interface works on models which
-report an unexpected chassis-type.
-
-Fixes: e82882cdd241 ("platform/x86: Add driver for Yoga Tablet Mode switch")
-Link: https://bugzilla.redhat.com/show_bug.cgi?id=2229373
-Cc: Gergo Koteles <soyer@irl.hu>
-Cc: Andrew Kallmeyer <kallmeyeras@gmail.com>
-Cc: André Apitzsch <git@apitzsch.eu>
-Cc: stable@vger.kernel.org
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
----
-Note: The chassis-type can be checked by doing:
-cat /sys/class/dmi/id/chassis_type
-if this reports 31 or 32 then this patch should not have any impact
-on your machine.
----
- drivers/platform/x86/lenovo-ymc.c | 25 +++++++++++++++++++++++++
- 1 file changed, 25 insertions(+)
-
-diff --git a/drivers/platform/x86/lenovo-ymc.c b/drivers/platform/x86/lenovo-ymc.c
-index 41676188b373..f360370d5002 100644
---- a/drivers/platform/x86/lenovo-ymc.c
-+++ b/drivers/platform/x86/lenovo-ymc.c
-@@ -24,6 +24,10 @@ static bool ec_trigger __read_mostly;
- module_param(ec_trigger, bool, 0444);
- MODULE_PARM_DESC(ec_trigger, "Enable EC triggering work-around to force emitting tablet mode events");
- 
-+static bool force;
-+module_param(force, bool, 0444);
-+MODULE_PARM_DESC(force, "Force loading on boards without a convertible DMI chassis-type");
-+
- static const struct dmi_system_id ec_trigger_quirk_dmi_table[] = {
- 	{
- 		/* Lenovo Yoga 7 14ARB7 */
-@@ -35,6 +39,20 @@ static const struct dmi_system_id ec_trigger_quirk_dmi_table[] = {
- 	{ }
- };
- 
-+static const struct dmi_system_id allowed_chasis_types_dmi_table[] = {
-+	{
-+		.matches = {
-+			DMI_EXACT_MATCH(DMI_CHASSIS_TYPE, "31" /* Convertible */),
-+		},
-+	},
-+	{
-+		.matches = {
-+			DMI_EXACT_MATCH(DMI_CHASSIS_TYPE, "32" /* Detachable */),
-+		},
-+	},
-+	{ }
-+};
-+
- struct lenovo_ymc_private {
- 	struct input_dev *input_dev;
- 	struct acpi_device *ec_acpi_dev;
-@@ -111,6 +129,13 @@ static int lenovo_ymc_probe(struct wmi_device *wdev, const void *ctx)
- 	struct input_dev *input_dev;
- 	int err;
- 
-+	if (!dmi_check_system(allowed_chasis_types_dmi_table)) {
-+		if (force)
-+			dev_info(&wdev->dev, "Force loading Lenovo YMC support\n");
-+		else
-+			return -ENODEV;
-+	}
-+
- 	ec_trigger |= dmi_check_system(ec_trigger_quirk_dmi_table);
- 
- 	priv = devm_kzalloc(&wdev->dev, sizeof(*priv), GFP_KERNEL);
--- 
-2.41.0
-
+greg k-h
