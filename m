@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8F58D77A1CA
-	for <lists+stable@lfdr.de>; Sat, 12 Aug 2023 20:33:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C7C4877A1CB
+	for <lists+stable@lfdr.de>; Sat, 12 Aug 2023 20:33:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229626AbjHLSdb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 12 Aug 2023 14:33:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51652 "EHLO
+        id S229501AbjHLSde (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 12 Aug 2023 14:33:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51666 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229493AbjHLSdb (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 12 Aug 2023 14:33:31 -0400
+        with ESMTP id S229493AbjHLSde (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 12 Aug 2023 14:33:34 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 930151716
-        for <stable@vger.kernel.org>; Sat, 12 Aug 2023 11:33:33 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB22010C0
+        for <stable@vger.kernel.org>; Sat, 12 Aug 2023 11:33:36 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2DB6061DF1
-        for <stable@vger.kernel.org>; Sat, 12 Aug 2023 18:33:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19207C433C8;
-        Sat, 12 Aug 2023 18:33:31 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 64D3461DF5
+        for <stable@vger.kernel.org>; Sat, 12 Aug 2023 18:33:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 713CCC433C8;
+        Sat, 12 Aug 2023 18:33:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691865212;
-        bh=7MM+R73GDjAosxYVvBdCvo1XJZLI7HoP9z5yAWkq7bo=;
+        s=korg; t=1691865215;
+        bh=95oG6lx1GHM650S9kB3h1d3uiNYUqj7iWaqmS+NE5jQ=;
         h=Subject:To:Cc:From:Date:From;
-        b=iq4FB+q7ZfVAuGb0y92f5FtOssjbhhKfVzKFhIXuC636xgtMmo3dpS1K0h1RLUc3W
-         ufrnyB/IGgHlT9Ye+I3pwTorKkPyeSsfF3Rq+uWlFpN3Xc23cEyap4Nxr7mbe7e5oA
-         RoQk+DMCtArf47iiYqUKKi0Ra+I0ANt5BSHJYeyg=
-Subject: FAILED: patch "[PATCH] nexthop: Fix infinite nexthop dump when using maximum nexthop" failed to apply to 5.10-stable tree
+        b=L4gxtYdxghDjlr5Wwl3Fq+P8iBNU+rOizEzGKFa6+Y+hIVCa6QVfrz18HpJbm+Am3
+         3xS6XaTZeyuUlDoymgBtIigLi+Qzu/4pJqEyAi8CcyJq36MiPuVFrDkb7Q0LiEJmxW
+         tqY/RrUtOmZFRkEBfZU/6paQIRg7+6yCE7ltWlWg=
+Subject: FAILED: patch "[PATCH] nexthop: Fix infinite nexthop dump when using maximum nexthop" failed to apply to 5.4-stable tree
 To:     idosch@nvidia.com, dsahern@kernel.org, kuba@kernel.org,
         petrm@nvidia.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 12 Aug 2023 20:33:29 +0200
-Message-ID: <2023081229-sturdy-emoticon-87ea@gregkh>
+Date:   Sat, 12 Aug 2023 20:33:33 +0200
+Message-ID: <2023081232-bartender-unwitting-d1ae@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -50,19 +50,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
 git cherry-pick -x 913f60cacda73ccac8eead94983e5884c03e04cd
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023081229-sturdy-emoticon-87ea@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023081232-bartender-unwitting-d1ae@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
@@ -75,6 +75,9 @@ b9ebea127661 ("nexthop: Extract a common helper for parsing dump attributes")
 44551bff290d ("nexthop: Use a dedicated policy for nh_valid_dump_req()")
 60f5ad5e19c0 ("nexthop: Use a dedicated policy for nh_valid_get_del_req()")
 5ca474f23454 ("nexthop: Prepare new notification info")
+80690ec6b595 ("nexthop: Convert to blocking notification chain")
+8590ceedb701 ("nexthop: add support for notifiers")
+38428d68719c ("nexthop: support for fdb ecmp nexthops")
 
 thanks,
 
