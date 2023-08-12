@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7FDE677A1D0
-	for <lists+stable@lfdr.de>; Sat, 12 Aug 2023 20:35:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6F2E177A1D1
+	for <lists+stable@lfdr.de>; Sat, 12 Aug 2023 20:35:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229494AbjHLSfq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 12 Aug 2023 14:35:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43726 "EHLO
+        id S229568AbjHLSfu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 12 Aug 2023 14:35:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43742 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229447AbjHLSfp (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 12 Aug 2023 14:35:45 -0400
+        with ESMTP id S229447AbjHLSft (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 12 Aug 2023 14:35:49 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E83510C0
-        for <stable@vger.kernel.org>; Sat, 12 Aug 2023 11:35:49 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5893F10C0
+        for <stable@vger.kernel.org>; Sat, 12 Aug 2023 11:35:52 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A512C61E32
-        for <stable@vger.kernel.org>; Sat, 12 Aug 2023 18:35:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDC0DC433C9;
-        Sat, 12 Aug 2023 18:35:47 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E224B61E36
+        for <stable@vger.kernel.org>; Sat, 12 Aug 2023 18:35:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06A7DC433C9;
+        Sat, 12 Aug 2023 18:35:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691865348;
-        bh=ybNl90oT4wcwRYFiu3WOj5QTbpmpYBWgyyXcJDmSEMg=;
+        s=korg; t=1691865351;
+        bh=tN2ypcLr4esEsJJ8KxFNzlo64Eo02cQp2RatF6gD/KY=;
         h=Subject:To:Cc:From:Date:From;
-        b=AsejnShuqkagZyZzgyDFEx2M37QrJO7Ae/u0F7NyreSomVOy5rpBg3S/uCCJSd0UZ
-         KiBNXQm5q/9FofsbG+QG4ple//Po1KZWeZaY68jabIWnQglO39tJsOd4S3uBeHSbag
-         Jn/FWu124gbWMTYHqsBXFXOAFUqS0UaXzibiHcBY=
-Subject: FAILED: patch "[PATCH] net/mlx5: Skip clock update work when device is in error" failed to apply to 5.10-stable tree
+        b=gojU2RYswrtxlT6B7gzBOBKGyPx5U6G5j96l86oKasm23Yy+VkNlmzl0Mktq84cWx
+         yKK7PxiHJ71/2c1TB1gLpduozHsUWEWQzQyBwJnhXTsnW697x5hzQYzTk7QQQlFApp
+         98zRGbe4MI7Z3jzVeaZeFftXYvJ8BvlC7GY1wqRs=
+Subject: FAILED: patch "[PATCH] net/mlx5: Skip clock update work when device is in error" failed to apply to 5.4-stable tree
 To:     moshe@nvidia.com, ayal@nvidia.com, ganeshgr@linux.ibm.com,
         saeedm@nvidia.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 12 Aug 2023 20:35:45 +0200
-Message-ID: <2023081245-nuttiness-coastland-4614@gregkh>
+Date:   Sat, 12 Aug 2023 20:35:46 +0200
+Message-ID: <2023081246-charity-puzzling-6cb5@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -50,25 +50,28 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
 git cherry-pick -x d006207625657322ba8251b6e7e829f9659755dc
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023081245-nuttiness-coastland-4614@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023081246-charity-puzzling-6cb5@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
 d00620762565 ("net/mlx5: Skip clock update work when device is in error state")
 d6f3dc8f509c ("net/mlx5: Move all internal timer metadata into a dedicated struct")
 1436de0b9915 ("net/mlx5: Refactor init clock function")
+fb609b5112bd ("net/mlx5: Always use container_of to find mdev pointer from clock struct")
+ed56d749c366 ("net/mlx5: Query PPS pin operational status before registering it")
+88c8cf92db48 ("net/mlx5: Fix a bug of using ptp channel index as pin index")
 
 thanks,
 
