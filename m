@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ECABA77A19A
-	for <lists+stable@lfdr.de>; Sat, 12 Aug 2023 20:03:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5236F77A19B
+	for <lists+stable@lfdr.de>; Sat, 12 Aug 2023 20:04:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229452AbjHLSDu (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 12 Aug 2023 14:03:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59920 "EHLO
+        id S229451AbjHLSEK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 12 Aug 2023 14:04:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56744 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229446AbjHLSDu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 12 Aug 2023 14:03:50 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D9A3CC
-        for <stable@vger.kernel.org>; Sat, 12 Aug 2023 11:03:53 -0700 (PDT)
+        with ESMTP id S229446AbjHLSEK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 12 Aug 2023 14:04:10 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 14042CC
+        for <stable@vger.kernel.org>; Sat, 12 Aug 2023 11:04:13 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DFF8661D40
-        for <stable@vger.kernel.org>; Sat, 12 Aug 2023 18:03:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED146C433C8;
-        Sat, 12 Aug 2023 18:03:51 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8E19161D45
+        for <stable@vger.kernel.org>; Sat, 12 Aug 2023 18:04:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A980BC433C7;
+        Sat, 12 Aug 2023 18:04:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691863432;
-        bh=W9cjOBQ3KkfnqZVjTj0uhtDb/DC/f8+ilwSG01sZexg=;
+        s=korg; t=1691863452;
+        bh=gxerYLkQmcX7fzDFA4YlqZEa9wd1r+NolXqTobCCdF4=;
         h=Subject:To:Cc:From:Date:From;
-        b=zGaasV1M7YxmXjxCTYGygeyQQXfyu1CX9ddbsJfpPaWH7cTQpZceH2YRfwvOQ+w9M
-         EA0WcCc/7bRV5HUEAMudmczr0Xf8KBOG32EGB1RXT/QOe0U01We/wa8PWlygPQUx84
-         NVomrMwg3+WrEq/64QERjaKu9yz9x2nR4p34TMsk=
-Subject: FAILED: patch "[PATCH] RDMA/bnxt_re: Fix error handling in probe failure path" failed to apply to 5.4-stable tree
-To:     kalesh-anakkur.purayil@broadcom.com, jgg@nvidia.com,
-        selvin.xavier@broadcom.com
+        b=b8ct1rMORMLtgJNCdw3s45Xhr3I+mRSUNkNw90g4VzpRHU0JnQT58KjW6IYkFOpSK
+         kJegEB5IR13k4upgiO1/2Rcfi7c88q7jCuXI6yqzW3lEisLsx3e57VtO/bb51kdT3j
+         qF0XGeAs39g+SCw7jKQIuqN+n8aFq5OIABXkEu2c=
+Subject: FAILED: patch "[PATCH] net: tls: avoid discarding data on record close" failed to apply to 5.15-stable tree
+To:     kuba@kernel.org, davem@davemloft.net
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 12 Aug 2023 20:03:45 +0200
-Message-ID: <2023081245-reformer-contort-e4c5@gregkh>
+Date:   Sat, 12 Aug 2023 20:04:09 +0200
+Message-ID: <2023081209-thing-daydream-d25a@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -50,26 +49,28 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x 5ac8480ae4d01f0ca5dfd561884424046df2478a
+git cherry-pick -x 6b47808f223c70ff564f9b363446d2a5fa1e05b2
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023081245-reformer-contort-e4c5@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023081209-thing-daydream-d25a@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
-5ac8480ae4d0 ("RDMA/bnxt_re: Fix error handling in probe failure path")
-6ccad8483b28 ("RDMA/bnxt_re: use ibdev based message printing functions")
-8dae419f9ec7 ("RDMA/bnxt_re: Refactor queue pair creation code")
-9a4467a6b282 ("RDMA/bnxt_re: Avoid freeing MR resources if dereg fails")
+6b47808f223c ("net: tls: avoid discarding data on record close")
+7adc91e0c939 ("net/tls: Multi-threaded calls to TX tls_dev_del")
+113671b255ee ("net/tls: Perform immediate device ctx cleanup when possible")
+f08d8c1bb97c ("net/tls: Fix race in TLS device down flow")
+3d8c51b25a23 ("net/tls: Check for errors in tls_device_init")
+f3911f73f51d ("tls: fix replacing proto_ops")
 
 thanks,
 
@@ -77,31 +78,159 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 5ac8480ae4d01f0ca5dfd561884424046df2478a Mon Sep 17 00:00:00 2001
-From: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-Date: Wed, 9 Aug 2023 21:44:36 -0700
-Subject: [PATCH] RDMA/bnxt_re: Fix error handling in probe failure path
+From 6b47808f223c70ff564f9b363446d2a5fa1e05b2 Mon Sep 17 00:00:00 2001
+From: Jakub Kicinski <kuba@kernel.org>
+Date: Fri, 4 Aug 2023 15:59:51 -0700
+Subject: [PATCH] net: tls: avoid discarding data on record close
 
-During bnxt_re_dev_init(), when bnxt_re_setup_chip_ctx() fails unregister
-with L2 first before bailing out probe.
+TLS records end with a 16B tag. For TLS device offload we only
+need to make space for this tag in the stream, the device will
+generate and replace it with the actual calculated tag.
 
-Fixes: ae8637e13185 ("RDMA/bnxt_re: Add chip context to identify 57500 series")
-Link: https://lore.kernel.org/r/1691642677-21369-3-git-send-email-selvin.xavier@broadcom.com
-Signed-off-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Long time ago the code would just re-reference the head frag
+which mostly worked but was suboptimal because it prevented TCP
+from combining the record into a single skb frag. I'm not sure
+if it was correct as the first frag may be shorter than the tag.
 
-diff --git a/drivers/infiniband/hw/bnxt_re/main.c b/drivers/infiniband/hw/bnxt_re/main.c
-index 1c7646057893..63e98e2d3596 100644
---- a/drivers/infiniband/hw/bnxt_re/main.c
-+++ b/drivers/infiniband/hw/bnxt_re/main.c
-@@ -1253,6 +1253,8 @@ static int bnxt_re_dev_init(struct bnxt_re_dev *rdev, u8 wqe_mode)
+The commit under fixes tried to replace that with using the page
+frag and if the allocation failed rolling back the data, if record
+was long enough. It achieves better fragment coalescing but is
+also buggy.
+
+We don't roll back the iterator, so unless we're at the end of
+send we'll skip the data we designated as tag and start the
+next record as if the rollback never happened.
+There's also the possibility that the record was constructed
+with MSG_MORE and the data came from a different syscall and
+we already told the user space that we "got it".
+
+Allocate a single dummy page and use it as fallback.
+
+Found by code inspection, and proven by forcing allocation
+failures.
+
+Fixes: e7b159a48ba6 ("net/tls: remove the record tail optimization")
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+
+diff --git a/net/tls/tls_device.c b/net/tls/tls_device.c
+index 2021fe557e50..529101eb20bd 100644
+--- a/net/tls/tls_device.c
++++ b/net/tls/tls_device.c
+@@ -52,6 +52,8 @@ static LIST_HEAD(tls_device_list);
+ static LIST_HEAD(tls_device_down_list);
+ static DEFINE_SPINLOCK(tls_device_lock);
  
- 	rc = bnxt_re_setup_chip_ctx(rdev, wqe_mode);
- 	if (rc) {
-+		bnxt_unregister_dev(rdev->en_dev);
-+		clear_bit(BNXT_RE_FLAG_NETDEV_REGISTERED, &rdev->flags);
- 		ibdev_err(&rdev->ibdev, "Failed to get chip context\n");
- 		return -EINVAL;
++static struct page *dummy_page;
++
+ static void tls_device_free_ctx(struct tls_context *ctx)
+ {
+ 	if (ctx->tx_conf == TLS_HW) {
+@@ -312,36 +314,33 @@ static int tls_push_record(struct sock *sk,
+ 	return tls_push_sg(sk, ctx, offload_ctx->sg_tx_data, 0, flags);
+ }
+ 
+-static int tls_device_record_close(struct sock *sk,
+-				   struct tls_context *ctx,
+-				   struct tls_record_info *record,
+-				   struct page_frag *pfrag,
+-				   unsigned char record_type)
++static void tls_device_record_close(struct sock *sk,
++				    struct tls_context *ctx,
++				    struct tls_record_info *record,
++				    struct page_frag *pfrag,
++				    unsigned char record_type)
+ {
+ 	struct tls_prot_info *prot = &ctx->prot_info;
+-	int ret;
++	struct page_frag dummy_tag_frag;
+ 
+ 	/* append tag
+ 	 * device will fill in the tag, we just need to append a placeholder
+ 	 * use socket memory to improve coalescing (re-using a single buffer
+ 	 * increases frag count)
+-	 * if we can't allocate memory now, steal some back from data
++	 * if we can't allocate memory now use the dummy page
+ 	 */
+-	if (likely(skb_page_frag_refill(prot->tag_size, pfrag,
+-					sk->sk_allocation))) {
+-		ret = 0;
+-		tls_append_frag(record, pfrag, prot->tag_size);
+-	} else {
+-		ret = prot->tag_size;
+-		if (record->len <= prot->overhead_size)
+-			return -ENOMEM;
++	if (unlikely(pfrag->size - pfrag->offset < prot->tag_size) &&
++	    !skb_page_frag_refill(prot->tag_size, pfrag, sk->sk_allocation)) {
++		dummy_tag_frag.page = dummy_page;
++		dummy_tag_frag.offset = 0;
++		pfrag = &dummy_tag_frag;
  	}
++	tls_append_frag(record, pfrag, prot->tag_size);
+ 
+ 	/* fill prepend */
+ 	tls_fill_prepend(ctx, skb_frag_address(&record->frags[0]),
+ 			 record->len - prot->overhead_size,
+ 			 record_type);
+-	return ret;
+ }
+ 
+ static int tls_create_new_record(struct tls_offload_context_tx *offload_ctx,
+@@ -541,18 +540,8 @@ static int tls_push_data(struct sock *sk,
+ 
+ 		if (done || record->len >= max_open_record_len ||
+ 		    (record->num_frags >= MAX_SKB_FRAGS - 1)) {
+-			rc = tls_device_record_close(sk, tls_ctx, record,
+-						     pfrag, record_type);
+-			if (rc) {
+-				if (rc > 0) {
+-					size += rc;
+-				} else {
+-					size = orig_size;
+-					destroy_record(record);
+-					ctx->open_record = NULL;
+-					break;
+-				}
+-			}
++			tls_device_record_close(sk, tls_ctx, record,
++						pfrag, record_type);
+ 
+ 			rc = tls_push_record(sk,
+ 					     tls_ctx,
+@@ -1450,14 +1439,26 @@ int __init tls_device_init(void)
+ {
+ 	int err;
+ 
+-	destruct_wq = alloc_workqueue("ktls_device_destruct", 0, 0);
+-	if (!destruct_wq)
++	dummy_page = alloc_page(GFP_KERNEL);
++	if (!dummy_page)
+ 		return -ENOMEM;
+ 
++	destruct_wq = alloc_workqueue("ktls_device_destruct", 0, 0);
++	if (!destruct_wq) {
++		err = -ENOMEM;
++		goto err_free_dummy;
++	}
++
+ 	err = register_netdevice_notifier(&tls_dev_notifier);
+ 	if (err)
+-		destroy_workqueue(destruct_wq);
++		goto err_destroy_wq;
+ 
++	return 0;
++
++err_destroy_wq:
++	destroy_workqueue(destruct_wq);
++err_free_dummy:
++	put_page(dummy_page);
+ 	return err;
+ }
+ 
+@@ -1466,4 +1467,5 @@ void __exit tls_device_cleanup(void)
+ 	unregister_netdevice_notifier(&tls_dev_notifier);
+ 	destroy_workqueue(destruct_wq);
+ 	clean_acked_data_flush();
++	put_page(dummy_page);
+ }
 
