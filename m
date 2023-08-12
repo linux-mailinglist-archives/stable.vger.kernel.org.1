@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F30C7779D78
-	for <lists+stable@lfdr.de>; Sat, 12 Aug 2023 08:03:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BD8A1779D79
+	for <lists+stable@lfdr.de>; Sat, 12 Aug 2023 08:03:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235501AbjHLGDC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 12 Aug 2023 02:03:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37296 "EHLO
+        id S235584AbjHLGDL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 12 Aug 2023 02:03:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43494 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229709AbjHLGDC (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 12 Aug 2023 02:03:02 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B66D8127
-        for <stable@vger.kernel.org>; Fri, 11 Aug 2023 23:03:01 -0700 (PDT)
+        with ESMTP id S229709AbjHLGDK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 12 Aug 2023 02:03:10 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9498F1AA
+        for <stable@vger.kernel.org>; Fri, 11 Aug 2023 23:03:10 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 49D25644C8
-        for <stable@vger.kernel.org>; Sat, 12 Aug 2023 06:03:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57730C433C9;
-        Sat, 12 Aug 2023 06:03:00 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 32091644C8
+        for <stable@vger.kernel.org>; Sat, 12 Aug 2023 06:03:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 439E4C433C9;
+        Sat, 12 Aug 2023 06:03:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691820180;
-        bh=NYWIwjuApmet6kAsKvWSs97D03k12lLSSYBeu3qy6Ek=;
+        s=korg; t=1691820189;
+        bh=b4Kf6xsVr1yze4jR3tzIKMpxcFs8r/W63EGV9rlWxEY=;
         h=Subject:To:Cc:From:Date:From;
-        b=vWCUdzFrGZ9vyJrbnu9ZTJQ9VYxJxl9A6DAEhiTplV9ZA6DVmxgG2yABc9CM/MsIX
-         nPaqb7xg7tHP1MxbqCUF54TaY6BeJZUaM7RVx5znUvuPUkwi7I2rGixG5ctTzmUnQw
-         HdxIsx/cI82ZHdTEDTzE6iqR0ivCP1HvJnNspPk4=
-Subject: FAILED: patch "[PATCH] io_uring: correct check for O_TMPFILE" failed to apply to 6.1-stable tree
+        b=uq26pSYiWYCNw+ZsfTTC5kmkFxs8FCqqgXzRdfABMyBv1WWUGjJwg94LAojlFxdfx
+         IEhU/P2AX05N0e3vT/wHtZb4CUy8CXCEkO/Xy7GhoRRc3aw6CDtQgGDT3fN4PW69X5
+         jgmrewkNr+oj3JXePp0Sdsf5/2CgV5KaR21S8sno=
+Subject: FAILED: patch "[PATCH] io_uring: correct check for O_TMPFILE" failed to apply to 5.15-stable tree
 To:     cyphar@cyphar.com, axboe@kernel.dk
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 12 Aug 2023 08:02:57 +0200
-Message-ID: <2023081257-upcountry-punch-e196@gregkh>
+Date:   Sat, 12 Aug 2023 08:02:58 +0200
+Message-ID: <2023081258-sturdy-retying-2572@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -49,24 +49,42 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x 72dbde0f2afbe4af8e8595a89c650ae6b9d9c36f
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023081257-upcountry-punch-e196@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023081258-sturdy-retying-2572@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
 72dbde0f2afb ("io_uring: correct check for O_TMPFILE")
 0ffae640ad83 ("io_uring: always go async for unsupported open flags")
+cd40cae29ef8 ("io_uring: split out open/close operations")
+453b329be5ea ("io_uring: separate out file table handling code")
+f4c163dd7d4b ("io_uring: split out fadvise/madvise operations")
+0d5847274037 ("io_uring: split out fs related sync/fallocate functions")
+531113bbd5bf ("io_uring: split out splice related operations")
+11aeb71406dd ("io_uring: split out filesystem related operations")
+e28683bdfc2f ("io_uring: move nop into its own file")
+5e2a18d93fec ("io_uring: move xattr related opcodes to its own file")
+97b388d70b53 ("io_uring: handle completions in the core")
+de23077eda61 ("io_uring: set completion results upfront")
+e27f928ee1cb ("io_uring: add io_uring_types.h")
+4d4c9cff4f70 ("io_uring: define a request type cleanup handler")
+890968dc0336 ("io_uring: unify struct io_symlink and io_hardlink")
+9a3a11f977f9 ("io_uring: convert iouring_cmd to io_cmd_type")
+ceb452e1b4ba ("io_uring: convert xattr to use io_cmd_type")
+ea5af87d29cf ("io_uring: convert rsrc_update to io_cmd_type")
+c1ee55950155 ("io_uring: convert msg and nop to io_cmd_type")
+2511d3030c5e ("io_uring: convert splice to use io_cmd_type")
 
 thanks,
 
