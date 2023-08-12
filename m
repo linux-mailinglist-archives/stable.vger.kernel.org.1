@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5236F77A19B
-	for <lists+stable@lfdr.de>; Sat, 12 Aug 2023 20:04:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3E3C177A19C
+	for <lists+stable@lfdr.de>; Sat, 12 Aug 2023 20:04:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229451AbjHLSEK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 12 Aug 2023 14:04:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56744 "EHLO
+        id S229475AbjHLSEN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 12 Aug 2023 14:04:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56760 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229446AbjHLSEK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 12 Aug 2023 14:04:10 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 14042CC
-        for <stable@vger.kernel.org>; Sat, 12 Aug 2023 11:04:13 -0700 (PDT)
+        with ESMTP id S229446AbjHLSEN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 12 Aug 2023 14:04:13 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45EB1CC
+        for <stable@vger.kernel.org>; Sat, 12 Aug 2023 11:04:16 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8E19161D45
-        for <stable@vger.kernel.org>; Sat, 12 Aug 2023 18:04:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A980BC433C7;
-        Sat, 12 Aug 2023 18:04:11 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D3D8061D4A
+        for <stable@vger.kernel.org>; Sat, 12 Aug 2023 18:04:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E69ECC433C8;
+        Sat, 12 Aug 2023 18:04:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691863452;
-        bh=gxerYLkQmcX7fzDFA4YlqZEa9wd1r+NolXqTobCCdF4=;
+        s=korg; t=1691863455;
+        bh=jh+TyiUtILtORJSd3cfRSDusHU/rQIj6tVRifqTXYNc=;
         h=Subject:To:Cc:From:Date:From;
-        b=b8ct1rMORMLtgJNCdw3s45Xhr3I+mRSUNkNw90g4VzpRHU0JnQT58KjW6IYkFOpSK
-         kJegEB5IR13k4upgiO1/2Rcfi7c88q7jCuXI6yqzW3lEisLsx3e57VtO/bb51kdT3j
-         qF0XGeAs39g+SCw7jKQIuqN+n8aFq5OIABXkEu2c=
-Subject: FAILED: patch "[PATCH] net: tls: avoid discarding data on record close" failed to apply to 5.15-stable tree
+        b=YT719evtVERQCDrhsjGdy5uGsR4ClphqCvzMK8YG9ql51oGDZnfr+0FjZmsV+i5dx
+         TF4lcHkOIJ6RG3RnQvCpHamHSLYatbOXICJJcOCHsg+EizsUbG5L5J1i096R/s1B1i
+         E0/NnKyoYUiuM36xWgDFYRltCFSW77BNz0Srq5xQ=
+Subject: FAILED: patch "[PATCH] net: tls: avoid discarding data on record close" failed to apply to 5.10-stable tree
 To:     kuba@kernel.org, davem@davemloft.net
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 12 Aug 2023 20:04:09 +0200
-Message-ID: <2023081209-thing-daydream-d25a@gregkh>
+Date:   Sat, 12 Aug 2023 20:04:11 +0200
+Message-ID: <2023081210-cleaver-detail-cb50@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -49,19 +49,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x 6b47808f223c70ff564f9b363446d2a5fa1e05b2
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023081209-thing-daydream-d25a@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023081210-cleaver-detail-cb50@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
@@ -71,6 +71,7 @@ Possible dependencies:
 f08d8c1bb97c ("net/tls: Fix race in TLS device down flow")
 3d8c51b25a23 ("net/tls: Check for errors in tls_device_init")
 f3911f73f51d ("tls: fix replacing proto_ops")
+6942a284fb3e ("net/tls: make inline helpers protocol-aware")
 
 thanks,
 
