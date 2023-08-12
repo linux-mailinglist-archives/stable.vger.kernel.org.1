@@ -2,45 +2,68 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 43E4377A1E1
-	for <lists+stable@lfdr.de>; Sat, 12 Aug 2023 20:37:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3D93D77A207
+	for <lists+stable@lfdr.de>; Sat, 12 Aug 2023 21:55:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229766AbjHLShY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 12 Aug 2023 14:37:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60062 "EHLO
+        id S229488AbjHLTzc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 12 Aug 2023 15:55:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54194 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229810AbjHLShT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 12 Aug 2023 14:37:19 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 22A3C10C0
-        for <stable@vger.kernel.org>; Sat, 12 Aug 2023 11:37:22 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E156D61EA5
-        for <stable@vger.kernel.org>; Sat, 12 Aug 2023 18:37:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0295DC433C7;
-        Sat, 12 Aug 2023 18:37:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691865441;
-        bh=rLxheWCgyN4pSo7Eae0MACtcEGJB5q382DybzPDnGHg=;
-        h=Subject:To:Cc:From:Date:From;
-        b=kEoabAqZet81HbaNEHIsW7LUnLc0ILxuZLN0u9GJkcyeZxMthoBuCXbnRFholQQvq
-         zyxREPvzlRw54a8Gm1q4kEq/fr4H+zlEVa3+L1m7dBPek71osfvWZx34VDMkI/NUG6
-         RZY8aWfjrCw12Uu1M3/Rjtw6lrPZVKbEec9H5itU=
-Subject: FAILED: patch "[PATCH] ibmvnic: Ensure login failure recovery is safe from other" failed to apply to 4.19-stable tree
-To:     nnac123@linux.ibm.com, horms@kernel.org, kuba@kernel.org
-Cc:     <stable@vger.kernel.org>
-From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 12 Aug 2023 20:37:17 +0200
-Message-ID: <2023081217-unrest-trusting-66a9@gregkh>
+        with ESMTP id S229475AbjHLTzc (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 12 Aug 2023 15:55:32 -0400
+Received: from mail-pf1-x42f.google.com (mail-pf1-x42f.google.com [IPv6:2607:f8b0:4864:20::42f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33869170C
+        for <stable@vger.kernel.org>; Sat, 12 Aug 2023 12:55:33 -0700 (PDT)
+Received: by mail-pf1-x42f.google.com with SMTP id d2e1a72fcca58-68706b39c4cso2194207b3a.2
+        for <stable@vger.kernel.org>; Sat, 12 Aug 2023 12:55:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernelci-org.20221208.gappssmtp.com; s=20221208; t=1691870132; x=1692474932;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=K+DCxhrOCvcKW72tiue4+bK50udPd+3lwr8HkodkBCo=;
+        b=pCCZ8lNhg30mK1i1Uh5PSm7RGKKF+levu0M55mfe/Wkai7YR6WJaA7YmVk2VIBkLAq
+         AxXhkDfF9Emd5bJds4u8asuxzs1G+C3b7XGlcupO6uvgG5R57VUz7XLci0s9txdITTQx
+         rjSBIDtw5ttfeYY8Xwj57tYl435vB60podebbzqGpsMfFr6V0F4IIg61hY3XWcPwbO3T
+         AswBljLyQcHCxgApf4+PhUw/v2M7f9aY6WsqDQkH3Yz3+FbW7/qY+hhj1zRT0I14WRRv
+         5MzltyUECB+/yMewa5cr9l7etg3mdaeKx88vJ/s2/WA02WNUfuSNstU42N+So3Ikf7Cg
+         iNlA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1691870132; x=1692474932;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=K+DCxhrOCvcKW72tiue4+bK50udPd+3lwr8HkodkBCo=;
+        b=HtEXm7M7ktksNaaDzSEmugr+YtajNrSPY05XO/pzUT45IwhJgaW86SxxGI+/BzS2cT
+         ngDqjvJkV0KhWFl5JqkGH+FAx6QGoZOtpxafPy5icSrCgKIC60DOIhGZSsqSIxGA26jP
+         kqloFKcegXmMpnBii+zcLegxYYGZn+tvaChLSQZF5oMYm5xSFIPX8G7aav16lTybW8aD
+         R9gT29llXh8I5XSdvKJiABs61rbd9AkWk9O62Cjw9IxziAXP7F3j87RkoDNV0q+bI12l
+         SDKK1znUBzd/qzz2y/hnlaaSuEF39dNOuwmmT1JzAFrP9Nv/ExV9oAsQDLp6cze96DBn
+         47Tg==
+X-Gm-Message-State: AOJu0YzxRU8qVP27GE+/xI/IUcMiiZenvUp8oSlOO9shz0lCihBkB+IF
+        mWA5dGUtI+ShkygZgcJaufxRll2peHhDlnAy/X0UwQ==
+X-Google-Smtp-Source: AGHT+IHhz1N0KLZfpCWtiho4JDQLxUtGZ85ZcWOU8Qi3JTtwomZtKXmEFg7lHAb2i1oJhCXKKg6kBA==
+X-Received: by 2002:a05:6a20:5497:b0:135:8a04:9045 with SMTP id i23-20020a056a20549700b001358a049045mr6252805pzk.1.1691870132243;
+        Sat, 12 Aug 2023 12:55:32 -0700 (PDT)
+Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
+        by smtp.gmail.com with ESMTPSA id q4-20020a638c44000000b00563590be25esm5529954pgn.29.2023.08.12.12.55.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 12 Aug 2023 12:55:31 -0700 (PDT)
+Message-ID: <64d7e3b3.630a0220.a35e4.962d@mx.google.com>
+Date:   Sat, 12 Aug 2023 12:55:31 -0700 (PDT)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+Content-Transfer-Encoding: quoted-printable
+X-Kernelci-Report-Type: build
+X-Kernelci-Kernel: v4.14.322-20-gcb8ddfca06627
+X-Kernelci-Tree: stable-rc
+X-Kernelci-Branch: linux-4.14.y
+Subject: stable-rc/linux-4.14.y build: 16 builds: 0 failed, 16 passed,
+ 21 warnings (v4.14.322-20-gcb8ddfca06627)
+To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+        kernelci-results@groups.io
+From:   "kernelci.org bot" <bot@kernelci.org>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -48,187 +71,202 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+stable-rc/linux-4.14.y build: 16 builds: 0 failed, 16 passed, 21 warnings (=
+v4.14.322-20-gcb8ddfca06627)
 
-The patch below does not apply to the 4.19-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+Full Build Summary: https://kernelci.org/build/stable-rc/branch/linux-4.14.=
+y/kernel/v4.14.322-20-gcb8ddfca06627/
 
-To reproduce the conflict and resubmit, you may use the following commands:
+Tree: stable-rc
+Branch: linux-4.14.y
+Git Describe: v4.14.322-20-gcb8ddfca06627
+Git Commit: cb8ddfca06627d55a4b79181796df689939e7ac8
+Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
+e-rc.git
+Built: 6 unique architectures
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
-git checkout FETCH_HEAD
-git cherry-pick -x 6db541ae279bd4e76dbd939e5fbf298396166242
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023081217-unrest-trusting-66a9@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+Warnings Detected:
 
-Possible dependencies:
+arc:
 
-6db541ae279b ("ibmvnic: Ensure login failure recovery is safe from other resets")
-23cc5f667453 ("ibmvnic: Do partial reset on login failure")
-61772b0908c6 ("ibmvnic: don't release napi in __ibmvnic_open()")
-b6ee566cf394 ("ibmvnic: Update driver return codes")
-bbd809305bc7 ("ibmvnic: Reuse tx pools when possible")
-489de956e7a2 ("ibmvnic: Reuse rx pools when possible")
-f8ac0bfa7d7a ("ibmvnic: Reuse LTB when possible")
-129854f061d8 ("ibmvnic: Use bitmap for LTB map_ids")
-0d1af4fa7124 ("ibmvnic: init_tx_pools move loop-invariant code")
-8243c7ed6d08 ("ibmvnic: Use/rename local vars in init_tx_pools")
-0df7b9ad8f84 ("ibmvnic: Use/rename local vars in init_rx_pools")
-0f2bf3188c43 ("ibmvnic: Fix up some comments and messages")
-38106b2c433e ("ibmvnic: Consolidate code in replenish_rx_pool()")
-f6ebca8efa52 ("ibmvnic: free tx_pool if tso_pool alloc fails")
-552a33729f1a ("ibmvnic: set ltb->buff to NULL after freeing")
-72368f8b2b9e ("ibmvnic: account for bufs already saved in indir_buf")
-65d6470d139a ("ibmvnic: clean pending indirect buffs during reset")
-0ec13aff058a ("Revert "ibmvnic: simplify reset_long_term_buff function"")
-d3a6abccbd27 ("ibmvnic: remove duplicate napi_schedule call in do_reset function")
-0775ebc4cf85 ("ibmvnic: avoid calling napi_disable() twice")
+arm64:
 
-thanks,
+arm:
 
-greg k-h
+i386:
+    allnoconfig (gcc-10): 3 warnings
+    i386_defconfig (gcc-10): 3 warnings
+    tinyconfig (gcc-10): 3 warnings
 
------------------- original commit in Linus's tree ------------------
+mips:
 
-From 6db541ae279bd4e76dbd939e5fbf298396166242 Mon Sep 17 00:00:00 2001
-From: Nick Child <nnac123@linux.ibm.com>
-Date: Wed, 9 Aug 2023 17:10:38 -0500
-Subject: [PATCH] ibmvnic: Ensure login failure recovery is safe from other
- resets
+x86_64:
+    allnoconfig (gcc-10): 3 warnings
+    tinyconfig (gcc-10): 3 warnings
+    x86_64_defconfig (gcc-10): 3 warnings
+    x86_64_defconfig+x86-chromebook (gcc-10): 3 warnings
 
-If a login request fails, the recovery process should be protected
-against parallel resets. It is a known issue that freeing and
-registering CRQ's in quick succession can result in a failover CRQ from
-the VIOS. Processing a failover during login recovery is dangerous for
-two reasons:
- 1. This will result in two parallel initialization processes, this can
- cause serious issues during login.
- 2. It is possible that the failover CRQ is received but never executed.
- We get notified of a pending failover through a transport event CRQ.
- The reset is not performed until a INIT CRQ request is received.
- Previously, if CRQ init fails during login recovery, then the ibmvnic
- irq is freed and the login process returned error. If failover_pending
- is true (a transport event was received), then the ibmvnic device
- would never be able to process the reset since it cannot receive the
- CRQ_INIT request due to the irq being freed. This leaved the device
- in a inoperable state.
 
-Therefore, the login failure recovery process must be hardened against
-these possible issues. Possible failovers (due to quick CRQ free and
-init) must be avoided and any issues during re-initialization should be
-dealt with instead of being propagated up the stack. This logic is
-similar to that of ibmvnic_probe().
+Warnings summary:
 
-Fixes: dff515a3e71d ("ibmvnic: Harden device login requests")
-Signed-off-by: Nick Child <nnac123@linux.ibm.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20230809221038.51296-5-nnac123@linux.ibm.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+    7    ld: warning: creating DT_TEXTREL in a PIE
+    4    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in rea=
+d-only section `.head.text'
+    4    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h=
+' differs from latest kernel version at 'arch/x86/include/asm/insn.h'
+    3    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in rea=
+d-only section `.head.text'
+    3    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic su=
+ffix given and no register operands; using default for `btr'
 
-diff --git a/drivers/net/ethernet/ibm/ibmvnic.c b/drivers/net/ethernet/ibm/ibmvnic.c
-index e9619957d58a..df76cdaddcfb 100644
---- a/drivers/net/ethernet/ibm/ibmvnic.c
-+++ b/drivers/net/ethernet/ibm/ibmvnic.c
-@@ -116,6 +116,7 @@ static void ibmvnic_tx_scrq_clean_buffer(struct ibmvnic_adapter *adapter,
- static void free_long_term_buff(struct ibmvnic_adapter *adapter,
- 				struct ibmvnic_long_term_buff *ltb);
- static void ibmvnic_disable_irqs(struct ibmvnic_adapter *adapter);
-+static void flush_reset_queue(struct ibmvnic_adapter *adapter);
- 
- struct ibmvnic_stat {
- 	char name[ETH_GSTRING_LEN];
-@@ -1507,8 +1508,8 @@ static const char *adapter_state_to_string(enum vnic_state state)
- 
- static int ibmvnic_login(struct net_device *netdev)
- {
-+	unsigned long flags, timeout = msecs_to_jiffies(20000);
- 	struct ibmvnic_adapter *adapter = netdev_priv(netdev);
--	unsigned long timeout = msecs_to_jiffies(20000);
- 	int retry_count = 0;
- 	int retries = 10;
- 	bool retry;
-@@ -1573,6 +1574,7 @@ static int ibmvnic_login(struct net_device *netdev)
- 					    "SCRQ irq initialization failed\n");
- 				return rc;
- 			}
-+		/* Default/timeout error handling, reset and start fresh */
- 		} else if (adapter->init_done_rc) {
- 			netdev_warn(netdev, "Adapter login failed, init_done_rc = %d\n",
- 				    adapter->init_done_rc);
-@@ -1588,29 +1590,53 @@ static int ibmvnic_login(struct net_device *netdev)
- 				    "Freeing and re-registering CRQs before attempting to login again\n");
- 			retry = true;
- 			adapter->init_done_rc = 0;
--			retry_count++;
- 			release_sub_crqs(adapter, true);
--			reinit_init_done(adapter);
--			release_crq_queue(adapter);
--			/* If we don't sleep here then we risk an unnecessary
--			 * failover event from the VIOS. This is a known VIOS
--			 * issue caused by a vnic device freeing and registering
--			 * a CRQ too quickly.
-+			/* Much of this is similar logic as ibmvnic_probe(),
-+			 * we are essentially re-initializing communication
-+			 * with the server. We really should not run any
-+			 * resets/failovers here because this is already a form
-+			 * of reset and we do not want parallel resets occurring
- 			 */
--			msleep(1500);
--			rc = init_crq_queue(adapter);
--			if (rc) {
--				netdev_err(netdev, "login recovery: init CRQ failed %d\n",
--					   rc);
--				return -EIO;
--			}
-+			do {
-+				reinit_init_done(adapter);
-+				/* Clear any failovers we got in the previous
-+				 * pass since we are re-initializing the CRQ
-+				 */
-+				adapter->failover_pending = false;
-+				release_crq_queue(adapter);
-+				/* If we don't sleep here then we risk an
-+				 * unnecessary failover event from the VIOS.
-+				 * This is a known VIOS issue caused by a vnic
-+				 * device freeing and registering a CRQ too
-+				 * quickly.
-+				 */
-+				msleep(1500);
-+				/* Avoid any resets, since we are currently
-+				 * resetting.
-+				 */
-+				spin_lock_irqsave(&adapter->rwi_lock, flags);
-+				flush_reset_queue(adapter);
-+				spin_unlock_irqrestore(&adapter->rwi_lock,
-+						       flags);
- 
--			rc = ibmvnic_reset_init(adapter, false);
--			if (rc) {
--				netdev_err(netdev, "login recovery: Reset init failed %d\n",
--					   rc);
--				return -EIO;
--			}
-+				rc = init_crq_queue(adapter);
-+				if (rc) {
-+					netdev_err(netdev, "login recovery: init CRQ failed %d\n",
-+						   rc);
-+					return -EIO;
-+				}
-+
-+				rc = ibmvnic_reset_init(adapter, false);
-+				if (rc)
-+					netdev_err(netdev, "login recovery: Reset init failed %d\n",
-+						   rc);
-+				/* IBMVNIC_CRQ_INIT will return EAGAIN if it
-+				 * fails, since ibmvnic_reset_init will free
-+				 * irq's in failure, we won't be able to receive
-+				 * new CRQs so we need to keep trying. probe()
-+				 * handles this similarly.
-+				 */
-+			} while (rc == -EAGAIN && retry_count++ < retries);
- 		}
- 	} while (retry);
- 
+Section mismatches summary:
 
+    3    WARNING: modpost: Found 1 section mismatch(es).
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
+
+Detailed per-defconfig build reports:
+
+---------------------------------------------------------------------------=
+-----
+32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
+tion mismatches
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 section =
+mismatches
+
+Warnings:
+    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic suffix =
+given and no register operands; using default for `btr'
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 sectio=
+n mismatches
+
+Warnings:
+    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
+fers from latest kernel version at 'arch/x86/include/asm/insn.h'
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+Section mismatches:
+    WARNING: modpost: Found 1 section mismatch(es).
+
+---------------------------------------------------------------------------=
+-----
+defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warn=
+ings, 0 section mismatches
+
+Section mismatches:
+    WARNING: modpost: Found 1 section mismatch(es).
+
+---------------------------------------------------------------------------=
+-----
+haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
+ section mismatches
+
+---------------------------------------------------------------------------=
+-----
+i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 secti=
+on mismatches
+
+Warnings:
+    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic suffix =
+given and no register operands; using default for `btr'
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+Section mismatches:
+    WARNING: modpost: Found 1 section mismatch(es).
+
+---------------------------------------------------------------------------=
+-----
+multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 section m=
+ismatches
+
+Warnings:
+    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic suffix =
+given and no register operands; using default for `btr'
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 section=
+ mismatches
+
+Warnings:
+    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
+fers from latest kernel version at 'arch/x86/include/asm/insn.h'
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 s=
+ection mismatches
+
+Warnings:
+    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
+fers from latest kernel version at 'arch/x86/include/asm/insn.h'
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig+x86-chromebook (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, =
+3 warnings, 0 section mismatches
+
+Warnings:
+    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
+fers from latest kernel version at 'arch/x86/include/asm/insn.h'
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---
+For more info write to <info@kernelci.org>
