@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 63D2377A186
-	for <lists+stable@lfdr.de>; Sat, 12 Aug 2023 19:52:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 23C3577A189
+	for <lists+stable@lfdr.de>; Sat, 12 Aug 2023 19:53:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229870AbjHLRwr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 12 Aug 2023 13:52:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42232 "EHLO
+        id S229810AbjHLRxY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 12 Aug 2023 13:53:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48974 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229810AbjHLRwr (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 12 Aug 2023 13:52:47 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 363E11709
-        for <stable@vger.kernel.org>; Sat, 12 Aug 2023 10:52:50 -0700 (PDT)
+        with ESMTP id S229501AbjHLRxY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 12 Aug 2023 13:53:24 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F264010E5
+        for <stable@vger.kernel.org>; Sat, 12 Aug 2023 10:53:25 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BF6AA61CB4
-        for <stable@vger.kernel.org>; Sat, 12 Aug 2023 17:52:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFAFEC433C8;
-        Sat, 12 Aug 2023 17:52:48 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9159561CB8
+        for <stable@vger.kernel.org>; Sat, 12 Aug 2023 17:53:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1401C433C7;
+        Sat, 12 Aug 2023 17:53:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691862769;
-        bh=z2inrZop3bVtFziNddCmf/KSbihDBqkL+Mn0yzvJ6IE=;
+        s=korg; t=1691862805;
+        bh=sbKePlEVYTJ/bS1oBesJvhqjibfsOh/a29zNdBWmKM8=;
         h=Subject:To:Cc:From:Date:From;
-        b=l3/eppaTuwguT6nUNyJ6JtC/6jK5WyhKBXxcdi00VVdeF/P/6+TbNgXmQ/PFE9igs
-         svV8gXaAaVbdADnngU1yv+gf6qq9fm5vMPVDlJ7Pm3MrzSOfT+gjxx3bu0L1boZWeC
-         r5fuRgJcNhvk82X8IsTcPfVvJ78QvfA7umf0sCnQ=
-Subject: FAILED: patch "[PATCH] bpf, sockmap: Fix map type error in sock_map_del_link" failed to apply to 5.4-stable tree
-To:     xukuohai@huawei.com, john.fastabend@gmail.com,
-        martin.lau@kernel.org
+        b=eJ2XmSoGu74mLGRBqnTGKqe5hnqZymiUqLcdNvv31Qfl+eKj9o/Y7/XG0IYWODp0e
+         n78ORHiaDh2Etus7E5AH7KO+UzLNOQe3CibfhWONAE2n9b92KJHjX4jiismTaJfnvJ
+         4bMh9WtbZbEIBwfnwrzNJ5isqXnkbonx0P8TVeKE=
+Subject: FAILED: patch "[PATCH] hwmon: (aquacomputer_d5next) Add selective 200ms delay after" failed to apply to 6.1-stable tree
+To:     savicaleksa83@gmail.com, linux@roeck-us.net
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 12 Aug 2023 19:52:38 +0200
-Message-ID: <2023081238-calibrate-savanna-77b0@gregkh>
+Date:   Sat, 12 Aug 2023 19:53:22 +0200
+Message-ID: <2023081222-chummy-aqueduct-85c2@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -50,42 +49,37 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
-git cherry-pick -x 7e96ec0e6605b69bb21bbf6c0ff9051e656ec2b1
+git cherry-pick -x 56b930dcd88c2adc261410501c402c790980bdb5
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023081238-calibrate-savanna-77b0@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023081222-chummy-aqueduct-85c2@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
-7e96ec0e6605 ("bpf, sockmap: Fix map type error in sock_map_del_link")
-a7ba4558e69a ("sock_map: Introduce BPF_SK_SKB_VERDICT")
-b017055255d6 ("sock_map: Kill sock_map_link_no_progs()")
-2004fdbd8a2b ("sock_map: Simplify sock_map_link() a bit")
-4675e234b9e1 ("sock_map: Make sock_map_prog_update() static")
-ae8b8332fbb5 ("sock_map: Rename skb_parser and skb_verdict")
-5a685cd94b21 ("skmsg: Get rid of struct sk_psock_parser")
-887596095ec2 ("bpf: Clean up sockmap related Kconfigs")
-83c11c17553c ("net, sockmap: Don't call bpf_prog_put() on NULL pointer")
-ef5659280eb1 ("bpf, sockmap: Allow skipping sk_skb parser program")
-743df8b7749f ("bpf, sockmap: Check skb_verdict and skb_parser programs explicitly")
-0b17ad25d8d1 ("bpf, sockmap: Add memory accounting so skbs on ingress lists are visible")
-10d58d006356 ("bpf, sockmap: Remove skb_orphan and let normal skb_kfree do cleanup")
-1e6c62a88215 ("bpf: Introduce sleepable BPF programs")
-8ea636848aca ("bpf: Implement bpf_local_storage for inodes")
-0813a841566f ("bpf: tcp: Allow bpf prog to write and parse TCP header option")
-c9985d09e189 ("bpf: sock_ops: Change some members of sock_ops_kern from u32 to u8")
-331fca4315ef ("bpf: tcp: Add bpf_skops_hdr_opt_len() and bpf_skops_write_hdr_opt()")
-00d211a4ea6f ("bpf: tcp: Add bpf_skops_parse_hdr()")
-72be0fe6ba76 ("bpf: tcp: Add bpf_skops_established()")
+56b930dcd88c ("hwmon: (aquacomputer_d5next) Add selective 200ms delay after sending ctrl report")
+19692f17cd13 ("hwmon: (aquacomputer_d5next) Add support for Aquacomputer Aquastream XT")
+866e630a3b8b ("hwmon: (aquacomputer_d5next) Add temperature offset control for Aquaero")
+6c83ccb10c49 ("hwmon: (aquacomputer_d5next) Add infrastructure for Aquaero control reports")
+b29090bac935 ("hwmon: (aquacomputer_d5next) Device dependent control report settings")
+7505dab78f58 ("hwmon: (aquacomputer_d5next) Add support for Aquacomputer Aquastream Ultimate")
+e0f6c370f0ad ("hwmon: (aquacomputer_d5next) Add support for Aquacomputer Poweradjust 3")
+3d2e9f582a8e ("hwmon: (aquacomputer_d5next) Add support for reading calculated Aquaero sensors")
+2c55211104b4 ("hwmon: (aquacomputer_d5next) Support sensors for Aquacomputer Aquaero")
+ad2f0811fbeb ("hwmon: (aquacomputer_d5next) Device dependent serial number and firmware offsets")
+249c752110a5 ("hwmon: (aquacomputer_d5next) Add structure for fan layout")
+8bcb02bdc638 ("hwmon: (aquacomputer_d5next) Rename AQC_TEMP_SENSOR_SIZE to AQC_SENSOR_SIZE")
+6ff838f2877d ("hwmon: (aquacomputer_d5next) Add support for Quadro flow sensor pulses")
+d5d896b83822 ("hwmon: (aquacomputer_d5next) Clear up macros and comments")
+662d20b3a5af ("hwmon: (aquacomputer_d5next) Add support for temperature sensor offsets")
 
 thanks,
 
@@ -93,43 +87,158 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 7e96ec0e6605b69bb21bbf6c0ff9051e656ec2b1 Mon Sep 17 00:00:00 2001
-From: Xu Kuohai <xukuohai@huawei.com>
-Date: Fri, 4 Aug 2023 03:37:37 -0400
-Subject: [PATCH] bpf, sockmap: Fix map type error in sock_map_del_link
+From 56b930dcd88c2adc261410501c402c790980bdb5 Mon Sep 17 00:00:00 2001
+From: Aleksa Savic <savicaleksa83@gmail.com>
+Date: Mon, 7 Aug 2023 19:20:03 +0200
+Subject: [PATCH] hwmon: (aquacomputer_d5next) Add selective 200ms delay after
+ sending ctrl report
 
-sock_map_del_link() operates on both SOCKMAP and SOCKHASH, although
-both types have member named "progs", the offset of "progs" member in
-these two types is different, so "progs" should be accessed with the
-real map type.
+Add a 200ms delay after sending a ctrl report to Quadro,
+Octo, D5 Next and Aquaero to give them enough time to
+process the request and save the data to memory. Otherwise,
+under heavier userspace loads where multiple sysfs entries
+are usually set in quick succession, a new ctrl report could
+be requested from the device while it's still processing the
+previous one and fail with -EPIPE. The delay is only applied
+if two ctrl report operations are near each other in time.
 
-Fixes: 604326b41a6f ("bpf, sockmap: convert to generic sk_msg interface")
-Signed-off-by: Xu Kuohai <xukuohai@huawei.com>
-Reviewed-by: John Fastabend <john.fastabend@gmail.com>
-Link: https://lore.kernel.org/r/20230804073740.194770-2-xukuohai@huaweicloud.com
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+Reported by a user on Github [1] and tested by both of us.
 
-diff --git a/net/core/sock_map.c b/net/core/sock_map.c
-index 08ab108206bf..8f07fea39d9e 100644
---- a/net/core/sock_map.c
-+++ b/net/core/sock_map.c
-@@ -146,13 +146,13 @@ static void sock_map_del_link(struct sock *sk,
- 	list_for_each_entry_safe(link, tmp, &psock->link, list) {
- 		if (link->link_raw == link_raw) {
- 			struct bpf_map *map = link->map;
--			struct bpf_stab *stab = container_of(map, struct bpf_stab,
--							     map);
--			if (psock->saved_data_ready && stab->progs.stream_parser)
-+			struct sk_psock_progs *progs = sock_map_progs(map);
+[1] https://github.com/aleksamagicka/aquacomputer_d5next-hwmon/issues/82
+
+Fixes: 752b927951ea ("hwmon: (aquacomputer_d5next) Add support for Aquacomputer Octo")
+Signed-off-by: Aleksa Savic <savicaleksa83@gmail.com>
+Link: https://lore.kernel.org/r/20230807172004.456968-1-savicaleksa83@gmail.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+
+diff --git a/drivers/hwmon/aquacomputer_d5next.c b/drivers/hwmon/aquacomputer_d5next.c
+index a997dbcb563f..023807859be7 100644
+--- a/drivers/hwmon/aquacomputer_d5next.c
++++ b/drivers/hwmon/aquacomputer_d5next.c
+@@ -13,9 +13,11 @@
+ 
+ #include <linux/crc16.h>
+ #include <linux/debugfs.h>
++#include <linux/delay.h>
+ #include <linux/hid.h>
+ #include <linux/hwmon.h>
+ #include <linux/jiffies.h>
++#include <linux/ktime.h>
+ #include <linux/module.h>
+ #include <linux/mutex.h>
+ #include <linux/seq_file.h>
+@@ -63,6 +65,8 @@ static const char *const aqc_device_names[] = {
+ #define CTRL_REPORT_ID			0x03
+ #define AQUAERO_CTRL_REPORT_ID		0x0b
+ 
++#define CTRL_REPORT_DELAY		200	/* ms */
 +
-+			if (psock->saved_data_ready && progs->stream_parser)
- 				strp_stop = true;
--			if (psock->saved_data_ready && stab->progs.stream_verdict)
-+			if (psock->saved_data_ready && progs->stream_verdict)
- 				verdict_stop = true;
--			if (psock->saved_data_ready && stab->progs.skb_verdict)
-+			if (psock->saved_data_ready && progs->skb_verdict)
- 				verdict_stop = true;
- 			list_del(&link->list);
- 			sk_psock_free_link(link);
+ /* The HID report that the official software always sends
+  * after writing values, currently same for all devices
+  */
+@@ -527,6 +531,9 @@ struct aqc_data {
+ 	int secondary_ctrl_report_size;
+ 	u8 *secondary_ctrl_report;
+ 
++	ktime_t last_ctrl_report_op;
++	int ctrl_report_delay;	/* Delay between two ctrl report operations, in ms */
++
+ 	int buffer_size;
+ 	u8 *buffer;
+ 	int checksum_start;
+@@ -611,17 +618,35 @@ static int aqc_aquastreamxt_convert_fan_rpm(u16 val)
+ 	return 0;
+ }
+ 
++static void aqc_delay_ctrl_report(struct aqc_data *priv)
++{
++	/*
++	 * If previous read or write is too close to this one, delay the current operation
++	 * to give the device enough time to process the previous one.
++	 */
++	if (priv->ctrl_report_delay) {
++		s64 delta = ktime_ms_delta(ktime_get(), priv->last_ctrl_report_op);
++
++		if (delta < priv->ctrl_report_delay)
++			msleep(priv->ctrl_report_delay - delta);
++	}
++}
++
+ /* Expects the mutex to be locked */
+ static int aqc_get_ctrl_data(struct aqc_data *priv)
+ {
+ 	int ret;
+ 
++	aqc_delay_ctrl_report(priv);
++
+ 	memset(priv->buffer, 0x00, priv->buffer_size);
+ 	ret = hid_hw_raw_request(priv->hdev, priv->ctrl_report_id, priv->buffer, priv->buffer_size,
+ 				 HID_FEATURE_REPORT, HID_REQ_GET_REPORT);
+ 	if (ret < 0)
+ 		ret = -ENODATA;
+ 
++	priv->last_ctrl_report_op = ktime_get();
++
+ 	return ret;
+ }
+ 
+@@ -631,6 +656,8 @@ static int aqc_send_ctrl_data(struct aqc_data *priv)
+ 	int ret;
+ 	u16 checksum;
+ 
++	aqc_delay_ctrl_report(priv);
++
+ 	/* Checksum is not needed for Aquaero */
+ 	if (priv->kind != aquaero) {
+ 		/* Init and xorout value for CRC-16/USB is 0xffff */
+@@ -646,12 +673,16 @@ static int aqc_send_ctrl_data(struct aqc_data *priv)
+ 	ret = hid_hw_raw_request(priv->hdev, priv->ctrl_report_id, priv->buffer, priv->buffer_size,
+ 				 HID_FEATURE_REPORT, HID_REQ_SET_REPORT);
+ 	if (ret < 0)
+-		return ret;
++		goto record_access_and_ret;
+ 
+ 	/* The official software sends this report after every change, so do it here as well */
+ 	ret = hid_hw_raw_request(priv->hdev, priv->secondary_ctrl_report_id,
+ 				 priv->secondary_ctrl_report, priv->secondary_ctrl_report_size,
+ 				 HID_FEATURE_REPORT, HID_REQ_SET_REPORT);
++
++record_access_and_ret:
++	priv->last_ctrl_report_op = ktime_get();
++
+ 	return ret;
+ }
+ 
+@@ -1524,6 +1555,7 @@ static int aqc_probe(struct hid_device *hdev, const struct hid_device_id *id)
+ 
+ 		priv->buffer_size = AQUAERO_CTRL_REPORT_SIZE;
+ 		priv->temp_ctrl_offset = AQUAERO_TEMP_CTRL_OFFSET;
++		priv->ctrl_report_delay = CTRL_REPORT_DELAY;
+ 
+ 		priv->temp_label = label_temp_sensors;
+ 		priv->virtual_temp_label = label_virtual_temp_sensors;
+@@ -1547,6 +1579,7 @@ static int aqc_probe(struct hid_device *hdev, const struct hid_device_id *id)
+ 		priv->temp_ctrl_offset = D5NEXT_TEMP_CTRL_OFFSET;
+ 
+ 		priv->buffer_size = D5NEXT_CTRL_REPORT_SIZE;
++		priv->ctrl_report_delay = CTRL_REPORT_DELAY;
+ 
+ 		priv->power_cycle_count_offset = D5NEXT_POWER_CYCLES;
+ 
+@@ -1597,6 +1630,7 @@ static int aqc_probe(struct hid_device *hdev, const struct hid_device_id *id)
+ 		priv->temp_ctrl_offset = OCTO_TEMP_CTRL_OFFSET;
+ 
+ 		priv->buffer_size = OCTO_CTRL_REPORT_SIZE;
++		priv->ctrl_report_delay = CTRL_REPORT_DELAY;
+ 
+ 		priv->power_cycle_count_offset = OCTO_POWER_CYCLES;
+ 
+@@ -1624,6 +1658,7 @@ static int aqc_probe(struct hid_device *hdev, const struct hid_device_id *id)
+ 		priv->temp_ctrl_offset = QUADRO_TEMP_CTRL_OFFSET;
+ 
+ 		priv->buffer_size = QUADRO_CTRL_REPORT_SIZE;
++		priv->ctrl_report_delay = CTRL_REPORT_DELAY;
+ 
+ 		priv->flow_pulses_ctrl_offset = QUADRO_FLOW_PULSES_CTRL_OFFSET;
+ 		priv->power_cycle_count_offset = QUADRO_POWER_CYCLES;
 
