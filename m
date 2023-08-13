@@ -2,51 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ED82D77AB68
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:21:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A9B5377ACE2
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:38:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230292AbjHMVVg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:21:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34410 "EHLO
+        id S232218AbjHMViO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:38:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46172 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229627AbjHMVVg (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:21:36 -0400
+        with ESMTP id S232221AbjHMViO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:38:14 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 100DD10D0
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:21:38 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D359B10E5
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:38:15 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A3DB062795
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:21:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E620C433C9;
-        Sun, 13 Aug 2023 21:21:36 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 720DC635AA
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:38:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89427C433C8;
+        Sun, 13 Aug 2023 21:38:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691961697;
-        bh=ZKG8s5xuZiblMO6eM1/BEJy75HQAz56zcA4G08jLXcE=;
+        s=korg; t=1691962694;
+        bh=YIim2C7tvSKuHNKNDL1vl/nusA/p/ze7IMNfV/U3HsM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=cq2QgWWX7jz/G2wSRBCpMN1pPKN9wA/xyiNq0kK9GS+KzFxfBrzVJz0jykDoacuBy
-         PI/+d7xfPAz4r7d0SAk/I3fvbpSg52X9n2az7w/kGgxdPw9ZSZroaQ5DG0MXut+E+1
-         erbi/4+SAeQPS+A7fRYMwahjpBojktdJjPcq7pY8=
+        b=pkpn3pVJWR4J9T8YzqCdcOMB9ZnPtnbOfoJOcicjqPYicVUu68R1Je6fN0YYcKiaR
+         PpjIAQgQ2BAqiGvCtHL4IkQTzymjRCqVM2n1l0ENRj+3eIf2Hl8hNAA/tlqaMENbd7
+         0cKNv9NvJaMNP14jMbJI3e8HgymERDl0QNdYh/OQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dan Carpenter <error27@gmail.com>,
-        Takashi Iwai <tiwai@suse.de>,
-        Kees Cook <keescook@chromium.org>,
-        "Luis R. Rodriguez" <mcgrof@ruslug.rutgers.edu>,
-        Scott Branden <sbranden@broadcom.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Brian Norris <briannorris@chromium.org>,
-        Mirsad Goran Todorovac <mirsad.todorovac@alu.unizg.hr>,
-        Dan Carpenter <dan.carpenter@linaro.org>
-Subject: [PATCH 4.14 07/26] test_firmware: return ENOMEM instead of ENOSPC on failed memory allocation
+        patches@lists.linux.dev, syzbot <syzkaller@googlegroups.com>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 095/149] dccp: fix data-race around dp->dccps_mss_cache
 Date:   Sun, 13 Aug 2023 23:19:00 +0200
-Message-ID: <20230813211703.269420619@linuxfoundation.org>
+Message-ID: <20230813211721.634147993@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211702.980427106@linuxfoundation.org>
-References: <20230813211702.980427106@linuxfoundation.org>
+In-Reply-To: <20230813211718.757428827@linuxfoundation.org>
+References: <20230813211718.757428827@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -60,87 +54,71 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Mirsad Goran Todorovac <mirsad.todorovac@alu.unizg.hr>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 7dae593cd226a0bca61201cf85ceb9335cf63682 upstream.
+commit a47e598fbd8617967e49d85c49c22f9fc642704c upstream.
 
-In a couple of situations like
+dccp_sendmsg() reads dp->dccps_mss_cache before locking the socket.
+Same thing in do_dccp_getsockopt().
 
-	name = kstrndup(buf, count, GFP_KERNEL);
-	if (!name)
-		return -ENOSPC;
+Add READ_ONCE()/WRITE_ONCE() annotations,
+and change dccp_sendmsg() to check again dccps_mss_cache
+after socket is locked.
 
-the error is not actually "No space left on device", but "Out of memory".
-
-It is semantically correct to return -ENOMEM in all failed kstrndup()
-and kzalloc() cases in this driver, as it is not a problem with disk
-space, but with kernel memory allocator failing allocation.
-
-The semantically correct should be:
-
-        name = kstrndup(buf, count, GFP_KERNEL);
-        if (!name)
-                return -ENOMEM;
-
-Cc: Dan Carpenter <error27@gmail.com>
-Cc: Takashi Iwai <tiwai@suse.de>
-Cc: Kees Cook <keescook@chromium.org>
-Cc: "Luis R. Rodriguez" <mcgrof@ruslug.rutgers.edu>
-Cc: Scott Branden <sbranden@broadcom.com>
-Cc: Hans de Goede <hdegoede@redhat.com>
-Cc: Brian Norris <briannorris@chromium.org>
-Fixes: c92316bf8e948 ("test_firmware: add batched firmware tests")
-Fixes: 0a8adf584759c ("test: add firmware_class loader test")
-Fixes: 548193cba2a7d ("test_firmware: add support for firmware_request_platform")
-Fixes: eb910947c82f9 ("test: firmware_class: add asynchronous request trigger")
-Fixes: 061132d2b9c95 ("test_firmware: add test custom fallback trigger")
-Fixes: 7feebfa487b92 ("test_firmware: add support for request_firmware_into_buf")
-Signed-off-by: Mirsad Goran Todorovac <mirsad.todorovac@alu.unizg.hr>
-Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
-Message-ID: <20230606070808.9300-1-mirsad.todorovac@alu.unizg.hr>
-Signed-off-by: Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>
+Fixes: 7c657876b63c ("[DCCP]: Initial implementation")
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Link: https://lore.kernel.org/r/20230803163021.2958262-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- lib/test_firmware.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ net/dccp/output.c |    2 +-
+ net/dccp/proto.c  |   10 ++++++++--
+ 2 files changed, 9 insertions(+), 3 deletions(-)
 
---- a/lib/test_firmware.c
-+++ b/lib/test_firmware.c
-@@ -159,7 +159,7 @@ static int __kstrncpy(char **dst, const
- {
- 	*dst = kstrndup(name, count, gfp);
- 	if (!*dst)
--		return -ENOSPC;
-+		return -ENOMEM;
- 	return count;
+--- a/net/dccp/output.c
++++ b/net/dccp/output.c
+@@ -187,7 +187,7 @@ unsigned int dccp_sync_mss(struct sock *
+ 
+ 	/* And store cached results */
+ 	icsk->icsk_pmtu_cookie = pmtu;
+-	dp->dccps_mss_cache = cur_mps;
++	WRITE_ONCE(dp->dccps_mss_cache, cur_mps);
+ 
+ 	return cur_mps;
  }
+--- a/net/dccp/proto.c
++++ b/net/dccp/proto.c
+@@ -627,7 +627,7 @@ static int do_dccp_getsockopt(struct soc
+ 		return dccp_getsockopt_service(sk, len,
+ 					       (__be32 __user *)optval, optlen);
+ 	case DCCP_SOCKOPT_GET_CUR_MPS:
+-		val = dp->dccps_mss_cache;
++		val = READ_ONCE(dp->dccps_mss_cache);
+ 		break;
+ 	case DCCP_SOCKOPT_AVAILABLE_CCIDS:
+ 		return ccid_getsockopt_builtin_ccids(sk, len, optval, optlen);
+@@ -736,7 +736,7 @@ int dccp_sendmsg(struct sock *sk, struct
  
-@@ -459,7 +459,7 @@ static ssize_t trigger_request_store(str
+ 	trace_dccp_probe(sk, len);
  
- 	name = kstrndup(buf, count, GFP_KERNEL);
- 	if (!name)
--		return -ENOSPC;
-+		return -ENOMEM;
+-	if (len > dp->dccps_mss_cache)
++	if (len > READ_ONCE(dp->dccps_mss_cache))
+ 		return -EMSGSIZE;
  
- 	pr_info("loading '%s'\n", name);
+ 	lock_sock(sk);
+@@ -769,6 +769,12 @@ int dccp_sendmsg(struct sock *sk, struct
+ 		goto out_discard;
+ 	}
  
-@@ -500,7 +500,7 @@ static ssize_t trigger_async_request_sto
- 
- 	name = kstrndup(buf, count, GFP_KERNEL);
- 	if (!name)
--		return -ENOSPC;
-+		return -ENOMEM;
- 
- 	pr_info("loading '%s'\n", name);
- 
-@@ -543,7 +543,7 @@ static ssize_t trigger_custom_fallback_s
- 
- 	name = kstrndup(buf, count, GFP_KERNEL);
- 	if (!name)
--		return -ENOSPC;
-+		return -ENOMEM;
- 
- 	pr_info("loading '%s' using custom fallback mechanism\n", name);
- 
++	/* We need to check dccps_mss_cache after socket is locked. */
++	if (len > dp->dccps_mss_cache) {
++		rc = -EMSGSIZE;
++		goto out_discard;
++	}
++
+ 	skb_reserve(skb, sk->sk_prot->max_header);
+ 	rc = memcpy_from_msg(skb_put(skb, len), msg, len);
+ 	if (rc != 0)
 
 
