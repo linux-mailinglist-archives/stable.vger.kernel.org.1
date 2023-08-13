@@ -2,53 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6E26377AC39
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:30:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F130277AE20
+	for <lists+stable@lfdr.de>; Mon, 14 Aug 2023 00:00:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231887AbjHMVal (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:30:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57434 "EHLO
+        id S232394AbjHMWA2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 18:00:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54400 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231873AbjHMVak (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:30:40 -0400
+        with ESMTP id S232378AbjHMV7V (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:59:21 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF18110DB
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:30:42 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C1DA92683
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:43:40 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 75DFB62B22
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:30:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B080C433C8;
-        Sun, 13 Aug 2023 21:30:41 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5778B623FF
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:43:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67157C433C7;
+        Sun, 13 Aug 2023 21:43:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691962241;
-        bh=OJg+T5Lg0O13AYYT+gVUpj2iBVGnVhWRj3qhBybT/bQ=;
+        s=korg; t=1691963019;
+        bh=UOMJ9aiNM/0ygEbZWLmlE8LuD7LMYe7kDBdxmhLoaZs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=BNDuHvw8h/cGDvqZD7a3FGrEPLeEIXw+5VxYdv0KhR6SnHkQ1jakkhSUMQRo4jZ/A
-         NRr3FyYNW0KbQ3CnCwbj9UZBvMkl/ApYlZiuD2JJkClWfQ+jszrrkDfl20f8PljL/w
-         BMto7ZoAPgecU6XslT9iFC5GPAfNbmsRSWBKJJH8=
+        b=qewJYGXkQvR647R0pYGsWNL2RC6pzKLl8iUBjRlkPfTxAG8zaxz8RHM2adWCMzg35
+         oPzgYnfmsZ8w1NsywZJd+eC+ytxrBMLOuEZxkpzDjs10AMkChW3z50HtSNU0IcZ8ND
+         d+eY/BOA4WL2t8DWuvlb+2EQlA9pzWhvwAWB2I3A=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Tony Zhu <tony.zhu@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Dave Jiang <dave.jiang@intel.com>,
-        Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.4 165/206] dmaengine: idxd: Clear PRS disable flag when disabling IDXD device
+        patches@lists.linux.dev, Sergei Antonov <saproj@gmail.com>,
+        Jonas Jensen <jonas.jensen@gmail.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 5.15 04/89] mmc: moxart: read scr register without changing byte order
 Date:   Sun, 13 Aug 2023 23:18:55 +0200
-Message-ID: <20230813211729.748277072@linuxfoundation.org>
+Message-ID: <20230813211710.916431267@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211724.969019629@linuxfoundation.org>
-References: <20230813211724.969019629@linuxfoundation.org>
+In-Reply-To: <20230813211710.787645394@linuxfoundation.org>
+References: <20230813211710.787645394@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -56,50 +55,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Fenghua Yu <fenghua.yu@intel.com>
+From: Sergei Antonov <saproj@gmail.com>
 
-commit 863676fe1ac1b82fc9eb56c242e80acfbfc18b76 upstream.
+commit d44263222134b5635932974c6177a5cba65a07e8 upstream.
 
-Disabling IDXD device doesn't reset Page Request Service (PRS)
-disable flag to its initial value 0. This may cause user confusion
-because once PRS is disabled user will see PRS still remains the
-previous setting (i.e. disabled) via sysfs interface even after the
-device is disabled.
+Conversion from big-endian to native is done in a common function
+mmc_app_send_scr(). Converting in moxart_transfer_pio() is extra.
+Double conversion on a LE system returns an incorrect SCR value,
+leads to errors:
 
-To eliminate user confusion, reset PRS disable flag to ensure that
-the PRS flag bit reflects correct state after the device is disabled.
+mmc0: unrecognised SCR structure version 8
 
-Additionally, simplify the code by setting wq->flags to 0, which clears
-all flag bits, including any future additions.
-
-Fixes: f2dc327131b5 ("dmaengine: idxd: add per wq PRS disable")
-Tested-by: Tony Zhu <tony.zhu@intel.com>
-Signed-off-by: Fenghua Yu <fenghua.yu@intel.com>
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-Link: https://lore.kernel.org/r/20230712193505.3440752-1-fenghua.yu@intel.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Fixes: 1b66e94e6b99 ("mmc: moxart: Add MOXA ART SD/MMC driver")
+Signed-off-by: Sergei Antonov <saproj@gmail.com>
+Cc: Jonas Jensen <jonas.jensen@gmail.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20230627120549.2400325-1-saproj@gmail.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma/idxd/device.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/mmc/host/moxart-mmc.c |    8 +-------
+ 1 file changed, 1 insertion(+), 7 deletions(-)
 
-diff --git a/drivers/dma/idxd/device.c b/drivers/dma/idxd/device.c
-index 5abbcc61c528..9a15f0d12c79 100644
---- a/drivers/dma/idxd/device.c
-+++ b/drivers/dma/idxd/device.c
-@@ -384,9 +384,7 @@ static void idxd_wq_disable_cleanup(struct idxd_wq *wq)
- 	wq->threshold = 0;
- 	wq->priority = 0;
- 	wq->enqcmds_retries = IDXD_ENQCMDS_RETRIES;
--	clear_bit(WQ_FLAG_DEDICATED, &wq->flags);
--	clear_bit(WQ_FLAG_BLOCK_ON_FAULT, &wq->flags);
--	clear_bit(WQ_FLAG_ATS_DISABLE, &wq->flags);
-+	wq->flags = 0;
- 	memset(wq->name, 0, WQ_NAME_SIZE);
- 	wq->max_xfer_bytes = WQ_DEFAULT_MAX_XFER;
- 	idxd_wq_set_max_batch_size(idxd->data->type, wq, WQ_DEFAULT_MAX_BATCH);
--- 
-2.41.0
-
+--- a/drivers/mmc/host/moxart-mmc.c
++++ b/drivers/mmc/host/moxart-mmc.c
+@@ -338,13 +338,7 @@ static void moxart_transfer_pio(struct m
+ 				return;
+ 			}
+ 			for (len = 0; len < remain && len < host->fifo_width;) {
+-				/* SCR data must be read in big endian. */
+-				if (data->mrq->cmd->opcode == SD_APP_SEND_SCR)
+-					*sgp = ioread32be(host->base +
+-							  REG_DATA_WINDOW);
+-				else
+-					*sgp = ioread32(host->base +
+-							REG_DATA_WINDOW);
++				*sgp = ioread32(host->base + REG_DATA_WINDOW);
+ 				sgp++;
+ 				len += 4;
+ 			}
 
 
