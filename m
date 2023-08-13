@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7787177ACC9
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:37:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 46D4D77AC1C
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:29:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232173AbjHMVhG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:37:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38872 "EHLO
+        id S231831AbjHMV3Z (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:29:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44678 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232176AbjHMVhF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:37:05 -0400
+        with ESMTP id S231804AbjHMV3Z (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:29:25 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D974210E3
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:37:07 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C0B610DB
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:29:27 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 71C4B632B3
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:37:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8924EC433C7;
-        Sun, 13 Aug 2023 21:37:06 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E48CE62AC6
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:29:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8CD1C433C7;
+        Sun, 13 Aug 2023 21:29:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691962626;
-        bh=KKrJewEweCq+o2GSa2egtb+0QTUA/2SzbvfNEBen7JY=;
+        s=korg; t=1691962166;
+        bh=n0v67YACvTUQXMZR49lG4H1m64K8P+DhK3T0nJ0nkzY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Yov4tUcnTNZ05XzHn1iToCHGMm6T98wU+8AXf1clIcuLVEekDqoEtj+0guc2O5qEQ
-         x02JqGjqExW0vA7e53GtcWp26J3xZNSgMmbgscYxV157LHaYrGkbe4owCDYHzX+7iz
-         1J5s3NkMECNX9g4cmauLuNGUlT2q8G7pn1tnJ3zo=
+        b=uYYMb07KG1jtjC0qft3Vghcmg7LdUVObGljx2tx8tE41Px1JRNXjShqWNWtI6jRzj
+         RVq6CH+vPoxr8EaKFJFOaY/omQZoCPN4u5L4gov5IlAvj/XBjLFDl5urSoMTc6J9Dn
+         7yyMj6RvhNUzSmd3rj9VkSLG/zWmE73w2kcIoFEw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Badhri Jagan Sridharan <badhri@google.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Subject: [PATCH 6.1 062/149] usb: typec: tcpm: Fix response to vsafe0V event
-Date:   Sun, 13 Aug 2023 23:18:27 +0200
-Message-ID: <20230813211720.662899320@linuxfoundation.org>
+        patches@lists.linux.dev, syzbot <syzkaller@googlegroups.com>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.4 138/206] dccp: fix data-race around dp->dccps_mss_cache
+Date:   Sun, 13 Aug 2023 23:18:28 +0200
+Message-ID: <20230813211728.970040349@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211718.757428827@linuxfoundation.org>
-References: <20230813211718.757428827@linuxfoundation.org>
+In-Reply-To: <20230813211724.969019629@linuxfoundation.org>
+References: <20230813211724.969019629@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,55 +55,71 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Badhri Jagan Sridharan <badhri@google.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 4270d2b4845e820b274702bfc2a7140f69e4d19d upstream.
+commit a47e598fbd8617967e49d85c49c22f9fc642704c upstream.
 
-Do not transition to SNK_UNATTACHED state when receiving vsafe0v event
-while in SNK_HARD_RESET_WAIT_VBUS. Ignore VBUS off events as well as
-in some platforms VBUS off can be signalled more than once.
+dccp_sendmsg() reads dp->dccps_mss_cache before locking the socket.
+Same thing in do_dccp_getsockopt().
 
-[143515.364753] Requesting mux state 1, usb-role 2, orientation 2
-[143515.365520] pending state change SNK_HARD_RESET_SINK_OFF -> SNK_HARD_RESET_SINK_ON @ 650 ms [rev3 HARD_RESET]
-[143515.632281] CC1: 0 -> 0, CC2: 3 -> 0 [state SNK_HARD_RESET_SINK_OFF, polarity 1, disconnected]
-[143515.637214] VBUS on
-[143515.664985] VBUS off
-[143515.664992] state change SNK_HARD_RESET_SINK_OFF -> SNK_HARD_RESET_WAIT_VBUS [rev3 HARD_RESET]
-[143515.665564] VBUS VSAFE0V
-[143515.665566] state change SNK_HARD_RESET_WAIT_VBUS -> SNK_UNATTACHED [rev3 HARD_RESET]
+Add READ_ONCE()/WRITE_ONCE() annotations,
+and change dccp_sendmsg() to check again dccps_mss_cache
+after socket is locked.
 
-Fixes: 28b43d3d746b ("usb: typec: tcpm: Introduce vsafe0v for vbus")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Badhri Jagan Sridharan <badhri@google.com>
-Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/20230712085722.1414743-1-badhri@google.com
+Fixes: 7c657876b63c ("[DCCP]: Initial implementation")
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Link: https://lore.kernel.org/r/20230803163021.2958262-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/typec/tcpm/tcpm.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ net/dccp/output.c |    2 +-
+ net/dccp/proto.c  |   10 ++++++++--
+ 2 files changed, 9 insertions(+), 3 deletions(-)
 
---- a/drivers/usb/typec/tcpm/tcpm.c
-+++ b/drivers/usb/typec/tcpm/tcpm.c
-@@ -5322,6 +5322,10 @@ static void _tcpm_pd_vbus_off(struct tcp
- 		/* Do nothing, vbus drop expected */
- 		break;
+--- a/net/dccp/output.c
++++ b/net/dccp/output.c
+@@ -187,7 +187,7 @@ unsigned int dccp_sync_mss(struct sock *
  
-+	case SNK_HARD_RESET_WAIT_VBUS:
-+		/* Do nothing, its OK to receive vbus off events */
-+		break;
-+
- 	default:
- 		if (port->pwr_role == TYPEC_SINK && port->attached)
- 			tcpm_set_state(port, SNK_UNATTACHED, tcpm_wait_for_discharge(port));
-@@ -5368,6 +5372,9 @@ static void _tcpm_pd_vbus_vsafe0v(struct
- 	case SNK_DEBOUNCED:
- 		/*Do nothing, still waiting for VSAFE5V for connect */
+ 	/* And store cached results */
+ 	icsk->icsk_pmtu_cookie = pmtu;
+-	dp->dccps_mss_cache = cur_mps;
++	WRITE_ONCE(dp->dccps_mss_cache, cur_mps);
+ 
+ 	return cur_mps;
+ }
+--- a/net/dccp/proto.c
++++ b/net/dccp/proto.c
+@@ -630,7 +630,7 @@ static int do_dccp_getsockopt(struct soc
+ 		return dccp_getsockopt_service(sk, len,
+ 					       (__be32 __user *)optval, optlen);
+ 	case DCCP_SOCKOPT_GET_CUR_MPS:
+-		val = dp->dccps_mss_cache;
++		val = READ_ONCE(dp->dccps_mss_cache);
  		break;
-+	case SNK_HARD_RESET_WAIT_VBUS:
-+		/* Do nothing, its OK to receive vbus off events */
-+		break;
- 	default:
- 		if (port->pwr_role == TYPEC_SINK && port->auto_vbus_discharge_enabled)
- 			tcpm_set_state(port, SNK_UNATTACHED, 0);
+ 	case DCCP_SOCKOPT_AVAILABLE_CCIDS:
+ 		return ccid_getsockopt_builtin_ccids(sk, len, optval, optlen);
+@@ -739,7 +739,7 @@ int dccp_sendmsg(struct sock *sk, struct
+ 
+ 	trace_dccp_probe(sk, len);
+ 
+-	if (len > dp->dccps_mss_cache)
++	if (len > READ_ONCE(dp->dccps_mss_cache))
+ 		return -EMSGSIZE;
+ 
+ 	lock_sock(sk);
+@@ -772,6 +772,12 @@ int dccp_sendmsg(struct sock *sk, struct
+ 		goto out_discard;
+ 	}
+ 
++	/* We need to check dccps_mss_cache after socket is locked. */
++	if (len > dp->dccps_mss_cache) {
++		rc = -EMSGSIZE;
++		goto out_discard;
++	}
++
+ 	skb_reserve(skb, sk->sk_prot->max_header);
+ 	rc = memcpy_from_msg(skb_put(skb, len), msg, len);
+ 	if (rc != 0)
 
 
