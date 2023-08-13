@@ -2,44 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 34C4377AD8E
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:49:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2FDC377AE14
+	for <lists+stable@lfdr.de>; Mon, 14 Aug 2023 00:00:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231130AbjHMVs5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:48:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57426 "EHLO
+        id S232568AbjHMWAY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 18:00:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40632 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232280AbjHMVs0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:48:26 -0400
+        with ESMTP id S231624AbjHMV7P (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:59:15 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4CDA01701
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:39:31 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 63F392D4E
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:44:43 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D757663815
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:39:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0545C433C8;
-        Sun, 13 Aug 2023 21:39:29 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id EC8D7628B4
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:44:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06BA5C433C8;
+        Sun, 13 Aug 2023 21:44:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691962770;
-        bh=GtEvnq/uif5boG73SgkeqjWTuGYjbYoVGaxeqonJRag=;
+        s=korg; t=1691963082;
+        bh=z1bi7sjIe+HcyufpBLtsmTUYkE6/ZIFOj1d7unzD9iU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=hb/3v2jS/APNfmDx0BxpkL97kiazjBBbFm1a3wOFJxhF5ToRPhOqXQWt82L6HRseC
-         MvgrGekd0C15dPgZ5up0d7j7ibrPCJKC2Q3Xrm8KUWqMQ5XC7u+psYE4PXtRKVj8KH
-         9V9Bf4UcLS/b9o+FYOkg61+v/YC4lGjxWrwBTD2k=
+        b=dJgX0hoT6nbyaPLmBB7agHF2f3gsbTNqsvkxkPQwquKZbrpQ6qN4Uk9yTO8kzhni3
+         o9rY5ghpgm0P3uLVD9OTfIq0LuDQMV06l59J9nipi2bRWQJHQPur7GrVdnLOxfkXDi
+         fZHwRmOAkP/IZvTYpM5zM020lsa/2eB9vmpNnoJs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Josef Bacik <josef@toxicpanda.com>,
-        David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.1 132/149] btrfs: set cache_block_group_error if we find an error
+        patches@lists.linux.dev, kernel test robot <oliver.sang@intel.com>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Sami Tolvanen <samitolvanen@google.com>,
+        Kees Cook <keescook@chromium.org>,
+        Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.15 46/89] mISDN: Update parameter type of dsp_cmx_send()
 Date:   Sun, 13 Aug 2023 23:19:37 +0200
-Message-ID: <20230813211722.666391270@linuxfoundation.org>
+Message-ID: <20230813211712.171368590@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211718.757428827@linuxfoundation.org>
-References: <20230813211718.757428827@linuxfoundation.org>
+In-Reply-To: <20230813211710.787645394@linuxfoundation.org>
+References: <20230813211710.787645394@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,47 +57,75 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Josef Bacik <josef@toxicpanda.com>
+From: Nathan Chancellor <nathan@kernel.org>
 
-commit 92fb94b69c6accf1e49fff699640fa0ce03dc910 upstream.
+commit 1696ec8654016dad3b1baf6c024303e584400453 upstream.
 
-We set cache_block_group_error if btrfs_cache_block_group() returns an
-error, this is because we could end up not finding space to allocate and
-mistakenly return -ENOSPC, and which could then abort the transaction
-with the incorrect errno, and in the case of ENOSPC result in a
-WARN_ON() that will trip up tests like generic/475.
+When booting a kernel with CONFIG_MISDN_DSP=y and CONFIG_CFI_CLANG=y,
+there is a failure when dsp_cmx_send() is called indirectly from
+call_timer_fn():
 
-However there's the case where multiple threads can be racing, one
-thread gets the proper error, and the other thread doesn't actually call
-btrfs_cache_block_group(), it instead sees ->cached ==
-BTRFS_CACHE_ERROR.  Again the result is the same, we fail to allocate
-our space and return -ENOSPC.  Instead we need to set
-cache_block_group_error to -EIO in this case to make sure that if we do
-not make our allocation we get the appropriate error returned back to
-the caller.
+  [    0.371412] CFI failure at call_timer_fn+0x2f/0x150 (target: dsp_cmx_send+0x0/0x530; expected type: 0x92ada1e9)
 
-CC: stable@vger.kernel.org # 4.14+
-Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+The function pointer prototype that call_timer_fn() expects is
+
+  void (*fn)(struct timer_list *)
+
+whereas dsp_cmx_send() has a parameter type of 'void *', which causes
+the control flow integrity checks to fail because the parameter types do
+not match.
+
+Change dsp_cmx_send()'s parameter type to be 'struct timer_list' to
+match the expected prototype. The argument is unused anyways, so this
+has no functional change, aside from avoiding the CFI failure.
+
+Reported-by: kernel test robot <oliver.sang@intel.com>
+Closes: https://lore.kernel.org/oe-lkp/202308020936.58787e6c-oliver.sang@intel.com
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Reviewed-by: Sami Tolvanen <samitolvanen@google.com>
+Reviewed-by: Kees Cook <keescook@chromium.org>
+Fixes: e313ac12eb13 ("mISDN: Convert timers to use timer_setup()")
+Link: https://lore.kernel.org/r/20230802-fix-dsp_cmx_send-cfi-failure-v1-1-2f2e79b0178d@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/extent-tree.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/isdn/mISDN/dsp.h      |    2 +-
+ drivers/isdn/mISDN/dsp_cmx.c  |    2 +-
+ drivers/isdn/mISDN/dsp_core.c |    2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
 
---- a/fs/btrfs/extent-tree.c
-+++ b/fs/btrfs/extent-tree.c
-@@ -4411,8 +4411,11 @@ have_block_group:
- 			ret = 0;
- 		}
+--- a/drivers/isdn/mISDN/dsp.h
++++ b/drivers/isdn/mISDN/dsp.h
+@@ -247,7 +247,7 @@ extern void dsp_cmx_hardware(struct dsp_
+ extern int dsp_cmx_conf(struct dsp *dsp, u32 conf_id);
+ extern void dsp_cmx_receive(struct dsp *dsp, struct sk_buff *skb);
+ extern void dsp_cmx_hdlc(struct dsp *dsp, struct sk_buff *skb);
+-extern void dsp_cmx_send(void *arg);
++extern void dsp_cmx_send(struct timer_list *arg);
+ extern void dsp_cmx_transmit(struct dsp *dsp, struct sk_buff *skb);
+ extern int dsp_cmx_del_conf_member(struct dsp *dsp);
+ extern int dsp_cmx_del_conf(struct dsp_conf *conf);
+--- a/drivers/isdn/mISDN/dsp_cmx.c
++++ b/drivers/isdn/mISDN/dsp_cmx.c
+@@ -1625,7 +1625,7 @@ static u16	dsp_count; /* last sample cou
+ static int	dsp_count_valid; /* if we have last sample count */
  
--		if (unlikely(block_group->cached == BTRFS_CACHE_ERROR))
-+		if (unlikely(block_group->cached == BTRFS_CACHE_ERROR)) {
-+			if (!cache_block_group_error)
-+				cache_block_group_error = -EIO;
- 			goto loop;
-+		}
+ void
+-dsp_cmx_send(void *arg)
++dsp_cmx_send(struct timer_list *arg)
+ {
+ 	struct dsp_conf *conf;
+ 	struct dsp_conf_member *member;
+--- a/drivers/isdn/mISDN/dsp_core.c
++++ b/drivers/isdn/mISDN/dsp_core.c
+@@ -1195,7 +1195,7 @@ static int __init dsp_init(void)
+ 	}
  
- 		bg_ret = NULL;
- 		ret = do_allocation(block_group, ffe_ctl, &bg_ret);
+ 	/* set sample timer */
+-	timer_setup(&dsp_spl_tl, (void *)dsp_cmx_send, 0);
++	timer_setup(&dsp_spl_tl, dsp_cmx_send, 0);
+ 	dsp_spl_tl.expires = jiffies + dsp_tics;
+ 	dsp_spl_jiffies = dsp_spl_tl.expires;
+ 	add_timer(&dsp_spl_tl);
 
 
