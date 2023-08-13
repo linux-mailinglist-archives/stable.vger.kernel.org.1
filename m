@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EA39D77AB8A
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:23:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 75FE877AD95
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:49:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229975AbjHMVXE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:23:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59238 "EHLO
+        id S232355AbjHMVtd (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:49:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41276 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231137AbjHMVXD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:23:03 -0400
+        with ESMTP id S232358AbjHMVtF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:49:05 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1090910D7
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:23:04 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BE42A19B5
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:41:23 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8EDE56285B
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:23:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E446C433C7;
-        Sun, 13 Aug 2023 21:23:02 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5371C61A36
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:41:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 674F8C433C8;
+        Sun, 13 Aug 2023 21:41:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691961783;
-        bh=4uzxwxiMUNN0d6t9TGZlC2qNg0P82PuwKAiaqudrInk=;
+        s=korg; t=1691962882;
+        bh=AO17ks+BVk7cg90ZOhuVWOIp63tLrMHqP5j2RQYvl7o=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=W5QQOmN6RUS2wFx4OXSaHwPp4595ulz6M2PDn1w7VCFIAH7WJAfPImX/TMJPkVJAN
-         iUmDpfR0OKXXFvdcIEr0ZGUprbg/KbaqHQUU18HGZSGZWoJLuGqNNq3MhqQy4HLlwP
-         /+DV85lU9FSqZE87Cc5i0wgRnygbiL8n6qk57ZJE=
+        b=RznHMEW2UPgrGZVWymP1TX5Gs54+jXvTWUJJusMeOM8EgiRWGbnLUde+2zJu7fAqb
+         gSr71PpnSMyfZ7bZLiz+6kiuphFtPV61D1RRvSOfPRKl51M6OelwkyPnWauIEAZcII
+         4aXyRM91jIzKKMXbZBuHAzawRpnAFA8d9SyCCTQ4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zhu Wang <wangzhu9@huawei.com>,
-        Bart Van Assche <bvanassche@acm.org>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 4.19 31/33] scsi: core: Fix possible memory leak if device_add() fails
+        patches@lists.linux.dev, Prashanth K <quic_prashk@quicinc.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Subject: [PATCH 5.10 24/68] usb: common: usb-conn-gpio: Prevent bailing out if initial role is none
 Date:   Sun, 13 Aug 2023 23:19:25 +0200
-Message-ID: <20230813211705.072214145@linuxfoundation.org>
+Message-ID: <20230813211708.893665512@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211703.915807095@linuxfoundation.org>
-References: <20230813211703.915807095@linuxfoundation.org>
+In-Reply-To: <20230813211708.149630011@linuxfoundation.org>
+References: <20230813211708.149630011@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,34 +56,62 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Zhu Wang <wangzhu9@huawei.com>
+From: Prashanth K <quic_prashk@quicinc.com>
 
-commit 04b5b5cb0136ce970333a9c6cec7e46adba1ea3a upstream.
+commit 8e21a620c7e6e00347ade1a6ed4967b359eada5a upstream.
 
-If device_add() returns error, the name allocated by dev_set_name() needs
-be freed. As the comment of device_add() says, put_device() should be used
-to decrease the reference count in the error path. So fix this by calling
-put_device(), then the name can be freed in kobject_cleanp().
+Currently if we bootup a device without cable connected, then
+usb-conn-gpio won't call set_role() because last_role is same
+as current role. This happens since last_role gets initialised
+to zero during the probe.
 
-Fixes: ee959b00c335 ("SCSI: convert struct class_device to struct device")
-Signed-off-by: Zhu Wang <wangzhu9@huawei.com>
-Link: https://lore.kernel.org/r/20230803020230.226903-1-wangzhu9@huawei.com
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+To avoid this, add a new flag initial_detection into struct
+usb_conn_info, which prevents bailing out during initial
+detection.
+
+Cc: <stable@vger.kernel.org> # 5.4
+Fixes: 4602f3bff266 ("usb: common: add USB GPIO based connection detection driver")
+Signed-off-by: Prashanth K <quic_prashk@quicinc.com>
+Tested-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/1690880632-12588-1-git-send-email-quic_prashk@quicinc.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/raid_class.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/usb/common/usb-conn-gpio.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/drivers/scsi/raid_class.c
-+++ b/drivers/scsi/raid_class.c
-@@ -249,6 +249,7 @@ int raid_component_add(struct raid_templ
- 	return 0;
+--- a/drivers/usb/common/usb-conn-gpio.c
++++ b/drivers/usb/common/usb-conn-gpio.c
+@@ -42,6 +42,7 @@ struct usb_conn_info {
  
- err_out:
-+	put_device(&rc->dev);
- 	list_del(&rc->node);
- 	rd->component_count--;
- 	put_device(component_dev);
+ 	struct power_supply_desc desc;
+ 	struct power_supply *charger;
++	bool initial_detection;
+ };
+ 
+ /*
+@@ -86,11 +87,13 @@ static void usb_conn_detect_cable(struct
+ 	dev_dbg(info->dev, "role %d/%d, gpios: id %d, vbus %d\n",
+ 		info->last_role, role, id, vbus);
+ 
+-	if (info->last_role == role) {
++	if (!info->initial_detection && info->last_role == role) {
+ 		dev_warn(info->dev, "repeated role: %d\n", role);
+ 		return;
+ 	}
+ 
++	info->initial_detection = false;
++
+ 	if (info->last_role == USB_ROLE_HOST && info->vbus)
+ 		regulator_disable(info->vbus);
+ 
+@@ -277,6 +280,7 @@ static int usb_conn_probe(struct platfor
+ 	platform_set_drvdata(pdev, info);
+ 
+ 	/* Perform initial detection */
++	info->initial_detection = true;
+ 	usb_conn_queue_dwork(info, 0);
+ 
+ 	return 0;
 
 
