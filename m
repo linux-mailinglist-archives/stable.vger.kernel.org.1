@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D1EBD77ADBD
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:53:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0818277AD35
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:48:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231270AbjHMVxc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:53:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41318 "EHLO
+        id S231419AbjHMVsN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:48:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45166 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231445AbjHMVvu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:51:50 -0400
+        with ESMTP id S232367AbjHMVqz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:46:55 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C19D4199B
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:48:55 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3BFB02D57
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:46:55 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6069863F76
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:48:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A02CC433C7;
-        Sun, 13 Aug 2023 21:48:54 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CFBFE60B9D
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:46:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8EE5C433C7;
+        Sun, 13 Aug 2023 21:46:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691963334;
-        bh=7WeVPtxduEj7ngh8M0XXZ1o1ZFbHVrPm1q/E9C1mE90=;
+        s=korg; t=1691963214;
+        bh=KRX/t8PFG6skDqH2WM10mDazglIzsOQBl4IZ2Kzwuqg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=IZL2IsYmujRHIviaNG8XiD6mlEZFps2u46uOd9QSgw1SQhTcmF3d+SgjB8OBu3yOj
-         YhWY1+RrbE0tTPMqdmpfmmKxGfuOkGjiUnMqTHcz3m62C6t+X7qtVbhYa5v7XTUspE
-         5EhCWp/x0qyTCbNsevy9FOSlARPlNTQNd3dO/Y64=
+        b=L3VgFbiSrR5CFBY2zMw7EwvhkX6KxyyyaHk27de6W3aZtUj9AfyCxB8g4lopXLVSC
+         Sbsil391QHKrEr+bZPm4zQC9BoS22KPEY9TZenOTaIgb33/+wX30v/rbycF3ySAMgH
+         sRxIQ28uO6Tso6K3dh84vFgPkg7oB30Hco2Kdvxs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Nick Child <nnac123@linux.ibm.com>,
-        Simon Horman <horms@kernel.org>,
-        Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.4 27/39] ibmvnic: Handle DMA unmapping of login buffs in release functions
+        patches@lists.linux.dev, Frederic Weisbecker <frederic@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        "Joel Fernandes (Google)" <joel@joelfernandes.org>,
+        "Paul E . McKenney" <paulmck@kernel.org>
+Subject: [PATCH 5.15 87/89] tick: Detect and fix jiffies update stall
 Date:   Sun, 13 Aug 2023 23:20:18 +0200
-Message-ID: <20230813211705.738086607@linuxfoundation.org>
+Message-ID: <20230813211713.367727818@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211704.796906808@linuxfoundation.org>
-References: <20230813211704.796906808@linuxfoundation.org>
+In-Reply-To: <20230813211710.787645394@linuxfoundation.org>
+References: <20230813211710.787645394@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,73 +55,87 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Nick Child <nnac123@linux.ibm.com>
+From: Frederic Weisbecker <frederic@kernel.org>
 
-commit d78a671eb8996af19d6311ecdee9790d2fa479f0 upstream.
+[ Upstream commit a1ff03cd6fb9c501fff63a4a2bface9adcfa81cd ]
 
-Rather than leaving the DMA unmapping of the login buffers to the
-login response handler, move this work into the login release functions.
-Previously, these functions were only used for freeing the allocated
-buffers. This could lead to issues if there are more than one
-outstanding login buffer requests, which is possible if a login request
-times out.
+tick: Detect and fix jiffies update stall
 
-If a login request times out, then there is another call to send login.
-The send login function makes a call to the login buffer release
-function. In the past, this freed the buffers but did not DMA unmap.
-Therefore, the VIOS could still write to the old login (now freed)
-buffer. It is for this reason that it is a good idea to leave the DMA
-unmap call to the login buffers release function.
+On some rare cases, the timekeeper CPU may be delaying its jiffies
+update duty for a while. Known causes include:
 
-Since the login buffer release functions now handle DMA unmapping,
-remove the duplicate DMA unmapping in handle_login_rsp().
+* The timekeeper is waiting on stop_machine in a MULTI_STOP_DISABLE_IRQ
+  or MULTI_STOP_RUN state. Disabled interrupts prevent from timekeeping
+  updates while waiting for the target CPU to complete its
+  stop_machine() callback.
 
-Fixes: dff515a3e71d ("ibmvnic: Harden device login requests")
-Signed-off-by: Nick Child <nnac123@linux.ibm.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20230809221038.51296-3-nnac123@linux.ibm.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+* The timekeeper vcpu has VMEXIT'ed for a long while due to some overload
+  on the host.
+
+Detect and fix these situations with emergency timekeeping catchups.
+
+Original-patch-by: Paul E. McKenney <paulmck@kernel.org>
+Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Joel Fernandes (Google) <joel@joelfernandes.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/ibm/ibmvnic.c |   15 ++++++++++-----
- 1 file changed, 10 insertions(+), 5 deletions(-)
+ kernel/time/tick-sched.c |   17 +++++++++++++++++
+ kernel/time/tick-sched.h |    4 ++++
+ 2 files changed, 21 insertions(+)
 
---- a/drivers/net/ethernet/ibm/ibmvnic.c
-+++ b/drivers/net/ethernet/ibm/ibmvnic.c
-@@ -873,12 +873,22 @@ static int ibmvnic_login(struct net_devi
- 
- static void release_login_buffer(struct ibmvnic_adapter *adapter)
- {
-+	if (!adapter->login_buf)
-+		return;
-+
-+	dma_unmap_single(&adapter->vdev->dev, adapter->login_buf_token,
-+			 adapter->login_buf_sz, DMA_TO_DEVICE);
- 	kfree(adapter->login_buf);
- 	adapter->login_buf = NULL;
+--- a/kernel/time/tick-sched.c
++++ b/kernel/time/tick-sched.c
+@@ -180,6 +180,8 @@ static ktime_t tick_init_jiffy_update(vo
+ 	return period;
  }
  
- static void release_login_rsp_buffer(struct ibmvnic_adapter *adapter)
- {
-+	if (!adapter->login_rsp_buf)
-+		return;
++#define MAX_STALLED_JIFFIES 5
 +
-+	dma_unmap_single(&adapter->vdev->dev, adapter->login_rsp_buf_token,
-+			 adapter->login_rsp_buf_sz, DMA_FROM_DEVICE);
- 	kfree(adapter->login_rsp_buf);
- 	adapter->login_rsp_buf = NULL;
- }
-@@ -4298,11 +4308,6 @@ static int handle_login_rsp(union ibmvni
- 	struct ibmvnic_login_buffer *login = adapter->login_buf;
- 	int i;
+ static void tick_sched_do_timer(struct tick_sched *ts, ktime_t now)
+ {
+ 	int cpu = smp_processor_id();
+@@ -207,6 +209,21 @@ static void tick_sched_do_timer(struct t
+ 	if (tick_do_timer_cpu == cpu)
+ 		tick_do_update_jiffies64(now);
  
--	dma_unmap_single(dev, adapter->login_buf_token, adapter->login_buf_sz,
--			 DMA_TO_DEVICE);
--	dma_unmap_single(dev, adapter->login_rsp_buf_token,
--			 adapter->login_rsp_buf_sz, DMA_FROM_DEVICE);
--
- 	/* If the number of queues requested can't be allocated by the
- 	 * server, the login response will return with code 1. We will need
- 	 * to resend the login buffer with fewer queues requested.
++	/*
++	 * If jiffies update stalled for too long (timekeeper in stop_machine()
++	 * or VMEXIT'ed for several msecs), force an update.
++	 */
++	if (ts->last_tick_jiffies != jiffies) {
++		ts->stalled_jiffies = 0;
++		ts->last_tick_jiffies = READ_ONCE(jiffies);
++	} else {
++		if (++ts->stalled_jiffies == MAX_STALLED_JIFFIES) {
++			tick_do_update_jiffies64(now);
++			ts->stalled_jiffies = 0;
++			ts->last_tick_jiffies = READ_ONCE(jiffies);
++		}
++	}
++
+ 	if (ts->inidle)
+ 		ts->got_idle_tick = 1;
+ }
+--- a/kernel/time/tick-sched.h
++++ b/kernel/time/tick-sched.h
+@@ -49,6 +49,8 @@ enum tick_nohz_mode {
+  * @timer_expires_base:	Base time clock monotonic for @timer_expires
+  * @next_timer:		Expiry time of next expiring timer for debugging purpose only
+  * @tick_dep_mask:	Tick dependency mask - is set, if someone needs the tick
++ * @last_tick_jiffies:	Value of jiffies seen on last tick
++ * @stalled_jiffies:	Number of stalled jiffies detected across ticks
+  */
+ struct tick_sched {
+ 	struct hrtimer			sched_timer;
+@@ -77,6 +79,8 @@ struct tick_sched {
+ 	u64				next_timer;
+ 	ktime_t				idle_expires;
+ 	atomic_t			tick_dep_mask;
++	unsigned long			last_tick_jiffies;
++	unsigned int			stalled_jiffies;
+ };
+ 
+ extern struct tick_sched *tick_get_tick_sched(int cpu);
 
 
