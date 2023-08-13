@@ -2,54 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E757F77ABCB
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:25:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 04D1877ABF3
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:27:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231693AbjHMVZu (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:25:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58874 "EHLO
+        id S231764AbjHMV1e (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:27:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51166 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231694AbjHMVZu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:25:50 -0400
+        with ESMTP id S231749AbjHMV1e (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:27:34 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BAA9B10D7
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:25:51 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3768810DB
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:27:36 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 509F36296B
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:25:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A371C433C7;
-        Sun, 13 Aug 2023 21:25:50 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C1DC3629FC
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:27:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAD9DC433C7;
+        Sun, 13 Aug 2023 21:27:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691961950;
-        bh=atJjrL+ptAlLAYKvgwmhLvnPFN82Hy/vBCI5lb6BTLs=;
+        s=korg; t=1691962055;
+        bh=ZRh2f5TqOLb1WrPh7iyXrwNoXbGyXkFuPyAUAufco1I=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=JZM5AbDNpmweM3JUliu5HZpsYxJRy2A9wVba/xBxPKn1Fpv7mmUDj8E6LxLHE0dyH
-         tVdipIeD2vMQXinILxic0cHYuSnCoIlADQcdIzH7GQtAV1G2LhtqKfK/JvAQXLd75B
-         MOYj6rrPDgxxbs6ehiPZc3jxTm2woChPa4vg89bg=
+        b=I4WnBF/8A5JmiFKTVsyy/6knb7FIYuQCgKFY6W5DwkdVOIe8TvffuVgChX0uC4zz/
+         unr/jC/g8oduG1SeuxhaT0WKY0CsRH6ndSeD/pQJ/qFyMX0quMocAeVslBD7ox/wr8
+         5NacE5bASzQtFRgnUH3ewS31TeW8517nUvB3vwf4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Lorenzo Stoakes <lstoakes@gmail.com>,
-        Jiri Olsa <olsajiri@gmail.com>, Jiri Olsa <jolsa@kernel.org>,
-        Will Deacon <will@kernel.org>,
-        Alexander Viro <viro@zeniv.linux.org.uk>,
-        Ard Biesheuvel <ardb@kernel.org>, Baoquan He <bhe@redhat.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        David Hildenbrand <david@redhat.com>,
-        Jens Axboe <axboe@kernel.dk>,
-        Kefeng Wang <wangkefeng.wang@huawei.com>,
-        Liu Shixin <liushixin2@huawei.com>,
-        Matthew Wilcox <willy@infradead.org>,
-        Mike Galbraith <efault@gmx.de>,
-        Thorsten Leemhuis <regressions@leemhuis.info>,
-        "Uladzislau Rezki (Sony)" <urezki@gmail.com>,
+        patches@lists.linux.dev,
+        Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+        syzbot+74db8b3087f293d3a13a@syzkaller.appspotmail.com,
         Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.4 056/206] fs/proc/kcore: reinstate bounce buffer for KCORE_TEXT regions
-Date:   Sun, 13 Aug 2023 23:17:06 +0200
-Message-ID: <20230813211726.620901350@linuxfoundation.org>
+Subject: [PATCH 6.4 057/206] nilfs2: fix use-after-free of nilfs_root in dirtying inodes via iput
+Date:   Sun, 13 Aug 2023 23:17:07 +0200
+Message-ID: <20230813211726.647510258@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230813211724.969019629@linuxfoundation.org>
 References: <20230813211724.969019629@linuxfoundation.org>
@@ -67,119 +56,120 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Lorenzo Stoakes <lstoakes@gmail.com>
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-commit 17457784004c84178798432a029ab20e14f728b1 upstream.
+commit f8654743a0e6909dc634cbfad6db6816f10f3399 upstream.
 
-Some architectures do not populate the entire range categorised by
-KCORE_TEXT, so we must ensure that the kernel address we read from is
-valid.
+During unmount process of nilfs2, nothing holds nilfs_root structure after
+nilfs2 detaches its writer in nilfs_detach_log_writer().  Previously,
+nilfs_evict_inode() could cause use-after-free read for nilfs_root if
+inodes are left in "garbage_list" and released by nilfs_dispose_list at
+the end of nilfs_detach_log_writer(), and this bug was fixed by commit
+9b5a04ac3ad9 ("nilfs2: fix use-after-free bug of nilfs_root in
+nilfs_evict_inode()").
 
-Unfortunately there is no solution currently available to do so with a
-purely iterator solution so reinstate the bounce buffer in this instance
-so we can use copy_from_kernel_nofault() in order to avoid page faults
-when regions are unmapped.
+However, it turned out that there is another possibility of UAF in the
+call path where mark_inode_dirty_sync() is called from iput():
 
-This change partly reverts commit 2e1c0170771e ("fs/proc/kcore: avoid
-bounce buffer for ktext data"), reinstating the bounce buffer, but adapts
-the code to continue to use an iterator.
+nilfs_detach_log_writer()
+  nilfs_dispose_list()
+    iput()
+      mark_inode_dirty_sync()
+        __mark_inode_dirty()
+          nilfs_dirty_inode()
+            __nilfs_mark_inode_dirty()
+              nilfs_load_inode_block() --> causes UAF of nilfs_root struct
 
-[lstoakes@gmail.com: correct comment to be strictly correct about reasoning]
-  Link: https://lkml.kernel.org/r/525a3f14-74fa-4c22-9fca-9dab4de8a0c3@lucifer.local
-Link: https://lkml.kernel.org/r/20230731215021.70911-1-lstoakes@gmail.com
-Fixes: 2e1c0170771e ("fs/proc/kcore: avoid bounce buffer for ktext data")
-Signed-off-by: Lorenzo Stoakes <lstoakes@gmail.com>
-Reported-by: Jiri Olsa <olsajiri@gmail.com>
-Closes: https://lore.kernel.org/all/ZHc2fm+9daF6cgCE@krava
-Tested-by: Jiri Olsa <jolsa@kernel.org>
-Tested-by: Will Deacon <will@kernel.org>
-Cc: Alexander Viro <viro@zeniv.linux.org.uk>
-Cc: Ard Biesheuvel <ardb@kernel.org>
-Cc: Baoquan He <bhe@redhat.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Jens Axboe <axboe@kernel.dk>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc: Liu Shixin <liushixin2@huawei.com>
-Cc: Matthew Wilcox <willy@infradead.org>
-Cc: Mike Galbraith <efault@gmx.de>
-Cc: Thorsten Leemhuis <regressions@leemhuis.info>
-Cc: Uladzislau Rezki (Sony) <urezki@gmail.com>
-Cc: <stable@vger.kernel.org>
+This can happen after commit 0ae45f63d4ef ("vfs: add support for a
+lazytime mount option"), which changed iput() to call
+mark_inode_dirty_sync() on its final reference if i_state has I_DIRTY_TIME
+flag and i_nlink is non-zero.
+
+This issue appears after commit 28a65b49eb53 ("nilfs2: do not write dirty
+data after degenerating to read-only") when using the syzbot reproducer,
+but the issue has potentially existed before.
+
+Fix this issue by adding a "purging flag" to the nilfs structure, setting
+that flag while disposing the "garbage_list" and checking it in
+__nilfs_mark_inode_dirty().
+
+Unlike commit 9b5a04ac3ad9 ("nilfs2: fix use-after-free bug of nilfs_root
+in nilfs_evict_inode()"), this patch does not rely on ns_writer to
+determine whether to skip operations, so as not to break recovery on
+mount.  The nilfs_salvage_orphan_logs routine dirties the buffer of
+salvaged data before attaching the log writer, so changing
+__nilfs_mark_inode_dirty() to skip the operation when ns_writer is NULL
+will cause recovery write to fail.  The purpose of using the cleanup-only
+flag is to allow for narrowing of such conditions.
+
+Link: https://lkml.kernel.org/r/20230728191318.33047-1-konishi.ryusuke@gmail.com
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Reported-by: syzbot+74db8b3087f293d3a13a@syzkaller.appspotmail.com
+Closes: https://lkml.kernel.org/r/000000000000b4e906060113fd63@google.com
+Fixes: 0ae45f63d4ef ("vfs: add support for a lazytime mount option")
+Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Cc: <stable@vger.kernel.org> # 4.0+
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/proc/kcore.c | 30 +++++++++++++++++++++++++++---
- 1 file changed, 27 insertions(+), 3 deletions(-)
+ fs/nilfs2/inode.c     |    8 ++++++++
+ fs/nilfs2/segment.c   |    2 ++
+ fs/nilfs2/the_nilfs.h |    2 ++
+ 3 files changed, 12 insertions(+)
 
-diff --git a/fs/proc/kcore.c b/fs/proc/kcore.c
-index 9cb32e1a78a0..23fc24d16b31 100644
---- a/fs/proc/kcore.c
-+++ b/fs/proc/kcore.c
-@@ -309,6 +309,8 @@ static void append_kcore_note(char *notes, size_t *i, const char *name,
+--- a/fs/nilfs2/inode.c
++++ b/fs/nilfs2/inode.c
+@@ -1101,9 +1101,17 @@ int nilfs_set_file_dirty(struct inode *i
  
- static ssize_t read_kcore_iter(struct kiocb *iocb, struct iov_iter *iter)
+ int __nilfs_mark_inode_dirty(struct inode *inode, int flags)
  {
-+	struct file *file = iocb->ki_filp;
-+	char *buf = file->private_data;
- 	loff_t *fpos = &iocb->ki_pos;
- 	size_t phdrs_offset, notes_offset, data_offset;
- 	size_t page_offline_frozen = 1;
-@@ -555,10 +557,21 @@ static ssize_t read_kcore_iter(struct kiocb *iocb, struct iov_iter *iter)
- 		case KCORE_VMEMMAP:
- 		case KCORE_TEXT:
- 			/*
--			 * We use _copy_to_iter() to bypass usermode hardening
--			 * which would otherwise prevent this operation.
-+			 * Sadly we must use a bounce buffer here to be able to
-+			 * make use of copy_from_kernel_nofault(), as these
-+			 * memory regions might not always be mapped on all
-+			 * architectures.
- 			 */
--			if (_copy_to_iter((char *)start, tsz, iter) != tsz) {
-+			if (copy_from_kernel_nofault(buf, (void *)start, tsz)) {
-+				if (iov_iter_zero(tsz, iter) != tsz) {
-+					ret = -EFAULT;
-+					goto out;
-+				}
-+			/*
-+			 * We know the bounce buffer is safe to copy from, so
-+			 * use _copy_to_iter() directly.
-+			 */
-+			} else if (_copy_to_iter(buf, tsz, iter) != tsz) {
- 				ret = -EFAULT;
- 				goto out;
- 			}
-@@ -595,6 +608,10 @@ static int open_kcore(struct inode *inode, struct file *filp)
- 	if (ret)
- 		return ret;
++	struct the_nilfs *nilfs = inode->i_sb->s_fs_info;
+ 	struct buffer_head *ibh;
+ 	int err;
  
-+	filp->private_data = kmalloc(PAGE_SIZE, GFP_KERNEL);
-+	if (!filp->private_data)
-+		return -ENOMEM;
++	/*
++	 * Do not dirty inodes after the log writer has been detached
++	 * and its nilfs_root struct has been freed.
++	 */
++	if (unlikely(nilfs_purging(nilfs)))
++		return 0;
 +
- 	if (kcore_need_update)
- 		kcore_update_ram();
- 	if (i_size_read(inode) != proc_root_kcore->size) {
-@@ -605,9 +622,16 @@ static int open_kcore(struct inode *inode, struct file *filp)
- 	return 0;
+ 	err = nilfs_load_inode_block(inode, &ibh);
+ 	if (unlikely(err)) {
+ 		nilfs_warn(inode->i_sb,
+--- a/fs/nilfs2/segment.c
++++ b/fs/nilfs2/segment.c
+@@ -2845,6 +2845,7 @@ void nilfs_detach_log_writer(struct supe
+ 		nilfs_segctor_destroy(nilfs->ns_writer);
+ 		nilfs->ns_writer = NULL;
+ 	}
++	set_nilfs_purging(nilfs);
+ 
+ 	/* Force to free the list of dirty files */
+ 	spin_lock(&nilfs->ns_inode_lock);
+@@ -2857,4 +2858,5 @@ void nilfs_detach_log_writer(struct supe
+ 	up_write(&nilfs->ns_segctor_sem);
+ 
+ 	nilfs_dispose_list(nilfs, &garbage_list, 1);
++	clear_nilfs_purging(nilfs);
  }
- 
-+static int release_kcore(struct inode *inode, struct file *file)
-+{
-+	kfree(file->private_data);
-+	return 0;
-+}
-+
- static const struct proc_ops kcore_proc_ops = {
- 	.proc_read_iter	= read_kcore_iter,
- 	.proc_open	= open_kcore,
-+	.proc_release	= release_kcore,
- 	.proc_lseek	= default_llseek,
+--- a/fs/nilfs2/the_nilfs.h
++++ b/fs/nilfs2/the_nilfs.h
+@@ -29,6 +29,7 @@ enum {
+ 	THE_NILFS_DISCONTINUED,	/* 'next' pointer chain has broken */
+ 	THE_NILFS_GC_RUNNING,	/* gc process is running */
+ 	THE_NILFS_SB_DIRTY,	/* super block is dirty */
++	THE_NILFS_PURGING,	/* disposing dirty files for cleanup */
  };
  
--- 
-2.41.0
-
+ /**
+@@ -208,6 +209,7 @@ THE_NILFS_FNS(INIT, init)
+ THE_NILFS_FNS(DISCONTINUED, discontinued)
+ THE_NILFS_FNS(GC_RUNNING, gc_running)
+ THE_NILFS_FNS(SB_DIRTY, sb_dirty)
++THE_NILFS_FNS(PURGING, purging)
+ 
+ /*
+  * Mount option operations
 
 
