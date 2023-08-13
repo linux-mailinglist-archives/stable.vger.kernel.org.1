@@ -2,85 +2,93 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B848777ACE7
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:38:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8CCCE77AD8C
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:49:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232222AbjHMVi1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:38:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53284 "EHLO
+        id S230413AbjHMVt3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:49:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39648 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232227AbjHMVi1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:38:27 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2898910DD
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:38:29 -0700 (PDT)
+        with ESMTP id S232280AbjHMVtE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:49:04 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B33401BF7
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:42:06 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BB3B6636C7
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:38:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1720C433C7;
-        Sun, 13 Aug 2023 21:38:27 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 48D8B60B9D
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:42:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E988C433C7;
+        Sun, 13 Aug 2023 21:42:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691962708;
-        bh=Dbj2Hx0+kdpjHVdqSZ5/XwpdvKqRVkjpWihUDD6EIkI=;
+        s=korg; t=1691962925;
+        bh=cVcaP475DPfDO5xgHArzZ59pco84P6EIcczICc8hmgs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=oFmxjqDDiW5t+MH0ULIhwVTbQQMGOPdO+ndQw9nezYFrSFYfrVPfdypPRPVbWvIMP
-         +Gl3K90Fk6LatifwMZeWFVouclU0RDp7rX1CFbGux1Eue1H1oENMKQVcEva1vMZbzt
-         BnnEtA0sl3D7QIayFEH1JVXbmuuK2bTl/e/OOgDQ=
+        b=GmaiNg1WF7NCX08R7KohFHwrTZ2cQdNkEiCM+8QqsLCzXrT1IrD5QkCa9IqYHJvLR
+         UDUu0fHh9VTi3wONj+voOskQDUBtn5+EI0NX8zC0A04kXXok22SSEo4o+tOYp205V6
+         X+JG7tSPuoBrjZx3ltW0p4jczDZwRvWaG04D/3RQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Linus Walleij <linus.walleij@linaro.org>
-Subject: [PATCH 6.1 126/149] gpio: sim: mark the GPIO chip as a one that can sleep
+        patches@lists.linux.dev, Olaf Skibbe <news@kravcenko.com>,
+        Lyude Paul <lyude@redhat.com>,
+        Karol Herbst <kherbst@redhat.com>
+Subject: [PATCH 5.10 30/68] drm/nouveau/disp: Revert a NULL check inside nouveau_connector_get_modes
 Date:   Sun, 13 Aug 2023 23:19:31 +0200
-Message-ID: <20230813211722.494853297@linuxfoundation.org>
+Message-ID: <20230813211709.073563418@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211718.757428827@linuxfoundation.org>
-References: <20230813211718.757428827@linuxfoundation.org>
+In-Reply-To: <20230813211708.149630011@linuxfoundation.org>
+References: <20230813211708.149630011@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+From: Karol Herbst <kherbst@redhat.com>
 
-commit 5a78d5db9c90c9dc84212f40a5f2687b7cafc8ec upstream.
+commit d5712cd22b9cf109fded1b7f178f4c1888c8b84b upstream.
 
-Simulated chips use a mutex for synchronization in driver callbacks so
-they must not be called from interrupt context. Set the can_sleep field
-of the GPIO chip to true to force users to only use threaded irqs.
+The original commit adding that check tried to protect the kenrel against
+a potential invalid NULL pointer access.
 
-Fixes: cb8c474e79be ("gpio: sim: new testing module")
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+However we call nouveau_connector_detect_depth once without a native_mode
+set on purpose for non LVDS connectors and this broke DP support in a few
+cases.
+
+Cc: Olaf Skibbe <news@kravcenko.com>
+Cc: Lyude Paul <lyude@redhat.com>
+Closes: https://gitlab.freedesktop.org/drm/nouveau/-/issues/238
+Closes: https://gitlab.freedesktop.org/drm/nouveau/-/issues/245
+Fixes: 20a2ce87fbaf8 ("drm/nouveau/dp: check for NULL nv_connector->native_mode")
+Signed-off-by: Karol Herbst <kherbst@redhat.com>
+Reviewed-by: Lyude Paul <lyude@redhat.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230805101813.2603989-1-kherbst@redhat.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpio/gpio-sim.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/nouveau/nouveau_connector.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpio/gpio-sim.c
-+++ b/drivers/gpio/gpio-sim.c
-@@ -425,6 +425,7 @@ static int gpio_sim_add_bank(struct fwno
- 	gc->set_config = gpio_sim_set_config;
- 	gc->to_irq = gpio_sim_to_irq;
- 	gc->free = gpio_sim_free;
-+	gc->can_sleep = true;
+--- a/drivers/gpu/drm/nouveau/nouveau_connector.c
++++ b/drivers/gpu/drm/nouveau/nouveau_connector.c
+@@ -947,7 +947,7 @@ nouveau_connector_get_modes(struct drm_c
+ 	/* Determine display colour depth for everything except LVDS now,
+ 	 * DP requires this before mode_valid() is called.
+ 	 */
+-	if (connector->connector_type != DRM_MODE_CONNECTOR_LVDS && nv_connector->native_mode)
++	if (connector->connector_type != DRM_MODE_CONNECTOR_LVDS)
+ 		nouveau_connector_detect_depth(connector);
  
- 	ret = devm_gpiochip_add_data(dev, gc, chip);
- 	if (ret)
+ 	/* Find the native mode if this is a digital panel, if we didn't
 
 
