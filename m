@@ -2,112 +2,130 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8D5B577AC56
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:32:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6CD2577ACE0
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:38:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231933AbjHMVcP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:32:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56234 "EHLO
+        id S232215AbjHMViJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:38:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46090 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231934AbjHMVcO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:32:14 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89E451700
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:32:10 -0700 (PDT)
+        with ESMTP id S232208AbjHMViI (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:38:08 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 91F5010DB
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:38:10 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E8C1162B5A
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:32:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05CE0C433C7;
-        Sun, 13 Aug 2023 21:32:04 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 25202635AC
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:38:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35D69C433C9;
+        Sun, 13 Aug 2023 21:38:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691962325;
-        bh=aYo3nfS70hiuAR6MC1KJQmyn4pU0OCZceC9spGImXIg=;
+        s=korg; t=1691962689;
+        bh=vzwl6Jm9xdoA/G6T+A4zdxqkLezkvJNyvOm9JEbwKnM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=CaDCKOgsPux2cniIT0Mq4jMynwhp0VSx6nxUIm20l1i8MQw4nAMGYrD0VE5os2RvH
-         h0isSDu+ZY7snE4ea2l7wLjFGhpUcomKeJENnk7gQSucjbO7y6yq7f5xeKbuS94yK9
-         K9llK8s/8iz1Gbr+8AnlL0wP7cuPirECf/JLbrww=
+        b=Z1ViOjPUa2AAPSox48+OKskudiMRdt0gNzvAhoHrC86G4BOTH6K3RiIW4IvwvuQWK
+         bF9sPXN68qJ43s4F01a78WXwCP9QEPRSbkFusvhCJpkpn0cZP6HK5omUUMIIxlhIBe
+         IhrrnlsPHGONPj+kLfB+CRjnik28JeieQoSV8vOs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Sesidhar Baddela <sebaddel@cisco.com>,
-        Karan Tilak Kumar <kartilak@cisco.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.4 195/206] scsi: fnic: Replace return codes in fnic_clean_pending_aborts()
+        patches@lists.linux.dev, Nick Child <nnac123@linux.ibm.com>,
+        Simon Horman <horms@kernel.org>,
+        Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 120/149] ibmvnic: Enforce stronger sanity checks on login response
 Date:   Sun, 13 Aug 2023 23:19:25 +0200
-Message-ID: <20230813211730.600035704@linuxfoundation.org>
+Message-ID: <20230813211722.328888206@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211724.969019629@linuxfoundation.org>
-References: <20230813211724.969019629@linuxfoundation.org>
+In-Reply-To: <20230813211718.757428827@linuxfoundation.org>
+References: <20230813211718.757428827@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Karan Tilak Kumar <kartilak@cisco.com>
+From: Nick Child <nnac123@linux.ibm.com>
 
-commit 5a43b07a87835660f91d88a4db11abfea8c523b7 upstream.
+commit db17ba719bceb52f0ae4ebca0e4c17d9a3bebf05 upstream.
 
-fnic_clean_pending_aborts() was returning a non-zero value irrespective of
-failure or success.  This caused the caller of this function to assume that
-the device reset had failed, even though it would succeed in most cases. As
-a consequence, a successful device reset would escalate to host reset.
+Ensure that all offsets in a login response buffer are within the size
+of the allocated response buffer. Any offsets or lengths that surpass
+the allocation are likely the result of an incomplete response buffer.
+In these cases, a full reset is necessary.
 
-Reviewed-by: Sesidhar Baddela <sebaddel@cisco.com>
-Tested-by: Karan Tilak Kumar <kartilak@cisco.com>
-Signed-off-by: Karan Tilak Kumar <kartilak@cisco.com>
-Link: https://lore.kernel.org/r/20230727193919.2519-1-kartilak@cisco.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+When attempting to login, the ibmvnic device will allocate a response
+buffer and pass a reference to the VIOS. The VIOS will then send the
+ibmvnic device a LOGIN_RSP CRQ to signal that the buffer has been filled
+with data. If the ibmvnic device does not get a response in 20 seconds,
+the old buffer is freed and a new login request is sent. With 2
+outstanding requests, any LOGIN_RSP CRQ's could be for the older
+login request. If this is the case then the login response buffer (which
+is for the newer login request) could be incomplete and contain invalid
+data. Therefore, we must enforce strict sanity checks on the response
+buffer values.
+
+Testing has shown that the `off_rxadd_buff_size` value is filled in last
+by the VIOS and will be the smoking gun for these circumstances.
+
+Until VIOS can implement a mechanism for tracking outstanding response
+buffers and a method for mapping a LOGIN_RSP CRQ to a particular login
+response buffer, the best ibmvnic can do in this situation is perform a
+full reset.
+
+Fixes: dff515a3e71d ("ibmvnic: Harden device login requests")
+Signed-off-by: Nick Child <nnac123@linux.ibm.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/20230809221038.51296-1-nnac123@linux.ibm.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/fnic/fnic.h      |    2 +-
- drivers/scsi/fnic/fnic_scsi.c |    6 ++++--
- 2 files changed, 5 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/ibm/ibmvnic.c |   18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
---- a/drivers/scsi/fnic/fnic.h
-+++ b/drivers/scsi/fnic/fnic.h
-@@ -27,7 +27,7 @@
+--- a/drivers/net/ethernet/ibm/ibmvnic.c
++++ b/drivers/net/ethernet/ibm/ibmvnic.c
+@@ -5192,6 +5192,7 @@ static int handle_login_rsp(union ibmvni
+ 	int num_tx_pools;
+ 	int num_rx_pools;
+ 	u64 *size_array;
++	u32 rsp_len;
+ 	int i;
  
- #define DRV_NAME		"fnic"
- #define DRV_DESCRIPTION		"Cisco FCoE HBA Driver"
--#define DRV_VERSION		"1.6.0.54"
-+#define DRV_VERSION		"1.6.0.55"
- #define PFX			DRV_NAME ": "
- #define DFX                     DRV_NAME "%d: "
- 
---- a/drivers/scsi/fnic/fnic_scsi.c
-+++ b/drivers/scsi/fnic/fnic_scsi.c
-@@ -2139,7 +2139,7 @@ static int fnic_clean_pending_aborts(str
- 				     bool new_sc)
- 
- {
--	int ret = SUCCESS;
-+	int ret = 0;
- 	struct fnic_pending_aborts_iter_data iter_data = {
- 		.fnic = fnic,
- 		.lun_dev = lr_sc->device,
-@@ -2159,9 +2159,11 @@ static int fnic_clean_pending_aborts(str
- 
- 	/* walk again to check, if IOs are still pending in fw */
- 	if (fnic_is_abts_pending(fnic, lr_sc))
--		ret = FAILED;
-+		ret = 1;
- 
- clean_pending_aborts_end:
-+	FNIC_SCSI_DBG(KERN_INFO, fnic->lport->host,
-+			"%s: exit status: %d\n", __func__, ret);
- 	return ret;
- }
- 
+ 	/* CHECK: Test/set of login_pending does not need to be atomic
+@@ -5243,6 +5244,23 @@ static int handle_login_rsp(union ibmvni
+ 		ibmvnic_reset(adapter, VNIC_RESET_FATAL);
+ 		return -EIO;
+ 	}
++
++	rsp_len = be32_to_cpu(login_rsp->len);
++	if (be32_to_cpu(login->login_rsp_len) < rsp_len ||
++	    rsp_len <= be32_to_cpu(login_rsp->off_txsubm_subcrqs) ||
++	    rsp_len <= be32_to_cpu(login_rsp->off_rxadd_subcrqs) ||
++	    rsp_len <= be32_to_cpu(login_rsp->off_rxadd_buff_size) ||
++	    rsp_len <= be32_to_cpu(login_rsp->off_supp_tx_desc)) {
++		/* This can happen if a login request times out and there are
++		 * 2 outstanding login requests sent, the LOGIN_RSP crq
++		 * could have been for the older login request. So we are
++		 * parsing the newer response buffer which may be incomplete
++		 */
++		dev_err(dev, "FATAL: Login rsp offsets/lengths invalid\n");
++		ibmvnic_reset(adapter, VNIC_RESET_FATAL);
++		return -EIO;
++	}
++
+ 	size_array = (u64 *)((u8 *)(adapter->login_rsp_buf) +
+ 		be32_to_cpu(adapter->login_rsp_buf->off_rxadd_buff_size));
+ 	/* variable buffer sizes are not supported, so just read the
 
 
