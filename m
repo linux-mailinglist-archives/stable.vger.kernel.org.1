@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7AB6177AD40
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:48:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 332B977AD5E
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:49:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231903AbjHMVsR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:48:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40504 "EHLO
+        id S232377AbjHMVtH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:49:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41288 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232311AbjHMVpm (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:45:42 -0400
+        with ESMTP id S231263AbjHMVsd (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:48:33 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A39AA2D69
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:45:41 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 574711FEE
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:42:47 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 39F9261C1D
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:45:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 290F8C433C8;
-        Sun, 13 Aug 2023 21:45:39 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E32B061A2D
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:42:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC8E9C433C7;
+        Sun, 13 Aug 2023 21:42:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691963140;
-        bh=qw9STLvFISGBFnU4pQxeQ4qxmkOcs/k/SXu+foGmvk0=;
+        s=korg; t=1691962966;
+        bh=tmZkOUylTn/zQgLuENPBmJpQWoV5hZ2QtTdTdyXGtq8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=A/vvAgbF1F9KmjHMlksxdIhub1eXDZ/ui1l3lfcC5VePgdcA9+/3wewV91zPbMAgv
-         8LPVCvaZiXLsu5+3XLY3o7cOSP+clfrjPPib7yOOwe+XdBV3ohjO5XngrL6AiHyKD9
-         UlR1/3PhgkGCZP0FsjAM4JUteEC6d5aLadJtldSM=
+        b=QAGC0LaLXeZoRhD+hBXrzcztsRaerqVaPFULFAEx/JSYSRjFvZsH+IFnZ272B5lfI
+         o6YhUdSPwN4RxOUuZKQEih4ipASLEkAnsVQD9FsJoLQ7Oem2Vg+QcS8iJ5MDf3FafH
+         /wn3h7xfAY2zXpAz4lMtDhnV9cVgupWXscOPlYUI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Nick Child <nnac123@linux.ibm.com>,
-        Simon Horman <horms@kernel.org>,
-        Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.15 68/89] ibmvnic: Unmap DMA login rsp buffer on send login fail
+        patches@lists.linux.dev, Ming Lei <ming.lei@redhat.com>,
+        Yi Zhang <yi.zhang@redhat.com>,
+        Sagi Grimberg <sagi@grimberg.me>,
+        Keith Busch <kbusch@kernel.org>
+Subject: [PATCH 5.10 58/68] nvme-rdma: fix potential unbalanced freeze & unfreeze
 Date:   Sun, 13 Aug 2023 23:19:59 +0200
-Message-ID: <20230813211712.819434424@linuxfoundation.org>
+Message-ID: <20230813211709.907243351@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211710.787645394@linuxfoundation.org>
-References: <20230813211710.787645394@linuxfoundation.org>
+In-Reply-To: <20230813211708.149630011@linuxfoundation.org>
+References: <20230813211708.149630011@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,41 +56,62 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Nick Child <nnac123@linux.ibm.com>
+From: Ming Lei <ming.lei@redhat.com>
 
-commit 411c565b4bc63e9584a8493882bd566e35a90588 upstream.
+commit 29b434d1e49252b3ad56ad3197e47fafff5356a1 upstream.
 
-If the LOGIN CRQ fails to send then we must DMA unmap the response
-buffer. Previously, if the CRQ failed then the memory was freed without
-DMA unmapping.
+Move start_freeze into nvme_rdma_configure_io_queues(), and there is
+at least two benefits:
 
-Fixes: c98d9cc4170d ("ibmvnic: send_login should check for crq errors")
-Signed-off-by: Nick Child <nnac123@linux.ibm.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20230809221038.51296-2-nnac123@linux.ibm.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+1) fix unbalanced freeze and unfreeze, since re-connection work may
+fail or be broken by removal
+
+2) IO during error recovery can be failfast quickly because nvme fabrics
+unquiesces queues after teardown.
+
+One side-effect is that !mpath request may timeout during connecting
+because of queue topo change, but that looks not one big deal:
+
+1) same problem exists with current code base
+
+2) compared with !mpath, mpath use case is dominant
+
+Fixes: 9f98772ba307 ("nvme-rdma: fix controller reset hang during traffic")
+Cc: stable@vger.kernel.org
+Signed-off-by: Ming Lei <ming.lei@redhat.com>
+Tested-by: Yi Zhang <yi.zhang@redhat.com>
+Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/ibm/ibmvnic.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/nvme/host/rdma.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/net/ethernet/ibm/ibmvnic.c
-+++ b/drivers/net/ethernet/ibm/ibmvnic.c
-@@ -4220,11 +4220,14 @@ static int send_login(struct ibmvnic_ada
- 	if (rc) {
- 		adapter->login_pending = false;
- 		netdev_err(adapter->netdev, "Failed to send login, rc=%d\n", rc);
--		goto buf_rsp_map_failed;
-+		goto buf_send_failed;
- 	}
+--- a/drivers/nvme/host/rdma.c
++++ b/drivers/nvme/host/rdma.c
+@@ -989,6 +989,7 @@ static int nvme_rdma_configure_io_queues
+ 		goto out_cleanup_connect_q;
  
- 	return 0;
- 
-+buf_send_failed:
-+	dma_unmap_single(dev, rsp_buffer_token, rsp_buffer_size,
-+			 DMA_FROM_DEVICE);
- buf_rsp_map_failed:
- 	kfree(login_rsp_buffer);
- 	adapter->login_rsp_buf = NULL;
+ 	if (!new) {
++		nvme_start_freeze(&ctrl->ctrl);
+ 		nvme_start_queues(&ctrl->ctrl);
+ 		if (!nvme_wait_freeze_timeout(&ctrl->ctrl, NVME_IO_TIMEOUT)) {
+ 			/*
+@@ -997,6 +998,7 @@ static int nvme_rdma_configure_io_queues
+ 			 * to be safe.
+ 			 */
+ 			ret = -ENODEV;
++			nvme_unfreeze(&ctrl->ctrl);
+ 			goto out_wait_freeze_timed_out;
+ 		}
+ 		blk_mq_update_nr_hw_queues(ctrl->ctrl.tagset,
+@@ -1042,7 +1044,6 @@ static void nvme_rdma_teardown_io_queues
+ 		bool remove)
+ {
+ 	if (ctrl->ctrl.queue_count > 1) {
+-		nvme_start_freeze(&ctrl->ctrl);
+ 		nvme_stop_queues(&ctrl->ctrl);
+ 		nvme_sync_io_queues(&ctrl->ctrl);
+ 		nvme_rdma_stop_io_queues(ctrl);
 
 
