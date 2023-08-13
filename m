@@ -2,47 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AF68577AD69
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:49:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5E9E877AE1E
+	for <lists+stable@lfdr.de>; Mon, 14 Aug 2023 00:00:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229519AbjHMVtL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:49:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60444 "EHLO
+        id S232315AbjHMWA2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 18:00:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54392 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229758AbjHMVst (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:48:49 -0400
+        with ESMTP id S232394AbjHMV7U (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:59:20 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7CD2B1718
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:39:52 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C961418F
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:43:05 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 106D463815
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:39:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20D07C433C7;
-        Sun, 13 Aug 2023 21:39:50 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 60B3C62913
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:43:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CEB1C433C8;
+        Sun, 13 Aug 2023 21:43:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691962791;
-        bh=amwjw9XamkyBWuFCZmLa0aWzXafwZbMjz29nSRQUV0Y=;
+        s=korg; t=1691962984;
+        bh=IaQdm7LkzryXjbAwr34+oFh68C878eWILHgPQlw6Jhc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=nOjn77Q9eFNTAeFyJPRum4JnZTv4iNZSDIgxwbwTSH2NYqprtiDKlLNsoibvRrDvf
-         xXKTWdUhnShUF5A33G4WFxjmjIWX0n1SjT5bifWSd4GnTTPHvOARXTqDusHQiL804x
-         4glqavIj7ASUE8+zQYd8ROhCOal2PCWXDcZSF0Cs=
+        b=il9nN5cIlucs7G2ep7sgBmebzNJqnxWkb94GHkmw+WYq/azmYT/7wvA622Ziyc6+n
+         nlQQHH3UubF0oOuHwtdRwc14UW+qgBsyVAAQZEzWj0DiekWMSe2oFqt8e7t0XxtINv
+         9miS8IYkTkGsr1nfbiByCVGVHCPg4GESDLQFdkE8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, "Jason A. Donenfeld" <Jason@zx2c4.com>,
-        Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.10 01/68] wireguard: allowedips: expand maximum node depth
+        patches@lists.linux.dev, Tao Ren <rentao.bupt@gmail.com>,
+        Guenter Roeck <linux@roeck-us.net>
+Subject: [PATCH 5.15 11/89] hwmon: (pmbus/bel-pfe) Enable PMBUS_SKIP_STATUS_CHECK for pfe1100
 Date:   Sun, 13 Aug 2023 23:19:02 +0200
-Message-ID: <20230813211708.195399867@linuxfoundation.org>
+Message-ID: <20230813211711.114918287@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211708.149630011@linuxfoundation.org>
-References: <20230813211708.149630011@linuxfoundation.org>
+In-Reply-To: <20230813211710.787645394@linuxfoundation.org>
+References: <20230813211710.787645394@linuxfoundation.org>
 User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -56,97 +54,62 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jason A. Donenfeld <Jason@zx2c4.com>
+From: Tao Ren <rentao.bupt@gmail.com>
 
-commit 46622219aae2b67813fe31a7b8cb7da5baff5c8a upstream.
+commit f38963b9cd0645a336cf30c5da2e89e34e34fec3 upstream.
 
-In the allowedips self-test, nodes are inserted into the tree, but it
-generated an even amount of nodes, but for checking maximum node depth,
-there is of course the root node, which makes the total number
-necessarily odd. With two few nodes added, it never triggered the
-maximum depth check like it should have. So, add 129 nodes instead of
-128 nodes, and do so with a more straightforward scheme, starting with
-all the bits set, and shifting over one each time. Then increase the
-maximum depth to 129, and choose a better name for that variable to
-make it clear that it represents depth as opposed to bits.
+Skip status check for both pfe1100 and pfe3000 because the communication
+error is also observed on pfe1100 devices.
 
+Signed-off-by: Tao Ren <rentao.bupt@gmail.com>
+Fixes: 626bb2f3fb3c hwmon: (pmbus) add driver for BEL PFE1100 and PFE3000
 Cc: stable@vger.kernel.org
-Fixes: e7096c131e51 ("net: WireGuard secure network tunnel")
-Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
-Link: https://lore.kernel.org/r/20230807132146.2191597-2-Jason@zx2c4.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Link: https://lore.kernel.org/r/20230804221403.28931-1-rentao.bupt@gmail.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireguard/allowedips.c          |    8 ++++----
- drivers/net/wireguard/selftest/allowedips.c |   16 ++++++++++------
- 2 files changed, 14 insertions(+), 10 deletions(-)
+ drivers/hwmon/pmbus/bel-pfe.c |   16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
---- a/drivers/net/wireguard/allowedips.c
-+++ b/drivers/net/wireguard/allowedips.c
-@@ -6,7 +6,7 @@
- #include "allowedips.h"
- #include "peer.h"
+--- a/drivers/hwmon/pmbus/bel-pfe.c
++++ b/drivers/hwmon/pmbus/bel-pfe.c
+@@ -17,12 +17,13 @@
+ enum chips {pfe1100, pfe3000};
  
--enum { MAX_ALLOWEDIPS_BITS = 128 };
-+enum { MAX_ALLOWEDIPS_DEPTH = 129 };
+ /*
+- * Disable status check for pfe3000 devices, because some devices report
+- * communication error (invalid command) for VOUT_MODE command (0x20)
+- * although correct VOUT_MODE (0x16) is returned: it leads to incorrect
+- * exponent in linear mode.
++ * Disable status check because some devices report communication error
++ * (invalid command) for VOUT_MODE command (0x20) although the correct
++ * VOUT_MODE (0x16) is returned: it leads to incorrect exponent in linear
++ * mode.
++ * This affects both pfe3000 and pfe1100.
+  */
+-static struct pmbus_platform_data pfe3000_plat_data = {
++static struct pmbus_platform_data pfe_plat_data = {
+ 	.flags = PMBUS_SKIP_STATUS_CHECK,
+ };
  
- static struct kmem_cache *node_cache;
+@@ -94,16 +95,15 @@ static int pfe_pmbus_probe(struct i2c_cl
+ 	int model;
  
-@@ -42,7 +42,7 @@ static void push_rcu(struct allowedips_n
- 		     struct allowedips_node __rcu *p, unsigned int *len)
- {
- 	if (rcu_access_pointer(p)) {
--		if (WARN_ON(IS_ENABLED(DEBUG) && *len >= MAX_ALLOWEDIPS_BITS))
-+		if (WARN_ON(IS_ENABLED(DEBUG) && *len >= MAX_ALLOWEDIPS_DEPTH))
- 			return;
- 		stack[(*len)++] = rcu_dereference_raw(p);
- 	}
-@@ -55,7 +55,7 @@ static void node_free_rcu(struct rcu_hea
+ 	model = (int)i2c_match_id(pfe_device_id, client)->driver_data;
++	client->dev.platform_data = &pfe_plat_data;
  
- static void root_free_rcu(struct rcu_head *rcu)
- {
--	struct allowedips_node *node, *stack[MAX_ALLOWEDIPS_BITS] = {
-+	struct allowedips_node *node, *stack[MAX_ALLOWEDIPS_DEPTH] = {
- 		container_of(rcu, struct allowedips_node, rcu) };
- 	unsigned int len = 1;
- 
-@@ -68,7 +68,7 @@ static void root_free_rcu(struct rcu_hea
- 
- static void root_remove_peer_lists(struct allowedips_node *root)
- {
--	struct allowedips_node *node, *stack[MAX_ALLOWEDIPS_BITS] = { root };
-+	struct allowedips_node *node, *stack[MAX_ALLOWEDIPS_DEPTH] = { root };
- 	unsigned int len = 1;
- 
- 	while (len > 0 && (node = stack[--len])) {
---- a/drivers/net/wireguard/selftest/allowedips.c
-+++ b/drivers/net/wireguard/selftest/allowedips.c
-@@ -593,16 +593,20 @@ bool __init wg_allowedips_selftest(void)
- 	wg_allowedips_remove_by_peer(&t, a, &mutex);
- 	test_negative(4, a, 192, 168, 0, 1);
- 
--	/* These will hit the WARN_ON(len >= MAX_ALLOWEDIPS_BITS) in free_node
-+	/* These will hit the WARN_ON(len >= MAX_ALLOWEDIPS_DEPTH) in free_node
- 	 * if something goes wrong.
+ 	/*
+ 	 * PFE3000-12-069RA devices may not stay in page 0 during device
+ 	 * probe which leads to probe failure (read status word failed).
+ 	 * So let's set the device to page 0 at the beginning.
  	 */
--	for (i = 0; i < MAX_ALLOWEDIPS_BITS; ++i) {
--		part = cpu_to_be64(~(1LLU << (i % 64)));
--		memset(&ip, 0xff, 16);
--		memcpy((u8 *)&ip + (i < 64) * 8, &part, 8);
-+	for (i = 0; i < 64; ++i) {
-+		part = cpu_to_be64(~0LLU << i);
-+		memset(&ip, 0xff, 8);
-+		memcpy((u8 *)&ip + 8, &part, 8);
-+		wg_allowedips_insert_v6(&t, &ip, 128, a, &mutex);
-+		memcpy(&ip, &part, 8);
-+		memset((u8 *)&ip + 8, 0, 8);
- 		wg_allowedips_insert_v6(&t, &ip, 128, a, &mutex);
- 	}
--
-+	memset(&ip, 0, 16);
-+	wg_allowedips_insert_v6(&t, &ip, 128, a, &mutex);
- 	wg_allowedips_free(&t, &mutex);
+-	if (model == pfe3000) {
+-		client->dev.platform_data = &pfe3000_plat_data;
++	if (model == pfe3000)
+ 		i2c_smbus_write_byte_data(client, PMBUS_PAGE, 0);
+-	}
  
- 	wg_allowedips_init(&t);
+ 	return pmbus_do_probe(client, &pfe_driver_info[model]);
+ }
 
 
