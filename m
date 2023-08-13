@@ -2,49 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0BC3277AB8C
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:23:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ADC0B77AD51
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:48:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231230AbjHMVXJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:23:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59104 "EHLO
+        id S232281AbjHMVs0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:48:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33248 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230103AbjHMVXI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:23:08 -0400
+        with ESMTP id S231139AbjHMVsH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:48:07 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 43CA7EE
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:23:09 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 063551BE9
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:41:56 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CD28362866
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:23:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0A37C433C9;
-        Sun, 13 Aug 2023 21:23:07 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8EFF460B9D
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:41:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3409C433C9;
+        Sun, 13 Aug 2023 21:41:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691961788;
-        bh=e359yJop2fp5uwsKmsGRxJqrc8tJ3j6u1dUOUgmEzvM=;
+        s=korg; t=1691962915;
+        bh=fdcXeXRWJyJDF02tP8DTmtxOIjkYmWa8oiWYmqT+qFg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=0k4ixmmmbNkdwR1IPqzDFV4DOE33II/vDTmKuvmXrl7McJgXZME3bp2ip9MpwnmEj
-         Xjobki8Gs9jBORgXflq8O7hqBeqh12Tkjv3aqFwyrxYPTM5CoJ2NdRkaxAMkBlhw9c
-         FavOCgW3uwLl/iWzhmIoPEiDDaJcxscidon1LroQ=
+        b=174eIu2oqg4glqbjo14Ji/Z1ChTVrCJ8sJFcfR+VbQ1tYkSDhqZq9Vb6hEKrfr5Fa
+         Ov4PX4yqMC8PZ4+sfoFCvK7NziBf+R85ELET2hf7T0dSbPPzCNUzqm1xHtWomKRlGY
+         rX8LJ8RSJL0u4d/bSO/FQorWcydLsIJ5nmiKz9eA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, syzbot <syzkaller@googlegroups.com>,
-        Eric Dumazet <edumazet@google.com>,
-        Stephen Hemminger <stephen@networkplumber.org>,
-        Jamal Hadi Salim <jhs@mojatatu.com>,
-        Simon Horman <simon.horman@corigine.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Fedor Pchelkin <pchelkin@ispras.ru>
-Subject: [PATCH 4.19 33/33] sch_netem: fix issues in netem_change() vs get_dist_table()
+        patches@lists.linux.dev,
+        Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
+        "Borislav Petkov (AMD)" <bp@alien8.de>
+Subject: [PATCH 5.10 26/68] x86/cpu/amd: Enable Zenbleed fix for AMD Custom APU 0405
 Date:   Sun, 13 Aug 2023 23:19:27 +0200
-Message-ID: <20230813211705.141126984@linuxfoundation.org>
+Message-ID: <20230813211708.953515083@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211703.915807095@linuxfoundation.org>
-References: <20230813211703.915807095@linuxfoundation.org>
+In-Reply-To: <20230813211708.149630011@linuxfoundation.org>
+References: <20230813211708.149630011@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -59,148 +55,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Eric Dumazet <edumazet@google.com>
+From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
 
-commit 11b73313c12403f617b47752db0ab3deef201af7 upstream.
+commit 6dbef74aeb090d6bee7d64ef3fa82ae6fa53f271 upstream.
 
-In blamed commit, I missed that get_dist_table() was allocating
-memory using GFP_KERNEL, and acquiring qdisc lock to perform
-the swap of newly allocated table with current one.
+Commit
 
-In this patch, get_dist_table() is allocating memory and
-copy user data before we acquire the qdisc lock.
+  522b1d69219d ("x86/cpu/amd: Add a Zenbleed fix")
 
-Then we perform swap operations while being protected by the lock.
+provided a fix for the Zen2 VZEROUPPER data corruption bug affecting
+a range of CPU models, but the AMD Custom APU 0405 found on SteamDeck
+was not listed, although it is clearly affected by the vulnerability.
 
-Note that after this patch netem_change() no longer can do partial changes.
-If an error is returned, qdisc conf is left unchanged.
+Add this CPU variant to the Zenbleed erratum list, in order to
+unconditionally enable the fallback fix until a proper microcode update
+is available.
 
-Fixes: 2174a08db80d ("sch_netem: acquire qdisc lock in netem_change()")
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Stephen Hemminger <stephen@networkplumber.org>
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Link: https://lore.kernel.org/r/20230622181503.2327695-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Fixes: 522b1d69219d ("x86/cpu/amd: Add a Zenbleed fix")
+Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20230811203705.1699914-1-cristian.ciocaltea@collabora.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/sch_netem.c |   59 +++++++++++++++++++++-----------------------------
- 1 file changed, 25 insertions(+), 34 deletions(-)
+ arch/x86/kernel/cpu/amd.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/net/sched/sch_netem.c
-+++ b/net/sched/sch_netem.c
-@@ -748,12 +748,10 @@ static void dist_free(struct disttable *
-  * signed 16 bit values.
-  */
+--- a/arch/x86/kernel/cpu/amd.c
++++ b/arch/x86/kernel/cpu/amd.c
+@@ -74,6 +74,7 @@ static const int amd_erratum_1054[] =
+ static const int amd_zenbleed[] =
+ 	AMD_LEGACY_ERRATUM(AMD_MODEL_RANGE(0x17, 0x30, 0x0, 0x4f, 0xf),
+ 			   AMD_MODEL_RANGE(0x17, 0x60, 0x0, 0x7f, 0xf),
++			   AMD_MODEL_RANGE(0x17, 0x90, 0x0, 0x91, 0xf),
+ 			   AMD_MODEL_RANGE(0x17, 0xa0, 0x0, 0xaf, 0xf));
  
--static int get_dist_table(struct Qdisc *sch, struct disttable **tbl,
--			  const struct nlattr *attr)
-+static int get_dist_table(struct disttable **tbl, const struct nlattr *attr)
- {
- 	size_t n = nla_len(attr)/sizeof(__s16);
- 	const __s16 *data = nla_data(attr);
--	spinlock_t *root_lock;
- 	struct disttable *d;
- 	int i;
- 
-@@ -768,13 +766,7 @@ static int get_dist_table(struct Qdisc *
- 	for (i = 0; i < n; i++)
- 		d->table[i] = data[i];
- 
--	root_lock = qdisc_root_sleeping_lock(sch);
--
--	spin_lock_bh(root_lock);
--	swap(*tbl, d);
--	spin_unlock_bh(root_lock);
--
--	dist_free(d);
-+	*tbl = d;
- 	return 0;
- }
- 
-@@ -930,6 +922,8 @@ static int netem_change(struct Qdisc *sc
- {
- 	struct netem_sched_data *q = qdisc_priv(sch);
- 	struct nlattr *tb[TCA_NETEM_MAX + 1];
-+	struct disttable *delay_dist = NULL;
-+	struct disttable *slot_dist = NULL;
- 	struct tc_netem_qopt *qopt;
- 	struct clgstate old_clg;
- 	int old_loss_model = CLG_RANDOM;
-@@ -943,6 +937,18 @@ static int netem_change(struct Qdisc *sc
- 	if (ret < 0)
- 		return ret;
- 
-+	if (tb[TCA_NETEM_DELAY_DIST]) {
-+		ret = get_dist_table(&delay_dist, tb[TCA_NETEM_DELAY_DIST]);
-+		if (ret)
-+			goto table_free;
-+	}
-+
-+	if (tb[TCA_NETEM_SLOT_DIST]) {
-+		ret = get_dist_table(&slot_dist, tb[TCA_NETEM_SLOT_DIST]);
-+		if (ret)
-+			goto table_free;
-+	}
-+
- 	sch_tree_lock(sch);
- 	/* backup q->clg and q->loss_model */
- 	old_clg = q->clg;
-@@ -952,26 +958,17 @@ static int netem_change(struct Qdisc *sc
- 		ret = get_loss_clg(q, tb[TCA_NETEM_LOSS]);
- 		if (ret) {
- 			q->loss_model = old_loss_model;
-+			q->clg = old_clg;
- 			goto unlock;
- 		}
- 	} else {
- 		q->loss_model = CLG_RANDOM;
- 	}
- 
--	if (tb[TCA_NETEM_DELAY_DIST]) {
--		ret = get_dist_table(sch, &q->delay_dist,
--				     tb[TCA_NETEM_DELAY_DIST]);
--		if (ret)
--			goto get_table_failure;
--	}
--
--	if (tb[TCA_NETEM_SLOT_DIST]) {
--		ret = get_dist_table(sch, &q->slot_dist,
--				     tb[TCA_NETEM_SLOT_DIST]);
--		if (ret)
--			goto get_table_failure;
--	}
--
-+	if (delay_dist)
-+		swap(q->delay_dist, delay_dist);
-+	if (slot_dist)
-+		swap(q->slot_dist, slot_dist);
- 	sch->limit = qopt->limit;
- 
- 	q->latency = PSCHED_TICKS2NS(qopt->latency);
-@@ -1021,17 +1018,11 @@ static int netem_change(struct Qdisc *sc
- 
- unlock:
- 	sch_tree_unlock(sch);
--	return ret;
- 
--get_table_failure:
--	/* recover clg and loss_model, in case of
--	 * q->clg and q->loss_model were modified
--	 * in get_loss_clg()
--	 */
--	q->clg = old_clg;
--	q->loss_model = old_loss_model;
--
--	goto unlock;
-+table_free:
-+	dist_free(delay_dist);
-+	dist_free(slot_dist);
-+	return ret;
- }
- 
- static int netem_init(struct Qdisc *sch, struct nlattr *opt,
+ static const int amd_div0[] =
 
 
