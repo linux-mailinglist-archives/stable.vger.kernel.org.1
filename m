@@ -2,114 +2,85 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5E9E877AE1E
-	for <lists+stable@lfdr.de>; Mon, 14 Aug 2023 00:00:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F74D77AC41
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:31:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232315AbjHMWA2 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 18:00:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54392 "EHLO
+        id S231893AbjHMVbB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:31:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38972 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232394AbjHMV7U (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:59:20 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C961418F
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:43:05 -0700 (PDT)
+        with ESMTP id S231911AbjHMVbA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:31:00 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4533710FE
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:31:02 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 60B3C62913
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:43:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CEB1C433C8;
-        Sun, 13 Aug 2023 21:43:04 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D2B2662B30
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:31:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D28F3C433C8;
+        Sun, 13 Aug 2023 21:31:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691962984;
-        bh=IaQdm7LkzryXjbAwr34+oFh68C878eWILHgPQlw6Jhc=;
+        s=korg; t=1691962261;
+        bh=aONwVCsQWoq0pud0HYosuJGYJFqj17q6C3rSVRNixIk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=il9nN5cIlucs7G2ep7sgBmebzNJqnxWkb94GHkmw+WYq/azmYT/7wvA622Ziyc6+n
-         nlQQHH3UubF0oOuHwtdRwc14UW+qgBsyVAAQZEzWj0DiekWMSe2oFqt8e7t0XxtINv
-         9miS8IYkTkGsr1nfbiByCVGVHCPg4GESDLQFdkE8=
+        b=nEnfMfonDdoBamJmUq4MjN/V2+QvQsxaPV1Nb6VSQ+m1bOdsIAE0Np0J7dKOlbxSK
+         4Jho8MP84P3UL7pyReOVyJLVuJOoY1huPcuFyfS9JLK3gLtG5GDPRtzNORZXQHcO/e
+         aoEx4TVkqaOFJ65aDiySp8hlezPaU2BxJnMXS404=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Tao Ren <rentao.bupt@gmail.com>,
-        Guenter Roeck <linux@roeck-us.net>
-Subject: [PATCH 5.15 11/89] hwmon: (pmbus/bel-pfe) Enable PMBUS_SKIP_STATUS_CHECK for pfe1100
+        patches@lists.linux.dev, Shay Drory <shayd@nvidia.com>,
+        Maor Gottlieb <maorg@nvidia.com>,
+        Saeed Mahameed <saeedm@nvidia.com>
+Subject: [PATCH 6.4 172/206] net/mlx5: LAG, Check correct bucket when modifying LAG
 Date:   Sun, 13 Aug 2023 23:19:02 +0200
-Message-ID: <20230813211711.114918287@linuxfoundation.org>
+Message-ID: <20230813211729.948496963@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211710.787645394@linuxfoundation.org>
-References: <20230813211710.787645394@linuxfoundation.org>
+In-Reply-To: <20230813211724.969019629@linuxfoundation.org>
+References: <20230813211724.969019629@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Tao Ren <rentao.bupt@gmail.com>
+From: Shay Drory <shayd@nvidia.com>
 
-commit f38963b9cd0645a336cf30c5da2e89e34e34fec3 upstream.
+commit 86ed7b773c01ba71617538b3b107c33fd9cf90b8 upstream.
 
-Skip status check for both pfe1100 and pfe3000 because the communication
-error is also observed on pfe1100 devices.
+Cited patch introduced buckets in hash mode, but missed to update
+the ports/bucket check when modifying LAG.
+Fix the check.
 
-Signed-off-by: Tao Ren <rentao.bupt@gmail.com>
-Fixes: 626bb2f3fb3c hwmon: (pmbus) add driver for BEL PFE1100 and PFE3000
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20230804221403.28931-1-rentao.bupt@gmail.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Fixes: 352899f384d4 ("net/mlx5: Lag, use buckets in hash mode")
+Signed-off-by: Shay Drory <shayd@nvidia.com>
+Reviewed-by: Maor Gottlieb <maorg@nvidia.com>
+Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hwmon/pmbus/bel-pfe.c |   16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/lag/port_sel.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/hwmon/pmbus/bel-pfe.c
-+++ b/drivers/hwmon/pmbus/bel-pfe.c
-@@ -17,12 +17,13 @@
- enum chips {pfe1100, pfe3000};
+--- a/drivers/net/ethernet/mellanox/mlx5/core/lag/port_sel.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/lag/port_sel.c
+@@ -574,7 +574,7 @@ static int __mlx5_lag_modify_definers_de
+ 	for (i = 0; i < ldev->ports; i++) {
+ 		for (j = 0; j < ldev->buckets; j++) {
+ 			idx = i * ldev->buckets + j;
+-			if (ldev->v2p_map[i] == ports[i])
++			if (ldev->v2p_map[idx] == ports[idx])
+ 				continue;
  
- /*
-- * Disable status check for pfe3000 devices, because some devices report
-- * communication error (invalid command) for VOUT_MODE command (0x20)
-- * although correct VOUT_MODE (0x16) is returned: it leads to incorrect
-- * exponent in linear mode.
-+ * Disable status check because some devices report communication error
-+ * (invalid command) for VOUT_MODE command (0x20) although the correct
-+ * VOUT_MODE (0x16) is returned: it leads to incorrect exponent in linear
-+ * mode.
-+ * This affects both pfe3000 and pfe1100.
-  */
--static struct pmbus_platform_data pfe3000_plat_data = {
-+static struct pmbus_platform_data pfe_plat_data = {
- 	.flags = PMBUS_SKIP_STATUS_CHECK,
- };
- 
-@@ -94,16 +95,15 @@ static int pfe_pmbus_probe(struct i2c_cl
- 	int model;
- 
- 	model = (int)i2c_match_id(pfe_device_id, client)->driver_data;
-+	client->dev.platform_data = &pfe_plat_data;
- 
- 	/*
- 	 * PFE3000-12-069RA devices may not stay in page 0 during device
- 	 * probe which leads to probe failure (read status word failed).
- 	 * So let's set the device to page 0 at the beginning.
- 	 */
--	if (model == pfe3000) {
--		client->dev.platform_data = &pfe3000_plat_data;
-+	if (model == pfe3000)
- 		i2c_smbus_write_byte_data(client, PMBUS_PAGE, 0);
--	}
- 
- 	return pmbus_do_probe(client, &pfe_driver_info[model]);
- }
+ 			dest.vport.vhca_id = MLX5_CAP_GEN(ldev->pf[ports[idx] - 1].dev,
 
 
