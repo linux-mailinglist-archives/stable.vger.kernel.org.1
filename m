@@ -2,174 +2,129 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 758F577ADA7
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:50:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3F7F877AD28
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:48:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232430AbjHMVuX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:50:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60550 "EHLO
+        id S229627AbjHMVsK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:48:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40488 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232432AbjHMVtW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:49:22 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0DA562D54
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:48:10 -0700 (PDT)
+        with ESMTP id S232310AbjHMVpj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:45:39 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B99532D66
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:45:38 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9876F63C6F
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:48:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADFFAC433C8;
-        Sun, 13 Aug 2023 21:48:08 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5872D60B9D
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:45:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EDEFC433C7;
+        Sun, 13 Aug 2023 21:45:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691963289;
-        bh=QCfH0S68Ge1SvrMquQpvVo16hGhCks9mIgeD6mssEXc=;
+        s=korg; t=1691963137;
+        bh=TgbV6GkrhERFHAFmIXihiZSEqANQ+fDJlM3YYkNZomM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=b42TC+7CEf8FsiV1BjMXqBDuFD9SANI0vG68bGl5mUpNsBaULPiPtzNtcUj0jrwYo
-         Gpo8UkLFcfPCMjVuux20BmECcWDVITPZABGM6eAb5xE34t29PAv3tSTKJmWSfhMOyH
-         qv06KyuitxXmeUrl99Uz8pRON/yR4zh8NInOy8kc=
+        b=dLjoARxAXcolYMtmQcigpD/NS8DmYJmOrZkk34Dibbjc4uWP2ZjRmC7WC0MMoy48R
+         YV5c1p05dnQiq6NwobXJ+EhAA8YYZxzKhRYXU0neIQSf0sbDwowgwdHlCISw+d0t97
+         nCW0Ck3jKDjRcr3T+ak3ChV2FwK4trXFfsfWkunk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-        syzbot+74db8b3087f293d3a13a@syzkaller.appspotmail.com,
-        Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.4 07/39] nilfs2: fix use-after-free of nilfs_root in dirtying inodes via iput
+        patches@lists.linux.dev, Nick Child <nnac123@linux.ibm.com>,
+        Simon Horman <horms@kernel.org>,
+        Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.15 67/89] ibmvnic: Enforce stronger sanity checks on login response
 Date:   Sun, 13 Aug 2023 23:19:58 +0200
-Message-ID: <20230813211705.082416974@linuxfoundation.org>
+Message-ID: <20230813211712.791795450@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211704.796906808@linuxfoundation.org>
-References: <20230813211704.796906808@linuxfoundation.org>
+In-Reply-To: <20230813211710.787645394@linuxfoundation.org>
+References: <20230813211710.787645394@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+From: Nick Child <nnac123@linux.ibm.com>
 
-commit f8654743a0e6909dc634cbfad6db6816f10f3399 upstream.
+commit db17ba719bceb52f0ae4ebca0e4c17d9a3bebf05 upstream.
 
-During unmount process of nilfs2, nothing holds nilfs_root structure after
-nilfs2 detaches its writer in nilfs_detach_log_writer().  Previously,
-nilfs_evict_inode() could cause use-after-free read for nilfs_root if
-inodes are left in "garbage_list" and released by nilfs_dispose_list at
-the end of nilfs_detach_log_writer(), and this bug was fixed by commit
-9b5a04ac3ad9 ("nilfs2: fix use-after-free bug of nilfs_root in
-nilfs_evict_inode()").
+Ensure that all offsets in a login response buffer are within the size
+of the allocated response buffer. Any offsets or lengths that surpass
+the allocation are likely the result of an incomplete response buffer.
+In these cases, a full reset is necessary.
 
-However, it turned out that there is another possibility of UAF in the
-call path where mark_inode_dirty_sync() is called from iput():
+When attempting to login, the ibmvnic device will allocate a response
+buffer and pass a reference to the VIOS. The VIOS will then send the
+ibmvnic device a LOGIN_RSP CRQ to signal that the buffer has been filled
+with data. If the ibmvnic device does not get a response in 20 seconds,
+the old buffer is freed and a new login request is sent. With 2
+outstanding requests, any LOGIN_RSP CRQ's could be for the older
+login request. If this is the case then the login response buffer (which
+is for the newer login request) could be incomplete and contain invalid
+data. Therefore, we must enforce strict sanity checks on the response
+buffer values.
 
-nilfs_detach_log_writer()
-  nilfs_dispose_list()
-    iput()
-      mark_inode_dirty_sync()
-        __mark_inode_dirty()
-          nilfs_dirty_inode()
-            __nilfs_mark_inode_dirty()
-              nilfs_load_inode_block() --> causes UAF of nilfs_root struct
+Testing has shown that the `off_rxadd_buff_size` value is filled in last
+by the VIOS and will be the smoking gun for these circumstances.
 
-This can happen after commit 0ae45f63d4ef ("vfs: add support for a
-lazytime mount option"), which changed iput() to call
-mark_inode_dirty_sync() on its final reference if i_state has I_DIRTY_TIME
-flag and i_nlink is non-zero.
+Until VIOS can implement a mechanism for tracking outstanding response
+buffers and a method for mapping a LOGIN_RSP CRQ to a particular login
+response buffer, the best ibmvnic can do in this situation is perform a
+full reset.
 
-This issue appears after commit 28a65b49eb53 ("nilfs2: do not write dirty
-data after degenerating to read-only") when using the syzbot reproducer,
-but the issue has potentially existed before.
-
-Fix this issue by adding a "purging flag" to the nilfs structure, setting
-that flag while disposing the "garbage_list" and checking it in
-__nilfs_mark_inode_dirty().
-
-Unlike commit 9b5a04ac3ad9 ("nilfs2: fix use-after-free bug of nilfs_root
-in nilfs_evict_inode()"), this patch does not rely on ns_writer to
-determine whether to skip operations, so as not to break recovery on
-mount.  The nilfs_salvage_orphan_logs routine dirties the buffer of
-salvaged data before attaching the log writer, so changing
-__nilfs_mark_inode_dirty() to skip the operation when ns_writer is NULL
-will cause recovery write to fail.  The purpose of using the cleanup-only
-flag is to allow for narrowing of such conditions.
-
-Link: https://lkml.kernel.org/r/20230728191318.33047-1-konishi.ryusuke@gmail.com
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Reported-by: syzbot+74db8b3087f293d3a13a@syzkaller.appspotmail.com
-Closes: https://lkml.kernel.org/r/000000000000b4e906060113fd63@google.com
-Fixes: 0ae45f63d4ef ("vfs: add support for a lazytime mount option")
-Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Cc: <stable@vger.kernel.org> # 4.0+
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: dff515a3e71d ("ibmvnic: Harden device login requests")
+Signed-off-by: Nick Child <nnac123@linux.ibm.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/20230809221038.51296-1-nnac123@linux.ibm.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nilfs2/inode.c     |    8 ++++++++
- fs/nilfs2/segment.c   |    2 ++
- fs/nilfs2/the_nilfs.h |    2 ++
- 3 files changed, 12 insertions(+)
+ drivers/net/ethernet/ibm/ibmvnic.c |   18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
---- a/fs/nilfs2/inode.c
-+++ b/fs/nilfs2/inode.c
-@@ -1112,9 +1112,17 @@ int nilfs_set_file_dirty(struct inode *i
+--- a/drivers/net/ethernet/ibm/ibmvnic.c
++++ b/drivers/net/ethernet/ibm/ibmvnic.c
+@@ -4788,6 +4788,7 @@ static int handle_login_rsp(union ibmvni
+ 	int num_tx_pools;
+ 	int num_rx_pools;
+ 	u64 *size_array;
++	u32 rsp_len;
+ 	int i;
  
- int __nilfs_mark_inode_dirty(struct inode *inode, int flags)
- {
-+	struct the_nilfs *nilfs = inode->i_sb->s_fs_info;
- 	struct buffer_head *ibh;
- 	int err;
- 
-+	/*
-+	 * Do not dirty inodes after the log writer has been detached
-+	 * and its nilfs_root struct has been freed.
-+	 */
-+	if (unlikely(nilfs_purging(nilfs)))
-+		return 0;
-+
- 	err = nilfs_load_inode_block(inode, &ibh);
- 	if (unlikely(err)) {
- 		nilfs_msg(inode->i_sb, KERN_WARNING,
---- a/fs/nilfs2/segment.c
-+++ b/fs/nilfs2/segment.c
-@@ -2845,6 +2845,7 @@ void nilfs_detach_log_writer(struct supe
- 		nilfs_segctor_destroy(nilfs->ns_writer);
- 		nilfs->ns_writer = NULL;
+ 	/* CHECK: Test/set of login_pending does not need to be atomic
+@@ -4839,6 +4840,23 @@ static int handle_login_rsp(union ibmvni
+ 		ibmvnic_reset(adapter, VNIC_RESET_FATAL);
+ 		return -EIO;
  	}
-+	set_nilfs_purging(nilfs);
- 
- 	/* Force to free the list of dirty files */
- 	spin_lock(&nilfs->ns_inode_lock);
-@@ -2857,4 +2858,5 @@ void nilfs_detach_log_writer(struct supe
- 	up_write(&nilfs->ns_segctor_sem);
- 
- 	nilfs_dispose_list(nilfs, &garbage_list, 1);
-+	clear_nilfs_purging(nilfs);
- }
---- a/fs/nilfs2/the_nilfs.h
-+++ b/fs/nilfs2/the_nilfs.h
-@@ -29,6 +29,7 @@ enum {
- 	THE_NILFS_DISCONTINUED,	/* 'next' pointer chain has broken */
- 	THE_NILFS_GC_RUNNING,	/* gc process is running */
- 	THE_NILFS_SB_DIRTY,	/* super block is dirty */
-+	THE_NILFS_PURGING,	/* disposing dirty files for cleanup */
- };
- 
- /**
-@@ -208,6 +209,7 @@ THE_NILFS_FNS(INIT, init)
- THE_NILFS_FNS(DISCONTINUED, discontinued)
- THE_NILFS_FNS(GC_RUNNING, gc_running)
- THE_NILFS_FNS(SB_DIRTY, sb_dirty)
-+THE_NILFS_FNS(PURGING, purging)
- 
- /*
-  * Mount option operations
++
++	rsp_len = be32_to_cpu(login_rsp->len);
++	if (be32_to_cpu(login->login_rsp_len) < rsp_len ||
++	    rsp_len <= be32_to_cpu(login_rsp->off_txsubm_subcrqs) ||
++	    rsp_len <= be32_to_cpu(login_rsp->off_rxadd_subcrqs) ||
++	    rsp_len <= be32_to_cpu(login_rsp->off_rxadd_buff_size) ||
++	    rsp_len <= be32_to_cpu(login_rsp->off_supp_tx_desc)) {
++		/* This can happen if a login request times out and there are
++		 * 2 outstanding login requests sent, the LOGIN_RSP crq
++		 * could have been for the older login request. So we are
++		 * parsing the newer response buffer which may be incomplete
++		 */
++		dev_err(dev, "FATAL: Login rsp offsets/lengths invalid\n");
++		ibmvnic_reset(adapter, VNIC_RESET_FATAL);
++		return -EIO;
++	}
++
+ 	size_array = (u64 *)((u8 *)(adapter->login_rsp_buf) +
+ 		be32_to_cpu(adapter->login_rsp_buf->off_rxadd_buff_size));
+ 	/* variable buffer sizes are not supported, so just read the
 
 
