@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9F6E677ABFB
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:27:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 953A977ACA3
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:35:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230506AbjHMV14 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:27:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36980 "EHLO
+        id S232108AbjHMVfX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:35:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32776 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231778AbjHMV1z (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:27:55 -0400
+        with ESMTP id S232096AbjHMVfU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:35:20 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C1B1710EA
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:27:57 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 458AE10FA
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:35:22 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5577062A05
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:27:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B663C433C7;
-        Sun, 13 Aug 2023 21:27:56 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 252226119A
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:35:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C04DC433C7;
+        Sun, 13 Aug 2023 21:35:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691962076;
-        bh=sVv7R0aC/P2fnboMzPuPKHSrUVP9mpjiJVcakUEUut8=;
+        s=korg; t=1691962521;
+        bh=3CXrZMmtM4Xp0zbcOlojaQ+TqZLurmB7IjBVu6NdyVI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=2vdGzkWS+vQS0BKjYymlyy7SVOlX8q4+vEcZde6o1J2oCOg37qz0SKS2TMv9sBYAt
-         0dznTtB1RZyww5ZTfNjC/iRUFuJXh2xhV1tlYmXzlAA+X4KubzYWl9ayb5dHieeOuZ
-         DIwYV7J0+kG9i4hJBdqWrQmqijamXPoYZpFhRtXQ=
+        b=Vl3y1hm2JxpwOQPUc/n9Su6ZqKjMtxNSj+oEdlcRqTF3kyd+cpmgXJkA0z3SnDQ1x
+         jZh8tYkE+iaYRQBEIa27j3sU/nKCrKSK8KsFyq5DroIi/eAoXBQ611ExK6Y26JnbXc
+         t1Hn5a3TZSqF065trY/9+bvsqX5YGMkYjvcK7MCQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Oliver Upton <oliver.upton@linux.dev>,
-        Raghavendra Rao Ananta <rananta@google.com>,
-        Marc Zyngier <maz@kernel.org>
-Subject: [PATCH 6.4 105/206] KVM: arm64: Fix hardware enable/disable flows for pKVM
+        patches@lists.linux.dev, Harry Wentland <harry.wentland@amd.com>,
+        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.1 030/149] drm/amdgpu: add S/G display parameter
 Date:   Sun, 13 Aug 2023 23:17:55 +0200
-Message-ID: <20230813211728.061770860@linuxfoundation.org>
+Message-ID: <20230813211719.707861445@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211724.969019629@linuxfoundation.org>
-References: <20230813211724.969019629@linuxfoundation.org>
+In-Reply-To: <20230813211718.757428827@linuxfoundation.org>
+References: <20230813211718.757428827@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,71 +55,82 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Raghavendra Rao Ananta <rananta@google.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-commit c718ca0e99401d80d2480c08e1b02cf5f7cd7033 upstream.
+commit bf0207e1727031798f300afa17f9bbeceac6da87 upstream.
 
-When running in protected mode, the hyp stub is disabled after pKVM is
-initialized, meaning the host cannot enable/disable the hyp at
-runtime. As such, kvm_arm_hardware_enabled is always 1 after
-initialization, and kvm_arch_hardware_enable() never enables the vgic
-maintenance irq or timer irqs.
+Some users have reported flickerng with S/G display.  We've
+tried extensively to reproduce and debug the issue on a wide
+variety of platform configurations (DRAM bandwidth, etc.) and
+a variety of monitors, but so far have not been able to.  We
+disabled S/G display on a number of platforms to address this
+but that leads to failure to pin framebuffers errors and
+blank displays when there is memory pressure or no displays
+at all on systems with limited carveout (e.g., Chromebooks).
+Add a option to disable this as a debugging option as a
+way for users to disable this, depending on their use case,
+and for us to help debug this further.
 
-Unconditionally enable/disable the vgic + timer irqs in the respective
-calls, instead relying on the percpu bookkeeping in the generic code
-to keep track of which cpus have the interrupts unmasked.
+v2: fix typo
 
-Fixes: 466d27e48d7c ("KVM: arm64: Simplify the CPUHP logic")
-Reported-by: Oliver Upton <oliver.upton@linux.dev>
-Suggested-by: Oliver Upton <oliver.upton@linux.dev>
-Signed-off-by: Raghavendra Rao Ananta <rananta@google.com>
-Link: https://lore.kernel.org/r/20230719175400.647154-1-rananta@google.com
-Acked-by: Marc Zyngier <maz@kernel.org>
-Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
+Reviewed-by: Harry Wentland <harry.wentland@amd.com>
+Acked-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/kvm/arm.c |   15 ++++-----------
- 1 file changed, 4 insertions(+), 11 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu.h               |    1 +
+ drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c           |   11 +++++++++++
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |    3 +++
+ 3 files changed, 15 insertions(+)
 
---- a/arch/arm64/kvm/arm.c
-+++ b/arch/arm64/kvm/arm.c
-@@ -1800,8 +1800,6 @@ static void _kvm_arch_hardware_enable(vo
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu.h
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu.h
+@@ -242,6 +242,7 @@ extern int amdgpu_num_kcq;
  
- int kvm_arch_hardware_enable(void)
- {
--	int was_enabled;
--
- 	/*
- 	 * Most calls to this function are made with migration
- 	 * disabled, but not with preemption disabled. The former is
-@@ -1810,13 +1808,10 @@ int kvm_arch_hardware_enable(void)
- 	 */
- 	preempt_disable();
+ #define AMDGPU_VCNFW_LOG_SIZE (32 * 1024)
+ extern int amdgpu_vcnfw_log;
++extern int amdgpu_sg_display;
  
--	was_enabled = __this_cpu_read(kvm_arm_hardware_enabled);
- 	_kvm_arch_hardware_enable(NULL);
+ #define AMDGPU_VM_MAX_NUM_CTX			4096
+ #define AMDGPU_SG_THRESHOLD			(256*1024*1024)
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
+@@ -185,6 +185,7 @@ int amdgpu_num_kcq = -1;
+ int amdgpu_smartshift_bias;
+ int amdgpu_use_xgmi_p2p = 1;
+ int amdgpu_vcnfw_log;
++int amdgpu_sg_display = -1; /* auto */
  
--	if (!was_enabled) {
--		kvm_vgic_cpu_up();
--		kvm_timer_cpu_up();
--	}
-+	kvm_vgic_cpu_up();
-+	kvm_timer_cpu_up();
+ static void amdgpu_drv_delayed_reset_work_handler(struct work_struct *work);
  
- 	preempt_enable();
+@@ -930,6 +931,16 @@ MODULE_PARM_DESC(vcnfw_log, "Enable vcnf
+ module_param_named(vcnfw_log, amdgpu_vcnfw_log, int, 0444);
  
-@@ -1833,10 +1828,8 @@ static void _kvm_arch_hardware_disable(v
+ /**
++ * DOC: sg_display (int)
++ * Disable S/G (scatter/gather) display (i.e., display from system memory).
++ * This option is only relevant on APUs.  Set this option to 0 to disable
++ * S/G display if you experience flickering or other issues under memory
++ * pressure and report the issue.
++ */
++MODULE_PARM_DESC(sg_display, "S/G Display (-1 = auto (default), 0 = disable)");
++module_param_named(sg_display, amdgpu_sg_display, int, 0444);
++
++/**
+  * DOC: smu_pptable_id (int)
+  * Used to override pptable id. id = 0 use VBIOS pptable.
+  * id > 0 use the soft pptable with specicfied id.
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -1634,6 +1634,9 @@ static int amdgpu_dm_init(struct amdgpu_
+ 		}
+ 		break;
+ 	}
++	if (init_data.flags.gpu_vm_support &&
++	    (amdgpu_sg_display == 0))
++		init_data.flags.gpu_vm_support = false;
  
- void kvm_arch_hardware_disable(void)
- {
--	if (__this_cpu_read(kvm_arm_hardware_enabled)) {
--		kvm_timer_cpu_down();
--		kvm_vgic_cpu_down();
--	}
-+	kvm_timer_cpu_down();
-+	kvm_vgic_cpu_down();
- 
- 	if (!is_protected_kvm_enabled())
- 		_kvm_arch_hardware_disable(NULL);
+ 	if (init_data.flags.gpu_vm_support)
+ 		adev->mode_info.gpu_vm_support = true;
 
 
