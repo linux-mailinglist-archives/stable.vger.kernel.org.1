@@ -2,96 +2,92 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A143177AC4B
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:32:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F325C77AB8F
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:23:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231918AbjHMVcI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:32:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55830 "EHLO
+        id S231284AbjHMVXS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:23:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59162 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231916AbjHMVcH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:32:07 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD52010EB
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:31:47 -0700 (PDT)
+        with ESMTP id S231194AbjHMVXR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:23:17 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 21FC3E5
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:23:17 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8EF2262B67
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:31:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7CBAC433C7;
-        Sun, 13 Aug 2023 21:31:39 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id AB6E862877
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:23:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C30B4C433C8;
+        Sun, 13 Aug 2023 21:23:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691962300;
-        bh=ZRFQgl5AGUt5ob7cXqP9NJEfx27b9+Euvd1vHoKuvBk=;
+        s=korg; t=1691961796;
+        bh=dweOYsRs+//ZcppptIzg709UfMwlBoNrKGtxrz06rFU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=OtEtuTSg1fhPyg1NbvzPFCoEFtbFyFoBxk+Nu7B5RW8W33EYDpElw7auTEB1Wc6CW
-         g9/DxOzkui7wUPTiTKEA9FQ1PFUtY4P62DbrXrkx78t3tOa7SUKkkUw8DWVYNvt2bh
-         1cCSYG9zh27C025EuVsj8cfSYEYIRKUiJxYaT6eI=
+        b=R9YIki5E9UoNeVKn3ykqqLRMcJMC4R/T9m9gwzI1O61Z8J9h7puK5FmMKVEBw7lEE
+         PN4PjKlNGayY7sAYmtQ2uFCgvr5n1BUtZP+I39Biph9VjOE6ezqPbv0HXoluPLhM7e
+         hZWbA7T5D2bQwZP0cn0thupVXb3vuAMnCRVhIaVI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Josef Bacik <josef@toxicpanda.com>,
-        Christoph Hellwig <hch@lst.de>, David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.4 184/206] btrfs: dont wait for writeback on clean pages in extent_write_cache_pages
+        patches@lists.linux.dev, Andrew Kanner <andrew.kanner@gmail.com>,
+        Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 4.19 20/33] drivers: net: prevent tun_build_skb() to exceed the packet size limit
 Date:   Sun, 13 Aug 2023 23:19:14 +0200
-Message-ID: <20230813211730.290217641@linuxfoundation.org>
+Message-ID: <20230813211704.673568641@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211724.969019629@linuxfoundation.org>
-References: <20230813211724.969019629@linuxfoundation.org>
+In-Reply-To: <20230813211703.915807095@linuxfoundation.org>
+References: <20230813211703.915807095@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Christoph Hellwig <hch@lst.de>
+From: Andrew Kanner <andrew.kanner@gmail.com>
 
-commit 5c25699871112853f231e52d51c576d5c759a020 upstream.
+commit 59eeb232940515590de513b997539ef495faca9a upstream.
 
-__extent_writepage could have started on more pages than the one it was
-called for.  This happens regularly for zoned file systems, and in theory
-could happen for compressed I/O if the worker thread was executed very
-quickly. For such pages extent_write_cache_pages waits for writeback
-to complete before moving on to the next page, which is highly inefficient
-as it blocks the flusher thread.
+Using the syzkaller repro with reduced packet size it was discovered
+that XDP_PACKET_HEADROOM is not checked in tun_can_build_skb(),
+although pad may be incremented in tun_build_skb(). This may end up
+with exceeding the PAGE_SIZE limit in tun_build_skb().
 
-Port over the PageDirty check that was added to write_cache_pages in
-commit 515f4a037fb ("mm: write_cache_pages optimise page cleaning") to
-fix this.
+Jason Wang <jasowang@redhat.com> proposed to count XDP_PACKET_HEADROOM
+always (e.g. without rcu_access_pointer(tun->xdp_prog)) in
+tun_can_build_skb() since there's a window during which XDP program
+might be attached between tun_can_build_skb() and tun_build_skb().
 
-CC: stable@vger.kernel.org # 4.14+
-Reviewed-by: Josef Bacik <josef@toxicpanda.com>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Fixes: 7df13219d757 ("tun: reserve extra headroom only when XDP is set")
+Link: https://syzkaller.appspot.com/bug?extid=f817490f5bd20541b90a
+Signed-off-by: Andrew Kanner <andrew.kanner@gmail.com>
+Link: https://lore.kernel.org/r/20230803185947.2379988-1-andrew.kanner@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/extent_io.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/net/tun.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/btrfs/extent_io.c
-+++ b/fs/btrfs/extent_io.c
-@@ -2345,6 +2345,12 @@ retry:
- 				continue;
- 			}
+--- a/drivers/net/tun.c
++++ b/drivers/net/tun.c
+@@ -1654,7 +1654,7 @@ static bool tun_can_build_skb(struct tun
+ 	if (zerocopy)
+ 		return false;
  
-+			if (!folio_test_dirty(folio)) {
-+				/* Someone wrote it for us. */
-+				folio_unlock(folio);
-+				continue;
-+			}
-+
- 			if (wbc->sync_mode != WB_SYNC_NONE) {
- 				if (folio_test_writeback(folio))
- 					submit_write_bio(bio_ctrl, 0);
+-	if (SKB_DATA_ALIGN(len + TUN_RX_PAD) +
++	if (SKB_DATA_ALIGN(len + TUN_RX_PAD + XDP_PACKET_HEADROOM) +
+ 	    SKB_DATA_ALIGN(sizeof(struct skb_shared_info)) > PAGE_SIZE)
+ 		return false;
+ 
 
 
