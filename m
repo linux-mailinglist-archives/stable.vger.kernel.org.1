@@ -2,121 +2,127 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BF6FD77AD96
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:49:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D16D277AD90
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:49:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232358AbjHMVte (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:49:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39676 "EHLO
+        id S232463AbjHMVt0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:49:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33248 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232360AbjHMVtF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:49:05 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B422D10FA
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:39:09 -0700 (PDT)
+        with ESMTP id S232336AbjHMVsz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:48:55 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E2C71BD8
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:41:42 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 641FE6381B
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:39:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E9E2C433C8;
-        Sun, 13 Aug 2023 21:39:08 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 34196623FF
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:41:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4424BC433C8;
+        Sun, 13 Aug 2023 21:41:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691962748;
-        bh=qJ3LsYz5LSXz+HFXUHQ9ay9OAS0AoOSJnNsDS+F7rxs=;
+        s=korg; t=1691962901;
+        bh=y3kQ6EzZ+bCYc72uotHIoRzp3JRVZciasvBKkLZzOJo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Y/9L275DokpKvf2bi4NT41F2c7JnwUU9+SOg6mQyG0wWN73W1B+XbZovtBdKtwwDq
-         uLoYNw/4HrjfidjjgzgkvYfSLNE0GVNgixQh4RkFVoEoFTJfyG9f53bS8DAvviqGn1
-         kRiVHHeSHoeLnRAcoQIG6YXlRRRxGibzHY10+fcw=
+        b=RwiKbrbf5ZRHX1DovwzHfzoV7ovh4Ky9byd7z4foBPYrof/3HL6YOuQVbRK2r9RNZ
+         inQzgK71LbyVs1bQMuuv4c9xydBKxs8vA3XGXwZg53SHw8YCfSa9MHUQWTU8bcDdd4
+         6UewmP3GwxQTn+kR2veRpiwlU84Hj5O6kHIMUIeM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Nilesh Javali <njavali@marvell.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.1 143/149] scsi: qedi: Fix firmware halt over suspend and resume
-Date:   Sun, 13 Aug 2023 23:19:48 +0200
-Message-ID: <20230813211722.976341308@linuxfoundation.org>
+        patches@lists.linux.dev, Jie Wang <wangjie125@huawei.com>,
+        Jijie Shao <shaojijie@huawei.com>,
+        Leon Romanovsky <leonro@nvidia.com>,
+        Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.10 48/68] net: hns3: refactor hclge_mac_link_status_wait for interface reuse
+Date:   Sun, 13 Aug 2023 23:19:49 +0200
+Message-ID: <20230813211709.613778540@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211718.757428827@linuxfoundation.org>
-References: <20230813211718.757428827@linuxfoundation.org>
+In-Reply-To: <20230813211708.149630011@linuxfoundation.org>
+References: <20230813211708.149630011@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Nilesh Javali <njavali@marvell.com>
+From: Jie Wang <wangjie125@huawei.com>
 
-commit 1516ee035df32115197cd93ae3619dba7b020986 upstream.
+commit 08469dacfad25428b66549716811807203744f4f upstream.
 
-While performing certain power-off sequences, PCI drivers are called to
-suspend and resume their underlying devices through PCI PM (power
-management) interface. However the hardware does not support PCI PM
-suspend/resume operations so system wide suspend/resume leads to bad MFW
-(management firmware) state which causes various follow-up errors in driver
-when communicating with the device/firmware.
+Some nic configurations could only be performed after link is down. So this
+patch refactor this API for reuse.
 
-To fix this driver implements PCI PM suspend handler to indicate
-unsupported operation to the PCI subsystem explicitly, thus avoiding system
-to go into suspended/standby mode.
-
-Fixes: ace7f46ba5fd ("scsi: qedi: Add QLogic FastLinQ offload iSCSI driver framework.")
-Signed-off-by: Nilesh Javali <njavali@marvell.com>
-Link: https://lore.kernel.org/r/20230807093725.46829-2-njavali@marvell.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Jie Wang <wangjie125@huawei.com>
+Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
+Link: https://lore.kernel.org/r/20230807113452.474224-3-shaojijie@huawei.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/qedi/qedi_main.c |   18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+ drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c |   14 +++++++++-----
+ 1 file changed, 9 insertions(+), 5 deletions(-)
 
---- a/drivers/scsi/qedi/qedi_main.c
-+++ b/drivers/scsi/qedi/qedi_main.c
-@@ -69,6 +69,7 @@ static struct nvm_iscsi_block *qedi_get_
- static void qedi_recovery_handler(struct work_struct *work);
- static void qedi_schedule_hw_err_handler(void *dev,
- 					 enum qed_hw_err_type err_type);
-+static int qedi_suspend(struct pci_dev *pdev, pm_message_t state);
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
+@@ -71,6 +71,8 @@ static int hclge_set_default_loopback(st
+ static void hclge_sync_mac_table(struct hclge_dev *hdev);
+ static void hclge_restore_hw_table(struct hclge_dev *hdev);
+ static void hclge_sync_promisc_mode(struct hclge_dev *hdev);
++static int hclge_mac_link_status_wait(struct hclge_dev *hdev, int link_ret,
++				      int wait_cnt);
  
- static int qedi_iscsi_event_cb(void *context, u8 fw_event_code, void *fw_handle)
- {
-@@ -2510,6 +2511,22 @@ static void qedi_shutdown(struct pci_dev
- 	__qedi_remove(pdev, QEDI_MODE_SHUTDOWN);
+ static struct hnae3_ae_algo ae_algo;
+ 
+@@ -6647,10 +6649,9 @@ static void hclge_phy_link_status_wait(s
+ 	} while (++i < HCLGE_PHY_LINK_STATUS_NUM);
  }
  
-+static int qedi_suspend(struct pci_dev *pdev, pm_message_t state)
-+{
-+	struct qedi_ctx *qedi;
-+
-+	if (!pdev) {
-+		QEDI_ERR(NULL, "pdev is NULL.\n");
-+		return -ENODEV;
-+	}
-+
-+	qedi = pci_get_drvdata(pdev);
-+
-+	QEDI_ERR(&qedi->dbg_ctx, "%s: Device does not support suspend operation\n", __func__);
-+
-+	return -EPERM;
-+}
-+
- static int __qedi_probe(struct pci_dev *pdev, int mode)
+-static int hclge_mac_link_status_wait(struct hclge_dev *hdev, int link_ret)
++static int hclge_mac_link_status_wait(struct hclge_dev *hdev, int link_ret,
++				      int wait_cnt)
  {
- 	struct qedi_ctx *qedi;
-@@ -2868,6 +2885,7 @@ static struct pci_driver qedi_pci_driver
- 	.remove = qedi_remove,
- 	.shutdown = qedi_shutdown,
- 	.err_handler = &qedi_err_handler,
-+	.suspend = qedi_suspend,
- };
+-#define HCLGE_MAC_LINK_STATUS_NUM  100
+-
+ 	int link_status;
+ 	int i = 0;
+ 	int ret;
+@@ -6663,13 +6664,15 @@ static int hclge_mac_link_status_wait(st
+ 			return 0;
  
- static int __init qedi_init(void)
+ 		msleep(HCLGE_LINK_STATUS_MS);
+-	} while (++i < HCLGE_MAC_LINK_STATUS_NUM);
++	} while (++i < wait_cnt);
+ 	return -EBUSY;
+ }
+ 
+ static int hclge_mac_phy_link_status_wait(struct hclge_dev *hdev, bool en,
+ 					  bool is_phy)
+ {
++#define HCLGE_MAC_LINK_STATUS_NUM  100
++
+ 	int link_ret;
+ 
+ 	link_ret = en ? HCLGE_LINK_STATUS_UP : HCLGE_LINK_STATUS_DOWN;
+@@ -6677,7 +6680,8 @@ static int hclge_mac_phy_link_status_wai
+ 	if (is_phy)
+ 		hclge_phy_link_status_wait(hdev, link_ret);
+ 
+-	return hclge_mac_link_status_wait(hdev, link_ret);
++	return hclge_mac_link_status_wait(hdev, link_ret,
++					  HCLGE_MAC_LINK_STATUS_NUM);
+ }
+ 
+ static int hclge_set_app_loopback(struct hclge_dev *hdev, bool en)
 
 
