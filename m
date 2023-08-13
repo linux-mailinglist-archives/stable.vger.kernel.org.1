@@ -2,49 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2CB0C77AD61
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:49:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 130FB77AC64
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:32:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232440AbjHMVtW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:49:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60514 "EHLO
+        id S231970AbjHMVce (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:32:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55954 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232319AbjHMVsw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:48:52 -0400
+        with ESMTP id S231965AbjHMVce (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:32:34 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A2E919A5
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:41:04 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 418F610D7
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:32:36 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CCE1E61A36
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:41:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2D8AC433C8;
-        Sun, 13 Aug 2023 21:41:00 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CB37B62BD7
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:32:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5F4CC433C8;
+        Sun, 13 Aug 2023 21:32:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691962861;
-        bh=LCN13f/maaKH/wIUK5yVyf7CBCaaoLCsJZ92DFP6SW8=;
+        s=korg; t=1691962355;
+        bh=AD++ORNyjz2bKUq+L4GuxWMFiwpvHOr0hv8jMvm8/r4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=kBXJk/JhkI7uQS8dfXVrz0rgA6klHSEXGoVTBNjYv8kkISkwEAIOKKb6L07nldVQh
-         h1IM1jG/8Av6y8ZRcJY0L+vE5mrNFwulrdiWXp9uz6R/2T7Bpl1DW/q7WG0Dbu1VbM
-         sR48FeASlDFOG6RUI7MA4UGV+yG+x6Da1xdNPdU0=
+        b=lb3PpaNWg0r9r0Xa/UktamT2ZDXm/Bt9x91vFSN0ipD4tvfY83zYcmAnTCZCTMHH1
+         MvHzYfY9S2fLTjS4rvPj02dIu15Pa+Ly38ooB7A0n2P3ES++Etn47sGlHzDuhdiNQx
+         sQQsfzxLYUI+L9lxmVsgt3F524i08zE/1kx03d8k=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>,
-        Ido Schimmel <idosch@nvidia.com>,
-        Petr Machata <petrm@nvidia.com>,
-        Hangbin Liu <liuhangbin@gmail.com>,
-        Nikolay Aleksandrov <razor@blackwall.org>,
-        Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.10 34/68] selftests: forwarding: ethtool: Skip when using veth pairs
+        Simon Trimmer <simont@opensource.cirrus.com>,
+        Richard Fitzgerald <rf@opensource.cirrus.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Hans de Goede <hdegoede@redhat.com>
+Subject: [PATCH 6.4 205/206] ACPI: scan: Create platform device for CS35L56
 Date:   Sun, 13 Aug 2023 23:19:35 +0200
-Message-ID: <20230813211709.192877653@linuxfoundation.org>
+Message-ID: <20230813211730.866562740@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211708.149630011@linuxfoundation.org>
-References: <20230813211708.149630011@linuxfoundation.org>
+In-Reply-To: <20230813211724.969019629@linuxfoundation.org>
+References: <20230813211724.969019629@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -59,45 +57,73 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Simon Trimmer <simont@opensource.cirrus.com>
 
-commit 60a36e21915c31c0375d9427be9406aa8ce2ec34 upstream.
+commit 1cd0302be5645420f73090aee26fa787287e1096 upstream.
 
-Auto-negotiation cannot be tested with veth pairs, resulting in
-failures:
+The ACPI device CSC3556 is a Cirrus Logic CS35L56 mono amplifier which
+is used in multiples, and can be connected either to I2C or SPI.
 
- # ./ethtool.sh
- TEST: force of same speed autoneg off                               [FAIL]
-         error in configuration. swp1 speed Not autoneg off
- [...]
+There will be multiple instances under the same Device() node. Add it
+to ignore_serial_bus_ids and handle it in the serial-multi-instantiate
+driver.
 
-Fix by skipping the test when used with veth pairs.
+There can be a 5th I2cSerialBusV2, but this is an alias address and doesn't
+represent a real device. Ignore this by having a dummy 5th entry in the
+serial-multi-instantiate instance list with the name of a non-existent
+driver, on the same pattern as done for bsg2150.
 
-Fixes: 64916b57c0b1 ("selftests: forwarding: Add speed and auto-negotiation test")
-Reported-by: Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>
-Closes: https://lore.kernel.org/netdev/adc5e40d-d040-a65e-eb26-edf47dac5b02@alu.unizg.hr/
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: Petr Machata <petrm@nvidia.com>
-Tested-by: Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>
-Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
-Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
-Link: https://lore.kernel.org/r/20230808141503.4060661-8-idosch@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Simon Trimmer <simont@opensource.cirrus.com>
+Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
+Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Link: https://lore.kernel.org/r/20230728111345.7224-1-rf@opensource.cirrus.com
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/net/forwarding/ethtool.sh |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/acpi/scan.c                             |    1 +
+ drivers/platform/x86/serial-multi-instantiate.c |   14 ++++++++++++++
+ 2 files changed, 15 insertions(+)
 
---- a/tools/testing/selftests/net/forwarding/ethtool.sh
-+++ b/tools/testing/selftests/net/forwarding/ethtool.sh
-@@ -286,6 +286,8 @@ different_speeds_autoneg_on()
- 	ethtool -s $h1 autoneg on
- }
+--- a/drivers/acpi/scan.c
++++ b/drivers/acpi/scan.c
+@@ -1712,6 +1712,7 @@ static bool acpi_device_enumeration_by_p
+ 		{"BSG1160", },
+ 		{"BSG2150", },
+ 		{"CSC3551", },
++		{"CSC3556", },
+ 		{"INT33FE", },
+ 		{"INT3515", },
+ 		/* Non-conforming _HID for Cirrus Logic already released */
+--- a/drivers/platform/x86/serial-multi-instantiate.c
++++ b/drivers/platform/x86/serial-multi-instantiate.c
+@@ -329,6 +329,19 @@ static const struct smi_node cs35l41_hda
+ 	.bus_type = SMI_AUTO_DETECT,
+ };
  
-+skip_on_veth
++static const struct smi_node cs35l56_hda = {
++	.instances = {
++		{ "cs35l56-hda", IRQ_RESOURCE_AUTO, 0 },
++		{ "cs35l56-hda", IRQ_RESOURCE_AUTO, 0 },
++		{ "cs35l56-hda", IRQ_RESOURCE_AUTO, 0 },
++		{ "cs35l56-hda", IRQ_RESOURCE_AUTO, 0 },
++		/* a 5th entry is an alias address, not a real device */
++		{ "cs35l56-hda_dummy_dev" },
++		{}
++	},
++	.bus_type = SMI_AUTO_DETECT,
++};
 +
- trap cleanup EXIT
- 
- setup_prepare
+ /*
+  * Note new device-ids must also be added to ignore_serial_bus_ids in
+  * drivers/acpi/scan.c: acpi_device_enumeration_by_parent().
+@@ -337,6 +350,7 @@ static const struct acpi_device_id smi_a
+ 	{ "BSG1160", (unsigned long)&bsg1160_data },
+ 	{ "BSG2150", (unsigned long)&bsg2150_data },
+ 	{ "CSC3551", (unsigned long)&cs35l41_hda },
++	{ "CSC3556", (unsigned long)&cs35l56_hda },
+ 	{ "INT3515", (unsigned long)&int3515_data },
+ 	/* Non-conforming _HID for Cirrus Logic already released */
+ 	{ "CLSA0100", (unsigned long)&cs35l41_hda },
 
 
