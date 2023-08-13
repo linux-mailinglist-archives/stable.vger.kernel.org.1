@@ -2,82 +2,135 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 75A3277AC45
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:31:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7B6BB77AB72
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:22:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231906AbjHMVbQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:31:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52086 "EHLO
+        id S229840AbjHMVWF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:22:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59196 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231907AbjHMVbP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:31:15 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C9FA3171F
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:31:10 -0700 (PDT)
+        with ESMTP id S229563AbjHMVWE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:22:04 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1D7810D0
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:22:06 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5B17B62B46
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:31:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 696E8C433C7;
-        Sun, 13 Aug 2023 21:31:09 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4733F627F0
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:22:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4ECF8C433C8;
+        Sun, 13 Aug 2023 21:22:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691962269;
-        bh=NoUPcJ4FOvoxtzYCXNMFtSK+3nWoNyjlq+PvalwjL8c=;
+        s=korg; t=1691961725;
+        bh=g8197a7NRaBT9assOceOLvYEVpbsLclKZcLanVOe73o=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=l39Mx9sMq2kuE1p7ERl2N/TPxWMj5k7Ty2CoDPowpIQsWy09ca5tUswYMn5zxw0+j
-         jONIx8t2+k97MF0EXzDTc2k2QZI8oCt9Gd3O0cFfF/YQbV8y3lK4WopHka0J5bNzT5
-         ObYPSOjuPf3a0Z7lHh3QyuQbjjzPWHpD4QExFBrI=
+        b=lIN/uWYoysy4FCOTSynZwo0m1UN+siy5GPKfg7zp37iJ2l0INGUgx1YUZ7kgL8c1j
+         4cbl/VT6TXbe9bJEgekChYXqAqCpZ58pdhy82LbBczOK5Em9B+LgTi+nDxdthEY7Rp
+         B4fxJ6m1YTklGP99lm2JWLdiO9mMrA0kkSmyD7DM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Moshe Shemesh <moshe@nvidia.com>,
-        Saeed Mahameed <saeedm@nvidia.com>
-Subject: [PATCH 6.4 174/206] net/mlx5: Reload auxiliary devices in pci error handlers
+        patches@lists.linux.dev,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        Alan Stern <stern@rowland.harvard.edu>,
+        syzbot+e7d46eb426883fb97efd@syzkaller.appspotmail.com
+Subject: [PATCH 4.19 10/33] usb-storage: alauda: Fix uninit-value in alauda_check_media()
 Date:   Sun, 13 Aug 2023 23:19:04 +0200
-Message-ID: <20230813211730.003796740@linuxfoundation.org>
+Message-ID: <20230813211704.302978443@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211724.969019629@linuxfoundation.org>
-References: <20230813211724.969019629@linuxfoundation.org>
+In-Reply-To: <20230813211703.915807095@linuxfoundation.org>
+References: <20230813211703.915807095@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Moshe Shemesh <moshe@nvidia.com>
+From: Alan Stern <stern@rowland.harvard.edu>
 
-commit aab8e1a200b926147db51e3f82fd07bb9edf6a98 upstream.
+commit a6ff6e7a9dd69364547751db0f626a10a6d628d2 upstream.
 
-Handling pci errors should fully teardown and load back auxiliary
-devices, same as done through mlx5 health recovery flow.
+Syzbot got KMSAN to complain about access to an uninitialized value in
+the alauda subdriver of usb-storage:
 
-Fixes: 72ed5d5624af ("net/mlx5: Suspend auxiliary devices only in case of PCI device suspend")
-Signed-off-by: Moshe Shemesh <moshe@nvidia.com>
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+BUG: KMSAN: uninit-value in alauda_transport+0x462/0x57f0
+drivers/usb/storage/alauda.c:1137
+CPU: 0 PID: 12279 Comm: usb-storage Not tainted 5.3.0-rc7+ #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS
+Google 01/01/2011
+Call Trace:
+  __dump_stack lib/dump_stack.c:77 [inline]
+  dump_stack+0x191/0x1f0 lib/dump_stack.c:113
+  kmsan_report+0x13a/0x2b0 mm/kmsan/kmsan_report.c:108
+  __msan_warning+0x73/0xe0 mm/kmsan/kmsan_instr.c:250
+  alauda_check_media+0x344/0x3310 drivers/usb/storage/alauda.c:460
+
+The problem is that alauda_check_media() doesn't verify that its USB
+transfer succeeded before trying to use the received data.  What
+should happen if the transfer fails isn't entirely clear, but a
+reasonably conservative approach is to pretend that no media is
+present.
+
+A similar problem exists in a usb_stor_dbg() call in
+alauda_get_media_status().  In this case, when an error occurs the
+call is redundant, because usb_stor_ctrl_transfer() already will print
+a debugging message.
+
+Finally, unrelated to the uninitialized memory access, is the fact
+that alauda_check_media() performs DMA to a buffer on the stack.
+Fortunately usb-storage provides a general purpose DMA-able buffer for
+uses like this.  We'll use it instead.
+
+Reported-and-tested-by: syzbot+e7d46eb426883fb97efd@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/0000000000007d25ff059457342d@google.com/T/
+Suggested-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
+Fixes: e80b0fade09e ("[PATCH] USB Storage: add alauda support")
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/693d5d5e-f09b-42d0-8ed9-1f96cd30bcce@rowland.harvard.edu
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/main.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/storage/alauda.c |    9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
---- a/drivers/net/ethernet/mellanox/mlx5/core/main.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/main.c
-@@ -1845,7 +1845,7 @@ static pci_ers_result_t mlx5_pci_err_det
+--- a/drivers/usb/storage/alauda.c
++++ b/drivers/usb/storage/alauda.c
+@@ -317,7 +317,8 @@ static int alauda_get_media_status(struc
+ 	rc = usb_stor_ctrl_transfer(us, us->recv_ctrl_pipe,
+ 		command, 0xc0, 0, 1, data, 2);
  
- 	mlx5_enter_error_state(dev, false);
- 	mlx5_error_sw_reset(dev);
--	mlx5_unload_one(dev, true);
-+	mlx5_unload_one(dev, false);
- 	mlx5_drain_health_wq(dev);
- 	mlx5_pci_disable_device(dev);
+-	usb_stor_dbg(us, "Media status %02X %02X\n", data[0], data[1]);
++	if (rc == USB_STOR_XFER_GOOD)
++		usb_stor_dbg(us, "Media status %02X %02X\n", data[0], data[1]);
  
+ 	return rc;
+ }
+@@ -453,10 +454,14 @@ static int alauda_init_media(struct us_d
+ static int alauda_check_media(struct us_data *us)
+ {
+ 	struct alauda_info *info = (struct alauda_info *) us->extra;
+-	unsigned char status[2];
++	unsigned char *status = us->iobuf;
+ 	int rc;
+ 
+ 	rc = alauda_get_media_status(us, status);
++	if (rc != USB_STOR_XFER_GOOD) {
++		status[0] = 0xF0;	/* Pretend there's no media */
++		status[1] = 0;
++	}
+ 
+ 	/* Check for no media or door open */
+ 	if ((status[0] & 0x80) || ((status[0] & 0x1F) == 0x10)
 
 
