@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 80F9577AE0E
-	for <lists+stable@lfdr.de>; Mon, 14 Aug 2023 00:00:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A13AC77AB7D
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:22:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232307AbjHMWAS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 18:00:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48774 "EHLO
+        id S230372AbjHMVWn (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:22:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42500 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231445AbjHMV7J (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:59:09 -0400
+        with ESMTP id S230437AbjHMVWc (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:22:32 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3BCC226A2
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:43:56 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 31EAF10D0
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:22:34 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id EE0D461A2D
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:43:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EFA3C433C7;
-        Sun, 13 Aug 2023 21:43:52 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BD66B62801
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:22:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2D95C433C7;
+        Sun, 13 Aug 2023 21:22:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691963033;
-        bh=1cd9f9Nrl60F2vSrMupFiHB7YwJgpEozzReFfBxYsyg=;
+        s=korg; t=1691961753;
+        bh=KDPt349JajcOgw954tXMd+x9SUhBV42O5ckpeKny2Sg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=vOLp3ENEvtyAvENey2rvgyIiNhqK70nIEFJuqqqm7nH2b2RktlsyglIhYQDcTEfPT
-         QLREW/ICLQaOW68RI5RGnvd5fE+VbjCu5OmWsXKwsV26S/bTaBpriN+SboxguyQFwX
-         Bq8Sf1dFQ266tsjpQz+j+N6EZojD3aYUajFiFOq8=
+        b=ZfUs3LY/Xu6Si/3B/3fe2Q8YXWRbmKpin4sVudL2CnFfPv2aoxi7KZo3jw4bAulsv
+         BJi9I3FllvFsB5n8tqLhBnYypW333tQycnAdGL+fq0F2UdHBgorHXLHHTDI5FY5yDH
+         Nr+TSVzfEoF5KLnV+DemEYuZ+iA5qs3BwK3Nfdm4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Daniel Vetter <daniel.vetter@ffwll.ch>,
-        Roman Stratiienko <r.stratiienko@gmail.com>,
-        Boris Brezillon <boris.brezillon@collabora.com>,
-        Thomas Zimmermann <tzimmermann@suse.de>
-Subject: [PATCH 5.15 09/89] drm/shmem-helper: Reset vma->vm_ops before calling dma_buf_mmap()
+        patches@lists.linux.dev, Colin Ian King <colin.i.king@gmail.com>,
+        Konstantin Khlebnikov <koct9i@gmail.com>,
+        "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+        Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 4.19 06/33] radix tree test suite: fix incorrect allocation size for pthreads
 Date:   Sun, 13 Aug 2023 23:19:00 +0200
-Message-ID: <20230813211711.058012414@linuxfoundation.org>
+Message-ID: <20230813211704.165245890@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211710.787645394@linuxfoundation.org>
-References: <20230813211710.787645394@linuxfoundation.org>
+In-Reply-To: <20230813211703.915807095@linuxfoundation.org>
+References: <20230813211703.915807095@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,45 +56,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Boris Brezillon <boris.brezillon@collabora.com>
+From: Colin Ian King <colin.i.king@gmail.com>
 
-commit 07dd476f6116966cb2006e25fdcf48f0715115ff upstream.
+commit cac7ea57a06016e4914848b707477fb07ee4ae1c upstream.
 
-The dma-buf backend is supposed to provide its own vm_ops, but some
-implementation just have nothing special to do and leave vm_ops
-untouched, probably expecting this field to be zero initialized (this
-is the case with the system_heap implementation for instance).
-Let's reset vma->vm_ops to NULL to keep things working with these
-implementations.
+Currently the pthread allocation for each array item is based on the size
+of a pthread_t pointer and should be the size of the pthread_t structure,
+so the allocation is under-allocating the correct size.  Fix this by using
+the size of each element in the pthreads array.
 
-Fixes: 26d3ac3cb04d ("drm/shmem-helpers: Redirect mmap for imported dma-buf")
+Static analysis cppcheck reported:
+tools/testing/radix-tree/regression1.c:180:2: warning: Size of pointer
+'threads' used instead of size of its data. [pointerSize]
+
+Link: https://lkml.kernel.org/r/20230727160930.632674-1-colin.i.king@gmail.com
+Fixes: 1366c37ed84b ("radix tree test harness")
+Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
+Cc: Konstantin Khlebnikov <koct9i@gmail.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
 Cc: <stable@vger.kernel.org>
-Cc: Daniel Vetter <daniel.vetter@ffwll.ch>
-Reported-by: Roman Stratiienko <r.stratiienko@gmail.com>
-Signed-off-by: Boris Brezillon <boris.brezillon@collabora.com>
-Tested-by: Roman Stratiienko <r.stratiienko@gmail.com>
-Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230724112610.60974-1-boris.brezillon@collabora.com
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/drm_gem_shmem_helper.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ tools/testing/radix-tree/regression1.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/drm_gem_shmem_helper.c
-+++ b/drivers/gpu/drm/drm_gem_shmem_helper.c
-@@ -591,7 +591,13 @@ int drm_gem_shmem_mmap(struct drm_gem_sh
- 	int ret;
+--- a/tools/testing/radix-tree/regression1.c
++++ b/tools/testing/radix-tree/regression1.c
+@@ -198,7 +198,7 @@ void regression1_test(void)
+ 	nr_threads = 2;
+ 	pthread_barrier_init(&worker_barrier, NULL, nr_threads);
  
- 	if (obj->import_attach) {
-+		/* Reset both vm_ops and vm_private_data, so we don't end up with
-+		 * vm_ops pointing to our implementation if the dma-buf backend
-+		 * doesn't set those fields.
-+		 */
- 		vma->vm_private_data = NULL;
-+		vma->vm_ops = NULL;
-+
- 		ret = dma_buf_mmap(obj->dma_buf, vma, 0);
+-	threads = malloc(nr_threads * sizeof(pthread_t *));
++	threads = malloc(nr_threads * sizeof(*threads));
  
- 		/* Drop the reference drm_gem_mmap_obj() acquired.*/
+ 	for (i = 0; i < nr_threads; i++) {
+ 		arg = i;
 
 
