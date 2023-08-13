@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7A3CA77ABDE
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:26:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C279877AC79
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:33:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231723AbjHMV0i (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:26:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54712 "EHLO
+        id S232009AbjHMVdc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:33:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57452 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231716AbjHMV0h (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:26:37 -0400
+        with ESMTP id S232007AbjHMVdb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:33:31 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A45BC10D7
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:26:39 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B127E91
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:33:33 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4226F629A3
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:26:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58F96C433C7;
-        Sun, 13 Aug 2023 21:26:38 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4FAEB62C31
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:33:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67D5EC433C8;
+        Sun, 13 Aug 2023 21:33:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691961998;
-        bh=RIqBAIEmXavQgo15/1d+p4OJhEPF+koZd9HCE0pZNfQ=;
+        s=korg; t=1691962412;
+        bh=S+nnZ7Mif79z4asiwYDbNCCbMlJqrfAlnqdXDpPl11g=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=XNLrfqkixhYfjLvuJ08WdBwl+b9kvQED05k2pX1J22hGvzjxlFv+P6GSoF7Oy7UrJ
-         GXwDJBNcfzQI6gnAliiHsOLbE0VsLktaO1lRNmQ7NINySO2DSeOY2jhq9FguWGWYcc
-         XOVFNLCjUXKJ5QS7ExmoTOGZ6Rr7vVubXDbpZ1u4=
+        b=PVY1feQnbhqbJdXOPHWryyUM1sumyfycaHGionBGucNgXdUHrSPWTGlPkTJbCUitf
+         aXnBAxhvoadyhqkcfEE5OAgLIJpZaUPhB3J0dGgi+AHRxtyyeK9mv5t1hDMYHqP0lO
+         mVBmibDaCDsBkjDepL9QXi6+kY3nGoyNfV47iB2c=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Alan Stern <stern@rowland.harvard.edu>,
-        Badhri Jagan Sridharan <badhri@google.com>,
-        Avichal Rakesh <arakesh@google.com>
-Subject: [PATCH 6.4 076/206] USB: Gadget: core: Help prevent panic during UVC unconfigure
-Date:   Sun, 13 Aug 2023 23:17:26 +0200
-Message-ID: <20230813211727.250367666@linuxfoundation.org>
+        patches@lists.linux.dev, Guenter Roeck <linux@roeck-us.net>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Daniel Sneddon <daniel.sneddon@linux.intel.com>
+Subject: [PATCH 6.1 002/149] Revert "loongarch/cpu: Switch to arch_cpu_finalize_init()"
+Date:   Sun, 13 Aug 2023 23:17:27 +0200
+Message-ID: <20230813211718.832873199@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211724.969019629@linuxfoundation.org>
-References: <20230813211724.969019629@linuxfoundation.org>
+In-Reply-To: <20230813211718.757428827@linuxfoundation.org>
+References: <20230813211718.757428827@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,85 +54,67 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Alan Stern <stern@rowland.harvard.edu>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-commit 65dadb2beeb7360232b09ebc4585b54475dfee06 upstream.
+This reverts commit 08e86d42e2c916e362d124e3bc6c824eb1862498 which is
+commit 9841c423164787feb8f1442f922b7d80a70c82f1 upstream.
 
-Avichal Rakesh reported a kernel panic that occurred when the UVC
-gadget driver was removed from a gadget's configuration.  The panic
-involves a somewhat complicated interaction between the kernel driver
-and a userspace component (as described in the Link tag below), but
-the analysis did make one thing clear: The Gadget core should
-accomodate gadget drivers calling usb_gadget_deactivate() as part of
-their unbind procedure.
+As Gunter reports:
+	Building loongarch:defconfig ... failed
+	--------------
+	Error log:
+	<stdin>:569:2: warning: #warning syscall fstat not implemented [-Wcpp]
+	arch/loongarch/kernel/setup.c: In function 'arch_cpu_finalize_init':
+	arch/loongarch/kernel/setup.c:86:9: error: implicit declaration of function 'alternative_instructions'
 
-Currently this doesn't work.  gadget_unbind_driver() calls
-driver->unbind() while holding the udc->connect_lock mutex, and
-usb_gadget_deactivate() attempts to acquire that mutex, which will
-result in a deadlock.
+	Actually introduced in v6.1.44 with commit 08e86d42e2c9 ("loongarch/cpu:
+	Switch to arch_cpu_finalize_init()"). Alternative instruction support
+	was only introduced for loongarch in v6.2 with commit 19e5eb15b00c
+	("LoongArch: Add alternative runtime patching mechanism").
 
-The simple fix is for gadget_unbind_driver() to release the mutex when
-invoking the ->unbind() callback.  There is no particular reason for
-it to be holding the mutex at that time, and the mutex isn't held
-while the ->bind() callback is invoked.  So we'll drop the mutex
-before performing the unbind callback and reacquire it afterward.
+So revert it from 6.1.y.
 
-We'll also add a couple of comments to usb_gadget_activate() and
-usb_gadget_deactivate().  Because they run in process context they
-must not be called from a gadget driver's ->disconnect() callback,
-which (according to the kerneldoc for struct usb_gadget_driver in
-include/linux/usb/gadget.h) may run in interrupt context.  This may
-help prevent similar bugs from arising in the future.
-
-Reported-and-tested-by: Avichal Rakesh <arakesh@google.com>
-Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
-Fixes: 286d9975a838 ("usb: gadget: udc: core: Prevent soft_connect_store() race")
-Link: https://lore.kernel.org/linux-usb/4d7aa3f4-22d9-9f5a-3d70-1bd7148ff4ba@google.com/
-Cc: Badhri Jagan Sridharan <badhri@google.com>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/48b2f1f1-0639-46bf-bbfc-98cb05a24914@rowland.harvard.edu
+Reported-by: Guenter Roeck <linux@roeck-us.net>
+Link: https://lore.kernel.org/r/fcd7b764-9047-22ba-a040-41b6ff99959c@roeck-us.net
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Daniel Sneddon <daniel.sneddon@linux.intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/gadget/udc/core.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ arch/loongarch/Kconfig        |    1 -
+ arch/loongarch/kernel/setup.c |    6 ------
+ 2 files changed, 7 deletions(-)
 
-diff --git a/drivers/usb/gadget/udc/core.c b/drivers/usb/gadget/udc/core.c
-index cd58f2a4e7f3..7d49d8a0b00c 100644
---- a/drivers/usb/gadget/udc/core.c
-+++ b/drivers/usb/gadget/udc/core.c
-@@ -822,6 +822,9 @@ EXPORT_SYMBOL_GPL(usb_gadget_disconnect);
-  * usb_gadget_activate() is called.  For example, user mode components may
-  * need to be activated before the system can talk to hosts.
-  *
-+ * This routine may sleep; it must not be called in interrupt context
-+ * (such as from within a gadget driver's disconnect() callback).
-+ *
-  * Returns zero on success, else negative errno.
+--- a/arch/loongarch/Kconfig
++++ b/arch/loongarch/Kconfig
+@@ -10,7 +10,6 @@ config LOONGARCH
+ 	select ARCH_ENABLE_MEMORY_HOTPLUG
+ 	select ARCH_ENABLE_MEMORY_HOTREMOVE
+ 	select ARCH_HAS_ACPI_TABLE_UPGRADE	if ACPI
+-	select ARCH_HAS_CPU_FINALIZE_INIT
+ 	select ARCH_HAS_NON_OVERLAPPING_ADDRESS_SPACE
+ 	select ARCH_HAS_PTE_SPECIAL
+ 	select ARCH_HAS_TICK_BROADCAST if GENERIC_CLOCKEVENTS_BROADCAST
+--- a/arch/loongarch/kernel/setup.c
++++ b/arch/loongarch/kernel/setup.c
+@@ -12,7 +12,6 @@
   */
- int usb_gadget_deactivate(struct usb_gadget *gadget)
-@@ -860,6 +863,8 @@ EXPORT_SYMBOL_GPL(usb_gadget_deactivate);
-  * This routine activates gadget which was previously deactivated with
-  * usb_gadget_deactivate() call. It calls usb_gadget_connect() if needed.
-  *
-+ * This routine may sleep; it must not be called in interrupt context.
-+ *
-  * Returns zero on success, else negative errno.
-  */
- int usb_gadget_activate(struct usb_gadget *gadget)
-@@ -1638,7 +1643,11 @@ static void gadget_unbind_driver(struct device *dev)
- 	usb_gadget_disable_async_callbacks(udc);
- 	if (gadget->irq)
- 		synchronize_irq(gadget->irq);
-+	mutex_unlock(&udc->connect_lock);
-+
- 	udc->driver->unbind(gadget);
-+
-+	mutex_lock(&udc->connect_lock);
- 	usb_gadget_udc_stop_locked(udc);
- 	mutex_unlock(&udc->connect_lock);
+ #include <linux/init.h>
+ #include <linux/acpi.h>
+-#include <linux/cpu.h>
+ #include <linux/dmi.h>
+ #include <linux/efi.h>
+ #include <linux/export.h>
+@@ -81,11 +80,6 @@ const char *get_system_type(void)
+ 	return "generic-loongson-machine";
+ }
  
--- 
-2.41.0
-
+-void __init arch_cpu_finalize_init(void)
+-{
+-	alternative_instructions();
+-}
+-
+ static const char *dmi_string_parse(const struct dmi_header *dm, u8 s)
+ {
+ 	const u8 *bp = ((u8 *) dm) + dm->length;
 
 
