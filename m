@@ -2,89 +2,124 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C27A777ACFC
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:48:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 092DA77AD7D
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:49:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232255AbjHMVi5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:38:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56626 "EHLO
+        id S231422AbjHMVsu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:48:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33216 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232227AbjHMVi5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:38:57 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C3BE10DB
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:38:59 -0700 (PDT)
+        with ESMTP id S229765AbjHMVsN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:48:13 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 231BD1BC6
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:41:29 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BEF9E637DB
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:38:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5B03C433C8;
-        Sun, 13 Aug 2023 21:38:57 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id ADA4261B60
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:41:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C60C1C433C7;
+        Sun, 13 Aug 2023 21:41:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691962738;
-        bh=Ub6X6dlBZATCSM2/RUFOM5pJM3Y9N4IuTIa4sBcJSx8=;
+        s=korg; t=1691962888;
+        bh=kUBK96QouseD65voQH8LnQLufLtROVXJNnd4FehaF2g=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ZSo9hAeDEzFzGfP2c/eVw5DyYs+heDGbsxffgnfyU7SOtriWBVTrh75RjYlLvAwr8
-         hfyTPOPUYC9s5cpfm8zQW410XCQQzadtpo+jJ/zGZNuu588uWrN8lBJmwGrQ/9MR5P
-         1v/tQEAFXvSYOWNVK7dGFq6LIfK1Wy8bIQiFuOHo=
+        b=nwM9V3LkuLwdyF7ZwZ83x9bJdk5EVXZO2dmpXRcu3hn1eket0PeZ6p7+JWBHOu5FX
+         O3pXcAq+p7f9WfObey5h5R64bwwqodmJxCXKueivWSj+zEnXvJm6fV3VMUTKuR6yp5
+         08LL1ll0IwDo4gp9G71wsN49V5k90EI9W1KLswgA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Vladimir Telezhnikov <vtelezhnikov@astralinux.ru>,
-        Alexandra Diupina <adiupina@astralinux.ru>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.1 139/149] scsi: 53c700: Check that command slot is not NULL
+        patches@lists.linux.dev, syzbot <syzkaller@googlegroups.com>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.10 43/68] dccp: fix data-race around dp->dccps_mss_cache
 Date:   Sun, 13 Aug 2023 23:19:44 +0200
-Message-ID: <20230813211722.867550572@linuxfoundation.org>
+Message-ID: <20230813211709.466694539@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211718.757428827@linuxfoundation.org>
-References: <20230813211718.757428827@linuxfoundation.org>
+In-Reply-To: <20230813211708.149630011@linuxfoundation.org>
+References: <20230813211708.149630011@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Alexandra Diupina <adiupina@astralinux.ru>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 8366d1f1249a0d0bba41d0bd1298d63e5d34c7f7 upstream.
+commit a47e598fbd8617967e49d85c49c22f9fc642704c upstream.
 
-Add a check for the command slot value to avoid dereferencing a NULL
-pointer.
+dccp_sendmsg() reads dp->dccps_mss_cache before locking the socket.
+Same thing in do_dccp_getsockopt().
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+Add READ_ONCE()/WRITE_ONCE() annotations,
+and change dccp_sendmsg() to check again dccps_mss_cache
+after socket is locked.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Co-developed-by: Vladimir Telezhnikov <vtelezhnikov@astralinux.ru>
-Signed-off-by: Vladimir Telezhnikov <vtelezhnikov@astralinux.ru>
-Signed-off-by: Alexandra Diupina <adiupina@astralinux.ru>
-Link: https://lore.kernel.org/r/20230728123521.18293-1-adiupina@astralinux.ru
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: 7c657876b63c ("[DCCP]: Initial implementation")
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Link: https://lore.kernel.org/r/20230803163021.2958262-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/53c700.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/dccp/output.c |    2 +-
+ net/dccp/proto.c  |   10 ++++++++--
+ 2 files changed, 9 insertions(+), 3 deletions(-)
 
---- a/drivers/scsi/53c700.c
-+++ b/drivers/scsi/53c700.c
-@@ -1598,7 +1598,7 @@ NCR_700_intr(int irq, void *dev_id)
- 				printk("scsi%d (%d:%d) PHASE MISMATCH IN SEND MESSAGE %d remain, return %p[%04x], phase %s\n", host->host_no, pun, lun, count, (void *)temp, temp - hostdata->pScript, sbcl_to_string(NCR_700_readb(host, SBCL_REG)));
- #endif
- 				resume_offset = hostdata->pScript + Ent_SendMessagePhaseMismatch;
--			} else if(dsp >= to32bit(&slot->pSG[0].ins) &&
-+			} else if (slot && dsp >= to32bit(&slot->pSG[0].ins) &&
- 				  dsp <= to32bit(&slot->pSG[NCR_700_SG_SEGMENTS].ins)) {
- 				int data_transfer = NCR_700_readl(host, DBC_REG) & 0xffffff;
- 				int SGcount = (dsp - to32bit(&slot->pSG[0].ins))/sizeof(struct NCR_700_SG_List);
+--- a/net/dccp/output.c
++++ b/net/dccp/output.c
+@@ -185,7 +185,7 @@ unsigned int dccp_sync_mss(struct sock *
+ 
+ 	/* And store cached results */
+ 	icsk->icsk_pmtu_cookie = pmtu;
+-	dp->dccps_mss_cache = cur_mps;
++	WRITE_ONCE(dp->dccps_mss_cache, cur_mps);
+ 
+ 	return cur_mps;
+ }
+--- a/net/dccp/proto.c
++++ b/net/dccp/proto.c
+@@ -639,7 +639,7 @@ static int do_dccp_getsockopt(struct soc
+ 		return dccp_getsockopt_service(sk, len,
+ 					       (__be32 __user *)optval, optlen);
+ 	case DCCP_SOCKOPT_GET_CUR_MPS:
+-		val = dp->dccps_mss_cache;
++		val = READ_ONCE(dp->dccps_mss_cache);
+ 		break;
+ 	case DCCP_SOCKOPT_AVAILABLE_CCIDS:
+ 		return ccid_getsockopt_builtin_ccids(sk, len, optval, optlen);
+@@ -748,7 +748,7 @@ int dccp_sendmsg(struct sock *sk, struct
+ 
+ 	trace_dccp_probe(sk, len);
+ 
+-	if (len > dp->dccps_mss_cache)
++	if (len > READ_ONCE(dp->dccps_mss_cache))
+ 		return -EMSGSIZE;
+ 
+ 	lock_sock(sk);
+@@ -781,6 +781,12 @@ int dccp_sendmsg(struct sock *sk, struct
+ 		goto out_discard;
+ 	}
+ 
++	/* We need to check dccps_mss_cache after socket is locked. */
++	if (len > dp->dccps_mss_cache) {
++		rc = -EMSGSIZE;
++		goto out_discard;
++	}
++
+ 	skb_reserve(skb, sk->sk_prot->max_header);
+ 	rc = memcpy_from_msg(skb_put(skb, len), msg, len);
+ 	if (rc != 0)
 
 
