@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ADC0B77AD51
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:48:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BBAFC77AC5B
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:32:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232281AbjHMVs0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:48:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33248 "EHLO
+        id S231938AbjHMVcR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:32:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56190 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231139AbjHMVsH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:48:07 -0400
+        with ESMTP id S231953AbjHMVcP (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:32:15 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 063551BE9
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:41:56 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9EAE41703
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:32:11 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8EFF460B9D
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:41:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3409C433C9;
-        Sun, 13 Aug 2023 21:41:54 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7E81862B65
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:32:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F4A3C433C8;
+        Sun, 13 Aug 2023 21:32:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691962915;
-        bh=fdcXeXRWJyJDF02tP8DTmtxOIjkYmWa8oiWYmqT+qFg=;
+        s=korg; t=1691962330;
+        bh=4yqqD4kPD9qaXmW1SnCS5PZwO6Cji2/M7HXw75t/SfM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=174eIu2oqg4glqbjo14Ji/Z1ChTVrCJ8sJFcfR+VbQ1tYkSDhqZq9Vb6hEKrfr5Fa
-         Ov4PX4yqMC8PZ4+sfoFCvK7NziBf+R85ELET2hf7T0dSbPPzCNUzqm1xHtWomKRlGY
-         rX8LJ8RSJL0u4d/bSO/FQorWcydLsIJ5nmiKz9eA=
+        b=wd3VOkd2KimMKL+Vqi7jX+atnasAyi88VbSz+jKCXZrqbyhnYItoobCvwhsYGZyNK
+         30hFKF+qkiZUpWcfSpTu8CPC451wH9VQPhn4goWQKiuc1wl+0GZuSkxUCpRJXkycZw
+         Z9fhA5pvnz/hWoNKtAcvAdUxtydffbpAmpp9HU5g=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
-        "Borislav Petkov (AMD)" <bp@alien8.de>
-Subject: [PATCH 5.10 26/68] x86/cpu/amd: Enable Zenbleed fix for AMD Custom APU 0405
+        patches@lists.linux.dev, Saurav Kashyap <skashyap@marvell.com>,
+        Nilesh Javali <njavali@marvell.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.4 197/206] scsi: qedf: Fix firmware halt over suspend and resume
 Date:   Sun, 13 Aug 2023 23:19:27 +0200
-Message-ID: <20230813211708.953515083@linuxfoundation.org>
+Message-ID: <20230813211730.653339886@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211708.149630011@linuxfoundation.org>
-References: <20230813211708.149630011@linuxfoundation.org>
+In-Reply-To: <20230813211724.969019629@linuxfoundation.org>
+References: <20230813211724.969019629@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,41 +55,71 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+From: Nilesh Javali <njavali@marvell.com>
 
-commit 6dbef74aeb090d6bee7d64ef3fa82ae6fa53f271 upstream.
+commit ef222f551e7c4e2008fc442ffc9edcd1a7fd8f63 upstream.
 
-Commit
+While performing certain power-off sequences, PCI drivers are called to
+suspend and resume their underlying devices through PCI PM (power
+management) interface. However the hardware does not support PCI PM
+suspend/resume operations so system wide suspend/resume leads to bad MFW
+(management firmware) state which causes various follow-up errors in driver
+when communicating with the device/firmware.
 
-  522b1d69219d ("x86/cpu/amd: Add a Zenbleed fix")
+To fix this driver implements PCI PM suspend handler to indicate
+unsupported operation to the PCI subsystem explicitly, thus avoiding system
+to go into suspended/standby mode.
 
-provided a fix for the Zen2 VZEROUPPER data corruption bug affecting
-a range of CPU models, but the AMD Custom APU 0405 found on SteamDeck
-was not listed, although it is clearly affected by the vulnerability.
-
-Add this CPU variant to the Zenbleed erratum list, in order to
-unconditionally enable the fallback fix until a proper microcode update
-is available.
-
-Fixes: 522b1d69219d ("x86/cpu/amd: Add a Zenbleed fix")
-Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20230811203705.1699914-1-cristian.ciocaltea@collabora.com
+Fixes: 61d8658b4a43 ("scsi: qedf: Add QLogic FastLinQ offload FCoE driver framework.")
+Signed-off-by: Saurav Kashyap <skashyap@marvell.com>
+Signed-off-by: Nilesh Javali <njavali@marvell.com>
+Link: https://lore.kernel.org/r/20230807093725.46829-1-njavali@marvell.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/cpu/amd.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/scsi/qedf/qedf_main.c |   18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
---- a/arch/x86/kernel/cpu/amd.c
-+++ b/arch/x86/kernel/cpu/amd.c
-@@ -74,6 +74,7 @@ static const int amd_erratum_1054[] =
- static const int amd_zenbleed[] =
- 	AMD_LEGACY_ERRATUM(AMD_MODEL_RANGE(0x17, 0x30, 0x0, 0x4f, 0xf),
- 			   AMD_MODEL_RANGE(0x17, 0x60, 0x0, 0x7f, 0xf),
-+			   AMD_MODEL_RANGE(0x17, 0x90, 0x0, 0x91, 0xf),
- 			   AMD_MODEL_RANGE(0x17, 0xa0, 0x0, 0xaf, 0xf));
+--- a/drivers/scsi/qedf/qedf_main.c
++++ b/drivers/scsi/qedf/qedf_main.c
+@@ -31,6 +31,7 @@ static void qedf_remove(struct pci_dev *
+ static void qedf_shutdown(struct pci_dev *pdev);
+ static void qedf_schedule_recovery_handler(void *dev);
+ static void qedf_recovery_handler(struct work_struct *work);
++static int qedf_suspend(struct pci_dev *pdev, pm_message_t state);
  
- static const int amd_div0[] =
+ /*
+  * Driver module parameters.
+@@ -3271,6 +3272,7 @@ static struct pci_driver qedf_pci_driver
+ 	.probe = qedf_probe,
+ 	.remove = qedf_remove,
+ 	.shutdown = qedf_shutdown,
++	.suspend = qedf_suspend,
+ };
+ 
+ static int __qedf_probe(struct pci_dev *pdev, int mode)
+@@ -4000,6 +4002,22 @@ static void qedf_shutdown(struct pci_dev
+ 	__qedf_remove(pdev, QEDF_MODE_NORMAL);
+ }
+ 
++static int qedf_suspend(struct pci_dev *pdev, pm_message_t state)
++{
++	struct qedf_ctx *qedf;
++
++	if (!pdev) {
++		QEDF_ERR(NULL, "pdev is NULL.\n");
++		return -ENODEV;
++	}
++
++	qedf = pci_get_drvdata(pdev);
++
++	QEDF_ERR(&qedf->dbg_ctx, "%s: Device does not support suspend operation\n", __func__);
++
++	return -EPERM;
++}
++
+ /*
+  * Recovery handler code
+  */
 
 
