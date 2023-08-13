@@ -2,173 +2,123 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E15A077AC52
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:32:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 43AB977ACBE
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:36:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231941AbjHMVcM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:32:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56038 "EHLO
+        id S232153AbjHMVgf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:36:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47494 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231924AbjHMVcL (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:32:11 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 64CA11735
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:31:53 -0700 (PDT)
+        with ESMTP id S232149AbjHMVge (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:36:34 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A18910DB
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:36:36 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8DB6362B7C
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:31:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94311C433C7;
-        Sun, 13 Aug 2023 21:31:50 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2816662FE2
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:36:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33C85C433C8;
+        Sun, 13 Aug 2023 21:36:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691962311;
-        bh=IoXWOz5dJk2xHTBfk8yU7zj59VKrYLXUzQsKw+nW4Vk=;
+        s=korg; t=1691962595;
+        bh=a4IDtCgJOgDbARXUSWs5RXi40sMDtYGE469G2EX8QtM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=v6uLD37TlRcomnDk96+dhfidmkD71xEF9GdjwsZKpWjb1EyNYD2bwXI3aqHVaM9lR
-         kNtw6xp/gzf+2LoI/xxDQGTdQ6eBGLedQXEF/O/cmijPtrBlDBGhoJW+K527NF0PMT
-         l86vdZWZDwV+nxtqsb7nDBECGfrA6pAWaouc781A=
+        b=xQPGIX9d1ZrQaPIzeZ4X22o8jMbpkgpl5jMx/i/vGjoTfR3mN6wQA0IFinx6ksXRU
+         udNqpJUDmEOmQW/+gY+BQHAcyql+XKMOqxIGtCv7p31q6/yQegL9yJHoDo4aKKuaOA
+         Hj0pc+mWJkbb5uN3KaJl7TyUiFUO1DUA9i3MUWNc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Petr Machata <petrm@nvidia.com>,
-        Ido Schimmel <idosch@nvidia.com>,
-        David Ahern <dsahern@kernel.org>,
-        Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.4 160/206] nexthop: Fix infinite nexthop dump when using maximum nexthop ID
+        patches@lists.linux.dev, Xu Kuohai <xukuohai@huawei.com>,
+        John Fastabend <john.fastabend@gmail.com>,
+        Martin KaFai Lau <martin.lau@kernel.org>
+Subject: [PATCH 6.1 085/149] bpf, sockmap: Fix bug that strp_done cannot be called
 Date:   Sun, 13 Aug 2023 23:18:50 +0200
-Message-ID: <20230813211729.603951596@linuxfoundation.org>
+Message-ID: <20230813211721.334869797@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211724.969019629@linuxfoundation.org>
-References: <20230813211724.969019629@linuxfoundation.org>
+In-Reply-To: <20230813211718.757428827@linuxfoundation.org>
+References: <20230813211718.757428827@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Xu Kuohai <xukuohai@huawei.com>
 
-commit 913f60cacda73ccac8eead94983e5884c03e04cd upstream.
+commit 809e4dc71a0f2b8d2836035d98603694fff11d5d upstream.
 
-A netlink dump callback can return a positive number to signal that more
-information needs to be dumped or zero to signal that the dump is
-complete. In the second case, the core netlink code will append the
-NLMSG_DONE message to the skb in order to indicate to user space that
-the dump is complete.
+strp_done is only called when psock->progs.stream_parser is not NULL,
+but stream_parser was set to NULL by sk_psock_stop_strp(), called
+by sk_psock_drop() earlier. So, strp_done can never be called.
 
-The nexthop dump callback always returns a positive number if nexthops
-were filled in the provided skb, even if the dump is complete. This
-means that a dump will span at least two recvmsg() calls as long as
-nexthops are present. In the last recvmsg() call the dump callback will
-not fill in any nexthops because the previous call indicated that the
-dump should restart from the last dumped nexthop ID plus one.
+Introduce SK_PSOCK_RX_ENABLED to mark whether there is strp on psock.
+Change the condition for calling strp_done from judging whether
+stream_parser is set to judging whether this flag is set. This flag is
+only set once when strp_init() succeeds, and will never be cleared later.
 
- # ip nexthop add id 1 blackhole
- # strace -e sendto,recvmsg -s 5 ip nexthop
- sendto(3, [[{nlmsg_len=24, nlmsg_type=RTM_GETNEXTHOP, nlmsg_flags=NLM_F_REQUEST|NLM_F_DUMP, nlmsg_seq=1691394315, nlmsg_pid=0}, {nh_family=AF_UNSPEC, nh_scope=RT_SCOPE_UNIVERSE, nh_protocol=RTPROT_UNSPEC, nh_flags=0}], {nlmsg_len=0, nlmsg_type=0 /* NLMSG_??? */, nlmsg_flags=0, nlmsg_seq=0, nlmsg_pid=0}], 152, 0, NULL, 0) = 152
- recvmsg(3, {msg_name={sa_family=AF_NETLINK, nl_pid=0, nl_groups=00000000}, msg_namelen=12, msg_iov=[{iov_base=NULL, iov_len=0}], msg_iovlen=1, msg_controllen=0, msg_flags=MSG_TRUNC}, MSG_PEEK|MSG_TRUNC) = 36
- recvmsg(3, {msg_name={sa_family=AF_NETLINK, nl_pid=0, nl_groups=00000000}, msg_namelen=12, msg_iov=[{iov_base=[{nlmsg_len=36, nlmsg_type=RTM_NEWNEXTHOP, nlmsg_flags=NLM_F_MULTI, nlmsg_seq=1691394315, nlmsg_pid=343}, {nh_family=AF_INET, nh_scope=RT_SCOPE_UNIVERSE, nh_protocol=RTPROT_UNSPEC, nh_flags=0}, [[{nla_len=8, nla_type=NHA_ID}, 1], {nla_len=4, nla_type=NHA_BLACKHOLE}]], iov_len=32768}], msg_iovlen=1, msg_controllen=0, msg_flags=0}, 0) = 36
- id 1 blackhole
- recvmsg(3, {msg_name={sa_family=AF_NETLINK, nl_pid=0, nl_groups=00000000}, msg_namelen=12, msg_iov=[{iov_base=NULL, iov_len=0}], msg_iovlen=1, msg_controllen=0, msg_flags=MSG_TRUNC}, MSG_PEEK|MSG_TRUNC) = 20
- recvmsg(3, {msg_name={sa_family=AF_NETLINK, nl_pid=0, nl_groups=00000000}, msg_namelen=12, msg_iov=[{iov_base=[{nlmsg_len=20, nlmsg_type=NLMSG_DONE, nlmsg_flags=NLM_F_MULTI, nlmsg_seq=1691394315, nlmsg_pid=343}, 0], iov_len=32768}], msg_iovlen=1, msg_controllen=0, msg_flags=0}, 0) = 20
- +++ exited with 0 +++
-
-This behavior is both inefficient and buggy. If the last nexthop to be
-dumped had the maximum ID of 0xffffffff, then the dump will restart from
-0 (0xffffffff + 1) and never end:
-
- # ip nexthop add id $((2**32-1)) blackhole
- # ip nexthop
- id 4294967295 blackhole
- id 4294967295 blackhole
- [...]
-
-Fix by adjusting the dump callback to return zero when the dump is
-complete. After the fix only one recvmsg() call is made and the
-NLMSG_DONE message is appended to the RTM_NEWNEXTHOP response:
-
- # ip nexthop add id $((2**32-1)) blackhole
- # strace -e sendto,recvmsg -s 5 ip nexthop
- sendto(3, [[{nlmsg_len=24, nlmsg_type=RTM_GETNEXTHOP, nlmsg_flags=NLM_F_REQUEST|NLM_F_DUMP, nlmsg_seq=1691394080, nlmsg_pid=0}, {nh_family=AF_UNSPEC, nh_scope=RT_SCOPE_UNIVERSE, nh_protocol=RTPROT_UNSPEC, nh_flags=0}], {nlmsg_len=0, nlmsg_type=0 /* NLMSG_??? */, nlmsg_flags=0, nlmsg_seq=0, nlmsg_pid=0}], 152, 0, NULL, 0) = 152
- recvmsg(3, {msg_name={sa_family=AF_NETLINK, nl_pid=0, nl_groups=00000000}, msg_namelen=12, msg_iov=[{iov_base=NULL, iov_len=0}], msg_iovlen=1, msg_controllen=0, msg_flags=MSG_TRUNC}, MSG_PEEK|MSG_TRUNC) = 56
- recvmsg(3, {msg_name={sa_family=AF_NETLINK, nl_pid=0, nl_groups=00000000}, msg_namelen=12, msg_iov=[{iov_base=[[{nlmsg_len=36, nlmsg_type=RTM_NEWNEXTHOP, nlmsg_flags=NLM_F_MULTI, nlmsg_seq=1691394080, nlmsg_pid=342}, {nh_family=AF_INET, nh_scope=RT_SCOPE_UNIVERSE, nh_protocol=RTPROT_UNSPEC, nh_flags=0}, [[{nla_len=8, nla_type=NHA_ID}, 4294967295], {nla_len=4, nla_type=NHA_BLACKHOLE}]], [{nlmsg_len=20, nlmsg_type=NLMSG_DONE, nlmsg_flags=NLM_F_MULTI, nlmsg_seq=1691394080, nlmsg_pid=342}, 0]], iov_len=32768}], msg_iovlen=1, msg_controllen=0, msg_flags=0}, 0) = 56
- id 4294967295 blackhole
- +++ exited with 0 +++
-
-Note that if the NLMSG_DONE message cannot be appended because of size
-limitations, then another recvmsg() will be needed, but the core netlink
-code will not invoke the dump callback and simply reply with a
-NLMSG_DONE message since it knows that the callback previously returned
-zero.
-
-Add a test that fails before the fix:
-
- # ./fib_nexthops.sh -t basic
- [...]
- TEST: Maximum nexthop ID dump                                       [FAIL]
- [...]
-
-And passes after it:
-
- # ./fib_nexthops.sh -t basic
- [...]
- TEST: Maximum nexthop ID dump                                       [ OK ]
- [...]
-
-Fixes: ab84be7e54fc ("net: Initial nexthop code")
-Reported-by: Petr Machata <petrm@nvidia.com>
-Closes: https://lore.kernel.org/netdev/87sf91enuf.fsf@nvidia.com/
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: Petr Machata <petrm@nvidia.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://lore.kernel.org/r/20230808075233.3337922-2-idosch@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: c0d95d3380ee ("bpf, sockmap: Re-evaluate proto ops when psock is removed from sockmap")
+Signed-off-by: Xu Kuohai <xukuohai@huawei.com>
+Reviewed-by: John Fastabend <john.fastabend@gmail.com>
+Link: https://lore.kernel.org/r/20230804073740.194770-3-xukuohai@huaweicloud.com
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/nexthop.c                          |    6 +-----
- tools/testing/selftests/net/fib_nexthops.sh |    5 +++++
- 2 files changed, 6 insertions(+), 5 deletions(-)
+ include/linux/skmsg.h |    1 +
+ net/core/skmsg.c      |   10 ++++++++--
+ 2 files changed, 9 insertions(+), 2 deletions(-)
 
---- a/net/ipv4/nexthop.c
-+++ b/net/ipv4/nexthop.c
-@@ -3221,13 +3221,9 @@ static int rtm_dump_nexthop(struct sk_bu
- 				     &rtm_dump_nexthop_cb, &filter);
- 	if (err < 0) {
- 		if (likely(skb->len))
--			goto out;
--		goto out_err;
-+			err = skb->len;
- 	}
+--- a/include/linux/skmsg.h
++++ b/include/linux/skmsg.h
+@@ -62,6 +62,7 @@ struct sk_psock_progs {
  
--out:
--	err = skb->len;
--out_err:
- 	cb->seq = net->nexthop.seq;
- 	nl_dump_check_consistent(cb, nlmsg_hdr(skb));
- 	return err;
---- a/tools/testing/selftests/net/fib_nexthops.sh
-+++ b/tools/testing/selftests/net/fib_nexthops.sh
-@@ -1981,6 +1981,11 @@ basic()
+ enum sk_psock_state_bits {
+ 	SK_PSOCK_TX_ENABLED,
++	SK_PSOCK_RX_STRP_ENABLED,
+ };
  
- 	run_cmd "$IP link set dev lo up"
+ struct sk_psock_link {
+--- a/net/core/skmsg.c
++++ b/net/core/skmsg.c
+@@ -1117,13 +1117,19 @@ static void sk_psock_strp_data_ready(str
  
-+	# Dump should not loop endlessly when maximum nexthop ID is configured.
-+	run_cmd "$IP nexthop add id $((2**32-1)) blackhole"
-+	run_cmd "timeout 5 $IP nexthop"
-+	log_test $? 0 "Maximum nexthop ID dump"
+ int sk_psock_init_strp(struct sock *sk, struct sk_psock *psock)
+ {
++	int ret;
 +
- 	#
- 	# groups
- 	#
+ 	static const struct strp_callbacks cb = {
+ 		.rcv_msg	= sk_psock_strp_read,
+ 		.read_sock_done	= sk_psock_strp_read_done,
+ 		.parse_msg	= sk_psock_strp_parse,
+ 	};
+ 
+-	return strp_init(&psock->strp, sk, &cb);
++	ret = strp_init(&psock->strp, sk, &cb);
++	if (!ret)
++		sk_psock_set_state(psock, SK_PSOCK_RX_STRP_ENABLED);
++
++	return ret;
+ }
+ 
+ void sk_psock_start_strp(struct sock *sk, struct sk_psock *psock)
+@@ -1151,7 +1157,7 @@ void sk_psock_stop_strp(struct sock *sk,
+ static void sk_psock_done_strp(struct sk_psock *psock)
+ {
+ 	/* Parser has been stopped */
+-	if (psock->progs.stream_parser)
++	if (sk_psock_test_state(psock, SK_PSOCK_RX_STRP_ENABLED))
+ 		strp_done(&psock->strp);
+ }
+ #else
 
 
