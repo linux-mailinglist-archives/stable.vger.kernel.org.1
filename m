@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9467A77AD59
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:49:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 213C677ACE9
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:38:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232390AbjHMVtK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:49:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36616 "EHLO
+        id S232231AbjHMVic (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:38:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56518 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231290AbjHMVse (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:48:34 -0400
+        with ESMTP id S232227AbjHMVic (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:38:32 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6831B199E
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:40:56 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AAF8D10DB
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:38:34 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id F284F60F71
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:40:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 147F3C433C7;
-        Sun, 13 Aug 2023 21:40:54 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 40568636CD
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:38:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50EC0C433C7;
+        Sun, 13 Aug 2023 21:38:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691962855;
-        bh=kXBFi4hfIk+Q14JW8uzgsf+WK2BtG/zSp8omQa2vUck=;
+        s=korg; t=1691962713;
+        bh=sSTWRchjXAYWiknUjtPRtV8KpmFkWF6+TggGEWZ95hU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=EtAg1R+kzMyZqZfk2AicWn1mYe8MCGYXZtkze13fj/TLoVrKlCf9G6pxinsvIrhl0
-         05D3192ysDQVT2dz74Aua/acjAPJrGHck5ssKVtn27ozcx7R6hfvxJHi+T4XwOTB0S
-         kPqfDfASKATjugB9By99DGYQhZJl1Wc6r7k7mlbg=
+        b=bf10Ge5ngqnobkuZMZccVnqqeRqIttu+iUekdv098Ngvf3Rrqq1b9JdBngEQ9yqEI
+         kMMZ+47iLFjDgo9IOPoG6RSIQ88FSM6A5AfwlCWBDFNKXWhA/5Q/GxxedE/lxdYp+T
+         Ccj+BUMFv742PjunouSM9XYnLI9eHY/nX8piVttM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Mark Brown <broonie@kernel.org>,
-        Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH 5.10 32/68] selftests/rseq: Fix build with undefined __weak
+        patches@lists.linux.dev, Josef Bacik <josef@toxicpanda.com>,
+        Christoph Hellwig <hch@lst.de>, David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.1 128/149] btrfs: dont stop integrity writeback too early
 Date:   Sun, 13 Aug 2023 23:19:33 +0200
-Message-ID: <20230813211709.133936691@linuxfoundation.org>
+Message-ID: <20230813211722.549824528@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211708.149630011@linuxfoundation.org>
-References: <20230813211708.149630011@linuxfoundation.org>
+In-Reply-To: <20230813211718.757428827@linuxfoundation.org>
+References: <20230813211718.757428827@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,64 +54,50 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Mark Brown <broonie@kernel.org>
+From: Christoph Hellwig <hch@lst.de>
 
-commit d5ad9aae13dcced333c1a7816ff0a4fbbb052466 upstream.
+commit effa24f689ce0948f68c754991a445a8d697d3a8 upstream.
 
-Commit 3bcbc20942db ("selftests/rseq: Play nice with binaries statically
-linked against glibc 2.35+") which is now in Linus' tree introduced uses
-of __weak but did nothing to ensure that a definition is provided for it
-resulting in build failures for the rseq tests:
+extent_write_cache_pages stops writing pages as soon as nr_to_write hits
+zero.  That is the right thing for opportunistic writeback, but incorrect
+for data integrity writeback, which needs to ensure that no dirty pages
+are left in the range.  Thus only stop the writeback for WB_SYNC_NONE
+if nr_to_write hits 0.
 
-rseq.c:41:1: error: unknown type name '__weak'
-__weak ptrdiff_t __rseq_offset;
-^
-rseq.c:41:17: error: expected ';' after top level declarator
-__weak ptrdiff_t __rseq_offset;
-                ^
-                ;
-rseq.c:42:1: error: unknown type name '__weak'
-__weak unsigned int __rseq_size;
-^
-rseq.c:43:1: error: unknown type name '__weak'
-__weak unsigned int __rseq_flags;
+This is a port of write_cache_pages changes in commit 05fe478dd04e
+("mm: write_cache_pages integrity fix").
 
-Fix this by using the definition from tools/include compiler.h.
+Note that I've only trigger the problem with other changes to the btrfs
+writeback code, but this condition seems worthwhile fixing anyway.
 
-Fixes: 3bcbc20942db ("selftests/rseq: Play nice with binaries statically linked against glibc 2.35+")
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Message-Id: <20230804-kselftest-rseq-build-v1-1-015830b66aa9@kernel.org>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+CC: stable@vger.kernel.org # 4.14+
+Reviewed-by: Josef Bacik <josef@toxicpanda.com>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: David Sterba <dsterba@suse.com>
+[ updated comment ]
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/rseq/Makefile |    4 +++-
- tools/testing/selftests/rseq/rseq.c   |    2 ++
- 2 files changed, 5 insertions(+), 1 deletion(-)
+ fs/btrfs/extent_io.c |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/tools/testing/selftests/rseq/Makefile
-+++ b/tools/testing/selftests/rseq/Makefile
-@@ -4,8 +4,10 @@ ifneq ($(shell $(CC) --version 2>&1 | he
- CLANG_FLAGS += -no-integrated-as
- endif
+--- a/fs/btrfs/extent_io.c
++++ b/fs/btrfs/extent_io.c
+@@ -3015,11 +3015,12 @@ retry:
+ 			}
  
-+top_srcdir = ../../../..
-+
- CFLAGS += -O2 -Wall -g -I./ -I../../../../usr/include/ -L$(OUTPUT) -Wl,-rpath=./ \
--	  $(CLANG_FLAGS)
-+	  $(CLANG_FLAGS) -I$(top_srcdir)/tools/include
- LDLIBS += -lpthread -ldl
- 
- # Own dependencies because we only want to build against 1st prerequisite, but
---- a/tools/testing/selftests/rseq/rseq.c
-+++ b/tools/testing/selftests/rseq/rseq.c
-@@ -29,6 +29,8 @@
- #include <dlfcn.h>
- #include <stddef.h>
- 
-+#include <linux/compiler.h>
-+
- #include "../kselftest.h"
- #include "rseq.h"
- 
+ 			/*
+-			 * the filesystem may choose to bump up nr_to_write.
++			 * The filesystem may choose to bump up nr_to_write.
+ 			 * We have to make sure to honor the new nr_to_write
+-			 * at any time
++			 * at any time.
+ 			 */
+-			nr_to_write_done = wbc->nr_to_write <= 0;
++			nr_to_write_done = (wbc->sync_mode == WB_SYNC_NONE &&
++					    wbc->nr_to_write <= 0);
+ 		}
+ 		pagevec_release(&pvec);
+ 		cond_resched();
 
 
