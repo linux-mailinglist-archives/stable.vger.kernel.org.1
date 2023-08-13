@@ -2,149 +2,94 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 021DA77AB7B
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:22:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0925577AB66
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:21:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230384AbjHMVWm (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:22:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40322 "EHLO
+        id S230289AbjHMVVa (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:21:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34344 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230400AbjHMVW0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:22:26 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E2DFF10D0
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:22:28 -0700 (PDT)
+        with ESMTP id S229627AbjHMVVa (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:21:30 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 713F010DB
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:21:32 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7924462801
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:22:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AFD3C433C8;
-        Sun, 13 Aug 2023 21:22:27 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 10EF6627A4
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:21:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26CF1C433C8;
+        Sun, 13 Aug 2023 21:21:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691961747;
-        bh=0If/8gDFTYr+jB8e5PWtKj56eMQEchOko0mPWvRU68w=;
+        s=korg; t=1691961691;
+        bh=KDPt349JajcOgw954tXMd+x9SUhBV42O5ckpeKny2Sg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=1fHQe/5Vcfcqwcn33/v0vafoOiCxT50C4saioMvlETEDXE9EAOsZghV2PbMUPFs42
-         DJliuHb+74Cn2T68mEaaJIp008SnfFjpah0dbN1okDO3X7Ft5BbDqvBVxBGKYkYCiq
-         tG7Y1NaUTsnx179bgLsHtd+aDRK4hvZU/MLqOfJw=
+        b=aswgs/Ft7HjB1AtAueMPRhX8tE+4t/KWKyURLOfWnwTmXo0nT6tEhFpeOMas+JTjT
+         BMnmf57cC0NrPwzMCU5AU3wVsCD8azLRVo5/a/7np0QQk1pnHczJtydtW8Cg4X76gi
+         mNTDeO70OF+Kz1SObI/mwwpA2ZM7JO2K+kRmtmd8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Richard Tresidder <rtresidd@electromag.com.au>,
-        =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-        Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 4.19 04/33] dmaengine: pl330: Return DMA_PAUSED when transaction is paused
+        patches@lists.linux.dev, Colin Ian King <colin.i.king@gmail.com>,
+        Konstantin Khlebnikov <koct9i@gmail.com>,
+        "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+        Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 4.14 05/26] radix tree test suite: fix incorrect allocation size for pthreads
 Date:   Sun, 13 Aug 2023 23:18:58 +0200
-Message-ID: <20230813211704.082942560@linuxfoundation.org>
+Message-ID: <20230813211703.187618690@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211703.915807095@linuxfoundation.org>
-References: <20230813211703.915807095@linuxfoundation.org>
+In-Reply-To: <20230813211702.980427106@linuxfoundation.org>
+References: <20230813211702.980427106@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+From: Colin Ian King <colin.i.king@gmail.com>
 
-commit 8cda3ececf07d374774f6a13e5a94bc2dc04c26c upstream.
+commit cac7ea57a06016e4914848b707477fb07ee4ae1c upstream.
 
-pl330_pause() does not set anything to indicate paused condition which
-causes pl330_tx_status() to return DMA_IN_PROGRESS. This breaks 8250
-DMA flush after the fix in commit 57e9af7831dc ("serial: 8250_dma: Fix
-DMA Rx rearm race"). The function comment for pl330_pause() claims
-pause is supported but resume is not which is enough for 8250 DMA flush
-to work as long as DMA status reports DMA_PAUSED when appropriate.
+Currently the pthread allocation for each array item is based on the size
+of a pthread_t pointer and should be the size of the pthread_t structure,
+so the allocation is under-allocating the correct size.  Fix this by using
+the size of each element in the pthreads array.
 
-Add PAUSED state for descriptor and mark BUSY descriptors with PAUSED
-in pl330_pause(). Return DMA_PAUSED from pl330_tx_status() when the
-descriptor is PAUSED.
+Static analysis cppcheck reported:
+tools/testing/radix-tree/regression1.c:180:2: warning: Size of pointer
+'threads' used instead of size of its data. [pointerSize]
 
-Reported-by: Richard Tresidder <rtresidd@electromag.com.au>
-Tested-by: Richard Tresidder <rtresidd@electromag.com.au>
-Fixes: 88987d2c7534 ("dmaengine: pl330: add DMA_PAUSE feature")
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/linux-serial/f8a86ecd-64b1-573f-c2fa-59f541083f1a@electromag.com.au/
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Link: https://lore.kernel.org/r/20230526105434.14959-1-ilpo.jarvinen@linux.intel.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Link: https://lkml.kernel.org/r/20230727160930.632674-1-colin.i.king@gmail.com
+Fixes: 1366c37ed84b ("radix tree test harness")
+Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
+Cc: Konstantin Khlebnikov <koct9i@gmail.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma/pl330.c |   18 ++++++++++++++++--
- 1 file changed, 16 insertions(+), 2 deletions(-)
+ tools/testing/radix-tree/regression1.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/dma/pl330.c
-+++ b/drivers/dma/pl330.c
-@@ -405,6 +405,12 @@ enum desc_status {
- 	 */
- 	BUSY,
- 	/*
-+	 * Pause was called while descriptor was BUSY. Due to hardware
-+	 * limitations, only termination is possible for descriptors
-+	 * that have been paused.
-+	 */
-+	PAUSED,
-+	/*
- 	 * Sitting on the channel work_list but xfer done
- 	 * by PL330 core
- 	 */
-@@ -2028,7 +2034,7 @@ static inline void fill_queue(struct dma
- 	list_for_each_entry(desc, &pch->work_list, node) {
+--- a/tools/testing/radix-tree/regression1.c
++++ b/tools/testing/radix-tree/regression1.c
+@@ -198,7 +198,7 @@ void regression1_test(void)
+ 	nr_threads = 2;
+ 	pthread_barrier_init(&worker_barrier, NULL, nr_threads);
  
- 		/* If already submitted */
--		if (desc->status == BUSY)
-+		if (desc->status == BUSY || desc->status == PAUSED)
- 			continue;
+-	threads = malloc(nr_threads * sizeof(pthread_t *));
++	threads = malloc(nr_threads * sizeof(*threads));
  
- 		ret = pl330_submit_req(pch->thread, desc);
-@@ -2305,6 +2311,7 @@ static int pl330_pause(struct dma_chan *
- {
- 	struct dma_pl330_chan *pch = to_pchan(chan);
- 	struct pl330_dmac *pl330 = pch->dmac;
-+	struct dma_pl330_desc *desc;
- 	unsigned long flags;
- 
- 	pm_runtime_get_sync(pl330->ddma.dev);
-@@ -2314,6 +2321,10 @@ static int pl330_pause(struct dma_chan *
- 	_stop(pch->thread);
- 	spin_unlock(&pl330->lock);
- 
-+	list_for_each_entry(desc, &pch->work_list, node) {
-+		if (desc->status == BUSY)
-+			desc->status = PAUSED;
-+	}
- 	spin_unlock_irqrestore(&pch->lock, flags);
- 	pm_runtime_mark_last_busy(pl330->ddma.dev);
- 	pm_runtime_put_autosuspend(pl330->ddma.dev);
-@@ -2404,7 +2415,7 @@ pl330_tx_status(struct dma_chan *chan, d
- 		else if (running && desc == running)
- 			transferred =
- 				pl330_get_current_xferred_count(pch, desc);
--		else if (desc->status == BUSY)
-+		else if (desc->status == BUSY || desc->status == PAUSED)
- 			/*
- 			 * Busy but not running means either just enqueued,
- 			 * or finished and not yet marked done
-@@ -2421,6 +2432,9 @@ pl330_tx_status(struct dma_chan *chan, d
- 			case DONE:
- 				ret = DMA_COMPLETE;
- 				break;
-+			case PAUSED:
-+				ret = DMA_PAUSED;
-+				break;
- 			case PREP:
- 			case BUSY:
- 				ret = DMA_IN_PROGRESS;
+ 	for (i = 0; i < nr_threads; i++) {
+ 		arg = i;
 
 
