@@ -2,97 +2,90 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 88FC277ACDE
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:38:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7B4AC77AB88
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:23:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232213AbjHMViD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:38:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34870 "EHLO
+        id S229754AbjHMVW6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:22:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37586 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232208AbjHMViC (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:38:02 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D48B910E3
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:38:04 -0700 (PDT)
+        with ESMTP id S231299AbjHMVW4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:22:56 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89B941707
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:22:58 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 72FEE6357E
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:38:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C3EAC433C8;
-        Sun, 13 Aug 2023 21:38:03 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 21C1162839
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:22:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 364F1C433C8;
+        Sun, 13 Aug 2023 21:22:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691962683;
-        bh=WKYGZvP+RDpkQQNauPhCCbLd8rfqw1pF9hIFynEuYyU=;
+        s=korg; t=1691961777;
+        bh=R15l1BKXod8hZEPiErcBzYQA82uGFFFFFen6jImXGo0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=erOSa7/sU1A4V80T4EaduSglm2z9DlTX0mbjR1V07uUY3fi0qU1BhEn2zFs4CrbSS
-         KN5gOPMTvGw0zPG1baDOOvL/i8qwgDhF6gNnVCIC2+Uy52yiRhdUzdpDuBz5qmCKi2
-         6heem+f/ZLrLgcOkkbvDpxiUWUnvA0UxrpwZJbzM=
+        b=gtpICajKxcySiknapsmKWwu4ppluUfLNvQY/5ps3iG+VDl35NcwydGEyhu8YK8BTg
+         h7zUcwS07JO24vC/ebCS96k3B1G+3l+jmIXwwQQHdU0CMaEE856fEtYYtTKFz0c3DK
+         XOFqayMTaFEb9jfza5WlQBtrENwqNzlBOLSq065E=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Moshe Shemesh <moshe@nvidia.com>,
-        Aya Levin <ayal@nvidia.com>,
-        Saeed Mahameed <saeedm@nvidia.com>,
-        Ganesh G R <ganeshgr@linux.ibm.com>
-Subject: [PATCH 6.1 118/149] net/mlx5: Skip clock update work when device is in error state
+        patches@lists.linux.dev,
+        Vladimir Telezhnikov <vtelezhnikov@astralinux.ru>,
+        Alexandra Diupina <adiupina@astralinux.ru>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 4.19 29/33] scsi: 53c700: Check that command slot is not NULL
 Date:   Sun, 13 Aug 2023 23:19:23 +0200
-Message-ID: <20230813211722.272975414@linuxfoundation.org>
+Message-ID: <20230813211704.993337754@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211718.757428827@linuxfoundation.org>
-References: <20230813211718.757428827@linuxfoundation.org>
+In-Reply-To: <20230813211703.915807095@linuxfoundation.org>
+References: <20230813211703.915807095@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Moshe Shemesh <moshe@nvidia.com>
+From: Alexandra Diupina <adiupina@astralinux.ru>
 
-commit d006207625657322ba8251b6e7e829f9659755dc upstream.
+commit 8366d1f1249a0d0bba41d0bd1298d63e5d34c7f7 upstream.
 
-When device is in error state, marked by the flag
-MLX5_DEVICE_STATE_INTERNAL_ERROR, the HW and PCI may not be accessible
-and so clock update work should be skipped. Furthermore, such access
-through PCI in error state, after calling mlx5_pci_disable_device() can
-result in failing to recover from pci errors.
+Add a check for the command slot value to avoid dereferencing a NULL
+pointer.
 
-Fixes: ef9814deafd0 ("net/mlx5e: Add HW timestamping (TS) support")
-Reported-and-tested-by: Ganesh G R <ganeshgr@linux.ibm.com>
-Closes: https://lore.kernel.org/netdev/9bdb9b9d-140a-7a28-f0de-2e64e873c068@nvidia.com
-Signed-off-by: Moshe Shemesh <moshe@nvidia.com>
-Reviewed-by: Aya Levin <ayal@nvidia.com>
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Co-developed-by: Vladimir Telezhnikov <vtelezhnikov@astralinux.ru>
+Signed-off-by: Vladimir Telezhnikov <vtelezhnikov@astralinux.ru>
+Signed-off-by: Alexandra Diupina <adiupina@astralinux.ru>
+Link: https://lore.kernel.org/r/20230728123521.18293-1-adiupina@astralinux.ru
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/lib/clock.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/scsi/53c700.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/net/ethernet/mellanox/mlx5/core/lib/clock.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/lib/clock.c
-@@ -198,10 +198,15 @@ static void mlx5_timestamp_overflow(stru
- 	clock = container_of(timer, struct mlx5_clock, timer);
- 	mdev = container_of(clock, struct mlx5_core_dev, clock);
- 
-+	if (mdev->state == MLX5_DEVICE_STATE_INTERNAL_ERROR)
-+		goto out;
-+
- 	write_seqlock_irqsave(&clock->lock, flags);
- 	timecounter_read(&timer->tc);
- 	mlx5_update_clock_info_page(mdev);
- 	write_sequnlock_irqrestore(&clock->lock, flags);
-+
-+out:
- 	schedule_delayed_work(&timer->overflow_work, timer->overflow_period);
- }
- 
+--- a/drivers/scsi/53c700.c
++++ b/drivers/scsi/53c700.c
+@@ -1594,7 +1594,7 @@ NCR_700_intr(int irq, void *dev_id)
+ 				printk("scsi%d (%d:%d) PHASE MISMATCH IN SEND MESSAGE %d remain, return %p[%04x], phase %s\n", host->host_no, pun, lun, count, (void *)temp, temp - hostdata->pScript, sbcl_to_string(NCR_700_readb(host, SBCL_REG)));
+ #endif
+ 				resume_offset = hostdata->pScript + Ent_SendMessagePhaseMismatch;
+-			} else if(dsp >= to32bit(&slot->pSG[0].ins) &&
++			} else if (slot && dsp >= to32bit(&slot->pSG[0].ins) &&
+ 				  dsp <= to32bit(&slot->pSG[NCR_700_SG_SEGMENTS].ins)) {
+ 				int data_transfer = NCR_700_readl(host, DBC_REG) & 0xffffff;
+ 				int SGcount = (dsp - to32bit(&slot->pSG[0].ins))/sizeof(struct NCR_700_SG_List);
 
 
