@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7C59877AB1D
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 22:19:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0E8E877AB1E
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 22:19:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230281AbjHMUTh (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 16:19:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37042 "EHLO
+        id S230495AbjHMUTq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 16:19:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37058 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229512AbjHMUTh (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 16:19:37 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E3FC10F9
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 13:19:39 -0700 (PDT)
+        with ESMTP id S229512AbjHMUTq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 16:19:46 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A18310F9
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 13:19:48 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D354162713
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 20:19:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD021C433C8;
-        Sun, 13 Aug 2023 20:19:37 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DCBE1626C4
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 20:19:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE9DFC433C7;
+        Sun, 13 Aug 2023 20:19:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691957978;
-        bh=C7MiadIW/UdgcpUzRnJ2lp+zxgkdr3fNPQlvztt1OL8=;
+        s=korg; t=1691957987;
+        bh=YRy4tnx1AJNWTdcsDBrkngytVkOBaUed47jV1yueFYE=;
         h=Subject:To:Cc:From:Date:From;
-        b=eTOPJIZTfYOjCyF8NrDjiONrcd7dLgy9Cdf6If6FE2ywjNL35NiISE7PinbHIZ0CH
-         xGS91vFsA5RSkmHHGx51ReG46iys7KMMuE3bbicsW2+0Jrroe9LT8+KiqzG9g41Uma
-         Ivs8lTBFrgDHL4r5tmtaTgvEDRyXZ4XT57nAg+iY=
-Subject: FAILED: patch "[PATCH] scsi: qedi: Fix firmware halt over suspend and resume" failed to apply to 5.4-stable tree
+        b=ndB4Zz6cr1HRpaZxEOekeSMrs2QqBXdlWGVLdRAafusrJJ5KbuuySH4vpCXCbH9YX
+         YTPKMK55ieZBKnHPU5TsQYLPbp63Ie8+KZOkbKR1UHDGlNqcINpGLFbHJysoQZVBsT
+         VF+74Pz+awYHZ52cZgjUqSPwknUuCXU/OoXJx6lE=
+Subject: FAILED: patch "[PATCH] scsi: qedi: Fix firmware halt over suspend and resume" failed to apply to 4.19-stable tree
 To:     njavali@marvell.com, martin.petersen@oracle.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sun, 13 Aug 2023 22:19:35 +0200
-Message-ID: <2023081335-disperser-acting-9c76@gregkh>
+Date:   Sun, 13 Aug 2023 22:19:36 +0200
+Message-ID: <2023081336-cameo-challenge-c72b@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -49,19 +48,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 4.19-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
 git checkout FETCH_HEAD
 git cherry-pick -x 1516ee035df32115197cd93ae3619dba7b020986
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023081335-disperser-acting-9c76@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023081336-cameo-challenge-c72b@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
 
 Possible dependencies:
 
@@ -72,6 +71,11 @@ f4ba4e55db6d ("scsi: qedi: Add firmware error recovery invocation support")
 e4020e0835ed ("scsi: qedi: Remove 2 set but unused variables")
 4f93c4bf0f74 ("scsi: qedi: Add PCI shutdown handler support")
 4b1068f5d74b ("scsi: qedi: Add MFW error recovery process")
+2bfbc570586e ("qedi: Use hwfns and affin_hwfn_idx to get MSI-X vector index")
+13b99d3d3907 ("Revert "scsi: qedi: Allocate IRQs based on msix_cnt"")
+dcceeeb71fb7 ("scsi: qedi: add module param to set ping packet size")
+1a291bce5eaf ("scsi: qedi: Allocate IRQs based on msix_cnt")
+3fb5a21fd008 ("scsi: qedi: Cleanup redundant QEDI_PAGE_SIZE macro definition")
 
 thanks,
 
