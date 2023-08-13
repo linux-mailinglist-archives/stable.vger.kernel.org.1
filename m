@@ -2,47 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 130FB77AC64
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:32:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5068677AD55
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:49:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231970AbjHMVce (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:32:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55954 "EHLO
+        id S232308AbjHMVtK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:49:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33202 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231965AbjHMVce (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:32:34 -0400
+        with ESMTP id S229519AbjHMVst (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:48:49 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 418F610D7
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:32:36 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 729D310FE
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:39:27 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CB37B62BD7
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:32:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5F4CC433C8;
-        Sun, 13 Aug 2023 21:32:34 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9199A63814
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:39:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA925C433C8;
+        Sun, 13 Aug 2023 21:39:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691962355;
-        bh=AD++ORNyjz2bKUq+L4GuxWMFiwpvHOr0hv8jMvm8/r4=;
+        s=korg; t=1691962765;
+        bh=JU01nKHC+I8iQiEJT//rwQKtAeahAHd2jTb7RdnW8Lo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=lb3PpaNWg0r9r0Xa/UktamT2ZDXm/Bt9x91vFSN0ipD4tvfY83zYcmAnTCZCTMHH1
-         MvHzYfY9S2fLTjS4rvPj02dIu15Pa+Ly38ooB7A0n2P3ES++Etn47sGlHzDuhdiNQx
-         sQQsfzxLYUI+L9lxmVsgt3F524i08zE/1kx03d8k=
+        b=QjZxVQljiDE69H4YRf/9hw0Mn2XCrv2fgr1+uaLRQfV7aV08OpdxuO0VTvN41n9gJ
+         K5X5V5oofu/ZxWwK2TmhdKftyiPcCwEiuQWTZqtFWLbGYWXD0zuDB6iE1Y4fZvsUqZ
+         GpxRM9R3/HFOBSe5BxgAgoJbNdnNu28IK3bSID2c=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Simon Trimmer <simont@opensource.cirrus.com>,
-        Richard Fitzgerald <rf@opensource.cirrus.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Hans de Goede <hdegoede@redhat.com>
-Subject: [PATCH 6.4 205/206] ACPI: scan: Create platform device for CS35L56
-Date:   Sun, 13 Aug 2023 23:19:35 +0200
-Message-ID: <20230813211730.866562740@linuxfoundation.org>
+        syzbot+ae97a827ae1c3336bbb4@syzkaller.appspotmail.com,
+        Filipe Manana <fdmanana@suse.com>, Qu Wenruo <wqu@suse.com>,
+        David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.1 131/149] btrfs: reject invalid reloc tree root keys with stack dump
+Date:   Sun, 13 Aug 2023 23:19:36 +0200
+Message-ID: <20230813211722.637793526@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211724.969019629@linuxfoundation.org>
-References: <20230813211724.969019629@linuxfoundation.org>
+In-Reply-To: <20230813211718.757428827@linuxfoundation.org>
+References: <20230813211718.757428827@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,73 +56,84 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Simon Trimmer <simont@opensource.cirrus.com>
+From: Qu Wenruo <wqu@suse.com>
 
-commit 1cd0302be5645420f73090aee26fa787287e1096 upstream.
+commit 6ebcd021c92b8e4b904552e4d87283032100796d upstream.
 
-The ACPI device CSC3556 is a Cirrus Logic CS35L56 mono amplifier which
-is used in multiples, and can be connected either to I2C or SPI.
+[BUG]
+Syzbot reported a crash that an ASSERT() got triggered inside
+prepare_to_merge().
 
-There will be multiple instances under the same Device() node. Add it
-to ignore_serial_bus_ids and handle it in the serial-multi-instantiate
-driver.
+That ASSERT() makes sure the reloc tree is properly pointed back by its
+subvolume tree.
 
-There can be a 5th I2cSerialBusV2, but this is an alias address and doesn't
-represent a real device. Ignore this by having a dummy 5th entry in the
-serial-multi-instantiate instance list with the name of a non-existent
-driver, on the same pattern as done for bsg2150.
+[CAUSE]
+After more debugging output, it turns out we had an invalid reloc tree:
 
-Signed-off-by: Simon Trimmer <simont@opensource.cirrus.com>
-Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
-Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Link: https://lore.kernel.org/r/20230728111345.7224-1-rf@opensource.cirrus.com
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+  BTRFS error (device loop1): reloc tree mismatch, root 8 has no reloc root, expect reloc root key (-8, 132, 8) gen 17
+
+Note the above root key is (TREE_RELOC_OBJECTID, ROOT_ITEM,
+QUOTA_TREE_OBJECTID), meaning it's a reloc tree for quota tree.
+
+But reloc trees can only exist for subvolumes, as for non-subvolume
+trees, we just COW the involved tree block, no need to create a reloc
+tree since those tree blocks won't be shared with other trees.
+
+Only subvolumes tree can share tree blocks with other trees (thus they
+have BTRFS_ROOT_SHAREABLE flag).
+
+Thus this new debug output proves my previous assumption that corrupted
+on-disk data can trigger that ASSERT().
+
+[FIX]
+Besides the dedicated fix and the graceful exit, also let tree-checker to
+check such root keys, to make sure reloc trees can only exist for subvolumes.
+
+CC: stable@vger.kernel.org # 5.15+
+Reported-by: syzbot+ae97a827ae1c3336bbb4@syzkaller.appspotmail.com
+Reviewed-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/scan.c                             |    1 +
- drivers/platform/x86/serial-multi-instantiate.c |   14 ++++++++++++++
- 2 files changed, 15 insertions(+)
+ fs/btrfs/disk-io.c      |    3 ++-
+ fs/btrfs/tree-checker.c |   14 ++++++++++++++
+ 2 files changed, 16 insertions(+), 1 deletion(-)
 
---- a/drivers/acpi/scan.c
-+++ b/drivers/acpi/scan.c
-@@ -1712,6 +1712,7 @@ static bool acpi_device_enumeration_by_p
- 		{"BSG1160", },
- 		{"BSG2150", },
- 		{"CSC3551", },
-+		{"CSC3556", },
- 		{"INT33FE", },
- 		{"INT3515", },
- 		/* Non-conforming _HID for Cirrus Logic already released */
---- a/drivers/platform/x86/serial-multi-instantiate.c
-+++ b/drivers/platform/x86/serial-multi-instantiate.c
-@@ -329,6 +329,19 @@ static const struct smi_node cs35l41_hda
- 	.bus_type = SMI_AUTO_DETECT,
- };
+--- a/fs/btrfs/disk-io.c
++++ b/fs/btrfs/disk-io.c
+@@ -1455,7 +1455,8 @@ static int btrfs_init_fs_root(struct btr
+ 		goto fail;
  
-+static const struct smi_node cs35l56_hda = {
-+	.instances = {
-+		{ "cs35l56-hda", IRQ_RESOURCE_AUTO, 0 },
-+		{ "cs35l56-hda", IRQ_RESOURCE_AUTO, 0 },
-+		{ "cs35l56-hda", IRQ_RESOURCE_AUTO, 0 },
-+		{ "cs35l56-hda", IRQ_RESOURCE_AUTO, 0 },
-+		/* a 5th entry is an alias address, not a real device */
-+		{ "cs35l56-hda_dummy_dev" },
-+		{}
-+	},
-+	.bus_type = SMI_AUTO_DETECT,
-+};
+ 	if (root->root_key.objectid != BTRFS_TREE_LOG_OBJECTID &&
+-	    !btrfs_is_data_reloc_root(root)) {
++	    !btrfs_is_data_reloc_root(root) &&
++	    is_fstree(root->root_key.objectid)) {
+ 		set_bit(BTRFS_ROOT_SHAREABLE, &root->state);
+ 		btrfs_check_and_init_root_item(&root->root_item);
+ 	}
+--- a/fs/btrfs/tree-checker.c
++++ b/fs/btrfs/tree-checker.c
+@@ -442,6 +442,20 @@ static int check_root_key(struct extent_
+ 	btrfs_item_key_to_cpu(leaf, &item_key, slot);
+ 	is_root_item = (item_key.type == BTRFS_ROOT_ITEM_KEY);
+ 
++	/*
++	 * Bad rootid for reloc trees.
++	 *
++	 * Reloc trees are only for subvolume trees, other trees only need
++	 * to be COWed to be relocated.
++	 */
++	if (unlikely(is_root_item && key->objectid == BTRFS_TREE_RELOC_OBJECTID &&
++		     !is_fstree(key->offset))) {
++		generic_err(leaf, slot,
++		"invalid reloc tree for root %lld, root id is not a subvolume tree",
++			    key->offset);
++		return -EUCLEAN;
++	}
 +
- /*
-  * Note new device-ids must also be added to ignore_serial_bus_ids in
-  * drivers/acpi/scan.c: acpi_device_enumeration_by_parent().
-@@ -337,6 +350,7 @@ static const struct acpi_device_id smi_a
- 	{ "BSG1160", (unsigned long)&bsg1160_data },
- 	{ "BSG2150", (unsigned long)&bsg2150_data },
- 	{ "CSC3551", (unsigned long)&cs35l41_hda },
-+	{ "CSC3556", (unsigned long)&cs35l56_hda },
- 	{ "INT3515", (unsigned long)&int3515_data },
- 	/* Non-conforming _HID for Cirrus Logic already released */
- 	{ "CLSA0100", (unsigned long)&cs35l41_hda },
+ 	/* No such tree id */
+ 	if (unlikely(key->objectid == 0)) {
+ 		if (is_root_item)
 
 
