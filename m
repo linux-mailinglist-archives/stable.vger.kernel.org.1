@@ -2,42 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2922C77ABF2
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:27:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 578CF77ABD5
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:26:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231761AbjHMV1b (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:27:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51144 "EHLO
+        id S231709AbjHMV0O (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:26:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39616 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231749AbjHMV1b (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:27:31 -0400
+        with ESMTP id S231704AbjHMV0N (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:26:13 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9CE8D10DB
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:27:33 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C3CAA10DD
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:26:15 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3290C629F0
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:27:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42173C433C7;
-        Sun, 13 Aug 2023 21:27:32 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5667662981
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:26:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6690AC433C8;
+        Sun, 13 Aug 2023 21:26:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691962052;
-        bh=7VefZ51285vODeQljYDChXMAZEUDSm8ckRSc2Wx2orE=;
+        s=korg; t=1691961974;
+        bh=QTxLNMcngBVpCdOAZKLbpaUn7Uz9/rGlb5zm4YXg/aw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=2kVk1lgrar7jNmLg6H4ToOCFLCb2ir3QRJ1DfVMgsUNS9jDo+ubDkzbec7peoQBSq
-         PgmsE8rl2wSxOFOpTOVg1dW8o4Ao3j5KX1yAzZBzMxKTRmAGL2rN2NbQDC2Z6TVQkg
-         K0G0Fzrw1vN2dc43+Vag89YxDjJqyGbcalgJuekQ=
+        b=2mBVC33pDhrRpoSAX3cwNDsvd/s8JFKyS0QXiGKcf57s8PBmqhZea3nAKeemFRuYP
+         DtLgRSx8wl3Wp635wXoeLlJ0Q2lPeGrdCeZLRgWch9UBdv8Fyyu+MpQe0gKiaiwqy5
+         Np8vjKdl/i6Qa0H/43qsHdogWRyGejhGgqEb4iiE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Tzung-Bi Shih <tzungbi@kernel.org>,
-        Yiyuan Guo <yguoaz@gmail.com>, Stable@vger.kerenl.org,
+        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
+        Stable@vger.kernel.org,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.4 066/206] iio: cros_ec: Fix the allocation size for cros_ec_command
-Date:   Sun, 13 Aug 2023 23:17:16 +0200
-Message-ID: <20230813211726.952954641@linuxfoundation.org>
+Subject: [PATCH 6.4 067/206] iio: frequency: admv1013: propagate errors from regulator_get_voltage()
+Date:   Sun, 13 Aug 2023 23:17:17 +0200
+Message-ID: <20230813211726.981047378@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230813211724.969019629@linuxfoundation.org>
 References: <20230813211724.969019629@linuxfoundation.org>
@@ -55,35 +55,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Yiyuan Guo <yguoaz@gmail.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-commit 8a4629055ef55177b5b63dab1ecce676bd8cccdd upstream.
+commit 507397d19b5a296aa339f7a1bd16284f668a1906 upstream.
 
-The struct cros_ec_command contains several integer fields and a
-trailing array. An allocation size neglecting the integer fields can
-lead to buffer overrun.
+The regulator_get_voltage() function returns negative error codes.
+This function saves it to an unsigned int and then does some range
+checking and, since the error code falls outside the correct range,
+it returns -EINVAL.
 
-Reviewed-by: Tzung-Bi Shih <tzungbi@kernel.org>
-Signed-off-by: Yiyuan Guo <yguoaz@gmail.com>
-Fixes: 974e6f02e27e ("iio: cros_ec_sensors_core: Add common functions for the ChromeOS EC Sensor Hub.")
-Link: https://lore.kernel.org/r/20230630143719.1513906-1-yguoaz@gmail.com
-Cc: <Stable@vger.kerenl.org>
+Beyond the messiness, this is bad because the regulator_get_voltage()
+function can return -EPROBE_DEFER and it's important to propagate that
+back properly so it can be handled.
+
+Fixes: da35a7b526d9 ("iio: frequency: admv1013: add support for ADMV1013")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://lore.kernel.org/r/ce75aac3-2aba-4435-8419-02e59fdd862b@moroto.mountain
+Cc: <Stable@vger.kernel.org>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iio/frequency/admv1013.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
-+++ b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
-@@ -253,7 +253,7 @@ int cros_ec_sensors_core_init(struct pla
- 	platform_set_drvdata(pdev, indio_dev);
+--- a/drivers/iio/frequency/admv1013.c
++++ b/drivers/iio/frequency/admv1013.c
+@@ -344,9 +344,12 @@ static int admv1013_update_quad_filters(
  
- 	state->ec = ec->ec_dev;
--	state->msg = devm_kzalloc(&pdev->dev,
-+	state->msg = devm_kzalloc(&pdev->dev, sizeof(*state->msg) +
- 				max((u16)sizeof(struct ec_params_motion_sense),
- 				state->ec->max_response), GFP_KERNEL);
- 	if (!state->msg)
+ static int admv1013_update_mixer_vgate(struct admv1013_state *st)
+ {
+-	unsigned int vcm, mixer_vgate;
++	unsigned int mixer_vgate;
++	int vcm;
+ 
+ 	vcm = regulator_get_voltage(st->reg);
++	if (vcm < 0)
++		return vcm;
+ 
+ 	if (vcm < 1800000)
+ 		mixer_vgate = (2389 * vcm / 1000000 + 8100) / 100;
 
 
