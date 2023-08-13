@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C6A6077ACA8
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:35:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8150877AC1E
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:29:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232113AbjHMVff (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:35:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50064 "EHLO
+        id S231837AbjHMV3c (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:29:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48560 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232111AbjHMVfe (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:35:34 -0400
+        with ESMTP id S231838AbjHMV3b (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:29:31 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4340310E3
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:35:36 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C41CF10DD
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:29:32 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D5E3362CE6
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:35:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F135CC433C8;
-        Sun, 13 Aug 2023 21:35:34 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 63FD262ACB
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:29:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 784F4C433C7;
+        Sun, 13 Aug 2023 21:29:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691962535;
-        bh=lAQ/l5TjbJHU8jSOymYws09tROvbAaEDGsg9hspSvSw=;
+        s=korg; t=1691962171;
+        bh=ZDLjwiJlEnLYq1lcOf4AVnwMrnT0jR3Hno1KI8zbff8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=DyE36MnpXq02mCya8yUzZDHftJYyV2UDlwO1BkyoepgvWS++OTvzqyWaG2oI9OOCg
-         +U3ZKPlVc11Gp+cY3i8fXLsRcfy5KcUd6lOOE898W7+lJPmkDg+RcWs8j4XBEzNd++
-         6jLi6uJrq3TN6YwTE3+wCAG3QNxVSEAKzEHZyyiw=
+        b=xfM7xYdO+DSKUbg5wl+oyk4OAZ9oIX3AVQbmdGWY2mYcGesu49DQhaF/80Ds8G3iW
+         jf/9Sn86WEUqecWJZjrkAmCoYT60hFXSLcmWrdNVeNGSNUUzxWwOXl+EWOxxeaRdK+
+         C61SW1FjThhh1kefG0zNUWp7bYEnqQy1wm4BeYjE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
-        "Borislav Petkov (AMD)" <bp@alien8.de>
-Subject: [PATCH 6.1 065/149] x86/cpu/amd: Enable Zenbleed fix for AMD Custom APU 0405
+        patches@lists.linux.dev, Ido Schimmel <idosch@idosch.org>,
+        Fedor Pchelkin <pchelkin@ispras.ru>,
+        "David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 6.4 140/206] drivers: vxlan: vnifilter: free percpu vni stats on error path
 Date:   Sun, 13 Aug 2023 23:18:30 +0200
-Message-ID: <20230813211720.749158208@linuxfoundation.org>
+Message-ID: <20230813211729.044200913@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211718.757428827@linuxfoundation.org>
-References: <20230813211718.757428827@linuxfoundation.org>
+In-Reply-To: <20230813211724.969019629@linuxfoundation.org>
+References: <20230813211724.969019629@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,41 +54,60 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+From: Fedor Pchelkin <pchelkin@ispras.ru>
 
-commit 6dbef74aeb090d6bee7d64ef3fa82ae6fa53f271 upstream.
+commit b1c936e9af5dd08636d568736fc6075ed9d1d529 upstream.
 
-Commit
+In case rhashtable_lookup_insert_fast() fails inside vxlan_vni_add(), the
+allocated percpu vni stats are not freed on the error path.
 
-  522b1d69219d ("x86/cpu/amd: Add a Zenbleed fix")
+Introduce vxlan_vni_free() which would work as a nice wrapper to free
+vxlan_vni_node resources properly.
 
-provided a fix for the Zen2 VZEROUPPER data corruption bug affecting
-a range of CPU models, but the AMD Custom APU 0405 found on SteamDeck
-was not listed, although it is clearly affected by the vulnerability.
+Found by Linux Verification Center (linuxtesting.org).
 
-Add this CPU variant to the Zenbleed erratum list, in order to
-unconditionally enable the fallback fix until a proper microcode update
-is available.
-
-Fixes: 522b1d69219d ("x86/cpu/amd: Add a Zenbleed fix")
-Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20230811203705.1699914-1-cristian.ciocaltea@collabora.com
+Fixes: 4095e0e1328a ("drivers: vxlan: vnifilter: per vni stats")
+Suggested-by: Ido Schimmel <idosch@idosch.org>
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/cpu/amd.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/vxlan/vxlan_vnifilter.c |   11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
---- a/arch/x86/kernel/cpu/amd.c
-+++ b/arch/x86/kernel/cpu/amd.c
-@@ -73,6 +73,7 @@ static const int amd_erratum_1054[] =
- static const int amd_zenbleed[] =
- 	AMD_LEGACY_ERRATUM(AMD_MODEL_RANGE(0x17, 0x30, 0x0, 0x4f, 0xf),
- 			   AMD_MODEL_RANGE(0x17, 0x60, 0x0, 0x7f, 0xf),
-+			   AMD_MODEL_RANGE(0x17, 0x90, 0x0, 0x91, 0xf),
- 			   AMD_MODEL_RANGE(0x17, 0xa0, 0x0, 0xaf, 0xf));
+--- a/drivers/net/vxlan/vxlan_vnifilter.c
++++ b/drivers/net/vxlan/vxlan_vnifilter.c
+@@ -713,6 +713,12 @@ static struct vxlan_vni_node *vxlan_vni_
+ 	return vninode;
+ }
  
- static const int amd_div0[] =
++static void vxlan_vni_free(struct vxlan_vni_node *vninode)
++{
++	free_percpu(vninode->stats);
++	kfree(vninode);
++}
++
+ static int vxlan_vni_add(struct vxlan_dev *vxlan,
+ 			 struct vxlan_vni_group *vg,
+ 			 u32 vni, union vxlan_addr *group,
+@@ -740,7 +746,7 @@ static int vxlan_vni_add(struct vxlan_de
+ 					    &vninode->vnode,
+ 					    vxlan_vni_rht_params);
+ 	if (err) {
+-		kfree(vninode);
++		vxlan_vni_free(vninode);
+ 		return err;
+ 	}
+ 
+@@ -763,8 +769,7 @@ static void vxlan_vni_node_rcu_free(stru
+ 	struct vxlan_vni_node *v;
+ 
+ 	v = container_of(rcu, struct vxlan_vni_node, rcu);
+-	free_percpu(v->stats);
+-	kfree(v);
++	vxlan_vni_free(v);
+ }
+ 
+ static int vxlan_vni_del(struct vxlan_dev *vxlan,
 
 
