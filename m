@@ -2,44 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D7D7777AD10
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:48:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A1A4E77AD6C
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:49:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230222AbjHMVsC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:48:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34260 "EHLO
+        id S232476AbjHMVt1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:49:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57412 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232336AbjHMVqM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:46:12 -0400
+        with ESMTP id S232342AbjHMVs4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:48:56 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99E812D61
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:46:11 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E73C1FE6
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:42:33 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2FECA61B60
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:46:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C2BDC433C7;
-        Sun, 13 Aug 2023 21:46:10 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3581F62784
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:42:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A81CC433C8;
+        Sun, 13 Aug 2023 21:42:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691963170;
-        bh=E3FPuyrBb6vlF7JdfkNXridaxK6TieuHXQ0h/GLq6qo=;
+        s=korg; t=1691962952;
+        bh=Chsc79yXdzIJY52AwP9fiZ6ySBL7WQhunvNWMr91WDY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=uFBr0+A1tJJKMb506nEcZCqXbBTnRNGqppDkeID/F9/Xj0grWRzkiE+OqddGaa7Sk
-         O3k6sD1kJGBg5tIiPn3DKkZwBJvXfPP9ESDTg+36920bTtz8b5kY6Pbsy9ty4rM4A6
-         QKvfs6mVk6HGfoQKCdPbyWm2BwlGFKMarjgF0EF0=
+        b=cTjrRoBpZVExsaXdxlBOQ2GO25fR+8i+2QdewWpfrlZR+Pr4MCFlATAcx6H9tz+eD
+         7Gcw3RofBMWkAn+B4OFoJTT5DqthV6sZ6SLlg1Q3VmwDJ6fwmUYg4y770FVbpFEy7M
+         B6/PboynmXC6soWr9Rm0B1keXHIdTCMA7LU0KJP4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Michael Kelley <mikelley@microsoft.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 5.15 78/89] scsi: storvsc: Fix handling of virtual Fibre Channel timeouts
+        patches@lists.linux.dev, syzbot <syzkaller@googlegroups.com>,
+        Eric Dumazet <edumazet@google.com>,
+        Stephen Hemminger <stephen@networkplumber.org>,
+        Jamal Hadi Salim <jhs@mojatatu.com>,
+        Simon Horman <simon.horman@corigine.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Fedor Pchelkin <pchelkin@ispras.ru>
+Subject: [PATCH 5.10 68/68] sch_netem: fix issues in netem_change() vs get_dist_table()
 Date:   Sun, 13 Aug 2023 23:20:09 +0200
-Message-ID: <20230813211713.110713091@linuxfoundation.org>
+Message-ID: <20230813211710.217026054@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211710.787645394@linuxfoundation.org>
-References: <20230813211710.787645394@linuxfoundation.org>
+In-Reply-To: <20230813211708.149630011@linuxfoundation.org>
+References: <20230813211708.149630011@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,62 +59,148 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Michael Kelley <mikelley@microsoft.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 175544ad48cbf56affeef2a679c6a4d4fb1e2881 upstream.
+commit 11b73313c12403f617b47752db0ab3deef201af7 upstream.
 
-Hyper-V provides the ability to connect Fibre Channel LUNs to the host
-system and present them in a guest VM as a SCSI device. I/O to the vFC
-device is handled by the storvsc driver. The storvsc driver includes a
-partial integration with the FC transport implemented in the generic
-portion of the Linux SCSI subsystem so that FC attributes can be displayed
-in /sys.  However, the partial integration means that some aspects of vFC
-don't work properly. Unfortunately, a full and correct integration isn't
-practical because of limitations in what Hyper-V provides to the guest.
+In blamed commit, I missed that get_dist_table() was allocating
+memory using GFP_KERNEL, and acquiring qdisc lock to perform
+the swap of newly allocated table with current one.
 
-In particular, in the context of Hyper-V storvsc, the FC transport timeout
-function fc_eh_timed_out() causes a kernel panic because it can't find the
-rport and dereferences a NULL pointer. The original patch that added the
-call from storvsc_eh_timed_out() to fc_eh_timed_out() is faulty in this
-regard.
+In this patch, get_dist_table() is allocating memory and
+copy user data before we acquire the qdisc lock.
 
-In many cases a timeout is due to a transient condition, so the situation
-can be improved by just continuing to wait like with other I/O requests
-issued by storvsc, and avoiding the guaranteed panic. For a permanent
-failure, continuing to wait may result in a hung thread instead of a panic,
-which again may be better.
+Then we perform swap operations while being protected by the lock.
 
-So fix the panic by removing the storvsc call to fc_eh_timed_out().  This
-allows storvsc to keep waiting for a response.  The change has been tested
-by users who experienced a panic in fc_eh_timed_out() due to transient
-timeouts, and it solves their problem.
+Note that after this patch netem_change() no longer can do partial changes.
+If an error is returned, qdisc conf is left unchanged.
 
-In the future we may want to deprecate the vFC functionality in storvsc
-since it can't be fully fixed. But it has current users for whom it is
-working well enough, so it should probably stay for a while longer.
-
-Fixes: 3930d7309807 ("scsi: storvsc: use default I/O timeout handler for FC devices")
-Cc: stable@vger.kernel.org
-Signed-off-by: Michael Kelley <mikelley@microsoft.com>
-Link: https://lore.kernel.org/r/1690606764-79669-1-git-send-email-mikelley@microsoft.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: 2174a08db80d ("sch_netem: acquire qdisc lock in netem_change()")
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Stephen Hemminger <stephen@networkplumber.org>
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Link: https://lore.kernel.org/r/20230622181503.2327695-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/storvsc_drv.c |    4 ----
- 1 file changed, 4 deletions(-)
+ net/sched/sch_netem.c |   59 +++++++++++++++++++++-----------------------------
+ 1 file changed, 25 insertions(+), 34 deletions(-)
 
---- a/drivers/scsi/storvsc_drv.c
-+++ b/drivers/scsi/storvsc_drv.c
-@@ -1730,10 +1730,6 @@ static int storvsc_host_reset_handler(st
+--- a/net/sched/sch_netem.c
++++ b/net/sched/sch_netem.c
+@@ -773,12 +773,10 @@ static void dist_free(struct disttable *
+  * signed 16 bit values.
   */
- static enum blk_eh_timer_return storvsc_eh_timed_out(struct scsi_cmnd *scmnd)
+ 
+-static int get_dist_table(struct Qdisc *sch, struct disttable **tbl,
+-			  const struct nlattr *attr)
++static int get_dist_table(struct disttable **tbl, const struct nlattr *attr)
  {
--#if IS_ENABLED(CONFIG_SCSI_FC_ATTRS)
--	if (scmnd->device->host->transportt == fc_transport_template)
--		return fc_eh_timed_out(scmnd);
--#endif
- 	return BLK_EH_RESET_TIMER;
+ 	size_t n = nla_len(attr)/sizeof(__s16);
+ 	const __s16 *data = nla_data(attr);
+-	spinlock_t *root_lock;
+ 	struct disttable *d;
+ 	int i;
+ 
+@@ -793,13 +791,7 @@ static int get_dist_table(struct Qdisc *
+ 	for (i = 0; i < n; i++)
+ 		d->table[i] = data[i];
+ 
+-	root_lock = qdisc_root_sleeping_lock(sch);
+-
+-	spin_lock_bh(root_lock);
+-	swap(*tbl, d);
+-	spin_unlock_bh(root_lock);
+-
+-	dist_free(d);
++	*tbl = d;
+ 	return 0;
  }
  
+@@ -956,6 +948,8 @@ static int netem_change(struct Qdisc *sc
+ {
+ 	struct netem_sched_data *q = qdisc_priv(sch);
+ 	struct nlattr *tb[TCA_NETEM_MAX + 1];
++	struct disttable *delay_dist = NULL;
++	struct disttable *slot_dist = NULL;
+ 	struct tc_netem_qopt *qopt;
+ 	struct clgstate old_clg;
+ 	int old_loss_model = CLG_RANDOM;
+@@ -969,6 +963,18 @@ static int netem_change(struct Qdisc *sc
+ 	if (ret < 0)
+ 		return ret;
+ 
++	if (tb[TCA_NETEM_DELAY_DIST]) {
++		ret = get_dist_table(&delay_dist, tb[TCA_NETEM_DELAY_DIST]);
++		if (ret)
++			goto table_free;
++	}
++
++	if (tb[TCA_NETEM_SLOT_DIST]) {
++		ret = get_dist_table(&slot_dist, tb[TCA_NETEM_SLOT_DIST]);
++		if (ret)
++			goto table_free;
++	}
++
+ 	sch_tree_lock(sch);
+ 	/* backup q->clg and q->loss_model */
+ 	old_clg = q->clg;
+@@ -978,26 +984,17 @@ static int netem_change(struct Qdisc *sc
+ 		ret = get_loss_clg(q, tb[TCA_NETEM_LOSS]);
+ 		if (ret) {
+ 			q->loss_model = old_loss_model;
++			q->clg = old_clg;
+ 			goto unlock;
+ 		}
+ 	} else {
+ 		q->loss_model = CLG_RANDOM;
+ 	}
+ 
+-	if (tb[TCA_NETEM_DELAY_DIST]) {
+-		ret = get_dist_table(sch, &q->delay_dist,
+-				     tb[TCA_NETEM_DELAY_DIST]);
+-		if (ret)
+-			goto get_table_failure;
+-	}
+-
+-	if (tb[TCA_NETEM_SLOT_DIST]) {
+-		ret = get_dist_table(sch, &q->slot_dist,
+-				     tb[TCA_NETEM_SLOT_DIST]);
+-		if (ret)
+-			goto get_table_failure;
+-	}
+-
++	if (delay_dist)
++		swap(q->delay_dist, delay_dist);
++	if (slot_dist)
++		swap(q->slot_dist, slot_dist);
+ 	sch->limit = qopt->limit;
+ 
+ 	q->latency = PSCHED_TICKS2NS(qopt->latency);
+@@ -1047,17 +1044,11 @@ static int netem_change(struct Qdisc *sc
+ 
+ unlock:
+ 	sch_tree_unlock(sch);
+-	return ret;
+ 
+-get_table_failure:
+-	/* recover clg and loss_model, in case of
+-	 * q->clg and q->loss_model were modified
+-	 * in get_loss_clg()
+-	 */
+-	q->clg = old_clg;
+-	q->loss_model = old_loss_model;
+-
+-	goto unlock;
++table_free:
++	dist_free(delay_dist);
++	dist_free(slot_dist);
++	return ret;
+ }
+ 
+ static int netem_init(struct Qdisc *sch, struct nlattr *opt,
 
 
