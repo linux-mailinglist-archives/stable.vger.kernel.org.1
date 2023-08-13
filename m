@@ -2,129 +2,126 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 582CA77AD6B
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:49:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C43F477AD16
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:48:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232495AbjHMVt3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:49:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57436 "EHLO
+        id S230315AbjHMVsD (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:48:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57728 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230413AbjHMVtE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:49:04 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B46BF10FB
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:39:15 -0700 (PDT)
+        with ESMTP id S232348AbjHMVqg (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:46:36 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4931D2D54
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:46:36 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BF6F86381F
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:39:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0E38C433C8;
-        Sun, 13 Aug 2023 21:39:13 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DAF97622CB
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:46:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEA3EC433C8;
+        Sun, 13 Aug 2023 21:46:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691962754;
-        bh=OJ8bT55eXcKf6TRMHS0UgRKiTPkMAAoq7xopAVbS/O4=;
+        s=korg; t=1691963195;
+        bh=/h4CMtc3JNsgyY5AvvgztexyVpPj2LFcBYyxs/2wJa0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ThPjZo38IPGxQh7coM6YLh+Efpt7CvePh9Gl7oS4YiMpJMma1k1KaKCn0QtiIikiw
-         HAAq+KjoUVWFsgC23FlhOMNbtuDuftVJnNg5kmpd5um1hmLz8pqr2gKVuOn5LVYnov
-         4gOiMmZ9IW2c/SwRdX/3zLIoi+ZI6dYfWzQ2FAGk=
+        b=kAfsQmbuOavncnI1x2Rded8Sb0OdPlwZwGyWVwaxNa2WimlS6KhdAyqXDdyZnUF7z
+         zsMOcb5dZDcTxZlywOWRce6gW6puGFEgowCoRvVaAAdtyfDLcyQdQ3SNO5ZYnx7kB8
+         Ft6jMR7uK5mvoYw0JLWDh6gb4Rd7vyXt9edk/mmA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, David Xu <xuwd1@hotmail.com>,
-        Hans de Goede <hdegoede@redhat.com>
-Subject: [PATCH 6.1 145/149] platform/x86: serial-multi-instantiate: Auto detect IRQ resource for CSC3551
+        patches@lists.linux.dev, Jie Wang <wangjie125@huawei.com>,
+        Jijie Shao <shaojijie@huawei.com>,
+        Leon Romanovsky <leonro@nvidia.com>,
+        Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.15 59/89] net: hns3: refactor hclge_mac_link_status_wait for interface reuse
 Date:   Sun, 13 Aug 2023 23:19:50 +0200
-Message-ID: <20230813211723.032497807@linuxfoundation.org>
+Message-ID: <20230813211712.564200777@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211718.757428827@linuxfoundation.org>
-References: <20230813211718.757428827@linuxfoundation.org>
+In-Reply-To: <20230813211710.787645394@linuxfoundation.org>
+References: <20230813211710.787645394@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: David Xu <xuwd1@hotmail.com>
+From: Jie Wang <wangjie125@huawei.com>
 
-commit 676b7c5ecab36274442887ceadd6dee8248a244f upstream.
+commit 08469dacfad25428b66549716811807203744f4f upstream.
 
-The current code assumes that the CSC3551(multiple cs35l41) always have
-its interrupt pin connected to GPIO thus the IRQ can be acquired with
-acpi_dev_gpio_irq_get. However on some newer laptop models this is no
-longer the case as they have the CSC3551's interrupt pin connected to
-APIC. This causes smi_i2c_probe to fail on these machines.
+Some nic configurations could only be performed after link is down. So this
+patch refactor this API for reuse.
 
-To support these machines, a new macro IRQ_RESOURCE_AUTO was introduced
-for cs35l41 smi_node, and smi_get_irq function was modified so it tries
-to get GPIO irq resource first and if failed, tries to get
-APIC irq resource for cs35l41.
-
-This patch affects only the cs35l41's probing and brings no negative
-influence on machines that indeed have the cs35l41's interrupt pin
-connected to GPIO.
-
-Signed-off-by: David Xu <xuwd1@hotmail.com>
-Link: https://lore.kernel.org/r/SY4P282MB18350CD8288687B87FFD2243E037A@SY4P282MB1835.AUSP282.PROD.OUTLOOK.COM
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Jie Wang <wangjie125@huawei.com>
+Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
+Link: https://lore.kernel.org/r/20230807113452.474224-3-shaojijie@huawei.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/serial-multi-instantiate.c |   21 +++++++++++++++++----
- 1 file changed, 17 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c |   14 +++++++++-----
+ 1 file changed, 9 insertions(+), 5 deletions(-)
 
---- a/drivers/platform/x86/serial-multi-instantiate.c
-+++ b/drivers/platform/x86/serial-multi-instantiate.c
-@@ -21,6 +21,7 @@
- #define IRQ_RESOURCE_NONE	0
- #define IRQ_RESOURCE_GPIO	1
- #define IRQ_RESOURCE_APIC	2
-+#define IRQ_RESOURCE_AUTO   3
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
+@@ -70,6 +70,8 @@ static void hclge_sync_mac_table(struct
+ static void hclge_restore_hw_table(struct hclge_dev *hdev);
+ static void hclge_sync_promisc_mode(struct hclge_dev *hdev);
+ static void hclge_sync_fd_table(struct hclge_dev *hdev);
++static int hclge_mac_link_status_wait(struct hclge_dev *hdev, int link_ret,
++				      int wait_cnt);
  
- enum smi_bus_type {
- 	SMI_I2C,
-@@ -52,6 +53,18 @@ static int smi_get_irq(struct platform_d
+ static struct hnae3_ae_algo ae_algo;
+ 
+@@ -7745,10 +7747,9 @@ static void hclge_phy_link_status_wait(s
+ 	} while (++i < HCLGE_PHY_LINK_STATUS_NUM);
+ }
+ 
+-static int hclge_mac_link_status_wait(struct hclge_dev *hdev, int link_ret)
++static int hclge_mac_link_status_wait(struct hclge_dev *hdev, int link_ret,
++				      int wait_cnt)
+ {
+-#define HCLGE_MAC_LINK_STATUS_NUM  100
+-
+ 	int link_status;
+ 	int i = 0;
  	int ret;
+@@ -7761,13 +7762,15 @@ static int hclge_mac_link_status_wait(st
+ 			return 0;
  
- 	switch (inst->flags & IRQ_RESOURCE_TYPE) {
-+	case IRQ_RESOURCE_AUTO:
-+		ret = acpi_dev_gpio_irq_get(adev, inst->irq_idx);
-+		if (ret > 0) {
-+			dev_dbg(&pdev->dev, "Using gpio irq\n");
-+			break;
-+		}
-+		ret = platform_get_irq(pdev, inst->irq_idx);
-+		if (ret > 0) {
-+			dev_dbg(&pdev->dev, "Using platform irq\n");
-+			break;
-+		}
-+		break;
- 	case IRQ_RESOURCE_GPIO:
- 		ret = acpi_dev_gpio_irq_get(adev, inst->irq_idx);
- 		break;
-@@ -308,10 +321,10 @@ static const struct smi_node int3515_dat
+ 		msleep(HCLGE_LINK_STATUS_MS);
+-	} while (++i < HCLGE_MAC_LINK_STATUS_NUM);
++	} while (++i < wait_cnt);
+ 	return -EBUSY;
+ }
  
- static const struct smi_node cs35l41_hda = {
- 	.instances = {
--		{ "cs35l41-hda", IRQ_RESOURCE_GPIO, 0 },
--		{ "cs35l41-hda", IRQ_RESOURCE_GPIO, 0 },
--		{ "cs35l41-hda", IRQ_RESOURCE_GPIO, 0 },
--		{ "cs35l41-hda", IRQ_RESOURCE_GPIO, 0 },
-+		{ "cs35l41-hda", IRQ_RESOURCE_AUTO, 0 },
-+		{ "cs35l41-hda", IRQ_RESOURCE_AUTO, 0 },
-+		{ "cs35l41-hda", IRQ_RESOURCE_AUTO, 0 },
-+		{ "cs35l41-hda", IRQ_RESOURCE_AUTO, 0 },
- 		{}
- 	},
- 	.bus_type = SMI_AUTO_DETECT,
+ static int hclge_mac_phy_link_status_wait(struct hclge_dev *hdev, bool en,
+ 					  bool is_phy)
+ {
++#define HCLGE_MAC_LINK_STATUS_NUM  100
++
+ 	int link_ret;
+ 
+ 	link_ret = en ? HCLGE_LINK_STATUS_UP : HCLGE_LINK_STATUS_DOWN;
+@@ -7775,7 +7778,8 @@ static int hclge_mac_phy_link_status_wai
+ 	if (is_phy)
+ 		hclge_phy_link_status_wait(hdev, link_ret);
+ 
+-	return hclge_mac_link_status_wait(hdev, link_ret);
++	return hclge_mac_link_status_wait(hdev, link_ret,
++					  HCLGE_MAC_LINK_STATUS_NUM);
+ }
+ 
+ static int hclge_set_app_loopback(struct hclge_dev *hdev, bool en)
 
 
