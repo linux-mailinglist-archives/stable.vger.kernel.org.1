@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4C78A77AD9E
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:49:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3565177ACDC
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:38:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232375AbjHMVtm (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:49:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39720 "EHLO
+        id S232209AbjHMVh5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:37:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34822 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232380AbjHMVtJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:49:09 -0400
+        with ESMTP id S232208AbjHMVh5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:37:57 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E41871985
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:40:27 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8787210DB
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:37:59 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7B60C60F71
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:40:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94BF5C433C7;
-        Sun, 13 Aug 2023 21:40:24 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1D1A7634D1
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:37:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14D65C433C8;
+        Sun, 13 Aug 2023 21:37:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691962824;
-        bh=lFWMpDQgwIvJiCJJuBNvhV/2Nj/FcQMCDIlhL3c7ltc=;
+        s=korg; t=1691962678;
+        bh=k5ugLlfZRSmCR9LajVGptlVNUxgulYTw2yzMtVVeGLU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=HZHmu89TlMdCntTwD0u+H506Oi5KdNMipV0eZDBZvguGcgix42eM0gUXr9YVx8p46
-         lyfRlrZhejm3u1P2UdRkNX8vUBqJ1kRCyABntiIYwHLCo8vNwbMtbwMHGiLq4czKgR
-         xxs01Kcc2FRVjD+tLsKVbj7qQQJh4iiqYQT5J7ZM=
+        b=wkYAX4KRMfCXNmXIDMCrl8hepXSM8VBGccoF/tTYEUib/UIB7kdAaatlZQxTEhO/H
+         j5/O3TvSaeLKnnbekJDMNSVP00BudSqC1hPYwZvmh9wt9AnJwpfarK9dZpqFOhjFgY
+         YgDFp7A0Sfy8WCM8F+xSb4AikX4Md3nSFJXu7PJ4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Tzung-Bi Shih <tzungbi@kernel.org>,
-        Yiyuan Guo <yguoaz@gmail.com>, Stable@vger.kerenl.org,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 5.10 20/68] iio: cros_ec: Fix the allocation size for cros_ec_command
+        patches@lists.linux.dev, Daniel Jurgens <danielj@nvidia.com>,
+        Saeed Mahameed <saeedm@nvidia.com>
+Subject: [PATCH 6.1 116/149] net/mlx5: Allow 0 for total host VFs
 Date:   Sun, 13 Aug 2023 23:19:21 +0200
-Message-ID: <20230813211708.770229193@linuxfoundation.org>
+Message-ID: <20230813211722.214973637@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211708.149630011@linuxfoundation.org>
-References: <20230813211708.149630011@linuxfoundation.org>
+In-Reply-To: <20230813211718.757428827@linuxfoundation.org>
+References: <20230813211718.757428827@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,35 +54,33 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Yiyuan Guo <yguoaz@gmail.com>
+From: Daniel Jurgens <danielj@nvidia.com>
 
-commit 8a4629055ef55177b5b63dab1ecce676bd8cccdd upstream.
+commit 2dc2b3922d3c0f52d3a792d15dcacfbc4cc76b8f upstream.
 
-The struct cros_ec_command contains several integer fields and a
-trailing array. An allocation size neglecting the integer fields can
-lead to buffer overrun.
+When querying eswitch functions 0 is a valid number of host VFs. After
+introducing ARM SRIOV falling through to getting the max value from PCI
+results in using the total VFs allowed on the ARM for the host.
 
-Reviewed-by: Tzung-Bi Shih <tzungbi@kernel.org>
-Signed-off-by: Yiyuan Guo <yguoaz@gmail.com>
-Fixes: 974e6f02e27e ("iio: cros_ec_sensors_core: Add common functions for the ChromeOS EC Sensor Hub.")
-Link: https://lore.kernel.org/r/20230630143719.1513906-1-yguoaz@gmail.com
-Cc: <Stable@vger.kerenl.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Fixes: 86eec50beaf3 ("net/mlx5: Support querying max VFs from device");
+Signed-off-by: Daniel Jurgens <danielj@nvidia.com>
+Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/mellanox/mlx5/core/sriov.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
-+++ b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
-@@ -263,7 +263,7 @@ int cros_ec_sensors_core_init(struct pla
- 	platform_set_drvdata(pdev, indio_dev);
+--- a/drivers/net/ethernet/mellanox/mlx5/core/sriov.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/sriov.c
+@@ -264,8 +264,7 @@ static u16 mlx5_get_max_vfs(struct mlx5_
+ 		host_total_vfs = MLX5_GET(query_esw_functions_out, out,
+ 					  host_params_context.host_total_vfs);
+ 		kvfree(out);
+-		if (host_total_vfs)
+-			return host_total_vfs;
++		return host_total_vfs;
+ 	}
  
- 	state->ec = ec->ec_dev;
--	state->msg = devm_kzalloc(&pdev->dev,
-+	state->msg = devm_kzalloc(&pdev->dev, sizeof(*state->msg) +
- 				max((u16)sizeof(struct ec_params_motion_sense),
- 				state->ec->max_response), GFP_KERNEL);
- 	if (!state->msg)
+ done:
 
 
