@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7B6BB77AB72
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:22:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0237477AB57
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:20:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229840AbjHMVWF (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:22:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59196 "EHLO
+        id S230144AbjHMVUv (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:20:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47878 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229563AbjHMVWE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:22:04 -0400
+        with ESMTP id S230091AbjHMVUu (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:20:50 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1D7810D0
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:22:06 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB46410D7
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:20:52 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4733F627F0
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:22:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4ECF8C433C8;
-        Sun, 13 Aug 2023 21:22:05 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3ECA3617D2
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:20:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AD3DC433C8;
+        Sun, 13 Aug 2023 21:20:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691961725;
-        bh=g8197a7NRaBT9assOceOLvYEVpbsLclKZcLanVOe73o=;
+        s=korg; t=1691961651;
+        bh=apUOYEDQ1nEyPxZIrMNCjJRU2v6bItJz5OIhl2soDOc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=lIN/uWYoysy4FCOTSynZwo0m1UN+siy5GPKfg7zp37iJ2l0INGUgx1YUZ7kgL8c1j
-         4cbl/VT6TXbe9bJEgekChYXqAqCpZ58pdhy82LbBczOK5Em9B+LgTi+nDxdthEY7Rp
-         B4fxJ6m1YTklGP99lm2JWLdiO9mMrA0kkSmyD7DM=
+        b=cIzltYJTGpo/aG3z5ovlCT0MhLlgFHIG3WLa3MEFzfbyR651ildZuF+cQ+ZE+o+q7
+         AZpXkf5EY51NyhzYM2Nh6E9I/gSNyT4qu42Ntfd9R01LK01RGwhZmkBd2mOlFNwkYp
+         8ZXD/T9WLYJNHh4qNm96ENSAiMWW5KEMU+3Rn8wc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Alan Stern <stern@rowland.harvard.edu>,
-        syzbot+e7d46eb426883fb97efd@syzkaller.appspotmail.com
-Subject: [PATCH 4.19 10/33] usb-storage: alauda: Fix uninit-value in alauda_check_media()
+        patches@lists.linux.dev, Yingcong Wu <yingcong.wu@intel.com>,
+        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>
+Subject: [PATCH 4.14 11/26] x86/mm: Fix VDSO and VVAR placement on 5-level paging machines
 Date:   Sun, 13 Aug 2023 23:19:04 +0200
-Message-ID: <20230813211704.302978443@linuxfoundation.org>
+Message-ID: <20230813211703.418506226@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211703.915807095@linuxfoundation.org>
-References: <20230813211703.915807095@linuxfoundation.org>
+In-Reply-To: <20230813211702.980427106@linuxfoundation.org>
+References: <20230813211702.980427106@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,81 +55,52 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Alan Stern <stern@rowland.harvard.edu>
+From: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 
-commit a6ff6e7a9dd69364547751db0f626a10a6d628d2 upstream.
+commit 1b8b1aa90c9c0e825b181b98b8d9e249dc395470 upstream.
 
-Syzbot got KMSAN to complain about access to an uninitialized value in
-the alauda subdriver of usb-storage:
+Yingcong has noticed that on the 5-level paging machine, VDSO and VVAR
+VMAs are placed above the 47-bit border:
 
-BUG: KMSAN: uninit-value in alauda_transport+0x462/0x57f0
-drivers/usb/storage/alauda.c:1137
-CPU: 0 PID: 12279 Comm: usb-storage Not tainted 5.3.0-rc7+ #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS
-Google 01/01/2011
-Call Trace:
-  __dump_stack lib/dump_stack.c:77 [inline]
-  dump_stack+0x191/0x1f0 lib/dump_stack.c:113
-  kmsan_report+0x13a/0x2b0 mm/kmsan/kmsan_report.c:108
-  __msan_warning+0x73/0xe0 mm/kmsan/kmsan_instr.c:250
-  alauda_check_media+0x344/0x3310 drivers/usb/storage/alauda.c:460
+8000001a9000-8000001ad000 r--p 00000000 00:00 0                          [vvar]
+8000001ad000-8000001af000 r-xp 00000000 00:00 0                          [vdso]
 
-The problem is that alauda_check_media() doesn't verify that its USB
-transfer succeeded before trying to use the received data.  What
-should happen if the transfer fails isn't entirely clear, but a
-reasonably conservative approach is to pretend that no media is
-present.
+This might confuse users who are not aware of 5-level paging and expect
+all userspace addresses to be under the 47-bit border.
 
-A similar problem exists in a usb_stor_dbg() call in
-alauda_get_media_status().  In this case, when an error occurs the
-call is redundant, because usb_stor_ctrl_transfer() already will print
-a debugging message.
+So far problem has only been triggered with ASLR disabled, although it
+may also occur with ASLR enabled if the layout is randomized in a just
+right way.
 
-Finally, unrelated to the uninitialized memory access, is the fact
-that alauda_check_media() performs DMA to a buffer on the stack.
-Fortunately usb-storage provides a general purpose DMA-able buffer for
-uses like this.  We'll use it instead.
+The problem happens due to custom placement for the VMAs in the VDSO
+code: vdso_addr() tries to place them above the stack and checks the
+result against TASK_SIZE_MAX, which is wrong. TASK_SIZE_MAX is set to
+the 56-bit border on 5-level paging machines. Use DEFAULT_MAP_WINDOW
+instead.
 
-Reported-and-tested-by: syzbot+e7d46eb426883fb97efd@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/0000000000007d25ff059457342d@google.com/T/
-Suggested-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
-Fixes: e80b0fade09e ("[PATCH] USB Storage: add alauda support")
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/693d5d5e-f09b-42d0-8ed9-1f96cd30bcce@rowland.harvard.edu
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: b569bab78d8d ("x86/mm: Prepare to expose larger address space to userspace")
+Reported-by: Yingcong Wu <yingcong.wu@intel.com>
+Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/all/20230803151609.22141-1-kirill.shutemov%40linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/storage/alauda.c |    9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ arch/x86/entry/vdso/vma.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/storage/alauda.c
-+++ b/drivers/usb/storage/alauda.c
-@@ -317,7 +317,8 @@ static int alauda_get_media_status(struc
- 	rc = usb_stor_ctrl_transfer(us, us->recv_ctrl_pipe,
- 		command, 0xc0, 0, 1, data, 2);
+--- a/arch/x86/entry/vdso/vma.c
++++ b/arch/x86/entry/vdso/vma.c
+@@ -227,8 +227,8 @@ static unsigned long vdso_addr(unsigned
  
--	usb_stor_dbg(us, "Media status %02X %02X\n", data[0], data[1]);
-+	if (rc == USB_STOR_XFER_GOOD)
-+		usb_stor_dbg(us, "Media status %02X %02X\n", data[0], data[1]);
+ 	/* Round the lowest possible end address up to a PMD boundary. */
+ 	end = (start + len + PMD_SIZE - 1) & PMD_MASK;
+-	if (end >= TASK_SIZE_MAX)
+-		end = TASK_SIZE_MAX;
++	if (end >= DEFAULT_MAP_WINDOW)
++		end = DEFAULT_MAP_WINDOW;
+ 	end -= len;
  
- 	return rc;
- }
-@@ -453,10 +454,14 @@ static int alauda_init_media(struct us_d
- static int alauda_check_media(struct us_data *us)
- {
- 	struct alauda_info *info = (struct alauda_info *) us->extra;
--	unsigned char status[2];
-+	unsigned char *status = us->iobuf;
- 	int rc;
- 
- 	rc = alauda_get_media_status(us, status);
-+	if (rc != USB_STOR_XFER_GOOD) {
-+		status[0] = 0xF0;	/* Pretend there's no media */
-+		status[1] = 0;
-+	}
- 
- 	/* Check for no media or door open */
- 	if ((status[0] & 0x80) || ((status[0] & 0x1F) == 0x10)
+ 	if (end > start) {
 
 
