@@ -2,42 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9C05477ADB0
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:51:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7EC6177ADB1
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:52:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232561AbjHMVvp (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:51:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32968 "EHLO
+        id S232562AbjHMVwB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:52:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60494 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229943AbjHMVtw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:49:52 -0400
+        with ESMTP id S231504AbjHMVuJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:50:09 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 76D7935AA
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:48:24 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9DEEE35B7
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:48:27 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0CF6663F09
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:48:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20017C433C8;
-        Sun, 13 Aug 2023 21:48:22 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 33EF663E06
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:48:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 256E3C433C8;
+        Sun, 13 Aug 2023 21:48:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691963303;
-        bh=LTLTGtzwLFCfMwDPkwvOE59epzWiH/L6gcAyHUc0PlM=;
+        s=korg; t=1691963306;
+        bh=EC2WCWgyoiDU5+tDDPPWxY2CHdsny6DE+73l8d4hfeE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=BoIhnK+11eJS84LmLCxnmV/cyGaT1ixBQ/Fd3BWA7Jd4ryEPLmFrHpV/NfQ4qGJTy
-         cxEqDwwUwWyNNlwRIaYh9R+mIAA5VcLRq//JyAp4fdo0ypX2LRCFKQ0m/SmUvN+Et5
-         89q7xkOF2iYKqYHOPfBj+JPcY/guI/fJqnr6oBnI=
+        b=epTg/7OAMo0kBfSI6p/4l0NphsBHsvqt/WrWkYOVY4oDkLLb1G6s2XN2T4CpzVLHk
+         AQhPelJpmty8wOeXTkIVCUtgBUd3RMJlWfnN5xNNuaZV2omJ3DD3uJqYyIDxp4BYpO
+         cfdyjAIXMOoymfioK+K2CzRjhBaPtbNzacr2/PA0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zhu Wang <wangzhu9@huawei.com>,
-        Bart Van Assche <bvanassche@acm.org>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 5.4 37/39] scsi: core: Fix possible memory leak if device_add() fails
-Date:   Sun, 13 Aug 2023 23:20:28 +0200
-Message-ID: <20230813211706.068083941@linuxfoundation.org>
+        patches@lists.linux.dev, Masahiro Yamada <masahiroy@kernel.org>,
+        Randy Dunlap <rdunlap@infradead.org>
+Subject: [PATCH 5.4 38/39] alpha: remove __init annotation from exported page_is_ram()
+Date:   Sun, 13 Aug 2023 23:20:29 +0200
+Message-ID: <20230813211706.097979983@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230813211704.796906808@linuxfoundation.org>
 References: <20230813211704.796906808@linuxfoundation.org>
@@ -55,34 +54,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Zhu Wang <wangzhu9@huawei.com>
+From: Masahiro Yamada <masahiroy@kernel.org>
 
-commit 04b5b5cb0136ce970333a9c6cec7e46adba1ea3a upstream.
+commit 6ccbd7fd474674654019a20177c943359469103a upstream.
 
-If device_add() returns error, the name allocated by dev_set_name() needs
-be freed. As the comment of device_add() says, put_device() should be used
-to decrease the reference count in the error path. So fix this by calling
-put_device(), then the name can be freed in kobject_cleanp().
+EXPORT_SYMBOL and __init is a bad combination because the .init.text
+section is freed up after the initialization.
 
-Fixes: ee959b00c335 ("SCSI: convert struct class_device to struct device")
-Signed-off-by: Zhu Wang <wangzhu9@huawei.com>
-Link: https://lore.kernel.org/r/20230803020230.226903-1-wangzhu9@huawei.com
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Commit c5a130325f13 ("ACPI/APEI: Add parameter check before error
+injection") exported page_is_ram(), hence the __init annotation should
+be removed.
+
+This fixes the modpost warning in ARCH=alpha builds:
+
+  WARNING: modpost: vmlinux: page_is_ram: EXPORT_SYMBOL used for init symbol. Remove __init or EXPORT_SYMBOL.
+
+Fixes: c5a130325f13 ("ACPI/APEI: Add parameter check before error injection")
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Reviewed-by: Randy Dunlap <rdunlap@infradead.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/raid_class.c |    1 +
- 1 file changed, 1 insertion(+)
+ arch/alpha/kernel/setup.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/drivers/scsi/raid_class.c
-+++ b/drivers/scsi/raid_class.c
-@@ -248,6 +248,7 @@ int raid_component_add(struct raid_templ
- 	return 0;
+--- a/arch/alpha/kernel/setup.c
++++ b/arch/alpha/kernel/setup.c
+@@ -394,8 +394,7 @@ setup_memory(void *kernel_end)
+ extern void setup_memory(void *);
+ #endif /* !CONFIG_DISCONTIGMEM */
  
- err_out:
-+	put_device(&rc->dev);
- 	list_del(&rc->node);
- 	rd->component_count--;
- 	put_device(component_dev);
+-int __init
+-page_is_ram(unsigned long pfn)
++int page_is_ram(unsigned long pfn)
+ {
+ 	struct memclust_struct * cluster;
+ 	struct memdesc_struct * memdesc;
 
 
