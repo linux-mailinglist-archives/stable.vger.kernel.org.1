@@ -2,170 +2,101 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D664677ABE7
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:27:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5B4D077AC82
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:34:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231740AbjHMV1C (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:27:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57854 "EHLO
+        id S232023AbjHMVd5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:33:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38110 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231737AbjHMV1C (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:27:02 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EEFFA10DD
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:27:03 -0700 (PDT)
+        with ESMTP id S232022AbjHMVd4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:33:56 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B9DEF10DB
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:33:58 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7ADA9629CA
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:27:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 943F4C433C7;
-        Sun, 13 Aug 2023 21:27:02 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4C17B62C4B
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:33:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E424C433C7;
+        Sun, 13 Aug 2023 21:33:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691962022;
-        bh=4or41LwDuMCbmpL05JH6W1YJStIqBfmYlJNXzcch9/g=;
+        s=korg; t=1691962437;
+        bh=HkkzLu+tmFeUpnrXMfZTq/oDnzvaFhYmeagV0z7zy5s=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=NeuiAcfKOdei/o9ZqDdq8bb37yHcZCVGukHIwJQeR6Rrs7GoWak9oxo9oSrrPFocx
-         2W3R8PQx8S3Xtn3mOrXtqlXqIcdfPcQQBQ7hooKOoVfZXdoxQYXEKeVgoEWPOdXR3+
-         P6E/rHZpSZvqxhGaRUlm83mg4z+mUuugBerE623c=
+        b=dYi+saxcDsykMEt/42FWIG0HRBREWl1iY5NcaKeTnbtdpWfGEr4CKl2+c6QaZnXeo
+         NgeY+IMr5gz5b6YftMEh82UqeXhruxwg1dk6puJMyuv+zydDQJxcDGQPUZbCPPcw87
+         AjCZjuiSI7P1eqtnJ61QzXDWgxqF27nVxyhZg2xQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Tao Liu <ltao@redhat.com>,
-        "Borislav Petkov (AMD)" <bp@alien8.de>,
-        Tom Lendacky <thomas.lendacky@amd.com>, stable@kernel.org
-Subject: [PATCH 6.4 084/206] x86/sev: Do not try to parse for the CC blob on non-AMD hardware
+        patches@lists.linux.dev, Keith Yeo <keithyjy@gmail.com>,
+        Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 6.1 009/149] wifi: nl80211: fix integer overflow in nl80211_parse_mbssid_elems()
 Date:   Sun, 13 Aug 2023 23:17:34 +0200
-Message-ID: <20230813211727.482798857@linuxfoundation.org>
+Message-ID: <20230813211719.075708601@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211724.969019629@linuxfoundation.org>
-References: <20230813211724.969019629@linuxfoundation.org>
+In-Reply-To: <20230813211718.757428827@linuxfoundation.org>
+References: <20230813211718.757428827@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Borislav Petkov (AMD) <bp@alien8.de>
+From: Keith Yeo <keithyjy@gmail.com>
 
-commit bee6cf1a80b54548a039e224c651bb15b644a480 upstream.
+commit 6311071a056272e1e761de8d0305e87cc566f734 upstream.
 
-Tao Liu reported a boot hang on an Intel Atom machine due to an unmapped
-EFI config table. The reason being that the CC blob which contains the
-CPUID page for AMD SNP guests is parsed for before even checking
-whether the machine runs on AMD hardware.
+nl80211_parse_mbssid_elems() uses a u8 variable num_elems to count the
+number of MBSSID elements in the nested netlink attribute attrs, which can
+lead to an integer overflow if a user of the nl80211 interface specifies
+256 or more elements in the corresponding attribute in userspace. The
+integer overflow can lead to a heap buffer overflow as num_elems determines
+the size of the trailing array in elems, and this array is thereafter
+written to for each element in attrs.
 
-Usually that's not a problem on !AMD hw - it simply won't find the CC
-blob's GUID and return. However, if any parts of the config table
-pointers array is not mapped, the kernel will #PF very early in the
-decompressor stage without any opportunity to recover.
+Note that this vulnerability only affects devices with the
+wiphy->mbssid_max_interfaces member set for the wireless physical device
+struct in the device driver, and can only be triggered by a process with
+CAP_NET_ADMIN capabilities.
 
-Therefore, do a superficial CPUID check before poking for the CC blob.
-This will fix the current issue on real hardware. It would also work as
-a guest on a non-lying hypervisor.
+Fix this by checking for a maximum of 255 elements in attrs.
 
-For the lying hypervisor, the check is done again, *after* parsing the
-CC blob as the real CPUID page will be present then.
-
-Clear the #VC handler in case SEV-{ES,SNP} hasn't been detected, as
-a precaution.
-
-Fixes: c01fce9cef84 ("x86/compressed: Add SEV-SNP feature detection/setup")
-Reported-by: Tao Liu <ltao@redhat.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Acked-by: Tom Lendacky <thomas.lendacky@amd.com>
-Tested-by: Tao Liu <ltao@redhat.com>
-Cc: <stable@kernel.org>
-Link: https://lore.kernel.org/r/20230601072043.24439-1-ltao@redhat.com
+Cc: stable@vger.kernel.org
+Fixes: dc1e3cb8da8b ("nl80211: MBSSID and EMA support in AP mode")
+Signed-off-by: Keith Yeo <keithyjy@gmail.com>
+Link: https://lore.kernel.org/r/20230731034719.77206-1-keithyjy@gmail.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/boot/compressed/idt_64.c |    9 ++++++++-
- arch/x86/boot/compressed/sev.c    |   37 +++++++++++++++++++++++++++++++++++--
- 2 files changed, 43 insertions(+), 3 deletions(-)
+ net/wireless/nl80211.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/arch/x86/boot/compressed/idt_64.c
-+++ b/arch/x86/boot/compressed/idt_64.c
-@@ -63,7 +63,14 @@ void load_stage2_idt(void)
- 	set_idt_entry(X86_TRAP_PF, boot_page_fault);
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -5378,8 +5378,11 @@ nl80211_parse_mbssid_elems(struct wiphy
+ 	if (!wiphy->mbssid_max_interfaces)
+ 		return ERR_PTR(-EINVAL);
  
- #ifdef CONFIG_AMD_MEM_ENCRYPT
--	set_idt_entry(X86_TRAP_VC, boot_stage2_vc);
-+	/*
-+	 * Clear the second stage #VC handler in case guest types
-+	 * needing #VC have not been detected.
-+	 */
-+	if (sev_status & BIT(1))
-+		set_idt_entry(X86_TRAP_VC, boot_stage2_vc);
-+	else
-+		set_idt_entry(X86_TRAP_VC, NULL);
- #endif
+-	nla_for_each_nested(nl_elems, attrs, rem_elems)
++	nla_for_each_nested(nl_elems, attrs, rem_elems) {
++		if (num_elems >= 255)
++			return ERR_PTR(-EINVAL);
+ 		num_elems++;
++	}
  
- 	load_boot_idt(&boot_idt_desc);
---- a/arch/x86/boot/compressed/sev.c
-+++ b/arch/x86/boot/compressed/sev.c
-@@ -353,12 +353,45 @@ void sev_enable(struct boot_params *bp)
- 		bp->cc_blob_address = 0;
- 
- 	/*
-+	 * Do an initial SEV capability check before snp_init() which
-+	 * loads the CPUID page and the same checks afterwards are done
-+	 * without the hypervisor and are trustworthy.
-+	 *
-+	 * If the HV fakes SEV support, the guest will crash'n'burn
-+	 * which is good enough.
-+	 */
-+
-+	/* Check for the SME/SEV support leaf */
-+	eax = 0x80000000;
-+	ecx = 0;
-+	native_cpuid(&eax, &ebx, &ecx, &edx);
-+	if (eax < 0x8000001f)
-+		return;
-+
-+	/*
-+	 * Check for the SME/SEV feature:
-+	 *   CPUID Fn8000_001F[EAX]
-+	 *   - Bit 0 - Secure Memory Encryption support
-+	 *   - Bit 1 - Secure Encrypted Virtualization support
-+	 *   CPUID Fn8000_001F[EBX]
-+	 *   - Bits 5:0 - Pagetable bit position used to indicate encryption
-+	 */
-+	eax = 0x8000001f;
-+	ecx = 0;
-+	native_cpuid(&eax, &ebx, &ecx, &edx);
-+	/* Check whether SEV is supported */
-+	if (!(eax & BIT(1)))
-+		return;
-+
-+	/*
- 	 * Setup/preliminary detection of SNP. This will be sanity-checked
- 	 * against CPUID/MSR values later.
- 	 */
- 	snp = snp_init(bp);
- 
--	/* Check for the SME/SEV support leaf */
-+	/* Now repeat the checks with the SNP CPUID table. */
-+
-+	/* Recheck the SME/SEV support leaf */
- 	eax = 0x80000000;
- 	ecx = 0;
- 	native_cpuid(&eax, &ebx, &ecx, &edx);
-@@ -366,7 +399,7 @@ void sev_enable(struct boot_params *bp)
- 		return;
- 
- 	/*
--	 * Check for the SME/SEV feature:
-+	 * Recheck for the SME/SEV feature:
- 	 *   CPUID Fn8000_001F[EAX]
- 	 *   - Bit 0 - Secure Memory Encryption support
- 	 *   - Bit 1 - Secure Encrypted Virtualization support
+ 	elems = kzalloc(struct_size(elems, elem, num_elems), GFP_KERNEL);
+ 	if (!elems)
 
 
