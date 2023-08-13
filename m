@@ -2,41 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D621577AD34
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:48:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D1EBD77ADBD
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:53:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231395AbjHMVsN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:48:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51218 "EHLO
+        id S231270AbjHMVxc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:53:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41318 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229765AbjHMVr4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:47:56 -0400
+        with ESMTP id S231445AbjHMVvu (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:51:50 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 928202D54
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:47:55 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C19D4199B
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:48:55 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 31D0C61468
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:47:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04310C433C7;
-        Sun, 13 Aug 2023 21:47:53 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6069863F76
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:48:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A02CC433C7;
+        Sun, 13 Aug 2023 21:48:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691963274;
-        bh=fgXNGAQTYlYSjdQdXDBa5ODIxnNhcUvDqKXl2asq4bo=;
+        s=korg; t=1691963334;
+        bh=7WeVPtxduEj7ngh8M0XXZ1o1ZFbHVrPm1q/E9C1mE90=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=NHqOWrvI2QCaOEIso1JctbVJttAOaRh4jIaiqlgIvT9evr8RVrRMYvuVwsHUNFVFh
-         JhVB0/3c/q6MbOBSClIEeS/KXWBw6FJCSRtL34+qHsscarP0jAzpFuVCSKo+awSD1G
-         CsFBzbcQaWQ0VF3Ci4VcdWj/69sm3aXYQbLo50p0=
+        b=IZL2IsYmujRHIviaNG8XiD6mlEZFps2u46uOd9QSgw1SQhTcmF3d+SgjB8OBu3yOj
+         YhWY1+RrbE0tTPMqdmpfmmKxGfuOkGjiUnMqTHcz3m62C6t+X7qtVbhYa5v7XTUspE
+         5EhCWp/x0qyTCbNsevy9FOSlARPlNTQNd3dO/Y64=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Daniel Jurgens <danielj@nvidia.com>,
-        Saeed Mahameed <saeedm@nvidia.com>
-Subject: [PATCH 5.4 26/39] net/mlx5: Allow 0 for total host VFs
-Date:   Sun, 13 Aug 2023 23:20:17 +0200
-Message-ID: <20230813211705.707135143@linuxfoundation.org>
+        patches@lists.linux.dev, Nick Child <nnac123@linux.ibm.com>,
+        Simon Horman <horms@kernel.org>,
+        Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.4 27/39] ibmvnic: Handle DMA unmapping of login buffs in release functions
+Date:   Sun, 13 Aug 2023 23:20:18 +0200
+Message-ID: <20230813211705.738086607@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230813211704.796906808@linuxfoundation.org>
 References: <20230813211704.796906808@linuxfoundation.org>
@@ -53,33 +54,73 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Daniel Jurgens <danielj@nvidia.com>
+From: Nick Child <nnac123@linux.ibm.com>
 
-commit 2dc2b3922d3c0f52d3a792d15dcacfbc4cc76b8f upstream.
+commit d78a671eb8996af19d6311ecdee9790d2fa479f0 upstream.
 
-When querying eswitch functions 0 is a valid number of host VFs. After
-introducing ARM SRIOV falling through to getting the max value from PCI
-results in using the total VFs allowed on the ARM for the host.
+Rather than leaving the DMA unmapping of the login buffers to the
+login response handler, move this work into the login release functions.
+Previously, these functions were only used for freeing the allocated
+buffers. This could lead to issues if there are more than one
+outstanding login buffer requests, which is possible if a login request
+times out.
 
-Fixes: 86eec50beaf3 ("net/mlx5: Support querying max VFs from device");
-Signed-off-by: Daniel Jurgens <danielj@nvidia.com>
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+If a login request times out, then there is another call to send login.
+The send login function makes a call to the login buffer release
+function. In the past, this freed the buffers but did not DMA unmap.
+Therefore, the VIOS could still write to the old login (now freed)
+buffer. It is for this reason that it is a good idea to leave the DMA
+unmap call to the login buffers release function.
+
+Since the login buffer release functions now handle DMA unmapping,
+remove the duplicate DMA unmapping in handle_login_rsp().
+
+Fixes: dff515a3e71d ("ibmvnic: Harden device login requests")
+Signed-off-by: Nick Child <nnac123@linux.ibm.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/20230809221038.51296-3-nnac123@linux.ibm.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/sriov.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/net/ethernet/ibm/ibmvnic.c |   15 ++++++++++-----
+ 1 file changed, 10 insertions(+), 5 deletions(-)
 
---- a/drivers/net/ethernet/mellanox/mlx5/core/sriov.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/sriov.c
-@@ -211,8 +211,7 @@ static u16 mlx5_get_max_vfs(struct mlx5_
- 		host_total_vfs = MLX5_GET(query_esw_functions_out, out,
- 					  host_params_context.host_total_vfs);
- 		kvfree(out);
--		if (host_total_vfs)
--			return host_total_vfs;
-+		return host_total_vfs;
- 	}
+--- a/drivers/net/ethernet/ibm/ibmvnic.c
++++ b/drivers/net/ethernet/ibm/ibmvnic.c
+@@ -873,12 +873,22 @@ static int ibmvnic_login(struct net_devi
  
- done:
+ static void release_login_buffer(struct ibmvnic_adapter *adapter)
+ {
++	if (!adapter->login_buf)
++		return;
++
++	dma_unmap_single(&adapter->vdev->dev, adapter->login_buf_token,
++			 adapter->login_buf_sz, DMA_TO_DEVICE);
+ 	kfree(adapter->login_buf);
+ 	adapter->login_buf = NULL;
+ }
+ 
+ static void release_login_rsp_buffer(struct ibmvnic_adapter *adapter)
+ {
++	if (!adapter->login_rsp_buf)
++		return;
++
++	dma_unmap_single(&adapter->vdev->dev, adapter->login_rsp_buf_token,
++			 adapter->login_rsp_buf_sz, DMA_FROM_DEVICE);
+ 	kfree(adapter->login_rsp_buf);
+ 	adapter->login_rsp_buf = NULL;
+ }
+@@ -4298,11 +4308,6 @@ static int handle_login_rsp(union ibmvni
+ 	struct ibmvnic_login_buffer *login = adapter->login_buf;
+ 	int i;
+ 
+-	dma_unmap_single(dev, adapter->login_buf_token, adapter->login_buf_sz,
+-			 DMA_TO_DEVICE);
+-	dma_unmap_single(dev, adapter->login_rsp_buf_token,
+-			 adapter->login_rsp_buf_sz, DMA_FROM_DEVICE);
+-
+ 	/* If the number of queues requested can't be allocated by the
+ 	 * server, the login response will return with code 1. We will need
+ 	 * to resend the login buffer with fewer queues requested.
 
 
