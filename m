@@ -2,151 +2,134 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2FCF177ACCB
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:37:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1D52D77AC31
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:30:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232177AbjHMVhM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:37:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39656 "EHLO
+        id S231868AbjHMVaU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:30:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40072 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232176AbjHMVhL (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:37:11 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5906710DD
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:37:13 -0700 (PDT)
+        with ESMTP id S231866AbjHMVaU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:30:20 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7CE4310DB
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:30:22 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E2970632F8
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:37:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE11CC433C7;
-        Sun, 13 Aug 2023 21:37:11 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1A355614BD
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:30:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E6C9C433C8;
+        Sun, 13 Aug 2023 21:30:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691962632;
-        bh=cOGs0bvySrHx0D6kqztLrfigfYfaAHabak1eE7HqQG0=;
+        s=korg; t=1691962221;
+        bh=Oqah/ag2XjGtbbrX54Zg7qK/mrCarrAQSj8qAbka6WU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=cjLWQbGGfgMRRoJq/6dLYzhPBpFBX3/B6+uc9C+DRCW2OzY0S9sxjkm56Xftlexgw
-         xLrs2ldcyhqeuAWieTlySWM7ndIPdyGKnIPgXIU9Utlv3ODOodqZGNnMcdfFW9hfc3
-         y9HF7PaOOgQ9R7OchdD8/7Toy6JEovWu0sn57ixg=
+        b=BvqKxKPzjfg4d76XCUm5XmtFsZwL1+UrGpTVhrRHkMsW6c6g1gYr/M1zAqzjP2/p2
+         ST4LgiheMZKs/vNu7a6sHhTpu0KFSimC0dtTZGb2C5F5fz3NyZePRCPqv1o/46VrqX
+         6zRX01xCuejRf5JAZf3fCEE6sK+UbjmgTfTeqUsk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Alisa Roman <alisa.roman@analog.com>,
-        Nuno Sa <nuno.sa@analog.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.1 054/149] iio: adc: ad7192: Fix ac excitation feature
+        patches@lists.linux.dev, Nitya Sunkad <nitya.sunkad@amd.com>,
+        Shannon Nelson <shannon.nelson@amd.com>,
+        "David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 6.4 129/206] ionic: Add missing err handling for queue reconfig
 Date:   Sun, 13 Aug 2023 23:18:19 +0200
-Message-ID: <20230813211720.431239213@linuxfoundation.org>
+Message-ID: <20230813211728.717355097@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211718.757428827@linuxfoundation.org>
-References: <20230813211718.757428827@linuxfoundation.org>
+In-Reply-To: <20230813211724.969019629@linuxfoundation.org>
+References: <20230813211724.969019629@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Alisa Roman <alisa.roman@analog.com>
+From: Nitya Sunkad <nitya.sunkad@amd.com>
 
-commit 6bc471b6c3aeaa7b95d1b86a1bb8d91a3c341fa5 upstream.
+commit 52417a95ff2d810dc31a68ae71102e741efea772 upstream.
 
-AC excitation enable feature exposed to user on AD7192, allowing a bit
-which should be 0 to be set. This feature is specific only to AD7195. AC
-excitation attribute moved accordingly.
+ionic_start_queues_reconfig returns an error code if txrx_init fails.
+Handle this error code in the relevant places.
 
-In the AD7195 documentation, the AC excitation enable bit is on position
-22 in the Configuration register. ACX macro changed to match correct
-register and bit.
+This fixes a corner case where the device could get left in a detached
+state if the CMB reconfig fails and the attempt to clean up the mess
+also fails. Note that calling netif_device_attach when the netdev is
+already attached does not lead to unexpected behavior.
 
-Note that the fix tag is for the commit that moved the driver out of
-staging.
+Change goto name "errout" to "err_out" to maintain consistency across
+goto statements.
 
-Fixes: b581f748cce0 ("staging: iio: adc: ad7192: move out of staging")
-Signed-off-by: Alisa Roman <alisa.roman@analog.com>
-Cc: stable@vger.kernel.org
-Reviewed-by: Nuno Sa <nuno.sa@analog.com>
-Link: https://lore.kernel.org/r/20230614155242.160296-1-alisa.roman@analog.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Fixes: 40bc471dc714 ("ionic: add tx/rx-push support with device Component Memory Buffers")
+Fixes: 6f7d6f0fd7a3 ("ionic: pull reset_queues into tx_timeout handler")
+Signed-off-by: Nitya Sunkad <nitya.sunkad@amd.com>
+Signed-off-by: Shannon Nelson <shannon.nelson@amd.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/adc/ad7192.c |   16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ drivers/net/ethernet/pensando/ionic/ionic_lif.c |   23 ++++++++++++++++-------
+ 1 file changed, 16 insertions(+), 7 deletions(-)
 
---- a/drivers/iio/adc/ad7192.c
-+++ b/drivers/iio/adc/ad7192.c
-@@ -62,7 +62,6 @@
- #define AD7192_MODE_STA_MASK	BIT(20) /* Status Register transmission Mask */
- #define AD7192_MODE_CLKSRC(x)	(((x) & 0x3) << 18) /* Clock Source Select */
- #define AD7192_MODE_SINC3	BIT(15) /* SINC3 Filter Select */
--#define AD7192_MODE_ACX		BIT(14) /* AC excitation enable(AD7195 only)*/
- #define AD7192_MODE_ENPAR	BIT(13) /* Parity Enable */
- #define AD7192_MODE_CLKDIV	BIT(12) /* Clock divide by 2 (AD7190/2 only)*/
- #define AD7192_MODE_SCYCLE	BIT(11) /* Single cycle conversion */
-@@ -91,6 +90,7 @@
- /* Configuration Register Bit Designations (AD7192_REG_CONF) */
+--- a/drivers/net/ethernet/pensando/ionic/ionic_lif.c
++++ b/drivers/net/ethernet/pensando/ionic/ionic_lif.c
+@@ -1816,6 +1816,7 @@ static int ionic_change_mtu(struct net_d
+ static void ionic_tx_timeout_work(struct work_struct *ws)
+ {
+ 	struct ionic_lif *lif = container_of(ws, struct ionic_lif, tx_timeout_work);
++	int err;
  
- #define AD7192_CONF_CHOP	BIT(23) /* CHOP enable */
-+#define AD7192_CONF_ACX		BIT(22) /* AC excitation enable(AD7195 only) */
- #define AD7192_CONF_REFSEL	BIT(20) /* REFIN1/REFIN2 Reference Select */
- #define AD7192_CONF_CHAN(x)	((x) << 8) /* Channel select */
- #define AD7192_CONF_CHAN_MASK	(0x7FF << 8) /* Channel select mask */
-@@ -473,7 +473,7 @@ static ssize_t ad7192_show_ac_excitation
- 	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
- 	struct ad7192_state *st = iio_priv(indio_dev);
+ 	if (test_bit(IONIC_LIF_F_FW_RESET, lif->state))
+ 		return;
+@@ -1828,8 +1829,11 @@ static void ionic_tx_timeout_work(struct
  
--	return sysfs_emit(buf, "%d\n", !!(st->mode & AD7192_MODE_ACX));
-+	return sysfs_emit(buf, "%d\n", !!(st->conf & AD7192_CONF_ACX));
+ 	mutex_lock(&lif->queue_lock);
+ 	ionic_stop_queues_reconfig(lif);
+-	ionic_start_queues_reconfig(lif);
++	err = ionic_start_queues_reconfig(lif);
+ 	mutex_unlock(&lif->queue_lock);
++
++	if (err)
++		dev_err(lif->ionic->dev, "%s: Restarting queues failed\n", __func__);
  }
  
- static ssize_t ad7192_show_bridge_switch(struct device *dev,
-@@ -514,13 +514,13 @@ static ssize_t ad7192_set(struct device
+ static void ionic_tx_timeout(struct net_device *netdev, unsigned int txqueue)
+@@ -2799,17 +2803,22 @@ static int ionic_cmb_reconfig(struct ion
+ 			if (err) {
+ 				dev_err(lif->ionic->dev,
+ 					"CMB restore failed: %d\n", err);
+-				goto errout;
++				goto err_out;
+ 			}
+ 		}
  
- 		ad_sd_write_reg(&st->sd, AD7192_REG_GPOCON, 1, st->gpocon);
- 		break;
--	case AD7192_REG_MODE:
-+	case AD7192_REG_CONF:
- 		if (val)
--			st->mode |= AD7192_MODE_ACX;
-+			st->conf |= AD7192_CONF_ACX;
- 		else
--			st->mode &= ~AD7192_MODE_ACX;
-+			st->conf &= ~AD7192_CONF_ACX;
+-		ionic_start_queues_reconfig(lif);
+-	} else {
+-		/* This was detached in ionic_stop_queues_reconfig() */
+-		netif_device_attach(lif->netdev);
++		err = ionic_start_queues_reconfig(lif);
++		if (err) {
++			dev_err(lif->ionic->dev,
++				"CMB reconfig failed: %d\n", err);
++			goto err_out;
++		}
+ 	}
  
--		ad_sd_write_reg(&st->sd, AD7192_REG_MODE, 3, st->mode);
-+		ad_sd_write_reg(&st->sd, AD7192_REG_CONF, 3, st->conf);
- 		break;
- 	default:
- 		ret = -EINVAL;
-@@ -580,12 +580,11 @@ static IIO_DEVICE_ATTR(bridge_switch_en,
- 
- static IIO_DEVICE_ATTR(ac_excitation_en, 0644,
- 		       ad7192_show_ac_excitation, ad7192_set,
--		       AD7192_REG_MODE);
-+		       AD7192_REG_CONF);
- 
- static struct attribute *ad7192_attributes[] = {
- 	&iio_dev_attr_filter_low_pass_3db_frequency_available.dev_attr.attr,
- 	&iio_dev_attr_bridge_switch_en.dev_attr.attr,
--	&iio_dev_attr_ac_excitation_en.dev_attr.attr,
- 	NULL
- };
- 
-@@ -596,6 +595,7 @@ static const struct attribute_group ad71
- static struct attribute *ad7195_attributes[] = {
- 	&iio_dev_attr_filter_low_pass_3db_frequency_available.dev_attr.attr,
- 	&iio_dev_attr_bridge_switch_en.dev_attr.attr,
-+	&iio_dev_attr_ac_excitation_en.dev_attr.attr,
- 	NULL
- };
+-errout:
++err_out:
++	/* This was detached in ionic_stop_queues_reconfig() */
++	netif_device_attach(lif->netdev);
++
+ 	return err;
+ }
  
 
 
