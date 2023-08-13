@@ -2,46 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6CF3E77AD43
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:48:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3380377AD5B
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:49:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232258AbjHMVsS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:48:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40486 "EHLO
+        id S231161AbjHMVtK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:49:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36628 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232308AbjHMVpg (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:45:36 -0400
+        with ESMTP id S232310AbjHMVse (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:48:34 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1B5282D61
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:45:36 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C5B21FED
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:42:43 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A4E1460B9D
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:45:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B735EC433C8;
-        Sun, 13 Aug 2023 21:45:34 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7CA0F60B9D
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:42:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9139EC433C7;
+        Sun, 13 Aug 2023 21:42:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691963135;
-        bh=CoKHGRGzilooxH2zKSZSKs2c3F9n7IFcksP9FV/HbFg=;
+        s=korg; t=1691962960;
+        bh=IFlHGQk34BWoKevksnbaV45SiiowBi3U/ePbO8yQMuo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=2MCUxemLZczA+Z1Wq5HRomQVNfMQgLJwLV8aRdd906aSNM72CTQLgmcE/qu3ypbn0
-         bwMDwvHXfOvL/YTMAVKgfp3KrvTGi+Iu44Q0XjBGUW5fOpSpTS11hHkNbFvEutYBpj
-         /qhf9ZqIRD7jte0ymXhMVP17NyrxIlvGzBzZardE=
+        b=gWjn1QbTYOc+Jtl+JS6nnT9pYEu6SqqLIMVXPrcdpoZ3csmSvVU0cz35FRAcPdGQP
+         6wXDJ5F8xOeEcALDu3m6HN9blQBqLVVQUjVLDtDiwHmPyzJj8oT7tzoMKq0u3+QKau
+         1ZKkMbYIcmapTunN9OY0fOg7229Gc6EbeuWNPFQ8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Moshe Shemesh <moshe@nvidia.com>,
-        Aya Levin <ayal@nvidia.com>,
-        Saeed Mahameed <saeedm@nvidia.com>,
-        Ganesh G R <ganeshgr@linux.ibm.com>
-Subject: [PATCH 5.15 66/89] net/mlx5: Skip clock update work when device is in error state
+        patches@lists.linux.dev, Josef Bacik <josef@toxicpanda.com>,
+        David Sterba <dsterba@suse.com>
+Subject: [PATCH 5.10 56/68] btrfs: set cache_block_group_error if we find an error
 Date:   Sun, 13 Aug 2023 23:19:57 +0200
-Message-ID: <20230813211712.761559739@linuxfoundation.org>
+Message-ID: <20230813211709.846593102@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211710.787645394@linuxfoundation.org>
-References: <20230813211710.787645394@linuxfoundation.org>
+In-Reply-To: <20230813211708.149630011@linuxfoundation.org>
+References: <20230813211708.149630011@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,44 +54,47 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Moshe Shemesh <moshe@nvidia.com>
+From: Josef Bacik <josef@toxicpanda.com>
 
-commit d006207625657322ba8251b6e7e829f9659755dc upstream.
+commit 92fb94b69c6accf1e49fff699640fa0ce03dc910 upstream.
 
-When device is in error state, marked by the flag
-MLX5_DEVICE_STATE_INTERNAL_ERROR, the HW and PCI may not be accessible
-and so clock update work should be skipped. Furthermore, such access
-through PCI in error state, after calling mlx5_pci_disable_device() can
-result in failing to recover from pci errors.
+We set cache_block_group_error if btrfs_cache_block_group() returns an
+error, this is because we could end up not finding space to allocate and
+mistakenly return -ENOSPC, and which could then abort the transaction
+with the incorrect errno, and in the case of ENOSPC result in a
+WARN_ON() that will trip up tests like generic/475.
 
-Fixes: ef9814deafd0 ("net/mlx5e: Add HW timestamping (TS) support")
-Reported-and-tested-by: Ganesh G R <ganeshgr@linux.ibm.com>
-Closes: https://lore.kernel.org/netdev/9bdb9b9d-140a-7a28-f0de-2e64e873c068@nvidia.com
-Signed-off-by: Moshe Shemesh <moshe@nvidia.com>
-Reviewed-by: Aya Levin <ayal@nvidia.com>
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+However there's the case where multiple threads can be racing, one
+thread gets the proper error, and the other thread doesn't actually call
+btrfs_cache_block_group(), it instead sees ->cached ==
+BTRFS_CACHE_ERROR.  Again the result is the same, we fail to allocate
+our space and return -ENOSPC.  Instead we need to set
+cache_block_group_error to -EIO in this case to make sure that if we do
+not make our allocation we get the appropriate error returned back to
+the caller.
+
+CC: stable@vger.kernel.org # 4.14+
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/lib/clock.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ fs/btrfs/extent-tree.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/net/ethernet/mellanox/mlx5/core/lib/clock.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/lib/clock.c
-@@ -189,10 +189,15 @@ static void mlx5_timestamp_overflow(stru
- 	clock = container_of(timer, struct mlx5_clock, timer);
- 	mdev = container_of(clock, struct mlx5_core_dev, clock);
+--- a/fs/btrfs/extent-tree.c
++++ b/fs/btrfs/extent-tree.c
+@@ -4138,8 +4138,11 @@ have_block_group:
+ 			ret = 0;
+ 		}
  
-+	if (mdev->state == MLX5_DEVICE_STATE_INTERNAL_ERROR)
-+		goto out;
-+
- 	write_seqlock_irqsave(&clock->lock, flags);
- 	timecounter_read(&timer->tc);
- 	mlx5_update_clock_info_page(mdev);
- 	write_sequnlock_irqrestore(&clock->lock, flags);
-+
-+out:
- 	schedule_delayed_work(&timer->overflow_work, timer->overflow_period);
- }
+-		if (unlikely(block_group->cached == BTRFS_CACHE_ERROR))
++		if (unlikely(block_group->cached == BTRFS_CACHE_ERROR)) {
++			if (!cache_block_group_error)
++				cache_block_group_error = -EIO;
+ 			goto loop;
++		}
  
+ 		bg_ret = NULL;
+ 		ret = do_allocation(block_group, &ffe_ctl, &bg_ret);
 
 
