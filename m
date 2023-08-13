@@ -2,50 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1AB3C77A6ED
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 16:29:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9502C77A6EE
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 16:31:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229706AbjHMO3i (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 10:29:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42058 "EHLO
+        id S229862AbjHMObI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 10:31:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42226 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229506AbjHMO3h (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 10:29:37 -0400
-Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D28DB10FC
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 07:29:38 -0700 (PDT)
-Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-5230963f636so1046358a12.0
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 07:29:38 -0700 (PDT)
+        with ESMTP id S229506AbjHMObI (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 10:31:08 -0400
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8DE2D1707
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 07:31:10 -0700 (PDT)
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-3fe8d816a40so3430325e9.1
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 07:31:10 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691936977; x=1692541777;
+        d=1e100.net; s=20221208; t=1691937068; x=1692541868;
         h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
         bh=tUuuKbL8ydFNPda8N4HOTsW5STdP9ERZYuHURXlNIxg=;
-        b=era47y43+H3gYPFi6VAVhB9ISdJ/iVJXGMCFsmpoh4D9rwBceGv7kEi/T+dL/9Zla5
-         qzze2trFZ2ZqthlLAkKYbLw8Fq1+quHuABYaS47YwVfT7h7JAUgKdifLvPXY51MYzHEo
-         QVp9C2sB9s0zwUiWJ6fRf9gT+nZigZa5ijk6Rnb0QnT/IBNd/MmcDvp8C5mnhS8D1+/v
-         /6/YTrqDbKNWzbEdoc/zq6WfEyQyTjDhijiASxYkpZPVilvL2qdxuph0jJwSgs8DnTTa
-         NJxsWQpdSpyBFBF8ZeFtdfPIV6+J7hEurBug9N6LfWrR3Wj2BEvC4unkWfBiADVcZsbv
-         a6vg==
-X-Gm-Message-State: AOJu0Ywv7BUKZ8dKvNE0CpyPNboes9obLPL/CnOqnGzbMJ5XTUEc5jOm
-        cPLSwMGHsiu3hXK2a2ppC5CsRsf77Jg=
-X-Google-Smtp-Source: AGHT+IEoYQjkNlZYlXMUTBn2A9gDQCzE4R8WIEaAngEv0BnC8sjVzTMCgl5Jcg54IZMgmkcX1IN0PQ==
-X-Received: by 2002:a17:906:7390:b0:994:539d:f98b with SMTP id f16-20020a170906739000b00994539df98bmr5049869ejl.6.1691936976697;
-        Sun, 13 Aug 2023 07:29:36 -0700 (PDT)
+        b=YWt+FutshAUEZMJwmXm+H4CQPe7Zwja+q3ydbUg2zTlgp3EgRz6VVLlZxfzk2QrAvT
+         z/eM/xDulkkxpXVHqrIbrV+lu9oTzpeOdZ7R/ai4W7FdQEYnGEIi6ariiYLBV02D4mzM
+         1NL+Rmyijo8YAU2E4RY2ubT6z1nXmWA6A1VifuNGBp3q5EHp+WPbuEFf5lNVkoZrFSgw
+         CMZ7Zke7sDcrlTA93+d5yM8sliuAkz9eF9a2ribE934lnk/i59Wrd4JhWFMgvwlXY0bV
+         vE5IvHG+4SDqlojGscdebyk5YmkjIzwA50n1wEEv6q23RIv+JGURtf7JWl6ca0oC+F/a
+         KCbw==
+X-Gm-Message-State: AOJu0YzA0hHm0u8oadJEIsORog5+1DuhBJC2LLwmp3c2yT3lD7g8ASXj
+        Ai7N2V5FZXNxDZtJfG16Ut/i5stp0/g=
+X-Google-Smtp-Source: AGHT+IGd2hPeaEh7kNTz5il4uY8J2DCXyPRPmXa8I13qfg2Tvp0zsvrPETGq8PATbl4Ea3sAn+YmBA==
+X-Received: by 2002:a05:600c:5111:b0:3fe:5228:b78c with SMTP id o17-20020a05600c511100b003fe5228b78cmr7207790wms.1.1691937068577;
+        Sun, 13 Aug 2023 07:31:08 -0700 (PDT)
 Received: from localhost.localdomain (46-116-229-137.bb.netvision.net.il. [46.116.229.137])
-        by smtp.gmail.com with ESMTPSA id bh12-20020a170906a0cc00b009888aa1da11sm4625225ejb.188.2023.08.13.07.29.35
-        for <stable@vger.kernel.org>
+        by smtp.gmail.com with ESMTPSA id b12-20020a170906660c00b00992c92af6f4sm4655213ejp.144.2023.08.13.07.31.07
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 13 Aug 2023 07:29:36 -0700 (PDT)
+        Sun, 13 Aug 2023 07:31:08 -0700 (PDT)
 From:   Sagi Grimberg <sagi@grimberg.me>
 To:     stable@vger.kernel.org
-Subject: [PATCH 6.1.y] nvme-tcp: fix potential unbalanced freeze & unfreeze
-Date:   Sun, 13 Aug 2023 17:29:34 +0300
-Message-ID: <20230813142934.12311-1-sagi@grimberg.me>
+Cc:     linux-nvme@lists.infradead.org
+Subject: [PATCH 5.15.y] nvme-tcp: fix potential unbalanced freeze & unfreeze
+Date:   Sun, 13 Aug 2023 17:31:06 +0300
+Message-ID: <20230813143106.12390-1-sagi@grimberg.me>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <2023081225-impotence-uncurious-0ad9@gregkh>
-References: <2023081225-impotence-uncurious-0ad9@gregkh>
+In-Reply-To: <2023081226-oak-cartoon-6115@gregkh>
+References: <2023081226-oak-cartoon-6115@gregkh>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
