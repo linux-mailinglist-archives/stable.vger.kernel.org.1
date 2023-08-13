@@ -2,129 +2,114 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E49F777AD31
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:48:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D7D7777AD10
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:48:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231370AbjHMVsM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:48:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39332 "EHLO
+        id S230222AbjHMVsC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:48:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34260 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229576AbjHMVrb (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:47:31 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5666D2D54
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:47:30 -0700 (PDT)
+        with ESMTP id S232336AbjHMVqM (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:46:12 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99E812D61
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:46:11 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DB6A36125C
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:47:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F18C4C433C8;
-        Sun, 13 Aug 2023 21:47:28 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2FECA61B60
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:46:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C2BDC433C7;
+        Sun, 13 Aug 2023 21:46:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691963249;
-        bh=xXFjVzXeG1U1HBgQhtEyEk4tWd/Tkl557R1e0nq47qE=;
+        s=korg; t=1691963170;
+        bh=E3FPuyrBb6vlF7JdfkNXridaxK6TieuHXQ0h/GLq6qo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=T3N0jt7c9R5RTUJHG7b3coQXiBBJDEkkP2XLJYzNu4usnBL2xZHfv9D8VXVfFfOGQ
-         4M4GAuFkWvjCR9heQuai4xNMJ4aT2fDOJZEhywAanz0ImzTcgdftR/uC4OWj7LmTvU
-         8ew1bcPJG0C3Z3tPLVcCDCPdPbbRJ4e0/1vLe+Bg=
+        b=uFBr0+A1tJJKMb506nEcZCqXbBTnRNGqppDkeID/F9/Xj0grWRzkiE+OqddGaa7Sk
+         O3k6sD1kJGBg5tIiPn3DKkZwBJvXfPP9ESDTg+36920bTtz8b5kY6Pbsy9ty4rM4A6
+         QKvfs6mVk6HGfoQKCdPbyWm2BwlGFKMarjgF0EF0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, kernel test robot <oliver.sang@intel.com>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Sami Tolvanen <samitolvanen@google.com>,
-        Kees Cook <keescook@chromium.org>,
-        Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.4 18/39] mISDN: Update parameter type of dsp_cmx_send()
+        patches@lists.linux.dev, Michael Kelley <mikelley@microsoft.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 5.15 78/89] scsi: storvsc: Fix handling of virtual Fibre Channel timeouts
 Date:   Sun, 13 Aug 2023 23:20:09 +0200
-Message-ID: <20230813211705.463535585@linuxfoundation.org>
+Message-ID: <20230813211713.110713091@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211704.796906808@linuxfoundation.org>
-References: <20230813211704.796906808@linuxfoundation.org>
+In-Reply-To: <20230813211710.787645394@linuxfoundation.org>
+References: <20230813211710.787645394@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Michael Kelley <mikelley@microsoft.com>
 
-commit 1696ec8654016dad3b1baf6c024303e584400453 upstream.
+commit 175544ad48cbf56affeef2a679c6a4d4fb1e2881 upstream.
 
-When booting a kernel with CONFIG_MISDN_DSP=y and CONFIG_CFI_CLANG=y,
-there is a failure when dsp_cmx_send() is called indirectly from
-call_timer_fn():
+Hyper-V provides the ability to connect Fibre Channel LUNs to the host
+system and present them in a guest VM as a SCSI device. I/O to the vFC
+device is handled by the storvsc driver. The storvsc driver includes a
+partial integration with the FC transport implemented in the generic
+portion of the Linux SCSI subsystem so that FC attributes can be displayed
+in /sys.  However, the partial integration means that some aspects of vFC
+don't work properly. Unfortunately, a full and correct integration isn't
+practical because of limitations in what Hyper-V provides to the guest.
 
-  [    0.371412] CFI failure at call_timer_fn+0x2f/0x150 (target: dsp_cmx_send+0x0/0x530; expected type: 0x92ada1e9)
+In particular, in the context of Hyper-V storvsc, the FC transport timeout
+function fc_eh_timed_out() causes a kernel panic because it can't find the
+rport and dereferences a NULL pointer. The original patch that added the
+call from storvsc_eh_timed_out() to fc_eh_timed_out() is faulty in this
+regard.
 
-The function pointer prototype that call_timer_fn() expects is
+In many cases a timeout is due to a transient condition, so the situation
+can be improved by just continuing to wait like with other I/O requests
+issued by storvsc, and avoiding the guaranteed panic. For a permanent
+failure, continuing to wait may result in a hung thread instead of a panic,
+which again may be better.
 
-  void (*fn)(struct timer_list *)
+So fix the panic by removing the storvsc call to fc_eh_timed_out().  This
+allows storvsc to keep waiting for a response.  The change has been tested
+by users who experienced a panic in fc_eh_timed_out() due to transient
+timeouts, and it solves their problem.
 
-whereas dsp_cmx_send() has a parameter type of 'void *', which causes
-the control flow integrity checks to fail because the parameter types do
-not match.
+In the future we may want to deprecate the vFC functionality in storvsc
+since it can't be fully fixed. But it has current users for whom it is
+working well enough, so it should probably stay for a while longer.
 
-Change dsp_cmx_send()'s parameter type to be 'struct timer_list' to
-match the expected prototype. The argument is unused anyways, so this
-has no functional change, aside from avoiding the CFI failure.
-
-Reported-by: kernel test robot <oliver.sang@intel.com>
-Closes: https://lore.kernel.org/oe-lkp/202308020936.58787e6c-oliver.sang@intel.com
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Reviewed-by: Sami Tolvanen <samitolvanen@google.com>
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Fixes: e313ac12eb13 ("mISDN: Convert timers to use timer_setup()")
-Link: https://lore.kernel.org/r/20230802-fix-dsp_cmx_send-cfi-failure-v1-1-2f2e79b0178d@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 3930d7309807 ("scsi: storvsc: use default I/O timeout handler for FC devices")
+Cc: stable@vger.kernel.org
+Signed-off-by: Michael Kelley <mikelley@microsoft.com>
+Link: https://lore.kernel.org/r/1690606764-79669-1-git-send-email-mikelley@microsoft.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/isdn/mISDN/dsp.h      |    2 +-
- drivers/isdn/mISDN/dsp_cmx.c  |    2 +-
- drivers/isdn/mISDN/dsp_core.c |    2 +-
- 3 files changed, 3 insertions(+), 3 deletions(-)
+ drivers/scsi/storvsc_drv.c |    4 ----
+ 1 file changed, 4 deletions(-)
 
---- a/drivers/isdn/mISDN/dsp.h
-+++ b/drivers/isdn/mISDN/dsp.h
-@@ -247,7 +247,7 @@ extern void dsp_cmx_hardware(struct dsp_
- extern int dsp_cmx_conf(struct dsp *dsp, u32 conf_id);
- extern void dsp_cmx_receive(struct dsp *dsp, struct sk_buff *skb);
- extern void dsp_cmx_hdlc(struct dsp *dsp, struct sk_buff *skb);
--extern void dsp_cmx_send(void *arg);
-+extern void dsp_cmx_send(struct timer_list *arg);
- extern void dsp_cmx_transmit(struct dsp *dsp, struct sk_buff *skb);
- extern int dsp_cmx_del_conf_member(struct dsp *dsp);
- extern int dsp_cmx_del_conf(struct dsp_conf *conf);
---- a/drivers/isdn/mISDN/dsp_cmx.c
-+++ b/drivers/isdn/mISDN/dsp_cmx.c
-@@ -1625,7 +1625,7 @@ static u16	dsp_count; /* last sample cou
- static int	dsp_count_valid; /* if we have last sample count */
- 
- void
--dsp_cmx_send(void *arg)
-+dsp_cmx_send(struct timer_list *arg)
+--- a/drivers/scsi/storvsc_drv.c
++++ b/drivers/scsi/storvsc_drv.c
+@@ -1730,10 +1730,6 @@ static int storvsc_host_reset_handler(st
+  */
+ static enum blk_eh_timer_return storvsc_eh_timed_out(struct scsi_cmnd *scmnd)
  {
- 	struct dsp_conf *conf;
- 	struct dsp_conf_member *member;
---- a/drivers/isdn/mISDN/dsp_core.c
-+++ b/drivers/isdn/mISDN/dsp_core.c
-@@ -1200,7 +1200,7 @@ static int __init dsp_init(void)
- 	}
+-#if IS_ENABLED(CONFIG_SCSI_FC_ATTRS)
+-	if (scmnd->device->host->transportt == fc_transport_template)
+-		return fc_eh_timed_out(scmnd);
+-#endif
+ 	return BLK_EH_RESET_TIMER;
+ }
  
- 	/* set sample timer */
--	timer_setup(&dsp_spl_tl, (void *)dsp_cmx_send, 0);
-+	timer_setup(&dsp_spl_tl, dsp_cmx_send, 0);
- 	dsp_spl_tl.expires = jiffies + dsp_tics;
- 	dsp_spl_jiffies = dsp_spl_tl.expires;
- 	add_timer(&dsp_spl_tl);
 
 
