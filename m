@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 23E4A77AD42
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:48:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AC28A77AC63
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:32:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229558AbjHMVsS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:48:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39234 "EHLO
+        id S231969AbjHMVcc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:32:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55928 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232270AbjHMVpA (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:45:00 -0400
+        with ESMTP id S231966AbjHMVcb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:32:31 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 883492D61
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:44:59 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 95C6410DB
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:32:33 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 24A3A60B9D
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:44:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27F69C433C8;
-        Sun, 13 Aug 2023 21:44:57 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 33F3962BD7
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:32:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25974C433C7;
+        Sun, 13 Aug 2023 21:32:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691963098;
-        bh=0T8dRlPa+QRxbbMSmt1qCMi+86a9J/exctEr9ZwW22w=;
+        s=korg; t=1691962352;
+        bh=l0+mI2gbfrg3yVM5mk2EVIPZzOyoFKEDU34FGa0s0fE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Qa5l4EUEEHmHzzEuIdFcCsFygaLJTcYDl5kAV8sLcaMeoQFDOIdhFq0JmrWpk8V7y
-         1mIWdgYQ/15WioeH7FBGK2xtsOs/wrgt2+LAvPs2IJ6F5ULxbTNlTq+1H/soDgJ63f
-         G67aRqHxCTae4lpR6/YPVIDyr6eXUdZg8RuKzPhU=
+        b=iq5zA6nCYtQWRgDTHFkF6LeMNAYQhcYrJXgpdZEG1sVZjlpbybEHlbO7IHKpbQX9l
+         3DWKkwCD2O0uGFU4Xyi1xgjP+hat3ITQX8ONUWAEZJ2T2KqdBvGJJb0j7OIDdSB4Kx
+         +a4vQp6vl4qTrEfM0NXiTuKOHaETD7niPIserlvA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Elson Roy Serrao <quic_eserrao@quicinc.com>,
-        Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
-        Roger Quadros <rogerq@kernel.org>
-Subject: [PATCH 5.15 26/89] usb: dwc3: Properly handle processing of pending events
+        syzbot+ae97a827ae1c3336bbb4@syzkaller.appspotmail.com,
+        Filipe Manana <fdmanana@suse.com>, Qu Wenruo <wqu@suse.com>,
+        David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.4 187/206] btrfs: reject invalid reloc tree root keys with stack dump
 Date:   Sun, 13 Aug 2023 23:19:17 +0200
-Message-ID: <20230813211711.534626555@linuxfoundation.org>
+Message-ID: <20230813211730.374396276@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211710.787645394@linuxfoundation.org>
-References: <20230813211710.787645394@linuxfoundation.org>
+In-Reply-To: <20230813211724.969019629@linuxfoundation.org>
+References: <20230813211724.969019629@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,56 +55,84 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Elson Roy Serrao <quic_eserrao@quicinc.com>
+From: Qu Wenruo <wqu@suse.com>
 
-commit 3ddaa6a274578e23745b7466346fc2650df8f959 upstream.
+commit 6ebcd021c92b8e4b904552e4d87283032100796d upstream.
 
-If dwc3 is runtime suspended we defer processing the event buffer
-until resume, by setting the pending_events flag. Set this flag before
-triggering resume to avoid race with the runtime resume callback.
+[BUG]
+Syzbot reported a crash that an ASSERT() got triggered inside
+prepare_to_merge().
 
-While handling the pending events, in addition to checking the event
-buffer we also need to process it. Handle this by explicitly calling
-dwc3_thread_interrupt(). Also balance the runtime pm get() operation
-that triggered this processing.
+That ASSERT() makes sure the reloc tree is properly pointed back by its
+subvolume tree.
 
-Cc: stable@vger.kernel.org
-Fixes: fc8bb91bc83e ("usb: dwc3: implement runtime PM")
-Signed-off-by: Elson Roy Serrao <quic_eserrao@quicinc.com>
-Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Reviewed-by: Roger Quadros <rogerq@kernel.org>
-Link: https://lore.kernel.org/r/20230801192658.19275-1-quic_eserrao@quicinc.com
+[CAUSE]
+After more debugging output, it turns out we had an invalid reloc tree:
+
+  BTRFS error (device loop1): reloc tree mismatch, root 8 has no reloc root, expect reloc root key (-8, 132, 8) gen 17
+
+Note the above root key is (TREE_RELOC_OBJECTID, ROOT_ITEM,
+QUOTA_TREE_OBJECTID), meaning it's a reloc tree for quota tree.
+
+But reloc trees can only exist for subvolumes, as for non-subvolume
+trees, we just COW the involved tree block, no need to create a reloc
+tree since those tree blocks won't be shared with other trees.
+
+Only subvolumes tree can share tree blocks with other trees (thus they
+have BTRFS_ROOT_SHAREABLE flag).
+
+Thus this new debug output proves my previous assumption that corrupted
+on-disk data can trigger that ASSERT().
+
+[FIX]
+Besides the dedicated fix and the graceful exit, also let tree-checker to
+check such root keys, to make sure reloc trees can only exist for subvolumes.
+
+CC: stable@vger.kernel.org # 5.15+
+Reported-by: syzbot+ae97a827ae1c3336bbb4@syzkaller.appspotmail.com
+Reviewed-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/dwc3/gadget.c |    9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ fs/btrfs/disk-io.c      |    3 ++-
+ fs/btrfs/tree-checker.c |   14 ++++++++++++++
+ 2 files changed, 16 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/dwc3/gadget.c
-+++ b/drivers/usb/dwc3/gadget.c
-@@ -4204,9 +4204,14 @@ static irqreturn_t dwc3_check_event_buf(
- 	u32 reg;
+--- a/fs/btrfs/disk-io.c
++++ b/fs/btrfs/disk-io.c
+@@ -1351,7 +1351,8 @@ static int btrfs_init_fs_root(struct btr
+ 	btrfs_drew_lock_init(&root->snapshot_lock);
  
- 	if (pm_runtime_suspended(dwc->dev)) {
-+		dwc->pending_events = true;
-+		/*
-+		 * Trigger runtime resume. The get() function will be balanced
-+		 * after processing the pending events in dwc3_process_pending
-+		 * events().
-+		 */
- 		pm_runtime_get(dwc->dev);
- 		disable_irq_nosync(dwc->irq_gadget);
--		dwc->pending_events = true;
- 		return IRQ_HANDLED;
+ 	if (root->root_key.objectid != BTRFS_TREE_LOG_OBJECTID &&
+-	    !btrfs_is_data_reloc_root(root)) {
++	    !btrfs_is_data_reloc_root(root) &&
++	    is_fstree(root->root_key.objectid)) {
+ 		set_bit(BTRFS_ROOT_SHAREABLE, &root->state);
+ 		btrfs_check_and_init_root_item(&root->root_item);
  	}
+--- a/fs/btrfs/tree-checker.c
++++ b/fs/btrfs/tree-checker.c
+@@ -446,6 +446,20 @@ static int check_root_key(struct extent_
+ 	btrfs_item_key_to_cpu(leaf, &item_key, slot);
+ 	is_root_item = (item_key.type == BTRFS_ROOT_ITEM_KEY);
  
-@@ -4470,6 +4475,8 @@ void dwc3_gadget_process_pending_events(
- {
- 	if (dwc->pending_events) {
- 		dwc3_interrupt(dwc->irq_gadget, dwc->ev_buf);
-+		dwc3_thread_interrupt(dwc->irq_gadget, dwc->ev_buf);
-+		pm_runtime_put(dwc->dev);
- 		dwc->pending_events = false;
- 		enable_irq(dwc->irq_gadget);
- 	}
++	/*
++	 * Bad rootid for reloc trees.
++	 *
++	 * Reloc trees are only for subvolume trees, other trees only need
++	 * to be COWed to be relocated.
++	 */
++	if (unlikely(is_root_item && key->objectid == BTRFS_TREE_RELOC_OBJECTID &&
++		     !is_fstree(key->offset))) {
++		generic_err(leaf, slot,
++		"invalid reloc tree for root %lld, root id is not a subvolume tree",
++			    key->offset);
++		return -EUCLEAN;
++	}
++
+ 	/* No such tree id */
+ 	if (unlikely(key->objectid == 0)) {
+ 		if (is_root_item)
 
 
