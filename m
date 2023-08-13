@@ -2,44 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 23A7E77AB5D
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:21:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6942A77AB96
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:23:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230186AbjHMVVL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:21:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33220 "EHLO
+        id S231357AbjHMVXb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:23:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47938 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230221AbjHMVVK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:21:10 -0400
+        with ESMTP id S231194AbjHMVXb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:23:31 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 108FC10DB
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:21:10 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7096810D7
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:23:33 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A2F3D626A4
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:21:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1008C433C8;
-        Sun, 13 Aug 2023 21:21:08 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0FA826289A
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:23:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B4B0C433C8;
+        Sun, 13 Aug 2023 21:23:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691961669;
-        bh=8IvPuOiceaZFMD8/pZoXlcfon2qftSs1zdjiPZGuSmk=;
+        s=korg; t=1691961812;
+        bh=H7h0f5LeBrAhA+/f34J6/IQQM3D60YE+sXZjRPww420=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=LXiCxMrmjSRwQc55U6g+WkIxla+oquX+snXekQGyxkQuXcdaIzRl0oIU8ktd4ku3j
-         J6NNsdcjz7ukU9uN6rs8DVbZxRLWdfuUqLJs++qCK8tP620ve9NcFXWoT3xYC9cCr4
-         eS+h5sq6VryR5FKZh/hcIB+X6H/a6nFLEQlUk/lw=
+        b=Zyh3NrIDvxd6T1D9U4g3rrvi/1CaDEbxhwMgqRVo9K4IrDZpGlt92o3WuSjU55FLZ
+         GRAr+Dt+uwXc9PWqY9TmmyX9fY1kkLAR5KIJ7iCWyCYJxx6cI98Dsb1gLXuo9nS3TX
+         e8xMb+mJ8itpjB+SrGZTxC2tr/ux7RNwZ50aXsNU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Andrew Kanner <andrew.kanner@gmail.com>,
+        patches@lists.linux.dev, kernel test robot <oliver.sang@intel.com>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Sami Tolvanen <samitolvanen@google.com>,
+        Kees Cook <keescook@chromium.org>,
         Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 4.14 17/26] drivers: net: prevent tun_build_skb() to exceed the packet size limit
+Subject: [PATCH 4.19 16/33] mISDN: Update parameter type of dsp_cmx_send()
 Date:   Sun, 13 Aug 2023 23:19:10 +0200
-Message-ID: <20230813211703.631274315@linuxfoundation.org>
+Message-ID: <20230813211704.514493817@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211702.980427106@linuxfoundation.org>
-References: <20230813211702.980427106@linuxfoundation.org>
+In-Reply-To: <20230813211703.915807095@linuxfoundation.org>
+References: <20230813211703.915807095@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,40 +56,75 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Andrew Kanner <andrew.kanner@gmail.com>
+From: Nathan Chancellor <nathan@kernel.org>
 
-commit 59eeb232940515590de513b997539ef495faca9a upstream.
+commit 1696ec8654016dad3b1baf6c024303e584400453 upstream.
 
-Using the syzkaller repro with reduced packet size it was discovered
-that XDP_PACKET_HEADROOM is not checked in tun_can_build_skb(),
-although pad may be incremented in tun_build_skb(). This may end up
-with exceeding the PAGE_SIZE limit in tun_build_skb().
+When booting a kernel with CONFIG_MISDN_DSP=y and CONFIG_CFI_CLANG=y,
+there is a failure when dsp_cmx_send() is called indirectly from
+call_timer_fn():
 
-Jason Wang <jasowang@redhat.com> proposed to count XDP_PACKET_HEADROOM
-always (e.g. without rcu_access_pointer(tun->xdp_prog)) in
-tun_can_build_skb() since there's a window during which XDP program
-might be attached between tun_can_build_skb() and tun_build_skb().
+  [    0.371412] CFI failure at call_timer_fn+0x2f/0x150 (target: dsp_cmx_send+0x0/0x530; expected type: 0x92ada1e9)
 
-Fixes: 7df13219d757 ("tun: reserve extra headroom only when XDP is set")
-Link: https://syzkaller.appspot.com/bug?extid=f817490f5bd20541b90a
-Signed-off-by: Andrew Kanner <andrew.kanner@gmail.com>
-Link: https://lore.kernel.org/r/20230803185947.2379988-1-andrew.kanner@gmail.com
+The function pointer prototype that call_timer_fn() expects is
+
+  void (*fn)(struct timer_list *)
+
+whereas dsp_cmx_send() has a parameter type of 'void *', which causes
+the control flow integrity checks to fail because the parameter types do
+not match.
+
+Change dsp_cmx_send()'s parameter type to be 'struct timer_list' to
+match the expected prototype. The argument is unused anyways, so this
+has no functional change, aside from avoiding the CFI failure.
+
+Reported-by: kernel test robot <oliver.sang@intel.com>
+Closes: https://lore.kernel.org/oe-lkp/202308020936.58787e6c-oliver.sang@intel.com
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Reviewed-by: Sami Tolvanen <samitolvanen@google.com>
+Reviewed-by: Kees Cook <keescook@chromium.org>
+Fixes: e313ac12eb13 ("mISDN: Convert timers to use timer_setup()")
+Link: https://lore.kernel.org/r/20230802-fix-dsp_cmx_send-cfi-failure-v1-1-2f2e79b0178d@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/tun.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/isdn/mISDN/dsp.h      |    2 +-
+ drivers/isdn/mISDN/dsp_cmx.c  |    2 +-
+ drivers/isdn/mISDN/dsp_core.c |    2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/net/tun.c
-+++ b/drivers/net/tun.c
-@@ -1275,7 +1275,7 @@ static bool tun_can_build_skb(struct tun
- 	if (zerocopy)
- 		return false;
+--- a/drivers/isdn/mISDN/dsp.h
++++ b/drivers/isdn/mISDN/dsp.h
+@@ -247,7 +247,7 @@ extern void dsp_cmx_hardware(struct dsp_
+ extern int dsp_cmx_conf(struct dsp *dsp, u32 conf_id);
+ extern void dsp_cmx_receive(struct dsp *dsp, struct sk_buff *skb);
+ extern void dsp_cmx_hdlc(struct dsp *dsp, struct sk_buff *skb);
+-extern void dsp_cmx_send(void *arg);
++extern void dsp_cmx_send(struct timer_list *arg);
+ extern void dsp_cmx_transmit(struct dsp *dsp, struct sk_buff *skb);
+ extern int dsp_cmx_del_conf_member(struct dsp *dsp);
+ extern int dsp_cmx_del_conf(struct dsp_conf *conf);
+--- a/drivers/isdn/mISDN/dsp_cmx.c
++++ b/drivers/isdn/mISDN/dsp_cmx.c
+@@ -1625,7 +1625,7 @@ static u16	dsp_count; /* last sample cou
+ static int	dsp_count_valid; /* if we have last sample count */
  
--	if (SKB_DATA_ALIGN(len + TUN_RX_PAD) +
-+	if (SKB_DATA_ALIGN(len + TUN_RX_PAD + XDP_PACKET_HEADROOM) +
- 	    SKB_DATA_ALIGN(sizeof(struct skb_shared_info)) > PAGE_SIZE)
- 		return false;
+ void
+-dsp_cmx_send(void *arg)
++dsp_cmx_send(struct timer_list *arg)
+ {
+ 	struct dsp_conf *conf;
+ 	struct dsp_conf_member *member;
+--- a/drivers/isdn/mISDN/dsp_core.c
++++ b/drivers/isdn/mISDN/dsp_core.c
+@@ -1202,7 +1202,7 @@ static int __init dsp_init(void)
+ 	}
  
+ 	/* set sample timer */
+-	timer_setup(&dsp_spl_tl, (void *)dsp_cmx_send, 0);
++	timer_setup(&dsp_spl_tl, dsp_cmx_send, 0);
+ 	dsp_spl_tl.expires = jiffies + dsp_tics;
+ 	dsp_spl_jiffies = dsp_spl_tl.expires;
+ 	add_timer(&dsp_spl_tl);
 
 
