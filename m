@@ -2,109 +2,97 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 455D977AB6B
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:21:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B185D77AD99
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:49:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230333AbjHMVVo (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:21:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41246 "EHLO
+        id S232525AbjHMVti (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:49:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36598 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229627AbjHMVVn (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:21:43 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 044AD10D0
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:21:46 -0700 (PDT)
+        with ESMTP id S231237AbjHMVtH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:49:07 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D8C74173D
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:40:22 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 97DFA627BD
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:21:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B14CFC433C7;
-        Sun, 13 Aug 2023 21:21:44 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B95CB60F71
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:40:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2D0DC433C7;
+        Sun, 13 Aug 2023 21:40:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691961705;
-        bh=/vy778I+Awk3J4osGPEOleSxsUAMIJ8ZAIcl4mrJOeM=;
+        s=korg; t=1691962822;
+        bh=EnlOqSZzYVL4gqDBVzyfLjHH9R2SKtoMEjbfxtC1vEs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=f3qLbunSW89EhW2Ee8xzs6ysIc6oEk/kHgWFJA/ftnjJWCwP7Y7S7rYbfdw3Bsqdo
-         +1TIJy3WXognAueB1ipMeGkbCrMyQ3dwkTkpBivBORWi/erwP7W8RBMQGiN0MGKIJV
-         PF0Pgr765cSDl8hmzE9zRdTsAYkMSSsR4lN62/kc=
+        b=Qlok4vK9rw//wB2peelBDb9dyVOEaDX10LTnOq/oz1n3x1splySI4HOLGdb4B9Sj3
+         WG9f95C8+WwkEFhYkRZSTGMm0P7JxlHc32Dg7XSIla0h0NU4QMVQc/H+uR/YrU7Ryg
+         AJv2X3j/RVuaHLsh9Ke7Ziae5TIMWbhYRX/KIXSQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Elson Roy Serrao <quic_eserrao@quicinc.com>,
-        Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
-        Roger Quadros <rogerq@kernel.org>
-Subject: [PATCH 4.14 10/26] usb: dwc3: Properly handle processing of pending events
+        patches@lists.linux.dev, Sergei Antonov <saproj@gmail.com>,
+        Jonas Jensen <jonas.jensen@gmail.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 5.10 02/68] mmc: moxart: read scr register without changing byte order
 Date:   Sun, 13 Aug 2023 23:19:03 +0200
-Message-ID: <20230813211703.382011333@linuxfoundation.org>
+Message-ID: <20230813211708.223822135@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211702.980427106@linuxfoundation.org>
-References: <20230813211702.980427106@linuxfoundation.org>
+In-Reply-To: <20230813211708.149630011@linuxfoundation.org>
+References: <20230813211708.149630011@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Elson Roy Serrao <quic_eserrao@quicinc.com>
+From: Sergei Antonov <saproj@gmail.com>
 
-commit 3ddaa6a274578e23745b7466346fc2650df8f959 upstream.
+commit d44263222134b5635932974c6177a5cba65a07e8 upstream.
 
-If dwc3 is runtime suspended we defer processing the event buffer
-until resume, by setting the pending_events flag. Set this flag before
-triggering resume to avoid race with the runtime resume callback.
+Conversion from big-endian to native is done in a common function
+mmc_app_send_scr(). Converting in moxart_transfer_pio() is extra.
+Double conversion on a LE system returns an incorrect SCR value,
+leads to errors:
 
-While handling the pending events, in addition to checking the event
-buffer we also need to process it. Handle this by explicitly calling
-dwc3_thread_interrupt(). Also balance the runtime pm get() operation
-that triggered this processing.
+mmc0: unrecognised SCR structure version 8
 
+Fixes: 1b66e94e6b99 ("mmc: moxart: Add MOXA ART SD/MMC driver")
+Signed-off-by: Sergei Antonov <saproj@gmail.com>
+Cc: Jonas Jensen <jonas.jensen@gmail.com>
 Cc: stable@vger.kernel.org
-Fixes: fc8bb91bc83e ("usb: dwc3: implement runtime PM")
-Signed-off-by: Elson Roy Serrao <quic_eserrao@quicinc.com>
-Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Reviewed-by: Roger Quadros <rogerq@kernel.org>
-Link: https://lore.kernel.org/r/20230801192658.19275-1-quic_eserrao@quicinc.com
+Link: https://lore.kernel.org/r/20230627120549.2400325-1-saproj@gmail.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/dwc3/gadget.c |    9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/mmc/host/moxart-mmc.c |    8 +-------
+ 1 file changed, 1 insertion(+), 7 deletions(-)
 
---- a/drivers/usb/dwc3/gadget.c
-+++ b/drivers/usb/dwc3/gadget.c
-@@ -3172,9 +3172,14 @@ static irqreturn_t dwc3_check_event_buf(
- 	u32 reg;
- 
- 	if (pm_runtime_suspended(dwc->dev)) {
-+		dwc->pending_events = true;
-+		/*
-+		 * Trigger runtime resume. The get() function will be balanced
-+		 * after processing the pending events in dwc3_process_pending
-+		 * events().
-+		 */
- 		pm_runtime_get(dwc->dev);
- 		disable_irq_nosync(dwc->irq_gadget);
--		dwc->pending_events = true;
- 		return IRQ_HANDLED;
- 	}
- 
-@@ -3414,6 +3419,8 @@ void dwc3_gadget_process_pending_events(
- {
- 	if (dwc->pending_events) {
- 		dwc3_interrupt(dwc->irq_gadget, dwc->ev_buf);
-+		dwc3_thread_interrupt(dwc->irq_gadget, dwc->ev_buf);
-+		pm_runtime_put(dwc->dev);
- 		dwc->pending_events = false;
- 		enable_irq(dwc->irq_gadget);
- 	}
+--- a/drivers/mmc/host/moxart-mmc.c
++++ b/drivers/mmc/host/moxart-mmc.c
+@@ -339,13 +339,7 @@ static void moxart_transfer_pio(struct m
+ 				return;
+ 			}
+ 			for (len = 0; len < remain && len < host->fifo_width;) {
+-				/* SCR data must be read in big endian. */
+-				if (data->mrq->cmd->opcode == SD_APP_SEND_SCR)
+-					*sgp = ioread32be(host->base +
+-							  REG_DATA_WINDOW);
+-				else
+-					*sgp = ioread32(host->base +
+-							REG_DATA_WINDOW);
++				*sgp = ioread32(host->base + REG_DATA_WINDOW);
+ 				sgp++;
+ 				len += 4;
+ 			}
 
 
