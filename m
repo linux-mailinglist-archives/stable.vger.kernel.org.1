@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 571EE77AC32
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:30:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9803377ACA6
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:35:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231869AbjHMVaY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:30:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40108 "EHLO
+        id S232105AbjHMVf3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:35:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50004 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231866AbjHMVaX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:30:23 -0400
+        with ESMTP id S232096AbjHMVf2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:35:28 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6717E10DB
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:30:25 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC74B10DB
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:35:30 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id F16AA61653
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:30:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 120FAC433C7;
-        Sun, 13 Aug 2023 21:30:23 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 40A4761E35
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:35:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52376C433C7;
+        Sun, 13 Aug 2023 21:35:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691962224;
-        bh=ZIEubNXA9Nc6PvnKOyDsgSPV99TV7/hXp7Vt9fF1+iI=;
+        s=korg; t=1691962529;
+        bh=o5YfiK6t4S8NtYPXrKKLgoKUEkE1Prvv03srNdyjNYI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Mvuo0PYus7AHHEwyG79Cle8RdH7b7C04dhI6Klfhyy55xa78/MDEypbDA2Vsd2TmZ
-         D79UlE2gyPU+WcBFEpKPjrdVnZnjHg52/xDzOgIR+ZRO/TnLbxu+CghjpIXFHaBcz2
-         TLI7+dzH5/K8pjWR9OC8XagtpnMe1kQLbu1nTI6s=
+        b=rzTMLnsm4tGHvbJFkzLBwicv7+koDUnSIFa3B4benEweLAMXaKmsJqD8Wh/q2tao3
+         3NiZRNADDVbBXqs9UX0LX7uVn3Lt9O9apmE3JIT9qHQC+PVj94C9L+sR/jumknbDFe
+         VKcU5ieQeKKq5DDznRWXSqgRVaCEqJfefGtpZYkw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, syzbot <syzkaller@googlegroups.com>,
-        Eric Dumazet <edumazet@google.com>,
-        Willem de Bruijn <willemb@google.com>,
-        Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.4 130/206] net/packet: annotate data-races around tp->status
+        patches@lists.linux.dev,
+        =?UTF-8?q?Alvin=20=C5=A0ipraga?= <alsi@bang-olufsen.dk>,
+        Stable@vger.kernel.org,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.1 055/149] iio: adc: ina2xx: avoid NULL pointer dereference on OF device match
 Date:   Sun, 13 Aug 2023 23:18:20 +0200
-Message-ID: <20230813211728.746250223@linuxfoundation.org>
+Message-ID: <20230813211720.458888285@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211724.969019629@linuxfoundation.org>
-References: <20230813211724.969019629@linuxfoundation.org>
+In-Reply-To: <20230813211718.757428827@linuxfoundation.org>
+References: <20230813211718.757428827@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,125 +56,92 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Eric Dumazet <edumazet@google.com>
+From: Alvin Šipraga <alsi@bang-olufsen.dk>
 
-commit 8a9896177784063d01068293caea3f74f6830ff6 upstream.
+commit a41e19cc0d6b6a445a4133170b90271e4a2553dc upstream.
 
-Another syzbot report [1] is about tp->status lockless reads
-from __packet_get_status()
+The affected lines were resulting in a NULL pointer dereference on our
+platform because the device tree contained the following list of
+compatible strings:
 
-[1]
-BUG: KCSAN: data-race in __packet_rcv_has_room / __packet_set_status
+    power-sensor@40 {
+        compatible = "ti,ina232", "ti,ina231";
+        ...
+    };
 
-write to 0xffff888117d7c080 of 8 bytes by interrupt on cpu 0:
-__packet_set_status+0x78/0xa0 net/packet/af_packet.c:407
-tpacket_rcv+0x18bb/0x1a60 net/packet/af_packet.c:2483
-deliver_skb net/core/dev.c:2173 [inline]
-__netif_receive_skb_core+0x408/0x1e80 net/core/dev.c:5337
-__netif_receive_skb_one_core net/core/dev.c:5491 [inline]
-__netif_receive_skb+0x57/0x1b0 net/core/dev.c:5607
-process_backlog+0x21f/0x380 net/core/dev.c:5935
-__napi_poll+0x60/0x3b0 net/core/dev.c:6498
-napi_poll net/core/dev.c:6565 [inline]
-net_rx_action+0x32b/0x750 net/core/dev.c:6698
-__do_softirq+0xc1/0x265 kernel/softirq.c:571
-invoke_softirq kernel/softirq.c:445 [inline]
-__irq_exit_rcu+0x57/0xa0 kernel/softirq.c:650
-sysvec_apic_timer_interrupt+0x6d/0x80 arch/x86/kernel/apic/apic.c:1106
-asm_sysvec_apic_timer_interrupt+0x1a/0x20 arch/x86/include/asm/idtentry.h:645
-smpboot_thread_fn+0x33c/0x4a0 kernel/smpboot.c:112
-kthread+0x1d7/0x210 kernel/kthread.c:379
-ret_from_fork+0x1f/0x30 arch/x86/entry/entry_64.S:308
+Since the driver doesn't declare a compatible string "ti,ina232", the OF
+matching succeeds on "ti,ina231". But the I2C device ID info is
+populated via the first compatible string, cf. modalias population in
+of_i2c_get_board_info(). Since there is no "ina232" entry in the legacy
+I2C device ID table either, the struct i2c_device_id *id pointer in the
+probe function is NULL.
 
-read to 0xffff888117d7c080 of 8 bytes by interrupt on cpu 1:
-__packet_get_status net/packet/af_packet.c:436 [inline]
-packet_lookup_frame net/packet/af_packet.c:524 [inline]
-__tpacket_has_room net/packet/af_packet.c:1255 [inline]
-__packet_rcv_has_room+0x3f9/0x450 net/packet/af_packet.c:1298
-tpacket_rcv+0x275/0x1a60 net/packet/af_packet.c:2285
-deliver_skb net/core/dev.c:2173 [inline]
-dev_queue_xmit_nit+0x38a/0x5e0 net/core/dev.c:2243
-xmit_one net/core/dev.c:3574 [inline]
-dev_hard_start_xmit+0xcf/0x3f0 net/core/dev.c:3594
-__dev_queue_xmit+0xefb/0x1d10 net/core/dev.c:4244
-dev_queue_xmit include/linux/netdevice.h:3088 [inline]
-can_send+0x4eb/0x5d0 net/can/af_can.c:276
-bcm_can_tx+0x314/0x410 net/can/bcm.c:302
-bcm_tx_timeout_handler+0xdb/0x260
-__run_hrtimer kernel/time/hrtimer.c:1685 [inline]
-__hrtimer_run_queues+0x217/0x700 kernel/time/hrtimer.c:1749
-hrtimer_run_softirq+0xd6/0x120 kernel/time/hrtimer.c:1766
-__do_softirq+0xc1/0x265 kernel/softirq.c:571
-run_ksoftirqd+0x17/0x20 kernel/softirq.c:939
-smpboot_thread_fn+0x30a/0x4a0 kernel/smpboot.c:164
-kthread+0x1d7/0x210 kernel/kthread.c:379
-ret_from_fork+0x1f/0x30 arch/x86/entry/entry_64.S:308
+Fix this by using the already populated type variable instead, which
+points to the proper driver data. Since the name is also wanted, add a
+generic one to the ina2xx_config table.
 
-value changed: 0x0000000000000000 -> 0x0000000020000081
-
-Reported by Kernel Concurrency Sanitizer on:
-CPU: 1 PID: 19 Comm: ksoftirqd/1 Not tainted 6.4.0-syzkaller #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 05/27/2023
-
-Fixes: 69e3c75f4d54 ("net: TX_RING and packet mmap")
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Link: https://lore.kernel.org/r/20230803145600.2937518-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Alvin Šipraga <alsi@bang-olufsen.dk>
+Fixes: c43a102e67db ("iio: ina2xx: add support for TI INA2xx Power Monitors")
+Link: https://lore.kernel.org/r/20230619141239.2257392-1-alvin@pqrs.dk
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/packet/af_packet.c |   16 ++++++++++------
- 1 file changed, 10 insertions(+), 6 deletions(-)
+ drivers/iio/adc/ina2xx-adc.c |    9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
---- a/net/packet/af_packet.c
-+++ b/net/packet/af_packet.c
-@@ -401,18 +401,20 @@ static void __packet_set_status(struct p
- {
- 	union tpacket_uhdr h;
+--- a/drivers/iio/adc/ina2xx-adc.c
++++ b/drivers/iio/adc/ina2xx-adc.c
+@@ -124,6 +124,7 @@ static const struct regmap_config ina2xx
+ enum ina2xx_ids { ina219, ina226 };
  
-+	/* WRITE_ONCE() are paired with READ_ONCE() in __packet_get_status */
-+
- 	h.raw = frame;
- 	switch (po->tp_version) {
- 	case TPACKET_V1:
--		h.h1->tp_status = status;
-+		WRITE_ONCE(h.h1->tp_status, status);
- 		flush_dcache_page(pgv_to_page(&h.h1->tp_status));
- 		break;
- 	case TPACKET_V2:
--		h.h2->tp_status = status;
-+		WRITE_ONCE(h.h2->tp_status, status);
- 		flush_dcache_page(pgv_to_page(&h.h2->tp_status));
- 		break;
- 	case TPACKET_V3:
--		h.h3->tp_status = status;
-+		WRITE_ONCE(h.h3->tp_status, status);
- 		flush_dcache_page(pgv_to_page(&h.h3->tp_status));
- 		break;
- 	default:
-@@ -429,17 +431,19 @@ static int __packet_get_status(const str
+ struct ina2xx_config {
++	const char *name;
+ 	u16 config_default;
+ 	int calibration_value;
+ 	int shunt_voltage_lsb;	/* nV */
+@@ -155,6 +156,7 @@ struct ina2xx_chip_info {
  
- 	smp_rmb();
+ static const struct ina2xx_config ina2xx_config[] = {
+ 	[ina219] = {
++		.name = "ina219",
+ 		.config_default = INA219_CONFIG_DEFAULT,
+ 		.calibration_value = 4096,
+ 		.shunt_voltage_lsb = 10000,
+@@ -164,6 +166,7 @@ static const struct ina2xx_config ina2xx
+ 		.chip_id = ina219,
+ 	},
+ 	[ina226] = {
++		.name = "ina226",
+ 		.config_default = INA226_CONFIG_DEFAULT,
+ 		.calibration_value = 2048,
+ 		.shunt_voltage_lsb = 2500,
+@@ -996,7 +999,7 @@ static int ina2xx_probe(struct i2c_clien
+ 	/* Patch the current config register with default. */
+ 	val = chip->config->config_default;
  
-+	/* READ_ONCE() are paired with WRITE_ONCE() in __packet_set_status */
-+
- 	h.raw = frame;
- 	switch (po->tp_version) {
- 	case TPACKET_V1:
- 		flush_dcache_page(pgv_to_page(&h.h1->tp_status));
--		return h.h1->tp_status;
-+		return READ_ONCE(h.h1->tp_status);
- 	case TPACKET_V2:
- 		flush_dcache_page(pgv_to_page(&h.h2->tp_status));
--		return h.h2->tp_status;
-+		return READ_ONCE(h.h2->tp_status);
- 	case TPACKET_V3:
- 		flush_dcache_page(pgv_to_page(&h.h3->tp_status));
--		return h.h3->tp_status;
-+		return READ_ONCE(h.h3->tp_status);
- 	default:
- 		WARN(1, "TPACKET version not supported.\n");
- 		BUG();
+-	if (id->driver_data == ina226) {
++	if (type == ina226) {
+ 		ina226_set_average(chip, INA226_DEFAULT_AVG, &val);
+ 		ina226_set_int_time_vbus(chip, INA226_DEFAULT_IT, &val);
+ 		ina226_set_int_time_vshunt(chip, INA226_DEFAULT_IT, &val);
+@@ -1015,7 +1018,7 @@ static int ina2xx_probe(struct i2c_clien
+ 	}
+ 
+ 	indio_dev->modes = INDIO_DIRECT_MODE;
+-	if (id->driver_data == ina226) {
++	if (type == ina226) {
+ 		indio_dev->channels = ina226_channels;
+ 		indio_dev->num_channels = ARRAY_SIZE(ina226_channels);
+ 		indio_dev->info = &ina226_info;
+@@ -1024,7 +1027,7 @@ static int ina2xx_probe(struct i2c_clien
+ 		indio_dev->num_channels = ARRAY_SIZE(ina219_channels);
+ 		indio_dev->info = &ina219_info;
+ 	}
+-	indio_dev->name = id->name;
++	indio_dev->name = id ? id->name : chip->config->name;
+ 
+ 	ret = devm_iio_kfifo_buffer_setup(&client->dev, indio_dev,
+ 					  &ina2xx_setup_ops);
 
 
