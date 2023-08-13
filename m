@@ -2,44 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F325C77AB8F
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:23:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4156877AD58
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:49:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231284AbjHMVXS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:23:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59162 "EHLO
+        id S229758AbjHMVtL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:49:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41306 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231194AbjHMVXR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:23:17 -0400
+        with ESMTP id S229943AbjHMVsu (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:48:50 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 21FC3E5
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:23:17 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C0F11720
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:40:03 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id AB6E862877
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:23:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C30B4C433C8;
-        Sun, 13 Aug 2023 21:23:15 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0E6CB6131F
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:40:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C83FC433C7;
+        Sun, 13 Aug 2023 21:40:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691961796;
-        bh=dweOYsRs+//ZcppptIzg709UfMwlBoNrKGtxrz06rFU=;
+        s=korg; t=1691962802;
+        bh=Zy8BM5nQ9z6OQ6GJS8rjUhptOxwEu1298/w69jkEYY4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=R9YIki5E9UoNeVKn3ykqqLRMcJMC4R/T9m9gwzI1O61Z8J9h7puK5FmMKVEBw7lEE
-         PN4PjKlNGayY7sAYmtQ2uFCgvr5n1BUtZP+I39Biph9VjOE6ezqPbv0HXoluPLhM7e
-         hZWbA7T5D2bQwZP0cn0thupVXb3vuAMnCRVhIaVI=
+        b=1IIKTpYBe1mJ6N5UOTexbPRw+QV0RuTjo+KYWx0QTzEcPqhjNW3IwzxmNz4ru336k
+         N4UrCDU7eeRdgL/nHEEVL++UyKQJ5AtdIU0SIhRVHYZIjGYEUqktyKFFilOtI6QRpf
+         yXnXd0oIWJ3VG4ziZ861fVLIjvQrO7PArs0zMy5s=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Andrew Kanner <andrew.kanner@gmail.com>,
-        Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 4.19 20/33] drivers: net: prevent tun_build_skb() to exceed the packet size limit
+        patches@lists.linux.dev, Daniel Vetter <daniel.vetter@ffwll.ch>,
+        Roman Stratiienko <r.stratiienko@gmail.com>,
+        Boris Brezillon <boris.brezillon@collabora.com>,
+        Thomas Zimmermann <tzimmermann@suse.de>
+Subject: [PATCH 5.10 13/68] drm/shmem-helper: Reset vma->vm_ops before calling dma_buf_mmap()
 Date:   Sun, 13 Aug 2023 23:19:14 +0200
-Message-ID: <20230813211704.673568641@linuxfoundation.org>
+Message-ID: <20230813211708.560867144@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211703.915807095@linuxfoundation.org>
-References: <20230813211703.915807095@linuxfoundation.org>
+In-Reply-To: <20230813211708.149630011@linuxfoundation.org>
+References: <20230813211708.149630011@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,40 +56,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Andrew Kanner <andrew.kanner@gmail.com>
+From: Boris Brezillon <boris.brezillon@collabora.com>
 
-commit 59eeb232940515590de513b997539ef495faca9a upstream.
+commit 07dd476f6116966cb2006e25fdcf48f0715115ff upstream.
 
-Using the syzkaller repro with reduced packet size it was discovered
-that XDP_PACKET_HEADROOM is not checked in tun_can_build_skb(),
-although pad may be incremented in tun_build_skb(). This may end up
-with exceeding the PAGE_SIZE limit in tun_build_skb().
+The dma-buf backend is supposed to provide its own vm_ops, but some
+implementation just have nothing special to do and leave vm_ops
+untouched, probably expecting this field to be zero initialized (this
+is the case with the system_heap implementation for instance).
+Let's reset vma->vm_ops to NULL to keep things working with these
+implementations.
 
-Jason Wang <jasowang@redhat.com> proposed to count XDP_PACKET_HEADROOM
-always (e.g. without rcu_access_pointer(tun->xdp_prog)) in
-tun_can_build_skb() since there's a window during which XDP program
-might be attached between tun_can_build_skb() and tun_build_skb().
-
-Fixes: 7df13219d757 ("tun: reserve extra headroom only when XDP is set")
-Link: https://syzkaller.appspot.com/bug?extid=f817490f5bd20541b90a
-Signed-off-by: Andrew Kanner <andrew.kanner@gmail.com>
-Link: https://lore.kernel.org/r/20230803185947.2379988-1-andrew.kanner@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 26d3ac3cb04d ("drm/shmem-helpers: Redirect mmap for imported dma-buf")
+Cc: <stable@vger.kernel.org>
+Cc: Daniel Vetter <daniel.vetter@ffwll.ch>
+Reported-by: Roman Stratiienko <r.stratiienko@gmail.com>
+Signed-off-by: Boris Brezillon <boris.brezillon@collabora.com>
+Tested-by: Roman Stratiienko <r.stratiienko@gmail.com>
+Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230724112610.60974-1-boris.brezillon@collabora.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/tun.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/drm_gem_shmem_helper.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/drivers/net/tun.c
-+++ b/drivers/net/tun.c
-@@ -1654,7 +1654,7 @@ static bool tun_can_build_skb(struct tun
- 	if (zerocopy)
- 		return false;
+--- a/drivers/gpu/drm/drm_gem_shmem_helper.c
++++ b/drivers/gpu/drm/drm_gem_shmem_helper.c
+@@ -614,7 +614,13 @@ int drm_gem_shmem_mmap(struct drm_gem_ob
+ 	int ret;
  
--	if (SKB_DATA_ALIGN(len + TUN_RX_PAD) +
-+	if (SKB_DATA_ALIGN(len + TUN_RX_PAD + XDP_PACKET_HEADROOM) +
- 	    SKB_DATA_ALIGN(sizeof(struct skb_shared_info)) > PAGE_SIZE)
- 		return false;
+ 	if (obj->import_attach) {
++		/* Reset both vm_ops and vm_private_data, so we don't end up with
++		 * vm_ops pointing to our implementation if the dma-buf backend
++		 * doesn't set those fields.
++		 */
+ 		vma->vm_private_data = NULL;
++		vma->vm_ops = NULL;
++
+ 		ret = dma_buf_mmap(obj->dma_buf, vma, 0);
  
+ 		/* Drop the reference drm_gem_mmap_obj() acquired.*/
 
 
