@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 86F5577AD5F
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:49:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CC4E777AE12
+	for <lists+stable@lfdr.de>; Mon, 14 Aug 2023 00:00:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232353AbjHMVtE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:49:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57436 "EHLO
+        id S231760AbjHMWAT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 18:00:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54000 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232284AbjHMVs0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:48:26 -0400
+        with ESMTP id S231352AbjHMV7K (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:59:10 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 42DAE1998
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:40:48 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 458062120
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:43:27 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CD56261A2D
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:40:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E523CC433C8;
-        Sun, 13 Aug 2023 21:40:46 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B825160F71
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:43:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA575C433C8;
+        Sun, 13 Aug 2023 21:43:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691962847;
-        bh=2KHo8ZDPZptaWdHEeaJAxd8pJNMcP/wkqvK1SWdiJqw=;
+        s=korg; t=1691963006;
+        bh=QFDV2gQ2n1Pe8hS4T4nt/aZzlC++AjpDfPZYYhDN4rs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=0+HWEd4K2EXe9lzuEaLiiFRLwS9JTeDjHz1AjmubsIQJTVC6bM5ZUwL/fOaWVhmyB
-         yUyIiP7oHJT5GFioTmOU37wWQCk4xqda6J48woMtgxkgxhwkol9LBzpPUZAscazqWU
-         eoPjIoRzjG6Cpe8vrE0anCFpiEGNLv55fyyVHdT8=
+        b=RBel2pt9NwVZRw10PJFDVa+Z4uZfhxWWrFSSBx1GgY5KGx/HMCIV60YIDDBiUwI77
+         wA+1i5R/kY9LJOOq3bc2aTtEZ/sRN5bP2bu3hQZdS40fWgSPOOOMAKAFNc6Vv5QFbt
+         AXGjxxjXSMBEEU5mdEAuaR8lsDa2kkUEF72HjyCo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev, Ilya Leoshkevich <iii@linux.ibm.com>,
         Alexei Starovoitov <ast@kernel.org>,
-        Pu Lehui <pulehui@huawei.com>,
-        Luiz Capitulino <luizcap@amazon.com>
-Subject: [PATCH 5.10 09/68] selftests/bpf: Fix sk_assign on s390x
+        Pu Lehui <pulehui@huawei.com>
+Subject: [PATCH 5.15 19/89] selftests/bpf: Fix sk_assign on s390x
 Date:   Sun, 13 Aug 2023 23:19:10 +0200
-Message-ID: <20230813211708.440547112@linuxfoundation.org>
+Message-ID: <20230813211711.339405466@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211708.149630011@linuxfoundation.org>
-References: <20230813211708.149630011@linuxfoundation.org>
+In-Reply-To: <20230813211710.787645394@linuxfoundation.org>
+References: <20230813211710.787645394@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -76,7 +75,6 @@ Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
 Link: https://lore.kernel.org/r/20230129190501.1624747-2-iii@linux.ibm.com
 Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Pu Lehui <pulehui@huawei.com>
-Tested-by: Luiz Capitulino <luizcap@amazon.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
  tools/testing/selftests/bpf/prog_tests/sk_assign.c        |   25 ++++++++++----
