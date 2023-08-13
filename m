@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5621C77AB69
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:21:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EBC2277AB7E
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:22:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230299AbjHMVVj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:21:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41156 "EHLO
+        id S230417AbjHMVWn (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:22:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42516 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229627AbjHMVVi (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:21:38 -0400
+        with ESMTP id S230443AbjHMVWe (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:22:34 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF9CB10D0
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:21:40 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C1B0E10D0
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:22:36 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6E5D3627B9
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:21:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59780C433C7;
-        Sun, 13 Aug 2023 21:21:39 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 607B4627DE
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:22:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79343C433C9;
+        Sun, 13 Aug 2023 21:22:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691961699;
-        bh=0AMdvi2yKg9TaoT5QvER/EDpE0FTF7lzsOVJd4Y4lHc=;
+        s=korg; t=1691961755;
+        bh=QCfH0S68Ge1SvrMquQpvVo16hGhCks9mIgeD6mssEXc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Hj7sOY8irHDjF3o1+RyKzx9oJ01GUrl2BS2/pt2IJ78QeeCxhk3p11Bdmn3LbD2Sq
-         sbDZ36MiMaKzcL90IpNx8iZ6eDEJ/Oh2D+T3JzZ5qmKV4+urq3xuAwixpbKXGnLxl0
-         VRVpIcYOmTZBCg0olGU7IPj/ssQVcJDL3hGLWD+I=
+        b=Zp2LOwPUH83vaG2GYQI+PjExIT3IE1Ga5dR2XTpbiGNZCXQRptWon6AotStsa4PuQ
+         kImKNt9SjPiud2h+0Eq/99h3B9cJ5sMtGuZN5vRyiw25EYUgHbf6Pq+8b3x3UXPQcF
+         YUvHDEkUBQ7DQpKdz6lb4QN2Kvk6IpLlWzUwwouc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Tzung-Bi Shih <tzungbi@kernel.org>,
-        Yiyuan Guo <yguoaz@gmail.com>, Stable@vger.kerenl.org,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 4.14 08/26] iio: cros_ec: Fix the allocation size for cros_ec_command
+        patches@lists.linux.dev,
+        Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+        syzbot+74db8b3087f293d3a13a@syzkaller.appspotmail.com,
+        Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 4.19 07/33] nilfs2: fix use-after-free of nilfs_root in dirtying inodes via iput
 Date:   Sun, 13 Aug 2023 23:19:01 +0200
-Message-ID: <20230813211703.300724861@linuxfoundation.org>
+Message-ID: <20230813211704.201214397@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211702.980427106@linuxfoundation.org>
-References: <20230813211702.980427106@linuxfoundation.org>
+In-Reply-To: <20230813211703.915807095@linuxfoundation.org>
+References: <20230813211703.915807095@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,35 +55,120 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Yiyuan Guo <yguoaz@gmail.com>
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-commit 8a4629055ef55177b5b63dab1ecce676bd8cccdd upstream.
+commit f8654743a0e6909dc634cbfad6db6816f10f3399 upstream.
 
-The struct cros_ec_command contains several integer fields and a
-trailing array. An allocation size neglecting the integer fields can
-lead to buffer overrun.
+During unmount process of nilfs2, nothing holds nilfs_root structure after
+nilfs2 detaches its writer in nilfs_detach_log_writer().  Previously,
+nilfs_evict_inode() could cause use-after-free read for nilfs_root if
+inodes are left in "garbage_list" and released by nilfs_dispose_list at
+the end of nilfs_detach_log_writer(), and this bug was fixed by commit
+9b5a04ac3ad9 ("nilfs2: fix use-after-free bug of nilfs_root in
+nilfs_evict_inode()").
 
-Reviewed-by: Tzung-Bi Shih <tzungbi@kernel.org>
-Signed-off-by: Yiyuan Guo <yguoaz@gmail.com>
-Fixes: 974e6f02e27e ("iio: cros_ec_sensors_core: Add common functions for the ChromeOS EC Sensor Hub.")
-Link: https://lore.kernel.org/r/20230630143719.1513906-1-yguoaz@gmail.com
-Cc: <Stable@vger.kerenl.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+However, it turned out that there is another possibility of UAF in the
+call path where mark_inode_dirty_sync() is called from iput():
+
+nilfs_detach_log_writer()
+  nilfs_dispose_list()
+    iput()
+      mark_inode_dirty_sync()
+        __mark_inode_dirty()
+          nilfs_dirty_inode()
+            __nilfs_mark_inode_dirty()
+              nilfs_load_inode_block() --> causes UAF of nilfs_root struct
+
+This can happen after commit 0ae45f63d4ef ("vfs: add support for a
+lazytime mount option"), which changed iput() to call
+mark_inode_dirty_sync() on its final reference if i_state has I_DIRTY_TIME
+flag and i_nlink is non-zero.
+
+This issue appears after commit 28a65b49eb53 ("nilfs2: do not write dirty
+data after degenerating to read-only") when using the syzbot reproducer,
+but the issue has potentially existed before.
+
+Fix this issue by adding a "purging flag" to the nilfs structure, setting
+that flag while disposing the "garbage_list" and checking it in
+__nilfs_mark_inode_dirty().
+
+Unlike commit 9b5a04ac3ad9 ("nilfs2: fix use-after-free bug of nilfs_root
+in nilfs_evict_inode()"), this patch does not rely on ns_writer to
+determine whether to skip operations, so as not to break recovery on
+mount.  The nilfs_salvage_orphan_logs routine dirties the buffer of
+salvaged data before attaching the log writer, so changing
+__nilfs_mark_inode_dirty() to skip the operation when ns_writer is NULL
+will cause recovery write to fail.  The purpose of using the cleanup-only
+flag is to allow for narrowing of such conditions.
+
+Link: https://lkml.kernel.org/r/20230728191318.33047-1-konishi.ryusuke@gmail.com
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Reported-by: syzbot+74db8b3087f293d3a13a@syzkaller.appspotmail.com
+Closes: https://lkml.kernel.org/r/000000000000b4e906060113fd63@google.com
+Fixes: 0ae45f63d4ef ("vfs: add support for a lazytime mount option")
+Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Cc: <stable@vger.kernel.org> # 4.0+
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/nilfs2/inode.c     |    8 ++++++++
+ fs/nilfs2/segment.c   |    2 ++
+ fs/nilfs2/the_nilfs.h |    2 ++
+ 3 files changed, 12 insertions(+)
 
---- a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
-+++ b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
-@@ -47,7 +47,7 @@ int cros_ec_sensors_core_init(struct pla
- 	platform_set_drvdata(pdev, indio_dev);
+--- a/fs/nilfs2/inode.c
++++ b/fs/nilfs2/inode.c
+@@ -1112,9 +1112,17 @@ int nilfs_set_file_dirty(struct inode *i
  
- 	state->ec = ec->ec_dev;
--	state->msg = devm_kzalloc(&pdev->dev,
-+	state->msg = devm_kzalloc(&pdev->dev, sizeof(*state->msg) +
- 				max((u16)sizeof(struct ec_params_motion_sense),
- 				state->ec->max_response), GFP_KERNEL);
- 	if (!state->msg)
+ int __nilfs_mark_inode_dirty(struct inode *inode, int flags)
+ {
++	struct the_nilfs *nilfs = inode->i_sb->s_fs_info;
+ 	struct buffer_head *ibh;
+ 	int err;
+ 
++	/*
++	 * Do not dirty inodes after the log writer has been detached
++	 * and its nilfs_root struct has been freed.
++	 */
++	if (unlikely(nilfs_purging(nilfs)))
++		return 0;
++
+ 	err = nilfs_load_inode_block(inode, &ibh);
+ 	if (unlikely(err)) {
+ 		nilfs_msg(inode->i_sb, KERN_WARNING,
+--- a/fs/nilfs2/segment.c
++++ b/fs/nilfs2/segment.c
+@@ -2845,6 +2845,7 @@ void nilfs_detach_log_writer(struct supe
+ 		nilfs_segctor_destroy(nilfs->ns_writer);
+ 		nilfs->ns_writer = NULL;
+ 	}
++	set_nilfs_purging(nilfs);
+ 
+ 	/* Force to free the list of dirty files */
+ 	spin_lock(&nilfs->ns_inode_lock);
+@@ -2857,4 +2858,5 @@ void nilfs_detach_log_writer(struct supe
+ 	up_write(&nilfs->ns_segctor_sem);
+ 
+ 	nilfs_dispose_list(nilfs, &garbage_list, 1);
++	clear_nilfs_purging(nilfs);
+ }
+--- a/fs/nilfs2/the_nilfs.h
++++ b/fs/nilfs2/the_nilfs.h
+@@ -29,6 +29,7 @@ enum {
+ 	THE_NILFS_DISCONTINUED,	/* 'next' pointer chain has broken */
+ 	THE_NILFS_GC_RUNNING,	/* gc process is running */
+ 	THE_NILFS_SB_DIRTY,	/* super block is dirty */
++	THE_NILFS_PURGING,	/* disposing dirty files for cleanup */
+ };
+ 
+ /**
+@@ -208,6 +209,7 @@ THE_NILFS_FNS(INIT, init)
+ THE_NILFS_FNS(DISCONTINUED, discontinued)
+ THE_NILFS_FNS(GC_RUNNING, gc_running)
+ THE_NILFS_FNS(SB_DIRTY, sb_dirty)
++THE_NILFS_FNS(PURGING, purging)
+ 
+ /*
+  * Mount option operations
 
 
