@@ -2,56 +2,56 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9502C77A6EE
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 16:31:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0197B77A6EF
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 16:31:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229862AbjHMObI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 10:31:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42226 "EHLO
+        id S229766AbjHMObu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 10:31:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41810 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229506AbjHMObI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 10:31:08 -0400
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8DE2D1707
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 07:31:10 -0700 (PDT)
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-3fe8d816a40so3430325e9.1
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 07:31:10 -0700 (PDT)
+        with ESMTP id S229506AbjHMObu (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 10:31:50 -0400
+Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 82FC910FC
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 07:31:52 -0700 (PDT)
+Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-99bd67facffso81106866b.0
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 07:31:52 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691937068; x=1692541868;
+        d=1e100.net; s=20221208; t=1691937110; x=1692541910;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
         bh=tUuuKbL8ydFNPda8N4HOTsW5STdP9ERZYuHURXlNIxg=;
-        b=YWt+FutshAUEZMJwmXm+H4CQPe7Zwja+q3ydbUg2zTlgp3EgRz6VVLlZxfzk2QrAvT
-         z/eM/xDulkkxpXVHqrIbrV+lu9oTzpeOdZ7R/ai4W7FdQEYnGEIi6ariiYLBV02D4mzM
-         1NL+Rmyijo8YAU2E4RY2ubT6z1nXmWA6A1VifuNGBp3q5EHp+WPbuEFf5lNVkoZrFSgw
-         CMZ7Zke7sDcrlTA93+d5yM8sliuAkz9eF9a2ribE934lnk/i59Wrd4JhWFMgvwlXY0bV
-         vE5IvHG+4SDqlojGscdebyk5YmkjIzwA50n1wEEv6q23RIv+JGURtf7JWl6ca0oC+F/a
-         KCbw==
-X-Gm-Message-State: AOJu0YzA0hHm0u8oadJEIsORog5+1DuhBJC2LLwmp3c2yT3lD7g8ASXj
-        Ai7N2V5FZXNxDZtJfG16Ut/i5stp0/g=
-X-Google-Smtp-Source: AGHT+IGd2hPeaEh7kNTz5il4uY8J2DCXyPRPmXa8I13qfg2Tvp0zsvrPETGq8PATbl4Ea3sAn+YmBA==
-X-Received: by 2002:a05:600c:5111:b0:3fe:5228:b78c with SMTP id o17-20020a05600c511100b003fe5228b78cmr7207790wms.1.1691937068577;
-        Sun, 13 Aug 2023 07:31:08 -0700 (PDT)
+        b=ZMtaCIUDIGiGELYv6fk4WnLtNi0lQmqrm6j00wr2CEL7Hdiugoim0yCav7eJCDJowm
+         gj8U6bvbYJ+lmwgCZN7NHTXEsJRgrCPsrZLwN7NDcwxuJFnsNgoappa8tvJoLWIHskq4
+         Xw4upkGoCiKRmvOR9yV23IaMR9Q0FA1L+ayHrAgkGVKDcMxin6SF1XDU/otWcmutMQEH
+         /zlGC5V3uzFTWOm00/jQdH6DxvkO6Bo1+A2I+TjqtHRhs0KYth3Pu04hA86Fqqft0j9W
+         4A5VU3hJvRSpJxpxVAA049qd5mLtv8Q20g6GJelRl+LBErzWZNISmU/T1BS7V8ZD0xD8
+         IAhw==
+X-Gm-Message-State: AOJu0Yzkyuw27HlSOlMU5Ebi9hXGiCtSz1AECFnD10zpSsMDux+VlL9f
+        09+5Jl6NTA2ewMibmEf+lO0PJ6tD4vo=
+X-Google-Smtp-Source: AGHT+IF7AyJqz3aIfRpSbZ9xLZ1M+kSDJRrU7dv6kXD6bIh27hcxdNqbXzo9iNEUYDD7slY/fB5r4Q==
+X-Received: by 2002:a17:906:74d9:b0:99c:adfb:713 with SMTP id z25-20020a17090674d900b0099cadfb0713mr5140735ejl.5.1691937110413;
+        Sun, 13 Aug 2023 07:31:50 -0700 (PDT)
 Received: from localhost.localdomain (46-116-229-137.bb.netvision.net.il. [46.116.229.137])
-        by smtp.gmail.com with ESMTPSA id b12-20020a170906660c00b00992c92af6f4sm4655213ejp.144.2023.08.13.07.31.07
+        by smtp.gmail.com with ESMTPSA id pj18-20020a170906d79200b009932337747esm4612773ejb.86.2023.08.13.07.31.49
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 13 Aug 2023 07:31:08 -0700 (PDT)
+        Sun, 13 Aug 2023 07:31:49 -0700 (PDT)
 From:   Sagi Grimberg <sagi@grimberg.me>
 To:     stable@vger.kernel.org
 Cc:     linux-nvme@lists.infradead.org
-Subject: [PATCH 5.15.y] nvme-tcp: fix potential unbalanced freeze & unfreeze
-Date:   Sun, 13 Aug 2023 17:31:06 +0300
-Message-ID: <20230813143106.12390-1-sagi@grimberg.me>
+Subject: [PATCH 5.10.y] nvme-tcp: fix potential unbalanced freeze & unfreeze
+Date:   Sun, 13 Aug 2023 17:31:48 +0300
+Message-ID: <20230813143148.12471-1-sagi@grimberg.me>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <2023081226-oak-cartoon-6115@gregkh>
-References: <2023081226-oak-cartoon-6115@gregkh>
+In-Reply-To: <2023081227-freeing-squeak-4a28@gregkh>
+References: <2023081227-freeing-squeak-4a28@gregkh>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
         FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-        autolearn=no autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
