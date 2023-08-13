@@ -2,45 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E2F7F77AC7E
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:33:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 92B6077ABE3
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:26:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232013AbjHMVdq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:33:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35050 "EHLO
+        id S231727AbjHMV0x (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:26:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55666 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232016AbjHMVdq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:33:46 -0400
+        with ESMTP id S231730AbjHMV0w (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:26:52 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C9AD510DB
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:33:47 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 586DC10DB
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:26:53 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 64A7762C56
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:33:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EF6BC433C7;
-        Sun, 13 Aug 2023 21:33:45 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id EA2CE629B2
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:26:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7998C433C8;
+        Sun, 13 Aug 2023 21:26:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691962426;
-        bh=6w60sbFKMYmVG66+dYlN5FMzeWBOFAW6DGEOx/KgqSA=;
+        s=korg; t=1691962012;
+        bh=dfeez71j0EzL2q3JlGDBF6XUOHddfv3999U2zaZ4ds0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Ii3GWTCmUnXBlQStnrinx9o6/6HrsBOiK0GCpSWgJvJ9QX6hIUhHoQNOkxoE4A3yf
-         U+9EwlIhIkhxFmN5cuo959Q06tpslMCu7+FRyIIOaPGDqYnFEVE6XopaFopdK9idEA
-         6tlaxJr0Xfovq86WyQjXJxeZ5863Oty5AyNnaPPg=
+        b=Ty3zZg20rXL5MjyJfvZpoa0JgJ+VuMyqIFTEs5SH5pg/onz0oMYMzg/gs3grELJTC
+         nAFVW1Np4L/lfn5aSGbxNBSTR1S4QYo0fu/a6Ur5Yexh7CcVFzdWZnn0wIKegc+HMG
+         wiSNiMtjp+t7H9ziZmhhrOGfX17LwAtbRIgcUEaM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Namjae Jeon <linkinjeon@kernel.org>,
-        Long Li <leo.lilong@huawei.com>,
-        Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.1 005/149] ksmbd: validate command request size
+        patches@lists.linux.dev, Nathan Chancellor <nathan@kernel.org>,
+        Daniel Kolesa <daniel@octaforge.org>,
+        Naresh Kamboju <naresh.kamboju@linaro.org>,
+        Sven Volkinsfeld <thyrc@gmx.net>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        "Borislav Petkov (AMD)" <bp@alien8.de>
+Subject: [PATCH 6.4 080/206] x86/srso: Fix build breakage with the LLVM linker
 Date:   Sun, 13 Aug 2023 23:17:30 +0200
-Message-ID: <20230813211718.924332134@linuxfoundation.org>
+Message-ID: <20230813211727.370097452@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211718.757428827@linuxfoundation.org>
-References: <20230813211718.757428827@linuxfoundation.org>
+In-Reply-To: <20230813211724.969019629@linuxfoundation.org>
+References: <20230813211724.969019629@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,45 +57,62 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Long Li <leo.lilong@huawei.com>
+From: Nick Desaulniers <ndesaulniers@google.com>
 
-commit 5aa4fda5aa9c2a5a7bac67b4a12b089ab81fee3c upstream.
+commit cbe8ded48b939b9d55d2c5589ab56caa7b530709 upstream.
 
-In commit 2b9b8f3b68ed ("ksmbd: validate command payload size"), except
-for SMB2_OPLOCK_BREAK_HE command, the request size of other commands
-is not checked, it's not expected. Fix it by add check for request
-size of other commands.
+The assertion added to verify the difference in bits set of the
+addresses of srso_untrain_ret_alias() and srso_safe_ret_alias() would fail
+to link in LLVM's ld.lld linker with the following error:
 
-Cc: stable@vger.kernel.org
-Fixes: 2b9b8f3b68ed ("ksmbd: validate command payload size")
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Long Li <leo.lilong@huawei.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+  ld.lld: error: ./arch/x86/kernel/vmlinux.lds:210: at least one side of
+  the expression must be absolute
+  ld.lld: error: ./arch/x86/kernel/vmlinux.lds:211: at least one side of
+  the expression must be absolute
+
+Use ABSOLUTE to evaluate the expression referring to at least one of the
+symbols so that LLD can evaluate the linker script.
+
+Also, add linker version info to the comment about XOR being unsupported
+in either ld.bfd or ld.lld until somewhat recently.
+
+Fixes: fb3bd914b3ec ("x86/srso: Add a Speculative RAS Overflow mitigation")
+Closes: https://lore.kernel.org/llvm/CA+G9fYsdUeNu-gwbs0+T6XHi4hYYk=Y9725-wFhZ7gJMspLDRA@mail.gmail.com/
+Reported-by: Nathan Chancellor <nathan@kernel.org>
+Reported-by: Daniel Kolesa <daniel@octaforge.org>
+Reported-by: Naresh Kamboju <naresh.kamboju@linaro.org>
+Suggested-by: Sven Volkinsfeld <thyrc@gmx.net>
+Signed-off-by: Nick Desaulniers <ndesaulniers@google.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://github.com/ClangBuiltLinux/linux/issues/1907
+Link: https://lore.kernel.org/r/20230809-gds-v1-1-eaac90b0cbcc@google.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/smb2misc.c |   10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ arch/x86/kernel/vmlinux.lds.S |   12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
---- a/fs/smb/server/smb2misc.c
-+++ b/fs/smb/server/smb2misc.c
-@@ -380,13 +380,13 @@ int ksmbd_smb2_check_message(struct ksmb
- 	}
+--- a/arch/x86/kernel/vmlinux.lds.S
++++ b/arch/x86/kernel/vmlinux.lds.S
+@@ -529,11 +529,17 @@ INIT_PER_CPU(irq_stack_backing_store);
  
- 	if (smb2_req_struct_sizes[command] != pdu->StructureSize2) {
--		if (command == SMB2_OPLOCK_BREAK_HE &&
--		    le16_to_cpu(pdu->StructureSize2) != OP_BREAK_STRUCT_SIZE_20 &&
--		    le16_to_cpu(pdu->StructureSize2) != OP_BREAK_STRUCT_SIZE_21) {
-+		if (!(command == SMB2_OPLOCK_BREAK_HE &&
-+		    (le16_to_cpu(pdu->StructureSize2) == OP_BREAK_STRUCT_SIZE_20 ||
-+		    le16_to_cpu(pdu->StructureSize2) == OP_BREAK_STRUCT_SIZE_21))) {
- 			/* special case for SMB2.1 lease break message */
- 			ksmbd_debug(SMB,
--				    "Illegal request size %d for oplock break\n",
--				    le16_to_cpu(pdu->StructureSize2));
-+				"Illegal request size %u for command %d\n",
-+				le16_to_cpu(pdu->StructureSize2), command);
- 			return 1;
- 		}
- 	}
+ #ifdef CONFIG_CPU_SRSO
+ /*
+- * GNU ld cannot do XOR so do: (A | B) - (A & B) in order to compute the XOR
++ * GNU ld cannot do XOR until 2.41.
++ * https://sourceware.org/git/?p=binutils-gdb.git;a=commit;h=f6f78318fca803c4907fb8d7f6ded8295f1947b1
++ *
++ * LLVM lld cannot do XOR until lld-17.
++ * https://github.com/llvm/llvm-project/commit/fae96104d4378166cbe5c875ef8ed808a356f3fb
++ *
++ * Instead do: (A | B) - (A & B) in order to compute the XOR
+  * of the two function addresses:
+  */
+-. = ASSERT(((srso_untrain_ret_alias | srso_safe_ret_alias) -
+-		(srso_untrain_ret_alias & srso_safe_ret_alias)) == ((1 << 2) | (1 << 8) | (1 << 14) | (1 << 20)),
++. = ASSERT(((ABSOLUTE(srso_untrain_ret_alias) | srso_safe_ret_alias) -
++		(ABSOLUTE(srso_untrain_ret_alias) & srso_safe_ret_alias)) == ((1 << 2) | (1 << 8) | (1 << 14) | (1 << 20)),
+ 		"SRSO function pair won't alias");
+ #endif
+ 
 
 
