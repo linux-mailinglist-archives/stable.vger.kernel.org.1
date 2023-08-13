@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B365277AB67
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:21:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5D50677ACD7
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:37:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229900AbjHMVVd (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:21:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34390 "EHLO
+        id S232204AbjHMVho (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:37:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46852 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229627AbjHMVVd (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:21:33 -0400
+        with ESMTP id S232190AbjHMVhn (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:37:43 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 35D2610D0
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:21:35 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD21F10DB
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:37:45 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C9AFF627AF
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:21:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB55DC433C7;
-        Sun, 13 Aug 2023 21:21:33 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4ADA26343E
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:37:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D15CC433C7;
+        Sun, 13 Aug 2023 21:37:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691961694;
-        bh=GWc1cu/amCp9CakShuTrrzwZPXKBwSs0rRxpgQItOYk=;
+        s=korg; t=1691962664;
+        bh=LyGn+Em8KUM6czcR6t61yyuJqMsHgUlc5gjUovShi3s=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=VvcJ+GJ7XGFcGn3YwKN87OG5cJ5Jn0vm7DaAnD+osuOyPnC5E6R5EF0PNRvDw0ZS+
-         RngF7jgz2jhNOpJuirz3f2/ffHe1N3isYefo1yTfYvkiwWl5uOK2NiuifFejfudN6A
-         j8aTWK3uLqb0fsFBWzGb7XeDN0VVCfPIJTrycKGc=
+        b=0FhNFr10k2rU2P6LTxPr3Ga1m4FBKHeRu/3Xil3KR+IN+zBS/euUzAtZldVdI3x11
+         0ubVNL8nFVf6Loo7bqUPxf6IiLc9cLKYd1Uv9qOBNOhDZsVbjzUmn9QT1AqQKHlwjp
+         V7+dXSviq9czAVakSeOERfzdzqG37SkboHPHe/P0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-        syzbot+74db8b3087f293d3a13a@syzkaller.appspotmail.com,
-        Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 4.14 06/26] nilfs2: fix use-after-free of nilfs_root in dirtying inodes via iput
+        patches@lists.linux.dev, Ido Schimmel <idosch@idosch.org>,
+        Ziyang Xuan <william.xuanziyang@huawei.com>,
+        Ido Schimmel <idosch@nvidia.com>,
+        Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 094/149] bonding: Fix incorrect deletion of ETH_P_8021AD protocol vid from slaves
 Date:   Sun, 13 Aug 2023 23:18:59 +0200
-Message-ID: <20230813211703.227229562@linuxfoundation.org>
+Message-ID: <20230813211721.605292376@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211702.980427106@linuxfoundation.org>
-References: <20230813211702.980427106@linuxfoundation.org>
+In-Reply-To: <20230813211718.757428827@linuxfoundation.org>
+References: <20230813211718.757428827@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,120 +55,82 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+From: Ziyang Xuan <william.xuanziyang@huawei.com>
 
-commit f8654743a0e6909dc634cbfad6db6816f10f3399 upstream.
+commit 01f4fd27087078c90a0e22860d1dfa2cd0510791 upstream.
 
-During unmount process of nilfs2, nothing holds nilfs_root structure after
-nilfs2 detaches its writer in nilfs_detach_log_writer().  Previously,
-nilfs_evict_inode() could cause use-after-free read for nilfs_root if
-inodes are left in "garbage_list" and released by nilfs_dispose_list at
-the end of nilfs_detach_log_writer(), and this bug was fixed by commit
-9b5a04ac3ad9 ("nilfs2: fix use-after-free bug of nilfs_root in
-nilfs_evict_inode()").
+BUG_ON(!vlan_info) is triggered in unregister_vlan_dev() with
+following testcase:
 
-However, it turned out that there is another possibility of UAF in the
-call path where mark_inode_dirty_sync() is called from iput():
+  # ip netns add ns1
+  # ip netns exec ns1 ip link add bond0 type bond mode 0
+  # ip netns exec ns1 ip link add bond_slave_1 type veth peer veth2
+  # ip netns exec ns1 ip link set bond_slave_1 master bond0
+  # ip netns exec ns1 ip link add link bond_slave_1 name vlan10 type vlan id 10 protocol 802.1ad
+  # ip netns exec ns1 ip link add link bond0 name bond0_vlan10 type vlan id 10 protocol 802.1ad
+  # ip netns exec ns1 ip link set bond_slave_1 nomaster
+  # ip netns del ns1
 
-nilfs_detach_log_writer()
-  nilfs_dispose_list()
-    iput()
-      mark_inode_dirty_sync()
-        __mark_inode_dirty()
-          nilfs_dirty_inode()
-            __nilfs_mark_inode_dirty()
-              nilfs_load_inode_block() --> causes UAF of nilfs_root struct
+The logical analysis of the problem is as follows:
 
-This can happen after commit 0ae45f63d4ef ("vfs: add support for a
-lazytime mount option"), which changed iput() to call
-mark_inode_dirty_sync() on its final reference if i_state has I_DIRTY_TIME
-flag and i_nlink is non-zero.
+1. create ETH_P_8021AD protocol vlan10 for bond_slave_1:
+register_vlan_dev()
+  vlan_vid_add()
+    vlan_info_alloc()
+    __vlan_vid_add() // add [ETH_P_8021AD, 10] vid to bond_slave_1
 
-This issue appears after commit 28a65b49eb53 ("nilfs2: do not write dirty
-data after degenerating to read-only") when using the syzbot reproducer,
-but the issue has potentially existed before.
+2. create ETH_P_8021AD protocol bond0_vlan10 for bond0:
+register_vlan_dev()
+  vlan_vid_add()
+    __vlan_vid_add()
+      vlan_add_rx_filter_info()
+          if (!vlan_hw_filter_capable(dev, proto)) // condition established because bond0 without NETIF_F_HW_VLAN_STAG_FILTER
+              return 0;
 
-Fix this issue by adding a "purging flag" to the nilfs structure, setting
-that flag while disposing the "garbage_list" and checking it in
-__nilfs_mark_inode_dirty().
+          if (netif_device_present(dev))
+              return dev->netdev_ops->ndo_vlan_rx_add_vid(dev, proto, vid); // will be never called
+              // The slaves of bond0 will not refer to the [ETH_P_8021AD, 10] vid.
 
-Unlike commit 9b5a04ac3ad9 ("nilfs2: fix use-after-free bug of nilfs_root
-in nilfs_evict_inode()"), this patch does not rely on ns_writer to
-determine whether to skip operations, so as not to break recovery on
-mount.  The nilfs_salvage_orphan_logs routine dirties the buffer of
-salvaged data before attaching the log writer, so changing
-__nilfs_mark_inode_dirty() to skip the operation when ns_writer is NULL
-will cause recovery write to fail.  The purpose of using the cleanup-only
-flag is to allow for narrowing of such conditions.
+3. detach bond_slave_1 from bond0:
+__bond_release_one()
+  vlan_vids_del_by_dev()
+    list_for_each_entry(vid_info, &vlan_info->vid_list, list)
+        vlan_vid_del(dev, vid_info->proto, vid_info->vid);
+        // bond_slave_1 [ETH_P_8021AD, 10] vid will be deleted.
+        // bond_slave_1->vlan_info will be assigned NULL.
 
-Link: https://lkml.kernel.org/r/20230728191318.33047-1-konishi.ryusuke@gmail.com
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Reported-by: syzbot+74db8b3087f293d3a13a@syzkaller.appspotmail.com
-Closes: https://lkml.kernel.org/r/000000000000b4e906060113fd63@google.com
-Fixes: 0ae45f63d4ef ("vfs: add support for a lazytime mount option")
-Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Cc: <stable@vger.kernel.org> # 4.0+
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+4. delete vlan10 during delete ns1:
+default_device_exit_batch()
+  dev->rtnl_link_ops->dellink() // unregister_vlan_dev() for vlan10
+    vlan_info = rtnl_dereference(real_dev->vlan_info); // real_dev of vlan10 is bond_slave_1
+	BUG_ON(!vlan_info); // bond_slave_1->vlan_info is NULL now, bug is triggered!!!
+
+Add S-VLAN tag related features support to bond driver. So the bond driver
+will always propagate the VLAN info to its slaves.
+
+Fixes: 8ad227ff89a7 ("net: vlan: add 802.1ad support")
+Suggested-by: Ido Schimmel <idosch@idosch.org>
+Signed-off-by: Ziyang Xuan <william.xuanziyang@huawei.com>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Link: https://lore.kernel.org/r/20230802114320.4156068-1-william.xuanziyang@huawei.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nilfs2/inode.c     |    8 ++++++++
- fs/nilfs2/segment.c   |    2 ++
- fs/nilfs2/the_nilfs.h |    2 ++
- 3 files changed, 12 insertions(+)
+ drivers/net/bonding/bond_main.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/fs/nilfs2/inode.c
-+++ b/fs/nilfs2/inode.c
-@@ -1121,9 +1121,17 @@ int nilfs_set_file_dirty(struct inode *i
+--- a/drivers/net/bonding/bond_main.c
++++ b/drivers/net/bonding/bond_main.c
+@@ -5839,7 +5839,9 @@ void bond_setup(struct net_device *bond_
  
- int __nilfs_mark_inode_dirty(struct inode *inode, int flags)
- {
-+	struct the_nilfs *nilfs = inode->i_sb->s_fs_info;
- 	struct buffer_head *ibh;
- 	int err;
+ 	bond_dev->hw_features = BOND_VLAN_FEATURES |
+ 				NETIF_F_HW_VLAN_CTAG_RX |
+-				NETIF_F_HW_VLAN_CTAG_FILTER;
++				NETIF_F_HW_VLAN_CTAG_FILTER |
++				NETIF_F_HW_VLAN_STAG_RX |
++				NETIF_F_HW_VLAN_STAG_FILTER;
  
-+	/*
-+	 * Do not dirty inodes after the log writer has been detached
-+	 * and its nilfs_root struct has been freed.
-+	 */
-+	if (unlikely(nilfs_purging(nilfs)))
-+		return 0;
-+
- 	err = nilfs_load_inode_block(inode, &ibh);
- 	if (unlikely(err)) {
- 		nilfs_msg(inode->i_sb, KERN_WARNING,
---- a/fs/nilfs2/segment.c
-+++ b/fs/nilfs2/segment.c
-@@ -2859,6 +2859,7 @@ void nilfs_detach_log_writer(struct supe
- 		nilfs_segctor_destroy(nilfs->ns_writer);
- 		nilfs->ns_writer = NULL;
- 	}
-+	set_nilfs_purging(nilfs);
- 
- 	/* Force to free the list of dirty files */
- 	spin_lock(&nilfs->ns_inode_lock);
-@@ -2871,4 +2872,5 @@ void nilfs_detach_log_writer(struct supe
- 	up_write(&nilfs->ns_segctor_sem);
- 
- 	nilfs_dispose_list(nilfs, &garbage_list, 1);
-+	clear_nilfs_purging(nilfs);
- }
---- a/fs/nilfs2/the_nilfs.h
-+++ b/fs/nilfs2/the_nilfs.h
-@@ -37,6 +37,7 @@ enum {
- 	THE_NILFS_DISCONTINUED,	/* 'next' pointer chain has broken */
- 	THE_NILFS_GC_RUNNING,	/* gc process is running */
- 	THE_NILFS_SB_DIRTY,	/* super block is dirty */
-+	THE_NILFS_PURGING,	/* disposing dirty files for cleanup */
- };
- 
- /**
-@@ -216,6 +217,7 @@ THE_NILFS_FNS(INIT, init)
- THE_NILFS_FNS(DISCONTINUED, discontinued)
- THE_NILFS_FNS(GC_RUNNING, gc_running)
- THE_NILFS_FNS(SB_DIRTY, sb_dirty)
-+THE_NILFS_FNS(PURGING, purging)
- 
- /*
-  * Mount option operations
+ 	bond_dev->hw_features |= NETIF_F_GSO_ENCAP_ALL;
+ 	bond_dev->features |= bond_dev->hw_features;
 
 
