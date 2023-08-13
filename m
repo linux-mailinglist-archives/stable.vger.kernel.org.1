@@ -2,43 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 04D1877ABF3
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:27:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 206F677ABD4
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:26:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231764AbjHMV1e (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:27:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51166 "EHLO
+        id S231707AbjHMV0L (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:26:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39598 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231749AbjHMV1e (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:27:34 -0400
+        with ESMTP id S231704AbjHMV0L (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:26:11 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3768810DB
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:27:36 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1850410DD
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:26:13 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C1DC3629FC
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:27:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAD9DC433C7;
-        Sun, 13 Aug 2023 21:27:34 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A12536297C
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:26:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEECDC433C7;
+        Sun, 13 Aug 2023 21:26:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691962055;
-        bh=ZRh2f5TqOLb1WrPh7iyXrwNoXbGyXkFuPyAUAufco1I=;
+        s=korg; t=1691961972;
+        bh=3QppXAd9JBc/wefvgr+cBsDuCfIjuy0/cdV/H1l0A4Q=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=I4WnBF/8A5JmiFKTVsyy/6knb7FIYuQCgKFY6W5DwkdVOIe8TvffuVgChX0uC4zz/
-         unr/jC/g8oduG1SeuxhaT0WKY0CsRH6ndSeD/pQJ/qFyMX0quMocAeVslBD7ox/wr8
-         5NacE5bASzQtFRgnUH3ewS31TeW8517nUvB3vwf4=
+        b=MBznFvgeRz+uMVXZa3bhb7P4GuJjHuCE4Xu0d6TKZPGDLD6VoOYBrGY851FpODNKo
+         FTjhbHh93R3eaVlBGmXCK1H2ljODO9qDT8vHATi9sM5C50a/YSrs7IRBC5cvMW5nwN
+         7zffBfWhytWxDS5AQ15v0e43Yf5l6LE4zUepfFrk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-        syzbot+74db8b3087f293d3a13a@syzkaller.appspotmail.com,
-        Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.4 057/206] nilfs2: fix use-after-free of nilfs_root in dirtying inodes via iput
-Date:   Sun, 13 Aug 2023 23:17:07 +0200
-Message-ID: <20230813211726.647510258@linuxfoundation.org>
+        Karol Wachowski <karol.wachowski@linux.intel.com>,
+        Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>
+Subject: [PATCH 6.4 058/206] accel/ivpu: Add set_pages_array_wc/uc for internal buffers
+Date:   Sun, 13 Aug 2023 23:17:08 +0200
+Message-ID: <20230813211726.676663559@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230813211724.969019629@linuxfoundation.org>
 References: <20230813211724.969019629@linuxfoundation.org>
@@ -56,120 +55,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+From: Karol Wachowski <karol.wachowski@linux.intel.com>
 
-commit f8654743a0e6909dc634cbfad6db6816f10f3399 upstream.
+commit 1963546390ed8b649f529993a755eba0fdeb7aaa upstream.
 
-During unmount process of nilfs2, nothing holds nilfs_root structure after
-nilfs2 detaches its writer in nilfs_detach_log_writer().  Previously,
-nilfs_evict_inode() could cause use-after-free read for nilfs_root if
-inodes are left in "garbage_list" and released by nilfs_dispose_list at
-the end of nilfs_detach_log_writer(), and this bug was fixed by commit
-9b5a04ac3ad9 ("nilfs2: fix use-after-free bug of nilfs_root in
-nilfs_evict_inode()").
+Buffers mapped with pgprot_writecombined() are not correctly
+flushed. This triggers issues on VPU access using random
+memory content such as MMU translation faults, invalid context
+descriptors being fetched and can lead to VPU FW crashes.
 
-However, it turned out that there is another possibility of UAF in the
-call path where mark_inode_dirty_sync() is called from iput():
-
-nilfs_detach_log_writer()
-  nilfs_dispose_list()
-    iput()
-      mark_inode_dirty_sync()
-        __mark_inode_dirty()
-          nilfs_dirty_inode()
-            __nilfs_mark_inode_dirty()
-              nilfs_load_inode_block() --> causes UAF of nilfs_root struct
-
-This can happen after commit 0ae45f63d4ef ("vfs: add support for a
-lazytime mount option"), which changed iput() to call
-mark_inode_dirty_sync() on its final reference if i_state has I_DIRTY_TIME
-flag and i_nlink is non-zero.
-
-This issue appears after commit 28a65b49eb53 ("nilfs2: do not write dirty
-data after degenerating to read-only") when using the syzbot reproducer,
-but the issue has potentially existed before.
-
-Fix this issue by adding a "purging flag" to the nilfs structure, setting
-that flag while disposing the "garbage_list" and checking it in
-__nilfs_mark_inode_dirty().
-
-Unlike commit 9b5a04ac3ad9 ("nilfs2: fix use-after-free bug of nilfs_root
-in nilfs_evict_inode()"), this patch does not rely on ns_writer to
-determine whether to skip operations, so as not to break recovery on
-mount.  The nilfs_salvage_orphan_logs routine dirties the buffer of
-salvaged data before attaching the log writer, so changing
-__nilfs_mark_inode_dirty() to skip the operation when ns_writer is NULL
-will cause recovery write to fail.  The purpose of using the cleanup-only
-flag is to allow for narrowing of such conditions.
-
-Link: https://lkml.kernel.org/r/20230728191318.33047-1-konishi.ryusuke@gmail.com
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Reported-by: syzbot+74db8b3087f293d3a13a@syzkaller.appspotmail.com
-Closes: https://lkml.kernel.org/r/000000000000b4e906060113fd63@google.com
-Fixes: 0ae45f63d4ef ("vfs: add support for a lazytime mount option")
-Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Cc: <stable@vger.kernel.org> # 4.0+
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 647371a6609d ("accel/ivpu: Add GEM buffer object management")
+Cc: stable@vger.kernel.org # 6.3+
+Signed-off-by: Karol Wachowski <karol.wachowski@linux.intel.com>
+Reviewed-by: Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>
+Signed-off-by: Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230802063735.3005291-1-stanislaw.gruszka@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nilfs2/inode.c     |    8 ++++++++
- fs/nilfs2/segment.c   |    2 ++
- fs/nilfs2/the_nilfs.h |    2 ++
- 3 files changed, 12 insertions(+)
+ drivers/accel/ivpu/ivpu_gem.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/fs/nilfs2/inode.c
-+++ b/fs/nilfs2/inode.c
-@@ -1101,9 +1101,17 @@ int nilfs_set_file_dirty(struct inode *i
- 
- int __nilfs_mark_inode_dirty(struct inode *inode, int flags)
+diff --git a/drivers/accel/ivpu/ivpu_gem.c b/drivers/accel/ivpu/ivpu_gem.c
+index 52b339aefadc..9967fcfa27ec 100644
+--- a/drivers/accel/ivpu/ivpu_gem.c
++++ b/drivers/accel/ivpu/ivpu_gem.c
+@@ -173,6 +173,9 @@ static void internal_free_pages_locked(struct ivpu_bo *bo)
  {
-+	struct the_nilfs *nilfs = inode->i_sb->s_fs_info;
- 	struct buffer_head *ibh;
- 	int err;
+ 	unsigned int i, npages = bo->base.size >> PAGE_SHIFT;
  
-+	/*
-+	 * Do not dirty inodes after the log writer has been detached
-+	 * and its nilfs_root struct has been freed.
-+	 */
-+	if (unlikely(nilfs_purging(nilfs)))
-+		return 0;
++	if (ivpu_bo_cache_mode(bo) != DRM_IVPU_BO_CACHED)
++		set_pages_array_wb(bo->pages, bo->base.size >> PAGE_SHIFT);
 +
- 	err = nilfs_load_inode_block(inode, &ibh);
- 	if (unlikely(err)) {
- 		nilfs_warn(inode->i_sb,
---- a/fs/nilfs2/segment.c
-+++ b/fs/nilfs2/segment.c
-@@ -2845,6 +2845,7 @@ void nilfs_detach_log_writer(struct supe
- 		nilfs_segctor_destroy(nilfs->ns_writer);
- 		nilfs->ns_writer = NULL;
- 	}
-+	set_nilfs_purging(nilfs);
+ 	for (i = 0; i < npages; i++)
+ 		put_page(bo->pages[i]);
  
- 	/* Force to free the list of dirty files */
- 	spin_lock(&nilfs->ns_inode_lock);
-@@ -2857,4 +2858,5 @@ void nilfs_detach_log_writer(struct supe
- 	up_write(&nilfs->ns_segctor_sem);
+@@ -587,6 +590,11 @@ ivpu_bo_alloc_internal(struct ivpu_device *vdev, u64 vpu_addr, u64 size, u32 fla
+ 	if (ivpu_bo_cache_mode(bo) != DRM_IVPU_BO_CACHED)
+ 		drm_clflush_pages(bo->pages, bo->base.size >> PAGE_SHIFT);
  
- 	nilfs_dispose_list(nilfs, &garbage_list, 1);
-+	clear_nilfs_purging(nilfs);
- }
---- a/fs/nilfs2/the_nilfs.h
-+++ b/fs/nilfs2/the_nilfs.h
-@@ -29,6 +29,7 @@ enum {
- 	THE_NILFS_DISCONTINUED,	/* 'next' pointer chain has broken */
- 	THE_NILFS_GC_RUNNING,	/* gc process is running */
- 	THE_NILFS_SB_DIRTY,	/* super block is dirty */
-+	THE_NILFS_PURGING,	/* disposing dirty files for cleanup */
- };
- 
- /**
-@@ -208,6 +209,7 @@ THE_NILFS_FNS(INIT, init)
- THE_NILFS_FNS(DISCONTINUED, discontinued)
- THE_NILFS_FNS(GC_RUNNING, gc_running)
- THE_NILFS_FNS(SB_DIRTY, sb_dirty)
-+THE_NILFS_FNS(PURGING, purging)
- 
- /*
-  * Mount option operations
++	if (bo->flags & DRM_IVPU_BO_WC)
++		set_pages_array_wc(bo->pages, bo->base.size >> PAGE_SHIFT);
++	else if (bo->flags & DRM_IVPU_BO_UNCACHED)
++		set_pages_array_uc(bo->pages, bo->base.size >> PAGE_SHIFT);
++
+ 	prot = ivpu_bo_pgprot(bo, PAGE_KERNEL);
+ 	bo->kvaddr = vmap(bo->pages, bo->base.size >> PAGE_SHIFT, VM_MAP, prot);
+ 	if (!bo->kvaddr) {
+-- 
+2.41.0
+
 
 
