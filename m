@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 086D977ACC2
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:36:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E640E77AC37
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:30:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232167AbjHMVgq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:36:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59748 "EHLO
+        id S231880AbjHMVai (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:30:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57362 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232156AbjHMVgq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:36:46 -0400
+        with ESMTP id S231873AbjHMVai (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:30:38 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA2B610DB
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:36:47 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3834210D7
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:30:40 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4C2E4631F5
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:36:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31356C433C7;
-        Sun, 13 Aug 2023 21:36:46 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C1E6E62B1A
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:30:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCA15C433C8;
+        Sun, 13 Aug 2023 21:30:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691962606;
-        bh=65FajYFrnyYp50MI1Ud9RYl/c+DCILQfQDV80Qqb3DQ=;
+        s=korg; t=1691962239;
+        bh=HQoPu4vPDZo5US+TpbT9lcOlZ+zKsoTKjnC/I46JQ+k=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=15XHxrnYr6AAIEgMvAmPaH9EaBYc8XRVn4IscIP5KTUXw71+bT2+tq+DkuZ0Kqan9
-         eV1D2R8BeZJq2kGGt+vb6N5cM9BJznEz4jRkbSsJmFMZ4lF0pXcXRh9DT/h8jVf6wZ
-         LSkhggRjCUB40zhGBlvWKBCfJPl0u+F392IOzsgU=
+        b=UwBp9oWCoqMDuYr40eMLouSadORYRsu7eXsMKQi4BI7pfMnOB1pmCIyto5qhJNAgf
+         89y/biEPtqgTBCLDfww9qBKtjxtGfFpo5kXxDW/vAMlUTR8dd6OXxW3Kv+RVYFEmkG
+         Dh3uvWQOJ8Bqid89kUat/199O5zfhECuWy6tHl30=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, syzbot <syzkaller@googlegroups.com>,
-        Eric Dumazet <edumazet@google.com>,
-        Willem de Bruijn <willemb@google.com>,
-        Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 089/149] net/packet: annotate data-races around tp->status
+        patches@lists.linux.dev,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 6.4 164/206] dmaengine: mcf-edma: Fix a potential un-allocated memory access
 Date:   Sun, 13 Aug 2023 23:18:54 +0200
-Message-ID: <20230813211721.449924576@linuxfoundation.org>
+Message-ID: <20230813211729.720654587@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211718.757428827@linuxfoundation.org>
-References: <20230813211718.757428827@linuxfoundation.org>
+In-Reply-To: <20230813211724.969019629@linuxfoundation.org>
+References: <20230813211724.969019629@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,125 +55,61 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Eric Dumazet <edumazet@google.com>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-commit 8a9896177784063d01068293caea3f74f6830ff6 upstream.
+commit 0a46781c89dece85386885a407244ca26e5c1c44 upstream.
 
-Another syzbot report [1] is about tp->status lockless reads
-from __packet_get_status()
+When 'mcf_edma' is allocated, some space is allocated for a
+flexible array at the end of the struct. 'chans' item are allocated, that is
+to say 'pdata->dma_channels'.
 
-[1]
-BUG: KCSAN: data-race in __packet_rcv_has_room / __packet_set_status
+Then, this number of item is stored in 'mcf_edma->n_chans'.
 
-write to 0xffff888117d7c080 of 8 bytes by interrupt on cpu 0:
-__packet_set_status+0x78/0xa0 net/packet/af_packet.c:407
-tpacket_rcv+0x18bb/0x1a60 net/packet/af_packet.c:2483
-deliver_skb net/core/dev.c:2173 [inline]
-__netif_receive_skb_core+0x408/0x1e80 net/core/dev.c:5337
-__netif_receive_skb_one_core net/core/dev.c:5491 [inline]
-__netif_receive_skb+0x57/0x1b0 net/core/dev.c:5607
-process_backlog+0x21f/0x380 net/core/dev.c:5935
-__napi_poll+0x60/0x3b0 net/core/dev.c:6498
-napi_poll net/core/dev.c:6565 [inline]
-net_rx_action+0x32b/0x750 net/core/dev.c:6698
-__do_softirq+0xc1/0x265 kernel/softirq.c:571
-invoke_softirq kernel/softirq.c:445 [inline]
-__irq_exit_rcu+0x57/0xa0 kernel/softirq.c:650
-sysvec_apic_timer_interrupt+0x6d/0x80 arch/x86/kernel/apic/apic.c:1106
-asm_sysvec_apic_timer_interrupt+0x1a/0x20 arch/x86/include/asm/idtentry.h:645
-smpboot_thread_fn+0x33c/0x4a0 kernel/smpboot.c:112
-kthread+0x1d7/0x210 kernel/kthread.c:379
-ret_from_fork+0x1f/0x30 arch/x86/entry/entry_64.S:308
+A few lines later, if 'mcf_edma->n_chans' is 0, then a default value of 64
+is set.
 
-read to 0xffff888117d7c080 of 8 bytes by interrupt on cpu 1:
-__packet_get_status net/packet/af_packet.c:436 [inline]
-packet_lookup_frame net/packet/af_packet.c:524 [inline]
-__tpacket_has_room net/packet/af_packet.c:1255 [inline]
-__packet_rcv_has_room+0x3f9/0x450 net/packet/af_packet.c:1298
-tpacket_rcv+0x275/0x1a60 net/packet/af_packet.c:2285
-deliver_skb net/core/dev.c:2173 [inline]
-dev_queue_xmit_nit+0x38a/0x5e0 net/core/dev.c:2243
-xmit_one net/core/dev.c:3574 [inline]
-dev_hard_start_xmit+0xcf/0x3f0 net/core/dev.c:3594
-__dev_queue_xmit+0xefb/0x1d10 net/core/dev.c:4244
-dev_queue_xmit include/linux/netdevice.h:3088 [inline]
-can_send+0x4eb/0x5d0 net/can/af_can.c:276
-bcm_can_tx+0x314/0x410 net/can/bcm.c:302
-bcm_tx_timeout_handler+0xdb/0x260
-__run_hrtimer kernel/time/hrtimer.c:1685 [inline]
-__hrtimer_run_queues+0x217/0x700 kernel/time/hrtimer.c:1749
-hrtimer_run_softirq+0xd6/0x120 kernel/time/hrtimer.c:1766
-__do_softirq+0xc1/0x265 kernel/softirq.c:571
-run_ksoftirqd+0x17/0x20 kernel/softirq.c:939
-smpboot_thread_fn+0x30a/0x4a0 kernel/smpboot.c:164
-kthread+0x1d7/0x210 kernel/kthread.c:379
-ret_from_fork+0x1f/0x30 arch/x86/entry/entry_64.S:308
+This ends to no space allocated by devm_kzalloc() because chans was 0, but
+64 items are read and/or written in some not allocated memory.
 
-value changed: 0x0000000000000000 -> 0x0000000020000081
+Change the logic to define a default value before allocating the memory.
 
-Reported by Kernel Concurrency Sanitizer on:
-CPU: 1 PID: 19 Comm: ksoftirqd/1 Not tainted 6.4.0-syzkaller #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 05/27/2023
-
-Fixes: 69e3c75f4d54 ("net: TX_RING and packet mmap")
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Link: https://lore.kernel.org/r/20230803145600.2937518-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: e7a3ff92eaf1 ("dmaengine: fsl-edma: add ColdFire mcf5441x edma support")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Link: https://lore.kernel.org/r/f55d914407c900828f6fad3ea5fa791a5f17b9a4.1685172449.git.christophe.jaillet@wanadoo.fr
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/packet/af_packet.c |   16 ++++++++++------
- 1 file changed, 10 insertions(+), 6 deletions(-)
+ drivers/dma/mcf-edma.c |   13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
---- a/net/packet/af_packet.c
-+++ b/net/packet/af_packet.c
-@@ -404,18 +404,20 @@ static void __packet_set_status(struct p
- {
- 	union tpacket_uhdr h;
+--- a/drivers/dma/mcf-edma.c
++++ b/drivers/dma/mcf-edma.c
+@@ -190,7 +190,13 @@ static int mcf_edma_probe(struct platfor
+ 		return -EINVAL;
+ 	}
  
-+	/* WRITE_ONCE() are paired with READ_ONCE() in __packet_get_status */
+-	chans = pdata->dma_channels;
++	if (!pdata->dma_channels) {
++		dev_info(&pdev->dev, "setting default channel number to 64");
++		chans = 64;
++	} else {
++		chans = pdata->dma_channels;
++	}
 +
- 	h.raw = frame;
- 	switch (po->tp_version) {
- 	case TPACKET_V1:
--		h.h1->tp_status = status;
-+		WRITE_ONCE(h.h1->tp_status, status);
- 		flush_dcache_page(pgv_to_page(&h.h1->tp_status));
- 		break;
- 	case TPACKET_V2:
--		h.h2->tp_status = status;
-+		WRITE_ONCE(h.h2->tp_status, status);
- 		flush_dcache_page(pgv_to_page(&h.h2->tp_status));
- 		break;
- 	case TPACKET_V3:
--		h.h3->tp_status = status;
-+		WRITE_ONCE(h.h3->tp_status, status);
- 		flush_dcache_page(pgv_to_page(&h.h3->tp_status));
- 		break;
- 	default:
-@@ -432,17 +434,19 @@ static int __packet_get_status(const str
+ 	len = sizeof(*mcf_edma) + sizeof(*mcf_chan) * chans;
+ 	mcf_edma = devm_kzalloc(&pdev->dev, len, GFP_KERNEL);
+ 	if (!mcf_edma)
+@@ -202,11 +208,6 @@ static int mcf_edma_probe(struct platfor
+ 	mcf_edma->drvdata = &mcf_data;
+ 	mcf_edma->big_endian = 1;
  
- 	smp_rmb();
+-	if (!mcf_edma->n_chans) {
+-		dev_info(&pdev->dev, "setting default channel number to 64");
+-		mcf_edma->n_chans = 64;
+-	}
+-
+ 	mutex_init(&mcf_edma->fsl_edma_mutex);
  
-+	/* READ_ONCE() are paired with WRITE_ONCE() in __packet_set_status */
-+
- 	h.raw = frame;
- 	switch (po->tp_version) {
- 	case TPACKET_V1:
- 		flush_dcache_page(pgv_to_page(&h.h1->tp_status));
--		return h.h1->tp_status;
-+		return READ_ONCE(h.h1->tp_status);
- 	case TPACKET_V2:
- 		flush_dcache_page(pgv_to_page(&h.h2->tp_status));
--		return h.h2->tp_status;
-+		return READ_ONCE(h.h2->tp_status);
- 	case TPACKET_V3:
- 		flush_dcache_page(pgv_to_page(&h.h3->tp_status));
--		return h.h3->tp_status;
-+		return READ_ONCE(h.h3->tp_status);
- 	default:
- 		WARN(1, "TPACKET version not supported.\n");
- 		BUG();
+ 	mcf_edma->membase = devm_platform_ioremap_resource(pdev, 0);
 
 
