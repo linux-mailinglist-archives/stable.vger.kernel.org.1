@@ -2,42 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8153177ABC9
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:25:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9561577ABCC
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:25:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231688AbjHMVZp (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:25:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57972 "EHLO
+        id S231695AbjHMVZx (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:25:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58924 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231694AbjHMVZo (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:25:44 -0400
+        with ESMTP id S231694AbjHMVZw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:25:52 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E16910F5
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:25:46 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 67CBE10DD
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:25:54 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D5B1A62947
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:25:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF67BC433C7;
-        Sun, 13 Aug 2023 21:25:44 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id F1B2B62969
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:25:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15A34C433C8;
+        Sun, 13 Aug 2023 21:25:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691961945;
-        bh=Voc/z56ludH7cMbTRV4Gn8QSgPht4EgCGug6G1acmEQ=;
+        s=korg; t=1691961953;
+        bh=GZWQy4wMUknFyU1T7CEyqwc2e+Alm6E+Wd3HmcY1kWY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=DfPWAuU2c9dBjLVaP7EBz7FQ+2ub8n3qkdctaRGKnWG/3/Y7Q1QIcbUct5+W1WjH/
-         GAFMqMuJrnck3rbRwfG3+oRaWDbEmjsdQToFsQ8OADEpsOllHXYnuBtZiWZrv9T5P7
-         74rVX8EnjRZaOZNEBL2tJxThy2mL6l4EmBR4lWlc=
+        b=T9UHdvQHi+SPkcDzKj49T2ABtGedZy33F7mC6z/jWOBA1yWVv8mNw8FQ3HLgdfyAj
+         HKt8dco4wgSQZfqJ7wB5q4k3CRYs3tB23QJHwdhdslY6Am9CFcGzU4iYqpE3TFH54j
+         3atmS9GDpSiEEsnMVkf5JU8Z2g+FjFvPK3tDX4kE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev, Helge Deller <deller@gmx.de>,
-        Christoph Biedl <linux-kernel.bfrz@manchmal.in-ulm.de>,
-        Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.4 028/206] io_uring/parisc: Adjust pgoff in io_uring mmap() for parisc
-Date:   Sun, 13 Aug 2023 23:16:38 +0200
-Message-ID: <20230813211725.807909427@linuxfoundation.org>
+        John David Anglin <dave.anglin@bell.net>
+Subject: [PATCH 6.4 029/206] parisc: Fix lightweight spinlock checks to not break futexes
+Date:   Sun, 13 Aug 2023 23:16:39 +0200
+Message-ID: <20230813211725.837786672@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230813211724.969019629@linuxfoundation.org>
 References: <20230813211724.969019629@linuxfoundation.org>
@@ -57,86 +56,176 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Helge Deller <deller@gmx.de>
 
-commit 56675f8b9f9b15b024b8e3145fa289b004916ab7 upstream.
+commit a0f4b7879f2e14986200747d1b545e5daac8c624 upstream.
 
-The changes from commit 32832a407a71 ("io_uring: Fix io_uring mmap() by
-using architecture-provided get_unmapped_area()") to the parisc
-implementation of get_unmapped_area() broke glibc's locale-gen
-executable when running on parisc.
+The lightweight spinlock checks verify that a spinlock has either value
+0 (spinlock locked) and that not any other bits than in
+__ARCH_SPIN_LOCK_UNLOCKED_VAL is set.
 
-This patch reverts those architecture-specific changes, and instead
-adjusts in io_uring_mmu_get_unmapped_area() the pgoff offset which is
-then given to parisc's get_unmapped_area() function.  This is much
-cleaner than the previous approach, and we still will get a coherent
-addresss.
+This breaks the current LWS code, which writes the address of the lock
+into the lock word to unlock it, which was an optimization to save one
+assembler instruction.
 
-This patch has no effect on other architectures (SHM_COLOUR is only
-defined on parisc), and the liburing testcase stil passes on parisc.
+Fix it by making spinlock_types.h accessible for asm code, change the
+LWS spinlock-unlocking code to write __ARCH_SPIN_LOCK_UNLOCKED_VAL into
+the lock word, and add some missing lightweight spinlock checks to the
+LWS path. Finally, make the spinlock checks dependend on DEBUG_KERNEL.
 
-Cc: stable@vger.kernel.org # 6.4
+Noticed-by: John David Anglin <dave.anglin@bell.net>
 Signed-off-by: Helge Deller <deller@gmx.de>
-Reported-by: Christoph Biedl <linux-kernel.bfrz@manchmal.in-ulm.de>
-Fixes: 32832a407a71 ("io_uring: Fix io_uring mmap() by using architecture-provided get_unmapped_area()")
-Fixes: d808459b2e31 ("io_uring: Adjust mapping wrt architecture aliasing requirements")
-Link: https://lore.kernel.org/r/ZNEyGV0jyI8kOOfz@p100
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Tested-by: John David Anglin <dave.anglin@bell.net>
+Cc: stable@vger.kernel.org # v6.4+
+Fixes: 15e64ef6520e ("parisc: Add lightweight spinlock checks")
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/parisc/kernel/sys_parisc.c |   15 +++++----------
- io_uring/io_uring.c             |    3 +++
- 2 files changed, 8 insertions(+), 10 deletions(-)
+ arch/parisc/Kconfig.debug                |  2 +-
+ arch/parisc/include/asm/spinlock.h       |  2 --
+ arch/parisc/include/asm/spinlock_types.h |  6 ++++++
+ arch/parisc/kernel/syscall.S             | 23 ++++++++++++++++++++---
+ 4 files changed, 27 insertions(+), 6 deletions(-)
 
---- a/arch/parisc/kernel/sys_parisc.c
-+++ b/arch/parisc/kernel/sys_parisc.c
-@@ -26,17 +26,12 @@
- #include <linux/compat.h>
+diff --git a/arch/parisc/Kconfig.debug b/arch/parisc/Kconfig.debug
+index 1401e4c5fe5f..bf2b21b96f0b 100644
+--- a/arch/parisc/Kconfig.debug
++++ b/arch/parisc/Kconfig.debug
+@@ -2,7 +2,7 @@
+ #
+ config LIGHTWEIGHT_SPINLOCK_CHECK
+ 	bool "Enable lightweight spinlock checks"
+-	depends on SMP && !DEBUG_SPINLOCK
++	depends on DEBUG_KERNEL && SMP && !DEBUG_SPINLOCK
+ 	default y
+ 	help
+ 	  Add checks with low performance impact to the spinlock functions
+diff --git a/arch/parisc/include/asm/spinlock.h b/arch/parisc/include/asm/spinlock.h
+index edfcb9858bcb..0b326e52255e 100644
+--- a/arch/parisc/include/asm/spinlock.h
++++ b/arch/parisc/include/asm/spinlock.h
+@@ -7,8 +7,6 @@
+ #include <asm/processor.h>
+ #include <asm/spinlock_types.h>
  
- /*
-- * Construct an artificial page offset for the mapping based on the virtual
-+ * Construct an artificial page offset for the mapping based on the physical
-  * address of the kernel file mapping variable.
-- * If filp is zero the calculated pgoff value aliases the memory of the given
-- * address. This is useful for io_uring where the mapping shall alias a kernel
-- * address and a userspace adress where both the kernel and the userspace
-- * access the same memory region.
-  */
--#define GET_FILP_PGOFF(filp, addr)		\
--	((filp ? (((unsigned long) filp->f_mapping) >> 8)	\
--		 & ((SHM_COLOUR-1) >> PAGE_SHIFT) : 0UL)	\
--	  + (addr >> PAGE_SHIFT))
-+#define GET_FILP_PGOFF(filp)		\
-+	(filp ? (((unsigned long) filp->f_mapping) >> 8)	\
-+		 & ((SHM_COLOUR-1) >> PAGE_SHIFT) : 0UL)
+-#define SPINLOCK_BREAK_INSN	0x0000c006	/* break 6,6 */
+-
+ static inline void arch_spin_val_check(int lock_val)
+ {
+ 	if (IS_ENABLED(CONFIG_LIGHTWEIGHT_SPINLOCK_CHECK))
+diff --git a/arch/parisc/include/asm/spinlock_types.h b/arch/parisc/include/asm/spinlock_types.h
+index d65934079ebd..efd06a897c6a 100644
+--- a/arch/parisc/include/asm/spinlock_types.h
++++ b/arch/parisc/include/asm/spinlock_types.h
+@@ -4,6 +4,10 @@
  
- static unsigned long shared_align_offset(unsigned long filp_pgoff,
- 					 unsigned long pgoff)
-@@ -116,7 +111,7 @@ static unsigned long arch_get_unmapped_a
- 	do_color_align = 0;
- 	if (filp || (flags & MAP_SHARED))
- 		do_color_align = 1;
--	filp_pgoff = GET_FILP_PGOFF(filp, addr);
-+	filp_pgoff = GET_FILP_PGOFF(filp);
+ #define __ARCH_SPIN_LOCK_UNLOCKED_VAL	0x1a46
  
- 	if (flags & MAP_FIXED) {
- 		/* Even MAP_FIXED mappings must reside within TASK_SIZE */
---- a/io_uring/io_uring.c
-+++ b/io_uring/io_uring.c
-@@ -3466,6 +3466,8 @@ static unsigned long io_uring_mmu_get_un
- 	 * - use the kernel virtual address of the shared io_uring context
- 	 *   (instead of the userspace-provided address, which has to be 0UL
- 	 *   anyway).
-+	 * - use the same pgoff which the get_unmapped_area() uses to
-+	 *   calculate the page colouring.
- 	 * For architectures without such aliasing requirements, the
- 	 * architecture will return any suitable mapping because addr is 0.
- 	 */
-@@ -3474,6 +3476,7 @@ static unsigned long io_uring_mmu_get_un
- 	pgoff = 0;	/* has been translated to ptr above */
- #ifdef SHM_COLOUR
- 	addr = (uintptr_t) ptr;
-+	pgoff = addr >> PAGE_SHIFT;
- #else
- 	addr = 0UL;
- #endif
++#define SPINLOCK_BREAK_INSN	0x0000c006	/* break 6,6 */
++
++#ifndef __ASSEMBLY__
++
+ typedef struct {
+ #ifdef CONFIG_PA20
+ 	volatile unsigned int slock;
+@@ -27,6 +31,8 @@ typedef struct {
+ 	volatile unsigned int	counter;
+ } arch_rwlock_t;
+ 
++#endif /* __ASSEMBLY__ */
++
+ #define __ARCH_RW_LOCK_UNLOCKED__       0x01000000
+ #define __ARCH_RW_LOCK_UNLOCKED         { .lock_mutex = __ARCH_SPIN_LOCK_UNLOCKED, \
+ 					.counter = __ARCH_RW_LOCK_UNLOCKED__ }
+diff --git a/arch/parisc/kernel/syscall.S b/arch/parisc/kernel/syscall.S
+index 1373e5129868..1f51aa9c8230 100644
+--- a/arch/parisc/kernel/syscall.S
++++ b/arch/parisc/kernel/syscall.S
+@@ -39,6 +39,7 @@ registers).
+ #include <asm/assembly.h>
+ #include <asm/processor.h>
+ #include <asm/cache.h>
++#include <asm/spinlock_types.h>
+ 
+ #include <linux/linkage.h>
+ 
+@@ -66,6 +67,16 @@ registers).
+ 	stw	\reg1, 0(%sr2,\reg2)
+ 	.endm
+ 
++	/* raise exception if spinlock content is not zero or
++	 * __ARCH_SPIN_LOCK_UNLOCKED_VAL */
++	.macro	spinlock_check spin_val,tmpreg
++#ifdef CONFIG_LIGHTWEIGHT_SPINLOCK_CHECK
++	ldi	__ARCH_SPIN_LOCK_UNLOCKED_VAL, \tmpreg
++	andcm,=	\spin_val, \tmpreg, %r0
++	.word	SPINLOCK_BREAK_INSN
++#endif
++	.endm
++
+ 	.text
+ 
+ 	.import syscall_exit,code
+@@ -508,7 +519,8 @@ lws_start:
+ 
+ lws_exit_noerror:
+ 	lws_pagefault_enable	%r1,%r21
+-	stw,ma	%r20, 0(%sr2,%r20)
++	ldi	__ARCH_SPIN_LOCK_UNLOCKED_VAL, %r21
++	stw,ma	%r21, 0(%sr2,%r20)
+ 	ssm	PSW_SM_I, %r0
+ 	b	lws_exit
+ 	copy	%r0, %r21
+@@ -521,7 +533,8 @@ lws_wouldblock:
+ 
+ lws_pagefault:
+ 	lws_pagefault_enable	%r1,%r21
+-	stw,ma	%r20, 0(%sr2,%r20)
++	ldi	__ARCH_SPIN_LOCK_UNLOCKED_VAL, %r21
++	stw,ma	%r21, 0(%sr2,%r20)
+ 	ssm	PSW_SM_I, %r0
+ 	ldo	3(%r0),%r28
+ 	b	lws_exit
+@@ -619,6 +632,7 @@ lws_compare_and_swap:
+ 
+ 	/* Try to acquire the lock */
+ 	LDCW	0(%sr2,%r20), %r28
++	spinlock_check	%r28, %r21
+ 	comclr,<>	%r0, %r28, %r0
+ 	b,n	lws_wouldblock
+ 
+@@ -772,6 +786,7 @@ cas2_lock_start:
+ 
+ 	/* Try to acquire the lock */
+ 	LDCW	0(%sr2,%r20), %r28
++	spinlock_check	%r28, %r21
+ 	comclr,<>	%r0, %r28, %r0
+ 	b,n	lws_wouldblock
+ 
+@@ -1001,6 +1016,7 @@ atomic_xchg_start:
+ 
+ 	/* Try to acquire the lock */
+ 	LDCW	0(%sr2,%r20), %r28
++	spinlock_check	%r28, %r21
+ 	comclr,<>	%r0, %r28, %r0
+ 	b,n	lws_wouldblock
+ 
+@@ -1199,6 +1215,7 @@ atomic_store_start:
+ 
+ 	/* Try to acquire the lock */
+ 	LDCW	0(%sr2,%r20), %r28
++	spinlock_check	%r28, %r21
+ 	comclr,<>	%r0, %r28, %r0
+ 	b,n	lws_wouldblock
+ 
+@@ -1330,7 +1347,7 @@ ENTRY(lws_lock_start)
+ 	/* lws locks */
+ 	.rept 256
+ 	/* Keep locks aligned at 16-bytes */
+-	.word 1
++	.word __ARCH_SPIN_LOCK_UNLOCKED_VAL
+ 	.word 0 
+ 	.word 0
+ 	.word 0
+-- 
+2.41.0
+
 
 
