@@ -2,116 +2,178 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1FCD277AD4C
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:48:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4FE1F77AE21
+	for <lists+stable@lfdr.de>; Mon, 14 Aug 2023 00:00:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230289AbjHMVsW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:48:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33202 "EHLO
+        id S232597AbjHMWA3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 18:00:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36546 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230299AbjHMVsC (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:48:02 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A8941708
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:39:37 -0700 (PDT)
+        with ESMTP id S232318AbjHMV7W (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:59:22 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB1C92D50
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:44:45 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6EEC26381F
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:39:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87AD3C433C7;
-        Sun, 13 Aug 2023 21:39:32 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7A13460B9D
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:44:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 906B9C433C7;
+        Sun, 13 Aug 2023 21:44:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691962772;
-        bh=YYpk5UZMJzfKeY0OXNFaMV4+zqmVAOe8Kp/+jib3eQA=;
+        s=korg; t=1691963084;
+        bh=4sHEEj+qEf3yChF6Wpt8MYCTbqfsOu6LsEoNvIbxmzg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=pUzZR15zamM4oIhB7J+bXW06EWp5b5wOvb3rW5L99FwDe4+LkpeQ4eJ3wlFTyTolw
-         ZTVJcHfgih7TAJgaokDa5H17CdEV2eZ+Q9PJCRuwcwT68kXa4uDTZaka/3b7DmcJWm
-         M42QFBNVM+A9cW3Ipda1QUBFUsgSv86RW0JMa9Oc=
+        b=GWq0kvYbDkbdSIPx81u8RqR3wbk2ypNKCUYsO8bTxmTM+1bhET/dZmLqTekB31t+K
+         9b8pX75q12zLldlL1j0kSNw96Vp/FRClQovM4SXiTfyq2zql3woKvzR0vdS017IO92
+         X+q/MMj+YeDxj6VVxt9bIC4iD0WzSEc/3jiJdhLY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ming Lei <ming.lei@redhat.com>,
-        Yi Zhang <yi.zhang@redhat.com>,
-        Sagi Grimberg <sagi@grimberg.me>,
-        Keith Busch <kbusch@kernel.org>
-Subject: [PATCH 6.1 133/149] nvme-tcp: fix potential unbalanced freeze & unfreeze
+        patches@lists.linux.dev, syzbot <syzkaller@googlegroups.com>,
+        Eric Dumazet <edumazet@google.com>,
+        Willem de Bruijn <willemb@google.com>,
+        Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.15 47/89] net/packet: annotate data-races around tp->status
 Date:   Sun, 13 Aug 2023 23:19:38 +0200
-Message-ID: <20230813211722.694200364@linuxfoundation.org>
+Message-ID: <20230813211712.200322740@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211718.757428827@linuxfoundation.org>
-References: <20230813211718.757428827@linuxfoundation.org>
+In-Reply-To: <20230813211710.787645394@linuxfoundation.org>
+References: <20230813211710.787645394@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ming Lei <ming.lei@redhat.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 99dc264014d5aed66ee37ddf136a38b5a2b1b529 upstream.
+commit 8a9896177784063d01068293caea3f74f6830ff6 upstream.
 
-Move start_freeze into nvme_tcp_configure_io_queues(), and there is
-at least two benefits:
+Another syzbot report [1] is about tp->status lockless reads
+from __packet_get_status()
 
-1) fix unbalanced freeze and unfreeze, since re-connection work may
-fail or be broken by removal
+[1]
+BUG: KCSAN: data-race in __packet_rcv_has_room / __packet_set_status
 
-2) IO during error recovery can be failfast quickly because nvme fabrics
-unquiesces queues after teardown.
+write to 0xffff888117d7c080 of 8 bytes by interrupt on cpu 0:
+__packet_set_status+0x78/0xa0 net/packet/af_packet.c:407
+tpacket_rcv+0x18bb/0x1a60 net/packet/af_packet.c:2483
+deliver_skb net/core/dev.c:2173 [inline]
+__netif_receive_skb_core+0x408/0x1e80 net/core/dev.c:5337
+__netif_receive_skb_one_core net/core/dev.c:5491 [inline]
+__netif_receive_skb+0x57/0x1b0 net/core/dev.c:5607
+process_backlog+0x21f/0x380 net/core/dev.c:5935
+__napi_poll+0x60/0x3b0 net/core/dev.c:6498
+napi_poll net/core/dev.c:6565 [inline]
+net_rx_action+0x32b/0x750 net/core/dev.c:6698
+__do_softirq+0xc1/0x265 kernel/softirq.c:571
+invoke_softirq kernel/softirq.c:445 [inline]
+__irq_exit_rcu+0x57/0xa0 kernel/softirq.c:650
+sysvec_apic_timer_interrupt+0x6d/0x80 arch/x86/kernel/apic/apic.c:1106
+asm_sysvec_apic_timer_interrupt+0x1a/0x20 arch/x86/include/asm/idtentry.h:645
+smpboot_thread_fn+0x33c/0x4a0 kernel/smpboot.c:112
+kthread+0x1d7/0x210 kernel/kthread.c:379
+ret_from_fork+0x1f/0x30 arch/x86/entry/entry_64.S:308
 
-One side-effect is that !mpath request may timeout during connecting
-because of queue topo change, but that looks not one big deal:
+read to 0xffff888117d7c080 of 8 bytes by interrupt on cpu 1:
+__packet_get_status net/packet/af_packet.c:436 [inline]
+packet_lookup_frame net/packet/af_packet.c:524 [inline]
+__tpacket_has_room net/packet/af_packet.c:1255 [inline]
+__packet_rcv_has_room+0x3f9/0x450 net/packet/af_packet.c:1298
+tpacket_rcv+0x275/0x1a60 net/packet/af_packet.c:2285
+deliver_skb net/core/dev.c:2173 [inline]
+dev_queue_xmit_nit+0x38a/0x5e0 net/core/dev.c:2243
+xmit_one net/core/dev.c:3574 [inline]
+dev_hard_start_xmit+0xcf/0x3f0 net/core/dev.c:3594
+__dev_queue_xmit+0xefb/0x1d10 net/core/dev.c:4244
+dev_queue_xmit include/linux/netdevice.h:3088 [inline]
+can_send+0x4eb/0x5d0 net/can/af_can.c:276
+bcm_can_tx+0x314/0x410 net/can/bcm.c:302
+bcm_tx_timeout_handler+0xdb/0x260
+__run_hrtimer kernel/time/hrtimer.c:1685 [inline]
+__hrtimer_run_queues+0x217/0x700 kernel/time/hrtimer.c:1749
+hrtimer_run_softirq+0xd6/0x120 kernel/time/hrtimer.c:1766
+__do_softirq+0xc1/0x265 kernel/softirq.c:571
+run_ksoftirqd+0x17/0x20 kernel/softirq.c:939
+smpboot_thread_fn+0x30a/0x4a0 kernel/smpboot.c:164
+kthread+0x1d7/0x210 kernel/kthread.c:379
+ret_from_fork+0x1f/0x30 arch/x86/entry/entry_64.S:308
 
-1) same problem exists with current code base
+value changed: 0x0000000000000000 -> 0x0000000020000081
 
-2) compared with !mpath, mpath use case is dominant
+Reported by Kernel Concurrency Sanitizer on:
+CPU: 1 PID: 19 Comm: ksoftirqd/1 Not tainted 6.4.0-syzkaller #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 05/27/2023
 
-Fixes: 2875b0aecabe ("nvme-tcp: fix controller reset hang during traffic")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ming Lei <ming.lei@redhat.com>
-Tested-by: Yi Zhang <yi.zhang@redhat.com>
-Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Fixes: 69e3c75f4d54 ("net: TX_RING and packet mmap")
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Link: https://lore.kernel.org/r/20230803145600.2937518-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nvme/host/tcp.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/packet/af_packet.c |   16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
 
---- a/drivers/nvme/host/tcp.c
-+++ b/drivers/nvme/host/tcp.c
-@@ -1890,6 +1890,7 @@ static int nvme_tcp_configure_io_queues(
- 		goto out_cleanup_connect_q;
+--- a/net/packet/af_packet.c
++++ b/net/packet/af_packet.c
+@@ -368,18 +368,20 @@ static void __packet_set_status(struct p
+ {
+ 	union tpacket_uhdr h;
  
- 	if (!new) {
-+		nvme_start_freeze(ctrl);
- 		nvme_start_queues(ctrl);
- 		if (!nvme_wait_freeze_timeout(ctrl, NVME_IO_TIMEOUT)) {
- 			/*
-@@ -1898,6 +1899,7 @@ static int nvme_tcp_configure_io_queues(
- 			 * to be safe.
- 			 */
- 			ret = -ENODEV;
-+			nvme_unfreeze(ctrl);
- 			goto out_wait_freeze_timed_out;
- 		}
- 		blk_mq_update_nr_hw_queues(ctrl->tagset,
-@@ -2002,7 +2004,6 @@ static void nvme_tcp_teardown_io_queues(
- 	if (ctrl->queue_count <= 1)
- 		return;
- 	nvme_stop_admin_queue(ctrl);
--	nvme_start_freeze(ctrl);
- 	nvme_stop_queues(ctrl);
- 	nvme_sync_io_queues(ctrl);
- 	nvme_tcp_stop_io_queues(ctrl);
++	/* WRITE_ONCE() are paired with READ_ONCE() in __packet_get_status */
++
+ 	h.raw = frame;
+ 	switch (po->tp_version) {
+ 	case TPACKET_V1:
+-		h.h1->tp_status = status;
++		WRITE_ONCE(h.h1->tp_status, status);
+ 		flush_dcache_page(pgv_to_page(&h.h1->tp_status));
+ 		break;
+ 	case TPACKET_V2:
+-		h.h2->tp_status = status;
++		WRITE_ONCE(h.h2->tp_status, status);
+ 		flush_dcache_page(pgv_to_page(&h.h2->tp_status));
+ 		break;
+ 	case TPACKET_V3:
+-		h.h3->tp_status = status;
++		WRITE_ONCE(h.h3->tp_status, status);
+ 		flush_dcache_page(pgv_to_page(&h.h3->tp_status));
+ 		break;
+ 	default:
+@@ -396,17 +398,19 @@ static int __packet_get_status(const str
+ 
+ 	smp_rmb();
+ 
++	/* READ_ONCE() are paired with WRITE_ONCE() in __packet_set_status */
++
+ 	h.raw = frame;
+ 	switch (po->tp_version) {
+ 	case TPACKET_V1:
+ 		flush_dcache_page(pgv_to_page(&h.h1->tp_status));
+-		return h.h1->tp_status;
++		return READ_ONCE(h.h1->tp_status);
+ 	case TPACKET_V2:
+ 		flush_dcache_page(pgv_to_page(&h.h2->tp_status));
+-		return h.h2->tp_status;
++		return READ_ONCE(h.h2->tp_status);
+ 	case TPACKET_V3:
+ 		flush_dcache_page(pgv_to_page(&h.h3->tp_status));
+-		return h.h3->tp_status;
++		return READ_ONCE(h.h3->tp_status);
+ 	default:
+ 		WARN(1, "TPACKET version not supported.\n");
+ 		BUG();
 
 
