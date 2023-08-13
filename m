@@ -2,33 +2,33 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9016777AB65
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:21:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 021DA77AB7B
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:22:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230271AbjHMVV2 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:21:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34336 "EHLO
+        id S230384AbjHMVWm (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:22:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40322 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229627AbjHMVV1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:21:27 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B65B710DB
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:21:29 -0700 (PDT)
+        with ESMTP id S230400AbjHMVW0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:22:26 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E2DFF10D0
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:22:28 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5532D6279C
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:21:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67315C433C7;
-        Sun, 13 Aug 2023 21:21:28 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7924462801
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:22:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AFD3C433C8;
+        Sun, 13 Aug 2023 21:22:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691961688;
-        bh=N9ptI9FnfkJvJ+R/hQlmk0Au1HWyfaMbwL0Y/pGLTfg=;
+        s=korg; t=1691961747;
+        bh=0If/8gDFTYr+jB8e5PWtKj56eMQEchOko0mPWvRU68w=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=1AogvgrOS2LjSjf6cFr+GB/29tJ7WWft2qpDLprv19Dz52uv2sGYTEEgywNCdulj8
-         9psORIGy2CfmgAfeROAmTjsPl5ihVhLK4J9m1/cqsbFp0I4oLAfsMFuIHM2Z7opLPX
-         UL0pzSFw0tT5++afz9m33wGwBlVX/Gb09xoLCdc8=
+        b=1fHQe/5Vcfcqwcn33/v0vafoOiCxT50C4saioMvlETEDXE9EAOsZghV2PbMUPFs42
+         DJliuHb+74Cn2T68mEaaJIp008SnfFjpah0dbN1okDO3X7Ft5BbDqvBVxBGKYkYCiq
+         tG7Y1NaUTsnx179bgLsHtd+aDRK4hvZU/MLqOfJw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -36,19 +36,20 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Richard Tresidder <rtresidd@electromag.com.au>,
         =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
         Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 4.14 04/26] dmaengine: pl330: Return DMA_PAUSED when transaction is paused
-Date:   Sun, 13 Aug 2023 23:18:57 +0200
-Message-ID: <20230813211703.149840720@linuxfoundation.org>
+Subject: [PATCH 4.19 04/33] dmaengine: pl330: Return DMA_PAUSED when transaction is paused
+Date:   Sun, 13 Aug 2023 23:18:58 +0200
+Message-ID: <20230813211704.082942560@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211702.980427106@linuxfoundation.org>
-References: <20230813211702.980427106@linuxfoundation.org>
+In-Reply-To: <20230813211703.915807095@linuxfoundation.org>
+References: <20230813211703.915807095@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -85,7 +86,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/drivers/dma/pl330.c
 +++ b/drivers/dma/pl330.c
-@@ -404,6 +404,12 @@ enum desc_status {
+@@ -405,6 +405,12 @@ enum desc_status {
  	 */
  	BUSY,
  	/*
@@ -98,7 +99,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  	 * Sitting on the channel work_list but xfer done
  	 * by PL330 core
  	 */
-@@ -1926,7 +1932,7 @@ static inline void fill_queue(struct dma
+@@ -2028,7 +2034,7 @@ static inline void fill_queue(struct dma
  	list_for_each_entry(desc, &pch->work_list, node) {
  
  		/* If already submitted */
@@ -107,7 +108,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  			continue;
  
  		ret = pl330_submit_req(pch->thread, desc);
-@@ -2191,6 +2197,7 @@ static int pl330_pause(struct dma_chan *
+@@ -2305,6 +2311,7 @@ static int pl330_pause(struct dma_chan *
  {
  	struct dma_pl330_chan *pch = to_pchan(chan);
  	struct pl330_dmac *pl330 = pch->dmac;
@@ -115,7 +116,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  	unsigned long flags;
  
  	pm_runtime_get_sync(pl330->ddma.dev);
-@@ -2200,6 +2207,10 @@ static int pl330_pause(struct dma_chan *
+@@ -2314,6 +2321,10 @@ static int pl330_pause(struct dma_chan *
  	_stop(pch->thread);
  	spin_unlock(&pl330->lock);
  
@@ -126,7 +127,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  	spin_unlock_irqrestore(&pch->lock, flags);
  	pm_runtime_mark_last_busy(pl330->ddma.dev);
  	pm_runtime_put_autosuspend(pl330->ddma.dev);
-@@ -2290,7 +2301,7 @@ pl330_tx_status(struct dma_chan *chan, d
+@@ -2404,7 +2415,7 @@ pl330_tx_status(struct dma_chan *chan, d
  		else if (running && desc == running)
  			transferred =
  				pl330_get_current_xferred_count(pch, desc);
@@ -135,7 +136,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  			/*
  			 * Busy but not running means either just enqueued,
  			 * or finished and not yet marked done
-@@ -2307,6 +2318,9 @@ pl330_tx_status(struct dma_chan *chan, d
+@@ -2421,6 +2432,9 @@ pl330_tx_status(struct dma_chan *chan, d
  			case DONE:
  				ret = DMA_COMPLETE;
  				break;
