@@ -2,46 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1421277AD84
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:49:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EC38377AB93
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:23:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232429AbjHMVtW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:49:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60498 "EHLO
+        id S230281AbjHMVX0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:23:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59358 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232316AbjHMVsw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:48:52 -0400
+        with ESMTP id S231287AbjHMVX0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:23:26 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F3D31725
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:40:11 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24A5FBF
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:23:28 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 233AB63826
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:40:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F918C433C8;
-        Sun, 13 Aug 2023 21:40:10 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id AE23762894
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:23:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8F2DC433C8;
+        Sun, 13 Aug 2023 21:23:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691962810;
-        bh=px2ikZgJt3p1w8e9TEPRcoe7l5DCFqn1YlrIsCewxYE=;
+        s=korg; t=1691961807;
+        bh=qURCFTTA6WAwrpD9QfXsjh2VroUH7rCvNn+CmsspVC8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rS5UFgFESxgCNmeW5SQsf0nhDzj0QpLQJHwbgrNRis+LCIaytRNCzqKZnUk0ZABK1
-         RMLeOLYcAyATmeGnKRoMuIUURMcDy7gqg1+hl+sa0gKbVr+eIsX89ua3gr/KNy1PVU
-         gSiZYIkIYIGooJU2OeU7dNK4gn5mIAoapCYPwgK4=
+        b=y2j5E2ps1YRjmvgjxT55N2DuLqAYDQIbozygypPeXAnDXT9gVjjMthCG+SJ+H0uel
+         jggrMldxYTavq/+Wb2ZG3swrVvKpZBBglxE6hLp8+CRaEaBf5IPBg3cIeP8w8H2IDQ
+         OUTmvC5ZGAue0fohjfFxXjuIFLwmlO9NTUpQKGgY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Colin Ian King <colin.i.king@gmail.com>,
-        Konstantin Khlebnikov <koct9i@gmail.com>,
-        "Matthew Wilcox (Oracle)" <willy@infradead.org>,
-        Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.10 16/68] radix tree test suite: fix incorrect allocation size for pthreads
-Date:   Sun, 13 Aug 2023 23:19:17 +0200
-Message-ID: <20230813211708.648444525@linuxfoundation.org>
+        patches@lists.linux.dev, Josef Bacik <josef@toxicpanda.com>,
+        Christoph Hellwig <hch@lst.de>, David Sterba <dsterba@suse.com>
+Subject: [PATCH 4.19 24/33] btrfs: dont stop integrity writeback too early
+Date:   Sun, 13 Aug 2023 23:19:18 +0200
+Message-ID: <20230813211704.805831080@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211708.149630011@linuxfoundation.org>
-References: <20230813211708.149630011@linuxfoundation.org>
+In-Reply-To: <20230813211703.915807095@linuxfoundation.org>
+References: <20230813211703.915807095@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,41 +54,50 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Colin Ian King <colin.i.king@gmail.com>
+From: Christoph Hellwig <hch@lst.de>
 
-commit cac7ea57a06016e4914848b707477fb07ee4ae1c upstream.
+commit effa24f689ce0948f68c754991a445a8d697d3a8 upstream.
 
-Currently the pthread allocation for each array item is based on the size
-of a pthread_t pointer and should be the size of the pthread_t structure,
-so the allocation is under-allocating the correct size.  Fix this by using
-the size of each element in the pthreads array.
+extent_write_cache_pages stops writing pages as soon as nr_to_write hits
+zero.  That is the right thing for opportunistic writeback, but incorrect
+for data integrity writeback, which needs to ensure that no dirty pages
+are left in the range.  Thus only stop the writeback for WB_SYNC_NONE
+if nr_to_write hits 0.
 
-Static analysis cppcheck reported:
-tools/testing/radix-tree/regression1.c:180:2: warning: Size of pointer
-'threads' used instead of size of its data. [pointerSize]
+This is a port of write_cache_pages changes in commit 05fe478dd04e
+("mm: write_cache_pages integrity fix").
 
-Link: https://lkml.kernel.org/r/20230727160930.632674-1-colin.i.king@gmail.com
-Fixes: 1366c37ed84b ("radix tree test harness")
-Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
-Cc: Konstantin Khlebnikov <koct9i@gmail.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Note that I've only trigger the problem with other changes to the btrfs
+writeback code, but this condition seems worthwhile fixing anyway.
+
+CC: stable@vger.kernel.org # 4.14+
+Reviewed-by: Josef Bacik <josef@toxicpanda.com>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: David Sterba <dsterba@suse.com>
+[ updated comment ]
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/radix-tree/regression1.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/btrfs/extent_io.c |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/tools/testing/radix-tree/regression1.c
-+++ b/tools/testing/radix-tree/regression1.c
-@@ -177,7 +177,7 @@ void regression1_test(void)
- 	nr_threads = 2;
- 	pthread_barrier_init(&worker_barrier, NULL, nr_threads);
+--- a/fs/btrfs/extent_io.c
++++ b/fs/btrfs/extent_io.c
+@@ -3928,11 +3928,12 @@ retry:
+ 			free_extent_buffer(eb);
  
--	threads = malloc(nr_threads * sizeof(pthread_t *));
-+	threads = malloc(nr_threads * sizeof(*threads));
- 
- 	for (i = 0; i < nr_threads; i++) {
- 		arg = i;
+ 			/*
+-			 * the filesystem may choose to bump up nr_to_write.
++			 * The filesystem may choose to bump up nr_to_write.
+ 			 * We have to make sure to honor the new nr_to_write
+-			 * at any time
++			 * at any time.
+ 			 */
+-			nr_to_write_done = wbc->nr_to_write <= 0;
++			nr_to_write_done = (wbc->sync_mode == WB_SYNC_NONE &&
++					    wbc->nr_to_write <= 0);
+ 		}
+ 		pagevec_release(&pvec);
+ 		cond_resched();
 
 
