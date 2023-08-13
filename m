@@ -2,114 +2,127 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DD36177ADA3
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:49:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2C54A77AD94
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:49:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232386AbjHMVtn (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:49:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39738 "EHLO
+        id S232512AbjHMVtd (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:49:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39662 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232387AbjHMVtJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:49:09 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F042B1BDB
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:41:47 -0700 (PDT)
+        with ESMTP id S232355AbjHMVtF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:49:05 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B3AC310F5
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:39:17 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 86C9062784
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:41:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D32DC433C7;
-        Sun, 13 Aug 2023 21:41:46 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6F6946378A
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:39:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84B39C433C8;
+        Sun, 13 Aug 2023 21:39:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691962907;
-        bh=mwXPl1fmAk2/6qni2eX1lhVECipL2FkQkp6jb5pWnZQ=;
+        s=korg; t=1691962756;
+        bh=wNRvscmA2Zxke4ubHVOHpXt0KjqJKn62DXB4yNNSvPY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=f8HxacToY9cC55LwXeyK0/cmuC7XJtlij2BN8r6hlvNUrgS6R14usktqfV7XHAikG
-         KAfuz8GxObUiqJ6owZgS5DfkZg1YRHl1A1ruoPM7pfYddTMcrlElmxp2u7olPTQTzt
-         FKLATavsO0EnrU33J9bbLLN+rPLzswWMHjxIJ8jo=
+        b=VwMLGwJhD6zsZjF5x5XNmRe8PwGWRwHfYdCIuiZZQrAUh18eNt81ugawKF64xvxzD
+         SzpFqIUKzf2YP8ElVDoGhndYr+coX0fTzQPVkBbePLU78ytJvRoyPmIEJRzo4VQCDj
+         l2LTatD8/UYs7wX9smwMGzWiwSTf+X1RlJCph/LA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 5.10 50/68] dmaengine: mcf-edma: Fix a potential un-allocated memory access
+        Simon Trimmer <simont@opensource.cirrus.com>,
+        Richard Fitzgerald <rf@opensource.cirrus.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Hans de Goede <hdegoede@redhat.com>
+Subject: [PATCH 6.1 146/149] ACPI: scan: Create platform device for CS35L56
 Date:   Sun, 13 Aug 2023 23:19:51 +0200
-Message-ID: <20230813211709.670983687@linuxfoundation.org>
+Message-ID: <20230813211723.060106273@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211708.149630011@linuxfoundation.org>
-References: <20230813211708.149630011@linuxfoundation.org>
+In-Reply-To: <20230813211718.757428827@linuxfoundation.org>
+References: <20230813211718.757428827@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Simon Trimmer <simont@opensource.cirrus.com>
 
-commit 0a46781c89dece85386885a407244ca26e5c1c44 upstream.
+commit 1cd0302be5645420f73090aee26fa787287e1096 upstream.
 
-When 'mcf_edma' is allocated, some space is allocated for a
-flexible array at the end of the struct. 'chans' item are allocated, that is
-to say 'pdata->dma_channels'.
+The ACPI device CSC3556 is a Cirrus Logic CS35L56 mono amplifier which
+is used in multiples, and can be connected either to I2C or SPI.
 
-Then, this number of item is stored in 'mcf_edma->n_chans'.
+There will be multiple instances under the same Device() node. Add it
+to ignore_serial_bus_ids and handle it in the serial-multi-instantiate
+driver.
 
-A few lines later, if 'mcf_edma->n_chans' is 0, then a default value of 64
-is set.
+There can be a 5th I2cSerialBusV2, but this is an alias address and doesn't
+represent a real device. Ignore this by having a dummy 5th entry in the
+serial-multi-instantiate instance list with the name of a non-existent
+driver, on the same pattern as done for bsg2150.
 
-This ends to no space allocated by devm_kzalloc() because chans was 0, but
-64 items are read and/or written in some not allocated memory.
-
-Change the logic to define a default value before allocating the memory.
-
-Fixes: e7a3ff92eaf1 ("dmaengine: fsl-edma: add ColdFire mcf5441x edma support")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Link: https://lore.kernel.org/r/f55d914407c900828f6fad3ea5fa791a5f17b9a4.1685172449.git.christophe.jaillet@wanadoo.fr
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Simon Trimmer <simont@opensource.cirrus.com>
+Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
+Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Link: https://lore.kernel.org/r/20230728111345.7224-1-rf@opensource.cirrus.com
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma/mcf-edma.c |   13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+ drivers/acpi/scan.c                             |    1 +
+ drivers/platform/x86/serial-multi-instantiate.c |   14 ++++++++++++++
+ 2 files changed, 15 insertions(+)
 
---- a/drivers/dma/mcf-edma.c
-+++ b/drivers/dma/mcf-edma.c
-@@ -191,7 +191,13 @@ static int mcf_edma_probe(struct platfor
- 		return -EINVAL;
- 	}
+--- a/drivers/acpi/scan.c
++++ b/drivers/acpi/scan.c
+@@ -1712,6 +1712,7 @@ static bool acpi_device_enumeration_by_p
+ 		{"BSG1160", },
+ 		{"BSG2150", },
+ 		{"CSC3551", },
++		{"CSC3556", },
+ 		{"INT33FE", },
+ 		{"INT3515", },
+ 		/* Non-conforming _HID for Cirrus Logic already released */
+--- a/drivers/platform/x86/serial-multi-instantiate.c
++++ b/drivers/platform/x86/serial-multi-instantiate.c
+@@ -330,6 +330,19 @@ static const struct smi_node cs35l41_hda
+ 	.bus_type = SMI_AUTO_DETECT,
+ };
  
--	chans = pdata->dma_channels;
-+	if (!pdata->dma_channels) {
-+		dev_info(&pdev->dev, "setting default channel number to 64");
-+		chans = 64;
-+	} else {
-+		chans = pdata->dma_channels;
-+	}
++static const struct smi_node cs35l56_hda = {
++	.instances = {
++		{ "cs35l56-hda", IRQ_RESOURCE_AUTO, 0 },
++		{ "cs35l56-hda", IRQ_RESOURCE_AUTO, 0 },
++		{ "cs35l56-hda", IRQ_RESOURCE_AUTO, 0 },
++		{ "cs35l56-hda", IRQ_RESOURCE_AUTO, 0 },
++		/* a 5th entry is an alias address, not a real device */
++		{ "cs35l56-hda_dummy_dev" },
++		{}
++	},
++	.bus_type = SMI_AUTO_DETECT,
++};
 +
- 	len = sizeof(*mcf_edma) + sizeof(*mcf_chan) * chans;
- 	mcf_edma = devm_kzalloc(&pdev->dev, len, GFP_KERNEL);
- 	if (!mcf_edma)
-@@ -203,11 +209,6 @@ static int mcf_edma_probe(struct platfor
- 	mcf_edma->drvdata = &mcf_data;
- 	mcf_edma->big_endian = 1;
- 
--	if (!mcf_edma->n_chans) {
--		dev_info(&pdev->dev, "setting default channel number to 64");
--		mcf_edma->n_chans = 64;
--	}
--
- 	mutex_init(&mcf_edma->fsl_edma_mutex);
- 
- 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+ /*
+  * Note new device-ids must also be added to ignore_serial_bus_ids in
+  * drivers/acpi/scan.c: acpi_device_enumeration_by_parent().
+@@ -338,6 +351,7 @@ static const struct acpi_device_id smi_a
+ 	{ "BSG1160", (unsigned long)&bsg1160_data },
+ 	{ "BSG2150", (unsigned long)&bsg2150_data },
+ 	{ "CSC3551", (unsigned long)&cs35l41_hda },
++	{ "CSC3556", (unsigned long)&cs35l56_hda },
+ 	{ "INT3515", (unsigned long)&int3515_data },
+ 	/* Non-conforming _HID for Cirrus Logic already released */
+ 	{ "CLSA0100", (unsigned long)&cs35l41_hda },
 
 
