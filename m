@@ -2,43 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3EC0677AC18
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:29:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 049D977AC19
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:29:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231829AbjHMV3O (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:29:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38554 "EHLO
+        id S231827AbjHMV3R (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:29:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44538 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231827AbjHMV3O (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:29:14 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 643C010D7
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:29:16 -0700 (PDT)
+        with ESMTP id S231804AbjHMV3R (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:29:17 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E9E410DD
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:29:19 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 02B0462A9B
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:29:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B2FBC433C8;
-        Sun, 13 Aug 2023 21:29:14 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B8A1862AB7
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:29:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C83BFC433C8;
+        Sun, 13 Aug 2023 21:29:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691962155;
-        bh=3gHNiJlAYoBN1UEY/DhNVy1/4ubApVr7KOF6R/s7+9Q=;
+        s=korg; t=1691962158;
+        bh=mQ5NRXZvFY+HN6Rd4xPvUZJ1L/QuP3EgdSYFA9qLev8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=k4OiD79gv12Od71OGB8qYsAdowIqM41g7JmgRBPon0tYmzpXybuQQiA4fJ69AuuuL
-         fDcV78m49XM6vk2EzvH2hdPz71rNq0Pu3ZPGZh6g7NEvUDSkftwyqw2ZPYyCUUtbGL
-         OuE7FicGKfY+D2VV2/83Jqjyw8ovAdyybGY1qkYI=
+        b=F+6OlPxRtulcg/57lQIJL9A9W05ra7p6Z/ZjkcRpekQy6pSQ1B893MhWuBLTgcUGK
+         IMeKRDyWF0c+hhATdOil7Xd4cAiG5M9m/LgJY0/lnqqP/Bm7MSHGHwKMxiQPDmqwSs
+         Slr0tcwpVMMq2XpJyGq7eeXj/NR2s/6e9RmfS2jQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
-        Ping Gan <jacky_gam_2001@163.com>, Manjusaka <me@manjusaka.me>,
-        Simon Horman <horms@kernel.org>,
+        patches@lists.linux.dev, Florian Westphal <fw@strlen.de>,
         Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.4 134/206] tcp: add missing family to tcp_set_ca_state() tracepoint
-Date:   Sun, 13 Aug 2023 23:18:24 +0200
-Message-ID: <20230813211728.860086941@linuxfoundation.org>
+Subject: [PATCH 6.4 135/206] tunnels: fix kasan splat when generating ipv4 pmtu error
+Date:   Sun, 13 Aug 2023 23:18:25 +0200
+Message-ID: <20230813211728.887074615@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230813211724.969019629@linuxfoundation.org>
 References: <20230813211724.969019629@linuxfoundation.org>
@@ -46,61 +44,58 @@ User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Eric Dumazet <edumazet@google.com>
+From: Florian Westphal <fw@strlen.de>
 
-commit 8a70ed9520c5fafaac91053cacdd44625c39e188 upstream.
+commit 6a7ac3d20593865209dceb554d8b3f094c6bd940 upstream.
 
-Before this code is copied, add the missing family, as we did in
-commit 3dd344ea84e1 ("net: tracepoint: exposing sk_family in all tcp:tracepoints")
+If we try to emit an icmp error in response to a nonliner skb, we get
 
-Fixes: 15fcdf6ae116 ("tcp: Add tracepoint for tcp_set_ca_state")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Ping Gan <jacky_gam_2001@163.com>
-Cc: Manjusaka <me@manjusaka.me>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20230808084923.2239142-1-edumazet@google.com
+BUG: KASAN: slab-out-of-bounds in ip_compute_csum+0x134/0x220
+Read of size 4 at addr ffff88811c50db00 by task iperf3/1691
+CPU: 2 PID: 1691 Comm: iperf3 Not tainted 6.5.0-rc3+ #309
+[..]
+ kasan_report+0x105/0x140
+ ip_compute_csum+0x134/0x220
+ iptunnel_pmtud_build_icmp+0x554/0x1020
+ skb_tunnel_check_pmtu+0x513/0xb80
+ vxlan_xmit_one+0x139e/0x2ef0
+ vxlan_xmit+0x1867/0x2760
+ dev_hard_start_xmit+0x1ee/0x4f0
+ br_dev_queue_push_xmit+0x4d1/0x660
+ [..]
+
+ip_compute_csum() cannot deal with nonlinear skbs, so avoid it.
+After this change, splat is gone and iperf3 is no longer stuck.
+
+Fixes: 4cb47a8644cc ("tunnels: PMTU discovery support for directly bridged IP packets")
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Link: https://lore.kernel.org/r/20230803152653.29535-2-fw@strlen.de
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/trace/events/tcp.h |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ net/ipv4/ip_tunnel_core.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/include/trace/events/tcp.h
-+++ b/include/trace/events/tcp.h
-@@ -381,6 +381,7 @@ TRACE_EVENT(tcp_cong_state_set,
- 		__field(const void *, skaddr)
- 		__field(__u16, sport)
- 		__field(__u16, dport)
-+		__field(__u16, family)
- 		__array(__u8, saddr, 4)
- 		__array(__u8, daddr, 4)
- 		__array(__u8, saddr_v6, 16)
-@@ -396,6 +397,7 @@ TRACE_EVENT(tcp_cong_state_set,
+--- a/net/ipv4/ip_tunnel_core.c
++++ b/net/ipv4/ip_tunnel_core.c
+@@ -224,7 +224,7 @@ static int iptunnel_pmtud_build_icmp(str
+ 		.un.frag.__unused	= 0,
+ 		.un.frag.mtu		= htons(mtu),
+ 	};
+-	icmph->checksum = ip_compute_csum(icmph, len);
++	icmph->checksum = csum_fold(skb_checksum(skb, 0, len, 0));
+ 	skb_reset_transport_header(skb);
  
- 		__entry->sport = ntohs(inet->inet_sport);
- 		__entry->dport = ntohs(inet->inet_dport);
-+		__entry->family = sk->sk_family;
- 
- 		p32 = (__be32 *) __entry->saddr;
- 		*p32 = inet->inet_saddr;
-@@ -409,7 +411,8 @@ TRACE_EVENT(tcp_cong_state_set,
- 		__entry->cong_state = ca_state;
- 	),
- 
--	TP_printk("sport=%hu dport=%hu saddr=%pI4 daddr=%pI4 saddrv6=%pI6c daddrv6=%pI6c cong_state=%u",
-+	TP_printk("family=%s sport=%hu dport=%hu saddr=%pI4 daddr=%pI4 saddrv6=%pI6c daddrv6=%pI6c cong_state=%u",
-+		  show_family_name(__entry->family),
- 		  __entry->sport, __entry->dport,
- 		  __entry->saddr, __entry->daddr,
- 		  __entry->saddr_v6, __entry->daddr_v6,
+ 	niph = skb_push(skb, sizeof(*niph));
 
 
