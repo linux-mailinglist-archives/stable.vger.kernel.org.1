@@ -2,197 +2,102 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5E4B177ACE5
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:38:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B6A3A77AE1C
+	for <lists+stable@lfdr.de>; Mon, 14 Aug 2023 00:00:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232217AbjHMViW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:38:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53220 "EHLO
+        id S232314AbjHMWA1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 18:00:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40692 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232222AbjHMViW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:38:22 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F036A10DB
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:38:23 -0700 (PDT)
+        with ESMTP id S231783AbjHMV7U (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:59:20 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4DD22736
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:44:21 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 790C863671
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:38:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F85EC433C8;
-        Sun, 13 Aug 2023 21:38:22 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 24B1960B9D
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:44:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3569DC433C7;
+        Sun, 13 Aug 2023 21:44:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691962702;
-        bh=PTKV+75czZjcKa0EFHYTVr68rry7wU5VoEW8Hhzs0Hs=;
+        s=korg; t=1691963060;
+        bh=PTpziOEOMpEKHUvd3Selo4MhS8Y+SZjJvJKA4d6kR8E=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rOqQso04MK6Lo1qE2yuw5byFwPNdF3kHXE5sCA+ZThCv47Bk4eGNWUmDrI4VQgPOa
-         PcGSfotJxV8zPwqlmll4yoIbk6GWTlqxTL9LpIZq+8DCad2PpiFegDxK49BfKBoKZs
-         StNo3CZ4gjhrLH8/nO46dYQqz+89xH58CNRfb4To=
+        b=jD5oOulnElcHJhkVZVyZj3zCIxrlEj+2tfqd7iNdivI1VZ/XTsFWKd0defFx1dkTX
+         EQ8F0jPBXctHGG3J1ntjMbLBK24X3cz7brTw4GwR0Ebje3magJaGe3H4pg3ngpRf1w
+         OuQq1RIpQaFY9aXVu4X11kjoLetOqQuZRv5kAls8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Nick Child <nnac123@linux.ibm.com>,
-        Simon Horman <horms@kernel.org>,
+        patches@lists.linux.dev,
+        Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>,
+        Ido Schimmel <idosch@nvidia.com>,
+        Petr Machata <petrm@nvidia.com>,
+        Hangbin Liu <liuhangbin@gmail.com>,
+        Nikolay Aleksandrov <razor@blackwall.org>,
         Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 124/149] ibmvnic: Ensure login failure recovery is safe from other resets
-Date:   Sun, 13 Aug 2023 23:19:29 +0200
-Message-ID: <20230813211722.439795777@linuxfoundation.org>
+Subject: [PATCH 5.15 39/89] selftests: forwarding: ethtool_extended_state: Skip when using veth pairs
+Date:   Sun, 13 Aug 2023 23:19:30 +0200
+Message-ID: <20230813211711.960570288@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211718.757428827@linuxfoundation.org>
-References: <20230813211718.757428827@linuxfoundation.org>
+In-Reply-To: <20230813211710.787645394@linuxfoundation.org>
+References: <20230813211710.787645394@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Nick Child <nnac123@linux.ibm.com>
+From: Ido Schimmel <idosch@nvidia.com>
 
-commit 6db541ae279bd4e76dbd939e5fbf298396166242 upstream.
+commit b3d9305e60d121dac20a77b6847c4cf14a4c0001 upstream.
 
-If a login request fails, the recovery process should be protected
-against parallel resets. It is a known issue that freeing and
-registering CRQ's in quick succession can result in a failover CRQ from
-the VIOS. Processing a failover during login recovery is dangerous for
-two reasons:
- 1. This will result in two parallel initialization processes, this can
- cause serious issues during login.
- 2. It is possible that the failover CRQ is received but never executed.
- We get notified of a pending failover through a transport event CRQ.
- The reset is not performed until a INIT CRQ request is received.
- Previously, if CRQ init fails during login recovery, then the ibmvnic
- irq is freed and the login process returned error. If failover_pending
- is true (a transport event was received), then the ibmvnic device
- would never be able to process the reset since it cannot receive the
- CRQ_INIT request due to the irq being freed. This leaved the device
- in a inoperable state.
+Ethtool extended state cannot be tested with veth pairs, resulting in
+failures:
 
-Therefore, the login failure recovery process must be hardened against
-these possible issues. Possible failovers (due to quick CRQ free and
-init) must be avoided and any issues during re-initialization should be
-dealt with instead of being propagated up the stack. This logic is
-similar to that of ibmvnic_probe().
+ # ./ethtool_extended_state.sh
+ TEST: Autoneg, No partner detected                                  [FAIL]
+         Expected "Autoneg", got "Link detected: no"
+ [...]
 
-Fixes: dff515a3e71d ("ibmvnic: Harden device login requests")
-Signed-off-by: Nick Child <nnac123@linux.ibm.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20230809221038.51296-5-nnac123@linux.ibm.com
+Fix by skipping the test when used with veth pairs.
+
+Fixes: 7d10bcce98cd ("selftests: forwarding: Add tests for ethtool extended state")
+Reported-by: Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>
+Closes: https://lore.kernel.org/netdev/adc5e40d-d040-a65e-eb26-edf47dac5b02@alu.unizg.hr/
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: Petr Machata <petrm@nvidia.com>
+Tested-by: Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>
+Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
+Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
+Link: https://lore.kernel.org/r/20230808141503.4060661-9-idosch@nvidia.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/ibm/ibmvnic.c |   70 +++++++++++++++++++++++++------------
- 1 file changed, 48 insertions(+), 22 deletions(-)
+ tools/testing/selftests/net/forwarding/ethtool_extended_state.sh |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/net/ethernet/ibm/ibmvnic.c
-+++ b/drivers/net/ethernet/ibm/ibmvnic.c
-@@ -115,6 +115,7 @@ static void ibmvnic_tx_scrq_clean_buffer
- static void free_long_term_buff(struct ibmvnic_adapter *adapter,
- 				struct ibmvnic_long_term_buff *ltb);
- static void ibmvnic_disable_irqs(struct ibmvnic_adapter *adapter);
-+static void flush_reset_queue(struct ibmvnic_adapter *adapter);
+--- a/tools/testing/selftests/net/forwarding/ethtool_extended_state.sh
++++ b/tools/testing/selftests/net/forwarding/ethtool_extended_state.sh
+@@ -95,6 +95,8 @@ no_cable()
+ 	ip link set dev $swp3 down
+ }
  
- struct ibmvnic_stat {
- 	char name[ETH_GSTRING_LEN];
-@@ -1316,8 +1317,8 @@ static const char *adapter_state_to_stri
- 
- static int ibmvnic_login(struct net_device *netdev)
- {
-+	unsigned long flags, timeout = msecs_to_jiffies(20000);
- 	struct ibmvnic_adapter *adapter = netdev_priv(netdev);
--	unsigned long timeout = msecs_to_jiffies(20000);
- 	int retry_count = 0;
- 	int retries = 10;
- 	bool retry;
-@@ -1382,6 +1383,7 @@ static int ibmvnic_login(struct net_devi
- 					    "SCRQ irq initialization failed\n");
- 				return rc;
- 			}
-+		/* Default/timeout error handling, reset and start fresh */
- 		} else if (adapter->init_done_rc) {
- 			netdev_warn(netdev, "Adapter login failed, init_done_rc = %d\n",
- 				    adapter->init_done_rc);
-@@ -1397,29 +1399,53 @@ partial_reset:
- 				    "Freeing and re-registering CRQs before attempting to login again\n");
- 			retry = true;
- 			adapter->init_done_rc = 0;
--			retry_count++;
- 			release_sub_crqs(adapter, true);
--			reinit_init_done(adapter);
--			release_crq_queue(adapter);
--			/* If we don't sleep here then we risk an unnecessary
--			 * failover event from the VIOS. This is a known VIOS
--			 * issue caused by a vnic device freeing and registering
--			 * a CRQ too quickly.
-+			/* Much of this is similar logic as ibmvnic_probe(),
-+			 * we are essentially re-initializing communication
-+			 * with the server. We really should not run any
-+			 * resets/failovers here because this is already a form
-+			 * of reset and we do not want parallel resets occurring
- 			 */
--			msleep(1500);
--			rc = init_crq_queue(adapter);
--			if (rc) {
--				netdev_err(netdev, "login recovery: init CRQ failed %d\n",
--					   rc);
--				return -EIO;
--			}
--
--			rc = ibmvnic_reset_init(adapter, false);
--			if (rc) {
--				netdev_err(netdev, "login recovery: Reset init failed %d\n",
--					   rc);
--				return -EIO;
--			}
-+			do {
-+				reinit_init_done(adapter);
-+				/* Clear any failovers we got in the previous
-+				 * pass since we are re-initializing the CRQ
-+				 */
-+				adapter->failover_pending = false;
-+				release_crq_queue(adapter);
-+				/* If we don't sleep here then we risk an
-+				 * unnecessary failover event from the VIOS.
-+				 * This is a known VIOS issue caused by a vnic
-+				 * device freeing and registering a CRQ too
-+				 * quickly.
-+				 */
-+				msleep(1500);
-+				/* Avoid any resets, since we are currently
-+				 * resetting.
-+				 */
-+				spin_lock_irqsave(&adapter->rwi_lock, flags);
-+				flush_reset_queue(adapter);
-+				spin_unlock_irqrestore(&adapter->rwi_lock,
-+						       flags);
++skip_on_veth
 +
-+				rc = init_crq_queue(adapter);
-+				if (rc) {
-+					netdev_err(netdev, "login recovery: init CRQ failed %d\n",
-+						   rc);
-+					return -EIO;
-+				}
-+
-+				rc = ibmvnic_reset_init(adapter, false);
-+				if (rc)
-+					netdev_err(netdev, "login recovery: Reset init failed %d\n",
-+						   rc);
-+				/* IBMVNIC_CRQ_INIT will return EAGAIN if it
-+				 * fails, since ibmvnic_reset_init will free
-+				 * irq's in failure, we won't be able to receive
-+				 * new CRQs so we need to keep trying. probe()
-+				 * handles this similarly.
-+				 */
-+			} while (rc == -EAGAIN && retry_count++ < retries);
- 		}
- 	} while (retry);
+ setup_prepare
  
+ tests_run
 
 
