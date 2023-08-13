@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7F4B177AD0C
+	by mail.lfdr.de (Postfix) with ESMTP id 363C877AD0B
 	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:48:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230146AbjHMVsA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:48:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52266 "EHLO
+        id S230092AbjHMVr7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:47:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41692 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232343AbjHMVqX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:46:23 -0400
+        with ESMTP id S229712AbjHMVrl (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:47:41 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A75C52D54
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:46:22 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 59A1C2D54
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:47:41 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 42B3161C1D
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:46:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54780C433C8;
-        Sun, 13 Aug 2023 21:46:21 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id EAE6D61C1D
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:47:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0387FC433C8;
+        Sun, 13 Aug 2023 21:47:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691963181;
-        bh=LTLTGtzwLFCfMwDPkwvOE59epzWiH/L6gcAyHUc0PlM=;
+        s=korg; t=1691963260;
+        bh=FMei2CsV7GQhJ+i9pA7bSCfp/3BI5AitEfoTp59/bpM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=T66D4f5EGaN3pbQNiRiZntqS80K6vxn6s6YUU4NCZ/yOoOY+klrIJNMejBdvdhaXV
-         rRO7h0klF/6nWIvwZJf6uYxc6hMHGlUPce+Bib6CjApmt8WhO93ksXuXWxxSjDNAkK
-         H36folzRjkeqwBD3ltGlyT0U/0HPom2X0/YeCPdo=
+        b=CKc5ME0KUJiqLK3hd/GJg/hWpcyeGaFY1RxjdMdF1k2YCEjx9i0AHlIaMCoFcyoBc
+         t1PfElWdtgsNNN+bj5jDCnm67/jrZok0Yn71TSLAif+FNUos6srkr4BzlXWEDeMi7o
+         D00WDGHcX3niZ17cI6pfmNkP94eQKi/DClsQT6bA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zhu Wang <wangzhu9@huawei.com>,
-        Bart Van Assche <bvanassche@acm.org>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 5.15 81/89] scsi: core: Fix possible memory leak if device_add() fails
+        patches@lists.linux.dev, syzbot <syzkaller@googlegroups.com>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.4 21/39] dccp: fix data-race around dp->dccps_mss_cache
 Date:   Sun, 13 Aug 2023 23:20:12 +0200
-Message-ID: <20230813211713.198223342@linuxfoundation.org>
+Message-ID: <20230813211705.551589989@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211710.787645394@linuxfoundation.org>
-References: <20230813211710.787645394@linuxfoundation.org>
+In-Reply-To: <20230813211704.796906808@linuxfoundation.org>
+References: <20230813211704.796906808@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,34 +54,71 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Zhu Wang <wangzhu9@huawei.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 04b5b5cb0136ce970333a9c6cec7e46adba1ea3a upstream.
+commit a47e598fbd8617967e49d85c49c22f9fc642704c upstream.
 
-If device_add() returns error, the name allocated by dev_set_name() needs
-be freed. As the comment of device_add() says, put_device() should be used
-to decrease the reference count in the error path. So fix this by calling
-put_device(), then the name can be freed in kobject_cleanp().
+dccp_sendmsg() reads dp->dccps_mss_cache before locking the socket.
+Same thing in do_dccp_getsockopt().
 
-Fixes: ee959b00c335 ("SCSI: convert struct class_device to struct device")
-Signed-off-by: Zhu Wang <wangzhu9@huawei.com>
-Link: https://lore.kernel.org/r/20230803020230.226903-1-wangzhu9@huawei.com
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Add READ_ONCE()/WRITE_ONCE() annotations,
+and change dccp_sendmsg() to check again dccps_mss_cache
+after socket is locked.
+
+Fixes: 7c657876b63c ("[DCCP]: Initial implementation")
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Link: https://lore.kernel.org/r/20230803163021.2958262-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/raid_class.c |    1 +
- 1 file changed, 1 insertion(+)
+ net/dccp/output.c |    2 +-
+ net/dccp/proto.c  |   10 ++++++++--
+ 2 files changed, 9 insertions(+), 3 deletions(-)
 
---- a/drivers/scsi/raid_class.c
-+++ b/drivers/scsi/raid_class.c
-@@ -248,6 +248,7 @@ int raid_component_add(struct raid_templ
- 	return 0;
+--- a/net/dccp/output.c
++++ b/net/dccp/output.c
+@@ -185,7 +185,7 @@ unsigned int dccp_sync_mss(struct sock *
  
- err_out:
-+	put_device(&rc->dev);
- 	list_del(&rc->node);
- 	rd->component_count--;
- 	put_device(component_dev);
+ 	/* And store cached results */
+ 	icsk->icsk_pmtu_cookie = pmtu;
+-	dp->dccps_mss_cache = cur_mps;
++	WRITE_ONCE(dp->dccps_mss_cache, cur_mps);
+ 
+ 	return cur_mps;
+ }
+--- a/net/dccp/proto.c
++++ b/net/dccp/proto.c
+@@ -644,7 +644,7 @@ static int do_dccp_getsockopt(struct soc
+ 		return dccp_getsockopt_service(sk, len,
+ 					       (__be32 __user *)optval, optlen);
+ 	case DCCP_SOCKOPT_GET_CUR_MPS:
+-		val = dp->dccps_mss_cache;
++		val = READ_ONCE(dp->dccps_mss_cache);
+ 		break;
+ 	case DCCP_SOCKOPT_AVAILABLE_CCIDS:
+ 		return ccid_getsockopt_builtin_ccids(sk, len, optval, optlen);
+@@ -766,7 +766,7 @@ int dccp_sendmsg(struct sock *sk, struct
+ 
+ 	trace_dccp_probe(sk, len);
+ 
+-	if (len > dp->dccps_mss_cache)
++	if (len > READ_ONCE(dp->dccps_mss_cache))
+ 		return -EMSGSIZE;
+ 
+ 	lock_sock(sk);
+@@ -799,6 +799,12 @@ int dccp_sendmsg(struct sock *sk, struct
+ 		goto out_discard;
+ 	}
+ 
++	/* We need to check dccps_mss_cache after socket is locked. */
++	if (len > dp->dccps_mss_cache) {
++		rc = -EMSGSIZE;
++		goto out_discard;
++	}
++
+ 	skb_reserve(skb, sk->sk_prot->max_header);
+ 	rc = memcpy_from_msg(skb_put(skb, len), msg, len);
+ 	if (rc != 0)
 
 
