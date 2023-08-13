@@ -2,42 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B77AB77ABD2
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:26:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0A64C77ABB3
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:24:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231706AbjHMV0G (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:26:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49252 "EHLO
+        id S231599AbjHMVYq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:24:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49882 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231701AbjHMV0F (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:26:05 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B76610DB
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:26:07 -0700 (PDT)
+        with ESMTP id S231582AbjHMVYq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:24:46 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E79710D7
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:24:48 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 39B636297D
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:26:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45D6AC433C7;
-        Sun, 13 Aug 2023 21:26:06 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9A26D62901
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:24:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE872C433C8;
+        Sun, 13 Aug 2023 21:24:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691961966;
-        bh=xlPU23jxXPMnbzPzWzz2fH7e0311zWj5oUFeQwawzlY=;
+        s=korg; t=1691961887;
+        bh=SxsEya9kUcl2yirQXYpk4xrz84SrBFJe0cqmKjwZj6M=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Hm9UgzOjnmnhT2lQrYyPfiEjPwuph4+zBOEBZDUtq3OOXnfZ/DIRGep3O0LGawSIZ
-         n2JmiYNjzvt1f8lCLQKEOS6LEGutGuPEQ8SzgrcS/MbGMv1z1/zGCzIUGCdHSK478h
-         FGvN6BYfejOpINkmcgE5GdSwZDqyegasoQEGQHys=
+        b=p4nMkSzjYp06k8GIdCCJnPx8o4EPS3n0RlICDloyz49wXdJ4guyrsFhrg2Ruwux7/
+         5FRBWTTNTg5aetEwk2vwmlYNt6IoHNIBMzciESkFmLJAUYTexE23bABY4216YttHns
+         rbGkWY6uX03N9oIu+liNOAwGB3rOTSWvFFU/xySY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, kernel test robot <lkp@intel.com>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Palmer Dabbelt <palmer@rivosinc.com>
-Subject: [PATCH 6.4 034/206] riscv: mm: fix 2 instances of -Wmissing-variable-declarations
-Date:   Sun, 13 Aug 2023 23:16:44 +0200
-Message-ID: <20230813211725.979196124@linuxfoundation.org>
+        patches@lists.linux.dev, Keith Busch <kbusch@kernel.org>,
+        Sagi Grimberg <sagi@grimberg.me>,
+        Chunguang Xu <brookxu.cn@gmail.com>,
+        Ming Lei <ming.lei@redhat.com>
+Subject: [PATCH 6.4 035/206] nvme: fix possible hang when removing a controller during error recovery
+Date:   Sun, 13 Aug 2023 23:16:45 +0200
+Message-ID: <20230813211726.006453005@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230813211724.969019629@linuxfoundation.org>
 References: <20230813211724.969019629@linuxfoundation.org>
@@ -45,98 +46,67 @@ User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Nick Desaulniers <ndesaulniers@google.com>
+From: Ming Lei <ming.lei@redhat.com>
 
-commit d2402048bc8a206a56fde4bc41dd01336c7b5a21 upstream.
+commit 1b95e817916069ec45a7f259d088fd1c091a8cc6 upstream.
 
-I'm looking to enable -Wmissing-variable-declarations behind W=1. 0day
-bot spotted the following instance in ARCH=riscv builds:
+Error recovery can be interrupted by controller removal, then the
+controller is left as quiesced, and IO hang can be caused.
 
-  arch/riscv/mm/init.c:276:7: warning: no previous extern declaration
-  for non-static variable 'trampoline_pg_dir'
-  [-Wmissing-variable-declarations]
-  276 | pgd_t trampoline_pg_dir[PTRS_PER_PGD] __page_aligned_bss;
-      |       ^
-  arch/riscv/mm/init.c:276:1: note: declare 'static' if the variable is
-  not intended to be used outside of this translation unit
-  276 | pgd_t trampoline_pg_dir[PTRS_PER_PGD] __page_aligned_bss;
-      | ^
-  arch/riscv/mm/init.c:279:7: warning: no previous extern declaration
-  for non-static variable 'early_pg_dir'
-  [-Wmissing-variable-declarations]
-  279 | pgd_t early_pg_dir[PTRS_PER_PGD] __initdata __aligned(PAGE_SIZE);
-      |       ^
-  arch/riscv/mm/init.c:279:1: note: declare 'static' if the variable is
-  not intended to be used outside of this translation unit
-  279 | pgd_t early_pg_dir[PTRS_PER_PGD] __initdata __aligned(PAGE_SIZE);
-      | ^
+Fix the issue by unquiescing controller unconditionally when removing
+namespaces.
 
-These symbols are referenced by more than one translation unit, so make
-sure they're both declared and include the correct header for their
-declarations. Finally, sort the list of includes to help keep them tidy.
+This way is reasonable and safe given forward progress can be made
+when removing namespaces.
 
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/llvm/202308081000.tTL1ElTr-lkp@intel.com/
-Signed-off-by: Nick Desaulniers <ndesaulniers@google.com>
-Link: https://lore.kernel.org/r/20230808-riscv_static-v2-1-2a1e2d2c7a4f@google.com
+Reviewed-by: Keith Busch <kbusch@kernel.org>
+Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
+Reported-by: Chunguang Xu <brookxu.cn@gmail.com>
+Closes: https://lore.kernel.org/linux-nvme/cover.1685350577.git.chunguang.xu@shopee.com/
 Cc: stable@vger.kernel.org
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Signed-off-by: Ming Lei <ming.lei@redhat.com>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/riscv/include/asm/pgtable.h |    2 ++
- arch/riscv/mm/init.c             |    9 +++++----
- arch/riscv/mm/kasan_init.c       |    1 -
- 3 files changed, 7 insertions(+), 5 deletions(-)
+ drivers/nvme/host/core.c |   10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
---- a/arch/riscv/include/asm/pgtable.h
-+++ b/arch/riscv/include/asm/pgtable.h
-@@ -188,6 +188,8 @@ extern struct pt_alloc_ops pt_ops __init
- #define PAGE_KERNEL_IO		__pgprot(_PAGE_IOREMAP)
+--- a/drivers/nvme/host/core.c
++++ b/drivers/nvme/host/core.c
+@@ -4728,6 +4728,12 @@ void nvme_remove_namespaces(struct nvme_
+ 	 */
+ 	nvme_mpath_clear_ctrl_paths(ctrl);
  
- extern pgd_t swapper_pg_dir[];
-+extern pgd_t trampoline_pg_dir[];
-+extern pgd_t early_pg_dir[];
++	/*
++	 * Unquiesce io queues so any pending IO won't hang, especially
++	 * those submitted from scan work
++	 */
++	nvme_unquiesce_io_queues(ctrl);
++
+ 	/* prevent racing with ns scanning */
+ 	flush_work(&ctrl->scan_work);
  
- #ifdef CONFIG_TRANSPARENT_HUGEPAGE
- static inline int pmd_present(pmd_t pmd)
---- a/arch/riscv/mm/init.c
-+++ b/arch/riscv/mm/init.c
-@@ -26,12 +26,13 @@
- #include <linux/kfence.h>
+@@ -4737,10 +4743,8 @@ void nvme_remove_namespaces(struct nvme_
+ 	 * removing the namespaces' disks; fail all the queues now to avoid
+ 	 * potentially having to clean up the failed sync later.
+ 	 */
+-	if (ctrl->state == NVME_CTRL_DEAD) {
++	if (ctrl->state == NVME_CTRL_DEAD)
+ 		nvme_mark_namespaces_dead(ctrl);
+-		nvme_unquiesce_io_queues(ctrl);
+-	}
  
- #include <asm/fixmap.h>
--#include <asm/tlbflush.h>
--#include <asm/sections.h>
--#include <asm/soc.h>
- #include <asm/io.h>
--#include <asm/ptdump.h>
- #include <asm/numa.h>
-+#include <asm/pgtable.h>
-+#include <asm/ptdump.h>
-+#include <asm/sections.h>
-+#include <asm/soc.h>
-+#include <asm/tlbflush.h>
- 
- #include "../kernel/head.h"
- 
---- a/arch/riscv/mm/kasan_init.c
-+++ b/arch/riscv/mm/kasan_init.c
-@@ -22,7 +22,6 @@
-  * region is not and then we have to go down to the PUD level.
-  */
- 
--extern pgd_t early_pg_dir[PTRS_PER_PGD];
- pgd_t tmp_pg_dir[PTRS_PER_PGD] __page_aligned_bss;
- p4d_t tmp_p4d[PTRS_PER_P4D] __page_aligned_bss;
- pud_t tmp_pud[PTRS_PER_PUD] __page_aligned_bss;
+ 	/* this is a no-op when called from the controller reset handler */
+ 	nvme_change_ctrl_state(ctrl, NVME_CTRL_DELETING_NOIO);
 
 
