@@ -2,129 +2,94 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6942A77AB96
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:23:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 84F0477AC4D
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:32:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231357AbjHMVXb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:23:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47938 "EHLO
+        id S231925AbjHMVcI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:32:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55876 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231194AbjHMVXb (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:23:31 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7096810D7
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:23:33 -0700 (PDT)
+        with ESMTP id S231929AbjHMVcI (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:32:08 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D6C51730
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:31:48 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0FA826289A
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:23:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B4B0C433C8;
-        Sun, 13 Aug 2023 21:23:31 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 138DD62B64
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:31:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16514C433C7;
+        Sun, 13 Aug 2023 21:31:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691961812;
-        bh=H7h0f5LeBrAhA+/f34J6/IQQM3D60YE+sXZjRPww420=;
+        s=korg; t=1691962286;
+        bh=pjfQf6Fajl/wmswnw31HV7Q0igLas9B8mGMqTzwdd5M=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Zyh3NrIDvxd6T1D9U4g3rrvi/1CaDEbxhwMgqRVo9K4IrDZpGlt92o3WuSjU55FLZ
-         GRAr+Dt+uwXc9PWqY9TmmyX9fY1kkLAR5KIJ7iCWyCYJxx6cI98Dsb1gLXuo9nS3TX
-         e8xMb+mJ8itpjB+SrGZTxC2tr/ux7RNwZ50aXsNU=
+        b=P+lssU2gmuyld1Qr0rNPt+TzYEgsKVCslNEVVnV5nVqGQHbxNislYbGy0G2kmFTcr
+         0vUQpdlpfW82BWNMkYydtGqyiF8fqFv3CrxfrXABnzzfm4NPEjQuynIGcn+D+GxVP5
+         xcYzvr/OqzH7JiQetkiMRJCirpU+tIlint7UUWBU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, kernel test robot <oliver.sang@intel.com>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Sami Tolvanen <samitolvanen@google.com>,
-        Kees Cook <keescook@chromium.org>,
-        Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 4.19 16/33] mISDN: Update parameter type of dsp_cmx_send()
+        patches@lists.linux.dev,
+        Paul Demetrotion <pdemetrotion@winsystems.com>,
+        William Breathitt Gray <william.gray@linaro.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Subject: [PATCH 6.4 180/206] gpio: ws16c48: Fix off-by-one error in WS16C48 resource region extent
 Date:   Sun, 13 Aug 2023 23:19:10 +0200
-Message-ID: <20230813211704.514493817@linuxfoundation.org>
+Message-ID: <20230813211730.174597259@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211703.915807095@linuxfoundation.org>
-References: <20230813211703.915807095@linuxfoundation.org>
+In-Reply-To: <20230813211724.969019629@linuxfoundation.org>
+References: <20230813211724.969019629@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: William Breathitt Gray <william.gray@linaro.org>
 
-commit 1696ec8654016dad3b1baf6c024303e584400453 upstream.
+commit 33f83d13ded164cd49ce2a3bd2770115abc64e6f upstream.
 
-When booting a kernel with CONFIG_MISDN_DSP=y and CONFIG_CFI_CLANG=y,
-there is a failure when dsp_cmx_send() is called indirectly from
-call_timer_fn():
+The WinSystems WS16C48 I/O address region spans offsets 0x0 through 0xA,
+which is a total of 11 bytes. Fix the WS16C48_EXTENT define to the
+correct value of 11 so that access to necessary device registers is
+properly requested in the ws16c48_probe() callback by the
+devm_request_region() function call.
 
-  [    0.371412] CFI failure at call_timer_fn+0x2f/0x150 (target: dsp_cmx_send+0x0/0x530; expected type: 0x92ada1e9)
-
-The function pointer prototype that call_timer_fn() expects is
-
-  void (*fn)(struct timer_list *)
-
-whereas dsp_cmx_send() has a parameter type of 'void *', which causes
-the control flow integrity checks to fail because the parameter types do
-not match.
-
-Change dsp_cmx_send()'s parameter type to be 'struct timer_list' to
-match the expected prototype. The argument is unused anyways, so this
-has no functional change, aside from avoiding the CFI failure.
-
-Reported-by: kernel test robot <oliver.sang@intel.com>
-Closes: https://lore.kernel.org/oe-lkp/202308020936.58787e6c-oliver.sang@intel.com
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Reviewed-by: Sami Tolvanen <samitolvanen@google.com>
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Fixes: e313ac12eb13 ("mISDN: Convert timers to use timer_setup()")
-Link: https://lore.kernel.org/r/20230802-fix-dsp_cmx_send-cfi-failure-v1-1-2f2e79b0178d@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 2c05a0f29f41 ("gpio: ws16c48: Implement and utilize register structures")
+Cc: stable@vger.kernel.org
+Cc: Paul Demetrotion <pdemetrotion@winsystems.com>
+Signed-off-by: William Breathitt Gray <william.gray@linaro.org>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/isdn/mISDN/dsp.h      |    2 +-
- drivers/isdn/mISDN/dsp_cmx.c  |    2 +-
- drivers/isdn/mISDN/dsp_core.c |    2 +-
- 3 files changed, 3 insertions(+), 3 deletions(-)
+ drivers/gpio/gpio-ws16c48.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/isdn/mISDN/dsp.h
-+++ b/drivers/isdn/mISDN/dsp.h
-@@ -247,7 +247,7 @@ extern void dsp_cmx_hardware(struct dsp_
- extern int dsp_cmx_conf(struct dsp *dsp, u32 conf_id);
- extern void dsp_cmx_receive(struct dsp *dsp, struct sk_buff *skb);
- extern void dsp_cmx_hdlc(struct dsp *dsp, struct sk_buff *skb);
--extern void dsp_cmx_send(void *arg);
-+extern void dsp_cmx_send(struct timer_list *arg);
- extern void dsp_cmx_transmit(struct dsp *dsp, struct sk_buff *skb);
- extern int dsp_cmx_del_conf_member(struct dsp *dsp);
- extern int dsp_cmx_del_conf(struct dsp_conf *conf);
---- a/drivers/isdn/mISDN/dsp_cmx.c
-+++ b/drivers/isdn/mISDN/dsp_cmx.c
-@@ -1625,7 +1625,7 @@ static u16	dsp_count; /* last sample cou
- static int	dsp_count_valid; /* if we have last sample count */
+--- a/drivers/gpio/gpio-ws16c48.c
++++ b/drivers/gpio/gpio-ws16c48.c
+@@ -18,7 +18,7 @@
+ #include <linux/spinlock.h>
+ #include <linux/types.h>
  
- void
--dsp_cmx_send(void *arg)
-+dsp_cmx_send(struct timer_list *arg)
- {
- 	struct dsp_conf *conf;
- 	struct dsp_conf_member *member;
---- a/drivers/isdn/mISDN/dsp_core.c
-+++ b/drivers/isdn/mISDN/dsp_core.c
-@@ -1202,7 +1202,7 @@ static int __init dsp_init(void)
- 	}
+-#define WS16C48_EXTENT 10
++#define WS16C48_EXTENT 11
+ #define MAX_NUM_WS16C48 max_num_isa_dev(WS16C48_EXTENT)
  
- 	/* set sample timer */
--	timer_setup(&dsp_spl_tl, (void *)dsp_cmx_send, 0);
-+	timer_setup(&dsp_spl_tl, dsp_cmx_send, 0);
- 	dsp_spl_tl.expires = jiffies + dsp_tics;
- 	dsp_spl_jiffies = dsp_spl_tl.expires;
- 	add_timer(&dsp_spl_tl);
+ static unsigned int base[MAX_NUM_WS16C48];
 
 
