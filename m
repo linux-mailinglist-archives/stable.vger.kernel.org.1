@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 935EA77AC66
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:32:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6118E77AB6E
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:21:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231972AbjHMVck (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:32:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45562 "EHLO
+        id S230334AbjHMVVy (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:21:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36828 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231965AbjHMVcj (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:32:39 -0400
+        with ESMTP id S230326AbjHMVVx (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:21:53 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B97D310E3
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:32:41 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 92C5110E3
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:21:55 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4DA7A62BED
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:32:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FCDBC433C7;
-        Sun, 13 Aug 2023 21:32:40 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 28D3A627CF
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:21:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 425E4C433C8;
+        Sun, 13 Aug 2023 21:21:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691962360;
-        bh=eQt7qd2P1Afc1nZDVmMp/yLSa/HpBufOBZvujW1dcOk=;
+        s=korg; t=1691961714;
+        bh=LTLTGtzwLFCfMwDPkwvOE59epzWiH/L6gcAyHUc0PlM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=QjW9hKwZraOZjd3oYEss7ecXD5kspxbbG16vX+T5Ftz6pFeADAtR8IW/HEjq5kVET
-         mbi+yLQic7jL8WdIMX04mH75b1UvsrWcsCH13xsDQy5nutH1rUsgfXX5GdB4La6hqr
-         c9guB0kbiZjjNdKnqDCfSiHPgSdI+Ik8aHJP+c4M=
+        b=ngM3dDXXpzvvNjJUVP1L5qNNUHZgUF0BFoV6bb3G5dVUkWKYKLPFKqYs1SFvusM9T
+         dYjiH2UbRw8lOLLcTOCHIphuyheT2VdS7IV+McE1lLsAxs3tsqo8vC1GZ3XVgNv0mw
+         rBCwohJc38a7pAol2koIt+3aWTZFt4xKRQ1yz+1s=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Josef Bacik <josef@toxicpanda.com>,
-        David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.4 188/206] btrfs: set cache_block_group_error if we find an error
+        patches@lists.linux.dev, Zhu Wang <wangzhu9@huawei.com>,
+        Bart Van Assche <bvanassche@acm.org>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 4.14 25/26] scsi: core: Fix possible memory leak if device_add() fails
 Date:   Sun, 13 Aug 2023 23:19:18 +0200
-Message-ID: <20230813211730.403252978@linuxfoundation.org>
+Message-ID: <20230813211703.922069272@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211724.969019629@linuxfoundation.org>
-References: <20230813211724.969019629@linuxfoundation.org>
+In-Reply-To: <20230813211702.980427106@linuxfoundation.org>
+References: <20230813211702.980427106@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,47 +55,34 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Josef Bacik <josef@toxicpanda.com>
+From: Zhu Wang <wangzhu9@huawei.com>
 
-commit 92fb94b69c6accf1e49fff699640fa0ce03dc910 upstream.
+commit 04b5b5cb0136ce970333a9c6cec7e46adba1ea3a upstream.
 
-We set cache_block_group_error if btrfs_cache_block_group() returns an
-error, this is because we could end up not finding space to allocate and
-mistakenly return -ENOSPC, and which could then abort the transaction
-with the incorrect errno, and in the case of ENOSPC result in a
-WARN_ON() that will trip up tests like generic/475.
+If device_add() returns error, the name allocated by dev_set_name() needs
+be freed. As the comment of device_add() says, put_device() should be used
+to decrease the reference count in the error path. So fix this by calling
+put_device(), then the name can be freed in kobject_cleanp().
 
-However there's the case where multiple threads can be racing, one
-thread gets the proper error, and the other thread doesn't actually call
-btrfs_cache_block_group(), it instead sees ->cached ==
-BTRFS_CACHE_ERROR.  Again the result is the same, we fail to allocate
-our space and return -ENOSPC.  Instead we need to set
-cache_block_group_error to -EIO in this case to make sure that if we do
-not make our allocation we get the appropriate error returned back to
-the caller.
-
-CC: stable@vger.kernel.org # 4.14+
-Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Fixes: ee959b00c335 ("SCSI: convert struct class_device to struct device")
+Signed-off-by: Zhu Wang <wangzhu9@huawei.com>
+Link: https://lore.kernel.org/r/20230803020230.226903-1-wangzhu9@huawei.com
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/extent-tree.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/scsi/raid_class.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/fs/btrfs/extent-tree.c
-+++ b/fs/btrfs/extent-tree.c
-@@ -4318,8 +4318,11 @@ have_block_group:
- 			ret = 0;
- 		}
+--- a/drivers/scsi/raid_class.c
++++ b/drivers/scsi/raid_class.c
+@@ -248,6 +248,7 @@ int raid_component_add(struct raid_templ
+ 	return 0;
  
--		if (unlikely(block_group->cached == BTRFS_CACHE_ERROR))
-+		if (unlikely(block_group->cached == BTRFS_CACHE_ERROR)) {
-+			if (!cache_block_group_error)
-+				cache_block_group_error = -EIO;
- 			goto loop;
-+		}
- 
- 		if (!find_free_extent_check_size_class(ffe_ctl, block_group))
- 			goto loop;
+ err_out:
++	put_device(&rc->dev);
+ 	list_del(&rc->node);
+ 	rd->component_count--;
+ 	put_device(component_dev);
 
 
