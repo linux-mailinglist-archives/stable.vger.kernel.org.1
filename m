@@ -2,48 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2883077AC0C
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:28:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A9F8C77AC94
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:34:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231802AbjHMV2l (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:28:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35942 "EHLO
+        id S232067AbjHMVen (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:34:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52348 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231800AbjHMV2l (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:28:41 -0400
+        with ESMTP id S232072AbjHMVen (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:34:43 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A6E510DB
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:28:43 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C73310DB
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:34:44 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1153862A5E
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:28:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27C2BC433C7;
-        Sun, 13 Aug 2023 21:28:41 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1290F62CB6
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:34:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A9D5C433C8;
+        Sun, 13 Aug 2023 21:34:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691962122;
-        bh=LJEqOoy/Sac427ChNWJowBXAlVtp6oGnDaQCF7GZgJg=;
+        s=korg; t=1691962483;
+        bh=S7kcNkwOY/aLyZ5rLqk9v5gRpyt1q4Um99CFQVNDPW8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=GriSVIqi9E+/ic2BlJbIfw6jZjdeEF7rp8zLa/2hQnYIuCjVOkoeYAFslKB2PDKf9
-         pFq2IcVcTYcnGmhRNYouRc6m2og5NNxw2N5DDykuYAaEKP7pV48lOOBTNzHK+Rz8Yp
-         3vMRrDfUWpUisDbAW2lkb0l23Y83IxJBvcBGtrVU=
+        b=qVd58UsRiIz6GBsT754gzxfW//SRf1AhWVF4Ge2L6rdi7Jd55Dzr5HoYM1HMsxWB9
+         ij9tIoslD8N1amGymMrjqHGqQXHtPeHajK5n99v12WSqBv19TjgMEzXAiMzOQSWcV0
+         dpBtGKRa5ePwcjzfejuK3ZN6VhOG1c5x5Jgko/sI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>,
-        Ido Schimmel <idosch@nvidia.com>,
-        Hangbin Liu <liuhangbin@gmail.com>,
-        Nikolay Aleksandrov <razor@blackwall.org>,
-        Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.4 120/206] selftests: forwarding: bridge_mdb: Make test more robust
+        patches@lists.linux.dev, Harry Wentland <harry.wentland@amd.com>,
+        Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
+        Aurabindo Pillai <aurabindo.pillai@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        Mario Limonciello <mario.limonciello@amd.com>
+Subject: [PATCH 6.1 045/149] drm/amd/display: Avoid ABM when ODM combine is enabled for eDP
 Date:   Sun, 13 Aug 2023 23:18:10 +0200
-Message-ID: <20230813211728.477522576@linuxfoundation.org>
+Message-ID: <20230813211720.164608726@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211724.969019629@linuxfoundation.org>
-References: <20230813211724.969019629@linuxfoundation.org>
+In-Reply-To: <20230813211718.757428827@linuxfoundation.org>
+References: <20230813211718.757428827@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -58,65 +57,47 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
 
-commit 8b5ff37097775cdbd447442603957066dd2e4d02 upstream.
+commit 7fffb03b4045c862f904a88b852dc509c4e46406 upstream
 
-Some test cases check that the group timer is (or isn't) 0. Instead of
-grepping for "0.00" grep for " 0.00" as the former can also match
-"260.00" which is the default group membership interval.
+ODM to combine on the eDP panel with ABM causes the color difference to
+the panel since the ABM module only sets one pipe. Hence, this commit
+blocks ABM in case of ODM combined on eDP.
 
-Fixes: b6d00da08610 ("selftests: forwarding: Add bridge MDB test")
-Reported-by: Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>
-Closes: https://lore.kernel.org/netdev/adc5e40d-d040-a65e-eb26-edf47dac5b02@alu.unizg.hr/
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Tested-by: Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>
-Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
-Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
-Link: https://lore.kernel.org/r/20230808141503.4060661-18-idosch@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Harry Wentland <harry.wentland@amd.com>
+Signed-off-by: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+Co-developed-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Signed-off-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/net/forwarding/bridge_mdb.sh |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/amd/display/dc/core/dc.c |   12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
---- a/tools/testing/selftests/net/forwarding/bridge_mdb.sh
-+++ b/tools/testing/selftests/net/forwarding/bridge_mdb.sh
-@@ -617,7 +617,7 @@ __cfg_test_port_ip_sg()
- 		grep -q "permanent"
- 	check_err $? "Entry not added as \"permanent\" when should"
- 	bridge -d -s mdb show dev br0 vid 10 | grep "$grp_key" | \
--		grep -q "0.00"
-+		grep -q " 0.00"
- 	check_err $? "\"permanent\" entry has a pending group timer"
- 	bridge mdb del dev br0 port $swp1 $grp_key vid 10
+--- a/drivers/gpu/drm/amd/display/dc/core/dc.c
++++ b/drivers/gpu/drm/amd/display/dc/core/dc.c
+@@ -1996,9 +1996,19 @@ enum dc_status dc_commit_streams(struct
+ 	res = dc_commit_state_no_check(dc, context);
  
-@@ -626,7 +626,7 @@ __cfg_test_port_ip_sg()
- 		grep -q "temp"
- 	check_err $? "Entry not added as \"temp\" when should"
- 	bridge -d -s mdb show dev br0 vid 10 | grep "$grp_key" | \
--		grep -q "0.00"
-+		grep -q " 0.00"
- 	check_fail $? "\"temp\" entry has an unpending group timer"
- 	bridge mdb del dev br0 port $swp1 $grp_key vid 10
+ 	for (i = 0; i < stream_count; i++) {
+-		for (j = 0; j < context->stream_count; j++)
++		for (j = 0; j < context->stream_count; j++) {
+ 			if (streams[i]->stream_id == context->streams[j]->stream_id)
+ 				streams[i]->out.otg_offset = context->stream_status[j].primary_otg_inst;
++
++			if (dc_is_embedded_signal(streams[i]->signal)) {
++				struct dc_stream_status *status = dc_stream_get_status_from_state(context, streams[i]);
++
++				if (dc->hwss.is_abm_supported)
++					status->is_abm_supported = dc->hwss.is_abm_supported(dc, context, streams[i]);
++				else
++					status->is_abm_supported = true;
++			}
++		}
+ 	}
  
-@@ -659,7 +659,7 @@ __cfg_test_port_ip_sg()
- 		grep -q "permanent"
- 	check_err $? "Entry not marked as \"permanent\" after replace"
- 	bridge -d -s mdb show dev br0 vid 10 | grep "$grp_key" | \
--		grep -q "0.00"
-+		grep -q " 0.00"
- 	check_err $? "Entry has a pending group timer after replace"
- 
- 	bridge mdb replace dev br0 port $swp1 $grp_key vid 10 temp
-@@ -667,7 +667,7 @@ __cfg_test_port_ip_sg()
- 		grep -q "temp"
- 	check_err $? "Entry not marked as \"temp\" after replace"
- 	bridge -d -s mdb show dev br0 vid 10 | grep "$grp_key" | \
--		grep -q "0.00"
-+		grep -q " 0.00"
- 	check_fail $? "Entry has an unpending group timer after replace"
- 	bridge mdb del dev br0 port $swp1 $grp_key vid 10
- 
+ fail:
 
 
