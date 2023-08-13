@@ -2,129 +2,115 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9873477AD6F
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:49:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9310B77AD29
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:48:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232313AbjHMVsv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:48:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33230 "EHLO
+        id S231210AbjHMVsK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:48:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39238 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231454AbjHMVsO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:48:14 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 31E88172E
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:40:15 -0700 (PDT)
+        with ESMTP id S232271AbjHMVpD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:45:03 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E2162D69
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:45:02 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C37056131F
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:40:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBA70C433C7;
-        Sun, 13 Aug 2023 21:40:12 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BE883622CB
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:45:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1C0CC433C7;
+        Sun, 13 Aug 2023 21:45:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691962813;
-        bh=XonbXjtX4fr/jxXaqWPO3He07W4rCIOAc80OoMl3DLo=;
+        s=korg; t=1691963101;
+        bh=pLBZJbHObia1ZyWNd2NU5VjNFTttqpAt7TF3trJEvvU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=v0iOw8LM3lvA4cXvq0ctHFsX/Kit4FddIYyXyP345UM/Hg622J+nd0Peyl1xvjjES
-         /AG137cnCoUwszbDsR3jIjZwEBfC+dJu+QhTKec42mDvRkrGlz5bCfZSf6r08UOSwR
-         tjylkCXstDLjdKL9xOnqQP9+SkgLd4uhGDeZjqwc=
+        b=HirF7E9PeRBR6sgXz1WY+R433f7gSfPpEqq3bcXwQw/HkfOLq4HROn8YRwh9LnXF/
+         8xowkZniftwsb/yrFniZoer9BgBGsxgCuR7NnvHNGo3iAVQthlYhRQkvNME18P/qc2
+         uoET01cZDsv9tMOfNK1nTBn86MvjDlwlE4WHIU4Y=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Thomas Gleixner <tglx@linutronix.de>,
-        Borislav Petkov <bp@suse.de>,
-        Thadeu Lima de Souza Cascardo <cascardo@canonical.com>
-Subject: [PATCH 5.10 17/68] x86/pkeys: Revert a5eff7259790 ("x86/pkeys: Add PKRU value to init_fpstate")
+        patches@lists.linux.dev, Prashanth K <quic_prashk@quicinc.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Subject: [PATCH 5.15 27/89] usb: common: usb-conn-gpio: Prevent bailing out if initial role is none
 Date:   Sun, 13 Aug 2023 23:19:18 +0200
-Message-ID: <20230813211708.678961745@linuxfoundation.org>
+Message-ID: <20230813211711.562389536@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211708.149630011@linuxfoundation.org>
-References: <20230813211708.149630011@linuxfoundation.org>
+In-Reply-To: <20230813211710.787645394@linuxfoundation.org>
+References: <20230813211710.787645394@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Thomas Gleixner <tglx@linutronix.de>
+From: Prashanth K <quic_prashk@quicinc.com>
 
-commit b3607269ff57fd3c9690cb25962c5e4b91a0fd3b upstream.
+commit 8e21a620c7e6e00347ade1a6ed4967b359eada5a upstream.
 
-This cannot work and it's unclear how that ever made a difference.
+Currently if we bootup a device without cable connected, then
+usb-conn-gpio won't call set_role() because last_role is same
+as current role. This happens since last_role gets initialised
+to zero during the probe.
 
-init_fpstate.xsave.header.xfeatures is always 0 so get_xsave_addr() will
-always return a NULL pointer, which will prevent storing the default PKRU
-value in init_fpstate.
+To avoid this, add a new flag initial_detection into struct
+usb_conn_info, which prevents bailing out during initial
+detection.
 
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Reviewed-by: Borislav Petkov <bp@suse.de>
-Link: https://lkml.kernel.org/r/20210623121451.451391598@linutronix.de
-Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@canonical.com>
+Cc: <stable@vger.kernel.org> # 5.4
+Fixes: 4602f3bff266 ("usb: common: add USB GPIO based connection detection driver")
+Signed-off-by: Prashanth K <quic_prashk@quicinc.com>
+Tested-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/1690880632-12588-1-git-send-email-quic_prashk@quicinc.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/cpu/common.c |    5 -----
- arch/x86/mm/pkeys.c          |    6 ------
- 2 files changed, 11 deletions(-)
+ drivers/usb/common/usb-conn-gpio.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/arch/x86/kernel/cpu/common.c
-+++ b/arch/x86/kernel/cpu/common.c
-@@ -472,8 +472,6 @@ static bool pku_disabled;
+--- a/drivers/usb/common/usb-conn-gpio.c
++++ b/drivers/usb/common/usb-conn-gpio.c
+@@ -42,6 +42,7 @@ struct usb_conn_info {
  
- static __always_inline void setup_pku(struct cpuinfo_x86 *c)
- {
--	struct pkru_state *pk;
--
- 	/* check the boot processor, plus compile options for PKU: */
- 	if (!cpu_feature_enabled(X86_FEATURE_PKU))
+ 	struct power_supply_desc desc;
+ 	struct power_supply *charger;
++	bool initial_detection;
+ };
+ 
+ /*
+@@ -86,11 +87,13 @@ static void usb_conn_detect_cable(struct
+ 	dev_dbg(info->dev, "role %s -> %s, gpios: id %d, vbus %d\n",
+ 		usb_role_string(info->last_role), usb_role_string(role), id, vbus);
+ 
+-	if (info->last_role == role) {
++	if (!info->initial_detection && info->last_role == role) {
+ 		dev_warn(info->dev, "repeated role: %s\n", usb_role_string(role));
  		return;
-@@ -484,9 +482,6 @@ static __always_inline void setup_pku(st
- 		return;
+ 	}
  
- 	cr4_set_bits(X86_CR4_PKE);
--	pk = get_xsave_addr(&init_fpstate.xsave, XFEATURE_PKRU);
--	if (pk)
--		pk->pkru = init_pkru_value;
- 	/*
- 	 * Seting X86_CR4_PKE will cause the X86_FEATURE_OSPKE
- 	 * cpuid bit to be set.  We need to ensure that we
---- a/arch/x86/mm/pkeys.c
-+++ b/arch/x86/mm/pkeys.c
-@@ -10,7 +10,6 @@
++	info->initial_detection = false;
++
+ 	if (info->last_role == USB_ROLE_HOST && info->vbus)
+ 		regulator_disable(info->vbus);
  
- #include <asm/cpufeature.h>             /* boot_cpu_has, ...            */
- #include <asm/mmu_context.h>            /* vma_pkey()                   */
--#include <asm/fpu/internal.h>		/* init_fpstate			*/
+@@ -273,6 +276,7 @@ static int usb_conn_probe(struct platfor
+ 	platform_set_drvdata(pdev, info);
  
- int __execute_only_pkey(struct mm_struct *mm)
- {
-@@ -154,7 +153,6 @@ static ssize_t init_pkru_read_file(struc
- static ssize_t init_pkru_write_file(struct file *file,
- 		 const char __user *user_buf, size_t count, loff_t *ppos)
- {
--	struct pkru_state *pk;
- 	char buf[32];
- 	ssize_t len;
- 	u32 new_init_pkru;
-@@ -177,10 +175,6 @@ static ssize_t init_pkru_write_file(stru
- 		return -EINVAL;
+ 	/* Perform initial detection */
++	info->initial_detection = true;
+ 	usb_conn_queue_dwork(info, 0);
  
- 	WRITE_ONCE(init_pkru_value, new_init_pkru);
--	pk = get_xsave_addr(&init_fpstate.xsave, XFEATURE_PKRU);
--	if (!pk)
--		return -EINVAL;
--	pk->pkru = new_init_pkru;
- 	return count;
- }
- 
+ 	return 0;
 
 
