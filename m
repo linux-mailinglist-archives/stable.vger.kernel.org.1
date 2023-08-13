@@ -2,90 +2,93 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 65CF077AD68
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:49:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A5ACD77AD02
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:48:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232398AbjHMVtK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:49:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41294 "EHLO
+        id S229451AbjHMVr6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:47:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47446 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232308AbjHMVse (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:48:34 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A8AD1FC8
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:42:17 -0700 (PDT)
+        with ESMTP id S229607AbjHMVrR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:47:17 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A07022D54
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:47:16 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0006561A2D
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:42:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 194EBC433C7;
-        Sun, 13 Aug 2023 21:42:15 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3E9A860B9D
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:47:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F13BC433C7;
+        Sun, 13 Aug 2023 21:47:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691962936;
-        bh=UrCE919QDeTdJhujNC2yEFpmC+5sFxDp2UAz1ej6/EE=;
+        s=korg; t=1691963235;
+        bh=jgzM9WXS0g1aaipURMOQ982YuwBnso6nMbKe1YEzAgw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=pOmdQv0NRZ/636a9UFIC1vns0Pr4mhSSr6JST/knIFRsmwePIguSAhjuOlhWrcGq0
-         wwQ+OQXL01GZQZ992fCpCoxbtLLq9VXhhiuxvbukgaD689kPTXnszUc+F1hoOCxKun
-         ge1eqbaeJdfIWS0qKxS0Mu8Bx1M4vso6aeTlLa6s=
+        b=UpFOPx8SVLoNNa/cLdZ1dMtiU+TMIiusIsQZyuoy/tOJqKuzzms886p61eEQ2Odye
+         EJAfaWqAQzMC57AvHaH8iC+XU0frPy2ebCI47XMIYYZs/QbZKcoW378tUXjloPTffA
+         u1eUeoxex5mRlVQ0CkTnxMzAVnPkiV/nUz1rO+pc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Vladimir Telezhnikov <vtelezhnikov@astralinux.ru>,
-        Alexandra Diupina <adiupina@astralinux.ru>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 5.10 62/68] scsi: 53c700: Check that command slot is not NULL
-Date:   Sun, 13 Aug 2023 23:20:03 +0200
-Message-ID: <20230813211710.032407855@linuxfoundation.org>
+        Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
+        "Borislav Petkov (AMD)" <bp@alien8.de>
+Subject: [PATCH 5.4 13/39] x86/cpu/amd: Enable Zenbleed fix for AMD Custom APU 0405
+Date:   Sun, 13 Aug 2023 23:20:04 +0200
+Message-ID: <20230813211705.286580541@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211708.149630011@linuxfoundation.org>
-References: <20230813211708.149630011@linuxfoundation.org>
+In-Reply-To: <20230813211704.796906808@linuxfoundation.org>
+References: <20230813211704.796906808@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Alexandra Diupina <adiupina@astralinux.ru>
+From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
 
-commit 8366d1f1249a0d0bba41d0bd1298d63e5d34c7f7 upstream.
+commit 6dbef74aeb090d6bee7d64ef3fa82ae6fa53f271 upstream.
 
-Add a check for the command slot value to avoid dereferencing a NULL
-pointer.
+Commit
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+  522b1d69219d ("x86/cpu/amd: Add a Zenbleed fix")
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Co-developed-by: Vladimir Telezhnikov <vtelezhnikov@astralinux.ru>
-Signed-off-by: Vladimir Telezhnikov <vtelezhnikov@astralinux.ru>
-Signed-off-by: Alexandra Diupina <adiupina@astralinux.ru>
-Link: https://lore.kernel.org/r/20230728123521.18293-1-adiupina@astralinux.ru
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+provided a fix for the Zen2 VZEROUPPER data corruption bug affecting
+a range of CPU models, but the AMD Custom APU 0405 found on SteamDeck
+was not listed, although it is clearly affected by the vulnerability.
+
+Add this CPU variant to the Zenbleed erratum list, in order to
+unconditionally enable the fallback fix until a proper microcode update
+is available.
+
+Fixes: 522b1d69219d ("x86/cpu/amd: Add a Zenbleed fix")
+Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20230811203705.1699914-1-cristian.ciocaltea@collabora.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/53c700.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/kernel/cpu/amd.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/scsi/53c700.c
-+++ b/drivers/scsi/53c700.c
-@@ -1600,7 +1600,7 @@ NCR_700_intr(int irq, void *dev_id)
- 				printk("scsi%d (%d:%d) PHASE MISMATCH IN SEND MESSAGE %d remain, return %p[%04x], phase %s\n", host->host_no, pun, lun, count, (void *)temp, temp - hostdata->pScript, sbcl_to_string(NCR_700_readb(host, SBCL_REG)));
- #endif
- 				resume_offset = hostdata->pScript + Ent_SendMessagePhaseMismatch;
--			} else if(dsp >= to32bit(&slot->pSG[0].ins) &&
-+			} else if (slot && dsp >= to32bit(&slot->pSG[0].ins) &&
- 				  dsp <= to32bit(&slot->pSG[NCR_700_SG_SEGMENTS].ins)) {
- 				int data_transfer = NCR_700_readl(host, DBC_REG) & 0xffffff;
- 				int SGcount = (dsp - to32bit(&slot->pSG[0].ins))/sizeof(struct NCR_700_SG_List);
+--- a/arch/x86/kernel/cpu/amd.c
++++ b/arch/x86/kernel/cpu/amd.c
+@@ -72,6 +72,7 @@ static const int amd_erratum_1054[] =
+ static const int amd_zenbleed[] =
+ 	AMD_LEGACY_ERRATUM(AMD_MODEL_RANGE(0x17, 0x30, 0x0, 0x4f, 0xf),
+ 			   AMD_MODEL_RANGE(0x17, 0x60, 0x0, 0x7f, 0xf),
++			   AMD_MODEL_RANGE(0x17, 0x90, 0x0, 0x91, 0xf),
+ 			   AMD_MODEL_RANGE(0x17, 0xa0, 0x0, 0xaf, 0xf));
+ 
+ static bool cpu_has_amd_erratum(struct cpuinfo_x86 *cpu, const int *erratum)
 
 
