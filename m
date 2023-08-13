@@ -2,86 +2,92 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4D0C077AD39
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:48:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8D07077AD5C
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:49:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231531AbjHMVsP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:48:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52262 "EHLO
+        id S232320AbjHMVsw (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:48:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41324 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232342AbjHMVqU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:46:20 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D60362D54
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:46:19 -0700 (PDT)
+        with ESMTP id S231523AbjHMVsO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:48:14 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32C4B1BD0
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:41:33 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7389361C1D
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:46:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68D3DC433C7;
-        Sun, 13 Aug 2023 21:46:18 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 95AF761A2D
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:41:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A71F7C433C8;
+        Sun, 13 Aug 2023 21:41:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691963178;
-        bh=0A0gAzXwXNMOg3hGBc8XZMdar2aUZsUFEP1GVpAaOHY=;
+        s=korg; t=1691962891;
+        bh=sWZ1OXHuB3XqLBP+ncP1JJpwvIMa3sLCs5/LOcx6BeQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=PgXjB8JVuLYyZZU5xM1EEzgQUG4a5IhkaN4ADctQUtNhAsJxgBJnoTH5LdrXQfEN0
-         bsB2Bhu9IRZ5rBGcNY8MMrGnLd9rsxgRayG3pPsXNQ+xCcwO//t5kB9nvcgEmhmB7t
-         qQCGBFotB/zf7add5Nzyc252nn2WKEpw+7StqH7g=
+        b=ge6CKAeiV0zuQ1MwJtUVhcW9AIQ0NAUiHAQJ6Jncqj5idW2bGPYkj4i+qpmoWMfvp
+         mDziywwiBEzE4zg/2XGNSYOZt/Jvp3BJrxDv/LXAfxyXW0CWEgQK6BBa9LvK4QVt+7
+         gNu3L+Bshij7f8w+C+cKPZgbI09RC+6fZhxxaPFg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Douglas Miller <doug.miller@cornelisnetworks.com>,
-        Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>,
-        Leon Romanovsky <leon@kernel.org>
-Subject: [PATCH 5.15 54/89] IB/hfi1: Fix possible panic during hotplug remove
+        patches@lists.linux.dev, Andrew Kanner <andrew.kanner@gmail.com>,
+        Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.10 44/68] drivers: net: prevent tun_build_skb() to exceed the packet size limit
 Date:   Sun, 13 Aug 2023 23:19:45 +0200
-Message-ID: <20230813211712.416499728@linuxfoundation.org>
+Message-ID: <20230813211709.499253742@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211710.787645394@linuxfoundation.org>
-References: <20230813211710.787645394@linuxfoundation.org>
+In-Reply-To: <20230813211708.149630011@linuxfoundation.org>
+References: <20230813211708.149630011@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Douglas Miller <doug.miller@cornelisnetworks.com>
+From: Andrew Kanner <andrew.kanner@gmail.com>
 
-commit 4fdfaef71fced490835145631a795497646f4555 upstream.
+commit 59eeb232940515590de513b997539ef495faca9a upstream.
 
-During hotplug remove it is possible that the update counters work
-might be pending, and may run after memory has been freed.
-Cancel the update counters work before freeing memory.
+Using the syzkaller repro with reduced packet size it was discovered
+that XDP_PACKET_HEADROOM is not checked in tun_can_build_skb(),
+although pad may be incremented in tun_build_skb(). This may end up
+with exceeding the PAGE_SIZE limit in tun_build_skb().
 
-Fixes: 7724105686e7 ("IB/hfi1: add driver files")
-Signed-off-by: Douglas Miller <doug.miller@cornelisnetworks.com>
-Signed-off-by: Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>
-Link: https://lore.kernel.org/r/169099756100.3927190.15284930454106475280.stgit@awfm-02.cornelisnetworks.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Jason Wang <jasowang@redhat.com> proposed to count XDP_PACKET_HEADROOM
+always (e.g. without rcu_access_pointer(tun->xdp_prog)) in
+tun_can_build_skb() since there's a window during which XDP program
+might be attached between tun_can_build_skb() and tun_build_skb().
+
+Fixes: 7df13219d757 ("tun: reserve extra headroom only when XDP is set")
+Link: https://syzkaller.appspot.com/bug?extid=f817490f5bd20541b90a
+Signed-off-by: Andrew Kanner <andrew.kanner@gmail.com>
+Link: https://lore.kernel.org/r/20230803185947.2379988-1-andrew.kanner@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/hfi1/chip.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/tun.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/infiniband/hw/hfi1/chip.c
-+++ b/drivers/infiniband/hw/hfi1/chip.c
-@@ -12306,6 +12306,7 @@ static void free_cntrs(struct hfi1_devda
+--- a/drivers/net/tun.c
++++ b/drivers/net/tun.c
+@@ -1604,7 +1604,7 @@ static bool tun_can_build_skb(struct tun
+ 	if (zerocopy)
+ 		return false;
  
- 	if (dd->synth_stats_timer.function)
- 		del_timer_sync(&dd->synth_stats_timer);
-+	cancel_work_sync(&dd->update_cntr_work);
- 	ppd = (struct hfi1_pportdata *)(dd + 1);
- 	for (i = 0; i < dd->num_pports; i++, ppd++) {
- 		kfree(ppd->cntrs);
+-	if (SKB_DATA_ALIGN(len + TUN_RX_PAD) +
++	if (SKB_DATA_ALIGN(len + TUN_RX_PAD + XDP_PACKET_HEADROOM) +
+ 	    SKB_DATA_ALIGN(sizeof(struct skb_shared_info)) > PAGE_SIZE)
+ 		return false;
+ 
 
 
