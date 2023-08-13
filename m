@@ -2,150 +2,89 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AFB7D77ACD6
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:37:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9F1DE77AB70
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:22:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232198AbjHMVhm (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:37:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46812 "EHLO
+        id S229597AbjHMVV7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:21:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59158 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232203AbjHMVhl (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:37:41 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 141C710E5
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:37:43 -0700 (PDT)
+        with ESMTP id S230326AbjHMVV6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:21:58 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 105AC10DB
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:22:01 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 85DB0633D2
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:37:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E151C433C7;
-        Sun, 13 Aug 2023 21:37:41 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A3E65627E4
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:22:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1862C433C8;
+        Sun, 13 Aug 2023 21:21:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691962662;
-        bh=SDk2jQs/9gsVggc8VaptrE27iFUMFZCIoI+W6X5PRH4=;
+        s=korg; t=1691961720;
+        bh=R15l1BKXod8hZEPiErcBzYQA82uGFFFFFen6jImXGo0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=fkgvo1oHFMFIK7YzEnvtcPj3MnazR6kHl8ppUlF1fFRCyafC8PrHzANL2ZwzMJSor
-         iGROUFYVxA6SNIH8X1J9vpNCte2obe6U9PcnvtGT4ldvXAqyNy69U5QaHDnzr8bXk5
-         2nIJJwSbbhO/Zmsv6RlAJVAMtgWr+ymwiiJuWC8o=
+        b=Hyt0I84SFM2vF4npw8fqx+K3zHDCShwKm5KXY1n2bzWleUrVTYMaZDh2SPl/dcJ1o
+         oq3QOE+vOJa6WI7QTqS6JYGn4QIF37IU6fj9szfC+bFqFIjsU4/75/Q54R1fatuNHQ
+         3zlRd5euZaV7+kU44l+u7UvRU/y79VYPIOBGgQjg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ido Schimmel <idosch@nvidia.com>,
-        Petr Machata <petrm@nvidia.com>,
-        David Ahern <dsahern@kernel.org>,
-        Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 111/149] nexthop: Make nexthop bucket dump more efficient
+        patches@lists.linux.dev,
+        Vladimir Telezhnikov <vtelezhnikov@astralinux.ru>,
+        Alexandra Diupina <adiupina@astralinux.ru>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 4.14 23/26] scsi: 53c700: Check that command slot is not NULL
 Date:   Sun, 13 Aug 2023 23:19:16 +0200
-Message-ID: <20230813211722.077828542@linuxfoundation.org>
+Message-ID: <20230813211703.848550401@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211718.757428827@linuxfoundation.org>
-References: <20230813211718.757428827@linuxfoundation.org>
+In-Reply-To: <20230813211702.980427106@linuxfoundation.org>
+References: <20230813211702.980427106@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Alexandra Diupina <adiupina@astralinux.ru>
 
-commit f10d3d9df49d9e6ee244fda6ca264f901a9c5d85 upstream.
+commit 8366d1f1249a0d0bba41d0bd1298d63e5d34c7f7 upstream.
 
-rtm_dump_nexthop_bucket_nh() is used to dump nexthop buckets belonging
-to a specific resilient nexthop group. The function returns a positive
-return code (the skb length) upon both success and failure.
+Add a check for the command slot value to avoid dereferencing a NULL
+pointer.
 
-The above behavior is problematic. When a complete nexthop bucket dump
-is requested, the function that walks the different nexthops treats the
-non-zero return code as an error. This causes buckets belonging to
-different resilient nexthop groups to be dumped using different buffers
-even if they can all fit in the same buffer:
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
- # ip link add name dummy1 up type dummy
- # ip nexthop add id 1 dev dummy1
- # ip nexthop add id 10 group 1 type resilient buckets 1
- # ip nexthop add id 20 group 1 type resilient buckets 1
- # strace -e recvmsg -s 0 ip nexthop bucket
- [...]
- recvmsg(3, {msg_name={sa_family=AF_NETLINK, nl_pid=0, nl_groups=00000000}, msg_namelen=12, msg_iov=[...], msg_iovlen=1, msg_controllen=0, msg_flags=0}, 0) = 64
- id 10 index 0 idle_time 10.27 nhid 1
- [...]
- recvmsg(3, {msg_name={sa_family=AF_NETLINK, nl_pid=0, nl_groups=00000000}, msg_namelen=12, msg_iov=[...], msg_iovlen=1, msg_controllen=0, msg_flags=0}, 0) = 64
- id 20 index 0 idle_time 6.44 nhid 1
- [...]
-
-Fix by only returning a non-zero return code when an error occurred and
-restarting the dump from the bucket index we failed to fill in. This
-allows buckets belonging to different resilient nexthop groups to be
-dumped using the same buffer:
-
- # ip link add name dummy1 up type dummy
- # ip nexthop add id 1 dev dummy1
- # ip nexthop add id 10 group 1 type resilient buckets 1
- # ip nexthop add id 20 group 1 type resilient buckets 1
- # strace -e recvmsg -s 0 ip nexthop bucket
- [...]
- recvmsg(3, {msg_name={sa_family=AF_NETLINK, nl_pid=0, nl_groups=00000000}, msg_namelen=12, msg_iov=[...], msg_iovlen=1, msg_controllen=0, msg_flags=0}, 0) = 128
- id 10 index 0 idle_time 30.21 nhid 1
- id 20 index 0 idle_time 26.7 nhid 1
- [...]
-
-While this change is more of a performance improvement change than an
-actual bug fix, it is a prerequisite for a subsequent patch that does
-fix a bug.
-
-Fixes: 8a1bbabb034d ("nexthop: Add netlink handlers for bucket dump")
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: Petr Machata <petrm@nvidia.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://lore.kernel.org/r/20230808075233.3337922-3-idosch@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Co-developed-by: Vladimir Telezhnikov <vtelezhnikov@astralinux.ru>
+Signed-off-by: Vladimir Telezhnikov <vtelezhnikov@astralinux.ru>
+Signed-off-by: Alexandra Diupina <adiupina@astralinux.ru>
+Link: https://lore.kernel.org/r/20230728123521.18293-1-adiupina@astralinux.ru
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/nexthop.c |   16 +++++-----------
- 1 file changed, 5 insertions(+), 11 deletions(-)
+ drivers/scsi/53c700.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/ipv4/nexthop.c
-+++ b/net/ipv4/nexthop.c
-@@ -3363,25 +3363,19 @@ static int rtm_dump_nexthop_bucket_nh(st
- 		    dd->filter.res_bucket_nh_id != nhge->nh->id)
- 			continue;
- 
-+		dd->ctx->bucket_index = bucket_index;
- 		err = nh_fill_res_bucket(skb, nh, bucket, bucket_index,
- 					 RTM_NEWNEXTHOPBUCKET, portid,
- 					 cb->nlh->nlmsg_seq, NLM_F_MULTI,
- 					 cb->extack);
--		if (err < 0) {
--			if (likely(skb->len))
--				goto out;
--			goto out_err;
--		}
-+		if (err)
-+			return err;
- 	}
- 
- 	dd->ctx->done_nh_idx = dd->ctx->nh.idx + 1;
--	bucket_index = 0;
-+	dd->ctx->bucket_index = 0;
- 
--out:
--	err = skb->len;
--out_err:
--	dd->ctx->bucket_index = bucket_index;
--	return err;
-+	return 0;
- }
- 
- static int rtm_dump_nexthop_bucket_cb(struct sk_buff *skb,
+--- a/drivers/scsi/53c700.c
++++ b/drivers/scsi/53c700.c
+@@ -1594,7 +1594,7 @@ NCR_700_intr(int irq, void *dev_id)
+ 				printk("scsi%d (%d:%d) PHASE MISMATCH IN SEND MESSAGE %d remain, return %p[%04x], phase %s\n", host->host_no, pun, lun, count, (void *)temp, temp - hostdata->pScript, sbcl_to_string(NCR_700_readb(host, SBCL_REG)));
+ #endif
+ 				resume_offset = hostdata->pScript + Ent_SendMessagePhaseMismatch;
+-			} else if(dsp >= to32bit(&slot->pSG[0].ins) &&
++			} else if (slot && dsp >= to32bit(&slot->pSG[0].ins) &&
+ 				  dsp <= to32bit(&slot->pSG[NCR_700_SG_SEGMENTS].ins)) {
+ 				int data_transfer = NCR_700_readl(host, DBC_REG) & 0xffffff;
+ 				int SGcount = (dsp - to32bit(&slot->pSG[0].ins))/sizeof(struct NCR_700_SG_List);
 
 
