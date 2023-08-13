@@ -2,46 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C5DC077AD76
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:49:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A363D77AD56
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:49:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232319AbjHMVtX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:49:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33240 "EHLO
+        id S232420AbjHMVtV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:49:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33232 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231639AbjHMVsy (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:48:54 -0400
+        with ESMTP id S231454AbjHMVsw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:48:52 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89AC219B2
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:41:20 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A3521713
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:39:46 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D7DB361A36
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:41:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBA7FC433C8;
-        Sun, 13 Aug 2023 21:41:16 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 23A1F63815
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:39:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AAABC433C7;
+        Sun, 13 Aug 2023 21:39:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691962877;
-        bh=XqqPgdXMliVofjW2tYzc+Iy7PfjRCb7E7Lwg3+5mtrw=;
+        s=korg; t=1691962783;
+        bh=+im8byIl+RMO+w3biTHnjEptTZ2eV+w0Yh+fcS+KPto=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=m5p2VnonyqqCyHrsmeuffreaYC8iqZfpgsAtibevPChOlmceUCxTe8HUoNjZWKnUi
-         l26bBjgFvNDjYpstTjX9RI4oRyVvRmwuaAaKHCUgpAdfsFcz6Fn6+A/8IRBZMpbNi3
-         ChMbVFK5pTGwN3o1QzSca0a6PRoDfluyNrIgUcDQ=
+        b=JIdGQgEZNGGDXYk13U9RyMfk2jY2UyPdzVY2QL0gSN3/jdPGDOf4RL5wmtG/bGiKy
+         V5AIxWkiZBaV2IoD3Ia0EUyYxcfsuH20BO1RGdXaaZjGJaKU85ILUXCFmHT57Qlobr
+         M26IEbaLS5O4fnpRCdSpdLKmMKFkQ9wKoSpmeWSA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, syzbot <syzkaller@googlegroups.com>,
-        Eric Dumazet <edumazet@google.com>,
-        Willem de Bruijn <willemb@google.com>,
-        Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.10 40/68] net/packet: annotate data-races around tp->status
-Date:   Sun, 13 Aug 2023 23:19:41 +0200
-Message-ID: <20230813211709.376923905@linuxfoundation.org>
+        patches@lists.linux.dev, Michael Kelley <mikelley@microsoft.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.1 137/149] scsi: storvsc: Fix handling of virtual Fibre Channel timeouts
+Date:   Sun, 13 Aug 2023 23:19:42 +0200
+Message-ID: <20230813211722.812313385@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211708.149630011@linuxfoundation.org>
-References: <20230813211708.149630011@linuxfoundation.org>
+In-Reply-To: <20230813211718.757428827@linuxfoundation.org>
+References: <20230813211718.757428827@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,125 +54,62 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Eric Dumazet <edumazet@google.com>
+From: Michael Kelley <mikelley@microsoft.com>
 
-commit 8a9896177784063d01068293caea3f74f6830ff6 upstream.
+commit 175544ad48cbf56affeef2a679c6a4d4fb1e2881 upstream.
 
-Another syzbot report [1] is about tp->status lockless reads
-from __packet_get_status()
+Hyper-V provides the ability to connect Fibre Channel LUNs to the host
+system and present them in a guest VM as a SCSI device. I/O to the vFC
+device is handled by the storvsc driver. The storvsc driver includes a
+partial integration with the FC transport implemented in the generic
+portion of the Linux SCSI subsystem so that FC attributes can be displayed
+in /sys.  However, the partial integration means that some aspects of vFC
+don't work properly. Unfortunately, a full and correct integration isn't
+practical because of limitations in what Hyper-V provides to the guest.
 
-[1]
-BUG: KCSAN: data-race in __packet_rcv_has_room / __packet_set_status
+In particular, in the context of Hyper-V storvsc, the FC transport timeout
+function fc_eh_timed_out() causes a kernel panic because it can't find the
+rport and dereferences a NULL pointer. The original patch that added the
+call from storvsc_eh_timed_out() to fc_eh_timed_out() is faulty in this
+regard.
 
-write to 0xffff888117d7c080 of 8 bytes by interrupt on cpu 0:
-__packet_set_status+0x78/0xa0 net/packet/af_packet.c:407
-tpacket_rcv+0x18bb/0x1a60 net/packet/af_packet.c:2483
-deliver_skb net/core/dev.c:2173 [inline]
-__netif_receive_skb_core+0x408/0x1e80 net/core/dev.c:5337
-__netif_receive_skb_one_core net/core/dev.c:5491 [inline]
-__netif_receive_skb+0x57/0x1b0 net/core/dev.c:5607
-process_backlog+0x21f/0x380 net/core/dev.c:5935
-__napi_poll+0x60/0x3b0 net/core/dev.c:6498
-napi_poll net/core/dev.c:6565 [inline]
-net_rx_action+0x32b/0x750 net/core/dev.c:6698
-__do_softirq+0xc1/0x265 kernel/softirq.c:571
-invoke_softirq kernel/softirq.c:445 [inline]
-__irq_exit_rcu+0x57/0xa0 kernel/softirq.c:650
-sysvec_apic_timer_interrupt+0x6d/0x80 arch/x86/kernel/apic/apic.c:1106
-asm_sysvec_apic_timer_interrupt+0x1a/0x20 arch/x86/include/asm/idtentry.h:645
-smpboot_thread_fn+0x33c/0x4a0 kernel/smpboot.c:112
-kthread+0x1d7/0x210 kernel/kthread.c:379
-ret_from_fork+0x1f/0x30 arch/x86/entry/entry_64.S:308
+In many cases a timeout is due to a transient condition, so the situation
+can be improved by just continuing to wait like with other I/O requests
+issued by storvsc, and avoiding the guaranteed panic. For a permanent
+failure, continuing to wait may result in a hung thread instead of a panic,
+which again may be better.
 
-read to 0xffff888117d7c080 of 8 bytes by interrupt on cpu 1:
-__packet_get_status net/packet/af_packet.c:436 [inline]
-packet_lookup_frame net/packet/af_packet.c:524 [inline]
-__tpacket_has_room net/packet/af_packet.c:1255 [inline]
-__packet_rcv_has_room+0x3f9/0x450 net/packet/af_packet.c:1298
-tpacket_rcv+0x275/0x1a60 net/packet/af_packet.c:2285
-deliver_skb net/core/dev.c:2173 [inline]
-dev_queue_xmit_nit+0x38a/0x5e0 net/core/dev.c:2243
-xmit_one net/core/dev.c:3574 [inline]
-dev_hard_start_xmit+0xcf/0x3f0 net/core/dev.c:3594
-__dev_queue_xmit+0xefb/0x1d10 net/core/dev.c:4244
-dev_queue_xmit include/linux/netdevice.h:3088 [inline]
-can_send+0x4eb/0x5d0 net/can/af_can.c:276
-bcm_can_tx+0x314/0x410 net/can/bcm.c:302
-bcm_tx_timeout_handler+0xdb/0x260
-__run_hrtimer kernel/time/hrtimer.c:1685 [inline]
-__hrtimer_run_queues+0x217/0x700 kernel/time/hrtimer.c:1749
-hrtimer_run_softirq+0xd6/0x120 kernel/time/hrtimer.c:1766
-__do_softirq+0xc1/0x265 kernel/softirq.c:571
-run_ksoftirqd+0x17/0x20 kernel/softirq.c:939
-smpboot_thread_fn+0x30a/0x4a0 kernel/smpboot.c:164
-kthread+0x1d7/0x210 kernel/kthread.c:379
-ret_from_fork+0x1f/0x30 arch/x86/entry/entry_64.S:308
+So fix the panic by removing the storvsc call to fc_eh_timed_out().  This
+allows storvsc to keep waiting for a response.  The change has been tested
+by users who experienced a panic in fc_eh_timed_out() due to transient
+timeouts, and it solves their problem.
 
-value changed: 0x0000000000000000 -> 0x0000000020000081
+In the future we may want to deprecate the vFC functionality in storvsc
+since it can't be fully fixed. But it has current users for whom it is
+working well enough, so it should probably stay for a while longer.
 
-Reported by Kernel Concurrency Sanitizer on:
-CPU: 1 PID: 19 Comm: ksoftirqd/1 Not tainted 6.4.0-syzkaller #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 05/27/2023
-
-Fixes: 69e3c75f4d54 ("net: TX_RING and packet mmap")
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Link: https://lore.kernel.org/r/20230803145600.2937518-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 3930d7309807 ("scsi: storvsc: use default I/O timeout handler for FC devices")
+Cc: stable@vger.kernel.org
+Signed-off-by: Michael Kelley <mikelley@microsoft.com>
+Link: https://lore.kernel.org/r/1690606764-79669-1-git-send-email-mikelley@microsoft.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/packet/af_packet.c |   16 ++++++++++------
- 1 file changed, 10 insertions(+), 6 deletions(-)
+ drivers/scsi/storvsc_drv.c |    4 ----
+ 1 file changed, 4 deletions(-)
 
---- a/net/packet/af_packet.c
-+++ b/net/packet/af_packet.c
-@@ -366,18 +366,20 @@ static void __packet_set_status(struct p
+--- a/drivers/scsi/storvsc_drv.c
++++ b/drivers/scsi/storvsc_drv.c
+@@ -1670,10 +1670,6 @@ static int storvsc_host_reset_handler(st
+  */
+ static enum blk_eh_timer_return storvsc_eh_timed_out(struct scsi_cmnd *scmnd)
  {
- 	union tpacket_uhdr h;
+-#if IS_ENABLED(CONFIG_SCSI_FC_ATTRS)
+-	if (scmnd->device->host->transportt == fc_transport_template)
+-		return fc_eh_timed_out(scmnd);
+-#endif
+ 	return BLK_EH_RESET_TIMER;
+ }
  
-+	/* WRITE_ONCE() are paired with READ_ONCE() in __packet_get_status */
-+
- 	h.raw = frame;
- 	switch (po->tp_version) {
- 	case TPACKET_V1:
--		h.h1->tp_status = status;
-+		WRITE_ONCE(h.h1->tp_status, status);
- 		flush_dcache_page(pgv_to_page(&h.h1->tp_status));
- 		break;
- 	case TPACKET_V2:
--		h.h2->tp_status = status;
-+		WRITE_ONCE(h.h2->tp_status, status);
- 		flush_dcache_page(pgv_to_page(&h.h2->tp_status));
- 		break;
- 	case TPACKET_V3:
--		h.h3->tp_status = status;
-+		WRITE_ONCE(h.h3->tp_status, status);
- 		flush_dcache_page(pgv_to_page(&h.h3->tp_status));
- 		break;
- 	default:
-@@ -394,17 +396,19 @@ static int __packet_get_status(const str
- 
- 	smp_rmb();
- 
-+	/* READ_ONCE() are paired with WRITE_ONCE() in __packet_set_status */
-+
- 	h.raw = frame;
- 	switch (po->tp_version) {
- 	case TPACKET_V1:
- 		flush_dcache_page(pgv_to_page(&h.h1->tp_status));
--		return h.h1->tp_status;
-+		return READ_ONCE(h.h1->tp_status);
- 	case TPACKET_V2:
- 		flush_dcache_page(pgv_to_page(&h.h2->tp_status));
--		return h.h2->tp_status;
-+		return READ_ONCE(h.h2->tp_status);
- 	case TPACKET_V3:
- 		flush_dcache_page(pgv_to_page(&h.h3->tp_status));
--		return h.h3->tp_status;
-+		return READ_ONCE(h.h3->tp_status);
- 	default:
- 		WARN(1, "TPACKET version not supported.\n");
- 		BUG();
 
 
