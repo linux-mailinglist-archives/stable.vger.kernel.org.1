@@ -2,47 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B750177AD79
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:49:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C5DC077AD76
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:49:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231263AbjHMVtI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:49:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36600 "EHLO
+        id S232319AbjHMVtX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:49:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33240 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232303AbjHMVsd (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:48:33 -0400
+        with ESMTP id S231639AbjHMVsy (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:48:54 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6CCCA1710
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:39:43 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89AC219B2
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:41:20 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7A5AF636FE
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:39:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EEF1C433C8;
-        Sun, 13 Aug 2023 21:39:40 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D7DB361A36
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:41:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBA7FC433C8;
+        Sun, 13 Aug 2023 21:41:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691962780;
-        bh=UH7wEnHk7hQoO3akTHWQnd5FSTxsSIvk/TIjwNixMws=;
+        s=korg; t=1691962877;
+        bh=XqqPgdXMliVofjW2tYzc+Iy7PfjRCb7E7Lwg3+5mtrw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=YWU6DkQiRtKL79bvFQg+3xrICc0Pq6CD72+Qr44QYqPE3HdAM/qks3XI6T9VFycZ4
-         NuM/wdcimcL4QjCeJKUMPcw7wPLXRuFOkc3RKm4qZJrKOeLr5uHpXhg8HrWQP5Tzai
-         KgB8uoxk64H98zQkDHKT3/khamCjnWEpd/8z/Xik=
+        b=m5p2VnonyqqCyHrsmeuffreaYC8iqZfpgsAtibevPChOlmceUCxTe8HUoNjZWKnUi
+         l26bBjgFvNDjYpstTjX9RI4oRyVvRmwuaAaKHCUgpAdfsFcz6Fn6+A/8IRBZMpbNi3
+         ChMbVFK5pTGwN3o1QzSca0a6PRoDfluyNrIgUcDQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Martin K Petersen <martin.petersen@oracle.com>,
-        James Bottomley <jejb@linux.ibm.com>, Willy Tarreau <w@1wt.eu>,
-        stable@kernel.org, Tony Battersby <tonyb@cybernetics.com>
-Subject: [PATCH 6.1 136/149] scsi: core: Fix legacy /proc parsing buffer overflow
+        patches@lists.linux.dev, syzbot <syzkaller@googlegroups.com>,
+        Eric Dumazet <edumazet@google.com>,
+        Willem de Bruijn <willemb@google.com>,
+        Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.10 40/68] net/packet: annotate data-races around tp->status
 Date:   Sun, 13 Aug 2023 23:19:41 +0200
-Message-ID: <20230813211722.781681448@linuxfoundation.org>
+Message-ID: <20230813211709.376923905@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211718.757428827@linuxfoundation.org>
-References: <20230813211718.757428827@linuxfoundation.org>
+In-Reply-To: <20230813211708.149630011@linuxfoundation.org>
+References: <20230813211708.149630011@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,106 +56,125 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Tony Battersby <tonyb@cybernetics.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 9426d3cef5000824e5f24f80ed5f42fb935f2488 upstream.
+commit 8a9896177784063d01068293caea3f74f6830ff6 upstream.
 
-(lightly modified commit message mostly by Linus Torvalds)
+Another syzbot report [1] is about tp->status lockless reads
+from __packet_get_status()
 
-The parsing code for /proc/scsi/scsi is disgusting and broken.  We should
-have just used 'sscanf()' or something simple like that, but the logic may
-actually predate our kernel sscanf library routine for all I know.  It
-certainly predates both git and BK histories.
+[1]
+BUG: KCSAN: data-race in __packet_rcv_has_room / __packet_set_status
 
-And we can't change it to be something sane like that now, because the
-string matching at the start is done case-insensitively, and the separator
-parsing between numbers isn't done at all, so *any* separator will work,
-including a possible terminating NUL character.
+write to 0xffff888117d7c080 of 8 bytes by interrupt on cpu 0:
+__packet_set_status+0x78/0xa0 net/packet/af_packet.c:407
+tpacket_rcv+0x18bb/0x1a60 net/packet/af_packet.c:2483
+deliver_skb net/core/dev.c:2173 [inline]
+__netif_receive_skb_core+0x408/0x1e80 net/core/dev.c:5337
+__netif_receive_skb_one_core net/core/dev.c:5491 [inline]
+__netif_receive_skb+0x57/0x1b0 net/core/dev.c:5607
+process_backlog+0x21f/0x380 net/core/dev.c:5935
+__napi_poll+0x60/0x3b0 net/core/dev.c:6498
+napi_poll net/core/dev.c:6565 [inline]
+net_rx_action+0x32b/0x750 net/core/dev.c:6698
+__do_softirq+0xc1/0x265 kernel/softirq.c:571
+invoke_softirq kernel/softirq.c:445 [inline]
+__irq_exit_rcu+0x57/0xa0 kernel/softirq.c:650
+sysvec_apic_timer_interrupt+0x6d/0x80 arch/x86/kernel/apic/apic.c:1106
+asm_sysvec_apic_timer_interrupt+0x1a/0x20 arch/x86/include/asm/idtentry.h:645
+smpboot_thread_fn+0x33c/0x4a0 kernel/smpboot.c:112
+kthread+0x1d7/0x210 kernel/kthread.c:379
+ret_from_fork+0x1f/0x30 arch/x86/entry/entry_64.S:308
 
-This interface is root-only, and entirely for legacy use, so there is
-absolutely no point in trying to tighten up the parsing.  Because any
-separator has traditionally worked, it's entirely possible that people have
-used random characters rather than the suggested space.
+read to 0xffff888117d7c080 of 8 bytes by interrupt on cpu 1:
+__packet_get_status net/packet/af_packet.c:436 [inline]
+packet_lookup_frame net/packet/af_packet.c:524 [inline]
+__tpacket_has_room net/packet/af_packet.c:1255 [inline]
+__packet_rcv_has_room+0x3f9/0x450 net/packet/af_packet.c:1298
+tpacket_rcv+0x275/0x1a60 net/packet/af_packet.c:2285
+deliver_skb net/core/dev.c:2173 [inline]
+dev_queue_xmit_nit+0x38a/0x5e0 net/core/dev.c:2243
+xmit_one net/core/dev.c:3574 [inline]
+dev_hard_start_xmit+0xcf/0x3f0 net/core/dev.c:3594
+__dev_queue_xmit+0xefb/0x1d10 net/core/dev.c:4244
+dev_queue_xmit include/linux/netdevice.h:3088 [inline]
+can_send+0x4eb/0x5d0 net/can/af_can.c:276
+bcm_can_tx+0x314/0x410 net/can/bcm.c:302
+bcm_tx_timeout_handler+0xdb/0x260
+__run_hrtimer kernel/time/hrtimer.c:1685 [inline]
+__hrtimer_run_queues+0x217/0x700 kernel/time/hrtimer.c:1749
+hrtimer_run_softirq+0xd6/0x120 kernel/time/hrtimer.c:1766
+__do_softirq+0xc1/0x265 kernel/softirq.c:571
+run_ksoftirqd+0x17/0x20 kernel/softirq.c:939
+smpboot_thread_fn+0x30a/0x4a0 kernel/smpboot.c:164
+kthread+0x1d7/0x210 kernel/kthread.c:379
+ret_from_fork+0x1f/0x30 arch/x86/entry/entry_64.S:308
 
-So don't bother to try to pretty it up, and let's just make a minimal patch
-that can be back-ported and we can forget about this whole sorry thing for
-another two decades.
+value changed: 0x0000000000000000 -> 0x0000000020000081
 
-Just make it at least not read past the end of the supplied data.
+Reported by Kernel Concurrency Sanitizer on:
+CPU: 1 PID: 19 Comm: ksoftirqd/1 Not tainted 6.4.0-syzkaller #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 05/27/2023
 
-Link: https://lore.kernel.org/linux-scsi/b570f5fe-cb7c-863a-6ed9-f6774c219b88@cybernetics.com/
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Martin K Petersen <martin.petersen@oracle.com>
-Cc: James Bottomley <jejb@linux.ibm.com>
-Cc: Willy Tarreau <w@1wt.eu>
-Cc: stable@kernel.org
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Tony Battersby <tonyb@cybernetics.com>
-Signed-off-by: Martin K Petersen <martin.petersen@oracle.com>
+Fixes: 69e3c75f4d54 ("net: TX_RING and packet mmap")
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Link: https://lore.kernel.org/r/20230803145600.2937518-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/scsi_proc.c |   30 +++++++++++++++++-------------
- 1 file changed, 17 insertions(+), 13 deletions(-)
+ net/packet/af_packet.c |   16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
 
---- a/drivers/scsi/scsi_proc.c
-+++ b/drivers/scsi/scsi_proc.c
-@@ -311,7 +311,7 @@ static ssize_t proc_scsi_write(struct fi
- 			       size_t length, loff_t *ppos)
+--- a/net/packet/af_packet.c
++++ b/net/packet/af_packet.c
+@@ -366,18 +366,20 @@ static void __packet_set_status(struct p
  {
- 	int host, channel, id, lun;
--	char *buffer, *p;
-+	char *buffer, *end, *p;
- 	int err;
+ 	union tpacket_uhdr h;
  
- 	if (!buf || length > PAGE_SIZE)
-@@ -326,10 +326,14 @@ static ssize_t proc_scsi_write(struct fi
- 		goto out;
++	/* WRITE_ONCE() are paired with READ_ONCE() in __packet_get_status */
++
+ 	h.raw = frame;
+ 	switch (po->tp_version) {
+ 	case TPACKET_V1:
+-		h.h1->tp_status = status;
++		WRITE_ONCE(h.h1->tp_status, status);
+ 		flush_dcache_page(pgv_to_page(&h.h1->tp_status));
+ 		break;
+ 	case TPACKET_V2:
+-		h.h2->tp_status = status;
++		WRITE_ONCE(h.h2->tp_status, status);
+ 		flush_dcache_page(pgv_to_page(&h.h2->tp_status));
+ 		break;
+ 	case TPACKET_V3:
+-		h.h3->tp_status = status;
++		WRITE_ONCE(h.h3->tp_status, status);
+ 		flush_dcache_page(pgv_to_page(&h.h3->tp_status));
+ 		break;
+ 	default:
+@@ -394,17 +396,19 @@ static int __packet_get_status(const str
  
- 	err = -EINVAL;
--	if (length < PAGE_SIZE)
--		buffer[length] = '\0';
--	else if (buffer[PAGE_SIZE-1])
--		goto out;
-+	if (length < PAGE_SIZE) {
-+		end = buffer + length;
-+		*end = '\0';
-+	} else {
-+		end = buffer + PAGE_SIZE - 1;
-+		if (*end)
-+			goto out;
-+	}
+ 	smp_rmb();
  
- 	/*
- 	 * Usage: echo "scsi add-single-device 0 1 2 3" >/proc/scsi/scsi
-@@ -338,10 +342,10 @@ static ssize_t proc_scsi_write(struct fi
- 	if (!strncmp("scsi add-single-device", buffer, 22)) {
- 		p = buffer + 23;
- 
--		host = simple_strtoul(p, &p, 0);
--		channel = simple_strtoul(p + 1, &p, 0);
--		id = simple_strtoul(p + 1, &p, 0);
--		lun = simple_strtoul(p + 1, &p, 0);
-+		host    = (p     < end) ? simple_strtoul(p, &p, 0) : 0;
-+		channel = (p + 1 < end) ? simple_strtoul(p + 1, &p, 0) : 0;
-+		id      = (p + 1 < end) ? simple_strtoul(p + 1, &p, 0) : 0;
-+		lun     = (p + 1 < end) ? simple_strtoul(p + 1, &p, 0) : 0;
- 
- 		err = scsi_add_single_device(host, channel, id, lun);
- 
-@@ -352,10 +356,10 @@ static ssize_t proc_scsi_write(struct fi
- 	} else if (!strncmp("scsi remove-single-device", buffer, 25)) {
- 		p = buffer + 26;
- 
--		host = simple_strtoul(p, &p, 0);
--		channel = simple_strtoul(p + 1, &p, 0);
--		id = simple_strtoul(p + 1, &p, 0);
--		lun = simple_strtoul(p + 1, &p, 0);
-+		host    = (p     < end) ? simple_strtoul(p, &p, 0) : 0;
-+		channel = (p + 1 < end) ? simple_strtoul(p + 1, &p, 0) : 0;
-+		id      = (p + 1 < end) ? simple_strtoul(p + 1, &p, 0) : 0;
-+		lun     = (p + 1 < end) ? simple_strtoul(p + 1, &p, 0) : 0;
- 
- 		err = scsi_remove_single_device(host, channel, id, lun);
- 	}
++	/* READ_ONCE() are paired with WRITE_ONCE() in __packet_set_status */
++
+ 	h.raw = frame;
+ 	switch (po->tp_version) {
+ 	case TPACKET_V1:
+ 		flush_dcache_page(pgv_to_page(&h.h1->tp_status));
+-		return h.h1->tp_status;
++		return READ_ONCE(h.h1->tp_status);
+ 	case TPACKET_V2:
+ 		flush_dcache_page(pgv_to_page(&h.h2->tp_status));
+-		return h.h2->tp_status;
++		return READ_ONCE(h.h2->tp_status);
+ 	case TPACKET_V3:
+ 		flush_dcache_page(pgv_to_page(&h.h3->tp_status));
+-		return h.h3->tp_status;
++		return READ_ONCE(h.h3->tp_status);
+ 	default:
+ 		WARN(1, "TPACKET version not supported.\n");
+ 		BUG();
 
 
