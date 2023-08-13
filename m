@@ -2,87 +2,113 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B265477ACDB
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:37:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B077E77AC68
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:32:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232207AbjHMVhz (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:37:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55662 "EHLO
+        id S231974AbjHMVcp (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:32:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45628 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232208AbjHMVhy (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:37:54 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B18AA10DB
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:37:56 -0700 (PDT)
+        with ESMTP id S231965AbjHMVcp (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:32:45 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 144F910D7
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:32:47 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 471E2633D2
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:37:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B165C433C8;
-        Sun, 13 Aug 2023 21:37:55 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A673362BF2
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:32:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8EF4C433C9;
+        Sun, 13 Aug 2023 21:32:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691962675;
-        bh=TZqAcznvCqCvpUicTpX3fxdcny3QexH2xqVkMvJHJUQ=;
+        s=korg; t=1691962366;
+        bh=WaoRDZBPjt0jG1LYNUFc06mC2uf/uXVkQN47ZJyxiwA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=WLrjr2hjsnH+hEFPa5tXXhTrSmi+VR7d77GY4VHRlMHJDoPpbIfm2Bfuze+NduNjB
-         evL3/mhMoqE2aum3d8rQMY8FWhz23CuvSsiBTZ2zY3StVaPCrWaBCH4c7qib7Ka+GQ
-         bfFII5vJw9gF5Qr0cfmRiYEHVUhX+3JPqy8vzqpw=
+        b=DZ52q1qkby7aaSiJh81FAta3oRVDFacj6wi4qRd+31sTcZYF7YqkFGTNw3uBPaj3P
+         wlvplcPJNYH1CJCOQw624Gsa5pOE4SaRFKLExp7LaNavNx5yJPSLFAk4OjbYu55EF6
+         kA5mvWaHZOnemDBDV9s1503Ci8mtxLATOyiejsVQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zhang Jianhua <chris.zjh@huawei.com>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.1 115/149] dmaengine: owl-dma: Modify mismatched function name
+        patches@lists.linux.dev, Michael Kelley <mikelley@microsoft.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.4 190/206] scsi: storvsc: Fix handling of virtual Fibre Channel timeouts
 Date:   Sun, 13 Aug 2023 23:19:20 +0200
-Message-ID: <20230813211722.186736789@linuxfoundation.org>
+Message-ID: <20230813211730.459184359@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211718.757428827@linuxfoundation.org>
-References: <20230813211718.757428827@linuxfoundation.org>
+In-Reply-To: <20230813211724.969019629@linuxfoundation.org>
+References: <20230813211724.969019629@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Zhang Jianhua <chris.zjh@huawei.com>
+From: Michael Kelley <mikelley@microsoft.com>
 
-commit 74d7221c1f9c9f3a8c316a3557ca7dca8b99d14c upstream.
+commit 175544ad48cbf56affeef2a679c6a4d4fb1e2881 upstream.
 
-No functional modification involved.
+Hyper-V provides the ability to connect Fibre Channel LUNs to the host
+system and present them in a guest VM as a SCSI device. I/O to the vFC
+device is handled by the storvsc driver. The storvsc driver includes a
+partial integration with the FC transport implemented in the generic
+portion of the Linux SCSI subsystem so that FC attributes can be displayed
+in /sys.  However, the partial integration means that some aspects of vFC
+don't work properly. Unfortunately, a full and correct integration isn't
+practical because of limitations in what Hyper-V provides to the guest.
 
-drivers/dma/owl-dma.c:208: warning: expecting prototype for struct owl_dma_pchan. Prototype was for struct owl_dma_vchan instead HDRTEST usr/include/sound/asequencer.h
+In particular, in the context of Hyper-V storvsc, the FC transport timeout
+function fc_eh_timed_out() causes a kernel panic because it can't find the
+rport and dereferences a NULL pointer. The original patch that added the
+call from storvsc_eh_timed_out() to fc_eh_timed_out() is faulty in this
+regard.
 
-Fixes: 47e20577c24d ("dmaengine: Add Actions Semi Owl family S900 DMA driver")
-Signed-off-by: Zhang Jianhua <chris.zjh@huawei.com>
-Reviewed-by: Randy Dunlap <rdunlap@infradead.org>
-Link: https://lore.kernel.org/r/20230722153244.2086949-1-chris.zjh@huawei.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+In many cases a timeout is due to a transient condition, so the situation
+can be improved by just continuing to wait like with other I/O requests
+issued by storvsc, and avoiding the guaranteed panic. For a permanent
+failure, continuing to wait may result in a hung thread instead of a panic,
+which again may be better.
+
+So fix the panic by removing the storvsc call to fc_eh_timed_out().  This
+allows storvsc to keep waiting for a response.  The change has been tested
+by users who experienced a panic in fc_eh_timed_out() due to transient
+timeouts, and it solves their problem.
+
+In the future we may want to deprecate the vFC functionality in storvsc
+since it can't be fully fixed. But it has current users for whom it is
+working well enough, so it should probably stay for a while longer.
+
+Fixes: 3930d7309807 ("scsi: storvsc: use default I/O timeout handler for FC devices")
+Cc: stable@vger.kernel.org
+Signed-off-by: Michael Kelley <mikelley@microsoft.com>
+Link: https://lore.kernel.org/r/1690606764-79669-1-git-send-email-mikelley@microsoft.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma/owl-dma.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/scsi/storvsc_drv.c |    4 ----
+ 1 file changed, 4 deletions(-)
 
---- a/drivers/dma/owl-dma.c
-+++ b/drivers/dma/owl-dma.c
-@@ -192,7 +192,7 @@ struct owl_dma_pchan {
- };
+--- a/drivers/scsi/storvsc_drv.c
++++ b/drivers/scsi/storvsc_drv.c
+@@ -1672,10 +1672,6 @@ static int storvsc_host_reset_handler(st
+  */
+ static enum scsi_timeout_action storvsc_eh_timed_out(struct scsi_cmnd *scmnd)
+ {
+-#if IS_ENABLED(CONFIG_SCSI_FC_ATTRS)
+-	if (scmnd->device->host->transportt == fc_transport_template)
+-		return fc_eh_timed_out(scmnd);
+-#endif
+ 	return SCSI_EH_RESET_TIMER;
+ }
  
- /**
-- * struct owl_dma_pchan - Wrapper for DMA ENGINE channel
-+ * struct owl_dma_vchan - Wrapper for DMA ENGINE channel
-  * @vc: wrapped virtual channel
-  * @pchan: the physical channel utilized by this channel
-  * @txd: active transaction on this channel
 
 
