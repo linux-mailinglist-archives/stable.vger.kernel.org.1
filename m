@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C9EE377AC47
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:31:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A49D077ACCD
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:37:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230220AbjHMVbc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:31:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42438 "EHLO
+        id S232183AbjHMVhR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:37:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39704 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231918AbjHMVbc (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:31:32 -0400
+        with ESMTP id S232176AbjHMVhQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:37:16 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A389919AB
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:31:16 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6A4A10DB
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:37:18 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0A10662B59
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:31:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22616C433C8;
-        Sun, 13 Aug 2023 21:31:14 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6559563320
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:37:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75A30C433C7;
+        Sun, 13 Aug 2023 21:37:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691962275;
-        bh=dbiv4JoIik8CIJOcYHRdECQk2GbRTz5ylBKVgFVpwAI=;
+        s=korg; t=1691962637;
+        bh=1c003UIrmwbmOnqJEoUdtA7kUjJf+M/OnAgg2A3N10A=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rUX4UpAABYC7tNIzHa0eIe3EiJDis34mpvKpGDsyw4CA8daQ/q/COm8Y7Zm8U6oAI
-         aywSQvhbE7S1YrGv9mxGCT8iIcZPhAdUR7XpGen1NoINDGnDLAlSS8HuHUEoa7xEwd
-         rJt1GS+qGgqmUazlhPu8dsA1lbr0KFlsXBc5p8dQ=
+        b=c8jd4CXq6eq079jQIojJ4nWX2dIEhYkmzV9bVJmY+YtbBlS70S2cKhwJuFllX/OYJ
+         AIAXn59+TmwqgRpcvrh60vjjIy5d1novTYlr9OgUBgNCSuXQvCtQGpPKHxNLM9PPA4
+         P/xiY0ufYlngMTm3mpTxQC/FZTLPxdSpEvRiuByg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Nick Child <nnac123@linux.ibm.com>,
-        Simon Horman <horms@kernel.org>,
-        Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.4 176/206] ibmvnic: Unmap DMA login rsp buffer on send login fail
-Date:   Sun, 13 Aug 2023 23:19:06 +0200
-Message-ID: <20230813211730.060994486@linuxfoundation.org>
+        patches@lists.linux.dev, Artemy Kovalyov <artemyko@nvidia.com>,
+        Michael Guralnik <michaelgur@nvidia.com>,
+        Leon Romanovsky <leon@kernel.org>
+Subject: [PATCH 6.1 102/149] RDMA/umem: Set iova in ODP flow
+Date:   Sun, 13 Aug 2023 23:19:07 +0200
+Message-ID: <20230813211721.830930900@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211724.969019629@linuxfoundation.org>
-References: <20230813211724.969019629@linuxfoundation.org>
+In-Reply-To: <20230813211718.757428827@linuxfoundation.org>
+References: <20230813211718.757428827@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,41 +54,63 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Nick Child <nnac123@linux.ibm.com>
+From: Michael Guralnik <michaelgur@nvidia.com>
 
-commit 411c565b4bc63e9584a8493882bd566e35a90588 upstream.
+commit 186b169cf1e4be85aa212a893ea783a543400979 upstream.
 
-If the LOGIN CRQ fails to send then we must DMA unmap the response
-buffer. Previously, if the CRQ failed then the memory was freed without
-DMA unmapping.
+Fixing the ODP registration flow to set the iova correctly.
+The calculation in ib_umem_num_dma_blocks() function assumes the iova of
+the umem is set correctly.
 
-Fixes: c98d9cc4170d ("ibmvnic: send_login should check for crq errors")
-Signed-off-by: Nick Child <nnac123@linux.ibm.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20230809221038.51296-2-nnac123@linux.ibm.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+When iova is not set, the calculation in ib_umem_num_dma_blocks() is
+equivalent to length/page_size, which is true only when memory is aligned.
+For unaligned memory, iova must be set for the ALIGN() in the
+ib_umem_num_dma_blocks() to take effect and return a correct value.
+
+mlx5_ib uses ib_umem_num_dma_blocks() to decide the mkey size to use for
+the MR. Without this fix, when registering unaligned ODP MR, a wrong
+size mkey might be chosen and this might cause the UMR to fail.
+
+UMR would fail over insufficient size to update the mkey translation:
+infiniband mlx5_0: dump_cqe:273:(pid 0): dump error cqe
+00000000: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+00000010: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+00000020: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+00000030: 00 00 00 00 0f 00 78 06 25 00 00 58 00 da ac d2
+infiniband mlx5_0: mlx5_ib_post_send_wait:806:(pid 20311): reg umr
+failed (6)
+infiniband mlx5_0: pagefault_real_mr:661:(pid 20311): Failed to update
+mkey page tables
+
+Fixes: f0093fb1a7cb ("RDMA/mlx5: Move mlx5_ib_cont_pages() to the creation of the mlx5_ib_mr")
+Fixes: a665aca89a41 ("RDMA/umem: Split ib_umem_num_pages() into ib_umem_num_dma_blocks()")
+Signed-off-by: Artemy Kovalyov <artemyko@nvidia.com>
+Signed-off-by: Michael Guralnik <michaelgur@nvidia.com>
+Link: https://lore.kernel.org/r/3d4be7ca2155bf239dd8c00a2d25974a92c26ab8.1689757344.git.leon@kernel.org
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/ibm/ibmvnic.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/infiniband/core/umem.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/net/ethernet/ibm/ibmvnic.c
-+++ b/drivers/net/ethernet/ibm/ibmvnic.c
-@@ -4830,11 +4830,14 @@ static int send_login(struct ibmvnic_ada
- 	if (rc) {
- 		adapter->login_pending = false;
- 		netdev_err(adapter->netdev, "Failed to send login, rc=%d\n", rc);
--		goto buf_rsp_map_failed;
-+		goto buf_send_failed;
- 	}
+--- a/drivers/infiniband/core/umem.c
++++ b/drivers/infiniband/core/umem.c
+@@ -85,6 +85,8 @@ unsigned long ib_umem_find_best_pgsz(str
+ 	dma_addr_t mask;
+ 	int i;
  
- 	return 0;
++	umem->iova = va = virt;
++
+ 	if (umem->is_odp) {
+ 		unsigned int page_size = BIT(to_ib_umem_odp(umem)->page_shift);
  
-+buf_send_failed:
-+	dma_unmap_single(dev, rsp_buffer_token, rsp_buffer_size,
-+			 DMA_FROM_DEVICE);
- buf_rsp_map_failed:
- 	kfree(login_rsp_buffer);
- 	adapter->login_rsp_buf = NULL;
+@@ -100,7 +102,6 @@ unsigned long ib_umem_find_best_pgsz(str
+ 	 */
+ 	pgsz_bitmap &= GENMASK(BITS_PER_LONG - 1, PAGE_SHIFT);
+ 
+-	umem->iova = va = virt;
+ 	/* The best result is the smallest page size that results in the minimum
+ 	 * number of required pages. Compute the largest page size that could
+ 	 * work based on VA address bits that don't change.
 
 
