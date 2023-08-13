@@ -2,204 +2,130 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4E88E77AD6E
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:49:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A9A3F77AD7C
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:49:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231230AbjHMVtG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:49:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36582 "EHLO
+        id S232333AbjHMVsz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:48:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33142 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232287AbjHMVsa (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:48:30 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C56410FD
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:39:23 -0700 (PDT)
+        with ESMTP id S230144AbjHMVsZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:48:25 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B87F2116
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:42:58 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id EF8136381B
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:39:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07C47C433C7;
-        Sun, 13 Aug 2023 21:39:21 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7A85060F71
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:42:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70F20C433C7;
+        Sun, 13 Aug 2023 21:42:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691962762;
-        bh=OpPXZpgdM+TqRfLqsw/HSGALB/bWhW5LZMRS2TRxov4=;
+        s=korg; t=1691962976;
+        bh=xsZQXSASeWOJycZBZIM83YWdCuNhim0xSWHvJRqhuLk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=IAhVx8ELJ6LWUcVcdNRPj0X3JumZhAnG4IHCmYI92pHaAplCDVnvkCszayVxoxR9u
-         3U/V0Wg9HtZu7CJ1lQ6EljotS9IFCBbIQiNnEIR4jDRSi+zhPYsgpzhc6JIBWrMkl3
-         8QxaRpYVJX8FdbWm5hiF6PYjWWzE1MY5WFKAohFE=
+        b=buWEcANUKBdBYyMzPhWVx4qjtlVapFyH3nsOiv1As8Ibo7hGWWLWOEYu/fsIH3F6b
+         +biusX7VLXAMLP6sXkdRIk5JUxB1wy3qUd5le1Zy9KurgopExTjxinAmi5ouKNp2a4
+         MYp6saVGUd2oHWsewqD31lA6nsdkWpqoIgm6BtbM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, syzbot <syzkaller@googlegroups.com>,
-        Eric Dumazet <edumazet@google.com>,
-        Stephen Hemminger <stephen@networkplumber.org>,
-        Jamal Hadi Salim <jhs@mojatatu.com>,
-        Simon Horman <simon.horman@corigine.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Fedor Pchelkin <pchelkin@ispras.ru>
-Subject: [PATCH 6.1 148/149] sch_netem: fix issues in netem_change() vs get_dist_table()
+        patches@lists.linux.dev, Nick Child <nnac123@linux.ibm.com>,
+        Simon Horman <horms@kernel.org>,
+        Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.10 52/68] ibmvnic: Enforce stronger sanity checks on login response
 Date:   Sun, 13 Aug 2023 23:19:53 +0200
-Message-ID: <20230813211723.116607647@linuxfoundation.org>
+Message-ID: <20230813211709.729604214@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211718.757428827@linuxfoundation.org>
-References: <20230813211718.757428827@linuxfoundation.org>
+In-Reply-To: <20230813211708.149630011@linuxfoundation.org>
+References: <20230813211708.149630011@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Eric Dumazet <edumazet@google.com>
+From: Nick Child <nnac123@linux.ibm.com>
 
-commit 11b73313c12403f617b47752db0ab3deef201af7 upstream.
+commit db17ba719bceb52f0ae4ebca0e4c17d9a3bebf05 upstream.
 
-In blamed commit, I missed that get_dist_table() was allocating
-memory using GFP_KERNEL, and acquiring qdisc lock to perform
-the swap of newly allocated table with current one.
+Ensure that all offsets in a login response buffer are within the size
+of the allocated response buffer. Any offsets or lengths that surpass
+the allocation are likely the result of an incomplete response buffer.
+In these cases, a full reset is necessary.
 
-In this patch, get_dist_table() is allocating memory and
-copy user data before we acquire the qdisc lock.
+When attempting to login, the ibmvnic device will allocate a response
+buffer and pass a reference to the VIOS. The VIOS will then send the
+ibmvnic device a LOGIN_RSP CRQ to signal that the buffer has been filled
+with data. If the ibmvnic device does not get a response in 20 seconds,
+the old buffer is freed and a new login request is sent. With 2
+outstanding requests, any LOGIN_RSP CRQ's could be for the older
+login request. If this is the case then the login response buffer (which
+is for the newer login request) could be incomplete and contain invalid
+data. Therefore, we must enforce strict sanity checks on the response
+buffer values.
 
-Then we perform swap operations while being protected by the lock.
+Testing has shown that the `off_rxadd_buff_size` value is filled in last
+by the VIOS and will be the smoking gun for these circumstances.
 
-Note that after this patch netem_change() no longer can do partial changes.
-If an error is returned, qdisc conf is left unchanged.
+Until VIOS can implement a mechanism for tracking outstanding response
+buffers and a method for mapping a LOGIN_RSP CRQ to a particular login
+response buffer, the best ibmvnic can do in this situation is perform a
+full reset.
 
-Fixes: 2174a08db80d ("sch_netem: acquire qdisc lock in netem_change()")
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Stephen Hemminger <stephen@networkplumber.org>
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Link: https://lore.kernel.org/r/20230622181503.2327695-1-edumazet@google.com
+Fixes: dff515a3e71d ("ibmvnic: Harden device login requests")
+Signed-off-by: Nick Child <nnac123@linux.ibm.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/20230809221038.51296-1-nnac123@linux.ibm.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/sch_netem.c |   59 +++++++++++++++++++++-----------------------------
- 1 file changed, 25 insertions(+), 34 deletions(-)
+ drivers/net/ethernet/ibm/ibmvnic.c |   18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
---- a/net/sched/sch_netem.c
-+++ b/net/sched/sch_netem.c
-@@ -773,12 +773,10 @@ static void dist_free(struct disttable *
-  * signed 16 bit values.
-  */
- 
--static int get_dist_table(struct Qdisc *sch, struct disttable **tbl,
--			  const struct nlattr *attr)
-+static int get_dist_table(struct disttable **tbl, const struct nlattr *attr)
- {
- 	size_t n = nla_len(attr)/sizeof(__s16);
- 	const __s16 *data = nla_data(attr);
--	spinlock_t *root_lock;
- 	struct disttable *d;
+--- a/drivers/net/ethernet/ibm/ibmvnic.c
++++ b/drivers/net/ethernet/ibm/ibmvnic.c
+@@ -4430,6 +4430,7 @@ static int handle_login_rsp(union ibmvni
+ 	int num_tx_pools;
+ 	int num_rx_pools;
+ 	u64 *size_array;
++	u32 rsp_len;
  	int i;
  
-@@ -793,13 +791,7 @@ static int get_dist_table(struct Qdisc *
- 	for (i = 0; i < n; i++)
- 		d->table[i] = data[i];
- 
--	root_lock = qdisc_root_sleeping_lock(sch);
--
--	spin_lock_bh(root_lock);
--	swap(*tbl, d);
--	spin_unlock_bh(root_lock);
--
--	dist_free(d);
-+	*tbl = d;
- 	return 0;
- }
- 
-@@ -956,6 +948,8 @@ static int netem_change(struct Qdisc *sc
- {
- 	struct netem_sched_data *q = qdisc_priv(sch);
- 	struct nlattr *tb[TCA_NETEM_MAX + 1];
-+	struct disttable *delay_dist = NULL;
-+	struct disttable *slot_dist = NULL;
- 	struct tc_netem_qopt *qopt;
- 	struct clgstate old_clg;
- 	int old_loss_model = CLG_RANDOM;
-@@ -966,6 +960,18 @@ static int netem_change(struct Qdisc *sc
- 	if (ret < 0)
- 		return ret;
- 
-+	if (tb[TCA_NETEM_DELAY_DIST]) {
-+		ret = get_dist_table(&delay_dist, tb[TCA_NETEM_DELAY_DIST]);
-+		if (ret)
-+			goto table_free;
-+	}
-+
-+	if (tb[TCA_NETEM_SLOT_DIST]) {
-+		ret = get_dist_table(&slot_dist, tb[TCA_NETEM_SLOT_DIST]);
-+		if (ret)
-+			goto table_free;
-+	}
-+
- 	sch_tree_lock(sch);
- 	/* backup q->clg and q->loss_model */
- 	old_clg = q->clg;
-@@ -975,26 +981,17 @@ static int netem_change(struct Qdisc *sc
- 		ret = get_loss_clg(q, tb[TCA_NETEM_LOSS]);
- 		if (ret) {
- 			q->loss_model = old_loss_model;
-+			q->clg = old_clg;
- 			goto unlock;
- 		}
- 	} else {
- 		q->loss_model = CLG_RANDOM;
+ 	/* CHECK: Test/set of login_pending does not need to be atomic
+@@ -4481,6 +4482,23 @@ static int handle_login_rsp(union ibmvni
+ 		ibmvnic_reset(adapter, VNIC_RESET_FATAL);
+ 		return -EIO;
  	}
- 
--	if (tb[TCA_NETEM_DELAY_DIST]) {
--		ret = get_dist_table(sch, &q->delay_dist,
--				     tb[TCA_NETEM_DELAY_DIST]);
--		if (ret)
--			goto get_table_failure;
--	}
--
--	if (tb[TCA_NETEM_SLOT_DIST]) {
--		ret = get_dist_table(sch, &q->slot_dist,
--				     tb[TCA_NETEM_SLOT_DIST]);
--		if (ret)
--			goto get_table_failure;
--	}
--
-+	if (delay_dist)
-+		swap(q->delay_dist, delay_dist);
-+	if (slot_dist)
-+		swap(q->slot_dist, slot_dist);
- 	sch->limit = qopt->limit;
- 
- 	q->latency = PSCHED_TICKS2NS(qopt->latency);
-@@ -1044,17 +1041,11 @@ static int netem_change(struct Qdisc *sc
- 
- unlock:
- 	sch_tree_unlock(sch);
--	return ret;
- 
--get_table_failure:
--	/* recover clg and loss_model, in case of
--	 * q->clg and q->loss_model were modified
--	 * in get_loss_clg()
--	 */
--	q->clg = old_clg;
--	q->loss_model = old_loss_model;
--
--	goto unlock;
-+table_free:
-+	dist_free(delay_dist);
-+	dist_free(slot_dist);
-+	return ret;
- }
- 
- static int netem_init(struct Qdisc *sch, struct nlattr *opt,
++
++	rsp_len = be32_to_cpu(login_rsp->len);
++	if (be32_to_cpu(login->login_rsp_len) < rsp_len ||
++	    rsp_len <= be32_to_cpu(login_rsp->off_txsubm_subcrqs) ||
++	    rsp_len <= be32_to_cpu(login_rsp->off_rxadd_subcrqs) ||
++	    rsp_len <= be32_to_cpu(login_rsp->off_rxadd_buff_size) ||
++	    rsp_len <= be32_to_cpu(login_rsp->off_supp_tx_desc)) {
++		/* This can happen if a login request times out and there are
++		 * 2 outstanding login requests sent, the LOGIN_RSP crq
++		 * could have been for the older login request. So we are
++		 * parsing the newer response buffer which may be incomplete
++		 */
++		dev_err(dev, "FATAL: Login rsp offsets/lengths invalid\n");
++		ibmvnic_reset(adapter, VNIC_RESET_FATAL);
++		return -EIO;
++	}
++
+ 	size_array = (u64 *)((u8 *)(adapter->login_rsp_buf) +
+ 		be32_to_cpu(adapter->login_rsp_buf->off_rxadd_buff_size));
+ 	/* variable buffer sizes are not supported, so just read the
 
 
