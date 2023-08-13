@@ -2,84 +2,170 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 459C477AB91
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:23:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 71C0877AC5A
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:32:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231172AbjHMVXV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:23:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59222 "EHLO
+        id S231934AbjHMVcQ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:32:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56190 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231277AbjHMVXU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:23:20 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 620AAD7
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:23:22 -0700 (PDT)
+        with ESMTP id S231931AbjHMVcP (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:32:15 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D8BE410EB
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:32:10 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 01A5962877
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:23:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CCFBC433C8;
-        Sun, 13 Aug 2023 21:23:20 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id EDB4262B6E
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:32:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 084DCC433C8;
+        Sun, 13 Aug 2023 21:32:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691961801;
-        bh=o6c5ZIai3Aqu2yqf2U2cQwE1JwdDooFF1LMhUGR8b30=;
+        s=korg; t=1691962322;
+        bh=i/fbtv2MbgcrMOxqDF18c++Ov0hnabskZk5qKFLRyBk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=OpvceQ/YyldrwQ9GbkoM8h3gjrmi1GKBEG/3yiqSDAqN1QmIvePC7eOl3oCo2B0SW
-         ocAfyC4T6fcK5t0svi8CmThPbcEIYARrmnkOif2ooLrx9a9TBi5r2e0ERBaiDJmjXF
-         AH9J5Tb8TnbRHOLfWE8XPlatlQ2YzkEQADa/wJwE=
+        b=TwiWbn9UsMOlhDDh6/zTQcEXU2CqpelM+Rd4Ar3nLTZJ6mwhcp1dijQKvJr+21Cq9
+         h4fNHs2U4thV0rQg2aPJXCDCkkJ3NiXRupB2VNHL2GkOD0lyQuuQ6h/gbfz8YZyng2
+         BogcQUjEfNgHZ5TWPwmJ7muX5G+H/1+wXAuCS9FI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Felix Fietkau <nbd@nbd.name>,
-        Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 4.19 22/33] wifi: cfg80211: fix sband iftype data lookup for AP_VLAN
+        patches@lists.linux.dev,
+        syzbot+ae97a827ae1c3336bbb4@syzkaller.appspotmail.com,
+        Filipe Manana <fdmanana@suse.com>, Qu Wenruo <wqu@suse.com>,
+        David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.4 186/206] btrfs: exit gracefully if reloc roots dont match
 Date:   Sun, 13 Aug 2023 23:19:16 +0200
-Message-ID: <20230813211704.740396047@linuxfoundation.org>
+Message-ID: <20230813211730.346855412@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211703.915807095@linuxfoundation.org>
-References: <20230813211703.915807095@linuxfoundation.org>
+In-Reply-To: <20230813211724.969019629@linuxfoundation.org>
+References: <20230813211724.969019629@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Felix Fietkau <nbd@nbd.name>
+From: Qu Wenruo <wqu@suse.com>
 
-commit 5fb9a9fb71a33be61d7d8e8ba4597bfb18d604d0 upstream.
+commit 05d7ce504545f7874529701664c90814ca645c5d upstream.
 
-AP_VLAN interfaces are virtual, so doesn't really exist as a type for
-capabilities. When passed in as a type, AP is the one that's really intended.
+[BUG]
+Syzbot reported a crash that an ASSERT() got triggered inside
+prepare_to_merge().
 
-Fixes: c4cbaf7973a7 ("cfg80211: Add support for HE")
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
-Link: https://lore.kernel.org/r/20230622165919.46841-1-nbd@nbd.name
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+[CAUSE]
+The root cause of the triggered ASSERT() is we can have a race between
+quota tree creation and relocation.
+
+This leads us to create a duplicated quota tree in the
+btrfs_read_fs_root() path, and since it's treated as fs tree, it would
+have ROOT_SHAREABLE flag, causing us to create a reloc tree for it.
+
+The bug itself is fixed by a dedicated patch for it, but this already
+taught us the ASSERT() is not something straightforward for
+developers.
+
+[ENHANCEMENT]
+Instead of using an ASSERT(), let's handle it gracefully and output
+extra info about the mismatch reloc roots to help debug.
+
+Also with the above ASSERT() removed, we can trigger ASSERT(0)s inside
+merge_reloc_roots() later.
+Also replace those ASSERT(0)s with WARN_ON()s.
+
+CC: stable@vger.kernel.org # 5.15+
+Reported-by: syzbot+ae97a827ae1c3336bbb4@syzkaller.appspotmail.com
+Reviewed-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/cfg80211.h |    3 +++
- 1 file changed, 3 insertions(+)
+ fs/btrfs/relocation.c |   45 +++++++++++++++++++++++++++++++++++++--------
+ 1 file changed, 37 insertions(+), 8 deletions(-)
 
---- a/include/net/cfg80211.h
-+++ b/include/net/cfg80211.h
-@@ -370,6 +370,9 @@ ieee80211_get_sband_iftype_data(const st
- 	if (WARN_ON(iftype >= NL80211_IFTYPE_MAX))
- 		return NULL;
- 
-+	if (iftype == NL80211_IFTYPE_AP_VLAN)
-+		iftype = NL80211_IFTYPE_AP;
+--- a/fs/btrfs/relocation.c
++++ b/fs/btrfs/relocation.c
+@@ -1916,7 +1916,39 @@ again:
+ 				err = PTR_ERR(root);
+ 			break;
+ 		}
+-		ASSERT(root->reloc_root == reloc_root);
 +
- 	for (i = 0; i < sband->n_iftype_data; i++)  {
- 		const struct ieee80211_sband_iftype_data *data =
- 			&sband->iftype_data[i];
++		if (unlikely(root->reloc_root != reloc_root)) {
++			if (root->reloc_root) {
++				btrfs_err(fs_info,
++"reloc tree mismatch, root %lld has reloc root key (%lld %u %llu) gen %llu, expect reloc root key (%lld %u %llu) gen %llu",
++					  root->root_key.objectid,
++					  root->reloc_root->root_key.objectid,
++					  root->reloc_root->root_key.type,
++					  root->reloc_root->root_key.offset,
++					  btrfs_root_generation(
++						  &root->reloc_root->root_item),
++					  reloc_root->root_key.objectid,
++					  reloc_root->root_key.type,
++					  reloc_root->root_key.offset,
++					  btrfs_root_generation(
++						  &reloc_root->root_item));
++			} else {
++				btrfs_err(fs_info,
++"reloc tree mismatch, root %lld has no reloc root, expect reloc root key (%lld %u %llu) gen %llu",
++					  root->root_key.objectid,
++					  reloc_root->root_key.objectid,
++					  reloc_root->root_key.type,
++					  reloc_root->root_key.offset,
++					  btrfs_root_generation(
++						  &reloc_root->root_item));
++			}
++			list_add(&reloc_root->root_list, &reloc_roots);
++			btrfs_put_root(root);
++			btrfs_abort_transaction(trans, -EUCLEAN);
++			if (!err)
++				err = -EUCLEAN;
++			break;
++		}
+ 
+ 		/*
+ 		 * set reference count to 1, so btrfs_recover_relocation
+@@ -1989,7 +2021,7 @@ again:
+ 		root = btrfs_get_fs_root(fs_info, reloc_root->root_key.offset,
+ 					 false);
+ 		if (btrfs_root_refs(&reloc_root->root_item) > 0) {
+-			if (IS_ERR(root)) {
++			if (WARN_ON(IS_ERR(root))) {
+ 				/*
+ 				 * For recovery we read the fs roots on mount,
+ 				 * and if we didn't find the root then we marked
+@@ -1998,17 +2030,14 @@ again:
+ 				 * memory.  However there's no reason we can't
+ 				 * handle the error properly here just in case.
+ 				 */
+-				ASSERT(0);
+ 				ret = PTR_ERR(root);
+ 				goto out;
+ 			}
+-			if (root->reloc_root != reloc_root) {
++			if (WARN_ON(root->reloc_root != reloc_root)) {
+ 				/*
+-				 * This is actually impossible without something
+-				 * going really wrong (like weird race condition
+-				 * or cosmic rays).
++				 * This can happen if on-disk metadata has some
++				 * corruption, e.g. bad reloc tree key offset.
+ 				 */
+-				ASSERT(0);
+ 				ret = -EINVAL;
+ 				goto out;
+ 			}
 
 
