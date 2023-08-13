@@ -2,41 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4B9EE77AC9A
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:35:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 86A2D77AC9C
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:35:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232082AbjHMVe6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:34:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56718 "EHLO
+        id S232089AbjHMVfE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:35:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56774 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232080AbjHMVe6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:34:58 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7ABB810DD
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:35:00 -0700 (PDT)
+        with ESMTP id S232085AbjHMVfD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:35:03 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D31D610DB
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:35:05 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1022662CCF
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:35:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 258EEC433C8;
-        Sun, 13 Aug 2023 21:34:58 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7181962CD0
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:35:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83716C433C8;
+        Sun, 13 Aug 2023 21:35:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691962499;
-        bh=Uo4hma2wBF/5S7o+ojQhxCzfga9i2wb+yUzSZRDuFeA=;
+        s=korg; t=1691962504;
+        bh=7VefZ51285vODeQljYDChXMAZEUDSm8ckRSc2Wx2orE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=hF51f4B2vL7TzyicZHxQXfHiHZnu9xVIRzhw7rmIy4KwLGqeURyFhbu8mnxIBI8te
-         U4Sjvg5H7/i2MdAfmTXnoH77xVJa7BBqwkF3Y7cnWgyGXUUYoxU339kEFhomvionX5
-         mRFX3ESMssRJSWzWodLZWWzK288KWsMVQWV5rRf4=
+        b=c3n8PYk/FvSuw5YBQMmTICnCMXXS8jrhjdpGZzuHS1B8wjYwAte+Al/4EAMq9HM4v
+         nn2lEJB1FOyusH8dMKPoITRNnAn+UoB6EWM24/tDvEnoi46iWCbU93RFDNze6BcwSr
+         UoQ8EXuZXELyMk7knrJgSFEJdJUKD4QOeqezKkYY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Aleksa Sarai <cyphar@cyphar.com>,
-        Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.1 051/149] io_uring: correct check for O_TMPFILE
-Date:   Sun, 13 Aug 2023 23:18:16 +0200
-Message-ID: <20230813211720.341879884@linuxfoundation.org>
+        patches@lists.linux.dev, Tzung-Bi Shih <tzungbi@kernel.org>,
+        Yiyuan Guo <yguoaz@gmail.com>, Stable@vger.kerenl.org,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.1 052/149] iio: cros_ec: Fix the allocation size for cros_ec_command
+Date:   Sun, 13 Aug 2023 23:18:17 +0200
+Message-ID: <20230813211720.372311576@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230813211718.757428827@linuxfoundation.org>
 References: <20230813211718.757428827@linuxfoundation.org>
@@ -44,49 +45,44 @@ User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Aleksa Sarai <cyphar@cyphar.com>
+From: Yiyuan Guo <yguoaz@gmail.com>
 
-Commit 72dbde0f2afbe4af8e8595a89c650ae6b9d9c36f upstream.
+commit 8a4629055ef55177b5b63dab1ecce676bd8cccdd upstream.
 
-O_TMPFILE is actually __O_TMPFILE|O_DIRECTORY. This means that the old
-check for whether RESOLVE_CACHED can be used would incorrectly think
-that O_DIRECTORY could not be used with RESOLVE_CACHED.
+The struct cros_ec_command contains several integer fields and a
+trailing array. An allocation size neglecting the integer fields can
+lead to buffer overrun.
 
-Cc: stable@vger.kernel.org # v5.12+
-Fixes: 3a81fd02045c ("io_uring: enable LOOKUP_CACHED path resolution for filename lookups")
-Signed-off-by: Aleksa Sarai <cyphar@cyphar.com>
-Link: https://lore.kernel.org/r/20230807-resolve_cached-o_tmpfile-v3-1-e49323e1ef6f@cyphar.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Reviewed-by: Tzung-Bi Shih <tzungbi@kernel.org>
+Signed-off-by: Yiyuan Guo <yguoaz@gmail.com>
+Fixes: 974e6f02e27e ("iio: cros_ec_sensors_core: Add common functions for the ChromeOS EC Sensor Hub.")
+Link: https://lore.kernel.org/r/20230630143719.1513906-1-yguoaz@gmail.com
+Cc: <Stable@vger.kerenl.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- io_uring/openclose.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/io_uring/openclose.c
-+++ b/io_uring/openclose.c
-@@ -110,9 +110,11 @@ int io_openat2(struct io_kiocb *req, uns
- 	if (issue_flags & IO_URING_F_NONBLOCK) {
- 		/*
- 		 * Don't bother trying for O_TRUNC, O_CREAT, or O_TMPFILE open,
--		 * it'll always -EAGAIN
-+		 * it'll always -EAGAIN. Note that we test for __O_TMPFILE
-+		 * because O_TMPFILE includes O_DIRECTORY, which isn't a flag
-+		 * we need to force async for.
- 		 */
--		if (open->how.flags & (O_TRUNC | O_CREAT | O_TMPFILE))
-+		if (open->how.flags & (O_TRUNC | O_CREAT | __O_TMPFILE))
- 			return -EAGAIN;
- 		op.lookup_flags |= LOOKUP_CACHED;
- 		op.open_flag |= O_NONBLOCK;
+--- a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
++++ b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
+@@ -253,7 +253,7 @@ int cros_ec_sensors_core_init(struct pla
+ 	platform_set_drvdata(pdev, indio_dev);
+ 
+ 	state->ec = ec->ec_dev;
+-	state->msg = devm_kzalloc(&pdev->dev,
++	state->msg = devm_kzalloc(&pdev->dev, sizeof(*state->msg) +
+ 				max((u16)sizeof(struct ec_params_motion_sense),
+ 				state->ec->max_response), GFP_KERNEL);
+ 	if (!state->msg)
 
 
