@@ -2,148 +2,92 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E4EFF77AB94
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:23:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F35AA77AB6F
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:21:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231287AbjHMVX3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:23:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47914 "EHLO
+        id S230349AbjHMVV4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:21:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36892 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231194AbjHMVX2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:23:28 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E07D5BF;
-        Sun, 13 Aug 2023 14:23:30 -0700 (PDT)
+        with ESMTP id S229597AbjHMVV4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:21:56 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5419E10DD
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:21:58 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 66A7062890;
-        Sun, 13 Aug 2023 21:23:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D5DDC433C7;
-        Sun, 13 Aug 2023 21:23:29 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DC438627DB
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:21:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC17BC433C7;
+        Sun, 13 Aug 2023 21:21:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691961809;
-        bh=BRLevBGrfVMwQ2osnvxXKlTN6p6K8Jye4hOJNUCFNmo=;
+        s=korg; t=1691961717;
+        bh=vFmKYYdT9dD/0yIP7GDSf/IPlBizywBUaEh2sD0SS/g=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Xy0OOQnoBKD9KsckP/DDmMM/JILDkl0aSukkCAn3LVspT3F3AH4nGYKE7OfPgRrCt
-         tlGlWOldvZctBiG5FjlVKukVqSuTc5L+sKmo9LXM1Yb6hG9818im/RQb58Jmkarr6u
-         jslLkSM8IgPwhMsiikJk7a9R+gN3Sf6K73RtdXqA=
+        b=lt5XkbLq1t2myaj8k9org/34L1qtRdPnnBbZtPPh7BNsfz2xgG0wNb8gLE9JDkWFb
+         3yudxziMK7SKONXPqZDdyv5yJHkV5ZZWhTtJZr9+HsWoBsnJBPvPX8g4a9WZd0CnCr
+         Up17IDN6M+ve0vwC5Cpi8JfPwoikYPCf/HdRI6pQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     stable@vger.kernel.org, netfilter-devel@vger.kernel.org
+To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Laura Garcia Liebana <nevola@gmail.com>,
-        Pablo Neira Ayuso <pablo@netfilter.org>
-Subject: [PATCH 4.19 25/33] netfilter: nf_tables: bogus EBUSY when deleting flowtable after flush
+        patches@lists.linux.dev, Masahiro Yamada <masahiroy@kernel.org>,
+        Randy Dunlap <rdunlap@infradead.org>
+Subject: [PATCH 4.14 26/26] alpha: remove __init annotation from exported page_is_ram()
 Date:   Sun, 13 Aug 2023 23:19:19 +0200
-Message-ID: <20230813211704.842776409@linuxfoundation.org>
+Message-ID: <20230813211703.953628985@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211703.915807095@linuxfoundation.org>
-References: <20230813211703.915807095@linuxfoundation.org>
+In-Reply-To: <20230813211702.980427106@linuxfoundation.org>
+References: <20230813211702.980427106@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Masahiro Yamada <masahiroy@kernel.org>
 
-From: Laura Garcia Liebana <nevola@gmail.com>
+commit 6ccbd7fd474674654019a20177c943359469103a upstream.
 
-commit 9b05b6e11d5e93a3a517cadc12b9836e0470c255 upstream.
+EXPORT_SYMBOL and __init is a bad combination because the .init.text
+section is freed up after the initialization.
 
-The deletion of a flowtable after a flush in the same transaction
-results in EBUSY. This patch adds an activation and deactivation of
-flowtables in order to update the _use_ counter.
+Commit c5a130325f13 ("ACPI/APEI: Add parameter check before error
+injection") exported page_is_ram(), hence the __init annotation should
+be removed.
 
-Signed-off-by: Laura Garcia Liebana <nevola@gmail.com>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+This fixes the modpost warning in ARCH=alpha builds:
+
+  WARNING: modpost: vmlinux: page_is_ram: EXPORT_SYMBOL used for init symbol. Remove __init or EXPORT_SYMBOL.
+
+Fixes: c5a130325f13 ("ACPI/APEI: Add parameter check before error injection")
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Reviewed-by: Randy Dunlap <rdunlap@infradead.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/netfilter/nf_tables.h |    4 ++++
- net/netfilter/nf_tables_api.c     |   16 ++++++++++++++++
- net/netfilter/nft_flow_offload.c  |   19 +++++++++++++++++++
- 3 files changed, 39 insertions(+)
+ arch/alpha/kernel/setup.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/include/net/netfilter/nf_tables.h
-+++ b/include/net/netfilter/nf_tables.h
-@@ -1161,6 +1161,10 @@ struct nft_flowtable *nft_flowtable_look
- 					   const struct nlattr *nla,
- 					   u8 genmask);
+--- a/arch/alpha/kernel/setup.c
++++ b/arch/alpha/kernel/setup.c
+@@ -469,8 +469,7 @@ setup_memory(void *kernel_end)
+ extern void setup_memory(void *);
+ #endif /* !CONFIG_DISCONTIGMEM */
  
-+void nf_tables_deactivate_flowtable(const struct nft_ctx *ctx,
-+				    struct nft_flowtable *flowtable,
-+				    enum nft_trans_phase phase);
-+
- void nft_register_flowtable_type(struct nf_flowtable_type *type);
- void nft_unregister_flowtable_type(struct nf_flowtable_type *type);
- 
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -5519,6 +5519,22 @@ struct nft_flowtable *nft_flowtable_look
- }
- EXPORT_SYMBOL_GPL(nft_flowtable_lookup);
- 
-+void nf_tables_deactivate_flowtable(const struct nft_ctx *ctx,
-+				    struct nft_flowtable *flowtable,
-+				    enum nft_trans_phase phase)
-+{
-+	switch (phase) {
-+	case NFT_TRANS_PREPARE:
-+	case NFT_TRANS_ABORT:
-+	case NFT_TRANS_RELEASE:
-+		flowtable->use--;
-+		/* fall through */
-+	default:
-+		return;
-+	}
-+}
-+EXPORT_SYMBOL_GPL(nf_tables_deactivate_flowtable);
-+
- static struct nft_flowtable *
- nft_flowtable_lookup_byhandle(const struct nft_table *table,
- 			      const struct nlattr *nla, u8 genmask)
---- a/net/netfilter/nft_flow_offload.c
-+++ b/net/netfilter/nft_flow_offload.c
-@@ -175,6 +175,23 @@ static int nft_flow_offload_init(const s
- 	return nf_ct_netns_get(ctx->net, ctx->family);
- }
- 
-+static void nft_flow_offload_deactivate(const struct nft_ctx *ctx,
-+					const struct nft_expr *expr,
-+					enum nft_trans_phase phase)
-+{
-+	struct nft_flow_offload *priv = nft_expr_priv(expr);
-+
-+	nf_tables_deactivate_flowtable(ctx, priv->flowtable, phase);
-+}
-+
-+static void nft_flow_offload_activate(const struct nft_ctx *ctx,
-+				      const struct nft_expr *expr)
-+{
-+	struct nft_flow_offload *priv = nft_expr_priv(expr);
-+
-+	priv->flowtable->use++;
-+}
-+
- static void nft_flow_offload_destroy(const struct nft_ctx *ctx,
- 				     const struct nft_expr *expr)
+-int __init
+-page_is_ram(unsigned long pfn)
++int page_is_ram(unsigned long pfn)
  {
-@@ -203,6 +220,8 @@ static const struct nft_expr_ops nft_flo
- 	.size		= NFT_EXPR_SIZE(sizeof(struct nft_flow_offload)),
- 	.eval		= nft_flow_offload_eval,
- 	.init		= nft_flow_offload_init,
-+	.activate	= nft_flow_offload_activate,
-+	.deactivate	= nft_flow_offload_deactivate,
- 	.destroy	= nft_flow_offload_destroy,
- 	.validate	= nft_flow_offload_validate,
- 	.dump		= nft_flow_offload_dump,
+ 	struct memclust_struct * cluster;
+ 	struct memdesc_struct * memdesc;
 
 
