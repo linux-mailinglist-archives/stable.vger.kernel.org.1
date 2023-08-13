@@ -2,85 +2,91 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9C73577AD7F
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:49:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3337077AD74
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:49:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231639AbjHMVtX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:49:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60518 "EHLO
+        id S232342AbjHMVt1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:49:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60562 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232321AbjHMVsy (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:48:54 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8DF441BDD
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:41:50 -0700 (PDT)
+        with ESMTP id S232344AbjHMVs4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:48:56 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A35A110FC
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:39:20 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 22E3A61A36
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:41:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DD8CC433C8;
-        Sun, 13 Aug 2023 21:41:49 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2DAF163826
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:39:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F38AC433C8;
+        Sun, 13 Aug 2023 21:39:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691962909;
-        bh=fgXNGAQTYlYSjdQdXDBa5ODIxnNhcUvDqKXl2asq4bo=;
+        s=korg; t=1691962759;
+        bh=qmdwKFJQSZSPR8QIoAwbWOQA29ZpZIJtGXNfmYJYEl0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rLkzz82hRnlNXGXQQ/PuirgPw7zgOoNELlBy2oAMG2z+RT7XL/j2VhzN9BpjXd58y
-         fs2CClxBpOHiyELyl21PFHJmPtOnvEoAsqqbSB5hoi9H8kifSAywRGSJ3dEi78e2U6
-         kTeSqfseAystkWu1a/BNFFrGbdbmlq1Gp5ZQ9CVk=
+        b=YZwquM7uJccAci4dCvgkFbvSSsmhgpW1kuJvggWhaYOzh3f1M01goBq4GzlCrbcss
+         GrF81SV4IBCHWCy5DWrwKqdPl0CuMw9ZbdUQz+5tkhek1HJ5qYNZ6KBOBj3BoDDt5j
+         /h2hISnn5q7RjFyQ4MHf59vpKEtbarVAMgBVCAEM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Daniel Jurgens <danielj@nvidia.com>,
-        Saeed Mahameed <saeedm@nvidia.com>
-Subject: [PATCH 5.10 51/68] net/mlx5: Allow 0 for total host VFs
+        patches@lists.linux.dev, Masahiro Yamada <masahiroy@kernel.org>,
+        Randy Dunlap <rdunlap@infradead.org>
+Subject: [PATCH 6.1 147/149] alpha: remove __init annotation from exported page_is_ram()
 Date:   Sun, 13 Aug 2023 23:19:52 +0200
-Message-ID: <20230813211709.700241167@linuxfoundation.org>
+Message-ID: <20230813211723.087208905@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211708.149630011@linuxfoundation.org>
-References: <20230813211708.149630011@linuxfoundation.org>
+In-Reply-To: <20230813211718.757428827@linuxfoundation.org>
+References: <20230813211718.757428827@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Daniel Jurgens <danielj@nvidia.com>
+From: Masahiro Yamada <masahiroy@kernel.org>
 
-commit 2dc2b3922d3c0f52d3a792d15dcacfbc4cc76b8f upstream.
+commit 6ccbd7fd474674654019a20177c943359469103a upstream.
 
-When querying eswitch functions 0 is a valid number of host VFs. After
-introducing ARM SRIOV falling through to getting the max value from PCI
-results in using the total VFs allowed on the ARM for the host.
+EXPORT_SYMBOL and __init is a bad combination because the .init.text
+section is freed up after the initialization.
 
-Fixes: 86eec50beaf3 ("net/mlx5: Support querying max VFs from device");
-Signed-off-by: Daniel Jurgens <danielj@nvidia.com>
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+Commit c5a130325f13 ("ACPI/APEI: Add parameter check before error
+injection") exported page_is_ram(), hence the __init annotation should
+be removed.
+
+This fixes the modpost warning in ARCH=alpha builds:
+
+  WARNING: modpost: vmlinux: page_is_ram: EXPORT_SYMBOL used for init symbol. Remove __init or EXPORT_SYMBOL.
+
+Fixes: c5a130325f13 ("ACPI/APEI: Add parameter check before error injection")
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Reviewed-by: Randy Dunlap <rdunlap@infradead.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/sriov.c |    3 +--
+ arch/alpha/kernel/setup.c |    3 +--
  1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/drivers/net/ethernet/mellanox/mlx5/core/sriov.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/sriov.c
-@@ -211,8 +211,7 @@ static u16 mlx5_get_max_vfs(struct mlx5_
- 		host_total_vfs = MLX5_GET(query_esw_functions_out, out,
- 					  host_params_context.host_total_vfs);
- 		kvfree(out);
--		if (host_total_vfs)
--			return host_total_vfs;
-+		return host_total_vfs;
- 	}
+--- a/arch/alpha/kernel/setup.c
++++ b/arch/alpha/kernel/setup.c
+@@ -385,8 +385,7 @@ setup_memory(void *kernel_end)
+ #endif /* CONFIG_BLK_DEV_INITRD */
+ }
  
- done:
+-int __init
+-page_is_ram(unsigned long pfn)
++int page_is_ram(unsigned long pfn)
+ {
+ 	struct memclust_struct * cluster;
+ 	struct memdesc_struct * memdesc;
 
 
