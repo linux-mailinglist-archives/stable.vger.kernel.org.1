@@ -2,52 +2,68 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1212677AE3B
-	for <lists+stable@lfdr.de>; Mon, 14 Aug 2023 00:18:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B26FB77AE24
+	for <lists+stable@lfdr.de>; Mon, 14 Aug 2023 00:08:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231723AbjHMWS1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 18:18:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58962 "EHLO
+        id S231366AbjHMWI3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 18:08:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58464 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231812AbjHMWSN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 18:18:13 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED62E2D49
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:44:37 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 80B4D62784
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:44:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71E89C433C7;
-        Sun, 13 Aug 2023 21:44:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691963076;
-        bh=qsC4dIn90MefTn9CUh7R5akvFvTaQKk9ffdyzTgWLa4=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=khJPLwYN1jM6UMAvVHmpzE/ZuH77v4MuW0r6890N4hmOMpMSxPYlzzkYcSVLzp81z
-         8/WuXI1hVV90C9SH+seodKk9XCP0zOBTlChEXytBQydoYCs8WYq4hHZkULUsB5lkwR
-         kZycxqS06tGalsIYWr9TQ30C3eTaNYpv2bPLyeik=
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     stable@vger.kernel.org
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Xu Kuohai <xukuohai@huawei.com>,
-        John Fastabend <john.fastabend@gmail.com>,
-        Martin KaFai Lau <martin.lau@kernel.org>
-Subject: [PATCH 5.15 44/89] bpf, sockmap: Fix map type error in sock_map_del_link
-Date:   Sun, 13 Aug 2023 23:19:35 +0200
-Message-ID: <20230813211712.114627991@linuxfoundation.org>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211710.787645394@linuxfoundation.org>
-References: <20230813211710.787645394@linuxfoundation.org>
-User-Agent: quilt/0.67
+        with ESMTP id S231221AbjHMWIP (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 18:08:15 -0400
+Received: from mail-pg1-x529.google.com (mail-pg1-x529.google.com [IPv6:2607:f8b0:4864:20::529])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F10919B2
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:58:31 -0700 (PDT)
+Received: by mail-pg1-x529.google.com with SMTP id 41be03b00d2f7-517ab9a4a13so2923725a12.1
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:58:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernelci-org.20221208.gappssmtp.com; s=20221208; t=1691963910; x=1692568710;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=cjNoRk+/5bb332jNdDfmacKF4+pgLG7+c2UqCxOmSzc=;
+        b=N5ngo3UIrgDbPGQjdwWGZa6TYUXeg7Dm8T6RkfKhaWzYQP1zY/yHW200DxtJ0mLsph
+         70gNmA3H7jSDOFmahLHF183jEjlv3N3Ww56OheyfYgP18HxUbiVQ5EAEsCD8+oax9LNb
+         zF2CwBoPpsNfWyfiRSrc4PzxDgWjukdXiyxV5baRFylZkuzUNRjjKNKO7QD3zOz/RGwo
+         AtvXd/djus+TEACTPjIT4Oogpcb7Q3yI1TQjXKOtwdENEFDbpjAEyIAn9XFyjIcZo2sw
+         g4dOpDlRIGF/LweOpiXVsqGack2lZNnRlUOz5rWqWiVLfH6qbty1TwMxTn7G4+k4JHaD
+         8lhg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1691963910; x=1692568710;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=cjNoRk+/5bb332jNdDfmacKF4+pgLG7+c2UqCxOmSzc=;
+        b=TJhq+HuWJgTQto+svLmBv7rvYCAjMGq8tnylAeOy0u9UbFnRuWEiJHm6bDVQUumbm1
+         IeUYV4KyBr1kZYeuX0gvhMSAOd/BEpCNtnBnP9vVIhUVgjK6RQ88PVxNxWtixGX908Hh
+         qcYynlkyz4BRd8cRmhLbKDH6v8o/3aMGCIO+R5Vip745h9hVnEGg4IIgq2pr4FH/bjvZ
+         MiuSvBJqMbhinjIvfyK0Z4laAzbR+CHs5iqei9G+ALUt4tVFJ6JKVciq0pFIJwmPkPFJ
+         jcJPxjdtehAXTspsh7z61l3HsrI4Z4Z96Ii16r3+tXWddKtGdL2VkWKXNIdm2ETYJSz+
+         43GA==
+X-Gm-Message-State: AOJu0YxBwI9ELJCIvfZkehqDT7WiRnC+ymXigkQJNOMLn4ZE6mBZJ3TO
+        m/saZ/CaeYnzN3jNAoUVmo3jLjw6EidWHsZqDcTLcqyN
+X-Google-Smtp-Source: AGHT+IEP9xXo6Bk63+/27a9TMgNtT1df1fZdy7S0Xr/gkNFhurGmjex5D7ZGkmmrgIb4DnXPvhzCug==
+X-Received: by 2002:a17:902:dac1:b0:1bc:5e85:9871 with SMTP id q1-20020a170902dac100b001bc5e859871mr10320455plx.54.1691963910443;
+        Sun, 13 Aug 2023 14:58:30 -0700 (PDT)
+Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
+        by smtp.gmail.com with ESMTPSA id j2-20020a170902da8200b001bc7306d321sm7878705plx.282.2023.08.13.14.58.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 13 Aug 2023 14:58:29 -0700 (PDT)
+Message-ID: <64d95205.170a0220.384eb.daf0@mx.google.com>
+Date:   Sun, 13 Aug 2023 14:58:29 -0700 (PDT)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+Content-Transfer-Encoding: quoted-printable
+X-Kernelci-Report-Type: build
+X-Kernelci-Kernel: v5.4.253-40-g89e2e795021f
+X-Kernelci-Tree: stable-rc
+X-Kernelci-Branch: linux-5.4.y
+Subject: stable-rc/linux-5.4.y build: 17 builds: 0 failed, 17 passed,
+ 26 warnings (v5.4.253-40-g89e2e795021f)
+To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+        kernelci-results@groups.io
+From:   "kernelci.org bot" <bot@kernelci.org>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -55,45 +71,232 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Xu Kuohai <xukuohai@huawei.com>
+stable-rc/linux-5.4.y build: 17 builds: 0 failed, 17 passed, 26 warnings (v=
+5.4.253-40-g89e2e795021f)
 
-commit 7e96ec0e6605b69bb21bbf6c0ff9051e656ec2b1 upstream.
+Full Build Summary: https://kernelci.org/build/stable-rc/branch/linux-5.4.y=
+/kernel/v5.4.253-40-g89e2e795021f/
 
-sock_map_del_link() operates on both SOCKMAP and SOCKHASH, although
-both types have member named "progs", the offset of "progs" member in
-these two types is different, so "progs" should be accessed with the
-real map type.
+Tree: stable-rc
+Branch: linux-5.4.y
+Git Describe: v5.4.253-40-g89e2e795021f
+Git Commit: 89e2e795021f6c31714341452eb5e5ef0e0f420f
+Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
+e-rc.git
+Built: 7 unique architectures
 
-Fixes: 604326b41a6f ("bpf, sockmap: convert to generic sk_msg interface")
-Signed-off-by: Xu Kuohai <xukuohai@huawei.com>
-Reviewed-by: John Fastabend <john.fastabend@gmail.com>
-Link: https://lore.kernel.org/r/20230804073740.194770-2-xukuohai@huaweicloud.com
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Warnings Detected:
+
+arc:
+
+arm64:
+    defconfig (gcc-10): 2 warnings
+    defconfig+arm64-chromebook (gcc-10): 2 warnings
+
+arm:
+
+i386:
+    allnoconfig (gcc-10): 2 warnings
+    i386_defconfig (gcc-10): 2 warnings
+    tinyconfig (gcc-10): 2 warnings
+
+mips:
+
+riscv:
+
+x86_64:
+    allnoconfig (gcc-10): 4 warnings
+    tinyconfig (gcc-10): 4 warnings
+    x86_64_defconfig (gcc-10): 4 warnings
+    x86_64_defconfig+x86-chromebook (gcc-10): 4 warnings
+
+
+Warnings summary:
+
+    7    ld: warning: creating DT_TEXTREL in a PIE
+    4    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in rea=
+d-only section `.head.text'
+    4    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer=
+ to integer of different size [-Wpointer-to-int-cast]
+    3    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in rea=
+d-only section `.head.text'
+    2    arch/x86/entry/entry_64.o: warning: objtool: If this is a retpolin=
+e, please patch it in with alternatives and annotate it with ANNOTATE_NOSPE=
+C_ALTERNATIVE.
+    2    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x1c1: un=
+supported intra-function call
+    2    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x151: un=
+supported intra-function call
+    2    arch/x86/entry/entry_64.S:1756: Warning: no instruction mnemonic s=
+uffix given and no register operands; using default for `sysret'
+
+Section mismatches summary:
+
+    1    WARNING: vmlinux.o(___ksymtab_gpl+vic_init_cascaded+0x0): Section =
+mismatch in reference from the variable __ksymtab_vic_init_cascaded to the =
+function .init.text:vic_init_cascaded()
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
+
+Detailed per-defconfig build reports:
+
+---------------------------------------------------------------------------=
+-----
+32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
+tion mismatches
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 sectio=
+n mismatches
+
+Warnings:
+    arch/x86/entry/entry_64.S:1756: Warning: no instruction mnemonic suffix=
+ given and no register operands; using default for `sysret'
+    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x151: unsuppo=
+rted intra-function call
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section =
+mismatches
+
+Warnings:
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section m=
+ismatches
+
+Warnings:
+    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer to i=
+nteger of different size [-Wpointer-to-int-cast]
+    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer to i=
+nteger of different size [-Wpointer-to-int-cast]
+
+---------------------------------------------------------------------------=
+-----
+defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 2 warn=
+ings, 0 section mismatches
+
+Warnings:
+    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer to i=
+nteger of different size [-Wpointer-to-int-cast]
+    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer to i=
+nteger of different size [-Wpointer-to-int-cast]
+
+---------------------------------------------------------------------------=
+-----
+haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
+ section mismatches
+
+---------------------------------------------------------------------------=
+-----
+i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 secti=
+on mismatches
+
+Warnings:
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+Section mismatches:
+    WARNING: vmlinux.o(___ksymtab_gpl+vic_init_cascaded+0x0): Section misma=
+tch in reference from the variable __ksymtab_vic_init_cascaded to the funct=
+ion .init.text:vic_init_cascaded()
+
+---------------------------------------------------------------------------=
+-----
+multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 section=
+ mismatches
+
+Warnings:
+    arch/x86/entry/entry_64.S:1756: Warning: no instruction mnemonic suffix=
+ given and no register operands; using default for `sysret'
+    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x151: unsuppo=
+rted intra-function call
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section m=
+ismatches
+
+Warnings:
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 s=
+ection mismatches
+
+Warnings:
+    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x1c1: unsuppo=
+rted intra-function call
+    arch/x86/entry/entry_64.o: warning: objtool: If this is a retpoline, pl=
+ease patch it in with alternatives and annotate it with ANNOTATE_NOSPEC_ALT=
+ERNATIVE.
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig+x86-chromebook (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, =
+4 warnings, 0 section mismatches
+
+Warnings:
+    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x1c1: unsuppo=
+rted intra-function call
+    arch/x86/entry/entry_64.o: warning: objtool: If this is a retpoline, pl=
+ease patch it in with alternatives and annotate it with ANNOTATE_NOSPEC_ALT=
+ERNATIVE.
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
 ---
- net/core/sock_map.c |   10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
-
---- a/net/core/sock_map.c
-+++ b/net/core/sock_map.c
-@@ -148,13 +148,13 @@ static void sock_map_del_link(struct soc
- 	list_for_each_entry_safe(link, tmp, &psock->link, list) {
- 		if (link->link_raw == link_raw) {
- 			struct bpf_map *map = link->map;
--			struct bpf_stab *stab = container_of(map, struct bpf_stab,
--							     map);
--			if (psock->saved_data_ready && stab->progs.stream_parser)
-+			struct sk_psock_progs *progs = sock_map_progs(map);
-+
-+			if (psock->saved_data_ready && progs->stream_parser)
- 				strp_stop = true;
--			if (psock->saved_data_ready && stab->progs.stream_verdict)
-+			if (psock->saved_data_ready && progs->stream_verdict)
- 				verdict_stop = true;
--			if (psock->saved_data_ready && stab->progs.skb_verdict)
-+			if (psock->saved_data_ready && progs->skb_verdict)
- 				verdict_stop = true;
- 			list_del(&link->list);
- 			sk_psock_free_link(link);
-
-
+For more info write to <info@kernelci.org>
