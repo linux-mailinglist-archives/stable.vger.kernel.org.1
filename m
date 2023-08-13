@@ -2,112 +2,126 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9238C77ADAC
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:50:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B419677ACFF
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:48:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232547AbjHMVug (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:50:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60618 "EHLO
+        id S229774AbjHMVr5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:47:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39278 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232460AbjHMVt0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:49:26 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BE86230CA
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:48:15 -0700 (PDT)
+        with ESMTP id S232313AbjHMVpp (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:45:45 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 66C302D6D
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:45:44 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5D39C63E8B
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:48:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 443BDC433C8;
-        Sun, 13 Aug 2023 21:48:14 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id F01FE61C1D
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:45:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0707AC433C8;
+        Sun, 13 Aug 2023 21:45:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691963294;
-        bh=eJIGWN3tjneuP36zsd0VF25VoMxas/P2/Gg0YEBUJnI=;
+        s=korg; t=1691963143;
+        bh=EZbMq1FC5HZK162QtouuqC5JuBeFtRHU42kYDo44d48=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=II/NEdPhA40+CwXkg8XfOx3vZuOWOYQzmc1xdHUBmWFoj/EJZORHCV11R+EUEmm6b
-         ZCs/SjhQLesqB2tq4BAQO/tvjL2HmVm7LDVsmFg6N1g0C9fj7P1AtupG9bWhiCbiMJ
-         PK08Yu/UdzwZQwfgFOeKjCIVA1jfClHAjmjnW8tg=
+        b=ARYSeX/kqBtnWwL9NbsSPJIL/f0d1V2nDMzmjwU3+5a4fiGykBTY/YMxyi7AQ/OMZ
+         +hSd/SqOm+uLT9m22D+AWyPApd/s0GlpkcXtXhr9vbWPqhynfYrSdGqxFVlmfgUpB0
+         cVhFfg2w8sui5ENvFmSMQgQaCSLGbu1J3W5Ym7qA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Qi Zheng <zhengqi.arch@bytedance.com>,
-        Carlos Llamas <cmllamas@google.com>, stable <stable@kernel.org>
-Subject: [PATCH 5.4 09/39] binder: fix memory leak in binder_init()
+        patches@lists.linux.dev, Nick Child <nnac123@linux.ibm.com>,
+        Simon Horman <horms@kernel.org>,
+        Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.15 69/89] ibmvnic: Handle DMA unmapping of login buffs in release functions
 Date:   Sun, 13 Aug 2023 23:20:00 +0200
-Message-ID: <20230813211705.151097946@linuxfoundation.org>
+Message-ID: <20230813211712.847186315@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211704.796906808@linuxfoundation.org>
-References: <20230813211704.796906808@linuxfoundation.org>
+In-Reply-To: <20230813211710.787645394@linuxfoundation.org>
+References: <20230813211710.787645394@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Qi Zheng <zhengqi.arch@bytedance.com>
+From: Nick Child <nnac123@linux.ibm.com>
 
-commit adb9743d6a08778b78d62d16b4230346d3508986 upstream.
+commit d78a671eb8996af19d6311ecdee9790d2fa479f0 upstream.
 
-In binder_init(), the destruction of binder_alloc_shrinker_init() is not
-performed in the wrong path, which will cause memory leaks. So this commit
-introduces binder_alloc_shrinker_exit() and calls it in the wrong path to
-fix that.
+Rather than leaving the DMA unmapping of the login buffers to the
+login response handler, move this work into the login release functions.
+Previously, these functions were only used for freeing the allocated
+buffers. This could lead to issues if there are more than one
+outstanding login buffer requests, which is possible if a login request
+times out.
 
-Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
-Acked-by: Carlos Llamas <cmllamas@google.com>
-Fixes: f2517eb76f1f ("android: binder: Add global lru shrinker to binder")
-Cc: stable <stable@kernel.org>
-Link: https://lore.kernel.org/r/20230625154937.64316-1-qi.zheng@linux.dev
+If a login request times out, then there is another call to send login.
+The send login function makes a call to the login buffer release
+function. In the past, this freed the buffers but did not DMA unmap.
+Therefore, the VIOS could still write to the old login (now freed)
+buffer. It is for this reason that it is a good idea to leave the DMA
+unmap call to the login buffers release function.
+
+Since the login buffer release functions now handle DMA unmapping,
+remove the duplicate DMA unmapping in handle_login_rsp().
+
+Fixes: dff515a3e71d ("ibmvnic: Harden device login requests")
+Signed-off-by: Nick Child <nnac123@linux.ibm.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/20230809221038.51296-3-nnac123@linux.ibm.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/android/binder.c       |    1 +
- drivers/android/binder_alloc.c |    6 ++++++
- drivers/android/binder_alloc.h |    1 +
- 3 files changed, 8 insertions(+)
+ drivers/net/ethernet/ibm/ibmvnic.c |   15 ++++++++++-----
+ 1 file changed, 10 insertions(+), 5 deletions(-)
 
---- a/drivers/android/binder.c
-+++ b/drivers/android/binder.c
-@@ -6555,6 +6555,7 @@ err_init_binder_device_failed:
+--- a/drivers/net/ethernet/ibm/ibmvnic.c
++++ b/drivers/net/ethernet/ibm/ibmvnic.c
+@@ -1007,12 +1007,22 @@ static int ibmvnic_login(struct net_devi
  
- err_alloc_device_names_failed:
- 	debugfs_remove_recursive(binder_debugfs_dir_entry_root);
-+	binder_alloc_shrinker_exit();
- 
- 	return ret;
- }
---- a/drivers/android/binder_alloc.c
-+++ b/drivers/android/binder_alloc.c
-@@ -1037,6 +1037,12 @@ int binder_alloc_shrinker_init(void)
- 	return ret;
- }
- 
-+void binder_alloc_shrinker_exit(void)
-+{
-+	unregister_shrinker(&binder_shrinker);
-+	list_lru_destroy(&binder_alloc_lru);
-+}
+ static void release_login_buffer(struct ibmvnic_adapter *adapter)
+ {
++	if (!adapter->login_buf)
++		return;
 +
- /**
-  * check_buffer() - verify that buffer/offset is safe to access
-  * @alloc: binder_alloc for this proc
---- a/drivers/android/binder_alloc.h
-+++ b/drivers/android/binder_alloc.h
-@@ -122,6 +122,7 @@ extern struct binder_buffer *binder_allo
- 						  int is_async);
- extern void binder_alloc_init(struct binder_alloc *alloc);
- extern int binder_alloc_shrinker_init(void);
-+extern void binder_alloc_shrinker_exit(void);
- extern void binder_alloc_vma_close(struct binder_alloc *alloc);
- extern struct binder_buffer *
- binder_alloc_prepare_to_free(struct binder_alloc *alloc,
++	dma_unmap_single(&adapter->vdev->dev, adapter->login_buf_token,
++			 adapter->login_buf_sz, DMA_TO_DEVICE);
+ 	kfree(adapter->login_buf);
+ 	adapter->login_buf = NULL;
+ }
+ 
+ static void release_login_rsp_buffer(struct ibmvnic_adapter *adapter)
+ {
++	if (!adapter->login_rsp_buf)
++		return;
++
++	dma_unmap_single(&adapter->vdev->dev, adapter->login_rsp_buf_token,
++			 adapter->login_rsp_buf_sz, DMA_FROM_DEVICE);
+ 	kfree(adapter->login_rsp_buf);
+ 	adapter->login_rsp_buf = NULL;
+ }
+@@ -4803,11 +4813,6 @@ static int handle_login_rsp(union ibmvni
+ 	}
+ 	adapter->login_pending = false;
+ 
+-	dma_unmap_single(dev, adapter->login_buf_token, adapter->login_buf_sz,
+-			 DMA_TO_DEVICE);
+-	dma_unmap_single(dev, adapter->login_rsp_buf_token,
+-			 adapter->login_rsp_buf_sz, DMA_FROM_DEVICE);
+-
+ 	/* If the number of queues requested can't be allocated by the
+ 	 * server, the login response will return with code 1. We will need
+ 	 * to resend the login buffer with fewer queues requested.
 
 
