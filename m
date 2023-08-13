@@ -2,44 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8E7E877AC58
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:32:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0BC3277AB8C
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:23:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231964AbjHMVcQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:32:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56206 "EHLO
+        id S231230AbjHMVXJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:23:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59104 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231945AbjHMVcP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:32:15 -0400
+        with ESMTP id S230103AbjHMVXI (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:23:08 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C6B61701
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:32:10 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 43CA7EE
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:23:09 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A1B3E62B7F
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:32:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B84ECC433C7;
-        Sun, 13 Aug 2023 21:32:07 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CD28362866
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:23:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0A37C433C9;
+        Sun, 13 Aug 2023 21:23:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691962328;
-        bh=qJ3LsYz5LSXz+HFXUHQ9ay9OAS0AoOSJnNsDS+F7rxs=;
+        s=korg; t=1691961788;
+        bh=e359yJop2fp5uwsKmsGRxJqrc8tJ3j6u1dUOUgmEzvM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Sk8EeVR5ERCq/zB0H4XmdOizhO3um1ZuFrZNo3oayh2TjbZKBN3kPsApNZD376jh8
-         8Bp4aNdLmwEEjPXzp8tpSPPluP0Pc6h4USHUDpNgI7tz1Yxr33YepR8HZKaZcfcgbk
-         ZuE7EfxlWxUkAovYFBtTF9eUMckVIQwvlEm/psdE=
+        b=0k4ixmmmbNkdwR1IPqzDFV4DOE33II/vDTmKuvmXrl7McJgXZME3bp2ip9MpwnmEj
+         Xjobki8Gs9jBORgXflq8O7hqBeqh12Tkjv3aqFwyrxYPTM5CoJ2NdRkaxAMkBlhw9c
+         FavOCgW3uwLl/iWzhmIoPEiDDaJcxscidon1LroQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Nilesh Javali <njavali@marvell.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.4 196/206] scsi: qedi: Fix firmware halt over suspend and resume
-Date:   Sun, 13 Aug 2023 23:19:26 +0200
-Message-ID: <20230813211730.627304310@linuxfoundation.org>
+        patches@lists.linux.dev, syzbot <syzkaller@googlegroups.com>,
+        Eric Dumazet <edumazet@google.com>,
+        Stephen Hemminger <stephen@networkplumber.org>,
+        Jamal Hadi Salim <jhs@mojatatu.com>,
+        Simon Horman <simon.horman@corigine.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Fedor Pchelkin <pchelkin@ispras.ru>
+Subject: [PATCH 4.19 33/33] sch_netem: fix issues in netem_change() vs get_dist_table()
+Date:   Sun, 13 Aug 2023 23:19:27 +0200
+Message-ID: <20230813211705.141126984@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211724.969019629@linuxfoundation.org>
-References: <20230813211724.969019629@linuxfoundation.org>
+In-Reply-To: <20230813211703.915807095@linuxfoundation.org>
+References: <20230813211703.915807095@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,70 +59,148 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Nilesh Javali <njavali@marvell.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 1516ee035df32115197cd93ae3619dba7b020986 upstream.
+commit 11b73313c12403f617b47752db0ab3deef201af7 upstream.
 
-While performing certain power-off sequences, PCI drivers are called to
-suspend and resume their underlying devices through PCI PM (power
-management) interface. However the hardware does not support PCI PM
-suspend/resume operations so system wide suspend/resume leads to bad MFW
-(management firmware) state which causes various follow-up errors in driver
-when communicating with the device/firmware.
+In blamed commit, I missed that get_dist_table() was allocating
+memory using GFP_KERNEL, and acquiring qdisc lock to perform
+the swap of newly allocated table with current one.
 
-To fix this driver implements PCI PM suspend handler to indicate
-unsupported operation to the PCI subsystem explicitly, thus avoiding system
-to go into suspended/standby mode.
+In this patch, get_dist_table() is allocating memory and
+copy user data before we acquire the qdisc lock.
 
-Fixes: ace7f46ba5fd ("scsi: qedi: Add QLogic FastLinQ offload iSCSI driver framework.")
-Signed-off-by: Nilesh Javali <njavali@marvell.com>
-Link: https://lore.kernel.org/r/20230807093725.46829-2-njavali@marvell.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Then we perform swap operations while being protected by the lock.
+
+Note that after this patch netem_change() no longer can do partial changes.
+If an error is returned, qdisc conf is left unchanged.
+
+Fixes: 2174a08db80d ("sch_netem: acquire qdisc lock in netem_change()")
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Stephen Hemminger <stephen@networkplumber.org>
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Link: https://lore.kernel.org/r/20230622181503.2327695-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/qedi/qedi_main.c |   18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+ net/sched/sch_netem.c |   59 +++++++++++++++++++++-----------------------------
+ 1 file changed, 25 insertions(+), 34 deletions(-)
 
---- a/drivers/scsi/qedi/qedi_main.c
-+++ b/drivers/scsi/qedi/qedi_main.c
-@@ -69,6 +69,7 @@ static struct nvm_iscsi_block *qedi_get_
- static void qedi_recovery_handler(struct work_struct *work);
- static void qedi_schedule_hw_err_handler(void *dev,
- 					 enum qed_hw_err_type err_type);
-+static int qedi_suspend(struct pci_dev *pdev, pm_message_t state);
+--- a/net/sched/sch_netem.c
++++ b/net/sched/sch_netem.c
+@@ -748,12 +748,10 @@ static void dist_free(struct disttable *
+  * signed 16 bit values.
+  */
  
- static int qedi_iscsi_event_cb(void *context, u8 fw_event_code, void *fw_handle)
+-static int get_dist_table(struct Qdisc *sch, struct disttable **tbl,
+-			  const struct nlattr *attr)
++static int get_dist_table(struct disttable **tbl, const struct nlattr *attr)
  {
-@@ -2510,6 +2511,22 @@ static void qedi_shutdown(struct pci_dev
- 	__qedi_remove(pdev, QEDI_MODE_SHUTDOWN);
+ 	size_t n = nla_len(attr)/sizeof(__s16);
+ 	const __s16 *data = nla_data(attr);
+-	spinlock_t *root_lock;
+ 	struct disttable *d;
+ 	int i;
+ 
+@@ -768,13 +766,7 @@ static int get_dist_table(struct Qdisc *
+ 	for (i = 0; i < n; i++)
+ 		d->table[i] = data[i];
+ 
+-	root_lock = qdisc_root_sleeping_lock(sch);
+-
+-	spin_lock_bh(root_lock);
+-	swap(*tbl, d);
+-	spin_unlock_bh(root_lock);
+-
+-	dist_free(d);
++	*tbl = d;
+ 	return 0;
  }
  
-+static int qedi_suspend(struct pci_dev *pdev, pm_message_t state)
-+{
-+	struct qedi_ctx *qedi;
-+
-+	if (!pdev) {
-+		QEDI_ERR(NULL, "pdev is NULL.\n");
-+		return -ENODEV;
+@@ -930,6 +922,8 @@ static int netem_change(struct Qdisc *sc
+ {
+ 	struct netem_sched_data *q = qdisc_priv(sch);
+ 	struct nlattr *tb[TCA_NETEM_MAX + 1];
++	struct disttable *delay_dist = NULL;
++	struct disttable *slot_dist = NULL;
+ 	struct tc_netem_qopt *qopt;
+ 	struct clgstate old_clg;
+ 	int old_loss_model = CLG_RANDOM;
+@@ -943,6 +937,18 @@ static int netem_change(struct Qdisc *sc
+ 	if (ret < 0)
+ 		return ret;
+ 
++	if (tb[TCA_NETEM_DELAY_DIST]) {
++		ret = get_dist_table(&delay_dist, tb[TCA_NETEM_DELAY_DIST]);
++		if (ret)
++			goto table_free;
 +	}
 +
-+	qedi = pci_get_drvdata(pdev);
++	if (tb[TCA_NETEM_SLOT_DIST]) {
++		ret = get_dist_table(&slot_dist, tb[TCA_NETEM_SLOT_DIST]);
++		if (ret)
++			goto table_free;
++	}
 +
-+	QEDI_ERR(&qedi->dbg_ctx, "%s: Device does not support suspend operation\n", __func__);
-+
-+	return -EPERM;
-+}
-+
- static int __qedi_probe(struct pci_dev *pdev, int mode)
- {
- 	struct qedi_ctx *qedi;
-@@ -2868,6 +2885,7 @@ static struct pci_driver qedi_pci_driver
- 	.remove = qedi_remove,
- 	.shutdown = qedi_shutdown,
- 	.err_handler = &qedi_err_handler,
-+	.suspend = qedi_suspend,
- };
+ 	sch_tree_lock(sch);
+ 	/* backup q->clg and q->loss_model */
+ 	old_clg = q->clg;
+@@ -952,26 +958,17 @@ static int netem_change(struct Qdisc *sc
+ 		ret = get_loss_clg(q, tb[TCA_NETEM_LOSS]);
+ 		if (ret) {
+ 			q->loss_model = old_loss_model;
++			q->clg = old_clg;
+ 			goto unlock;
+ 		}
+ 	} else {
+ 		q->loss_model = CLG_RANDOM;
+ 	}
  
- static int __init qedi_init(void)
+-	if (tb[TCA_NETEM_DELAY_DIST]) {
+-		ret = get_dist_table(sch, &q->delay_dist,
+-				     tb[TCA_NETEM_DELAY_DIST]);
+-		if (ret)
+-			goto get_table_failure;
+-	}
+-
+-	if (tb[TCA_NETEM_SLOT_DIST]) {
+-		ret = get_dist_table(sch, &q->slot_dist,
+-				     tb[TCA_NETEM_SLOT_DIST]);
+-		if (ret)
+-			goto get_table_failure;
+-	}
+-
++	if (delay_dist)
++		swap(q->delay_dist, delay_dist);
++	if (slot_dist)
++		swap(q->slot_dist, slot_dist);
+ 	sch->limit = qopt->limit;
+ 
+ 	q->latency = PSCHED_TICKS2NS(qopt->latency);
+@@ -1021,17 +1018,11 @@ static int netem_change(struct Qdisc *sc
+ 
+ unlock:
+ 	sch_tree_unlock(sch);
+-	return ret;
+ 
+-get_table_failure:
+-	/* recover clg and loss_model, in case of
+-	 * q->clg and q->loss_model were modified
+-	 * in get_loss_clg()
+-	 */
+-	q->clg = old_clg;
+-	q->loss_model = old_loss_model;
+-
+-	goto unlock;
++table_free:
++	dist_free(delay_dist);
++	dist_free(slot_dist);
++	return ret;
+ }
+ 
+ static int netem_init(struct Qdisc *sch, struct nlattr *opt,
 
 
