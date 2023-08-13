@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4156877AD58
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:49:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BD57977ACD4
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:37:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229758AbjHMVtL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:49:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41306 "EHLO
+        id S232197AbjHMVhg (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:37:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37846 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229943AbjHMVsu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:48:50 -0400
+        with ESMTP id S232190AbjHMVhf (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:37:35 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C0F11720
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:40:03 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E6EA10DB
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:37:37 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0E6CB6131F
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:40:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C83FC433C7;
-        Sun, 13 Aug 2023 21:40:01 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 32D9663401
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:37:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41B6CC433C7;
+        Sun, 13 Aug 2023 21:37:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691962802;
-        bh=Zy8BM5nQ9z6OQ6GJS8rjUhptOxwEu1298/w69jkEYY4=;
+        s=korg; t=1691962656;
+        bh=qvMCbLCUhQzt2S/cLp+qQ19aeNjjUA+3La5Wft2PxnY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=1IIKTpYBe1mJ6N5UOTexbPRw+QV0RuTjo+KYWx0QTzEcPqhjNW3IwzxmNz4ru336k
-         N4UrCDU7eeRdgL/nHEEVL++UyKQJ5AtdIU0SIhRVHYZIjGYEUqktyKFFilOtI6QRpf
-         yXnXd0oIWJ3VG4ziZ861fVLIjvQrO7PArs0zMy5s=
+        b=FlDho9jt/5djryLHuka5guios/GWttyaMTVWaAmp5wjaMJpcQbnwYSFO5ESM5nT0m
+         U9x8Jjp0qs8TwaFttGe/fODTE7MGutvC5jv0cbNClP/OBFZ+IOFTgoDgUtRFUvzau9
+         PqvDr0GFn9AnpCWu0ABeoflvettVwNzq0/PrQJ4c=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Daniel Vetter <daniel.vetter@ffwll.ch>,
-        Roman Stratiienko <r.stratiienko@gmail.com>,
-        Boris Brezillon <boris.brezillon@collabora.com>,
-        Thomas Zimmermann <tzimmermann@suse.de>
-Subject: [PATCH 5.10 13/68] drm/shmem-helper: Reset vma->vm_ops before calling dma_buf_mmap()
+        patches@lists.linux.dev, Yonglong Liu <liuyonglong@huawei.com>,
+        Jijie Shao <shaojijie@huawei.com>,
+        Leon Romanovsky <leonro@nvidia.com>,
+        Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 109/149] net: hns3: fix deadlock issue when externel_lb and reset are executed together
 Date:   Sun, 13 Aug 2023 23:19:14 +0200
-Message-ID: <20230813211708.560867144@linuxfoundation.org>
+Message-ID: <20230813211722.023564637@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211708.149630011@linuxfoundation.org>
-References: <20230813211708.149630011@linuxfoundation.org>
+In-Reply-To: <20230813211718.757428827@linuxfoundation.org>
+References: <20230813211718.757428827@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,45 +56,89 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Boris Brezillon <boris.brezillon@collabora.com>
+From: Yonglong Liu <liuyonglong@huawei.com>
 
-commit 07dd476f6116966cb2006e25fdcf48f0715115ff upstream.
+commit ac6257a3ae5db5193b1f19c268e4f72d274ddb88 upstream.
 
-The dma-buf backend is supposed to provide its own vm_ops, but some
-implementation just have nothing special to do and leave vm_ops
-untouched, probably expecting this field to be zero initialized (this
-is the case with the system_heap implementation for instance).
-Let's reset vma->vm_ops to NULL to keep things working with these
-implementations.
+When externel_lb and reset are executed together, a deadlock may
+occur:
+[ 3147.217009] INFO: task kworker/u321:0:7 blocked for more than 120 seconds.
+[ 3147.230483] "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
+[ 3147.238999] task:kworker/u321:0  state:D stack:    0 pid:    7 ppid:     2 flags:0x00000008
+[ 3147.248045] Workqueue: hclge hclge_service_task [hclge]
+[ 3147.253957] Call trace:
+[ 3147.257093]  __switch_to+0x7c/0xbc
+[ 3147.261183]  __schedule+0x338/0x6f0
+[ 3147.265357]  schedule+0x50/0xe0
+[ 3147.269185]  schedule_preempt_disabled+0x18/0x24
+[ 3147.274488]  __mutex_lock.constprop.0+0x1d4/0x5dc
+[ 3147.279880]  __mutex_lock_slowpath+0x1c/0x30
+[ 3147.284839]  mutex_lock+0x50/0x60
+[ 3147.288841]  rtnl_lock+0x20/0x2c
+[ 3147.292759]  hclge_reset_prepare+0x68/0x90 [hclge]
+[ 3147.298239]  hclge_reset_subtask+0x88/0xe0 [hclge]
+[ 3147.303718]  hclge_reset_service_task+0x84/0x120 [hclge]
+[ 3147.309718]  hclge_service_task+0x2c/0x70 [hclge]
+[ 3147.315109]  process_one_work+0x1d0/0x490
+[ 3147.319805]  worker_thread+0x158/0x3d0
+[ 3147.324240]  kthread+0x108/0x13c
+[ 3147.328154]  ret_from_fork+0x10/0x18
 
-Fixes: 26d3ac3cb04d ("drm/shmem-helpers: Redirect mmap for imported dma-buf")
-Cc: <stable@vger.kernel.org>
-Cc: Daniel Vetter <daniel.vetter@ffwll.ch>
-Reported-by: Roman Stratiienko <r.stratiienko@gmail.com>
-Signed-off-by: Boris Brezillon <boris.brezillon@collabora.com>
-Tested-by: Roman Stratiienko <r.stratiienko@gmail.com>
-Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230724112610.60974-1-boris.brezillon@collabora.com
+In externel_lb process, the hns3 driver call napi_disable()
+first, then the reset happen, then the restore process of the
+externel_lb will fail, and will not call napi_enable(). When
+doing externel_lb again, napi_disable() will be double call,
+cause a deadlock of rtnl_lock().
+
+This patch use the HNS3_NIC_STATE_DOWN state to protect the
+calling of napi_disable() and napi_enable() in externel_lb
+process, just as the usage in ndo_stop() and ndo_start().
+
+Fixes: 04b6ba143521 ("net: hns3: add support for external loopback test")
+Signed-off-by: Yonglong Liu <liuyonglong@huawei.com>
+Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
+Link: https://lore.kernel.org/r/20230807113452.474224-5-shaojijie@huawei.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/drm_gem_shmem_helper.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/net/ethernet/hisilicon/hns3/hns3_enet.c | 14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/drm_gem_shmem_helper.c
-+++ b/drivers/gpu/drm/drm_gem_shmem_helper.c
-@@ -614,7 +614,13 @@ int drm_gem_shmem_mmap(struct drm_gem_ob
- 	int ret;
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
+index 9f6890059666..b7b51e56b030 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
+@@ -5854,6 +5854,9 @@ void hns3_external_lb_prepare(struct net_device *ndev, bool if_running)
+ 	if (!if_running)
+ 		return;
  
- 	if (obj->import_attach) {
-+		/* Reset both vm_ops and vm_private_data, so we don't end up with
-+		 * vm_ops pointing to our implementation if the dma-buf backend
-+		 * doesn't set those fields.
-+		 */
- 		vma->vm_private_data = NULL;
-+		vma->vm_ops = NULL;
++	if (test_and_set_bit(HNS3_NIC_STATE_DOWN, &priv->state))
++		return;
 +
- 		ret = dma_buf_mmap(obj->dma_buf, vma, 0);
+ 	netif_carrier_off(ndev);
+ 	netif_tx_disable(ndev);
  
- 		/* Drop the reference drm_gem_mmap_obj() acquired.*/
+@@ -5882,7 +5885,16 @@ void hns3_external_lb_restore(struct net_device *ndev, bool if_running)
+ 	if (!if_running)
+ 		return;
+ 
+-	hns3_nic_reset_all_ring(priv->ae_handle);
++	if (hns3_nic_resetting(ndev))
++		return;
++
++	if (!test_bit(HNS3_NIC_STATE_DOWN, &priv->state))
++		return;
++
++	if (hns3_nic_reset_all_ring(priv->ae_handle))
++		return;
++
++	clear_bit(HNS3_NIC_STATE_DOWN, &priv->state);
+ 
+ 	for (i = 0; i < priv->vector_num; i++)
+ 		hns3_vector_enable(&priv->tqp_vector[i]);
+-- 
+2.41.0
+
 
 
