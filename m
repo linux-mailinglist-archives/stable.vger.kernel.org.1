@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9278A77ABE0
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:26:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1676B77AC7C
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:33:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231725AbjHMV0o (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:26:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54794 "EHLO
+        id S232014AbjHMVdk (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:33:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34932 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231727AbjHMV0n (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:26:43 -0400
+        with ESMTP id S232013AbjHMVdk (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:33:40 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3512310D7
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:26:45 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2911510DB
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:33:42 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BD033629A9
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:26:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C09ACC433C8;
-        Sun, 13 Aug 2023 21:26:43 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B23E262C4B
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:33:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C831CC433C8;
+        Sun, 13 Aug 2023 21:33:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691962004;
-        bh=SUzloAaHKebh0i07lhExKnM+0s1HO9wQJ1U8Tc7pdTg=;
+        s=korg; t=1691962421;
+        bh=obTqLkBjtYEvq1TUqjiaRIO3KMJuz3SnatepwGohf7A=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=hySIvO/t9SkvtXc3gYrvdPAcdqqSgeiy3DsctMinb/vSniR5YA+Z6CTRbTvyw2k7R
-         5KIqq/cPu3Oa9qJfSSHFnGbXnrcUS9n+t+LSPJNRDqD89eYz5uPXTaq5Zr0R2yvjqn
-         HkIalS2esP+RzBh6tyAbySCgNGWeJOyFN+0UouOY=
+        b=LhRHWUdR+pqsqwpmBFvfGXb+oLBzHwM7kdPsOzo49ziE7IQ8yS8kURL5tnh034MRt
+         g6WFXT1qIDEfD/vbH8WXdXkfbJio6DGpAN+La7hcgycW/DiVvtoUaklT6/5NrUehu0
+         cWEsYGTOb+q7i8B+VaKPlkQVb83Ont/DLBhDw7NY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Prashanth K <quic_prashk@quicinc.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Subject: [PATCH 6.4 077/206] usb: common: usb-conn-gpio: Prevent bailing out if initial role is none
-Date:   Sun, 13 Aug 2023 23:17:27 +0200
-Message-ID: <20230813211727.282898280@linuxfoundation.org>
+        patches@lists.linux.dev, daniil.stas@posteo.net,
+        bitlord0xff@gmail.com,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        Jarkko Sakkinen <jarkko@kernel.org>
+Subject: [PATCH 6.1 003/149] tpm: Disable RNG for all AMD fTPMs
+Date:   Sun, 13 Aug 2023 23:17:28 +0200
+Message-ID: <20230813211718.860937766@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211724.969019629@linuxfoundation.org>
-References: <20230813211724.969019629@linuxfoundation.org>
+In-Reply-To: <20230813211718.757428827@linuxfoundation.org>
+References: <20230813211718.757428827@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,62 +56,184 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Prashanth K <quic_prashk@quicinc.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-commit 8e21a620c7e6e00347ade1a6ed4967b359eada5a upstream.
+commit 554b841d470338a3b1d6335b14ee1cd0c8f5d754 upstream.
 
-Currently if we bootup a device without cable connected, then
-usb-conn-gpio won't call set_role() because last_role is same
-as current role. This happens since last_role gets initialised
-to zero during the probe.
+The TPM RNG functionality is not necessary for entropy when the CPU
+already supports the RDRAND instruction. The TPM RNG functionality
+was previously disabled on a subset of AMD fTPM series, but reports
+continue to show problems on some systems causing stutter root caused
+to TPM RNG functionality.
 
-To avoid this, add a new flag initial_detection into struct
-usb_conn_info, which prevents bailing out during initial
-detection.
+Expand disabling TPM RNG use for all AMD fTPMs whether they have versions
+that claim to have fixed or not. To accomplish this, move the detection
+into part of the TPM CRB registration and add a flag indicating that
+the TPM should opt-out of registration to hwrng.
 
-Cc: <stable@vger.kernel.org> # 5.4
-Fixes: 4602f3bff266 ("usb: common: add USB GPIO based connection detection driver")
-Signed-off-by: Prashanth K <quic_prashk@quicinc.com>
-Tested-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/1690880632-12588-1-git-send-email-quic_prashk@quicinc.com
+Cc: stable@vger.kernel.org # 6.1.y+
+Fixes: b006c439d58d ("hwrng: core - start hwrng kthread also for untrusted sources")
+Fixes: f1324bbc4011 ("tpm: disable hwrng for fTPM on some AMD designs")
+Reported-by: daniil.stas@posteo.net
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217719
+Reported-by: bitlord0xff@gmail.com
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217212
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/common/usb-conn-gpio.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/char/tpm/tpm-chip.c |   68 +-------------------------------------------
+ drivers/char/tpm/tpm_crb.c  |   30 +++++++++++++++++++
+ include/linux/tpm.h         |    1 
+ 3 files changed, 33 insertions(+), 66 deletions(-)
 
---- a/drivers/usb/common/usb-conn-gpio.c
-+++ b/drivers/usb/common/usb-conn-gpio.c
-@@ -42,6 +42,7 @@ struct usb_conn_info {
+--- a/drivers/char/tpm/tpm-chip.c
++++ b/drivers/char/tpm/tpm-chip.c
+@@ -507,70 +507,6 @@ static int tpm_add_legacy_sysfs(struct t
+ 	return 0;
+ }
  
- 	struct power_supply_desc desc;
- 	struct power_supply *charger;
-+	bool initial_detection;
+-/*
+- * Some AMD fTPM versions may cause stutter
+- * https://www.amd.com/en/support/kb/faq/pa-410
+- *
+- * Fixes are available in two series of fTPM firmware:
+- * 6.x.y.z series: 6.0.18.6 +
+- * 3.x.y.z series: 3.57.y.5 +
+- */
+-#ifdef CONFIG_X86
+-static bool tpm_amd_is_rng_defective(struct tpm_chip *chip)
+-{
+-	u32 val1, val2;
+-	u64 version;
+-	int ret;
+-
+-	if (!(chip->flags & TPM_CHIP_FLAG_TPM2))
+-		return false;
+-
+-	ret = tpm_request_locality(chip);
+-	if (ret)
+-		return false;
+-
+-	ret = tpm2_get_tpm_pt(chip, TPM2_PT_MANUFACTURER, &val1, NULL);
+-	if (ret)
+-		goto release;
+-	if (val1 != 0x414D4400U /* AMD */) {
+-		ret = -ENODEV;
+-		goto release;
+-	}
+-	ret = tpm2_get_tpm_pt(chip, TPM2_PT_FIRMWARE_VERSION_1, &val1, NULL);
+-	if (ret)
+-		goto release;
+-	ret = tpm2_get_tpm_pt(chip, TPM2_PT_FIRMWARE_VERSION_2, &val2, NULL);
+-
+-release:
+-	tpm_relinquish_locality(chip);
+-
+-	if (ret)
+-		return false;
+-
+-	version = ((u64)val1 << 32) | val2;
+-	if ((version >> 48) == 6) {
+-		if (version >= 0x0006000000180006ULL)
+-			return false;
+-	} else if ((version >> 48) == 3) {
+-		if (version >= 0x0003005700000005ULL)
+-			return false;
+-	} else {
+-		return false;
+-	}
+-
+-	dev_warn(&chip->dev,
+-		 "AMD fTPM version 0x%llx causes system stutter; hwrng disabled\n",
+-		 version);
+-
+-	return true;
+-}
+-#else
+-static inline bool tpm_amd_is_rng_defective(struct tpm_chip *chip)
+-{
+-	return false;
+-}
+-#endif /* CONFIG_X86 */
+-
+ static int tpm_hwrng_read(struct hwrng *rng, void *data, size_t max, bool wait)
+ {
+ 	struct tpm_chip *chip = container_of(rng, struct tpm_chip, hwrng);
+@@ -585,7 +521,7 @@ static int tpm_hwrng_read(struct hwrng *
+ static int tpm_add_hwrng(struct tpm_chip *chip)
+ {
+ 	if (!IS_ENABLED(CONFIG_HW_RANDOM_TPM) || tpm_is_firmware_upgrade(chip) ||
+-	    tpm_amd_is_rng_defective(chip))
++	    chip->flags & TPM_CHIP_FLAG_HWRNG_DISABLED)
+ 		return 0;
+ 
+ 	snprintf(chip->hwrng_name, sizeof(chip->hwrng_name),
+@@ -716,7 +652,7 @@ void tpm_chip_unregister(struct tpm_chip
+ {
+ 	tpm_del_legacy_sysfs(chip);
+ 	if (IS_ENABLED(CONFIG_HW_RANDOM_TPM) && !tpm_is_firmware_upgrade(chip) &&
+-	    !tpm_amd_is_rng_defective(chip))
++	    !(chip->flags & TPM_CHIP_FLAG_HWRNG_DISABLED))
+ 		hwrng_unregister(&chip->hwrng);
+ 	tpm_bios_log_teardown(chip);
+ 	if (chip->flags & TPM_CHIP_FLAG_TPM2 && !tpm_is_firmware_upgrade(chip))
+--- a/drivers/char/tpm/tpm_crb.c
++++ b/drivers/char/tpm/tpm_crb.c
+@@ -463,6 +463,28 @@ static bool crb_req_canceled(struct tpm_
+ 	return (cancel & CRB_CANCEL_INVOKE) == CRB_CANCEL_INVOKE;
+ }
+ 
++static int crb_check_flags(struct tpm_chip *chip)
++{
++	u32 val;
++	int ret;
++
++	ret = crb_request_locality(chip, 0);
++	if (ret)
++		return ret;
++
++	ret = tpm2_get_tpm_pt(chip, TPM2_PT_MANUFACTURER, &val, NULL);
++	if (ret)
++		goto release;
++
++	if (val == 0x414D4400U /* AMD */)
++		chip->flags |= TPM_CHIP_FLAG_HWRNG_DISABLED;
++
++release:
++	crb_relinquish_locality(chip, 0);
++
++	return ret;
++}
++
+ static const struct tpm_class_ops tpm_crb = {
+ 	.flags = TPM_OPS_AUTO_STARTUP,
+ 	.status = crb_status,
+@@ -800,6 +822,14 @@ static int crb_acpi_add(struct acpi_devi
+ 	chip->acpi_dev_handle = device->handle;
+ 	chip->flags = TPM_CHIP_FLAG_TPM2;
+ 
++	rc = tpm_chip_bootstrap(chip);
++	if (rc)
++		goto out;
++
++	rc = crb_check_flags(chip);
++	if (rc)
++		goto out;
++
+ 	rc = tpm_chip_register(chip);
+ 
+ out:
+--- a/include/linux/tpm.h
++++ b/include/linux/tpm.h
+@@ -282,6 +282,7 @@ enum tpm_chip_flags {
+ 	TPM_CHIP_FLAG_FIRMWARE_POWER_MANAGED	= BIT(6),
+ 	TPM_CHIP_FLAG_FIRMWARE_UPGRADE		= BIT(7),
+ 	TPM_CHIP_FLAG_SUSPENDED			= BIT(8),
++	TPM_CHIP_FLAG_HWRNG_DISABLED		= BIT(9),
  };
  
- /*
-@@ -86,11 +87,13 @@ static void usb_conn_detect_cable(struct
- 	dev_dbg(info->dev, "role %s -> %s, gpios: id %d, vbus %d\n",
- 		usb_role_string(info->last_role), usb_role_string(role), id, vbus);
- 
--	if (info->last_role == role) {
-+	if (!info->initial_detection && info->last_role == role) {
- 		dev_warn(info->dev, "repeated role: %s\n", usb_role_string(role));
- 		return;
- 	}
- 
-+	info->initial_detection = false;
-+
- 	if (info->last_role == USB_ROLE_HOST && info->vbus)
- 		regulator_disable(info->vbus);
- 
-@@ -258,6 +261,7 @@ static int usb_conn_probe(struct platfor
- 	device_set_wakeup_capable(&pdev->dev, true);
- 
- 	/* Perform initial detection */
-+	info->initial_detection = true;
- 	usb_conn_queue_dwork(info, 0);
- 
- 	return 0;
+ #define to_tpm_chip(d) container_of(d, struct tpm_chip, dev)
 
 
