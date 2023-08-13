@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E640E77AC37
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:30:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1B5BD77AE0A
+	for <lists+stable@lfdr.de>; Mon, 14 Aug 2023 00:00:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231880AbjHMVai (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:30:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57362 "EHLO
+        id S230094AbjHMWAQ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 18:00:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53910 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231873AbjHMVai (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:30:38 -0400
+        with ESMTP id S230379AbjHMV7G (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:59:06 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3834210D7
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:30:40 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 10E6C2682
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:43:38 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C1E6E62B1A
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:30:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCA15C433C8;
-        Sun, 13 Aug 2023 21:30:38 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9877661B60
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:43:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD49BC433C8;
+        Sun, 13 Aug 2023 21:43:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691962239;
-        bh=HQoPu4vPDZo5US+TpbT9lcOlZ+zKsoTKjnC/I46JQ+k=;
+        s=korg; t=1691963017;
+        bh=amwjw9XamkyBWuFCZmLa0aWzXafwZbMjz29nSRQUV0Y=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=UwBp9oWCoqMDuYr40eMLouSadORYRsu7eXsMKQi4BI7pfMnOB1pmCIyto5qhJNAgf
-         89y/biEPtqgTBCLDfww9qBKtjxtGfFpo5kXxDW/vAMlUTR8dd6OXxW3Kv+RVYFEmkG
-         Dh3uvWQOJ8Bqid89kUat/199O5zfhECuWy6tHl30=
+        b=OZqe0RvdETsWHSObSXgFDKm2KpEavIR8TqQZyEIbVXPzW0sUdyAvYqy6UGYwBceOk
+         PvPtFUQcnHRsE7jy+tIeb1iFIvXFW2nA+ccEOpAfdqg1gFTezFuukFECfFsKYbpcQs
+         IeS0hW6YGZyOIxlhoWWN5kAJy/usaAXkSjT0rbh4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.4 164/206] dmaengine: mcf-edma: Fix a potential un-allocated memory access
+        patches@lists.linux.dev, "Jason A. Donenfeld" <Jason@zx2c4.com>,
+        Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.15 03/89] wireguard: allowedips: expand maximum node depth
 Date:   Sun, 13 Aug 2023 23:18:54 +0200
-Message-ID: <20230813211729.720654587@linuxfoundation.org>
+Message-ID: <20230813211710.888507789@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211724.969019629@linuxfoundation.org>
-References: <20230813211724.969019629@linuxfoundation.org>
+In-Reply-To: <20230813211710.787645394@linuxfoundation.org>
+References: <20230813211710.787645394@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,61 +54,97 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Jason A. Donenfeld <Jason@zx2c4.com>
 
-commit 0a46781c89dece85386885a407244ca26e5c1c44 upstream.
+commit 46622219aae2b67813fe31a7b8cb7da5baff5c8a upstream.
 
-When 'mcf_edma' is allocated, some space is allocated for a
-flexible array at the end of the struct. 'chans' item are allocated, that is
-to say 'pdata->dma_channels'.
+In the allowedips self-test, nodes are inserted into the tree, but it
+generated an even amount of nodes, but for checking maximum node depth,
+there is of course the root node, which makes the total number
+necessarily odd. With two few nodes added, it never triggered the
+maximum depth check like it should have. So, add 129 nodes instead of
+128 nodes, and do so with a more straightforward scheme, starting with
+all the bits set, and shifting over one each time. Then increase the
+maximum depth to 129, and choose a better name for that variable to
+make it clear that it represents depth as opposed to bits.
 
-Then, this number of item is stored in 'mcf_edma->n_chans'.
-
-A few lines later, if 'mcf_edma->n_chans' is 0, then a default value of 64
-is set.
-
-This ends to no space allocated by devm_kzalloc() because chans was 0, but
-64 items are read and/or written in some not allocated memory.
-
-Change the logic to define a default value before allocating the memory.
-
-Fixes: e7a3ff92eaf1 ("dmaengine: fsl-edma: add ColdFire mcf5441x edma support")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Link: https://lore.kernel.org/r/f55d914407c900828f6fad3ea5fa791a5f17b9a4.1685172449.git.christophe.jaillet@wanadoo.fr
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: e7096c131e51 ("net: WireGuard secure network tunnel")
+Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
+Link: https://lore.kernel.org/r/20230807132146.2191597-2-Jason@zx2c4.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma/mcf-edma.c |   13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+ drivers/net/wireguard/allowedips.c          |    8 ++++----
+ drivers/net/wireguard/selftest/allowedips.c |   16 ++++++++++------
+ 2 files changed, 14 insertions(+), 10 deletions(-)
 
---- a/drivers/dma/mcf-edma.c
-+++ b/drivers/dma/mcf-edma.c
-@@ -190,7 +190,13 @@ static int mcf_edma_probe(struct platfor
- 		return -EINVAL;
+--- a/drivers/net/wireguard/allowedips.c
++++ b/drivers/net/wireguard/allowedips.c
+@@ -6,7 +6,7 @@
+ #include "allowedips.h"
+ #include "peer.h"
+ 
+-enum { MAX_ALLOWEDIPS_BITS = 128 };
++enum { MAX_ALLOWEDIPS_DEPTH = 129 };
+ 
+ static struct kmem_cache *node_cache;
+ 
+@@ -42,7 +42,7 @@ static void push_rcu(struct allowedips_n
+ 		     struct allowedips_node __rcu *p, unsigned int *len)
+ {
+ 	if (rcu_access_pointer(p)) {
+-		if (WARN_ON(IS_ENABLED(DEBUG) && *len >= MAX_ALLOWEDIPS_BITS))
++		if (WARN_ON(IS_ENABLED(DEBUG) && *len >= MAX_ALLOWEDIPS_DEPTH))
+ 			return;
+ 		stack[(*len)++] = rcu_dereference_raw(p);
  	}
+@@ -55,7 +55,7 @@ static void node_free_rcu(struct rcu_hea
  
--	chans = pdata->dma_channels;
-+	if (!pdata->dma_channels) {
-+		dev_info(&pdev->dev, "setting default channel number to 64");
-+		chans = 64;
-+	} else {
-+		chans = pdata->dma_channels;
-+	}
-+
- 	len = sizeof(*mcf_edma) + sizeof(*mcf_chan) * chans;
- 	mcf_edma = devm_kzalloc(&pdev->dev, len, GFP_KERNEL);
- 	if (!mcf_edma)
-@@ -202,11 +208,6 @@ static int mcf_edma_probe(struct platfor
- 	mcf_edma->drvdata = &mcf_data;
- 	mcf_edma->big_endian = 1;
+ static void root_free_rcu(struct rcu_head *rcu)
+ {
+-	struct allowedips_node *node, *stack[MAX_ALLOWEDIPS_BITS] = {
++	struct allowedips_node *node, *stack[MAX_ALLOWEDIPS_DEPTH] = {
+ 		container_of(rcu, struct allowedips_node, rcu) };
+ 	unsigned int len = 1;
  
--	if (!mcf_edma->n_chans) {
--		dev_info(&pdev->dev, "setting default channel number to 64");
--		mcf_edma->n_chans = 64;
--	}
+@@ -68,7 +68,7 @@ static void root_free_rcu(struct rcu_hea
+ 
+ static void root_remove_peer_lists(struct allowedips_node *root)
+ {
+-	struct allowedips_node *node, *stack[MAX_ALLOWEDIPS_BITS] = { root };
++	struct allowedips_node *node, *stack[MAX_ALLOWEDIPS_DEPTH] = { root };
+ 	unsigned int len = 1;
+ 
+ 	while (len > 0 && (node = stack[--len])) {
+--- a/drivers/net/wireguard/selftest/allowedips.c
++++ b/drivers/net/wireguard/selftest/allowedips.c
+@@ -593,16 +593,20 @@ bool __init wg_allowedips_selftest(void)
+ 	wg_allowedips_remove_by_peer(&t, a, &mutex);
+ 	test_negative(4, a, 192, 168, 0, 1);
+ 
+-	/* These will hit the WARN_ON(len >= MAX_ALLOWEDIPS_BITS) in free_node
++	/* These will hit the WARN_ON(len >= MAX_ALLOWEDIPS_DEPTH) in free_node
+ 	 * if something goes wrong.
+ 	 */
+-	for (i = 0; i < MAX_ALLOWEDIPS_BITS; ++i) {
+-		part = cpu_to_be64(~(1LLU << (i % 64)));
+-		memset(&ip, 0xff, 16);
+-		memcpy((u8 *)&ip + (i < 64) * 8, &part, 8);
++	for (i = 0; i < 64; ++i) {
++		part = cpu_to_be64(~0LLU << i);
++		memset(&ip, 0xff, 8);
++		memcpy((u8 *)&ip + 8, &part, 8);
++		wg_allowedips_insert_v6(&t, &ip, 128, a, &mutex);
++		memcpy(&ip, &part, 8);
++		memset((u8 *)&ip + 8, 0, 8);
+ 		wg_allowedips_insert_v6(&t, &ip, 128, a, &mutex);
+ 	}
 -
- 	mutex_init(&mcf_edma->fsl_edma_mutex);
++	memset(&ip, 0, 16);
++	wg_allowedips_insert_v6(&t, &ip, 128, a, &mutex);
+ 	wg_allowedips_free(&t, &mutex);
  
- 	mcf_edma->membase = devm_platform_ioremap_resource(pdev, 0);
+ 	wg_allowedips_init(&t);
 
 
