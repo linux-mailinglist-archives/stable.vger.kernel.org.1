@@ -2,8 +2,8 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E67DC77ACF3
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:39:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C27A777ACFC
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:48:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
         id S232255AbjHMVi5 (ORCPT <rfc822;lists+stable@lfdr.de>);
         Sun, 13 Aug 2023 17:38:57 -0400
