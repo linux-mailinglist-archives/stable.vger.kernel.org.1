@@ -2,49 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 05FFD77AD87
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:49:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CA8EB77AD4B
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:48:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232311AbjHMVse (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:48:34 -0400
+        id S230091AbjHMVsV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:48:21 -0400
 Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33188 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230221AbjHMVsM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:48:12 -0400
+        with ESMTP id S230289AbjHMVsC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:48:02 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1342119AA
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:41:14 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B2A81709
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:39:37 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 909BF6110F
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:41:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9420C433C8;
-        Sun, 13 Aug 2023 21:41:11 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0F80D636FE
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:39:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 264CBC433C7;
+        Sun, 13 Aug 2023 21:39:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691962872;
-        bh=J5Ggx3D2k+RAXhXftk9OUkW9Ck8k1qLo+vEznpvVleo=;
+        s=korg; t=1691962775;
+        bh=P4vRP7IxQnMm4DNtO9GWyrdEfDinflvBfayp55P273o=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=FzySPhS0FM3+Uvb+7OZ3er3+yOVfZLBRjBDTcUZAnZmLk7aFnpgo71ZlldRdxjyAh
-         tZc7All6FJ0LLJ7Ay9Y2ukLghIRynY6Wjzn7H1kL7ipdL62gl+5lrnggpMId9lj3Hq
-         NXZID7mXbh5Q04B4by+AtFmbhZLSqNhvpl3cDIaE=
+        b=aA27swOR2iSmELkTEirI07VbKMJC7OECCoYBzxGFSBKsa0gtf9izrv+FlFdWBjXbW
+         gKtxOvQRJvHA20Im7ptpAg1EO+1/ZrUiVwyBJU3hHw7+o07tYXxKwR8MSeIjJaA4u7
+         tfRMB7t+rDj16sf+NxYn32Y6c0xl+Y+Kqq1zmI2A=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>,
-        Ido Schimmel <idosch@nvidia.com>,
-        Petr Machata <petrm@nvidia.com>,
-        Hangbin Liu <liuhangbin@gmail.com>,
-        Nikolay Aleksandrov <razor@blackwall.org>,
-        Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.10 38/68] selftests: forwarding: tc_flower: Relax success criterion
+        patches@lists.linux.dev, Ming Lei <ming.lei@redhat.com>,
+        Yi Zhang <yi.zhang@redhat.com>,
+        Sagi Grimberg <sagi@grimberg.me>,
+        Keith Busch <kbusch@kernel.org>
+Subject: [PATCH 6.1 134/149] nvme-rdma: fix potential unbalanced freeze & unfreeze
 Date:   Sun, 13 Aug 2023 23:19:39 +0200
-Message-ID: <20230813211709.318320539@linuxfoundation.org>
+Message-ID: <20230813211722.721575220@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211708.149630011@linuxfoundation.org>
-References: <20230813211708.149630011@linuxfoundation.org>
+In-Reply-To: <20230813211718.757428827@linuxfoundation.org>
+References: <20230813211718.757428827@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -59,56 +56,62 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Ming Lei <ming.lei@redhat.com>
 
-commit 9ee37e53e7687654b487fc94e82569377272a7a8 upstream.
+commit 29b434d1e49252b3ad56ad3197e47fafff5356a1 upstream.
 
-The test checks that filters that match on source or destination MAC
-were only hit once. A host can send more than one packet with a given
-source or destination MAC, resulting in failures.
+Move start_freeze into nvme_rdma_configure_io_queues(), and there is
+at least two benefits:
 
-Fix by relaxing the success criterion and instead check that the filters
-were not hit zero times. Using tc_check_at_least_x_packets() is also an
-option, but it is not available in older kernels.
+1) fix unbalanced freeze and unfreeze, since re-connection work may
+fail or be broken by removal
 
-Fixes: 07e5c75184a1 ("selftests: forwarding: Introduce tc flower matching tests")
-Reported-by: Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>
-Closes: https://lore.kernel.org/netdev/adc5e40d-d040-a65e-eb26-edf47dac5b02@alu.unizg.hr/
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: Petr Machata <petrm@nvidia.com>
-Tested-by: Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>
-Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
-Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
-Link: https://lore.kernel.org/r/20230808141503.4060661-13-idosch@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+2) IO during error recovery can be failfast quickly because nvme fabrics
+unquiesces queues after teardown.
+
+One side-effect is that !mpath request may timeout during connecting
+because of queue topo change, but that looks not one big deal:
+
+1) same problem exists with current code base
+
+2) compared with !mpath, mpath use case is dominant
+
+Fixes: 9f98772ba307 ("nvme-rdma: fix controller reset hang during traffic")
+Cc: stable@vger.kernel.org
+Signed-off-by: Ming Lei <ming.lei@redhat.com>
+Tested-by: Yi Zhang <yi.zhang@redhat.com>
+Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/net/forwarding/tc_flower.sh |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/nvme/host/rdma.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/tools/testing/selftests/net/forwarding/tc_flower.sh
-+++ b/tools/testing/selftests/net/forwarding/tc_flower.sh
-@@ -49,8 +49,8 @@ match_dst_mac_test()
- 	tc_check_packets "dev $h2 ingress" 101 1
- 	check_fail $? "Matched on a wrong filter"
+--- a/drivers/nvme/host/rdma.c
++++ b/drivers/nvme/host/rdma.c
+@@ -923,6 +923,7 @@ static int nvme_rdma_configure_io_queues
+ 		goto out_cleanup_tagset;
  
--	tc_check_packets "dev $h2 ingress" 102 1
--	check_err $? "Did not match on correct filter"
-+	tc_check_packets "dev $h2 ingress" 102 0
-+	check_fail $? "Did not match on correct filter"
- 
- 	tc filter del dev $h2 ingress protocol ip pref 1 handle 101 flower
- 	tc filter del dev $h2 ingress protocol ip pref 2 handle 102 flower
-@@ -75,8 +75,8 @@ match_src_mac_test()
- 	tc_check_packets "dev $h2 ingress" 101 1
- 	check_fail $? "Matched on a wrong filter"
- 
--	tc_check_packets "dev $h2 ingress" 102 1
--	check_err $? "Did not match on correct filter"
-+	tc_check_packets "dev $h2 ingress" 102 0
-+	check_fail $? "Did not match on correct filter"
- 
- 	tc filter del dev $h2 ingress protocol ip pref 1 handle 101 flower
- 	tc filter del dev $h2 ingress protocol ip pref 2 handle 102 flower
+ 	if (!new) {
++		nvme_start_freeze(&ctrl->ctrl);
+ 		nvme_start_queues(&ctrl->ctrl);
+ 		if (!nvme_wait_freeze_timeout(&ctrl->ctrl, NVME_IO_TIMEOUT)) {
+ 			/*
+@@ -931,6 +932,7 @@ static int nvme_rdma_configure_io_queues
+ 			 * to be safe.
+ 			 */
+ 			ret = -ENODEV;
++			nvme_unfreeze(&ctrl->ctrl);
+ 			goto out_wait_freeze_timed_out;
+ 		}
+ 		blk_mq_update_nr_hw_queues(ctrl->ctrl.tagset,
+@@ -980,7 +982,6 @@ static void nvme_rdma_teardown_io_queues
+ 		bool remove)
+ {
+ 	if (ctrl->ctrl.queue_count > 1) {
+-		nvme_start_freeze(&ctrl->ctrl);
+ 		nvme_stop_queues(&ctrl->ctrl);
+ 		nvme_sync_io_queues(&ctrl->ctrl);
+ 		nvme_rdma_stop_io_queues(ctrl);
 
 
