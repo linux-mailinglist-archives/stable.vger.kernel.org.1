@@ -2,102 +2,172 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8051F77AD62
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:49:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6236E77ACD5
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:37:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232294AbjHMVsa (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:48:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41276 "EHLO
+        id S232192AbjHMVhj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:37:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46780 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231237AbjHMVsK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:48:10 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1991A1722
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:40:06 -0700 (PDT)
+        with ESMTP id S232190AbjHMVhi (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:37:38 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5BBCD10DD
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:37:40 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A286663815
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:40:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B299BC433C8;
-        Sun, 13 Aug 2023 21:40:04 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E17086336C
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:37:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0113CC433C8;
+        Sun, 13 Aug 2023 21:37:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691962805;
-        bh=5S+lvAZEisDVKjKvsO7Tf8OPd+oDRlRrkbYTjbadQ0Y=;
+        s=korg; t=1691962659;
+        bh=IoXWOz5dJk2xHTBfk8yU7zj59VKrYLXUzQsKw+nW4Vk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Vgd9tkj33NDSf+y2+VwT3zC5nLVEAyK96GqoUwMuiBuToELZjB2kPCjG2fXqWwvva
-         LB1/c2DYr+1T42C9uM0tKXvHfhVEGHO+25oIwULbwV2I5eUy0PO0zznyDBrvx/Ow5F
-         RauOfK6UZhCFeqUOewcSh7zV9QpjAwg9RtfAnR+0=
+        b=vLQOOnnV09GxeFcO7E44CV0dTfmRxkVlaPAYZSA7bxwuy92RtwvPNSyRquqxEjDbN
+         UEWUTyQykPj9K1O069oCnchFbPbMCodtdWugvnZ0Tbu+PJg9YX0EdnYlaXpXk9zoji
+         imU9qbYQrPAi0byRFq39psGfMI+GJcw1jww2mAi4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Melissa Wen <mwen@igalia.com>,
-        Harry Wentland <harry.wentland@amd.com>,
-        Alex Hung <alex.hung@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 5.10 14/68] drm/amd/display: check attr flag before set cursor degamma on DCN3+
+        patches@lists.linux.dev, Petr Machata <petrm@nvidia.com>,
+        Ido Schimmel <idosch@nvidia.com>,
+        David Ahern <dsahern@kernel.org>,
+        Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 110/149] nexthop: Fix infinite nexthop dump when using maximum nexthop ID
 Date:   Sun, 13 Aug 2023 23:19:15 +0200
-Message-ID: <20230813211708.590022043@linuxfoundation.org>
+Message-ID: <20230813211722.050554244@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211708.149630011@linuxfoundation.org>
-References: <20230813211708.149630011@linuxfoundation.org>
+In-Reply-To: <20230813211718.757428827@linuxfoundation.org>
+References: <20230813211718.757428827@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Melissa Wen <mwen@igalia.com>
+From: Ido Schimmel <idosch@nvidia.com>
 
-commit 96b020e2163fb2197266b2f71b1007495206e6bb upstream.
+commit 913f60cacda73ccac8eead94983e5884c03e04cd upstream.
 
-Don't set predefined degamma curve to cursor plane if the cursor
-attribute flag is not set. Applying a degamma curve to the cursor by
-default breaks userspace expectation. Checking the flag before
-performing any color transformation prevents too dark cursor gamma in
-DCN3+ on many Linux desktop environment (KDE Plasma, GNOME,
-wlroots-based, etc.) as reported at:
-- https://gitlab.freedesktop.org/drm/amd/-/issues/1513
+A netlink dump callback can return a positive number to signal that more
+information needs to be dumped or zero to signal that the dump is
+complete. In the second case, the core netlink code will append the
+NLMSG_DONE message to the skb in order to indicate to user space that
+the dump is complete.
 
-This is the same approach followed by DCN2 drivers where the issue is
-not present.
+The nexthop dump callback always returns a positive number if nexthops
+were filled in the provided skb, even if the dump is complete. This
+means that a dump will span at least two recvmsg() calls as long as
+nexthops are present. In the last recvmsg() call the dump callback will
+not fill in any nexthops because the previous call indicated that the
+dump should restart from the last dumped nexthop ID plus one.
 
-Fixes: 03f54d7d3448 ("drm/amd/display: Add DCN3 DPP")
-Link: https://gitlab.freedesktop.org/drm/amd/-/issues/1513
-Signed-off-by: Melissa Wen <mwen@igalia.com>
-Reviewed-by: Harry Wentland <harry.wentland@amd.com>
-Tested-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
+ # ip nexthop add id 1 blackhole
+ # strace -e sendto,recvmsg -s 5 ip nexthop
+ sendto(3, [[{nlmsg_len=24, nlmsg_type=RTM_GETNEXTHOP, nlmsg_flags=NLM_F_REQUEST|NLM_F_DUMP, nlmsg_seq=1691394315, nlmsg_pid=0}, {nh_family=AF_UNSPEC, nh_scope=RT_SCOPE_UNIVERSE, nh_protocol=RTPROT_UNSPEC, nh_flags=0}], {nlmsg_len=0, nlmsg_type=0 /* NLMSG_??? */, nlmsg_flags=0, nlmsg_seq=0, nlmsg_pid=0}], 152, 0, NULL, 0) = 152
+ recvmsg(3, {msg_name={sa_family=AF_NETLINK, nl_pid=0, nl_groups=00000000}, msg_namelen=12, msg_iov=[{iov_base=NULL, iov_len=0}], msg_iovlen=1, msg_controllen=0, msg_flags=MSG_TRUNC}, MSG_PEEK|MSG_TRUNC) = 36
+ recvmsg(3, {msg_name={sa_family=AF_NETLINK, nl_pid=0, nl_groups=00000000}, msg_namelen=12, msg_iov=[{iov_base=[{nlmsg_len=36, nlmsg_type=RTM_NEWNEXTHOP, nlmsg_flags=NLM_F_MULTI, nlmsg_seq=1691394315, nlmsg_pid=343}, {nh_family=AF_INET, nh_scope=RT_SCOPE_UNIVERSE, nh_protocol=RTPROT_UNSPEC, nh_flags=0}, [[{nla_len=8, nla_type=NHA_ID}, 1], {nla_len=4, nla_type=NHA_BLACKHOLE}]], iov_len=32768}], msg_iovlen=1, msg_controllen=0, msg_flags=0}, 0) = 36
+ id 1 blackhole
+ recvmsg(3, {msg_name={sa_family=AF_NETLINK, nl_pid=0, nl_groups=00000000}, msg_namelen=12, msg_iov=[{iov_base=NULL, iov_len=0}], msg_iovlen=1, msg_controllen=0, msg_flags=MSG_TRUNC}, MSG_PEEK|MSG_TRUNC) = 20
+ recvmsg(3, {msg_name={sa_family=AF_NETLINK, nl_pid=0, nl_groups=00000000}, msg_namelen=12, msg_iov=[{iov_base=[{nlmsg_len=20, nlmsg_type=NLMSG_DONE, nlmsg_flags=NLM_F_MULTI, nlmsg_seq=1691394315, nlmsg_pid=343}, 0], iov_len=32768}], msg_iovlen=1, msg_controllen=0, msg_flags=0}, 0) = 20
+ +++ exited with 0 +++
+
+This behavior is both inefficient and buggy. If the last nexthop to be
+dumped had the maximum ID of 0xffffffff, then the dump will restart from
+0 (0xffffffff + 1) and never end:
+
+ # ip nexthop add id $((2**32-1)) blackhole
+ # ip nexthop
+ id 4294967295 blackhole
+ id 4294967295 blackhole
+ [...]
+
+Fix by adjusting the dump callback to return zero when the dump is
+complete. After the fix only one recvmsg() call is made and the
+NLMSG_DONE message is appended to the RTM_NEWNEXTHOP response:
+
+ # ip nexthop add id $((2**32-1)) blackhole
+ # strace -e sendto,recvmsg -s 5 ip nexthop
+ sendto(3, [[{nlmsg_len=24, nlmsg_type=RTM_GETNEXTHOP, nlmsg_flags=NLM_F_REQUEST|NLM_F_DUMP, nlmsg_seq=1691394080, nlmsg_pid=0}, {nh_family=AF_UNSPEC, nh_scope=RT_SCOPE_UNIVERSE, nh_protocol=RTPROT_UNSPEC, nh_flags=0}], {nlmsg_len=0, nlmsg_type=0 /* NLMSG_??? */, nlmsg_flags=0, nlmsg_seq=0, nlmsg_pid=0}], 152, 0, NULL, 0) = 152
+ recvmsg(3, {msg_name={sa_family=AF_NETLINK, nl_pid=0, nl_groups=00000000}, msg_namelen=12, msg_iov=[{iov_base=NULL, iov_len=0}], msg_iovlen=1, msg_controllen=0, msg_flags=MSG_TRUNC}, MSG_PEEK|MSG_TRUNC) = 56
+ recvmsg(3, {msg_name={sa_family=AF_NETLINK, nl_pid=0, nl_groups=00000000}, msg_namelen=12, msg_iov=[{iov_base=[[{nlmsg_len=36, nlmsg_type=RTM_NEWNEXTHOP, nlmsg_flags=NLM_F_MULTI, nlmsg_seq=1691394080, nlmsg_pid=342}, {nh_family=AF_INET, nh_scope=RT_SCOPE_UNIVERSE, nh_protocol=RTPROT_UNSPEC, nh_flags=0}, [[{nla_len=8, nla_type=NHA_ID}, 4294967295], {nla_len=4, nla_type=NHA_BLACKHOLE}]], [{nlmsg_len=20, nlmsg_type=NLMSG_DONE, nlmsg_flags=NLM_F_MULTI, nlmsg_seq=1691394080, nlmsg_pid=342}, 0]], iov_len=32768}], msg_iovlen=1, msg_controllen=0, msg_flags=0}, 0) = 56
+ id 4294967295 blackhole
+ +++ exited with 0 +++
+
+Note that if the NLMSG_DONE message cannot be appended because of size
+limitations, then another recvmsg() will be needed, but the core netlink
+code will not invoke the dump callback and simply reply with a
+NLMSG_DONE message since it knows that the callback previously returned
+zero.
+
+Add a test that fails before the fix:
+
+ # ./fib_nexthops.sh -t basic
+ [...]
+ TEST: Maximum nexthop ID dump                                       [FAIL]
+ [...]
+
+And passes after it:
+
+ # ./fib_nexthops.sh -t basic
+ [...]
+ TEST: Maximum nexthop ID dump                                       [ OK ]
+ [...]
+
+Fixes: ab84be7e54fc ("net: Initial nexthop code")
+Reported-by: Petr Machata <petrm@nvidia.com>
+Closes: https://lore.kernel.org/netdev/87sf91enuf.fsf@nvidia.com/
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: Petr Machata <petrm@nvidia.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://lore.kernel.org/r/20230808075233.3337922-2-idosch@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/dcn30/dcn30_dpp.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ net/ipv4/nexthop.c                          |    6 +-----
+ tools/testing/selftests/net/fib_nexthops.sh |    5 +++++
+ 2 files changed, 6 insertions(+), 5 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_dpp.c
-+++ b/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_dpp.c
-@@ -354,8 +354,11 @@ void dpp3_set_cursor_attributes(
- 	int cur_rom_en = 0;
+--- a/net/ipv4/nexthop.c
++++ b/net/ipv4/nexthop.c
+@@ -3221,13 +3221,9 @@ static int rtm_dump_nexthop(struct sk_bu
+ 				     &rtm_dump_nexthop_cb, &filter);
+ 	if (err < 0) {
+ 		if (likely(skb->len))
+-			goto out;
+-		goto out_err;
++			err = skb->len;
+ 	}
  
- 	if (color_format == CURSOR_MODE_COLOR_PRE_MULTIPLIED_ALPHA ||
--		color_format == CURSOR_MODE_COLOR_UN_PRE_MULTIPLIED_ALPHA)
--		cur_rom_en = 1;
-+		color_format == CURSOR_MODE_COLOR_UN_PRE_MULTIPLIED_ALPHA) {
-+		if (cursor_attributes->attribute_flags.bits.ENABLE_CURSOR_DEGAMMA) {
-+			cur_rom_en = 1;
-+		}
-+	}
+-out:
+-	err = skb->len;
+-out_err:
+ 	cb->seq = net->nexthop.seq;
+ 	nl_dump_check_consistent(cb, nlmsg_hdr(skb));
+ 	return err;
+--- a/tools/testing/selftests/net/fib_nexthops.sh
++++ b/tools/testing/selftests/net/fib_nexthops.sh
+@@ -1981,6 +1981,11 @@ basic()
  
- 	REG_UPDATE_3(CURSOR0_CONTROL,
- 			CUR0_MODE, color_format,
+ 	run_cmd "$IP link set dev lo up"
+ 
++	# Dump should not loop endlessly when maximum nexthop ID is configured.
++	run_cmd "$IP nexthop add id $((2**32-1)) blackhole"
++	run_cmd "timeout 5 $IP nexthop"
++	log_test $? 0 "Maximum nexthop ID dump"
++
+ 	#
+ 	# groups
+ 	#
 
 
