@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9EF5D77AB5B
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:21:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F98A77AB78
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:22:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230219AbjHMVVI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:21:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33152 "EHLO
+        id S230272AbjHMVWl (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:22:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40294 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230191AbjHMVVH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:21:07 -0400
+        with ESMTP id S230384AbjHMVWR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:22:17 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8902A10F5
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:21:04 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25C4410D0
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:22:20 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1D43860EE6
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:21:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3199AC433C8;
-        Sun, 13 Aug 2023 21:21:03 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id ACF3B62802
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:22:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1670C433C7;
+        Sun, 13 Aug 2023 21:22:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691961663;
-        bh=xniB8p0CXGr7jjV5Qj1m10eEC5CYQA//7jYXru8u54M=;
+        s=korg; t=1691961739;
+        bh=UrBH5tSEFB58qkmcw+mg9FcUjL3T0i0jwbLIHyUL2xk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=BFZlQ4bafRc/HoL5aYd8ma/88OdoMZNxr8Dy5V5bTDYLqT8j5xD2sBS63sJWA9CAS
-         6L3ewYDs/bBRZO1WMTnbfHmyi7woeFwOlQWMYM7reuAeHstBwgp8vctwH3ZC1wAv2H
-         RRSpY7/P0gsM0bRNNYW13OVCaTus0F3sm9iZESTU=
+        b=cVwWabdFi8in1rg3zMjsvnSy0kQ6txlctc+TFO/ys4QRnDiCAjcy0ut30loJFN7Z7
+         P/d37S+COvSAT53qLYtn6u8+cI6LKbxtoVnOXhNDTnBmEklp+Ki7YxMFStoPzbPr5Q
+         hwmvUMUfbpHNmgUtn12HG61hrMoarNPi3x3xAt5c=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ido Schimmel <idosch@idosch.org>,
-        Ziyang Xuan <william.xuanziyang@huawei.com>,
-        Ido Schimmel <idosch@nvidia.com>,
-        Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 4.14 15/26] bonding: Fix incorrect deletion of ETH_P_8021AD protocol vid from slaves
-Date:   Sun, 13 Aug 2023 23:19:08 +0200
-Message-ID: <20230813211703.558716597@linuxfoundation.org>
+        patches@lists.linux.dev, Olaf Skibbe <news@kravcenko.com>,
+        Lyude Paul <lyude@redhat.com>,
+        Karol Herbst <kherbst@redhat.com>
+Subject: [PATCH 4.19 15/33] drm/nouveau/disp: Revert a NULL check inside nouveau_connector_get_modes
+Date:   Sun, 13 Aug 2023 23:19:09 +0200
+Message-ID: <20230813211704.474062962@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211702.980427106@linuxfoundation.org>
-References: <20230813211702.980427106@linuxfoundation.org>
+In-Reply-To: <20230813211703.915807095@linuxfoundation.org>
+References: <20230813211703.915807095@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,82 +55,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ziyang Xuan <william.xuanziyang@huawei.com>
+From: Karol Herbst <kherbst@redhat.com>
 
-commit 01f4fd27087078c90a0e22860d1dfa2cd0510791 upstream.
+commit d5712cd22b9cf109fded1b7f178f4c1888c8b84b upstream.
 
-BUG_ON(!vlan_info) is triggered in unregister_vlan_dev() with
-following testcase:
+The original commit adding that check tried to protect the kenrel against
+a potential invalid NULL pointer access.
 
-  # ip netns add ns1
-  # ip netns exec ns1 ip link add bond0 type bond mode 0
-  # ip netns exec ns1 ip link add bond_slave_1 type veth peer veth2
-  # ip netns exec ns1 ip link set bond_slave_1 master bond0
-  # ip netns exec ns1 ip link add link bond_slave_1 name vlan10 type vlan id 10 protocol 802.1ad
-  # ip netns exec ns1 ip link add link bond0 name bond0_vlan10 type vlan id 10 protocol 802.1ad
-  # ip netns exec ns1 ip link set bond_slave_1 nomaster
-  # ip netns del ns1
+However we call nouveau_connector_detect_depth once without a native_mode
+set on purpose for non LVDS connectors and this broke DP support in a few
+cases.
 
-The logical analysis of the problem is as follows:
-
-1. create ETH_P_8021AD protocol vlan10 for bond_slave_1:
-register_vlan_dev()
-  vlan_vid_add()
-    vlan_info_alloc()
-    __vlan_vid_add() // add [ETH_P_8021AD, 10] vid to bond_slave_1
-
-2. create ETH_P_8021AD protocol bond0_vlan10 for bond0:
-register_vlan_dev()
-  vlan_vid_add()
-    __vlan_vid_add()
-      vlan_add_rx_filter_info()
-          if (!vlan_hw_filter_capable(dev, proto)) // condition established because bond0 without NETIF_F_HW_VLAN_STAG_FILTER
-              return 0;
-
-          if (netif_device_present(dev))
-              return dev->netdev_ops->ndo_vlan_rx_add_vid(dev, proto, vid); // will be never called
-              // The slaves of bond0 will not refer to the [ETH_P_8021AD, 10] vid.
-
-3. detach bond_slave_1 from bond0:
-__bond_release_one()
-  vlan_vids_del_by_dev()
-    list_for_each_entry(vid_info, &vlan_info->vid_list, list)
-        vlan_vid_del(dev, vid_info->proto, vid_info->vid);
-        // bond_slave_1 [ETH_P_8021AD, 10] vid will be deleted.
-        // bond_slave_1->vlan_info will be assigned NULL.
-
-4. delete vlan10 during delete ns1:
-default_device_exit_batch()
-  dev->rtnl_link_ops->dellink() // unregister_vlan_dev() for vlan10
-    vlan_info = rtnl_dereference(real_dev->vlan_info); // real_dev of vlan10 is bond_slave_1
-	BUG_ON(!vlan_info); // bond_slave_1->vlan_info is NULL now, bug is triggered!!!
-
-Add S-VLAN tag related features support to bond driver. So the bond driver
-will always propagate the VLAN info to its slaves.
-
-Fixes: 8ad227ff89a7 ("net: vlan: add 802.1ad support")
-Suggested-by: Ido Schimmel <idosch@idosch.org>
-Signed-off-by: Ziyang Xuan <william.xuanziyang@huawei.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Link: https://lore.kernel.org/r/20230802114320.4156068-1-william.xuanziyang@huawei.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Cc: Olaf Skibbe <news@kravcenko.com>
+Cc: Lyude Paul <lyude@redhat.com>
+Closes: https://gitlab.freedesktop.org/drm/nouveau/-/issues/238
+Closes: https://gitlab.freedesktop.org/drm/nouveau/-/issues/245
+Fixes: 20a2ce87fbaf8 ("drm/nouveau/dp: check for NULL nv_connector->native_mode")
+Signed-off-by: Karol Herbst <kherbst@redhat.com>
+Reviewed-by: Lyude Paul <lyude@redhat.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230805101813.2603989-1-kherbst@redhat.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/bonding/bond_main.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/nouveau/nouveau_connector.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/net/bonding/bond_main.c
-+++ b/drivers/net/bonding/bond_main.c
-@@ -4345,7 +4345,9 @@ void bond_setup(struct net_device *bond_
+--- a/drivers/gpu/drm/nouveau/nouveau_connector.c
++++ b/drivers/gpu/drm/nouveau/nouveau_connector.c
+@@ -921,7 +921,7 @@ nouveau_connector_get_modes(struct drm_c
+ 	/* Determine display colour depth for everything except LVDS now,
+ 	 * DP requires this before mode_valid() is called.
+ 	 */
+-	if (connector->connector_type != DRM_MODE_CONNECTOR_LVDS && nv_connector->native_mode)
++	if (connector->connector_type != DRM_MODE_CONNECTOR_LVDS)
+ 		nouveau_connector_detect_depth(connector);
  
- 	bond_dev->hw_features = BOND_VLAN_FEATURES |
- 				NETIF_F_HW_VLAN_CTAG_RX |
--				NETIF_F_HW_VLAN_CTAG_FILTER;
-+				NETIF_F_HW_VLAN_CTAG_FILTER |
-+				NETIF_F_HW_VLAN_STAG_RX |
-+				NETIF_F_HW_VLAN_STAG_FILTER;
- 
- 	bond_dev->hw_features |= NETIF_F_GSO_ENCAP_ALL;
- 	bond_dev->features |= bond_dev->hw_features;
+ 	/* Find the native mode if this is a digital panel, if we didn't
 
 
