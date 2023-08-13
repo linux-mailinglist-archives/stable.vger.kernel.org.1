@@ -2,124 +2,91 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0BA4777AE1D
-	for <lists+stable@lfdr.de>; Mon, 14 Aug 2023 00:00:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5F33777AC65
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:32:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232395AbjHMWA1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 18:00:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40706 "EHLO
+        id S231966AbjHMVch (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:32:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55992 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232315AbjHMV7U (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:59:20 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB2402D4C
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:44:40 -0700 (PDT)
+        with ESMTP id S231965AbjHMVcg (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:32:36 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E9DF410D7
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:32:38 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3F4E0628B4
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:44:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F91EC433C8;
-        Sun, 13 Aug 2023 21:44:39 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 88AAF62BE7
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:32:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F123C433C8;
+        Sun, 13 Aug 2023 21:32:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691963079;
-        bh=+/7OtCizogLxvq732zG/lBkpMzYp7+dmYrChBNo9WwA=;
+        s=korg; t=1691962358;
+        bh=qmdwKFJQSZSPR8QIoAwbWOQA29ZpZIJtGXNfmYJYEl0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=GeMaH1SqCOOkkp0kYAy3dwsXuh0rK7svBNTT67cDTbo8f+uA/aAa5qddf0vf/jAYk
-         DcJRIVn3b0HLasnTYQc/PFMfe/1JusLWW4Z6A/HaYMzulFuOvLFIH2S6iysFgcQvMO
-         OTotObyGS4Q50hyPxEtnlBnbCLgtuspC/C/+stfI=
+        b=TLYe34G+erCAt0eLz8I2WQGhwRal4w1qnYMxa8HX1RW9KB0rrq4SLETI4HYR+Qddk
+         wIgu9AY4t0U+6+56ZIgXyO+rP/bUj+WhahuKQAtFjY2V3QZQkoUk6XUnURXjlw+ToU
+         rSFKGflfUTxDbOPdZKZIg/bxuEkY9OTb5lHm6cus=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Xu Kuohai <xukuohai@huawei.com>,
-        John Fastabend <john.fastabend@gmail.com>,
-        Martin KaFai Lau <martin.lau@kernel.org>
-Subject: [PATCH 5.15 45/89] bpf, sockmap: Fix bug that strp_done cannot be called
+        patches@lists.linux.dev, Masahiro Yamada <masahiroy@kernel.org>,
+        Randy Dunlap <rdunlap@infradead.org>
+Subject: [PATCH 6.4 206/206] alpha: remove __init annotation from exported page_is_ram()
 Date:   Sun, 13 Aug 2023 23:19:36 +0200
-Message-ID: <20230813211712.142797146@linuxfoundation.org>
+Message-ID: <20230813211730.893246681@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211710.787645394@linuxfoundation.org>
-References: <20230813211710.787645394@linuxfoundation.org>
+In-Reply-To: <20230813211724.969019629@linuxfoundation.org>
+References: <20230813211724.969019629@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Xu Kuohai <xukuohai@huawei.com>
+From: Masahiro Yamada <masahiroy@kernel.org>
 
-commit 809e4dc71a0f2b8d2836035d98603694fff11d5d upstream.
+commit 6ccbd7fd474674654019a20177c943359469103a upstream.
 
-strp_done is only called when psock->progs.stream_parser is not NULL,
-but stream_parser was set to NULL by sk_psock_stop_strp(), called
-by sk_psock_drop() earlier. So, strp_done can never be called.
+EXPORT_SYMBOL and __init is a bad combination because the .init.text
+section is freed up after the initialization.
 
-Introduce SK_PSOCK_RX_ENABLED to mark whether there is strp on psock.
-Change the condition for calling strp_done from judging whether
-stream_parser is set to judging whether this flag is set. This flag is
-only set once when strp_init() succeeds, and will never be cleared later.
+Commit c5a130325f13 ("ACPI/APEI: Add parameter check before error
+injection") exported page_is_ram(), hence the __init annotation should
+be removed.
 
-Fixes: c0d95d3380ee ("bpf, sockmap: Re-evaluate proto ops when psock is removed from sockmap")
-Signed-off-by: Xu Kuohai <xukuohai@huawei.com>
-Reviewed-by: John Fastabend <john.fastabend@gmail.com>
-Link: https://lore.kernel.org/r/20230804073740.194770-3-xukuohai@huaweicloud.com
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+This fixes the modpost warning in ARCH=alpha builds:
+
+  WARNING: modpost: vmlinux: page_is_ram: EXPORT_SYMBOL used for init symbol. Remove __init or EXPORT_SYMBOL.
+
+Fixes: c5a130325f13 ("ACPI/APEI: Add parameter check before error injection")
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Reviewed-by: Randy Dunlap <rdunlap@infradead.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/skmsg.h |    1 +
- net/core/skmsg.c      |   10 ++++++++--
- 2 files changed, 9 insertions(+), 2 deletions(-)
+ arch/alpha/kernel/setup.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/include/linux/skmsg.h
-+++ b/include/linux/skmsg.h
-@@ -63,6 +63,7 @@ struct sk_psock_progs {
- 
- enum sk_psock_state_bits {
- 	SK_PSOCK_TX_ENABLED,
-+	SK_PSOCK_RX_STRP_ENABLED,
- };
- 
- struct sk_psock_link {
---- a/net/core/skmsg.c
-+++ b/net/core/skmsg.c
-@@ -1124,13 +1124,19 @@ static void sk_psock_strp_data_ready(str
- 
- int sk_psock_init_strp(struct sock *sk, struct sk_psock *psock)
- {
-+	int ret;
-+
- 	static const struct strp_callbacks cb = {
- 		.rcv_msg	= sk_psock_strp_read,
- 		.read_sock_done	= sk_psock_strp_read_done,
- 		.parse_msg	= sk_psock_strp_parse,
- 	};
- 
--	return strp_init(&psock->strp, sk, &cb);
-+	ret = strp_init(&psock->strp, sk, &cb);
-+	if (!ret)
-+		sk_psock_set_state(psock, SK_PSOCK_RX_STRP_ENABLED);
-+
-+	return ret;
+--- a/arch/alpha/kernel/setup.c
++++ b/arch/alpha/kernel/setup.c
+@@ -385,8 +385,7 @@ setup_memory(void *kernel_end)
+ #endif /* CONFIG_BLK_DEV_INITRD */
  }
  
- void sk_psock_start_strp(struct sock *sk, struct sk_psock *psock)
-@@ -1158,7 +1164,7 @@ void sk_psock_stop_strp(struct sock *sk,
- static void sk_psock_done_strp(struct sk_psock *psock)
+-int __init
+-page_is_ram(unsigned long pfn)
++int page_is_ram(unsigned long pfn)
  {
- 	/* Parser has been stopped */
--	if (psock->progs.stream_parser)
-+	if (sk_psock_test_state(psock, SK_PSOCK_RX_STRP_ENABLED))
- 		strp_done(&psock->strp);
- }
- #else
+ 	struct memclust_struct * cluster;
+ 	struct memdesc_struct * memdesc;
 
 
