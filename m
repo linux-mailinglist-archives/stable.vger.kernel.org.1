@@ -2,44 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5D90477AD85
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:49:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C443577AD41
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:48:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231308AbjHMVtP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:49:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60474 "EHLO
+        id S232227AbjHMVsR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:48:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33830 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231352AbjHMVsu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:48:50 -0400
+        with ESMTP id S229558AbjHMVrW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:47:22 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 762F91FDB
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:42:26 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 03AE42D57
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:47:22 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 18B6B60B9D
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:42:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28961C433C8;
-        Sun, 13 Aug 2023 21:42:23 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8D96561C1D
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:47:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A78DBC433C7;
+        Sun, 13 Aug 2023 21:47:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691962944;
-        bh=dgAvIXWN+aovnXwN1twj9rbo4W3bNSYMoqi0/VGLDS4=;
+        s=korg; t=1691963241;
+        bh=TZMjdabBjw2/2tyqneGql4z/t5/47nnBPKJ9NoYOqXk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rNwqxbSaylWtgsBBQp5+/xXkg9scUbkClJ6Dc02NOh9J5+6KvVpI1/N6jiDqnaRgQ
-         MArDroNQuf1w+ABAuODDgu9zGS2w2xJf/mjTEXaBSEnK63hk2nho4KXGC47UXLw9yD
-         NnKLs8I97K5bOtZqCZG/LGWg9t2RjKw+tBTCT3Y0=
+        b=JdQhCHHwPNvdrLNebRRYIk1xVqwb8m0AL2R6+rKPBDQv+btpfglnQmr4SuX1w39Mf
+         CnBVamn0xwpSpwdLvsYpk3J6/58YEBo6cokloFe0sYUzI7A+TaHzEfQi2EBYCFwUDL
+         Mq5ki9RZEc+Qojmw6M7A5WfxBebljbFP74BewO0I=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Nilesh Javali <njavali@marvell.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 5.10 65/68] scsi: qedi: Fix firmware halt over suspend and resume
+        patches@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Daniel Sneddon <daniel.sneddon@linux.intel.com>,
+        stable@kernel.org
+Subject: [PATCH 5.4 15/39] x86: Move gds_ucode_mitigated() declaration to header
 Date:   Sun, 13 Aug 2023 23:20:06 +0200
-Message-ID: <20230813211710.120080028@linuxfoundation.org>
+Message-ID: <20230813211705.362752336@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211708.149630011@linuxfoundation.org>
-References: <20230813211708.149630011@linuxfoundation.org>
+In-Reply-To: <20230813211704.796906808@linuxfoundation.org>
+References: <20230813211704.796906808@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,70 +56,48 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Nilesh Javali <njavali@marvell.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-commit 1516ee035df32115197cd93ae3619dba7b020986 upstream.
+commit eb3515dc99c7c85f4170b50838136b2a193f8012 upstream.
 
-While performing certain power-off sequences, PCI drivers are called to
-suspend and resume their underlying devices through PCI PM (power
-management) interface. However the hardware does not support PCI PM
-suspend/resume operations so system wide suspend/resume leads to bad MFW
-(management firmware) state which causes various follow-up errors in driver
-when communicating with the device/firmware.
+The declaration got placed in the .c file of the caller, but that
+causes a warning for the definition:
 
-To fix this driver implements PCI PM suspend handler to indicate
-unsupported operation to the PCI subsystem explicitly, thus avoiding system
-to go into suspended/standby mode.
+arch/x86/kernel/cpu/bugs.c:682:6: error: no previous prototype for 'gds_ucode_mitigated' [-Werror=missing-prototypes]
 
-Fixes: ace7f46ba5fd ("scsi: qedi: Add QLogic FastLinQ offload iSCSI driver framework.")
-Signed-off-by: Nilesh Javali <njavali@marvell.com>
-Link: https://lore.kernel.org/r/20230807093725.46829-2-njavali@marvell.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Move it to a header where both sides can observe it instead.
+
+Fixes: 81ac7e5d74174 ("KVM: Add GDS_NO support to KVM")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Tested-by: Daniel Sneddon <daniel.sneddon@linux.intel.com>
+Cc: stable@kernel.org
+Link: https://lore.kernel.org/all/20230809130530.1913368-2-arnd%40kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/qedi/qedi_main.c |   18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+ arch/x86/include/asm/processor.h |    2 ++
+ arch/x86/kvm/x86.c               |    2 --
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/scsi/qedi/qedi_main.c
-+++ b/drivers/scsi/qedi/qedi_main.c
-@@ -69,6 +69,7 @@ static struct nvm_iscsi_block *qedi_get_
- static void qedi_recovery_handler(struct work_struct *work);
- static void qedi_schedule_hw_err_handler(void *dev,
- 					 enum qed_hw_err_type err_type);
-+static int qedi_suspend(struct pci_dev *pdev, pm_message_t state);
- 
- static int qedi_iscsi_event_cb(void *context, u8 fw_event_code, void *fw_handle)
- {
-@@ -2517,6 +2518,22 @@ static void qedi_shutdown(struct pci_dev
- 	__qedi_remove(pdev, QEDI_MODE_SHUTDOWN);
- }
- 
-+static int qedi_suspend(struct pci_dev *pdev, pm_message_t state)
-+{
-+	struct qedi_ctx *qedi;
-+
-+	if (!pdev) {
-+		QEDI_ERR(NULL, "pdev is NULL.\n");
-+		return -ENODEV;
-+	}
-+
-+	qedi = pci_get_drvdata(pdev);
-+
-+	QEDI_ERR(&qedi->dbg_ctx, "%s: Device does not support suspend operation\n", __func__);
-+
-+	return -EPERM;
-+}
-+
- static int __qedi_probe(struct pci_dev *pdev, int mode)
- {
- 	struct qedi_ctx *qedi;
-@@ -2875,6 +2892,7 @@ static struct pci_driver qedi_pci_driver
- 	.remove = qedi_remove,
- 	.shutdown = qedi_shutdown,
- 	.err_handler = &qedi_err_handler,
-+	.suspend = qedi_suspend,
+--- a/arch/x86/include/asm/processor.h
++++ b/arch/x86/include/asm/processor.h
+@@ -986,4 +986,6 @@ enum taa_mitigations {
+ 	TAA_MITIGATION_TSX_DISABLED,
  };
  
- static int __init qedi_init(void)
++extern bool gds_ucode_mitigated(void);
++
+ #endif /* _ASM_X86_PROCESSOR_H */
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -226,8 +226,6 @@ struct kvm_stats_debugfs_item debugfs_en
+ 
+ u64 __read_mostly host_xcr0;
+ 
+-extern bool gds_ucode_mitigated(void);
+-
+ struct kmem_cache *x86_fpu_cache;
+ EXPORT_SYMBOL_GPL(x86_fpu_cache);
+ 
 
 
