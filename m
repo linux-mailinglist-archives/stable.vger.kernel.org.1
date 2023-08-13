@@ -2,46 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 75FE877AD95
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:49:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8DB6177AB8B
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:23:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232355AbjHMVtd (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:49:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41276 "EHLO
+        id S231139AbjHMVXG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:23:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59270 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232358AbjHMVtF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:49:05 -0400
+        with ESMTP id S230386AbjHMVXF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:23:05 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BE42A19B5
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:41:23 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A7DF0BF
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:23:06 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5371C61A36
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:41:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 674F8C433C8;
-        Sun, 13 Aug 2023 21:41:22 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3EC8A62860
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:23:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F73FC433C8;
+        Sun, 13 Aug 2023 21:23:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691962882;
-        bh=AO17ks+BVk7cg90ZOhuVWOIp63tLrMHqP5j2RQYvl7o=;
+        s=korg; t=1691961785;
+        bh=vFmKYYdT9dD/0yIP7GDSf/IPlBizywBUaEh2sD0SS/g=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=RznHMEW2UPgrGZVWymP1TX5Gs54+jXvTWUJJusMeOM8EgiRWGbnLUde+2zJu7fAqb
-         gSr71PpnSMyfZ7bZLiz+6kiuphFtPV61D1RRvSOfPRKl51M6OelwkyPnWauIEAZcII
-         4aXyRM91jIzKKMXbZBuHAzawRpnAFA8d9SyCCTQ4=
+        b=mDcbvo80a2/w58cTWvEHjOSQ7ECpIJ8xAs1mtv0Au3hZohUHLZDpO4iR0NmOZbM3G
+         hotvU2+zmvqXNPhxjgnAVhJvli9PRkGzeYV4Aj2xNtzGe74XKJNJvm9jZjxyaCgug7
+         cAsLHkHgZT56aUhRiYeI0Ss77Ak7lBbeyy6bgs5Q=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Prashanth K <quic_prashk@quicinc.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Subject: [PATCH 5.10 24/68] usb: common: usb-conn-gpio: Prevent bailing out if initial role is none
-Date:   Sun, 13 Aug 2023 23:19:25 +0200
-Message-ID: <20230813211708.893665512@linuxfoundation.org>
+        patches@lists.linux.dev, Masahiro Yamada <masahiroy@kernel.org>,
+        Randy Dunlap <rdunlap@infradead.org>
+Subject: [PATCH 4.19 32/33] alpha: remove __init annotation from exported page_is_ram()
+Date:   Sun, 13 Aug 2023 23:19:26 +0200
+Message-ID: <20230813211705.104711062@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211708.149630011@linuxfoundation.org>
-References: <20230813211708.149630011@linuxfoundation.org>
+In-Reply-To: <20230813211703.915807095@linuxfoundation.org>
+References: <20230813211703.915807095@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,62 +54,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Prashanth K <quic_prashk@quicinc.com>
+From: Masahiro Yamada <masahiroy@kernel.org>
 
-commit 8e21a620c7e6e00347ade1a6ed4967b359eada5a upstream.
+commit 6ccbd7fd474674654019a20177c943359469103a upstream.
 
-Currently if we bootup a device without cable connected, then
-usb-conn-gpio won't call set_role() because last_role is same
-as current role. This happens since last_role gets initialised
-to zero during the probe.
+EXPORT_SYMBOL and __init is a bad combination because the .init.text
+section is freed up after the initialization.
 
-To avoid this, add a new flag initial_detection into struct
-usb_conn_info, which prevents bailing out during initial
-detection.
+Commit c5a130325f13 ("ACPI/APEI: Add parameter check before error
+injection") exported page_is_ram(), hence the __init annotation should
+be removed.
 
-Cc: <stable@vger.kernel.org> # 5.4
-Fixes: 4602f3bff266 ("usb: common: add USB GPIO based connection detection driver")
-Signed-off-by: Prashanth K <quic_prashk@quicinc.com>
-Tested-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/1690880632-12588-1-git-send-email-quic_prashk@quicinc.com
+This fixes the modpost warning in ARCH=alpha builds:
+
+  WARNING: modpost: vmlinux: page_is_ram: EXPORT_SYMBOL used for init symbol. Remove __init or EXPORT_SYMBOL.
+
+Fixes: c5a130325f13 ("ACPI/APEI: Add parameter check before error injection")
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Reviewed-by: Randy Dunlap <rdunlap@infradead.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/common/usb-conn-gpio.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ arch/alpha/kernel/setup.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/drivers/usb/common/usb-conn-gpio.c
-+++ b/drivers/usb/common/usb-conn-gpio.c
-@@ -42,6 +42,7 @@ struct usb_conn_info {
+--- a/arch/alpha/kernel/setup.c
++++ b/arch/alpha/kernel/setup.c
+@@ -469,8 +469,7 @@ setup_memory(void *kernel_end)
+ extern void setup_memory(void *);
+ #endif /* !CONFIG_DISCONTIGMEM */
  
- 	struct power_supply_desc desc;
- 	struct power_supply *charger;
-+	bool initial_detection;
- };
- 
- /*
-@@ -86,11 +87,13 @@ static void usb_conn_detect_cable(struct
- 	dev_dbg(info->dev, "role %d/%d, gpios: id %d, vbus %d\n",
- 		info->last_role, role, id, vbus);
- 
--	if (info->last_role == role) {
-+	if (!info->initial_detection && info->last_role == role) {
- 		dev_warn(info->dev, "repeated role: %d\n", role);
- 		return;
- 	}
- 
-+	info->initial_detection = false;
-+
- 	if (info->last_role == USB_ROLE_HOST && info->vbus)
- 		regulator_disable(info->vbus);
- 
-@@ -277,6 +280,7 @@ static int usb_conn_probe(struct platfor
- 	platform_set_drvdata(pdev, info);
- 
- 	/* Perform initial detection */
-+	info->initial_detection = true;
- 	usb_conn_queue_dwork(info, 0);
- 
- 	return 0;
+-int __init
+-page_is_ram(unsigned long pfn)
++int page_is_ram(unsigned long pfn)
+ {
+ 	struct memclust_struct * cluster;
+ 	struct memdesc_struct * memdesc;
 
 
