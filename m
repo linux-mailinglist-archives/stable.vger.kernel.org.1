@@ -2,207 +2,179 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E8AE577AB54
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:20:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 086D977ACC2
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:36:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229764AbjHMVUq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:20:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48690 "EHLO
+        id S232167AbjHMVgq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:36:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59748 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229522AbjHMVUp (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:20:45 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C54310D0;
-        Sun, 13 Aug 2023 14:20:47 -0700 (PDT)
+        with ESMTP id S232156AbjHMVgq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:36:46 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA2B610DB
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:36:47 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DC3C2612D6;
-        Sun, 13 Aug 2023 21:20:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6E7EC433C7;
-        Sun, 13 Aug 2023 21:20:45 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4C2E4631F5
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:36:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31356C433C7;
+        Sun, 13 Aug 2023 21:36:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691961646;
-        bh=Jh4KJjsbQaS+JEF+w7qDObZ/RSPYn8hd8PmpmYAz1TE=;
-        h=From:To:Cc:Subject:Date:From;
-        b=buJLSgPRpDUpkwqQX/Q7RqtebFIn3Bp/2tvIXbaakhyT7f9JkdU3ch9jcuCbnbkGC
-         41jE4qpjKRMP/Ap44BibjL9hGA2wNq7uF58VYk97mAQcLkuDPPBruKvOsAUyXiEdk1
-         Z15hwoYZujRBs88+wSHcbIkio+RGcawrX5/y4P7Q=
+        s=korg; t=1691962606;
+        bh=65FajYFrnyYp50MI1Ud9RYl/c+DCILQfQDV80Qqb3DQ=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=15XHxrnYr6AAIEgMvAmPaH9EaBYc8XRVn4IscIP5KTUXw71+bT2+tq+DkuZ0Kqan9
+         eV1D2R8BeZJq2kGGt+vb6N5cM9BJznEz4jRkbSsJmFMZ4lF0pXcXRh9DT/h8jVf6wZ
+         LSkhggRjCUB40zhGBlvWKBCfJPl0u+F392IOzsgU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-        torvalds@linux-foundation.org, akpm@linux-foundation.org,
-        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
-Subject: [PATCH 4.14 00/26] 4.14.323-rc1 review
-Date:   Sun, 13 Aug 2023 23:18:53 +0200
-Message-ID: <20230813211702.980427106@linuxfoundation.org>
+        patches@lists.linux.dev, syzbot <syzkaller@googlegroups.com>,
+        Eric Dumazet <edumazet@google.com>,
+        Willem de Bruijn <willemb@google.com>,
+        Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 089/149] net/packet: annotate data-races around tp->status
+Date:   Sun, 13 Aug 2023 23:18:54 +0200
+Message-ID: <20230813211721.449924576@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-MIME-Version: 1.0
+In-Reply-To: <20230813211718.757428827@linuxfoundation.org>
+References: <20230813211718.757428827@linuxfoundation.org>
 User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
-X-KernelTest-Patch: http://kernel.org/pub/linux/kernel/v4.x/stable-review/patch-4.14.323-rc1.gz
-X-KernelTest-Tree: git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
-X-KernelTest-Branch: linux-4.14.y
-X-KernelTest-Patches: git://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git
-X-KernelTest-Version: 4.14.323-rc1
-X-KernelTest-Deadline: 2023-08-15T21:17+00:00
+MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-This is the start of the stable review cycle for the 4.14.323 release.
-There are 26 patches in this series, all will be posted as a response
-to this one.  If anyone has any issues with these being applied, please
-let me know.
+From: Eric Dumazet <edumazet@google.com>
 
-Responses should be made by Tue, 15 Aug 2023 21:16:53 +0000.
-Anything received after that time might be too late.
+commit 8a9896177784063d01068293caea3f74f6830ff6 upstream.
 
-The whole patch series can be found in one patch at:
-	https://www.kernel.org/pub/linux/kernel/v4.x/stable-review/patch-4.14.323-rc1.gz
-or in the git tree and branch at:
-	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-4.14.y
-and the diffstat can be found below.
+Another syzbot report [1] is about tp->status lockless reads
+from __packet_get_status()
 
-thanks,
+[1]
+BUG: KCSAN: data-race in __packet_rcv_has_room / __packet_set_status
 
-greg k-h
+write to 0xffff888117d7c080 of 8 bytes by interrupt on cpu 0:
+__packet_set_status+0x78/0xa0 net/packet/af_packet.c:407
+tpacket_rcv+0x18bb/0x1a60 net/packet/af_packet.c:2483
+deliver_skb net/core/dev.c:2173 [inline]
+__netif_receive_skb_core+0x408/0x1e80 net/core/dev.c:5337
+__netif_receive_skb_one_core net/core/dev.c:5491 [inline]
+__netif_receive_skb+0x57/0x1b0 net/core/dev.c:5607
+process_backlog+0x21f/0x380 net/core/dev.c:5935
+__napi_poll+0x60/0x3b0 net/core/dev.c:6498
+napi_poll net/core/dev.c:6565 [inline]
+net_rx_action+0x32b/0x750 net/core/dev.c:6698
+__do_softirq+0xc1/0x265 kernel/softirq.c:571
+invoke_softirq kernel/softirq.c:445 [inline]
+__irq_exit_rcu+0x57/0xa0 kernel/softirq.c:650
+sysvec_apic_timer_interrupt+0x6d/0x80 arch/x86/kernel/apic/apic.c:1106
+asm_sysvec_apic_timer_interrupt+0x1a/0x20 arch/x86/include/asm/idtentry.h:645
+smpboot_thread_fn+0x33c/0x4a0 kernel/smpboot.c:112
+kthread+0x1d7/0x210 kernel/kthread.c:379
+ret_from_fork+0x1f/0x30 arch/x86/entry/entry_64.S:308
 
--------------
-Pseudo-Shortlog of commits:
+read to 0xffff888117d7c080 of 8 bytes by interrupt on cpu 1:
+__packet_get_status net/packet/af_packet.c:436 [inline]
+packet_lookup_frame net/packet/af_packet.c:524 [inline]
+__tpacket_has_room net/packet/af_packet.c:1255 [inline]
+__packet_rcv_has_room+0x3f9/0x450 net/packet/af_packet.c:1298
+tpacket_rcv+0x275/0x1a60 net/packet/af_packet.c:2285
+deliver_skb net/core/dev.c:2173 [inline]
+dev_queue_xmit_nit+0x38a/0x5e0 net/core/dev.c:2243
+xmit_one net/core/dev.c:3574 [inline]
+dev_hard_start_xmit+0xcf/0x3f0 net/core/dev.c:3594
+__dev_queue_xmit+0xefb/0x1d10 net/core/dev.c:4244
+dev_queue_xmit include/linux/netdevice.h:3088 [inline]
+can_send+0x4eb/0x5d0 net/can/af_can.c:276
+bcm_can_tx+0x314/0x410 net/can/bcm.c:302
+bcm_tx_timeout_handler+0xdb/0x260
+__run_hrtimer kernel/time/hrtimer.c:1685 [inline]
+__hrtimer_run_queues+0x217/0x700 kernel/time/hrtimer.c:1749
+hrtimer_run_softirq+0xd6/0x120 kernel/time/hrtimer.c:1766
+__do_softirq+0xc1/0x265 kernel/softirq.c:571
+run_ksoftirqd+0x17/0x20 kernel/softirq.c:939
+smpboot_thread_fn+0x30a/0x4a0 kernel/smpboot.c:164
+kthread+0x1d7/0x210 kernel/kthread.c:379
+ret_from_fork+0x1f/0x30 arch/x86/entry/entry_64.S:308
 
-Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-    Linux 4.14.323-rc1
+value changed: 0x0000000000000000 -> 0x0000000020000081
 
-Masahiro Yamada <masahiroy@kernel.org>
-    alpha: remove __init annotation from exported page_is_ram()
+Reported by Kernel Concurrency Sanitizer on:
+CPU: 1 PID: 19 Comm: ksoftirqd/1 Not tainted 6.4.0-syzkaller #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 05/27/2023
 
-Zhu Wang <wangzhu9@huawei.com>
-    scsi: core: Fix possible memory leak if device_add() fails
+Fixes: 69e3c75f4d54 ("net: TX_RING and packet mmap")
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Link: https://lore.kernel.org/r/20230803145600.2937518-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+---
+ net/packet/af_packet.c |   16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
 
-Zhu Wang <wangzhu9@huawei.com>
-    scsi: snic: Fix possible memory leak if device_add() fails
-
-Alexandra Diupina <adiupina@astralinux.ru>
-    scsi: 53c700: Check that command slot is not NULL
-
-Michael Kelley <mikelley@microsoft.com>
-    scsi: storvsc: Fix handling of virtual Fibre Channel timeouts
-
-Tony Battersby <tonyb@cybernetics.com>
-    scsi: core: Fix legacy /proc parsing buffer overflow
-
-Pablo Neira Ayuso <pablo@netfilter.org>
-    netfilter: nf_tables: report use refcount overflow
-
-Christoph Hellwig <hch@lst.de>
-    btrfs: don't stop integrity writeback too early
-
-Douglas Miller <doug.miller@cornelisnetworks.com>
-    IB/hfi1: Fix possible panic during hotplug remove
-
-Andrew Kanner <andrew.kanner@gmail.com>
-    drivers: net: prevent tun_build_skb() to exceed the packet size limit
-
-Eric Dumazet <edumazet@google.com>
-    dccp: fix data-race around dp->dccps_mss_cache
-
-Ziyang Xuan <william.xuanziyang@huawei.com>
-    bonding: Fix incorrect deletion of ETH_P_8021AD protocol vid from slaves
-
-Eric Dumazet <edumazet@google.com>
-    net/packet: annotate data-races around tp->status
-
-Karol Herbst <kherbst@redhat.com>
-    drm/nouveau/disp: Revert a NULL check inside nouveau_connector_get_modes
-
-Arnd Bergmann <arnd@arndb.de>
-    x86: Move gds_ucode_mitigated() declaration to header
-
-Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-    x86/mm: Fix VDSO and VVAR placement on 5-level paging machines
-
-Elson Roy Serrao <quic_eserrao@quicinc.com>
-    usb: dwc3: Properly handle processing of pending events
-
-Alan Stern <stern@rowland.harvard.edu>
-    usb-storage: alauda: Fix uninit-value in alauda_check_media()
-
-Yiyuan Guo <yguoaz@gmail.com>
-    iio: cros_ec: Fix the allocation size for cros_ec_command
-
-Mirsad Goran Todorovac <mirsad.todorovac@alu.unizg.hr>
-    test_firmware: return ENOMEM instead of ENOSPC on failed memory allocation
-
-Ryusuke Konishi <konishi.ryusuke@gmail.com>
-    nilfs2: fix use-after-free of nilfs_root in dirtying inodes via iput
-
-Colin Ian King <colin.i.king@gmail.com>
-    radix tree test suite: fix incorrect allocation size for pthreads
-
-Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-    dmaengine: pl330: Return DMA_PAUSED when transaction is paused
-
-Maciej Żenczykowski <maze@google.com>
-    ipv6: adjust ndisc_is_useropt() to also return true for PIO
-
-Sergei Antonov <saproj@gmail.com>
-    mmc: moxart: read scr register without changing byte order
-
-Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-    sparc: fix up arch_cpu_finalize_init() build breakage.
-
-
--------------
-
-Diffstat:
-
- Makefile                                           |   4 +-
- arch/alpha/kernel/setup.c                          |   3 +-
- arch/sparc/Kconfig                                 |   2 +-
- arch/x86/entry/vdso/vma.c                          |   4 +-
- arch/x86/include/asm/processor.h                   |   2 +
- arch/x86/kvm/x86.c                                 |   2 -
- drivers/dma/pl330.c                                |  18 ++-
- drivers/gpu/drm/nouveau/nouveau_connector.c        |   2 +-
- .../common/cros_ec_sensors/cros_ec_sensors_core.c  |   2 +-
- drivers/infiniband/hw/hfi1/chip.c                  |   1 +
- drivers/mmc/host/moxart-mmc.c                      |   8 +-
- drivers/net/bonding/bond_main.c                    |   4 +-
- drivers/net/tun.c                                  |   2 +-
- drivers/scsi/53c700.c                              |   2 +-
- drivers/scsi/raid_class.c                          |   1 +
- drivers/scsi/scsi_proc.c                           |  30 +++--
- drivers/scsi/snic/snic_disc.c                      |   1 +
- drivers/scsi/storvsc_drv.c                         |   4 -
- drivers/usb/dwc3/gadget.c                          |   9 +-
- drivers/usb/storage/alauda.c                       |   9 +-
- fs/btrfs/extent_io.c                               |   7 +-
- fs/nilfs2/inode.c                                  |   8 ++
- fs/nilfs2/segment.c                                |   2 +
- fs/nilfs2/the_nilfs.h                              |   2 +
- include/net/netfilter/nf_tables.h                  |  27 +++-
- lib/test_firmware.c                                |   8 +-
- net/dccp/output.c                                  |   2 +-
- net/dccp/proto.c                                   |  10 +-
- net/ipv6/ndisc.c                                   |   3 +-
- net/netfilter/nf_tables_api.c                      | 143 +++++++++++++--------
- net/netfilter/nft_objref.c                         |   8 +-
- net/packet/af_packet.c                             |  16 ++-
- tools/testing/radix-tree/regression1.c             |   2 +-
- 33 files changed, 228 insertions(+), 120 deletions(-)
+--- a/net/packet/af_packet.c
++++ b/net/packet/af_packet.c
+@@ -404,18 +404,20 @@ static void __packet_set_status(struct p
+ {
+ 	union tpacket_uhdr h;
+ 
++	/* WRITE_ONCE() are paired with READ_ONCE() in __packet_get_status */
++
+ 	h.raw = frame;
+ 	switch (po->tp_version) {
+ 	case TPACKET_V1:
+-		h.h1->tp_status = status;
++		WRITE_ONCE(h.h1->tp_status, status);
+ 		flush_dcache_page(pgv_to_page(&h.h1->tp_status));
+ 		break;
+ 	case TPACKET_V2:
+-		h.h2->tp_status = status;
++		WRITE_ONCE(h.h2->tp_status, status);
+ 		flush_dcache_page(pgv_to_page(&h.h2->tp_status));
+ 		break;
+ 	case TPACKET_V3:
+-		h.h3->tp_status = status;
++		WRITE_ONCE(h.h3->tp_status, status);
+ 		flush_dcache_page(pgv_to_page(&h.h3->tp_status));
+ 		break;
+ 	default:
+@@ -432,17 +434,19 @@ static int __packet_get_status(const str
+ 
+ 	smp_rmb();
+ 
++	/* READ_ONCE() are paired with WRITE_ONCE() in __packet_set_status */
++
+ 	h.raw = frame;
+ 	switch (po->tp_version) {
+ 	case TPACKET_V1:
+ 		flush_dcache_page(pgv_to_page(&h.h1->tp_status));
+-		return h.h1->tp_status;
++		return READ_ONCE(h.h1->tp_status);
+ 	case TPACKET_V2:
+ 		flush_dcache_page(pgv_to_page(&h.h2->tp_status));
+-		return h.h2->tp_status;
++		return READ_ONCE(h.h2->tp_status);
+ 	case TPACKET_V3:
+ 		flush_dcache_page(pgv_to_page(&h.h3->tp_status));
+-		return h.h3->tp_status;
++		return READ_ONCE(h.h3->tp_status);
+ 	default:
+ 		WARN(1, "TPACKET version not supported.\n");
+ 		BUG();
 
 
