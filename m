@@ -2,92 +2,93 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 98BC877AC1D
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:29:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C6A6077ACA8
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:35:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231804AbjHMV32 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:29:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48520 "EHLO
+        id S232113AbjHMVff (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:35:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50064 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231836AbjHMV32 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:29:28 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1743310DB
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:29:30 -0700 (PDT)
+        with ESMTP id S232111AbjHMVfe (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:35:34 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4340310E3
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:35:36 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A211762AC6
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:29:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9201C433C8;
-        Sun, 13 Aug 2023 21:29:28 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D5E3362CE6
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:35:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F135CC433C8;
+        Sun, 13 Aug 2023 21:35:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691962169;
-        bh=gXNNdU99P4VeD8iKbdCOc+ADo5ffmH+Za8JUXlnTHgc=;
+        s=korg; t=1691962535;
+        bh=lAQ/l5TjbJHU8jSOymYws09tROvbAaEDGsg9hspSvSw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=DaTIlnSIdy1WdNVKvHip0Bljb1XpukDDMLByCJNEP8lMx1jv+GU8Q4RY3lV+nCwBc
-         k5jhpGpYzli+/5FjEiKfYjBWbyxRah5jH0eFFz1k8o/j6axZIaVS8yf6trfj/wwgAg
-         MoQA9cjW+krgBqYKS7u32pUWp7H1+408VaYo7uHM=
+        b=DyE36MnpXq02mCya8yUzZDHftJYyV2UDlwO1BkyoepgvWS++OTvzqyWaG2oI9OOCg
+         +U3ZKPlVc11Gp+cY3i8fXLsRcfy5KcUd6lOOE898W7+lJPmkDg+RcWs8j4XBEzNd++
+         6jLi6uJrq3TN6YwTE3+wCAG3QNxVSEAKzEHZyyiw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Andrew Kanner <andrew.kanner@gmail.com>,
-        Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.4 139/206] drivers: net: prevent tun_build_skb() to exceed the packet size limit
-Date:   Sun, 13 Aug 2023 23:18:29 +0200
-Message-ID: <20230813211729.000091728@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
+        "Borislav Petkov (AMD)" <bp@alien8.de>
+Subject: [PATCH 6.1 065/149] x86/cpu/amd: Enable Zenbleed fix for AMD Custom APU 0405
+Date:   Sun, 13 Aug 2023 23:18:30 +0200
+Message-ID: <20230813211720.749158208@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211724.969019629@linuxfoundation.org>
-References: <20230813211724.969019629@linuxfoundation.org>
+In-Reply-To: <20230813211718.757428827@linuxfoundation.org>
+References: <20230813211718.757428827@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Andrew Kanner <andrew.kanner@gmail.com>
+From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
 
-commit 59eeb232940515590de513b997539ef495faca9a upstream.
+commit 6dbef74aeb090d6bee7d64ef3fa82ae6fa53f271 upstream.
 
-Using the syzkaller repro with reduced packet size it was discovered
-that XDP_PACKET_HEADROOM is not checked in tun_can_build_skb(),
-although pad may be incremented in tun_build_skb(). This may end up
-with exceeding the PAGE_SIZE limit in tun_build_skb().
+Commit
 
-Jason Wang <jasowang@redhat.com> proposed to count XDP_PACKET_HEADROOM
-always (e.g. without rcu_access_pointer(tun->xdp_prog)) in
-tun_can_build_skb() since there's a window during which XDP program
-might be attached between tun_can_build_skb() and tun_build_skb().
+  522b1d69219d ("x86/cpu/amd: Add a Zenbleed fix")
 
-Fixes: 7df13219d757 ("tun: reserve extra headroom only when XDP is set")
-Link: https://syzkaller.appspot.com/bug?extid=f817490f5bd20541b90a
-Signed-off-by: Andrew Kanner <andrew.kanner@gmail.com>
-Link: https://lore.kernel.org/r/20230803185947.2379988-1-andrew.kanner@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+provided a fix for the Zen2 VZEROUPPER data corruption bug affecting
+a range of CPU models, but the AMD Custom APU 0405 found on SteamDeck
+was not listed, although it is clearly affected by the vulnerability.
+
+Add this CPU variant to the Zenbleed erratum list, in order to
+unconditionally enable the fallback fix until a proper microcode update
+is available.
+
+Fixes: 522b1d69219d ("x86/cpu/amd: Add a Zenbleed fix")
+Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20230811203705.1699914-1-cristian.ciocaltea@collabora.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/tun.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/kernel/cpu/amd.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/net/tun.c
-+++ b/drivers/net/tun.c
-@@ -1594,7 +1594,7 @@ static bool tun_can_build_skb(struct tun
- 	if (zerocopy)
- 		return false;
+--- a/arch/x86/kernel/cpu/amd.c
++++ b/arch/x86/kernel/cpu/amd.c
+@@ -73,6 +73,7 @@ static const int amd_erratum_1054[] =
+ static const int amd_zenbleed[] =
+ 	AMD_LEGACY_ERRATUM(AMD_MODEL_RANGE(0x17, 0x30, 0x0, 0x4f, 0xf),
+ 			   AMD_MODEL_RANGE(0x17, 0x60, 0x0, 0x7f, 0xf),
++			   AMD_MODEL_RANGE(0x17, 0x90, 0x0, 0x91, 0xf),
+ 			   AMD_MODEL_RANGE(0x17, 0xa0, 0x0, 0xaf, 0xf));
  
--	if (SKB_DATA_ALIGN(len + TUN_RX_PAD) +
-+	if (SKB_DATA_ALIGN(len + TUN_RX_PAD + XDP_PACKET_HEADROOM) +
- 	    SKB_DATA_ALIGN(sizeof(struct skb_shared_info)) > PAGE_SIZE)
- 		return false;
- 
+ static const int amd_div0[] =
 
 
