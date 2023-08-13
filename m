@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E45BD77AC2A
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:30:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0730077ACB3
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:36:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231861AbjHMVaC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:30:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42156 "EHLO
+        id S232136AbjHMVgE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:36:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38576 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231836AbjHMVaB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:30:01 -0400
+        with ESMTP id S232133AbjHMVgE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:36:04 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C37010DB
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:30:03 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6212310DD
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:36:06 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BC8CE62AF8
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:30:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF1D8C433C7;
-        Sun, 13 Aug 2023 21:30:01 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id F142062D08
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:36:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B5B5C433C7;
+        Sun, 13 Aug 2023 21:36:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691962202;
-        bh=Pgcw3N54tL+sWquBCVfFx6nLtmYeczE7L2bOtp0Sueo=;
+        s=korg; t=1691962565;
+        bh=Vkmv/eTa4s/bMwY7sbDaxh0cPWUnSfEMGbkVpKgfOUI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=yJsW/xeqApjsa5nsI2u5jbqDxiabPll2dneE1xrU862SXECxgXO3AlmFC1sNTDec8
-         MEtmLWyJvcDV8lIbBow3XH5BT6mr1jtRPhd4LjbyFGNBQE0WBHqc8gO/dee2OC1OED
-         vb7/iGIanUT2POXA4E2GZK3Qb2YiBuX+dXVgc4Jw=
+        b=aJ3hhvMZ5/LBWCp7CLQdHJ7Cnexir2Hpv3TBpL2GBcZrqZTFoR0VAx1tAsPe0jkSy
+         It+KmMEjWpPjOxKEk+7w9p7Tu/H9/diIdcz6f2cfs2btKd+PPGUWpxR+8ebBRbdHQ4
+         U3k8mN+EE6YiGCUs0rUG+RH6pCZk0tcrM2AmEx/Q=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Selvin Xavier <selvin.xavier@broadcom.com>,
-        Jason Gunthorpe <jgg@nvidia.com>
-Subject: [PATCH 6.4 150/206] RDMA/bnxt_re: Properly order ib_device_unalloc() to avoid UAF
+        patches@lists.linux.dev, Mark Brown <broonie@kernel.org>,
+        Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH 6.1 075/149] selftests/rseq: Fix build with undefined __weak
 Date:   Sun, 13 Aug 2023 23:18:40 +0200
-Message-ID: <20230813211729.325118514@linuxfoundation.org>
+Message-ID: <20230813211721.039888343@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211724.969019629@linuxfoundation.org>
-References: <20230813211724.969019629@linuxfoundation.org>
+In-Reply-To: <20230813211718.757428827@linuxfoundation.org>
+References: <20230813211718.757428827@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,33 +53,64 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Selvin Xavier <selvin.xavier@broadcom.com>
+From: Mark Brown <broonie@kernel.org>
 
-commit 5363fc488da579923edf6a2fdca3d3b651dd800b upstream.
+commit d5ad9aae13dcced333c1a7816ff0a4fbbb052466 upstream.
 
-ib_dealloc_device() should be called only after device cleanup.  Fix the
-dealloc sequence.
+Commit 3bcbc20942db ("selftests/rseq: Play nice with binaries statically
+linked against glibc 2.35+") which is now in Linus' tree introduced uses
+of __weak but did nothing to ensure that a definition is provided for it
+resulting in build failures for the rseq tests:
 
-Fixes: 6d758147c7b8 ("RDMA/bnxt_re: Use auxiliary driver interface")
-Link: https://lore.kernel.org/r/1691642677-21369-2-git-send-email-selvin.xavier@broadcom.com
-Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+rseq.c:41:1: error: unknown type name '__weak'
+__weak ptrdiff_t __rseq_offset;
+^
+rseq.c:41:17: error: expected ';' after top level declarator
+__weak ptrdiff_t __rseq_offset;
+                ^
+                ;
+rseq.c:42:1: error: unknown type name '__weak'
+__weak unsigned int __rseq_size;
+^
+rseq.c:43:1: error: unknown type name '__weak'
+__weak unsigned int __rseq_flags;
+
+Fix this by using the definition from tools/include compiler.h.
+
+Fixes: 3bcbc20942db ("selftests/rseq: Play nice with binaries statically linked against glibc 2.35+")
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Message-Id: <20230804-kselftest-rseq-build-v1-1-015830b66aa9@kernel.org>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/bnxt_re/main.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/testing/selftests/rseq/Makefile |    4 +++-
+ tools/testing/selftests/rseq/rseq.c   |    2 ++
+ 2 files changed, 5 insertions(+), 1 deletion(-)
 
---- a/drivers/infiniband/hw/bnxt_re/main.c
-+++ b/drivers/infiniband/hw/bnxt_re/main.c
-@@ -1425,8 +1425,8 @@ static void bnxt_re_remove(struct auxili
- 	}
- 	bnxt_re_setup_cc(rdev, false);
- 	ib_unregister_device(&rdev->ibdev);
--	ib_dealloc_device(&rdev->ibdev);
- 	bnxt_re_dev_uninit(rdev);
-+	ib_dealloc_device(&rdev->ibdev);
- skip_remove:
- 	mutex_unlock(&bnxt_re_mutex);
- }
+--- a/tools/testing/selftests/rseq/Makefile
++++ b/tools/testing/selftests/rseq/Makefile
+@@ -4,8 +4,10 @@ ifneq ($(shell $(CC) --version 2>&1 | he
+ CLANG_FLAGS += -no-integrated-as
+ endif
+ 
++top_srcdir = ../../../..
++
+ CFLAGS += -O2 -Wall -g -I./ $(KHDR_INCLUDES) -L$(OUTPUT) -Wl,-rpath=./ \
+-	  $(CLANG_FLAGS)
++	  $(CLANG_FLAGS) -I$(top_srcdir)/tools/include
+ LDLIBS += -lpthread -ldl
+ 
+ # Own dependencies because we only want to build against 1st prerequisite, but
+--- a/tools/testing/selftests/rseq/rseq.c
++++ b/tools/testing/selftests/rseq/rseq.c
+@@ -29,6 +29,8 @@
+ #include <dlfcn.h>
+ #include <stddef.h>
+ 
++#include <linux/compiler.h>
++
+ #include "../kselftest.h"
+ #include "rseq.h"
+ 
 
 
