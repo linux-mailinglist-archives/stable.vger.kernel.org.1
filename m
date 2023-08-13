@@ -2,160 +2,113 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6632377AB63
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:21:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CA22277AE0F
+	for <lists+stable@lfdr.de>; Mon, 14 Aug 2023 00:00:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229512AbjHMVVX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:21:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45464 "EHLO
+        id S231445AbjHMWAS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 18:00:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53954 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230271AbjHMVVW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:21:22 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D5D910E3
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:21:24 -0700 (PDT)
+        with ESMTP id S231269AbjHMV7J (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:59:09 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 31F022717
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:44:15 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C15946271C
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:21:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D60ECC433C8;
-        Sun, 13 Aug 2023 21:21:22 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7F3C360B9D
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:43:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 939C4C433C7;
+        Sun, 13 Aug 2023 21:43:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691961683;
-        bh=UH7wEnHk7hQoO3akTHWQnd5FSTxsSIvk/TIjwNixMws=;
+        s=korg; t=1691963038;
+        bh=J3Ql6omGLv5otMMylyVQfBSPl0jzme1XllAxd+N5kfo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=JJiLQE+txQcD6VKEQjqp1SjOEKlqQtoA1Lb/Pvmt42rxD5dC2QVtgVsHYB8nerp6V
-         eUZZbtkQ0icfeXTOl41QAKkv4WU1reitycg5lqRb8xbPOXIwUIebU7yODrmicWDs/G
-         llxTHDGXHA6+UMbydS11PB70R2xc0M5snL2rwnm0=
+        b=CJgEQ1uvcPdDwlq121ZmyioBNLseNBZH3HkLsex2dJKtEmSAPHVB43OE+z0QVYZPd
+         3aixxePOlWxp1tPcHUI6ydvQ357sPh/JwBwuWcZd3/5FTV26FuMEhLq+X5jFk2e5/1
+         N64McT8gVTJtP9NGkGyB837wtN57pOxgeXI3KX5c=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Martin K Petersen <martin.petersen@oracle.com>,
-        James Bottomley <jejb@linux.ibm.com>, Willy Tarreau <w@1wt.eu>,
-        stable@kernel.org, Tony Battersby <tonyb@cybernetics.com>
-Subject: [PATCH 4.14 21/26] scsi: core: Fix legacy /proc parsing buffer overflow
+        patches@lists.linux.dev, Qi Zheng <zhengqi.arch@bytedance.com>,
+        Carlos Llamas <cmllamas@google.com>, stable <stable@kernel.org>
+Subject: [PATCH 5.15 23/89] binder: fix memory leak in binder_init()
 Date:   Sun, 13 Aug 2023 23:19:14 +0200
-Message-ID: <20230813211703.776460963@linuxfoundation.org>
+Message-ID: <20230813211711.451753713@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211702.980427106@linuxfoundation.org>
-References: <20230813211702.980427106@linuxfoundation.org>
+In-Reply-To: <20230813211710.787645394@linuxfoundation.org>
+References: <20230813211710.787645394@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Tony Battersby <tonyb@cybernetics.com>
+From: Qi Zheng <zhengqi.arch@bytedance.com>
 
-commit 9426d3cef5000824e5f24f80ed5f42fb935f2488 upstream.
+commit adb9743d6a08778b78d62d16b4230346d3508986 upstream.
 
-(lightly modified commit message mostly by Linus Torvalds)
+In binder_init(), the destruction of binder_alloc_shrinker_init() is not
+performed in the wrong path, which will cause memory leaks. So this commit
+introduces binder_alloc_shrinker_exit() and calls it in the wrong path to
+fix that.
 
-The parsing code for /proc/scsi/scsi is disgusting and broken.  We should
-have just used 'sscanf()' or something simple like that, but the logic may
-actually predate our kernel sscanf library routine for all I know.  It
-certainly predates both git and BK histories.
-
-And we can't change it to be something sane like that now, because the
-string matching at the start is done case-insensitively, and the separator
-parsing between numbers isn't done at all, so *any* separator will work,
-including a possible terminating NUL character.
-
-This interface is root-only, and entirely for legacy use, so there is
-absolutely no point in trying to tighten up the parsing.  Because any
-separator has traditionally worked, it's entirely possible that people have
-used random characters rather than the suggested space.
-
-So don't bother to try to pretty it up, and let's just make a minimal patch
-that can be back-ported and we can forget about this whole sorry thing for
-another two decades.
-
-Just make it at least not read past the end of the supplied data.
-
-Link: https://lore.kernel.org/linux-scsi/b570f5fe-cb7c-863a-6ed9-f6774c219b88@cybernetics.com/
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Martin K Petersen <martin.petersen@oracle.com>
-Cc: James Bottomley <jejb@linux.ibm.com>
-Cc: Willy Tarreau <w@1wt.eu>
-Cc: stable@kernel.org
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Tony Battersby <tonyb@cybernetics.com>
-Signed-off-by: Martin K Petersen <martin.petersen@oracle.com>
+Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
+Acked-by: Carlos Llamas <cmllamas@google.com>
+Fixes: f2517eb76f1f ("android: binder: Add global lru shrinker to binder")
+Cc: stable <stable@kernel.org>
+Link: https://lore.kernel.org/r/20230625154937.64316-1-qi.zheng@linux.dev
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/scsi_proc.c |   30 +++++++++++++++++-------------
- 1 file changed, 17 insertions(+), 13 deletions(-)
+ drivers/android/binder.c       |    1 +
+ drivers/android/binder_alloc.c |    6 ++++++
+ drivers/android/binder_alloc.h |    1 +
+ 3 files changed, 8 insertions(+)
 
---- a/drivers/scsi/scsi_proc.c
-+++ b/drivers/scsi/scsi_proc.c
-@@ -311,7 +311,7 @@ static ssize_t proc_scsi_write(struct fi
- 			       size_t length, loff_t *ppos)
- {
- 	int host, channel, id, lun;
--	char *buffer, *p;
-+	char *buffer, *end, *p;
- 	int err;
+--- a/drivers/android/binder.c
++++ b/drivers/android/binder.c
+@@ -6412,6 +6412,7 @@ err_init_binder_device_failed:
  
- 	if (!buf || length > PAGE_SIZE)
-@@ -326,10 +326,14 @@ static ssize_t proc_scsi_write(struct fi
- 		goto out;
+ err_alloc_device_names_failed:
+ 	debugfs_remove_recursive(binder_debugfs_dir_entry_root);
++	binder_alloc_shrinker_exit();
  
- 	err = -EINVAL;
--	if (length < PAGE_SIZE)
--		buffer[length] = '\0';
--	else if (buffer[PAGE_SIZE-1])
--		goto out;
-+	if (length < PAGE_SIZE) {
-+		end = buffer + length;
-+		*end = '\0';
-+	} else {
-+		end = buffer + PAGE_SIZE - 1;
-+		if (*end)
-+			goto out;
-+	}
+ 	return ret;
+ }
+--- a/drivers/android/binder_alloc.c
++++ b/drivers/android/binder_alloc.c
+@@ -1091,6 +1091,12 @@ int binder_alloc_shrinker_init(void)
+ 	return ret;
+ }
  
- 	/*
- 	 * Usage: echo "scsi add-single-device 0 1 2 3" >/proc/scsi/scsi
-@@ -338,10 +342,10 @@ static ssize_t proc_scsi_write(struct fi
- 	if (!strncmp("scsi add-single-device", buffer, 22)) {
- 		p = buffer + 23;
- 
--		host = simple_strtoul(p, &p, 0);
--		channel = simple_strtoul(p + 1, &p, 0);
--		id = simple_strtoul(p + 1, &p, 0);
--		lun = simple_strtoul(p + 1, &p, 0);
-+		host    = (p     < end) ? simple_strtoul(p, &p, 0) : 0;
-+		channel = (p + 1 < end) ? simple_strtoul(p + 1, &p, 0) : 0;
-+		id      = (p + 1 < end) ? simple_strtoul(p + 1, &p, 0) : 0;
-+		lun     = (p + 1 < end) ? simple_strtoul(p + 1, &p, 0) : 0;
- 
- 		err = scsi_add_single_device(host, channel, id, lun);
- 
-@@ -352,10 +356,10 @@ static ssize_t proc_scsi_write(struct fi
- 	} else if (!strncmp("scsi remove-single-device", buffer, 25)) {
- 		p = buffer + 26;
- 
--		host = simple_strtoul(p, &p, 0);
--		channel = simple_strtoul(p + 1, &p, 0);
--		id = simple_strtoul(p + 1, &p, 0);
--		lun = simple_strtoul(p + 1, &p, 0);
-+		host    = (p     < end) ? simple_strtoul(p, &p, 0) : 0;
-+		channel = (p + 1 < end) ? simple_strtoul(p + 1, &p, 0) : 0;
-+		id      = (p + 1 < end) ? simple_strtoul(p + 1, &p, 0) : 0;
-+		lun     = (p + 1 < end) ? simple_strtoul(p + 1, &p, 0) : 0;
- 
- 		err = scsi_remove_single_device(host, channel, id, lun);
- 	}
++void binder_alloc_shrinker_exit(void)
++{
++	unregister_shrinker(&binder_shrinker);
++	list_lru_destroy(&binder_alloc_lru);
++}
++
+ /**
+  * check_buffer() - verify that buffer/offset is safe to access
+  * @alloc: binder_alloc for this proc
+--- a/drivers/android/binder_alloc.h
++++ b/drivers/android/binder_alloc.h
+@@ -131,6 +131,7 @@ extern struct binder_buffer *binder_allo
+ 						  int pid);
+ extern void binder_alloc_init(struct binder_alloc *alloc);
+ extern int binder_alloc_shrinker_init(void);
++extern void binder_alloc_shrinker_exit(void);
+ extern void binder_alloc_vma_close(struct binder_alloc *alloc);
+ extern struct binder_buffer *
+ binder_alloc_prepare_to_free(struct binder_alloc *alloc,
 
 
