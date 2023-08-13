@@ -2,113 +2,174 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D2BD077ACDA
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:37:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 029E277AD9D
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:49:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232203AbjHMVhw (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:37:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55618 "EHLO
+        id S232529AbjHMVtl (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:49:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39716 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232207AbjHMVhv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:37:51 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0451210DB
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:37:54 -0700 (PDT)
+        with ESMTP id S232375AbjHMVtH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:49:07 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E46D71730
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:40:16 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8FD59634D1
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:37:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E4E3C433C8;
-        Sun, 13 Aug 2023 21:37:52 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7338B6110F
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:40:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88BDFC433C8;
+        Sun, 13 Aug 2023 21:40:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691962673;
-        bh=mwXPl1fmAk2/6qni2eX1lhVECipL2FkQkp6jb5pWnZQ=;
+        s=korg; t=1691962815;
+        bh=mehQCbLNCSNw65Igszu/fStmN9/LOpKgVuY8ux27FBg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=NuNk71EC3hXqI4ZiWJrXmrGOmbraJcHTJ8TRYQBQbp/u04xAsFh86pbLuDSB8zJIa
-         bqov1zAU05BQcj9oKc/keistSv7bPVP7pfGchCd4zSyxWO2slRyonheOLoQ6wn4XkG
-         QrmV+0h60DT6W99Z3VGzk3SDieII8bN7cD4rfw6w=
+        b=vN0/rLn4dc0pzNfqzID/Fx91RoZx4mA/15WfKSrftcgdmc/CxPX1Y9ExwwuWbDfwa
+         7cVAJz8ZJZGiM0sm2/9M1XAdhRmtUTwt1qAgvNxiVbJBPLqqPit8XkltwUU5QuhJJx
+         3Vk7kIRu0EApSP6xBAAXy25eAd89StOH4fOezjXQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.1 114/149] dmaengine: mcf-edma: Fix a potential un-allocated memory access
+        Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+        syzbot+74db8b3087f293d3a13a@syzkaller.appspotmail.com,
+        Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.10 18/68] nilfs2: fix use-after-free of nilfs_root in dirtying inodes via iput
 Date:   Sun, 13 Aug 2023 23:19:19 +0200
-Message-ID: <20230813211722.160736561@linuxfoundation.org>
+Message-ID: <20230813211708.706262569@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211718.757428827@linuxfoundation.org>
-References: <20230813211718.757428827@linuxfoundation.org>
+In-Reply-To: <20230813211708.149630011@linuxfoundation.org>
+References: <20230813211708.149630011@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-commit 0a46781c89dece85386885a407244ca26e5c1c44 upstream.
+commit f8654743a0e6909dc634cbfad6db6816f10f3399 upstream.
 
-When 'mcf_edma' is allocated, some space is allocated for a
-flexible array at the end of the struct. 'chans' item are allocated, that is
-to say 'pdata->dma_channels'.
+During unmount process of nilfs2, nothing holds nilfs_root structure after
+nilfs2 detaches its writer in nilfs_detach_log_writer().  Previously,
+nilfs_evict_inode() could cause use-after-free read for nilfs_root if
+inodes are left in "garbage_list" and released by nilfs_dispose_list at
+the end of nilfs_detach_log_writer(), and this bug was fixed by commit
+9b5a04ac3ad9 ("nilfs2: fix use-after-free bug of nilfs_root in
+nilfs_evict_inode()").
 
-Then, this number of item is stored in 'mcf_edma->n_chans'.
+However, it turned out that there is another possibility of UAF in the
+call path where mark_inode_dirty_sync() is called from iput():
 
-A few lines later, if 'mcf_edma->n_chans' is 0, then a default value of 64
-is set.
+nilfs_detach_log_writer()
+  nilfs_dispose_list()
+    iput()
+      mark_inode_dirty_sync()
+        __mark_inode_dirty()
+          nilfs_dirty_inode()
+            __nilfs_mark_inode_dirty()
+              nilfs_load_inode_block() --> causes UAF of nilfs_root struct
 
-This ends to no space allocated by devm_kzalloc() because chans was 0, but
-64 items are read and/or written in some not allocated memory.
+This can happen after commit 0ae45f63d4ef ("vfs: add support for a
+lazytime mount option"), which changed iput() to call
+mark_inode_dirty_sync() on its final reference if i_state has I_DIRTY_TIME
+flag and i_nlink is non-zero.
 
-Change the logic to define a default value before allocating the memory.
+This issue appears after commit 28a65b49eb53 ("nilfs2: do not write dirty
+data after degenerating to read-only") when using the syzbot reproducer,
+but the issue has potentially existed before.
 
-Fixes: e7a3ff92eaf1 ("dmaengine: fsl-edma: add ColdFire mcf5441x edma support")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Link: https://lore.kernel.org/r/f55d914407c900828f6fad3ea5fa791a5f17b9a4.1685172449.git.christophe.jaillet@wanadoo.fr
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Fix this issue by adding a "purging flag" to the nilfs structure, setting
+that flag while disposing the "garbage_list" and checking it in
+__nilfs_mark_inode_dirty().
+
+Unlike commit 9b5a04ac3ad9 ("nilfs2: fix use-after-free bug of nilfs_root
+in nilfs_evict_inode()"), this patch does not rely on ns_writer to
+determine whether to skip operations, so as not to break recovery on
+mount.  The nilfs_salvage_orphan_logs routine dirties the buffer of
+salvaged data before attaching the log writer, so changing
+__nilfs_mark_inode_dirty() to skip the operation when ns_writer is NULL
+will cause recovery write to fail.  The purpose of using the cleanup-only
+flag is to allow for narrowing of such conditions.
+
+Link: https://lkml.kernel.org/r/20230728191318.33047-1-konishi.ryusuke@gmail.com
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Reported-by: syzbot+74db8b3087f293d3a13a@syzkaller.appspotmail.com
+Closes: https://lkml.kernel.org/r/000000000000b4e906060113fd63@google.com
+Fixes: 0ae45f63d4ef ("vfs: add support for a lazytime mount option")
+Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Cc: <stable@vger.kernel.org> # 4.0+
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma/mcf-edma.c |   13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+ fs/nilfs2/inode.c     |    8 ++++++++
+ fs/nilfs2/segment.c   |    2 ++
+ fs/nilfs2/the_nilfs.h |    2 ++
+ 3 files changed, 12 insertions(+)
 
---- a/drivers/dma/mcf-edma.c
-+++ b/drivers/dma/mcf-edma.c
-@@ -191,7 +191,13 @@ static int mcf_edma_probe(struct platfor
- 		return -EINVAL;
- 	}
+--- a/fs/nilfs2/inode.c
++++ b/fs/nilfs2/inode.c
+@@ -1103,9 +1103,17 @@ int nilfs_set_file_dirty(struct inode *i
  
--	chans = pdata->dma_channels;
-+	if (!pdata->dma_channels) {
-+		dev_info(&pdev->dev, "setting default channel number to 64");
-+		chans = 64;
-+	} else {
-+		chans = pdata->dma_channels;
-+	}
+ int __nilfs_mark_inode_dirty(struct inode *inode, int flags)
+ {
++	struct the_nilfs *nilfs = inode->i_sb->s_fs_info;
+ 	struct buffer_head *ibh;
+ 	int err;
+ 
++	/*
++	 * Do not dirty inodes after the log writer has been detached
++	 * and its nilfs_root struct has been freed.
++	 */
++	if (unlikely(nilfs_purging(nilfs)))
++		return 0;
 +
- 	len = sizeof(*mcf_edma) + sizeof(*mcf_chan) * chans;
- 	mcf_edma = devm_kzalloc(&pdev->dev, len, GFP_KERNEL);
- 	if (!mcf_edma)
-@@ -203,11 +209,6 @@ static int mcf_edma_probe(struct platfor
- 	mcf_edma->drvdata = &mcf_data;
- 	mcf_edma->big_endian = 1;
+ 	err = nilfs_load_inode_block(inode, &ibh);
+ 	if (unlikely(err)) {
+ 		nilfs_warn(inode->i_sb,
+--- a/fs/nilfs2/segment.c
++++ b/fs/nilfs2/segment.c
+@@ -2850,6 +2850,7 @@ void nilfs_detach_log_writer(struct supe
+ 		nilfs_segctor_destroy(nilfs->ns_writer);
+ 		nilfs->ns_writer = NULL;
+ 	}
++	set_nilfs_purging(nilfs);
  
--	if (!mcf_edma->n_chans) {
--		dev_info(&pdev->dev, "setting default channel number to 64");
--		mcf_edma->n_chans = 64;
--	}
--
- 	mutex_init(&mcf_edma->fsl_edma_mutex);
+ 	/* Force to free the list of dirty files */
+ 	spin_lock(&nilfs->ns_inode_lock);
+@@ -2862,4 +2863,5 @@ void nilfs_detach_log_writer(struct supe
+ 	up_write(&nilfs->ns_segctor_sem);
  
- 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+ 	nilfs_dispose_list(nilfs, &garbage_list, 1);
++	clear_nilfs_purging(nilfs);
+ }
+--- a/fs/nilfs2/the_nilfs.h
++++ b/fs/nilfs2/the_nilfs.h
+@@ -29,6 +29,7 @@ enum {
+ 	THE_NILFS_DISCONTINUED,	/* 'next' pointer chain has broken */
+ 	THE_NILFS_GC_RUNNING,	/* gc process is running */
+ 	THE_NILFS_SB_DIRTY,	/* super block is dirty */
++	THE_NILFS_PURGING,	/* disposing dirty files for cleanup */
+ };
+ 
+ /**
+@@ -208,6 +209,7 @@ THE_NILFS_FNS(INIT, init)
+ THE_NILFS_FNS(DISCONTINUED, discontinued)
+ THE_NILFS_FNS(GC_RUNNING, gc_running)
+ THE_NILFS_FNS(SB_DIRTY, sb_dirty)
++THE_NILFS_FNS(PURGING, purging)
+ 
+ /*
+  * Mount option operations
 
 
