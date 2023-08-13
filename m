@@ -2,137 +2,116 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7520077AD18
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:48:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A49FB77AD37
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:48:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230334AbjHMVsE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:48:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34264 "EHLO
+        id S231482AbjHMVsO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:48:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45224 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232320AbjHMVp4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:45:56 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 546722D55
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:45:55 -0700 (PDT)
+        with ESMTP id S229478AbjHMVrO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:47:14 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0641C2D55
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:47:14 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E737B60B9D
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:45:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7613C433C8;
-        Sun, 13 Aug 2023 21:45:53 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 796AD60B9D
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:47:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DA19C433C8;
+        Sun, 13 Aug 2023 21:47:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691963154;
-        bh=L3IiUJk596A6kxY65cnUz2UMDCa4rpuQz3JcimFiwcs=;
+        s=korg; t=1691963232;
+        bh=nUMEiokJZiU6tqmO2VDBktmKlW/FpDm0C4mLBA3Q4qk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=kVPlzc/RvQS0eFqGQtUh3o42V6F4BIu6Q5wfLfAtB3wBl/YqSWMLouP/QFMGuAfje
-         KRjiW/p1w8WVoafpOINvm5hPF06jeGzzlc+el6FNLI6PQt+C7L91mJAojxDaRLgMwZ
-         j/qGlT+0dv8TLeAaf75AMw17PsVOGgGLo2QvXaTE=
+        b=yQ6VpUl3xS2aKMXwrNnnyJpAcowKuOtAkyPWkP06X3fg4QyHD5pvcL35cm7HIRw+k
+         I/4YaWcuRAORXb06waMwThdN5WBKooG2FBZvkcgW1Y8bNQy6e6xCdqM+WbCJZglCdO
+         5r4p0Amq0pQaFmAXeQf5+qQ3EGvUf4xeA6+2ZdQE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        syzbot+ae97a827ae1c3336bbb4@syzkaller.appspotmail.com,
-        Filipe Manana <fdmanana@suse.com>, Qu Wenruo <wqu@suse.com>,
-        David Sterba <dsterba@suse.com>
-Subject: [PATCH 5.15 72/89] btrfs: reject invalid reloc tree root keys with stack dump
+        patches@lists.linux.dev, Prashanth K <quic_prashk@quicinc.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Subject: [PATCH 5.4 12/39] usb: common: usb-conn-gpio: Prevent bailing out if initial role is none
 Date:   Sun, 13 Aug 2023 23:20:03 +0200
-Message-ID: <20230813211712.933704756@linuxfoundation.org>
+Message-ID: <20230813211705.255122360@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211710.787645394@linuxfoundation.org>
-References: <20230813211710.787645394@linuxfoundation.org>
+In-Reply-To: <20230813211704.796906808@linuxfoundation.org>
+References: <20230813211704.796906808@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Qu Wenruo <wqu@suse.com>
+From: Prashanth K <quic_prashk@quicinc.com>
 
-commit 6ebcd021c92b8e4b904552e4d87283032100796d upstream.
+commit 8e21a620c7e6e00347ade1a6ed4967b359eada5a upstream.
 
-[BUG]
-Syzbot reported a crash that an ASSERT() got triggered inside
-prepare_to_merge().
+Currently if we bootup a device without cable connected, then
+usb-conn-gpio won't call set_role() because last_role is same
+as current role. This happens since last_role gets initialised
+to zero during the probe.
 
-That ASSERT() makes sure the reloc tree is properly pointed back by its
-subvolume tree.
+To avoid this, add a new flag initial_detection into struct
+usb_conn_info, which prevents bailing out during initial
+detection.
 
-[CAUSE]
-After more debugging output, it turns out we had an invalid reloc tree:
-
-  BTRFS error (device loop1): reloc tree mismatch, root 8 has no reloc root, expect reloc root key (-8, 132, 8) gen 17
-
-Note the above root key is (TREE_RELOC_OBJECTID, ROOT_ITEM,
-QUOTA_TREE_OBJECTID), meaning it's a reloc tree for quota tree.
-
-But reloc trees can only exist for subvolumes, as for non-subvolume
-trees, we just COW the involved tree block, no need to create a reloc
-tree since those tree blocks won't be shared with other trees.
-
-Only subvolumes tree can share tree blocks with other trees (thus they
-have BTRFS_ROOT_SHAREABLE flag).
-
-Thus this new debug output proves my previous assumption that corrupted
-on-disk data can trigger that ASSERT().
-
-[FIX]
-Besides the dedicated fix and the graceful exit, also let tree-checker to
-check such root keys, to make sure reloc trees can only exist for subvolumes.
-
-CC: stable@vger.kernel.org # 5.15+
-Reported-by: syzbot+ae97a827ae1c3336bbb4@syzkaller.appspotmail.com
-Reviewed-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Cc: <stable@vger.kernel.org> # 5.4
+Fixes: 4602f3bff266 ("usb: common: add USB GPIO based connection detection driver")
+Signed-off-by: Prashanth K <quic_prashk@quicinc.com>
+Tested-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/1690880632-12588-1-git-send-email-quic_prashk@quicinc.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/disk-io.c      |    3 ++-
- fs/btrfs/tree-checker.c |   14 ++++++++++++++
- 2 files changed, 16 insertions(+), 1 deletion(-)
+ drivers/usb/common/usb-conn-gpio.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/fs/btrfs/disk-io.c
-+++ b/fs/btrfs/disk-io.c
-@@ -1437,7 +1437,8 @@ static int btrfs_init_fs_root(struct btr
- 		goto fail;
+--- a/drivers/usb/common/usb-conn-gpio.c
++++ b/drivers/usb/common/usb-conn-gpio.c
+@@ -38,6 +38,7 @@ struct usb_conn_info {
+ 	struct gpio_desc *vbus_gpiod;
+ 	int id_irq;
+ 	int vbus_irq;
++	bool initial_detection;
+ };
  
- 	if (root->root_key.objectid != BTRFS_TREE_LOG_OBJECTID &&
--	    !btrfs_is_data_reloc_root(root)) {
-+	    !btrfs_is_data_reloc_root(root) &&
-+	    is_fstree(root->root_key.objectid)) {
- 		set_bit(BTRFS_ROOT_SHAREABLE, &root->state);
- 		btrfs_check_and_init_root_item(&root->root_item);
+ /**
+@@ -82,11 +83,13 @@ static void usb_conn_detect_cable(struct
+ 	dev_dbg(info->dev, "role %d/%d, gpios: id %d, vbus %d\n",
+ 		info->last_role, role, id, vbus);
+ 
+-	if (info->last_role == role) {
++	if (!info->initial_detection && info->last_role == role) {
+ 		dev_warn(info->dev, "repeated role: %d\n", role);
+ 		return;
  	}
---- a/fs/btrfs/tree-checker.c
-+++ b/fs/btrfs/tree-checker.c
-@@ -442,6 +442,20 @@ static int check_root_key(struct extent_
- 	btrfs_item_key_to_cpu(leaf, &item_key, slot);
- 	is_root_item = (item_key.type == BTRFS_ROOT_ITEM_KEY);
  
-+	/*
-+	 * Bad rootid for reloc trees.
-+	 *
-+	 * Reloc trees are only for subvolume trees, other trees only need
-+	 * to be COWed to be relocated.
-+	 */
-+	if (unlikely(is_root_item && key->objectid == BTRFS_TREE_RELOC_OBJECTID &&
-+		     !is_fstree(key->offset))) {
-+		generic_err(leaf, slot,
-+		"invalid reloc tree for root %lld, root id is not a subvolume tree",
-+			    key->offset);
-+		return -EUCLEAN;
-+	}
++	info->initial_detection = false;
 +
- 	/* No such tree id */
- 	if (unlikely(key->objectid == 0)) {
- 		if (is_root_item)
+ 	if (info->last_role == USB_ROLE_HOST)
+ 		regulator_disable(info->vbus);
+ 
+@@ -206,6 +209,7 @@ static int usb_conn_probe(struct platfor
+ 	platform_set_drvdata(pdev, info);
+ 
+ 	/* Perform initial detection */
++	info->initial_detection = true;
+ 	usb_conn_queue_dwork(info, 0);
+ 
+ 	return 0;
 
 
