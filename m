@@ -2,100 +2,148 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9855F77AD05
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:48:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9016777AB65
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:21:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232256AbjHMViw (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:38:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33564 "EHLO
+        id S230271AbjHMVV2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:21:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34336 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232227AbjHMViv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:38:51 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C39A710E3
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:38:53 -0700 (PDT)
+        with ESMTP id S229627AbjHMVV1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:21:27 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B65B710DB
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:21:29 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 56E46637DB
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:38:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C879C433C7;
-        Sun, 13 Aug 2023 21:38:52 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5532D6279C
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:21:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67315C433C7;
+        Sun, 13 Aug 2023 21:21:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691962732;
-        bh=mQ5NRXZvFY+HN6Rd4xPvUZJ1L/QuP3EgdSYFA9qLev8=;
+        s=korg; t=1691961688;
+        bh=N9ptI9FnfkJvJ+R/hQlmk0Au1HWyfaMbwL0Y/pGLTfg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=iEQuINmvGTLPmNKAOfpsE6J04aeNblC3A2VCeLnILeqwmVID9ai0J8+XReJZa2CNy
-         eyHrSJNgb70FoUG2Xj00ouTI645aeS3xJafUon7MTZcd1qejJ4jtivU4H3iuT8shIB
-         kcoL0A/qMCFBGgMSU8iro0oMokSBTqDnGcH4T7xc=
+        b=1AogvgrOS2LjSjf6cFr+GB/29tJ7WWft2qpDLprv19Dz52uv2sGYTEEgywNCdulj8
+         9psORIGy2CfmgAfeROAmTjsPl5ihVhLK4J9m1/cqsbFp0I4oLAfsMFuIHM2Z7opLPX
+         UL0pzSFw0tT5++afz9m33wGwBlVX/Gb09xoLCdc8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Florian Westphal <fw@strlen.de>,
-        Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 092/149] tunnels: fix kasan splat when generating ipv4 pmtu error
+        patches@lists.linux.dev,
+        Richard Tresidder <rtresidd@electromag.com.au>,
+        =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+        Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 4.14 04/26] dmaengine: pl330: Return DMA_PAUSED when transaction is paused
 Date:   Sun, 13 Aug 2023 23:18:57 +0200
-Message-ID: <20230813211721.544957780@linuxfoundation.org>
+Message-ID: <20230813211703.149840720@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211718.757428827@linuxfoundation.org>
-References: <20230813211718.757428827@linuxfoundation.org>
+In-Reply-To: <20230813211702.980427106@linuxfoundation.org>
+References: <20230813211702.980427106@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Florian Westphal <fw@strlen.de>
+From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
-commit 6a7ac3d20593865209dceb554d8b3f094c6bd940 upstream.
+commit 8cda3ececf07d374774f6a13e5a94bc2dc04c26c upstream.
 
-If we try to emit an icmp error in response to a nonliner skb, we get
+pl330_pause() does not set anything to indicate paused condition which
+causes pl330_tx_status() to return DMA_IN_PROGRESS. This breaks 8250
+DMA flush after the fix in commit 57e9af7831dc ("serial: 8250_dma: Fix
+DMA Rx rearm race"). The function comment for pl330_pause() claims
+pause is supported but resume is not which is enough for 8250 DMA flush
+to work as long as DMA status reports DMA_PAUSED when appropriate.
 
-BUG: KASAN: slab-out-of-bounds in ip_compute_csum+0x134/0x220
-Read of size 4 at addr ffff88811c50db00 by task iperf3/1691
-CPU: 2 PID: 1691 Comm: iperf3 Not tainted 6.5.0-rc3+ #309
-[..]
- kasan_report+0x105/0x140
- ip_compute_csum+0x134/0x220
- iptunnel_pmtud_build_icmp+0x554/0x1020
- skb_tunnel_check_pmtu+0x513/0xb80
- vxlan_xmit_one+0x139e/0x2ef0
- vxlan_xmit+0x1867/0x2760
- dev_hard_start_xmit+0x1ee/0x4f0
- br_dev_queue_push_xmit+0x4d1/0x660
- [..]
+Add PAUSED state for descriptor and mark BUSY descriptors with PAUSED
+in pl330_pause(). Return DMA_PAUSED from pl330_tx_status() when the
+descriptor is PAUSED.
 
-ip_compute_csum() cannot deal with nonlinear skbs, so avoid it.
-After this change, splat is gone and iperf3 is no longer stuck.
-
-Fixes: 4cb47a8644cc ("tunnels: PMTU discovery support for directly bridged IP packets")
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Link: https://lore.kernel.org/r/20230803152653.29535-2-fw@strlen.de
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reported-by: Richard Tresidder <rtresidd@electromag.com.au>
+Tested-by: Richard Tresidder <rtresidd@electromag.com.au>
+Fixes: 88987d2c7534 ("dmaengine: pl330: add DMA_PAUSE feature")
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/linux-serial/f8a86ecd-64b1-573f-c2fa-59f541083f1a@electromag.com.au/
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Link: https://lore.kernel.org/r/20230526105434.14959-1-ilpo.jarvinen@linux.intel.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/ip_tunnel_core.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/dma/pl330.c |   18 ++++++++++++++++--
+ 1 file changed, 16 insertions(+), 2 deletions(-)
 
---- a/net/ipv4/ip_tunnel_core.c
-+++ b/net/ipv4/ip_tunnel_core.c
-@@ -224,7 +224,7 @@ static int iptunnel_pmtud_build_icmp(str
- 		.un.frag.__unused	= 0,
- 		.un.frag.mtu		= htons(mtu),
- 	};
--	icmph->checksum = ip_compute_csum(icmph, len);
-+	icmph->checksum = csum_fold(skb_checksum(skb, 0, len, 0));
- 	skb_reset_transport_header(skb);
+--- a/drivers/dma/pl330.c
++++ b/drivers/dma/pl330.c
+@@ -404,6 +404,12 @@ enum desc_status {
+ 	 */
+ 	BUSY,
+ 	/*
++	 * Pause was called while descriptor was BUSY. Due to hardware
++	 * limitations, only termination is possible for descriptors
++	 * that have been paused.
++	 */
++	PAUSED,
++	/*
+ 	 * Sitting on the channel work_list but xfer done
+ 	 * by PL330 core
+ 	 */
+@@ -1926,7 +1932,7 @@ static inline void fill_queue(struct dma
+ 	list_for_each_entry(desc, &pch->work_list, node) {
  
- 	niph = skb_push(skb, sizeof(*niph));
+ 		/* If already submitted */
+-		if (desc->status == BUSY)
++		if (desc->status == BUSY || desc->status == PAUSED)
+ 			continue;
+ 
+ 		ret = pl330_submit_req(pch->thread, desc);
+@@ -2191,6 +2197,7 @@ static int pl330_pause(struct dma_chan *
+ {
+ 	struct dma_pl330_chan *pch = to_pchan(chan);
+ 	struct pl330_dmac *pl330 = pch->dmac;
++	struct dma_pl330_desc *desc;
+ 	unsigned long flags;
+ 
+ 	pm_runtime_get_sync(pl330->ddma.dev);
+@@ -2200,6 +2207,10 @@ static int pl330_pause(struct dma_chan *
+ 	_stop(pch->thread);
+ 	spin_unlock(&pl330->lock);
+ 
++	list_for_each_entry(desc, &pch->work_list, node) {
++		if (desc->status == BUSY)
++			desc->status = PAUSED;
++	}
+ 	spin_unlock_irqrestore(&pch->lock, flags);
+ 	pm_runtime_mark_last_busy(pl330->ddma.dev);
+ 	pm_runtime_put_autosuspend(pl330->ddma.dev);
+@@ -2290,7 +2301,7 @@ pl330_tx_status(struct dma_chan *chan, d
+ 		else if (running && desc == running)
+ 			transferred =
+ 				pl330_get_current_xferred_count(pch, desc);
+-		else if (desc->status == BUSY)
++		else if (desc->status == BUSY || desc->status == PAUSED)
+ 			/*
+ 			 * Busy but not running means either just enqueued,
+ 			 * or finished and not yet marked done
+@@ -2307,6 +2318,9 @@ pl330_tx_status(struct dma_chan *chan, d
+ 			case DONE:
+ 				ret = DMA_COMPLETE;
+ 				break;
++			case PAUSED:
++				ret = DMA_PAUSED;
++				break;
+ 			case PREP:
+ 			case BUSY:
+ 				ret = DMA_IN_PROGRESS;
 
 
