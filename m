@@ -2,113 +2,96 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CA22277AE0F
-	for <lists+stable@lfdr.de>; Mon, 14 Aug 2023 00:00:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A143177AC4B
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:32:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231445AbjHMWAS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 18:00:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53954 "EHLO
+        id S231918AbjHMVcI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:32:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55830 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231269AbjHMV7J (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:59:09 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 31F022717
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:44:15 -0700 (PDT)
+        with ESMTP id S231916AbjHMVcH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:32:07 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD52010EB
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:31:47 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7F3C360B9D
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:43:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 939C4C433C7;
-        Sun, 13 Aug 2023 21:43:58 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8EF2262B67
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:31:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7CBAC433C7;
+        Sun, 13 Aug 2023 21:31:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691963038;
-        bh=J3Ql6omGLv5otMMylyVQfBSPl0jzme1XllAxd+N5kfo=;
+        s=korg; t=1691962300;
+        bh=ZRFQgl5AGUt5ob7cXqP9NJEfx27b9+Euvd1vHoKuvBk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=CJgEQ1uvcPdDwlq121ZmyioBNLseNBZH3HkLsex2dJKtEmSAPHVB43OE+z0QVYZPd
-         3aixxePOlWxp1tPcHUI6ydvQ357sPh/JwBwuWcZd3/5FTV26FuMEhLq+X5jFk2e5/1
-         N64McT8gVTJtP9NGkGyB837wtN57pOxgeXI3KX5c=
+        b=OtEtuTSg1fhPyg1NbvzPFCoEFtbFyFoBxk+Nu7B5RW8W33EYDpElw7auTEB1Wc6CW
+         g9/DxOzkui7wUPTiTKEA9FQ1PFUtY4P62DbrXrkx78t3tOa7SUKkkUw8DWVYNvt2bh
+         1cCSYG9zh27C025EuVsj8cfSYEYIRKUiJxYaT6eI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Qi Zheng <zhengqi.arch@bytedance.com>,
-        Carlos Llamas <cmllamas@google.com>, stable <stable@kernel.org>
-Subject: [PATCH 5.15 23/89] binder: fix memory leak in binder_init()
+        patches@lists.linux.dev, Josef Bacik <josef@toxicpanda.com>,
+        Christoph Hellwig <hch@lst.de>, David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.4 184/206] btrfs: dont wait for writeback on clean pages in extent_write_cache_pages
 Date:   Sun, 13 Aug 2023 23:19:14 +0200
-Message-ID: <20230813211711.451753713@linuxfoundation.org>
+Message-ID: <20230813211730.290217641@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211710.787645394@linuxfoundation.org>
-References: <20230813211710.787645394@linuxfoundation.org>
+In-Reply-To: <20230813211724.969019629@linuxfoundation.org>
+References: <20230813211724.969019629@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Qi Zheng <zhengqi.arch@bytedance.com>
+From: Christoph Hellwig <hch@lst.de>
 
-commit adb9743d6a08778b78d62d16b4230346d3508986 upstream.
+commit 5c25699871112853f231e52d51c576d5c759a020 upstream.
 
-In binder_init(), the destruction of binder_alloc_shrinker_init() is not
-performed in the wrong path, which will cause memory leaks. So this commit
-introduces binder_alloc_shrinker_exit() and calls it in the wrong path to
-fix that.
+__extent_writepage could have started on more pages than the one it was
+called for.  This happens regularly for zoned file systems, and in theory
+could happen for compressed I/O if the worker thread was executed very
+quickly. For such pages extent_write_cache_pages waits for writeback
+to complete before moving on to the next page, which is highly inefficient
+as it blocks the flusher thread.
 
-Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
-Acked-by: Carlos Llamas <cmllamas@google.com>
-Fixes: f2517eb76f1f ("android: binder: Add global lru shrinker to binder")
-Cc: stable <stable@kernel.org>
-Link: https://lore.kernel.org/r/20230625154937.64316-1-qi.zheng@linux.dev
+Port over the PageDirty check that was added to write_cache_pages in
+commit 515f4a037fb ("mm: write_cache_pages optimise page cleaning") to
+fix this.
+
+CC: stable@vger.kernel.org # 4.14+
+Reviewed-by: Josef Bacik <josef@toxicpanda.com>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/android/binder.c       |    1 +
- drivers/android/binder_alloc.c |    6 ++++++
- drivers/android/binder_alloc.h |    1 +
- 3 files changed, 8 insertions(+)
+ fs/btrfs/extent_io.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/drivers/android/binder.c
-+++ b/drivers/android/binder.c
-@@ -6412,6 +6412,7 @@ err_init_binder_device_failed:
+--- a/fs/btrfs/extent_io.c
++++ b/fs/btrfs/extent_io.c
+@@ -2345,6 +2345,12 @@ retry:
+ 				continue;
+ 			}
  
- err_alloc_device_names_failed:
- 	debugfs_remove_recursive(binder_debugfs_dir_entry_root);
-+	binder_alloc_shrinker_exit();
- 
- 	return ret;
- }
---- a/drivers/android/binder_alloc.c
-+++ b/drivers/android/binder_alloc.c
-@@ -1091,6 +1091,12 @@ int binder_alloc_shrinker_init(void)
- 	return ret;
- }
- 
-+void binder_alloc_shrinker_exit(void)
-+{
-+	unregister_shrinker(&binder_shrinker);
-+	list_lru_destroy(&binder_alloc_lru);
-+}
++			if (!folio_test_dirty(folio)) {
++				/* Someone wrote it for us. */
++				folio_unlock(folio);
++				continue;
++			}
 +
- /**
-  * check_buffer() - verify that buffer/offset is safe to access
-  * @alloc: binder_alloc for this proc
---- a/drivers/android/binder_alloc.h
-+++ b/drivers/android/binder_alloc.h
-@@ -131,6 +131,7 @@ extern struct binder_buffer *binder_allo
- 						  int pid);
- extern void binder_alloc_init(struct binder_alloc *alloc);
- extern int binder_alloc_shrinker_init(void);
-+extern void binder_alloc_shrinker_exit(void);
- extern void binder_alloc_vma_close(struct binder_alloc *alloc);
- extern struct binder_buffer *
- binder_alloc_prepare_to_free(struct binder_alloc *alloc,
+ 			if (wbc->sync_mode != WB_SYNC_NONE) {
+ 				if (folio_test_writeback(folio))
+ 					submit_write_bio(bio_ctrl, 0);
 
 
