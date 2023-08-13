@@ -2,49 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 66E8277AC70
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:33:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0ADC077ABE9
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:27:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231982AbjHMVdH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:33:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60440 "EHLO
+        id S231731AbjHMV1H (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:27:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53698 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231997AbjHMVdH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:33:07 -0400
+        with ESMTP id S231742AbjHMV1H (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:27:07 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1AC0D91
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:33:09 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6FDDF10D7
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:27:09 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A40E462C0E
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:33:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7C99C433C7;
-        Sun, 13 Aug 2023 21:33:07 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 046ED629D1
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:27:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12AF4C433C8;
+        Sun, 13 Aug 2023 21:27:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691962388;
-        bh=25zy2sfNmWktLZNtxAWSxp4BB/hpjp8WHHPBl3cyHEY=;
+        s=korg; t=1691962028;
+        bh=A87liQJZt1QETltZwySfFJ9Bx67cktbkLe9ZLwz4Ghs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Zv5an+PQqw7JIqmBtXl7+/sEHqhjXReQz2fIm2QvpYGDovAC+DlreQcVlzdBa1FDd
-         OVUptazLcHOrSRCOUgymBLyFKZZ9z/DjFTAZ1sHz87uXxZtwcEWx2aF/ukrw+PeDoO
-         ituL3Ad1WRarsq+F875q3j5YSlXpS2oq7Vw8iK8c=
+        b=k+PgFf/5w1eQE+Z9fiYQn3S5dYnij7XQpYNk3hocNrCNxLSP5eWvLxTlUmXwS4orT
+         9xpZN/KqAoTZgqYQIms1FiU6Vp0OzqnvFRMcZyS0Mqo1b9yE83yxAcfT7xCTauHArP
+         vXQ7EQAxqlk500oOBLDrD4DjSLDzHEQgeYVItzok=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>,
-        Ido Schimmel <idosch@nvidia.com>,
-        Petr Machata <petrm@nvidia.com>,
-        Hangbin Liu <liuhangbin@gmail.com>,
-        Nikolay Aleksandrov <razor@blackwall.org>,
-        Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 011/149] selftests: forwarding: Set default IPv6 traceroute utility
+        patches@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Daniel Sneddon <daniel.sneddon@linux.intel.com>,
+        stable@kernel.org
+Subject: [PATCH 6.4 086/206] x86/speculation: Add cpu_show_gds() prototype
 Date:   Sun, 13 Aug 2023 23:17:36 +0200
-Message-ID: <20230813211719.137290885@linuxfoundation.org>
+Message-ID: <20230813211727.539223147@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211718.757428827@linuxfoundation.org>
-References: <20230813211718.757428827@linuxfoundation.org>
+In-Reply-To: <20230813211724.969019629@linuxfoundation.org>
+References: <20230813211724.969019629@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -59,60 +56,38 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-commit 38f7c44d6e760a8513557e27340d61b820c91b8f upstream.
+commit a57c27c7ad85c420b7de44c6ee56692d51709dda upstream.
 
-The test uses the 'TROUTE6' environment variable to encode the name of
-the IPv6 traceroute utility. By default (without a configuration file),
-this variable is not set, resulting in failures:
+The newly added function has two definitions but no prototypes:
 
- # ./ip6_forward_instats_vrf.sh
- TEST: ping6                                                         [ OK ]
- TEST: Ip6InTooBigErrors                                             [ OK ]
- TEST: Ip6InHdrErrors                                                [FAIL]
- TEST: Ip6InAddrErrors                                               [ OK ]
- TEST: Ip6InDiscards                                                 [ OK ]
+drivers/base/cpu.c:605:16: error: no previous prototype for 'cpu_show_gds' [-Werror=missing-prototypes]
 
-Fix by setting a default utility name and skip the test if the utility
-is not present.
+Add a declaration next to the other ones for this file to avoid the
+warning.
 
-Fixes: 0857d6f8c759 ("ipv6: When forwarding count rx stats on the orig netdev")
-Reported-by: Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>
-Closes: https://lore.kernel.org/netdev/adc5e40d-d040-a65e-eb26-edf47dac5b02@alu.unizg.hr/
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: Petr Machata <petrm@nvidia.com>
-Tested-by: Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>
-Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
-Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
-Link: https://lore.kernel.org/r/20230808141503.4060661-6-idosch@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 8974eb588283b ("x86/speculation: Add Gather Data Sampling mitigation")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Tested-by: Daniel Sneddon <daniel.sneddon@linux.intel.com>
+Cc: stable@kernel.org
+Link: https://lore.kernel.org/all/20230809130530.1913368-1-arnd%40kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/net/forwarding/ip6_forward_instats_vrf.sh |    2 ++
- tools/testing/selftests/net/forwarding/lib.sh                     |    1 +
- 2 files changed, 3 insertions(+)
+ include/linux/cpu.h |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/tools/testing/selftests/net/forwarding/ip6_forward_instats_vrf.sh
-+++ b/tools/testing/selftests/net/forwarding/ip6_forward_instats_vrf.sh
-@@ -14,6 +14,8 @@ ALL_TESTS="
- NUM_NETIFS=4
- source lib.sh
+--- a/include/linux/cpu.h
++++ b/include/linux/cpu.h
+@@ -72,6 +72,8 @@ extern ssize_t cpu_show_retbleed(struct
+ 				 struct device_attribute *attr, char *buf);
+ extern ssize_t cpu_show_spec_rstack_overflow(struct device *dev,
+ 					     struct device_attribute *attr, char *buf);
++extern ssize_t cpu_show_gds(struct device *dev,
++			    struct device_attribute *attr, char *buf);
  
-+require_command $TROUTE6
-+
- h1_create()
- {
- 	simple_if_init $h1 2001:1:1::2/64
---- a/tools/testing/selftests/net/forwarding/lib.sh
-+++ b/tools/testing/selftests/net/forwarding/lib.sh
-@@ -30,6 +30,7 @@ REQUIRE_MZ=${REQUIRE_MZ:=yes}
- REQUIRE_MTOOLS=${REQUIRE_MTOOLS:=no}
- STABLE_MAC_ADDRS=${STABLE_MAC_ADDRS:=no}
- TCPDUMP_EXTRA_FLAGS=${TCPDUMP_EXTRA_FLAGS:=}
-+TROUTE6=${TROUTE6:=traceroute6}
- 
- relative_path="${BASH_SOURCE%/*}"
- if [[ "$relative_path" == "${BASH_SOURCE}" ]]; then
+ extern __printf(4, 5)
+ struct device *cpu_device_create(struct device *parent, void *drvdata,
 
 
