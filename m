@@ -2,44 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 648CD77AB64
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:21:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 12E2277AB90
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:23:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229558AbjHMVV0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:21:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45478 "EHLO
+        id S231137AbjHMVXS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:23:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59196 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230271AbjHMVVZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:21:25 -0400
+        with ESMTP id S231172AbjHMVXS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:23:18 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F04D910D7
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:21:26 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD002FB
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:23:19 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8604362793
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:21:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97DA7C433C9;
-        Sun, 13 Aug 2023 21:21:25 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6470B62880
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:23:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79308C433C7;
+        Sun, 13 Aug 2023 21:23:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691961686;
-        bh=lwGCTcQkL9P0smekJypRVkktTk+uh81uf5a/nipxBe4=;
+        s=korg; t=1691961798;
+        bh=Zxit6O1Bh6wPqMdnyKqbEyLICOb/91Le6JJXX1nz2qU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=yP5OL0Cfsb73FFhXE3nKnkjIjv2c9749qqjvonpiqxGbtX7ou++sbYeNu11RnpnOm
-         41o2TjwqvELQPfmPr9lEqWD/5sW6DRErcJ5h59EFYR9B8+x+2n4aue5wSlDtM6O47B
-         L1QKbA03lNvcQ0sitMiViwg+gPQpG87edqPD8qzk=
+        b=JTTxuKL4h/dDMCUzr5ZhqVTxW17+6xlJeAodyUZPyJCPA3CqPmwCTRfMBmABj01dG
+         2OJDZsUMbt52JZlsJPJ8kUEuCszxg+9odWn6u7AvNi6pu8O2oRTPusDTFRzpz5VkwM
+         n5zvxyG4uZPjoNDcxxA2BNa25i7pbykyzYmBPV1g=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Michael Kelley <mikelley@microsoft.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 4.14 22/26] scsi: storvsc: Fix handling of virtual Fibre Channel timeouts
+        patches@lists.linux.dev,
+        Douglas Miller <doug.miller@cornelisnetworks.com>,
+        Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>,
+        Leon Romanovsky <leon@kernel.org>
+Subject: [PATCH 4.19 21/33] IB/hfi1: Fix possible panic during hotplug remove
 Date:   Sun, 13 Aug 2023 23:19:15 +0200
-Message-ID: <20230813211703.810652834@linuxfoundation.org>
+Message-ID: <20230813211704.709675123@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211702.980427106@linuxfoundation.org>
-References: <20230813211702.980427106@linuxfoundation.org>
+In-Reply-To: <20230813211703.915807095@linuxfoundation.org>
+References: <20230813211703.915807095@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,62 +56,33 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Michael Kelley <mikelley@microsoft.com>
+From: Douglas Miller <doug.miller@cornelisnetworks.com>
 
-commit 175544ad48cbf56affeef2a679c6a4d4fb1e2881 upstream.
+commit 4fdfaef71fced490835145631a795497646f4555 upstream.
 
-Hyper-V provides the ability to connect Fibre Channel LUNs to the host
-system and present them in a guest VM as a SCSI device. I/O to the vFC
-device is handled by the storvsc driver. The storvsc driver includes a
-partial integration with the FC transport implemented in the generic
-portion of the Linux SCSI subsystem so that FC attributes can be displayed
-in /sys.  However, the partial integration means that some aspects of vFC
-don't work properly. Unfortunately, a full and correct integration isn't
-practical because of limitations in what Hyper-V provides to the guest.
+During hotplug remove it is possible that the update counters work
+might be pending, and may run after memory has been freed.
+Cancel the update counters work before freeing memory.
 
-In particular, in the context of Hyper-V storvsc, the FC transport timeout
-function fc_eh_timed_out() causes a kernel panic because it can't find the
-rport and dereferences a NULL pointer. The original patch that added the
-call from storvsc_eh_timed_out() to fc_eh_timed_out() is faulty in this
-regard.
-
-In many cases a timeout is due to a transient condition, so the situation
-can be improved by just continuing to wait like with other I/O requests
-issued by storvsc, and avoiding the guaranteed panic. For a permanent
-failure, continuing to wait may result in a hung thread instead of a panic,
-which again may be better.
-
-So fix the panic by removing the storvsc call to fc_eh_timed_out().  This
-allows storvsc to keep waiting for a response.  The change has been tested
-by users who experienced a panic in fc_eh_timed_out() due to transient
-timeouts, and it solves their problem.
-
-In the future we may want to deprecate the vFC functionality in storvsc
-since it can't be fully fixed. But it has current users for whom it is
-working well enough, so it should probably stay for a while longer.
-
-Fixes: 3930d7309807 ("scsi: storvsc: use default I/O timeout handler for FC devices")
-Cc: stable@vger.kernel.org
-Signed-off-by: Michael Kelley <mikelley@microsoft.com>
-Link: https://lore.kernel.org/r/1690606764-79669-1-git-send-email-mikelley@microsoft.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: 7724105686e7 ("IB/hfi1: add driver files")
+Signed-off-by: Douglas Miller <doug.miller@cornelisnetworks.com>
+Signed-off-by: Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>
+Link: https://lore.kernel.org/r/169099756100.3927190.15284930454106475280.stgit@awfm-02.cornelisnetworks.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/storvsc_drv.c |    4 ----
- 1 file changed, 4 deletions(-)
+ drivers/infiniband/hw/hfi1/chip.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/scsi/storvsc_drv.c
-+++ b/drivers/scsi/storvsc_drv.c
-@@ -1505,10 +1505,6 @@ static int storvsc_host_reset_handler(st
-  */
- static enum blk_eh_timer_return storvsc_eh_timed_out(struct scsi_cmnd *scmnd)
- {
--#if IS_ENABLED(CONFIG_SCSI_FC_ATTRS)
--	if (scmnd->device->host->transportt == fc_transport_template)
--		return fc_eh_timed_out(scmnd);
--#endif
- 	return BLK_EH_RESET_TIMER;
- }
+--- a/drivers/infiniband/hw/hfi1/chip.c
++++ b/drivers/infiniband/hw/hfi1/chip.c
+@@ -12178,6 +12178,7 @@ static void free_cntrs(struct hfi1_devda
  
+ 	if (dd->synth_stats_timer.function)
+ 		del_timer_sync(&dd->synth_stats_timer);
++	cancel_work_sync(&dd->update_cntr_work);
+ 	ppd = (struct hfi1_pportdata *)(dd + 1);
+ 	for (i = 0; i < dd->num_pports; i++, ppd++) {
+ 		kfree(ppd->cntrs);
 
 
