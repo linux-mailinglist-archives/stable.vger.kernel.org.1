@@ -2,46 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6A6F977AC51
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:32:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4E40E77ACBB
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:36:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231923AbjHMVcL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:32:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55978 "EHLO
+        id S232141AbjHMVg1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:36:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59672 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231924AbjHMVcK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:32:10 -0400
+        with ESMTP id S232148AbjHMVg0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:36:26 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F3D721BE7
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:31:51 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 788D910DB
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:36:28 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 044A862B49
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:31:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A9A8C433C8;
-        Sun, 13 Aug 2023 21:31:44 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0EAB962EAF
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:36:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24418C433C7;
+        Sun, 13 Aug 2023 21:36:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691962305;
-        bh=b4IPiS6o5lHjzNYLNZcgvpuRvgyOawN94vatG/qa3wg=;
+        s=korg; t=1691962587;
+        bh=s7b0HE2BSbuInMhTYrQJ8CfQD1qiStrdX12UqkTTddo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=TRmtugFSJ2s3To7ESVv5AHLpj+TjC9F6h8BTjK+KZgpgy+qsFOFr830fUX6S+0Lxf
-         4RCA2wfJogi33NfOh0y2J52f6I/D2/Ywp5+bpx8TLqbTkoRBfNyzzjGb7lDRnUONfp
-         By19CEj+AKxL27guftX0aYGTHfjn8ZEwnQhQRZs4=
+        b=ItBfl+2orJw+wqKLzbFx4achoF13ItD/7rjHo+vT1b7dCAdfJO4BWeTeuFI0AFXeD
+         t70Ip6MUI4p97+lBpNMrf9n1wKONOG6d3x7KDVrpmbARw8I7X1pKn0eim4ItsU2bGs
+         zJeA5AJDK0hRR1FQr6RkUwPv7Z9A5vNce+IN7EzY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yonglong Liu <liuyonglong@huawei.com>,
-        Jijie Shao <shaojijie@huawei.com>,
-        Leon Romanovsky <leonro@nvidia.com>,
-        Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.4 158/206] net: hns3: fix deadlock issue when externel_lb and reset are executed together
+        patches@lists.linux.dev, Andrew Kanner <andrew.kanner@gmail.com>,
+        Jesper Dangaard Brouer <hawk@kernel.org>,
+        Jason Wang <jasowang@redhat.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        syzbot+f817490f5bd20541b90a@syzkaller.appspotmail.com
+Subject: [PATCH 6.1 083/149] net: core: remove unnecessary frame_sz check in bpf_xdp_adjust_tail()
 Date:   Sun, 13 Aug 2023 23:18:48 +0200
-Message-ID: <20230813211729.549519199@linuxfoundation.org>
+Message-ID: <20230813211721.277887207@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211724.969019629@linuxfoundation.org>
-References: <20230813211724.969019629@linuxfoundation.org>
+In-Reply-To: <20230813211718.757428827@linuxfoundation.org>
+References: <20230813211718.757428827@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,84 +57,80 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Yonglong Liu <liuyonglong@huawei.com>
+From: Andrew Kanner <andrew.kanner@gmail.com>
 
-commit ac6257a3ae5db5193b1f19c268e4f72d274ddb88 upstream.
+commit d14eea09edf427fa36bd446f4a3271f99164202f upstream.
 
-When externel_lb and reset are executed together, a deadlock may
-occur:
-[ 3147.217009] INFO: task kworker/u321:0:7 blocked for more than 120 seconds.
-[ 3147.230483] "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
-[ 3147.238999] task:kworker/u321:0  state:D stack:    0 pid:    7 ppid:     2 flags:0x00000008
-[ 3147.248045] Workqueue: hclge hclge_service_task [hclge]
-[ 3147.253957] Call trace:
-[ 3147.257093]  __switch_to+0x7c/0xbc
-[ 3147.261183]  __schedule+0x338/0x6f0
-[ 3147.265357]  schedule+0x50/0xe0
-[ 3147.269185]  schedule_preempt_disabled+0x18/0x24
-[ 3147.274488]  __mutex_lock.constprop.0+0x1d4/0x5dc
-[ 3147.279880]  __mutex_lock_slowpath+0x1c/0x30
-[ 3147.284839]  mutex_lock+0x50/0x60
-[ 3147.288841]  rtnl_lock+0x20/0x2c
-[ 3147.292759]  hclge_reset_prepare+0x68/0x90 [hclge]
-[ 3147.298239]  hclge_reset_subtask+0x88/0xe0 [hclge]
-[ 3147.303718]  hclge_reset_service_task+0x84/0x120 [hclge]
-[ 3147.309718]  hclge_service_task+0x2c/0x70 [hclge]
-[ 3147.315109]  process_one_work+0x1d0/0x490
-[ 3147.319805]  worker_thread+0x158/0x3d0
-[ 3147.324240]  kthread+0x108/0x13c
-[ 3147.328154]  ret_from_fork+0x10/0x18
+Syzkaller reported the following issue:
+=======================================
+Too BIG xdp->frame_sz = 131072
+WARNING: CPU: 0 PID: 5020 at net/core/filter.c:4121
+  ____bpf_xdp_adjust_tail net/core/filter.c:4121 [inline]
+WARNING: CPU: 0 PID: 5020 at net/core/filter.c:4121
+  bpf_xdp_adjust_tail+0x466/0xa10 net/core/filter.c:4103
+...
+Call Trace:
+ <TASK>
+ bpf_prog_4add87e5301a4105+0x1a/0x1c
+ __bpf_prog_run include/linux/filter.h:600 [inline]
+ bpf_prog_run_xdp include/linux/filter.h:775 [inline]
+ bpf_prog_run_generic_xdp+0x57e/0x11e0 net/core/dev.c:4721
+ netif_receive_generic_xdp net/core/dev.c:4807 [inline]
+ do_xdp_generic+0x35c/0x770 net/core/dev.c:4866
+ tun_get_user+0x2340/0x3ca0 drivers/net/tun.c:1919
+ tun_chr_write_iter+0xe8/0x210 drivers/net/tun.c:2043
+ call_write_iter include/linux/fs.h:1871 [inline]
+ new_sync_write fs/read_write.c:491 [inline]
+ vfs_write+0x650/0xe40 fs/read_write.c:584
+ ksys_write+0x12f/0x250 fs/read_write.c:637
+ do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+ do_syscall_64+0x38/0xb0 arch/x86/entry/common.c:80
+ entry_SYSCALL_64_after_hwframe+0x63/0xcd
 
-In externel_lb process, the hns3 driver call napi_disable()
-first, then the reset happen, then the restore process of the
-externel_lb will fail, and will not call napi_enable(). When
-doing externel_lb again, napi_disable() will be double call,
-cause a deadlock of rtnl_lock().
+xdp->frame_sz > PAGE_SIZE check was introduced in commit c8741e2bfe87
+("xdp: Allow bpf_xdp_adjust_tail() to grow packet size"). But Jesper
+Dangaard Brouer <jbrouer@redhat.com> noted that after introducing the
+xdp_init_buff() which all XDP driver use - it's safe to remove this
+check. The original intend was to catch cases where XDP drivers have
+not been updated to use xdp.frame_sz, but that is not longer a concern
+(since xdp_init_buff).
 
-This patch use the HNS3_NIC_STATE_DOWN state to protect the
-calling of napi_disable() and napi_enable() in externel_lb
-process, just as the usage in ndo_stop() and ndo_start().
+Running the initial syzkaller repro it was discovered that the
+contiguous physical memory allocation is used for both xdp paths in
+tun_get_user(), e.g. tun_build_skb() and tun_alloc_skb(). It was also
+stated by Jesper Dangaard Brouer <jbrouer@redhat.com> that XDP can
+work on higher order pages, as long as this is contiguous physical
+memory (e.g. a page).
 
-Fixes: 04b6ba143521 ("net: hns3: add support for external loopback test")
-Signed-off-by: Yonglong Liu <liuyonglong@huawei.com>
-Signed-off-by: Jijie Shao <shaojijie@huawei.com>
-Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
-Link: https://lore.kernel.org/r/20230807113452.474224-5-shaojijie@huawei.com
+Reported-and-tested-by: syzbot+f817490f5bd20541b90a@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/000000000000774b9205f1d8a80d@google.com/T/
+Link: https://syzkaller.appspot.com/bug?extid=f817490f5bd20541b90a
+Link: https://lore.kernel.org/all/20230725155403.796-1-andrew.kanner@gmail.com/T/
+Fixes: 43b5169d8355 ("net, xdp: Introduce xdp_init_buff utility routine")
+Signed-off-by: Andrew Kanner <andrew.kanner@gmail.com>
+Acked-by: Jesper Dangaard Brouer <hawk@kernel.org>
+Acked-by: Jason Wang <jasowang@redhat.com>
+Link: https://lore.kernel.org/r/20230803190316.2380231-1-andrew.kanner@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/hisilicon/hns3/hns3_enet.c |   14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+ net/core/filter.c |    6 ------
+ 1 file changed, 6 deletions(-)
 
---- a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
-@@ -5854,6 +5854,9 @@ void hns3_external_lb_prepare(struct net
- 	if (!if_running)
- 		return;
+--- a/net/core/filter.c
++++ b/net/core/filter.c
+@@ -4064,12 +4064,6 @@ BPF_CALL_2(bpf_xdp_adjust_tail, struct x
+ 	if (unlikely(data_end > data_hard_end))
+ 		return -EINVAL;
  
-+	if (test_and_set_bit(HNS3_NIC_STATE_DOWN, &priv->state))
-+		return;
-+
- 	netif_carrier_off(ndev);
- 	netif_tx_disable(ndev);
+-	/* ALL drivers MUST init xdp->frame_sz, chicken check below */
+-	if (unlikely(xdp->frame_sz > PAGE_SIZE)) {
+-		WARN_ONCE(1, "Too BIG xdp->frame_sz = %d\n", xdp->frame_sz);
+-		return -EINVAL;
+-	}
+-
+ 	if (unlikely(data_end < xdp->data + ETH_HLEN))
+ 		return -EINVAL;
  
-@@ -5882,7 +5885,16 @@ void hns3_external_lb_restore(struct net
- 	if (!if_running)
- 		return;
- 
--	hns3_nic_reset_all_ring(priv->ae_handle);
-+	if (hns3_nic_resetting(ndev))
-+		return;
-+
-+	if (!test_bit(HNS3_NIC_STATE_DOWN, &priv->state))
-+		return;
-+
-+	if (hns3_nic_reset_all_ring(priv->ae_handle))
-+		return;
-+
-+	clear_bit(HNS3_NIC_STATE_DOWN, &priv->state);
- 
- 	for (i = 0; i < priv->vector_num; i++)
- 		hns3_vector_enable(&priv->tqp_vector[i]);
 
 
