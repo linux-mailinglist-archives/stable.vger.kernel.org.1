@@ -2,50 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CD5E977A704
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 16:45:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E3C3E77A706
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 16:45:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230369AbjHMOpF (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 10:45:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58386 "EHLO
+        id S230383AbjHMOpN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 10:45:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45908 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230194AbjHMOpE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 10:45:04 -0400
-Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C4761702
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 07:45:06 -0700 (PDT)
-Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-99bd67facffso81258966b.0
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 07:45:06 -0700 (PDT)
+        with ESMTP id S230092AbjHMOpM (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 10:45:12 -0400
+Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C63B10DE
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 07:45:15 -0700 (PDT)
+Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-99c3ca08c09so107759866b.1
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 07:45:14 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691937904; x=1692542704;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=zCCJuLWxlzwZK4lPpl9OOBdDL3u1368YHPb0g0HV9fw=;
-        b=BgP99zH8e2yZbQdha6IjgxCb95cJcOPTtn9465yW10XQzTyKISMvRyKJw6acxorqxF
-         1dlkjZpbmJS2IRO4KyXVoAyLBMXPvXBIdeU+wk357aWzjZ33Qa3M9mqBOSXX9w+Y/lZM
-         4FaQZFHJtI8FYGclxnWtNyZSaaKe0HeugYl2hlY1oUL+xP4lEn089YOGjiBVX3smatLo
-         vZP8pYbOM5zof6lys/8SgbgIl+nlLq/7H98qnxJPrYETOzju7hKEdIE+43BNHi99lndQ
-         ArHbpKH5nuQBdfo6ODh6FZDpVDrgGnQ2WUVuIMuw3qqWUUkBxhdOnIRFwYzha8kVVPw2
-         PCFw==
-X-Gm-Message-State: AOJu0Yz85I13liMtHRiRYx3hQtwzhJdQcAG5ad1KBYv7J+eYU/ppgm/w
-        JxasxRR9afVnIIf2YhMjJ2PJdgexM4I=
-X-Google-Smtp-Source: AGHT+IFIRCwoxlLELSV6+nD2yzu51uet4FKj4HXaxSd/Tq89d9NcP9kV/g2lKC51F+pjVVWNPlqp3w==
-X-Received: by 2002:a17:906:21c:b0:99c:c178:cef9 with SMTP id 28-20020a170906021c00b0099cc178cef9mr5573065ejd.2.1691937904256;
-        Sun, 13 Aug 2023 07:45:04 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1691937913; x=1692542713;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=QNGi8K3J7lw/ZSXS7j6v1SkrAVUpcZa/LdyjGxfu3pA=;
+        b=L7xg4DE6U3OoMMVDdhf6wvOsrNDZGwosVkCKONM3dcytbAZGNCa3z6wJAtHGdgJSqb
+         vglabDnFXKhsfdjxMdhREISqco6fml2q1BhF3tTd5FBgtXpluaHqTTEd/I7xmG4wrkM6
+         lw1IF6tmlrmZjZ2LGQ2nqXYP40lK0O6wRcft51HQO7L+tZvc4gtdxSPiRMy4d4t3WgCT
+         1rG1xO2KmqIqSA3gXPBgXA0lOnGpiSik4n3gtAfVQwT86T/mToKiJqDK4llxrnYKdX1e
+         jLnkJd/p8CiIqUQluEABfEwss9XEsHrWtPariryMkGWicu3LxkJ+moChyT4/WbHFz+fn
+         xf5w==
+X-Gm-Message-State: AOJu0YxJNYOX5JeXdr1O7OgQujH7NiYpuRHLrsAQIl3deghFYjUYM5kU
+        DFwRQDmUdXMkKhkIiBS+DGD7eqynXcA=
+X-Google-Smtp-Source: AGHT+IEmlQCISV8xuYubpycyxGP0Hocr6owQNsOJL0RdozE0FVGdLDyTDQ7kzwHuZeUbpaz/KHYqqQ==
+X-Received: by 2002:a17:906:73c6:b0:997:d069:a880 with SMTP id n6-20020a17090673c600b00997d069a880mr6142907ejl.1.1691937913126;
+        Sun, 13 Aug 2023 07:45:13 -0700 (PDT)
 Received: from localhost.localdomain (46-116-229-137.bb.netvision.net.il. [46.116.229.137])
-        by smtp.gmail.com with ESMTPSA id h11-20020a170906110b00b00977cad140a8sm4618761eja.218.2023.08.13.07.45.03
+        by smtp.gmail.com with ESMTPSA id g6-20020a170906348600b0099c157cba46sm4574699ejb.119.2023.08.13.07.45.12
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 13 Aug 2023 07:45:03 -0700 (PDT)
+        Sun, 13 Aug 2023 07:45:12 -0700 (PDT)
 From:   Sagi Grimberg <sagi@grimberg.me>
 To:     <stable@vger.kernel.org>
 Cc:     linux-nvme@lists.infradead.org
-Subject: [PATCH 6.1.y 2/2] nvme-rdma: fix potential unbalanced freeze & unfreeze
-Date:   Sun, 13 Aug 2023 17:45:00 +0300
-Message-ID: <20230813144500.15339-2-sagi@grimberg.me>
+Subject: [PATCH 5.15.y 5.10.y 5.4.y 1/2] nvme-tcp: fix potential unbalanced freeze & unfreeze
+Date:   Sun, 13 Aug 2023 17:45:09 +0300
+Message-ID: <20230813144510.15401-1-sagi@grimberg.me>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813144500.15339-1-sagi@grimberg.me>
-References: <20230813144500.15339-1-sagi@grimberg.me>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
@@ -60,7 +58,7 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Ming Lei <ming.lei@redhat.com>
 
-Move start_freeze into nvme_rdma_configure_io_queues(), and there is
+Move start_freeze into nvme_tcp_configure_io_queues(), and there is
 at least two benefits:
 
 1) fix unbalanced freeze and unfreeze, since re-connection work may
@@ -76,44 +74,44 @@ because of queue topo change, but that looks not one big deal:
 
 2) compared with !mpath, mpath use case is dominant
 
-Fixes: 9f98772ba307 ("nvme-rdma: fix controller reset hang during traffic")
+Fixes: 2875b0aecabe ("nvme-tcp: fix controller reset hang during traffic")
 Cc: stable@vger.kernel.org
 Signed-off-by: Ming Lei <ming.lei@redhat.com>
 Tested-by: Yi Zhang <yi.zhang@redhat.com>
 Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
 Signed-off-by: Keith Busch <kbusch@kernel.org>
 ---
- drivers/nvme/host/rdma.c | 3 ++-
+ drivers/nvme/host/tcp.c | 3 ++-
  1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/nvme/host/rdma.c b/drivers/nvme/host/rdma.c
-index 80383213b882..c478480f54aa 100644
---- a/drivers/nvme/host/rdma.c
-+++ b/drivers/nvme/host/rdma.c
-@@ -923,6 +923,7 @@ static int nvme_rdma_configure_io_queues(struct nvme_rdma_ctrl *ctrl, bool new)
- 		goto out_cleanup_tagset;
+diff --git a/drivers/nvme/host/tcp.c b/drivers/nvme/host/tcp.c
+index 96d8d7844e84..c2e037644ad1 100644
+--- a/drivers/nvme/host/tcp.c
++++ b/drivers/nvme/host/tcp.c
+@@ -1882,6 +1882,7 @@ static int nvme_tcp_configure_io_queues(struct nvme_ctrl *ctrl, bool new)
+ 		goto out_cleanup_connect_q;
  
  	if (!new) {
-+		nvme_start_freeze(&ctrl->ctrl);
- 		nvme_start_queues(&ctrl->ctrl);
- 		if (!nvme_wait_freeze_timeout(&ctrl->ctrl, NVME_IO_TIMEOUT)) {
++		nvme_start_freeze(ctrl);
+ 		nvme_start_queues(ctrl);
+ 		if (!nvme_wait_freeze_timeout(ctrl, NVME_IO_TIMEOUT)) {
  			/*
-@@ -931,6 +932,7 @@ static int nvme_rdma_configure_io_queues(struct nvme_rdma_ctrl *ctrl, bool new)
+@@ -1890,6 +1891,7 @@ static int nvme_tcp_configure_io_queues(struct nvme_ctrl *ctrl, bool new)
  			 * to be safe.
  			 */
  			ret = -ENODEV;
-+			nvme_unfreeze(&ctrl->ctrl);
++			nvme_unfreeze(ctrl);
  			goto out_wait_freeze_timed_out;
  		}
- 		blk_mq_update_nr_hw_queues(ctrl->ctrl.tagset,
-@@ -980,7 +982,6 @@ static void nvme_rdma_teardown_io_queues(struct nvme_rdma_ctrl *ctrl,
- 		bool remove)
- {
- 	if (ctrl->ctrl.queue_count > 1) {
--		nvme_start_freeze(&ctrl->ctrl);
- 		nvme_stop_queues(&ctrl->ctrl);
- 		nvme_sync_io_queues(&ctrl->ctrl);
- 		nvme_rdma_stop_io_queues(ctrl);
+ 		blk_mq_update_nr_hw_queues(ctrl->tagset,
+@@ -2008,7 +2010,6 @@ static void nvme_tcp_teardown_io_queues(struct nvme_ctrl *ctrl,
+ 	if (ctrl->queue_count <= 1)
+ 		return;
+ 	blk_mq_quiesce_queue(ctrl->admin_q);
+-	nvme_start_freeze(ctrl);
+ 	nvme_stop_queues(ctrl);
+ 	nvme_sync_io_queues(ctrl);
+ 	nvme_tcp_stop_io_queues(ctrl);
 -- 
 2.41.0
 
