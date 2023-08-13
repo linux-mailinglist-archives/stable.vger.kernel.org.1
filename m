@@ -2,44 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A389A77AD9C
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:49:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6AE8E77AD82
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:49:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232528AbjHMVtk (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:49:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36600 "EHLO
+        id S232435AbjHMVtW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:49:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41330 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232297AbjHMVtH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:49:07 -0400
+        with ESMTP id S232318AbjHMVsw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:48:52 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EAFE41719
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:39:52 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F4C519A3
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:40:59 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5E645622CB
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:39:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77D90C433C7;
-        Sun, 13 Aug 2023 21:39:48 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 25C7461A2D
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:40:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBCDEC433C8;
+        Sun, 13 Aug 2023 21:40:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691962788;
-        bh=HykUHpbPs/2YVkHCI8x20/a9KSCSKMkB5Veryj+IJhM=;
+        s=korg; t=1691962858;
+        bh=vyrbWkL+w5yCnSv55T8mPMqORP3G3ad88emGkNyMm4w=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=LIRzMqhzsbr86mimkT1V8McqH/rC1q4Z8F7ilyt3UFEFq3AM168JlaqAiZJmkS4Fu
-         v4fTb94u7PciDMbnotD/OJKXyji/JMTa1a1Rutdpbg+WcFOFVcfary949LoKaRHp3Y
-         +5DEONLRwe+ayRYpjrskT4Al0DPl62qzVbA1mhDU=
+        b=DK90rvUvKR2KB0nj5hMesYA0ZOFXlygmalukTqUsf5lI9rQVwEhvvM2edpNomkfuh
+         18yNvWHZKv/J733gnHbMUh9Nj2PPDPZQ9mRdQdyLtwxFQ28dBIl3tA4oMV9bAVm+K6
+         aBxytHuoGo3iAfwRlskFp7IHL4oiZ6Db0KWy/orE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Josef Bacik <josef@toxicpanda.com>,
-        Christoph Hellwig <hch@lst.de>, David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.1 129/149] btrfs: properly clear end of the unreserved range in cow_file_range
+        patches@lists.linux.dev, Ido Schimmel <idosch@nvidia.com>,
+        Petr Machata <petrm@nvidia.com>,
+        Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>,
+        Hangbin Liu <liuhangbin@gmail.com>,
+        Nikolay Aleksandrov <razor@blackwall.org>,
+        Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.10 33/68] selftests: forwarding: Add a helper to skip test when using veth pairs
 Date:   Sun, 13 Aug 2023 23:19:34 +0200
-Message-ID: <20230813211722.581708159@linuxfoundation.org>
+Message-ID: <20230813211709.162643828@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211718.757428827@linuxfoundation.org>
-References: <20230813211718.757428827@linuxfoundation.org>
+In-Reply-To: <20230813211708.149630011@linuxfoundation.org>
+References: <20230813211708.149630011@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,54 +58,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Christoph Hellwig <hch@lst.de>
+From: Ido Schimmel <idosch@nvidia.com>
 
-commit 12b2d64e591652a2d97dd3afa2b062ca7a4ba352 upstream.
+commit 66e131861ab7bf754b50813216f5c6885cd32d63 upstream.
 
-When the call to btrfs_reloc_clone_csums in cow_file_range returns an
-error, we jump to the out_unlock label with the extent_reserved variable
-set to false.   The cleanup at the label will then call
-extent_clear_unlock_delalloc on the range from start to end.  But we've
-already added cur_alloc_size to start before the jump, so there might no
-range be left from the newly incremented start to end.  Move the check for
-'start < end' so that it is reached by also for the !extent_reserved case.
+A handful of tests require physical loopbacks to be used instead of veth
+pairs. Add a helper that these tests will invoke in order to be skipped
+when executed with veth pairs.
 
-CC: stable@vger.kernel.org # 6.1+
-Fixes: a315e68f6e8b ("Btrfs: fix invalid attempt to free reserved space on failure to cow range")
-Reviewed-by: Josef Bacik <josef@toxicpanda.com>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Fixes: 64916b57c0b1 ("selftests: forwarding: Add speed and auto-negotiation test")
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: Petr Machata <petrm@nvidia.com>
+Tested-by: Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>
+Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
+Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
+Link: https://lore.kernel.org/r/20230808141503.4060661-7-idosch@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/inode.c |   10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ tools/testing/selftests/net/forwarding/lib.sh |   11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
---- a/fs/btrfs/inode.c
-+++ b/fs/btrfs/inode.c
-@@ -1429,8 +1429,6 @@ out_unlock:
- 					     clear_bits,
- 					     page_ops);
- 		start += cur_alloc_size;
--		if (start >= end)
--			return ret;
- 	}
- 
- 	/*
-@@ -1439,9 +1437,11 @@ out_unlock:
- 	 * space_info's bytes_may_use counter, reserved in
- 	 * btrfs_check_data_free_space().
- 	 */
--	extent_clear_unlock_delalloc(inode, start, end, locked_page,
--				     clear_bits | EXTENT_CLEAR_DATA_RESV,
--				     page_ops);
-+	if (start < end) {
-+		clear_bits |= EXTENT_CLEAR_DATA_RESV;
-+		extent_clear_unlock_delalloc(inode, start, end, locked_page,
-+					     clear_bits, page_ops);
-+	}
- 	return ret;
+--- a/tools/testing/selftests/net/forwarding/lib.sh
++++ b/tools/testing/selftests/net/forwarding/lib.sh
+@@ -69,6 +69,17 @@ check_tc_action_hw_stats_support()
+ 	fi
  }
  
++skip_on_veth()
++{
++	local kind=$(ip -j -d link show dev ${NETIFS[p1]} |
++		jq -r '.[].linkinfo.info_kind')
++
++	if [[ $kind == veth ]]; then
++		echo "SKIP: Test cannot be run with veth pairs"
++		exit $ksft_skip
++	fi
++}
++
+ if [[ "$(id -u)" -ne 0 ]]; then
+ 	echo "SKIP: need root privileges"
+ 	exit 0
 
 
