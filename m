@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2B7D777AB92
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:23:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1421277AD84
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:49:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231299AbjHMVXX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:23:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59298 "EHLO
+        id S232429AbjHMVtW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:49:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60498 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231287AbjHMVXX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:23:23 -0400
+        with ESMTP id S232316AbjHMVsw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:48:52 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2204DEE
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:23:25 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F3D31725
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:40:11 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id ACE9662878
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:23:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6772C433C8;
-        Sun, 13 Aug 2023 21:23:23 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 233AB63826
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:40:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F918C433C8;
+        Sun, 13 Aug 2023 21:40:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691961804;
-        bh=x70b3uBrcyDzxHUprW9HAfTP/x8eUIhusQVUyShBXP8=;
+        s=korg; t=1691962810;
+        bh=px2ikZgJt3p1w8e9TEPRcoe7l5DCFqn1YlrIsCewxYE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=yEnE+jZSDspe8c1YWyqxp62gIbQ0PpsVg6T9CDCrJ7+6/dEEec8tL6hNSkWcvJcuC
-         2yLnjN2RiJfBpIUT9YRD6oD8z/rFP54Cs1tlQ9HpfToZKANNIZ+yyK7tbh0QpbTKuS
-         WGLIWBv3fJhz4XUXnmzal5yQrur4YBkWg7aCRsYA=
+        b=rS5UFgFESxgCNmeW5SQsf0nhDzj0QpLQJHwbgrNRis+LCIaytRNCzqKZnUk0ZABK1
+         RMLeOLYcAyATmeGnKRoMuIUURMcDy7gqg1+hl+sa0gKbVr+eIsX89ua3gr/KNy1PVU
+         gSiZYIkIYIGooJU2OeU7dNK4gn5mIAoapCYPwgK4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Nick Child <nnac123@linux.ibm.com>,
-        Simon Horman <horms@kernel.org>,
-        Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 4.19 23/33] ibmvnic: Handle DMA unmapping of login buffs in release functions
+        patches@lists.linux.dev, Colin Ian King <colin.i.king@gmail.com>,
+        Konstantin Khlebnikov <koct9i@gmail.com>,
+        "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+        Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.10 16/68] radix tree test suite: fix incorrect allocation size for pthreads
 Date:   Sun, 13 Aug 2023 23:19:17 +0200
-Message-ID: <20230813211704.771193429@linuxfoundation.org>
+Message-ID: <20230813211708.648444525@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211703.915807095@linuxfoundation.org>
-References: <20230813211703.915807095@linuxfoundation.org>
+In-Reply-To: <20230813211708.149630011@linuxfoundation.org>
+References: <20230813211708.149630011@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,73 +56,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Nick Child <nnac123@linux.ibm.com>
+From: Colin Ian King <colin.i.king@gmail.com>
 
-commit d78a671eb8996af19d6311ecdee9790d2fa479f0 upstream.
+commit cac7ea57a06016e4914848b707477fb07ee4ae1c upstream.
 
-Rather than leaving the DMA unmapping of the login buffers to the
-login response handler, move this work into the login release functions.
-Previously, these functions were only used for freeing the allocated
-buffers. This could lead to issues if there are more than one
-outstanding login buffer requests, which is possible if a login request
-times out.
+Currently the pthread allocation for each array item is based on the size
+of a pthread_t pointer and should be the size of the pthread_t structure,
+so the allocation is under-allocating the correct size.  Fix this by using
+the size of each element in the pthreads array.
 
-If a login request times out, then there is another call to send login.
-The send login function makes a call to the login buffer release
-function. In the past, this freed the buffers but did not DMA unmap.
-Therefore, the VIOS could still write to the old login (now freed)
-buffer. It is for this reason that it is a good idea to leave the DMA
-unmap call to the login buffers release function.
+Static analysis cppcheck reported:
+tools/testing/radix-tree/regression1.c:180:2: warning: Size of pointer
+'threads' used instead of size of its data. [pointerSize]
 
-Since the login buffer release functions now handle DMA unmapping,
-remove the duplicate DMA unmapping in handle_login_rsp().
-
-Fixes: dff515a3e71d ("ibmvnic: Harden device login requests")
-Signed-off-by: Nick Child <nnac123@linux.ibm.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20230809221038.51296-3-nnac123@linux.ibm.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Link: https://lkml.kernel.org/r/20230727160930.632674-1-colin.i.king@gmail.com
+Fixes: 1366c37ed84b ("radix tree test harness")
+Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
+Cc: Konstantin Khlebnikov <koct9i@gmail.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/ibm/ibmvnic.c |   15 ++++++++++-----
- 1 file changed, 10 insertions(+), 5 deletions(-)
+ tools/testing/radix-tree/regression1.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/net/ethernet/ibm/ibmvnic.c
-+++ b/drivers/net/ethernet/ibm/ibmvnic.c
-@@ -884,12 +884,22 @@ static int ibmvnic_login(struct net_devi
+--- a/tools/testing/radix-tree/regression1.c
++++ b/tools/testing/radix-tree/regression1.c
+@@ -177,7 +177,7 @@ void regression1_test(void)
+ 	nr_threads = 2;
+ 	pthread_barrier_init(&worker_barrier, NULL, nr_threads);
  
- static void release_login_buffer(struct ibmvnic_adapter *adapter)
- {
-+	if (!adapter->login_buf)
-+		return;
-+
-+	dma_unmap_single(&adapter->vdev->dev, adapter->login_buf_token,
-+			 adapter->login_buf_sz, DMA_TO_DEVICE);
- 	kfree(adapter->login_buf);
- 	adapter->login_buf = NULL;
- }
+-	threads = malloc(nr_threads * sizeof(pthread_t *));
++	threads = malloc(nr_threads * sizeof(*threads));
  
- static void release_login_rsp_buffer(struct ibmvnic_adapter *adapter)
- {
-+	if (!adapter->login_rsp_buf)
-+		return;
-+
-+	dma_unmap_single(&adapter->vdev->dev, adapter->login_rsp_buf_token,
-+			 adapter->login_rsp_buf_sz, DMA_FROM_DEVICE);
- 	kfree(adapter->login_rsp_buf);
- 	adapter->login_rsp_buf = NULL;
- }
-@@ -4061,11 +4071,6 @@ static int handle_login_rsp(union ibmvni
- 	struct ibmvnic_login_buffer *login = adapter->login_buf;
- 	int i;
- 
--	dma_unmap_single(dev, adapter->login_buf_token, adapter->login_buf_sz,
--			 DMA_TO_DEVICE);
--	dma_unmap_single(dev, adapter->login_rsp_buf_token,
--			 adapter->login_rsp_buf_sz, DMA_FROM_DEVICE);
--
- 	/* If the number of queues requested can't be allocated by the
- 	 * server, the login response will return with code 1. We will need
- 	 * to resend the login buffer with fewer queues requested.
+ 	for (i = 0; i < nr_threads; i++) {
+ 		arg = i;
 
 
