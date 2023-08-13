@@ -2,49 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A1A4E77AD6C
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:49:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EA27977AD27
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:48:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232476AbjHMVt1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:49:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57412 "EHLO
+        id S230193AbjHMVsJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:48:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39334 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232342AbjHMVs4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:48:56 -0400
+        with ESMTP id S229627AbjHMVrd (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:47:33 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E73C1FE6
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:42:33 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 10BE42D54
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:47:33 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3581F62784
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:42:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A81CC433C8;
-        Sun, 13 Aug 2023 21:42:32 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8CED161468
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:47:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DD8AC433C8;
+        Sun, 13 Aug 2023 21:47:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691962952;
-        bh=Chsc79yXdzIJY52AwP9fiZ6ySBL7WQhunvNWMr91WDY=;
+        s=korg; t=1691963252;
+        bh=Vx4ymv7O6sZqjygvjDyEsP1QyIjXBARNMyl4QDaodRw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=cTjrRoBpZVExsaXdxlBOQ2GO25fR+8i+2QdewWpfrlZR+Pr4MCFlATAcx6H9tz+eD
-         7Gcw3RofBMWkAn+B4OFoJTT5DqthV6sZ6SLlg1Q3VmwDJ6fwmUYg4y770FVbpFEy7M
-         B6/PboynmXC6soWr9Rm0B1keXHIdTCMA7LU0KJP4=
+        b=ohUO6wbinRzvvvr9lMEu8P+jSSlXUvZV7f9D7Rr3DqEKeru7f2m9tZ0rl+M1UkB1U
+         2iAPXSyM/fD8JUJiQipqTaTJwO/sgvjBav1l2WjfSdW740jF/ZA8LPtU7lHAXOWeuO
+         P9IbFhGOFnDl8y71YC2kj2wexNgStvwV6knignDU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev, syzbot <syzkaller@googlegroups.com>,
         Eric Dumazet <edumazet@google.com>,
-        Stephen Hemminger <stephen@networkplumber.org>,
-        Jamal Hadi Salim <jhs@mojatatu.com>,
-        Simon Horman <simon.horman@corigine.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Fedor Pchelkin <pchelkin@ispras.ru>
-Subject: [PATCH 5.10 68/68] sch_netem: fix issues in netem_change() vs get_dist_table()
-Date:   Sun, 13 Aug 2023 23:20:09 +0200
-Message-ID: <20230813211710.217026054@linuxfoundation.org>
+        Willem de Bruijn <willemb@google.com>,
+        Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.4 19/39] net/packet: annotate data-races around tp->status
+Date:   Sun, 13 Aug 2023 23:20:10 +0200
+Message-ID: <20230813211705.492965946@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211708.149630011@linuxfoundation.org>
-References: <20230813211708.149630011@linuxfoundation.org>
+In-Reply-To: <20230813211704.796906808@linuxfoundation.org>
+References: <20230813211704.796906808@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -61,146 +58,123 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Eric Dumazet <edumazet@google.com>
 
-commit 11b73313c12403f617b47752db0ab3deef201af7 upstream.
+commit 8a9896177784063d01068293caea3f74f6830ff6 upstream.
 
-In blamed commit, I missed that get_dist_table() was allocating
-memory using GFP_KERNEL, and acquiring qdisc lock to perform
-the swap of newly allocated table with current one.
+Another syzbot report [1] is about tp->status lockless reads
+from __packet_get_status()
 
-In this patch, get_dist_table() is allocating memory and
-copy user data before we acquire the qdisc lock.
+[1]
+BUG: KCSAN: data-race in __packet_rcv_has_room / __packet_set_status
 
-Then we perform swap operations while being protected by the lock.
+write to 0xffff888117d7c080 of 8 bytes by interrupt on cpu 0:
+__packet_set_status+0x78/0xa0 net/packet/af_packet.c:407
+tpacket_rcv+0x18bb/0x1a60 net/packet/af_packet.c:2483
+deliver_skb net/core/dev.c:2173 [inline]
+__netif_receive_skb_core+0x408/0x1e80 net/core/dev.c:5337
+__netif_receive_skb_one_core net/core/dev.c:5491 [inline]
+__netif_receive_skb+0x57/0x1b0 net/core/dev.c:5607
+process_backlog+0x21f/0x380 net/core/dev.c:5935
+__napi_poll+0x60/0x3b0 net/core/dev.c:6498
+napi_poll net/core/dev.c:6565 [inline]
+net_rx_action+0x32b/0x750 net/core/dev.c:6698
+__do_softirq+0xc1/0x265 kernel/softirq.c:571
+invoke_softirq kernel/softirq.c:445 [inline]
+__irq_exit_rcu+0x57/0xa0 kernel/softirq.c:650
+sysvec_apic_timer_interrupt+0x6d/0x80 arch/x86/kernel/apic/apic.c:1106
+asm_sysvec_apic_timer_interrupt+0x1a/0x20 arch/x86/include/asm/idtentry.h:645
+smpboot_thread_fn+0x33c/0x4a0 kernel/smpboot.c:112
+kthread+0x1d7/0x210 kernel/kthread.c:379
+ret_from_fork+0x1f/0x30 arch/x86/entry/entry_64.S:308
 
-Note that after this patch netem_change() no longer can do partial changes.
-If an error is returned, qdisc conf is left unchanged.
+read to 0xffff888117d7c080 of 8 bytes by interrupt on cpu 1:
+__packet_get_status net/packet/af_packet.c:436 [inline]
+packet_lookup_frame net/packet/af_packet.c:524 [inline]
+__tpacket_has_room net/packet/af_packet.c:1255 [inline]
+__packet_rcv_has_room+0x3f9/0x450 net/packet/af_packet.c:1298
+tpacket_rcv+0x275/0x1a60 net/packet/af_packet.c:2285
+deliver_skb net/core/dev.c:2173 [inline]
+dev_queue_xmit_nit+0x38a/0x5e0 net/core/dev.c:2243
+xmit_one net/core/dev.c:3574 [inline]
+dev_hard_start_xmit+0xcf/0x3f0 net/core/dev.c:3594
+__dev_queue_xmit+0xefb/0x1d10 net/core/dev.c:4244
+dev_queue_xmit include/linux/netdevice.h:3088 [inline]
+can_send+0x4eb/0x5d0 net/can/af_can.c:276
+bcm_can_tx+0x314/0x410 net/can/bcm.c:302
+bcm_tx_timeout_handler+0xdb/0x260
+__run_hrtimer kernel/time/hrtimer.c:1685 [inline]
+__hrtimer_run_queues+0x217/0x700 kernel/time/hrtimer.c:1749
+hrtimer_run_softirq+0xd6/0x120 kernel/time/hrtimer.c:1766
+__do_softirq+0xc1/0x265 kernel/softirq.c:571
+run_ksoftirqd+0x17/0x20 kernel/softirq.c:939
+smpboot_thread_fn+0x30a/0x4a0 kernel/smpboot.c:164
+kthread+0x1d7/0x210 kernel/kthread.c:379
+ret_from_fork+0x1f/0x30 arch/x86/entry/entry_64.S:308
 
-Fixes: 2174a08db80d ("sch_netem: acquire qdisc lock in netem_change()")
+value changed: 0x0000000000000000 -> 0x0000000020000081
+
+Reported by Kernel Concurrency Sanitizer on:
+CPU: 1 PID: 19 Comm: ksoftirqd/1 Not tainted 6.4.0-syzkaller #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 05/27/2023
+
+Fixes: 69e3c75f4d54 ("net: TX_RING and packet mmap")
 Reported-by: syzbot <syzkaller@googlegroups.com>
 Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Stephen Hemminger <stephen@networkplumber.org>
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Link: https://lore.kernel.org/r/20230622181503.2327695-1-edumazet@google.com
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Link: https://lore.kernel.org/r/20230803145600.2937518-1-edumazet@google.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/sch_netem.c |   59 +++++++++++++++++++++-----------------------------
- 1 file changed, 25 insertions(+), 34 deletions(-)
+ net/packet/af_packet.c |   16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
 
---- a/net/sched/sch_netem.c
-+++ b/net/sched/sch_netem.c
-@@ -773,12 +773,10 @@ static void dist_free(struct disttable *
-  * signed 16 bit values.
-  */
- 
--static int get_dist_table(struct Qdisc *sch, struct disttable **tbl,
--			  const struct nlattr *attr)
-+static int get_dist_table(struct disttable **tbl, const struct nlattr *attr)
+--- a/net/packet/af_packet.c
++++ b/net/packet/af_packet.c
+@@ -363,18 +363,20 @@ static void __packet_set_status(struct p
  {
- 	size_t n = nla_len(attr)/sizeof(__s16);
- 	const __s16 *data = nla_data(attr);
--	spinlock_t *root_lock;
- 	struct disttable *d;
- 	int i;
+ 	union tpacket_uhdr h;
  
-@@ -793,13 +791,7 @@ static int get_dist_table(struct Qdisc *
- 	for (i = 0; i < n; i++)
- 		d->table[i] = data[i];
- 
--	root_lock = qdisc_root_sleeping_lock(sch);
--
--	spin_lock_bh(root_lock);
--	swap(*tbl, d);
--	spin_unlock_bh(root_lock);
--
--	dist_free(d);
-+	*tbl = d;
- 	return 0;
- }
- 
-@@ -956,6 +948,8 @@ static int netem_change(struct Qdisc *sc
- {
- 	struct netem_sched_data *q = qdisc_priv(sch);
- 	struct nlattr *tb[TCA_NETEM_MAX + 1];
-+	struct disttable *delay_dist = NULL;
-+	struct disttable *slot_dist = NULL;
- 	struct tc_netem_qopt *qopt;
- 	struct clgstate old_clg;
- 	int old_loss_model = CLG_RANDOM;
-@@ -969,6 +963,18 @@ static int netem_change(struct Qdisc *sc
- 	if (ret < 0)
- 		return ret;
- 
-+	if (tb[TCA_NETEM_DELAY_DIST]) {
-+		ret = get_dist_table(&delay_dist, tb[TCA_NETEM_DELAY_DIST]);
-+		if (ret)
-+			goto table_free;
-+	}
++	/* WRITE_ONCE() are paired with READ_ONCE() in __packet_get_status */
 +
-+	if (tb[TCA_NETEM_SLOT_DIST]) {
-+		ret = get_dist_table(&slot_dist, tb[TCA_NETEM_SLOT_DIST]);
-+		if (ret)
-+			goto table_free;
-+	}
+ 	h.raw = frame;
+ 	switch (po->tp_version) {
+ 	case TPACKET_V1:
+-		h.h1->tp_status = status;
++		WRITE_ONCE(h.h1->tp_status, status);
+ 		flush_dcache_page(pgv_to_page(&h.h1->tp_status));
+ 		break;
+ 	case TPACKET_V2:
+-		h.h2->tp_status = status;
++		WRITE_ONCE(h.h2->tp_status, status);
+ 		flush_dcache_page(pgv_to_page(&h.h2->tp_status));
+ 		break;
+ 	case TPACKET_V3:
+-		h.h3->tp_status = status;
++		WRITE_ONCE(h.h3->tp_status, status);
+ 		flush_dcache_page(pgv_to_page(&h.h3->tp_status));
+ 		break;
+ 	default:
+@@ -391,17 +393,19 @@ static int __packet_get_status(const str
+ 
+ 	smp_rmb();
+ 
++	/* READ_ONCE() are paired with WRITE_ONCE() in __packet_set_status */
 +
- 	sch_tree_lock(sch);
- 	/* backup q->clg and q->loss_model */
- 	old_clg = q->clg;
-@@ -978,26 +984,17 @@ static int netem_change(struct Qdisc *sc
- 		ret = get_loss_clg(q, tb[TCA_NETEM_LOSS]);
- 		if (ret) {
- 			q->loss_model = old_loss_model;
-+			q->clg = old_clg;
- 			goto unlock;
- 		}
- 	} else {
- 		q->loss_model = CLG_RANDOM;
- 	}
- 
--	if (tb[TCA_NETEM_DELAY_DIST]) {
--		ret = get_dist_table(sch, &q->delay_dist,
--				     tb[TCA_NETEM_DELAY_DIST]);
--		if (ret)
--			goto get_table_failure;
--	}
--
--	if (tb[TCA_NETEM_SLOT_DIST]) {
--		ret = get_dist_table(sch, &q->slot_dist,
--				     tb[TCA_NETEM_SLOT_DIST]);
--		if (ret)
--			goto get_table_failure;
--	}
--
-+	if (delay_dist)
-+		swap(q->delay_dist, delay_dist);
-+	if (slot_dist)
-+		swap(q->slot_dist, slot_dist);
- 	sch->limit = qopt->limit;
- 
- 	q->latency = PSCHED_TICKS2NS(qopt->latency);
-@@ -1047,17 +1044,11 @@ static int netem_change(struct Qdisc *sc
- 
- unlock:
- 	sch_tree_unlock(sch);
--	return ret;
- 
--get_table_failure:
--	/* recover clg and loss_model, in case of
--	 * q->clg and q->loss_model were modified
--	 * in get_loss_clg()
--	 */
--	q->clg = old_clg;
--	q->loss_model = old_loss_model;
--
--	goto unlock;
-+table_free:
-+	dist_free(delay_dist);
-+	dist_free(slot_dist);
-+	return ret;
- }
- 
- static int netem_init(struct Qdisc *sch, struct nlattr *opt,
+ 	h.raw = frame;
+ 	switch (po->tp_version) {
+ 	case TPACKET_V1:
+ 		flush_dcache_page(pgv_to_page(&h.h1->tp_status));
+-		return h.h1->tp_status;
++		return READ_ONCE(h.h1->tp_status);
+ 	case TPACKET_V2:
+ 		flush_dcache_page(pgv_to_page(&h.h2->tp_status));
+-		return h.h2->tp_status;
++		return READ_ONCE(h.h2->tp_status);
+ 	case TPACKET_V3:
+ 		flush_dcache_page(pgv_to_page(&h.h3->tp_status));
+-		return h.h3->tp_status;
++		return READ_ONCE(h.h3->tp_status);
+ 	default:
+ 		WARN(1, "TPACKET version not supported.\n");
+ 		BUG();
 
 
