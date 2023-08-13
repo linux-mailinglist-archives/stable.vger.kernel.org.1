@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8450777AD2C
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:48:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 770D577AD4A
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:48:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229512AbjHMVsL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:48:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39238 "EHLO
+        id S232270AbjHMVsV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:48:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33106 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232303AbjHMVp2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:45:28 -0400
+        with ESMTP id S230091AbjHMVr7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:47:59 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C03A42D55
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:45:27 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A81502D57
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:47:58 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 509A960B9D
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:45:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 637B4C433C7;
-        Sun, 13 Aug 2023 21:45:26 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 47A8960CA3
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:47:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5641DC433C8;
+        Sun, 13 Aug 2023 21:47:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691963126;
-        bh=NhWYeqooCCOfCwW6UILIvmEBchpE1QllOOwknZfVXvE=;
+        s=korg; t=1691963277;
+        bh=5Vveo3xlx54gjqwG7i2Qd02oXXzLw5lm30b5HUa0J3U=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=o0Rsk6LqHdkyM1lvpb4/nyxnd51UV0FkpuReXoVJSoZAlTcPxK5PQgj6cqIV67ZhW
-         YvjFAf2GPSmB1ytu7XVQsMFK87/P3QdmzREVxT0Xt1mkfZpTByVNj1G9Q0WDk6Bn1Z
-         uMRLuYSbD/QZ7sCmvU++WBVVqFHdRrgR53iPESBU=
+        b=UFYZV7YXpGYYRblbMIpU73sXUraKKQXhrl5d3FW1zoaWcGMLcHskr/qFFdgJum6Kq
+         2hrRklIBU8i33paU6x/RLdWz7UbnlwJnCkJVxAmftFoTMZeA/LKSC+2lY95qLpHLtd
+         Hh1cfLK49E4bSuMu8zc8Ft+xxNCSRfisoduD1Rs8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ido Schimmel <idosch@nvidia.com>,
-        Petr Machata <petrm@nvidia.com>,
-        David Ahern <dsahern@kernel.org>,
-        Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.15 63/89] nexthop: Fix infinite nexthop bucket dump when using maximum nexthop ID
+        patches@lists.linux.dev,
+        Richard Tresidder <rtresidd@electromag.com.au>,
+        =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+        Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 5.4 03/39] dmaengine: pl330: Return DMA_PAUSED when transaction is paused
 Date:   Sun, 13 Aug 2023 23:19:54 +0200
-Message-ID: <20230813211712.677707487@linuxfoundation.org>
+Message-ID: <20230813211704.929151980@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211710.787645394@linuxfoundation.org>
-References: <20230813211710.787645394@linuxfoundation.org>
+In-Reply-To: <20230813211704.796906808@linuxfoundation.org>
+References: <20230813211704.796906808@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,128 +55,95 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
-commit 8743aeff5bc4dcb5b87b43765f48d5ac3ad7dd9f upstream.
+commit 8cda3ececf07d374774f6a13e5a94bc2dc04c26c upstream.
 
-A netlink dump callback can return a positive number to signal that more
-information needs to be dumped or zero to signal that the dump is
-complete. In the second case, the core netlink code will append the
-NLMSG_DONE message to the skb in order to indicate to user space that
-the dump is complete.
+pl330_pause() does not set anything to indicate paused condition which
+causes pl330_tx_status() to return DMA_IN_PROGRESS. This breaks 8250
+DMA flush after the fix in commit 57e9af7831dc ("serial: 8250_dma: Fix
+DMA Rx rearm race"). The function comment for pl330_pause() claims
+pause is supported but resume is not which is enough for 8250 DMA flush
+to work as long as DMA status reports DMA_PAUSED when appropriate.
 
-The nexthop bucket dump callback always returns a positive number if
-nexthop buckets were filled in the provided skb, even if the dump is
-complete. This means that a dump will span at least two recvmsg() calls
-as long as nexthop buckets are present. In the last recvmsg() call the
-dump callback will not fill in any nexthop buckets because the previous
-call indicated that the dump should restart from the last dumped nexthop
-ID plus one.
+Add PAUSED state for descriptor and mark BUSY descriptors with PAUSED
+in pl330_pause(). Return DMA_PAUSED from pl330_tx_status() when the
+descriptor is PAUSED.
 
- # ip link add name dummy1 up type dummy
- # ip nexthop add id 1 dev dummy1
- # ip nexthop add id 10 group 1 type resilient buckets 2
- # strace -e sendto,recvmsg -s 5 ip nexthop bucket
- sendto(3, [[{nlmsg_len=24, nlmsg_type=RTM_GETNEXTHOPBUCKET, nlmsg_flags=NLM_F_REQUEST|NLM_F_DUMP, nlmsg_seq=1691396980, nlmsg_pid=0}, {family=AF_UNSPEC, data="\x00\x00\x00\x00\x00"...}], {nlmsg_len=0, nlmsg_type=0 /* NLMSG_??? */, nlmsg_flags=0, nlmsg_seq=0, nlmsg_pid=0}], 152, 0, NULL, 0) = 152
- recvmsg(3, {msg_name={sa_family=AF_NETLINK, nl_pid=0, nl_groups=00000000}, msg_namelen=12, msg_iov=[{iov_base=NULL, iov_len=0}], msg_iovlen=1, msg_controllen=0, msg_flags=MSG_TRUNC}, MSG_PEEK|MSG_TRUNC) = 128
- recvmsg(3, {msg_name={sa_family=AF_NETLINK, nl_pid=0, nl_groups=00000000}, msg_namelen=12, msg_iov=[{iov_base=[[{nlmsg_len=64, nlmsg_type=RTM_NEWNEXTHOPBUCKET, nlmsg_flags=NLM_F_MULTI, nlmsg_seq=1691396980, nlmsg_pid=347}, {family=AF_UNSPEC, data="\x00\x00\x00\x00\x00"...}], [{nlmsg_len=64, nlmsg_type=RTM_NEWNEXTHOPBUCKET, nlmsg_flags=NLM_F_MULTI, nlmsg_seq=1691396980, nlmsg_pid=347}, {family=AF_UNSPEC, data="\x00\x00\x00\x00\x00"...}]], iov_len=32768}], msg_iovlen=1, msg_controllen=0, msg_flags=0}, 0) = 128
- id 10 index 0 idle_time 6.66 nhid 1
- id 10 index 1 idle_time 6.66 nhid 1
- recvmsg(3, {msg_name={sa_family=AF_NETLINK, nl_pid=0, nl_groups=00000000}, msg_namelen=12, msg_iov=[{iov_base=NULL, iov_len=0}], msg_iovlen=1, msg_controllen=0, msg_flags=MSG_TRUNC}, MSG_PEEK|MSG_TRUNC) = 20
- recvmsg(3, {msg_name={sa_family=AF_NETLINK, nl_pid=0, nl_groups=00000000}, msg_namelen=12, msg_iov=[{iov_base=[{nlmsg_len=20, nlmsg_type=NLMSG_DONE, nlmsg_flags=NLM_F_MULTI, nlmsg_seq=1691396980, nlmsg_pid=347}, 0], iov_len=32768}], msg_iovlen=1, msg_controllen=0, msg_flags=0}, 0) = 20
- +++ exited with 0 +++
-
-This behavior is both inefficient and buggy. If the last nexthop to be
-dumped had the maximum ID of 0xffffffff, then the dump will restart from
-0 (0xffffffff + 1) and never end:
-
- # ip link add name dummy1 up type dummy
- # ip nexthop add id 1 dev dummy1
- # ip nexthop add id $((2**32-1)) group 1 type resilient buckets 2
- # ip nexthop bucket
- id 4294967295 index 0 idle_time 5.55 nhid 1
- id 4294967295 index 1 idle_time 5.55 nhid 1
- id 4294967295 index 0 idle_time 5.55 nhid 1
- id 4294967295 index 1 idle_time 5.55 nhid 1
- [...]
-
-Fix by adjusting the dump callback to return zero when the dump is
-complete. After the fix only one recvmsg() call is made and the
-NLMSG_DONE message is appended to the RTM_NEWNEXTHOPBUCKET responses:
-
- # ip link add name dummy1 up type dummy
- # ip nexthop add id 1 dev dummy1
- # ip nexthop add id $((2**32-1)) group 1 type resilient buckets 2
- # strace -e sendto,recvmsg -s 5 ip nexthop bucket
- sendto(3, [[{nlmsg_len=24, nlmsg_type=RTM_GETNEXTHOPBUCKET, nlmsg_flags=NLM_F_REQUEST|NLM_F_DUMP, nlmsg_seq=1691396737, nlmsg_pid=0}, {family=AF_UNSPEC, data="\x00\x00\x00\x00\x00"...}], {nlmsg_len=0, nlmsg_type=0 /* NLMSG_??? */, nlmsg_flags=0, nlmsg_seq=0, nlmsg_pid=0}], 152, 0, NULL, 0) = 152
- recvmsg(3, {msg_name={sa_family=AF_NETLINK, nl_pid=0, nl_groups=00000000}, msg_namelen=12, msg_iov=[{iov_base=NULL, iov_len=0}], msg_iovlen=1, msg_controllen=0, msg_flags=MSG_TRUNC}, MSG_PEEK|MSG_TRUNC) = 148
- recvmsg(3, {msg_name={sa_family=AF_NETLINK, nl_pid=0, nl_groups=00000000}, msg_namelen=12, msg_iov=[{iov_base=[[{nlmsg_len=64, nlmsg_type=RTM_NEWNEXTHOPBUCKET, nlmsg_flags=NLM_F_MULTI, nlmsg_seq=1691396737, nlmsg_pid=350}, {family=AF_UNSPEC, data="\x00\x00\x00\x00\x00"...}], [{nlmsg_len=64, nlmsg_type=RTM_NEWNEXTHOPBUCKET, nlmsg_flags=NLM_F_MULTI, nlmsg_seq=1691396737, nlmsg_pid=350}, {family=AF_UNSPEC, data="\x00\x00\x00\x00\x00"...}], [{nlmsg_len=20, nlmsg_type=NLMSG_DONE, nlmsg_flags=NLM_F_MULTI, nlmsg_seq=1691396737, nlmsg_pid=350}, 0]], iov_len=32768}], msg_iovlen=1, msg_controllen=0, msg_flags=0}, 0) = 148
- id 4294967295 index 0 idle_time 6.61 nhid 1
- id 4294967295 index 1 idle_time 6.61 nhid 1
- +++ exited with 0 +++
-
-Note that if the NLMSG_DONE message cannot be appended because of size
-limitations, then another recvmsg() will be needed, but the core netlink
-code will not invoke the dump callback and simply reply with a
-NLMSG_DONE message since it knows that the callback previously returned
-zero.
-
-Add a test that fails before the fix:
-
- # ./fib_nexthops.sh -t basic_res
- [...]
- TEST: Maximum nexthop ID dump                                       [FAIL]
- [...]
-
-And passes after it:
-
- # ./fib_nexthops.sh -t basic_res
- [...]
- TEST: Maximum nexthop ID dump                                       [ OK ]
- [...]
-
-Fixes: 8a1bbabb034d ("nexthop: Add netlink handlers for bucket dump")
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: Petr Machata <petrm@nvidia.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://lore.kernel.org/r/20230808075233.3337922-4-idosch@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reported-by: Richard Tresidder <rtresidd@electromag.com.au>
+Tested-by: Richard Tresidder <rtresidd@electromag.com.au>
+Fixes: 88987d2c7534 ("dmaengine: pl330: add DMA_PAUSE feature")
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/linux-serial/f8a86ecd-64b1-573f-c2fa-59f541083f1a@electromag.com.au/
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Link: https://lore.kernel.org/r/20230526105434.14959-1-ilpo.jarvinen@linux.intel.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/nexthop.c                          |    6 +-----
- tools/testing/selftests/net/fib_nexthops.sh |    5 +++++
- 2 files changed, 6 insertions(+), 5 deletions(-)
+ drivers/dma/pl330.c |   18 ++++++++++++++++--
+ 1 file changed, 16 insertions(+), 2 deletions(-)
 
---- a/net/ipv4/nexthop.c
-+++ b/net/ipv4/nexthop.c
-@@ -3425,13 +3425,9 @@ static int rtm_dump_nexthop_bucket(struc
+--- a/drivers/dma/pl330.c
++++ b/drivers/dma/pl330.c
+@@ -403,6 +403,12 @@ enum desc_status {
+ 	 */
+ 	BUSY,
+ 	/*
++	 * Pause was called while descriptor was BUSY. Due to hardware
++	 * limitations, only termination is possible for descriptors
++	 * that have been paused.
++	 */
++	PAUSED,
++	/*
+ 	 * Sitting on the channel work_list but xfer done
+ 	 * by PL330 core
+ 	 */
+@@ -2035,7 +2041,7 @@ static inline void fill_queue(struct dma
+ 	list_for_each_entry(desc, &pch->work_list, node) {
  
- 	if (err < 0) {
- 		if (likely(skb->len))
--			goto out;
--		goto out_err;
-+			err = skb->len;
- 	}
+ 		/* If already submitted */
+-		if (desc->status == BUSY)
++		if (desc->status == BUSY || desc->status == PAUSED)
+ 			continue;
  
--out:
--	err = skb->len;
--out_err:
- 	cb->seq = net->nexthop.seq;
- 	nl_dump_check_consistent(cb, nlmsg_hdr(skb));
- 	return err;
---- a/tools/testing/selftests/net/fib_nexthops.sh
-+++ b/tools/testing/selftests/net/fib_nexthops.sh
-@@ -2142,6 +2142,11 @@ basic_res()
- 	run_cmd "$IP nexthop bucket list fdb"
- 	log_test $? 255 "Dump all nexthop buckets with invalid 'fdb' keyword"
+ 		ret = pl330_submit_req(pch->thread, desc);
+@@ -2322,6 +2328,7 @@ static int pl330_pause(struct dma_chan *
+ {
+ 	struct dma_pl330_chan *pch = to_pchan(chan);
+ 	struct pl330_dmac *pl330 = pch->dmac;
++	struct dma_pl330_desc *desc;
+ 	unsigned long flags;
  
-+	# Dump should not loop endlessly when maximum nexthop ID is configured.
-+	run_cmd "$IP nexthop add id $((2**32-1)) group 1/2 type resilient buckets 4"
-+	run_cmd "timeout 5 $IP nexthop bucket"
-+	log_test $? 0 "Maximum nexthop ID dump"
-+
- 	#
- 	# resilient nexthop buckets get requests
- 	#
+ 	pm_runtime_get_sync(pl330->ddma.dev);
+@@ -2331,6 +2338,10 @@ static int pl330_pause(struct dma_chan *
+ 	_stop(pch->thread);
+ 	spin_unlock(&pl330->lock);
+ 
++	list_for_each_entry(desc, &pch->work_list, node) {
++		if (desc->status == BUSY)
++			desc->status = PAUSED;
++	}
+ 	spin_unlock_irqrestore(&pch->lock, flags);
+ 	pm_runtime_mark_last_busy(pl330->ddma.dev);
+ 	pm_runtime_put_autosuspend(pl330->ddma.dev);
+@@ -2421,7 +2432,7 @@ pl330_tx_status(struct dma_chan *chan, d
+ 		else if (running && desc == running)
+ 			transferred =
+ 				pl330_get_current_xferred_count(pch, desc);
+-		else if (desc->status == BUSY)
++		else if (desc->status == BUSY || desc->status == PAUSED)
+ 			/*
+ 			 * Busy but not running means either just enqueued,
+ 			 * or finished and not yet marked done
+@@ -2438,6 +2449,9 @@ pl330_tx_status(struct dma_chan *chan, d
+ 			case DONE:
+ 				ret = DMA_COMPLETE;
+ 				break;
++			case PAUSED:
++				ret = DMA_PAUSED;
++				break;
+ 			case PREP:
+ 			case BUSY:
+ 				ret = DMA_IN_PROGRESS;
 
 
