@@ -2,120 +2,129 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8D66877ACD9
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:37:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9873477AD6F
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:49:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232206AbjHMVhu (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:37:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55574 "EHLO
+        id S232313AbjHMVsv (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:48:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33230 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232203AbjHMVht (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:37:49 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 49B1F10DB
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:37:51 -0700 (PDT)
+        with ESMTP id S231454AbjHMVsO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:48:14 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 31E88172E
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:40:15 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DCBDA634DB
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:37:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECD9DC433C7;
-        Sun, 13 Aug 2023 21:37:49 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C37056131F
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:40:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBA70C433C7;
+        Sun, 13 Aug 2023 21:40:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691962670;
-        bh=wzjW6NfWaFGmkx6qG8ljmnjVVJVSQaGZk4dIKtIXpIQ=;
+        s=korg; t=1691962813;
+        bh=XonbXjtX4fr/jxXaqWPO3He07W4rCIOAc80OoMl3DLo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=k76K/mCh62VSnC3/zSPWmIFIVTcbaGHd701m2AEJjfQDv2fcGFK0OsEW/XHdbRDpv
-         Vq4ikODu4WPJGOiXIuQyFeynZgiTkLW5naUgOWFArmD4sNMK043Lx7TgNz7G9Nnces
-         fApMw3pvCtabbthl8+gr6HN1U/WosIkN0oGV/jUI=
+        b=v0iOw8LM3lvA4cXvq0ctHFsX/Kit4FddIYyXyP345UM/Hg622J+nd0Peyl1xvjjES
+         /AG137cnCoUwszbDsR3jIjZwEBfC+dJu+QhTKec42mDvRkrGlz5bCfZSf6r08UOSwR
+         tjylkCXstDLjdKL9xOnqQP9+SkgLd4uhGDeZjqwc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hao Chen <chenhao418@huawei.com>,
-        Jijie Shao <shaojijie@huawei.com>,
-        Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 113/149] net: hns3: fix strscpy causing content truncation issue
+        patches@lists.linux.dev, Thomas Gleixner <tglx@linutronix.de>,
+        Borislav Petkov <bp@suse.de>,
+        Thadeu Lima de Souza Cascardo <cascardo@canonical.com>
+Subject: [PATCH 5.10 17/68] x86/pkeys: Revert a5eff7259790 ("x86/pkeys: Add PKRU value to init_fpstate")
 Date:   Sun, 13 Aug 2023 23:19:18 +0200
-Message-ID: <20230813211722.133629405@linuxfoundation.org>
+Message-ID: <20230813211708.678961745@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211718.757428827@linuxfoundation.org>
-References: <20230813211718.757428827@linuxfoundation.org>
+In-Reply-To: <20230813211708.149630011@linuxfoundation.org>
+References: <20230813211708.149630011@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Hao Chen <chenhao418@huawei.com>
+From: Thomas Gleixner <tglx@linutronix.de>
 
-commit 5e3d20617b055e725e785e0058426368269949f3 upstream.
+commit b3607269ff57fd3c9690cb25962c5e4b91a0fd3b upstream.
 
-hns3_dbg_fill_content()/hclge_dbg_fill_content() is aim to integrate some
-items to a string for content, and we add '\n' and '\0' in the last
-two bytes of content.
+This cannot work and it's unclear how that ever made a difference.
 
-strscpy() will add '\0' in the last byte of destination buffer(one of
-items), it result in finishing content print ahead of schedule and some
-dump content truncation.
+init_fpstate.xsave.header.xfeatures is always 0 so get_xsave_addr() will
+always return a NULL pointer, which will prevent storing the default PKRU
+value in init_fpstate.
 
-One Error log shows as below:
-cat mac_list/uc
-UC MAC_LIST:
-
-Expected:
-UC MAC_LIST:
-FUNC_ID  MAC_ADDR            STATE
-pf       00:2b:19:05:03:00   ACTIVE
-
-The destination buffer is length-bounded and not required to be
-NUL-terminated, so just change strscpy() to memcpy() to fix it.
-
-Fixes: 1cf3d5567f27 ("net: hns3: fix strncpy() not using dest-buf length as length issue")
-Signed-off-by: Hao Chen <chenhao418@huawei.com>
-Signed-off-by: Jijie Shao <shaojijie@huawei.com>
-Link: https://lore.kernel.org/r/20230809020902.1941471-1-shaojijie@huawei.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Reviewed-by: Borislav Petkov <bp@suse.de>
+Link: https://lkml.kernel.org/r/20210623121451.451391598@linutronix.de
+Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@canonical.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/hisilicon/hns3/hns3_debugfs.c         |    4 ++--
- drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_debugfs.c |    4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ arch/x86/kernel/cpu/common.c |    5 -----
+ arch/x86/mm/pkeys.c          |    6 ------
+ 2 files changed, 11 deletions(-)
 
---- a/drivers/net/ethernet/hisilicon/hns3/hns3_debugfs.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3_debugfs.c
-@@ -458,9 +458,9 @@ static void hns3_dbg_fill_content(char *
- 		if (result) {
- 			if (item_len < strlen(result[i]))
- 				break;
--			strscpy(pos, result[i], strlen(result[i]));
-+			memcpy(pos, result[i], strlen(result[i]));
- 		} else {
--			strscpy(pos, items[i].name, strlen(items[i].name));
-+			memcpy(pos, items[i].name, strlen(items[i].name));
- 		}
- 		pos += item_len;
- 		len -= item_len;
---- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_debugfs.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_debugfs.c
-@@ -110,9 +110,9 @@ static void hclge_dbg_fill_content(char
- 		if (result) {
- 			if (item_len < strlen(result[i]))
- 				break;
--			strscpy(pos, result[i], strlen(result[i]));
-+			memcpy(pos, result[i], strlen(result[i]));
- 		} else {
--			strscpy(pos, items[i].name, strlen(items[i].name));
-+			memcpy(pos, items[i].name, strlen(items[i].name));
- 		}
- 		pos += item_len;
- 		len -= item_len;
+--- a/arch/x86/kernel/cpu/common.c
++++ b/arch/x86/kernel/cpu/common.c
+@@ -472,8 +472,6 @@ static bool pku_disabled;
+ 
+ static __always_inline void setup_pku(struct cpuinfo_x86 *c)
+ {
+-	struct pkru_state *pk;
+-
+ 	/* check the boot processor, plus compile options for PKU: */
+ 	if (!cpu_feature_enabled(X86_FEATURE_PKU))
+ 		return;
+@@ -484,9 +482,6 @@ static __always_inline void setup_pku(st
+ 		return;
+ 
+ 	cr4_set_bits(X86_CR4_PKE);
+-	pk = get_xsave_addr(&init_fpstate.xsave, XFEATURE_PKRU);
+-	if (pk)
+-		pk->pkru = init_pkru_value;
+ 	/*
+ 	 * Seting X86_CR4_PKE will cause the X86_FEATURE_OSPKE
+ 	 * cpuid bit to be set.  We need to ensure that we
+--- a/arch/x86/mm/pkeys.c
++++ b/arch/x86/mm/pkeys.c
+@@ -10,7 +10,6 @@
+ 
+ #include <asm/cpufeature.h>             /* boot_cpu_has, ...            */
+ #include <asm/mmu_context.h>            /* vma_pkey()                   */
+-#include <asm/fpu/internal.h>		/* init_fpstate			*/
+ 
+ int __execute_only_pkey(struct mm_struct *mm)
+ {
+@@ -154,7 +153,6 @@ static ssize_t init_pkru_read_file(struc
+ static ssize_t init_pkru_write_file(struct file *file,
+ 		 const char __user *user_buf, size_t count, loff_t *ppos)
+ {
+-	struct pkru_state *pk;
+ 	char buf[32];
+ 	ssize_t len;
+ 	u32 new_init_pkru;
+@@ -177,10 +175,6 @@ static ssize_t init_pkru_write_file(stru
+ 		return -EINVAL;
+ 
+ 	WRITE_ONCE(init_pkru_value, new_init_pkru);
+-	pk = get_xsave_addr(&init_fpstate.xsave, XFEATURE_PKRU);
+-	if (!pk)
+-		return -EINVAL;
+-	pk->pkru = new_init_pkru;
+ 	return count;
+ }
+ 
 
 
