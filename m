@@ -2,46 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EE7A377AD8A
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:49:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DC43177AD2A
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:48:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232457AbjHMVtZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:49:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57408 "EHLO
+        id S231219AbjHMVsK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:48:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52280 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232271AbjHMVsz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:48:55 -0400
+        with ESMTP id S232344AbjHMVq0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:46:26 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 90EC51BD1
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:41:34 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 668C32D54
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:46:25 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 26E4A60B9D
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:41:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42A47C433C7;
-        Sun, 13 Aug 2023 21:41:33 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DD2F661C1D
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:46:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3900C433C8;
+        Sun, 13 Aug 2023 21:46:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691962893;
-        bh=H8OsNGUikVtkbjDPMqqe4SQtUA0jbXNeF2Cl2cF2yL8=;
+        s=korg; t=1691963184;
+        bh=aQuGPSP0X75QwvtN7mxx9co7HF1BCIffUkxoDOCGHWM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=MVmdjah5OGoxTCL+qugW915a2S6TBKqIpzL/hzJollgnd/qtwqDBuMGWKkkXOY/Xw
-         mEB2LBw7qzLVj6Trc0DRQoYldpH2zXFYisV9f+go4D4homuuvLy4bZR+gMDZ1KoR4D
-         lebRCX5//YIoQB6ZceP63qmumQKMFogrKRbN/uBg=
+        b=OrizguQXog/dU4bUZu7LymWlK5dLIn2uo6QN1cfooWCg10i3huGEIlOm2VdAvNfjg
+         +45iIeuh3iG2iKBD2cegerqIucvzBSpYbxVp0Hukw8rbAwISrB5ALSOW9nNH92qsN9
+         N70U/E9M0coThkMWk7sSOJmlgseyqrAxTDbA38Us=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Douglas Miller <doug.miller@cornelisnetworks.com>,
-        Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>,
-        Leon Romanovsky <leon@kernel.org>
-Subject: [PATCH 5.10 45/68] IB/hfi1: Fix possible panic during hotplug remove
+        patches@lists.linux.dev, Daniel Stone <daniels@collabora.com>,
+        Heiko Stuebner <heiko@sntech.de>
+Subject: [PATCH 5.15 55/89] drm/rockchip: Dont spam logs in atomic check
 Date:   Sun, 13 Aug 2023 23:19:46 +0200
-Message-ID: <20230813211709.527238537@linuxfoundation.org>
+Message-ID: <20230813211712.447912884@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211708.149630011@linuxfoundation.org>
-References: <20230813211708.149630011@linuxfoundation.org>
+In-Reply-To: <20230813211710.787645394@linuxfoundation.org>
+References: <20230813211710.787645394@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,33 +54,70 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Douglas Miller <doug.miller@cornelisnetworks.com>
+From: Daniel Stone <daniels@collabora.com>
 
-commit 4fdfaef71fced490835145631a795497646f4555 upstream.
+commit 43dae319b50fac075ad864f84501c703ef20eb2b upstream.
 
-During hotplug remove it is possible that the update counters work
-might be pending, and may run after memory has been freed.
-Cancel the update counters work before freeing memory.
+Userspace should not be able to trigger DRM_ERROR messages to spam the
+logs; especially not through atomic commit parameters which are
+completely legitimate for userspace to attempt.
 
-Fixes: 7724105686e7 ("IB/hfi1: add driver files")
-Signed-off-by: Douglas Miller <doug.miller@cornelisnetworks.com>
-Signed-off-by: Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>
-Link: https://lore.kernel.org/r/169099756100.3927190.15284930454106475280.stgit@awfm-02.cornelisnetworks.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Daniel Stone <daniels@collabora.com>
+Fixes: 7707f7227f09 ("drm/rockchip: Add support for afbc")
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230808104405.522493-1-daniels@collabora.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/hfi1/chip.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/rockchip/rockchip_drm_vop.c |   17 +++++++++--------
+ 1 file changed, 9 insertions(+), 8 deletions(-)
 
---- a/drivers/infiniband/hw/hfi1/chip.c
-+++ b/drivers/infiniband/hw/hfi1/chip.c
-@@ -12348,6 +12348,7 @@ static void free_cntrs(struct hfi1_devda
+--- a/drivers/gpu/drm/rockchip/rockchip_drm_vop.c
++++ b/drivers/gpu/drm/rockchip/rockchip_drm_vop.c
+@@ -820,12 +820,12 @@ static int vop_plane_atomic_check(struct
+ 	 * need align with 2 pixel.
+ 	 */
+ 	if (fb->format->is_yuv && ((new_plane_state->src.x1 >> 16) % 2)) {
+-		DRM_ERROR("Invalid Source: Yuv format not support odd xpos\n");
++		DRM_DEBUG_KMS("Invalid Source: Yuv format not support odd xpos\n");
+ 		return -EINVAL;
+ 	}
  
- 	if (dd->synth_stats_timer.function)
- 		del_timer_sync(&dd->synth_stats_timer);
-+	cancel_work_sync(&dd->update_cntr_work);
- 	ppd = (struct hfi1_pportdata *)(dd + 1);
- 	for (i = 0; i < dd->num_pports; i++, ppd++) {
- 		kfree(ppd->cntrs);
+ 	if (fb->format->is_yuv && new_plane_state->rotation & DRM_MODE_REFLECT_Y) {
+-		DRM_ERROR("Invalid Source: Yuv format does not support this rotation\n");
++		DRM_DEBUG_KMS("Invalid Source: Yuv format does not support this rotation\n");
+ 		return -EINVAL;
+ 	}
+ 
+@@ -833,7 +833,7 @@ static int vop_plane_atomic_check(struct
+ 		struct vop *vop = to_vop(crtc);
+ 
+ 		if (!vop->data->afbc) {
+-			DRM_ERROR("vop does not support AFBC\n");
++			DRM_DEBUG_KMS("vop does not support AFBC\n");
+ 			return -EINVAL;
+ 		}
+ 
+@@ -842,15 +842,16 @@ static int vop_plane_atomic_check(struct
+ 			return ret;
+ 
+ 		if (new_plane_state->src.x1 || new_plane_state->src.y1) {
+-			DRM_ERROR("AFBC does not support offset display, xpos=%d, ypos=%d, offset=%d\n",
+-				  new_plane_state->src.x1,
+-				  new_plane_state->src.y1, fb->offsets[0]);
++			DRM_DEBUG_KMS("AFBC does not support offset display, " \
++				      "xpos=%d, ypos=%d, offset=%d\n",
++				      new_plane_state->src.x1, new_plane_state->src.y1,
++				      fb->offsets[0]);
+ 			return -EINVAL;
+ 		}
+ 
+ 		if (new_plane_state->rotation && new_plane_state->rotation != DRM_MODE_ROTATE_0) {
+-			DRM_ERROR("No rotation support in AFBC, rotation=%d\n",
+-				  new_plane_state->rotation);
++			DRM_DEBUG_KMS("No rotation support in AFBC, rotation=%d\n",
++				      new_plane_state->rotation);
+ 			return -EINVAL;
+ 		}
+ 	}
 
 
