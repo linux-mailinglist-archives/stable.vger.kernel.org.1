@@ -2,44 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4E40E77ACBB
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:36:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B94DB77ACBD
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:36:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232141AbjHMVg1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:36:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59672 "EHLO
+        id S232155AbjHMVgc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:36:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47458 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232148AbjHMVg0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:36:26 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 788D910DB
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:36:28 -0700 (PDT)
+        with ESMTP id S232153AbjHMVgb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:36:31 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED54810E3
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:36:33 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0EAB962EAF
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:36:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24418C433C7;
-        Sun, 13 Aug 2023 21:36:26 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 66C8962FE2
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:36:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AC80C433C7;
+        Sun, 13 Aug 2023 21:36:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691962587;
-        bh=s7b0HE2BSbuInMhTYrQJ8CfQD1qiStrdX12UqkTTddo=;
+        s=korg; t=1691962592;
+        bh=qsC4dIn90MefTn9CUh7R5akvFvTaQKk9ffdyzTgWLa4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ItBfl+2orJw+wqKLzbFx4achoF13ItD/7rjHo+vT1b7dCAdfJO4BWeTeuFI0AFXeD
-         t70Ip6MUI4p97+lBpNMrf9n1wKONOG6d3x7KDVrpmbARw8I7X1pKn0eim4ItsU2bGs
-         zJeA5AJDK0hRR1FQr6RkUwPv7Z9A5vNce+IN7EzY=
+        b=EJYo3eSie40lEIC79wSPm33khsVZZWDhCQaOtQoe8S8DXr8YGX+uQi9ZsXn568Dsb
+         LShc71pQ27p+Ai9XofaRVoBJ35Mw5BUP4D+H96sI++hvnNhkx0U6hhalGqgBDw78Kv
+         9S7QDFBDW8oCPt6p3c0+VVV4p6kGLFgOTLz/hDf4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Andrew Kanner <andrew.kanner@gmail.com>,
-        Jesper Dangaard Brouer <hawk@kernel.org>,
-        Jason Wang <jasowang@redhat.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        syzbot+f817490f5bd20541b90a@syzkaller.appspotmail.com
-Subject: [PATCH 6.1 083/149] net: core: remove unnecessary frame_sz check in bpf_xdp_adjust_tail()
-Date:   Sun, 13 Aug 2023 23:18:48 +0200
-Message-ID: <20230813211721.277887207@linuxfoundation.org>
+        patches@lists.linux.dev, Xu Kuohai <xukuohai@huawei.com>,
+        John Fastabend <john.fastabend@gmail.com>,
+        Martin KaFai Lau <martin.lau@kernel.org>
+Subject: [PATCH 6.1 084/149] bpf, sockmap: Fix map type error in sock_map_del_link
+Date:   Sun, 13 Aug 2023 23:18:49 +0200
+Message-ID: <20230813211721.307146979@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230813211718.757428827@linuxfoundation.org>
 References: <20230813211718.757428827@linuxfoundation.org>
@@ -47,90 +45,54 @@ User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Andrew Kanner <andrew.kanner@gmail.com>
+From: Xu Kuohai <xukuohai@huawei.com>
 
-commit d14eea09edf427fa36bd446f4a3271f99164202f upstream.
+commit 7e96ec0e6605b69bb21bbf6c0ff9051e656ec2b1 upstream.
 
-Syzkaller reported the following issue:
-=======================================
-Too BIG xdp->frame_sz = 131072
-WARNING: CPU: 0 PID: 5020 at net/core/filter.c:4121
-  ____bpf_xdp_adjust_tail net/core/filter.c:4121 [inline]
-WARNING: CPU: 0 PID: 5020 at net/core/filter.c:4121
-  bpf_xdp_adjust_tail+0x466/0xa10 net/core/filter.c:4103
-...
-Call Trace:
- <TASK>
- bpf_prog_4add87e5301a4105+0x1a/0x1c
- __bpf_prog_run include/linux/filter.h:600 [inline]
- bpf_prog_run_xdp include/linux/filter.h:775 [inline]
- bpf_prog_run_generic_xdp+0x57e/0x11e0 net/core/dev.c:4721
- netif_receive_generic_xdp net/core/dev.c:4807 [inline]
- do_xdp_generic+0x35c/0x770 net/core/dev.c:4866
- tun_get_user+0x2340/0x3ca0 drivers/net/tun.c:1919
- tun_chr_write_iter+0xe8/0x210 drivers/net/tun.c:2043
- call_write_iter include/linux/fs.h:1871 [inline]
- new_sync_write fs/read_write.c:491 [inline]
- vfs_write+0x650/0xe40 fs/read_write.c:584
- ksys_write+0x12f/0x250 fs/read_write.c:637
- do_syscall_x64 arch/x86/entry/common.c:50 [inline]
- do_syscall_64+0x38/0xb0 arch/x86/entry/common.c:80
- entry_SYSCALL_64_after_hwframe+0x63/0xcd
+sock_map_del_link() operates on both SOCKMAP and SOCKHASH, although
+both types have member named "progs", the offset of "progs" member in
+these two types is different, so "progs" should be accessed with the
+real map type.
 
-xdp->frame_sz > PAGE_SIZE check was introduced in commit c8741e2bfe87
-("xdp: Allow bpf_xdp_adjust_tail() to grow packet size"). But Jesper
-Dangaard Brouer <jbrouer@redhat.com> noted that after introducing the
-xdp_init_buff() which all XDP driver use - it's safe to remove this
-check. The original intend was to catch cases where XDP drivers have
-not been updated to use xdp.frame_sz, but that is not longer a concern
-(since xdp_init_buff).
-
-Running the initial syzkaller repro it was discovered that the
-contiguous physical memory allocation is used for both xdp paths in
-tun_get_user(), e.g. tun_build_skb() and tun_alloc_skb(). It was also
-stated by Jesper Dangaard Brouer <jbrouer@redhat.com> that XDP can
-work on higher order pages, as long as this is contiguous physical
-memory (e.g. a page).
-
-Reported-and-tested-by: syzbot+f817490f5bd20541b90a@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/000000000000774b9205f1d8a80d@google.com/T/
-Link: https://syzkaller.appspot.com/bug?extid=f817490f5bd20541b90a
-Link: https://lore.kernel.org/all/20230725155403.796-1-andrew.kanner@gmail.com/T/
-Fixes: 43b5169d8355 ("net, xdp: Introduce xdp_init_buff utility routine")
-Signed-off-by: Andrew Kanner <andrew.kanner@gmail.com>
-Acked-by: Jesper Dangaard Brouer <hawk@kernel.org>
-Acked-by: Jason Wang <jasowang@redhat.com>
-Link: https://lore.kernel.org/r/20230803190316.2380231-1-andrew.kanner@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 604326b41a6f ("bpf, sockmap: convert to generic sk_msg interface")
+Signed-off-by: Xu Kuohai <xukuohai@huawei.com>
+Reviewed-by: John Fastabend <john.fastabend@gmail.com>
+Link: https://lore.kernel.org/r/20230804073740.194770-2-xukuohai@huaweicloud.com
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/filter.c |    6 ------
- 1 file changed, 6 deletions(-)
+ net/core/sock_map.c |   10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
---- a/net/core/filter.c
-+++ b/net/core/filter.c
-@@ -4064,12 +4064,6 @@ BPF_CALL_2(bpf_xdp_adjust_tail, struct x
- 	if (unlikely(data_end > data_hard_end))
- 		return -EINVAL;
- 
--	/* ALL drivers MUST init xdp->frame_sz, chicken check below */
--	if (unlikely(xdp->frame_sz > PAGE_SIZE)) {
--		WARN_ONCE(1, "Too BIG xdp->frame_sz = %d\n", xdp->frame_sz);
--		return -EINVAL;
--	}
--
- 	if (unlikely(data_end < xdp->data + ETH_HLEN))
- 		return -EINVAL;
- 
+--- a/net/core/sock_map.c
++++ b/net/core/sock_map.c
+@@ -148,13 +148,13 @@ static void sock_map_del_link(struct soc
+ 	list_for_each_entry_safe(link, tmp, &psock->link, list) {
+ 		if (link->link_raw == link_raw) {
+ 			struct bpf_map *map = link->map;
+-			struct bpf_stab *stab = container_of(map, struct bpf_stab,
+-							     map);
+-			if (psock->saved_data_ready && stab->progs.stream_parser)
++			struct sk_psock_progs *progs = sock_map_progs(map);
++
++			if (psock->saved_data_ready && progs->stream_parser)
+ 				strp_stop = true;
+-			if (psock->saved_data_ready && stab->progs.stream_verdict)
++			if (psock->saved_data_ready && progs->stream_verdict)
+ 				verdict_stop = true;
+-			if (psock->saved_data_ready && stab->progs.skb_verdict)
++			if (psock->saved_data_ready && progs->skb_verdict)
+ 				verdict_stop = true;
+ 			list_del(&link->list);
+ 			sk_psock_free_link(link);
 
 
