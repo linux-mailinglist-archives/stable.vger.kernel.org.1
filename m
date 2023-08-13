@@ -2,44 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 854AC77ACD1
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:37:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 98B0077AB83
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:22:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232184AbjHMVh2 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:37:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37752 "EHLO
+        id S230437AbjHMVWr (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:22:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58670 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232190AbjHMVh1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:37:27 -0400
+        with ESMTP id S230386AbjHMVWp (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:22:45 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A113D10DD
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:37:29 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D8EB10D7
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:22:47 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 366D1633CD
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:37:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50EECC433C7;
-        Sun, 13 Aug 2023 21:37:28 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E295262825
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:22:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02FB8C433CC;
+        Sun, 13 Aug 2023 21:22:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691962648;
-        bh=JOEaiS4VsnMNMCPECevu7X2SMwUnUorjUgLnle49tPs=;
+        s=korg; t=1691961766;
+        bh=GzUT0W16J26iR0wg9Eatipwu0bpEdIqSKWiiFT1nNqE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=OJkoZSP3aaxO0QjfwMk/ZnIdBQYlA2E8Gfi5l7dzCTcyzn/+Td06/xvCtzIbCAIpG
-         ZlTuVDzZ4uSvji7ssDyRMkfc7brmYNgwnMOIOTH+4nBh9L2ihtBIKscTjlDyNgc1nY
-         +zzaiixlT8rLVx4aExe/jI1XXABBTNtqtNq4/v6k=
+        b=jx5ZigHC/1SHuNVA+qZqOTSAWFPhGdcMes2HWaLeTXOfRk6yoPSwGWxwdWOrSz3AL
+         mCeGfOUcNZlOTwrVnoEGyWAn96zdaoXDgnquC7WE12GSRKuvnamTkmTZ2U/NDQMgEq
+         rTIHQCiboOHIPsTsArA+lzc9kKPcEVeTn52qXJKw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Vladimir Oltean <vladimir.oltean@nxp.com>,
+        patches@lists.linux.dev, syzbot <syzkaller@googlegroups.com>,
+        Eric Dumazet <edumazet@google.com>,
+        Willem de Bruijn <willemb@google.com>,
         Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 106/149] net: dsa: ocelot: call dsa_tag_8021q_unregister() under rtnl_lock() on driver remove
+Subject: [PATCH 4.19 17/33] net/packet: annotate data-races around tp->status
 Date:   Sun, 13 Aug 2023 23:19:11 +0200
-Message-ID: <20230813211721.940607230@linuxfoundation.org>
+Message-ID: <20230813211704.552562507@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211718.757428827@linuxfoundation.org>
-References: <20230813211718.757428827@linuxfoundation.org>
+In-Reply-To: <20230813211703.915807095@linuxfoundation.org>
+References: <20230813211703.915807095@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,91 +56,125 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit a94c16a2fda010866b8858a386a8bfbeba4f72c5 upstream.
+commit 8a9896177784063d01068293caea3f74f6830ff6 upstream.
 
-When the tagging protocol in current use is "ocelot-8021q" and we unbind
-the driver, we see this splat:
+Another syzbot report [1] is about tp->status lockless reads
+from __packet_get_status()
 
-$ echo '0000:00:00.2' > /sys/bus/pci/drivers/fsl_enetc/unbind
-mscc_felix 0000:00:00.5 swp0: left promiscuous mode
-sja1105 spi2.0: Link is Down
-DSA: tree 1 torn down
-mscc_felix 0000:00:00.5 swp2: left promiscuous mode
-sja1105 spi2.2: Link is Down
-DSA: tree 3 torn down
-fsl_enetc 0000:00:00.2 eno2: left promiscuous mode
-mscc_felix 0000:00:00.5: Link is Down
-------------[ cut here ]------------
-RTNL: assertion failed at net/dsa/tag_8021q.c (409)
-WARNING: CPU: 1 PID: 329 at net/dsa/tag_8021q.c:409 dsa_tag_8021q_unregister+0x12c/0x1a0
-Modules linked in:
-CPU: 1 PID: 329 Comm: bash Not tainted 6.5.0-rc3+ #771
-pc : dsa_tag_8021q_unregister+0x12c/0x1a0
-lr : dsa_tag_8021q_unregister+0x12c/0x1a0
-Call trace:
- dsa_tag_8021q_unregister+0x12c/0x1a0
- felix_tag_8021q_teardown+0x130/0x150
- felix_teardown+0x3c/0xd8
- dsa_tree_teardown_switches+0xbc/0xe0
- dsa_unregister_switch+0x168/0x260
- felix_pci_remove+0x30/0x60
- pci_device_remove+0x4c/0x100
- device_release_driver_internal+0x188/0x288
- device_links_unbind_consumers+0xfc/0x138
- device_release_driver_internal+0xe0/0x288
- device_driver_detach+0x24/0x38
- unbind_store+0xd8/0x108
- drv_attr_store+0x30/0x50
----[ end trace 0000000000000000 ]---
-------------[ cut here ]------------
-RTNL: assertion failed at net/8021q/vlan_core.c (376)
-WARNING: CPU: 1 PID: 329 at net/8021q/vlan_core.c:376 vlan_vid_del+0x1b8/0x1f0
-CPU: 1 PID: 329 Comm: bash Tainted: G        W          6.5.0-rc3+ #771
-pc : vlan_vid_del+0x1b8/0x1f0
-lr : vlan_vid_del+0x1b8/0x1f0
- dsa_tag_8021q_unregister+0x8c/0x1a0
- felix_tag_8021q_teardown+0x130/0x150
- felix_teardown+0x3c/0xd8
- dsa_tree_teardown_switches+0xbc/0xe0
- dsa_unregister_switch+0x168/0x260
- felix_pci_remove+0x30/0x60
- pci_device_remove+0x4c/0x100
- device_release_driver_internal+0x188/0x288
- device_links_unbind_consumers+0xfc/0x138
- device_release_driver_internal+0xe0/0x288
- device_driver_detach+0x24/0x38
- unbind_store+0xd8/0x108
- drv_attr_store+0x30/0x50
-DSA: tree 0 torn down
+[1]
+BUG: KCSAN: data-race in __packet_rcv_has_room / __packet_set_status
 
-This was somewhat not so easy to spot, because "ocelot-8021q" is not the
-default tagging protocol, and thus, not everyone who tests the unbinding
-path may have switched to it beforehand. The default
-felix_tag_npi_teardown() does not require rtnl_lock() to be held.
+write to 0xffff888117d7c080 of 8 bytes by interrupt on cpu 0:
+__packet_set_status+0x78/0xa0 net/packet/af_packet.c:407
+tpacket_rcv+0x18bb/0x1a60 net/packet/af_packet.c:2483
+deliver_skb net/core/dev.c:2173 [inline]
+__netif_receive_skb_core+0x408/0x1e80 net/core/dev.c:5337
+__netif_receive_skb_one_core net/core/dev.c:5491 [inline]
+__netif_receive_skb+0x57/0x1b0 net/core/dev.c:5607
+process_backlog+0x21f/0x380 net/core/dev.c:5935
+__napi_poll+0x60/0x3b0 net/core/dev.c:6498
+napi_poll net/core/dev.c:6565 [inline]
+net_rx_action+0x32b/0x750 net/core/dev.c:6698
+__do_softirq+0xc1/0x265 kernel/softirq.c:571
+invoke_softirq kernel/softirq.c:445 [inline]
+__irq_exit_rcu+0x57/0xa0 kernel/softirq.c:650
+sysvec_apic_timer_interrupt+0x6d/0x80 arch/x86/kernel/apic/apic.c:1106
+asm_sysvec_apic_timer_interrupt+0x1a/0x20 arch/x86/include/asm/idtentry.h:645
+smpboot_thread_fn+0x33c/0x4a0 kernel/smpboot.c:112
+kthread+0x1d7/0x210 kernel/kthread.c:379
+ret_from_fork+0x1f/0x30 arch/x86/entry/entry_64.S:308
 
-Fixes: 7c83a7c539ab ("net: dsa: add a second tagger for Ocelot switches based on tag_8021q")
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Link: https://lore.kernel.org/r/20230803134253.2711124-1-vladimir.oltean@nxp.com
+read to 0xffff888117d7c080 of 8 bytes by interrupt on cpu 1:
+__packet_get_status net/packet/af_packet.c:436 [inline]
+packet_lookup_frame net/packet/af_packet.c:524 [inline]
+__tpacket_has_room net/packet/af_packet.c:1255 [inline]
+__packet_rcv_has_room+0x3f9/0x450 net/packet/af_packet.c:1298
+tpacket_rcv+0x275/0x1a60 net/packet/af_packet.c:2285
+deliver_skb net/core/dev.c:2173 [inline]
+dev_queue_xmit_nit+0x38a/0x5e0 net/core/dev.c:2243
+xmit_one net/core/dev.c:3574 [inline]
+dev_hard_start_xmit+0xcf/0x3f0 net/core/dev.c:3594
+__dev_queue_xmit+0xefb/0x1d10 net/core/dev.c:4244
+dev_queue_xmit include/linux/netdevice.h:3088 [inline]
+can_send+0x4eb/0x5d0 net/can/af_can.c:276
+bcm_can_tx+0x314/0x410 net/can/bcm.c:302
+bcm_tx_timeout_handler+0xdb/0x260
+__run_hrtimer kernel/time/hrtimer.c:1685 [inline]
+__hrtimer_run_queues+0x217/0x700 kernel/time/hrtimer.c:1749
+hrtimer_run_softirq+0xd6/0x120 kernel/time/hrtimer.c:1766
+__do_softirq+0xc1/0x265 kernel/softirq.c:571
+run_ksoftirqd+0x17/0x20 kernel/softirq.c:939
+smpboot_thread_fn+0x30a/0x4a0 kernel/smpboot.c:164
+kthread+0x1d7/0x210 kernel/kthread.c:379
+ret_from_fork+0x1f/0x30 arch/x86/entry/entry_64.S:308
+
+value changed: 0x0000000000000000 -> 0x0000000020000081
+
+Reported by Kernel Concurrency Sanitizer on:
+CPU: 1 PID: 19 Comm: ksoftirqd/1 Not tainted 6.4.0-syzkaller #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 05/27/2023
+
+Fixes: 69e3c75f4d54 ("net: TX_RING and packet mmap")
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Link: https://lore.kernel.org/r/20230803145600.2937518-1-edumazet@google.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/dsa/ocelot/felix.c |    2 ++
- 1 file changed, 2 insertions(+)
+ net/packet/af_packet.c |   16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
 
---- a/drivers/net/dsa/ocelot/felix.c
-+++ b/drivers/net/dsa/ocelot/felix.c
-@@ -1606,8 +1606,10 @@ static void felix_teardown(struct dsa_sw
- 	struct felix *felix = ocelot_to_felix(ocelot);
- 	struct dsa_port *dp;
+--- a/net/packet/af_packet.c
++++ b/net/packet/af_packet.c
+@@ -370,18 +370,20 @@ static void __packet_set_status(struct p
+ {
+ 	union tpacket_uhdr h;
  
-+	rtnl_lock();
- 	if (felix->tag_proto_ops)
- 		felix->tag_proto_ops->teardown(ds);
-+	rtnl_unlock();
++	/* WRITE_ONCE() are paired with READ_ONCE() in __packet_get_status */
++
+ 	h.raw = frame;
+ 	switch (po->tp_version) {
+ 	case TPACKET_V1:
+-		h.h1->tp_status = status;
++		WRITE_ONCE(h.h1->tp_status, status);
+ 		flush_dcache_page(pgv_to_page(&h.h1->tp_status));
+ 		break;
+ 	case TPACKET_V2:
+-		h.h2->tp_status = status;
++		WRITE_ONCE(h.h2->tp_status, status);
+ 		flush_dcache_page(pgv_to_page(&h.h2->tp_status));
+ 		break;
+ 	case TPACKET_V3:
+-		h.h3->tp_status = status;
++		WRITE_ONCE(h.h3->tp_status, status);
+ 		flush_dcache_page(pgv_to_page(&h.h3->tp_status));
+ 		break;
+ 	default:
+@@ -398,17 +400,19 @@ static int __packet_get_status(struct pa
  
- 	dsa_switch_for_each_available_port(dp, ds)
- 		ocelot_deinit_port(ocelot, dp->index);
+ 	smp_rmb();
+ 
++	/* READ_ONCE() are paired with WRITE_ONCE() in __packet_set_status */
++
+ 	h.raw = frame;
+ 	switch (po->tp_version) {
+ 	case TPACKET_V1:
+ 		flush_dcache_page(pgv_to_page(&h.h1->tp_status));
+-		return h.h1->tp_status;
++		return READ_ONCE(h.h1->tp_status);
+ 	case TPACKET_V2:
+ 		flush_dcache_page(pgv_to_page(&h.h2->tp_status));
+-		return h.h2->tp_status;
++		return READ_ONCE(h.h2->tp_status);
+ 	case TPACKET_V3:
+ 		flush_dcache_page(pgv_to_page(&h.h3->tp_status));
+-		return h.h3->tp_status;
++		return READ_ONCE(h.h3->tp_status);
+ 	default:
+ 		WARN(1, "TPACKET version not supported.\n");
+ 		BUG();
 
 
