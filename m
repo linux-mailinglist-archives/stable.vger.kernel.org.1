@@ -2,47 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 64ECC77AC5D
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:32:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5E4B177ACE5
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:38:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231949AbjHMVcR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:32:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56190 "EHLO
+        id S232217AbjHMViW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:38:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53220 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231960AbjHMVcR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:32:17 -0400
+        with ESMTP id S232222AbjHMViW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:38:22 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 699AC10F5
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:32:17 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F036A10DB
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:38:23 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 085BD62B9C
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:32:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F37CBC433C9;
-        Sun, 13 Aug 2023 21:32:15 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 790C863671
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:38:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F85EC433C8;
+        Sun, 13 Aug 2023 21:38:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691962336;
-        bh=sqTW8dK3H/9DaN2wTnRnd29na1gnUo6H+TTW5P1gbGQ=;
+        s=korg; t=1691962702;
+        bh=PTKV+75czZjcKa0EFHYTVr68rry7wU5VoEW8Hhzs0Hs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=kF4TwY5if33sK6X6OokdcWxkB+83IFzH6l9z4IeXYFK/pHNoKPe1B3tgkLif+sFUY
-         boNqCg7fZYei9tcYQ4YFaVQovtl075cLsxaBAzwcAlcmFeW6yze6tmGoRJOzQMmTLs
-         HmvM0NBa0eutwX8eGic7c3m0udavjXgen8O5/y3Y=
+        b=rOqQso04MK6Lo1qE2yuw5byFwPNdF3kHXE5sCA+ZThCv47Bk4eGNWUmDrI4VQgPOa
+         PcGSfotJxV8zPwqlmll4yoIbk6GWTlqxTL9LpIZq+8DCad2PpiFegDxK49BfKBoKZs
+         StNo3CZ4gjhrLH8/nO46dYQqz+89xH58CNRfb4To=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        =?UTF-8?q?Andr=C3=A9=20Apitzsch?= <git@apitzsch.eu>,
-        Andrew Kallmeyer <kallmeyeras@gmail.com>,
-        =?UTF-8?q?Gerg=C5=91=20K=C3=B6teles?= <soyer@irl.hu>,
-        Hans de Goede <hdegoede@redhat.com>
-Subject: [PATCH 6.4 199/206] platform/x86: lenovo-ymc: Only bind on machines with a convertible DMI chassis-type
+        patches@lists.linux.dev, Nick Child <nnac123@linux.ibm.com>,
+        Simon Horman <horms@kernel.org>,
+        Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 124/149] ibmvnic: Ensure login failure recovery is safe from other resets
 Date:   Sun, 13 Aug 2023 23:19:29 +0200
-Message-ID: <20230813211730.706570074@linuxfoundation.org>
+Message-ID: <20230813211722.439795777@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211724.969019629@linuxfoundation.org>
-References: <20230813211724.969019629@linuxfoundation.org>
+In-Reply-To: <20230813211718.757428827@linuxfoundation.org>
+References: <20230813211718.757428827@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,96 +54,145 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Nick Child <nnac123@linux.ibm.com>
 
-commit 2b6aa6610dc9690f79d305ca938abfb799a4f766 upstream.
+commit 6db541ae279bd4e76dbd939e5fbf298396166242 upstream.
 
-The lenovo-ymc driver is causing the keyboard + touchpad to stop working
-on some regular laptop models such as the Lenovo ThinkBook 13s G2 ITL 20V9.
+If a login request fails, the recovery process should be protected
+against parallel resets. It is a known issue that freeing and
+registering CRQ's in quick succession can result in a failover CRQ from
+the VIOS. Processing a failover during login recovery is dangerous for
+two reasons:
+ 1. This will result in two parallel initialization processes, this can
+ cause serious issues during login.
+ 2. It is possible that the failover CRQ is received but never executed.
+ We get notified of a pending failover through a transport event CRQ.
+ The reset is not performed until a INIT CRQ request is received.
+ Previously, if CRQ init fails during login recovery, then the ibmvnic
+ irq is freed and the login process returned error. If failover_pending
+ is true (a transport event was received), then the ibmvnic device
+ would never be able to process the reset since it cannot receive the
+ CRQ_INIT request due to the irq being freed. This leaved the device
+ in a inoperable state.
 
-The problem is that there are YMC WMI GUID methods in the ACPI tables
-of these laptops, despite them not being Yogas and lenovo-ymc loading
-causes libinput to see a SW_TABLET_MODE switch with state 1.
+Therefore, the login failure recovery process must be hardened against
+these possible issues. Possible failovers (due to quick CRQ free and
+init) must be avoided and any issues during re-initialization should be
+dealt with instead of being propagated up the stack. This logic is
+similar to that of ibmvnic_probe().
 
-This in turn causes libinput to ignore events from the builtin keyboard
-and touchpad, since it filters those out for a Yoga in tablet mode.
-
-Similar issues with false-positive SW_TABLET_MODE=1 reporting have
-been seen with the intel-hid driver.
-
-Copy the intel-hid driver approach to fix this and only bind to the WMI
-device on machines where the DMI chassis-type indicates the machine
-is a convertible.
-
-Add a 'force' module parameter to allow overriding the chassis-type check
-so that users can easily test if the YMC interface works on models which
-report an unexpected chassis-type.
-
-Fixes: e82882cdd241 ("platform/x86: Add driver for Yoga Tablet Mode switch")
-Link: https://bugzilla.redhat.com/show_bug.cgi?id=2229373
-Cc: André Apitzsch <git@apitzsch.eu>
-Cc: stable@vger.kernel.org
-Tested-by: Andrew Kallmeyer <kallmeyeras@gmail.com>
-Tested-by: Gergő Köteles <soyer@irl.hu>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20230812144818.383230-1-hdegoede@redhat.com
+Fixes: dff515a3e71d ("ibmvnic: Harden device login requests")
+Signed-off-by: Nick Child <nnac123@linux.ibm.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/20230809221038.51296-5-nnac123@linux.ibm.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/lenovo-ymc.c | 25 +++++++++++++++++++++++++
- 1 file changed, 25 insertions(+)
+ drivers/net/ethernet/ibm/ibmvnic.c |   70 +++++++++++++++++++++++++------------
+ 1 file changed, 48 insertions(+), 22 deletions(-)
 
-diff --git a/drivers/platform/x86/lenovo-ymc.c b/drivers/platform/x86/lenovo-ymc.c
-index 41676188b373..f360370d5002 100644
---- a/drivers/platform/x86/lenovo-ymc.c
-+++ b/drivers/platform/x86/lenovo-ymc.c
-@@ -24,6 +24,10 @@ static bool ec_trigger __read_mostly;
- module_param(ec_trigger, bool, 0444);
- MODULE_PARM_DESC(ec_trigger, "Enable EC triggering work-around to force emitting tablet mode events");
+--- a/drivers/net/ethernet/ibm/ibmvnic.c
++++ b/drivers/net/ethernet/ibm/ibmvnic.c
+@@ -115,6 +115,7 @@ static void ibmvnic_tx_scrq_clean_buffer
+ static void free_long_term_buff(struct ibmvnic_adapter *adapter,
+ 				struct ibmvnic_long_term_buff *ltb);
+ static void ibmvnic_disable_irqs(struct ibmvnic_adapter *adapter);
++static void flush_reset_queue(struct ibmvnic_adapter *adapter);
  
-+static bool force;
-+module_param(force, bool, 0444);
-+MODULE_PARM_DESC(force, "Force loading on boards without a convertible DMI chassis-type");
+ struct ibmvnic_stat {
+ 	char name[ETH_GSTRING_LEN];
+@@ -1316,8 +1317,8 @@ static const char *adapter_state_to_stri
+ 
+ static int ibmvnic_login(struct net_device *netdev)
+ {
++	unsigned long flags, timeout = msecs_to_jiffies(20000);
+ 	struct ibmvnic_adapter *adapter = netdev_priv(netdev);
+-	unsigned long timeout = msecs_to_jiffies(20000);
+ 	int retry_count = 0;
+ 	int retries = 10;
+ 	bool retry;
+@@ -1382,6 +1383,7 @@ static int ibmvnic_login(struct net_devi
+ 					    "SCRQ irq initialization failed\n");
+ 				return rc;
+ 			}
++		/* Default/timeout error handling, reset and start fresh */
+ 		} else if (adapter->init_done_rc) {
+ 			netdev_warn(netdev, "Adapter login failed, init_done_rc = %d\n",
+ 				    adapter->init_done_rc);
+@@ -1397,29 +1399,53 @@ partial_reset:
+ 				    "Freeing and re-registering CRQs before attempting to login again\n");
+ 			retry = true;
+ 			adapter->init_done_rc = 0;
+-			retry_count++;
+ 			release_sub_crqs(adapter, true);
+-			reinit_init_done(adapter);
+-			release_crq_queue(adapter);
+-			/* If we don't sleep here then we risk an unnecessary
+-			 * failover event from the VIOS. This is a known VIOS
+-			 * issue caused by a vnic device freeing and registering
+-			 * a CRQ too quickly.
++			/* Much of this is similar logic as ibmvnic_probe(),
++			 * we are essentially re-initializing communication
++			 * with the server. We really should not run any
++			 * resets/failovers here because this is already a form
++			 * of reset and we do not want parallel resets occurring
+ 			 */
+-			msleep(1500);
+-			rc = init_crq_queue(adapter);
+-			if (rc) {
+-				netdev_err(netdev, "login recovery: init CRQ failed %d\n",
+-					   rc);
+-				return -EIO;
+-			}
+-
+-			rc = ibmvnic_reset_init(adapter, false);
+-			if (rc) {
+-				netdev_err(netdev, "login recovery: Reset init failed %d\n",
+-					   rc);
+-				return -EIO;
+-			}
++			do {
++				reinit_init_done(adapter);
++				/* Clear any failovers we got in the previous
++				 * pass since we are re-initializing the CRQ
++				 */
++				adapter->failover_pending = false;
++				release_crq_queue(adapter);
++				/* If we don't sleep here then we risk an
++				 * unnecessary failover event from the VIOS.
++				 * This is a known VIOS issue caused by a vnic
++				 * device freeing and registering a CRQ too
++				 * quickly.
++				 */
++				msleep(1500);
++				/* Avoid any resets, since we are currently
++				 * resetting.
++				 */
++				spin_lock_irqsave(&adapter->rwi_lock, flags);
++				flush_reset_queue(adapter);
++				spin_unlock_irqrestore(&adapter->rwi_lock,
++						       flags);
 +
- static const struct dmi_system_id ec_trigger_quirk_dmi_table[] = {
- 	{
- 		/* Lenovo Yoga 7 14ARB7 */
-@@ -35,6 +39,20 @@ static const struct dmi_system_id ec_trigger_quirk_dmi_table[] = {
- 	{ }
- };
- 
-+static const struct dmi_system_id allowed_chasis_types_dmi_table[] = {
-+	{
-+		.matches = {
-+			DMI_EXACT_MATCH(DMI_CHASSIS_TYPE, "31" /* Convertible */),
-+		},
-+	},
-+	{
-+		.matches = {
-+			DMI_EXACT_MATCH(DMI_CHASSIS_TYPE, "32" /* Detachable */),
-+		},
-+	},
-+	{ }
-+};
++				rc = init_crq_queue(adapter);
++				if (rc) {
++					netdev_err(netdev, "login recovery: init CRQ failed %d\n",
++						   rc);
++					return -EIO;
++				}
 +
- struct lenovo_ymc_private {
- 	struct input_dev *input_dev;
- 	struct acpi_device *ec_acpi_dev;
-@@ -111,6 +129,13 @@ static int lenovo_ymc_probe(struct wmi_device *wdev, const void *ctx)
- 	struct input_dev *input_dev;
- 	int err;
++				rc = ibmvnic_reset_init(adapter, false);
++				if (rc)
++					netdev_err(netdev, "login recovery: Reset init failed %d\n",
++						   rc);
++				/* IBMVNIC_CRQ_INIT will return EAGAIN if it
++				 * fails, since ibmvnic_reset_init will free
++				 * irq's in failure, we won't be able to receive
++				 * new CRQs so we need to keep trying. probe()
++				 * handles this similarly.
++				 */
++			} while (rc == -EAGAIN && retry_count++ < retries);
+ 		}
+ 	} while (retry);
  
-+	if (!dmi_check_system(allowed_chasis_types_dmi_table)) {
-+		if (force)
-+			dev_info(&wdev->dev, "Force loading Lenovo YMC support\n");
-+		else
-+			return -ENODEV;
-+	}
-+
- 	ec_trigger |= dmi_check_system(ec_trigger_quirk_dmi_table);
- 
- 	priv = devm_kzalloc(&wdev->dev, sizeof(*priv), GFP_KERNEL);
--- 
-2.41.0
-
 
 
