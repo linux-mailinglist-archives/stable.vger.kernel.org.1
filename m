@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1144177AC5C
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:32:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 249DF77AD77
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:49:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231968AbjHMVcR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:32:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56254 "EHLO
+        id S232321AbjHMVtX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:49:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57392 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231945AbjHMVcQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:32:16 -0400
+        with ESMTP id S232323AbjHMVsy (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:48:54 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4850710FE
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:32:14 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89ED61BEC
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:42:00 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 28E4162B95
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:32:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EEADC433C9;
-        Sun, 13 Aug 2023 21:32:13 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3EB4761A36
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:41:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53DE3C433C8;
+        Sun, 13 Aug 2023 21:41:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691962333;
-        bh=AlirPVlmGJEyWN4RLg7vt+by28P7HhhhV0Ip+hE5gB4=;
+        s=korg; t=1691962917;
+        bh=KZN/o5a9DZ3N/9TdnPoCvvpgrNuqOZmzOZXfRFYf7TI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=BfFglTso5WjsPTGwdcRDYZiV8+ID8UhcFiphlRpFzNUBRa2l2bSo6BczAfQN58m+u
-         opVlcq7BY8yC0LC2dQogyTIyAbUrV899Wgk7WYKCwtvxXWR7YC3AvNo8ImKqSobgC2
-         xiy493sUd4GHU6cF3NQqDSwRePsFjIg7O4oKZwSQ=
+        b=S87b47PYCvfcwZUGynm6zxdzl7fDKgXSI9Q7SQE2BInpTs3wm7yVzG7vxrn6ZrNn5
+         +f63DrmOEM7wpgBRu1QIdgnOSK/Nzb6ntbhzGfdgg/f057HdHDG0dLjwu3ClCooDcm
+         O77VW6skAiXRVTyKAs6xX1GcxzRqAKScKNDgvMhQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jean Delvare <jdelvare@suse.de>,
-        Nikita Kravets <teackot@gmail.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Mark Gross <markgross@kernel.org>
-Subject: [PATCH 6.4 198/206] platform/x86: msi-ec: Fix the build
+        patches@lists.linux.dev, Yingcong Wu <yingcong.wu@intel.com>,
+        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>
+Subject: [PATCH 5.10 27/68] x86/mm: Fix VDSO and VVAR placement on 5-level paging machines
 Date:   Sun, 13 Aug 2023 23:19:28 +0200
-Message-ID: <20230813211730.679644327@linuxfoundation.org>
+Message-ID: <20230813211708.982450644@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211724.969019629@linuxfoundation.org>
-References: <20230813211724.969019629@linuxfoundation.org>
+In-Reply-To: <20230813211708.149630011@linuxfoundation.org>
+References: <20230813211708.149630011@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,70 +55,52 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jean Delvare <jdelvare@suse.de>
+From: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 
-commit 5a66d59b5ff537ddae84a1f175c3f8eb1140a562 upstream.
+commit 1b8b1aa90c9c0e825b181b98b8d9e249dc395470 upstream.
 
-The msi-ec driver fails to build for me (gcc 7.5):
+Yingcong has noticed that on the 5-level paging machine, VDSO and VVAR
+VMAs are placed above the 47-bit border:
 
-  CC [M]  drivers/platform/x86/msi-ec.o
-drivers/platform/x86/msi-ec.c:72:6: error: initializer element is not constant
-    { SM_ECO_NAME,     0xc2 },
-      ^~~~~~~~~~~
-drivers/platform/x86/msi-ec.c:72:6: note: (near initialization for ‘CONF0.shift_mode.modes[0].name’)
-drivers/platform/x86/msi-ec.c:73:6: error: initializer element is not constant
-    { SM_COMFORT_NAME, 0xc1 },
-      ^~~~~~~~~~~~~~~
-drivers/platform/x86/msi-ec.c:73:6: note: (near initialization for ‘CONF0.shift_mode.modes[1].name’)
-drivers/platform/x86/msi-ec.c:74:6: error: initializer element is not constant
-    { SM_SPORT_NAME,   0xc0 },
-      ^~~~~~~~~~~~~
-drivers/platform/x86/msi-ec.c:74:6: note: (near initialization for ‘CONF0.shift_mode.modes[2].name’)
-(...)
+8000001a9000-8000001ad000 r--p 00000000 00:00 0                          [vvar]
+8000001ad000-8000001af000 r-xp 00000000 00:00 0                          [vdso]
 
-Don't try to be smart, just use defines for the constant strings. The
-compiler will recognize it's the same string and will store it only
-once in the data section anyway.
+This might confuse users who are not aware of 5-level paging and expect
+all userspace addresses to be under the 47-bit border.
 
-Signed-off-by: Jean Delvare <jdelvare@suse.de>
-Fixes: 392cacf2aa10 ("platform/x86: Add new msi-ec driver")
+So far problem has only been triggered with ASLR disabled, although it
+may also occur with ASLR enabled if the layout is randomized in a just
+right way.
+
+The problem happens due to custom placement for the VMAs in the VDSO
+code: vdso_addr() tries to place them above the stack and checks the
+result against TASK_SIZE_MAX, which is wrong. TASK_SIZE_MAX is set to
+the 56-bit border on 5-level paging machines. Use DEFAULT_MAP_WINDOW
+instead.
+
+Fixes: b569bab78d8d ("x86/mm: Prepare to expose larger address space to userspace")
+Reported-by: Yingcong Wu <yingcong.wu@intel.com>
+Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
 Cc: stable@vger.kernel.org
-Cc: Nikita Kravets <teackot@gmail.com>
-Cc: Hans de Goede <hdegoede@redhat.com>
-Cc: Mark Gross <markgross@kernel.org>
-Link: https://lore.kernel.org/r/20230805101010.54d49e91@endymion.delvare
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/all/20230803151609.22141-1-kirill.shutemov%40linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/msi-ec.c |   16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ arch/x86/entry/vdso/vma.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/platform/x86/msi-ec.c
-+++ b/drivers/platform/x86/msi-ec.c
-@@ -27,15 +27,15 @@
- #include <linux/seq_file.h>
- #include <linux/string.h>
+--- a/arch/x86/entry/vdso/vma.c
++++ b/arch/x86/entry/vdso/vma.c
+@@ -339,8 +339,8 @@ static unsigned long vdso_addr(unsigned
  
--static const char *const SM_ECO_NAME       = "eco";
--static const char *const SM_COMFORT_NAME   = "comfort";
--static const char *const SM_SPORT_NAME     = "sport";
--static const char *const SM_TURBO_NAME     = "turbo";
-+#define SM_ECO_NAME		"eco"
-+#define SM_COMFORT_NAME		"comfort"
-+#define SM_SPORT_NAME		"sport"
-+#define SM_TURBO_NAME		"turbo"
+ 	/* Round the lowest possible end address up to a PMD boundary. */
+ 	end = (start + len + PMD_SIZE - 1) & PMD_MASK;
+-	if (end >= TASK_SIZE_MAX)
+-		end = TASK_SIZE_MAX;
++	if (end >= DEFAULT_MAP_WINDOW)
++		end = DEFAULT_MAP_WINDOW;
+ 	end -= len;
  
--static const char *const FM_AUTO_NAME     = "auto";
--static const char *const FM_SILENT_NAME   = "silent";
--static const char *const FM_BASIC_NAME    = "basic";
--static const char *const FM_ADVANCED_NAME = "advanced";
-+#define FM_AUTO_NAME		"auto"
-+#define FM_SILENT_NAME		"silent"
-+#define FM_BASIC_NAME		"basic"
-+#define FM_ADVANCED_NAME	"advanced"
- 
- static const char * const ALLOWED_FW_0[] __initconst = {
- 	"14C1EMS1.012",
+ 	if (end > start) {
 
 
