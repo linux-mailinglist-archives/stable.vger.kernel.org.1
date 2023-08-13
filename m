@@ -2,135 +2,108 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 66D1B77AC1B
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:29:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7787177ACC9
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:37:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231830AbjHMV3X (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:29:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44608 "EHLO
+        id S232173AbjHMVhG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:37:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38872 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231804AbjHMV3W (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:29:22 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9738010D7
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:29:24 -0700 (PDT)
+        with ESMTP id S232176AbjHMVhF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:37:05 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D974210E3
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:37:07 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3647062AC1
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:29:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44662C433C8;
-        Sun, 13 Aug 2023 21:29:23 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 71C4B632B3
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:37:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8924EC433C7;
+        Sun, 13 Aug 2023 21:37:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691962163;
-        bh=XJOYeuEfqlR6YXS7M/z07D7FtbrCfJhdJjJonzYyUeA=;
+        s=korg; t=1691962626;
+        bh=KKrJewEweCq+o2GSa2egtb+0QTUA/2SzbvfNEBen7JY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Z6Alc+htGVHcm/BXf1qtk+R/q4y3bkx93Hn3yyweU2xrK+LaJPvrsILkK1TFItUGH
-         VShc8Z6swwty/GMOcT+amkyLNs84OJB/eB4Ae+T4Wq9snn4vlvl153jssXq1XygtL7
-         DyDNY5+49zOAsE6n8kj1SF92fxRxXIRiLRj36bYM=
+        b=Yov4tUcnTNZ05XzHn1iToCHGMm6T98wU+8AXf1clIcuLVEekDqoEtj+0guc2O5qEQ
+         x02JqGjqExW0vA7e53GtcWp26J3xZNSgMmbgscYxV157LHaYrGkbe4owCDYHzX+7iz
+         1J5s3NkMECNX9g4cmauLuNGUlT2q8G7pn1tnJ3zo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ido Schimmel <idosch@idosch.org>,
-        Ziyang Xuan <william.xuanziyang@huawei.com>,
-        Ido Schimmel <idosch@nvidia.com>,
-        Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.4 137/206] bonding: Fix incorrect deletion of ETH_P_8021AD protocol vid from slaves
+        patches@lists.linux.dev,
+        Badhri Jagan Sridharan <badhri@google.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Subject: [PATCH 6.1 062/149] usb: typec: tcpm: Fix response to vsafe0V event
 Date:   Sun, 13 Aug 2023 23:18:27 +0200
-Message-ID: <20230813211728.941910071@linuxfoundation.org>
+Message-ID: <20230813211720.662899320@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211724.969019629@linuxfoundation.org>
-References: <20230813211724.969019629@linuxfoundation.org>
+In-Reply-To: <20230813211718.757428827@linuxfoundation.org>
+References: <20230813211718.757428827@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ziyang Xuan <william.xuanziyang@huawei.com>
+From: Badhri Jagan Sridharan <badhri@google.com>
 
-commit 01f4fd27087078c90a0e22860d1dfa2cd0510791 upstream.
+commit 4270d2b4845e820b274702bfc2a7140f69e4d19d upstream.
 
-BUG_ON(!vlan_info) is triggered in unregister_vlan_dev() with
-following testcase:
+Do not transition to SNK_UNATTACHED state when receiving vsafe0v event
+while in SNK_HARD_RESET_WAIT_VBUS. Ignore VBUS off events as well as
+in some platforms VBUS off can be signalled more than once.
 
-  # ip netns add ns1
-  # ip netns exec ns1 ip link add bond0 type bond mode 0
-  # ip netns exec ns1 ip link add bond_slave_1 type veth peer veth2
-  # ip netns exec ns1 ip link set bond_slave_1 master bond0
-  # ip netns exec ns1 ip link add link bond_slave_1 name vlan10 type vlan id 10 protocol 802.1ad
-  # ip netns exec ns1 ip link add link bond0 name bond0_vlan10 type vlan id 10 protocol 802.1ad
-  # ip netns exec ns1 ip link set bond_slave_1 nomaster
-  # ip netns del ns1
+[143515.364753] Requesting mux state 1, usb-role 2, orientation 2
+[143515.365520] pending state change SNK_HARD_RESET_SINK_OFF -> SNK_HARD_RESET_SINK_ON @ 650 ms [rev3 HARD_RESET]
+[143515.632281] CC1: 0 -> 0, CC2: 3 -> 0 [state SNK_HARD_RESET_SINK_OFF, polarity 1, disconnected]
+[143515.637214] VBUS on
+[143515.664985] VBUS off
+[143515.664992] state change SNK_HARD_RESET_SINK_OFF -> SNK_HARD_RESET_WAIT_VBUS [rev3 HARD_RESET]
+[143515.665564] VBUS VSAFE0V
+[143515.665566] state change SNK_HARD_RESET_WAIT_VBUS -> SNK_UNATTACHED [rev3 HARD_RESET]
 
-The logical analysis of the problem is as follows:
-
-1. create ETH_P_8021AD protocol vlan10 for bond_slave_1:
-register_vlan_dev()
-  vlan_vid_add()
-    vlan_info_alloc()
-    __vlan_vid_add() // add [ETH_P_8021AD, 10] vid to bond_slave_1
-
-2. create ETH_P_8021AD protocol bond0_vlan10 for bond0:
-register_vlan_dev()
-  vlan_vid_add()
-    __vlan_vid_add()
-      vlan_add_rx_filter_info()
-          if (!vlan_hw_filter_capable(dev, proto)) // condition established because bond0 without NETIF_F_HW_VLAN_STAG_FILTER
-              return 0;
-
-          if (netif_device_present(dev))
-              return dev->netdev_ops->ndo_vlan_rx_add_vid(dev, proto, vid); // will be never called
-              // The slaves of bond0 will not refer to the [ETH_P_8021AD, 10] vid.
-
-3. detach bond_slave_1 from bond0:
-__bond_release_one()
-  vlan_vids_del_by_dev()
-    list_for_each_entry(vid_info, &vlan_info->vid_list, list)
-        vlan_vid_del(dev, vid_info->proto, vid_info->vid);
-        // bond_slave_1 [ETH_P_8021AD, 10] vid will be deleted.
-        // bond_slave_1->vlan_info will be assigned NULL.
-
-4. delete vlan10 during delete ns1:
-default_device_exit_batch()
-  dev->rtnl_link_ops->dellink() // unregister_vlan_dev() for vlan10
-    vlan_info = rtnl_dereference(real_dev->vlan_info); // real_dev of vlan10 is bond_slave_1
-	BUG_ON(!vlan_info); // bond_slave_1->vlan_info is NULL now, bug is triggered!!!
-
-Add S-VLAN tag related features support to bond driver. So the bond driver
-will always propagate the VLAN info to its slaves.
-
-Fixes: 8ad227ff89a7 ("net: vlan: add 802.1ad support")
-Suggested-by: Ido Schimmel <idosch@idosch.org>
-Signed-off-by: Ziyang Xuan <william.xuanziyang@huawei.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Link: https://lore.kernel.org/r/20230802114320.4156068-1-william.xuanziyang@huawei.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 28b43d3d746b ("usb: typec: tcpm: Introduce vsafe0v for vbus")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Badhri Jagan Sridharan <badhri@google.com>
+Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20230712085722.1414743-1-badhri@google.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/bonding/bond_main.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/usb/typec/tcpm/tcpm.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/drivers/net/bonding/bond_main.c
-+++ b/drivers/net/bonding/bond_main.c
-@@ -5898,7 +5898,9 @@ void bond_setup(struct net_device *bond_
+--- a/drivers/usb/typec/tcpm/tcpm.c
++++ b/drivers/usb/typec/tcpm/tcpm.c
+@@ -5322,6 +5322,10 @@ static void _tcpm_pd_vbus_off(struct tcp
+ 		/* Do nothing, vbus drop expected */
+ 		break;
  
- 	bond_dev->hw_features = BOND_VLAN_FEATURES |
- 				NETIF_F_HW_VLAN_CTAG_RX |
--				NETIF_F_HW_VLAN_CTAG_FILTER;
-+				NETIF_F_HW_VLAN_CTAG_FILTER |
-+				NETIF_F_HW_VLAN_STAG_RX |
-+				NETIF_F_HW_VLAN_STAG_FILTER;
- 
- 	bond_dev->hw_features |= NETIF_F_GSO_ENCAP_ALL;
- 	bond_dev->features |= bond_dev->hw_features;
++	case SNK_HARD_RESET_WAIT_VBUS:
++		/* Do nothing, its OK to receive vbus off events */
++		break;
++
+ 	default:
+ 		if (port->pwr_role == TYPEC_SINK && port->attached)
+ 			tcpm_set_state(port, SNK_UNATTACHED, tcpm_wait_for_discharge(port));
+@@ -5368,6 +5372,9 @@ static void _tcpm_pd_vbus_vsafe0v(struct
+ 	case SNK_DEBOUNCED:
+ 		/*Do nothing, still waiting for VSAFE5V for connect */
+ 		break;
++	case SNK_HARD_RESET_WAIT_VBUS:
++		/* Do nothing, its OK to receive vbus off events */
++		break;
+ 	default:
+ 		if (port->pwr_role == TYPEC_SINK && port->auto_vbus_discharge_enabled)
+ 			tcpm_set_state(port, SNK_UNATTACHED, 0);
 
 
