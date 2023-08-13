@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A830477AE1F
-	for <lists+stable@lfdr.de>; Mon, 14 Aug 2023 00:00:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 690C677AD4D
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:48:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229931AbjHMWA2 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 18:00:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40720 "EHLO
+        id S230299AbjHMVsW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:48:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33216 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232316AbjHMV7V (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:59:21 -0400
+        with ESMTP id S230325AbjHMVsE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:48:04 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D83B4213B
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:43:36 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B506171B
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:39:58 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E4DEF60F71
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:43:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06082C433C8;
-        Sun, 13 Aug 2023 21:43:33 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7D1E66381F
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:39:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D1DCC433C7;
+        Sun, 13 Aug 2023 21:39:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691963014;
-        bh=bhPgTdJt7BL0YakLjah9u5myML6RzhTJaXXQDhgTapU=;
+        s=korg; t=1691962796;
+        bh=8SOFQyrS2XcR+/jgWBQbvc5B3VtrT921Tk6XIbDWWY8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Tqvuypryt8x0LYd7NeiKPo3REkuzWdl/nAHqwlhhnnK3nrWbF0v+0VWuEJvCC4eg/
-         C0xNqIQp3fMys0zUeyCNQyUCeXYv9sI2+yJW+MH562u/nlzFnm2rwbpIkT6Ek/DE1V
-         +73tQDP1dbNcyPSpDuynaHGwZRKwpfCTdfP+Qdes=
+        b=BqFShJKJRCFmKIW7xoCFdVr3lYR62Z9K6q1RgEihF+IbILrU76fvDlf1IHSulsoiB
+         +oqJ+kCGSoxH/ABbLuuMsPM63XV0iRedfzo54Z+vktbLzgqEcI5BGI8E9mWDt/lldy
+         5ys4E1jvxJgV/4aSRdvBJnicjeMgPAOgfAMT2kZo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Tzung-Bi Shih <tzungbi@kernel.org>,
-        Yiyuan Guo <yguoaz@gmail.com>, Stable@vger.kerenl.org,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 5.15 21/89] iio: cros_ec: Fix the allocation size for cros_ec_command
+        patches@lists.linux.dev, Andrea Parri <parri.andrea@gmail.com>,
+        Palmer Dabbelt <palmer@rivosinc.com>
+Subject: [PATCH 5.10 11/68] riscv,mmio: Fix readX()-to-delay() ordering
 Date:   Sun, 13 Aug 2023 23:19:12 +0200
-Message-ID: <20230813211711.397291257@linuxfoundation.org>
+Message-ID: <20230813211708.501798686@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211710.787645394@linuxfoundation.org>
-References: <20230813211710.787645394@linuxfoundation.org>
+In-Reply-To: <20230813211708.149630011@linuxfoundation.org>
+References: <20230813211708.149630011@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,35 +54,68 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Yiyuan Guo <yguoaz@gmail.com>
+From: Andrea Parri <parri.andrea@gmail.com>
 
-commit 8a4629055ef55177b5b63dab1ecce676bd8cccdd upstream.
+commit 4eb2eb1b4c0eb07793c240744843498564a67b83 upstream.
 
-The struct cros_ec_command contains several integer fields and a
-trailing array. An allocation size neglecting the integer fields can
-lead to buffer overrun.
+Section 2.1 of the Platform Specification [1] states:
 
-Reviewed-by: Tzung-Bi Shih <tzungbi@kernel.org>
-Signed-off-by: Yiyuan Guo <yguoaz@gmail.com>
-Fixes: 974e6f02e27e ("iio: cros_ec_sensors_core: Add common functions for the ChromeOS EC Sensor Hub.")
-Link: https://lore.kernel.org/r/20230630143719.1513906-1-yguoaz@gmail.com
-Cc: <Stable@vger.kerenl.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+  Unless otherwise specified by a given I/O device, I/O devices are on
+  ordering channel 0 (i.e., they are point-to-point strongly ordered).
+
+which is not sufficient to guarantee that a readX() by a hart completes
+before a subsequent delay() on the same hart (cf. memory-barriers.txt,
+"Kernel I/O barrier effects").
+
+Set the I(nput) bit in __io_ar() to restore the ordering, align inline
+comments.
+
+[1] https://github.com/riscv/riscv-platform-specs
+
+Signed-off-by: Andrea Parri <parri.andrea@gmail.com>
+Link: https://lore.kernel.org/r/20230803042738.5937-1-parri.andrea@gmail.com
+Fixes: fab957c11efe ("RISC-V: Atomic and Locking Code")
+Cc: stable@vger.kernel.org
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/riscv/include/asm/mmio.h |   16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
---- a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
-+++ b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
-@@ -259,7 +259,7 @@ int cros_ec_sensors_core_init(struct pla
- 	platform_set_drvdata(pdev, indio_dev);
+--- a/arch/riscv/include/asm/mmio.h
++++ b/arch/riscv/include/asm/mmio.h
+@@ -101,9 +101,9 @@ static inline u64 __raw_readq(const vola
+  * Relaxed I/O memory access primitives. These follow the Device memory
+  * ordering rules but do not guarantee any ordering relative to Normal memory
+  * accesses.  These are defined to order the indicated access (either a read or
+- * write) with all other I/O memory accesses. Since the platform specification
+- * defines that all I/O regions are strongly ordered on channel 2, no explicit
+- * fences are required to enforce this ordering.
++ * write) with all other I/O memory accesses to the same peripheral. Since the
++ * platform specification defines that all I/O regions are strongly ordered on
++ * channel 0, no explicit fences are required to enforce this ordering.
+  */
+ /* FIXME: These are now the same as asm-generic */
+ #define __io_rbr()		do {} while (0)
+@@ -125,14 +125,14 @@ static inline u64 __raw_readq(const vola
+ #endif
  
- 	state->ec = ec->ec_dev;
--	state->msg = devm_kzalloc(&pdev->dev,
-+	state->msg = devm_kzalloc(&pdev->dev, sizeof(*state->msg) +
- 				max((u16)sizeof(struct ec_params_motion_sense),
- 				state->ec->max_response), GFP_KERNEL);
- 	if (!state->msg)
+ /*
+- * I/O memory access primitives. Reads are ordered relative to any
+- * following Normal memory access. Writes are ordered relative to any prior
+- * Normal memory access.  The memory barriers here are necessary as RISC-V
++ * I/O memory access primitives.  Reads are ordered relative to any following
++ * Normal memory read and delay() loop.  Writes are ordered relative to any
++ * prior Normal memory write.  The memory barriers here are necessary as RISC-V
+  * doesn't define any ordering between the memory space and the I/O space.
+  */
+ #define __io_br()	do {} while (0)
+-#define __io_ar(v)	__asm__ __volatile__ ("fence i,r" : : : "memory")
+-#define __io_bw()	__asm__ __volatile__ ("fence w,o" : : : "memory")
++#define __io_ar(v)	({ __asm__ __volatile__ ("fence i,ir" : : : "memory"); })
++#define __io_bw()	({ __asm__ __volatile__ ("fence w,o" : : : "memory"); })
+ #define __io_aw()	mmiowb_set_pending()
+ 
+ #define readb(c)	({ u8  __v; __io_br(); __v = readb_cpu(c); __io_ar(__v); __v; })
 
 
