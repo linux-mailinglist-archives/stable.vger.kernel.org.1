@@ -2,182 +2,181 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CD26C77ACE8
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:38:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7305677AD65
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:49:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232230AbjHMVia (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:38:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56498 "EHLO
+        id S232347AbjHMVs4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:48:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57412 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232227AbjHMVia (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:38:30 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F2E7010DB
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:38:31 -0700 (PDT)
+        with ESMTP id S232279AbjHMVs0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:48:26 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B9C61BF9
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:42:10 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 923BF636ED
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:38:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AAB1C433C8;
-        Sun, 13 Aug 2023 21:38:30 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E747A623FF
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:42:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0467FC433C8;
+        Sun, 13 Aug 2023 21:42:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691962711;
-        bh=af5j18Hd8UVp9zJDmr5zw0LkJt+032SAnrb1pNFXKKM=;
+        s=korg; t=1691962928;
+        bh=kWd2UDvlp47925AesQ9yZZB/LslHx/esUxeX+rW1+M0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=LKMZpAj0/thBp7DzwnGGyR8BjB/CC+m/5rlAk4pFw0utLQ1Ci3v/CLIP2XV9kxZ4v
-         27hgx3ANYEdyFaK6oNfrPvTtvdfCOVsrTJaRYCxAe1vGoLJaezt8HNe75lHU3T/VxL
-         +8q5Ulweyc1giiMyZPIY/GUO3xkY2OvMJ3dpbmJk=
+        b=n7L9GsQRJs4Mv0duwUvF8bVmWN3TgotPZ0L8NWo227XSnJzx8Ubv4ha0y1zslMw+n
+         E4P4byWQ8qi/b1icAVdwWisVlIpa51WKpLnw0ng0D03fOAaytJAAHJDGewLez44JXe
+         gEUXqL2JYUkOKn9PO3G87dnJ0ApYRx1oIuapen8s=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Boris Burkov <boris@bur.io>,
-        Josef Bacik <josef@toxicpanda.com>,
-        David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.1 127/149] btrfs: wait for actual caching progress during allocation
+        patches@lists.linux.dev, Florian Westphal <fw@strlen.de>,
+        Pablo Neira Ayuso <pablo@netfilter.org>
+Subject: [PATCH 5.10 31/68] netfilter: nf_tables: dont skip expired elements during walk
 Date:   Sun, 13 Aug 2023 23:19:32 +0200
-Message-ID: <20230813211722.521930099@linuxfoundation.org>
+Message-ID: <20230813211709.102802314@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211718.757428827@linuxfoundation.org>
-References: <20230813211718.757428827@linuxfoundation.org>
+In-Reply-To: <20230813211708.149630011@linuxfoundation.org>
+References: <20230813211708.149630011@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Josef Bacik <josef@toxicpanda.com>
+From: Florian Westphal <fw@strlen.de>
 
-commit fc1f91b9231a28fba333f931a031bf776bc6ef0e upstream.
+commit 24138933b97b055d486e8064b4a1721702442a9b upstream.
 
-Recently we've been having mysterious hangs while running generic/475 on
-the CI system.  This turned out to be something like this:
+There is an asymmetry between commit/abort and preparation phase if the
+following conditions are met:
 
-  Task 1
-  dmsetup suspend --nolockfs
-  -> __dm_suspend
-   -> dm_wait_for_completion
-    -> dm_wait_for_bios_completion
-     -> Unable to complete because of IO's on a plug in Task 2
+1. set is a verdict map ("1.2.3.4 : jump foo")
+2. timeouts are enabled
 
-  Task 2
-  wb_workfn
-  -> wb_writeback
-   -> blk_start_plug
-    -> writeback_sb_inodes
-     -> Infinite loop unable to make an allocation
+In this case, following sequence is problematic:
 
-  Task 3
-  cache_block_group
-  ->read_extent_buffer_pages
-   ->Waiting for IO to complete that can't be submitted because Task 1
-     suspended the DM device
+1. element E in set S refers to chain C
+2. userspace requests removal of set S
+3. kernel does a set walk to decrement chain->use count for all elements
+   from preparation phase
+4. kernel does another set walk to remove elements from the commit phase
+   (or another walk to do a chain->use increment for all elements from
+    abort phase)
 
-The problem here is that we need Task 2 to be scheduled completely for
-the blk plug to flush.  Normally this would happen, we normally wait for
-the block group caching to finish (Task 3), and this schedule would
-result in the block plug flushing.
+If E has already expired in 1), it will be ignored during list walk, so its use count
+won't have been changed.
 
-However if there's enough free space available from the current caching
-to satisfy the allocation we won't actually wait for the caching to
-complete.  This check however just checks that we have enough space, not
-that we can make the allocation.  In this particular case we were trying
-to allocate 9MiB, and we had 10MiB of free space, but we didn't have
-9MiB of contiguous space to allocate, and thus the allocation failed and
-we looped.
+Then, when set is culled, ->destroy callback will zap the element via
+nf_tables_set_elem_destroy(), but this function is only safe for
+elements that have been deactivated earlier from the preparation phase:
+lack of earlier deactivate removes the element but leaks the chain use
+count, which results in a WARN splat when the chain gets removed later,
+plus a leak of the nft_chain structure.
 
-We specifically don't cycle through the FFE loop until we stop finding
-cached block groups because we don't want to allocate new block groups
-just because we're caching, so we short circuit the normal loop once we
-hit LOOP_CACHING_WAIT and we found a caching block group.
+Update pipapo_get() not to skip expired elements, otherwise flush
+command reports bogus ENOENT errors.
 
-This is normally fine, except in this particular case where the caching
-thread can't make progress because the DM device has been suspended.
-
-Fix this by not only waiting for free space to >= the amount of space we
-want to allocate, but also that we make some progress in caching from
-the time we start waiting.  This will keep us from busy looping when the
-caching is taking a while but still theoretically has enough space for
-us to allocate from, and fixes this particular case by forcing us to
-actually sleep and wait for forward progress, which will flush the plug.
-
-With this fix we're no longer hanging with generic/475.
-
-CC: stable@vger.kernel.org # 6.1+
-Reviewed-by: Boris Burkov <boris@bur.io>
-Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Fixes: 3c4287f62044 ("nf_tables: Add set type for arbitrary concatenation of ranges")
+Fixes: 8d8540c4f5e0 ("netfilter: nft_set_rbtree: add timeout support")
+Fixes: 9d0982927e79 ("netfilter: nft_hash: add support for timeouts")
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/block-group.c |   17 +++++++++++++++--
- fs/btrfs/block-group.h |    2 ++
- 2 files changed, 17 insertions(+), 2 deletions(-)
+ net/netfilter/nf_tables_api.c  |    4 ++++
+ net/netfilter/nft_set_hash.c   |    2 --
+ net/netfilter/nft_set_pipapo.c |   18 ++++++++++++------
+ net/netfilter/nft_set_rbtree.c |    2 --
+ 4 files changed, 16 insertions(+), 10 deletions(-)
 
---- a/fs/btrfs/block-group.c
-+++ b/fs/btrfs/block-group.c
-@@ -436,13 +436,23 @@ void btrfs_wait_block_group_cache_progre
- 					   u64 num_bytes)
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -4911,8 +4911,12 @@ static int nf_tables_dump_setelem(const
+ 				  const struct nft_set_iter *iter,
+ 				  struct nft_set_elem *elem)
  {
- 	struct btrfs_caching_control *caching_ctl;
-+	int progress;
++	const struct nft_set_ext *ext = nft_set_elem_ext(set, elem->priv);
+ 	struct nft_set_dump_args *args;
  
- 	caching_ctl = btrfs_get_caching_control(cache);
- 	if (!caching_ctl)
- 		return;
- 
-+	/*
-+	 * We've already failed to allocate from this block group, so even if
-+	 * there's enough space in the block group it isn't contiguous enough to
-+	 * allow for an allocation, so wait for at least the next wakeup tick,
-+	 * or for the thing to be done.
-+	 */
-+	progress = atomic_read(&caching_ctl->progress);
++	if (nft_set_elem_expired(ext))
++		return 0;
 +
- 	wait_event(caching_ctl->wait, btrfs_block_group_done(cache) ||
--		   (cache->free_space_ctl->free_space >= num_bytes));
-+		   (progress != atomic_read(&caching_ctl->progress) &&
-+		    (cache->free_space_ctl->free_space >= num_bytes)));
- 
- 	btrfs_put_caching_control(caching_ctl);
+ 	args = container_of(iter, struct nft_set_dump_args, iter);
+ 	return nf_tables_fill_setelem(args->skb, set, elem);
  }
-@@ -660,8 +670,10 @@ next:
+--- a/net/netfilter/nft_set_hash.c
++++ b/net/netfilter/nft_set_hash.c
+@@ -277,8 +277,6 @@ static void nft_rhash_walk(const struct
  
- 			if (total_found > CACHING_CTL_WAKE_UP) {
- 				total_found = 0;
--				if (wakeup)
-+				if (wakeup) {
-+					atomic_inc(&caching_ctl->progress);
- 					wake_up(&caching_ctl->wait);
-+				}
- 			}
- 		}
- 		path->slots[0]++;
-@@ -767,6 +779,7 @@ int btrfs_cache_block_group(struct btrfs
- 	init_waitqueue_head(&caching_ctl->wait);
- 	caching_ctl->block_group = cache;
- 	refcount_set(&caching_ctl->count, 2);
-+	atomic_set(&caching_ctl->progress, 0);
- 	btrfs_init_work(&caching_ctl->work, caching_thread, NULL, NULL);
+ 		if (iter->count < iter->skip)
+ 			goto cont;
+-		if (nft_set_elem_expired(&he->ext))
+-			goto cont;
+ 		if (!nft_set_elem_active(&he->ext, iter->genmask))
+ 			goto cont;
  
- 	spin_lock(&cache->lock);
---- a/fs/btrfs/block-group.h
-+++ b/fs/btrfs/block-group.h
-@@ -70,6 +70,8 @@ struct btrfs_caching_control {
- 	wait_queue_head_t wait;
- 	struct btrfs_work work;
- 	struct btrfs_block_group *block_group;
-+	/* Track progress of caching during allocation. */
-+	atomic_t progress;
- 	refcount_t count;
- };
+--- a/net/netfilter/nft_set_pipapo.c
++++ b/net/netfilter/nft_set_pipapo.c
+@@ -566,8 +566,7 @@ next_match:
+ 			goto out;
+ 
+ 		if (last) {
+-			if (nft_set_elem_expired(&f->mt[b].e->ext) ||
+-			    (genmask &&
++			if ((genmask &&
+ 			     !nft_set_elem_active(&f->mt[b].e->ext, genmask)))
+ 				goto next_match;
+ 
+@@ -601,8 +600,17 @@ out:
+ static void *nft_pipapo_get(const struct net *net, const struct nft_set *set,
+ 			    const struct nft_set_elem *elem, unsigned int flags)
+ {
+-	return pipapo_get(net, set, (const u8 *)elem->key.val.data,
+-			  nft_genmask_cur(net));
++	struct nft_pipapo_elem *ret;
++
++	ret = pipapo_get(net, set, (const u8 *)elem->key.val.data,
++			 nft_genmask_cur(net));
++	if (IS_ERR(ret))
++		return ret;
++
++	if (nft_set_elem_expired(&ret->ext))
++		return ERR_PTR(-ENOENT);
++
++	return ret;
+ }
+ 
+ /**
+@@ -1981,8 +1989,6 @@ static void nft_pipapo_walk(const struct
+ 			goto cont;
+ 
+ 		e = f->mt[r].e;
+-		if (nft_set_elem_expired(&e->ext))
+-			goto cont;
+ 
+ 		elem.priv = e;
+ 
+--- a/net/netfilter/nft_set_rbtree.c
++++ b/net/netfilter/nft_set_rbtree.c
+@@ -551,8 +551,6 @@ static void nft_rbtree_walk(const struct
+ 
+ 		if (iter->count < iter->skip)
+ 			goto cont;
+-		if (nft_set_elem_expired(&rbe->ext))
+-			goto cont;
+ 		if (!nft_set_elem_active(&rbe->ext, iter->genmask))
+ 			goto cont;
  
 
 
