@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CB90877ACC4
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:36:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 58AA877AB79
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:22:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232165AbjHMVgw (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:36:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33646 "EHLO
+        id S230360AbjHMVWl (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:22:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40308 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232156AbjHMVgv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:36:51 -0400
+        with ESMTP id S230315AbjHMVWV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:22:21 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 061B410E3
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:36:54 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4ABC110D0
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:22:23 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5E3626323A
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:36:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A792C433C7;
-        Sun, 13 Aug 2023 21:36:51 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DD80C62802
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:22:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D63ACC433C8;
+        Sun, 13 Aug 2023 21:22:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691962612;
-        bh=3gHNiJlAYoBN1UEY/DhNVy1/4ubApVr7KOF6R/s7+9Q=;
+        s=korg; t=1691961742;
+        bh=EnlOqSZzYVL4gqDBVzyfLjHH9R2SKtoMEjbfxtC1vEs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ocZNBKEf9AzappyRExTtDMWEMocmxrGX+J6YtbnGmupjqoaHMGfqzwt0xA9dM6Rwx
-         xy9ENaVtSJDoCj/5qbqT1R5Lk8y1AD4WIlqRbahpkl8HrbL0kHpca0TEWtjBEw6gzW
-         FVLnnNUFsXYTrV4DZjNd9gOaUYTmd2ZXJJs2pzf8=
+        b=KtH94liXPtrG/pLkrvqAhbvoTFXYSZfbpF9VgoND6KSfHGphZevyUHr34lRnQ5ZMT
+         W4JxGvQ6BiMpn6oDYAy36enSblRf7eAcbST0IthG29ivc0XnBrWXk4lM00KQSQdA1S
+         80Ku/4UeQrVN+fbR1aJmgoUb+MDq8MEHeAS8Ilho=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
-        Ping Gan <jacky_gam_2001@163.com>, Manjusaka <me@manjusaka.me>,
-        Simon Horman <horms@kernel.org>,
-        Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 091/149] tcp: add missing family to tcp_set_ca_state() tracepoint
+        patches@lists.linux.dev, Sergei Antonov <saproj@gmail.com>,
+        Jonas Jensen <jonas.jensen@gmail.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 4.19 02/33] mmc: moxart: read scr register without changing byte order
 Date:   Sun, 13 Aug 2023 23:18:56 +0200
-Message-ID: <20230813211721.513053125@linuxfoundation.org>
+Message-ID: <20230813211704.011158600@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211718.757428827@linuxfoundation.org>
-References: <20230813211718.757428827@linuxfoundation.org>
+In-Reply-To: <20230813211703.915807095@linuxfoundation.org>
+References: <20230813211703.915807095@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,52 +54,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Eric Dumazet <edumazet@google.com>
+From: Sergei Antonov <saproj@gmail.com>
 
-commit 8a70ed9520c5fafaac91053cacdd44625c39e188 upstream.
+commit d44263222134b5635932974c6177a5cba65a07e8 upstream.
 
-Before this code is copied, add the missing family, as we did in
-commit 3dd344ea84e1 ("net: tracepoint: exposing sk_family in all tcp:tracepoints")
+Conversion from big-endian to native is done in a common function
+mmc_app_send_scr(). Converting in moxart_transfer_pio() is extra.
+Double conversion on a LE system returns an incorrect SCR value,
+leads to errors:
 
-Fixes: 15fcdf6ae116 ("tcp: Add tracepoint for tcp_set_ca_state")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Ping Gan <jacky_gam_2001@163.com>
-Cc: Manjusaka <me@manjusaka.me>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20230808084923.2239142-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+mmc0: unrecognised SCR structure version 8
+
+Fixes: 1b66e94e6b99 ("mmc: moxart: Add MOXA ART SD/MMC driver")
+Signed-off-by: Sergei Antonov <saproj@gmail.com>
+Cc: Jonas Jensen <jonas.jensen@gmail.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20230627120549.2400325-1-saproj@gmail.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/trace/events/tcp.h |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/mmc/host/moxart-mmc.c |    8 +-------
+ 1 file changed, 1 insertion(+), 7 deletions(-)
 
---- a/include/trace/events/tcp.h
-+++ b/include/trace/events/tcp.h
-@@ -381,6 +381,7 @@ TRACE_EVENT(tcp_cong_state_set,
- 		__field(const void *, skaddr)
- 		__field(__u16, sport)
- 		__field(__u16, dport)
-+		__field(__u16, family)
- 		__array(__u8, saddr, 4)
- 		__array(__u8, daddr, 4)
- 		__array(__u8, saddr_v6, 16)
-@@ -396,6 +397,7 @@ TRACE_EVENT(tcp_cong_state_set,
- 
- 		__entry->sport = ntohs(inet->inet_sport);
- 		__entry->dport = ntohs(inet->inet_dport);
-+		__entry->family = sk->sk_family;
- 
- 		p32 = (__be32 *) __entry->saddr;
- 		*p32 = inet->inet_saddr;
-@@ -409,7 +411,8 @@ TRACE_EVENT(tcp_cong_state_set,
- 		__entry->cong_state = ca_state;
- 	),
- 
--	TP_printk("sport=%hu dport=%hu saddr=%pI4 daddr=%pI4 saddrv6=%pI6c daddrv6=%pI6c cong_state=%u",
-+	TP_printk("family=%s sport=%hu dport=%hu saddr=%pI4 daddr=%pI4 saddrv6=%pI6c daddrv6=%pI6c cong_state=%u",
-+		  show_family_name(__entry->family),
- 		  __entry->sport, __entry->dport,
- 		  __entry->saddr, __entry->daddr,
- 		  __entry->saddr_v6, __entry->daddr_v6,
+--- a/drivers/mmc/host/moxart-mmc.c
++++ b/drivers/mmc/host/moxart-mmc.c
+@@ -339,13 +339,7 @@ static void moxart_transfer_pio(struct m
+ 				return;
+ 			}
+ 			for (len = 0; len < remain && len < host->fifo_width;) {
+-				/* SCR data must be read in big endian. */
+-				if (data->mrq->cmd->opcode == SD_APP_SEND_SCR)
+-					*sgp = ioread32be(host->base +
+-							  REG_DATA_WINDOW);
+-				else
+-					*sgp = ioread32(host->base +
+-							REG_DATA_WINDOW);
++				*sgp = ioread32(host->base + REG_DATA_WINDOW);
+ 				sgp++;
+ 				len += 4;
+ 			}
 
 
