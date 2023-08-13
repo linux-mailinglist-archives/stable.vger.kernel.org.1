@@ -2,46 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1C26877AC6A
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:32:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 06E2477AD54
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:49:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231977AbjHMVcu (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:32:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50944 "EHLO
+        id S231326AbjHMVtO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:49:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33216 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231976AbjHMVcu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:32:50 -0400
+        with ESMTP id S230379AbjHMVsu (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:48:50 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9216210E3
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:32:52 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7FAA4198B
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:40:31 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 24A0862BF8
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:32:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E041C433C8;
-        Sun, 13 Aug 2023 21:32:51 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 29CF161B60
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:40:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DC69C433C7;
+        Sun, 13 Aug 2023 21:40:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691962371;
-        bh=Ub6X6dlBZATCSM2/RUFOM5pJM3Y9N4IuTIa4sBcJSx8=;
+        s=korg; t=1691962827;
+        bh=SIMafsva4moZ9wHuE6CWZEzf0yK6ExvzuD6y1GZsoE0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=L6jj66GW2Z6PsdhHlZNkr4BGo8wSBNPn/+uNTwK+cc/MIJTF4M94e9h/T8yrbA2F4
-         h9yjDPJbL7bVhRxR1SLK7sir6pgHFl4JHbnd4xgQ9JkPCxmTiwya99NHqNBHPOMWwE
-         b9J+5VUVnDkA7lXC26Mt80z7mzZZ9PtOinBtGUkQ=
+        b=e/pMMcodOAlwA9OLeXOM9iq1AEK7TwUwgdGHg/D3Ij0of85KD7Z3DriVzziNg/GXq
+         9WxogYSiBw4LROx3cbT263F1FX/nnbcLW8UwqVkq8lDn2z+CiausoQNHM0Y/Q+uR/P
+         lMTg0aJaMQ6KUH9HwQ5mJ99wBzo4zL/qgJV+kCrI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Vladimir Telezhnikov <vtelezhnikov@astralinux.ru>,
-        Alexandra Diupina <adiupina@astralinux.ru>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.4 192/206] scsi: 53c700: Check that command slot is not NULL
+        patches@lists.linux.dev, Qi Zheng <zhengqi.arch@bytedance.com>,
+        Carlos Llamas <cmllamas@google.com>, stable <stable@kernel.org>
+Subject: [PATCH 5.10 21/68] binder: fix memory leak in binder_init()
 Date:   Sun, 13 Aug 2023 23:19:22 +0200
-Message-ID: <20230813211730.514693622@linuxfoundation.org>
+Message-ID: <20230813211708.799824629@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211724.969019629@linuxfoundation.org>
-References: <20230813211724.969019629@linuxfoundation.org>
+In-Reply-To: <20230813211708.149630011@linuxfoundation.org>
+References: <20230813211708.149630011@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,36 +54,61 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Alexandra Diupina <adiupina@astralinux.ru>
+From: Qi Zheng <zhengqi.arch@bytedance.com>
 
-commit 8366d1f1249a0d0bba41d0bd1298d63e5d34c7f7 upstream.
+commit adb9743d6a08778b78d62d16b4230346d3508986 upstream.
 
-Add a check for the command slot value to avoid dereferencing a NULL
-pointer.
+In binder_init(), the destruction of binder_alloc_shrinker_init() is not
+performed in the wrong path, which will cause memory leaks. So this commit
+introduces binder_alloc_shrinker_exit() and calls it in the wrong path to
+fix that.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Co-developed-by: Vladimir Telezhnikov <vtelezhnikov@astralinux.ru>
-Signed-off-by: Vladimir Telezhnikov <vtelezhnikov@astralinux.ru>
-Signed-off-by: Alexandra Diupina <adiupina@astralinux.ru>
-Link: https://lore.kernel.org/r/20230728123521.18293-1-adiupina@astralinux.ru
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
+Acked-by: Carlos Llamas <cmllamas@google.com>
+Fixes: f2517eb76f1f ("android: binder: Add global lru shrinker to binder")
+Cc: stable <stable@kernel.org>
+Link: https://lore.kernel.org/r/20230625154937.64316-1-qi.zheng@linux.dev
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/53c700.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/android/binder.c       |    1 +
+ drivers/android/binder_alloc.c |    6 ++++++
+ drivers/android/binder_alloc.h |    1 +
+ 3 files changed, 8 insertions(+)
 
---- a/drivers/scsi/53c700.c
-+++ b/drivers/scsi/53c700.c
-@@ -1598,7 +1598,7 @@ NCR_700_intr(int irq, void *dev_id)
- 				printk("scsi%d (%d:%d) PHASE MISMATCH IN SEND MESSAGE %d remain, return %p[%04x], phase %s\n", host->host_no, pun, lun, count, (void *)temp, temp - hostdata->pScript, sbcl_to_string(NCR_700_readb(host, SBCL_REG)));
- #endif
- 				resume_offset = hostdata->pScript + Ent_SendMessagePhaseMismatch;
--			} else if(dsp >= to32bit(&slot->pSG[0].ins) &&
-+			} else if (slot && dsp >= to32bit(&slot->pSG[0].ins) &&
- 				  dsp <= to32bit(&slot->pSG[NCR_700_SG_SEGMENTS].ins)) {
- 				int data_transfer = NCR_700_readl(host, DBC_REG) & 0xffffff;
- 				int SGcount = (dsp - to32bit(&slot->pSG[0].ins))/sizeof(struct NCR_700_SG_List);
+--- a/drivers/android/binder.c
++++ b/drivers/android/binder.c
+@@ -6541,6 +6541,7 @@ err_init_binder_device_failed:
+ 
+ err_alloc_device_names_failed:
+ 	debugfs_remove_recursive(binder_debugfs_dir_entry_root);
++	binder_alloc_shrinker_exit();
+ 
+ 	return ret;
+ }
+--- a/drivers/android/binder_alloc.c
++++ b/drivers/android/binder_alloc.c
+@@ -1086,6 +1086,12 @@ int binder_alloc_shrinker_init(void)
+ 	return ret;
+ }
+ 
++void binder_alloc_shrinker_exit(void)
++{
++	unregister_shrinker(&binder_shrinker);
++	list_lru_destroy(&binder_alloc_lru);
++}
++
+ /**
+  * check_buffer() - verify that buffer/offset is safe to access
+  * @alloc: binder_alloc for this proc
+--- a/drivers/android/binder_alloc.h
++++ b/drivers/android/binder_alloc.h
+@@ -125,6 +125,7 @@ extern struct binder_buffer *binder_allo
+ 						  int pid);
+ extern void binder_alloc_init(struct binder_alloc *alloc);
+ extern int binder_alloc_shrinker_init(void);
++extern void binder_alloc_shrinker_exit(void);
+ extern void binder_alloc_vma_close(struct binder_alloc *alloc);
+ extern struct binder_buffer *
+ binder_alloc_prepare_to_free(struct binder_alloc *alloc,
 
 
