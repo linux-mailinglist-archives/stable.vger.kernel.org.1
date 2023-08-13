@@ -2,177 +2,290 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D030777AED1
-	for <lists+stable@lfdr.de>; Mon, 14 Aug 2023 01:09:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C1D1977AEE8
+	for <lists+stable@lfdr.de>; Mon, 14 Aug 2023 01:21:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230372AbjHMXJG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 19:09:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53266 "EHLO
+        id S231299AbjHMXUe (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 19:20:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47972 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231309AbjHMXJC (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 19:09:02 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2DCACC5
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 16:08:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1691968094;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=AUa1QX/mJ1ef9VxwUsegnOGKLjQxThmW1L4mbjRAl5o=;
-        b=gAYdFQ/TBCNWCbrOzuFmK2+Vz4ns4QeDYNYSoIHdEwWzBOUq9I1ppLu/Z3O6oLAPjrto7B
-        oHPUhRcWo4mL6witR4/r+lAwnuI8zK51jSqK8Stw9KfPN1Rjzej6wJU39mdveEHbMk8jOK
-        IU4moGJmi2AdtzCng0wkUDhNr+AQj0A=
-Received: from mail-lj1-f200.google.com (mail-lj1-f200.google.com
- [209.85.208.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-93-qiOmjEOpOUaeuZfrptVUpA-1; Sun, 13 Aug 2023 19:08:12 -0400
-X-MC-Unique: qiOmjEOpOUaeuZfrptVUpA-1
-Received: by mail-lj1-f200.google.com with SMTP id 38308e7fff4ca-2b9b820c94fso36457621fa.2
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 16:08:12 -0700 (PDT)
+        with ESMTP id S229597AbjHMXUN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 19:20:13 -0400
+Received: from mail-pl1-x62d.google.com (mail-pl1-x62d.google.com [IPv6:2607:f8b0:4864:20::62d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A1DDE4
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 16:20:12 -0700 (PDT)
+Received: by mail-pl1-x62d.google.com with SMTP id d9443c01a7336-1bc3d94d40fso33498245ad.3
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 16:20:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernelci-org.20221208.gappssmtp.com; s=20221208; t=1691968811; x=1692573611;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=kiyS2VehFMfuVYF8pCqrv51Yky+ofwQ0HUMpd4ZCwjs=;
+        b=Vk48iJa3R42v1Rsq5oTwTm7ZnaCQFe6kPfGduBhVLEGdNpPgcHPbAyTl0Rq1AzIPn4
+         BQ30f3QPeXi6SVp9S6hqPdIA2ruWEhwT5dOvK+uxAZs2ZVtw9fw69d5D1i6I9FbIx5Qh
+         HkVBbJ4IacQzMdW/Bs+/Y2o+H5pFFvsrWrObd423AfMUKNT/tqSz5FAttDJQKi1du+bE
+         iDc9OfaQ3yn5c0jWaio4YQ7qUvV1RVRvaa7OCJJCF+wKzzRFDS72HGtdIpIwPUsn3Bmi
+         QzXF5CcwjLu3v75a1nZvI0WOkyp3RHZ2IPDp4d5j3bXWyX/yOW7x62m1VVpkqUkzQrtk
+         Fdhg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691968091; x=1692572891;
-        h=content-transfer-encoding:content-disposition:mime-version
-         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=AUa1QX/mJ1ef9VxwUsegnOGKLjQxThmW1L4mbjRAl5o=;
-        b=P7/JLqPSJUw29ZCKiV1/EHXXsP4xo5mHiP4ppQpp86ZOBwE1D3Mt0ytaYQ77j2tEQQ
-         6hA2wZSPyuq4cGB21uL/On7CHO92Rf+KkNlQ9rQoa+jdW6NWemuD2r5Umgt8kkIMHvGn
-         K6e1Hmit+rZ6TgnwX0nhCPGsYOT+a7yjnd4YZbuYAgIb3Gk5U+PiGKwFVZhavRKSLtQ/
-         iBca09UnIA93ailw9n2v3vx8cZKV0K1cIWsuUU9M/Z8fKk5SRHQ1vPKQueFuYgxtwT+Z
-         N/oi/O7XNBYeSnarq+UEzkcHs7E+b+otrjnfKbq0/HI24yXLighpO1emZVKQnQV0Q2tx
-         coIw==
-X-Gm-Message-State: AOJu0Yz9joXUbbj0fPJ0YC0BCW+hvlUHWMO30JV+IOHZB5fc9Qp4tmK/
-        EkOL1s+ObOqZAarVpshvbUbS8Rmu8tEI2PeLvdT2aYqfCk6vA1OYezcgV9DqI2ml8MvIZ/nMUYU
-        WaZXWoADmDeSd+a5h
-X-Received: by 2002:a2e:8503:0:b0:2b7:1005:931b with SMTP id j3-20020a2e8503000000b002b71005931bmr5573404lji.0.1691968090805;
-        Sun, 13 Aug 2023 16:08:10 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHfB6KQC44UtzTvTIQLTU6WSArsFvqwFM/tL9oeOdLXdw+TuyKztZH0mu5DyTnZ3c9/bKtQHw==
-X-Received: by 2002:a2e:8503:0:b0:2b7:1005:931b with SMTP id j3-20020a2e8503000000b002b71005931bmr5573379lji.0.1691968090444;
-        Sun, 13 Aug 2023 16:08:10 -0700 (PDT)
-Received: from redhat.com ([2.55.42.146])
-        by smtp.gmail.com with ESMTPSA id jo19-20020a170906f6d300b0099bcd1fa5b0sm5002759ejb.192.2023.08.13.16.08.05
+        d=1e100.net; s=20221208; t=1691968811; x=1692573611;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=kiyS2VehFMfuVYF8pCqrv51Yky+ofwQ0HUMpd4ZCwjs=;
+        b=Ymhhl/ogTDL/ojl5L0OiPAg1ZeHZXQWJnFAroLpdrAMC6geLhIg/baqA7tGt4rJSQX
+         S0gYQNA+vRLX9T5YJFnrgg88NwordIFYE9DQUgTXJEtW7JncK4xVq1our6DK8lyLsF/O
+         XE4Jl/dPGAHC89AFWEFKx25kRfWEbHgAA/X/32ZcBtosudSax7TTEAF4yEAbYllMK1hp
+         Z4EeFb/DEvwF+mgZngYeJZcB1AJGhbQTrvLQ2tqLLPQRW9+dx0OHTX52qidw5ZTg6cBN
+         7yFGJ7kCMsXrjMyA7OZQyG3RYgnPiKMEMISiVY/jlJqtpIWoYdBseJ7CZK9Ze02sAra9
+         ZSjA==
+X-Gm-Message-State: AOJu0YyKBpCRvypUnj+0SwGiv1YrBS1jaqFqXHQ/VnImBF81PHxFnOVL
+        EY80Wsxg9ESajEVjZP8TGMhg28cZggTaGzUFZxynmxhN
+X-Google-Smtp-Source: AGHT+IGtvTtxvPh4sQNr+1YOZEitUxvD/KetHkD1Ma86biJWbDeXLfZWGr6noyHGUQLWRm9dk+eiDg==
+X-Received: by 2002:a17:902:bd87:b0:1bd:e9de:ccd7 with SMTP id q7-20020a170902bd8700b001bde9deccd7mr244513pls.24.1691968811445;
+        Sun, 13 Aug 2023 16:20:11 -0700 (PDT)
+Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
+        by smtp.gmail.com with ESMTPSA id g14-20020a170902868e00b001b9dab0397bsm7893502plo.29.2023.08.13.16.20.10
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 13 Aug 2023 16:08:09 -0700 (PDT)
-Date:   Sun, 13 Aug 2023 19:08:03 -0400
-From:   "Michael S. Tsirkin" <mst@redhat.com>
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     kvm@vger.kernel.org, virtualization@lists.linux-foundation.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        allen.hubbe@amd.com, andrew@daynix.com, david@redhat.com,
-        dtatulea@nvidia.com, eperezma@redhat.com, feliu@nvidia.com,
-        gal@nvidia.com, jasowang@redhat.com, leiyang@redhat.com,
-        linma@zju.edu.cn, maxime.coquelin@redhat.com,
-        michael.christie@oracle.com, mst@redhat.com, rdunlap@infradead.org,
-        sgarzare@redhat.com, shannon.nelson@amd.com,
-        stable@vger.kernel.org, stable@vger.kernelorg, stefanha@redhat.com,
-        wsa+renesas@sang-engineering.com, xieyongji@bytedance.com,
-        yin31149@gmail.com
-Subject: [GIT PULL] virtio: bugfixes
-Message-ID: <20230813190803-mutt-send-email-mst@kernel.org>
+        Sun, 13 Aug 2023 16:20:10 -0700 (PDT)
+Message-ID: <64d9652a.170a0220.c28b0.d92f@mx.google.com>
+Date:   Sun, 13 Aug 2023 16:20:10 -0700 (PDT)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-X-Mutt-Fcc: =sent
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+X-Kernelci-Report-Type: build
+X-Kernelci-Kernel: v4.19.291-34-g84b9d8b93009
+X-Kernelci-Tree: stable-rc
+X-Kernelci-Branch: linux-4.19.y
+Subject: stable-rc/linux-4.19.y build: 19 builds: 3 failed, 16 passed,
+ 20 warnings (v4.19.291-34-g84b9d8b93009)
+To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+        kernelci-results@groups.io
+From:   "kernelci.org bot" <bot@kernelci.org>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-All small, fairly safe changes.
+stable-rc/linux-4.19.y build: 19 builds: 3 failed, 16 passed, 20 warnings (=
+v4.19.291-34-g84b9d8b93009)
 
-The following changes since commit 52a93d39b17dc7eb98b6aa3edb93943248e03b2f:
+Full Build Summary: https://kernelci.org/build/stable-rc/branch/linux-4.19.=
+y/kernel/v4.19.291-34-g84b9d8b93009/
 
-  Linux 6.5-rc5 (2023-08-06 15:07:51 -0700)
+Tree: stable-rc
+Branch: linux-4.19.y
+Git Describe: v4.19.291-34-g84b9d8b93009
+Git Commit: 84b9d8b93009a14264e351f2ae6dd63d95dd6ceb
+Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
+e-rc.git
+Built: 7 unique architectures
 
-are available in the Git repository at:
+Build Failures Detected:
 
-  https://git.kernel.org/pub/scm/linux/kernel/git/mst/vhost.git tags/for_linus
+riscv:
+    allnoconfig: (gcc-10) FAIL
+    defconfig: (gcc-10) FAIL
+    tinyconfig: (gcc-10) FAIL
 
-for you to fetch changes up to f55484fd7be923b740e8e1fc304070ba53675cb4:
+Warnings Detected:
 
-  virtio-mem: check if the config changed before fake offlining memory (2023-08-10 15:51:46 -0400)
+arc:
 
-----------------------------------------------------------------
-virtio: bugfixes
+arm64:
+    defconfig (gcc-10): 3 warnings
+    defconfig+arm64-chromebook (gcc-10): 3 warnings
 
-just a bunch of bugfixes all over the place.
+arm:
 
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+i386:
+    allnoconfig (gcc-10): 2 warnings
+    i386_defconfig (gcc-10): 2 warnings
+    tinyconfig (gcc-10): 2 warnings
 
-----------------------------------------------------------------
-Allen Hubbe (2):
-      pds_vdpa: reset to vdpa specified mac
-      pds_vdpa: alloc irq vectors on DRIVER_OK
+mips:
 
-David Hildenbrand (4):
-      virtio-mem: remove unsafe unplug in Big Block Mode (BBM)
-      virtio-mem: convert most offline_and_remove_memory() errors to -EBUSY
-      virtio-mem: keep retrying on offline_and_remove_memory() errors in Sub Block Mode (SBM)
-      virtio-mem: check if the config changed before fake offlining memory
+riscv:
 
-Dragos Tatulea (4):
-      vdpa: Enable strict validation for netlinks ops
-      vdpa/mlx5: Correct default number of queues when MQ is on
-      vdpa/mlx5: Fix mr->initialized semantics
-      vdpa/mlx5: Fix crash on shutdown for when no ndev exists
+x86_64:
+    allnoconfig (gcc-10): 2 warnings
+    tinyconfig (gcc-10): 2 warnings
+    x86_64_defconfig (gcc-10): 2 warnings
+    x86_64_defconfig+x86-chromebook (gcc-10): 2 warnings
 
-Eugenio Pérez (1):
-      vdpa/mlx5: Delete control vq iotlb in destroy_mr only when necessary
 
-Feng Liu (1):
-      virtio-pci: Fix legacy device flag setting error in probe
+Warnings summary:
 
-Gal Pressman (1):
-      virtio-vdpa: Fix cpumask memory leak in virtio_vdpa_find_vqs()
+    7    ld: warning: creating DT_TEXTREL in a PIE
+    6    aarch64-linux-gnu-ld: warning: -z norelro ignored
+    4    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in rea=
+d-only section `.head.text'
+    3    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in rea=
+d-only section `.head.text'
 
-Hawkins Jiawei (1):
-      virtio-net: Zero max_tx_vq field for VIRTIO_NET_CTRL_MQ_HASH_CONFIG case
+Section mismatches summary:
 
-Lin Ma (3):
-      vdpa: Add features attr to vdpa_nl_policy for nlattr length check
-      vdpa: Add queue index attr to vdpa_nl_policy for nlattr length check
-      vdpa: Add max vqp attr to vdpa_nl_policy for nlattr length check
+    3    WARNING: modpost: Found 1 section mismatch(es).
 
-Maxime Coquelin (1):
-      vduse: Use proper spinlock for IRQ injection
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
 
-Mike Christie (3):
-      vhost-scsi: Fix alignment handling with windows
-      vhost-scsi: Rename vhost_scsi_iov_to_sgl
-      MAINTAINERS: add vhost-scsi entry and myself as a co-maintainer
+Detailed per-defconfig build reports:
 
-Shannon Nelson (4):
-      pds_vdpa: protect Makefile from unconfigured debugfs
-      pds_vdpa: always allow offering VIRTIO_NET_F_MAC
-      pds_vdpa: clean and reset vqs entries
-      pds_vdpa: fix up debugfs feature bit printing
+---------------------------------------------------------------------------=
+-----
+32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
+tion mismatches
 
-Wolfram Sang (1):
-      virtio-mmio: don't break lifecycle of vm_dev
+---------------------------------------------------------------------------=
+-----
+allnoconfig (riscv, gcc-10) =E2=80=94 FAIL, 0 errors, 0 warnings, 0 section=
+ mismatches
 
- MAINTAINERS                        |  11 ++-
- drivers/net/virtio_net.c           |   2 +-
- drivers/vdpa/mlx5/core/mlx5_vdpa.h |   2 +
- drivers/vdpa/mlx5/core/mr.c        | 105 +++++++++++++++------
- drivers/vdpa/mlx5/net/mlx5_vnet.c  |  26 +++---
- drivers/vdpa/pds/Makefile          |   3 +-
- drivers/vdpa/pds/debugfs.c         |  15 ++-
- drivers/vdpa/pds/vdpa_dev.c        | 176 ++++++++++++++++++++++++----------
- drivers/vdpa/pds/vdpa_dev.h        |   5 +-
- drivers/vdpa/vdpa.c                |   9 +-
- drivers/vdpa/vdpa_user/vduse_dev.c |   8 +-
- drivers/vhost/scsi.c               | 187 ++++++++++++++++++++++++++++++++-----
- drivers/virtio/virtio_mem.c        | 168 ++++++++++++++++++++++-----------
- drivers/virtio/virtio_mmio.c       |   5 +-
- drivers/virtio/virtio_pci_common.c |   2 -
- drivers/virtio/virtio_pci_legacy.c |   1 +
- drivers/virtio/virtio_vdpa.c       |   2 +
- 17 files changed, 519 insertions(+), 208 deletions(-)
+---------------------------------------------------------------------------=
+-----
+allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 sectio=
+n mismatches
 
+Warnings:
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section =
+mismatches
+
+Warnings:
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+defconfig (riscv, gcc-10) =E2=80=94 FAIL, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 section m=
+ismatches
+
+Warnings:
+    aarch64-linux-gnu-ld: warning: -z norelro ignored
+    aarch64-linux-gnu-ld: warning: -z norelro ignored
+    aarch64-linux-gnu-ld: warning: -z norelro ignored
+
+Section mismatches:
+    WARNING: modpost: Found 1 section mismatch(es).
+
+---------------------------------------------------------------------------=
+-----
+defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warn=
+ings, 0 section mismatches
+
+Warnings:
+    aarch64-linux-gnu-ld: warning: -z norelro ignored
+    aarch64-linux-gnu-ld: warning: -z norelro ignored
+    aarch64-linux-gnu-ld: warning: -z norelro ignored
+
+Section mismatches:
+    WARNING: modpost: Found 1 section mismatch(es).
+
+---------------------------------------------------------------------------=
+-----
+haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
+ section mismatches
+
+---------------------------------------------------------------------------=
+-----
+i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 secti=
+on mismatches
+
+Warnings:
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+Section mismatches:
+    WARNING: modpost: Found 1 section mismatch(es).
+
+---------------------------------------------------------------------------=
+-----
+multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (riscv, gcc-10) =E2=80=94 FAIL, 0 errors, 0 warnings, 0 section =
+mismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section m=
+ismatches
+
+Warnings:
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section=
+ mismatches
+
+Warnings:
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 s=
+ection mismatches
+
+Warnings:
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig+x86-chromebook (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, =
+2 warnings, 0 section mismatches
+
+Warnings:
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---
+For more info write to <info@kernelci.org>
