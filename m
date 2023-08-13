@@ -2,47 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EFCA777AC8F
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:34:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C08B577AC08
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:28:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232057AbjHMVe3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:34:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56620 "EHLO
+        id S231793AbjHMV2b (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:28:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39732 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232043AbjHMVe3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:34:29 -0400
+        with ESMTP id S231789AbjHMV2a (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:28:30 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F166E10EB
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:34:30 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7AF3E10DD
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:28:32 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8F59B62C76
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:34:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3F9BC433C8;
-        Sun, 13 Aug 2023 21:34:29 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1A9E662A4F
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:28:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34D45C433C8;
+        Sun, 13 Aug 2023 21:28:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691962470;
-        bh=9QkjKkl+8zNwYbZlRf/+Eo93FkXOkOII/J04Ooy06XM=;
+        s=korg; t=1691962111;
+        bh=au87tlTGG3kVmUHDd/aOS7tzJPnWfRwjIyLp+gnphwI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=aWWKhK98YmYNQ5oIZ0oHZ9FbvQoHzLfUTJS7qhZpeGrjGytD0Jn78uoGpc/nLscll
-         7ii26ER920ia3QYlf7ORWQf4/gOw8hiqlheRug1QYzTV7CumwtlExTe2atRz0dEiVR
-         yr3lhYVarb4pZ2ZQ/5XFk23QGxBDE9C1gkM6H0xE=
+        b=k+uKi+QW4zr27LJrlM8/sXaGcw4RSaxM3lig/s2QjtHulBz4TfuryvlT5tx7GeNjG
+         Ll+2J4dccQWJhdIzx10WascgatISv95iQPY4wEV8qYD1lQ5g6YNDTmfy9B+1DY9n/2
+         uQgiBUgy/IphKZAwt/hkgXK3UAxw/Dva0s3HVXEM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Harry Wentland <harry.wentland@amd.com>,
-        Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
-        Aurabindo Pillai <aurabindo.pillai@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        Mario Limonciello <mario.limonciello@amd.com>
-Subject: [PATCH 6.1 041/149] drm/amd/display: Handle virtual hardware detect
-Date:   Sun, 13 Aug 2023 23:18:06 +0200
-Message-ID: <20230813211720.039406492@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>,
+        Ido Schimmel <idosch@nvidia.com>,
+        Petr Machata <petrm@nvidia.com>,
+        Hangbin Liu <liuhangbin@gmail.com>,
+        Nikolay Aleksandrov <razor@blackwall.org>,
+        Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.4 117/206] selftests: forwarding: tc_flower: Relax success criterion
+Date:   Sun, 13 Aug 2023 23:18:07 +0200
+Message-ID: <20230813211728.387442936@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211718.757428827@linuxfoundation.org>
-References: <20230813211718.757428827@linuxfoundation.org>
+In-Reply-To: <20230813211724.969019629@linuxfoundation.org>
+References: <20230813211724.969019629@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,35 +58,56 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+From: Ido Schimmel <idosch@nvidia.com>
 
-commit 987b96eb860036ab79051fb271f7fbdc01c9daf5 upstream
+commit 9ee37e53e7687654b487fc94e82569377272a7a8 upstream.
 
-If virtual hardware is detected, there is no reason to run the full
-dc_commit_streams process, and DC can return true immediately.
+The test checks that filters that match on source or destination MAC
+were only hit once. A host can send more than one packet with a given
+source or destination MAC, resulting in failures.
 
-Reviewed-by: Harry Wentland <harry.wentland@amd.com>
-Signed-off-by: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
-Co-developed-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Signed-off-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Fix by relaxing the success criterion and instead check that the filters
+were not hit zero times. Using tc_check_at_least_x_packets() is also an
+option, but it is not available in older kernels.
+
+Fixes: 07e5c75184a1 ("selftests: forwarding: Introduce tc flower matching tests")
+Reported-by: Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>
+Closes: https://lore.kernel.org/netdev/adc5e40d-d040-a65e-eb26-edf47dac5b02@alu.unizg.hr/
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: Petr Machata <petrm@nvidia.com>
+Tested-by: Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>
+Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
+Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
+Link: https://lore.kernel.org/r/20230808141503.4060661-13-idosch@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/core/dc.c |    3 +++
- 1 file changed, 3 insertions(+)
+ tools/testing/selftests/net/forwarding/tc_flower.sh |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/dc/core/dc.c
-+++ b/drivers/gpu/drm/amd/display/dc/core/dc.c
-@@ -1942,6 +1942,9 @@ enum dc_status dc_commit_streams(struct
- 	struct pipe_ctx *pipe;
- 	bool handle_exit_odm2to1 = false;
+--- a/tools/testing/selftests/net/forwarding/tc_flower.sh
++++ b/tools/testing/selftests/net/forwarding/tc_flower.sh
+@@ -52,8 +52,8 @@ match_dst_mac_test()
+ 	tc_check_packets "dev $h2 ingress" 101 1
+ 	check_fail $? "Matched on a wrong filter"
  
-+	if (dc->ctx->dce_environment == DCE_ENV_VIRTUAL_HW)
-+		return res;
-+
- 	if (!streams_changed(dc, streams, stream_count))
- 		return res;
+-	tc_check_packets "dev $h2 ingress" 102 1
+-	check_err $? "Did not match on correct filter"
++	tc_check_packets "dev $h2 ingress" 102 0
++	check_fail $? "Did not match on correct filter"
  
+ 	tc filter del dev $h2 ingress protocol ip pref 1 handle 101 flower
+ 	tc filter del dev $h2 ingress protocol ip pref 2 handle 102 flower
+@@ -78,8 +78,8 @@ match_src_mac_test()
+ 	tc_check_packets "dev $h2 ingress" 101 1
+ 	check_fail $? "Matched on a wrong filter"
+ 
+-	tc_check_packets "dev $h2 ingress" 102 1
+-	check_err $? "Did not match on correct filter"
++	tc_check_packets "dev $h2 ingress" 102 0
++	check_fail $? "Did not match on correct filter"
+ 
+ 	tc filter del dev $h2 ingress protocol ip pref 1 handle 101 flower
+ 	tc filter del dev $h2 ingress protocol ip pref 2 handle 102 flower
 
 
