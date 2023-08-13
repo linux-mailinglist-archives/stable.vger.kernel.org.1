@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3141177AD2B
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:48:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3F95477AD3C
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:48:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231260AbjHMVsK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:48:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33810 "EHLO
+        id S231553AbjHMVsQ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:48:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39278 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229512AbjHMVrU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:47:20 -0400
+        with ESMTP id S232323AbjHMVqB (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:46:01 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6786A2D54
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:47:19 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 972BC2D57
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:46:00 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id F0DBD61C1D
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:47:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CA31C433C8;
-        Sun, 13 Aug 2023 21:47:17 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2AC3E61468
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:46:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42D37C433C8;
+        Sun, 13 Aug 2023 21:45:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691963238;
-        bh=DFZpq3LKweXt3Unnw+pBlNlk9lFhpr41+1i9x4cMs1o=;
+        s=korg; t=1691963159;
+        bh=p9si0NpoDSgo8l0EQQLMSbbfky3lK3mVvS+TxZf1Ntc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=L2r3sx/XQ4n19dNUjBq0vEFtha9pncfUfXqK5D+DDXk8jZiRJx5fLbHnJ6kb+gnWS
-         cjOqLs7LPPSgDsJwTTkORxnA49uZhTdGPmb0g+5KZMo5gGGXshVMCiHYWTYQ+S/d+S
-         FbU7QkZYfCTZX3ughXWYOB1+vQb+jZy60Ea8HV4Y=
+        b=uSKZhOpzBK8JHFSObofhCC0BabV7c3e6jeVbLybODIIy+cwpTYJ1FAAlFZjxtGmzO
+         oRDbNGEUAMW9OZ9iS7/Y0woD2qZDtH1CJ5EeTvdEOG0bUWcaEAYEATCQzjLAQ/KiDE
+         qqbp3xtasht/KihdDF3MoN7qmPpBjhcgvz+iPH+E=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yingcong Wu <yingcong.wu@intel.com>,
-        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>
-Subject: [PATCH 5.4 14/39] x86/mm: Fix VDSO and VVAR placement on 5-level paging machines
+        patches@lists.linux.dev, Ming Lei <ming.lei@redhat.com>,
+        Yi Zhang <yi.zhang@redhat.com>,
+        Sagi Grimberg <sagi@grimberg.me>,
+        Keith Busch <kbusch@kernel.org>
+Subject: [PATCH 5.15 74/89] nvme-tcp: fix potential unbalanced freeze & unfreeze
 Date:   Sun, 13 Aug 2023 23:20:05 +0200
-Message-ID: <20230813211705.322851364@linuxfoundation.org>
+Message-ID: <20230813211712.993349133@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211704.796906808@linuxfoundation.org>
-References: <20230813211704.796906808@linuxfoundation.org>
+In-Reply-To: <20230813211710.787645394@linuxfoundation.org>
+References: <20230813211710.787645394@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,52 +56,62 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+From: Ming Lei <ming.lei@redhat.com>
 
-commit 1b8b1aa90c9c0e825b181b98b8d9e249dc395470 upstream.
+commit 99dc264014d5aed66ee37ddf136a38b5a2b1b529 upstream.
 
-Yingcong has noticed that on the 5-level paging machine, VDSO and VVAR
-VMAs are placed above the 47-bit border:
+Move start_freeze into nvme_tcp_configure_io_queues(), and there is
+at least two benefits:
 
-8000001a9000-8000001ad000 r--p 00000000 00:00 0                          [vvar]
-8000001ad000-8000001af000 r-xp 00000000 00:00 0                          [vdso]
+1) fix unbalanced freeze and unfreeze, since re-connection work may
+fail or be broken by removal
 
-This might confuse users who are not aware of 5-level paging and expect
-all userspace addresses to be under the 47-bit border.
+2) IO during error recovery can be failfast quickly because nvme fabrics
+unquiesces queues after teardown.
 
-So far problem has only been triggered with ASLR disabled, although it
-may also occur with ASLR enabled if the layout is randomized in a just
-right way.
+One side-effect is that !mpath request may timeout during connecting
+because of queue topo change, but that looks not one big deal:
 
-The problem happens due to custom placement for the VMAs in the VDSO
-code: vdso_addr() tries to place them above the stack and checks the
-result against TASK_SIZE_MAX, which is wrong. TASK_SIZE_MAX is set to
-the 56-bit border on 5-level paging machines. Use DEFAULT_MAP_WINDOW
-instead.
+1) same problem exists with current code base
 
-Fixes: b569bab78d8d ("x86/mm: Prepare to expose larger address space to userspace")
-Reported-by: Yingcong Wu <yingcong.wu@intel.com>
-Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+2) compared with !mpath, mpath use case is dominant
+
+Fixes: 2875b0aecabe ("nvme-tcp: fix controller reset hang during traffic")
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/all/20230803151609.22141-1-kirill.shutemov%40linux.intel.com
+Signed-off-by: Ming Lei <ming.lei@redhat.com>
+Tested-by: Yi Zhang <yi.zhang@redhat.com>
+Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/entry/vdso/vma.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/nvme/host/tcp.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/arch/x86/entry/vdso/vma.c
-+++ b/arch/x86/entry/vdso/vma.c
-@@ -222,8 +222,8 @@ static unsigned long vdso_addr(unsigned
+--- a/drivers/nvme/host/tcp.c
++++ b/drivers/nvme/host/tcp.c
+@@ -1888,6 +1888,7 @@ static int nvme_tcp_configure_io_queues(
+ 		goto out_cleanup_connect_q;
  
- 	/* Round the lowest possible end address up to a PMD boundary. */
- 	end = (start + len + PMD_SIZE - 1) & PMD_MASK;
--	if (end >= TASK_SIZE_MAX)
--		end = TASK_SIZE_MAX;
-+	if (end >= DEFAULT_MAP_WINDOW)
-+		end = DEFAULT_MAP_WINDOW;
- 	end -= len;
- 
- 	if (end > start) {
+ 	if (!new) {
++		nvme_start_freeze(ctrl);
+ 		nvme_start_queues(ctrl);
+ 		if (!nvme_wait_freeze_timeout(ctrl, NVME_IO_TIMEOUT)) {
+ 			/*
+@@ -1896,6 +1897,7 @@ static int nvme_tcp_configure_io_queues(
+ 			 * to be safe.
+ 			 */
+ 			ret = -ENODEV;
++			nvme_unfreeze(ctrl);
+ 			goto out_wait_freeze_timed_out;
+ 		}
+ 		blk_mq_update_nr_hw_queues(ctrl->tagset,
+@@ -2014,7 +2016,6 @@ static void nvme_tcp_teardown_io_queues(
+ 	if (ctrl->queue_count <= 1)
+ 		return;
+ 	blk_mq_quiesce_queue(ctrl->admin_q);
+-	nvme_start_freeze(ctrl);
+ 	nvme_stop_queues(ctrl);
+ 	nvme_sync_io_queues(ctrl);
+ 	nvme_tcp_stop_io_queues(ctrl);
 
 
