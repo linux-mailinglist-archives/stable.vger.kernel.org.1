@@ -2,114 +2,137 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8A74077AD72
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:49:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7520077AD18
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:48:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231564AbjHMVtG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:49:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41276 "EHLO
+        id S230334AbjHMVsE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:48:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34264 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231230AbjHMVsa (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:48:30 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 451262112
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:42:55 -0700 (PDT)
+        with ESMTP id S232320AbjHMVp4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:45:56 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 546722D55
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:45:55 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CDAB561A36
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:42:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDD1DC433C9;
-        Sun, 13 Aug 2023 21:42:53 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E737B60B9D
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:45:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7613C433C8;
+        Sun, 13 Aug 2023 21:45:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691962974;
-        bh=5FtQuB71NbM3ttVo78fjx9a/0JhwNv8fyRWaR0bmXBo=;
+        s=korg; t=1691963154;
+        bh=L3IiUJk596A6kxY65cnUz2UMDCa4rpuQz3JcimFiwcs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=SlbvB090IoM3NFXbJtG0a6DIuiZ4KcrEWMJCUPiiJNjixgvzuSqHO9cUN8UGICXVY
-         F8ELkEFW/K7F3KU0Xkt5qOLGk1pFRCEsD1jhaE2OmBOXwZct5fopkttodlVudCAA2H
-         5/A/na3OZSWsixMnUkPAHZseEXZZGLj0nsf/EI8s=
+        b=kVPlzc/RvQS0eFqGQtUh3o42V6F4BIu6Q5wfLfAtB3wBl/YqSWMLouP/QFMGuAfje
+         KRjiW/p1w8WVoafpOINvm5hPF06jeGzzlc+el6FNLI6PQt+C7L91mJAojxDaRLgMwZ
+         j/qGlT+0dv8TLeAaf75AMw17PsVOGgGLo2QvXaTE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Michael Kelley <mikelley@microsoft.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 5.10 61/68] scsi: storvsc: Fix handling of virtual Fibre Channel timeouts
-Date:   Sun, 13 Aug 2023 23:20:02 +0200
-Message-ID: <20230813211710.004779783@linuxfoundation.org>
+        patches@lists.linux.dev,
+        syzbot+ae97a827ae1c3336bbb4@syzkaller.appspotmail.com,
+        Filipe Manana <fdmanana@suse.com>, Qu Wenruo <wqu@suse.com>,
+        David Sterba <dsterba@suse.com>
+Subject: [PATCH 5.15 72/89] btrfs: reject invalid reloc tree root keys with stack dump
+Date:   Sun, 13 Aug 2023 23:20:03 +0200
+Message-ID: <20230813211712.933704756@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211708.149630011@linuxfoundation.org>
-References: <20230813211708.149630011@linuxfoundation.org>
+In-Reply-To: <20230813211710.787645394@linuxfoundation.org>
+References: <20230813211710.787645394@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Michael Kelley <mikelley@microsoft.com>
+From: Qu Wenruo <wqu@suse.com>
 
-commit 175544ad48cbf56affeef2a679c6a4d4fb1e2881 upstream.
+commit 6ebcd021c92b8e4b904552e4d87283032100796d upstream.
 
-Hyper-V provides the ability to connect Fibre Channel LUNs to the host
-system and present them in a guest VM as a SCSI device. I/O to the vFC
-device is handled by the storvsc driver. The storvsc driver includes a
-partial integration with the FC transport implemented in the generic
-portion of the Linux SCSI subsystem so that FC attributes can be displayed
-in /sys.  However, the partial integration means that some aspects of vFC
-don't work properly. Unfortunately, a full and correct integration isn't
-practical because of limitations in what Hyper-V provides to the guest.
+[BUG]
+Syzbot reported a crash that an ASSERT() got triggered inside
+prepare_to_merge().
 
-In particular, in the context of Hyper-V storvsc, the FC transport timeout
-function fc_eh_timed_out() causes a kernel panic because it can't find the
-rport and dereferences a NULL pointer. The original patch that added the
-call from storvsc_eh_timed_out() to fc_eh_timed_out() is faulty in this
-regard.
+That ASSERT() makes sure the reloc tree is properly pointed back by its
+subvolume tree.
 
-In many cases a timeout is due to a transient condition, so the situation
-can be improved by just continuing to wait like with other I/O requests
-issued by storvsc, and avoiding the guaranteed panic. For a permanent
-failure, continuing to wait may result in a hung thread instead of a panic,
-which again may be better.
+[CAUSE]
+After more debugging output, it turns out we had an invalid reloc tree:
 
-So fix the panic by removing the storvsc call to fc_eh_timed_out().  This
-allows storvsc to keep waiting for a response.  The change has been tested
-by users who experienced a panic in fc_eh_timed_out() due to transient
-timeouts, and it solves their problem.
+  BTRFS error (device loop1): reloc tree mismatch, root 8 has no reloc root, expect reloc root key (-8, 132, 8) gen 17
 
-In the future we may want to deprecate the vFC functionality in storvsc
-since it can't be fully fixed. But it has current users for whom it is
-working well enough, so it should probably stay for a while longer.
+Note the above root key is (TREE_RELOC_OBJECTID, ROOT_ITEM,
+QUOTA_TREE_OBJECTID), meaning it's a reloc tree for quota tree.
 
-Fixes: 3930d7309807 ("scsi: storvsc: use default I/O timeout handler for FC devices")
-Cc: stable@vger.kernel.org
-Signed-off-by: Michael Kelley <mikelley@microsoft.com>
-Link: https://lore.kernel.org/r/1690606764-79669-1-git-send-email-mikelley@microsoft.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+But reloc trees can only exist for subvolumes, as for non-subvolume
+trees, we just COW the involved tree block, no need to create a reloc
+tree since those tree blocks won't be shared with other trees.
+
+Only subvolumes tree can share tree blocks with other trees (thus they
+have BTRFS_ROOT_SHAREABLE flag).
+
+Thus this new debug output proves my previous assumption that corrupted
+on-disk data can trigger that ASSERT().
+
+[FIX]
+Besides the dedicated fix and the graceful exit, also let tree-checker to
+check such root keys, to make sure reloc trees can only exist for subvolumes.
+
+CC: stable@vger.kernel.org # 5.15+
+Reported-by: syzbot+ae97a827ae1c3336bbb4@syzkaller.appspotmail.com
+Reviewed-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/storvsc_drv.c |    4 ----
- 1 file changed, 4 deletions(-)
+ fs/btrfs/disk-io.c      |    3 ++-
+ fs/btrfs/tree-checker.c |   14 ++++++++++++++
+ 2 files changed, 16 insertions(+), 1 deletion(-)
 
---- a/drivers/scsi/storvsc_drv.c
-+++ b/drivers/scsi/storvsc_drv.c
-@@ -1641,10 +1641,6 @@ static int storvsc_host_reset_handler(st
-  */
- static enum blk_eh_timer_return storvsc_eh_timed_out(struct scsi_cmnd *scmnd)
- {
--#if IS_ENABLED(CONFIG_SCSI_FC_ATTRS)
--	if (scmnd->device->host->transportt == fc_transport_template)
--		return fc_eh_timed_out(scmnd);
--#endif
- 	return BLK_EH_RESET_TIMER;
- }
+--- a/fs/btrfs/disk-io.c
++++ b/fs/btrfs/disk-io.c
+@@ -1437,7 +1437,8 @@ static int btrfs_init_fs_root(struct btr
+ 		goto fail;
  
+ 	if (root->root_key.objectid != BTRFS_TREE_LOG_OBJECTID &&
+-	    !btrfs_is_data_reloc_root(root)) {
++	    !btrfs_is_data_reloc_root(root) &&
++	    is_fstree(root->root_key.objectid)) {
+ 		set_bit(BTRFS_ROOT_SHAREABLE, &root->state);
+ 		btrfs_check_and_init_root_item(&root->root_item);
+ 	}
+--- a/fs/btrfs/tree-checker.c
++++ b/fs/btrfs/tree-checker.c
+@@ -442,6 +442,20 @@ static int check_root_key(struct extent_
+ 	btrfs_item_key_to_cpu(leaf, &item_key, slot);
+ 	is_root_item = (item_key.type == BTRFS_ROOT_ITEM_KEY);
+ 
++	/*
++	 * Bad rootid for reloc trees.
++	 *
++	 * Reloc trees are only for subvolume trees, other trees only need
++	 * to be COWed to be relocated.
++	 */
++	if (unlikely(is_root_item && key->objectid == BTRFS_TREE_RELOC_OBJECTID &&
++		     !is_fstree(key->offset))) {
++		generic_err(leaf, slot,
++		"invalid reloc tree for root %lld, root id is not a subvolume tree",
++			    key->offset);
++		return -EUCLEAN;
++	}
++
+ 	/* No such tree id */
+ 	if (unlikely(key->objectid == 0)) {
+ 		if (is_root_item)
 
 
