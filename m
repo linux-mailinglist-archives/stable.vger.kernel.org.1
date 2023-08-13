@@ -2,43 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0038E77ADBB
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:53:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B65E377ADBC
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:53:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232530AbjHMVxT (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:53:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36616 "EHLO
+        id S232536AbjHMVxW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:53:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32942 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232303AbjHMVv2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:51:28 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5221C10EA
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:48:50 -0700 (PDT)
+        with ESMTP id S232387AbjHMVve (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:51:34 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0BCA2172E
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:48:53 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E2D6463F1C
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:48:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01C48C433C8;
-        Sun, 13 Aug 2023 21:48:48 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 952C863DD2
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:48:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD007C433CC;
+        Sun, 13 Aug 2023 21:48:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691963329;
-        bh=bq0AncfZhJruxItKeszUkrhtzeEdok/360VQdhTLdAc=;
+        s=korg; t=1691963332;
+        bh=4v+94prT9e4Zj/BHMucDr/oLfG8GPskabnTBqsh/0Dk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=u1B2afuMLt75ktwvwvvjuFA0HuE1GFo0RzHkQ4ivjFOmNMOiuOO92vviGE+g4q6nX
-         jDm1VP301hYBTEaOPUj4iZ8m7/Ns0h5ICUO15tx/zV31MOPNNVo3uS4Ahb6nMbDg48
-         BXgUzsVhH9twaGrZkaPt/0oBMOad/YmDavgxXwzQ=
+        b=qjtBZpPwW0NiChb5MAj0xW5fqMCpkC0O7+5vb6lqhxy+B+yX6dAiidSkok2Eqyg3C
+         RnpTr55skTVh0mIf+jUgVIf7V+2g293cO7y8zGalNtYAoJoFfaS98TE/qhevvkeKD1
+         0j3QXkZcAC1TA3gEaNn+5lNGoyUFjzdEf8l0F4Gk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Vladimir Telezhnikov <vtelezhnikov@astralinux.ru>,
-        Alexandra Diupina <adiupina@astralinux.ru>,
+        patches@lists.linux.dev, Zhu Wang <wangzhu9@huawei.com>,
+        Narsimhulu Musini <nmusini@cisco.com>,
         "Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 5.4 35/39] scsi: 53c700: Check that command slot is not NULL
-Date:   Sun, 13 Aug 2023 23:20:26 +0200
-Message-ID: <20230813211705.998024928@linuxfoundation.org>
+Subject: [PATCH 5.4 36/39] scsi: snic: Fix possible memory leak if device_add() fails
+Date:   Sun, 13 Aug 2023 23:20:27 +0200
+Message-ID: <20230813211706.033118386@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230813211704.796906808@linuxfoundation.org>
 References: <20230813211704.796906808@linuxfoundation.org>
@@ -46,45 +45,44 @@ User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Alexandra Diupina <adiupina@astralinux.ru>
+From: Zhu Wang <wangzhu9@huawei.com>
 
-commit 8366d1f1249a0d0bba41d0bd1298d63e5d34c7f7 upstream.
+commit 41320b18a0e0dfb236dba4edb9be12dba1878156 upstream.
 
-Add a check for the command slot value to avoid dereferencing a NULL
-pointer.
+If device_add() returns error, the name allocated by dev_set_name() needs
+be freed. As the comment of device_add() says, put_device() should be used
+to give up the reference in the error path. So fix this by calling
+put_device(), then the name can be freed in kobject_cleanp().
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Co-developed-by: Vladimir Telezhnikov <vtelezhnikov@astralinux.ru>
-Signed-off-by: Vladimir Telezhnikov <vtelezhnikov@astralinux.ru>
-Signed-off-by: Alexandra Diupina <adiupina@astralinux.ru>
-Link: https://lore.kernel.org/r/20230728123521.18293-1-adiupina@astralinux.ru
+Fixes: c8806b6c9e82 ("snic: driver for Cisco SCSI HBA")
+Signed-off-by: Zhu Wang <wangzhu9@huawei.com>
+Acked-by: Narsimhulu Musini <nmusini@cisco.com>
+Link: https://lore.kernel.org/r/20230801111421.63651-1-wangzhu9@huawei.com
 Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/53c700.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/scsi/snic/snic_disc.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/scsi/53c700.c
-+++ b/drivers/scsi/53c700.c
-@@ -1581,7 +1581,7 @@ NCR_700_intr(int irq, void *dev_id)
- 				printk("scsi%d (%d:%d) PHASE MISMATCH IN SEND MESSAGE %d remain, return %p[%04x], phase %s\n", host->host_no, pun, lun, count, (void *)temp, temp - hostdata->pScript, sbcl_to_string(NCR_700_readb(host, SBCL_REG)));
- #endif
- 				resume_offset = hostdata->pScript + Ent_SendMessagePhaseMismatch;
--			} else if(dsp >= to32bit(&slot->pSG[0].ins) &&
-+			} else if (slot && dsp >= to32bit(&slot->pSG[0].ins) &&
- 				  dsp <= to32bit(&slot->pSG[NCR_700_SG_SEGMENTS].ins)) {
- 				int data_transfer = NCR_700_readl(host, DBC_REG) & 0xffffff;
- 				int SGcount = (dsp - to32bit(&slot->pSG[0].ins))/sizeof(struct NCR_700_SG_List);
+--- a/drivers/scsi/snic/snic_disc.c
++++ b/drivers/scsi/snic/snic_disc.c
+@@ -317,6 +317,7 @@ snic_tgt_create(struct snic *snic, struc
+ 			      "Snic Tgt: device_add, with err = %d\n",
+ 			      ret);
+ 
++		put_device(&tgt->dev);
+ 		put_device(&snic->shost->shost_gendev);
+ 		spin_lock_irqsave(snic->shost->host_lock, flags);
+ 		list_del(&tgt->list);
 
 
