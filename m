@@ -2,94 +2,207 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B15AC77A615
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 13:03:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2D5B377A669
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 14:56:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230056AbjHMLD3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 07:03:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56098 "EHLO
+        id S230379AbjHMM4Z (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 08:56:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32954 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229558AbjHMLD1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 07:03:27 -0400
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25AA41BD
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 04:03:30 -0700 (PDT)
-Received: from localhost (localhost.localdomain [127.0.0.1])
-        by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id AC51F40E0185;
-        Sun, 13 Aug 2023 11:03:25 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-        header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-        by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id 5C8xwSiMocF3; Sun, 13 Aug 2023 11:03:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-        t=1691924603; bh=NElFY/m1+ArvR7Gho78vQn1P8OB5nFajoABT/fHSVYA=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=MRlyieZkkSnHX2qmgUCdPajG3wE+LhKL9EsOB5ghL6RcBk7UjCyxuTsq54EXTR82A
-         lf9MoTnC2aO9NLeAktosNGdKOdbzw8mILDzR76SatBUFdFULvrxWMI38b1ObZL4N92
-         yYnINJkF2fNHWIA8UCNzh7FW/TNhpFDX3Ri0m0hq8l36VOm4Q/VPfWAgNe0tTN7jCY
-         MDTYvlC6o97swoJ0GkuP2zQV+SJO86xRDHUTeJMUPSlWJqQfPPzicavmrxl4ZqlWih
-         /Z+nbuMxVqUH/LZ1Ao4WzaKbVstz+bzCnhQzXr8g1IeX5cWqMKMZ2ec+AYzmaIckJ/
-         MnzW/w3ZNECsSqzEFPyYZX+AZGlfv/R69CHqs/KH0cSI+wP8QLBTTSHjRUGNd6Lr9t
-         lFh1aqt1gLVWpwjTBlPEXEQon4Hd7/B0GW6uHk0ga6UUW+F7NJibcEm4K8Y5STsD/z
-         f+eMkUXc9zmL1radgTCguaJY9+Yv3bDYq24QcnMixrdrnM+e/rXWYNYVdTlKt+SjXM
-         noGRqPmEOcIJHzYFD/LV2VrMSrQuMqUwQXFJ1qiHMklqz37BwSGHLZ6MgX3QcY5A2w
-         3w7xDqv05uSIbUskK7k6MBVlYdmmeT/b7xhmnypBZwnkwta0R3hZxu2+vn9ievDLuI
-         weBr1CoqeYEuDDIBgiPug//Y=
-Received: from zn.tnic (pd9530d32.dip0.t-ipconnect.de [217.83.13.50])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-        (No client certificate requested)
-        by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 3F03740E00B0;
-        Sun, 13 Aug 2023 11:02:59 +0000 (UTC)
-Date:   Sun, 13 Aug 2023 13:02:54 +0200
-From:   Borislav Petkov <bp@alien8.de>
-To:     Nathan Chancellor <nathan@kernel.org>
-Cc:     Guenter Roeck <linux@roeck-us.net>,
-        Naresh Kamboju <naresh.kamboju@linaro.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        clang-built-linux <llvm@lists.linux.dev>, stable@vger.kernel.org,
-        patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-        torvalds@linux-foundation.org, akpm@linux-foundation.org,
-        shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Sven Volkinsfeld <thyrc@gmx.net>,
-        Daniel Kolesa <daniel@octaforge.org>, x86@kernel.org
-Subject: Re: [PATCH 6.1 000/127] 6.1.45-rc1 review
-Message-ID: <20230813110254.GDZNi4XhHjY4xlNdBJ@fat_crate.local>
-References: <20230809103636.615294317@linuxfoundation.org>
- <CA+G9fYvQdQqTqCgbS4sit_Y2AtKtDiWMOkGZjoeSEFhc=M_jKw@mail.gmail.com>
- <078d6e3d-9572-a624-2c5a-e2d58473e6d0@roeck-us.net>
- <20230811041339.GA193223@dev-arch.thelio-3990X>
+        with ESMTP id S229562AbjHMM4Z (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 08:56:25 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B51EC1712
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 05:55:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1691931340;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=HpP/UmSbd/3zjTPm/BSKDWOF8g8BW3I43bbgTg39mWs=;
+        b=LuLmVg8OI/6pI1uvt4Q89XaUxZYFRfmMXaKmbfor4BioD1KTsSmStdDrphBi6iF1kEzHFf
+        +4K6/I7XCRgtkuq/Cerr4O6XN0pVbxg2FDlX/ZAVjaVFkWYFw6jlM71bhbuYnVAX6PDjjf
+        M5SGCtNj4zblmXc2GgqnCyPw6/Tlc8M=
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
+ [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-539-KKioEPdVMKqULqOipHTTZg-1; Sun, 13 Aug 2023 08:55:37 -0400
+X-MC-Unique: KKioEPdVMKqULqOipHTTZg-1
+Received: by mail-ej1-f72.google.com with SMTP id a640c23a62f3a-94a35b0d4ceso217424266b.3
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 05:55:36 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1691931336; x=1692536136;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=HpP/UmSbd/3zjTPm/BSKDWOF8g8BW3I43bbgTg39mWs=;
+        b=jeDbbBKCLZLKdVoP2NbLuecfUgg2poqftLv7FzDy61Sa5bw+WF5bg1HCf1nK2uge2a
+         dayilcqftGwyoXx9rIXhAMz1IKp96yMiXExw4ZaYKrzDZkUz3cPGiQbkb5HfwIdSpQvf
+         LwCOsteG2i1W5443bdwxoIQHzdlkDvFaQhztEu4qdFzeIftTTzvh+2orLZ6oixa8xzU6
+         mh4AMTClF5epwZlYkdow3m78bns5fT0tVxJ2TqYkbjoSC5gsVpWv4kHQ8D02Ko6isdHe
+         4DgSeWoKQa0R5Fkw4QkbikvQxYKavcT95A7NgnbblNIM5hRoqHt9qieshSXDKtwIrf81
+         9VRA==
+X-Gm-Message-State: AOJu0YwL3AdjObGCosULDOcRDDe1lWSeW22EAsda8nuzfBtk1siaO/DT
+        Gd6dC94k14+SjGaYde0p2zORhXu/BMA8kIgUhTNnwrzqLM+/91z2APYjVuOOlheqtf3/BH6muyf
+        nsFSV3JiNYmg4dbSM
+X-Received: by 2002:a17:907:7808:b0:99c:5708:496f with SMTP id la8-20020a170907780800b0099c5708496fmr5118838ejc.47.1691931336086;
+        Sun, 13 Aug 2023 05:55:36 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEIUElMEBgLGDCNoSKEWoy78stJZTL1FIpMSpD1/CLtmm0cQm1qmnui9WG0RhJbclb3JpmKKQ==
+X-Received: by 2002:a17:907:7808:b0:99c:5708:496f with SMTP id la8-20020a170907780800b0099c5708496fmr5118816ejc.47.1691931335312;
+        Sun, 13 Aug 2023 05:55:35 -0700 (PDT)
+Received: from ?IPV6:2001:1c00:c32:7800:5bfa:a036:83f0:f9ec? (2001-1c00-0c32-7800-5bfa-a036-83f0-f9ec.cable.dynamic.v6.ziggo.nl. [2001:1c00:c32:7800:5bfa:a036:83f0:f9ec])
+        by smtp.gmail.com with ESMTPSA id l18-20020a1709065a9200b00991e2b5a27dsm4586275ejq.37.2023.08.13.05.55.34
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 13 Aug 2023 05:55:34 -0700 (PDT)
+Message-ID: <1c2fac32-ba63-9e55-f809-d86a1afed3f9@redhat.com>
+Date:   Sun, 13 Aug 2023 14:55:33 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20230811041339.GA193223@dev-arch.thelio-3990X>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-        autolearn=unavailable autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH] platform/x86: lenovo-ymc: Only bind on machines with a
+ convertible DMI chassis-type
+Content-Language: en-US, nl
+To:     =?UTF-8?B?R2VyZ8WRIEvDtnRlbGVz?= <soyer@irl.hu>,
+        =?UTF-8?Q?Ilpo_J=c3=a4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+        Andy Shevchenko <andy@kernel.org>
+Cc:     platform-driver-x86@vger.kernel.org,
+        Andrew Kallmeyer <kallmeyeras@gmail.com>,
+        =?UTF-8?Q?Andr=c3=a9_Apitzsch?= <git@apitzsch.eu>,
+        stable@vger.kernel.org
+References: <20230812144818.383230-1-hdegoede@redhat.com>
+ <3d4143b70eaeb45e6feabde0c9d90c1a07312163.camel@irl.hu>
+From:   Hans de Goede <hdegoede@redhat.com>
+In-Reply-To: <3d4143b70eaeb45e6feabde0c9d90c1a07312163.camel@irl.hu>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-6.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+        SPF_NONE autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, Aug 10, 2023 at 09:13:39PM -0700, Nathan Chancellor wrote:
-> 1911 is still being investigated (some additional eyes on it would not
-> hurt).
+Hi,
 
-I'm hoping that we can take this one:
+On 8/12/23 22:48, Gergő Köteles wrote:
+> Hi,
+> 
+> On Sat, 2023-08-12 at 16:48 +0200, Hans de Goede wrote:
+>> The lenovo-ymc driver is causing the keyboard + touchpad to stop working
+>> on some regular laptop models such as the Lenovo ThinkBook 13s G2 ITL 20V9.
+>>
+>> The problem is that there are YMC WMI GUID methods in the ACPI tables
+>> of these laptops, despite them not being Yogas and lenovo-ymc loading
+>> causes libinput to see a SW_TABLET_MODE switch with state 1.
+>>
+>> This in turn causes libinput to ignore events from the builtin keyboard
+>> and touchpad, since it filters those out for a Yoga in tablet mode.
+>>
+>> Similar issues with false-positive SW_TABLET_MODE=1 reporting have
+>> been seen with the intel-hid driver.
+>>
+>> Copy the intel-hid driver approach to fix this and only bind to the WMI
+>> device on machines where the DMI chassis-type indicates the machine
+>> is a convertible.
+>>
+>> Add a 'force' module parameter to allow overriding the chassis-type check
+>> so that users can easily test if the YMC interface works on models which
+>> report an unexpected chassis-type.
+>>
+>> Fixes: e82882cdd241 ("platform/x86: Add driver for Yoga Tablet Mode switch")
+>> Link: https://bugzilla.redhat.com/show_bug.cgi?id=2229373
+>> Cc: Gergo Koteles <soyer@irl.hu>
+>> Cc: Andrew Kallmeyer <kallmeyeras@gmail.com>
+>> Cc: André Apitzsch <git@apitzsch.eu>
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+> 
+> Thanks for fixing this!
+> It works on Yoga 7 14ARB7.
+> 
+> Tested-by: Gergő Köteles <soyer@irl.hu>
 
-https://lore.kernel.org/r/20230809072200.543939260@infradead.org
+On 8/12/23 19:25, Andrew Kallmeyer wrote:
 
-which should resolve this issue, right?
+> Too bad that this caused problems for some people. Thank you for
+> getting it fixed Hans!
+> 
+> Tested-by: Andrew Kallmeyer <kallmeyeras@gmail.com>
 
--- 
-Regards/Gruss,
-    Boris.
+Thank you both for testing this.
 
-https://people.kernel.org/tglx/notes-about-netiquette
+I've added this to the pdx86/fixes branch now, with both
+your Tested-by-s added.
+
+Regards,
+
+Hans
+
+
+
+
+>> ---
+>> Note: The chassis-type can be checked by doing:
+>> cat /sys/class/dmi/id/chassis_type
+>> if this reports 31 or 32 then this patch should not have any impact
+>> on your machine.
+>> ---
+>>  drivers/platform/x86/lenovo-ymc.c | 25 +++++++++++++++++++++++++
+>>  1 file changed, 25 insertions(+)
+>>
+>> diff --git a/drivers/platform/x86/lenovo-ymc.c b/drivers/platform/x86/lenovo-ymc.c
+>> index 41676188b373..f360370d5002 100644
+>> --- a/drivers/platform/x86/lenovo-ymc.c
+>> +++ b/drivers/platform/x86/lenovo-ymc.c
+>> @@ -24,6 +24,10 @@ static bool ec_trigger __read_mostly;
+>>  module_param(ec_trigger, bool, 0444);
+>>  MODULE_PARM_DESC(ec_trigger, "Enable EC triggering work-around to force emitting tablet mode events");
+>>  
+>> +static bool force;
+>> +module_param(force, bool, 0444);
+>> +MODULE_PARM_DESC(force, "Force loading on boards without a convertible DMI chassis-type");
+>> +
+>>  static const struct dmi_system_id ec_trigger_quirk_dmi_table[] = {
+>>  	{
+>>  		/* Lenovo Yoga 7 14ARB7 */
+>> @@ -35,6 +39,20 @@ static const struct dmi_system_id ec_trigger_quirk_dmi_table[] = {
+>>  	{ }
+>>  };
+>>  
+>> +static const struct dmi_system_id allowed_chasis_types_dmi_table[] = {
+>> +	{
+>> +		.matches = {
+>> +			DMI_EXACT_MATCH(DMI_CHASSIS_TYPE, "31" /* Convertible */),
+>> +		},
+>> +	},
+>> +	{
+>> +		.matches = {
+>> +			DMI_EXACT_MATCH(DMI_CHASSIS_TYPE, "32" /* Detachable */),
+>> +		},
+>> +	},
+>> +	{ }
+>> +};
+>> +
+>>  struct lenovo_ymc_private {
+>>  	struct input_dev *input_dev;
+>>  	struct acpi_device *ec_acpi_dev;
+>> @@ -111,6 +129,13 @@ static int lenovo_ymc_probe(struct wmi_device *wdev, const void *ctx)
+>>  	struct input_dev *input_dev;
+>>  	int err;
+>>  
+>> +	if (!dmi_check_system(allowed_chasis_types_dmi_table)) {
+>> +		if (force)
+>> +			dev_info(&wdev->dev, "Force loading Lenovo YMC support\n");
+>> +		else
+>> +			return -ENODEV;
+>> +	}
+>> +
+>>  	ec_trigger |= dmi_check_system(ec_trigger_quirk_dmi_table);
+>>  
+>>  	priv = devm_kzalloc(&wdev->dev, sizeof(*priv), GFP_KERNEL);
+> 
+
