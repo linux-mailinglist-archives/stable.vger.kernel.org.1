@@ -2,92 +2,148 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0ADC077ABE9
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:27:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ADE7877AC71
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:33:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231731AbjHMV1H (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:27:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53698 "EHLO
+        id S231998AbjHMVdK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:33:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60450 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231742AbjHMV1H (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:27:07 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6FDDF10D7
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:27:09 -0700 (PDT)
+        with ESMTP id S231997AbjHMVdJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:33:09 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D6FD4D2
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:33:11 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 046ED629D1
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:27:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12AF4C433C8;
-        Sun, 13 Aug 2023 21:27:07 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7400662BF8
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:33:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61101C433C9;
+        Sun, 13 Aug 2023 21:33:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691962028;
-        bh=A87liQJZt1QETltZwySfFJ9Bx67cktbkLe9ZLwz4Ghs=;
+        s=korg; t=1691962390;
+        bh=amwjw9XamkyBWuFCZmLa0aWzXafwZbMjz29nSRQUV0Y=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=k+PgFf/5w1eQE+Z9fiYQn3S5dYnij7XQpYNk3hocNrCNxLSP5eWvLxTlUmXwS4orT
-         9xpZN/KqAoTZgqYQIms1FiU6Vp0OzqnvFRMcZyS0Mqo1b9yE83yxAcfT7xCTauHArP
-         vXQ7EQAxqlk500oOBLDrD4DjSLDzHEQgeYVItzok=
+        b=MOTln4RbZF8xjA70+tgbgb1TPjJQf682b94cK/SluXlbV22xqhMv/oO6FJD4tMAAk
+         Sw8lY5mxXzV6sz4uV7eJ12AnByu24wkowUWWwCc2ap6+y2P44SpmqD3DMjYzNzjIKE
+         neJ9LnjIx9rHrq0Df09qoD8n2TRjfKwQ1xaoBI+I=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Daniel Sneddon <daniel.sneddon@linux.intel.com>,
-        stable@kernel.org
-Subject: [PATCH 6.4 086/206] x86/speculation: Add cpu_show_gds() prototype
-Date:   Sun, 13 Aug 2023 23:17:36 +0200
-Message-ID: <20230813211727.539223147@linuxfoundation.org>
+        patches@lists.linux.dev, "Jason A. Donenfeld" <Jason@zx2c4.com>,
+        Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 012/149] wireguard: allowedips: expand maximum node depth
+Date:   Sun, 13 Aug 2023 23:17:37 +0200
+Message-ID: <20230813211719.165814344@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211724.969019629@linuxfoundation.org>
-References: <20230813211724.969019629@linuxfoundation.org>
+In-Reply-To: <20230813211718.757428827@linuxfoundation.org>
+References: <20230813211718.757428827@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Jason A. Donenfeld <Jason@zx2c4.com>
 
-commit a57c27c7ad85c420b7de44c6ee56692d51709dda upstream.
+commit 46622219aae2b67813fe31a7b8cb7da5baff5c8a upstream.
 
-The newly added function has two definitions but no prototypes:
+In the allowedips self-test, nodes are inserted into the tree, but it
+generated an even amount of nodes, but for checking maximum node depth,
+there is of course the root node, which makes the total number
+necessarily odd. With two few nodes added, it never triggered the
+maximum depth check like it should have. So, add 129 nodes instead of
+128 nodes, and do so with a more straightforward scheme, starting with
+all the bits set, and shifting over one each time. Then increase the
+maximum depth to 129, and choose a better name for that variable to
+make it clear that it represents depth as opposed to bits.
 
-drivers/base/cpu.c:605:16: error: no previous prototype for 'cpu_show_gds' [-Werror=missing-prototypes]
-
-Add a declaration next to the other ones for this file to avoid the
-warning.
-
-Fixes: 8974eb588283b ("x86/speculation: Add Gather Data Sampling mitigation")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Tested-by: Daniel Sneddon <daniel.sneddon@linux.intel.com>
-Cc: stable@kernel.org
-Link: https://lore.kernel.org/all/20230809130530.1913368-1-arnd%40kernel.org
+Cc: stable@vger.kernel.org
+Fixes: e7096c131e51 ("net: WireGuard secure network tunnel")
+Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
+Link: https://lore.kernel.org/r/20230807132146.2191597-2-Jason@zx2c4.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/cpu.h |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/wireguard/allowedips.c          |    8 ++++----
+ drivers/net/wireguard/selftest/allowedips.c |   16 ++++++++++------
+ 2 files changed, 14 insertions(+), 10 deletions(-)
 
---- a/include/linux/cpu.h
-+++ b/include/linux/cpu.h
-@@ -72,6 +72,8 @@ extern ssize_t cpu_show_retbleed(struct
- 				 struct device_attribute *attr, char *buf);
- extern ssize_t cpu_show_spec_rstack_overflow(struct device *dev,
- 					     struct device_attribute *attr, char *buf);
-+extern ssize_t cpu_show_gds(struct device *dev,
-+			    struct device_attribute *attr, char *buf);
+--- a/drivers/net/wireguard/allowedips.c
++++ b/drivers/net/wireguard/allowedips.c
+@@ -6,7 +6,7 @@
+ #include "allowedips.h"
+ #include "peer.h"
  
- extern __printf(4, 5)
- struct device *cpu_device_create(struct device *parent, void *drvdata,
+-enum { MAX_ALLOWEDIPS_BITS = 128 };
++enum { MAX_ALLOWEDIPS_DEPTH = 129 };
+ 
+ static struct kmem_cache *node_cache;
+ 
+@@ -42,7 +42,7 @@ static void push_rcu(struct allowedips_n
+ 		     struct allowedips_node __rcu *p, unsigned int *len)
+ {
+ 	if (rcu_access_pointer(p)) {
+-		if (WARN_ON(IS_ENABLED(DEBUG) && *len >= MAX_ALLOWEDIPS_BITS))
++		if (WARN_ON(IS_ENABLED(DEBUG) && *len >= MAX_ALLOWEDIPS_DEPTH))
+ 			return;
+ 		stack[(*len)++] = rcu_dereference_raw(p);
+ 	}
+@@ -55,7 +55,7 @@ static void node_free_rcu(struct rcu_hea
+ 
+ static void root_free_rcu(struct rcu_head *rcu)
+ {
+-	struct allowedips_node *node, *stack[MAX_ALLOWEDIPS_BITS] = {
++	struct allowedips_node *node, *stack[MAX_ALLOWEDIPS_DEPTH] = {
+ 		container_of(rcu, struct allowedips_node, rcu) };
+ 	unsigned int len = 1;
+ 
+@@ -68,7 +68,7 @@ static void root_free_rcu(struct rcu_hea
+ 
+ static void root_remove_peer_lists(struct allowedips_node *root)
+ {
+-	struct allowedips_node *node, *stack[MAX_ALLOWEDIPS_BITS] = { root };
++	struct allowedips_node *node, *stack[MAX_ALLOWEDIPS_DEPTH] = { root };
+ 	unsigned int len = 1;
+ 
+ 	while (len > 0 && (node = stack[--len])) {
+--- a/drivers/net/wireguard/selftest/allowedips.c
++++ b/drivers/net/wireguard/selftest/allowedips.c
+@@ -593,16 +593,20 @@ bool __init wg_allowedips_selftest(void)
+ 	wg_allowedips_remove_by_peer(&t, a, &mutex);
+ 	test_negative(4, a, 192, 168, 0, 1);
+ 
+-	/* These will hit the WARN_ON(len >= MAX_ALLOWEDIPS_BITS) in free_node
++	/* These will hit the WARN_ON(len >= MAX_ALLOWEDIPS_DEPTH) in free_node
+ 	 * if something goes wrong.
+ 	 */
+-	for (i = 0; i < MAX_ALLOWEDIPS_BITS; ++i) {
+-		part = cpu_to_be64(~(1LLU << (i % 64)));
+-		memset(&ip, 0xff, 16);
+-		memcpy((u8 *)&ip + (i < 64) * 8, &part, 8);
++	for (i = 0; i < 64; ++i) {
++		part = cpu_to_be64(~0LLU << i);
++		memset(&ip, 0xff, 8);
++		memcpy((u8 *)&ip + 8, &part, 8);
++		wg_allowedips_insert_v6(&t, &ip, 128, a, &mutex);
++		memcpy(&ip, &part, 8);
++		memset((u8 *)&ip + 8, 0, 8);
+ 		wg_allowedips_insert_v6(&t, &ip, 128, a, &mutex);
+ 	}
+-
++	memset(&ip, 0, 16);
++	wg_allowedips_insert_v6(&t, &ip, 128, a, &mutex);
+ 	wg_allowedips_free(&t, &mutex);
+ 
+ 	wg_allowedips_init(&t);
 
 
