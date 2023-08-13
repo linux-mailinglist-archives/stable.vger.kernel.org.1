@@ -2,61 +2,60 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E351477A4D4
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 05:16:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8618377A4D5
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 05:16:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229494AbjHMDQI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 12 Aug 2023 23:16:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41098 "EHLO
+        id S229612AbjHMDQJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 12 Aug 2023 23:16:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41102 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229612AbjHMDQG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 12 Aug 2023 23:16:06 -0400
-Received: from mail-io1-xd35.google.com (mail-io1-xd35.google.com [IPv6:2607:f8b0:4864:20::d35])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E8C78E9
-        for <stable@vger.kernel.org>; Sat, 12 Aug 2023 20:16:08 -0700 (PDT)
-Received: by mail-io1-xd35.google.com with SMTP id ca18e2360f4ac-790f0276911so140464139f.2
-        for <stable@vger.kernel.org>; Sat, 12 Aug 2023 20:16:08 -0700 (PDT)
+        with ESMTP id S229703AbjHMDQH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 12 Aug 2023 23:16:07 -0400
+Received: from mail-il1-x136.google.com (mail-il1-x136.google.com [IPv6:2607:f8b0:4864:20::136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD5A0E54
+        for <stable@vger.kernel.org>; Sat, 12 Aug 2023 20:16:09 -0700 (PDT)
+Received: by mail-il1-x136.google.com with SMTP id e9e14a558f8ab-34911a634edso12610215ab.0
+        for <stable@vger.kernel.org>; Sat, 12 Aug 2023 20:16:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=joelfernandes.org; s=google; t=1691896568; x=1692501368;
+        d=joelfernandes.org; s=google; t=1691896569; x=1692501369;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=56T8+A6IRHJH9+E79bo0itXjoBiwatvZolX0wUJO2nU=;
-        b=Wz38fPkwoCZPiuCUuKYzZnpk3JvfANQlx8JqVwAbxKRDXXywamZilcHKFY3bdYqxwk
-         8Tx+cTFMFWKTMW//gULchb7k3DIjCs5Uqs3jvHE/DXvDfTmIhoASpa6oKzqvvnoO1SGH
-         Xg3XtExOXjObQKg1koRzMJvIbsBm/MG90+0Xs=
+        bh=W4TcyAdXtvQmY1m7YqyEig6CsLGhynC1fUmr3aQGp7w=;
+        b=TGpcG9junm1yPR7uSRWjpiMJWbTpdxIDcVEEgQeIBsufZjm8YLM9+mfyb4na3HShbm
+         WqhV37JYZyftI6Q4YW3Edx8TkbhiF33DJXjQs66I5FvPjdhW+AVZgiOzxn5fhirHbNI3
+         kEDn5o479+2LQGDdGhqiSGeFgrsC/yP7CTnXo=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691896568; x=1692501368;
+        d=1e100.net; s=20221208; t=1691896569; x=1692501369;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=56T8+A6IRHJH9+E79bo0itXjoBiwatvZolX0wUJO2nU=;
-        b=CSw9vWzogzGFQr4XHgTRpWSPUn0inOu6pF8xx9BfBdXq5LwagCj7Pdiw1EGCWTi+76
-         lFoh+BsDGydrmX/hReq7jTNE7OnnxzDwpGj7k9wgM42n+Ka+7E5IJzaIU/WjzyuR0aoD
-         46u46lCKeTrT6IGkFFuNV/d6CEMtZAgf4/h+cokZ9zxNS3iNM/p7UVzCRok3IAev9f9q
-         kprvSerXhWXDGLv52lqOyKWK4a0Eoh6DZ3viH6dAKJEdFbbpiA6uQ5dv3XU77VlmVnsI
-         hLQJpKZ1yTBh5BIRycUMQqodHkbobi5kO5soAMfa7rgWOkjWq3wxpDYpRNDadoHQh5I6
-         Ceyw==
-X-Gm-Message-State: AOJu0YwH1SPFgwGu2GN66SHiJmAsT5fDzSYeDrzImoIpCy1VTKtk0f8Y
-        rDdTmpmfYXlVgWlL5UI1exdV61Qg642NzIV/Hsw=
-X-Google-Smtp-Source: AGHT+IFNLqXjKvLH3RS0oGXz7pjL18QgFUX9Od6NDzc+wWI59Y0FPPBsRMpbSu2/rkgr7Lzfybjg1Q==
-X-Received: by 2002:a5e:d605:0:b0:787:1a8f:1d08 with SMTP id w5-20020a5ed605000000b007871a8f1d08mr8175479iom.15.1691896567900;
-        Sat, 12 Aug 2023 20:16:07 -0700 (PDT)
+        bh=W4TcyAdXtvQmY1m7YqyEig6CsLGhynC1fUmr3aQGp7w=;
+        b=Y74T6HnOyL/Cvl5emNakkt20BnXsa97MxX8OcA65d2aRAg+MN0udQnzppwL2Ao+4VT
+         frK+Xfup0lkIP1A+ya3vDmFeA+5MYjtZcoa+MbCBqZLulQV6okSzfcuYvYHpQzQjkTh+
+         KzQUHG+WmA4FDojOzncp5nkhhcZRJnAd5ugWbhCL55XOiMEX903dC0TXQxOL+5ODpy1k
+         1iPBFghGgILo+103WSouMiSmprtyKkj7Ac408vajFITCsS1tUE1bKM4guvJZC5E87Fwn
+         PsSaadPslvobHYQjwCNdBAO15wGBvxh8aA6QCC3HHBe1Y67f7RrCF/I1QUUIAYwNPftp
+         Pvlg==
+X-Gm-Message-State: AOJu0YxwJBIBJ1kH/ETJN0immCUiLgzbNHF4Nj/xHu9Y2RwzZqK2hGGB
+        apw9UJDUIe+luzAknEuOCi3AWp49nVJn8MCTDsw=
+X-Google-Smtp-Source: AGHT+IFg2mIPnR7CkFoHhKL33O+R/HUm/oKLzR/rzVk3TKo0f1Yo4Ad/eGpXQ2VlRDG5HWTBfiUKmA==
+X-Received: by 2002:a5d:89c1:0:b0:791:1e87:b47e with SMTP id a1-20020a5d89c1000000b007911e87b47emr7771943iot.15.1691896568822;
+        Sat, 12 Aug 2023 20:16:08 -0700 (PDT)
 Received: from joelboxx5.c.googlers.com.com (254.82.172.34.bc.googleusercontent.com. [34.172.82.254])
         by smtp.gmail.com with ESMTPSA id y19-20020a02a393000000b0042b0f3f9367sm2169737jak.129.2023.08.12.20.16.07
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 12 Aug 2023 20:16:07 -0700 (PDT)
+        Sat, 12 Aug 2023 20:16:08 -0700 (PDT)
 From:   "Joel Fernandes (Google)" <joel@joelfernandes.org>
 To:     stable@vger.kernel.org
 Cc:     Guenter Roeck <linux@roeck-us.net>,
         Steven Rostedt <rostedt@goodmis.org>,
-        Frederic Weisbecker <frederic@kernel.org>,
-        "Paul E . McKenney" <paulmck@kernel.org>,
+        Nicholas Piggin <npiggin@gmail.com>,
         Thomas Gleixner <tglx@linutronix.de>,
         Joel Fernandes <joel@joelfernandes.org>
-Subject: [PATCH 5.10 2/3] tick: Detect and fix jiffies update stall
-Date:   Sun, 13 Aug 2023 03:15:35 +0000
-Message-ID: <20230813031536.2166337-2-joel@joelfernandes.org>
+Subject: [PATCH 5.10 3/3] timers/nohz: Switch to ONESHOT_STOPPED in the low-res handler when the tick is stopped
+Date:   Sun, 13 Aug 2023 03:15:36 +0000
+Message-ID: <20230813031536.2166337-3-joel@joelfernandes.org>
 X-Mailer: git-send-email 2.41.0.640.ga95def55d0-goog
 In-Reply-To: <20230813031536.2166337-1-joel@joelfernandes.org>
 References: <20230813031536.2166337-1-joel@joelfernandes.org>
@@ -71,89 +70,58 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Frederic Weisbecker <frederic@kernel.org>
+From: Nicholas Piggin <npiggin@gmail.com>
 
-tick: Detect and fix jiffies update stall
+When tick_nohz_stop_tick() stops the tick and high resolution timers are
+disabled, then the clock event device is not put into ONESHOT_STOPPED
+mode. This can lead to spurious timer interrupts with some clock event
+device drivers that don't shut down entirely after firing.
 
-On some rare cases, the timekeeper CPU may be delaying its jiffies
-update duty for a while. Known causes include:
+Eliminate these by putting the device into ONESHOT_STOPPED mode at points
+where it is not being reprogrammed. When there are no timers active, then
+tick_program_event() with KTIME_MAX can be used to stop the device. When
+there is a timer active, the device can be stopped at the next tick (any
+new timer added by timers will reprogram the tick).
 
-* The timekeeper is waiting on stop_machine in a MULTI_STOP_DISABLE_IRQ
-  or MULTI_STOP_RUN state. Disabled interrupts prevent from timekeeping
-  updates while waiting for the target CPU to complete its
-  stop_machine() callback.
-
-* The timekeeper vcpu has VMEXIT'ed for a long while due to some overload
-  on the host.
-
-Detect and fix these situations with emergency timekeeping catchups.
-
-Original-patch-by: Paul E. McKenney <paulmck@kernel.org>
-Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/r/20220422141446.915024-1-npiggin@gmail.com
 Signed-off-by: Joel Fernandes (Google) <joel@joelfernandes.org>
 ---
- kernel/time/tick-sched.c | 17 +++++++++++++++++
- kernel/time/tick-sched.h |  4 ++++
- 2 files changed, 21 insertions(+)
+ kernel/time/tick-sched.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
 diff --git a/kernel/time/tick-sched.c b/kernel/time/tick-sched.c
-index d07de3ff42ac..bb51619c9b63 100644
+index bb51619c9b63..fc79b04b5947 100644
 --- a/kernel/time/tick-sched.c
 +++ b/kernel/time/tick-sched.c
-@@ -148,6 +148,8 @@ static ktime_t tick_init_jiffy_update(void)
- 	return period;
- }
+@@ -884,6 +884,8 @@ static void tick_nohz_stop_tick(struct tick_sched *ts, int cpu)
+ 	if (unlikely(expires == KTIME_MAX)) {
+ 		if (ts->nohz_mode == NOHZ_MODE_HIGHRES)
+ 			hrtimer_cancel(&ts->sched_timer);
++		else
++			tick_program_event(KTIME_MAX, 1);
+ 		return;
+ 	}
  
-+#define MAX_STALLED_JIFFIES 5
-+
- static void tick_sched_do_timer(struct tick_sched *ts, ktime_t now)
- {
- 	int cpu = smp_processor_id();
-@@ -175,6 +177,21 @@ static void tick_sched_do_timer(struct tick_sched *ts, ktime_t now)
- 	if (tick_do_timer_cpu == cpu)
- 		tick_do_update_jiffies64(now);
+@@ -1274,9 +1276,15 @@ static void tick_nohz_handler(struct clock_event_device *dev)
+ 	tick_sched_do_timer(ts, now);
+ 	tick_sched_handle(ts, regs);
  
-+	/*
-+	 * If jiffies update stalled for too long (timekeeper in stop_machine()
-+	 * or VMEXIT'ed for several msecs), force an update.
-+	 */
-+	if (ts->last_tick_jiffies != jiffies) {
-+		ts->stalled_jiffies = 0;
-+		ts->last_tick_jiffies = READ_ONCE(jiffies);
-+	} else {
-+		if (++ts->stalled_jiffies == MAX_STALLED_JIFFIES) {
-+			tick_do_update_jiffies64(now);
-+			ts->stalled_jiffies = 0;
-+			ts->last_tick_jiffies = READ_ONCE(jiffies);
-+		}
+-	/* No need to reprogram if we are running tickless  */
+-	if (unlikely(ts->tick_stopped))
++	if (unlikely(ts->tick_stopped)) {
++		/*
++		 * The clockevent device is not reprogrammed, so change the
++		 * clock event device to ONESHOT_STOPPED to avoid spurious
++		 * interrupts on devices which might not be truly one shot.
++		 */
++		tick_program_event(KTIME_MAX, 1);
+ 		return;
 +	}
-+
- 	if (ts->inidle)
- 		ts->got_idle_tick = 1;
- }
-diff --git a/kernel/time/tick-sched.h b/kernel/time/tick-sched.h
-index 4fb06527cf64..1e7ec5c968a5 100644
---- a/kernel/time/tick-sched.h
-+++ b/kernel/time/tick-sched.h
-@@ -49,6 +49,8 @@ enum tick_nohz_mode {
-  * @timer_expires_base:	Base time clock monotonic for @timer_expires
-  * @next_timer:		Expiry time of next expiring timer for debugging purpose only
-  * @tick_dep_mask:	Tick dependency mask - is set, if someone needs the tick
-+ * @last_tick_jiffies:	Value of jiffies seen on last tick
-+ * @stalled_jiffies:	Number of stalled jiffies detected across ticks
-  */
- struct tick_sched {
- 	struct hrtimer			sched_timer;
-@@ -77,6 +79,8 @@ struct tick_sched {
- 	u64				next_timer;
- 	ktime_t				idle_expires;
- 	atomic_t			tick_dep_mask;
-+	unsigned long			last_tick_jiffies;
-+	unsigned int			stalled_jiffies;
- };
  
- extern struct tick_sched *tick_get_tick_sched(int cpu);
+ 	hrtimer_forward(&ts->sched_timer, now, TICK_NSEC);
+ 	tick_program_event(hrtimer_get_expires(&ts->sched_timer), 1);
 -- 
 2.41.0.640.ga95def55d0-goog
 
