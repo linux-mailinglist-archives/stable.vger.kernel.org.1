@@ -2,165 +2,177 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2337D77AC49
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:31:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2D54677AE0D
+	for <lists+stable@lfdr.de>; Mon, 14 Aug 2023 00:00:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231911AbjHMVbq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:31:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43340 "EHLO
+        id S230495AbjHMWAR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 18:00:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53936 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231916AbjHMVbq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:31:46 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 51A941709
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:31:24 -0700 (PDT)
+        with ESMTP id S231186AbjHMV7I (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:59:08 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 27DD2211B
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:43:24 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 93ABE62B53
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:31:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A638AC433C8;
-        Sun, 13 Aug 2023 21:31:20 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 576D460F71
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:43:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AFBAC433C8;
+        Sun, 13 Aug 2023 21:43:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691962281;
-        bh=y+8QMQY4w+s1y4Dh+NEY8TqCosK7ovVMRQ6piDH8/i4=;
+        s=korg; t=1691963000;
+        bh=En3wsv5ZClmDFra6LBlTrGZzTxmP1kGX2XfF5871RRI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=xPakCFJN7j9CZomXNHXHt5DNV+475Vv4hfnSS6hwimiioiJwpsJMwLYhkDJjoWcmh
-         vTGIw/d0Kj3RDMQHvQ9H9vgTLGUHZoo6mb9bq1fvvXvpp2itXi8GJhpTd4d+UZYtoU
-         wYvDmE9n3hslSUy5MW9QeGoRLbOvHXh9JFwVaoOI=
+        b=WCrLyRES4ByFOxk21ULqQCRbqPOrNeFlr0ic7zQiw5LnJBipO9LrKcPDOBM6KY4iN
+         DzFYFKCei/kz0k94u9ZslPQXwJA/t5nfVmatnu2GvW9/4UAIY2iGSK+8Zk3vQwJpsT
+         UgLPYXy30sx5wiENr1nv/7dm6INKcrlGhTLiKUjA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Nick Child <nnac123@linux.ibm.com>,
-        Simon Horman <horms@kernel.org>,
-        Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.4 178/206] ibmvnic: Do partial reset on login failure
+        patches@lists.linux.dev, Andrii Nakryiko <andrii@kernel.org>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Pu Lehui <pulehui@huawei.com>
+Subject: [PATCH 5.15 17/89] selftests/bpf: make test_align selftest more robust
 Date:   Sun, 13 Aug 2023 23:19:08 +0200
-Message-ID: <20230813211730.118140129@linuxfoundation.org>
+Message-ID: <20230813211711.283368370@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211724.969019629@linuxfoundation.org>
-References: <20230813211724.969019629@linuxfoundation.org>
+In-Reply-To: <20230813211710.787645394@linuxfoundation.org>
+References: <20230813211710.787645394@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Nick Child <nnac123@linux.ibm.com>
+From: Andrii Nakryiko <andrii@kernel.org>
 
-commit 23cc5f667453ca7645a24c8d21bf84dbf61107b2 upstream.
+[ Upstream commit 4f999b767769b76378c3616c624afd6f4bb0d99f ]
 
-Perform a partial reset before sending a login request if any of the
-following are true:
- 1. If a previous request times out. This can be dangerous because the
- 	VIOS could still receive the old login request at any point after
- 	the timeout. Therefore, it is best to re-register the CRQ's  and
- 	sub-CRQ's before retrying.
- 2. If the previous request returns an error that is not described in
- 	PAPR. PAPR provides procedures if the login returns with partial
- 	success or aborted return codes (section L.5.1) but other values
-	do not have a defined procedure. Previously, these conditions
-	just returned error from the login function rather than trying
-	to resolve the issue.
- 	This can cause further issues since most callers of the login
- 	function are not prepared to handle an error when logging in. This
- 	improper cleanup can lead to the device being permanently DOWN'd.
- 	For example, if the VIOS believes that the device is already logged
- 	in then it will return INVALID_STATE (-7). If we never re-register
- 	CRQ's then it will always think that the device is already logged
- 	in. This leaves the device inoperable.
+test_align selftest relies on BPF verifier log emitting register states
+for specific instructions in expected format. Unfortunately, BPF
+verifier precision backtracking log interferes with such expectations.
+And instruction on which precision propagation happens sometimes don't
+output full expected register states. This does indeed look like
+something to be improved in BPF verifier, but is beyond the scope of
+this patch set.
 
-The partial reset involves freeing the sub-CRQs, freeing the CRQ then
-registering and initializing a new CRQ and sub-CRQs. This essentially
-restarts all communication with VIOS to allow for a fresh login attempt
-that will be unhindered by any previous failed attempts.
+So to make test_align a bit more robust, inject few dummy R4 = R5
+instructions which capture desired state of R5 and won't have precision
+tracking logs on them. This fixes tests until we can improve BPF
+verifier output in the presence of precision tracking.
 
-Fixes: dff515a3e71d ("ibmvnic: Harden device login requests")
-Signed-off-by: Nick Child <nnac123@linux.ibm.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20230809221038.51296-4-nnac123@linux.ibm.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/r/20221104163649.121784-7-andrii@kernel.org
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Stable-dep-of: ecdf985d7615 ("bpf: track immediate values written to stack by BPF_ST instruction")
+Signed-off-by: Pu Lehui <pulehui@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/ibm/ibmvnic.c |   46 ++++++++++++++++++++++++++++++++-----
- 1 file changed, 40 insertions(+), 6 deletions(-)
+ tools/testing/selftests/bpf/prog_tests/align.c |   36 +++++++++++++++----------
+ 1 file changed, 23 insertions(+), 13 deletions(-)
 
---- a/drivers/net/ethernet/ibm/ibmvnic.c
-+++ b/drivers/net/ethernet/ibm/ibmvnic.c
-@@ -97,6 +97,8 @@ static int pending_scrq(struct ibmvnic_a
- static union sub_crq *ibmvnic_next_scrq(struct ibmvnic_adapter *,
- 					struct ibmvnic_sub_crq_queue *);
- static int ibmvnic_poll(struct napi_struct *napi, int data);
-+static int reset_sub_crq_queues(struct ibmvnic_adapter *adapter);
-+static inline void reinit_init_done(struct ibmvnic_adapter *adapter);
- static void send_query_map(struct ibmvnic_adapter *adapter);
- static int send_request_map(struct ibmvnic_adapter *, dma_addr_t, u32, u8);
- static int send_request_unmap(struct ibmvnic_adapter *, u8);
-@@ -1527,11 +1529,9 @@ static int ibmvnic_login(struct net_devi
+--- a/tools/testing/selftests/bpf/prog_tests/align.c
++++ b/tools/testing/selftests/bpf/prog_tests/align.c
+@@ -2,7 +2,7 @@
+ #include <test_progs.h>
  
- 		if (!wait_for_completion_timeout(&adapter->init_done,
- 						 timeout)) {
--			netdev_warn(netdev, "Login timed out, retrying...\n");
--			retry = true;
--			adapter->init_done_rc = 0;
--			retry_count++;
--			continue;
-+			netdev_warn(netdev, "Login timed out\n");
-+			adapter->login_pending = false;
-+			goto partial_reset;
- 		}
+ #define MAX_INSNS	512
+-#define MAX_MATCHES	16
++#define MAX_MATCHES	24
  
- 		if (adapter->init_done_rc == ABORTED) {
-@@ -1576,7 +1576,41 @@ static int ibmvnic_login(struct net_devi
- 		} else if (adapter->init_done_rc) {
- 			netdev_warn(netdev, "Adapter login failed, init_done_rc = %d\n",
- 				    adapter->init_done_rc);
--			return -EIO;
-+
-+partial_reset:
-+			/* adapter login failed, so free any CRQs or sub-CRQs
-+			 * and register again before attempting to login again.
-+			 * If we don't do this then the VIOS may think that
-+			 * we are already logged in and reject any subsequent
-+			 * attempts
-+			 */
-+			netdev_warn(netdev,
-+				    "Freeing and re-registering CRQs before attempting to login again\n");
-+			retry = true;
-+			adapter->init_done_rc = 0;
-+			retry_count++;
-+			release_sub_crqs(adapter, true);
-+			reinit_init_done(adapter);
-+			release_crq_queue(adapter);
-+			/* If we don't sleep here then we risk an unnecessary
-+			 * failover event from the VIOS. This is a known VIOS
-+			 * issue caused by a vnic device freeing and registering
-+			 * a CRQ too quickly.
-+			 */
-+			msleep(1500);
-+			rc = init_crq_queue(adapter);
-+			if (rc) {
-+				netdev_err(netdev, "login recovery: init CRQ failed %d\n",
-+					   rc);
-+				return -EIO;
-+			}
-+
-+			rc = ibmvnic_reset_init(adapter, false);
-+			if (rc) {
-+				netdev_err(netdev, "login recovery: Reset init failed %d\n",
-+					   rc);
-+				return -EIO;
-+			}
- 		}
- 	} while (retry);
- 
+ struct bpf_reg_match {
+ 	unsigned int line;
+@@ -267,6 +267,7 @@ static struct bpf_align_test tests[] = {
+ 			 */
+ 			BPF_MOV64_REG(BPF_REG_5, BPF_REG_2),
+ 			BPF_ALU64_REG(BPF_ADD, BPF_REG_5, BPF_REG_6),
++			BPF_MOV64_REG(BPF_REG_4, BPF_REG_5),
+ 			BPF_ALU64_IMM(BPF_ADD, BPF_REG_5, 14),
+ 			BPF_MOV64_REG(BPF_REG_4, BPF_REG_5),
+ 			BPF_ALU64_IMM(BPF_ADD, BPF_REG_4, 4),
+@@ -280,6 +281,7 @@ static struct bpf_align_test tests[] = {
+ 			BPF_MOV64_REG(BPF_REG_5, BPF_REG_2),
+ 			BPF_ALU64_IMM(BPF_ADD, BPF_REG_5, 14),
+ 			BPF_ALU64_REG(BPF_ADD, BPF_REG_5, BPF_REG_6),
++			BPF_MOV64_REG(BPF_REG_4, BPF_REG_5),
+ 			BPF_ALU64_IMM(BPF_ADD, BPF_REG_5, 4),
+ 			BPF_ALU64_REG(BPF_ADD, BPF_REG_5, BPF_REG_6),
+ 			BPF_MOV64_REG(BPF_REG_4, BPF_REG_5),
+@@ -311,44 +313,52 @@ static struct bpf_align_test tests[] = {
+ 			{15, "R4=pkt(id=1,off=18,r=18,umax_value=1020,var_off=(0x0; 0x3fc))"},
+ 			{15, "R5=pkt(id=1,off=14,r=18,umax_value=1020,var_off=(0x0; 0x3fc))"},
+ 			/* Variable offset is added to R5 packet pointer,
+-			 * resulting in auxiliary alignment of 4.
++			 * resulting in auxiliary alignment of 4. To avoid BPF
++			 * verifier's precision backtracking logging
++			 * interfering we also have a no-op R4 = R5
++			 * instruction to validate R5 state. We also check
++			 * that R4 is what it should be in such case.
+ 			 */
+-			{18, "R5_w=pkt(id=2,off=0,r=0,umax_value=1020,var_off=(0x0; 0x3fc))"},
++			{19, "R4_w=pkt(id=2,off=0,r=0,umax_value=1020,var_off=(0x0; 0x3fc))"},
++			{19, "R5_w=pkt(id=2,off=0,r=0,umax_value=1020,var_off=(0x0; 0x3fc))"},
+ 			/* Constant offset is added to R5, resulting in
+ 			 * reg->off of 14.
+ 			 */
+-			{19, "R5_w=pkt(id=2,off=14,r=0,umax_value=1020,var_off=(0x0; 0x3fc))"},
++			{20, "R5_w=pkt(id=2,off=14,r=0,umax_value=1020,var_off=(0x0; 0x3fc))"},
+ 			/* At the time the word size load is performed from R5,
+ 			 * its total fixed offset is NET_IP_ALIGN + reg->off
+ 			 * (14) which is 16.  Then the variable offset is 4-byte
+ 			 * aligned, so the total offset is 4-byte aligned and
+ 			 * meets the load's requirements.
+ 			 */
+-			{23, "R4=pkt(id=2,off=18,r=18,umax_value=1020,var_off=(0x0; 0x3fc))"},
+-			{23, "R5=pkt(id=2,off=14,r=18,umax_value=1020,var_off=(0x0; 0x3fc))"},
++			{24, "R4=pkt(id=2,off=18,r=18,umax_value=1020,var_off=(0x0; 0x3fc))"},
++			{24, "R5=pkt(id=2,off=14,r=18,umax_value=1020,var_off=(0x0; 0x3fc))"},
+ 			/* Constant offset is added to R5 packet pointer,
+ 			 * resulting in reg->off value of 14.
+ 			 */
+-			{26, "R5_w=pkt(id=0,off=14,r=8"},
++			{27, "R5_w=pkt(id=0,off=14,r=8"},
+ 			/* Variable offset is added to R5, resulting in a
+-			 * variable offset of (4n).
++			 * variable offset of (4n). See comment for insn #19
++			 * for R4 = R5 trick.
+ 			 */
+-			{27, "R5_w=pkt(id=3,off=14,r=0,umax_value=1020,var_off=(0x0; 0x3fc))"},
++			{29, "R4_w=pkt(id=3,off=14,r=0,umax_value=1020,var_off=(0x0; 0x3fc))"},
++			{29, "R5_w=pkt(id=3,off=14,r=0,umax_value=1020,var_off=(0x0; 0x3fc))"},
+ 			/* Constant is added to R5 again, setting reg->off to 18. */
+-			{28, "R5_w=pkt(id=3,off=18,r=0,umax_value=1020,var_off=(0x0; 0x3fc))"},
++			{30, "R5_w=pkt(id=3,off=18,r=0,umax_value=1020,var_off=(0x0; 0x3fc))"},
+ 			/* And once more we add a variable; resulting var_off
+ 			 * is still (4n), fixed offset is not changed.
+ 			 * Also, we create a new reg->id.
+ 			 */
+-			{29, "R5_w=pkt(id=4,off=18,r=0,umax_value=2040,var_off=(0x0; 0x7fc)"},
++			{32, "R4_w=pkt(id=4,off=18,r=0,umax_value=2040,var_off=(0x0; 0x7fc)"},
++			{32, "R5_w=pkt(id=4,off=18,r=0,umax_value=2040,var_off=(0x0; 0x7fc)"},
+ 			/* At the time the word size load is performed from R5,
+ 			 * its total fixed offset is NET_IP_ALIGN + reg->off (18)
+ 			 * which is 20.  Then the variable offset is (4n), so
+ 			 * the total offset is 4-byte aligned and meets the
+ 			 * load's requirements.
+ 			 */
+-			{33, "R4=pkt(id=4,off=22,r=22,umax_value=2040,var_off=(0x0; 0x7fc)"},
+-			{33, "R5=pkt(id=4,off=18,r=22,umax_value=2040,var_off=(0x0; 0x7fc)"},
++			{35, "R4=pkt(id=4,off=22,r=22,umax_value=2040,var_off=(0x0; 0x7fc)"},
++			{35, "R5=pkt(id=4,off=18,r=22,umax_value=2040,var_off=(0x0; 0x7fc)"},
+ 		},
+ 	},
+ 	{
 
 
