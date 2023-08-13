@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E96DA77ADA0
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:49:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9EF5D77AB5B
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:21:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232539AbjHMVtn (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:49:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39730 "EHLO
+        id S230219AbjHMVVI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:21:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33152 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232382AbjHMVtJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:49:09 -0400
+        with ESMTP id S230191AbjHMVVH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:21:07 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EBAC71993
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:40:44 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8902A10F5
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:21:04 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6AAC36110F
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:40:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D949C433C7;
-        Sun, 13 Aug 2023 21:40:41 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1D43860EE6
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:21:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3199AC433C8;
+        Sun, 13 Aug 2023 21:21:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691962841;
-        bh=rIYITYKDP3ne2wcX1Y53MlJFlTHQrrevnaBjIyOvGgI=;
+        s=korg; t=1691961663;
+        bh=xniB8p0CXGr7jjV5Qj1m10eEC5CYQA//7jYXru8u54M=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=DYqspAL6JLD3m2KWtdA0ppFr38oy/wjd5jY/33Kcc07ULa02HlkE6gqx9Qhk34kI0
-         5BkQwAEGaK9JYsd3JpG0rnJj/KOVOJUNIuSmF7gVVpypVFP+m2qr+M45QdsRkESh8L
-         ab4MuJcYs8NnE1K3yg3YWiqMdnRDiqxJwRTyiZeU=
+        b=BFZlQ4bafRc/HoL5aYd8ma/88OdoMZNxr8Dy5V5bTDYLqT8j5xD2sBS63sJWA9CAS
+         6L3ewYDs/bBRZO1WMTnbfHmyi7woeFwOlQWMYM7reuAeHstBwgp8vctwH3ZC1wAv2H
+         RRSpY7/P0gsM0bRNNYW13OVCaTus0F3sm9iZESTU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Andrii Nakryiko <andrii@kernel.org>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Pu Lehui <pulehui@huawei.com>,
-        Luiz Capitulino <luizcap@amazon.com>
-Subject: [PATCH 5.10 07/68] selftests/bpf: make test_align selftest more robust
+        patches@lists.linux.dev, Ido Schimmel <idosch@idosch.org>,
+        Ziyang Xuan <william.xuanziyang@huawei.com>,
+        Ido Schimmel <idosch@nvidia.com>,
+        Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 4.14 15/26] bonding: Fix incorrect deletion of ETH_P_8021AD protocol vid from slaves
 Date:   Sun, 13 Aug 2023 23:19:08 +0200
-Message-ID: <20230813211708.380917944@linuxfoundation.org>
+Message-ID: <20230813211703.558716597@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211708.149630011@linuxfoundation.org>
-References: <20230813211708.149630011@linuxfoundation.org>
+In-Reply-To: <20230813211702.980427106@linuxfoundation.org>
+References: <20230813211702.980427106@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,125 +56,82 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Andrii Nakryiko <andrii@kernel.org>
+From: Ziyang Xuan <william.xuanziyang@huawei.com>
 
-[ Upstream commit 4f999b767769b76378c3616c624afd6f4bb0d99f ]
+commit 01f4fd27087078c90a0e22860d1dfa2cd0510791 upstream.
 
-test_align selftest relies on BPF verifier log emitting register states
-for specific instructions in expected format. Unfortunately, BPF
-verifier precision backtracking log interferes with such expectations.
-And instruction on which precision propagation happens sometimes don't
-output full expected register states. This does indeed look like
-something to be improved in BPF verifier, but is beyond the scope of
-this patch set.
+BUG_ON(!vlan_info) is triggered in unregister_vlan_dev() with
+following testcase:
 
-So to make test_align a bit more robust, inject few dummy R4 = R5
-instructions which capture desired state of R5 and won't have precision
-tracking logs on them. This fixes tests until we can improve BPF
-verifier output in the presence of precision tracking.
+  # ip netns add ns1
+  # ip netns exec ns1 ip link add bond0 type bond mode 0
+  # ip netns exec ns1 ip link add bond_slave_1 type veth peer veth2
+  # ip netns exec ns1 ip link set bond_slave_1 master bond0
+  # ip netns exec ns1 ip link add link bond_slave_1 name vlan10 type vlan id 10 protocol 802.1ad
+  # ip netns exec ns1 ip link add link bond0 name bond0_vlan10 type vlan id 10 protocol 802.1ad
+  # ip netns exec ns1 ip link set bond_slave_1 nomaster
+  # ip netns del ns1
 
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/r/20221104163649.121784-7-andrii@kernel.org
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Stable-dep-of: ecdf985d7615 ("bpf: track immediate values written to stack by BPF_ST instruction")
-Signed-off-by: Pu Lehui <pulehui@huawei.com>
-Tested-by: Luiz Capitulino <luizcap@amazon.com>
+The logical analysis of the problem is as follows:
+
+1. create ETH_P_8021AD protocol vlan10 for bond_slave_1:
+register_vlan_dev()
+  vlan_vid_add()
+    vlan_info_alloc()
+    __vlan_vid_add() // add [ETH_P_8021AD, 10] vid to bond_slave_1
+
+2. create ETH_P_8021AD protocol bond0_vlan10 for bond0:
+register_vlan_dev()
+  vlan_vid_add()
+    __vlan_vid_add()
+      vlan_add_rx_filter_info()
+          if (!vlan_hw_filter_capable(dev, proto)) // condition established because bond0 without NETIF_F_HW_VLAN_STAG_FILTER
+              return 0;
+
+          if (netif_device_present(dev))
+              return dev->netdev_ops->ndo_vlan_rx_add_vid(dev, proto, vid); // will be never called
+              // The slaves of bond0 will not refer to the [ETH_P_8021AD, 10] vid.
+
+3. detach bond_slave_1 from bond0:
+__bond_release_one()
+  vlan_vids_del_by_dev()
+    list_for_each_entry(vid_info, &vlan_info->vid_list, list)
+        vlan_vid_del(dev, vid_info->proto, vid_info->vid);
+        // bond_slave_1 [ETH_P_8021AD, 10] vid will be deleted.
+        // bond_slave_1->vlan_info will be assigned NULL.
+
+4. delete vlan10 during delete ns1:
+default_device_exit_batch()
+  dev->rtnl_link_ops->dellink() // unregister_vlan_dev() for vlan10
+    vlan_info = rtnl_dereference(real_dev->vlan_info); // real_dev of vlan10 is bond_slave_1
+	BUG_ON(!vlan_info); // bond_slave_1->vlan_info is NULL now, bug is triggered!!!
+
+Add S-VLAN tag related features support to bond driver. So the bond driver
+will always propagate the VLAN info to its slaves.
+
+Fixes: 8ad227ff89a7 ("net: vlan: add 802.1ad support")
+Suggested-by: Ido Schimmel <idosch@idosch.org>
+Signed-off-by: Ziyang Xuan <william.xuanziyang@huawei.com>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Link: https://lore.kernel.org/r/20230802114320.4156068-1-william.xuanziyang@huawei.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/bpf/prog_tests/align.c |   36 +++++++++++++++----------
- 1 file changed, 23 insertions(+), 13 deletions(-)
+ drivers/net/bonding/bond_main.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/tools/testing/selftests/bpf/prog_tests/align.c
-+++ b/tools/testing/selftests/bpf/prog_tests/align.c
-@@ -2,7 +2,7 @@
- #include <test_progs.h>
+--- a/drivers/net/bonding/bond_main.c
++++ b/drivers/net/bonding/bond_main.c
+@@ -4345,7 +4345,9 @@ void bond_setup(struct net_device *bond_
  
- #define MAX_INSNS	512
--#define MAX_MATCHES	16
-+#define MAX_MATCHES	24
+ 	bond_dev->hw_features = BOND_VLAN_FEATURES |
+ 				NETIF_F_HW_VLAN_CTAG_RX |
+-				NETIF_F_HW_VLAN_CTAG_FILTER;
++				NETIF_F_HW_VLAN_CTAG_FILTER |
++				NETIF_F_HW_VLAN_STAG_RX |
++				NETIF_F_HW_VLAN_STAG_FILTER;
  
- struct bpf_reg_match {
- 	unsigned int line;
-@@ -267,6 +267,7 @@ static struct bpf_align_test tests[] = {
- 			 */
- 			BPF_MOV64_REG(BPF_REG_5, BPF_REG_2),
- 			BPF_ALU64_REG(BPF_ADD, BPF_REG_5, BPF_REG_6),
-+			BPF_MOV64_REG(BPF_REG_4, BPF_REG_5),
- 			BPF_ALU64_IMM(BPF_ADD, BPF_REG_5, 14),
- 			BPF_MOV64_REG(BPF_REG_4, BPF_REG_5),
- 			BPF_ALU64_IMM(BPF_ADD, BPF_REG_4, 4),
-@@ -280,6 +281,7 @@ static struct bpf_align_test tests[] = {
- 			BPF_MOV64_REG(BPF_REG_5, BPF_REG_2),
- 			BPF_ALU64_IMM(BPF_ADD, BPF_REG_5, 14),
- 			BPF_ALU64_REG(BPF_ADD, BPF_REG_5, BPF_REG_6),
-+			BPF_MOV64_REG(BPF_REG_4, BPF_REG_5),
- 			BPF_ALU64_IMM(BPF_ADD, BPF_REG_5, 4),
- 			BPF_ALU64_REG(BPF_ADD, BPF_REG_5, BPF_REG_6),
- 			BPF_MOV64_REG(BPF_REG_4, BPF_REG_5),
-@@ -311,44 +313,52 @@ static struct bpf_align_test tests[] = {
- 			{15, "R4=pkt(id=1,off=18,r=18,umax_value=1020,var_off=(0x0; 0x3fc))"},
- 			{15, "R5=pkt(id=1,off=14,r=18,umax_value=1020,var_off=(0x0; 0x3fc))"},
- 			/* Variable offset is added to R5 packet pointer,
--			 * resulting in auxiliary alignment of 4.
-+			 * resulting in auxiliary alignment of 4. To avoid BPF
-+			 * verifier's precision backtracking logging
-+			 * interfering we also have a no-op R4 = R5
-+			 * instruction to validate R5 state. We also check
-+			 * that R4 is what it should be in such case.
- 			 */
--			{18, "R5_w=pkt(id=2,off=0,r=0,umax_value=1020,var_off=(0x0; 0x3fc))"},
-+			{19, "R4_w=pkt(id=2,off=0,r=0,umax_value=1020,var_off=(0x0; 0x3fc))"},
-+			{19, "R5_w=pkt(id=2,off=0,r=0,umax_value=1020,var_off=(0x0; 0x3fc))"},
- 			/* Constant offset is added to R5, resulting in
- 			 * reg->off of 14.
- 			 */
--			{19, "R5_w=pkt(id=2,off=14,r=0,umax_value=1020,var_off=(0x0; 0x3fc))"},
-+			{20, "R5_w=pkt(id=2,off=14,r=0,umax_value=1020,var_off=(0x0; 0x3fc))"},
- 			/* At the time the word size load is performed from R5,
- 			 * its total fixed offset is NET_IP_ALIGN + reg->off
- 			 * (14) which is 16.  Then the variable offset is 4-byte
- 			 * aligned, so the total offset is 4-byte aligned and
- 			 * meets the load's requirements.
- 			 */
--			{23, "R4=pkt(id=2,off=18,r=18,umax_value=1020,var_off=(0x0; 0x3fc))"},
--			{23, "R5=pkt(id=2,off=14,r=18,umax_value=1020,var_off=(0x0; 0x3fc))"},
-+			{24, "R4=pkt(id=2,off=18,r=18,umax_value=1020,var_off=(0x0; 0x3fc))"},
-+			{24, "R5=pkt(id=2,off=14,r=18,umax_value=1020,var_off=(0x0; 0x3fc))"},
- 			/* Constant offset is added to R5 packet pointer,
- 			 * resulting in reg->off value of 14.
- 			 */
--			{26, "R5_w=pkt(id=0,off=14,r=8"},
-+			{27, "R5_w=pkt(id=0,off=14,r=8"},
- 			/* Variable offset is added to R5, resulting in a
--			 * variable offset of (4n).
-+			 * variable offset of (4n). See comment for insn #19
-+			 * for R4 = R5 trick.
- 			 */
--			{27, "R5_w=pkt(id=3,off=14,r=0,umax_value=1020,var_off=(0x0; 0x3fc))"},
-+			{29, "R4_w=pkt(id=3,off=14,r=0,umax_value=1020,var_off=(0x0; 0x3fc))"},
-+			{29, "R5_w=pkt(id=3,off=14,r=0,umax_value=1020,var_off=(0x0; 0x3fc))"},
- 			/* Constant is added to R5 again, setting reg->off to 18. */
--			{28, "R5_w=pkt(id=3,off=18,r=0,umax_value=1020,var_off=(0x0; 0x3fc))"},
-+			{30, "R5_w=pkt(id=3,off=18,r=0,umax_value=1020,var_off=(0x0; 0x3fc))"},
- 			/* And once more we add a variable; resulting var_off
- 			 * is still (4n), fixed offset is not changed.
- 			 * Also, we create a new reg->id.
- 			 */
--			{29, "R5_w=pkt(id=4,off=18,r=0,umax_value=2040,var_off=(0x0; 0x7fc)"},
-+			{32, "R4_w=pkt(id=4,off=18,r=0,umax_value=2040,var_off=(0x0; 0x7fc)"},
-+			{32, "R5_w=pkt(id=4,off=18,r=0,umax_value=2040,var_off=(0x0; 0x7fc)"},
- 			/* At the time the word size load is performed from R5,
- 			 * its total fixed offset is NET_IP_ALIGN + reg->off (18)
- 			 * which is 20.  Then the variable offset is (4n), so
- 			 * the total offset is 4-byte aligned and meets the
- 			 * load's requirements.
- 			 */
--			{33, "R4=pkt(id=4,off=22,r=22,umax_value=2040,var_off=(0x0; 0x7fc)"},
--			{33, "R5=pkt(id=4,off=18,r=22,umax_value=2040,var_off=(0x0; 0x7fc)"},
-+			{35, "R4=pkt(id=4,off=22,r=22,umax_value=2040,var_off=(0x0; 0x7fc)"},
-+			{35, "R5=pkt(id=4,off=18,r=22,umax_value=2040,var_off=(0x0; 0x7fc)"},
- 		},
- 	},
- 	{
+ 	bond_dev->hw_features |= NETIF_F_GSO_ENCAP_ALL;
+ 	bond_dev->features |= bond_dev->hw_features;
 
 
