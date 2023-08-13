@@ -2,52 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EBCC877AC4C
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:32:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 790DD77AE15
+	for <lists+stable@lfdr.de>; Mon, 14 Aug 2023 00:00:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231916AbjHMVcI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:32:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55840 "EHLO
+        id S231624AbjHMWAZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 18:00:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40638 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231923AbjHMVcH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:32:07 -0400
+        with ESMTP id S231504AbjHMV7O (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:59:14 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4EECF10F2
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:31:47 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 692D4211C
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:43:24 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4985762B62
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:31:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F3E7C433C8;
-        Sun, 13 Aug 2023 21:31:23 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 01B8262784
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:43:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A0EEC433C7;
+        Sun, 13 Aug 2023 21:43:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691962283;
-        bh=C2Mf8hRPe93haF1t/rJTtceQg4ddXQXvb7uxOYaAKqs=;
+        s=korg; t=1691963003;
+        bh=ZDQatO0janZUPWiZepG5Vpft0JcKZgIvYCGL/IEyLns=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=DdQjn4+AphOfRAw86gBOvxcvwJIjoLKIJQfoct/zwo1xVyji0T88sjmeGZCFY9jNL
-         0k/41b4rvkuEIeZKoiSAfJFibIafb+M2fgIcpXPaijpAC+A5jMpqouKWBJepCmTFBR
-         3NiRj03UW00zHNLECM9a1ulBDc/98kB9bUUV/5u4=
+        b=rm4OwDrLcG9TwYY9J8ptpSMA19aA8B2MdWTGKumqkIVe1X8kFBlIxw8MZVuKeePeM
+         xSVHleT/LJ+xs8E0obj+YKMOldMxOYTv2LZy9kZYrE9Wff1ALzD76JMOBOVv48bVFr
+         VQw0RgDciAc4GEFITal+iRsoaPL+WIYrJ+Q4fiyA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Nick Child <nnac123@linux.ibm.com>,
-        Simon Horman <horms@kernel.org>,
-        Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.4 179/206] ibmvnic: Ensure login failure recovery is safe from other resets
+        patches@lists.linux.dev, Andrii Nakryiko <andrii@kernel.org>,
+        Yonghong Song <yhs@fb.com>, Pu Lehui <pulehui@huawei.com>
+Subject: [PATCH 5.15 18/89] selftests/bpf: Workaround verification failure for fexit_bpf2bpf/func_replace_return_code
 Date:   Sun, 13 Aug 2023 23:19:09 +0200
-Message-ID: <20230813211730.146923038@linuxfoundation.org>
+Message-ID: <20230813211711.311057714@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211724.969019629@linuxfoundation.org>
-References: <20230813211724.969019629@linuxfoundation.org>
+In-Reply-To: <20230813211710.787645394@linuxfoundation.org>
+References: <20230813211710.787645394@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -55,145 +54,92 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Nick Child <nnac123@linux.ibm.com>
+From: Yonghong Song <yhs@fb.com>
 
-commit 6db541ae279bd4e76dbd939e5fbf298396166242 upstream.
+[ Upstream commit 63d78b7e8ca2d0eb8c687a355fa19d01b6fcc723 ]
 
-If a login request fails, the recovery process should be protected
-against parallel resets. It is a known issue that freeing and
-registering CRQ's in quick succession can result in a failover CRQ from
-the VIOS. Processing a failover during login recovery is dangerous for
-two reasons:
- 1. This will result in two parallel initialization processes, this can
- cause serious issues during login.
- 2. It is possible that the failover CRQ is received but never executed.
- We get notified of a pending failover through a transport event CRQ.
- The reset is not performed until a INIT CRQ request is received.
- Previously, if CRQ init fails during login recovery, then the ibmvnic
- irq is freed and the login process returned error. If failover_pending
- is true (a transport event was received), then the ibmvnic device
- would never be able to process the reset since it cannot receive the
- CRQ_INIT request due to the irq being freed. This leaved the device
- in a inoperable state.
+With latest llvm17, selftest fexit_bpf2bpf/func_replace_return_code
+has the following verification failure:
 
-Therefore, the login failure recovery process must be hardened against
-these possible issues. Possible failovers (due to quick CRQ free and
-init) must be avoided and any issues during re-initialization should be
-dealt with instead of being propagated up the stack. This logic is
-similar to that of ibmvnic_probe().
+  0: R1=ctx(off=0,imm=0) R10=fp0
+  ; int connect_v4_prog(struct bpf_sock_addr *ctx)
+  0: (bf) r7 = r1                       ; R1=ctx(off=0,imm=0) R7_w=ctx(off=0,imm=0)
+  1: (b4) w6 = 0                        ; R6_w=0
+  ; memset(&tuple.ipv4.saddr, 0, sizeof(tuple.ipv4.saddr));
+  ...
+  ; return do_bind(ctx) ? 1 : 0;
+  179: (bf) r1 = r7                     ; R1=ctx(off=0,imm=0) R7=ctx(off=0,imm=0)
+  180: (85) call pc+147
+  Func#3 is global and valid. Skipping.
+  181: R0_w=scalar()
+  181: (bc) w6 = w0                     ; R0_w=scalar() R6_w=scalar(umax=4294967295,var_off=(0x0; 0xffffffff))
+  182: (05) goto pc-129
+  ; }
+  54: (bc) w0 = w6                      ; R0_w=scalar(umax=4294967295,var_off=(0x0; 0xffffffff)) R6_w=scalar(umax=4294967295,var_off=(0x0; 0xffffffff))
+  55: (95) exit
+  At program exit the register R0 has value (0x0; 0xffffffff) should have been in (0x0; 0x1)
+  processed 281 insns (limit 1000000) max_states_per_insn 1 total_states 26 peak_states 26 mark_read 13
+  -- END PROG LOAD LOG --
+  libbpf: prog 'connect_v4_prog': failed to load: -22
 
-Fixes: dff515a3e71d ("ibmvnic: Harden device login requests")
-Signed-off-by: Nick Child <nnac123@linux.ibm.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20230809221038.51296-5-nnac123@linux.ibm.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+The corresponding source code:
+
+  __attribute__ ((noinline))
+  int do_bind(struct bpf_sock_addr *ctx)
+  {
+        struct sockaddr_in sa = {};
+
+        sa.sin_family = AF_INET;
+        sa.sin_port = bpf_htons(0);
+        sa.sin_addr.s_addr = bpf_htonl(SRC_REWRITE_IP4);
+
+        if (bpf_bind(ctx, (struct sockaddr *)&sa, sizeof(sa)) != 0)
+                return 0;
+
+        return 1;
+  }
+  ...
+  SEC("cgroup/connect4")
+  int connect_v4_prog(struct bpf_sock_addr *ctx)
+  {
+  ...
+        return do_bind(ctx) ? 1 : 0;
+  }
+
+Insn 180 is a call to 'do_bind'. The call's return value is also the return value
+for the program. Since do_bind() returns 0/1, so it is legitimate for compiler to
+optimize 'return do_bind(ctx) ? 1 : 0' to 'return do_bind(ctx)'. However, such
+optimization breaks verifier as the return value of 'do_bind()' is marked as any
+scalar which violates the requirement of prog return value 0/1.
+
+There are two ways to fix this problem, (1) changing 'return 1' in do_bind() to
+e.g. 'return 10' so the compiler has to do 'do_bind(ctx) ? 1 :0', or (2)
+suggested by Andrii, marking do_bind() with __weak attribute so the compiler
+cannot make any assumption on do_bind() return value.
+
+This patch adopted adding __weak approach which is simpler and more resistant
+to potential compiler optimizations.
+
+Suggested-by: Andrii Nakryiko <andrii@kernel.org>
+Signed-off-by: Yonghong Song <yhs@fb.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/20230310012410.2920570-1-yhs@fb.com
+Signed-off-by: Pu Lehui <pulehui@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/ibm/ibmvnic.c |   70 +++++++++++++++++++++++++------------
- 1 file changed, 48 insertions(+), 22 deletions(-)
+ tools/testing/selftests/bpf/progs/connect4_prog.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/net/ethernet/ibm/ibmvnic.c
-+++ b/drivers/net/ethernet/ibm/ibmvnic.c
-@@ -116,6 +116,7 @@ static void ibmvnic_tx_scrq_clean_buffer
- static void free_long_term_buff(struct ibmvnic_adapter *adapter,
- 				struct ibmvnic_long_term_buff *ltb);
- static void ibmvnic_disable_irqs(struct ibmvnic_adapter *adapter);
-+static void flush_reset_queue(struct ibmvnic_adapter *adapter);
+--- a/tools/testing/selftests/bpf/progs/connect4_prog.c
++++ b/tools/testing/selftests/bpf/progs/connect4_prog.c
+@@ -33,7 +33,7 @@
  
- struct ibmvnic_stat {
- 	char name[ETH_GSTRING_LEN];
-@@ -1507,8 +1508,8 @@ static const char *adapter_state_to_stri
+ int _version SEC("version") = 1;
  
- static int ibmvnic_login(struct net_device *netdev)
+-__attribute__ ((noinline))
++__attribute__ ((noinline)) __weak
+ int do_bind(struct bpf_sock_addr *ctx)
  {
-+	unsigned long flags, timeout = msecs_to_jiffies(20000);
- 	struct ibmvnic_adapter *adapter = netdev_priv(netdev);
--	unsigned long timeout = msecs_to_jiffies(20000);
- 	int retry_count = 0;
- 	int retries = 10;
- 	bool retry;
-@@ -1573,6 +1574,7 @@ static int ibmvnic_login(struct net_devi
- 					    "SCRQ irq initialization failed\n");
- 				return rc;
- 			}
-+		/* Default/timeout error handling, reset and start fresh */
- 		} else if (adapter->init_done_rc) {
- 			netdev_warn(netdev, "Adapter login failed, init_done_rc = %d\n",
- 				    adapter->init_done_rc);
-@@ -1588,29 +1590,53 @@ partial_reset:
- 				    "Freeing and re-registering CRQs before attempting to login again\n");
- 			retry = true;
- 			adapter->init_done_rc = 0;
--			retry_count++;
- 			release_sub_crqs(adapter, true);
--			reinit_init_done(adapter);
--			release_crq_queue(adapter);
--			/* If we don't sleep here then we risk an unnecessary
--			 * failover event from the VIOS. This is a known VIOS
--			 * issue caused by a vnic device freeing and registering
--			 * a CRQ too quickly.
-+			/* Much of this is similar logic as ibmvnic_probe(),
-+			 * we are essentially re-initializing communication
-+			 * with the server. We really should not run any
-+			 * resets/failovers here because this is already a form
-+			 * of reset and we do not want parallel resets occurring
- 			 */
--			msleep(1500);
--			rc = init_crq_queue(adapter);
--			if (rc) {
--				netdev_err(netdev, "login recovery: init CRQ failed %d\n",
--					   rc);
--				return -EIO;
--			}
--
--			rc = ibmvnic_reset_init(adapter, false);
--			if (rc) {
--				netdev_err(netdev, "login recovery: Reset init failed %d\n",
--					   rc);
--				return -EIO;
--			}
-+			do {
-+				reinit_init_done(adapter);
-+				/* Clear any failovers we got in the previous
-+				 * pass since we are re-initializing the CRQ
-+				 */
-+				adapter->failover_pending = false;
-+				release_crq_queue(adapter);
-+				/* If we don't sleep here then we risk an
-+				 * unnecessary failover event from the VIOS.
-+				 * This is a known VIOS issue caused by a vnic
-+				 * device freeing and registering a CRQ too
-+				 * quickly.
-+				 */
-+				msleep(1500);
-+				/* Avoid any resets, since we are currently
-+				 * resetting.
-+				 */
-+				spin_lock_irqsave(&adapter->rwi_lock, flags);
-+				flush_reset_queue(adapter);
-+				spin_unlock_irqrestore(&adapter->rwi_lock,
-+						       flags);
-+
-+				rc = init_crq_queue(adapter);
-+				if (rc) {
-+					netdev_err(netdev, "login recovery: init CRQ failed %d\n",
-+						   rc);
-+					return -EIO;
-+				}
-+
-+				rc = ibmvnic_reset_init(adapter, false);
-+				if (rc)
-+					netdev_err(netdev, "login recovery: Reset init failed %d\n",
-+						   rc);
-+				/* IBMVNIC_CRQ_INIT will return EAGAIN if it
-+				 * fails, since ibmvnic_reset_init will free
-+				 * irq's in failure, we won't be able to receive
-+				 * new CRQs so we need to keep trying. probe()
-+				 * handles this similarly.
-+				 */
-+			} while (rc == -EAGAIN && retry_count++ < retries);
- 		}
- 	} while (retry);
- 
+ 	struct sockaddr_in sa = {};
 
 
