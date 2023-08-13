@@ -2,184 +2,149 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8D70B77AC3B
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:30:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 82B2277AE11
+	for <lists+stable@lfdr.de>; Mon, 14 Aug 2023 00:00:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231879AbjHMVar (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:30:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57574 "EHLO
+        id S231269AbjHMWAS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 18:00:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48786 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231888AbjHMVaq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:30:46 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B95A10DB
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:30:48 -0700 (PDT)
+        with ESMTP id S231760AbjHMV7J (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:59:09 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 389E52694
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:43:46 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2A7D962B26
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:30:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 361D1C433C7;
-        Sun, 13 Aug 2023 21:30:47 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C22B761B60
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:43:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D35FBC433C8;
+        Sun, 13 Aug 2023 21:43:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691962247;
-        bh=CxCxUmEkdsGMoPA2HaLw5L5qFa239jAOnp2lFtVMar8=;
+        s=korg; t=1691963025;
+        bh=mCqvZt7xICFCSiofPWOuaRPTwXVLfS4/Q6cFloz4v4E=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Zm0cnuQXYi6CVh7JjVrJYfzbr2G4SJIQxO89Oz0pBLKGOppKav4GktkBqpjGUSxk4
-         BHG7klkNkWnYpkuK1uYN3hOtKxt3UiyyetXUvnCplHt9YEdppBnKpfdJdKnZVam3wk
-         PsGRVZsYjJhm/lUxq35VGI4ZoJywpRBrPv+03QrE=
+        b=HBzyXCyOxjLLih0ubKO5rBFdz04bdnFsz9R66wNzMlUaUDJTyHrdPSlFi9ZU2CCOD
+         cr6Po3zmE6q7T5i+8UoRCdm+MULBPWwNxyumProIL6c5+dHGy7e32erdf5QdCkXcmq
+         PwnGAgyNGcT5sw4+KPXq3MmNlvWIUF177a1+0vds=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Gal Pressman <gal@nvidia.com>,
-        Tariq Toukan <tariqt@nvidia.com>,
-        Saeed Mahameed <saeedm@nvidia.com>
-Subject: [PATCH 6.4 167/206] net/mlx5e: Take RTNL lock when needed before calling xdp_set_features()
+        patches@lists.linux.dev,
+        Richard Tresidder <rtresidd@electromag.com.au>,
+        =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+        Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 5.15 06/89] dmaengine: pl330: Return DMA_PAUSED when transaction is paused
 Date:   Sun, 13 Aug 2023 23:18:57 +0200
-Message-ID: <20230813211729.807162836@linuxfoundation.org>
+Message-ID: <20230813211710.973077723@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211724.969019629@linuxfoundation.org>
-References: <20230813211724.969019629@linuxfoundation.org>
+In-Reply-To: <20230813211710.787645394@linuxfoundation.org>
+References: <20230813211710.787645394@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Gal Pressman <gal@nvidia.com>
+From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
-commit 72cc654970658e88a1cdea08f06b11c218efa4da upstream.
+commit 8cda3ececf07d374774f6a13e5a94bc2dc04c26c upstream.
 
-Hold RTNL lock when calling xdp_set_features() with a registered netdev,
-as the call triggers the netdev notifiers. This could happen when
-switching from uplink rep to nic profile for example.
+pl330_pause() does not set anything to indicate paused condition which
+causes pl330_tx_status() to return DMA_IN_PROGRESS. This breaks 8250
+DMA flush after the fix in commit 57e9af7831dc ("serial: 8250_dma: Fix
+DMA Rx rearm race"). The function comment for pl330_pause() claims
+pause is supported but resume is not which is enough for 8250 DMA flush
+to work as long as DMA status reports DMA_PAUSED when appropriate.
 
-This resolves the following call trace:
+Add PAUSED state for descriptor and mark BUSY descriptors with PAUSED
+in pl330_pause(). Return DMA_PAUSED from pl330_tx_status() when the
+descriptor is PAUSED.
 
-RTNL: assertion failed at net/core/dev.c (1953)
-WARNING: CPU: 6 PID: 112670 at net/core/dev.c:1953 call_netdevice_notifiers_info+0x7c/0x80
-Modules linked in: sch_mqprio sch_mqprio_lib act_tunnel_key act_mirred act_skbedit cls_matchall nfnetlink_cttimeout act_gact cls_flower sch_ingress bonding ib_umad ip_gre rdma_ucm mlx5_vfio_pci ipip tunnel4 ip6_gre gre mlx5_ib vfio_pci vfio_pci_core vfio_iommu_type1 ib_uverbs vfio mlx5_core ib_ipoib geneve nf_tables ip6_tunnel tunnel6 iptable_raw openvswitch nsh rpcrdma ib_iser libiscsi scsi_transport_iscsi rdma_cm iw_cm ib_cm ib_core xt_conntrack xt_MASQUERADE nf_conntrack_netlink nfnetlink xt_addrtype iptable_nat nf_nat br_netfilter rpcsec_gss_krb5 auth_rpcgss oid_registry overlay zram zsmalloc fuse [last unloaded: ib_uverbs]
-CPU: 6 PID: 112670 Comm: devlink Not tainted 6.4.0-rc7_for_upstream_min_debug_2023_06_28_17_02 #1
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.13.0-0-gf21b5a4aeb02-prebuilt.qemu.org 04/01/2014
-RIP: 0010:call_netdevice_notifiers_info+0x7c/0x80
-Code: 90 ff 80 3d 2d 6b f7 00 00 75 c5 ba a1 07 00 00 48 c7 c6 e4 ce 0b 82 48 c7 c7 c8 f4 04 82 c6 05 11 6b f7 00 01 e8 a4 7c 8e ff <0f> 0b eb a2 0f 1f 44 00 00 55 48 89 e5 41 54 48 83 e4 f0 48 83 ec
-RSP: 0018:ffff8882a21c3948 EFLAGS: 00010282
-RAX: 0000000000000000 RBX: ffffffff82e6f880 RCX: 0000000000000027
-RDX: ffff88885f99b5c8 RSI: 0000000000000001 RDI: ffff88885f99b5c0
-RBP: 0000000000000028 R08: ffff88887ffabaa8 R09: 0000000000000003
-R10: ffff88887fecbac0 R11: ffff88887ff7bac0 R12: ffff8882a21c3968
-R13: ffff88811c018940 R14: 0000000000000000 R15: ffff8881274401a0
-FS:  00007fe141c81800(0000) GS:ffff88885f980000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f787c28b948 CR3: 000000014bcf3005 CR4: 0000000000370ea0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <TASK>
- ? __warn+0x79/0x120
- ? call_netdevice_notifiers_info+0x7c/0x80
- ? report_bug+0x17c/0x190
- ? handle_bug+0x3c/0x60
- ? exc_invalid_op+0x14/0x70
- ? asm_exc_invalid_op+0x16/0x20
- ? call_netdevice_notifiers_info+0x7c/0x80
- ? call_netdevice_notifiers_info+0x7c/0x80
- call_netdevice_notifiers+0x2e/0x50
- mlx5e_set_xdp_feature+0x21/0x50 [mlx5_core]
- mlx5e_nic_init+0xf1/0x1a0 [mlx5_core]
- mlx5e_netdev_init_profile+0x76/0x110 [mlx5_core]
- mlx5e_netdev_attach_profile+0x1f/0x90 [mlx5_core]
- mlx5e_netdev_change_profile+0x92/0x160 [mlx5_core]
- mlx5e_netdev_attach_nic_profile+0x1b/0x30 [mlx5_core]
- mlx5e_vport_rep_unload+0xaa/0xc0 [mlx5_core]
- __esw_offloads_unload_rep+0x52/0x60 [mlx5_core]
- mlx5_esw_offloads_rep_unload+0x52/0x70 [mlx5_core]
- esw_offloads_unload_rep+0x34/0x70 [mlx5_core]
- esw_offloads_disable+0x2b/0x90 [mlx5_core]
- mlx5_eswitch_disable_locked+0x1b9/0x210 [mlx5_core]
- mlx5_devlink_eswitch_mode_set+0xf5/0x630 [mlx5_core]
- ? devlink_get_from_attrs_lock+0x9e/0x110
- devlink_nl_cmd_eswitch_set_doit+0x60/0xe0
- genl_family_rcv_msg_doit.isra.0+0xc2/0x110
- genl_rcv_msg+0x17d/0x2b0
- ? devlink_get_from_attrs_lock+0x110/0x110
- ? devlink_nl_cmd_eswitch_get_doit+0x290/0x290
- ? devlink_pernet_pre_exit+0xf0/0xf0
- ? genl_family_rcv_msg_doit.isra.0+0x110/0x110
- netlink_rcv_skb+0x54/0x100
- genl_rcv+0x24/0x40
- netlink_unicast+0x1f6/0x2c0
- netlink_sendmsg+0x232/0x4a0
- sock_sendmsg+0x38/0x60
- ? _copy_from_user+0x2a/0x60
- __sys_sendto+0x110/0x160
- ? __count_memcg_events+0x48/0x90
- ? handle_mm_fault+0x161/0x260
- ? do_user_addr_fault+0x278/0x6e0
- __x64_sys_sendto+0x20/0x30
- do_syscall_64+0x3d/0x90
- entry_SYSCALL_64_after_hwframe+0x46/0xb0
-RIP: 0033:0x7fe141b1340a
-Code: d8 64 89 02 48 c7 c0 ff ff ff ff eb b8 0f 1f 00 f3 0f 1e fa 41 89 ca 64 8b 04 25 18 00 00 00 85 c0 75 15 b8 2c 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 7e c3 0f 1f 44 00 00 41 54 48 83 ec 30 44 89
-RSP: 002b:00007fff61d03de8 EFLAGS: 00000246 ORIG_RAX: 000000000000002c
-RAX: ffffffffffffffda RBX: 0000000000afab00 RCX: 00007fe141b1340a
-RDX: 0000000000000038 RSI: 0000000000afab00 RDI: 0000000000000003
-RBP: 0000000000afa910 R08: 00007fe141d80200 R09: 000000000000000c
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000001
- </TASK>
-
-Fixes: 4d5ab0ad964d ("net/mlx5e: take into account device reconfiguration for xdp_features flag")
-Signed-off-by: Gal Pressman <gal@nvidia.com>
-Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+Reported-by: Richard Tresidder <rtresidd@electromag.com.au>
+Tested-by: Richard Tresidder <rtresidd@electromag.com.au>
+Fixes: 88987d2c7534 ("dmaengine: pl330: add DMA_PAUSE feature")
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/linux-serial/f8a86ecd-64b1-573f-c2fa-59f541083f1a@electromag.com.au/
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Link: https://lore.kernel.org/r/20230526105434.14959-1-ilpo.jarvinen@linux.intel.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en_main.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ drivers/dma/pl330.c |   18 ++++++++++++++++--
+ 1 file changed, 16 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-index 1c820119e438..c27df14df145 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-@@ -5266,6 +5266,7 @@ void mlx5e_destroy_q_counters(struct mlx5e_priv *priv)
- static int mlx5e_nic_init(struct mlx5_core_dev *mdev,
- 			  struct net_device *netdev)
- {
-+	const bool take_rtnl = netdev->reg_state == NETREG_REGISTERED;
- 	struct mlx5e_priv *priv = netdev_priv(netdev);
- 	struct mlx5e_flow_steering *fs;
- 	int err;
-@@ -5294,9 +5295,19 @@ static int mlx5e_nic_init(struct mlx5_core_dev *mdev,
- 		mlx5_core_err(mdev, "TLS initialization failed, %d\n", err);
- 
- 	mlx5e_health_create_reporters(priv);
-+
-+	/* If netdev is already registered (e.g. move from uplink to nic profile),
-+	 * RTNL lock must be held before triggering netdev notifiers.
+--- a/drivers/dma/pl330.c
++++ b/drivers/dma/pl330.c
+@@ -404,6 +404,12 @@ enum desc_status {
+ 	 */
+ 	BUSY,
+ 	/*
++	 * Pause was called while descriptor was BUSY. Due to hardware
++	 * limitations, only termination is possible for descriptors
++	 * that have been paused.
 +	 */
-+	if (take_rtnl)
-+		rtnl_lock();
-+
- 	/* update XDP supported features */
- 	mlx5e_set_xdp_feature(netdev);
++	PAUSED,
++	/*
+ 	 * Sitting on the channel work_list but xfer done
+ 	 * by PL330 core
+ 	 */
+@@ -2041,7 +2047,7 @@ static inline void fill_queue(struct dma
+ 	list_for_each_entry(desc, &pch->work_list, node) {
  
-+	if (take_rtnl)
-+		rtnl_unlock();
-+
- 	return 0;
- }
+ 		/* If already submitted */
+-		if (desc->status == BUSY)
++		if (desc->status == BUSY || desc->status == PAUSED)
+ 			continue;
  
--- 
-2.41.0
-
+ 		ret = pl330_submit_req(pch->thread, desc);
+@@ -2326,6 +2332,7 @@ static int pl330_pause(struct dma_chan *
+ {
+ 	struct dma_pl330_chan *pch = to_pchan(chan);
+ 	struct pl330_dmac *pl330 = pch->dmac;
++	struct dma_pl330_desc *desc;
+ 	unsigned long flags;
+ 
+ 	pm_runtime_get_sync(pl330->ddma.dev);
+@@ -2335,6 +2342,10 @@ static int pl330_pause(struct dma_chan *
+ 	_stop(pch->thread);
+ 	spin_unlock(&pl330->lock);
+ 
++	list_for_each_entry(desc, &pch->work_list, node) {
++		if (desc->status == BUSY)
++			desc->status = PAUSED;
++	}
+ 	spin_unlock_irqrestore(&pch->lock, flags);
+ 	pm_runtime_mark_last_busy(pl330->ddma.dev);
+ 	pm_runtime_put_autosuspend(pl330->ddma.dev);
+@@ -2425,7 +2436,7 @@ pl330_tx_status(struct dma_chan *chan, d
+ 		else if (running && desc == running)
+ 			transferred =
+ 				pl330_get_current_xferred_count(pch, desc);
+-		else if (desc->status == BUSY)
++		else if (desc->status == BUSY || desc->status == PAUSED)
+ 			/*
+ 			 * Busy but not running means either just enqueued,
+ 			 * or finished and not yet marked done
+@@ -2442,6 +2453,9 @@ pl330_tx_status(struct dma_chan *chan, d
+ 			case DONE:
+ 				ret = DMA_COMPLETE;
+ 				break;
++			case PAUSED:
++				ret = DMA_PAUSED;
++				break;
+ 			case PREP:
+ 			case BUSY:
+ 				ret = DMA_IN_PROGRESS;
 
 
