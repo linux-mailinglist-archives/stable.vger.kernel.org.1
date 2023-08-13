@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A4ECF77ACC0
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:36:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B06EF77AC36
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:30:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232160AbjHMVgk (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:36:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59670 "EHLO
+        id S231876AbjHMVag (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:30:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59460 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232149AbjHMVgk (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:36:40 -0400
+        with ESMTP id S231873AbjHMVaf (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:30:35 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E67FA10E3
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:36:41 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9511910D7
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:30:37 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 85AC762CE7
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:36:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A4C5C433C7;
-        Sun, 13 Aug 2023 21:36:40 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3396862B14
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:30:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46B0BC433CB;
+        Sun, 13 Aug 2023 21:30:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691962601;
-        bh=db3rPmon8gVmUXodyZj5rzdTR3LPjG9FuIJHR+2X23o=;
+        s=korg; t=1691962236;
+        bh=Q/9huDZQtCDnqCu3n8Lxkqn/nicz6guvEabofKVyExM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=OnrHVuwIlQhssWOsrg4Lx26Q1eq/tlfNcGUT/YeOEIdgSVPjKgWoZh0mtQH+Kf3tA
-         THkghfiNdqXLQyUdEucieAdFwGudSWNJLxRXfjtW0mrB3M6xpSUaOopUebKpCnbbI3
-         9+XLV0sCkCmF6gMGuxL7DvUHbJeK0eBV8C8uNU80=
+        b=I+eJBcIJ+1Me1M8ISIn7iLsVE4bdF00MIGq74lZC7wEMAWe2BeJR2EbE8ytdJpjbo
+         vjvumYI6GRnWMhroi4WrF0JzwFkVpZ5OZ6K8HvXaDRo5Pta+ekj+C404gQ/QXcAv7l
+         u5df9PUz1Imfgq4iydtFzzeE2vgzDJP7GC8Kyjdo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, syzbot <syzkaller@googlegroups.com>,
-        Eric Dumazet <edumazet@google.com>,
-        Sabrina Dubroca <sd@queasysnail.net>,
-        "David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 6.1 087/149] macsec: use DEV_STATS_INC()
-Date:   Sun, 13 Aug 2023 23:18:52 +0200
-Message-ID: <20230813211721.391417435@linuxfoundation.org>
+        patches@lists.linux.dev, Hao Chen <chenhao418@huawei.com>,
+        Jijie Shao <shaojijie@huawei.com>,
+        Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.4 163/206] net: hns3: fix strscpy causing content truncation issue
+Date:   Sun, 13 Aug 2023 23:18:53 +0200
+Message-ID: <20230813211729.692342034@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211718.757428827@linuxfoundation.org>
-References: <20230813211718.757428827@linuxfoundation.org>
+In-Reply-To: <20230813211724.969019629@linuxfoundation.org>
+References: <20230813211724.969019629@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,140 +54,68 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Eric Dumazet <edumazet@google.com>
+From: Hao Chen <chenhao418@huawei.com>
 
-commit 32d0a49d36a2a306c2e47fe5659361e424f0ed3f upstream.
+commit 5e3d20617b055e725e785e0058426368269949f3 upstream.
 
-syzbot/KCSAN reported data-races in macsec whenever dev->stats fields
-are updated.
+hns3_dbg_fill_content()/hclge_dbg_fill_content() is aim to integrate some
+items to a string for content, and we add '\n' and '\0' in the last
+two bytes of content.
 
-It appears all of these updates can happen from multiple cpus.
+strscpy() will add '\0' in the last byte of destination buffer(one of
+items), it result in finishing content print ahead of schedule and some
+dump content truncation.
 
-Adopt SMP safe DEV_STATS_INC() to update dev->stats fields.
+One Error log shows as below:
+cat mac_list/uc
+UC MAC_LIST:
 
-Fixes: c09440f7dcb3 ("macsec: introduce IEEE 802.1AE driver")
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Sabrina Dubroca <sd@queasysnail.net>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Expected:
+UC MAC_LIST:
+FUNC_ID  MAC_ADDR            STATE
+pf       00:2b:19:05:03:00   ACTIVE
+
+The destination buffer is length-bounded and not required to be
+NUL-terminated, so just change strscpy() to memcpy() to fix it.
+
+Fixes: 1cf3d5567f27 ("net: hns3: fix strncpy() not using dest-buf length as length issue")
+Signed-off-by: Hao Chen <chenhao418@huawei.com>
+Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+Link: https://lore.kernel.org/r/20230809020902.1941471-1-shaojijie@huawei.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/macsec.c |   28 ++++++++++++++--------------
- 1 file changed, 14 insertions(+), 14 deletions(-)
+ drivers/net/ethernet/hisilicon/hns3/hns3_debugfs.c         |    4 ++--
+ drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_debugfs.c |    4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/net/macsec.c
-+++ b/drivers/net/macsec.c
-@@ -743,7 +743,7 @@ static bool macsec_post_decrypt(struct s
- 		u64_stats_update_begin(&rxsc_stats->syncp);
- 		rxsc_stats->stats.InPktsLate++;
- 		u64_stats_update_end(&rxsc_stats->syncp);
--		secy->netdev->stats.rx_dropped++;
-+		DEV_STATS_INC(secy->netdev, rx_dropped);
- 		return false;
- 	}
- 
-@@ -767,7 +767,7 @@ static bool macsec_post_decrypt(struct s
- 			rxsc_stats->stats.InPktsNotValid++;
- 			u64_stats_update_end(&rxsc_stats->syncp);
- 			this_cpu_inc(rx_sa->stats->InPktsNotValid);
--			secy->netdev->stats.rx_errors++;
-+			DEV_STATS_INC(secy->netdev, rx_errors);
- 			return false;
- 		}
- 
-@@ -1059,7 +1059,7 @@ static enum rx_handler_result handle_not
- 			u64_stats_update_begin(&secy_stats->syncp);
- 			secy_stats->stats.InPktsNoTag++;
- 			u64_stats_update_end(&secy_stats->syncp);
--			macsec->secy.netdev->stats.rx_dropped++;
-+			DEV_STATS_INC(macsec->secy.netdev, rx_dropped);
- 			continue;
- 		}
- 
-@@ -1169,7 +1169,7 @@ static rx_handler_result_t macsec_handle
- 		u64_stats_update_begin(&secy_stats->syncp);
- 		secy_stats->stats.InPktsBadTag++;
- 		u64_stats_update_end(&secy_stats->syncp);
--		secy->netdev->stats.rx_errors++;
-+		DEV_STATS_INC(secy->netdev, rx_errors);
- 		goto drop_nosa;
- 	}
- 
-@@ -1186,7 +1186,7 @@ static rx_handler_result_t macsec_handle
- 			u64_stats_update_begin(&rxsc_stats->syncp);
- 			rxsc_stats->stats.InPktsNotUsingSA++;
- 			u64_stats_update_end(&rxsc_stats->syncp);
--			secy->netdev->stats.rx_errors++;
-+			DEV_STATS_INC(secy->netdev, rx_errors);
- 			if (active_rx_sa)
- 				this_cpu_inc(active_rx_sa->stats->InPktsNotUsingSA);
- 			goto drop_nosa;
-@@ -1220,7 +1220,7 @@ static rx_handler_result_t macsec_handle
- 			u64_stats_update_begin(&rxsc_stats->syncp);
- 			rxsc_stats->stats.InPktsLate++;
- 			u64_stats_update_end(&rxsc_stats->syncp);
--			macsec->secy.netdev->stats.rx_dropped++;
-+			DEV_STATS_INC(macsec->secy.netdev, rx_dropped);
- 			goto drop;
- 		}
- 	}
-@@ -1261,7 +1261,7 @@ deliver:
- 	if (ret == NET_RX_SUCCESS)
- 		count_rx(dev, len);
- 	else
--		macsec->secy.netdev->stats.rx_dropped++;
-+		DEV_STATS_INC(macsec->secy.netdev, rx_dropped);
- 
- 	rcu_read_unlock();
- 
-@@ -1298,7 +1298,7 @@ nosci:
- 			u64_stats_update_begin(&secy_stats->syncp);
- 			secy_stats->stats.InPktsNoSCI++;
- 			u64_stats_update_end(&secy_stats->syncp);
--			macsec->secy.netdev->stats.rx_errors++;
-+			DEV_STATS_INC(macsec->secy.netdev, rx_errors);
- 			continue;
- 		}
- 
-@@ -1317,7 +1317,7 @@ nosci:
- 			secy_stats->stats.InPktsUnknownSCI++;
- 			u64_stats_update_end(&secy_stats->syncp);
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3_debugfs.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3_debugfs.c
+@@ -461,9 +461,9 @@ static void hns3_dbg_fill_content(char *
+ 		if (result) {
+ 			if (item_len < strlen(result[i]))
+ 				break;
+-			strscpy(pos, result[i], strlen(result[i]));
++			memcpy(pos, result[i], strlen(result[i]));
  		} else {
--			macsec->secy.netdev->stats.rx_dropped++;
-+			DEV_STATS_INC(macsec->secy.netdev, rx_dropped);
+-			strscpy(pos, items[i].name, strlen(items[i].name));
++			memcpy(pos, items[i].name, strlen(items[i].name));
  		}
- 	}
- 
-@@ -3418,7 +3418,7 @@ static netdev_tx_t macsec_start_xmit(str
- 
- 	if (!secy->operational) {
- 		kfree_skb(skb);
--		dev->stats.tx_dropped++;
-+		DEV_STATS_INC(dev, tx_dropped);
- 		return NETDEV_TX_OK;
- 	}
- 
-@@ -3426,7 +3426,7 @@ static netdev_tx_t macsec_start_xmit(str
- 	skb = macsec_encrypt(skb, dev);
- 	if (IS_ERR(skb)) {
- 		if (PTR_ERR(skb) != -EINPROGRESS)
--			dev->stats.tx_dropped++;
-+			DEV_STATS_INC(dev, tx_dropped);
- 		return NETDEV_TX_OK;
- 	}
- 
-@@ -3663,9 +3663,9 @@ static void macsec_get_stats64(struct ne
- 
- 	dev_fetch_sw_netstats(s, dev->tstats);
- 
--	s->rx_dropped = dev->stats.rx_dropped;
--	s->tx_dropped = dev->stats.tx_dropped;
--	s->rx_errors = dev->stats.rx_errors;
-+	s->rx_dropped = atomic_long_read(&dev->stats.__rx_dropped);
-+	s->tx_dropped = atomic_long_read(&dev->stats.__tx_dropped);
-+	s->rx_errors = atomic_long_read(&dev->stats.__rx_errors);
- }
- 
- static int macsec_get_iflink(const struct net_device *dev)
+ 		pos += item_len;
+ 		len -= item_len;
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_debugfs.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_debugfs.c
+@@ -111,9 +111,9 @@ static void hclge_dbg_fill_content(char
+ 		if (result) {
+ 			if (item_len < strlen(result[i]))
+ 				break;
+-			strscpy(pos, result[i], strlen(result[i]));
++			memcpy(pos, result[i], strlen(result[i]));
+ 		} else {
+-			strscpy(pos, items[i].name, strlen(items[i].name));
++			memcpy(pos, items[i].name, strlen(items[i].name));
+ 		}
+ 		pos += item_len;
+ 		len -= item_len;
 
 
