@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EDD6F77AB20
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 22:19:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6F20277AB22
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 22:20:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229512AbjHMUTx (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 16:19:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52722 "EHLO
+        id S229900AbjHMUUC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 16:20:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43208 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231309AbjHMUTx (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 16:19:53 -0400
+        with ESMTP id S231309AbjHMUUC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 16:20:02 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 41C9210FA
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 13:19:55 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24C9C10F9
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 13:20:04 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CBDF662742
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 20:19:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9287C433C8;
-        Sun, 13 Aug 2023 20:19:53 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A94306274B
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 20:20:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEDB5C433C7;
+        Sun, 13 Aug 2023 20:20:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691957994;
-        bh=V4PKoESkI8xckkdVJOMdYbu0x1aFc7r5VWIfUmsojOI=;
+        s=korg; t=1691958003;
+        bh=by3PZSUsFQQFuygTz2tMpwNLhM5trCyWODvjZtS3gUA=;
         h=Subject:To:Cc:From:Date:From;
-        b=f/uqseZzXaYDr9+yW5YON09dH/ghyC1dy8FM4PTPTExN1MV3qV0jQu1EjyZSVtI6e
-         GZ4A+fE3jpT5s/o+u8+XpZcu5KFxzNRBxE6lqQiajYNMa/KGoTj1RFMgOLG63Lhlw9
-         6mCtzJE8rXPHu5y/Cvg3JXaVPxXTQ/qL4yj6u8tU=
-Subject: FAILED: patch "[PATCH] scsi: qedf: Fix firmware halt over suspend and resume" failed to apply to 5.4-stable tree
+        b=q2O2QRIadquvTzh3hud2Vevr/wHCUJu9pzfc6HVcpbzf3EWVYz9gi1yVfGIj0D+mx
+         3c7mmg/xQcPcbF3FEUdzuO0rHzEnuM6mMyUUagGG6kPwBhQyjIiLx0TNLeO5YB1tkd
+         w3QARjUnsYKD2VZqqZr/wDKmwDtnnExbS2FzAYtg=
+Subject: FAILED: patch "[PATCH] scsi: qedf: Fix firmware halt over suspend and resume" failed to apply to 4.19-stable tree
 To:     njavali@marvell.com, martin.petersen@oracle.com,
         skashyap@marvell.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sun, 13 Aug 2023 22:19:51 +0200
-Message-ID: <2023081351-dreamlike-morale-ab08@gregkh>
+Date:   Sun, 13 Aug 2023 22:19:52 +0200
+Message-ID: <2023081352-pouncing-speller-9684@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -50,25 +50,26 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 4.19-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
 git checkout FETCH_HEAD
 git cherry-pick -x ef222f551e7c4e2008fc442ffc9edcd1a7fd8f63
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023081351-dreamlike-morale-ab08@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023081352-pouncing-speller-9684@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
 
 Possible dependencies:
 
 ef222f551e7c ("scsi: qedf: Fix firmware halt over suspend and resume")
 f6b172f21999 ("scsi: qedf: Add schedule recovery handler")
 6e7c8eea929e ("scsi: qedf: Implement callback for bw_update")
+31696204c44c ("scsi: qedf: Add shutdown callback handler")
 
 thanks,
 
