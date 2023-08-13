@@ -2,46 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C546F77ACA2
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:35:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 16FDA77ABFA
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:27:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232112AbjHMVfT (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:35:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60976 "EHLO
+        id S231769AbjHMV1x (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:27:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36900 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232096AbjHMVfS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:35:18 -0400
+        with ESMTP id S231613AbjHMV1x (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:27:53 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E57A710E5
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:35:19 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 16E5510E3
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:27:55 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6495A61366
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:35:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C911C433C8;
-        Sun, 13 Aug 2023 21:35:18 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9DDE162A0F
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:27:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAFE2C433C8;
+        Sun, 13 Aug 2023 21:27:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691962518;
-        bh=+ecs3ODtgA28oTupRvKUtRFGI+0huETpzyjh51D7gME=;
+        s=korg; t=1691962074;
+        bh=SDZ8x7raN/AlSsbkys9k4iVMnXCk1dURpQpzzmKmKl8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=OrMIySH+FeEfmckgm5yEx7gfj7vOCldg/WQ/hoeZ/7E4I8WbACWM/fzQpw1I0ehNx
-         EvIHM1jVHTSaI//zuVisQuwUX+Ubry6CINDH8Pr5PRr5N7m1kyq/qbGU6myh8Ks6Fd
-         YsfACEq2AO31Ptk0QqVl/bHJcSNFRfSAkCZKAQ3c=
+        b=Oh9Fe2HnifC92YUb9U3Q3ea2DWR/vldGIDY3vBvFZnIK93yhVy7/l9nPCpoq9ByCU
+         EshXSUiEy5hlA76AdMMReD9OFzicNWh1YuXZdDYd2Ydmn6W79QICj9mn+udyiS1I7G
+         vq2l61gpnop21c3X5IsEuord59+ooKLTkA98ohas=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Melissa Wen <mwen@igalia.com>,
-        Harry Wentland <harry.wentland@amd.com>,
-        Alex Hung <alex.hung@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.1 029/149] drm/amd/display: check attr flag before set cursor degamma on DCN3+
+        patches@lists.linux.dev,
+        Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>,
+        Ido Schimmel <idosch@nvidia.com>,
+        Petr Machata <petrm@nvidia.com>,
+        Hangbin Liu <liuhangbin@gmail.com>,
+        Nikolay Aleksandrov <razor@blackwall.org>,
+        Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.4 104/206] selftests: forwarding: bridge_mdb: Check iproute2 version
 Date:   Sun, 13 Aug 2023 23:17:54 +0200
-Message-ID: <20230813211719.679674863@linuxfoundation.org>
+Message-ID: <20230813211728.034021166@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211718.757428827@linuxfoundation.org>
-References: <20230813211718.757428827@linuxfoundation.org>
+In-Reply-To: <20230813211724.969019629@linuxfoundation.org>
+References: <20230813211724.969019629@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,48 +59,62 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Melissa Wen <mwen@igalia.com>
+From: Ido Schimmel <idosch@nvidia.com>
 
-commit 96b020e2163fb2197266b2f71b1007495206e6bb upstream.
+commit ab2eda04e2c2116910b9d77ccc82e727efa71d49 upstream.
 
-Don't set predefined degamma curve to cursor plane if the cursor
-attribute flag is not set. Applying a degamma curve to the cursor by
-default breaks userspace expectation. Checking the flag before
-performing any color transformation prevents too dark cursor gamma in
-DCN3+ on many Linux desktop environment (KDE Plasma, GNOME,
-wlroots-based, etc.) as reported at:
-- https://gitlab.freedesktop.org/drm/amd/-/issues/1513
+The selftest relies on iproute2 changes present in version 6.3, but the
+test does not check for it, resulting in error:
 
-This is the same approach followed by DCN2 drivers where the issue is
-not present.
+ # ./bridge_mdb.sh
 
-Fixes: 03f54d7d3448 ("drm/amd/display: Add DCN3 DPP")
-Link: https://gitlab.freedesktop.org/drm/amd/-/issues/1513
-Signed-off-by: Melissa Wen <mwen@igalia.com>
-Reviewed-by: Harry Wentland <harry.wentland@amd.com>
-Tested-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
+ INFO: # Host entries configuration tests
+ TEST: Common host entries configuration tests (IPv4)                [FAIL]
+         Managed to add IPv4 host entry with a filter mode
+ TEST: Common host entries configuration tests (IPv6)                [FAIL]
+         Managed to add IPv6 host entry with a filter mode
+ TEST: Common host entries configuration tests (L2)                  [FAIL]
+         Managed to add L2 host entry with a filter mode
+
+ INFO: # Port group entries configuration tests - (*, G)
+ Command "replace" is unknown, try "bridge mdb help".
+ [...]
+
+Fix by skipping the test if iproute2 is too old.
+
+Fixes: b6d00da08610 ("selftests: forwarding: Add bridge MDB test")
+Reported-by: Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>
+Closes: https://lore.kernel.org/netdev/6b04b2ba-2372-6f6b-3ac8-b7cba1cfae83@alu.unizg.hr/
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: Petr Machata <petrm@nvidia.com>
+Tested-by: Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>
+Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
+Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
+Link: https://lore.kernel.org/r/20230808141503.4060661-4-idosch@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/dcn30/dcn30_dpp.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ tools/testing/selftests/net/forwarding/bridge_mdb.sh | 5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_dpp.c
-+++ b/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_dpp.c
-@@ -357,8 +357,11 @@ void dpp3_set_cursor_attributes(
- 	int cur_rom_en = 0;
+diff --git a/tools/testing/selftests/net/forwarding/bridge_mdb.sh b/tools/testing/selftests/net/forwarding/bridge_mdb.sh
+index ae3f9462a2b6..6f830b5f03c9 100755
+--- a/tools/testing/selftests/net/forwarding/bridge_mdb.sh
++++ b/tools/testing/selftests/net/forwarding/bridge_mdb.sh
+@@ -1206,6 +1206,11 @@ ctrl_test()
+ 	ctrl_mldv2_is_in_test
+ }
  
- 	if (color_format == CURSOR_MODE_COLOR_PRE_MULTIPLIED_ALPHA ||
--		color_format == CURSOR_MODE_COLOR_UN_PRE_MULTIPLIED_ALPHA)
--		cur_rom_en = 1;
-+		color_format == CURSOR_MODE_COLOR_UN_PRE_MULTIPLIED_ALPHA) {
-+		if (cursor_attributes->attribute_flags.bits.ENABLE_CURSOR_DEGAMMA) {
-+			cur_rom_en = 1;
-+		}
-+	}
++if ! bridge mdb help 2>&1 | grep -q "replace"; then
++	echo "SKIP: iproute2 too old, missing bridge mdb replace support"
++	exit $ksft_skip
++fi
++
+ trap cleanup EXIT
  
- 	REG_UPDATE_3(CURSOR0_CONTROL,
- 			CUR0_MODE, color_format,
+ setup_prepare
+-- 
+2.41.0
+
 
 
