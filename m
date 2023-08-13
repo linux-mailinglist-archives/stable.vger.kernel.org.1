@@ -2,165 +2,125 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6B5CD77AC9B
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:35:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2ACB277ABF7
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:27:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232080AbjHMVfD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:35:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56744 "EHLO
+        id S231775AbjHMV1p (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:27:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41572 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232085AbjHMVfB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:35:01 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 10EF510DB
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:35:03 -0700 (PDT)
+        with ESMTP id S231749AbjHMV1p (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:27:45 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1A4E910D7
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:27:47 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A354062CD0
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:35:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4F44C433C8;
-        Sun, 13 Aug 2023 21:35:01 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A49C5629ED
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:27:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAC82C433C8;
+        Sun, 13 Aug 2023 21:27:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691962502;
-        bh=hOabV+KorJK9yJKufh1IhqTLOa1UUsSKa8xLx0V0TvE=;
+        s=korg; t=1691962066;
+        bh=w7590vGmhAEpks0pn60oUDdjgVkV1E72X310TcBUVHg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jJ79xCRZ7CiUnhYxcctadfYveQgIrsnPcvl1Yi0GXV7sKtLvCV/UkGTx5Iqnuwkxy
-         e/WDzcLwk77BN6j4mrqWluHP05F7fkL73VisF+7+6drVXd9V9+7lxoH/rrEgtG0FHC
-         RkpbhmZXxZ9E9K4cIyT3B78z4e6b/Fp2EPGhbWS8=
+        b=iqaC5hwq6Z/BpLGh40Ndb7iiMwSzIUcgznS65KxmWB2sJWKN64sj9isffWwq3XASr
+         T8R5nC4q6CJJXDwZfYtDVjrRqLKFw/TEEgyj7RZ1fKusmXvX5hgHs/00YP8J6lTBQh
+         pTiUCwIxPKy3hmP8hwFPaWBOw2FOBVllEvlrsqQA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ben Skeggs <bskeggs@redhat.com>,
-        David Airlie <airlied@gmail.com>,
-        nouveau@lists.freedesktop.org, Karol Herbst <kherbst@redhat.com>,
-        Dave Airlie <airlied@redhat.com>
-Subject: [PATCH 6.1 025/149] drm/nouveau/gr: enable memory loads on helper invocation on all channels
-Date:   Sun, 13 Aug 2023 23:17:50 +0200
-Message-ID: <20230813211719.554323424@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>,
+        Ido Schimmel <idosch@nvidia.com>,
+        Petr Machata <petrm@nvidia.com>,
+        Davide Caratti <dcaratti@redhat.com>,
+        Hangbin Liu <liuhangbin@gmail.com>,
+        Nikolay Aleksandrov <razor@blackwall.org>,
+        Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.4 101/206] selftests: forwarding: tc_tunnel_key: Make filters more specific
+Date:   Sun, 13 Aug 2023 23:17:51 +0200
+Message-ID: <20230813211727.950115419@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211718.757428827@linuxfoundation.org>
-References: <20230813211718.757428827@linuxfoundation.org>
+In-Reply-To: <20230813211724.969019629@linuxfoundation.org>
+References: <20230813211724.969019629@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Karol Herbst <kherbst@redhat.com>
+From: Ido Schimmel <idosch@nvidia.com>
 
-commit 1cb9e2ef66d53b020842b18762e30d0eb4384de8 upstream.
+commit 11604178fdc3404d46518e5332f1fe865d30c4a1 upstream.
 
-We have a lurking bug where Fragment Shader Helper Invocations can't load
-from memory. But this is actually required in OpenGL and is causing random
-hangs or failures in random shaders.
+The test installs filters that match on various IP fragments (e.g., no
+fragment, first fragment) and expects a certain amount of packets to hit
+each filter. This is problematic as the filters are not specific enough
+and can match IP packets (e.g., IGMP) generated by the stack, resulting
+in failures [1].
 
-It is unknown how widespread this issue is, but shaders hitting this can
-end up with infinite loops.
+Fix by making the filters more specific and match on more fields in the
+IP header: Source IP, destination IP and protocol.
 
-We enable those only on all Kepler and newer GPUs where we use our own
-Firmware.
+[1]
+ # timeout set to 0
+ # selftests: net/forwarding: tc_tunnel_key.sh
+ # TEST: tunnel_key nofrag (skip_hw)                                   [FAIL]
+ #       packet smaller than MTU was not tunneled
+ # INFO: Could not test offloaded functionality
+ not ok 89 selftests: net/forwarding: tc_tunnel_key.sh # exit=1
 
-Nvidia's firmware provides a way to set a kernelspace controlled list of
-mmio registers in the gr space from push buffers via MME macros.
-
-v2: drop code for gm200 and newer.
-
-Cc: Ben Skeggs <bskeggs@redhat.com>
-Cc: David Airlie <airlied@gmail.com>
-Cc: nouveau@lists.freedesktop.org
-Cc: stable@vger.kernel.org # 4.19+
-Signed-off-by: Karol Herbst <kherbst@redhat.com>
-Reviewed-by: Dave Airlie <airlied@redhat.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230622152017.2512101-1-kherbst@redhat.com
+Fixes: 533a89b1940f ("selftests: forwarding: add tunnel_key "nofrag" test case")
+Reported-by: Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>
+Closes: https://lore.kernel.org/netdev/adc5e40d-d040-a65e-eb26-edf47dac5b02@alu.unizg.hr/
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: Petr Machata <petrm@nvidia.com>
+Tested-by: Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>
+Acked-by: Davide Caratti <dcaratti@redhat.com>
+Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
+Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
+Link: https://lore.kernel.org/r/20230808141503.4060661-14-idosch@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/nouveau/nvkm/engine/gr/ctxgf100.h  |    1 +
- drivers/gpu/drm/nouveau/nvkm/engine/gr/ctxgk104.c  |    4 +++-
- drivers/gpu/drm/nouveau/nvkm/engine/gr/ctxgk110.c  |   10 ++++++++++
- drivers/gpu/drm/nouveau/nvkm/engine/gr/ctxgk110b.c |    1 +
- drivers/gpu/drm/nouveau/nvkm/engine/gr/ctxgk208.c  |    1 +
- drivers/gpu/drm/nouveau/nvkm/engine/gr/ctxgm107.c  |    1 +
- 6 files changed, 17 insertions(+), 1 deletion(-)
+ tools/testing/selftests/net/forwarding/tc_tunnel_key.sh | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
---- a/drivers/gpu/drm/nouveau/nvkm/engine/gr/ctxgf100.h
-+++ b/drivers/gpu/drm/nouveau/nvkm/engine/gr/ctxgf100.h
-@@ -123,6 +123,7 @@ void gk104_grctx_generate_r418800(struct
+diff --git a/tools/testing/selftests/net/forwarding/tc_tunnel_key.sh b/tools/testing/selftests/net/forwarding/tc_tunnel_key.sh
+index 5ac184d51809..5a5dd9034819 100755
+--- a/tools/testing/selftests/net/forwarding/tc_tunnel_key.sh
++++ b/tools/testing/selftests/net/forwarding/tc_tunnel_key.sh
+@@ -104,11 +104,14 @@ tunnel_key_nofrag_test()
+ 	local i
  
- extern const struct gf100_grctx_func gk110_grctx;
- void gk110_grctx_generate_r419eb0(struct gf100_gr *);
-+void gk110_grctx_generate_r419f78(struct gf100_gr *);
+ 	tc filter add dev $swp1 ingress protocol ip pref 100 handle 100 \
+-		flower ip_flags nofrag action drop
++		flower src_ip 192.0.2.1 dst_ip 192.0.2.2 ip_proto udp \
++		ip_flags nofrag action drop
+ 	tc filter add dev $swp1 ingress protocol ip pref 101 handle 101 \
+-		flower ip_flags firstfrag action drop
++		flower src_ip 192.0.2.1 dst_ip 192.0.2.2 ip_proto udp \
++		ip_flags firstfrag action drop
+ 	tc filter add dev $swp1 ingress protocol ip pref 102 handle 102 \
+-		flower ip_flags nofirstfrag action drop
++		flower src_ip 192.0.2.1 dst_ip 192.0.2.2 ip_proto udp \
++		ip_flags nofirstfrag action drop
  
- extern const struct gf100_grctx_func gk110b_grctx;
- extern const struct gf100_grctx_func gk208_grctx;
---- a/drivers/gpu/drm/nouveau/nvkm/engine/gr/ctxgk104.c
-+++ b/drivers/gpu/drm/nouveau/nvkm/engine/gr/ctxgk104.c
-@@ -916,7 +916,9 @@ static void
- gk104_grctx_generate_r419f78(struct gf100_gr *gr)
- {
- 	struct nvkm_device *device = gr->base.engine.subdev.device;
--	nvkm_mask(device, 0x419f78, 0x00000001, 0x00000000);
-+
-+	/* bit 3 set disables loads in fp helper invocations, we need it enabled */
-+	nvkm_mask(device, 0x419f78, 0x00000009, 0x00000000);
- }
- 
- void
---- a/drivers/gpu/drm/nouveau/nvkm/engine/gr/ctxgk110.c
-+++ b/drivers/gpu/drm/nouveau/nvkm/engine/gr/ctxgk110.c
-@@ -820,6 +820,15 @@ gk110_grctx_generate_r419eb0(struct gf10
- 	nvkm_mask(device, 0x419eb0, 0x00001000, 0x00001000);
- }
- 
-+void
-+gk110_grctx_generate_r419f78(struct gf100_gr *gr)
-+{
-+	struct nvkm_device *device = gr->base.engine.subdev.device;
-+
-+	/* bit 3 set disables loads in fp helper invocations, we need it enabled */
-+	nvkm_mask(device, 0x419f78, 0x00000008, 0x00000000);
-+}
-+
- const struct gf100_grctx_func
- gk110_grctx = {
- 	.main  = gf100_grctx_generate_main,
-@@ -852,4 +861,5 @@ gk110_grctx = {
- 	.gpc_tpc_nr = gk104_grctx_generate_gpc_tpc_nr,
- 	.r418800 = gk104_grctx_generate_r418800,
- 	.r419eb0 = gk110_grctx_generate_r419eb0,
-+	.r419f78 = gk110_grctx_generate_r419f78,
- };
---- a/drivers/gpu/drm/nouveau/nvkm/engine/gr/ctxgk110b.c
-+++ b/drivers/gpu/drm/nouveau/nvkm/engine/gr/ctxgk110b.c
-@@ -101,4 +101,5 @@ gk110b_grctx = {
- 	.gpc_tpc_nr = gk104_grctx_generate_gpc_tpc_nr,
- 	.r418800 = gk104_grctx_generate_r418800,
- 	.r419eb0 = gk110_grctx_generate_r419eb0,
-+	.r419f78 = gk110_grctx_generate_r419f78,
- };
---- a/drivers/gpu/drm/nouveau/nvkm/engine/gr/ctxgk208.c
-+++ b/drivers/gpu/drm/nouveau/nvkm/engine/gr/ctxgk208.c
-@@ -566,4 +566,5 @@ gk208_grctx = {
- 	.dist_skip_table = gf117_grctx_generate_dist_skip_table,
- 	.gpc_tpc_nr = gk104_grctx_generate_gpc_tpc_nr,
- 	.r418800 = gk104_grctx_generate_r418800,
-+	.r419f78 = gk110_grctx_generate_r419f78,
- };
---- a/drivers/gpu/drm/nouveau/nvkm/engine/gr/ctxgm107.c
-+++ b/drivers/gpu/drm/nouveau/nvkm/engine/gr/ctxgm107.c
-@@ -991,4 +991,5 @@ gm107_grctx = {
- 	.r406500 = gm107_grctx_generate_r406500,
- 	.gpc_tpc_nr = gk104_grctx_generate_gpc_tpc_nr,
- 	.r419e00 = gm107_grctx_generate_r419e00,
-+	.r419f78 = gk110_grctx_generate_r419f78,
- };
+ 	# test 'nofrag' set
+ 	tc filter add dev h1-et egress protocol all pref 1 handle 1 matchall $tcflags \
+-- 
+2.41.0
+
 
 
