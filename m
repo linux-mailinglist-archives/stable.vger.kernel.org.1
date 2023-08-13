@@ -2,87 +2,120 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6118E77AB6E
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:21:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8D66877ACD9
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:37:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230334AbjHMVVy (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:21:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36828 "EHLO
+        id S232206AbjHMVhu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:37:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55574 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230326AbjHMVVx (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:21:53 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 92C5110E3
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:21:55 -0700 (PDT)
+        with ESMTP id S232203AbjHMVht (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:37:49 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 49B1F10DB
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:37:51 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 28D3A627CF
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:21:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 425E4C433C8;
-        Sun, 13 Aug 2023 21:21:54 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DCBDA634DB
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:37:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECD9DC433C7;
+        Sun, 13 Aug 2023 21:37:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691961714;
-        bh=LTLTGtzwLFCfMwDPkwvOE59epzWiH/L6gcAyHUc0PlM=;
+        s=korg; t=1691962670;
+        bh=wzjW6NfWaFGmkx6qG8ljmnjVVJVSQaGZk4dIKtIXpIQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ngM3dDXXpzvvNjJUVP1L5qNNUHZgUF0BFoV6bb3G5dVUkWKYKLPFKqYs1SFvusM9T
-         dYjiH2UbRw8lOLLcTOCHIphuyheT2VdS7IV+McE1lLsAxs3tsqo8vC1GZ3XVgNv0mw
-         rBCwohJc38a7pAol2koIt+3aWTZFt4xKRQ1yz+1s=
+        b=k76K/mCh62VSnC3/zSPWmIFIVTcbaGHd701m2AEJjfQDv2fcGFK0OsEW/XHdbRDpv
+         Vq4ikODu4WPJGOiXIuQyFeynZgiTkLW5naUgOWFArmD4sNMK043Lx7TgNz7G9Nnces
+         fApMw3pvCtabbthl8+gr6HN1U/WosIkN0oGV/jUI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zhu Wang <wangzhu9@huawei.com>,
-        Bart Van Assche <bvanassche@acm.org>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 4.14 25/26] scsi: core: Fix possible memory leak if device_add() fails
+        patches@lists.linux.dev, Hao Chen <chenhao418@huawei.com>,
+        Jijie Shao <shaojijie@huawei.com>,
+        Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 113/149] net: hns3: fix strscpy causing content truncation issue
 Date:   Sun, 13 Aug 2023 23:19:18 +0200
-Message-ID: <20230813211703.922069272@linuxfoundation.org>
+Message-ID: <20230813211722.133629405@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211702.980427106@linuxfoundation.org>
-References: <20230813211702.980427106@linuxfoundation.org>
+In-Reply-To: <20230813211718.757428827@linuxfoundation.org>
+References: <20230813211718.757428827@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Zhu Wang <wangzhu9@huawei.com>
+From: Hao Chen <chenhao418@huawei.com>
 
-commit 04b5b5cb0136ce970333a9c6cec7e46adba1ea3a upstream.
+commit 5e3d20617b055e725e785e0058426368269949f3 upstream.
 
-If device_add() returns error, the name allocated by dev_set_name() needs
-be freed. As the comment of device_add() says, put_device() should be used
-to decrease the reference count in the error path. So fix this by calling
-put_device(), then the name can be freed in kobject_cleanp().
+hns3_dbg_fill_content()/hclge_dbg_fill_content() is aim to integrate some
+items to a string for content, and we add '\n' and '\0' in the last
+two bytes of content.
 
-Fixes: ee959b00c335 ("SCSI: convert struct class_device to struct device")
-Signed-off-by: Zhu Wang <wangzhu9@huawei.com>
-Link: https://lore.kernel.org/r/20230803020230.226903-1-wangzhu9@huawei.com
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+strscpy() will add '\0' in the last byte of destination buffer(one of
+items), it result in finishing content print ahead of schedule and some
+dump content truncation.
+
+One Error log shows as below:
+cat mac_list/uc
+UC MAC_LIST:
+
+Expected:
+UC MAC_LIST:
+FUNC_ID  MAC_ADDR            STATE
+pf       00:2b:19:05:03:00   ACTIVE
+
+The destination buffer is length-bounded and not required to be
+NUL-terminated, so just change strscpy() to memcpy() to fix it.
+
+Fixes: 1cf3d5567f27 ("net: hns3: fix strncpy() not using dest-buf length as length issue")
+Signed-off-by: Hao Chen <chenhao418@huawei.com>
+Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+Link: https://lore.kernel.org/r/20230809020902.1941471-1-shaojijie@huawei.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/raid_class.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/hisilicon/hns3/hns3_debugfs.c         |    4 ++--
+ drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_debugfs.c |    4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/scsi/raid_class.c
-+++ b/drivers/scsi/raid_class.c
-@@ -248,6 +248,7 @@ int raid_component_add(struct raid_templ
- 	return 0;
- 
- err_out:
-+	put_device(&rc->dev);
- 	list_del(&rc->node);
- 	rd->component_count--;
- 	put_device(component_dev);
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3_debugfs.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3_debugfs.c
+@@ -458,9 +458,9 @@ static void hns3_dbg_fill_content(char *
+ 		if (result) {
+ 			if (item_len < strlen(result[i]))
+ 				break;
+-			strscpy(pos, result[i], strlen(result[i]));
++			memcpy(pos, result[i], strlen(result[i]));
+ 		} else {
+-			strscpy(pos, items[i].name, strlen(items[i].name));
++			memcpy(pos, items[i].name, strlen(items[i].name));
+ 		}
+ 		pos += item_len;
+ 		len -= item_len;
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_debugfs.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_debugfs.c
+@@ -110,9 +110,9 @@ static void hclge_dbg_fill_content(char
+ 		if (result) {
+ 			if (item_len < strlen(result[i]))
+ 				break;
+-			strscpy(pos, result[i], strlen(result[i]));
++			memcpy(pos, result[i], strlen(result[i]));
+ 		} else {
+-			strscpy(pos, items[i].name, strlen(items[i].name));
++			memcpy(pos, items[i].name, strlen(items[i].name));
+ 		}
+ 		pos += item_len;
+ 		len -= item_len;
 
 
