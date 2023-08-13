@@ -2,49 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DD96777AD5D
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:49:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1FCD277AD4C
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:48:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232336AbjHMVt0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:49:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60554 "EHLO
+        id S230289AbjHMVsW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:48:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33202 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232339AbjHMVsz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:48:55 -0400
+        with ESMTP id S230299AbjHMVsC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:48:02 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C7B519A7
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:41:07 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A8941708
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:39:37 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 343A561A2D
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:41:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 454ACC433C8;
-        Sun, 13 Aug 2023 21:41:06 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6EEC26381F
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:39:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87AD3C433C7;
+        Sun, 13 Aug 2023 21:39:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691962866;
-        bh=iqwqPSbrOzLABMnbt/2aa7sFnp243oZZ+ilWCX40fuY=;
+        s=korg; t=1691962772;
+        bh=YYpk5UZMJzfKeY0OXNFaMV4+zqmVAOe8Kp/+jib3eQA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=lkSzUKymf6/zhFuVRAXvnKmarplah7btRGWDHKA0TjnQbc63PiJpm0+gBm8nKAaUF
-         Oq6hSGCpEMNtXNqe0yp++oO/3wigiK6OxRsD7uOVB+HpdmJpXNNTLjo1G5WYQpc3o+
-         Or71zF1mWn2u0QBA6WlNCQaqMuEAgmVGhkDUFJ0s=
+        b=pUzZR15zamM4oIhB7J+bXW06EWp5b5wOvb3rW5L99FwDe4+LkpeQ4eJ3wlFTyTolw
+         ZTVJcHfgih7TAJgaokDa5H17CdEV2eZ+Q9PJCRuwcwT68kXa4uDTZaka/3b7DmcJWm
+         M42QFBNVM+A9cW3Ipda1QUBFUsgSv86RW0JMa9Oc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>,
-        Ido Schimmel <idosch@nvidia.com>,
-        Petr Machata <petrm@nvidia.com>,
-        Hangbin Liu <liuhangbin@gmail.com>,
-        Nikolay Aleksandrov <razor@blackwall.org>,
-        Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.10 36/68] selftests: forwarding: Skip test when no interfaces are specified
-Date:   Sun, 13 Aug 2023 23:19:37 +0200
-Message-ID: <20230813211709.256551181@linuxfoundation.org>
+        patches@lists.linux.dev, Ming Lei <ming.lei@redhat.com>,
+        Yi Zhang <yi.zhang@redhat.com>,
+        Sagi Grimberg <sagi@grimberg.me>,
+        Keith Busch <kbusch@kernel.org>
+Subject: [PATCH 6.1 133/149] nvme-tcp: fix potential unbalanced freeze & unfreeze
+Date:   Sun, 13 Aug 2023 23:19:38 +0200
+Message-ID: <20230813211722.694200364@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211708.149630011@linuxfoundation.org>
-References: <20230813211708.149630011@linuxfoundation.org>
+In-Reply-To: <20230813211718.757428827@linuxfoundation.org>
+References: <20230813211718.757428827@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -59,68 +56,62 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Ming Lei <ming.lei@redhat.com>
 
-commit d72c83b1e4b4a36a38269c77a85ff52f95eb0d08 upstream.
+commit 99dc264014d5aed66ee37ddf136a38b5a2b1b529 upstream.
 
-As explained in [1], the forwarding selftests are meant to be run with
-either physical loopbacks or veth pairs. The interfaces are expected to
-be specified in a user-provided forwarding.config file or as command
-line arguments. By default, this file is not present and the tests fail:
+Move start_freeze into nvme_tcp_configure_io_queues(), and there is
+at least two benefits:
 
- # make -C tools/testing/selftests TARGETS=net/forwarding run_tests
- [...]
- TAP version 13
- 1..102
- # timeout set to 45
- # selftests: net/forwarding: bridge_igmp.sh
- # Command line is not complete. Try option "help"
- # Failed to create netif
- not ok 1 selftests: net/forwarding: bridge_igmp.sh # exit=1
- [...]
+1) fix unbalanced freeze and unfreeze, since re-connection work may
+fail or be broken by removal
 
-Fix by skipping a test if interfaces are not provided either via the
-configuration file or command line arguments.
+2) IO during error recovery can be failfast quickly because nvme fabrics
+unquiesces queues after teardown.
 
- # make -C tools/testing/selftests TARGETS=net/forwarding run_tests
- [...]
- TAP version 13
- 1..102
- # timeout set to 45
- # selftests: net/forwarding: bridge_igmp.sh
- # SKIP: Cannot create interface. Name not specified
- ok 1 selftests: net/forwarding: bridge_igmp.sh # SKIP
+One side-effect is that !mpath request may timeout during connecting
+because of queue topo change, but that looks not one big deal:
 
-[1] tools/testing/selftests/net/forwarding/README
+1) same problem exists with current code base
 
-Fixes: 81573b18f26d ("selftests/net/forwarding: add Makefile to install tests")
-Reported-by: Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>
-Closes: https://lore.kernel.org/netdev/856d454e-f83c-20cf-e166-6dc06cbc1543@alu.unizg.hr/
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: Petr Machata <petrm@nvidia.com>
-Tested-by: Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>
-Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
-Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
-Link: https://lore.kernel.org/r/20230808141503.4060661-2-idosch@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+2) compared with !mpath, mpath use case is dominant
+
+Fixes: 2875b0aecabe ("nvme-tcp: fix controller reset hang during traffic")
+Cc: stable@vger.kernel.org
+Signed-off-by: Ming Lei <ming.lei@redhat.com>
+Tested-by: Yi Zhang <yi.zhang@redhat.com>
+Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/net/forwarding/lib.sh |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/nvme/host/tcp.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/tools/testing/selftests/net/forwarding/lib.sh
-+++ b/tools/testing/selftests/net/forwarding/lib.sh
-@@ -132,6 +132,11 @@ create_netif_veth()
- 	for ((i = 1; i <= NUM_NETIFS; ++i)); do
- 		local j=$((i+1))
+--- a/drivers/nvme/host/tcp.c
++++ b/drivers/nvme/host/tcp.c
+@@ -1890,6 +1890,7 @@ static int nvme_tcp_configure_io_queues(
+ 		goto out_cleanup_connect_q;
  
-+		if [ -z ${NETIFS[p$i]} ]; then
-+			echo "SKIP: Cannot create interface. Name not specified"
-+			exit $ksft_skip
-+		fi
-+
- 		ip link show dev ${NETIFS[p$i]} &> /dev/null
- 		if [[ $? -ne 0 ]]; then
- 			ip link add ${NETIFS[p$i]} type veth \
+ 	if (!new) {
++		nvme_start_freeze(ctrl);
+ 		nvme_start_queues(ctrl);
+ 		if (!nvme_wait_freeze_timeout(ctrl, NVME_IO_TIMEOUT)) {
+ 			/*
+@@ -1898,6 +1899,7 @@ static int nvme_tcp_configure_io_queues(
+ 			 * to be safe.
+ 			 */
+ 			ret = -ENODEV;
++			nvme_unfreeze(ctrl);
+ 			goto out_wait_freeze_timed_out;
+ 		}
+ 		blk_mq_update_nr_hw_queues(ctrl->tagset,
+@@ -2002,7 +2004,6 @@ static void nvme_tcp_teardown_io_queues(
+ 	if (ctrl->queue_count <= 1)
+ 		return;
+ 	nvme_stop_admin_queue(ctrl);
+-	nvme_start_freeze(ctrl);
+ 	nvme_stop_queues(ctrl);
+ 	nvme_sync_io_queues(ctrl);
+ 	nvme_tcp_stop_io_queues(ctrl);
 
 
