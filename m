@@ -2,129 +2,150 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1E7DA77ACBF
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:36:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 28DD177AC54
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:32:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232157AbjHMVgh (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:36:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59650 "EHLO
+        id S231955AbjHMVcN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:32:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56108 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232149AbjHMVgh (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:36:37 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3671E10DD
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:36:39 -0700 (PDT)
+        with ESMTP id S231945AbjHMVcM (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:32:12 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 942A6173D
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:31:55 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C8F0A631A1
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:36:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDFF5C433C7;
-        Sun, 13 Aug 2023 21:36:37 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 807CC62B16
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:31:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98B3BC433C8;
+        Sun, 13 Aug 2023 21:31:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691962598;
-        bh=z1bi7sjIe+HcyufpBLtsmTUYkE6/ZIFOj1d7unzD9iU=;
+        s=korg; t=1691962314;
+        bh=SDk2jQs/9gsVggc8VaptrE27iFUMFZCIoI+W6X5PRH4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=yvwLzGFIq+Rw6/VVzbL7iSKjjBnU8V78Fm+a9tzgoYTAME4+qUque42gleOcH5JNX
-         ghC/ULRUoKKytzzD9LzGjYLFn2QzDvh1Tf1kpN7/EwiomeQcydknw4Rg182ddO6lTx
-         kIstMWida4IGdiUYYCBVZyji8iFHy5B59FeHZL5A=
+        b=L1TVKDhKd5LyxpkENAv+361Nw5799F3ngCyxJaIhy8uB8St/N0borhsG39n+Uxyrx
+         kubqhorEBK5IEjnGqbhmA2nv4fYNboHiJpBlIv6634Dbuq6L0Ld2oZSUXEJiJisIf/
+         JSmAndfzNCtzxsjBlSEXcUK23yO0bYHW5Fc2L4qE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, kernel test robot <oliver.sang@intel.com>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Sami Tolvanen <samitolvanen@google.com>,
-        Kees Cook <keescook@chromium.org>,
+        patches@lists.linux.dev, Ido Schimmel <idosch@nvidia.com>,
+        Petr Machata <petrm@nvidia.com>,
+        David Ahern <dsahern@kernel.org>,
         Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 086/149] mISDN: Update parameter type of dsp_cmx_send()
+Subject: [PATCH 6.4 161/206] nexthop: Make nexthop bucket dump more efficient
 Date:   Sun, 13 Aug 2023 23:18:51 +0200
-Message-ID: <20230813211721.362988896@linuxfoundation.org>
+Message-ID: <20230813211729.631903303@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211718.757428827@linuxfoundation.org>
-References: <20230813211718.757428827@linuxfoundation.org>
+In-Reply-To: <20230813211724.969019629@linuxfoundation.org>
+References: <20230813211724.969019629@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Ido Schimmel <idosch@nvidia.com>
 
-commit 1696ec8654016dad3b1baf6c024303e584400453 upstream.
+commit f10d3d9df49d9e6ee244fda6ca264f901a9c5d85 upstream.
 
-When booting a kernel with CONFIG_MISDN_DSP=y and CONFIG_CFI_CLANG=y,
-there is a failure when dsp_cmx_send() is called indirectly from
-call_timer_fn():
+rtm_dump_nexthop_bucket_nh() is used to dump nexthop buckets belonging
+to a specific resilient nexthop group. The function returns a positive
+return code (the skb length) upon both success and failure.
 
-  [    0.371412] CFI failure at call_timer_fn+0x2f/0x150 (target: dsp_cmx_send+0x0/0x530; expected type: 0x92ada1e9)
+The above behavior is problematic. When a complete nexthop bucket dump
+is requested, the function that walks the different nexthops treats the
+non-zero return code as an error. This causes buckets belonging to
+different resilient nexthop groups to be dumped using different buffers
+even if they can all fit in the same buffer:
 
-The function pointer prototype that call_timer_fn() expects is
+ # ip link add name dummy1 up type dummy
+ # ip nexthop add id 1 dev dummy1
+ # ip nexthop add id 10 group 1 type resilient buckets 1
+ # ip nexthop add id 20 group 1 type resilient buckets 1
+ # strace -e recvmsg -s 0 ip nexthop bucket
+ [...]
+ recvmsg(3, {msg_name={sa_family=AF_NETLINK, nl_pid=0, nl_groups=00000000}, msg_namelen=12, msg_iov=[...], msg_iovlen=1, msg_controllen=0, msg_flags=0}, 0) = 64
+ id 10 index 0 idle_time 10.27 nhid 1
+ [...]
+ recvmsg(3, {msg_name={sa_family=AF_NETLINK, nl_pid=0, nl_groups=00000000}, msg_namelen=12, msg_iov=[...], msg_iovlen=1, msg_controllen=0, msg_flags=0}, 0) = 64
+ id 20 index 0 idle_time 6.44 nhid 1
+ [...]
 
-  void (*fn)(struct timer_list *)
+Fix by only returning a non-zero return code when an error occurred and
+restarting the dump from the bucket index we failed to fill in. This
+allows buckets belonging to different resilient nexthop groups to be
+dumped using the same buffer:
 
-whereas dsp_cmx_send() has a parameter type of 'void *', which causes
-the control flow integrity checks to fail because the parameter types do
-not match.
+ # ip link add name dummy1 up type dummy
+ # ip nexthop add id 1 dev dummy1
+ # ip nexthop add id 10 group 1 type resilient buckets 1
+ # ip nexthop add id 20 group 1 type resilient buckets 1
+ # strace -e recvmsg -s 0 ip nexthop bucket
+ [...]
+ recvmsg(3, {msg_name={sa_family=AF_NETLINK, nl_pid=0, nl_groups=00000000}, msg_namelen=12, msg_iov=[...], msg_iovlen=1, msg_controllen=0, msg_flags=0}, 0) = 128
+ id 10 index 0 idle_time 30.21 nhid 1
+ id 20 index 0 idle_time 26.7 nhid 1
+ [...]
 
-Change dsp_cmx_send()'s parameter type to be 'struct timer_list' to
-match the expected prototype. The argument is unused anyways, so this
-has no functional change, aside from avoiding the CFI failure.
+While this change is more of a performance improvement change than an
+actual bug fix, it is a prerequisite for a subsequent patch that does
+fix a bug.
 
-Reported-by: kernel test robot <oliver.sang@intel.com>
-Closes: https://lore.kernel.org/oe-lkp/202308020936.58787e6c-oliver.sang@intel.com
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Reviewed-by: Sami Tolvanen <samitolvanen@google.com>
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Fixes: e313ac12eb13 ("mISDN: Convert timers to use timer_setup()")
-Link: https://lore.kernel.org/r/20230802-fix-dsp_cmx_send-cfi-failure-v1-1-2f2e79b0178d@kernel.org
+Fixes: 8a1bbabb034d ("nexthop: Add netlink handlers for bucket dump")
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: Petr Machata <petrm@nvidia.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://lore.kernel.org/r/20230808075233.3337922-3-idosch@nvidia.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/isdn/mISDN/dsp.h      |    2 +-
- drivers/isdn/mISDN/dsp_cmx.c  |    2 +-
- drivers/isdn/mISDN/dsp_core.c |    2 +-
- 3 files changed, 3 insertions(+), 3 deletions(-)
+ net/ipv4/nexthop.c |   16 +++++-----------
+ 1 file changed, 5 insertions(+), 11 deletions(-)
 
---- a/drivers/isdn/mISDN/dsp.h
-+++ b/drivers/isdn/mISDN/dsp.h
-@@ -247,7 +247,7 @@ extern void dsp_cmx_hardware(struct dsp_
- extern int dsp_cmx_conf(struct dsp *dsp, u32 conf_id);
- extern void dsp_cmx_receive(struct dsp *dsp, struct sk_buff *skb);
- extern void dsp_cmx_hdlc(struct dsp *dsp, struct sk_buff *skb);
--extern void dsp_cmx_send(void *arg);
-+extern void dsp_cmx_send(struct timer_list *arg);
- extern void dsp_cmx_transmit(struct dsp *dsp, struct sk_buff *skb);
- extern int dsp_cmx_del_conf_member(struct dsp *dsp);
- extern int dsp_cmx_del_conf(struct dsp_conf *conf);
---- a/drivers/isdn/mISDN/dsp_cmx.c
-+++ b/drivers/isdn/mISDN/dsp_cmx.c
-@@ -1625,7 +1625,7 @@ static u16	dsp_count; /* last sample cou
- static int	dsp_count_valid; /* if we have last sample count */
+--- a/net/ipv4/nexthop.c
++++ b/net/ipv4/nexthop.c
+@@ -3363,25 +3363,19 @@ static int rtm_dump_nexthop_bucket_nh(st
+ 		    dd->filter.res_bucket_nh_id != nhge->nh->id)
+ 			continue;
  
- void
--dsp_cmx_send(void *arg)
-+dsp_cmx_send(struct timer_list *arg)
- {
- 	struct dsp_conf *conf;
- 	struct dsp_conf_member *member;
---- a/drivers/isdn/mISDN/dsp_core.c
-+++ b/drivers/isdn/mISDN/dsp_core.c
-@@ -1195,7 +1195,7 @@ static int __init dsp_init(void)
++		dd->ctx->bucket_index = bucket_index;
+ 		err = nh_fill_res_bucket(skb, nh, bucket, bucket_index,
+ 					 RTM_NEWNEXTHOPBUCKET, portid,
+ 					 cb->nlh->nlmsg_seq, NLM_F_MULTI,
+ 					 cb->extack);
+-		if (err < 0) {
+-			if (likely(skb->len))
+-				goto out;
+-			goto out_err;
+-		}
++		if (err)
++			return err;
  	}
  
- 	/* set sample timer */
--	timer_setup(&dsp_spl_tl, (void *)dsp_cmx_send, 0);
-+	timer_setup(&dsp_spl_tl, dsp_cmx_send, 0);
- 	dsp_spl_tl.expires = jiffies + dsp_tics;
- 	dsp_spl_jiffies = dsp_spl_tl.expires;
- 	add_timer(&dsp_spl_tl);
+ 	dd->ctx->done_nh_idx = dd->ctx->nh.idx + 1;
+-	bucket_index = 0;
++	dd->ctx->bucket_index = 0;
+ 
+-out:
+-	err = skb->len;
+-out_err:
+-	dd->ctx->bucket_index = bucket_index;
+-	return err;
++	return 0;
+ }
+ 
+ static int rtm_dump_nexthop_bucket_cb(struct sk_buff *skb,
 
 
