@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5448677AC6F
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:33:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5A27577ABE8
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:27:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231995AbjHMVdF (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:33:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57904 "EHLO
+        id S231737AbjHMV1F (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:27:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57888 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231982AbjHMVdE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:33:04 -0400
+        with ESMTP id S231731AbjHMV1E (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:27:04 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 54DE391
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:33:06 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C48F710D7
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:27:06 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DD32E62C0C
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:33:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFE6FC433C8;
-        Sun, 13 Aug 2023 21:33:04 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 595A4629CC
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:27:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47160C433C8;
+        Sun, 13 Aug 2023 21:27:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691962385;
-        bh=rHSypBbSZT4Jam3GNg4+VqomMu6B+hadevaYTq4GXc8=;
+        s=korg; t=1691962025;
+        bh=tpfOpc5fjInSeYhRCSKyhk2jYzfs2VEeDrACHRpsV0I=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=i8ho9lEJixqkmO3cGY/stWqrGkIyiiMLaSwpKblX+UYq6dTOSdrGOlB1QmoCXbpK0
-         v1uc0eJXfK2a0oXRbMX+MYqDIF68deruDulwhhcl6LlzkKhigXjZtMg77PSf5PTs5h
-         EmAzWqPK7rQtsG7oAsfiwIvdKnRgC3TMcysJr/y8=
+        b=LdCBhIYSKYZnrUM+u74hYWpLyiFxABkEdJW4PaV4o4M7ffevKFynDXZoIiPCsPxxu
+         K69JjZNCBqOwd4PyjjW+d2x+eRu30mt4Z5bmnxNyshOM8+lFAJ/Suy/hdB7AyqgNwE
+         IqrHqGlcV07jRPk+6+iGa8Eyo6NIp9rXPLG8+7Pg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Damian B <bronecki.damian@gmail.com>,
-        Stable@vger.kernel.org, Ping-Ke Shih <pkshih@realtek.com>,
-        Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 6.1 010/149] wifi: rtw89: fix 8852AE disconnection caused by RX full flags
+        patches@lists.linux.dev, Jinghao Jia <jinghao@linux.ibm.com>,
+        "Borislav Petkov (AMD)" <bp@alien8.de>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Randy Dunlap <rdunlap@infradead.org>, stable@kernel.org
+Subject: [PATCH 6.4 085/206] x86/linkage: Fix typo of BUILD_VDSO in asm/linkage.h
 Date:   Sun, 13 Aug 2023 23:17:35 +0200
-Message-ID: <20230813211719.107044372@linuxfoundation.org>
+Message-ID: <20230813211727.509987866@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211718.757428827@linuxfoundation.org>
-References: <20230813211718.757428827@linuxfoundation.org>
+In-Reply-To: <20230813211724.969019629@linuxfoundation.org>
+References: <20230813211724.969019629@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,40 +56,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ping-Ke Shih <pkshih@realtek.com>
+From: Jinghao Jia <jinghao@linux.ibm.com>
 
-commit b74bb07cdab6859e1a3fc9fe7351052176322ddf upstream.
+commit 7324f74d39531262b8e362f228b46512e6bee632 upstream.
 
-RX full flags are raised if certain types of RX FIFO are full, and then
-drop all following MPDU of AMPDU. In order to resume to receive MPDU
-when RX FIFO becomes available, we clear the register bits by the
-commit a0d99ebb3ecd ("wifi: rtw89: initialize DMA of CMAC"). But, 8852AE
-needs more settings to support this. To quickly fix disconnection problem,
-revert the behavior as before.
+The BUILD_VDSO macro was incorrectly spelled as BULID_VDSO in
+asm/linkage.h. This causes the !defined(BULID_VDSO) directive to always
+evaluate to true.
 
-Fixes: a0d99ebb3ecd ("wifi: rtw89: initialize DMA of CMAC")
-Reported-by: Damian B <bronecki.damian@gmail.com>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217710
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Tested-by: Damian B <bronecki.damian@gmail.com>
-Link: https://lore.kernel.org/r/20230808005426.5327-1-pkshih@realtek.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Correct the spelling to BUILD_VDSO.
+
+Fixes: bea75b33895f ("x86/Kconfig: Introduce function padding")
+Signed-off-by: Jinghao Jia <jinghao@linux.ibm.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
+Acked-by: Randy Dunlap <rdunlap@infradead.org>
+Cc: <stable@kernel.org>
+Link: https://lore.kernel.org/r/20230808182353.76218-1-jinghao@linux.ibm.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/realtek/rtw89/mac.c |    2 +-
+ arch/x86/include/asm/linkage.h | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/net/wireless/realtek/rtw89/mac.c
-+++ b/drivers/net/wireless/realtek/rtw89/mac.c
-@@ -2209,7 +2209,7 @@ static int cmac_dma_init(struct rtw89_de
- 	u32 reg;
- 	int ret;
+diff --git a/arch/x86/include/asm/linkage.h b/arch/x86/include/asm/linkage.h
+index 0953aa32a324..97a3de7892d3 100644
+--- a/arch/x86/include/asm/linkage.h
++++ b/arch/x86/include/asm/linkage.h
+@@ -21,7 +21,7 @@
+ #define FUNCTION_PADDING
+ #endif
  
--	if (chip_id != RTL8852A && chip_id != RTL8852B)
-+	if (chip_id != RTL8852B)
- 		return 0;
- 
- 	ret = rtw89_mac_check_mac_en(rtwdev, mac_idx, RTW89_CMAC_SEL);
+-#if (CONFIG_FUNCTION_ALIGNMENT > 8) && !defined(__DISABLE_EXPORTS) && !defined(BULID_VDSO)
++#if (CONFIG_FUNCTION_ALIGNMENT > 8) && !defined(__DISABLE_EXPORTS) && !defined(BUILD_VDSO)
+ # define __FUNC_ALIGN		__ALIGN; FUNCTION_PADDING
+ #else
+ # define __FUNC_ALIGN		__ALIGN
+-- 
+2.41.0
+
 
 
