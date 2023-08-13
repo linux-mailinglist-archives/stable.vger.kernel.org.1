@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C429077AD93
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:49:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6779A77ADAA
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:50:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232509AbjHMVtd (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:49:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57446 "EHLO
+        id S232438AbjHMVu0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:50:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60570 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232284AbjHMVtF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:49:05 -0400
+        with ESMTP id S232439AbjHMVtW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:49:22 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC29A1FF0
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:42:47 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D74871709
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:48:12 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 25A3961A36
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:42:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39EACC433C8;
-        Sun, 13 Aug 2023 21:42:43 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6BD1963E44
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:48:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C25BC433C7;
+        Sun, 13 Aug 2023 21:48:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691962963;
-        bh=QE3p9s2mOodhd12/G9pbvpeZUD5cvMBaQqKk9dkAdS4=;
+        s=korg; t=1691963291;
+        bh=cTdeHh848QZnLCcdgDZMlk9AFU1o9ZXAMKFT/vJblzY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=wUFne587124mq67cPn4s4LNh2FpbokNRke5NpEI8qmQpeFp0q/qXFqkyedK+X3Gki
-         +qw5bVBRLl1D0Dp6AOPVPorDFkMFsoRDjOW4ULcc992SN9KL91aiaojwg/xUH1MD2z
-         IwlPkzVLNq8At2gGCdZyKgeAB4Y/dJefuGnmcCQs=
+        b=t41kklezME6tgBUvASPZMJB0wRPgQuYUi+nulLzM5J0RHzmEER7BRNliKVFAxCM6N
+         P9lVft/PXQz30GkQZiD2RYD3REYMA6ybr4M2WBPDpRQjxdzxdPDys2mmpItY7c1WhP
+         2MpMZ3Gb/ZU9gTn30zCC92v7I1B4ngDYW9oob6zI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ming Lei <ming.lei@redhat.com>,
-        Yi Zhang <yi.zhang@redhat.com>,
-        Sagi Grimberg <sagi@grimberg.me>,
-        Keith Busch <kbusch@kernel.org>
-Subject: [PATCH 5.10 57/68] nvme-tcp: fix potential unbalanced freeze & unfreeze
-Date:   Sun, 13 Aug 2023 23:19:58 +0200
-Message-ID: <20230813211709.876183395@linuxfoundation.org>
+        patches@lists.linux.dev, Tzung-Bi Shih <tzungbi@kernel.org>,
+        Yiyuan Guo <yguoaz@gmail.com>, Stable@vger.kerenl.org,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 5.4 08/39] iio: cros_ec: Fix the allocation size for cros_ec_command
+Date:   Sun, 13 Aug 2023 23:19:59 +0200
+Message-ID: <20230813211705.119276228@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211708.149630011@linuxfoundation.org>
-References: <20230813211708.149630011@linuxfoundation.org>
+In-Reply-To: <20230813211704.796906808@linuxfoundation.org>
+References: <20230813211704.796906808@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,62 +55,35 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ming Lei <ming.lei@redhat.com>
+From: Yiyuan Guo <yguoaz@gmail.com>
 
-commit 99dc264014d5aed66ee37ddf136a38b5a2b1b529 upstream.
+commit 8a4629055ef55177b5b63dab1ecce676bd8cccdd upstream.
 
-Move start_freeze into nvme_tcp_configure_io_queues(), and there is
-at least two benefits:
+The struct cros_ec_command contains several integer fields and a
+trailing array. An allocation size neglecting the integer fields can
+lead to buffer overrun.
 
-1) fix unbalanced freeze and unfreeze, since re-connection work may
-fail or be broken by removal
-
-2) IO during error recovery can be failfast quickly because nvme fabrics
-unquiesces queues after teardown.
-
-One side-effect is that !mpath request may timeout during connecting
-because of queue topo change, but that looks not one big deal:
-
-1) same problem exists with current code base
-
-2) compared with !mpath, mpath use case is dominant
-
-Fixes: 2875b0aecabe ("nvme-tcp: fix controller reset hang during traffic")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ming Lei <ming.lei@redhat.com>
-Tested-by: Yi Zhang <yi.zhang@redhat.com>
-Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Reviewed-by: Tzung-Bi Shih <tzungbi@kernel.org>
+Signed-off-by: Yiyuan Guo <yguoaz@gmail.com>
+Fixes: 974e6f02e27e ("iio: cros_ec_sensors_core: Add common functions for the ChromeOS EC Sensor Hub.")
+Link: https://lore.kernel.org/r/20230630143719.1513906-1-yguoaz@gmail.com
+Cc: <Stable@vger.kerenl.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nvme/host/tcp.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/nvme/host/tcp.c
-+++ b/drivers/nvme/host/tcp.c
-@@ -1859,6 +1859,7 @@ static int nvme_tcp_configure_io_queues(
- 		goto out_cleanup_connect_q;
+--- a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
++++ b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
+@@ -99,7 +99,7 @@ int cros_ec_sensors_core_init(struct pla
+ 	platform_set_drvdata(pdev, indio_dev);
  
- 	if (!new) {
-+		nvme_start_freeze(ctrl);
- 		nvme_start_queues(ctrl);
- 		if (!nvme_wait_freeze_timeout(ctrl, NVME_IO_TIMEOUT)) {
- 			/*
-@@ -1867,6 +1868,7 @@ static int nvme_tcp_configure_io_queues(
- 			 * to be safe.
- 			 */
- 			ret = -ENODEV;
-+			nvme_unfreeze(ctrl);
- 			goto out_wait_freeze_timed_out;
- 		}
- 		blk_mq_update_nr_hw_queues(ctrl->tagset,
-@@ -1989,7 +1991,6 @@ static void nvme_tcp_teardown_io_queues(
- 	if (ctrl->queue_count <= 1)
- 		return;
- 	blk_mq_quiesce_queue(ctrl->admin_q);
--	nvme_start_freeze(ctrl);
- 	nvme_stop_queues(ctrl);
- 	nvme_sync_io_queues(ctrl);
- 	nvme_tcp_stop_io_queues(ctrl);
+ 	state->ec = ec->ec_dev;
+-	state->msg = devm_kzalloc(&pdev->dev,
++	state->msg = devm_kzalloc(&pdev->dev, sizeof(*state->msg) +
+ 				max((u16)sizeof(struct ec_params_motion_sense),
+ 				state->ec->max_response), GFP_KERNEL);
+ 	if (!state->msg)
 
 
