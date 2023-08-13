@@ -2,173 +2,113 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EBC2277AB7E
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:22:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6AE1B77ACFE
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:48:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230417AbjHMVWn (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:22:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42516 "EHLO
+        id S232235AbjHMVii (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:38:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60538 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230443AbjHMVWe (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:22:34 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C1B0E10D0
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:22:36 -0700 (PDT)
+        with ESMTP id S232227AbjHMVii (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:38:38 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 253C810DB
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:38:40 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 607B4627DE
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:22:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79343C433C9;
-        Sun, 13 Aug 2023 21:22:35 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id AFBDB63723
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:38:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6672C433C8;
+        Sun, 13 Aug 2023 21:38:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691961755;
-        bh=QCfH0S68Ge1SvrMquQpvVo16hGhCks9mIgeD6mssEXc=;
+        s=korg; t=1691962719;
+        bh=ZDLjwiJlEnLYq1lcOf4AVnwMrnT0jR3Hno1KI8zbff8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Zp2LOwPUH83vaG2GYQI+PjExIT3IE1Ga5dR2XTpbiGNZCXQRptWon6AotStsa4PuQ
-         kImKNt9SjPiud2h+0Eq/99h3B9cJ5sMtGuZN5vRyiw25EYUgHbf6Pq+8b3x3UXPQcF
-         YUvHDEkUBQ7DQpKdz6lb4QN2Kvk6IpLlWzUwwouc=
+        b=dtSk4iv34pbuBdqgFoxKFP8TzbXZYeru+ItdUxFDmRotRf56mEaQOV5Qz2RGbsN3Y
+         iXL3LTTFRLyFvcFJUHZzVP+MTTe3JdG5GwoiNOkJsj6GZQe80JOG2K6WWyAobDRSHJ
+         2LOyOm1nFFM4TbdGz2GhfUL4tFxlNN732xZ1oKjg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-        syzbot+74db8b3087f293d3a13a@syzkaller.appspotmail.com,
-        Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 4.19 07/33] nilfs2: fix use-after-free of nilfs_root in dirtying inodes via iput
-Date:   Sun, 13 Aug 2023 23:19:01 +0200
-Message-ID: <20230813211704.201214397@linuxfoundation.org>
+        patches@lists.linux.dev, Ido Schimmel <idosch@idosch.org>,
+        Fedor Pchelkin <pchelkin@ispras.ru>,
+        "David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 6.1 097/149] drivers: vxlan: vnifilter: free percpu vni stats on error path
+Date:   Sun, 13 Aug 2023 23:19:02 +0200
+Message-ID: <20230813211721.689944942@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211703.915807095@linuxfoundation.org>
-References: <20230813211703.915807095@linuxfoundation.org>
+In-Reply-To: <20230813211718.757428827@linuxfoundation.org>
+References: <20230813211718.757428827@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+From: Fedor Pchelkin <pchelkin@ispras.ru>
 
-commit f8654743a0e6909dc634cbfad6db6816f10f3399 upstream.
+commit b1c936e9af5dd08636d568736fc6075ed9d1d529 upstream.
 
-During unmount process of nilfs2, nothing holds nilfs_root structure after
-nilfs2 detaches its writer in nilfs_detach_log_writer().  Previously,
-nilfs_evict_inode() could cause use-after-free read for nilfs_root if
-inodes are left in "garbage_list" and released by nilfs_dispose_list at
-the end of nilfs_detach_log_writer(), and this bug was fixed by commit
-9b5a04ac3ad9 ("nilfs2: fix use-after-free bug of nilfs_root in
-nilfs_evict_inode()").
+In case rhashtable_lookup_insert_fast() fails inside vxlan_vni_add(), the
+allocated percpu vni stats are not freed on the error path.
 
-However, it turned out that there is another possibility of UAF in the
-call path where mark_inode_dirty_sync() is called from iput():
+Introduce vxlan_vni_free() which would work as a nice wrapper to free
+vxlan_vni_node resources properly.
 
-nilfs_detach_log_writer()
-  nilfs_dispose_list()
-    iput()
-      mark_inode_dirty_sync()
-        __mark_inode_dirty()
-          nilfs_dirty_inode()
-            __nilfs_mark_inode_dirty()
-              nilfs_load_inode_block() --> causes UAF of nilfs_root struct
+Found by Linux Verification Center (linuxtesting.org).
 
-This can happen after commit 0ae45f63d4ef ("vfs: add support for a
-lazytime mount option"), which changed iput() to call
-mark_inode_dirty_sync() on its final reference if i_state has I_DIRTY_TIME
-flag and i_nlink is non-zero.
-
-This issue appears after commit 28a65b49eb53 ("nilfs2: do not write dirty
-data after degenerating to read-only") when using the syzbot reproducer,
-but the issue has potentially existed before.
-
-Fix this issue by adding a "purging flag" to the nilfs structure, setting
-that flag while disposing the "garbage_list" and checking it in
-__nilfs_mark_inode_dirty().
-
-Unlike commit 9b5a04ac3ad9 ("nilfs2: fix use-after-free bug of nilfs_root
-in nilfs_evict_inode()"), this patch does not rely on ns_writer to
-determine whether to skip operations, so as not to break recovery on
-mount.  The nilfs_salvage_orphan_logs routine dirties the buffer of
-salvaged data before attaching the log writer, so changing
-__nilfs_mark_inode_dirty() to skip the operation when ns_writer is NULL
-will cause recovery write to fail.  The purpose of using the cleanup-only
-flag is to allow for narrowing of such conditions.
-
-Link: https://lkml.kernel.org/r/20230728191318.33047-1-konishi.ryusuke@gmail.com
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Reported-by: syzbot+74db8b3087f293d3a13a@syzkaller.appspotmail.com
-Closes: https://lkml.kernel.org/r/000000000000b4e906060113fd63@google.com
-Fixes: 0ae45f63d4ef ("vfs: add support for a lazytime mount option")
-Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Cc: <stable@vger.kernel.org> # 4.0+
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 4095e0e1328a ("drivers: vxlan: vnifilter: per vni stats")
+Suggested-by: Ido Schimmel <idosch@idosch.org>
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nilfs2/inode.c     |    8 ++++++++
- fs/nilfs2/segment.c   |    2 ++
- fs/nilfs2/the_nilfs.h |    2 ++
- 3 files changed, 12 insertions(+)
+ drivers/net/vxlan/vxlan_vnifilter.c |   11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
---- a/fs/nilfs2/inode.c
-+++ b/fs/nilfs2/inode.c
-@@ -1112,9 +1112,17 @@ int nilfs_set_file_dirty(struct inode *i
- 
- int __nilfs_mark_inode_dirty(struct inode *inode, int flags)
- {
-+	struct the_nilfs *nilfs = inode->i_sb->s_fs_info;
- 	struct buffer_head *ibh;
- 	int err;
- 
-+	/*
-+	 * Do not dirty inodes after the log writer has been detached
-+	 * and its nilfs_root struct has been freed.
-+	 */
-+	if (unlikely(nilfs_purging(nilfs)))
-+		return 0;
-+
- 	err = nilfs_load_inode_block(inode, &ibh);
- 	if (unlikely(err)) {
- 		nilfs_msg(inode->i_sb, KERN_WARNING,
---- a/fs/nilfs2/segment.c
-+++ b/fs/nilfs2/segment.c
-@@ -2845,6 +2845,7 @@ void nilfs_detach_log_writer(struct supe
- 		nilfs_segctor_destroy(nilfs->ns_writer);
- 		nilfs->ns_writer = NULL;
- 	}
-+	set_nilfs_purging(nilfs);
- 
- 	/* Force to free the list of dirty files */
- 	spin_lock(&nilfs->ns_inode_lock);
-@@ -2857,4 +2858,5 @@ void nilfs_detach_log_writer(struct supe
- 	up_write(&nilfs->ns_segctor_sem);
- 
- 	nilfs_dispose_list(nilfs, &garbage_list, 1);
-+	clear_nilfs_purging(nilfs);
+--- a/drivers/net/vxlan/vxlan_vnifilter.c
++++ b/drivers/net/vxlan/vxlan_vnifilter.c
+@@ -713,6 +713,12 @@ static struct vxlan_vni_node *vxlan_vni_
+ 	return vninode;
  }
---- a/fs/nilfs2/the_nilfs.h
-+++ b/fs/nilfs2/the_nilfs.h
-@@ -29,6 +29,7 @@ enum {
- 	THE_NILFS_DISCONTINUED,	/* 'next' pointer chain has broken */
- 	THE_NILFS_GC_RUNNING,	/* gc process is running */
- 	THE_NILFS_SB_DIRTY,	/* super block is dirty */
-+	THE_NILFS_PURGING,	/* disposing dirty files for cleanup */
- };
  
- /**
-@@ -208,6 +209,7 @@ THE_NILFS_FNS(INIT, init)
- THE_NILFS_FNS(DISCONTINUED, discontinued)
- THE_NILFS_FNS(GC_RUNNING, gc_running)
- THE_NILFS_FNS(SB_DIRTY, sb_dirty)
-+THE_NILFS_FNS(PURGING, purging)
++static void vxlan_vni_free(struct vxlan_vni_node *vninode)
++{
++	free_percpu(vninode->stats);
++	kfree(vninode);
++}
++
+ static int vxlan_vni_add(struct vxlan_dev *vxlan,
+ 			 struct vxlan_vni_group *vg,
+ 			 u32 vni, union vxlan_addr *group,
+@@ -740,7 +746,7 @@ static int vxlan_vni_add(struct vxlan_de
+ 					    &vninode->vnode,
+ 					    vxlan_vni_rht_params);
+ 	if (err) {
+-		kfree(vninode);
++		vxlan_vni_free(vninode);
+ 		return err;
+ 	}
  
- /*
-  * Mount option operations
+@@ -763,8 +769,7 @@ static void vxlan_vni_node_rcu_free(stru
+ 	struct vxlan_vni_node *v;
+ 
+ 	v = container_of(rcu, struct vxlan_vni_node, rcu);
+-	free_percpu(v->stats);
+-	kfree(v);
++	vxlan_vni_free(v);
+ }
+ 
+ static int vxlan_vni_del(struct vxlan_dev *vxlan,
 
 
