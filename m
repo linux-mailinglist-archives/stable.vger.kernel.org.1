@@ -2,46 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1E36077ADA9
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:50:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BEDF477AD30
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:48:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231640AbjHMVt7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:49:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60474 "EHLO
+        id S231305AbjHMVsM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:48:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43982 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231269AbjHMVtP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:49:15 -0400
+        with ESMTP id S232307AbjHMVpe (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:45:34 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7BFB4199A
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:48:04 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 68C052D5B
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:45:33 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 11DBC63AFB
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:48:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FF5AC433C8;
-        Sun, 13 Aug 2023 21:48:02 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0011561B60
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:45:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A3FEC433C7;
+        Sun, 13 Aug 2023 21:45:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691963283;
-        bh=px2ikZgJt3p1w8e9TEPRcoe7l5DCFqn1YlrIsCewxYE=;
+        s=korg; t=1691963132;
+        bh=8XstUszOUuydCBG8NLru81gTAfM/BcWF0b+uMxKBUvY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=mgXV9kaI6VPoEKyquo1E3mmVe88GInl6qF8pwmZEsv08rrdODQji/0tMPveSLE+Fo
-         Bd2FKZn4OtGfIx7AE14WTCe1URmM6lG0oW2ey2qGqJDomioUkJEKCZ3UNFmJGPmizc
-         veOpWs9XAool3lLLMYaoNIDJylhIi/p3rxXGFUQg=
+        b=kwDH7sCUBx/fJTB0qXS/+UsRENpyH8CvXmi2BV+gaywWsqj5TIB2EsWkR6NdLBmPi
+         G1/nRBPuCnHti2EJLiwo45w6Ybmqm4H3Tf29yGoCk9bKJw++t2haImxJaVABqNq63V
+         1j35Dbn66bBOcY/ElgctPIJEIC98PR9vYtdEafuU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Colin Ian King <colin.i.king@gmail.com>,
-        Konstantin Khlebnikov <koct9i@gmail.com>,
-        "Matthew Wilcox (Oracle)" <willy@infradead.org>,
-        Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.4 05/39] radix tree test suite: fix incorrect allocation size for pthreads
+        patches@lists.linux.dev, Daniel Jurgens <danielj@nvidia.com>,
+        Saeed Mahameed <saeedm@nvidia.com>
+Subject: [PATCH 5.15 65/89] net/mlx5: Allow 0 for total host VFs
 Date:   Sun, 13 Aug 2023 23:19:56 +0200
-Message-ID: <20230813211705.004475813@linuxfoundation.org>
+Message-ID: <20230813211712.733304261@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211704.796906808@linuxfoundation.org>
-References: <20230813211704.796906808@linuxfoundation.org>
+In-Reply-To: <20230813211710.787645394@linuxfoundation.org>
+References: <20230813211710.787645394@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,41 +54,33 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Colin Ian King <colin.i.king@gmail.com>
+From: Daniel Jurgens <danielj@nvidia.com>
 
-commit cac7ea57a06016e4914848b707477fb07ee4ae1c upstream.
+commit 2dc2b3922d3c0f52d3a792d15dcacfbc4cc76b8f upstream.
 
-Currently the pthread allocation for each array item is based on the size
-of a pthread_t pointer and should be the size of the pthread_t structure,
-so the allocation is under-allocating the correct size.  Fix this by using
-the size of each element in the pthreads array.
+When querying eswitch functions 0 is a valid number of host VFs. After
+introducing ARM SRIOV falling through to getting the max value from PCI
+results in using the total VFs allowed on the ARM for the host.
 
-Static analysis cppcheck reported:
-tools/testing/radix-tree/regression1.c:180:2: warning: Size of pointer
-'threads' used instead of size of its data. [pointerSize]
-
-Link: https://lkml.kernel.org/r/20230727160930.632674-1-colin.i.king@gmail.com
-Fixes: 1366c37ed84b ("radix tree test harness")
-Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
-Cc: Konstantin Khlebnikov <koct9i@gmail.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 86eec50beaf3 ("net/mlx5: Support querying max VFs from device");
+Signed-off-by: Daniel Jurgens <danielj@nvidia.com>
+Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/radix-tree/regression1.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/mellanox/mlx5/core/sriov.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/tools/testing/radix-tree/regression1.c
-+++ b/tools/testing/radix-tree/regression1.c
-@@ -177,7 +177,7 @@ void regression1_test(void)
- 	nr_threads = 2;
- 	pthread_barrier_init(&worker_barrier, NULL, nr_threads);
+--- a/drivers/net/ethernet/mellanox/mlx5/core/sriov.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/sriov.c
+@@ -256,8 +256,7 @@ static u16 mlx5_get_max_vfs(struct mlx5_
+ 		host_total_vfs = MLX5_GET(query_esw_functions_out, out,
+ 					  host_params_context.host_total_vfs);
+ 		kvfree(out);
+-		if (host_total_vfs)
+-			return host_total_vfs;
++		return host_total_vfs;
+ 	}
  
--	threads = malloc(nr_threads * sizeof(pthread_t *));
-+	threads = malloc(nr_threads * sizeof(*threads));
- 
- 	for (i = 0; i < nr_threads; i++) {
- 		arg = i;
+ done:
 
 
