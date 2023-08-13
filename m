@@ -2,49 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 59E6977ACBA
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:36:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 377CC77AC53
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:32:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232146AbjHMVgY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:36:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59628 "EHLO
+        id S231924AbjHMVcM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:32:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56052 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232141AbjHMVgX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:36:23 -0400
+        with ESMTP id S231931AbjHMVcL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:32:11 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF55810DD
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:36:25 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 434D31716
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:31:54 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5D49062D18
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:36:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 717B6C433C8;
-        Sun, 13 Aug 2023 21:36:24 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 47FEF62B6D
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:31:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A784C433C8;
+        Sun, 13 Aug 2023 21:31:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691962584;
-        bh=au87tlTGG3kVmUHDd/aOS7tzJPnWfRwjIyLp+gnphwI=;
+        s=korg; t=1691962302;
+        bh=K35XiHKbW6/O1VkZWxhykHHyBiXHC/XPoPf2n9/ucu4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Y9bNfuT6F8d2ekEY/o6UJGljV6SMEBvym6OTjkWNXLI4fldKcjCRmr5LWHX8gRp/d
-         C9qaczDtM5DhVTffeGd9YWrF4BywwaS6AUUibq5kLI8t8sVVmHnzxqKL+TTbcI6TQe
-         q/HAKn4LuouK6i6MsMRjGszg/28vyn1CeQut20TI=
+        b=P9DgT0gEKg48COdeupr15sXPAthGwhjgyItZmnlOPljwqg94Osil+PSgNhMROUWTJ
+         urgbPdNAuIXFFG/g2y0VaKlzK3TMDrOpVd2yUwGrHo3SZD+Qha42WekbCmekr6z2o8
+         Ulk4vOYm7Y3icoVwIe6bQGk12O5Htxsm6FdX9cm0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>,
-        Ido Schimmel <idosch@nvidia.com>,
-        Petr Machata <petrm@nvidia.com>,
-        Hangbin Liu <liuhangbin@gmail.com>,
-        Nikolay Aleksandrov <razor@blackwall.org>,
+        patches@lists.linux.dev, Jie Wang <wangjie125@huawei.com>,
+        Jijie Shao <shaojijie@huawei.com>,
+        Leon Romanovsky <leonro@nvidia.com>,
         Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 082/149] selftests: forwarding: tc_flower: Relax success criterion
+Subject: [PATCH 6.4 157/206] net: hns3: add wait until mac link down
 Date:   Sun, 13 Aug 2023 23:18:47 +0200
-Message-ID: <20230813211721.248758881@linuxfoundation.org>
+Message-ID: <20230813211729.521409063@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211718.757428827@linuxfoundation.org>
-References: <20230813211718.757428827@linuxfoundation.org>
+In-Reply-To: <20230813211724.969019629@linuxfoundation.org>
+References: <20230813211724.969019629@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -58,56 +55,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Jie Wang <wangjie125@huawei.com>
 
-commit 9ee37e53e7687654b487fc94e82569377272a7a8 upstream.
+commit 6265e242f7b95f2c1195b42ec912b84ad161470e upstream.
 
-The test checks that filters that match on source or destination MAC
-were only hit once. A host can send more than one packet with a given
-source or destination MAC, resulting in failures.
+In some configure flow of hns3 driver, for example, change mtu, it will
+disable MAC through firmware before configuration. But firmware disables
+MAC asynchronously. The rx traffic may be not stopped in this case.
 
-Fix by relaxing the success criterion and instead check that the filters
-were not hit zero times. Using tc_check_at_least_x_packets() is also an
-option, but it is not available in older kernels.
+So fixes it by waiting until mac link is down.
 
-Fixes: 07e5c75184a1 ("selftests: forwarding: Introduce tc flower matching tests")
-Reported-by: Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>
-Closes: https://lore.kernel.org/netdev/adc5e40d-d040-a65e-eb26-edf47dac5b02@alu.unizg.hr/
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: Petr Machata <petrm@nvidia.com>
-Tested-by: Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>
-Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
-Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
-Link: https://lore.kernel.org/r/20230808141503.4060661-13-idosch@nvidia.com
+Fixes: a9775bb64aa7 ("net: hns3: fix set and get link ksettings issue")
+Signed-off-by: Jie Wang <wangjie125@huawei.com>
+Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
+Link: https://lore.kernel.org/r/20230807113452.474224-4-shaojijie@huawei.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/net/forwarding/tc_flower.sh |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c |   10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
---- a/tools/testing/selftests/net/forwarding/tc_flower.sh
-+++ b/tools/testing/selftests/net/forwarding/tc_flower.sh
-@@ -52,8 +52,8 @@ match_dst_mac_test()
- 	tc_check_packets "dev $h2 ingress" 101 1
- 	check_fail $? "Matched on a wrong filter"
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
+@@ -7569,6 +7569,8 @@ static void hclge_enable_fd(struct hnae3
  
--	tc_check_packets "dev $h2 ingress" 102 1
--	check_err $? "Did not match on correct filter"
-+	tc_check_packets "dev $h2 ingress" 102 0
-+	check_fail $? "Did not match on correct filter"
+ static void hclge_cfg_mac_mode(struct hclge_dev *hdev, bool enable)
+ {
++#define HCLGE_LINK_STATUS_WAIT_CNT  3
++
+ 	struct hclge_desc desc;
+ 	struct hclge_config_mac_mode_cmd *req =
+ 		(struct hclge_config_mac_mode_cmd *)desc.data;
+@@ -7593,9 +7595,15 @@ static void hclge_cfg_mac_mode(struct hc
+ 	req->txrx_pad_fcs_loop_en = cpu_to_le32(loop_en);
  
- 	tc filter del dev $h2 ingress protocol ip pref 1 handle 101 flower
- 	tc filter del dev $h2 ingress protocol ip pref 2 handle 102 flower
-@@ -78,8 +78,8 @@ match_src_mac_test()
- 	tc_check_packets "dev $h2 ingress" 101 1
- 	check_fail $? "Matched on a wrong filter"
+ 	ret = hclge_cmd_send(&hdev->hw, &desc, 1);
+-	if (ret)
++	if (ret) {
+ 		dev_err(&hdev->pdev->dev,
+ 			"mac enable fail, ret =%d.\n", ret);
++		return;
++	}
++
++	if (!enable)
++		hclge_mac_link_status_wait(hdev, HCLGE_LINK_STATUS_DOWN,
++					   HCLGE_LINK_STATUS_WAIT_CNT);
+ }
  
--	tc_check_packets "dev $h2 ingress" 102 1
--	check_err $? "Did not match on correct filter"
-+	tc_check_packets "dev $h2 ingress" 102 0
-+	check_fail $? "Did not match on correct filter"
- 
- 	tc filter del dev $h2 ingress protocol ip pref 1 handle 101 flower
- 	tc filter del dev $h2 ingress protocol ip pref 2 handle 102 flower
+ static int hclge_config_switch_param(struct hclge_dev *hdev, int vfid,
 
 
