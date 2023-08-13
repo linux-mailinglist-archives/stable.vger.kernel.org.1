@@ -2,174 +2,160 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 029E277AD9D
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:49:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C7A3777AC67
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:32:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232529AbjHMVtl (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:49:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39716 "EHLO
+        id S231975AbjHMVcn (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:32:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45602 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232375AbjHMVtH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:49:07 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E46D71730
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:40:16 -0700 (PDT)
+        with ESMTP id S231974AbjHMVcm (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:32:42 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 56E9D10DB
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:32:44 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7338B6110F
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:40:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88BDFC433C8;
-        Sun, 13 Aug 2023 21:40:15 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E8E9A62BEB
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:32:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09923C433C8;
+        Sun, 13 Aug 2023 21:32:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691962815;
-        bh=mehQCbLNCSNw65Igszu/fStmN9/LOpKgVuY8ux27FBg=;
+        s=korg; t=1691962363;
+        bh=hdtwnZqZbdSiRdVbN6xV4E6M7Ke+NsQRG3r4bczK5B4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=vN0/rLn4dc0pzNfqzID/Fx91RoZx4mA/15WfKSrftcgdmc/CxPX1Y9ExwwuWbDfwa
-         7cVAJz8ZJZGiM0sm2/9M1XAdhRmtUTwt1qAgvNxiVbJBPLqqPit8XkltwUU5QuhJJx
-         3Vk7kIRu0EApSP6xBAAXy25eAd89StOH4fOezjXQ=
+        b=SdjFPqi5BwUs7X4vCTtM8PTaQwSY2J1zPpHHS0WHz90iq1ecu2H3W92xoIBLUENSU
+         K+f9qMkGCyAXmt8o2WzO+4YO+BBk9fD9DEBBMXvKHm6syjQVYKnOE+6eNJvp9zF9l2
+         /cGdylyNkh1TstcVXiW5Lj+XrIs2Ir5jQ9w2hDgc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-        syzbot+74db8b3087f293d3a13a@syzkaller.appspotmail.com,
-        Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.10 18/68] nilfs2: fix use-after-free of nilfs_root in dirtying inodes via iput
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Martin K Petersen <martin.petersen@oracle.com>,
+        James Bottomley <jejb@linux.ibm.com>, Willy Tarreau <w@1wt.eu>,
+        stable@kernel.org, Tony Battersby <tonyb@cybernetics.com>
+Subject: [PATCH 6.4 189/206] scsi: core: Fix legacy /proc parsing buffer overflow
 Date:   Sun, 13 Aug 2023 23:19:19 +0200
-Message-ID: <20230813211708.706262569@linuxfoundation.org>
+Message-ID: <20230813211730.431439442@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211708.149630011@linuxfoundation.org>
-References: <20230813211708.149630011@linuxfoundation.org>
+In-Reply-To: <20230813211724.969019629@linuxfoundation.org>
+References: <20230813211724.969019629@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+From: Tony Battersby <tonyb@cybernetics.com>
 
-commit f8654743a0e6909dc634cbfad6db6816f10f3399 upstream.
+commit 9426d3cef5000824e5f24f80ed5f42fb935f2488 upstream.
 
-During unmount process of nilfs2, nothing holds nilfs_root structure after
-nilfs2 detaches its writer in nilfs_detach_log_writer().  Previously,
-nilfs_evict_inode() could cause use-after-free read for nilfs_root if
-inodes are left in "garbage_list" and released by nilfs_dispose_list at
-the end of nilfs_detach_log_writer(), and this bug was fixed by commit
-9b5a04ac3ad9 ("nilfs2: fix use-after-free bug of nilfs_root in
-nilfs_evict_inode()").
+(lightly modified commit message mostly by Linus Torvalds)
 
-However, it turned out that there is another possibility of UAF in the
-call path where mark_inode_dirty_sync() is called from iput():
+The parsing code for /proc/scsi/scsi is disgusting and broken.  We should
+have just used 'sscanf()' or something simple like that, but the logic may
+actually predate our kernel sscanf library routine for all I know.  It
+certainly predates both git and BK histories.
 
-nilfs_detach_log_writer()
-  nilfs_dispose_list()
-    iput()
-      mark_inode_dirty_sync()
-        __mark_inode_dirty()
-          nilfs_dirty_inode()
-            __nilfs_mark_inode_dirty()
-              nilfs_load_inode_block() --> causes UAF of nilfs_root struct
+And we can't change it to be something sane like that now, because the
+string matching at the start is done case-insensitively, and the separator
+parsing between numbers isn't done at all, so *any* separator will work,
+including a possible terminating NUL character.
 
-This can happen after commit 0ae45f63d4ef ("vfs: add support for a
-lazytime mount option"), which changed iput() to call
-mark_inode_dirty_sync() on its final reference if i_state has I_DIRTY_TIME
-flag and i_nlink is non-zero.
+This interface is root-only, and entirely for legacy use, so there is
+absolutely no point in trying to tighten up the parsing.  Because any
+separator has traditionally worked, it's entirely possible that people have
+used random characters rather than the suggested space.
 
-This issue appears after commit 28a65b49eb53 ("nilfs2: do not write dirty
-data after degenerating to read-only") when using the syzbot reproducer,
-but the issue has potentially existed before.
+So don't bother to try to pretty it up, and let's just make a minimal patch
+that can be back-ported and we can forget about this whole sorry thing for
+another two decades.
 
-Fix this issue by adding a "purging flag" to the nilfs structure, setting
-that flag while disposing the "garbage_list" and checking it in
-__nilfs_mark_inode_dirty().
+Just make it at least not read past the end of the supplied data.
 
-Unlike commit 9b5a04ac3ad9 ("nilfs2: fix use-after-free bug of nilfs_root
-in nilfs_evict_inode()"), this patch does not rely on ns_writer to
-determine whether to skip operations, so as not to break recovery on
-mount.  The nilfs_salvage_orphan_logs routine dirties the buffer of
-salvaged data before attaching the log writer, so changing
-__nilfs_mark_inode_dirty() to skip the operation when ns_writer is NULL
-will cause recovery write to fail.  The purpose of using the cleanup-only
-flag is to allow for narrowing of such conditions.
-
-Link: https://lkml.kernel.org/r/20230728191318.33047-1-konishi.ryusuke@gmail.com
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Reported-by: syzbot+74db8b3087f293d3a13a@syzkaller.appspotmail.com
-Closes: https://lkml.kernel.org/r/000000000000b4e906060113fd63@google.com
-Fixes: 0ae45f63d4ef ("vfs: add support for a lazytime mount option")
-Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Cc: <stable@vger.kernel.org> # 4.0+
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Link: https://lore.kernel.org/linux-scsi/b570f5fe-cb7c-863a-6ed9-f6774c219b88@cybernetics.com/
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Martin K Petersen <martin.petersen@oracle.com>
+Cc: James Bottomley <jejb@linux.ibm.com>
+Cc: Willy Tarreau <w@1wt.eu>
+Cc: stable@kernel.org
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Tony Battersby <tonyb@cybernetics.com>
+Signed-off-by: Martin K Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nilfs2/inode.c     |    8 ++++++++
- fs/nilfs2/segment.c   |    2 ++
- fs/nilfs2/the_nilfs.h |    2 ++
- 3 files changed, 12 insertions(+)
+ drivers/scsi/scsi_proc.c |   30 +++++++++++++++++-------------
+ 1 file changed, 17 insertions(+), 13 deletions(-)
 
---- a/fs/nilfs2/inode.c
-+++ b/fs/nilfs2/inode.c
-@@ -1103,9 +1103,17 @@ int nilfs_set_file_dirty(struct inode *i
- 
- int __nilfs_mark_inode_dirty(struct inode *inode, int flags)
+--- a/drivers/scsi/scsi_proc.c
++++ b/drivers/scsi/scsi_proc.c
+@@ -406,7 +406,7 @@ static ssize_t proc_scsi_write(struct fi
+ 			       size_t length, loff_t *ppos)
  {
-+	struct the_nilfs *nilfs = inode->i_sb->s_fs_info;
- 	struct buffer_head *ibh;
+ 	int host, channel, id, lun;
+-	char *buffer, *p;
++	char *buffer, *end, *p;
  	int err;
  
-+	/*
-+	 * Do not dirty inodes after the log writer has been detached
-+	 * and its nilfs_root struct has been freed.
-+	 */
-+	if (unlikely(nilfs_purging(nilfs)))
-+		return 0;
-+
- 	err = nilfs_load_inode_block(inode, &ibh);
- 	if (unlikely(err)) {
- 		nilfs_warn(inode->i_sb,
---- a/fs/nilfs2/segment.c
-+++ b/fs/nilfs2/segment.c
-@@ -2850,6 +2850,7 @@ void nilfs_detach_log_writer(struct supe
- 		nilfs_segctor_destroy(nilfs->ns_writer);
- 		nilfs->ns_writer = NULL;
+ 	if (!buf || length > PAGE_SIZE)
+@@ -421,10 +421,14 @@ static ssize_t proc_scsi_write(struct fi
+ 		goto out;
+ 
+ 	err = -EINVAL;
+-	if (length < PAGE_SIZE)
+-		buffer[length] = '\0';
+-	else if (buffer[PAGE_SIZE-1])
+-		goto out;
++	if (length < PAGE_SIZE) {
++		end = buffer + length;
++		*end = '\0';
++	} else {
++		end = buffer + PAGE_SIZE - 1;
++		if (*end)
++			goto out;
++	}
+ 
+ 	/*
+ 	 * Usage: echo "scsi add-single-device 0 1 2 3" >/proc/scsi/scsi
+@@ -433,10 +437,10 @@ static ssize_t proc_scsi_write(struct fi
+ 	if (!strncmp("scsi add-single-device", buffer, 22)) {
+ 		p = buffer + 23;
+ 
+-		host = simple_strtoul(p, &p, 0);
+-		channel = simple_strtoul(p + 1, &p, 0);
+-		id = simple_strtoul(p + 1, &p, 0);
+-		lun = simple_strtoul(p + 1, &p, 0);
++		host    = (p     < end) ? simple_strtoul(p, &p, 0) : 0;
++		channel = (p + 1 < end) ? simple_strtoul(p + 1, &p, 0) : 0;
++		id      = (p + 1 < end) ? simple_strtoul(p + 1, &p, 0) : 0;
++		lun     = (p + 1 < end) ? simple_strtoul(p + 1, &p, 0) : 0;
+ 
+ 		err = scsi_add_single_device(host, channel, id, lun);
+ 
+@@ -447,10 +451,10 @@ static ssize_t proc_scsi_write(struct fi
+ 	} else if (!strncmp("scsi remove-single-device", buffer, 25)) {
+ 		p = buffer + 26;
+ 
+-		host = simple_strtoul(p, &p, 0);
+-		channel = simple_strtoul(p + 1, &p, 0);
+-		id = simple_strtoul(p + 1, &p, 0);
+-		lun = simple_strtoul(p + 1, &p, 0);
++		host    = (p     < end) ? simple_strtoul(p, &p, 0) : 0;
++		channel = (p + 1 < end) ? simple_strtoul(p + 1, &p, 0) : 0;
++		id      = (p + 1 < end) ? simple_strtoul(p + 1, &p, 0) : 0;
++		lun     = (p + 1 < end) ? simple_strtoul(p + 1, &p, 0) : 0;
+ 
+ 		err = scsi_remove_single_device(host, channel, id, lun);
  	}
-+	set_nilfs_purging(nilfs);
- 
- 	/* Force to free the list of dirty files */
- 	spin_lock(&nilfs->ns_inode_lock);
-@@ -2862,4 +2863,5 @@ void nilfs_detach_log_writer(struct supe
- 	up_write(&nilfs->ns_segctor_sem);
- 
- 	nilfs_dispose_list(nilfs, &garbage_list, 1);
-+	clear_nilfs_purging(nilfs);
- }
---- a/fs/nilfs2/the_nilfs.h
-+++ b/fs/nilfs2/the_nilfs.h
-@@ -29,6 +29,7 @@ enum {
- 	THE_NILFS_DISCONTINUED,	/* 'next' pointer chain has broken */
- 	THE_NILFS_GC_RUNNING,	/* gc process is running */
- 	THE_NILFS_SB_DIRTY,	/* super block is dirty */
-+	THE_NILFS_PURGING,	/* disposing dirty files for cleanup */
- };
- 
- /**
-@@ -208,6 +209,7 @@ THE_NILFS_FNS(INIT, init)
- THE_NILFS_FNS(DISCONTINUED, discontinued)
- THE_NILFS_FNS(GC_RUNNING, gc_running)
- THE_NILFS_FNS(SB_DIRTY, sb_dirty)
-+THE_NILFS_FNS(PURGING, purging)
- 
- /*
-  * Mount option operations
 
 
