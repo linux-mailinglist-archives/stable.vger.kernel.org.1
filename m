@@ -2,120 +2,90 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B06EF77AC36
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:30:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B932B77ACC1
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:36:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231876AbjHMVag (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:30:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59460 "EHLO
+        id S232163AbjHMVgn (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:36:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59698 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231873AbjHMVaf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:30:35 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9511910D7
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:30:37 -0700 (PDT)
+        with ESMTP id S232149AbjHMVgm (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:36:42 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C82F310E5
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:36:44 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3396862B14
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:30:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46B0BC433CB;
-        Sun, 13 Aug 2023 21:30:36 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5BE28631CE
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:36:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64A53C433C7;
+        Sun, 13 Aug 2023 21:36:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691962236;
-        bh=Q/9huDZQtCDnqCu3n8Lxkqn/nicz6guvEabofKVyExM=;
+        s=korg; t=1691962603;
+        bh=vLzRE8wPIkV0OHwXQjNwt6Lwb2s508y5j58PujaOhnk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=I+eJBcIJ+1Me1M8ISIn7iLsVE4bdF00MIGq74lZC7wEMAWe2BeJR2EbE8ytdJpjbo
-         vjvumYI6GRnWMhroi4WrF0JzwFkVpZ5OZ6K8HvXaDRo5Pta+ekj+C404gQ/QXcAv7l
-         u5df9PUz1Imfgq4iydtFzzeE2vgzDJP7GC8Kyjdo=
+        b=0Z+d0J9CkegXm5m+ImVuZL4vNu+A6c7+6rxtpWOMKk9HpWKLfi4j6SkVdCyrWjYf3
+         z3XWW+p0OhEahumHaf1sMWqLpfzx3NCqasiTt7eM9tHa42c+RtpzLmcqO4xMXVqCCg
+         /r/iINVmwGZX47e4NgdQheuGvBIa//K6zWHvmmXw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hao Chen <chenhao418@huawei.com>,
-        Jijie Shao <shaojijie@huawei.com>,
+        patches@lists.linux.dev, Xiang Yang <xiangyang3@huawei.com>,
+        Matthieu Baerts <matthieu.baerts@tessares.net>,
         Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.4 163/206] net: hns3: fix strscpy causing content truncation issue
+Subject: [PATCH 6.1 088/149] mptcp: fix the incorrect judgment for msk->cb_flags
 Date:   Sun, 13 Aug 2023 23:18:53 +0200
-Message-ID: <20230813211729.692342034@linuxfoundation.org>
+Message-ID: <20230813211721.420335825@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211724.969019629@linuxfoundation.org>
-References: <20230813211724.969019629@linuxfoundation.org>
+In-Reply-To: <20230813211718.757428827@linuxfoundation.org>
+References: <20230813211718.757428827@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Hao Chen <chenhao418@huawei.com>
+From: Xiang Yang <xiangyang3@huawei.com>
 
-commit 5e3d20617b055e725e785e0058426368269949f3 upstream.
+commit 17ebf8a4c38b5481c29623f5e003fdf7583947f9 upstream.
 
-hns3_dbg_fill_content()/hclge_dbg_fill_content() is aim to integrate some
-items to a string for content, and we add '\n' and '\0' in the last
-two bytes of content.
+Coccicheck reports the error below:
+net/mptcp/protocol.c:3330:15-28: ERROR: test of a variable/field address
 
-strscpy() will add '\0' in the last byte of destination buffer(one of
-items), it result in finishing content print ahead of schedule and some
-dump content truncation.
+Since the address of msk->cb_flags is used in __test_and_clear_bit, the
+address should not be NULL. The judgment for if (unlikely(msk->cb_flags))
+will always be true, we should check the real value of msk->cb_flags here.
 
-One Error log shows as below:
-cat mac_list/uc
-UC MAC_LIST:
-
-Expected:
-UC MAC_LIST:
-FUNC_ID  MAC_ADDR            STATE
-pf       00:2b:19:05:03:00   ACTIVE
-
-The destination buffer is length-bounded and not required to be
-NUL-terminated, so just change strscpy() to memcpy() to fix it.
-
-Fixes: 1cf3d5567f27 ("net: hns3: fix strncpy() not using dest-buf length as length issue")
-Signed-off-by: Hao Chen <chenhao418@huawei.com>
-Signed-off-by: Jijie Shao <shaojijie@huawei.com>
-Link: https://lore.kernel.org/r/20230809020902.1941471-1-shaojijie@huawei.com
+Fixes: 65a569b03ca8 ("mptcp: optimize release_cb for the common case")
+Signed-off-by: Xiang Yang <xiangyang3@huawei.com>
+Reviewed-by: Matthieu Baerts <matthieu.baerts@tessares.net>
+Link: https://lore.kernel.org/r/20230803072438.1847500-1-xiangyang3@huawei.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/hisilicon/hns3/hns3_debugfs.c         |    4 ++--
- drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_debugfs.c |    4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ net/mptcp/protocol.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/net/ethernet/hisilicon/hns3/hns3_debugfs.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3_debugfs.c
-@@ -461,9 +461,9 @@ static void hns3_dbg_fill_content(char *
- 		if (result) {
- 			if (item_len < strlen(result[i]))
- 				break;
--			strscpy(pos, result[i], strlen(result[i]));
-+			memcpy(pos, result[i], strlen(result[i]));
- 		} else {
--			strscpy(pos, items[i].name, strlen(items[i].name));
-+			memcpy(pos, items[i].name, strlen(items[i].name));
- 		}
- 		pos += item_len;
- 		len -= item_len;
---- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_debugfs.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_debugfs.c
-@@ -111,9 +111,9 @@ static void hclge_dbg_fill_content(char
- 		if (result) {
- 			if (item_len < strlen(result[i]))
- 				break;
--			strscpy(pos, result[i], strlen(result[i]));
-+			memcpy(pos, result[i], strlen(result[i]));
- 		} else {
--			strscpy(pos, items[i].name, strlen(items[i].name));
-+			memcpy(pos, items[i].name, strlen(items[i].name));
- 		}
- 		pos += item_len;
- 		len -= item_len;
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -3370,7 +3370,7 @@ static void mptcp_release_cb(struct sock
+ 
+ 	if (__test_and_clear_bit(MPTCP_CLEAN_UNA, &msk->cb_flags))
+ 		__mptcp_clean_una_wakeup(sk);
+-	if (unlikely(&msk->cb_flags)) {
++	if (unlikely(msk->cb_flags)) {
+ 		/* be sure to set the current sk state before tacking actions
+ 		 * depending on sk_state, that is processing MPTCP_ERROR_REPORT
+ 		 */
 
 
