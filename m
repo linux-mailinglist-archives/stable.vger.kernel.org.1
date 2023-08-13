@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0E8E877AB1E
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 22:19:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CD2BA77AB1F
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 22:19:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230495AbjHMUTq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 16:19:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37058 "EHLO
+        id S231139AbjHMUTt (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 16:19:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52690 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229512AbjHMUTq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 16:19:46 -0400
+        with ESMTP id S229512AbjHMUTt (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 16:19:49 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A18310F9
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 13:19:48 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0538710FA
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 13:19:51 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DCBE1626C4
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 20:19:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE9DFC433C7;
-        Sun, 13 Aug 2023 20:19:46 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 950196273E
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 20:19:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B122C433C7;
+        Sun, 13 Aug 2023 20:19:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691957987;
-        bh=YRy4tnx1AJNWTdcsDBrkngytVkOBaUed47jV1yueFYE=;
+        s=korg; t=1691957990;
+        bh=Lvsqu7DoP1XA6G106ASSrUHDqNYE2msZoXfMB8DpvWA=;
         h=Subject:To:Cc:From:Date:From;
-        b=ndB4Zz6cr1HRpaZxEOekeSMrs2QqBXdlWGVLdRAafusrJJ5KbuuySH4vpCXCbH9YX
-         YTPKMK55ieZBKnHPU5TsQYLPbp63Ie8+KZOkbKR1UHDGlNqcINpGLFbHJysoQZVBsT
-         VF+74Pz+awYHZ52cZgjUqSPwknUuCXU/OoXJx6lE=
-Subject: FAILED: patch "[PATCH] scsi: qedi: Fix firmware halt over suspend and resume" failed to apply to 4.19-stable tree
+        b=vT4pb36j4VAICfB1aeqbKdTMCYFB7EUVXK4JnIO+Oe5DczywX7D4j7LpWAch5cZnr
+         p33mfNp39KUchBdUClUIkE0+WK4t10ZsG0RDv+DdUAOD0mgJ+xByLgnuky+yRXPrmR
+         e4q/m+0Kq54AzfQZ2q1ZSSDxRL1dmhUKW5YvyrpQ=
+Subject: FAILED: patch "[PATCH] scsi: qedi: Fix firmware halt over suspend and resume" failed to apply to 4.14-stable tree
 To:     njavali@marvell.com, martin.petersen@oracle.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sun, 13 Aug 2023 22:19:36 +0200
-Message-ID: <2023081336-cameo-challenge-c72b@gregkh>
+Date:   Sun, 13 Aug 2023 22:19:37 +0200
+Message-ID: <2023081337-splendor-opal-8b0b@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -48,19 +48,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 4.19-stable tree.
+The patch below does not apply to the 4.14-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
 git checkout FETCH_HEAD
 git cherry-pick -x 1516ee035df32115197cd93ae3619dba7b020986
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023081336-cameo-challenge-c72b@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023081337-splendor-opal-8b0b@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
 
 Possible dependencies:
 
@@ -76,6 +76,13 @@ e4020e0835ed ("scsi: qedi: Remove 2 set but unused variables")
 dcceeeb71fb7 ("scsi: qedi: add module param to set ping packet size")
 1a291bce5eaf ("scsi: qedi: Allocate IRQs based on msix_cnt")
 3fb5a21fd008 ("scsi: qedi: Cleanup redundant QEDI_PAGE_SIZE macro definition")
+a3440d0d2f57 ("scsi: qedi: Send driver state to MFW")
+534bbdf8832a ("qedi: Add support for populating ethernet TLVs.")
+da09091732ae ("qed*: Utilize FW 8.33.1.0")
+21dd79e82f00 ("qed*: HSI renaming for different types of HW")
+a2e7699eb50f ("qed*: Refactoring and rearranging FW API with no functional impact")
+ed468ebee04f ("qed: Add ll2 ability of opening a secondary queue")
+d1abfd0b4ee2 ("qed: Add iWARP out of order support")
 
 thanks,
 
