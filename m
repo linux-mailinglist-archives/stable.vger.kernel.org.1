@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 72E8377AB5C
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:21:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6031C77ACCF
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:37:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230216AbjHMVVJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:21:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33174 "EHLO
+        id S232179AbjHMVhX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:37:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57402 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230186AbjHMVVJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:21:09 -0400
+        with ESMTP id S232187AbjHMVhW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:37:22 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 49ADC10FD
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:21:07 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5425210DB
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:37:24 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DAD0B6269A
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:21:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED21AC433C7;
-        Sun, 13 Aug 2023 21:21:05 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E7F106336C
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:37:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CDB1C433C8;
+        Sun, 13 Aug 2023 21:37:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691961666;
-        bh=c+2LWefcHW//g9WMKgWlvMWqrW8stZ7s7bhip9HllYE=;
+        s=korg; t=1691962643;
+        bh=gdXtDeJmPlC4guCEyiaQbDos5NN/iLLr/vN6YnbzFFc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ZsPxoRRNmSJla8BWgzQWKhRXubauimuMy4nNloULXgSsb3knK96wc70WwkKm0EBeb
-         14zYxtE8obIC3miMTF4SFwKFKakD73SohG7lKZaXa0XdDLftNtM3PYm94N4kv50/7s
-         6ZjoB6cupbgFzbugqRjG1uAUDwFGK3mCyQlgjq88=
+        b=X93ZdBIXd78hArNsmE52BJSPSqIYU6f1i9Bq28KWq2od3dpyy56nlfqsADWVus3DP
+         yQe2+xuRdtTtIetAk76hvoWJNN5q4EnX5s3qG5xdszvwrRonl01y9eg9PgYld24lf5
+         LWIG/i9MfI5aQadzOmLzjEeTW4fH7y52XCuqNY7E=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, syzbot <syzkaller@googlegroups.com>,
-        Eric Dumazet <edumazet@google.com>,
+        patches@lists.linux.dev, Jonas Gorski <jonas.gorski@bisdn.de>,
+        Elad Nachman <enachman@marvell.com>,
         Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 4.14 16/26] dccp: fix data-race around dp->dccps_mss_cache
+Subject: [PATCH 6.1 104/149] net: marvell: prestera: fix handling IPv4 routes with nhid
 Date:   Sun, 13 Aug 2023 23:19:09 +0200
-Message-ID: <20230813211703.597664050@linuxfoundation.org>
+Message-ID: <20230813211721.886241808@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211702.980427106@linuxfoundation.org>
-References: <20230813211702.980427106@linuxfoundation.org>
+In-Reply-To: <20230813211718.757428827@linuxfoundation.org>
+References: <20230813211718.757428827@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,71 +54,160 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Eric Dumazet <edumazet@google.com>
+From: Jonas Gorski <jonas.gorski@bisdn.de>
 
-commit a47e598fbd8617967e49d85c49c22f9fc642704c upstream.
+commit 2aa71b4b294ee2c3041d085404cea914be9b3225 upstream.
 
-dccp_sendmsg() reads dp->dccps_mss_cache before locking the socket.
-Same thing in do_dccp_getsockopt().
+Fix handling IPv4 routes referencing a nexthop via its id by replacing
+calls to fib_info_nh() with fib_info_nhc().
 
-Add READ_ONCE()/WRITE_ONCE() annotations,
-and change dccp_sendmsg() to check again dccps_mss_cache
-after socket is locked.
+Trying to add an IPv4 route referencing a nextop via nhid:
 
-Fixes: 7c657876b63c ("[DCCP]: Initial implementation")
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://lore.kernel.org/r/20230803163021.2958262-1-edumazet@google.com
+    $ ip link set up swp5
+    $ ip a a 10.0.0.1/24 dev swp5
+    $ ip nexthop add dev swp5 id 20 via 10.0.0.2
+    $ ip route add 10.0.1.0/24 nhid 20
+
+triggers warnings when trying to handle the route:
+
+[  528.805763] ------------[ cut here ]------------
+[  528.810437] WARNING: CPU: 3 PID: 53 at include/net/nexthop.h:468 __prestera_fi_is_direct+0x2c/0x68 [prestera]
+[  528.820434] Modules linked in: prestera_pci act_gact act_police sch_ingress cls_u32 cls_flower prestera arm64_delta_tn48m_dn_led(O) arm64_delta_tn48m_dn_cpld(O) [last unloaded: prestera_pci]
+[  528.837485] CPU: 3 PID: 53 Comm: kworker/u8:3 Tainted: G           O       6.4.5 #1
+[  528.845178] Hardware name: delta,tn48m-dn (DT)
+[  528.849641] Workqueue: prestera_ordered __prestera_router_fib_event_work [prestera]
+[  528.857352] pstate: 60000005 (nZCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+[  528.864347] pc : __prestera_fi_is_direct+0x2c/0x68 [prestera]
+[  528.870135] lr : prestera_k_arb_fib_evt+0xb20/0xd50 [prestera]
+[  528.876007] sp : ffff80000b20bc90
+[  528.879336] x29: ffff80000b20bc90 x28: 0000000000000000 x27: ffff0001374d3a48
+[  528.886510] x26: ffff000105604000 x25: ffff000134af8a28 x24: ffff0001374d3800
+[  528.893683] x23: ffff000101c89148 x22: ffff000101c89000 x21: ffff000101c89200
+[  528.900855] x20: ffff00013641fda0 x19: ffff800009d01088 x18: 0000000000000059
+[  528.908027] x17: 0000000000000277 x16: 0000000000000000 x15: 0000000000000000
+[  528.915198] x14: 0000000000000003 x13: 00000000000fe400 x12: 0000000000000000
+[  528.922371] x11: 0000000000000002 x10: 0000000000000aa0 x9 : ffff8000013d2020
+[  528.929543] x8 : 0000000000000018 x7 : 000000007b1703f8 x6 : 000000001ca72f86
+[  528.936715] x5 : 0000000033399ea7 x4 : 0000000000000000 x3 : ffff0001374d3acc
+[  528.943886] x2 : 0000000000000000 x1 : ffff00010200de00 x0 : ffff000134ae3f80
+[  528.951058] Call trace:
+[  528.953516]  __prestera_fi_is_direct+0x2c/0x68 [prestera]
+[  528.958952]  __prestera_router_fib_event_work+0x100/0x158 [prestera]
+[  528.965348]  process_one_work+0x208/0x488
+[  528.969387]  worker_thread+0x4c/0x430
+[  528.973068]  kthread+0x120/0x138
+[  528.976313]  ret_from_fork+0x10/0x20
+[  528.979909] ---[ end trace 0000000000000000 ]---
+[  528.984998] ------------[ cut here ]------------
+[  528.989645] WARNING: CPU: 3 PID: 53 at include/net/nexthop.h:468 __prestera_fi_is_direct+0x2c/0x68 [prestera]
+[  528.999628] Modules linked in: prestera_pci act_gact act_police sch_ingress cls_u32 cls_flower prestera arm64_delta_tn48m_dn_led(O) arm64_delta_tn48m_dn_cpld(O) [last unloaded: prestera_pci]
+[  529.016676] CPU: 3 PID: 53 Comm: kworker/u8:3 Tainted: G        W  O       6.4.5 #1
+[  529.024368] Hardware name: delta,tn48m-dn (DT)
+[  529.028830] Workqueue: prestera_ordered __prestera_router_fib_event_work [prestera]
+[  529.036539] pstate: 60000005 (nZCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+[  529.043533] pc : __prestera_fi_is_direct+0x2c/0x68 [prestera]
+[  529.049318] lr : __prestera_k_arb_fc_apply+0x280/0x2f8 [prestera]
+[  529.055452] sp : ffff80000b20bc60
+[  529.058781] x29: ffff80000b20bc60 x28: 0000000000000000 x27: ffff0001374d3a48
+[  529.065953] x26: ffff000105604000 x25: ffff000134af8a28 x24: ffff0001374d3800
+[  529.073126] x23: ffff000101c89148 x22: ffff000101c89148 x21: ffff00013641fda0
+[  529.080299] x20: ffff000101c89000 x19: ffff000101c89020 x18: 0000000000000059
+[  529.087471] x17: 0000000000000277 x16: 0000000000000000 x15: 0000000000000000
+[  529.094642] x14: 0000000000000003 x13: 00000000000fe400 x12: 0000000000000000
+[  529.101814] x11: 0000000000000002 x10: 0000000000000aa0 x9 : ffff8000013cee80
+[  529.108985] x8 : 0000000000000018 x7 : 000000007b1703f8 x6 : 0000000000000018
+[  529.116157] x5 : 00000000d3497eb6 x4 : ffff000105604081 x3 : 000000008e979557
+[  529.123329] x2 : 0000000000000000 x1 : ffff00010200de00 x0 : ffff000134ae3f80
+[  529.130501] Call trace:
+[  529.132958]  __prestera_fi_is_direct+0x2c/0x68 [prestera]
+[  529.138394]  prestera_k_arb_fib_evt+0x6b8/0xd50 [prestera]
+[  529.143918]  __prestera_router_fib_event_work+0x100/0x158 [prestera]
+[  529.150313]  process_one_work+0x208/0x488
+[  529.154348]  worker_thread+0x4c/0x430
+[  529.158030]  kthread+0x120/0x138
+[  529.161274]  ret_from_fork+0x10/0x20
+[  529.164867] ---[ end trace 0000000000000000 ]---
+
+and results in a non offloaded route:
+
+    $ ip route
+    10.0.0.0/24 dev swp5 proto kernel scope link src 10.0.0.1 rt_trap
+    10.0.1.0/24 nhid 20 via 10.0.0.2 dev swp5 rt_trap
+
+When creating a route referencing a nexthop via its ID, the nexthop will
+be stored in a separate nh pointer instead of the array of nexthops in
+the fib_info struct. This causes issues since fib_info_nh() only handles
+the nexthops array, but not the separate nh pointer, and will loudly
+WARN about it.
+
+In contrast fib_info_nhc() handles both, but returns a fib_nh_common
+pointer instead of a fib_nh pointer. Luckily we only ever access fields
+from the fib_nh_common parts, so we can just replace all instances of
+fib_info_nh() with fib_info_nhc() and access the fields via their
+fib_nh_common names.
+
+This allows handling IPv4 routes with an external nexthop, and they now
+get offloaded as expected:
+
+    $ ip route
+    10.0.0.0/24 dev swp5 proto kernel scope link src 10.0.0.1 rt_trap
+    10.0.1.0/24 nhid 20 via 10.0.0.2 dev swp5 offload rt_offload
+
+Fixes: 396b80cb5cc8 ("net: marvell: prestera: Add neighbour cache accounting")
+Signed-off-by: Jonas Gorski <jonas.gorski@bisdn.de>
+Acked-by: Elad Nachman <enachman@marvell.com>
+Link: https://lore.kernel.org/r/20230804101220.247515-1-jonas.gorski@bisdn.de
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/dccp/output.c |    2 +-
- net/dccp/proto.c  |   10 ++++++++--
- 2 files changed, 9 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/marvell/prestera/prestera_router.c |   14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
---- a/net/dccp/output.c
-+++ b/net/dccp/output.c
-@@ -189,7 +189,7 @@ unsigned int dccp_sync_mss(struct sock *
+--- a/drivers/net/ethernet/marvell/prestera/prestera_router.c
++++ b/drivers/net/ethernet/marvell/prestera/prestera_router.c
+@@ -166,11 +166,11 @@ prestera_util_neigh2nc_key(struct preste
  
- 	/* And store cached results */
- 	icsk->icsk_pmtu_cookie = pmtu;
--	dp->dccps_mss_cache = cur_mps;
-+	WRITE_ONCE(dp->dccps_mss_cache, cur_mps);
+ static bool __prestera_fi_is_direct(struct fib_info *fi)
+ {
+-	struct fib_nh *fib_nh;
++	struct fib_nh_common *fib_nhc;
  
- 	return cur_mps;
- }
---- a/net/dccp/proto.c
-+++ b/net/dccp/proto.c
-@@ -645,7 +645,7 @@ static int do_dccp_getsockopt(struct soc
- 		return dccp_getsockopt_service(sk, len,
- 					       (__be32 __user *)optval, optlen);
- 	case DCCP_SOCKOPT_GET_CUR_MPS:
--		val = dp->dccps_mss_cache;
-+		val = READ_ONCE(dp->dccps_mss_cache);
- 		break;
- 	case DCCP_SOCKOPT_AVAILABLE_CCIDS:
- 		return ccid_getsockopt_builtin_ccids(sk, len, optval, optlen);
-@@ -765,7 +765,7 @@ int dccp_sendmsg(struct sock *sk, struct
- 	int rc, size;
- 	long timeo;
- 
--	if (len > dp->dccps_mss_cache)
-+	if (len > READ_ONCE(dp->dccps_mss_cache))
- 		return -EMSGSIZE;
- 
- 	lock_sock(sk);
-@@ -798,6 +798,12 @@ int dccp_sendmsg(struct sock *sk, struct
- 		goto out_discard;
+ 	if (fib_info_num_path(fi) == 1) {
+-		fib_nh = fib_info_nh(fi, 0);
+-		if (fib_nh->fib_nh_gw_family == AF_UNSPEC)
++		fib_nhc = fib_info_nhc(fi, 0);
++		if (fib_nhc->nhc_gw_family == AF_UNSPEC)
+ 			return true;
  	}
  
-+	/* We need to check dccps_mss_cache after socket is locked. */
-+	if (len > dp->dccps_mss_cache) {
-+		rc = -EMSGSIZE;
-+		goto out_discard;
-+	}
-+
- 	skb_reserve(skb, sk->sk_prot->max_header);
- 	rc = memcpy_from_msg(skb_put(skb, len), msg, len);
- 	if (rc != 0)
+@@ -261,7 +261,7 @@ static bool
+ __prestera_util_kern_n_is_reachable_v4(u32 tb_id, __be32 *addr,
+ 				       struct net_device *dev)
+ {
+-	struct fib_nh *fib_nh;
++	struct fib_nh_common *fib_nhc;
+ 	struct fib_result res;
+ 	bool reachable;
+ 
+@@ -269,8 +269,8 @@ __prestera_util_kern_n_is_reachable_v4(u
+ 
+ 	if (!prestera_util_kern_get_route(&res, tb_id, addr))
+ 		if (prestera_fi_is_direct(res.fi)) {
+-			fib_nh = fib_info_nh(res.fi, 0);
+-			if (dev == fib_nh->fib_nh_dev)
++			fib_nhc = fib_info_nhc(res.fi, 0);
++			if (dev == fib_nhc->nhc_dev)
+ 				reachable = true;
+ 		}
+ 
+@@ -324,7 +324,7 @@ prestera_kern_fib_info_nhc(struct fib_no
+ 	if (info->family == AF_INET) {
+ 		fen4_info = container_of(info, struct fib_entry_notifier_info,
+ 					 info);
+-		return &fib_info_nh(fen4_info->fi, n)->nh_common;
++		return fib_info_nhc(fen4_info->fi, n);
+ 	} else if (info->family == AF_INET6) {
+ 		fen6_info = container_of(info, struct fib6_entry_notifier_info,
+ 					 info);
 
 
