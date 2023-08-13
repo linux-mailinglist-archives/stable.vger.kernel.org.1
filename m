@@ -2,212 +2,198 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6031C77ACCF
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:37:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EBCC877AC4C
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:32:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232179AbjHMVhX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:37:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57402 "EHLO
+        id S231916AbjHMVcI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:32:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55840 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232187AbjHMVhW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:37:22 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5425210DB
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:37:24 -0700 (PDT)
+        with ESMTP id S231923AbjHMVcH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:32:07 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4EECF10F2
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:31:47 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E7F106336C
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:37:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CDB1C433C8;
-        Sun, 13 Aug 2023 21:37:22 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4985762B62
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:31:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F3E7C433C8;
+        Sun, 13 Aug 2023 21:31:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691962643;
-        bh=gdXtDeJmPlC4guCEyiaQbDos5NN/iLLr/vN6YnbzFFc=;
+        s=korg; t=1691962283;
+        bh=C2Mf8hRPe93haF1t/rJTtceQg4ddXQXvb7uxOYaAKqs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=X93ZdBIXd78hArNsmE52BJSPSqIYU6f1i9Bq28KWq2od3dpyy56nlfqsADWVus3DP
-         yQe2+xuRdtTtIetAk76hvoWJNN5q4EnX5s3qG5xdszvwrRonl01y9eg9PgYld24lf5
-         LWIG/i9MfI5aQadzOmLzjEeTW4fH7y52XCuqNY7E=
+        b=DdQjn4+AphOfRAw86gBOvxcvwJIjoLKIJQfoct/zwo1xVyji0T88sjmeGZCFY9jNL
+         0k/41b4rvkuEIeZKoiSAfJFibIafb+M2fgIcpXPaijpAC+A5jMpqouKWBJepCmTFBR
+         3NiRj03UW00zHNLECM9a1ulBDc/98kB9bUUV/5u4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jonas Gorski <jonas.gorski@bisdn.de>,
-        Elad Nachman <enachman@marvell.com>,
+        patches@lists.linux.dev, Nick Child <nnac123@linux.ibm.com>,
+        Simon Horman <horms@kernel.org>,
         Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 104/149] net: marvell: prestera: fix handling IPv4 routes with nhid
+Subject: [PATCH 6.4 179/206] ibmvnic: Ensure login failure recovery is safe from other resets
 Date:   Sun, 13 Aug 2023 23:19:09 +0200
-Message-ID: <20230813211721.886241808@linuxfoundation.org>
+Message-ID: <20230813211730.146923038@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211718.757428827@linuxfoundation.org>
-References: <20230813211718.757428827@linuxfoundation.org>
+In-Reply-To: <20230813211724.969019629@linuxfoundation.org>
+References: <20230813211724.969019629@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jonas Gorski <jonas.gorski@bisdn.de>
+From: Nick Child <nnac123@linux.ibm.com>
 
-commit 2aa71b4b294ee2c3041d085404cea914be9b3225 upstream.
+commit 6db541ae279bd4e76dbd939e5fbf298396166242 upstream.
 
-Fix handling IPv4 routes referencing a nexthop via its id by replacing
-calls to fib_info_nh() with fib_info_nhc().
+If a login request fails, the recovery process should be protected
+against parallel resets. It is a known issue that freeing and
+registering CRQ's in quick succession can result in a failover CRQ from
+the VIOS. Processing a failover during login recovery is dangerous for
+two reasons:
+ 1. This will result in two parallel initialization processes, this can
+ cause serious issues during login.
+ 2. It is possible that the failover CRQ is received but never executed.
+ We get notified of a pending failover through a transport event CRQ.
+ The reset is not performed until a INIT CRQ request is received.
+ Previously, if CRQ init fails during login recovery, then the ibmvnic
+ irq is freed and the login process returned error. If failover_pending
+ is true (a transport event was received), then the ibmvnic device
+ would never be able to process the reset since it cannot receive the
+ CRQ_INIT request due to the irq being freed. This leaved the device
+ in a inoperable state.
 
-Trying to add an IPv4 route referencing a nextop via nhid:
+Therefore, the login failure recovery process must be hardened against
+these possible issues. Possible failovers (due to quick CRQ free and
+init) must be avoided and any issues during re-initialization should be
+dealt with instead of being propagated up the stack. This logic is
+similar to that of ibmvnic_probe().
 
-    $ ip link set up swp5
-    $ ip a a 10.0.0.1/24 dev swp5
-    $ ip nexthop add dev swp5 id 20 via 10.0.0.2
-    $ ip route add 10.0.1.0/24 nhid 20
-
-triggers warnings when trying to handle the route:
-
-[  528.805763] ------------[ cut here ]------------
-[  528.810437] WARNING: CPU: 3 PID: 53 at include/net/nexthop.h:468 __prestera_fi_is_direct+0x2c/0x68 [prestera]
-[  528.820434] Modules linked in: prestera_pci act_gact act_police sch_ingress cls_u32 cls_flower prestera arm64_delta_tn48m_dn_led(O) arm64_delta_tn48m_dn_cpld(O) [last unloaded: prestera_pci]
-[  528.837485] CPU: 3 PID: 53 Comm: kworker/u8:3 Tainted: G           O       6.4.5 #1
-[  528.845178] Hardware name: delta,tn48m-dn (DT)
-[  528.849641] Workqueue: prestera_ordered __prestera_router_fib_event_work [prestera]
-[  528.857352] pstate: 60000005 (nZCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-[  528.864347] pc : __prestera_fi_is_direct+0x2c/0x68 [prestera]
-[  528.870135] lr : prestera_k_arb_fib_evt+0xb20/0xd50 [prestera]
-[  528.876007] sp : ffff80000b20bc90
-[  528.879336] x29: ffff80000b20bc90 x28: 0000000000000000 x27: ffff0001374d3a48
-[  528.886510] x26: ffff000105604000 x25: ffff000134af8a28 x24: ffff0001374d3800
-[  528.893683] x23: ffff000101c89148 x22: ffff000101c89000 x21: ffff000101c89200
-[  528.900855] x20: ffff00013641fda0 x19: ffff800009d01088 x18: 0000000000000059
-[  528.908027] x17: 0000000000000277 x16: 0000000000000000 x15: 0000000000000000
-[  528.915198] x14: 0000000000000003 x13: 00000000000fe400 x12: 0000000000000000
-[  528.922371] x11: 0000000000000002 x10: 0000000000000aa0 x9 : ffff8000013d2020
-[  528.929543] x8 : 0000000000000018 x7 : 000000007b1703f8 x6 : 000000001ca72f86
-[  528.936715] x5 : 0000000033399ea7 x4 : 0000000000000000 x3 : ffff0001374d3acc
-[  528.943886] x2 : 0000000000000000 x1 : ffff00010200de00 x0 : ffff000134ae3f80
-[  528.951058] Call trace:
-[  528.953516]  __prestera_fi_is_direct+0x2c/0x68 [prestera]
-[  528.958952]  __prestera_router_fib_event_work+0x100/0x158 [prestera]
-[  528.965348]  process_one_work+0x208/0x488
-[  528.969387]  worker_thread+0x4c/0x430
-[  528.973068]  kthread+0x120/0x138
-[  528.976313]  ret_from_fork+0x10/0x20
-[  528.979909] ---[ end trace 0000000000000000 ]---
-[  528.984998] ------------[ cut here ]------------
-[  528.989645] WARNING: CPU: 3 PID: 53 at include/net/nexthop.h:468 __prestera_fi_is_direct+0x2c/0x68 [prestera]
-[  528.999628] Modules linked in: prestera_pci act_gact act_police sch_ingress cls_u32 cls_flower prestera arm64_delta_tn48m_dn_led(O) arm64_delta_tn48m_dn_cpld(O) [last unloaded: prestera_pci]
-[  529.016676] CPU: 3 PID: 53 Comm: kworker/u8:3 Tainted: G        W  O       6.4.5 #1
-[  529.024368] Hardware name: delta,tn48m-dn (DT)
-[  529.028830] Workqueue: prestera_ordered __prestera_router_fib_event_work [prestera]
-[  529.036539] pstate: 60000005 (nZCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-[  529.043533] pc : __prestera_fi_is_direct+0x2c/0x68 [prestera]
-[  529.049318] lr : __prestera_k_arb_fc_apply+0x280/0x2f8 [prestera]
-[  529.055452] sp : ffff80000b20bc60
-[  529.058781] x29: ffff80000b20bc60 x28: 0000000000000000 x27: ffff0001374d3a48
-[  529.065953] x26: ffff000105604000 x25: ffff000134af8a28 x24: ffff0001374d3800
-[  529.073126] x23: ffff000101c89148 x22: ffff000101c89148 x21: ffff00013641fda0
-[  529.080299] x20: ffff000101c89000 x19: ffff000101c89020 x18: 0000000000000059
-[  529.087471] x17: 0000000000000277 x16: 0000000000000000 x15: 0000000000000000
-[  529.094642] x14: 0000000000000003 x13: 00000000000fe400 x12: 0000000000000000
-[  529.101814] x11: 0000000000000002 x10: 0000000000000aa0 x9 : ffff8000013cee80
-[  529.108985] x8 : 0000000000000018 x7 : 000000007b1703f8 x6 : 0000000000000018
-[  529.116157] x5 : 00000000d3497eb6 x4 : ffff000105604081 x3 : 000000008e979557
-[  529.123329] x2 : 0000000000000000 x1 : ffff00010200de00 x0 : ffff000134ae3f80
-[  529.130501] Call trace:
-[  529.132958]  __prestera_fi_is_direct+0x2c/0x68 [prestera]
-[  529.138394]  prestera_k_arb_fib_evt+0x6b8/0xd50 [prestera]
-[  529.143918]  __prestera_router_fib_event_work+0x100/0x158 [prestera]
-[  529.150313]  process_one_work+0x208/0x488
-[  529.154348]  worker_thread+0x4c/0x430
-[  529.158030]  kthread+0x120/0x138
-[  529.161274]  ret_from_fork+0x10/0x20
-[  529.164867] ---[ end trace 0000000000000000 ]---
-
-and results in a non offloaded route:
-
-    $ ip route
-    10.0.0.0/24 dev swp5 proto kernel scope link src 10.0.0.1 rt_trap
-    10.0.1.0/24 nhid 20 via 10.0.0.2 dev swp5 rt_trap
-
-When creating a route referencing a nexthop via its ID, the nexthop will
-be stored in a separate nh pointer instead of the array of nexthops in
-the fib_info struct. This causes issues since fib_info_nh() only handles
-the nexthops array, but not the separate nh pointer, and will loudly
-WARN about it.
-
-In contrast fib_info_nhc() handles both, but returns a fib_nh_common
-pointer instead of a fib_nh pointer. Luckily we only ever access fields
-from the fib_nh_common parts, so we can just replace all instances of
-fib_info_nh() with fib_info_nhc() and access the fields via their
-fib_nh_common names.
-
-This allows handling IPv4 routes with an external nexthop, and they now
-get offloaded as expected:
-
-    $ ip route
-    10.0.0.0/24 dev swp5 proto kernel scope link src 10.0.0.1 rt_trap
-    10.0.1.0/24 nhid 20 via 10.0.0.2 dev swp5 offload rt_offload
-
-Fixes: 396b80cb5cc8 ("net: marvell: prestera: Add neighbour cache accounting")
-Signed-off-by: Jonas Gorski <jonas.gorski@bisdn.de>
-Acked-by: Elad Nachman <enachman@marvell.com>
-Link: https://lore.kernel.org/r/20230804101220.247515-1-jonas.gorski@bisdn.de
+Fixes: dff515a3e71d ("ibmvnic: Harden device login requests")
+Signed-off-by: Nick Child <nnac123@linux.ibm.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/20230809221038.51296-5-nnac123@linux.ibm.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/marvell/prestera/prestera_router.c |   14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ drivers/net/ethernet/ibm/ibmvnic.c |   70 +++++++++++++++++++++++++------------
+ 1 file changed, 48 insertions(+), 22 deletions(-)
 
---- a/drivers/net/ethernet/marvell/prestera/prestera_router.c
-+++ b/drivers/net/ethernet/marvell/prestera/prestera_router.c
-@@ -166,11 +166,11 @@ prestera_util_neigh2nc_key(struct preste
+--- a/drivers/net/ethernet/ibm/ibmvnic.c
++++ b/drivers/net/ethernet/ibm/ibmvnic.c
+@@ -116,6 +116,7 @@ static void ibmvnic_tx_scrq_clean_buffer
+ static void free_long_term_buff(struct ibmvnic_adapter *adapter,
+ 				struct ibmvnic_long_term_buff *ltb);
+ static void ibmvnic_disable_irqs(struct ibmvnic_adapter *adapter);
++static void flush_reset_queue(struct ibmvnic_adapter *adapter);
  
- static bool __prestera_fi_is_direct(struct fib_info *fi)
+ struct ibmvnic_stat {
+ 	char name[ETH_GSTRING_LEN];
+@@ -1507,8 +1508,8 @@ static const char *adapter_state_to_stri
+ 
+ static int ibmvnic_login(struct net_device *netdev)
  {
--	struct fib_nh *fib_nh;
-+	struct fib_nh_common *fib_nhc;
- 
- 	if (fib_info_num_path(fi) == 1) {
--		fib_nh = fib_info_nh(fi, 0);
--		if (fib_nh->fib_nh_gw_family == AF_UNSPEC)
-+		fib_nhc = fib_info_nhc(fi, 0);
-+		if (fib_nhc->nhc_gw_family == AF_UNSPEC)
- 			return true;
- 	}
- 
-@@ -261,7 +261,7 @@ static bool
- __prestera_util_kern_n_is_reachable_v4(u32 tb_id, __be32 *addr,
- 				       struct net_device *dev)
- {
--	struct fib_nh *fib_nh;
-+	struct fib_nh_common *fib_nhc;
- 	struct fib_result res;
- 	bool reachable;
- 
-@@ -269,8 +269,8 @@ __prestera_util_kern_n_is_reachable_v4(u
- 
- 	if (!prestera_util_kern_get_route(&res, tb_id, addr))
- 		if (prestera_fi_is_direct(res.fi)) {
--			fib_nh = fib_info_nh(res.fi, 0);
--			if (dev == fib_nh->fib_nh_dev)
-+			fib_nhc = fib_info_nhc(res.fi, 0);
-+			if (dev == fib_nhc->nhc_dev)
- 				reachable = true;
++	unsigned long flags, timeout = msecs_to_jiffies(20000);
+ 	struct ibmvnic_adapter *adapter = netdev_priv(netdev);
+-	unsigned long timeout = msecs_to_jiffies(20000);
+ 	int retry_count = 0;
+ 	int retries = 10;
+ 	bool retry;
+@@ -1573,6 +1574,7 @@ static int ibmvnic_login(struct net_devi
+ 					    "SCRQ irq initialization failed\n");
+ 				return rc;
+ 			}
++		/* Default/timeout error handling, reset and start fresh */
+ 		} else if (adapter->init_done_rc) {
+ 			netdev_warn(netdev, "Adapter login failed, init_done_rc = %d\n",
+ 				    adapter->init_done_rc);
+@@ -1588,29 +1590,53 @@ partial_reset:
+ 				    "Freeing and re-registering CRQs before attempting to login again\n");
+ 			retry = true;
+ 			adapter->init_done_rc = 0;
+-			retry_count++;
+ 			release_sub_crqs(adapter, true);
+-			reinit_init_done(adapter);
+-			release_crq_queue(adapter);
+-			/* If we don't sleep here then we risk an unnecessary
+-			 * failover event from the VIOS. This is a known VIOS
+-			 * issue caused by a vnic device freeing and registering
+-			 * a CRQ too quickly.
++			/* Much of this is similar logic as ibmvnic_probe(),
++			 * we are essentially re-initializing communication
++			 * with the server. We really should not run any
++			 * resets/failovers here because this is already a form
++			 * of reset and we do not want parallel resets occurring
+ 			 */
+-			msleep(1500);
+-			rc = init_crq_queue(adapter);
+-			if (rc) {
+-				netdev_err(netdev, "login recovery: init CRQ failed %d\n",
+-					   rc);
+-				return -EIO;
+-			}
+-
+-			rc = ibmvnic_reset_init(adapter, false);
+-			if (rc) {
+-				netdev_err(netdev, "login recovery: Reset init failed %d\n",
+-					   rc);
+-				return -EIO;
+-			}
++			do {
++				reinit_init_done(adapter);
++				/* Clear any failovers we got in the previous
++				 * pass since we are re-initializing the CRQ
++				 */
++				adapter->failover_pending = false;
++				release_crq_queue(adapter);
++				/* If we don't sleep here then we risk an
++				 * unnecessary failover event from the VIOS.
++				 * This is a known VIOS issue caused by a vnic
++				 * device freeing and registering a CRQ too
++				 * quickly.
++				 */
++				msleep(1500);
++				/* Avoid any resets, since we are currently
++				 * resetting.
++				 */
++				spin_lock_irqsave(&adapter->rwi_lock, flags);
++				flush_reset_queue(adapter);
++				spin_unlock_irqrestore(&adapter->rwi_lock,
++						       flags);
++
++				rc = init_crq_queue(adapter);
++				if (rc) {
++					netdev_err(netdev, "login recovery: init CRQ failed %d\n",
++						   rc);
++					return -EIO;
++				}
++
++				rc = ibmvnic_reset_init(adapter, false);
++				if (rc)
++					netdev_err(netdev, "login recovery: Reset init failed %d\n",
++						   rc);
++				/* IBMVNIC_CRQ_INIT will return EAGAIN if it
++				 * fails, since ibmvnic_reset_init will free
++				 * irq's in failure, we won't be able to receive
++				 * new CRQs so we need to keep trying. probe()
++				 * handles this similarly.
++				 */
++			} while (rc == -EAGAIN && retry_count++ < retries);
  		}
+ 	} while (retry);
  
-@@ -324,7 +324,7 @@ prestera_kern_fib_info_nhc(struct fib_no
- 	if (info->family == AF_INET) {
- 		fen4_info = container_of(info, struct fib_entry_notifier_info,
- 					 info);
--		return &fib_info_nh(fen4_info->fi, n)->nh_common;
-+		return fib_info_nhc(fen4_info->fi, n);
- 	} else if (info->family == AF_INET6) {
- 		fen6_info = container_of(info, struct fib6_entry_notifier_info,
- 					 info);
 
 
