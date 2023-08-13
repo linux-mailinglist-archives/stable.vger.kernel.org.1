@@ -2,48 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 79EB177ABF8
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:27:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9495177ACA0
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:35:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231749AbjHMV1t (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:27:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36778 "EHLO
+        id S232093AbjHMVfM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:35:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48962 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231772AbjHMV1r (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:27:47 -0400
+        with ESMTP id S232096AbjHMVfL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:35:11 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B075410D7
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:27:49 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0639810DD
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:35:14 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 46E2D62A05
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:27:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 613FEC433C8;
-        Sun, 13 Aug 2023 21:27:48 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6EB8F62CD3
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:35:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 895ABC433C8;
+        Sun, 13 Aug 2023 21:35:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691962068;
-        bh=rUjMNLyauspD1fsMyJIM0dhznTVXeLRmDEHGHbdeLEU=;
+        s=korg; t=1691962512;
+        bh=Ax5MOy70B7HP2+Aw+eDOLsrGyVVCWIc9rVjYyMxv868=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=U11SAU6FL2SS3RwdqoesW9b9M+7vj0s5mPypP+p2pQLysnGSY3zLmrENeEAqH57N6
-         kMfVQwOeJR29iUXeKuhC7cb9mub5KAPP6NNT4zCPE2Ou5EgoMLVknl9Pc7MvEsYNNi
-         oaHjlh/XI2CzTLZaUOZHKrFh/utOwhsNk3PdhJjw=
+        b=C4lJTxoOOoCOgDumFkMxWNZGNziHW1fW+6SKsSs9N1KaewLnDcpmDg9xf7UYPRI7V
+         ofUWjSWKGeNveNVntfkmwIserFZMAdin5njuIqNkzmJkfUbAK7+pv7A+4bWfuINrlG
+         87q8fPIfniV2nQPyxS61+f9D/jmk/CaNoBN4XdKM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>,
-        Ido Schimmel <idosch@nvidia.com>,
-        Hangbin Liu <liuhangbin@gmail.com>,
-        Nikolay Aleksandrov <razor@blackwall.org>,
-        Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.4 102/206] selftests: forwarding: ethtool_mm: Skip when MAC Merge is not supported
+        patches@lists.linux.dev, Daniel Vetter <daniel.vetter@ffwll.ch>,
+        Roman Stratiienko <r.stratiienko@gmail.com>,
+        Boris Brezillon <boris.brezillon@collabora.com>,
+        Thomas Zimmermann <tzimmermann@suse.de>
+Subject: [PATCH 6.1 027/149] drm/shmem-helper: Reset vma->vm_ops before calling dma_buf_mmap()
 Date:   Sun, 13 Aug 2023 23:17:52 +0200
-Message-ID: <20230813211727.977662507@linuxfoundation.org>
+Message-ID: <20230813211719.613814712@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211724.969019629@linuxfoundation.org>
-References: <20230813211724.969019629@linuxfoundation.org>
+In-Reply-To: <20230813211718.757428827@linuxfoundation.org>
+References: <20230813211718.757428827@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -58,70 +56,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Boris Brezillon <boris.brezillon@collabora.com>
 
-commit 23fb886a1ced6f885ddd541cc86d45c415ce705c upstream.
+commit 07dd476f6116966cb2006e25fdcf48f0715115ff upstream.
 
-MAC Merge cannot be tested with veth pairs, resulting in failures:
+The dma-buf backend is supposed to provide its own vm_ops, but some
+implementation just have nothing special to do and leave vm_ops
+untouched, probably expecting this field to be zero initialized (this
+is the case with the system_heap implementation for instance).
+Let's reset vma->vm_ops to NULL to keep things working with these
+implementations.
 
- # ./ethtool_mm.sh
- [...]
- TEST: Manual configuration with verification: swp1 to swp2          [FAIL]
-         Verification did not succeed
-
-Fix by skipping the test when the interfaces do not support MAC Merge.
-
-Fixes: e6991384ace5 ("selftests: forwarding: add a test for MAC Merge layer")
-Reported-by: Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>
-Closes: https://lore.kernel.org/netdev/adc5e40d-d040-a65e-eb26-edf47dac5b02@alu.unizg.hr/
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
-Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
-Link: https://lore.kernel.org/r/20230808141503.4060661-11-idosch@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 26d3ac3cb04d ("drm/shmem-helpers: Redirect mmap for imported dma-buf")
+Cc: <stable@vger.kernel.org>
+Cc: Daniel Vetter <daniel.vetter@ffwll.ch>
+Reported-by: Roman Stratiienko <r.stratiienko@gmail.com>
+Signed-off-by: Boris Brezillon <boris.brezillon@collabora.com>
+Tested-by: Roman Stratiienko <r.stratiienko@gmail.com>
+Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230724112610.60974-1-boris.brezillon@collabora.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../selftests/net/forwarding/ethtool_mm.sh     | 18 +++++++++++++-----
- 1 file changed, 13 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/drm_gem_shmem_helper.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/tools/testing/selftests/net/forwarding/ethtool_mm.sh b/tools/testing/selftests/net/forwarding/ethtool_mm.sh
-index c580ad623848..39e736f30322 100755
---- a/tools/testing/selftests/net/forwarding/ethtool_mm.sh
-+++ b/tools/testing/selftests/net/forwarding/ethtool_mm.sh
-@@ -258,11 +258,6 @@ h2_destroy()
+--- a/drivers/gpu/drm/drm_gem_shmem_helper.c
++++ b/drivers/gpu/drm/drm_gem_shmem_helper.c
+@@ -622,7 +622,13 @@ int drm_gem_shmem_mmap(struct drm_gem_sh
+ 	int ret;
  
- setup_prepare()
- {
--	check_ethtool_mm_support
--	check_tc_fp_support
--	require_command lldptool
--	bail_on_lldpad "autoconfigure the MAC Merge layer" "configure it manually"
--
- 	h1=${NETIFS[p1]}
- 	h2=${NETIFS[p2]}
- 
-@@ -278,6 +273,19 @@ cleanup()
- 	h1_destroy
- }
- 
-+check_ethtool_mm_support
-+check_tc_fp_support
-+require_command lldptool
-+bail_on_lldpad "autoconfigure the MAC Merge layer" "configure it manually"
+ 	if (obj->import_attach) {
++		/* Reset both vm_ops and vm_private_data, so we don't end up with
++		 * vm_ops pointing to our implementation if the dma-buf backend
++		 * doesn't set those fields.
++		 */
+ 		vma->vm_private_data = NULL;
++		vma->vm_ops = NULL;
 +
-+for netif in ${NETIFS[@]}; do
-+	ethtool --show-mm $netif 2>&1 &> /dev/null
-+	if [[ $? -ne 0 ]]; then
-+		echo "SKIP: $netif does not support MAC Merge"
-+		exit $ksft_skip
-+	fi
-+done
-+
- trap cleanup EXIT
+ 		ret = dma_buf_mmap(obj->dma_buf, vma, 0);
  
- setup_prepare
--- 
-2.41.0
-
+ 		/* Drop the reference drm_gem_mmap_obj() acquired.*/
 
 
