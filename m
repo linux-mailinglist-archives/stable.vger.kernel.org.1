@@ -2,91 +2,173 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6AA3377AC3D
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:30:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B365277AB67
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:21:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231892AbjHMVaw (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:30:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48430 "EHLO
+        id S229900AbjHMVVd (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:21:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34390 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231888AbjHMVav (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:30:51 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0450010D7
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:30:54 -0700 (PDT)
+        with ESMTP id S229627AbjHMVVd (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:21:33 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 35D2610D0
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:21:35 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 893B262B25
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:30:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E444C433C7;
-        Sun, 13 Aug 2023 21:30:52 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C9AFF627AF
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:21:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB55DC433C7;
+        Sun, 13 Aug 2023 21:21:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691962253;
-        bh=+5UBt90uZKWy99kz7ljgCeWAQa8dEwQbUFKvaWUi+oY=;
+        s=korg; t=1691961694;
+        bh=GWc1cu/amCp9CakShuTrrzwZPXKBwSs0rRxpgQItOYk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=S7ZgdgCrFkdiR4fOhil4ElMNB5m4BWA6Jz4cJLBNLY+uaXzyAoVzWD6tLyNYY/vRQ
-         Xm9zOpUX+Hr4W5AAssMQ8NpK6QMfvUTHbUIrti+DkLD8TSXZsDKqCswQtGfNIiTiZH
-         DI6lFV/NflCpw5VQ7oHDJTAvhSvEEWYbIJe21Gv0=
+        b=VvcJ+GJ7XGFcGn3YwKN87OG5cJ5Jn0vm7DaAnD+osuOyPnC5E6R5EF0PNRvDw0ZS+
+         RngF7jgz2jhNOpJuirz3f2/ffHe1N3isYefo1yTfYvkiwWl5uOK2NiuifFejfudN6A
+         j8aTWK3uLqb0fsFBWzGb7XeDN0VVCfPIJTrycKGc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yevgeny Kliteynik <kliteyn@nvidia.com>,
-        Erez Shitrit <erezsh@nvidia.com>,
-        Saeed Mahameed <saeedm@nvidia.com>
-Subject: [PATCH 6.4 169/206] net/mlx5: DR, Fix wrong allocation of modify hdr pattern
+        patches@lists.linux.dev,
+        Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+        syzbot+74db8b3087f293d3a13a@syzkaller.appspotmail.com,
+        Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 4.14 06/26] nilfs2: fix use-after-free of nilfs_root in dirtying inodes via iput
 Date:   Sun, 13 Aug 2023 23:18:59 +0200
-Message-ID: <20230813211729.863088044@linuxfoundation.org>
+Message-ID: <20230813211703.227229562@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211724.969019629@linuxfoundation.org>
-References: <20230813211724.969019629@linuxfoundation.org>
+In-Reply-To: <20230813211702.980427106@linuxfoundation.org>
+References: <20230813211702.980427106@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Yevgeny Kliteynik <kliteyn@nvidia.com>
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-commit 8bfe1e19fb96d89fce14302e35cba0cd9f39d0a1 upstream.
+commit f8654743a0e6909dc634cbfad6db6816f10f3399 upstream.
 
-Fixing wrong calculation of the modify hdr pattern size,
-where the previously calculated number would not be enough
-to accommodate the required number of actions.
+During unmount process of nilfs2, nothing holds nilfs_root structure after
+nilfs2 detaches its writer in nilfs_detach_log_writer().  Previously,
+nilfs_evict_inode() could cause use-after-free read for nilfs_root if
+inodes are left in "garbage_list" and released by nilfs_dispose_list at
+the end of nilfs_detach_log_writer(), and this bug was fixed by commit
+9b5a04ac3ad9 ("nilfs2: fix use-after-free bug of nilfs_root in
+nilfs_evict_inode()").
 
-Fixes: da5d0027d666 ("net/mlx5: DR, Add cache for modify header pattern")
-Signed-off-by: Yevgeny Kliteynik <kliteyn@nvidia.com>
-Reviewed-by: Erez Shitrit <erezsh@nvidia.com>
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+However, it turned out that there is another possibility of UAF in the
+call path where mark_inode_dirty_sync() is called from iput():
+
+nilfs_detach_log_writer()
+  nilfs_dispose_list()
+    iput()
+      mark_inode_dirty_sync()
+        __mark_inode_dirty()
+          nilfs_dirty_inode()
+            __nilfs_mark_inode_dirty()
+              nilfs_load_inode_block() --> causes UAF of nilfs_root struct
+
+This can happen after commit 0ae45f63d4ef ("vfs: add support for a
+lazytime mount option"), which changed iput() to call
+mark_inode_dirty_sync() on its final reference if i_state has I_DIRTY_TIME
+flag and i_nlink is non-zero.
+
+This issue appears after commit 28a65b49eb53 ("nilfs2: do not write dirty
+data after degenerating to read-only") when using the syzbot reproducer,
+but the issue has potentially existed before.
+
+Fix this issue by adding a "purging flag" to the nilfs structure, setting
+that flag while disposing the "garbage_list" and checking it in
+__nilfs_mark_inode_dirty().
+
+Unlike commit 9b5a04ac3ad9 ("nilfs2: fix use-after-free bug of nilfs_root
+in nilfs_evict_inode()"), this patch does not rely on ns_writer to
+determine whether to skip operations, so as not to break recovery on
+mount.  The nilfs_salvage_orphan_logs routine dirties the buffer of
+salvaged data before attaching the log writer, so changing
+__nilfs_mark_inode_dirty() to skip the operation when ns_writer is NULL
+will cause recovery write to fail.  The purpose of using the cleanup-only
+flag is to allow for narrowing of such conditions.
+
+Link: https://lkml.kernel.org/r/20230728191318.33047-1-konishi.ryusuke@gmail.com
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Reported-by: syzbot+74db8b3087f293d3a13a@syzkaller.appspotmail.com
+Closes: https://lkml.kernel.org/r/000000000000b4e906060113fd63@google.com
+Fixes: 0ae45f63d4ef ("vfs: add support for a lazytime mount option")
+Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Cc: <stable@vger.kernel.org> # 4.0+
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/steering/dr_ptrn.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/nilfs2/inode.c     |    8 ++++++++
+ fs/nilfs2/segment.c   |    2 ++
+ fs/nilfs2/the_nilfs.h |    2 ++
+ 3 files changed, 12 insertions(+)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/steering/dr_ptrn.c b/drivers/net/ethernet/mellanox/mlx5/core/steering/dr_ptrn.c
-index d6947fe13d56..8ca534ef5d03 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/steering/dr_ptrn.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/steering/dr_ptrn.c
-@@ -82,7 +82,7 @@ dr_ptrn_alloc_pattern(struct mlx5dr_ptrn_mgr *mgr,
- 	u32 chunk_size;
- 	u32 index;
+--- a/fs/nilfs2/inode.c
++++ b/fs/nilfs2/inode.c
+@@ -1121,9 +1121,17 @@ int nilfs_set_file_dirty(struct inode *i
  
--	chunk_size = ilog2(num_of_actions);
-+	chunk_size = ilog2(roundup_pow_of_two(num_of_actions));
- 	/* HW modify action index granularity is at least 64B */
- 	chunk_size = max_t(u32, chunk_size, DR_CHUNK_SIZE_8);
+ int __nilfs_mark_inode_dirty(struct inode *inode, int flags)
+ {
++	struct the_nilfs *nilfs = inode->i_sb->s_fs_info;
+ 	struct buffer_head *ibh;
+ 	int err;
  
--- 
-2.41.0
-
++	/*
++	 * Do not dirty inodes after the log writer has been detached
++	 * and its nilfs_root struct has been freed.
++	 */
++	if (unlikely(nilfs_purging(nilfs)))
++		return 0;
++
+ 	err = nilfs_load_inode_block(inode, &ibh);
+ 	if (unlikely(err)) {
+ 		nilfs_msg(inode->i_sb, KERN_WARNING,
+--- a/fs/nilfs2/segment.c
++++ b/fs/nilfs2/segment.c
+@@ -2859,6 +2859,7 @@ void nilfs_detach_log_writer(struct supe
+ 		nilfs_segctor_destroy(nilfs->ns_writer);
+ 		nilfs->ns_writer = NULL;
+ 	}
++	set_nilfs_purging(nilfs);
+ 
+ 	/* Force to free the list of dirty files */
+ 	spin_lock(&nilfs->ns_inode_lock);
+@@ -2871,4 +2872,5 @@ void nilfs_detach_log_writer(struct supe
+ 	up_write(&nilfs->ns_segctor_sem);
+ 
+ 	nilfs_dispose_list(nilfs, &garbage_list, 1);
++	clear_nilfs_purging(nilfs);
+ }
+--- a/fs/nilfs2/the_nilfs.h
++++ b/fs/nilfs2/the_nilfs.h
+@@ -37,6 +37,7 @@ enum {
+ 	THE_NILFS_DISCONTINUED,	/* 'next' pointer chain has broken */
+ 	THE_NILFS_GC_RUNNING,	/* gc process is running */
+ 	THE_NILFS_SB_DIRTY,	/* super block is dirty */
++	THE_NILFS_PURGING,	/* disposing dirty files for cleanup */
+ };
+ 
+ /**
+@@ -216,6 +217,7 @@ THE_NILFS_FNS(INIT, init)
+ THE_NILFS_FNS(DISCONTINUED, discontinued)
+ THE_NILFS_FNS(GC_RUNNING, gc_running)
+ THE_NILFS_FNS(SB_DIRTY, sb_dirty)
++THE_NILFS_FNS(PURGING, purging)
+ 
+ /*
+  * Mount option operations
 
 
