@@ -2,49 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DC61077AC86
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:34:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B8E1777ABFD
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:28:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232045AbjHMVeN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:34:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32904 "EHLO
+        id S231776AbjHMV2B (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:28:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41288 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232043AbjHMVeF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:34:05 -0400
+        with ESMTP id S231613AbjHMV2B (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:28:01 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DDD6210DB
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:34:06 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2996A10D7
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:28:03 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7307662C75
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:34:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BB52C433C8;
-        Sun, 13 Aug 2023 21:34:05 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B273B62A27
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:28:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4D90C433C8;
+        Sun, 13 Aug 2023 21:28:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691962445;
-        bh=91a//ZPt+Ufn40txO1MRK3Xk6hh7et4Z3OCnk954LOI=;
+        s=korg; t=1691962082;
+        bh=ZEv/HAweZuiGnvwv6eZxaATYoGfoTROek+O5VAPXFVI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=q4Yd4imoUL2JX1ldE8dL0dOA4a5/WxrFPLUCorRRUefQeIJl1KcXXao9CoDXpF60i
-         aYoZNHyeDCT2nnOTLt3Dmrbu0jKze5QnD+6G/2N4v+ODuKfP/VZbH/8TfUCnj8x1rB
-         Nvyhuqjz7ua6l1k9w9DXPZf2eJnOGPeobTlUr7To=
+        b=RggbMd6OkRqX91HvpfssEAYikuN4y1WtgleeClc3BGAtSlaqrnACc2CO1D1C7C5oQ
+         tY1EdWASfRl79hvAdNZbcm6PtJE6X9kfZWEF4soPn/RDFIbZXNou6BsYyWVS9Fu1s9
+         mOZH7ujdFMs6aXw+JKN/oW3pGC1yIt5KmW7EqvbA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        Stylon Wang <stylon.wang@amd.com>,
-        Peichen Huang <peichen.huang@amd.com>,
-        Mustapha Ghaddar <Mustapha.Ghaddar@amd.com>,
-        Daniel Wheeler <daniel.wheeler@amd.com>
-Subject: [PATCH 6.1 032/149] drm/amd/display: limit DPIA link rate to HBR3
+        patches@lists.linux.dev, Minjie Du <duminjie@vivo.com>,
+        Michal Simek <michal.simek@amd.com>,
+        Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 6.4 107/206] dmaengine: xilinx: xdma: Fix Judgment of the return value
 Date:   Sun, 13 Aug 2023 23:17:57 +0200
-Message-ID: <20230813211719.767586367@linuxfoundation.org>
+Message-ID: <20230813211728.115845481@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211718.757428827@linuxfoundation.org>
-References: <20230813211718.757428827@linuxfoundation.org>
+In-Reply-To: <20230813211724.969019629@linuxfoundation.org>
+References: <20230813211724.969019629@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -59,44 +55,32 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Peichen Huang <peichen.huang@amd.com>
+From: Minjie Du <duminjie@vivo.com>
 
-commit 0e69ef6ea82e8eece7d2b2b45a0da9670eaaefff upstream.
+commit a68b48afc050a9456ed4ed19d8755e0f925b44e6 upstream.
 
-[Why]
-DPIA doesn't support UHBR, driver should not enable UHBR
-for dp tunneling
+Fix: make IS_ERR() judge the devm_ioremap_resource() function return.
 
-[How]
-limit DPIA link rate to HBR3
-
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
-Acked-by: Stylon Wang <stylon.wang@amd.com>
-Signed-off-by: Peichen Huang <peichen.huang@amd.com>
-Reviewed-by: Mustapha Ghaddar <Mustapha.Ghaddar@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Fixes: 17ce252266c7 ("dmaengine: xilinx: xdma: Add xilinx xdma driver")
+Signed-off-by: Minjie Du <duminjie@vivo.com>
+Acked-by: Michal Simek <michal.simek@amd.com>
+Link: https://lore.kernel.org/r/20230705113912.16247-1-duminjie@vivo.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/core/dc_link.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/dma/xilinx/xdma.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/display/dc/core/dc_link.c
-+++ b/drivers/gpu/drm/amd/display/dc/core/dc_link.c
-@@ -1141,6 +1141,11 @@ static bool detect_link_and_local_sink(s
- 					(link->dpcd_caps.dongle_type !=
- 							DISPLAY_DONGLE_DP_HDMI_CONVERTER))
- 				converter_disable_audio = true;
-+
-+			/* limited link rate to HBR3 for DPIA until we implement USB4 V2 */
-+			if (link->ep_type == DISPLAY_ENDPOINT_USB4_DPIA &&
-+					link->reported_link_cap.link_rate > LINK_RATE_HIGH3)
-+				link->reported_link_cap.link_rate = LINK_RATE_HIGH3;
- 			break;
- 		}
+--- a/drivers/dma/xilinx/xdma.c
++++ b/drivers/dma/xilinx/xdma.c
+@@ -894,7 +894,7 @@ static int xdma_probe(struct platform_de
+ 	}
  
+ 	reg_base = devm_ioremap_resource(&pdev->dev, res);
+-	if (!reg_base) {
++	if (IS_ERR(reg_base)) {
+ 		xdma_err(xdev, "ioremap failed");
+ 		goto failed;
+ 	}
 
 
