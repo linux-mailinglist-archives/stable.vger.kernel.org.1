@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 954CB77ACAA
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:35:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 88DB777AC21
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:29:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232107AbjHMVfk (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:35:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38592 "EHLO
+        id S231840AbjHMV3k (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:29:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39298 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232111AbjHMVfj (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:35:39 -0400
+        with ESMTP id S231836AbjHMV3j (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:29:39 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C242E10DD
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:35:41 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70D2910E5
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:29:41 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 60B1262CEC
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:35:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78DCCC433C7;
-        Sun, 13 Aug 2023 21:35:40 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0E32D62ACB
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:29:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D6C0C433C7;
+        Sun, 13 Aug 2023 21:29:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691962540;
-        bh=jMa0yFUyBMoO14cGhZjriSxrKglpiq5ssP1edSCI88E=;
+        s=korg; t=1691962180;
+        bh=8TMxi96RIWjNIOiNhkjKHfj4IIP9kMJl8q2G3CFCKx0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rxgGESpp1cl6Fm/1OlnkDXadSfUZ+ifcSeGUj/95SZUPgTo/F/MoRgz+U5nj7vHRT
-         twQy71NjoxmnKKjikgUT3XQs5ucENOcrm+S0sK4A4azyj/mgLI517W9bOjN7xyLeVr
-         Yy8gxNLpkw1Umq4w4aI3Yo7HN3YP7YrEdxJHcy18=
+        b=bc0SYzq0he1M9A1XdbmuuqXqtW+iCjHEDfhVjKlpRnAvW71rGSE7236c8kAorL9S4
+         XPPx/0nXzcP17MbIQiNwmp+9/viLpYhrxrdmgViaYDt7+MArdaXMXeDxiKDae5kqKI
+         b8ElD8BI0s1zQ3xGWM+yB9iyRMUIIk6177b8G8ME=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Tao Liu <ltao@redhat.com>,
-        "Borislav Petkov (AMD)" <bp@alien8.de>,
-        Tom Lendacky <thomas.lendacky@amd.com>, stable@kernel.org
-Subject: [PATCH 6.1 067/149] x86/sev: Do not try to parse for the CC blob on non-AMD hardware
+        patches@lists.linux.dev,
+        Douglas Miller <doug.miller@cornelisnetworks.com>,
+        Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>,
+        Leon Romanovsky <leon@kernel.org>
+Subject: [PATCH 6.4 142/206] IB/hfi1: Fix possible panic during hotplug remove
 Date:   Sun, 13 Aug 2023 23:18:32 +0200
-Message-ID: <20230813211720.805980913@linuxfoundation.org>
+Message-ID: <20230813211729.097956396@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211718.757428827@linuxfoundation.org>
-References: <20230813211718.757428827@linuxfoundation.org>
+In-Reply-To: <20230813211724.969019629@linuxfoundation.org>
+References: <20230813211724.969019629@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,118 +55,33 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Borislav Petkov (AMD) <bp@alien8.de>
+From: Douglas Miller <doug.miller@cornelisnetworks.com>
 
-commit bee6cf1a80b54548a039e224c651bb15b644a480 upstream.
+commit 4fdfaef71fced490835145631a795497646f4555 upstream.
 
-Tao Liu reported a boot hang on an Intel Atom machine due to an unmapped
-EFI config table. The reason being that the CC blob which contains the
-CPUID page for AMD SNP guests is parsed for before even checking
-whether the machine runs on AMD hardware.
+During hotplug remove it is possible that the update counters work
+might be pending, and may run after memory has been freed.
+Cancel the update counters work before freeing memory.
 
-Usually that's not a problem on !AMD hw - it simply won't find the CC
-blob's GUID and return. However, if any parts of the config table
-pointers array is not mapped, the kernel will #PF very early in the
-decompressor stage without any opportunity to recover.
-
-Therefore, do a superficial CPUID check before poking for the CC blob.
-This will fix the current issue on real hardware. It would also work as
-a guest on a non-lying hypervisor.
-
-For the lying hypervisor, the check is done again, *after* parsing the
-CC blob as the real CPUID page will be present then.
-
-Clear the #VC handler in case SEV-{ES,SNP} hasn't been detected, as
-a precaution.
-
-Fixes: c01fce9cef84 ("x86/compressed: Add SEV-SNP feature detection/setup")
-Reported-by: Tao Liu <ltao@redhat.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Acked-by: Tom Lendacky <thomas.lendacky@amd.com>
-Tested-by: Tao Liu <ltao@redhat.com>
-Cc: <stable@kernel.org>
-Link: https://lore.kernel.org/r/20230601072043.24439-1-ltao@redhat.com
+Fixes: 7724105686e7 ("IB/hfi1: add driver files")
+Signed-off-by: Douglas Miller <doug.miller@cornelisnetworks.com>
+Signed-off-by: Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>
+Link: https://lore.kernel.org/r/169099756100.3927190.15284930454106475280.stgit@awfm-02.cornelisnetworks.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/boot/compressed/idt_64.c |    9 ++++++++-
- arch/x86/boot/compressed/sev.c    |   37 +++++++++++++++++++++++++++++++++++--
- 2 files changed, 43 insertions(+), 3 deletions(-)
+ drivers/infiniband/hw/hfi1/chip.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/arch/x86/boot/compressed/idt_64.c
-+++ b/arch/x86/boot/compressed/idt_64.c
-@@ -63,7 +63,14 @@ void load_stage2_idt(void)
- 	set_idt_entry(X86_TRAP_PF, boot_page_fault);
+--- a/drivers/infiniband/hw/hfi1/chip.c
++++ b/drivers/infiniband/hw/hfi1/chip.c
+@@ -12307,6 +12307,7 @@ static void free_cntrs(struct hfi1_devda
  
- #ifdef CONFIG_AMD_MEM_ENCRYPT
--	set_idt_entry(X86_TRAP_VC, boot_stage2_vc);
-+	/*
-+	 * Clear the second stage #VC handler in case guest types
-+	 * needing #VC have not been detected.
-+	 */
-+	if (sev_status & BIT(1))
-+		set_idt_entry(X86_TRAP_VC, boot_stage2_vc);
-+	else
-+		set_idt_entry(X86_TRAP_VC, NULL);
- #endif
- 
- 	load_boot_idt(&boot_idt_desc);
---- a/arch/x86/boot/compressed/sev.c
-+++ b/arch/x86/boot/compressed/sev.c
-@@ -355,12 +355,45 @@ void sev_enable(struct boot_params *bp)
- 		bp->cc_blob_address = 0;
- 
- 	/*
-+	 * Do an initial SEV capability check before snp_init() which
-+	 * loads the CPUID page and the same checks afterwards are done
-+	 * without the hypervisor and are trustworthy.
-+	 *
-+	 * If the HV fakes SEV support, the guest will crash'n'burn
-+	 * which is good enough.
-+	 */
-+
-+	/* Check for the SME/SEV support leaf */
-+	eax = 0x80000000;
-+	ecx = 0;
-+	native_cpuid(&eax, &ebx, &ecx, &edx);
-+	if (eax < 0x8000001f)
-+		return;
-+
-+	/*
-+	 * Check for the SME/SEV feature:
-+	 *   CPUID Fn8000_001F[EAX]
-+	 *   - Bit 0 - Secure Memory Encryption support
-+	 *   - Bit 1 - Secure Encrypted Virtualization support
-+	 *   CPUID Fn8000_001F[EBX]
-+	 *   - Bits 5:0 - Pagetable bit position used to indicate encryption
-+	 */
-+	eax = 0x8000001f;
-+	ecx = 0;
-+	native_cpuid(&eax, &ebx, &ecx, &edx);
-+	/* Check whether SEV is supported */
-+	if (!(eax & BIT(1)))
-+		return;
-+
-+	/*
- 	 * Setup/preliminary detection of SNP. This will be sanity-checked
- 	 * against CPUID/MSR values later.
- 	 */
- 	snp = snp_init(bp);
- 
--	/* Check for the SME/SEV support leaf */
-+	/* Now repeat the checks with the SNP CPUID table. */
-+
-+	/* Recheck the SME/SEV support leaf */
- 	eax = 0x80000000;
- 	ecx = 0;
- 	native_cpuid(&eax, &ebx, &ecx, &edx);
-@@ -368,7 +401,7 @@ void sev_enable(struct boot_params *bp)
- 		return;
- 
- 	/*
--	 * Check for the SME/SEV feature:
-+	 * Recheck for the SME/SEV feature:
- 	 *   CPUID Fn8000_001F[EAX]
- 	 *   - Bit 0 - Secure Memory Encryption support
- 	 *   - Bit 1 - Secure Encrypted Virtualization support
+ 	if (dd->synth_stats_timer.function)
+ 		del_timer_sync(&dd->synth_stats_timer);
++	cancel_work_sync(&dd->update_cntr_work);
+ 	ppd = (struct hfi1_pportdata *)(dd + 1);
+ 	for (i = 0; i < dd->num_pports; i++, ppd++) {
+ 		kfree(ppd->cntrs);
 
 
