@@ -2,84 +2,93 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8275C77ACF0
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:38:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A359A77AB58
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:21:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232244AbjHMVit (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:38:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33536 "EHLO
+        id S229522AbjHMVU5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:20:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48016 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232227AbjHMVis (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:38:48 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED03A10DB
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:38:50 -0700 (PDT)
+        with ESMTP id S230186AbjHMVU4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:20:56 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 365F010E5
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:20:58 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8BFB16379F
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:38:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A015AC433C8;
-        Sun, 13 Aug 2023 21:38:49 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BE042617E8
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:20:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD107C433C8;
+        Sun, 13 Aug 2023 21:20:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691962730;
-        bh=NN/eqOZXS7wT3jpbo6YSXlVEQyQHTlH1ly8FxJZOlC0=;
+        s=korg; t=1691961657;
+        bh=d/SmMrQo1zjN499ghSAbSRZ9hHgu8GKA2HVi8bdA110=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=VT/d4FHCFQhk4KjBUjWuEm/CXqfs6prGF4U/1FLYi1Yz1ODRCgUUEb4K8tT/nek7b
-         ysl/E88C6dzDUi1Qh9iz+PxtCIqb596AuTl0OmlVB2e8GuXIYG/LjLb7dOh4U7STrK
-         hsbVeaqDrUZjgjAhXoi4ADXIZkueLjl9wBg2GEkA=
+        b=Jh5m59W8HULxNNqRU4gblkxRU7HPkI7V+7ffrt+Y22kkhYzj4zdif+KVaknvKBbzJ
+         kLtOklj+h4E12mf5cf/oijFKha/adNepFxLXT++Ssx2vkBzKxJUjLA0hXrGfof78GI
+         xcdr/KzKbixlQm253UBZn9z0yd/TLocxBGjLppdA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Felix Fietkau <nbd@nbd.name>,
-        Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 6.1 101/149] wifi: cfg80211: fix sband iftype data lookup for AP_VLAN
+        patches@lists.linux.dev, Olaf Skibbe <news@kravcenko.com>,
+        Lyude Paul <lyude@redhat.com>,
+        Karol Herbst <kherbst@redhat.com>
+Subject: [PATCH 4.14 13/26] drm/nouveau/disp: Revert a NULL check inside nouveau_connector_get_modes
 Date:   Sun, 13 Aug 2023 23:19:06 +0200
-Message-ID: <20230813211721.802689407@linuxfoundation.org>
+Message-ID: <20230813211703.485579448@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211718.757428827@linuxfoundation.org>
-References: <20230813211718.757428827@linuxfoundation.org>
+In-Reply-To: <20230813211702.980427106@linuxfoundation.org>
+References: <20230813211702.980427106@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Felix Fietkau <nbd@nbd.name>
+From: Karol Herbst <kherbst@redhat.com>
 
-commit 5fb9a9fb71a33be61d7d8e8ba4597bfb18d604d0 upstream.
+commit d5712cd22b9cf109fded1b7f178f4c1888c8b84b upstream.
 
-AP_VLAN interfaces are virtual, so doesn't really exist as a type for
-capabilities. When passed in as a type, AP is the one that's really intended.
+The original commit adding that check tried to protect the kenrel against
+a potential invalid NULL pointer access.
 
-Fixes: c4cbaf7973a7 ("cfg80211: Add support for HE")
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
-Link: https://lore.kernel.org/r/20230622165919.46841-1-nbd@nbd.name
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+However we call nouveau_connector_detect_depth once without a native_mode
+set on purpose for non LVDS connectors and this broke DP support in a few
+cases.
+
+Cc: Olaf Skibbe <news@kravcenko.com>
+Cc: Lyude Paul <lyude@redhat.com>
+Closes: https://gitlab.freedesktop.org/drm/nouveau/-/issues/238
+Closes: https://gitlab.freedesktop.org/drm/nouveau/-/issues/245
+Fixes: 20a2ce87fbaf8 ("drm/nouveau/dp: check for NULL nv_connector->native_mode")
+Signed-off-by: Karol Herbst <kherbst@redhat.com>
+Reviewed-by: Lyude Paul <lyude@redhat.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230805101813.2603989-1-kherbst@redhat.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/cfg80211.h |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/gpu/drm/nouveau/nouveau_connector.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/include/net/cfg80211.h
-+++ b/include/net/cfg80211.h
-@@ -562,6 +562,9 @@ ieee80211_get_sband_iftype_data(const st
- 	if (WARN_ON(iftype >= NL80211_IFTYPE_MAX))
- 		return NULL;
+--- a/drivers/gpu/drm/nouveau/nouveau_connector.c
++++ b/drivers/gpu/drm/nouveau/nouveau_connector.c
+@@ -945,7 +945,7 @@ nouveau_connector_get_modes(struct drm_c
+ 	/* Determine display colour depth for everything except LVDS now,
+ 	 * DP requires this before mode_valid() is called.
+ 	 */
+-	if (connector->connector_type != DRM_MODE_CONNECTOR_LVDS && nv_connector->native_mode)
++	if (connector->connector_type != DRM_MODE_CONNECTOR_LVDS)
+ 		nouveau_connector_detect_depth(connector);
  
-+	if (iftype == NL80211_IFTYPE_AP_VLAN)
-+		iftype = NL80211_IFTYPE_AP;
-+
- 	for (i = 0; i < sband->n_iftype_data; i++)  {
- 		const struct ieee80211_sband_iftype_data *data =
- 			&sband->iftype_data[i];
+ 	/* Find the native mode if this is a digital panel, if we didn't
 
 
