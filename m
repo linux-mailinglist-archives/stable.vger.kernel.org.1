@@ -2,178 +2,181 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E068377AB5A
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:21:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 95F9477AD9F
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:49:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230091AbjHMVVE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:21:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54922 "EHLO
+        id S232380AbjHMVtm (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:49:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36616 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230186AbjHMVVE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:21:04 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA44210E3
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:21:01 -0700 (PDT)
+        with ESMTP id S232381AbjHMVtJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:49:09 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE5551992
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:40:39 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 529526267C
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:21:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09C3BC433C8;
-        Sun, 13 Aug 2023 21:20:59 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 72A4A628B4
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:40:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35463C433C8;
+        Sun, 13 Aug 2023 21:40:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691961660;
-        bh=kPSiPS0z4zErPXHczipo2i7p+00yIeDwcaYht24ovYk=;
+        s=korg; t=1691962838;
+        bh=TDLFJ/34jFGQ9iCgEKjPvALhN71yUZ204Ow66MAejEg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=DMsY9ypf6zTYcl1cj/3WJcNkrPKvFKWEhkzXPJ7Pj83VbuVbMFlRyvsG+TiAk3yhh
-         DfUPnLBVLcWfeSglV6XvNjzo5Onts/B72RzeFJDYXGpjq8LAY+ecIjO03pRwHmOkAa
-         RsdS2jQp/snTaZxNQv42oWTyTtLltUroO3GjZHpw=
+        b=tAzp7Nyw/vtIHR+Y7a6IDeQtjUSER3Ysz5gV1cXYHn77NtYUzNMpDHESYURIHYTgm
+         zjgcnjTcW6qA9WzHLTKHhxQT97+dLBnTtcPyleV3t19K+HloL6GozM3kbcjfuV0ZJk
+         exoZie9OrJGXA9WXuNqfsJb+Wb0RCR1zG78aR0mI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, syzbot <syzkaller@googlegroups.com>,
-        Eric Dumazet <edumazet@google.com>,
-        Willem de Bruijn <willemb@google.com>,
-        Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 4.14 14/26] net/packet: annotate data-races around tp->status
+        patches@lists.linux.dev, Andrii Nakryiko <andrii@kernel.org>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Pu Lehui <pulehui@huawei.com>,
+        Luiz Capitulino <luizcap@amazon.com>
+Subject: [PATCH 5.10 06/68] bpf: aggressively forget precise markings during state checkpointing
 Date:   Sun, 13 Aug 2023 23:19:07 +0200
-Message-ID: <20230813211703.525168662@linuxfoundation.org>
+Message-ID: <20230813211708.350846290@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211702.980427106@linuxfoundation.org>
-References: <20230813211702.980427106@linuxfoundation.org>
+In-Reply-To: <20230813211708.149630011@linuxfoundation.org>
+References: <20230813211708.149630011@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Eric Dumazet <edumazet@google.com>
+From: Andrii Nakryiko <andrii@kernel.org>
 
-commit 8a9896177784063d01068293caea3f74f6830ff6 upstream.
+[ Upstream commit 7a830b53c17bbadcf99f778f28aaaa4e6c41df5f ]
 
-Another syzbot report [1] is about tp->status lockless reads
-from __packet_get_status()
+Exploit the property of about-to-be-checkpointed state to be able to
+forget all precise markings up to that point even more aggressively. We
+now clear all potentially inherited precise markings right before
+checkpointing and branching off into child state. If any of children
+states require precise knowledge of any SCALAR register, those will be
+propagated backwards later on before this state is finalized, preserving
+correctness.
 
-[1]
-BUG: KCSAN: data-race in __packet_rcv_has_room / __packet_set_status
+There is a single selftests BPF program change, but tremendous one: 25x
+reduction in number of verified instructions and states in
+trace_virtqueue_add_sgs.
 
-write to 0xffff888117d7c080 of 8 bytes by interrupt on cpu 0:
-__packet_set_status+0x78/0xa0 net/packet/af_packet.c:407
-tpacket_rcv+0x18bb/0x1a60 net/packet/af_packet.c:2483
-deliver_skb net/core/dev.c:2173 [inline]
-__netif_receive_skb_core+0x408/0x1e80 net/core/dev.c:5337
-__netif_receive_skb_one_core net/core/dev.c:5491 [inline]
-__netif_receive_skb+0x57/0x1b0 net/core/dev.c:5607
-process_backlog+0x21f/0x380 net/core/dev.c:5935
-__napi_poll+0x60/0x3b0 net/core/dev.c:6498
-napi_poll net/core/dev.c:6565 [inline]
-net_rx_action+0x32b/0x750 net/core/dev.c:6698
-__do_softirq+0xc1/0x265 kernel/softirq.c:571
-invoke_softirq kernel/softirq.c:445 [inline]
-__irq_exit_rcu+0x57/0xa0 kernel/softirq.c:650
-sysvec_apic_timer_interrupt+0x6d/0x80 arch/x86/kernel/apic/apic.c:1106
-asm_sysvec_apic_timer_interrupt+0x1a/0x20 arch/x86/include/asm/idtentry.h:645
-smpboot_thread_fn+0x33c/0x4a0 kernel/smpboot.c:112
-kthread+0x1d7/0x210 kernel/kthread.c:379
-ret_from_fork+0x1f/0x30 arch/x86/entry/entry_64.S:308
+Cilium results are more modest, but happen across wider range of programs.
 
-read to 0xffff888117d7c080 of 8 bytes by interrupt on cpu 1:
-__packet_get_status net/packet/af_packet.c:436 [inline]
-packet_lookup_frame net/packet/af_packet.c:524 [inline]
-__tpacket_has_room net/packet/af_packet.c:1255 [inline]
-__packet_rcv_has_room+0x3f9/0x450 net/packet/af_packet.c:1298
-tpacket_rcv+0x275/0x1a60 net/packet/af_packet.c:2285
-deliver_skb net/core/dev.c:2173 [inline]
-dev_queue_xmit_nit+0x38a/0x5e0 net/core/dev.c:2243
-xmit_one net/core/dev.c:3574 [inline]
-dev_hard_start_xmit+0xcf/0x3f0 net/core/dev.c:3594
-__dev_queue_xmit+0xefb/0x1d10 net/core/dev.c:4244
-dev_queue_xmit include/linux/netdevice.h:3088 [inline]
-can_send+0x4eb/0x5d0 net/can/af_can.c:276
-bcm_can_tx+0x314/0x410 net/can/bcm.c:302
-bcm_tx_timeout_handler+0xdb/0x260
-__run_hrtimer kernel/time/hrtimer.c:1685 [inline]
-__hrtimer_run_queues+0x217/0x700 kernel/time/hrtimer.c:1749
-hrtimer_run_softirq+0xd6/0x120 kernel/time/hrtimer.c:1766
-__do_softirq+0xc1/0x265 kernel/softirq.c:571
-run_ksoftirqd+0x17/0x20 kernel/softirq.c:939
-smpboot_thread_fn+0x30a/0x4a0 kernel/smpboot.c:164
-kthread+0x1d7/0x210 kernel/kthread.c:379
-ret_from_fork+0x1f/0x30 arch/x86/entry/entry_64.S:308
+SELFTESTS RESULTS
+=================
 
-value changed: 0x0000000000000000 -> 0x0000000020000081
+$ ./veristat -C -e file,prog,insns,states ~/imprecise-early-results.csv ~/imprecise-aggressive-results.csv | grep -v '+0'
+File                 Program                  Total insns (A)  Total insns (B)  Total insns (DIFF)  Total states (A)  Total states (B)  Total states (DIFF)
+-------------------  -----------------------  ---------------  ---------------  ------------------  ----------------  ----------------  -------------------
+loop6.bpf.linked1.o  trace_virtqueue_add_sgs           398057            15114   -382943 (-96.20%)              8717               336      -8381 (-96.15%)
+-------------------  -----------------------  ---------------  ---------------  ------------------  ----------------  ----------------  -------------------
 
-Reported by Kernel Concurrency Sanitizer on:
-CPU: 1 PID: 19 Comm: ksoftirqd/1 Not tainted 6.4.0-syzkaller #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 05/27/2023
+CILIUM RESULTS
+==============
 
-Fixes: 69e3c75f4d54 ("net: TX_RING and packet mmap")
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Link: https://lore.kernel.org/r/20230803145600.2937518-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+$ ./veristat -C -e file,prog,insns,states ~/imprecise-early-results-cilium.csv ~/imprecise-aggressive-results-cilium.csv | grep -v '+0'
+File           Program                           Total insns (A)  Total insns (B)  Total insns (DIFF)  Total states (A)  Total states (B)  Total states (DIFF)
+-------------  --------------------------------  ---------------  ---------------  ------------------  ----------------  ----------------  -------------------
+bpf_host.o     tail_handle_nat_fwd_ipv4                    23426            23221       -205 (-0.88%)              1537              1515         -22 (-1.43%)
+bpf_host.o     tail_handle_nat_fwd_ipv6                    13009            12904       -105 (-0.81%)               719               708         -11 (-1.53%)
+bpf_host.o     tail_nodeport_nat_ingress_ipv6               5261             5196        -65 (-1.24%)               247               243          -4 (-1.62%)
+bpf_host.o     tail_nodeport_nat_ipv6_egress                3446             3406        -40 (-1.16%)               203               198          -5 (-2.46%)
+bpf_lxc.o      tail_handle_nat_fwd_ipv4                    23426            23221       -205 (-0.88%)              1537              1515         -22 (-1.43%)
+bpf_lxc.o      tail_handle_nat_fwd_ipv6                    13009            12904       -105 (-0.81%)               719               708         -11 (-1.53%)
+bpf_lxc.o      tail_ipv4_ct_egress                          5074             4897       -177 (-3.49%)               255               248          -7 (-2.75%)
+bpf_lxc.o      tail_ipv4_ct_ingress                         5100             4923       -177 (-3.47%)               255               248          -7 (-2.75%)
+bpf_lxc.o      tail_ipv4_ct_ingress_policy_only             5100             4923       -177 (-3.47%)               255               248          -7 (-2.75%)
+bpf_lxc.o      tail_ipv6_ct_egress                          4558             4536        -22 (-0.48%)               188               187          -1 (-0.53%)
+bpf_lxc.o      tail_ipv6_ct_ingress                         4578             4556        -22 (-0.48%)               188               187          -1 (-0.53%)
+bpf_lxc.o      tail_ipv6_ct_ingress_policy_only             4578             4556        -22 (-0.48%)               188               187          -1 (-0.53%)
+bpf_lxc.o      tail_nodeport_nat_ingress_ipv6               5261             5196        -65 (-1.24%)               247               243          -4 (-1.62%)
+bpf_overlay.o  tail_nodeport_nat_ingress_ipv6               5261             5196        -65 (-1.24%)               247               243          -4 (-1.62%)
+bpf_overlay.o  tail_nodeport_nat_ipv6_egress                3482             3442        -40 (-1.15%)               204               201          -3 (-1.47%)
+bpf_xdp.o      tail_nodeport_nat_egress_ipv4               17200            15619      -1581 (-9.19%)              1111              1010        -101 (-9.09%)
+-------------  --------------------------------  ---------------  ---------------  ------------------  ----------------  ----------------  -------------------
+
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/r/20221104163649.121784-6-andrii@kernel.org
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Stable-dep-of: ecdf985d7615 ("bpf: track immediate values written to stack by BPF_ST instruction")
+Signed-off-by: Pu Lehui <pulehui@huawei.com>
+Tested-by: Luiz Capitulino <luizcap@amazon.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/packet/af_packet.c |   16 ++++++++++------
- 1 file changed, 10 insertions(+), 6 deletions(-)
+ kernel/bpf/verifier.c |   37 +++++++++++++++++++++++++++++++++++++
+ 1 file changed, 37 insertions(+)
 
---- a/net/packet/af_packet.c
-+++ b/net/packet/af_packet.c
-@@ -403,18 +403,20 @@ static void __packet_set_status(struct p
- {
- 	union tpacket_uhdr h;
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -2048,6 +2048,31 @@ static void mark_all_scalars_precise(str
+ 	}
+ }
  
-+	/* WRITE_ONCE() are paired with READ_ONCE() in __packet_get_status */
++static void mark_all_scalars_imprecise(struct bpf_verifier_env *env, struct bpf_verifier_state *st)
++{
++	struct bpf_func_state *func;
++	struct bpf_reg_state *reg;
++	int i, j;
 +
- 	h.raw = frame;
- 	switch (po->tp_version) {
- 	case TPACKET_V1:
--		h.h1->tp_status = status;
-+		WRITE_ONCE(h.h1->tp_status, status);
- 		flush_dcache_page(pgv_to_page(&h.h1->tp_status));
- 		break;
- 	case TPACKET_V2:
--		h.h2->tp_status = status;
-+		WRITE_ONCE(h.h2->tp_status, status);
- 		flush_dcache_page(pgv_to_page(&h.h2->tp_status));
- 		break;
- 	case TPACKET_V3:
--		h.h3->tp_status = status;
-+		WRITE_ONCE(h.h3->tp_status, status);
- 		flush_dcache_page(pgv_to_page(&h.h3->tp_status));
- 		break;
- 	default:
-@@ -431,17 +433,19 @@ static int __packet_get_status(struct pa
- 
- 	smp_rmb();
- 
-+	/* READ_ONCE() are paired with WRITE_ONCE() in __packet_set_status */
++	for (i = 0; i <= st->curframe; i++) {
++		func = st->frame[i];
++		for (j = 0; j < BPF_REG_FP; j++) {
++			reg = &func->regs[j];
++			if (reg->type != SCALAR_VALUE)
++				continue;
++			reg->precise = false;
++		}
++		for (j = 0; j < func->allocated_stack / BPF_REG_SIZE; j++) {
++			if (!is_spilled_reg(&func->stack[j]))
++				continue;
++			reg = &func->stack[j].spilled_ptr;
++			if (reg->type != SCALAR_VALUE)
++				continue;
++			reg->precise = false;
++		}
++	}
++}
 +
- 	h.raw = frame;
- 	switch (po->tp_version) {
- 	case TPACKET_V1:
- 		flush_dcache_page(pgv_to_page(&h.h1->tp_status));
--		return h.h1->tp_status;
-+		return READ_ONCE(h.h1->tp_status);
- 	case TPACKET_V2:
- 		flush_dcache_page(pgv_to_page(&h.h2->tp_status));
--		return h.h2->tp_status;
-+		return READ_ONCE(h.h2->tp_status);
- 	case TPACKET_V3:
- 		flush_dcache_page(pgv_to_page(&h.h3->tp_status));
--		return h.h3->tp_status;
-+		return READ_ONCE(h.h3->tp_status);
- 	default:
- 		WARN(1, "TPACKET version not supported.\n");
- 		BUG();
+ /*
+  * __mark_chain_precision() backtracks BPF program instruction sequence and
+  * chain of verifier states making sure that register *regno* (if regno >= 0)
+@@ -2126,6 +2151,14 @@ static void mark_all_scalars_precise(str
+  * be imprecise. If any child state does require this register to be precise,
+  * we'll mark it precise later retroactively during precise markings
+  * propagation from child state to parent states.
++ *
++ * Skipping precise marking setting in current state is a mild version of
++ * relying on the above observation. But we can utilize this property even
++ * more aggressively by proactively forgetting any precise marking in the
++ * current state (which we inherited from the parent state), right before we
++ * checkpoint it and branch off into new child state. This is done by
++ * mark_all_scalars_imprecise() to hopefully get more permissive and generic
++ * finalized states which help in short circuiting more future states.
+  */
+ static int __mark_chain_precision(struct bpf_verifier_env *env, int frame, int regno,
+ 				  int spi)
+@@ -9875,6 +9908,10 @@ next:
+ 	env->prev_jmps_processed = env->jmps_processed;
+ 	env->prev_insn_processed = env->insn_processed;
+ 
++	/* forget precise markings we inherited, see __mark_chain_precision */
++	if (env->bpf_capable)
++		mark_all_scalars_imprecise(env, cur);
++
+ 	/* add new state to the head of linked list */
+ 	new = &new_sl->state;
+ 	err = copy_verifier_state(new, cur);
 
 
