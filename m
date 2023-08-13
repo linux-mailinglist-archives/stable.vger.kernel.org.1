@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4378377AD32
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:48:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0827177AD48
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:48:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229576AbjHMVsN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:48:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52204 "EHLO
+        id S232265AbjHMVsT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:48:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51206 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232357AbjHMVqr (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:46:47 -0400
+        with ESMTP id S229745AbjHMVrt (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:47:49 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F12AF2D5B
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:46:46 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A90E2D55
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:47:49 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8E5B160CA3
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:46:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5B72C433C8;
-        Sun, 13 Aug 2023 21:46:45 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0982F61468
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:47:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18A36C433C8;
+        Sun, 13 Aug 2023 21:47:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691963206;
-        bh=naWNfAgkRIgdAjdS9Hbe7q9+mIzGfemcRBOzIhrh/M8=;
+        s=korg; t=1691963268;
+        bh=4UYuX4GX9QdnG3CYiBn8vKTr5Kbxaneem42Nc/h7MNY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=0zVGF0M67nzRtatxT87PwXPJVpSY+UiX8spgYhwFjHggtYXkRYIeigmxGVsuIs/67
-         NWcTkwn6h9Zm/YlhZh2NwPBRzpkx3ItubEu9CHJKLOFCj/IYzygl+lJJXECLkar2Em
-         O6G2f1Pepebu47TB8Kp037G6t0DmYhxifV6/bz8w=
+        b=pPVlgcK2eQBGcZ+Lh+/HrDwYlFTs4FhKzEoJgF5WvLUR30sp9bX9j9NcQnWT18lZ0
+         bI5TxeBpvyvDY3AeZXF3N5eTyl9+Q85Yw0krBV7gbCDDKEVsm5rUQFwzD7cVXK21Uo
+         5B1J3bGvjiCkGrD2etFWbIlrCu2SOZzygPnp9hc4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Saurav Kashyap <skashyap@marvell.com>,
-        Nilesh Javali <njavali@marvell.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 5.15 84/89] scsi: qedf: Fix firmware halt over suspend and resume
+        patches@lists.linux.dev, Felix Fietkau <nbd@nbd.name>,
+        Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 5.4 24/39] wifi: cfg80211: fix sband iftype data lookup for AP_VLAN
 Date:   Sun, 13 Aug 2023 23:20:15 +0200
-Message-ID: <20230813211713.284929710@linuxfoundation.org>
+Message-ID: <20230813211705.644534101@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211710.787645394@linuxfoundation.org>
-References: <20230813211710.787645394@linuxfoundation.org>
+In-Reply-To: <20230813211704.796906808@linuxfoundation.org>
+References: <20230813211704.796906808@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,71 +53,33 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Nilesh Javali <njavali@marvell.com>
+From: Felix Fietkau <nbd@nbd.name>
 
-commit ef222f551e7c4e2008fc442ffc9edcd1a7fd8f63 upstream.
+commit 5fb9a9fb71a33be61d7d8e8ba4597bfb18d604d0 upstream.
 
-While performing certain power-off sequences, PCI drivers are called to
-suspend and resume their underlying devices through PCI PM (power
-management) interface. However the hardware does not support PCI PM
-suspend/resume operations so system wide suspend/resume leads to bad MFW
-(management firmware) state which causes various follow-up errors in driver
-when communicating with the device/firmware.
+AP_VLAN interfaces are virtual, so doesn't really exist as a type for
+capabilities. When passed in as a type, AP is the one that's really intended.
 
-To fix this driver implements PCI PM suspend handler to indicate
-unsupported operation to the PCI subsystem explicitly, thus avoiding system
-to go into suspended/standby mode.
-
-Fixes: 61d8658b4a43 ("scsi: qedf: Add QLogic FastLinQ offload FCoE driver framework.")
-Signed-off-by: Saurav Kashyap <skashyap@marvell.com>
-Signed-off-by: Nilesh Javali <njavali@marvell.com>
-Link: https://lore.kernel.org/r/20230807093725.46829-1-njavali@marvell.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: c4cbaf7973a7 ("cfg80211: Add support for HE")
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Link: https://lore.kernel.org/r/20230622165919.46841-1-nbd@nbd.name
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/qedf/qedf_main.c |   18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+ include/net/cfg80211.h |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/scsi/qedf/qedf_main.c
-+++ b/drivers/scsi/qedf/qedf_main.c
-@@ -31,6 +31,7 @@ static void qedf_remove(struct pci_dev *
- static void qedf_shutdown(struct pci_dev *pdev);
- static void qedf_schedule_recovery_handler(void *dev);
- static void qedf_recovery_handler(struct work_struct *work);
-+static int qedf_suspend(struct pci_dev *pdev, pm_message_t state);
+--- a/include/net/cfg80211.h
++++ b/include/net/cfg80211.h
+@@ -436,6 +436,9 @@ ieee80211_get_sband_iftype_data(const st
+ 	if (WARN_ON(iftype >= NL80211_IFTYPE_MAX))
+ 		return NULL;
  
- /*
-  * Driver module parameters.
-@@ -3276,6 +3277,7 @@ static struct pci_driver qedf_pci_driver
- 	.probe = qedf_probe,
- 	.remove = qedf_remove,
- 	.shutdown = qedf_shutdown,
-+	.suspend = qedf_suspend,
- };
- 
- static int __qedf_probe(struct pci_dev *pdev, int mode)
-@@ -4005,6 +4007,22 @@ static void qedf_shutdown(struct pci_dev
- 	__qedf_remove(pdev, QEDF_MODE_NORMAL);
- }
- 
-+static int qedf_suspend(struct pci_dev *pdev, pm_message_t state)
-+{
-+	struct qedf_ctx *qedf;
++	if (iftype == NL80211_IFTYPE_AP_VLAN)
++		iftype = NL80211_IFTYPE_AP;
 +
-+	if (!pdev) {
-+		QEDF_ERR(NULL, "pdev is NULL.\n");
-+		return -ENODEV;
-+	}
-+
-+	qedf = pci_get_drvdata(pdev);
-+
-+	QEDF_ERR(&qedf->dbg_ctx, "%s: Device does not support suspend operation\n", __func__);
-+
-+	return -EPERM;
-+}
-+
- /*
-  * Recovery handler code
-  */
+ 	for (i = 0; i < sband->n_iftype_data; i++)  {
+ 		const struct ieee80211_sband_iftype_data *data =
+ 			&sband->iftype_data[i];
 
 
