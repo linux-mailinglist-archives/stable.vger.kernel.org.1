@@ -2,49 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 21C6277ADB2
-	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:52:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AEBB777AE3A
+	for <lists+stable@lfdr.de>; Mon, 14 Aug 2023 00:18:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232563AbjHMVwP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 17:52:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60532 "EHLO
+        id S231626AbjHMWS1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 18:18:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47084 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231454AbjHMVuS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:50:18 -0400
+        with ESMTP id S232367AbjHMWSN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 18:18:13 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C75C63A81
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:48:30 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E78462123
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:43:29 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5DBE563F1C
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:48:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66650C433C8;
-        Sun, 13 Aug 2023 21:48:29 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7D4D460F71
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:43:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93458C433C7;
+        Sun, 13 Aug 2023 21:43:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691963309;
-        bh=Chsc79yXdzIJY52AwP9fiZ6ySBL7WQhunvNWMr91WDY=;
+        s=korg; t=1691963008;
+        bh=ZYN6cahuBPqKew9p1Yh0el1Wz+A8GFm7Ylbn5Ildkgo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=f9/KoQOoefD4TFNe7PuQTGvsmfAp+WfNdbKnv4gZt+bzQI9OmVkTfiTMzqaVNANJj
-         gfrxjaEAjuiBbXynzJdQBYcIqcRU8pNaFVOKoBYUZqn3axI9MPCxELmqqtKTQyyySM
-         9/ySLnPu7xaodc/IfmBwzJHY7FW6zUPf10q4nImE=
+        b=VNdsLbA21fJoyOABQcfg5HXYxtGD74VYcstyVd78odKAoI30bfey5UAV7048fFHkT
+         riT+Pj/qsjMAqY2Ysoe/cKU5esw/AEXx3NgudLrXP+oBKWU7T4ehei77OHZXYx7uHS
+         0suz1eZ76jxXC6Q7IOG3SS/bBp826Eo+TOzslZSU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, syzbot <syzkaller@googlegroups.com>,
-        Eric Dumazet <edumazet@google.com>,
-        Stephen Hemminger <stephen@networkplumber.org>,
-        Jamal Hadi Salim <jhs@mojatatu.com>,
-        Simon Horman <simon.horman@corigine.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Fedor Pchelkin <pchelkin@ispras.ru>
-Subject: [PATCH 5.4 39/39] sch_netem: fix issues in netem_change() vs get_dist_table()
-Date:   Sun, 13 Aug 2023 23:20:30 +0200
-Message-ID: <20230813211706.129717158@linuxfoundation.org>
+        patches@lists.linux.dev, Namjae Jeon <linkinjeon@kernel.org>,
+        Steve French <stfrench@microsoft.com>,
+        zdi-disclosures@trendmicro.com
+Subject: [PATCH 5.15 02/89] ksmbd: fix wrong next length validation of ea buffer in smb2_set_ea()
+Date:   Sun, 13 Aug 2023 23:18:53 +0200
+Message-ID: <20230813211710.859658800@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211704.796906808@linuxfoundation.org>
-References: <20230813211704.796906808@linuxfoundation.org>
+In-Reply-To: <20230813211710.787645394@linuxfoundation.org>
+References: <20230813211710.787645394@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -59,148 +55,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Eric Dumazet <edumazet@google.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-commit 11b73313c12403f617b47752db0ab3deef201af7 upstream.
+commit 79ed288cef201f1f212dfb934bcaac75572fb8f6 upstream.
 
-In blamed commit, I missed that get_dist_table() was allocating
-memory using GFP_KERNEL, and acquiring qdisc lock to perform
-the swap of newly allocated table with current one.
+There are multiple smb2_ea_info buffers in FILE_FULL_EA_INFORMATION request
+from client. ksmbd find next smb2_ea_info using ->NextEntryOffset of
+current smb2_ea_info. ksmbd need to validate buffer length Before
+accessing the next ea. ksmbd should check buffer length using buf_len,
+not next variable. next is the start offset of current ea that got from
+previous ea.
 
-In this patch, get_dist_table() is allocating memory and
-copy user data before we acquire the qdisc lock.
-
-Then we perform swap operations while being protected by the lock.
-
-Note that after this patch netem_change() no longer can do partial changes.
-If an error is returned, qdisc conf is left unchanged.
-
-Fixes: 2174a08db80d ("sch_netem: acquire qdisc lock in netem_change()")
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Stephen Hemminger <stephen@networkplumber.org>
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Link: https://lore.kernel.org/r/20230622181503.2327695-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Cc: stable@vger.kernel.org
+Reported-by: zdi-disclosures@trendmicro.com # ZDI-CAN-21598
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/sch_netem.c |   59 +++++++++++++++++++++-----------------------------
- 1 file changed, 25 insertions(+), 34 deletions(-)
+ fs/ksmbd/smb2pdu.c |    9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
---- a/net/sched/sch_netem.c
-+++ b/net/sched/sch_netem.c
-@@ -773,12 +773,10 @@ static void dist_free(struct disttable *
-  * signed 16 bit values.
-  */
+--- a/fs/ksmbd/smb2pdu.c
++++ b/fs/ksmbd/smb2pdu.c
+@@ -2309,9 +2309,16 @@ next:
+ 			break;
+ 		buf_len -= next;
+ 		eabuf = (struct smb2_ea_info *)((char *)eabuf + next);
+-		if (next < (u32)eabuf->EaNameLength + le16_to_cpu(eabuf->EaValueLength))
++		if (buf_len < sizeof(struct smb2_ea_info)) {
++			rc = -EINVAL;
+ 			break;
++		}
  
--static int get_dist_table(struct Qdisc *sch, struct disttable **tbl,
--			  const struct nlattr *attr)
-+static int get_dist_table(struct disttable **tbl, const struct nlattr *attr)
- {
- 	size_t n = nla_len(attr)/sizeof(__s16);
- 	const __s16 *data = nla_data(attr);
--	spinlock_t *root_lock;
- 	struct disttable *d;
- 	int i;
++		if (buf_len < sizeof(struct smb2_ea_info) + eabuf->EaNameLength +
++				le16_to_cpu(eabuf->EaValueLength)) {
++			rc = -EINVAL;
++			break;
++		}
+ 	} while (next != 0);
  
-@@ -793,13 +791,7 @@ static int get_dist_table(struct Qdisc *
- 	for (i = 0; i < n; i++)
- 		d->table[i] = data[i];
- 
--	root_lock = qdisc_root_sleeping_lock(sch);
--
--	spin_lock_bh(root_lock);
--	swap(*tbl, d);
--	spin_unlock_bh(root_lock);
--
--	dist_free(d);
-+	*tbl = d;
- 	return 0;
- }
- 
-@@ -956,6 +948,8 @@ static int netem_change(struct Qdisc *sc
- {
- 	struct netem_sched_data *q = qdisc_priv(sch);
- 	struct nlattr *tb[TCA_NETEM_MAX + 1];
-+	struct disttable *delay_dist = NULL;
-+	struct disttable *slot_dist = NULL;
- 	struct tc_netem_qopt *qopt;
- 	struct clgstate old_clg;
- 	int old_loss_model = CLG_RANDOM;
-@@ -969,6 +963,18 @@ static int netem_change(struct Qdisc *sc
- 	if (ret < 0)
- 		return ret;
- 
-+	if (tb[TCA_NETEM_DELAY_DIST]) {
-+		ret = get_dist_table(&delay_dist, tb[TCA_NETEM_DELAY_DIST]);
-+		if (ret)
-+			goto table_free;
-+	}
-+
-+	if (tb[TCA_NETEM_SLOT_DIST]) {
-+		ret = get_dist_table(&slot_dist, tb[TCA_NETEM_SLOT_DIST]);
-+		if (ret)
-+			goto table_free;
-+	}
-+
- 	sch_tree_lock(sch);
- 	/* backup q->clg and q->loss_model */
- 	old_clg = q->clg;
-@@ -978,26 +984,17 @@ static int netem_change(struct Qdisc *sc
- 		ret = get_loss_clg(q, tb[TCA_NETEM_LOSS]);
- 		if (ret) {
- 			q->loss_model = old_loss_model;
-+			q->clg = old_clg;
- 			goto unlock;
- 		}
- 	} else {
- 		q->loss_model = CLG_RANDOM;
- 	}
- 
--	if (tb[TCA_NETEM_DELAY_DIST]) {
--		ret = get_dist_table(sch, &q->delay_dist,
--				     tb[TCA_NETEM_DELAY_DIST]);
--		if (ret)
--			goto get_table_failure;
--	}
--
--	if (tb[TCA_NETEM_SLOT_DIST]) {
--		ret = get_dist_table(sch, &q->slot_dist,
--				     tb[TCA_NETEM_SLOT_DIST]);
--		if (ret)
--			goto get_table_failure;
--	}
--
-+	if (delay_dist)
-+		swap(q->delay_dist, delay_dist);
-+	if (slot_dist)
-+		swap(q->slot_dist, slot_dist);
- 	sch->limit = qopt->limit;
- 
- 	q->latency = PSCHED_TICKS2NS(qopt->latency);
-@@ -1047,17 +1044,11 @@ static int netem_change(struct Qdisc *sc
- 
- unlock:
- 	sch_tree_unlock(sch);
--	return ret;
- 
--get_table_failure:
--	/* recover clg and loss_model, in case of
--	 * q->clg and q->loss_model were modified
--	 * in get_loss_clg()
--	 */
--	q->clg = old_clg;
--	q->loss_model = old_loss_model;
--
--	goto unlock;
-+table_free:
-+	dist_free(delay_dist);
-+	dist_free(slot_dist);
-+	return ret;
- }
- 
- static int netem_init(struct Qdisc *sch, struct nlattr *opt,
+ 	kfree(attr_name);
 
 
