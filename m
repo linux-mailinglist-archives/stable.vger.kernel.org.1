@@ -2,102 +2,93 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B6A3A77AE1C
-	for <lists+stable@lfdr.de>; Mon, 14 Aug 2023 00:00:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D18C577ACE6
+	for <lists+stable@lfdr.de>; Sun, 13 Aug 2023 23:38:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232314AbjHMWA1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 13 Aug 2023 18:00:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40692 "EHLO
+        id S232224AbjHMViY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 13 Aug 2023 17:38:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53258 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231783AbjHMV7U (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:59:20 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4DD22736
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:44:21 -0700 (PDT)
+        with ESMTP id S232222AbjHMViY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 13 Aug 2023 17:38:24 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D24110DD
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 14:38:26 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 24B1960B9D
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:44:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3569DC433C7;
-        Sun, 13 Aug 2023 21:44:20 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 181F6635F8
+        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 21:38:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33640C433C8;
+        Sun, 13 Aug 2023 21:38:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1691963060;
-        bh=PTpziOEOMpEKHUvd3Selo4MhS8Y+SZjJvJKA4d6kR8E=;
+        s=korg; t=1691962705;
+        bh=pjfQf6Fajl/wmswnw31HV7Q0igLas9B8mGMqTzwdd5M=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jD5oOulnElcHJhkVZVyZj3zCIxrlEj+2tfqd7iNdivI1VZ/XTsFWKd0defFx1dkTX
-         EQ8F0jPBXctHGG3J1ntjMbLBK24X3cz7brTw4GwR0Ebje3magJaGe3H4pg3ngpRf1w
-         OuQq1RIpQaFY9aXVu4X11kjoLetOqQuZRv5kAls8=
+        b=SXxF1reRwKtCuLwwGHHleANdHboELoehNAsbWQW/0lH5R1qnR0OgKXtwdUqaYurFw
+         hcBibl0xKzwNfSTSBb53R/fCRGkVqFofOrLu3ynoZntF9jYpWjmqdVIasX9POweHpW
+         7v2osFz1yeRIou4uJHL5t6sjUWiSIS+hJarS+2NU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>,
-        Ido Schimmel <idosch@nvidia.com>,
-        Petr Machata <petrm@nvidia.com>,
-        Hangbin Liu <liuhangbin@gmail.com>,
-        Nikolay Aleksandrov <razor@blackwall.org>,
-        Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.15 39/89] selftests: forwarding: ethtool_extended_state: Skip when using veth pairs
+        Paul Demetrotion <pdemetrotion@winsystems.com>,
+        William Breathitt Gray <william.gray@linaro.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Subject: [PATCH 6.1 125/149] gpio: ws16c48: Fix off-by-one error in WS16C48 resource region extent
 Date:   Sun, 13 Aug 2023 23:19:30 +0200
-Message-ID: <20230813211711.960570288@linuxfoundation.org>
+Message-ID: <20230813211722.466998883@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230813211710.787645394@linuxfoundation.org>
-References: <20230813211710.787645394@linuxfoundation.org>
+In-Reply-To: <20230813211718.757428827@linuxfoundation.org>
+References: <20230813211718.757428827@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: William Breathitt Gray <william.gray@linaro.org>
 
-commit b3d9305e60d121dac20a77b6847c4cf14a4c0001 upstream.
+commit 33f83d13ded164cd49ce2a3bd2770115abc64e6f upstream.
 
-Ethtool extended state cannot be tested with veth pairs, resulting in
-failures:
+The WinSystems WS16C48 I/O address region spans offsets 0x0 through 0xA,
+which is a total of 11 bytes. Fix the WS16C48_EXTENT define to the
+correct value of 11 so that access to necessary device registers is
+properly requested in the ws16c48_probe() callback by the
+devm_request_region() function call.
 
- # ./ethtool_extended_state.sh
- TEST: Autoneg, No partner detected                                  [FAIL]
-         Expected "Autoneg", got "Link detected: no"
- [...]
-
-Fix by skipping the test when used with veth pairs.
-
-Fixes: 7d10bcce98cd ("selftests: forwarding: Add tests for ethtool extended state")
-Reported-by: Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>
-Closes: https://lore.kernel.org/netdev/adc5e40d-d040-a65e-eb26-edf47dac5b02@alu.unizg.hr/
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: Petr Machata <petrm@nvidia.com>
-Tested-by: Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>
-Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
-Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
-Link: https://lore.kernel.org/r/20230808141503.4060661-9-idosch@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 2c05a0f29f41 ("gpio: ws16c48: Implement and utilize register structures")
+Cc: stable@vger.kernel.org
+Cc: Paul Demetrotion <pdemetrotion@winsystems.com>
+Signed-off-by: William Breathitt Gray <william.gray@linaro.org>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/net/forwarding/ethtool_extended_state.sh |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpio/gpio-ws16c48.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/tools/testing/selftests/net/forwarding/ethtool_extended_state.sh
-+++ b/tools/testing/selftests/net/forwarding/ethtool_extended_state.sh
-@@ -95,6 +95,8 @@ no_cable()
- 	ip link set dev $swp3 down
- }
+--- a/drivers/gpio/gpio-ws16c48.c
++++ b/drivers/gpio/gpio-ws16c48.c
+@@ -18,7 +18,7 @@
+ #include <linux/spinlock.h>
+ #include <linux/types.h>
  
-+skip_on_veth
-+
- setup_prepare
+-#define WS16C48_EXTENT 10
++#define WS16C48_EXTENT 11
+ #define MAX_NUM_WS16C48 max_num_isa_dev(WS16C48_EXTENT)
  
- tests_run
+ static unsigned int base[MAX_NUM_WS16C48];
 
 
