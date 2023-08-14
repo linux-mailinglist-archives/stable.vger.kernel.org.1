@@ -2,98 +2,95 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F4D977B946
-	for <lists+stable@lfdr.de>; Mon, 14 Aug 2023 15:01:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6FA8B77B994
+	for <lists+stable@lfdr.de>; Mon, 14 Aug 2023 15:19:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230210AbjHNNBP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 14 Aug 2023 09:01:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35988 "EHLO
+        id S230078AbjHNNSb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 14 Aug 2023 09:18:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55882 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231506AbjHNNA6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 14 Aug 2023 09:00:58 -0400
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E091C198B;
-        Mon, 14 Aug 2023 06:00:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1692018052; x=1723554052;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=x6U2lciyWZv16l3tw5CDh4m8yiw1CZFrKicNiibj/ZU=;
-  b=iz4Rh9+NKFMTXEapEiBEs9CbBKpBhy7cvH/kZl5eEnSTmdQxHhWV2H/h
-   sNk4M/GRfd5Qn7t23fuyrmPpp9PJ0YpbSHU7sqokcVd20dlB2+C/bikjL
-   jgvPlA7R3GTaE1kMiT3zTMS1mCCDQGjyjsD4jO1OBT8D7HBuhnu5tyANx
-   BQ1kV2ElOfCAqIYxPF2h7aRhJEcltMMCI82xz+Dxmkqs+1kodevl+M48U
-   S6z+4fqTza5GT0d4lV5wZHjtlbPADa53/hGzFGcyjd46UuG9xaImywdY9
-   UDISS8h7LYBSxgFoW+8bynnQrzbXcRg/M4xkmGVVUTDY4DfcrnTLLCPU0
-   w==;
-X-IronPort-AV: E=Sophos;i="6.01,172,1684825200"; 
-   d="asc'?scan'208";a="229705827"
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa5.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 14 Aug 2023 06:00:51 -0700
-Received: from chn-vm-ex04.mchp-main.com (10.10.85.152) by
- chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.21; Mon, 14 Aug 2023 06:00:50 -0700
-Received: from wendy (10.10.115.15) by chn-vm-ex04.mchp-main.com
- (10.10.85.152) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.21 via Frontend
- Transport; Mon, 14 Aug 2023 06:00:47 -0700
-Date:   Mon, 14 Aug 2023 14:00:09 +0100
-From:   Conor Dooley <conor.dooley@microchip.com>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-CC:     <stable@vger.kernel.org>, <patches@lists.linux.dev>,
-        <linux-kernel@vger.kernel.org>, <torvalds@linux-foundation.org>,
-        <akpm@linux-foundation.org>, <linux@roeck-us.net>,
-        <shuah@kernel.org>, <patches@kernelci.org>,
-        <lkft-triage@lists.linaro.org>, <pavel@denx.de>,
-        <jonathanh@nvidia.com>, <f.fainelli@gmail.com>,
-        <sudipm.mukherjee@gmail.com>, <srw@sladewatkins.net>,
-        <rwarsow@gmx.de>, <conor@kernel.org>
-Subject: Re: [PATCH 6.4 000/206] 6.4.11-rc1 review
-Message-ID: <20230814-jimmy-march-7defc9fff112@wendy>
-References: <20230813211724.969019629@linuxfoundation.org>
+        with ESMTP id S229972AbjHNNSG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 14 Aug 2023 09:18:06 -0400
+Received: from mail-oa1-x2b.google.com (mail-oa1-x2b.google.com [IPv6:2001:4860:4864:20::2b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6AF1F12D;
+        Mon, 14 Aug 2023 06:18:05 -0700 (PDT)
+Received: by mail-oa1-x2b.google.com with SMTP id 586e51a60fabf-1c504386374so535100fac.3;
+        Mon, 14 Aug 2023 06:18:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1692019084; x=1692623884;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=tciLO5aIFeWALn4B+WuHKgBZ+0zyAoOpqtrps2MSa0I=;
+        b=RLmAQ1GQK22rhXIpBwgMSRQe6kAaOWCeqYSmoO7XVu7W+jIjZAivlY7p2Ibdd+kvm0
+         R4PVaSaslxBI17MTqjXXL9pOFDZnuvFI5GtrrGLlGty5g2VPlcTizFGQXE2q7fxv9FE2
+         VTaLTUENc5nlW46TX60tueNgC9Ab22TMCfJFOWBKUb/wor10f7QH0ThXWQXZQTE6I4tO
+         2f7vtaj3XPMYqp1SR1Q6VemydFH0AjkR60J1yaziRwS6IQc6U1P/o7GV7HZcgzJ3D1Yr
+         EFR25XhQ7uLhN8Ug/U0sk0lpKdRinoobn5AyQkbY0YRW6HLLwpphCKGzwtgxdB8PdWJD
+         YzpQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1692019084; x=1692623884;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=tciLO5aIFeWALn4B+WuHKgBZ+0zyAoOpqtrps2MSa0I=;
+        b=LQFhbmrMDTKmWsoPdTKq4NJMpZBmuzv8DtOdyBBWDvkCb6UbnAjw73kdyPys9pKvgd
+         SLPwYxA8VLA05OguwJd28vtCDjgRaiypWM5Oiqn4zuvSwAH/TFEv7Ao3nK8ymQFlBgVA
+         ht20EqWHZZbNt6BPR7iHkBt/CiXJktAor5nUnjZZOjq7oclWusLY5Wf0Db720Cg91a68
+         F3oKIZrLLrDkglcTWnr5VCuIXMPYo7X6zSVkLh9SFag3Qotg/CyRJkIdlAL0mSfXnZxW
+         y2GkeCmipkddBhBumCLZaPgHXQEp5eF9iD9m/QTzmOlXffVXjKIcjNdKFQtT/6kGLN7N
+         cowQ==
+X-Gm-Message-State: AOJu0YxpFKJCJG1rvCvKgGU2XVAgS0htJxbIBRzRAvuUPvzZEuLkjUAm
+        mYN+kQtJTd0aG48X/YAWCOzUNF+gcBTmXZ8UvCG2KgPFNzQ=
+X-Google-Smtp-Source: AGHT+IFXW5h7oxdY3BTPwoujmhAS/pefvYYF4kWoJeZSYIfCNmlR1SSqhyHhQJfYXWSaXyN8FgqMVQBk1BSuPNJc+g0=
+X-Received: by 2002:a05:6870:9629:b0:1b4:685d:55e4 with SMTP id
+ d41-20020a056870962900b001b4685d55e4mr9266601oaq.39.1692019084446; Mon, 14
+ Aug 2023 06:18:04 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="9y0SwpsL8LCJz6Od"
-Content-Disposition: inline
-In-Reply-To: <20230813211724.969019629@linuxfoundation.org>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_NONE
-        autolearn=ham autolearn_force=no version=3.4.6
+References: <20230813160605.1080385-1-sashal@kernel.org> <20230813160605.1080385-28-sashal@kernel.org>
+In-Reply-To: <20230813160605.1080385-28-sashal@kernel.org>
+From:   Ilya Dryomov <idryomov@gmail.com>
+Date:   Mon, 14 Aug 2023 15:17:52 +0200
+Message-ID: <CAOi1vP-TjjckKBNAiiTQDpgxVVKU0NFW0OrxADs6dz4p6p0yfQ@mail.gmail.com>
+Subject: Re: [PATCH AUTOSEL 5.15 28/31] rbd: make get_lock_owner_info() return
+ a single locker or NULL
+To:     Sasha Levin <sashal@kernel.org>
+Cc:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        Dongsheng Yang <dongsheng.yang@easystack.cn>, axboe@kernel.dk,
+        ceph-devel@vger.kernel.org, linux-block@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
---9y0SwpsL8LCJz6Od
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+On Sun, Aug 13, 2023 at 6:09=E2=80=AFPM Sasha Levin <sashal@kernel.org> wro=
+te:
+>
+> From: Ilya Dryomov <idryomov@gmail.com>
+>
+> [ Upstream commit f38cb9d9c2045dad16eead4a2e1aedfddd94603b ]
+>
+> Make the "num_lockers can be only 0 or 1" assumption explicit and
+> simplify the API by getting rid of output parameters in preparation
+> for calling get_lock_owner_info() twice before blocklisting.
+>
+> Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+> Reviewed-by: Dongsheng Yang <dongsheng.yang@easystack.cn>
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
 
-On Sun, Aug 13, 2023 at 11:16:10PM +0200, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.4.11 release.
-> There are 206 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+Hi Sasha,
 
-Tested-by: Conor Dooley <conor.dooley@microchip.com>
+I think this patch, as well as "rbd: harden get_lock_owner_info()
+a bit", have already been applied to 5.15, 6.1 and 6.4 by Greg.  The
+emails went out on Aug 1.
 
 Thanks,
-Conor.
 
---9y0SwpsL8LCJz6Od
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZNolWQAKCRB4tDGHoIJi
-0tdaAP4i3nafwH/sM8PrBKf8CRaa139GwZ01W000uBSNlQJK9gEAxIiLslXk7hig
-9fmzNbyg31OxBqnPG+99Y9OGMiP2QAI=
-=MsV5
------END PGP SIGNATURE-----
-
---9y0SwpsL8LCJz6Od--
+                Ilya
