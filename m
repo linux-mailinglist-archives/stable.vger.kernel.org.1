@@ -2,123 +2,99 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7DFFD77B918
-	for <lists+stable@lfdr.de>; Mon, 14 Aug 2023 14:56:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C761F77B927
+	for <lists+stable@lfdr.de>; Mon, 14 Aug 2023 14:59:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229517AbjHNM40 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 14 Aug 2023 08:56:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59030 "EHLO
+        id S230212AbjHNM7H (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 14 Aug 2023 08:59:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54434 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230475AbjHNM4Q (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 14 Aug 2023 08:56:16 -0400
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EEC6F13E;
-        Mon, 14 Aug 2023 05:56:14 -0700 (PDT)
-Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
-        by smtp-out2.suse.de (Postfix) with ESMTP id 4395C1F383;
-        Mon, 14 Aug 2023 12:56:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-        t=1692017773; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=tLAW/PphNbg1TEhFiEypZB5q9ika6zqlbWoI7379ZzY=;
-        b=U7WXAit58eY9yDdne/j+gIV85WE5olzqNpHNtsNiLrnkyRXIsMKz4YwZbscic+s6xLPGZp
-        PYs0ZQa2NtEj3p/BZh49xYYe9vbIkCsZfZx2984z45jsHhAwIPIjFbNOlVKQUO0gssfSIi
-        hSKfsWQlGjU8oq2APzyKrXyF1/1n+9E=
-Received: from suse.cz (pmladek.tcp.ovpn2.prg.suse.de [10.100.208.146])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by relay2.suse.de (Postfix) with ESMTPS id 902692C143;
-        Mon, 14 Aug 2023 12:56:11 +0000 (UTC)
-Date:   Mon, 14 Aug 2023 14:56:10 +0200
-From:   Petr Mladek <pmladek@suse.com>
-To:     David Laight <David.Laight@aculab.com>
-Cc:     'Kees Cook' <keescook@chromium.org>,
-        Sergey Senozhatsky <senozhatsky@chromium.org>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        John Ogness <john.ogness@linutronix.de>,
-        Vijay Balakrishna <vijayb@linux.microsoft.com>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>,
-        Tony Luck <tony.luck@intel.com>,
-        "Guilherme G. Piccoli" <gpiccoli@igalia.com>,
-        "Paul E. McKenney" <paulmck@kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-hardening@vger.kernel.org" <linux-hardening@vger.kernel.org>
-Subject: Re: [PATCH] printk: ringbuffer: Fix truncating buffer size min_t cast
-Message-ID: <ZNokaoSFTXeB_LP4@alley>
-References: <20230811054528.never.165-kees@kernel.org>
- <42a1e2099fe141c3a57e808cbf06d8a0@AcuMS.aculab.com>
+        with ESMTP id S231304AbjHNM7E (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 14 Aug 2023 08:59:04 -0400
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 06025B5;
+        Mon, 14 Aug 2023 05:59:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1692017943; x=1723553943;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=DE9xX4dYWtBq0Su8RLmTH6uQZ23grIVCeSguhcWzu0U=;
+  b=2Ld5CSfRh9GA8+V+2gFWMx+YypMTpyGTDg2+qDPSPd65KK9zLCiH5aci
+   tHfoOgMed8GLf6qI2l9EEYZVgT2ZGLWXU/fb2B+ElU5fJ2F97GmQVbobT
+   N4AvqTPIpRRfIEoNeaXEnxBOiaodKzDi/erRPWKwd0/JNDSYVrjAWaIGv
+   lHtZOgj03THH+CuQ+BRIYVwI772hkp1hB+jfG+YaLVus0PQiQZfDgxxdy
+   4Qj2atkNoWWUH+SveXgaY0vegCJVS5MaNLbCzWSjLGgPQ4jLDYpxt1vKB
+   3r5UL9y2lGUmYhIzTjXOw21ojGkzgU33rdwyoMN7HC+C5YnbBGPtY7FSM
+   A==;
+X-IronPort-AV: E=Sophos;i="6.01,172,1684825200"; 
+   d="asc'?scan'208";a="228827133"
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa3.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 14 Aug 2023 05:59:02 -0700
+Received: from chn-vm-ex03.mchp-main.com (10.10.85.151) by
+ chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.21; Mon, 14 Aug 2023 05:59:02 -0700
+Received: from wendy (10.10.115.15) by chn-vm-ex03.mchp-main.com
+ (10.10.85.151) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.21 via Frontend
+ Transport; Mon, 14 Aug 2023 05:58:59 -0700
+Date:   Mon, 14 Aug 2023 13:58:21 +0100
+From:   Conor Dooley <conor.dooley@microchip.com>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+CC:     <stable@vger.kernel.org>, <patches@lists.linux.dev>,
+        <linux-kernel@vger.kernel.org>, <torvalds@linux-foundation.org>,
+        <akpm@linux-foundation.org>, <linux@roeck-us.net>,
+        <shuah@kernel.org>, <patches@kernelci.org>,
+        <lkft-triage@lists.linaro.org>, <pavel@denx.de>,
+        <jonathanh@nvidia.com>, <f.fainelli@gmail.com>,
+        <sudipm.mukherjee@gmail.com>, <srw@sladewatkins.net>,
+        <rwarsow@gmx.de>, <conor@kernel.org>
+Subject: Re: [PATCH 6.1 000/127] 6.1.45-rc1 review
+Message-ID: <20230814-tamale-persecute-6878e2892a57@wendy>
+References: <20230809103636.615294317@linuxfoundation.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="T26R+JCjILvdL4AG"
 Content-Disposition: inline
-In-Reply-To: <42a1e2099fe141c3a57e808cbf06d8a0@AcuMS.aculab.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <20230809103636.615294317@linuxfoundation.org>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_NONE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon 2023-08-14 10:42:26, David Laight wrote:
-> From: Kees Cook
-> > Sent: 11 August 2023 06:46
-> > 
-> > If an output buffer size exceeded U16_MAX, the min_t(u16, ...) cast in
-> > copy_data() was causing writes to truncate. This manifested as output
-> > bytes being skipped, seen as %NUL bytes in pstore dumps when the available
-> > record size was larger than 65536. Fix the cast to no longer truncate
-> > the calculation.
-> > 
-> ...
-> > diff --git a/kernel/printk/printk_ringbuffer.c b/kernel/printk/printk_ringbuffer.c
-> > index 2dc4d5a1f1ff..fde338606ce8 100644
-> > --- a/kernel/printk/printk_ringbuffer.c
-> > +++ b/kernel/printk/printk_ringbuffer.c
-> > @@ -1735,7 +1735,7 @@ static bool copy_data(struct prb_data_ring *data_ring,
-> >  	if (!buf || !buf_size)
-> >  		return true;
-> > 
-> > -	data_size = min_t(u16, buf_size, len);
-> > +	data_size = min_t(unsigned int, buf_size, len);
-> 
-> I'd noticed that during one of my test compiles while looking
-> at making min() less fussy.
-> 
-> A better fix would be:
-> 	data_size = min(buf_size + 0u, len);
+--T26R+JCjILvdL4AG
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-This looks like a magic to me. The types are:
+On Wed, Aug 09, 2023 at 12:39:47PM +0200, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.1.45 release.
+> There are 127 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-	unsigned int data_size;
-	unsigned int buf_size;
-	u16 len
+Nothing looking amiss from here..
+Tested-by: Conor Dooley <conor.dooley@microchip.com>
 
-I would naively expect that
+Thanks,
+Conor.
 
-	data_size = min(buf_size, len);
+--T26R+JCjILvdL4AG
+Content-Type: application/pgp-signature; name="signature.asc"
 
-would do the right job and expand @len to "unsigned int".
+-----BEGIN PGP SIGNATURE-----
 
-I do not remember why "min_t" was used. Was it an optimization?
-Did we miss the problem with casting "u32" down to "u16"?
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZNok7QAKCRB4tDGHoIJi
+0pJtAP4iI7Upu2x9EmSOWEdkMF8xma+q4BC/Pgcob/zBUzNNmgEA3gjThIDvdrId
+3V+WLAx1GiySOqCFi2p1qNuh59FXmQ8=
+=nF15
+-----END PGP SIGNATURE-----
 
-I tried to read the discussion at
-https://lore.kernel.org/lkml/b6a49ed73aba427ca8bb433763fa94e9@AcuMS.aculab.com/
-but it is more about "signed" vs. "unsigned" problem. Maybe
-it is more complicated that I expected.
-
-> Or put an ack on my patch 3/5 to minmax.h and then min(buf_size, len)
-> will be fine (because both arguments are unsigned).
-
-Do you mean
-https://lore.kernel.org/lkml/6dc20ac7cb6f4570a0160f076e8362e3@AcuMS.aculab.com/ ?
-It seems to be just indentation cleanup.
-
-Best Regards,
-Petr
-
-PS: I have already pushed the patch because it looked reasonable and
-    got testing. I have to admit that I am probably in a pre-vacation
-    hurry mode.
+--T26R+JCjILvdL4AG--
