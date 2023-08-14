@@ -2,97 +2,122 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8652C77B9E7
-	for <lists+stable@lfdr.de>; Mon, 14 Aug 2023 15:24:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DF6DA77BA08
+	for <lists+stable@lfdr.de>; Mon, 14 Aug 2023 15:30:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229450AbjHNNYZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 14 Aug 2023 09:24:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57000 "EHLO
+        id S229641AbjHNN3n (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 14 Aug 2023 09:29:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48676 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230435AbjHNNXy (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 14 Aug 2023 09:23:54 -0400
-Received: from mail-ot1-x32f.google.com (mail-ot1-x32f.google.com [IPv6:2607:f8b0:4864:20::32f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4EA0B10C6;
-        Mon, 14 Aug 2023 06:23:54 -0700 (PDT)
-Received: by mail-ot1-x32f.google.com with SMTP id 46e09a7af769-6bb140cd5a5so3455720a34.3;
-        Mon, 14 Aug 2023 06:23:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1692019433; x=1692624233;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=DrPNQERrOv3TUTMR4WcWsfPPW9clyc64cY5xGbhYQfU=;
-        b=qRMXV3ux3UEznrhbp/FNBxNre5mDfXcdXEgxRffHEVNISfrJvmgkVGvEIdcBgpiz7B
-         eYw19fAMKPMUvrlKUsdlfcUaRjDwz+CSvsJOW7Uz2vv88Jos+K2c/WDk6MZsf1BizKLo
-         5pf55lrnaW8WDphjg90V9c2JZAVeH0qfpXrekjo+a1xH59KK1ajTPuGTBz2yix9btarh
-         ETtGjq/Jy5R6rzZUqMqGFjJoJSLPud4Ak2T70Brb/VJooBuNARe+A6M0zHBixc8a2Z8X
-         DJuD/CHJvMPttngCAMDfi83GTBCEH1SBWl11ba89qjBJpo8hreXjvTCxR1u4c4qCIC+9
-         CHew==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692019433; x=1692624233;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=DrPNQERrOv3TUTMR4WcWsfPPW9clyc64cY5xGbhYQfU=;
-        b=RrXUYhamYAG4c14hhMajPV7LtcvtebHzdZourjf3c3g8tIPESETLW4+n4w4+pgB3+y
-         vd6UTOkGOk6JPUUzfQuyl744DAyB+WDH5t9kYm9QrPqEyk8iejf8H1v2cV6W/oTC22em
-         h0p2ZBHSJCRZlLp/MOf4yfYWrVti6qGayouXHFsO9FWE16HULd9u6PGG78n0oeugIM88
-         /0y0JrWkINPJqppZ5iUANd7DLi4sY39L0jnw08dFq/n+w6fBoKF3NpZhUQWADW41fm0a
-         XMBCP+wtM0m1E4L49MAOYKjmR9ZWRu3evn0ww172ZBa59c2KPrz+fBjaa5kXaV2g2mQg
-         AdVA==
-X-Gm-Message-State: AOJu0Yxl+F938WKnlzXRsbJ3+I4To8OcYAbW0kaDHEU6pX1YmBEC6wHZ
-        KuYEoe3hhdrL2MX22w82V2HkLws9An3Bu42Mt2M=
-X-Google-Smtp-Source: AGHT+IFnyrKGUBSBRzYP9MZWbLPYVlvyCpffBIQq5VQjXF3tzYzUHmgGqPhYE+0g0sf0xcHWlAf7JP3fXn3i6xo0t1Y=
-X-Received: by 2002:a05:6870:440e:b0:1bb:b172:4bd5 with SMTP id
- u14-20020a056870440e00b001bbb1724bd5mr11409614oah.18.1692019433185; Mon, 14
- Aug 2023 06:23:53 -0700 (PDT)
+        with ESMTP id S231446AbjHNN3h (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 14 Aug 2023 09:29:37 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4ABEF10D5;
+        Mon, 14 Aug 2023 06:29:36 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DD86A63D44;
+        Mon, 14 Aug 2023 13:29:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E34B2C433C8;
+        Mon, 14 Aug 2023 13:29:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1692019775;
+        bh=vL0Rp5Rao9UZ/BTg2YYC/mT9fxEqJ1wE21HPrTYhQ4A=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=qWtIvnuATKTld70yR47P3L8R/BFnk3ykveU+GR0wQeD/5/Lg9qkooJ3jxArnG0jRh
+         N10Il8qvl2xVztlh+xNYr4QP6M9fzR9mhdsT8FlTsarhFyJeRIG2kBsMm4rDG+bn/X
+         wmvLfnU2KNURxYeRHf0odxBNtEWESisxhv7n+tt8Wwa5N/ow0eidfg+fO2Vp8VTliM
+         R70LVmBumP9gg+ifFLSG1XzpFCFmcQhGV5HVqnGOErm5dFPaYTsB6Q8MQM6ZACPISx
+         HxfiTxP7RjREY9keqoBDVGbNBnKi9TtM+h9gqvJOJWCViUIVi2hnp6FaJnqO7rlkfh
+         PYxUwcdx/pouw==
+Date:   Mon, 14 Aug 2023 15:29:32 +0200
+From:   Wolfram Sang <wsa@kernel.org>
+To:     Tam Nguyen <tamnguyenchi@os.amperecomputing.com>
+Cc:     linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org,
+        patches@amperecomputing.com, jarkko.nikula@linux.intel.com,
+        andriy.shevchenko@linux.intel.com, mika.westerberg@linux.intel.com,
+        jsd@semihalf.com, chuong@os.amperecomputing.com,
+        darren@os.amperecomputing.com,
+        Quan Nguyen <quan@os.amperecomputing.com>,
+        stable@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] i2c: designware: Correct length byte validation
+ logic
+Message-ID: <ZNosPK3M4/bZ0vc9@shikoro>
+Mail-Followup-To: Wolfram Sang <wsa@kernel.org>,
+        Tam Nguyen <tamnguyenchi@os.amperecomputing.com>,
+        linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org,
+        patches@amperecomputing.com, jarkko.nikula@linux.intel.com,
+        andriy.shevchenko@linux.intel.com, mika.westerberg@linux.intel.com,
+        jsd@semihalf.com, chuong@os.amperecomputing.com,
+        darren@os.amperecomputing.com,
+        Quan Nguyen <quan@os.amperecomputing.com>, stable@vger.kernel.org
+References: <20230726080001.337353-1-tamnguyenchi@os.amperecomputing.com>
+ <20230726080001.337353-2-tamnguyenchi@os.amperecomputing.com>
 MIME-Version: 1.0
-References: <20230813160936.1082758-1-sashal@kernel.org> <20230813160936.1082758-22-sashal@kernel.org>
-In-Reply-To: <20230813160936.1082758-22-sashal@kernel.org>
-From:   Ilya Dryomov <idryomov@gmail.com>
-Date:   Mon, 14 Aug 2023 15:23:41 +0200
-Message-ID: <CAOi1vP-+xfmQBNWL4iKC+bB-T+yjPh=zF0nBqGMeXCdvpf7+zg@mail.gmail.com>
-Subject: Re: [PATCH AUTOSEL 5.10 22/25] rbd: make get_lock_owner_info() return
- a single locker or NULL
-To:     Sasha Levin <sashal@kernel.org>
-Cc:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        Dongsheng Yang <dongsheng.yang@easystack.cn>, axboe@kernel.dk,
-        ceph-devel@vger.kernel.org, linux-block@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="Va0SrhCIqzaABToJ"
+Content-Disposition: inline
+In-Reply-To: <20230726080001.337353-2-tamnguyenchi@os.amperecomputing.com>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Sun, Aug 13, 2023 at 6:11=E2=80=AFPM Sasha Levin <sashal@kernel.org> wro=
-te:
->
-> From: Ilya Dryomov <idryomov@gmail.com>
->
-> [ Upstream commit f38cb9d9c2045dad16eead4a2e1aedfddd94603b ]
->
-> Make the "num_lockers can be only 0 or 1" assumption explicit and
-> simplify the API by getting rid of output parameters in preparation
-> for calling get_lock_owner_info() twice before blocklisting.
->
-> Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
-> Reviewed-by: Dongsheng Yang <dongsheng.yang@easystack.cn>
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
 
-Hi Sasha,
+--Va0SrhCIqzaABToJ
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-This is a prerequisite patch, it doesn't make sense to backport it
-without also backporting "rbd: harden get_lock_owner_info() a bit" and
-"rbd: retrieve and check lock owner twice before blocklisting".
+On Wed, Jul 26, 2023 at 03:00:00PM +0700, Tam Nguyen wrote:
+> From: Quan Nguyen <quan@os.amperecomputing.com>
+>=20
+> Commit 0daede80f870 ("i2c: designware: Convert driver to using regmap API=
+")
+> changes the logic to validate the whole 32-bit return value of
+> DW_IC_DATA_CMD register instead of 8-bit LSB without reason.
+>=20
+> Later, commit f53f15ba5a85 ("i2c: designware: Get right data length"),
+> introduced partial fix but not enough because the "tmp > 0" still test
+> tmp as 32-bit value and is wrong in case the IC_DATA_CMD[11] is set.
+>=20
+> Revert the logic to just before commit 0daede80f870
+> ("i2c: designware: Convert driver to using regmap API").
+>=20
+> Fixes: f53f15ba5a85 ("i2c: designware: Get right data length")
+> Fixes: 0daede80f870 ("i2c: designware: Convert driver to using regmap API=
+")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Tam Nguyen <tamnguyenchi@os.amperecomputing.com>
+> Signed-off-by: Quan Nguyen <quan@os.amperecomputing.com>
 
-Please drop it.
+Applied to for-current, thanks!
 
-Thanks,
 
-                Ilya
+--Va0SrhCIqzaABToJ
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmTaLDwACgkQFA3kzBSg
+Kbbh6g//azQ4qtqndnhpbxP1Ujc5PyG55chGeQ7kmcTlXpJaZEJq/rTc7y/HbNGG
+6/kIeriOMA2BU4xJKk6ipIK8OiM5Kk8WD6ow7LhICxzi4xg2CAy+ILTiaWnflUtn
+XGW6GNFx02+iiHwv3Dfek5CJ9NF/Kk4CSw3EV9umFT1GPzbCtGLSfX69BW7Abbod
+o3vLeUu5y7P56RYotEjUJPIrM961G/pnPh0p29EkJkFmg/6rdy1bS6FSilT8KgyN
+uLlxqJiSBu1yRJTmPE2wPKlppfNmtCg1VojbDsZaJN9PUxqF/m4+uh6//1spj1O0
+2lh5t/YkbdBAT7u7JH2OuaveQIssgaPFRkt9I9ugda1kAvCeEjBAYVL5wyvIm0mi
+kvHk+2x1HizQfOCRxIWAlEvz3IT1PSjQQ2Daqg1FFSD96jay/6gcFXnkQBXSbVWW
+oiumMrTwHm8yT1uzfN2Srd9j1/OOAnckxC4VPjoMcEv1sPBb9sohssNdMF1Bgzoi
+h2L0thsS4lHgP3KzCAczSpmOT4kbW71h4WMQli2wCnU1fTGyhHX/2GjblEefqyrE
+8o7hTZedd00qhzeKCGZKE+2UuQL6uqKqGaqcv2HviOIu8g3MYThkam3Kr/WQsSov
+//P69PLYuat/fBbVrM5r7AdreNgcLcYuc73L2NlPqnJmneNWQew=
+=cdP5
+-----END PGP SIGNATURE-----
+
+--Va0SrhCIqzaABToJ--
