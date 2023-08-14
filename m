@@ -2,100 +2,144 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4E5E377BCDA
-	for <lists+stable@lfdr.de>; Mon, 14 Aug 2023 17:21:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4771C77BCD4
+	for <lists+stable@lfdr.de>; Mon, 14 Aug 2023 17:18:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229688AbjHNPU1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 14 Aug 2023 11:20:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44282 "EHLO
+        id S232427AbjHNPRd (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 14 Aug 2023 11:17:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46288 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232865AbjHNPTz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 14 Aug 2023 11:19:55 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED759DA
-        for <stable@vger.kernel.org>; Mon, 14 Aug 2023 08:19:54 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7638C61009
-        for <stable@vger.kernel.org>; Mon, 14 Aug 2023 15:14:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BFB4C433C8;
-        Mon, 14 Aug 2023 15:14:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692026090;
-        bh=g9SZlKOPWWnC6NmGW13v2jdDr2kwqfhBFZBSUHkDY0E=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=yqFYS0KhAzz7SMTnc/UtpvttJHIfGuVOELqnTQsEoG9RCM2dp7JvRfKCQ8c0s6YDL
-         D0AldwN2wDfGolrlr5z8b6L/6b28ti3hkqhHFTNYTHaDUCWvDUhEVBerEO+FrduYel
-         /DeD0VOMCl6CDqfvK1Ud5Ea769vYna0kvT+ddQW4=
-Date:   Mon, 14 Aug 2023 17:14:48 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Florian Westphal <fw@strlen.de>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        Pablo Neira Ayuso <pablo@netfilter.org>
-Subject: Re: [PATCH 6.4 090/206] netfilter: nf_tables: dont skip expired
- elements during walk
-Message-ID: <2023081418-goes-vitally-3c6f@gregkh>
-References: <20230813211724.969019629@linuxfoundation.org>
- <20230813211727.651202695@linuxfoundation.org>
- <20230813221730.GA22068@breakpoint.cc>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230813221730.GA22068@breakpoint.cc>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S232966AbjHNPRM (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 14 Aug 2023 11:17:12 -0400
+Received: from mail-yw1-x1149.google.com (mail-yw1-x1149.google.com [IPv6:2607:f8b0:4864:20::1149])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 52B1010C0
+        for <stable@vger.kernel.org>; Mon, 14 Aug 2023 08:16:55 -0700 (PDT)
+Received: by mail-yw1-x1149.google.com with SMTP id 00721157ae682-589c772be14so56870907b3.0
+        for <stable@vger.kernel.org>; Mon, 14 Aug 2023 08:16:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20221208; t=1692026214; x=1692631014;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=/FNoZQB0IrLaKqGcAaCCQtd/SwINEujNen6PFYywNmQ=;
+        b=Syd749r+wn/31GfcBZ2X1EmM8zOBT3WHN3gRME1+GWTQKeuS/r1PTSbEnPXHTwGHwe
+         6fnC4j8d1fVeqUEjKApqDPF/0xYsuJSLnk6UEBLeKjNU84fJOo9Qij8huJ/ZiRRBhPAO
+         rmdzwAM+EdgClvgMsvs/I/fsVDh7o7JA5Vvtpq1gwsZjVds09RvWlssJNWOnc+s3ogCd
+         xdJBuSqn95iMh+mtkpV37HzhOze6UfxJ3EqiJGh5GpMWFL/E5Fx/dD6eQpKlwfBTu+d3
+         uqbpDpJZHSBkqaADM23Swa5RWpd4ZoY3kiCu1eZUQetrUSaLIpoaHPvU7sEFqDSFXAj+
+         cflA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1692026214; x=1692631014;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=/FNoZQB0IrLaKqGcAaCCQtd/SwINEujNen6PFYywNmQ=;
+        b=W3FlUbJXLvleivM06hmTYfNdltAg2Sf7roj+1hfs6fQ4s7orEQuV9+kGsoGrAbWLX2
+         OXBalP2/9ggUdCmXR0sQuBPQa93lRtOte5CibhMbeEaBSI9EKfvbkx6uFlVLa7XxiMf2
+         uvKuTmeQedI2B2A5sYqApXb4TPzvIovm9upM5L5MOQDAFlhjpzoa5tbfoxACgTenIMeH
+         S5/64t80mIkxMewi4T13sEFvITZL/d3h5xETeThGzlaNLV7wLtHo/W+gZioQ5A99OCWg
+         u5oG4qJvrRCEfnX5QloOsoeEttWiadcv9vMB68VgWc19oXSyowAeoH3c9koJ/3iNEW+e
+         W/jQ==
+X-Gm-Message-State: AOJu0YxhzTz6hH1oiPNIomrKFbqVwCqrEWVifcN14L7FtpCWeYfUWLSJ
+        PBTRF3H4BuVka5sI5Vm6SmJFfWn6j++cINg=
+X-Google-Smtp-Source: AGHT+IGNjXXgrbDzHO8XmjU8hvNW3ac8in3D1QL3hTJWGpwZ0u3oHyq6TITxY7sjk641/7DG+3aOn6ThNsHUDiw=
+X-Received: from tj.c.googlers.com ([fda3:e722:ac3:cc00:20:ed76:c0a8:53a])
+ (user=tjmercier job=sendgmr) by 2002:a05:690c:300f:b0:589:6c60:f4a0 with SMTP
+ id ey15-20020a05690c300f00b005896c60f4a0mr240385ywb.0.1692026214561; Mon, 14
+ Aug 2023 08:16:54 -0700 (PDT)
+Date:   Mon, 14 Aug 2023 15:16:36 +0000
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.41.0.640.ga95def55d0-goog
+Message-ID: <20230814151636.1639123-1-tjmercier@google.com>
+Subject: [PATCH mm-unstable] mm: multi-gen LRU: don't spin during memcg release
+From:   "T.J. Mercier" <tjmercier@google.com>
+To:     linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+        akpm@linux-foundation.org
+Cc:     android-mm@google.com, "T.J. Mercier" <tjmercier@google.com>,
+        stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, Aug 14, 2023 at 12:17:30AM +0200, Florian Westphal wrote:
-> Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
-> > From: Florian Westphal <fw@strlen.de>
-> > 
-> > commit 24138933b97b055d486e8064b4a1721702442a9b upstream.
-> 
-> Just FYI, this change is not correct.
-> 
-> > There is an asymmetry between commit/abort and preparation phase if the
-> > following conditions are met:
-> 
-> > 1. set is a verdict map ("1.2.3.4 : jump foo")
-> > 2. timeouts are enabled
-> 
-> [..]
-> 
-> > --- a/net/netfilter/nft_set_pipapo.c
-> > +++ b/net/netfilter/nft_set_pipapo.c
-> > @@ -566,8 +566,7 @@ next_match:
-> >  			goto out;
-> >  
-> >  		if (last) {
-> > -			if (nft_set_elem_expired(&f->mt[b].e->ext) ||
-> > -			    (genmask &&
-> > +			if ((genmask &&
-> >  			     !nft_set_elem_active(&f->mt[b].e->ext, genmask)))
-> >  				goto next_match;
-> 
-> This part is bonkers, it papers over the real issue and introduces
-> another bug while at it (insertions for key K will fail if we have
-> a key K that is already expired).
-> 
-> A patch to resolve it is queued on the mailing list and I'll make sure
-> it gets passed to the net tree by this wednesday.
-> 
-> Sorry for the inconvenience, I hope this doesn't interefere with
-> -stable release plans and this is leaves enough time for
-> the fix to make it to -stable too.
+When a memcg is in the process of being released mem_cgroup_tryget will
+fail because its reference count has already reached 0. This can happen
+during reclaim if the memcg has already been offlined, and we reclaim
+all remaining pages attributed to the offlined memcg. shrink_many
+attempts to skip the empty memcg in this case, and continue reclaiming
+from the remaining memcgs in the old generation. If there is only one
+memcg remaining, or if all remaining memcgs are in the process of being
+released then shrink_many will spin until all memcgs have finished
+being released. The release occurs through a workqueue, so it can take
+a while before kswapd is able to make any further progress.
 
-Is there an upstream fix for this yet?  If so, I can pull it into the
-stable tree, or should I drop this one for now and wait for the real
-fix?  It's your call.
+This fix results in reductions in kswapd activity and direct reclaim in
+a test where 28 apps (working set size > total memory) are repeatedly
+launched in a random sequence:
 
-thanks,
+                                       A          B      delta   ratio(%)
+           allocstall_movable       5962       3539      -2423     -40.64
+            allocstall_normal       2661       2417       -244      -9.17
+kswapd_high_wmark_hit_quickly      53152       7594     -45558     -85.71
+                   pageoutrun      57365      11750     -45615     -79.52
 
-greg k-h
+Fixes: e4dde56cd208 ("mm: multi-gen LRU: per-node lru_gen_folio lists")
+Cc: stable@vger.kernel.org
+Signed-off-by: T.J. Mercier <tjmercier@google.com>
+---
+ mm/vmscan.c | 13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
+
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index 157ed68470ee..c7c149cb8d66 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -4856,16 +4856,17 @@ void lru_gen_release_memcg(struct mem_cgroup *memcg)
+ 
+ 		spin_lock_irq(&pgdat->memcg_lru.lock);
+ 
+-		VM_WARN_ON_ONCE(hlist_nulls_unhashed(&lruvec->lrugen.list));
++		if (hlist_nulls_unhashed(&lruvec->lrugen.list))
++			goto unlock;
+ 
+ 		gen = lruvec->lrugen.gen;
+ 
+-		hlist_nulls_del_rcu(&lruvec->lrugen.list);
++		hlist_nulls_del_init_rcu(&lruvec->lrugen.list);
+ 		pgdat->memcg_lru.nr_memcgs[gen]--;
+ 
+ 		if (!pgdat->memcg_lru.nr_memcgs[gen] && gen == get_memcg_gen(pgdat->memcg_lru.seq))
+ 			WRITE_ONCE(pgdat->memcg_lru.seq, pgdat->memcg_lru.seq + 1);
+-
++unlock:
+ 		spin_unlock_irq(&pgdat->memcg_lru.lock);
+ 	}
+ }
+@@ -5447,8 +5448,10 @@ static void shrink_many(struct pglist_data *pgdat, struct scan_control *sc)
+ 	rcu_read_lock();
+ 
+ 	hlist_nulls_for_each_entry_rcu(lrugen, pos, &pgdat->memcg_lru.fifo[gen][bin], list) {
+-		if (op)
++		if (op) {
+ 			lru_gen_rotate_memcg(lruvec, op);
++			op = 0;
++		}
+ 
+ 		mem_cgroup_put(memcg);
+ 
+@@ -5456,7 +5459,7 @@ static void shrink_many(struct pglist_data *pgdat, struct scan_control *sc)
+ 		memcg = lruvec_memcg(lruvec);
+ 
+ 		if (!mem_cgroup_tryget(memcg)) {
+-			op = 0;
++			lru_gen_release_memcg(memcg);
+ 			memcg = NULL;
+ 			continue;
+ 		}
+-- 
+2.41.0.640.ga95def55d0-goog
+
