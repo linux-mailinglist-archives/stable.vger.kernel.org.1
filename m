@@ -2,99 +2,126 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9B3C477BF0B
-	for <lists+stable@lfdr.de>; Mon, 14 Aug 2023 19:34:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 007A677BF0E
+	for <lists+stable@lfdr.de>; Mon, 14 Aug 2023 19:34:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229921AbjHNRdp (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 14 Aug 2023 13:33:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42368 "EHLO
+        id S230243AbjHNReT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 14 Aug 2023 13:34:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60454 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230432AbjHNRde (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 14 Aug 2023 13:33:34 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 85B14133;
-        Mon, 14 Aug 2023 10:33:32 -0700 (PDT)
+        with ESMTP id S230174AbjHNRdr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 14 Aug 2023 13:33:47 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6008F133;
+        Mon, 14 Aug 2023 10:33:46 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1907E60F13;
-        Mon, 14 Aug 2023 17:33:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6333CC433C8;
-        Mon, 14 Aug 2023 17:33:29 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id F176460F13;
+        Mon, 14 Aug 2023 17:33:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 108C6C433C7;
+        Mon, 14 Aug 2023 17:33:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1692034411;
-        bh=dMLWHmmWTHTpECQlogQ0Ns+k8Paiopb9T66lZHlkhII=;
-        h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-        b=h8GDb/X2iClmuQ5zfnXPmiXaDl9Kr6TqdPk9iMRYifdCs5TcOthXO4Hnmac1V1af8
-         mSo/bA8Uy1YoHuUBNr0W10qyeGiRKlZp6XGLSE7/C1qPbgwLQ23lxZdARJSGYc7Tq4
-         PWAl705L0Cd1cvET+qYqT4H5ANbjo17n8elx8weikQQ0MVb99e5FMid9DcOOI6WQOd
-         XUxLS1Yq0OSdv4mcDxAOPu66/N5DeAPo9DXiZ9jd+UibphFES1gctSEicQJ7NOSsbq
-         rWljLJkhTLkxwNy2kdSq8LWYtYqz456/8ICTDs/lKeFKEZyT3CJVYStPUaR1Ojc0cb
-         8JbvVV4wtiIcA==
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date:   Mon, 14 Aug 2023 20:33:27 +0300
-Message-Id: <CUSG4ZTYMMD3.30DE3M55W3CJ1@suppilovahvero>
-Cc:     "Linux kernel regressions list" <regressions@lists.linux.dev>,
-        "Peter Huewe" <peterhuewe@gmx.de>,
-        "Christian Hesse" <mail@eworm.de>, <stable@vger.kernel.org>,
-        <roubro1991@gmail.com>,
-        "Linus Torvalds" <torvalds@linux-foundation.org>,
-        "Christian Hesse" <list@eworm.de>,
-        <linux-integrity@vger.kernel.org>
-Subject: Re: [PATCH v2 1/2] tpm/tpm_tis: Disable interrupts for Framework
- Laptop Intel 12th gen
-From:   "Jarkko Sakkinen" <jarkko@kernel.org>
-To:     "Grundik" <ggrundik@gmail.com>,
-        "Thorsten Leemhuis" <regressions@leemhuis.info>,
-        "Lino Sanfilippo" <LinoSanfilippo@gmx.de>
-X-Mailer: aerc 0.14.0
-References: <20230710133836.4367-1-mail@eworm.de>
- <20230710142916.18162-1-mail@eworm.de>
- <20230710231315.4ef54679@leda.eworm.net>
- <bd0587e16d55ef38277ab1f6169909ae7cde3542.camel@kernel.org>
- <bb5580e93d244400c3330d7091bf64868aa2053f.camel@gmail.com>
- <0f272843a33a1706dbcbb2d84b02e3951ee60cbb.camel@kernel.org>
- <fdd5fd9ece045ebd1888672a75f157e64ade98fb.camel@gmail.com>
- <a588d1d3-12e0-b078-b6cc-b0a63c54ab37@leemhuis.info>
- <CUPW0XP1RFXI.162GZ78E46TBJ@suppilovahvero>
- <CUPWEV9HSGHY.MLO0B4RRH4RR@suppilovahvero>
- <5806ebf113d52c660e1c70e8a57cc047ab039aff.camel@gmail.com>
- <CUPZF09RGD86.VQN9BOMEYZX5@suppilovahvero>
- <2c5abdca1e93894ff3ee41ab1da90a5f8e38657f.camel@gmail.com>
-In-Reply-To: <2c5abdca1e93894ff3ee41ab1da90a5f8e38657f.camel@gmail.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        s=k20201202; t=1692034425;
+        bh=yUg04tR1pN7v+DP0lF/LHfOCynWXpMf32x2afCs8lm8=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=tuwpLSay9CE/IcWDxy6SXqmal2K80if10co5deDTmGKEk+X0cNn0V7/E4mzAe1MeX
+         YwCbyTyBZp6ShxhD0wN8656z2V40S/AdIyXcGa6orTlA7RNHei6fmnfe1mj1fnPh9s
+         QY56Dn1BEPxv9jfIddp5jLd3lTHkzGLShrzVKl84Hp2pSpZ+w4bRCHrmtEoD+EhHM6
+         vPj8qfLz1w1ZD59HTgjK4O9Y1MLX1O3ozIBEz0+8X1UAgEgpI4cy0sAZaH8vRaWc60
+         4DD20HG1CcVIYxe+1Z0WmQju9jj1ZX3vSdzVwLR454+O7g0gEO3DqFNEsYhtnOeJQr
+         Iekjf17yuFHwQ==
+From:   SeongJae Park <sj@kernel.org>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+        jonathanh@nvidia.com, f.fainelli@gmail.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+        conor@kernel.org, damon@lists.linux.dev,
+        SeongJae Park <sj@kernel.org>
+Subject: Re: [PATCH 5.15 00/89] 5.15.127-rc1 review
+Date:   Mon, 14 Aug 2023 17:33:42 +0000
+Message-Id: <20230814173342.9798-1-sj@kernel.org>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20230813211710.787645394@linuxfoundation.org>
+References: 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Sat Aug 12, 2023 at 2:28 PM EEST, Grundik wrote:
-> On Fri, 2023-08-11 at 23:01 +0300, Jarkko Sakkinen wrote:
-> >=20
-> >=20
-> > Thanks for sharing your opinion. I'll take the necessary steps.
-> >=20
->
-> I was thinking... Maybe I'm wrong, maybe I mistaking, but isnt this TPM
-> located inside of the CPU chip? So that issue is not specific to laptop
-> vendor or model, but its CPU-specific.
+Hello,
 
-Nope, tpm_tis is MMIO interface for so called FIFO register interface,
-it could be backed e.g. by SPI [*]. It is a physical layer for MMIO.
-There's other backends too such as tpm_tis_i2c where kernel is directly
-exposed to the physical layer.
 
-> My MSI A12MT laptop has i5-1240P, Framework laptops mentioned in this
-> thread, also has i5-1240P CPU. Unfortunately there are no such
-> information about other affected models, but could it be just that CPU
-> line?
+On Sun, 13 Aug 2023 23:18:51 +0200 Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
 
-[*] https://lkml.org/lkml/2023/8/14/1065
+> This is the start of the stable review cycle for the 5.15.127 release.
+> There are 89 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Tue, 15 Aug 2023 21:16:53 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.127-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
+> and the diffstat can be found below.
 
-BR, Jarkko
+This rc kernel passes DAMON functionality test[1] on my test machine.
+Attaching the test results summary below.  Please note that I retrieved the
+kernel from linux-stable-rc tree[2].
+
+Tested-by: SeongJae Park <sj@kernel.org>
+
+[1] https://github.com/awslabs/damon-tests/tree/next/corr
+[2] c79c1253de29 ("Linux 5.15.127-rc1")
+
+Thanks,
+SJ
+
+[...]
+
+---
+
+ok 13 selftests: damon-tests: build_i386_idle_flag.sh
+# selftests: damon-tests: build_i386_highpte.sh
+# .config:1341:warning: override: reassigning to symbol DAMON
+ok 14 selftests: damon-tests: build_i386_highpte.sh
+# selftests: damon-tests: build_nomemcg.sh
+# .config:1342:warning: override: reassigning to symbol DAMON
+# .config:1352:warning: override: reassigning to symbol CGROUPS
+ok 15 selftests: damon-tests: build_nomemcg.sh
+# kselftest dir '/home/sjpark/damon-tests-cont/linux/tools/testing/selftests/damon-tests' is in dirty state.
+# the log is at '/home/sjpark/log'.
+ [32m
+ok 1 selftests: damon: debugfs_attrs.sh
+ok 1 selftests: damon-tests: kunit.sh
+ok 2 selftests: damon-tests: huge_count_read_write.sh
+ok 3 selftests: damon-tests: buffer_overflow.sh
+ok 4 selftests: damon-tests: rm_contexts.sh
+ok 5 selftests: damon-tests: record_null_deref.sh
+ok 6 selftests: damon-tests: dbgfs_target_ids_read_before_terminate_race.sh
+ok 7 selftests: damon-tests: dbgfs_target_ids_pid_leak.sh
+ok 8 selftests: damon-tests: damo_tests.sh
+ok 9 selftests: damon-tests: masim-record.sh
+ok 10 selftests: damon-tests: build_i386.sh
+ok 11 selftests: damon-tests: build_m68k.sh
+ok 12 selftests: damon-tests: build_arm64.sh
+ok 13 selftests: damon-tests: build_i386_idle_flag.sh
+ok 14 selftests: damon-tests: build_i386_highpte.sh
+ok 15 selftests: damon-tests: build_nomemcg.sh
+ [33m
+ [92mPASS [39m
+_remote_run_corr.sh SUCCESS
