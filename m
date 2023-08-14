@@ -2,94 +2,115 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2F7B777BD88
-	for <lists+stable@lfdr.de>; Mon, 14 Aug 2023 18:00:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2F2C377BDAE
+	for <lists+stable@lfdr.de>; Mon, 14 Aug 2023 18:12:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230232AbjHNQAJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 14 Aug 2023 12:00:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43742 "EHLO
+        id S229799AbjHNQL4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 14 Aug 2023 12:11:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59784 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230491AbjHNP7p (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 14 Aug 2023 11:59:45 -0400
-Received: from mail.zeus03.de (www.zeus03.de [194.117.254.33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C8ADE10F9
-        for <stable@vger.kernel.org>; Mon, 14 Aug 2023 08:59:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        sang-engineering.com; h=date:from:to:cc:subject:message-id
-        :references:mime-version:content-type:in-reply-to; s=k1; bh=13fD
-        tr5RGVxMatqp+5PRiwH9poWYh3uB+bymHm5fjMM=; b=WuSix5gG7x1VtMh6u5UX
-        vVF6FOvQZXqudgMYKM5jAQBQ7I9z6NV2o9SN3+3ETV63c7IaNIvEvRv8Lt6SUdR0
-        uYYlxR7Zrv2JCW6uZrFMF8+HyKqZRamYsGRZm3HAljexNieU3Q7jxWxHsRyS5swu
-        vYnv8qx0nr5dSlof2QD/WaUyM9aQizZMa+Xa2yX5ZHbPijQO15rFCpL6wnby1I07
-        StLrq80fbWNMkDNy6lViO9JDegehrBU0yhGBABln2VzoCUAnxQ8q6VUxrYccY5EB
-        E2Lzv/dC45KfngpLje/1VnU0EZikxglYKTeLrPxReLyHTkC1UqWM9CrKANy/RJCn
-        vQ==
-Received: (qmail 97684 invoked from network); 14 Aug 2023 17:59:42 +0200
-Received: by mail.zeus03.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 14 Aug 2023 17:59:42 +0200
-X-UD-Smtp-Session: l3s3148p1@DuyFJuQCHIYgAwDPXxIFAOXxDpD4UZq0
-Date:   Mon, 14 Aug 2023 17:59:42 +0200
-From:   Wolfram Sang <wsa+renesas@sang-engineering.com>
-To:     Minjie Du <duminjie@vivo.com>
-Cc:     Andi Shyti <andi.shyti@kernel.org>,
-        "open list:I2C SUBSYSTEM HOST DRIVERS" <linux-i2c@vger.kernel.org>,
-        open list <linux-kernel@vger.kernel.org>,
-        opensource.kernel@vivo.com, stable@vger.kernel.org
-Subject: Re: [PATCH v4] i2c: gpio: Fix an error check in
- i2c_gpio_fault_injector_init()
-Message-ID: <ZNpPbhqNqD90VuN1@shikoro>
-Mail-Followup-To: Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        Minjie Du <duminjie@vivo.com>, Andi Shyti <andi.shyti@kernel.org>,
-        "open list:I2C SUBSYSTEM HOST DRIVERS" <linux-i2c@vger.kernel.org>,
-        open list <linux-kernel@vger.kernel.org>,
-        opensource.kernel@vivo.com, stable@vger.kernel.org
-References: <20230713101829.15548-1-duminjie@vivo.com>
+        with ESMTP id S231739AbjHNQL3 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 14 Aug 2023 12:11:29 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 475F9F1
+        for <stable@vger.kernel.org>; Mon, 14 Aug 2023 09:11:17 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DA95C60C15
+        for <stable@vger.kernel.org>; Mon, 14 Aug 2023 16:11:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFFE8C433C8;
+        Mon, 14 Aug 2023 16:11:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1692029476;
+        bh=lMjlapqeyDzouK7rBxj3XpLytHXl61DbEVPIrXEm/Cc=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=GRy/tMndOIDvb4+cNw875AafCPE/NdBqhjGP64kJGA93iLmZTGzACbbngw9yz98Ga
+         jjTTvsE2XIjX+Wy2vfC7jFJ12H4Z9j9rVnrAgZBuKiUgFXd7Bpibk51AdPBF3zAie0
+         epGnvlUonikjtRU2tgCUSJqi1wxrdiIAF5qyums4=
+Date:   Mon, 14 Aug 2023 18:11:13 +0200
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Pablo Neira Ayuso <pablo@netfilter.org>
+Cc:     Florian Westphal <fw@strlen.de>, stable@vger.kernel.org,
+        patches@lists.linux.dev
+Subject: Re: [PATCH 6.4 090/206] netfilter: nf_tables: dont skip expired
+ elements during walk
+Message-ID: <2023081404-quality-shindig-552b@gregkh>
+References: <20230813211724.969019629@linuxfoundation.org>
+ <20230813211727.651202695@linuxfoundation.org>
+ <20230813221730.GA22068@breakpoint.cc>
+ <2023081418-goes-vitally-3c6f@gregkh>
+ <ZNpLHwZ6VlaJjQD1@calendula>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="F3VAkMY5d1uSTLql"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230713101829.15548-1-duminjie@vivo.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H3,
-        RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS autolearn=unavailable
-        autolearn_force=no version=3.4.6
+In-Reply-To: <ZNpLHwZ6VlaJjQD1@calendula>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+On Mon, Aug 14, 2023 at 05:41:19PM +0200, Pablo Neira Ayuso wrote:
+> On Mon, Aug 14, 2023 at 05:14:48PM +0200, Greg Kroah-Hartman wrote:
+> > On Mon, Aug 14, 2023 at 12:17:30AM +0200, Florian Westphal wrote:
+> > > Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
+> > > > From: Florian Westphal <fw@strlen.de>
+> > > > 
+> > > > commit 24138933b97b055d486e8064b4a1721702442a9b upstream.
+> > > 
+> > > Just FYI, this change is not correct.
+> > > 
+> > > > There is an asymmetry between commit/abort and preparation phase if the
+> > > > following conditions are met:
+> > > 
+> > > > 1. set is a verdict map ("1.2.3.4 : jump foo")
+> > > > 2. timeouts are enabled
+> > > 
+> > > [..]
+> > > 
+> > > > --- a/net/netfilter/nft_set_pipapo.c
+> > > > +++ b/net/netfilter/nft_set_pipapo.c
+> > > > @@ -566,8 +566,7 @@ next_match:
+> > > >  			goto out;
+> > > >  
+> > > >  		if (last) {
+> > > > -			if (nft_set_elem_expired(&f->mt[b].e->ext) ||
+> > > > -			    (genmask &&
+> > > > +			if ((genmask &&
+> > > >  			     !nft_set_elem_active(&f->mt[b].e->ext, genmask)))
+> > > >  				goto next_match;
+> > > 
+> > > This part is bonkers, it papers over the real issue and introduces
+> > > another bug while at it (insertions for key K will fail if we have
+> > > a key K that is already expired).
+> > > 
+> > > A patch to resolve it is queued on the mailing list and I'll make sure
+> > > it gets passed to the net tree by this wednesday.
+> > > 
+> > > Sorry for the inconvenience, I hope this doesn't interefere with
+> > > -stable release plans and this is leaves enough time for
+> > > the fix to make it to -stable too.
+> > 
+> > Is there an upstream fix for this yet?  If so, I can pull it into the
+> > stable tree, or should I drop this one for now and wait for the real
+> > fix?  It's your call.
+> 
+> I'd suggest: Drop it for 5.10, 5.15 and 6.1, because these versions
+> are still missing the full series.
+> 
+> Keep it for 6.4 (this already have the full series with fixed) the
+> incremental fix that is flying upstream will event amend this patch.
+> 
+> In summary:
+> 
+> - drop it for 5.10, 5.15 and 6.1
+> - keep it for 6.4
 
---F3VAkMY5d1uSTLql
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Ok, thanks, now dropped for those trees.
 
-
-> -		if (!i2c_gpio_debug_dir)
-> +		if (IS_ERR(i2c_gpio_debug_dir))
->  			return;
-
-AFAIK, the trend is to remove error checking from debugfs calls. It is
-debug only anyhow. No need to bail out. But please double check.
-
-
---F3VAkMY5d1uSTLql
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmTaT24ACgkQFA3kzBSg
-KbaHvhAAteNEN5boU3yeCiAtEbnto/LU6ozZJ10oprKOFKlRCXdb9r0Q84nHswwa
-c3MtS0ApRUGUIvlZmJtNG404Z9y86KbnNYS6mv4Ghqqgtg/1HrcUwoRV2bJa6nMC
-BC2wPkl3IqYFXmDyA0NuKSUZnwh+ZKSQ6hOUAkxYerqiAKld5/bF5VJXGuSxycqJ
-Wmgu19yoIlFE3vl1UxIqpFpUY4ygP8nsANdG4MG0jaM+Jgh5YgLmBDCP9LXtZgun
-5Hb4E+TIGpWUJA418b9JOp3bSXYDjQJmUjrM2uSuged+h19pOFdg981khh0h/BHN
-y+ntBS2WZ7AoE2J7baK5eQuJv7Bxi1ZH0HQ1xamQevi8rjOUH3kZGB12Jyt0WCv2
-erfUjS/oio2xZPgMzKu6Z1MB7NK3bJEblCQ1hOZ1JKDcH0XEgrsSILH/BWqkzad2
-PTY+U9nANiQe24NRK1bE2wVrBCEZIhjQdDpGLMfceIa58fy9iNflw3de8dSrqvLU
-CacC0l7ykyMQvYOuGml9PvZszbhXec5AzrtisEXsPVK6l+1l3WYZvHZUpMugfzAV
-7xZaTqWXuJE2fEEdG8Tf3xr2lDB+JJtuXgAt4tixQqNprliSya/i1RMS42kBV2zy
-h/Pv9tyI1C7X0dZCZbslzXvwNf+Xl1yD4PB33Dm6ckWvuZcNy04=
-=n8bT
------END PGP SIGNATURE-----
-
---F3VAkMY5d1uSTLql--
+greg k-h
