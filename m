@@ -2,163 +2,307 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9B11B77BF8D
-	for <lists+stable@lfdr.de>; Mon, 14 Aug 2023 20:08:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E0BFD77BF96
+	for <lists+stable@lfdr.de>; Mon, 14 Aug 2023 20:13:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230222AbjHNSHn (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 14 Aug 2023 14:07:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52050 "EHLO
+        id S230204AbjHNSNH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 14 Aug 2023 14:13:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58082 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230147AbjHNSHK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 14 Aug 2023 14:07:10 -0400
-Received: from mail-yb1-xb49.google.com (mail-yb1-xb49.google.com [IPv6:2607:f8b0:4864:20::b49])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24C76E5E
-        for <stable@vger.kernel.org>; Mon, 14 Aug 2023 11:07:09 -0700 (PDT)
-Received: by mail-yb1-xb49.google.com with SMTP id 3f1490d57ef6-d63ffc9cc1bso4892098276.1
-        for <stable@vger.kernel.org>; Mon, 14 Aug 2023 11:07:09 -0700 (PDT)
+        with ESMTP id S231354AbjHNSMz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 14 Aug 2023 14:12:55 -0400
+Received: from mail-oo1-xc31.google.com (mail-oo1-xc31.google.com [IPv6:2607:f8b0:4864:20::c31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2243DE65
+        for <stable@vger.kernel.org>; Mon, 14 Aug 2023 11:12:54 -0700 (PDT)
+Received: by mail-oo1-xc31.google.com with SMTP id 006d021491bc7-56c4c4e822eso3441186eaf.3
+        for <stable@vger.kernel.org>; Mon, 14 Aug 2023 11:12:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1692036428; x=1692641228;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=ILL3/wme+Xj3iELICcc/rzQVuKV1rDXNge6KvsnjpQU=;
-        b=byqR1Ww+0r/eXw/qhFsThHdhUozBD7vXDz8QBlKVU7ODMahemj/tryCgsp4E4moyVo
-         Y6WIvCu4UBQCyYP5mYnIz14yhVEqF0KWZo78E+i/dl/n9UFjqYadCSAb3JQTWyuXtDvT
-         4UJd1fX5GS4LxUOCNLGiW26cx5vZ9VE9JB4mVqHFhkCZn5wP8QNDqPLg11wcW+C04Jz3
-         +rcvEt4yROAK69LcpGxkVyx+x5gT0zv8M+aMV5dZ4uUnSekygISfLbwjVe+6MzvzbUfG
-         F4m09HWA7nxzK5jOFjK4r6EXvYW1uUC8pipTpQCpkwumrAI+6q7TQSgAzntNvfUSGgth
-         qBDA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692036428; x=1692641228;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+        d=linaro.org; s=google; t=1692036773; x=1692641573;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=ILL3/wme+Xj3iELICcc/rzQVuKV1rDXNge6KvsnjpQU=;
-        b=U+lBQGGG78b5LUdam9WUOCH7Mb+dK6XqHPlHMzfNTOjZrsG8hTSlzKIKLIisCxwo2s
-         KBKqOcNAr4nj+UwMdDAMdba8BJAMFvNBv5Kvt0b4L58+WhpiELhcoRz7vywzxd66W0ir
-         MJYxle25AJBUQ9GKS7iB58OveR/6XBOjKe8I8ayCHELXjRKR2mIPLvCIbgXRvnaxH+o0
-         bxuA/KoHpqHJHbNO6wt2YGIew+9u/nMVU5RNTcdZTk61Vw8XWOaJkykEX+FS1tUNVuo6
-         vXvTnRNgxnv4hDfyZGQNCDAotyEDCGmH+3bbqjjwapXwBeBJawdIr6QwgZc2wpgC2oTU
-         uw7Q==
-X-Gm-Message-State: AOJu0YxarspTY6en4SNId07Bj09CgU0PwvPIR5Yf1e7W6p4kkAMExo8J
-        HkA1j2PqMqSMI24g0/73l/vhHKig7xt66DM=
-X-Google-Smtp-Source: AGHT+IFPcHmzG6KqaH70vqmY/Q2yqgXqnRgdvqHi7Ao2JTUETR1j90+egJ02S9qBGbxPNcRQs1E46IszPQ13uZA=
-X-Received: from rdbabiera.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:18a8])
- (user=rdbabiera job=sendgmr) by 2002:a25:d4d5:0:b0:d0f:bcfe:bc74 with SMTP id
- m204-20020a25d4d5000000b00d0fbcfebc74mr138892ybf.9.1692036428382; Mon, 14 Aug
- 2023 11:07:08 -0700 (PDT)
-Date:   Mon, 14 Aug 2023 18:05:59 +0000
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.41.0.694.ge786442a9b-goog
-Message-ID: <20230814180559.923475-1-rdbabiera@google.com>
-Subject: [PATCH v4] usb: typec: bus: verify partner exists in typec_altmode_attention
-From:   RD Babiera <rdbabiera@google.com>
-To:     heikki.krogerus@linux.intel.com, gregkh@linuxfoundation.org,
-        linux@roeck-us.net
-Cc:     badhri@google.com, linux-usb@vger.kernel.org,
-        linux-kernel@vger.kernel.org, RD Babiera <rdbabiera@google.com>,
+        bh=8y7m8mVXPBvCJUohO0isZKMbqlhr4Ta+xAXjRe1GD4k=;
+        b=Wh2gNTiViCBPcsHehCRxnz7D8RH+7zJoFSJD5jWU4hEe7ejoAyai/y6w9iWjRjNwq1
+         0+wVSOTGtM2g7jE5BBu0KU50QuVbmj7lIbLu+cy4Yv6tNZ79ISXQBGu1/P1X8mxMobLj
+         ewn3ivb+cjfymslohz2Brhz9/FZ0lF8gMvjOx+PK/tGyGS94AnLufR6qGHpoTGEZPZKG
+         tcB2bTP86vk5CUhlUpguMX/QUvoLOkbOButCyCK1z7o3xgRRvJtzq7Q/Bz8XMXN+W3ct
+         UnE9I/vLEAQjk7roa9g1sru09leD+5WNxVfxbXi7MTiVrqKgAuh0LrryeL9gdoRjf54e
+         tGtA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1692036773; x=1692641573;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=8y7m8mVXPBvCJUohO0isZKMbqlhr4Ta+xAXjRe1GD4k=;
+        b=QMr7khpdTeWPBt+hLXcwg2VfHq7e4fjVQ5MYtHLGJ+Mf6UMw9qIq0BRg52r14t6t01
+         EGkxLfTgCs+HPQT9T26XvQjCDLYh1iGnKd83B3+Y06l533bgLSqAyIi0HVEFuUwlXp0V
+         sFPO2g5yl5iFlmXDCw9uNeS2r4QaKzTPPdyxTJF76VJ0rGdoUL9V94QEd/W0Nx2hGbp8
+         WwG7EY4enjzKLd7XtT4mqXGIYgWzKAMPbEaWRJDAkrI0mHd9D7ssTm/2/S8nwBGvAav+
+         lsGY1dG5Mogr8KmKSQUBwocaLODG79dlgFg09baZse0o/YtqB3y/W9PZe7KmnD/FeuKQ
+         z0uQ==
+X-Gm-Message-State: AOJu0YwEXqDEoualptrz12oN5n3Rq6DBEo2MwTfoC2JZuDXG9GF/All4
+        5Jf1W2dks5fGSruWDfyVzcKmqA==
+X-Google-Smtp-Source: AGHT+IEE3lvLDiYiLhU5iKzgoVQEt2R66USH/QzAbUEpFRMhW8/U8wI1VGJfr7Ca/08zzbqYkmddIg==
+X-Received: by 2002:a05:6871:821:b0:1b0:293e:f8f3 with SMTP id q33-20020a056871082100b001b0293ef8f3mr12692158oap.53.1692036773399;
+        Mon, 14 Aug 2023 11:12:53 -0700 (PDT)
+Received: from [192.168.17.16] ([149.19.169.25])
+        by smtp.gmail.com with ESMTPSA id z4-20020a0568301da400b006b8c277be12sm4507898oti.8.2023.08.14.11.12.51
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 14 Aug 2023 11:12:52 -0700 (PDT)
+Message-ID: <b2145971-5417-e1b1-40b4-f971e247e1ea@linaro.org>
+Date:   Mon, 14 Aug 2023 12:12:50 -0600
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.14.0
+Subject: Re: [PATCH 6.4 000/206] 6.4.11-rc1 review
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+        torvalds@linux-foundation.org, akpm@linux-foundation.org,
+        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
+        nathan@kernel.org, peterz@infradead.org
+References: <20230813211724.969019629@linuxfoundation.org>
+Content-Language: en-US
+From:   =?UTF-8?Q?Daniel_D=c3=adaz?= <daniel.diaz@linaro.org>
+In-Reply-To: <20230813211724.969019629@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Some usb hubs will negotiate DisplayPort Alt mode with the device
-but will then negotiate a data role swap after entering the alt
-mode. The data role swap causes the device to unregister all alt
-modes, however the usb hub will still send Attention messages
-even after failing to reregister the Alt Mode. type_altmode_attention
-currently does not verify whether or not a device's altmode partner
-exists, which results in a NULL pointer error when dereferencing
-the typec_altmode and typec_altmode_ops belonging to the altmode
-partner.
+Hello!
 
-Verify the presence of a device's altmode partner before sending
-the Attention message to the Alt Mode driver.
+We see this warning on x86 (real machine and Qemu) with Clang:
 
-Fixes: 8a37d87d72f0 ("usb: typec: Bus type for alternate modes")
-Cc: stable@vger.kernel.org
-Signed-off-by: RD Babiera <rdbabiera@google.com>
----
-Changes since v1:
-* Only assigns pdev if altmode partner exists in typec_altmode_attention
-* Removed error return in typec_altmode_attention if Alt Mode does
-  not implement Attention messages.
-* Changed tcpm_log message to indicate that altmode partner does not exist,
-  as it only logs in that case.
----
-Changes since v2:
-* Changed tcpm_log message to accurately reflect error
-* Revised commit message
----
-Changes since v3:
-* Fixed nits
----
- drivers/usb/typec/bus.c           | 12 ++++++++++--
- drivers/usb/typec/tcpm/tcpm.c     |  3 ++-
- include/linux/usb/typec_altmode.h |  2 +-
- 3 files changed, 13 insertions(+), 4 deletions(-)
+-----8<-----
+   [    1.364590] ------------[ cut here ]------------
+   [    1.364685] missing return thunk: __ret+0x5/0x7e-__ret+0x0/0x7e: e9 f6 ff ff ff
+   [    1.364691] WARNING: CPU: 0 PID: 0 at arch/x86/kernel/alternative.c:630 apply_returns+0x2c9/0x420
+   [    1.366684] Modules linked in:
+   [    1.367685] CPU: 0 PID: 0 Comm: swapper/0 Not tainted 6.4.11-rc1 #1
+   [    1.368684] Hardware name: Supermicro SYS-5019S-ML/X11SSH-F, BIOS 2.0b 07/27/2017
+   [    1.369685] RIP: 0010:apply_returns+0x2c9/0x420
+   [    1.370685] Code: ff ff 0f 0b e9 b5 fd ff ff c6 05 a8 97 fa 01 01 48 c7 c7 e6 b5 9f a7 4c 89 ee 4c 89 e2 b9 05 00 00 00 4d 89 e8 e8 57 c2 11 00 <0f> 0b e9 8d fd ff ff 4d 85 e4 0f 84 1f ff ff ff 48 c7 c7 bf 44 98
+   [    1.371684] RSP: 0000:ffffffffa7c03e00 EFLAGS: 00010246
+   [    1.372684] RAX: 8bcba40230adee00 RBX: ffffffffa8150ba4 RCX: ffffffffa7c72440
+   [    1.373684] RDX: ffffffffa7c03c88 RSI: 00000000ffffdfff RDI: 0000000000000001
+   [    1.374684] RBP: ffffffffa7c03ed8 R08: 0000000000001fff R09: ffffffffa7c726d0
+   [    1.375684] R10: 0000000000005ffd R11: 0000000000000004 R12: ffffffffa7182140
+   [    1.376684] R13: ffffffffa7182145 R14: ffffffffa8150b9c R15: ffffffffa71821f0
+   [    1.377684] FS:  0000000000000000(0000) GS:ffff8adb1fc00000(0000) knlGS:0000000000000000
+   [    1.378684] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+   [    1.379684] CR2: ffff8ad8b7001000 CR3: 00000001f6640001 CR4: 00000000003706f0
+   [    1.380684] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+   [    1.381684] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+   [    1.382684] Call Trace:
+   [    1.383685]  <TASK>
+   [    1.384685]  ? show_regs+0x61/0x70
+   [    1.385685]  ? __warn+0xce/0x1d0
+   [    1.386684]  ? apply_returns+0x2c9/0x420
+   [    1.387685]  ? report_bug+0x160/0x210
+   [    1.388685]  ? handle_bug+0x41/0x70
+   [    1.389684]  ? exc_invalid_op+0x1f/0x50
+   [    1.390685]  ? asm_exc_invalid_op+0x1f/0x30
+   [    1.391684]  ? srso_safe_ret+0x30/0x30
+   [    1.392685]  ? __ret+0x5/0x7e
+   [    1.393684]  ? zen_untrain_ret+0x1/0x1
+   [    1.394685]  ? apply_returns+0x2c9/0x420
+   [    1.395685]  ? __ret+0x5/0x7e
+   [    1.396684]  ? __ret+0x14/0x7e
+   [    1.397684]  ? __ret+0xa/0x7e
+   [    1.398685]  alternative_instructions+0x50/0x120
+   [    1.399685]  arch_cpu_finalize_init+0x30/0x60
+   [    1.400684]  start_kernel+0x30e/0x3e0
+   [    1.401685]  x86_64_start_reservations+0x28/0x30
+   [    1.402684]  x86_64_start_kernel+0xaf/0xc0
+   [    1.403685]  secondary_startup_64_no_verify+0x107/0x10b
+   [    1.404685]  </TASK>
+   [    1.405685] ---[ end trace 0000000000000000 ]---
+-----8>-----
 
-diff --git a/drivers/usb/typec/bus.c b/drivers/usb/typec/bus.c
-index fe5b9a2e61f5..e95ec7e382bb 100644
---- a/drivers/usb/typec/bus.c
-+++ b/drivers/usb/typec/bus.c
-@@ -183,12 +183,20 @@ EXPORT_SYMBOL_GPL(typec_altmode_exit);
-  *
-  * Notifies the partner of @adev about Attention command.
-  */
--void typec_altmode_attention(struct typec_altmode *adev, u32 vdo)
-+int typec_altmode_attention(struct typec_altmode *adev, u32 vdo)
- {
--	struct typec_altmode *pdev = &to_altmode(adev)->partner->adev;
-+	struct altmode *partner = to_altmode(adev)->partner;
-+	struct typec_altmode *pdev;
-+
-+	if (!partner)
-+		return -ENODEV;
-+
-+	pdev = &partner->adev;
- 
- 	if (pdev->ops && pdev->ops->attention)
- 		pdev->ops->attention(pdev, vdo);
-+
-+	return 0;
- }
- EXPORT_SYMBOL_GPL(typec_altmode_attention);
- 
-diff --git a/drivers/usb/typec/tcpm/tcpm.c b/drivers/usb/typec/tcpm/tcpm.c
-index 5a7d8cc04628..77fe16190766 100644
---- a/drivers/usb/typec/tcpm/tcpm.c
-+++ b/drivers/usb/typec/tcpm/tcpm.c
-@@ -1877,7 +1877,8 @@ static void tcpm_handle_vdm_request(struct tcpm_port *port,
- 			}
- 			break;
- 		case ADEV_ATTENTION:
--			typec_altmode_attention(adev, p[1]);
-+			if (typec_altmode_attention(adev, p[1]))
-+				tcpm_log(port, "typec_altmode_attention no port partner altmode");
- 			break;
- 		}
- 	}
-diff --git a/include/linux/usb/typec_altmode.h b/include/linux/usb/typec_altmode.h
-index 350d49012659..28aeef8f9e7b 100644
---- a/include/linux/usb/typec_altmode.h
-+++ b/include/linux/usb/typec_altmode.h
-@@ -67,7 +67,7 @@ struct typec_altmode_ops {
- 
- int typec_altmode_enter(struct typec_altmode *altmode, u32 *vdo);
- int typec_altmode_exit(struct typec_altmode *altmode);
--void typec_altmode_attention(struct typec_altmode *altmode, u32 vdo);
-+int typec_altmode_attention(struct typec_altmode *altmode, u32 vdo);
- int typec_altmode_vdm(struct typec_altmode *altmode,
- 		      const u32 header, const u32 *vdo, int count);
- int typec_altmode_notify(struct typec_altmode *altmode, unsigned long conf,
+Full log here of one of those instances:
+   https://lkft.validation.linaro.org/scheduler/job/6664660#L671
 
-base-commit: f176638af476c6d46257cc3303f5c7cf47d5967d
+There is a ClangBuiltLinux issue addressing this [1]. Nathan refers Peter's second patch [2] in his series fixes this problem.
+
+This was introduced in v6.4.9 (which we did not review). Clang builds failed for v6.4.10 [3][4] and are now fixed, so this is the first time we're seeing this warning.
+
+Rest of the report as follows:
+
+## Build
+* kernel: 6.4.11-rc1
+* git: https://gitlab.com/Linaro/lkft/mirrors/stable/linux-stable-rc
+* git branch: linux-6.4.y
+* git commit: 427a3a47257b870ef6dce995a40bb7aca1bfc6ec
+* git describe: v6.4.10-207-g427a3a47257b
+* test details: https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.4.y/build/v6.4.10-207-g427a3a47257b
+
+## Test Regressions (compared to v6.4.10)
+* x86, log-parser-boot
+   - check-kernel-warning
+
+Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+
+## No metric regressions (compared to v6.4.10)
+
+## Test Fixes (compared to v6.4.10)
+* x86_64, build
+   - clang-17-allmodconfig
+   - clang-17-lkftconfig
+   - clang-17-lkftconfig-compat
+   - clang-17-lkftconfig-kcsan
+   - clang-17-lkftconfig-no-kselftest-frag
+   - clang-17-x86_64_defconfig
+   - clang-lkftconfig
+   - clang-nightly-lkftconfig
+   - clang-nightly-lkftconfig-kselftest
+   - clang-nightly-x86_64_defconfig
+
+## No metric fixes (compared to v6.4.10)
+
+## Test result summary
+total: 172870, pass: 149103, fail: 3038, skip: 20556, xfail: 173
+
+## Build Summary
+* arc: 5 total, 5 passed, 0 failed
+* arm: 145 total, 144 passed, 1 failed
+* arm64: 54 total, 52 passed, 2 failed
+* i386: 41 total, 40 passed, 1 failed
+* mips: 30 total, 28 passed, 2 failed
+* parisc: 4 total, 4 passed, 0 failed
+* powerpc: 38 total, 36 passed, 2 failed
+* riscv: 26 total, 24 passed, 2 failed
+* s390: 16 total, 14 passed, 2 failed
+* sh: 14 total, 12 passed, 2 failed
+* sparc: 8 total, 8 passed, 0 failed
+* x86_64: 46 total, 45 passed, 1 failed
+
+## Test suites summary
+* boot
+* kselftest-android
+* kselftest-arm64
+* kselftest-breakpoints
+* kselftest-capabilities
+* kselftest-cgroup
+* kselftest-clone3
+* kselftest-core
+* kselftest-cpu-hotplug
+* kselftest-cpufreq
+* kselftest-drivers-dma-buf
+* kselftest-efivarfs
+* kselftest-exec
+* kselftest-filesystems
+* kselftest-filesystems-binderfs
+* kselftest-filesystems-epoll
+* kselftest-firmware
+* kselftest-fpu
+* kselftest-ftrace
+* kselftest-futex
+* kselftest-gpio
+* kselftest-intel_pstate
+* kselftest-ipc
+* kselftest-ir
+* kselftest-kcmp
+* kselftest-kexec
+* kselftest-kvm
+* kselftest-lib
+* kselftest-livepatch
+* kselftest-membarrier
+* kselftest-memfd
+* kselftest-memory-hotplug
+* kselftest-mincore
+* kselftest-mount
+* kselftest-mqueue
+* kselftest-net
+* kselftest-net-forwarding
+* kselftest-net-mptcp
+* kselftest-netfilter
+* kselftest-nsfs
+* kselftest-openat2
+* kselftest-pid_namespace
+* kselftest-pidfd
+* kselftest-proc
+* kselftest-pstore
+* kselftest-ptrace
+* kselftest-rseq
+* kselftest-rtc
+* kselftest-seccomp
+* kselftest-sigaltstack
+* kselftest-size
+* kselftest-splice
+* kselftest-static_keys
+* kselftest-sync
+* kselftest-sysctl
+* kselftest-tc-testing
+* kselftest-timens
+* kselftest-timers
+* kselftest-tmpfs
+* kselftest-tpm2
+* kselftest-user
+* kselftest-user_events
+* kselftest-vDSO
+* kselftest-vm
+* kselftest-watchdog
+* kselftest-x86
+* kselftest-zram
+* kunit
+* kvm-unit-tests
+* libgpiod
+* libhugetlbfs
+* log-parser-boot
+* log-parser-test
+* ltp-cap_bounds
+* ltp-commands
+* ltp-containers
+* ltp-controllers
+* ltp-cpuhotplug
+* ltp-crypto
+* ltp-cve
+* ltp-dio
+* ltp-fcntl-locktests
+* ltp-filecaps
+* ltp-fs
+* ltp-fs_bind
+* ltp-fs_perms_simple
+* ltp-fsx
+* ltp-hugetlb
+* ltp-io
+* ltp-ipc
+* ltp-math
+* ltp-mm
+* ltp-nptl
+* ltp-pty
+* ltp-sched
+* ltp-securebits
+* ltp-smoke
+* ltp-syscalls
+* ltp-tracing
+* network-basic-tests
+* perf
+* rcutorture
+* v4l2-compliance
+
+
+Greetings!
+
+Daniel Díaz
+daniel.diaz@linaro.org
+
+[1] https://github.com/ClangBuiltLinux/linux/issues/1911
+[2] https://lore.kernel.org/20230809072200.543939260@infradead.org/
+[3] https://lore.kernel.org/stable/CA+G9fYuoajK0n7RNhSqm-ycO6Md3W4ah_Sc=b_KVAQwY=Rt6YQ@mail.gmail.com/
+[4] https://github.com/ClangBuiltLinux/linux/issues/1907
+
 -- 
-2.41.0.694.ge786442a9b-goog
-
+Linaro LKFT
+https://lkft.linaro.org
