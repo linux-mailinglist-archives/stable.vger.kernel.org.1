@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6CD8177C16B
-	for <lists+stable@lfdr.de>; Mon, 14 Aug 2023 22:21:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1A24977C16D
+	for <lists+stable@lfdr.de>; Mon, 14 Aug 2023 22:21:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230156AbjHNUUr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 14 Aug 2023 16:20:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54452 "EHLO
+        id S231244AbjHNUVS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 14 Aug 2023 16:21:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45172 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232385AbjHNUUh (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 14 Aug 2023 16:20:37 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2BCA4BC;
-        Mon, 14 Aug 2023 13:20:37 -0700 (PDT)
+        with ESMTP id S230190AbjHNUUt (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 14 Aug 2023 16:20:49 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A1EA11D;
+        Mon, 14 Aug 2023 13:20:49 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BC097626BE;
-        Mon, 14 Aug 2023 20:20:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B1C1C433C8;
-        Mon, 14 Aug 2023 20:20:36 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 933D361FFE;
+        Mon, 14 Aug 2023 20:20:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA3B4C433C7;
+        Mon, 14 Aug 2023 20:20:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-        s=korg; t=1692044436;
-        bh=ydUt2A85dQ5YUTDoZJHyjnXlDItxilfPDwcVIwDTsdM=;
+        s=korg; t=1692044448;
+        bh=zOBqUFl76cB5cuhRqFOgOcW2JxtotebwLxUY5NNQ09g=;
         h=Date:To:From:Subject:From;
-        b=zQ31gEAJVP2SyQSUACRSb4MyZzALMP971aUcaYUS8uz1qYFnfGNfc5kac6E/ZAf/B
-         dO7cqbDj4zu66FRnvKgsXXz+N/dTEK1mxrJPHOBipE50hj8JEvLHEzOXLNTBrEHGge
-         uaCBnzIkpq4oETmQCh5U59ddfoNxGlSHWPjMJcN4=
-Date:   Mon, 14 Aug 2023 13:20:35 -0700
-To:     mm-commits@vger.kernel.org, stable@vger.kernel.org,
-        rppt@kernel.org, deller@gmx.de, akpm@linux-foundation.org
+        b=v23N38KQ15UuHhJZ83iAEUTBdVQVkok/Toma/rSyNE+wpLZJR6buyKRdtGN9T4og1
+         PYkGi/cxxSiQYuTg0i1+59j2PiZ/v20eVbCW9OQNISAdd8k+NKFQdIzSrNuDMKy+6h
+         sMqGiALw2P9okpC+nqd8TFcDLypiz8O35rgSZ41U=
+Date:   Mon, 14 Aug 2023 13:20:47 -0700
+To:     mm-commits@vger.kernel.org, stable@vger.kernel.org, deller@gmx.de,
+        akpm@linux-foundation.org
 From:   Andrew Morton <akpm@linux-foundation.org>
-Subject: [withdrawn] init-add-lockdep-annotation-to-kthreadd_done-completer.patch removed from -mm tree
-Message-Id: <20230814202036.1B1C1C433C8@smtp.kernel.org>
+Subject: [withdrawn] watchdog-fix-lockdep-warning.patch removed from -mm tree
+Message-Id: <20230814202047.EA3B4C433C7@smtp.kernel.org>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -46,61 +46,64 @@ X-Mailing-List: stable@vger.kernel.org
 
 
 The quilt patch titled
-     Subject: init: add lockdep annotation to kthreadd_done completer
+     Subject: watchdog: Fix lockdep warning
 has been removed from the -mm tree.  Its filename was
-     init-add-lockdep-annotation-to-kthreadd_done-completer.patch
+     watchdog-fix-lockdep-warning.patch
 
 This patch was dropped because it was withdrawn
 
 ------------------------------------------------------
 From: Helge Deller <deller@gmx.de>
-Subject: init: add lockdep annotation to kthreadd_done completer
-Date: Fri, 11 Aug 2023 18:04:22 +0200
+Subject: watchdog: Fix lockdep warning
+Date: Fri, 11 Aug 2023 19:11:46 +0200
 
-Add the missing lockdep annotation to avoid this warning:
+Fully initialize detector_work work struct to avoid this kernel warning
+when lockdep is enabled:
 
- INFO: trying to register non-static key.
- The code is fine but needs lockdep annotation, or maybe
- you didn't initialize this object before use?
- turning off the locking correctness validator.
- CPU: 0 PID: 1 Comm: swapper/0 Not tainted 6.5.0-rc5+ #681
+ =====================================
+ WARNING: bad unlock balance detected!
+ 6.5.0-rc5+ #687 Not tainted
+ -------------------------------------
+ swapper/0/1 is trying to release lock (detector_work) at:
+ [<000000004037e554>] __flush_work+0x60/0x658
+ but there are no more locks to release!
+
+ other info that might help us debug this:
+ no locks held by swapper/0/1.
+
+ stack backtrace:
+ CPU: 0 PID: 1 Comm: swapper/0 Not tainted 6.5.0-rc5+ #687
  Hardware name: 9000/785/C3700
  Backtrace:
-  [<000000004030bcd0>] show_stack+0x74/0xb0
-  [<0000000041469c7c>] dump_stack_lvl+0x104/0x180
-  [<0000000041469d2c>] dump_stack+0x34/0x48
-  [<000000004040e5b4>] register_lock_class+0xd24/0xd30
-  [<000000004040c21c>] __lock_acquire.isra.0+0xb4/0xac8
-  [<000000004040cd60>] lock_acquire+0x130/0x298
-  [<000000004146df54>] _raw_spin_lock_irq+0x60/0xb8
-  [<0000000041472044>] wait_for_completion+0xa0/0x2d0
-  [<000000004146b544>] kernel_init+0x48/0x3a8
+  [<0000000041455d5c>] print_unlock_imbalance_bug.part.0+0x20c/0x230
+  [<000000004040d5e8>] lock_release+0x2e8/0x3f8
+  [<000000004037e5cc>] __flush_work+0xd8/0x658
+  [<000000004037eb7c>] flush_work+0x30/0x60
+  [<000000004011f140>] lockup_detector_check+0x54/0x128
+  [<0000000040306430>] do_one_initcall+0x9c/0x408
+  [<0000000040102d44>] kernel_init_freeable+0x688/0x7f0
+  [<000000004146df68>] kernel_init+0x64/0x3a8
   [<0000000040302020>] ret_from_kernel_thread+0x20/0x28
 
-Link: https://lkml.kernel.org/r/ZNZcBkiVkm87+Tvr@p100
 Signed-off-by: Helge Deller <deller@gmx.de>
-Cc: Mike Rapoport (IBM) <rppt@kernel.org>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- init/main.c |    2 ++
- 1 file changed, 2 insertions(+)
+ kernel/watchdog.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/init/main.c~init-add-lockdep-annotation-to-kthreadd_done-completer
-+++ a/init/main.c
-@@ -682,6 +682,8 @@ noinline void __ref __noreturn rest_init
- 	struct task_struct *tsk;
- 	int pid;
+--- a/kernel/watchdog.c~watchdog-fix-lockdep-warning
++++ a/kernel/watchdog.c
+@@ -1022,5 +1022,6 @@ void __init lockup_detector_init(void)
+ 	else
+ 		allow_lockup_detector_init_retry = true;
  
-+	init_completion(&kthreadd_done);
-+
- 	rcu_scheduler_starting();
- 	/*
- 	 * We need to spawn init first so that it obtains pid 1, however
++	INIT_WORK(&detector_work, lockup_detector_delay_init);
+ 	lockup_detector_setup();
+ }
 _
 
 Patches currently in -mm which might be from deller@gmx.de are
 
-watchdog-fix-lockdep-warning.patch
 
