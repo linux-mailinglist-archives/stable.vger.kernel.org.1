@@ -2,225 +2,149 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A00F877BBF2
-	for <lists+stable@lfdr.de>; Mon, 14 Aug 2023 16:49:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3730C77BBF7
+	for <lists+stable@lfdr.de>; Mon, 14 Aug 2023 16:49:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230473AbjHNOsa (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 14 Aug 2023 10:48:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53626 "EHLO
+        id S231197AbjHNOtE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 14 Aug 2023 10:49:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50988 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231506AbjHNOsG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 14 Aug 2023 10:48:06 -0400
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2AD4BC3;
-        Mon, 14 Aug 2023 07:48:05 -0700 (PDT)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by smtp-out2.suse.de (Postfix) with ESMTPS id D26E51F7AB;
-        Mon, 14 Aug 2023 14:48:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-        t=1692024483; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=BiBm685hzTBMar9PdbO8Taka4sGqAp1uF0sY47azg7U=;
-        b=OdjitYHlIuuQN/mMeli5buRFmKB220no6BKHTamL5iKQX0/Nz/2JDdYjVldHUzGIE4PuGz
-        bPQGOGhGL8Eku4QIfc1mmqR6mxcVmTvLPvbAo9QkdAa3c7qQ393R/LP/E/aFlT975/Pzy9
-        xeSHVW6Q5j6C8WC+5SPnDqdiEc528N0=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-        s=susede2_ed25519; t=1692024483;
-        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=BiBm685hzTBMar9PdbO8Taka4sGqAp1uF0sY47azg7U=;
-        b=d63G25R+K9a3Zyqwd9EKktSL5tns3i+oVr++6X8qCNUJrf7KpqzX1HSHEoU3bzD13XwvKY
-        NVLw9TOfS6YehBAA==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 6A7B7138EE;
-        Mon, 14 Aug 2023 14:48:03 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-        by imap2.suse-dmz.suse.de with ESMTPSA
-        id vge1GKM+2mSqBAAAMHmgww
-        (envelope-from <hare@suse.de>); Mon, 14 Aug 2023 14:48:03 +0000
-Message-ID: <8d0fbb63-9d2a-d16b-0644-e8ba251d1b04@suse.de>
-Date:   Mon, 14 Aug 2023 16:48:02 +0200
+        with ESMTP id S231453AbjHNOs6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 14 Aug 2023 10:48:58 -0400
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2046.outbound.protection.outlook.com [40.107.94.46])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 66F23183;
+        Mon, 14 Aug 2023 07:48:57 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=M81JEDd8p9zvmWvDI9O+YsZMUmBlmKjAU/etiRmK2aWTItvlm68/EUrML94nsx+KxGh5nWCydi3xqIubwVEnKYAJpIbi9g5psPrRFF+THsFw6pHdE9a+qtQtZrRVi5p5FRQ2w883Iy7WA04Xb3WWnJjmWyC4cKgKDOyCnp+Qs+mDYSdDQPS02kP530Gd83HtQHsaO2ETRVi0CTeOkKOMuIx6jO51HaHQ9W8jjVwDkR3TXdxfmCMxu9nBIWb407OypYLRsm7QR4ccor35B7UhjqNqauS8ETn1Uy6JMgBplB5HkD6H7QwoRxhOFuMo44PGqOL8Jum5JgE/JtY6VS2qLg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=IUosk8zsViY8Ty9vpiKtKoeylANeMjGa/fAQ/TN20to=;
+ b=LIn1LFD3DMEi1r5Ounr8iR8O+UCaaPNd03ekAvFpekC3xqIMKAhtcDB2GN99u58puzSf2pCF3EF/Qm0UsmWuFB4wR+/9ML4Kb0J1k6zQgmMgg7HfVRJ6bQUQf1so/qXT/U4HKHMF2IvT56MYVSLecVA8R2+JLMOlcMDtfCTY/AvVq0ZBM5HPpGU4RZVF5TKi9v11oGj6fwPf0I926OdAJ9u8RTn9WjVYyB4X/N8CHtdxh1GvMlbpWmoI2RlbFTiA2cRtnb4uHkslqyzxTb3FN4uujqZPRfqKokA1/ztOS+ZYCLlv/HQjuIQV9f3GdR19166ib/5CqDfSy4fV/hQ2Zw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.160) smtp.rcpttodomain=linuxfoundation.org
+ smtp.mailfrom=nvidia.com; dmarc=pass (p=reject sp=reject pct=100) action=none
+ header.from=nvidia.com; dkim=none (message not signed); arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=IUosk8zsViY8Ty9vpiKtKoeylANeMjGa/fAQ/TN20to=;
+ b=K4n9I8ICYL7cAw04hGeby+Euw5fjXg8QJAnbmTe6fBKJ54mrRvt0DiZRqdJM9iWr2iN2FW0K2QF7do9WYzrDHQkj9a9QisEKZO+WrDa+6dRpkL6+C/L9OSb3ApgqercifhcyJmiznBSuxnZ6lGHeJAEznOCy6kSlbaifi5boiSrW+CmmHNUBAzL7mAEx1Q23NCF0QGA2iNhKfHteYeCH3w0cV5Kl2Pyue/RQwkcXgQKwmU/sGobfZoxcxaP76UQZ+81kQoj1GOjj6ZJonDilSKKNKLANaRrxzXtSqfizp/LjPbXm/R5LP07wcQR0rkuvNs5YdABsm9lN0rfTUQ6EJQ==
+Received: from SA1P222CA0102.NAMP222.PROD.OUTLOOK.COM (2603:10b6:806:35e::10)
+ by DM4PR12MB5722.namprd12.prod.outlook.com (2603:10b6:8:5d::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6678.26; Mon, 14 Aug
+ 2023 14:48:53 +0000
+Received: from SN1PEPF00026368.namprd02.prod.outlook.com
+ (2603:10b6:806:35e:cafe::d1) by SA1P222CA0102.outlook.office365.com
+ (2603:10b6:806:35e::10) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6652.33 via Frontend
+ Transport; Mon, 14 Aug 2023 14:48:53 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.160) by
+ SN1PEPF00026368.mail.protection.outlook.com (10.167.241.133) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.6699.12 via Frontend Transport; Mon, 14 Aug 2023 14:48:53 +0000
+Received: from rnnvmail205.nvidia.com (10.129.68.10) by mail.nvidia.com
+ (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.5; Mon, 14 Aug 2023
+ 07:48:40 -0700
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by rnnvmail205.nvidia.com
+ (10.129.68.10) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.37; Mon, 14 Aug
+ 2023 07:48:40 -0700
+Received: from orome.fritz.box (10.127.8.12) by mail.nvidia.com (10.129.68.8)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.37 via Frontend
+ Transport; Mon, 14 Aug 2023 07:48:36 -0700
+From:   Thierry Reding <treding@nvidia.com>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        <stable@vger.kernel.org>
+CC:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        <patches@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
+        <torvalds@linux-foundation.org>, <akpm@linux-foundation.org>,
+        <linux@roeck-us.net>, <shuah@kernel.org>, <patches@kernelci.org>,
+        <lkft-triage@lists.linaro.org>, <pavel@denx.de>,
+        <jonathanh@nvidia.com>, <f.fainelli@gmail.com>,
+        <sudipm.mukherjee@gmail.com>, <srw@sladewatkins.net>,
+        <rwarsow@gmx.de>, <conor@kernel.org>, <linux-tegra@vger.kernel.org>
+Subject: Re: [PATCH 6.4 000/206] 6.4.11-rc1 review
+In-Reply-To: <20230813211724.969019629@linuxfoundation.org>
+References: <20230813211724.969019629@linuxfoundation.org>
+X-NVConfidentiality: public
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH] block: Remove special-casing of compound pages
-Content-Language: en-US
-To:     "Matthew Wilcox (Oracle)" <willy@infradead.org>,
-        Jens Axboe <axboe@kernel.dk>
-Cc:     Andrew Morton <akpm@linux-foundation.org>,
-        "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
-        Hugh Dickins <hughd@google.com>, linux-mm@kvack.org,
-        linux-block@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20230814144100.596749-1-willy@infradead.org>
-From:   Hannes Reinecke <hare@suse.de>
-In-Reply-To: <20230814144100.596749-1-willy@infradead.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Message-ID: <b716d082-697a-4ecf-9d96-549076879293@rnnvmail201.nvidia.com>
+Date:   Mon, 14 Aug 2023 07:48:36 -0700
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SN1PEPF00026368:EE_|DM4PR12MB5722:EE_
+X-MS-Office365-Filtering-Correlation-Id: 74519e51-6407-4b7a-e6ce-08db9cd5947f
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: uirhwayhp3vte9O/oIP9LKtDZ3G906uhCW4okikxdwY6/If+mOvW2iMHcqGFjBYxGGMArvSQmC9X+10Crk21xfj8rimUA9SxLMdSuMX8cWT/PCphwi3kTzwkctsPc20Zi8vU0s3Es31nXnQUnAbd96ZY7dWJxEC3deDg700Ndr/FIhIlPMfABl6Nzi2DrOHruRSiu+86E8h+6aCqViWTzVgKS7gxsHfCeWf5AMwtfImIcp66yl1L8sBxzziVNeFU8s2q94+VT2yW8Y5Oi5MQqlzEeF/YOpEIhL4pQTdsxyVhUiXdTkjp625qUZzLd9J8PJt40fon1gGIAdE2lX0cCj0eYWa7Cn7BIq4KpCHE24TGus71sTH4H0XOjhEMYRR2Kyw+/N9fp9t7FzNG6TMC4MFmeHhAsHK4Uq83URDSiLzu8wjgTfU1MuF9Q16v1h/AvIctfs8xq9kJ3APyGGaSp2nLs471CBijCZdWsHcuYqjWbrlEe1YCqC0LoKPOqRemTWXoAGeOqsuNyk8Ih+8p+wWArTQeOj1VP9z1tu5aIukxfJKhEMqH9Ks+hhtsZCBl4ZH5STHAqf1bmvcRHFwY9yg8TNFPhev+djdxsBzxHLfchhvwmgWKFvHCWGZ1GBkU54kLkcapDZeeCOlC1Ry2sXxheeaySNJ8sMQG3SG32lJ7+7Fx5QVi5UadSrkVnVQRMEdULTmLGNfGkvo9efL4cQPB1ZfURXm7G0/hdlcDTtAYfvogamtAguBSLbwhAXcEFb6aDY+tHmNdWBktH/TOpBlerrBCkXtW4ttefOXr+u8=
+X-Forefront-Antispam-Report: CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230028)(4636009)(346002)(376002)(39860400002)(396003)(136003)(186006)(1800799006)(451199021)(82310400008)(40470700004)(36840700001)(46966006)(36860700001)(47076005)(31696002)(40460700003)(40480700001)(86362001)(26005)(426003)(336012)(5660300002)(4326008)(54906003)(110136005)(316002)(70206006)(70586007)(8676002)(8936002)(41300700001)(7416002)(966005)(478600001)(2906002)(82740400003)(356005)(7636003)(31686004);DIR:OUT;SFP:1101;
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Aug 2023 14:48:53.4871
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 74519e51-6407-4b7a-e6ce-08db9cd5947f
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource: SN1PEPF00026368.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB5722
+X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 8/14/23 16:41, Matthew Wilcox (Oracle) wrote:
-> The special casing was originally added in pre-git history; reproducing
-> the commit log here:
-> 
->> commit a318a92567d77
->> Author: Andrew Morton <akpm@osdl.org>
->> Date:   Sun Sep 21 01:42:22 2003 -0700
->>
->>      [PATCH] Speed up direct-io hugetlbpage handling
->>
->>      This patch short-circuits all the direct-io page dirtying logic for
->>      higher-order pages.  Without this, we pointlessly bounce BIOs up to
->>      keventd all the time.
-> 
-> In the last twenty years, compound pages have become used for more than
-> just hugetlb.  Rewrite these functions to operate on folios instead
-> of pages and remove the special case for hugetlbfs; I don't think
-> it's needed any more (and if it is, we can put it back in as a call
-> to folio_test_hugetlb()).
-> 
-> This was found by inspection; as far as I can tell, this bug can lead
-> to pages used as the destination of a direct I/O read not being marked
-> as dirty.  If those pages are then reclaimed by the MM without being
-> dirtied for some other reason, they won't be written out.  Then when
-> they're faulted back in, they will not contain the data they should.
-> It'll take a pretty unusual setup to produce this problem with several
-> races all going the wrong way.
-> 
-> This problem predates the folio work; it could for example have been
-> triggered by mmaping a THP in tmpfs and using that as the target of an
-> O_DIRECT read.
-> 
-> Fixes: 800d8c63b2e98 ("shmem: add huge pages support")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-> ---
->   block/bio.c | 46 ++++++++++++++++++++++++----------------------
->   1 file changed, 24 insertions(+), 22 deletions(-)
-> 
-> diff --git a/block/bio.c b/block/bio.c
-> index 8672179213b9..f46d8ec71fbd 100644
-> --- a/block/bio.c
-> +++ b/block/bio.c
-> @@ -1171,13 +1171,22 @@ EXPORT_SYMBOL(bio_add_folio);
->   
->   void __bio_release_pages(struct bio *bio, bool mark_dirty)
->   {
-> -	struct bvec_iter_all iter_all;
-> -	struct bio_vec *bvec;
-> +	struct folio_iter fi;
-> +
-> +	bio_for_each_folio_all(fi, bio) {
-> +		struct page *page;
-> +		size_t done = 0;
->   
-> -	bio_for_each_segment_all(bvec, bio, iter_all) {
-> -		if (mark_dirty && !PageCompound(bvec->bv_page))
-> -			set_page_dirty_lock(bvec->bv_page);
-> -		bio_release_page(bio, bvec->bv_page);
-> +		if (mark_dirty) {
-> +			folio_lock(fi.folio);
-> +			folio_mark_dirty(fi.folio);
-> +			folio_unlock(fi.folio);
-> +		}
-> +		page = folio_page(fi.folio, fi.offset / PAGE_SIZE);
-> +		do {
-> +			bio_release_page(bio, page++);
-> +			done += PAGE_SIZE;
-> +		} while (done < fi.length);
->   	}
->   }
->   EXPORT_SYMBOL_GPL(__bio_release_pages);
-> @@ -1455,18 +1464,12 @@ EXPORT_SYMBOL(bio_free_pages);
->    * bio_set_pages_dirty() and bio_check_pages_dirty() are support functions
->    * for performing direct-IO in BIOs.
->    *
-> - * The problem is that we cannot run set_page_dirty() from interrupt context
-> + * The problem is that we cannot run folio_mark_dirty() from interrupt context
->    * because the required locks are not interrupt-safe.  So what we can do is to
->    * mark the pages dirty _before_ performing IO.  And in interrupt context,
->    * check that the pages are still dirty.   If so, fine.  If not, redirty them
->    * in process context.
->    *
-> - * We special-case compound pages here: normally this means reads into hugetlb
-> - * pages.  The logic in here doesn't really work right for compound pages
-> - * because the VM does not uniformly chase down the head page in all cases.
-> - * But dirtiness of compound pages is pretty meaningless anyway: the VM doesn't
-> - * handle them at all.  So we skip compound pages here at an early stage.
-> - *
->    * Note that this code is very hard to test under normal circumstances because
->    * direct-io pins the pages with get_user_pages().  This makes
->    * is_page_cache_freeable return false, and the VM will not clean the pages.
-> @@ -1482,12 +1485,12 @@ EXPORT_SYMBOL(bio_free_pages);
->    */
->   void bio_set_pages_dirty(struct bio *bio)
->   {
-> -	struct bio_vec *bvec;
-> -	struct bvec_iter_all iter_all;
-> +	struct folio_iter fi;
->   
-> -	bio_for_each_segment_all(bvec, bio, iter_all) {
-> -		if (!PageCompound(bvec->bv_page))
-> -			set_page_dirty_lock(bvec->bv_page);
-> +	bio_for_each_folio_all(fi, bio) {
-> +		folio_lock(fi.folio);
-> +		folio_mark_dirty(fi.folio);
-> +		folio_unlock(fi.folio);
->   	}
->   }
->   
-> @@ -1530,12 +1533,11 @@ static void bio_dirty_fn(struct work_struct *work)
->   
->   void bio_check_pages_dirty(struct bio *bio)
->   {
-> -	struct bio_vec *bvec;
-> +	struct folio_iter fi;
->   	unsigned long flags;
-> -	struct bvec_iter_all iter_all;
->   
-> -	bio_for_each_segment_all(bvec, bio, iter_all) {
-> -		if (!PageDirty(bvec->bv_page) && !PageCompound(bvec->bv_page))
-> +	bio_for_each_folio_all(fi, bio) {
-> +		if (!folio_test_dirty(fi.folio))
->   			goto defer;
->   	}
->   
-You know what, I guess I've seen this bug.
+On Sun, 13 Aug 2023 23:16:10 +0200, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.4.11 release.
+> There are 206 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>=20
+> Responses should be made by Tue, 15 Aug 2023 21:16:53 +0000.
+> Anything received after that time might be too late.
+>=20
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.4.11-rc=
+1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git l=
+inux-6.4.y
+> and the diffstat can be found below.
+>=20
+> thanks,
+>=20
+> greg k-h
 
-During my large-page I/O work I stumbled across the weird issue that 
-using the modified 'brd' directly resulted in xfs to report checksum 
-errors, but when using the modified 'brd' as the backing store for an
-nvme-target running over the loopback interface xfs was happy.
+All tests passing for Tegra ...
 
-Haven't really investigated that, but it sounds awfully similar.
+Test results for stable-v6.4:
+    11 builds:	11 pass, 0 fail
+    28 boots:	28 pass, 0 fail
+    130 tests:	130 pass, 0 fail
 
-I'll see if I can give this patch a spin.
+Linux version:	6.4.11-rc1-g00ae646d9c95
+Boards tested:	tegra124-jetson-tk1, tegra186-p2771-0000,
+                tegra194-p2972-0000, tegra194-p3509-0000+p3668-0000,
+                tegra20-ventana, tegra210-p2371-2180,
+                tegra210-p3450-0000, tegra30-cardhu-a04
 
-Cheers,
-
-Hannes
--- 
-Dr. Hannes Reinecke                Kernel Storage Architect
-hare@suse.de                              +49 911 74053 688
-SUSE Software Solutions GmbH, Maxfeldstr. 5, 90409 Nürnberg
-HRB 36809 (AG Nürnberg), Geschäftsführer: Ivo Totev, Andrew
-Myers, Andrew McDonald, Martje Boudien Moerman
+Tested-by: Thierry Reding <treding@nvidia.com>
 
