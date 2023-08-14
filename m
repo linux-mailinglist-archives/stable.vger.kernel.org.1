@@ -2,65 +2,71 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C2D3977BE64
-	for <lists+stable@lfdr.de>; Mon, 14 Aug 2023 18:53:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9B3C477BF0B
+	for <lists+stable@lfdr.de>; Mon, 14 Aug 2023 19:34:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229542AbjHNQxW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 14 Aug 2023 12:53:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54592 "EHLO
+        id S229921AbjHNRdp (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 14 Aug 2023 13:33:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42368 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229827AbjHNQwv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 14 Aug 2023 12:52:51 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F433E63;
-        Mon, 14 Aug 2023 09:52:51 -0700 (PDT)
+        with ESMTP id S230432AbjHNRde (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 14 Aug 2023 13:33:34 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 85B14133;
+        Mon, 14 Aug 2023 10:33:32 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A222463996;
-        Mon, 14 Aug 2023 16:52:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3E53C433C7;
-        Mon, 14 Aug 2023 16:52:48 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1907E60F13;
+        Mon, 14 Aug 2023 17:33:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6333CC433C8;
+        Mon, 14 Aug 2023 17:33:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1692031970;
-        bh=S8/38gOX8CEBqpB9alrToiwydnTBozTScdBE+KGfjnc=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=txcWCsP8BvaHjh2RYmoe7+RTCg0O53+D1jmlGgIBOBq9VC2ckkSWUXdoUM/aLXN6J
-         i2gV1zWw0rlBkNU0i43AzAopUr5Uw8voedWq/fF1K4giCWiNUtokKBUbRZNcqD6dTS
-         TA1rejJzKREjB927mRsWauqHeM5oz+IXbPk9m4aUtoGsh8Lyl+/n2PkmLeB/zDZFI3
-         TU+oLFWBOPZP2kpl12Byg5Hi5rv8zJAnmTpUObZNYlyWxtjGzNCaMMCpzRhOYRb6st
-         3psq2Q4f43NQMM2v4nMPj3kanRCCUi/ywS/2oY1P3thPtfbizvDB/6xhnkApd1fSzC
-         r1fZjGAVeUaFQ==
-Date:   Mon, 14 Aug 2023 09:52:46 -0700
-From:   Nathan Chancellor <nathan@kernel.org>
-To:     Borislav Petkov <bp@alien8.de>
-Cc:     Guenter Roeck <linux@roeck-us.net>,
-        Naresh Kamboju <naresh.kamboju@linaro.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        clang-built-linux <llvm@lists.linux.dev>, stable@vger.kernel.org,
-        patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-        torvalds@linux-foundation.org, akpm@linux-foundation.org,
-        shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Sven Volkinsfeld <thyrc@gmx.net>,
-        Daniel Kolesa <daniel@octaforge.org>, x86@kernel.org
-Subject: Re: [PATCH 6.1 000/127] 6.1.45-rc1 review
-Message-ID: <20230814165246.GA911700@dev-arch.thelio-3990X>
-References: <20230809103636.615294317@linuxfoundation.org>
- <CA+G9fYvQdQqTqCgbS4sit_Y2AtKtDiWMOkGZjoeSEFhc=M_jKw@mail.gmail.com>
- <078d6e3d-9572-a624-2c5a-e2d58473e6d0@roeck-us.net>
- <20230811041339.GA193223@dev-arch.thelio-3990X>
- <20230813110254.GDZNi4XhHjY4xlNdBJ@fat_crate.local>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230813110254.GDZNi4XhHjY4xlNdBJ@fat_crate.local>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        s=k20201202; t=1692034411;
+        bh=dMLWHmmWTHTpECQlogQ0Ns+k8Paiopb9T66lZHlkhII=;
+        h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+        b=h8GDb/X2iClmuQ5zfnXPmiXaDl9Kr6TqdPk9iMRYifdCs5TcOthXO4Hnmac1V1af8
+         mSo/bA8Uy1YoHuUBNr0W10qyeGiRKlZp6XGLSE7/C1qPbgwLQ23lxZdARJSGYc7Tq4
+         PWAl705L0Cd1cvET+qYqT4H5ANbjo17n8elx8weikQQ0MVb99e5FMid9DcOOI6WQOd
+         XUxLS1Yq0OSdv4mcDxAOPu66/N5DeAPo9DXiZ9jd+UibphFES1gctSEicQJ7NOSsbq
+         rWljLJkhTLkxwNy2kdSq8LWYtYqz456/8ICTDs/lKeFKEZyT3CJVYStPUaR1Ojc0cb
+         8JbvVV4wtiIcA==
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date:   Mon, 14 Aug 2023 20:33:27 +0300
+Message-Id: <CUSG4ZTYMMD3.30DE3M55W3CJ1@suppilovahvero>
+Cc:     "Linux kernel regressions list" <regressions@lists.linux.dev>,
+        "Peter Huewe" <peterhuewe@gmx.de>,
+        "Christian Hesse" <mail@eworm.de>, <stable@vger.kernel.org>,
+        <roubro1991@gmail.com>,
+        "Linus Torvalds" <torvalds@linux-foundation.org>,
+        "Christian Hesse" <list@eworm.de>,
+        <linux-integrity@vger.kernel.org>
+Subject: Re: [PATCH v2 1/2] tpm/tpm_tis: Disable interrupts for Framework
+ Laptop Intel 12th gen
+From:   "Jarkko Sakkinen" <jarkko@kernel.org>
+To:     "Grundik" <ggrundik@gmail.com>,
+        "Thorsten Leemhuis" <regressions@leemhuis.info>,
+        "Lino Sanfilippo" <LinoSanfilippo@gmx.de>
+X-Mailer: aerc 0.14.0
+References: <20230710133836.4367-1-mail@eworm.de>
+ <20230710142916.18162-1-mail@eworm.de>
+ <20230710231315.4ef54679@leda.eworm.net>
+ <bd0587e16d55ef38277ab1f6169909ae7cde3542.camel@kernel.org>
+ <bb5580e93d244400c3330d7091bf64868aa2053f.camel@gmail.com>
+ <0f272843a33a1706dbcbb2d84b02e3951ee60cbb.camel@kernel.org>
+ <fdd5fd9ece045ebd1888672a75f157e64ade98fb.camel@gmail.com>
+ <a588d1d3-12e0-b078-b6cc-b0a63c54ab37@leemhuis.info>
+ <CUPW0XP1RFXI.162GZ78E46TBJ@suppilovahvero>
+ <CUPWEV9HSGHY.MLO0B4RRH4RR@suppilovahvero>
+ <5806ebf113d52c660e1c70e8a57cc047ab039aff.camel@gmail.com>
+ <CUPZF09RGD86.VQN9BOMEYZX5@suppilovahvero>
+ <2c5abdca1e93894ff3ee41ab1da90a5f8e38657f.camel@gmail.com>
+In-Reply-To: <2c5abdca1e93894ff3ee41ab1da90a5f8e38657f.camel@gmail.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -68,21 +74,27 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Sun, Aug 13, 2023 at 01:02:54PM +0200, Borislav Petkov wrote:
-> On Thu, Aug 10, 2023 at 09:13:39PM -0700, Nathan Chancellor wrote:
-> > 1911 is still being investigated (some additional eyes on it would not
-> > hurt).
-> 
-> I'm hoping that we can take this one:
-> 
-> https://lore.kernel.org/r/20230809072200.543939260@infradead.org
-> 
-> which should resolve this issue, right?
+On Sat Aug 12, 2023 at 2:28 PM EEST, Grundik wrote:
+> On Fri, 2023-08-11 at 23:01 +0300, Jarkko Sakkinen wrote:
+> >=20
+> >=20
+> > Thanks for sharing your opinion. I'll take the necessary steps.
+> >=20
+>
+> I was thinking... Maybe I'm wrong, maybe I mistaking, but isnt this TPM
+> located inside of the CPU chip? So that issue is not specific to laptop
+> vendor or model, but its CPU-specific.
 
-Yes, it does, as least for mainline and 6.4. The backport to 6.1 seems
-hairy (due to a lack of call depth tracking me thinks). It may be worth
-taking Nick's change there for simplicity's sake but I'll let y'all make
-that decision.
+Nope, tpm_tis is MMIO interface for so called FIFO register interface,
+it could be backed e.g. by SPI [*]. It is a physical layer for MMIO.
+There's other backends too such as tpm_tis_i2c where kernel is directly
+exposed to the physical layer.
 
-Cheers,
-Nathan
+> My MSI A12MT laptop has i5-1240P, Framework laptops mentioned in this
+> thread, also has i5-1240P CPU. Unfortunately there are no such
+> information about other affected models, but could it be just that CPU
+> line?
+
+[*] https://lkml.org/lkml/2023/8/14/1065
+
+BR, Jarkko
