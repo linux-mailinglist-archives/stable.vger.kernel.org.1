@@ -2,102 +2,99 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9E75A77BD50
-	for <lists+stable@lfdr.de>; Mon, 14 Aug 2023 17:42:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7B49C77BD89
+	for <lists+stable@lfdr.de>; Mon, 14 Aug 2023 18:00:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229699AbjHNPlw (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 14 Aug 2023 11:41:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59028 "EHLO
+        id S229927AbjHNQAI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 14 Aug 2023 12:00:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43742 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230434AbjHNPl3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 14 Aug 2023 11:41:29 -0400
-Received: from ganesha.gnumonks.org (ganesha.gnumonks.org [IPv6:2001:780:45:1d:225:90ff:fe52:c662])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8AD5710E5
-        for <stable@vger.kernel.org>; Mon, 14 Aug 2023 08:41:26 -0700 (PDT)
-Received: from [78.30.34.192] (port=51654 helo=gnumonks.org)
-        by ganesha.gnumonks.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.94.2)
-        (envelope-from <pablo@gnumonks.org>)
-        id 1qVZh2-003wZp-7B; Mon, 14 Aug 2023 17:41:22 +0200
-Date:   Mon, 14 Aug 2023 17:41:19 +0200
-From:   Pablo Neira Ayuso <pablo@netfilter.org>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     Florian Westphal <fw@strlen.de>, stable@vger.kernel.org,
-        patches@lists.linux.dev
-Subject: Re: [PATCH 6.4 090/206] netfilter: nf_tables: dont skip expired
- elements during walk
-Message-ID: <ZNpLHwZ6VlaJjQD1@calendula>
-References: <20230813211724.969019629@linuxfoundation.org>
- <20230813211727.651202695@linuxfoundation.org>
- <20230813221730.GA22068@breakpoint.cc>
- <2023081418-goes-vitally-3c6f@gregkh>
+        with ESMTP id S230282AbjHNP7o (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 14 Aug 2023 11:59:44 -0400
+Received: from mail-qt1-x82b.google.com (mail-qt1-x82b.google.com [IPv6:2607:f8b0:4864:20::82b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A10EE10F2
+        for <stable@vger.kernel.org>; Mon, 14 Aug 2023 08:59:43 -0700 (PDT)
+Received: by mail-qt1-x82b.google.com with SMTP id d75a77b69052e-40c72caec5cso420951cf.0
+        for <stable@vger.kernel.org>; Mon, 14 Aug 2023 08:59:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20221208; t=1692028783; x=1692633583;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=4i5eV473f7wGLCUwgr8eYOWIRZnCPm+12Iu8HyqFQZ4=;
+        b=QeiZ/V/HDBgQma+VPIYzMnSI+wWGXhP/WATnzSaWxUHnnjG3VkOwog2bBquQo1mZR7
+         oPZDpTClhz0d2BeL+bbe9t0ejh1ggNvxQyKYv5vSBvWn8v2o+Ujx849qi74bmVekOhWn
+         0CEpgDR2s1tpA1B3llKF+Z4j5+dcItmBfhWKCJn9gvtTIhtC8obgDF36yXvcQrtaG5qe
+         pKgEEnFGO3nwXE4I8uoslqMT2uvaxpHz+5kYnc3qiMhJJ5PBtKKjlXMzFiAj0jdlPgR4
+         nJUXmE3FC6Ph72MDRc4XiBwU7Qz+THcSA6Gb0LX3GiXKfFWTIukNVZaXoWMUsaaBBqFL
+         Drug==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1692028783; x=1692633583;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=4i5eV473f7wGLCUwgr8eYOWIRZnCPm+12Iu8HyqFQZ4=;
+        b=jXS3qmyDsTbf/RQETv2tjvYEBvN8UX3O0C4GdmJSQU4nsQHFzPHIzxWunoTBlQTnRB
+         YsT25MEydqp9rNPrGZDtGs8XaatG20w9GceW+kKEGy7Jl/eHI85YfQXZKFuxEXOgtuzx
+         G4kpm4hTHOFu4W/2tHnVzsLrhZ/d3KhdTLOj3NcKikEz05tlXO5TtB+ypkqM6BMNsDIE
+         3Ol1C/TtbVITqGSsq/G259Ue2Sw6MKR+wAb2YW2iTqtVin1GrctkkLkEHbe4frGZiR7h
+         jUnwQU9tQ3Rv5GNajyWrOP4msI5ScF478UW36lPpIH6yGW/CcML4w1B2DOE+FXBQG9t5
+         cdAQ==
+X-Gm-Message-State: AOJu0YwDt7ge/GXR0f+60vj6De4XT88XV45SWVp6HgB/8kEFVa0czTaW
+        2W1T5TbuDvcSkiPyJrb0s9CysjR3V41kNYl47ardQQ==
+X-Google-Smtp-Source: AGHT+IFDjRWBRJPugWc/SmG/R5CLHd5UA0RCFSy3Sbq0ldUfjl8s+ZFz2wUt7NFfjwQ8aSKf/5oKkOjuCtNMQFLvpng=
+X-Received: by 2002:a05:622a:1988:b0:410:3405:7398 with SMTP id
+ u8-20020a05622a198800b0041034057398mr586521qtc.18.1692028782725; Mon, 14 Aug
+ 2023 08:59:42 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <2023081418-goes-vitally-3c6f@gregkh>
-X-Spam-Score: -1.9 (-)
-X-Spam-Status: No, score=-1.6 required=5.0 tests=BAYES_00,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,
-        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+References: <20230814151636.1639123-1-tjmercier@google.com>
+In-Reply-To: <20230814151636.1639123-1-tjmercier@google.com>
+From:   Yu Zhao <yuzhao@google.com>
+Date:   Mon, 14 Aug 2023 09:59:06 -0600
+Message-ID: <CAOUHufZg=RpSMeQSaag0mXH_UAASPtqPVUtC-u9V=j826Vpo4Q@mail.gmail.com>
+Subject: Re: [PATCH mm-unstable] mm: multi-gen LRU: don't spin during memcg release
+To:     "T.J. Mercier" <tjmercier@google.com>, akpm@linux-foundation.org
+Cc:     linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+        android-mm@google.com, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, Aug 14, 2023 at 05:14:48PM +0200, Greg Kroah-Hartman wrote:
-> On Mon, Aug 14, 2023 at 12:17:30AM +0200, Florian Westphal wrote:
-> > Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
-> > > From: Florian Westphal <fw@strlen.de>
-> > > 
-> > > commit 24138933b97b055d486e8064b4a1721702442a9b upstream.
-> > 
-> > Just FYI, this change is not correct.
-> > 
-> > > There is an asymmetry between commit/abort and preparation phase if the
-> > > following conditions are met:
-> > 
-> > > 1. set is a verdict map ("1.2.3.4 : jump foo")
-> > > 2. timeouts are enabled
-> > 
-> > [..]
-> > 
-> > > --- a/net/netfilter/nft_set_pipapo.c
-> > > +++ b/net/netfilter/nft_set_pipapo.c
-> > > @@ -566,8 +566,7 @@ next_match:
-> > >  			goto out;
-> > >  
-> > >  		if (last) {
-> > > -			if (nft_set_elem_expired(&f->mt[b].e->ext) ||
-> > > -			    (genmask &&
-> > > +			if ((genmask &&
-> > >  			     !nft_set_elem_active(&f->mt[b].e->ext, genmask)))
-> > >  				goto next_match;
-> > 
-> > This part is bonkers, it papers over the real issue and introduces
-> > another bug while at it (insertions for key K will fail if we have
-> > a key K that is already expired).
-> > 
-> > A patch to resolve it is queued on the mailing list and I'll make sure
-> > it gets passed to the net tree by this wednesday.
-> > 
-> > Sorry for the inconvenience, I hope this doesn't interefere with
-> > -stable release plans and this is leaves enough time for
-> > the fix to make it to -stable too.
-> 
-> Is there an upstream fix for this yet?  If so, I can pull it into the
-> stable tree, or should I drop this one for now and wait for the real
-> fix?  It's your call.
+On Mon, Aug 14, 2023 at 9:16=E2=80=AFAM T.J. Mercier <tjmercier@google.com>=
+ wrote:
+>
+> When a memcg is in the process of being released mem_cgroup_tryget will
+> fail because its reference count has already reached 0. This can happen
+> during reclaim if the memcg has already been offlined, and we reclaim
+> all remaining pages attributed to the offlined memcg. shrink_many
+> attempts to skip the empty memcg in this case, and continue reclaiming
+> from the remaining memcgs in the old generation. If there is only one
+> memcg remaining, or if all remaining memcgs are in the process of being
+> released then shrink_many will spin until all memcgs have finished
+> being released. The release occurs through a workqueue, so it can take
+> a while before kswapd is able to make any further progress.
+>
+> This fix results in reductions in kswapd activity and direct reclaim in
+> a test where 28 apps (working set size > total memory) are repeatedly
+> launched in a random sequence:
+>
+>                                        A          B      delta   ratio(%)
+>            allocstall_movable       5962       3539      -2423     -40.64
+>             allocstall_normal       2661       2417       -244      -9.17
+> kswapd_high_wmark_hit_quickly      53152       7594     -45558     -85.71
+>                    pageoutrun      57365      11750     -45615     -79.52
+>
+> Fixes: e4dde56cd208 ("mm: multi-gen LRU: per-node lru_gen_folio lists")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: T.J. Mercier <tjmercier@google.com>
 
-I'd suggest: Drop it for 5.10, 5.15 and 6.1, because these versions
-are still missing the full series.
-
-Keep it for 6.4 (this already have the full series with fixed) the
-incremental fix that is flying upstream will event amend this patch.
-
-In summary:
-
-- drop it for 5.10, 5.15 and 6.1
-- keep it for 6.4
-
-Thanks
+Acked-by: Yu Zhao <yuzhao@google.com>
