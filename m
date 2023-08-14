@@ -2,99 +2,127 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 086D977BAFA
-	for <lists+stable@lfdr.de>; Mon, 14 Aug 2023 16:08:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2417077BB1C
+	for <lists+stable@lfdr.de>; Mon, 14 Aug 2023 16:11:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230190AbjHNOH2 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 14 Aug 2023 10:07:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45328 "EHLO
+        id S232025AbjHNOKp (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 14 Aug 2023 10:10:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52270 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231631AbjHNOHQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 14 Aug 2023 10:07:16 -0400
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E29E3E3;
-        Mon, 14 Aug 2023 07:07:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1692022035; x=1723558035;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=/MFNWkqsq1K7XfpryTJ0ac/m6VwICjGCbIya+sayRsE=;
-  b=ooFbrjEgj05JlMdRlY97NXIC3T7BrfLxhZDT9wPU3LcYR3grGjTDvS3s
-   Rwuz7c+HPYRH5DEK7eMjfm79KYCe3MdxktPFDJ7yHiWk1qDMvRNi9PSd1
-   hxMVrogBXWw28HYaowgwn7/As0+OmClFEpRPM9/UsuRsjZYjKBw+t/TUQ
-   viYtSlhxZTGXEjuVFdyWTGTdgVT7WSBDNvfAs0+4bAbPvnF+amGEccQxM
-   fUSb6zu8yHbbz6oJ8urlFAq7rRPqrWzrBntoJID9n1cqH+heParKs/dox
-   VhuUoetRypKJ0V3rzx/YCeDC/NaG+/KT2K/61/h5w6dN85GX6S1tqdC+L
-   w==;
-X-IronPort-AV: E=Sophos;i="6.01,172,1684825200"; 
-   d="asc'?scan'208";a="166343655"
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa6.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 14 Aug 2023 07:07:15 -0700
-Received: from chn-vm-ex03.mchp-main.com (10.10.85.151) by
- chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.21; Mon, 14 Aug 2023 07:07:14 -0700
-Received: from wendy (10.10.115.15) by chn-vm-ex03.mchp-main.com
- (10.10.85.151) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.21 via Frontend
- Transport; Mon, 14 Aug 2023 07:07:11 -0700
-Date:   Mon, 14 Aug 2023 15:06:33 +0100
-From:   Conor Dooley <conor.dooley@microchip.com>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-CC:     <stable@vger.kernel.org>, <patches@lists.linux.dev>,
-        <linux-kernel@vger.kernel.org>, <torvalds@linux-foundation.org>,
-        <akpm@linux-foundation.org>, <linux@roeck-us.net>,
-        <shuah@kernel.org>, <patches@kernelci.org>,
-        <lkft-triage@lists.linaro.org>, <pavel@denx.de>,
-        <jonathanh@nvidia.com>, <f.fainelli@gmail.com>,
-        <sudipm.mukherjee@gmail.com>, <srw@sladewatkins.net>,
-        <rwarsow@gmx.de>, <conor@kernel.org>
-Subject: Re: [PATCH 6.1 000/149] 6.1.46-rc1 review
-Message-ID: <20230814-immature-roamer-398c43abc0a0@wendy>
-References: <20230813211718.757428827@linuxfoundation.org>
+        with ESMTP id S231881AbjHNOKQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 14 Aug 2023 10:10:16 -0400
+Received: from mail-wm1-x32a.google.com (mail-wm1-x32a.google.com [IPv6:2a00:1450:4864:20::32a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7BA0FB
+        for <stable@vger.kernel.org>; Mon, 14 Aug 2023 07:10:14 -0700 (PDT)
+Received: by mail-wm1-x32a.google.com with SMTP id 5b1f17b1804b1-3fe2ba3e260so43022295e9.2
+        for <stable@vger.kernel.org>; Mon, 14 Aug 2023 07:10:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1692022213; x=1692627013;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=uRW3uVyacKVMz0n3X0Q3Lp2slVRo4x30QDLpyV/AFPs=;
+        b=y5qonWQOj74q+4miQrLJ3794iiCdJAkuwQT8UPSLzik2G94eC7vqSmcxlM+LWZbbJh
+         aGTXagyl3w3zF5+TC2SSrAMy9W9GdcstTCUMeBXDJfsse9dSkTCqp0h3WWpTTbSvxyq2
+         1aVOt3bW6f4Pg0CNtNziXZA3kvcENup09KOPfkz0Lypfs6jWo4rOwXDySA3Y8yT8/nYQ
+         gWaX//S+8J0NbDFnLC9a7ws9QiV56JJJ2U87FhClxf+WU5htN+ny2V5PZkaRncVdicRu
+         FyQHDAF47LAk6X2veqAJ9OA368/GY421/EMIrW31s0UgxKWVOkGp07K4fpzOKAjvHcJY
+         1hbw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1692022213; x=1692627013;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=uRW3uVyacKVMz0n3X0Q3Lp2slVRo4x30QDLpyV/AFPs=;
+        b=YTMzF2N3MH32+C5HEs2RlvyNSU4BsFZBFYVAkk98z37juGfa+zLw/MfZS0smpnJ4bW
+         n6PmPP0IpDOexespuOtnALRVqBYw1sKacOtIzHg/1qiiXtICijg8u2l23lbu65qhb3MF
+         ZCIbRpFyN3Lu7uUjYKRUpC1ZvE0oS+YHgDmnfV6cvbqBgNbKgcL0p+29wTWC415ILKfY
+         qicG2HUflOYaOWL/ujAQJeEh4zo6YUPy3bRyv8KLcWEGvNVl8li8dZCX99p5mxLE4OtT
+         SzFR7FcGDEWI6bGk3XbPUXz7JKEqFtC25TVIu5t/N1ABCmaHi6oq9M6++liZ9I09a16h
+         BWqg==
+X-Gm-Message-State: AOJu0YyD2vV/aSGQDu/uzejM/5NL7/RXQjReMMCpWT95tJ1iu9LpJwwh
+        6yzvdof5fnESUaCdw/F0iLQnAw==
+X-Google-Smtp-Source: AGHT+IElcvFhO4oc6hXDyWfIeD96YZsuBnOqteXXIU1uTizJIh8oDmCC8uiZ9wWrMjrI9OJNpVYtLw==
+X-Received: by 2002:a1c:f707:0:b0:3fe:5501:d284 with SMTP id v7-20020a1cf707000000b003fe5501d284mr8140217wmh.11.1692022213145;
+        Mon, 14 Aug 2023 07:10:13 -0700 (PDT)
+Received: from sagittarius-a.chello.ie (188-141-3-169.dynamic.upc.ie. [188.141.3.169])
+        by smtp.gmail.com with ESMTPSA id p5-20020a1c7405000000b003fe1630a8f0sm17232749wmc.24.2023.08.14.07.10.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 14 Aug 2023 07:10:12 -0700 (PDT)
+From:   Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+To:     rfoss@kernel.org, todor.too@gmail.com, bryan.odonoghue@linaro.org,
+        agross@kernel.org, andersson@kernel.org, konrad.dybcio@linaro.org,
+        mchehab@kernel.org, hverkuil-cisco@xs4all.nl,
+        sakari.ailus@linux.intel.com, andrey.konovalov@linaro.org
+Cc:     linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: [PATCH v0 1/9] media: qcom: camss: Fix pm_domain_on sequence in probe
+Date:   Mon, 14 Aug 2023 15:09:59 +0100
+Message-ID: <20230814141007.3721197-2-bryan.odonoghue@linaro.org>
+X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20230814141007.3721197-1-bryan.odonoghue@linaro.org>
+References: <20230814141007.3721197-1-bryan.odonoghue@linaro.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="BKYbhG+6ARxAenx9"
-Content-Disposition: inline
-In-Reply-To: <20230813211718.757428827@linuxfoundation.org>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_NONE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
---BKYbhG+6ARxAenx9
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+We need to make sure camss_configure_pd() happens before
+camss_register_entities() as the vfe_get() path relies on the pointer
+provided by camss_configure_pd().
 
-On Sun, Aug 13, 2023 at 11:17:25PM +0200, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.1.46 release.
-> There are 149 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+Fix the ordering sequence in probe to ensure the pointers vfe_get() demands
+are present by the time camss_register_entities() runs.
 
-I think I replied to the wrong thing earlier for 6.1 testing..
-Tested-by: Conor Dooley <conor.dooley@microchip.com>
+In order to facilitate backporting to stable kernels I've moved the
+configure_pd() call pretty early on the probe() function so that
+irrespective of the existence of the old error handling jump labels this
+patch should still apply to -next circa Aug 2023 to v5.13 inclusive.
 
-Thanks,
-Conor.
+Fixes: 2f6f8af67203 ("media: camss: Refactor VFE power domain toggling")
+Cc: stable@vger.kernel.org
+Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+---
+ drivers/media/platform/qcom/camss/camss.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
---BKYbhG+6ARxAenx9
-Content-Type: application/pgp-signature; name="signature.asc"
+diff --git a/drivers/media/platform/qcom/camss/camss.c b/drivers/media/platform/qcom/camss/camss.c
+index f11dc59135a5a..75991d849b571 100644
+--- a/drivers/media/platform/qcom/camss/camss.c
++++ b/drivers/media/platform/qcom/camss/camss.c
+@@ -1619,6 +1619,12 @@ static int camss_probe(struct platform_device *pdev)
+ 	if (ret < 0)
+ 		goto err_cleanup;
+ 
++	ret = camss_configure_pd(camss);
++	if (ret < 0) {
++		dev_err(dev, "Failed to configure power domains: %d\n", ret);
++		goto err_cleanup;
++	}
++
+ 	ret = camss_init_subdevices(camss);
+ 	if (ret < 0)
+ 		goto err_cleanup;
+@@ -1678,12 +1684,6 @@ static int camss_probe(struct platform_device *pdev)
+ 		}
+ 	}
+ 
+-	ret = camss_configure_pd(camss);
+-	if (ret < 0) {
+-		dev_err(dev, "Failed to configure power domains: %d\n", ret);
+-		return ret;
+-	}
+-
+ 	pm_runtime_enable(dev);
+ 
+ 	return 0;
+-- 
+2.41.0
 
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZNo06QAKCRB4tDGHoIJi
-0hgKAQDMLP2kATJw24PtA4Bi5XuVhgh7wUADE15xJQMAW8bDEwD/QD+7tMnE+gm4
-Rax2OYQ0kcjL2JfyT0taCMKtm/XJpgs=
-=zblf
------END PGP SIGNATURE-----
-
---BKYbhG+6ARxAenx9--
