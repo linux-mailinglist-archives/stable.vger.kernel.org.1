@@ -2,144 +2,79 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4771C77BCD4
-	for <lists+stable@lfdr.de>; Mon, 14 Aug 2023 17:18:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DE62977BD16
+	for <lists+stable@lfdr.de>; Mon, 14 Aug 2023 17:32:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232427AbjHNPRd (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 14 Aug 2023 11:17:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46288 "EHLO
+        id S229523AbjHNPbn (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 14 Aug 2023 11:31:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48644 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232966AbjHNPRM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 14 Aug 2023 11:17:12 -0400
-Received: from mail-yw1-x1149.google.com (mail-yw1-x1149.google.com [IPv6:2607:f8b0:4864:20::1149])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 52B1010C0
-        for <stable@vger.kernel.org>; Mon, 14 Aug 2023 08:16:55 -0700 (PDT)
-Received: by mail-yw1-x1149.google.com with SMTP id 00721157ae682-589c772be14so56870907b3.0
-        for <stable@vger.kernel.org>; Mon, 14 Aug 2023 08:16:55 -0700 (PDT)
+        with ESMTP id S232656AbjHNPbZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 14 Aug 2023 11:31:25 -0400
+Received: from mail-lf1-x142.google.com (mail-lf1-x142.google.com [IPv6:2a00:1450:4864:20::142])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A98710D5
+        for <stable@vger.kernel.org>; Mon, 14 Aug 2023 08:31:24 -0700 (PDT)
+Received: by mail-lf1-x142.google.com with SMTP id 2adb3069b0e04-4fe1e7440f1so1328788e87.0
+        for <stable@vger.kernel.org>; Mon, 14 Aug 2023 08:31:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1692026214; x=1692631014;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+        d=gmail.com; s=20221208; t=1692027082; x=1692631882;
+        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=/FNoZQB0IrLaKqGcAaCCQtd/SwINEujNen6PFYywNmQ=;
-        b=Syd749r+wn/31GfcBZ2X1EmM8zOBT3WHN3gRME1+GWTQKeuS/r1PTSbEnPXHTwGHwe
-         6fnC4j8d1fVeqUEjKApqDPF/0xYsuJSLnk6UEBLeKjNU84fJOo9Qij8huJ/ZiRRBhPAO
-         rmdzwAM+EdgClvgMsvs/I/fsVDh7o7JA5Vvtpq1gwsZjVds09RvWlssJNWOnc+s3ogCd
-         xdJBuSqn95iMh+mtkpV37HzhOze6UfxJ3EqiJGh5GpMWFL/E5Fx/dD6eQpKlwfBTu+d3
-         uqbpDpJZHSBkqaADM23Swa5RWpd4ZoY3kiCu1eZUQetrUSaLIpoaHPvU7sEFqDSFXAj+
-         cflA==
+        bh=dzJV+0JSxdS2u11Q4yqe83pIxspCfYUwALmsLNdmIGc=;
+        b=oBR0hDZA/JyTnPzQJGGo1j5wxhOkJ83HnofRwDy8wYoLLYahvLTL2t0oHVmjLzjjY6
+         vhWAH80kTTHAozOLDhllGw7nV+M/NBqkCuCZo7X4WiT7eNe/mkxJd+3ZZikSsgM0KNTY
+         zzZNRGKCYmUHz2sv1vO09zc/em9j4UgTb6Cv0valL/lm5vEioJ/7p8BLOU41wgFtFS8R
+         72NLsOZi1uS/aLNwfCA0TshPR22olmLCT/VrvYxPExvmrUJ9itrnP3VIwsbOCfnDGDLj
+         jnwWGPJetfxWD7Z1a/aPxPiog7DEdgGLGPevGKmaTjMxhRNrWENj6VaixHvLkEoQDngp
+         8dVw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692026214; x=1692631014;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+        d=1e100.net; s=20221208; t=1692027082; x=1692631882;
+        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=/FNoZQB0IrLaKqGcAaCCQtd/SwINEujNen6PFYywNmQ=;
-        b=W3FlUbJXLvleivM06hmTYfNdltAg2Sf7roj+1hfs6fQ4s7orEQuV9+kGsoGrAbWLX2
-         OXBalP2/9ggUdCmXR0sQuBPQa93lRtOte5CibhMbeEaBSI9EKfvbkx6uFlVLa7XxiMf2
-         uvKuTmeQedI2B2A5sYqApXb4TPzvIovm9upM5L5MOQDAFlhjpzoa5tbfoxACgTenIMeH
-         S5/64t80mIkxMewi4T13sEFvITZL/d3h5xETeThGzlaNLV7wLtHo/W+gZioQ5A99OCWg
-         u5oG4qJvrRCEfnX5QloOsoeEttWiadcv9vMB68VgWc19oXSyowAeoH3c9koJ/3iNEW+e
-         W/jQ==
-X-Gm-Message-State: AOJu0YxhzTz6hH1oiPNIomrKFbqVwCqrEWVifcN14L7FtpCWeYfUWLSJ
-        PBTRF3H4BuVka5sI5Vm6SmJFfWn6j++cINg=
-X-Google-Smtp-Source: AGHT+IGNjXXgrbDzHO8XmjU8hvNW3ac8in3D1QL3hTJWGpwZ0u3oHyq6TITxY7sjk641/7DG+3aOn6ThNsHUDiw=
-X-Received: from tj.c.googlers.com ([fda3:e722:ac3:cc00:20:ed76:c0a8:53a])
- (user=tjmercier job=sendgmr) by 2002:a05:690c:300f:b0:589:6c60:f4a0 with SMTP
- id ey15-20020a05690c300f00b005896c60f4a0mr240385ywb.0.1692026214561; Mon, 14
- Aug 2023 08:16:54 -0700 (PDT)
-Date:   Mon, 14 Aug 2023 15:16:36 +0000
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.41.0.640.ga95def55d0-goog
-Message-ID: <20230814151636.1639123-1-tjmercier@google.com>
-Subject: [PATCH mm-unstable] mm: multi-gen LRU: don't spin during memcg release
-From:   "T.J. Mercier" <tjmercier@google.com>
-To:     linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-        akpm@linux-foundation.org
-Cc:     android-mm@google.com, "T.J. Mercier" <tjmercier@google.com>,
-        stable@vger.kernel.org
+        bh=dzJV+0JSxdS2u11Q4yqe83pIxspCfYUwALmsLNdmIGc=;
+        b=AHf7/RifYwMb47WxR7Akx4usJj/FzalRC8VH547O0OjZpJ1YECb7BIkyLWGIP2XlmZ
+         9GQFOcNJkX5LjK9lrHcoXLD1vCz5AvFrGqdjstsVKrPdQlqBzLeTfdR0Ejx7tKPFoNwM
+         TscTfBa3dGHVK9U0ylFgbZ9/mlI31ibAfla3m4KwTuIn4VaEOJH9c/aqX9AT2iFp4EYs
+         I9QMPAfvHgAu1f1BKaKwfzal6u78oVMm8uUecg8URZzqxeTOUIXf3C4kSXM+1W+XlJ/J
+         Xhrki2rM+aUJiWzwu80KJCTBcBmGoQn5lZVQrCTjq96ZM7gkv95q2mwMqFnckSdkt+jF
+         pxEQ==
+X-Gm-Message-State: AOJu0Yxz5ncMmghbV1bM/xRNbxlrb0PAIeor7glAeSMgP7BrJYfFg1iv
+        VgtV1FzacltQFIXj0tY0mq9WCIWXztLas8foiDs=
+X-Google-Smtp-Source: AGHT+IHNfqkPFJhHHveai/Q1hVBnhL4gIkHpLZIZSZEkrzYGOX3voMEs9+Ra/ZGmSD5YWczuxfKdtLp/fcyQA18CYfk=
+X-Received: by 2002:ac2:4892:0:b0:4fd:cbd8:17c0 with SMTP id
+ x18-20020ac24892000000b004fdcbd817c0mr5335074lfc.3.1692027082151; Mon, 14 Aug
+ 2023 08:31:22 -0700 (PDT)
+MIME-Version: 1.0
+From:   Yenny Miller <attendeeslistzone@gmail.com>
+Date:   Mon, 14 Aug 2023 10:31:04 -0500
+Message-ID: <CANF5vERNpjaoWqzzCVK_it3TmL4UN9i=0hG8rSGfA7-2CsM-Jg@mail.gmail.com>
+Subject: RE: AWS RE:INVENT ATTENDEES EMAIL LIST- 2023
+To:     Yenny Miller <attendeeslistzone@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=3.1 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FILL_THIS_FORM,
+        FILL_THIS_FORM_LONG,FREEMAIL_FROM,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,
+        SPF_PASS,SUBJ_ALL_CAPS autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: ***
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-When a memcg is in the process of being released mem_cgroup_tryget will
-fail because its reference count has already reached 0. This can happen
-during reclaim if the memcg has already been offlined, and we reclaim
-all remaining pages attributed to the offlined memcg. shrink_many
-attempts to skip the empty memcg in this case, and continue reclaiming
-from the remaining memcgs in the old generation. If there is only one
-memcg remaining, or if all remaining memcgs are in the process of being
-released then shrink_many will spin until all memcgs have finished
-being released. The release occurs through a workqueue, so it can take
-a while before kswapd is able to make any further progress.
+Hi,
 
-This fix results in reductions in kswapd activity and direct reclaim in
-a test where 28 apps (working set size > total memory) are repeatedly
-launched in a random sequence:
+Would you be interested in acquiring AWS reinvent/ Amazon Web Services
+Attendees Email List- 2023?
 
-                                       A          B      delta   ratio(%)
-           allocstall_movable       5962       3539      -2423     -40.64
-            allocstall_normal       2661       2417       -244      -9.17
-kswapd_high_wmark_hit_quickly      53152       7594     -45558     -85.71
-                   pageoutrun      57365      11750     -45615     -79.52
+List contains: Company Name, Contact Name, Title, Address, Street,
+City, Zip code, State, Country, Telephone, Email address and more,
 
-Fixes: e4dde56cd208 ("mm: multi-gen LRU: per-node lru_gen_folio lists")
-Cc: stable@vger.kernel.org
-Signed-off-by: T.J. Mercier <tjmercier@google.com>
----
- mm/vmscan.c | 13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+Number of Attendees: 45,369
+Attendees List Cost: $2,099
 
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index 157ed68470ee..c7c149cb8d66 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -4856,16 +4856,17 @@ void lru_gen_release_memcg(struct mem_cgroup *memcg)
- 
- 		spin_lock_irq(&pgdat->memcg_lru.lock);
- 
--		VM_WARN_ON_ONCE(hlist_nulls_unhashed(&lruvec->lrugen.list));
-+		if (hlist_nulls_unhashed(&lruvec->lrugen.list))
-+			goto unlock;
- 
- 		gen = lruvec->lrugen.gen;
- 
--		hlist_nulls_del_rcu(&lruvec->lrugen.list);
-+		hlist_nulls_del_init_rcu(&lruvec->lrugen.list);
- 		pgdat->memcg_lru.nr_memcgs[gen]--;
- 
- 		if (!pgdat->memcg_lru.nr_memcgs[gen] && gen == get_memcg_gen(pgdat->memcg_lru.seq))
- 			WRITE_ONCE(pgdat->memcg_lru.seq, pgdat->memcg_lru.seq + 1);
--
-+unlock:
- 		spin_unlock_irq(&pgdat->memcg_lru.lock);
- 	}
- }
-@@ -5447,8 +5448,10 @@ static void shrink_many(struct pglist_data *pgdat, struct scan_control *sc)
- 	rcu_read_lock();
- 
- 	hlist_nulls_for_each_entry_rcu(lrugen, pos, &pgdat->memcg_lru.fifo[gen][bin], list) {
--		if (op)
-+		if (op) {
- 			lru_gen_rotate_memcg(lruvec, op);
-+			op = 0;
-+		}
- 
- 		mem_cgroup_put(memcg);
- 
-@@ -5456,7 +5459,7 @@ static void shrink_many(struct pglist_data *pgdat, struct scan_control *sc)
- 		memcg = lruvec_memcg(lruvec);
- 
- 		if (!mem_cgroup_tryget(memcg)) {
--			op = 0;
-+			lru_gen_release_memcg(memcg);
- 			memcg = NULL;
- 			continue;
- 		}
--- 
-2.41.0.640.ga95def55d0-goog
+Interested? Email me back; I would love to provide more information on the list.
 
+Kind Regards,
+Yenny Miller
+Marketing Coordinator
