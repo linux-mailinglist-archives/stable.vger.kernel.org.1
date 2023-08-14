@@ -2,53 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D319577BB18
-	for <lists+stable@lfdr.de>; Mon, 14 Aug 2023 16:11:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C29D277BB0B
+	for <lists+stable@lfdr.de>; Mon, 14 Aug 2023 16:11:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231940AbjHNOKo (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 14 Aug 2023 10:10:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50878 "EHLO
+        id S231896AbjHNOKl (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 14 Aug 2023 10:10:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50838 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232018AbjHNOK0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 14 Aug 2023 10:10:26 -0400
-Received: from mail-wm1-x32d.google.com (mail-wm1-x32d.google.com [IPv6:2a00:1450:4864:20::32d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6DAC010DE
-        for <stable@vger.kernel.org>; Mon, 14 Aug 2023 07:10:22 -0700 (PDT)
-Received: by mail-wm1-x32d.google.com with SMTP id 5b1f17b1804b1-3fbd33a57b6so43848165e9.2
-        for <stable@vger.kernel.org>; Mon, 14 Aug 2023 07:10:22 -0700 (PDT)
+        with ESMTP id S232027AbjHNOK1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 14 Aug 2023 10:10:27 -0400
+Received: from mail-wm1-x32b.google.com (mail-wm1-x32b.google.com [IPv6:2a00:1450:4864:20::32b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C38FF10F7
+        for <stable@vger.kernel.org>; Mon, 14 Aug 2023 07:10:23 -0700 (PDT)
+Received: by mail-wm1-x32b.google.com with SMTP id 5b1f17b1804b1-3fe1d462762so40227755e9.0
+        for <stable@vger.kernel.org>; Mon, 14 Aug 2023 07:10:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1692022221; x=1692627021;
+        d=linaro.org; s=google; t=1692022222; x=1692627022;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=9HGhoQh+Cc1QnhiJuF+fRUaLv4iTYPEYMts/sNpzsFg=;
-        b=q1/n7+K4ipJ+tYmMshBiWs8UFexzbspwBdc9ZCpYUYLlsNKUPdUE7XnFw6RuBdLqNy
-         v18ohU22Co4Wl4pabLqUcgicdRJkgvsmxbdJFjwPpNnj1z+1wqQx1zNg0WCYMUJKVQrA
-         Mv2C97gY7qilWDANjiz4ufA83ERqMLcheTbDHadv0qk200LiHUiv2ITjphLMuILd17BR
-         /+gvfp0YErQntLe/yWsqZqKpBvnq4RaQ3gBzgcIWZo/j3vQt1JVoDqBK7r6yNeLeIYih
-         sqkl7r916TX2NGndd8elM8QBEkUGh9I+KokcQKbOWTP2VDzKk70zng3MU5HsKsfUTB6j
-         okvw==
+        bh=Rz1zrGGONNkngfkoUA1t5vIxlWnYkYs5EA/aRamoKao=;
+        b=GM5bZ+i/YC9L6vOUhfHcXEpmYiKmLT9PnXAieBJnaaLn8c3LJqE0PwtV+vxqV6TGSm
+         e11wYA7PSCbBSHizzthtz74FZt3bS2iE2MmTGaMGc2eB5WqbUJRNfMxWJhwtCk15obP7
+         IjZIolAguBVCMgHqB+6Q3VCHQkHW6N6f6o8QsptAnYGfrGoMym8QCDWfh+QgGPLrIEnM
+         jszXS2LvKCLCbCwG0R2lCo4Aw76jDYlKoHMIg1Ra4tYuSc+/0AFdml3zj4cZHUnKJPBH
+         kEyh6GaGfNb7Ab5axvfNRayguNAlx6KP4e+3OI5wtz7ufPckdFZxZzDX0JuW67jFDxc2
+         0ChA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692022221; x=1692627021;
+        d=1e100.net; s=20221208; t=1692022222; x=1692627022;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=9HGhoQh+Cc1QnhiJuF+fRUaLv4iTYPEYMts/sNpzsFg=;
-        b=Ih3UD89G+Hml3IxnwkFmOT0zsfBi3NiPyBw+pM4JqFW21X1J+XAzVBfNZdm4KEA/09
-         kX4AG+YJ6VGj0+itrLNRhJcNQiRA+gR/UuVsv5AWtKs8jyWn9QnkBjVEvbzXZuPBjrnb
-         DL5HegUZMDyuWfVoSyXIxUnFNCtpea8+gqn/sSixaAAU2Ur8NH6SaSiVWl0RzCJ4VtG7
-         1PUbrWMNZbJlvXScKoP/ZGak3BPvGDfltgoW3PQfV1PvTNtmcWnVOxT99/T/g16v37cK
-         7XcHLoTccTilf5JUgyZi67AWHNgdcI2vijy3IExBKgpuOYIX3J9yabmJYQAHqFNK5bQM
-         IIjA==
-X-Gm-Message-State: AOJu0YwOWccv2fJaWBYs8to57PrT1S5frEB4RT2FeBoKobdX6t3vgoJv
-        ea9COOTB9NowjWGIQa3a2Gym8Q==
-X-Google-Smtp-Source: AGHT+IFD3EH24917DWNuG+tFsT60ozdbcomaexWmGlHGkqMp2ssZOZrDp1HJXZ1mKSZN47v/jZDbKA==
-X-Received: by 2002:a1c:7910:0:b0:3fc:f9c:a3ed with SMTP id l16-20020a1c7910000000b003fc0f9ca3edmr8283076wme.22.1692022221036;
-        Mon, 14 Aug 2023 07:10:21 -0700 (PDT)
+        bh=Rz1zrGGONNkngfkoUA1t5vIxlWnYkYs5EA/aRamoKao=;
+        b=cmZZYThHbGVk1tbrWtnRDTNN2mlAmWQfwhQpTW/scCK1fz/ve/j4wim+nICWBPNhfD
+         8mIVIcP0xXJ+BkRNQFYlNiOB9ENYNLFxWAPLc5Z5ZrzeJVv8xTMoKUmArYgj4R4+ZRKw
+         kpiX08fdpi949sGGumL2DtbNe2GMeR4ZgUpzOazZFOmAz1optwbWyWS5HjDTu2yZdecT
+         H2dDZDGmem++Y4wi810kZHNNHvmDJ2T+BrYoN32upvf3nlG2JmU+6T3/RxOj4NAnAtV7
+         yh+HXkjfs484dcY5s4I9JXcX/WFdyHfiosaEclLkqD4Yg2HAwX/+FWTGqb91365Lwuuc
+         Qiyg==
+X-Gm-Message-State: AOJu0YzRj7dQLD9n0H62y8sMWgc2pC2oth3jGA5FmeTyLppF/LP+p9Xn
+        2gf0wvrMbEiNkOnnmKCiNvHJUQ==
+X-Google-Smtp-Source: AGHT+IH4lmR4Jq258PPpXzeSJjiXBAi1Ej7YMvp05OASmR/BQW1itlDNeNtxzgOd1xlFJF1azKbmog==
+X-Received: by 2002:a1c:721a:0:b0:3f9:82f:bad1 with SMTP id n26-20020a1c721a000000b003f9082fbad1mr6879452wmc.40.1692022222419;
+        Mon, 14 Aug 2023 07:10:22 -0700 (PDT)
 Received: from sagittarius-a.chello.ie (188-141-3-169.dynamic.upc.ie. [188.141.3.169])
-        by smtp.gmail.com with ESMTPSA id p5-20020a1c7405000000b003fe1630a8f0sm17232749wmc.24.2023.08.14.07.10.19
+        by smtp.gmail.com with ESMTPSA id p5-20020a1c7405000000b003fe1630a8f0sm17232749wmc.24.2023.08.14.07.10.21
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 14 Aug 2023 07:10:20 -0700 (PDT)
+        Mon, 14 Aug 2023 07:10:21 -0700 (PDT)
 From:   Bryan O'Donoghue <bryan.odonoghue@linaro.org>
 To:     rfoss@kernel.org, todor.too@gmail.com, bryan.odonoghue@linaro.org,
         agross@kernel.org, andersson@kernel.org, konrad.dybcio@linaro.org,
@@ -56,9 +56,9 @@ To:     rfoss@kernel.org, todor.too@gmail.com, bryan.odonoghue@linaro.org,
         sakari.ailus@linux.intel.com, andrey.konovalov@linaro.org
 Cc:     linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org,
         linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: [PATCH v0 7/9] media: qcom: camss: Fix invalid clock enable bit disjunction
-Date:   Mon, 14 Aug 2023 15:10:05 +0100
-Message-ID: <20230814141007.3721197-8-bryan.odonoghue@linaro.org>
+Subject: [PATCH v0 8/9] media: qcom: camss: Fix set CSI2_RX_CFG1_VC_MODE when VC is greater than 3
+Date:   Mon, 14 Aug 2023 15:10:06 +0100
+Message-ID: <20230814141007.3721197-9-bryan.odonoghue@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230814141007.3721197-1-bryan.odonoghue@linaro.org>
 References: <20230814141007.3721197-1-bryan.odonoghue@linaro.org>
@@ -66,38 +66,44 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-define CSIPHY_3PH_CMN_CSI_COMMON_CTRL5_CLK_ENABLE BIT(7)
+VC_MODE = 0 implies a two bit VC address.
+VC_MODE = 1 is required for VCs with a larger address than two bits.
 
-disjunction for gen2 ? BIT(7) : is a nop we are setting the same bit
-either way.
-
-Fixes: 4abb21309fda ("media: camss: csiphy: Move to hardcode CSI Clock Lane number")
+Fixes: eebe6d00e9bf ("media: camss: Add support for CSID hardware version Titan 170")
 Cc: stable@vger.kernel.org
 Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
 ---
- drivers/media/platform/qcom/camss/camss-csiphy-3ph-1-0.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/platform/qcom/camss/camss-csid-gen2.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/media/platform/qcom/camss/camss-csiphy-3ph-1-0.c b/drivers/media/platform/qcom/camss/camss-csiphy-3ph-1-0.c
-index 04baa80494c66..4dba61b8d3f2a 100644
---- a/drivers/media/platform/qcom/camss/camss-csiphy-3ph-1-0.c
-+++ b/drivers/media/platform/qcom/camss/camss-csiphy-3ph-1-0.c
-@@ -476,7 +476,7 @@ static void csiphy_lanes_enable(struct csiphy_device *csiphy,
+diff --git a/drivers/media/platform/qcom/camss/camss-csid-gen2.c b/drivers/media/platform/qcom/camss/camss-csid-gen2.c
+index 45c7986d4a8d0..9ac253111e572 100644
+--- a/drivers/media/platform/qcom/camss/camss-csid-gen2.c
++++ b/drivers/media/platform/qcom/camss/camss-csid-gen2.c
+@@ -352,7 +352,7 @@ static void __csid_configure_stream(struct csid_device *csid, u8 enable, u8 vc)
+ 		phy_sel = csid->phy.csiphy_id;
  
- 	settle_cnt = csiphy_settle_cnt_calc(link_freq, csiphy->timer_clk_rate);
+ 	if (enable) {
+-		u8 dt_id = vc;
++		u8 dt_id = vc * 4;
  
--	val = is_gen2 ? BIT(7) : CSIPHY_3PH_CMN_CSI_COMMON_CTRL5_CLK_ENABLE;
-+	val = CSIPHY_3PH_CMN_CSI_COMMON_CTRL5_CLK_ENABLE;
- 	for (i = 0; i < c->num_data; i++)
- 		val |= BIT(c->data[i].pos * 2);
+ 		if (tg->enabled) {
+ 			/* Config Test Generator */
+@@ -449,6 +449,8 @@ static void __csid_configure_stream(struct csid_device *csid, u8 enable, u8 vc)
+ 	writel_relaxed(val, csid->base + CSID_CSI2_RX_CFG0);
+ 
+ 	val = 1 << CSI2_RX_CFG1_PACKET_ECC_CORRECTION_EN;
++	if (vc > 3)
++		val |= 1 << CSI2_RX_CFG1_VC_MODE;
+ 	val |= 1 << CSI2_RX_CFG1_MISR_EN;
+ 	writel_relaxed(val, csid->base + CSID_CSI2_RX_CFG1);
  
 -- 
 2.41.0
