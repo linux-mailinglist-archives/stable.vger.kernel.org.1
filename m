@@ -2,114 +2,110 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9E0C577B1CB
-	for <lists+stable@lfdr.de>; Mon, 14 Aug 2023 08:45:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E095C77B209
+	for <lists+stable@lfdr.de>; Mon, 14 Aug 2023 09:06:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233148AbjHNGpZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 14 Aug 2023 02:45:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51458 "EHLO
+        id S232785AbjHNHGH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 14 Aug 2023 03:06:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55700 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233880AbjHNGpE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 14 Aug 2023 02:45:04 -0400
-Received: from mailout3.samsung.com (mailout3.samsung.com [203.254.224.33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 806D9E62
-        for <stable@vger.kernel.org>; Sun, 13 Aug 2023 23:44:58 -0700 (PDT)
-Received: from epcas5p1.samsung.com (unknown [182.195.41.39])
-        by mailout3.samsung.com (KnoxPortal) with ESMTP id 20230814064456epoutp03303099ab356a6b2b3895e41eacadc718~7LPBk8FEW1116011160epoutp03C
-        for <stable@vger.kernel.org>; Mon, 14 Aug 2023 06:44:56 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout3.samsung.com 20230814064456epoutp03303099ab356a6b2b3895e41eacadc718~7LPBk8FEW1116011160epoutp03C
+        with ESMTP id S234054AbjHNHF5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 14 Aug 2023 03:05:57 -0400
+Received: from mailout1.samsung.com (mailout1.samsung.com [203.254.224.24])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D6F8EE65
+        for <stable@vger.kernel.org>; Mon, 14 Aug 2023 00:05:54 -0700 (PDT)
+Received: from epcas5p4.samsung.com (unknown [182.195.41.42])
+        by mailout1.samsung.com (KnoxPortal) with ESMTP id 20230814070551epoutp018153faafb05307432432f296f8d38a5b~7LhTM1VRg0130501305epoutp01O
+        for <stable@vger.kernel.org>; Mon, 14 Aug 2023 07:05:51 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.samsung.com 20230814070551epoutp018153faafb05307432432f296f8d38a5b~7LhTM1VRg0130501305epoutp01O
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-        s=mail20170921; t=1691995496;
-        bh=+iQsm3hfosqQmSkkVmr8crzsyxw2qkaqPu3if0KTuPs=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=Khs7o0HNeyMJqVm/1mz4p0/1sWAUK1Gee87OQZ4MoxB8swZCh7zNaVg5vcN5vqQWg
-         OltzAn0pQuZHTHXaK4IiAM1ZIPLcaFDTRx/SQfgcj30aSGLrrvN6hKrF5ydiNwM5Xq
-         dQ6aofVMdIviSh96WehEewx1lAv8UCFjJ7sJx6s4=
-Received: from epsnrtp4.localdomain (unknown [182.195.42.165]) by
-        epcas5p2.samsung.com (KnoxPortal) with ESMTP id
-        20230814064455epcas5p2a013c18a7c6d8fae918c9f73ae09215b~7LPBImR6v2656526565epcas5p20;
-        Mon, 14 Aug 2023 06:44:55 +0000 (GMT)
-Received: from epsmges5p1new.samsung.com (unknown [182.195.38.180]) by
-        epsnrtp4.localdomain (Postfix) with ESMTP id 4RPPys5pCkz4x9Q9; Mon, 14 Aug
-        2023 06:44:53 +0000 (GMT)
-Received: from epcas5p1.samsung.com ( [182.195.41.39]) by
-        epsmges5p1new.samsung.com (Symantec Messaging Gateway) with SMTP id
-        0A.6D.55522.56DC9D46; Mon, 14 Aug 2023 15:44:53 +0900 (KST)
+        s=mail20170921; t=1691996751;
+        bh=o9N27HS0IKGas7IN3ghJxg+CtlGoLVttaBdOjLYjBKg=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=DrJZY7/RrMkOYtVXoQFDyP7davLV90eqIpAvDfnM57fFBXnNfErxm0kbRnZKtHi1R
+         zTv6kETQhE3vlnUVKTLDsMpjZlkx5tUdkLcxJhyjUajd3/JCDSKykMIrIjGF3a0cgU
+         KzQs1XgwDlsFkRp1uMdBg2LRskRr8WupQNCJgADk=
+Received: from epsnrtp1.localdomain (unknown [182.195.42.162]) by
+        epcas5p4.samsung.com (KnoxPortal) with ESMTP id
+        20230814070550epcas5p43cc1ac4f20933a49cb79bcdb1f0bd522~7LhSRHQAG3085130851epcas5p4T;
+        Mon, 14 Aug 2023 07:05:50 +0000 (GMT)
+Received: from epsmges5p2new.samsung.com (unknown [182.195.38.183]) by
+        epsnrtp1.localdomain (Postfix) with ESMTP id 4RPQR11Fvqz4x9Pr; Mon, 14 Aug
+        2023 07:05:49 +0000 (GMT)
+Received: from epcas5p3.samsung.com ( [182.195.41.41]) by
+        epsmges5p2new.samsung.com (Symantec Messaging Gateway) with SMTP id
+        A3.51.44250.D42D9D46; Mon, 14 Aug 2023 16:05:49 +0900 (KST)
 Received: from epsmtrp1.samsung.com (unknown [182.195.40.13]) by
-        epcas5p2.samsung.com (KnoxPortal) with ESMTPA id
-        20230814064453epcas5p216e308e567a0657e7a519c71c604031c~7LO-EcToY2429724297epcas5p2-;
-        Mon, 14 Aug 2023 06:44:53 +0000 (GMT)
-Received: from epsmgms1p1new.samsung.com (unknown [182.195.42.41]) by
+        epcas5p3.samsung.com (KnoxPortal) with ESMTPA id
+        20230814070548epcas5p34eb8f36ab460ee2bf55030ce856844b9~7LhQP3j270297102971epcas5p3d;
+        Mon, 14 Aug 2023 07:05:48 +0000 (GMT)
+Received: from epsmgmcp1.samsung.com (unknown [182.195.42.82]) by
         epsmtrp1.samsung.com (KnoxPortal) with ESMTP id
-        20230814064453epsmtrp116f50861ab0be9ab0e924c5a6f70a49e~7LO-Drfcl2107721077epsmtrp1F;
-        Mon, 14 Aug 2023 06:44:53 +0000 (GMT)
-X-AuditID: b6c32a49-67ffa7000000d8e2-70-64d9cd65ead4
+        20230814070548epsmtrp1d8289a85b241ec2398873d0a8a94cd21~7LhQPCu1H0038000380epsmtrp1k;
+        Mon, 14 Aug 2023 07:05:48 +0000 (GMT)
+X-AuditID: b6c32a4a-c4fff7000000acda-1a-64d9d24d5f00
 Received: from epsmtip2.samsung.com ( [182.195.34.31]) by
-        epsmgms1p1new.samsung.com (Symantec Messaging Gateway) with SMTP id
-        B2.30.34491.56DC9D46; Mon, 14 Aug 2023 15:44:53 +0900 (KST)
-Received: from green245 (unknown [107.99.41.245]) by epsmtip2.samsung.com
-        (KnoxPortal) with ESMTPA id
-        20230814064451epsmtip20e0d856471a8a7cdbc5c08f3623ecc0b~7LO87bWky1020810208epsmtip2-;
-        Mon, 14 Aug 2023 06:44:50 +0000 (GMT)
-Date:   Mon, 14 Aug 2023 12:11:30 +0530
+        epsmgmcp1.samsung.com (Symantec Messaging Gateway) with SMTP id
+        E7.B8.64355.C42D9D46; Mon, 14 Aug 2023 16:05:48 +0900 (KST)
+Received: from localhost.localdomain (unknown [107.99.41.245]) by
+        epsmtip2.samsung.com (KnoxPortal) with ESMTPA id
+        20230814070546epsmtip2ae149f0c4361375a786eba8fd2232b56~7LhOdlut12323723237epsmtip29;
+        Mon, 14 Aug 2023 07:05:46 +0000 (GMT)
 From:   Kanchan Joshi <joshi.k@samsung.com>
-To:     Keith Busch <kbusch@kernel.org>
-Cc:     hch@lst.de, axboe@kernel.dk, sagi@grimberg.me,
-        linux-nvme@lists.infradead.org, vincentfu@gmail.com,
+To:     hch@lst.de, kbusch@kernel.org, axboe@kernel.dk, sagi@grimberg.me
+Cc:     linux-nvme@lists.infradead.org, vincentfu@gmail.com,
         ankit.kumar@samsung.com, joshiiitr@gmail.com, gost.dev@samsung.com,
-        stable@vger.kernel.org, Vincent Fu <vincent.fu@samsung.com>
-Subject: Re: [PATCH 1/2] nvme: fix memory corruption for passthrough
- metadata
-Message-ID: <20230814064130.GA6702@green245>
+        Kanchan Joshi <joshi.k@samsung.com>, stable@vger.kernel.org,
+        Vincent Fu <vincent.fu@samsung.com>
+Subject: [PATCH v2 1/2] nvme: fix memory corruption for passthrough metadata
+Date:   Mon, 14 Aug 2023 12:32:12 +0530
+Message-Id: <20230814070213.161033-2-joshi.k@samsung.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20230814070213.161033-1-joshi.k@samsung.com>
 MIME-Version: 1.0
-In-Reply-To: <ZNZogPZtHsxi1S10@kbusch-mbp.dhcp.thefacebook.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrHJsWRmVeSWpSXmKPExsWy7bCmum7q2ZspBi9W61msufKb3WL13X42
-        i5sHdjJZrFx9lMni/NvDTBaTDl1jtJi/7Cm7xbrX71ksFmx8xGjxuLuD0WJDm6ADt8fOWXfZ
-        Pc7f28jicflsqcemVZ1sHpuX1HvsvtnA5tG3ZRWjx+dNcgEcUdk2GamJKalFCql5yfkpmXnp
-        tkrewfHO8aZmBoa6hpYW5koKeYm5qbZKLj4Bum6ZOUBnKimUJeaUAoUCEouLlfTtbIryS0tS
-        FTLyi0tslVILUnIKTAr0ihNzi0vz0vXyUkusDA0MjEyBChOyM95MvsFcsJmrYtG0t+wNjLs5
-        uhg5OSQETCRerTzB0sXIxSEksJtRomvnRHYI5xOjxITVXawQzjdGiZWvT7LAtFzY/wWqZS+j
-        xNIju5ggnGeMErtbu5hAqlgEVCV+blvE3MXIwcEmoClxYXIpSFhEQFni7vyZYFOZBd4C1b9/
-        xQySEBbwl7i8uhXM5hXQkWj6+5cVwhaUODnzCdhmTgF7idnH14LFRYEGHdh2nAnioi0cEk2b
-        tUB2SQi4SOzsY4QIC0u8Or6FHcKWknjZ3wZlJ0tcmnkOqrVE4vGeg1C2vUTrqX6wE5gFMiQW
-        7HnGBmHzSfT+fsIEMZ5XoqNNCKJcUeLepKesELa4xMMZS6BsD4kVZ/dCw+cDo0Tn62NMExjl
-        ZiH5ZhaSFRC2lUTnhybWWUArmAWkJZb/44AwNSXW79JfwMi6ilEytaA4Nz212LTAMC+1HB7H
-        yfm5mxjBCVfLcwfj3Qcf9A4xMnEwHmKU4GBWEuG95X4tRYg3JbGyKrUoP76oNCe1+BCjKTB2
-        JjJLiSbnA1N+Xkm8oYmlgYmZmZmJpbGZoZI47+vWuSlCAumJJanZqakFqUUwfUwcnFINTAL/
-        vxQxlSTd/W2wsUaR4caFEtUg2zKHY4e9mLbE5PIJ33vFrJ1Zqyr5PellX8XJMN+Sh99tzr1/
-        LfLl6FK794//rtYonR1QcTuQXU3kpeZP8/8rY+q26DLdV71i9L+xwWgjm3/O5R2lM2U6ZP8I
-        8V+q/7m5a5aZlKnQpNmMiTvK95xfYPDyuuLeFcVeZ3d4HXqnMfFZl6m2svYTydtvdorO9Vqh
-        tL0nLmmC04QXs5YLOsssjHwQs27JwfxzzytOl/rnccY+fztNOF7uRnaH4hTBZ7mT3aYuvfGi
-        X8yDOabhQvhmMYf6y2rdrHxLj5k/MtsoV9Cr0LNN91p07iH1030Od87O/TkpwGpZ440NHEos
-        xRmJhlrMRcWJADmQnuNBBAAA
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFvrHLMWRmVeSWpSXmKPExsWy7bCSvG7q2ZspBr/m8VisufKb3WL13X42
-        i5sHdjJZrFx9lMni/NvDTBaTDl1jtJi/7Cm7xbrX71ksFmx8xGjxuLuD0WJDm6ADt8fOWXfZ
-        Pc7f28jicflsqcemVZ1sHpuX1HvsvtnA5tG3ZRWjx+dNcgEcUVw2Kak5mWWpRfp2CVwZLSv7
-        2Aqeslec/TaPvYGxna2LkZNDQsBE4sL+LyxdjFwcQgK7GSVuzXjFCJEQl2i+9oMdwhaWWPnv
-        OTtE0RNGia83rrKCJFgEVCV+blvE3MXIwcEmoClxYXIpSFhEQFni7vyZrCD1zAJvGSV2v3/F
-        DJIQFvCVeL38GwuIzSugI9H09y8rxNAPjBJvNj5mgkgISpyc+QSsiFnATGLe5odgC5gFpCWW
-        /+MACXMK2EvMPr4W7AZRoGUHth1nmsAoOAtJ9ywk3bMQuhcwMq9ilEwtKM5Nzy02LDDMSy3X
-        K07MLS7NS9dLzs/dxAiOIi3NHYzbV33QO8TIxMF4iFGCg1lJhPeW+7UUId6UxMqq1KL8+KLS
-        nNTiQ4zSHCxK4rziL3pThATSE0tSs1NTC1KLYLJMHJxSDUxHv/SyG5w5nNg1Vzp75dN2mf/z
-        vz94ID/hsPIx8cO2DwsEtNyXfNQL5fvEWvqjL/ijkvHOeXFs0Uvs3+74skj/1J91u/X5hdo3
-        fD3ctuSqetO5EHbRHatX1r+8ZyjywOZi77P+H6eS08uuhamt7alb4NJS+UvpdGjr0ba+63kb
-        mK3u7z6efuhY25Q7K6YJZ5lHHy/lm/GyXtaxbrt7dPrDraLPNhTM3yc6yaW5/P6pn5NDe5K7
-        i+f++WLc/OeAwMXcV+xS2dtq9yzuuM/ia/ftVHffm5ae2q0Tfi+/Llbl265yrJXTWevDOTkr
-        701OAU57dy68mchhw3krlsFoQ4qU+YtJJnO2KZpsWCLdcIBLiaU4I9FQi7moOBEAjcWFsBED
-        AAA=
-X-CMS-MailID: 20230814064453epcas5p216e308e567a0657e7a519c71c604031c
+Content-Transfer-Encoding: 8bit
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrBJsWRmVeSWpSXmKPExsWy7bCmpq7vpZspBqeusFmsufKb3WL13X42
+        i5sHdjJZrFx9lMni6P+3bBbn3x5msph06BqjxfxlT9kt1r1+z2KxYOMjRovH3R2MFhvaBB14
+        PHbOusvucf7eRhaPy2dLPTat6mTz2Lyk3mP3zQY2j74tqxg9Pm+SC+CIyrbJSE1MSS1SSM1L
+        zk/JzEu3VfIOjneONzUzMNQ1tLQwV1LIS8xNtVVy8QnQdcvMAbpVSaEsMacUKBSQWFyspG9n
+        U5RfWpKqkJFfXGKrlFqQklNgUqBXnJhbXJqXrpeXWmJlaGBgZApUmJCdsaA9o6BTqOJT91Tm
+        BsbbfF2MnBwSAiYSb9aeYuli5OIQEtjNKNG9+T0bhPOJUWLPtGtMcM65w7fYYFqO7+2DSuxk
+        lLh44gyU85lRou1vP9AwDg42AU2JC5NLQRpEBFwkGv69YQSpYRZ4zCixo/ceE0hCWMBHYtX7
+        FmYQm0VAVeLUqeusIDavgKXEwd1PWSG2yUvMvPSdHcTmFLCSeLJkKwtEjaDEyZlPwGxmoJrm
+        rbOZQRZICEzlkLi05hzUqS4Sb99tYIGwhSVeHd/CDmFLSbzsb4OykyUuzTzHBGGXSDzecxDK
+        tpdoPdXPDPIMM9Az63fpQ+zik+j9/YQJJCwhwCvR0SYEUa0ocW8SzMniEg9nLIGyPSQuL5vK
+        DAmfXkaJJ9vfM01glJ+F5IVZSF6YhbBtASPzKkbJ1ILi3PTUYtMCo7zUcnjEJufnbmIEJ1kt
+        rx2MDx980DvEyMTBeIhRgoNZSYT3lvu1FCHelMTKqtSi/Pii0pzU4kOMpsAwnsgsJZqcD0zz
+        eSXxhiaWBiZmZmYmlsZmhkrivK9b56YICaQnlqRmp6YWpBbB9DFxcEo1MK2R1O9o89c0tZji
+        Ile8gyHkzP7oswcVnVgk5lxTvC41z3Xduw12K/cH3vnk/NF9Q4+OsKxay4uPBS4z5MT9o28z
+        /F4tLsmhuyT8RPcFCd4D4j9Cm81LbTNPu5nmCbnc+53CrCSslcx81ZabZ3515ZWVO/s/6Xjv
+        1exbtjDKtfNlxM9jfT9UOHO8//VovHC4IJHmKnov7/JtJbkn1/Tsp4e+zin+tFYvW+LSRufL
+        SVd0Nu0vVKwIWiC0c1Um21b+faY/jHZyHwgNfOSyb8enWL9JfCZqpr28jvbb8zsZuL0aN+gk
+        R9h3Z3nOUJ/12LQgbD+PVv7fZb4zGXbU9+q9iZw3SVbDQSJVIkZJuEOJpTgj0VCLuag4EQAb
+        8ugzOwQAAA==
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFnrKLMWRmVeSWpSXmKPExsWy7bCSvK7PpZspBoe/KlmsufKb3WL13X42
+        i5sHdjJZrFx9lMni6P+3bBbn3x5msph06BqjxfxlT9kt1r1+z2KxYOMjRovH3R2MFhvaBB14
+        PHbOusvucf7eRhaPy2dLPTat6mTz2Lyk3mP3zQY2j74tqxg9Pm+SC+CI4rJJSc3JLEst0rdL
+        4MpY0J5R0ClU8al7KnMD422+LkZODgkBE4nje/uYQGwhge2MEhevpEDExSWar/1gh7CFJVb+
+        e84OUfORUeLQbKsuRg4ONgFNiQuTS0HCIgJeEvNmL2DpYuTiYBZ4zSixo387I0hCWMBHYtX7
+        FmYQm0VAVeLUqeusIDavgKXEwd1PWSHmy0vMvPQdbD6ngJXEkyVbWSB2WUqs3/aGEaJeUOLk
+        zCdgcWag+uats5knMArMQpKahSS1gJFpFaNoakFxbnpucoGhXnFibnFpXrpecn7uJkZwTGgF
+        7WBctv6v3iFGJg7GQ4wSHMxKIry33K+lCPGmJFZWpRblxxeV5qQWH2KU5mBREudVzulMERJI
+        TyxJzU5NLUgtgskycXBKNTBlrvWZmxkmOIPN3tdRtuFLneEhp0+f1s981VLSH6Y35esUtaWf
+        hDnftCQZGMqF++gfOVG6Z80a3tTdrlv7V8X+tHe/PHfdrA8Rhfuyz9WKFEn37Ew5dqgs/0Wm
+        7Hppti2yc8obtW89bPrhovD185QH/S6vXfyTN4vkSU61ie1X3t7RtmlqLS/XBkULntfms2o8
+        +BUFnri7pyVqHZ1vf8Lj6rep31b83z3R1njOsos//f+XWb3SPCAYHsPj2OCykzH1T9/a5u72
+        t18fr5UPunmY8b/Whdh5sqEZ06ocLMX4Vt864Z209fs8yVb7TEe/vgMSLOvUW78nPvO4X2Tu
+        m3j6g+jPstlS5SaeUVLX+JRYijMSDbWYi4oTAY4y7E74AgAA
+X-CMS-MailID: 20230814070548epcas5p34eb8f36ab460ee2bf55030ce856844b9
 X-Msg-Generator: CA
-Content-Type: multipart/mixed;
-        boundary="----gE6680ZNUinvX0c6ClraybDZwn8mhhmyVsG0uFNlX7QT91ZL=_532d1_"
+Content-Type: text/plain; charset="utf-8"
 CMS-TYPE: 105P
 DLP-Filter: Pass
 X-CFilter-Loop: Reflected
-X-CMS-RootMailID: 20230811160454epcas5p2635d208557749a2431b99c27b30a727f
-References: <20230811155906.15883-1-joshi.k@samsung.com>
-        <CGME20230811160454epcas5p2635d208557749a2431b99c27b30a727f@epcas5p2.samsung.com>
-        <20230811155906.15883-2-joshi.k@samsung.com>
-        <ZNZogPZtHsxi1S10@kbusch-mbp.dhcp.thefacebook.com>
+X-CMS-RootMailID: 20230814070548epcas5p34eb8f36ab460ee2bf55030ce856844b9
+References: <20230814070213.161033-1-joshi.k@samsung.com>
+        <CGME20230814070548epcas5p34eb8f36ab460ee2bf55030ce856844b9@epcas5p3.samsung.com>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
@@ -120,39 +116,73 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-------gE6680ZNUinvX0c6ClraybDZwn8mhhmyVsG0uFNlX7QT91ZL=_532d1_
-Content-Type: text/plain; charset="utf-8"; format="flowed"
-Content-Disposition: inline
+User can specify a smaller meta buffer than what the device is
+wired to update/access.
+This may lead to Device doing a larger DMA operation, overwriting
+unrelated kernel memory.
 
-On Fri, Aug 11, 2023 at 10:57:36AM -0600, Keith Busch wrote:
->On Fri, Aug 11, 2023 at 09:29:05PM +0530, Kanchan Joshi wrote:
->> +static bool nvme_validate_passthru_meta(struct nvme_ctrl *ctrl,
->> +					struct nvme_ns *ns,
->> +					struct nvme_command *c,
->> +					__u64 meta, __u32 meta_len)
->> +{
->> +	/*
->> +	 * User may specify smaller meta-buffer with a larger data-buffer.
->> +	 * Driver allocated meta buffer will also be small.
->> +	 * Device can do larger dma into that, overwriting unrelated kernel
->> +	 * memory.
->> +	 */
->> +	if (ns && (meta_len || meta)) {
->> +		u16 nlb = lower_16_bits(le32_to_cpu(c->common.cdw12));
->> +
->> +		if (meta_len != (nlb + 1) * ns->ms) {
->> +			dev_err(ctrl->device,
->> +			"%s: metadata length does not match!\n", current->comm);
->> +			return false;
->> +		}
->
->Don't you need to check the command PRINFO PRACT bit to know if metadata
->length is striped/generated on the controller side?
+Detect this situation for uring passthrough, and bail out.
 
-Good point. Will add that check in v2.
+Fixes: 456cba386e94 ("nvme: wire-up uring-cmd support for io-passthru on char-device")
+Cc: stable@vger.kernel.org
 
-------gE6680ZNUinvX0c6ClraybDZwn8mhhmyVsG0uFNlX7QT91ZL=_532d1_
-Content-Type: text/plain; charset="utf-8"
+Reported-by: Vincent Fu <vincent.fu@samsung.com>
+Signed-off-by: Kanchan Joshi <joshi.k@samsung.com>
+---
+ drivers/nvme/host/ioctl.c | 33 +++++++++++++++++++++++++++++++++
+ 1 file changed, 33 insertions(+)
 
+diff --git a/drivers/nvme/host/ioctl.c b/drivers/nvme/host/ioctl.c
+index 19a5177bc360..717c7effaf8a 100644
+--- a/drivers/nvme/host/ioctl.c
++++ b/drivers/nvme/host/ioctl.c
+@@ -320,6 +320,35 @@ static int nvme_submit_io(struct nvme_ns *ns, struct nvme_user_io __user *uio)
+ 			meta_len, lower_32_bits(io.slba), NULL, 0, 0);
+ }
+ 
++static bool nvme_validate_passthru_meta(struct nvme_ctrl *ctrl,
++					struct nvme_ns *ns,
++					struct nvme_command *c,
++					__u64 meta, __u32 meta_len)
++{
++	/*
++	 * User may specify smaller meta-buffer with a larger data-buffer.
++	 * Driver allocated meta buffer will also be small.
++	 * Device can do larger dma into that, overwriting unrelated kernel
++	 * memory.
++	 */
++	if (ns && (meta_len || meta)) {
++		u16 nlb = lower_16_bits(le32_to_cpu(c->common.cdw12));
++		u16 control = upper_16_bits(le32_to_cpu(c->common.cdw12));
++
++		/* meta transfer from/to host is not done */
++		if (control & NVME_RW_PRINFO_PRACT && ns->ms == ns->pi_size)
++			return true;
++
++		if (meta_len != (nlb + 1) * ns->ms) {
++			dev_err(ctrl->device,
++			"%s: metadata length does not match!\n", current->comm);
++			return false;
++		}
++	}
++
++	return true;
++}
++
+ static bool nvme_validate_passthru_nsid(struct nvme_ctrl *ctrl,
+ 					struct nvme_ns *ns, __u32 nsid)
+ {
+@@ -593,6 +622,10 @@ static int nvme_uring_cmd_io(struct nvme_ctrl *ctrl, struct nvme_ns *ns,
+ 	d.metadata_len = READ_ONCE(cmd->metadata_len);
+ 	d.timeout_ms = READ_ONCE(cmd->timeout_ms);
+ 
++	if (!nvme_validate_passthru_meta(ctrl, ns, &c, d.metadata,
++					 d.metadata_len))
++		return -EINVAL;
++
+ 	if (issue_flags & IO_URING_F_NONBLOCK) {
+ 		rq_flags |= REQ_NOWAIT;
+ 		blk_flags = BLK_MQ_REQ_NOWAIT;
+-- 
+2.25.1
 
-------gE6680ZNUinvX0c6ClraybDZwn8mhhmyVsG0uFNlX7QT91ZL=_532d1_--
