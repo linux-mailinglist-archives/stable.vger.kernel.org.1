@@ -2,98 +2,103 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D7E1E77C25E
-	for <lists+stable@lfdr.de>; Mon, 14 Aug 2023 23:28:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E290F77C33B
+	for <lists+stable@lfdr.de>; Tue, 15 Aug 2023 00:07:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231461AbjHNV2I (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 14 Aug 2023 17:28:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36444 "EHLO
+        id S231150AbjHNWGi (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 14 Aug 2023 18:06:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59210 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232898AbjHNV2A (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 14 Aug 2023 17:28:00 -0400
-Received: from mail-ot1-x32a.google.com (mail-ot1-x32a.google.com [IPv6:2607:f8b0:4864:20::32a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A8517B3
-        for <stable@vger.kernel.org>; Mon, 14 Aug 2023 14:27:57 -0700 (PDT)
-Received: by mail-ot1-x32a.google.com with SMTP id 46e09a7af769-6bcaa6d5e2cso4174999a34.3
-        for <stable@vger.kernel.org>; Mon, 14 Aug 2023 14:27:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxtx.org; s=google; t=1692048477; x=1692653277;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=h2Gb6QdAQZGLkPrUcUrS4E1/hnWfvRNciGalZbqgQQ4=;
-        b=i11OJNbYHC5AYqDBR2eu2fGiK9DqeYAVHKwAtBqDqVczemPMwMq9yxj0tSz8BMAJy9
-         Td5JKgLF5NR7KOz2qv7DwuVONvciQESKh8dLyfB6SZTY8qDJFQP3y0mQ1NbREL5rTC4Z
-         F4fAQra83kQoWFJkYnHg+4p6ZlIDUtVKUTvZA=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692048477; x=1692653277;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=h2Gb6QdAQZGLkPrUcUrS4E1/hnWfvRNciGalZbqgQQ4=;
-        b=IJnOT5YxXd5rZQtzzDQ8MLjpEQnaaXYaTBi/2p0T/89lg4eKT68GVEelMvmf11UdSF
-         VPNuYzRZ+SjBW/liVO/jekl7ct7QLWsRM3DHeM8oCyj4CJcnu0Kc0v0ss6TkPlorlFdY
-         +aqRrcibNJnZ7neohXUiVsbUBcMiABnhnVK0py7Ba45SSxMDEikL0W3F1jGa+RvXyhzS
-         SVBGEWTLZ0Iz1nJ7Qs0EuP+dKBj/4F0ZP/sDj6Rqfs6SILast/f+KDqK19j86so3dwFZ
-         N2d2z6cBBJkaQFhLrZuu7ZvTjTbYmve5M9xdVYzNjLySsGZTr45BoL3Ng9g0We0dRzcS
-         jJOA==
-X-Gm-Message-State: AOJu0YztJ5uMdBVvA1JhGV0NCh12AIC0yq5MyJOIXbDK2rQMUwg2LX8E
-        273F4BrHzcKvOuQ+DwItt0mNOw==
-X-Google-Smtp-Source: AGHT+IF5Big4bba0sH4Y/J9B79lhl7z/AYAs28CvbkFA9qljvEtUNhSestPpkhMBziUHW7zBNaIktw==
-X-Received: by 2002:a9d:684a:0:b0:6b2:9bdb:a84a with SMTP id c10-20020a9d684a000000b006b29bdba84amr10662554oto.32.1692048477015;
-        Mon, 14 Aug 2023 14:27:57 -0700 (PDT)
-Received: from fedora64.linuxtx.org ([99.47.93.78])
-        by smtp.gmail.com with ESMTPSA id d27-20020a0568301b7b00b006b1570a7674sm4708854ote.29.2023.08.14.14.27.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 14 Aug 2023 14:27:56 -0700 (PDT)
-Sender: Justin Forbes <jmforbes@linuxtx.org>
-Date:   Mon, 14 Aug 2023 16:27:54 -0500
-From:   Justin Forbes <jforbes@fedoraproject.org>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-        jonathanh@nvidia.com, f.fainelli@gmail.com,
-        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-        conor@kernel.org
-Subject: Re: [PATCH 6.4 000/206] 6.4.11-rc1 review
-Message-ID: <ZNqcWhqouBYey/8g@fedora64.linuxtx.org>
-References: <20230813211724.969019629@linuxfoundation.org>
+        with ESMTP id S233024AbjHNWGQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 14 Aug 2023 18:06:16 -0400
+Received: from outgoing.mit.edu (outgoing-auth-1.mit.edu [18.9.28.11])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F19CFB0
+        for <stable@vger.kernel.org>; Mon, 14 Aug 2023 15:06:15 -0700 (PDT)
+Received: from cwcc.thunk.org (pool-173-48-82-92.bstnma.fios.verizon.net [173.48.82.92])
+        (authenticated bits=0)
+        (User authenticated as tytso@ATHENA.MIT.EDU)
+        by outgoing.mit.edu (8.14.7/8.12.4) with ESMTP id 37EM5bBe007191
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 14 Aug 2023 18:05:38 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mit.edu; s=outgoing;
+        t=1692050740; bh=iRv8SucL4d4OYoE5Cj7E+7EpEmUPiTYhpKfXfCItRcc=;
+        h=Date:From:Subject:Message-ID:MIME-Version:Content-Type;
+        b=W2X1E7TgU6mM3iJA/os2+pKqmvzRMoOPS3llA/P9Ez3p2GCHiUEAj7/sH5iP1sxdl
+         8+QP12zP/F9KvBlytY+gn8IJqUQdtdjJl9TYtHXc/Poi6wf7wYSYm6ssF0FETsCsv0
+         LiNHbOGL0fsRYl+8HivQQz4n7VC7OhlyuYa37J5AGVnqEQ+2xk8ZUGkLar+jAqf9fA
+         gcfYFrFCRRYCRqK4Hqzod7wghhHGqL7UjALL01UdX0a64Gf8rmKBouPOwVPcqosr6j
+         Jeu+I8Ac3GPoc9CLqxbYFTY9mWm9ERe0TzP7o5QJg3hywDYJ9VTuKmlHXSVcbFd5SM
+         Ro5WIpBPqj2cQ==
+Received: by cwcc.thunk.org (Postfix, from userid 15806)
+        id E75E415C0292; Mon, 14 Aug 2023 18:05:36 -0400 (EDT)
+Date:   Mon, 14 Aug 2023 18:05:36 -0400
+From:   "Theodore Ts'o" <tytso@mit.edu>
+To:     Muhammad Usama Anjum <usama.anjum@collabora.com>
+Cc:     syzbot <syzbot+a8068dd81edde0186829@syzkaller.appspotmail.com>,
+        syzkaller-lts-bugs@googlegroups.com, linux-ext4@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        linux-stable <stable@vger.kernel.org>,
+        regressions@lists.linux.dev, Baokun Li <libaokun1@huawei.com>,
+        Andreas Dilger <adilger.kernel@dilger.ca>,
+        Jan Kara <jack@suse.cz>
+Subject: Re: [v6.1] kernel BUG in ext4_writepages
+Message-ID: <20230814220536.GE2247938@mit.edu>
+References: <00000000000081f8c905f6c24e0d@google.com>
+ <87dcdf62-8a74-1fbf-5f10-f4f3231f774f@collabora.com>
+ <4637f58c-1cf3-0691-4fc1-6fbc38ec47ce@collabora.com>
+ <0fc2546b-da7c-aac4-b402-3ef4970a1789@collabora.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230813211724.969019629@linuxfoundation.org>
-X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=no
-        autolearn_force=no version=3.4.6
+In-Reply-To: <0fc2546b-da7c-aac4-b402-3ef4970a1789@collabora.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Sun, Aug 13, 2023 at 11:16:10PM +0200, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.4.11 release.
-> There are 206 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+On Mon, Aug 14, 2023 at 10:35:57AM +0500, Muhammad Usama Anjum wrote:
+> > The last refactoring was done by 4e7ea81db53465 on this code in 2013. The
+> > code segment in question is present from even before that. It means that
+> > this bug is present for several years. 4.14 is the most old kernel being
+> > maintained today. So it affects all current LTS and mainline kernels. I'll
+> > report 4e7ea81db53465 with regzbot for proper tracking. Thus probably the
+> > bug report will get associated with all LTS kernels as well.
+> > 
+> > #regzbot title: Race condition between buffer write and page_mkwrite
 > 
-> Responses should be made by Tue, 15 Aug 2023 21:16:53 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.4.11-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.4.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
+> #regzbot title: ext4: Race condition between buffer write and page_mkwrite
 
-Tested rc1 against the Fedora build system (aarch64, ppc64le, s390x,
-x86_64), and boot tested x86_64. No regressions noted.
+If it's a long-standing bug, then it's really not something I consider
+a regression.  That being said, you're assuming that the refactoring
+is what has introduced the bug; that's not necessarily case.
 
-Tested-by: Justin M. Forbes <jforbes@fedoraproject.org>
+*Especially* if it requires a maliciously fuzzed file system, since
+you have to be root to mount a file system.  That's the other thing;
+the different reports at the console have different reproducers, and
+at least one of them has a very badly corrupted file system --- and
+since you need to have root to mount the a maliciously fuzzed file
+system, these are treated with a much lower priority as far as I'm
+concerned.
+
+(If you think it should be higher priority, and your company is
+willing to fund such work, patches are greatfully appreciated.  :-)
+
+I tried to reproduce this using one of the reproducers on a modern
+kernel, and it doesn't reproduce there.  That being said, it's not
+entirely what the reproducer is doing, since (a) passing -1 to the
+in_fd and out_fd to sendfile *should* just cause sendfile to to return
+an EBADF error, and (b) when I ran it, it just segfaulted on an mmap()
+before it executed anything interesting.
+
+Please let me know (a) if you can replicate this on the latest
+upstream kernel, and (b) if the reproducer doesn't require a
+maliciously fuzzed kernel, or where the reproducer is scribbling on
+the file system image while it is mounted.
+
+Cheers,
+
+						- Ted
