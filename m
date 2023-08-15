@@ -2,218 +2,175 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0AA5C77D1F6
-	for <lists+stable@lfdr.de>; Tue, 15 Aug 2023 20:38:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AF04277D3D7
+	for <lists+stable@lfdr.de>; Tue, 15 Aug 2023 22:03:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239167AbjHOShb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 15 Aug 2023 14:37:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40416 "EHLO
+        id S238374AbjHOUCv (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 15 Aug 2023 16:02:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58682 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239166AbjHOShB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 15 Aug 2023 14:37:01 -0400
-Received: from NAM04-BN8-obe.outbound.protection.outlook.com (mail-bn8nam04on2085.outbound.protection.outlook.com [40.107.100.85])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC11F10D8;
-        Tue, 15 Aug 2023 11:36:59 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=j7izHaKPQXxwJ4D/wuJFHrxvZvIVVtKVnyKZGr80fnGxuELVbe7c1X57jhPW/ztxjM3kzhdyJJFYkI4i+mb2mT+ryVwnV9SPi4k63KWpX2UcR1ZinwCJ+spjFFezuc0xvCdWI437iaf9T2CEJGRZnq0GKwoTuDX+pn7slxGyE2IUVgMKwtaYvMwDySv9FRh0gLQN9M+53sdWukQSaYWx+jtab1wCBMCOQPs4Gi/MpBvI++TieBnQOBUs4wqpDwneAMpKjne68Wgi+2zsxX62Bc5la2sW1tLguDlebzaBRxavdBGsQ5C5Fzb+vr1Lp8hAbGjFb/i1KPAfQY2hY2eQLQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=yQa+rJbVNIeopDc2qqPkmuUpAx6pLNaUBew7+bL7Nj4=;
- b=d0n4x30xG2miFPBagdfOVuKcb9J5LWPl26b3S0z1E3130xBHRpHeIcErx49jlEGJ1TeGrRr7yY+n5Eh2EPcpCIoCVYThdVUEqZGOAEt+nQ+Xa0hC7rvt+gZLoGaB5H+MGk70dLVdYLxnY7ukw+nRY19qsEOqzNVaBhaXfa47RqPfy/HY9Fgcc/bI4f9WJM4UYRtMnNKYC7wkc6PICjr2eRS3yK3uzSFX/4Wmk2+/GkHJItn000MADys5JvYkFxX7R4I/e4edMOT+EsbbzDbCwYUC47YM1rhmZkfzDlA89gwo/zw/M81zVp/vDQtpCDF43Gxy11+dov6F8tSBuXjFpg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=yQa+rJbVNIeopDc2qqPkmuUpAx6pLNaUBew7+bL7Nj4=;
- b=p0Bka6LD4pq7rQrtUgat4QvvqPZNy9/Z7D4S8eGUeP0oads2F7NRlOKpixxiTsRd9Ck6SIu1Fg5AvJ3Pl6yIJM3GAqA/s8z5M1Z7Iqtl0P6NzEzSUlgafmvLxCHeh2VgnOS0uAz9swLsUo+zo5hZyRgjG6TlVwcAlN/wLmqnVoc=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from MN0PR12MB6101.namprd12.prod.outlook.com (2603:10b6:208:3cb::10)
- by DS7PR12MB6142.namprd12.prod.outlook.com (2603:10b6:8:9a::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6678.26; Tue, 15 Aug
- 2023 18:36:55 +0000
-Received: from MN0PR12MB6101.namprd12.prod.outlook.com
- ([fe80::36f9:ffa7:c770:d146]) by MN0PR12MB6101.namprd12.prod.outlook.com
- ([fe80::36f9:ffa7:c770:d146%7]) with mapi id 15.20.6678.025; Tue, 15 Aug 2023
- 18:36:55 +0000
-Message-ID: <3caa31c0-39bd-42e5-8e59-7ac7f197dcb7@amd.com>
-Date:   Tue, 15 Aug 2023 13:36:53 -0500
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] drm/amdgpu: register a dirty framebuffer callback for
- fbcon
-Content-Language: en-US
-To:     Hamza Mahfooz <hamza.mahfooz@amd.com>,
-        amd-gfx@lists.freedesktop.org
-Cc:     Aurabindo Pillai <aurabindo.pillai@amd.com>,
-        stable@vger.kernel.org, Alex Deucher <alexander.deucher@amd.com>,
-        =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
-        "Pan, Xinhui" <Xinhui.Pan@amd.com>,
-        David Airlie <airlied@gmail.com>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        Javier Martinez Canillas <javierm@redhat.com>,
-        Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
-        Guchun Chen <guchun.chen@amd.com>,
-        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org
-References: <20230815172700.255596-1-hamza.mahfooz@amd.com>
-From:   Mario Limonciello <mario.limonciello@amd.com>
-In-Reply-To: <20230815172700.255596-1-hamza.mahfooz@amd.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SN4PR0501CA0103.namprd05.prod.outlook.com
- (2603:10b6:803:42::20) To MN0PR12MB6101.namprd12.prod.outlook.com
- (2603:10b6:208:3cb::10)
+        with ESMTP id S240121AbjHOUCU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 15 Aug 2023 16:02:20 -0400
+Received: from mail-il1-x136.google.com (mail-il1-x136.google.com [IPv6:2607:f8b0:4864:20::136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 27D831BF1;
+        Tue, 15 Aug 2023 13:02:12 -0700 (PDT)
+Received: by mail-il1-x136.google.com with SMTP id e9e14a558f8ab-34aa0845837so7834035ab.1;
+        Tue, 15 Aug 2023 13:02:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1692129731; x=1692734531;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=tT5nENGTmtsOYaR4AN3QL0P9N1DvYamQQ82TaK4qYbI=;
+        b=SbsqkqKIDGgCa8iOgg9dZ0sLrGB/ekFHLh2DdUkobgkBz+efDovWBaO3EIwaLQuWfk
+         sSnIckgSBuNgud2LSHQKFeP0lBt5V/QdD9+G2qqBGUu9kADcHAeUevKbab8+KoR7JO5v
+         WSVcFft2NBCZJ9188STPSzXxEOP61FEuUGwotV20dJWsazOVJZkYQNSvkC6pyBANxEJh
+         dOa44DZ9kYCCrZEQERWF3jrp9OuCo0ZIm/xkDbTsPB2iQKw6tuQOD6SF8/6GMXKwWqVP
+         FZluJydRUrQ8BmZfQ8/tKmlbbkgCv+8+PbldjDsmPVbjT5RmHh6N6wOe/XSuk2CgYYRE
+         HOZQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1692129731; x=1692734531;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=tT5nENGTmtsOYaR4AN3QL0P9N1DvYamQQ82TaK4qYbI=;
+        b=EelbEOmU7uqmDMpj7HNpA61radnoXk97ZzGf1AvR/88FGKYlraQ0gfI62zTrNNQsP/
+         ePtJ2Yep9KS4oxNFYUIcWt5ZLlJq3VuNWW0BNp5DsVfJeEBsZA28bxyfyY2qR6TvWLgr
+         oHI5AGBjELZ//9ta/7sSFB0OsRQ5BIrO75vtKU3EevVzseah74PJDTQme0k1dEZVw7z4
+         0D63vAD3a+vTMzlMJlb6tYstgc59I+PrHhSXDR7+7qtm+XiKjS99OAjHCjQq4eRSmJlk
+         6+tsr1B2nFTDth5GjwgI++sgycGuyinxHIQQA01yC+RESxy3OgRjp+hf2Kw7pg2W/j+M
+         LSjQ==
+X-Gm-Message-State: AOJu0YzLldKwdjyIu5Z20Euv5gGLIVpczui2S28VZzjAIb0+mk7jhUp2
+        ifZAarN9OR8FbvnIAPWNV78=
+X-Google-Smtp-Source: AGHT+IGS8MmNpGPFfriIYC8OKL4AZomFcn3qdOXgE/pPXsyeZLsfp82UV4wMFbJrnbxGdo6TX2X4nw==
+X-Received: by 2002:a05:6e02:1b08:b0:347:70ae:542d with SMTP id i8-20020a056e021b0800b0034770ae542dmr19828995ilv.7.1692129731295;
+        Tue, 15 Aug 2023 13:02:11 -0700 (PDT)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id da25-20020a0566384a5900b004249d9e81besm3660836jab.131.2023.08.15.13.02.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 15 Aug 2023 13:02:10 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Date:   Tue, 15 Aug 2023 13:02:09 -0700
+From:   Guenter Roeck <linux@roeck-us.net>
+To:     RD Babiera <rdbabiera@google.com>
+Cc:     heikki.krogerus@linux.intel.com, gregkh@linuxfoundation.org,
+        badhri@google.com, linux-usb@vger.kernel.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v4] usb: typec: bus: verify partner exists in
+ typec_altmode_attention
+Message-ID: <794a4438-6414-4266-bb03-3b36614ba395@roeck-us.net>
+References: <20230814180559.923475-1-rdbabiera@google.com>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MN0PR12MB6101:EE_|DS7PR12MB6142:EE_
-X-MS-Office365-Filtering-Correlation-Id: 54f31212-39bb-45bc-1c83-08db9dbe99e8
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: sdpK13SsvmUZC6m9nbOIa0Qn5Z77RdU71oLXjdI/OZzMmrj98gXMjMGHh5mpXMzOmKFYJadMkLbdH9VWROXqjF6eWY5e36zx32gUxH22rdIxegdkqDFTkRBo6TN0xa22gFoLPmd2W2B414szJI8xYvb7dUq8LHze24IeWDboEC4LQLglk7cJTjG8u3x2zdnfjlHOCRYOHYs1QGcpJc3WxKAG91GU3OZt88uT9AjngJ5j/sbRomomCxOl0Jw2q1KffVnVeTdSaYQaNlk6CBE5Vo9p1aB5r74MmqmJAFH1VZstVj2L+aG5lY71ZkgtnqHwpC5Op268JyAYGIrELheMSDC7GsZxLNoztctTjRnQDakjiHI6NAq8karUVxD5VzXQ7dgj/R7XaqP6XOEvaVASRITa4+ZWhQza1HVrTFlQHFFJ0q3mxgrGIQiUHMZLm2ya9mga5xyWbCRQ+BM+XsJiMVQexC/dA8ULr4OXppLFjUUrbUKt7GSf18GQ0ak3vPxCpAUqukvIepJLe0IHPEdLsJEMP2C3H7HitLFAOOyTHWmKsT8XK328Okfmj1EXPScH8IjUNtu+ZsbMkwAP2NKqbl9NqMRdknYY3oWbOHD3pyAM+dgPC+otoxrNz0VDpdKmNGyJsMGSP6Lvu9uoovrAcK2vy1ji6hVteHcRjbjZCu8=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR12MB6101.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376002)(136003)(396003)(366004)(39860400002)(346002)(451199024)(1800799009)(186009)(26005)(6486002)(31686004)(38100700002)(53546011)(6506007)(54906003)(31696002)(86362001)(316002)(66946007)(36756003)(5660300002)(44832011)(478600001)(8936002)(8676002)(4326008)(83380400001)(41300700001)(66476007)(66556008)(2906002)(6512007)(966005)(2616005)(14143004)(43740500002)(45980500001);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?bUJLK1hqeW9IUXM4RkZ0YjA3Q2o4cjViSVY3TDJtUXVXTUVmaUFUMHJQWUFN?=
- =?utf-8?B?MkhVN0lTMlUzS05jNWNVQ3NOMGtvTXRpa3pqWVFUa2syVmxjWWJSdXdaanF5?=
- =?utf-8?B?Yk0rcldCaWdXMmI2eG5aSW4rZlk4SngxS3Y2U3JScHpDK1lrNkhNbmR4ZUk0?=
- =?utf-8?B?UWFUeXBTT1B0S090MUhXQklwSGpYejZvS3Rzc1JoS2ptMElzRUhFQ2o3RmZx?=
- =?utf-8?B?S2ZTSk1aMGozRzhtWkNzK21kNERRd0JVM2RlWUg0ZlVkV0JHakl0MEVWVTdZ?=
- =?utf-8?B?Q2JNRG9SUEV0SGMzNW9UZ2ZOSm5tZGJrQmVTN3dGdlVaM05rcXRtQVUvRVBU?=
- =?utf-8?B?Z2ZXcGp3dHM1VVV1QkdYNUtyUmdvMlFRZVF2NmZyR1diZFlsOFA5TVNlQTJr?=
- =?utf-8?B?ckNneTNSblJpendNTzhXcC9RdWRIanFqYVUydTNsaVgrbDVtVTMySmpMZjRG?=
- =?utf-8?B?YkpBY2N3NEJPRjZVb1RiYUoybXh6UlhxNHBJYVEzdkFOZnZIMGlvNkc5Sm5I?=
- =?utf-8?B?VjA3VzJmbVgybWVsT3EwNUsvbFJvMlI0VlNUajNLU2cxUFppSDhXbzdFRXBq?=
- =?utf-8?B?cERJSzFjaUZzdjFFeTlzdzFMZ2xmMFdMM2xSdjd6WTB6QkdmSy9XTkdxbjFx?=
- =?utf-8?B?eVBBaHdxM1J6MzdYd1dVSkRsUy9pMDFwQXl4NVNqU040aWdVOEluR1B0bmda?=
- =?utf-8?B?cHRsUkZYVnZuVEl0TWhPSGNvNFhMQlJEVDhHSFFjNzhmdzZ0RGhZNUw4ejlP?=
- =?utf-8?B?TlIzTnJHMUR6WDRHQkt5Ymw1MlN5L1VydXRUZ3lBNmczSGZ4N1RjbFFrVDZT?=
- =?utf-8?B?bzhHcXpRUkpNNGE3NEg4aTBuaGR6YjN2N2J5b3ozT1h5VWVvSVZsYzNkRTM0?=
- =?utf-8?B?V3lkMzZjcngwWUN1SWhtZGx2QmgxNTRVMjZwRWJhMnF5SkhjYnlEbEM5QjZI?=
- =?utf-8?B?U0ZiRVlHdXl0ZlBRWEN3amZzZHpVUGFLS2hWdmJmMVhBMENBbW05K2VJbVE4?=
- =?utf-8?B?SVZMN2llZzNZUk5aaERsbWplZktXNTBtbEpHUzd4V3IvSDlxVmQ4UU04Q2V5?=
- =?utf-8?B?cWt0VmRrQmhjWmJ4U0VjamJoRTBRY3hBUjZGeVYxSHk1TGlXdFpLUDRzNExn?=
- =?utf-8?B?bmV4a2xjMlR0UUNOTDZDbjc0eHp1bjhlaUVyd1RLY3BjNXlpb3hGRlpkVGV3?=
- =?utf-8?B?Tm50L3lVOTNDL25DSkJ3VC9mTng2TVpaQU0yTjk0a1NId25YQ1htaHhzRUg4?=
- =?utf-8?B?eTl4RnpXY2lPMk1weDNudUw5WVZ2Wnc1ZVFTNEZjcmdpVTA3a0VER3Y0REE1?=
- =?utf-8?B?ckUrOVN6ejF4aDBidDNrWUk3ei9iQVBQeGd4WnhJQzdVYlhoRGJYYXErWUxa?=
- =?utf-8?B?L3JtZWNXUTVaN1NXNVdaNXpIbmhIVjF1alExbFJkbkl6SW5PazdlNnhxKzM5?=
- =?utf-8?B?aFRUb0FCOFRsMVlKRHFUcDdZd004bXpQSFBPMG94dTdwYTUvcXhhL2hGcVJj?=
- =?utf-8?B?ZnZtMjUxOER5ZnpVeTZlZGFXN0tGS1Voc2wrckxac0JML01wV1Z3ZnYyVzFT?=
- =?utf-8?B?SWJ0NDF6T25mcnlYSVoxbFhtQ21uSUdCVTVWdzR0MXNCNFZEVHFCMWVBU1lG?=
- =?utf-8?B?VVp0Ull3ZE16Ukp2dnZSdTF6WW1Qays1QmNwbnJiNWZlelJGajU2dWdhdCtm?=
- =?utf-8?B?WjljV1ROSmlkNHlZc1RiZVM4NWxvTXdEeGtUSUhmVnd4Qnp5TzFqU2VlbTlV?=
- =?utf-8?B?cTFITS96MlRwLytYbEx1TTR6TmtRb3hsL0xPdlpNelZRQ2xuOE1LRkVjYkZu?=
- =?utf-8?B?NjU0U09iVnZuMGlmNU9IWDRob1pkcnBVaG5jeUdHc2xwRVVhRGZJUWZ3L3Jt?=
- =?utf-8?B?cEgxZG9UakZhSkxWQUJWT1hpTHk5Ukg1U1RubFBLQ2pZUHJrRGVnQXRDUUY4?=
- =?utf-8?B?YWE1V2FndDNsdnIzYjBxNEVvUlN0b3MvUVQwZWNia2ZMVDZQb0s4bTczVFhI?=
- =?utf-8?B?UmtIM2FOKzZ5TDhNbTJ3c2VzYzAvYm1LQ0VBdDU5dWNkUUxOV0dTWm9wUjVk?=
- =?utf-8?B?SUd3c3JoNlhtOFdoVUNhczRDR0d0SzF1T3JvMGlhb1p2Qjg2SE43ZHBWaitQ?=
- =?utf-8?Q?l2YhgVcuvenKJzehgzz+4BBN7?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 54f31212-39bb-45bc-1c83-08db9dbe99e8
-X-MS-Exchange-CrossTenant-AuthSource: MN0PR12MB6101.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Aug 2023 18:36:55.6633
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 9AxeH6BgLVmwiKMtEsXE6q9/fsc355URQHVdEk7WxEg1isvyTGGNyMeM9I2Mcjqi4t1viQPwKkRHOeihodrGJg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB6142
-X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230814180559.923475-1-rdbabiera@google.com>
+X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 8/15/2023 12:26, Hamza Mahfooz wrote:
-> fbcon requires that we implement &drm_framebuffer_funcs.dirty.
-> Otherwise, the framebuffer might take a while to flush (which would
-> manifest as noticeable lag). However, we can't enable this callback for
-> non-fbcon cases since it might cause too many atomic commits to be made
-> at once. So, implement amdgpu_dirtyfb() and only enable it for fbcon
-> framebuffers on devices that support atomic KMS.
+On Mon, Aug 14, 2023 at 06:05:59PM +0000, RD Babiera wrote:
+> Some usb hubs will negotiate DisplayPort Alt mode with the device
+> but will then negotiate a data role swap after entering the alt
+> mode. The data role swap causes the device to unregister all alt
+> modes, however the usb hub will still send Attention messages
+> even after failing to reregister the Alt Mode. type_altmode_attention
+> currently does not verify whether or not a device's altmode partner
+> exists, which results in a NULL pointer error when dereferencing
+> the typec_altmode and typec_altmode_ops belonging to the altmode
+> partner.
 > 
-> Cc: Aurabindo Pillai <aurabindo.pillai@amd.com>
-> Cc: Mario Limonciello <mario.limonciello@amd.com>
-> Cc: stable@vger.kernel.org # 6.1+
+> Verify the presence of a device's altmode partner before sending
+> the Attention message to the Alt Mode driver.
+> 
+> Fixes: 8a37d87d72f0 ("usb: typec: Bus type for alternate modes")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: RD Babiera <rdbabiera@google.com>
 
-This is safe specifically because other things like FB_DAMAGE_CLIPS have 
-come back to 6.1.y as well via f1edb2f58adb ("drm/amd/display: add 
-FB_DAMAGE_CLIPS support") and fixups to that.
-
-> Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2519
-> Signed-off-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
-
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
 
 > ---
-> v2: update variable names
+> Changes since v1:
+> * Only assigns pdev if altmode partner exists in typec_altmode_attention
+> * Removed error return in typec_altmode_attention if Alt Mode does
+>   not implement Attention messages.
+> * Changed tcpm_log message to indicate that altmode partner does not exist,
+>   as it only logs in that case.
 > ---
->   drivers/gpu/drm/amd/amdgpu/amdgpu_display.c | 26 ++++++++++++++++++++-
->   1 file changed, 25 insertions(+), 1 deletion(-)
+> Changes since v2:
+> * Changed tcpm_log message to accurately reflect error
+> * Revised commit message
+> ---
+> Changes since v3:
+> * Fixed nits
+> ---
+>  drivers/usb/typec/bus.c           | 12 ++++++++++--
+>  drivers/usb/typec/tcpm/tcpm.c     |  3 ++-
+>  include/linux/usb/typec_altmode.h |  2 +-
+>  3 files changed, 13 insertions(+), 4 deletions(-)
 > 
-> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_display.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_display.c
-> index d20dd3f852fc..d3b59f99cb7c 100644
-> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_display.c
-> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_display.c
-> @@ -38,6 +38,8 @@
->   #include <linux/pci.h>
->   #include <linux/pm_runtime.h>
->   #include <drm/drm_crtc_helper.h>
-> +#include <drm/drm_damage_helper.h>
-> +#include <drm/drm_drv.h>
->   #include <drm/drm_edid.h>
->   #include <drm/drm_fb_helper.h>
->   #include <drm/drm_gem_framebuffer_helper.h>
-> @@ -532,11 +534,29 @@ bool amdgpu_display_ddc_probe(struct amdgpu_connector *amdgpu_connector,
->   	return true;
->   }
->   
-> +static int amdgpu_dirtyfb(struct drm_framebuffer *fb, struct drm_file *file,
-> +			  unsigned int flags, unsigned int color,
-> +			  struct drm_clip_rect *clips, unsigned int num_clips)
-> +{
+> diff --git a/drivers/usb/typec/bus.c b/drivers/usb/typec/bus.c
+> index fe5b9a2e61f5..e95ec7e382bb 100644
+> --- a/drivers/usb/typec/bus.c
+> +++ b/drivers/usb/typec/bus.c
+> @@ -183,12 +183,20 @@ EXPORT_SYMBOL_GPL(typec_altmode_exit);
+>   *
+>   * Notifies the partner of @adev about Attention command.
+>   */
+> -void typec_altmode_attention(struct typec_altmode *adev, u32 vdo)
+> +int typec_altmode_attention(struct typec_altmode *adev, u32 vdo)
+>  {
+> -	struct typec_altmode *pdev = &to_altmode(adev)->partner->adev;
+> +	struct altmode *partner = to_altmode(adev)->partner;
+> +	struct typec_altmode *pdev;
 > +
-> +	if (strcmp(fb->comm, "[fbcon]"))
-> +		return -ENOSYS;
+> +	if (!partner)
+> +		return -ENODEV;
 > +
-> +	return drm_atomic_helper_dirtyfb(fb, file, flags, color, clips,
-> +					 num_clips);
-> +}
+> +	pdev = &partner->adev;
+>  
+>  	if (pdev->ops && pdev->ops->attention)
+>  		pdev->ops->attention(pdev, vdo);
 > +
->   static const struct drm_framebuffer_funcs amdgpu_fb_funcs = {
->   	.destroy = drm_gem_fb_destroy,
->   	.create_handle = drm_gem_fb_create_handle,
->   };
->   
-> +static const struct drm_framebuffer_funcs amdgpu_fb_funcs_atomic = {
-> +	.destroy = drm_gem_fb_destroy,
-> +	.create_handle = drm_gem_fb_create_handle,
-> +	.dirty = amdgpu_dirtyfb
-> +};
-> +
->   uint32_t amdgpu_display_supported_domains(struct amdgpu_device *adev,
->   					  uint64_t bo_flags)
->   {
-> @@ -1139,7 +1159,11 @@ static int amdgpu_display_gem_fb_verify_and_init(struct drm_device *dev,
->   	if (ret)
->   		goto err;
->   
-> -	ret = drm_framebuffer_init(dev, &rfb->base, &amdgpu_fb_funcs);
-> +	if (drm_drv_uses_atomic_modeset(dev))
-> +		ret = drm_framebuffer_init(dev, &rfb->base,
-> +					   &amdgpu_fb_funcs_atomic);
-> +	else
-> +		ret = drm_framebuffer_init(dev, &rfb->base, &amdgpu_fb_funcs);
->   
->   	if (ret)
->   		goto err;
-
+> +	return 0;
+>  }
+>  EXPORT_SYMBOL_GPL(typec_altmode_attention);
+>  
+> diff --git a/drivers/usb/typec/tcpm/tcpm.c b/drivers/usb/typec/tcpm/tcpm.c
+> index 5a7d8cc04628..77fe16190766 100644
+> --- a/drivers/usb/typec/tcpm/tcpm.c
+> +++ b/drivers/usb/typec/tcpm/tcpm.c
+> @@ -1877,7 +1877,8 @@ static void tcpm_handle_vdm_request(struct tcpm_port *port,
+>  			}
+>  			break;
+>  		case ADEV_ATTENTION:
+> -			typec_altmode_attention(adev, p[1]);
+> +			if (typec_altmode_attention(adev, p[1]))
+> +				tcpm_log(port, "typec_altmode_attention no port partner altmode");
+>  			break;
+>  		}
+>  	}
+> diff --git a/include/linux/usb/typec_altmode.h b/include/linux/usb/typec_altmode.h
+> index 350d49012659..28aeef8f9e7b 100644
+> --- a/include/linux/usb/typec_altmode.h
+> +++ b/include/linux/usb/typec_altmode.h
+> @@ -67,7 +67,7 @@ struct typec_altmode_ops {
+>  
+>  int typec_altmode_enter(struct typec_altmode *altmode, u32 *vdo);
+>  int typec_altmode_exit(struct typec_altmode *altmode);
+> -void typec_altmode_attention(struct typec_altmode *altmode, u32 vdo);
+> +int typec_altmode_attention(struct typec_altmode *altmode, u32 vdo);
+>  int typec_altmode_vdm(struct typec_altmode *altmode,
+>  		      const u32 header, const u32 *vdo, int count);
+>  int typec_altmode_notify(struct typec_altmode *altmode, unsigned long conf,
+> 
+> base-commit: f176638af476c6d46257cc3303f5c7cf47d5967d
+> -- 
+> 2.41.0.694.ge786442a9b-goog
+> 
