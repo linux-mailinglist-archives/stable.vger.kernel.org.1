@@ -2,136 +2,92 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 080F677C786
-	for <lists+stable@lfdr.de>; Tue, 15 Aug 2023 08:12:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DABEC77C7C4
+	for <lists+stable@lfdr.de>; Tue, 15 Aug 2023 08:29:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234810AbjHOGMH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 15 Aug 2023 02:12:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44880 "EHLO
+        id S230080AbjHOG3J (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 15 Aug 2023 02:29:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57888 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234919AbjHOGLn (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 15 Aug 2023 02:11:43 -0400
-Received: from mail-lj1-x236.google.com (mail-lj1-x236.google.com [IPv6:2a00:1450:4864:20::236])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 400541730
-        for <stable@vger.kernel.org>; Mon, 14 Aug 2023 23:11:41 -0700 (PDT)
-Received: by mail-lj1-x236.google.com with SMTP id 38308e7fff4ca-2b9338e4695so78751931fa.2
-        for <stable@vger.kernel.org>; Mon, 14 Aug 2023 23:11:41 -0700 (PDT)
+        with ESMTP id S235054AbjHOG3D (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 15 Aug 2023 02:29:03 -0400
+Received: from mail-lf1-x129.google.com (mail-lf1-x129.google.com [IPv6:2a00:1450:4864:20::129])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 079D0173C
+        for <stable@vger.kernel.org>; Mon, 14 Aug 2023 23:29:02 -0700 (PDT)
+Received: by mail-lf1-x129.google.com with SMTP id 2adb3069b0e04-4fe1b00fce2so7574427e87.3
+        for <stable@vger.kernel.org>; Mon, 14 Aug 2023 23:29:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1692079899; x=1692684699;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=+uRmlNp0zVeV/2xZq56pyWJycC87MI6SKt4lbuSPPaQ=;
-        b=RixMO+c72EN6CMA7cwO5cA40NZSIJCAL+YfvbGxtQi+qNWO77CYMEAkmlEZxPxVf+2
-         oFEuEI8Wy3NAjfomoBrafT/Vfd3w2go6PjwAwtZykgf8RfTSe4GNd/dPbck4k7k941V4
-         lsp/oC9NwnAZ91FjPDv3CZubs8ntI5LYx38xWs+H+EMgAdEyLpIZxS2biBJBOwIZOeS6
-         HRHfp35h2nKMP79/32GIB8HZSp+aOm6F85pE4T1JpCLdwPOQSr1DXuxj8NovkE92UeiP
-         ZmJVDJCBikEbRpWB8Lj2WQirBPd9v023p6KiOJlmaw55JViZttGWmjStw3wmc7sRkNBI
-         4tKQ==
+        d=linuxfoundation.org; s=google; t=1692080940; x=1692685740;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=ludy8s71/IVequuRzsey/0aGXZOas5qhy1/o2Tc5egU=;
+        b=R9HJDB3o2BKpiuDxOVG83IJyv8w8Tp4qjYRcn1F+t0LmvM/uIGFT8rq0O4QwLXu7Qq
+         OtcXdsTcaf5r1a5UmoQCj3Pti1Rp/j2Ewr05MClnPRjEo7eJEtyRbQgGU8ARmpELtRHI
+         ve8abFSll7ZVVPGNGpkCzXAPV1nJaCmWU0YZM=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692079899; x=1692684699;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=+uRmlNp0zVeV/2xZq56pyWJycC87MI6SKt4lbuSPPaQ=;
-        b=KFkVwcJIyPrr++Uj5aV2BUX2zeB6Wo9E6P58eCSuKyOobv5xYtO0yMm6nYdoGnaCDi
-         9jeKLIhdJiBMJAjYvr5Znl1qNdK43oZQsr/5V2UYyH6esu4ZB3WGsINmoyrykPxcL0gb
-         /+8F12KaxK4cqdtua4s1xlj5MWvm5kvVlVT6uI3R7EJsnNDlH+mtgOxW+unzZsSyKRbE
-         iv71TPZjpxoUSIZcS4zGufzVbiUHCmnczSuO9Zsjg62HoAnSI79O1x+I4za/WbH18J1n
-         PaTkgM8Hz6VPn1iuWMvPbH8vh8XE+g7ZWaPtI0Rl5lF3T+nyKSZu7yGcoOtvwh/xHUxu
-         7Plw==
-X-Gm-Message-State: AOJu0YySnIixEHY+JzeLb4sRMwzRtcKgTQsu4PLxwaVPat5OAcmnbXbU
-        FTGW12IIpd1Bodk9UBjjBD8vT0gpFcG6jp1x4P1zxQi1Gp5TVw==
-X-Google-Smtp-Source: AGHT+IFQSCQw7lJnipy721GFX6ZIrO8Uvr6+vFiWWFVsa/Y8aqt4FOFC3qMVy58dw3me6QoZzaGkVuZsC/YFS2aBofM=
-X-Received: by 2002:a2e:b0dc:0:b0:2b9:dfd1:3803 with SMTP id
- g28-20020a2eb0dc000000b002b9dfd13803mr8691959ljl.30.1692079899079; Mon, 14
- Aug 2023 23:11:39 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1692080940; x=1692685740;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ludy8s71/IVequuRzsey/0aGXZOas5qhy1/o2Tc5egU=;
+        b=JCjboXeWIaehg+g6PG9exI7r6omKDVy7Nvah1e6yMxlOzBV+aqrqPNVwyP6xf9hTq6
+         bQM55zqx3algMEeIpA9DOopF3lu+NDN5bP8va0qvO7u87IWvKYW/xnyJOi+HKchufoJ3
+         Gwj7p05ChnLJWzwy+a9+iKJ1+OIC+6vxJCegzTT9ZnOIddfkmHkHYv6VyRQdTeZEqu9v
+         iCvbcIJvJ3c+XqSbNEo1xVRIPmn5XW7Shmro7NQMvEDzXDmz/IoMHre886GiWtwMzwbR
+         llTaeNflUx62ocQuZmZmafSiIGXpYhxRiOtDlgla32PXdMzNVP11drMeHtwLwTpeGFAb
+         Pa0A==
+X-Gm-Message-State: AOJu0YwSmYAdJYJTemHdxfQkTThll1qcW0fj/CtUTrr04VLPCpSsX5Df
+        lBDmfoaYrIgsUUGzfk2DD3lAwzsr5MYtTSzwdmkpVg==
+X-Google-Smtp-Source: AGHT+IG4baKVGgDn3WoawnLHLNLEzp4YlwCBeCoKQsO9EgEe19j4x2LxBnizwWirmAsHG1t+lt2/VA==
+X-Received: by 2002:a05:6512:78c:b0:4fe:db6:cb3a with SMTP id x12-20020a056512078c00b004fe0db6cb3amr7336144lfr.22.1692080940262;
+        Mon, 14 Aug 2023 23:29:00 -0700 (PDT)
+Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com. [209.85.167.43])
+        by smtp.gmail.com with ESMTPSA id u19-20020ac24c33000000b004fa52552c7csm2291347lfq.151.2023.08.14.23.28.58
+        for <stable@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 14 Aug 2023 23:28:58 -0700 (PDT)
+Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-4ff88239785so198585e87.0
+        for <stable@vger.kernel.org>; Mon, 14 Aug 2023 23:28:58 -0700 (PDT)
+X-Received: by 2002:a05:6512:60a:b0:4fe:ae7:d906 with SMTP id
+ b10-20020a056512060a00b004fe0ae7d906mr6932731lfe.65.1692080938440; Mon, 14
+ Aug 2023 23:28:58 -0700 (PDT)
 MIME-Version: 1.0
 References: <CA+prNOpqd2Tk1tiBAa9MT6ZPxB5gj9ftxOhaZ-u1WEay9H-oHQ@mail.gmail.com>
- <20230815053132.GB22301@1wt.eu>
-In-Reply-To: <20230815053132.GB22301@1wt.eu>
-From:   Xuancong Wang <xuancong84@gmail.com>
-Date:   Tue, 15 Aug 2023 14:11:28 +0800
-Message-ID: <CA+prNOrUVWM9-vozUZyW49-m=qFWZR3JAtikZb4T1EimV0ZCDw@mail.gmail.com>
+ <20230815053132.GB22301@1wt.eu> <CA+prNOrUVWM9-vozUZyW49-m=qFWZR3JAtikZb4T1EimV0ZCDw@mail.gmail.com>
+In-Reply-To: <CA+prNOrUVWM9-vozUZyW49-m=qFWZR3JAtikZb4T1EimV0ZCDw@mail.gmail.com>
+From:   Linus Torvalds <torvalds@linuxfoundation.org>
+Date:   Tue, 15 Aug 2023 06:28:41 +0000
+X-Gmail-Original-Message-ID: <CAHk-=wgDbr7dw0GP4zEkPu5X2mME3YH9t0+cP8Avs3m0KZxbCQ@mail.gmail.com>
+Message-ID: <CAHk-=wgDbr7dw0GP4zEkPu5X2mME3YH9t0+cP8Avs3m0KZxbCQ@mail.gmail.com>
 Subject: Re: A small bug in file access control that all have neglected
-To:     Willy Tarreau <w@1wt.eu>
-Cc:     security@kernel.org, stable@vger.kernel.org,
-        regressions@lists.linux.dev
+To:     Xuancong Wang <xuancong84@gmail.com>
+Cc:     Willy Tarreau <w@1wt.eu>, security@kernel.org,
+        stable@vger.kernel.org, regressions@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Yes, by "full access", I mean `chmod 777`. You can easily reproduce
-this bug on any Linux machine by typing the following commands:
+On Tue, 15 Aug 2023 at 06:11, Xuancong Wang <xuancong84@gmail.com> wrote:
+>
+> Yes, by "full access", I mean `chmod 777`. You can easily reproduce
+> this bug on any Linux machine by typing the following commands:
 
-xuancong@mx:~$ sudo su
-root@mx:/home/xuancong# echo yes >a
-root@mx:/home/xuancong# chmod 777 a
-root@mx:/home/xuancong#
-exit
-xuancong@mx:~$ echo no >>a
-xuancong@mx:~$ cat a
-yes
-no
-xuancong@mx:~$ ls -al a
--rwxrwxrwx 1 root root 7 Aug 15 14:08 a
-xuancong@mx:~$ touch -m a
-touch: setting times of 'a': Operation not permitted
-xuancong@mx:~$ python -c "import os,sys;os.utime('a',(1,1))"
-Traceback (most recent call last):
-  File "<string>", line 1, in <module>
-PermissionError: [Errno 1] Operation not permitted
+This is how things are supposed to work. The 0777 permissions mean
+that you can read, write and execute the file. They do not mean that
+you own the file.
 
+As a non-owner, you can set the access and modification times  the
+same way you could by just reading and writing to the file. So if you
+set mtime, you have to set ctime ("change time") too.
 
-Cheers,
-Xuancong
+To actually change times arbitrarily and with other patterns, you need
+to actually own the file.
 
-On Tue, Aug 15, 2023 at 1:31=E2=80=AFPM Willy Tarreau <w@1wt.eu> wrote:
->
-> Hello,
->
-> On Tue, Aug 15, 2023 at 11:42:55AM +0800, Xuancong Wang wrote:
-> > Dear all,
-> >
-> > I found in all versions of Linux (at least for kernel version 4/5/6), t=
-he
-> > following bug exists:
-> > When a user is granted full access to a file of which he is not the own=
-er,
-> > he can read/write/delete the file, but cannot "change only its last
-> > modification date". In particular, `touch -m` fails and Python's
-> > `os.utime()` also fails with "Operation not permitted", but `touch` wit=
-hout
-> > -m works.
-> >
-> > This applies to both FACL extended permission as well as basic Linux fi=
-le
-> > permission.
-> >
-> > Thank you for fixing this in the future!
->
-> Your description is unclear to me, particularly what you call "is
-> granted full access": do you mean chmod here ? If so, you can't
-> delete it, so maybe you mean something else ? You should share a
-> full reproducer showing the problem. Also, the fact that one
-> command (touch) works and another one (python) does not indicates
-> they don't do the same thing. So I suspect it's more related to
-> the way the file is accessed where both commands use different
-> semantics. As such, using strace on both commands showing the
-> sequence accessing that file will reveal the difference and very
-> likely explain why one can and the other cannot change the last
-> modification date.
->
-> Willy
->
-> PS: there's no need to keep security@ here, it's used to dispatch
->     issues to maintainers and coordinate fixes, now that your report
->     is public it will not bring anything anymore.
+             Linus
