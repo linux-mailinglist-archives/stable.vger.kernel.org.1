@@ -2,162 +2,190 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E32A277CB16
-	for <lists+stable@lfdr.de>; Tue, 15 Aug 2023 12:20:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 57CDB77CB7D
+	for <lists+stable@lfdr.de>; Tue, 15 Aug 2023 13:07:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236380AbjHOKTg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 15 Aug 2023 06:19:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40464 "EHLO
+        id S236567AbjHOLHM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 15 Aug 2023 07:07:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42746 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236385AbjHOKTP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 15 Aug 2023 06:19:15 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B57B115
-        for <stable@vger.kernel.org>; Tue, 15 Aug 2023 03:19:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1692094754; x=1723630754;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=ZwudxVOEqX7y3DSNyKC+Qf9C63chH+gEjZJLdd1Mve8=;
-  b=g5aqB4gL5zMN4LS0YRVg8Yp3L9dLBiRxO1SJv2T9M6Dzwe0QlqU9k2Dw
-   +kwUjIEhyZn2JORVYpyGgpCQ+5fzpyJJw1KbUTILZFceFHJAWK1spamCk
-   5BACIUgjLG+Gz66uAA539oxLOMzJE5ELitlbkQa0uKmcIDkufr83mlath
-   scMRmP9afJ0dzbqv4KRV+eYpQjF8Tzumpv6S7NRBWWCO1aaAxIrBiDNCX
-   KVVbdgrmG7IO71sf23pp+exrHtZKICNlcD5n/mBgK+xiNP+3B61SziBw9
-   nnzy9ftQKpe+SJUyolWzzRVMiQne3uPKYi8OE0rYFoxF78z1jcx8BAKhl
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10802"; a="351835823"
-X-IronPort-AV: E=Sophos;i="6.01,174,1684825200"; 
-   d="scan'208";a="351835823"
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Aug 2023 03:19:13 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10802"; a="683611422"
-X-IronPort-AV: E=Sophos;i="6.01,174,1684825200"; 
-   d="scan'208";a="683611422"
-Received: from cristina-mobl3.ger.corp.intel.com (HELO localhost) ([10.252.52.75])
-  by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Aug 2023 03:19:11 -0700
-From:   Jani Nikula <jani.nikula@intel.com>
-To:     dri-devel@lists.freedesktop.org
-Cc:     intel-gfx@lists.freedesktop.org, ville.syrjala@linux.intel.com,
-        Jani Nikula <jani.nikula@intel.com>, stable@vger.kernel.org
-Subject: [PATCH] Revert "drm/edid: Fix csync detailed mode parsing"
-Date:   Tue, 15 Aug 2023 13:19:07 +0300
-Message-Id: <20230815101907.2900768-1-jani.nikula@intel.com>
-X-Mailer: git-send-email 2.39.2
+        with ESMTP id S236749AbjHOLGy (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 15 Aug 2023 07:06:54 -0400
+Received: from mail-lj1-x232.google.com (mail-lj1-x232.google.com [IPv6:2a00:1450:4864:20::232])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69EC61BD3
+        for <stable@vger.kernel.org>; Tue, 15 Aug 2023 04:06:37 -0700 (PDT)
+Received: by mail-lj1-x232.google.com with SMTP id 38308e7fff4ca-2b9a828c920so80188511fa.1
+        for <stable@vger.kernel.org>; Tue, 15 Aug 2023 04:06:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1692097591; x=1692702391;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=9QB9PMpIHxMSl15jEhQj2gUyUbqxC8jr5ruom3EkY7U=;
+        b=uZ9Pyq7+10EJjDPyRf5UqN3TIkIWm3We9xpznQgvTiZKVHFezbTxkaYLE9RdXGeS4h
+         kekfa+BbdjT83BQ9rZqKNj7Mg6ceouZx2aGeJPtfMBvsbU8m2Kaq43b6nTDdeb9uYBiy
+         DwlcciUQPHv3h6pt2dUu7WZa5V6160P5vawx5gzqloB9zg155vY1hUo8Cn/CvhsJs22w
+         NeGYb06D3FZc+qfrPRTRBMxEjrhFfFe+LP2Fv9Wkvfiq21nr1uyNirj4iEpRxE6epSYJ
+         PuTeR8cO5XTnNeM2YCRnoa66nbT1xbmL6sGzLzJnkpq9vIqYSe4qr+aJEyYH7NLu8orG
+         SB3Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1692097591; x=1692702391;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=9QB9PMpIHxMSl15jEhQj2gUyUbqxC8jr5ruom3EkY7U=;
+        b=lMcVNDrUMa/GlDA6mIBXmQat4+8qXg2yy9acRol42L2QF+LHQE7EYCKnQBAsMsnBgM
+         YeEohCJEmgMqcHxN/7wpfOMiFzt370nezIe8g+mbUsFjMb0/1rgyx5QPFuxfy6xBw8ZK
+         F/V0Sp88WU2u5E5WTSMMJ2M2ZiBxX+ifZq8xCfr6plx/LB6d8IA1MyutIxdR3M9EINmN
+         1Wy23Me5n/nsUk8FCNeJBti8zCS1nVnhvF77NK9ThvF/KB2R8cGSObMwCEfo+tSEL3Kn
+         o367q15ypsi0T9AcMOKjtYPQ/wP2iqdpzW0+zS16mPQ+IvA8XDqVYuZSbZx4l4By/+dq
+         DZLQ==
+X-Gm-Message-State: AOJu0YyOjAhe1deOMJ9X4JrbHmNtXPcOINLCTF7CSDDcTf62T2wByz2z
+        JCdvLjgEOplHXfMz5c9QlY3mnw==
+X-Google-Smtp-Source: AGHT+IHFchTlULqciOQ9mFT5NakM1xgtrE/pnBhEiYjYqW2OdfYK6GfZqAb0ySIOgTvvuZ+tKjtkIw==
+X-Received: by 2002:a2e:80d3:0:b0:2bb:8eea:755a with SMTP id r19-20020a2e80d3000000b002bb8eea755amr676100ljg.49.1692097591089;
+        Tue, 15 Aug 2023 04:06:31 -0700 (PDT)
+Received: from krzk-bin.. ([178.197.214.188])
+        by smtp.gmail.com with ESMTPSA id i23-20020a170906265700b00991bba473e2sm6852642ejc.85.2023.08.15.04.06.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 15 Aug 2023 04:06:30 -0700 (PDT)
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+To:     Bjorn Andersson <andersson@kernel.org>,
+        Andy Gross <agross@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+        linux-arm-msm@vger.kernel.org, linux-gpio@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        stable@vger.kernel.org
+Subject: [PATCH] pinctrl: qcom: lpass-lpi: fix concurrent register updates
+Date:   Tue, 15 Aug 2023 13:06:25 +0200
+Message-Id: <20230815110625.317971-1-krzysztof.kozlowski@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-This reverts commit ca62297b2085b5b3168bd891ca24862242c635a1.
+The Qualcomm LPASS LPI pin controller driver uses one lock for guarding
+Read-Modify-Write code for slew rate registers.  However the pin
+configuration and muxing registers have exactly the same RMW code but
+are not protected.
 
-Commit ca62297b2085 ("drm/edid: Fix csync detailed mode parsing") fixed
-EDID detailed mode sync parsing. Unfortunately, there are quite a few
-displays out there that have bogus (zero) sync field that are broken by
-the change. Zero means analog composite sync, which is not right for
-digital displays, and the modes get rejected. Regardless, it used to
-work, and it needs to continue to work. Revert the change.
+Pin controller framework does not provide locking here, thus it is
+possible to trigger simultaneous change of pin configuration registers
+resulting in non-atomic changes.
 
-Rejecting modes with analog composite sync was the part that fixed the
-gitlab issue 8146 [1]. We'll need to get back to the drawing board with
-that.
+Protect from concurrent access by re-using the same lock used to cover
+the slew rate register.  Using the same lock instead of adding second
+one will make more sense, once we add support for newer Qualcomm SoC,
+where slew rate is configured in the same register as pin
+configuration/muxing.
 
-[1] https://gitlab.freedesktop.org/drm/intel/-/issues/8146
-
-Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/8789
-Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/8930
-Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/9044
-Fixes: ca62297b2085 ("drm/edid: Fix csync detailed mode parsing")
-Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Cc: dri-devel@lists.freedesktop.org
-Cc: <stable@vger.kernel.org> # v6.4+
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+Fixes: 6e261d1090d6 ("pinctrl: qcom: Add sm8250 lpass lpi pinctrl driver")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 ---
- drivers/gpu/drm/drm_edid.c | 29 ++++++++---------------------
- include/drm/drm_edid.h     | 12 +++---------
- 2 files changed, 11 insertions(+), 30 deletions(-)
+ drivers/pinctrl/qcom/pinctrl-lpass-lpi.c | 17 +++++++++++------
+ 1 file changed, 11 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/gpu/drm/drm_edid.c b/drivers/gpu/drm/drm_edid.c
-index f95152fac427..340da8257b51 100644
---- a/drivers/gpu/drm/drm_edid.c
-+++ b/drivers/gpu/drm/drm_edid.c
-@@ -3457,6 +3457,10 @@ static struct drm_display_mode *drm_mode_detailed(struct drm_connector *connecto
- 			    connector->base.id, connector->name);
- 		return NULL;
+diff --git a/drivers/pinctrl/qcom/pinctrl-lpass-lpi.c b/drivers/pinctrl/qcom/pinctrl-lpass-lpi.c
+index e5a418026ba3..0b2839d27fd6 100644
+--- a/drivers/pinctrl/qcom/pinctrl-lpass-lpi.c
++++ b/drivers/pinctrl/qcom/pinctrl-lpass-lpi.c
+@@ -32,7 +32,8 @@ struct lpi_pinctrl {
+ 	char __iomem *tlmm_base;
+ 	char __iomem *slew_base;
+ 	struct clk_bulk_data clks[MAX_LPI_NUM_CLKS];
+-	struct mutex slew_access_lock;
++	/* Protects from concurrent register updates */
++	struct mutex lock;
+ 	DECLARE_BITMAP(ever_gpio, MAX_NR_GPIO);
+ 	const struct lpi_pinctrl_variant_data *data;
+ };
+@@ -103,6 +104,7 @@ static int lpi_gpio_set_mux(struct pinctrl_dev *pctldev, unsigned int function,
+ 	if (WARN_ON(i == g->nfuncs))
+ 		return -EINVAL;
+ 
++	mutex_lock(&pctrl->lock);
+ 	val = lpi_gpio_read(pctrl, pin, LPI_GPIO_CFG_REG);
+ 
+ 	/*
+@@ -128,6 +130,7 @@ static int lpi_gpio_set_mux(struct pinctrl_dev *pctldev, unsigned int function,
+ 
+ 	u32p_replace_bits(&val, i, LPI_GPIO_FUNCTION_MASK);
+ 	lpi_gpio_write(pctrl, pin, LPI_GPIO_CFG_REG, val);
++	mutex_unlock(&pctrl->lock);
+ 
+ 	return 0;
+ }
+@@ -233,14 +236,14 @@ static int lpi_config_set(struct pinctrl_dev *pctldev, unsigned int group,
+ 			if (slew_offset == LPI_NO_SLEW)
+ 				break;
+ 
+-			mutex_lock(&pctrl->slew_access_lock);
++			mutex_lock(&pctrl->lock);
+ 
+ 			sval = ioread32(pctrl->slew_base + LPI_SLEW_RATE_CTL_REG);
+ 			sval &= ~(LPI_SLEW_RATE_MASK << slew_offset);
+ 			sval |= arg << slew_offset;
+ 			iowrite32(sval, pctrl->slew_base + LPI_SLEW_RATE_CTL_REG);
+ 
+-			mutex_unlock(&pctrl->slew_access_lock);
++			mutex_unlock(&pctrl->lock);
+ 			break;
+ 		default:
+ 			return -EINVAL;
+@@ -256,6 +259,7 @@ static int lpi_config_set(struct pinctrl_dev *pctldev, unsigned int group,
+ 		lpi_gpio_write(pctrl, group, LPI_GPIO_VALUE_REG, val);
  	}
-+	if (!(pt->misc & DRM_EDID_PT_SEPARATE_SYNC)) {
-+		drm_dbg_kms(dev, "[CONNECTOR:%d:%s] Composite sync not supported\n",
-+			    connector->base.id, connector->name);
-+	}
  
- 	/* it is incorrect if hsync/vsync width is zero */
- 	if (!hsync_pulse_width || !vsync_pulse_width) {
-@@ -3503,27 +3507,10 @@ static struct drm_display_mode *drm_mode_detailed(struct drm_connector *connecto
- 	if (info->quirks & EDID_QUIRK_DETAILED_SYNC_PP) {
- 		mode->flags |= DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC;
- 	} else {
--		switch (pt->misc & DRM_EDID_PT_SYNC_MASK) {
--		case DRM_EDID_PT_ANALOG_CSYNC:
--		case DRM_EDID_PT_BIPOLAR_ANALOG_CSYNC:
--			drm_dbg_kms(dev, "[CONNECTOR:%d:%s] Analog composite sync!\n",
--				    connector->base.id, connector->name);
--			mode->flags |= DRM_MODE_FLAG_CSYNC | DRM_MODE_FLAG_NCSYNC;
--			break;
--		case DRM_EDID_PT_DIGITAL_CSYNC:
--			drm_dbg_kms(dev, "[CONNECTOR:%d:%s] Digital composite sync!\n",
--				    connector->base.id, connector->name);
--			mode->flags |= DRM_MODE_FLAG_CSYNC;
--			mode->flags |= (pt->misc & DRM_EDID_PT_HSYNC_POSITIVE) ?
--				DRM_MODE_FLAG_PCSYNC : DRM_MODE_FLAG_NCSYNC;
--			break;
--		case DRM_EDID_PT_DIGITAL_SEPARATE_SYNC:
--			mode->flags |= (pt->misc & DRM_EDID_PT_HSYNC_POSITIVE) ?
--				DRM_MODE_FLAG_PHSYNC : DRM_MODE_FLAG_NHSYNC;
--			mode->flags |= (pt->misc & DRM_EDID_PT_VSYNC_POSITIVE) ?
--				DRM_MODE_FLAG_PVSYNC : DRM_MODE_FLAG_NVSYNC;
--			break;
--		}
-+		mode->flags |= (pt->misc & DRM_EDID_PT_HSYNC_POSITIVE) ?
-+			DRM_MODE_FLAG_PHSYNC : DRM_MODE_FLAG_NHSYNC;
-+		mode->flags |= (pt->misc & DRM_EDID_PT_VSYNC_POSITIVE) ?
-+			DRM_MODE_FLAG_PVSYNC : DRM_MODE_FLAG_NVSYNC;
- 	}
++	mutex_lock(&pctrl->lock);
+ 	val = lpi_gpio_read(pctrl, group, LPI_GPIO_CFG_REG);
  
- set_size:
-diff --git a/include/drm/drm_edid.h b/include/drm/drm_edid.h
-index 169755d3de19..48e93f909ef6 100644
---- a/include/drm/drm_edid.h
-+++ b/include/drm/drm_edid.h
-@@ -61,15 +61,9 @@ struct std_timing {
- 	u8 vfreq_aspect;
- } __attribute__((packed));
+ 	u32p_replace_bits(&val, pullup, LPI_GPIO_PULL_MASK);
+@@ -264,6 +268,7 @@ static int lpi_config_set(struct pinctrl_dev *pctldev, unsigned int group,
+ 	u32p_replace_bits(&val, output_enabled, LPI_GPIO_OE_MASK);
  
--#define DRM_EDID_PT_SYNC_MASK              (3 << 3)
--# define DRM_EDID_PT_ANALOG_CSYNC          (0 << 3)
--# define DRM_EDID_PT_BIPOLAR_ANALOG_CSYNC  (1 << 3)
--# define DRM_EDID_PT_DIGITAL_CSYNC         (2 << 3)
--#  define DRM_EDID_PT_CSYNC_ON_RGB         (1 << 1) /* analog csync only */
--#  define DRM_EDID_PT_CSYNC_SERRATE        (1 << 2)
--# define DRM_EDID_PT_DIGITAL_SEPARATE_SYNC (3 << 3)
--#  define DRM_EDID_PT_HSYNC_POSITIVE       (1 << 1) /* also digital csync */
--#  define DRM_EDID_PT_VSYNC_POSITIVE       (1 << 2)
-+#define DRM_EDID_PT_HSYNC_POSITIVE (1 << 1)
-+#define DRM_EDID_PT_VSYNC_POSITIVE (1 << 2)
-+#define DRM_EDID_PT_SEPARATE_SYNC  (3 << 3)
- #define DRM_EDID_PT_STEREO         (1 << 5)
- #define DRM_EDID_PT_INTERLACED     (1 << 7)
+ 	lpi_gpio_write(pctrl, group, LPI_GPIO_CFG_REG, val);
++	mutex_unlock(&pctrl->lock);
  
+ 	return 0;
+ }
+@@ -461,7 +466,7 @@ int lpi_pinctrl_probe(struct platform_device *pdev)
+ 	pctrl->chip.label = dev_name(dev);
+ 	pctrl->chip.can_sleep = false;
+ 
+-	mutex_init(&pctrl->slew_access_lock);
++	mutex_init(&pctrl->lock);
+ 
+ 	pctrl->ctrl = devm_pinctrl_register(dev, &pctrl->desc, pctrl);
+ 	if (IS_ERR(pctrl->ctrl)) {
+@@ -483,7 +488,7 @@ int lpi_pinctrl_probe(struct platform_device *pdev)
+ 	return 0;
+ 
+ err_pinctrl:
+-	mutex_destroy(&pctrl->slew_access_lock);
++	mutex_destroy(&pctrl->lock);
+ 	clk_bulk_disable_unprepare(MAX_LPI_NUM_CLKS, pctrl->clks);
+ 
+ 	return ret;
+@@ -495,7 +500,7 @@ int lpi_pinctrl_remove(struct platform_device *pdev)
+ 	struct lpi_pinctrl *pctrl = platform_get_drvdata(pdev);
+ 	int i;
+ 
+-	mutex_destroy(&pctrl->slew_access_lock);
++	mutex_destroy(&pctrl->lock);
+ 	clk_bulk_disable_unprepare(MAX_LPI_NUM_CLKS, pctrl->clks);
+ 
+ 	for (i = 0; i < pctrl->data->npins; i++)
 -- 
-2.39.2
+2.34.1
 
