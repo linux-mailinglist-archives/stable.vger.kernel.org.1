@@ -2,135 +2,128 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AF72577D17D
-	for <lists+stable@lfdr.de>; Tue, 15 Aug 2023 20:07:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9031B77D1AE
+	for <lists+stable@lfdr.de>; Tue, 15 Aug 2023 20:24:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234958AbjHOSHK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 15 Aug 2023 14:07:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42566 "EHLO
+        id S239036AbjHOSXc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 15 Aug 2023 14:23:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46354 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237657AbjHOSHF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 15 Aug 2023 14:07:05 -0400
-Received: from mail-pf1-x449.google.com (mail-pf1-x449.google.com [IPv6:2607:f8b0:4864:20::449])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4DDC41987
-        for <stable@vger.kernel.org>; Tue, 15 Aug 2023 11:07:04 -0700 (PDT)
-Received: by mail-pf1-x449.google.com with SMTP id d2e1a72fcca58-68732996d32so10157838b3a.3
-        for <stable@vger.kernel.org>; Tue, 15 Aug 2023 11:07:04 -0700 (PDT)
+        with ESMTP id S239049AbjHOSXD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 15 Aug 2023 14:23:03 -0400
+Received: from mail-lf1-x136.google.com (mail-lf1-x136.google.com [IPv6:2a00:1450:4864:20::136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7AEF71BC3
+        for <stable@vger.kernel.org>; Tue, 15 Aug 2023 11:23:01 -0700 (PDT)
+Received: by mail-lf1-x136.google.com with SMTP id 2adb3069b0e04-4fe7e67cc77so9369966e87.2
+        for <stable@vger.kernel.org>; Tue, 15 Aug 2023 11:23:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1692122824; x=1692727624;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZzlqVQrvz1LgR4zEI0c7q19btoRHqsnter3MWimoxGE=;
-        b=hiG8r7vPGqJNmNnWdDT9KHbb9KQdwVUQGMlS3dO6/2ADa5Eit6K3IeYEKLkEJWL6ni
-         HVNl4DsZikpjBn6rR5Dxj2/INtElRybVMIKBl+XVSjgUQNHgvsVQY1vC8pFNyC4ae2vF
-         XtmiWUDthUcSeyungNkTDq8xXJJdwPms+Yjchjy6bHcshtQMWmrYzrwRMTcgjyK2CPcx
-         e86QXndoI6yBstB60XMtDBnimtFEg+M6YBo3mK8VU+w1WpAWXXCR8/IPDiFIC/f2jtgu
-         vPT5cmzE+bi2AXREOAN2gSs4zIDgJSoEf0NFqI1gXKLVTSCmmsRomzGJyIHJmml1GDz0
-         Pa1w==
+        d=ionos.com; s=google; t=1692123780; x=1692728580;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=75p/Ga3OF+rL1HqSOI9gCDFvimOS3BgZhss1tX+cqHo=;
+        b=a9nDnGEGMcDJVZOvNqJk532O22A1oTj0ctz3bNuNN0dCOFVtDqfkp70Z08IrusG1ym
+         UlP4QTYG4GvZXeMiwlBdf7fRJIGezYpZxFQk8FkFTJNqsGcMfzGt999WuOAblTQ7iukA
+         fZ4gn4FckYhd9gKCWRaoyyZIHGaZFFHrxJVWoZku3tdUAbBHtYY53MqapIChAwOd5rri
+         yIBlJ4hy3K8biJXuSGl6+JUwdcTrlCPr30XNpPP3LHhAJ3vCXoApdClmWn1DUsrV4W6M
+         MfHJHppBfNnJueUZFRS20LvfttAEkcqh34ISq4jeYN1u11U4G35KoU/tb9+PnYzFYn8q
+         o9Vw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692122824; x=1692727624;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZzlqVQrvz1LgR4zEI0c7q19btoRHqsnter3MWimoxGE=;
-        b=Ma6ZKQrIczmpjI7NGoEOlh2k5ecLfPcPSTerAMWfgZZG+l5uPFDNrxMpPwmnwGPl+o
-         Wdx5dvaPgNvoCHBLPyx4/Ak19FXDw9E85JCVn6A8s0v4FgJrVqXMPRlHwjET6up8YTAX
-         BIS3jNHz0GRO4ey1JnM3l+mmf1N1z78hwBv7xEdHzGNz04z+m7gSmQwESOKWLoOYpSx+
-         xPhHEf4I4JSvqEaUyDvV6TV79UFQqY+Cz3x6SUUFIXDqCE8rtj84KwJd0vdfcJ8inJ1n
-         iG5Q2oqqsV3EQ1iLlftZopQy3/k+U23ZcqNbFCL0sVN8zFmdS8/Nz3nhI8cZ9gx/mWP0
-         C4IQ==
-X-Gm-Message-State: AOJu0Yy1jSDIghQI8+ZW1PaeL+3IuCvZAG8P9sLmv6BZ/GdUW1lMJYgM
-        6CfU0oyqMYwnGQycBQpBdnb6arT+DFgcZSVAnzwra2toTn7Bjyygee0PrSvEDnUZPEPBQ5ixm4K
-        pUFuvYUQ7Y/NqaH0dTbDuKc2gAlMVtJWs/tG5WsmlwayCNEJOmVlsJ/GV+XeU68slvPU=
-X-Google-Smtp-Source: AGHT+IFCfr4RjMfwdl7ViWc4OoIvxbxXoIYX5CJHfWNKEzrjjI1q0NtHNi/76Hj6tC9JGv96jWvg6pPtgelaHg==
-X-Received: from xllamas.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5070])
- (user=cmllamas job=sendgmr) by 2002:a05:6a00:3a27:b0:687:94c2:106 with SMTP
- id fj39-20020a056a003a2700b0068794c20106mr6734231pfb.5.1692122823696; Tue, 15
- Aug 2023 11:07:03 -0700 (PDT)
-Date:   Tue, 15 Aug 2023 18:05:21 +0000
-In-Reply-To: <2023081201-exhale-bonelike-1800@gregkh>
-Mime-Version: 1.0
-References: <2023081201-exhale-bonelike-1800@gregkh>
-X-Mailer: git-send-email 2.41.0.694.ge786442a9b-goog
-Message-ID: <20230815180521.1049900-1-cmllamas@google.com>
-Subject: [PATCH 4.14.y] binder: fix memory leak in binder_init()
-From:   Carlos Llamas <cmllamas@google.com>
-To:     stable@vger.kernel.org
-Cc:     Qi Zheng <zhengqi.arch@bytedance.com>,
-        Carlos Llamas <cmllamas@google.com>,
-        stable <stable@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL autolearn=ham
-        autolearn_force=no version=3.4.6
+        d=1e100.net; s=20221208; t=1692123780; x=1692728580;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=75p/Ga3OF+rL1HqSOI9gCDFvimOS3BgZhss1tX+cqHo=;
+        b=kKwFIZsODx7hTAwNmnYtQepxbOByAWfIiDOeu8YQdSI7hE/0ig0bzKuO3YlWgCIU1f
+         l3QagFLx/YWv6ghZGmdEM7PxL6n7QAimKD90CNugFRKyjK/RGgEwY4KZ0ZduIxHZ6jSJ
+         gClASICLJh3t8nj4TbUstgTu3T5TLn39bKsmGlsOziPppbZCknlFsRJsTyoI3yyu57Gf
+         iFFV3fdHdJcYW8iKi12X8csNhmk3g47jQM37hdHJ9GijVEFNvgd3aa8m8iCTuN/K9y7l
+         M93MNOjIPpAzllSuNc7ap8aoJFrsVMx19nY4zOzDtNdG2zB6vbm9fhevL+kCGw898TmZ
+         fSzQ==
+X-Gm-Message-State: AOJu0YyilIE7Z8MLQyJ2vSuBvcFdL5AbZd5tpG3U0j41ZTTbZLg1lycy
+        POhJ8Tx//vxOqdyjbOZhnrj9zgVwpRH18L0NxN8=
+X-Google-Smtp-Source: AGHT+IH1t5vrX0QGlomCKTzArjoVD7IMDRxcf52K7O6ZEZgMiHFjK9kLIiQg5rcUC19y6+k0wMO0xg==
+X-Received: by 2002:ac2:5f6c:0:b0:4fb:2c1e:4e03 with SMTP id c12-20020ac25f6c000000b004fb2c1e4e03mr9027078lfc.32.1692123779663;
+        Tue, 15 Aug 2023 11:22:59 -0700 (PDT)
+Received: from lb02065.fkb.profitbricks.net ([2001:9e8:141f:7d00:9f1e:dc4b:3dfb:993])
+        by smtp.gmail.com with ESMTPSA id b13-20020a05640202cd00b0052544441babsm4610931edx.72.2023.08.15.11.22.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 15 Aug 2023 11:22:59 -0700 (PDT)
+From:   Jack Wang <jinpu.wang@ionos.com>
+To:     linux-sgx@vger.kernel.org
+Cc:     Jarkko Sakkinen <jarkko@kernel.org>,
+        Haitao Huang <haitao.huang@linux.intel.com>,
+        stable@vger.kernel.org, Yu Zhang <yu.zhang@ionos.com>
+Subject: [PATCHv2] x86/sgx: Avoid softlockup from sgx_vepc_release
+Date:   Tue, 15 Aug 2023 20:22:58 +0200
+Message-Id: <20230815182258.177153-1-jinpu.wang@ionos.com>
+X-Mailer: git-send-email 2.34.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Qi Zheng <zhengqi.arch@bytedance.com>
+We hit softlocup with following call trace:
+? asm_sysvec_apic_timer_interrupt+0x16/0x20
+xa_erase+0x21/0xb0
+? sgx_free_epc_page+0x20/0x50
+sgx_vepc_release+0x75/0x220
+__fput+0x89/0x250
+task_work_run+0x59/0x90
+do_exit+0x337/0x9a0
 
-commit adb9743d6a08778b78d62d16b4230346d3508986 upstream.
+Similar like commit
+8795359e35bc ("x86/sgx: Silence softlockup detection when releasing large enclaves")
+The test system has 64GB of enclave memory, and all assigned to a single
+VM. Release vepc take longer time and triggers the softlockup warning.
 
-In binder_init(), the destruction of binder_alloc_shrinker_init() is not
-performed in the wrong path, which will cause memory leaks. So this commit
-introduces binder_alloc_shrinker_exit() and calls it in the wrong path to
-fix that.
+Add a cond_resched() to give other tasks a chance to run and placate
+the softlockup detector.
 
-Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
-Acked-by: Carlos Llamas <cmllamas@google.com>
-Fixes: f2517eb76f1f ("android: binder: Add global lru shrinker to binder")
-Cc: stable <stable@kernel.org>
-Link: https://lore.kernel.org/r/20230625154937.64316-1-qi.zheng@linux.dev
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-[cmllamas: resolved trivial merge conflicts]
-Signed-off-by: Carlos Llamas <cmllamas@google.com>
+Cc: Jarkko Sakkinen <jarkko@kernel.org>
+Cc: Haitao Huang <haitao.huang@linux.intel.com>
+Cc: stable@vger.kernel.org
+Fixes: 540745ddbc70 ("x86/sgx: Introduce virtual EPC for use by KVM guests")
+Reported-by: Yu Zhang <yu.zhang@ionos.com>
+Tested-by: Yu Zhang <yu.zhang@ionos.com>
+Acked-by: Haitao Huang <haitao.huang@linux.intel.com>
+Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+Signed-off-by: Jack Wang <jinpu.wang@ionos.com>
 ---
- drivers/android/binder.c       | 1 +
- drivers/android/binder_alloc.c | 6 ++++++
- drivers/android/binder_alloc.h | 1 +
- 3 files changed, 8 insertions(+)
+v2: 
+* collects review and test by.
+* add fixes tag
+* trim call trace.
 
-diff --git a/drivers/android/binder.c b/drivers/android/binder.c
-index c07a304af8a3..95c9f81a514a 100644
---- a/drivers/android/binder.c
-+++ b/drivers/android/binder.c
-@@ -5658,6 +5658,7 @@ static int __init binder_init(void)
+ arch/x86/kernel/cpu/sgx/virt.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/arch/x86/kernel/cpu/sgx/virt.c b/arch/x86/kernel/cpu/sgx/virt.c
+index c3e37eaec8ec..01d2795792cc 100644
+--- a/arch/x86/kernel/cpu/sgx/virt.c
++++ b/arch/x86/kernel/cpu/sgx/virt.c
+@@ -204,6 +204,7 @@ static int sgx_vepc_release(struct inode *inode, struct file *file)
+ 			continue;
  
- err_alloc_device_names_failed:
- 	debugfs_remove_recursive(binder_debugfs_dir_entry_root);
-+	binder_alloc_shrinker_exit();
+ 		xa_erase(&vepc->page_array, index);
++		cond_resched();
+ 	}
  
- 	return ret;
- }
-diff --git a/drivers/android/binder_alloc.c b/drivers/android/binder_alloc.c
-index 1687368ea71f..f7f0b71c9f68 100644
---- a/drivers/android/binder_alloc.c
-+++ b/drivers/android/binder_alloc.c
-@@ -1033,3 +1033,9 @@ void binder_alloc_shrinker_init(void)
- 	list_lru_init(&binder_alloc_lru);
- 	register_shrinker(&binder_shrinker);
- }
-+
-+void binder_alloc_shrinker_exit(void)
-+{
-+	unregister_shrinker(&binder_shrinker);
-+	list_lru_destroy(&binder_alloc_lru);
-+}
-diff --git a/drivers/android/binder_alloc.h b/drivers/android/binder_alloc.h
-index a3ad7683b6f2..7efcb46c0083 100644
---- a/drivers/android/binder_alloc.h
-+++ b/drivers/android/binder_alloc.h
-@@ -128,6 +128,7 @@ extern struct binder_buffer *binder_alloc_new_buf(struct binder_alloc *alloc,
- 						  int is_async);
- extern void binder_alloc_init(struct binder_alloc *alloc);
- void binder_alloc_shrinker_init(void);
-+extern void binder_alloc_shrinker_exit(void);
- extern void binder_alloc_vma_close(struct binder_alloc *alloc);
- extern struct binder_buffer *
- binder_alloc_prepare_to_free(struct binder_alloc *alloc,
+ 	/*
+@@ -222,6 +223,7 @@ static int sgx_vepc_release(struct inode *inode, struct file *file)
+ 			list_add_tail(&epc_page->list, &secs_pages);
+ 
+ 		xa_erase(&vepc->page_array, index);
++		cond_resched();
+ 	}
+ 
+ 	/*
 -- 
-2.41.0.694.ge786442a9b-goog
+2.34.1
 
