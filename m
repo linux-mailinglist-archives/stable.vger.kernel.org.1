@@ -2,55 +2,76 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8BBC777CFF4
-	for <lists+stable@lfdr.de>; Tue, 15 Aug 2023 18:13:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DCFF277D013
+	for <lists+stable@lfdr.de>; Tue, 15 Aug 2023 18:26:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234300AbjHOQMy (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 15 Aug 2023 12:12:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52216 "EHLO
+        id S233254AbjHOQ0F (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 15 Aug 2023 12:26:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35644 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238552AbjHOQMw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 15 Aug 2023 12:12:52 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 98AEB13E;
-        Tue, 15 Aug 2023 09:12:51 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E940E64DEE;
-        Tue, 15 Aug 2023 16:12:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16064C433C8;
-        Tue, 15 Aug 2023 16:12:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1692115970;
-        bh=N3OM+clUa6koI6lGjQiHjHyRvH37l0zus4518nO+E10=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=kBD6aRCww6QnLx/rsU4KOMW6CAq1bwVClHVVTzB1NWX4qtMrx2YzWryIPIjwL5Ks6
-         MJLQU6DxP8I9bOo6AqFofCHp26tQxPEA/HPWiI2hORuvG30zP8j8jR+CKH1kdfqASK
-         piwANskal1t91lFVp/NgrC7vrL8YqlxIAWCoI5IsUiE9fQwgtHWebNZGDmi0jevokt
-         cK2P7BCEZI3LIY7fJLbQ3nmlDaQC86ArrFw2yKHL6WZZzD4SIvPGfKOkYMDIG6wlMT
-         NDaLFYYYmP1Zrg3D8O7DmKlwmtSN6SBXu6xYwKbdEqgD5CkoQQXyaEgFHaYd9UC4Z9
-         7FKgXPmZAm9vg==
-Message-ID: <ed79681e-ecd1-3129-5ad1-2965e2cd42b5@kernel.org>
-Date:   Tue, 15 Aug 2023 09:12:48 -0700
+        with ESMTP id S234973AbjHOQZi (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 15 Aug 2023 12:25:38 -0400
+Received: from mail-pg1-x536.google.com (mail-pg1-x536.google.com [IPv6:2607:f8b0:4864:20::536])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E16DD1;
+        Tue, 15 Aug 2023 09:25:36 -0700 (PDT)
+Received: by mail-pg1-x536.google.com with SMTP id 41be03b00d2f7-5654051b27fso4265445a12.0;
+        Tue, 15 Aug 2023 09:25:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1692116736; x=1692721536;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:subject:from:user-agent:mime-version:date:message-id:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=li9W0TPphaLFM4THwDEEy6SPFHkTHwvo/HLHwG/PjCg=;
+        b=rObTB0IZ4E1BH0rxcZYxyz6CHfP87BIXOY6IuFUicK4m7Cwt+LeNjwPCqfDtr6TJW1
+         uWVj8HBtUyJZUpHxo91ycqbUbKMx4FHnEWobCwbu2xghBK8Mw87B5mX4MbFNXZPuX6aO
+         hd8+H4FZjlldBsQ/FaeBwQBwcTfFxT6OxV+fF9IVpcwHVWGZxvSvcxb36ed7M4DjrgTy
+         8N6qekmuJ/0Yfj5D0FiWHnz+omDO2eaRBuvF4b0mq9xagk4JMouTwjfiBC5K1JtCkUjw
+         bKL5zwsh0ool6jdim1tpmv54JwgWcSjWORGyhZssJ17G7ie6N7BZSA0+dfxKkRPZuf0J
+         H5vg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1692116736; x=1692721536;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:subject:from:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=li9W0TPphaLFM4THwDEEy6SPFHkTHwvo/HLHwG/PjCg=;
+        b=EOZp5ZUO9ZCmJRFNvgcmWYzXi2d11C1BVY2B6/HW+n94yZV9Inh9Z+hxrP37V7UWsp
+         KRShlFxP1Z/nFhhGrQAIT6jwh4W8McISScKDBG6u4VQDGiwYJyO4SfUmf3vgJcEXefLH
+         whhbl44Lm8ZZViAs3OYI5haqwndjmB8d0rQ7nB6kGSilA9cMtF2mk3MgdXmRtucE0yvp
+         PdXVMtTD5q/5kICdVuvKEgfnUwCy/Ql6FRQGy8UZ/FrUPVulqAHFvKXYS0/P9cMEBabz
+         hNmvt5CVnjAsHFIutwXKEuzGqHdc816x+q/1E+gY3RpEFrVJhPAuIVxBozevNLRG8gQd
+         Iwdg==
+X-Gm-Message-State: AOJu0Yxrcx88PiTv7B80s1Ux9svLKG1JjE09RUbrE6UT66YOtG0U57r9
+        QIRWrhLyi/frZUhfnU5BHOY=
+X-Google-Smtp-Source: AGHT+IHQAUsRMIZ+kLKJZc/JkXEB4hYY7dN+HC9oKh2e/SL5o59OIKdHmR2+tl+T4wp4DRRiNwfNYQ==
+X-Received: by 2002:a17:903:110f:b0:1b5:2fdf:5bd8 with SMTP id n15-20020a170903110f00b001b52fdf5bd8mr16481704plh.8.1692116735943;
+        Tue, 15 Aug 2023 09:25:35 -0700 (PDT)
+Received: from [192.168.114.133] ([107.119.56.177])
+        by smtp.gmail.com with ESMTPSA id ij13-20020a170902ab4d00b001bb04755212sm11416802plb.228.2023.08.15.09.25.33
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 15 Aug 2023 09:25:35 -0700 (PDT)
+Message-ID: <20251557-0436-cdf5-4af6-f13bf0de4d0d@gmail.com>
+Date:   Tue, 15 Aug 2023 09:25:31 -0700
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: [PATCH] ARC: avoid unwanted gcc optimizations in atomic
- operations
-To:     Pavel.Kozlov@synopsys.com, linux-snps-arc@lists.infradead.org
-Cc:     linux-kernel@vger.kernel.org, vgupta@kernel.org,
+From:   Florian Fainelli <f.fainelli@gmail.com>
+Subject: Re: [PATCH 6.1 000/149] 6.1.46-rc1 review
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         stable@vger.kernel.org
-References: <20230815151136.2220588-1-kozlov@synopsys.com>
+Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+        torvalds@linux-foundation.org, akpm@linux-foundation.org,
+        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+        conor@kernel.org
+References: <20230813211718.757428827@linuxfoundation.org>
 Content-Language: en-US
-From:   Vineet Gupta <vgupta@kernel.org>
-In-Reply-To: <20230815151136.2220588-1-kozlov@synopsys.com>
+In-Reply-To: <20230813211718.757428827@linuxfoundation.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-5.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+X-Spam-Status: No, score=-3.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -58,41 +79,28 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+On 8/13/23 14:17, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.1.46 release.
+> There are 149 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Tue, 15 Aug 2023 21:16:53 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.46-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
+On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels:
 
-On 8/15/23 08:11, Pavel.Kozlov@synopsys.com wrote:
-> From: Pavel Kozlov<pavel.kozlov@synopsys.com>
->
-> Notify a compiler about write operations and prevent unwanted
-> optimizations. Add the "memory" clobber to the clobber list.
->
-> An obvious problem with unwanted compiler optimizations appeared after
-> the cpumask optimization commit 596ff4a09b89 ("cpumask: re-introduce
-> constant-sized cpumask optimizations").
->
-> After this commit the SMP kernels for ARC no longer loads because of
-> failed assert in the percpu allocator initialization routine:
->
-> percpu: BUG: failure at mm/percpu.c:2981/pcpu_build_alloc_info()!
->
-> The write operation performed by the scond instruction in the atomic
-> inline asm code is not properly passed to the compiler. The compiler
-> cannot correctly optimize a nested loop that runs through the cpumask
-> in the pcpu_build_alloc_info() function.
->
-> Add the "memory" clobber to fix this.
->
-> Link:https://github.com/foss-for-synopsys-dwc-arc-processors/linux/issues/135
-> Cc:<stable@vger.kernel.org>  # v6.3+
-> Signed-off-by: Pavel Kozlov<pavel.kozlov@synopsys.com>
-
-
-Acked-by: Vineet Gupta <vgupta@kernel.org>
-
-Fixes: b64be6836993c431e ("ARC: atomics: implement relaxed variants")
-
-Before that commit, atomic ops could elide memory clobber because the 
-trailing smp_mb() did that anyways.
-However after that commit, the smp_mb() was optional for relaxed 
-variants and thus needs clobber.
+Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
+-- 
+Florian
 
