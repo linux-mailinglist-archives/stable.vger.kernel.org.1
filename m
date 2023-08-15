@@ -2,164 +2,162 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6EE0677C941
-	for <lists+stable@lfdr.de>; Tue, 15 Aug 2023 10:19:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E32A277CB16
+	for <lists+stable@lfdr.de>; Tue, 15 Aug 2023 12:20:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235579AbjHOIS4 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 15 Aug 2023 04:18:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38612 "EHLO
+        id S236380AbjHOKTg (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 15 Aug 2023 06:19:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40464 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235650AbjHOIST (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 15 Aug 2023 04:18:19 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F94A10C0;
-        Tue, 15 Aug 2023 01:18:18 -0700 (PDT)
+        with ESMTP id S236385AbjHOKTP (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 15 Aug 2023 06:19:15 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B57B115
+        for <stable@vger.kernel.org>; Tue, 15 Aug 2023 03:19:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1692087498; x=1723623498;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=3dYXn6E9NAUNNi42+ayfswlDFcST6ltjtF9/c5VvXpA=;
-  b=a3ouxw1VHoZNRiUCyx7W0dY6pY+0BDTP7mAgItlZMWGY942ybcL22S+4
-   O9BzxtxCj9+qnBT3EPJdUcJZpG5z9os3yrz9G63KA5/yz5nnE3ZBq3yAy
-   g2ek+XKhjZHj7KZnPrwV/2Vb/DTgaAZv+5Hu2ponPQZrD8o3eQLU8iOMw
-   m/fRDN1QTNM6ipIzF9OdT4TMgGjA1+1fw/WsU08M2aGIhzxGYaXL9pRMK
-   oAq9j/btbvzrtOgLho+rIZ3FmvvtMltWLGTa9lgCJ0d6vVP7mBHd4WTyf
-   wB7TVtHgidP/aOabmkVp0/OckwvZCYV45Bg0pED9tJUtcIy0c/s9oVTrH
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10802"; a="372227408"
+  t=1692094754; x=1723630754;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=ZwudxVOEqX7y3DSNyKC+Qf9C63chH+gEjZJLdd1Mve8=;
+  b=g5aqB4gL5zMN4LS0YRVg8Yp3L9dLBiRxO1SJv2T9M6Dzwe0QlqU9k2Dw
+   +kwUjIEhyZn2JORVYpyGgpCQ+5fzpyJJw1KbUTILZFceFHJAWK1spamCk
+   5BACIUgjLG+Gz66uAA539oxLOMzJE5ELitlbkQa0uKmcIDkufr83mlath
+   scMRmP9afJ0dzbqv4KRV+eYpQjF8Tzumpv6S7NRBWWCO1aaAxIrBiDNCX
+   KVVbdgrmG7IO71sf23pp+exrHtZKICNlcD5n/mBgK+xiNP+3B61SziBw9
+   nnzy9ftQKpe+SJUyolWzzRVMiQne3uPKYi8OE0rYFoxF78z1jcx8BAKhl
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10802"; a="351835823"
 X-IronPort-AV: E=Sophos;i="6.01,174,1684825200"; 
-   d="scan'208";a="372227408"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Aug 2023 01:18:18 -0700
+   d="scan'208";a="351835823"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Aug 2023 03:19:13 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.01,202,1684825200"; 
-   d="scan'208";a="877276113"
-Received: from kuha.fi.intel.com ([10.237.72.185])
-  by fmsmga001.fm.intel.com with SMTP; 15 Aug 2023 01:18:18 -0700
-Received: by kuha.fi.intel.com (sSMTP sendmail emulation); Tue, 15 Aug 2023 11:18:14 +0300
-Date:   Tue, 15 Aug 2023 11:18:14 +0300
-From:   Heikki Krogerus <heikki.krogerus@linux.intel.com>
-To:     RD Babiera <rdbabiera@google.com>
-Cc:     gregkh@linuxfoundation.org, linux@roeck-us.net, badhri@google.com,
-        linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org
-Subject: Re: [PATCH v4] usb: typec: bus: verify partner exists in
- typec_altmode_attention
-Message-ID: <ZNs0xhqPHvmzrvlF@kuha.fi.intel.com>
-References: <20230814180559.923475-1-rdbabiera@google.com>
+X-IronPort-AV: E=McAfee;i="6600,9927,10802"; a="683611422"
+X-IronPort-AV: E=Sophos;i="6.01,174,1684825200"; 
+   d="scan'208";a="683611422"
+Received: from cristina-mobl3.ger.corp.intel.com (HELO localhost) ([10.252.52.75])
+  by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Aug 2023 03:19:11 -0700
+From:   Jani Nikula <jani.nikula@intel.com>
+To:     dri-devel@lists.freedesktop.org
+Cc:     intel-gfx@lists.freedesktop.org, ville.syrjala@linux.intel.com,
+        Jani Nikula <jani.nikula@intel.com>, stable@vger.kernel.org
+Subject: [PATCH] Revert "drm/edid: Fix csync detailed mode parsing"
+Date:   Tue, 15 Aug 2023 13:19:07 +0300
+Message-Id: <20230815101907.2900768-1-jani.nikula@intel.com>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230814180559.923475-1-rdbabiera@google.com>
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=UTF-8
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, Aug 14, 2023 at 06:05:59PM +0000, RD Babiera wrote:
-> Some usb hubs will negotiate DisplayPort Alt mode with the device
-> but will then negotiate a data role swap after entering the alt
-> mode. The data role swap causes the device to unregister all alt
-> modes, however the usb hub will still send Attention messages
-> even after failing to reregister the Alt Mode. type_altmode_attention
-> currently does not verify whether or not a device's altmode partner
-> exists, which results in a NULL pointer error when dereferencing
-> the typec_altmode and typec_altmode_ops belonging to the altmode
-> partner.
-> 
-> Verify the presence of a device's altmode partner before sending
-> the Attention message to the Alt Mode driver.
-> 
-> Fixes: 8a37d87d72f0 ("usb: typec: Bus type for alternate modes")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: RD Babiera <rdbabiera@google.com>
+This reverts commit ca62297b2085b5b3168bd891ca24862242c635a1.
 
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Commit ca62297b2085 ("drm/edid: Fix csync detailed mode parsing") fixed
+EDID detailed mode sync parsing. Unfortunately, there are quite a few
+displays out there that have bogus (zero) sync field that are broken by
+the change. Zero means analog composite sync, which is not right for
+digital displays, and the modes get rejected. Regardless, it used to
+work, and it needs to continue to work. Revert the change.
 
-> ---
-> Changes since v1:
-> * Only assigns pdev if altmode partner exists in typec_altmode_attention
-> * Removed error return in typec_altmode_attention if Alt Mode does
->   not implement Attention messages.
-> * Changed tcpm_log message to indicate that altmode partner does not exist,
->   as it only logs in that case.
-> ---
-> Changes since v2:
-> * Changed tcpm_log message to accurately reflect error
-> * Revised commit message
-> ---
-> Changes since v3:
-> * Fixed nits
-> ---
->  drivers/usb/typec/bus.c           | 12 ++++++++++--
->  drivers/usb/typec/tcpm/tcpm.c     |  3 ++-
->  include/linux/usb/typec_altmode.h |  2 +-
->  3 files changed, 13 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/usb/typec/bus.c b/drivers/usb/typec/bus.c
-> index fe5b9a2e61f5..e95ec7e382bb 100644
-> --- a/drivers/usb/typec/bus.c
-> +++ b/drivers/usb/typec/bus.c
-> @@ -183,12 +183,20 @@ EXPORT_SYMBOL_GPL(typec_altmode_exit);
->   *
->   * Notifies the partner of @adev about Attention command.
->   */
-> -void typec_altmode_attention(struct typec_altmode *adev, u32 vdo)
-> +int typec_altmode_attention(struct typec_altmode *adev, u32 vdo)
->  {
-> -	struct typec_altmode *pdev = &to_altmode(adev)->partner->adev;
-> +	struct altmode *partner = to_altmode(adev)->partner;
-> +	struct typec_altmode *pdev;
-> +
-> +	if (!partner)
-> +		return -ENODEV;
-> +
-> +	pdev = &partner->adev;
->  
->  	if (pdev->ops && pdev->ops->attention)
->  		pdev->ops->attention(pdev, vdo);
-> +
-> +	return 0;
->  }
->  EXPORT_SYMBOL_GPL(typec_altmode_attention);
->  
-> diff --git a/drivers/usb/typec/tcpm/tcpm.c b/drivers/usb/typec/tcpm/tcpm.c
-> index 5a7d8cc04628..77fe16190766 100644
-> --- a/drivers/usb/typec/tcpm/tcpm.c
-> +++ b/drivers/usb/typec/tcpm/tcpm.c
-> @@ -1877,7 +1877,8 @@ static void tcpm_handle_vdm_request(struct tcpm_port *port,
->  			}
->  			break;
->  		case ADEV_ATTENTION:
-> -			typec_altmode_attention(adev, p[1]);
-> +			if (typec_altmode_attention(adev, p[1]))
-> +				tcpm_log(port, "typec_altmode_attention no port partner altmode");
->  			break;
->  		}
->  	}
-> diff --git a/include/linux/usb/typec_altmode.h b/include/linux/usb/typec_altmode.h
-> index 350d49012659..28aeef8f9e7b 100644
-> --- a/include/linux/usb/typec_altmode.h
-> +++ b/include/linux/usb/typec_altmode.h
-> @@ -67,7 +67,7 @@ struct typec_altmode_ops {
->  
->  int typec_altmode_enter(struct typec_altmode *altmode, u32 *vdo);
->  int typec_altmode_exit(struct typec_altmode *altmode);
-> -void typec_altmode_attention(struct typec_altmode *altmode, u32 vdo);
-> +int typec_altmode_attention(struct typec_altmode *altmode, u32 vdo);
->  int typec_altmode_vdm(struct typec_altmode *altmode,
->  		      const u32 header, const u32 *vdo, int count);
->  int typec_altmode_notify(struct typec_altmode *altmode, unsigned long conf,
-> 
-> base-commit: f176638af476c6d46257cc3303f5c7cf47d5967d
-> -- 
-> 2.41.0.694.ge786442a9b-goog
+Rejecting modes with analog composite sync was the part that fixed the
+gitlab issue 8146 [1]. We'll need to get back to the drawing board with
+that.
 
+[1] https://gitlab.freedesktop.org/drm/intel/-/issues/8146
+
+Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/8789
+Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/8930
+Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/9044
+Fixes: ca62297b2085 ("drm/edid: Fix csync detailed mode parsing")
+Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Cc: dri-devel@lists.freedesktop.org
+Cc: <stable@vger.kernel.org> # v6.4+
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+---
+ drivers/gpu/drm/drm_edid.c | 29 ++++++++---------------------
+ include/drm/drm_edid.h     | 12 +++---------
+ 2 files changed, 11 insertions(+), 30 deletions(-)
+
+diff --git a/drivers/gpu/drm/drm_edid.c b/drivers/gpu/drm/drm_edid.c
+index f95152fac427..340da8257b51 100644
+--- a/drivers/gpu/drm/drm_edid.c
++++ b/drivers/gpu/drm/drm_edid.c
+@@ -3457,6 +3457,10 @@ static struct drm_display_mode *drm_mode_detailed(struct drm_connector *connecto
+ 			    connector->base.id, connector->name);
+ 		return NULL;
+ 	}
++	if (!(pt->misc & DRM_EDID_PT_SEPARATE_SYNC)) {
++		drm_dbg_kms(dev, "[CONNECTOR:%d:%s] Composite sync not supported\n",
++			    connector->base.id, connector->name);
++	}
+ 
+ 	/* it is incorrect if hsync/vsync width is zero */
+ 	if (!hsync_pulse_width || !vsync_pulse_width) {
+@@ -3503,27 +3507,10 @@ static struct drm_display_mode *drm_mode_detailed(struct drm_connector *connecto
+ 	if (info->quirks & EDID_QUIRK_DETAILED_SYNC_PP) {
+ 		mode->flags |= DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC;
+ 	} else {
+-		switch (pt->misc & DRM_EDID_PT_SYNC_MASK) {
+-		case DRM_EDID_PT_ANALOG_CSYNC:
+-		case DRM_EDID_PT_BIPOLAR_ANALOG_CSYNC:
+-			drm_dbg_kms(dev, "[CONNECTOR:%d:%s] Analog composite sync!\n",
+-				    connector->base.id, connector->name);
+-			mode->flags |= DRM_MODE_FLAG_CSYNC | DRM_MODE_FLAG_NCSYNC;
+-			break;
+-		case DRM_EDID_PT_DIGITAL_CSYNC:
+-			drm_dbg_kms(dev, "[CONNECTOR:%d:%s] Digital composite sync!\n",
+-				    connector->base.id, connector->name);
+-			mode->flags |= DRM_MODE_FLAG_CSYNC;
+-			mode->flags |= (pt->misc & DRM_EDID_PT_HSYNC_POSITIVE) ?
+-				DRM_MODE_FLAG_PCSYNC : DRM_MODE_FLAG_NCSYNC;
+-			break;
+-		case DRM_EDID_PT_DIGITAL_SEPARATE_SYNC:
+-			mode->flags |= (pt->misc & DRM_EDID_PT_HSYNC_POSITIVE) ?
+-				DRM_MODE_FLAG_PHSYNC : DRM_MODE_FLAG_NHSYNC;
+-			mode->flags |= (pt->misc & DRM_EDID_PT_VSYNC_POSITIVE) ?
+-				DRM_MODE_FLAG_PVSYNC : DRM_MODE_FLAG_NVSYNC;
+-			break;
+-		}
++		mode->flags |= (pt->misc & DRM_EDID_PT_HSYNC_POSITIVE) ?
++			DRM_MODE_FLAG_PHSYNC : DRM_MODE_FLAG_NHSYNC;
++		mode->flags |= (pt->misc & DRM_EDID_PT_VSYNC_POSITIVE) ?
++			DRM_MODE_FLAG_PVSYNC : DRM_MODE_FLAG_NVSYNC;
+ 	}
+ 
+ set_size:
+diff --git a/include/drm/drm_edid.h b/include/drm/drm_edid.h
+index 169755d3de19..48e93f909ef6 100644
+--- a/include/drm/drm_edid.h
++++ b/include/drm/drm_edid.h
+@@ -61,15 +61,9 @@ struct std_timing {
+ 	u8 vfreq_aspect;
+ } __attribute__((packed));
+ 
+-#define DRM_EDID_PT_SYNC_MASK              (3 << 3)
+-# define DRM_EDID_PT_ANALOG_CSYNC          (0 << 3)
+-# define DRM_EDID_PT_BIPOLAR_ANALOG_CSYNC  (1 << 3)
+-# define DRM_EDID_PT_DIGITAL_CSYNC         (2 << 3)
+-#  define DRM_EDID_PT_CSYNC_ON_RGB         (1 << 1) /* analog csync only */
+-#  define DRM_EDID_PT_CSYNC_SERRATE        (1 << 2)
+-# define DRM_EDID_PT_DIGITAL_SEPARATE_SYNC (3 << 3)
+-#  define DRM_EDID_PT_HSYNC_POSITIVE       (1 << 1) /* also digital csync */
+-#  define DRM_EDID_PT_VSYNC_POSITIVE       (1 << 2)
++#define DRM_EDID_PT_HSYNC_POSITIVE (1 << 1)
++#define DRM_EDID_PT_VSYNC_POSITIVE (1 << 2)
++#define DRM_EDID_PT_SEPARATE_SYNC  (3 << 3)
+ #define DRM_EDID_PT_STEREO         (1 << 5)
+ #define DRM_EDID_PT_INTERLACED     (1 << 7)
+ 
 -- 
-heikki
+2.39.2
+
