@@ -2,119 +2,119 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 172ED77CF6D
-	for <lists+stable@lfdr.de>; Tue, 15 Aug 2023 17:45:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BA4AF77CF98
+	for <lists+stable@lfdr.de>; Tue, 15 Aug 2023 17:52:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238189AbjHOPpR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 15 Aug 2023 11:45:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40182 "EHLO
+        id S238317AbjHOPvp (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 15 Aug 2023 11:51:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35076 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229494AbjHOPop (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 15 Aug 2023 11:44:45 -0400
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2057.outbound.protection.outlook.com [40.107.237.57])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F316CE61;
-        Tue, 15 Aug 2023 08:44:43 -0700 (PDT)
+        with ESMTP id S236263AbjHOPvO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 15 Aug 2023 11:51:14 -0400
+Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on2082.outbound.protection.outlook.com [40.107.244.82])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC73E10C6;
+        Tue, 15 Aug 2023 08:51:12 -0700 (PDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=ROYlnltZ0CYm7RE4ZupfeXZknxo3iQoyLP0wV9pLls99yVP0VbqeJ7go45kp0q+FYRSo2vfqwxSZV4tYP4JSCgMDJF4AQOK1oDnRYTWb84e6VkbCb7LhtWKQREMZvMsb1tZqdeNlf4Z1xHaVZ+x87+fK93bbzosDFKOZrtsUyHSzG3eTYDwZqVnz99iCamG+zOuNEU+3s/30HEeekk2IltWngb+uiRTEAib0/e26K+YNmDokg842K5uQj2mPhyqcyK0hSfJG2LXFbDOFTlKjyaZ/Lgz0OZx4gUL1Uj73PtEJheFROZA4iqcwB11fXEyfCIX+dtC5pVSmgKAFIFEh6A==
+ b=BtDQYYbaDrI11lF1Hecg2gQ9Y8febEF0SJPRz+FeCMQfO2tznbDc3Mkg21N+sVlhXIANUl7b9ZjZvs5sLBFhegCjv/OU4S3uuqP0Ljvbvapcyy6/Yd2rah66WeojMhKBBuLv8OCGmJ0PCRHcLDlGA0F52/gdfMzu94OZB2cRrY2MMzIpYZ+8qBF8ol+Gt1Tbl03MtX//itzyuuoxPKff+J9ik/CFEAk+w2hR8h5jppL1dT50R/CZ4gAX4Lj13te6XFbWpDdZCyob0Kc3G3WDP8JLBrIF7e6JK/JzBuovDdHOcqJp+kw/u5uXWXgIBdykO4zycBxVjoB2luKN3HrwmA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=9JWA4O9VVhJ6nUHagzx6aAb/WcFD+i87ixntjT83M1o=;
- b=Fw8uXQhJ+P7R9BD+kBZar83aXLxh83rhIk3lBQ1Y9HJbXo3kH94DnbY1UiScmNioeSCLIV5ofy6/GqeFQeaovf76DAia3asvQLSbFe5aFLU8eBoM9jXZTyD3A5Y4BANQms9XHi8bd14sh/zPVeKHp6m6Ab+vYNSMj0klgtC3Z/HELpmfYO1DMI0iq2rFg3dLSeEcQYBxoS72bR73qGkUjkj6RyRx2MoZK4ttJXPTiALzelxI+hZeAIzZhMEE8rvYRa70zl+46HnwWPsHDZ2K5QXL4kF8QykOT3Zsl8+ZlwxeAoemRvpXu3wZcy1yoZXnK2F4uAqh+MdvGvFa41GaHg==
+ bh=slZsflMliJ7MlBj9odh5Rshma0VgD/8+rE8oxMwjTbw=;
+ b=OHpCpru2af7rJis23OamZhlZqbhm0E57ougIrUTrydjCsAr8nvd3xYtsfI/49a9b0+VSdBGvpYwIaw9RiWy8qUa4sG/JvxcoMmxfeWQojdMy05ZjJs9d0zkS2SJOxL9P1KaKReQakw4bukWGHfjl/x15h2Zx6oSWOWqpGdF/6Kqd0GvmnATWyX6xlGQLeNr193GbA2WJg6kcqYpLyqZIt9VxKsrE1af4CgDpoO7UP47FiKVDI8jGtds7Ms6NNiWvcRH8Zgy1rTWHZod3ttVVoiLdg0h7mXim24FxDAjigeaelTFKqrtUkvP4OF3/gQKQ1RgQ/KFimJI8icGrnzQKKw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
  header.d=amd.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=9JWA4O9VVhJ6nUHagzx6aAb/WcFD+i87ixntjT83M1o=;
- b=jNQYueFvYmVw22Rx751Yw9UT3KjXMmVD5QtyJR3GaTKyxItNN+VApNOE64xDKHHU4XhcJ3LOYvBOiokaKRjz9UPG0IJQyndlnMwoi4mMlfUct5+8u5Ilj6CiGre1bkpEV11qhgJnk77y0c8D0ENQMomlDrnz6t/5iCmpCkcABAE=
+ bh=slZsflMliJ7MlBj9odh5Rshma0VgD/8+rE8oxMwjTbw=;
+ b=VEnvFreXDDAZNtFrI/7UMmB2P7Mo7UKRRX2yiCZwJag2mDzRfPvjn+gupv44T4QNTajxws84v2mfAhDPsM9f1e/2w20DC5TM9d1Btu62gtByFtltWsTlrVDlg/xIyBoBbSe2btYdd+okYXCKYMvjmZwQWkhoInB0NdxZE6GdZ6w=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=amd.com;
 Received: from DM4PR12MB5229.namprd12.prod.outlook.com (2603:10b6:5:398::12)
- by PH7PR12MB8827.namprd12.prod.outlook.com (2603:10b6:510:26b::12) with
+ by SA1PR12MB5616.namprd12.prod.outlook.com (2603:10b6:806:22a::11) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6678.26; Tue, 15 Aug
- 2023 15:44:41 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6652.30; Tue, 15 Aug
+ 2023 15:51:09 +0000
 Received: from DM4PR12MB5229.namprd12.prod.outlook.com
  ([fe80::d267:7b8b:844f:8bcd]) by DM4PR12MB5229.namprd12.prod.outlook.com
  ([fe80::d267:7b8b:844f:8bcd%7]) with mapi id 15.20.6678.025; Tue, 15 Aug 2023
- 15:44:41 +0000
-Message-ID: <7e396697-afc8-51cc-07de-882499532b68@amd.com>
-Date:   Tue, 15 Aug 2023 10:44:39 -0500
+ 15:51:09 +0000
+Message-ID: <930c4030-9581-cded-9349-c4486749c7d7@amd.com>
+Date:   Tue, 15 Aug 2023 10:51:07 -0500
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: [PATCH 1/3] KVM: SEV: snapshot the GHCB before accessing it
+Subject: Re: [PATCH 2/3] KVM: SEV: only access GHCB fields once
 Content-Language: en-US
 To:     Paolo Bonzini <pbonzini@redhat.com>, linux-kernel@vger.kernel.org,
         kvm@vger.kernel.org
 Cc:     pgonda@google.com, seanjc@google.com, theflow@google.com,
         vkuznets@redhat.com, stable@vger.kernel.org
 References: <20230804173355.51753-1-pbonzini@redhat.com>
- <20230804173355.51753-2-pbonzini@redhat.com>
+ <20230804173355.51753-3-pbonzini@redhat.com>
 From:   Tom Lendacky <thomas.lendacky@amd.com>
-In-Reply-To: <20230804173355.51753-2-pbonzini@redhat.com>
+In-Reply-To: <20230804173355.51753-3-pbonzini@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SA9PR13CA0045.namprd13.prod.outlook.com
- (2603:10b6:806:22::20) To DM4PR12MB5229.namprd12.prod.outlook.com
+X-ClientProxiedBy: SA1P222CA0154.NAMP222.PROD.OUTLOOK.COM
+ (2603:10b6:806:3c3::27) To DM4PR12MB5229.namprd12.prod.outlook.com
  (2603:10b6:5:398::12)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR12MB5229:EE_|PH7PR12MB8827:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9cf3cf0a-f4f2-43a9-ac1e-08db9da68a5f
+X-MS-TrafficTypeDiagnostic: DM4PR12MB5229:EE_|SA1PR12MB5616:EE_
+X-MS-Office365-Filtering-Correlation-Id: b3696f55-6f86-4ee8-f2c7-08db9da77145
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: UoLEGxCwRuBWCWZzqW/XjSgqLqYrujIoyTW+3mF5YP65W0EnwIi+CPD/EkjCKtR5VhXoIDy682cxAJ4ykY9aC2NHjK0EDIULW0xFn/9BJc+VPm4TIBVnfniulMC7qwXEjjvyAP5D0yUR79aGKgUj9SBRKQbiaUYBIed8SYcSD7d/AMWY6uZ3+u8cRWAFUBaxgxfSW8u9bPKUy3/MZD2er0WXgdBGUpEHMDn0T5qO8prJFtWHm5z8GIA+8Nx4dIsENiSUu25ApbkhgsHDiSM01HYILQR3YTNhl975hR8qXraFZASU39LKCnMdxDBRuyl1XyJSr83UMepIEMV1fFxQhAdXpjRiLNRfFe1mGJylvXWnG91dNuLXUy3j6tciuFdOENVrxSG12Egs/M7sYG1X2k1YfPgi3QApdQLXiHwuuwE7PrhJRiICeyPh4iKBScj6TVgN24J4C6eoZRyRV73xPvZ+/iNW5pRTOHTDiRptgl+fQdM1iCjpxZ31K26WHope0gnoxzcs7/gsmdcquXwLxfqj+FD2GSJSq3nIzKrepiZ1OTBOgx4SRMFsdsr+sSUWpueyQIomEd4AGAd2S0PO0LluFaYY7FVDYYNgCy3cu17641F6aQEeP1fnZ93qP3dBZ/FacqCA3NCtUznsGWVf4g==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR12MB5229.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(136003)(376002)(396003)(366004)(346002)(39860400002)(451199024)(1800799009)(186009)(36756003)(31686004)(6506007)(2906002)(26005)(53546011)(4326008)(316002)(2616005)(83380400001)(8936002)(8676002)(41300700001)(31696002)(478600001)(6486002)(6512007)(66556008)(5660300002)(66476007)(66946007)(86362001)(38100700002)(45980500001)(43740500002);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam-Message-Info: F5HVrMNgdHd2rHXPTBf3bx+LwkkXsvDD87aQNpWN/UcsM6rugn3o3hRsT3eZNVGE4YDG02wKLW8ZJWEe3YzqpmNLijqxIELmItMkU3mFGuK22OBdsl+/L5x+Cbv80oj7CH6OJEFa5LLXzRjDOQUliaLFUArPzahEj8DVcWGjnqoZe+1h1eUdNtuif1UnORElVvdPYEB1wCLplYXcODNoOo05BhaXtgTg96V8utW3T1vzvg5A4I+WNn+7SwCRYDTAHR5EAw7sPVVW496YFGA4X1iN9GKQHjnuxQhfe4sb07nEidM0rpKEO+Bnac0J/5HbbRgRECaj21PUMhNBwhlRUFnNhZ6mFBAuLSkDKyHi06XBRR58lH7parrVZgLycXKLu6M3ZQ2AE0QT/dVAUk1C+NeIbe2z9qsMN0SrxWz/1OEswGTYwL+fbynuUt74DTqkYSod0WuOl3w9Iom54fXtJoMioT6RpNzCPBmyTO+cFb+4dG+dA/XFqgJLerSbLgkeeDGy7MLdcxy3iUCy7RdD2+V8unpDxYbpAAeCTwFg9sf3Fh2UFBNDEMpf1hg6CdpirdRVlAVfBkQlXXdAT06P+1tFjBPdaKt5xjom5WVQz7ug1Uz/VLiiU5AE4o9JJc5KgnzthqlZh3xTh84OnoexTA==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR12MB5229.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376002)(346002)(396003)(136003)(39860400002)(366004)(451199024)(1800799009)(186009)(2616005)(38100700002)(2906002)(83380400001)(8676002)(31696002)(6506007)(31686004)(86362001)(26005)(5660300002)(66556008)(6512007)(66946007)(316002)(66476007)(6486002)(478600001)(53546011)(8936002)(41300700001)(4326008)(36756003)(43740500002)(45980500001);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?VXhRQ2JHTjZCVFV1WHZ4cWhvL3lkZjZ0VzYzTkx1MENWUVp2Z05MKys4Y3dr?=
- =?utf-8?B?MU1abVJDenh3VXJrTVJPM0tndDVkQjdTQ1ovT2lVbXRFaUR3U1JoSHhnQUhE?=
- =?utf-8?B?Skk4NVg3WDJOWmhUSCtqVzd6QjZ4cy9iOGEyeDBhQWFHZ2dlemFUQ1hJOUxu?=
- =?utf-8?B?b1VlR2RRRFJ4VkROTnpjajVQNXo1dWd1ZW8rVXl5Ui9Yak5qNmlkSFd4MFVl?=
- =?utf-8?B?YkFWK1JxVjRzellJZnoxYnJYZmF2czdVclI1eEtmeTRmRnczcGZ2TE1tTWhS?=
- =?utf-8?B?WUZLVUlWMWliMVB1M2hHRjg2Wk9QUDEvVzlVb2VXc29GVDR4VXdWemhEd25k?=
- =?utf-8?B?M3RGd2kweHhXUHhWNVF0c2NvSzVXelZrSDNFbVljdllCdWZoVjdFOU5ab0Jj?=
- =?utf-8?B?UUx0WG5NM1BKOTRFNmwzc2t6ZUxmb1kzaU0zM3VOdkdGTnJWYXpicEFpNkZq?=
- =?utf-8?B?UVBpMWZ2VDE1RjFPajZiMlhTeVZNdEE5TUdqTTNubmw2bnZCWThZNTNDSWNP?=
- =?utf-8?B?NG81Yjl0eFl1VXM0SXJYNTNKVE1wZTN4ZUV0Z1YrWTFrL2Jxa3RkVHA1NHl0?=
- =?utf-8?B?UmFDYlYzUWIxOTVjYUxFMEFKbTNTY25FSGRFdkNDaVNTVkVBeUlpRkhkTFRl?=
- =?utf-8?B?RVN4YXd0alZlU0FlVU5XMkptWHFVcVBaV0kram5xaFUxcE5TS1o0dm40YXYr?=
- =?utf-8?B?WjFRTUdCT1pWR0VubUVFOWtnQUJiRkJwTkRpQWJEQ1c1WmZLTENsb1JLUWtt?=
- =?utf-8?B?M0YxZE84bWhOT2NiMXh6NVBDbGF0engydU05a2lIbUl5bG1tU2dYU3pKVGgz?=
- =?utf-8?B?OC9HaFpPZzd2SkkvUERUOEpPYVlMdGFKREZ4clVnVzJvWStYNklPVVFmNmR0?=
- =?utf-8?B?SUZ4dGZOWm1ZcUcvNDRlcnAzZ3RDWFVhMjhjSGRzUDl2cS9uY2Q1cG9JUHJn?=
- =?utf-8?B?SE1GWVh2ZmphVmQrYTlDaVJHRmwrcjArQmphREVONHRCb1JreXNKUWk1SW5p?=
- =?utf-8?B?MFg2ZGo0QUFnZHVaNExLV3ZLYkQ4YmdpS1kwMGIyZTJaRFZSTTdXNVRJdC8w?=
- =?utf-8?B?L1VnOGZLd0ViakpveTRNYkU0enhJcy9LOFNOYnV4NVN0ejRETDBLRCtCcFlx?=
- =?utf-8?B?bCt6YzFwYUxoNzgvN0h0Y1QyUUQvR3dpOW51V05uTlpkVGk1ZGdzKzJzajNW?=
- =?utf-8?B?QTU5S05BVWF2WlBYOUpyT01wck1WKy9EZ3RqSWtaT1NqczJQdE5aRHVVdCsx?=
- =?utf-8?B?WjRTSzROWDZManpnSUN5SFgzdDV5R2liUm5YUUxFcEhsYitrWW5tZkhmcHdx?=
- =?utf-8?B?TWUySzZUZkNNRkNGL2ZNb1VycDg3aWVpUVZuMkx4N2R0eXBHN0RUcjh1OTNL?=
- =?utf-8?B?S0hGZ25rK2lpYkhpVWFoVmFqc3IrMDB2cU4xU0Zxb1ZpVnFkdUppdS9GZHIv?=
- =?utf-8?B?ZEhPNzRWNTRDelFOVzFNQ2dBRVFibkp0WVN2cEtab3dWUkY3aDgzVGpGYzMx?=
- =?utf-8?B?RWxxMEtkSG5PTjRRYm1TL2dndHhFN2M4UVN4UXNXaWFDUVR0NmJvWThXUmYv?=
- =?utf-8?B?bXVielNPZnFKOFkrVC9ORkJKQWZGNXg4dlpQY2UyRjhvNUV5OEZGSjJQOCtx?=
- =?utf-8?B?ZFQxSFp0N2lmbGJxWFVjQUhnTUlhMWI3R1NQZmNOdTNGM0NjRW1ubVJvbFpy?=
- =?utf-8?B?WUpDOVcxOFl3bng5dVFUMm1LbW1oSW43N1BNTW9zclBmTkJLVGFTWVBrSDE1?=
- =?utf-8?B?allCQzR1SlppM3NjYVh2dExvQWVGRDZiWXVTRDRmOXlGRWlqK1R0dEZDNVRa?=
- =?utf-8?B?eWF6YzY1SlRoTzI0cGlIUzNnTFdiS1NUMks5UytIYVBKdndHSG9TVTZ3WTIz?=
- =?utf-8?B?Q0VHV3RCSnlHMlRJUUVrYXVwZmNHZFVUYW1reTNCeERTT0dhWHppWnBZV3R1?=
- =?utf-8?B?VjlCR29OVnhrSzJ5TU1ZdThZWVFKdlkxQVAxMTg3UzdOWXhiLzYzajZiL0No?=
- =?utf-8?B?NlN2MXI5cDR1dVB6WG1VVmJMcjBFeG8rSkxRWDlqUllCQzNjMHdOdWRZQlc1?=
- =?utf-8?B?MVpxVzdLMGUxN2ZGSXlxeU1lY09aYTU1ME1lMVRuUkxHK1dUV1duc2djZFNi?=
- =?utf-8?Q?7dASjShCCPFkgz0dm+ZyqF2fd?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?bEkrcjZYbDg2U1YyOVplalJSNllNdGZlWjlvRTA1SEtTNERZYzdFeUx5eTIx?=
+ =?utf-8?B?OFVpNFVGbG5XWUZXcXB0N3ZqOW1JM1htZ2lxTkhlaTFVSGc5d0F4SFgvUG5U?=
+ =?utf-8?B?K3NVNzQvalhFTDFMaVNUOTgySEx5UkJvSS9EVmN5Vm5iRVh3VFpPdGRZMGcr?=
+ =?utf-8?B?SURrcjVWek45WjVsVWowQ25DbXhtZlFrTkVuakNTYXFWVGpWWWlRU01rMTYy?=
+ =?utf-8?B?ZkRBdE9NREVBQjh1WUFWN1FNcDJjclIyY1lYbmR1aCtSdi9yNmVidkdUOEc4?=
+ =?utf-8?B?VHNkbWRsUUE0SmtuUkdjbnR3QlZxaDliWklUMFpxalFxRXhwSldabXBySlVY?=
+ =?utf-8?B?UW1FT2FMZUtScDk4cWRoOUVVdE5IakE4c0UyM2FKajZ0YXE1REZsWDN4aVNo?=
+ =?utf-8?B?cDJKMFF3cUdMZ2tEMGtNNUlEMVVKTXZTb3JQUEQzUmg1YWtqck8waEtCTjUv?=
+ =?utf-8?B?blRNbHp4ckhlV1Zzd0tjcmFBQ05tTDJVWjRSRFZqTlB1TlViM3g5VWF6UUJS?=
+ =?utf-8?B?aFVIUHpYNENjYlFtRG1BODJscFFXY2VxVVRmblpwQklTek5RWEhiSlRVbXhT?=
+ =?utf-8?B?SmZvMUwwRE1NRFFpOVVpN2Y0V0FNVXNRVnI0RmdRbkpGcVNjL1BqaU9tbzV5?=
+ =?utf-8?B?aG1wZ0VWNWdKYmRLYUhGenhzUmlMUHU5eTI4bklPZURUaXgzT1dyc01XdklU?=
+ =?utf-8?B?K3RmZ0RhUFF6R3N3WEVlNGhCN2c0VmVISkhqZzNVOVRCd0RWbnN3ekNPZnpq?=
+ =?utf-8?B?QXd3MHdqVTA3ZWdndmxvVnF1b3hDMGkyYXErNE85U0c4YnBVaElBQmVsb2cx?=
+ =?utf-8?B?ZVJzZzlwdkFtcEVTU0FjQ0FKN0dIbzM0SFpCQlRpK25BcDZNRHBxQnZlZ2lp?=
+ =?utf-8?B?eFJaMjQrVVhOQ3QwOGtXa29MdXR4MmdlMzJ6bGtNb3NNQmF0SVhWby8yby9l?=
+ =?utf-8?B?KzI2MWNZZXJBT1N1UlkvRWtqdXpLVWd1VS9LUVFjSkdBUmRFa0s2MFdBQytT?=
+ =?utf-8?B?b3lVTVh4YllMUGFTZlZCeVA2ZGpEbWFxUi9JRy9YVU01c3k4UktJUnZjektq?=
+ =?utf-8?B?cEdBQnB3ZVVIMnZIeXdpVTZpWXI2R1NoU0NjaUNWZC9WU09iT2d0Mk5OTHlt?=
+ =?utf-8?B?RHlQYTdpdnVmRFJ2OHdVZXkwbXJtbHNlaU84eWxORVYvU1B6WUxEclQxcWpH?=
+ =?utf-8?B?TExsdzUyd3Bqb01qaXpVUVhIRXNnK3hwV25pQTBIT001VnBvWGxjRjJJYkwx?=
+ =?utf-8?B?eEJ5L3pJUnRhbUdSQXNLdzU4VHNwaGNiMzhUTWd0SXcxSkNUb1pGTTlDYk4x?=
+ =?utf-8?B?YXdHdnNXZEZYWnRZYmtha1VBZ3RUREZvUXNLSmJPZTg1VGM3eTJFbWtYZkdk?=
+ =?utf-8?B?M1RTSGx3dzhLZTVzZ3U4enAzUW5ZTkpGU2I1TDNzbjErNld2cldzT0d6VFV6?=
+ =?utf-8?B?RS9nR1RWWllMNDFZWEgwYVNSR1RxTGUrOU51MVFucTBjY1VMQy9UZ1I4ckk1?=
+ =?utf-8?B?RFozS1k3ck1jZ3VBbFh5UzFFZGpVSVh5WnZzQUJFN2c3QStzcm5IRzlZVVBS?=
+ =?utf-8?B?dFRFcFZqK0xPS25ERHVpODZOcUoyRE16b3V0amd4MGRrQ3k3d2trNzRPbVlB?=
+ =?utf-8?B?NUhzYm5vMkVEOHZ5UFJianQwNXNDOXg3UnJtdTMwNDhaOFFVczdLaFRFaG5S?=
+ =?utf-8?B?cFNjZFlQUDc1di9ZL1lieHBYQ2h2SjBaK0FHTGJvRG02Vjl5U1ZNOFlVQi9X?=
+ =?utf-8?B?cjJyeGJkNFNlWmhXZFhPZlV1MHVUS1N6NmMzdklHSm9XS3NPd1I3eU1Lc1J0?=
+ =?utf-8?B?bFhIazJzempJMmtET004OXFhNTF1QlhhSTNNQXRhcndPMWJ3cHBPaktyT0FS?=
+ =?utf-8?B?Wk1mWUNGMVJ5b0V5aG5pN2hoUVgyZk5mR240U1lvbkZiUUN4cTI0Q2JaQ1NB?=
+ =?utf-8?B?RVVpdVppRjJyRzlaOFZHY1M2d3dKcVFERG5BaDlDWC8xY2FhUnp0U1FXeExq?=
+ =?utf-8?B?OVluTTV3KzBLcmMxZUtTNXRKZWZ5OFMwNGk0SVNRVFBITjRzcFJWbWxkMzRl?=
+ =?utf-8?B?SDQ1WlZzNlFSY2dzNjVrS3MvdVVnTWNuTWJySEI2MytJMjZ5R0Y5di8yTXdE?=
+ =?utf-8?Q?KRxxx5n0KE2tLAhplqbhv6I7u?=
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9cf3cf0a-f4f2-43a9-ac1e-08db9da68a5f
+X-MS-Exchange-CrossTenant-Network-Message-Id: b3696f55-6f86-4ee8-f2c7-08db9da77145
 X-MS-Exchange-CrossTenant-AuthSource: DM4PR12MB5229.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Aug 2023 15:44:41.6458
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Aug 2023 15:51:09.0072
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: UqbqFAVF9SQ9mQOJiNheOzNXePPVrFheQGy/8R6GGitzOUcqonPMT87vE2B75yCjDCjdGJCw4c/Nd3wxsA1Qyg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB8827
+X-MS-Exchange-CrossTenant-UserPrincipalName: 67vewOOqbX/ZmSPEJEkAbzDBU3D/4oJtGgJCgqvjrddl42/JCf9+wa3LgoPwiaOpS21jiIi3DSRxR4YsbtIALA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB5616
 X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
         NICE_REPLY_A,RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,
@@ -126,29 +126,70 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 On 8/4/23 12:33, Paolo Bonzini wrote:
-> Validation of the GHCB is susceptible to time-of-check/time-of-use vulnerabilities.
-> To avoid them, we would like to always snapshot the fields that are read in
-> sev_es_validate_vmgexit(), and not use the GHCB anymore after it returns.
+> A KVM guest using SEV-ES or SEV-SNP with multiple vCPUs can trigger
+> a double fetch race condition vulnerability and invoke the VMGEXIT
+> handler recursively.
 > 
-> This means:
+> sev_handle_vmgexit() maps the GHCB page using kvm_vcpu_map() and then
+> fetches the exit code using ghcb_get_sw_exit_code().  Soon after,
+> sev_es_validate_vmgexit() fetches the exit code again. Since the GHCB
+> page is shared with the guest, the guest is able to quickly swap the
+> values with another vCPU and hence bypass the validation. One vmexit code
+> that can be rejected by sev_es_validate_vmgexit() is SVM_EXIT_VMGEXIT;
+> if sev_handle_vmgexit() observes it in the second fetch, the call
+> to svm_invoke_exit_handler() will invoke sev_handle_vmgexit() again
+> recursively.
 > 
-> - invoking sev_es_sync_from_ghcb() before any GHCB access, including before
->    sev_es_validate_vmgexit()
+> To avoid the race, always fetch the GHCB data from the places where
+> sev_es_sync_from_ghcb stores it.
 > 
-> - snapshotting all fields including the valid bitmap and the sw_scratch field,
->    which are currently not caching anywhere.
+> Exploiting recursions on linux kernel has been proven feasible
+> in the past, but the impact is mitigated by stack guard pages
+> (CONFIG_VMAP_STACK).  Still, if an attacker manages to call the handler
+> multiple times, they can theoretically trigger a stack overflow and
+> cause a denial-of-service, or potentially guest-to-host escape in kernel
+> configurations without stack guard pages.
 > 
-> The valid bitmap is the first thing to be copied out of the GHCB; then,
-> further accesses will use the copy in svm->sev_es.
+> Note that winning the race reliably in every iteration is very tricky
+> due to the very tight window of the fetches; depending on the compiler
+> settings, they are often consecutive because of optimization and inlining.
 > 
+> Tested by booting an SEV-ES RHEL9 guest.
+> 
+> Fixes: CVE-2023-4155
 > Fixes: 291bd20d5d88 ("KVM: SVM: Add initial support for a VMGEXIT VMEXIT")
 > Cc: stable@vger.kernel.org
+> Reported-by: Andy Nguyen <theflow@google.com>
 > Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+
+Just one very minor comment below, otherwise
 
 Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
 
 > ---
->   arch/x86/kvm/svm/sev.c | 69 +++++++++++++++++++++---------------------
->   arch/x86/kvm/svm/svm.h | 26 ++++++++++++++++
->   2 files changed, 61 insertions(+), 34 deletions(-)
+>   arch/x86/kvm/svm/sev.c | 25 ++++++++++++++-----------
+>   1 file changed, 14 insertions(+), 11 deletions(-)
 > 
+> diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+> index e898f0b2b0ba..ca4ba5fe9a01 100644
+> --- a/arch/x86/kvm/svm/sev.c
+> +++ b/arch/x86/kvm/svm/sev.c
+> @@ -2445,9 +2445,15 @@ static void sev_es_sync_from_ghcb(struct vcpu_svm *svm)
+>   	memset(ghcb->save.valid_bitmap, 0, sizeof(ghcb->save.valid_bitmap));
+>   }
+>   
+> +static u64 kvm_ghcb_get_sw_exit_code(struct vmcb_control_area *control)
+> +{
+
+Since ghcb is in the function name it might be nice to have a comment 
+indicating that the actual GHCB value was copied to the VMCB fields as 
+part of sev_es_sync_from_ghcb() and this is used to avoid reading from the 
+GHCB after validation.
+
+Thanks,
+Tom
+
+> +	return (((u64)control->exit_code_hi) << 32) | control->exit_code;
+> +}
+> +
+>   static int sev_es_validate_vmgexit(struct vcpu_svm *svm)
