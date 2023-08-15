@@ -2,51 +2,67 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4C68E77D043
-	for <lists+stable@lfdr.de>; Tue, 15 Aug 2023 18:45:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CDD7777D09F
+	for <lists+stable@lfdr.de>; Tue, 15 Aug 2023 19:08:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238559AbjHOQpD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 15 Aug 2023 12:45:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43026 "EHLO
+        id S237666AbjHORIO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 15 Aug 2023 13:08:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53450 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238563AbjHOQo5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 15 Aug 2023 12:44:57 -0400
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 02CBE1B5;
-        Tue, 15 Aug 2023 09:44:52 -0700 (PDT)
-Received: from p200300cf17418700333267be2b9ea1d1.dip0.t-ipconnect.de ([2003:cf:1741:8700:3332:67be:2b9e:a1d1]); authenticated
-        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        id 1qVx9v-0000wM-7d; Tue, 15 Aug 2023 18:44:43 +0200
-Message-ID: <0d6d7b2d-fc01-0e78-8492-e460cce9f6a7@leemhuis.info>
-Date:   Tue, 15 Aug 2023 18:44:40 +0200
+        with ESMTP id S238672AbjHORH5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 15 Aug 2023 13:07:57 -0400
+Received: from mail-pj1-x1031.google.com (mail-pj1-x1031.google.com [IPv6:2607:f8b0:4864:20::1031])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 486C219B4;
+        Tue, 15 Aug 2023 10:07:56 -0700 (PDT)
+Received: by mail-pj1-x1031.google.com with SMTP id 98e67ed59e1d1-26b0b4a7ccbso3040084a91.2;
+        Tue, 15 Aug 2023 10:07:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1692119276; x=1692724076;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=IfnBPQmR5aKREIriV/5IUmnU6LBPlzSZxgIT4j/hHjY=;
+        b=g1o+GBOmqgdPyGBdCrc4qUhlPgRGJy5a49DnyQByaEtsFFeSA/55HbCEWVCMXZ5Bo/
+         xWETpO+2e/nWDuVv2yRhTC49zjLIvvPHe0xVquBbH7CH5FRbJ0y/duopQ7z2mh4Cfl0W
+         2fG4k/IDyBk9kjmmu85L5viegl/46BgvM7n1tMFNawIx1MbNcRg4KDjpq1uAXdZgqfTR
+         z8y0uacEkPKVLpfrRhvvYBluyya6U2annLUZu70u8j9+iw066oSFl3KqNJnyXZKpDVKr
+         2A38zXfwmRuAT+pZYlLgL0SwXlpfLmrmZVjWkDLUQ4co2O48W0lHgH83xBAAh5gO/AY1
+         zzBw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1692119276; x=1692724076;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=IfnBPQmR5aKREIriV/5IUmnU6LBPlzSZxgIT4j/hHjY=;
+        b=VSoskYIxAOJ64YqXxkD4JIRN6L9bh2FhOapF7VCaQy/7U9Jln7PpM/CQpgIB36lkvr
+         8Yt472v/X20eckO2lBoVmmOZ5sLxCkt/JBKvoKE4ZXuqMynuuCx9aIMjvLYa5N+kU9OP
+         /wJLAnbcv1ro/cehevSdMtf6BqVA1z7CEXWrbWggBH9StYz4kBUFLSB4ki3EvlMhGmFb
+         ddxF4Mvj28O84rLi6NE4wU78q/0MYWDrz0Za5PqMWi9i/u8+Zi/frzLuPABz8bd1S6Uy
+         TEkSvttCN3vtcfuFPJEOaoMKYX/bcLffzd7OQcIHNurqvtXOaIeTP1hQ8Li78tP1ki2r
+         S9+Q==
+X-Gm-Message-State: AOJu0Yxoghvv0rzedixB5EVtxiPWaBZTYPmlE/yI7rbKAyB2Y3rmp5GC
+        u512+KcN+ZpQ5N/qAV6fVgybs4WlMDyROMdFNhI=
+X-Google-Smtp-Source: AGHT+IHbZrHeipVo2piqPvyBgSPpQA68tJvSvWC79m9yJlxEIGYRdt46+9nXHa45IhR9nYBoQxcxdmEleaN9Qgt03no=
+X-Received: by 2002:a17:90a:69a1:b0:268:2c60:9969 with SMTP id
+ s30-20020a17090a69a100b002682c609969mr9886712pjj.47.1692119275603; Tue, 15
+ Aug 2023 10:07:55 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [v6.1] kernel BUG in ext4_writepages
-Content-Language: en-US, de-DE
-To:     Muhammad Usama Anjum <usama.anjum@collabora.com>,
-        Theodore Ts'o <tytso@mit.edu>
-Cc:     syzbot <syzbot+a8068dd81edde0186829@syzkaller.appspotmail.com>,
-        syzkaller-lts-bugs@googlegroups.com, linux-ext4@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        linux-stable <stable@vger.kernel.org>,
-        regressions@lists.linux.dev, Baokun Li <libaokun1@huawei.com>,
-        Andreas Dilger <adilger.kernel@dilger.ca>,
-        Jan Kara <jack@suse.cz>
-References: <00000000000081f8c905f6c24e0d@google.com>
- <87dcdf62-8a74-1fbf-5f10-f4f3231f774f@collabora.com>
- <4637f58c-1cf3-0691-4fc1-6fbc38ec47ce@collabora.com>
- <0fc2546b-da7c-aac4-b402-3ef4970a1789@collabora.com>
- <20230814220536.GE2247938@mit.edu>
- <1fa9ba26-d6f7-04e7-efb8-c85645857c7f@collabora.com>
-From:   "Linux regression tracking (Thorsten Leemhuis)" 
-        <regressions@leemhuis.info>
-Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
-In-Reply-To: <1fa9ba26-d6f7-04e7-efb8-c85645857c7f@collabora.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1692117893;48bb5312;
-X-HE-SMSGID: 1qVx9v-0000wM-7d
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+References: <20230813211710.787645394@linuxfoundation.org>
+In-Reply-To: <20230813211710.787645394@linuxfoundation.org>
+From:   Allen Pais <stable.kernel.dev@gmail.com>
+Date:   Tue, 15 Aug 2023 10:07:44 -0700
+Message-ID: <CAJq+SaCcK5iPN4+Ow+aMz=f5BGQkLbo7zfkLsoaLsCergLHMcg@mail.gmail.com>
+Subject: Re: [PATCH 5.15 00/89] 5.15.127-rc1 review
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+        jonathanh@nvidia.com, f.fainelli@gmail.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+        conor@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,45 +71,28 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 15.08.23 18:31, Muhammad Usama Anjum wrote:
-> Thank you for looking at the email.
-> 
-> On 8/15/23 3:05 AM, Theodore Ts'o wrote:
->> On Mon, Aug 14, 2023 at 10:35:57AM +0500, Muhammad Usama Anjum wrote:
->>>> The last refactoring was done by 4e7ea81db53465 on this code in 2013. The
->>>> code segment in question is present from even before that. It means that
->>>> this bug is present for several years. 4.14 is the most old kernel being
->>>> maintained today. So it affects all current LTS and mainline kernels. I'll
->>>> report 4e7ea81db53465 with regzbot for proper tracking. Thus probably the
->>>> bug report will get associated with all LTS kernels as well.
->>>>
->>>> #regzbot title: Race condition between buffer write and page_mkwrite
->>>
->>> #regzbot title: ext4: Race condition between buffer write and page_mkwrite
->>
->> If it's a long-standing bug, then it's really not something I consider
->> a regression.  That being said, you're assuming that the refactoring
->> is what has introduced the bug; that's not necessarily case.
-> The bug was introduced by the following patch:
-> 9c3569b50f12 ("ext4: add delalloc support for inline data")
+> This is the start of the stable review cycle for the 5.15.127 release.
+> There are 89 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Tue, 15 Aug 2023 21:16:53 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.127-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
+>
 
-Which was v3.8-rc1 afaics.
+Compiled and booted on my x86_64 and ARM64 test systems. No errors or
+regressions.
 
-> https://lore.kernel.org/all/1351047338-4963-7-git-send-email-tm@tao.ma/
-> The bug is in the inline data feature addition patches itself.
-> 
-> Should I remove this regression from regzbot marking it as not regression
-> and only a long-standing bug?
+Tested-by: Allen Pais <apais@linux.microsoft.com>
 
-Let me do that:
-
-#regzbot inconclusive: regression from the 3.8 days, tracking doesn't
-really gain us anything
-
-To explain: not sure how Linus sees it, but if the culprit was merged
-that long ago there is not much worth in tracking it, as there is no
-easy way to fix it with a revert or something anyway. Sure, the issue
-nevertheless should not remain unfixed, but lets trust Ted here that
-he'll sooner or later take care of it when he sees fit.
-
-Ciao, Thorsten
+Thanks.
