@@ -2,190 +2,173 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 57CDB77CB7D
-	for <lists+stable@lfdr.de>; Tue, 15 Aug 2023 13:07:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7363777CBD2
+	for <lists+stable@lfdr.de>; Tue, 15 Aug 2023 13:36:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236567AbjHOLHM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 15 Aug 2023 07:07:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42746 "EHLO
+        id S236695AbjHOLf1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 15 Aug 2023 07:35:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57860 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236749AbjHOLGy (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 15 Aug 2023 07:06:54 -0400
-Received: from mail-lj1-x232.google.com (mail-lj1-x232.google.com [IPv6:2a00:1450:4864:20::232])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69EC61BD3
-        for <stable@vger.kernel.org>; Tue, 15 Aug 2023 04:06:37 -0700 (PDT)
-Received: by mail-lj1-x232.google.com with SMTP id 38308e7fff4ca-2b9a828c920so80188511fa.1
-        for <stable@vger.kernel.org>; Tue, 15 Aug 2023 04:06:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1692097591; x=1692702391;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=9QB9PMpIHxMSl15jEhQj2gUyUbqxC8jr5ruom3EkY7U=;
-        b=uZ9Pyq7+10EJjDPyRf5UqN3TIkIWm3We9xpznQgvTiZKVHFezbTxkaYLE9RdXGeS4h
-         kekfa+BbdjT83BQ9rZqKNj7Mg6ceouZx2aGeJPtfMBvsbU8m2Kaq43b6nTDdeb9uYBiy
-         DwlcciUQPHv3h6pt2dUu7WZa5V6160P5vawx5gzqloB9zg155vY1hUo8Cn/CvhsJs22w
-         NeGYb06D3FZc+qfrPRTRBMxEjrhFfFe+LP2Fv9Wkvfiq21nr1uyNirj4iEpRxE6epSYJ
-         PuTeR8cO5XTnNeM2YCRnoa66nbT1xbmL6sGzLzJnkpq9vIqYSe4qr+aJEyYH7NLu8orG
-         SB3Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692097591; x=1692702391;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=9QB9PMpIHxMSl15jEhQj2gUyUbqxC8jr5ruom3EkY7U=;
-        b=lMcVNDrUMa/GlDA6mIBXmQat4+8qXg2yy9acRol42L2QF+LHQE7EYCKnQBAsMsnBgM
-         YeEohCJEmgMqcHxN/7wpfOMiFzt370nezIe8g+mbUsFjMb0/1rgyx5QPFuxfy6xBw8ZK
-         F/V0Sp88WU2u5E5WTSMMJ2M2ZiBxX+ifZq8xCfr6plx/LB6d8IA1MyutIxdR3M9EINmN
-         1Wy23Me5n/nsUk8FCNeJBti8zCS1nVnhvF77NK9ThvF/KB2R8cGSObMwCEfo+tSEL3Kn
-         o367q15ypsi0T9AcMOKjtYPQ/wP2iqdpzW0+zS16mPQ+IvA8XDqVYuZSbZx4l4By/+dq
-         DZLQ==
-X-Gm-Message-State: AOJu0YyOjAhe1deOMJ9X4JrbHmNtXPcOINLCTF7CSDDcTf62T2wByz2z
-        JCdvLjgEOplHXfMz5c9QlY3mnw==
-X-Google-Smtp-Source: AGHT+IHFchTlULqciOQ9mFT5NakM1xgtrE/pnBhEiYjYqW2OdfYK6GfZqAb0ySIOgTvvuZ+tKjtkIw==
-X-Received: by 2002:a2e:80d3:0:b0:2bb:8eea:755a with SMTP id r19-20020a2e80d3000000b002bb8eea755amr676100ljg.49.1692097591089;
-        Tue, 15 Aug 2023 04:06:31 -0700 (PDT)
-Received: from krzk-bin.. ([178.197.214.188])
-        by smtp.gmail.com with ESMTPSA id i23-20020a170906265700b00991bba473e2sm6852642ejc.85.2023.08.15.04.06.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 15 Aug 2023 04:06:30 -0700 (PDT)
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-To:     Bjorn Andersson <andersson@kernel.org>,
-        Andy Gross <agross@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-        linux-arm-msm@vger.kernel.org, linux-gpio@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        stable@vger.kernel.org
-Subject: [PATCH] pinctrl: qcom: lpass-lpi: fix concurrent register updates
-Date:   Tue, 15 Aug 2023 13:06:25 +0200
-Message-Id: <20230815110625.317971-1-krzysztof.kozlowski@linaro.org>
+        with ESMTP id S236837AbjHOLfT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 15 Aug 2023 07:35:19 -0400
+Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B0458E7C
+        for <stable@vger.kernel.org>; Tue, 15 Aug 2023 04:35:16 -0700 (PDT)
+Received: from vefanov-Precision-3650-Tower.intra.ispras.ru (unknown [10.10.2.69])
+        by mail.ispras.ru (Postfix) with ESMTPSA id 6C63E400FC5B;
+        Tue, 15 Aug 2023 11:35:14 +0000 (UTC)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 6C63E400FC5B
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
+        s=default; t=1692099314;
+        bh=8XcqmwQTwhr0oVpsrynYkxTWOgJcki0rQoz/W+YD8ME=;
+        h=From:To:Cc:Subject:Date:From;
+        b=Gic4sc9lo4QlCAjHiJYzDMs0STdkzxf7J/H6BVp/v/UrhjeeViaDyHVMQkrjIem0v
+         7xBXxw9SLQjmTBEgtp4TxEkWBZ/r9YMZpqBulRDnrIqyJVAXFjfQTicTp2cZ+UNs+C
+         /k2sXshpsuV0mMA3lOkke4lKYjezsTUL/CYZE1pA=
+From:   Vladislav Efanov <VEfanov@ispras.ru>
+To:     stable@vger.kernel.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     Vladislav Efanov <VEfanov@ispras.ru>, Jan Kara <jack@suse.com>,
+        lvc-project@linuxtesting.org, Jan Kara <jack@suse.cz>
+Subject: [PATCH 5.10 1/1] udf: Handle error when adding extent to a file
+Date:   Tue, 15 Aug 2023 14:34:53 +0300
+Message-Id: <20230815113453.2213555-1-VEfanov@ispras.ru>
 X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
-        autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-The Qualcomm LPASS LPI pin controller driver uses one lock for guarding
-Read-Modify-Write code for slew rate registers.  However the pin
-configuration and muxing registers have exactly the same RMW code but
-are not protected.
+From: Jan Kara <jack@suse.cz>
 
-Pin controller framework does not provide locking here, thus it is
-possible to trigger simultaneous change of pin configuration registers
-resulting in non-atomic changes.
+commit 19fd80de0a8b5170ef34704c8984cca920dffa59 upstream
 
-Protect from concurrent access by re-using the same lock used to cover
-the slew rate register.  Using the same lock instead of adding second
-one will make more sense, once we add support for newer Qualcomm SoC,
-where slew rate is configured in the same register as pin
-configuration/muxing.
+When adding extent to a file fails, so far we've silently squelshed the
+error. Make sure to propagate it up properly.
 
-Fixes: 6e261d1090d6 ("pinctrl: qcom: Add sm8250 lpass lpi pinctrl driver")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Vladislav Efanov <VEfanov@ispras.ru>
 ---
- drivers/pinctrl/qcom/pinctrl-lpass-lpi.c | 17 +++++++++++------
- 1 file changed, 11 insertions(+), 6 deletions(-)
+Syzkaller reports this problem in 5.10 stable release. The problem has
+been fixed by the following patch which can be cleanly applied to the
+5.10 branch.
+ fs/udf/inode.c | 41 +++++++++++++++++++++++++++--------------
+ 1 file changed, 27 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/pinctrl/qcom/pinctrl-lpass-lpi.c b/drivers/pinctrl/qcom/pinctrl-lpass-lpi.c
-index e5a418026ba3..0b2839d27fd6 100644
---- a/drivers/pinctrl/qcom/pinctrl-lpass-lpi.c
-+++ b/drivers/pinctrl/qcom/pinctrl-lpass-lpi.c
-@@ -32,7 +32,8 @@ struct lpi_pinctrl {
- 	char __iomem *tlmm_base;
- 	char __iomem *slew_base;
- 	struct clk_bulk_data clks[MAX_LPI_NUM_CLKS];
--	struct mutex slew_access_lock;
-+	/* Protects from concurrent register updates */
-+	struct mutex lock;
- 	DECLARE_BITMAP(ever_gpio, MAX_NR_GPIO);
- 	const struct lpi_pinctrl_variant_data *data;
- };
-@@ -103,6 +104,7 @@ static int lpi_gpio_set_mux(struct pinctrl_dev *pctldev, unsigned int function,
- 	if (WARN_ON(i == g->nfuncs))
- 		return -EINVAL;
+diff --git a/fs/udf/inode.c b/fs/udf/inode.c
+index d114774ecdea..3e11190b7118 100644
+--- a/fs/udf/inode.c
++++ b/fs/udf/inode.c
+@@ -57,15 +57,15 @@ static int udf_update_inode(struct inode *, int);
+ static int udf_sync_inode(struct inode *inode);
+ static int udf_alloc_i_data(struct inode *inode, size_t size);
+ static sector_t inode_getblk(struct inode *, sector_t, int *, int *);
+-static int8_t udf_insert_aext(struct inode *, struct extent_position,
+-			      struct kernel_lb_addr, uint32_t);
++static int udf_insert_aext(struct inode *, struct extent_position,
++			   struct kernel_lb_addr, uint32_t);
+ static void udf_split_extents(struct inode *, int *, int, udf_pblk_t,
+ 			      struct kernel_long_ad *, int *);
+ static void udf_prealloc_extents(struct inode *, int, int,
+ 				 struct kernel_long_ad *, int *);
+ static void udf_merge_extents(struct inode *, struct kernel_long_ad *, int *);
+-static void udf_update_extents(struct inode *, struct kernel_long_ad *, int,
+-			       int, struct extent_position *);
++static int udf_update_extents(struct inode *, struct kernel_long_ad *, int,
++			      int, struct extent_position *);
+ static int udf_get_block(struct inode *, sector_t, struct buffer_head *, int);
  
-+	mutex_lock(&pctrl->lock);
- 	val = lpi_gpio_read(pctrl, pin, LPI_GPIO_CFG_REG);
+ static void __udf_clear_extent_cache(struct inode *inode)
+@@ -887,7 +887,9 @@ static sector_t inode_getblk(struct inode *inode, sector_t block,
+ 	/* write back the new extents, inserting new extents if the new number
+ 	 * of extents is greater than the old number, and deleting extents if
+ 	 * the new number of extents is less than the old number */
+-	udf_update_extents(inode, laarr, startnum, endnum, &prev_epos);
++	*err = udf_update_extents(inode, laarr, startnum, endnum, &prev_epos);
++	if (*err < 0)
++		goto out_free;
  
- 	/*
-@@ -128,6 +130,7 @@ static int lpi_gpio_set_mux(struct pinctrl_dev *pctldev, unsigned int function,
- 
- 	u32p_replace_bits(&val, i, LPI_GPIO_FUNCTION_MASK);
- 	lpi_gpio_write(pctrl, pin, LPI_GPIO_CFG_REG, val);
-+	mutex_unlock(&pctrl->lock);
- 
- 	return 0;
- }
-@@ -233,14 +236,14 @@ static int lpi_config_set(struct pinctrl_dev *pctldev, unsigned int group,
- 			if (slew_offset == LPI_NO_SLEW)
- 				break;
- 
--			mutex_lock(&pctrl->slew_access_lock);
-+			mutex_lock(&pctrl->lock);
- 
- 			sval = ioread32(pctrl->slew_base + LPI_SLEW_RATE_CTL_REG);
- 			sval &= ~(LPI_SLEW_RATE_MASK << slew_offset);
- 			sval |= arg << slew_offset;
- 			iowrite32(sval, pctrl->slew_base + LPI_SLEW_RATE_CTL_REG);
- 
--			mutex_unlock(&pctrl->slew_access_lock);
-+			mutex_unlock(&pctrl->lock);
- 			break;
- 		default:
- 			return -EINVAL;
-@@ -256,6 +259,7 @@ static int lpi_config_set(struct pinctrl_dev *pctldev, unsigned int group,
- 		lpi_gpio_write(pctrl, group, LPI_GPIO_VALUE_REG, val);
+ 	newblock = udf_get_pblock(inode->i_sb, newblocknum,
+ 				iinfo->i_location.partitionReferenceNum, 0);
+@@ -1155,21 +1157,30 @@ static void udf_merge_extents(struct inode *inode, struct kernel_long_ad *laarr,
  	}
- 
-+	mutex_lock(&pctrl->lock);
- 	val = lpi_gpio_read(pctrl, group, LPI_GPIO_CFG_REG);
- 
- 	u32p_replace_bits(&val, pullup, LPI_GPIO_PULL_MASK);
-@@ -264,6 +268,7 @@ static int lpi_config_set(struct pinctrl_dev *pctldev, unsigned int group,
- 	u32p_replace_bits(&val, output_enabled, LPI_GPIO_OE_MASK);
- 
- 	lpi_gpio_write(pctrl, group, LPI_GPIO_CFG_REG, val);
-+	mutex_unlock(&pctrl->lock);
- 
- 	return 0;
  }
-@@ -461,7 +466,7 @@ int lpi_pinctrl_probe(struct platform_device *pdev)
- 	pctrl->chip.label = dev_name(dev);
- 	pctrl->chip.can_sleep = false;
  
--	mutex_init(&pctrl->slew_access_lock);
-+	mutex_init(&pctrl->lock);
+-static void udf_update_extents(struct inode *inode, struct kernel_long_ad *laarr,
+-			       int startnum, int endnum,
+-			       struct extent_position *epos)
++static int udf_update_extents(struct inode *inode, struct kernel_long_ad *laarr,
++			      int startnum, int endnum,
++			      struct extent_position *epos)
+ {
+ 	int start = 0, i;
+ 	struct kernel_lb_addr tmploc;
+ 	uint32_t tmplen;
++	int err;
  
- 	pctrl->ctrl = devm_pinctrl_register(dev, &pctrl->desc, pctrl);
- 	if (IS_ERR(pctrl->ctrl)) {
-@@ -483,7 +488,7 @@ int lpi_pinctrl_probe(struct platform_device *pdev)
- 	return 0;
+ 	if (startnum > endnum) {
+ 		for (i = 0; i < (startnum - endnum); i++)
+ 			udf_delete_aext(inode, *epos);
+ 	} else if (startnum < endnum) {
+ 		for (i = 0; i < (endnum - startnum); i++) {
+-			udf_insert_aext(inode, *epos, laarr[i].extLocation,
+-					laarr[i].extLength);
++			err = udf_insert_aext(inode, *epos,
++					      laarr[i].extLocation,
++					      laarr[i].extLength);
++			/*
++			 * If we fail here, we are likely corrupting the extent
++			 * list and leaking blocks. At least stop early to
++			 * limit the damage.
++			 */
++			if (err < 0)
++				return err;
+ 			udf_next_aext(inode, epos, &laarr[i].extLocation,
+ 				      &laarr[i].extLength, 1);
+ 			start++;
+@@ -1181,6 +1192,7 @@ static void udf_update_extents(struct inode *inode, struct kernel_long_ad *laarr
+ 		udf_write_aext(inode, epos, &laarr[i].extLocation,
+ 			       laarr[i].extLength, 1);
+ 	}
++	return 0;
+ }
  
- err_pinctrl:
--	mutex_destroy(&pctrl->slew_access_lock);
-+	mutex_destroy(&pctrl->lock);
- 	clk_bulk_disable_unprepare(MAX_LPI_NUM_CLKS, pctrl->clks);
+ struct buffer_head *udf_bread(struct inode *inode, udf_pblk_t block,
+@@ -2215,12 +2227,13 @@ int8_t udf_current_aext(struct inode *inode, struct extent_position *epos,
+ 	return etype;
+ }
  
- 	return ret;
-@@ -495,7 +500,7 @@ int lpi_pinctrl_remove(struct platform_device *pdev)
- 	struct lpi_pinctrl *pctrl = platform_get_drvdata(pdev);
- 	int i;
+-static int8_t udf_insert_aext(struct inode *inode, struct extent_position epos,
+-			      struct kernel_lb_addr neloc, uint32_t nelen)
++static int udf_insert_aext(struct inode *inode, struct extent_position epos,
++			   struct kernel_lb_addr neloc, uint32_t nelen)
+ {
+ 	struct kernel_lb_addr oeloc;
+ 	uint32_t oelen;
+ 	int8_t etype;
++	int err;
  
--	mutex_destroy(&pctrl->slew_access_lock);
-+	mutex_destroy(&pctrl->lock);
- 	clk_bulk_disable_unprepare(MAX_LPI_NUM_CLKS, pctrl->clks);
+ 	if (epos.bh)
+ 		get_bh(epos.bh);
+@@ -2230,10 +2243,10 @@ static int8_t udf_insert_aext(struct inode *inode, struct extent_position epos,
+ 		neloc = oeloc;
+ 		nelen = (etype << 30) | oelen;
+ 	}
+-	udf_add_aext(inode, &epos, &neloc, nelen, 1);
++	err = udf_add_aext(inode, &epos, &neloc, nelen, 1);
+ 	brelse(epos.bh);
  
- 	for (i = 0; i < pctrl->data->npins; i++)
+-	return (nelen >> 30);
++	return err;
+ }
+ 
+ int8_t udf_delete_aext(struct inode *inode, struct extent_position epos)
 -- 
 2.34.1
 
