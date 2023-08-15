@@ -2,164 +2,135 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0D5C077D17A
-	for <lists+stable@lfdr.de>; Tue, 15 Aug 2023 20:05:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AF72577D17D
+	for <lists+stable@lfdr.de>; Tue, 15 Aug 2023 20:07:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238072AbjHOSE7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 15 Aug 2023 14:04:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41356 "EHLO
+        id S234958AbjHOSHK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 15 Aug 2023 14:07:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42566 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238591AbjHOSEp (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 15 Aug 2023 14:04:45 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 497F21984
-        for <stable@vger.kernel.org>; Tue, 15 Aug 2023 11:04:44 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D9CB963D55
-        for <stable@vger.kernel.org>; Tue, 15 Aug 2023 18:04:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16F2CC433C8;
-        Tue, 15 Aug 2023 18:04:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1692122683;
-        bh=6zTX5vK0JP+WLH94PYbAK8SJ1mxjCuXKBefI8p2LFCA=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=hfeUJ9a+zyp+3fVSDezeY2s40Ooi5caMqb5338Hx3wGeA9/S7OFg6WCBhItPy66J4
-         HH2xgW5OcFyw04CoET9lg25Z1DBU/Z6u3u7iTBd+pGj0bZYrSHXN4Sh8GXW8k0RfIo
-         Q6KMIervFaVJwSkyVdLg3oSHtxtd7cF1oaK5xXwxQ19e7Dr27Ife/toKwVpMn4NJA0
-         +OB6a/rSNcGC8hXHPuzfY8KZFZPJttgC+h5wjz3KbxB6toykPmp+m72KCYttxkfLvb
-         keUGBpiiMUVgJwxQyM63gKhgH7CTQqUK0eGCISmyfNNiolVTeLNWb6CY+AqPywGDDG
-         MhPQ/RKZ9RSDQ==
-Received: by quaco.ghostprotocols.net (Postfix, from userid 1000)
-        id 96877404DF; Tue, 15 Aug 2023 15:04:40 -0300 (-03)
-Date:   Tue, 15 Aug 2023 15:04:40 -0300
-From:   Arnaldo Carvalho de Melo <acme@kernel.org>
-To:     gregkh@linuxfoundation.org
-Cc:     acme@redhat.com, adrian.hunter@intel.com,
-        alexander.shishkin@linux.intel.com, andrii.nakryiko@gmail.com,
-        asavkov@redhat.com, hawk@kernel.org, irogers@google.com,
-        jolsa@kernel.org, mark.rutland@arm.com, mhiramat@kernel.org,
-        milian.wolff@kdab.com, mingo@redhat.com, namhyung@kernel.org,
-        peterz@infradead.org, stable@vger.kernel.org
-Subject: Re: FAILED: patch "[PATCH] Revert "perf report: Append inlines to
- non-DWARF callchains"" failed to apply to 6.4-stable tree
-Message-ID: <ZNu+OFN4bwJ0lBir@kernel.org>
-References: <2023081251-conceal-stool-53f1@gregkh>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2023081251-conceal-stool-53f1@gregkh>
-X-Url:  http://acmel.wordpress.com
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+        with ESMTP id S237657AbjHOSHF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 15 Aug 2023 14:07:05 -0400
+Received: from mail-pf1-x449.google.com (mail-pf1-x449.google.com [IPv6:2607:f8b0:4864:20::449])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4DDC41987
+        for <stable@vger.kernel.org>; Tue, 15 Aug 2023 11:07:04 -0700 (PDT)
+Received: by mail-pf1-x449.google.com with SMTP id d2e1a72fcca58-68732996d32so10157838b3a.3
+        for <stable@vger.kernel.org>; Tue, 15 Aug 2023 11:07:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20221208; t=1692122824; x=1692727624;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZzlqVQrvz1LgR4zEI0c7q19btoRHqsnter3MWimoxGE=;
+        b=hiG8r7vPGqJNmNnWdDT9KHbb9KQdwVUQGMlS3dO6/2ADa5Eit6K3IeYEKLkEJWL6ni
+         HVNl4DsZikpjBn6rR5Dxj2/INtElRybVMIKBl+XVSjgUQNHgvsVQY1vC8pFNyC4ae2vF
+         XtmiWUDthUcSeyungNkTDq8xXJJdwPms+Yjchjy6bHcshtQMWmrYzrwRMTcgjyK2CPcx
+         e86QXndoI6yBstB60XMtDBnimtFEg+M6YBo3mK8VU+w1WpAWXXCR8/IPDiFIC/f2jtgu
+         vPT5cmzE+bi2AXREOAN2gSs4zIDgJSoEf0NFqI1gXKLVTSCmmsRomzGJyIHJmml1GDz0
+         Pa1w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1692122824; x=1692727624;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZzlqVQrvz1LgR4zEI0c7q19btoRHqsnter3MWimoxGE=;
+        b=Ma6ZKQrIczmpjI7NGoEOlh2k5ecLfPcPSTerAMWfgZZG+l5uPFDNrxMpPwmnwGPl+o
+         Wdx5dvaPgNvoCHBLPyx4/Ak19FXDw9E85JCVn6A8s0v4FgJrVqXMPRlHwjET6up8YTAX
+         BIS3jNHz0GRO4ey1JnM3l+mmf1N1z78hwBv7xEdHzGNz04z+m7gSmQwESOKWLoOYpSx+
+         xPhHEf4I4JSvqEaUyDvV6TV79UFQqY+Cz3x6SUUFIXDqCE8rtj84KwJd0vdfcJ8inJ1n
+         iG5Q2oqqsV3EQ1iLlftZopQy3/k+U23ZcqNbFCL0sVN8zFmdS8/Nz3nhI8cZ9gx/mWP0
+         C4IQ==
+X-Gm-Message-State: AOJu0Yy1jSDIghQI8+ZW1PaeL+3IuCvZAG8P9sLmv6BZ/GdUW1lMJYgM
+        6CfU0oyqMYwnGQycBQpBdnb6arT+DFgcZSVAnzwra2toTn7Bjyygee0PrSvEDnUZPEPBQ5ixm4K
+        pUFuvYUQ7Y/NqaH0dTbDuKc2gAlMVtJWs/tG5WsmlwayCNEJOmVlsJ/GV+XeU68slvPU=
+X-Google-Smtp-Source: AGHT+IFCfr4RjMfwdl7ViWc4OoIvxbxXoIYX5CJHfWNKEzrjjI1q0NtHNi/76Hj6tC9JGv96jWvg6pPtgelaHg==
+X-Received: from xllamas.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5070])
+ (user=cmllamas job=sendgmr) by 2002:a05:6a00:3a27:b0:687:94c2:106 with SMTP
+ id fj39-20020a056a003a2700b0068794c20106mr6734231pfb.5.1692122823696; Tue, 15
+ Aug 2023 11:07:03 -0700 (PDT)
+Date:   Tue, 15 Aug 2023 18:05:21 +0000
+In-Reply-To: <2023081201-exhale-bonelike-1800@gregkh>
+Mime-Version: 1.0
+References: <2023081201-exhale-bonelike-1800@gregkh>
+X-Mailer: git-send-email 2.41.0.694.ge786442a9b-goog
+Message-ID: <20230815180521.1049900-1-cmllamas@google.com>
+Subject: [PATCH 4.14.y] binder: fix memory leak in binder_init()
+From:   Carlos Llamas <cmllamas@google.com>
+To:     stable@vger.kernel.org
+Cc:     Qi Zheng <zhengqi.arch@bytedance.com>,
+        Carlos Llamas <cmllamas@google.com>,
+        stable <stable@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Em Sat, Aug 12, 2023 at 06:50:51PM +0200, gregkh@linuxfoundation.org escreveu:
-> 
-> The patch below does not apply to the 6.4-stable tree.
-> If someone wants it applied there, or to any other stable or longterm
-> tree, then please email the backport, including the original git commit
-> id to <stable@vger.kernel.org>.
-> 
-> To reproduce the conflict and resubmit, you may use the following commands:
-> 
-> git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.4.y
-> git checkout FETCH_HEAD
-> git cherry-pick -x c0b067588a4836b762cfc6a4c83f122ca1dbb93a
-> # <resolve conflicts, build, test, etc.>
-> git commit -s
-> git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023081251-conceal-stool-53f1@gregkh' --subject-prefix 'PATCH 6.4.y' HEAD^..
+From: Qi Zheng <zhengqi.arch@bytedance.com>
 
-Had to add "--no-cover-letter":
+commit adb9743d6a08778b78d62d16b4230346d3508986 upstream.
 
-[acme@quaco perf-tools-next]$ git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023081251-conceal-stool-53f1@gregkh' --subject-prefix 'PATCH 6.4.y' HEAD^..
-/tmp/5jnzQlFK3_/0000-cover-letter.patch
-/tmp/5jnzQlFK3_/0001-Revert-perf-report-Append-inlines-to-non-DWARF-callc.patch
-Refusing to send because the patch
-	/tmp/5jnzQlFK3_/0000-cover-letter.patch
-has the template subject '*** SUBJECT HERE ***'. Pass --force if you really want to send.
-[acme@quaco perf-tools-next]$
-[acme@quaco perf-tools-next]$
-[acme@quaco perf-tools-next]$
-[acme@quaco perf-tools-next]$ man git-send-email
-[acme@quaco perf-tools-next]$
-[acme@quaco perf-tools-next]$ git send-email --no-cover-letter
+In binder_init(), the destruction of binder_alloc_shrinker_init() is not
+performed in the wrong path, which will cause memory leaks. So this commit
+introduces binder_alloc_shrinker_exit() and calls it in the wrong path to
+fix that.
 
-Sent.
+Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
+Acked-by: Carlos Llamas <cmllamas@google.com>
+Fixes: f2517eb76f1f ("android: binder: Add global lru shrinker to binder")
+Cc: stable <stable@kernel.org>
+Link: https://lore.kernel.org/r/20230625154937.64316-1-qi.zheng@linux.dev
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[cmllamas: resolved trivial merge conflicts]
+Signed-off-by: Carlos Llamas <cmllamas@google.com>
+---
+ drivers/android/binder.c       | 1 +
+ drivers/android/binder_alloc.c | 6 ++++++
+ drivers/android/binder_alloc.h | 1 +
+ 3 files changed, 8 insertions(+)
+
+diff --git a/drivers/android/binder.c b/drivers/android/binder.c
+index c07a304af8a3..95c9f81a514a 100644
+--- a/drivers/android/binder.c
++++ b/drivers/android/binder.c
+@@ -5658,6 +5658,7 @@ static int __init binder_init(void)
  
-> Possible dependencies:
-> 
-> 
-> 
-> thanks,
-> 
-> greg k-h
-> 
-> ------------------ original commit in Linus's tree ------------------
-> 
-> From c0b067588a4836b762cfc6a4c83f122ca1dbb93a Mon Sep 17 00:00:00 2001
-> From: Arnaldo Carvalho de Melo <acme@kernel.org>
-> Date: Tue, 1 Aug 2023 18:42:47 -0300
-> Subject: [PATCH] Revert "perf report: Append inlines to non-DWARF callchains"
-> 
-> This reverts commit 46d21ec067490ab9cdcc89b9de5aae28786a8b8e.
-> 
-> The tests were made with a specific workload, further tests on a
-> recently updated fedora 38 system with a system wide perf.data file
-> shows 'perf report' taking excessive time resolving inlines in vmlinux,
-> so lets revert this until a full investigation and improvement on the
-> addr2line support code is made.
-> 
-> Reported-by: Jesper Dangaard Brouer <hawk@kernel.org>
-> Acked-by: Artem Savkov <asavkov@redhat.com>
-> Tested-by: Jesper Dangaard Brouer <hawk@kernel.org>
-> Cc: Andrii Nakryiko <andrii.nakryiko@gmail.com>
-> Cc: Namhyung Kim <namhyung@kernel.org>
-> Cc: Adrian Hunter <adrian.hunter@intel.com>
-> Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-> Cc: Ian Rogers <irogers@google.com>
-> Cc: Ingo Molnar <mingo@redhat.com>
-> Cc: Jiri Olsa <jolsa@kernel.org>
-> Cc: Mark Rutland <mark.rutland@arm.com>
-> Cc: Masami Hiramatsu <mhiramat@kernel.org>
-> Cc: Milian Wolff <milian.wolff@kdab.com>
-> Cc: Peter Zijlstra <peterz@infradead.org>
-> Link: https://lore.kernel.org/r/ZMl8VyhdwhClTM5g@kernel.org
-> Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-> 
-> diff --git a/tools/perf/util/machine.c b/tools/perf/util/machine.c
-> index 4e62843d51b7..f4cb41ee23cd 100644
-> --- a/tools/perf/util/machine.c
-> +++ b/tools/perf/util/machine.c
-> @@ -45,7 +45,6 @@
->  
->  static void __machine__remove_thread(struct machine *machine, struct thread_rb_node *nd,
->  				     struct thread *th, bool lock);
-> -static int append_inlines(struct callchain_cursor *cursor, struct map_symbol *ms, u64 ip);
->  
->  static struct dso *machine__kernel_dso(struct machine *machine)
->  {
-> @@ -2385,10 +2384,6 @@ static int add_callchain_ip(struct thread *thread,
->  	ms.maps = maps__get(al.maps);
->  	ms.map = map__get(al.map);
->  	ms.sym = al.sym;
-> -
-> -	if (!branch && append_inlines(cursor, &ms, ip) == 0)
-> -		goto out;
-> -
->  	srcline = callchain_srcline(&ms, al.addr);
->  	err = callchain_cursor_append(cursor, ip, &ms,
->  				      branch, flags, nr_loop_iter,
-> 
-
+ err_alloc_device_names_failed:
+ 	debugfs_remove_recursive(binder_debugfs_dir_entry_root);
++	binder_alloc_shrinker_exit();
+ 
+ 	return ret;
+ }
+diff --git a/drivers/android/binder_alloc.c b/drivers/android/binder_alloc.c
+index 1687368ea71f..f7f0b71c9f68 100644
+--- a/drivers/android/binder_alloc.c
++++ b/drivers/android/binder_alloc.c
+@@ -1033,3 +1033,9 @@ void binder_alloc_shrinker_init(void)
+ 	list_lru_init(&binder_alloc_lru);
+ 	register_shrinker(&binder_shrinker);
+ }
++
++void binder_alloc_shrinker_exit(void)
++{
++	unregister_shrinker(&binder_shrinker);
++	list_lru_destroy(&binder_alloc_lru);
++}
+diff --git a/drivers/android/binder_alloc.h b/drivers/android/binder_alloc.h
+index a3ad7683b6f2..7efcb46c0083 100644
+--- a/drivers/android/binder_alloc.h
++++ b/drivers/android/binder_alloc.h
+@@ -128,6 +128,7 @@ extern struct binder_buffer *binder_alloc_new_buf(struct binder_alloc *alloc,
+ 						  int is_async);
+ extern void binder_alloc_init(struct binder_alloc *alloc);
+ void binder_alloc_shrinker_init(void);
++extern void binder_alloc_shrinker_exit(void);
+ extern void binder_alloc_vma_close(struct binder_alloc *alloc);
+ extern struct binder_buffer *
+ binder_alloc_prepare_to_free(struct binder_alloc *alloc,
 -- 
+2.41.0.694.ge786442a9b-goog
 
-- Arnaldo
