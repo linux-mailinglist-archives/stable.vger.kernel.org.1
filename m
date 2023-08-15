@@ -2,175 +2,160 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AF04277D3D7
-	for <lists+stable@lfdr.de>; Tue, 15 Aug 2023 22:03:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5066277D3F3
+	for <lists+stable@lfdr.de>; Tue, 15 Aug 2023 22:17:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238374AbjHOUCv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 15 Aug 2023 16:02:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58682 "EHLO
+        id S231933AbjHOUQZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 15 Aug 2023 16:16:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44202 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240121AbjHOUCU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 15 Aug 2023 16:02:20 -0400
-Received: from mail-il1-x136.google.com (mail-il1-x136.google.com [IPv6:2607:f8b0:4864:20::136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 27D831BF1;
-        Tue, 15 Aug 2023 13:02:12 -0700 (PDT)
-Received: by mail-il1-x136.google.com with SMTP id e9e14a558f8ab-34aa0845837so7834035ab.1;
-        Tue, 15 Aug 2023 13:02:12 -0700 (PDT)
+        with ESMTP id S230505AbjHOUP5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 15 Aug 2023 16:15:57 -0400
+Received: from smtp-fw-80008.amazon.com (smtp-fw-80008.amazon.com [99.78.197.219])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AFDDCC7;
+        Tue, 15 Aug 2023 13:15:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1692129731; x=1692734531;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=tT5nENGTmtsOYaR4AN3QL0P9N1DvYamQQ82TaK4qYbI=;
-        b=SbsqkqKIDGgCa8iOgg9dZ0sLrGB/ekFHLh2DdUkobgkBz+efDovWBaO3EIwaLQuWfk
-         sSnIckgSBuNgud2LSHQKFeP0lBt5V/QdD9+G2qqBGUu9kADcHAeUevKbab8+KoR7JO5v
-         WSVcFft2NBCZJ9188STPSzXxEOP61FEuUGwotV20dJWsazOVJZkYQNSvkC6pyBANxEJh
-         dOa44DZ9kYCCrZEQERWF3jrp9OuCo0ZIm/xkDbTsPB2iQKw6tuQOD6SF8/6GMXKwWqVP
-         FZluJydRUrQ8BmZfQ8/tKmlbbkgCv+8+PbldjDsmPVbjT5RmHh6N6wOe/XSuk2CgYYRE
-         HOZQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692129731; x=1692734531;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=tT5nENGTmtsOYaR4AN3QL0P9N1DvYamQQ82TaK4qYbI=;
-        b=EelbEOmU7uqmDMpj7HNpA61radnoXk97ZzGf1AvR/88FGKYlraQ0gfI62zTrNNQsP/
-         ePtJ2Yep9KS4oxNFYUIcWt5ZLlJq3VuNWW0BNp5DsVfJeEBsZA28bxyfyY2qR6TvWLgr
-         oHI5AGBjELZ//9ta/7sSFB0OsRQ5BIrO75vtKU3EevVzseah74PJDTQme0k1dEZVw7z4
-         0D63vAD3a+vTMzlMJlb6tYstgc59I+PrHhSXDR7+7qtm+XiKjS99OAjHCjQq4eRSmJlk
-         6+tsr1B2nFTDth5GjwgI++sgycGuyinxHIQQA01yC+RESxy3OgRjp+hf2Kw7pg2W/j+M
-         LSjQ==
-X-Gm-Message-State: AOJu0YzLldKwdjyIu5Z20Euv5gGLIVpczui2S28VZzjAIb0+mk7jhUp2
-        ifZAarN9OR8FbvnIAPWNV78=
-X-Google-Smtp-Source: AGHT+IGS8MmNpGPFfriIYC8OKL4AZomFcn3qdOXgE/pPXsyeZLsfp82UV4wMFbJrnbxGdo6TX2X4nw==
-X-Received: by 2002:a05:6e02:1b08:b0:347:70ae:542d with SMTP id i8-20020a056e021b0800b0034770ae542dmr19828995ilv.7.1692129731295;
-        Tue, 15 Aug 2023 13:02:11 -0700 (PDT)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id da25-20020a0566384a5900b004249d9e81besm3660836jab.131.2023.08.15.13.02.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 15 Aug 2023 13:02:10 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Date:   Tue, 15 Aug 2023 13:02:09 -0700
-From:   Guenter Roeck <linux@roeck-us.net>
-To:     RD Babiera <rdbabiera@google.com>
-Cc:     heikki.krogerus@linux.intel.com, gregkh@linuxfoundation.org,
-        badhri@google.com, linux-usb@vger.kernel.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v4] usb: typec: bus: verify partner exists in
- typec_altmode_attention
-Message-ID: <794a4438-6414-4266-bb03-3b36614ba395@roeck-us.net>
-References: <20230814180559.923475-1-rdbabiera@google.com>
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
+  t=1692130556; x=1723666556;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=3Ij07SyVS74pwvfzrHiuSb1DxM5+2AJnxh6YxneYOs0=;
+  b=NXt1FGbzEBNpQe0iZG9sbFZBBirYvR+Yr3x5yfp1shgr22ZWcc9WXTyk
+   HE3Xh8AuDFc/Xh2RBwIgYAsMWOGWDY5ISZysygfRXnh+oS3cppZ78n094
+   VSZBWXFAowMXas0u1voXREbI7LC4Bv9utBJUuzpcjSp+jM2ooC/TMkU23
+   A=;
+X-IronPort-AV: E=Sophos;i="6.01,175,1684800000"; 
+   d="scan'208";a="22699422"
+Received: from pdx4-co-svc-p1-lb2-vlan3.amazon.com (HELO email-inbound-relay-pdx-2b-m6i4x-189d700f.us-west-2.amazon.com) ([10.25.36.214])
+  by smtp-border-fw-80008.pdx80.corp.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Aug 2023 20:15:56 +0000
+Received: from EX19MTAUWA002.ant.amazon.com (pdx1-ws-svc-p6-lb9-vlan2.pdx.amazon.com [10.236.137.194])
+        by email-inbound-relay-pdx-2b-m6i4x-189d700f.us-west-2.amazon.com (Postfix) with ESMTPS id 0ED1040D6E;
+        Tue, 15 Aug 2023 20:15:56 +0000 (UTC)
+Received: from EX19D046UWB004.ant.amazon.com (10.13.139.164) by
+ EX19MTAUWA002.ant.amazon.com (10.250.64.202) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.30; Tue, 15 Aug 2023 20:15:55 +0000
+Received: from dev-dsk-shaoyi-2b-b6ac9e9c.us-west-2.amazon.com (10.189.91.91)
+ by EX19D046UWB004.ant.amazon.com (10.13.139.164) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.30; Tue, 15 Aug 2023 20:15:55 +0000
+From:   Shaoying Xu <shaoyi@amazon.com>
+To:     <gregkh@linuxfoundation.org>, <tglx@linutronix.de>
+CC:     <linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>,
+        <jgross@suse.com>, <sjpark@amazon.com>, <hailmo@amazon.com>,
+        <kuniyu@amazon.com>, <shaoyi@amazon.com>
+Subject: Re: Linux 5.4.252 FPU initialization warnings in stable kernels 5.4/5.10
+Date:   Tue, 15 Aug 2023 20:15:39 +0000
+Message-ID: <20230815201539.19015-1-shaoyi@amazon.com>
+X-Mailer: git-send-email 2.40.1
+In-Reply-To: <2023080814-relax-divisible-dea4@gregkh>
+References: <2023080814-relax-divisible-dea4@gregkh>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230814180559.923475-1-rdbabiera@google.com>
-X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=no
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.189.91.91]
+X-ClientProxiedBy: EX19D037UWB003.ant.amazon.com (10.13.138.115) To
+ EX19D046UWB004.ant.amazon.com (10.13.139.164)
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, Aug 14, 2023 at 06:05:59PM +0000, RD Babiera wrote:
-> Some usb hubs will negotiate DisplayPort Alt mode with the device
-> but will then negotiate a data role swap after entering the alt
-> mode. The data role swap causes the device to unregister all alt
-> modes, however the usb hub will still send Attention messages
-> even after failing to reregister the Alt Mode. type_altmode_attention
-> currently does not verify whether or not a device's altmode partner
-> exists, which results in a NULL pointer error when dereferencing
-> the typec_altmode and typec_altmode_ops belonging to the altmode
-> partner.
-> 
-> Verify the presence of a device's altmode partner before sending
-> the Attention message to the Alt Mode driver.
-> 
-> Fixes: 8a37d87d72f0 ("usb: typec: Bus type for alternate modes")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: RD Babiera <rdbabiera@google.com>
+Hi Thomas/Greg
 
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+We are seeing “get of unsupported state” warnings during FPU initialization in the v5.4.252 and v5.10.189
+kernel booted on AWS EC2 instances with Intel processors based on Nitro system. These warnings are observed 
+in EC2 c5.18xlarge instance: 
 
-> ---
-> Changes since v1:
-> * Only assigns pdev if altmode partner exists in typec_altmode_attention
-> * Removed error return in typec_altmode_attention if Alt Mode does
->   not implement Attention messages.
-> * Changed tcpm_log message to indicate that altmode partner does not exist,
->   as it only logs in that case.
-> ---
-> Changes since v2:
-> * Changed tcpm_log message to accurately reflect error
-> * Revised commit message
-> ---
-> Changes since v3:
-> * Fixed nits
-> ---
->  drivers/usb/typec/bus.c           | 12 ++++++++++--
->  drivers/usb/typec/tcpm/tcpm.c     |  3 ++-
->  include/linux/usb/typec_altmode.h |  2 +-
->  3 files changed, 13 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/usb/typec/bus.c b/drivers/usb/typec/bus.c
-> index fe5b9a2e61f5..e95ec7e382bb 100644
-> --- a/drivers/usb/typec/bus.c
-> +++ b/drivers/usb/typec/bus.c
-> @@ -183,12 +183,20 @@ EXPORT_SYMBOL_GPL(typec_altmode_exit);
->   *
->   * Notifies the partner of @adev about Attention command.
->   */
-> -void typec_altmode_attention(struct typec_altmode *adev, u32 vdo)
-> +int typec_altmode_attention(struct typec_altmode *adev, u32 vdo)
->  {
-> -	struct typec_altmode *pdev = &to_altmode(adev)->partner->adev;
-> +	struct altmode *partner = to_altmode(adev)->partner;
-> +	struct typec_altmode *pdev;
-> +
-> +	if (!partner)
-> +		return -ENODEV;
-> +
-> +	pdev = &partner->adev;
->  
->  	if (pdev->ops && pdev->ops->attention)
->  		pdev->ops->attention(pdev, vdo);
-> +
-> +	return 0;
->  }
->  EXPORT_SYMBOL_GPL(typec_altmode_attention);
->  
-> diff --git a/drivers/usb/typec/tcpm/tcpm.c b/drivers/usb/typec/tcpm/tcpm.c
-> index 5a7d8cc04628..77fe16190766 100644
-> --- a/drivers/usb/typec/tcpm/tcpm.c
-> +++ b/drivers/usb/typec/tcpm/tcpm.c
-> @@ -1877,7 +1877,8 @@ static void tcpm_handle_vdm_request(struct tcpm_port *port,
->  			}
->  			break;
->  		case ADEV_ATTENTION:
-> -			typec_altmode_attention(adev, p[1]);
-> +			if (typec_altmode_attention(adev, p[1]))
-> +				tcpm_log(port, "typec_altmode_attention no port partner altmode");
->  			break;
->  		}
->  	}
-> diff --git a/include/linux/usb/typec_altmode.h b/include/linux/usb/typec_altmode.h
-> index 350d49012659..28aeef8f9e7b 100644
-> --- a/include/linux/usb/typec_altmode.h
-> +++ b/include/linux/usb/typec_altmode.h
-> @@ -67,7 +67,7 @@ struct typec_altmode_ops {
->  
->  int typec_altmode_enter(struct typec_altmode *altmode, u32 *vdo);
->  int typec_altmode_exit(struct typec_altmode *altmode);
-> -void typec_altmode_attention(struct typec_altmode *altmode, u32 vdo);
-> +int typec_altmode_attention(struct typec_altmode *altmode, u32 vdo);
->  int typec_altmode_vdm(struct typec_altmode *altmode,
->  		      const u32 header, const u32 *vdo, int count);
->  int typec_altmode_notify(struct typec_altmode *altmode, unsigned long conf,
-> 
-> base-commit: f176638af476c6d46257cc3303f5c7cf47d5967d
-> -- 
-> 2.41.0.694.ge786442a9b-goog
-> 
+[    1.204495] ------------[ cut here ]------------
+[    1.204495] get of unsupported state
+[    1.204495] WARNING: CPU: 0 PID: 0 at arch/x86/kernel/fpu/xstate.c:879 get_xsave_addr+0x81/0x90
+[    1.204495] Modules linked in:
+[    1.204495] CPU: 0 PID: 0 Comm: swapper/0 Not tainted 5.4.252 #10
+[    1.204495] Hardware name: Amazon EC2 c5.18xlarge/, BIOS 1.0 10/16/2017
+[    1.204495] RIP: 0010:get_xsave_addr+0x81/0x90
+[    1.204495] Code: 5b c3 48 83 c4 08 31 c0 5b c3 80 3d 7c f0 78 01 00 75 c1 48 c7 c7 34 be 03 b2 89 4c 24 04 c6 05 68 f0 78 01 01 e8 ef 41 05 00 <0f> 0b 48 63 4c 24 04 eb a1 31 c0 c3 0f 1f 00 0f 1f 44 00 00 41 54
+[    1.204495] RSP: 0000:ffffffffb2603ed0 EFLAGS: 00010282
+[    1.204495] RAX: 0000000000000000 RBX: ffffffffb27ebe80 RCX: 0000000047cb2486
+[    1.204495] RDX: 0000000000000018 RSI: ffffffffb39e99a0 RDI: ffffffffb39e756c
+[    1.204495] RBP: ffffffffb27ebd40 R08: 7520666f20746567 R09: 74726f707075736e
+[    1.204495] R10: 00000000000962fc R11: 6574617473206465 R12: ffffffffb2d89b60
+[    1.204495] R13: 0000000000000246 R14: 0000000000000000 R15: 0000000000000000
+[    1.204495] FS:  0000000000000000(0000) GS:ffff96d031400000(0000) knlGS:0000000000000000
+[    1.204495] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[    1.204495] CR2: ffff96e277fff000 CR3: 000000103060a001 CR4: 00000000007200b0
+[    1.204495] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+[    1.204495] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+[    1.204495] Call Trace:
+[    1.204495]  ? __warn+0x85/0xd0
+[    1.204495]  ? get_xsave_addr+0x81/0x90
+[    1.204495]  ? report_bug+0xb6/0x130
+[    1.204495]  ? get_xsave_addr+0x81/0x90
+[    1.204495]  ? fixup_bug.part.12+0x18/0x30
+[    1.204495]  ? do_error_trap+0x95/0xb0
+[    1.204495]  ? do_invalid_op+0x36/0x40
+[    1.204495]  ? get_xsave_addr+0x81/0x90
+[    1.204495]  ? invalid_op+0x1e/0x30
+[    1.204495]  ? get_xsave_addr+0x81/0x90
+[    1.204495]  identify_cpu+0x422/0x510
+[    1.204495]  identify_boot_cpu+0xc/0x94
+[    1.204495]  arch_cpu_finalize_init+0x5/0x47
+[    1.204495]  start_kernel+0x468/0x511
+[    1.204495]  secondary_startup_64+0xa4/0xb0
+[    1.204495] ---[ end trace dffac81ff531fcf2 ]---
+
+The issue can be easily reproduced on both virtualized and bare metal instances but interesting thing is 
+it can’t be found in other latest stable kernels v4.14, v4.19, v5.15 and newer. We tried to bisect between v5.4.251 and v5.4.252 and 
+were able to find below commit to be the culprit. Also, reverting it in v5.4.252 and v5.10.189 resolved above warnings completely. 
+
+    x86/fpu: Move FPU initialization into arch_cpu_finalize_init() 
+    commit b81fac906a8f9e682e513ddd95697ec7a20878d4 upstream
+
+We used to speculate the fix might be similar to commit 3f8968f1f0ad (“x86/xen: Fix secondary processors' FPU initialization”) but 
+since only kernel 5.4/5.10  are impacted, we’re not quite sure how this commit affects them in practice. Could you please take a look and share your insights?
+
+Also put stack traces from v5.10.189: 
+
+[    1.210910] ------------[ cut here ]------------
+[    1.210910] get of unsupported state
+[    1.210910] WARNING: CPU: 0 PID: 0 at arch/x86/kernel/fpu/xstate.c:974 get_xsave_addr+0x89/0xa0
+[    1.210910] Modules linked in:
+[    1.210910] CPU: 0 PID: 0 Comm: swapper/0 Not tainted 5.10.189 #4
+[    1.210910] Hardware name: Amazon EC2 c5.18xlarge/, BIOS 1.0 10/16/2017
+[    1.210910] RIP: 0010:get_xsave_addr+0x89/0xa0
+[    1.210910] Code: c4 08 31 c0 5b e9 17 a4 bc 00 80 3d e7 75 eb 01 00 75 b9 48 c7 c7 b7 f4 09 ab 89 4c 24 04 c6 05 d3 75 eb 01 01 e8 17 98 05 00 <0f> 0b 48 63 4c 24 04 eb 99 31 c0 e9 e7 a3 bc 00 0f 1f 80 00 00 00
+[    1.210910] RSP: 0000:ffffffffab603ec8 EFLAGS: 00010286
+[    1.210910] RAX: 0000000000000000 RBX: ffffffffabf25bc0 RCX: 00000000fffeffff
+[    1.210910] RDX: ffffffffab603cd0 RSI: 00000000fffeffff RDI: ffffffffad1a3dec
+[    1.210910] RBP: ffffffffabf25a60 R08: 0000000000000000 R09: 0000000000000001
+[    1.210910] R10: 0000000000000000 R11: ffffffffab603cc8 R12: ffffffffac539b40
+[    1.210910] R13: 0000000000000246 R14: 0000000000000000 R15: 0000000000000000
+[    1.210910] FS:  0000000000000000(0000) GS:ffff9150f1600000(0000) knlGS:0000000000000000
+[    1.210910] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[    1.210910] CR2: ffff915702801000 CR3: 0000001780610001 CR4: 00000000007300b0
+[    1.210910] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+[    1.210910] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+[    1.210910] Call Trace:
+[    1.210910]  ? __warn+0x7d/0xe0
+[    1.210910]  ? get_xsave_addr+0x89/0xa0
+[    1.210910]  ? report_bug+0xbb/0x140
+[    1.210910]  ? handle_bug+0x3f/0x70
+[    1.210910]  ? exc_invalid_op+0x13/0x60
+[    1.210910]  ? asm_exc_invalid_op+0x12/0x20
+[    1.210910]  ? get_xsave_addr+0x89/0xa0
+[    1.210910]  ? get_xsave_addr+0x89/0xa0
+[    1.210910]  identify_cpu+0x42a/0x550
+[    1.210910]  identify_boot_cpu+0xc/0x94
+[    1.210910]  arch_cpu_finalize_init+0x5/0x47
+[    1.210910]  start_kernel+0x4bc/0x56b
+[    1.210910]  secondary_startup_64_no_verify+0xb0/0xbb
+[    1.210910] ---[ end trace 14850c6f8ee0875d ]---
+
+
+Thanks,
+Shaoying
