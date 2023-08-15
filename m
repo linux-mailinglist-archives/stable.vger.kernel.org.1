@@ -2,50 +2,60 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7E68D77C864
-	for <lists+stable@lfdr.de>; Tue, 15 Aug 2023 09:14:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 40CF577C86F
+	for <lists+stable@lfdr.de>; Tue, 15 Aug 2023 09:18:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235441AbjHOHOR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 15 Aug 2023 03:14:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38830 "EHLO
+        id S235108AbjHOHSE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 15 Aug 2023 03:18:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42876 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235533AbjHOHNo (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 15 Aug 2023 03:13:44 -0400
-Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 31FFFCE;
-        Tue, 15 Aug 2023 00:13:25 -0700 (PDT)
-Received: from localhost.localdomain (unknown [39.34.184.155])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        (Authenticated sender: usama.anjum)
-        by madras.collabora.co.uk (Postfix) with ESMTPSA id 141E866071C1;
-        Tue, 15 Aug 2023 08:13:21 +0100 (BST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1692083603;
-        bh=5OmlFjj5KV/EzXKNt4SeqnKQwRJht9eXvfXu7crYI1g=;
-        h=From:To:Cc:Subject:Date:From;
-        b=Cl3oKnIfrCH4nuKS3XACtSIt+EyfrY3T/osZgwmbUOdYABkVinsD+7NXSVxmG+3Qr
-         Uo+KcUVhbszMSJxN0LhNK4nPOZobYGh10tD1xG2Rbybwm01zb8suWqkwYT/5I4U+p9
-         Xmm00/B2izj2FQH2ALHsA/oJ7qUVrR0voswjaaO2Tti2X5dzldxoJJi+d8lHOc7n4i
-         gHXeBf06aSDyVXhpytkcaUTKpK36qY7QYCbfPWMpey7D81UziEetiZG/kbIHz7B+vQ
-         RQrGItX4CQg3PhniTCop3VG8DQqcknb87jLFr2wmXuyIyaiOqv2Nu2JuVM5rcLfw0Z
-         UByvDbLjgbEhg==
-From:   Muhammad Usama Anjum <usama.anjum@collabora.com>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jiri Slaby <jirislaby@kernel.org>, Ingo Molnar <mingo@elte.hu>
-Cc:     Muhammad Usama Anjum <usama.anjum@collabora.com>,
-        kernel@collabora.com, stable@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org
-Subject: [PATCH] tty/sysrq: replace smp_processor_id() with get_cpu()
-Date:   Tue, 15 Aug 2023 12:13:15 +0500
-Message-Id: <20230815071316.3433114-1-usama.anjum@collabora.com>
-X-Mailer: git-send-email 2.40.1
+        with ESMTP id S235410AbjHOHRc (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 15 Aug 2023 03:17:32 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.24])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B49A210F0
+        for <stable@vger.kernel.org>; Tue, 15 Aug 2023 00:17:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1692083851; x=1723619851;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   in-reply-to;
+  bh=BO2vlgP+zJS416U1Mj3ShdC7MqfFW0Og3vvdCXCl7og=;
+  b=FawbX+x75vEe8PbRAr7SXh78qq/j6tPFWCdSjUoM2JHowrwT7QUQ+IRa
+   1R5og7ALgWwreaqrc+N2RDpDSaVPT+o/aBkVqJ+gwwseI7z/N5tgS3sDL
+   VOzzem48SdN6HxmGzlfiHKtZkgS4xLgMFouB13yx1HNJ9cgj2M8iG5YW1
+   tJk5h/FQgvhzFkSq4EOedBBJXoMKPxRg87k1bOZ/Thg4iOY/tgkdQjm1f
+   4+0JM3317mUzNx5liiUzO4Ee1a95o4O/4TinfGH3KCLyBr1I7cQnmQd5i
+   SHJtiwIZmV4NYyiYCD16VOODii/yKUKPZpLdQi27WMqHnsiThG2epOztm
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10802"; a="374991255"
+X-IronPort-AV: E=Sophos;i="6.01,174,1684825200"; 
+   d="scan'208";a="374991255"
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Aug 2023 00:17:31 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10802"; a="799106492"
+X-IronPort-AV: E=Sophos;i="6.01,174,1684825200"; 
+   d="scan'208";a="799106492"
+Received: from lkp-server02.sh.intel.com (HELO b5fb8d9e1ffc) ([10.239.97.151])
+  by fmsmga008.fm.intel.com with ESMTP; 15 Aug 2023 00:17:30 -0700
+Received: from kbuild by b5fb8d9e1ffc with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1qVoIz-0000l9-1X;
+        Tue, 15 Aug 2023 07:17:29 +0000
+Date:   Tue, 15 Aug 2023 15:17:17 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Muhammad Usama Anjum <usama.anjum@collabora.com>
+Cc:     stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH] tty/sysrq: replace smp_processor_id() with get_cpu()
+Message-ID: <ZNsmfV+KY97Oxi43@de6b5a1e2688>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230815071316.3433114-1-usama.anjum@collabora.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -53,62 +63,21 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-The smp_processor_id() shouldn't be called from preemptible code.
-Instead use get_cpu() and put_cpu() which disables preemption in
-addition to getting the processor id. This fixes the following bug:
+Hi,
 
-[  119.143590] sysrq: Show backtrace of all active CPUs
-[  119.143902] BUG: using smp_processor_id() in preemptible [00000000] code: bash/873
-[  119.144586] caller is debug_smp_processor_id+0x20/0x30
-[  119.144827] CPU: 6 PID: 873 Comm: bash Not tainted 5.10.124-dirty #3
-[  119.144861] Hardware name: QEMU QEMU Virtual Machine, BIOS 2023.05-1 07/22/2023
-[  119.145053] Call trace:
-[  119.145093]  dump_backtrace+0x0/0x1a0
-[  119.145122]  show_stack+0x18/0x70
-[  119.145141]  dump_stack+0xc4/0x11c
-[  119.145159]  check_preemption_disabled+0x100/0x110
-[  119.145175]  debug_smp_processor_id+0x20/0x30
-[  119.145195]  sysrq_handle_showallcpus+0x20/0xc0
-[  119.145211]  __handle_sysrq+0x8c/0x1a0
-[  119.145227]  write_sysrq_trigger+0x94/0x12c
-[  119.145247]  proc_reg_write+0xa8/0xe4
-[  119.145266]  vfs_write+0xec/0x280
-[  119.145282]  ksys_write+0x6c/0x100
-[  119.145298]  __arm64_sys_write+0x20/0x30
-[  119.145315]  el0_svc_common.constprop.0+0x78/0x1e4
-[  119.145332]  do_el0_svc+0x24/0x8c
-[  119.145348]  el0_svc+0x10/0x20
-[  119.145364]  el0_sync_handler+0x134/0x140
-[  119.145381]  el0_sync+0x180/0x1c0
+Thanks for your patch.
 
-Fixes: 47cab6a722d4 ("debug lockups: Improve lockup detection, fix generic arch fallback")
-Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
----
-I've reproduced the bug on arm64. This patch fixes the bug.
----
- drivers/tty/sysrq.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+FYI: kernel test robot notices the stable kernel rule is not satisfied.
 
-diff --git a/drivers/tty/sysrq.c b/drivers/tty/sysrq.c
-index 23198e3f1461a..6b4a28bcf2f5f 100644
---- a/drivers/tty/sysrq.c
-+++ b/drivers/tty/sysrq.c
-@@ -262,13 +262,14 @@ static void sysrq_handle_showallcpus(u8 key)
- 		if (in_hardirq())
- 			regs = get_irq_regs();
- 
--		pr_info("CPU%d:\n", smp_processor_id());
-+		pr_info("CPU%d:\n", get_cpu());
- 		if (regs)
- 			show_regs(regs);
- 		else
- 			show_stack(NULL, NULL, KERN_INFO);
- 
- 		schedule_work(&sysrq_showallcpus);
-+		put_cpu();
- 	}
- }
- 
+Rule: 'Cc: stable@vger.kernel.org' or 'commit <sha1> upstream.'
+Subject: [PATCH] tty/sysrq: replace smp_processor_id() with get_cpu()
+Link: https://lore.kernel.org/stable/20230815071316.3433114-1-usama.anjum%40collabora.com
+
+The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
+
 -- 
-2.40.1
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
+
+
 
