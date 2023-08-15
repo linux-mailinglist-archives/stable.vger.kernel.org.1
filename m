@@ -2,173 +2,104 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7363777CBD2
-	for <lists+stable@lfdr.de>; Tue, 15 Aug 2023 13:36:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4748E77CBEE
+	for <lists+stable@lfdr.de>; Tue, 15 Aug 2023 13:46:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236695AbjHOLf1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 15 Aug 2023 07:35:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57860 "EHLO
+        id S236788AbjHOLpu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 15 Aug 2023 07:45:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41074 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236837AbjHOLfT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 15 Aug 2023 07:35:19 -0400
-Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B0458E7C
-        for <stable@vger.kernel.org>; Tue, 15 Aug 2023 04:35:16 -0700 (PDT)
-Received: from vefanov-Precision-3650-Tower.intra.ispras.ru (unknown [10.10.2.69])
-        by mail.ispras.ru (Postfix) with ESMTPSA id 6C63E400FC5B;
-        Tue, 15 Aug 2023 11:35:14 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 6C63E400FC5B
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
-        s=default; t=1692099314;
-        bh=8XcqmwQTwhr0oVpsrynYkxTWOgJcki0rQoz/W+YD8ME=;
-        h=From:To:Cc:Subject:Date:From;
-        b=Gic4sc9lo4QlCAjHiJYzDMs0STdkzxf7J/H6BVp/v/UrhjeeViaDyHVMQkrjIem0v
-         7xBXxw9SLQjmTBEgtp4TxEkWBZ/r9YMZpqBulRDnrIqyJVAXFjfQTicTp2cZ+UNs+C
-         /k2sXshpsuV0mMA3lOkke4lKYjezsTUL/CYZE1pA=
-From:   Vladislav Efanov <VEfanov@ispras.ru>
-To:     stable@vger.kernel.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     Vladislav Efanov <VEfanov@ispras.ru>, Jan Kara <jack@suse.com>,
-        lvc-project@linuxtesting.org, Jan Kara <jack@suse.cz>
-Subject: [PATCH 5.10 1/1] udf: Handle error when adding extent to a file
-Date:   Tue, 15 Aug 2023 14:34:53 +0300
-Message-Id: <20230815113453.2213555-1-VEfanov@ispras.ru>
-X-Mailer: git-send-email 2.34.1
+        with ESMTP id S236767AbjHOLpQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 15 Aug 2023 07:45:16 -0400
+Received: from mail-yb1-xb34.google.com (mail-yb1-xb34.google.com [IPv6:2607:f8b0:4864:20::b34])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5BD8F1985
+        for <stable@vger.kernel.org>; Tue, 15 Aug 2023 04:45:14 -0700 (PDT)
+Received: by mail-yb1-xb34.google.com with SMTP id 3f1490d57ef6-d650a22abd7so4883823276.3
+        for <stable@vger.kernel.org>; Tue, 15 Aug 2023 04:45:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1692099913; x=1692704713;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=5Uss1xJ7T68zJOpOSvzMeDJcEGS6v01LgFXbHfvNCt4=;
+        b=aDQ16dIx0q5/7i3e7tpyb0N0zy8GDO3EpKuFeU/wDyf7QsB3dGAQPev7p+hH429+kN
+         htuMTHuhS7lYZ69eem0ZpAFp0Dwpk4SbfVSmC4L4AOVBZM8AFwnW9BiDdevI9bSRKtS7
+         abUEyO5bRRHZWa8Z2gdGUXiw5ERi7QXIgqVUmew1LsDt+4fqsKIvBBPcKdEOqZCkDDvh
+         XNkoZXnr1vvnjEmhTslPdsphwNlyUCnPlWb2WcJ1KuMWozvWJvqwZlinKzaKPoUlOCUo
+         51YLkOkOzZlh0zEoFSnfo3C7GfSXrNWNsaA3dW7XUYe65vPzwrvyWqiPzb3fwlgsDYOq
+         8FdQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1692099913; x=1692704713;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=5Uss1xJ7T68zJOpOSvzMeDJcEGS6v01LgFXbHfvNCt4=;
+        b=BUiqwCOJFAVe5DWeCMiH3EZ7CdC55qrFdzLbFSOerXhX5OVJswGC1ADhiCiMnDXfyL
+         Qz6EPbc3+SgiwkiY4AQZSyuuBvtEQcb9vDX4kH/Ik+N1jaju84nQo4vUCkVktuTqLLK4
+         jNEAwFDTKFeuh2EVWAErq2snLq/nMMLz5fmlugQCeZY5s5E7sED8fqSs8Q+eeKYLU3m1
+         gHmCnbcTssgq1MVZiiuhlskYxqUsYqWCmKYOr5VbeSCvNdpsAUhYZGwxU/LtkX+vBIU6
+         AQdRA4lKS35D5YdYhl7qgi9bW+N+F4R2J6Trw8hu+Uz//LpzAJXnjFVNutD6YE657APU
+         hRkg==
+X-Gm-Message-State: AOJu0Yy4y5KB4aMXHKC3phibF1Rz+D1+LKzNPaYjfxW2HDtYJirRKAvL
+        uO2jNaI/Lmekn1kI2fj6ah8vdqo/iKDsAU053XIg4Q==
+X-Google-Smtp-Source: AGHT+IE7hVv+xxjJPAe+fTihw9d0B4IaDQAkSwLsCePXvP5rKchR4KKQEE/ROaNrkhm0HsbxrwNmE8/cO2OeGJvMUC0=
+X-Received: by 2002:a25:abab:0:b0:d3f:a6cd:f2d2 with SMTP id
+ v40-20020a25abab000000b00d3fa6cdf2d2mr15268160ybi.50.1692099913433; Tue, 15
+ Aug 2023 04:45:13 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20230815110625.317971-1-krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20230815110625.317971-1-krzysztof.kozlowski@linaro.org>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Tue, 15 Aug 2023 13:45:02 +0200
+Message-ID: <CACRpkdaBee108wbXcAcz5j7Ws1pbDw5TJ7id7dupJi64YHU0mQ@mail.gmail.com>
+Subject: Re: [PATCH] pinctrl: qcom: lpass-lpi: fix concurrent register updates
+To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc:     Bjorn Andersson <andersson@kernel.org>,
+        Andy Gross <agross@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+        linux-arm-msm@vger.kernel.org, linux-gpio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jan Kara <jack@suse.cz>
+On Tue, Aug 15, 2023 at 1:06=E2=80=AFPM Krzysztof Kozlowski
+<krzysztof.kozlowski@linaro.org> wrote:
 
-commit 19fd80de0a8b5170ef34704c8984cca920dffa59 upstream
+> The Qualcomm LPASS LPI pin controller driver uses one lock for guarding
+> Read-Modify-Write code for slew rate registers.  However the pin
+> configuration and muxing registers have exactly the same RMW code but
+> are not protected.
+>
+> Pin controller framework does not provide locking here, thus it is
+> possible to trigger simultaneous change of pin configuration registers
+> resulting in non-atomic changes.
+>
+> Protect from concurrent access by re-using the same lock used to cover
+> the slew rate register.  Using the same lock instead of adding second
+> one will make more sense, once we add support for newer Qualcomm SoC,
+> where slew rate is configured in the same register as pin
+> configuration/muxing.
+>
+> Fixes: 6e261d1090d6 ("pinctrl: qcom: Add sm8250 lpass lpi pinctrl driver"=
+)
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-When adding extent to a file fails, so far we've silently squelshed the
-error. Make sure to propagate it up properly.
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
 
-Signed-off-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Vladislav Efanov <VEfanov@ispras.ru>
----
-Syzkaller reports this problem in 5.10 stable release. The problem has
-been fixed by the following patch which can be cleanly applied to the
-5.10 branch.
- fs/udf/inode.c | 41 +++++++++++++++++++++++++++--------------
- 1 file changed, 27 insertions(+), 14 deletions(-)
+Here it would be nice if we took a sweep once this fix is in and switch
+over to scoped guards, like Bartosz does:
+https://lore.kernel.org/linux-gpio/20230812183635.5478-1-brgl@bgdev.pl/
 
-diff --git a/fs/udf/inode.c b/fs/udf/inode.c
-index d114774ecdea..3e11190b7118 100644
---- a/fs/udf/inode.c
-+++ b/fs/udf/inode.c
-@@ -57,15 +57,15 @@ static int udf_update_inode(struct inode *, int);
- static int udf_sync_inode(struct inode *inode);
- static int udf_alloc_i_data(struct inode *inode, size_t size);
- static sector_t inode_getblk(struct inode *, sector_t, int *, int *);
--static int8_t udf_insert_aext(struct inode *, struct extent_position,
--			      struct kernel_lb_addr, uint32_t);
-+static int udf_insert_aext(struct inode *, struct extent_position,
-+			   struct kernel_lb_addr, uint32_t);
- static void udf_split_extents(struct inode *, int *, int, udf_pblk_t,
- 			      struct kernel_long_ad *, int *);
- static void udf_prealloc_extents(struct inode *, int, int,
- 				 struct kernel_long_ad *, int *);
- static void udf_merge_extents(struct inode *, struct kernel_long_ad *, int *);
--static void udf_update_extents(struct inode *, struct kernel_long_ad *, int,
--			       int, struct extent_position *);
-+static int udf_update_extents(struct inode *, struct kernel_long_ad *, int,
-+			      int, struct extent_position *);
- static int udf_get_block(struct inode *, sector_t, struct buffer_head *, int);
- 
- static void __udf_clear_extent_cache(struct inode *inode)
-@@ -887,7 +887,9 @@ static sector_t inode_getblk(struct inode *inode, sector_t block,
- 	/* write back the new extents, inserting new extents if the new number
- 	 * of extents is greater than the old number, and deleting extents if
- 	 * the new number of extents is less than the old number */
--	udf_update_extents(inode, laarr, startnum, endnum, &prev_epos);
-+	*err = udf_update_extents(inode, laarr, startnum, endnum, &prev_epos);
-+	if (*err < 0)
-+		goto out_free;
- 
- 	newblock = udf_get_pblock(inode->i_sb, newblocknum,
- 				iinfo->i_location.partitionReferenceNum, 0);
-@@ -1155,21 +1157,30 @@ static void udf_merge_extents(struct inode *inode, struct kernel_long_ad *laarr,
- 	}
- }
- 
--static void udf_update_extents(struct inode *inode, struct kernel_long_ad *laarr,
--			       int startnum, int endnum,
--			       struct extent_position *epos)
-+static int udf_update_extents(struct inode *inode, struct kernel_long_ad *laarr,
-+			      int startnum, int endnum,
-+			      struct extent_position *epos)
- {
- 	int start = 0, i;
- 	struct kernel_lb_addr tmploc;
- 	uint32_t tmplen;
-+	int err;
- 
- 	if (startnum > endnum) {
- 		for (i = 0; i < (startnum - endnum); i++)
- 			udf_delete_aext(inode, *epos);
- 	} else if (startnum < endnum) {
- 		for (i = 0; i < (endnum - startnum); i++) {
--			udf_insert_aext(inode, *epos, laarr[i].extLocation,
--					laarr[i].extLength);
-+			err = udf_insert_aext(inode, *epos,
-+					      laarr[i].extLocation,
-+					      laarr[i].extLength);
-+			/*
-+			 * If we fail here, we are likely corrupting the extent
-+			 * list and leaking blocks. At least stop early to
-+			 * limit the damage.
-+			 */
-+			if (err < 0)
-+				return err;
- 			udf_next_aext(inode, epos, &laarr[i].extLocation,
- 				      &laarr[i].extLength, 1);
- 			start++;
-@@ -1181,6 +1192,7 @@ static void udf_update_extents(struct inode *inode, struct kernel_long_ad *laarr
- 		udf_write_aext(inode, epos, &laarr[i].extLocation,
- 			       laarr[i].extLength, 1);
- 	}
-+	return 0;
- }
- 
- struct buffer_head *udf_bread(struct inode *inode, udf_pblk_t block,
-@@ -2215,12 +2227,13 @@ int8_t udf_current_aext(struct inode *inode, struct extent_position *epos,
- 	return etype;
- }
- 
--static int8_t udf_insert_aext(struct inode *inode, struct extent_position epos,
--			      struct kernel_lb_addr neloc, uint32_t nelen)
-+static int udf_insert_aext(struct inode *inode, struct extent_position epos,
-+			   struct kernel_lb_addr neloc, uint32_t nelen)
- {
- 	struct kernel_lb_addr oeloc;
- 	uint32_t oelen;
- 	int8_t etype;
-+	int err;
- 
- 	if (epos.bh)
- 		get_bh(epos.bh);
-@@ -2230,10 +2243,10 @@ static int8_t udf_insert_aext(struct inode *inode, struct extent_position epos,
- 		neloc = oeloc;
- 		nelen = (etype << 30) | oelen;
- 	}
--	udf_add_aext(inode, &epos, &neloc, nelen, 1);
-+	err = udf_add_aext(inode, &epos, &neloc, nelen, 1);
- 	brelse(epos.bh);
- 
--	return (nelen >> 30);
-+	return err;
- }
- 
- int8_t udf_delete_aext(struct inode *inode, struct extent_position epos)
--- 
-2.34.1
-
+Yours,
+Linus Walleij
