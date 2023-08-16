@@ -2,293 +2,140 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3FE9677D830
-	for <lists+stable@lfdr.de>; Wed, 16 Aug 2023 04:12:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6682277D899
+	for <lists+stable@lfdr.de>; Wed, 16 Aug 2023 04:54:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241199AbjHPCMZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 15 Aug 2023 22:12:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60364 "EHLO
+        id S241353AbjHPCyM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 15 Aug 2023 22:54:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37566 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241242AbjHPCMJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 15 Aug 2023 22:12:09 -0400
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C742A212D;
-        Tue, 15 Aug 2023 19:11:50 -0700 (PDT)
-Received: from dggpeml500006.china.huawei.com (unknown [172.30.72.53])
-        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4RQWkn2hYJzNml3;
-        Wed, 16 Aug 2023 10:08:17 +0800 (CST)
-Received: from [10.174.176.127] (10.174.176.127) by
- dggpeml500006.china.huawei.com (7.185.36.76) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.31; Wed, 16 Aug 2023 10:11:48 +0800
-Subject: Re: [PATCH 5.4 00/39] 5.4.254-rc1 review
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        <stable@vger.kernel.org>
-CC:     <patches@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
-        <torvalds@linux-foundation.org>, <akpm@linux-foundation.org>,
-        <linux@roeck-us.net>, <shuah@kernel.org>, <patches@kernelci.org>,
-        <lkft-triage@lists.linaro.org>, <pavel@denx.de>,
-        <jonathanh@nvidia.com>, <f.fainelli@gmail.com>,
-        <sudipm.mukherjee@gmail.com>, <srw@sladewatkins.net>,
-        <rwarsow@gmx.de>, <conor@kernel.org>
-References: <20230813211704.796906808@linuxfoundation.org>
-From:   luomeng <luomeng12@huawei.com>
-Message-ID: <511a8f49-b521-3405-e9d3-607ccde656bf@huawei.com>
-Date:   Wed, 16 Aug 2023 10:11:47 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.8.1
+        with ESMTP id S241379AbjHPCyI (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 15 Aug 2023 22:54:08 -0400
+Received: from mail-qv1-xf36.google.com (mail-qv1-xf36.google.com [IPv6:2607:f8b0:4864:20::f36])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 15C0F212D
+        for <stable@vger.kernel.org>; Tue, 15 Aug 2023 19:54:07 -0700 (PDT)
+Received: by mail-qv1-xf36.google.com with SMTP id 6a1803df08f44-644e8aeb791so19985606d6.1
+        for <stable@vger.kernel.org>; Tue, 15 Aug 2023 19:54:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cloudflare.com; s=google; t=1692154446; x=1692759246;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=2jAVBy2MkmXmlDNRy4QvEu431ZhbMb0FhFH3eSVe50I=;
+        b=s1C2tL1gwzB9t1W8VGjfLV8zpPSqNILfvoZd7kA5FZ9giVSw/PctFcXKSiDXYkoGUj
+         1J3ikEOfXp+jpODaD5f7mpP0/lMAq0LmLyxnAz/lDqn5zuop//mbNmqaNG3n4CR7nOzd
+         3MJOvbDoMyc0pVW5eUOZfakv4t579QuSvvZRM=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1692154446; x=1692759246;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=2jAVBy2MkmXmlDNRy4QvEu431ZhbMb0FhFH3eSVe50I=;
+        b=bB+8MItaxyMpH1sueweCY9CuWSNlJVEjvtwkq/Ke9AeYUeE4xWryB0vTuGjFsvR02r
+         zeaGnLqiCGelJpOYqNvR/YShxuin22afdwYgy0BU3OwT+/cVKoZDrPRghmjPVWrr6kAK
+         QUQlrEIErZjdtZiX19XK4AlBp7wHiOvCSDNp1w0a+2mH3/vLugmJ4na2gbiAJnOTu8KR
+         3Qa3K6sbLMgAEjufDhTByrVmUkOyLDgApgM8amEeSqQB71molH3A/E2yNzABdeJdx+8m
+         /A+JI+cXvYpRzMs8OjkJ6jsra1MPsUF8D4myx2Pe59OoZLJXnkDs9Hg4FbDhZsMinBGq
+         klPQ==
+X-Gm-Message-State: AOJu0YwBaYx8MTvdXVHh2x+DDy4IUMVxKm7XgYN0DeBXwVZyUqhzb/gl
+        9MWI4bqPhnLxk8dl2HNOd77KMA==
+X-Google-Smtp-Source: AGHT+IFUyON3WYFx3pyMbAY54IPL8txV66k0Ez5DFT6rOchV7FfvRatH9VayV7nsUi0glnx5sw9aFA==
+X-Received: by 2002:a0c:c444:0:b0:626:3a5a:f8dc with SMTP id t4-20020a0cc444000000b006263a5af8dcmr517063qvi.57.1692154446180;
+        Tue, 15 Aug 2023 19:54:06 -0700 (PDT)
+Received: from debian.debian ([140.141.197.139])
+        by smtp.gmail.com with ESMTPSA id c21-20020ae9e215000000b00765a9f53af0sm4136929qkc.128.2023.08.15.19.54.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 15 Aug 2023 19:54:05 -0700 (PDT)
+Date:   Tue, 15 Aug 2023 19:54:03 -0700
+From:   Yan Zhai <yan@cloudflare.com>
+To:     bpf@vger.kernel.org
+Cc:     "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        David Ahern <dsahern@kernel.org>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Andrii Nakryiko <andrii@kernel.org>,
+        Martin KaFai Lau <martin.lau@linux.dev>,
+        Song Liu <song@kernel.org>, Yonghong Song <yhs@fb.com>,
+        John Fastabend <john.fastabend@gmail.com>,
+        KP Singh <kpsingh@kernel.org>,
+        Stanislav Fomichev <sdf@google.com>,
+        Hao Luo <haoluo@google.com>, Jiri Olsa <jolsa@kernel.org>,
+        Mykola Lysenko <mykolal@fb.com>, Shuah Khan <shuah@kernel.org>,
+        Yan Zhai <yan@cloudflare.com>, Thomas Graf <tgraf@suug.ch>,
+        Jordan Griege <jgriege@cloudflare.com>,
+        Dan Carpenter <dan.carpenter@linaro.org>,
+        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kselftest@vger.kernel.org, stable@vger.kernel.org
+Subject: [PATCH v5 bpf 0/4] lwt: fix return values of BPF ops
+Message-ID: <cover.1692153515.git.yan@cloudflare.com>
 MIME-Version: 1.0
-In-Reply-To: <20230813211704.796906808@linuxfoundation.org>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.174.176.127]
-X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
- dggpeml500006.china.huawei.com (7.185.36.76)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-5.2 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Tested on arm64 and x86 for 5.4.254-rc1,
+lwt xmit hook does not expect positive return values in function
+ip_finish_output2 and ip6_finish_output. However, BPF programs can
+directly return positive statuses such like NET_XMIT_DROP, NET_RX_DROP,
+and etc to the caller. Such return values would make the kernel continue
+processing already freed skbs and eventually panic.
 
-Kernel 
-repo:https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
-Branch: linux-5.4.y
-Version: 5.4.254-rc1
-Commit: 89e2e795021f6c31714341452eb5e5ef0e0f420f
-Compiler: gcc version 7.3.0 (GCC)
+This set fixes the return values from BPF ops to unexpected continue
+processing, and checks strictly on the correct continue condition for
+future proof. In addition, add missing selftests for BPF_REDIRECT
+and BPF_REROUTE cases for BPF-CI.
 
-arm64:
---------------------------------------------------------------------
-Testcase Result Summary:
-total: 8971
-passed: 8971
-failed: 0
-timeout: 0
---------------------------------------------------------------------
+v4: https://lore.kernel.org/bpf/ZMD1sFTW8SFiex+x@debian.debian/T/ 
+v3: https://lore.kernel.org/bpf/cover.1690255889.git.yan@cloudflare.com/ 
+v2: https://lore.kernel.org/netdev/ZLdY6JkWRccunvu0@debian.debian/ 
+v1: https://lore.kernel.org/bpf/ZLbYdpWC8zt9EJtq@debian.debian/ 
 
-x86:
---------------------------------------------------------------------
-Testcase Result Summary:
-total: 8971
-passed: 8971
-failed: 0
-timeout: 0
---------------------------------------------------------------------
-Tested-by: Hulk Robot <hulkrobot@huawei.com>
+changes since v4:
+ * fixed same error on BPF_REROUTE path
+ * re-implemented selftests under BPF-CI requirement
 
-在 2023/8/14 5:19, Greg Kroah-Hartman 写道:
-> This is the start of the stable review cycle for the 5.4.254 release.
-> There are 39 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Tue, 15 Aug 2023 21:16:53 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.4.254-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.4.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
-> 
-> -------------
-> Pseudo-Shortlog of commits:
-> 
-> Greg Kroah-Hartman <gregkh@linuxfoundation.org>
->      Linux 5.4.254-rc1
-> 
-> Eric Dumazet <edumazet@google.com>
->      sch_netem: fix issues in netem_change() vs get_dist_table()
-> 
-> Masahiro Yamada <masahiroy@kernel.org>
->      alpha: remove __init annotation from exported page_is_ram()
-> 
-> Zhu Wang <wangzhu9@huawei.com>
->      scsi: core: Fix possible memory leak if device_add() fails
-> 
-> Zhu Wang <wangzhu9@huawei.com>
->      scsi: snic: Fix possible memory leak if device_add() fails
-> 
-> Alexandra Diupina <adiupina@astralinux.ru>
->      scsi: 53c700: Check that command slot is not NULL
-> 
-> Michael Kelley <mikelley@microsoft.com>
->      scsi: storvsc: Fix handling of virtual Fibre Channel timeouts
-> 
-> Tony Battersby <tonyb@cybernetics.com>
->      scsi: core: Fix legacy /proc parsing buffer overflow
-> 
-> Pablo Neira Ayuso <pablo@netfilter.org>
->      netfilter: nf_tables: report use refcount overflow
-> 
-> Ming Lei <ming.lei@redhat.com>
->      nvme-rdma: fix potential unbalanced freeze & unfreeze
-> 
-> Ming Lei <ming.lei@redhat.com>
->      nvme-tcp: fix potential unbalanced freeze & unfreeze
-> 
-> Josef Bacik <josef@toxicpanda.com>
->      btrfs: set cache_block_group_error if we find an error
-> 
-> Christoph Hellwig <hch@lst.de>
->      btrfs: don't stop integrity writeback too early
-> 
-> Nick Child <nnac123@linux.ibm.com>
->      ibmvnic: Handle DMA unmapping of login buffs in release functions
-> 
-> Daniel Jurgens <danielj@nvidia.com>
->      net/mlx5: Allow 0 for total host VFs
-> 
-> Christophe JAILLET <christophe.jaillet@wanadoo.fr>
->      dmaengine: mcf-edma: Fix a potential un-allocated memory access
-> 
-> Felix Fietkau <nbd@nbd.name>
->      wifi: cfg80211: fix sband iftype data lookup for AP_VLAN
-> 
-> Douglas Miller <doug.miller@cornelisnetworks.com>
->      IB/hfi1: Fix possible panic during hotplug remove
-> 
-> Andrew Kanner <andrew.kanner@gmail.com>
->      drivers: net: prevent tun_build_skb() to exceed the packet size limit
-> 
-> Eric Dumazet <edumazet@google.com>
->      dccp: fix data-race around dp->dccps_mss_cache
-> 
-> Ziyang Xuan <william.xuanziyang@huawei.com>
->      bonding: Fix incorrect deletion of ETH_P_8021AD protocol vid from slaves
-> 
-> Eric Dumazet <edumazet@google.com>
->      net/packet: annotate data-races around tp->status
-> 
-> Nathan Chancellor <nathan@kernel.org>
->      mISDN: Update parameter type of dsp_cmx_send()
-> 
-> Mark Brown <broonie@kernel.org>
->      selftests/rseq: Fix build with undefined __weak
-> 
-> Karol Herbst <kherbst@redhat.com>
->      drm/nouveau/disp: Revert a NULL check inside nouveau_connector_get_modes
-> 
-> Arnd Bergmann <arnd@arndb.de>
->      x86: Move gds_ucode_mitigated() declaration to header
-> 
-> Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
->      x86/mm: Fix VDSO and VVAR placement on 5-level paging machines
-> 
-> Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
->      x86/cpu/amd: Enable Zenbleed fix for AMD Custom APU 0405
-> 
-> Prashanth K <quic_prashk@quicinc.com>
->      usb: common: usb-conn-gpio: Prevent bailing out if initial role is none
-> 
-> Elson Roy Serrao <quic_eserrao@quicinc.com>
->      usb: dwc3: Properly handle processing of pending events
-> 
-> Alan Stern <stern@rowland.harvard.edu>
->      usb-storage: alauda: Fix uninit-value in alauda_check_media()
-> 
-> Qi Zheng <zhengqi.arch@bytedance.com>
->      binder: fix memory leak in binder_init()
-> 
-> Yiyuan Guo <yguoaz@gmail.com>
->      iio: cros_ec: Fix the allocation size for cros_ec_command
-> 
-> Ryusuke Konishi <konishi.ryusuke@gmail.com>
->      nilfs2: fix use-after-free of nilfs_root in dirtying inodes via iput
-> 
-> Thomas Gleixner <tglx@linutronix.de>
->      x86/pkeys: Revert a5eff7259790 ("x86/pkeys: Add PKRU value to init_fpstate")
-> 
-> Colin Ian King <colin.i.king@gmail.com>
->      radix tree test suite: fix incorrect allocation size for pthreads
-> 
-> Karol Herbst <kherbst@redhat.com>
->      drm/nouveau/gr: enable memory loads on helper invocation on all channels
-> 
-> Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
->      dmaengine: pl330: Return DMA_PAUSED when transaction is paused
-> 
-> Maciej Żenczykowski <maze@google.com>
->      ipv6: adjust ndisc_is_useropt() to also return true for PIO
-> 
-> Sergei Antonov <saproj@gmail.com>
->      mmc: moxart: read scr register without changing byte order
-> 
-> 
-> -------------
-> 
-> Diffstat:
-> 
->   Makefile                                           |   4 +-
->   arch/alpha/kernel/setup.c                          |   3 +-
->   arch/x86/entry/vdso/vma.c                          |   4 +-
->   arch/x86/include/asm/processor.h                   |   2 +
->   arch/x86/kernel/cpu/amd.c                          |   1 +
->   arch/x86/kernel/cpu/common.c                       |   5 -
->   arch/x86/kvm/x86.c                                 |   2 -
->   arch/x86/mm/pkeys.c                                |   6 -
->   drivers/android/binder.c                           |   1 +
->   drivers/android/binder_alloc.c                     |   6 +
->   drivers/android/binder_alloc.h                     |   1 +
->   drivers/dma/mcf-edma.c                             |  13 +-
->   drivers/dma/pl330.c                                |  18 ++-
->   drivers/gpu/drm/nouveau/nouveau_connector.c        |   2 +-
->   drivers/gpu/drm/nouveau/nvkm/engine/gr/ctxgf100.h  |   1 +
->   drivers/gpu/drm/nouveau/nvkm/engine/gr/ctxgk104.c  |   4 +-
->   drivers/gpu/drm/nouveau/nvkm/engine/gr/ctxgk110.c  |  10 ++
->   drivers/gpu/drm/nouveau/nvkm/engine/gr/ctxgk110b.c |   1 +
->   drivers/gpu/drm/nouveau/nvkm/engine/gr/ctxgk208.c  |   1 +
->   drivers/gpu/drm/nouveau/nvkm/engine/gr/ctxgm107.c  |   1 +
->   .../common/cros_ec_sensors/cros_ec_sensors_core.c  |   2 +-
->   drivers/infiniband/hw/hfi1/chip.c                  |   1 +
->   drivers/isdn/mISDN/dsp.h                           |   2 +-
->   drivers/isdn/mISDN/dsp_cmx.c                       |   2 +-
->   drivers/isdn/mISDN/dsp_core.c                      |   2 +-
->   drivers/mmc/host/moxart-mmc.c                      |   8 +-
->   drivers/net/bonding/bond_main.c                    |   4 +-
->   drivers/net/ethernet/ibm/ibmvnic.c                 |  15 +-
->   drivers/net/ethernet/mellanox/mlx5/core/sriov.c    |   3 +-
->   drivers/net/tun.c                                  |   2 +-
->   drivers/nvme/host/rdma.c                           |   3 +-
->   drivers/nvme/host/tcp.c                            |   3 +-
->   drivers/scsi/53c700.c                              |   2 +-
->   drivers/scsi/raid_class.c                          |   1 +
->   drivers/scsi/scsi_proc.c                           |  30 ++--
->   drivers/scsi/snic/snic_disc.c                      |   1 +
->   drivers/scsi/storvsc_drv.c                         |   4 -
->   drivers/usb/common/usb-conn-gpio.c                 |   6 +-
->   drivers/usb/dwc3/gadget.c                          |   9 +-
->   drivers/usb/storage/alauda.c                       |   9 +-
->   fs/btrfs/extent-tree.c                             |   5 +-
->   fs/btrfs/extent_io.c                               |   7 +-
->   fs/nilfs2/inode.c                                  |   8 +
->   fs/nilfs2/segment.c                                |   2 +
->   fs/nilfs2/the_nilfs.h                              |   2 +
->   include/net/cfg80211.h                             |   3 +
->   include/net/netfilter/nf_tables.h                  |  31 +++-
->   net/dccp/output.c                                  |   2 +-
->   net/dccp/proto.c                                   |  10 +-
->   net/ipv6/ndisc.c                                   |   3 +-
->   net/netfilter/nf_tables_api.c                      | 166 +++++++++++++--------
->   net/netfilter/nft_flow_offload.c                   |   6 +-
->   net/netfilter/nft_objref.c                         |   8 +-
->   net/packet/af_packet.c                             |  16 +-
->   net/sched/sch_netem.c                              |  59 ++++----
->   tools/testing/radix-tree/regression1.c             |   2 +-
->   tools/testing/selftests/rseq/Makefile              |   4 +-
->   tools/testing/selftests/rseq/rseq.c                |   2 +
->   58 files changed, 337 insertions(+), 194 deletions(-)
-> 
-> 
-> .
-> 
+changes since v3:
+ * minor change in commit message and changelogs
+ * tested by Jakub Sitnicki
+
+changes since v2:
+ * subject name changed
+ * also covered redirect to ingress case
+ * added selftests
+
+changes since v1:
+ * minor code style changes
+
+Yan Zhai (4):
+  lwt: fix return values of BPF ops
+  lwt: check LWTUNNEL_XMIT_CONTINUE strictly
+  selftests/bpf: add lwt_xmit tests for BPF_REDIRECT
+  selftests/bpf: add lwt_xmit tests for BPF_REROUTE
+
+ include/net/lwtunnel.h                        |   5 +-
+ net/core/lwt_bpf.c                            |   7 +-
+ net/ipv4/ip_output.c                          |   2 +-
+ net/ipv6/ip6_output.c                         |   2 +-
+ .../selftests/bpf/prog_tests/lwt_helpers.h    | 139 ++++++++
+ .../selftests/bpf/prog_tests/lwt_redirect.c   | 319 ++++++++++++++++++
+ .../selftests/bpf/prog_tests/lwt_reroute.c    | 256 ++++++++++++++
+ .../selftests/bpf/progs/test_lwt_redirect.c   |  58 ++++
+ .../selftests/bpf/progs/test_lwt_reroute.c    |  36 ++
+ 9 files changed, 817 insertions(+), 7 deletions(-)
+ create mode 100644 tools/testing/selftests/bpf/prog_tests/lwt_helpers.h
+ create mode 100644 tools/testing/selftests/bpf/prog_tests/lwt_redirect.c
+ create mode 100644 tools/testing/selftests/bpf/prog_tests/lwt_reroute.c
+ create mode 100644 tools/testing/selftests/bpf/progs/test_lwt_redirect.c
+ create mode 100644 tools/testing/selftests/bpf/progs/test_lwt_reroute.c
+
+-- 
+2.30.2
+
