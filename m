@@ -2,295 +2,246 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 505DB77E357
-	for <lists+stable@lfdr.de>; Wed, 16 Aug 2023 16:15:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2E9B577E368
+	for <lists+stable@lfdr.de>; Wed, 16 Aug 2023 16:18:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235449AbjHPOOU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 16 Aug 2023 10:14:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45882 "EHLO
+        id S1343521AbjHPOSM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 16 Aug 2023 10:18:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51112 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231533AbjHPONp (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 16 Aug 2023 10:13:45 -0400
-Received: from mailout2.w1.samsung.com (mailout2.w1.samsung.com [210.118.77.12])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C5152705
-        for <stable@vger.kernel.org>; Wed, 16 Aug 2023 07:13:40 -0700 (PDT)
-Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
-        by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20230816141338euoutp02af1ab858543dc7c76b28edc165207910~74pXrVhvj0320303203euoutp02e
-        for <stable@vger.kernel.org>; Wed, 16 Aug 2023 14:13:38 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20230816141338euoutp02af1ab858543dc7c76b28edc165207910~74pXrVhvj0320303203euoutp02e
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-        s=mail20170921; t=1692195218;
-        bh=wLwr6gnPMrVuRdoUCnV9+Ys56Mqg2tWmonUHpJvmY+E=;
-        h=From:To:Subject:Date:In-Reply-To:References:From;
-        b=PWvkTuMBcIT7tWdgoSv9UZfRC50Tnrm2egy6ESN2ZYZmYlJ2g+htv7p5qrgq/sCEJ
-         g3wxxoLA5gaZi2ZkJfdeUKKVMmJPOI8ygtZXoSBPQVX5cmtShN+mIRVmIzIj6NSBm/
-         BC11kxWcqfqNoZIlHk68/Txls+1wOW9aMilnbwQE=
-Received: from eusmges1new.samsung.com (unknown [203.254.199.242]) by
-        eucas1p2.samsung.com (KnoxPortal) with ESMTP id
-        20230816141338eucas1p2129e9e75855997125475391eb00750d9~74pXS0xgx2836328363eucas1p23;
-        Wed, 16 Aug 2023 14:13:38 +0000 (GMT)
-Received: from eucas1p2.samsung.com ( [182.198.249.207]) by
-        eusmges1new.samsung.com (EUCPMTA) with SMTP id B8.AF.42423.199DCD46; Wed, 16
-        Aug 2023 15:13:37 +0100 (BST)
-Received: from eusmtrp2.samsung.com (unknown [182.198.249.139]) by
-        eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
-        20230816141337eucas1p1dabe7fb9f6bd69d6ce50586ca5df54d4~74pW4U2eK1452514525eucas1p1n;
-        Wed, 16 Aug 2023 14:13:37 +0000 (GMT)
-Received: from eusmgms2.samsung.com (unknown [182.198.249.180]) by
-        eusmtrp2.samsung.com (KnoxPortal) with ESMTP id
-        20230816141337eusmtrp2eb046b9b69d4d4e5b86fb69f834f96fa~74pW3ms5M3018630186eusmtrp2U;
-        Wed, 16 Aug 2023 14:13:37 +0000 (GMT)
-X-AuditID: cbfec7f2-a3bff7000002a5b7-24-64dcd9915078
-Received: from eusmtip1.samsung.com ( [203.254.199.221]) by
-        eusmgms2.samsung.com (EUCPMTA) with SMTP id 67.8B.14344.199DCD46; Wed, 16
-        Aug 2023 15:13:37 +0100 (BST)
-Received: from CAMSVWEXC01.scsc.local (unknown [106.1.227.71]) by
-        eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
-        20230816141337eusmtip107774bcc266c90b6eda9ff60aeabb727~74pWngub92176321763eusmtip1X;
-        Wed, 16 Aug 2023 14:13:37 +0000 (GMT)
-Received: from CAMSVWEXC02.scsc.local (2002:6a01:e348::6a01:e348) by
-        CAMSVWEXC01.scsc.local (2002:6a01:e347::6a01:e347) with Microsoft SMTP
-        Server (TLS) id 15.0.1497.2; Wed, 16 Aug 2023 15:13:36 +0100
-Received: from CAMSVWEXC02.scsc.local ([::1]) by CAMSVWEXC02.scsc.local
-        ([fe80::3c08:6c51:fa0a:6384%13]) with mapi id 15.00.1497.012; Wed, 16 Aug
-        2023 15:13:36 +0100
-From:   Daniel Gomez <da.gomez@samsung.com>
-To:     "Yin, Fengwei" <fengwei.yin@intel.com>,
-        "linux-mm@kvack.org" <linux-mm@kvack.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>,
-        "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
-        "willy@infradead.org" <willy@infradead.org>,
-        "vishal.moola@gmail.com" <vishal.moola@gmail.com>,
-        "wangkefeng.wang@huawei.com" <wangkefeng.wang@huawei.com>,
-        "minchan@kernel.org" <minchan@kernel.org>,
-        "yuzhao@google.com" <yuzhao@google.com>,
-        "david@redhat.com" <david@redhat.com>,
-        "ryan.roberts@arm.com" <ryan.roberts@arm.com>,
-        "shy828301@gmail.com" <shy828301@gmail.com>
-Subject: Re: [PATCH v2 3/3] madvise:madvise_free_pte_range(): don't use
- mapcount() against large folio for sharing check
-Thread-Topic: [PATCH v2 3/3] madvise:madvise_free_pte_range(): don't use
-        mapcount() against large folio for sharing check
-Thread-Index: AQHZz3vpurV86lSwc0Wr64w4rsIXva/r8T+AgADNGgCAAAV0gIAAJCQA
-Date:   Wed, 16 Aug 2023 14:13:35 +0000
-Message-ID: <a4k27pleianmjbt2d5lqlmwqv7k2pujzfv75y2q564vrcdye3w@xf3wcifffxkx>
-In-Reply-To: <4412ad3c-ebed-40a4-8f4e-83bb1b53b686@intel.com>
-Accept-Language: en-US, en-GB
+        with ESMTP id S1343566AbjHPORs (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 16 Aug 2023 10:17:48 -0400
+Received: from NAM04-MW2-obe.outbound.protection.outlook.com (mail-mw2nam04on2085.outbound.protection.outlook.com [40.107.101.85])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F69E272C;
+        Wed, 16 Aug 2023 07:17:45 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=iQ3r3/SoKVSItwUMgXC4EYR8DRqT3CkwBITAJze3uey3+W+CzHMlUWNfK+WnNSgeyH+VY+fFskxqJGiuChn1HAkVs2pWKTeD/hhUPjYGe17QzVjBdjOWDpshM7tj1pO/LXnJx2hhajUQuCIJPZ7Jc7w+4+CLUTHZWBis4X1vx0jtaSM10orgyXIBj7ZYd1nvULLojJs24QRg2jxEv4JHepzEuhDNe0z9b4MOdr4EsJyuNasZPYW5M31lJGb9DM0wtmRuCwz1bhKSK2OjRAI2qNElPbLLxZVpKNIiUc6xRaIL0caSdFZukfPkFhjMgaWqfDlyT/WhjAiMmsk1EvYU+g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=pIlYviRfxRmoTXiged3GPLYUZ2916nMZe5U43lL/lHk=;
+ b=neiwULDnCrmw0TxYfG0CrucNSSUYQczpkzCP4IouHs7QC4oDVHqE0XTP9mY0d+5rgevxAxOYRynKgwE+lCghapQ1SODfU2qtcIVnUtNWx0+1PVIPd+Ib03LwW94wDCPVTBCbHV5Oqtv4Y+la02GFj69pqNcyidJKarBgdJ9+6DZ3ngYCNlmxsvxYci++zkVvMXJuPZqXFoO/Sz+gKM1dZb2M/ne0ukvNsG8+KCK67NbPIWJa2bf4VBFWoOeUu4zy6gq8uI5r82SMWbLDodBu0hAyNncDuwF/2BbiJVlGDp7Hbyjt7+yWDp4alA1DFwY/LqswN2aBbAqHfp/pUnTFvw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=pIlYviRfxRmoTXiged3GPLYUZ2916nMZe5U43lL/lHk=;
+ b=skMDGbjRKLwgMCPkByR7RnsSPX75Nm6mZeqQF4f0TgvC3lLwOFfM5OqTbMkPSHrXLexwWLrEMg3OHszqVQC/Iji4Xv8uD4CMeS0HDZQ6zIxuLy6UubdY8FyW/aYMh28ZA1wBWMeU6Yg+n0uRtsEJUAple5CfdDPXFl6oDjLgsmA=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from BN8PR12MB3587.namprd12.prod.outlook.com (2603:10b6:408:43::13)
+ by SN7PR12MB7809.namprd12.prod.outlook.com (2603:10b6:806:34e::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6678.26; Wed, 16 Aug
+ 2023 14:17:42 +0000
+Received: from BN8PR12MB3587.namprd12.prod.outlook.com
+ ([fe80::3d:c14:667a:1c81]) by BN8PR12MB3587.namprd12.prod.outlook.com
+ ([fe80::3d:c14:667a:1c81%4]) with mapi id 15.20.6678.029; Wed, 16 Aug 2023
+ 14:17:42 +0000
+Message-ID: <9855fa7a-dd9d-27b8-171e-b662d417b902@amd.com>
+Date:   Wed, 16 Aug 2023 16:17:34 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH v2] drm/amdgpu: register a dirty framebuffer callback for
+ fbcon
 Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-messagesentrepresentingtype: 1
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [106.110.32.67]
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <81886C2D09B51A449710C87C857467DA@scsc.local>
-Content-Transfer-Encoding: quoted-printable
+To:     Hamza Mahfooz <hamza.mahfooz@amd.com>,
+        amd-gfx@lists.freedesktop.org
+Cc:     Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        Guchun Chen <guchun.chen@amd.com>,
+        dri-devel@lists.freedesktop.org,
+        "Pan, Xinhui" <Xinhui.Pan@amd.com>,
+        Javier Martinez Canillas <javierm@redhat.com>,
+        stable@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Aurabindo Pillai <aurabindo.pillai@amd.com>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        David Airlie <airlied@gmail.com>,
+        =?UTF-8?Q?Christian_K=c3=b6nig?= <christian.koenig@amd.com>,
+        Mario Limonciello <mario.limonciello@amd.com>
+References: <20230815172700.255596-1-hamza.mahfooz@amd.com>
+ <d1831afd-9e02-fbc9-69f7-e8f044f35ee0@gmail.com>
+ <855aeab8-13e1-4dc4-841e-24d298c9c072@amd.com>
+From:   =?UTF-8?Q?Christian_K=c3=b6nig?= <christian.koenig@amd.com>
+In-Reply-To: <855aeab8-13e1-4dc4-841e-24d298c9c072@amd.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: FR0P281CA0117.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:a8::15) To BN8PR12MB3587.namprd12.prod.outlook.com
+ (2603:10b6:408:43::13)
 MIME-Version: 1.0
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFnrOKsWRmVeSWpSXmKPExsWy7djP87oTb95JMdiy0sZizvo1bBZf1/9i
-        trhy+g2TxeVdc9gs7q35z2qx7Ot7doue3VMZLRacWAwkNj5itFi/7warRePn+4wWv38A1b2b
-        8IXVgddjzbw1jB47Z91l91iwqdSj5chbVo/NK7Q8Fu95yeSxaVUnm8emT5PYPU7M+M3i8X7f
-        VTaPz5vkArijuGxSUnMyy1KL9O0SuDIObdjNXnBAo2L3nJtsDYw9Cl2MnBwSAiYS876dYQSx
-        hQRWMEp0NQp0MXIB2V8YJXav38EE4XxmlJi1dgEzTMfk/idQieWMEv/n3mWFaAequt4YCpE4
-        wyjxfc0LqKqVjBK3VlwFa2cT0JTYd3ITO0hCRKCNVWLSxPlMIAlhgSqJFdsOAl3CAZSolri6
-        rRokLCLgJvGguYkNxGYRUJXoXX4AbBuvgK9E6/9OFhCbU8BW4kDDcbAxjAKyEo9W/mIHsZkF
-        xCVuPYEYLyEgKLFo9h6oF8Qk/u16yAZh60icvf6EEcI2kNi6dB8LhK0o0XHsJhvEHB2JBbs/
-        QdmWEvtXdzJC2NoSyxa+Zoa4R1Di5MwnLCB/SQjM5ZJ49bGHFWKQi8SxCeuhFgtLvDq+hR3C
-        lpH4v3M+0wRG7VlIbp2FZN8sJPtmIdk3C8m+BYysqxjFU0uLc9NTiw3zUsv1ihNzi0vz0vWS
-        83M3MQLT4ul/xz/tYJz76qPeIUYmDsZDjBIczEoivD28t1KEeFMSK6tSi/Lji0pzUosPMUpz
-        sCiJ82rbnkwWEkhPLEnNTk0tSC2CyTJxcEo1MCVIb1Wf+sjxT/fVL6yhBf93/zj1Ne+C0NSX
-        87/sfcbLJum36Ffw5c0v58TG+s5MNj5SsUsh6dK6qQvr5xbOrj/Bv+ZzsIDobiPXhS+bqtqk
-        WOd+kVJSWRjfu8l+MnudUPcVRk3tOypW/k6vjld3L36qbXqfN+L1tFt6S/edZEoOSqz62+l4
-        Qf2fzh+VR59YPJ6aSO2JqxZ6uaR9zpfLSZadB1anaf3bsrXo06rpiRtXsU+wcTRf/P7CC2et
-        uXO4nv74onlaQjnO7cDnD1McZWXFHVbc37aj+t/FC5Wqek7hcnLMM+LuXuw97nfzz9rjbU5d
-        /5jWar7yadY5s/hiNf+EkD7zYxW7vM0r9qk9+LpDiaU4I9FQi7moOBEACx7otfoDAAA=
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFnrGKsWRmVeSWpSXmKPExsVy+t/xu7oTb95JMVg/Q95izvo1bBZf1/9i
-        trhy+g2TxeVdc9gs7q35z2qx7Ot7doue3VMZLRacWAwkNj5itFi/7warRePn+4wWv38A1b2b
-        8IXVgddjzbw1jB47Z91l91iwqdSj5chbVo/NK7Q8Fu95yeSxaVUnm8emT5PYPU7M+M3i8X7f
-        VTaPz5vkArij9GyK8ktLUhUy8otLbJWiDS2M9AwtLfSMTCz1DI3NY62MTJX07WxSUnMyy1KL
-        9O0S9DIObdjNXnBAo2L3nJtsDYw9Cl2MnBwSAiYSk/ufMHUxcnEICSxllLh95DoLREJGYuOX
-        q6wQtrDEn2tdbBBFHxklZi3YDNVxhlHiYudeVghnJaPE779NjCAtbAKaEvtObmIHSYgItLFK
-        TJo4nwkkISxQJbFi20GwIhGBaon7x0+wQNhuEg+am9hAbBYBVYne5QfAdvMK+Eq0/u9kgdiw
-        kVni+5HFYAlOAVuJAw3HwYYyCshKPFr5ix3EZhYQl7j1BGKZhICAxJI955khbFGJl4//QT2k
-        I3H2+hNGCNtAYuvSfVBPK0p0HLvJBjFHR2LB7k9QtqXE/tWdjBC2tsSyha+ZIY4TlDg58wnL
-        BEbpWUhWz0LSPgtJ+ywk7bOQtC9gZF3FKJJaWpybnltspFecmFtcmpeul5yfu4kRmOC2Hfu5
-        ZQfjylcf9Q4xMnEwHmKU4GBWEuHt4b2VIsSbklhZlVqUH19UmpNafIjRFBh4E5mlRJPzgSk2
-        ryTe0MzA1NDEzNLA1NLMWEmc17OgI1FIID2xJDU7NbUgtQimj4mDU6qBadcq6+aDewL/LHWJ
-        Px1wK27Gn0V/e9c9Xhd9rXvbgTV5SbvctI/rStn7vsy+H9f4f/WvHdu2NWerHrl2edtT92wp
-        aRv9Ewmn79t1+T4oKTA/HvS3OGf7O8td4rw6f9SLL5Vpl4seFZILfCafKTNz3sGiCLbV92xE
-        sm8oeijN+6oYKSKxa6lRv3ZOx3vBPa/EDDxqjUIvlifMX//wKFu/onRJl8bd4EMLdDoVLy8+
-        whrg6ub9Om/elAd98623yDNzXhSVyL+6tat86cp30oGvprr0Gv/83SZcXbW0ccm5PYnFypo1
-        ueLhya3F8Q/OX/2j+aPJKGzWXFvO2HTDDe5814oqu4Me/bz557rqZuF0JZbijERDLeai4kQA
-        tlZ+pPkDAAA=
-X-CMS-MailID: 20230816141337eucas1p1dabe7fb9f6bd69d6ce50586ca5df54d4
-X-Msg-Generator: CA
-X-RootMTR: 20230815132509eucas1p1b34b2852a9c4efe743c8da82867c4cc3
-X-EPHeader: CA
-CMS-TYPE: 201P
-X-CMS-RootMailID: 20230815132509eucas1p1b34b2852a9c4efe743c8da82867c4cc3
-References: <20230808020917.2230692-1-fengwei.yin@intel.com>
-        <20230808020917.2230692-4-fengwei.yin@intel.com>
-        <CGME20230815132509eucas1p1b34b2852a9c4efe743c8da82867c4cc3@eucas1p1.samsung.com>
-        <4jvrmdpyteny5vaqmcrctzrovap2oy2zuukybbhfqyqbbb5xmy@ufgxufss2ngw>
-        <2bfa1931-1fc6-5d6f-cba1-c7a9eb8a279a@intel.com>
-        <svdxtqiihsjwcbxjp67s6cteprhoxgypf7rjrk2v73ppyn2ogp@ee4ru6vgspl4>
-        <4412ad3c-ebed-40a4-8f4e-83bb1b53b686@intel.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_PASS,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN8PR12MB3587:EE_|SN7PR12MB7809:EE_
+X-MS-Office365-Filtering-Correlation-Id: 591dc7f5-4c20-41b4-5ede-08db9e638de8
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 8K4gmMxT/D+EnRhOQdlIIkf16urzpnFHc3A9dRzM8UfQ+TWLQbIDFDB/Nj0J/EVXK1wNONRqw4yQ6phdh4cjF/iISxfZKL8o6L8MqlxrOJkQg6Sz6IFS8+OT/rbAIih3Azg9JrzyjXA/9+H3AbKAkt0T86jikZHoDV8snOTqwfN74Dl5XgYJ5wRA8iYnJpsRgSCeW9/8ThtapyX5si17/A5fWw/sty68kcI3pSPPS1QqqUqMKpYXHSbFd8x5rHr47G0DwsqoBwaeWuBRgI52hqn1EK3bgXpJ6FGXEJIKVoigvNzZ72nghbN4KyKw2e5Szzc9lo7UdDq6IqYIgAg5lTvWegpCnody5tGSJLS6YuGCOpeXnJtYAeAOU6qhn7erHfK1a9BNBDVh73hnoo6bn/6IABH6tE+cBs1UorPxEdiyr/kK0tA0DmlM+Dcv++crj12tDrMIOhbsPP7W72l/yOeyqHT6TxZIfR0DaosX5vBKIPKUYwcirLQHzyK8JaYjnu5ZL4fVu4/5FDbTiYTTP3vqD85S/QlUPAmETEx6lb92e80pluD4yBNpmwA5eJ1fvPsYUWisFXqd4asSUJwFx/3C8x/nuCHsA6ydLeGG8ATDbbroTnDRY3fpZdvUMoFIMgC3HVZnHmnOlj3zF/e2AJMnAxO4pepDEzLCzIZpj1g=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN8PR12MB3587.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(396003)(39860400002)(346002)(366004)(376002)(136003)(1800799009)(451199024)(186009)(316002)(54906003)(66946007)(66476007)(66556008)(966005)(41300700001)(5660300002)(66574015)(38100700002)(31686004)(8676002)(4326008)(8936002)(2906002)(83380400001)(26005)(478600001)(86362001)(31696002)(6512007)(53546011)(6506007)(36756003)(6666004)(2616005)(6486002)(14143004)(45980500001)(43740500002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?d1YxYWZKdC9RdnduZHFYaG51TGJBK3BHMDN0ZldWUENaV2tRNlI3MFdHazhh?=
+ =?utf-8?B?cHE0OER3UjllaVcrakhxUnR3R0w5UzFzVG96WDVJWU4zbThyOEd0VEQzdHRy?=
+ =?utf-8?B?U095d1JRL2JxdmJrYmpPZTlDcndUQXROcEVFUFZ1R2xCcExnZkVGMmlsdXZr?=
+ =?utf-8?B?cm1wVHJWT0JaU2g5MUZGMGo3KzRkRE1vSVJSZnZRL2NDNmFaQi9nZ3FBYTlq?=
+ =?utf-8?B?TTR5akxKdEppc0drcDRKUmZmdWFnam14a3J6Y1dvYjY0MzBYVHdpckNiTkht?=
+ =?utf-8?B?cGxUWFN4ZWt0TG9CSDY2SnFNbWRSa0JyZ2dvMDJUYTFrMlZvWE1sbnhQUURV?=
+ =?utf-8?B?NFAzZUpSWHVHZWpxYlpJR1gxS1dMNTRqVFNFRmxFZE5LTVpQbml5V0s4Nnp1?=
+ =?utf-8?B?anRUVVRRUjNHaTV4MWZPQ1Y1NTNXTFBhVDM4cFBud3VIMjhxd3BBdUgva3Z2?=
+ =?utf-8?B?WElteU9kUk1BUmNLUkxHT1Qzc1FveDAyYkQrRFB6aFR1bXh3Qk9VMDk1ZktT?=
+ =?utf-8?B?MFpIWTVOYnI5OHRsYnFORGRsYjFLMlA3MFlqbzlmaFZlNEY4SUZJVHk1QXlK?=
+ =?utf-8?B?L0hXTDZZa25VZ1ZDZmZCUzZlZlprOEF6Q2FPVWhDR3Mram5KOFg5T09kdkRo?=
+ =?utf-8?B?YmhrZFNnZUtzWjliYUNhek5lWUhPbFVqa2JuZmdOSzg4THQxbGpMbEhTZ2Q3?=
+ =?utf-8?B?TTFwQXFUa0pqWVdlT3V5QjNNdmtndU1INGZCTHJhN2VyZWJFVFJwSDAxSHNw?=
+ =?utf-8?B?Q0kyS0QzTnUybGJQQUtGNmN5Z0hWVWhJTTJ1WWhrcWpwV2t0N1d0ZG1NaWEv?=
+ =?utf-8?B?UkpwVloyekNTWkFNNnRmbGxuUzhpbFpYaFRSWGF1QThCaG1QVW93R0RnYlNo?=
+ =?utf-8?B?bks1T2gwUlp6bmdWR3plY3hBMWZ4VFBtVVVQaEJUK2FFbFZZaSs4clYxRmdC?=
+ =?utf-8?B?Tk9TenA5SXNRT2xWdE5iMUV5WTFWZUdET0E4WXl2VTA3TFdyM3ljdDJOOE5I?=
+ =?utf-8?B?K0ZOdGhwSFBYeFp0UjhIREJqUko4dHd3RDhQa2xCdTZZYzRGZjljMUlZT3N0?=
+ =?utf-8?B?RHhtMzVvR29ibE1hcHhER3lNNENvcXNRdk1zN1dZdnkyU1lUMHkxNUdxZlp4?=
+ =?utf-8?B?ZW0yZnNjQ0FpeG40UjB5Nzh6WStmMzlYRk9WNkhQY0d5b3BNQmtPbmtxcUov?=
+ =?utf-8?B?RnQySHdrOWllZ09LR1M4d0RUSVgwZFVUMUVPaXhBYTc5TWNRaFE4MFBNeElm?=
+ =?utf-8?B?UE5KS0N1OWdSMllub3NTOUZsUkVNMDJhazVrTjl2UXg0cEpybGIvTDRObTMw?=
+ =?utf-8?B?azJZbzdtN3FwbEZtaVlDS0JmU1gva2tHQnQxeVI1Y0JZL3EraXExb0pwN2VL?=
+ =?utf-8?B?a3V1VzRiT21SbkNvWGJVa3VUQmVwSVE5UU90Y1dlbGNRUXQ0TGM1V3UvcGFI?=
+ =?utf-8?B?NVlJT2JPcllQSHM1ZXNET3M3d3FVMFhySHE0S3dtaVhoelkzeXN6UElwdC8z?=
+ =?utf-8?B?SmdrN0ROUWljZndxeFJpdXB3YlBQT1g3N3BNU3NtUndKdXVyU2JOTG95cktY?=
+ =?utf-8?B?US9uRlArcFI1L25nQkIrcUhkRDN5TGlOcE9VS25XTHBpS205cVFKd2h5ZGc5?=
+ =?utf-8?B?cW5WeUxMcUNvczJEZjdURUQyaWZvaHB6M0hNRm9PbGdxWjVBMTRqTFBWaHJl?=
+ =?utf-8?B?TmkzK2cxRnBJcFltaUFGS0Y1eFRFdUlvUm4wc3NRT2RkRXJuWUdKVnJjcGtt?=
+ =?utf-8?B?SjE2RE9IaTVnT2VXRys2Q20wQmdZaXFmbWlkSlNlbm5tRUJ5MklzaFJMSEJP?=
+ =?utf-8?B?L2pUeHVzVmhpY045OThKUTduNXFNSUpXek9PMWZwRzk3enhBbklCN0prSURo?=
+ =?utf-8?B?aTd1NXBUbjduOVZGN0NPT0Vhc3REZUZ3ZUl6bEsxYVQzSjFuTE42SzFickVR?=
+ =?utf-8?B?NDBvWlpudTZJckF1bHh6SDJBSWVETUFRNktmK0VvNWxTbE1BMWNIMGlwck9z?=
+ =?utf-8?B?UkppWW1KOVdPUTUzckppQVhmb3JnUnlxZ1F4Mlk1eGtFUDV1KytyUFRKSkIv?=
+ =?utf-8?B?SytycTA1eXRLQkNYelA1bTJ1REozOFJHTHEyWmRidlBFNitkaFkvMlB1eTht?=
+ =?utf-8?Q?pccKKinXBPOvo81+gyvSmhe/J?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 591dc7f5-4c20-41b4-5ede-08db9e638de8
+X-MS-Exchange-CrossTenant-AuthSource: BN8PR12MB3587.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Aug 2023 14:17:42.4597
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: K9LJEn8KJaIxOpa8Xhtsk1BQDRsk4uaCqA5Ark2Orr/jAvUtpMhyE1s7htPmHruV
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB7809
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
+        NICE_REPLY_A,RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,
+        SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, Aug 16, 2023 at 08:04:11PM +0800, Yin, Fengwei wrote:
+Am 16.08.23 um 15:41 schrieb Hamza Mahfooz:
 >
+> On 8/16/23 01:55, Christian König wrote:
+>>
+>>
+>> Am 15.08.23 um 19:26 schrieb Hamza Mahfooz:
+>>> fbcon requires that we implement &drm_framebuffer_funcs.dirty.
+>>> Otherwise, the framebuffer might take a while to flush (which would
+>>> manifest as noticeable lag). However, we can't enable this callback for
+>>> non-fbcon cases since it might cause too many atomic commits to be made
+>>> at once. So, implement amdgpu_dirtyfb() and only enable it for fbcon
+>>> framebuffers on devices that support atomic KMS.
+>>>
+>>> Cc: Aurabindo Pillai <aurabindo.pillai@amd.com>
+>>> Cc: Mario Limonciello <mario.limonciello@amd.com>
+>>> Cc: stable@vger.kernel.org # 6.1+
+>>> Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2519
+>>> Signed-off-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
+>>> ---
+>>> v2: update variable names
+>>> ---
+>>>   drivers/gpu/drm/amd/amdgpu/amdgpu_display.c | 26 
+>>> ++++++++++++++++++++-
+>>>   1 file changed, 25 insertions(+), 1 deletion(-)
+>>>
+>>> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_display.c 
+>>> b/drivers/gpu/drm/amd/amdgpu/amdgpu_display.c
+>>> index d20dd3f852fc..d3b59f99cb7c 100644
+>>> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_display.c
+>>> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_display.c
+>>> @@ -38,6 +38,8 @@
+>>>   #include <linux/pci.h>
+>>>   #include <linux/pm_runtime.h>
+>>>   #include <drm/drm_crtc_helper.h>
+>>> +#include <drm/drm_damage_helper.h>
+>>> +#include <drm/drm_drv.h>
+>>>   #include <drm/drm_edid.h>
+>>>   #include <drm/drm_fb_helper.h>
+>>>   #include <drm/drm_gem_framebuffer_helper.h>
+>>> @@ -532,11 +534,29 @@ bool amdgpu_display_ddc_probe(struct 
+>>> amdgpu_connector *amdgpu_connector,
+>>>       return true;
+>>>   }
+>>> +static int amdgpu_dirtyfb(struct drm_framebuffer *fb, struct 
+>>> drm_file *file,
+>>> +              unsigned int flags, unsigned int color,
+>>> +              struct drm_clip_rect *clips, unsigned int num_clips)
+>>> +{
+>>> +
+>>> +    if (strcmp(fb->comm, "[fbcon]"))
+>>> +        return -ENOSYS;
+>>
+>> Once more to the v2 of this patch: Tests like those are a pretty big 
+>> NO-GO for upstreaming.
 >
-> On 8/16/2023 7:44 PM, Daniel Gomez wrote:
-> > On Wed, Aug 16, 2023 at 07:30:35AM +0800, Yin Fengwei wrote:
-> >>
-> >>
-> >> On 8/15/23 21:25, Daniel Gomez wrote:
-> >>> Hi Yin,
-> >>> On Tue, Aug 08, 2023 at 10:09:17AM +0800, Yin Fengwei wrote:
-> >>>> Commit 98b211d6415f ("madvise: convert madvise_free_pte_range() to u=
-se a
-> >>>> folio") replaced the page_mapcount() with folio_mapcount() to check
-> >>>> whether the folio is shared by other mapping.
-> >>>>
-> >>>> It's not correct for large folios. folio_mapcount() returns the tota=
-l
-> >>>> mapcount of large folio which is not suitable to detect whether the =
-folio
-> >>>> is shared.
-> >>>>
-> >>>> Use folio_estimated_sharers() which returns a estimated number of sh=
-ares.
-> >>>> That means it's not 100% correct. It should be OK for madvise case h=
-ere.
-> >>>
-> >>> I'm trying to understand why it should be ok for madvise this change,=
- so
-> >>> I hope it's okay to ask you few questions.
-> >>>
-> >>> folio_mapcount() calculates the total maps for all the subpages of a
-> >>> folio. However, the folio_estimated_sharers does it only for the firs=
-t
-> >>> subpage making it not true for large folios. Then, wouldn't this chan=
-ge
-> >>> drop support for large folios?
-> >> I saw David explained this very well in another mail.
-> >>
-> >>>
-> >>> Seems like folio_entire_mapcount() is not accurate either because of =
-it
-> >>> does not inclue PTE-mapped sub-pages which I think we need here. Henc=
-e,
-> >>> the folio_mapcount(). Could this be something missing in the test sid=
-e?
-> >>>
-> >>> I tried to replicate the setup with CONFIG_TRANSPARENT_HUGEPAGE but
-> >>> seems like I'm not able to do it:
-> >>>
-> >>> ./cow
-> >>> # [INFO] detected THP size: 2048 KiB
-> >>> # [INFO] detected hugetlb size: 2048 KiB
-> >>> # [INFO] detected hugetlb size: 1048576 KiB
-> >>> # [INFO] huge zeropage is enabled
-> >>> TAP version 13
-> >>> 1..166
-> >>> # [INFO] Anonymous memory tests in private mappings
-> >>> # [RUN] Basic COW after fork() ... with base page
-> >>> not ok 1 MADV_NOHUGEPAGE failed
-> >>> # [RUN] Basic COW after fork() ... with swapped out base page
-> >>> not ok 2 MADV_NOHUGEPAGE failed
-> >>> # [RUN] Basic COW after fork() ... with THP
-> >>> not ok 3 MADV_HUGEPAGE failed
-> >>> # [RUN] Basic COW after fork() ... with swapped-out THP
-> >>> not ok 4 MADV_HUGEPAGE failed
-> >>> # [RUN] Basic COW after fork() ... with PTE-mapped THP
-> >>> not ok 5 MADV_HUGEPAGE failed
-> >>> # [RUN] Basic COW after fork() ... with swapped-out, PTE-mapped THP
-> >>> not ok 6 MADV_HUGEPAGE failed
-> >>> ...
-> >> Can you post the MADV_PAGEOUT and PTE-mapped THP related testing resul=
-t?
-> >> And I suppose swap need be enabled also for the testing.
-> >
-> > You may find a dump of the logs in the link below with system informati=
-on. Let me
-> > know if you find something wrong in my setup or if you need something e=
-lse.
-> > Besides CONFIG_TRANSPARENT_HUGEPAGE, CONFIG_SWAP is also enabled in the=
- kernel.
-> >
-> > https://gitlab.com/-/snippets/2584135
-> >
-> > Also, strace reports ENOSYS for MADV_*:
-> > madvise(0x7f2912465000, 4096, MADV_NOHUGEPAGE) =3D -1 ENOSYS (Function =
-not implemented)
-> > madvise(0x7f2912000000, 2097152, MADV_HUGEPAGE) =3D -1 ENOSYS (Function=
- not implemented)
-> O. The problem here is MADV_HUGEPAGE/MADV_NOHUGEPAGE doesn't work.
-> Do you have CONFIG_ADVISE_SYSCALLS enabled?
-It worked after I enabled the conf. Some tests failed and some were
-skipped. But I managed to reproduce the issue now, thanks Yin!
+> On closer inspection it is actually sufficient to check if `file` is
+> NULL here (since it means that the request isn't from userspace). So, do
+> you think that would be palatable for upstream?
 
-Bail out! 4 out of 166 tests failed
-# Totals: pass:146 fail:4 xfail:0 xpass:0 skip:16 error:0
+That's certainly better than doing a string compare, but I'm not sure if 
+that's sufficient.
 
-Here the full log:
-https://gitlab.com/-/snippets/2584190/raw/main/cow.txt
+In general drivers shouldn't have any special handling for fdcon.
+
+You should probably have Thomas Zimmermann <tzimmermann@suse.de> take a 
+look at this.
+
+Regards,
+Christian.
+
 >
-> Regards
-> Yin, Fengwei
->
-> >
-> >
-> >>
-> >>
-> >> Regards
-> >> Yin, Fengwei
-> >>
-> >>>
-> >>>
-> >>> Daniel
-> >>>>
-> >>>> User-visible effects is that the THP is skipped when user call madvi=
-se.
-> >>>> But the correct behavior is THP should be split and processed then.
-> >>>>
-> >>>> NOTE: this change is a temporary fix to reduce the user-visible effe=
-cts
-> >>>> before the long term fix from David is ready.
-> >>>>
-> >>>> Fixes: 98b211d6415f ("madvise: convert madvise_free_pte_range() to u=
-se a folio")
-> >>>> Cc: stable@vger.kernel.org
-> >>>> Signed-off-by: Yin Fengwei <fengwei.yin@intel.com>
-> >>>> Reviewed-by: Yu Zhao <yuzhao@google.com>
-> >>>> Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
-> >>>> ---
-> >>>>  mm/madvise.c | 2 +-
-> >>>>  1 file changed, 1 insertion(+), 1 deletion(-)
-> >>>>
-> >>>> diff --git a/mm/madvise.c b/mm/madvise.c
-> >>>> index 49af35e2d99a..4dded5d27e7e 100644
-> >>>> --- a/mm/madvise.c
-> >>>> +++ b/mm/madvise.c
-> >>>> @@ -683,7 +683,7 @@ static int madvise_free_pte_range(pmd_t *pmd, un=
-signed long addr,
-> >>>>  		if (folio_test_large(folio)) {
-> >>>>  			int err;
-> >>>>
-> >>>> -			if (folio_mapcount(folio) !=3D 1)
-> >>>> +			if (folio_estimated_sharers(folio) !=3D 1)
-> >>>>  				break;
-> >>>>  			if (!folio_trylock(folio))
-> >>>>  				break;
-> >>>> --
-> >>>> 2.39.2
-> >>> >=
+>>
+>> Regards,
+>> Christian.
+>>
+>>> +
+>>> +    return drm_atomic_helper_dirtyfb(fb, file, flags, color, clips,
+>>> +                     num_clips);
+>>> +}
+>>> +
+>>>   static const struct drm_framebuffer_funcs amdgpu_fb_funcs = {
+>>>       .destroy = drm_gem_fb_destroy,
+>>>       .create_handle = drm_gem_fb_create_handle,
+>>>   };
+>>> +static const struct drm_framebuffer_funcs amdgpu_fb_funcs_atomic = {
+>>> +    .destroy = drm_gem_fb_destroy,
+>>> +    .create_handle = drm_gem_fb_create_handle,
+>>> +    .dirty = amdgpu_dirtyfb
+>>> +};
+>>> +
+>>>   uint32_t amdgpu_display_supported_domains(struct amdgpu_device *adev,
+>>>                         uint64_t bo_flags)
+>>>   {
+>>> @@ -1139,7 +1159,11 @@ static int 
+>>> amdgpu_display_gem_fb_verify_and_init(struct drm_device *dev,
+>>>       if (ret)
+>>>           goto err;
+>>> -    ret = drm_framebuffer_init(dev, &rfb->base, &amdgpu_fb_funcs);
+>>> +    if (drm_drv_uses_atomic_modeset(dev))
+>>> +        ret = drm_framebuffer_init(dev, &rfb->base,
+>>> +                       &amdgpu_fb_funcs_atomic);
+>>> +    else
+>>> +        ret = drm_framebuffer_init(dev, &rfb->base, &amdgpu_fb_funcs);
+>>>       if (ret)
+>>>           goto err;
+>>
+
