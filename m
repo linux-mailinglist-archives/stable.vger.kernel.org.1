@@ -2,146 +2,236 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9003777EAAB
-	for <lists+stable@lfdr.de>; Wed, 16 Aug 2023 22:28:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1832A77EAB0
+	for <lists+stable@lfdr.de>; Wed, 16 Aug 2023 22:29:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346121AbjHPU1y (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 16 Aug 2023 16:27:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50836 "EHLO
+        id S243082AbjHPU25 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 16 Aug 2023 16:28:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56154 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1346125AbjHPU13 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 16 Aug 2023 16:27:29 -0400
-Received: from mail-yw1-x112a.google.com (mail-yw1-x112a.google.com [IPv6:2607:f8b0:4864:20::112a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7FE32269E
-        for <stable@vger.kernel.org>; Wed, 16 Aug 2023 13:27:27 -0700 (PDT)
-Received: by mail-yw1-x112a.google.com with SMTP id 00721157ae682-58dfe2d5b9aso682547b3.1
-        for <stable@vger.kernel.org>; Wed, 16 Aug 2023 13:27:27 -0700 (PDT)
+        with ESMTP id S1346157AbjHPU2i (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 16 Aug 2023 16:28:38 -0400
+Received: from mail-pf1-x42a.google.com (mail-pf1-x42a.google.com [IPv6:2607:f8b0:4864:20::42a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA92926BB
+        for <stable@vger.kernel.org>; Wed, 16 Aug 2023 13:28:36 -0700 (PDT)
+Received: by mail-pf1-x42a.google.com with SMTP id d2e1a72fcca58-68879c7f5easo1212069b3a.1
+        for <stable@vger.kernel.org>; Wed, 16 Aug 2023 13:28:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1692217646; x=1692822446;
-        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=o6nAd4B+hY09XKdSdHx5sCH4iOSgPQT2h6trGlM+vNA=;
-        b=dveIXLQA89ZUWYHabJVtI3oEEzpIr9fV/lirVBfekKiFOXn1lGgA2uPGEcOlkOZjBD
-         a1aBpoGF8QaJMHqlLM0UKvL9kaKpzS6zyOvmB6Zbc1eS7EEJ6VlfQkXyzLpNQhfG3OEw
-         eCGtvZNYLyrmkoj5+tJuw3HMFHCP3sqPuk8fbd3spP0mYw93n9H7+8N80JmbfIs4qiXv
-         pYw7bvDGtSSGmN6GSey1TNwmTvBJC5JMT671NM0B4mgv/BXoWeH/4YzxKbh3yB570fS0
-         aJREuoDn9t0m4s+z3u9TOwbz2TQ5vLr7L5z9o4q0UsNVHdnnboFQwrHaMLNNgfIPCdb7
-         au3A==
+        d=kernelci-org.20221208.gappssmtp.com; s=20221208; t=1692217715; x=1692822515;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=FI4HO7IqPz1Bj02MIrF3X2QdmI7mwITtJcCi8eLCwYE=;
+        b=R725Yf3l0cOFXwzOqQKlBPVh/jMwsOZbQamWz3GLi4qU0jEZdD2QFMSLxbqXeGFwq0
+         Dt/8VszStL0jYYVyB06ss+6wCJgff/UtanDJk2W8wL08O4/oWM3qeFIP8mShKmfmi0s8
+         aE2NYFYbe35MjF5/0UcRkSjHDemoiW2ugv0nGk3wx3myA0hWQcqVv1dOrT4jB+K1YKas
+         kNnTzM3xpFKAEcQMFzHsB+jOGIsKTTpGGSTdoiX5bKvpYWhQZHmyiJujzjiymAPECgN0
+         jvipDX48D18sBiN3r3znJ8i1qeyy2+gfS3Aq7kKY/xrhlBri6a+Fyzmo3YB8BkfY5MP/
+         yYzg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692217646; x=1692822446;
-        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=o6nAd4B+hY09XKdSdHx5sCH4iOSgPQT2h6trGlM+vNA=;
-        b=hXWKd/hsFooiInL8UrXW+KakXgvMeIz1fINEwGzNChVy9sc61BI9Mj4bASkJU7b6RS
-         v8UEY2032RWj/q1uzXBDmY7O0NAINDrTt67vX1PN2QzPce+PjcGoukoIz4VstwlWJFgw
-         S6wE6NFZ5vKrSHACdLMraOSrQJk9aRfqZqE18xnhfTjTJK85UISTfsfSz0bkKIGz64Ex
-         rF5LOAEe2szk8S6GNNEr9vm3L21G64My7HFSS9eUVWWUNjs+ENu3M+IbZS2MXU5YS1s8
-         5YfPN42FezakK9w6CFvjyXL/+cJKnx/mcn3Kw3OG9V6vfSgAjSBaCeD71PC0wuGyO6zR
-         D0tQ==
-X-Gm-Message-State: AOJu0YwzsmnX/a0xdOyTEOTchHS7Hfm74oMxA5HrdWeHEZ+zMx6nRJLK
-        saxzizeV4ETl78pKfv88R6e+kQ==
-X-Google-Smtp-Source: AGHT+IEO5uc8CKDzvfrW8shdjb35Kp27HpuCfrFDLQV5dylLk8ofwbkbKcaFpgjeKtRhrvd/mx2svA==
-X-Received: by 2002:a0d:d641:0:b0:56c:e5a3:3e09 with SMTP id y62-20020a0dd641000000b0056ce5a33e09mr850661ywd.15.1692217646555;
-        Wed, 16 Aug 2023 13:27:26 -0700 (PDT)
-Received: from ripple.attlocal.net (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
-        by smtp.gmail.com with ESMTPSA id z16-20020a81c210000000b005463e45458bsm4189762ywc.123.2023.08.16.13.27.24
+        d=1e100.net; s=20221208; t=1692217715; x=1692822515;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=FI4HO7IqPz1Bj02MIrF3X2QdmI7mwITtJcCi8eLCwYE=;
+        b=cPV6MamhcsUWS3b9vtJbrZuNbwWoTBtFJ6KrTNpJfwgOypNlaOA2VN9NHsnv3FLjb+
+         7gUkvhku5nQBioArQCDJGX6Wa3uQn353VhCpp5Io6pMXaJQRKqh+zA/RVoYbkRwkHD5P
+         wq/pEI8dC2gVh1ivU+nrH7qlbglCvu3XNRAnZON7gXrtKYoWv8TH/HP2nEt4SrzlGYqx
+         LVAUScB+gFl3c25g0KC6Df19oz644g17BkBwR8qWVGaBb/+zNmw7WV5covCjsbSQB2Ne
+         5B16Vi3au5GDTNSwhMrYLPJOgN1UOEWczFzuLVJKY8bdXvLTzri1HN98ZuXmJOhAM0WT
+         lVjQ==
+X-Gm-Message-State: AOJu0YwYC1WuJW15eQ+8DqnTeeOH67IuADrzBa6+DVM7SlpwqcCrh5Ym
+        KprYkr6J9WTou9mo8epsFZIYgH3nomYxd3ZBmT1CtQ==
+X-Google-Smtp-Source: AGHT+IGBtVvus1/cEYAKS4WQU2qdjhFmvpFkA4aAZm/uKcGDOvVLe+pRThcEOJJtWI0NU7I0aS1wWg==
+X-Received: by 2002:a05:6a00:22d0:b0:67b:8602:aa1b with SMTP id f16-20020a056a0022d000b0067b8602aa1bmr2963014pfj.27.1692217715641;
+        Wed, 16 Aug 2023 13:28:35 -0700 (PDT)
+Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
+        by smtp.gmail.com with ESMTPSA id g6-20020a63be46000000b00563ea47c948sm11296293pgo.53.2023.08.16.13.28.34
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 16 Aug 2023 13:27:25 -0700 (PDT)
-Date:   Wed, 16 Aug 2023 13:27:17 -0700 (PDT)
-From:   Hugh Dickins <hughd@google.com>
-X-X-Sender: hugh@ripple.attlocal.net
-To:     "Matthew Wilcox (Oracle)" <willy@infradead.org>
-cc:     Jens Axboe <axboe@kernel.dk>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
-        Hugh Dickins <hughd@google.com>, Hannes Reineke <hare@suse.de>,
-        linux-mm@kvack.org, linux-block@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org
-Subject: Re: [PATCH] block: Remove special-casing of compound pages
-In-Reply-To: <20230814144100.596749-1-willy@infradead.org>
-Message-ID: <94635da5-ce28-a8fb-84e3-7a9f5240fe6a@google.com>
-References: <20230814144100.596749-1-willy@infradead.org>
+        Wed, 16 Aug 2023 13:28:35 -0700 (PDT)
+Message-ID: <64dd3173.630a0220.eca8d.39b9@mx.google.com>
+Date:   Wed, 16 Aug 2023 13:28:35 -0700 (PDT)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
-        USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL autolearn=unavailable
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+X-Kernelci-Report-Type: build
+X-Kernelci-Kernel: v6.1.46
+X-Kernelci-Tree: stable
+X-Kernelci-Branch: linux-6.1.y
+Subject: stable/linux-6.1.y build: 20 builds: 0 failed, 20 passed,
+ 3 warnings (v6.1.46)
+To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+        kernelci-results@groups.io
+From:   "kernelci.org bot" <bot@kernelci.org>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-a.k.a "Fix rare user data corruption when using THP" :)
+stable/linux-6.1.y build: 20 builds: 0 failed, 20 passed, 3 warnings (v6.1.=
+46)
 
-On Mon, 14 Aug 2023, Matthew Wilcox (Oracle) wrote:
+Full Build Summary: https://kernelci.org/build/stable/branch/linux-6.1.y/ke=
+rnel/v6.1.46/
 
-> The special casing was originally added in pre-git history; reproducing
-> the commit log here:
-> 
-> > commit a318a92567d77
-> > Author: Andrew Morton <akpm@osdl.org>
-> > Date:   Sun Sep 21 01:42:22 2003 -0700
-> >
-> >     [PATCH] Speed up direct-io hugetlbpage handling
-> >
-> >     This patch short-circuits all the direct-io page dirtying logic for
-> >     higher-order pages.  Without this, we pointlessly bounce BIOs up to
-> >     keventd all the time.
-> 
-> In the last twenty years, compound pages have become used for more than
-> just hugetlb.  Rewrite these functions to operate on folios instead
-> of pages and remove the special case for hugetlbfs; I don't think
-> it's needed any more (and if it is, we can put it back in as a call
-> to folio_test_hugetlb()).
-> 
-> This was found by inspection; as far as I can tell, this bug can lead
-> to pages used as the destination of a direct I/O read not being marked
-> as dirty.  If those pages are then reclaimed by the MM without being
-> dirtied for some other reason, they won't be written out.  Then when
-> they're faulted back in, they will not contain the data they should.
-> It'll take a pretty unusual setup to produce this problem with several
-> races all going the wrong way.
-> 
-> This problem predates the folio work; it could for example have been
-> triggered by mmaping a THP in tmpfs and using that as the target of an
-> O_DIRECT read.
-> 
-> Fixes: 800d8c63b2e98 ("shmem: add huge pages support")
+Tree: stable
+Branch: linux-6.1.y
+Git Describe: v6.1.46
+Git Commit: 6c44e13dc284f7f4db17706ca48fd016d6b3d49a
+Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
+e.git
+Built: 7 unique architectures
 
-No. It's a good catch, but bug looks specific to the folio work to me.
+Warnings Detected:
 
-Almost all shmem pages are dirty from birth, even as soon as they are
-brought back from swap; so it is not necessary to re-mark them dirty.
+arc:
 
-The exceptions are pages allocated to holes when faulted: so you did
-get me worried as to whether khugepaged could collapse a pmd-ful of
-those into a THP without marking the result as dirty.
+arm64:
 
-But no, in v6.5-rc6 the collapse_file() success path has
-	if (is_shmem)
-		folio_mark_dirty(folio);
-and in v5.10 the same appears as
-		if (is_shmem)
-			set_page_dirty(new_page);
+arm:
 
-(IIRC, that or marking pmd dirty was missed from early shmem THP
-support, but fairly soon corrected, and backported to stable then.
-I have a faint memory of versions which assembled pmd_dirty from
-collected pte_dirtys.)
+i386:
 
-And the !is_shmem case is for CONFIG_READ_ONLY_THP_FOR_FS: writing
-into those pages, by direct IO or whatever, is already prohibited.
+mips:
+    32r2el_defconfig (gcc-10): 1 warning
 
-It's dem dirty (or not dirty) folios dat's the trouble!
+riscv:
 
-Hugh
+x86_64:
+    x86_64_defconfig (gcc-10): 1 warning
+    x86_64_defconfig+x86-chromebook (gcc-10): 1 warning
 
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-> ---
->  block/bio.c | 46 ++++++++++++++++++++++++----------------------
->  1 file changed, 24 insertions(+), 22 deletions(-)
+
+Warnings summary:
+
+    2    arch/x86/lib/retpoline.o: warning: objtool: .altinstr_replacement:=
+ unexpected end of section
+    1    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_devic=
+e_reg): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expec=
+ted "0,0"
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
+
+Detailed per-defconfig build reports:
+
+---------------------------------------------------------------------------=
+-----
+32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sect=
+ion mismatches
+
+Warnings:
+    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_device_reg=
+): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expected "=
+0,0"
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
+mismatches
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
+n mismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warn=
+ings, 0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
+ section mismatches
+
+---------------------------------------------------------------------------=
+-----
+i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
+on mismatches
+
+---------------------------------------------------------------------------=
+-----
+imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+nommu_k210_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, =
+0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+nommu_k210_sdcard_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 war=
+nings, 0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+rv32_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
+ion mismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section=
+ mismatches
+
+---------------------------------------------------------------------------=
+-----
+vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 se=
+ction mismatches
+
+Warnings:
+    arch/x86/lib/retpoline.o: warning: objtool: .altinstr_replacement: unex=
+pected end of section
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig+x86-chromebook (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, =
+1 warning, 0 section mismatches
+
+Warnings:
+    arch/x86/lib/retpoline.o: warning: objtool: .altinstr_replacement: unex=
+pected end of section
+
+---
+For more info write to <info@kernelci.org>
