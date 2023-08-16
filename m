@@ -2,240 +2,121 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C4DBA77E38D
-	for <lists+stable@lfdr.de>; Wed, 16 Aug 2023 16:27:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1097777E48B
+	for <lists+stable@lfdr.de>; Wed, 16 Aug 2023 17:02:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343606AbjHPO10 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 16 Aug 2023 10:27:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41758 "EHLO
+        id S239871AbjHPPCV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 16 Aug 2023 11:02:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36752 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343688AbjHPO1V (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 16 Aug 2023 10:27:21 -0400
-Received: from www62.your-server.de (www62.your-server.de [213.133.104.62])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 81CC72705;
-        Wed, 16 Aug 2023 07:27:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=iogearbox.net; s=default2302; h=Content-Transfer-Encoding:Content-Type:
-        In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
-        bh=12sOJIm+x6ia2Tol/RQD3pz06O8YQaOp4XAGIcYNGak=; b=MyKeOwO48f7aS0xKZYq2oCE+XL
-        O3p7bUIx8p1CkTKg72k5dzwt6hCMwQzY8UeEIfAGFp2uOQF9uiIGHwy6qFaRwBO6ktGkV6HjRWG+F
-        XXJMZfxo0RqVLpBFJ5rUdSctbOshpvw/OjkqTdONTBp6uz8mb3aioSQXOIW+XR1thxttIAO74qOPv
-        0AJd4k62UObsQCUKq64TWyCOGJaCDISEQ6HHRBeAjxYdLBlFpNf6A/kL6ZMNr3J7uILL9kAIRnOPW
-        wo0RZ8nzWDIrdBh4Ks6EyYnpPsukH2bxkSgymFQbua8+CewhucqAB32vtTE/eBoOOVHE6U2iOBL/w
-        1g1lqsJw==;
-Received: from sslproxy01.your-server.de ([78.46.139.224])
-        by www62.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-        (Exim 4.94.2)
-        (envelope-from <daniel@iogearbox.net>)
-        id 1qWHUS-000JaR-K5; Wed, 16 Aug 2023 16:27:16 +0200
-Received: from [85.1.206.226] (helo=pc-102.home)
-        by sslproxy01.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <daniel@iogearbox.net>)
-        id 1qWHUR-000Vt1-8R; Wed, 16 Aug 2023 16:27:15 +0200
-Subject: Re: [PATCH v5 bpf 0/4] lwt: fix return values of BPF ops
-To:     Yan Zhai <yan@cloudflare.com>, bpf@vger.kernel.org
-Cc:     "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        David Ahern <dsahern@kernel.org>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Andrii Nakryiko <andrii@kernel.org>,
-        Martin KaFai Lau <martin.lau@linux.dev>,
-        Song Liu <song@kernel.org>, Yonghong Song <yhs@fb.com>,
-        John Fastabend <john.fastabend@gmail.com>,
-        KP Singh <kpsingh@kernel.org>,
-        Stanislav Fomichev <sdf@google.com>,
-        Hao Luo <haoluo@google.com>, Jiri Olsa <jolsa@kernel.org>,
-        Mykola Lysenko <mykolal@fb.com>, Shuah Khan <shuah@kernel.org>,
-        Thomas Graf <tgraf@suug.ch>,
-        Jordan Griege <jgriege@cloudflare.com>,
-        Dan Carpenter <dan.carpenter@linaro.org>,
-        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kselftest@vger.kernel.org, stable@vger.kernel.org
-References: <cover.1692153515.git.yan@cloudflare.com>
-From:   Daniel Borkmann <daniel@iogearbox.net>
-Message-ID: <9ac9d459-9bc3-bcee-b912-3ab66d2a7fe7@iogearbox.net>
-Date:   Wed, 16 Aug 2023 16:27:14 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.2
+        with ESMTP id S1343921AbjHPPBs (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 16 Aug 2023 11:01:48 -0400
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3987710FF;
+        Wed, 16 Aug 2023 08:01:47 -0700 (PDT)
+Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
+        by smtp-out1.suse.de (Postfix) with ESMTP id ED5F5218FC;
+        Wed, 16 Aug 2023 15:01:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+        t=1692198105; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=cwYr/ImenycskpSCIbuvxpPgA8pKU0LOXJlUOQJJlZc=;
+        b=BAoXAjr4dRq9QYTkYjPQ3T3bey6O/p4hgNk6aSHnyCuZaN4++Hsb7G0+qFVygkvUE+zIgP
+        8Jp8g2/w4YONjyYfeGas0oTPBrHD0zfP5ikMwGNG1bj0klYLJFD+nsNenQGwWzIEHUz/Lk
+        ZSg1XKUJBkBw+gkrUhoXnUw4tSibH14=
+Received: from suse.cz (pmladek.tcp.ovpn2.prg.suse.de [10.100.208.146])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by relay2.suse.de (Postfix) with ESMTPS id 3CD052C146;
+        Wed, 16 Aug 2023 15:01:45 +0000 (UTC)
+Date:   Wed, 16 Aug 2023 17:01:43 +0200
+From:   Petr Mladek <pmladek@suse.com>
+To:     Nathan Chancellor <nathan@kernel.org>
+Cc:     rostedt@goodmis.org, senozhatsky@chromium.org,
+        andriy.shevchenko@linux.intel.com, linux@rasmusvillemoes.dk,
+        ndesaulniers@google.com, trix@redhat.com,
+        linux-kernel@vger.kernel.org, llvm@lists.linux.dev,
+        patches@lists.linux.dev, stable@vger.kernel.org
+Subject: Re: [PATCH v2] lib: test_scanf: Add explicit type cast to result
+ initialization in test_number_prefix()
+Message-ID: <ZNzk1yIvCy7EF_EF@alley>
+References: <20230807-test_scanf-wconstant-conversion-v2-1-839ca39083e1@kernel.org>
+ <ZNysmicYHHQ3f1Ck@alley>
+ <20230816140112.GA2109327@dev-arch.thelio-3990X>
 MIME-Version: 1.0
-In-Reply-To: <cover.1692153515.git.yan@cloudflare.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Authenticated-Sender: daniel@iogearbox.net
-X-Virus-Scanned: Clear (ClamAV 0.103.8/27002/Wed Aug 16 09:38:26 2023)
-X-Spam-Status: No, score=-5.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230816140112.GA2109327@dev-arch.thelio-3990X>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi Yan,
-
-On 8/16/23 4:54 AM, Yan Zhai wrote:
-> lwt xmit hook does not expect positive return values in function
-> ip_finish_output2 and ip6_finish_output. However, BPF programs can
-> directly return positive statuses such like NET_XMIT_DROP, NET_RX_DROP,
-> and etc to the caller. Such return values would make the kernel continue
-> processing already freed skbs and eventually panic.
+On Wed 2023-08-16 07:01:12, Nathan Chancellor wrote:
+> Hi Petr,
 > 
-> This set fixes the return values from BPF ops to unexpected continue
-> processing, and checks strictly on the correct continue condition for
-> future proof. In addition, add missing selftests for BPF_REDIRECT
-> and BPF_REROUTE cases for BPF-CI.
+> On Wed, Aug 16, 2023 at 01:01:46PM +0200, Petr Mladek wrote:
+> > On Mon 2023-08-07 08:36:28, Nathan Chancellor wrote:
+> > > A recent change in clang allows it to consider more expressions as
+> > > compile time constants, which causes it to point out an implicit
+> > > conversion in the scanf tests:
+> > > 
+> > >   lib/test_scanf.c:661:2: warning: implicit conversion from 'int' to 'unsigned char' changes value from -168 to 88 [-Wconstant-conversion]
+> > >     661 |         test_number_prefix(unsigned char,       "0xA7", "%2hhx%hhx", 0, 0xa7, 2, check_uchar);
+> > >         |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> > >   lib/test_scanf.c:609:29: note: expanded from macro 'test_number_prefix'
+> > >     609 |         T result[2] = {~expect[0], ~expect[1]};                                 \
+> > >         |                       ~            ^~~~~~~~~~
+> > >   1 warning generated.
+> > > 
+> > > The result of the bitwise negation is the type of the operand after
+> > > going through the integer promotion rules, so this truncation is
+> > > expected but harmless, as the initial values in the result array get
+> > > overwritten by _test() anyways. Add an explicit cast to the expected
+> > > type in test_number_prefix() to silence the warning. There is no
+> > > functional change, as all the tests still pass with GCC 13.1.0 and clang
+> > > 18.0.0.
+> > > 
+> > > Cc: stable@vger.kernel.org
+> > > Closes: https://github.com/ClangBuiltLinux/linux/issues/1899
+> > 
+> > "Closes:" is not a valid tag. It was proposed and rejected in the end.
+> > I replaced it with "Link:" as suggested by ./scripts/checkpatch.pl/
 > 
-> v4: https://lore.kernel.org/bpf/ZMD1sFTW8SFiex+x@debian.debian/T/
-> v3: https://lore.kernel.org/bpf/cover.1690255889.git.yan@cloudflare.com/
-> v2: https://lore.kernel.org/netdev/ZLdY6JkWRccunvu0@debian.debian/
-> v1: https://lore.kernel.org/bpf/ZLbYdpWC8zt9EJtq@debian.debian/
+> I don't really care about "Closes:" vs. "Link:", either is fine with me,
+> but checkpatch.pl did not warn me about it and I still see commit
+> 44c31888098a ("checkpatch: allow Closes tags with links") in mainline
+> and -next that explicitly allows this (and even requires Closes: instead
+> of Link: when following Reported-by:).
+
+Good to know. It is possible that I mixed this with another tag.
+I recall that people wanted to add some new tags recently and
+Linus was strongly against it. Unfortunately, I can't find
+the discussion now.
+
+It seems that the Closes: tag is acceptable. But Linus is still
+going to "put my foot down" when it gets misused, see
+https://lore.kernel.org/linux-doc/CAHk-=wh0v1EeDV3v8TzK81nDC40=XuTdY2MCr0xy3m3FiBV3+Q@mail.gmail.com/
+
+I called the checkpatch.pl from printk/linux.git in a branch based on 6.4.
+It did not have the commit 44c31888098a ("checkpatch: allow Closes
+tags with links").
+
+If you do not mind, I'll keep the "Link:" tag to avoid rebase in
+the for-6.6 branch in printk/linug.git.
+
+
+> > The patch has been pushed into printk/linux.git, branch for-6.6.
 > 
-> changes since v4:
->   * fixed same error on BPF_REROUTE path
->   * re-implemented selftests under BPF-CI requirement
+> Thanks a lot for the review and acceptance!
 
-BPF CI failed: https://github.com/kernel-patches/bpf/actions/runs/5874202507/job/15929012788
+You are welcome.
 
-Looks like due to dummy device issue. Either you might need to add this to
-the tools/testing/selftests/bpf/config* or perhaps just use veth instead for
-link_err dev.
-
-Error from the above link:
-
-Notice: Success: 370/3177, Skipped: 21, Failed: 2
-Error: #131 lwt_redirect
-   Error: #131 lwt_redirect
-   test_lwt_redirect:PASS:pthread_create 0 nsec
-Error: #131/1 lwt_redirect/lwt_redirect_normal
-   Error: #131/1 lwt_redirect/lwt_redirect_normal
-   test_lwt_redirect_run:PASS:netns_create 0 nsec
-   open_netns:PASS:malloc token 0 nsec
-   open_netns:PASS:open /proc/self/ns/net 0 nsec
-   open_netns:PASS:open netns fd 0 nsec
-   open_netns:PASS:setns 0 nsec
-   test_lwt_redirect_run:PASS:setns 0 nsec
-   open_tuntap:PASS:open(/dev/net/tun) 0 nsec
-   open_tuntap:PASS:ioctl(TUNSETIFF) 0 nsec
-   open_tuntap:PASS:fcntl(O_NONBLOCK) 0 nsec
-   setup_redirect_target:PASS:open_tuntap 0 nsec
-   setup_redirect_target:PASS:if_nametoindex 0 nsec
-   setup_redirect_target:FAIL:ip link add link_err type dummy unexpected error: 512 (errno 0)
-   test_lwt_redirect_normal:FAIL:setup_redirect_target unexpected setup_redirect_target: actual -1 < expected 0
-   close_netns:PASS:setns 0 nsec
-Error: #131/2 lwt_redirect/lwt_redirect_normal_nomac
-   Error: #131/2 lwt_redirect/lwt_redirect_normal_nomac
-   test_lwt_redirect_run:PASS:netns_create 0 nsec
-   open_netns:PASS:malloc token 0 nsec
-   open_netns:PASS:open /proc/self/ns/net 0 nsec
-   open_netns:PASS:open netns fd 0 nsec
-   open_netns:PASS:setns 0 nsec
-   test_lwt_redirect_run:PASS:setns 0 nsec
-   open_tuntap:PASS:open(/dev/net/tun) 0 nsec
-   open_tuntap:PASS:ioctl(TUNSETIFF) 0 nsec
-   open_tuntap:PASS:fcntl(O_NONBLOCK) 0 nsec
-   setup_redirect_target:PASS:open_tuntap 0 nsec
-   setup_redirect_target:PASS:if_nametoindex 0 nsec
-   setup_redirect_target:FAIL:ip link add link_err type dummy unexpected error: 512 (errno 0)
-   test_lwt_redirect_normal_nomac:FAIL:setup_redirect_target unexpected setup_redirect_target: actual -1 < expected 0
-   close_netns:PASS:setns 0 nsec
-Error: #131/3 lwt_redirect/lwt_redirect_dev_down
-   Error: #131/3 lwt_redirect/lwt_redirect_dev_down
-   test_lwt_redirect_run:PASS:netns_create 0 nsec
-   open_netns:PASS:malloc token 0 nsec
-   open_netns:PASS:open /proc/self/ns/net 0 nsec
-   open_netns:PASS:open netns fd 0 nsec
-   open_netns:PASS:setns 0 nsec
-   test_lwt_redirect_run:PASS:setns 0 nsec
-   open_tuntap:PASS:open(/dev/net/tun) 0 nsec
-   open_tuntap:PASS:ioctl(TUNSETIFF) 0 nsec
-   open_tuntap:PASS:fcntl(O_NONBLOCK) 0 nsec
-   setup_redirect_target:PASS:open_tuntap 0 nsec
-   setup_redirect_target:PASS:if_nametoindex 0 nsec
-   setup_redirect_target:FAIL:ip link add link_err type dummy unexpected error: 512 (errno 0)
-   __test_lwt_redirect_dev_down:FAIL:setup_redirect_target unexpected setup_redirect_target: actual -1 < expected 0
-   close_netns:PASS:setns 0 nsec
-Error: #131/4 lwt_redirect/lwt_redirect_dev_down_nomac
-   Error: #131/4 lwt_redirect/lwt_redirect_dev_down_nomac
-   test_lwt_redirect_run:PASS:netns_create 0 nsec
-   open_netns:PASS:malloc token 0 nsec
-   open_netns:PASS:open /proc/self/ns/net 0 nsec
-   open_netns:PASS:open netns fd 0 nsec
-   open_netns:PASS:setns 0 nsec
-   test_lwt_redirect_run:PASS:setns 0 nsec
-   open_tuntap:PASS:open(/dev/net/tun) 0 nsec
-   open_tuntap:PASS:ioctl(TUNSETIFF) 0 nsec
-   open_tuntap:PASS:fcntl(O_NONBLOCK) 0 nsec
-   setup_redirect_target:PASS:open_tuntap 0 nsec
-   setup_redirect_target:PASS:if_nametoindex 0 nsec
-   setup_redirect_target:FAIL:ip link add link_err type dummy unexpected error: 512 (errno 0)
-   __test_lwt_redirect_dev_down:FAIL:setup_redirect_target unexpected setup_redirect_target: actual -1 < expected 0
-   close_netns:PASS:setns 0 nsec
-Error: #131/5 lwt_redirect/lwt_redirect_dev_carrier_down
-   Error: #131/5 lwt_redirect/lwt_redirect_dev_carrier_down
-   test_lwt_redirect_run:PASS:netns_create 0 nsec
-   open_netns:PASS:malloc token 0 nsec
-   open_netns:PASS:open /proc/self/ns/net 0 nsec
-   open_netns:PASS:open netns fd 0 nsec
-   open_netns:PASS:setns 0 nsec
-   test_lwt_redirect_run:PASS:setns 0 nsec
-   open_tuntap:PASS:open(/dev/net/tun) 0 nsec
-   open_tuntap:PASS:ioctl(TUNSETIFF) 0 nsec
-   open_tuntap:PASS:fcntl(O_NONBLOCK) 0 nsec
-   setup_redirect_target:PASS:open_tuntap 0 nsec
-   setup_redirect_target:PASS:if_nametoindex 0 nsec
-   setup_redirect_target:FAIL:ip link add link_err type dummy unexpected error: 512 (errno 0)
-   test_lwt_redirect_dev_carrier_down:FAIL:setup_redirect_target unexpected setup_redirect_target: actual -1 < expected 0
-   close_netns:PASS:setns 0 nsec
-   test_lwt_redirect:PASS:pthread_join 0 nsec
-Error: #132 lwt_reroute
-   Error: #132 lwt_reroute
-   test_lwt_reroute:PASS:pthread_create 0 nsec
-Error: #132/1 lwt_reroute/lwt_reroute_normal_xmit
-   Error: #132/1 lwt_reroute/lwt_reroute_normal_xmit
-   test_lwt_reroute_run:PASS:netns_create 0 nsec
-   open_netns:PASS:malloc token 0 nsec
-   open_netns:PASS:open /proc/self/ns/net 0 nsec
-   open_netns:PASS:open netns fd 0 nsec
-   open_netns:PASS:setns 0 nsec
-   test_lwt_reroute_run:PASS:setns 0 nsec
-   open_tuntap:PASS:open(/dev/net/tun) 0 nsec
-   open_tuntap:PASS:ioctl(TUNSETIFF) 0 nsec
-   open_tuntap:PASS:fcntl(O_NONBLOCK) 0 nsec
-   setup:PASS:open_tun 0 nsec
-   setup:PASS:if_nametoindex 0 nsec
-   setup:FAIL:ip link add link_err type dummy unexpected error: 512 (errno 0)
-   test_lwt_reroute_normal_xmit:FAIL:setup_reroute unexpected setup_reroute: actual -1 < expected 0
-   close_netns:PASS:setns 0 nsec
-Error: #132/2 lwt_reroute/lwt_reroute_qdisc_dropped
-   Error: #132/2 lwt_reroute/lwt_reroute_qdisc_dropped
-   test_lwt_reroute_run:PASS:netns_create 0 nsec
-   open_netns:PASS:malloc token 0 nsec
-   open_netns:PASS:open /proc/self/ns/net 0 nsec
-   open_netns:PASS:open netns fd 0 nsec
-   open_netns:PASS:setns 0 nsec
-   test_lwt_reroute_run:PASS:setns 0 nsec
-   open_tuntap:PASS:open(/dev/net/tun) 0 nsec
-   open_tuntap:PASS:ioctl(TUNSETIFF) 0 nsec
-   open_tuntap:PASS:fcntl(O_NONBLOCK) 0 nsec
-   setup:PASS:open_tun 0 nsec
-   setup:PASS:if_nametoindex 0 nsec
-   setup:FAIL:ip link add link_err type dummy unexpected error: 512 (errno 0)
-   test_lwt_reroute_qdisc_dropped:FAIL:setup_reroute unexpected setup_reroute: actual -1 < expected 0
-   close_netns:PASS:setns 0 nsec
-   test_lwt_reroute:PASS:pthread_join 0 nsec
-Test Results:
-              bpftool: PASS
-           test_progs: FAIL (returned 1)
-             shutdown: CLEAN
-Error: Process completed with exit code 1.
-
-Thanks,
-Daniel
+Best Regards,
+Petr
