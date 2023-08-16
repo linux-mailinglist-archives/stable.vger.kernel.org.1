@@ -2,272 +2,301 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 988C477EBCE
-	for <lists+stable@lfdr.de>; Wed, 16 Aug 2023 23:29:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A7DC477EBFB
+	for <lists+stable@lfdr.de>; Wed, 16 Aug 2023 23:39:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242993AbjHPV3H (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 16 Aug 2023 17:29:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57330 "EHLO
+        id S236700AbjHPVi4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 16 Aug 2023 17:38:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51542 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1346499AbjHPV2n (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 16 Aug 2023 17:28:43 -0400
-Received: from domac.alu.hr (domac.alu.unizg.hr [IPv6:2001:b68:2:2800::3])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 34241FD;
-        Wed, 16 Aug 2023 14:28:42 -0700 (PDT)
-Received: from localhost (localhost [127.0.0.1])
-        by domac.alu.hr (Postfix) with ESMTP id 19DF260174;
-        Wed, 16 Aug 2023 23:28:40 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=alu.unizg.hr; s=mail;
-        t=1692221320; bh=rIZf+tAqF67XAb0OfH9NkRmreg9cRVOUccORHUbh0H4=;
-        h=From:To:Cc:Subject:Date:From;
-        b=ip8HZAJDpPj4BkPt74Lq9cHX2vfPStRQpP7FbobsLN1TTqe10LT+MixTwEAaOEBsF
-         oWK0r2HuOPsrVjtIboxyzlw3b0IEIF1+Znp/bEaWY4IvSWROWft3gH+BEnAXQ45loi
-         k3chfVnEcxr8wpy0UNfoCYBM6g1kpRiCdvT+FeIWAx0fVUkraR8+6EB6xE6OeRr/8A
-         ICQAru91zWnNjB9WNPyaH8E8DqIxZ1OkISAhaX3s+7SOlzpFtOT0lNA2gwPyWHgl9K
-         +tlfom2aszpaiUdbzsw8mj7XigOShBCvDHkzIp2jkc47m5nljKRkcVlTcaEIce7Ip6
-         aigUO4Qq9wE8A==
-X-Virus-Scanned: Debian amavisd-new at domac.alu.hr
-Received: from domac.alu.hr ([127.0.0.1])
-        by localhost (domac.alu.hr [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id YeHIiorDg4g1; Wed, 16 Aug 2023 23:28:36 +0200 (CEST)
-Received: from defiant.. (unknown [94.250.191.183])
-        by domac.alu.hr (Postfix) with ESMTPSA id 39A6B6015E;
-        Wed, 16 Aug 2023 23:28:36 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=alu.unizg.hr; s=mail;
-        t=1692221316; bh=rIZf+tAqF67XAb0OfH9NkRmreg9cRVOUccORHUbh0H4=;
-        h=From:To:Cc:Subject:Date:From;
-        b=LWpPMdZ6/Zn4Mqa3h4TvyvYrd3+6FpBCr+FCQVHpTkgc6VtAFWp2PdYo444oHEJ8k
-         26ALhOk4jmEMP38WH9I0oQBtucoIRfIjbFrxKn4xzHneBACkw9lbJtAW2IjMccALG6
-         F0iypWoinFein3WPA18nps7m6CGZxUe73qiP0MggSmekVvAJNCYVQWd/tf1+TPzg5Q
-         6K+ETVN+jiHpEkqrhv0OeYStLPb8q8SOPFEQFDZNdhCffkEJc5IemfFTlQcIaZzZYX
-         vtNZzPv/FbaVUtQ2eA3NXGYXOebntnqQOc0z4/TQnGepYk16jnXKSN4mBG5qgAFdQP
-         9nQehndIxFAJw==
-From:   Mirsad Goran Todorovac <mirsad.todorovac@alu.unizg.hr>
-To:     Mirsad Goran Todorovac <mirsad.todorovac@alu.unizg.hr>,
-        linux-kernel@vger.kernel.org
-Cc:     "Luis R . Rodriguez" <mcgrof@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Russ Weight <russell.h.weight@intel.com>,
-        Takashi Iwai <tiwai@suse.de>,
-        Tianfei Zhang <tianfei.zhang@intel.com>,
-        Shuah Khan <shuah@kernel.org>,
-        Colin Ian King <colin.i.king@gmail.com>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        linux-kselftest@vger.kernel.org, stable@vger.kernel.org,
-        Dan Carpenter <error27@gmail.com>
-Subject: [PATCH v4 4.19 1/1] test_firmware: prevent race conditions by a correct implementation of locking
-Date:   Wed, 16 Aug 2023 23:27:18 +0200
-Message-Id: <20230816212717.817202-1-mirsad.todorovac@alu.unizg.hr>
-X-Mailer: git-send-email 2.34.1
+        with ESMTP id S1346614AbjHPViy (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 16 Aug 2023 17:38:54 -0400
+Received: from mail-pl1-x629.google.com (mail-pl1-x629.google.com [IPv6:2607:f8b0:4864:20::629])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 28F561FE3
+        for <stable@vger.kernel.org>; Wed, 16 Aug 2023 14:38:52 -0700 (PDT)
+Received: by mail-pl1-x629.google.com with SMTP id d9443c01a7336-1bdbbede5d4so47714275ad.2
+        for <stable@vger.kernel.org>; Wed, 16 Aug 2023 14:38:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernelci-org.20221208.gappssmtp.com; s=20221208; t=1692221931; x=1692826731;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=AjVqp2G8ERhEIhj8Dtp1+VyMSvz58i5MpxnymoDGm9Q=;
+        b=wnwbw0+KTpqDfoS4kKEnp5OQpAOmZwJFDXuTo/6zhLtB7Vap+u9L9cPSUWLHWSmCO5
+         YAXbGZDTGXlSMNP9CH1NnwnD5q3hcw4kCo7bGQUXjO+cfHogQlgCeG1osQWILROsY65j
+         ObF4/OS56V4mJSz13pSLMvYMGXFUVfqSfr4x5rc2hUVlnyp+47h5YoflM7+20OCNrm1Y
+         GGWcR3N9moe9QALk4Z2eNcDQ7AD+nNmgXNJcO0uuQgCoz8yIAlhL+pMwkQMPf4UhsTU+
+         pxbXnT0r93+llElPMpyWR/4+mm5LwGg197NgUm2GfwwswHw/mYJBDcjla0AtQEHsaxJz
+         WYdw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1692221931; x=1692826731;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=AjVqp2G8ERhEIhj8Dtp1+VyMSvz58i5MpxnymoDGm9Q=;
+        b=krblFreCHMZu+AtvutXzBuJTHiFsrPjQsVANERigSj2w038vRoDe6J/je6VNZQ9U7C
+         ddq+ZMkt3EVrjk4GctqICfWoCuYOwybi0y18SwX22y+X1hjqIsTDk5vfJJsOEiReUIsN
+         L8nYHpISDNEu7khh6dBoh4tOhN0NJSuwIrIOkznF5ujniMuVXKQkJ8l7AYMVsiH7lL4j
+         gM2XMzTA+KVrI+VwimedwtGMsqOLJBCBvTSMdttEEP4UXMTpuvKGXPzlaiPhDdcNn0eI
+         5SlMEx9I0UhlNCkTejD8LijfJJLGMUiKwUsfyJWbv6L4wOz467sn6+QcZYVtpPRuQLIf
+         vxjQ==
+X-Gm-Message-State: AOJu0YxpyBUx99/4FLjuOTaCjcLX7HGl13OGMOd2obgA8u2MkZ7sLt0N
+        VbTyixEWf3FO4CEetxGijoB0pNFAspWFTdh4c4fMoQ==
+X-Google-Smtp-Source: AGHT+IFUYeVFR39NZPX6FtJ/Fw9ezipqkqBSNmV3hbGlhVt+t9/HO5+7HMKWbotGgKclSDFOCcjq8w==
+X-Received: by 2002:a17:902:c40a:b0:1bc:2d43:c741 with SMTP id k10-20020a170902c40a00b001bc2d43c741mr3977714plk.66.1692221931092;
+        Wed, 16 Aug 2023 14:38:51 -0700 (PDT)
+Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
+        by smtp.gmail.com with ESMTPSA id j7-20020a170902758700b001b9e9edbf43sm13683678pll.171.2023.08.16.14.38.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 16 Aug 2023 14:38:50 -0700 (PDT)
+Message-ID: <64dd41ea.170a0220.7002b.b097@mx.google.com>
+Date:   Wed, 16 Aug 2023 14:38:50 -0700 (PDT)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+X-Kernelci-Report-Type: build
+X-Kernelci-Kernel: v5.4.254
+X-Kernelci-Tree: stable-rc
+X-Kernelci-Branch: linux-5.4.y
+Subject: stable-rc/linux-5.4.y build: 17 builds: 0 failed, 17 passed,
+ 26 warnings (v5.4.254)
+To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+        kernelci-results@groups.io
+From:   "kernelci.org bot" <bot@kernelci.org>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-[ Upstream commit 4acfe3dfde685a5a9eaec5555351918e2d7266a1 ]
+stable-rc/linux-5.4.y build: 17 builds: 0 failed, 17 passed, 26 warnings (v=
+5.4.254)
 
-Dan Carpenter spotted a race condition in a couple of situations like
-these in the test_firmware driver:
+Full Build Summary: https://kernelci.org/build/stable-rc/branch/linux-5.4.y=
+/kernel/v5.4.254/
 
-static int test_dev_config_update_u8(const char *buf, size_t size, u8 *cfg)
-{
-        u8 val;
-        int ret;
+Tree: stable-rc
+Branch: linux-5.4.y
+Git Describe: v5.4.254
+Git Commit: fd2a1d1f32ea37c57a8b46a0857f06fd7274dd2c
+Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
+e-rc.git
+Built: 7 unique architectures
 
-        ret = kstrtou8(buf, 10, &val);
-        if (ret)
-                return ret;
+Warnings Detected:
 
-        mutex_lock(&test_fw_mutex);
-        *(u8 *)cfg = val;
-        mutex_unlock(&test_fw_mutex);
+arc:
 
-        /* Always return full write size even if we didn't consume all */
-        return size;
-}
+arm64:
+    defconfig (gcc-10): 2 warnings
+    defconfig+arm64-chromebook (gcc-10): 2 warnings
 
-static ssize_t config_num_requests_store(struct device *dev,
-                                         struct device_attribute *attr,
-                                         const char *buf, size_t count)
-{
-        int rc;
+arm:
 
-        mutex_lock(&test_fw_mutex);
-        if (test_fw_config->reqs) {
-                pr_err("Must call release_all_firmware prior to changing config\n");
-                rc = -EINVAL;
-                mutex_unlock(&test_fw_mutex);
-                goto out;
-        }
-        mutex_unlock(&test_fw_mutex);
+i386:
+    allnoconfig (gcc-10): 2 warnings
+    i386_defconfig (gcc-10): 2 warnings
+    tinyconfig (gcc-10): 2 warnings
 
-        // NOTE: HERE is the race!!! Function can be preempted!
+mips:
 
-        // test_fw_config->reqs can change between the release of
-        // the lock about and acquire of the lock in the
-        // test_dev_config_update_u8()
+riscv:
 
-        rc = test_dev_config_update_u8(buf, count,
-                                       &test_fw_config->num_requests);
+x86_64:
+    allnoconfig (gcc-10): 4 warnings
+    tinyconfig (gcc-10): 4 warnings
+    x86_64_defconfig (gcc-10): 4 warnings
+    x86_64_defconfig+x86-chromebook (gcc-10): 4 warnings
 
-out:
-        return rc;
-}
 
-static ssize_t config_read_fw_idx_store(struct device *dev,
-                                        struct device_attribute *attr,
-                                        const char *buf, size_t count)
-{
-        return test_dev_config_update_u8(buf, count,
-                                         &test_fw_config->read_fw_idx);
-}
+Warnings summary:
 
-The function test_dev_config_update_u8() is called from both the locked
-and the unlocked context, function config_num_requests_store() and
-config_read_fw_idx_store() which can both be called asynchronously as
-they are driver's methods, while test_dev_config_update_u8() and siblings
-change their argument pointed to by u8 *cfg or similar pointer.
+    7    ld: warning: creating DT_TEXTREL in a PIE
+    4    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in rea=
+d-only section `.head.text'
+    4    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer=
+ to integer of different size [-Wpointer-to-int-cast]
+    3    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in rea=
+d-only section `.head.text'
+    2    arch/x86/entry/entry_64.o: warning: objtool: If this is a retpolin=
+e, please patch it in with alternatives and annotate it with ANNOTATE_NOSPE=
+C_ALTERNATIVE.
+    2    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x1c1: un=
+supported intra-function call
+    2    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x151: un=
+supported intra-function call
+    2    arch/x86/entry/entry_64.S:1756: Warning: no instruction mnemonic s=
+uffix given and no register operands; using default for `sysret'
 
-To avoid deadlock on test_fw_mutex, the lock is dropped before calling
-test_dev_config_update_u8() and re-acquired within test_dev_config_update_u8()
-itself, but alas this creates a race condition.
+Section mismatches summary:
 
-Having two locks wouldn't assure a race-proof mutual exclusion.
+    1    WARNING: vmlinux.o(___ksymtab_gpl+vic_init_cascaded+0x0): Section =
+mismatch in reference from the variable __ksymtab_vic_init_cascaded to the =
+function .init.text:vic_init_cascaded()
 
-This situation is best avoided by the introduction of a new, unlocked
-function __test_dev_config_update_u8() which can be called from the locked
-context and reducing test_dev_config_update_u8() to:
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
 
-static int test_dev_config_update_u8(const char *buf, size_t size, u8 *cfg)
-{
-        int ret;
+Detailed per-defconfig build reports:
 
-        mutex_lock(&test_fw_mutex);
-        ret = __test_dev_config_update_u8(buf, size, cfg);
-        mutex_unlock(&test_fw_mutex);
+---------------------------------------------------------------------------=
+-----
+32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
+tion mismatches
 
-        return ret;
-}
+---------------------------------------------------------------------------=
+-----
+allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 sectio=
+n mismatches
 
-doing the locking and calling the unlocked primitive, which enables both
-locked and unlocked versions without duplication of code.
+Warnings:
+    arch/x86/entry/entry_64.S:1756: Warning: no instruction mnemonic suffix=
+ given and no register operands; using default for `sysret'
+    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x151: unsuppo=
+rted intra-function call
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
 
-Fixes: c92316bf8e948 ("test_firmware: add batched firmware tests")
-Cc: Luis R. Rodriguez <mcgrof@kernel.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Russ Weight <russell.h.weight@intel.com>
-Cc: Takashi Iwai <tiwai@suse.de>
-Cc: Tianfei Zhang <tianfei.zhang@intel.com>
-Cc: Shuah Khan <shuah@kernel.org>
-Cc: Colin Ian King <colin.i.king@gmail.com>
-Cc: Randy Dunlap <rdunlap@infradead.org>
-Cc: linux-kselftest@vger.kernel.org
-Cc: stable@vger.kernel.org # v5.4, 4.19, 4.14
-Suggested-by: Dan Carpenter <error27@gmail.com>
-Link: https://lore.kernel.org/r/20230509084746.48259-1-mirsad.todorovac@alu.unizg.hr
-Signed-off-by: Mirsad Goran Todorovac <mirsad.todorovac@alu.unizg.hr>
+---------------------------------------------------------------------------=
+-----
+allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section =
+mismatches
 
-[ This is the patch to fix the racing condition in locking for the 5.4, ]
-[ 4.19 and 4.14 stable branches. Not all the fixes from the upstream    ]
-[ commit apply, but those which do are verbatim equal to those in the   ]
-[ upstream commit.                                                      ]
+Warnings:
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section m=
+ismatches
+
+Warnings:
+    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer to i=
+nteger of different size [-Wpointer-to-int-cast]
+    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer to i=
+nteger of different size [-Wpointer-to-int-cast]
+
+---------------------------------------------------------------------------=
+-----
+defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 2 warn=
+ings, 0 section mismatches
+
+Warnings:
+    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer to i=
+nteger of different size [-Wpointer-to-int-cast]
+    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer to i=
+nteger of different size [-Wpointer-to-int-cast]
+
+---------------------------------------------------------------------------=
+-----
+haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
+ section mismatches
+
+---------------------------------------------------------------------------=
+-----
+i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 secti=
+on mismatches
+
+Warnings:
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+Section mismatches:
+    WARNING: vmlinux.o(___ksymtab_gpl+vic_init_cascaded+0x0): Section misma=
+tch in reference from the variable __ksymtab_vic_init_cascaded to the funct=
+ion .init.text:vic_init_cascaded()
+
+---------------------------------------------------------------------------=
+-----
+multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 section=
+ mismatches
+
+Warnings:
+    arch/x86/entry/entry_64.S:1756: Warning: no instruction mnemonic suffix=
+ given and no register operands; using default for `sysret'
+    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x151: unsuppo=
+rted intra-function call
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section m=
+ismatches
+
+Warnings:
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 s=
+ection mismatches
+
+Warnings:
+    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x1c1: unsuppo=
+rted intra-function call
+    arch/x86/entry/entry_64.o: warning: objtool: If this is a retpoline, pl=
+ease patch it in with alternatives and annotate it with ANNOTATE_NOSPEC_ALT=
+ERNATIVE.
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig+x86-chromebook (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, =
+4 warnings, 0 section mismatches
+
+Warnings:
+    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x1c1: unsuppo=
+rted intra-function call
+    arch/x86/entry/entry_64.o: warning: objtool: If this is a retpoline, pl=
+ease patch it in with alternatives and annotate it with ANNOTATE_NOSPEC_ALT=
+ERNATIVE.
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
 
 ---
- v4:
-	verbatim the same patch as for the 5.4 stable tree which patchwork failed to apply.
-
- lib/test_firmware.c | 37 ++++++++++++++++++++++++++++---------
- 1 file changed, 28 insertions(+), 9 deletions(-)
-
-diff --git a/lib/test_firmware.c b/lib/test_firmware.c
-index b5e779bcfb34..be3baea88b61 100644
---- a/lib/test_firmware.c
-+++ b/lib/test_firmware.c
-@@ -284,16 +284,26 @@ static ssize_t config_test_show_str(char *dst,
- 	return len;
- }
- 
--static int test_dev_config_update_bool(const char *buf, size_t size,
--				       bool *cfg)
-+static inline int __test_dev_config_update_bool(const char *buf, size_t size,
-+						bool *cfg)
- {
- 	int ret;
- 
--	mutex_lock(&test_fw_mutex);
- 	if (strtobool(buf, cfg) < 0)
- 		ret = -EINVAL;
- 	else
- 		ret = size;
-+
-+	return ret;
-+}
-+
-+static int test_dev_config_update_bool(const char *buf, size_t size,
-+				       bool *cfg)
-+{
-+	int ret;
-+
-+	mutex_lock(&test_fw_mutex);
-+	ret = __test_dev_config_update_bool(buf, size, cfg);
- 	mutex_unlock(&test_fw_mutex);
- 
- 	return ret;
-@@ -323,7 +333,7 @@ static ssize_t test_dev_config_show_int(char *buf, int cfg)
- 	return snprintf(buf, PAGE_SIZE, "%d\n", val);
- }
- 
--static int test_dev_config_update_u8(const char *buf, size_t size, u8 *cfg)
-+static inline int __test_dev_config_update_u8(const char *buf, size_t size, u8 *cfg)
- {
- 	int ret;
- 	long new;
-@@ -335,14 +345,23 @@ static int test_dev_config_update_u8(const char *buf, size_t size, u8 *cfg)
- 	if (new > U8_MAX)
- 		return -EINVAL;
- 
--	mutex_lock(&test_fw_mutex);
- 	*(u8 *)cfg = new;
--	mutex_unlock(&test_fw_mutex);
- 
- 	/* Always return full write size even if we didn't consume all */
- 	return size;
- }
- 
-+static int test_dev_config_update_u8(const char *buf, size_t size, u8 *cfg)
-+{
-+	int ret;
-+
-+	mutex_lock(&test_fw_mutex);
-+	ret = __test_dev_config_update_u8(buf, size, cfg);
-+	mutex_unlock(&test_fw_mutex);
-+
-+	return ret;
-+}
-+
- static ssize_t test_dev_config_show_u8(char *buf, u8 cfg)
- {
- 	u8 val;
-@@ -375,10 +394,10 @@ static ssize_t config_num_requests_store(struct device *dev,
- 		mutex_unlock(&test_fw_mutex);
- 		goto out;
- 	}
--	mutex_unlock(&test_fw_mutex);
- 
--	rc = test_dev_config_update_u8(buf, count,
--				       &test_fw_config->num_requests);
-+	rc = __test_dev_config_update_u8(buf, count,
-+					 &test_fw_config->num_requests);
-+	mutex_unlock(&test_fw_mutex);
- 
- out:
- 	return rc;
--- 
-2.34.1
-
+For more info write to <info@kernelci.org>
