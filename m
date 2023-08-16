@@ -2,173 +2,150 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F0A7D77DA0C
-	for <lists+stable@lfdr.de>; Wed, 16 Aug 2023 07:56:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1EF7077DCFA
+	for <lists+stable@lfdr.de>; Wed, 16 Aug 2023 11:08:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241756AbjHPF4M (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 16 Aug 2023 01:56:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37946 "EHLO
+        id S243022AbjHPJIZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 16 Aug 2023 05:08:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39092 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241822AbjHPFzy (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 16 Aug 2023 01:55:54 -0400
-Received: from mail-ej1-x62b.google.com (mail-ej1-x62b.google.com [IPv6:2a00:1450:4864:20::62b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7439AE56;
-        Tue, 15 Aug 2023 22:55:53 -0700 (PDT)
-Received: by mail-ej1-x62b.google.com with SMTP id a640c23a62f3a-99c1d03e124so754907366b.2;
-        Tue, 15 Aug 2023 22:55:53 -0700 (PDT)
+        with ESMTP id S243213AbjHPJIJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 16 Aug 2023 05:08:09 -0400
+Received: from mail-yw1-x1135.google.com (mail-yw1-x1135.google.com [IPv6:2607:f8b0:4864:20::1135])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A7A9B1BFB
+        for <stable@vger.kernel.org>; Wed, 16 Aug 2023 02:08:08 -0700 (PDT)
+Received: by mail-yw1-x1135.google.com with SMTP id 00721157ae682-589e590af61so46361097b3.0
+        for <stable@vger.kernel.org>; Wed, 16 Aug 2023 02:08:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1692165352; x=1692770152;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=6aZkOL7SjZGnUHAIvEt/YDknB7+2gxb44+woju4e+uE=;
-        b=VfCom1umUhKMEoU/+uHAV8huhuxTS3rkeuRK8CgGS4Pf/0CTvzwkECTCCDk0Nz8fYJ
-         ZZwtkJuX4W3UOGSquDKAByWKGnq6kkeoW+l8JP3MOKY/nu3d8hsm5OQx3/P2yfLrBbnu
-         3z5awkUHCDiAGeng8HrzdRBzgarA0HmQEtvoEAT7+4oKmYqPuqnXmlMk+jjFTlPlMNs8
-         lBy632wiFdEarOdwxdnWDGbxjB/UJdfJFF9XdgK9RgQVln/1VrKM3lVuVg7/eZua2Fyt
-         YzWi4KzHUqWcbOY+IxfQ9wQAUz1Ic6Mn7vmooNKeN0HCI7gcNF0jBcHSDGRtrxTYkR3R
-         GrJg==
+        d=semihalf.com; s=google; t=1692176888; x=1692781688;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=B4E6y+EsBZT+xa8sFtpV5pHAhyhxp/Z2XFWH1I0j3iY=;
+        b=k2SpWvwJV96h7cjYIgbcAulHgYn/SeqI69Ta92U7nJxV/Rb2epbSBTK4byp3Rmssvy
+         ei8z6iSXMVHSuo9TokjCpvjSPGSrbC84gYidM3i3g2t2yLwwqI0qSiIS5IREK77PLAPb
+         JKNt6V7YGovc6cwJIsYByqMXtZP+eQ71Ncz/boUHrTWcDW0vrseG6ObaXC55iGJ3BvD2
+         cCbgJSKNYm+8nN5DwbzLHiT6PrS43DOORmHJ6jQZmgT9DYcEHzk9+Mddz98cGsejuLB6
+         v/Cj7qogF/GlfA7E8JYrq+Zx+JiQ3Ms3KjTm++H++s6mQB+KMUbKKtiu7aNL5ZUcuFiu
+         YH9w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692165352; x=1692770152;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=6aZkOL7SjZGnUHAIvEt/YDknB7+2gxb44+woju4e+uE=;
-        b=GJi3JcALOSR/H54/S9tbcGkG/zVcD6pQGEYRZ+DZFjbH5PATHPb1UwD4qwistTOn/s
-         LFcCIoOBScHTckEw/xrm/sHzuaax5d3ZGTYKNSdiIkHMjvC2+XpBnj0WOj07+l5r4DCo
-         fMc2sJ0iVvlDUj4VRvh5/PCcCUw/8mmg9Oor0exHHjtLtFoFrVJXDvVOESQfXc5UsCEo
-         yljUrf0esddL0Z1qDMPSQS8kJwywEGvQbimQcNzgdymoRiuftJDhmxyTq6CozJDUQJbf
-         qDYtKGHBk/clU/y6RigoT2G8uPvn+0Rc7gXG5o3+SJXkKmhIEtONTfTtgr5vBd8lKez1
-         Ky3Q==
-X-Gm-Message-State: AOJu0YywSJBQhSav/G8DWl7diATbYMVr8Sz1uju7YsZQwwiDtQ7asuMo
-        BfT98Jqzq1k3gJ4yz3RI7H8=
-X-Google-Smtp-Source: AGHT+IF4cQjPHPsGP77huoi8BSKDn99dS/edqLrfBHnOmj+6zJvC5sm7DmueoS1E10YGpHFIdUgYtQ==
-X-Received: by 2002:a17:906:259:b0:991:ed4e:1c84 with SMTP id 25-20020a170906025900b00991ed4e1c84mr667070ejl.25.1692165351663;
-        Tue, 15 Aug 2023 22:55:51 -0700 (PDT)
-Received: from ?IPV6:2a00:e180:15f4:7600:d198:bace:ace6:651f? ([2a00:e180:15f4:7600:d198:bace:ace6:651f])
-        by smtp.gmail.com with ESMTPSA id a9-20020a170906190900b00992c92af6easm8031662eje.161.2023.08.15.22.55.50
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 15 Aug 2023 22:55:51 -0700 (PDT)
-Message-ID: <d1831afd-9e02-fbc9-69f7-e8f044f35ee0@gmail.com>
-Date:   Wed, 16 Aug 2023 07:55:49 +0200
+        d=1e100.net; s=20221208; t=1692176888; x=1692781688;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=B4E6y+EsBZT+xa8sFtpV5pHAhyhxp/Z2XFWH1I0j3iY=;
+        b=YEYsLQsS+YZNxtXQKtbAfxn1knI5kj+1iR8+adsZp25XzpcmvfnP/CSTI7EskSi0kg
+         QU/PI/1y0sLbM9VAvuYIrdWe1GHWllp1Geo3ywTnVLY+RYB0B4TY/djhmBzwB4oSK+8y
+         uhMFEkCLs+0jv5Dl6zauYDOMpRS/KempLGPHDY3ovK4eaI/hpATNVwg1Ex86QptsNEWN
+         oGhSxtJdZa2KZaBO5dJxk1nc+jZJFncvs75flg3hpxkla8XQSWwq8BGGfGgj6zsv6HyK
+         mMfybEbZ5tAYwi5KDO1tugL19g5AQabw8Szj5jm5vuV71jAFrvplUuI2Kvz1t9EqyCsr
+         hZiA==
+X-Gm-Message-State: AOJu0YyUY2O8td7mC/V3JRNe3w82cpjowx5LMreIRk+KMOYnX4cwHUHL
+        5YI7qERWNLAuQimKGUJ4DYdSp68hGLtDW1cRJOxUvg==
+X-Google-Smtp-Source: AGHT+IHs3/3TrKxg3s9PVZt7PqVQ46mOv8b7b4u/wLYVkSAhu+ZR5b9bIvK6MhNsKqncE6TPb64oJar7x9WLjBTwuTA=
+X-Received: by 2002:a0d:d649:0:b0:583:7564:49de with SMTP id
+ y70-20020a0dd649000000b00583756449demr1616392ywd.3.1692176887862; Wed, 16 Aug
+ 2023 02:08:07 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v2] drm/amdgpu: register a dirty framebuffer callback for
- fbcon
-Content-Language: en-US
-To:     Hamza Mahfooz <hamza.mahfooz@amd.com>,
-        amd-gfx@lists.freedesktop.org
-Cc:     Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        Guchun Chen <guchun.chen@amd.com>,
-        dri-devel@lists.freedesktop.org,
-        "Pan, Xinhui" <Xinhui.Pan@amd.com>,
-        Javier Martinez Canillas <javierm@redhat.com>,
-        stable@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Aurabindo Pillai <aurabindo.pillai@amd.com>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        David Airlie <airlied@gmail.com>,
-        =?UTF-8?Q?Christian_K=c3=b6nig?= <christian.koenig@amd.com>,
-        Mario Limonciello <mario.limonciello@amd.com>
-References: <20230815172700.255596-1-hamza.mahfooz@amd.com>
-From:   =?UTF-8?Q?Christian_K=c3=b6nig?= <ckoenig.leichtzumerken@gmail.com>
-In-Reply-To: <20230815172700.255596-1-hamza.mahfooz@amd.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-3.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+References: <20230803092308.79197-1-lma@semihalf.com>
+In-Reply-To: <20230803092308.79197-1-lma@semihalf.com>
+From:   Lukasz Majczak <lma@semihalf.com>
+Date:   Wed, 16 Aug 2023 11:07:56 +0200
+Message-ID: <CAFJ_xbqoVjXQXJZ0krbsRqUOe3hLNubi12r_q=idSgkfeV=LRQ@mail.gmail.com>
+Subject: Re: [PATCH] drm/dp_mst: Fix NULL deref in get_mst_branch_device_by_guid_helper()
+To:     David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>
+Cc:     Guenter Roeck <linux@roeck-us.net>, upstream@semihalf.com,
+        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-
-
-Am 15.08.23 um 19:26 schrieb Hamza Mahfooz:
-> fbcon requires that we implement &drm_framebuffer_funcs.dirty.
-> Otherwise, the framebuffer might take a while to flush (which would
-> manifest as noticeable lag). However, we can't enable this callback for
-> non-fbcon cases since it might cause too many atomic commits to be made
-> at once. So, implement amdgpu_dirtyfb() and only enable it for fbcon
-> framebuffers on devices that support atomic KMS.
+czw., 3 sie 2023 o 11:23 Lukasz Majczak <lma@semihalf.com> napisa=C5=82(a):
 >
-> Cc: Aurabindo Pillai <aurabindo.pillai@amd.com>
-> Cc: Mario Limonciello <mario.limonciello@amd.com>
-> Cc: stable@vger.kernel.org # 6.1+
-> Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2519
-> Signed-off-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
-> ---
-> v2: update variable names
-> ---
->   drivers/gpu/drm/amd/amdgpu/amdgpu_display.c | 26 ++++++++++++++++++++-
->   1 file changed, 25 insertions(+), 1 deletion(-)
+> Check mgr->mst_primary, before passing it to
+> the get_mst_branch_device_by_guid_helper(), otherwise NULL dereference
+> may occur in the call to memcpy() and cause:
 >
-> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_display.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_display.c
-> index d20dd3f852fc..d3b59f99cb7c 100644
-> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_display.c
-> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_display.c
-> @@ -38,6 +38,8 @@
->   #include <linux/pci.h>
->   #include <linux/pm_runtime.h>
->   #include <drm/drm_crtc_helper.h>
-> +#include <drm/drm_damage_helper.h>
-> +#include <drm/drm_drv.h>
->   #include <drm/drm_edid.h>
->   #include <drm/drm_fb_helper.h>
->   #include <drm/drm_gem_framebuffer_helper.h>
-> @@ -532,11 +534,29 @@ bool amdgpu_display_ddc_probe(struct amdgpu_connector *amdgpu_connector,
->   	return true;
->   }
->   
-> +static int amdgpu_dirtyfb(struct drm_framebuffer *fb, struct drm_file *file,
-> +			  unsigned int flags, unsigned int color,
-> +			  struct drm_clip_rect *clips, unsigned int num_clips)
-> +{
-> +
-> +	if (strcmp(fb->comm, "[fbcon]"))
-> +		return -ENOSYS;
+> [12579.365869] BUG: kernel NULL pointer dereference, address: 00000000000=
+00049
+> [12579.365878] #PF: supervisor read access in kernel mode
+> [12579.365880] #PF: error_code(0x0000) - not-present page
+> [12579.365882] PGD 0 P4D 0
+> [12579.365887] Oops: 0000 [#1] PREEMPT SMP NOPTI
+> ...
+> [12579.365895] Workqueue: events_long drm_dp_mst_up_req_work
+> [12579.365899] RIP: 0010:memcmp+0xb/0x29
+> [12579.365921] Call Trace:
+> [12579.365927] get_mst_branch_device_by_guid_helper+0x22/0x64
+> [12579.365930] drm_dp_mst_up_req_work+0x137/0x416
+> [12579.365933] process_one_work+0x1d0/0x419
+> [12579.365935] worker_thread+0x11a/0x289
+> [12579.365938] kthread+0x13e/0x14f
+> [12579.365941] ? process_one_work+0x419/0x419
+> [12579.365943] ? kthread_blkcg+0x31/0x31
+> [12579.365946] ret_from_fork+0x1f/0x30
+>
+> Similar check is done in e.g: drm_dp_mst_topology_get_mstb_validated().
+>
+> Fixes: 5e93b8208d3c ("drm/dp/mst: move GUID storage from mgr, port to onl=
+y mst branch")
+> Cc: <stable@vger.kernel.org> # 4.14+
+> Signed-off-by: Lukasz Majczak <lma@semihalf.com>
+> ---
+>  drivers/gpu/drm/display/drm_dp_mst_topology.c | 16 ++++++++--------
+>  1 file changed, 8 insertions(+), 8 deletions(-)
+>
+> diff --git a/drivers/gpu/drm/display/drm_dp_mst_topology.c b/drivers/gpu/=
+drm/display/drm_dp_mst_topology.c
+> index ed96cfcfa304..703cd97b1d11 100644
+> --- a/drivers/gpu/drm/display/drm_dp_mst_topology.c
+> +++ b/drivers/gpu/drm/display/drm_dp_mst_topology.c
+> @@ -2595,19 +2595,19 @@ static struct drm_dp_mst_branch *
+>  drm_dp_get_mst_branch_device_by_guid(struct drm_dp_mst_topology_mgr *mgr=
+,
+>                                      const uint8_t *guid)
+>  {
+> -       struct drm_dp_mst_branch *mstb;
+> +       struct drm_dp_mst_branch *mstb =3D NULL;
+>         int ret;
+>
+>         /* find the port by iterating down */
+>         mutex_lock(&mgr->lock);
+> -
+> -       mstb =3D get_mst_branch_device_by_guid_helper(mgr->mst_primary, g=
+uid);
+> -       if (mstb) {
+> -               ret =3D drm_dp_mst_topology_try_get_mstb(mstb);
+> -               if (!ret)
+> -                       mstb =3D NULL;
+> +       if (mgr->mst_primary) {
+> +               mstb =3D get_mst_branch_device_by_guid_helper(mgr->mst_pr=
+imary, guid);
+> +               if (mstb) {
+> +                       ret =3D drm_dp_mst_topology_try_get_mstb(mstb);
+> +                       if (!ret)
+> +                               mstb =3D NULL;
+> +               }
+>         }
+> -
+>         mutex_unlock(&mgr->lock);
+>         return mstb;
+>  }
+> --
+> 2.41.0.640.ga95def55d0-goog
+>
+Hi,
 
-Once more to the v2 of this patch: Tests like those are a pretty big 
-NO-GO for upstreaming.
+Is there anything more I should do regarding these changes?
 
-Regards,
-Christian.
-
-> +
-> +	return drm_atomic_helper_dirtyfb(fb, file, flags, color, clips,
-> +					 num_clips);
-> +}
-> +
->   static const struct drm_framebuffer_funcs amdgpu_fb_funcs = {
->   	.destroy = drm_gem_fb_destroy,
->   	.create_handle = drm_gem_fb_create_handle,
->   };
->   
-> +static const struct drm_framebuffer_funcs amdgpu_fb_funcs_atomic = {
-> +	.destroy = drm_gem_fb_destroy,
-> +	.create_handle = drm_gem_fb_create_handle,
-> +	.dirty = amdgpu_dirtyfb
-> +};
-> +
->   uint32_t amdgpu_display_supported_domains(struct amdgpu_device *adev,
->   					  uint64_t bo_flags)
->   {
-> @@ -1139,7 +1159,11 @@ static int amdgpu_display_gem_fb_verify_and_init(struct drm_device *dev,
->   	if (ret)
->   		goto err;
->   
-> -	ret = drm_framebuffer_init(dev, &rfb->base, &amdgpu_fb_funcs);
-> +	if (drm_drv_uses_atomic_modeset(dev))
-> +		ret = drm_framebuffer_init(dev, &rfb->base,
-> +					   &amdgpu_fb_funcs_atomic);
-> +	else
-> +		ret = drm_framebuffer_init(dev, &rfb->base, &amdgpu_fb_funcs);
->   
->   	if (ret)
->   		goto err;
-
+Best regards,
+Lukasz
