@@ -2,196 +2,173 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E5EFD77DA02
-	for <lists+stable@lfdr.de>; Wed, 16 Aug 2023 07:53:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F0A7D77DA0C
+	for <lists+stable@lfdr.de>; Wed, 16 Aug 2023 07:56:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235459AbjHPFwv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 16 Aug 2023 01:52:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43652 "EHLO
+        id S241756AbjHPF4M (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 16 Aug 2023 01:56:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37946 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231518AbjHPFwV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 16 Aug 2023 01:52:21 -0400
-Received: from mail-wr1-x42b.google.com (mail-wr1-x42b.google.com [IPv6:2a00:1450:4864:20::42b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 760C52117;
-        Tue, 15 Aug 2023 22:52:18 -0700 (PDT)
-Received: by mail-wr1-x42b.google.com with SMTP id ffacd0b85a97d-3179ed1dfbbso5377899f8f.1;
-        Tue, 15 Aug 2023 22:52:18 -0700 (PDT)
+        with ESMTP id S241822AbjHPFzy (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 16 Aug 2023 01:55:54 -0400
+Received: from mail-ej1-x62b.google.com (mail-ej1-x62b.google.com [IPv6:2a00:1450:4864:20::62b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7439AE56;
+        Tue, 15 Aug 2023 22:55:53 -0700 (PDT)
+Received: by mail-ej1-x62b.google.com with SMTP id a640c23a62f3a-99c1d03e124so754907366b.2;
+        Tue, 15 Aug 2023 22:55:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1692165137; x=1692769937;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:sender
+        d=gmail.com; s=20221208; t=1692165352; x=1692770152;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=2yTAlFaDhRXDFXIujLYE9tmlWZe5/3Kwg9FHeJ3oejY=;
-        b=XgryXH0llBSnWZC8M1i1FO6inpaa7l1hZRjIb1H1sFsJyTDaPeO/OBUw89h5ryoaRm
-         rtAs1goICIinKKg/1OA/KbX4PV1J/k6SstnBM1Lnksda79CA//aZ//CU19ZCLUjkPbdC
-         rRXcqR9HWeasWQhlTFJlZ/J7yxpG168a002n6ZEqXO4Oo17cd8efL26k/xRP6F7j0nnp
-         W2fc4KILSgNh3coewm9nvkJQc85kk2pH5lypyESnnY3wFR7Q3k2ekLNIR/g3yjBmfKWa
-         AxYAPDmN3S1d2sC1UHOCwj1YdBbNQcYGWTW3PF6cqHdQP9B/Eu0sv+JPVLKebYe485fR
-         WQlA==
+        bh=6aZkOL7SjZGnUHAIvEt/YDknB7+2gxb44+woju4e+uE=;
+        b=VfCom1umUhKMEoU/+uHAV8huhuxTS3rkeuRK8CgGS4Pf/0CTvzwkECTCCDk0Nz8fYJ
+         ZZwtkJuX4W3UOGSquDKAByWKGnq6kkeoW+l8JP3MOKY/nu3d8hsm5OQx3/P2yfLrBbnu
+         3z5awkUHCDiAGeng8HrzdRBzgarA0HmQEtvoEAT7+4oKmYqPuqnXmlMk+jjFTlPlMNs8
+         lBy632wiFdEarOdwxdnWDGbxjB/UJdfJFF9XdgK9RgQVln/1VrKM3lVuVg7/eZua2Fyt
+         YzWi4KzHUqWcbOY+IxfQ9wQAUz1Ic6Mn7vmooNKeN0HCI7gcNF0jBcHSDGRtrxTYkR3R
+         GrJg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692165137; x=1692769937;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:sender
+        d=1e100.net; s=20221208; t=1692165352; x=1692770152;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=2yTAlFaDhRXDFXIujLYE9tmlWZe5/3Kwg9FHeJ3oejY=;
-        b=PZwoD6n6EII14jNcSlQGsNXMxkoamWc+qhcDoU/wkHoQMizs6P2GnIH3flbQwTyVSp
-         i/LvA/MU7xaMbFO+G1MGcqvwEVq9Ruw0gp1/PCP7zEVALNQS2jC+svttyvxG+6pa1G6L
-         GXWH1A3YtyiNGDm1cXJ5sWnfFoiOZjuFjpnVqb0pvoeqYVvSzTSysGLjKlp99mu5E4UF
-         uOJtTTuIjUnoJC8yRL026jDfN9aqDxlN2CLMhsWWD6ZPHLTiR7P6EMwwPFTyGp9K+Z15
-         p+0KqNA1l71aFa9TEYe3b0YKH6KtG5th9TiQ3MRecKBxVYKOqRCAZMa5+tJ+eeUTqzl0
-         MNwA==
-X-Gm-Message-State: AOJu0YzZ7BTocofW9yQ6jtXouDJXZXyL0kUOqLgwxEs70cWXG6We4v9D
-        XGifh2nIY1t4gm68DTDwUGk=
-X-Google-Smtp-Source: AGHT+IEUbrjD6hMJIHrOfTuiJvp97y9onaiw36QbmXVq8hx6MWGLpauDBwCu9D0ySOVtj75IHZsgCQ==
-X-Received: by 2002:a5d:5507:0:b0:315:a1d5:a3d5 with SMTP id b7-20020a5d5507000000b00315a1d5a3d5mr720616wrv.22.1692165136719;
-        Tue, 15 Aug 2023 22:52:16 -0700 (PDT)
-Received: from eldamar.lan (c-82-192-242-114.customer.ggaweb.ch. [82.192.242.114])
-        by smtp.gmail.com with ESMTPSA id w17-20020adfee51000000b00317eee26bf0sm20076662wro.69.2023.08.15.22.52.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 15 Aug 2023 22:52:16 -0700 (PDT)
-Sender: Salvatore Bonaccorso <salvatore.bonaccorso@gmail.com>
-Received: by eldamar.lan (Postfix, from userid 1000)
-        id 603ABBE2DE0; Wed, 16 Aug 2023 07:52:15 +0200 (CEST)
-Date:   Wed, 16 Aug 2023 07:52:15 +0200
-From:   Salvatore Bonaccorso <carnil@debian.org>
-To:     Greg KH <gregkh@linuxfoundation.org>
-Cc:     Shaoying Xu <shaoyi@amazon.com>, tglx@linutronix.de,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        jgross@suse.com, sjpark@amazon.com, hailmo@amazon.com,
-        kuniyu@amazon.com
-Subject: Re: Linux 5.4.252 FPU initialization warnings in stable kernels
- 5.4/5.10
-Message-ID: <ZNxkD0xvJf/U+Jae@eldamar.lan>
-References: <2023080814-relax-divisible-dea4@gregkh>
- <20230815201539.19015-1-shaoyi@amazon.com>
- <2023081511-easing-exerciser-c356@gregkh>
+        bh=6aZkOL7SjZGnUHAIvEt/YDknB7+2gxb44+woju4e+uE=;
+        b=GJi3JcALOSR/H54/S9tbcGkG/zVcD6pQGEYRZ+DZFjbH5PATHPb1UwD4qwistTOn/s
+         LFcCIoOBScHTckEw/xrm/sHzuaax5d3ZGTYKNSdiIkHMjvC2+XpBnj0WOj07+l5r4DCo
+         fMc2sJ0iVvlDUj4VRvh5/PCcCUw/8mmg9Oor0exHHjtLtFoFrVJXDvVOESQfXc5UsCEo
+         yljUrf0esddL0Z1qDMPSQS8kJwywEGvQbimQcNzgdymoRiuftJDhmxyTq6CozJDUQJbf
+         qDYtKGHBk/clU/y6RigoT2G8uPvn+0Rc7gXG5o3+SJXkKmhIEtONTfTtgr5vBd8lKez1
+         Ky3Q==
+X-Gm-Message-State: AOJu0YywSJBQhSav/G8DWl7diATbYMVr8Sz1uju7YsZQwwiDtQ7asuMo
+        BfT98Jqzq1k3gJ4yz3RI7H8=
+X-Google-Smtp-Source: AGHT+IF4cQjPHPsGP77huoi8BSKDn99dS/edqLrfBHnOmj+6zJvC5sm7DmueoS1E10YGpHFIdUgYtQ==
+X-Received: by 2002:a17:906:259:b0:991:ed4e:1c84 with SMTP id 25-20020a170906025900b00991ed4e1c84mr667070ejl.25.1692165351663;
+        Tue, 15 Aug 2023 22:55:51 -0700 (PDT)
+Received: from ?IPV6:2a00:e180:15f4:7600:d198:bace:ace6:651f? ([2a00:e180:15f4:7600:d198:bace:ace6:651f])
+        by smtp.gmail.com with ESMTPSA id a9-20020a170906190900b00992c92af6easm8031662eje.161.2023.08.15.22.55.50
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 15 Aug 2023 22:55:51 -0700 (PDT)
+Message-ID: <d1831afd-9e02-fbc9-69f7-e8f044f35ee0@gmail.com>
+Date:   Wed, 16 Aug 2023 07:55:49 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <2023081511-easing-exerciser-c356@gregkh>
-X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,
-        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH v2] drm/amdgpu: register a dirty framebuffer callback for
+ fbcon
+Content-Language: en-US
+To:     Hamza Mahfooz <hamza.mahfooz@amd.com>,
+        amd-gfx@lists.freedesktop.org
+Cc:     Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        Guchun Chen <guchun.chen@amd.com>,
+        dri-devel@lists.freedesktop.org,
+        "Pan, Xinhui" <Xinhui.Pan@amd.com>,
+        Javier Martinez Canillas <javierm@redhat.com>,
+        stable@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Aurabindo Pillai <aurabindo.pillai@amd.com>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        David Airlie <airlied@gmail.com>,
+        =?UTF-8?Q?Christian_K=c3=b6nig?= <christian.koenig@amd.com>,
+        Mario Limonciello <mario.limonciello@amd.com>
+References: <20230815172700.255596-1-hamza.mahfooz@amd.com>
+From:   =?UTF-8?Q?Christian_K=c3=b6nig?= <ckoenig.leichtzumerken@gmail.com>
+In-Reply-To: <20230815172700.255596-1-hamza.mahfooz@amd.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-3.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi,
 
-On Tue, Aug 15, 2023 at 11:16:52PM +0200, Greg KH wrote:
-> On Tue, Aug 15, 2023 at 08:15:39PM +0000, Shaoying Xu wrote:
-> > Hi Thomas/Greg
-> > 
-> > We are seeing “get of unsupported state” warnings during FPU initialization in the v5.4.252 and v5.10.189
-> > kernel booted on AWS EC2 instances with Intel processors based on Nitro system. These warnings are observed 
-> > in EC2 c5.18xlarge instance: 
-> > 
-> > [    1.204495] ------------[ cut here ]------------
-> > [    1.204495] get of unsupported state
-> > [    1.204495] WARNING: CPU: 0 PID: 0 at arch/x86/kernel/fpu/xstate.c:879 get_xsave_addr+0x81/0x90
-> > [    1.204495] Modules linked in:
-> > [    1.204495] CPU: 0 PID: 0 Comm: swapper/0 Not tainted 5.4.252 #10
-> > [    1.204495] Hardware name: Amazon EC2 c5.18xlarge/, BIOS 1.0 10/16/2017
-> > [    1.204495] RIP: 0010:get_xsave_addr+0x81/0x90
-> > [    1.204495] Code: 5b c3 48 83 c4 08 31 c0 5b c3 80 3d 7c f0 78 01 00 75 c1 48 c7 c7 34 be 03 b2 89 4c 24 04 c6 05 68 f0 78 01 01 e8 ef 41 05 00 <0f> 0b 48 63 4c 24 04 eb a1 31 c0 c3 0f 1f 00 0f 1f 44 00 00 41 54
-> > [    1.204495] RSP: 0000:ffffffffb2603ed0 EFLAGS: 00010282
-> > [    1.204495] RAX: 0000000000000000 RBX: ffffffffb27ebe80 RCX: 0000000047cb2486
-> > [    1.204495] RDX: 0000000000000018 RSI: ffffffffb39e99a0 RDI: ffffffffb39e756c
-> > [    1.204495] RBP: ffffffffb27ebd40 R08: 7520666f20746567 R09: 74726f707075736e
-> > [    1.204495] R10: 00000000000962fc R11: 6574617473206465 R12: ffffffffb2d89b60
-> > [    1.204495] R13: 0000000000000246 R14: 0000000000000000 R15: 0000000000000000
-> > [    1.204495] FS:  0000000000000000(0000) GS:ffff96d031400000(0000) knlGS:0000000000000000
-> > [    1.204495] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> > [    1.204495] CR2: ffff96e277fff000 CR3: 000000103060a001 CR4: 00000000007200b0
-> > [    1.204495] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-> > [    1.204495] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-> > [    1.204495] Call Trace:
-> > [    1.204495]  ? __warn+0x85/0xd0
-> > [    1.204495]  ? get_xsave_addr+0x81/0x90
-> > [    1.204495]  ? report_bug+0xb6/0x130
-> > [    1.204495]  ? get_xsave_addr+0x81/0x90
-> > [    1.204495]  ? fixup_bug.part.12+0x18/0x30
-> > [    1.204495]  ? do_error_trap+0x95/0xb0
-> > [    1.204495]  ? do_invalid_op+0x36/0x40
-> > [    1.204495]  ? get_xsave_addr+0x81/0x90
-> > [    1.204495]  ? invalid_op+0x1e/0x30
-> > [    1.204495]  ? get_xsave_addr+0x81/0x90
-> > [    1.204495]  identify_cpu+0x422/0x510
-> > [    1.204495]  identify_boot_cpu+0xc/0x94
-> > [    1.204495]  arch_cpu_finalize_init+0x5/0x47
-> > [    1.204495]  start_kernel+0x468/0x511
-> > [    1.204495]  secondary_startup_64+0xa4/0xb0
-> > [    1.204495] ---[ end trace dffac81ff531fcf2 ]---
-> > 
-> > The issue can be easily reproduced on both virtualized and bare metal instances but interesting thing is 
-> > it can’t be found in other latest stable kernels v4.14, v4.19, v5.15 and newer. We tried to bisect between v5.4.251 and v5.4.252 and 
-> > were able to find below commit to be the culprit. Also, reverting it in v5.4.252 and v5.10.189 resolved above warnings completely. 
-> > 
-> >     x86/fpu: Move FPU initialization into arch_cpu_finalize_init() 
-> >     commit b81fac906a8f9e682e513ddd95697ec7a20878d4 upstream
-> > 
-> > We used to speculate the fix might be similar to commit 3f8968f1f0ad (“x86/xen: Fix secondary processors' FPU initialization”) but 
-> > since only kernel 5.4/5.10  are impacted, we’re not quite sure how this commit affects them in practice. Could you please take a look and share your insights?
-> > 
-> > Also put stack traces from v5.10.189: 
-> > 
-> > [    1.210910] ------------[ cut here ]------------
-> > [    1.210910] get of unsupported state
-> > [    1.210910] WARNING: CPU: 0 PID: 0 at arch/x86/kernel/fpu/xstate.c:974 get_xsave_addr+0x89/0xa0
-> > [    1.210910] Modules linked in:
-> > [    1.210910] CPU: 0 PID: 0 Comm: swapper/0 Not tainted 5.10.189 #4
-> > [    1.210910] Hardware name: Amazon EC2 c5.18xlarge/, BIOS 1.0 10/16/2017
-> > [    1.210910] RIP: 0010:get_xsave_addr+0x89/0xa0
-> > [    1.210910] Code: c4 08 31 c0 5b e9 17 a4 bc 00 80 3d e7 75 eb 01 00 75 b9 48 c7 c7 b7 f4 09 ab 89 4c 24 04 c6 05 d3 75 eb 01 01 e8 17 98 05 00 <0f> 0b 48 63 4c 24 04 eb 99 31 c0 e9 e7 a3 bc 00 0f 1f 80 00 00 00
-> > [    1.210910] RSP: 0000:ffffffffab603ec8 EFLAGS: 00010286
-> > [    1.210910] RAX: 0000000000000000 RBX: ffffffffabf25bc0 RCX: 00000000fffeffff
-> > [    1.210910] RDX: ffffffffab603cd0 RSI: 00000000fffeffff RDI: ffffffffad1a3dec
-> > [    1.210910] RBP: ffffffffabf25a60 R08: 0000000000000000 R09: 0000000000000001
-> > [    1.210910] R10: 0000000000000000 R11: ffffffffab603cc8 R12: ffffffffac539b40
-> > [    1.210910] R13: 0000000000000246 R14: 0000000000000000 R15: 0000000000000000
-> > [    1.210910] FS:  0000000000000000(0000) GS:ffff9150f1600000(0000) knlGS:0000000000000000
-> > [    1.210910] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> > [    1.210910] CR2: ffff915702801000 CR3: 0000001780610001 CR4: 00000000007300b0
-> > [    1.210910] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-> > [    1.210910] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-> > [    1.210910] Call Trace:
-> > [    1.210910]  ? __warn+0x7d/0xe0
-> > [    1.210910]  ? get_xsave_addr+0x89/0xa0
-> > [    1.210910]  ? report_bug+0xbb/0x140
-> > [    1.210910]  ? handle_bug+0x3f/0x70
-> > [    1.210910]  ? exc_invalid_op+0x13/0x60
-> > [    1.210910]  ? asm_exc_invalid_op+0x12/0x20
-> > [    1.210910]  ? get_xsave_addr+0x89/0xa0
-> > [    1.210910]  ? get_xsave_addr+0x89/0xa0
-> > [    1.210910]  identify_cpu+0x42a/0x550
-> > [    1.210910]  identify_boot_cpu+0xc/0x94
-> > [    1.210910]  arch_cpu_finalize_init+0x5/0x47
-> > [    1.210910]  start_kernel+0x4bc/0x56b
-> > [    1.210910]  secondary_startup_64_no_verify+0xb0/0xbb
-> > [    1.210910] ---[ end trace 14850c6f8ee0875d ]---
-> 
-> I think this is fixed with commit b3607269ff57 ("x86/pkeys: Revert
-> a5eff7259790 ("x86/pkeys: Add PKRU value to init_fpstate")"), which is
-> queued up for the next 5.4 and 5.10.y releases to happen "soon".  Can
-> you test the released -rc1 versions of this to verify it is resolved or
-> not?
 
-While not the reporter, I can confirm that the commit resolved the
-issue. 
+Am 15.08.23 um 19:26 schrieb Hamza Mahfooz:
+> fbcon requires that we implement &drm_framebuffer_funcs.dirty.
+> Otherwise, the framebuffer might take a while to flush (which would
+> manifest as noticeable lag). However, we can't enable this callback for
+> non-fbcon cases since it might cause too many atomic commits to be made
+> at once. So, implement amdgpu_dirtyfb() and only enable it for fbcon
+> framebuffers on devices that support atomic KMS.
+>
+> Cc: Aurabindo Pillai <aurabindo.pillai@amd.com>
+> Cc: Mario Limonciello <mario.limonciello@amd.com>
+> Cc: stable@vger.kernel.org # 6.1+
+> Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2519
+> Signed-off-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
+> ---
+> v2: update variable names
+> ---
+>   drivers/gpu/drm/amd/amdgpu/amdgpu_display.c | 26 ++++++++++++++++++++-
+>   1 file changed, 25 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_display.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_display.c
+> index d20dd3f852fc..d3b59f99cb7c 100644
+> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_display.c
+> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_display.c
+> @@ -38,6 +38,8 @@
+>   #include <linux/pci.h>
+>   #include <linux/pm_runtime.h>
+>   #include <drm/drm_crtc_helper.h>
+> +#include <drm/drm_damage_helper.h>
+> +#include <drm/drm_drv.h>
+>   #include <drm/drm_edid.h>
+>   #include <drm/drm_fb_helper.h>
+>   #include <drm/drm_gem_framebuffer_helper.h>
+> @@ -532,11 +534,29 @@ bool amdgpu_display_ddc_probe(struct amdgpu_connector *amdgpu_connector,
+>   	return true;
+>   }
+>   
+> +static int amdgpu_dirtyfb(struct drm_framebuffer *fb, struct drm_file *file,
+> +			  unsigned int flags, unsigned int color,
+> +			  struct drm_clip_rect *clips, unsigned int num_clips)
+> +{
+> +
+> +	if (strcmp(fb->comm, "[fbcon]"))
+> +		return -ENOSYS;
 
-The issue was reported some days back in Debian as
-https://bugs.debian.org/1044518
-
-I verified that with 5.10.190-rc1 the above warning is gone:
-https://bugs.debian.org/1044518#34
-
-(as it was fixed already with 5.10.190-rc1 pending, I did not
-botherred to as well report it upstream after it was clear it is not a
-Debian specific issue anymore).
+Once more to the v2 of this patch: Tests like those are a pretty big 
+NO-GO for upstreaming.
 
 Regards,
-Salvatore
+Christian.
+
+> +
+> +	return drm_atomic_helper_dirtyfb(fb, file, flags, color, clips,
+> +					 num_clips);
+> +}
+> +
+>   static const struct drm_framebuffer_funcs amdgpu_fb_funcs = {
+>   	.destroy = drm_gem_fb_destroy,
+>   	.create_handle = drm_gem_fb_create_handle,
+>   };
+>   
+> +static const struct drm_framebuffer_funcs amdgpu_fb_funcs_atomic = {
+> +	.destroy = drm_gem_fb_destroy,
+> +	.create_handle = drm_gem_fb_create_handle,
+> +	.dirty = amdgpu_dirtyfb
+> +};
+> +
+>   uint32_t amdgpu_display_supported_domains(struct amdgpu_device *adev,
+>   					  uint64_t bo_flags)
+>   {
+> @@ -1139,7 +1159,11 @@ static int amdgpu_display_gem_fb_verify_and_init(struct drm_device *dev,
+>   	if (ret)
+>   		goto err;
+>   
+> -	ret = drm_framebuffer_init(dev, &rfb->base, &amdgpu_fb_funcs);
+> +	if (drm_drv_uses_atomic_modeset(dev))
+> +		ret = drm_framebuffer_init(dev, &rfb->base,
+> +					   &amdgpu_fb_funcs_atomic);
+> +	else
+> +		ret = drm_framebuffer_init(dev, &rfb->base, &amdgpu_fb_funcs);
+>   
+>   	if (ret)
+>   		goto err;
+
