@@ -2,73 +2,72 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8638577EA91
-	for <lists+stable@lfdr.de>; Wed, 16 Aug 2023 22:17:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9003777EAAB
+	for <lists+stable@lfdr.de>; Wed, 16 Aug 2023 22:28:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346081AbjHPURB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 16 Aug 2023 16:17:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48394 "EHLO
+        id S1346121AbjHPU1y (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 16 Aug 2023 16:27:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50836 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1346073AbjHPUQs (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 16 Aug 2023 16:16:48 -0400
-Received: from mail-pf1-x433.google.com (mail-pf1-x433.google.com [IPv6:2607:f8b0:4864:20::433])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D45E1FE3;
-        Wed, 16 Aug 2023 13:16:47 -0700 (PDT)
-Received: by mail-pf1-x433.google.com with SMTP id d2e1a72fcca58-68879c7f5easo1203366b3a.1;
-        Wed, 16 Aug 2023 13:16:47 -0700 (PDT)
+        with ESMTP id S1346125AbjHPU13 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 16 Aug 2023 16:27:29 -0400
+Received: from mail-yw1-x112a.google.com (mail-yw1-x112a.google.com [IPv6:2607:f8b0:4864:20::112a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7FE32269E
+        for <stable@vger.kernel.org>; Wed, 16 Aug 2023 13:27:27 -0700 (PDT)
+Received: by mail-yw1-x112a.google.com with SMTP id 00721157ae682-58dfe2d5b9aso682547b3.1
+        for <stable@vger.kernel.org>; Wed, 16 Aug 2023 13:27:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1692217007; x=1692821807;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=nZM/eyn/Z81Tm9J694oWmHZlVhE2rGX5Mf5KWzu1qc0=;
-        b=ZZLlPWhtpBfb8SoQ0BhA/882tPCtx3FYqRb+hioIWXD0wyuZgBXPWKfFA+9LrWWWW2
-         KPSzsog2P0h343wrzVZ2b71JnJ0Ww3DXgg2IwqDAKKtWNgHzTaRpA7tW+7fS+8yC5L5v
-         ScOV2Vcp0fivunwcTAKxIAlhhEQjC0EVhlxBQD7Z6rTTSn7FcGQ5AhUNt1sDhYyyGWym
-         4TK3/Dy6sTMlnix3YwUTqsdIetuhlD7lYKg5qJRrDJ5dfZ5R3rkjGnnrTKGYXA63DBRu
-         expypEbq5Q69/l9G8IGbSU/BCpPmjrIjnClDiHghwxOPwiTfjBOdZcRXOyg2UsmiQ75a
-         wcRQ==
+        d=google.com; s=20221208; t=1692217646; x=1692822446;
+        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=o6nAd4B+hY09XKdSdHx5sCH4iOSgPQT2h6trGlM+vNA=;
+        b=dveIXLQA89ZUWYHabJVtI3oEEzpIr9fV/lirVBfekKiFOXn1lGgA2uPGEcOlkOZjBD
+         a1aBpoGF8QaJMHqlLM0UKvL9kaKpzS6zyOvmB6Zbc1eS7EEJ6VlfQkXyzLpNQhfG3OEw
+         eCGtvZNYLyrmkoj5+tJuw3HMFHCP3sqPuk8fbd3spP0mYw93n9H7+8N80JmbfIs4qiXv
+         pYw7bvDGtSSGmN6GSey1TNwmTvBJC5JMT671NM0B4mgv/BXoWeH/4YzxKbh3yB570fS0
+         aJREuoDn9t0m4s+z3u9TOwbz2TQ5vLr7L5z9o4q0UsNVHdnnboFQwrHaMLNNgfIPCdb7
+         au3A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692217007; x=1692821807;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=nZM/eyn/Z81Tm9J694oWmHZlVhE2rGX5Mf5KWzu1qc0=;
-        b=Y8izhaQP1mquXqzetTssSeRF1dWf6/DDq/29y4Diq/EAUmvu14QPXDZpMwGJHNCivM
-         78aWL52k/a1bkoxkdxGlnmIU5kMQTCee/augkgK6X6y9rO0Z89IFU5G3rQFolZYu0bXN
-         qRlleKHHn1YPj/q38pkUI0Llkd7/2uZbizGLvqYQSe4IQRL5RJEqvT7THEgssUHAMsnw
-         0p3TAOzEEdNaMsunY3kxp0NDafvSMxFAYVkry0fmroW3eUFi7thFQBJiVxHuCGhCrUxc
-         NvklO9xUgeVRDwkX9PtZy104hSxSCaQHOiNXJF14ePRvg/cV6sriFa5C2CF8BlG4jMBr
-         UWKQ==
-X-Gm-Message-State: AOJu0YwgJe4xcL7pr1zVCtyhuNnHPUAGpF8F+p4ndWQN6PPPRsif7Dye
-        m8WYqatp3kVlKABlOlcNg2jePRpocH4=
-X-Google-Smtp-Source: AGHT+IG7oPpIeGE0niswNlwO4hc+s+FI0MmkllISzy9y0LRDHfCq+UZnlTYGS32lTEsHnmV8McNbbQ==
-X-Received: by 2002:a05:6a21:3383:b0:13b:9d80:673d with SMTP id yy3-20020a056a21338300b0013b9d80673dmr3631298pzb.48.1692217006754;
-        Wed, 16 Aug 2023 13:16:46 -0700 (PDT)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id n12-20020aa7904c000000b00688214cff65sm7884844pfo.44.2023.08.16.13.16.45
+        d=1e100.net; s=20221208; t=1692217646; x=1692822446;
+        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=o6nAd4B+hY09XKdSdHx5sCH4iOSgPQT2h6trGlM+vNA=;
+        b=hXWKd/hsFooiInL8UrXW+KakXgvMeIz1fINEwGzNChVy9sc61BI9Mj4bASkJU7b6RS
+         v8UEY2032RWj/q1uzXBDmY7O0NAINDrTt67vX1PN2QzPce+PjcGoukoIz4VstwlWJFgw
+         S6wE6NFZ5vKrSHACdLMraOSrQJk9aRfqZqE18xnhfTjTJK85UISTfsfSz0bkKIGz64Ex
+         rF5LOAEe2szk8S6GNNEr9vm3L21G64My7HFSS9eUVWWUNjs+ENu3M+IbZS2MXU5YS1s8
+         5YfPN42FezakK9w6CFvjyXL/+cJKnx/mcn3Kw3OG9V6vfSgAjSBaCeD71PC0wuGyO6zR
+         D0tQ==
+X-Gm-Message-State: AOJu0YwzsmnX/a0xdOyTEOTchHS7Hfm74oMxA5HrdWeHEZ+zMx6nRJLK
+        saxzizeV4ETl78pKfv88R6e+kQ==
+X-Google-Smtp-Source: AGHT+IEO5uc8CKDzvfrW8shdjb35Kp27HpuCfrFDLQV5dylLk8ofwbkbKcaFpgjeKtRhrvd/mx2svA==
+X-Received: by 2002:a0d:d641:0:b0:56c:e5a3:3e09 with SMTP id y62-20020a0dd641000000b0056ce5a33e09mr850661ywd.15.1692217646555;
+        Wed, 16 Aug 2023 13:27:26 -0700 (PDT)
+Received: from ripple.attlocal.net (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
+        by smtp.gmail.com with ESMTPSA id z16-20020a81c210000000b005463e45458bsm4189762ywc.123.2023.08.16.13.27.24
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 16 Aug 2023 13:16:46 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Date:   Wed, 16 Aug 2023 13:16:44 -0700
-From:   Guenter Roeck <linux@roeck-us.net>
-To:     Fabio Estevam <festevam@gmail.com>
-Cc:     heikki.krogerus@linux.intel.com, gregkh@linuxfoundation.org,
-        linux-usb@vger.kernel.org, m.felsch@pengutronix.de, jun.li@nxp.com,
-        xu.yang_2@nxp.com, angus@akkea.ca, stable@vger.kernel.org,
-        Christian Bach <christian.bach@scs.ch>,
-        Fabio Estevam <festevam@denx.de>
-Subject: Re: [PATCH v3] usb: typec: tcpci: clear the fault status bit
-Message-ID: <462383e9-48be-41a2-a275-8c330a2fb7e6@roeck-us.net>
-References: <20230816172502.1155079-1-festevam@gmail.com>
+        Wed, 16 Aug 2023 13:27:25 -0700 (PDT)
+Date:   Wed, 16 Aug 2023 13:27:17 -0700 (PDT)
+From:   Hugh Dickins <hughd@google.com>
+X-X-Sender: hugh@ripple.attlocal.net
+To:     "Matthew Wilcox (Oracle)" <willy@infradead.org>
+cc:     Jens Axboe <axboe@kernel.dk>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
+        Hugh Dickins <hughd@google.com>, Hannes Reineke <hare@suse.de>,
+        linux-mm@kvack.org, linux-block@vger.kernel.org,
+        linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org
+Subject: Re: [PATCH] block: Remove special-casing of compound pages
+In-Reply-To: <20230814144100.596749-1-willy@infradead.org>
+Message-ID: <94635da5-ce28-a8fb-84e3-7a9f5240fe6a@google.com>
+References: <20230814144100.596749-1-willy@infradead.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230816172502.1155079-1-festevam@gmail.com>
-X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=no
+Content-Type: text/plain; charset=US-ASCII
+X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
+        USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -76,70 +75,73 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, Aug 16, 2023 at 02:25:02PM -0300, Fabio Estevam wrote:
-> From: Marco Felsch <m.felsch@pengutronix.de>
+a.k.a "Fix rare user data corruption when using THP" :)
+
+On Mon, 14 Aug 2023, Matthew Wilcox (Oracle) wrote:
+
+> The special casing was originally added in pre-git history; reproducing
+> the commit log here:
 > 
-> According the "USB Type-C Port Controller Interface Specification v2.0"
-> the TCPC sets the fault status register bit-7
-> (AllRegistersResetToDefault) once the registers have been reset to
-> their default values.
+> > commit a318a92567d77
+> > Author: Andrew Morton <akpm@osdl.org>
+> > Date:   Sun Sep 21 01:42:22 2003 -0700
+> >
+> >     [PATCH] Speed up direct-io hugetlbpage handling
+> >
+> >     This patch short-circuits all the direct-io page dirtying logic for
+> >     higher-order pages.  Without this, we pointlessly bounce BIOs up to
+> >     keventd all the time.
 > 
-> This triggers an alert(-irq) on PTN5110 devices albeit we do mask the
-> fault-irq, which may cause a kernel hang. Fix this generically by writing
-> a one to the corresponding bit-7.
+> In the last twenty years, compound pages have become used for more than
+> just hugetlb.  Rewrite these functions to operate on folios instead
+> of pages and remove the special case for hugetlbfs; I don't think
+> it's needed any more (and if it is, we can put it back in as a call
+> to folio_test_hugetlb()).
 > 
+> This was found by inspection; as far as I can tell, this bug can lead
+> to pages used as the destination of a direct I/O read not being marked
+> as dirty.  If those pages are then reclaimed by the MM without being
+> dirtied for some other reason, they won't be written out.  Then when
+> they're faulted back in, they will not contain the data they should.
+> It'll take a pretty unusual setup to produce this problem with several
+> races all going the wrong way.
+> 
+> This problem predates the folio work; it could for example have been
+> triggered by mmaping a THP in tmpfs and using that as the target of an
+> O_DIRECT read.
+> 
+> Fixes: 800d8c63b2e98 ("shmem: add huge pages support")
+
+No. It's a good catch, but bug looks specific to the folio work to me.
+
+Almost all shmem pages are dirty from birth, even as soon as they are
+brought back from swap; so it is not necessary to re-mark them dirty.
+
+The exceptions are pages allocated to holes when faulted: so you did
+get me worried as to whether khugepaged could collapse a pmd-ful of
+those into a THP without marking the result as dirty.
+
+But no, in v6.5-rc6 the collapse_file() success path has
+	if (is_shmem)
+		folio_mark_dirty(folio);
+and in v5.10 the same appears as
+		if (is_shmem)
+			set_page_dirty(new_page);
+
+(IIRC, that or marking pmd dirty was missed from early shmem THP
+support, but fairly soon corrected, and backported to stable then.
+I have a faint memory of versions which assembled pmd_dirty from
+collected pte_dirtys.)
+
+And the !is_shmem case is for CONFIG_READ_ONLY_THP_FOR_FS: writing
+into those pages, by direct IO or whatever, is already prohibited.
+
+It's dem dirty (or not dirty) folios dat's the trouble!
+
+Hugh
+
 > Cc: stable@vger.kernel.org
-> Fixes: 74e656d6b055 ("staging: typec: Type-C Port Controller Interface driver (tcpci)")
-> Reported-by: Angus Ainslie (Purism) <angus@akkea.ca>
-> Closes: https://lore.kernel.org/all/20190508002749.14816-2-angus@akkea.ca/
-> Reported-by: Christian Bach <christian.bach@scs.ch>
-> Closes: https://lore.kernel.org/regressions/ZR0P278MB07737E5F1D48632897D51AC3EB329@ZR0P278MB0773.CHEP278.PROD.OUTLOOK.COM/t/
-> Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
-> Signed-off-by: Fabio Estevam <festevam@denx.de>
-
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-
+> Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
 > ---
-> Changes since v2:
-> - Submitted it as a standalone patch.
-> - Explain that it may cause a kernel hang.
-> - Fixed typos in the commit log. (Guenter)
-> - Check the tcpci_write16() return value. (Guenter)
-> - Write to TCPC_FAULT_STATUS unconditionally. (Guenter)
-> - Added Fixes, Reported-by and Closes tags.
-> - CCed stable
-> 
->  drivers/usb/typec/tcpm/tcpci.c | 4 ++++
->  include/linux/usb/tcpci.h      | 1 +
->  2 files changed, 5 insertions(+)
-> 
-> diff --git a/drivers/usb/typec/tcpm/tcpci.c b/drivers/usb/typec/tcpm/tcpci.c
-> index fc708c289a73..0ee3e6e29bb1 100644
-> --- a/drivers/usb/typec/tcpm/tcpci.c
-> +++ b/drivers/usb/typec/tcpm/tcpci.c
-> @@ -602,6 +602,10 @@ static int tcpci_init(struct tcpc_dev *tcpc)
->  	if (time_after(jiffies, timeout))
->  		return -ETIMEDOUT;
->  
-> +	ret = tcpci_write16(tcpci, TCPC_FAULT_STATUS, TCPC_FAULT_STATUS_ALL_REG_RST_TO_DEFAULT);
-> +	if (ret < 0)
-> +		return ret;
-> +
->  	/* Handle vendor init */
->  	if (tcpci->data->init) {
->  		ret = tcpci->data->init(tcpci, tcpci->data);
-> diff --git a/include/linux/usb/tcpci.h b/include/linux/usb/tcpci.h
-> index 85e95a3251d3..83376473ac76 100644
-> --- a/include/linux/usb/tcpci.h
-> +++ b/include/linux/usb/tcpci.h
-> @@ -103,6 +103,7 @@
->  #define TCPC_POWER_STATUS_SINKING_VBUS	BIT(0)
->  
->  #define TCPC_FAULT_STATUS		0x1f
-> +#define TCPC_FAULT_STATUS_ALL_REG_RST_TO_DEFAULT BIT(7)
->  
->  #define TCPC_ALERT_EXTENDED		0x21
->  
-> -- 
-> 2.34.1
-> 
+>  block/bio.c | 46 ++++++++++++++++++++++++----------------------
+>  1 file changed, 24 insertions(+), 22 deletions(-)
