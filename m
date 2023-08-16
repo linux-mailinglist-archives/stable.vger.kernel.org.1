@@ -2,246 +2,240 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2E9B577E368
-	for <lists+stable@lfdr.de>; Wed, 16 Aug 2023 16:18:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C4DBA77E38D
+	for <lists+stable@lfdr.de>; Wed, 16 Aug 2023 16:27:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343521AbjHPOSM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 16 Aug 2023 10:18:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51112 "EHLO
+        id S1343606AbjHPO10 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 16 Aug 2023 10:27:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41758 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343566AbjHPORs (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 16 Aug 2023 10:17:48 -0400
-Received: from NAM04-MW2-obe.outbound.protection.outlook.com (mail-mw2nam04on2085.outbound.protection.outlook.com [40.107.101.85])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F69E272C;
-        Wed, 16 Aug 2023 07:17:45 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=iQ3r3/SoKVSItwUMgXC4EYR8DRqT3CkwBITAJze3uey3+W+CzHMlUWNfK+WnNSgeyH+VY+fFskxqJGiuChn1HAkVs2pWKTeD/hhUPjYGe17QzVjBdjOWDpshM7tj1pO/LXnJx2hhajUQuCIJPZ7Jc7w+4+CLUTHZWBis4X1vx0jtaSM10orgyXIBj7ZYd1nvULLojJs24QRg2jxEv4JHepzEuhDNe0z9b4MOdr4EsJyuNasZPYW5M31lJGb9DM0wtmRuCwz1bhKSK2OjRAI2qNElPbLLxZVpKNIiUc6xRaIL0caSdFZukfPkFhjMgaWqfDlyT/WhjAiMmsk1EvYU+g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=pIlYviRfxRmoTXiged3GPLYUZ2916nMZe5U43lL/lHk=;
- b=neiwULDnCrmw0TxYfG0CrucNSSUYQczpkzCP4IouHs7QC4oDVHqE0XTP9mY0d+5rgevxAxOYRynKgwE+lCghapQ1SODfU2qtcIVnUtNWx0+1PVIPd+Ib03LwW94wDCPVTBCbHV5Oqtv4Y+la02GFj69pqNcyidJKarBgdJ9+6DZ3ngYCNlmxsvxYci++zkVvMXJuPZqXFoO/Sz+gKM1dZb2M/ne0ukvNsG8+KCK67NbPIWJa2bf4VBFWoOeUu4zy6gq8uI5r82SMWbLDodBu0hAyNncDuwF/2BbiJVlGDp7Hbyjt7+yWDp4alA1DFwY/LqswN2aBbAqHfp/pUnTFvw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=pIlYviRfxRmoTXiged3GPLYUZ2916nMZe5U43lL/lHk=;
- b=skMDGbjRKLwgMCPkByR7RnsSPX75Nm6mZeqQF4f0TgvC3lLwOFfM5OqTbMkPSHrXLexwWLrEMg3OHszqVQC/Iji4Xv8uD4CMeS0HDZQ6zIxuLy6UubdY8FyW/aYMh28ZA1wBWMeU6Yg+n0uRtsEJUAple5CfdDPXFl6oDjLgsmA=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from BN8PR12MB3587.namprd12.prod.outlook.com (2603:10b6:408:43::13)
- by SN7PR12MB7809.namprd12.prod.outlook.com (2603:10b6:806:34e::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6678.26; Wed, 16 Aug
- 2023 14:17:42 +0000
-Received: from BN8PR12MB3587.namprd12.prod.outlook.com
- ([fe80::3d:c14:667a:1c81]) by BN8PR12MB3587.namprd12.prod.outlook.com
- ([fe80::3d:c14:667a:1c81%4]) with mapi id 15.20.6678.029; Wed, 16 Aug 2023
- 14:17:42 +0000
-Message-ID: <9855fa7a-dd9d-27b8-171e-b662d417b902@amd.com>
-Date:   Wed, 16 Aug 2023 16:17:34 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v2] drm/amdgpu: register a dirty framebuffer callback for
- fbcon
-Content-Language: en-US
-To:     Hamza Mahfooz <hamza.mahfooz@amd.com>,
-        amd-gfx@lists.freedesktop.org
-Cc:     Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        Guchun Chen <guchun.chen@amd.com>,
-        dri-devel@lists.freedesktop.org,
-        "Pan, Xinhui" <Xinhui.Pan@amd.com>,
-        Javier Martinez Canillas <javierm@redhat.com>,
-        stable@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Aurabindo Pillai <aurabindo.pillai@amd.com>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        David Airlie <airlied@gmail.com>,
-        =?UTF-8?Q?Christian_K=c3=b6nig?= <christian.koenig@amd.com>,
-        Mario Limonciello <mario.limonciello@amd.com>
-References: <20230815172700.255596-1-hamza.mahfooz@amd.com>
- <d1831afd-9e02-fbc9-69f7-e8f044f35ee0@gmail.com>
- <855aeab8-13e1-4dc4-841e-24d298c9c072@amd.com>
-From:   =?UTF-8?Q?Christian_K=c3=b6nig?= <christian.koenig@amd.com>
-In-Reply-To: <855aeab8-13e1-4dc4-841e-24d298c9c072@amd.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: FR0P281CA0117.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:a8::15) To BN8PR12MB3587.namprd12.prod.outlook.com
- (2603:10b6:408:43::13)
+        with ESMTP id S1343688AbjHPO1V (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 16 Aug 2023 10:27:21 -0400
+Received: from www62.your-server.de (www62.your-server.de [213.133.104.62])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 81CC72705;
+        Wed, 16 Aug 2023 07:27:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=iogearbox.net; s=default2302; h=Content-Transfer-Encoding:Content-Type:
+        In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
+        bh=12sOJIm+x6ia2Tol/RQD3pz06O8YQaOp4XAGIcYNGak=; b=MyKeOwO48f7aS0xKZYq2oCE+XL
+        O3p7bUIx8p1CkTKg72k5dzwt6hCMwQzY8UeEIfAGFp2uOQF9uiIGHwy6qFaRwBO6ktGkV6HjRWG+F
+        XXJMZfxo0RqVLpBFJ5rUdSctbOshpvw/OjkqTdONTBp6uz8mb3aioSQXOIW+XR1thxttIAO74qOPv
+        0AJd4k62UObsQCUKq64TWyCOGJaCDISEQ6HHRBeAjxYdLBlFpNf6A/kL6ZMNr3J7uILL9kAIRnOPW
+        wo0RZ8nzWDIrdBh4Ks6EyYnpPsukH2bxkSgymFQbua8+CewhucqAB32vtTE/eBoOOVHE6U2iOBL/w
+        1g1lqsJw==;
+Received: from sslproxy01.your-server.de ([78.46.139.224])
+        by www62.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <daniel@iogearbox.net>)
+        id 1qWHUS-000JaR-K5; Wed, 16 Aug 2023 16:27:16 +0200
+Received: from [85.1.206.226] (helo=pc-102.home)
+        by sslproxy01.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <daniel@iogearbox.net>)
+        id 1qWHUR-000Vt1-8R; Wed, 16 Aug 2023 16:27:15 +0200
+Subject: Re: [PATCH v5 bpf 0/4] lwt: fix return values of BPF ops
+To:     Yan Zhai <yan@cloudflare.com>, bpf@vger.kernel.org
+Cc:     "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        David Ahern <dsahern@kernel.org>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Andrii Nakryiko <andrii@kernel.org>,
+        Martin KaFai Lau <martin.lau@linux.dev>,
+        Song Liu <song@kernel.org>, Yonghong Song <yhs@fb.com>,
+        John Fastabend <john.fastabend@gmail.com>,
+        KP Singh <kpsingh@kernel.org>,
+        Stanislav Fomichev <sdf@google.com>,
+        Hao Luo <haoluo@google.com>, Jiri Olsa <jolsa@kernel.org>,
+        Mykola Lysenko <mykolal@fb.com>, Shuah Khan <shuah@kernel.org>,
+        Thomas Graf <tgraf@suug.ch>,
+        Jordan Griege <jgriege@cloudflare.com>,
+        Dan Carpenter <dan.carpenter@linaro.org>,
+        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kselftest@vger.kernel.org, stable@vger.kernel.org
+References: <cover.1692153515.git.yan@cloudflare.com>
+From:   Daniel Borkmann <daniel@iogearbox.net>
+Message-ID: <9ac9d459-9bc3-bcee-b912-3ab66d2a7fe7@iogearbox.net>
+Date:   Wed, 16 Aug 2023 16:27:14 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.2
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN8PR12MB3587:EE_|SN7PR12MB7809:EE_
-X-MS-Office365-Filtering-Correlation-Id: 591dc7f5-4c20-41b4-5ede-08db9e638de8
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 8K4gmMxT/D+EnRhOQdlIIkf16urzpnFHc3A9dRzM8UfQ+TWLQbIDFDB/Nj0J/EVXK1wNONRqw4yQ6phdh4cjF/iISxfZKL8o6L8MqlxrOJkQg6Sz6IFS8+OT/rbAIih3Azg9JrzyjXA/9+H3AbKAkt0T86jikZHoDV8snOTqwfN74Dl5XgYJ5wRA8iYnJpsRgSCeW9/8ThtapyX5si17/A5fWw/sty68kcI3pSPPS1QqqUqMKpYXHSbFd8x5rHr47G0DwsqoBwaeWuBRgI52hqn1EK3bgXpJ6FGXEJIKVoigvNzZ72nghbN4KyKw2e5Szzc9lo7UdDq6IqYIgAg5lTvWegpCnody5tGSJLS6YuGCOpeXnJtYAeAOU6qhn7erHfK1a9BNBDVh73hnoo6bn/6IABH6tE+cBs1UorPxEdiyr/kK0tA0DmlM+Dcv++crj12tDrMIOhbsPP7W72l/yOeyqHT6TxZIfR0DaosX5vBKIPKUYwcirLQHzyK8JaYjnu5ZL4fVu4/5FDbTiYTTP3vqD85S/QlUPAmETEx6lb92e80pluD4yBNpmwA5eJ1fvPsYUWisFXqd4asSUJwFx/3C8x/nuCHsA6ydLeGG8ATDbbroTnDRY3fpZdvUMoFIMgC3HVZnHmnOlj3zF/e2AJMnAxO4pepDEzLCzIZpj1g=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN8PR12MB3587.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(396003)(39860400002)(346002)(366004)(376002)(136003)(1800799009)(451199024)(186009)(316002)(54906003)(66946007)(66476007)(66556008)(966005)(41300700001)(5660300002)(66574015)(38100700002)(31686004)(8676002)(4326008)(8936002)(2906002)(83380400001)(26005)(478600001)(86362001)(31696002)(6512007)(53546011)(6506007)(36756003)(6666004)(2616005)(6486002)(14143004)(45980500001)(43740500002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?d1YxYWZKdC9RdnduZHFYaG51TGJBK3BHMDN0ZldWUENaV2tRNlI3MFdHazhh?=
- =?utf-8?B?cHE0OER3UjllaVcrakhxUnR3R0w5UzFzVG96WDVJWU4zbThyOEd0VEQzdHRy?=
- =?utf-8?B?U095d1JRL2JxdmJrYmpPZTlDcndUQXROcEVFUFZ1R2xCcExnZkVGMmlsdXZr?=
- =?utf-8?B?cm1wVHJWT0JaU2g5MUZGMGo3KzRkRE1vSVJSZnZRL2NDNmFaQi9nZ3FBYTlq?=
- =?utf-8?B?TTR5akxKdEppc0drcDRKUmZmdWFnam14a3J6Y1dvYjY0MzBYVHdpckNiTkht?=
- =?utf-8?B?cGxUWFN4ZWt0TG9CSDY2SnFNbWRSa0JyZ2dvMDJUYTFrMlZvWE1sbnhQUURV?=
- =?utf-8?B?NFAzZUpSWHVHZWpxYlpJR1gxS1dMNTRqVFNFRmxFZE5LTVpQbml5V0s4Nnp1?=
- =?utf-8?B?anRUVVRRUjNHaTV4MWZPQ1Y1NTNXTFBhVDM4cFBud3VIMjhxd3BBdUgva3Z2?=
- =?utf-8?B?WElteU9kUk1BUmNLUkxHT1Qzc1FveDAyYkQrRFB6aFR1bXh3Qk9VMDk1ZktT?=
- =?utf-8?B?MFpIWTVOYnI5OHRsYnFORGRsYjFLMlA3MFlqbzlmaFZlNEY4SUZJVHk1QXlK?=
- =?utf-8?B?L0hXTDZZa25VZ1ZDZmZCUzZlZlprOEF6Q2FPVWhDR3Mram5KOFg5T09kdkRo?=
- =?utf-8?B?YmhrZFNnZUtzWjliYUNhek5lWUhPbFVqa2JuZmdOSzg4THQxbGpMbEhTZ2Q3?=
- =?utf-8?B?TTFwQXFUa0pqWVdlT3V5QjNNdmtndU1INGZCTHJhN2VyZWJFVFJwSDAxSHNw?=
- =?utf-8?B?Q0kyS0QzTnUybGJQQUtGNmN5Z0hWVWhJTTJ1WWhrcWpwV2t0N1d0ZG1NaWEv?=
- =?utf-8?B?UkpwVloyekNTWkFNNnRmbGxuUzhpbFpYaFRSWGF1QThCaG1QVW93R0RnYlNo?=
- =?utf-8?B?bks1T2gwUlp6bmdWR3plY3hBMWZ4VFBtVVVQaEJUK2FFbFZZaSs4clYxRmdC?=
- =?utf-8?B?Tk9TenA5SXNRT2xWdE5iMUV5WTFWZUdET0E4WXl2VTA3TFdyM3ljdDJOOE5I?=
- =?utf-8?B?K0ZOdGhwSFBYeFp0UjhIREJqUko4dHd3RDhQa2xCdTZZYzRGZjljMUlZT3N0?=
- =?utf-8?B?RHhtMzVvR29ibE1hcHhER3lNNENvcXNRdk1zN1dZdnkyU1lUMHkxNUdxZlp4?=
- =?utf-8?B?ZW0yZnNjQ0FpeG40UjB5Nzh6WStmMzlYRk9WNkhQY0d5b3BNQmtPbmtxcUov?=
- =?utf-8?B?RnQySHdrOWllZ09LR1M4d0RUSVgwZFVUMUVPaXhBYTc5TWNRaFE4MFBNeElm?=
- =?utf-8?B?UE5KS0N1OWdSMllub3NTOUZsUkVNMDJhazVrTjl2UXg0cEpybGIvTDRObTMw?=
- =?utf-8?B?azJZbzdtN3FwbEZtaVlDS0JmU1gva2tHQnQxeVI1Y0JZL3EraXExb0pwN2VL?=
- =?utf-8?B?a3V1VzRiT21SbkNvWGJVa3VUQmVwSVE5UU90Y1dlbGNRUXQ0TGM1V3UvcGFI?=
- =?utf-8?B?NVlJT2JPcllQSHM1ZXNET3M3d3FVMFhySHE0S3dtaVhoelkzeXN6UElwdC8z?=
- =?utf-8?B?SmdrN0ROUWljZndxeFJpdXB3YlBQT1g3N3BNU3NtUndKdXVyU2JOTG95cktY?=
- =?utf-8?B?US9uRlArcFI1L25nQkIrcUhkRDN5TGlOcE9VS25XTHBpS205cVFKd2h5ZGc5?=
- =?utf-8?B?cW5WeUxMcUNvczJEZjdURUQyaWZvaHB6M0hNRm9PbGdxWjVBMTRqTFBWaHJl?=
- =?utf-8?B?TmkzK2cxRnBJcFltaUFGS0Y1eFRFdUlvUm4wc3NRT2RkRXJuWUdKVnJjcGtt?=
- =?utf-8?B?SjE2RE9IaTVnT2VXRys2Q20wQmdZaXFmbWlkSlNlbm5tRUJ5MklzaFJMSEJP?=
- =?utf-8?B?L2pUeHVzVmhpY045OThKUTduNXFNSUpXek9PMWZwRzk3enhBbklCN0prSURo?=
- =?utf-8?B?aTd1NXBUbjduOVZGN0NPT0Vhc3REZUZ3ZUl6bEsxYVQzSjFuTE42SzFickVR?=
- =?utf-8?B?NDBvWlpudTZJckF1bHh6SDJBSWVETUFRNktmK0VvNWxTbE1BMWNIMGlwck9z?=
- =?utf-8?B?UkppWW1KOVdPUTUzckppQVhmb3JnUnlxZ1F4Mlk1eGtFUDV1KytyUFRKSkIv?=
- =?utf-8?B?SytycTA1eXRLQkNYelA1bTJ1REozOFJHTHEyWmRidlBFNitkaFkvMlB1eTht?=
- =?utf-8?Q?pccKKinXBPOvo81+gyvSmhe/J?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 591dc7f5-4c20-41b4-5ede-08db9e638de8
-X-MS-Exchange-CrossTenant-AuthSource: BN8PR12MB3587.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Aug 2023 14:17:42.4597
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: K9LJEn8KJaIxOpa8Xhtsk1BQDRsk4uaCqA5Ark2Orr/jAvUtpMhyE1s7htPmHruV
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB7809
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
-        NICE_REPLY_A,RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,
-        SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <cover.1692153515.git.yan@cloudflare.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Authenticated-Sender: daniel@iogearbox.net
+X-Virus-Scanned: Clear (ClamAV 0.103.8/27002/Wed Aug 16 09:38:26 2023)
+X-Spam-Status: No, score=-5.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Am 16.08.23 um 15:41 schrieb Hamza Mahfooz:
->
-> On 8/16/23 01:55, Christian König wrote:
->>
->>
->> Am 15.08.23 um 19:26 schrieb Hamza Mahfooz:
->>> fbcon requires that we implement &drm_framebuffer_funcs.dirty.
->>> Otherwise, the framebuffer might take a while to flush (which would
->>> manifest as noticeable lag). However, we can't enable this callback for
->>> non-fbcon cases since it might cause too many atomic commits to be made
->>> at once. So, implement amdgpu_dirtyfb() and only enable it for fbcon
->>> framebuffers on devices that support atomic KMS.
->>>
->>> Cc: Aurabindo Pillai <aurabindo.pillai@amd.com>
->>> Cc: Mario Limonciello <mario.limonciello@amd.com>
->>> Cc: stable@vger.kernel.org # 6.1+
->>> Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2519
->>> Signed-off-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
->>> ---
->>> v2: update variable names
->>> ---
->>>   drivers/gpu/drm/amd/amdgpu/amdgpu_display.c | 26 
->>> ++++++++++++++++++++-
->>>   1 file changed, 25 insertions(+), 1 deletion(-)
->>>
->>> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_display.c 
->>> b/drivers/gpu/drm/amd/amdgpu/amdgpu_display.c
->>> index d20dd3f852fc..d3b59f99cb7c 100644
->>> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_display.c
->>> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_display.c
->>> @@ -38,6 +38,8 @@
->>>   #include <linux/pci.h>
->>>   #include <linux/pm_runtime.h>
->>>   #include <drm/drm_crtc_helper.h>
->>> +#include <drm/drm_damage_helper.h>
->>> +#include <drm/drm_drv.h>
->>>   #include <drm/drm_edid.h>
->>>   #include <drm/drm_fb_helper.h>
->>>   #include <drm/drm_gem_framebuffer_helper.h>
->>> @@ -532,11 +534,29 @@ bool amdgpu_display_ddc_probe(struct 
->>> amdgpu_connector *amdgpu_connector,
->>>       return true;
->>>   }
->>> +static int amdgpu_dirtyfb(struct drm_framebuffer *fb, struct 
->>> drm_file *file,
->>> +              unsigned int flags, unsigned int color,
->>> +              struct drm_clip_rect *clips, unsigned int num_clips)
->>> +{
->>> +
->>> +    if (strcmp(fb->comm, "[fbcon]"))
->>> +        return -ENOSYS;
->>
->> Once more to the v2 of this patch: Tests like those are a pretty big 
->> NO-GO for upstreaming.
->
-> On closer inspection it is actually sufficient to check if `file` is
-> NULL here (since it means that the request isn't from userspace). So, do
-> you think that would be palatable for upstream?
+Hi Yan,
 
-That's certainly better than doing a string compare, but I'm not sure if 
-that's sufficient.
+On 8/16/23 4:54 AM, Yan Zhai wrote:
+> lwt xmit hook does not expect positive return values in function
+> ip_finish_output2 and ip6_finish_output. However, BPF programs can
+> directly return positive statuses such like NET_XMIT_DROP, NET_RX_DROP,
+> and etc to the caller. Such return values would make the kernel continue
+> processing already freed skbs and eventually panic.
+> 
+> This set fixes the return values from BPF ops to unexpected continue
+> processing, and checks strictly on the correct continue condition for
+> future proof. In addition, add missing selftests for BPF_REDIRECT
+> and BPF_REROUTE cases for BPF-CI.
+> 
+> v4: https://lore.kernel.org/bpf/ZMD1sFTW8SFiex+x@debian.debian/T/
+> v3: https://lore.kernel.org/bpf/cover.1690255889.git.yan@cloudflare.com/
+> v2: https://lore.kernel.org/netdev/ZLdY6JkWRccunvu0@debian.debian/
+> v1: https://lore.kernel.org/bpf/ZLbYdpWC8zt9EJtq@debian.debian/
+> 
+> changes since v4:
+>   * fixed same error on BPF_REROUTE path
+>   * re-implemented selftests under BPF-CI requirement
 
-In general drivers shouldn't have any special handling for fdcon.
+BPF CI failed: https://github.com/kernel-patches/bpf/actions/runs/5874202507/job/15929012788
 
-You should probably have Thomas Zimmermann <tzimmermann@suse.de> take a 
-look at this.
+Looks like due to dummy device issue. Either you might need to add this to
+the tools/testing/selftests/bpf/config* or perhaps just use veth instead for
+link_err dev.
 
-Regards,
-Christian.
+Error from the above link:
 
->
->>
->> Regards,
->> Christian.
->>
->>> +
->>> +    return drm_atomic_helper_dirtyfb(fb, file, flags, color, clips,
->>> +                     num_clips);
->>> +}
->>> +
->>>   static const struct drm_framebuffer_funcs amdgpu_fb_funcs = {
->>>       .destroy = drm_gem_fb_destroy,
->>>       .create_handle = drm_gem_fb_create_handle,
->>>   };
->>> +static const struct drm_framebuffer_funcs amdgpu_fb_funcs_atomic = {
->>> +    .destroy = drm_gem_fb_destroy,
->>> +    .create_handle = drm_gem_fb_create_handle,
->>> +    .dirty = amdgpu_dirtyfb
->>> +};
->>> +
->>>   uint32_t amdgpu_display_supported_domains(struct amdgpu_device *adev,
->>>                         uint64_t bo_flags)
->>>   {
->>> @@ -1139,7 +1159,11 @@ static int 
->>> amdgpu_display_gem_fb_verify_and_init(struct drm_device *dev,
->>>       if (ret)
->>>           goto err;
->>> -    ret = drm_framebuffer_init(dev, &rfb->base, &amdgpu_fb_funcs);
->>> +    if (drm_drv_uses_atomic_modeset(dev))
->>> +        ret = drm_framebuffer_init(dev, &rfb->base,
->>> +                       &amdgpu_fb_funcs_atomic);
->>> +    else
->>> +        ret = drm_framebuffer_init(dev, &rfb->base, &amdgpu_fb_funcs);
->>>       if (ret)
->>>           goto err;
->>
+Notice: Success: 370/3177, Skipped: 21, Failed: 2
+Error: #131 lwt_redirect
+   Error: #131 lwt_redirect
+   test_lwt_redirect:PASS:pthread_create 0 nsec
+Error: #131/1 lwt_redirect/lwt_redirect_normal
+   Error: #131/1 lwt_redirect/lwt_redirect_normal
+   test_lwt_redirect_run:PASS:netns_create 0 nsec
+   open_netns:PASS:malloc token 0 nsec
+   open_netns:PASS:open /proc/self/ns/net 0 nsec
+   open_netns:PASS:open netns fd 0 nsec
+   open_netns:PASS:setns 0 nsec
+   test_lwt_redirect_run:PASS:setns 0 nsec
+   open_tuntap:PASS:open(/dev/net/tun) 0 nsec
+   open_tuntap:PASS:ioctl(TUNSETIFF) 0 nsec
+   open_tuntap:PASS:fcntl(O_NONBLOCK) 0 nsec
+   setup_redirect_target:PASS:open_tuntap 0 nsec
+   setup_redirect_target:PASS:if_nametoindex 0 nsec
+   setup_redirect_target:FAIL:ip link add link_err type dummy unexpected error: 512 (errno 0)
+   test_lwt_redirect_normal:FAIL:setup_redirect_target unexpected setup_redirect_target: actual -1 < expected 0
+   close_netns:PASS:setns 0 nsec
+Error: #131/2 lwt_redirect/lwt_redirect_normal_nomac
+   Error: #131/2 lwt_redirect/lwt_redirect_normal_nomac
+   test_lwt_redirect_run:PASS:netns_create 0 nsec
+   open_netns:PASS:malloc token 0 nsec
+   open_netns:PASS:open /proc/self/ns/net 0 nsec
+   open_netns:PASS:open netns fd 0 nsec
+   open_netns:PASS:setns 0 nsec
+   test_lwt_redirect_run:PASS:setns 0 nsec
+   open_tuntap:PASS:open(/dev/net/tun) 0 nsec
+   open_tuntap:PASS:ioctl(TUNSETIFF) 0 nsec
+   open_tuntap:PASS:fcntl(O_NONBLOCK) 0 nsec
+   setup_redirect_target:PASS:open_tuntap 0 nsec
+   setup_redirect_target:PASS:if_nametoindex 0 nsec
+   setup_redirect_target:FAIL:ip link add link_err type dummy unexpected error: 512 (errno 0)
+   test_lwt_redirect_normal_nomac:FAIL:setup_redirect_target unexpected setup_redirect_target: actual -1 < expected 0
+   close_netns:PASS:setns 0 nsec
+Error: #131/3 lwt_redirect/lwt_redirect_dev_down
+   Error: #131/3 lwt_redirect/lwt_redirect_dev_down
+   test_lwt_redirect_run:PASS:netns_create 0 nsec
+   open_netns:PASS:malloc token 0 nsec
+   open_netns:PASS:open /proc/self/ns/net 0 nsec
+   open_netns:PASS:open netns fd 0 nsec
+   open_netns:PASS:setns 0 nsec
+   test_lwt_redirect_run:PASS:setns 0 nsec
+   open_tuntap:PASS:open(/dev/net/tun) 0 nsec
+   open_tuntap:PASS:ioctl(TUNSETIFF) 0 nsec
+   open_tuntap:PASS:fcntl(O_NONBLOCK) 0 nsec
+   setup_redirect_target:PASS:open_tuntap 0 nsec
+   setup_redirect_target:PASS:if_nametoindex 0 nsec
+   setup_redirect_target:FAIL:ip link add link_err type dummy unexpected error: 512 (errno 0)
+   __test_lwt_redirect_dev_down:FAIL:setup_redirect_target unexpected setup_redirect_target: actual -1 < expected 0
+   close_netns:PASS:setns 0 nsec
+Error: #131/4 lwt_redirect/lwt_redirect_dev_down_nomac
+   Error: #131/4 lwt_redirect/lwt_redirect_dev_down_nomac
+   test_lwt_redirect_run:PASS:netns_create 0 nsec
+   open_netns:PASS:malloc token 0 nsec
+   open_netns:PASS:open /proc/self/ns/net 0 nsec
+   open_netns:PASS:open netns fd 0 nsec
+   open_netns:PASS:setns 0 nsec
+   test_lwt_redirect_run:PASS:setns 0 nsec
+   open_tuntap:PASS:open(/dev/net/tun) 0 nsec
+   open_tuntap:PASS:ioctl(TUNSETIFF) 0 nsec
+   open_tuntap:PASS:fcntl(O_NONBLOCK) 0 nsec
+   setup_redirect_target:PASS:open_tuntap 0 nsec
+   setup_redirect_target:PASS:if_nametoindex 0 nsec
+   setup_redirect_target:FAIL:ip link add link_err type dummy unexpected error: 512 (errno 0)
+   __test_lwt_redirect_dev_down:FAIL:setup_redirect_target unexpected setup_redirect_target: actual -1 < expected 0
+   close_netns:PASS:setns 0 nsec
+Error: #131/5 lwt_redirect/lwt_redirect_dev_carrier_down
+   Error: #131/5 lwt_redirect/lwt_redirect_dev_carrier_down
+   test_lwt_redirect_run:PASS:netns_create 0 nsec
+   open_netns:PASS:malloc token 0 nsec
+   open_netns:PASS:open /proc/self/ns/net 0 nsec
+   open_netns:PASS:open netns fd 0 nsec
+   open_netns:PASS:setns 0 nsec
+   test_lwt_redirect_run:PASS:setns 0 nsec
+   open_tuntap:PASS:open(/dev/net/tun) 0 nsec
+   open_tuntap:PASS:ioctl(TUNSETIFF) 0 nsec
+   open_tuntap:PASS:fcntl(O_NONBLOCK) 0 nsec
+   setup_redirect_target:PASS:open_tuntap 0 nsec
+   setup_redirect_target:PASS:if_nametoindex 0 nsec
+   setup_redirect_target:FAIL:ip link add link_err type dummy unexpected error: 512 (errno 0)
+   test_lwt_redirect_dev_carrier_down:FAIL:setup_redirect_target unexpected setup_redirect_target: actual -1 < expected 0
+   close_netns:PASS:setns 0 nsec
+   test_lwt_redirect:PASS:pthread_join 0 nsec
+Error: #132 lwt_reroute
+   Error: #132 lwt_reroute
+   test_lwt_reroute:PASS:pthread_create 0 nsec
+Error: #132/1 lwt_reroute/lwt_reroute_normal_xmit
+   Error: #132/1 lwt_reroute/lwt_reroute_normal_xmit
+   test_lwt_reroute_run:PASS:netns_create 0 nsec
+   open_netns:PASS:malloc token 0 nsec
+   open_netns:PASS:open /proc/self/ns/net 0 nsec
+   open_netns:PASS:open netns fd 0 nsec
+   open_netns:PASS:setns 0 nsec
+   test_lwt_reroute_run:PASS:setns 0 nsec
+   open_tuntap:PASS:open(/dev/net/tun) 0 nsec
+   open_tuntap:PASS:ioctl(TUNSETIFF) 0 nsec
+   open_tuntap:PASS:fcntl(O_NONBLOCK) 0 nsec
+   setup:PASS:open_tun 0 nsec
+   setup:PASS:if_nametoindex 0 nsec
+   setup:FAIL:ip link add link_err type dummy unexpected error: 512 (errno 0)
+   test_lwt_reroute_normal_xmit:FAIL:setup_reroute unexpected setup_reroute: actual -1 < expected 0
+   close_netns:PASS:setns 0 nsec
+Error: #132/2 lwt_reroute/lwt_reroute_qdisc_dropped
+   Error: #132/2 lwt_reroute/lwt_reroute_qdisc_dropped
+   test_lwt_reroute_run:PASS:netns_create 0 nsec
+   open_netns:PASS:malloc token 0 nsec
+   open_netns:PASS:open /proc/self/ns/net 0 nsec
+   open_netns:PASS:open netns fd 0 nsec
+   open_netns:PASS:setns 0 nsec
+   test_lwt_reroute_run:PASS:setns 0 nsec
+   open_tuntap:PASS:open(/dev/net/tun) 0 nsec
+   open_tuntap:PASS:ioctl(TUNSETIFF) 0 nsec
+   open_tuntap:PASS:fcntl(O_NONBLOCK) 0 nsec
+   setup:PASS:open_tun 0 nsec
+   setup:PASS:if_nametoindex 0 nsec
+   setup:FAIL:ip link add link_err type dummy unexpected error: 512 (errno 0)
+   test_lwt_reroute_qdisc_dropped:FAIL:setup_reroute unexpected setup_reroute: actual -1 < expected 0
+   close_netns:PASS:setns 0 nsec
+   test_lwt_reroute:PASS:pthread_join 0 nsec
+Test Results:
+              bpftool: PASS
+           test_progs: FAIL (returned 1)
+             shutdown: CLEAN
+Error: Process completed with exit code 1.
 
+Thanks,
+Daniel
