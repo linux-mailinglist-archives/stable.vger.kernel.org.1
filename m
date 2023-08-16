@@ -2,152 +2,81 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CF4F877D8A6
-	for <lists+stable@lfdr.de>; Wed, 16 Aug 2023 04:56:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 33A7577D8AE
+	for <lists+stable@lfdr.de>; Wed, 16 Aug 2023 04:57:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241390AbjHPCzt (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 15 Aug 2023 22:55:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59062 "EHLO
+        id S241405AbjHPC44 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 15 Aug 2023 22:56:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41770 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241423AbjHPCzc (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 15 Aug 2023 22:55:32 -0400
-Received: from mail-qv1-xf35.google.com (mail-qv1-xf35.google.com [IPv6:2607:f8b0:4864:20::f35])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DACD2268F
-        for <stable@vger.kernel.org>; Tue, 15 Aug 2023 19:55:25 -0700 (PDT)
-Received: by mail-qv1-xf35.google.com with SMTP id 6a1803df08f44-6424c61c80eso19667186d6.1
-        for <stable@vger.kernel.org>; Tue, 15 Aug 2023 19:55:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cloudflare.com; s=google; t=1692154525; x=1692759325;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=PlkFhJjPZ+nVOvUd+Bq8Pm9xKRLhY4/ZIov2TViDPGA=;
-        b=u0crk9vGr/nqq4DRoRfsmHXKIisixdAHqHTsS1KMoVwfubQuVk0JmLH7NclBlUCzwP
-         GVP/G00X4Kfqdn6GNdCAunGqtZAtgZ0V0eUK0jkq68HAlYeRZeYac/6KOjVfyyxP/QjU
-         lFKCEbNa2yP5IuAQCD/x011qQerffKA17z1cU=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692154525; x=1692759325;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=PlkFhJjPZ+nVOvUd+Bq8Pm9xKRLhY4/ZIov2TViDPGA=;
-        b=A/7Q1TYFhiZbWu9C4cfHJhJpTzCTB0YdCADDU379r6KUPuNhLLER2kgFnWWqzOmRwh
-         Gqw6tSeag699XK4RCvgeZzb5u7woH362B2NtzVLq9UUJcFXuT8EzT9ICkinMcN8J2954
-         cfLp6m+zQLN68P88yupZEdmcdNoKHu1cWxgr9quzTorkKe+pD0ojvpHRIkO9S9qojtfP
-         A5RVmk5VmF+dKgdOcN0hTH2LAOP+3uddRS83y4O2WvlHAMROSvggm3Do9WSMAkLjMUc4
-         CexoAI23omwf15C2dcFPEBbSCR7pwFb4qW7XJBb9KrFv9X5wb5AKviCWoNEGKN9635EO
-         8fcQ==
-X-Gm-Message-State: AOJu0YzDEX2qNTTJLN8hNToeL6pXUmFTSE2b3u4MxBefoCcpfl6dbvAq
-        0bTKy6bhT4ePCFAiHW1hFBDzGA==
-X-Google-Smtp-Source: AGHT+IER30di/frjLmSfjBFxrbvcoUh8ENJ/K3XUUSW6J703Xp97ZRzLzUrHCHHTK6WJ/FNFpTmFmg==
-X-Received: by 2002:a05:6214:500b:b0:63d:580:9c68 with SMTP id jo11-20020a056214500b00b0063d05809c68mr5481820qvb.32.1692154524793;
-        Tue, 15 Aug 2023 19:55:24 -0700 (PDT)
-Received: from debian.debian ([140.141.197.139])
-        by smtp.gmail.com with ESMTPSA id i4-20020a0cf384000000b006300722883fsm4576015qvk.33.2023.08.15.19.55.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 15 Aug 2023 19:55:24 -0700 (PDT)
-Date:   Tue, 15 Aug 2023 19:55:21 -0700
-From:   Yan Zhai <yan@cloudflare.com>
-To:     bpf@vger.kernel.org
-Cc:     "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        David Ahern <dsahern@kernel.org>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Andrii Nakryiko <andrii@kernel.org>,
-        Martin KaFai Lau <martin.lau@linux.dev>,
-        Song Liu <song@kernel.org>, Yonghong Song <yhs@fb.com>,
-        John Fastabend <john.fastabend@gmail.com>,
-        KP Singh <kpsingh@kernel.org>,
-        Stanislav Fomichev <sdf@google.com>,
-        Hao Luo <haoluo@google.com>, Jiri Olsa <jolsa@kernel.org>,
-        Mykola Lysenko <mykolal@fb.com>, Shuah Khan <shuah@kernel.org>,
-        Yan Zhai <yan@cloudflare.com>, Thomas Graf <tgraf@suug.ch>,
-        Jordan Griege <jgriege@cloudflare.com>,
-        Dan Carpenter <dan.carpenter@linaro.org>,
-        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kselftest@vger.kernel.org, stable@vger.kernel.org
-Subject: [PATCH v5 bpf 2/4] lwt: check LWTUNNEL_XMIT_CONTINUE strictly
-Message-ID: <fb1092883824cec55e31f69c7f8fae86e48fd445.1692153515.git.yan@cloudflare.com>
-References: <cover.1692153515.git.yan@cloudflare.com>
+        with ESMTP id S241454AbjHPC4k (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 15 Aug 2023 22:56:40 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A34B12136
+        for <stable@vger.kernel.org>; Tue, 15 Aug 2023 19:56:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1692154598; x=1723690598;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   in-reply-to;
+  bh=BpadUsvJXDmAr0q0akrmpXCQ0ANUKEyvprrX6Az8xvY=;
+  b=RbG/OosJQQLt7U2j1lvAD5ZYmwxEzxgU9h4EOWweKpedX0ySqnCW04h7
+   ulrrjpKMKkJW454oOOLg+SLxjUqM8xes179KxfCyLpGTCZkIr3uGG5wRJ
+   0sSC3OZ56lPRu8CsLWgqzrLXCRx18jM0FJVtovRYr6m+o5Dd9fddLq30K
+   P5prNcdaogsIkJiRxZx7MQuhMKRl8neH2xh2Wbt/f3T1OoYjRGEoYUrmm
+   OpuUQfj4X/7/TV1nRgrGn4nIPUXcO/5VpvtlLkWSREwMtArCUVrnzxAqq
+   kASIdYQSs5r/5kQYGiHOlU0x4weF2ZX19HzbRjD/MMMtTmg4wsr59pvIJ
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10803"; a="372424102"
+X-IronPort-AV: E=Sophos;i="6.01,175,1684825200"; 
+   d="scan'208";a="372424102"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Aug 2023 19:56:38 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10803"; a="763486169"
+X-IronPort-AV: E=Sophos;i="6.01,175,1684825200"; 
+   d="scan'208";a="763486169"
+Received: from lkp-server02.sh.intel.com (HELO b5fb8d9e1ffc) ([10.239.97.151])
+  by orsmga008.jf.intel.com with ESMTP; 15 Aug 2023 19:56:37 -0700
+Received: from kbuild by b5fb8d9e1ffc with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1qW6i4-0001Qt-1C;
+        Wed, 16 Aug 2023 02:56:36 +0000
+Date:   Wed, 16 Aug 2023 10:56:19 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Yan Zhai <yan@cloudflare.com>
+Cc:     stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH v5 bpf 1/4] lwt: fix return values of BPF ops
+Message-ID: <ZNw603SSAV0rMiGH@de6b5a1e2688>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <cover.1692153515.git.yan@cloudflare.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <28cb906436e87eada712f55e63ae5c420bea0ecb.1692153515.git.yan@cloudflare.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-LWTUNNEL_XMIT_CONTINUE is implicitly assumed in ip(6)_finish_output2,
-such that any positive return value from a xmit hook could cause
-unexpected continue behavior, despite that related skb may have been
-freed. This could be error-prone for future xmit hook ops, particularly
-if dst_output statuses are directly returned.
+Hi,
 
-To make the code safer, redefine LWTUNNEL_XMIT_CONTINUE value to
-distinguish from dst_output statuses and check the continue
-condition explicitly.
+Thanks for your patch.
 
-Fixes: 3a0af8fd61f9 ("bpf: BPF for lightweight tunnel infrastructure")
-Suggested-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Yan Zhai <yan@cloudflare.com>
----
- include/net/lwtunnel.h | 5 ++++-
- net/ipv4/ip_output.c   | 2 +-
- net/ipv6/ip6_output.c  | 2 +-
- 3 files changed, 6 insertions(+), 3 deletions(-)
+FYI: kernel test robot notices the stable kernel rule is not satisfied.
 
-diff --git a/include/net/lwtunnel.h b/include/net/lwtunnel.h
-index 6f15e6fa154e..53bd2d02a4f0 100644
---- a/include/net/lwtunnel.h
-+++ b/include/net/lwtunnel.h
-@@ -16,9 +16,12 @@
- #define LWTUNNEL_STATE_INPUT_REDIRECT	BIT(1)
- #define LWTUNNEL_STATE_XMIT_REDIRECT	BIT(2)
- 
-+/* LWTUNNEL_XMIT_CONTINUE should be distinguishable from dst_output return
-+ * values (NET_XMIT_xxx and NETDEV_TX_xxx in linux/netdevice.h) for safety.
-+ */
- enum {
- 	LWTUNNEL_XMIT_DONE,
--	LWTUNNEL_XMIT_CONTINUE,
-+	LWTUNNEL_XMIT_CONTINUE = 0x100,
- };
- 
- 
-diff --git a/net/ipv4/ip_output.c b/net/ipv4/ip_output.c
-index 6ba1a0fafbaa..a6e4c82615d7 100644
---- a/net/ipv4/ip_output.c
-+++ b/net/ipv4/ip_output.c
-@@ -216,7 +216,7 @@ static int ip_finish_output2(struct net *net, struct sock *sk, struct sk_buff *s
- 	if (lwtunnel_xmit_redirect(dst->lwtstate)) {
- 		int res = lwtunnel_xmit(skb);
- 
--		if (res < 0 || res == LWTUNNEL_XMIT_DONE)
-+		if (res != LWTUNNEL_XMIT_CONTINUE)
- 			return res;
- 	}
- 
-diff --git a/net/ipv6/ip6_output.c b/net/ipv6/ip6_output.c
-index 1e8c90e97608..016b0a513259 100644
---- a/net/ipv6/ip6_output.c
-+++ b/net/ipv6/ip6_output.c
-@@ -113,7 +113,7 @@ static int ip6_finish_output2(struct net *net, struct sock *sk, struct sk_buff *
- 	if (lwtunnel_xmit_redirect(dst->lwtstate)) {
- 		int res = lwtunnel_xmit(skb);
- 
--		if (res < 0 || res == LWTUNNEL_XMIT_DONE)
-+		if (res != LWTUNNEL_XMIT_CONTINUE)
- 			return res;
- 	}
- 
+Rule: 'Cc: stable@vger.kernel.org' or 'commit <sha1> upstream.'
+Subject: [PATCH v5 bpf 1/4] lwt: fix return values of BPF ops
+Link: https://lore.kernel.org/stable/28cb906436e87eada712f55e63ae5c420bea0ecb.1692153515.git.yan%40cloudflare.com
+
+The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
+
 -- 
-2.30.2
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
+
+
 
