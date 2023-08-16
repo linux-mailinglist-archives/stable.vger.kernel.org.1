@@ -2,184 +2,271 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BC49C77E80B
-	for <lists+stable@lfdr.de>; Wed, 16 Aug 2023 19:59:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3947C77E891
+	for <lists+stable@lfdr.de>; Wed, 16 Aug 2023 20:20:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345313AbjHPR7X (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 16 Aug 2023 13:59:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56558 "EHLO
+        id S1345460AbjHPSTs (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 16 Aug 2023 14:19:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42296 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345324AbjHPR67 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 16 Aug 2023 13:58:59 -0400
-Received: from smtp-fw-80006.amazon.com (smtp-fw-80006.amazon.com [99.78.197.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 838A610C0;
-        Wed, 16 Aug 2023 10:58:58 -0700 (PDT)
+        with ESMTP id S1345483AbjHPSTX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 16 Aug 2023 14:19:23 -0400
+Received: from mail-pl1-x62a.google.com (mail-pl1-x62a.google.com [IPv6:2607:f8b0:4864:20::62a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C4592723
+        for <stable@vger.kernel.org>; Wed, 16 Aug 2023 11:19:11 -0700 (PDT)
+Received: by mail-pl1-x62a.google.com with SMTP id d9443c01a7336-1bdb7b0c8afso32705855ad.3
+        for <stable@vger.kernel.org>; Wed, 16 Aug 2023 11:19:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1692208739; x=1723744739;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=4MQ5IchDUGLzGso6gM/o2hiSdDEdDzj+Q4pKloaOnyk=;
-  b=ap524/g/Q4Swg02DKYUDI147uV+OftdRQwUnAX6mmnAye/vWgbJGPcYS
-   Ec9FGOzk5VpD45XvIWwqBlK2NDgmkelA0HJ538xWqnVsb4sgrbuO0gFx5
-   fJ3qsJu7wZ07GF2JQsAtVB7jVg+f/ZyYDhW6q9DgqQ2p1/FW+oQEf/2ZE
-   0=;
-X-IronPort-AV: E=Sophos;i="6.01,177,1684800000"; 
-   d="scan'208";a="232842254"
-Received: from pdx4-co-svc-p1-lb2-vlan3.amazon.com (HELO email-inbound-relay-pdx-2b-m6i4x-7fa2de02.us-west-2.amazon.com) ([10.25.36.214])
-  by smtp-border-fw-80006.pdx80.corp.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Aug 2023 17:58:58 +0000
-Received: from EX19MTAUWB002.ant.amazon.com (pdx1-ws-svc-p6-lb9-vlan3.pdx.amazon.com [10.236.137.198])
-        by email-inbound-relay-pdx-2b-m6i4x-7fa2de02.us-west-2.amazon.com (Postfix) with ESMTPS id DB63740D78;
-        Wed, 16 Aug 2023 17:58:57 +0000 (UTC)
-Received: from EX19D046UWB004.ant.amazon.com (10.13.139.164) by
- EX19MTAUWB002.ant.amazon.com (10.250.64.231) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.30; Wed, 16 Aug 2023 17:58:57 +0000
-Received: from dev-dsk-shaoyi-2b-b6ac9e9c.us-west-2.amazon.com (10.189.91.91)
- by EX19D046UWB004.ant.amazon.com (10.13.139.164) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.30; Wed, 16 Aug 2023 17:58:57 +0000
-From:   Shaoying Xu <shaoyi@amazon.com>
-To:     <gregkh@linuxfoundation.org>
-CC:     <hailmo@amazon.com>, <jgross@suse.com>, <kuniyu@amazon.com>,
-        <linux-kernel@vger.kernel.org>, <shaoyi@amazon.com>,
-        <sjpark@amazon.com>, <stable@vger.kernel.org>, <tglx@linutronix.de>
-Subject: Re: Linux 5.4.252 FPU initialization warnings in stable kernels 5.4/5.10
-Date:   Wed, 16 Aug 2023 17:58:46 +0000
-Message-ID: <20230816175846.15122-1-shaoyi@amazon.com>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <2023081511-easing-exerciser-c356@gregkh>
-References: <2023081511-easing-exerciser-c356@gregkh>
+        d=kernelci-org.20221208.gappssmtp.com; s=20221208; t=1692209950; x=1692814750;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=B5V/K0ocrd9QAbuNvo9HSDY2+PUlRlv7YIIsXbT1+3o=;
+        b=RXo6ExuRdfzZ61g7X3YfPnVBP/By3qpe8298w76/4+xg76YrlgbuHCL9KWAqXFn+ff
+         EHyE8f3BHBASS7Wo671vaoiSmJaIkMapBeCSx0KdeAif8/uZ5kD5BYILwskxJHAlG82l
+         V43ecdxDECqknbJEhdyuTH9DmLUDY3AhqL97m6Uvwfl8/iyxOYmDLKLnESRSsGAYkFll
+         ScuS6X3P9jbFf1lVgPiCOU6LK4ZF1JjwN+DqI1s815nFjaZCMVxe1cnIA/BUHfPC8vy/
+         fjS2xXirye6TbK09aqIlnq6ZqNDehWVDpTLgFKyp+W1vKbpzILlbC0+F0rDxlBtZSeud
+         FIOA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1692209950; x=1692814750;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=B5V/K0ocrd9QAbuNvo9HSDY2+PUlRlv7YIIsXbT1+3o=;
+        b=MVK/OHDWykxptuDO1zb96tYJb7betTKEvHGdf1VBbljuipOqwZBdXukWDP1uzqXsY9
+         BPcrOp1JOziyicBG7f3sbvipA23w3Q7YbHYCwc1PjIWNO6BAUnmvvYmtndF7Syzoq9nb
+         gBkTo7C4HF8jQc6/a+aI/H+NbsM6CyYCr2lH94sk3afDQxdwVa8hmRRhAvwpNZHWdQr4
+         Hxz16418J3f1w0VouweT1STzPKqE3n6+5Z1qkpI437u7i6jJkfQq9uRFxRc+mPYNh2En
+         yTVk4qmJYP6bXGvFna+M7XAmxwkBxrG/OMyo6c3G8iWcpXxtOe2TBUV1zh6lUuLPRp67
+         Eq3Q==
+X-Gm-Message-State: AOJu0YyOmkce2rPbZv4NgV1NL2bS0XhFCFIBAnmI8BCLEcfzpybsxzto
+        BhDQ8xKKEMNaLZZKKjtEtx58LbZdVq2xd762K2HQrQ==
+X-Google-Smtp-Source: AGHT+IGH+IQ3JS8B/jLm2WPcnH/7vr+puYi3W+9WThQQOhVBJmOf0ahPRubL/Iq1kc5cxy4lrB5OnA==
+X-Received: by 2002:a17:902:e54f:b0:1b8:9552:ca with SMTP id n15-20020a170902e54f00b001b8955200camr3128651plf.45.1692209950624;
+        Wed, 16 Aug 2023 11:19:10 -0700 (PDT)
+Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
+        by smtp.gmail.com with ESMTPSA id r11-20020a1709028bcb00b001b86dd825e7sm13428330plo.108.2023.08.16.11.19.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 16 Aug 2023 11:19:09 -0700 (PDT)
+Message-ID: <64dd131d.170a0220.88a7c.9e51@mx.google.com>
+Date:   Wed, 16 Aug 2023 11:19:09 -0700 (PDT)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.189.91.91]
-X-ClientProxiedBy: EX19D046UWA004.ant.amazon.com (10.13.139.76) To
- EX19D046UWB004.ant.amazon.com (10.13.139.164)
-X-Spam-Status: No, score=0.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,
-        SORTED_RECIPS,SPF_HELO_NONE,SPF_NONE autolearn=no autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+X-Kernelci-Report-Type: build
+X-Kernelci-Kernel: v4.14.323
+X-Kernelci-Tree: stable
+X-Kernelci-Branch: linux-4.14.y
+Subject: stable/linux-4.14.y build: 16 builds: 0 failed, 16 passed,
+ 21 warnings (v4.14.323)
+To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+        kernelci-results@groups.io
+From:   "kernelci.org bot" <bot@kernelci.org>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 2023-08-15, 2:17 PM, "Greg KH" <gregkh@linuxfoundation.org <mailto:gregkh@linuxfoundation.org> >> > wrote:
+stable/linux-4.14.y build: 16 builds: 0 failed, 16 passed, 21 warnings (v4.=
+14.323)
 
-> On Tue, Aug 15, 2023 at 08:15:39PM +0000, Shaoying Xu wrote:
-> > Hi Thomas/Greg
-> >
-> > We are seeing “get of unsupported state” warnings during FPU initialization in the v5.4.252 and v5.10.189
-> > kernel booted on AWS EC2 instances with Intel processors based on Nitro system. These warnings are observed
-> > in EC2 c5.18xlarge instance:
-> >
-> > [ 1.204495] ------------[ cut here ]------------
-> > [ 1.204495] get of unsupported state
-> > [ 1.204495] WARNING: CPU: 0 PID: 0 at arch/x86/kernel/fpu/xstate.c:879 get_xsave_addr+0x81/0x90
-> > [ 1.204495] Modules linked in:
-> > [ 1.204495] CPU: 0 PID: 0 Comm: swapper/0 Not tainted 5.4.252 #10
-> > [ 1.204495] Hardware name: Amazon EC2 c5.18xlarge/, BIOS 1.0 10/16/2017
-> > [ 1.204495] RIP: 0010:get_xsave_addr+0x81/0x90
-> > [ 1.204495] Code: 5b c3 48 83 c4 08 31 c0 5b c3 80 3d 7c f0 78 01 00 75 c1 48 c7 c7 34 be 03 b2 89 4c 24 04 c6 05 68 f0 78 01 01 e8 ef 41 05 00 <0f> > 0b 48 63 4c 24 04 eb a1 31 c0 c3 0f 1f 00 0f 1f 44 00 00 41 54
-> > [ 1.204495] RSP: 0000:ffffffffb2603ed0 EFLAGS: 00010282
-> > [ 1.204495] RAX: 0000000000000000 RBX: ffffffffb27ebe80 RCX: 0000000047cb2486
-> > [ 1.204495] RDX: 0000000000000018 RSI: ffffffffb39e99a0 RDI: ffffffffb39e756c
-> > [ 1.204495] RBP: ffffffffb27ebd40 R08: 7520666f20746567 R09: 74726f707075736e
-> > [ 1.204495] R10: 00000000000962fc R11: 6574617473206465 R12: ffffffffb2d89b60
-> > [ 1.204495] R13: 0000000000000246 R14: 0000000000000000 R15: 0000000000000000
-> > [ 1.204495] FS: 0000000000000000(0000) GS:ffff96d031400000(0000) knlGS:0000000000000000
-> > [ 1.204495] CS: 0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> > [ 1.204495] CR2: ffff96e277fff000 CR3: 000000103060a001 CR4: 00000000007200b0
-> > [ 1.204495] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-> > [ 1.204495] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-> > [ 1.204495] Call Trace:
-> > [ 1.204495] ? __warn+0x85/0xd0
-> > [ 1.204495] ? get_xsave_addr+0x81/0x90
-> > [ 1.204495] ? report_bug+0xb6/0x130
-> > [ 1.204495] ? get_xsave_addr+0x81/0x90
-> > [ 1.204495] ? fixup_bug.part.12+0x18/0x30
-> > [ 1.204495] ? do_error_trap+0x95/0xb0
-> > [ 1.204495] ? do_invalid_op+0x36/0x40
-> > [ 1.204495] ? get_xsave_addr+0x81/0x90
-> > [ 1.204495] ? invalid_op+0x1e/0x30
-> > [ 1.204495] ? get_xsave_addr+0x81/0x90
-> > [ 1.204495] identify_cpu+0x422/0x510
-> > [ 1.204495] identify_boot_cpu+0xc/0x94
-> > [ 1.204495] arch_cpu_finalize_init+0x5/0x47
-> > [ 1.204495] start_kernel+0x468/0x511
-> > [ 1.204495] secondary_startup_64+0xa4/0xb0
-> > [ 1.204495] ---[ end trace dffac81ff531fcf2 ]---
-> >
-> > The issue can be easily reproduced on both virtualized and bare metal instances but interesting thing is
-> > it can’t be found in other latest stable kernels v4.14, v4.19, v5.15 and newer. We tried to bisect between v5.4.251 and v5.4.252 and
-> > were able to find below commit to be the culprit. Also, reverting it in v5.4.252 and v5.10.189 resolved above warnings completely.
-> >
-> > x86/fpu: Move FPU initialization into arch_cpu_finalize_init()
-> > commit b81fac906a8f9e682e513ddd95697ec7a20878d4 upstream
-> >
-> > We used to speculate the fix might be similar to commit 3f8968f1f0ad (“x86/xen: Fix secondary processors' FPU initialization”) but
-> > since only kernel 5.4/5.10 are impacted, we’re not quite sure how this commit affects them in practice. Could you please take a look and share your insights?
-> >
-> > Also put stack traces from v5.10.189:
-> >
-> > [ 1.210910] ------------[ cut here ]------------
-> > [ 1.210910] get of unsupported state
-> > [ 1.210910] WARNING: CPU: 0 PID: 0 at arch/x86/kernel/fpu/xstate.c:974 get_xsave_addr+0x89/0xa0
-> > [ 1.210910] Modules linked in:
-> > [ 1.210910] CPU: 0 PID: 0 Comm: swapper/0 Not tainted 5.10.189 #4
-> > [ 1.210910] Hardware name: Amazon EC2 c5.18xlarge/, BIOS 1.0 10/16/2017
-> > [ 1.210910] RIP: 0010:get_xsave_addr+0x89/0xa0
-> > [ 1.210910] Code: c4 08 31 c0 5b e9 17 a4 bc 00 80 3d e7 75 eb 01 00 75 b9 48 c7 c7 b7 f4 09 ab 89 4c 24 04 c6 05 d3 75 eb 01 01 e8 17 98 05 00 <0f> > 0b 48 63 4c 24 04 eb 99 31 c0 e9 e7 a3 bc 00 0f 1f 80 00 00 00
-> > [ 1.210910] RSP: 0000:ffffffffab603ec8 EFLAGS: 00010286
-> > [ 1.210910] RAX: 0000000000000000 RBX: ffffffffabf25bc0 RCX: 00000000fffeffff
-> > [ 1.210910] RDX: ffffffffab603cd0 RSI: 00000000fffeffff RDI: ffffffffad1a3dec
-> > [ 1.210910] RBP: ffffffffabf25a60 R08: 0000000000000000 R09: 0000000000000001
-> > [ 1.210910] R10: 0000000000000000 R11: ffffffffab603cc8 R12: ffffffffac539b40
-> > [ 1.210910] R13: 0000000000000246 R14: 0000000000000000 R15: 0000000000000000
-> > [ 1.210910] FS: 0000000000000000(0000) GS:ffff9150f1600000(0000) knlGS:0000000000000000
-> > [ 1.210910] CS: 0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> > [ 1.210910] CR2: ffff915702801000 CR3: 0000001780610001 CR4: 00000000007300b0
-> > [ 1.210910] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-> > [ 1.210910] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-> > [ 1.210910] Call Trace:
-> > [ 1.210910] ? __warn+0x7d/0xe0
-> > [ 1.210910] ? get_xsave_addr+0x89/0xa0
-> > [ 1.210910] ? report_bug+0xbb/0x140
-> > [ 1.210910] ? handle_bug+0x3f/0x70
-> > [ 1.210910] ? exc_invalid_op+0x13/0x60
-> > [ 1.210910] ? asm_exc_invalid_op+0x12/0x20
-> > [ 1.210910] ? get_xsave_addr+0x89/0xa0
-> > [ 1.210910] ? get_xsave_addr+0x89/0xa0
-> > [ 1.210910] identify_cpu+0x42a/0x550
-> > [ 1.210910] identify_boot_cpu+0xc/0x94
-> > [ 1.210910] arch_cpu_finalize_init+0x5/0x47
-> > [ 1.210910] start_kernel+0x4bc/0x56b
-> > [ 1.210910] secondary_startup_64_no_verify+0xb0/0xbb
-> > [ 1.210910] ---[ end trace 14850c6f8ee0875d ]---
->
->
-> I think this is fixed with commit b3607269ff57 ("x86/pkeys: Revert
-> a5eff7259790 ("x86/pkeys: Add PKRU value to init_fpstate")"), which is
-> queued up for the next 5.4 and 5.10.y releases to happen "soon". Can
-> you test the released -rc1 versions of this to verify it is resolved or
-> not?
->
->
-> thanks,
-> 
->
-> greg k-h
+Full Build Summary: https://kernelci.org/build/stable/branch/linux-4.14.y/k=
+ernel/v4.14.323/
 
-Hi Greg,
+Tree: stable
+Branch: linux-4.14.y
+Git Describe: v4.14.323
+Git Commit: 80b73c056d2076d12f9e50c753bb440fc79f30c9
+Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
+e.git
+Built: 6 unique architectures
 
-Thank you for pointing this commit. I verfied v5.4.254-rc1 and v5.10.191-rc1 
-on the same EC2 c5.18xlarge instance would no longer reproduce above warnings. 
-In addition, I tested v5.4.252 and v5.10.189 plus commit b3607269ff57 ("x86/pkeys: Revert 
-a5eff7259790 ("x86/pkeys: Add PKRU value to init_fpstate")") and found fpu initilization
-was clean. It can be confirmed that this commit resolves the reported issue. 
+Warnings Detected:
 
-Thanks,
-Shaoying
+arc:
+
+arm64:
+
+arm:
+
+i386:
+    allnoconfig (gcc-10): 3 warnings
+    i386_defconfig (gcc-10): 3 warnings
+    tinyconfig (gcc-10): 3 warnings
+
+mips:
+
+x86_64:
+    allnoconfig (gcc-10): 3 warnings
+    tinyconfig (gcc-10): 3 warnings
+    x86_64_defconfig (gcc-10): 3 warnings
+    x86_64_defconfig+x86-chromebook (gcc-10): 3 warnings
+
+
+Warnings summary:
+
+    7    ld: warning: creating DT_TEXTREL in a PIE
+    4    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in rea=
+d-only section `.head.text'
+    4    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h=
+' differs from latest kernel version at 'arch/x86/include/asm/insn.h'
+    3    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in rea=
+d-only section `.head.text'
+    3    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic su=
+ffix given and no register operands; using default for `btr'
+
+Section mismatches summary:
+
+    3    WARNING: modpost: Found 1 section mismatch(es).
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
+
+Detailed per-defconfig build reports:
+
+---------------------------------------------------------------------------=
+-----
+32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
+tion mismatches
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 section =
+mismatches
+
+Warnings:
+    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic suffix =
+given and no register operands; using default for `btr'
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 sectio=
+n mismatches
+
+Warnings:
+    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
+fers from latest kernel version at 'arch/x86/include/asm/insn.h'
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+Section mismatches:
+    WARNING: modpost: Found 1 section mismatch(es).
+
+---------------------------------------------------------------------------=
+-----
+defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warn=
+ings, 0 section mismatches
+
+Section mismatches:
+    WARNING: modpost: Found 1 section mismatch(es).
+
+---------------------------------------------------------------------------=
+-----
+haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
+ section mismatches
+
+---------------------------------------------------------------------------=
+-----
+i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 secti=
+on mismatches
+
+Warnings:
+    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic suffix =
+given and no register operands; using default for `btr'
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+Section mismatches:
+    WARNING: modpost: Found 1 section mismatch(es).
+
+---------------------------------------------------------------------------=
+-----
+multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 section m=
+ismatches
+
+Warnings:
+    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic suffix =
+given and no register operands; using default for `btr'
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 section=
+ mismatches
+
+Warnings:
+    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
+fers from latest kernel version at 'arch/x86/include/asm/insn.h'
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 s=
+ection mismatches
+
+Warnings:
+    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
+fers from latest kernel version at 'arch/x86/include/asm/insn.h'
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig+x86-chromebook (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, =
+3 warnings, 0 section mismatches
+
+Warnings:
+    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
+fers from latest kernel version at 'arch/x86/include/asm/insn.h'
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---
+For more info write to <info@kernelci.org>
