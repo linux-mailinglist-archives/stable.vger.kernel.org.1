@@ -2,63 +2,64 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9271877E6A3
-	for <lists+stable@lfdr.de>; Wed, 16 Aug 2023 18:41:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A572D77E6A5
+	for <lists+stable@lfdr.de>; Wed, 16 Aug 2023 18:41:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235581AbjHPQkg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 16 Aug 2023 12:40:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34518 "EHLO
+        id S245001AbjHPQkh (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 16 Aug 2023 12:40:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34536 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344456AbjHPQkX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 16 Aug 2023 12:40:23 -0400
-Received: from mail.simonwunderlich.de (mail.simonwunderlich.de [IPv6:2a01:4f8:c17:e8c0::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4724C2724;
+        with ESMTP id S1344799AbjHPQkY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 16 Aug 2023 12:40:24 -0400
+X-Greylist: delayed 419 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 16 Aug 2023 09:40:22 PDT
+Received: from mail.simonwunderlich.de (mail.simonwunderlich.de [23.88.38.48])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4672D2721;
         Wed, 16 Aug 2023 09:40:21 -0700 (PDT)
-Received: from kero.packetmixer.de (p200300FA272a67000Bb2D6DcAf57d46E.dip0.t-ipconnect.de [IPv6:2003:fa:272a:6700:bb2:d6dc:af57:d46e])
+Received: from kero.packetmixer.de (p200300FA272a67000Bb2D6DcAf57D46E.dip0.t-ipconnect.de [IPv6:2003:fa:272a:6700:bb2:d6dc:af57:d46e])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by mail.simonwunderlich.de (Postfix) with ESMTPSA id C0A49FB5B1;
-        Wed, 16 Aug 2023 18:33:20 +0200 (CEST)
+        by mail.simonwunderlich.de (Postfix) with ESMTPSA id 2D8F6FB5B6;
+        Wed, 16 Aug 2023 18:33:21 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=simonwunderlich.de;
-        s=09092022; t=1692203600; h=from:from:sender:reply-to:subject:subject:date:date:
+        s=09092022; t=1692203602; h=from:from:sender:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=TDr4ApcYiSq7b1LH4pTlLUo+yJYCl799b+ZbteyLDqg=;
-        b=RNif1ElgLtX1XNgo34EMgkPcO5bvSJuM3smEAG7H32FxEb7chYcIVrae2OLivrI+qGX9K+
-        qhSu5jlg0SDB3jzGGv9zQVtIF6d9PZn2Mb4pumvvyy32Q0GeE8z1pnHZD7z0fVSRRD2NuX
-        boI/Cw6s1v3WsJgag07VuUl8bem2UYV1m9BbNEbtmiXHyHeyeSCvmmEtl53aYo6wE5JSnv
-        HxyAsX+rYBmHMmDPMhUyxSRJxDUQGZFLh2ZZEljSTNna3a0TsSZRWKzWotkPSxe7t3zjhO
-        1vheyMFebETNMepkbK1hCgtPedUky5vA0eR/oAcMXHRPYuimJs4LCRaV2iG62w==
+        bh=jtU/tgx4L6o0Wop2AU1xgpmhIFIvDcIHteSPIJzJVzQ=;
+        b=ZAJBcK1mkQD/h+RaS+rhNBlMEwe8FNtnH+Ubastim8RuMTx6CaaDXOPHk5NNAchmiruGYc
+        DKjIHxgcNXxgpcxr/ebBkwXWxjA+EZHgyz7BOR+KFbKn6jtiPJcIkrqTwFU2dIpbgRqv1G
+        UAhMPzStUg42dl9KH7b9gdXGU8x4EbZ1ZVlfW/noNGSn5Ha0FZshGuPYuSbBzw7KUbwAGm
+        l//+YvOWQ4K4+WQvoUzzU4ypRApT4WeU4tkhwj4yo6AnGszMTu9W4gG8mogASlKfiPrMcQ
+        0CQdrFSbTBuIeWs+ZwyMW8n5+XcwZcgWGspEL9HTE5FoWTd9TtyjcnnHHzD8OQ==
 From:   Simon Wunderlich <sw@simonwunderlich.de>
 To:     davem@davemloft.net, kuba@kernel.org
 Cc:     netdev@vger.kernel.org, b.a.t.m.a.n@lists.open-mesh.org,
         Sven Eckelmann <sven@narfation.org>, stable@vger.kernel.org,
         Simon Wunderlich <sw@simonwunderlich.de>
-Subject: [PATCH 1/5] batman-adv: Trigger events for auto adjusted MTU
-Date:   Wed, 16 Aug 2023 18:33:14 +0200
-Message-Id: <20230816163318.189996-2-sw@simonwunderlich.de>
+Subject: [PATCH 2/5] batman-adv: Don't increase MTU when set by user
+Date:   Wed, 16 Aug 2023 18:33:15 +0200
+Message-Id: <20230816163318.189996-3-sw@simonwunderlich.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230816163318.189996-1-sw@simonwunderlich.de>
 References: <20230816163318.189996-1-sw@simonwunderlich.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=simonwunderlich.de; s=09092022; t=1692203600;
+        d=simonwunderlich.de; s=09092022; t=1692203602;
         h=from:from:sender:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=TDr4ApcYiSq7b1LH4pTlLUo+yJYCl799b+ZbteyLDqg=;
-        b=lY2tZcU3Oc7gr3m4vR+VbFmStW3bKrvzjD0zoTvWkAJrLM9sXyA9lelui69YIzNxgIvv5a
-        AWbZE4XLalZWSaM7KMvwVHaCFbSkh6u6D0MdzaAmnGKAOjR232tmJuV5bIFZAOvZ+Sa1Df
-        nAYThj5auLs8M2WQb3nsyLajr9pPMPFYPd7Wsyfbm+hJGi2fRixPa2RuWQVkLHGs2OLugc
-        THblU1YavYRkhedX9cGacj54kZtNhEEQ5CPMEmeJwz68si3mlYO41oG+Aods3gTMXcuZ2c
-        iMTIp6k0zW5hCQB9hnPL5J+F/3LH0jJJHH2Sglx6LdnXucAiQMPBnWxagEg98Q==
-ARC-Seal: i=1; s=09092022; d=simonwunderlich.de; t=1692203600; a=rsa-sha256;
+        bh=jtU/tgx4L6o0Wop2AU1xgpmhIFIvDcIHteSPIJzJVzQ=;
+        b=uvCyrT5yxTVLpvUL9j/Kbx1/jk6u2SafmN8gKg64X2WS8LKZe9IHDBRBi8q57WWWVuqmL2
+        URpZJNg6tl/PpY32yK4EbhOw2bxXvZIoHiB+g33a6RGGGeO6b8RX7jPGW1n0EseCrS2x6P
+        yRtN4t0OwxfbpADgqjFDd56aJy4T3aneT8rg1iFoHFMRVM4oscpMq9AZ5VkqAEd0CJPUiI
+        UvRZyhChd41LsMU1Hvq09mWrtd1DlvF583mDjxznCCFaG46OFGZLq2eQ3tdy9jMy/rrd7W
+        S53mE4KBxm1Ap6tvAL40bcYNG4De7Xq6u84Z+AGt8md4C7KAokdHEVIA74+icQ==
+ARC-Seal: i=1; s=09092022; d=simonwunderlich.de; t=1692203602; a=rsa-sha256;
         cv=none;
-        b=gi3BxAgYdVgaF7/GAmc3riqNqKa2RKe2eKZHU5kqbFwPdZ40JQlzZ+5RwZPzpr8HdHVhB3meZJ770phCT883HX7Z0rWSmrBTJAGLwq1ik7J4J6i3Q8Qzcj1LLdM6Q6lBwvYMALicQUDE221CxwCBteT7gZyLXA5xdb9Eekol5eOKRVMy8txqUFfQ61CvH4rqxxz637Ity0pdrY4M9lt/tWYzsOm2IBcifqr65LJoCWfkKSnBoCXaQGTXOnmArH/3P2gIMi4oMWJyOgNDwPJvGhgcUfTkR/x6jAP6invWK+fhJMxl0IvEA+vIBFrUCndlmlrQUl1c08KAl/SIKI9jDQ==
+        b=Kn4nsiW5NXDiE0JOpoekwcbtDknkwfoJ/zAw/H9KB2cBra8ZNhiCasi/5Rr/LxyLxe2AiJY4kfGfkyRrpOnlqMi39sc5dIoEHLGmw+Ds2jXbQwrvgvhh1le25hbsjXKwBuhh4B9YYk9BCILBRBqyqN33EiirjE6PQSFATq6ZnaSW4s9fwioBGU0KGq/jjJwwT/NTtU8I554TqYv+eCwhNZac71kLB/rfyWMCESrpqP4RhuButAHGdajAI+TXZ30q1ZszTR2RWhrJZILmK1YRG6lxtFtUuaStf7oSaMDRvPVzijY02TxvIVGpf5CpKj92Uds7Q4K3m6ATsBkDKOhTEA==
 ARC-Authentication-Results: i=1;
         mail.simonwunderlich.de;
         auth=pass smtp.auth=sw@simonwunderlich.de smtp.mailfrom=sw@simonwunderlich.de
@@ -74,36 +75,85 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Sven Eckelmann <sven@narfation.org>
 
-If an interface changes the MTU, it is expected that an NETDEV_PRECHANGEMTU
-and NETDEV_CHANGEMTU notification events is triggered. This worked fine for
-.ndo_change_mtu based changes because core networking code took care of it.
-But for auto-adjustments after hard-interfaces changes, these events were
-simply missing.
+If the user set an MTU value, it usually means that there are special
+requirements for the MTU. But if an interface gots activated, the MTU was
+always recalculated and then the user set value was overwritten.
 
-Due to this problem, non-batman-adv components weren't aware of MTU changes
-and thus couldn't perform their own tasks correctly.
+The only reason why this user set value has to be overwritten, is when the
+MTU has to be decreased because batman-adv is not able to transfer packets
+with the user specified size.
 
 Fixes: c6c8fea29769 ("net: Add batman-adv meshing protocol")
 Cc: stable@vger.kernel.org
 Signed-off-by: Sven Eckelmann <sven@narfation.org>
 Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
 ---
- net/batman-adv/hard-interface.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/batman-adv/hard-interface.c | 14 +++++++++++++-
+ net/batman-adv/soft-interface.c |  3 +++
+ net/batman-adv/types.h          |  6 ++++++
+ 3 files changed, 22 insertions(+), 1 deletion(-)
 
 diff --git a/net/batman-adv/hard-interface.c b/net/batman-adv/hard-interface.c
-index 41c1ad33d009..ae5762af0146 100644
+index ae5762af0146..24c9c0c3f316 100644
 --- a/net/batman-adv/hard-interface.c
 +++ b/net/batman-adv/hard-interface.c
-@@ -630,7 +630,7 @@ int batadv_hardif_min_mtu(struct net_device *soft_iface)
+@@ -630,7 +630,19 @@ int batadv_hardif_min_mtu(struct net_device *soft_iface)
   */
  void batadv_update_min_mtu(struct net_device *soft_iface)
  {
--	soft_iface->mtu = batadv_hardif_min_mtu(soft_iface);
-+	dev_set_mtu(soft_iface, batadv_hardif_min_mtu(soft_iface));
+-	dev_set_mtu(soft_iface, batadv_hardif_min_mtu(soft_iface));
++	struct batadv_priv *bat_priv = netdev_priv(soft_iface);
++	int limit_mtu;
++	int mtu;
++
++	mtu = batadv_hardif_min_mtu(soft_iface);
++
++	if (bat_priv->mtu_set_by_user)
++		limit_mtu = bat_priv->mtu_set_by_user;
++	else
++		limit_mtu = ETH_DATA_LEN;
++
++	mtu = min(mtu, limit_mtu);
++	dev_set_mtu(soft_iface, mtu);
  
  	/* Check if the local translate table should be cleaned up to match a
  	 * new (and smaller) MTU.
+diff --git a/net/batman-adv/soft-interface.c b/net/batman-adv/soft-interface.c
+index d3fdf82282af..85d00dc9ce32 100644
+--- a/net/batman-adv/soft-interface.c
++++ b/net/batman-adv/soft-interface.c
+@@ -153,11 +153,14 @@ static int batadv_interface_set_mac_addr(struct net_device *dev, void *p)
+ 
+ static int batadv_interface_change_mtu(struct net_device *dev, int new_mtu)
+ {
++	struct batadv_priv *bat_priv = netdev_priv(dev);
++
+ 	/* check ranges */
+ 	if (new_mtu < 68 || new_mtu > batadv_hardif_min_mtu(dev))
+ 		return -EINVAL;
+ 
+ 	dev->mtu = new_mtu;
++	bat_priv->mtu_set_by_user = new_mtu;
+ 
+ 	return 0;
+ }
+diff --git a/net/batman-adv/types.h b/net/batman-adv/types.h
+index ca9449ec9836..cf1a0eafe3ab 100644
+--- a/net/batman-adv/types.h
++++ b/net/batman-adv/types.h
+@@ -1546,6 +1546,12 @@ struct batadv_priv {
+ 	/** @soft_iface: net device which holds this struct as private data */
+ 	struct net_device *soft_iface;
+ 
++	/**
++	 * @mtu_set_by_user: MTU was set once by user
++	 * protected by rtnl_lock
++	 */
++	int mtu_set_by_user;
++
+ 	/**
+ 	 * @bat_counters: mesh internal traffic statistic counters (see
+ 	 *  batadv_counters)
 -- 
 2.39.2
 
