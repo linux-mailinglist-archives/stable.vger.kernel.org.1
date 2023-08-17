@@ -2,140 +2,175 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6DA9877F4D1
-	for <lists+stable@lfdr.de>; Thu, 17 Aug 2023 13:12:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4708E77F55D
+	for <lists+stable@lfdr.de>; Thu, 17 Aug 2023 13:36:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1350158AbjHQLLn (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 17 Aug 2023 07:11:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57936 "EHLO
+        id S1349221AbjHQLgD (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 17 Aug 2023 07:36:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41386 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1350238AbjHQLLa (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 17 Aug 2023 07:11:30 -0400
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B653630E2
-        for <stable@vger.kernel.org>; Thu, 17 Aug 2023 04:11:24 -0700 (PDT)
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 37HB6xc7019956;
-        Thu, 17 Aug 2023 11:11:05 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- mime-version : content-transfer-encoding; s=pp1;
- bh=bh8hKNOCunj0DLdC3UT5xxQR2j12wuA594/Ukqt1VGs=;
- b=qMpbIHCC/rTJNgAk3atsNYk63+5p4oTqn6UAjLI+KkELEigs/SqG7mW7+/oDDlO1QUo5
- GQbv58+tApbbXmB1xcjoSgeLUOTdTqNUJo5g2uNEk0Q5ctlsGLY6uKu8PfBqGtbWBQIY
- guaRTK5EL+5SLJMt5KlRC6lzF97HzPGb5bHttKCSKqfA7e4eDqoCSg1hiikCARfoq+CZ
- 7luxW+mcTPhIu87IwGgknTbaHcSmgxyyyPcyWX9e6J8CH08+188uNzNBiOr85e++SAwi
- 3dV9JO5M3p+PE/ba2Yc5YUR0kJXnq95k1B+dnr7s2FPtQU2QsQeRQLQIRseE9Sk5xF2V fA== 
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3shja306dq-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 17 Aug 2023 11:11:05 +0000
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-        by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 37H9DeQZ007832;
-        Thu, 17 Aug 2023 11:11:04 GMT
-Received: from smtprelay03.dal12v.mail.ibm.com ([172.16.1.5])
-        by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3senwkndqg-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 17 Aug 2023 11:11:04 +0000
-Received: from smtpav03.dal12v.mail.ibm.com (smtpav03.dal12v.mail.ibm.com [10.241.53.102])
-        by smtprelay03.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 37HBB32L64094470
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 17 Aug 2023 11:11:03 GMT
-Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 547ED5805A;
-        Thu, 17 Aug 2023 11:11:03 +0000 (GMT)
-Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id E916E58056;
-        Thu, 17 Aug 2023 11:11:02 +0000 (GMT)
-Received: from li-f45666cc-3089-11b2-a85c-c57d1a57929f.ibm.com (unknown [9.61.190.112])
-        by smtpav03.dal12v.mail.ibm.com (Postfix) with ESMTP;
-        Thu, 17 Aug 2023 11:11:02 +0000 (GMT)
-Message-ID: <c785dca7d2c1c732fd47047e70396f11b7a3d2d3.camel@linux.ibm.com>
-Subject: Re: [PATCH 6.1 063/591] evm: Complete description of
- evm_inode_setattr()
-From:   Mimi Zohar <zohar@linux.ibm.com>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        with ESMTP id S1350259AbjHQLfm (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 17 Aug 2023 07:35:42 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 654D0F7
+        for <stable@vger.kernel.org>; Thu, 17 Aug 2023 04:35:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1692272139; x=1723808139;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=U/IB5AY7stuYmqXqKtnDK70cJDZnilSRWZem4li6CXI=;
+  b=j59gnG9qKKd+5J3JBgOOeA6xQ2A33ObsNRPlIuLCwo9+TaVvjvToalTi
+   NVzep8M3OrY/WqVpImXDhg2VZSKCEVjFu9Odx1kHLON+20x0uSMOzzU4I
+   yRcKbElQRefNn6ALt6zERn+3lOz/iwl6NygRZrYIpVvD1CXo7KDyQkiZe
+   s09nQnBRb3qAJCIxCIqp6w18vZt53u5GiCXIexkWXAGblW5jB+Jb0bLLL
+   G6ju58P6FQtk59+d5ZxnkTnO5Wo2tXDwdmCHXgUZv21r5YDA9GEIy9Vxx
+   01RkvtU1BCGZXXmM4ctkzHHgoaqkiB1lEhIJ3LMQIP1HclLo9phB6DNH6
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10803"; a="459141100"
+X-IronPort-AV: E=Sophos;i="6.01,180,1684825200"; 
+   d="scan'208";a="459141100"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Aug 2023 04:35:37 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10803"; a="728104374"
+X-IronPort-AV: E=Sophos;i="6.01,180,1684825200"; 
+   d="scan'208";a="728104374"
+Received: from stinkpipe.fi.intel.com (HELO stinkbox) ([10.237.72.68])
+  by orsmga007.jf.intel.com with SMTP; 17 Aug 2023 04:35:34 -0700
+Received: by stinkbox (sSMTP sendmail emulation); Thu, 17 Aug 2023 14:35:33 +0300
+Date:   Thu, 17 Aug 2023 14:35:33 +0300
+From:   Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
+To:     Jani Nikula <jani.nikula@intel.com>
+Cc:     dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
         stable@vger.kernel.org
-Cc:     patches@lists.linux.dev, Roberto Sassu <roberto.sassu@huawei.com>,
-        Stefan Berger <stefanb@linux.ibm.com>,
-        Sasha Levin <sashal@kernel.org>
-Date:   Thu, 17 Aug 2023 07:11:02 -0400
-In-Reply-To: <20230716194925.509794730@linuxfoundation.org>
-References: <20230716194923.861634455@linuxfoundation.org>
-         <20230716194925.509794730@linuxfoundation.org>
-Content-Type: text/plain; charset="ISO-8859-15"
-X-Mailer: Evolution 3.28.5 (3.28.5-22.el8) 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: _IxyUO4cvT41ofwkpqJmvGNZnjNsdq8u
-X-Proofpoint-ORIG-GUID: _IxyUO4cvT41ofwkpqJmvGNZnjNsdq8u
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
- definitions=2023-08-17_03,2023-08-17_02,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0
- priorityscore=1501 lowpriorityscore=0 impostorscore=0 adultscore=0
- mlxscore=0 bulkscore=0 phishscore=0 clxscore=1011 mlxlogscore=999
- malwarescore=0 suspectscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2306200000 definitions=main-2308170100
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H5,
-        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Subject: Re: [PATCH] Revert "drm/edid: Fix csync detailed mode parsing"
+Message-ID: <ZN4GBQCtIi6v0D28@intel.com>
+References: <20230815101907.2900768-1-jani.nikula@intel.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20230815101907.2900768-1-jani.nikula@intel.com>
+X-Patchwork-Hint: comment
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi Greg,
-
-To clarify the kernel test robot report:
-
-[stable:linux-6.1.y 7217/8698] security/integrity/evm/evm_main.c:788:
-warning: Excess function parameter 'idmap' description in
-'evm_inode_setattr'
-
-Commit b1de86d4248b added two missing kernel-doc function arguments. 
-Both changes should be backported to 6.3, but then only "* @attr: iattr
-structure containing the new file attributes" should be backported.
-
-thanks,
-
-Mimi
-
-
-On Sun, 2023-07-16 at 21:43 +0200, Greg Kroah-Hartman wrote:
-> From: Roberto Sassu <roberto.sassu@huawei.com>
+On Tue, Aug 15, 2023 at 01:19:07PM +0300, Jani Nikula wrote:
+> This reverts commit ca62297b2085b5b3168bd891ca24862242c635a1.
 > 
-> [ Upstream commit b1de86d4248b273cb12c4cd7d20c08d459519f7d ]
+> Commit ca62297b2085 ("drm/edid: Fix csync detailed mode parsing") fixed
+> EDID detailed mode sync parsing. Unfortunately, there are quite a few
+> displays out there that have bogus (zero) sync field that are broken by
+> the change. Zero means analog composite sync, which is not right for
+> digital displays, and the modes get rejected. Regardless, it used to
+> work, and it needs to continue to work. Revert the change.
+
+Bah. I guess one option would be to quirk the bogus EDIDs, or maybe just
+ignore bogus sync flags for the eDP preferred mode. But maybe needs a
+bit more thinking, so
+
+Acked-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+
 > 
-> Add the description for missing parameters of evm_inode_setattr() to
-> avoid the warning arising with W=n compile option.
+> Rejecting modes with analog composite sync was the part that fixed the
+> gitlab issue 8146 [1]. We'll need to get back to the drawing board with
+> that.
 > 
-> Fixes: 817b54aa45db ("evm: add evm_inode_setattr to prevent updating an invalid security.evm") # v3.2+
-> Fixes: c1632a0f1120 ("fs: port ->setattr() to pass mnt_idmap") # v6.3+
-> Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
-> Reviewed-by: Stefan Berger <stefanb@linux.ibm.com>
-> Signed-off-by: Mimi Zohar <zohar@linux.ibm.com>
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> [1] https://gitlab.freedesktop.org/drm/intel/-/issues/8146
+> 
+> Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/8789
+> Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/8930
+> Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/9044
+> Fixes: ca62297b2085 ("drm/edid: Fix csync detailed mode parsing")
+> Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
+> Cc: dri-devel@lists.freedesktop.org
+> Cc: <stable@vger.kernel.org> # v6.4+
+> Signed-off-by: Jani Nikula <jani.nikula@intel.com>
 > ---
->  security/integrity/evm/evm_main.c | 2 ++
->  1 file changed, 2 insertions(+)
+>  drivers/gpu/drm/drm_edid.c | 29 ++++++++---------------------
+>  include/drm/drm_edid.h     | 12 +++---------
+>  2 files changed, 11 insertions(+), 30 deletions(-)
 > 
-> diff --git a/security/integrity/evm/evm_main.c b/security/integrity/evm/evm_main.c
-> index 23d484e05e6f2..f1a26d50c1d58 100644
-> --- a/security/integrity/evm/evm_main.c
-> +++ b/security/integrity/evm/evm_main.c
-> @@ -776,7 +776,9 @@ static int evm_attr_change(struct user_namespace *mnt_userns,
+> diff --git a/drivers/gpu/drm/drm_edid.c b/drivers/gpu/drm/drm_edid.c
+> index f95152fac427..340da8257b51 100644
+> --- a/drivers/gpu/drm/drm_edid.c
+> +++ b/drivers/gpu/drm/drm_edid.c
+> @@ -3457,6 +3457,10 @@ static struct drm_display_mode *drm_mode_detailed(struct drm_connector *connecto
+>  			    connector->base.id, connector->name);
+>  		return NULL;
+>  	}
+> +	if (!(pt->misc & DRM_EDID_PT_SEPARATE_SYNC)) {
+> +		drm_dbg_kms(dev, "[CONNECTOR:%d:%s] Composite sync not supported\n",
+> +			    connector->base.id, connector->name);
+> +	}
 >  
->  /**
->   * evm_inode_setattr - prevent updating an invalid EVM extended attribute
-> + * @idmap: idmap of the mount
->   * @dentry: pointer to the affected dentry
-> + * @attr: iattr structure containing the new file attributes
->   *
->   * Permit update of file attributes when files have a valid EVM signature,
->   * except in the case of them having an immutable portable signature.
+>  	/* it is incorrect if hsync/vsync width is zero */
+>  	if (!hsync_pulse_width || !vsync_pulse_width) {
+> @@ -3503,27 +3507,10 @@ static struct drm_display_mode *drm_mode_detailed(struct drm_connector *connecto
+>  	if (info->quirks & EDID_QUIRK_DETAILED_SYNC_PP) {
+>  		mode->flags |= DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC;
+>  	} else {
+> -		switch (pt->misc & DRM_EDID_PT_SYNC_MASK) {
+> -		case DRM_EDID_PT_ANALOG_CSYNC:
+> -		case DRM_EDID_PT_BIPOLAR_ANALOG_CSYNC:
+> -			drm_dbg_kms(dev, "[CONNECTOR:%d:%s] Analog composite sync!\n",
+> -				    connector->base.id, connector->name);
+> -			mode->flags |= DRM_MODE_FLAG_CSYNC | DRM_MODE_FLAG_NCSYNC;
+> -			break;
+> -		case DRM_EDID_PT_DIGITAL_CSYNC:
+> -			drm_dbg_kms(dev, "[CONNECTOR:%d:%s] Digital composite sync!\n",
+> -				    connector->base.id, connector->name);
+> -			mode->flags |= DRM_MODE_FLAG_CSYNC;
+> -			mode->flags |= (pt->misc & DRM_EDID_PT_HSYNC_POSITIVE) ?
+> -				DRM_MODE_FLAG_PCSYNC : DRM_MODE_FLAG_NCSYNC;
+> -			break;
+> -		case DRM_EDID_PT_DIGITAL_SEPARATE_SYNC:
+> -			mode->flags |= (pt->misc & DRM_EDID_PT_HSYNC_POSITIVE) ?
+> -				DRM_MODE_FLAG_PHSYNC : DRM_MODE_FLAG_NHSYNC;
+> -			mode->flags |= (pt->misc & DRM_EDID_PT_VSYNC_POSITIVE) ?
+> -				DRM_MODE_FLAG_PVSYNC : DRM_MODE_FLAG_NVSYNC;
+> -			break;
+> -		}
+> +		mode->flags |= (pt->misc & DRM_EDID_PT_HSYNC_POSITIVE) ?
+> +			DRM_MODE_FLAG_PHSYNC : DRM_MODE_FLAG_NHSYNC;
+> +		mode->flags |= (pt->misc & DRM_EDID_PT_VSYNC_POSITIVE) ?
+> +			DRM_MODE_FLAG_PVSYNC : DRM_MODE_FLAG_NVSYNC;
+>  	}
+>  
+>  set_size:
+> diff --git a/include/drm/drm_edid.h b/include/drm/drm_edid.h
+> index 169755d3de19..48e93f909ef6 100644
+> --- a/include/drm/drm_edid.h
+> +++ b/include/drm/drm_edid.h
+> @@ -61,15 +61,9 @@ struct std_timing {
+>  	u8 vfreq_aspect;
+>  } __attribute__((packed));
+>  
+> -#define DRM_EDID_PT_SYNC_MASK              (3 << 3)
+> -# define DRM_EDID_PT_ANALOG_CSYNC          (0 << 3)
+> -# define DRM_EDID_PT_BIPOLAR_ANALOG_CSYNC  (1 << 3)
+> -# define DRM_EDID_PT_DIGITAL_CSYNC         (2 << 3)
+> -#  define DRM_EDID_PT_CSYNC_ON_RGB         (1 << 1) /* analog csync only */
+> -#  define DRM_EDID_PT_CSYNC_SERRATE        (1 << 2)
+> -# define DRM_EDID_PT_DIGITAL_SEPARATE_SYNC (3 << 3)
+> -#  define DRM_EDID_PT_HSYNC_POSITIVE       (1 << 1) /* also digital csync */
+> -#  define DRM_EDID_PT_VSYNC_POSITIVE       (1 << 2)
+> +#define DRM_EDID_PT_HSYNC_POSITIVE (1 << 1)
+> +#define DRM_EDID_PT_VSYNC_POSITIVE (1 << 2)
+> +#define DRM_EDID_PT_SEPARATE_SYNC  (3 << 3)
+>  #define DRM_EDID_PT_STEREO         (1 << 5)
+>  #define DRM_EDID_PT_INTERLACED     (1 << 7)
+>  
+> -- 
+> 2.39.2
 
-
+-- 
+Ville Syrjälä
+Intel
