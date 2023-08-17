@@ -2,60 +2,54 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ACEF577F74E
-	for <lists+stable@lfdr.de>; Thu, 17 Aug 2023 15:08:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D405577F762
+	for <lists+stable@lfdr.de>; Thu, 17 Aug 2023 15:12:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346787AbjHQNIP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 17 Aug 2023 09:08:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50286 "EHLO
+        id S1349998AbjHQNMS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 17 Aug 2023 09:12:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60416 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1351347AbjHQNH5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 17 Aug 2023 09:07:57 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9446A3A8C
-        for <stable@vger.kernel.org>; Thu, 17 Aug 2023 06:07:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1692277644; x=1723813644;
-  h=from:to:cc:subject:in-reply-to:references:date:
-   message-id:mime-version;
-  bh=wE7qeL3PmBJFRmq8LxVnfupjLQQE+KvKqnjTG7gUkqw=;
-  b=mmDY53VPihM6G777T0vj08GFByy0fNAK1uj2UhGP0ZIdoNPquLzqHf+k
-   7bIIhadA+HRvgzxmJTvwhbnd01iIv3xFcLYKpLwSFl1+bPqbRkYoUyd77
-   EJ/Ophe6CaxltD1qkzivL/24tsgSszi98crBtWlT1p4jHcQMyj7zqtwtO
-   73yqCscg8THf1/hxRxVSPNO3dALqfADGVJAvF0EuM8OLjMqYH8NiFSK0V
-   A9yqV+6UYROgQ0Ygm/OXdka0WtPdEmw+lXYz65n4oc7BXyf6vSBTOm5iG
-   bUMaBs9igFGz1eyxJwU6vFb20rQOmPtPOIXodNErM2dH9fYp6/vRLLk6M
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10803"; a="436707636"
-X-IronPort-AV: E=Sophos;i="6.01,180,1684825200"; 
-   d="scan'208";a="436707636"
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Aug 2023 06:06:03 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10803"; a="981150375"
-X-IronPort-AV: E=Sophos;i="6.01,180,1684825200"; 
-   d="scan'208";a="981150375"
-Received: from jnikula-mobl4.fi.intel.com (HELO localhost) ([10.237.66.162])
-  by fmsmga006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Aug 2023 06:06:00 -0700
-From:   Jani Nikula <jani.nikula@intel.com>
-To:     Dirk Lehmann <develop@dj-l.de>, stable@vger.kernel.org
-Cc:     dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
-        Ville =?utf-8?B?U3lyasOkbMOk?= <ville.syrjala@linux.intel.com>,
-        Dirk Lehmann <develop@dj-l.de>
-Subject: Re: [PATCH v2 2/2] drm/edid: Fix "Analog composite sync!" for
- current eDP display panels
-In-Reply-To: <E1qWbpR-0007ey-0B@djlnb.local>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-References: <20230815101907.2900768-1-jani.nikula@intel.com>
- <E1qWbpR-0007ey-0B@djlnb.local>
-Date:   Thu, 17 Aug 2023 16:05:56 +0300
-Message-ID: <87o7j595u3.fsf@intel.com>
+        with ESMTP id S1351371AbjHQNL6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 17 Aug 2023 09:11:58 -0400
+Received: from smtp-relay-canonical-0.canonical.com (smtp-relay-canonical-0.canonical.com [185.125.188.120])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99FD530F1
+        for <stable@vger.kernel.org>; Thu, 17 Aug 2023 06:11:20 -0700 (PDT)
+Received: from [192.168.1.152] (unknown [222.129.36.197])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by smtp-relay-canonical-0.canonical.com (Postfix) with ESMTPSA id 754EC3F161;
+        Thu, 17 Aug 2023 13:10:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+        s=20210705; t=1692277808;
+        bh=ZOFc641//xjZbzZJp1nLBtreufTaSDvxCbK9eKVutvg=;
+        h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
+         In-Reply-To:Content-Type;
+        b=WBwk4JIIulgpRZzERpVDR36OcOC7HqYgqAI61kNL0arckTYXzn+nX6sd4FTAqYaca
+         UhxdtU75bS7ugAWZD8eqOYX05kuhGDz21V3iYu/WBKA5EYc2hxWZgM/nIHcLPsBE8q
+         9iT7YqxhNhY3OrYRw3qEoLFBbT38jPRAhkdv83Pyvl2x7JSi3Mrjn1eAFDFeBEmjjd
+         nsF9aA9M734/OYvFNMlavD6RDfIsC4iH9WPZIShwFsvn2BFYK1e0w/2Hn1rYNyPGYo
+         s9JGE96Md+fIxkJnyUTyoLO82f9bSnwDKJBt9VuJOTC/Gr7m3fB9g6m4om+sIgkZRX
+         4dMcgO1WUYSuQ==
+Message-ID: <838aac7d-dbbd-5a04-7c25-344d8e0512b5@canonical.com>
+Date:   Thu, 17 Aug 2023 21:10:02 +0800
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+To:     anshuman.gupta@intel.com
+Cc:     intel-gfx@lists.freedesktop.org, jianshui.yu@intel.com,
+        lidong.wang@intel.com, rodrigo.vivi@intel.com,
+        stable@vger.kernel.org
+References: <20230816125216.1722002-1-anshuman.gupta@intel.com>
+Subject: Re: [Intel-gfx] [PATCH v2] drm/i915/dgfx: Enable d3cold at s2idle
+Content-Language: en-US
+From:   Aaron Ma <aaron.ma@canonical.com>
+In-Reply-To: <20230816125216.1722002-1-anshuman.gupta@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-8.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -63,195 +57,4 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, 17 Aug 2023, Dirk Lehmann <develop@dj-l.de> wrote:
-> VESA Enhanced EDID Standard does not clearly describe how display
-> panel vendors should setup the Sync Signal Defintions (bit 4 & 3) in
-> the Detailed Timing Definition (relative offset 17, absolute offset
-> 47h[+18]) for Digital Video Signal Interfaces (bit 7 at offset 14h).
->
-> In practice many eDP panels which using a Digital Video Signal
-> Interfaces (bit 7 at offset 14h == 1) are leaving the Sync Signal
-> Defintions at offset 47h[+18] blank 0x00, which would mean concerned
-> with the VESA Standard [1] that they are using "Analog Composite
-> Sync".
->
-> Fix: Just detect Analog Sync Signal if an Analog Video Signal
->      Interface (bit 7 at offset 14h == 0) is in use.  Just detect
->      Digital Sync Signal if an Digital Video Signal Interface is in
->      use.
->
-> Reference: [1] VESA Enhanced EDID Standard, Release A, Rev.2, Page 35
-
-Please don't reply with patches in-reply-to other people's patches.
-
-> Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/8789
-
-This is now fixed by the revert that I just pushed.
-
-> Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/8146
-
-I don't think this patch fixes that one; see below.
-
-> Signed-off-by: Dirk Lehmann <develop@dj-l.de>
-> ---
->  drivers/gpu/drm/drm_edid.c | 74 ++++++++++++++++++++++++++++++++------
->  include/drm/drm_edid.h     | 12 +++++--
->  2 files changed, 73 insertions(+), 13 deletions(-)
->
-> diff --git a/drivers/gpu/drm/drm_edid.c b/drivers/gpu/drm/drm_edid.c
-> index 1f470968ed14..6afdc34e55ce 100644
-> --- a/drivers/gpu/drm/drm_edid.c
-> +++ b/drivers/gpu/drm/drm_edid.c
-> @@ -3437,6 +3437,7 @@ static struct drm_display_mode *drm_mode_detailed(struct drm_connector *connecto
->  	const struct drm_display_info *info = &connector->display_info;
->  	struct drm_device *dev = connector->dev;
->  	struct drm_display_mode *mode;
-> +	const struct edid *edid = drm_edid->edid;
->  	const struct detailed_pixel_timing *pt = &timing->data.pixel_data;
->  	unsigned hactive = (pt->hactive_hblank_hi & 0xf0) << 4 | pt->hactive_lo;
->  	unsigned vactive = (pt->vactive_vblank_hi & 0xf0) << 4 | pt->vactive_lo;
-> @@ -3456,10 +3457,6 @@ static struct drm_display_mode *drm_mode_detailed(struct drm_connector *connecto
->  			    connector->base.id, connector->name);
->  		return NULL;
->  	}
-> -	if (!(pt->misc & DRM_EDID_PT_SEPARATE_SYNC)) {
-> -		drm_dbg_kms(dev, "[CONNECTOR:%d:%s] Composite sync not supported\n",
-> -			    connector->base.id, connector->name);
-> -	}
->  
->  	/* it is incorrect if hsync/vsync width is zero */
->  	if (!hsync_pulse_width || !vsync_pulse_width) {
-> @@ -3505,11 +3502,68 @@ static struct drm_display_mode *drm_mode_detailed(struct drm_connector *connecto
->  
->  	if (info->quirks & EDID_QUIRK_DETAILED_SYNC_PP) {
->  		mode->flags |= DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC;
-> +	} else if (edid->input & DRM_EDID_INPUT_DIGITAL) {
-> +		/* !info->quirks && edid->input == DIGITAL  */
-> +		switch (pt->misc & DRM_EDID_PT_SYNC_MASK) {
-> +		/* VESA Enhanced EDID Standard, Release A, Rev.2, Page 35
-> +		 *
-> +		 * CASE DRM_EDID_PT_ANALOG_CSYNC:
-> +		 *
-> +		 * (pt->misc & DRM_EDID_PT_SYNC_MASK == 0x00) means
-> +		 * "Analog Composite Sync" as described in VESA
-> +		 * Standard.  But many digital display panels without
-> +		 * composite sync are also using 0x00 here.
-> +		 *
-> +		 * Therefore use DEFAULT: as we are currently on an
-> +		 * digital video signal interface.
-> +		 */
-> +		case DRM_EDID_PT_DIGITAL_CSYNC:
-> +			drm_dbg_kms(dev,
-> +				"[CONNECTOR:%d:%s] Digital composite sync!\n",
-> +				connector->base.id, connector->name);
-> +			mode->flags |= DRM_MODE_FLAG_CSYNC;
-> +			mode->flags |= (pt->misc & DRM_EDID_PT_HSYNC_POSITIVE) ?
-> +				DRM_MODE_FLAG_PCSYNC : DRM_MODE_FLAG_NCSYNC;
-> +			break;
-> +		case DRM_EDID_PT_DIGITAL_SEPARATE_SYNC:
-> +			drm_dbg_kms(dev,
-> +				"[CONNECTOR:%d:%s] Digital seperate sync!\n",
-> +				connector->base.id, connector->name);
-> +			goto digital_default;
-> +			break; /* Missing BREAK throws a compiler warning  */
-
-fallthrough; will do the trick.
-
-> +		default:
-> +digital_default:
-> +			mode->flags |= (pt->misc & DRM_EDID_PT_HSYNC_POSITIVE) ?
-> +				DRM_MODE_FLAG_PHSYNC : DRM_MODE_FLAG_NHSYNC;
-> +			mode->flags |= (pt->misc & DRM_EDID_PT_VSYNC_POSITIVE) ?
-> +				DRM_MODE_FLAG_PVSYNC : DRM_MODE_FLAG_NVSYNC;
-
-The failing mode in bug [1] has 0x0a for flags, so it ends up here, and
-for that display this patch is a no-op.
-
-As I explained in [2], all the problematic cases have invalid data, but
-the ones fixed by the revert need to ignore the analog sync *flags* and
-accept the mode, and the display in [1] needs to have the whole *mode*
-rejected.
-
-[1] https://gitlab.freedesktop.org/drm/intel/-/issues/8146
-[2] https://gitlab.freedesktop.org/drm/intel/-/issues/8789#note_2047902
-
-> +			break;
-> +		}
->  	} else {
-> -		mode->flags |= (pt->misc & DRM_EDID_PT_HSYNC_POSITIVE) ?
-> -			DRM_MODE_FLAG_PHSYNC : DRM_MODE_FLAG_NHSYNC;
-> -		mode->flags |= (pt->misc & DRM_EDID_PT_VSYNC_POSITIVE) ?
-> -			DRM_MODE_FLAG_PVSYNC : DRM_MODE_FLAG_NVSYNC;
-> +		/* !info->quirks && edid->input == ANALOG  */
-> +		switch (pt->misc & DRM_EDID_PT_SYNC_MASK) {
-> +		/* VESA Enhanced EDID Standard, Release A, Rev.2, Page 35
-> +		 *
-> +		 * CASE DRM_EDID_PT_ANALOG_CSYNC:
-> +		 *
-> +		 * (pt->misc & DRM_EDID_PT_SYNC_MASK == 0x00) for
-> +		 * "Analog Composite Sync" is possible here, as we are
-> +		 * currently on an analog video signal interface.
-> +		 */
-> +		case DRM_EDID_PT_ANALOG_CSYNC:
-> +		case DRM_EDID_PT_BIPOLAR_ANALOG_CSYNC:
-> +			drm_dbg_kms(dev,
-> +				"[CONNECTOR:%d:%s] Analog composite sync!\n",
-> +				connector->base.id, connector->name);
-> +			mode->flags |= DRM_MODE_FLAG_CSYNC | DRM_MODE_FLAG_NCSYNC;
-> +			break;
-> +		default:
-> +			mode->flags |= (pt->misc & DRM_EDID_PT_HSYNC_POSITIVE) ?
-> +				DRM_MODE_FLAG_PHSYNC : DRM_MODE_FLAG_NHSYNC;
-> +			mode->flags |= (pt->misc & DRM_EDID_PT_VSYNC_POSITIVE) ?
-> +				DRM_MODE_FLAG_PVSYNC : DRM_MODE_FLAG_NVSYNC;
-> +			break;
-> +		}
-
-Another angle is that for analog displays, EDID offset 0x14 has info
-about the supported sync modes. If we're separating digital/analog sync
-handling, we should probably filter the analog sync with the info from
-0x14.
-
-BR,
-Jani.
-
-
->  	}
->  
->  set_size:
-> @@ -3522,8 +3576,8 @@ static struct drm_display_mode *drm_mode_detailed(struct drm_connector *connecto
->  	}
->  
->  	if (info->quirks & EDID_QUIRK_DETAILED_USE_MAXIMUM_SIZE) {
-> -		mode->width_mm = drm_edid->edid->width_cm * 10;
-> -		mode->height_mm = drm_edid->edid->height_cm * 10;
-> +		mode->width_mm = edid->width_cm * 10;
-> +		mode->height_mm = edid->height_cm * 10;
->  	}
->  
->  	mode->type = DRM_MODE_TYPE_DRIVER;
-> diff --git a/include/drm/drm_edid.h b/include/drm/drm_edid.h
-> index 48e93f909ef6..169755d3de19 100644
-> --- a/include/drm/drm_edid.h
-> +++ b/include/drm/drm_edid.h
-> @@ -61,9 +61,15 @@ struct std_timing {
->  	u8 vfreq_aspect;
->  } __attribute__((packed));
->  
-> -#define DRM_EDID_PT_HSYNC_POSITIVE (1 << 1)
-> -#define DRM_EDID_PT_VSYNC_POSITIVE (1 << 2)
-> -#define DRM_EDID_PT_SEPARATE_SYNC  (3 << 3)
-> +#define DRM_EDID_PT_SYNC_MASK              (3 << 3)
-> +# define DRM_EDID_PT_ANALOG_CSYNC          (0 << 3)
-> +# define DRM_EDID_PT_BIPOLAR_ANALOG_CSYNC  (1 << 3)
-> +# define DRM_EDID_PT_DIGITAL_CSYNC         (2 << 3)
-> +#  define DRM_EDID_PT_CSYNC_ON_RGB         (1 << 1) /* analog csync only */
-> +#  define DRM_EDID_PT_CSYNC_SERRATE        (1 << 2)
-> +# define DRM_EDID_PT_DIGITAL_SEPARATE_SYNC (3 << 3)
-> +#  define DRM_EDID_PT_HSYNC_POSITIVE       (1 << 1) /* also digital csync */
-> +#  define DRM_EDID_PT_VSYNC_POSITIVE       (1 << 2)
->  #define DRM_EDID_PT_STEREO         (1 << 5)
->  #define DRM_EDID_PT_INTERLACED     (1 << 7)
-
--- 
-Jani Nikula, Intel Open Source Graphics Center
+Tested-by: Aaron Ma <aaron.ma@canonical.com>
