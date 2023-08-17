@@ -2,68 +2,95 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E1A2F77FDD6
-	for <lists+stable@lfdr.de>; Thu, 17 Aug 2023 20:27:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3995477FDE8
+	for <lists+stable@lfdr.de>; Thu, 17 Aug 2023 20:34:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1352911AbjHQS0r (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 17 Aug 2023 14:26:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50086 "EHLO
+        id S1354323AbjHQSeR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 17 Aug 2023 14:34:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58252 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1354505AbjHQS0n (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 17 Aug 2023 14:26:43 -0400
-Received: from mail-lj1-x232.google.com (mail-lj1-x232.google.com [IPv6:2a00:1450:4864:20::232])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 688013592
-        for <stable@vger.kernel.org>; Thu, 17 Aug 2023 11:26:19 -0700 (PDT)
-Received: by mail-lj1-x232.google.com with SMTP id 38308e7fff4ca-2b9a2033978so1472341fa.0
-        for <stable@vger.kernel.org>; Thu, 17 Aug 2023 11:26:19 -0700 (PDT)
+        with ESMTP id S1354452AbjHQSeI (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 17 Aug 2023 14:34:08 -0400
+Received: from mail-qt1-x82e.google.com (mail-qt1-x82e.google.com [IPv6:2607:f8b0:4864:20::82e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8CBC32D7D
+        for <stable@vger.kernel.org>; Thu, 17 Aug 2023 11:34:05 -0700 (PDT)
+Received: by mail-qt1-x82e.google.com with SMTP id d75a77b69052e-40c72caec5cso48961cf.0
+        for <stable@vger.kernel.org>; Thu, 17 Aug 2023 11:34:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1692296699; x=1692901499;
+        d=google.com; s=20221208; t=1692297244; x=1692902044;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=xTCzY45neRf9bLG0/HZXpMx1Auiac0ZDw5Pu30+Zc5Y=;
-        b=JgtobsF5w8cLXojXpzy5vFUVkWdUsq0DRhT8ba5XIg2hgKolBhgh2VbC26FfnwJWC9
-         Q3aJzC6xBnZpxfg4mJtdy4uPpsDRT32X5cjLUj2+gmkGgqil9X8mEh1DJ3ueSkRI7VJT
-         m1f4CYqiRC8KSIYM1jFK2rCs8vv1MChQzD5O1ZzGAzLx5ORa521U0fD2seWL+K1DgBPw
-         ij1qXmXOB+xGTcYtdrnkw7TSbCYHKfmy6f2lHZ8lDdnVWJg4SWwsSXWVjt4oTwTF4UDz
-         ywjOdcZ6Sx7JU3NAaGny0od3l8zI2S3zvjcq7mU+ONR3SheaY1Wg2RK63pzT/V5esH64
-         xf+A==
+        bh=Rjwv8sslpW+2jt+7VuXCijBydYvuy0SecoEskGI9Hvg=;
+        b=mRsOhspkMEK2n+R1CkVHVpfAMtm0Sa916XMiv4H+Cl59SviDwcTKHyeuTKgvsn/cSn
+         8DB63ATRXXMz9K+aiTQpVKm8xMXQn6CK9v9j/RmnOMR+ovU+kce3K3Uv6r5O9zV6wwFK
+         39Wbt3tnHL/Ri5TI1pbKgX3Gt/R5cOeeeYrMX8uUDCXGeLXwlLPywp2nr8eoEKVLPxaN
+         dMm0ICQoYi36DAZKWQPevn4awNMHlS+/VCw3y+wArX9zIa4neFsfsDwQvkEEgPzH8IBj
+         9N1DmZy3RdaI1iH7yJbG+eqVIE0S2lZfekgRMsX+ceHgxf6iJ2RsYHQRB+pZWi3a9iMY
+         58aQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692296699; x=1692901499;
+        d=1e100.net; s=20221208; t=1692297244; x=1692902044;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=xTCzY45neRf9bLG0/HZXpMx1Auiac0ZDw5Pu30+Zc5Y=;
-        b=jMpmxBTTgiUenQhYIw/GlBMBo/kN2+cXo+bTQCx1+FR6ougb8NSXwu5wunuwAePxsW
-         sSmxFGtx82nLfGnCHYaqOHhv8c0bQx0DQFi3+k/hyo24HYyyo09x7GMlTnbaHpV3asCc
-         +KoD2KgyjK0akcVFJxh2e7RfpEsBHnzCTf4eN5DO0eGC36MxfwYlz/IZwd1a8hCT9EN6
-         ZMOPwvat4YCAfx2e/8tPnrpXvF3viHyy3U+z4sTTltOnbHS6WNPQJbdPRcjCeDcdlOR0
-         r6eB/gfBwq+egKtvu8OmiYYh0xZ2B09zYiDUVarWLTmi7vS4KGPzotFcawze6EoSn0j+
-         uPnA==
-X-Gm-Message-State: AOJu0Yzc23C2x6Yuk+mU9YutD8MLJOfcGIaj0rEeu+3xXWKC21394FT2
-        laZktMKaC3XQEoSueV+RutvCa3XXdxz0iW320pJAgw==
-X-Google-Smtp-Source: AGHT+IE50cnqvaE0+vUzqUjw3t9ZgyGRNYS1PoufZg3xW9PDTtIyg250o9j5dwUqW3d4wVEGjwL5lqXKmWHmq9w13VY=
-X-Received: by 2002:a2e:6806:0:b0:2ba:18e5:1064 with SMTP id
- c6-20020a2e6806000000b002ba18e51064mr129890lja.14.1692296698761; Thu, 17 Aug
- 2023 11:24:58 -0700 (PDT)
+        bh=Rjwv8sslpW+2jt+7VuXCijBydYvuy0SecoEskGI9Hvg=;
+        b=AC3H+KVD2KtqLIMsfngwvs+M5Qx1koQ+CJTyUhDak2bJsKdd7vyinfwjGJwsrZP5pQ
+         oj//wzU7yWPgFY+QJiPS8SNhNBBINVATzjdYcvfXFFEblmYXCGjnTMZdvoJisG4B+VGP
+         by7ifLQazkrg+FZtRA1OmuR/yHDK/sxHaeuOu6HNhCg0MZj5XrbLKEdr1RFXQx/pMmBG
+         U9OQKFanKImyTEYEIDDkFcGAA374HayzxqwBOZ3LCGFXeZ6/xUs/hRW8SgkgCpdvS992
+         hvx/C1O02KhILuH8dTlggrjRzsejs0xbZiKqRkyZsE7DvwK84Vjqdn+7UWpRn5W5s2Zd
+         g/Vg==
+X-Gm-Message-State: AOJu0YxV4yfD6T0DO6CkkKzrDT0+um97Hjli+0fDdDigxzLsu7MOl2Gd
+        ETUcqIdHIbOoCPpsA7WuyTEsHn1VxyoB01KoMN/pAA==
+X-Google-Smtp-Source: AGHT+IEAoy+DC+ZtRcR24ffFRFO1j1wvaVNNo42ihSrViDhvZaj9joDlxOmKfTAV1k1Hmd0SLHtyhBIunqwuMP0wbPA=
+X-Received: by 2002:a05:622a:1801:b0:404:8218:83da with SMTP id
+ t1-20020a05622a180100b00404821883damr45742qtc.1.1692297244495; Thu, 17 Aug
+ 2023 11:34:04 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230817164733.2475092-1-nphamcs@gmail.com> <CAJD7tkYnhTOTR8OOzvmC4dbctEE951dfbAm=wZN7gEXvLNLRng@mail.gmail.com>
- <CAKEwX=PFMV0PE5WRw2C==pNCqTg7SaY+NFF59b=kZF0xbe8=9g@mail.gmail.com>
-In-Reply-To: <CAKEwX=PFMV0PE5WRw2C==pNCqTg7SaY+NFF59b=kZF0xbe8=9g@mail.gmail.com>
-From:   Yosry Ahmed <yosryahmed@google.com>
-Date:   Thu, 17 Aug 2023 11:24:22 -0700
-Message-ID: <CAJD7tkYU0Mhprw4yP08rOyEMibZ-nh=hTvW-gvveaJQ5QVJCPA@mail.gmail.com>
-Subject: Re: [PATCH] workingset: ensure memcg is valid for recency check
-To:     Nhat Pham <nphamcs@gmail.com>
-Cc:     akpm@linux-foundation.org, hannes@cmpxchg.org,
-        kernel-team@meta.com, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20220613094924.913340374@linuxfoundation.org> <20220613094928.793712131@linuxfoundation.org>
+ <6283c4b1-2513-207d-4ed6-fdabf3f3880e@collabora.com> <2023081619-slapping-congrats-8e85@gregkh>
+ <471bf84d-9d58-befc-8224-359a62e29786@collabora.com>
+In-Reply-To: <471bf84d-9d58-befc-8224-359a62e29786@collabora.com>
+From:   Saravana Kannan <saravanak@google.com>
+Date:   Thu, 17 Aug 2023 11:33:26 -0700
+Message-ID: <CAGETcx-NVoN7b8XCV09ouof81XxZk4wtGhEcqcFAt6Gs=JWKdw@mail.gmail.com>
+Subject: Re: [PATCH 5.17 127/298] driver core: Fix wait_for_device_probe() &
+ deferred_probe_timeout interaction
+To:     Shreeya Patel <shreeya.patel@collabora.com>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org, John Stultz <jstultz@google.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Alexey Kuznetsov <kuznet@ms2.inr.ac.ru>,
+        Hideaki YOSHIFUJI <yoshfuji@linux-ipv6.org>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Rob Herring <robh@kernel.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+        Robin Murphy <robin.murphy@arm.com>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Naresh Kamboju <naresh.kamboju@linaro.org>,
+        Basil Eljuse <Basil.Eljuse@arm.com>,
+        Ferry Toth <fntoth@gmail.com>, Arnd Bergmann <arnd@arndb.de>,
+        Anders Roxell <anders.roxell@linaro.org>,
+        linux-pm@vger.kernel.org, Nathan Chancellor <nathan@kernel.org>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Sasha Levin <sashal@kernel.org>, linux-kernel@vger.kernel.org,
+        "gustavo.padovan@collabora.com" <gustavo.padovan@collabora.com>,
+        =?UTF-8?Q?Ricardo_Ca=C3=B1uelo_Navarro?= 
+        <ricardo.canuelo@collabora.com>,
+        Guillaume Charles Tucker <guillaume.tucker@collabora.com>,
+        usama.anjum@collabora.com, kernelci@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
-        USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL autolearn=unavailable
+        USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -71,168 +98,143 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, Aug 17, 2023 at 11:13=E2=80=AFAM Nhat Pham <nphamcs@gmail.com> wrot=
-e:
+On Thu, Aug 17, 2023 at 4:37=E2=80=AFAM Shreeya Patel
+<shreeya.patel@collabora.com> wrote:
 >
-> Thanks for the review, Yosry!
-> On Thu, Aug 17, 2023 at 10:40=E2=80=AFAM Yosry Ahmed <yosryahmed@google.c=
-om> wrote:
-> >
-> > On Thu, Aug 17, 2023 at 9:47=E2=80=AFAM Nhat Pham <nphamcs@gmail.com> w=
-rote:
-> > >
-> > > In eviction recency check, we are currently not holding a local
-> > > reference to the memcg that the refaulted folio belonged to when it w=
-as
-> > > evicted. This could cause serious memcg lifetime issues, for e.g in t=
-he
-> > > memcg hierarchy traversal done in mem_cgroup_get_nr_swap_pages(). Thi=
-s
-> > > has occurred in production:
-> >
-> > Doesn't workingset_refault() call workingset_test_recent() under RCU?
-> Yep we're under RCU protection. But the eviction_memcg is grabbed
-> from a memcg id packed in the shadow - its reference count might
-> go down to 0 in the meantime and get killed.
-
-I see, is this basically protecting against a race with
-mem_cgroup_id_put_many()? My thought was that given that we have an
-id, then we should have a ref to the memcg, but if we race with
-mem_cgroup_id_put_many() we might get the id just before it is removed
-and the ref is put, and then use the memcg after it's freed.
-
-Is this what's happening here? If yes, I think this makes sense.
-
+> Hi Greg,
 >
-> This pattern (tryget memcg inside RCU) is done in a couple
-> other places too.
-> > Shouldn't this guarantee the validity of the memcg?
-> >
-> > >
-> > > [ 155757.793456] BUG: kernel NULL pointer dereference, address: 00000=
-000000000c0
-> > > [ 155757.807568] #PF: supervisor read access in kernel mode
-> > > [ 155757.818024] #PF: error_code(0x0000) - not-present page
-> > > [ 155757.828482] PGD 401f77067 P4D 401f77067 PUD 401f76067 PMD 0
-> > > [ 155757.839985] Oops: 0000 [#1] SMP
-> > > [ 155757.846444] CPU: 7 PID: 1380944 Comm: ThriftSrv-pri3- Kdump: loa=
-ded Tainted: G S                 6.4.3-0_fbk1_rc0_594_g8d0cbcaa67ba #1
-> > > [ 155757.870808] Hardware name: Wiwynn Twin Lakes MP/Twin Lakes Passi=
-ve MP, BIOS YMM16 05/24/2021
-> > > [ 155757.887870] RIP: 0010:mem_cgroup_get_nr_swap_pages+0x3d/0xb0
-> > > [ 155757.899377] Code: 29 19 4a 02 48 39 f9 74 63 48 8b 97 c0 00 00 0=
-0 48 8b b7 58 02 00 00 48 2b b7 c0 01 00 00 48 39 f0 48 0f 4d c6 48 39 d1 7=
-4 42 <48> 8b b2 c0 00 00 00 48 8b ba 58 02 00 00 48 2b ba c0 01 00 00 48
-> > > [ 155757.937125] RSP: 0018:ffffc9002ecdfbc8 EFLAGS: 00010286
-> > > [ 155757.947755] RAX: 00000000003a3b1c RBX: 000007ffffffffff RCX: fff=
-f888280183000
-> > > [ 155757.962202] RDX: 0000000000000000 RSI: 0007ffffffffffff RDI: fff=
-f888bbc2d1000
-> > > [ 155757.976648] RBP: 0000000000000001 R08: 000000000000000b R09: fff=
-f888ad9cedba0
-> > > [ 155757.991094] R10: ffffea0039c07900 R11: 0000000000000010 R12: fff=
-f888b23a7b000
-> > > [ 155758.005540] R13: 0000000000000000 R14: ffff888bbc2d1000 R15: 000=
-007ffffc71354
-> > > [ 155758.019991] FS:  00007f6234c68640(0000) GS:ffff88903f9c0000(0000=
-) knlGS:0000000000000000
-> > > [ 155758.036356] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> > > [ 155758.048023] CR2: 00000000000000c0 CR3: 0000000a83eb8004 CR4: 000=
-00000007706e0
-> > > [ 155758.062473] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 000=
-0000000000000
-> > > [ 155758.076924] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 000=
-0000000000400
-> > > [ 155758.091376] PKRU: 55555554
-> > > [ 155758.096957] Call Trace:
-> > > [ 155758.102016]  <TASK>
-> > > [ 155758.106502]  ? __die+0x78/0xc0
-> > > [ 155758.112793]  ? page_fault_oops+0x286/0x380
-> > > [ 155758.121175]  ? exc_page_fault+0x5d/0x110
-> > > [ 155758.129209]  ? asm_exc_page_fault+0x22/0x30
-> > > [ 155758.137763]  ? mem_cgroup_get_nr_swap_pages+0x3d/0xb0
-> > > [ 155758.148060]  workingset_test_recent+0xda/0x1b0
-> > > [ 155758.157133]  workingset_refault+0xca/0x1e0
-> > > [ 155758.165508]  filemap_add_folio+0x4d/0x70
-> > > [ 155758.173538]  page_cache_ra_unbounded+0xed/0x190
-> > > [ 155758.182919]  page_cache_sync_ra+0xd6/0x1e0
-> > > [ 155758.191738]  filemap_read+0x68d/0xdf0
-> > > [ 155758.199495]  ? mlx5e_napi_poll+0x123/0x940
-> > > [ 155758.207981]  ? __napi_schedule+0x55/0x90
-> > > [ 155758.216095]  __x64_sys_pread64+0x1d6/0x2c0
-> > > [ 155758.224601]  do_syscall_64+0x3d/0x80
-> > > [ 155758.232058]  entry_SYSCALL_64_after_hwframe+0x46/0xb0
-> > > [ 155758.242473] RIP: 0033:0x7f62c29153b5
-> > > [ 155758.249938] Code: e8 48 89 75 f0 89 7d f8 48 89 4d e0 e8 b4 e6 f=
-7 ff 41 89 c0 4c 8b 55 e0 48 8b 55 e8 48 8b 75 f0 8b 7d f8 b8 11 00 00 00 0=
-f 05 <48> 3d 00 f0 ff ff 77 33 44 89 c7 48 89 45 f8 e8 e7 e6 f7 ff 48 8b
-> > > [ 155758.288005] RSP: 002b:00007f6234c5ffd0 EFLAGS: 00000293 ORIG_RAX=
-: 0000000000000011
-> > > [ 155758.303474] RAX: ffffffffffffffda RBX: 00007f628c4e70c0 RCX: 000=
-07f62c29153b5
-> > > [ 155758.318075] RDX: 000000000003c041 RSI: 00007f61d2986000 RDI: 000=
-0000000000076
-> > > [ 155758.332678] RBP: 00007f6234c5fff0 R08: 0000000000000000 R09: 000=
-0000064d5230c
-> > > [ 155758.347452] R10: 000000000027d450 R11: 0000000000000293 R12: 000=
-000000003c041
-> > > [ 155758.362044] R13: 00007f61d2986000 R14: 00007f629e11b060 R15: 000=
-000000027d450
-> > > [ 155758.376661]  </TASK>
-> > >
-> > > This patch fixes the issue by getting a local reference inside
-> > > unpack_shadow().
-> > >
-> > > Fixes: f78dfc7b77d5 ("workingset: fix confusion around eviction vs re=
-fault container")
-> > > Signed-off-by: Nhat Pham <nphamcs@gmail.com>
-> > > Cc: stable@vger.kernel.org
-> > > ---
-> > >  mm/workingset.c | 57 ++++++++++++++++++++++++++++++-----------------=
+> On 16/08/23 20:33, Greg Kroah-Hartman wrote:
+> > On Wed, Aug 16, 2023 at 03:09:27PM +0530, Shreeya Patel wrote:
+> >> On 13/06/22 15:40, Greg Kroah-Hartman wrote:
+> >>> From: Saravana Kannan<saravanak@google.com>
+> >>>
+> >>> [ Upstream commit 5ee76c256e928455212ab759c51d198fedbe7523 ]
+> >>>
+> >>> Mounting NFS rootfs was timing out when deferred_probe_timeout was
+> >>> non-zero [1].  This was because ip_auto_config() initcall times out
+> >>> waiting for the network interfaces to show up when
+> >>> deferred_probe_timeout was non-zero. While ip_auto_config() calls
+> >>> wait_for_device_probe() to make sure any currently running deferred
+> >>> probe work or asynchronous probe finishes, that wasn't sufficient to
+> >>> account for devices being deferred until deferred_probe_timeout.
+> >>>
+> >>> Commit 35a672363ab3 ("driver core: Ensure wait_for_device_probe() wai=
+ts
+> >>> until the deferred_probe_timeout fires") tried to fix that by making
+> >>> sure wait_for_device_probe() waits for deferred_probe_timeout to expi=
+re
+> >>> before returning.
+> >>>
+> >>> However, if wait_for_device_probe() is called from the kernel_init()
+> >>> context:
+> >>>
+> >>> - Before deferred_probe_initcall() [2], it causes the boot process to
+> >>>     hang due to a deadlock.
+> >>>
+> >>> - After deferred_probe_initcall() [3], it blocks kernel_init() from
+> >>>     continuing till deferred_probe_timeout expires and beats the poin=
+t of
+> >>>     deferred_probe_timeout that's trying to wait for userspace to loa=
+d
+> >>>     modules.
+> >>>
+> >>> Neither of this is good. So revert the changes to
+> >>> wait_for_device_probe().
+> >>>
+> >>> [1] -https://lore.kernel.org/lkml/TYAPR01MB45443DF63B9EF29054F7C41FD8=
+C60@TYAPR01MB4544.jpnprd01.prod.outlook.com/
+> >>> [2] -https://lore.kernel.org/lkml/YowHNo4sBjr9ijZr@dev-arch.thelio-39=
+90X/
+> >>> [3] -https://lore.kernel.org/lkml/Yo3WvGnNk3LvLb7R@linutronix.de/
+> >> Hi Saravana, Greg,
+> >>
+> >>
+> >> KernelCI found this patch causes the baseline.bootrr.deferred-probe-em=
+pty test to fail on r8a77960-ulcb,
+> >> see the following details for more information.
+> >>
+> >> KernelCI dashboard link:
+> >> https://linux.kernelci.org/test/plan/id/64d2a6be8c1a8435e535b264/
+> >>
+> >> Error messages from the logs :-
+> >>
+> >> + UUID=3D11236495_1.5.2.4.5
+> >> + set +x
+> >> + export 'PATH=3D/opt/bootrr/libexec/bootrr/helpers:/lava-11236495/1/.=
+./bin:/sbin:/usr/sbin:/bin:/usr/bin'
+> >> + cd /opt/bootrr/libexec/bootrr
+> >> + sh helpers/bootrr-auto
+> >> e6800000.ethernet
+> >> e6700000.dma-controller
+> >> e7300000.dma-controller
+> >> e7310000.dma-controller
+> >> ec700000.dma-controller
+> >> ec720000.dma-controller
+> >> fea20000.vsp
+> >> feb00000.display
+> >> fea28000.vsp
+> >> fea30000.vsp
+> >> fe9a0000.vsp
+> >> fe9af000.fcp
+> >> fea27000.fcp
+> >> fea2f000.fcp
+> >> fea37000.fcp
+> >> sound
+> >> ee100000.mmc
+> >> ee140000.mmc
+> >> ec500000.sound
+> >> /lava-11236495/1/../bin/lava-test-case
+> >> <8>[   17.476741] <LAVA_SIGNAL_TESTCASE TEST_CASE_ID=3Ddeferred-probe-=
+empty RESULT=3Dfail>
+> >>
+> >> Test case failing :-
+> >> Baseline Bootrr deferred-probe-empty test -https://github.com/kernelci=
+/bootrr/blob/main/helpers/bootrr-generic-tests
+> >>
+> >> Regression Reproduced :-
+> >>
+> >> Lava job after reverting the commit 5ee76c256e92
+> >> https://lava.collabora.dev/scheduler/job/11292890
+> >>
+> >>
+> >> Bisection report from KernelCI can be found at the bottom of the email=
+.
+> >>
+> >> Thanks,
+> >> Shreeya Patel
+> >>
+> >> #regzbot introduced: 5ee76c256e92
+> >> #regzbot title: KernelCI: Multiple devices deferring on r8a77960-ulcb
+> >>
+> >> ----------------------------------------------------------------------=
+---------------------------------------------------------------------------=
 --
-> > >  1 file changed, 35 insertions(+), 22 deletions(-)
-> > >
-> > > diff --git a/mm/workingset.c b/mm/workingset.c
-> > > index da58a26d0d4d..c20b26bb6cb1 100644
-> > > --- a/mm/workingset.c
-> > > +++ b/mm/workingset.c
-> > > @@ -206,10 +206,11 @@ static void *pack_shadow(int memcgid, pg_data_t=
- *pgdat, unsigned long eviction,
-> > >         return xa_mk_value(eviction);
-> > >  }
-> > >
+> >>
+> >> * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * **
+> >> * If you do send a fix, please include this trailer: *
+> >> * Reported-by: "kernelci.org bot" <bot@...> *
+> >> * *
+> >> * Hope this helps! *
+> >> * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+> >>
+> >> stable-rc/linux-5.10.y bisection: baseline.bootrr.deferred-probe-empty=
+ on
+> >> r8a77960-ulcb
+> > You are testing 5.10.y, yet the subject says 5.17?
 > >
-> > > -static void unpack_shadow(void *shadow, int *memcgidp, pg_data_t **p=
-gdat,
-> > > -                         unsigned long *evictionp, bool *workingsetp=
-)
-> > > +static void unpack_shadow(void *shadow, struct mem_cgroup **memcgp,
-> > > +                       pg_data_t **pgdat, unsigned long *evictionp, =
-bool *workingsetp)
-> >
-> > We should probably document that we are returning a memcg with a ref
-> > on it, or change the name to put "get" and "memcg" in there somewhere.
-> > Alternatively we could separate the function that gets the memcg from
-> > the shadow (e.g. get_memcg_from_shadow or so).
-> Hmm I feel like unpack as a verb is good here. But I can add a small
-> comment/documentation above the function to signify that this
-> function holds a reference to the memcg, and a corresponding
-> put call will be needed, if that helps.
-
-I don't want to be nitpicking, so no strong opinions here :)
-
-> >
-> > I would also hold an RCU read lock here so that the call to
-> > mem_cgroup_from_id() is valid. I know all callers currently do, but it
-> > may change later. Alternatively we can add an assertion or a warning.
-> I prefer the assertion idea. But FWIW, mem_cgroup_from_id()
-> already has a warning for this
-> (WARN_ON_ONCE(!rcu_read_lock_held()))
+> > Which is it here?
 >
-> Seems redundant to me, especially if the reason why we care
-> about unpack_shadow() being under RCU is for
-> mem_cgroup_from_id() to be valid.
-> >
+> Sorry, I accidentally used the lore link for 5.17 while reporting this
+> issue,
+> but this test does fail on all the stable releases from 5.10 onwards.
+>
+> stable 5.15 :-
+> https://linux.kernelci.org/test/case/id/64dd156a5ac58d0cf335b1ea/
+> mainline :-
+> https://linux.kernelci.org/test/case/id/64dc13d55cb51357a135b209/
+>
 
-Fair enough, I guess basic testing with debugging enabled should spot
-any misuse quickly enough.
+Shreeya, can you try the patch Geert suggested and let us know if it
+helps? If not, then I can try to take a closer look.
+
+-Saravana
