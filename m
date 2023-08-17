@@ -2,73 +2,81 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 468CA77FB67
-	for <lists+stable@lfdr.de>; Thu, 17 Aug 2023 18:00:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E7A9877FB6C
+	for <lists+stable@lfdr.de>; Thu, 17 Aug 2023 18:02:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1351166AbjHQQAW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 17 Aug 2023 12:00:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46324 "EHLO
+        id S1353417AbjHQQB0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 17 Aug 2023 12:01:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56200 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1353428AbjHQQAD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 17 Aug 2023 12:00:03 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1184C30F1
-        for <stable@vger.kernel.org>; Thu, 17 Aug 2023 09:00:02 -0700 (PDT)
+        with ESMTP id S1353415AbjHQQA6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 17 Aug 2023 12:00:58 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4258F30E9;
+        Thu, 17 Aug 2023 09:00:57 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9933067514
-        for <stable@vger.kernel.org>; Thu, 17 Aug 2023 16:00:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB4EBC433C8;
-        Thu, 17 Aug 2023 16:00:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692288001;
-        bh=URfkQC6T1yRnRQwiIDvntMf2HUheMa6DnBprmeOIMCg=;
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D4ECB6293C;
+        Thu, 17 Aug 2023 16:00:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17746C433C8;
+        Thu, 17 Aug 2023 16:00:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1692288056;
+        bh=7q34eH4rPK+YptiiNrbK2ngkqEU1Twj0WP3fj7nVHh0=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=ul0yyiEaTE8oWr3XybYQYLQQPYv9zUMygWGRNQysVJCPkhcHGefjVNotKfcqRxjPV
-         RNnD9hmAGZy2EUwH5cK9cKVEkLY5M2gxSq0yfIVjAh92zmBU4fD7nzzqql4AnUGTtT
-         SBhv8bJMMPP+B+SK8Hg1YUlCOMC1DJcM/6tVQxKg=
-Date:   Thu, 17 Aug 2023 17:59:58 +0200
-From:   'Greg KH' <gregkh@linuxfoundation.org>
-To:     David Laight <David.Laight@aculab.com>
-Cc:     "t.martitz@avm.de" <t.martitz@avm.de>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>,
-        Al Viro <viro@zeniv.linux.org.uk>
-Subject: Re: proc_lseek backport request
-Message-ID: <2023081729-strained-hatchback-41af@gregkh>
-References: <OF964B0E9A.174E142D-ONC1258A0E.0032FEAA-C1258A0E.00337FA7@avm.de>
- <2023081752-giddily-anytime-237e@gregkh>
- <f98cf66371de47e6a0e87c5214ba2c22@AcuMS.aculab.com>
+        b=I2XWH9jGq2qV/sPJNUHVQPg9+SVwc2njdp5bC4MMV5jS3MlqdHdVGw/jAxqh6ulJo
+         JIufTlcPvFVRZoyYf2p1AMbGMgZqhfdgknDPFCUvMka9PrOVu/2HOe9v1f7pZ8dNM/
+         ewZd38j6EXOKzqEH6pIeTD1vqFYmQb46wjDuSigr14HfGrghJe/dAMu7F9Zvu6tMOU
+         vrNZQ2iofkDAABKf+u6KaUU8pOxeBPIx9IWPOkJnqp+jFvNYedeFIIs+m3/hAzMZg0
+         SxeR1iYqFqjblStp23M/OnSwr4i93OiUbJRnNCDW/tKj22ft5zi4CHYcbXt8tXXV+t
+         0efFQfXSBUnqQ==
+Date:   Thu, 17 Aug 2023 09:00:54 -0700
+From:   Eric Biggers <ebiggers@kernel.org>
+To:     Sweet Tea Dorminy <sweettea-kernel@dorminy.me>
+Cc:     Jens Axboe <axboe@kernel.dk>, Satya Tangirala <satyat@google.com>,
+        linux-block@vger.kernel.org, kernel-team@meta.com,
+        stable@vger.kernel.org
+Subject: Re: [PATCH v5] blk-crypto: dynamically allocate fallback profile
+Message-ID: <20230817160054.GB1483@sol.localdomain>
+References: <20230817141615.15387-1-sweettea-kernel@dorminy.me>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <f98cf66371de47e6a0e87c5214ba2c22@AcuMS.aculab.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <20230817141615.15387-1-sweettea-kernel@dorminy.me>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, Aug 17, 2023 at 03:42:02PM +0000, David Laight wrote:
-> > Attempting to keep kernel code outside of the kernel tree is, on
-> > purpose, very expensive in time and resources.  The very simple way to
-> > solve this is to get your drivers merged properly into the mainline
-> > kernel tree.
+On Thu, Aug 17, 2023 at 10:15:56AM -0400, Sweet Tea Dorminy wrote:
+> blk_crypto_profile_init() calls lockdep_register_key(), which warns and
+> does not register if the provided memory is a static object.
+> blk-crypto-fallback currently has a static blk_crypto_profile and calls
+> blk_crypto_profile_init() thereupon, resulting in the warning and
+> failure to register.
 > 
-> I've got some of those, you really wouldn't want them.
+> Fortunately it is simple enough to use a dynamically allocated profile
+> and make lockdep function correctly.
+> 
+> Fixes: 2fb48d88e77f ("blk-crypto: use dynamic lock class for blk_crypto_profile::lock")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Sweet Tea Dorminy <sweettea-kernel@dorminy.me>
+> ---
+> v5: added correct error return if allocation fails.
+> v4: removed a stray change introduced in v3.
+> v3: added allocation error checking as noted by Eric Biggers.
+> v2: reworded commit message, fixed Fixes tag, as pointed out by Eric
+> Biggers.
 
-I would argue we do, but if you want to spend the extra time and money
-keeping them out of the kernel, that's your choice to make.
+Reviewed-by: Eric Biggers <ebiggers@google.com>
 
-> They are audio/telephony drivers for some very specific hardware.
+Thanks,
 
-As are almost all drivers in the kernel.  Your hardware is special and
-unique, just like all others :)
-
-thanks,
-
-greg k-h
+- Eric
