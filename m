@@ -2,309 +2,257 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D204D77FD22
-	for <lists+stable@lfdr.de>; Thu, 17 Aug 2023 19:41:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7DB4B77FD53
+	for <lists+stable@lfdr.de>; Thu, 17 Aug 2023 19:55:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232591AbjHQRlC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 17 Aug 2023 13:41:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47864 "EHLO
+        id S241514AbjHQRzD (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 17 Aug 2023 13:55:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44558 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1354031AbjHQRkd (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 17 Aug 2023 13:40:33 -0400
-Received: from mail-ed1-x531.google.com (mail-ed1-x531.google.com [IPv6:2a00:1450:4864:20::531])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A441230F1
-        for <stable@vger.kernel.org>; Thu, 17 Aug 2023 10:40:31 -0700 (PDT)
-Received: by mail-ed1-x531.google.com with SMTP id 4fb4d7f45d1cf-51e28cac164so2498331a12.1
-        for <stable@vger.kernel.org>; Thu, 17 Aug 2023 10:40:31 -0700 (PDT)
+        with ESMTP id S1354230AbjHQRy6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 17 Aug 2023 13:54:58 -0400
+Received: from mail-lf1-x12e.google.com (mail-lf1-x12e.google.com [IPv6:2a00:1450:4864:20::12e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D8BF272B
+        for <stable@vger.kernel.org>; Thu, 17 Aug 2023 10:54:56 -0700 (PDT)
+Received: by mail-lf1-x12e.google.com with SMTP id 2adb3069b0e04-4ffa01fc987so567682e87.1
+        for <stable@vger.kernel.org>; Thu, 17 Aug 2023 10:54:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1692294030; x=1692898830;
+        d=joelfernandes.org; s=google; t=1692294894; x=1692899694;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=2ikpFEortTkhR9FkYMVNm4OpmTIcy4GBbKE28Gs4DMM=;
-        b=JrMGk72KwiMR3DfJFBNV8+vS8+nfjQMpLlO7/FDwvfNeikZGp7HiVfNKFyW4v0cMRN
-         npOEqv5efZpXFJz22/KuCr3TOl9eplI/oMLnzIdtrC5CrT/fZXjPGsj/i6EfLVfmKwc5
-         u3UiEwnJuCjbGsam1VZNVHq0puPG7E9hjbxR6lXuCi8ge9vGDxCYTnRvLx+8aICfxLS3
-         s2R/1h3pfgmOax210y4oz2v1/LOlMRgCq14v6osvaSalpWsnPvH0j0HY/v9hI8USQgfu
-         G/OmH2ZM6IlZibO0KH7rnOStxZ0uCENsIoq1xd8z5DA7bgvORg+ywb44O3CwlalQ3BS2
-         oBfQ==
+        bh=/fgRsj2DuwZzufRcmRfa0a4ZKvAqz+lOLIY7gG+vMKE=;
+        b=UY7XPztgMf2kY9IaEeGzXDGRWxwHtCF3TPxjN39qrrGc/o71yVho5xeF2Q7R3yAS5r
+         r42vI1dKFikWPMKcpXmSo375ucNy4cnO91llYsJOX18pxwQPSSes0p0RxcpW7sBXaoe3
+         yFsZfn79PhOhikPBJ4Fm675TshwOKRZWSna+w=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692294030; x=1692898830;
+        d=1e100.net; s=20221208; t=1692294894; x=1692899694;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=2ikpFEortTkhR9FkYMVNm4OpmTIcy4GBbKE28Gs4DMM=;
-        b=AEEReAK6tuX9Q8+LbMcpu0McSRfd0bzUmlzbE89+hHCJFxJ8nPpM2NutAhnQl+KZHV
-         0c7dMVw6626/2gf7a7ZPadO2L52USpk/0FAUZ0SOi63BtLH6aj+3F/0x2YkHqr8jM5MQ
-         PtbtbgMBTEfk8SMAuIVccLTaAX1/O2+qU1SaKJDJDYrfPOQ8VoXgkjyvV0xVKWh7Q4Sm
-         2gHohTckgR347ZzsqWewMej3B6NR9UydUgCczQ2LzQDiv62QqV8XC1yJuIJxUFh5etkw
-         LBUt0EeFWcfuukdnJwOGF9xFMuG9Psq33pVFf1ZZ+QdXIjg9ZpUVc/ZCEk4FC3uAxB8o
-         kiIg==
-X-Gm-Message-State: AOJu0YzA+MsDjjbJBxalaqclN95W/5gSAZilGLRB5/uBuyhQzVbnpZk/
-        BNB6MtjTDGERtVnfEFrsr7coBbDJ77gq2K3xThhGXA==
-X-Google-Smtp-Source: AGHT+IEeGH8KfSrsteafcVZhsWsAM+IUREYx0ej8iM01CDXYJAncm2jImtnXMofSotTS/W450HE4b92/fcvzKHU1Z/o=
-X-Received: by 2002:a17:907:761a:b0:99e:f3:67ae with SMTP id
- jx26-20020a170907761a00b0099e00f367aemr60648ejc.31.1692294029908; Thu, 17 Aug
- 2023 10:40:29 -0700 (PDT)
+        bh=/fgRsj2DuwZzufRcmRfa0a4ZKvAqz+lOLIY7gG+vMKE=;
+        b=KR9F779zqlWE73SA/5YbrdWVShfsgoPxUF8Gc7jhhPtUPAsiJuZqMKMEIId4sWOKcX
+         zEa8yPLNH+GypeeWAQZWlDPXqjas1vjBTuqdm79ohctQ0OHDCqJ4uDrt9rUj/t6HfV8L
+         4Zt++uc0pS76xeYqNRU9NgIhonn0buMd4TOaooStfLbPMrP6wNMOlLgCCO6dzzhyh7DZ
+         PE/jHQAi8I0S79Op0HFEozJ0IC31y4kJ1Yr+ahmm7IdBUWI79P8XtUz6JOZcbBi4YxXI
+         0/wcBzxM8A27vnTfBfednEuyptS5r2XIEZngxkLeIM+dU+FPYCMjScYQ4U9xYXAiHHU4
+         fhiw==
+X-Gm-Message-State: AOJu0YyStpLVLV+qXU4BzKHVCmQiS9Nwp0yPNMuE5GolWYkZywWA2M/L
+        HJC1q689vAwMaL7gHVroVuJPRtGHr8vI+3sKjKiWzQ==
+X-Google-Smtp-Source: AGHT+IGopK3p4yj7V3Xod9RB8EqNvGCuz6XTR5t4ABSkG9mQgAqqFWso19dB69tfA0JwGq32jfuFprGomyQ/PH0HhXk=
+X-Received: by 2002:a05:6512:b24:b0:4f8:586a:d6ca with SMTP id
+ w36-20020a0565120b2400b004f8586ad6camr1178481lfu.9.1692294894048; Thu, 17 Aug
+ 2023 10:54:54 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230817164733.2475092-1-nphamcs@gmail.com>
-In-Reply-To: <20230817164733.2475092-1-nphamcs@gmail.com>
-From:   Yosry Ahmed <yosryahmed@google.com>
-Date:   Thu, 17 Aug 2023 10:39:53 -0700
-Message-ID: <CAJD7tkYnhTOTR8OOzvmC4dbctEE951dfbAm=wZN7gEXvLNLRng@mail.gmail.com>
-Subject: Re: [PATCH] workingset: ensure memcg is valid for recency check
-To:     Nhat Pham <nphamcs@gmail.com>
-Cc:     akpm@linux-foundation.org, hannes@cmpxchg.org,
-        kernel-team@meta.com, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20230817081345.1423-1-chenhuacai@loongson.cn>
+In-Reply-To: <20230817081345.1423-1-chenhuacai@loongson.cn>
+From:   Joel Fernandes <joel@joelfernandes.org>
+Date:   Thu, 17 Aug 2023 13:54:43 -0400
+Message-ID: <CAEXW_YTM5sa15euDeQhEq0CQ=vqLis=pY-5PF00aKTk5y3J6jw@mail.gmail.com>
+Subject: Re: [PATCH] rcu: Update jiffies locally in rcu_cpu_stall_reset()
+To:     Huacai Chen <chenhuacai@loongson.cn>
+Cc:     "Paul E . McKenney" <paulmck@kernel.org>,
+        Frederic Weisbecker <frederic@kernel.org>,
+        Neeraj Upadhyay <quic_neeraju@quicinc.com>,
+        Josh Triplett <josh@joshtriplett.org>,
+        Boqun Feng <boqun.feng@gmail.com>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+        Lai Jiangshan <jiangshanlai@gmail.com>,
+        Zqiang <qiang.zhang1211@gmail.com>,
+        Sergey Senozhatsky <senozhatsky@chromium.org>,
+        chenhuacai@kernel.org, rcu@vger.kernel.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        Binbin Zhou <zhoubinbin@loongson.cn>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
-        USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, Aug 17, 2023 at 9:47=E2=80=AFAM Nhat Pham <nphamcs@gmail.com> wrote=
-:
+On Thu, Aug 17, 2023 at 4:14=E2=80=AFAM Huacai Chen <chenhuacai@loongson.cn=
+> wrote:
 >
-> In eviction recency check, we are currently not holding a local
-> reference to the memcg that the refaulted folio belonged to when it was
-> evicted. This could cause serious memcg lifetime issues, for e.g in the
-> memcg hierarchy traversal done in mem_cgroup_get_nr_swap_pages(). This
-> has occurred in production:
-
-Doesn't workingset_refault() call workingset_test_recent() under RCU?
-Shouldn't this guarantee the validity of the memcg?
-
+> The KGDB initial breakpoint gets an rcu stall warning after commit
+> a80be428fbc1f1f3bc9ed924 ("rcu: Do not disable GP stall detection in
+> rcu_cpu_stall_reset()").
 >
-> [ 155757.793456] BUG: kernel NULL pointer dereference, address: 000000000=
-00000c0
-> [ 155757.807568] #PF: supervisor read access in kernel mode
-> [ 155757.818024] #PF: error_code(0x0000) - not-present page
-> [ 155757.828482] PGD 401f77067 P4D 401f77067 PUD 401f76067 PMD 0
-> [ 155757.839985] Oops: 0000 [#1] SMP
-> [ 155757.846444] CPU: 7 PID: 1380944 Comm: ThriftSrv-pri3- Kdump: loaded =
-Tainted: G S                 6.4.3-0_fbk1_rc0_594_g8d0cbcaa67ba #1
-> [ 155757.870808] Hardware name: Wiwynn Twin Lakes MP/Twin Lakes Passive M=
-P, BIOS YMM16 05/24/2021
-> [ 155757.887870] RIP: 0010:mem_cgroup_get_nr_swap_pages+0x3d/0xb0
-> [ 155757.899377] Code: 29 19 4a 02 48 39 f9 74 63 48 8b 97 c0 00 00 00 48=
- 8b b7 58 02 00 00 48 2b b7 c0 01 00 00 48 39 f0 48 0f 4d c6 48 39 d1 74 42=
- <48> 8b b2 c0 00 00 00 48 8b ba 58 02 00 00 48 2b ba c0 01 00 00 48
-> [ 155757.937125] RSP: 0018:ffffc9002ecdfbc8 EFLAGS: 00010286
-> [ 155757.947755] RAX: 00000000003a3b1c RBX: 000007ffffffffff RCX: ffff888=
-280183000
-> [ 155757.962202] RDX: 0000000000000000 RSI: 0007ffffffffffff RDI: ffff888=
-bbc2d1000
-> [ 155757.976648] RBP: 0000000000000001 R08: 000000000000000b R09: ffff888=
-ad9cedba0
-> [ 155757.991094] R10: ffffea0039c07900 R11: 0000000000000010 R12: ffff888=
-b23a7b000
-> [ 155758.005540] R13: 0000000000000000 R14: ffff888bbc2d1000 R15: 000007f=
-fffc71354
-> [ 155758.019991] FS:  00007f6234c68640(0000) GS:ffff88903f9c0000(0000) kn=
-lGS:0000000000000000
-> [ 155758.036356] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> [ 155758.048023] CR2: 00000000000000c0 CR3: 0000000a83eb8004 CR4: 0000000=
-0007706e0
-> [ 155758.062473] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000=
-000000000
-> [ 155758.076924] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000=
-000000400
-> [ 155758.091376] PKRU: 55555554
-> [ 155758.096957] Call Trace:
-> [ 155758.102016]  <TASK>
-> [ 155758.106502]  ? __die+0x78/0xc0
-> [ 155758.112793]  ? page_fault_oops+0x286/0x380
-> [ 155758.121175]  ? exc_page_fault+0x5d/0x110
-> [ 155758.129209]  ? asm_exc_page_fault+0x22/0x30
-> [ 155758.137763]  ? mem_cgroup_get_nr_swap_pages+0x3d/0xb0
-> [ 155758.148060]  workingset_test_recent+0xda/0x1b0
-> [ 155758.157133]  workingset_refault+0xca/0x1e0
-> [ 155758.165508]  filemap_add_folio+0x4d/0x70
-> [ 155758.173538]  page_cache_ra_unbounded+0xed/0x190
-> [ 155758.182919]  page_cache_sync_ra+0xd6/0x1e0
-> [ 155758.191738]  filemap_read+0x68d/0xdf0
-> [ 155758.199495]  ? mlx5e_napi_poll+0x123/0x940
-> [ 155758.207981]  ? __napi_schedule+0x55/0x90
-> [ 155758.216095]  __x64_sys_pread64+0x1d6/0x2c0
-> [ 155758.224601]  do_syscall_64+0x3d/0x80
-> [ 155758.232058]  entry_SYSCALL_64_after_hwframe+0x46/0xb0
-> [ 155758.242473] RIP: 0033:0x7f62c29153b5
-> [ 155758.249938] Code: e8 48 89 75 f0 89 7d f8 48 89 4d e0 e8 b4 e6 f7 ff=
- 41 89 c0 4c 8b 55 e0 48 8b 55 e8 48 8b 75 f0 8b 7d f8 b8 11 00 00 00 0f 05=
- <48> 3d 00 f0 ff ff 77 33 44 89 c7 48 89 45 f8 e8 e7 e6 f7 ff 48 8b
-> [ 155758.288005] RSP: 002b:00007f6234c5ffd0 EFLAGS: 00000293 ORIG_RAX: 00=
-00000000000011
-> [ 155758.303474] RAX: ffffffffffffffda RBX: 00007f628c4e70c0 RCX: 00007f6=
-2c29153b5
-> [ 155758.318075] RDX: 000000000003c041 RSI: 00007f61d2986000 RDI: 0000000=
-000000076
-> [ 155758.332678] RBP: 00007f6234c5fff0 R08: 0000000000000000 R09: 0000000=
-064d5230c
-> [ 155758.347452] R10: 000000000027d450 R11: 0000000000000293 R12: 0000000=
-00003c041
-> [ 155758.362044] R13: 00007f61d2986000 R14: 00007f629e11b060 R15: 0000000=
-00027d450
-> [ 155758.376661]  </TASK>
+> [   53.452051] rcu: INFO: rcu_preempt self-detected stall on CPU
+> [   53.487950] rcu:     3-...0: (1 ticks this GP) idle=3D0e2c/1/0x4000000=
+000000000 softirq=3D375/375 fqs=3D8
+> [   53.528243] rcu:     (t=3D12297 jiffies g=3D-995 q=3D1 ncpus=3D4)
+> [   53.564840] CPU: 3 PID: 1 Comm: swapper/0 Not tainted 6.5.0-rc2+ #4848
+> [   53.603005] Hardware name: Loongson Loongson-3A5000-HV-7A2000-1w-V0.1-=
+CRB/Loongson-LS3A5000-7A2000-1w-CRB-V1.21, BIOS Loongson-UDK2018-V2.0.05099=
+-beta8 08
+> [   53.682062] pc 9000000000332100 ra 90000000003320f4 tp 90000001000a000=
+0 sp 90000001000a3710
+> [   53.724934] a0 9000000001d4b488 a1 0000000000000000 a2 000000000000000=
+1 a3 0000000000000000
+> [   53.768179] a4 9000000001d526c8 a5 90000001000a38f0 a6 000000000000002=
+c a7 0000000000000000
+> [   53.810751] t0 00000000000002b0 t1 0000000000000004 t2 900000000131c9c=
+0 t3 fffffffffffffffa
+> [   53.853249] t4 0000000000000080 t5 90000001002ac190 t6 000000000000000=
+4 t7 9000000001912d58
+> [   53.895684] t8 0000000000000000 u0 90000000013141a0 s9 000000000000002=
+8 s0 9000000001d512f0
+> [   53.937633] s1 9000000001d51278 s2 90000001000a3798 s3 90000000019fc41=
+0 s4 9000000001d4b488
+> [   53.979486] s5 9000000001d512f0 s6 90000000013141a0 s7 000000000000007=
+8 s8 9000000001d4b450
+> [   54.021175]    ra: 90000000003320f4 kgdb_cpu_enter+0x534/0x640
+> [   54.060150]   ERA: 9000000000332100 kgdb_cpu_enter+0x540/0x640
+> [   54.098347]  CRMD: 000000b0 (PLV0 -IE -DA +PG DACF=3DCC DACM=3DCC -WE)
+> [   54.136621]  PRMD: 0000000c (PPLV0 +PIE +PWE)
+> [   54.172192]  EUEN: 00000000 (-FPE -SXE -ASXE -BTE)
+> [   54.207838]  ECFG: 00071c1c (LIE=3D2-4,10-12 VS=3D7)
+> [   54.242503] ESTAT: 00000800 [INT] (IS=3D11 ECode=3D0 EsubCode=3D0)
+> [   54.277996]  PRID: 0014c011 (Loongson-64bit, Loongson-3A5000-HV)
+> [   54.313544] CPU: 3 PID: 1 Comm: swapper/0 Not tainted 6.5.0-rc2+ #4848
+> [   54.430170] Stack : 0072617764726148 0000000000000000 9000000000223504=
+ 90000001000a0000
+> [   54.472308]         9000000100073a90 9000000100073a98 0000000000000000=
+ 9000000100073bd8
+> [   54.514413]         9000000100073bd0 9000000100073bd0 9000000100073a00=
+ 0000000000000001
+> [   54.556018]         0000000000000001 9000000100073a98 99828271f24e961a=
+ 90000001002810c0
+> [   54.596924]         0000000000000001 0000000000010003 0000000000000000=
+ 0000000000000001
+> [   54.637115]         ffff8000337cdb80 0000000000000001 0000000006360000=
+ 900000000131c9c0
+> [   54.677049]         0000000000000000 0000000000000000 90000000017b4c98=
+ 9000000001912000
+> [   54.716394]         9000000001912f68 9000000001913000 9000000001912f70=
+ 00000000000002b0
+> [   54.754880]         90000000014a8840 0000000000000000 900000000022351c=
+ 0000000000000000
+> [   54.792372]         00000000000002b0 000000000000000c 0000000000000000=
+ 0000000000071c1c
+> [   54.829302]         ...
+> [   54.859163] Call Trace:
+> [   54.859165] [<900000000022351c>] show_stack+0x5c/0x180
+> [   54.918298] [<90000000012f6100>] dump_stack_lvl+0x60/0x88
+> [   54.949251] [<90000000012dd5d8>] rcu_dump_cpu_stacks+0xf0/0x148
+> [   54.981116] [<90000000002d2fb8>] rcu_sched_clock_irq+0xb78/0xe60
+> [   55.012744] [<90000000002e47cc>] update_process_times+0x6c/0xc0
+> [   55.044169] [<90000000002f65d4>] tick_sched_timer+0x54/0x100
+> [   55.075488] [<90000000002e5174>] __hrtimer_run_queues+0x154/0x240
+> [   55.107347] [<90000000002e6288>] hrtimer_interrupt+0x108/0x2a0
+> [   55.139112] [<9000000000226418>] constant_timer_interrupt+0x38/0x60
+> [   55.170749] [<90000000002b3010>] __handle_irq_event_percpu+0x50/0x160
+> [   55.203141] [<90000000002b3138>] handle_irq_event_percpu+0x18/0x80
+> [   55.235064] [<90000000002b9d54>] handle_percpu_irq+0x54/0xa0
+> [   55.266241] [<90000000002b2168>] generic_handle_domain_irq+0x28/0x40
+> [   55.298466] [<9000000000aba95c>] handle_cpu_irq+0x5c/0xa0
+> [   55.329749] [<90000000012f7270>] handle_loongarch_irq+0x30/0x60
+> [   55.361476] [<90000000012f733c>] do_vint+0x9c/0x100
+> [   55.391737] [<9000000000332100>] kgdb_cpu_enter+0x540/0x640
+> [   55.422440] [<9000000000332b64>] kgdb_handle_exception+0x104/0x180
+> [   55.452911] [<9000000000232478>] kgdb_loongarch_notify+0x38/0xa0
+> [   55.481964] [<900000000026b4d4>] notify_die+0x94/0x100
+> [   55.509184] [<90000000012f685c>] do_bp+0x21c/0x340
+> [   55.562475] [<90000000003315b8>] kgdb_compiled_break+0x0/0x28
+> [   55.590319] [<9000000000332e80>] kgdb_register_io_module+0x160/0x1c0
+> [   55.618901] [<9000000000c0f514>] configure_kgdboc+0x154/0x1c0
+> [   55.647034] [<9000000000c0f5e0>] kgdboc_probe+0x60/0x80
+> [   55.674647] [<9000000000c96da8>] platform_probe+0x68/0x100
+> [   55.702613] [<9000000000c938e0>] really_probe+0xc0/0x340
+> [   55.730528] [<9000000000c93be4>] __driver_probe_device+0x84/0x140
+> [   55.759615] [<9000000000c93cdc>] driver_probe_device+0x3c/0x120
+> [   55.787990] [<9000000000c93e8c>] __device_attach_driver+0xcc/0x160
+> [   55.817145] [<9000000000c91290>] bus_for_each_drv+0x90/0x100
+> [   55.845654] [<9000000000c94328>] __device_attach+0xa8/0x1a0
+> [   55.874145] [<9000000000c925f0>] bus_probe_device+0xb0/0xe0
+> [   55.902572] [<9000000000c8ec7c>] device_add+0x65c/0x860
+> [   55.930635] [<9000000000c96704>] platform_device_add+0x124/0x2c0
+> [   55.959669] [<9000000001452b38>] init_kgdboc+0x58/0xa0
+> [   55.987677] [<900000000022015c>] do_one_initcall+0x7c/0x1e0
+> [   56.016134] [<9000000001420f1c>] kernel_init_freeable+0x22c/0x2a0
+> [   56.045128] [<90000000012f923c>] kernel_init+0x20/0x124
 >
-> This patch fixes the issue by getting a local reference inside
-> unpack_shadow().
+> Currently rcu_cpu_stall_reset() set rcu_state.jiffies_stall to one check
+> period later, i.e. jiffies + rcu_jiffies_till_stall_check(). But jiffies
+> is only updated in the timer interrupt, so when kgdb_cpu_enter() begins
+> to run there may already be nearly one rcu check period after jiffies.
+> Since all interrupts are disabled during kgdb_cpu_enter(), jiffies will
+> not be updated. When kgdb_cpu_enter() returns, rcu_state.jiffies_stall
+> maybe already gets timeout.
 >
-> Fixes: f78dfc7b77d5 ("workingset: fix confusion around eviction vs refaul=
-t container")
-> Signed-off-by: Nhat Pham <nphamcs@gmail.com>
+> We can set rcu_state.jiffies_stall to two rcu check periods later, e.g.
+> jiffies + (rcu_jiffies_till_stall_check() * 2) in rcu_cpu_stall_reset()
+> to avoid this problem. But this isn't a complete solution because kgdb
+> may take a very long time in irq disabled context.
+>
+> Instead, update jiffies at the beginning of rcu_cpu_stall_reset() can
+> solve all kinds of problems [1]. But this causes a new problem because
+> updating jiffies is not NMI safe while rcu_cpu_stall_reset() may be used
+> in NMI context.
+>
+> So we don't update the global jiffies, but only add the time 'delta' to
+> jiffies locally at the beginning of rcu_cpu_stall_reset() which has the
+> same effect.
+>
+> [1] https://lore.kernel.org/rcu/20230814020045.51950-1-chenhuacai@loongso=
+n.cn/T/#t
+>
 > Cc: stable@vger.kernel.org
+> Fixes: a80be428fbc1f1f3bc9ed924 ("rcu: Do not disable GP stall detection =
+in rcu_cpu_stall_reset()")
+> Reported-off-by: Binbin Zhou <zhoubinbin@loongson.cn>
+> Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 > ---
->  mm/workingset.c | 57 ++++++++++++++++++++++++++++++-------------------
->  1 file changed, 35 insertions(+), 22 deletions(-)
+>  kernel/rcu/tree_stall.h | 6 +++++-
+>  1 file changed, 5 insertions(+), 1 deletion(-)
 >
-> diff --git a/mm/workingset.c b/mm/workingset.c
-> index da58a26d0d4d..c20b26bb6cb1 100644
-> --- a/mm/workingset.c
-> +++ b/mm/workingset.c
-> @@ -206,10 +206,11 @@ static void *pack_shadow(int memcgid, pg_data_t *pg=
-dat, unsigned long eviction,
->         return xa_mk_value(eviction);
->  }
->
-
-> -static void unpack_shadow(void *shadow, int *memcgidp, pg_data_t **pgdat=
-,
-> -                         unsigned long *evictionp, bool *workingsetp)
-> +static void unpack_shadow(void *shadow, struct mem_cgroup **memcgp,
-> +                       pg_data_t **pgdat, unsigned long *evictionp, bool=
- *workingsetp)
-
-We should probably document that we are returning a memcg with a ref
-on it, or change the name to put "get" and "memcg" in there somewhere.
-Alternatively we could separate the function that gets the memcg from
-the shadow (e.g. get_memcg_from_shadow or so).
-
-I would also hold an RCU read lock here so that the call to
-mem_cgroup_from_id() is valid. I know all callers currently do, but it
-may change later. Alternatively we can add an assertion or a warning.
-
+> diff --git a/kernel/rcu/tree_stall.h b/kernel/rcu/tree_stall.h
+> index b10b8349bb2a..1bf1306cae23 100644
+> --- a/kernel/rcu/tree_stall.h
+> +++ b/kernel/rcu/tree_stall.h
+> @@ -153,8 +153,12 @@ static void panic_on_rcu_stall(void)
+>   */
+>  void rcu_cpu_stall_reset(void)
 >  {
->         unsigned long entry =3D xa_to_value(shadow);
-> +       struct mem_cgroup *memcg;
->         int memcgid, nid;
->         bool workingset;
->
-> @@ -220,7 +221,24 @@ static void unpack_shadow(void *shadow, int *memcgid=
-p, pg_data_t **pgdat,
->         memcgid =3D entry & ((1UL << MEM_CGROUP_ID_SHIFT) - 1);
->         entry >>=3D MEM_CGROUP_ID_SHIFT;
->
-> -       *memcgidp =3D memcgid;
-> +       /*
-> +        * Look up the memcg associated with the stored ID. It might
-> +        * have been deleted since the folio's eviction.
-> +        *
-> +        * Note that in rare events the ID could have been recycled
-> +        * for a new cgroup that refaults a shared folio. This is
-> +        * impossible to tell from the available data. However, this
-> +        * should be a rare and limited disturbance, and activations
-> +        * are always speculative anyway. Ultimately, it's the aging
-> +        * algorithm's job to shake out the minimum access frequency
-> +        * for the active cache.
-> +        */
-> +       memcg =3D mem_cgroup_from_id(memcgid);
-> +       if (memcg && css_tryget(&memcg->css))
-> +               *memcgp =3D memcg;
-> +       else
-> +               *memcgp =3D NULL;
+> +       unsigned long delta;
 > +
->         *pgdat =3D NODE_DATA(nid);
->         *evictionp =3D entry;
->         *workingsetp =3D workingset;
-> @@ -262,15 +280,16 @@ static void *lru_gen_eviction(struct folio *folio)
->  static bool lru_gen_test_recent(void *shadow, bool file, struct lruvec *=
-*lruvec,
->                                 unsigned long *token, bool *workingset)
->  {
-> -       int memcg_id;
->         unsigned long min_seq;
->         struct mem_cgroup *memcg;
->         struct pglist_data *pgdat;
->
-> -       unpack_shadow(shadow, &memcg_id, &pgdat, token, workingset);
-> +       unpack_shadow(shadow, &memcg, &pgdat, token, workingset);
-> +       if (!mem_cgroup_disabled() && !memcg)
-> +               return false;
->
-> -       memcg =3D mem_cgroup_from_id(memcg_id);
->         *lruvec =3D mem_cgroup_lruvec(memcg, pgdat);
-> +       mem_cgroup_put(memcg);
->
->         min_seq =3D READ_ONCE((*lruvec)->lrugen.min_seq[file]);
->         return (*token >> LRU_REFS_WIDTH) =3D=3D (min_seq & (EVICTION_MAS=
-K >> LRU_REFS_WIDTH));
-> @@ -421,36 +440,29 @@ bool workingset_test_recent(void *shadow, bool file=
-, bool *workingset)
->         unsigned long refault_distance;
->         unsigned long workingset_size;
->         unsigned long refault;
-> -       int memcgid;
->         struct pglist_data *pgdat;
->         unsigned long eviction;
->
->         if (lru_gen_enabled())
->                 return lru_gen_test_recent(shadow, file, &eviction_lruvec=
-, &eviction, workingset);
->
-> -       unpack_shadow(shadow, &memcgid, &pgdat, &eviction, workingset);
-> -       eviction <<=3D bucket_order;
-> -
-> +       unpack_shadow(shadow, &eviction_memcg, &pgdat, &eviction, working=
-set);
->         /*
-> -        * Look up the memcg associated with the stored ID. It might
-> -        * have been deleted since the folio's eviction.
-> +        * When memcg is enabled, we only get !memcg here if the
-> +        * eviction group has been deleted. In that case, ignore
-> +        * the refault.
->          *
-> -        * Note that in rare events the ID could have been recycled
-> -        * for a new cgroup that refaults a shared folio. This is
-> -        * impossible to tell from the available data. However, this
-> -        * should be a rare and limited disturbance, and activations
-> -        * are always speculative anyway. Ultimately, it's the aging
-> -        * algorithm's job to shake out the minimum access frequency
-> -        * for the active cache.
-> +        * When memcg is disabled, we always get NULL since there
-> +        * is no root_mem_cgroup for !CONFIG_MEMCG. Continue; the
-> +        * mem_cgroup_lruvec() will get us the global lruvec.
->          *
-> -        * XXX: On !CONFIG_MEMCG, this will always return NULL; it
-> -        * would be better if the root_mem_cgroup existed in all
-> +        * XXX: It would be better if the root_mem_cgroup existed in all
->          * configurations instead.
->          */
-> -       eviction_memcg =3D mem_cgroup_from_id(memcgid);
->         if (!mem_cgroup_disabled() && !eviction_memcg)
->                 return false;
->
-> +       eviction <<=3D bucket_order;
->         eviction_lruvec =3D mem_cgroup_lruvec(eviction_memcg, pgdat);
->         refault =3D atomic_long_read(&eviction_lruvec->nonresident_age);
->
-> @@ -493,6 +505,7 @@ bool workingset_test_recent(void *shadow, bool file, =
-bool *workingset)
->                 }
->         }
->
-> +       mem_cgroup_put(eviction_memcg);
->         return refault_distance <=3D workingset_size;
->  }
->
-> --
-> 2.34.1
->
->
+> +       delta =3D nsecs_to_jiffies(ktime_get_ns() - ktime_get_coarse_ns()=
+);
+> +
+>         WRITE_ONCE(rcu_state.jiffies_stall,
+> -                  jiffies + rcu_jiffies_till_stall_check());
+> +                  jiffies + delta + rcu_jiffies_till_stall_check());
+
+This is certainly better than magic numbers, but I was still wondering
+how the delta really works. What are typical values of delta, and why
+is that equivalent to updating jiffies?
+
+Can you provide more technical details about why it turns out to be
+effectively the number of jiffies that the jiffies are off by?
+
+Also, how often do you see that an NMI is required to prevent a KGDB
+stall? If not, just do:
+
+void rcu_cpu_stall_reset(void) {
+[...]
+    if (!in_nmi) {
+      do_jiffies_update();
+   }
+   WRITE_ONCE(rcu_state.jiffies_stall, ..);
+[...]
+}
+
+?
+
+But if your solution provides accurate results, that's fine with me. I
+just don't understand coarse ktime that much and how it differs from
+regular ktime, so I appreciate the education ;-)
+
+Nice work, thanks,
+ - Joel
