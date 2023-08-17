@@ -2,184 +2,210 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1475A77F1E7
-	for <lists+stable@lfdr.de>; Thu, 17 Aug 2023 10:15:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 885C877F2CE
+	for <lists+stable@lfdr.de>; Thu, 17 Aug 2023 11:11:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231680AbjHQIO1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 17 Aug 2023 04:14:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40122 "EHLO
+        id S1349306AbjHQJLV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 17 Aug 2023 05:11:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55970 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1348795AbjHQIOH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 17 Aug 2023 04:14:07 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3AD682136;
-        Thu, 17 Aug 2023 01:14:05 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B620064959;
-        Thu, 17 Aug 2023 08:14:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50395C433C7;
-        Thu, 17 Aug 2023 08:14:00 +0000 (UTC)
-From:   Huacai Chen <chenhuacai@loongson.cn>
-To:     "Paul E . McKenney" <paulmck@kernel.org>,
-        Frederic Weisbecker <frederic@kernel.org>,
-        Neeraj Upadhyay <quic_neeraju@quicinc.com>,
-        Joel Fernandes <joel@joelfernandes.org>,
-        Josh Triplett <josh@joshtriplett.org>,
-        Boqun Feng <boqun.feng@gmail.com>
-Cc:     Steven Rostedt <rostedt@goodmis.org>,
-        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-        Lai Jiangshan <jiangshanlai@gmail.com>,
-        Zqiang <qiang.zhang1211@gmail.com>,
-        Sergey Senozhatsky <senozhatsky@chromium.org>,
-        chenhuacai@kernel.org, rcu@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Huacai Chen <chenhuacai@loongson.cn>,
-        stable@vger.kernel.org, Binbin Zhou <zhoubinbin@loongson.cn>
-Subject: [PATCH] rcu: Update jiffies locally in rcu_cpu_stall_reset()
-Date:   Thu, 17 Aug 2023 16:13:45 +0800
-Message-Id: <20230817081345.1423-1-chenhuacai@loongson.cn>
-X-Mailer: git-send-email 2.39.3
+        with ESMTP id S1349320AbjHQJKw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 17 Aug 2023 05:10:52 -0400
+Received: from mx0a-0014ca01.pphosted.com (mx0b-0014ca01.pphosted.com [208.86.201.193])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D10A619A1;
+        Thu, 17 Aug 2023 02:10:49 -0700 (PDT)
+Received: from pps.filterd (m0042333.ppops.net [127.0.0.1])
+        by mx0b-0014ca01.pphosted.com (8.17.1.22/8.17.1.22) with ESMTP id 37H6S0Ht019793;
+        Thu, 17 Aug 2023 02:10:38 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cadence.com; h=
+        from:to:cc:subject:date:message-id:references:in-reply-to
+        :content-type:content-transfer-encoding:mime-version; s=
+        proofpoint; bh=iYNXO1UOt2AEMEXnjFa3s+ZmwY+51p0DdnQfLLFwOow=; b=I
+        21BMteLKs/Aj/T48QVGzUt/P8wunLghMdP8OxsSLLyDrPhTRf5g/maWQJPJMCBKE
+        3qE6B/d6QdCLToQF3zH6K/rlQHBHRhLbRPHDOwngoC+pltFreax2MqQExHfARVTk
+        qjcRlPCPcb4QCP0rYz4njBY+wqtbAHQ0Kh+MrcqDwrrggfoHJpOhkAFCMKFTzEpQ
+        38do3fdO8edxkhIJetv5863OBDTEU5vS3+Blqv8L+UQTRLb0qAD89VyiVRbm1qgK
+        WSjbH9Y+ml4gI/RgSh3EhR+ojH7s+td3hWAm0cDleLAVJBV8PjHfHAI/y6cbCDkq
+        kb+6Pq0AxeCy8ou+QGIiw==
+Received: from nam12-dm6-obe.outbound.protection.outlook.com (mail-dm6nam12lp2171.outbound.protection.outlook.com [104.47.59.171])
+        by mx0b-0014ca01.pphosted.com (PPS) with ESMTPS id 3sfnffu2r3-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 17 Aug 2023 02:10:37 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=cM/qknEGDKRdo1ua/BjUAl5ugYj/ErnyOZrzxicitlXh+ED044pbRDhJvOmosUSIBmdj19FQ7+uB+mnsfo5k5P0TG1+NasbWngIc64srjm5ggeWdt/j7KsgLoAz71eZYPB1wWkHzWNDlZw7y+BYaeQjWBKQ6IclZplbKta/4UZWhAH1aLk0sBDd/arrrJzr/jYfRB/Eu/ZQ5kWQcbOxp1m3fMIFXVDsbJrJkx1nIf6snR3Ju4kV7qWVVVgYsuXEU7bWniV5fZyyvao/+l5h7wG179zRBi0aKrWI3TLfybBkUr8H9Z69O8uDOJO0pyQjN6Pvq6bRAkQuBDB85Vt5jEw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=iYNXO1UOt2AEMEXnjFa3s+ZmwY+51p0DdnQfLLFwOow=;
+ b=b1AWAqVRU8l367yNPySa+znbSNzF+evlNep22OYOfhdMPyXnOOU1pen1bRvKQoIzBC2DRS9GpcvD7Ti494a8zRBIyfMYQXOIlfSKU1C9F5LDGMg3TGOLaOuYBFcC3PMZjZUTQ0FsgqkyLnpNkcd3I1BNNaT8dJarDbBWuR3alTS/IVfecUnYHUivWVC2qKaTCb2adhONV3iMbviK8dDu0NPh0UQV9PR4eAugkcaCFUMhOixVs94v9UUt5VMqMmXYhMa2g+oUNQ3sFgsbbVqviP7x6Ut6ZCy+IapP7lPgxP1W6EvMdiG3a09Zaft0I2auM2rq5agqk9o20QhSYIuu1w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=cadence.com; dmarc=pass action=none header.from=cadence.com;
+ dkim=pass header.d=cadence.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cadence.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=iYNXO1UOt2AEMEXnjFa3s+ZmwY+51p0DdnQfLLFwOow=;
+ b=aRrzgFicWuzHqc0RxpzgSiYqGpXR86oFB37h26sr9Z3QKDhUzt+yQj/NHC1rglw2wXY+ttQTY3omMuWO/Ge+GFQc5Q8qLCX8nNHnKOIp2CJrSetvpjq91TFyHXfAdKsBOQhioTgnM+nASWr0lYq3PfUzOszQQinW6gYdGQXgrNQ=
+Received: from BYAPR07MB5381.namprd07.prod.outlook.com (2603:10b6:a03:6d::24)
+ by DS7PR07MB8352.namprd07.prod.outlook.com (2603:10b6:5:3a0::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6678.31; Thu, 17 Aug
+ 2023 09:10:34 +0000
+Received: from BYAPR07MB5381.namprd07.prod.outlook.com
+ ([fe80::571d:f5d4:a9a4:dbb0]) by BYAPR07MB5381.namprd07.prod.outlook.com
+ ([fe80::571d:f5d4:a9a4:dbb0%4]) with mapi id 15.20.6678.029; Thu, 17 Aug 2023
+ 09:10:34 +0000
+From:   Pawel Laszczak <pawell@cadence.com>
+To:     Peter Chen <peter.chen@kernel.org>
+CC:     "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
+        "linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: RE: [PATCH] usb: cdnsp: Fixes issue with dequeuing not queued
+ requests
+Thread-Topic: [PATCH] usb: cdnsp: Fixes issue with dequeuing not queued
+ requests
+Thread-Index: AQHZtWIUOnzlmDC91EyICLRPIn7cGq+4hxoAgABUPOCAA3K6gIAyDw7Q
+Date:   Thu, 17 Aug 2023 09:10:33 +0000
+Message-ID: <BYAPR07MB5381A0D4D62053442E34B275DD1AA@BYAPR07MB5381.namprd07.prod.outlook.com>
+References: <20230713081429.326660-1-pawell@cadence.com>
+ <20230714021436.GA2520702@nchen-desktop>
+ <BYAPR07MB5381BA3F7A34D18BC16B86DFDD34A@BYAPR07MB5381.namprd07.prod.outlook.com>
+ <20230716115529.GA2529084@nchen-desktop>
+In-Reply-To: <20230716115529.GA2529084@nchen-desktop>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-dg-ref: PG1ldGE+PGF0IG5tPSJib2R5LnR4dCIgcD0iYzpcdXNlcnNccGF3ZWxsXGFwcGRhdGFccm9hbWluZ1wwOWQ4NDliNi0zMmQzLTRhNDAtODVlZS02Yjg0YmEyOWUzNWJcbXNnc1xtc2ctZTk5ZjczNDEtM2NkZC0xMWVlLWE4NzQtMDBiZTQzMTQxNTFlXGFtZS10ZXN0XGU5OWY3MzQyLTNjZGQtMTFlZS1hODc0LTAwYmU0MzE0MTUxZWJvZHkudHh0IiBzej0iMTg0NyIgdD0iMTMzMzY3MzcwMzEwMzAwMjU4IiBoPSJsNldzQ0Z2eURGTC9iZFZ2WW0wWjZCUUNDZXM9IiBpZD0iIiBibD0iMCIgYm89IjEiLz48L21ldGE+
+x-dg-rorf: true
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: BYAPR07MB5381:EE_|DS7PR07MB8352:EE_
+x-ms-office365-filtering-correlation-id: 2eccfc2e-5b8f-45fc-64ef-08db9f01cff1
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: qAb78dbMAj5Zn3SaxVxAJn9+1xz/VPZjBaS2TM9JfF16Kh3c/0XmDMVaRPcZ5VOY2/P+UqSCnWc7Rt0AoMtZ3+DjLhNx8SMrbbjijl+OoWBgJudy7tSPL4s51lASMlJEO+Y50WKQ7uYV0lPDZPUFw30DIlJ54UoqkRmPeGX14RTvA/lQXmGL/mVOIsOtO91sCVxSkLQmyIgkWFzyFmkZVv9YIw0qkbKrLSl3Ud81iuHsX0lYWWEzHZvYEt2bBiGMuqMSLysCqPEGO2RN/GPdw3IC5ANhDxZ3gjVcSIaAFmR6ST9zx6ba60UgWOAJr/Ty5DZocvNgYFyI1S5EyibNT+Kh9xHXch6mwQqb0AqdGt4aBxrAkrmAqte3vU0GJLwccaZIujijgGnxTNrzkt98p1D1z6Y3XzDJrW7TRtQ8b3EEYf9dBoW/E9sXU8q/g9lcAM2JFItou2oM1L6aFAQoqhb8Fe1kp3wmxaC0OHsWEcNpiBSiEVKlN57bwvIQhlujGT0LQBB/AoB6kcATZBwqr35JhLurSxc+uqpCZdEEzRIcHotmBzcC0ErkQExjDw0tl3P4nfMUh8wfLsOZtpErlq/YxsVVTJkraN21V6OuvMEqZR2eTuw/Yzo/egoFzI2P
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR07MB5381.namprd07.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(39860400002)(346002)(396003)(376002)(366004)(136003)(451199024)(1800799009)(186009)(86362001)(33656002)(38070700005)(38100700002)(122000001)(55016003)(52536014)(5660300002)(66946007)(66446008)(66476007)(66556008)(478600001)(76116006)(6916009)(316002)(64756008)(6506007)(7696005)(71200400001)(54906003)(26005)(9686003)(41300700001)(4326008)(8936002)(8676002)(2906002)(83380400001);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?gVhOuB0N5EZWf0k8NRujkrDA7y1g3pBtCxZQfnZ2R0R5qEAglDS20yUi6iXn?=
+ =?us-ascii?Q?knlOi4LQn8QGEp/LB2M/I4O2v9cgd46G6goM5yQIg9dOQZsC8V6/jTabQpVD?=
+ =?us-ascii?Q?TGiKjSumwz3Zfx9218pcw3uSsXbsfTrlINpfaW5v6ucEqRYGSB7Y7D4UJ6yt?=
+ =?us-ascii?Q?L1+Ft7S76LXuMUm+tCPIu40puP4uDd1g4WKxvM0xYWy6q5/SsO6tMfaYR9mX?=
+ =?us-ascii?Q?2kM9ST3tnVEyysjYWzkbA5X9whGjQuwqEp1imsWVCtXr9hBJeJey7RQw8GGc?=
+ =?us-ascii?Q?qGda16FFIyk5KMN9o8dKNpH6nEvOgOX5Sbq3hlMHT7GzLLkEtgHg3TqkzcE/?=
+ =?us-ascii?Q?8yv839Bo9Jbgzq210XFaUETH57f3w6BK4P6HqhjaEno+q+alB2PFJv9lxElh?=
+ =?us-ascii?Q?SuuRqQdXPrO9yV0rCVimA2JbQsoyIf/NG+qytiD5VZttbu8Qj0sWl4SHEYo9?=
+ =?us-ascii?Q?sxia81Q/pnDVRUpK64MoVG9AUz5tux+n/uvYJZIPPgeBLh9rneVdghhY0kK7?=
+ =?us-ascii?Q?vS+UgUO46QKPsA7cqivqpIjzI1O82Doay5cYocau0Y907X7E3ArxNIsr/Ccz?=
+ =?us-ascii?Q?sVpke/bnl7/U5h02nUMyftqPYYqfE1XaBTm19wNLsOW2GmDxffqmaRKTm1r4?=
+ =?us-ascii?Q?VBptQQ+LJcmCDvbO3ZckMuocIhHCrKujONIi2zjieCfO7PtJw4TDlLDcjOB2?=
+ =?us-ascii?Q?fDv2DGRJJDNbXZJCtLQiKGDiRnkTEHAzA8Z6nNUOQP4E3w9ajD+cr31vYxCl?=
+ =?us-ascii?Q?E910Tt1MmCNJQvbbq3xOa4v0XOhRmYjjIr70XfQM4ZJPRe0BMOYZrw83U2JK?=
+ =?us-ascii?Q?PdsMHBOCu5n1RrrZM3T7jE74gCrSZjS/wax4vq7EaRXH5zMs+wT2YkhwWvaU?=
+ =?us-ascii?Q?Fcc4ISMB3BZPe4aSlVDJNOSxmzJ1xtAiELEmAfJEio6K/ujwbsVg4vx0QFEF?=
+ =?us-ascii?Q?kE6YguNL3zVPnTGSDbkfbefXD7TxshlpHTqsEMGXhxFxBoFzA8Mp19GZ2JOQ?=
+ =?us-ascii?Q?2lfSeBZP8K1LdITnOadOOzyG1D8Wq+5R2gwDV9dXGA4KaJRz1X594rpM7SR6?=
+ =?us-ascii?Q?MaHLafT6ahMVhynOZ+kRwMQzzIcgB4P24ePjBdc0GPfPrFI1MyHVHfOXWVSK?=
+ =?us-ascii?Q?ZBLAp0WYki9kGWJppDQOm9p4f7q2eq/cNlOS8P1Aka6gB+DTuW+OojQWkI4D?=
+ =?us-ascii?Q?AQzRpC83Nm/tiIJdzKQ1p8Kz9rG3z2BIqVekANjalGgjZxSLDGoW0xBa0k86?=
+ =?us-ascii?Q?ZyquF2P9sP5/dJH1FHvjHaDozpnnpSX8SxQfFmUudRsSezcCoF2WY0SBX1r2?=
+ =?us-ascii?Q?oLBUqyWO4OXps6Mga9f0KP0VGIdJosj/d3UqxYgKBnL4xZyzriZOrziyZYOW?=
+ =?us-ascii?Q?kfd+GCSFgSNebqstBc0U7MUV/+Io9EJmFdXBRy9JptwFFTQu3fiQUBmHPzja?=
+ =?us-ascii?Q?NHXLqhwvv96mv6zZ/xS5cnzgt7++SKewOWiqeJPhN5BTGq1oiZ5X0PMxj1xL?=
+ =?us-ascii?Q?I1Nly76r7WXtDDZczoAyEemhiL38+VoB2+ogHXURNzDndn1JDiNxgKogeV7x?=
+ =?us-ascii?Q?mBmHHJ3u+JEo44pOUaMkFEIcqb5lQ85OK4+RgKwE?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-0.6 required=5.0 tests=BAYES_00,
-        HEADER_FROM_DIFFERENT_DOMAINS,HEXHASH_WORD,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+X-OriginatorOrg: cadence.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: BYAPR07MB5381.namprd07.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2eccfc2e-5b8f-45fc-64ef-08db9f01cff1
+X-MS-Exchange-CrossTenant-originalarrivaltime: 17 Aug 2023 09:10:33.5243
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: d36035c5-6ce6-4662-a3dc-e762e61ae4c9
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: ZY2LntQCArVHNw1lZR6S1Rj5vb7FT31XyAHvSiqD5taiainA7b08Tx/o+j1tOBbCI0bqatVUT532oa0fjn/JKTwWNXXK/RdkUdekIqWNPQI=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR07MB8352
+X-Proofpoint-GUID: vMm3du8KjkHcnm7JkRoPGBWf5wycpnU0
+X-Proofpoint-ORIG-GUID: vMm3du8KjkHcnm7JkRoPGBWf5wycpnU0
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
+ definitions=2023-08-17_03,2023-08-15_02,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_check_notspam policy=outbound_check score=0 phishscore=0
+ impostorscore=0 mlxscore=0 bulkscore=0 spamscore=0 clxscore=1011
+ mlxlogscore=730 suspectscore=0 malwarescore=0 lowpriorityscore=0
+ adultscore=0 priorityscore=1501 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.19.0-2306200000 definitions=main-2308170082
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-The KGDB initial breakpoint gets an rcu stall warning after commit
-a80be428fbc1f1f3bc9ed924 ("rcu: Do not disable GP stall detection in
-rcu_cpu_stall_reset()").
 
-[   53.452051] rcu: INFO: rcu_preempt self-detected stall on CPU
-[   53.487950] rcu:     3-...0: (1 ticks this GP) idle=0e2c/1/0x4000000000000000 softirq=375/375 fqs=8
-[   53.528243] rcu:     (t=12297 jiffies g=-995 q=1 ncpus=4)
-[   53.564840] CPU: 3 PID: 1 Comm: swapper/0 Not tainted 6.5.0-rc2+ #4848
-[   53.603005] Hardware name: Loongson Loongson-3A5000-HV-7A2000-1w-V0.1-CRB/Loongson-LS3A5000-7A2000-1w-CRB-V1.21, BIOS Loongson-UDK2018-V2.0.05099-beta8 08
-[   53.682062] pc 9000000000332100 ra 90000000003320f4 tp 90000001000a0000 sp 90000001000a3710
-[   53.724934] a0 9000000001d4b488 a1 0000000000000000 a2 0000000000000001 a3 0000000000000000
-[   53.768179] a4 9000000001d526c8 a5 90000001000a38f0 a6 000000000000002c a7 0000000000000000
-[   53.810751] t0 00000000000002b0 t1 0000000000000004 t2 900000000131c9c0 t3 fffffffffffffffa
-[   53.853249] t4 0000000000000080 t5 90000001002ac190 t6 0000000000000004 t7 9000000001912d58
-[   53.895684] t8 0000000000000000 u0 90000000013141a0 s9 0000000000000028 s0 9000000001d512f0
-[   53.937633] s1 9000000001d51278 s2 90000001000a3798 s3 90000000019fc410 s4 9000000001d4b488
-[   53.979486] s5 9000000001d512f0 s6 90000000013141a0 s7 0000000000000078 s8 9000000001d4b450
-[   54.021175]    ra: 90000000003320f4 kgdb_cpu_enter+0x534/0x640
-[   54.060150]   ERA: 9000000000332100 kgdb_cpu_enter+0x540/0x640
-[   54.098347]  CRMD: 000000b0 (PLV0 -IE -DA +PG DACF=CC DACM=CC -WE)
-[   54.136621]  PRMD: 0000000c (PPLV0 +PIE +PWE)
-[   54.172192]  EUEN: 00000000 (-FPE -SXE -ASXE -BTE)
-[   54.207838]  ECFG: 00071c1c (LIE=2-4,10-12 VS=7)
-[   54.242503] ESTAT: 00000800 [INT] (IS=11 ECode=0 EsubCode=0)
-[   54.277996]  PRID: 0014c011 (Loongson-64bit, Loongson-3A5000-HV)
-[   54.313544] CPU: 3 PID: 1 Comm: swapper/0 Not tainted 6.5.0-rc2+ #4848
-[   54.430170] Stack : 0072617764726148 0000000000000000 9000000000223504 90000001000a0000
-[   54.472308]         9000000100073a90 9000000100073a98 0000000000000000 9000000100073bd8
-[   54.514413]         9000000100073bd0 9000000100073bd0 9000000100073a00 0000000000000001
-[   54.556018]         0000000000000001 9000000100073a98 99828271f24e961a 90000001002810c0
-[   54.596924]         0000000000000001 0000000000010003 0000000000000000 0000000000000001
-[   54.637115]         ffff8000337cdb80 0000000000000001 0000000006360000 900000000131c9c0
-[   54.677049]         0000000000000000 0000000000000000 90000000017b4c98 9000000001912000
-[   54.716394]         9000000001912f68 9000000001913000 9000000001912f70 00000000000002b0
-[   54.754880]         90000000014a8840 0000000000000000 900000000022351c 0000000000000000
-[   54.792372]         00000000000002b0 000000000000000c 0000000000000000 0000000000071c1c
-[   54.829302]         ...
-[   54.859163] Call Trace:
-[   54.859165] [<900000000022351c>] show_stack+0x5c/0x180
-[   54.918298] [<90000000012f6100>] dump_stack_lvl+0x60/0x88
-[   54.949251] [<90000000012dd5d8>] rcu_dump_cpu_stacks+0xf0/0x148
-[   54.981116] [<90000000002d2fb8>] rcu_sched_clock_irq+0xb78/0xe60
-[   55.012744] [<90000000002e47cc>] update_process_times+0x6c/0xc0
-[   55.044169] [<90000000002f65d4>] tick_sched_timer+0x54/0x100
-[   55.075488] [<90000000002e5174>] __hrtimer_run_queues+0x154/0x240
-[   55.107347] [<90000000002e6288>] hrtimer_interrupt+0x108/0x2a0
-[   55.139112] [<9000000000226418>] constant_timer_interrupt+0x38/0x60
-[   55.170749] [<90000000002b3010>] __handle_irq_event_percpu+0x50/0x160
-[   55.203141] [<90000000002b3138>] handle_irq_event_percpu+0x18/0x80
-[   55.235064] [<90000000002b9d54>] handle_percpu_irq+0x54/0xa0
-[   55.266241] [<90000000002b2168>] generic_handle_domain_irq+0x28/0x40
-[   55.298466] [<9000000000aba95c>] handle_cpu_irq+0x5c/0xa0
-[   55.329749] [<90000000012f7270>] handle_loongarch_irq+0x30/0x60
-[   55.361476] [<90000000012f733c>] do_vint+0x9c/0x100
-[   55.391737] [<9000000000332100>] kgdb_cpu_enter+0x540/0x640
-[   55.422440] [<9000000000332b64>] kgdb_handle_exception+0x104/0x180
-[   55.452911] [<9000000000232478>] kgdb_loongarch_notify+0x38/0xa0
-[   55.481964] [<900000000026b4d4>] notify_die+0x94/0x100
-[   55.509184] [<90000000012f685c>] do_bp+0x21c/0x340
-[   55.562475] [<90000000003315b8>] kgdb_compiled_break+0x0/0x28
-[   55.590319] [<9000000000332e80>] kgdb_register_io_module+0x160/0x1c0
-[   55.618901] [<9000000000c0f514>] configure_kgdboc+0x154/0x1c0
-[   55.647034] [<9000000000c0f5e0>] kgdboc_probe+0x60/0x80
-[   55.674647] [<9000000000c96da8>] platform_probe+0x68/0x100
-[   55.702613] [<9000000000c938e0>] really_probe+0xc0/0x340
-[   55.730528] [<9000000000c93be4>] __driver_probe_device+0x84/0x140
-[   55.759615] [<9000000000c93cdc>] driver_probe_device+0x3c/0x120
-[   55.787990] [<9000000000c93e8c>] __device_attach_driver+0xcc/0x160
-[   55.817145] [<9000000000c91290>] bus_for_each_drv+0x90/0x100
-[   55.845654] [<9000000000c94328>] __device_attach+0xa8/0x1a0
-[   55.874145] [<9000000000c925f0>] bus_probe_device+0xb0/0xe0
-[   55.902572] [<9000000000c8ec7c>] device_add+0x65c/0x860
-[   55.930635] [<9000000000c96704>] platform_device_add+0x124/0x2c0
-[   55.959669] [<9000000001452b38>] init_kgdboc+0x58/0xa0
-[   55.987677] [<900000000022015c>] do_one_initcall+0x7c/0x1e0
-[   56.016134] [<9000000001420f1c>] kernel_init_freeable+0x22c/0x2a0
-[   56.045128] [<90000000012f923c>] kernel_init+0x20/0x124
+>> >
+>> >On 23-07-13 04:14:29, Pawel Laszczak wrote:
+>> >> Gadget ACM while unloading module try to dequeue not queued usb
+>> >> request which causes the kernel to crash.
+>> >> Patch adds extra condition to check whether usb request is
+>> >> processed by CDNSP driver.
+>> >>
+>> >
+>> >Why ACM does that?
+>
+>Would you please explain which situation triggers it?
 
-Currently rcu_cpu_stall_reset() set rcu_state.jiffies_stall to one check
-period later, i.e. jiffies + rcu_jiffies_till_stall_check(). But jiffies
-is only updated in the timer interrupt, so when kgdb_cpu_enter() begins
-to run there may already be nearly one rcu check period after jiffies.
-Since all interrupts are disabled during kgdb_cpu_enter(), jiffies will
-not be updated. When kgdb_cpu_enter() returns, rcu_state.jiffies_stall
-maybe already gets timeout.
+The sequence to trigger is simple:
+- Load modules (u_serial, f_acm and udc driver)
+- unload module
 
-We can set rcu_state.jiffies_stall to two rcu check periods later, e.g.
-jiffies + (rcu_jiffies_till_stall_check() * 2) in rcu_cpu_stall_reset()
-to avoid this problem. But this isn't a complete solution because kgdb
-may take a very long time in irq disabled context.
+In my case the plug is attached to host.
 
-Instead, update jiffies at the beginning of rcu_cpu_stall_reset() can
-solve all kinds of problems [1]. But this causes a new problem because
-updating jiffies is not NMI safe while rcu_cpu_stall_reset() may be used
-in NMI context.
+While unloading in the gs_console_disconnect function is involved
+which try dequeue the usb_request not queued.
 
-So we don't update the global jiffies, but only add the time 'delta' to
-jiffies locally at the beginning of rcu_cpu_stall_reset() which has the
-same effect.
+Without fix controller driver during dequeuing trees to make operation
+on not initialized field which causes the kernel to crash.
 
-[1] https://lore.kernel.org/rcu/20230814020045.51950-1-chenhuacai@loongson.cn/T/#t
+Regards,
+Pawel
 
-Cc: stable@vger.kernel.org
-Fixes: a80be428fbc1f1f3bc9ed924 ("rcu: Do not disable GP stall detection in rcu_cpu_stall_reset()")
-Reported-off-by: Binbin Zhou <zhoubinbin@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
----
- kernel/rcu/tree_stall.h | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
-
-diff --git a/kernel/rcu/tree_stall.h b/kernel/rcu/tree_stall.h
-index b10b8349bb2a..1bf1306cae23 100644
---- a/kernel/rcu/tree_stall.h
-+++ b/kernel/rcu/tree_stall.h
-@@ -153,8 +153,12 @@ static void panic_on_rcu_stall(void)
-  */
- void rcu_cpu_stall_reset(void)
- {
-+	unsigned long delta;
-+
-+	delta = nsecs_to_jiffies(ktime_get_ns() - ktime_get_coarse_ns());
-+
- 	WRITE_ONCE(rcu_state.jiffies_stall,
--		   jiffies + rcu_jiffies_till_stall_check());
-+		   jiffies + delta + rcu_jiffies_till_stall_check());
- }
- 
- //////////////////////////////////////////////////////////////////////////////
--- 
-2.39.3
-
+>> >
+>> >> cc: <stable@vger.kernel.org>
+>> >> Fixes: 3d82904559f4 ("usb: cdnsp: cdns3 Add main part of Cadence
+>> >> USBSSP DRD Driver")
+>> >> Signed-off-by: Pawel Laszczak <pawell@cadence.com>
+>> >> ---
+>> >>  drivers/usb/cdns3/cdnsp-gadget.c | 3 +++
+>> >>  1 file changed, 3 insertions(+)
+>> >>
+>> >> diff --git a/drivers/usb/cdns3/cdnsp-gadget.c
+>> >> b/drivers/usb/cdns3/cdnsp-gadget.c
+>> >> index fff9ec9c391f..3a30c2af0c00 100644
+>> >> --- a/drivers/usb/cdns3/cdnsp-gadget.c
+>> >> +++ b/drivers/usb/cdns3/cdnsp-gadget.c
+>> >> @@ -1125,6 +1125,9 @@ static int cdnsp_gadget_ep_dequeue(struct
+>> >usb_ep *ep,
+>> >>  	unsigned long flags;
+>> >>  	int ret;
+>> >>
+>> >> +	if (request->status !=3D -EINPROGRESS)
+>> >> +		return 0;
+>> >> +
+>> >
+>> >Why not you use pending list which used at cdnsp_ep_enqueue to do this?
+>>
+>> It's just simpler and faster way - no other reasons.
+>
+>Okay, get it.
+>
+>--
+>
+>Thanks,
+>Peter Chen
