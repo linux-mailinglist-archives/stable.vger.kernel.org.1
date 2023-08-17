@@ -2,57 +2,85 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9C81477F34C
-	for <lists+stable@lfdr.de>; Thu, 17 Aug 2023 11:31:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6DA9877F4D1
+	for <lists+stable@lfdr.de>; Thu, 17 Aug 2023 13:12:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1349618AbjHQJao (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 17 Aug 2023 05:30:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36988 "EHLO
+        id S1350158AbjHQLLn (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 17 Aug 2023 07:11:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57936 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1349620AbjHQJaX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 17 Aug 2023 05:30:23 -0400
-X-Greylist: delayed 467 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 17 Aug 2023 02:30:20 PDT
-Received: from mail.avm.de (mail.avm.de [IPv6:2001:bf0:244:244::94])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97F002D61
-        for <stable@vger.kernel.org>; Thu, 17 Aug 2023 02:30:20 -0700 (PDT)
-Received: from mail-notes.avm.de (mail-notes.avm.de [172.16.0.1])
-        by mail.avm.de (Postfix) with ESMTP;
-        Thu, 17 Aug 2023 11:22:30 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=avm.de; s=mail;
-        t=1692264150; bh=Mo5Ei4R9H2Ue8pYI5YtYwz+ROB9jat+95RQMycPkH/g=;
-        h=In-Reply-To:References:Subject:From:To:Cc:Date:From;
-        b=Zsv+kCeWMhAwVv3a6TMZctxs12lWiS9K7ifyGvPNNQpMSpgrfyovCUtoiagA9hI8k
-         iWftEQ1eba2vahne61Q5UPjbKGjeVZIzVpT9qSkv5FkHsLw1055ia4x5J9a6EQkOkX
-         m0L8J6YbaRrZGOg8Fj5pRel9rJkKDhnwM/ehh1Hw=
-MIME-Version: 1.0
-Sensitivity: 
-Importance: Normal
-X-Priority: 3 (Normal)
-In-Reply-To: 
-References: 
-Subject: proc_lseek backport request
-From:   t.martitz@avm.de
-To:     stable@vger.kernel.org
-Cc:     Al Viro <viro@zeniv.linux.org.uk>
-Date:   Thu, 17 Aug 2023 11:22:30 +0200
-Message-ID: <OF964B0E9A.174E142D-ONC1258A0E.0032FEAA-C1258A0E.00337FA7@avm.de>
-X-Mailer: Lotus Domino Web Server Release 12.0.2FP2 July 12, 2023
-X-MIMETrack: Serialize by http on ANIS1/AVM(Release 12.0.2FP2|July 12, 2023) at
- 17.08.2023 11:22:30,
-        Serialize complete at 17.08.2023 11:22:30,
-        Serialize by Router on ANIS1/AVM(Release 12.0.2FP2|July 12, 2023) at
- 17.08.2023 11:22:30
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-purgate-ID: 149429::1692264150-2E41C28E-C98C1539/0/0
-X-purgate-type: clean
-X-purgate-size: 1503
-X-purgate-Ad: Categorized by eleven eXpurgate (R) http://www.eleven.de
-X-purgate: This mail is considered clean (visit http://www.eleven.de for further information)
-X-purgate: clean
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        with ESMTP id S1350238AbjHQLLa (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 17 Aug 2023 07:11:30 -0400
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B653630E2
+        for <stable@vger.kernel.org>; Thu, 17 Aug 2023 04:11:24 -0700 (PDT)
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 37HB6xc7019956;
+        Thu, 17 Aug 2023 11:11:05 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
+ from : to : cc : date : in-reply-to : references : content-type :
+ mime-version : content-transfer-encoding; s=pp1;
+ bh=bh8hKNOCunj0DLdC3UT5xxQR2j12wuA594/Ukqt1VGs=;
+ b=qMpbIHCC/rTJNgAk3atsNYk63+5p4oTqn6UAjLI+KkELEigs/SqG7mW7+/oDDlO1QUo5
+ GQbv58+tApbbXmB1xcjoSgeLUOTdTqNUJo5g2uNEk0Q5ctlsGLY6uKu8PfBqGtbWBQIY
+ guaRTK5EL+5SLJMt5KlRC6lzF97HzPGb5bHttKCSKqfA7e4eDqoCSg1hiikCARfoq+CZ
+ 7luxW+mcTPhIu87IwGgknTbaHcSmgxyyyPcyWX9e6J8CH08+188uNzNBiOr85e++SAwi
+ 3dV9JO5M3p+PE/ba2Yc5YUR0kJXnq95k1B+dnr7s2FPtQU2QsQeRQLQIRseE9Sk5xF2V fA== 
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3shja306dq-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 17 Aug 2023 11:11:05 +0000
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+        by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 37H9DeQZ007832;
+        Thu, 17 Aug 2023 11:11:04 GMT
+Received: from smtprelay03.dal12v.mail.ibm.com ([172.16.1.5])
+        by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3senwkndqg-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 17 Aug 2023 11:11:04 +0000
+Received: from smtpav03.dal12v.mail.ibm.com (smtpav03.dal12v.mail.ibm.com [10.241.53.102])
+        by smtprelay03.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 37HBB32L64094470
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 17 Aug 2023 11:11:03 GMT
+Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 547ED5805A;
+        Thu, 17 Aug 2023 11:11:03 +0000 (GMT)
+Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id E916E58056;
+        Thu, 17 Aug 2023 11:11:02 +0000 (GMT)
+Received: from li-f45666cc-3089-11b2-a85c-c57d1a57929f.ibm.com (unknown [9.61.190.112])
+        by smtpav03.dal12v.mail.ibm.com (Postfix) with ESMTP;
+        Thu, 17 Aug 2023 11:11:02 +0000 (GMT)
+Message-ID: <c785dca7d2c1c732fd47047e70396f11b7a3d2d3.camel@linux.ibm.com>
+Subject: Re: [PATCH 6.1 063/591] evm: Complete description of
+ evm_inode_setattr()
+From:   Mimi Zohar <zohar@linux.ibm.com>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org
+Cc:     patches@lists.linux.dev, Roberto Sassu <roberto.sassu@huawei.com>,
+        Stefan Berger <stefanb@linux.ibm.com>,
+        Sasha Levin <sashal@kernel.org>
+Date:   Thu, 17 Aug 2023 07:11:02 -0400
+In-Reply-To: <20230716194925.509794730@linuxfoundation.org>
+References: <20230716194923.861634455@linuxfoundation.org>
+         <20230716194925.509794730@linuxfoundation.org>
+Content-Type: text/plain; charset="ISO-8859-15"
+X-Mailer: Evolution 3.28.5 (3.28.5-22.el8) 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: _IxyUO4cvT41ofwkpqJmvGNZnjNsdq8u
+X-Proofpoint-ORIG-GUID: _IxyUO4cvT41ofwkpqJmvGNZnjNsdq8u
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
+ definitions=2023-08-17_03,2023-08-17_02,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0
+ priorityscore=1501 lowpriorityscore=0 impostorscore=0 adultscore=0
+ mlxscore=0 bulkscore=0 phishscore=0 clxscore=1011 mlxlogscore=999
+ malwarescore=0 suspectscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2306200000 definitions=main-2308170100
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H5,
+        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -60,45 +88,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Dear stable team,
+Hi Greg,
 
-I'm asking that=20
+To clarify the kernel test robot report:
 
-commit 3f61631d47f1 ("take care to handle NULL ->proc=5Flseek()")
+[stable:linux-6.1.y 7217/8698] security/integrity/evm/evm_main.c:788:
+warning: Excess function parameter 'idmap' description in
+'evm_inode_setattr'
 
-gets backported to the stable and LTS kernels down to 5.10.
+Commit b1de86d4248b added two missing kernel-doc function arguments. 
+Both changes should be backported to 6.3, but then only "* @attr: iattr
+structure containing the new file attributes" should be backported.
 
-Background:
-We are in the process of upgrading our kernels. One target kernel
-is based on 5.15 LTS.
+thanks,
 
-Here we found that, if proc file drivers do not implement proc=5Flseek,
-user space crashes easily, because various library routines internally
-perform lseek(2). The crash happens in proc=5Freg=5Fllseek, where it
-wants to jump to a NULL pointer.
+Mimi
 
-We could, arguably, fix these drivers to use ".proc=5Flseek =3D no=5Fllseek=
-".
-But this doesn't seem like a worthwhile path forward, considering that
-latest Linux kernels (including 6.1 LTS) allow proc=5Flseek =3D=3D NULL aga=
-in=20
-and *remove* no=5Flseek. Essentially, on HEAD, it's best practice to leave =
 
-proc=5Flseek =3D=3D NULL.
-Therefore, I ask that the above procfs fix gets backported so that our
-drivers can work across all kernel versions, including latest 6.x.
+On Sun, 2023-07-16 at 21:43 +0200, Greg Kroah-Hartman wrote:
+> From: Roberto Sassu <roberto.sassu@huawei.com>
+> 
+> [ Upstream commit b1de86d4248b273cb12c4cd7d20c08d459519f7d ]
+> 
+> Add the description for missing parameters of evm_inode_setattr() to
+> avoid the warning arising with W=n compile option.
+> 
+> Fixes: 817b54aa45db ("evm: add evm_inode_setattr to prevent updating an invalid security.evm") # v3.2+
+> Fixes: c1632a0f1120 ("fs: port ->setattr() to pass mnt_idmap") # v6.3+
+> Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
+> Reviewed-by: Stefan Berger <stefanb@linux.ibm.com>
+> Signed-off-by: Mimi Zohar <zohar@linux.ibm.com>
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> ---
+>  security/integrity/evm/evm_main.c | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/security/integrity/evm/evm_main.c b/security/integrity/evm/evm_main.c
+> index 23d484e05e6f2..f1a26d50c1d58 100644
+> --- a/security/integrity/evm/evm_main.c
+> +++ b/security/integrity/evm/evm_main.c
+> @@ -776,7 +776,9 @@ static int evm_attr_change(struct user_namespace *mnt_userns,
+>  
+>  /**
+>   * evm_inode_setattr - prevent updating an invalid EVM extended attribute
+> + * @idmap: idmap of the mount
+>   * @dentry: pointer to the affected dentry
+> + * @attr: iattr structure containing the new file attributes
+>   *
+>   * Permit update of file attributes when files have a valid EVM signature,
+>   * except in the case of them having an immutable portable signature.
 
-I checked that this commit applies and works as expected on a board that
-runs Linux 5.15, and the observed crash goes away.
 
-Furthermore, I investigated that the fix applies to older LTS kernels, down
-to 5.10. The lseek(2) path uses vfs=5Fllseek() which checks for FMODE=5FLSE=
-EK. This
-has been like that forever since the initial git import. However, 5.4 LTS a=
-nd=20
-older kernels do not have "struct proc=5Fops".
-
-Thank you in advance.
-
-Best regards,
-Thomas Martitz
