@@ -2,78 +2,285 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D077C77EFAF
-	for <lists+stable@lfdr.de>; Thu, 17 Aug 2023 05:56:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 24AAE77EFB8
+	for <lists+stable@lfdr.de>; Thu, 17 Aug 2023 06:05:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233315AbjHQDzr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 16 Aug 2023 23:55:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36412 "EHLO
+        id S1347952AbjHQEFA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 17 Aug 2023 00:05:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35586 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1347932AbjHQDzY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 16 Aug 2023 23:55:24 -0400
-Received: from mail-oi1-x229.google.com (mail-oi1-x229.google.com [IPv6:2607:f8b0:4864:20::229])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7424226B6
-        for <stable@vger.kernel.org>; Wed, 16 Aug 2023 20:55:23 -0700 (PDT)
-Received: by mail-oi1-x229.google.com with SMTP id 5614622812f47-3a81154c570so1876146b6e.1
-        for <stable@vger.kernel.org>; Wed, 16 Aug 2023 20:55:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1692244523; x=1692849323;
-        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=gb4qAVlMN/V48c3tDnit9Qdh+68rSKImmu7s/ky4OWc=;
-        b=XI7m/zznxZ4aPkTspl+4F2hkxPQMFV/SA6DW5QbWbq45/ySn06nnL6iFpX9CTOBkd4
-         tc3224mXMq6pT4XU9dqJhfcRnbpbbhbnj+pjQ+zotEdAavAPevnt9KQp3y5Fu4sLSxy7
-         2xssKJM9cZD65A/JJXySE3PXod3ADk9tPwf/G59BshcvoySbwUAFZlSqaCnqG91yoCXb
-         mD4WFpY2puqqgv+zPbwJE40Z38oQfixXwVx18xOq1pGCxgQLUjwT5JzVJZFcUbVhpyYm
-         SSVIVZTXPdQb2nWh+5k3LdCpESAEgHSF8bA7GMNdCbQ1QWWe4Me8QxE0Eci7W3HzpiSO
-         uEZw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692244523; x=1692849323;
-        h=to:subject:message-id:date:from:reply-to:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=gb4qAVlMN/V48c3tDnit9Qdh+68rSKImmu7s/ky4OWc=;
-        b=Tofe6UjxczC6CmxAZGzDGbg3lFBFpcrF6SEREMRnMsuXz2d0/vDnXxSRBrgWSSwTm/
-         BW52x9CniJm7GejcEGk+cVIdRD3AXiezZ9tNAlAG53F4JpzOnakGHQFKeSjbTfMViUnr
-         T0UIYfcri8r051BtxXbiyk9RLi3WwzLds0g8kf1JH1fT3MeHJrC3vG8yegw6T/bqGUvg
-         zHKc1oeB0Ad5R8JRUWWG+VHa6vhWKXOGpamjn96UEGQ65zTKB/jr1Yr4cT57kdBamkWa
-         cG6kgYtiyTYWzipNwITaF+QehNPym4lv31589yZ7hvwcUW8oJcbAKhmVuUn5Pa/7kBI9
-         JalQ==
-X-Gm-Message-State: AOJu0YxSCBLq4ZXUUOtha5B8Dl6+FzLcB8iR9ch9DDrU8JQccKsuMaD0
-        4yOh2dORy0zClTm1wZdG2KLL9k0RAPkXAr1ctdE=
-X-Google-Smtp-Source: AGHT+IFpBgVTNE7D4AYzdwlBHId9YHYK9UIWGzoUlK7gyNRhxSI015nsXjcQKN7Pn5SL2Szo6m0vyMwQLzM9c/kZK3Y=
-X-Received: by 2002:aca:280b:0:b0:3a7:adf5:d5aa with SMTP id
- 11-20020aca280b000000b003a7adf5d5aamr3939166oix.31.1692244522534; Wed, 16 Aug
- 2023 20:55:22 -0700 (PDT)
+        with ESMTP id S1347955AbjHQEE7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 17 Aug 2023 00:04:59 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6FD48271D;
+        Wed, 16 Aug 2023 21:04:58 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id EC39D63827;
+        Thu, 17 Aug 2023 04:04:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C2F9C433B6;
+        Thu, 17 Aug 2023 04:04:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1692245097;
+        bh=n93Y+NvoiCdhzO7vgtSvAbVtJcBfReB5Q3BzTXShkwQ=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=BIf+jhuUQeg4/1MhgIg4CpsmvhqewTlGzKp/7gEX/5xk+BQQQ4xdVvLii9VcQTMjt
+         UiqozUyWJhbWbKRJ37rwMGZzFO5oQY7KUT73GX1KEUCxYSteEqO0LEC/NuIz0OgHir
+         iHX5wwf1/0AtJivlFSv9aCcwW4VEsySrslDYcCU+yHMMjwiHGT9T06zXRuYXdDR9nq
+         O8HTG7QBLuYU7E3pfE22GqpCDNNzHaZGbpBzt2aaB8hOp80EgjqgHVXqiyqH8oWRPB
+         +lBosP5l5Cx6uhbob5wtDGXHziWEkFwkwPYmlYAlD/w1WeaYpl/Z+gZyzvzxcOS8h/
+         PQGjp+OfVSCyw==
+Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-5255da974c4so5637717a12.3;
+        Wed, 16 Aug 2023 21:04:57 -0700 (PDT)
+X-Gm-Message-State: AOJu0YzRBKeg/NuqUpavhyBvC+BJ7uumYAlL9Vw9SPAnSSCyB5NHA6sp
+        /w0yvQVDZiGUNFM+N9xvIVyYAONWOHDcAOOLMN8=
+X-Google-Smtp-Source: AGHT+IHp+7TMt3Tj5/RPaWSXYWVOe5SbUojxP0adL9e0JxkaBOlBhmT7bkD3la7r7y1S8eA63rcp6wYS+uiFyY1ffsw=
+X-Received: by 2002:aa7:db45:0:b0:522:29ec:3e0a with SMTP id
+ n5-20020aa7db45000000b0052229ec3e0amr3009174edt.28.1692245095417; Wed, 16 Aug
+ 2023 21:04:55 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 2002:a05:6358:d099:b0:133:91d:bed5 with HTTP; Wed, 16 Aug 2023
- 20:55:22 -0700 (PDT)
-Reply-To: privateemail01112@gmail.com
-From:   KEIN BRIGGS <privateemailjsuee@gmail.com>
-Date:   Wed, 16 Aug 2023 20:55:22 -0700
-Message-ID: <CAGgyiOo8N1VmN4WeWTyY8_0KCNeib77vD_XNfPJOzOPMZXM8DA@mail.gmail.com>
-Subject: Your attention please!!
-To:     undisclosed-recipients:;
+References: <20230814020045.51950-1-chenhuacai@loongson.cn>
+ <20230814020045.51950-2-chenhuacai@loongson.cn> <18b9119c-cbc8-42a1-a313-9154d73c9841@paulmck-laptop>
+ <CAAhV-H7t46hD1k18-sLYQA8h=M+ROdyMnT7gRtEGoRwKKBUZUA@mail.gmail.com>
+ <CALm+0cWkQ8j_jiOSOuSsR9LbKPUL5cxRrONVxeNgSM5f1nDxMQ@mail.gmail.com>
+ <CAAhV-H6S3Scu-Mf7E3aaqySytY4xDgjXrWc=fXSbr4i7R+-GDA@mail.gmail.com>
+ <CALm+0cUpqONZOEHbc85d-Z5cC=P5LSeOAGuCCOukpTagLxnXWw@mail.gmail.com>
+ <CAAhV-H7J6Rj99M6rxoFCEKu4G6NQPX9-N0a3-2GjEwbr+tbwQw@mail.gmail.com>
+ <CALm+0cVdaXn5+4veu2NDwdi7htm=KY4ca+Eh54TwnN_6Xjs8TA@mail.gmail.com>
+ <CAAhV-H6ejw=8afS0jmmQvKUrCw=qZm_P6SA0A+tuvvb8bsq4-Q@mail.gmail.com>
+ <D3AFC0E7-9E6C-43F2-B9F5-3AC498B14F0F@gmail.com> <CAAhV-H6XPmDFEKGwjcbv57jRwpUvZ76PcmJjxN50Dpbq+-QgKA@mail.gmail.com>
+ <2EB2D2A7-7C69-4E75-BF62-92309121B0A5@gmail.com>
+In-Reply-To: <2EB2D2A7-7C69-4E75-BF62-92309121B0A5@gmail.com>
+From:   Huacai Chen <chenhuacai@kernel.org>
+Date:   Thu, 17 Aug 2023 12:04:42 +0800
+X-Gmail-Original-Message-ID: <CAAhV-H49seuerPTqwh_KQxFBjSVAT6CjFE_8veifLyEZvvbTYg@mail.gmail.com>
+Message-ID: <CAAhV-H49seuerPTqwh_KQxFBjSVAT6CjFE_8veifLyEZvvbTYg@mail.gmail.com>
+Subject: Re: [PATCH V4 2/2] rcu: Update jiffies in rcu_cpu_stall_reset()
+To:     Alan Huang <mmpgouride@gmail.com>
+Cc:     Z qiang <qiang.zhang1211@gmail.com>,
+        "Paul E . McKenney" <paulmck@kernel.org>,
+        Huacai Chen <chenhuacai@loongson.cn>,
+        Frederic Weisbecker <frederic@kernel.org>,
+        Neeraj Upadhyay <quic_neeraju@quicinc.com>,
+        Joel Fernandes <joel@joelfernandes.org>,
+        Josh Triplett <josh@joshtriplett.org>,
+        Boqun Feng <boqun.feng@gmail.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@kernel.org>,
+        John Stultz <jstultz@google.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+        Lai Jiangshan <jiangshanlai@gmail.com>,
+        Sergey Senozhatsky <senozhatsky@chromium.org>,
+        rcu@vger.kernel.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org, Binbin Zhou <zhoubinbin@loongson.cn>
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=4.4 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLYTO,
-        FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,
-        SPF_PASS,UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Level: ****
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Your attention please!
+Hi, Alan,
 
-My efforts to reaching you many times always not through.
+On Thu, Aug 17, 2023 at 12:52=E2=80=AFAM Alan Huang <mmpgouride@gmail.com> =
+wrote:
+>
+> >>
+> >>>>>>>>>>>
+> >>>>>>>>>>> Currently rcu_cpu_stall_reset() set rcu_state.jiffies_stall t=
+o one check
+> >>>>>>>>>>> period later, i.e. jiffies + rcu_jiffies_till_stall_check(). =
+But jiffies
+> >>>>>>>>>>> is only updated in the timer interrupt, so when kgdb_cpu_ente=
+r() begins
+> >>>>>>>>>>> to run there may already be nearly one rcu check period after=
+ jiffies.
+> >>>>>>>>>>> Since all interrupts are disabled during kgdb_cpu_enter(), ji=
+ffies will
+> >>>>>>>>>>> not be updated. When kgdb_cpu_enter() returns, rcu_state.jiff=
+ies_stall
+> >>>>>>>>>>> maybe already gets timeout.
+> >>>>>>>>>>>
+> >>>>>>>>>>> We can set rcu_state.jiffies_stall to two rcu check periods l=
+ater, e.g.
+> >>>>>>>>>>> jiffies + (rcu_jiffies_till_stall_check() * 2) in rcu_cpu_sta=
+ll_reset()
+> >>>>>>>>>>> to avoid this problem. But this isn't a complete solution bec=
+ause kgdb
+> >>>>>>>>>>> may take a very long time in irq disabled context.
+> >>>>>>>>>>>
+> >>>>>>>>>>> Instead, update jiffies at the beginning of rcu_cpu_stall_res=
+et() can
+> >>>>>>>>>>> solve all kinds of problems.
+> >>>>>>>>>>
+> >>>>>>>>>> Would it make sense for there to be a kgdb_cpu_exit()?  In tha=
+t case,
+> >>>>>>>>>> the stalls could simply be suppressed at the beginning of the =
+debug
+> >>>>>>>>>> session and re-enabled upon exit, as is currently done for sys=
+rq output
+> >>>>>>>>>> via rcu_sysrq_start() and rcu_sysrq_end().
+> >>>>>>>>> Thank you for your advice, but that doesn't help. Because
+> >>>>>>>>> rcu_sysrq_start() and rcu_sysrq_end() try to suppress the warni=
+ngs
+> >>>>>>>>> during sysrq, but kgdb already has no warnings during kgdb_cpu_=
+enter()
+> >>>>>>>>> since it is executed in irq disabled context. Instead, this pat=
+ch
+> >>>>>>>>> wants to suppress the warnings *after* kgdb_cpu_enter() due to =
+a very
+> >>>>>>>>> old jiffies value.
+> >>>>>>>>>
+> >>>>>>>>
+> >>>>>>>> Hello, Huacai
+> >>>>>>>>
+> >>>>>>>> Is it possible to set  the rcu_cpu_stall_suppress is true in
+> >>>>>>>> dbg_touch_watchdogs()
+> >>>>>>>> and reset the rcu_cpu_stall_suppress at the beginning and end of=
+ the
+> >>>>>>>> RCU grace period?
+> >>>>>>> This is possible but not the best: 1, kgdb is not the only caller=
+ of
+> >>>>>>> rcu_cpu_stall_reset(); 2, it is difficult to find the "end" to re=
+set
+> >>>>>>> rcu_cpu_stall_suppress.
+> >>>>>>>
+> >>>>>>
+> >>>>>> You can replace rcu_state.jiffies_stall update by setting rcu_cpu_=
+stall_suppress
+> >>>>>> in rcu_cpu_stall_reset(),  and reset rcu_cpu_stall_suppress in rcu=
+_gp_init() and
+> >>>>>> rcu_gp_cleanup().
+> >>>>> What's the advantage compared with updating jiffies? Updating jiffi=
+es
+> >>>>> seems more straight forward.
+> >>>>>
+> >>>>
+> >>>> In do_update_jiffies_64(), need to acquire jiffies_lock raw spinlock=
+,
+> >>>> like you said, kgdb is not the only caller of rcu_cpu_stall_reset(),
+> >>>> the rcu_cpu_stall_reset() maybe invoke in NMI  (arch/x86/platform/uv=
+/uv_nmi.c)
+> >>> Reset rcu_cpu_stall_suppress in rcu_gp_init()/rcu_gp_cleanup() is
+> >>> still not so good to me, because it does a useless operation in most
+> >>> cases. Moreover, the rcu core is refactored again and again, somethin=
+g
+> >>> may be changed in future.
+> >>>
+> >>> If  do_update_jiffies_64() cannot be used in NMI context, can we
+> >>
+> >> What about updating jiffies in dbg_touch_watchdogs or adding a wrapper=
+ which updates
+> >> both jiffies and jiffies_stall?
+> > This can solve the kgdb problem, but I found that most callers of
+> > rcu_cpu_stall_reset() are in irq disabled context so they may meet
+>
+> The duration of other contexts where interrupts are disabled may not be a=
+s long as in the case of kgdb=EF=BC=9F
+>
+> > similar problems. Modifying rcu_cpu_stall_reset() can solve all of
+> > them.
+> >
+> > But due to the NMI issue, from my point of view, setting jiffies_stall
+> > to jiffies + 300*HZ is the best solution now. :)
+>
+> If I understand correctly, the NMI issue is the deadlock issue? If so, pl=
+us the short duration of other irq disabled
+> contexts, it=E2=80=99s ok just update jiffies in dbg_touch_watchdogs.
+>
+> Please correct me if anything wrong. :)
+The timeout value can be configured as short as 3 seconds, in this
+case other callers may also have problems.
 
-Please may you kindly let me know if you are still using this email
-address as my previous messages to you were not responded to.
-
-I await hearing from you once more if my previous messages were not received.
-Reach me via my email: privateemail01112@gmail.com
-
-My regards,
-Kein Briggs.
+Huacai
+>
+> >
+> > Huacai
+> >>
+> >>> consider my old method [1]?
+> >>> https://lore.kernel.org/rcu/CAAhV-H7j9Y=3DVvRLm8thLw-EX1PGqBA9YfT4G1A=
+N7ucYS=3DiP+DQ@mail.gmail.com/T/#t
+> >>>
+> >>> Of course we should set rcu_state.jiffies_stall large enough, so we
+> >>> can do like this:
+> >>>
+> >>> void rcu_cpu_stall_reset(void)
+> >>> {
+> >>> WRITE_ONCE(rcu_state.jiffies_stall,
+> >>> -   jiffies + rcu_jiffies_till_stall_check());
+> >>> +   jiffies + 300 * HZ);
+> >>> }
+> >>>
+> >>> 300s is the largest timeout value, and I think 300s is enough here in=
+ practice.
+> >>>
+> >>> Huacai
+> >>>
+> >>>>
+> >>>> Thanks
+> >>>> Zqiang
+> >>>>
+> >>>>
+> >>>>> Huacai
+> >>>>>
+> >>>>>>
+> >>>>>> Thanks
+> >>>>>> Zqiang
+> >>>>>>
+> >>>>>>>
+> >>>>>>>> or set rcupdate.rcu_cpu_stall_suppress_at_boot=3D1 in bootargs c=
+an
+> >>>>>>>> suppress RCU stall
+> >>>>>>>> in booting.
+> >>>>>>> This is also possible, but it suppresses all kinds of stall warni=
+ngs,
+> >>>>>>> which is not what we want.
+> >>>>>>>
+> >>>>>>> Huacai
+> >>>>>>>>
+> >>>>>>>>
+> >>>>>>>> Thanks
+> >>>>>>>> Zqiang
+> >>>>>>>>
+> >>>>>>>>
+> >>>>>>>>>
+> >>>>>>>>> Huacai
+> >>>>>>>>>
+> >>>>>>>>>>
+> >>>>>>>>>>                                                       Thanx, P=
+aul
+> >>>>>>>>>>
+> >>>>>>>>>>> Cc: stable@vger.kernel.org
+> >>>>>>>>>>> Fixes: a80be428fbc1f1f3bc9ed924 ("rcu: Do not disable GP stal=
+l detection in rcu_cpu_stall_reset()")
+> >>>>>>>>>>> Reported-off-by: Binbin Zhou <zhoubinbin@loongson.cn>
+> >>>>>>>>>>> Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+> >>>>>>>>>>> ---
+> >>>>>>>>>>> kernel/rcu/tree_stall.h | 1 +
+> >>>>>>>>>>> 1 file changed, 1 insertion(+)
+> >>>>>>>>>>>
+> >>>>>>>>>>> diff --git a/kernel/rcu/tree_stall.h b/kernel/rcu/tree_stall.=
+h
+> >>>>>>>>>>> index b10b8349bb2a..1c7b540985bf 100644
+> >>>>>>>>>>> --- a/kernel/rcu/tree_stall.h
+> >>>>>>>>>>> +++ b/kernel/rcu/tree_stall.h
+> >>>>>>>>>>> @@ -153,6 +153,7 @@ static void panic_on_rcu_stall(void)
+> >>>>>>>>>>> */
+> >>>>>>>>>>> void rcu_cpu_stall_reset(void)
+> >>>>>>>>>>> {
+> >>>>>>>>>>> +     do_update_jiffies_64(ktime_get());
+> >>>>>>>>>>>     WRITE_ONCE(rcu_state.jiffies_stall,
+> >>>>>>>>>>>                jiffies + rcu_jiffies_till_stall_check());
+> >>>>>>>>>>> }
+> >>>>>>>>>>> --
+> >>>>>>>>>>> 2.39.3
+>
+>
