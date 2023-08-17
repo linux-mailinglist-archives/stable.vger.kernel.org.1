@@ -2,175 +2,213 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4708E77F55D
-	for <lists+stable@lfdr.de>; Thu, 17 Aug 2023 13:36:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AA9DD77F563
+	for <lists+stable@lfdr.de>; Thu, 17 Aug 2023 13:38:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1349221AbjHQLgD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 17 Aug 2023 07:36:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41386 "EHLO
+        id S1350332AbjHQLhk (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 17 Aug 2023 07:37:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48142 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1350259AbjHQLfm (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 17 Aug 2023 07:35:42 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 654D0F7
-        for <stable@vger.kernel.org>; Thu, 17 Aug 2023 04:35:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1692272139; x=1723808139;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=U/IB5AY7stuYmqXqKtnDK70cJDZnilSRWZem4li6CXI=;
-  b=j59gnG9qKKd+5J3JBgOOeA6xQ2A33ObsNRPlIuLCwo9+TaVvjvToalTi
-   NVzep8M3OrY/WqVpImXDhg2VZSKCEVjFu9Odx1kHLON+20x0uSMOzzU4I
-   yRcKbElQRefNn6ALt6zERn+3lOz/iwl6NygRZrYIpVvD1CXo7KDyQkiZe
-   s09nQnBRb3qAJCIxCIqp6w18vZt53u5GiCXIexkWXAGblW5jB+Jb0bLLL
-   G6ju58P6FQtk59+d5ZxnkTnO5Wo2tXDwdmCHXgUZv21r5YDA9GEIy9Vxx
-   01RkvtU1BCGZXXmM4ctkzHHgoaqkiB1lEhIJ3LMQIP1HclLo9phB6DNH6
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10803"; a="459141100"
-X-IronPort-AV: E=Sophos;i="6.01,180,1684825200"; 
-   d="scan'208";a="459141100"
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Aug 2023 04:35:37 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10803"; a="728104374"
-X-IronPort-AV: E=Sophos;i="6.01,180,1684825200"; 
-   d="scan'208";a="728104374"
-Received: from stinkpipe.fi.intel.com (HELO stinkbox) ([10.237.72.68])
-  by orsmga007.jf.intel.com with SMTP; 17 Aug 2023 04:35:34 -0700
-Received: by stinkbox (sSMTP sendmail emulation); Thu, 17 Aug 2023 14:35:33 +0300
-Date:   Thu, 17 Aug 2023 14:35:33 +0300
-From:   Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
-To:     Jani Nikula <jani.nikula@intel.com>
-Cc:     dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
-        stable@vger.kernel.org
-Subject: Re: [PATCH] Revert "drm/edid: Fix csync detailed mode parsing"
-Message-ID: <ZN4GBQCtIi6v0D28@intel.com>
-References: <20230815101907.2900768-1-jani.nikula@intel.com>
+        with ESMTP id S1350259AbjHQLhL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 17 Aug 2023 07:37:11 -0400
+Received: from madras.collabora.co.uk (madras.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e5ab])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6CC94F7;
+        Thu, 17 Aug 2023 04:37:09 -0700 (PDT)
+Received: from [IPV6:2405:201:0:21ea:73f6:2283:f432:3936] (unknown [IPv6:2405:201:0:21ea:73f6:2283:f432:3936])
+        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        (Authenticated sender: shreeya)
+        by madras.collabora.co.uk (Postfix) with ESMTPSA id 38DD7660722C;
+        Thu, 17 Aug 2023 12:37:02 +0100 (BST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+        s=mail; t=1692272227;
+        bh=XpsLoLdD24V/VCEZfFfWZMx9/FmqcYIRq7T56uKXZkM=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=dezbTy3ssM+3ssPGsT3JQhck6ieWjEz8Pt1eVIZWl6rtFNAOrVAkHyGYhRsGl92iE
+         3P18wyUzp+DFCjjDzoyUWQ//8oeo1GPJ5EkFFhAEja/Ul9YTVgdI6TNLs8zpKnwsbK
+         mNL53o+EadUuMa1ZF70cWv8s5uL9NEgzR7IEa6PbZpOY4k232U1L8JVObPpwnvtB9/
+         zrfkA3rYNn2ydvjILvWrs3GYaC22C96IRqnsvgpA2O7vdc2rjJNYVo3Q/0sOq5SZKT
+         YbE/Ygr3JfhLIHe5Sdj5hx7W/6AmWayTOzUvPl8O1Vq7qGZrzJ8mrM1lGXEHUdkBGq
+         t3fEPB7HvgLpQ==
+Message-ID: <471bf84d-9d58-befc-8224-359a62e29786@collabora.com>
+Date:   Thu, 17 Aug 2023 17:06:57 +0530
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230815101907.2900768-1-jani.nikula@intel.com>
-X-Patchwork-Hint: comment
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH 5.17 127/298] driver core: Fix wait_for_device_probe() &
+ deferred_probe_timeout interaction
+Content-Language: en-US
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     saravanak@google.com, stable@vger.kernel.org,
+        John Stultz <jstultz@google.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Alexey Kuznetsov <kuznet@ms2.inr.ac.ru>,
+        Hideaki YOSHIFUJI <yoshfuji@linux-ipv6.org>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Rob Herring <robh@kernel.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+        Robin Murphy <robin.murphy@arm.com>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Naresh Kamboju <naresh.kamboju@linaro.org>,
+        Basil Eljuse <Basil.Eljuse@arm.com>,
+        Ferry Toth <fntoth@gmail.com>, Arnd Bergmann <arnd@arndb.de>,
+        Anders Roxell <anders.roxell@linaro.org>,
+        linux-pm@vger.kernel.org, Nathan Chancellor <nathan@kernel.org>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Sasha Levin <sashal@kernel.org>, linux-kernel@vger.kernel.org,
+        "gustavo.padovan@collabora.com" <gustavo.padovan@collabora.com>,
+        =?UTF-8?Q?Ricardo_Ca=c3=b1uelo_Navarro?= 
+        <ricardo.canuelo@collabora.com>,
+        Guillaume Charles Tucker <guillaume.tucker@collabora.com>,
+        usama.anjum@collabora.com, kernelci@lists.linux.dev
+References: <20220613094924.913340374@linuxfoundation.org>
+ <20220613094928.793712131@linuxfoundation.org>
+ <6283c4b1-2513-207d-4ed6-fdabf3f3880e@collabora.com>
+ <2023081619-slapping-congrats-8e85@gregkh>
+From:   Shreeya Patel <shreeya.patel@collabora.com>
+In-Reply-To: <2023081619-slapping-congrats-8e85@gregkh>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-6.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, Aug 15, 2023 at 01:19:07PM +0300, Jani Nikula wrote:
-> This reverts commit ca62297b2085b5b3168bd891ca24862242c635a1.
-> 
-> Commit ca62297b2085 ("drm/edid: Fix csync detailed mode parsing") fixed
-> EDID detailed mode sync parsing. Unfortunately, there are quite a few
-> displays out there that have bogus (zero) sync field that are broken by
-> the change. Zero means analog composite sync, which is not right for
-> digital displays, and the modes get rejected. Regardless, it used to
-> work, and it needs to continue to work. Revert the change.
+Hi Greg,
 
-Bah. I guess one option would be to quirk the bogus EDIDs, or maybe just
-ignore bogus sync flags for the eDP preferred mode. But maybe needs a
-bit more thinking, so
+On 16/08/23 20:33, Greg Kroah-Hartman wrote:
+> On Wed, Aug 16, 2023 at 03:09:27PM +0530, Shreeya Patel wrote:
+>> On 13/06/22 15:40, Greg Kroah-Hartman wrote:
+>>> From: Saravana Kannan<saravanak@google.com>
+>>>
+>>> [ Upstream commit 5ee76c256e928455212ab759c51d198fedbe7523 ]
+>>>
+>>> Mounting NFS rootfs was timing out when deferred_probe_timeout was
+>>> non-zero [1].  This was because ip_auto_config() initcall times out
+>>> waiting for the network interfaces to show up when
+>>> deferred_probe_timeout was non-zero. While ip_auto_config() calls
+>>> wait_for_device_probe() to make sure any currently running deferred
+>>> probe work or asynchronous probe finishes, that wasn't sufficient to
+>>> account for devices being deferred until deferred_probe_timeout.
+>>>
+>>> Commit 35a672363ab3 ("driver core: Ensure wait_for_device_probe() waits
+>>> until the deferred_probe_timeout fires") tried to fix that by making
+>>> sure wait_for_device_probe() waits for deferred_probe_timeout to expire
+>>> before returning.
+>>>
+>>> However, if wait_for_device_probe() is called from the kernel_init()
+>>> context:
+>>>
+>>> - Before deferred_probe_initcall() [2], it causes the boot process to
+>>>     hang due to a deadlock.
+>>>
+>>> - After deferred_probe_initcall() [3], it blocks kernel_init() from
+>>>     continuing till deferred_probe_timeout expires and beats the point of
+>>>     deferred_probe_timeout that's trying to wait for userspace to load
+>>>     modules.
+>>>
+>>> Neither of this is good. So revert the changes to
+>>> wait_for_device_probe().
+>>>
+>>> [1] -https://lore.kernel.org/lkml/TYAPR01MB45443DF63B9EF29054F7C41FD8C60@TYAPR01MB4544.jpnprd01.prod.outlook.com/
+>>> [2] -https://lore.kernel.org/lkml/YowHNo4sBjr9ijZr@dev-arch.thelio-3990X/
+>>> [3] -https://lore.kernel.org/lkml/Yo3WvGnNk3LvLb7R@linutronix.de/
+>> Hi Saravana, Greg,
+>>
+>>
+>> KernelCI found this patch causes the baseline.bootrr.deferred-probe-empty test to fail on r8a77960-ulcb,
+>> see the following details for more information.
+>>
+>> KernelCI dashboard link:
+>> https://linux.kernelci.org/test/plan/id/64d2a6be8c1a8435e535b264/
+>>
+>> Error messages from the logs :-
+>>
+>> + UUID=11236495_1.5.2.4.5
+>> + set +x
+>> + export 'PATH=/opt/bootrr/libexec/bootrr/helpers:/lava-11236495/1/../bin:/sbin:/usr/sbin:/bin:/usr/bin'
+>> + cd /opt/bootrr/libexec/bootrr
+>> + sh helpers/bootrr-auto
+>> e6800000.ethernet	
+>> e6700000.dma-controller	
+>> e7300000.dma-controller	
+>> e7310000.dma-controller	
+>> ec700000.dma-controller	
+>> ec720000.dma-controller	
+>> fea20000.vsp	
+>> feb00000.display	
+>> fea28000.vsp	
+>> fea30000.vsp	
+>> fe9a0000.vsp	
+>> fe9af000.fcp	
+>> fea27000.fcp	
+>> fea2f000.fcp	
+>> fea37000.fcp	
+>> sound	
+>> ee100000.mmc	
+>> ee140000.mmc	
+>> ec500000.sound	
+>> /lava-11236495/1/../bin/lava-test-case
+>> <8>[   17.476741] <LAVA_SIGNAL_TESTCASE TEST_CASE_ID=deferred-probe-empty RESULT=fail>
+>>
+>> Test case failing :-
+>> Baseline Bootrr deferred-probe-empty test -https://github.com/kernelci/bootrr/blob/main/helpers/bootrr-generic-tests
+>>
+>> Regression Reproduced :-
+>>
+>> Lava job after reverting the commit 5ee76c256e92
+>> https://lava.collabora.dev/scheduler/job/11292890
+>>
+>>
+>> Bisection report from KernelCI can be found at the bottom of the email.
+>>
+>> Thanks,
+>> Shreeya Patel
+>>
+>> #regzbot introduced: 5ee76c256e92
+>> #regzbot title: KernelCI: Multiple devices deferring on r8a77960-ulcb
+>>
+>> ---------------------------------------------------------------------------------------------------------------------------------------------------
+>>
+>> * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * **
+>> * If you do send a fix, please include this trailer: *
+>> * Reported-by: "kernelci.org bot" <bot@...> *
+>> * *
+>> * Hope this helps! *
+>> * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+>>
+>> stable-rc/linux-5.10.y bisection: baseline.bootrr.deferred-probe-empty on
+>> r8a77960-ulcb
+> You are testing 5.10.y, yet the subject says 5.17?
+>
+> Which is it here?
 
-Acked-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Sorry, I accidentally used the lore link for 5.17 while reporting this 
+issue,
+but this test does fail on all the stable releases from 5.10 onwards.
 
-> 
-> Rejecting modes with analog composite sync was the part that fixed the
-> gitlab issue 8146 [1]. We'll need to get back to the drawing board with
-> that.
-> 
-> [1] https://gitlab.freedesktop.org/drm/intel/-/issues/8146
-> 
-> Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/8789
-> Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/8930
-> Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/9044
-> Fixes: ca62297b2085 ("drm/edid: Fix csync detailed mode parsing")
-> Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
-> Cc: dri-devel@lists.freedesktop.org
-> Cc: <stable@vger.kernel.org> # v6.4+
-> Signed-off-by: Jani Nikula <jani.nikula@intel.com>
-> ---
->  drivers/gpu/drm/drm_edid.c | 29 ++++++++---------------------
->  include/drm/drm_edid.h     | 12 +++---------
->  2 files changed, 11 insertions(+), 30 deletions(-)
-> 
-> diff --git a/drivers/gpu/drm/drm_edid.c b/drivers/gpu/drm/drm_edid.c
-> index f95152fac427..340da8257b51 100644
-> --- a/drivers/gpu/drm/drm_edid.c
-> +++ b/drivers/gpu/drm/drm_edid.c
-> @@ -3457,6 +3457,10 @@ static struct drm_display_mode *drm_mode_detailed(struct drm_connector *connecto
->  			    connector->base.id, connector->name);
->  		return NULL;
->  	}
-> +	if (!(pt->misc & DRM_EDID_PT_SEPARATE_SYNC)) {
-> +		drm_dbg_kms(dev, "[CONNECTOR:%d:%s] Composite sync not supported\n",
-> +			    connector->base.id, connector->name);
-> +	}
->  
->  	/* it is incorrect if hsync/vsync width is zero */
->  	if (!hsync_pulse_width || !vsync_pulse_width) {
-> @@ -3503,27 +3507,10 @@ static struct drm_display_mode *drm_mode_detailed(struct drm_connector *connecto
->  	if (info->quirks & EDID_QUIRK_DETAILED_SYNC_PP) {
->  		mode->flags |= DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC;
->  	} else {
-> -		switch (pt->misc & DRM_EDID_PT_SYNC_MASK) {
-> -		case DRM_EDID_PT_ANALOG_CSYNC:
-> -		case DRM_EDID_PT_BIPOLAR_ANALOG_CSYNC:
-> -			drm_dbg_kms(dev, "[CONNECTOR:%d:%s] Analog composite sync!\n",
-> -				    connector->base.id, connector->name);
-> -			mode->flags |= DRM_MODE_FLAG_CSYNC | DRM_MODE_FLAG_NCSYNC;
-> -			break;
-> -		case DRM_EDID_PT_DIGITAL_CSYNC:
-> -			drm_dbg_kms(dev, "[CONNECTOR:%d:%s] Digital composite sync!\n",
-> -				    connector->base.id, connector->name);
-> -			mode->flags |= DRM_MODE_FLAG_CSYNC;
-> -			mode->flags |= (pt->misc & DRM_EDID_PT_HSYNC_POSITIVE) ?
-> -				DRM_MODE_FLAG_PCSYNC : DRM_MODE_FLAG_NCSYNC;
-> -			break;
-> -		case DRM_EDID_PT_DIGITAL_SEPARATE_SYNC:
-> -			mode->flags |= (pt->misc & DRM_EDID_PT_HSYNC_POSITIVE) ?
-> -				DRM_MODE_FLAG_PHSYNC : DRM_MODE_FLAG_NHSYNC;
-> -			mode->flags |= (pt->misc & DRM_EDID_PT_VSYNC_POSITIVE) ?
-> -				DRM_MODE_FLAG_PVSYNC : DRM_MODE_FLAG_NVSYNC;
-> -			break;
-> -		}
-> +		mode->flags |= (pt->misc & DRM_EDID_PT_HSYNC_POSITIVE) ?
-> +			DRM_MODE_FLAG_PHSYNC : DRM_MODE_FLAG_NHSYNC;
-> +		mode->flags |= (pt->misc & DRM_EDID_PT_VSYNC_POSITIVE) ?
-> +			DRM_MODE_FLAG_PVSYNC : DRM_MODE_FLAG_NVSYNC;
->  	}
->  
->  set_size:
-> diff --git a/include/drm/drm_edid.h b/include/drm/drm_edid.h
-> index 169755d3de19..48e93f909ef6 100644
-> --- a/include/drm/drm_edid.h
-> +++ b/include/drm/drm_edid.h
-> @@ -61,15 +61,9 @@ struct std_timing {
->  	u8 vfreq_aspect;
->  } __attribute__((packed));
->  
-> -#define DRM_EDID_PT_SYNC_MASK              (3 << 3)
-> -# define DRM_EDID_PT_ANALOG_CSYNC          (0 << 3)
-> -# define DRM_EDID_PT_BIPOLAR_ANALOG_CSYNC  (1 << 3)
-> -# define DRM_EDID_PT_DIGITAL_CSYNC         (2 << 3)
-> -#  define DRM_EDID_PT_CSYNC_ON_RGB         (1 << 1) /* analog csync only */
-> -#  define DRM_EDID_PT_CSYNC_SERRATE        (1 << 2)
-> -# define DRM_EDID_PT_DIGITAL_SEPARATE_SYNC (3 << 3)
-> -#  define DRM_EDID_PT_HSYNC_POSITIVE       (1 << 1) /* also digital csync */
-> -#  define DRM_EDID_PT_VSYNC_POSITIVE       (1 << 2)
-> +#define DRM_EDID_PT_HSYNC_POSITIVE (1 << 1)
-> +#define DRM_EDID_PT_VSYNC_POSITIVE (1 << 2)
-> +#define DRM_EDID_PT_SEPARATE_SYNC  (3 << 3)
->  #define DRM_EDID_PT_STEREO         (1 << 5)
->  #define DRM_EDID_PT_INTERLACED     (1 << 7)
->  
-> -- 
-> 2.39.2
+stable 5.15 :- 
+https://linux.kernelci.org/test/case/id/64dd156a5ac58d0cf335b1ea/
+mainline :- 
+https://linux.kernelci.org/test/case/id/64dc13d55cb51357a135b209/
 
--- 
-Ville Syrjälä
-Intel
+Thanks,
+Shreeya Patel
+
+>
+> confused,
+>
+> greg k-h
+>
