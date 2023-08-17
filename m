@@ -2,81 +2,90 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E7A9877FB6C
-	for <lists+stable@lfdr.de>; Thu, 17 Aug 2023 18:02:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BA49377FB76
+	for <lists+stable@lfdr.de>; Thu, 17 Aug 2023 18:07:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1353417AbjHQQB0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 17 Aug 2023 12:01:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56200 "EHLO
+        id S1346695AbjHQQGt (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 17 Aug 2023 12:06:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44090 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1353415AbjHQQA6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 17 Aug 2023 12:00:58 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4258F30E9;
-        Thu, 17 Aug 2023 09:00:57 -0700 (PDT)
+        with ESMTP id S1353466AbjHQQGV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 17 Aug 2023 12:06:21 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F6BB3598
+        for <stable@vger.kernel.org>; Thu, 17 Aug 2023 09:06:14 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D4ECB6293C;
-        Thu, 17 Aug 2023 16:00:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17746C433C8;
-        Thu, 17 Aug 2023 16:00:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1692288056;
-        bh=7q34eH4rPK+YptiiNrbK2ngkqEU1Twj0WP3fj7nVHh0=;
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D9E38646D7
+        for <stable@vger.kernel.org>; Thu, 17 Aug 2023 16:06:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA41BC433C8;
+        Thu, 17 Aug 2023 16:06:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1692288373;
+        bh=EU02RGNDiz3LcwWOBJtwRGvFH/kW5Pm24riFUd/WV18=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=I2XWH9jGq2qV/sPJNUHVQPg9+SVwc2njdp5bC4MMV5jS3MlqdHdVGw/jAxqh6ulJo
-         JIufTlcPvFVRZoyYf2p1AMbGMgZqhfdgknDPFCUvMka9PrOVu/2HOe9v1f7pZ8dNM/
-         ewZd38j6EXOKzqEH6pIeTD1vqFYmQb46wjDuSigr14HfGrghJe/dAMu7F9Zvu6tMOU
-         vrNZQ2iofkDAABKf+u6KaUU8pOxeBPIx9IWPOkJnqp+jFvNYedeFIIs+m3/hAzMZg0
-         SxeR1iYqFqjblStp23M/OnSwr4i93OiUbJRnNCDW/tKj22ft5zi4CHYcbXt8tXXV+t
-         0efFQfXSBUnqQ==
-Date:   Thu, 17 Aug 2023 09:00:54 -0700
-From:   Eric Biggers <ebiggers@kernel.org>
-To:     Sweet Tea Dorminy <sweettea-kernel@dorminy.me>
-Cc:     Jens Axboe <axboe@kernel.dk>, Satya Tangirala <satyat@google.com>,
-        linux-block@vger.kernel.org, kernel-team@meta.com,
-        stable@vger.kernel.org
-Subject: Re: [PATCH v5] blk-crypto: dynamically allocate fallback profile
-Message-ID: <20230817160054.GB1483@sol.localdomain>
-References: <20230817141615.15387-1-sweettea-kernel@dorminy.me>
+        b=mIZCIMBzWUQEQxVaQUQsNpmqD48LN0TRIUZ8YAqlte5c/2hbS7oBrWj87n8n/NSzX
+         z+Q0zDvVtXH8d/2jw4lh0XRIRTjv6y1PwdTKq2f7DMo+0HObWeCqiIgT30TbmBmnyS
+         U1Qo4gvkci/lxawFKMQI3DKPl2BJetmqJtXNMiZQ=
+Date:   Thu, 17 Aug 2023 18:06:10 +0200
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Alexander Ofitserov <oficerovas@altlinux.org>
+Cc:     stable@vger.kernel.org, Lee Jones <lee@kernel.org>,
+        Jean Delvare <jdelvare@suse.com>,
+        Linus Walleij <linus.walleij@linaro.org>
+Subject: Re: [PATCH RESEND 0/3] Add support for Intel Alder Lake PCH
+Message-ID: <2023081713-galvanize-enroll-39eb@gregkh>
+References: <20230817134336.965020-1-oficerovas@altlinux.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230817141615.15387-1-sweettea-kernel@dorminy.me>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+In-Reply-To: <20230817134336.965020-1-oficerovas@altlinux.org>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, Aug 17, 2023 at 10:15:56AM -0400, Sweet Tea Dorminy wrote:
-> blk_crypto_profile_init() calls lockdep_register_key(), which warns and
-> does not register if the provided memory is a static object.
-> blk-crypto-fallback currently has a static blk_crypto_profile and calls
-> blk_crypto_profile_init() thereupon, resulting in the warning and
-> failure to register.
+On Thu, Aug 17, 2023 at 04:43:33PM +0300, Alexander Ofitserov wrote:
+> This patch series enables support of i2c bus for Intel Alder Lake PCH-P and PCH-M
+> on kernel version 5.10. These patches add ID's of Alder lake platform in these
+> drivers: i801, intel-lpss, pinctrl. ID's were taken from linux kernel version 5.15.
 > 
-> Fortunately it is simple enough to use a dynamically allocated profile
-> and make lockdep function correctly.
+> Alexander Ofitserov (3):
+>   i2c: i801: Add support for Intel Alder Lake PCH
+>   mfd: intel-lpss: Add Alder Lake's PCI devices IDs
+>   pinctrl: tigerlake: Add Alder Lake-P ACPI ID
 > 
-> Fixes: 2fb48d88e77f ("blk-crypto: use dynamic lock class for blk_crypto_profile::lock")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Sweet Tea Dorminy <sweettea-kernel@dorminy.me>
-> ---
-> v5: added correct error return if allocation fails.
-> v4: removed a stray change introduced in v3.
-> v3: added allocation error checking as noted by Eric Biggers.
-> v2: reworded commit message, fixed Fixes tag, as pointed out by Eric
-> Biggers.
+>  drivers/i2c/busses/i2c-i801.c             |  8 +++++
+>  drivers/mfd/intel-lpss-pci.c              | 41 +++++++++++++++++++++++
+>  drivers/pinctrl/intel/pinctrl-tigerlake.c |  1 +
+>  3 files changed, 50 insertions(+)
+> 
+> -- 
+> 2.33.8
+> 
 
-Reviewed-by: Eric Biggers <ebiggers@google.com>
+Have you read the kernel documentation for how to submit patches here?
 
-Thanks,
+I thought my bot sent this in the past, if not, here it is again:
 
-- Eric
+<formletter>
+
+This is not the correct way to submit patches for inclusion in the
+stable kernel tree.  Please read:
+    https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
+for how to do this properly.
+
+</formletter>
+
+Is there something in that document that describes the format of what
+you submitted here?
+
+thanks,
+
+greg k-h
