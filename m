@@ -2,231 +2,358 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 392D07801F9
-	for <lists+stable@lfdr.de>; Fri, 18 Aug 2023 01:58:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 969B87802C0
+	for <lists+stable@lfdr.de>; Fri, 18 Aug 2023 02:37:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241329AbjHQX5Y (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 17 Aug 2023 19:57:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38536 "EHLO
+        id S1356715AbjHRAhZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 17 Aug 2023 20:37:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39328 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1347544AbjHQX5U (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 17 Aug 2023 19:57:20 -0400
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1802C35B6;
-        Thu, 17 Aug 2023 16:57:19 -0700 (PDT)
-Received: from pps.filterd (m0333521.ppops.net [127.0.0.1])
-        by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 37HN4g99000471;
-        Thu, 17 Aug 2023 23:57:06 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : content-type : in-reply-to :
- mime-version; s=corp-2023-03-30;
- bh=uiCAa54FMhyJq3J47n4SziVkmMZALOtTY0/AGQi28+8=;
- b=NSHitHEbgTwCc6XfpESSgREhkKO5cssvw6wMyKAaiFfuNmGDoJtQi81kGgOzsqcyu0ZO
- El4UlMc+8xFYEfuoMvw6Igdo/Z1zSjCaQhPoB9xS/PnrKuCJO8OxdOdEka8gFVG+41bU
- adt23NHPxi3d7hmLoutZoEGMULVtgzQnyXzb9hgfneGfuxovZzy/7qn8fmBkrcOPtOWs
- cOcKgKqad69Qwi0fOlqf6TZaz1xf7JVF/gdPSZYPexU7Jt143JEAfJ1urfXqYm/3/Z1q
- boblI0vkr/SmhoElV7ge7+uRU/8p59lIQsmwSKzMrbwc1cs/P9m/vqsk7ldwtN0nr+nd Jg== 
-Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
-        by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3se30t2tpx-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 17 Aug 2023 23:57:05 +0000
-Received: from pps.filterd (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-        by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19) with ESMTP id 37HN6xGE019784;
-        Thu, 17 Aug 2023 23:57:04 GMT
-Received: from nam04-bn8-obe.outbound.protection.outlook.com (mail-bn8nam04lp2047.outbound.protection.outlook.com [104.47.74.47])
-        by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 3sey3ysd6h-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 17 Aug 2023 23:57:04 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=kwoWm70bMAH19eZBIst8kwEkLptfvxWi4prxITLFecjaBPUFhuZwg+a6+VnWvi2oqX4W4uPZTwZCHdUEMJQZ+facriRKVUhquhEzuziVOZyBOXY8ti9tpYw0yAkN8ZyTCrfvXIKXnSbxLR/O72HHGH/1YuCvyCZ3nAHWWt3h9996fvh1zgBUDM4zh3irX2kVAhj70uGgw2qzhwNSBD6bb5NAZYMgjhvZyNWQcuKgZknXz/suU9v+T5QkVewKZsoLNHFTmEF7bbQDMaA+nwbatQb6FBeSGZ5yvG2qRkOLkJiaVpG43VZl0uqbCA/cBro/ipqglwTWigMBz4Vq9wxqOA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=uiCAa54FMhyJq3J47n4SziVkmMZALOtTY0/AGQi28+8=;
- b=iKEXAkKYfyBIzO1A12v4y+HaCGoRbZdYCVk8/9xd09gOpsNzGOpWHoiCXWQr9kY15If0fj78CK55PkCOfARnefaibFp7gw9jkCW6Zgv1Lag75iyGjwqSZEQxpq2hQwmtmDIu+dMChyhNVAsQxyr2JtVS8A8jqSgRJRLd5zXx3Mih9UggL+uNzwP3bQgaiYnLRlO9yno/Mlpp/4bSxGjGyhDZYG1jfUmWqBdLcZs39AlfdiSZLiYIt4gAyrDqOB+ES35SudxXd/sE0hwMBd4Z5AMKMJ4NqsHUSp3iEG5dsMA2eTzKLMUFltroBFGOeHt8gkqn8m+c8cg2OiccBGvEVA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
+        with ESMTP id S1356763AbjHRAhY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 17 Aug 2023 20:37:24 -0400
+Received: from mail-io1-xd33.google.com (mail-io1-xd33.google.com [IPv6:2607:f8b0:4864:20::d33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 42A7C2D50;
+        Thu, 17 Aug 2023 17:37:22 -0700 (PDT)
+Received: by mail-io1-xd33.google.com with SMTP id ca18e2360f4ac-790b95beeedso13505439f.0;
+        Thu, 17 Aug 2023 17:37:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=uiCAa54FMhyJq3J47n4SziVkmMZALOtTY0/AGQi28+8=;
- b=FS8BDghu0rWsuJFscg/gzIfSxd1i3HLHPeOfJ21bfLeky5BwxB8PHzkqUcK5KYZQ58kM8Fzcj+sVP3X9+YopgnZFt0AH0pHuKiYJy3EAwfFiRXnCU4HHQVU6nI4phsfrvGIiJt5CpSMTOn0/Zlg+pBu6CZCqeWsqpJcjB+XSIbg=
-Received: from SN6PR10MB3022.namprd10.prod.outlook.com (2603:10b6:805:d8::25)
- by BLAPR10MB4945.namprd10.prod.outlook.com (2603:10b6:208:324::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6699.20; Thu, 17 Aug
- 2023 23:57:02 +0000
-Received: from SN6PR10MB3022.namprd10.prod.outlook.com
- ([fe80::26d3:6f41:6415:8c35]) by SN6PR10MB3022.namprd10.prod.outlook.com
- ([fe80::26d3:6f41:6415:8c35%3]) with mapi id 15.20.6678.031; Thu, 17 Aug 2023
- 23:57:02 +0000
-Date:   Thu, 17 Aug 2023 19:56:54 -0400
-From:   "Liam R. Howlett" <Liam.Howlett@Oracle.com>
-To:     Andrew Morton <akpm@linux-foundation.org>
-Cc:     maple-tree@lists.infradead.org, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH 1/2] maple_tree: Disable mas_wr_append() when other
- readers are possible
-Message-ID: <20230817235654.z7e7fi2gofnsxniw@revolver>
-Mail-Followup-To: "Liam R. Howlett" <Liam.Howlett@Oracle.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        maple-tree@lists.infradead.org, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20230817191505.1170876-1-Liam.Howlett@oracle.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230817191505.1170876-1-Liam.Howlett@oracle.com>
-User-Agent: NeoMutt/20220429
-X-ClientProxiedBy: YT4PR01CA0081.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:b01:ff::15) To SN6PR10MB3022.namprd10.prod.outlook.com
- (2603:10b6:805:d8::25)
+        d=gmail.com; s=20221208; t=1692319041; x=1692923841;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=TqbGnaK63iMY9Vbhd2QY6y6U3TWCZOciAxXZ/dkbjbU=;
+        b=L6ZdCvcMNpDxWkPAhIRTPsWOVnmFZHk7xoVOKcmh3xNl+Pi7gcwVjSzOvJRdenZdSQ
+         VCQfaI+/9Jf49vwdOJuu8CqQWt1yNPj/woBcFtGyPfxaxFtiUpEs8b6FwE3rILja59LS
+         +yVSgHwvIb+SRA8QvJqZd3NgS2yafTSoRmhxBH25QqD74CzHZr/4LBvB92173FeZ8nhG
+         eNNoWMGLeXcN58vB7q++NS1XdC6GfM0cxMgBtCCa9L22wfuOwMQSTepLZlMf4WBwloSc
+         0eiOFrmx8FLcw3BjL3vFXQatzrd0W2/c+DoB4cXFtYY+XSWgXjcMK4G2D7WrIEG42Yjc
+         A0Jw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1692319041; x=1692923841;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=TqbGnaK63iMY9Vbhd2QY6y6U3TWCZOciAxXZ/dkbjbU=;
+        b=TU33yI+OO5c7QZL3bG+A0ZafxsTTJkBVvbE2NdPWVEsn48j0INGE9hJ+QpnJGvZw15
+         64kt71ebQ8RxqP+UcTitcqOt7QHrE6y2MP4j0RAiSpAea6XzjrBPKlZKGazb+4s+Sd97
+         F+vP5i0v0miq2alwF3TmTAMwDhURNlqVjE4CUFGNQFKymmve1GaK6ywhrZ7SQ1+gJyiR
+         +4Tt9OBnyn/jJSayv+a+JI9hkcbCzAVB0goe9y7W68mt9nciss0k4BWT7LxP+zaLmz4F
+         ECIJtNX+39rTCT4fhGOFa3s5XV5OK+TX+ShhUzRe3vVzCO1tRyGoRGaLHHHgxs/TP+ni
+         9Csw==
+X-Gm-Message-State: AOJu0YyXTwdGUkkP5l40PlB5cOXlt6zfCK+/BIUciJ8WbHLvFhwEzdTZ
+        dgtvnM77PY1P5XPCgHulopW7cwKPFRf8TUTRiHk=
+X-Google-Smtp-Source: AGHT+IFCEDkfDzZXKGC+CX0z7LhZdvN9JVcqBHFUW+iJM9gMHqpiukRTRft8HvkKLk7a9BlYgYW54F8VsxF9ejQjqUY=
+X-Received: by 2002:a05:6602:276b:b0:786:8523:7578 with SMTP id
+ l11-20020a056602276b00b0078685237578mr109535ioe.15.1692319041508; Thu, 17 Aug
+ 2023 17:37:21 -0700 (PDT)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SN6PR10MB3022:EE_|BLAPR10MB4945:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2fd7bdd1-fa47-4fd0-11fb-08db9f7da6ed
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: GMRf/mwWtBOKzMI1NRo4FKMNG+HPLcEYTrOJVDZRpP+NauehU0P7TLQeWD1XvxaPTPG2Ho/XaDa1bSJpNNo/B0pIy8NkkiCq3m5pN3pUKOG3OuwAxVFt8dZNNpaY6S+A7M9GOWz0cQRKSHopOYQxGAt2kYD6n2WXLL3q3rL4dKA9lFrOLiG9IgTa6zzfqN+4FIlTTar7Qy6YiMxP/agTLGF4yxI20lj/ophK2hjAfsilCbL8IH7gO30yA9MN3pLshVGAPLhigTHB2skLCoLEA9Xogt7zFHzFx1cfFFVgMIrdn/0hsnpEKbOg5IB/eTqLf6oEthDvrMfO1I2tFns8aQqC6RTXJh+0a0tjA3Nv7xZWwMApiGxHa0vTtzSGJJbVs504yjmJyV7rC/vtyRykb2OvfKPe+d7XR7sqJF9ch8XSUfIc0AiTwahTcjY8vJUaV3sbTysRp4rmfMM4PJormDjUchjfj6cXSiOVM672Mlg0QqKErLDFavdUCTnGVLTrshXhuDac0SEohw2HaGJSswvROw3zPOHz/SJbYUdcouS3ZxiL+fbpFIXmz+wzvp7p
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN6PR10MB3022.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(7916004)(346002)(136003)(39860400002)(396003)(376002)(366004)(451199024)(1800799009)(186009)(1076003)(26005)(6666004)(6486002)(6512007)(9686003)(6506007)(33716001)(83380400001)(5660300002)(4326008)(8936002)(8676002)(2906002)(478600001)(41300700001)(66946007)(6916009)(66476007)(66556008)(316002)(38100700002)(86362001);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?ViSxmDXo6vKtcY2YaX+mE9dmRYZ1SWDTFKnjhSdjwCcYxzCyF7f+0I+k0zKG?=
- =?us-ascii?Q?S5X20wcf0CK2Je6mJY82mYi09cshLk1QjOXmcqOBvrMuXwe9VZr0jw/ptmWY?=
- =?us-ascii?Q?ZwqqUmpOt7wad+cfvriYSBb88+LxKmxMIbwwCnZ50maeePJUAZEfpHYX1FmD?=
- =?us-ascii?Q?basvCc0mKymvRJbE/P0i2p7hiMecxeZ+7SM7agrAZrUYBbbrbGd0jnRr8uWx?=
- =?us-ascii?Q?TegBVaqmuSzsXUX5NHiIUdljySGlDJBsWKynYU51exJLlw6KYTbPauBpT2mg?=
- =?us-ascii?Q?qomCxfGxOhw15UqqyqrtvVE9h9SptU6YyFfnZUlOifZzy7cZEkdxbVGy1OQz?=
- =?us-ascii?Q?vRSLjtJQL13mPoyEhqR7i+XPErZWvSiezGbmwG40IXbhdiVQZO7FzO5QMnzu?=
- =?us-ascii?Q?fmv20sO3/Cp6YkQQak+JfhhZW0GfTw/Mmfmcb2FSu0lO3+jPRsTcASda0hDJ?=
- =?us-ascii?Q?Qspi14nZcko8wXAmRy7LOmFSqv8aojyPsLRSwJSUS6eNh6Z1BAEPBqmvqrex?=
- =?us-ascii?Q?Ws7jOOfTcKCbU0sXjwuc09d1ftBHWkQcSW4R4o3k1pkgMdK6jJgEwxBR7U3d?=
- =?us-ascii?Q?uE2yIxtOQXQMAKkgf9GFH5UzAoZ6LOTh1tvgu7i10kYRPmOXwGAIe1c3Z+ih?=
- =?us-ascii?Q?e1vI/Hpx+yM5i/4CiVZeqcbwMOsIk9DmdZq0SvnumvbF0tw9pNbPVj9eMfB7?=
- =?us-ascii?Q?CBPPOxUveof/fM2tem9DCs8Hqdwufx0Y2PnMw1qVtNn+Vp3hKwtZSJNPHYPf?=
- =?us-ascii?Q?DqK4cNTFyYoLMO8O9Fdvebu7hZNfnxMRqTb88Xq8fDjARKAkrsHR7TriGeKU?=
- =?us-ascii?Q?NhSGo1wZBMesVXIZKH/4OTM1Rf8kObFSBTJ473MyBu6msZF7Jo2nQ+ilFYyj?=
- =?us-ascii?Q?2I4OWTuKoKf5SsS4eSfn1BCT0biSkgeDOvc+NXnLzfxq8vn3bx3YVvO1UCnP?=
- =?us-ascii?Q?awFqDczj/zTcvG+B9X4sOEbPmBuikes1E7vFds+HgCoTj+OEHGtX4GqtCgrj?=
- =?us-ascii?Q?2sBITf3Ut6RWEC9xXBPUaVV9hK6vghHleveKNwNLweYK8iJyNaLpLlKsJXJc?=
- =?us-ascii?Q?gk0niBjwzKWmx+dTGgFfqjcsdWYiJr+n40AH8JWF0NWrN1GXgK/A7uIF8/2J?=
- =?us-ascii?Q?RPQIDx9/fE1+yyr2Y/KwltjMqCawPJahYCbuqSdEJqmMm765sJV9nU258N5E?=
- =?us-ascii?Q?xao7eM1LQH4yaMaRi6KYlwAlheijPWiEPJOzKWh7oyQCjp82lhUUp6+2Vp7W?=
- =?us-ascii?Q?6tdm1X7cZRCkk4s1mJnJ0+UefRohdR9j8s49Z0K3jnVjO7V6Q9vCyhh1UiFj?=
- =?us-ascii?Q?ncwXD0tO03ITbZI8vInj5ZfiNJKRSvARbDiaiVCfJRP1S7luecQ0wBbiR8PJ?=
- =?us-ascii?Q?07a1K5/bBAK8Cua0ApdSmUcnvUy+krBPhOixkTmcBsHeQ81ULIdepUHG3KNr?=
- =?us-ascii?Q?A33htm1mus/zD2ZgY0K4JchDtUGtN4ttm/oItRFyod8385Om5iRh243M62SZ?=
- =?us-ascii?Q?8fu1HA1UyCVDl+BmyPIFgXBeOcpYuhhiJuv/7iiPlTjTic1+SVtdr/ms8u5j?=
- =?us-ascii?Q?zzx4EbQH6HcljB09uxRijnAhvzzD9+oD8+H/7et42Dr5zp4N2VEfZJAAMjFw?=
- =?us-ascii?Q?Fg=3D=3D?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: IV3FtZFhIIOjJ36gPjlMKQJH0ZlV7fC0HziGsrCeoE6QBwPyVd2WYMRaBkBNHnY99oUesytjr0heWSs69Av9j01mFug5desIyPXLExcUm4Ue3Sp1Evy+PsTlAg6LDETjpfRF526di0vR2Z0j4wQd1kD9tPXW9kV/nGld7xcqMHt1Xo5PmtNgR6TmJBsNzT4X2e5bvrT7otudi+Z7oTqLcFj0QdwzXbtfTlWjYMw88PYXt3PTBbIojS4i3rok1X+U7USDz+xvDf9lyXePMs2Oy4hzVeVlM1V9LZQX+0i3yujLEo1QjJ9ewBGopUpGzUQWKKCy9ZYbyvs7EQNwUbbytfUjropniINI/yZ2qlLJ7jGsKnI6X7Rz/bbZ/wgB+YQ7X5VvSg1/1PPX7e1NZG6f9w0WoXeizp+7wjBXkgkWBz4Mh3WS6gKRstQc4gFP6Dxr8DfKzrsPjLHBjAFiQbrevbM8sC57QpcPDtDq8LSljo28uTq8NPEa1Mtm0+m70W3xQsbaog30mJs78bREj+FC+ppLoto4IeCuXP7O2tIdWCvjOiL1euKVtSSCzYZ1fPpge+pWnxlI5/rqDoW43J+fgjXbx0Kq4radBzcVKUAqG1UgGOTWODVMn4GGJTfV7RzlWBD23Gm3WFSyJsC2lX9oKxspQH28Fzo4tVEkNHpsLZZ0W5er0OiCvKLjbrFLSEW7GCW5+7168TiyPPO6KAX1wPHPzEIQ2uGWE1igzjhjt4Jd4SAvy1jTpbFVpoZhtidEq0xgOtMFmBx5Z7dJQ6BBiUvz1ABISEh/E80PYbEQeyblygLHjsuFRj+ReWhrAtg/ZXQDz6vuvGsBoiNLkCJFVx66LLDQzfs5Q9hlSIpzqvIkKvjAZPUZbIHfk3IVc7TdUCI40YQedlg+sgaWV8plwA==
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2fd7bdd1-fa47-4fd0-11fb-08db9f7da6ed
-X-MS-Exchange-CrossTenant-AuthSource: SN6PR10MB3022.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Aug 2023 23:57:02.4818
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: fbDNR5nUlIF8MBMKqe1nA2XKNbDcQGElbHXqoBJY078Vyr3R1IU6htu2/DtdMu0I8B3k5LJZFaC/l5Ic895r7g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BLAPR10MB4945
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
- definitions=2023-08-17_18,2023-08-17_02,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 mlxlogscore=913
- spamscore=0 mlxscore=0 adultscore=0 bulkscore=0 suspectscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2306200000 definitions=main-2308170213
-X-Proofpoint-GUID: 3PZUfSgR2L0n5N_nlFhGosSPwZdKHUsb
-X-Proofpoint-ORIG-GUID: 3PZUfSgR2L0n5N_nlFhGosSPwZdKHUsb
+References: <20230817164733.2475092-1-nphamcs@gmail.com> <20230817190126.3155299-1-nphamcs@gmail.com>
+ <CAJD7tkaNo=0mkYKxrTwGNaJ33G1z7cYdWhNQNF3tQp_MKCh-uA@mail.gmail.com>
+ <CAKEwX=Pt3ir0jpn+eRjzH=K49b0Y0_N1NnieLm0a0VwV1aCKKQ@mail.gmail.com> <CAJD7tkb1jMuCouyL8OX0434HK0Wx=Hyf9UnGVOH8fP7NxA8+Pw@mail.gmail.com>
+In-Reply-To: <CAJD7tkb1jMuCouyL8OX0434HK0Wx=Hyf9UnGVOH8fP7NxA8+Pw@mail.gmail.com>
+From:   Nhat Pham <nphamcs@gmail.com>
+Date:   Thu, 17 Aug 2023 17:37:10 -0700
+Message-ID: <CAKEwX=M4jsrZPjR7b+KLjchD4eUODsbZSwuBXfJa7bfMEnLDeA@mail.gmail.com>
+Subject: Re: [PATCH v2] workingset: ensure memcg is valid for recency check
+To:     Yosry Ahmed <yosryahmed@google.com>
+Cc:     Yu Zhao <yuzhao@google.com>, akpm@linux-foundation.org,
+        hannes@cmpxchg.org, kernel-team@meta.com,
+        linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+        stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
-        autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-I forgot the fixes tag, I will include that in v2.
+On Thu, Aug 17, 2023 at 3:50=E2=80=AFPM Yosry Ahmed <yosryahmed@google.com>=
+ wrote:
+>
+> On Thu, Aug 17, 2023 at 3:43=E2=80=AFPM Nhat Pham <nphamcs@gmail.com> wro=
+te:
+> >
+> > On Thu, Aug 17, 2023 at 1:50 PM Yosry Ahmed <yosryahmed@google.com> wro=
+te:
+> > >
+> > > On Thu, Aug 17, 2023 at 12:01=E2=80=AFPM Nhat Pham <nphamcs@gmail.com=
+> wrote:
+> > > >
+> > > > In eviction recency check, we are currently not holding a local
+> > > > reference to the memcg that the refaulted folio belonged to when it=
+ was
+> > > > evicted. This could cause serious memcg lifetime issues, for e.g in=
+ the
+> > > > memcg hierarchy traversal done in mem_cgroup_get_nr_swap_pages(). T=
+his
+> > > > has occurred in production:
+> > > >
+> > > > [ 155757.793456] BUG: kernel NULL pointer dereference, address: 000=
+00000000000c0
+> > > > [ 155757.807568] #PF: supervisor read access in kernel mode
+> > > > [ 155757.818024] #PF: error_code(0x0000) - not-present page
+> > > > [ 155757.828482] PGD 401f77067 P4D 401f77067 PUD 401f76067 PMD 0
+> > > > [ 155757.839985] Oops: 0000 [#1] SMP
+> > > > [ 155757.846444] CPU: 7 PID: 1380944 Comm: ThriftSrv-pri3- Kdump: l=
+oaded Tainted: G S                 6.4.3-0_fbk1_rc0_594_g8d0cbcaa67ba #1
+> > > > [ 155757.870808] Hardware name: Wiwynn Twin Lakes MP/Twin Lakes Pas=
+sive MP, BIOS YMM16 05/24/2021
+> > > > [ 155757.887870] RIP: 0010:mem_cgroup_get_nr_swap_pages+0x3d/0xb0
+> > > > [ 155757.899377] Code: 29 19 4a 02 48 39 f9 74 63 48 8b 97 c0 00 00=
+ 00 48 8b b7 58 02 00 00 48 2b b7 c0 01 00 00 48 39 f0 48 0f 4d c6 48 39 d1=
+ 74 42 <48> 8b b2 c0 00 00 00 48 8b ba 58 02 00 00 48 2b ba c0 01 00 00 48
+> > > > [ 155757.937125] RSP: 0018:ffffc9002ecdfbc8 EFLAGS: 00010286
+> > > > [ 155757.947755] RAX: 00000000003a3b1c RBX: 000007ffffffffff RCX: f=
+fff888280183000
+> > > > [ 155757.962202] RDX: 0000000000000000 RSI: 0007ffffffffffff RDI: f=
+fff888bbc2d1000
+> > > > [ 155757.976648] RBP: 0000000000000001 R08: 000000000000000b R09: f=
+fff888ad9cedba0
+> > > > [ 155757.991094] R10: ffffea0039c07900 R11: 0000000000000010 R12: f=
+fff888b23a7b000
+> > > > [ 155758.005540] R13: 0000000000000000 R14: ffff888bbc2d1000 R15: 0=
+00007ffffc71354
+> > > > [ 155758.019991] FS:  00007f6234c68640(0000) GS:ffff88903f9c0000(00=
+00) knlGS:0000000000000000
+> > > > [ 155758.036356] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> > > > [ 155758.048023] CR2: 00000000000000c0 CR3: 0000000a83eb8004 CR4: 0=
+0000000007706e0
+> > > > [ 155758.062473] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0=
+000000000000000
+> > > > [ 155758.076924] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0=
+000000000000400
+> > > > [ 155758.091376] PKRU: 55555554
+> > > > [ 155758.096957] Call Trace:
+> > > > [ 155758.102016]  <TASK>
+> > > > [ 155758.106502]  ? __die+0x78/0xc0
+> > > > [ 155758.112793]  ? page_fault_oops+0x286/0x380
+> > > > [ 155758.121175]  ? exc_page_fault+0x5d/0x110
+> > > > [ 155758.129209]  ? asm_exc_page_fault+0x22/0x30
+> > > > [ 155758.137763]  ? mem_cgroup_get_nr_swap_pages+0x3d/0xb0
+> > > > [ 155758.148060]  workingset_test_recent+0xda/0x1b0
+> > > > [ 155758.157133]  workingset_refault+0xca/0x1e0
+> > > > [ 155758.165508]  filemap_add_folio+0x4d/0x70
+> > > > [ 155758.173538]  page_cache_ra_unbounded+0xed/0x190
+> > > > [ 155758.182919]  page_cache_sync_ra+0xd6/0x1e0
+> > > > [ 155758.191738]  filemap_read+0x68d/0xdf0
+> > > > [ 155758.199495]  ? mlx5e_napi_poll+0x123/0x940
+> > > > [ 155758.207981]  ? __napi_schedule+0x55/0x90
+> > > > [ 155758.216095]  __x64_sys_pread64+0x1d6/0x2c0
+> > > > [ 155758.224601]  do_syscall_64+0x3d/0x80
+> > > > [ 155758.232058]  entry_SYSCALL_64_after_hwframe+0x46/0xb0
+> > > > [ 155758.242473] RIP: 0033:0x7f62c29153b5
+> > > > [ 155758.249938] Code: e8 48 89 75 f0 89 7d f8 48 89 4d e0 e8 b4 e6=
+ f7 ff 41 89 c0 4c 8b 55 e0 48 8b 55 e8 48 8b 75 f0 8b 7d f8 b8 11 00 00 00=
+ 0f 05 <48> 3d 00 f0 ff ff 77 33 44 89 c7 48 89 45 f8 e8 e7 e6 f7 ff 48 8b
+> > > > [ 155758.288005] RSP: 002b:00007f6234c5ffd0 EFLAGS: 00000293 ORIG_R=
+AX: 0000000000000011
+> > > > [ 155758.303474] RAX: ffffffffffffffda RBX: 00007f628c4e70c0 RCX: 0=
+0007f62c29153b5
+> > > > [ 155758.318075] RDX: 000000000003c041 RSI: 00007f61d2986000 RDI: 0=
+000000000000076
+> > > > [ 155758.332678] RBP: 00007f6234c5fff0 R08: 0000000000000000 R09: 0=
+000000064d5230c
+> > > > [ 155758.347452] R10: 000000000027d450 R11: 0000000000000293 R12: 0=
+00000000003c041
+> > > > [ 155758.362044] R13: 00007f61d2986000 R14: 00007f629e11b060 R15: 0=
+00000000027d450
+> > > > [ 155758.376661]  </TASK>
+> > > >
+> > > > This patch fixes the issue by getting a local reference inside
+> > > > unpack_shadow().
+> > > >
+> > > > Fixes: f78dfc7b77d5 ("workingset: fix confusion around eviction vs =
+refault container")
+> > >
+> > > Beyond mem_cgroup_get_nr_swap_pages(), we still use the eviction_memc=
+g
+> > > without grabbing a ref to it first in workingset_test_recent() (and i=
+n
+> > > workingset_refault() before that) as well as lru_gen_test_recent().
+> > >
+> > > Wouldn't the fix go back even further? or am I misinterpreting the pr=
+oblem?
+> > Hmm I don't see eviction_memcg being used outside of *_test_recent
+> > (the rest just uses memcg =3D folio_memcg(folio), which if I'm not mist=
+aken is
+> > the memcg that is refaulting the folio into memory).
+> >
+> > Inside workingset_test_recent(), the only other place where eviction_me=
+mcg
+> > is used is for mem_cgroup_lruvec. This function call won't crash whethe=
+r
+> > eviction_memcg is valid or not.
+>
+> If eviction_memcg is invalid because the memory was already freed, we
+> are basically dereferencing garbage in mem_cgroup_lruvec() aren't we?
+Ah I see what you mean. Also, I think "valid" is too loaded a word here.
+I guess I meant refcnt (of the memcg's css) =3D=3D 0, but I don't know the
+term/state to describe this, better than "valid" anyway.
 
-* Liam R. Howlett <Liam.Howlett@oracle.com> [230817 15:15]:
-> The current implementation of append may cause duplicate data and/or
-> incorrect ranges to be returned to a reader during an update.  Although
-> this has not been reported or seen, disable the append write operation
-> while the tree is in rcu mode out of an abundance of caution.
-> 
-> During the analysis of the mas_next_slot() the following was
-> artificially created by separating the writer and reader code:
-> 
-> Writer:                                 reader:
-> mas_wr_append
->     set end pivot
->     updates end metata
->     Detects write to last slot
->     last slot write is to start of slot
->     store current contents in slot
->     overwrite old end pivot
->                                         mas_next_slot():
->                                                 read end metadata
->                                                 read old end pivot
->                                                 return with incorrect range
->     store new value
-> 
-> Alternatively:
-> 
-> Writer:                                 reader:
-> mas_wr_append
->     set end pivot
->     updates end metata
->     Detects write to last slot
->     last lost write to end of slot
->     store value
->                                         mas_next_slot():
->                                                 read end metadata
->                                                 read old end pivot
->                                                 read new end pivot
->                                                 return with incorrect range
->     set old end pivot
-> 
-> There may be other accesses that are not safe since we are now updating
-> both metadata and pointers, so disabling append if there could be rcu
-> readers is the safest action.
-> 
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
-> ---
->  lib/maple_tree.c | 7 +++++++
->  1 file changed, 7 insertions(+)
-> 
-> diff --git a/lib/maple_tree.c b/lib/maple_tree.c
-> index ffb9d15bd815..05d5db255c39 100644
-> --- a/lib/maple_tree.c
-> +++ b/lib/maple_tree.c
-> @@ -4107,6 +4107,10 @@ static inline unsigned char mas_wr_new_end(struct ma_wr_state *wr_mas)
->   * mas_wr_append: Attempt to append
->   * @wr_mas: the maple write state
->   *
-> + * This is currently unsafe in rcu mode since the end of the node may be cached
-> + * by readers while the node contents may be updated which could result in
-> + * inaccurate information.
-> + *
->   * Return: True if appended, false otherwise
->   */
->  static inline bool mas_wr_append(struct ma_wr_state *wr_mas,
-> @@ -4116,6 +4120,9 @@ static inline bool mas_wr_append(struct ma_wr_state *wr_mas,
->  	struct ma_state *mas = wr_mas->mas;
->  	unsigned char node_pivots = mt_pivots[wr_mas->type];
->  
-> +	if (mt_in_rcu(mas->tree))
-> +		return false;
-> +
->  	if (mas->offset != wr_mas->node_end)
->  		return false;
->  
-> -- 
-> 2.39.2
-> 
+Let me try to make it clear(-er):
+
+When eviction_memcg's refcnt goes to 0, the memory allocated to
+eviction_memcg might still be around. This is because
+kfree(memcg) is only triggered when mem_cgroup_css_free(memcg)
+happens. I believe this freeing is ultimately done in a deferred workqueue
+(i.e asynchronously)?
+
+(This is based on the documentation in kernel/cgroup/cgroup.c,
+above css_free_rwork_fn() definition. This work function is where
+css freeing is actually done).
+
+As long as the memory is still around and not garbage, all the deref
+happening in mem_cgroup_lruvec() should still give us sane values.
+
+But yeah, it seems like you're right that getting lruvec from
+eviction_memcg might fail as well! We've only observed the
+mem_cgroup_get_nr_swap_pages failure (itself is also relatively
+rare) but it seems we could potentially run into another bug.
+Maybe we haven't run 6.4 enough to see the other case yet.
+
+But either way, I still believe we absolutely need to hold a
+reference here to preserve the "validity" of eviction_memcg
+(whether for grabbing the lruvec or hierarchy traversal).
+It'll prevent css_free from happening, and if you look at
+css_free_rwork_fn, you'll see that it also keeps another
+reference to the parent css from being putted as well.
+
+I hope I'm still making sense... This is a bit convoluted,
+I admit - please fact check me :)
+>
+> > The crash only happens during
+> > mem_cgroup_get_nr_swap_pages, which has an upward traversal from
+> > eviction_memcg to root.
+> >
+> > Let me know if this does not make sense and/or is insufficient to ensur=
+e
+> > safe upward traversal from eviction_memcg to root!
+> > >
+> > >
+> > >
+> > > > Signed-off-by: Nhat Pham <nphamcs@gmail.com>
+> > > > Cc: stable@vger.kernel.org
+> > > > ---
+> > > >  mm/workingset.c | 65 ++++++++++++++++++++++++++++++++-------------=
+----
+> > > >  1 file changed, 43 insertions(+), 22 deletions(-)
+> > > >
+> > > > diff --git a/mm/workingset.c b/mm/workingset.c
+> > > > index da58a26d0d4d..03cadad4e484 100644
+> > > > --- a/mm/workingset.c
+> > > > +++ b/mm/workingset.c
+> > > > @@ -206,10 +206,19 @@ static void *pack_shadow(int memcgid, pg_data=
+_t *pgdat, unsigned long eviction,
+> > > >         return xa_mk_value(eviction);
+> > > >  }
+> > > >
+> > > > -static void unpack_shadow(void *shadow, int *memcgidp, pg_data_t *=
+*pgdat,
+> > > > -                         unsigned long *evictionp, bool *workingse=
+tp)
+> > > > +/*
+> > > > + * Unpacks the stored fields of a shadow entry into the given poin=
+ters.
+> > > > + *
+> > > > + * The memcg pointer is only populated if the memcg recorded in th=
+e shadow
+> > > > + * entry is valid. In this case, a reference to the memcg will be =
+acquired,
+> > > > + * and a corresponding mem_cgroup_put() will be needed when we no =
+longer
+> > > > + * need the memcg.
+> > > > + */
+> > > > +static void unpack_shadow(void *shadow, struct mem_cgroup **memcgp=
+,
+> > > > +                       pg_data_t **pgdat, unsigned long *evictionp=
+, bool *workingsetp)
+> > > >  {
+> > > >         unsigned long entry =3D xa_to_value(shadow);
+> > > > +       struct mem_cgroup *memcg;
+> > > >         int memcgid, nid;
+> > > >         bool workingset;
+> > > >
+> > > > @@ -220,7 +229,24 @@ static void unpack_shadow(void *shadow, int *m=
+emcgidp, pg_data_t **pgdat,
+> > > >         memcgid =3D entry & ((1UL << MEM_CGROUP_ID_SHIFT) - 1);
+> > > >         entry >>=3D MEM_CGROUP_ID_SHIFT;
+> > > >
+> > > > -       *memcgidp =3D memcgid;
+> > > > +       /*
+> > > > +        * Look up the memcg associated with the stored ID. It migh=
+t
+> > > > +        * have been deleted since the folio's eviction.
+> > > > +        *
+> > > > +        * Note that in rare events the ID could have been recycled
+> > > > +        * for a new cgroup that refaults a shared folio. This is
+> > > > +        * impossible to tell from the available data. However, thi=
+s
+> > > > +        * should be a rare and limited disturbance, and activation=
+s
+> > > > +        * are always speculative anyway. Ultimately, it's the agin=
+g
+> > > > +        * algorithm's job to shake out the minimum access frequenc=
+y
+> > > > +        * for the active cache.
+> > > > +        */
+> > > > +       memcg =3D mem_cgroup_from_id(memcgid);
+> > > > +       if (memcg && css_tryget(&memcg->css))
+> > > > +               *memcgp =3D memcg;
+> > > > +       else
+> > > > +               *memcgp =3D NULL;
+> > > > +
+> > > >         *pgdat =3D NODE_DATA(nid);
+> > > >         *evictionp =3D entry;
+> > > >         *workingsetp =3D workingset;
+> > > > @@ -262,15 +288,16 @@ static void *lru_gen_eviction(struct folio *f=
+olio)
+> > > >  static bool lru_gen_test_recent(void *shadow, bool file, struct lr=
+uvec **lruvec,
+> > > >                                 unsigned long *token, bool *working=
+set)
+> > > >  {
+> > > > -       int memcg_id;
+> > > >         unsigned long min_seq;
+> > > >         struct mem_cgroup *memcg;
+> > > >         struct pglist_data *pgdat;
+> > > >
+> > > > -       unpack_shadow(shadow, &memcg_id, &pgdat, token, workingset)=
+;
+> > > > +       unpack_shadow(shadow, &memcg, &pgdat, token, workingset);
+> > > > +       if (!mem_cgroup_disabled() && !memcg)
+> > > > +               return false;
+> > >
+> > > +Yu Zhao
+> > >
+> > > There is a change of behavior here, right?
+> > >
+> > > The existing code will continue if !mem_cgroup_disabled() && !memcg i=
+s
+> > > true, and mem_cgroup_lruvec() will return the lruvec of the root
+> > > memcg. Now we are just returning false.
+> > >
+> > > Is this intentional?
+> > Oh right, there is. Should have cc-ed Yu Zhao as well, my bad.
+> > get_maintainers.pl isn't always sufficient I guess :)
+> >
+> > But yeah, this behavioral change is intentional.
+> >
+> > Correct me if I'm wrong of course, but it seems like MGLRU should
+> > follow the same pattern here. That is, once we return from unpack_shado=
+w,
+> > the possible scenarios are the same as prescribed in workingset_test_re=
+cent:
+> >
+> > 1. If mem_cgroup is disabled, we can ignore this check.
+> > 2. If mem_cgroup is enabled, then the only reason why we get NULL
+> > memcg from unpack_shadow is if the eviction_memcg is no longer
+> > valid.  We should not try to get its lruvec, or substitute it with the
+> > root memcg, but return false right away (i.e not recent).
+> > >
+>
+> I will leave this for Yu :)
