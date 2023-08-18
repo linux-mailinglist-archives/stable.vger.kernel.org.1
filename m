@@ -2,189 +2,430 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 57AD6780E48
-	for <lists+stable@lfdr.de>; Fri, 18 Aug 2023 16:50:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 05D96780E65
+	for <lists+stable@lfdr.de>; Fri, 18 Aug 2023 16:57:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239461AbjHROtt (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 18 Aug 2023 10:49:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36962 "EHLO
+        id S1353777AbjHRO50 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 18 Aug 2023 10:57:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46238 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1346049AbjHROtY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 18 Aug 2023 10:49:24 -0400
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2044.outbound.protection.outlook.com [40.107.94.44])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1623E13D;
-        Fri, 18 Aug 2023 07:49:23 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=ddXQiRq2R+aPBk7c9Ux84ygpx03NSeYKlp1EfpmS8EPZ9f4E6ttUTCFUQw4xxpxhTKnI2RYkjcD0aWIEItz251Q/69he10kcu58gh3DZigg/bi3LogJWHj5HoSdANcsful613iMvgfk0KMDWprHLRlvUailheZn13Q6qIShqYrjT5dVZYo/x60Zwq66UzuCwT+FAOBrGBdGMm9+38v2Q4yaJc97bWr7x5RfdzNWzxCcv6iWCyDspBgoXHwhSitw1L3o1z0UncryQ5CQZykPkNux94VQvewMExWR7LKMaCZpJTwLcddhdQFpOzUJFN6CSoOFr39mmdcG5XKnrIwb58g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=KqS1Zly3e8UdCu/ZcuU7Gt/aBD2XCjEIw6SWS+jfsQ8=;
- b=KLGTb/xjoX7rlCDqC+F34SV0aXOe7xzleHfTgr4jwSyC4A4avg+/vu1ps5Mhgy8Cq80D924LoxxvdgYkUHJRQHtwkEufv9oJVkQIP3ik3sdOQ8WEnopRI9b45VIFqsB/Ypk0QKUs/wdGUDRBtEn/M19BLKWefGIv8kwgNQQiAoC0CSRFu0G996OUrbL7M14HwII3dpdlPg3P7EXtbPwBuqA2tVcOhDeqdUEEvXg6gtVp0sJfxxLU5+1J29rsMwHqA91NuC0UxM8FZn+LoiyDQPIZyFEPGXCj6CzuiHIv3jfXRUXbXS7QuY/JwQ2HEOPzzTrBVEG8a0nHtiJdwrrPsQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=linaro.org smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=KqS1Zly3e8UdCu/ZcuU7Gt/aBD2XCjEIw6SWS+jfsQ8=;
- b=mrzRcl3vAmQ8xV/1uHb36VpsfRms2+/yYivXZxJk5k7a6IW5y3DgKN/IyzaK3x+liCDxl/DNVL5AgqBXokMLQT+zKnharKnIPc3XY9L9UoBuYIZDo5h4VwiutqUAz5IWU1MD591SuaVxSJISvj3BSRAC2OiszILPwgYAcDInm8E=
-Received: from BYAPR05CA0073.namprd05.prod.outlook.com (2603:10b6:a03:e0::14)
- by SA1PR12MB5658.namprd12.prod.outlook.com (2603:10b6:806:235::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6678.31; Fri, 18 Aug
- 2023 14:49:19 +0000
-Received: from CO1PEPF000042AA.namprd03.prod.outlook.com
- (2603:10b6:a03:e0:cafe::d9) by BYAPR05CA0073.outlook.office365.com
- (2603:10b6:a03:e0::14) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6699.14 via Frontend
- Transport; Fri, 18 Aug 2023 14:49:19 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- CO1PEPF000042AA.mail.protection.outlook.com (10.167.243.39) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.6699.14 via Frontend Transport; Fri, 18 Aug 2023 14:49:19 +0000
-Received: from AUS-LX-MLIMONCI.amd.com (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Fri, 18 Aug
- 2023 09:49:17 -0500
-From:   Mario Limonciello <mario.limonciello@amd.com>
-To:     <linus.walleij@linaro.org>, <Basavaraj.Natikar@amd.com>,
-        <Shyam-sundar.S-k@amd.com>
-CC:     <linux-gpio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        "Mario Limonciello" <mario.limonciello@amd.com>,
-        Sachi King <nakato@nakato.io>, <stable@vger.kernel.org>,
-        Thorsten Leemhuis <regressions@leemhuis.info>,
-        Shubhra Prakash Nandi <email2shubhra@gmail.com>,
-        Carsten Hatger <xmb8dsv4@gmail.com>
-Subject: [PATCH] pinctrl: amd: Mask wake bits on probe again
-Date:   Fri, 18 Aug 2023 09:48:50 -0500
-Message-ID: <20230818144850.1439-1-mario.limonciello@amd.com>
-X-Mailer: git-send-email 2.25.1
+        with ESMTP id S1377239AbjHRO5S (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 18 Aug 2023 10:57:18 -0400
+Received: from mail-ej1-x62a.google.com (mail-ej1-x62a.google.com [IPv6:2a00:1450:4864:20::62a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08E47CD
+        for <stable@vger.kernel.org>; Fri, 18 Aug 2023 07:57:16 -0700 (PDT)
+Received: by mail-ej1-x62a.google.com with SMTP id a640c23a62f3a-99c4923195dso126452466b.2
+        for <stable@vger.kernel.org>; Fri, 18 Aug 2023 07:57:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20221208; t=1692370634; x=1692975434;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=1hIaw7v+qFnCecVSN9ksqIlSLleZjVGkf9dkFvjHvMI=;
+        b=uEwqgDBxVrpuSVPK0vIySBvl8ycyqBeC9nei0Ym4lTWnwCcVBUML1H9jep5TOl8Ayl
+         9oKA3Ej4XJ0aBHsU04PfZUyix/a+gLud1UMRDSWA2zto2RssIKqlXHhErV2dTpN+FjGn
+         p4n3fCR7GZKx0yh7lh0rcQSNRBZNOaLeI1k0Py4Lxj2EMTdH5up6VQnGIysSfYTF7u24
+         /xSyIcv62Nd6Shv1n20/rTsOqhBU/plVXDb3FuGuaPjKvWzKqSXskDnht99QCC3mBpv9
+         VqyejiCiHhU9Ls8wMcDMo6yNO2Dbm9B4/8KUC+1b55qDLAVdAmdhwAj8FUs3fNf2JVsq
+         bn3A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1692370634; x=1692975434;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=1hIaw7v+qFnCecVSN9ksqIlSLleZjVGkf9dkFvjHvMI=;
+        b=PKNH86MMeWb4OQhkHtSXH1Nbs2/xsjCK0eUhW4d4cCEkl86aJImmvooATb9PRJGV2y
+         s06vqNzecO6T88sl0FvRA2Sbe2c9Z2KAuyhROIso2gSAsULz8XYt1lUPIiDdvx660sRS
+         TZHIhMEBPpqPHnzqCaslWtn7jq5juCQzSyKDc/trVKPVq6GBYSRrm7zEwCwnrkz9jDDo
+         qDdtE9egEYSvGBSD1qa23GfXlPJzY5TFBnpf/McDDx66QZdQX1ojrdz9VnlIo7kLk2Pu
+         +r617PMNiqLHqzykcGwxMn4j29eDp18oxkyfBaGs1HBgYILWEfwdpNKZp5vw3vvRk+yj
+         UuAw==
+X-Gm-Message-State: AOJu0YxOVK62RyKJejIb4WRPqSG+tX+6vJXb+iOjLmGXh62ZVX7Md9ac
+        lyjyLNgfgZLvILra/g+X/1RCKXEPFkpsf5V7UZRwng==
+X-Google-Smtp-Source: AGHT+IFEDbNG3bhSioghc3EtIdvvCBkNR1/FmkkoWe1jJY21nWwJt8Le1O6PsMenzp75eoy3O+om+SYQoFtb7vUNUJM=
+X-Received: by 2002:a17:906:5dd8:b0:99b:dd1d:bc58 with SMTP id
+ p24-20020a1709065dd800b0099bdd1dbc58mr2209933ejv.41.1692370634183; Fri, 18
+ Aug 2023 07:57:14 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CO1PEPF000042AA:EE_|SA1PR12MB5658:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0c3af051-7521-464e-69f6-08db9ffa4d71
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: wVNBV3iVeHGJgJxE1PGI5uKO04SH+D1WshCVZms8u7/tYicPnLPvrmFbqh/x/FQVCa/PXss2179WasibI2HoKmTAs7M6emnb5XMOQhZCZEhOiigne9zfvfsEMoLRbT9TrRe3ybE42uiO7EfpGkzyAdfsprEfoebYFLmhDPj1vTP94JFkGsfckwMPxq2cUnTQLoU17LvgagBfkoTX0jmheTjnLay909qUo5QrGpXi2n6HALafEhgwpYIITI66edL2lzSIhN9ldMq6Fzvi6NIxcJTOHU7IuVjNd2R6mhwrVBa1Ov5X0Q5B9+zQEOzmJdjima+o/eCS0f241EKkD/FPjTM4NjJKWSpt7PQ8mDBTZXlNpmp0o+q/7qAvJuQfdT7D9pSEXiOAtnrws2Ier/U24bc1ADdx4qhEj7rzAa1RtaVhpFA6pz+IflZN1g62j7nYnu8cQoneGmE8SYo0OYNLRqifZp6ZCgYYgQoS3z+3lcURk9s09u08bNY7VAIkvwaJaQe14l5PMW1a310FvGsNAMV/jMqbH2C0ung2yC59STegiv0OfSCvK8yxoKemce5XjJbDo5OOAOwqXhWoHc83y1hqgA290NiwCOoZ0E32H9CcZIy7X5oYPTzTJet8giOE3CNc2SohraMGRJtn/hINM1gJ9ll+m0aM/PmdCqBT7mxnPDUMEYaZCIxAZuOsaNNh/IarDf0+UTo7NeLiJgdxnPF1etZzmVFbj6sXrA69R3lPZ6Yye5zMMTCsDvSsLeiCl5JOCzskPae4P7PXYkHInMbXw60QSemreHyDmddDKJ0=
-X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(4636009)(346002)(376002)(39860400002)(136003)(396003)(451199024)(82310400011)(1800799009)(186009)(40470700004)(36840700001)(46966006)(36756003)(86362001)(82740400003)(81166007)(356005)(40480700001)(966005)(16526019)(2616005)(5660300002)(44832011)(7696005)(70586007)(70206006)(6666004)(6636002)(54906003)(110136005)(316002)(26005)(41300700001)(1076003)(4326008)(8936002)(8676002)(40460700003)(478600001)(83380400001)(36860700001)(47076005)(426003)(2906002)(336012)(36900700001);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Aug 2023 14:49:19.1569
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0c3af051-7521-464e-69f6-08db9ffa4d71
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: CO1PEPF000042AA.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB5658
-X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.6
+References: <20230817164733.2475092-1-nphamcs@gmail.com> <20230817190126.3155299-1-nphamcs@gmail.com>
+ <CAJD7tkaNo=0mkYKxrTwGNaJ33G1z7cYdWhNQNF3tQp_MKCh-uA@mail.gmail.com>
+ <CAKEwX=Pt3ir0jpn+eRjzH=K49b0Y0_N1NnieLm0a0VwV1aCKKQ@mail.gmail.com>
+ <CAJD7tkb1jMuCouyL8OX0434HK0Wx=Hyf9UnGVOH8fP7NxA8+Pw@mail.gmail.com>
+ <CAOUHufbDhqSgSYZwkEo1aF1iFqGge_8jY3dt3OfPwXU0s07KOA@mail.gmail.com> <20230818134906.GA138967@cmpxchg.org>
+In-Reply-To: <20230818134906.GA138967@cmpxchg.org>
+From:   Yosry Ahmed <yosryahmed@google.com>
+Date:   Fri, 18 Aug 2023 07:56:37 -0700
+Message-ID: <CAJD7tkZY3kQPO2dn2NX0WODwwRifhH4R=pSZnFZYxh23Eszb-g@mail.gmail.com>
+Subject: Re: [PATCH v2] workingset: ensure memcg is valid for recency check
+To:     Johannes Weiner <hannes@cmpxchg.org>
+Cc:     Yu Zhao <yuzhao@google.com>, Nhat Pham <nphamcs@gmail.com>,
+        akpm@linux-foundation.org, kernel-team@meta.com,
+        linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+        stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
+        USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Shubhra reports that their laptop is heating up over s2idle. Even though
-it's getting into the deepest state, it appears to be having spurious
-wakeup events.
+On Fri, Aug 18, 2023 at 6:49=E2=80=AFAM Johannes Weiner <hannes@cmpxchg.org=
+> wrote:
+>
+> On Thu, Aug 17, 2023 at 05:12:17PM -0600, Yu Zhao wrote:
+> > On Thu, Aug 17, 2023 at 4:50=E2=80=AFPM Yosry Ahmed <yosryahmed@google.=
+com> wrote:
+> > >
+> > > On Thu, Aug 17, 2023 at 3:43=E2=80=AFPM Nhat Pham <nphamcs@gmail.com>=
+ wrote:
+> > > >
+> > > > On Thu, Aug 17, 2023 at 1:50 PM Yosry Ahmed <yosryahmed@google.com>=
+ wrote:
+> > > > >
+> > > > > On Thu, Aug 17, 2023 at 12:01=E2=80=AFPM Nhat Pham <nphamcs@gmail=
+.com> wrote:
+> > > > > >
+> > > > > > In eviction recency check, we are currently not holding a local
+> > > > > > reference to the memcg that the refaulted folio belonged to whe=
+n it was
+> > > > > > evicted. This could cause serious memcg lifetime issues, for e.=
+g in the
+> > > > > > memcg hierarchy traversal done in mem_cgroup_get_nr_swap_pages(=
+). This
+> > > > > > has occurred in production:
+> > > > > >
+> > > > > > [ 155757.793456] BUG: kernel NULL pointer dereference, address:=
+ 00000000000000c0
+> > > > > > [ 155757.807568] #PF: supervisor read access in kernel mode
+> > > > > > [ 155757.818024] #PF: error_code(0x0000) - not-present page
+> > > > > > [ 155757.828482] PGD 401f77067 P4D 401f77067 PUD 401f76067 PMD =
+0
+> > > > > > [ 155757.839985] Oops: 0000 [#1] SMP
+> > > > > > [ 155757.846444] CPU: 7 PID: 1380944 Comm: ThriftSrv-pri3- Kdum=
+p: loaded Tainted: G S                 6.4.3-0_fbk1_rc0_594_g8d0cbcaa67ba #=
+1
+> > > > > > [ 155757.870808] Hardware name: Wiwynn Twin Lakes MP/Twin Lakes=
+ Passive MP, BIOS YMM16 05/24/2021
+> > > > > > [ 155757.887870] RIP: 0010:mem_cgroup_get_nr_swap_pages+0x3d/0x=
+b0
+> > > > > > [ 155757.899377] Code: 29 19 4a 02 48 39 f9 74 63 48 8b 97 c0 0=
+0 00 00 48 8b b7 58 02 00 00 48 2b b7 c0 01 00 00 48 39 f0 48 0f 4d c6 48 3=
+9 d1 74 42 <48> 8b b2 c0 00 00 00 48 8b ba 58 02 00 00 48 2b ba c0 01 00 00=
+ 48
+> > > > > > [ 155757.937125] RSP: 0018:ffffc9002ecdfbc8 EFLAGS: 00010286
+> > > > > > [ 155757.947755] RAX: 00000000003a3b1c RBX: 000007ffffffffff RC=
+X: ffff888280183000
+> > > > > > [ 155757.962202] RDX: 0000000000000000 RSI: 0007ffffffffffff RD=
+I: ffff888bbc2d1000
+> > > > > > [ 155757.976648] RBP: 0000000000000001 R08: 000000000000000b R0=
+9: ffff888ad9cedba0
+> > > > > > [ 155757.991094] R10: ffffea0039c07900 R11: 0000000000000010 R1=
+2: ffff888b23a7b000
+> > > > > > [ 155758.005540] R13: 0000000000000000 R14: ffff888bbc2d1000 R1=
+5: 000007ffffc71354
+> > > > > > [ 155758.019991] FS:  00007f6234c68640(0000) GS:ffff88903f9c000=
+0(0000) knlGS:0000000000000000
+> > > > > > [ 155758.036356] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050=
+033
+> > > > > > [ 155758.048023] CR2: 00000000000000c0 CR3: 0000000a83eb8004 CR=
+4: 00000000007706e0
+> > > > > > [ 155758.062473] DR0: 0000000000000000 DR1: 0000000000000000 DR=
+2: 0000000000000000
+> > > > > > [ 155758.076924] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR=
+7: 0000000000000400
+> > > > > > [ 155758.091376] PKRU: 55555554
+> > > > > > [ 155758.096957] Call Trace:
+> > > > > > [ 155758.102016]  <TASK>
+> > > > > > [ 155758.106502]  ? __die+0x78/0xc0
+> > > > > > [ 155758.112793]  ? page_fault_oops+0x286/0x380
+> > > > > > [ 155758.121175]  ? exc_page_fault+0x5d/0x110
+> > > > > > [ 155758.129209]  ? asm_exc_page_fault+0x22/0x30
+> > > > > > [ 155758.137763]  ? mem_cgroup_get_nr_swap_pages+0x3d/0xb0
+> > > > > > [ 155758.148060]  workingset_test_recent+0xda/0x1b0
+> > > > > > [ 155758.157133]  workingset_refault+0xca/0x1e0
+> > > > > > [ 155758.165508]  filemap_add_folio+0x4d/0x70
+> > > > > > [ 155758.173538]  page_cache_ra_unbounded+0xed/0x190
+> > > > > > [ 155758.182919]  page_cache_sync_ra+0xd6/0x1e0
+> > > > > > [ 155758.191738]  filemap_read+0x68d/0xdf0
+> > > > > > [ 155758.199495]  ? mlx5e_napi_poll+0x123/0x940
+> > > > > > [ 155758.207981]  ? __napi_schedule+0x55/0x90
+> > > > > > [ 155758.216095]  __x64_sys_pread64+0x1d6/0x2c0
+> > > > > > [ 155758.224601]  do_syscall_64+0x3d/0x80
+> > > > > > [ 155758.232058]  entry_SYSCALL_64_after_hwframe+0x46/0xb0
+> > > > > > [ 155758.242473] RIP: 0033:0x7f62c29153b5
+> > > > > > [ 155758.249938] Code: e8 48 89 75 f0 89 7d f8 48 89 4d e0 e8 b=
+4 e6 f7 ff 41 89 c0 4c 8b 55 e0 48 8b 55 e8 48 8b 75 f0 8b 7d f8 b8 11 00 0=
+0 00 0f 05 <48> 3d 00 f0 ff ff 77 33 44 89 c7 48 89 45 f8 e8 e7 e6 f7 ff 48=
+ 8b
+> > > > > > [ 155758.288005] RSP: 002b:00007f6234c5ffd0 EFLAGS: 00000293 OR=
+IG_RAX: 0000000000000011
+> > > > > > [ 155758.303474] RAX: ffffffffffffffda RBX: 00007f628c4e70c0 RC=
+X: 00007f62c29153b5
+> > > > > > [ 155758.318075] RDX: 000000000003c041 RSI: 00007f61d2986000 RD=
+I: 0000000000000076
+> > > > > > [ 155758.332678] RBP: 00007f6234c5fff0 R08: 0000000000000000 R0=
+9: 0000000064d5230c
+> > > > > > [ 155758.347452] R10: 000000000027d450 R11: 0000000000000293 R1=
+2: 000000000003c041
+> > > > > > [ 155758.362044] R13: 00007f61d2986000 R14: 00007f629e11b060 R1=
+5: 000000000027d450
+> > > > > > [ 155758.376661]  </TASK>
+> > > > > >
+> > > > > > This patch fixes the issue by getting a local reference inside
+> > > > > > unpack_shadow().
+> > > > > >
+> > > > > > Fixes: f78dfc7b77d5 ("workingset: fix confusion around eviction=
+ vs refault container")
+> > > > >
+> > > > > Beyond mem_cgroup_get_nr_swap_pages(), we still use the eviction_=
+memcg
+> > > > > without grabbing a ref to it first in workingset_test_recent() (a=
+nd in
+> > > > > workingset_refault() before that) as well as lru_gen_test_recent(=
+).
+> > > > >
+> > > > > Wouldn't the fix go back even further? or am I misinterpreting th=
+e problem?
+> > > > Hmm I don't see eviction_memcg being used outside of *_test_recent
+> > > > (the rest just uses memcg =3D folio_memcg(folio), which if I'm not =
+mistaken is
+> > > > the memcg that is refaulting the folio into memory).
+> > > >
+> > > > Inside workingset_test_recent(), the only other place where evictio=
+n_memcg
+> > > > is used is for mem_cgroup_lruvec. This function call won't crash wh=
+ether
+> > > > eviction_memcg is valid or not.
+> > >
+> > > If eviction_memcg is invalid because the memory was already freed, we
+> > > are basically dereferencing garbage in mem_cgroup_lruvec() aren't we?
+> > >
+> > > > The crash only happens during
+> > > > mem_cgroup_get_nr_swap_pages, which has an upward traversal from
+> > > > eviction_memcg to root.
+> > > >
+> > > > Let me know if this does not make sense and/or is insufficient to e=
+nsure
+> > > > safe upward traversal from eviction_memcg to root!
+> > > > >
+> > > > >
+> > > > >
+> > > > > > Signed-off-by: Nhat Pham <nphamcs@gmail.com>
+> > > > > > Cc: stable@vger.kernel.org
+> > > > > > ---
+> > > > > >  mm/workingset.c | 65 ++++++++++++++++++++++++++++++++---------=
+--------
+> > > > > >  1 file changed, 43 insertions(+), 22 deletions(-)
+> > > > > >
+> > > > > > diff --git a/mm/workingset.c b/mm/workingset.c
+> > > > > > index da58a26d0d4d..03cadad4e484 100644
+> > > > > > --- a/mm/workingset.c
+> > > > > > +++ b/mm/workingset.c
+> > > > > > @@ -206,10 +206,19 @@ static void *pack_shadow(int memcgid, pg_=
+data_t *pgdat, unsigned long eviction,
+> > > > > >         return xa_mk_value(eviction);
+> > > > > >  }
+> > > > > >
+> > > > > > -static void unpack_shadow(void *shadow, int *memcgidp, pg_data=
+_t **pgdat,
+> > > > > > -                         unsigned long *evictionp, bool *worki=
+ngsetp)
+> > > > > > +/*
+> > > > > > + * Unpacks the stored fields of a shadow entry into the given =
+pointers.
+> > > > > > + *
+> > > > > > + * The memcg pointer is only populated if the memcg recorded i=
+n the shadow
+> > > > > > + * entry is valid. In this case, a reference to the memcg will=
+ be acquired,
+> > > > > > + * and a corresponding mem_cgroup_put() will be needed when we=
+ no longer
+> > > > > > + * need the memcg.
+> > > > > > + */
+> > > > > > +static void unpack_shadow(void *shadow, struct mem_cgroup **me=
+mcgp,
+> > > > > > +                       pg_data_t **pgdat, unsigned long *evict=
+ionp, bool *workingsetp)
+> > > > > >  {
+> > > > > >         unsigned long entry =3D xa_to_value(shadow);
+> > > > > > +       struct mem_cgroup *memcg;
+> > > > > >         int memcgid, nid;
+> > > > > >         bool workingset;
+> > > > > >
+> > > > > > @@ -220,7 +229,24 @@ static void unpack_shadow(void *shadow, in=
+t *memcgidp, pg_data_t **pgdat,
+> > > > > >         memcgid =3D entry & ((1UL << MEM_CGROUP_ID_SHIFT) - 1);
+> > > > > >         entry >>=3D MEM_CGROUP_ID_SHIFT;
+> > > > > >
+> > > > > > -       *memcgidp =3D memcgid;
+> > > > > > +       /*
+> > > > > > +        * Look up the memcg associated with the stored ID. It =
+might
+> > > > > > +        * have been deleted since the folio's eviction.
+> > > > > > +        *
+> > > > > > +        * Note that in rare events the ID could have been recy=
+cled
+> > > > > > +        * for a new cgroup that refaults a shared folio. This =
+is
+> > > > > > +        * impossible to tell from the available data. However,=
+ this
+> > > > > > +        * should be a rare and limited disturbance, and activa=
+tions
+> > > > > > +        * are always speculative anyway. Ultimately, it's the =
+aging
+> > > > > > +        * algorithm's job to shake out the minimum access freq=
+uency
+> > > > > > +        * for the active cache.
+> > > > > > +        */
+> > > > > > +       memcg =3D mem_cgroup_from_id(memcgid);
+> > > > > > +       if (memcg && css_tryget(&memcg->css))
+> > > > > > +               *memcgp =3D memcg;
+> > > > > > +       else
+> > > > > > +               *memcgp =3D NULL;
+> > > > > > +
+> > > > > >         *pgdat =3D NODE_DATA(nid);
+> > > > > >         *evictionp =3D entry;
+> > > > > >         *workingsetp =3D workingset;
+> > > > > > @@ -262,15 +288,16 @@ static void *lru_gen_eviction(struct foli=
+o *folio)
+> > > > > >  static bool lru_gen_test_recent(void *shadow, bool file, struc=
+t lruvec **lruvec,
+> > > > > >                                 unsigned long *token, bool *wor=
+kingset)
+> > > > > >  {
+> > > > > > -       int memcg_id;
+> > > > > >         unsigned long min_seq;
+> > > > > >         struct mem_cgroup *memcg;
+> > > > > >         struct pglist_data *pgdat;
+> > > > > >
+> > > > > > -       unpack_shadow(shadow, &memcg_id, &pgdat, token, working=
+set);
+> > > > > > +       unpack_shadow(shadow, &memcg, &pgdat, token, workingset=
+);
+> > > > > > +       if (!mem_cgroup_disabled() && !memcg)
+> > > > > > +               return false;
+> > > > >
+> > > > > +Yu Zhao
+> > > > >
+> > > > > There is a change of behavior here, right?
+> > > > >
+> > > > > The existing code will continue if !mem_cgroup_disabled() && !mem=
+cg is
+> > > > > true, and mem_cgroup_lruvec() will return the lruvec of the root
+> > > > > memcg. Now we are just returning false.
+> > > > >
+> > > > > Is this intentional?
+> > > > Oh right, there is. Should have cc-ed Yu Zhao as well, my bad.
+> > > > get_maintainers.pl isn't always sufficient I guess :)
+> > > >
+> > > > But yeah, this behavioral change is intentional.
+> > > >
+> > > > Correct me if I'm wrong of course, but it seems like MGLRU should
+> > > > follow the same pattern here. That is, once we return from unpack_s=
+hadow,
+> > > > the possible scenarios are the same as prescribed in workingset_tes=
+t_recent:
+> > > >
+> > > > 1. If mem_cgroup is disabled, we can ignore this check.
+> > > > 2. If mem_cgroup is enabled, then the only reason why we get NULL
+> > > > memcg from unpack_shadow is if the eviction_memcg is no longer
+> > > > valid.  We should not try to get its lruvec, or substitute it with =
+the
+> > > > root memcg, but return false right away (i.e not recent).
+> > > > >
+> > >
+> > > I will leave this for Yu :)
+> >
+> > Thanks, Yosry.
+> >
+> > Hi Nhat, it seems unnecessary to me to introduce a get/put into
+> > lru_gen_test_recent() because it doesn't suffer from the bug this
+> > patch tries to fix. In theory, the extra get/put can impact
+> > performance, though admittedly the impact is unlikely to be
+> > measurable. Regardless, the general practice is to fix the bug
+> > locally, i.e., when the mem_cgroup_get_nr_swap_pages() path is taken,
+> > rather than change the unrelated path. Thank you.
+>
+> Hey guys,
+>
+> I had suggested to have it in unpack_shadow() to keep things simple,
+> and not further complicate the lifetime rules in this code. The
+> tryget() is against a per-cpu counter, so it's not expensive.
+>
+> The NULL deref is evidence that while *some* cgroup members are still
+> accessible once it's dead, not all of it is. There is no explicit
+> guarantee from the cgroup code that anything BUT the tryget() is still
+> valid against group that is under rcu freeing.
+>
+> Since it isn't expensive, let's keep it simple and robust, and prevent
+> future bugs of the same class, by always ensuring the cgroup is alive
+> before accessing random members. Especially in non-cgroup code.
 
-While debugging a tangential issue with the RTC Carsten reports that recent
-6.1.y based kernel face a similar problem.
+I looked at this again today with fresh eyes, and I want to go back to
+what I initially said. Isn't RCU protection in this case enough to
+keep the memcg "valid" (i.e accessible, not garbage)? The tryget is
+not a lot of complexity or performance tax, but I want to really
+understand what's happening here.
 
-Looking at acpidump and GPIO register comparisons these spurious wakeup
-events are from the GPIO associated with the I2C touchpad on both laptops
-and occur even when the touchpad is not marked as a wake source by the
-kernel.
+Looking at the code again, this seems to be the sequence of events on
+the cgroup side:
+- css_put() puts the last reference invoking a call to css_release()
+- css_release() queues css_release_work_fn()
+- css_release() does some bookkeeping, makes some callbacks, and
+queues css_free_rwork_fn() to run *after* an RCU grace period.
+- css_free_rwork_fn() makes callbacks to free the memory, ultimately
+freeing the memcg.
 
-This means that the boot firmware has programmed these bits and because
-Linux didn't touch them lead to spurious wakeup events from that GPIO.
+On the memcg idr side, the removal sequence of events seem to be:
+- mem_cgroup_id_put() will decrement the id ref and check if falls to 0
+- If the id ref falls to 0, we call mem_cgroup_id_remove() *then* css_put()
 
-To fix this issue, restore most of the code that previously would clear all
-the bits associated with wakeup sources. This will allow the kernel to only
-program the wake up sources that are necessary.
+On the workingset_refault() side, the sequence of events seems to be:
+- rcu_read_lock()
+- memcg =3D mem_cgroup_from_id()
+- ... // use memcg
+- rcu_read_unlock()
 
-This is similar to what was done previously; but only the wake bits are
-cleared by default instead of interrupts and wake bits.  If any other
-problems are reported then it may make sense to clear interrupts again too.
+So technically, after holding the rcu read lock, if we find the memcg
+in the idr, it must be valid, and it must not be freed until after the
+rcu read section is completed. It's not just the cgroup internal
+implementation, it's the contract between cgroup core and controllers
+such as memcg.
 
-Cc: Sachi King <nakato@nakato.io>
-Cc: stable@vger.kernel.org
-Cc: Thorsten Leemhuis <regressions@leemhuis.info>
-Fixes: 65f6c7c91cb2 ("pinctrl: amd: Revert "pinctrl: amd: disable and mask interrupts on probe"")
-Reported-by: "Shubhra Prakash Nandi" <email2shubhra@gmail.com>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217754
-Reported-by: "Carsten Hatger" <xmb8dsv4@gmail.com>
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=217626#c28
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
----
- drivers/pinctrl/pinctrl-amd.c | 30 ++++++++++++++++++++++++++++++
- 1 file changed, 30 insertions(+)
+The memory controller expects a sequence of callbacks during freeing:
+css_offline() -> css_released() -> css_free(). So memcg code is within
+its right to access any fields of struct mem_cgroup that are not freed
+by the css_offline() or css_released() until css_free() is called,
+right?
 
-diff --git a/drivers/pinctrl/pinctrl-amd.c b/drivers/pinctrl/pinctrl-amd.c
-index 20bd97a603d9c..74241b2ff21e3 100644
---- a/drivers/pinctrl/pinctrl-amd.c
-+++ b/drivers/pinctrl/pinctrl-amd.c
-@@ -862,6 +862,33 @@ static const struct pinconf_ops amd_pinconf_ops = {
- 	.pin_config_group_set = amd_pinconf_group_set,
- };
- 
-+static void amd_gpio_irq_init(struct amd_gpio *gpio_dev)
-+{
-+	struct pinctrl_desc *desc = gpio_dev->pctrl->desc;
-+	unsigned long flags;
-+	u32 pin_reg, mask;
-+	int i;
-+
-+	mask = BIT(WAKE_CNTRL_OFF_S0I3) | BIT(WAKE_CNTRL_OFF_S3) |
-+		BIT(WAKE_CNTRL_OFF_S4);
-+
-+	for (i = 0; i < desc->npins; i++) {
-+		int pin = desc->pins[i].number;
-+		const struct pin_desc *pd = pin_desc_get(gpio_dev->pctrl, pin);
-+
-+		if (!pd)
-+			continue;
-+
-+		raw_spin_lock_irqsave(&gpio_dev->lock, flags);
-+
-+		pin_reg = readl(gpio_dev->base + pin * 4);
-+		pin_reg &= ~mask;
-+		writel(pin_reg, gpio_dev->base + pin * 4);
-+
-+		raw_spin_unlock_irqrestore(&gpio_dev->lock, flags);
-+	}
-+}
-+
- #ifdef CONFIG_PM_SLEEP
- static bool amd_gpio_should_save(struct amd_gpio *gpio_dev, unsigned int pin)
- {
-@@ -1099,6 +1126,9 @@ static int amd_gpio_probe(struct platform_device *pdev)
- 		return PTR_ERR(gpio_dev->pctrl);
- 	}
- 
-+	/* Disable and mask interrupts */
-+	amd_gpio_irq_init(gpio_dev);
-+
- 	girq = &gpio_dev->gc.irq;
- 	gpio_irq_chip_set_chip(girq, &amd_gpio_irqchip);
- 	/* This will let us handle the parent IRQ in the driver */
--- 
-2.34.1
+Here is a guess / question, because I am not really familiar with
+memory barriers and such, but is it at all possible that the actual
+problem is reordering of instructions in mem_cgroup_id_put_many(),
+such that we actually execute css_put() *before*
+mem_cgroup_id_remove()?
 
+If this happens it seems possible for this to happen:
+
+cpu #1                                  cpu#2
+                                             css_put()
+                                             /* css_free_rwork_fn is queued=
+ */
+rcu_read_lock()
+mem_cgroup_from_id()
+                                             mem_cgroup_id_remove()
+/* access memcg */
+
+If I understand correctly, if css_free_rwork_fn() is queued before the
+rcu_read_lock in workingset_refault() begins, then it can be executed
+during the rcu read section, and the memcg can be freed at any point
+from under us. Perhaps what we need is memory barriers to ensure
+correct ordering in mem_cgroup_id_put_many()? I am not sure if
+rcu_read_lock() implies a barrier on the other side.
+
+Sorry if this is all off, I am just trying to understand what's going on.
