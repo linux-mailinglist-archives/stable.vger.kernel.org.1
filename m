@@ -2,296 +2,183 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6F94F780CF1
-	for <lists+stable@lfdr.de>; Fri, 18 Aug 2023 15:50:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CE3E3780D1F
+	for <lists+stable@lfdr.de>; Fri, 18 Aug 2023 15:55:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1347994AbjHRNth (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 18 Aug 2023 09:49:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53780 "EHLO
+        id S1377456AbjHRNy7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 18 Aug 2023 09:54:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51622 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377479AbjHRNtY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 18 Aug 2023 09:49:24 -0400
-Received: from mail-qv1-xf33.google.com (mail-qv1-xf33.google.com [IPv6:2607:f8b0:4864:20::f33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3226B4685
-        for <stable@vger.kernel.org>; Fri, 18 Aug 2023 06:49:08 -0700 (PDT)
-Received: by mail-qv1-xf33.google.com with SMTP id 6a1803df08f44-649edb3a3d6so4311256d6.0
-        for <stable@vger.kernel.org>; Fri, 18 Aug 2023 06:49:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg-org.20221208.gappssmtp.com; s=20221208; t=1692366547; x=1692971347;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=SknGd1OGAImO0gpD7vAgIL5kV6VxTVw1G0lBI9eZFTI=;
-        b=rGCgpiLWWyHLpNU/f74FjInWfpLrfIOmGhhKPhf/ECN6iOuuc9UmP7vZHpSc9U7l0O
-         HcTwar9abmVF268ZgWvh36PGzr8b1v/YYLek7Bu3pKfVTENUUgR+BvMvPcMwWXnNf2yC
-         U339aTZ4MYbvbLH6KMSHI/QMpBzdJVT9w9fD2hvWlsFWFHnUIdnLNVAHWwN2hwKZsrRY
-         cecpac6jkGwP4jmeDV7OaQsB18Xa3C7vuNoe4nVJ7QlS2upjiOSVI7ucPWdXMgrEFxcE
-         4i957D3Cm9FFCwcL/sS7wO81OlEN01gco1e1a2MSzWFjZWWFS58dIA8Q4Dz2PeTStyO5
-         KgTA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692366547; x=1692971347;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=SknGd1OGAImO0gpD7vAgIL5kV6VxTVw1G0lBI9eZFTI=;
-        b=hgpcJqPGGA8SgCle42oU5rCcAZW4Xu2+jxJMJRSxhlDkngzEZF5tvcT0lwmO+5lhU/
-         nFXRq1oelaCUP0D/fN71IzhqRbXRNjTK+zbI3XIxNva0kY9ZnGAAxAL0wLJ55Cc39v09
-         cND/7SA3o7t4h1LZYh/KLawffNPWg6sBojKSqnIm7ru1UUs6XQDo+6RwCrCwWv2Nhfec
-         GWGAjSBoeR6fmpClpaW21eDb16tdHfjrCFrpebQi8bq/Nvs0m2Mlu5T5mc83B4ZpvMsL
-         5R23hptKVJPT7oCWsDKT+Y0hYuD1CDop5jZ+TYvIonV9WNnERJKaF7JtdMMOYVkO4fGP
-         4Etw==
-X-Gm-Message-State: AOJu0YwXBmBY4Y5+M5Lh7ORkM/H3VtTUEyV1fh/bMYX7MtsaHtLje4qR
-        mHOTwSH2Lw+v+mCo9xR4zpq6oA==
-X-Google-Smtp-Source: AGHT+IHqZZNdqmvvDJfUJAxKuFM7NyEFK3DwfOKGEkVIur/tVoF8cGu1PkjeI8ml0OTvhHLWs883Pg==
-X-Received: by 2002:ad4:5dc7:0:b0:63c:f325:bb03 with SMTP id m7-20020ad45dc7000000b0063cf325bb03mr6752636qvh.8.1692366547079;
-        Fri, 18 Aug 2023 06:49:07 -0700 (PDT)
-Received: from localhost ([2620:10d:c091:400::5:75e0])
-        by smtp.gmail.com with ESMTPSA id i8-20020a0cf388000000b0063d5d173a51sm697181qvk.50.2023.08.18.06.49.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 18 Aug 2023 06:49:06 -0700 (PDT)
-Date:   Fri, 18 Aug 2023 09:49:06 -0400
-From:   Johannes Weiner <hannes@cmpxchg.org>
-To:     Yu Zhao <yuzhao@google.com>
-Cc:     Yosry Ahmed <yosryahmed@google.com>, Nhat Pham <nphamcs@gmail.com>,
-        akpm@linux-foundation.org, kernel-team@meta.com,
-        linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-        stable@vger.kernel.org
-Subject: Re: [PATCH v2] workingset: ensure memcg is valid for recency check
-Message-ID: <20230818134906.GA138967@cmpxchg.org>
-References: <20230817164733.2475092-1-nphamcs@gmail.com>
- <20230817190126.3155299-1-nphamcs@gmail.com>
- <CAJD7tkaNo=0mkYKxrTwGNaJ33G1z7cYdWhNQNF3tQp_MKCh-uA@mail.gmail.com>
- <CAKEwX=Pt3ir0jpn+eRjzH=K49b0Y0_N1NnieLm0a0VwV1aCKKQ@mail.gmail.com>
- <CAJD7tkb1jMuCouyL8OX0434HK0Wx=Hyf9UnGVOH8fP7NxA8+Pw@mail.gmail.com>
- <CAOUHufbDhqSgSYZwkEo1aF1iFqGge_8jY3dt3OfPwXU0s07KOA@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+        with ESMTP id S1377490AbjHRNyg (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 18 Aug 2023 09:54:36 -0400
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2085.outbound.protection.outlook.com [40.107.94.85])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AE19D3C35;
+        Fri, 18 Aug 2023 06:54:32 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=izx88yioYio4WyNN3bDeb8e3Dy+27MMN4ZPM8lwkgnZ8y+8KTDlWmN4c+3IegdQ3ZuOm8jbMNKzEPmT5IQcMt0ykKP1O5DSKGJPpJCE/imo5W2di18XI57yCs+8x8pdGm8IDYjwZoPWhomwQKKeDGoVTxHYklVxly9I4OG0Mosoi28j5RfBTXh9wVnpUNNhZvK/fWcCUnMl+A5Bi/zH2AZpMYIw00ph506vJXBK6H8x7jGaJDXBZOfynIYG05LjNgDHYcQ+omFJ9hdYebl0Co0Qn7A5sclVPeAHuyTrV32Mwk9hRJtxPlVKVzWqJ4/F+yGgFnu8LLIn8XUN/maIpnw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=97vIEc5goRdDvtSi5EFMvr552bGqvHDTutcxsW58sb8=;
+ b=Zs3Y0wKoyWcKCZ/qoeZxdACsQ3RikgAwinRMYtSIbkoYqtvw4Gs8Bbfs8ekFOjROGQuJzEcqYDIs2CH3PIXVjKrZ0BJjTg6tfru9EqXeFkmM/qoetCF5dNhWl2mCzwDmNOwf+da2udg3CAMhyo2MuFLTVs+Og0JowvK6cBxY0ZR0uSKCOFi4FqJz6tWNnmj3d2o0yPgml4Xu03vqreqRwS5wCOW4aDH1uHQMy3mRMg0kjOFsiPUgwS7hQ7RDgU3HMIZ8SIM/tuvATVg4n5QuXHgBBqEgUV9RhrHE8WU3/EO4gTdjPiiO32aafmFs8bgm7z7vEJR3ptq8sSoZvVkGow==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=97vIEc5goRdDvtSi5EFMvr552bGqvHDTutcxsW58sb8=;
+ b=hc3Rt2DRtH0tA0i7zajU2cg8InXuIoF/UWjsV+fAV2cKawKcYa3tLBsNa0LFTb+Al2ZsoKfuypQ6o9TtlkMpU/TpX92gtdx1XMFBu+2EvLl7mSutje/qqCyDDnXo+zZPZgiUf4NK/2DUNMaaMg3wTwXp90i/Nu4bO+QOqOC+esE=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from DS7PR12MB6095.namprd12.prod.outlook.com (2603:10b6:8:9c::19) by
+ PH7PR12MB7820.namprd12.prod.outlook.com (2603:10b6:510:268::8) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.6699.20; Fri, 18 Aug 2023 13:54:30 +0000
+Received: from DS7PR12MB6095.namprd12.prod.outlook.com
+ ([fe80::44a:f414:7a0f:9dae]) by DS7PR12MB6095.namprd12.prod.outlook.com
+ ([fe80::44a:f414:7a0f:9dae%7]) with mapi id 15.20.6699.020; Fri, 18 Aug 2023
+ 13:54:29 +0000
+Message-ID: <647e85d0-3790-4a21-b56d-1bd9123a294a@amd.com>
+Date:   Fri, 18 Aug 2023 08:54:28 -0500
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v13 01/12] PCI: Only put Intel PCIe ports >= 2015 into D3
+Content-Language: en-US
+To:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        David Laight <David.Laight@aculab.com>
+Cc:     Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Bjorn Helgaas <helgaas@kernel.org>,
+        "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        Kuppuswamy Sathyanarayanan 
+        <sathyanarayanan.kuppuswamy@linux.intel.com>,
+        Iain Lane <iain@orangesquash.org.uk>,
+        Shyam-sundar S-k <Shyam-sundar.S-k@amd.com>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>
+References: <20230818051319.551-1-mario.limonciello@amd.com>
+ <20230818051319.551-2-mario.limonciello@amd.com>
+ <CAJZ5v0iHvbbNBnwb-RKvcBaFR8VMGyGt--b6RmbUmwuzcBZKnQ@mail.gmail.com>
+ <106803fab8da4648a6881991c7f37214@AcuMS.aculab.com>
+ <CAJZ5v0h1tCBOcnU2mCGbgE53_=ZM3kHHXzpCtqv=d9LOadaycQ@mail.gmail.com>
+From:   Mario Limonciello <mario.limonciello@amd.com>
+In-Reply-To: <CAJZ5v0h1tCBOcnU2mCGbgE53_=ZM3kHHXzpCtqv=d9LOadaycQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAOUHufbDhqSgSYZwkEo1aF1iFqGge_8jY3dt3OfPwXU0s07KOA@mail.gmail.com>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-ClientProxiedBy: SN6PR2101CA0005.namprd21.prod.outlook.com
+ (2603:10b6:805:106::15) To DS7PR12MB6095.namprd12.prod.outlook.com
+ (2603:10b6:8:9c::19)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS7PR12MB6095:EE_|PH7PR12MB7820:EE_
+X-MS-Office365-Filtering-Correlation-Id: 02c91445-f1f6-45e4-b383-08db9ff2a445
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: gPWxb5eSNmrVddHhesNrS1nw8LA/gGlIkItJcMb7/jtLIeg1S5p6ae47BHCgzgJb8EcMZKNnme/vAOyhd4WHb3lKAgrLXuRCa5A+znDgox8LXTT3+ll0hJ9Q31Yxf7HJ+ZijzPwdWC55CuDM6x2rHkNqQUhtsD+07ilrXxo9hNKh1WFOS9ljuZk0cEi9l3o6f0km4uT7e9zWmNb3q1tUfSjOp0sTfYyOqDdck8J3opiHdIw2DQZerdEmwyqjBZtZtkVCC3bczX93PXSHPIV6TSbr90GRrksrxFy3RUq56d+kWi8rQ7U+3CnINdn+pVDNJdUJdHUWkzURnJ2bYXeL26G+XxqfSHYnMMkx3pp5FivaerocHlsCWrIhz4jbYMjFqlITo1pygivQNPPS3hue/pJZJ1W2oUuNOlq/AutJ7AHDMG8b6OLcUKU71RQZJviOiSP0OgqMlzaDwwXmOyXlsW1GvcB0Wnq5D8sz0EczKxT9svDfFmO9aM/daeWFARa0j9sXsRSJAYNDybJuiuoGvM8aLcdmd+V2HnkCVRSny6NFQW1VJwkt9jD2MxR8gg+L3SdkJYoXjORpPEyNSR/Pa0v9v5RnjPuhL9gYKYeTQMFydTr2p9xqV1qUFPN2C2lhZ52VbBCzKq0fA/hPeU4JpQ==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB6095.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(346002)(136003)(39860400002)(366004)(376002)(396003)(186009)(1800799009)(451199024)(6486002)(6506007)(38100700002)(6512007)(53546011)(86362001)(31696002)(26005)(83380400001)(36756003)(2616005)(2906002)(54906003)(66946007)(66476007)(66556008)(316002)(41300700001)(110136005)(44832011)(5660300002)(7416002)(31686004)(8676002)(4326008)(8936002)(478600001)(45980500001)(43740500002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?UnVPMU9WTWNYOTIxbXB6OW8vTi9TS2FPWHpnV3V0K1NBaWV3WFo0UXg0WDVu?=
+ =?utf-8?B?MFVieTNkSGZLRmNYYUlwVW5uUTA5elZFaGdDRTY0S0wxVHlwSitKUXpVckVq?=
+ =?utf-8?B?MURTYkNvUjNYRVpjRFk2RGlZaGpqK0NVTnJHVitraXl1OVllZkR2K2R5THpp?=
+ =?utf-8?B?Q1JBZHBNWHFKTE1POHBHbjN5YUs1WGZMOS94bHhQb2lmS1k2b05LeGxrZ2l0?=
+ =?utf-8?B?S284YW5sUWRWWnBYd0RQQXBvUEg0NWQvWUprcmpHQVRaUzUySW5FWXFueFdZ?=
+ =?utf-8?B?K1UyZmVTeG0vOWU3SCtiTkJOdjk1VEY2L25SSm5xVjhKRS8zSjhwcUJMNFRo?=
+ =?utf-8?B?SzVVbThyOEpLU1Rxb3EzL3AralBsRFRsNktPNXVWL2Q4UFV6QThjYVNINFZt?=
+ =?utf-8?B?REtKa3NDM1VjaVNNUkdBQXRDM21wK0JMZlVGK3I1V1poRS96cHFrbzI4RjZH?=
+ =?utf-8?B?Yzh5NCtQZEdKeTBHM0VBd0lUbEFHeHpnRXdHekVTS3h2azhlRXZkUWdlUkxZ?=
+ =?utf-8?B?UGFFRmR3Rm50Q1NRSFdHcHVVMnd4SXk5MWxrcFhzZElhbXIxeHNRUjVIVm1m?=
+ =?utf-8?B?cFlmVXBQWWQzNW1Nc3FRWDhMYkZ4c2xFZUkvQ0VDd3ErUDRPanRSakJnQ0Vl?=
+ =?utf-8?B?TUU3d1A2VzhWSlJNeHF5MXJYMENZMEE3RVc0djE1KzdCS2docUgzQzBSajR1?=
+ =?utf-8?B?OVFRRVBudmpyR0Q3SDFPWTlKVHNnZytiTmJETlhUWm9zSnJqVWZPTisvdTFw?=
+ =?utf-8?B?d0FVMFdJUnVWZ1FVL21uRVZwTVY3RE5rVm1MWGpIRG90ZmpnTjFhR2hlZEth?=
+ =?utf-8?B?T1g0cDFQTE9EdERZNHNHSjAxbHh5UGgvUC9vWDE1SkE1Y1BON0FVNHdBYWlv?=
+ =?utf-8?B?Y0VWYlBYcTAxU1JCTmIxZklZcnd1MDFuSnhKR2J3czRwTndKVjNFT1MyUXU3?=
+ =?utf-8?B?NjhCaUxqY0dMOGJENE9Femd2MDhtSVQ2R3J4UnJNdFRkbFpWeVplc2w5YVZ4?=
+ =?utf-8?B?MUFFdWdKNUUzYVdPd0NRM1VMd2hKTStsRE5Pa3g1QnJobGlKMUJvU21tOFJQ?=
+ =?utf-8?B?ejdLZ2twUzFzZzhFSmdONDFVdHhMbWdIOTNSWTFtMTM0SjMyc281czZLTkVX?=
+ =?utf-8?B?VDVvL1U5ZlVLZHhiYkFKRWhUOWVjc3pqN0RoQ29UbDRYcllyaWg1SjlUdE1B?=
+ =?utf-8?B?SDNMeUhxQy9pd2plUlhLQnBON3loTUFPOXFtRlFrZ2NXakVHT3lrOFFtek9q?=
+ =?utf-8?B?TUFTcW5GelU1c0RmSGRqVEVFWVMwTklMakhzNWRBZXlycnowa29pcmIraUJ2?=
+ =?utf-8?B?ZHZTekpFZkhrVE43ZDRrVFlUUUhwWXpvckgrKzRmSXM5ODZXL2k5dWFlT2xK?=
+ =?utf-8?B?TFRJdXJpZzhXS3BGclhEcFdJd2lBa3ZDaDR3dXR6Y2x0am5mTWtpbzVOSnhD?=
+ =?utf-8?B?dzB4VlBqMkZzUUltakI3azFuYVRyL1Nrb3IrWERmQWNRZXhQcmVVOWJMM3NV?=
+ =?utf-8?B?VnFsVnNOVlJVVGp1T0xKWmNHTXpDNVNES0xGbERRMGc2WGRHZjRvK1p6VUxQ?=
+ =?utf-8?B?akpKdXQ3MmltSUlUeERrcTdwcHRieG9XdWFETGxUZmdnYVlXQzZ4Z3FlTCtZ?=
+ =?utf-8?B?YUY5MW1OYmtORzJNNkJVT2RoSTlNMXBuTUljdWxQNDhmTFpEdDlBZkFkbDVh?=
+ =?utf-8?B?MGdPd0xiRStXOTRFT0xnNzRzS0ZVaGgvRXJEaithY2xDck1hWFNtb2ova3o0?=
+ =?utf-8?B?d0JwR2FFQUVaOTRLMzhrbjNBMDI4RUNVQ0l1MEljSmVueXd4SEhDa1FZMDI2?=
+ =?utf-8?B?OGlteUV1M0hiYjZTTm5rUHNuQ2NuWE9OcDF3c0V3Y0k0VGdqYUFDNHhaTm82?=
+ =?utf-8?B?MWZ6ZUNpNmZONUJTRk5sNGw0Q2pZVE1aLzBxZXREMEliTGJYNGRRbGNScXNx?=
+ =?utf-8?B?OVZRdWFrY2R3TXZSNXVxT2ZUc3c1b2NyTmVYcGZ3TmFhcC9rUzFqMHRHWWpa?=
+ =?utf-8?B?SlV0MzVrcEJodmxiNDNoaUUwclliVTZrN1psYnE5TzYzZHJ5WHM5VnhIRHhO?=
+ =?utf-8?B?cEp6MksweDd0d2lISkJRL2x4dThtcWE3ZTUwdzdZQVdlV1gxVkxTQVJGaVpY?=
+ =?utf-8?Q?4q1qi7NhwpN2g4pAygHea4FK2?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 02c91445-f1f6-45e4-b383-08db9ff2a445
+X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB6095.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Aug 2023 13:54:29.3931
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: KDo7oHkXeAR0bPvRGZ0AutdwGqy2qynIxtVvB0TqP7VlrlWF8ckrWK22VHVZ056ArwkJekAZFeju4NzDAmauSA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB7820
+X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, Aug 17, 2023 at 05:12:17PM -0600, Yu Zhao wrote:
-> On Thu, Aug 17, 2023 at 4:50 PM Yosry Ahmed <yosryahmed@google.com> wrote:
-> >
-> > On Thu, Aug 17, 2023 at 3:43 PM Nhat Pham <nphamcs@gmail.com> wrote:
-> > >
-> > > On Thu, Aug 17, 2023 at 1:50 PM Yosry Ahmed <yosryahmed@google.com> wrote:
-> > > >
-> > > > On Thu, Aug 17, 2023 at 12:01 PM Nhat Pham <nphamcs@gmail.com> wrote:
-> > > > >
-> > > > > In eviction recency check, we are currently not holding a local
-> > > > > reference to the memcg that the refaulted folio belonged to when it was
-> > > > > evicted. This could cause serious memcg lifetime issues, for e.g in the
-> > > > > memcg hierarchy traversal done in mem_cgroup_get_nr_swap_pages(). This
-> > > > > has occurred in production:
-> > > > >
-> > > > > [ 155757.793456] BUG: kernel NULL pointer dereference, address: 00000000000000c0
-> > > > > [ 155757.807568] #PF: supervisor read access in kernel mode
-> > > > > [ 155757.818024] #PF: error_code(0x0000) - not-present page
-> > > > > [ 155757.828482] PGD 401f77067 P4D 401f77067 PUD 401f76067 PMD 0
-> > > > > [ 155757.839985] Oops: 0000 [#1] SMP
-> > > > > [ 155757.846444] CPU: 7 PID: 1380944 Comm: ThriftSrv-pri3- Kdump: loaded Tainted: G S                 6.4.3-0_fbk1_rc0_594_g8d0cbcaa67ba #1
-> > > > > [ 155757.870808] Hardware name: Wiwynn Twin Lakes MP/Twin Lakes Passive MP, BIOS YMM16 05/24/2021
-> > > > > [ 155757.887870] RIP: 0010:mem_cgroup_get_nr_swap_pages+0x3d/0xb0
-> > > > > [ 155757.899377] Code: 29 19 4a 02 48 39 f9 74 63 48 8b 97 c0 00 00 00 48 8b b7 58 02 00 00 48 2b b7 c0 01 00 00 48 39 f0 48 0f 4d c6 48 39 d1 74 42 <48> 8b b2 c0 00 00 00 48 8b ba 58 02 00 00 48 2b ba c0 01 00 00 48
-> > > > > [ 155757.937125] RSP: 0018:ffffc9002ecdfbc8 EFLAGS: 00010286
-> > > > > [ 155757.947755] RAX: 00000000003a3b1c RBX: 000007ffffffffff RCX: ffff888280183000
-> > > > > [ 155757.962202] RDX: 0000000000000000 RSI: 0007ffffffffffff RDI: ffff888bbc2d1000
-> > > > > [ 155757.976648] RBP: 0000000000000001 R08: 000000000000000b R09: ffff888ad9cedba0
-> > > > > [ 155757.991094] R10: ffffea0039c07900 R11: 0000000000000010 R12: ffff888b23a7b000
-> > > > > [ 155758.005540] R13: 0000000000000000 R14: ffff888bbc2d1000 R15: 000007ffffc71354
-> > > > > [ 155758.019991] FS:  00007f6234c68640(0000) GS:ffff88903f9c0000(0000) knlGS:0000000000000000
-> > > > > [ 155758.036356] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> > > > > [ 155758.048023] CR2: 00000000000000c0 CR3: 0000000a83eb8004 CR4: 00000000007706e0
-> > > > > [ 155758.062473] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-> > > > > [ 155758.076924] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-> > > > > [ 155758.091376] PKRU: 55555554
-> > > > > [ 155758.096957] Call Trace:
-> > > > > [ 155758.102016]  <TASK>
-> > > > > [ 155758.106502]  ? __die+0x78/0xc0
-> > > > > [ 155758.112793]  ? page_fault_oops+0x286/0x380
-> > > > > [ 155758.121175]  ? exc_page_fault+0x5d/0x110
-> > > > > [ 155758.129209]  ? asm_exc_page_fault+0x22/0x30
-> > > > > [ 155758.137763]  ? mem_cgroup_get_nr_swap_pages+0x3d/0xb0
-> > > > > [ 155758.148060]  workingset_test_recent+0xda/0x1b0
-> > > > > [ 155758.157133]  workingset_refault+0xca/0x1e0
-> > > > > [ 155758.165508]  filemap_add_folio+0x4d/0x70
-> > > > > [ 155758.173538]  page_cache_ra_unbounded+0xed/0x190
-> > > > > [ 155758.182919]  page_cache_sync_ra+0xd6/0x1e0
-> > > > > [ 155758.191738]  filemap_read+0x68d/0xdf0
-> > > > > [ 155758.199495]  ? mlx5e_napi_poll+0x123/0x940
-> > > > > [ 155758.207981]  ? __napi_schedule+0x55/0x90
-> > > > > [ 155758.216095]  __x64_sys_pread64+0x1d6/0x2c0
-> > > > > [ 155758.224601]  do_syscall_64+0x3d/0x80
-> > > > > [ 155758.232058]  entry_SYSCALL_64_after_hwframe+0x46/0xb0
-> > > > > [ 155758.242473] RIP: 0033:0x7f62c29153b5
-> > > > > [ 155758.249938] Code: e8 48 89 75 f0 89 7d f8 48 89 4d e0 e8 b4 e6 f7 ff 41 89 c0 4c 8b 55 e0 48 8b 55 e8 48 8b 75 f0 8b 7d f8 b8 11 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 33 44 89 c7 48 89 45 f8 e8 e7 e6 f7 ff 48 8b
-> > > > > [ 155758.288005] RSP: 002b:00007f6234c5ffd0 EFLAGS: 00000293 ORIG_RAX: 0000000000000011
-> > > > > [ 155758.303474] RAX: ffffffffffffffda RBX: 00007f628c4e70c0 RCX: 00007f62c29153b5
-> > > > > [ 155758.318075] RDX: 000000000003c041 RSI: 00007f61d2986000 RDI: 0000000000000076
-> > > > > [ 155758.332678] RBP: 00007f6234c5fff0 R08: 0000000000000000 R09: 0000000064d5230c
-> > > > > [ 155758.347452] R10: 000000000027d450 R11: 0000000000000293 R12: 000000000003c041
-> > > > > [ 155758.362044] R13: 00007f61d2986000 R14: 00007f629e11b060 R15: 000000000027d450
-> > > > > [ 155758.376661]  </TASK>
-> > > > >
-> > > > > This patch fixes the issue by getting a local reference inside
-> > > > > unpack_shadow().
-> > > > >
-> > > > > Fixes: f78dfc7b77d5 ("workingset: fix confusion around eviction vs refault container")
-> > > >
-> > > > Beyond mem_cgroup_get_nr_swap_pages(), we still use the eviction_memcg
-> > > > without grabbing a ref to it first in workingset_test_recent() (and in
-> > > > workingset_refault() before that) as well as lru_gen_test_recent().
-> > > >
-> > > > Wouldn't the fix go back even further? or am I misinterpreting the problem?
-> > > Hmm I don't see eviction_memcg being used outside of *_test_recent
-> > > (the rest just uses memcg = folio_memcg(folio), which if I'm not mistaken is
-> > > the memcg that is refaulting the folio into memory).
-> > >
-> > > Inside workingset_test_recent(), the only other place where eviction_memcg
-> > > is used is for mem_cgroup_lruvec. This function call won't crash whether
-> > > eviction_memcg is valid or not.
-> >
-> > If eviction_memcg is invalid because the memory was already freed, we
-> > are basically dereferencing garbage in mem_cgroup_lruvec() aren't we?
-> >
-> > > The crash only happens during
-> > > mem_cgroup_get_nr_swap_pages, which has an upward traversal from
-> > > eviction_memcg to root.
-> > >
-> > > Let me know if this does not make sense and/or is insufficient to ensure
-> > > safe upward traversal from eviction_memcg to root!
-> > > >
-> > > >
-> > > >
-> > > > > Signed-off-by: Nhat Pham <nphamcs@gmail.com>
-> > > > > Cc: stable@vger.kernel.org
-> > > > > ---
-> > > > >  mm/workingset.c | 65 ++++++++++++++++++++++++++++++++-----------------
-> > > > >  1 file changed, 43 insertions(+), 22 deletions(-)
-> > > > >
-> > > > > diff --git a/mm/workingset.c b/mm/workingset.c
-> > > > > index da58a26d0d4d..03cadad4e484 100644
-> > > > > --- a/mm/workingset.c
-> > > > > +++ b/mm/workingset.c
-> > > > > @@ -206,10 +206,19 @@ static void *pack_shadow(int memcgid, pg_data_t *pgdat, unsigned long eviction,
-> > > > >         return xa_mk_value(eviction);
-> > > > >  }
-> > > > >
-> > > > > -static void unpack_shadow(void *shadow, int *memcgidp, pg_data_t **pgdat,
-> > > > > -                         unsigned long *evictionp, bool *workingsetp)
-> > > > > +/*
-> > > > > + * Unpacks the stored fields of a shadow entry into the given pointers.
-> > > > > + *
-> > > > > + * The memcg pointer is only populated if the memcg recorded in the shadow
-> > > > > + * entry is valid. In this case, a reference to the memcg will be acquired,
-> > > > > + * and a corresponding mem_cgroup_put() will be needed when we no longer
-> > > > > + * need the memcg.
-> > > > > + */
-> > > > > +static void unpack_shadow(void *shadow, struct mem_cgroup **memcgp,
-> > > > > +                       pg_data_t **pgdat, unsigned long *evictionp, bool *workingsetp)
-> > > > >  {
-> > > > >         unsigned long entry = xa_to_value(shadow);
-> > > > > +       struct mem_cgroup *memcg;
-> > > > >         int memcgid, nid;
-> > > > >         bool workingset;
-> > > > >
-> > > > > @@ -220,7 +229,24 @@ static void unpack_shadow(void *shadow, int *memcgidp, pg_data_t **pgdat,
-> > > > >         memcgid = entry & ((1UL << MEM_CGROUP_ID_SHIFT) - 1);
-> > > > >         entry >>= MEM_CGROUP_ID_SHIFT;
-> > > > >
-> > > > > -       *memcgidp = memcgid;
-> > > > > +       /*
-> > > > > +        * Look up the memcg associated with the stored ID. It might
-> > > > > +        * have been deleted since the folio's eviction.
-> > > > > +        *
-> > > > > +        * Note that in rare events the ID could have been recycled
-> > > > > +        * for a new cgroup that refaults a shared folio. This is
-> > > > > +        * impossible to tell from the available data. However, this
-> > > > > +        * should be a rare and limited disturbance, and activations
-> > > > > +        * are always speculative anyway. Ultimately, it's the aging
-> > > > > +        * algorithm's job to shake out the minimum access frequency
-> > > > > +        * for the active cache.
-> > > > > +        */
-> > > > > +       memcg = mem_cgroup_from_id(memcgid);
-> > > > > +       if (memcg && css_tryget(&memcg->css))
-> > > > > +               *memcgp = memcg;
-> > > > > +       else
-> > > > > +               *memcgp = NULL;
-> > > > > +
-> > > > >         *pgdat = NODE_DATA(nid);
-> > > > >         *evictionp = entry;
-> > > > >         *workingsetp = workingset;
-> > > > > @@ -262,15 +288,16 @@ static void *lru_gen_eviction(struct folio *folio)
-> > > > >  static bool lru_gen_test_recent(void *shadow, bool file, struct lruvec **lruvec,
-> > > > >                                 unsigned long *token, bool *workingset)
-> > > > >  {
-> > > > > -       int memcg_id;
-> > > > >         unsigned long min_seq;
-> > > > >         struct mem_cgroup *memcg;
-> > > > >         struct pglist_data *pgdat;
-> > > > >
-> > > > > -       unpack_shadow(shadow, &memcg_id, &pgdat, token, workingset);
-> > > > > +       unpack_shadow(shadow, &memcg, &pgdat, token, workingset);
-> > > > > +       if (!mem_cgroup_disabled() && !memcg)
-> > > > > +               return false;
-> > > >
-> > > > +Yu Zhao
-> > > >
-> > > > There is a change of behavior here, right?
-> > > >
-> > > > The existing code will continue if !mem_cgroup_disabled() && !memcg is
-> > > > true, and mem_cgroup_lruvec() will return the lruvec of the root
-> > > > memcg. Now we are just returning false.
-> > > >
-> > > > Is this intentional?
-> > > Oh right, there is. Should have cc-ed Yu Zhao as well, my bad.
-> > > get_maintainers.pl isn't always sufficient I guess :)
-> > >
-> > > But yeah, this behavioral change is intentional.
-> > >
-> > > Correct me if I'm wrong of course, but it seems like MGLRU should
-> > > follow the same pattern here. That is, once we return from unpack_shadow,
-> > > the possible scenarios are the same as prescribed in workingset_test_recent:
-> > >
-> > > 1. If mem_cgroup is disabled, we can ignore this check.
-> > > 2. If mem_cgroup is enabled, then the only reason why we get NULL
-> > > memcg from unpack_shadow is if the eviction_memcg is no longer
-> > > valid.  We should not try to get its lruvec, or substitute it with the
-> > > root memcg, but return false right away (i.e not recent).
-> > > >
-> >
-> > I will leave this for Yu :)
+On 8/18/2023 04:19, Rafael J. Wysocki wrote:
+> On Fri, Aug 18, 2023 at 10:21 AM David Laight <David.Laight@aculab.com> wrote:
+>>
+>> From: Rafael J. Wysocki
+>>> Sent: Friday, August 18, 2023 9:12 AM
+>>>
+>>> On Fri, Aug 18, 2023 at 7:14 AM Mario Limonciello
+>>> <mario.limonciello@amd.com> wrote:
+>>>>
+>>>> commit 9d26d3a8f1b0 ("PCI: Put PCIe ports into D3 during suspend")
+>>>> changed pci_bridge_d3_possible() so that any vendor's PCIe ports
+>>>> from modern machines (>=2015) are allowed to be put into D3.
+>>>>
+>>>> Iain reports that USB devices can't be used to wake a Lenovo Z13
+>>>> from suspend. This is because the PCIe root port has been put
+>>>> into D3 and AMD's platform can't handle USB devices waking in this
+>>>> case.
+>>>>
+>> ...
+>>>> diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+>>>> index 60230da957e0c..051e88ee64c63 100644
+>>>> --- a/drivers/pci/pci.c
+>>>> +++ b/drivers/pci/pci.c
+>>>> @@ -3037,10 +3037,11 @@ bool pci_bridge_d3_possible(struct pci_dev *bridge)
+>>>>                          return false;
+>>>>
+>>>>                  /*
+>>>> -                * It should be safe to put PCIe ports from 2015 or newer
+>>>> +                * It is safe to put Intel PCIe ports from 2015 or newer
+>>>>                   * to D3.
+>>>>                   */
+>>>
+>>> I would say "Allow Intel PCIe ports from 2015 onward to go into D3 to
+>>> achieve additional energy conservation on some platforms" without the
+>>> "It is safe" part that is kind of obvious (it wouldn't be done if it
+>>> were unsafe).
+>>
+>> Just say why...
+>>
+>> "Don't put root ports into D3 on non-Intel systems to avoid issues
+>> with USB devices being unable to wake up some AMD based laptops."
 > 
-> Thanks, Yosry.
-> 
-> Hi Nhat, it seems unnecessary to me to introduce a get/put into
-> lru_gen_test_recent() because it doesn't suffer from the bug this
-> patch tries to fix. In theory, the extra get/put can impact
-> performance, though admittedly the impact is unlikely to be
-> measurable. Regardless, the general practice is to fix the bug
-> locally, i.e., when the mem_cgroup_get_nr_swap_pages() path is taken,
-> rather than change the unrelated path. Thank you.
+> Well, both pieces of information are actually useful: Why it is done
+> on Intel systems in the first place and why it cannot be done on AMD
+> systems.
 
-Hey guys,
-
-I had suggested to have it in unpack_shadow() to keep things simple,
-and not further complicate the lifetime rules in this code. The
-tryget() is against a per-cpu counter, so it's not expensive.
-
-The NULL deref is evidence that while *some* cgroup members are still
-accessible once it's dead, not all of it is. There is no explicit
-guarantee from the cgroup code that anything BUT the tryget() is still
-valid against group that is under rcu freeing.
-
-Since it isn't expensive, let's keep it simple and robust, and prevent
-future bugs of the same class, by always ensuring the cgroup is alive
-before accessing random members. Especially in non-cgroup code.
+Thanks guys, I'll add both in next version.
