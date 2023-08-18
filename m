@@ -2,64 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6A8F27804C4
-	for <lists+stable@lfdr.de>; Fri, 18 Aug 2023 05:37:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B700278050B
+	for <lists+stable@lfdr.de>; Fri, 18 Aug 2023 06:13:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1357726AbjHRDhJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 17 Aug 2023 23:37:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36418 "EHLO
+        id S1349068AbjHRENX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 18 Aug 2023 00:13:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59060 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1357771AbjHRDgx (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 17 Aug 2023 23:36:53 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7889211F;
-        Thu, 17 Aug 2023 20:36:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1692329811; x=1723865811;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=e6mQbkZhJ+crlMj97hR9Gkzu8n2w0+M+4yl1/MdMkHQ=;
-  b=H0or6js4eWrMBdMYRNMegKCgXf4VS9EQPnRsGg0MxKfe2H35Vgo41YaX
-   gH+uZXaZyFx2g52GfQZJW9fIEPcrriLGmpcVzeGfVvWRc1+I3fYUk0kzB
-   Qk+gLEpNqnGxJB4z1Fhwiv0BG+X+BIKOzvXF/Ka3PAfl2v1a7F2JJHUy5
-   jJ5vn/iqWxkeXE7QtrXdgspBqVPfxUy/KfzL3Ej8tPXH2urreMEjJ8LWO
-   AYWWhrMRHYLlmgfERjsBr+mfWdbOC0rMObjmBgH+uZCDhcMUCj8X2Dt1y
-   Loz+kmCf1ZfwlFnIyrrgt5MWyJ7Nj0LJrKo0iXLPnAqdOd+SUKmXrFLr2
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10805"; a="363161778"
-X-IronPort-AV: E=Sophos;i="6.01,181,1684825200"; 
-   d="scan'208";a="363161778"
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Aug 2023 20:36:50 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10805"; a="800312178"
-X-IronPort-AV: E=Sophos;i="6.01,181,1684825200"; 
-   d="scan'208";a="800312178"
-Received: from lkp-server02.sh.intel.com (HELO a9caf1a0cf30) ([10.239.97.151])
-  by fmsmga008.fm.intel.com with ESMTP; 17 Aug 2023 20:36:44 -0700
-Received: from kbuild by a9caf1a0cf30 with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1qWqI0-00024a-0n;
-        Fri, 18 Aug 2023 03:36:44 +0000
-Date:   Fri, 18 Aug 2023 11:36:38 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Nhat Pham <nphamcs@gmail.com>, akpm@linux-foundation.org
-Cc:     oe-kbuild-all@lists.linux.dev, hannes@cmpxchg.org,
-        kernel-team@meta.com, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        yosryahmed@google.com
-Subject: Re: [PATCH v2] workingset: ensure memcg is valid for recency check
-Message-ID: <202308181130.VIAl2viu-lkp@intel.com>
-References: <20230817190126.3155299-1-nphamcs@gmail.com>
+        with ESMTP id S1357826AbjHRENS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 18 Aug 2023 00:13:18 -0400
+Received: from letterbox.kde.org (letterbox.kde.org [46.43.1.242])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C3633A80
+        for <stable@vger.kernel.org>; Thu, 17 Aug 2023 21:13:16 -0700 (PDT)
+Received: from vertex.localdomain (pool-173-49-113-140.phlapa.fios.verizon.net [173.49.113.140])
+        (Authenticated sender: zack)
+        by letterbox.kde.org (Postfix) with ESMTPSA id C2403327CB6;
+        Fri, 18 Aug 2023 05:13:12 +0100 (BST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kde.org; s=users;
+        t=1692331993; bh=Z90lYTsnk2rL97KwndbL2rx3/QIIQtqV4IsDi0aUcCY=;
+        h=From:To:Cc:Subject:Date:From;
+        b=nHunDvVknX/PrApH0jQ296pWMtL60PVsqYX4JdKg62mHwNOOHRBggZyKjQE+wd230
+         XiwM3MkNmqo5wPXU9zKXSbJ7VpRvm28omb8E4g6vqTMVgvOjKCFzIo159GPwtbf/Y+
+         VfMQEzHIs2Cie5oR039zOlenLwX2cNlyqJwGNq+NKY+ilezHhEkJvPrFLDhku5mtiy
+         JOipVEpHYbaLoLcsYHN/fQYctnAgXgI9nzDVzKfuM4btMHMAhy09mMhbqeHLBcJ3c+
+         wLm+Qi/i/FbSlkIi617J5JBk45kq7rTrA/C0nUOpaMju0I8z+csbYshOpUi7rL9tnV
+         oWq7StDuIMomg==
+From:   Zack Rusin <zack@kde.org>
+To:     dri-devel@lists.freedesktop.org
+Cc:     krastevm@vmware.com, mombasawalam@vmware.com, banackm@vmware.com,
+        iforbes@vmware.com, Zack Rusin <zackr@vmware.com>,
+        stable@vger.kernel.org
+Subject: [PATCH] drm/vmwgfx: Fix possible invalid drm gem put calls
+Date:   Fri, 18 Aug 2023 00:13:01 -0400
+Message-Id: <20230818041301.407636-1-zack@kde.org>
+X-Mailer: git-send-email 2.39.2
+Reply-To: Zack Rusin <zackr@vmware.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230817190126.3155299-1-nphamcs@gmail.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -67,87 +49,145 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi Nhat,
+From: Zack Rusin <zackr@vmware.com>
 
-kernel test robot noticed the following build errors:
+vmw_bo_unreference sets the input buffer to null on exit, resulting in
+null ptr deref's on the subsequent drm gem put calls.
 
-[auto build test ERROR on linus/master]
-[also build test ERROR on v6.5-rc6 next-20230817]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+This went unnoticed because only very old userspace would be exercising
+those paths but it wouldn't be hard to hit on old distros with brand
+new kernels.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Nhat-Pham/workingset-ensure-memcg-is-valid-for-recency-check/20230818-030311
-base:   linus/master
-patch link:    https://lore.kernel.org/r/20230817190126.3155299-1-nphamcs%40gmail.com
-patch subject: [PATCH v2] workingset: ensure memcg is valid for recency check
-config: x86_64-buildonly-randconfig-r003-20230818 (https://download.01.org/0day-ci/archive/20230818/202308181130.VIAl2viu-lkp@intel.com/config)
-compiler: gcc-9 (Debian 9.3.0-22) 9.3.0
-reproduce: (https://download.01.org/0day-ci/archive/20230818/202308181130.VIAl2viu-lkp@intel.com/reproduce)
+Introduce a new function that abstracts unrefing of user bo's to make
+the code cleaner and more explicit.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202308181130.VIAl2viu-lkp@intel.com/
+Signed-off-by: Zack Rusin <zackr@vmware.com>
+Reported-by: Ian Forbes <iforbes@vmware.com>
+Fixes: 9ef8d83e8e25 ("drm/vmwgfx: Do not drop the reference to the handle too soon")
+Cc: <stable@vger.kernel.org> # v6.4+
+---
+ drivers/gpu/drm/vmwgfx/vmwgfx_bo.c      | 6 ++----
+ drivers/gpu/drm/vmwgfx/vmwgfx_bo.h      | 8 ++++++++
+ drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c | 6 ++----
+ drivers/gpu/drm/vmwgfx/vmwgfx_kms.c     | 6 ++----
+ drivers/gpu/drm/vmwgfx/vmwgfx_overlay.c | 3 +--
+ drivers/gpu/drm/vmwgfx/vmwgfx_shader.c  | 3 +--
+ 6 files changed, 16 insertions(+), 16 deletions(-)
 
-All errors (new ones prefixed by >>):
-
-   mm/workingset.c: In function 'unpack_shadow':
->> mm/workingset.c:245:32: error: dereferencing pointer to incomplete type 'struct mem_cgroup'
-     245 |  if (memcg && css_tryget(&memcg->css))
-         |                                ^~
-
-
-vim +245 mm/workingset.c
-
-   208	
-   209	/*
-   210	 * Unpacks the stored fields of a shadow entry into the given pointers.
-   211	 *
-   212	 * The memcg pointer is only populated if the memcg recorded in the shadow
-   213	 * entry is valid. In this case, a reference to the memcg will be acquired,
-   214	 * and a corresponding mem_cgroup_put() will be needed when we no longer
-   215	 * need the memcg.
-   216	 */
-   217	static void unpack_shadow(void *shadow, struct mem_cgroup **memcgp,
-   218				pg_data_t **pgdat, unsigned long *evictionp, bool *workingsetp)
-   219	{
-   220		unsigned long entry = xa_to_value(shadow);
-   221		struct mem_cgroup *memcg;
-   222		int memcgid, nid;
-   223		bool workingset;
-   224	
-   225		workingset = entry & ((1UL << WORKINGSET_SHIFT) - 1);
-   226		entry >>= WORKINGSET_SHIFT;
-   227		nid = entry & ((1UL << NODES_SHIFT) - 1);
-   228		entry >>= NODES_SHIFT;
-   229		memcgid = entry & ((1UL << MEM_CGROUP_ID_SHIFT) - 1);
-   230		entry >>= MEM_CGROUP_ID_SHIFT;
-   231	
-   232		/*
-   233		 * Look up the memcg associated with the stored ID. It might
-   234		 * have been deleted since the folio's eviction.
-   235		 *
-   236		 * Note that in rare events the ID could have been recycled
-   237		 * for a new cgroup that refaults a shared folio. This is
-   238		 * impossible to tell from the available data. However, this
-   239		 * should be a rare and limited disturbance, and activations
-   240		 * are always speculative anyway. Ultimately, it's the aging
-   241		 * algorithm's job to shake out the minimum access frequency
-   242		 * for the active cache.
-   243		 */
-   244		memcg = mem_cgroup_from_id(memcgid);
- > 245		if (memcg && css_tryget(&memcg->css))
-   246			*memcgp = memcg;
-   247		else
-   248			*memcgp = NULL;
-   249	
-   250		*pgdat = NODE_DATA(nid);
-   251		*evictionp = entry;
-   252		*workingsetp = workingset;
-   253	}
-   254	
-
+diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_bo.c b/drivers/gpu/drm/vmwgfx/vmwgfx_bo.c
+index 82094c137855..c43853597776 100644
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_bo.c
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_bo.c
+@@ -497,10 +497,9 @@ static int vmw_user_bo_synccpu_release(struct drm_file *filp,
+ 		if (!(flags & drm_vmw_synccpu_allow_cs)) {
+ 			atomic_dec(&vmw_bo->cpu_writers);
+ 		}
+-		ttm_bo_put(&vmw_bo->tbo);
++		vmw_user_bo_unref(vmw_bo);
+ 	}
+ 
+-	drm_gem_object_put(&vmw_bo->tbo.base);
+ 	return ret;
+ }
+ 
+@@ -540,8 +539,7 @@ int vmw_user_bo_synccpu_ioctl(struct drm_device *dev, void *data,
+ 			return ret;
+ 
+ 		ret = vmw_user_bo_synccpu_grab(vbo, arg->flags);
+-		vmw_bo_unreference(&vbo);
+-		drm_gem_object_put(&vbo->tbo.base);
++		vmw_user_bo_unref(vbo);
+ 		if (unlikely(ret != 0)) {
+ 			if (ret == -ERESTARTSYS || ret == -EBUSY)
+ 				return -EBUSY;
+diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_bo.h b/drivers/gpu/drm/vmwgfx/vmwgfx_bo.h
+index 50a836e70994..1d433fceed3d 100644
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_bo.h
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_bo.h
+@@ -195,6 +195,14 @@ static inline struct vmw_bo *vmw_bo_reference(struct vmw_bo *buf)
+ 	return buf;
+ }
+ 
++static inline void vmw_user_bo_unref(struct vmw_bo *vbo)
++{
++	if (vbo) {
++		ttm_bo_put(&vbo->tbo);
++		drm_gem_object_put(&vbo->tbo.base);
++	}
++}
++
+ static inline struct vmw_bo *to_vmw_bo(struct drm_gem_object *gobj)
+ {
+ 	return container_of((gobj), struct vmw_bo, tbo.base);
+diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c b/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
+index 6b9aa2b4ef54..25b96821df0f 100644
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
+@@ -1164,8 +1164,7 @@ static int vmw_translate_mob_ptr(struct vmw_private *dev_priv,
+ 	}
+ 	vmw_bo_placement_set(vmw_bo, VMW_BO_DOMAIN_MOB, VMW_BO_DOMAIN_MOB);
+ 	ret = vmw_validation_add_bo(sw_context->ctx, vmw_bo);
+-	ttm_bo_put(&vmw_bo->tbo);
+-	drm_gem_object_put(&vmw_bo->tbo.base);
++	vmw_user_bo_unref(vmw_bo);
+ 	if (unlikely(ret != 0))
+ 		return ret;
+ 
+@@ -1221,8 +1220,7 @@ static int vmw_translate_guest_ptr(struct vmw_private *dev_priv,
+ 	vmw_bo_placement_set(vmw_bo, VMW_BO_DOMAIN_GMR | VMW_BO_DOMAIN_VRAM,
+ 			     VMW_BO_DOMAIN_GMR | VMW_BO_DOMAIN_VRAM);
+ 	ret = vmw_validation_add_bo(sw_context->ctx, vmw_bo);
+-	ttm_bo_put(&vmw_bo->tbo);
+-	drm_gem_object_put(&vmw_bo->tbo.base);
++	vmw_user_bo_unref(vmw_bo);
+ 	if (unlikely(ret != 0))
+ 		return ret;
+ 
+diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c b/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
+index b62207be3363..1489ad73c103 100644
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
+@@ -1665,10 +1665,8 @@ static struct drm_framebuffer *vmw_kms_fb_create(struct drm_device *dev,
+ 
+ err_out:
+ 	/* vmw_user_lookup_handle takes one ref so does new_fb */
+-	if (bo) {
+-		vmw_bo_unreference(&bo);
+-		drm_gem_object_put(&bo->tbo.base);
+-	}
++	if (bo)
++		vmw_user_bo_unref(bo);
+ 	if (surface)
+ 		vmw_surface_unreference(&surface);
+ 
+diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_overlay.c b/drivers/gpu/drm/vmwgfx/vmwgfx_overlay.c
+index 7e112319a23c..fb85f244c3d0 100644
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_overlay.c
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_overlay.c
+@@ -451,8 +451,7 @@ int vmw_overlay_ioctl(struct drm_device *dev, void *data,
+ 
+ 	ret = vmw_overlay_update_stream(dev_priv, buf, arg, true);
+ 
+-	vmw_bo_unreference(&buf);
+-	drm_gem_object_put(&buf->tbo.base);
++	vmw_user_bo_unref(buf);
+ 
+ out_unlock:
+ 	mutex_unlock(&overlay->mutex);
+diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_shader.c b/drivers/gpu/drm/vmwgfx/vmwgfx_shader.c
+index e7226db8b242..1e81ff2422cf 100644
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_shader.c
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_shader.c
+@@ -809,8 +809,7 @@ static int vmw_shader_define(struct drm_device *dev, struct drm_file *file_priv,
+ 				    shader_type, num_input_sig,
+ 				    num_output_sig, tfile, shader_handle);
+ out_bad_arg:
+-	vmw_bo_unreference(&buffer);
+-	drm_gem_object_put(&buffer->tbo.base);
++	vmw_user_bo_unref(buffer);
+ 	return ret;
+ }
+ 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.39.2
+
