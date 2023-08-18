@@ -2,134 +2,119 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 38D467812AE
-	for <lists+stable@lfdr.de>; Fri, 18 Aug 2023 20:16:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F34F07812EE
+	for <lists+stable@lfdr.de>; Fri, 18 Aug 2023 20:36:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1379444AbjHRSQH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 18 Aug 2023 14:16:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54068 "EHLO
+        id S1353087AbjHRSgL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 18 Aug 2023 14:36:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60804 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1379258AbjHRSPk (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 18 Aug 2023 14:15:40 -0400
-Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2066.outbound.protection.outlook.com [40.107.92.66])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 040412D70;
-        Fri, 18 Aug 2023 11:15:39 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=kD7ZKsk+OdvqD2knYkkt7iWfUl0m4b3QuKE96Tb0yiXSAp/w3XAMR2d9J6UcaxozeY4RFYohnnGC/dAxQ+rbMlY4mpidWnJlwwVxWgOr90ZoB05ENBxE6XAlF+3l495g6TVTkocE5esTrn78BwlwFa7+i09sYf7qC8YJlrxJmqNkFw5wu3Unk3cr0eXl+Mb8lxaatWNyDQqVz/VWCJESzsGQbvsfPsJNODSazWxEUFfVnPpXASnX0JcatLFMM3HgitZxMUclwOruStIHUCBDvFRxtXu2a/ChJ4RJcZjzmxDIB/1+ERksVmo1gZ5YWdxaXdgRhQ0QwE6TdpYG7yxlBQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=w+7nM7XsdgnsxsSnJH/2QBAjzB74eXD8P7vIXcRa+G0=;
- b=KlJGDxugOjA5NC7DR/ddIhmOe1e5Ari+hNk25GZ46v0O0M+n+dovaaIp0LXK1rqZbaHNV/8bt94VO9nouHYlnixV803uV49yvV7ezdCgvtF2OE5i39VhrXaBm8Kq7q6FxZUAV3BrnL6xFeHWaOh0b3pAnb9EIxsvJFM80JZj/JhgkG98Y5WnIuP7zOUqeuuijXLHamwLrUjhkOA8UslEVBuAGiGBNyD8FO6HhNoKC+ftO4tr7k0oo99qh82bcRDukwsV8MmRSgZYtHOimSjHFOPfsVUGXTI5ei3KnvzXRTYNbWF04eiGOA4rHs0BEMe+WjjU3p5dZ/aHesdeQXFPFA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=w+7nM7XsdgnsxsSnJH/2QBAjzB74eXD8P7vIXcRa+G0=;
- b=PmHyffkIVEIW4O4AV34mEbnw+2WXDJniweaFJTHPcLsmzTLRwxjwzJO4BQBBCwyB7+V4XiO4Df4wzXmnTBZzQQsjPwukGYqXCzwC3kF4klBG5Si6IkZx7HkZmdcWOjHUb8vKvT/CH06W26KlKQLp4U/tRXqHQjwJJ9/6IYnmLdk=
-Received: from PH0PR07CA0091.namprd07.prod.outlook.com (2603:10b6:510:4::6) by
- SA1PR12MB7125.namprd12.prod.outlook.com (2603:10b6:806:29f::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6678.31; Fri, 18 Aug
- 2023 18:15:36 +0000
-Received: from SN1PEPF0002529E.namprd05.prod.outlook.com
- (2603:10b6:510:4:cafe::f0) by PH0PR07CA0091.outlook.office365.com
- (2603:10b6:510:4::6) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6699.17 via Frontend
- Transport; Fri, 18 Aug 2023 18:15:36 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- SN1PEPF0002529E.mail.protection.outlook.com (10.167.242.5) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.6699.14 via Frontend Transport; Fri, 18 Aug 2023 18:15:36 +0000
-Received: from AUS-LX-MLIMONCI.amd.com (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Fri, 18 Aug
- 2023 13:15:35 -0500
-From:   Mario Limonciello <mario.limonciello@amd.com>
-To:     <jarkko@kernel.org>
-CC:     <linux-integrity@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        Thorsten Leemhuis <regressions@leemhuis.info>,
-        <charles.d.prestopine@intel.com>, <rafael.j.wysocki@intel.com>,
-        <len.brown@intel.com>,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        <stable@vger.kernel.org>, Todd Brandt <todd.e.brandt@intel.com>
-Subject: [PATCH] tpm: Don't make vendor check required for probe
-Date:   Fri, 18 Aug 2023 13:15:16 -0500
-Message-ID: <20230818181516.19167-1-mario.limonciello@amd.com>
-X-Mailer: git-send-email 2.25.1
+        with ESMTP id S1379453AbjHRSfm (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 18 Aug 2023 14:35:42 -0400
+Received: from mail-qv1-xf32.google.com (mail-qv1-xf32.google.com [IPv6:2607:f8b0:4864:20::f32])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 19D903C2D
+        for <stable@vger.kernel.org>; Fri, 18 Aug 2023 11:35:41 -0700 (PDT)
+Received: by mail-qv1-xf32.google.com with SMTP id 6a1803df08f44-649edb3a3d6so5895776d6.0
+        for <stable@vger.kernel.org>; Fri, 18 Aug 2023 11:35:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cmpxchg-org.20221208.gappssmtp.com; s=20221208; t=1692383740; x=1692988540;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=Oz06k/Wemi6J/ldyB6c9tZm1247DSyEcuvZiFNgbP/o=;
+        b=DtsMQQNk4Bw3nnmKshQ+7c4Rh2kpkW0GfXbaMoNvPPCBSotCAKqyKPqUpE7cnqxQDg
+         3NVgdQWv50gPB+xZd95+0eKBdY/vozuftwC8s7uE4FW8nb5nIjP2X9OQ749EhQ4ZI9FN
+         NIJnAzSOhJDd5OAuAAu6GF85ydfquuGL4aReaWtesi88GnMSRQxlDOBlhfSCpVTL3/jl
+         xsMqtR+H10NCVwftvFu8Xtm0Rd/Y7TOZ9ozwxiiqbPuqEKx4TcTwjwQFDmpTbykwjI+8
+         H7qYx8Rob30SfV3A+Xm4ONoW3BneudCzjgkK9VYwDGry+J30qPVuPQ/bNAmmAGSswHLE
+         rUMw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1692383740; x=1692988540;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Oz06k/Wemi6J/ldyB6c9tZm1247DSyEcuvZiFNgbP/o=;
+        b=A4pNsNerP3GANXTxTTRMvX1X0bnYAXpg9fjcvzhp3L/1gKdCTraJ/VyHFFwBsBx9Wi
+         bMWFrriHS8BsfUqXdCM4JsocFkU/vWh1pPcceRUgzWRa2UcAvT3eiOJVvX9vjB1XnQox
+         896r9tpC/wVgoGB8xn6EOS++qAzCeeOxVIZZoBg4ziEx3KcQRM6/lXk4SMtMoaEcdaNL
+         jj9BplXu+coN/NNTVdS780+BnIM79Z05+eV4TvW3ZkCm//QizQ83pdXpuUtUjkKVEpti
+         gSiiI0pX4SALknYVOwsfe2w+D41vSGPsqcOsZIT9r7QyXEdtC3pwVt3Q7sxqCzjsBtWW
+         a8Cw==
+X-Gm-Message-State: AOJu0Yy4GDbld7KM3fz6zKqo3nxEkwCaziMvTzhcQZFZvhBuE3LIDgY4
+        ybdpY82fKaf/4NhE3Dt5Kc5phA==
+X-Google-Smtp-Source: AGHT+IF7YzSibPnzgxPoJYofHLjKfxo+upoXyv0TzXTpF3VWJPmLvlah9US/Du/r9oTY1p/0jpOSwQ==
+X-Received: by 2002:a0c:cb0b:0:b0:64b:51d4:6696 with SMTP id o11-20020a0ccb0b000000b0064b51d46696mr28432qvk.5.1692383740251;
+        Fri, 18 Aug 2023 11:35:40 -0700 (PDT)
+Received: from localhost ([2620:10d:c091:400::5:75e0])
+        by smtp.gmail.com with ESMTPSA id o6-20020a0ccb06000000b0063d252a141dsm853148qvk.116.2023.08.18.11.35.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 18 Aug 2023 11:35:39 -0700 (PDT)
+Date:   Fri, 18 Aug 2023 14:35:38 -0400
+From:   Johannes Weiner <hannes@cmpxchg.org>
+To:     Yosry Ahmed <yosryahmed@google.com>
+Cc:     Yu Zhao <yuzhao@google.com>, Nhat Pham <nphamcs@gmail.com>,
+        akpm@linux-foundation.org, kernel-team@meta.com,
+        linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+        stable@vger.kernel.org
+Subject: Re: [PATCH v2] workingset: ensure memcg is valid for recency check
+Message-ID: <20230818183538.GA142974@cmpxchg.org>
+References: <20230817164733.2475092-1-nphamcs@gmail.com>
+ <20230817190126.3155299-1-nphamcs@gmail.com>
+ <CAJD7tkaNo=0mkYKxrTwGNaJ33G1z7cYdWhNQNF3tQp_MKCh-uA@mail.gmail.com>
+ <CAKEwX=Pt3ir0jpn+eRjzH=K49b0Y0_N1NnieLm0a0VwV1aCKKQ@mail.gmail.com>
+ <CAJD7tkb1jMuCouyL8OX0434HK0Wx=Hyf9UnGVOH8fP7NxA8+Pw@mail.gmail.com>
+ <CAOUHufbDhqSgSYZwkEo1aF1iFqGge_8jY3dt3OfPwXU0s07KOA@mail.gmail.com>
+ <20230818134906.GA138967@cmpxchg.org>
+ <CAJD7tkZY3kQPO2dn2NX0WODwwRifhH4R=pSZnFZYxh23Eszb-g@mail.gmail.com>
+ <20230818173544.GA142196@cmpxchg.org>
+ <CAJD7tkZ3i-NoqSi+BkCY7nR-2z==243F1FKrh42toQwsgv5eKQ@mail.gmail.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SN1PEPF0002529E:EE_|SA1PR12MB7125:EE_
-X-MS-Office365-Filtering-Correlation-Id: da5779bc-eddc-4884-4193-08dba0171edf
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: OaGjO42SKQdf/3TxbDU2y7YdXt4TBVprsCAFfJLX7RMo6rfNu/2JVUeFBUFrOWxH861IbBtt20WZsttw6mWURYW6uCVTaXuQ4w+/wpWRH720CSt2l9fZghqlLWwJMNmhv48OUXus+Pj3Ao3Wh45aw7WeY3/APDEvBm11wQoyORZKV7kzTI9OxZyXyeW0vTlfzkQPWdqnhYO6piRLcnbxgJuIR7MmBzd+W7TIDMT+j+4F4qzk8v19t4LDParUJYiIWDuGgh/d2TUsewG72xvWWY+1iDOlhXFjn4JdwQBlxZ6RKyu98XXk7TjoXzG5gLzlgKwruEfrafRAaNJ5ZeBrSTn9GEQfHvz0x/ZJ1ksyvKgOapADnoG1xVSYZFKqxIDYubxYRLLizw41CeEJlVUjJYAElb0m6sXzUGbE53CwQd7w8bOxjnGlyOROcoc4k9JVsSI+dhvWk62sHyVYLrAXtI3RfQoHOfdSbhngTNTr/YvNyHvHr+VQFNm32SANQCyXKmdny+B/MdeYyc5hak/P71FF7yNO52tVF6ROeA61w6qscfqeDnDXl0t4faC4UqYAHgkowAfGdXJGU/nmWCKn6dLtVdTJTGqBRzpB/HM888HhR2zuyD55iGbulMk6htzudQ0NBGPdsroX3ce68NxvLGIiEzoRbJvo0ejoOf7e/w5ZOmj1EmOXZtOC32UF6XgMcfed3fokTwZD6+Ti0vcotqroTSxzCleafdzPvTwgQx5sdT/jLFtQLlSWC2rBjdC1
-X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(4636009)(396003)(136003)(346002)(39860400002)(376002)(451199024)(1800799009)(82310400011)(186009)(46966006)(40470700004)(36840700001)(86362001)(36756003)(82740400003)(356005)(81166007)(40480700001)(966005)(44832011)(16526019)(5660300002)(2616005)(7696005)(70586007)(54906003)(70206006)(478600001)(6666004)(316002)(6916009)(26005)(1076003)(4326008)(8936002)(8676002)(41300700001)(40460700003)(47076005)(336012)(36860700001)(83380400001)(426003)(2906002)(36900700001);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Aug 2023 18:15:36.5071
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: da5779bc-eddc-4884-4193-08dba0171edf
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: SN1PEPF0002529E.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB7125
-X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.6
+In-Reply-To: <CAJD7tkZ3i-NoqSi+BkCY7nR-2z==243F1FKrh42toQwsgv5eKQ@mail.gmail.com>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-The vendor check introduced by commit 554b841d4703 ("tpm: Disable RNG for
-all AMD fTPMs") doesn't work properly on Intel fTPM.  The TPM doesn't reply
-at bootup and returns back the command code.
+On Fri, Aug 18, 2023 at 10:45:56AM -0700, Yosry Ahmed wrote:
+> On Fri, Aug 18, 2023 at 10:35 AM Johannes Weiner <hannes@cmpxchg.org> wrote:
+> > On Fri, Aug 18, 2023 at 07:56:37AM -0700, Yosry Ahmed wrote:
+> > > If this happens it seems possible for this to happen:
+> > >
+> > > cpu #1                                  cpu#2
+> > >                                              css_put()
+> > >                                              /* css_free_rwork_fn is queued */
+> > > rcu_read_lock()
+> > > mem_cgroup_from_id()
+> > >                                              mem_cgroup_id_remove()
+> > > /* access memcg */
+> >
+> > I don't quite see how that'd possible. IDR uses rcu_assign_pointer()
+> > during deletion, which inserts the necessary barriering. My
+> > understanding is that this should always be safe:
+> >
+> >   rcu_read_lock()                 (writer serialization, in this case ref count == 0)
+> >   foo = idr_find(x)               idr_remove(x)
+> >   if (foo)                        kfree_rcu(foo)
+> >     LOAD(foo->bar)
+> >   rcu_read_unlock()
+> 
+> How does a barrier inside IDR removal protect against the memcg being
+> freed here though?
+> 
+> If css_put() is executed out-of-order before mem_cgroup_id_remove(),
+> the memcg can be freed even before mem_cgroup_id_remove() is called,
+> right?
 
-As this isn't crucial for anything but AMD fTPM and AMD fTPM works, throw
-away the error code to let Intel fTPM continue to work.
+css_put() can start earlier, but it's not allowed to reorder the rcu
+callback that frees past the rcu_assign_pointer() in idr_remove().
 
-Cc: stable@vger.kernel.org
-Fixes: 554b841d4703 ("tpm: Disable RNG for all AMD fTPMs")
-Reported-by: Todd Brandt <todd.e.brandt@intel.com>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217804
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
----
- drivers/char/tpm/tpm_crb.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
-
-diff --git a/drivers/char/tpm/tpm_crb.c b/drivers/char/tpm/tpm_crb.c
-index 9eb1a18590123..b0e9931fe436c 100644
---- a/drivers/char/tpm/tpm_crb.c
-+++ b/drivers/char/tpm/tpm_crb.c
-@@ -472,8 +472,7 @@ static int crb_check_flags(struct tpm_chip *chip)
- 	if (ret)
- 		return ret;
- 
--	ret = tpm2_get_tpm_pt(chip, TPM2_PT_MANUFACTURER, &val, NULL);
--	if (ret)
-+	if (tpm2_get_tpm_pt(chip, TPM2_PT_MANUFACTURER, &val, NULL))
- 		goto release;
- 
- 	if (val == 0x414D4400U /* AMD */)
--- 
-2.34.1
-
+This is what RCU and its access primitives guarantees. It ensures that
+after "unpublishing" the pointer, all concurrent RCU-protected
+accesses to the object have finished, and the memory can be freed.
