@@ -2,158 +2,92 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EB9AB78155C
-	for <lists+stable@lfdr.de>; Sat, 19 Aug 2023 00:20:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 131EA781562
+	for <lists+stable@lfdr.de>; Sat, 19 Aug 2023 00:21:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229656AbjHRWTt (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 18 Aug 2023 18:19:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58490 "EHLO
+        id S231679AbjHRWUx (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 18 Aug 2023 18:20:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54386 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241159AbjHRWTR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 18 Aug 2023 18:19:17 -0400
-Received: from mail-oi1-x231.google.com (mail-oi1-x231.google.com [IPv6:2607:f8b0:4864:20::231])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 84F893ABC
-        for <stable@vger.kernel.org>; Fri, 18 Aug 2023 15:19:15 -0700 (PDT)
-Received: by mail-oi1-x231.google.com with SMTP id 5614622812f47-3a800814122so1028466b6e.0
-        for <stable@vger.kernel.org>; Fri, 18 Aug 2023 15:19:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg-org.20221208.gappssmtp.com; s=20221208; t=1692397155; x=1693001955;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=hmpKIyAQ8RsIyIEMOMC7QqMJtydQ9V1xA5lN6gQxjZI=;
-        b=rDWfS1qgctml/CnDjcIdruBH+DHUCGbl85DmFlXB/3Rb4TZalsuBMBkcKe5rwOG/2d
-         q11J5RVL2Nh/T5ca7d+YfO44YpB/y6Vj8RCzA7MmGI3ebcpF2CNKRcBf1WF3YSRTHN9t
-         XRjr3lPJrmP0vBGvYrVC+KBesQD9ApDl2o1zdU5SL10jW3rWfTd8YVAbF86EpTusstrw
-         6gxji2eNBUIE9sigybwMoCwnpzMhHZKp12BG7G2ouWBobL+2wNU7U87YLpeMHLQyGnSG
-         qzX3XHyI1s1Ux7P7jE2aqRsSHBafKPpXmfcASYxce8+0kpUiNyZoIbwshrygCQxg43Zr
-         coNQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692397155; x=1693001955;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=hmpKIyAQ8RsIyIEMOMC7QqMJtydQ9V1xA5lN6gQxjZI=;
-        b=i1YwrvwjptihJxkefmQrB4VopGTOm3ldW5C1cVcVPqLHi3auf54InXoDwRGwpxxCsk
-         tNLoCNZfTqscd3j1/YKJGiMnaX7/CbEFkXaP7Vb9OjCuhFhhdP7uecTod3MG0gYxzPSB
-         kl+1M7TLcsaDVsnnoMNMlpPVey8f+00fgOoK0DwHhU+zpckkkysL7mLY6J7dhTpyjd9s
-         6NlAva5uRQ/IljPhvd9+tD2jAfsfcfPx7FnfoqQKmaCnp2jf7LmuuzK4W/xvFICyWsYf
-         p/T9Ul4Iw27G8mVwrV6UmmuXlWrvWj+9GvBSLPXwTPPIAGHZPGJSpIvcFjyBPFVWEE4B
-         Btrg==
-X-Gm-Message-State: AOJu0YyStkVpxJKBkq6pHYM9vKCiv22+6LKVDnhCQRroYkLSKD9g03m3
-        OPB2Noe5srZEz/WxZ/vPQWt3bQ==
-X-Google-Smtp-Source: AGHT+IGlY5jBVyHy6id4d2YSavOSbKGRT+TFNUDhCFs+bK5aqxjjPqXsb43+1mr0FR6EuLyJsll8cA==
-X-Received: by 2002:a05:6359:1b85:b0:139:e3a4:70a1 with SMTP id ur5-20020a0563591b8500b00139e3a470a1mr420297rwb.28.1692397154786;
-        Fri, 18 Aug 2023 15:19:14 -0700 (PDT)
-Received: from localhost ([2620:10d:c091:400::5:75e0])
-        by smtp.gmail.com with ESMTPSA id g22-20020a0caad6000000b006262de12a8csm981855qvb.65.2023.08.18.15.19.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 18 Aug 2023 15:19:14 -0700 (PDT)
-Date:   Fri, 18 Aug 2023 18:19:13 -0400
-From:   Johannes Weiner <hannes@cmpxchg.org>
-To:     Yosry Ahmed <yosryahmed@google.com>
-Cc:     Yu Zhao <yuzhao@google.com>, Nhat Pham <nphamcs@gmail.com>,
-        akpm@linux-foundation.org, kernel-team@meta.com,
-        linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-        stable@vger.kernel.org
-Subject: Re: [PATCH v2] workingset: ensure memcg is valid for recency check
-Message-ID: <20230818221913.GA144640@cmpxchg.org>
-References: <CAJD7tkaNo=0mkYKxrTwGNaJ33G1z7cYdWhNQNF3tQp_MKCh-uA@mail.gmail.com>
- <CAKEwX=Pt3ir0jpn+eRjzH=K49b0Y0_N1NnieLm0a0VwV1aCKKQ@mail.gmail.com>
- <CAJD7tkb1jMuCouyL8OX0434HK0Wx=Hyf9UnGVOH8fP7NxA8+Pw@mail.gmail.com>
- <CAOUHufbDhqSgSYZwkEo1aF1iFqGge_8jY3dt3OfPwXU0s07KOA@mail.gmail.com>
- <20230818134906.GA138967@cmpxchg.org>
- <CAJD7tkZY3kQPO2dn2NX0WODwwRifhH4R=pSZnFZYxh23Eszb-g@mail.gmail.com>
- <20230818173544.GA142196@cmpxchg.org>
- <CAJD7tkZ3i-NoqSi+BkCY7nR-2z==243F1FKrh42toQwsgv5eKQ@mail.gmail.com>
- <20230818183538.GA142974@cmpxchg.org>
- <CAJD7tkYjyqhjv7q-VCSPViFGqdYWGpsyftR6L=D_M8QuMsQQ5Q@mail.gmail.com>
+        with ESMTP id S241562AbjHRWU1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 18 Aug 2023 18:20:27 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B0F13C10
+        for <stable@vger.kernel.org>; Fri, 18 Aug 2023 15:20:26 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CE8DC6230C
+        for <stable@vger.kernel.org>; Fri, 18 Aug 2023 22:20:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 3A1D4C433C8;
+        Fri, 18 Aug 2023 22:20:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1692397225;
+        bh=B84Ed/Eub/ZxXe98rGhtXzjES0xyVZVz+SiunbmFd10=;
+        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+        b=eQcIuavP2adT6lEqWoQ080wisukuG78x9KnSNCvSi/ALgsgVfCl+eGQKFjHqN5C28
+         dufNidF5i47IPAC08UsVNba6SDqe52Q0W6o/uAq7C+6uSErbl9UvdkbCb2QEU6un0q
+         CtgQR7jJxdmXEQbOkFayhYbg4U+f0+9gWn4Tlipo7IY/UgwbTQRGWWnaJFhVnOFiv1
+         opOtaDTkNeAM64wsaAvb5Vr0cxpp9JQRDH7XgcU4tUjQbYpgKuPvuGDuiX+3x+2jxx
+         /R64QrZg7PCRFTKiJT4G4JFDjbUSwbVEPWyMEUN1HQZD4ix7ri/WxcwutC7A3eiFYa
+         0Zb4OsgoAJkVw==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 1BF83C395DC;
+        Fri, 18 Aug 2023 22:20:25 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAJD7tkYjyqhjv7q-VCSPViFGqdYWGpsyftR6L=D_M8QuMsQQ5Q@mail.gmail.com>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Subject: Re: [PATCH 1/5] batman-adv: Trigger events for auto adjusted MTU
+From:   patchwork-bot+netdevbpf@kernel.org
+Message-Id: <169239722510.24641.8619081876432561940.git-patchwork-notify@kernel.org>
+Date:   Fri, 18 Aug 2023 22:20:25 +0000
+References: <20230816163318.189996-2-sw@simonwunderlich.de>
+In-Reply-To: <20230816163318.189996-2-sw@simonwunderlich.de>
+To:     Simon Wunderlich <sw@simonwunderlich.de>
+Cc:     davem@davemloft.net, kuba@kernel.org, netdev@vger.kernel.org,
+        b.a.t.m.a.n@lists.open-mesh.org, sven@narfation.org,
+        stable@vger.kernel.org
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Fri, Aug 18, 2023 at 11:44:45AM -0700, Yosry Ahmed wrote:
-> On Fri, Aug 18, 2023 at 11:35 AM Johannes Weiner <hannes@cmpxchg.org> wrote:
-> >
-> > On Fri, Aug 18, 2023 at 10:45:56AM -0700, Yosry Ahmed wrote:
-> > > On Fri, Aug 18, 2023 at 10:35 AM Johannes Weiner <hannes@cmpxchg.org> wrote:
-> > > > On Fri, Aug 18, 2023 at 07:56:37AM -0700, Yosry Ahmed wrote:
-> > > > > If this happens it seems possible for this to happen:
-> > > > >
-> > > > > cpu #1                                  cpu#2
-> > > > >                                              css_put()
-> > > > >                                              /* css_free_rwork_fn is queued */
-> > > > > rcu_read_lock()
-> > > > > mem_cgroup_from_id()
-> > > > >                                              mem_cgroup_id_remove()
-> > > > > /* access memcg */
-> > > >
-> > > > I don't quite see how that'd possible. IDR uses rcu_assign_pointer()
-> > > > during deletion, which inserts the necessary barriering. My
-> > > > understanding is that this should always be safe:
-> > > >
-> > > >   rcu_read_lock()                 (writer serialization, in this case ref count == 0)
-> > > >   foo = idr_find(x)               idr_remove(x)
-> > > >   if (foo)                        kfree_rcu(foo)
-> > > >     LOAD(foo->bar)
-> > > >   rcu_read_unlock()
-> > >
-> > > How does a barrier inside IDR removal protect against the memcg being
-> > > freed here though?
-> > >
-> > > If css_put() is executed out-of-order before mem_cgroup_id_remove(),
-> > > the memcg can be freed even before mem_cgroup_id_remove() is called,
-> > > right?
-> >
-> > css_put() can start earlier, but it's not allowed to reorder the rcu
-> > callback that frees past the rcu_assign_pointer() in idr_remove().
-> >
-> > This is what RCU and its access primitives guarantees. It ensures that
-> > after "unpublishing" the pointer, all concurrent RCU-protected
-> > accesses to the object have finished, and the memory can be freed.
+Hello:
+
+This series was applied to netdev/net.git (main)
+by Simon Wunderlich <sw@simonwunderlich.de>:
+
+On Wed, 16 Aug 2023 18:33:14 +0200 you wrote:
+> From: Sven Eckelmann <sven@narfation.org>
 > 
-> I am not sure I understand, this is the scenario I mean:
+> If an interface changes the MTU, it is expected that an NETDEV_PRECHANGEMTU
+> and NETDEV_CHANGEMTU notification events is triggered. This worked fine for
+> .ndo_change_mtu based changes because core networking code took care of it.
+> But for auto-adjustments after hard-interfaces changes, these events were
+> simply missing.
 > 
-> cpu#1                      cpu#2                             cpu#3
-> css_put()
-> /* schedule free */
->                                 rcu_read_lock()
-> idr_remove()
->                                mem_cgroup_from_id()
-> 
-> /* free memcg */
->                                /* use memcg */
+> [...]
 
-idr_remove() cannot be re-ordered after scheduling the free. Think
-about it, this is the common rcu-freeing pattern:
+Here is the summary with links:
+  - [1/5] batman-adv: Trigger events for auto adjusted MTU
+    https://git.kernel.org/netdev/net/c/c6a953cce8d0
+  - [2/5] batman-adv: Don't increase MTU when set by user
+    https://git.kernel.org/netdev/net/c/d8e42a2b0add
+  - [3/5] batman-adv: Do not get eth header before batadv_check_management_packet
+    https://git.kernel.org/netdev/net/c/eac27a41ab64
+  - [4/5] batman-adv: Fix TT global entry leak when client roamed back
+    https://git.kernel.org/netdev/net/c/d25ddb7e788d
+  - [5/5] batman-adv: Fix batadv_v_ogm_aggr_send memory leak
+    https://git.kernel.org/netdev/net/c/421d467dc2d4
 
-	rcu_assign_pointer(p, NULL);
-	call_rcu(rh, free_pointee);
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-on the write side, and:
 
-	rcu_read_lock();
-	pointee = rcu_dereference(p);
-	if (pointee)
-		do_stuff(pointee);
-	rcu_read_unlock();
-
-on the read side.
-
-In our case, the rcu_assign_pointer() is in idr_remove(). And the
-rcu_dereference() is in mem_cgroup_from_id() -> idr_find() ->
-radix_tree_lookup() -> radix_tree_descend().
-
-So if we find the memcg in the idr under rcu lock, the cgroup rcu work
-is guaranteed to not run until the lock is dropped. If we don't find
-it, it may or may not have already run.
