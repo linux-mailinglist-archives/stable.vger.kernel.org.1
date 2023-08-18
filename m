@@ -2,392 +2,300 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C1719780F3C
-	for <lists+stable@lfdr.de>; Fri, 18 Aug 2023 17:33:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2C12E781004
+	for <lists+stable@lfdr.de>; Fri, 18 Aug 2023 18:13:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1358666AbjHRPcb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 18 Aug 2023 11:32:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40554 "EHLO
+        id S1353570AbjHRQNQ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 18 Aug 2023 12:13:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55168 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1378257AbjHRPc0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 18 Aug 2023 11:32:26 -0400
-Received: from mail-lj1-x22b.google.com (mail-lj1-x22b.google.com [IPv6:2a00:1450:4864:20::22b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C48C4229
-        for <stable@vger.kernel.org>; Fri, 18 Aug 2023 08:32:14 -0700 (PDT)
-Received: by mail-lj1-x22b.google.com with SMTP id 38308e7fff4ca-2b9a2033978so16099051fa.0
-        for <stable@vger.kernel.org>; Fri, 18 Aug 2023 08:32:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=joelfernandes.org; s=google; t=1692372732; x=1692977532;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=05J1V2AkTQGsWgugSfJnxNJW5v8QnaLYavz4WjVBuwc=;
-        b=SL3wRGMxxjqlhHp8YLj83mi/HRpZ4CmKYcw13KxXEVCv25NNhOEw8YWd4su74nrdsj
-         c76/rzlqYaBGaNwHkl5NNoP0DZmZ95LKsORuF5A/Z6WHaBM6Qi8+zCeSZdaU2YMzNFLX
-         3rJCURLulOE3pvcaI9MjolzUDE384aTUSnXXA=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692372732; x=1692977532;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=05J1V2AkTQGsWgugSfJnxNJW5v8QnaLYavz4WjVBuwc=;
-        b=UM3maJCSfIPDrQN9ERoqf/rx7o9GQ45W07Tpq+8TpqmT+6QSEOn95YabatgcxWa0+G
-         TWeixSDjFQXP5X+nexjvFZdVorV6sBJlMnBXknLlijMnsAybEtC4a5y6rKFDtUikojva
-         Gv+kIAVJND/iWrOwwddAE6zwa3wP8YjztxzbPmTasOo3Zn7eLssk9l58y3SKumwae9ZV
-         2tbczPtCLMY2g9UTImTR/R9PDtc440hzZJOTMGYgz5XMcu2WgG2wSmLnAkp2Is1PIz9C
-         DTGXRBoGWJ62EUhxP791EkDd250YkZ/NdWoj9sjaRcUDxlu5Tr4cvgMNbwt07qfG+dDe
-         3AmA==
-X-Gm-Message-State: AOJu0YwW+Pq1xm/eUv5uKZ3OOw/Qie5AjRqNwzt6e5nTl+ryRfaMAwl8
-        O/T7t74pGLyKPhgYcbRzogaufExbOjhPZAMVTnFqLJSRflcGEsEVG9I=
-X-Google-Smtp-Source: AGHT+IGKIUVA8tn+t77iDl9AVMBbKa2S9tVH6q3NhfGLB84jpm+qaVT18KqG1UrzAMRoj0QRWHn/CYbEIonbH1Xex8A=
-X-Received: by 2002:a2e:9059:0:b0:2b6:e105:6174 with SMTP id
- n25-20020a2e9059000000b002b6e1056174mr2020174ljg.47.1692372732412; Fri, 18
- Aug 2023 08:32:12 -0700 (PDT)
+        with ESMTP id S1378572AbjHRQND (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 18 Aug 2023 12:13:03 -0400
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2041.outbound.protection.outlook.com [40.107.236.41])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D13330F3;
+        Fri, 18 Aug 2023 09:13:00 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=bPBx1JHcMwNDGkj2nhkAF8CpYHIW4ENMNQq7KM+V8VqCHuQ5yvIpUmVsT9go41vczu1dKpcNgNExSc0RzEFcCz7JK/Odv06OAQpbPSJ02+MJ2/8+4F5+HlFfKz6rPcAE40iJNDqNcPs4QUDDEv7J2IWdc3rgHHwK0DPRM3H0J4EHwrJJMnCInE2akWRgVfaccwcVfLnwexO2LGfbVLqrIjE9qON4BNP07uCue1lplCh8TPeFKKhrVR7g6GwlhpAIgBJEuwI/cGS1u0hmtbhwy9t8xjifzm08HTgICnFY5chdEykE9bJ0SsH4Mmwcc5Ad2piu4QPG7/DzIVJPgZWJUg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Ub6y0v5rNIbg85A0oX+ecRr8n6YFcu7dq9pdri8mIXQ=;
+ b=D0ZdA9cIHmA19rgcaM2JgIJUCpldm/O//4rzZtJMbIED/uMu9AyCvdEb6lpFOryRt7vHnlmCS5T2NIkHkZ7cg0cZico1xu/QYBTxP4J9NtihrEs1IBcuN8QgtLQ5HcrkGnyBFAjeL0CPTSCDFgJVbHztyfK6n2UTo4P3Hmr1xSyHc6tAXQoso3Dx9dlvLF2Fwz1pYwIr5Y+210ACgM6cpzzq3ZTUNCX/pT2ZKTrSGDVr4BjLhU+uGxa6hT9bHupztTocHuYwYlVgZvcnPANn/25fCUC97JQoIaezKIod7Krpks/R6GTw4l1E/jUzyr3soeYR8hw3aTMBKWJCoE6Afw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Ub6y0v5rNIbg85A0oX+ecRr8n6YFcu7dq9pdri8mIXQ=;
+ b=dMM6tUgLzYAM6Q2PKgWwOPO8flsPXpEzA3dsMGcTlGP29WO3tPCz7ev+pNCfCjnPRL9E6vMyw+2u+Vz5ImpjcsVg1KtCof3CklMJk5lXssuJdOAhzeH8SqZJTnEnsFULfj2dVhWmuVn4IzO2RDTi45MRab467f3EtdRm2dR7s4o=
+Received: from BL1PR12MB5144.namprd12.prod.outlook.com (2603:10b6:208:316::6)
+ by PH8PR12MB7205.namprd12.prod.outlook.com (2603:10b6:510:227::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6699.20; Fri, 18 Aug
+ 2023 16:12:57 +0000
+Received: from BL1PR12MB5144.namprd12.prod.outlook.com
+ ([fe80::bcfa:7757:68bd:f905]) by BL1PR12MB5144.namprd12.prod.outlook.com
+ ([fe80::bcfa:7757:68bd:f905%5]) with mapi id 15.20.6699.020; Fri, 18 Aug 2023
+ 16:12:57 +0000
+From:   "Deucher, Alexander" <Alexander.Deucher@amd.com>
+To:     =?utf-8?B?SWxwbyBKw6RydmluZW4=?= <ilpo.jarvinen@linux.intel.com>,
+        "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Rob Herring <robh@kernel.org>,
+        =?utf-8?B?S3J6eXN6dG9mIFdpbGN6ecWEc2tp?= <kw@linux.com>,
+        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Heiner Kallweit <hkallweit1@gmail.com>,
+        Lukas Wunner <lukas@wunner.de>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        "Koenig, Christian" <Christian.Koenig@amd.com>,
+        "Pan, Xinhui" <Xinhui.Pan@amd.com>,
+        David Airlie <airlied@gmail.com>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        "amd-gfx@lists.freedesktop.org" <amd-gfx@lists.freedesktop.org>,
+        "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+CC:     Dean Luick <dean.luick@cornelisnetworks.com>,
+        =?utf-8?B?Sm9uYXMgRHJlw59sZXI=?= <verdre@v0yd.nl>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: RE: [PATCH v5 06/11] drm/radeon: Use RMW accessors for changing
+ LNKCTL
+Thread-Topic: [PATCH v5 06/11] drm/radeon: Use RMW accessors for changing
+ LNKCTL
+Thread-Index: AQHZuKclLd/hzG1i1UmQamiALj5wpa/wa+Yw
+Date:   Fri, 18 Aug 2023 16:12:57 +0000
+Message-ID: <BL1PR12MB5144FF7542426AB3B4C66082F71BA@BL1PR12MB5144.namprd12.prod.outlook.com>
+References: <20230717120503.15276-1-ilpo.jarvinen@linux.intel.com>
+ <20230717120503.15276-7-ilpo.jarvinen@linux.intel.com>
+In-Reply-To: <20230717120503.15276-7-ilpo.jarvinen@linux.intel.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+msip_labels: MSIP_Label_d4243a53-6221-4f75-8154-e4b33a5707a1_ActionId=6bb2fc73-a784-49aa-bbd6-22f6032ebdce;MSIP_Label_d4243a53-6221-4f75-8154-e4b33a5707a1_ContentBits=0;MSIP_Label_d4243a53-6221-4f75-8154-e4b33a5707a1_Enabled=true;MSIP_Label_d4243a53-6221-4f75-8154-e4b33a5707a1_Method=Privileged;MSIP_Label_d4243a53-6221-4f75-8154-e4b33a5707a1_Name=Public-AIP
+ 2.0;MSIP_Label_d4243a53-6221-4f75-8154-e4b33a5707a1_SetDate=2023-08-18T16:11:16Z;MSIP_Label_d4243a53-6221-4f75-8154-e4b33a5707a1_SiteId=3dd8961f-e488-4e60-8e11-a82d994e183d;
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: BL1PR12MB5144:EE_|PH8PR12MB7205:EE_
+x-ms-office365-filtering-correlation-id: eff8f4ef-b680-4e6c-c033-08dba005fc83
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: 8i86SyNv8nG7bP4iTqu9wbR9oi2Le8HjIY7NqaQIT+L7gukIfMB/pFT9Q4tuA/w+aDM5ybvb6CTIg1pFOhB6E2e5yNnXLN9xH+k/aZp/C9AngUrkyOesh3/WYjdsVWDknk/fvro/M2J4gICc0jAuzN/DUR1zdg2XM7yuNVkVhBRp6cTSa3E6NJFndnlA0wGvYa8rx15L973LU/CphwrBL4G6Lfjayk8MHQ/ctjj91qL3FRSNUOgGGeBPrT01LyL5lM7dJ8sHAhILhUYFdVi2t2grCbdwFJNG7Yr5plFzsmxTN/H0FTqr01CnTMOh1GxxtlKOJz0UUBWz4wawdcdiQL0mibjp4RiLcsvFpYHCA/nBtywJhb6bchCrU9jVg+mWCL6xJRdfbgRWbu/9DY44oEfJUMh4AHBRkTvLIybqMfyJJv37HzC0XvN2S2KyWzup1XP2Y+z4xaKoUjz6ekfswrzMmWm0Z+yoZlZBriepxml0aU+xj++jLbiR3g1aUxnwOFNKpqZIfXMVOPTWUr46jxWQ0c4pJtQdPnfF0HfPABGFwh6yJehssV76v4dmWGXAvYOvdMuD4A2G7fMrBLOChHVjn9/737jMSXn/+n/MggfEoJg9TGvm8drHsQ892NeU
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL1PR12MB5144.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(39860400002)(396003)(366004)(136003)(346002)(376002)(186009)(1800799009)(451199024)(33656002)(86362001)(55016003)(122000001)(921005)(66946007)(54906003)(64756008)(66446008)(66476007)(316002)(66556008)(478600001)(110136005)(76116006)(41300700001)(38100700002)(38070700005)(26005)(71200400001)(6506007)(7696005)(9686003)(53546011)(4326008)(52536014)(8676002)(5660300002)(8936002)(7416002)(2906002)(83380400001)(66574015);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?TjNqcUU4WjUzUDFOWE9XVHF2clpyOFdsamw1NHZOZ2s3T2RyOWllZktWR214?=
+ =?utf-8?B?MjlVR05iNEc3WTBMZVpSRmdKUU5kVW5QT21tdUEzM3NKRDV3OTFKNzRxZzd6?=
+ =?utf-8?B?bm01K1JDcVZVNWcxUS9VcGJzWTNGem1SN2lCMjN1RGo3TFVWR1FvZ0pWeDJi?=
+ =?utf-8?B?NTJJRjF2UTdUSHZjMzhNc082bFo1VEFVMHQ0K3JQWFdwcjNrbkZ1R0h5bzZV?=
+ =?utf-8?B?WmJkRlZhdnJiT3Y3MjR6RXphNldIWG9YVkFIK24yNXdnaER4ejRxdFRzZkg1?=
+ =?utf-8?B?UDZyQnlFeG1wM3FKY1kyeE51KzkvUnJCR3BxSk1PWHNKTDUwbElrbVN2aEZq?=
+ =?utf-8?B?MWk2THpwVU1Pc04zclRnNGl6ZjdLS0dUTUZTclFjUUx0dE0yUjUzQzFnRkp1?=
+ =?utf-8?B?Q0VJRXIrN0xhRm81UmhLbklNWUlyWVkxNGp3RDdWeEtVS3EwVlN3MHhBVGxH?=
+ =?utf-8?B?VWdpZVVSSzFKNytML3FKUUF2MFRHb0MyZjF3SS96ekcyRWRYYU1kSFdoM2w1?=
+ =?utf-8?B?a3FJZDhwby92NHpIaG12N1lrMUtHemwxc3hhUW14SFdIM0srNjlLMWJZRTVF?=
+ =?utf-8?B?U3J2eTdNZXlmWjMvNXRxcmFBSDRvM3d6eDR6ODZ6NlVWTHRHakpMUG9MNzZW?=
+ =?utf-8?B?RnExQVRWeHphKzVqZ2NmYWVjbWUvQ013b1N3NnRYME1uaGVXY0RhMFlIYzhZ?=
+ =?utf-8?B?cjJ1ekVyWEpqUUdkbDNHblZvYlYxa1pJaE9Laks4WnJTSXVadVBWTk5aOUw2?=
+ =?utf-8?B?UjQweS8renA3YlFkZktKN3RhU2g3Ukd3and5UlgyVnlwUDlQd2x6VUt6NEIr?=
+ =?utf-8?B?WVg4R3RYTy8wMjU3TFlVbTRZWHhjdVV1RGp4Snd2YUxJbm1hSGhMb05IL1BS?=
+ =?utf-8?B?MDBaRDg3cWNlYzg1N3YvQVBRNkVZUFo1QU8yU3NuR2lYVzVkeitLZkhISWU2?=
+ =?utf-8?B?SnBLYnZsSWtNQnNnMUppQ29zdkYyMFJseTg2SnhpTDlkZ3Q4UFRYaDBLTkMr?=
+ =?utf-8?B?R1IxeGdCQVBrUkxlbldjYzgyR1EyTnlmUk4wQzhCMTNpMXd4d2xaOHFhN1ov?=
+ =?utf-8?B?QlcyNXVsZVg0ZHpvSUtUOTEybkY1cW9FSm1qdEFwT3ViY29maHR3RjZ1KzZG?=
+ =?utf-8?B?UElUZzl6UUJ4b0x2Qkh2d25acUg0QmExcE5YMkNURDUvZDdXZDhKRjdKWVQ4?=
+ =?utf-8?B?TWd1MDQrYWFUZ3pIUXZ4a29DMDZwMENZQkhNWlRlSlBXYXlpb21SKzdRMnZI?=
+ =?utf-8?B?MFhhcVpHcjhsNDdEck5qYTJDZ2hGdVRzWlp2Q3dhS3psRFB4WWJKeC84K0th?=
+ =?utf-8?B?aTQ4NlVMcXhYMm1DaFE5N3FiZ20yWCtsc0FTMEdmSWtkRWkzNkc2U2dDRmZH?=
+ =?utf-8?B?WmtMYkRwcWs1YlBzNlIyQzZha0U0a21NMGMrVk0wcTBaV3RQbWJuS25hbkdB?=
+ =?utf-8?B?dFY1Q0NaejI0VXk1ZW94c2ZBNGRBV25DUnFiSDlMMEF4OUtTeDFiOGpaeDFF?=
+ =?utf-8?B?bUdKYjFpTGt6SisvcnFjR29kUmFKSHpIYjNFSlFKRHRIdWRTVXdjV2h0M0tm?=
+ =?utf-8?B?YnQ3ZTB0UnpMS29hMEZDNDRnSUFvVURHMFBMK3d1RER1c0lYME9JRHFzTUpP?=
+ =?utf-8?B?d0NGbjFaeTFSemFXYkg2YzNTYngycjdmelZFbHg4MDFRcEkwek5aMDNhekVE?=
+ =?utf-8?B?NitmUzVpcDYxNDBvYWhQRHUzMEUzbXczTFh4N0dVQ1MrU0xtQ2NMbzM3aGEw?=
+ =?utf-8?B?VE94T3ovU3ZiaDNQNEprNzQ3a3VoU3g1QTZuaUpLK1ZBVk9DeGYwNWUzSk5X?=
+ =?utf-8?B?dDBuZm9EbnM1eVl5d3lSU2wwWmJiN0h1bmtEb3g2eTR6KzVTbGxVb2F4aWJJ?=
+ =?utf-8?B?ZHBXTWd4bE4xU1hHems1bU9CQklURG1uV3FYZUNEcnpwclJjQU1UemY0K0lu?=
+ =?utf-8?B?U0UvbGx0SHBiZXBjaXBqL2RzODBQdTZFc1Q1ZGF3aDFaOGVsdURIM0RkM3Nj?=
+ =?utf-8?B?NS9NWHc4MTBjNU9taWpZTDVRTnNEdUw3cVBnRlRnbmpvbjlxY1dibkZRNHZY?=
+ =?utf-8?B?aEhWemR0elNMWkx0N2VqSFRRR0F2QzV1TnhHQVVQVUw3RTk2dmdaQmpET013?=
+ =?utf-8?Q?6qx4=3D?=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-References: <20230817081345.1423-1-chenhuacai@loongson.cn> <CAEXW_YTM5sa15euDeQhEq0CQ=vqLis=pY-5PF00aKTk5y3J6jw@mail.gmail.com>
- <CAAhV-H71iVtpW8NN-v8WnbgUte4vp7D+82O8gdNvdkupcOauig@mail.gmail.com>
- <CAEXW_YTQucT9VkMwaLtyv2Ja7b1OG+UJX3w3GA3=ZbHeDq16tw@mail.gmail.com> <CAAhV-H632rGzu+T-GFjiy41r=QADASB91wuxnHvf-4sn5+psuQ@mail.gmail.com>
-In-Reply-To: <CAAhV-H632rGzu+T-GFjiy41r=QADASB91wuxnHvf-4sn5+psuQ@mail.gmail.com>
-From:   Joel Fernandes <joel@joelfernandes.org>
-Date:   Fri, 18 Aug 2023 11:32:01 -0400
-Message-ID: <CAEXW_YQXMgoBjt_s1Et1Pi_A1oyFAu-hsTFJitamm1USAOGCHw@mail.gmail.com>
-Subject: Re: [PATCH] rcu: Update jiffies locally in rcu_cpu_stall_reset()
-To:     Huacai Chen <chenhuacai@kernel.org>
-Cc:     Huacai Chen <chenhuacai@loongson.cn>,
-        "Paul E . McKenney" <paulmck@kernel.org>,
-        Frederic Weisbecker <frederic@kernel.org>,
-        Neeraj Upadhyay <quic_neeraju@quicinc.com>,
-        Josh Triplett <josh@joshtriplett.org>,
-        Boqun Feng <boqun.feng@gmail.com>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-        Lai Jiangshan <jiangshanlai@gmail.com>,
-        Zqiang <qiang.zhang1211@gmail.com>,
-        Sergey Senozhatsky <senozhatsky@chromium.org>,
-        rcu@vger.kernel.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org, Binbin Zhou <zhoubinbin@loongson.cn>,
-        Thomas Gleixner <tglx@linutronix.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
-        autolearn_force=no version=3.4.6
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: BL1PR12MB5144.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: eff8f4ef-b680-4e6c-c033-08dba005fc83
+X-MS-Exchange-CrossTenant-originalarrivaltime: 18 Aug 2023 16:12:57.4672
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: qTxORD6KU82hjHHHS3s/KVsh6HKAmwKB7ka/L5YJyG3bmvIR0ljIK4/Ug+011tO5edfseQznfq0cET3jhqup0w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR12MB7205
+X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Fri, Aug 18, 2023 at 4:31=E2=80=AFAM Huacai Chen <chenhuacai@kernel.org>=
- wrote:
->
-> Hi, Joel,
->
-> On Fri, Aug 18, 2023 at 11:05=E2=80=AFAM Joel Fernandes <joel@joelfernand=
-es.org> wrote:
-> >
-> > On Thu, Aug 17, 2023 at 10:36=E2=80=AFPM Huacai Chen <chenhuacai@kernel=
-.org> wrote:
-> > >
-> > > Hi, Joel,
-> > >
-> > > On Fri, Aug 18, 2023 at 1:54=E2=80=AFAM Joel Fernandes <joel@joelfern=
-andes.org> wrote:
-> > > >
-> > > > On Thu, Aug 17, 2023 at 4:14=E2=80=AFAM Huacai Chen <chenhuacai@loo=
-ngson.cn> wrote:
-> > > > >
-> > > > > The KGDB initial breakpoint gets an rcu stall warning after commi=
-t
-> > > > > a80be428fbc1f1f3bc9ed924 ("rcu: Do not disable GP stall detection=
- in
-> > > > > rcu_cpu_stall_reset()").
-> > > > >
-> > > > > [   53.452051] rcu: INFO: rcu_preempt self-detected stall on CPU
-> > > > > [   53.487950] rcu:     3-...0: (1 ticks this GP) idle=3D0e2c/1/0=
-x4000000000000000 softirq=3D375/375 fqs=3D8
-> > > > > [   53.528243] rcu:     (t=3D12297 jiffies g=3D-995 q=3D1 ncpus=
-=3D4)
-> > > > > [   53.564840] CPU: 3 PID: 1 Comm: swapper/0 Not tainted 6.5.0-rc=
-2+ #4848
-> > > > > [   53.603005] Hardware name: Loongson Loongson-3A5000-HV-7A2000-=
-1w-V0.1-CRB/Loongson-LS3A5000-7A2000-1w-CRB-V1.21, BIOS Loongson-UDK2018-V2=
-.0.05099-beta8 08
-> > > > > [   53.682062] pc 9000000000332100 ra 90000000003320f4 tp 9000000=
-1000a0000 sp 90000001000a3710
-> > > > > [   53.724934] a0 9000000001d4b488 a1 0000000000000000 a2 0000000=
-000000001 a3 0000000000000000
-> > > > > [   53.768179] a4 9000000001d526c8 a5 90000001000a38f0 a6 0000000=
-00000002c a7 0000000000000000
-> > > > > [   53.810751] t0 00000000000002b0 t1 0000000000000004 t2 9000000=
-00131c9c0 t3 fffffffffffffffa
-> > > > > [   53.853249] t4 0000000000000080 t5 90000001002ac190 t6 0000000=
-000000004 t7 9000000001912d58
-> > > > > [   53.895684] t8 0000000000000000 u0 90000000013141a0 s9 0000000=
-000000028 s0 9000000001d512f0
-> > > > > [   53.937633] s1 9000000001d51278 s2 90000001000a3798 s3 9000000=
-0019fc410 s4 9000000001d4b488
-> > > > > [   53.979486] s5 9000000001d512f0 s6 90000000013141a0 s7 0000000=
-000000078 s8 9000000001d4b450
-> > > > > [   54.021175]    ra: 90000000003320f4 kgdb_cpu_enter+0x534/0x640
-> > > > > [   54.060150]   ERA: 9000000000332100 kgdb_cpu_enter+0x540/0x640
-> > > > > [   54.098347]  CRMD: 000000b0 (PLV0 -IE -DA +PG DACF=3DCC DACM=
-=3DCC -WE)
-> > > > > [   54.136621]  PRMD: 0000000c (PPLV0 +PIE +PWE)
-> > > > > [   54.172192]  EUEN: 00000000 (-FPE -SXE -ASXE -BTE)
-> > > > > [   54.207838]  ECFG: 00071c1c (LIE=3D2-4,10-12 VS=3D7)
-> > > > > [   54.242503] ESTAT: 00000800 [INT] (IS=3D11 ECode=3D0 EsubCode=
-=3D0)
-> > > > > [   54.277996]  PRID: 0014c011 (Loongson-64bit, Loongson-3A5000-H=
-V)
-> > > > > [   54.313544] CPU: 3 PID: 1 Comm: swapper/0 Not tainted 6.5.0-rc=
-2+ #4848
-> > > > > [   54.430170] Stack : 0072617764726148 0000000000000000 90000000=
-00223504 90000001000a0000
-> > > > > [   54.472308]         9000000100073a90 9000000100073a98 00000000=
-00000000 9000000100073bd8
-> > > > > [   54.514413]         9000000100073bd0 9000000100073bd0 90000001=
-00073a00 0000000000000001
-> > > > > [   54.556018]         0000000000000001 9000000100073a98 99828271=
-f24e961a 90000001002810c0
-> > > > > [   54.596924]         0000000000000001 0000000000010003 00000000=
-00000000 0000000000000001
-> > > > > [   54.637115]         ffff8000337cdb80 0000000000000001 00000000=
-06360000 900000000131c9c0
-> > > > > [   54.677049]         0000000000000000 0000000000000000 90000000=
-017b4c98 9000000001912000
-> > > > > [   54.716394]         9000000001912f68 9000000001913000 90000000=
-01912f70 00000000000002b0
-> > > > > [   54.754880]         90000000014a8840 0000000000000000 90000000=
-0022351c 0000000000000000
-> > > > > [   54.792372]         00000000000002b0 000000000000000c 00000000=
-00000000 0000000000071c1c
-> > > > > [   54.829302]         ...
-> > > > > [   54.859163] Call Trace:
-> > > > > [   54.859165] [<900000000022351c>] show_stack+0x5c/0x180
-> > > > > [   54.918298] [<90000000012f6100>] dump_stack_lvl+0x60/0x88
-> > > > > [   54.949251] [<90000000012dd5d8>] rcu_dump_cpu_stacks+0xf0/0x14=
-8
-> > > > > [   54.981116] [<90000000002d2fb8>] rcu_sched_clock_irq+0xb78/0xe=
-60
-> > > > > [   55.012744] [<90000000002e47cc>] update_process_times+0x6c/0xc=
-0
-> > > > > [   55.044169] [<90000000002f65d4>] tick_sched_timer+0x54/0x100
-> > > > > [   55.075488] [<90000000002e5174>] __hrtimer_run_queues+0x154/0x=
-240
-> > > > > [   55.107347] [<90000000002e6288>] hrtimer_interrupt+0x108/0x2a0
-> > > > > [   55.139112] [<9000000000226418>] constant_timer_interrupt+0x38=
-/0x60
-> > > > > [   55.170749] [<90000000002b3010>] __handle_irq_event_percpu+0x5=
-0/0x160
-> > > > > [   55.203141] [<90000000002b3138>] handle_irq_event_percpu+0x18/=
-0x80
-> > > > > [   55.235064] [<90000000002b9d54>] handle_percpu_irq+0x54/0xa0
-> > > > > [   55.266241] [<90000000002b2168>] generic_handle_domain_irq+0x2=
-8/0x40
-> > > > > [   55.298466] [<9000000000aba95c>] handle_cpu_irq+0x5c/0xa0
-> > > > > [   55.329749] [<90000000012f7270>] handle_loongarch_irq+0x30/0x6=
-0
-> > > > > [   55.361476] [<90000000012f733c>] do_vint+0x9c/0x100
-> > > > > [   55.391737] [<9000000000332100>] kgdb_cpu_enter+0x540/0x640
-> > > > > [   55.422440] [<9000000000332b64>] kgdb_handle_exception+0x104/0=
-x180
-> > > > > [   55.452911] [<9000000000232478>] kgdb_loongarch_notify+0x38/0x=
-a0
-> > > > > [   55.481964] [<900000000026b4d4>] notify_die+0x94/0x100
-> > > > > [   55.509184] [<90000000012f685c>] do_bp+0x21c/0x340
-> > > > > [   55.562475] [<90000000003315b8>] kgdb_compiled_break+0x0/0x28
-> > > > > [   55.590319] [<9000000000332e80>] kgdb_register_io_module+0x160=
-/0x1c0
-> > > > > [   55.618901] [<9000000000c0f514>] configure_kgdboc+0x154/0x1c0
-> > > > > [   55.647034] [<9000000000c0f5e0>] kgdboc_probe+0x60/0x80
-> > > > > [   55.674647] [<9000000000c96da8>] platform_probe+0x68/0x100
-> > > > > [   55.702613] [<9000000000c938e0>] really_probe+0xc0/0x340
-> > > > > [   55.730528] [<9000000000c93be4>] __driver_probe_device+0x84/0x=
-140
-> > > > > [   55.759615] [<9000000000c93cdc>] driver_probe_device+0x3c/0x12=
-0
-> > > > > [   55.787990] [<9000000000c93e8c>] __device_attach_driver+0xcc/0=
-x160
-> > > > > [   55.817145] [<9000000000c91290>] bus_for_each_drv+0x90/0x100
-> > > > > [   55.845654] [<9000000000c94328>] __device_attach+0xa8/0x1a0
-> > > > > [   55.874145] [<9000000000c925f0>] bus_probe_device+0xb0/0xe0
-> > > > > [   55.902572] [<9000000000c8ec7c>] device_add+0x65c/0x860
-> > > > > [   55.930635] [<9000000000c96704>] platform_device_add+0x124/0x2=
-c0
-> > > > > [   55.959669] [<9000000001452b38>] init_kgdboc+0x58/0xa0
-> > > > > [   55.987677] [<900000000022015c>] do_one_initcall+0x7c/0x1e0
-> > > > > [   56.016134] [<9000000001420f1c>] kernel_init_freeable+0x22c/0x=
-2a0
-> > > > > [   56.045128] [<90000000012f923c>] kernel_init+0x20/0x124
-> > > > >
-> > > > > Currently rcu_cpu_stall_reset() set rcu_state.jiffies_stall to on=
-e check
-> > > > > period later, i.e. jiffies + rcu_jiffies_till_stall_check(). But =
-jiffies
-> > > > > is only updated in the timer interrupt, so when kgdb_cpu_enter() =
-begins
-> > > > > to run there may already be nearly one rcu check period after jif=
-fies.
-> > > > > Since all interrupts are disabled during kgdb_cpu_enter(), jiffie=
-s will
-> > > > > not be updated. When kgdb_cpu_enter() returns, rcu_state.jiffies_=
-stall
-> > > > > maybe already gets timeout.
-> > > > >
-> > > > > We can set rcu_state.jiffies_stall to two rcu check periods later=
-, e.g.
-> > > > > jiffies + (rcu_jiffies_till_stall_check() * 2) in rcu_cpu_stall_r=
-eset()
-> > > > > to avoid this problem. But this isn't a complete solution because=
- kgdb
-> > > > > may take a very long time in irq disabled context.
-> > > > >
-> > > > > Instead, update jiffies at the beginning of rcu_cpu_stall_reset()=
- can
-> > > > > solve all kinds of problems [1]. But this causes a new problem be=
-cause
-> > > > > updating jiffies is not NMI safe while rcu_cpu_stall_reset() may =
-be used
-> > > > > in NMI context.
-> > > > >
-> > > > > So we don't update the global jiffies, but only add the time 'del=
-ta' to
-> > > > > jiffies locally at the beginning of rcu_cpu_stall_reset() which h=
-as the
-> > > > > same effect.
-> > > > >
-> > > > > [1] https://lore.kernel.org/rcu/20230814020045.51950-1-chenhuacai=
-@loongson.cn/T/#t
-> > > > >
-> > > > > Cc: stable@vger.kernel.org
-> > > > > Fixes: a80be428fbc1f1f3bc9ed924 ("rcu: Do not disable GP stall de=
-tection in rcu_cpu_stall_reset()")
-> > > > > Reported-off-by: Binbin Zhou <zhoubinbin@loongson.cn>
-> > > > > Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-> > > > > ---
-> > > > >  kernel/rcu/tree_stall.h | 6 +++++-
-> > > > >  1 file changed, 5 insertions(+), 1 deletion(-)
-> > > > >
-> > > > > diff --git a/kernel/rcu/tree_stall.h b/kernel/rcu/tree_stall.h
-> > > > > index b10b8349bb2a..1bf1306cae23 100644
-> > > > > --- a/kernel/rcu/tree_stall.h
-> > > > > +++ b/kernel/rcu/tree_stall.h
-> > > > > @@ -153,8 +153,12 @@ static void panic_on_rcu_stall(void)
-> > > > >   */
-> > > > >  void rcu_cpu_stall_reset(void)
-> > > > >  {
-> > > > > +       unsigned long delta;
-> > > > > +
-> > > > > +       delta =3D nsecs_to_jiffies(ktime_get_ns() - ktime_get_coa=
-rse_ns());
-> > > > > +
-> > > > >         WRITE_ONCE(rcu_state.jiffies_stall,
-> > > > > -                  jiffies + rcu_jiffies_till_stall_check());
-> > > > > +                  jiffies + delta + rcu_jiffies_till_stall_check=
-());
-> > > >
-> > > > This is certainly better than magic numbers, but I was still wonder=
-ing
-> > > > how the delta really works. What are typical values of delta, and w=
-hy
-> > > > is that equivalent to updating jiffies?
-> > > >
-> > > > Can you provide more technical details about why it turns out to be
-> > > > effectively the number of jiffies that the jiffies are off by?
-> > > >
-> > > > Also, how often do you see that an NMI is required to prevent a KGD=
-B
-> > > > stall? If not, just do:
-> > > >
-> > > > void rcu_cpu_stall_reset(void) {
-> > > > [...]
-> > > >     if (!in_nmi) {
-> > > >       do_jiffies_update();
-> > > >    }
-> > > >    WRITE_ONCE(rcu_state.jiffies_stall, ..);
-> > > > [...]
-> > > > }
-> > > >
-> > > > ?
-> > > >
-> > > > But if your solution provides accurate results, that's fine with me=
-. I
-> > > > just don't understand coarse ktime that much and how it differs fro=
-m
-> > > > regular ktime, so I appreciate the education ;-)
-> > > ktime_get() get the accurate current time from clocksource,
-> > > ktime_get_coarse() get the coarse current time from jiffies. Below is
-> > > from Documentation/core-api/timekeeping.rst:
-> > >
-> > >         "The time returned here corresponds to the last timer tick, w=
-hich
-> > >         may be as much as 10ms in the past (for CONFIG_HZ=3D100), sam=
-e as
-> > >         reading the 'jiffies' variable.  These are only useful when c=
-alled
-> > >         in a fast path and one still expects better than second accur=
-acy,
-> > >         but can't easily use 'jiffies', e.g. for inode timestamps."
-> > >
-> > > So, the delta between ktime_get() and ktime_get_coarse() is accuratel=
-y
-> > > the delta when we update jiffies.
-> > >
-> >
-> > That sounds good to me then! I see you added Thomas so let us see if
-> > he yells back.
-> >
-> > But in the meanwhile, maybe you could also do some testing (if you
-> > want to) something like:
-> > =3D=3D=3D=3D=3D
-> > old_jiffies =3D jiffies;
-> > delta =3D nsecs_to_jiffies(ktime_get_ns() - ktime_get_coarse_ns());
-> >
-> > /* do the jiffies update here */
-> >
-> > WARN_ON_ONCE(jiffies - old_jiffies !=3D delta);
-> > =3D=3D=3D=3D=3D
-> Thank you for your advice, I do an experiment with the code below:
->
-> void rcu_cpu_stall_reset(void)
-> {
->         unsigned long delta;
->         u64 old =3D jiffies;
->         u64 now =3D ktime_get_ns();
->
->         delta =3D nsecs_to_jiffies(now - ktime_get_coarse_ns());
->         tick_do_update_jiffies64(now);
->         printk("jiffies - old =3D %lld, delta =3D %ld\n", jiffies - old, =
-delta);
->
->         WRITE_ONCE(rcu_state.jiffies_stall,
->                    jiffies + delta + rcu_jiffies_till_stall_check());
-> }
->
-> My machine has a quad-core cpu. I try 2 times, and I get:
->
-> [   56.178011] jiffies - old =3D 13028, delta =3D 13028   #HZ=3D250, ~50s
-> [   56.178010] jiffies - old =3D 13028, delta =3D 13028
-> [   56.178010] jiffies - old =3D 13028, delta =3D 13028
-> [   56.178012] jiffies - old =3D 13028, delta =3D 13028
->
-> [   84.722304] jiffies - old =3D 6955, delta =3D 6955      #HZ=3D250, ~27=
-s
-> [   84.722304] jiffies - old =3D 6955, delta =3D 6955
-> [   84.722304] jiffies - old =3D 6955, delta =3D 6955
-> [   84.722306] jiffies - old =3D 6955, delta =3D 6955
-
-Looks good and my testing went good as well. However, since we were
-worried about rcu_cpu_stall_reset() called from the NMI context, isn't
-ktime_get_mono_fast_ns() supposed to be the NMI safe version, which
-implies the others may not be? I am happy to be corrected on that...
-but the last thing we want is rcu_cpu_stall_reset() deadlocking in the
-timekeeping seq latch during a timekeeping update.
-
-Can you not do a jiffies update safely at a point before the stall
-detector warns? That stall detection happened here in the
-scheduling-clock interrupt.
-
- - Joel
+W1B1YmxpY10NCg0KPiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBJbHBvIErD
+pHJ2aW5lbiA8aWxwby5qYXJ2aW5lbkBsaW51eC5pbnRlbC5jb20+DQo+IFNlbnQ6IE1vbmRheSwg
+SnVseSAxNywgMjAyMyA4OjA1IEFNDQo+IFRvOiBsaW51eC1wY2lAdmdlci5rZXJuZWwub3JnOyBC
+am9ybiBIZWxnYWFzIDxiaGVsZ2Fhc0Bnb29nbGUuY29tPjsgTG9yZW56bw0KPiBQaWVyYWxpc2kg
+PGxvcmVuem8ucGllcmFsaXNpQGFybS5jb20+OyBSb2IgSGVycmluZyA8cm9iaEBrZXJuZWwub3Jn
+PjsNCj4gS3J6eXN6dG9mIFdpbGN6ecWEc2tpIDxrd0BsaW51eC5jb20+OyBFbW1hbnVlbCBHcnVt
+YmFjaA0KPiA8ZW1tYW51ZWwuZ3J1bWJhY2hAaW50ZWwuY29tPjsgUmFmYWVsIEogLiBXeXNvY2tp
+IDxyYWZhZWxAa2VybmVsLm9yZz47DQo+IEhlaW5lciBLYWxsd2VpdCA8aGthbGx3ZWl0MUBnbWFp
+bC5jb20+OyBMdWthcyBXdW5uZXIgPGx1a2FzQHd1bm5lci5kZT47DQo+IEFuZHkgU2hldmNoZW5r
+byA8YW5kcml5LnNoZXZjaGVua29AbGludXguaW50ZWwuY29tPjsgRGV1Y2hlciwgQWxleGFuZGVy
+DQo+IDxBbGV4YW5kZXIuRGV1Y2hlckBhbWQuY29tPjsgS29lbmlnLCBDaHJpc3RpYW4NCj4gPENo
+cmlzdGlhbi5Lb2VuaWdAYW1kLmNvbT47IFBhbiwgWGluaHVpIDxYaW5odWkuUGFuQGFtZC5jb20+
+OyBEYXZpZA0KPiBBaXJsaWUgPGFpcmxpZWRAZ21haWwuY29tPjsgRGFuaWVsIFZldHRlciA8ZGFu
+aWVsQGZmd2xsLmNoPjsgYW1kLQ0KPiBnZnhAbGlzdHMuZnJlZWRlc2t0b3Aub3JnOyBkcmktZGV2
+ZWxAbGlzdHMuZnJlZWRlc2t0b3Aub3JnOyBsaW51eC0NCj4ga2VybmVsQHZnZXIua2VybmVsLm9y
+Zw0KPiBDYzogRGVhbiBMdWljayA8ZGVhbi5sdWlja0Bjb3JuZWxpc25ldHdvcmtzLmNvbT47IEpv
+bmFzIERyZcOfbGVyDQo+IDx2ZXJkcmVAdjB5ZC5ubD47IElscG8gSsOkcnZpbmVuIDxpbHBvLmph
+cnZpbmVuQGxpbnV4LmludGVsLmNvbT47DQo+IHN0YWJsZUB2Z2VyLmtlcm5lbC5vcmcNCj4gU3Vi
+amVjdDogW1BBVENIIHY1IDA2LzExXSBkcm0vcmFkZW9uOiBVc2UgUk1XIGFjY2Vzc29ycyBmb3Ig
+Y2hhbmdpbmcNCj4gTE5LQ1RMDQo+DQo+IERvbid0IGFzc3VtZSB0aGF0IG9ubHkgdGhlIGRyaXZl
+ciB3b3VsZCBiZSBhY2Nlc3NpbmcgTE5LQ1RMLiBBU1BNIHBvbGljeQ0KPiBjaGFuZ2VzIGNhbiB0
+cmlnZ2VyIHdyaXRlIHRvIExOS0NUTCBvdXRzaWRlIG9mIGRyaXZlcidzIGNvbnRyb2wuDQo+IEFu
+ZCBpbiB0aGUgY2FzZSBvZiB1cHN0cmVhbSBicmlkZ2UsIHRoZSBkcml2ZXIgZG9lcyBub3QgZXZl
+biBvd24gdGhlIGRldmljZQ0KPiBpdCdzIGNoYW5naW5nIHRoZSByZWdpc3RlcnMgZm9yLg0KPg0K
+PiBVc2UgUk1XIGNhcGFiaWxpdHkgYWNjZXNzb3JzIHdoaWNoIGRvIHByb3BlciBsb2NraW5nIHRv
+IGF2b2lkIGxvc2luZw0KPiBjb25jdXJyZW50IHVwZGF0ZXMgdG8gdGhlIHJlZ2lzdGVyIHZhbHVl
+Lg0KPg0KPiBGaXhlczogOGE3Y2QyNzY3OWQwICgiZHJtL3JhZGVvbi9jaWs6IGFkZCBzdXBwb3J0
+IGZvciBwY2llIGdlbjEvMi8zDQo+IHN3aXRjaGluZyIpDQo+IEZpeGVzOiBiOWQzMDVkZmI2NmMg
+KCJkcm0vcmFkZW9uOiBpbXBsZW1lbnQgcGNpZSBnZW4yLzMgc3VwcG9ydCBmb3IgU0kiKQ0KPiBT
+dWdnZXN0ZWQtYnk6IEx1a2FzIFd1bm5lciA8bHVrYXNAd3VubmVyLmRlPg0KPiBTaWduZWQtb2Zm
+LWJ5OiBJbHBvIErDpHJ2aW5lbiA8aWxwby5qYXJ2aW5lbkBsaW51eC5pbnRlbC5jb20+DQo+IENj
+OiBzdGFibGVAdmdlci5rZXJuZWwub3JnDQoNCkZvciB0aGlzIGFuZCB0aGUgYW1kZ3B1IHBhdGNo
+Og0KQWNrZWQtYnk6IEFsZXggRGV1Y2hlciA8YWxleGFuZGVyLmRldWNoZXJAYW1kLmNvbT4NCkkn
+bSBub3Qgc3VyZSBpZiB0aGlzIGlzIHN0YWJsZSBtYXRlcmlhbCBob3dldmVyLiAgSXMgdGhlcmUg
+c29tZSBpc3N1ZSB0b2RheT8NCg0KDQo+IC0tLQ0KPiAgZHJpdmVycy9ncHUvZHJtL3JhZGVvbi9j
+aWsuYyB8IDM2ICsrKysrKysrKystLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tDQo+ICBkcml2ZXJz
+L2dwdS9kcm0vcmFkZW9uL3NpLmMgIHwgMzcgKysrKysrKysrKy0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tDQo+ICAyIGZpbGVzIGNoYW5nZWQsIDIwIGluc2VydGlvbnMoKyksIDUzIGRlbGV0aW9u
+cygtKQ0KPg0KPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9ncHUvZHJtL3JhZGVvbi9jaWsuYyBiL2Ry
+aXZlcnMvZ3B1L2RybS9yYWRlb24vY2lrLmMNCj4gaW5kZXggNTgxOTczN2MyMWM2Li5hNmYzYzgx
+MWNlYjggMTAwNjQ0DQo+IC0tLSBhL2RyaXZlcnMvZ3B1L2RybS9yYWRlb24vY2lrLmMNCj4gKysr
+IGIvZHJpdmVycy9ncHUvZHJtL3JhZGVvbi9jaWsuYw0KPiBAQCAtOTUzNCwxNyArOTUzNCw4IEBA
+IHN0YXRpYyB2b2lkIGNpa19wY2llX2dlbjNfZW5hYmxlKHN0cnVjdA0KPiByYWRlb25fZGV2aWNl
+ICpyZGV2KQ0KPiAgICAgICAgICAgICAgICAgICAgICAgdTE2IGJyaWRnZV9jZmcyLCBncHVfY2Zn
+MjsNCj4gICAgICAgICAgICAgICAgICAgICAgIHUzMiBtYXhfbHcsIGN1cnJlbnRfbHcsIHRtcDsN
+Cj4NCj4gLSAgICAgICAgICAgICAgICAgICAgIHBjaWVfY2FwYWJpbGl0eV9yZWFkX3dvcmQocm9v
+dCwgUENJX0VYUF9MTktDVEwsDQo+IC0gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICZicmlkZ2VfY2ZnKTsNCj4gLSAgICAgICAgICAgICAgICAgICAgIHBjaWVf
+Y2FwYWJpbGl0eV9yZWFkX3dvcmQocmRldi0+cGRldiwNCj4gUENJX0VYUF9MTktDVEwsDQo+IC0g
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICZncHVfY2ZnKTsN
+Cj4gLQ0KPiAtICAgICAgICAgICAgICAgICAgICAgdG1wMTYgPSBicmlkZ2VfY2ZnIHwgUENJX0VY
+UF9MTktDVExfSEFXRDsNCj4gLSAgICAgICAgICAgICAgICAgICAgIHBjaWVfY2FwYWJpbGl0eV93
+cml0ZV93b3JkKHJvb3QsIFBDSV9FWFBfTE5LQ1RMLA0KPiB0bXAxNik7DQo+IC0NCj4gLSAgICAg
+ICAgICAgICAgICAgICAgIHRtcDE2ID0gZ3B1X2NmZyB8IFBDSV9FWFBfTE5LQ1RMX0hBV0Q7DQo+
+IC0gICAgICAgICAgICAgICAgICAgICBwY2llX2NhcGFiaWxpdHlfd3JpdGVfd29yZChyZGV2LT5w
+ZGV2LA0KPiBQQ0lfRVhQX0xOS0NUTCwNCj4gLSAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgIHRtcDE2KTsNCj4gKyAgICAgICAgICAgICAgICAgICAgIHBjaWVf
+Y2FwYWJpbGl0eV9zZXRfd29yZChyb290LCBQQ0lfRVhQX0xOS0NUTCwNCj4gUENJX0VYUF9MTktD
+VExfSEFXRCk7DQo+ICsgICAgICAgICAgICAgICAgICAgICBwY2llX2NhcGFiaWxpdHlfc2V0X3dv
+cmQocmRldi0+cGRldiwNCj4gUENJX0VYUF9MTktDVEwsDQo+ICtQQ0lfRVhQX0xOS0NUTF9IQVdE
+KTsNCj4NCj4gICAgICAgICAgICAgICAgICAgICAgIHRtcCA9IFJSRUczMl9QQ0lFX1BPUlQoUENJ
+RV9MQ19TVEFUVVMxKTsNCj4gICAgICAgICAgICAgICAgICAgICAgIG1heF9sdyA9ICh0bXAgJiBM
+Q19ERVRFQ1RFRF9MSU5LX1dJRFRIX01BU0spDQo+ID4+IExDX0RFVEVDVEVEX0xJTktfV0lEVEhf
+U0hJRlQ7IEBAIC05NTkxLDIxICs5NTgyLDE0IEBAIHN0YXRpYw0KPiB2b2lkIGNpa19wY2llX2dl
+bjNfZW5hYmxlKHN0cnVjdCByYWRlb25fZGV2aWNlICpyZGV2KQ0KPiAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICBtc2xlZXAoMTAwKTsNCj4NCj4gICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgLyogbGlua2N0bCAqLw0KPiAtICAgICAgICAgICAgICAgICAgICAgICAgICAgICBwY2ll
+X2NhcGFiaWxpdHlfcmVhZF93b3JkKHJvb3QsDQo+IFBDSV9FWFBfTE5LQ1RMLA0KPiAtICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICZ0bXAxNik7
+DQo+IC0gICAgICAgICAgICAgICAgICAgICAgICAgICAgIHRtcDE2ICY9IH5QQ0lfRVhQX0xOS0NU
+TF9IQVdEOw0KPiAtICAgICAgICAgICAgICAgICAgICAgICAgICAgICB0bXAxNiB8PSAoYnJpZGdl
+X2NmZyAmDQo+IFBDSV9FWFBfTE5LQ1RMX0hBV0QpOw0KPiAtICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICBwY2llX2NhcGFiaWxpdHlfd3JpdGVfd29yZChyb290LA0KPiBQQ0lfRVhQX0xOS0NU
+TCwNCj4gLSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgdG1wMTYpOw0KPiAtDQo+IC0gICAgICAgICAgICAgICAgICAgICAgICAgICAgIHBjaWVf
+Y2FwYWJpbGl0eV9yZWFkX3dvcmQocmRldi0+cGRldiwNCj4gLSAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBQQ0lfRVhQX0xOS0NUTCwNCj4gLSAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAmdG1w
+MTYpOw0KPiAtICAgICAgICAgICAgICAgICAgICAgICAgICAgICB0bXAxNiAmPSB+UENJX0VYUF9M
+TktDVExfSEFXRDsNCj4gLSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgdG1wMTYgfD0gKGdw
+dV9jZmcgJg0KPiBQQ0lfRVhQX0xOS0NUTF9IQVdEKTsNCj4gLSAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgcGNpZV9jYXBhYmlsaXR5X3dyaXRlX3dvcmQocmRldi0+cGRldiwNCj4gLSAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgUENJX0VY
+UF9MTktDVEwsDQo+IC0gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgIHRtcDE2KTsNCj4gKyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgcGNp
+ZV9jYXBhYmlsaXR5X2NsZWFyX2FuZF9zZXRfd29yZChyb290LA0KPiBQQ0lfRVhQX0xOS0NUTCwN
+Cj4gKw0KPiBQQ0lfRVhQX0xOS0NUTF9IQVdELA0KPiArICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGJyaWRnZV9jZmcgJg0KPiAr
+DQo+IFBDSV9FWFBfTE5LQ1RMX0hBV0QpOw0KPiArICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICBwY2llX2NhcGFiaWxpdHlfY2xlYXJfYW5kX3NldF93b3JkKHJkZXYtDQo+ID5wZGV2LCBQQ0lf
+RVhQX0xOS0NUTCwNCj4gKw0KPiBQQ0lfRVhQX0xOS0NUTF9IQVdELA0KPiArICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGdwdV9j
+ZmcgJg0KPiArDQo+IFBDSV9FWFBfTE5LQ1RMX0hBV0QpOw0KPg0KPiAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAvKiBsaW5rY3RsMiAqLw0KPiAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICBwY2llX2NhcGFiaWxpdHlfcmVhZF93b3JkKHJvb3QsDQo+IFBDSV9FWFBfTE5LQ1RMMiwg
+ZGlmZiAtLWdpdCBhL2RyaXZlcnMvZ3B1L2RybS9yYWRlb24vc2kuYw0KPiBiL2RyaXZlcnMvZ3B1
+L2RybS9yYWRlb24vc2kuYyBpbmRleCA4ZDVlNGIyNTYwOWQuLmE5MTAxMjQ0N2I1Ng0KPiAxMDA2
+NDQNCj4gLS0tIGEvZHJpdmVycy9ncHUvZHJtL3JhZGVvbi9zaS5jDQo+ICsrKyBiL2RyaXZlcnMv
+Z3B1L2RybS9yYWRlb24vc2kuYw0KPiBAQCAtNzEzMSwxNyArNzEzMSw4IEBAIHN0YXRpYyB2b2lk
+IHNpX3BjaWVfZ2VuM19lbmFibGUoc3RydWN0DQo+IHJhZGVvbl9kZXZpY2UgKnJkZXYpDQo+ICAg
+ICAgICAgICAgICAgICAgICAgICB1MTYgYnJpZGdlX2NmZzIsIGdwdV9jZmcyOw0KPiAgICAgICAg
+ICAgICAgICAgICAgICAgdTMyIG1heF9sdywgY3VycmVudF9sdywgdG1wOw0KPg0KPiAtICAgICAg
+ICAgICAgICAgICAgICAgcGNpZV9jYXBhYmlsaXR5X3JlYWRfd29yZChyb290LCBQQ0lfRVhQX0xO
+S0NUTCwNCj4gLSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+JmJyaWRnZV9jZmcpOw0KPiAtICAgICAgICAgICAgICAgICAgICAgcGNpZV9jYXBhYmlsaXR5X3Jl
+YWRfd29yZChyZGV2LT5wZGV2LA0KPiBQQ0lfRVhQX0xOS0NUTCwNCj4gLSAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgJmdwdV9jZmcpOw0KPiAtDQo+IC0gICAg
+ICAgICAgICAgICAgICAgICB0bXAxNiA9IGJyaWRnZV9jZmcgfCBQQ0lfRVhQX0xOS0NUTF9IQVdE
+Ow0KPiAtICAgICAgICAgICAgICAgICAgICAgcGNpZV9jYXBhYmlsaXR5X3dyaXRlX3dvcmQocm9v
+dCwgUENJX0VYUF9MTktDVEwsDQo+IHRtcDE2KTsNCj4gLQ0KPiAtICAgICAgICAgICAgICAgICAg
+ICAgdG1wMTYgPSBncHVfY2ZnIHwgUENJX0VYUF9MTktDVExfSEFXRDsNCj4gLSAgICAgICAgICAg
+ICAgICAgICAgIHBjaWVfY2FwYWJpbGl0eV93cml0ZV93b3JkKHJkZXYtPnBkZXYsDQo+IFBDSV9F
+WFBfTE5LQ1RMLA0KPiAtICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgdG1wMTYpOw0KPiArICAgICAgICAgICAgICAgICAgICAgcGNpZV9jYXBhYmlsaXR5X3Nl
+dF93b3JkKHJvb3QsIFBDSV9FWFBfTE5LQ1RMLA0KPiBQQ0lfRVhQX0xOS0NUTF9IQVdEKTsNCj4g
+KyAgICAgICAgICAgICAgICAgICAgIHBjaWVfY2FwYWJpbGl0eV9zZXRfd29yZChyZGV2LT5wZGV2
+LA0KPiBQQ0lfRVhQX0xOS0NUTCwNCj4gK1BDSV9FWFBfTE5LQ1RMX0hBV0QpOw0KPg0KPiAgICAg
+ICAgICAgICAgICAgICAgICAgdG1wID0gUlJFRzMyX1BDSUUoUENJRV9MQ19TVEFUVVMxKTsNCj4g
+ICAgICAgICAgICAgICAgICAgICAgIG1heF9sdyA9ICh0bXAgJiBMQ19ERVRFQ1RFRF9MSU5LX1dJ
+RFRIX01BU0spDQo+ID4+IExDX0RFVEVDVEVEX0xJTktfV0lEVEhfU0hJRlQ7IEBAIC03MTg4LDIy
+ICs3MTc5LDE0IEBAIHN0YXRpYw0KPiB2b2lkIHNpX3BjaWVfZ2VuM19lbmFibGUoc3RydWN0IHJh
+ZGVvbl9kZXZpY2UgKnJkZXYpDQo+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIG1zbGVl
+cCgxMDApOw0KPg0KPiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAvKiBsaW5rY3RsICov
+DQo+IC0gICAgICAgICAgICAgICAgICAgICAgICAgICAgIHBjaWVfY2FwYWJpbGl0eV9yZWFkX3dv
+cmQocm9vdCwNCj4gUENJX0VYUF9MTktDVEwsDQo+IC0gICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgJnRtcDE2KTsNCj4gLSAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgdG1wMTYgJj0gflBDSV9FWFBfTE5LQ1RMX0hBV0Q7DQo+IC0gICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgIHRtcDE2IHw9IChicmlkZ2VfY2ZnICYNCj4gUENJX0VYUF9M
+TktDVExfSEFXRCk7DQo+IC0gICAgICAgICAgICAgICAgICAgICAgICAgICAgIHBjaWVfY2FwYWJp
+bGl0eV93cml0ZV93b3JkKHJvb3QsDQo+IC0gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgIFBDSV9FWFBfTE5LQ1RMLA0KPiAtICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB0bXAxNik7DQo+IC0N
+Cj4gLSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgcGNpZV9jYXBhYmlsaXR5X3JlYWRfd29y
+ZChyZGV2LT5wZGV2LA0KPiAtICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgIFBDSV9FWFBfTE5LQ1RMLA0KPiAtICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICZ0bXAxNik7DQo+IC0gICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgIHRtcDE2ICY9IH5QQ0lfRVhQX0xOS0NUTF9IQVdEOw0KPiAtICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICB0bXAxNiB8PSAoZ3B1X2NmZyAmDQo+IFBDSV9FWFBf
+TE5LQ1RMX0hBV0QpOw0KPiAtICAgICAgICAgICAgICAgICAgICAgICAgICAgICBwY2llX2NhcGFi
+aWxpdHlfd3JpdGVfd29yZChyZGV2LT5wZGV2LA0KPiAtICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBQQ0lfRVhQX0xOS0NUTCwNCj4gLSAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgdG1wMTYp
+Ow0KPiArICAgICAgICAgICAgICAgICAgICAgICAgICAgICBwY2llX2NhcGFiaWxpdHlfY2xlYXJf
+YW5kX3NldF93b3JkKHJvb3QsDQo+IFBDSV9FWFBfTE5LQ1RMLA0KPiArDQo+IFBDSV9FWFBfTE5L
+Q1RMX0hBV0QsDQo+ICsgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgYnJpZGdlX2NmZyAmDQo+ICsNCj4gUENJX0VYUF9MTktDVExf
+SEFXRCk7DQo+ICsgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHBjaWVfY2FwYWJpbGl0eV9j
+bGVhcl9hbmRfc2V0X3dvcmQocmRldi0NCj4gPnBkZXYsIFBDSV9FWFBfTE5LQ1RMLA0KPiArDQo+
+IFBDSV9FWFBfTE5LQ1RMX0hBV0QsDQo+ICsgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgZ3B1X2NmZyAmDQo+ICsNCj4gUENJX0VY
+UF9MTktDVExfSEFXRCk7DQo+DQo+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIC8qIGxp
+bmtjdGwyICovDQo+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHBjaWVfY2FwYWJpbGl0
+eV9yZWFkX3dvcmQocm9vdCwNCj4gUENJX0VYUF9MTktDVEwyLA0KPiAtLQ0KPiAyLjMwLjINCg0K
