@@ -2,163 +2,179 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8D6107809B1
-	for <lists+stable@lfdr.de>; Fri, 18 Aug 2023 12:09:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 38717780AE3
+	for <lists+stable@lfdr.de>; Fri, 18 Aug 2023 13:14:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239329AbjHRKJJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 18 Aug 2023 06:09:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57474 "EHLO
+        id S1355925AbjHRLOY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 18 Aug 2023 07:14:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38190 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376389AbjHRKIf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 18 Aug 2023 06:08:35 -0400
-Received: from mail-wm1-x32f.google.com (mail-wm1-x32f.google.com [IPv6:2a00:1450:4864:20::32f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3498E46BB
-        for <stable@vger.kernel.org>; Fri, 18 Aug 2023 03:08:01 -0700 (PDT)
-Received: by mail-wm1-x32f.google.com with SMTP id 5b1f17b1804b1-3fe8a1591c7so7067115e9.3
-        for <stable@vger.kernel.org>; Fri, 18 Aug 2023 03:08:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1692353211; x=1692958011;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Lv+abx3QslGUToUb7vrRoug6JE3seu3NREsfOC/kEXo=;
-        b=wxBr7P0QZmtmISzuXDXdgRfFhn+K3ceIA5ful2/bkKogmWFfEg4BN2B3yTOCJEU/uD
-         ke4BAKo+cU0CHmiGV2FVxTcgSo1vCJDr8MCx1l7PVOMQ/AEPdOk/8gDWDp24jtam+PgJ
-         kn05bDVjpzmNozWUSgVYqa1TA4CTX9B1xhLcxj2QrEbDtWS1qnCRWu2wT1K9p0liSKPO
-         UuYV9tLh6BLckNIX20BSW3EXqkSVq7qUXgsewcT0eQePEcBf5kC/T1tZEs2ytTbIl1Iq
-         im+Z438XNmcS/Rba7Krt7L4EFwE4s+Fdgg0WOPf//fN1krGnen1O2ktUwjpjLn/8StF7
-         qLVw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692353211; x=1692958011;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Lv+abx3QslGUToUb7vrRoug6JE3seu3NREsfOC/kEXo=;
-        b=PMQw6TYKBc5Aa0sCghZCYA5ivCRhTqubJr6RzkgkLbwkxtZHKBZvdQLZ8v3986dmT1
-         fyWTGA1kflVkAdVypT0TuS+AHk8mDu3zZy28+Z3e1IiQsZ0ziN/x/vHMjFJL/7QTcrwN
-         yxMDqfXqJUcqI5KhjZIDOdq1JfSQTvNqroPXdGudSqMjIIj2Qtc17NYZIDg9JnYl67mx
-         ZP2QB5bKwuJnyM+dfO8VG9kFdqjv+5Tt9ylcGGJOVEwEZ0u0z+79/r02HPKJz3UvLg8D
-         NBvj/6siSFUJwrvjvLBbom/jUyzyrBEX+fKKO60sDDhCBELSzkIuSCP5ixFFL98SDaEI
-         HYsQ==
-X-Gm-Message-State: AOJu0YxZEolNocflFS1Gi4UZdiGnf+Iqbxa3gNsl3e5aBfR+nVbfoWNc
-        QCr4Xvy2kh8HDevaCUpgdzJHeA==
-X-Google-Smtp-Source: AGHT+IFzWYJ6guNyIaVwmBfXsC7UfY0AV5H0XFxUUmTuqKkczLtSuqqAl+UGrkLoNy/+K3owMK1lWw==
-X-Received: by 2002:adf:e50b:0:b0:317:57f0:fae with SMTP id j11-20020adfe50b000000b0031757f00faemr1627817wrm.63.1692353211029;
-        Fri, 18 Aug 2023 03:06:51 -0700 (PDT)
-Received: from [192.168.10.46] (146725694.box.freepro.com. [130.180.211.218])
-        by smtp.googlemail.com with ESMTPSA id k10-20020adfe8ca000000b003198d274208sm2250783wrn.86.2023.08.18.03.06.49
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 18 Aug 2023 03:06:50 -0700 (PDT)
-Message-ID: <48283a14-d2af-630c-40c0-d0316cd30d69@linaro.org>
-Date:   Fri, 18 Aug 2023 12:06:49 +0200
+        with ESMTP id S1376562AbjHRLOB (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 18 Aug 2023 07:14:01 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 243EC1FE9;
+        Fri, 18 Aug 2023 04:14:00 -0700 (PDT)
+Date:   Fri, 18 Aug 2023 11:13:58 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1692357238;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=AiN71icVYzlR4s63/zJKC42piZqVUS3e45uTbzXDIvg=;
+        b=Bt4nSAzrLJ4Qj7fu4XwyPWKtrGkv1M+cBy2QJ9M0punPEXdpNXsnX8qI9FA+RyjJ08gCPg
+        SqgzHAyx/JHAVmLqKp3ZZRQz3YnHIJtXreb4OI2sBRlnsXjZgv/ShK9nuEPb5ffjncNzWn
+        aHLG5Qlsd+WL8zWZ6o8IGW5rGDhwdtJqhrWPzKCHS+r/LvQXLU1oYLcgtcuakEstrPAy9y
+        Zfqf3/vEasKzknm4Affj4SExfhE2RKsLF6dhICSohyZ0umdjRxr58mhG0+LT6RG5whWGvb
+        Y/8E4DZf/GXXVcwYjYS1IvG/Pc6dfUUUnOmGjiSUhtwwww0fYn18Rn5RnK7Kxw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1692357238;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=AiN71icVYzlR4s63/zJKC42piZqVUS3e45uTbzXDIvg=;
+        b=8x7IENgy9KCRazznvS5R0wL2z1qTwp9QWWO9xLp8M/DCQbzhxL4qZAxVT0DhoxkxKhhwLv
+        HJI6P/d+T4EG3zAw==
+From:   "tip-bot2 for Yazen Ghannam" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: ras/core] x86/MCE: Always save CS register on AMD Zen IF Poison errors
+Cc:     Yazen Ghannam <yazen.ghannam@amd.com>,
+        "Borislav Petkov (AMD)" <bp@alien8.de>, stable@vger.kernel.org,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20230814200853.29258-1-yazen.ghannam@amd.com>
+References: <20230814200853.29258-1-yazen.ghannam@amd.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH] clocksource/drivers/arm_arch_timer: Disable timer before
- programming CVAL
-Content-Language: en-US
-To:     =?UTF-8?B?V2FsdGVyIENoYW5nICjlvLXntq3lk7Ip?= 
-        <Walter.Chang@mediatek.com>, "maz@kernel.org" <maz@kernel.org>,
-        "mark.rutland@arm.com" <mark.rutland@arm.com>,
-        "tglx@linutronix.de" <tglx@linutronix.de>,
-        "matthias.bgg@gmail.com" <matthias.bgg@gmail.com>,
-        "angelogioacchino.delregno@collabora.com" 
-        <angelogioacchino.delregno@collabora.com>
-Cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-mediatek@lists.infradead.org" 
-        <linux-mediatek@lists.infradead.org>,
-        wsd_upstream <wsd_upstream@mediatek.com>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>,
-        =?UTF-8?B?Q2h1bi1IdW5nIFd1ICjlt6vpp7/lro8p?= 
-        <Chun-hung.Wu@mediatek.com>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        =?UTF-8?B?U3RhbmxleSBDaHUgKOacseWOn+mZnik=?= 
-        <stanley.chu@mediatek.com>,
-        =?UTF-8?B?RnJlZGR5IEhzaW4gKOi+m+aBkuixkCk=?= 
-        <Freddy.Hsin@mediatek.com>
-References: <20230717090735.19370-1-walter.chang@mediatek.com>
- <9c428d54c07f60e79c63119621bf03b797f79a37.camel@mediatek.com>
-From:   Daniel Lezcano <daniel.lezcano@linaro.org>
-In-Reply-To: <9c428d54c07f60e79c63119621bf03b797f79a37.camel@mediatek.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-5.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+Message-ID: <169235723803.27769.11766321060457693576.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 18/08/2023 11:29, Walter Chang (張維哲) wrote:
-> On Mon, 2023-07-17 at 17:07 +0800, walter.chang@mediatek.com wrote:
->> From: Walter Chang <walter.chang@mediatek.com>
->> 
->> Due to the fact that the use of `writeq_relaxed()` to program CVAL is
->> not guaranteed to be atomic, it is necessary to disable the timer
->> before
->> programming CVAL.
->> 
->> However, if the MMIO timer is already enabled and has not yet
->> expired,
->> there is a possibility of unexpected behavior occurring: when the CPU
->> enters the idle state during this period, and if the CPU's local
->> event
->> is earlier than the broadcast event, the following process occurs:
->> 
->> tick_broadcast_enter()
->>   tick_broadcast_oneshot_control(TICK_BROADCAST_ENTER)
->>     __tick_broadcast_oneshot_control()
->>       ___tick_broadcast_oneshot_control()
->>         tick_broadcast_set_event()
->>           clockevents_program_event()
->>             set_next_event_mem()
->> 
->> During this process, the MMIO timer remains enabled while programming
->> CVAL. To prevent such behavior, disable timer explicitly prior to
->> programming CVAL.
->> 
->> Fixes: 8b82c4f883a7 ("clocksource/drivers/arm_arch_timer: Move MMIO
->> timer programming over to CVAL")
->> Cc: stable@vger.kernel.org
->> Signed-off-by: Walter Chang <walter.chang@mediatek.com>
->> ---
->>  drivers/clocksource/arm_arch_timer.c | 7 +++++++
->>  1 file changed, 7 insertions(+)
->> 
->> diff --git a/drivers/clocksource/arm_arch_timer.c
->> b/drivers/clocksource/arm_arch_timer.c
->> index e733a2a1927a..7dd2c615bce2 100644
->> --- a/drivers/clocksource/arm_arch_timer.c
->> +++ b/drivers/clocksource/arm_arch_timer.c
->> @@ -792,6 +792,13 @@ static __always_inline void
->> set_next_event_mem(const int access, unsigned long e
->>  u64 cnt;
->>  
->>  ctrl = arch_timer_reg_read(access, ARCH_TIMER_REG_CTRL, clk);
->> +
->> +/* Timer must be disabled before programming CVAL */
->> +if (ctrl & ARCH_TIMER_CTRL_ENABLE) {
->> +ctrl &= ~ARCH_TIMER_CTRL_ENABLE;
->> +arch_timer_reg_write(access, ARCH_TIMER_REG_CTRL, ctrl,
->> clk);
->> +}
->> +
->>  ctrl |= ARCH_TIMER_CTRL_ENABLE;
->>  ctrl &= ~ARCH_TIMER_CTRL_IT_MASK;
->>  
-> 
-> Gentle ping for this patch.
+The following commit has been merged into the ras/core branch of tip:
 
-Applied, thanks
+Commit-ID:     4240e2ebe67941ce2c4f5c866c3af4b5ac7a0c67
+Gitweb:        https://git.kernel.org/tip/4240e2ebe67941ce2c4f5c866c3af4b5ac7a0c67
+Author:        Yazen Ghannam <yazen.ghannam@amd.com>
+AuthorDate:    Mon, 14 Aug 2023 15:08:53 -05:00
+Committer:     Borislav Petkov (AMD) <bp@alien8.de>
+CommitterDate: Fri, 18 Aug 2023 13:05:52 +02:00
 
--- 
-<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
+x86/MCE: Always save CS register on AMD Zen IF Poison errors
 
-Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
-<http://twitter.com/#!/linaroorg> Twitter |
-<http://www.linaro.org/linaro-blog/> Blog
+The Instruction Fetch (IF) units on current AMD Zen-based systems do not
+guarantee a synchronous #MC is delivered for poison consumption errors.
+Therefore, MCG_STATUS[EIPV|RIPV] will not be set. However, the
+microarchitecture does guarantee that the exception is delivered within
+the same context. In other words, the exact rIP is not known, but the
+context is known to not have changed.
 
+There is no architecturally-defined method to determine this behavior.
+
+The Code Segment (CS) register is always valid on such IF unit poison
+errors regardless of the value of MCG_STATUS[EIPV|RIPV].
+
+Add a quirk to save the CS register for poison consumption from the IF
+unit banks.
+
+This is needed to properly determine the context of the error.
+Otherwise, the severity grading function will assume the context is
+IN_KERNEL due to the m->cs value being 0 (the initialized value). This
+leads to unnecessary kernel panics on data poison errors due to the
+kernel believing the poison consumption occurred in kernel context.
+
+Signed-off-by: Yazen Ghannam <yazen.ghannam@amd.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20230814200853.29258-1-yazen.ghannam@amd.com
+---
+ arch/x86/kernel/cpu/mce/core.c     | 26 ++++++++++++++++++++++++++
+ arch/x86/kernel/cpu/mce/internal.h |  5 ++++-
+ 2 files changed, 30 insertions(+), 1 deletion(-)
+
+diff --git a/arch/x86/kernel/cpu/mce/core.c b/arch/x86/kernel/cpu/mce/core.c
+index b8ad5a5..6f35f72 100644
+--- a/arch/x86/kernel/cpu/mce/core.c
++++ b/arch/x86/kernel/cpu/mce/core.c
+@@ -843,6 +843,26 @@ static noinstr bool quirk_skylake_repmov(void)
+ }
+ 
+ /*
++ * Some Zen-based Instruction Fetch Units set EIPV=RIPV=0 on poison consumption
++ * errors. This means mce_gather_info() will not save the "ip" and "cs" registers.
++ *
++ * However, the context is still valid, so save the "cs" register for later use.
++ *
++ * The "ip" register is truly unknown, so don't save it or fixup EIPV/RIPV.
++ *
++ * The Instruction Fetch Unit is at MCA bank 1 for all affected systems.
++ */
++static __always_inline void quirk_zen_ifu(int bank, struct mce *m, struct pt_regs *regs)
++{
++	if (bank != 1)
++		return;
++	if (!(m->status & MCI_STATUS_POISON))
++		return;
++
++	m->cs = regs->cs;
++}
++
++/*
+  * Do a quick check if any of the events requires a panic.
+  * This decides if we keep the events around or clear them.
+  */
+@@ -861,6 +881,9 @@ static __always_inline int mce_no_way_out(struct mce *m, char **msg, unsigned lo
+ 		if (mce_flags.snb_ifu_quirk)
+ 			quirk_sandybridge_ifu(i, m, regs);
+ 
++		if (mce_flags.zen_ifu_quirk)
++			quirk_zen_ifu(i, m, regs);
++
+ 		m->bank = i;
+ 		if (mce_severity(m, regs, &tmp, true) >= MCE_PANIC_SEVERITY) {
+ 			mce_read_aux(m, i);
+@@ -1849,6 +1872,9 @@ static int __mcheck_cpu_apply_quirks(struct cpuinfo_x86 *c)
+ 		if (c->x86 == 0x15 && c->x86_model <= 0xf)
+ 			mce_flags.overflow_recov = 1;
+ 
++		if (c->x86 >= 0x17 && c->x86 <= 0x1A)
++			mce_flags.zen_ifu_quirk = 1;
++
+ 	}
+ 
+ 	if (c->x86_vendor == X86_VENDOR_INTEL) {
+diff --git a/arch/x86/kernel/cpu/mce/internal.h b/arch/x86/kernel/cpu/mce/internal.h
+index ed4a71c..bcf1b3c 100644
+--- a/arch/x86/kernel/cpu/mce/internal.h
++++ b/arch/x86/kernel/cpu/mce/internal.h
+@@ -157,6 +157,9 @@ struct mce_vendor_flags {
+ 	 */
+ 	smca			: 1,
+ 
++	/* Zen IFU quirk */
++	zen_ifu_quirk		: 1,
++
+ 	/* AMD-style error thresholding banks present. */
+ 	amd_threshold		: 1,
+ 
+@@ -172,7 +175,7 @@ struct mce_vendor_flags {
+ 	/* Skylake, Cascade Lake, Cooper Lake REP;MOVS* quirk */
+ 	skx_repmov_quirk	: 1,
+ 
+-	__reserved_0		: 56;
++	__reserved_0		: 55;
+ };
+ 
+ extern struct mce_vendor_flags mce_flags;
