@@ -2,72 +2,63 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A62A87805B2
-	for <lists+stable@lfdr.de>; Fri, 18 Aug 2023 07:34:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7698B7806ED
+	for <lists+stable@lfdr.de>; Fri, 18 Aug 2023 10:13:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1357238AbjHRFdi (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 18 Aug 2023 01:33:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40390 "EHLO
+        id S1358471AbjHRINC convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+stable@lfdr.de>); Fri, 18 Aug 2023 04:13:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57942 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1357903AbjHRFdY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 18 Aug 2023 01:33:24 -0400
-Received: from out1-smtp.messagingengine.com (out1-smtp.messagingengine.com [66.111.4.25])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C4DD1706;
-        Thu, 17 Aug 2023 22:33:22 -0700 (PDT)
-Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
-        by mailout.nyi.internal (Postfix) with ESMTP id 2308B5C00D1;
-        Fri, 18 Aug 2023 01:33:19 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute1.internal (MEProxy); Fri, 18 Aug 2023 01:33:19 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-type:content-type:date:date
-        :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-        :message-id:mime-version:references:reply-to:sender:subject
-        :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-        :x-sasl-enc; s=fm1; t=1692336799; x=1692423199; bh=Gc15qWvK649Gi
-        on2Drq5HT+hHTu1NHG5OYl6MDmkzx8=; b=1WjoWEpIiIi59tu822LZZkMN5IJTH
-        xCgRaQ9uamnnsxuS8DqOUK81oFgP1c4Spe/Q8o2QaF2/79kIaTUxoWLmy3xu8i5S
-        vaVM+/8nO2//Kzd0lPL7j3/mn9aUiUZB3O8rifUUYgsmW+2tF28OGby/oob+NW3w
-        q2i9HYmhOYhIdTKp/cZA+uesaMA0VkPtDYG0Juej+fJAMOX4KUIKSFSft585GaKD
-        cnBqPq3fkjhj5Nqj29HhzYYzSNlzmK2kVSKVmCH8D/43pQqNtg/shtt5Hfci+rHp
-        eJHoT3VRzy6IxP28ddIFHtUd+GYIaR7iMgQ259HzSlufS4LScHg5Nockw==
-X-ME-Sender: <xms:ngLfZCBoHPYvtZG7Wxc7YL2dtH-NPygbjWoZdaQUinVh7g2KTFm6Kw>
-    <xme:ngLfZMgxG1X7cHIwpSbW1GnysRvWIPl6q5TSFpX_qUlY76wFzJjdf-QhN_fKcLlHp
-    nooaQA4kULNrghgWB8>
-X-ME-Received: <xmr:ngLfZFk6DvdFj5F4n5jmx1YdW0aeHyYf8e4IvYhfjCNIXdrFmq1P5sGG7_LWXRkXUJGzg3aakI2Ob1DqHQ3j0QtAdzzF9u0-bLE>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrudduvddgleeiucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepfffhvfevufgjkfhfgggtsehttdertddttddvnecuhfhrohhmpefhihhnnhcu
-    vfhhrghinhcuoehfthhhrghinheslhhinhhugidqmheikehkrdhorhhgqeenucggtffrrg
-    htthgvrhhnpeefieehjedvtefgiedtudethfekieelhfevhefgvddtkeekvdekhefftdek
-    vedvueenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivg
-    eptdenucfrrghrrghmpehmrghilhhfrhhomhepfhhthhgrihhnsehlihhnuhigqdhmieek
-    khdrohhrgh
-X-ME-Proxy: <xmx:ngLfZAw6ajbDA8fh9OOLKMFhMdNfNDMur9BwPV4Nc8cbQOhYoiH-wg>
-    <xmx:ngLfZHRDtcKYaB0zppdEMgbJsLbKAQduu2KwKsVPvM7SszCV1kLtug>
-    <xmx:ngLfZLaMngko4vNM2g7H2MRG6ELIA8t5K-6D1VEvUkPPvzDcdF72Pg>
-    <xmx:nwLfZGEV9I-6suDbJVywE8_d352Y_50RfF63QN74pDiD5u4dT0kxyw>
-Feedback-ID: i58a146ae:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 18 Aug 2023 01:33:15 -0400 (EDT)
-Date:   Fri, 18 Aug 2023 15:33:29 +1000 (AEST)
-From:   Finn Thain <fthain@linux-m68k.org>
-To:     Michael Schmitz <schmitzmic@gmail.com>
-cc:     Damien Le Moal <dlemoal@kernel.org>, s.shtylyov@omp.ru,
-        linux-ide@vger.kernel.org, linux-m68k@vger.kernel.org,
-        will@sowerbutts.com, rz@linux-m68k.org, geert@linux-m68k.org,
-        stable@vger.kernel.org
-Subject: Re: [PATCH 1/3] m68k/q40: fix IO base selection for Q40 in
- pata_falcon.c
-In-Reply-To: <a75c21bc-c776-cf19-a5b2-9163af035d65@gmail.com>
-Message-ID: <ef903aa8-25aa-779b-cf88-33840b498282@linux-m68k.org>
-References: <20230817221232.22035-1-schmitzmic@gmail.com> <20230817221232.22035-2-schmitzmic@gmail.com> <ca753d89-ad51-d901-4058-d974fea7e658@kernel.org> <a75c21bc-c776-cf19-a5b2-9163af035d65@gmail.com>
+        with ESMTP id S1358463AbjHRIMg (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 18 Aug 2023 04:12:36 -0400
+Received: from mail-oo1-f45.google.com (mail-oo1-f45.google.com [209.85.161.45])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A627E2D67;
+        Fri, 18 Aug 2023 01:12:34 -0700 (PDT)
+Received: by mail-oo1-f45.google.com with SMTP id 006d021491bc7-56d26137095so113118eaf.1;
+        Fri, 18 Aug 2023 01:12:34 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1692346354; x=1692951154;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=wlfSrbt+jyOReyWKwiQVH9Cn4HXiM8ZuEdzWRtwyMeQ=;
+        b=R0gm8lYce1FiJEmy13lLT8jweH0Xgspf+tcoKJDOCxnvDCSjINcfLk7YI+AygvGQrW
+         u1xrH2VDO4XySgDSrXKb4g5ccpFXq2VzfWSTzj4/LwyRhWnitGWJ/G5fxarCKIG3noeg
+         ThwOCwwXO6Nu40Lmb4zKFcmm63yzEOPc2APSAvOs0eiMcI3BXpduGFlWIdgPuUzyab7n
+         7Iiyf9WEQ87iY3aL7Sog5DGIvDkbPA2ODZqhAcYUtLfeoyT/Tg6NPWsWWHG2IkA+2Hp5
+         FXHuq+J8a/9OMwcA6X7H/9MCHNkImNi7G/3bEqnBRETMB++a9dysIUh7F8e8on91xawD
+         uHng==
+X-Gm-Message-State: AOJu0YziU5nfsb51FWbn/ytiL8mLqLMvWxqRLHlNfDspYtvgKiPDiqj2
+        RDkH4vwbzpwW6B2sgZMJONO67B3A6SMp10qkYG4=
+X-Google-Smtp-Source: AGHT+IG5ZbK1ZC5QP/c343120LfytPwdwJ4JmaTUFGB4KRI6C1ojCn3gTXvm3TLzGQl52gTW7XBQmcU1T0om+FUVncU=
+X-Received: by 2002:a4a:d581:0:b0:56e:487f:8caa with SMTP id
+ z1-20020a4ad581000000b0056e487f8caamr2023839oos.1.1692346353860; Fri, 18 Aug
+ 2023 01:12:33 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_PASS,SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+References: <20230818051319.551-1-mario.limonciello@amd.com> <20230818051319.551-2-mario.limonciello@amd.com>
+In-Reply-To: <20230818051319.551-2-mario.limonciello@amd.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Fri, 18 Aug 2023 10:12:22 +0200
+Message-ID: <CAJZ5v0iHvbbNBnwb-RKvcBaFR8VMGyGt--b6RmbUmwuzcBZKnQ@mail.gmail.com>
+Subject: Re: [PATCH v13 01/12] PCI: Only put Intel PCIe ports >= 2015 into D3
+To:     Mario Limonciello <mario.limonciello@amd.com>
+Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Bjorn Helgaas <helgaas@kernel.org>, linux-pci@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        linux-acpi@vger.kernel.org,
+        Kuppuswamy Sathyanarayanan 
+        <sathyanarayanan.kuppuswamy@linux.intel.com>,
+        Iain Lane <iain@orangesquash.org.uk>,
+        Shyam-sundar S-k <Shyam-sundar.S-k@amd.com>,
+        stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=no autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -75,26 +66,62 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Fri, 18 Aug 2023, Michael Schmitz wrote:
+On Fri, Aug 18, 2023 at 7:14 AM Mario Limonciello
+<mario.limonciello@amd.com> wrote:
+>
+> commit 9d26d3a8f1b0 ("PCI: Put PCIe ports into D3 during suspend")
+> changed pci_bridge_d3_possible() so that any vendor's PCIe ports
+> from modern machines (>=2015) are allowed to be put into D3.
+>
+> Iain reports that USB devices can't be used to wake a Lenovo Z13
+> from suspend. This is because the PCIe root port has been put
+> into D3 and AMD's platform can't handle USB devices waking in this
+> case.
+>
+> This behavior is only reported on Linux. Comparing the behavior
+> on Windows and Linux, Windows doesn't put the root ports into D3.
+>
+> To fix the issue without regressing existing Intel systems,
+> limit the >=2015 check to only apply to Intel PCIe ports.
+>
+> Cc: stable@vger.kernel.org
+> Fixes: 9d26d3a8f1b0 ("PCI: Put PCIe ports into D3 during suspend")
+> Reported-by: Iain Lane <iain@orangesquash.org.uk>
+> Closes: https://forums.lenovo.com/t5/Ubuntu/Z13-can-t-resume-from-suspend-with-external-USB-keyboard/m-p/5217121
+> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+> ---
+> v12->v13:
+>  * New patch
+> ---
+>  drivers/pci/pci.c | 5 +++--
+>  1 file changed, 3 insertions(+), 2 deletions(-)
+>
+> diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+> index 60230da957e0c..051e88ee64c63 100644
+> --- a/drivers/pci/pci.c
+> +++ b/drivers/pci/pci.c
+> @@ -3037,10 +3037,11 @@ bool pci_bridge_d3_possible(struct pci_dev *bridge)
+>                         return false;
+>
+>                 /*
+> -                * It should be safe to put PCIe ports from 2015 or newer
+> +                * It is safe to put Intel PCIe ports from 2015 or newer
+>                  * to D3.
+>                  */
 
-> >> Cc: <stable@vger.kernel.org> # 5.14
-> >
-> > 5.14+ ? But I do not think you need to specify anything anyway since 
-> > you have the Fixes tag.
-> 
-> 5.14+ perhaps. I'll check the docs again to see whether Fixes: obsoletes 
-> the stable backport tag. I've so far used both together...
-> 
+I would say "Allow Intel PCIe ports from 2015 onward to go into D3 to
+achieve additional energy conservation on some platforms" without the
+"It is safe" part that is kind of obvious (it wouldn't be done if it
+were unsafe).
 
-You'd specify a "# x.y+" limit along with a "Fixes" tag if you don't want 
-to backport as far back as the buggy commit (because some other 
-pre-requisite isn't present on the older branches). But that does not 
-apply in this case.
+And analogously in patch [12/12].
 
-Writing "# 5.14" is surprising because (according to www.kernel.org 
-landing page) that branch was abandoned, and no live branch was named. 
-But in "git log" you can see that people write this anyway.
-
-Writing "# 5.14+" or "# 5.15+" is clear enough but is normally omitted 
-when it can be inferred from the Fixes tag. That's been my experience, at 
-least.
+> -               if (dmi_get_bios_year() >= 2015)
+> +               if (bridge->vendor == PCI_VENDOR_ID_INTEL &&
+> +                   dmi_get_bios_year() >= 2015)
+>                         return true;
+>                 break;
+>         }
+> --
+> 2.34.1
+>
