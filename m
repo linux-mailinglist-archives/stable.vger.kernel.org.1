@@ -2,119 +2,127 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3E098780DBA
-	for <lists+stable@lfdr.de>; Fri, 18 Aug 2023 16:13:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 66936780DDA
+	for <lists+stable@lfdr.de>; Fri, 18 Aug 2023 16:20:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348133AbjHROND (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 18 Aug 2023 10:13:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45894 "EHLO
+        id S1377317AbjHROUF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 18 Aug 2023 10:20:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47616 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377660AbjHROMz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 18 Aug 2023 10:12:55 -0400
-Received: from mail-oi1-x232.google.com (mail-oi1-x232.google.com [IPv6:2607:f8b0:4864:20::232])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0860B30F6
-        for <stable@vger.kernel.org>; Fri, 18 Aug 2023 07:12:53 -0700 (PDT)
-Received: by mail-oi1-x232.google.com with SMTP id 5614622812f47-3a80e665410so661307b6e.2
-        for <stable@vger.kernel.org>; Fri, 18 Aug 2023 07:12:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg-org.20221208.gappssmtp.com; s=20221208; t=1692367972; x=1692972772;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=BYbkuGWphKck53qhRSBFRHDgKey55imRkhHrLlN3Ku4=;
-        b=ygscda0SW+DoI+xM1m+X6QVMZ/+48fNkg7e0BRDfdfImdu4JFmDY4BlU13bvWPz/Ln
-         ol79wApAEOabboJA/jpajAN/GZQwdD/qjBEcFYVt2wDsTo8WxExhHLZvJOuge4GFg39m
-         c67fBh4KCaMkZNwdber8FH60yLWAomgkRTf8Z7jzh4QXyg9iLA5A2oY9GoW6+I4nkxyT
-         tuLjtVxdWCfqvFqDHn9Bz/9hLg0nptMwc67/KWKwxgMEbMhFssTgkvgEVTw05zeFQHoc
-         UvMS79ntR9HqvKtXhzW7SlDVYK4fUCGUbPhIRiQNDajG3crsk5j/webmaBRmeX+6GgHV
-         ncrg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692367972; x=1692972772;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=BYbkuGWphKck53qhRSBFRHDgKey55imRkhHrLlN3Ku4=;
-        b=DWS15czkZYoYFgvnuYuzEF4NMTkWmA2S0xGHfKovpUlRD4eVQB/p/MaIeMWjeesIgn
-         UGoc4AXWieZ4+VtWina670CW0ORFMUA/dUHeWJYyZBjDn4m4nS5MRvZSRF5RyN6btzjL
-         S5FtUaa60fqFZd/EhHwe5cYsAdEJqrEGrqM9vOC/j1xPfyKpr9yvPxJ8gOg46UCwq9EY
-         C/Sb0V+UdpP6TqFztK6T3Cht/pHrV5smcwE4/P/ewbMOwmDh7BuM5jJfE43bl46j7Iob
-         P9zUEG4UnN36xGhTpzU+Gl2l+zGtt6d3+BZWOJsrnCz3YO2Qo9L4jmbKaGewn3Btkjpy
-         /nAw==
-X-Gm-Message-State: AOJu0YzaeFwn4ktuRlH1/oaYN8hEHJTb46hFqeZ+8nUYa1NG1q/CH53O
-        vh+GQOYsERPxwHLU/I/ZAblYFVyajnrzKOZHLLPEoQ==
-X-Google-Smtp-Source: AGHT+IFhNH1W2ZLadujTkNccDtvX2b8TuH+H5bk+QLsoKGMdGEtgAoq4ItoEzN5ZlbCt7QVgOQ/N9A==
-X-Received: by 2002:a05:6808:220d:b0:3a7:4889:79fe with SMTP id bd13-20020a056808220d00b003a7488979femr3920845oib.20.1692367972393;
-        Fri, 18 Aug 2023 07:12:52 -0700 (PDT)
-Received: from localhost ([2620:10d:c091:400::5:75e0])
-        by smtp.gmail.com with ESMTPSA id c15-20020a0ca9cf000000b00637abbfaac9sm706117qvb.98.2023.08.18.07.12.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 18 Aug 2023 07:12:51 -0700 (PDT)
-Date:   Fri, 18 Aug 2023 10:12:51 -0400
-From:   Johannes Weiner <hannes@cmpxchg.org>
-To:     Nhat Pham <nphamcs@gmail.com>
-Cc:     akpm@linux-foundation.org, kernel-team@meta.com,
-        linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org, yosryahmed@google.com,
-        Yu Zhao <yuzhao@google.com>
-Subject: Re: [PATCH v2] workingset: ensure memcg is valid for recency check
-Message-ID: <20230818141251.GB138967@cmpxchg.org>
-References: <20230817164733.2475092-1-nphamcs@gmail.com>
- <20230817190126.3155299-1-nphamcs@gmail.com>
+        with ESMTP id S1377481AbjHROT4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 18 Aug 2023 10:19:56 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E4AA3AAC;
+        Fri, 18 Aug 2023 07:19:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1692368394; x=1723904394;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=6t+2wqAcIleaGbYchZEYFST4Lvi86RbDwXOifd8hTFU=;
+  b=CgYnSPMbMfVIb6P1sH0Y4f3sHl+saJLfOmGxHnqKKGhQrqN0IMFhzOkm
+   1oWCMrnPUl15sk3MeVYH66D890gcbueM+Lxfvv5EMO24YzcXNMG6zJrC7
+   lCNmBB2MRDbpsPlYIedlL2BRxnxj6TY6DQsbOVCrIjwMl2IGWuhbZTppD
+   sjdN8fQMRSIL2bbbP+UGVG4J90IJEhBl/wd9IkSPii1CHmC2QR6u4trlN
+   drPipUofmzHvSXoqB6gq6PYs+X/BnF9gBwC4smr1ZuVK/Qjta0syeSG16
+   Q3ImUA+YpWcYLNmNKh1hkPtWycofVPh/fOby0D1fI6ATe/0d+xumbonTa
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10806"; a="372011627"
+X-IronPort-AV: E=Sophos;i="6.01,183,1684825200"; 
+   d="scan'208";a="372011627"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Aug 2023 07:19:53 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10806"; a="684903682"
+X-IronPort-AV: E=Sophos;i="6.01,183,1684825200"; 
+   d="scan'208";a="684903682"
+Received: from bcottam-mobl1.amr.corp.intel.com (HELO [10.252.133.219]) ([10.252.133.219])
+  by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Aug 2023 07:19:53 -0700
+Message-ID: <c752ce85-13e2-44d3-8729-4ce296572069@linux.intel.com>
+Date:   Fri, 18 Aug 2023 07:19:53 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230817190126.3155299-1-nphamcs@gmail.com>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v13 01/12] PCI: Only put Intel PCIe ports >= 2015 into D3
+To:     Mario Limonciello <mario.limonciello@amd.com>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Bjorn Helgaas <helgaas@kernel.org>
+Cc:     linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        linux-acpi@vger.kernel.org, Iain Lane <iain@orangesquash.org.uk>,
+        Shyam-sundar S-k <Shyam-sundar.S-k@amd.com>,
+        stable@vger.kernel.org
+References: <20230818051319.551-1-mario.limonciello@amd.com>
+ <20230818051319.551-2-mario.limonciello@amd.com>
+Content-Language: en-US
+From:   Kuppuswamy Sathyanarayanan 
+        <sathyanarayanan.kuppuswamy@linux.intel.com>
+In-Reply-To: <20230818051319.551-2-mario.limonciello@amd.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, Aug 17, 2023 at 12:01:26PM -0700, Nhat Pham wrote:
->  static bool lru_gen_test_recent(void *shadow, bool file, struct lruvec **lruvec,
->  				unsigned long *token, bool *workingset)
->  {
-> -	int memcg_id;
->  	unsigned long min_seq;
->  	struct mem_cgroup *memcg;
->  	struct pglist_data *pgdat;
+Hi,
+
+On 8/17/2023 10:13 PM, Mario Limonciello wrote:
+> commit 9d26d3a8f1b0 ("PCI: Put PCIe ports into D3 during suspend")
+> changed pci_bridge_d3_possible() so that any vendor's PCIe ports
+> from modern machines (>=2015) are allowed to be put into D3.
+> 
+> Iain reports that USB devices can't be used to wake a Lenovo Z13
+> from suspend. This is because the PCIe root port has been put
+> into D3 and AMD's platform can't handle USB devices waking in this
+> case.
+> 
+> This behavior is only reported on Linux. Comparing the behavior
+> on Windows and Linux, Windows doesn't put the root ports into D3.
+> 
+> To fix the issue without regressing existing Intel systems,
+> limit the >=2015 check to only apply to Intel PCIe ports.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 9d26d3a8f1b0 ("PCI: Put PCIe ports into D3 during suspend")
+> Reported-by: Iain Lane <iain@orangesquash.org.uk>
+> Closes: https://forums.lenovo.com/t5/Ubuntu/Z13-can-t-resume-from-suspend-with-external-USB-keyboard/m-p/5217121
+> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+> ---
+
+Looks good to me.
+
+Reviewed-by:Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+
+> v12->v13:
+>  * New patch
+> ---
+>  drivers/pci/pci.c | 5 +++--
+>  1 file changed, 3 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+> index 60230da957e0c..051e88ee64c63 100644
+> --- a/drivers/pci/pci.c
+> +++ b/drivers/pci/pci.c
+> @@ -3037,10 +3037,11 @@ bool pci_bridge_d3_possible(struct pci_dev *bridge)
+>  			return false;
 >  
-> -	unpack_shadow(shadow, &memcg_id, &pgdat, token, workingset);
-> +	unpack_shadow(shadow, &memcg, &pgdat, token, workingset);
-> +	if (!mem_cgroup_disabled() && !memcg)
-> +		return false;
->  
-> -	memcg = mem_cgroup_from_id(memcg_id);
->  	*lruvec = mem_cgroup_lruvec(memcg, pgdat);
-> +	mem_cgroup_put(memcg);
->  
->  	min_seq = READ_ONCE((*lruvec)->lrugen.min_seq[file]);
->  	return (*token >> LRU_REFS_WIDTH) == (min_seq & (EVICTION_MASK >> LRU_REFS_WIDTH));
+>  		/*
+> -		 * It should be safe to put PCIe ports from 2015 or newer
+> +		 * It is safe to put Intel PCIe ports from 2015 or newer
+>  		 * to D3.
+>  		 */
+> -		if (dmi_get_bios_year() >= 2015)
+> +		if (bridge->vendor == PCI_VENDOR_ID_INTEL &&
+> +		    dmi_get_bios_year() >= 2015)
+>  			return true;
+>  		break;
+>  	}
 
-This isn't quite right. lruvec's lifetime is bound to the memcg, so
-the put has to happen after the code is done accessing it.
-
-lru_gen_refault() is still using the eviction lruvec after the recency
-test - but only if eviction_lruvec == refault_lruvec. This gives me
-pause, because they're frequently different. This is a common setup:
-
-root - slice - service 1
-            `- service 2
-
-where slice has the limit and will be the cause of evictions, whereas
-the service groups have the actual pages and see the refaults.
-
-workingset_eviction() and workingset_refault() will do recency
-evaluation against slice, and refault accounting against service X.
-
-MGLRU will use service X to determine recency, which 1) will not
-properly activate when one service is thrashing while the other is
-dominating the memory allowance of slice, and 2) will not detect
-refaults of pages shared between the services.
-
-Maybe it's time to fix this first and bring the two codebases in
-unison. Then the recency test and eviction group lifetime can be
-encapsulated in test_recent(), and _refault() can just use
-folio_memcg() to do the activation and accounting against.
+-- 
+Sathyanarayanan Kuppuswamy
+Linux Kernel Developer
