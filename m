@@ -2,165 +2,271 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0B487781371
-	for <lists+stable@lfdr.de>; Fri, 18 Aug 2023 21:40:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6AF4678143F
+	for <lists+stable@lfdr.de>; Fri, 18 Aug 2023 22:21:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1379651AbjHRTkQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 18 Aug 2023 15:40:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51704 "EHLO
+        id S1379941AbjHRUUz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 18 Aug 2023 16:20:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38226 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1379658AbjHRTkB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 18 Aug 2023 15:40:01 -0400
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on2049.outbound.protection.outlook.com [40.107.244.49])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 649F03C3F;
-        Fri, 18 Aug 2023 12:40:00 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=PzApI4cNn5jahxd114qic1k0CUxd6eXSxr/2NUhiK3zNLL6+3Iko5LAZSB034ysOsflkRshiTXryFwTEU1/rxe+odHUjEryn9QTBHO2Nd8inFr/CxPjoFdpExuWybLmH9+7QH35x1YcCF/QW/tIaW/nnAgLqonDdpflzZU1rgspphTzHOBwhQpgYeHe1y3Q4raDLp+Z+zGZwZLNlyzBLo6klZaAei3YQajCnJfR4fQ6hRcWkPhIiWsjZSjEy/iKU8zT5U0WF3ycpuf/5EZQf0fc+fS5AnHqU0ECZclBLB0Pqw2nr3zYY1oK99NtQCnHEvtzMJ1w6z1DunWnS6wWXWg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=t6ZKgrHOqIXPWweiZ3YaRGMVfgKIDuQZQKDAPFCYsMs=;
- b=ENGBR3qRaDNut5w0q1Dq0X8b1ICcZQPitQEXzQSS1owtrhiRmbRRHDzEM5Nn05WhgCaf89op5mPDUctfL1IRbyKw8UtSjJAiJzw4rZP3+tRoL27dalwJsuVWr38PaeUMezRvZweZqrOVAIUUzL1XUKbXA07VvLiPQgwQmEAJAehtduqf4IYCeHzIBdw6BEhBPgNCInVIY2GnO+Pm2nblq/pP9u4w6AttpU0juCXobQzv+0iRKLoz4qmC7Q0TgN48jzkb5Mvr1Yg/J0RKd0NSNoe3Beggy+MSIeBbm5QP2u3AKaCSt79Xv0JUWAdFbH2b6iqBulVwbB3lrKZylfpV7A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=linux.intel.com smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=t6ZKgrHOqIXPWweiZ3YaRGMVfgKIDuQZQKDAPFCYsMs=;
- b=XtwatXd1Ra3FdScQy6Xy8jecPRsW38N10sswt+ibXiNe0Y0Cyrcdla2aMhLeS4+tbKrhJF63MOzcyvjDaY7y+yTB/VN3av1u3IP43qEsjgpmiyTqXbYILJBgEI2UjG9N/Gt7J/h8CG0n7R0dy0tq49/VAQ1CBpdp8w8ZnkLY3e8=
-Received: from MW4PR03CA0333.namprd03.prod.outlook.com (2603:10b6:303:dc::8)
- by CH3PR12MB8709.namprd12.prod.outlook.com (2603:10b6:610:17c::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6699.20; Fri, 18 Aug
- 2023 19:39:57 +0000
-Received: from MWH0EPF000989EB.namprd02.prod.outlook.com
- (2603:10b6:303:dc:cafe::19) by MW4PR03CA0333.outlook.office365.com
- (2603:10b6:303:dc::8) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6699.17 via Frontend
- Transport; Fri, 18 Aug 2023 19:39:57 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- MWH0EPF000989EB.mail.protection.outlook.com (10.167.241.138) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.6699.14 via Frontend Transport; Fri, 18 Aug 2023 19:39:57 +0000
-Received: from AUS-LX-MLIMONCI.amd.com (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Fri, 18 Aug
- 2023 14:39:55 -0500
-From:   Mario Limonciello <mario.limonciello@amd.com>
-To:     Mika Westerberg <mika.westerberg@linux.intel.com>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Bjorn Helgaas <helgaas@kernel.org>
-CC:     <linux-pci@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-acpi@vger.kernel.org>, Iain Lane <iain@orangesquash.org.uk>,
-        "Andy Shevchenko" <andriy.shevchenko@linux.intel.com>,
-        Kuppuswamy Sathyanarayanan 
-        <sathyanarayanan.kuppuswamy@linux.intel.com>,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        <stable@vger.kernel.org>
-Subject: [PATCH v14.a 1/1] PCI: Only put Intel PCIe ports >= 2015 into D3
-Date:   Fri, 18 Aug 2023 14:39:32 -0500
-Message-ID: <20230818193932.27187-1-mario.limonciello@amd.com>
-X-Mailer: git-send-email 2.25.1
+        with ESMTP id S1379914AbjHRUU0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 18 Aug 2023 16:20:26 -0400
+Received: from mail-qt1-x82c.google.com (mail-qt1-x82c.google.com [IPv6:2607:f8b0:4864:20::82c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C63923A94
+        for <stable@vger.kernel.org>; Fri, 18 Aug 2023 13:20:23 -0700 (PDT)
+Received: by mail-qt1-x82c.google.com with SMTP id d75a77b69052e-40a47e8e38dso18241cf.1
+        for <stable@vger.kernel.org>; Fri, 18 Aug 2023 13:20:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20221208; t=1692390023; x=1692994823;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=hJivKRUQVufG/gPmQeTicJgOw5YOtNiOedA2X8vU9zE=;
+        b=G3VGxR5zQ/wn8bs1jFo/t0VmyFqMoOtDmLslbRIHJk21UrHdZY8HT8PexNES69U8cc
+         COydRhoSc2QngvCduPSEVYlodpuas9ObmPtUWW122HK8lZTSSCvjoy30H7lDXADy4EXV
+         5C1siSFS37lpkbu/yoolDQK8T/bXCB7/7pnZ0E7eraoK1ikRGty5FCbdgH7oR8AYFbS+
+         zO7O/LqS2xLH9BzUgKyBFydjigHDw9QQKSK25RA/gnWIpbLhEJlj3WcgLwP+XBVe17Mq
+         cO5v1MaDpawx4RoM46uQ94x3vozEKXF6MjTydtMTTAlt+XTyWdZlDPZbjfwvbnNnRpqG
+         qmPA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1692390023; x=1692994823;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=hJivKRUQVufG/gPmQeTicJgOw5YOtNiOedA2X8vU9zE=;
+        b=XUoFF6LtBbLD6MumkuUGJUawIfKjr8pWLtDYEP/8eweWNteHp9C5Fa2Sr1IyMm3SZf
+         p6MMP/n0ySCeUzn0NA7nyGzUZo4GCLXDNBs2vb6w07/4/5EK17RuwfdykU8NdArI1lB7
+         4BG7PuLUEmYSj4VyAdh//xfQ+YsFhO+wwdiDAeF/mtiVN/XFhmBXChGNcKsMdfSWHP2f
+         +oL1ab2Y6x9ygd6c9BXKBo0YoCpkMt/qlKAHmoEeVZsFhI3pCFNt7//BvL5GhtuGIkib
+         Xsi3s3ALmvBrN7cgs/KVLFMlbW9w37ucvA7Hd2P0oFy+/XrtqFO3ZFKLD5s8Kw66Ekyb
+         DTig==
+X-Gm-Message-State: AOJu0YyGi4Ke8z/fJGLTs+5S9LcD2fI6p5J+HpYunEq1bBBPMhQUZiwE
+        I32tMEb4cAlcdPvFm3+0Prz2uZSYAkfLwjON8qqK1Q==
+X-Google-Smtp-Source: AGHT+IEhwnsWoqhjrCcucUjO6z8QLTGzlIDf8prugA9O2RpP4srmVZqsJbmCcbZ5tZ9oWV31HG4wWi04/nNC4NUYdz4=
+X-Received: by 2002:ac8:5782:0:b0:40f:d1f4:aa58 with SMTP id
+ v2-20020ac85782000000b0040fd1f4aa58mr288786qta.8.1692390022713; Fri, 18 Aug
+ 2023 13:20:22 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MWH0EPF000989EB:EE_|CH3PR12MB8709:EE_
-X-MS-Office365-Filtering-Correlation-Id: cc626ac1-2bd6-46dd-b6ea-08dba022e747
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 6uWw1rQttwnBY/YcMAHnNvxPDWcqBu3gOqUHF9Es29lfN5skUcWMf4Jf9I4arkTD4ZuJ532WpcvrlEO0vTfhsrn4l/XmkDjA0qoOo3dzGLY0x5JOYJA7QGbxS0J3zSKR9bJR+B47Xc1/Zf6qdcr1sEAm0OCC9ps26kUIMaoG8ua4rKTH7BwrcRfcZTKdawtBCca1NbgQSGAuQZ3PVlF5ZGZtBfUObg2erASaATu+a0DwR2eo6liIv0rrB1+j8bJcGPayvw/k7RrC+PAxFc2eCmRCMoksBe8ljJIAqryJ+j4JJUW5ogAYEfojFowgYfTKvgn2svAPxzedXvpIfYFXBcLwfp40WIU0nfgacmKzqqTXz/N+XjOlZzOtTV0f7BdH3a95M7ypq+G/iG/Kq4xDRSjosuT9JB+E3iU1KIx7MYso6YX5KorXgEWhSnDSJWwkt+QubtuMqQH9iyAko9dYOQisAcw7XCdeu3lTfdg39kE6ci0DFaKUcas6zr4RqPDnsSe+e7zoJl2/DXbIeWt5A+kPmPxF+v8ahX9FLzcY6CwqQGBX1CEKBBV9xXV4zl/eiTXlgo4Oj5fJNMDJ1JNyor8DtA3FFHwrGtMgW2LvpQtmW7KVcoKMrj4LYsXM4uWZQBqcJid7ZwfCHhV4UgdRvLoBz6GQ1fpXEt1+FZPh3E5IWK2Q4HrjZxYwFDt0gD58kXe3gdGGxcqdOxonLt1fcDbjla8oqWhtvBJpMh663F5tGvn8w74pb20yfpX6RWfC
-X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(4636009)(39860400002)(376002)(136003)(396003)(346002)(451199024)(186009)(1800799009)(82310400011)(36840700001)(40470700004)(46966006)(110136005)(70206006)(70586007)(5660300002)(44832011)(2616005)(41300700001)(2906002)(316002)(54906003)(966005)(8936002)(8676002)(4326008)(7416002)(478600001)(40460700003)(6666004)(7696005)(86362001)(82740400003)(356005)(81166007)(47076005)(36756003)(16526019)(426003)(336012)(36860700001)(83380400001)(1076003)(26005)(40480700001)(36900700001);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Aug 2023 19:39:57.0907
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: cc626ac1-2bd6-46dd-b6ea-08dba022e747
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: MWH0EPF000989EB.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB8709
-X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.6
+References: <20220613094924.913340374@linuxfoundation.org> <20220613094928.793712131@linuxfoundation.org>
+ <6283c4b1-2513-207d-4ed6-fdabf3f3880e@collabora.com> <2023081619-slapping-congrats-8e85@gregkh>
+ <471bf84d-9d58-befc-8224-359a62e29786@collabora.com> <CAGETcx-NVoN7b8XCV09ouof81XxZk4wtGhEcqcFAt6Gs=JWKdw@mail.gmail.com>
+ <d8f8ddf6-8063-fb3a-7dad-4064a47c5fe8@collabora.com>
+In-Reply-To: <d8f8ddf6-8063-fb3a-7dad-4064a47c5fe8@collabora.com>
+From:   Saravana Kannan <saravanak@google.com>
+Date:   Fri, 18 Aug 2023 13:19:46 -0700
+Message-ID: <CAGETcx-DUm417mM-Nmyqj-e_rKUw69m=rTe5R6_Vxd_rsKMmGg@mail.gmail.com>
+Subject: Re: [PATCH 5.17 127/298] driver core: Fix wait_for_device_probe() &
+ deferred_probe_timeout interaction
+To:     Shreeya Patel <shreeya.patel@collabora.com>
+Cc:     Geert Uytterhoeven <geert+renesas@glider.be>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org, John Stultz <jstultz@google.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Alexey Kuznetsov <kuznet@ms2.inr.ac.ru>,
+        Hideaki YOSHIFUJI <yoshfuji@linux-ipv6.org>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Rob Herring <robh@kernel.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+        Robin Murphy <robin.murphy@arm.com>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Naresh Kamboju <naresh.kamboju@linaro.org>,
+        Basil Eljuse <Basil.Eljuse@arm.com>,
+        Ferry Toth <fntoth@gmail.com>, Arnd Bergmann <arnd@arndb.de>,
+        Anders Roxell <anders.roxell@linaro.org>,
+        linux-pm@vger.kernel.org, Nathan Chancellor <nathan@kernel.org>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Sasha Levin <sashal@kernel.org>, linux-kernel@vger.kernel.org,
+        "gustavo.padovan@collabora.com" <gustavo.padovan@collabora.com>,
+        =?UTF-8?Q?Ricardo_Ca=C3=B1uelo_Navarro?= 
+        <ricardo.canuelo@collabora.com>,
+        Guillaume Charles Tucker <guillaume.tucker@collabora.com>,
+        usama.anjum@collabora.com, kernelci@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
+        URIBL_BLOCKED,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-commit 9d26d3a8f1b0 ("PCI: Put PCIe ports into D3 during suspend")
-changed pci_bridge_d3_possible() so that any vendor's PCIe ports
-from modern machines (>=2015) are allowed to be put into D3.
+On Thu, Aug 17, 2023 at 4:13=E2=80=AFPM Shreeya Patel
+<shreeya.patel@collabora.com> wrote:
+>
+> Hi Geert, Saravana,
+>
+> On 18/08/23 00:03, Saravana Kannan wrote:
+> > On Thu, Aug 17, 2023 at 4:37=E2=80=AFAM Shreeya Patel
+> > <shreeya.patel@collabora.com> wrote:
+> >> Hi Greg,
+> >>
+> >> On 16/08/23 20:33, Greg Kroah-Hartman wrote:
+> >>> On Wed, Aug 16, 2023 at 03:09:27PM +0530, Shreeya Patel wrote:
+> >>>> On 13/06/22 15:40, Greg Kroah-Hartman wrote:
+> >>>>> From: Saravana Kannan<saravanak@google.com>
+> >>>>>
+> >>>>> [ Upstream commit 5ee76c256e928455212ab759c51d198fedbe7523 ]
+> >>>>>
+> >>>>> Mounting NFS rootfs was timing out when deferred_probe_timeout was
+> >>>>> non-zero [1].  This was because ip_auto_config() initcall times out
+> >>>>> waiting for the network interfaces to show up when
+> >>>>> deferred_probe_timeout was non-zero. While ip_auto_config() calls
+> >>>>> wait_for_device_probe() to make sure any currently running deferred
+> >>>>> probe work or asynchronous probe finishes, that wasn't sufficient t=
+o
+> >>>>> account for devices being deferred until deferred_probe_timeout.
+> >>>>>
+> >>>>> Commit 35a672363ab3 ("driver core: Ensure wait_for_device_probe() w=
+aits
+> >>>>> until the deferred_probe_timeout fires") tried to fix that by makin=
+g
+> >>>>> sure wait_for_device_probe() waits for deferred_probe_timeout to ex=
+pire
+> >>>>> before returning.
+> >>>>>
+> >>>>> However, if wait_for_device_probe() is called from the kernel_init(=
+)
+> >>>>> context:
+> >>>>>
+> >>>>> - Before deferred_probe_initcall() [2], it causes the boot process =
+to
+> >>>>>      hang due to a deadlock.
+> >>>>>
+> >>>>> - After deferred_probe_initcall() [3], it blocks kernel_init() from
+> >>>>>      continuing till deferred_probe_timeout expires and beats the p=
+oint of
+> >>>>>      deferred_probe_timeout that's trying to wait for userspace to =
+load
+> >>>>>      modules.
+> >>>>>
+> >>>>> Neither of this is good. So revert the changes to
+> >>>>> wait_for_device_probe().
+> >>>>>
+> >>>>> [1] -https://lore.kernel.org/lkml/TYAPR01MB45443DF63B9EF29054F7C41F=
+D8C60@TYAPR01MB4544.jpnprd01.prod.outlook.com/
+> >>>>> [2] -https://lore.kernel.org/lkml/YowHNo4sBjr9ijZr@dev-arch.thelio-=
+3990X/
+> >>>>> [3] -https://lore.kernel.org/lkml/Yo3WvGnNk3LvLb7R@linutronix.de/
+> >>>> Hi Saravana, Greg,
+> >>>>
+> >>>>
+> >>>> KernelCI found this patch causes the baseline.bootrr.deferred-probe-=
+empty test to fail on r8a77960-ulcb,
+> >>>> see the following details for more information.
+> >>>>
+> >>>> KernelCI dashboard link:
+> >>>> https://linux.kernelci.org/test/plan/id/64d2a6be8c1a8435e535b264/
+> >>>>
+> >>>> Error messages from the logs :-
+> >>>>
+> >>>> + UUID=3D11236495_1.5.2.4.5
+> >>>> + set +x
+> >>>> + export 'PATH=3D/opt/bootrr/libexec/bootrr/helpers:/lava-11236495/1=
+/../bin:/sbin:/usr/sbin:/bin:/usr/bin'
+> >>>> + cd /opt/bootrr/libexec/bootrr
+> >>>> + sh helpers/bootrr-auto
+> >>>> e6800000.ethernet
+> >>>> e6700000.dma-controller
+> >>>> e7300000.dma-controller
+> >>>> e7310000.dma-controller
+> >>>> ec700000.dma-controller
+> >>>> ec720000.dma-controller
+> >>>> fea20000.vsp
+> >>>> feb00000.display
+> >>>> fea28000.vsp
+> >>>> fea30000.vsp
+> >>>> fe9a0000.vsp
+> >>>> fe9af000.fcp
+> >>>> fea27000.fcp
+> >>>> fea2f000.fcp
+> >>>> fea37000.fcp
+> >>>> sound
+> >>>> ee100000.mmc
+> >>>> ee140000.mmc
+> >>>> ec500000.sound
+> >>>> /lava-11236495/1/../bin/lava-test-case
+> >>>> <8>[   17.476741] <LAVA_SIGNAL_TESTCASE TEST_CASE_ID=3Ddeferred-prob=
+e-empty RESULT=3Dfail>
+> >>>>
+> >>>> Test case failing :-
+> >>>> Baseline Bootrr deferred-probe-empty test -https://github.com/kernel=
+ci/bootrr/blob/main/helpers/bootrr-generic-tests
+> >>>>
+> >>>> Regression Reproduced :-
+> >>>>
+> >>>> Lava job after reverting the commit 5ee76c256e92
+> >>>> https://lava.collabora.dev/scheduler/job/11292890
+> >>>>
+> >>>>
+> >>>> Bisection report from KernelCI can be found at the bottom of the ema=
+il.
+> >>>>
+> >>>> Thanks,
+> >>>> Shreeya Patel
+> >>>>
+> >>>> #regzbot introduced: 5ee76c256e92
+> >>>> #regzbot title: KernelCI: Multiple devices deferring on r8a77960-ulc=
+b
+> >>>>
+> >>>> --------------------------------------------------------------------=
+---------------------------------------------------------------------------=
+----
+> >>>>
+> >>>> * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * **
+> >>>> * If you do send a fix, please include this trailer: *
+> >>>> * Reported-by: "kernelci.org bot" <bot@...> *
+> >>>> * *
+> >>>> * Hope this helps! *
+> >>>> * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+> >>>>
+> >>>> stable-rc/linux-5.10.y bisection: baseline.bootrr.deferred-probe-emp=
+ty on
+> >>>> r8a77960-ulcb
+> >>> You are testing 5.10.y, yet the subject says 5.17?
+> >>>
+> >>> Which is it here?
+> >> Sorry, I accidentally used the lore link for 5.17 while reporting this
+> >> issue,
+> >> but this test does fail on all the stable releases from 5.10 onwards.
+> >>
+> >> stable 5.15 :-
+> >> https://linux.kernelci.org/test/case/id/64dd156a5ac58d0cf335b1ea/
+> >> mainline :-
+> >> https://linux.kernelci.org/test/case/id/64dc13d55cb51357a135b209/
+> >>
+> > Shreeya, can you try the patch Geert suggested and let us know if it
+> > helps? If not, then I can try to take a closer look.
+>
+> I tried to test the kernel with 9be4cbd09da8 but it didn't change the
+> result.
+> https://lava.collabora.dev/scheduler/job/11311615
+>
+> Also, I am not sure if this can change things but just FYI, KernelCI
+> adds some kernel parameters when running these tests and one of the
+> parameter is deferred_probe_timeout=3D60.
 
-Iain reports that USB devices can't be used to wake a Lenovo Z13
-from suspend. This is because the PCIe root port has been put
-into D3 and AMD's platform can't handle USB devices waking in this
-case.
+Ah this is good to know.
 
-This behavior is only reported on Linux. Comparing the behavior
-on Windows and Linux, Windows doesn't put the root ports into D3.
+> You can check this in the definition details given in the Lava job. I
+> also tried to remove this parameter and rerun the test but again I got
+> the same result.
 
-To fix the issue without regressing existing Intel systems,
-limit the >=2015 check to only apply to Intel PCIe ports.
+How long does the test wait after boot before checking for the
+deferred devices list?
 
-Cc: stable@vger.kernel.org
-Fixes: 9d26d3a8f1b0 ("PCI: Put PCIe ports into D3 during suspend")
-Reported-by: Iain Lane <iain@orangesquash.org.uk>
-Closes: https://forums.lenovo.com/t5/Ubuntu/Z13-can-t-resume-from-suspend-with-external-USB-keyboard/m-p/5217121
-Reviewed-by:Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
----
-In v14 this series has been split into 3 parts.
- part A: Immediate fix for AMD issue.
- part B: LPS0 export improvements
- part C: Long term solution for all vendors
-v13->v14:
- * Reword the comment
- * add tag
-v12->v13:
- * New patch
----
- drivers/pci/pci.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+> I will try to add 9be4cbd09da8 to mainline kernel and see what results I
+> get.
 
-diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-index 60230da957e0c..bfdad2eb36d13 100644
---- a/drivers/pci/pci.c
-+++ b/drivers/pci/pci.c
-@@ -3037,10 +3037,15 @@ bool pci_bridge_d3_possible(struct pci_dev *bridge)
- 			return false;
- 
- 		/*
--		 * It should be safe to put PCIe ports from 2015 or newer
--		 * to D3.
-+		 * Allow Intel PCIe ports from 2015 onward to go into D3 to
-+		 * achieve additional energy conservation on some platforms.
-+		 *
-+		 * This is only set for Intel PCIe ports as it causes problems
-+		 * on both AMD Rembrandt and Phoenix platforms where USB keyboards
-+		 * can not be used to wake the system from suspend.
- 		 */
--		if (dmi_get_bios_year() >= 2015)
-+		if (bridge->vendor == PCI_VENDOR_ID_INTEL &&
-+		    dmi_get_bios_year() >= 2015)
- 			return true;
- 		break;
- 	}
--- 
-2.34.1
+Now I'm confused. What do you mean by mainline? Are you saying the tip
+of tree of Linus's tree is also hitting this issue?
 
+-Saravana
