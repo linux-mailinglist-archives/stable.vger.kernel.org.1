@@ -2,158 +2,151 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 720E27819C0
-	for <lists+stable@lfdr.de>; Sat, 19 Aug 2023 15:38:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B0812781B8E
+	for <lists+stable@lfdr.de>; Sun, 20 Aug 2023 02:14:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232731AbjHSNiT (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 19 Aug 2023 09:38:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44440 "EHLO
+        id S229555AbjHTALF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 19 Aug 2023 20:11:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57220 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229436AbjHSNiT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 19 Aug 2023 09:38:19 -0400
-Received: from out1-smtp.messagingengine.com (out1-smtp.messagingengine.com [66.111.4.25])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F3582D2F9;
-        Sat, 19 Aug 2023 06:35:26 -0700 (PDT)
-Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
-        by mailout.nyi.internal (Postfix) with ESMTP id 38C195C010D;
-        Sat, 19 Aug 2023 09:35:23 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute3.internal (MEProxy); Sat, 19 Aug 2023 09:35:23 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pks.im; h=cc:cc
-        :content-type:content-type:date:date:from:from:in-reply-to
-        :in-reply-to:message-id:mime-version:references:reply-to:sender
-        :subject:subject:to:to; s=fm1; t=1692452123; x=1692538523; bh=s0
-        DkB80QM5PxLvRe5qrV2u/Nzr3XG7+Odpxz7D4j7rw=; b=EXI3TMmR8q+ngoGyRv
-        j0XvEaGQT+YyLBN8TQQgHDdXSPq3DtDUIUOcoriJfN8BNgJnI0s0HBnsU8eTLzXe
-        7LktLYmHaidbvNQNkxi56QeXAOr9kqB2WgObb9VTYI3KWK2Etv6WWJsYe1R/hPfL
-        7RyJmo72hXsrrbhI903M7jD8Di8N4ifFrwkKQkZqYS7KsjuXPsB6S2nLA2/gCZSB
-        WHqyC0lj/F7eWMrD1Fc936e43nzIDNH4L9RUqaf9Qhm7RV99SO6DtEGcsDrOlr1q
-        6kwwa7clKvcS+sN9NAYvMgvg5tVCiKvq4/2K3jnoCmDTfC+Upmw9iKyU0C0GlJ6w
-        +7qQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-type:content-type:date:date
-        :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-        :message-id:mime-version:references:reply-to:sender:subject
-        :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-        :x-sasl-enc; s=fm1; t=1692452123; x=1692538523; bh=s0DkB80QM5PxL
-        vRe5qrV2u/Nzr3XG7+Odpxz7D4j7rw=; b=o8DN2OIeOrhoezr0BMMM6s4pxvYF7
-        r5ACr2g5feSpE6czVR9/aNeW83FR0A88xCsDPqOacFDbop8LdEzokHh0wRBMyxqX
-        7qPvxxXupXkfHRDB2rpvzHIPR6HA2X0k3B8EyZWI78QbPHeLI9KLYyvSg/5zVcSI
-        ycIeO6i+FthHS4RTTiOrduMIxHCrn8hDjYn6sD7IBr+H3zI9gKdDszGjMphmNCN1
-        Kh+bZbY46Ulr/ljCXggUJafjiv9dFt9SZot31u6mHgHcOkamCj+/fd3MSI3ZStb5
-        rZnc7waNEErw75zXH2A4Kga3ycnp0fswp9YXFjX14eHYNFqlOS4+Gbvbg==
-X-ME-Sender: <xms:GsXgZJzf5bMxfuGucmcwOlebYD9Q2CnXTDPhjnhlCPjtmlMyWWVcaw>
-    <xme:GsXgZJR5jNNgDBAVF3FvQLUk5walqc5g7CntkGcEn7QV7yLKeQQ_mrXNlvDX4CCfu
-    clc38GFQ_ODlcKDFA>
-X-ME-Received: <xmr:GsXgZDUU26vDAUjHGl9fVG8U_7SijT-vh30GInB9WuNCowBeGi10ulomjgQP9YGhdseuDIaKSqYIufehFo8TiDB05JScB58i6l-9QCsblChT>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrudduhedgieeiucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepfffhvfevuffkfhggtggujgesghdtreertddtvdenucfhrhhomheprfgrthhr
-    ihgtkhcuufhtvghinhhhrghrughtuceophhssehpkhhsrdhimheqnecuggftrfgrthhtvg
-    hrnhepueektdevtdffveeljeetgfehheeigeekleduvdeffeeghefgledttdehjeelffet
-    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepphhsse
-    hpkhhsrdhimh
-X-ME-Proxy: <xmx:GsXgZLikLtxbCW_A0wfLhsHu2G1917An8jbx6q4CUrJKCygc8UHEtQ>
-    <xmx:GsXgZLA2vU0mclgDGq9XWz7OWEufaTK5SnZM_ioUo5DI02Lyc_dT0Q>
-    <xmx:GsXgZEIF2aNrwusi2-Uxl4NMr0Wt54YffP5AciFWmBpzw6_v_sZpnw>
-    <xmx:G8XgZP1ze5i-3kVQH5igim6Ch9V0ekDoeA28PracmuwqC5-b_fuJtA>
-Feedback-ID: i197146af:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sat,
- 19 Aug 2023 09:35:20 -0400 (EDT)
-Received: by pks.im (OpenSMTPD) with ESMTPSA id fb4068d3 (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
-        Sat, 19 Aug 2023 13:32:57 +0000 (UTC)
-Date:   Sat, 19 Aug 2023 15:35:15 +0200
-From:   Patrick Steinhardt <ps@pks.im>
-To:     "Limonciello, Mario" <mario.limonciello@amd.com>
-Cc:     Jarkko Sakkinen <jarkko@kernel.org>,
-        linux-integrity@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Thorsten Leemhuis <regressions@leemhuis.info>,
-        charles.d.prestopine@intel.com, rafael.j.wysocki@intel.com,
-        len.brown@intel.com, stable@vger.kernel.org,
-        Todd Brandt <todd.e.brandt@intel.com>
-Subject: Re: [PATCH] tpm: Don't make vendor check required for probe
-Message-ID: <ZODFE7ngbLAo2vCx@ncase>
-References: <20230818181516.19167-1-mario.limonciello@amd.com>
- <CUW0GZCVHKPB.1W7ESSPE7INHQ@seitikki>
- <25a21516-7201-4ee4-be2b-f67edaf97e2a@amd.com>
- <CUW2JM314GAR.36XV41132X3OX@seitikki>
- <719602ec-c9fc-4a72-9585-d50595cb6dca@amd.com>
+        with ESMTP id S229646AbjHTAKn (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 19 Aug 2023 20:10:43 -0400
+Received: from mx01.omp.ru (mx01.omp.ru [90.154.21.10])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D89E821201;
+        Sat, 19 Aug 2023 13:29:25 -0700 (PDT)
+Received: from [192.168.1.103] (178.176.78.25) by msexch01.omp.ru
+ (10.188.4.12) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.986.14; Sat, 19 Aug
+ 2023 23:29:21 +0300
+Subject: Re: [PATCH 1/3] m68k/q40: fix IO base selection for Q40 in
+ pata_falcon.c
+To:     Michael Schmitz <schmitzmic@gmail.com>,
+        <linux-ide@vger.kernel.org>, <linux-m68k@vger.kernel.org>
+CC:     <will@sowerbutts.com>, <rz@linux-m68k.org>, <geert@linux-m68k.org>,
+        <stable@vger.kernel.org>, Finn Thain <fthain@linux-m68k.org>
+References: <20230817221232.22035-1-schmitzmic@gmail.com>
+ <20230817221232.22035-2-schmitzmic@gmail.com>
+From:   Sergey Shtylyov <s.shtylyov@omp.ru>
+Organization: Open Mobile Platform
+Message-ID: <82f37617-949b-bcfa-8531-c0a9790aaf48@omp.ru>
+Date:   Sat, 19 Aug 2023 23:29:20 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.10.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="GTm5NOWFRb5wyE6r"
-Content-Disposition: inline
-In-Reply-To: <719602ec-c9fc-4a72-9585-d50595cb6dca@amd.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <20230817221232.22035-2-schmitzmic@gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [178.176.78.25]
+X-ClientProxiedBy: msexch01.omp.ru (10.188.4.12) To msexch01.omp.ru
+ (10.188.4.12)
+X-KSE-ServerInfo: msexch01.omp.ru, 9
+X-KSE-AntiSpam-Interceptor-Info: scan successful
+X-KSE-AntiSpam-Version: 5.9.59, Database issued on: 08/19/2023 20:10:14
+X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
+X-KSE-AntiSpam-Method: none
+X-KSE-AntiSpam-Rate: 59
+X-KSE-AntiSpam-Info: Lua profiles 179337 [Aug 18 2023]
+X-KSE-AntiSpam-Info: Version: 5.9.59.0
+X-KSE-AntiSpam-Info: Envelope from: s.shtylyov@omp.ru
+X-KSE-AntiSpam-Info: LuaCore: 526 526 7a6a9b19f6b9b3921b5701490f189af0e0cd5310
+X-KSE-AntiSpam-Info: {rep_avail}
+X-KSE-AntiSpam-Info: {Tracking_uf_ne_domains}
+X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
+X-KSE-AntiSpam-Info: {relay has no DNS name}
+X-KSE-AntiSpam-Info: {SMTP from is not routable}
+X-KSE-AntiSpam-Info: {Found in DNSBL: 178.176.78.25 in (user)
+ b.barracudacentral.org}
+X-KSE-AntiSpam-Info: {Found in DNSBL: 178.176.78.25 in (user)
+ dbl.spamhaus.org}
+X-KSE-AntiSpam-Info: omp.ru:7.1.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;lore.kernel.org:7.1.1;127.0.0.199:7.1.2
+X-KSE-AntiSpam-Info: FromAlignment: s
+X-KSE-AntiSpam-Info: {rdns complete}
+X-KSE-AntiSpam-Info: {fromrtbl complete}
+X-KSE-AntiSpam-Info: ApMailHostAddress: 178.176.78.25
+X-KSE-AntiSpam-Info: Rate: 59
+X-KSE-AntiSpam-Info: Status: not_detected
+X-KSE-AntiSpam-Info: Method: none
+X-KSE-AntiSpam-Info: Auth:dmarc=none header.from=omp.ru;spf=none
+ smtp.mailfrom=omp.ru;dkim=none
+X-KSE-Antiphishing-Info: Clean
+X-KSE-Antiphishing-ScanningType: Heuristic
+X-KSE-Antiphishing-Method: None
+X-KSE-Antiphishing-Bases: 08/19/2023 20:13:00
+X-KSE-Antivirus-Interceptor-Info: scan successful
+X-KSE-Antivirus-Info: Clean, bases: 8/19/2023 5:17:00 PM
+X-KSE-Attachment-Filter-Triggered-Rules: Clean
+X-KSE-Attachment-Filter-Triggered-Filters: Clean
+X-KSE-BulkMessagesFiltering-Scan-Result: InTheLimit
+X-Spam-Status: No, score=-3.8 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+Hello!
 
---GTm5NOWFRb5wyE6r
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On 8/18/23 1:12 AM, Michael Schmitz wrote:
 
-On Fri, Aug 18, 2023 at 06:57:57PM -0500, Limonciello, Mario wrote:
->=20
->=20
-> On 8/18/2023 6:44 PM, Jarkko Sakkinen wrote:
-> > On Fri Aug 18, 2023 at 10:38 PM UTC, Limonciello, Mario wrote:
-> >>
-> >>
-> >> On 8/18/2023 5:07 PM, Jarkko Sakkinen wrote:
-> >>> On Fri Aug 18, 2023 at 6:15 PM UTC, Mario Limonciello wrote:
-> >>>> The vendor check introduced by commit 554b841d4703 ("tpm: Disable RN=
-G for
-> >>>> all AMD fTPMs") doesn't work properly on Intel fTPM.  The TPM doesn'=
-t reply
-> >>>> at bootup and returns back the command code.
-> >>>
-> >>> Is this reproducible with any production hardware? You are stating it
-> >>> as it was reproducible categorically with any Intel fTPM.
-> >>>
-> >>
-> >> Yes, it's affecting production hardware too.
-> >> Someone came to the kernel bugzilla and reported a regression on 6.4.11
-> >> on a Lenovo Intel laptop as well.
-> >=20
-> > Now the description says that cateogrically all Intel fTPM's fail.
->=20
-> According to Todd this change caused 5 *different* reference Intel=20
-> systems all to fail.  I know they're not production hardware, but still..
+> With commit 44b1fbc0f5f3 ("m68k/q40: Replace q40ide driver
+> with pata_falcon and falconide"), the Q40 IDE driver was
+> replaced by pata_falcon.c.
+> 
+> Both IO and memory resources were defined for the Q40 IDE
+> platform device, but definition of the IDE register addresses
+> was modeled after the Falcon case, both in use of the memory
+> resources and in including register scale and byte vs. word
+> offset in the address.
+> 
+> This was correct for the Falcon case, which does not apply
+> any address translation to the register addresses. In the
+> Q40 case, all of device base address, byte access offset
+> and register scaling is included in the platform specific
+> ISA access translation (in asm/mm_io.h).
+> 
+> As a consequence, such address translation gets applied
+> twice, and register addresses are mangled.
+> 
+> Use the device base address from the platform IO resource,
+> and use standard register offsets from that base in order
+> to calculate register addresses (the IO address translation
+> will then apply the correct ISA window base and scaling).
+> 
+> Encode PIO_OFFSET into IO port addresses for all registers
+> except the data transfer register. Encode the MMIO offset
+> there (pata_falcon_data_xfer() directly uses raw IO with
+> no address translation).
+> 
+> Reported-by: William R Sowerbutts <will@sowerbutts.com>
+> Closes: https://lore.kernel.org/r/CAMuHMdUU62jjunJh9cqSqHT87B0H0A4udOOPs=WN7WZKpcagVA@mail.gmail.com
+> Link: https://lore.kernel.org/r/CAMuHMdUU62jjunJh9cqSqHT87B0H0A4udOOPs=WN7WZKpcagVA@mail.gmail.com
+> Fixes: 44b1fbc0f5f3 ("m68k/q40: Replace q40ide driver with pata_falcon and falconide")
+> Cc: <stable@vger.kernel.org> # 5.14
+> Cc: Finn Thain <fthain@linux-m68k.org>
+> Cc: Geert Uytterhoeven <geert@linux-m68k.org>
+> Signed-off-by: Michael Schmitz <schmitzmic@gmail.com>
 
-For what it's worth, I can confirm that this issue also occurs on an
-ASUS Z170I motherboard with Intel i3 7100U and an integrated fTPM. If it
-helps I'm happy to try out the proposed patch -- for now I simply
-reverted 554b841d4703 ("tpm: Disable RNG for all AMD fTPMs"), which
-resolved the issue for me.
+Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
 
-Patrick
+[...]
+> diff --git a/drivers/ata/pata_falcon.c b/drivers/ata/pata_falcon.c
+> index 996516e64f13..346259e3bbc8 100644
+> --- a/drivers/ata/pata_falcon.c
+> +++ b/drivers/ata/pata_falcon.c
+> @@ -123,8 +123,8 @@ static int __init pata_falcon_init_one(struct platform_device *pdev)
+>  	struct resource *base_res, *ctl_res, *irq_res;
+>  	struct ata_host *host;
+>  	struct ata_port *ap;
+> -	void __iomem *base;
+> -	int irq = 0;
+> +	void __iomem *base, *ctl_base;
+> +	int irq = 0, io_offset = 1, reg_scale = 4;
 
---GTm5NOWFRb5wyE6r
-Content-Type: application/pgp-signature; name="signature.asc"
+   Maybe reg_step?
 
------BEGIN PGP SIGNATURE-----
+[...]
 
-iQIzBAABCgAdFiEEF9hrgiFbCdvenl/rVbJhu7ckPpQFAmTgxRMACgkQVbJhu7ck
-PpTGrQ/+NSOsdhrpo9Bqdl1pr45xp0zOtHBhTY34uRNDQdBxKAuniFqfxRjLy9lf
-5oxS67OZC3JXYpPVEriLcrALtQj4J2iSA6/dSN3q0EUard8vO0heLVTTZdiG2BOW
-/Y8zhydrxs4s1s4n1E6Z02Ofk7Own+QdCbsAOOqi+zzoKFKrwB3iY51evQ9Jvett
-IOzg+zS93kDyOJFkQqCTGaz3JrPPPcHZfg/m3jbPOWImyL9+aONEXrrDYRyYXnwY
-zME05dZcQ/fsjUrDtsP9d5FRkw/XA6EcQQrdOcOezxUp8GJQSlBO/a7GLbnao1hK
-XxyusCSBNKVBnf1iEP0P3uPJ9frD96F6x6HT1mLUtYakmKo9XGseodZ0K35FBanG
-IGmgmab/bOCp5ra1SQQZirQmkekTqLLGCSkFmVOO7dsGmrQZoinfW9hQhh/LFoNr
-KMZRPzGtS+aU9+/fm32qJIJDo/D24GKZDtL48UGkyKvNUiLj13p8Ee1YqVL6Ytvq
-REF0tzp1rN8r4tuD1kVtwplt2x1oRNe6ysGtJRKdOddP+CXRlGMlzuxuXBP4Eany
-KLbk+WTUhqh1FdwNRTueC2vZwwIGMqi1YiQffQcJIvod5D2A2FDyP65g8fXdreoy
-3VkpVnKS+ep/oEJDYYIwmP6grIx746YSjV4AKCJ/Xruj5L7qEmo=
-=JhpO
------END PGP SIGNATURE-----
-
---GTm5NOWFRb5wyE6r--
+MBR, Sergey
