@@ -2,210 +2,225 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9E08B7815EE
-	for <lists+stable@lfdr.de>; Sat, 19 Aug 2023 01:58:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CA0EF78162A
+	for <lists+stable@lfdr.de>; Sat, 19 Aug 2023 02:54:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242920AbjHRX6P (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 18 Aug 2023 19:58:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48908 "EHLO
+        id S243394AbjHSAw7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 18 Aug 2023 20:52:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37532 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242717AbjHRX6G (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 18 Aug 2023 19:58:06 -0400
-Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2081.outbound.protection.outlook.com [40.107.243.81])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 68AE12D65;
-        Fri, 18 Aug 2023 16:58:04 -0700 (PDT)
+        with ESMTP id S243434AbjHSAwS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 18 Aug 2023 20:52:18 -0400
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D7A5C44B1;
+        Fri, 18 Aug 2023 17:44:22 -0700 (PDT)
+Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
+        by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 37IFo0SD027850;
+        Sat, 19 Aug 2023 00:44:13 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
+ subject : date : message-id : in-reply-to : references :
+ content-transfer-encoding : content-type : mime-version;
+ s=corp-2023-03-30; bh=feqk/SDhmjpE1eHojcZ94OQImeurSY23yvCAzDKLIqg=;
+ b=uSTOPvYWI7PY4Tl3G0QrxfLTiYwWzMUQiBUN62Q+h11lLUCx4xCi3RsjOEN7ehU7lUr6
+ 7vuWnyjl+u0+ITbI3qv+zNFaZDAALHcwHIoNd9yDkHXz5piuBWVl6nTWMtB0M87PWAmW
+ Z9dTCUaIcU77yNHO4J3MEa3Nhg+lMYId8RvYypSDl5ZKLB82J3qL37wGOWy0fxjadPFj
+ eb4Luyc12kMag+kY7MD9CDf8hMrLwdfqcMLcdvdb8YJjLFxN4n4WVueSmW1TP/UGKnME
+ t6tWV9UsJHcbm0+J+rngcaA3ueO5li9Pzku0aBZFDhq2d1qdy2Pr8dJqxbvpiJ1HQ85a mg== 
+Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
+        by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3se349n03m-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Sat, 19 Aug 2023 00:44:12 +0000
+Received: from pps.filterd (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+        by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19) with ESMTP id 37ILdQ4h019891;
+        Sat, 19 Aug 2023 00:44:09 GMT
+Received: from nam11-bn8-obe.outbound.protection.outlook.com (mail-bn8nam11lp2169.outbound.protection.outlook.com [104.47.58.169])
+        by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 3sey412sfm-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Sat, 19 Aug 2023 00:44:09 +0000
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=jkCBe1EEfkL8sBn3BOr+mrYJ2tQuWhPa1W4fJnhmRh0VKOA1b0N/dCeQNtP3EGtB8P5b9hYo8ZfBtOfNCBCU4nMim1XAsEmjm8kDCKArzZAE8gHAgkF3sb16FrUl603GqJS8IqOVmsG/J6URMG+FaF+ErOicOeBgp20gnWaSllA2+o9y1gGrMEl4kg0L3yaH+GmcrHnyNIOeOV2Mhus6XyWZ9j4SZ2LlXynzDYQiwqdFSKS8ieKiow88nJzpq76L0zgX5FKuP4R0CUP1dVKUx+uC9UgBANKqz/O3GnCAo+Qqu/ctgfKlJFyE1PUNavpskNxBkm4tvKq50L63BR8LIQ==
+ b=i33u7vxHqaW9JRFd7bpZSdNp6H1r14Tj8qMUv3gfobHuch09Bg9XVdf/iTHKIS4Bsc7oxr8O88K+sCNsaUeXW7gjrh40z0a3K1PZC9M/PRisT+BXPirdG9OboFYLkulCQIhu8XjYPGazzVpWWV9B1yg+dEniY5ZlZNXhUOv+F6uw9sTcv7o3blenog3qli1gs4Izs6z0iynbOiKma+SoPNlvpOP5WhOUug3TPV5Sz9X0ekqR2Lwxo453TDZirakeKkZZGvR8TiRsTYJiv4izx8J63d1bI0Qn1ot+Le0N5z+buuWxClEwk6sDoYhLxInxEf7EYEdVRoUz1Net4LumtA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=hzAqwlpRc8z1ikiGNunPbbeEtWQvVwqeYnxfMljkLGw=;
- b=QTwHbFnQ47dPF/YTzPPLMoD9agem+6Gs9+aOS3CjEyeLt4fBm8hYsm0O0/PMDu7UXdkEqOstv3fioEF4hlv4K7nn4zW5r92nG24sCC1rr0OwqGoZNtpekG8t880l3zNF1wNH+R2hyFZLjm4nSq2CzxfUjSGob74jfo5NVoeGW866SwF1i6N9i2P3UY0oS3l0RHUhAzg5ZJNlIXP4f1wfw2vYsoV8NntcA4l06v4sGig9ZXW5KLZhz5Ia5f2VQ8Vd9qltrZMbFN4LetxTanBDAaD6qAmQdqb+hJqJxynHRT0vjUXXLRM5P30xjcGcMBiVOzXKKjHakUgao5qnPb65lA==
+ bh=feqk/SDhmjpE1eHojcZ94OQImeurSY23yvCAzDKLIqg=;
+ b=WKEElb4wxXmfvPyKrGz4zYtHSJQlDAZuS6rFRP6nyZpFbwJGsTuG4nESWtNa9wVY7cmv6Bv+1MAl9ZKZRG06xqC7OwThKOcwQUeyzD3uQLp6PKrhuc5ZamsF8nu4szOSvIZJrYGI6lKsG6xoTijpIdIdcupMAEtMYk4N3vYYonJCcKgyNhhHVgad7CZqlzsV5Wc0/2XyudV49NiDtkaXTux0jsljyYpoOcI1DDLmeUUU7+0EXIQINmKILyY7o7bFrxtHEKoE4KPIWWbfGkVX0IwMoTQGsgdW4KLZ7ZaNbcbA9EQC14Joyr7n00jyC0Eb3wqMTaOwGDYmwflRMOO+iA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=hzAqwlpRc8z1ikiGNunPbbeEtWQvVwqeYnxfMljkLGw=;
- b=HY3Vz/Gm7AGtDC+7jGdeY28MKcbgACeujWh0RBQa7Ho9gqBw908lb7FDw7FvMNnHY6gOBn18o5U59/Am6/Tv2vkZ9no9Tn3ERUAxalNh4tA8csxnJE7IiCkmZY9q8Cdd4brcLNDQrlTajCVd9u8n92ZCQbyhNzx4kgstObT/vqQ=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from MN0PR12MB6101.namprd12.prod.outlook.com (2603:10b6:208:3cb::10)
- by DS0PR12MB9058.namprd12.prod.outlook.com (2603:10b6:8:c6::10) with
+ bh=feqk/SDhmjpE1eHojcZ94OQImeurSY23yvCAzDKLIqg=;
+ b=iiiAUDHfaaXalCgpEzoOuo+oFho+smlJbHSCpZJDgqqCGSAHK6nNLAgDl9pzm+DIY7zQvdf7Nz/qAfXm+QNsiOo81uGPaO3BhyrJeAWwnyTsn5IOA9zs9+FxYFzuIA2v/jzJfDWNp0rrf0CKrwclapXxJqPtVOFPtSwKdNZ4274=
+Received: from SN6PR10MB3022.namprd10.prod.outlook.com (2603:10b6:805:d8::25)
+ by IA1PR10MB7167.namprd10.prod.outlook.com (2603:10b6:208:3f1::12) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6699.20; Fri, 18 Aug
- 2023 23:58:01 +0000
-Received: from MN0PR12MB6101.namprd12.prod.outlook.com
- ([fe80::36f9:ffa7:c770:d146]) by MN0PR12MB6101.namprd12.prod.outlook.com
- ([fe80::36f9:ffa7:c770:d146%7]) with mapi id 15.20.6699.020; Fri, 18 Aug 2023
- 23:58:00 +0000
-Message-ID: <719602ec-c9fc-4a72-9585-d50595cb6dca@amd.com>
-Date:   Fri, 18 Aug 2023 18:57:57 -0500
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] tpm: Don't make vendor check required for probe
-Content-Language: en-US
-To:     Jarkko Sakkinen <jarkko@kernel.org>
-Cc:     linux-integrity@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Thorsten Leemhuis <regressions@leemhuis.info>,
-        charles.d.prestopine@intel.com, rafael.j.wysocki@intel.com,
-        len.brown@intel.com, stable@vger.kernel.org,
-        Todd Brandt <todd.e.brandt@intel.com>
-References: <20230818181516.19167-1-mario.limonciello@amd.com>
- <CUW0GZCVHKPB.1W7ESSPE7INHQ@seitikki>
- <25a21516-7201-4ee4-be2b-f67edaf97e2a@amd.com>
- <CUW2JM314GAR.36XV41132X3OX@seitikki>
-From:   "Limonciello, Mario" <mario.limonciello@amd.com>
-In-Reply-To: <CUW2JM314GAR.36XV41132X3OX@seitikki>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SN7PR04CA0233.namprd04.prod.outlook.com
- (2603:10b6:806:127::28) To MN0PR12MB6101.namprd12.prod.outlook.com
- (2603:10b6:208:3cb::10)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6699.20; Sat, 19 Aug
+ 2023 00:44:07 +0000
+Received: from SN6PR10MB3022.namprd10.prod.outlook.com
+ ([fe80::26d3:6f41:6415:8c35]) by SN6PR10MB3022.namprd10.prod.outlook.com
+ ([fe80::26d3:6f41:6415:8c35%3]) with mapi id 15.20.6678.031; Sat, 19 Aug 2023
+ 00:44:07 +0000
+From:   "Liam R. Howlett" <Liam.Howlett@oracle.com>
+To:     Andrew Morton <akpm@linux-foundation.org>
+Cc:     maple-tree@lists.infradead.org, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org,
+        "Liam R. Howlett" <Liam.Howlett@oracle.com>, stable@vger.kernel.org
+Subject: [PATCH v2 1/2] maple_tree: Disable mas_wr_append() when other readers are possible
+Date:   Fri, 18 Aug 2023 20:43:55 -0400
+Message-Id: <20230819004356.1454718-2-Liam.Howlett@oracle.com>
+X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20230819004356.1454718-1-Liam.Howlett@oracle.com>
+References: <20230819004356.1454718-1-Liam.Howlett@oracle.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: YT4PR01CA0106.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:b01:d7::12) To SN6PR10MB3022.namprd10.prod.outlook.com
+ (2603:10b6:805:d8::25)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MN0PR12MB6101:EE_|DS0PR12MB9058:EE_
-X-MS-Office365-Filtering-Correlation-Id: ca8dc99b-f2f1-4411-b096-08dba046f3d6
+X-MS-TrafficTypeDiagnostic: SN6PR10MB3022:EE_|IA1PR10MB7167:EE_
+X-MS-Office365-Filtering-Correlation-Id: 10880033-9e6d-45a6-0b2e-08dba04d653b
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: DZYcvHjfz7kIJD5nN2SrlOTi6JPZTbYhrtK2J/MZ8whK9XDEd0vwmy8mTH4OsB6OT6V+bkddf+HuWJhnmBAKKmrsvyzLraD+hTKdvcmkMLW6zO0oGydKQirTh/l0GjaE5IBIlQ/T9eKjDrCOKUZuAlNhU8msa/mrL45mVUmILrYMSeII3o+E9g05bzyULijelYuY1MQIfOTg8L3ITSEqVCBUXlWIgcq3n/asVGuDOEYD09uYqbQOw5RQEjzoz9PQnfSonNBOASLldf6dyY4GoJ0SMVclaGeljJFIQtqoMSg+9uzgAz1a+bEzIIkNXs48+7iUd/fR6EP+2HhubkoMi87xICIQJzJVNP6hesFq66+a8YhEn9ctx6bazMUK9JVy3QQVZSC2+TznH5++GywVEC9Kw/rI6e7sMFaHqbhd3HXCDP2Xn1NFy2HJ36GTbJKgnGEuTzLKTgMYEsFNkN5paPBsexFZCdR3WwgGCkq23kBDau57Q5KbgTkrRZXUMGp0zQLpa2LuCis+tCZvp3WJ/UVh3jnpglhAHX/Yl4PzIRgpyPMc9lfAxMu+d8dw+R60F8/Qp/LHLfm4zG15G2/kwN9Qfki2oauE8OUychh6k4fTWMFtTvib0ILI9P36KBtX4oLSRHkw7SFMwlTyt3AUng==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR12MB6101.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(346002)(136003)(39860400002)(376002)(396003)(366004)(451199024)(186009)(1800799009)(2906002)(6916009)(66556008)(66476007)(54906003)(66946007)(4326008)(5660300002)(8676002)(8936002)(316002)(41300700001)(966005)(53546011)(478600001)(6486002)(6506007)(31686004)(6666004)(6512007)(2616005)(26005)(83380400001)(86362001)(31696002)(38100700002)(36756003)(45980500001)(43740500002);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam-Message-Info: A3G7MPfEkmh4iiKPN9LARMD+gN9Ime8lwwebWJ7KAy9s+XibYDQ53Ojmf0TaaiCqOn7bNdZ6At0j6ZbXz1YqzBHBaOQCMBYfqWNzdSiNmrW82l6VnbuD7tywLOpJu/LE8G8X6jd2ftKxH6Cka4Xcwbdjxdt+go9gfm6r0DpZzijlEPYuZreg+20ftoMwW2KlIVZPuWM4c9LcLO99DnNlkio40LJcauDp9XiOPFMYCOKEwUZsovwbW32vOuLaI8hIOBn0xLDmKL4y+XZwfFtN1RRsa2HLjGTNDuHGjoUt//MmcO+tLO5Bx5TFjJCGZQrvYL2pZscf4RmgmALuf+cQf6fewKjcEEGNFEPOo0ghG0ahRZukQ43IKusNM0oSPnGij3FAKE670RdAQpzlD6FyOA3z4awgJk9qvDwM88ABFgUaoT/laGr6zh0yoPXvZjGdsm1xtQARvp4xWaFOCwgCY5gGRbap8eGwE7MqPGZGQ3HL+rjcUPmChnMntW4+Rut/fmEfvJlQbumYDoVgSTmH0Wdq3fs6qnoVoP3LD8LINJZ5IDyH3uvTd41QS0x1TcqS
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN6PR10MB3022.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(346002)(136003)(39860400002)(366004)(396003)(376002)(1800799009)(186009)(451199024)(6666004)(6486002)(6506007)(38100700002)(6512007)(1076003)(83380400001)(36756003)(26005)(2616005)(66556008)(316002)(2906002)(6916009)(66946007)(66476007)(41300700001)(86362001)(5660300002)(8676002)(8936002)(4326008)(478600001);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?R0hYcUdoZ21UcEp3bWRucGdwaUc0WE1BV1NOSHRTOEVPYWVQbUJTWUJKZ0la?=
- =?utf-8?B?M0lBWm5DN2VKUXhOTU1UeEMxTTV6a3dicEhSa3hRUmIvVnQ0dVV3YXFlc3Jn?=
- =?utf-8?B?c2VscnRjU0xaUytJM2VTS1NEM05ER3NwSFpNaXNHaHVUdVFYS3N0VHY0RXpL?=
- =?utf-8?B?SlhGUElLRmpTRTBPMmJ6cUpneFIybEd2aXA5Qi93NnVKbTRZS0NFdG1na0NM?=
- =?utf-8?B?NktYemt5YW9TbWE4ZVJXemtpY1ZBMWRET1VUdEt3cFVpYXkzTVRVVU4yVklK?=
- =?utf-8?B?YU1uRXY2NE5wdnlzN0NaalMwYkVFV1VsNWZZQlBuNS94N2xJWFQxdC9pSlhY?=
- =?utf-8?B?YzZCZCs5Nm45RkthanZWVDVXK3p0TzRqZ3RoeWwxeDVpemRPN1YzYmtMeUFB?=
- =?utf-8?B?YVlFbmFhbDhCUnBobGpzTCtwdlpPVGlPWjV3MGhjSUMvTFYzUjBtVXNvMGRO?=
- =?utf-8?B?cXoya2syeXpyN3d5WlFPTG0zZ3k1U1JtWWVlQVBLdU9OUnhjZlo5bDdaYStO?=
- =?utf-8?B?S1ZkL0VuUFoySUZFR0Y2THl6dWVSbUVkRDhBZU52OWF1a1Rnd3kwNkJKNmd1?=
- =?utf-8?B?V2xQWkVRNTRSUzBGcjhHb1hpWms2Z3JGVkJYN0ZRN25VbWxEUWtYYlBGaFlS?=
- =?utf-8?B?L0xHcGxpaDFBb1V5R0oxRnZCN1ZROXBOWkI2SXZDMjh1cnFCejR4Q3BQenRm?=
- =?utf-8?B?UitQbGE3NW5TSHFlTWlTOGQwdEt3dHBMcTNGUWFtY3lJaUNOWDZ1bmNib3c0?=
- =?utf-8?B?UklnN0s5djIyVUtWaGN3Zml6ZGYyWHV1ZlF0TUpOUEJuaDBvZ3h4Q3RYYldv?=
- =?utf-8?B?THNaVWh3QXp0bUo5Yno5UHQyRmFLWmtKTGQvcllPR1RYajJ4akhVZjV3R1J1?=
- =?utf-8?B?TjNtZklxY2haNGhNUkw4Ly9BRXJxa2RJYTZLVzgzN1dHb20yQ255bnhqMktB?=
- =?utf-8?B?bUtVSHFab3FUaEpuQ0k3ZmxDVUN5WU9oM2NvZ3dNKythTEc0VG9PK3AvVnpu?=
- =?utf-8?B?Z0F0enAyQi80VWc5Z3I1QytDVU5hc1hxb2s5TE1sZDdQTnppaGhhMnJsQ3hF?=
- =?utf-8?B?TERhM0pjRHlpTWw0NWZhdXNuc1hCaG1TZ2szUk9xTFRuVm1LK0dvL1pwUkpF?=
- =?utf-8?B?Vk1SSFFHL244SkQrOGN2ejBPK0h5OHBPbmF2Q2VvN0dMSktxay9CQ1lPcHUv?=
- =?utf-8?B?dFFRMWJ3UXZrS0pYQXczRTZQUC9zNm5scmlCWE9TamtTWlVCd2VKYzdKRUFn?=
- =?utf-8?B?cTBGRkRtS0pzRHVuM1psdFgzVmt0bFU2dFdvcVI3VFl1RFFHdyswaFhTRkxO?=
- =?utf-8?B?T1FxSlhDL2V3MGdxb2J4ZjFma0F5K09Zd2hXTWl4MTZUVFZMN1V5V3VkQVVC?=
- =?utf-8?B?ZFlIWlB3UTczVzhGcnEyMit3bnpTMnJiT2RDWnIrWEc1WHExRCtDQ0xsbG5x?=
- =?utf-8?B?cWxKNUdWNzZnMWdLMzFuOU56eHhPS2xnaDB4eCtZVzhaaVlFMVBKRUJLYlZI?=
- =?utf-8?B?aSt1dmtQR2hYNmpMd3gveWIveDd1TmFMdVRIS1V5OTJmMjU4aU5peFBBQmF0?=
- =?utf-8?B?N2NxNklIRytPRnZaeXVma1V5N2paYnRXQ1NjZEZVNndNcG1mZnpJbXd6K3FB?=
- =?utf-8?B?SUoycEZOSmRoLzlxUkplbkNvcEY2SUxBZUhXRDNZOWRyaDhJeW4zNWtnMjEx?=
- =?utf-8?B?QTZaTzRHYTc0aDAxWFZRWlpTVmEwZWxuV3JVaDZ2dUV6S0pEeC9SVytLczF5?=
- =?utf-8?B?eHp3VXpGckY4eTZmV2NQaDBMR0dlK0lGM2QxWG1ZNXI1QnlJdE8wZFhMSVRG?=
- =?utf-8?B?d2g4VmZrRmx2c09WVmxSM0FIR0hMek85VXp3RzVQeGh2UWpEYXB6c29wL2E5?=
- =?utf-8?B?bGFHYzRrVG9hbHpMSXVzb2g2aTl3OTRIZWVUVTl5UEFPVTVWaFFsTUpCUWsz?=
- =?utf-8?B?ekF6YURpNnFmaGRzSmF0b2d2TzVraHNwdDdRZ0w3bGRnV21lTWM4YXB2V2hl?=
- =?utf-8?B?S25DajVrU1JXRkR3M2dNYXFWb2VtckYyR1MzMXNRZ3doK2t4a2F2citRaWdM?=
- =?utf-8?B?R0o3RGFMWFVqdzNTWG9mNGsxbWJpQWdnM0U2TDU2OXB6bGNxRVNhTXNESkQr?=
- =?utf-8?Q?0/u9rPSUYrNAuF+sOhaB1ixnP?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ca8dc99b-f2f1-4411-b096-08dba046f3d6
-X-MS-Exchange-CrossTenant-AuthSource: MN0PR12MB6101.namprd12.prod.outlook.com
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?3i8tBJ/8LP3YZ5RXMQU3BDutkswK1FUKT/t2uB3FFKeHpTII9PcIEQZXvH50?=
+ =?us-ascii?Q?s6IhmLebwynDGgNtbgjPpjmKheVmQuP1i21kr1RvCYNOj30C2ZbYFGtZa5tR?=
+ =?us-ascii?Q?M39dt/E6Cb/ftdgnhmktvYoUyA3kmhawvgZQRlXLNtMbPw22NH4Pdg61pw/5?=
+ =?us-ascii?Q?yOgDERUJBcfRyOTo2PfTyMovyr5scIiDU/YDRJhyphFrlm1Xm3BzKqnXDSej?=
+ =?us-ascii?Q?D+afdas+0yGhT5CLvspYeRn7R1Kp8F2/b8PvcTlgjkMyniAPh1nUSyWz0ovf?=
+ =?us-ascii?Q?E0bK0d6VB+lODqVmxIT2WSHTpKmVzVoLBPxwkZDFozi19hRNzw/D6j4fQzoA?=
+ =?us-ascii?Q?hLyNdETvnMNWxpK2XmrdIHOI6FWnivk+jFHxOHJrIS+T/jxv7fJd1yz+W8Wz?=
+ =?us-ascii?Q?l0BjGWCOKNaQs3mXmYk5v372/oPQU7p8YSgqZPXFupnaWDTUBNbZIsvBCASN?=
+ =?us-ascii?Q?VwZ1e8SVRS7rrMfAW0uYtdJo7//GBvCAhl+cPdSbiThbP8alluvK/TuTcHe/?=
+ =?us-ascii?Q?zmWkoZut1OWw0FSfWpvJFlgCbeJ6SzYQk6u2PrPtyY0rZ00FUF6k9YceoKUf?=
+ =?us-ascii?Q?yxnnUAQ9xPXI72jaAJ53FFV4dHDDp3Ex964Ud8aJIQ9AcwSnlK5vEY2idInj?=
+ =?us-ascii?Q?JkobDbKgt2jH2jstaqNyk0/0i2CwkucOSLqVO8YMBA6yPPx1tJsQ9FkzZD6C?=
+ =?us-ascii?Q?AS94OUkh4cpD6jiiycd4zewYewcBvZ9zNrauMExheJ9QEPzbaub0arcGALDH?=
+ =?us-ascii?Q?p0RJd05ybsGFWCsH5K8LTV34A5ifwOt410C8CKXU9ftR1P0J3rYoFmg2/85n?=
+ =?us-ascii?Q?gqVi1dXl5qgGhrCfmspd1fcS224NMnLl1qVB5d/6NvDiZPpALk/RtKPs0pzT?=
+ =?us-ascii?Q?MBHZw29P5Vhv6BmkMQt6Af21uvMNf+Ixc9MCUZP4cUeKKtuNIrVlsxmB7KTC?=
+ =?us-ascii?Q?5nDy9WCvINwUi2UXqhUnH8qyKd2y41x/K1EqUTzNPDbK+esr0KJkcjhAmMra?=
+ =?us-ascii?Q?85kH5atrNi5o4UhwtkPJnrfc0Ks5aG/MrXXFrqahi0F8gSwUv05fnMgyBCF8?=
+ =?us-ascii?Q?3dmM121OYVyNzWnAOBSjLzSacXHO2yESX6KWU/KGWaQE/l11mKlTG+ckODJb?=
+ =?us-ascii?Q?7yhZuVMWqqveB1gKmM0+zSf2UC4aD08liBXIwmZIm6/jn77hxB4eqVLz0H7c?=
+ =?us-ascii?Q?CKE3CgM6B/zTwgD+NzhcrJyFreGtMDOLtoz9nmiViMEXsd0QWO0n5CrJ4IRx?=
+ =?us-ascii?Q?7xDqZsr5kMIgADeIMSp5bR+Np5/vosnGlue72gkVSI1LMXK3s/ZrssU77bEP?=
+ =?us-ascii?Q?mEBUKaptvAjNcrh+aDC7DCHRb/WDf2hAkI/xBgtc/8ANrQd6OVAF/Q5RFBiq?=
+ =?us-ascii?Q?RMlacU6Jv60MlqUk8GkagUE9rlaBULa9+XKLzx080Tyw4tGtJP09o7bOG4/n?=
+ =?us-ascii?Q?q1zAUvkH5TLzdm2wr/GT5GCRIcTaPBCz51Sb1M2j4UuVY4GElBr4WTWDZVGE?=
+ =?us-ascii?Q?C4Xz5cm0DogIiF4dpZSakXDutRDMn5hGvOJbnOtlTN++/ubjDb5mXjsmWgK5?=
+ =?us-ascii?Q?RIsI1OLf1dIJdjljGsxf807TBjPRj86cFuJ1O2uL2r3NWbv7MBwBRTzMisun?=
+ =?us-ascii?Q?hQ=3D=3D?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: QnwiQRVfitle3WAqE+bo6sSTNHkn4JZUcBZcZh4kMI5oLDmWwR63HjR3zsbIWfODvL8ExJMtx1CdURCMFfdCRdBywr8TS9IbURlje56nBI8cgjO0ZzJGASDysNwiadzz3y/9sI5ThDuE7HQPb6n//kvlCCd64zbBrSpPIadvSe4wtfOPLsfJVifz2kSO1eE+YqSgLy2WVoEnquEMimdTjUOu8tS3gvlMJgedDs/AdYuBCzMqilhBxN9SVPmyR4jD2ylnerQoNg/f7c8zJ3Hf5jSO2n2qv/Rt4T8P1uTTfO39xYEhAGbgFwsbQyREIl9Iqp6Mwl3zPwCH2I9CCsS4ZQs8DSOY9jgTkundesJSNQn48S4G8Q0yJe38CAl78Uor/tHPjWYc6gka69NNlhQBFnj1es5ftcrHXP1SvszOfQLFGOxZt7RqVdQkCPyUMq/x/AHXL/8FCfsDVHYna/NiGNnW2ErvIs3lT6ncYD5NcUs7LsVSvDLIpUtn9cBakUsMNMgadVOZeKVFkVqDEsGKOYE5jyPhu/mdOzEEaG6zG7BGjsoP9XbHsuPhJX54fXhkTCq1S11C8I/yIIRBQf9J8HsNkAopb3YUxwDTioT87691/st3474RgRlK7wwArH95ojTSTZlkwMK63mJJulFrArreqV1EC2XRitbIh05v6dHxwj+teaj6AADf97rzvSx6H51BNIgN110exBzmfXH0cRulf9J3ri0V9aKEWFf7c5CchKsXfEFzF0CV21JBr86zo6hF8DQbqnKq62Zm0lpnzYV+puVIIPypSK/ciw2ZWkxY7uQMlDFDBeKbQHVmo+zmk50KFNrZ1ArTzVEs6pvWqjeffRtA7oo3sebEK8xwGXVCiWkb3CTcFSmSpTUUrT0c6TZoh8TR56Xmp84S56cqBg==
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 10880033-9e6d-45a6-0b2e-08dba04d653b
+X-MS-Exchange-CrossTenant-AuthSource: SN6PR10MB3022.namprd10.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Aug 2023 23:58:00.3892
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Aug 2023 00:44:07.5592
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: SMEeX/rWI2TTE9S9eW6+gsgicw/Cp4zAyKSMIxqi3tyHe0opCbndggYdcfxoC2V9FvNIVgP2+L4VXdKIeRGD4g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB9058
-X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.6
+X-MS-Exchange-CrossTenant-UserPrincipalName: MJZbeLVPQa2L8XMYXKo0YCMKArfWHdm3ASFSX/gOGa0yb32eLfD1qgOjrtyTmzK337yo0P2qBqN8F3sljQXUZw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR10MB7167
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
+ definitions=2023-08-18_29,2023-08-18_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 mlxlogscore=999
+ spamscore=0 mlxscore=0 adultscore=0 bulkscore=0 suspectscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2306200000 definitions=main-2308190005
+X-Proofpoint-GUID: 3e8ybFcaa1jTjk_lx8iRuzf6pqXGUY86
+X-Proofpoint-ORIG-GUID: 3e8ybFcaa1jTjk_lx8iRuzf6pqXGUY86
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+The current implementation of append may cause duplicate data and/or
+incorrect ranges to be returned to a reader during an update.  Although
+this has not been reported or seen, disable the append write operation
+while the tree is in rcu mode out of an abundance of caution.
 
+During the analysis of the mas_next_slot() the following was
+artificially created by separating the writer and reader code:
 
-On 8/18/2023 6:44 PM, Jarkko Sakkinen wrote:
-> On Fri Aug 18, 2023 at 10:38 PM UTC, Limonciello, Mario wrote:
->>
->>
->> On 8/18/2023 5:07 PM, Jarkko Sakkinen wrote:
->>> On Fri Aug 18, 2023 at 6:15 PM UTC, Mario Limonciello wrote:
->>>> The vendor check introduced by commit 554b841d4703 ("tpm: Disable RNG for
->>>> all AMD fTPMs") doesn't work properly on Intel fTPM.  The TPM doesn't reply
->>>> at bootup and returns back the command code.
->>>
->>> Is this reproducible with any production hardware? You are stating it
->>> as it was reproducible categorically with any Intel fTPM.
->>>
->>
->> Yes, it's affecting production hardware too.
->> Someone came to the kernel bugzilla and reported a regression on 6.4.11
->> on a Lenovo Intel laptop as well.
-> 
-> Now the description says that cateogrically all Intel fTPM's fail.
+Writer:                                 reader:
+mas_wr_append
+    set end pivot
+    updates end metata
+    Detects write to last slot
+    last slot write is to start of slot
+    store current contents in slot
+    overwrite old end pivot
+                                        mas_next_slot():
+                                                read end metadata
+                                                read old end pivot
+                                                return with incorrect range
+    store new value
 
-According to Todd this change caused 5 *different* reference Intel 
-systems all to fail.  I know they're not production hardware, but still..
+Alternatively:
 
-> 
-> I asked for the laptop model in the bugzilla bug, which should be put to
-> the commit description later on (hopefully with a snippet of klog
-> transcript). This commit cannot be applied as it is at the moment, even
-> if it turned out to be a legit fix.
-> 
->>>> As this isn't crucial for anything but AMD fTPM and AMD fTPM works, throw
->>>> away the error code to let Intel fTPM continue to work.
->>>>
->>>> Cc: stable@vger.kernel.org
->>>> Fixes: 554b841d4703 ("tpm: Disable RNG for all AMD fTPMs")
->>>
->>> It does make sense not to exercise this outside of AMD CPus but since
->>> there is no production hardware failing, it cannot be categorized as a
->>> bug fix.
->>
->> See above (and also kernel bugzilla).
->>
->>>
->>>> Reported-by: Todd Brandt <todd.e.brandt@intel.com>
->>>> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217804
->>>> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
->>>> ---
->>>>    drivers/char/tpm/tpm_crb.c | 3 +--
->>>>    1 file changed, 1 insertion(+), 2 deletions(-)
->>>>
->>>> diff --git a/drivers/char/tpm/tpm_crb.c b/drivers/char/tpm/tpm_crb.c
->>>> index 9eb1a18590123..b0e9931fe436c 100644
->>>> --- a/drivers/char/tpm/tpm_crb.c
->>>> +++ b/drivers/char/tpm/tpm_crb.c
->>>> @@ -472,8 +472,7 @@ static int crb_check_flags(struct tpm_chip *chip)
->>>>    	if (ret)
->>>>    		return ret;
->>>>    
->>>> -	ret = tpm2_get_tpm_pt(chip, TPM2_PT_MANUFACTURER, &val, NULL);
->>>> -	if (ret)
->>>> +	if (tpm2_get_tpm_pt(chip, TPM2_PT_MANUFACTURER, &val, NULL))
->>>>    		goto release;
->>>
->>> It would be better not to exercise a potentially failing code path at
->>> all. This initiates full transaction with the TPM.
->>
->> So why does a full transaction not work in this case?
-> 
-> It makes absolutely zero sense to send a message to a TPM just to know
-> that you are on AMD CPU, right?
-> 
-> E.g. you could check if boot_cpu_data.x86_vendor == X86_VENDOR_AMD right
-> in the beginning of this function.
-> 
+Writer:                                 reader:
+mas_wr_append
+    set end pivot
+    updates end metata
+    Detects write to last slot
+    last lost write to end of slot
+    store value
+                                        mas_next_slot():
+                                                read end metadata
+                                                read old end pivot
+                                                read new end pivot
+                                                return with incorrect range
+    set old end pivot
 
-You couldn't replace the whole function with this check.
+There may be other accesses that are not safe since we are now updating
+both metadata and pointers, so disabling append if there could be rcu
+readers is the safest action.
 
-If you apply it to everything on an AMD system you catch too much.  You 
-need to know it's specifically an AMD fTPM to avoid tripping the stutter 
-bug.  Pluton is fine, dTPMs are fine too.
+Fixes: 54a611b60590 ("Maple Tree: add new data structure")
+Cc: stable@vger.kernel.org
+Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
+---
+ lib/maple_tree.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/lib/maple_tree.c b/lib/maple_tree.c
+index ffb9d15bd815..05d5db255c39 100644
+--- a/lib/maple_tree.c
++++ b/lib/maple_tree.c
+@@ -4107,6 +4107,10 @@ static inline unsigned char mas_wr_new_end(struct ma_wr_state *wr_mas)
+  * mas_wr_append: Attempt to append
+  * @wr_mas: the maple write state
+  *
++ * This is currently unsafe in rcu mode since the end of the node may be cached
++ * by readers while the node contents may be updated which could result in
++ * inaccurate information.
++ *
+  * Return: True if appended, false otherwise
+  */
+ static inline bool mas_wr_append(struct ma_wr_state *wr_mas,
+@@ -4116,6 +4120,9 @@ static inline bool mas_wr_append(struct ma_wr_state *wr_mas,
+ 	struct ma_state *mas = wr_mas->mas;
+ 	unsigned char node_pivots = mt_pivots[wr_mas->type];
+ 
++	if (mt_in_rcu(mas->tree))
++		return false;
++
+ 	if (mas->offset != wr_mas->node_end)
+ 		return false;
+ 
+-- 
+2.39.2
+
