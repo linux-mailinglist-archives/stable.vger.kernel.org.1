@@ -2,53 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 079E9781EAE
+	by mail.lfdr.de (Postfix) with ESMTP id 5EDE0781EAF
 	for <lists+stable@lfdr.de>; Sun, 20 Aug 2023 17:26:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231465AbjHTP0D (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 20 Aug 2023 11:26:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45042 "EHLO
+        id S229877AbjHTP0E (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 20 Aug 2023 11:26:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45058 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231437AbjHTPZ7 (ORCPT
+        with ESMTP id S231354AbjHTPZ7 (ORCPT
         <rfc822;stable@vger.kernel.org>); Sun, 20 Aug 2023 11:25:59 -0400
-Received: from mail-wm1-x32d.google.com (mail-wm1-x32d.google.com [IPv6:2a00:1450:4864:20::32d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 16D574685
+Received: from mail-wr1-x42f.google.com (mail-wr1-x42f.google.com [IPv6:2a00:1450:4864:20::42f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D88104686
         for <stable@vger.kernel.org>; Sun, 20 Aug 2023 08:23:08 -0700 (PDT)
-Received: by mail-wm1-x32d.google.com with SMTP id 5b1f17b1804b1-3fe32016bc8so23594585e9.1
+Received: by mail-wr1-x42f.google.com with SMTP id ffacd0b85a97d-31c3df710bdso304267f8f.1
         for <stable@vger.kernel.org>; Sun, 20 Aug 2023 08:23:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=layalina-io.20221208.gappssmtp.com; s=20221208; t=1692544986; x=1693149786;
+        d=layalina-io.20221208.gappssmtp.com; s=20221208; t=1692544987; x=1693149787;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=SjJzyXCDZRnO5S3i8PaQSpY49m3CqdcltrMAbk+AgrI=;
-        b=H9sJpLmtQexSNnmzR9lDVSDxw7LVQBCygZsvaSp+cGqHTMKeI/TpC00lNhqXVmbpMa
-         5ed8pfohi1I2zsWjUwxFcS9rvYK0lhAt1MUWJ2sy/PJrA2Slkfl1Pfe4/LpF5evX8win
-         CpwDSQd6RfC8kFl5vkhyb9AEsej7hxtYETrd8qUGQOh0fOSayAf/vYAIW5s8mdi/2i6P
-         SISc1WVE2hm7zbkl5uqSRlLeqYaRkOCoaEFmbgK4r+n/SqXx2lp0oRZLsIkDXIhLVNT1
-         +GCgWDVifQ0+5XpX2Mogre4B8VEQPq2t6WGs1tIMPJzNjk15hmPE0BiTmon+3DzveZez
-         ip4A==
+        bh=JLSxlsy87hcasRJmuGTJaVLeiItQlaN8QE5VZMp0yL4=;
+        b=Pa5yqh/IcChza6SIKJKAfM5dfE9CHgJuxcBVqz9Qrpw5SBR45EPi87dz0126SE2V/u
+         f2/ST09WioBkG1a8Hc5bakXx7TAPkjXnLqUpISluuL+zJQlX/gx6dtmUohh1kvR/FkGt
+         Y6g1Gk4ef05WaT1Tv8qD7qCCVjpU8JOoMsNg8p2VTPTKPGXkFOKeutMaL9gDrCHe+GOA
+         HKzNNjS3X3HeMaQXODuyJ5VcuR90AQvLHmNBCfBFz9hYtxbvrC7iGAKSD0eoTILxZv3A
+         zCsftidzJ2QorQD9GLG4Ztq5UnPLjCurwMBTnbM1noMp5txz1ywEjGpCLEwqHwvES9Fk
+         2Gjw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692544986; x=1693149786;
+        d=1e100.net; s=20221208; t=1692544987; x=1693149787;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=SjJzyXCDZRnO5S3i8PaQSpY49m3CqdcltrMAbk+AgrI=;
-        b=gRggTdeYO2yVCTq+KCSTCzLKE+9s4YMum8T7C72hokWeoKLIe8yopQH/PBp6XWDrip
-         UaCjcd4vQ9g2qL/m68DG3xlj5G7C4U0ayBbBw4XxpYV6dQFSUyYLfJUK865PfSi6BCpT
-         SR5jZCPCfUbnwckbO63m42cLzhG/qnL0m4zSmBMSiE0GfJGg96yDCQCJM9L38oinChG4
-         D3CQ/viG0nSQOd/nRXp424GAt/SCoKGhgeX3DN0qmOOO9oO/nP8EXUz+khuBpknuLmfB
-         BP7I6csxpf+BBVC690UxIP9QtLF/89OyL+gUeJKm/+FfOgPrpYGinL1BOAYCYanIwLiZ
-         R9gA==
-X-Gm-Message-State: AOJu0Yxgr6oszidMG4TUqcyrRsbEzhiOMN6XPeXW1E8HU9QVD+/N7g3X
-        Njp+Xv3RPPGT6IZlJDxXGhv/Sz7d47cjLTlwCy0=
-X-Google-Smtp-Source: AGHT+IGgfmwaMPu6+ziabfVirvrWGn78n4Vx3osiOq1I/zZd75YriD9oasKLB3zsIJfNjonG6rcz2A==
-X-Received: by 2002:adf:f10c:0:b0:31c:4c68:e73a with SMTP id r12-20020adff10c000000b0031c4c68e73amr356189wro.66.1692544986616;
-        Sun, 20 Aug 2023 08:23:06 -0700 (PDT)
+        bh=JLSxlsy87hcasRJmuGTJaVLeiItQlaN8QE5VZMp0yL4=;
+        b=RP9hPV58xvG/maIrNIVAaoX/JdIS0GC7ihGQb3syID5gmdB/U4+Qf61gUlWFesDcxN
+         Po6C2bPK8iFScHvoLNpg2L5wDDo2AJcNd5R9l+m1WviBZ2hbWGr7456zf5wBB5DTmUQk
+         nmwqwFqQIRSKaiVFrRTDKrLZnqqbB7Vu1yETjLbf76sqlM6XN7fANMfPPeSM0YHnkNe+
+         rB34cCYpehy2m/JbXlMMdBLkf+q3jCTE+pFgO5iIVKlkVZKV4vIemet6Fs2udtPbszWs
+         CCUrZo8RBh1xrxklDSOjagXPELLOt2TvH8BkCFD8v+MBGyxeSIFZRH80se174Biod/ex
+         rgew==
+X-Gm-Message-State: AOJu0YwAM+woTKtLZ2CyuY1hVoVhB1UH9Tqjy4AZQeTVWSdy5tEX5jdm
+        wxQaj2SaydWEz524wTFyUmVbL70NAzAyxnyhqLk=
+X-Google-Smtp-Source: AGHT+IE32G8w72ksUDK+nWjkkSgh68TATPAsonJHAJ5xVbrQvBdZcIsen56O99uNCh453PwPPOBZGw==
+X-Received: by 2002:adf:f50b:0:b0:319:6afc:7a3c with SMTP id q11-20020adff50b000000b003196afc7a3cmr2829992wro.10.1692544987515;
+        Sun, 20 Aug 2023 08:23:07 -0700 (PDT)
 Received: from airbuntu.. (host109-151-228-137.range109-151.btcentralplus.com. [109.151.228.137])
-        by smtp.gmail.com with ESMTPSA id c3-20020adfe703000000b0031773a8e5c4sm9527466wrm.37.2023.08.20.08.23.05
+        by smtp.gmail.com with ESMTPSA id c3-20020adfe703000000b0031773a8e5c4sm9527466wrm.37.2023.08.20.08.23.06
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 20 Aug 2023 08:23:06 -0700 (PDT)
+        Sun, 20 Aug 2023 08:23:07 -0700 (PDT)
 From:   Qais Yousef <qyousef@layalina.io>
 To:     stable@vger.kernel.org
 Cc:     Juri Lelli <juri.lelli@redhat.com>,
@@ -59,17 +59,17 @@ Cc:     Juri Lelli <juri.lelli@redhat.com>,
         Ingo Molnar <mingo@kernel.org>, Hao Luo <haoluo@google.com>,
         John Stultz <jstultz@google.com>, cgroups@vger.kernel.org,
         linux-kernel@vger.kernel.org, Qais Yousef <qyousef@layalina.io>
-Subject: [PATCH 3/6] sched/cpuset: Keep track of SCHED_DEADLINE task in cpusets
-Date:   Sun, 20 Aug 2023 16:22:55 +0100
-Message-Id: <20230820152258.518128-4-qyousef@layalina.io>
+Subject: [PATCH 4/6] cgroup/cpuset: Iterate only if DEADLINE tasks are present
+Date:   Sun, 20 Aug 2023 16:22:56 +0100
+Message-Id: <20230820152258.518128-5-qyousef@layalina.io>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230820152258.518128-1-qyousef@layalina.io>
 References: <20230820152258.518128-1-qyousef@layalina.io>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS
-        autolearn=unavailable autolearn_force=no version=3.4.6
+        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -78,166 +78,40 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Juri Lelli <juri.lelli@redhat.com>
 
-commit 6c24849f5515e4966d94fa5279bdff4acf2e9489 upstream.
+commit c0f78fd5edcf29b2822ac165f9248a6c165e8554 upstream.
 
-Qais reported that iterating over all tasks when rebuilding root domains
-for finding out which ones are DEADLINE and need their bandwidth
-correctly restored on such root domains can be a costly operation (10+
-ms delays on suspend-resume).
+update_tasks_root_domain currently iterates over all tasks even if no
+DEADLINE task is present on the cpuset/root domain for which bandwidth
+accounting is being rebuilt. This has been reported to introduce 10+ ms
+delays on suspend-resume operations.
 
-To fix the problem keep track of the number of DEADLINE tasks belonging
-to each cpuset and then use this information (followup patch) to only
-perform the above iteration if DEADLINE tasks are actually present in
-the cpuset for which a corresponding root domain is being rebuilt.
+Skip the costly iteration for cpusets that don't contain DEADLINE tasks.
 
 Reported-by: Qais Yousef (Google) <qyousef@layalina.io>
 Link: https://lore.kernel.org/lkml/20230206221428.2125324-1-qyousef@layalina.io/
 Signed-off-by: Juri Lelli <juri.lelli@redhat.com>
 Reviewed-by: Waiman Long <longman@redhat.com>
 Signed-off-by: Tejun Heo <tj@kernel.org>
-(cherry picked from commit 6c24849f5515e4966d94fa5279bdff4acf2e9489)
-[Conflict in kernel/cgroup/cpuset.c and kernel/sched/deadline.c due to
-pulling new code. Reject new code/fields.]
+(cherry picked from commit c0f78fd5edcf29b2822ac165f9248a6c165e8554)
 Signed-off-by: Qais Yousef (Google) <qyousef@layalina.io>
 ---
- include/linux/cpuset.h  |  4 ++++
- kernel/cgroup/cgroup.c  |  4 ++++
- kernel/cgroup/cpuset.c  | 25 +++++++++++++++++++++++++
- kernel/sched/deadline.c | 13 +++++++++++++
- 4 files changed, 46 insertions(+)
+ kernel/cgroup/cpuset.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/include/linux/cpuset.h b/include/linux/cpuset.h
-index 5a94f5143924..82fb7e24d1cb 100644
---- a/include/linux/cpuset.h
-+++ b/include/linux/cpuset.h
-@@ -56,6 +56,8 @@ extern void cpuset_init_smp(void);
- extern void cpuset_force_rebuild(void);
- extern void cpuset_update_active_cpus(void);
- extern void cpuset_wait_for_hotplug(void);
-+extern void inc_dl_tasks_cs(struct task_struct *task);
-+extern void dec_dl_tasks_cs(struct task_struct *task);
- extern void cpuset_lock(void);
- extern void cpuset_unlock(void);
- extern void cpuset_cpus_allowed(struct task_struct *p, struct cpumask *mask);
-@@ -179,6 +181,8 @@ static inline void cpuset_update_active_cpus(void)
- 
- static inline void cpuset_wait_for_hotplug(void) { }
- 
-+static inline void inc_dl_tasks_cs(struct task_struct *task) { }
-+static inline void dec_dl_tasks_cs(struct task_struct *task) { }
- static inline void cpuset_lock(void) { }
- static inline void cpuset_unlock(void) { }
- 
-diff --git a/kernel/cgroup/cgroup.c b/kernel/cgroup/cgroup.c
-index 6ccdbce17399..be467aea457e 100644
---- a/kernel/cgroup/cgroup.c
-+++ b/kernel/cgroup/cgroup.c
-@@ -56,6 +56,7 @@
- #include <linux/file.h>
- #include <linux/fs_parser.h>
- #include <linux/sched/cputime.h>
-+#include <linux/sched/deadline.h>
- #include <linux/psi.h>
- #include <net/sock.h>
- 
-@@ -6467,6 +6468,9 @@ void cgroup_exit(struct task_struct *tsk)
- 	list_add_tail(&tsk->cg_list, &cset->dying_tasks);
- 	cset->nr_tasks--;
- 
-+	if (dl_task(tsk))
-+		dec_dl_tasks_cs(tsk);
-+
- 	WARN_ON_ONCE(cgroup_task_frozen(tsk));
- 	if (unlikely(!(tsk->flags & PF_KTHREAD) &&
- 		     test_bit(CGRP_FREEZE, &task_dfl_cgroup(tsk)->flags)))
 diff --git a/kernel/cgroup/cpuset.c b/kernel/cgroup/cpuset.c
-index 0eff9fb4e6d3..00821ed3d300 100644
+index 00821ed3d300..63c8939503cb 100644
 --- a/kernel/cgroup/cpuset.c
 +++ b/kernel/cgroup/cpuset.c
-@@ -162,6 +162,12 @@ struct cpuset {
- 	int use_parent_ecpus;
- 	int child_ecpus_count;
+@@ -966,6 +966,9 @@ static void dl_update_tasks_root_domain(struct cpuset *cs)
+ 	struct css_task_iter it;
+ 	struct task_struct *task;
  
-+	/*
-+	 * number of SCHED_DEADLINE tasks attached to this cpuset, so that we
-+	 * know when to rebuild associated root domain bandwidth information.
-+	 */
-+	int nr_deadline_tasks;
++	if (cs->nr_deadline_tasks == 0)
++		return;
 +
- 	/* Handle for cpuset.cpus.partition */
- 	struct cgroup_file partition_file;
- };
-@@ -209,6 +215,20 @@ static inline struct cpuset *parent_cs(struct cpuset *cs)
- 	return css_cs(cs->css.parent);
- }
+ 	css_task_iter_start(&cs->css, 0, &it);
  
-+void inc_dl_tasks_cs(struct task_struct *p)
-+{
-+	struct cpuset *cs = task_cs(p);
-+
-+	cs->nr_deadline_tasks++;
-+}
-+
-+void dec_dl_tasks_cs(struct task_struct *p)
-+{
-+	struct cpuset *cs = task_cs(p);
-+
-+	cs->nr_deadline_tasks--;
-+}
-+
- /* bits in struct cpuset flags field */
- typedef enum {
- 	CS_ONLINE,
-@@ -2210,6 +2230,11 @@ static int cpuset_can_attach(struct cgroup_taskset *tset)
- 		ret = security_task_setscheduler(task);
- 		if (ret)
- 			goto out_unlock;
-+
-+		if (dl_task(task)) {
-+			cs->nr_deadline_tasks++;
-+			cpuset_attach_old_cs->nr_deadline_tasks--;
-+		}
- 	}
- 
- 	/*
-diff --git a/kernel/sched/deadline.c b/kernel/sched/deadline.c
-index b3e206498395..fced55d6e8da 100644
---- a/kernel/sched/deadline.c
-+++ b/kernel/sched/deadline.c
-@@ -17,6 +17,7 @@
-  */
- #include "sched.h"
- #include "pelt.h"
-+#include <linux/cpuset.h>
- 
- struct dl_bandwidth def_dl_bandwidth;
- 
-@@ -2446,6 +2447,12 @@ static void switched_from_dl(struct rq *rq, struct task_struct *p)
- 	if (task_on_rq_queued(p) && p->dl.dl_runtime)
- 		task_non_contending(p);
- 
-+	/*
-+	 * In case a task is setscheduled out from SCHED_DEADLINE we need to
-+	 * keep track of that on its cpuset (for correct bandwidth tracking).
-+	 */
-+	dec_dl_tasks_cs(p);
-+
- 	if (!task_on_rq_queued(p)) {
- 		/*
- 		 * Inactive timer is armed. However, p is leaving DEADLINE and
-@@ -2486,6 +2493,12 @@ static void switched_to_dl(struct rq *rq, struct task_struct *p)
- 	if (hrtimer_try_to_cancel(&p->dl.inactive_timer) == 1)
- 		put_task_struct(p);
- 
-+	/*
-+	 * In case a task is setscheduled to SCHED_DEADLINE we need to keep
-+	 * track of that on its cpuset (for correct bandwidth tracking).
-+	 */
-+	inc_dl_tasks_cs(p);
-+
- 	/* If p is not queued we will update its parameters at next wakeup. */
- 	if (!task_on_rq_queued(p)) {
- 		add_rq_bw(&p->dl, &rq->dl);
+ 	while ((task = css_task_iter_next(&it)))
 -- 
 2.34.1
 
