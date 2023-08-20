@@ -2,45 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F2C2A781F0B
-	for <lists+stable@lfdr.de>; Sun, 20 Aug 2023 19:36:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AF16A781F15
+	for <lists+stable@lfdr.de>; Sun, 20 Aug 2023 19:56:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229932AbjHTRgt (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 20 Aug 2023 13:36:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54906 "EHLO
+        id S230423AbjHTR4k (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 20 Aug 2023 13:56:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52078 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231501AbjHTRgr (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 20 Aug 2023 13:36:47 -0400
+        with ESMTP id S231615AbjHTR4c (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 20 Aug 2023 13:56:32 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E31112724
-        for <stable@vger.kernel.org>; Sun, 20 Aug 2023 10:33:15 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 625702D52
+        for <stable@vger.kernel.org>; Sun, 20 Aug 2023 10:54:23 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7F4A060BA0
-        for <stable@vger.kernel.org>; Sun, 20 Aug 2023 17:33:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3E6BC433C8;
-        Sun, 20 Aug 2023 17:33:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1692552794;
-        bh=WENwwukqvqLnh0i70wqLdjnC9+i3wzyAPZzzsBwu9GM=;
-        h=From:To:Cc:Subject:Date:From;
-        b=eK/Pj2PDOw6jbR+ynm+yECSoWnkZi9Rc3RDtiMFJFwqkdk18F5shl80G1K3gaUhh1
-         hEdJriIWbIxefsn5Jcn1ai/Fe0pFfibiEBRlVdz+N/UhVfJJtpr48OkuO5vC5tD9z0
-         7nf3mWpQwAgQ6wJCYC3bvPhwyqfrpej6as3YI4/sdZZMpMHSFb98waMAS7F3HY+hOg
-         gFLw65u0yb4zhJ85XhLme3By0rS6Ql7Ae1rlUHn9+/robFW7syDT/sR1iYnb2EmVUV
-         7FNeTRfgsJwiMrTBahR5RywGoXA7ezpYINelM8MCdAkM5DB0hpu1ThYtdmfUdvnFvR
-         +DT9QDvFLjmjA==
-From:   Eric Biggers <ebiggers@kernel.org>
-To:     fsverity@lists.linux.dev
-Cc:     Victor Hsieh <victorhsieh@google.com>, stable@vger.kernel.org,
-        Jarkko Sakkinen <jarkko@kernel.org>
-Subject: [PATCH v3] fsverity: skip PKCS#7 parser when keyring is empty
-Date:   Sun, 20 Aug 2023 10:32:36 -0700
-Message-ID: <20230820173237.2579-1-ebiggers@kernel.org>
-X-Mailer: git-send-email 2.41.0
+        by dfw.source.kernel.org (Postfix) with ESMTPS id EE8B8612EA
+        for <stable@vger.kernel.org>; Sun, 20 Aug 2023 17:54:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE7A8C433C8;
+        Sun, 20 Aug 2023 17:54:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1692554062;
+        bh=bAq165hLNrLjmbOL546fFrpO4OVC0PyfNbtGDRoHFQU=;
+        h=Subject:To:Cc:From:Date:From;
+        b=uqHIG6bCW7xQJJpUJEK66RhAs94m4JEAaah36ZTD+rKQ1EpCqK7mIAuEkEkL+dGiA
+         HeFCkpHJhWIw0RH4Cd5rcNteQoaaJmZ95FkRNzOQ92euqM5T6Z6iIdBWe8Z9xk4pp2
+         OVL+SJmb2BBU44ShxrFEvFjWJhDPl0QY5NdWkFaE=
+Subject: FAILED: patch "[PATCH] blk-cgroup: hold queue_lock when removing blkg->q_node" failed to apply to 6.1-stable tree
+To:     ming.lei@redhat.com, axboe@kernel.dk, chuhu@redhat.com,
+        snitzer@kernel.org, tj@kernel.org, xifeng@redhat.com,
+        yukuai3@huawei.com
+Cc:     <stable@vger.kernel.org>
+From:   <gregkh@linuxfoundation.org>
+Date:   Sun, 20 Aug 2023 19:54:19 +0200
+Message-ID: <2023082019-brink-buddhist-4d1b@gregkh>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
@@ -51,71 +49,82 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Eric Biggers <ebiggers@google.com>
 
-If an fsverity builtin signature is given for a file but the
-".fs-verity" keyring is empty, there's no real reason to run the PKCS#7
-parser.  Skip this to avoid the PKCS#7 attack surface when builtin
-signature support is configured into the kernel but is not being used.
+The patch below does not apply to the 6.1-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-This is a hardening improvement, not a fix per se, but I've added
-Fixes and Cc stable to get it out to more users.
+To reproduce the conflict and resubmit, you may use the following commands:
 
-Fixes: 432434c9f8e1 ("fs-verity: support builtin file signatures")
-Cc: stable@vger.kernel.org
-Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
-Signed-off-by: Eric Biggers <ebiggers@google.com>
----
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git checkout FETCH_HEAD
+git cherry-pick -x c164c7bc9775be7bcc68754bb3431fce5823822e
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023082019-brink-buddhist-4d1b@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
-v3: improve the error message slightly
-v2: check keyring and return early before allocating formatted digest
+Possible dependencies:
 
- fs/verity/signature.c | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+c164c7bc9775 ("blk-cgroup: hold queue_lock when removing blkg->q_node")
+a06377c5d01e ("Revert "blk-cgroup: pin the gendisk in struct blkcg_gq"")
+9a9c261e6b55 ("Revert "blk-cgroup: pass a gendisk to blkg_lookup"")
+1231039db31c ("Revert "blk-cgroup: move the cgroup information to struct gendisk"")
+dcb522014351 ("Revert "blk-cgroup: simplify blkg freeing from initialization failure paths"")
+3f13ab7c80fd ("blk-cgroup: move the cgroup information to struct gendisk")
+479664cee14d ("blk-cgroup: pass a gendisk to blkg_lookup")
+ba91c849fa50 ("blk-rq-qos: store a gendisk instead of request_queue in struct rq_qos")
+3963d84df797 ("blk-rq-qos: constify rq_qos_ops")
+ce57b558604e ("blk-rq-qos: make rq_qos_add and rq_qos_del more useful")
+b494f9c566ba ("blk-rq-qos: move rq_qos_add and rq_qos_del out of line")
+f05837ed73d0 ("blk-cgroup: store a gendisk to throttle in struct task_struct")
+84d7d462b16d ("blk-cgroup: pin the gendisk in struct blkcg_gq")
+180b04d450a7 ("blk-cgroup: remove the !bdi->dev check in blkg_dev_name")
+27b642b07a4a ("blk-cgroup: simplify blkg freeing from initialization failure paths")
+0b6f93bdf07e ("blk-cgroup: improve error unwinding in blkg_alloc")
+f1c006f1c685 ("blk-cgroup: synchronize pd_free_fn() from blkg_free_workfn() and blkcg_deactivate_policy()")
+dfd6200a0954 ("blk-cgroup: support to track if policy is online")
+c7241babf085 ("blk-cgroup: dropping parent refcount after pd_free_fn() is done")
+e3ff8887e7db ("blk-cgroup: fix missing pd_online_fn() while activating policy")
 
-diff --git a/fs/verity/signature.c b/fs/verity/signature.c
-index b95acae64eac6..90c07573dd77b 100644
---- a/fs/verity/signature.c
-+++ b/fs/verity/signature.c
-@@ -55,20 +55,36 @@ int fsverity_verify_signature(const struct fsverity_info *vi,
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From c164c7bc9775be7bcc68754bb3431fce5823822e Mon Sep 17 00:00:00 2001
+From: Ming Lei <ming.lei@redhat.com>
+Date: Thu, 17 Aug 2023 22:17:51 +0800
+Subject: [PATCH] blk-cgroup: hold queue_lock when removing blkg->q_node
+
+When blkg is removed from q->blkg_list from blkg_free_workfn(), queue_lock
+has to be held, otherwise, all kinds of bugs(list corruption, hard lockup,
+..) can be triggered from blkg_destroy_all().
+
+Fixes: f1c006f1c685 ("blk-cgroup: synchronize pd_free_fn() from blkg_free_workfn() and blkcg_deactivate_policy()")
+Cc: Yu Kuai <yukuai3@huawei.com>
+Cc: xiaoli feng <xifeng@redhat.com>
+Cc: Chunyu Hu <chuhu@redhat.com>
+Cc: Mike Snitzer <snitzer@kernel.org>
+Cc: Tejun Heo <tj@kernel.org>
+Signed-off-by: Ming Lei <ming.lei@redhat.com>
+Acked-by: Tejun Heo <tj@kernel.org>
+Link: https://lore.kernel.org/r/20230817141751.1128970-1-ming.lei@redhat.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+
+diff --git a/block/blk-cgroup.c b/block/blk-cgroup.c
+index fc49be622e05..9faafcd10e17 100644
+--- a/block/blk-cgroup.c
++++ b/block/blk-cgroup.c
+@@ -136,7 +136,9 @@ static void blkg_free_workfn(struct work_struct *work)
+ 			blkcg_policy[i]->pd_free_fn(blkg->pd[i]);
+ 	if (blkg->parent)
+ 		blkg_put(blkg->parent);
++	spin_lock_irq(&q->queue_lock);
+ 	list_del_init(&blkg->q_node);
++	spin_unlock_irq(&q->queue_lock);
+ 	mutex_unlock(&q->blkcg_mutex);
  
- 	if (sig_size == 0) {
- 		if (fsverity_require_signatures) {
- 			fsverity_err(inode,
- 				     "require_signatures=1, rejecting unsigned file!");
- 			return -EPERM;
- 		}
- 		return 0;
- 	}
- 
-+	if (fsverity_keyring->keys.nr_leaves_on_tree == 0) {
-+		/*
-+		 * The ".fs-verity" keyring is empty, due to builtin signatures
-+		 * being supported by the kernel but not actually being used.
-+		 * In this case, verify_pkcs7_signature() would always return an
-+		 * error, usually ENOKEY.  It could also be EBADMSG if the
-+		 * PKCS#7 is malformed, but that isn't very important to
-+		 * distinguish.  So, just skip to ENOKEY to avoid the attack
-+		 * surface of the PKCS#7 parser, which would otherwise be
-+		 * reachable by any task able to execute FS_IOC_ENABLE_VERITY.
-+		 */
-+		fsverity_err(inode,
-+			     "fs-verity keyring is empty, rejecting signed file!");
-+		return -ENOKEY;
-+	}
-+
- 	d = kzalloc(sizeof(*d) + hash_alg->digest_size, GFP_KERNEL);
- 	if (!d)
- 		return -ENOMEM;
- 	memcpy(d->magic, "FSVerity", 8);
- 	d->digest_algorithm = cpu_to_le16(hash_alg - fsverity_hash_algs);
- 	d->digest_size = cpu_to_le16(hash_alg->digest_size);
- 	memcpy(d->digest, vi->file_digest, hash_alg->digest_size);
- 
- 	err = verify_pkcs7_signature(d, sizeof(*d) + hash_alg->digest_size,
- 				     signature, sig_size, fsverity_keyring,
-
-base-commit: 456ae5fe9b448f44ebe98b391a3bae9c75df465e
--- 
-2.41.0
+ 	blk_put_queue(q);
 
