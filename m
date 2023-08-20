@@ -2,185 +2,109 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 16507781F35
-	for <lists+stable@lfdr.de>; Sun, 20 Aug 2023 20:16:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 339ED781F72
+	for <lists+stable@lfdr.de>; Sun, 20 Aug 2023 21:22:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231576AbjHTSQt (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 20 Aug 2023 14:16:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33620 "EHLO
+        id S231661AbjHTTWI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 20 Aug 2023 15:22:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47252 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231279AbjHTSQo (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 20 Aug 2023 14:16:44 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A7C1C185
-        for <stable@vger.kernel.org>; Sun, 20 Aug 2023 11:12:11 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 44E3E61ACE
-        for <stable@vger.kernel.org>; Sun, 20 Aug 2023 18:12:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51E18C433C7;
-        Sun, 20 Aug 2023 18:12:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692555130;
-        bh=LsgCKpXesQxOUAUeYMpCpXr34LsUqicN3rW5W1mgCPU=;
-        h=Subject:To:Cc:From:Date:From;
-        b=oMhRtKFgXpR/2+/Z0Q5077o60tOBrE/rQvWnKTY5ej70altcnlxJJxQn+5zELYHP+
-         OsNO8eU0CT7MNfVQsCFcnWpwvQ82L/sMhmfvd5jlOrb76T2xLLbcYaOTCQaP+RrD7R
-         og9mwSY+fNnSPwo/lX00ZsmFVVUeRd5n0kM5x7Bw=
-Subject: FAILED: patch "[PATCH] btrfs: fix incorrect splitting in btrfs_drop_extent_map_range" failed to apply to 4.14-stable tree
-To:     josef@toxicpanda.com, dsterba@suse.com, fdmanana@suse.com
-Cc:     <stable@vger.kernel.org>
-From:   <gregkh@linuxfoundation.org>
-Date:   Sun, 20 Aug 2023 20:12:02 +0200
-Message-ID: <2023082002-say-opposing-542b@gregkh>
+        with ESMTP id S231589AbjHTTWI (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 20 Aug 2023 15:22:08 -0400
+Received: from mail-wr1-x42b.google.com (mail-wr1-x42b.google.com [IPv6:2a00:1450:4864:20::42b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB7451BC5
+        for <stable@vger.kernel.org>; Sun, 20 Aug 2023 12:17:01 -0700 (PDT)
+Received: by mail-wr1-x42b.google.com with SMTP id ffacd0b85a97d-31c5327e5e8so54878f8f.1
+        for <stable@vger.kernel.org>; Sun, 20 Aug 2023 12:17:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=layalina-io.20221208.gappssmtp.com; s=20221208; t=1692559020; x=1693163820;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Q8tmHG4iKjop6oaRZJCRny7Ii8bbirFNeHQwN4qiWd0=;
+        b=LRJNqb63H45H5c6VdWdiNavvlbuXHFoNkkYYndXMMIeOzq8cU8HoXOyiXbCC7fAjSD
+         CJdob94BYUHO3+3UohhOepgf/kGyWxicpH3BgxgWoaDJSMaRaKrQoDoXbrgps3b8bSL+
+         SrcVMDvRrsK7dIjY9qn6n3aD+I10DdSm+Vad3CsF88wETXQFCrfTT3nsFu1cFmwirw/e
+         IpDijPIORXriNaw8HoRuvwiSmGRJLeTEovxNz0pmC7yRCOmgj+kYObbYvP6qD4ZvpkHz
+         Uqm0s40DqeBi4Ba3LrxCQNVfZaUCbqnBsU/u2KD9mOiUzc+TfOhfh4mlDrIZXn3KvEfT
+         jgbg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1692559020; x=1693163820;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Q8tmHG4iKjop6oaRZJCRny7Ii8bbirFNeHQwN4qiWd0=;
+        b=YUzx+hVTipmiMRJ8obzYhJiRksKq+8ofByEubCgdZCiTvuJnCZHhOWawaVynhDxDZY
+         gEyou4Q6hxVxUUBc3qEr72RNLm986yhtDyd9ibKAhh4Zoq2zijL13RB8WqnlcxTNJ267
+         jY/f1ZwKgD8YQIPnPJj7h8LmKV4Hu6PQPe+ZfOIomsnRWTQ0c6MfdLsb4iSnmFr9yNmo
+         kxKimYoxHNW34yfMsu9DLj+K6FNc+1jIKGlBSdu8IRwQv5xMpniC1wM2k1WNXnO2jEq9
+         9KemhS7gdigM15dSoCVUz8pzipEG61Xu+mLc3vsgu6w5Ubs3ZpHC9BiG/qQfALnVGLF+
+         f42A==
+X-Gm-Message-State: AOJu0YzwPkxwcraFJT8mqi7KOa3+h8E6ym40bFD3Nay7ZBNlLYJu1hMZ
+        30Q5ErZDWsmyDKFJc9HfooU1BZ6tXg23tNdAN58=
+X-Google-Smtp-Source: AGHT+IFGC/mjVRpF0tS2ezanULq7qQN5KU1nu3cC6II4FY/Q8NBzmL0Tc1d0uWFWxLjgVZomEoQGHA==
+X-Received: by 2002:adf:f9c4:0:b0:319:7abb:4112 with SMTP id w4-20020adff9c4000000b003197abb4112mr3930024wrr.21.1692559020165;
+        Sun, 20 Aug 2023 12:17:00 -0700 (PDT)
+Received: from airbuntu.. (host109-151-228-137.range109-151.btcentralplus.com. [109.151.228.137])
+        by smtp.gmail.com with ESMTPSA id s8-20020a5d4ec8000000b00317f3fd21b7sm10125665wrv.80.2023.08.20.12.16.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 20 Aug 2023 12:16:59 -0700 (PDT)
+From:   Qais Yousef <qyousef@layalina.io>
+To:     stable@vger.kernel.org
+Cc:     Vincent Guittot <vincent.guittot@linaro.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Ingo Molnar <mingo@kernel.org>,
+        Dietmar Eggemann <dietmar.eggemann@arm.com>,
+        linux-kernel@vger.kernel.org, Qais Yousef <qyousef@layalina.io>
+Subject: [PATCH 0/2] Backport unlink misfit patches into 6.1.y
+Date:   Sun, 20 Aug 2023 20:16:48 +0100
+Message-Id: <20230820191650.532978-1-qyousef@layalina.io>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+Decoupling misfit from overutilized better helps handling misfit due to
+uclamp_min only being misfit without triggering overutilized state, which is
+bad from energy point of view as it prematurely disables energy aware
+scheduling.
 
-The patch below does not apply to the 4.14-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+The series also makes the search for a better CPU under bad thermal condition
+more comprehensive, which is useful improvement when the system is under bad
+thermal condition.
 
-To reproduce the conflict and resubmit, you may use the following commands:
+Backports to 5.10.y and 5.15.y is hard as find_energy_efficient_cpu() is
+different. But it applies cleanly on 6.1.y
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
-git checkout FETCH_HEAD
-git cherry-pick -x c962098ca4af146f2625ed64399926a098752c9c
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023082002-say-opposing-542b@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
+Compile tested against various randconfigs for different archs.
 
-Possible dependencies:
+Boot tested on android14-6.1 GKI kernel.
 
-c962098ca4af ("btrfs: fix incorrect splitting in btrfs_drop_extent_map_range")
-db21370bffbc ("btrfs: drop extent map range more efficiently")
-f3109e33bb0a ("btrfs: use extent_map_end() at btrfs_drop_extent_map_range()")
-4c0c8cfc8433 ("btrfs: move btrfs_drop_extent_cache() to extent_map.c")
-cef7820d6abf ("btrfs: fix missed extent on fsync after dropping extent maps")
-570eb97bace8 ("btrfs: unify the lock/unlock extent variants")
-dbbf49928f2e ("btrfs: remove the wake argument from clear_extent_bits")
-e3974c669472 ("btrfs: move core extent_io_tree functions to extent-io-tree.c")
-38830018387e ("btrfs: move a few exported extent_io_tree helpers to extent-io-tree.c")
-04eba8932392 ("btrfs: temporarily export and then move extent state helpers")
-91af24e48474 ("btrfs: temporarily export and move core extent_io_tree tree functions")
-6962541e964f ("btrfs: move btrfs_debug_check_extent_io_range into extent-io-tree.c")
-ec39e39bbf97 ("btrfs: export wait_extent_bit")
-a66318872c41 ("btrfs: move simple extent bit helpers out of extent_io.c")
-ad795329574c ("btrfs: convert BUG_ON(EXTENT_BIT_LOCKED) checks to ASSERT's")
-83cf709a89fb ("btrfs: move extent state init and alloc functions to their own file")
-c45379a20fbc ("btrfs: temporarily export alloc_extent_state helpers")
-a40246e8afc0 ("btrfs: separate out the eb and extent state leak helpers")
-a62a3bd9546b ("btrfs: separate out the extent state and extent buffer init code")
-87c11705cc94 ("btrfs: convert the io_failure_tree to a plain rb_tree")
+Based on v6.1.46
 
-thanks,
+Original series
 
-greg k-h
+	https://lore.kernel.org/lkml/20230201143628.270912-1-vincent.guittot@linaro.org/
 
------------------- original commit in Linus's tree ------------------
+Thanks!
 
-From c962098ca4af146f2625ed64399926a098752c9c Mon Sep 17 00:00:00 2001
-From: Josef Bacik <josef@toxicpanda.com>
-Date: Thu, 17 Aug 2023 16:57:30 -0400
-Subject: [PATCH] btrfs: fix incorrect splitting in btrfs_drop_extent_map_range
+--
+Qais Yousef
 
-In production we were seeing a variety of WARN_ON()'s in the extent_map
-code, specifically in btrfs_drop_extent_map_range() when we have to call
-add_extent_mapping() for our second split.
+Vincent Guittot (2):
+  sched/fair: unlink misfit task from cpu overutilized
+  sched/fair: Remove capacity inversion detection
 
-Consider the following extent map layout
+ kernel/sched/fair.c  | 189 ++++++++++++++++++++-----------------------
+ kernel/sched/sched.h |  19 -----
+ 2 files changed, 87 insertions(+), 121 deletions(-)
 
-	PINNED
-	[0 16K)  [32K, 48K)
-
-and then we call btrfs_drop_extent_map_range for [0, 36K), with
-skip_pinned == true.  The initial loop will have
-
-	start = 0
-	end = 36K
-	len = 36K
-
-we will find the [0, 16k) extent, but since we are pinned we will skip
-it, which has this code
-
-	start = em_end;
-	if (end != (u64)-1)
-		len = start + len - em_end;
-
-em_end here is 16K, so now the values are
-
-	start = 16K
-	len = 16K + 36K - 16K = 36K
-
-len should instead be 20K.  This is a problem when we find the next
-extent at [32K, 48K), we need to split this extent to leave [36K, 48k),
-however the code for the split looks like this
-
-	split->start = start + len;
-	split->len = em_end - (start + len);
-
-In this case we have
-
-	em_end = 48K
-	split->start = 16K + 36K       // this should be 16K + 20K
-	split->len = 48K - (16K + 36K) // this overflows as 16K + 36K is 52K
-
-and now we have an invalid extent_map in the tree that potentially
-overlaps other entries in the extent map.  Even in the non-overlapping
-case we will have split->start set improperly, which will cause problems
-with any block related calculations.
-
-We don't actually need len in this loop, we can simply use end as our
-end point, and only adjust start up when we find a pinned extent we need
-to skip.
-
-Adjust the logic to do this, which keeps us from inserting an invalid
-extent map.
-
-We only skip_pinned in the relocation case, so this is relatively rare,
-except in the case where you are running relocation a lot, which can
-happen with auto relocation on.
-
-Fixes: 55ef68990029 ("Btrfs: Fix btrfs_drop_extent_cache for skip pinned case")
-CC: stable@vger.kernel.org # 4.14+
-Reviewed-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-
-diff --git a/fs/btrfs/extent_map.c b/fs/btrfs/extent_map.c
-index 0cdb3e86f29b..a6d8368ed0ed 100644
---- a/fs/btrfs/extent_map.c
-+++ b/fs/btrfs/extent_map.c
-@@ -760,8 +760,6 @@ void btrfs_drop_extent_map_range(struct btrfs_inode *inode, u64 start, u64 end,
- 
- 		if (skip_pinned && test_bit(EXTENT_FLAG_PINNED, &em->flags)) {
- 			start = em_end;
--			if (end != (u64)-1)
--				len = start + len - em_end;
- 			goto next;
- 		}
- 
-@@ -829,8 +827,8 @@ void btrfs_drop_extent_map_range(struct btrfs_inode *inode, u64 start, u64 end,
- 				if (!split)
- 					goto remove_em;
- 			}
--			split->start = start + len;
--			split->len = em_end - (start + len);
-+			split->start = end;
-+			split->len = em_end - end;
- 			split->block_start = em->block_start;
- 			split->flags = flags;
- 			split->compress_type = em->compress_type;
+-- 
+2.34.1
 
