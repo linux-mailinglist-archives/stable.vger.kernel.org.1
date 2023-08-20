@@ -2,74 +2,120 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3B91E781DF3
-	for <lists+stable@lfdr.de>; Sun, 20 Aug 2023 15:23:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A5A03781EA0
+	for <lists+stable@lfdr.de>; Sun, 20 Aug 2023 17:25:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230263AbjHTNXr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 20 Aug 2023 09:23:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38226 "EHLO
+        id S231415AbjHTPZs (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 20 Aug 2023 11:25:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54472 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229739AbjHTNXp (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 20 Aug 2023 09:23:45 -0400
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D21D018E;
-        Sun, 20 Aug 2023 06:22:48 -0700 (PDT)
-Received: from p200300cf17418700333267be2b9ea1d1.dip0.t-ipconnect.de ([2003:cf:1741:8700:3332:67be:2b9e:a1d1]); authenticated
-        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        id 1qXiOD-0008Pc-U1; Sun, 20 Aug 2023 15:22:45 +0200
-Message-ID: <48b80ab9-560d-3a8c-bfa8-b2983ca591fa@leemhuis.info>
-Date:   Sun, 20 Aug 2023 15:22:44 +0200
+        with ESMTP id S231416AbjHTPZo (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 20 Aug 2023 11:25:44 -0400
+Received: from mail-wm1-x32f.google.com (mail-wm1-x32f.google.com [IPv6:2a00:1450:4864:20::32f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 809323A9C
+        for <stable@vger.kernel.org>; Sun, 20 Aug 2023 08:21:51 -0700 (PDT)
+Received: by mail-wm1-x32f.google.com with SMTP id 5b1f17b1804b1-3fee600dce6so9736115e9.1
+        for <stable@vger.kernel.org>; Sun, 20 Aug 2023 08:21:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=layalina-io.20221208.gappssmtp.com; s=20221208; t=1692544910; x=1693149710;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=t1WFhLLujM0Chr+SFgokCgNMU6zRltqI69DEFgLDAHM=;
+        b=FMj8AIFOKHOUOs579dCdiNT8N9nIRUXe7vWEEWi+4Ym7tht9mCp4KrM4gNByXZBOQS
+         liHslt2h7iNO+t9RjBUVr6zhUuLjZrbr6SlXX69mcq40hax5tGHdWVypHuDiDKxDGa66
+         6KDlvXoSmrIhW8xUf1WNaYiqN0C/LW+Vv10l6/Hf5tIiFYVnWaVUvTnNKieks6eia793
+         JJH67O2xM8d+UKQyFjTUvOvh2eKW9GyZ6OchggLkde6n86jE0iyaPRBzCC0dZlMBLibs
+         orLYy7XlIYntl9+EgUSbotcn9c0JET16VFwoS11Cn59mceRqjM8iLfjqeol16WJmBl0y
+         xVHQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1692544910; x=1693149710;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=t1WFhLLujM0Chr+SFgokCgNMU6zRltqI69DEFgLDAHM=;
+        b=LtInebkDXvbxBvO6H7hOmKirkfwO76uZHiTVyLDzjLCpA7QkUTuf6mVwfhintcHC0J
+         xjEQ9jquvWY0SRPDH0bVGxjMCnl1ynvvvjR4rHoRC/WKs6NVRffxylC5NhaLG36H1tLE
+         3XRPKqqFJXVPGeAw7jz48oH1vObYAYckNkOhZkRUQU3RMq0kURWhw3R87WJKyezMnNZ+
+         MvoAXoGvOubhLdSDQ9Zb7telrIso4Bj8NgH42HK4JLzfAfZ/veQoSpm3wYfSS+jov7K2
+         yfAh6OFGlqur4yW7L4Vxvh8K/7q8xEjRbfPLbWwmtVdVhMDvJMs65PrTiYG3ArDvgqMf
+         1UdQ==
+X-Gm-Message-State: AOJu0YzhVSheFUv4MJIf9YPICXLUM7rN40FAeU4LJMx+z4K4ftADM08P
+        Ryo17i01nPdKWtr7mimA/sG4miM0MEC3mSusinE=
+X-Google-Smtp-Source: AGHT+IEfgSETFCpZ8ZM9J6X/uBMjWpzJMTJX6/BAw7lW2wKlwYwVtHw6y2wx7TO+NakNYRnOgkbhTw==
+X-Received: by 2002:a7b:cbcd:0:b0:3fe:25b3:951d with SMTP id n13-20020a7bcbcd000000b003fe25b3951dmr3262262wmi.5.1692544909882;
+        Sun, 20 Aug 2023 08:21:49 -0700 (PDT)
+Received: from airbuntu.. (host109-151-228-137.range109-151.btcentralplus.com. [109.151.228.137])
+        by smtp.gmail.com with ESMTPSA id o11-20020a05600c510b00b003fe3674bb39sm9762497wms.2.2023.08.20.08.21.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 20 Aug 2023 08:21:49 -0700 (PDT)
+From:   Qais Yousef <qyousef@layalina.io>
+To:     stable@vger.kernel.org
+Cc:     Juri Lelli <juri.lelli@redhat.com>,
+        Waiman Long <longman@redhat.com>, Tejun Heo <tj@kernel.org>,
+        Dietmar Eggemann <dietmar.eggemann@arm.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Vincent Guittot <vincent.guittot@linaro.org>,
+        Ingo Molnar <mingo@kernel.org>, Hao Luo <haoluo@google.com>,
+        John Stultz <jstultz@google.com>, cgroups@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Qais Yousef <qyousef@layalina.io>
+Subject: [PATCH 0/6] Backport rework of deadline bandwidth restoration for 5.10.y
+Date:   Sun, 20 Aug 2023 16:21:38 +0100
+Message-Id: <20230820152144.517461-1-qyousef@layalina.io>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Fwd: System becomes hot when put to sleep
-Content-Language: en-US, de-DE
-To:     Bagas Sanjaya <bagasdotme@gmail.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Shubhra Prakash Nandi <email2shubhra@gmail.com>,
-        "Enrico Weigelt, metux IT consult" <info@metux.net>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <brgl@bgdev.pl>,
-        Andy Shevchenko <andy@kernel.org>
-Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux Regressions <regressions@lists.linux.dev>,
-        Linux Power Management <linux-pm@vger.kernel.org>,
-        Linux Stable <stable@vger.kernel.org>,
-        Linux GPIO <linux-gpio@vger.kernel.org>
-References: <430ca35e-70a1-e2b0-34e4-2586bebccd44@gmail.com>
-From:   "Linux regression tracking #update (Thorsten Leemhuis)" 
-        <regressions@leemhuis.info>
-Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
-In-Reply-To: <430ca35e-70a1-e2b0-34e4-2586bebccd44@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1692537768;ac97949c;
-X-HE-SMSGID: 1qXiOD-0008Pc-U1
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 03.08.23 16:13, Bagas Sanjaya wrote:
+This is a backport of the series that fixes the way deadline bandwidth
+restoration is done which is causing noticeable delay on resume path. It also
+converts the cpuset lock back into a mutex which some users on Android too.
+I lack the details but AFAIU the read/write semaphore was slower on high
+contention.
 
-> I notice a regression report on Bugzilla [1]. Quoting from it:
->> I have a Dell Inspiron 14 5425 laptop with hardware specified below. Up till kernel version 6.1.39 the system can sleep and resume correctly but with kernel version 6.1.40 it heats up when put to sleep and drains battery very quickly. It seems CPU cannot suspend though the system can resume correctly and functions correctly after that. I believe many GPIO and pinctrl patches/fixes for the AMD platform beginning 6.1.40 and 6.4.5 has caused this issue. There is no error in logs and sleep/resume log messages in both 6.1.39 and 6.1.40 are the same. Only s2idle sleep mode is available on my system.
-> [...] 
+Compile tested against some randconfig for different archs and tested against
+android13-5.10 GKI kernel.
 
-TWIMC, Mario is working on it and proposed a fix:
+My testing is limited to resume path only; and general phone usage to make sure
+nothing falls apart. Would be good to have some deadline specific testing done
+too.
 
-#regzbot introduced: 65f6c7c91cb2
-#regzbot monitor:
-https://lore.kernel.org/all/20230818144850.1439-1-mario.limonciello@amd.com/
+Based on v5.10.191
 
-Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
+Original series:
+
+	https://lore.kernel.org/lkml/20230508075854.17215-1-juri.lelli@redhat.com/
+
+Thanks!
+
 --
-Everything you wanna know about Linux kernel regression tracking:
-https://linux-regtracking.leemhuis.info/about/#tldr
-That page also explains what to do if mails like this annoy you.
+Qais Yousef
 
-#regzbot ignore-activity
+Dietmar Eggemann (2):
+  sched/deadline: Create DL BW alloc, free & check overflow interface
+  cgroup/cpuset: Free DL BW in case can_attach() fails
+
+Juri Lelli (4):
+  cgroup/cpuset: Rename functions dealing with DEADLINE accounting
+  sched/cpuset: Bring back cpuset_mutex
+  sched/cpuset: Keep track of SCHED_DEADLINE task in cpusets
+  cgroup/cpuset: Iterate only if DEADLINE tasks are present
+
+ include/linux/cpuset.h  |  12 ++-
+ include/linux/sched.h   |   4 +-
+ kernel/cgroup/cgroup.c  |   4 +
+ kernel/cgroup/cpuset.c  | 161 ++++++++++++++++++++++++++++------------
+ kernel/sched/core.c     |  41 +++++-----
+ kernel/sched/deadline.c |  66 ++++++++++++----
+ kernel/sched/sched.h    |   2 +-
+ 7 files changed, 202 insertions(+), 88 deletions(-)
+
+-- 
+2.34.1
+
