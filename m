@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4E6F0781F31
-	for <lists+stable@lfdr.de>; Sun, 20 Aug 2023 20:16:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A84AB781F32
+	for <lists+stable@lfdr.de>; Sun, 20 Aug 2023 20:16:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230051AbjHTSQN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 20 Aug 2023 14:16:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37208 "EHLO
+        id S231593AbjHTSQr (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 20 Aug 2023 14:16:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33554 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229726AbjHTSQM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 20 Aug 2023 14:16:12 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E2383A8B
-        for <stable@vger.kernel.org>; Sun, 20 Aug 2023 11:11:09 -0700 (PDT)
+        with ESMTP id S231601AbjHTSQo (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 20 Aug 2023 14:16:44 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 30B80107
+        for <stable@vger.kernel.org>; Sun, 20 Aug 2023 11:11:59 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D892560A6D
-        for <stable@vger.kernel.org>; Sun, 20 Aug 2023 18:11:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8D35C433C8;
-        Sun, 20 Aug 2023 18:11:07 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C0E8D60F0A
+        for <stable@vger.kernel.org>; Sun, 20 Aug 2023 18:11:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1E40C433C9;
+        Sun, 20 Aug 2023 18:11:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692555068;
-        bh=KO6oJ81jHsptLP6pPWqwXGwBZD+sdJrSZ54eiL0+HF8=;
+        s=korg; t=1692555118;
+        bh=rybrVv1o+Q7PzcBtMf6Dj98B6qbetCJ5yb997ngBf3Y=;
         h=Subject:To:Cc:From:Date:From;
-        b=L2CqCkxKaP01r4oF17meVY9/cI5ej9fky+iIqtJDNb0jY+S8caCwsMyADQ8o8LweD
-         yub7JHzaGdAGPyhJf/JgznLVKaXcosvD3HE8gI4Mh9YKCpTvdxGBl5FtythvazUF62
-         S2v7FhiUn1kIUqsnC8PwGlKRZr3eh/wnXr3IrBaU=
-Subject: FAILED: patch "[PATCH] smb3: display network namespace in debug information" failed to apply to 4.14-stable tree
-To:     stfrench@microsoft.com, pc@manguebit.com
+        b=yTHpVSD8VxEW7pMZAmZVomJ3HrQ8pVEGZL/wqbeJLE1GnZqOFNdigRqGxyGwx9Sq3
+         0rpXZ8irCYD/Z5ThOEIp5B7BPszAjnnaNSv3t/78ZEt0YeN0ZE5IA3XZnViAJEX2aW
+         cZCNAdn3JOfWvkHMznK4jqwfgSSwsrlY9CCd/UZM=
+Subject: FAILED: patch "[PATCH] btrfs: fix incorrect splitting in btrfs_drop_extent_map_range" failed to apply to 5.15-stable tree
+To:     josef@toxicpanda.com, dsterba@suse.com, fdmanana@suse.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sun, 20 Aug 2023 20:10:58 +0200
-Message-ID: <2023082058-untamed-discharge-d6ff@gregkh>
+Date:   Sun, 20 Aug 2023 20:11:55 +0200
+Message-ID: <2023082055-raffle-skinning-b3e8@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -48,42 +48,42 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 4.14-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x 7b38f6ddc97bf572c3422d3175e8678dd95502fa
+git cherry-pick -x c962098ca4af146f2625ed64399926a098752c9c
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023082058-untamed-discharge-d6ff@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023082055-raffle-skinning-b3e8@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
-7b38f6ddc97b ("smb3: display network namespace in debug information")
-3ae872de4107 ("smb: client: fix shared DFS root mounts with different prefixes")
-38c8a9a52082 ("smb: move client and server files to common directory fs/smb")
-72a7804a667e ("cifs: fix smb1 mount regression")
-8e3554150d6c ("cifs: fix sharing of DFS connections")
-3dc9c433c9dd ("cifs: protect access of TCP_Server_Info::{origin,leaf}_fullpath")
-ee20d7c61007 ("cifs: fix potential race when tree connecting ipc")
-d5a863a153e9 ("cifs: avoid dup prefix path in dfs_get_automount_devname()")
-2f4e429c8469 ("cifs: lock chan_lock outside match_session")
-396935de1455 ("cifs: fix use-after-free bug in refresh_cache_worker()")
-b56bce502f55 ("cifs: set DFS root session in cifs_get_smb_ses()")
-b9ee2e307c6b ("cifs: improve checking of DFS links over STATUS_OBJECT_NAME_INVALID")
-9e6002c8738a ("cifs: ignore ipc reconnect failures during dfs failover")
-7ad54b98fc1f ("cifs: use origin fullpath for automounts")
-466611e4af82 ("cifs: fix source pathname comparison of dfs supers")
-1d04a6fe75ee ("cifs: don't block in dfs_cache_noreq_update_tgthint()")
-6916881f443f ("cifs: fix refresh of cached referrals")
-cb3f6d876452 ("cifs: don't refresh cached referrals from unactive mounts")
-a1c0d00572fc ("cifs: share dfs connections and supers")
-a73a26d97eca ("cifs: split out ses and tcon retrieval from mount_get_conns()")
+c962098ca4af ("btrfs: fix incorrect splitting in btrfs_drop_extent_map_range")
+db21370bffbc ("btrfs: drop extent map range more efficiently")
+f3109e33bb0a ("btrfs: use extent_map_end() at btrfs_drop_extent_map_range()")
+4c0c8cfc8433 ("btrfs: move btrfs_drop_extent_cache() to extent_map.c")
+cef7820d6abf ("btrfs: fix missed extent on fsync after dropping extent maps")
+570eb97bace8 ("btrfs: unify the lock/unlock extent variants")
+dbbf49928f2e ("btrfs: remove the wake argument from clear_extent_bits")
+e3974c669472 ("btrfs: move core extent_io_tree functions to extent-io-tree.c")
+38830018387e ("btrfs: move a few exported extent_io_tree helpers to extent-io-tree.c")
+04eba8932392 ("btrfs: temporarily export and then move extent state helpers")
+91af24e48474 ("btrfs: temporarily export and move core extent_io_tree tree functions")
+6962541e964f ("btrfs: move btrfs_debug_check_extent_io_range into extent-io-tree.c")
+ec39e39bbf97 ("btrfs: export wait_extent_bit")
+a66318872c41 ("btrfs: move simple extent bit helpers out of extent_io.c")
+ad795329574c ("btrfs: convert BUG_ON(EXTENT_BIT_LOCKED) checks to ASSERT's")
+83cf709a89fb ("btrfs: move extent state init and alloc functions to their own file")
+c45379a20fbc ("btrfs: temporarily export alloc_extent_state helpers")
+a40246e8afc0 ("btrfs: separate out the eb and extent state leak helpers")
+a62a3bd9546b ("btrfs: separate out the extent state and extent buffer init code")
+87c11705cc94 ("btrfs: convert the io_failure_tree to a plain rb_tree")
 
 thanks,
 
@@ -91,62 +91,96 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 7b38f6ddc97bf572c3422d3175e8678dd95502fa Mon Sep 17 00:00:00 2001
-From: Steve French <stfrench@microsoft.com>
-Date: Thu, 10 Aug 2023 21:41:03 -0500
-Subject: [PATCH] smb3: display network namespace in debug information
+From c962098ca4af146f2625ed64399926a098752c9c Mon Sep 17 00:00:00 2001
+From: Josef Bacik <josef@toxicpanda.com>
+Date: Thu, 17 Aug 2023 16:57:30 -0400
+Subject: [PATCH] btrfs: fix incorrect splitting in btrfs_drop_extent_map_range
 
-We recently had problems where a network namespace was deleted
-causing hard to debug reconnect problems.  To help deal with
-configuration issues like this it is useful to dump the network
-namespace to better debug what happened.
+In production we were seeing a variety of WARN_ON()'s in the extent_map
+code, specifically in btrfs_drop_extent_map_range() when we have to call
+add_extent_mapping() for our second split.
 
-So add this to information displayed in /proc/fs/cifs/DebugData for
-the server (and channels if mounted with multichannel). For example:
+Consider the following extent map layout
 
-   Local Users To Server: 1 SecMode: 0x1 Req On Wire: 0 Net namespace: 4026531840
+	PINNED
+	[0 16K)  [32K, 48K)
 
-This can be easily compared with what is displayed for the
-processes on the system. For example /proc/1/ns/net in this case
-showed the same thing (see below), and we can see that the namespace
-is still valid in this example.
+and then we call btrfs_drop_extent_map_range for [0, 36K), with
+skip_pinned == true.  The initial loop will have
 
-   'net:[4026531840]'
+	start = 0
+	end = 36K
+	len = 36K
 
-Cc: stable@vger.kernel.org
-Acked-by: Paulo Alcantara (SUSE) <pc@manguebit.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+we will find the [0, 16k) extent, but since we are pinned we will skip
+it, which has this code
 
-diff --git a/fs/smb/client/cifs_debug.c b/fs/smb/client/cifs_debug.c
-index fb4162a52844..aec6e9137474 100644
---- a/fs/smb/client/cifs_debug.c
-+++ b/fs/smb/client/cifs_debug.c
-@@ -153,6 +153,11 @@ cifs_dump_channel(struct seq_file *m, int i, struct cifs_chan *chan)
- 		   in_flight(server),
- 		   atomic_read(&server->in_send),
- 		   atomic_read(&server->num_waiters));
-+#ifdef CONFIG_NET_NS
-+	if (server->net)
-+		seq_printf(m, " Net namespace: %u ", server->net->ns.inum);
-+#endif /* NET_NS */
-+
- }
+	start = em_end;
+	if (end != (u64)-1)
+		len = start + len - em_end;
+
+em_end here is 16K, so now the values are
+
+	start = 16K
+	len = 16K + 36K - 16K = 36K
+
+len should instead be 20K.  This is a problem when we find the next
+extent at [32K, 48K), we need to split this extent to leave [36K, 48k),
+however the code for the split looks like this
+
+	split->start = start + len;
+	split->len = em_end - (start + len);
+
+In this case we have
+
+	em_end = 48K
+	split->start = 16K + 36K       // this should be 16K + 20K
+	split->len = 48K - (16K + 36K) // this overflows as 16K + 36K is 52K
+
+and now we have an invalid extent_map in the tree that potentially
+overlaps other entries in the extent map.  Even in the non-overlapping
+case we will have split->start set improperly, which will cause problems
+with any block related calculations.
+
+We don't actually need len in this loop, we can simply use end as our
+end point, and only adjust start up when we find a pinned extent we need
+to skip.
+
+Adjust the logic to do this, which keeps us from inserting an invalid
+extent map.
+
+We only skip_pinned in the relocation case, so this is relatively rare,
+except in the case where you are running relocation a lot, which can
+happen with auto relocation on.
+
+Fixes: 55ef68990029 ("Btrfs: Fix btrfs_drop_extent_cache for skip pinned case")
+CC: stable@vger.kernel.org # 4.14+
+Reviewed-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+
+diff --git a/fs/btrfs/extent_map.c b/fs/btrfs/extent_map.c
+index 0cdb3e86f29b..a6d8368ed0ed 100644
+--- a/fs/btrfs/extent_map.c
++++ b/fs/btrfs/extent_map.c
+@@ -760,8 +760,6 @@ void btrfs_drop_extent_map_range(struct btrfs_inode *inode, u64 start, u64 end,
  
- static inline const char *smb_speed_to_str(size_t bps)
-@@ -430,10 +435,15 @@ static int cifs_debug_data_proc_show(struct seq_file *m, void *v)
- 				server->reconnect_instance,
- 				server->srv_count,
- 				server->sec_mode, in_flight(server));
-+#ifdef CONFIG_NET_NS
-+		if (server->net)
-+			seq_printf(m, " Net namespace: %u ", server->net->ns.inum);
-+#endif /* NET_NS */
+ 		if (skip_pinned && test_bit(EXTENT_FLAG_PINNED, &em->flags)) {
+ 			start = em_end;
+-			if (end != (u64)-1)
+-				len = start + len - em_end;
+ 			goto next;
+ 		}
  
- 		seq_printf(m, "\nIn Send: %d In MaxReq Wait: %d",
- 				atomic_read(&server->in_send),
- 				atomic_read(&server->num_waiters));
-+
- 		if (server->leaf_fullpath) {
- 			seq_printf(m, "\nDFS leaf full path: %s",
- 				   server->leaf_fullpath);
+@@ -829,8 +827,8 @@ void btrfs_drop_extent_map_range(struct btrfs_inode *inode, u64 start, u64 end,
+ 				if (!split)
+ 					goto remove_em;
+ 			}
+-			split->start = start + len;
+-			split->len = em_end - (start + len);
++			split->start = end;
++			split->len = em_end - end;
+ 			split->block_start = em->block_start;
+ 			split->flags = flags;
+ 			split->compress_type = em->compress_type;
 
