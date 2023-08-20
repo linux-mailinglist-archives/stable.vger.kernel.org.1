@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 41A47781F1A
-	for <lists+stable@lfdr.de>; Sun, 20 Aug 2023 20:01:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 35F62781F1D
+	for <lists+stable@lfdr.de>; Sun, 20 Aug 2023 20:01:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230510AbjHTSBf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        id S231562AbjHTSBf (ORCPT <rfc822;lists+stable@lfdr.de>);
         Sun, 20 Aug 2023 14:01:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60010 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54870 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229648AbjHTSBc (ORCPT
+        with ESMTP id S231539AbjHTSBc (ORCPT
         <rfc822;stable@vger.kernel.org>); Sun, 20 Aug 2023 14:01:32 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5169711C
-        for <stable@vger.kernel.org>; Sun, 20 Aug 2023 10:57:02 -0700 (PDT)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 918BE126
+        for <stable@vger.kernel.org>; Sun, 20 Aug 2023 10:57:11 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DFB1460A6D
-        for <stable@vger.kernel.org>; Sun, 20 Aug 2023 17:57:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E910DC433C8;
-        Sun, 20 Aug 2023 17:57:00 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 139C4619E5
+        for <stable@vger.kernel.org>; Sun, 20 Aug 2023 17:57:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2062EC433C8;
+        Sun, 20 Aug 2023 17:57:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692554221;
-        bh=6XElO8RnQWK6JiFjBAoG38cTrPs/SXSKC/4W24vA/Pk=;
+        s=korg; t=1692554230;
+        bh=IRoTKROKjGnYoNo0y7VQNRAay7iGdDgRtPstDd34bBE=;
         h=Subject:To:Cc:From:Date:From;
-        b=b54EWLEhlefrK+sQsxoWX0ng2EJCp10k6L0YAAFibdc+cjuS5XjjQavEfV2vbamvj
-         trqbvPKdPF6bP7rs3kmBkaoUda4M6RWi1NAnE1wlt2S6JU+OeKdR1dr7Oj+5dojXet
-         EI6FLMehAXdxfTeFTthwG8k1V19YF1mtMkxrw7v4=
-Subject: FAILED: patch "[PATCH] objtool/x86: Fix SRSO mess" failed to apply to 6.1-stable tree
+        b=Kl355dpt1j8wrFBxb3Ask6qyxQy4dw2gV6RYn9071vTO6CQCfu0Bceeli+bBrw/k5
+         ywwtRJUj0ZCcjiLfMO/bIE2CjdMIAsm6OLD/Mak5RNrHdlP21llSJy+fGrHvAQTkmU
+         ZTkP83bVm5hI2lKOmgLl9PyhhS1Fci/G6dHWNpHg=
+Subject: FAILED: patch "[PATCH] objtool/x86: Fix SRSO mess" failed to apply to 5.15-stable tree
 To:     peterz@infradead.org, bp@alien8.de
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sun, 20 Aug 2023 19:56:58 +0200
-Message-ID: <2023082058-catalog-reconvene-ddce@gregkh>
+Date:   Sun, 20 Aug 2023 19:56:59 +0200
+Message-ID: <2023082059-hacksaw-deflator-8c6c@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -48,19 +48,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x 4ae68b26c3ab5a82aa271e6e9fc9b1a06e1d6b40
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023082058-catalog-reconvene-ddce@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023082059-hacksaw-deflator-8c6c@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
