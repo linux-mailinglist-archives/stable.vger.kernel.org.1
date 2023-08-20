@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D2658781F1F
-	for <lists+stable@lfdr.de>; Sun, 20 Aug 2023 20:01:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A536B781F27
+	for <lists+stable@lfdr.de>; Sun, 20 Aug 2023 20:11:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231543AbjHTSBg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 20 Aug 2023 14:01:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60112 "EHLO
+        id S229776AbjHTSLh (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 20 Aug 2023 14:11:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51058 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231542AbjHTSBc (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 20 Aug 2023 14:01:32 -0400
+        with ESMTP id S230493AbjHTSLf (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 20 Aug 2023 14:11:35 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E6DE127
-        for <stable@vger.kernel.org>; Sun, 20 Aug 2023 10:57:14 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 105DE1B3
+        for <stable@vger.kernel.org>; Sun, 20 Aug 2023 11:10:53 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 02FA0619E5
-        for <stable@vger.kernel.org>; Sun, 20 Aug 2023 17:57:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C27FC433C7;
-        Sun, 20 Aug 2023 17:57:12 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 99ACF60C4B
+        for <stable@vger.kernel.org>; Sun, 20 Aug 2023 18:10:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3E93C433C8;
+        Sun, 20 Aug 2023 18:10:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692554233;
-        bh=uI+dcDaP9DwJEIq26uHFkdiVcbKPSkIAYYQNh0nDIbQ=;
+        s=korg; t=1692555052;
+        bh=li2XU9EnRTt/JFS0w3thcW8KWy5vtVR9yjfumvrKKBY=;
         h=Subject:To:Cc:From:Date:From;
-        b=jZBZVLHj2hco6I89KyrgncWqkyLhhaJQ5iOql8Iqdtq+ZB8n+/vw2P6ZdEkXpwb0w
-         GEJyuhOu88euZJ71/u88gkNIoTDcRDbMNVoazrNBofMj0RwTSNxpcADwg3iDfEx+hv
-         VEgYABlecunE80aQPSdbaNsarWcqEE2uf52IFqrc=
-Subject: FAILED: patch "[PATCH] objtool/x86: Fix SRSO mess" failed to apply to 5.10-stable tree
-To:     peterz@infradead.org, bp@alien8.de
+        b=cwggKuBqgxT/p6h993DjhESsAQN0MbMOExti8Fwg70uKINxgbZGvLGbsDH5Pl69Md
+         /IK9lwvoeTPqIlqHP3r6ceksKn4sdgHBkgV0CakP5LN3lEt9aWtB5tAmFJikoORxI6
+         0RFm8xeV3m+8QGi6mBxUG7wqxE60ZC0WG9IfuzOM=
+Subject: FAILED: patch "[PATCH] smb3: display network namespace in debug information" failed to apply to 6.1-stable tree
+To:     stfrench@microsoft.com, pc@manguebit.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sun, 20 Aug 2023 19:57:01 +0200
-Message-ID: <2023082001-sessions-transpose-175d@gregkh>
+Date:   Sun, 20 Aug 2023 20:10:48 +0200
+Message-ID: <2023082048-jeep-prancing-da9a@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -48,25 +48,42 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
-git cherry-pick -x 4ae68b26c3ab5a82aa271e6e9fc9b1a06e1d6b40
+git cherry-pick -x 7b38f6ddc97bf572c3422d3175e8678dd95502fa
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023082001-sessions-transpose-175d@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023082048-jeep-prancing-da9a@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
-4ae68b26c3ab ("objtool/x86: Fix SRSO mess")
-fb3bd914b3ec ("x86/srso: Add a Speculative RAS Overflow mitigation")
-6f612579be9d ("Merge tag 'objtool-core-2023-06-27' of git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip")
+7b38f6ddc97b ("smb3: display network namespace in debug information")
+3ae872de4107 ("smb: client: fix shared DFS root mounts with different prefixes")
+38c8a9a52082 ("smb: move client and server files to common directory fs/smb")
+72a7804a667e ("cifs: fix smb1 mount regression")
+8e3554150d6c ("cifs: fix sharing of DFS connections")
+3dc9c433c9dd ("cifs: protect access of TCP_Server_Info::{origin,leaf}_fullpath")
+ee20d7c61007 ("cifs: fix potential race when tree connecting ipc")
+d5a863a153e9 ("cifs: avoid dup prefix path in dfs_get_automount_devname()")
+2f4e429c8469 ("cifs: lock chan_lock outside match_session")
+396935de1455 ("cifs: fix use-after-free bug in refresh_cache_worker()")
+b56bce502f55 ("cifs: set DFS root session in cifs_get_smb_ses()")
+b9ee2e307c6b ("cifs: improve checking of DFS links over STATUS_OBJECT_NAME_INVALID")
+9e6002c8738a ("cifs: ignore ipc reconnect failures during dfs failover")
+7ad54b98fc1f ("cifs: use origin fullpath for automounts")
+466611e4af82 ("cifs: fix source pathname comparison of dfs supers")
+1d04a6fe75ee ("cifs: don't block in dfs_cache_noreq_update_tgthint()")
+6916881f443f ("cifs: fix refresh of cached referrals")
+cb3f6d876452 ("cifs: don't refresh cached referrals from unactive mounts")
+a1c0d00572fc ("cifs: share dfs connections and supers")
+a73a26d97eca ("cifs: split out ses and tcon retrieval from mount_get_conns()")
 
 thanks,
 
@@ -74,153 +91,62 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 4ae68b26c3ab5a82aa271e6e9fc9b1a06e1d6b40 Mon Sep 17 00:00:00 2001
-From: Peter Zijlstra <peterz@infradead.org>
-Date: Mon, 14 Aug 2023 13:44:29 +0200
-Subject: [PATCH] objtool/x86: Fix SRSO mess
+From 7b38f6ddc97bf572c3422d3175e8678dd95502fa Mon Sep 17 00:00:00 2001
+From: Steve French <stfrench@microsoft.com>
+Date: Thu, 10 Aug 2023 21:41:03 -0500
+Subject: [PATCH] smb3: display network namespace in debug information
 
-Objtool --rethunk does two things:
+We recently had problems where a network namespace was deleted
+causing hard to debug reconnect problems.  To help deal with
+configuration issues like this it is useful to dump the network
+namespace to better debug what happened.
 
- - it collects all (tail) call's of __x86_return_thunk and places them
-   into .return_sites. These are typically compiler generated, but
-   RET also emits this same.
+So add this to information displayed in /proc/fs/cifs/DebugData for
+the server (and channels if mounted with multichannel). For example:
 
- - it fudges the validation of the __x86_return_thunk symbol; because
-   this symbol is inside another instruction, it can't actually find
-   the instruction pointed to by the symbol offset and gets upset.
+   Local Users To Server: 1 SecMode: 0x1 Req On Wire: 0 Net namespace: 4026531840
 
-Because these two things pertained to the same symbol, there was no
-pressing need to separate these two separate things.
+This can be easily compared with what is displayed for the
+processes on the system. For example /proc/1/ns/net in this case
+showed the same thing (see below), and we can see that the namespace
+is still valid in this example.
 
-However, alas, along comes SRSO and more crazy things to deal with
-appeared.
+   'net:[4026531840]'
 
-The SRSO patch itself added the following symbol names to identify as
-rethunk:
+Cc: stable@vger.kernel.org
+Acked-by: Paulo Alcantara (SUSE) <pc@manguebit.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 
-  'srso_untrain_ret', 'srso_safe_ret' and '__ret'
-
-Where '__ret' is the old retbleed return thunk, 'srso_safe_ret' is a
-new similarly embedded return thunk, and 'srso_untrain_ret' is
-completely unrelated to anything the above does (and was only included
-because of that INT3 vs UD2 issue fixed previous).
-
-Clear things up by adding a second category for the embedded instruction
-thing.
-
-Fixes: fb3bd914b3ec ("x86/srso: Add a Speculative RAS Overflow mitigation")
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20230814121148.704502245@infradead.org
-
-diff --git a/tools/objtool/arch/x86/decode.c b/tools/objtool/arch/x86/decode.c
-index 2d51fa8da9e8..cba8a7be040e 100644
---- a/tools/objtool/arch/x86/decode.c
-+++ b/tools/objtool/arch/x86/decode.c
-@@ -824,8 +824,11 @@ bool arch_is_retpoline(struct symbol *sym)
- 
- bool arch_is_rethunk(struct symbol *sym)
- {
--	return !strcmp(sym->name, "__x86_return_thunk") ||
--	       !strcmp(sym->name, "srso_untrain_ret") ||
--	       !strcmp(sym->name, "srso_safe_ret") ||
--	       !strcmp(sym->name, "__ret");
-+	return !strcmp(sym->name, "__x86_return_thunk");
-+}
+diff --git a/fs/smb/client/cifs_debug.c b/fs/smb/client/cifs_debug.c
+index fb4162a52844..aec6e9137474 100644
+--- a/fs/smb/client/cifs_debug.c
++++ b/fs/smb/client/cifs_debug.c
+@@ -153,6 +153,11 @@ cifs_dump_channel(struct seq_file *m, int i, struct cifs_chan *chan)
+ 		   in_flight(server),
+ 		   atomic_read(&server->in_send),
+ 		   atomic_read(&server->num_waiters));
++#ifdef CONFIG_NET_NS
++	if (server->net)
++		seq_printf(m, " Net namespace: %u ", server->net->ns.inum);
++#endif /* NET_NS */
 +
-+bool arch_is_embedded_insn(struct symbol *sym)
-+{
-+	return !strcmp(sym->name, "__ret") ||
-+	       !strcmp(sym->name, "srso_safe_ret");
- }
-diff --git a/tools/objtool/check.c b/tools/objtool/check.c
-index e2ee10ce7703..191656ee9fbc 100644
---- a/tools/objtool/check.c
-+++ b/tools/objtool/check.c
-@@ -455,7 +455,7 @@ static int decode_instructions(struct objtool_file *file)
- 				return -1;
- 			}
- 
--			if (func->return_thunk || func->alias != func)
-+			if (func->embedded_insn || func->alias != func)
- 				continue;
- 
- 			if (!find_insn(file, sec, func->offset)) {
-@@ -1288,16 +1288,33 @@ static int add_ignore_alternatives(struct objtool_file *file)
- 	return 0;
  }
  
-+/*
-+ * Symbols that replace INSN_CALL_DYNAMIC, every (tail) call to such a symbol
-+ * will be added to the .retpoline_sites section.
-+ */
- __weak bool arch_is_retpoline(struct symbol *sym)
- {
- 	return false;
- }
+ static inline const char *smb_speed_to_str(size_t bps)
+@@ -430,10 +435,15 @@ static int cifs_debug_data_proc_show(struct seq_file *m, void *v)
+ 				server->reconnect_instance,
+ 				server->srv_count,
+ 				server->sec_mode, in_flight(server));
++#ifdef CONFIG_NET_NS
++		if (server->net)
++			seq_printf(m, " Net namespace: %u ", server->net->ns.inum);
++#endif /* NET_NS */
  
-+/*
-+ * Symbols that replace INSN_RETURN, every (tail) call to such a symbol
-+ * will be added to the .return_sites section.
-+ */
- __weak bool arch_is_rethunk(struct symbol *sym)
- {
- 	return false;
- }
- 
-+/*
-+ * Symbols that are embedded inside other instructions, because sometimes crazy
-+ * code exists. These are mostly ignored for validation purposes.
-+ */
-+__weak bool arch_is_embedded_insn(struct symbol *sym)
-+{
-+	return false;
-+}
+ 		seq_printf(m, "\nIn Send: %d In MaxReq Wait: %d",
+ 				atomic_read(&server->in_send),
+ 				atomic_read(&server->num_waiters));
 +
- static struct reloc *insn_reloc(struct objtool_file *file, struct instruction *insn)
- {
- 	struct reloc *reloc;
-@@ -1583,7 +1600,7 @@ static int add_jump_destinations(struct objtool_file *file)
- 			 * middle of another instruction.  Objtool only
- 			 * knows about the outer instruction.
- 			 */
--			if (sym && sym->return_thunk) {
-+			if (sym && sym->embedded_insn) {
- 				add_return_call(file, insn, false);
- 				continue;
- 			}
-@@ -2502,6 +2519,9 @@ static int classify_symbols(struct objtool_file *file)
- 		if (arch_is_rethunk(func))
- 			func->return_thunk = true;
- 
-+		if (arch_is_embedded_insn(func))
-+			func->embedded_insn = true;
-+
- 		if (arch_ftrace_match(func->name))
- 			func->fentry = true;
- 
-diff --git a/tools/objtool/include/objtool/arch.h b/tools/objtool/include/objtool/arch.h
-index 2b6d2ce4f9a5..0b303eba660e 100644
---- a/tools/objtool/include/objtool/arch.h
-+++ b/tools/objtool/include/objtool/arch.h
-@@ -90,6 +90,7 @@ int arch_decode_hint_reg(u8 sp_reg, int *base);
- 
- bool arch_is_retpoline(struct symbol *sym);
- bool arch_is_rethunk(struct symbol *sym);
-+bool arch_is_embedded_insn(struct symbol *sym);
- 
- int arch_rewrite_retpolines(struct objtool_file *file);
- 
-diff --git a/tools/objtool/include/objtool/elf.h b/tools/objtool/include/objtool/elf.h
-index c532d70864dc..9f71e988eca4 100644
---- a/tools/objtool/include/objtool/elf.h
-+++ b/tools/objtool/include/objtool/elf.h
-@@ -66,6 +66,7 @@ struct symbol {
- 	u8 fentry            : 1;
- 	u8 profiling_func    : 1;
- 	u8 warned	     : 1;
-+	u8 embedded_insn     : 1;
- 	struct list_head pv_target;
- 	struct reloc *relocs;
- };
+ 		if (server->leaf_fullpath) {
+ 			seq_printf(m, "\nDFS leaf full path: %s",
+ 				   server->leaf_fullpath);
 
