@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 075CF781F33
-	for <lists+stable@lfdr.de>; Sun, 20 Aug 2023 20:16:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A1513781F37
+	for <lists+stable@lfdr.de>; Sun, 20 Aug 2023 20:16:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231596AbjHTSQr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 20 Aug 2023 14:16:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33388 "EHLO
+        id S231591AbjHTSQv (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 20 Aug 2023 14:16:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33586 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231574AbjHTSQo (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 20 Aug 2023 14:16:44 -0400
+        with ESMTP id S230139AbjHTSQq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 20 Aug 2023 14:16:46 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AE4DD116
-        for <stable@vger.kernel.org>; Sun, 20 Aug 2023 11:12:02 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E2CE129
+        for <stable@vger.kernel.org>; Sun, 20 Aug 2023 11:12:05 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3F83D61AE4
-        for <stable@vger.kernel.org>; Sun, 20 Aug 2023 18:12:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50DEAC433C9;
-        Sun, 20 Aug 2023 18:12:01 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1394F60F0A
+        for <stable@vger.kernel.org>; Sun, 20 Aug 2023 18:12:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21A68C433C7;
+        Sun, 20 Aug 2023 18:12:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692555121;
-        bh=j487a8uA/eT64z27B2ZgQ1orHGognC4r+NYegl5yTHw=;
+        s=korg; t=1692555124;
+        bh=atsRfOf9UpKtH8UQRoCEuP0VDvVnUcvfX1I0NJ1zBlI=;
         h=Subject:To:Cc:From:Date:From;
-        b=BF7IaG88qtVyM8txftLM+6GjylApDHuEO5iGxvM9Td4thvOxZjFl625m/mS2/lEHC
-         Q30LJpbbJCZ4Z/u62RdYGBoG0ApSC4ptBmhESkBlpw3poPkVo4/xHYQJCnwKRlhC8+
-         g+XG7fHTG7VU3qxX0FKy75tYAg8puFbGBMVbCLIs=
-Subject: FAILED: patch "[PATCH] btrfs: fix incorrect splitting in btrfs_drop_extent_map_range" failed to apply to 5.10-stable tree
+        b=0XAK2DsgwDewn2RzExw4mi42VRSXMqROhTZjJooMQIJpCLdI7fbfdYkYaz+BZvMf1
+         GQGV2EOq5VpU6YFZWb9bSNNmA2/QoMACTPGhwdaGgcgoggWyi4C+Vqnm3HtYzpJYGX
+         tufSQBcaQhohdakt7Vgthq7d5SwGkepA1a2QHSck=
+Subject: FAILED: patch "[PATCH] btrfs: fix incorrect splitting in btrfs_drop_extent_map_range" failed to apply to 5.4-stable tree
 To:     josef@toxicpanda.com, dsterba@suse.com, fdmanana@suse.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sun, 20 Aug 2023 20:11:57 +0200
-Message-ID: <2023082057-gating-hankering-1cda@gregkh>
+Date:   Sun, 20 Aug 2023 20:11:58 +0200
+Message-ID: <2023082058-overture-sneeze-6ada@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -48,19 +48,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
 git cherry-pick -x c962098ca4af146f2625ed64399926a098752c9c
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023082057-gating-hankering-1cda@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023082058-overture-sneeze-6ada@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
