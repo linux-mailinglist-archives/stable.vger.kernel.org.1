@@ -2,455 +2,125 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C3107781C46
-	for <lists+stable@lfdr.de>; Sun, 20 Aug 2023 05:48:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 55607781C91
+	for <lists+stable@lfdr.de>; Sun, 20 Aug 2023 08:01:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229786AbjHTDsP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 19 Aug 2023 23:48:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44660 "EHLO
+        id S230032AbjHTGBX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 20 Aug 2023 02:01:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45992 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229769AbjHTDsM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 19 Aug 2023 23:48:12 -0400
-Received: from mail-lj1-x233.google.com (mail-lj1-x233.google.com [IPv6:2a00:1450:4864:20::233])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E0B3B3A8D
-        for <stable@vger.kernel.org>; Sat, 19 Aug 2023 20:24:32 -0700 (PDT)
-Received: by mail-lj1-x233.google.com with SMTP id 38308e7fff4ca-2b962c226ceso34977561fa.3
-        for <stable@vger.kernel.org>; Sat, 19 Aug 2023 20:24:32 -0700 (PDT)
+        with ESMTP id S229869AbjHTGBC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 20 Aug 2023 02:01:02 -0400
+Received: from mail-pj1-x104a.google.com (mail-pj1-x104a.google.com [IPv6:2607:f8b0:4864:20::104a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 94696D950
+        for <stable@vger.kernel.org>; Sat, 19 Aug 2023 21:45:00 -0700 (PDT)
+Received: by mail-pj1-x104a.google.com with SMTP id 98e67ed59e1d1-26d5094188cso1924000a91.0
+        for <stable@vger.kernel.org>; Sat, 19 Aug 2023 21:45:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=joelfernandes.org; s=google; t=1692501871; x=1693106671;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=TQmMhZWmap/YTzFElc74YAgD5HIu61NXcGWCch9T3wI=;
-        b=dFSS2ngm9ZB3DlUdOwCK4yvBIoQD9gNphWgYnv7ZZeNZZqCbi+e4WjKb8VgRkbESex
-         k3eaIo2q90F2vvQkfOmywCVmRpJg9+puy6WB4KQxaz3ntLC6qwwWInayAGjLrQ44Wl3+
-         377oQRkeAOxD9UxbY7GOjJwgtKYOCSIuhOexw=
+        d=google.com; s=20221208; t=1692506700; x=1693111500;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=0FxH3RmVNebbCiuph+Bo6boQ8Nz4tprYlS7+OEsOmqw=;
+        b=5jmbfSXOvAMBjY7XcewJDVevQopgO54KQmbQ2iQKCPwWla6sUAswnrQug61V8hji0P
+         FaRA54BkkIuCNeFsp8E4UIG5T7V4sFSfFeatIfwF6jAXyA9xgu2mNc6TuPy513kAB3Rz
+         RiT7tiN4pfEvGwwI8oiuOlidELgMrLeYxDbWEaI7W5tajNVXMefLkGp05jOY8nS1ru9H
+         /pGsi97IyOxc244X4uetUs36QpUq+1OB6S4HvDZXotaICbhy4suLuW6xt5bXIl6MgD9v
+         DvC03mjIj0uwMuIRzFNUmiBWXBVYTlO6b+XCGLeqq8G0ERC4BwKeoxk3CCel2uiyUEGe
+         wvkg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692501871; x=1693106671;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=TQmMhZWmap/YTzFElc74YAgD5HIu61NXcGWCch9T3wI=;
-        b=U37dnrwuPDfnljx9xl/RGT1j+2cJxXTOtVM7KW6qMh75MXq24rMfIC6ZWcievbRDsr
-         okui++L0iJ2E4b4VGX8/vpzJ4hGd01VE+KMzFztR4GVzZLEdJCBG7WeaMOpfmJzaWWeN
-         2hrUxD1a1SH1ginBe+xtdL3ZT2fGdCoIp8nVLGmb8hpMtBkG8vh0j+px+6fkV2plIe3M
-         rwf5W96TitfrJhubDRxdcjFPBaCNKO+mtwxCBDtfkZ1r4wh33Zx0U4Em2o0SUmeFcklj
-         tl52VO/O5WEHMMzRtsRYTr/MwA9KCQMaKzX+hNqH04XmqPaFmdf0OODgUIDi0qnND+JS
-         5bjA==
-X-Gm-Message-State: AOJu0YzGf2L5ZYbzCR2XFk9X/hk9rw4YnD8X6TdAWRopy0Bzg9S0+Qum
-        fGAG975ITXoATjO+LedNCO3M4Z/x/C80QDzr6PrsXA==
-X-Google-Smtp-Source: AGHT+IEdER/izBwvRugiVeukk46NZkROAYj1sY5D/LeQeQ7Rtzmmonx6YoO7yUdJsB69umquL59SgpJRQqvDjMQHHhY=
-X-Received: by 2002:a2e:330f:0:b0:2b8:4079:fd9d with SMTP id
- d15-20020a2e330f000000b002b84079fd9dmr2290514ljc.29.1692501870905; Sat, 19
- Aug 2023 20:24:30 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230817081345.1423-1-chenhuacai@loongson.cn> <CAEXW_YTM5sa15euDeQhEq0CQ=vqLis=pY-5PF00aKTk5y3J6jw@mail.gmail.com>
- <CAAhV-H71iVtpW8NN-v8WnbgUte4vp7D+82O8gdNvdkupcOauig@mail.gmail.com>
- <CAEXW_YTQucT9VkMwaLtyv2Ja7b1OG+UJX3w3GA3=ZbHeDq16tw@mail.gmail.com>
- <CAAhV-H632rGzu+T-GFjiy41r=QADASB91wuxnHvf-4sn5+psuQ@mail.gmail.com>
- <CAEXW_YQXMgoBjt_s1Et1Pi_A1oyFAu-hsTFJitamm1USAOGCHw@mail.gmail.com> <CAAhV-H5brH8crw+aF90VhjPrZi86QaGvbnsFtN+J91fATuXmEA@mail.gmail.com>
-In-Reply-To: <CAAhV-H5brH8crw+aF90VhjPrZi86QaGvbnsFtN+J91fATuXmEA@mail.gmail.com>
-From:   Joel Fernandes <joel@joelfernandes.org>
-Date:   Sat, 19 Aug 2023 23:24:22 -0400
-Message-ID: <CAEXW_YT+uw5JodtrqjY0B2xx0J8ukF=FAB9-p5rxgWobSU2P2A@mail.gmail.com>
-Subject: Re: [PATCH] rcu: Update jiffies locally in rcu_cpu_stall_reset()
-To:     Huacai Chen <chenhuacai@kernel.org>
-Cc:     Huacai Chen <chenhuacai@loongson.cn>,
-        "Paul E . McKenney" <paulmck@kernel.org>,
-        Frederic Weisbecker <frederic@kernel.org>,
-        Neeraj Upadhyay <quic_neeraju@quicinc.com>,
-        Josh Triplett <josh@joshtriplett.org>,
-        Boqun Feng <boqun.feng@gmail.com>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-        Lai Jiangshan <jiangshanlai@gmail.com>,
-        Zqiang <qiang.zhang1211@gmail.com>,
-        Sergey Senozhatsky <senozhatsky@chromium.org>,
-        rcu@vger.kernel.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org, Binbin Zhou <zhoubinbin@loongson.cn>,
-        Thomas Gleixner <tglx@linutronix.de>
+        d=1e100.net; s=20221208; t=1692506700; x=1693111500;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=0FxH3RmVNebbCiuph+Bo6boQ8Nz4tprYlS7+OEsOmqw=;
+        b=Nb6llMV1QYmRtAzhLTj+tbZMwIrW5n4R5hGDddzkELUt6B0YNAyE2guPLUzkMtAoSJ
+         68ikNH6Dl4a+cyaZuNZ3KFQmHgkM1T12bZLPIB2awMfRTbPqa1zeSX0UpjAxVV2Q8jnW
+         zTnaLk0zqnzZMTm+vP93mn4ECYz5+p86Kgp7PKffGLYoFp/6QCj4twoKw6xwVXhH8Z+9
+         Sj/5EDrfIw7ENSU4Vlvec+ehS6x980Dkzwpndo70L0vLygxff0PD4e/+bfXn7gsMLr2+
+         4s4E93CiLbFLxxvx9H/zmptaSikBSBh5plHVoaZvdUH+EfMFuuwTs6DXoJ8S9/kQiWGW
+         f3WQ==
+X-Gm-Message-State: AOJu0YzAJOJpjZ1XxE9J1j1K1PGbPuKpEwBFKHFFkSP/mA1Y/2vBBCNt
+        Y1qNTpOHabXhOQEPHGb3GBw1j7LJQqg=
+X-Google-Smtp-Source: AGHT+IEqOT3wwRMG5WwcbGjs5DHF28XuWoiMfoFuFwXlv5eZTJ+qF6GxclqG4t6qc2t8wDLRKskoRu3kjBA=
+X-Received: from badhri.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:6442])
+ (user=badhri job=sendgmr) by 2002:a17:90a:f00b:b0:268:4dee:eba0 with SMTP id
+ bt11-20020a17090af00b00b002684deeeba0mr669301pjb.8.1692506699855; Sat, 19 Aug
+ 2023 21:44:59 -0700 (PDT)
+Date:   Sun, 20 Aug 2023 04:44:48 +0000
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.42.0.rc1.204.g551eb34607-goog
+Message-ID: <20230820044449.1005889-1-badhri@google.com>
+Subject: [PATCH v1] tcpm: Avoid soft reset when partner does not support get_status
+From:   Badhri Jagan Sridharan <badhri@google.com>
+To:     gregkh@linuxfoundation.org, linux@roeck-us.net,
+        heikki.krogerus@linux.intel.com
+Cc:     kyletso@google.com, linux-usb@vger.kernel.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        Badhri Jagan Sridharan <badhri@google.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Sat, Aug 19, 2023 at 1:03=E2=80=AFAM Huacai Chen <chenhuacai@kernel.org>=
- wrote:
->
-> Hi, Joel,
->
-> On Fri, Aug 18, 2023 at 11:32=E2=80=AFPM Joel Fernandes <joel@joelfernand=
-es.org> wrote:
-> >
-> > On Fri, Aug 18, 2023 at 4:31=E2=80=AFAM Huacai Chen <chenhuacai@kernel.=
-org> wrote:
-> > >
-> > > Hi, Joel,
-> > >
-> > > On Fri, Aug 18, 2023 at 11:05=E2=80=AFAM Joel Fernandes <joel@joelfer=
-nandes.org> wrote:
-> > > >
-> > > > On Thu, Aug 17, 2023 at 10:36=E2=80=AFPM Huacai Chen <chenhuacai@ke=
-rnel.org> wrote:
-> > > > >
-> > > > > Hi, Joel,
-> > > > >
-> > > > > On Fri, Aug 18, 2023 at 1:54=E2=80=AFAM Joel Fernandes <joel@joel=
-fernandes.org> wrote:
-> > > > > >
-> > > > > > On Thu, Aug 17, 2023 at 4:14=E2=80=AFAM Huacai Chen <chenhuacai=
-@loongson.cn> wrote:
-> > > > > > >
-> > > > > > > The KGDB initial breakpoint gets an rcu stall warning after c=
-ommit
-> > > > > > > a80be428fbc1f1f3bc9ed924 ("rcu: Do not disable GP stall detec=
-tion in
-> > > > > > > rcu_cpu_stall_reset()").
-> > > > > > >
-> > > > > > > [   53.452051] rcu: INFO: rcu_preempt self-detected stall on =
-CPU
-> > > > > > > [   53.487950] rcu:     3-...0: (1 ticks this GP) idle=3D0e2c=
-/1/0x4000000000000000 softirq=3D375/375 fqs=3D8
-> > > > > > > [   53.528243] rcu:     (t=3D12297 jiffies g=3D-995 q=3D1 ncp=
-us=3D4)
-> > > > > > > [   53.564840] CPU: 3 PID: 1 Comm: swapper/0 Not tainted 6.5.=
-0-rc2+ #4848
-> > > > > > > [   53.603005] Hardware name: Loongson Loongson-3A5000-HV-7A2=
-000-1w-V0.1-CRB/Loongson-LS3A5000-7A2000-1w-CRB-V1.21, BIOS Loongson-UDK201=
-8-V2.0.05099-beta8 08
-> > > > > > > [   53.682062] pc 9000000000332100 ra 90000000003320f4 tp 900=
-00001000a0000 sp 90000001000a3710
-> > > > > > > [   53.724934] a0 9000000001d4b488 a1 0000000000000000 a2 000=
-0000000000001 a3 0000000000000000
-> > > > > > > [   53.768179] a4 9000000001d526c8 a5 90000001000a38f0 a6 000=
-000000000002c a7 0000000000000000
-> > > > > > > [   53.810751] t0 00000000000002b0 t1 0000000000000004 t2 900=
-000000131c9c0 t3 fffffffffffffffa
-> > > > > > > [   53.853249] t4 0000000000000080 t5 90000001002ac190 t6 000=
-0000000000004 t7 9000000001912d58
-> > > > > > > [   53.895684] t8 0000000000000000 u0 90000000013141a0 s9 000=
-0000000000028 s0 9000000001d512f0
-> > > > > > > [   53.937633] s1 9000000001d51278 s2 90000001000a3798 s3 900=
-00000019fc410 s4 9000000001d4b488
-> > > > > > > [   53.979486] s5 9000000001d512f0 s6 90000000013141a0 s7 000=
-0000000000078 s8 9000000001d4b450
-> > > > > > > [   54.021175]    ra: 90000000003320f4 kgdb_cpu_enter+0x534/0=
-x640
-> > > > > > > [   54.060150]   ERA: 9000000000332100 kgdb_cpu_enter+0x540/0=
-x640
-> > > > > > > [   54.098347]  CRMD: 000000b0 (PLV0 -IE -DA +PG DACF=3DCC DA=
-CM=3DCC -WE)
-> > > > > > > [   54.136621]  PRMD: 0000000c (PPLV0 +PIE +PWE)
-> > > > > > > [   54.172192]  EUEN: 00000000 (-FPE -SXE -ASXE -BTE)
-> > > > > > > [   54.207838]  ECFG: 00071c1c (LIE=3D2-4,10-12 VS=3D7)
-> > > > > > > [   54.242503] ESTAT: 00000800 [INT] (IS=3D11 ECode=3D0 EsubC=
-ode=3D0)
-> > > > > > > [   54.277996]  PRID: 0014c011 (Loongson-64bit, Loongson-3A50=
-00-HV)
-> > > > > > > [   54.313544] CPU: 3 PID: 1 Comm: swapper/0 Not tainted 6.5.=
-0-rc2+ #4848
-> > > > > > > [   54.430170] Stack : 0072617764726148 0000000000000000 9000=
-000000223504 90000001000a0000
-> > > > > > > [   54.472308]         9000000100073a90 9000000100073a98 0000=
-000000000000 9000000100073bd8
-> > > > > > > [   54.514413]         9000000100073bd0 9000000100073bd0 9000=
-000100073a00 0000000000000001
-> > > > > > > [   54.556018]         0000000000000001 9000000100073a98 9982=
-8271f24e961a 90000001002810c0
-> > > > > > > [   54.596924]         0000000000000001 0000000000010003 0000=
-000000000000 0000000000000001
-> > > > > > > [   54.637115]         ffff8000337cdb80 0000000000000001 0000=
-000006360000 900000000131c9c0
-> > > > > > > [   54.677049]         0000000000000000 0000000000000000 9000=
-0000017b4c98 9000000001912000
-> > > > > > > [   54.716394]         9000000001912f68 9000000001913000 9000=
-000001912f70 00000000000002b0
-> > > > > > > [   54.754880]         90000000014a8840 0000000000000000 9000=
-00000022351c 0000000000000000
-> > > > > > > [   54.792372]         00000000000002b0 000000000000000c 0000=
-000000000000 0000000000071c1c
-> > > > > > > [   54.829302]         ...
-> > > > > > > [   54.859163] Call Trace:
-> > > > > > > [   54.859165] [<900000000022351c>] show_stack+0x5c/0x180
-> > > > > > > [   54.918298] [<90000000012f6100>] dump_stack_lvl+0x60/0x88
-> > > > > > > [   54.949251] [<90000000012dd5d8>] rcu_dump_cpu_stacks+0xf0/=
-0x148
-> > > > > > > [   54.981116] [<90000000002d2fb8>] rcu_sched_clock_irq+0xb78=
-/0xe60
-> > > > > > > [   55.012744] [<90000000002e47cc>] update_process_times+0x6c=
-/0xc0
-> > > > > > > [   55.044169] [<90000000002f65d4>] tick_sched_timer+0x54/0x1=
-00
-> > > > > > > [   55.075488] [<90000000002e5174>] __hrtimer_run_queues+0x15=
-4/0x240
-> > > > > > > [   55.107347] [<90000000002e6288>] hrtimer_interrupt+0x108/0=
-x2a0
-> > > > > > > [   55.139112] [<9000000000226418>] constant_timer_interrupt+=
-0x38/0x60
-> > > > > > > [   55.170749] [<90000000002b3010>] __handle_irq_event_percpu=
-+0x50/0x160
-> > > > > > > [   55.203141] [<90000000002b3138>] handle_irq_event_percpu+0=
-x18/0x80
-> > > > > > > [   55.235064] [<90000000002b9d54>] handle_percpu_irq+0x54/0x=
-a0
-> > > > > > > [   55.266241] [<90000000002b2168>] generic_handle_domain_irq=
-+0x28/0x40
-> > > > > > > [   55.298466] [<9000000000aba95c>] handle_cpu_irq+0x5c/0xa0
-> > > > > > > [   55.329749] [<90000000012f7270>] handle_loongarch_irq+0x30=
-/0x60
-> > > > > > > [   55.361476] [<90000000012f733c>] do_vint+0x9c/0x100
-> > > > > > > [   55.391737] [<9000000000332100>] kgdb_cpu_enter+0x540/0x64=
-0
-> > > > > > > [   55.422440] [<9000000000332b64>] kgdb_handle_exception+0x1=
-04/0x180
-> > > > > > > [   55.452911] [<9000000000232478>] kgdb_loongarch_notify+0x3=
-8/0xa0
-> > > > > > > [   55.481964] [<900000000026b4d4>] notify_die+0x94/0x100
-> > > > > > > [   55.509184] [<90000000012f685c>] do_bp+0x21c/0x340
-> > > > > > > [   55.562475] [<90000000003315b8>] kgdb_compiled_break+0x0/0=
-x28
-> > > > > > > [   55.590319] [<9000000000332e80>] kgdb_register_io_module+0=
-x160/0x1c0
-> > > > > > > [   55.618901] [<9000000000c0f514>] configure_kgdboc+0x154/0x=
-1c0
-> > > > > > > [   55.647034] [<9000000000c0f5e0>] kgdboc_probe+0x60/0x80
-> > > > > > > [   55.674647] [<9000000000c96da8>] platform_probe+0x68/0x100
-> > > > > > > [   55.702613] [<9000000000c938e0>] really_probe+0xc0/0x340
-> > > > > > > [   55.730528] [<9000000000c93be4>] __driver_probe_device+0x8=
-4/0x140
-> > > > > > > [   55.759615] [<9000000000c93cdc>] driver_probe_device+0x3c/=
-0x120
-> > > > > > > [   55.787990] [<9000000000c93e8c>] __device_attach_driver+0x=
-cc/0x160
-> > > > > > > [   55.817145] [<9000000000c91290>] bus_for_each_drv+0x90/0x1=
-00
-> > > > > > > [   55.845654] [<9000000000c94328>] __device_attach+0xa8/0x1a=
-0
-> > > > > > > [   55.874145] [<9000000000c925f0>] bus_probe_device+0xb0/0xe=
-0
-> > > > > > > [   55.902572] [<9000000000c8ec7c>] device_add+0x65c/0x860
-> > > > > > > [   55.930635] [<9000000000c96704>] platform_device_add+0x124=
-/0x2c0
-> > > > > > > [   55.959669] [<9000000001452b38>] init_kgdboc+0x58/0xa0
-> > > > > > > [   55.987677] [<900000000022015c>] do_one_initcall+0x7c/0x1e=
-0
-> > > > > > > [   56.016134] [<9000000001420f1c>] kernel_init_freeable+0x22=
-c/0x2a0
-> > > > > > > [   56.045128] [<90000000012f923c>] kernel_init+0x20/0x124
-> > > > > > >
-> > > > > > > Currently rcu_cpu_stall_reset() set rcu_state.jiffies_stall t=
-o one check
-> > > > > > > period later, i.e. jiffies + rcu_jiffies_till_stall_check(). =
-But jiffies
-> > > > > > > is only updated in the timer interrupt, so when kgdb_cpu_ente=
-r() begins
-> > > > > > > to run there may already be nearly one rcu check period after=
- jiffies.
-> > > > > > > Since all interrupts are disabled during kgdb_cpu_enter(), ji=
-ffies will
-> > > > > > > not be updated. When kgdb_cpu_enter() returns, rcu_state.jiff=
-ies_stall
-> > > > > > > maybe already gets timeout.
-> > > > > > >
-> > > > > > > We can set rcu_state.jiffies_stall to two rcu check periods l=
-ater, e.g.
-> > > > > > > jiffies + (rcu_jiffies_till_stall_check() * 2) in rcu_cpu_sta=
-ll_reset()
-> > > > > > > to avoid this problem. But this isn't a complete solution bec=
-ause kgdb
-> > > > > > > may take a very long time in irq disabled context.
-> > > > > > >
-> > > > > > > Instead, update jiffies at the beginning of rcu_cpu_stall_res=
-et() can
-> > > > > > > solve all kinds of problems [1]. But this causes a new proble=
-m because
-> > > > > > > updating jiffies is not NMI safe while rcu_cpu_stall_reset() =
-may be used
-> > > > > > > in NMI context.
-> > > > > > >
-> > > > > > > So we don't update the global jiffies, but only add the time =
-'delta' to
-> > > > > > > jiffies locally at the beginning of rcu_cpu_stall_reset() whi=
-ch has the
-> > > > > > > same effect.
-> > > > > > >
-> > > > > > > [1] https://lore.kernel.org/rcu/20230814020045.51950-1-chenhu=
-acai@loongson.cn/T/#t
-> > > > > > >
-> > > > > > > Cc: stable@vger.kernel.org
-> > > > > > > Fixes: a80be428fbc1f1f3bc9ed924 ("rcu: Do not disable GP stal=
-l detection in rcu_cpu_stall_reset()")
-> > > > > > > Reported-off-by: Binbin Zhou <zhoubinbin@loongson.cn>
-> > > > > > > Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-> > > > > > > ---
-> > > > > > >  kernel/rcu/tree_stall.h | 6 +++++-
-> > > > > > >  1 file changed, 5 insertions(+), 1 deletion(-)
-> > > > > > >
-> > > > > > > diff --git a/kernel/rcu/tree_stall.h b/kernel/rcu/tree_stall.=
-h
-> > > > > > > index b10b8349bb2a..1bf1306cae23 100644
-> > > > > > > --- a/kernel/rcu/tree_stall.h
-> > > > > > > +++ b/kernel/rcu/tree_stall.h
-> > > > > > > @@ -153,8 +153,12 @@ static void panic_on_rcu_stall(void)
-> > > > > > >   */
-> > > > > > >  void rcu_cpu_stall_reset(void)
-> > > > > > >  {
-> > > > > > > +       unsigned long delta;
-> > > > > > > +
-> > > > > > > +       delta =3D nsecs_to_jiffies(ktime_get_ns() - ktime_get=
-_coarse_ns());
-> > > > > > > +
-> > > > > > >         WRITE_ONCE(rcu_state.jiffies_stall,
-> > > > > > > -                  jiffies + rcu_jiffies_till_stall_check());
-> > > > > > > +                  jiffies + delta + rcu_jiffies_till_stall_c=
-heck());
-> > > > > >
-> > > > > > This is certainly better than magic numbers, but I was still wo=
-ndering
-> > > > > > how the delta really works. What are typical values of delta, a=
-nd why
-> > > > > > is that equivalent to updating jiffies?
-> > > > > >
-> > > > > > Can you provide more technical details about why it turns out t=
-o be
-> > > > > > effectively the number of jiffies that the jiffies are off by?
-> > > > > >
-> > > > > > Also, how often do you see that an NMI is required to prevent a=
- KGDB
-> > > > > > stall? If not, just do:
-> > > > > >
-> > > > > > void rcu_cpu_stall_reset(void) {
-> > > > > > [...]
-> > > > > >     if (!in_nmi) {
-> > > > > >       do_jiffies_update();
-> > > > > >    }
-> > > > > >    WRITE_ONCE(rcu_state.jiffies_stall, ..);
-> > > > > > [...]
-> > > > > > }
-> > > > > >
-> > > > > > ?
-> > > > > >
-> > > > > > But if your solution provides accurate results, that's fine wit=
-h me. I
-> > > > > > just don't understand coarse ktime that much and how it differs=
- from
-> > > > > > regular ktime, so I appreciate the education ;-)
-> > > > > ktime_get() get the accurate current time from clocksource,
-> > > > > ktime_get_coarse() get the coarse current time from jiffies. Belo=
-w is
-> > > > > from Documentation/core-api/timekeeping.rst:
-> > > > >
-> > > > >         "The time returned here corresponds to the last timer tic=
-k, which
-> > > > >         may be as much as 10ms in the past (for CONFIG_HZ=3D100),=
- same as
-> > > > >         reading the 'jiffies' variable.  These are only useful wh=
-en called
-> > > > >         in a fast path and one still expects better than second a=
-ccuracy,
-> > > > >         but can't easily use 'jiffies', e.g. for inode timestamps=
-."
-> > > > >
-> > > > > So, the delta between ktime_get() and ktime_get_coarse() is accur=
-ately
-> > > > > the delta when we update jiffies.
-> > > > >
-> > > >
-> > > > That sounds good to me then! I see you added Thomas so let us see i=
-f
-> > > > he yells back.
-> > > >
-> > > > But in the meanwhile, maybe you could also do some testing (if you
-> > > > want to) something like:
-> > > > =3D=3D=3D=3D=3D
-> > > > old_jiffies =3D jiffies;
-> > > > delta =3D nsecs_to_jiffies(ktime_get_ns() - ktime_get_coarse_ns());
-> > > >
-> > > > /* do the jiffies update here */
-> > > >
-> > > > WARN_ON_ONCE(jiffies - old_jiffies !=3D delta);
-> > > > =3D=3D=3D=3D=3D
-> > > Thank you for your advice, I do an experiment with the code below:
-> > >
-> > > void rcu_cpu_stall_reset(void)
-> > > {
-> > >         unsigned long delta;
-> > >         u64 old =3D jiffies;
-> > >         u64 now =3D ktime_get_ns();
-> > >
-> > >         delta =3D nsecs_to_jiffies(now - ktime_get_coarse_ns());
-> > >         tick_do_update_jiffies64(now);
-> > >         printk("jiffies - old =3D %lld, delta =3D %ld\n", jiffies - o=
-ld, delta);
-> > >
-> > >         WRITE_ONCE(rcu_state.jiffies_stall,
-> > >                    jiffies + delta + rcu_jiffies_till_stall_check());
-> > > }
-> > >
-> > > My machine has a quad-core cpu. I try 2 times, and I get:
-> > >
-> > > [   56.178011] jiffies - old =3D 13028, delta =3D 13028   #HZ=3D250, =
-~50s
-> > > [   56.178010] jiffies - old =3D 13028, delta =3D 13028
-> > > [   56.178010] jiffies - old =3D 13028, delta =3D 13028
-> > > [   56.178012] jiffies - old =3D 13028, delta =3D 13028
-> > >
-> > > [   84.722304] jiffies - old =3D 6955, delta =3D 6955      #HZ=3D250,=
- ~27s
-> > > [   84.722304] jiffies - old =3D 6955, delta =3D 6955
-> > > [   84.722304] jiffies - old =3D 6955, delta =3D 6955
-> > > [   84.722306] jiffies - old =3D 6955, delta =3D 6955
-> >
-> > Looks good and my testing went good as well. However, since we were
-> > worried about rcu_cpu_stall_reset() called from the NMI context, isn't
-> > ktime_get_mono_fast_ns() supposed to be the NMI safe version, which
-> > implies the others may not be? I am happy to be corrected on that...
-> > but the last thing we want is rcu_cpu_stall_reset() deadlocking in the
-> > timekeeping seq latch during a timekeeping update.
-> When Z. qiang first talks about the NMI issue, he means the update
-> code will acquire jiffies_lock raw spinlock, which causes deadlock.
->
-> ktime_get() is another story, when we say it is not NMI safe, we don't
-> mean deadlock because it doesn't acquire spinlock. We just mean that
-> it may get a wrong value because jiffies update is not an atomic
-> operation.
+When partner does not support get_status message, tcpm right now
+responds with soft reset message. This causes PD renegotiation to
+happen and resets PPS link. Avoid soft resetting the link when
+partner does not support get_status message to mitigate PPS resets.
 
-No, it can deadlock in a different way.
+[  208.926752] Setting voltage/current limit 9500 mV 2450 mA
+[  208.930407] set_auto_vbus_discharge_threshold mode:3 pps_active:y vbus:9500 ret:0
+[  208.930418] state change SNK_TRANSITION_SINK -> SNK_READY [rev3 POWER_NEGOTIATION]
+[  208.930455] AMS POWER_NEGOTIATION finished
 
-ktime_get() calls read_seqcount_begin() which can busy-loop if a
-writer is in progress. You can see this in the code for
-read_seqcount_begin().
+// ALERT message from the Source
+[  213.948442] PD RX, header: 0x19a6 [1]
+[  213.948451] state change SNK_READY -> GET_STATUS_SEND [rev3 GETTING_SOURCE_SINK_STATUS]
+[  213.948457] PD TX, header: 0x492
+[  213.950402] PD TX complete, status: 0
+[  213.950427] pending state change GET_STATUS_SEND -> GET_STATUS_SEND_TIMEOUT @ 60 ms [rev3 GETTING_SOURCE_SINK_STATUS]
 
-If you call it from an NMI context, and the NMI context happens to
-interrupt a *timekeeping* update, you can lockup forever.
+// NOT_SUPPORTED from the Source
+[  213.959954] PD RX, header: 0xbb0 [1]
 
-You cannot safely interrupt the write-side section of a sequence lock
-reader, and that's exactly what you're doing when you call ktime_get()
-in an NMI context.
+// sink sends SOFT_RESET
+[  213.959958] state change GET_STATUS_SEND -> SNK_SOFT_RESET [rev3 GETTING_SOURCE_SINK_STATUS]
+[  213.959962] AMS GETTING_SOURCE_SINK_STATUS finished
+[  213.959964] AMS SOFT_RESET_AMS start
+[  213.959966] state change SNK_SOFT_RESET -> AMS_START [rev3 SOFT_RESET_AMS]
+[  213.959969] state change AMS_START -> SOFT_RESET_SEND [rev3 SOFT_RESET_AMS]
 
-That's what sequence *latch* is for.
+Cc: stable@vger.kernel.org
+Fixes: 8dea75e11380 ("usb: typec: tcpm: Protocol Error handling")
+Signed-off-by: Badhri Jagan Sridharan <badhri@google.com>
+---
+ drivers/usb/typec/tcpm/tcpm.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-See comments about sequence latch where it specifically calls out NMIs:
- * Latch sequence counters (seqcount_latch_t)
- *
- * A sequence counter variant where the counter even/odd value is used to
- * switch between two copies of protected data. This allows the read path,
- * typically NMIs, to safely interrupt the write side critical section.
- *
- * As the write sections are fully preemptible, no special handling for
- * PREEMPT_RT is needed.
- */
+diff --git a/drivers/usb/typec/tcpm/tcpm.c b/drivers/usb/typec/tcpm/tcpm.c
+index 5639b9a1e0bf..280ce1bd7b53 100644
+--- a/drivers/usb/typec/tcpm/tcpm.c
++++ b/drivers/usb/typec/tcpm/tcpm.c
+@@ -2753,6 +2753,13 @@ static void tcpm_pd_ctrl_request(struct tcpm_port *port,
+ 			port->sink_cap_done = true;
+ 			tcpm_set_state(port, ready_state(port), 0);
+ 			break;
++		/*
++		 * Some port partners do not support GET_STATUS, avoid soft reset the link to
++		 * prevent redundant power re-negotiation
++		 */
++		case GET_STATUS_SEND:
++			tcpm_set_state(port, ready_state(port), 0);
++			break;
+ 		case SRC_READY:
+ 		case SNK_READY:
+ 			if (port->vdm_state > VDM_STATE_READY) {
 
-So I just can't see how you can call ktime_get() in an NMI context the
-way you are calling... What am I missing?
+base-commit: bbb9e06d2c6435af9c62074ad7048910eeb2e7bc
+-- 
+2.42.0.rc1.204.g551eb34607-goog
 
-Thanks!
-
- - Joel
