@@ -2,51 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0C9397831F6
-	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:21:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DFE6378333C
+	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:23:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230208AbjHUUEl (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 21 Aug 2023 16:04:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33506 "EHLO
+        id S229727AbjHUTyt (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 21 Aug 2023 15:54:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54982 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230200AbjHUUEl (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 16:04:41 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6CCD8A8
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 13:04:39 -0700 (PDT)
+        with ESMTP id S229726AbjHUTyt (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 15:54:49 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B09A9FB
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 12:54:47 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id F1B5D648D6
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 20:04:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A4B4C433C8;
-        Mon, 21 Aug 2023 20:04:37 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 474246457B
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 19:54:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55C6FC433BA;
+        Mon, 21 Aug 2023 19:54:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692648278;
-        bh=Hz2bZHE8ltcu5LU73DAuZ71/idwYTToEiUt1M7vvhBk=;
+        s=korg; t=1692647686;
+        bh=TXfax9c4mV4lIN7hMVIyhN9JXMIX7u2mtnHlXlZUQxw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=A8jq47N9Ct3GMm88zPMqITZW/59CV4r3jk2eXjaFSpaMFeutyRs9eCOWwL10Kh2lM
-         83NDebnvX47gQNCYefJw7CG7toudcONzS323t90bDPePkFGPC+V2XXImFbQS189t3f
-         kN/cOHyDmOfo4NDGkQIE1pMLoVshXmc6uoPjFkWE=
+        b=kGSErHeRBiS56UujRSFJzes3x/TCmmbamEproBNUx3rmZ2JPWVf4OywzWMpQ0vJju
+         0sb4PQF3+l2GxI+LEwwu1geNkncyYGDWpy8B/zUmM5kelIZpOHImC+j5QuypLVuvoL
+         W+fUDp2kQVoY/dpopPhy0NH6i+W6RDMeqHMO7nu4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        "Borislav Petkov (AMD)" <bp@alien8.de>
-Subject: [PATCH 6.4 118/234] x86/cpu: Clean up SRSO return thunk mess
-Date:   Mon, 21 Aug 2023 21:41:21 +0200
-Message-ID: <20230821194134.042416287@linuxfoundation.org>
+        Tam Nguyen <tamnguyenchi@os.amperecomputing.com>,
+        Jarkko Nikula <jarkko.nikula@linux.intel.com>,
+        Andi Shyti <andi.shyti@kernel.org>,
+        Wolfram Sang <wsa@kernel.org>
+Subject: [PATCH 6.1 103/194] i2c: designware: Handle invalid SMBus block data response length value
+Date:   Mon, 21 Aug 2023 21:41:22 +0200
+Message-ID: <20230821194127.220885098@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230821194128.754601642@linuxfoundation.org>
-References: <20230821194128.754601642@linuxfoundation.org>
+In-Reply-To: <20230821194122.695845670@linuxfoundation.org>
+References: <20230821194122.695845670@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -54,322 +56,57 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Peter Zijlstra <peterz@infradead.org>
+From: Tam Nguyen <tamnguyenchi@os.amperecomputing.com>
 
-commit d43490d0ab824023e11d0b57d0aeec17a6e0ca13 upstream.
+commit 69f035c480d76f12bf061148ccfd578e1099e5fc upstream.
 
-Use the existing configurable return thunk. There is absolute no
-justification for having created this __x86_return_thunk alternative.
+In the I2C_FUNC_SMBUS_BLOCK_DATA case, the invalid length byte value
+(outside of 1-32) of the SMBus block data response from the Slave device
+is not correctly handled by the I2C Designware driver.
 
-To clarify, the whole thing looks like:
+In case IC_EMPTYFIFO_HOLD_MASTER_EN==1, which cannot be detected
+from the registers, the Master can be disabled only if the STOP bit
+is set. Without STOP bit set, the Master remains active, holding the bus
+until receiving a block data response length. This hangs the bus and
+is unrecoverable.
 
-Zen3/4 does:
+Avoid this by issuing another dump read to reach the stop condition when
+an invalid length byte is received.
 
-  srso_alias_untrain_ret:
-	  nop2
-	  lfence
-	  jmp srso_alias_return_thunk
-	  int3
-
-  srso_alias_safe_ret: // aliasses srso_alias_untrain_ret just so
-	  add $8, %rsp
-	  ret
-	  int3
-
-  srso_alias_return_thunk:
-	  call srso_alias_safe_ret
-	  ud2
-
-While Zen1/2 does:
-
-  srso_untrain_ret:
-	  movabs $foo, %rax
-	  lfence
-	  call srso_safe_ret           (jmp srso_return_thunk ?)
-	  int3
-
-  srso_safe_ret: // embedded in movabs instruction
-	  add $8,%rsp
-          ret
-          int3
-
-  srso_return_thunk:
-	  call srso_safe_ret
-	  ud2
-
-While retbleed does:
-
-  zen_untrain_ret:
-	  test $0xcc, %bl
-	  lfence
-	  jmp zen_return_thunk
-          int3
-
-  zen_return_thunk: // embedded in the test instruction
-	  ret
-          int3
-
-Where Zen1/2 flush the BTB entry using the instruction decoder trick
-(test,movabs) Zen3/4 use BTB aliasing. SRSO adds a return sequence
-(srso_safe_ret()) which forces the function return instruction to
-speculate into a trap (UD2).  This RET will then mispredict and
-execution will continue at the return site read from the top of the
-stack.
-
-Pick one of three options at boot (evey function can only ever return
-once).
-
-  [ bp: Fixup commit message uarch details and add them in a comment in
-    the code too. Add a comment about the srso_select_mitigation()
-    dependency on retbleed_select_mitigation(). Add moar ifdeffery for
-    32-bit builds. Add a dummy srso_untrain_ret_alias() definition for
-    32-bit alternatives needing the symbol. ]
-
-Fixes: fb3bd914b3ec ("x86/srso: Add a Speculative RAS Overflow mitigation")
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20230814121148.842775684@infradead.org
+Cc: stable@vger.kernel.org
+Signed-off-by: Tam Nguyen <tamnguyenchi@os.amperecomputing.com>
+Acked-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+Link: https://lore.kernel.org/r/20230726080001.337353-3-tamnguyenchi@os.amperecomputing.com
+Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
+Signed-off-by: Wolfram Sang <wsa@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/include/asm/nospec-branch.h |    5 +++
- arch/x86/kernel/cpu/bugs.c           |   17 ++++++++--
- arch/x86/kernel/vmlinux.lds.S        |    4 +-
- arch/x86/lib/retpoline.S             |   58 +++++++++++++++++++++++++----------
- tools/objtool/arch/x86/decode.c      |    2 -
- 5 files changed, 64 insertions(+), 22 deletions(-)
+ drivers/i2c/busses/i2c-designware-master.c |   15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
 
---- a/arch/x86/include/asm/nospec-branch.h
-+++ b/arch/x86/include/asm/nospec-branch.h
-@@ -343,9 +343,14 @@ extern void __x86_return_thunk(void);
- static inline void __x86_return_thunk(void) {}
- #endif
- 
-+extern void zen_return_thunk(void);
-+extern void srso_return_thunk(void);
-+extern void srso_alias_return_thunk(void);
+--- a/drivers/i2c/busses/i2c-designware-master.c
++++ b/drivers/i2c/busses/i2c-designware-master.c
+@@ -527,8 +527,19 @@ i2c_dw_read(struct dw_i2c_dev *dev)
+ 			regmap_read(dev->map, DW_IC_DATA_CMD, &tmp);
+ 			tmp &= DW_IC_DATA_CMD_DAT;
+ 			/* Ensure length byte is a valid value */
+-			if (flags & I2C_M_RECV_LEN &&
+-			    tmp <= I2C_SMBUS_BLOCK_MAX && tmp > 0) {
++			if (flags & I2C_M_RECV_LEN) {
++				/*
++				 * if IC_EMPTYFIFO_HOLD_MASTER_EN is set, which cannot be
++				 * detected from the registers, the controller can be
++				 * disabled if the STOP bit is set. But it is only set
++				 * after receiving block data response length in
++				 * I2C_FUNC_SMBUS_BLOCK_DATA case. That needs to read
++				 * another byte with STOP bit set when the block data
++				 * response length is invalid to complete the transaction.
++				 */
++				if (!tmp || tmp > I2C_SMBUS_BLOCK_MAX)
++					tmp = 1;
 +
- extern void zen_untrain_ret(void);
- extern void srso_untrain_ret(void);
- extern void srso_untrain_ret_alias(void);
-+
- extern void entry_ibpb(void);
- 
- extern void (*x86_return_thunk)(void);
---- a/arch/x86/kernel/cpu/bugs.c
-+++ b/arch/x86/kernel/cpu/bugs.c
-@@ -167,8 +167,13 @@ void __init cpu_select_mitigations(void)
- 	md_clear_select_mitigation();
- 	srbds_select_mitigation();
- 	l1d_flush_select_mitigation();
--	gds_select_mitigation();
-+
-+	/*
-+	 * srso_select_mitigation() depends and must run after
-+	 * retbleed_select_mitigation().
-+	 */
- 	srso_select_mitigation();
-+	gds_select_mitigation();
- }
- 
- /*
-@@ -1037,6 +1042,9 @@ do_cmd_auto:
- 		setup_force_cpu_cap(X86_FEATURE_RETHUNK);
- 		setup_force_cpu_cap(X86_FEATURE_UNRET);
- 
-+		if (IS_ENABLED(CONFIG_RETHUNK))
-+			x86_return_thunk = zen_return_thunk;
-+
- 		if (boot_cpu_data.x86_vendor != X86_VENDOR_AMD &&
- 		    boot_cpu_data.x86_vendor != X86_VENDOR_HYGON)
- 			pr_err(RETBLEED_UNTRAIN_MSG);
-@@ -2451,10 +2459,13 @@ static void __init srso_select_mitigatio
- 			 */
- 			setup_force_cpu_cap(X86_FEATURE_RETHUNK);
- 
--			if (boot_cpu_data.x86 == 0x19)
-+			if (boot_cpu_data.x86 == 0x19) {
- 				setup_force_cpu_cap(X86_FEATURE_SRSO_ALIAS);
--			else
-+				x86_return_thunk = srso_alias_return_thunk;
-+			} else {
- 				setup_force_cpu_cap(X86_FEATURE_SRSO);
-+				x86_return_thunk = srso_return_thunk;
-+			}
- 			srso_mitigation = SRSO_MITIGATION_SAFE_RET;
- 		} else {
- 			pr_err("WARNING: kernel not compiled with CPU_SRSO.\n");
---- a/arch/x86/kernel/vmlinux.lds.S
-+++ b/arch/x86/kernel/vmlinux.lds.S
-@@ -522,8 +522,8 @@ INIT_PER_CPU(irq_stack_backing_store);
-            "fixed_percpu_data is not at start of per-cpu area");
- #endif
- 
-- #ifdef CONFIG_RETHUNK
--. = ASSERT((__ret & 0x3f) == 0, "__ret not cacheline-aligned");
-+#ifdef CONFIG_RETHUNK
-+. = ASSERT((zen_return_thunk & 0x3f) == 0, "zen_return_thunk not cacheline-aligned");
- . = ASSERT((srso_safe_ret & 0x3f) == 0, "srso_safe_ret not cacheline-aligned");
- #endif
- 
---- a/arch/x86/lib/retpoline.S
-+++ b/arch/x86/lib/retpoline.S
-@@ -151,22 +151,27 @@ SYM_CODE_END(__x86_indirect_jump_thunk_a
- 	.section .text.__x86.rethunk_untrain
- 
- SYM_START(srso_untrain_ret_alias, SYM_L_GLOBAL, SYM_A_NONE)
-+	UNWIND_HINT_FUNC
- 	ANNOTATE_NOENDBR
- 	ASM_NOP2
- 	lfence
--	jmp __x86_return_thunk
-+	jmp srso_alias_return_thunk
- SYM_FUNC_END(srso_untrain_ret_alias)
- __EXPORT_THUNK(srso_untrain_ret_alias)
- 
- 	.section .text.__x86.rethunk_safe
-+#else
-+/* dummy definition for alternatives */
-+SYM_START(srso_untrain_ret_alias, SYM_L_GLOBAL, SYM_A_NONE)
-+	ANNOTATE_UNRET_SAFE
-+	ret
-+	int3
-+SYM_FUNC_END(srso_untrain_ret_alias)
- #endif
- 
--/* Needs a definition for the __x86_return_thunk alternative below. */
- SYM_START(srso_safe_ret_alias, SYM_L_GLOBAL, SYM_A_NONE)
--#ifdef CONFIG_CPU_SRSO
- 	add $8, %_ASM_SP
- 	UNWIND_HINT_FUNC
--#endif
- 	ANNOTATE_UNRET_SAFE
- 	ret
- 	int3
-@@ -174,9 +179,16 @@ SYM_FUNC_END(srso_safe_ret_alias)
- 
- 	.section .text.__x86.return_thunk
- 
-+SYM_CODE_START(srso_alias_return_thunk)
-+	UNWIND_HINT_FUNC
-+	ANNOTATE_NOENDBR
-+	call srso_safe_ret_alias
-+	ud2
-+SYM_CODE_END(srso_alias_return_thunk)
-+
- /*
-  * Safety details here pertain to the AMD Zen{1,2} microarchitecture:
-- * 1) The RET at __x86_return_thunk must be on a 64 byte boundary, for
-+ * 1) The RET at zen_return_thunk must be on a 64 byte boundary, for
-  *    alignment within the BTB.
-  * 2) The instruction at zen_untrain_ret must contain, and not
-  *    end with, the 0xc3 byte of the RET.
-@@ -184,7 +196,7 @@ SYM_FUNC_END(srso_safe_ret_alias)
-  *    from re-poisioning the BTB prediction.
-  */
- 	.align 64
--	.skip 64 - (__ret - zen_untrain_ret), 0xcc
-+	.skip 64 - (zen_return_thunk - zen_untrain_ret), 0xcc
- SYM_START(zen_untrain_ret, SYM_L_GLOBAL, SYM_A_NONE)
- 	ANNOTATE_NOENDBR
- 	/*
-@@ -192,16 +204,16 @@ SYM_START(zen_untrain_ret, SYM_L_GLOBAL,
- 	 *
- 	 *   TEST $0xcc, %bl
- 	 *   LFENCE
--	 *   JMP __x86_return_thunk
-+	 *   JMP zen_return_thunk
- 	 *
- 	 * Executing the TEST instruction has a side effect of evicting any BTB
- 	 * prediction (potentially attacker controlled) attached to the RET, as
--	 * __x86_return_thunk + 1 isn't an instruction boundary at the moment.
-+	 * zen_return_thunk + 1 isn't an instruction boundary at the moment.
- 	 */
- 	.byte	0xf6
- 
- 	/*
--	 * As executed from __x86_return_thunk, this is a plain RET.
-+	 * As executed from zen_return_thunk, this is a plain RET.
- 	 *
- 	 * As part of the TEST above, RET is the ModRM byte, and INT3 the imm8.
- 	 *
-@@ -213,13 +225,13 @@ SYM_START(zen_untrain_ret, SYM_L_GLOBAL,
- 	 * With SMT enabled and STIBP active, a sibling thread cannot poison
- 	 * RET's prediction to a type of its choice, but can evict the
- 	 * prediction due to competitive sharing. If the prediction is
--	 * evicted, __x86_return_thunk will suffer Straight Line Speculation
-+	 * evicted, zen_return_thunk will suffer Straight Line Speculation
- 	 * which will be contained safely by the INT3.
- 	 */
--SYM_INNER_LABEL(__ret, SYM_L_GLOBAL)
-+SYM_INNER_LABEL(zen_return_thunk, SYM_L_GLOBAL)
- 	ret
- 	int3
--SYM_CODE_END(__ret)
-+SYM_CODE_END(zen_return_thunk)
- 
- 	/*
- 	 * Ensure the TEST decoding / BTB invalidation is complete.
-@@ -230,7 +242,7 @@ SYM_CODE_END(__ret)
- 	 * Jump back and execute the RET in the middle of the TEST instruction.
- 	 * INT3 is for SLS protection.
- 	 */
--	jmp __ret
-+	jmp zen_return_thunk
- 	int3
- SYM_FUNC_END(zen_untrain_ret)
- __EXPORT_THUNK(zen_untrain_ret)
-@@ -251,12 +263,19 @@ SYM_START(srso_untrain_ret, SYM_L_GLOBAL
- 	ANNOTATE_NOENDBR
- 	.byte 0x48, 0xb8
- 
-+/*
-+ * This forces the function return instruction to speculate into a trap
-+ * (UD2 in srso_return_thunk() below).  This RET will then mispredict
-+ * and execution will continue at the return site read from the top of
-+ * the stack.
-+ */
- SYM_INNER_LABEL(srso_safe_ret, SYM_L_GLOBAL)
- 	add $8, %_ASM_SP
- 	ret
- 	int3
- 	int3
- 	int3
-+	/* end of movabs */
- 	lfence
- 	call srso_safe_ret
- 	ud2
-@@ -264,12 +283,19 @@ SYM_CODE_END(srso_safe_ret)
- SYM_FUNC_END(srso_untrain_ret)
- __EXPORT_THUNK(srso_untrain_ret)
- 
--SYM_CODE_START(__x86_return_thunk)
-+SYM_CODE_START(srso_return_thunk)
- 	UNWIND_HINT_FUNC
- 	ANNOTATE_NOENDBR
--	ALTERNATIVE_2 "jmp __ret", "call srso_safe_ret", X86_FEATURE_SRSO, \
--			"call srso_safe_ret_alias", X86_FEATURE_SRSO_ALIAS
-+	call srso_safe_ret
- 	ud2
-+SYM_CODE_END(srso_return_thunk)
-+
-+SYM_CODE_START(__x86_return_thunk)
-+	UNWIND_HINT_FUNC
-+	ANNOTATE_NOENDBR
-+	ANNOTATE_UNRET_SAFE
-+	ret
-+	int3
- SYM_CODE_END(__x86_return_thunk)
- EXPORT_SYMBOL(__x86_return_thunk)
- 
---- a/tools/objtool/arch/x86/decode.c
-+++ b/tools/objtool/arch/x86/decode.c
-@@ -829,6 +829,6 @@ bool arch_is_rethunk(struct symbol *sym)
- 
- bool arch_is_embedded_insn(struct symbol *sym)
- {
--	return !strcmp(sym->name, "__ret") ||
-+	return !strcmp(sym->name, "zen_return_thunk") ||
- 	       !strcmp(sym->name, "srso_safe_ret");
- }
+ 				len = i2c_dw_recv_len(dev, tmp);
+ 			}
+ 			*buf++ = tmp;
 
 
