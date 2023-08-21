@@ -2,50 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0667D783294
-	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:22:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 85C207832D6
+	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:22:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230328AbjHUUIb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 21 Aug 2023 16:08:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38676 "EHLO
+        id S229947AbjHUT6q (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 21 Aug 2023 15:58:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60452 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230343AbjHUUIb (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 16:08:31 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF2CCDF
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 13:08:29 -0700 (PDT)
+        with ESMTP id S229942AbjHUT6p (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 15:58:45 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1045012A
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 12:58:44 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5DB1164A28
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 20:08:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 675BBC433C7;
-        Mon, 21 Aug 2023 20:08:28 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9AC5B646E0
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 19:58:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86B6FC433C9;
+        Mon, 21 Aug 2023 19:58:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692648508;
-        bh=y1dRbUDI8YwEXTR7tC2httjr7xXGPh3SKF/bYDcTrMs=;
+        s=korg; t=1692647923;
+        bh=PSzzHcLbiJRPJ8XMHvqia7Gwh0KcHTTH6tmKWeVToR8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ZMI1PjllOtBAunfGuPidIEg9Sgkwxiu6N3rQZOcrUYuisqdoLJ5HSwuafMr8NLub3
-         ZwraIRzqhAMPxnY4AJHYzAODio7Nlv1Nvqi3VN1SaJI5JPsPYZWf13rl8ngSIBnERz
-         J7kviABFnfHHwnoz8xE6m9w/6a330qxnmYiBjeuM=
+        b=o77nvT/DGiojimg+2cEWRvRVsBdggkg2VUpBh5pZ9G+TavyKmudNFA5i0i7KFHs5l
+         lPFraQZh9GIrLOOnsErgtcouSnmSZoX5iELBMjjhxZgj3gKd1IcEsJc4JvKWy9hUEP
+         COX1QRVoXFwtcIr+D3bDn1bschAGg/vLjIIDaOWg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Tony Lindgren <tony@atomide.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 201/234] serial: 8250: Fix oops for port->pm on uart_change_pm()
-Date:   Mon, 21 Aug 2023 21:42:44 +0200
-Message-ID: <20230821194137.732779317@linuxfoundation.org>
+        patches@lists.linux.dev,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        "Borislav Petkov (AMD)" <bp@alien8.de>,
+        Josh Poimboeuf <jpoimboe@kernel.org>
+Subject: [PATCH 6.1 186/194] objtool/x86: Fixup frame-pointer vs rethunk
+Date:   Mon, 21 Aug 2023 21:42:45 +0200
+Message-ID: <20230821194130.871689629@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230821194128.754601642@linuxfoundation.org>
-References: <20230821194128.754601642@linuxfoundation.org>
+In-Reply-To: <20230821194122.695845670@linuxfoundation.org>
+References: <20230821194122.695845670@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -53,44 +55,62 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Tony Lindgren <tony@atomide.com>
+From: Peter Zijlstra <peterz@infradead.org>
 
-[ Upstream commit dfe2aeb226fd5e19b0ee795f4f6ed8bc494c1534 ]
+commit dbf46008775516f7f25c95b7760041c286299783 upstream.
 
-Unloading a hardware specific 8250 driver can produce error "Unable to
-handle kernel paging request at virtual address" about ten seconds after
-unloading the driver. This happens on uart_hangup() calling
-uart_change_pm().
+For stack-validation of a frame-pointer build, objtool validates that
+every CALL instruction is preceded by a frame-setup. The new SRSO
+return thunks violate this with their RSB stuffing trickery.
 
-Turns out commit 04e82793f068 ("serial: 8250: Reinit port->pm on port
-specific driver unbind") was only a partial fix. If the hardware specific
-driver has initialized port->pm function, we need to clear port->pm too.
-Just reinitializing port->ops does not do this. Otherwise serial8250_pm()
-will call port->pm() instead of serial8250_do_pm().
+Extend the __fentry__ exception to also cover the embedded_insn case
+used for this. This cures:
 
-Fixes: 04e82793f068 ("serial: 8250: Reinit port->pm on port specific driver unbind")
-Signed-off-by: Tony Lindgren <tony@atomide.com>
-Link: https://lore.kernel.org/r/20230804131553.52927-1-tony@atomide.com
+  vmlinux.o: warning: objtool: srso_untrain_ret+0xd: call without frame pointer save/setup
+
+Fixes: 4ae68b26c3ab ("objtool/x86: Fix SRSO mess")
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Acked-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Link: https://lore.kernel.org/r/20230816115921.GH980931@hirez.programming.kicks-ass.net
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/8250/8250_port.c | 1 +
- 1 file changed, 1 insertion(+)
+ tools/objtool/check.c |   17 +++++++++++------
+ 1 file changed, 11 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/tty/serial/8250/8250_port.c b/drivers/tty/serial/8250/8250_port.c
-index 053d44412e42f..0a67dff575f78 100644
---- a/drivers/tty/serial/8250/8250_port.c
-+++ b/drivers/tty/serial/8250/8250_port.c
-@@ -3288,6 +3288,7 @@ void serial8250_init_port(struct uart_8250_port *up)
- 	struct uart_port *port = &up->port;
+--- a/tools/objtool/check.c
++++ b/tools/objtool/check.c
+@@ -2450,12 +2450,17 @@ static int decode_sections(struct objtoo
+ 	return 0;
+ }
  
- 	spin_lock_init(&port->lock);
-+	port->pm = NULL;
- 	port->ops = &serial8250_pops;
- 	port->has_sysrq = IS_ENABLED(CONFIG_SERIAL_8250_CONSOLE);
+-static bool is_fentry_call(struct instruction *insn)
++static bool is_special_call(struct instruction *insn)
+ {
+-	if (insn->type == INSN_CALL &&
+-	    insn->call_dest &&
+-	    insn->call_dest->fentry)
+-		return true;
++	if (insn->type == INSN_CALL) {
++		struct symbol *dest = insn->call_dest;
++
++		if (!dest)
++			return false;
++
++		if (dest->fentry)
++			return true;
++	}
  
--- 
-2.40.1
-
+ 	return false;
+ }
+@@ -3448,7 +3453,7 @@ static int validate_branch(struct objtoo
+ 			if (ret)
+ 				return ret;
+ 
+-			if (opts.stackval && func && !is_fentry_call(insn) &&
++			if (opts.stackval && func && !is_special_call(insn) &&
+ 			    !has_valid_stack_frame(&state)) {
+ 				WARN_FUNC("call without frame pointer save/setup",
+ 					  sec, insn->offset);
 
 
