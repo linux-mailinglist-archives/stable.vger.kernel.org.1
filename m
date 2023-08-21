@@ -2,42 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B04B378325E
-	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:21:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2FB427832E2
+	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:22:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230104AbjHUUA0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 21 Aug 2023 16:00:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40974 "EHLO
+        id S230138AbjHUUCU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 21 Aug 2023 16:02:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48660 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229967AbjHUUA0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 16:00:26 -0400
+        with ESMTP id S230140AbjHUUCT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 16:02:19 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D1AF711C
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 13:00:24 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C3C9E11C
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 13:02:16 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6BBA66164F
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 20:00:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A960C433C9;
-        Mon, 21 Aug 2023 20:00:23 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6320164800
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 20:02:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 708FCC433C7;
+        Mon, 21 Aug 2023 20:02:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692648023;
-        bh=KA/lQXiDMZIJDeDewA7exKjJDiJNYqY1EXweNM8TucY=;
+        s=korg; t=1692648135;
+        bh=8wIZgmQ7cNiLTKgKaCmxKSyYTpIWjAijkUt80ywWrk0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=cPJSpZcDZJcPt5D1tRNrbTwVw4A4JGtnmq8Emg1xgIkfXZQqUAUw2wY1SGXgcM79t
-         /y/A/Y3GZ7ompddwK72/d/wV+wp14rVRn1MElJgzaSAXSXZttEZAbFLJW3mGUIyHMB
-         +KXutqWXgByKwjGPhnQXY+oui4btlI3p0ki3lox8=
+        b=VjTYZtCpDepvesvPjBt4X042y3rGUfBKtGwej0Jdz6fi/KGlY/6VOQS5a0bGhJymD
+         sUHncumrvDQcHvFWmNJ7Zn7T+T2G0UGOGkmXw4wVZUErBIHoB/hEmpLVuCxW+RY3MV
+         905pfLO5/CM/xJcor5+1lmmZgL1IzkNMJx4NiFug=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ofir Bitton <obitton@habana.ai>,
+        patches@lists.linux.dev, Moti Haimovski <mhaimovski@habana.ai>,
+        Dani Liberman <dliberman@habana.ai>,
         Oded Gabbay <ogabbay@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 027/234] accel/habanalabs: add pci health check during heartbeat
-Date:   Mon, 21 Aug 2023 21:39:50 +0200
-Message-ID: <20230821194129.953178224@linuxfoundation.org>
+Subject: [PATCH 6.4 028/234] accel/habanalabs: fix mem leak in capture user mappings
+Date:   Mon, 21 Aug 2023 21:39:51 +0200
+Message-ID: <20230821194129.994374865@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230821194128.754601642@linuxfoundation.org>
 References: <20230821194128.754601642@linuxfoundation.org>
@@ -54,85 +55,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ofir Bitton <obitton@habana.ai>
+From: Moti Haimovski <mhaimovski@habana.ai>
 
-[ Upstream commit d8b9cea584661b30305cf341bf9f675dc0a25471 ]
+[ Upstream commit 314a7ffd7c196b27eedd50cb7553029e17789b55 ]
 
-Currently upon a heartbeat failure, we don't know if the failure
-is due to firmware hang or due to a bad PCI link. Hence, we
-are reading a PCI config space register with a known value (vendor ID)
-so we will know which of the two possibilities caused the heartbeat
-failure.
+This commit fixes a memory leak caused when clearing the user_mappings
+info when a new context is opened immediately after user_mapping is
+captured and a hard reset is performed.
 
-Signed-off-by: Ofir Bitton <obitton@habana.ai>
+Signed-off-by: Moti Haimovski <mhaimovski@habana.ai>
+Reviewed-by: Dani Liberman <dliberman@habana.ai>
 Reviewed-by: Oded Gabbay <ogabbay@kernel.org>
 Signed-off-by: Oded Gabbay <ogabbay@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/accel/habanalabs/common/device.c         | 15 ++++++++++++++-
- drivers/accel/habanalabs/common/habanalabs.h     |  2 ++
- drivers/accel/habanalabs/common/habanalabs_drv.c |  2 --
- 3 files changed, 16 insertions(+), 3 deletions(-)
+ drivers/accel/habanalabs/common/habanalabs_drv.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/accel/habanalabs/common/device.c b/drivers/accel/habanalabs/common/device.c
-index fabfc501ef543..a39dd346a1678 100644
---- a/drivers/accel/habanalabs/common/device.c
-+++ b/drivers/accel/habanalabs/common/device.c
-@@ -981,6 +981,18 @@ static void device_early_fini(struct hl_device *hdev)
- 		hdev->asic_funcs->early_fini(hdev);
- }
- 
-+static bool is_pci_link_healthy(struct hl_device *hdev)
-+{
-+	u16 vendor_id;
-+
-+	if (!hdev->pdev)
-+		return false;
-+
-+	pci_read_config_word(hdev->pdev, PCI_VENDOR_ID, &vendor_id);
-+
-+	return (vendor_id == PCI_VENDOR_ID_HABANALABS);
-+}
-+
- static void hl_device_heartbeat(struct work_struct *work)
- {
- 	struct hl_device *hdev = container_of(work, struct hl_device,
-@@ -995,7 +1007,8 @@ static void hl_device_heartbeat(struct work_struct *work)
- 		goto reschedule;
- 
- 	if (hl_device_operational(hdev, NULL))
--		dev_err(hdev->dev, "Device heartbeat failed!\n");
-+		dev_err(hdev->dev, "Device heartbeat failed! PCI link is %s\n",
-+			is_pci_link_healthy(hdev) ? "healthy" : "broken");
- 
- 	info.err_type = HL_INFO_FW_HEARTBEAT_ERR;
- 	info.event_mask = &event_mask;
-diff --git a/drivers/accel/habanalabs/common/habanalabs.h b/drivers/accel/habanalabs/common/habanalabs.h
-index eaae69a9f8178..7f5d1b6e3fb08 100644
---- a/drivers/accel/habanalabs/common/habanalabs.h
-+++ b/drivers/accel/habanalabs/common/habanalabs.h
-@@ -36,6 +36,8 @@
- struct hl_device;
- struct hl_fpriv;
- 
-+#define PCI_VENDOR_ID_HABANALABS	0x1da3
-+
- /* Use upper bits of mmap offset to store habana driver specific information.
-  * bits[63:59] - Encode mmap type
-  * bits[45:0]  - mmap offset value
 diff --git a/drivers/accel/habanalabs/common/habanalabs_drv.c b/drivers/accel/habanalabs/common/habanalabs_drv.c
-index d9df64e75f33a..1ec97da3dddb8 100644
+index 1ec97da3dddb8..70fb2df9a93b8 100644
 --- a/drivers/accel/habanalabs/common/habanalabs_drv.c
 +++ b/drivers/accel/habanalabs/common/habanalabs_drv.c
-@@ -54,8 +54,6 @@ module_param(boot_error_status_mask, ulong, 0444);
- MODULE_PARM_DESC(boot_error_status_mask,
- 	"Mask of the error status during device CPU boot (If bitX is cleared then error X is masked. Default all 1's)");
+@@ -13,6 +13,7 @@
  
--#define PCI_VENDOR_ID_HABANALABS	0x1da3
--
- #define PCI_IDS_GOYA			0x0001
- #define PCI_IDS_GAUDI			0x1000
- #define PCI_IDS_GAUDI_SEC		0x1010
+ #include <linux/pci.h>
+ #include <linux/module.h>
++#include <linux/vmalloc.h>
+ 
+ #define CREATE_TRACE_POINTS
+ #include <trace/events/habanalabs.h>
+@@ -218,6 +219,7 @@ int hl_device_open(struct inode *inode, struct file *filp)
+ 
+ 	hl_debugfs_add_file(hpriv);
+ 
++	vfree(hdev->captured_err_info.page_fault_info.user_mappings);
+ 	memset(&hdev->captured_err_info, 0, sizeof(hdev->captured_err_info));
+ 	atomic_set(&hdev->captured_err_info.cs_timeout.write_enable, 1);
+ 	hdev->captured_err_info.undef_opcode.write_enable = true;
 -- 
 2.40.1
 
