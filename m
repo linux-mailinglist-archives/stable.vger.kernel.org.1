@@ -2,54 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 546AC78322F
-	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:21:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E961B783206
+	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:21:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230356AbjHUUJL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 21 Aug 2023 16:09:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48274 "EHLO
+        id S229914AbjHUT6F (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 21 Aug 2023 15:58:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34940 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230368AbjHUUJK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 16:09:10 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ABC1212A
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 13:09:08 -0700 (PDT)
+        with ESMTP id S229806AbjHUT6E (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 15:58:04 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3250E12A
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 12:58:02 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4A14264A60
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 20:09:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58715C433C8;
-        Mon, 21 Aug 2023 20:09:07 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BC0BF6468D
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 19:58:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6EF1C433C8;
+        Mon, 21 Aug 2023 19:58:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692648547;
-        bh=qeudcGN8HNgBz5SgkXygnoDhjvgcagvT5TCfF54u/7o=;
+        s=korg; t=1692647881;
+        bh=ZMxO8ZSbns/R9RsVzuppopXHs4/9fgNVbmjrcQ8D/WE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=sv4QdEu5y2EPPK7chkclov67qLjiP+yBNR+LTW5uUiYlkU8tncnXtMWgOM8mrwuE7
-         O8TA8sMV3lRqm62h5Knkfiar1JBZb3L7ZYVCL2/9JLKvlOv1y49wPr5lbbZYQ0/ccx
-         JvcC8PzHyiRsjxDcW+n1qJJZ1oRB+Qnbq26RImlA=
+        b=anc4lSweCCsbXP95pLSkCwOeJX7jNWJHYAbYg1/JE1/pXohmHkn2Uw+funMVHblgq
+         e5kHsQW2hYmiSiePRuKDu5ZuW5dXNOSI5PfZFNW/XmzI9hleLv63Ew8BNkluCvCwlq
+         QTS8ZCQmYAn80Xbmu+r6jK1uYF9utaGlzaRReOjY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Fabio Estevam <festevam@denx.de>,
-        Marek Vasut <marex@denx.de>,
-        Marco Felsch <m.felsch@pengutronix.de>,
-        Adam Ford <aford173@gmail.com>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 187/234] arm64: dts: imx8mm: Drop CSI1 PHY reference clock configuration
-Date:   Mon, 21 Aug 2023 21:42:30 +0200
-Message-ID: <20230821194137.105468441@linuxfoundation.org>
+        patches@lists.linux.dev, Paolo Valerio <pvalerio@redhat.com>,
+        Xin Long <lucien.xin@gmail.com>,
+        Simon Horman <horms@kernel.org>,
+        Florian Westphal <fw@strlen.de>
+Subject: [PATCH 6.1 172/194] netfilter: set default timeout to 3 secs for sctp shutdown send and recv state
+Date:   Mon, 21 Aug 2023 21:42:31 +0200
+Message-ID: <20230821194130.259716790@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230821194128.754601642@linuxfoundation.org>
-References: <20230821194128.754601642@linuxfoundation.org>
+In-Reply-To: <20230821194122.695845670@linuxfoundation.org>
+References: <20230821194122.695845670@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -57,53 +55,68 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Fabio Estevam <festevam@denx.de>
+From: Xin Long <lucien.xin@gmail.com>
 
-[ Upstream commit f02b53375e8f14b4c27a14f6e4fb6e89914fdc29 ]
+commit 9bfab6d23a2865966a4f89a96536fbf23f83bc8c upstream.
 
-The CSI1 PHY reference clock is limited to 125 MHz according to:
-i.MX 8M Mini Applications Processor Reference Manual, Rev. 3, 11/2020
-Table 5-1. Clock Root Table (continued) / page 307
-Slice Index n = 123 .
+In SCTP protocol, it is using the same timer (T2 timer) for SHUTDOWN and
+SHUTDOWN_ACK retransmission. However in sctp conntrack the default timeout
+value for SCTP_CONNTRACK_SHUTDOWN_ACK_SENT state is 3 secs while it's 300
+msecs for SCTP_CONNTRACK_SHUTDOWN_SEND/RECV state.
 
-Currently the IMX8MM_CLK_CSI1_PHY_REF clock is configured to be
-fed directly from 1 GHz PLL2 , which overclocks them. Instead, drop
-the configuration altogether, which defaults the clock to 24 MHz REF
-clock input, which for the PHY reference clock is just fine.
+As Paolo Valerio noticed, this might cause unwanted expiration of the ct
+entry. In my test, with 1s tc netem delay set on the NAT path, after the
+SHUTDOWN is sent, the sctp ct entry enters SCTP_CONNTRACK_SHUTDOWN_SEND
+state. However, due to 300ms (too short) delay, when the SHUTDOWN_ACK is
+sent back from the peer, the sctp ct entry has expired and been deleted,
+and then the SHUTDOWN_ACK has to be dropped.
 
-Based on a patch from Marek Vasut for the imx8mn.
+Also, it is confusing these two sysctl options always show 0 due to all
+timeout values using sec as unit:
 
-Fixes: e523b7c54c05 ("arm64: dts: imx8mm: Add CSI nodes")
-Signed-off-by: Fabio Estevam <festevam@denx.de>
-Reviewed-by: Marek Vasut <marex@denx.de>
-Reviewed-by: Marco Felsch <m.felsch@pengutronix.de>
-Reviewed-by: Adam Ford <aford173@gmail.com>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  net.netfilter.nf_conntrack_sctp_timeout_shutdown_recd = 0
+  net.netfilter.nf_conntrack_sctp_timeout_shutdown_sent = 0
+
+This patch fixes it by also using 3 secs for sctp shutdown send and recv
+state in sctp conntrack, which is also RTO.initial value in SCTP protocol.
+
+Note that the very short time value for SCTP_CONNTRACK_SHUTDOWN_SEND/RECV
+was probably used for a rare scenario where SHUTDOWN is sent on 1st path
+but SHUTDOWN_ACK is replied on 2nd path, then a new connection started
+immediately on 1st path. So this patch also moves from SHUTDOWN_SEND/RECV
+to CLOSE when receiving INIT in the ORIGINAL direction.
+
+Fixes: 9fb9cbb1082d ("[NETFILTER]: Add nf_conntrack subsystem.")
+Reported-by: Paolo Valerio <pvalerio@redhat.com>
+Signed-off-by: Xin Long <lucien.xin@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/freescale/imx8mm.dtsi | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ net/netfilter/nf_conntrack_proto_sctp.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mm.dtsi b/arch/arm64/boot/dts/freescale/imx8mm.dtsi
-index d6b36f04f3dc1..1a647d4072ba0 100644
---- a/arch/arm64/boot/dts/freescale/imx8mm.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mm.dtsi
-@@ -1221,10 +1221,9 @@
- 				compatible = "fsl,imx8mm-mipi-csi2";
- 				reg = <0x32e30000 0x1000>;
- 				interrupts = <GIC_SPI 17 IRQ_TYPE_LEVEL_HIGH>;
--				assigned-clocks = <&clk IMX8MM_CLK_CSI1_CORE>,
--						  <&clk IMX8MM_CLK_CSI1_PHY_REF>;
--				assigned-clock-parents = <&clk IMX8MM_SYS_PLL2_1000M>,
--							  <&clk IMX8MM_SYS_PLL2_1000M>;
-+				assigned-clocks = <&clk IMX8MM_CLK_CSI1_CORE>;
-+				assigned-clock-parents = <&clk IMX8MM_SYS_PLL2_1000M>;
-+
- 				clock-frequency = <333000000>;
- 				clocks = <&clk IMX8MM_CLK_DISP_APB_ROOT>,
- 					 <&clk IMX8MM_CLK_CSI1_ROOT>,
--- 
-2.40.1
-
+--- a/net/netfilter/nf_conntrack_proto_sctp.c
++++ b/net/netfilter/nf_conntrack_proto_sctp.c
+@@ -49,8 +49,8 @@ static const unsigned int sctp_timeouts[
+ 	[SCTP_CONNTRACK_COOKIE_WAIT]		= 3 SECS,
+ 	[SCTP_CONNTRACK_COOKIE_ECHOED]		= 3 SECS,
+ 	[SCTP_CONNTRACK_ESTABLISHED]		= 210 SECS,
+-	[SCTP_CONNTRACK_SHUTDOWN_SENT]		= 300 SECS / 1000,
+-	[SCTP_CONNTRACK_SHUTDOWN_RECD]		= 300 SECS / 1000,
++	[SCTP_CONNTRACK_SHUTDOWN_SENT]		= 3 SECS,
++	[SCTP_CONNTRACK_SHUTDOWN_RECD]		= 3 SECS,
+ 	[SCTP_CONNTRACK_SHUTDOWN_ACK_SENT]	= 3 SECS,
+ 	[SCTP_CONNTRACK_HEARTBEAT_SENT]		= 30 SECS,
+ };
+@@ -105,7 +105,7 @@ static const u8 sctp_conntracks[2][11][S
+ 	{
+ /*	ORIGINAL	*/
+ /*                  sNO, sCL, sCW, sCE, sES, sSS, sSR, sSA, sHS */
+-/* init         */ {sCL, sCL, sCW, sCE, sES, sSS, sSR, sSA, sCW},
++/* init         */ {sCL, sCL, sCW, sCE, sES, sCL, sCL, sSA, sCW},
+ /* init_ack     */ {sCL, sCL, sCW, sCE, sES, sSS, sSR, sSA, sCL},
+ /* abort        */ {sCL, sCL, sCL, sCL, sCL, sCL, sCL, sCL, sCL},
+ /* shutdown     */ {sCL, sCL, sCW, sCE, sSS, sSS, sSR, sSA, sCL},
 
 
