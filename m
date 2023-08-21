@@ -2,44 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7E9D2783271
-	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:22:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D1B6C783268
+	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:22:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229972AbjHUT6u (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 21 Aug 2023 15:58:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60530 "EHLO
+        id S230343AbjHUUIh (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 21 Aug 2023 16:08:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38676 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229971AbjHUT6s (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 15:58:48 -0400
+        with ESMTP id S230338AbjHUUIg (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 16:08:36 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C904812C
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 12:58:46 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 59148E4
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 13:08:35 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6802F646DE
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 19:58:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76E90C433CC;
-        Mon, 21 Aug 2023 19:58:45 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id EAE9164A33
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 20:08:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07D80C433C7;
+        Mon, 21 Aug 2023 20:08:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692647925;
-        bh=ziT8LjD+H6/mXuzlnivpUnSdMdH6GPHZrgYd7YEQQ40=;
+        s=korg; t=1692648514;
+        bh=ZnKMC5MA3sHAFGoGNIOugIvGhd6Ei9kuQwossqRfee4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=q2dinN01orruxTDe+O9kyaWQ5/Jm/uRiOzKW6S00I/M/RzGLZTUXuLly1UD6bzWU0
-         gIUwRROZvQQyHlUi7yhPrZJeCPoLjscwIqv3K9CQHZ1Pl+WB+VdPLPGqtDVrvv7yaZ
-         h43YDg6HnNq0LOoXQOx7wjpae0IF41qjemgw+iQg=
+        b=fibcfppEw1elFAAbO2MpckM+EyM4MmTqJFF3sHGcYn4LItVuPrZvsfyFfIE6ohl05
+         I1M2V1vDzUGb36ii94WdT9HkyLwR3DXq4UnVuJ2tepr48HxLTl9SUmSon86T6OyAAh
+         /RzDgMnzyy2d6CLG+4yWF7SAhevnsfEdKOkkUMoo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Josh Poimboeuf <jpoimboe@kernel.org>,
-        "Borislav Petkov (AMD)" <bp@alien8.de>
-Subject: [PATCH 6.1 187/194] x86/srso: Correct the mitigation status when SMT is disabled
+        patches@lists.linux.dev, Russell Harmon <russ@har.mn>,
+        "Paulo Alcantara (SUSE)" <pc@manguebit.com>,
+        David Howells <dhowells@redhat.com>,
+        Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.4 203/234] cifs: Release folio lock on fscache read hit.
 Date:   Mon, 21 Aug 2023 21:42:46 +0200
-Message-ID: <20230821194130.911317510@linuxfoundation.org>
+Message-ID: <20230821194137.833000408@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230821194122.695845670@linuxfoundation.org>
-References: <20230821194122.695845670@linuxfoundation.org>
+In-Reply-To: <20230821194128.754601642@linuxfoundation.org>
+References: <20230821194128.754601642@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,43 +55,65 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Borislav Petkov (AMD) <bp@alien8.de>
+From: Russell Harmon via samba-technical <samba-technical@lists.samba.org>
 
-commit 6405b72e8d17bd1875a56ae52d23ec3cd51b9d66 upstream.
+commit 69513dd669e243928f7450893190915a88f84a2b upstream.
 
-Specify how is SRSO mitigated when SMT is disabled. Also, correct the
-SMT check for that.
+Under the current code, when cifs_readpage_worker is called, the call
+contract is that the callee should unlock the page. This is documented
+in the read_folio section of Documentation/filesystems/vfs.rst as:
 
-Fixes: e9fbc47b818b ("x86/srso: Disable the mitigation on unaffected configurations")
-Suggested-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Acked-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Link: https://lore.kernel.org/r/20230814200813.p5czl47zssuej7nv@treble
+> The filesystem should unlock the folio once the read has completed,
+> whether it was successful or not.
+
+Without this change, when fscache is in use and cache hit occurs during
+a read, the page lock is leaked, producing the following stack on
+subsequent reads (via mmap) to the page:
+
+$ cat /proc/3890/task/12864/stack
+[<0>] folio_wait_bit_common+0x124/0x350
+[<0>] filemap_read_folio+0xad/0xf0
+[<0>] filemap_fault+0x8b1/0xab0
+[<0>] __do_fault+0x39/0x150
+[<0>] do_fault+0x25c/0x3e0
+[<0>] __handle_mm_fault+0x6ca/0xc70
+[<0>] handle_mm_fault+0xe9/0x350
+[<0>] do_user_addr_fault+0x225/0x6c0
+[<0>] exc_page_fault+0x84/0x1b0
+[<0>] asm_exc_page_fault+0x27/0x30
+
+This requires a reboot to resolve; it is a deadlock.
+
+Note however that the call to cifs_readpage_from_fscache does mark the
+page clean, but does not free the folio lock. This happens in
+__cifs_readpage_from_fscache on success. Releasing the lock at that
+point however is not appropriate as cifs_readahead also calls
+cifs_readpage_from_fscache and *does* unconditionally release the lock
+after its return. This change therefore effectively makes
+cifs_readpage_worker work like cifs_readahead.
+
+Signed-off-by: Russell Harmon <russ@har.mn>
+Acked-by: Paulo Alcantara (SUSE) <pc@manguebit.com>
+Reviewed-by: David Howells <dhowells@redhat.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/cpu/bugs.c |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ fs/smb/client/file.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/x86/kernel/cpu/bugs.c
-+++ b/arch/x86/kernel/cpu/bugs.c
-@@ -2398,8 +2398,7 @@ static void __init srso_select_mitigatio
- 		 * Zen1/2 with SMT off aren't vulnerable after the right
- 		 * IBPB microcode has been applied.
- 		 */
--		if ((boot_cpu_data.x86 < 0x19) &&
--		    (!cpu_smt_possible() || (cpu_smt_control == CPU_SMT_DISABLED))) {
-+		if (boot_cpu_data.x86 < 0x19 && !cpu_smt_possible()) {
- 			setup_force_cpu_cap(X86_FEATURE_SRSO_NO);
- 			return;
- 		}
-@@ -2689,7 +2688,7 @@ static ssize_t gds_show_state(char *buf)
- static ssize_t srso_show_state(char *buf)
- {
- 	if (boot_cpu_has(X86_FEATURE_SRSO_NO))
--		return sysfs_emit(buf, "Not affected\n");
-+		return sysfs_emit(buf, "Mitigation: SMT disabled\n");
+--- a/fs/smb/client/file.c
++++ b/fs/smb/client/file.c
+@@ -4681,9 +4681,9 @@ static int cifs_readpage_worker(struct f
  
- 	return sysfs_emit(buf, "%s%s\n",
- 			  srso_strings[srso_mitigation],
+ io_error:
+ 	kunmap(page);
+-	unlock_page(page);
+ 
+ read_complete:
++	unlock_page(page);
+ 	return rc;
+ }
+ 
 
 
