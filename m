@@ -2,43 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 130897832E8
-	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:22:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B1F2A7831C5
+	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:21:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229974AbjHUUBb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 21 Aug 2023 16:01:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33696 "EHLO
+        id S230136AbjHUUBx (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 21 Aug 2023 16:01:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34352 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229978AbjHUUBa (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 16:01:30 -0400
+        with ESMTP id S230134AbjHUUBx (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 16:01:53 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5AA5B195
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 13:01:21 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA155129
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 13:01:51 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E26C16479B
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 20:01:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3B83C433C8;
-        Mon, 21 Aug 2023 20:01:19 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 70693647D9
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 20:01:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D8D5C433C9;
+        Mon, 21 Aug 2023 20:01:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692648080;
-        bh=UBKTv7jz9V7OSALMPnzFJJH74y85V02+DYk4A3671xw=;
+        s=korg; t=1692648110;
+        bh=j2/SJBiFhWFnYATV/tALmd+Ax6GAELMae4O70ON35mU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=oeb9uhkUcCPPgH+YQZI4rxo4uQ0/UuyUPzeD+qEZ1zsotCXwqc8AsWooWWCz4vu3L
-         iixN91ol2FdvQDBSmZ9l6oJqFKa1HKu1szSf+2eRal9+BKBcH2wuw2aRXf7GdfEItG
-         6dV/o4O/1xCWP/lOsRtyusm/4FjfX8zQuUVn+52Y=
+        b=SNKDE80BwubfOnUbt69F9pQlrC2DvIQwRRoNaP9TEaNylsMClNDEVG+8LkXDF4COT
+         sLbCutsD1i+D+0atZtHmd5iYuHgdkI+QEwriowvOA4eOg06sc78p0DUdM5z3tNec1o
+         MdugDRpCDc+8cwgN4rJiF6fiamFdnlPcm0LUX6I0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Fei Shao <fshao@chromium.org>,
-        Douglas Anderson <dianders@chromium.org>,
-        Jeff LaBundy <jeff@labundy.com>, Jiri Kosina <jkosina@suse.cz>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 030/234] HID: i2c-hid: goodix: Add support for "goodix,no-reset-during-suspend" property
-Date:   Mon, 21 Aug 2023 21:39:53 +0200
-Message-ID: <20230821194130.079171591@linuxfoundation.org>
+        patches@lists.linux.dev, Bastien Nocera <hadess@hadess.net>,
+        Stuart Hayhurst <stuart.a.hayhurst@gmail.com>,
+        Jiri Kosina <jkosina@suse.cz>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 031/234] HID: logitech-hidpp: Add USB and Bluetooth IDs for the Logitech G915 TKL Keyboard
+Date:   Mon, 21 Aug 2023 21:39:54 +0200
+Message-ID: <20230821194130.112167727@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230821194128.754601642@linuxfoundation.org>
 References: <20230821194128.754601642@linuxfoundation.org>
@@ -55,94 +54,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Fei Shao <fshao@chromium.org>
+From: stuarthayhurst <stuart.a.hayhurst@gmail.com>
 
-[ Upstream commit 7607f12ba735f04e0ef8718dabadf3a765c9a477 ]
+[ Upstream commit 48aea8b445c422a372cf15915101035a47105421 ]
 
-In the beginning, commit 18eeef46d359 ("HID: i2c-hid: goodix: Tie the
-reset line to true state of the regulator") introduced a change to tie
-the reset line of the Goodix touchscreen to the state of the regulator
-to fix a power leakage issue in suspend.
+Adds the USB and Bluetooth IDs for the Logitech G915 TKL keyboard, for device detection
+For this device, this provides battery reporting on top of hid-generic
 
-After some time, the change was deemed unnecessary and was reverted in
-commit 557e05fa9fdd ("HID: i2c-hid: goodix: Stop tying the reset line to
-the regulator") due to difficulties in managing regulator notifiers for
-designs like Evoker, which provides a second power rail to touchscreen.
-
-However, the revert caused a power regression on another Chromebook
-device Steelix in the field, which has a dedicated always-on regulator
-for touchscreen and was covered by the workaround in the first commit.
-
-To address both cases, this patch adds the support for the new
-"goodix,no-reset-during-suspend" property in the driver:
-- When set to true, the driver does not assert the reset GPIO during
-  power-down.
-  Instead, the GPIO will be asserted during power-up to ensure the
-  touchscreen always has a clean start and consistent behavior after
-  resuming.
-  This is for designs with a dedicated always-on regulator.
-- When set to false or unset, the driver uses the original control flow
-  and asserts GPIO and disables regulators normally.
-  This is for the two-regulator and shared-regulator designs.
-
-Signed-off-by: Fei Shao <fshao@chromium.org>
-Suggested-by: Douglas Anderson <dianders@chromium.org>
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
-Reviewed-by: Jeff LaBundy <jeff@labundy.com>
+Reviewed-by: Bastien Nocera <hadess@hadess.net>
+Signed-off-by: Stuart Hayhurst <stuart.a.hayhurst@gmail.com>
 Signed-off-by: Jiri Kosina <jkosina@suse.cz>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/i2c-hid/i2c-hid-of-goodix.c | 16 +++++++++++++++-
- 1 file changed, 15 insertions(+), 1 deletion(-)
+ drivers/hid/hid-logitech-hidpp.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/hid/i2c-hid/i2c-hid-of-goodix.c b/drivers/hid/i2c-hid/i2c-hid-of-goodix.c
-index 0060e3dcd775d..db4639db98407 100644
---- a/drivers/hid/i2c-hid/i2c-hid-of-goodix.c
-+++ b/drivers/hid/i2c-hid/i2c-hid-of-goodix.c
-@@ -28,6 +28,7 @@ struct i2c_hid_of_goodix {
- 	struct regulator *vdd;
- 	struct regulator *vddio;
- 	struct gpio_desc *reset_gpio;
-+	bool no_reset_during_suspend;
- 	const struct goodix_i2c_hid_timing_data *timings;
- };
- 
-@@ -37,6 +38,14 @@ static int goodix_i2c_hid_power_up(struct i2chid_ops *ops)
- 		container_of(ops, struct i2c_hid_of_goodix, ops);
- 	int ret;
- 
-+	/*
-+	 * We assert reset GPIO here (instead of during power-down) to ensure
-+	 * the device will have a clean state after powering up, just like the
-+	 * normal scenarios will have.
-+	 */
-+	if (ihid_goodix->no_reset_during_suspend)
-+		gpiod_set_value_cansleep(ihid_goodix->reset_gpio, 1);
-+
- 	ret = regulator_enable(ihid_goodix->vdd);
- 	if (ret)
- 		return ret;
-@@ -60,7 +69,9 @@ static void goodix_i2c_hid_power_down(struct i2chid_ops *ops)
- 	struct i2c_hid_of_goodix *ihid_goodix =
- 		container_of(ops, struct i2c_hid_of_goodix, ops);
- 
--	gpiod_set_value_cansleep(ihid_goodix->reset_gpio, 1);
-+	if (!ihid_goodix->no_reset_during_suspend)
-+		gpiod_set_value_cansleep(ihid_goodix->reset_gpio, 1);
-+
- 	regulator_disable(ihid_goodix->vddio);
- 	regulator_disable(ihid_goodix->vdd);
- }
-@@ -91,6 +102,9 @@ static int i2c_hid_of_goodix_probe(struct i2c_client *client)
- 	if (IS_ERR(ihid_goodix->vddio))
- 		return PTR_ERR(ihid_goodix->vddio);
- 
-+	ihid_goodix->no_reset_during_suspend =
-+		of_property_read_bool(client->dev.of_node, "goodix,no-reset-during-suspend");
-+
- 	ihid_goodix->timings = device_get_match_data(&client->dev);
- 
- 	return i2c_hid_core_probe(client, &ihid_goodix->ops, 0x0001, 0);
+diff --git a/drivers/hid/hid-logitech-hidpp.c b/drivers/hid/hid-logitech-hidpp.c
+index f7e06d433a915..dfe8e09a18de0 100644
+--- a/drivers/hid/hid-logitech-hidpp.c
++++ b/drivers/hid/hid-logitech-hidpp.c
+@@ -4608,6 +4608,8 @@ static const struct hid_device_id hidpp_devices[] = {
+ 	  HID_USB_DEVICE(USB_VENDOR_ID_LOGITECH, 0xC086) },
+ 	{ /* Logitech G903 Hero Gaming Mouse over USB */
+ 	  HID_USB_DEVICE(USB_VENDOR_ID_LOGITECH, 0xC091) },
++	{ /* Logitech G915 TKL Keyboard over USB */
++	  HID_USB_DEVICE(USB_VENDOR_ID_LOGITECH, 0xC343) },
+ 	{ /* Logitech G920 Wheel over USB */
+ 	  HID_USB_DEVICE(USB_VENDOR_ID_LOGITECH, USB_DEVICE_ID_LOGITECH_G920_WHEEL),
+ 		.driver_data = HIDPP_QUIRK_CLASS_G920 | HIDPP_QUIRK_FORCE_OUTPUT_REPORTS},
+@@ -4630,6 +4632,8 @@ static const struct hid_device_id hidpp_devices[] = {
+ 	{ /* MX5500 keyboard over Bluetooth */
+ 	  HID_BLUETOOTH_DEVICE(USB_VENDOR_ID_LOGITECH, 0xb30b),
+ 	  .driver_data = HIDPP_QUIRK_HIDPP_CONSUMER_VENDOR_KEYS },
++	{ /* Logitech G915 TKL keyboard over Bluetooth */
++	  HID_BLUETOOTH_DEVICE(USB_VENDOR_ID_LOGITECH, 0xb35f) },
+ 	{ /* M-RCQ142 V470 Cordless Laser Mouse over Bluetooth */
+ 	  HID_BLUETOOTH_DEVICE(USB_VENDOR_ID_LOGITECH, 0xb008) },
+ 	{ /* MX Master mouse over Bluetooth */
 -- 
 2.40.1
 
