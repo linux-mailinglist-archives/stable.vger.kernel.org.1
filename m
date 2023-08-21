@@ -2,42 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9195278337C
-	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:23:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E68BF78344E
+	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 23:05:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230331AbjHUUIU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 21 Aug 2023 16:08:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60178 "EHLO
+        id S231229AbjHUUkK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 21 Aug 2023 16:40:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39498 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230333AbjHUUIQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 16:08:16 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D6CCF131;
-        Mon, 21 Aug 2023 13:08:14 -0700 (PDT)
+        with ESMTP id S229835AbjHUUkA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 16:40:00 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E9C881B1;
+        Mon, 21 Aug 2023 13:39:33 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7359F649EE;
-        Mon, 21 Aug 2023 20:08:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C303CC433CB;
-        Mon, 21 Aug 2023 20:08:13 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7463564AF5;
+        Mon, 21 Aug 2023 20:39:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCA90C433C7;
+        Mon, 21 Aug 2023 20:39:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-        s=korg; t=1692648493;
-        bh=3i20pnBEinCK9ddZDRR6NoRQ8BsgF+99CG156P4J0Yg=;
+        s=korg; t=1692650372;
+        bh=gdeTd2Fq8N6hGs3pm1LoGgcAK9FXyF3raWVMYgUvC/8=;
         h=Date:To:From:Subject:From;
-        b=CJVdbs0ZqLumnX4QeWRxevcj5kNOBso45ka78tEyBcGqOJZngoc5ocH2921CeWewG
-         7ZxdHaZV28H+l5tkTz0ocB9DHw7tiwYkYKHXnLno6WUZuOFYGLuve6Bac4VbBdsxkU
-         AjQ19h65VjTAgkhjeN1B3jBFJqxxLk5oQq/q7CBk=
-Date:   Mon, 21 Aug 2023 13:08:13 -0700
-To:     mm-commits@vger.kernel.org, yuzhao@google.com,
-        stable@vger.kernel.org, tjmercier@google.com,
+        b=RF/2n2umfN7Oc+iiX9YpDqqnWqlcr2lawBlu64hH3l6s/b2lYvFilfoVmUQaWyT8a
+         dGlNg56lKHyOXCzWesFVPmaqwdyXZZyJoW1FRwR0MaPOginAoeUvtggyRtlMeL4uOm
+         nyJJfUgDRLhoZSdX9HhPTAHecf7qqxQj+NUUwRoQ=
+Date:   Mon, 21 Aug 2023 13:39:32 -0700
+To:     mm-commits@vger.kernel.org, zhengqi.arch@bytedance.com,
+        yuzhao@google.com, surenb@google.com, suleiman@google.com,
+        steven@liquorix.net, stable@vger.kernel.org,
+        quic_charante@quicinc.com, oleksandr@natalenko.name,
+        matthias.bgg@gmail.com, lecopzer.chen@mediatek.com,
+        heftig@archlinux.org, bgeffon@google.com, baohua@kernel.org,
+        angelogioacchino.delregno@collabora.com,
+        aneesh.kumar@linux.ibm.com, kaleshsingh@google.com,
         akpm@linux-foundation.org
 From:   Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] mm-multi-gen-lru-dont-spin-during-memcg-release.patch removed from -mm tree
-Message-Id: <20230821200813.C303CC433CB@smtp.kernel.org>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
+Subject: [merged mm-stable] mm-unstable-multi-gen-lru-fix-per-zone-reclaim.patch removed from -mm tree
+Message-Id: <20230821203932.CCA90C433C7@smtp.kernel.org>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
         SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -47,96 +53,165 @@ X-Mailing-List: stable@vger.kernel.org
 
 
 The quilt patch titled
-     Subject: mm: multi-gen LRU: don't spin during memcg release
+     Subject: Multi-gen LRU: fix per-zone reclaim
 has been removed from the -mm tree.  Its filename was
-     mm-multi-gen-lru-dont-spin-during-memcg-release.patch
+     mm-unstable-multi-gen-lru-fix-per-zone-reclaim.patch
 
-This patch was dropped because it was merged into the mm-hotfixes-stable branch
+This patch was dropped because it was merged into the mm-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: "T.J. Mercier" <tjmercier@google.com>
-Subject: mm: multi-gen LRU: don't spin during memcg release
-Date: Mon, 14 Aug 2023 15:16:36 +0000
+From: Kalesh Singh <kaleshsingh@google.com>
+Subject: Multi-gen LRU: fix per-zone reclaim
+Date: Tue, 1 Aug 2023 19:56:02 -0700
 
-When a memcg is in the process of being released mem_cgroup_tryget will
-fail because its reference count has already reached 0.  This can happen
-during reclaim if the memcg has already been offlined, and we reclaim all
-remaining pages attributed to the offlined memcg.  shrink_many attempts to
-skip the empty memcg in this case, and continue reclaiming from the
-remaining memcgs in the old generation.  If there is only one memcg
-remaining, or if all remaining memcgs are in the process of being released
-then shrink_many will spin until all memcgs have finished being released. 
-The release occurs through a workqueue, so it can take a while before
-kswapd is able to make any further progress.
+MGLRU has a LRU list for each zone for each type (anon/file) in each
+generation:
 
-This fix results in reductions in kswapd activity and direct reclaim in
-a test where 28 apps (working set size > total memory) are repeatedly
-launched in a random sequence:
+	long nr_pages[MAX_NR_GENS][ANON_AND_FILE][MAX_NR_ZONES];
 
-                                       A          B      delta   ratio(%)
-           allocstall_movable       5962       3539      -2423     -40.64
-            allocstall_normal       2661       2417       -244      -9.17
-kswapd_high_wmark_hit_quickly      53152       7594     -45558     -85.71
-                   pageoutrun      57365      11750     -45615     -79.52
+The min_seq (oldest generation) can progress independently for each
+type but the max_seq (youngest generation) is shared for both anon and
+file. This is to maintain a common frame of reference.
 
-Link: https://lkml.kernel.org/r/20230814151636.1639123-1-tjmercier@google.com
-Fixes: e4dde56cd208 ("mm: multi-gen LRU: per-node lru_gen_folio lists")
-Signed-off-by: T.J. Mercier <tjmercier@google.com>
-Acked-by: Yu Zhao <yuzhao@google.com>
+In order for eviction to advance the min_seq of a type, all the per-zone
+lists in the oldest generation of that type must be empty.
+
+The eviction logic only considers pages from eligible zones for
+eviction or promotion.
+
+    scan_folios() {
+	...
+	for (zone = sc->reclaim_idx; zone >= 0; zone--)  {
+	    ...
+	    sort_folio(); 	// Promote
+	    ...
+	    isolate_folio(); 	// Evict
+	}
+	...
+    }
+
+Consider the system has the movable zone configured and default 4
+generations. The current state of the system is as shown below
+(only illustrating one type for simplicity):
+
+Type: ANON
+
+	Zone    DMA32     Normal    Movable    Device
+
+	Gen 0       0          0        4GB         0
+
+	Gen 1       0        1GB        1MB         0
+
+	Gen 2     1MB        4GB        1MB         0
+
+	Gen 3     1MB        1MB        1MB         0
+
+Now consider there is a GFP_KERNEL allocation request (eligible zone
+index <= Normal), evict_folios() will return without doing any work
+since there are no pages to scan in the eligible zones of the oldest
+generation. Reclaim won't make progress until triggered from a ZONE_MOVABLE
+allocation request; which may not happen soon if there is a lot of free
+memory in the movable zone. This can lead to OOM kills, although there
+is 1GB pages in the Normal zone of Gen 1 that we have not yet tried to
+reclaim.
+
+This issue is not seen in the conventional active/inactive LRU since
+there are no per-zone lists.
+
+If there are no (not enough) folios to scan in the eligible zones, move
+folios from ineligible zone (zone_index > reclaim_index) to the next
+generation. This allows for the progression of min_seq and reclaiming
+from the next generation (Gen 1).
+
+Qualcomm, Mediatek and raspberrypi [1] discovered this issue independently.
+
+[1] https://github.com/raspberrypi/linux/issues/5395
+
+Link: https://lkml.kernel.org/r/20230802025606.346758-1-kaleshsingh@google.com
+Fixes: ac35a4902374 ("mm: multi-gen LRU: minimal implementation")
+Signed-off-by: Kalesh Singh <kaleshsingh@google.com>
+Reported-by: Charan Teja Kalla <quic_charante@quicinc.com>
+Reported-by: Lecopzer Chen <lecopzer.chen@mediatek.com>
+Tested-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com> [mediatek]
+Tested-by: Charan Teja Kalla <quic_charante@quicinc.com>
+Cc: Yu Zhao <yuzhao@google.com>
+Cc: Barry Song <baohua@kernel.org>
+Cc: Brian Geffon <bgeffon@google.com>
+Cc: Jan Alexander Steffens (heftig) <heftig@archlinux.org>
+Cc: Matthias Brugger <matthias.bgg@gmail.com>
+Cc: Oleksandr Natalenko <oleksandr@natalenko.name>
+Cc: Qi Zheng <zhengqi.arch@bytedance.com>
+Cc: Steven Barrett <steven@liquorix.net>
+Cc: Suleiman Souhlal <suleiman@google.com>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Aneesh Kumar K V <aneesh.kumar@linux.ibm.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- mm/vmscan.c |   13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+ mm/vmscan.c |   18 ++++++++++++++----
+ 1 file changed, 14 insertions(+), 4 deletions(-)
 
---- a/mm/vmscan.c~mm-multi-gen-lru-dont-spin-during-memcg-release
+--- a/mm/vmscan.c~mm-unstable-multi-gen-lru-fix-per-zone-reclaim
 +++ a/mm/vmscan.c
-@@ -4854,16 +4854,17 @@ void lru_gen_release_memcg(struct mem_cg
+@@ -4889,7 +4889,8 @@ static int lru_gen_memcg_seg(struct lruv
+  *                          the eviction
+  ******************************************************************************/
  
- 		spin_lock_irq(&pgdat->memcg_lru.lock);
- 
--		VM_WARN_ON_ONCE(hlist_nulls_unhashed(&lruvec->lrugen.list));
-+		if (hlist_nulls_unhashed(&lruvec->lrugen.list))
-+			goto unlock;
- 
- 		gen = lruvec->lrugen.gen;
- 
--		hlist_nulls_del_rcu(&lruvec->lrugen.list);
-+		hlist_nulls_del_init_rcu(&lruvec->lrugen.list);
- 		pgdat->memcg_lru.nr_memcgs[gen]--;
- 
- 		if (!pgdat->memcg_lru.nr_memcgs[gen] && gen == get_memcg_gen(pgdat->memcg_lru.seq))
- 			WRITE_ONCE(pgdat->memcg_lru.seq, pgdat->memcg_lru.seq + 1);
--
-+unlock:
- 		spin_unlock_irq(&pgdat->memcg_lru.lock);
+-static bool sort_folio(struct lruvec *lruvec, struct folio *folio, int tier_idx)
++static bool sort_folio(struct lruvec *lruvec, struct folio *folio, struct scan_control *sc,
++		       int tier_idx)
+ {
+ 	bool success;
+ 	int gen = folio_lru_gen(folio);
+@@ -4939,6 +4940,13 @@ static bool sort_folio(struct lruvec *lr
+ 		return true;
  	}
- }
-@@ -5435,8 +5436,10 @@ restart:
- 	rcu_read_lock();
  
- 	hlist_nulls_for_each_entry_rcu(lrugen, pos, &pgdat->memcg_lru.fifo[gen][bin], list) {
--		if (op)
-+		if (op) {
- 			lru_gen_rotate_memcg(lruvec, op);
-+			op = 0;
-+		}
++	/* ineligible */
++	if (zone > sc->reclaim_idx) {
++		gen = folio_inc_gen(lruvec, folio, false);
++		list_move_tail(&folio->lru, &lrugen->folios[gen][type][zone]);
++		return true;
++	}
++
+ 	/* waiting for writeback */
+ 	if (folio_test_locked(folio) || folio_test_writeback(folio) ||
+ 	    (type == LRU_GEN_FILE && folio_test_dirty(folio))) {
+@@ -4987,7 +4995,8 @@ static bool isolate_folio(struct lruvec
+ static int scan_folios(struct lruvec *lruvec, struct scan_control *sc,
+ 		       int type, int tier, struct list_head *list)
+ {
+-	int gen, zone;
++	int i;
++	int gen;
+ 	enum vm_event_item item;
+ 	int sorted = 0;
+ 	int scanned = 0;
+@@ -5003,9 +5012,10 @@ static int scan_folios(struct lruvec *lr
  
- 		mem_cgroup_put(memcg);
+ 	gen = lru_gen_from_seq(lrugen->min_seq[type]);
  
-@@ -5444,7 +5447,7 @@ restart:
- 		memcg = lruvec_memcg(lruvec);
+-	for (zone = sc->reclaim_idx; zone >= 0; zone--) {
++	for (i = MAX_NR_ZONES; i > 0; i--) {
+ 		LIST_HEAD(moved);
+ 		int skipped = 0;
++		int zone = (sc->reclaim_idx + i) % MAX_NR_ZONES;
+ 		struct list_head *head = &lrugen->folios[gen][type][zone];
  
- 		if (!mem_cgroup_tryget(memcg)) {
--			op = 0;
-+			lru_gen_release_memcg(memcg);
- 			memcg = NULL;
- 			continue;
- 		}
+ 		while (!list_empty(head)) {
+@@ -5019,7 +5029,7 @@ static int scan_folios(struct lruvec *lr
+ 
+ 			scanned += delta;
+ 
+-			if (sort_folio(lruvec, folio, tier))
++			if (sort_folio(lruvec, folio, sc, tier))
+ 				sorted += delta;
+ 			else if (isolate_folio(lruvec, folio, sc)) {
+ 				list_add(&folio->lru, list);
 _
 
-Patches currently in -mm which might be from tjmercier@google.com are
+Patches currently in -mm which might be from kaleshsingh@google.com are
 
 
