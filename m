@@ -2,42 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 497B57831CA
-	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:21:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B25917832E7
+	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:22:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230269AbjHUUGn (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 21 Aug 2023 16:06:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45638 "EHLO
+        id S230235AbjHUUFP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 21 Aug 2023 16:05:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48506 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230265AbjHUUGm (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 16:06:42 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5347BA8
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 13:06:40 -0700 (PDT)
+        with ESMTP id S230232AbjHUUFO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 16:05:14 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E09DE4
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 13:05:13 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E49886496B
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 20:06:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE2AFC433C7;
-        Mon, 21 Aug 2023 20:06:38 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 260B264911
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 20:05:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F260C433C7;
+        Mon, 21 Aug 2023 20:05:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692648399;
-        bh=gcpeXCVN4v5KSyPFNjK/zLCOh1Hfq76lAt5te4I//14=;
+        s=korg; t=1692648312;
+        bh=zT1pPN4NJ8eIRdh8stujh7UAwsJZjQzDnUMUzKePI2A=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=s3sFylJa6Q9RegMJaSVuOg8r05YY+cdy3nA8WNTFcA+1sS4l3VTjB3qVRB55Wbc3G
-         gS1BJgYzBQ/XW2bD6u6UzrBLHTm7JZrHwdgtasBJ+pbVdPmIJ+eQT66sPaaECv9jpu
-         G2uKXz3qtqi84LdyN55+D84VsfCBQMT0VjaB9qXk=
+        b=jTQI1eH9fqKN2HcslNxlIy+rfcrdktmil9S+9nzqGJ6u57q+GUAR1Rs39QRXOu/8F
+         UzLI93zfWvgbjoZqPkRfjUTGljumTOcjcyMIcmvbVUXxNlAIdh1IaxqlF26unJXZnv
+         XUbMHhEu554AV0XE1D+gPUy4S7g5WiRs+7KAVRCI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        "Borislav Petkov (AMD)" <bp@alien8.de>
-Subject: [PATCH 6.4 122/234] x86/cpu/kvm: Provide UNTRAIN_RET_VM
-Date:   Mon, 21 Aug 2023 21:41:25 +0200
-Message-ID: <20230821194134.225398028@linuxfoundation.org>
+        patches@lists.linux.dev, "Borislav Petkov (AMD)" <bp@alien8.de>
+Subject: [PATCH 6.4 123/234] x86/srso: Explain the untraining sequences a bit more
+Date:   Mon, 21 Aug 2023 21:41:26 +0200
+Message-ID: <20230821194134.259712546@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230821194128.754601642@linuxfoundation.org>
 References: <20230821194128.754601642@linuxfoundation.org>
@@ -45,8 +43,8 @@ User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -54,96 +52,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Peter Zijlstra <peterz@infradead.org>
+From: Borislav Petkov (AMD) <bp@alien8.de>
 
-commit 864bcaa38ee44ec6c0e43f79c2d2997b977e26b2 upstream.
+commit 9dbd23e42ff0b10c9b02c9e649c76e5228241a8e upstream.
 
-Similar to how it doesn't make sense to have UNTRAIN_RET have two
-untrain calls, it also doesn't make sense for VMEXIT to have an extra
-IBPB call.
+The goal is to eventually have a proper documentation about all this.
 
-This cures VMEXIT doing potentially unret+IBPB or double IBPB.
-Also, the (SEV) VMEXIT case seems to have been overlooked.
-
-Redefine the meaning of the synthetic IBPB flags to:
-
- - ENTRY_IBPB     -- issue IBPB on entry  (was: entry + VMEXIT)
- - IBPB_ON_VMEXIT -- issue IBPB on VMEXIT
-
-And have 'retbleed=ibpb' set *BOTH* feature flags to ensure it retains
-the previous behaviour and issues IBPB on entry+VMEXIT.
-
-The new 'srso=ibpb_vmexit' option only sets IBPB_ON_VMEXIT.
-
-Create UNTRAIN_RET_VM specifically for the VMEXIT case, and have that
-check IBPB_ON_VMEXIT.
-
-All this avoids having the VMEXIT case having to check both ENTRY_IBPB
-and IBPB_ON_VMEXIT and simplifies the alternatives.
-
-Fixes: fb3bd914b3ec ("x86/srso: Add a Speculative RAS Overflow mitigation")
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20230814121149.109557833@infradead.org
+Link: https://lore.kernel.org/r/20230814164447.GFZNpZ/64H4lENIe94@fat_crate.local
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/include/asm/nospec-branch.h |   11 +++++++++++
- arch/x86/kernel/cpu/bugs.c           |    1 +
- arch/x86/kvm/svm/vmenter.S           |    7 ++-----
- 3 files changed, 14 insertions(+), 5 deletions(-)
+ arch/x86/lib/retpoline.S |   19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
 
---- a/arch/x86/include/asm/nospec-branch.h
-+++ b/arch/x86/include/asm/nospec-branch.h
-@@ -295,6 +295,17 @@
- #endif
- .endm
+--- a/arch/x86/lib/retpoline.S
++++ b/arch/x86/lib/retpoline.S
+@@ -187,6 +187,25 @@ SYM_CODE_START(srso_alias_return_thunk)
+ SYM_CODE_END(srso_alias_return_thunk)
  
-+.macro UNTRAIN_RET_VM
-+#if defined(CONFIG_CPU_UNRET_ENTRY) || defined(CONFIG_CPU_IBPB_ENTRY) || \
-+	defined(CONFIG_CALL_DEPTH_TRACKING) || defined(CONFIG_CPU_SRSO)
-+	VALIDATE_UNRET_END
-+	ALTERNATIVE_3 "",						\
-+		      CALL_UNTRAIN_RET, X86_FEATURE_UNRET,		\
-+		      "call entry_ibpb", X86_FEATURE_IBPB_ON_VMEXIT,	\
-+		      __stringify(RESET_CALL_DEPTH), X86_FEATURE_CALL_DEPTH
-+#endif
-+.endm
+ /*
++ * Some generic notes on the untraining sequences:
++ *
++ * They are interchangeable when it comes to flushing potentially wrong
++ * RET predictions from the BTB.
++ *
++ * The SRSO Zen1/2 (MOVABS) untraining sequence is longer than the
++ * Retbleed sequence because the return sequence done there
++ * (srso_safe_ret()) is longer and the return sequence must fully nest
++ * (end before) the untraining sequence. Therefore, the untraining
++ * sequence must fully overlap the return sequence.
++ *
++ * Regarding alignment - the instructions which need to be untrained,
++ * must all start at a cacheline boundary for Zen1/2 generations. That
++ * is, instruction sequences starting at srso_safe_ret() and
++ * the respective instruction sequences at retbleed_return_thunk()
++ * must start at a cacheline boundary.
++ */
 +
- .macro UNTRAIN_RET_FROM_CALL
- #if defined(CONFIG_CPU_UNRET_ENTRY) || defined(CONFIG_CPU_IBPB_ENTRY) || \
- 	defined(CONFIG_CALL_DEPTH_TRACKING)
---- a/arch/x86/kernel/cpu/bugs.c
-+++ b/arch/x86/kernel/cpu/bugs.c
-@@ -1054,6 +1054,7 @@ do_cmd_auto:
- 
- 	case RETBLEED_MITIGATION_IBPB:
- 		setup_force_cpu_cap(X86_FEATURE_ENTRY_IBPB);
-+		setup_force_cpu_cap(X86_FEATURE_IBPB_ON_VMEXIT);
- 		mitigate_smt = true;
- 		break;
- 
---- a/arch/x86/kvm/svm/vmenter.S
-+++ b/arch/x86/kvm/svm/vmenter.S
-@@ -222,10 +222,7 @@ SYM_FUNC_START(__svm_vcpu_run)
- 	 * because interrupt handlers won't sanitize 'ret' if the return is
- 	 * from the kernel.
- 	 */
--	UNTRAIN_RET
--
--	/* SRSO */
--	ALTERNATIVE "", "call entry_ibpb", X86_FEATURE_IBPB_ON_VMEXIT
-+	UNTRAIN_RET_VM
- 
- 	/*
- 	 * Clear all general purpose registers except RSP and RAX to prevent
-@@ -362,7 +359,7 @@ SYM_FUNC_START(__svm_sev_es_vcpu_run)
- 	 * because interrupt handlers won't sanitize RET if the return is
- 	 * from the kernel.
- 	 */
--	UNTRAIN_RET
-+	UNTRAIN_RET_VM
- 
- 	/* "Pop" @spec_ctrl_intercepted.  */
- 	pop %_ASM_BX
++/*
+  * Safety details here pertain to the AMD Zen{1,2} microarchitecture:
+  * 1) The RET at retbleed_return_thunk must be on a 64 byte boundary, for
+  *    alignment within the BTB.
 
 
