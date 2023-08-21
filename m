@@ -2,44 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6E6D67832F0
-	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:22:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E41C778337D
+	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:23:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230305AbjHUUHw (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 21 Aug 2023 16:07:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54238 "EHLO
+        id S229838AbjHUT4m (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 21 Aug 2023 15:56:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33754 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230304AbjHUUHw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 16:07:52 -0400
+        with ESMTP id S229843AbjHUT4l (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 15:56:41 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1FE5AE3
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 13:07:50 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C872FA
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 12:56:40 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id AE228649C3
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 20:07:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAE74C433C8;
-        Mon, 21 Aug 2023 20:07:48 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3C5A664613
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 19:56:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C4FDC433C8;
+        Mon, 21 Aug 2023 19:56:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692648469;
-        bh=1Y3djnkq4GcPRyptUoXXY6BGPdqFi+uZWkc2soq5ePw=;
+        s=korg; t=1692647799;
+        bh=vGIAahqBWZRipnGAlrVvpDTRq5qvD98ohLiD+RGI+5g=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=1JtlyDyjKLnMqp7+yp5wqp2Iz9hu4jJz+ilDs5zYQhvm5VLqX/HI/zLrC2SOTF+XV
-         6rLm+vVVayyD7sh4s3R++PWH49RL8/a79VsVVX5QsqHtMKpN2Dbd1V8giTFOgEBm5v
-         azOAXw2Jko1cGUBaWhXebDpRDeOLITovzWcmKqqk=
+        b=SZeVBd3zpV+U236CwuQPWs1R5OP0MHVkUnBRyFs/HTYfHpDn5xCE/o4+8hjJwr+tk
+         2rEKmDJh0UnFo3JpMRjKqJALUKq8WVQK8zusoHxYElGAWCAqP4EDw4HdyJzLeCEa80
+         JqAfNjafWmt14RFnQGd+ccJVC35xRZCwSRwQm8xI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Florian Westphal <fw@strlen.de>,
+        patches@lists.linux.dev,
+        Alexander Stein <alexander.stein@ew.tq-group.com>,
+        Peng Fan <peng.fan@nxp.com>, Jacky Bai <ping.bai@nxp.com>,
+        Shawn Guo <shawnguo@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 159/234] netfilter: nf_tables: dont fail inserts if duplicate has expired
+Subject: [PATCH 6.1 143/194] arm64: dts: imx93: Fix anatop node size
 Date:   Mon, 21 Aug 2023 21:42:02 +0200
-Message-ID: <20230821194135.843121383@linuxfoundation.org>
+Message-ID: <20230821194128.984522917@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230821194128.754601642@linuxfoundation.org>
-References: <20230821194128.754601642@linuxfoundation.org>
+In-Reply-To: <20230821194122.695845670@linuxfoundation.org>
+References: <20230821194122.695845670@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,100 +56,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Florian Westphal <fw@strlen.de>
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
 
-[ Upstream commit 7845914f45f066497ac75b30c50dbc735e84e884 ]
+[ Upstream commit 78e869dd8b2ba19765ac9b05cdea3e432d1dc188 ]
 
-nftables selftests fail:
-run-tests.sh testcases/sets/0044interval_overlap_0
-Expected: 0-2 . 0-3, got:
-W: [FAILED]     ./testcases/sets/0044interval_overlap_0: got 1
+Although the memory map of i.MX93 reference manual rev. 2 claims that
+analog top has start address of 0x44480000 and end address of 0x4448ffff,
+this overlaps with TMU memory area starting at 0x44482000, as stated in
+section 73.6.1.
+As PLL configuration registers start at addresses up to 0x44481400, as used
+by clk-imx93, reduce the anatop size to 0x2000, so exclude the TMU area
+but keep all PLL registers inside.
 
-Insertion must ignore duplicate but expired entries.
-
-Moreover, there is a strange asymmetry in nft_pipapo_activate:
-
-It refetches the current element, whereas the other ->activate callbacks
-(bitmap, hash, rhash, rbtree) use elem->priv.
-Same for .remove: other set implementations take elem->priv,
-nft_pipapo_remove fetches elem->priv, then does a relookup,
-remove this.
-
-I suspect this was the reason for the change that prompted the
-removal of the expired check in pipapo_get() in the first place,
-but skipping exired elements there makes no sense to me, this helper
-is used for normal get requests, insertions (duplicate check)
-and deactivate callback.
-
-In first two cases expired elements must be skipped.
-
-For ->deactivate(), this gets called for DELSETELEM, so it
-seems to me that expired elements should be skipped as well, i.e.
-delete request should fail with -ENOENT error.
-
-Fixes: 24138933b97b ("netfilter: nf_tables: don't skip expired elements during walk")
-Signed-off-by: Florian Westphal <fw@strlen.de>
+Fixes: ec8b5b5058ea ("arm64: dts: freescale: Add i.MX93 dtsi support")
+Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+Reviewed-by: Peng Fan <peng.fan@nxp.com>
+Reviewed-by: Jacky Bai <ping.bai@nxp.com>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nft_set_pipapo.c | 23 ++++-------------------
- 1 file changed, 4 insertions(+), 19 deletions(-)
+ arch/arm64/boot/dts/freescale/imx93.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/netfilter/nft_set_pipapo.c b/net/netfilter/nft_set_pipapo.c
-index 3b5c3919fff9c..352180b123fc7 100644
---- a/net/netfilter/nft_set_pipapo.c
-+++ b/net/netfilter/nft_set_pipapo.c
-@@ -566,6 +566,8 @@ static struct nft_pipapo_elem *pipapo_get(const struct net *net,
- 			goto out;
+diff --git a/arch/arm64/boot/dts/freescale/imx93.dtsi b/arch/arm64/boot/dts/freescale/imx93.dtsi
+index 8ab9f8194702e..c2f60d41d6fd1 100644
+--- a/arch/arm64/boot/dts/freescale/imx93.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx93.dtsi
+@@ -254,7 +254,7 @@
  
- 		if (last) {
-+			if (nft_set_elem_expired(&f->mt[b].e->ext))
-+				goto next_match;
- 			if ((genmask &&
- 			     !nft_set_elem_active(&f->mt[b].e->ext, genmask)))
- 				goto next_match;
-@@ -600,17 +602,8 @@ static struct nft_pipapo_elem *pipapo_get(const struct net *net,
- static void *nft_pipapo_get(const struct net *net, const struct nft_set *set,
- 			    const struct nft_set_elem *elem, unsigned int flags)
- {
--	struct nft_pipapo_elem *ret;
--
--	ret = pipapo_get(net, set, (const u8 *)elem->key.val.data,
-+	return pipapo_get(net, set, (const u8 *)elem->key.val.data,
- 			 nft_genmask_cur(net));
--	if (IS_ERR(ret))
--		return ret;
--
--	if (nft_set_elem_expired(&ret->ext))
--		return ERR_PTR(-ENOENT);
--
--	return ret;
- }
+ 			anatop: anatop@44480000 {
+ 				compatible = "fsl,imx93-anatop", "syscon";
+-				reg = <0x44480000 0x10000>;
++				reg = <0x44480000 0x2000>;
+ 			};
+ 		};
  
- /**
-@@ -1744,11 +1737,7 @@ static void nft_pipapo_activate(const struct net *net,
- 				const struct nft_set *set,
- 				const struct nft_set_elem *elem)
- {
--	struct nft_pipapo_elem *e;
--
--	e = pipapo_get(net, set, (const u8 *)elem->key.val.data, 0);
--	if (IS_ERR(e))
--		return;
-+	struct nft_pipapo_elem *e = elem->priv;
- 
- 	nft_set_elem_change_active(net, set, &e->ext);
- }
-@@ -1962,10 +1951,6 @@ static void nft_pipapo_remove(const struct net *net, const struct nft_set *set,
- 
- 	data = (const u8 *)nft_set_ext_key(&e->ext);
- 
--	e = pipapo_get(net, set, data, 0);
--	if (IS_ERR(e))
--		return;
--
- 	while ((rules_f0 = pipapo_rules_same_key(m->f, first_rule))) {
- 		union nft_pipapo_map_bucket rulemap[NFT_PIPAPO_MAX_FIELDS];
- 		const u8 *match_start, *match_end;
 -- 
 2.40.1
 
