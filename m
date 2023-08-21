@@ -2,52 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E47D27831C2
-	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:21:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 604AE78330B
+	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:22:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229626AbjHUTwn (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 21 Aug 2023 15:52:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50770 "EHLO
+        id S230191AbjHUUDk (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 21 Aug 2023 16:03:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40560 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229656AbjHUTwm (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 15:52:42 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97F5B10F
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 12:52:24 -0700 (PDT)
+        with ESMTP id S230189AbjHUUDj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 16:03:39 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C0FFCE3
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 13:03:37 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 79199644A0
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 19:52:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C7B0C433C8;
-        Mon, 21 Aug 2023 19:52:23 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4EEB064871
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 20:03:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B038C433C7;
+        Mon, 21 Aug 2023 20:03:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692647543;
-        bh=buo1gXP+6ENs24Tr2jw2oL4Zh6jCjQRo6G9GFD6psB4=;
+        s=korg; t=1692648216;
+        bh=SoZRM45UXqCotRUBdPI0WEKA1VxguTOYKER9ljcPVLU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=thSgdgWVLyvM5ldmX4DyqkSeGPCC6l/beB86VKgjG92en5MXx+q3xFmDeBVyuWkEO
-         4Mqz0QitKuhsZ7cJcfj+C4TvYq1+rjP5I0Obu0GOeCy11tUImxioc3x0CR8PBoZO65
-         4rD6j0bvwf44Bl/ZNlCD57YIdtPIQyNyT2mlPgRE=
+        b=cJdoA9Pj3EqZJHyJPEZSiAgcK1zYg+xJbTsQBYaR7rYHVpNNaW2IL4w4XXAqrtMWn
+         h/Q7XsA+ywuz/Q0kNM6kzHaqHvu0jvv8IDhQzMxjKfI7BCGxnYi/cU8EEmJ41+D+7w
+         AnpIRzXd9lBkzP6+T0M7LuK9jSHlb4f8+5tl1xwo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, BassCheck <bass@buaa.edu.cn>,
-        Tuo Li <islituo@gmail.com>,
-        Andreas Gruenbacher <agruenba@redhat.com>,
+        patches@lists.linux.dev, Edward Lo <loyuantsung@gmail.com>,
+        Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 051/194] gfs2: Fix possible data races in gfs2_show_options()
-Date:   Mon, 21 Aug 2023 21:40:30 +0200
-Message-ID: <20230821194125.052528047@linuxfoundation.org>
+Subject: [PATCH 6.4 068/234] fs/ntfs3: Enhance sanity check while generating attr_list
+Date:   Mon, 21 Aug 2023 21:40:31 +0200
+Message-ID: <20230821194131.773747357@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230821194122.695845670@linuxfoundation.org>
-References: <20230821194122.695845670@linuxfoundation.org>
+In-Reply-To: <20230821194128.754601642@linuxfoundation.org>
+References: <20230821194128.754601642@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -55,84 +54,197 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Tuo Li <islituo@gmail.com>
+From: Edward Lo <loyuantsung@gmail.com>
 
-[ Upstream commit 6fa0a72cbbe45db4ed967a51f9e6f4e3afe61d20 ]
+[ Upstream commit fdec309c7672cbee4dc0229ee4cbb33c948a1bdd ]
 
-Some fields such as gt_logd_secs of the struct gfs2_tune are accessed
-without holding the lock gt_spin in gfs2_show_options():
+ni_create_attr_list uses WARN_ON to catch error cases while generating
+attribute list, which only prints out stack trace and may not be enough.
+This repalces them with more proper error handling flow.
 
-  val = sdp->sd_tune.gt_logd_secs;
-  if (val != 30)
-    seq_printf(s, ",commit=%d", val);
+[   59.666332] BUG: kernel NULL pointer dereference, address: 000000000000000e
+[   59.673268] #PF: supervisor read access in kernel mode
+[   59.678354] #PF: error_code(0x0000) - not-present page
+[   59.682831] PGD 8000000005ff1067 P4D 8000000005ff1067 PUD 7dee067 PMD 0
+[   59.688556] Oops: 0000 [#1] PREEMPT SMP KASAN PTI
+[   59.692642] CPU: 0 PID: 198 Comm: poc Tainted: G    B   W          6.2.0-rc1+ #4
+[   59.698868] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.0-0-gd239552ce722-prebuilt.qemu.org 04/01/2014
+[   59.708795] RIP: 0010:ni_create_attr_list+0x505/0x860
+[   59.713657] Code: 7e 10 e8 5e d0 d0 ff 45 0f b7 76 10 48 8d 7b 16 e8 00 d1 d0 ff 66 44 89 73 16 4d 8d 75 0e 4c 89 f7 e8 3f d0 d0 ff 4c 8d8
+[   59.731559] RSP: 0018:ffff88800a56f1e0 EFLAGS: 00010282
+[   59.735691] RAX: 0000000000000001 RBX: ffff88800b7b5088 RCX: ffffffffb83079fe
+[   59.741792] RDX: 0000000000000001 RSI: 0000000000000008 RDI: ffffffffbb7f9fc0
+[   59.748423] RBP: ffff88800a56f3a8 R08: ffff88800b7b50a0 R09: fffffbfff76ff3f9
+[   59.754654] R10: ffffffffbb7f9fc7 R11: fffffbfff76ff3f8 R12: ffff88800b756180
+[   59.761552] R13: 0000000000000000 R14: 000000000000000e R15: 0000000000000050
+[   59.768323] FS:  00007feaa8c96440(0000) GS:ffff88806d400000(0000) knlGS:0000000000000000
+[   59.776027] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[   59.781395] CR2: 00007f3a2e0b1000 CR3: 000000000a5bc000 CR4: 00000000000006f0
+[   59.787607] Call Trace:
+[   59.790271]  <TASK>
+[   59.792488]  ? __pfx_ni_create_attr_list+0x10/0x10
+[   59.797235]  ? kernel_text_address+0xd3/0xe0
+[   59.800856]  ? unwind_get_return_address+0x3e/0x60
+[   59.805101]  ? __kasan_check_write+0x18/0x20
+[   59.809296]  ? preempt_count_sub+0x1c/0xd0
+[   59.813421]  ni_ins_attr_ext+0x52c/0x5c0
+[   59.817034]  ? __pfx_ni_ins_attr_ext+0x10/0x10
+[   59.821926]  ? __vfs_setxattr+0x121/0x170
+[   59.825718]  ? __vfs_setxattr_noperm+0x97/0x300
+[   59.829562]  ? __vfs_setxattr_locked+0x145/0x170
+[   59.833987]  ? vfs_setxattr+0x137/0x2a0
+[   59.836732]  ? do_setxattr+0xce/0x150
+[   59.839807]  ? setxattr+0x126/0x140
+[   59.842353]  ? path_setxattr+0x164/0x180
+[   59.845275]  ? __x64_sys_setxattr+0x71/0x90
+[   59.848838]  ? do_syscall_64+0x3f/0x90
+[   59.851898]  ? entry_SYSCALL_64_after_hwframe+0x72/0xdc
+[   59.857046]  ? stack_depot_save+0x17/0x20
+[   59.860299]  ni_insert_attr+0x1ba/0x420
+[   59.863104]  ? __pfx_ni_insert_attr+0x10/0x10
+[   59.867069]  ? preempt_count_sub+0x1c/0xd0
+[   59.869897]  ? _raw_spin_unlock_irqrestore+0x2b/0x50
+[   59.874088]  ? __create_object+0x3ae/0x5d0
+[   59.877865]  ni_insert_resident+0xc4/0x1c0
+[   59.881430]  ? __pfx_ni_insert_resident+0x10/0x10
+[   59.886355]  ? kasan_save_alloc_info+0x1f/0x30
+[   59.891117]  ? __kasan_kmalloc+0x8b/0xa0
+[   59.894383]  ntfs_set_ea+0x90d/0xbf0
+[   59.897703]  ? __pfx_ntfs_set_ea+0x10/0x10
+[   59.901011]  ? kernel_text_address+0xd3/0xe0
+[   59.905308]  ? __kernel_text_address+0x16/0x50
+[   59.909811]  ? unwind_get_return_address+0x3e/0x60
+[   59.914898]  ? __pfx_stack_trace_consume_entry+0x10/0x10
+[   59.920250]  ? arch_stack_walk+0xa2/0x100
+[   59.924560]  ? filter_irq_stacks+0x27/0x80
+[   59.928722]  ntfs_setxattr+0x405/0x440
+[   59.932512]  ? __pfx_ntfs_setxattr+0x10/0x10
+[   59.936634]  ? kvmalloc_node+0x2d/0x120
+[   59.940378]  ? kasan_save_stack+0x41/0x60
+[   59.943870]  ? kasan_save_stack+0x2a/0x60
+[   59.947719]  ? kasan_set_track+0x29/0x40
+[   59.951417]  ? kasan_save_alloc_info+0x1f/0x30
+[   59.955733]  ? __kasan_kmalloc+0x8b/0xa0
+[   59.959598]  ? __kmalloc_node+0x68/0x150
+[   59.963163]  ? kvmalloc_node+0x2d/0x120
+[   59.966490]  ? vmemdup_user+0x2b/0xa0
+[   59.969060]  __vfs_setxattr+0x121/0x170
+[   59.972456]  ? __pfx___vfs_setxattr+0x10/0x10
+[   59.976008]  __vfs_setxattr_noperm+0x97/0x300
+[   59.981562]  __vfs_setxattr_locked+0x145/0x170
+[   59.986100]  vfs_setxattr+0x137/0x2a0
+[   59.989964]  ? __pfx_vfs_setxattr+0x10/0x10
+[   59.993616]  ? __kasan_check_write+0x18/0x20
+[   59.997425]  do_setxattr+0xce/0x150
+[   60.000304]  setxattr+0x126/0x140
+[   60.002967]  ? __pfx_setxattr+0x10/0x10
+[   60.006471]  ? __virt_addr_valid+0xcb/0x140
+[   60.010461]  ? __call_rcu_common.constprop.0+0x1c7/0x330
+[   60.016037]  ? debug_smp_processor_id+0x1b/0x30
+[   60.021008]  ? kasan_quarantine_put+0x5b/0x190
+[   60.025545]  ? putname+0x84/0xa0
+[   60.027910]  ? __kasan_slab_free+0x11e/0x1b0
+[   60.031483]  ? putname+0x84/0xa0
+[   60.033986]  ? preempt_count_sub+0x1c/0xd0
+[   60.036876]  ? __mnt_want_write+0xae/0x100
+[   60.040738]  ? mnt_want_write+0x8f/0x150
+[   60.044317]  path_setxattr+0x164/0x180
+[   60.048096]  ? __pfx_path_setxattr+0x10/0x10
+[   60.052096]  ? strncpy_from_user+0x175/0x1c0
+[   60.056482]  ? debug_smp_processor_id+0x1b/0x30
+[   60.059848]  ? fpregs_assert_state_consistent+0x6b/0x80
+[   60.064557]  __x64_sys_setxattr+0x71/0x90
+[   60.068892]  do_syscall_64+0x3f/0x90
+[   60.072868]  entry_SYSCALL_64_after_hwframe+0x72/0xdc
+[   60.077523] RIP: 0033:0x7feaa86e4469
+[   60.080915] Code: 00 f3 c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 088
+[   60.097353] RSP: 002b:00007ffdbd8311e8 EFLAGS: 00000286 ORIG_RAX: 00000000000000bc
+[   60.103386] RAX: ffffffffffffffda RBX: 9461c5e290baac00 RCX: 00007feaa86e4469
+[   60.110322] RDX: 00007ffdbd831fe0 RSI: 00007ffdbd831305 RDI: 00007ffdbd831263
+[   60.116808] RBP: 00007ffdbd836180 R08: 0000000000000001 R09: 00007ffdbd836268
+[   60.123879] R10: 000000000000007d R11: 0000000000000286 R12: 0000000000400500
+[   60.130540] R13: 00007ffdbd836260 R14: 0000000000000000 R15: 0000000000000000
+[   60.136553]  </TASK>
+[   60.138818] Modules linked in:
+[   60.141839] CR2: 000000000000000e
+[   60.144831] ---[ end trace 0000000000000000 ]---
+[   60.149058] RIP: 0010:ni_create_attr_list+0x505/0x860
+[   60.153975] Code: 7e 10 e8 5e d0 d0 ff 45 0f b7 76 10 48 8d 7b 16 e8 00 d1 d0 ff 66 44 89 73 16 4d 8d 75 0e 4c 89 f7 e8 3f d0 d0 ff 4c 8d8
+[   60.172443] RSP: 0018:ffff88800a56f1e0 EFLAGS: 00010282
+[   60.176246] RAX: 0000000000000001 RBX: ffff88800b7b5088 RCX: ffffffffb83079fe
+[   60.182752] RDX: 0000000000000001 RSI: 0000000000000008 RDI: ffffffffbb7f9fc0
+[   60.189949] RBP: ffff88800a56f3a8 R08: ffff88800b7b50a0 R09: fffffbfff76ff3f9
+[   60.196950] R10: ffffffffbb7f9fc7 R11: fffffbfff76ff3f8 R12: ffff88800b756180
+[   60.203671] R13: 0000000000000000 R14: 000000000000000e R15: 0000000000000050
+[   60.209595] FS:  00007feaa8c96440(0000) GS:ffff88806d400000(0000) knlGS:0000000000000000
+[   60.216299] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[   60.222276] CR2: 00007f3a2e0b1000 CR3: 000000000a5bc000 CR4: 00000000000006f0
 
-And thus can cause data races when gfs2_show_options() and other functions
-such as gfs2_reconfigure() are concurrently executed:
-
-  spin_lock(&gt->gt_spin);
-  gt->gt_logd_secs = newargs->ar_commit;
-
-To fix these possible data races, the lock sdp->sd_tune.gt_spin is
-acquired before accessing the fields of gfs2_tune and released after these
-accesses.
-
-Further changes by Andreas:
-
-- Don't hold the spin lock over the seq_printf operations.
-
-Reported-by: BassCheck <bass@buaa.edu.cn>
-Signed-off-by: Tuo Li <islituo@gmail.com>
-Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+Signed-off-by: Edward Lo <loyuantsung@gmail.com>
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/gfs2/super.c | 26 +++++++++++++++-----------
- 1 file changed, 15 insertions(+), 11 deletions(-)
+ fs/ntfs3/frecord.c | 16 +++++++++++-----
+ 1 file changed, 11 insertions(+), 5 deletions(-)
 
-diff --git a/fs/gfs2/super.c b/fs/gfs2/super.c
-index 9d27aa8bd2bc6..44c564f0bc622 100644
---- a/fs/gfs2/super.c
-+++ b/fs/gfs2/super.c
-@@ -981,7 +981,14 @@ static int gfs2_show_options(struct seq_file *s, struct dentry *root)
- {
- 	struct gfs2_sbd *sdp = root->d_sb->s_fs_info;
- 	struct gfs2_args *args = &sdp->sd_args;
--	int val;
-+	unsigned int logd_secs, statfs_slow, statfs_quantum, quota_quantum;
-+
-+	spin_lock(&sdp->sd_tune.gt_spin);
-+	logd_secs = sdp->sd_tune.gt_logd_secs;
-+	quota_quantum = sdp->sd_tune.gt_quota_quantum;
-+	statfs_quantum = sdp->sd_tune.gt_statfs_quantum;
-+	statfs_slow = sdp->sd_tune.gt_statfs_slow;
-+	spin_unlock(&sdp->sd_tune.gt_spin);
+diff --git a/fs/ntfs3/frecord.c b/fs/ntfs3/frecord.c
+index 2bfcf1a989c95..50214b77c6a35 100644
+--- a/fs/ntfs3/frecord.c
++++ b/fs/ntfs3/frecord.c
+@@ -874,6 +874,7 @@ int ni_create_attr_list(struct ntfs_inode *ni)
+ 	if (err)
+ 		goto out1;
  
- 	if (is_ancestor(root, sdp->sd_master_dir))
- 		seq_puts(s, ",meta");
-@@ -1036,17 +1043,14 @@ static int gfs2_show_options(struct seq_file *s, struct dentry *root)
++	err = -EINVAL;
+ 	/* Call mi_remove_attr() in reverse order to keep pointers 'arr_move' valid. */
+ 	while (to_free > 0) {
+ 		struct ATTRIB *b = arr_move[--nb];
+@@ -882,7 +883,8 @@ int ni_create_attr_list(struct ntfs_inode *ni)
+ 
+ 		attr = mi_insert_attr(mi, b->type, Add2Ptr(b, name_off),
+ 				      b->name_len, asize, name_off);
+-		WARN_ON(!attr);
++		if (!attr)
++			goto out1;
+ 
+ 		mi_get_ref(mi, &le_b[nb]->ref);
+ 		le_b[nb]->id = attr->id;
+@@ -892,17 +894,20 @@ int ni_create_attr_list(struct ntfs_inode *ni)
+ 		attr->id = le_b[nb]->id;
+ 
+ 		/* Remove from primary record. */
+-		WARN_ON(!mi_remove_attr(NULL, &ni->mi, b));
++		if (!mi_remove_attr(NULL, &ni->mi, b))
++			goto out1;
+ 
+ 		if (to_free <= asize)
+ 			break;
+ 		to_free -= asize;
+-		WARN_ON(!nb);
++		if (!nb)
++			goto out1;
  	}
- 	if (args->ar_discard)
- 		seq_puts(s, ",discard");
--	val = sdp->sd_tune.gt_logd_secs;
--	if (val != 30)
--		seq_printf(s, ",commit=%d", val);
--	val = sdp->sd_tune.gt_statfs_quantum;
--	if (val != 30)
--		seq_printf(s, ",statfs_quantum=%d", val);
--	else if (sdp->sd_tune.gt_statfs_slow)
-+	if (logd_secs != 30)
-+		seq_printf(s, ",commit=%d", logd_secs);
-+	if (statfs_quantum != 30)
-+		seq_printf(s, ",statfs_quantum=%d", statfs_quantum);
-+	else if (statfs_slow)
- 		seq_puts(s, ",statfs_quantum=0");
--	val = sdp->sd_tune.gt_quota_quantum;
--	if (val != 60)
--		seq_printf(s, ",quota_quantum=%d", val);
-+	if (quota_quantum != 60)
-+		seq_printf(s, ",quota_quantum=%d", quota_quantum);
- 	if (args->ar_statfs_percent)
- 		seq_printf(s, ",statfs_percent=%d", args->ar_statfs_percent);
- 	if (args->ar_errors != GFS2_ERRORS_DEFAULT) {
+ 
+ 	attr = mi_insert_attr(&ni->mi, ATTR_LIST, NULL, 0,
+ 			      lsize + SIZEOF_RESIDENT, SIZEOF_RESIDENT);
+-	WARN_ON(!attr);
++	if (!attr)
++		goto out1;
+ 
+ 	attr->non_res = 0;
+ 	attr->flags = 0;
+@@ -922,9 +927,10 @@ int ni_create_attr_list(struct ntfs_inode *ni)
+ 	kfree(ni->attr_list.le);
+ 	ni->attr_list.le = NULL;
+ 	ni->attr_list.size = 0;
++	return err;
+ 
+ out:
+-	return err;
++	return 0;
+ }
+ 
+ /*
 -- 
 2.40.1
 
