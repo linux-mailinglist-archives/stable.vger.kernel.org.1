@@ -2,52 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9681D78336C
-	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:23:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1A040783333
+	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:23:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229647AbjHUTwk (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 21 Aug 2023 15:52:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38176 "EHLO
+        id S230190AbjHUUDe (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 21 Aug 2023 16:03:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40474 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229644AbjHUTwj (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 15:52:39 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B487A116
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 12:52:21 -0700 (PDT)
+        with ESMTP id S230184AbjHUUDd (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 16:03:33 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D394A8
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 13:03:32 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 92899644A7
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 19:52:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D0EAC433C8;
-        Mon, 21 Aug 2023 19:52:20 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D0C0C6486A
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 20:03:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E28BDC433C7;
+        Mon, 21 Aug 2023 20:03:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692647541;
-        bh=5612J5t2h9QIHiXc1izaY/Cq5xWKezMWcpkqLJ38ixU=;
+        s=korg; t=1692648211;
+        bh=S1xl9s7QHzMAhFxvD89ZNdTJOSpsqrBvmXJi6ZyLEaU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=W87xt9F1QDRn98AHtL/ld+kl+Av3J2Tt7RvZ2lFnmsvoK24o2Jhc0nnV3SZ7CCwg/
-         AZZQMSglUu4wiD2YDIwW4JTJ9rB/MYQduCCbf91H2TwXYhA+Fxj8YaahqwBex0AOwk
-         VqyGCMnSaiIxXRqlL3a325bASF3ByX/P0yVu7n3w=
+        b=oH5DxtYE+FNr1tQq6aP71kNsijF9jPXuduJu5OfftKygi0MLBXiq004kCKaynpk44
+         tiKkxft7ySMMXaWfUrMf9cFLhUOb766knpbUZ4UiBQiIbr+P3No8/o/G0w1iUz98z4
+         9Pxdn2R55bkejkuK7U0dDHtnU68IMyJz+xDvP/ww=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Li Jun <jun.li@nxp.com>,
-        Xu Yang <xu.yang_2@nxp.com>,
-        Peter Chen <peter.chen@kernel.org>,
+        patches@lists.linux.dev, Xiubo Li <xiubli@redhat.com>,
+        Milind Changire <mchangir@redhat.com>,
+        Ilya Dryomov <idryomov@gmail.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 050/194] usb: chipidea: imx: add missing USB PHY DPDM wakeup setting
+Subject: [PATCH 6.4 066/234] ceph: try to dump the msgs when decoding fails
 Date:   Mon, 21 Aug 2023 21:40:29 +0200
-Message-ID: <20230821194125.002629395@linuxfoundation.org>
+Message-ID: <20230821194131.690965436@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230821194122.695845670@linuxfoundation.org>
-References: <20230821194122.695845670@linuxfoundation.org>
+In-Reply-To: <20230821194128.754601642@linuxfoundation.org>
+References: <20230821194128.754601642@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -55,39 +55,57 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Xu Yang <xu.yang_2@nxp.com>
+From: Xiubo Li <xiubli@redhat.com>
 
-[ Upstream commit 53d061c19dc4cb68409df6dc11c40389c8c42a75 ]
+[ Upstream commit 8b0da5c549ae63ba1debd92a350f90773cb4bfe7 ]
 
-USB PHY DPDM wakeup bit is enabled by default, when USB wakeup
-is not required(/sys/.../wakeup is disabled), this bit should be
-disabled, otherwise we will have unexpected wakeup if do USB device
-connect/disconnect while system sleep.
-This bit can be enabled for both host and device mode.
+When the msgs are corrupted we need to dump them and then it will
+be easier to dig what has happened and where the issue is.
 
-Signed-off-by: Li Jun <jun.li@nxp.com>
-Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
-Acked-by: Peter Chen <peter.chen@kernel.org>
-Message-ID: <20230517081907.3410465-3-xu.yang_2@nxp.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Xiubo Li <xiubli@redhat.com>
+Reviewed-by: Milind Changire <mchangir@redhat.com>
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/chipidea/usbmisc_imx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/ceph/mds_client.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/usb/chipidea/usbmisc_imx.c b/drivers/usb/chipidea/usbmisc_imx.c
-index bac0f5458cab9..2318c7906acdb 100644
---- a/drivers/usb/chipidea/usbmisc_imx.c
-+++ b/drivers/usb/chipidea/usbmisc_imx.c
-@@ -135,7 +135,7 @@
- #define TXVREFTUNE0_MASK		(0xf << 20)
+diff --git a/fs/ceph/mds_client.c b/fs/ceph/mds_client.c
+index 83c4abff496da..5fb367b1d4b06 100644
+--- a/fs/ceph/mds_client.c
++++ b/fs/ceph/mds_client.c
+@@ -645,6 +645,7 @@ static int parse_reply_info(struct ceph_mds_session *s, struct ceph_msg *msg,
+ 	err = -EIO;
+ out_bad:
+ 	pr_err("mds parse_reply err %d\n", err);
++	ceph_msg_dump(msg);
+ 	return err;
+ }
  
- #define MX6_USB_OTG_WAKEUP_BITS (MX6_BM_WAKEUP_ENABLE | MX6_BM_VBUS_WAKEUP | \
--				 MX6_BM_ID_WAKEUP)
-+				 MX6_BM_ID_WAKEUP | MX6SX_BM_DPDM_WAKEUP_EN)
+@@ -3538,6 +3539,7 @@ static void handle_forward(struct ceph_mds_client *mdsc,
  
- struct usbmisc_ops {
- 	/* It's called once when probe a usb device */
+ bad:
+ 	pr_err("mdsc_handle_forward decode error err=%d\n", err);
++	ceph_msg_dump(msg);
+ }
+ 
+ static int __decode_session_metadata(void **p, void *end,
+@@ -5258,6 +5260,7 @@ void ceph_mdsc_handle_fsmap(struct ceph_mds_client *mdsc, struct ceph_msg *msg)
+ bad:
+ 	pr_err("error decoding fsmap %d. Shutting down mount.\n", err);
+ 	ceph_umount_begin(mdsc->fsc->sb);
++	ceph_msg_dump(msg);
+ err_out:
+ 	mutex_lock(&mdsc->mutex);
+ 	mdsc->mdsmap_err = err;
+@@ -5326,6 +5329,7 @@ void ceph_mdsc_handle_mdsmap(struct ceph_mds_client *mdsc, struct ceph_msg *msg)
+ bad:
+ 	pr_err("error decoding mdsmap %d. Shutting down mount.\n", err);
+ 	ceph_umount_begin(mdsc->fsc->sb);
++	ceph_msg_dump(msg);
+ 	return;
+ }
+ 
 -- 
 2.40.1
 
