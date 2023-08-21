@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 604AE78330B
-	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:22:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 67EFB783321
+	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:22:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230191AbjHUUDk (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 21 Aug 2023 16:03:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40560 "EHLO
+        id S229521AbjHUTwo (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 21 Aug 2023 15:52:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50818 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230189AbjHUUDj (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 16:03:39 -0400
+        with ESMTP id S229648AbjHUTwo (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 15:52:44 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C0FFCE3
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 13:03:37 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 94009185
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 12:52:27 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4EEB064871
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 20:03:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B038C433C7;
-        Mon, 21 Aug 2023 20:03:36 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 33022644AE
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 19:52:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41402C433C7;
+        Mon, 21 Aug 2023 19:52:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692648216;
-        bh=SoZRM45UXqCotRUBdPI0WEKA1VxguTOYKER9ljcPVLU=;
+        s=korg; t=1692647546;
+        bh=oMWZPEONArk7VvM5WnO/SxhH+xt8Ku0GeNuXlBzUP+8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=cJdoA9Pj3EqZJHyJPEZSiAgcK1zYg+xJbTsQBYaR7rYHVpNNaW2IL4w4XXAqrtMWn
-         h/Q7XsA+ywuz/Q0kNM6kzHaqHvu0jvv8IDhQzMxjKfI7BCGxnYi/cU8EEmJ41+D+7w
-         AnpIRzXd9lBkzP6+T0M7LuK9jSHlb4f8+5tl1xwo=
+        b=wZDD4iZDHS5hG+ifGnSPwx/J+fweBl6J0+ivrPEQasLyaoyS8SV+m7Zot3GgdoJMn
+         282zFL6CvU25jqdCpZ1BfoSyT5r53KdBo9A1AS6Ms4nxDW4OR7vITvJbnkjj6qcbBy
+         wnOtqG1evOaMYjCPWvY7AIROzDZ4aG0CFJ5y94xg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Edward Lo <loyuantsung@gmail.com>,
-        Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+        patches@lists.linux.dev, Armin Wolf <W_Armin@gmx.de>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 068/234] fs/ntfs3: Enhance sanity check while generating attr_list
+Subject: [PATCH 6.1 052/194] pcmcia: rsrc_nonstatic: Fix memory leak in nonstatic_release_resource_db()
 Date:   Mon, 21 Aug 2023 21:40:31 +0200
-Message-ID: <20230821194131.773747357@linuxfoundation.org>
+Message-ID: <20230821194125.096001773@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230821194128.754601642@linuxfoundation.org>
-References: <20230821194128.754601642@linuxfoundation.org>
+In-Reply-To: <20230821194122.695845670@linuxfoundation.org>
+References: <20230821194122.695845670@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,197 +53,63 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Edward Lo <loyuantsung@gmail.com>
+From: Armin Wolf <W_Armin@gmx.de>
 
-[ Upstream commit fdec309c7672cbee4dc0229ee4cbb33c948a1bdd ]
+[ Upstream commit c85fd9422fe0f5d667305efb27f56d09eab120b0 ]
 
-ni_create_attr_list uses WARN_ON to catch error cases while generating
-attribute list, which only prints out stack trace and may not be enough.
-This repalces them with more proper error handling flow.
+When nonstatic_release_resource_db() frees all resources associated
+with an PCMCIA socket, it forgets to free socket_data too, causing
+a memory leak observable with kmemleak:
 
-[   59.666332] BUG: kernel NULL pointer dereference, address: 000000000000000e
-[   59.673268] #PF: supervisor read access in kernel mode
-[   59.678354] #PF: error_code(0x0000) - not-present page
-[   59.682831] PGD 8000000005ff1067 P4D 8000000005ff1067 PUD 7dee067 PMD 0
-[   59.688556] Oops: 0000 [#1] PREEMPT SMP KASAN PTI
-[   59.692642] CPU: 0 PID: 198 Comm: poc Tainted: G    B   W          6.2.0-rc1+ #4
-[   59.698868] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.0-0-gd239552ce722-prebuilt.qemu.org 04/01/2014
-[   59.708795] RIP: 0010:ni_create_attr_list+0x505/0x860
-[   59.713657] Code: 7e 10 e8 5e d0 d0 ff 45 0f b7 76 10 48 8d 7b 16 e8 00 d1 d0 ff 66 44 89 73 16 4d 8d 75 0e 4c 89 f7 e8 3f d0 d0 ff 4c 8d8
-[   59.731559] RSP: 0018:ffff88800a56f1e0 EFLAGS: 00010282
-[   59.735691] RAX: 0000000000000001 RBX: ffff88800b7b5088 RCX: ffffffffb83079fe
-[   59.741792] RDX: 0000000000000001 RSI: 0000000000000008 RDI: ffffffffbb7f9fc0
-[   59.748423] RBP: ffff88800a56f3a8 R08: ffff88800b7b50a0 R09: fffffbfff76ff3f9
-[   59.754654] R10: ffffffffbb7f9fc7 R11: fffffbfff76ff3f8 R12: ffff88800b756180
-[   59.761552] R13: 0000000000000000 R14: 000000000000000e R15: 0000000000000050
-[   59.768323] FS:  00007feaa8c96440(0000) GS:ffff88806d400000(0000) knlGS:0000000000000000
-[   59.776027] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[   59.781395] CR2: 00007f3a2e0b1000 CR3: 000000000a5bc000 CR4: 00000000000006f0
-[   59.787607] Call Trace:
-[   59.790271]  <TASK>
-[   59.792488]  ? __pfx_ni_create_attr_list+0x10/0x10
-[   59.797235]  ? kernel_text_address+0xd3/0xe0
-[   59.800856]  ? unwind_get_return_address+0x3e/0x60
-[   59.805101]  ? __kasan_check_write+0x18/0x20
-[   59.809296]  ? preempt_count_sub+0x1c/0xd0
-[   59.813421]  ni_ins_attr_ext+0x52c/0x5c0
-[   59.817034]  ? __pfx_ni_ins_attr_ext+0x10/0x10
-[   59.821926]  ? __vfs_setxattr+0x121/0x170
-[   59.825718]  ? __vfs_setxattr_noperm+0x97/0x300
-[   59.829562]  ? __vfs_setxattr_locked+0x145/0x170
-[   59.833987]  ? vfs_setxattr+0x137/0x2a0
-[   59.836732]  ? do_setxattr+0xce/0x150
-[   59.839807]  ? setxattr+0x126/0x140
-[   59.842353]  ? path_setxattr+0x164/0x180
-[   59.845275]  ? __x64_sys_setxattr+0x71/0x90
-[   59.848838]  ? do_syscall_64+0x3f/0x90
-[   59.851898]  ? entry_SYSCALL_64_after_hwframe+0x72/0xdc
-[   59.857046]  ? stack_depot_save+0x17/0x20
-[   59.860299]  ni_insert_attr+0x1ba/0x420
-[   59.863104]  ? __pfx_ni_insert_attr+0x10/0x10
-[   59.867069]  ? preempt_count_sub+0x1c/0xd0
-[   59.869897]  ? _raw_spin_unlock_irqrestore+0x2b/0x50
-[   59.874088]  ? __create_object+0x3ae/0x5d0
-[   59.877865]  ni_insert_resident+0xc4/0x1c0
-[   59.881430]  ? __pfx_ni_insert_resident+0x10/0x10
-[   59.886355]  ? kasan_save_alloc_info+0x1f/0x30
-[   59.891117]  ? __kasan_kmalloc+0x8b/0xa0
-[   59.894383]  ntfs_set_ea+0x90d/0xbf0
-[   59.897703]  ? __pfx_ntfs_set_ea+0x10/0x10
-[   59.901011]  ? kernel_text_address+0xd3/0xe0
-[   59.905308]  ? __kernel_text_address+0x16/0x50
-[   59.909811]  ? unwind_get_return_address+0x3e/0x60
-[   59.914898]  ? __pfx_stack_trace_consume_entry+0x10/0x10
-[   59.920250]  ? arch_stack_walk+0xa2/0x100
-[   59.924560]  ? filter_irq_stacks+0x27/0x80
-[   59.928722]  ntfs_setxattr+0x405/0x440
-[   59.932512]  ? __pfx_ntfs_setxattr+0x10/0x10
-[   59.936634]  ? kvmalloc_node+0x2d/0x120
-[   59.940378]  ? kasan_save_stack+0x41/0x60
-[   59.943870]  ? kasan_save_stack+0x2a/0x60
-[   59.947719]  ? kasan_set_track+0x29/0x40
-[   59.951417]  ? kasan_save_alloc_info+0x1f/0x30
-[   59.955733]  ? __kasan_kmalloc+0x8b/0xa0
-[   59.959598]  ? __kmalloc_node+0x68/0x150
-[   59.963163]  ? kvmalloc_node+0x2d/0x120
-[   59.966490]  ? vmemdup_user+0x2b/0xa0
-[   59.969060]  __vfs_setxattr+0x121/0x170
-[   59.972456]  ? __pfx___vfs_setxattr+0x10/0x10
-[   59.976008]  __vfs_setxattr_noperm+0x97/0x300
-[   59.981562]  __vfs_setxattr_locked+0x145/0x170
-[   59.986100]  vfs_setxattr+0x137/0x2a0
-[   59.989964]  ? __pfx_vfs_setxattr+0x10/0x10
-[   59.993616]  ? __kasan_check_write+0x18/0x20
-[   59.997425]  do_setxattr+0xce/0x150
-[   60.000304]  setxattr+0x126/0x140
-[   60.002967]  ? __pfx_setxattr+0x10/0x10
-[   60.006471]  ? __virt_addr_valid+0xcb/0x140
-[   60.010461]  ? __call_rcu_common.constprop.0+0x1c7/0x330
-[   60.016037]  ? debug_smp_processor_id+0x1b/0x30
-[   60.021008]  ? kasan_quarantine_put+0x5b/0x190
-[   60.025545]  ? putname+0x84/0xa0
-[   60.027910]  ? __kasan_slab_free+0x11e/0x1b0
-[   60.031483]  ? putname+0x84/0xa0
-[   60.033986]  ? preempt_count_sub+0x1c/0xd0
-[   60.036876]  ? __mnt_want_write+0xae/0x100
-[   60.040738]  ? mnt_want_write+0x8f/0x150
-[   60.044317]  path_setxattr+0x164/0x180
-[   60.048096]  ? __pfx_path_setxattr+0x10/0x10
-[   60.052096]  ? strncpy_from_user+0x175/0x1c0
-[   60.056482]  ? debug_smp_processor_id+0x1b/0x30
-[   60.059848]  ? fpregs_assert_state_consistent+0x6b/0x80
-[   60.064557]  __x64_sys_setxattr+0x71/0x90
-[   60.068892]  do_syscall_64+0x3f/0x90
-[   60.072868]  entry_SYSCALL_64_after_hwframe+0x72/0xdc
-[   60.077523] RIP: 0033:0x7feaa86e4469
-[   60.080915] Code: 00 f3 c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 088
-[   60.097353] RSP: 002b:00007ffdbd8311e8 EFLAGS: 00000286 ORIG_RAX: 00000000000000bc
-[   60.103386] RAX: ffffffffffffffda RBX: 9461c5e290baac00 RCX: 00007feaa86e4469
-[   60.110322] RDX: 00007ffdbd831fe0 RSI: 00007ffdbd831305 RDI: 00007ffdbd831263
-[   60.116808] RBP: 00007ffdbd836180 R08: 0000000000000001 R09: 00007ffdbd836268
-[   60.123879] R10: 000000000000007d R11: 0000000000000286 R12: 0000000000400500
-[   60.130540] R13: 00007ffdbd836260 R14: 0000000000000000 R15: 0000000000000000
-[   60.136553]  </TASK>
-[   60.138818] Modules linked in:
-[   60.141839] CR2: 000000000000000e
-[   60.144831] ---[ end trace 0000000000000000 ]---
-[   60.149058] RIP: 0010:ni_create_attr_list+0x505/0x860
-[   60.153975] Code: 7e 10 e8 5e d0 d0 ff 45 0f b7 76 10 48 8d 7b 16 e8 00 d1 d0 ff 66 44 89 73 16 4d 8d 75 0e 4c 89 f7 e8 3f d0 d0 ff 4c 8d8
-[   60.172443] RSP: 0018:ffff88800a56f1e0 EFLAGS: 00010282
-[   60.176246] RAX: 0000000000000001 RBX: ffff88800b7b5088 RCX: ffffffffb83079fe
-[   60.182752] RDX: 0000000000000001 RSI: 0000000000000008 RDI: ffffffffbb7f9fc0
-[   60.189949] RBP: ffff88800a56f3a8 R08: ffff88800b7b50a0 R09: fffffbfff76ff3f9
-[   60.196950] R10: ffffffffbb7f9fc7 R11: fffffbfff76ff3f8 R12: ffff88800b756180
-[   60.203671] R13: 0000000000000000 R14: 000000000000000e R15: 0000000000000050
-[   60.209595] FS:  00007feaa8c96440(0000) GS:ffff88806d400000(0000) knlGS:0000000000000000
-[   60.216299] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[   60.222276] CR2: 00007f3a2e0b1000 CR3: 000000000a5bc000 CR4: 00000000000006f0
+unreferenced object 0xc28d1000 (size 64):
+  comm "systemd-udevd", pid 297, jiffies 4294898478 (age 194.484s)
+  hex dump (first 32 bytes):
+    00 00 00 00 00 00 00 00 f0 85 0e c3 00 00 00 00  ................
+    00 00 00 00 0c 10 8d c2 00 00 00 00 00 00 00 00  ................
+  backtrace:
+    [<ffda4245>] __kmem_cache_alloc_node+0x2d7/0x4a0
+    [<7e51f0c8>] kmalloc_trace+0x31/0xa4
+    [<d52b4ca0>] nonstatic_init+0x24/0x1a4 [pcmcia_rsrc]
+    [<a2f13e08>] pcmcia_register_socket+0x200/0x35c [pcmcia_core]
+    [<a728be1b>] yenta_probe+0x4d8/0xa70 [yenta_socket]
+    [<c48fac39>] pci_device_probe+0x99/0x194
+    [<84b7c690>] really_probe+0x181/0x45c
+    [<8060fe6e>] __driver_probe_device+0x75/0x1f4
+    [<b9b76f43>] driver_probe_device+0x28/0xac
+    [<648b766f>] __driver_attach+0xeb/0x1e4
+    [<6e9659eb>] bus_for_each_dev+0x61/0xb4
+    [<25a669f3>] driver_attach+0x1e/0x28
+    [<d8671d6b>] bus_add_driver+0x102/0x20c
+    [<df0d323c>] driver_register+0x5b/0x120
+    [<942cd8a4>] __pci_register_driver+0x44/0x4c
+    [<e536027e>] __UNIQUE_ID___addressable_cleanup_module188+0x1c/0xfffff000 [iTCO_vendor_support]
 
-Signed-off-by: Edward Lo <loyuantsung@gmail.com>
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Fix this by freeing socket_data too.
+
+Tested on a Acer Travelmate 4002WLMi by manually binding/unbinding
+the yenta_cardbus driver (yenta_socket).
+
+Signed-off-by: Armin Wolf <W_Armin@gmx.de>
+Message-ID: <20230512184529.5094-1-W_Armin@gmx.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ntfs3/frecord.c | 16 +++++++++++-----
- 1 file changed, 11 insertions(+), 5 deletions(-)
+ drivers/pcmcia/rsrc_nonstatic.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/fs/ntfs3/frecord.c b/fs/ntfs3/frecord.c
-index 2bfcf1a989c95..50214b77c6a35 100644
---- a/fs/ntfs3/frecord.c
-+++ b/fs/ntfs3/frecord.c
-@@ -874,6 +874,7 @@ int ni_create_attr_list(struct ntfs_inode *ni)
- 	if (err)
- 		goto out1;
- 
-+	err = -EINVAL;
- 	/* Call mi_remove_attr() in reverse order to keep pointers 'arr_move' valid. */
- 	while (to_free > 0) {
- 		struct ATTRIB *b = arr_move[--nb];
-@@ -882,7 +883,8 @@ int ni_create_attr_list(struct ntfs_inode *ni)
- 
- 		attr = mi_insert_attr(mi, b->type, Add2Ptr(b, name_off),
- 				      b->name_len, asize, name_off);
--		WARN_ON(!attr);
-+		if (!attr)
-+			goto out1;
- 
- 		mi_get_ref(mi, &le_b[nb]->ref);
- 		le_b[nb]->id = attr->id;
-@@ -892,17 +894,20 @@ int ni_create_attr_list(struct ntfs_inode *ni)
- 		attr->id = le_b[nb]->id;
- 
- 		/* Remove from primary record. */
--		WARN_ON(!mi_remove_attr(NULL, &ni->mi, b));
-+		if (!mi_remove_attr(NULL, &ni->mi, b))
-+			goto out1;
- 
- 		if (to_free <= asize)
- 			break;
- 		to_free -= asize;
--		WARN_ON(!nb);
-+		if (!nb)
-+			goto out1;
+diff --git a/drivers/pcmcia/rsrc_nonstatic.c b/drivers/pcmcia/rsrc_nonstatic.c
+index ad1141fddb4cc..8bda75990bce5 100644
+--- a/drivers/pcmcia/rsrc_nonstatic.c
++++ b/drivers/pcmcia/rsrc_nonstatic.c
+@@ -1053,6 +1053,8 @@ static void nonstatic_release_resource_db(struct pcmcia_socket *s)
+ 		q = p->next;
+ 		kfree(p);
  	}
- 
- 	attr = mi_insert_attr(&ni->mi, ATTR_LIST, NULL, 0,
- 			      lsize + SIZEOF_RESIDENT, SIZEOF_RESIDENT);
--	WARN_ON(!attr);
-+	if (!attr)
-+		goto out1;
- 
- 	attr->non_res = 0;
- 	attr->flags = 0;
-@@ -922,9 +927,10 @@ int ni_create_attr_list(struct ntfs_inode *ni)
- 	kfree(ni->attr_list.le);
- 	ni->attr_list.le = NULL;
- 	ni->attr_list.size = 0;
-+	return err;
- 
- out:
--	return err;
-+	return 0;
++
++	kfree(data);
  }
  
- /*
+ 
 -- 
 2.40.1
 
