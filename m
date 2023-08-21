@@ -2,87 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 00A8A782A0D
-	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 15:11:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7E37A782A48
+	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 15:17:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230407AbjHUNLo (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 21 Aug 2023 09:11:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48504 "EHLO
+        id S232297AbjHUNRj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 21 Aug 2023 09:17:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51820 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233988AbjHUNLn (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 09:11:43 -0400
+        with ESMTP id S232488AbjHUNRi (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 09:17:38 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 524EFE8;
-        Mon, 21 Aug 2023 06:11:41 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8CFA8B1
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 06:17:14 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DC7B563544;
-        Mon, 21 Aug 2023 13:11:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81813C433C8;
-        Mon, 21 Aug 2023 13:11:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1692623500;
-        bh=fKeIzDelBhcXSFwPC4v8AT95YfiJ57nqdgQdtNrfJN4=;
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C4AF0616C7
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 13:17:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4FC9C433C8;
+        Mon, 21 Aug 2023 13:17:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1692623832;
+        bh=QRbVYdkISTB1JEgThMzHttizW7x+znLDgouSfrg58bs=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=VsfbPZUkFt08a+Wx0UN0m8lvTnb/61UGGxfrg1HRj7GndsGHSlQ6Z7DiMk+vQwlho
-         TTSL29bxPpzAy02jyElUvTTOnXNiWXT/Mm/G5GFQJAL8AzvZs4N9NR9yS8DvmAsiE2
-         X+/mMIN1FnSaaYoXTbhV7ANfuPzYQzpLlF75tlgPgbFAs/ooMbq7cGQILEV6ZpWJ2k
-         fGLfYtU0WktuizrYDj2suYlO/9wI2muPELUhvd5nfPR+Jq8iAyGqaNVy/PnM6qo171
-         9dek6upF92jpbeNkPF5C1jx2jDXOUklt8z3S0Mf4ZbxHLmC1ei/bIkCxIDhEy2Doqs
-         a/DT28fVwfJnQ==
-Date:   Mon, 21 Aug 2023 14:11:30 +0100
-From:   Mark Brown <broonie@kernel.org>
-To:     Robin Murphy <robin.murphy@arm.com>
-Cc:     Shreeya Patel <shreeya.patel@collabora.com>,
-        Saravana Kannan <saravanak@google.com>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, John Stultz <jstultz@google.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Alexey Kuznetsov <kuznet@ms2.inr.ac.ru>,
-        Hideaki YOSHIFUJI <yoshfuji@linux-ipv6.org>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Rob Herring <robh@kernel.org>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Naresh Kamboju <naresh.kamboju@linaro.org>,
-        Basil Eljuse <Basil.Eljuse@arm.com>,
-        Ferry Toth <fntoth@gmail.com>, Arnd Bergmann <arnd@arndb.de>,
-        Anders Roxell <anders.roxell@linaro.org>,
-        linux-pm@vger.kernel.org, Nathan Chancellor <nathan@kernel.org>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Sasha Levin <sashal@kernel.org>, linux-kernel@vger.kernel.org,
-        "gustavo.padovan@collabora.com" <gustavo.padovan@collabora.com>,
-        Ricardo =?iso-8859-1?Q?Ca=F1uelo?= Navarro 
-        <ricardo.canuelo@collabora.com>,
-        Guillaume Charles Tucker <guillaume.tucker@collabora.com>,
-        usama.anjum@collabora.com, kernelci@lists.linux.dev
-Subject: Re: [PATCH 5.17 127/298] driver core: Fix wait_for_device_probe() &
- deferred_probe_timeout interaction
-Message-ID: <0a06a54e-0348-4964-ab90-48c648712ed6@sirena.org.uk>
-References: <20220613094924.913340374@linuxfoundation.org>
- <20220613094928.793712131@linuxfoundation.org>
- <6283c4b1-2513-207d-4ed6-fdabf3f3880e@collabora.com>
- <2023081619-slapping-congrats-8e85@gregkh>
- <471bf84d-9d58-befc-8224-359a62e29786@collabora.com>
- <CAGETcx-NVoN7b8XCV09ouof81XxZk4wtGhEcqcFAt6Gs=JWKdw@mail.gmail.com>
- <d8f8ddf6-8063-fb3a-7dad-4064a47c5fe8@collabora.com>
- <CAGETcx-DUm417mM-Nmyqj-e_rKUw69m=rTe5R6_Vxd_rsKMmGg@mail.gmail.com>
- <97b06c78-da3c-d8ab-ca72-ff37b9976f2a@collabora.com>
- <6d7a7ecc-1364-5cbe-0485-01d693dbdc6c@arm.com>
+        b=y9UpXin2FTm3GqP7l1JUE0js52PMR31oSJGoiawdmKCV/Edg5ZFmQHYV9diOMpAvS
+         SGJqZrBA6uP1SRvkCLTXFsGDMbXZBCTRF234pLwl2GGTZfhfmHl7kzeTiei4PiKVL4
+         3zwFeD25Vy5D9WacfuYXV3ASM4tGIbDqOTJK0Xts=
+Date:   Mon, 21 Aug 2023 15:17:09 +0200
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     t.martitz@avm.de
+Cc:     stable@vger.kernel.org, Al Viro <viro@zeniv.linux.org.uk>
+Subject: Re: proc_lseek backport request
+Message-ID: <2023082138-unscrew-washbasin-1a74@gregkh>
+References: <2023081752-giddily-anytime-237e@gregkh>
+ <OF964B0E9A.174E142D-ONC1258A0E.0032FEAA-C1258A0E.00337FA7@avm.de>
+ <OF38330399.317AA8E2-ONC1258A12.00239743-C1258A12.00239746@avm.de>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="9yeLbFu7ADkQpySe"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <6d7a7ecc-1364-5cbe-0485-01d693dbdc6c@arm.com>
-X-Cookie: Do not write below this line.
+In-Reply-To: <OF38330399.317AA8E2-ONC1258A12.00239743-C1258A12.00239746@avm.de>
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -92,40 +51,65 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+On Mon, Aug 21, 2023 at 08:28:44AM +0200, t.martitz@avm.de wrote:
+> >Attempting to keep kernel code outside of the kernel tree is, on
+> >purpose, very expensive in time and resources. The very simple way
+> >to
+> >solve this is to get your drivers merged properly into the mainline
+> >kernel tree.
+> >
+> >Have you submitted your drivers and had them rejected?
+> 
+> Most drivers affected by the above patch are delivered to us by
+> chip vendors that we cannot post publicly without their consent.
 
---9yeLbFu7ADkQpySe
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+As it's all GPLv2 code, you don't need their "consent" to post the code
+publicly, in fact, you are obligated to do so :)
 
-On Mon, Aug 21, 2023 at 01:39:11PM +0100, Robin Murphy wrote:
-> On 2023-08-21 12:35, Shreeya Patel wrote:
+> It's
+> also not our job to get their crappy code (and it's a lot of that!) to a
+> state that meets your quality standards. We can and do ask for mainline
+> drivers but our influence is limited.
 
-> > AFAIK, script for running the tests is immediately ran after the boot
-> > process is complete so there is no wait time.
+You can write this into your contract in order to pick their chips.
+That's how this was resolved decades ago for scsi and ethernet
+chips/drivers, you have more influence here than you might think.
 
-> Regardless of what the kernel is doing, it seems like a fundamentally dumb
-> test to specifically ask deferred probe to wait for up to a minute then
-> complain that it hasn't finished after 11 seconds :/
+> Also, would driver code for chips that aren't publicly available any useful for you?
 
-IIRC that stuff is expecting the modules to be loaded from the initramfs
-and checking from the main system which is a bit more sensible (at least
-in the case where there is a main filesystem).  It's vulnerable to races
-but less so, especially given the time a Debian rootfs typically takes
-to boot over NFS.
+Of course it would, it's available for someone, right?
 
---9yeLbFu7ADkQpySe
-Content-Type: application/pgp-signature; name="signature.asc"
+> There is also some in-house code affected but that "drivers" don't usually
+> drive hardware but simply provide F!OS-specific proc interfaces (F!OS
+> is the name of the firmware that runs on our devices). These are just
+> software, often device or vendor specific, and not suitable for the wider
+> kernel community. Also we don't have the resources to get our code
+> top-notch for potential mainline inclusion (although it's usually better
+> than the vendor code we receive).
 
------BEGIN PGP SIGNATURE-----
+As stated many times before, by many companies, you will save time and
+money if you get your code merged upstream.  If you have time and money
+to burn (like nvidia), then sure, keep the code out of the kernel tree,
+it's your choice.
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmTjYoEACgkQJNaLcl1U
-h9A6Swf/XtoTqsAUrhDq/Wh7JfVm3BoLQKbTuySudRcbCDjKQqaSOK6krL2dOyho
-pMlwv20MA3H+NF8I/hbsKh76FXvk08d1iLcKHll3kfZOxLUmdhOXY56bn88FStfd
-Yja0b9OFe5TkkxZngSggpps6F+hhI0Q1GbuX+VZKqwZ3+1cbM+osTfZDzxy5Y47x
-NwqGj95If45WtM2T1uom9ODZS1xKNH3Y7TO7Ifkpqf9sV0h+l4cWYEUOahfcEh6z
-hIH1+EeAJSqWhvoWxXgc0KkmrTV3MQetnfOOpofb9YEO7zvRnU2k/vzhY142cS3Z
-MfbPxUXC9o6LeMMrbYdhvLEEImawAQ==
-=cxsG
------END PGP SIGNATURE-----
+> On the positive side, we do realize that mainlining things can be a net win for us
+> long term and we have started an internal process that allows us to selectively
+> mainline portions of our in-house code, but it's limited by resources and
+> therefore a slow process. See [1] for example.
+> 
+> [1] https://lore.kernel.org/all/20230619071444.14625-1-jnixdorf-oss@avm.de/
 
---9yeLbFu7ADkQpySe--
+That's great!
+
+> >Have you taken advantage of the projects that are willing to take
+> >out-of-tree drivers and get them merged upstream properly for free?
+> 
+> I don't know about any such project. Interesting to hear they exist! Who are they?
+
+The old "driverdevel" mailing list would do this, but that got removed
+many years ago when companies stopped needing this.  If you are
+interested, email me off-list and we can take it from there.
+
+thanks,
+
+greg k-h
