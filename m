@@ -2,47 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C55CD783332
-	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:23:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D3A93783313
+	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:22:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229770AbjHUTzU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 21 Aug 2023 15:55:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54392 "EHLO
+        id S230266AbjHUUGd (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 21 Aug 2023 16:06:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52304 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229754AbjHUTzU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 15:55:20 -0400
+        with ESMTP id S230265AbjHUUGd (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 16:06:33 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A86D12A
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 12:55:18 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F275FA8
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 13:06:31 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 06F1D645B8
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 19:55:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EFBBC433C8;
-        Mon, 21 Aug 2023 19:55:16 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 91C8064962
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 20:06:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2B79C433C8;
+        Mon, 21 Aug 2023 20:06:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692647717;
-        bh=7hwvDBACKTflcEs4feTvTnJvGuY6kcnlAwwUj9pVOpU=;
+        s=korg; t=1692648391;
+        bh=aGadGLzXfiq6rzxiz0zYBf/QAR2s3KmdqXCBM1lWAXU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Ngj3ZQLX1vKpt6YaK+Y9CKhIs/KajW9tQwTcNTBvIYYPLNZ9wBXNO5OOTytOv/UGy
-         oxU1vZvYip/vXerp061Iya2BzHV58nCk+soMwC3XdBOwoZGCELQ6qN7W+CJq3XYvmj
-         OBneJ2qOFFC7AYXAgfyYWRbNwldm1Rv4fAvTDazc=
+        b=mBAzOIY7i6s6lVs4yEVzKtuZyP+pD6iPk1eOARk+AkdfJP0P38+rKo5ZVBxAiruiO
+         IFoEh1nETFLPu073Vd5cfvNJEQAn5qqQJ6Xm9Advz+KJ3YYRRkHRLabiePQ2gjDpT7
+         kMjc37DCWTIJoi96jhRMOIovHhphfJVNM0fYFb8E=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dragos Tatulea <dtatulea@nvidia.com>,
-        "Michael S. Tsirkin" <mst@redhat.com>,
-        Jason Wang <jasowang@redhat.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 113/194] virtio-net: set queues after driver_ok
+        patches@lists.linux.dev, Petr Pavlu <petr.pavlu@suse.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Nathan Chancellor <nathan@kernel.org>,
+        "Borislav Petkov (AMD)" <bp@alien8.de>
+Subject: [PATCH 6.4 129/234] x86/retpoline,kprobes: Fix position of thunk sections with CONFIG_LTO_CLANG
 Date:   Mon, 21 Aug 2023 21:41:32 +0200
-Message-ID: <20230821194127.662940648@linuxfoundation.org>
+Message-ID: <20230821194134.542686421@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230821194122.695845670@linuxfoundation.org>
-References: <20230821194122.695845670@linuxfoundation.org>
+In-Reply-To: <20230821194128.754601642@linuxfoundation.org>
+References: <20230821194128.754601642@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,52 +55,131 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jason Wang <jasowang@redhat.com>
+From: Petr Pavlu <petr.pavlu@suse.com>
 
-[ Upstream commit 51b813176f098ff61bd2833f627f5319ead098a5 ]
+commit 79cd2a11224eab86d6673fe8a11d2046ae9d2757 upstream.
 
-Commit 25266128fe16 ("virtio-net: fix race between set queues and
-probe") tries to fix the race between set queues and probe by calling
-_virtnet_set_queues() before DRIVER_OK is set. This violates virtio
-spec. Fixing this by setting queues after virtio_device_ready().
+The linker script arch/x86/kernel/vmlinux.lds.S matches the thunk
+sections ".text.__x86.*" from arch/x86/lib/retpoline.S as follows:
 
-Note that rtnl needs to be held for userspace requests to change the
-number of queues. So we are serialized in this way.
+  .text {
+    [...]
+    TEXT_TEXT
+    [...]
+    __indirect_thunk_start = .;
+    *(.text.__x86.*)
+    __indirect_thunk_end = .;
+    [...]
+  }
 
-Fixes: 25266128fe16 ("virtio-net: fix race between set queues and probe")
-Reported-by: Dragos Tatulea <dtatulea@nvidia.com>
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: Jason Wang <jasowang@redhat.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Macro TEXT_TEXT references TEXT_MAIN which normally expands to only
+".text". However, with CONFIG_LTO_CLANG, TEXT_MAIN becomes
+".text .text.[0-9a-zA-Z_]*" which wrongly matches also the thunk
+sections. The output layout is then different than expected. For
+instance, the currently defined range [__indirect_thunk_start,
+__indirect_thunk_end] becomes empty.
+
+Prevent the problem by using ".." as the first separator, for example,
+".text..__x86.indirect_thunk". This pattern is utilized by other
+explicit section names which start with one of the standard prefixes,
+such as ".text" or ".data", and that need to be individually selected in
+the linker script.
+
+  [ nathan: Fix conflicts with SRSO and fold in fix issue brought up by
+    Andrew Cooper in post-review:
+    https://lore.kernel.org/20230803230323.1478869-1-andrew.cooper3@citrix.com ]
+
+Fixes: dc5723b02e52 ("kbuild: add support for Clang LTO")
+Signed-off-by: Petr Pavlu <petr.pavlu@suse.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/r/20230711091952.27944-2-petr.pavlu@suse.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/virtio_net.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/x86/kernel/vmlinux.lds.S |    8 ++++----
+ arch/x86/lib/retpoline.S      |    8 ++++----
+ tools/objtool/check.c         |    2 +-
+ 3 files changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
-index b7a4df4bab817..55c20ccb791ea 100644
---- a/drivers/net/virtio_net.c
-+++ b/drivers/net/virtio_net.c
-@@ -3942,8 +3942,6 @@ static int virtnet_probe(struct virtio_device *vdev)
- 	if (vi->has_rss || vi->has_rss_hash_report)
- 		virtnet_init_default_rss(vi);
+--- a/arch/x86/kernel/vmlinux.lds.S
++++ b/arch/x86/kernel/vmlinux.lds.S
+@@ -134,15 +134,15 @@ SECTIONS
+ 		SOFTIRQENTRY_TEXT
+ #ifdef CONFIG_RETPOLINE
+ 		__indirect_thunk_start = .;
+-		*(.text.__x86.indirect_thunk)
+-		*(.text.__x86.return_thunk)
++		*(.text..__x86.indirect_thunk)
++		*(.text..__x86.return_thunk)
+ 		__indirect_thunk_end = .;
+ #endif
+ 		STATIC_CALL_TEXT
  
--	_virtnet_set_queues(vi, vi->curr_queue_pairs);
--
- 	/* serialize netdev register + virtio_device_ready() with ndo_open() */
- 	rtnl_lock();
+ 		ALIGN_ENTRY_TEXT_BEGIN
+ #ifdef CONFIG_CPU_SRSO
+-		*(.text.__x86.rethunk_untrain)
++		*(.text..__x86.rethunk_untrain)
+ #endif
  
-@@ -3956,6 +3954,8 @@ static int virtnet_probe(struct virtio_device *vdev)
+ 		ENTRY_TEXT
+@@ -153,7 +153,7 @@ SECTIONS
+ 		 * definition.
+ 		 */
+ 		. = srso_alias_untrain_ret | (1 << 2) | (1 << 8) | (1 << 14) | (1 << 20);
+-		*(.text.__x86.rethunk_safe)
++		*(.text..__x86.rethunk_safe)
+ #endif
+ 		ALIGN_ENTRY_TEXT_END
+ 		*(.gnu.warning)
+--- a/arch/x86/lib/retpoline.S
++++ b/arch/x86/lib/retpoline.S
+@@ -13,7 +13,7 @@
+ #include <asm/frame.h>
+ #include <asm/nops.h>
  
- 	virtio_device_ready(vdev);
+-	.section .text.__x86.indirect_thunk
++	.section .text..__x86.indirect_thunk
  
-+	_virtnet_set_queues(vi, vi->curr_queue_pairs);
-+
- 	/* a random MAC address has been assigned, notify the device.
- 	 * We don't fail probe if VIRTIO_NET_F_CTRL_MAC_ADDR is not there
- 	 * because many devices work fine without getting MAC explicitly
--- 
-2.40.1
-
+ 
+ .macro POLINE reg
+@@ -148,7 +148,7 @@ SYM_CODE_END(__x86_indirect_jump_thunk_a
+  * As a result, srso_alias_safe_ret() becomes a safe return.
+  */
+ #ifdef CONFIG_CPU_SRSO
+-	.section .text.__x86.rethunk_untrain
++	.section .text..__x86.rethunk_untrain
+ 
+ SYM_START(srso_alias_untrain_ret, SYM_L_GLOBAL, SYM_A_NONE)
+ 	UNWIND_HINT_FUNC
+@@ -159,7 +159,7 @@ SYM_START(srso_alias_untrain_ret, SYM_L_
+ SYM_FUNC_END(srso_alias_untrain_ret)
+ __EXPORT_THUNK(srso_alias_untrain_ret)
+ 
+-	.section .text.__x86.rethunk_safe
++	.section .text..__x86.rethunk_safe
+ #else
+ /* dummy definition for alternatives */
+ SYM_START(srso_alias_untrain_ret, SYM_L_GLOBAL, SYM_A_NONE)
+@@ -177,7 +177,7 @@ SYM_START(srso_alias_safe_ret, SYM_L_GLO
+ 	int3
+ SYM_FUNC_END(srso_alias_safe_ret)
+ 
+-	.section .text.__x86.return_thunk
++	.section .text..__x86.return_thunk
+ 
+ SYM_CODE_START(srso_alias_return_thunk)
+ 	UNWIND_HINT_FUNC
+--- a/tools/objtool/check.c
++++ b/tools/objtool/check.c
+@@ -429,7 +429,7 @@ static int decode_instructions(struct ob
+ 		if (!strcmp(sec->name, ".noinstr.text") ||
+ 		    !strcmp(sec->name, ".entry.text") ||
+ 		    !strcmp(sec->name, ".cpuidle.text") ||
+-		    !strncmp(sec->name, ".text.__x86.", 12))
++		    !strncmp(sec->name, ".text..__x86.", 13))
+ 			sec->noinstr = true;
+ 
+ 		/*
 
 
