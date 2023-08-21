@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 86F66782831
-	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 13:48:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8C7F3782836
+	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 13:48:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230359AbjHULss (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 21 Aug 2023 07:48:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35194 "EHLO
+        id S232592AbjHULs7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 21 Aug 2023 07:48:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40142 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232146AbjHULsr (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 07:48:47 -0400
+        with ESMTP id S232003AbjHULs5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 07:48:57 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6CCEF90
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 04:48:46 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6DC9A8F
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 04:48:55 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id F1C3B62367
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 11:48:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D88FEC433C7;
-        Mon, 21 Aug 2023 11:48:44 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id EFDA163257
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 11:48:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC1B3C433C8;
+        Mon, 21 Aug 2023 11:48:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692618525;
-        bh=4DFC6QmN4Cpm7EnsLyhNemuNXb+38prtbRNPz+h3e3k=;
+        s=korg; t=1692618534;
+        bh=Wk+cNXSfGeCto2/7MbwS+IY4Xf1WE+V01DVjbTYkgEg=;
         h=Subject:To:Cc:From:Date:From;
-        b=IrawjtaVTkWs16B4AmrFeiKLHSTvVtdGBx9o1lWsCdaDOoILlomXmYqNsHkq0t498
-         Rs3K+tQjb/YPW9tJJYY21LrN+o58JE3mWZwXmFGiFoX2b2AcnFmRatvyJwgrCB8NWm
-         dXD7Q6rTpg35toCiugzeh5Whk3dptsUrrOdnW+rw=
-Subject: FAILED: patch "[PATCH] drm/amd/pm: disallow the fan setting if there is no fan on" failed to apply to 6.4-stable tree
+        b=FiwXn7/I0gh2PriFifPYecdxqFxqkZMtUT6n0zpKgl0F6NYXMm+iZf8x/JeVeJ8XJ
+         WKx/wKqW5aU9pcRg4Tv63MwN7yWnKtFQnBPf+Y3DSjtqjJatdo6KmIH0ONQn70xzr5
+         Qy4mnE/ZcctCBl7yZSP1nFEK6ZIm1FHXXm5lno48=
+Subject: FAILED: patch "[PATCH] drm/amd/pm: disallow the fan setting if there is no fan on" failed to apply to 6.1-stable tree
 To:     kenneth.feng@amd.com, alexander.deucher@amd.com, lijo.lazar@amd.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Mon, 21 Aug 2023 13:48:42 +0200
-Message-ID: <2023082142-gizmo-recital-659c@gregkh>
+Date:   Mon, 21 Aug 2023 13:48:43 +0200
+Message-ID: <2023082143-underage-slain-d7a5@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -48,23 +48,30 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.4-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
 git cherry-pick -x b6360a5ec31d160d58c1a64387b323b556cedca8
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023082142-gizmo-recital-659c@gregkh' --subject-prefix 'PATCH 6.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023082143-underage-slain-d7a5@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
-
+b6360a5ec31d ("drm/amd/pm: disallow the fan setting if there is no fan on smu 13.0.0")
+61319b8e3b58 ("drm/amd/pm: disable the SMU13 OD feature support temporarily")
+8f4f5f0b901a ("drm/amd/pm: fulfill SMU13 OD settings init and restore")
+f6c0cd55fed8 ("drm/amd/pm: Enable ecc_info table support for smu v13_0_10")
+1794f6a9535b ("drm/amd/pm: enable GPO dynamic control support for SMU13.0.0")
+48aa62f07467 ("drm/amd/pm: Enable bad memory page/channel recording support for smu v13_0_0")
+8ae5a38c8cb3 ("drm/amd/pm: enable runpm support over BACO for SMU13.0.0")
+60cfad329ab8 ("drm/amd/pm: enable mode1 reset on smu_v13_0_10")
 
 thanks,
 
