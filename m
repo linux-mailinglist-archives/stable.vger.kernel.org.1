@@ -2,46 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2672D7832A5
-	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:22:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C0C6A783373
+	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:23:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229738AbjHUTzP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 21 Aug 2023 15:55:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54286 "EHLO
+        id S230262AbjHUUGb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 21 Aug 2023 16:06:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52302 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229763AbjHUTzP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 15:55:15 -0400
+        with ESMTP id S230265AbjHUUGb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 16:06:31 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE62610B
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 12:55:12 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6FC53E4
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 13:06:29 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 62AF664596
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 19:55:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FBEFC433C8;
-        Mon, 21 Aug 2023 19:55:11 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D05396495D
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 20:06:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF47EC433C7;
+        Mon, 21 Aug 2023 20:06:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692647711;
-        bh=baEKYuGNA04bZe8BVW2C4ZyFkyRLTl9Gqgeow+Fnk6E=;
+        s=korg; t=1692648388;
+        bh=/cqN16+Qs2mGXLtrbvjwXl76Z3tXO2E6uKjJ2kxVBXE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=WCSvrldNSAgwfnOXNkUMxND4VBSl7UjsuDsDqx7p8EUPIUPWDNtNBKGzwrTeOWmyi
-         RilpQU+x3RLCrkG/mxVX8uS8+MzlDEIWyIesW8bh6uRjYffBFQIwZAtAkvgDig2Jm9
-         mPTnvMR/RGtSLHck3XLthyKfMTP9IzbcBX9M14bA=
+        b=dvx+LGwKRjIZbP9AfLxLntupM2LfbwBy5g8Co7BbGJvdbKCOB77v8/8OxEYG48erU
+         FiMiRDFnz7CHNPEwRjDV+S1W3Cfd4zBRH40ylqppyqVu0hMeI3HnPplAnquYPIpupq
+         Is6F1OEivktNQI817TvqMMtqLKolj/V2lM8SBXA8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Laurent Vivier <lvivier@redhat.com>,
-        "Michael S. Tsirkin" <mst@redhat.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 112/194] virtio_net: notify MAC address change on device initialization
+        patches@lists.linux.dev, "Borislav Petkov (AMD)" <bp@alien8.de>
+Subject: [PATCH 6.4 128/234] x86/srso: Disable the mitigation on unaffected configurations
 Date:   Mon, 21 Aug 2023 21:41:31 +0200
-Message-ID: <20230821194127.627186260@linuxfoundation.org>
+Message-ID: <20230821194134.498077383@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230821194122.695845670@linuxfoundation.org>
-References: <20230821194122.695845670@linuxfoundation.org>
+In-Reply-To: <20230821194128.754601642@linuxfoundation.org>
+References: <20230821194128.754601642@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,72 +52,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Laurent Vivier <lvivier@redhat.com>
+From: Borislav Petkov (AMD) <bp@alien8.de>
 
-[ Upstream commit 9f62d221a4b0aa6a8d2a18053a0ca349c025297c ]
+commit e9fbc47b818b964ddff5df5b2d5c0f5f32f4a147 upstream.
 
-In virtnet_probe(), if the device doesn't provide a MAC address the
-driver assigns a random one.
-As we modify the MAC address we need to notify the device to allow it
-to update all the related information.
+Skip the srso cmd line parsing which is not needed on Zen1/2 with SMT
+disabled and with the proper microcode applied (latter should be the
+case anyway) as those are not affected.
 
-The problem can be seen with vDPA and mlx5_vdpa driver as it doesn't
-assign a MAC address by default. The virtio_net device uses a random
-MAC address (we can see it with "ip link"), but we can't ping a net
-namespace from another one using the virtio-vdpa device because the
-new MAC address has not been provided to the hardware:
-RX packets are dropped since they don't go through the receive filters,
-TX packets go through unaffected.
-
-Signed-off-by: Laurent Vivier <lvivier@redhat.com>
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 51b813176f09 ("virtio-net: set queues after driver_ok")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 5a15d8348881 ("x86/srso: Tie SBPB bit setting to microcode patch detection")
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/r/20230813104517.3346-1-bp@alien8.de
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/virtio_net.c | 20 ++++++++++++++++++++
- 1 file changed, 20 insertions(+)
+ arch/x86/kernel/cpu/bugs.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
-index 075d5d42f5eb6..b7a4df4bab817 100644
---- a/drivers/net/virtio_net.c
-+++ b/drivers/net/virtio_net.c
-@@ -3825,6 +3825,8 @@ static int virtnet_probe(struct virtio_device *vdev)
- 		eth_hw_addr_set(dev, addr);
- 	} else {
- 		eth_hw_addr_random(dev);
-+		dev_info(&vdev->dev, "Assigned random MAC address %pM\n",
-+			 dev->dev_addr);
+--- a/arch/x86/kernel/cpu/bugs.c
++++ b/arch/x86/kernel/cpu/bugs.c
+@@ -2429,8 +2429,10 @@ static void __init srso_select_mitigatio
+ 		 * IBPB microcode has been applied.
+ 		 */
+ 		if ((boot_cpu_data.x86 < 0x19) &&
+-		    (!cpu_smt_possible() || (cpu_smt_control == CPU_SMT_DISABLED)))
++		    (!cpu_smt_possible() || (cpu_smt_control == CPU_SMT_DISABLED))) {
+ 			setup_force_cpu_cap(X86_FEATURE_SRSO_NO);
++			return;
++		}
  	}
  
- 	/* Set up our device-specific information */
-@@ -3954,6 +3956,24 @@ static int virtnet_probe(struct virtio_device *vdev)
+ 	if (retbleed_mitigation == RETBLEED_MITIGATION_IBPB) {
+@@ -2716,6 +2718,9 @@ static ssize_t gds_show_state(char *buf)
  
- 	virtio_device_ready(vdev);
- 
-+	/* a random MAC address has been assigned, notify the device.
-+	 * We don't fail probe if VIRTIO_NET_F_CTRL_MAC_ADDR is not there
-+	 * because many devices work fine without getting MAC explicitly
-+	 */
-+	if (!virtio_has_feature(vdev, VIRTIO_NET_F_MAC) &&
-+	    virtio_has_feature(vi->vdev, VIRTIO_NET_F_CTRL_MAC_ADDR)) {
-+		struct scatterlist sg;
+ static ssize_t srso_show_state(char *buf)
+ {
++	if (boot_cpu_has(X86_FEATURE_SRSO_NO))
++		return sysfs_emit(buf, "Not affected\n");
 +
-+		sg_init_one(&sg, dev->dev_addr, dev->addr_len);
-+		if (!virtnet_send_command(vi, VIRTIO_NET_CTRL_MAC,
-+					  VIRTIO_NET_CTRL_MAC_ADDR_SET, &sg)) {
-+			pr_debug("virtio_net: setting MAC address failed\n");
-+			rtnl_unlock();
-+			err = -EINVAL;
-+			goto free_unregister_netdev;
-+		}
-+	}
-+
- 	rtnl_unlock();
- 
- 	err = virtnet_cpu_notif_add(vi);
--- 
-2.40.1
-
+ 	return sysfs_emit(buf, "%s%s\n",
+ 			  srso_strings[srso_mitigation],
+ 			  (cpu_has_ibpb_brtype_microcode() ? "" : ", no microcode"));
 
 
