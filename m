@@ -2,51 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1432578335D
-	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:23:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 411F67831D4
+	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:21:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230022AbjHUT7O (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 21 Aug 2023 15:59:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36024 "EHLO
+        id S230300AbjHUUHh (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 21 Aug 2023 16:07:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59700 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230017AbjHUT7N (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 15:59:13 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97DC1183
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 12:59:03 -0700 (PDT)
+        with ESMTP id S230295AbjHUUHf (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 16:07:35 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 76D49E4
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 13:07:33 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2CD51646FF
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 19:59:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36ECCC433C8;
-        Mon, 21 Aug 2023 19:59:02 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1509D649B0
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 20:07:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FF70C433C9;
+        Mon, 21 Aug 2023 20:07:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692647942;
-        bh=CE46UrjLI89jK7OPIFEf+aCDPgDqvk+a44r8r6zt2hk=;
+        s=korg; t=1692648452;
+        bh=hp73kmSVLXc9H1W2nqXbvVF35riPw7CH2ANVj0/YE+Q=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=SXntv5wD5AwOb9BjJXG7UyuNL0cKUGExNRPuOKKztAraYn1xqKBDuSGBi4zksSMVv
-         KahzNzkvzMRBQl4zF0JZ2tbRIs+t+C2Stm3SurImP0MOr3+v+mlb+zCn14QS8Cgfe5
-         1ZvhYNXHUSVyLD/BXsD/y5rybQQww85cDlNukKec=
+        b=HXdvOTWHGCEgf3257L5qlmQJ5cghZffvNJR+GRZvDpsY1oc+3ziqKxBS9Lvv3QAZw
+         DqHn+816AGy4PWWqGtmjoRpebf5AcEQAXEKDvDwSjoACfdjr0+Qcvoe2DPyXPEowzO
+         rWQQcx6WrJvkMmtflOqHCflCdrF3R/K/YD8GxiKg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Evan Quan <evan.quan@amd.com>,
-        Umio Yasuno <coelacanth_dream@protonmail.com>,
-        Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.1 164/194] drm/amdgpu/pm: fix throttle_status for other than MP1 11.0.7
+        patches@lists.linux.dev, "kernelci.org bot" <bot@kernelci.org>,
+        Tony Lindgren <tony@atomide.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 180/234] bus: ti-sysc: Flush posted write on enable before reset
 Date:   Mon, 21 Aug 2023 21:42:23 +0200
-Message-ID: <20230821194129.910879660@linuxfoundation.org>
+Message-ID: <20230821194136.801684857@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230821194122.695845670@linuxfoundation.org>
-References: <20230821194122.695845670@linuxfoundation.org>
+In-Reply-To: <20230821194128.754601642@linuxfoundation.org>
+References: <20230821194128.754601642@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -54,68 +54,48 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Umio Yasuno <coelacanth_dream@protonmail.com>
+From: Tony Lindgren <tony@atomide.com>
 
-commit 6a92761a86817ad15c9a562e2a809386237fae3e upstream.
+[ Upstream commit 34539b442b3bc7d5bf10164750302b60b91f18a7 ]
 
-Use the right metrics table version based on the firmware.
+The am335x devices started producing boot errors for resetting musb module
+in because of subtle timing changes:
 
-Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2720
-Reviewed-by: Evan Quan <evan.quan@amd.com>
-Signed-off-by: Umio Yasuno <coelacanth_dream@protonmail.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Unhandled fault: external abort on non-linefetch (0x1008)
+...
+sysc_poll_reset_sysconfig from sysc_reset+0x109/0x12
+sysc_reset from sysc_probe+0xa99/0xeb0
+...
+
+The fix is to flush posted write after enable before reset during
+probe. Note that some devices also need to specify the delay after enable
+with ti,sysc-delay-us, but this is not needed for musb on am335x based on
+my tests.
+
+Reported-by: kernelci.org bot <bot@kernelci.org>
+Closes: https://storage.kernelci.org/next/master/next-20230614/arm/multi_v7_defconfig+CONFIG_THUMB2_KERNEL=y/gcc-10/lab-cip/baseline-beaglebone-black.html
+Fixes: 596e7955692b ("bus: ti-sysc: Add support for software reset")
+Signed-off-by: Tony Lindgren <tony@atomide.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/pm/swsmu/smu11/sienna_cichlid_ppt.c |   14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ drivers/bus/ti-sysc.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/gpu/drm/amd/pm/swsmu/smu11/sienna_cichlid_ppt.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/smu11/sienna_cichlid_ppt.c
-@@ -588,7 +588,9 @@ err0_out:
- 	return -ENOMEM;
- }
+diff --git a/drivers/bus/ti-sysc.c b/drivers/bus/ti-sysc.c
+index 21fe9854703f9..4cb23b9e06ea4 100644
+--- a/drivers/bus/ti-sysc.c
++++ b/drivers/bus/ti-sysc.c
+@@ -2142,6 +2142,8 @@ static int sysc_reset(struct sysc *ddata)
+ 		sysc_val = sysc_read_sysconfig(ddata);
+ 		sysc_val |= sysc_mask;
+ 		sysc_write(ddata, sysc_offset, sysc_val);
++		/* Flush posted write */
++		sysc_val = sysc_read_sysconfig(ddata);
+ 	}
  
--static uint32_t sienna_cichlid_get_throttler_status_locked(struct smu_context *smu)
-+static uint32_t sienna_cichlid_get_throttler_status_locked(struct smu_context *smu,
-+							   bool use_metrics_v3,
-+							   bool use_metrics_v2)
- {
- 	struct smu_table_context *smu_table= &smu->smu_table;
- 	SmuMetricsExternal_t *metrics_ext =
-@@ -596,13 +598,11 @@ static uint32_t sienna_cichlid_get_throt
- 	uint32_t throttler_status = 0;
- 	int i;
- 
--	if ((smu->adev->ip_versions[MP1_HWIP][0] == IP_VERSION(11, 0, 7)) &&
--	     (smu->smc_fw_version >= 0x3A4900)) {
-+	if (use_metrics_v3) {
- 		for (i = 0; i < THROTTLER_COUNT; i++)
- 			throttler_status |=
- 				(metrics_ext->SmuMetrics_V3.ThrottlingPercentage[i] ? 1U << i : 0);
--	} else if ((smu->adev->ip_versions[MP1_HWIP][0] == IP_VERSION(11, 0, 7)) &&
--	     (smu->smc_fw_version >= 0x3A4300)) {
-+	} else if (use_metrics_v2) {
- 		for (i = 0; i < THROTTLER_COUNT; i++)
- 			throttler_status |=
- 				(metrics_ext->SmuMetrics_V2.ThrottlingPercentage[i] ? 1U << i : 0);
-@@ -864,7 +864,7 @@ static int sienna_cichlid_get_smu_metric
- 			metrics->TemperatureVrSoc) * SMU_TEMPERATURE_UNITS_PER_CENTIGRADES;
- 		break;
- 	case METRICS_THROTTLER_STATUS:
--		*value = sienna_cichlid_get_throttler_status_locked(smu);
-+		*value = sienna_cichlid_get_throttler_status_locked(smu, use_metrics_v3, use_metrics_v2);
- 		break;
- 	case METRICS_CURR_FANSPEED:
- 		*value = use_metrics_v3 ? metrics_v3->CurrFanSpeed :
-@@ -4017,7 +4017,7 @@ static ssize_t sienna_cichlid_get_gpu_me
- 	gpu_metrics->current_dclk1 = use_metrics_v3 ? metrics_v3->CurrClock[PPCLK_DCLK_1] :
- 		use_metrics_v2 ? metrics_v2->CurrClock[PPCLK_DCLK_1] : metrics->CurrClock[PPCLK_DCLK_1];
- 
--	gpu_metrics->throttle_status = sienna_cichlid_get_throttler_status_locked(smu);
-+	gpu_metrics->throttle_status = sienna_cichlid_get_throttler_status_locked(smu, use_metrics_v3, use_metrics_v2);
- 	gpu_metrics->indep_throttle_status =
- 			smu_cmn_get_indep_throttler_status(gpu_metrics->throttle_status,
- 							   sienna_cichlid_throttler_map);
+ 	if (ddata->cfg.srst_udelay)
+-- 
+2.40.1
+
 
 
