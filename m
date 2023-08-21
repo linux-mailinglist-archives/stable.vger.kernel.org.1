@@ -2,51 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 18659783343
-	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:23:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 62D4E783222
+	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:21:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230368AbjHUUJe (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 21 Aug 2023 16:09:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51432 "EHLO
+        id S229806AbjHUT6S (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 21 Aug 2023 15:58:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41426 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230371AbjHUUJe (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 16:09:34 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AAE61123
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 13:09:31 -0700 (PDT)
+        with ESMTP id S229922AbjHUT6S (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 15:58:18 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 10CBB12B
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 12:58:16 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4A7C864A86
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 20:09:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E149C433C8;
-        Mon, 21 Aug 2023 20:09:30 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9B8F0646AB
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 19:58:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADF35C433C8;
+        Mon, 21 Aug 2023 19:58:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692648570;
-        bh=jbvMzFmjSYHmiosVTmRSDrtGUWjWhB7mVg5YNS/JP6k=;
+        s=korg; t=1692647895;
+        bh=a5xeouMCbXkoBsy66fqkKXaAAzmY2VNa0f03zAVRP6o=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=LRw0R86/OZU6n++yCvv5CaVt/Q1m/VJp5rXzf3WjYagS0YMKZB38LkCcxIffgsV4R
-         a/vFs2oVLHzZ7MObabyzk2sX0RoALsBVaAR/3L8gp7x+tf919VoV8yrBzz4qWjkEpD
-         APoo15dMaTctAhpfqtXOXA2xnsBtQHAQHnI/9ZFU=
+        b=1Q6222BOrRFETSy/0mw4RC6kTzlgIxbNVBZEHsEN4AlW3P2fszjf7L83ytX2WY0la
+         58/JB65YGeOQ+Nwa7oen9N7vJDx1ppCc4dXtAX5WrMVKbzFmdFXaLnDlXF8HeJThX4
+         t7vAw7yypGa6AoDSqHAKTRNVYADKbfWT8mzjvLf4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Stefan Binding <sbinding@opensource.cirrus.com>,
-        Takashi Iwai <tiwai@suse.de>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 193/234] ALSA: hda/realtek: Add quirks for HP G11 Laptops
+        patches@lists.linux.dev, Josh Poimboeuf <jpoimboe@kernel.org>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        "Borislav Petkov (AMD)" <bp@alien8.de>
+Subject: [PATCH 6.1 177/194] x86/cpu: Rename original retbleed methods
 Date:   Mon, 21 Aug 2023 21:42:36 +0200
-Message-ID: <20230821194137.357053488@linuxfoundation.org>
+Message-ID: <20230821194130.511509456@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230821194128.754601642@linuxfoundation.org>
-References: <20230821194128.754601642@linuxfoundation.org>
+In-Reply-To: <20230821194122.695845670@linuxfoundation.org>
+References: <20230821194122.695845670@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -54,46 +54,182 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Stefan Binding <sbinding@opensource.cirrus.com>
+From: Peter Zijlstra <peterz@infradead.org>
 
-[ Upstream commit fb8cce69e5e56eedb35fc4d77b2f099860965859 ]
+commit d025b7bac07a6e90b6b98b487f88854ad9247c39 upstream.
 
-These HP G11 laptops use Realtek HDA codec combined with
-2xCS35L41 Amplifiers using SPI or I2C with External Boost.
+Rename the original retbleed return thunk and untrain_ret to
+retbleed_return_thunk() and retbleed_untrain_ret().
 
-Laptop 103c8c26 has been removed as this has been replaced
-by this new series of laptops.
+No functional changes.
 
-Fixes: 3e10f6ca76c4 ("ALSA: hda/realtek: Add quirk for HP EliteBook G10 laptops")
-Signed-off-by: Stefan Binding <sbinding@opensource.cirrus.com>
-Link: https://lore.kernel.org/r/20230809142957.675933-2-sbinding@opensource.cirrus.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Suggested-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/r/20230814121148.909378169@infradead.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/patch_realtek.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ arch/x86/include/asm/nospec-branch.h |    8 ++++----
+ arch/x86/kernel/cpu/bugs.c           |    2 +-
+ arch/x86/kernel/vmlinux.lds.S        |    2 +-
+ arch/x86/lib/retpoline.S             |   30 +++++++++++++++---------------
+ tools/objtool/arch/x86/decode.c      |    2 +-
+ tools/objtool/check.c                |    2 +-
+ 6 files changed, 23 insertions(+), 23 deletions(-)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index 853d1ed21facd..0289d9109bf32 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -9606,7 +9606,13 @@ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x103c, 0x8b96, "HP", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
- 	SND_PCI_QUIRK(0x103c, 0x8b97, "HP", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
- 	SND_PCI_QUIRK(0x103c, 0x8bf0, "HP", ALC236_FIXUP_HP_GPIO_LED),
--	SND_PCI_QUIRK(0x103c, 0x8c26, "HP HP EliteBook 800G11", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
-+	SND_PCI_QUIRK(0x103c, 0x8c46, "HP EliteBook 830 G11", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
-+	SND_PCI_QUIRK(0x103c, 0x8c47, "HP EliteBook 840 G11", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
-+	SND_PCI_QUIRK(0x103c, 0x8c48, "HP EliteBook 860 G11", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
-+	SND_PCI_QUIRK(0x103c, 0x8c49, "HP Elite x360 830 2-in-1 G11", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
-+	SND_PCI_QUIRK(0x103c, 0x8c70, "HP EliteBook 835 G11", ALC287_FIXUP_CS35L41_I2C_2_HP_GPIO_LED),
-+	SND_PCI_QUIRK(0x103c, 0x8c71, "HP EliteBook 845 G11", ALC287_FIXUP_CS35L41_I2C_2_HP_GPIO_LED),
-+	SND_PCI_QUIRK(0x103c, 0x8c72, "HP EliteBook 865 G11", ALC287_FIXUP_CS35L41_I2C_2_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x1043, 0x103e, "ASUS X540SA", ALC256_FIXUP_ASUS_MIC),
- 	SND_PCI_QUIRK(0x1043, 0x103f, "ASUS TX300", ALC282_FIXUP_ASUS_TX300),
- 	SND_PCI_QUIRK(0x1043, 0x106d, "Asus K53BE", ALC269_FIXUP_LIMIT_INT_MIC_BOOST),
--- 
-2.40.1
-
+--- a/arch/x86/include/asm/nospec-branch.h
++++ b/arch/x86/include/asm/nospec-branch.h
+@@ -168,7 +168,7 @@
+ .endm
+ 
+ #ifdef CONFIG_CPU_UNRET_ENTRY
+-#define CALL_ZEN_UNTRAIN_RET	"call zen_untrain_ret"
++#define CALL_ZEN_UNTRAIN_RET	"call retbleed_untrain_ret"
+ #else
+ #define CALL_ZEN_UNTRAIN_RET	""
+ #endif
+@@ -178,7 +178,7 @@
+  * return thunk isn't mapped into the userspace tables (then again, AMD
+  * typically has NO_MELTDOWN).
+  *
+- * While zen_untrain_ret() doesn't clobber anything but requires stack,
++ * While retbleed_untrain_ret() doesn't clobber anything but requires stack,
+  * entry_ibpb() will clobber AX, CX, DX.
+  *
+  * As such, this must be placed after every *SWITCH_TO_KERNEL_CR3 at a point
+@@ -216,11 +216,11 @@ extern void __x86_return_thunk(void);
+ static inline void __x86_return_thunk(void) {}
+ #endif
+ 
+-extern void zen_return_thunk(void);
++extern void retbleed_return_thunk(void);
+ extern void srso_return_thunk(void);
+ extern void srso_alias_return_thunk(void);
+ 
+-extern void zen_untrain_ret(void);
++extern void retbleed_untrain_ret(void);
+ extern void srso_untrain_ret(void);
+ extern void srso_untrain_ret_alias(void);
+ 
+--- a/arch/x86/kernel/cpu/bugs.c
++++ b/arch/x86/kernel/cpu/bugs.c
+@@ -1021,7 +1021,7 @@ do_cmd_auto:
+ 		setup_force_cpu_cap(X86_FEATURE_UNRET);
+ 
+ 		if (IS_ENABLED(CONFIG_RETHUNK))
+-			x86_return_thunk = zen_return_thunk;
++			x86_return_thunk = retbleed_return_thunk;
+ 
+ 		if (boot_cpu_data.x86_vendor != X86_VENDOR_AMD &&
+ 		    boot_cpu_data.x86_vendor != X86_VENDOR_HYGON)
+--- a/arch/x86/kernel/vmlinux.lds.S
++++ b/arch/x86/kernel/vmlinux.lds.S
+@@ -508,7 +508,7 @@ INIT_PER_CPU(irq_stack_backing_store);
+ #endif
+ 
+ #ifdef CONFIG_RETHUNK
+-. = ASSERT((zen_return_thunk & 0x3f) == 0, "zen_return_thunk not cacheline-aligned");
++. = ASSERT((retbleed_return_thunk & 0x3f) == 0, "retbleed_return_thunk not cacheline-aligned");
+ . = ASSERT((srso_safe_ret & 0x3f) == 0, "srso_safe_ret not cacheline-aligned");
+ #endif
+ 
+--- a/arch/x86/lib/retpoline.S
++++ b/arch/x86/lib/retpoline.S
+@@ -131,32 +131,32 @@ SYM_CODE_END(srso_alias_return_thunk)
+ 
+ /*
+  * Safety details here pertain to the AMD Zen{1,2} microarchitecture:
+- * 1) The RET at zen_return_thunk must be on a 64 byte boundary, for
++ * 1) The RET at retbleed_return_thunk must be on a 64 byte boundary, for
+  *    alignment within the BTB.
+- * 2) The instruction at zen_untrain_ret must contain, and not
++ * 2) The instruction at retbleed_untrain_ret must contain, and not
+  *    end with, the 0xc3 byte of the RET.
+  * 3) STIBP must be enabled, or SMT disabled, to prevent the sibling thread
+  *    from re-poisioning the BTB prediction.
+  */
+ 	.align 64
+-	.skip 64 - (zen_return_thunk - zen_untrain_ret), 0xcc
+-SYM_START(zen_untrain_ret, SYM_L_GLOBAL, SYM_A_NONE)
++	.skip 64 - (retbleed_return_thunk - retbleed_untrain_ret), 0xcc
++SYM_START(retbleed_untrain_ret, SYM_L_GLOBAL, SYM_A_NONE)
+ 	ANNOTATE_NOENDBR
+ 	/*
+-	 * As executed from zen_untrain_ret, this is:
++	 * As executed from retbleed_untrain_ret, this is:
+ 	 *
+ 	 *   TEST $0xcc, %bl
+ 	 *   LFENCE
+-	 *   JMP zen_return_thunk
++	 *   JMP retbleed_return_thunk
+ 	 *
+ 	 * Executing the TEST instruction has a side effect of evicting any BTB
+ 	 * prediction (potentially attacker controlled) attached to the RET, as
+-	 * zen_return_thunk + 1 isn't an instruction boundary at the moment.
++	 * retbleed_return_thunk + 1 isn't an instruction boundary at the moment.
+ 	 */
+ 	.byte	0xf6
+ 
+ 	/*
+-	 * As executed from zen_return_thunk, this is a plain RET.
++	 * As executed from retbleed_return_thunk, this is a plain RET.
+ 	 *
+ 	 * As part of the TEST above, RET is the ModRM byte, and INT3 the imm8.
+ 	 *
+@@ -168,13 +168,13 @@ SYM_START(zen_untrain_ret, SYM_L_GLOBAL,
+ 	 * With SMT enabled and STIBP active, a sibling thread cannot poison
+ 	 * RET's prediction to a type of its choice, but can evict the
+ 	 * prediction due to competitive sharing. If the prediction is
+-	 * evicted, zen_return_thunk will suffer Straight Line Speculation
++	 * evicted, retbleed_return_thunk will suffer Straight Line Speculation
+ 	 * which will be contained safely by the INT3.
+ 	 */
+-SYM_INNER_LABEL(zen_return_thunk, SYM_L_GLOBAL)
++SYM_INNER_LABEL(retbleed_return_thunk, SYM_L_GLOBAL)
+ 	ret
+ 	int3
+-SYM_CODE_END(zen_return_thunk)
++SYM_CODE_END(retbleed_return_thunk)
+ 
+ 	/*
+ 	 * Ensure the TEST decoding / BTB invalidation is complete.
+@@ -185,13 +185,13 @@ SYM_CODE_END(zen_return_thunk)
+ 	 * Jump back and execute the RET in the middle of the TEST instruction.
+ 	 * INT3 is for SLS protection.
+ 	 */
+-	jmp zen_return_thunk
++	jmp retbleed_return_thunk
+ 	int3
+-SYM_FUNC_END(zen_untrain_ret)
+-__EXPORT_THUNK(zen_untrain_ret)
++SYM_FUNC_END(retbleed_untrain_ret)
++__EXPORT_THUNK(retbleed_untrain_ret)
+ 
+ /*
+- * SRSO untraining sequence for Zen1/2, similar to zen_untrain_ret()
++ * SRSO untraining sequence for Zen1/2, similar to retbleed_untrain_ret()
+  * above. On kernel entry, srso_untrain_ret() is executed which is a
+  *
+  * movabs $0xccccccc308c48348,%rax
+--- a/tools/objtool/arch/x86/decode.c
++++ b/tools/objtool/arch/x86/decode.c
+@@ -799,5 +799,5 @@ bool arch_is_rethunk(struct symbol *sym)
+ 	return !strcmp(sym->name, "__x86_return_thunk") ||
+ 	       !strcmp(sym->name, "srso_untrain_ret") ||
+ 	       !strcmp(sym->name, "srso_safe_ret") ||
+-	       !strcmp(sym->name, "zen_return_thunk");
++	       !strcmp(sym->name, "retbleed_return_thunk");
+ }
+--- a/tools/objtool/check.c
++++ b/tools/objtool/check.c
+@@ -1430,7 +1430,7 @@ static int add_jump_destinations(struct
+ 			struct symbol *sym = find_symbol_by_offset(dest_sec, dest_off);
+ 
+ 			/*
+-			 * This is a special case for zen_untrain_ret().
++			 * This is a special case for retbleed_untrain_ret().
+ 			 * It jumps to __x86_return_thunk(), but objtool
+ 			 * can't find the thunk's starting RET
+ 			 * instruction, because the RET is also in the
 
 
