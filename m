@@ -2,44 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BF861783386
-	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:23:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ECFA17832D1
+	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:22:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230189AbjHUUD4 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 21 Aug 2023 16:03:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47832 "EHLO
+        id S229634AbjHUTyK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 21 Aug 2023 15:54:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59530 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229938AbjHUUD4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 16:03:56 -0400
+        with ESMTP id S229619AbjHUTyK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 15:54:10 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E97CA8
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 13:03:54 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A594FB
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 12:54:08 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 243DC64892
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 20:03:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34EADC433C7;
-        Mon, 21 Aug 2023 20:03:53 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D5A176454F
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 19:54:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2851C433C8;
+        Mon, 21 Aug 2023 19:54:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692648233;
-        bh=jkr/wUpIvTQHTNBKEQsJs7rUlBo0FZ4S6ODwvDjTiN4=;
+        s=korg; t=1692647647;
+        bh=mUAPi55XRhPGHUrQffSnU3C9JkOfTpMTGAYXNRE2Lk8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=iKTsJ8+AVz6K1Ikf4K+nE+KPziVYeVoMr9ZgO1Pc/2j0eL+4C+gVET4wkBYTqrSsx
-         lUizpOfxrMvnxsuVivL6X2G7NQaXRwrlGVS4yg5oa81Ib2DcxdtVONm6GOj528sQeP
-         FDLQeUkZpoxuNHI8E+ILycGcxEfEcWvt31H6vAio=
+        b=OPiV8mjbvlBWa3YWaeasYmd10ghEyY00Cy4+eRrrX9h8n1tW7iRFEyN3nbUNA6vsN
+         IUo3B36frG+7gjhqL0fq99s3qdNuiTI+Qrgg/GbfJRe9NRIAhoLXl5OplAQRqRQK/2
+         6iwDzOlHU7mfYkvOt1YY1IFz1drGmC/4crjekt/E=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dragos Tatulea <dtatulea@nvidia.com>,
-        "Michael S. Tsirkin" <mst@redhat.com>
-Subject: [PATCH 6.4 103/234] vdpa: Enable strict validation for netlinks ops
-Date:   Mon, 21 Aug 2023 21:41:06 +0200
-Message-ID: <20230821194133.376089674@linuxfoundation.org>
+        patches@lists.linux.dev, Bharath SM <bharathsm@microsoft.com>,
+        Shyam Prasad N <sprasad@microsoft.com>,
+        "Paulo Alcantara (SUSE)" <pc@manguebit.com>,
+        Steve French <stfrench@microsoft.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 088/194] cifs: fix potential oops in cifs_oplock_break
+Date:   Mon, 21 Aug 2023 21:41:07 +0200
+Message-ID: <20230821194126.605414243@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230821194128.754601642@linuxfoundation.org>
-References: <20230821194128.754601642@linuxfoundation.org>
+In-Reply-To: <20230821194122.695845670@linuxfoundation.org>
+References: <20230821194122.695845670@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,63 +56,108 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Dragos Tatulea <dtatulea@nvidia.com>
+From: Steve French <stfrench@microsoft.com>
 
-commit f46c1e1620c6bbc9aad5693082efd1b80822e97c upstream.
+[ Upstream commit e8f5f849ffce24490eb9449e98312b66c0dba76f ]
 
-The previous patches added the missing nla policies that were required for
-validation to work.
+With deferred close we can have closes that race with lease breaks,
+and so with the current checks for whether to send the lease response,
+oplock_response(), this can mean that an unmount (kill_sb) can occur
+just before we were checking if the tcon->ses is valid.  See below:
 
-Now strict validation on netlink ops can be enabled. This patch does it.
+[Fri Aug  4 04:12:50 2023] RIP: 0010:cifs_oplock_break+0x1f7/0x5b0 [cifs]
+[Fri Aug  4 04:12:50 2023] Code: 7d a8 48 8b 7d c0 c0 e9 02 48 89 45 b8 41 89 cf e8 3e f5 ff ff 4c 89 f7 41 83 e7 01 e8 82 b3 03 f2 49 8b 45 50 48 85 c0 74 5e <48> 83 78 60 00 74 57 45 84 ff 75 52 48 8b 43 98 48 83 eb 68 48 39
+[Fri Aug  4 04:12:50 2023] RSP: 0018:ffffb30607ddbdf8 EFLAGS: 00010206
+[Fri Aug  4 04:12:50 2023] RAX: 632d223d32612022 RBX: ffff97136944b1e0 RCX: 0000000080100009
+[Fri Aug  4 04:12:50 2023] RDX: 0000000000000001 RSI: 0000000080100009 RDI: ffff97136944b188
+[Fri Aug  4 04:12:50 2023] RBP: ffffb30607ddbe58 R08: 0000000000000001 R09: ffffffffc08e0900
+[Fri Aug  4 04:12:50 2023] R10: 0000000000000001 R11: 000000000000000f R12: ffff97136944b138
+[Fri Aug  4 04:12:50 2023] R13: ffff97149147c000 R14: ffff97136944b188 R15: 0000000000000000
+[Fri Aug  4 04:12:50 2023] FS:  0000000000000000(0000) GS:ffff9714f7c00000(0000) knlGS:0000000000000000
+[Fri Aug  4 04:12:50 2023] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[Fri Aug  4 04:12:50 2023] CR2: 00007fd8de9c7590 CR3: 000000011228e000 CR4: 0000000000350ef0
+[Fri Aug  4 04:12:50 2023] Call Trace:
+[Fri Aug  4 04:12:50 2023]  <TASK>
+[Fri Aug  4 04:12:50 2023]  process_one_work+0x225/0x3d0
+[Fri Aug  4 04:12:50 2023]  worker_thread+0x4d/0x3e0
+[Fri Aug  4 04:12:50 2023]  ? process_one_work+0x3d0/0x3d0
+[Fri Aug  4 04:12:50 2023]  kthread+0x12a/0x150
+[Fri Aug  4 04:12:50 2023]  ? set_kthread_struct+0x50/0x50
+[Fri Aug  4 04:12:50 2023]  ret_from_fork+0x22/0x30
+[Fri Aug  4 04:12:50 2023]  </TASK>
 
-Signed-off-by: Dragos Tatulea <dtatulea@nvidia.com>
-Cc: stable@vger.kernel.org
-Message-Id: <20230727175757.73988-9-dtatulea@nvidia.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To fix this change the ordering of the checks before sending the oplock_response
+to first check if the openFileList is empty.
+
+Fixes: da787d5b7498 ("SMB3: Do not send lease break acknowledgment if all file handles have been closed")
+Suggested-by: Bharath SM <bharathsm@microsoft.com>
+Reviewed-by: Bharath SM <bharathsm@microsoft.com>
+Reviewed-by: Shyam Prasad N <sprasad@microsoft.com>
+Signed-off-by: Paulo Alcantara (SUSE) <pc@manguebit.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/vdpa/vdpa.c |    6 ------
- 1 file changed, 6 deletions(-)
+ fs/smb/client/file.c | 23 ++++++++++++++++-------
+ 1 file changed, 16 insertions(+), 7 deletions(-)
 
---- a/drivers/vdpa/vdpa.c
-+++ b/drivers/vdpa/vdpa.c
-@@ -1257,37 +1257,31 @@ static const struct nla_policy vdpa_nl_p
- static const struct genl_ops vdpa_nl_ops[] = {
- 	{
- 		.cmd = VDPA_CMD_MGMTDEV_GET,
--		.validate = GENL_DONT_VALIDATE_STRICT | GENL_DONT_VALIDATE_DUMP,
- 		.doit = vdpa_nl_cmd_mgmtdev_get_doit,
- 		.dumpit = vdpa_nl_cmd_mgmtdev_get_dumpit,
- 	},
- 	{
- 		.cmd = VDPA_CMD_DEV_NEW,
--		.validate = GENL_DONT_VALIDATE_STRICT | GENL_DONT_VALIDATE_DUMP,
- 		.doit = vdpa_nl_cmd_dev_add_set_doit,
- 		.flags = GENL_ADMIN_PERM,
- 	},
- 	{
- 		.cmd = VDPA_CMD_DEV_DEL,
--		.validate = GENL_DONT_VALIDATE_STRICT | GENL_DONT_VALIDATE_DUMP,
- 		.doit = vdpa_nl_cmd_dev_del_set_doit,
- 		.flags = GENL_ADMIN_PERM,
- 	},
- 	{
- 		.cmd = VDPA_CMD_DEV_GET,
--		.validate = GENL_DONT_VALIDATE_STRICT | GENL_DONT_VALIDATE_DUMP,
- 		.doit = vdpa_nl_cmd_dev_get_doit,
- 		.dumpit = vdpa_nl_cmd_dev_get_dumpit,
- 	},
- 	{
- 		.cmd = VDPA_CMD_DEV_CONFIG_GET,
--		.validate = GENL_DONT_VALIDATE_STRICT | GENL_DONT_VALIDATE_DUMP,
- 		.doit = vdpa_nl_cmd_dev_config_get_doit,
- 		.dumpit = vdpa_nl_cmd_dev_config_get_dumpit,
- 	},
- 	{
- 		.cmd = VDPA_CMD_DEV_VSTATS_GET,
--		.validate = GENL_DONT_VALIDATE_STRICT | GENL_DONT_VALIDATE_DUMP,
- 		.doit = vdpa_nl_cmd_dev_stats_get_doit,
- 		.flags = GENL_ADMIN_PERM,
- 	},
+diff --git a/fs/smb/client/file.c b/fs/smb/client/file.c
+index 27c6d14e369f1..0a8adec515aed 100644
+--- a/fs/smb/client/file.c
++++ b/fs/smb/client/file.c
+@@ -5082,9 +5082,11 @@ void cifs_oplock_break(struct work_struct *work)
+ 	struct cifsFileInfo *cfile = container_of(work, struct cifsFileInfo,
+ 						  oplock_break);
+ 	struct inode *inode = d_inode(cfile->dentry);
++	struct cifs_sb_info *cifs_sb = CIFS_SB(inode->i_sb);
+ 	struct cifsInodeInfo *cinode = CIFS_I(inode);
+-	struct cifs_tcon *tcon = tlink_tcon(cfile->tlink);
+-	struct TCP_Server_Info *server = tcon->ses->server;
++	struct cifs_tcon *tcon;
++	struct TCP_Server_Info *server;
++	struct tcon_link *tlink;
+ 	int rc = 0;
+ 	bool purge_cache = false, oplock_break_cancelled;
+ 	__u64 persistent_fid, volatile_fid;
+@@ -5093,6 +5095,12 @@ void cifs_oplock_break(struct work_struct *work)
+ 	wait_on_bit(&cinode->flags, CIFS_INODE_PENDING_WRITERS,
+ 			TASK_UNINTERRUPTIBLE);
+ 
++	tlink = cifs_sb_tlink(cifs_sb);
++	if (IS_ERR(tlink))
++		goto out;
++	tcon = tlink_tcon(tlink);
++	server = tcon->ses->server;
++
+ 	server->ops->downgrade_oplock(server, cinode, cfile->oplock_level,
+ 				      cfile->oplock_epoch, &purge_cache);
+ 
+@@ -5142,18 +5150,19 @@ void cifs_oplock_break(struct work_struct *work)
+ 	/*
+ 	 * MS-SMB2 3.2.5.19.1 and 3.2.5.19.2 (and MS-CIFS 3.2.5.42) do not require
+ 	 * an acknowledgment to be sent when the file has already been closed.
+-	 * check for server null, since can race with kill_sb calling tree disconnect.
+ 	 */
+ 	spin_lock(&cinode->open_file_lock);
+-	if (tcon->ses && tcon->ses->server && !oplock_break_cancelled &&
+-					!list_empty(&cinode->openFileList)) {
++	/* check list empty since can race with kill_sb calling tree disconnect */
++	if (!oplock_break_cancelled && !list_empty(&cinode->openFileList)) {
+ 		spin_unlock(&cinode->open_file_lock);
+-		rc = tcon->ses->server->ops->oplock_response(tcon, persistent_fid,
+-						volatile_fid, net_fid, cinode);
++		rc = server->ops->oplock_response(tcon, persistent_fid,
++						  volatile_fid, net_fid, cinode);
+ 		cifs_dbg(FYI, "Oplock release rc = %d\n", rc);
+ 	} else
+ 		spin_unlock(&cinode->open_file_lock);
+ 
++	cifs_put_tlink(tlink);
++out:
+ 	cifs_done_oplock_break(cinode);
+ }
+ 
+-- 
+2.40.1
+
 
 
