@@ -2,41 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F3BB783295
-	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:22:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0A6F7783224
+	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:21:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230398AbjHUUK3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 21 Aug 2023 16:10:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53804 "EHLO
+        id S230375AbjHUUJj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 21 Aug 2023 16:09:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51482 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230397AbjHUUK3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 16:10:29 -0400
+        with ESMTP id S230372AbjHUUJi (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 16:09:38 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A3E9DDF
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 13:10:27 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4445DDF
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 13:09:37 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3FCBC6164F
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 20:10:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B8E3C433C8;
-        Mon, 21 Aug 2023 20:10:26 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D62A964A96
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 20:09:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4BCEC433C8;
+        Mon, 21 Aug 2023 20:09:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692648626;
-        bh=7a8AK98anMFfua3NLL8RUEamcE2sPD8UDE4T5o3pr8k=;
+        s=korg; t=1692648576;
+        bh=zeK/ysJgb6ZniSTJBeu7TX3T/ZMG36DFOfxcEtkvRtI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=scdfoHO90ogQFsM2dmwUchrpjXfWWYG03aRfHqZ+CufMyXfSz71FvidSTFrch3Slh
-         1RT48YpWqY5Sx3FZql1uCsHlAGsG3pibK3o2Z47mEwlM0yq0VAsoIaS/yhbzsBrSbc
-         wyNKEPbz/7uB/L8cz0uBcJQJvM6xmp1bAziRycVs=
+        b=0gNBW0SQFMAQJXC9ya0CEDhCMhkKd4w3+Wwx1anlgGcryUoC0v4xQR7h8RWcQopzG
+         TLDeA79M6ErJImTWBMoOAr0WRrtzeVzpc5zEDiyMO+sWeM/n3kVpXa8WY/8Gy2aUYL
+         wkEciaXF9hQ/X5kUNoX+F7h62M7Jzmde8reUMUxI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yang Yingliang <yangyingliang@huawei.com>,
+        patches@lists.linux.dev, Yibin Ding <yibin.ding@unisoc.com>,
+        Adrian Hunter <adrian.hunter@intel.com>,
         Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.4 216/234] mmc: wbsd: fix double mmc_free_host() in wbsd_init()
-Date:   Mon, 21 Aug 2023 21:42:59 +0200
-Message-ID: <20230821194138.423828380@linuxfoundation.org>
+Subject: [PATCH 6.4 217/234] mmc: block: Fix in_flight[issue_type] value error
+Date:   Mon, 21 Aug 2023 21:43:00 +0200
+Message-ID: <20230821194138.464555585@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230821194128.754601642@linuxfoundation.org>
 References: <20230821194128.754601642@linuxfoundation.org>
@@ -53,33 +54,75 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Yang Yingliang <yangyingliang@huawei.com>
+From: Yibin Ding <yibin.ding@unisoc.com>
 
-commit d83035433701919ac6db15f7737cbf554c36c1a6 upstream.
+commit 4b430d4ac99750ee2ae2f893f1055c7af1ec3dc5 upstream.
 
-mmc_free_host() has already be called in wbsd_free_mmc(),
-remove the mmc_free_host() in error path in wbsd_init().
+For a completed request, after the mmc_blk_mq_complete_rq(mq, req)
+function is executed, the bitmap_tags corresponding to the
+request will be cleared, that is, the request will be regarded as
+idle. If the request is acquired by a different type of process at
+this time, the issue_type of the request may change. It further
+caused the value of mq->in_flight[issue_type] to be abnormal,
+and a large number of requests could not be sent.
 
-Fixes: dc5b9b50fc9d ("mmc: wbsd: fix return value check of mmc_add_host()")
-Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
+p1:					      p2:
+mmc_blk_mq_complete_rq
+  blk_mq_free_request
+					      blk_mq_get_request
+					        blk_mq_rq_ctx_init
+mmc_blk_mq_dec_in_flight
+  mmc_issue_type(mq, req)
+
+This strategy can ensure the consistency of issue_type
+before and after executing mmc_blk_mq_complete_rq.
+
+Fixes: 81196976ed94 ("mmc: block: Add blk-mq support")
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20230807124443.3431366-1-yangyingliang@huawei.com
+Signed-off-by: Yibin Ding <yibin.ding@unisoc.com>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Link: https://lore.kernel.org/r/20230802023023.1318134-1-yunlong.xing@unisoc.com
 Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/host/wbsd.c |    2 --
- 1 file changed, 2 deletions(-)
+ drivers/mmc/core/block.c |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/drivers/mmc/host/wbsd.c
-+++ b/drivers/mmc/host/wbsd.c
-@@ -1705,8 +1705,6 @@ static int wbsd_init(struct device *dev,
+--- a/drivers/mmc/core/block.c
++++ b/drivers/mmc/core/block.c
+@@ -2097,14 +2097,14 @@ static void mmc_blk_mq_poll_completion(s
+ 	mmc_blk_urgent_bkops(mq, mqrq);
+ }
  
- 		wbsd_release_resources(host);
- 		wbsd_free_mmc(dev);
--
--		mmc_free_host(mmc);
- 		return ret;
+-static void mmc_blk_mq_dec_in_flight(struct mmc_queue *mq, struct request *req)
++static void mmc_blk_mq_dec_in_flight(struct mmc_queue *mq, enum mmc_issue_type issue_type)
+ {
+ 	unsigned long flags;
+ 	bool put_card;
+ 
+ 	spin_lock_irqsave(&mq->lock, flags);
+ 
+-	mq->in_flight[mmc_issue_type(mq, req)] -= 1;
++	mq->in_flight[issue_type] -= 1;
+ 
+ 	put_card = (mmc_tot_in_flight(mq) == 0);
+ 
+@@ -2117,6 +2117,7 @@ static void mmc_blk_mq_dec_in_flight(str
+ static void mmc_blk_mq_post_req(struct mmc_queue *mq, struct request *req,
+ 				bool can_sleep)
+ {
++	enum mmc_issue_type issue_type = mmc_issue_type(mq, req);
+ 	struct mmc_queue_req *mqrq = req_to_mmc_queue_req(req);
+ 	struct mmc_request *mrq = &mqrq->brq.mrq;
+ 	struct mmc_host *host = mq->card->host;
+@@ -2136,7 +2137,7 @@ static void mmc_blk_mq_post_req(struct m
+ 			blk_mq_complete_request(req);
  	}
  
+-	mmc_blk_mq_dec_in_flight(mq, req);
++	mmc_blk_mq_dec_in_flight(mq, issue_type);
+ }
+ 
+ void mmc_blk_mq_recovery(struct mmc_queue *mq)
 
 
