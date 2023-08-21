@@ -2,53 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ECFA17832D1
-	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:22:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D525978332F
+	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:23:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229634AbjHUTyK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 21 Aug 2023 15:54:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59530 "EHLO
+        id S229987AbjHUUD6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 21 Aug 2023 16:03:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47858 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229619AbjHUTyK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 15:54:10 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A594FB
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 12:54:08 -0700 (PDT)
+        with ESMTP id S229938AbjHUUD6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 16:03:58 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 43651DF
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 13:03:57 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D5A176454F
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 19:54:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2851C433C8;
-        Mon, 21 Aug 2023 19:54:06 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D7EB564894
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 20:03:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8DEAC433C7;
+        Mon, 21 Aug 2023 20:03:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692647647;
-        bh=mUAPi55XRhPGHUrQffSnU3C9JkOfTpMTGAYXNRE2Lk8=;
+        s=korg; t=1692648236;
+        bh=RrXHtGy317FVEhZMESI/Ncw9A1/YQro2RoPblKc8aUc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=OPiV8mjbvlBWa3YWaeasYmd10ghEyY00Cy4+eRrrX9h8n1tW7iRFEyN3nbUNA6vsN
-         IUo3B36frG+7gjhqL0fq99s3qdNuiTI+Qrgg/GbfJRe9NRIAhoLXl5OplAQRqRQK/2
-         6iwDzOlHU7mfYkvOt1YY1IFz1drGmC/4crjekt/E=
+        b=CQK0GotNXT6oG6j0FECfzYFDbnyPe5DO3K3VXsSnLQxaCgdsbQchCt92MRMCE2lfm
+         ZNGlLqPqqv5lLoK1ZBxd+AfopgPQS2Y0TnnDURW6yR7shObukYXYN6uSnTFYeHsPHP
+         5elEbrVCgTmggN8VZ+TQZw4xZi651xyzY6wnFZFg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Bharath SM <bharathsm@microsoft.com>,
-        Shyam Prasad N <sprasad@microsoft.com>,
+        patches@lists.linux.dev,
         "Paulo Alcantara (SUSE)" <pc@manguebit.com>,
-        Steve French <stfrench@microsoft.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 088/194] cifs: fix potential oops in cifs_oplock_break
+        Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.4 104/234] smb3: display network namespace in debug information
 Date:   Mon, 21 Aug 2023 21:41:07 +0200
-Message-ID: <20230821194126.605414243@linuxfoundation.org>
+Message-ID: <20230821194133.416635430@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230821194122.695845670@linuxfoundation.org>
-References: <20230821194122.695845670@linuxfoundation.org>
+In-Reply-To: <20230821194128.754601642@linuxfoundation.org>
+References: <20230821194128.754601642@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -58,106 +56,62 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Steve French <stfrench@microsoft.com>
 
-[ Upstream commit e8f5f849ffce24490eb9449e98312b66c0dba76f ]
+commit 7b38f6ddc97bf572c3422d3175e8678dd95502fa upstream.
 
-With deferred close we can have closes that race with lease breaks,
-and so with the current checks for whether to send the lease response,
-oplock_response(), this can mean that an unmount (kill_sb) can occur
-just before we were checking if the tcon->ses is valid.  See below:
+We recently had problems where a network namespace was deleted
+causing hard to debug reconnect problems.  To help deal with
+configuration issues like this it is useful to dump the network
+namespace to better debug what happened.
 
-[Fri Aug  4 04:12:50 2023] RIP: 0010:cifs_oplock_break+0x1f7/0x5b0 [cifs]
-[Fri Aug  4 04:12:50 2023] Code: 7d a8 48 8b 7d c0 c0 e9 02 48 89 45 b8 41 89 cf e8 3e f5 ff ff 4c 89 f7 41 83 e7 01 e8 82 b3 03 f2 49 8b 45 50 48 85 c0 74 5e <48> 83 78 60 00 74 57 45 84 ff 75 52 48 8b 43 98 48 83 eb 68 48 39
-[Fri Aug  4 04:12:50 2023] RSP: 0018:ffffb30607ddbdf8 EFLAGS: 00010206
-[Fri Aug  4 04:12:50 2023] RAX: 632d223d32612022 RBX: ffff97136944b1e0 RCX: 0000000080100009
-[Fri Aug  4 04:12:50 2023] RDX: 0000000000000001 RSI: 0000000080100009 RDI: ffff97136944b188
-[Fri Aug  4 04:12:50 2023] RBP: ffffb30607ddbe58 R08: 0000000000000001 R09: ffffffffc08e0900
-[Fri Aug  4 04:12:50 2023] R10: 0000000000000001 R11: 000000000000000f R12: ffff97136944b138
-[Fri Aug  4 04:12:50 2023] R13: ffff97149147c000 R14: ffff97136944b188 R15: 0000000000000000
-[Fri Aug  4 04:12:50 2023] FS:  0000000000000000(0000) GS:ffff9714f7c00000(0000) knlGS:0000000000000000
-[Fri Aug  4 04:12:50 2023] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[Fri Aug  4 04:12:50 2023] CR2: 00007fd8de9c7590 CR3: 000000011228e000 CR4: 0000000000350ef0
-[Fri Aug  4 04:12:50 2023] Call Trace:
-[Fri Aug  4 04:12:50 2023]  <TASK>
-[Fri Aug  4 04:12:50 2023]  process_one_work+0x225/0x3d0
-[Fri Aug  4 04:12:50 2023]  worker_thread+0x4d/0x3e0
-[Fri Aug  4 04:12:50 2023]  ? process_one_work+0x3d0/0x3d0
-[Fri Aug  4 04:12:50 2023]  kthread+0x12a/0x150
-[Fri Aug  4 04:12:50 2023]  ? set_kthread_struct+0x50/0x50
-[Fri Aug  4 04:12:50 2023]  ret_from_fork+0x22/0x30
-[Fri Aug  4 04:12:50 2023]  </TASK>
+So add this to information displayed in /proc/fs/cifs/DebugData for
+the server (and channels if mounted with multichannel). For example:
 
-To fix this change the ordering of the checks before sending the oplock_response
-to first check if the openFileList is empty.
+   Local Users To Server: 1 SecMode: 0x1 Req On Wire: 0 Net namespace: 4026531840
 
-Fixes: da787d5b7498 ("SMB3: Do not send lease break acknowledgment if all file handles have been closed")
-Suggested-by: Bharath SM <bharathsm@microsoft.com>
-Reviewed-by: Bharath SM <bharathsm@microsoft.com>
-Reviewed-by: Shyam Prasad N <sprasad@microsoft.com>
-Signed-off-by: Paulo Alcantara (SUSE) <pc@manguebit.com>
+This can be easily compared with what is displayed for the
+processes on the system. For example /proc/1/ns/net in this case
+showed the same thing (see below), and we can see that the namespace
+is still valid in this example.
+
+   'net:[4026531840]'
+
+Cc: stable@vger.kernel.org
+Acked-by: Paulo Alcantara (SUSE) <pc@manguebit.com>
 Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/file.c | 23 ++++++++++++++++-------
- 1 file changed, 16 insertions(+), 7 deletions(-)
+ fs/smb/client/cifs_debug.c |   10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/fs/smb/client/file.c b/fs/smb/client/file.c
-index 27c6d14e369f1..0a8adec515aed 100644
---- a/fs/smb/client/file.c
-+++ b/fs/smb/client/file.c
-@@ -5082,9 +5082,11 @@ void cifs_oplock_break(struct work_struct *work)
- 	struct cifsFileInfo *cfile = container_of(work, struct cifsFileInfo,
- 						  oplock_break);
- 	struct inode *inode = d_inode(cfile->dentry);
-+	struct cifs_sb_info *cifs_sb = CIFS_SB(inode->i_sb);
- 	struct cifsInodeInfo *cinode = CIFS_I(inode);
--	struct cifs_tcon *tcon = tlink_tcon(cfile->tlink);
--	struct TCP_Server_Info *server = tcon->ses->server;
-+	struct cifs_tcon *tcon;
-+	struct TCP_Server_Info *server;
-+	struct tcon_link *tlink;
- 	int rc = 0;
- 	bool purge_cache = false, oplock_break_cancelled;
- 	__u64 persistent_fid, volatile_fid;
-@@ -5093,6 +5095,12 @@ void cifs_oplock_break(struct work_struct *work)
- 	wait_on_bit(&cinode->flags, CIFS_INODE_PENDING_WRITERS,
- 			TASK_UNINTERRUPTIBLE);
- 
-+	tlink = cifs_sb_tlink(cifs_sb);
-+	if (IS_ERR(tlink))
-+		goto out;
-+	tcon = tlink_tcon(tlink);
-+	server = tcon->ses->server;
+--- a/fs/smb/client/cifs_debug.c
++++ b/fs/smb/client/cifs_debug.c
+@@ -153,6 +153,11 @@ cifs_dump_channel(struct seq_file *m, in
+ 		   in_flight(server),
+ 		   atomic_read(&server->in_send),
+ 		   atomic_read(&server->num_waiters));
++#ifdef CONFIG_NET_NS
++	if (server->net)
++		seq_printf(m, " Net namespace: %u ", server->net->ns.inum);
++#endif /* NET_NS */
 +
- 	server->ops->downgrade_oplock(server, cinode, cfile->oplock_level,
- 				      cfile->oplock_epoch, &purge_cache);
- 
-@@ -5142,18 +5150,19 @@ void cifs_oplock_break(struct work_struct *work)
- 	/*
- 	 * MS-SMB2 3.2.5.19.1 and 3.2.5.19.2 (and MS-CIFS 3.2.5.42) do not require
- 	 * an acknowledgment to be sent when the file has already been closed.
--	 * check for server null, since can race with kill_sb calling tree disconnect.
- 	 */
- 	spin_lock(&cinode->open_file_lock);
--	if (tcon->ses && tcon->ses->server && !oplock_break_cancelled &&
--					!list_empty(&cinode->openFileList)) {
-+	/* check list empty since can race with kill_sb calling tree disconnect */
-+	if (!oplock_break_cancelled && !list_empty(&cinode->openFileList)) {
- 		spin_unlock(&cinode->open_file_lock);
--		rc = tcon->ses->server->ops->oplock_response(tcon, persistent_fid,
--						volatile_fid, net_fid, cinode);
-+		rc = server->ops->oplock_response(tcon, persistent_fid,
-+						  volatile_fid, net_fid, cinode);
- 		cifs_dbg(FYI, "Oplock release rc = %d\n", rc);
- 	} else
- 		spin_unlock(&cinode->open_file_lock);
- 
-+	cifs_put_tlink(tlink);
-+out:
- 	cifs_done_oplock_break(cinode);
  }
  
--- 
-2.40.1
-
+ static inline const char *smb_speed_to_str(size_t bps)
+@@ -429,10 +434,15 @@ skip_rdma:
+ 				server->reconnect_instance,
+ 				server->srv_count,
+ 				server->sec_mode, in_flight(server));
++#ifdef CONFIG_NET_NS
++		if (server->net)
++			seq_printf(m, " Net namespace: %u ", server->net->ns.inum);
++#endif /* NET_NS */
+ 
+ 		seq_printf(m, "\nIn Send: %d In MaxReq Wait: %d",
+ 				atomic_read(&server->in_send),
+ 				atomic_read(&server->num_waiters));
++
+ 		if (server->leaf_fullpath) {
+ 			seq_printf(m, "\nDFS leaf full path: %s",
+ 				   server->leaf_fullpath);
 
 
