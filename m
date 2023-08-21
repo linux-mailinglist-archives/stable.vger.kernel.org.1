@@ -2,42 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 19F84783221
-	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:21:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 834A67831CE
+	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:21:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229820AbjHUT4T (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 21 Aug 2023 15:56:19 -0400
+        id S229824AbjHUT4W (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 21 Aug 2023 15:56:22 -0400
 Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52656 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229817AbjHUT4T (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 15:56:19 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C1007EE
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 12:56:17 -0700 (PDT)
+        with ESMTP id S229817AbjHUT4V (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 15:56:21 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 86677EE
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 12:56:20 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 613C5645F6
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 19:56:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 720BAC433C8;
-        Mon, 21 Aug 2023 19:56:16 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1C93D645E7
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 19:56:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 278ABC433C8;
+        Mon, 21 Aug 2023 19:56:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692647776;
-        bh=U9mFyu5XHRGA3Wok2dRZIV719QkZ9TcR8KXPX2uSn2I=;
+        s=korg; t=1692647779;
+        bh=NEME7E1ourTDwz3y+WD8qpXGO1SmIVIKPm2nlR2Sgug=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rjo7Fu5MmRMPmr14FR03UfBPY6I/xGvhNaZObXrn4q3qoSLUEt5nK0yBRluyLscom
-         kYH2VSWdGFsNnw608pMHCHCKdsns7uUuQ215U0lJ5Fo8PfYQzcQm96rl+KHN51Qhgj
-         e+KGI5d2VjGbE269QeE50ejz5xiLEd532j71RceE=
+        b=FtY6Ep0xw5GTUK6fvEAI0CraR6sEa89y+4jg0Km2Mr3zPpvr65hEI6pYzCoAJNOYL
+         Z1lnfD59d0BZtO53DcxPM67O0UIwg48ujVeVIsj2/86lfbiRzqxe5iwABus+5gHjb/
+         vCfv84OiqaFn1wLxCCdggbklaJa3otkYtz01VKDY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, "kernelci.org bot" <bot@kernelci.org>,
-        Tony Lindgren <tony@atomide.com>,
+        patches@lists.linux.dev,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 135/194] bus: ti-sysc: Flush posted write on enable before reset
-Date:   Mon, 21 Aug 2023 21:41:54 +0200
-Message-ID: <20230821194128.620095903@linuxfoundation.org>
+Subject: [PATCH 6.1 136/194] arm64: dts: qcom: qrb5165-rb5: fix thermal zone conflict
+Date:   Mon, 21 Aug 2023 21:41:55 +0200
+Message-ID: <20230821194128.661271004@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230821194122.695845670@linuxfoundation.org>
 References: <20230821194122.695845670@linuxfoundation.org>
@@ -45,8 +47,8 @@ User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -54,46 +56,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Tony Lindgren <tony@atomide.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit 34539b442b3bc7d5bf10164750302b60b91f18a7 ]
+[ Upstream commit 798f1df86e5709b7b6aedf493cc04c7fedbf544a ]
 
-The am335x devices started producing boot errors for resetting musb module
-in because of subtle timing changes:
+The commit 3a786086c6f8 ("arm64: dts: qcom: Add missing "-thermal"
+suffix for thermal zones") renamed the thermal zone in the pm8150l.dtsi
+file to comply with the schema. However this resulted in a clash with
+the RB5 board file, which already contained the pm8150l-thermal zone for
+the on-board sensor. This resulted in the board file definition
+overriding the thermal zone defined in the PMIC include file (and thus
+the on-die PMIC temp alarm was not probing at all).
 
-Unhandled fault: external abort on non-linefetch (0x1008)
-...
-sysc_poll_reset_sysconfig from sysc_reset+0x109/0x12
-sysc_reset from sysc_probe+0xa99/0xeb0
-...
+Rename the thermal zone in qcom/qrb5165-rb5.dts to remove this override.
 
-The fix is to flush posted write after enable before reset during
-probe. Note that some devices also need to specify the delay after enable
-with ti,sysc-delay-us, but this is not needed for musb on am335x based on
-my tests.
-
-Reported-by: kernelci.org bot <bot@kernelci.org>
-Closes: https://storage.kernelci.org/next/master/next-20230614/arm/multi_v7_defconfig+CONFIG_THUMB2_KERNEL=y/gcc-10/lab-cip/baseline-beaglebone-black.html
-Fixes: 596e7955692b ("bus: ti-sysc: Add support for software reset")
-Signed-off-by: Tony Lindgren <tony@atomide.com>
+Fixes: 3a786086c6f8 ("arm64: dts: qcom: Add missing "-thermal" suffix for thermal zones")
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20230613131224.666668-1-dmitry.baryshkov@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bus/ti-sysc.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/arm64/boot/dts/qcom/qrb5165-rb5.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/bus/ti-sysc.c b/drivers/bus/ti-sysc.c
-index cae078bffc715..9b7268bae66ab 100644
---- a/drivers/bus/ti-sysc.c
-+++ b/drivers/bus/ti-sysc.c
-@@ -2159,6 +2159,8 @@ static int sysc_reset(struct sysc *ddata)
- 		sysc_val = sysc_read_sysconfig(ddata);
- 		sysc_val |= sysc_mask;
- 		sysc_write(ddata, sysc_offset, sysc_val);
-+		/* Flush posted write */
-+		sysc_val = sysc_read_sysconfig(ddata);
- 	}
+diff --git a/arch/arm64/boot/dts/qcom/qrb5165-rb5.dts b/arch/arm64/boot/dts/qcom/qrb5165-rb5.dts
+index bf8077a1cf9a7..9731a7c63d53b 100644
+--- a/arch/arm64/boot/dts/qcom/qrb5165-rb5.dts
++++ b/arch/arm64/boot/dts/qcom/qrb5165-rb5.dts
+@@ -121,7 +121,7 @@
+ 			};
+ 		};
  
- 	if (ddata->cfg.srst_udelay)
+-		pm8150l-thermal {
++		pm8150l-pcb-thermal {
+ 			polling-delay-passive = <0>;
+ 			polling-delay = <0>;
+ 			thermal-sensors = <&pm8150l_adc_tm 1>;
 -- 
 2.40.1
 
