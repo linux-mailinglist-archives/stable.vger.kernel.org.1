@@ -2,51 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B0ABF7831E5
-	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:21:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 922147831EB
+	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:21:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230238AbjHUUF0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 21 Aug 2023 16:05:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44746 "EHLO
+        id S229784AbjHUTzo (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 21 Aug 2023 15:55:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39800 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230229AbjHUUFZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 16:05:25 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C051E4
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 13:05:22 -0700 (PDT)
+        with ESMTP id S229780AbjHUTzo (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 15:55:44 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A5B512A
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 12:55:32 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A907464917
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 20:05:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B674AC433C8;
-        Mon, 21 Aug 2023 20:05:20 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2320A64354
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 19:55:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30E58C433C7;
+        Mon, 21 Aug 2023 19:55:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692648321;
-        bh=WgORxXEiopBs9KlI3qU/PwBnjcsC+wqVi3Y8ZCPcGSk=;
+        s=korg; t=1692647731;
+        bh=qvpxPsOOK8qVZzDrtwNQpKSzDQXV/y+mOwGgwJEFYKo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=oWjWXq+Q84t5KvnlfJ3eDNrDvddV+yDYAE8kAVGVUPAkQum7at5+23PUhw+otEtzp
-         m63mYxuwGJIQFh5MwqdPkaV+iKh2/xDTHzieOfVI020vuNHkKc9UiuLfIFlroUS1AI
-         0ZfBvibRuupfWURaRVWtrzWy7olOJV6BoaAssK5w=
+        b=cRudAFYP/1imGFwtDW14Ci6R6OxclINFTTO+IUDyEj+Vq3WScsgZdhXapGUCuJVY9
+         kIBAto5rmc9v01HLfIhhdds/eSwGTVinBVPeOw0BhymbrWe1fX1Iu29t5b3YfTXpZW
+         5Bfw1n7/b/RSMB1IGjEaIFtNy7h6oiCdgUgXsoqQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Lin Ma <linma@zju.edu.cn>,
-        Steffen Klassert <steffen.klassert@secunet.com>,
+        patches@lists.linux.dev,
+        Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>,
+        Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 134/234] net: xfrm: Amend XFRMA_SEC_CTX nla_policy structure
+Subject: [PATCH 6.1 118/194] net: macb: In ZynqMP resume always configure PS GTR for non-wakeup source
 Date:   Mon, 21 Aug 2023 21:41:37 +0200
-Message-ID: <20230821194134.755843939@linuxfoundation.org>
+Message-ID: <20230821194127.892746233@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230821194128.754601642@linuxfoundation.org>
-References: <20230821194128.754601642@linuxfoundation.org>
+In-Reply-To: <20230821194122.695845670@linuxfoundation.org>
+References: <20230821194122.695845670@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -54,60 +55,98 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Lin Ma <linma@zju.edu.cn>
+From: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
 
-[ Upstream commit d1e0e61d617ba17aa516db707aa871387566bbf7 ]
+[ Upstream commit 6c461e394d11a981c662cc16cebfb05b602e23ba ]
 
-According to all consumers code of attrs[XFRMA_SEC_CTX], like
+On Zynq UltraScale+ MPSoC ubuntu platform when systemctl issues suspend,
+network manager bring down the interface and goes into suspend. When it
+wakes up it again enables the interface.
 
-* verify_sec_ctx_len(), convert to xfrm_user_sec_ctx*
-* xfrm_state_construct(), call security_xfrm_state_alloc whose prototype
-is int security_xfrm_state_alloc(.., struct xfrm_user_sec_ctx *sec_ctx);
-* copy_from_user_sec_ctx(), convert to xfrm_user_sec_ctx *
-...
+This leads to xilinx-psgtr "PLL lock timeout" on interface bringup, as
+the power management controller power down the entire FPD (including
+SERDES) if none of the FPD devices are in use and serdes is not
+initialized on resume.
 
-It seems that the expected parsing result for XFRMA_SEC_CTX should be
-structure xfrm_user_sec_ctx, and the current xfrm_sec_ctx is confusing
-and misleading (Luckily, they happen to have same size 8 bytes).
+$ sudo rtcwake -m no -s 120 -v
+$ sudo systemctl suspend  <this does ifconfig eth1 down>
+$ ifconfig eth1 up
+xilinx-psgtr fd400000.phy: lane 0 (type 10, protocol 5): PLL lock timeout
+phy phy-fd400000.phy.0: phy poweron failed --> -110
 
-This commit amend the policy structure to xfrm_user_sec_ctx to avoid
-ambiguity.
+macb driver is called in this way:
+1. macb_close: Stop network interface. In this function, it
+   reset MACB IP and disables PHY and network interface.
 
-Fixes: cf5cb79f6946 ("[XFRM] netlink: Establish an attribute policy")
-Signed-off-by: Lin Ma <linma@zju.edu.cn>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+2. macb_suspend: It is called in kernel suspend flow. But because
+   network interface has been disabled(netif_running(ndev) is
+   false), it does nothing and returns directly;
+
+3. System goes into suspend state. Some time later, system is
+   waken up by RTC wakeup device;
+
+4. macb_resume: It does nothing because network interface has
+   been disabled;
+
+5. macb_open: It is called to enable network interface again. ethernet
+   interface is initialized in this API but serdes which is power-off
+   by PMUFW during FPD-off suspend is not initialized again and so
+   we hit GT PLL lock issue on open.
+
+To resolve this PLL timeout issue always do PS GTR initialization
+when ethernet device is configured as non-wakeup source.
+
+Fixes: f22bd29ba19a ("net: macb: Fix ZynqMP SGMII non-wakeup source resume failure")
+Fixes: 8b73fa3ae02b ("net: macb: Added ZynqMP-specific initialization")
+Signed-off-by: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
+Link: https://lore.kernel.org/r/1691414091-2260697-1-git-send-email-radhey.shyam.pandey@amd.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/xfrm/xfrm_compat.c | 2 +-
- net/xfrm/xfrm_user.c   | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/cadence/macb_main.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/net/xfrm/xfrm_compat.c b/net/xfrm/xfrm_compat.c
-index 8cbf45a8bcdc2..655fe4ff86212 100644
---- a/net/xfrm/xfrm_compat.c
-+++ b/net/xfrm/xfrm_compat.c
-@@ -108,7 +108,7 @@ static const struct nla_policy compat_policy[XFRMA_MAX+1] = {
- 	[XFRMA_ALG_COMP]	= { .len = sizeof(struct xfrm_algo) },
- 	[XFRMA_ENCAP]		= { .len = sizeof(struct xfrm_encap_tmpl) },
- 	[XFRMA_TMPL]		= { .len = sizeof(struct xfrm_user_tmpl) },
--	[XFRMA_SEC_CTX]		= { .len = sizeof(struct xfrm_sec_ctx) },
-+	[XFRMA_SEC_CTX]		= { .len = sizeof(struct xfrm_user_sec_ctx) },
- 	[XFRMA_LTIME_VAL]	= { .len = sizeof(struct xfrm_lifetime_cur) },
- 	[XFRMA_REPLAY_VAL]	= { .len = sizeof(struct xfrm_replay_state) },
- 	[XFRMA_REPLAY_THRESH]	= { .type = NLA_U32 },
-diff --git a/net/xfrm/xfrm_user.c b/net/xfrm/xfrm_user.c
-index 7c91deadc36e5..fdc0c17122b69 100644
---- a/net/xfrm/xfrm_user.c
-+++ b/net/xfrm/xfrm_user.c
-@@ -3024,7 +3024,7 @@ const struct nla_policy xfrma_policy[XFRMA_MAX+1] = {
- 	[XFRMA_ALG_COMP]	= { .len = sizeof(struct xfrm_algo) },
- 	[XFRMA_ENCAP]		= { .len = sizeof(struct xfrm_encap_tmpl) },
- 	[XFRMA_TMPL]		= { .len = sizeof(struct xfrm_user_tmpl) },
--	[XFRMA_SEC_CTX]		= { .len = sizeof(struct xfrm_sec_ctx) },
-+	[XFRMA_SEC_CTX]		= { .len = sizeof(struct xfrm_user_sec_ctx) },
- 	[XFRMA_LTIME_VAL]	= { .len = sizeof(struct xfrm_lifetime_cur) },
- 	[XFRMA_REPLAY_VAL]	= { .len = sizeof(struct xfrm_replay_state) },
- 	[XFRMA_REPLAY_THRESH]	= { .type = NLA_U32 },
+diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
+index abd6cc0cd641f..5fb991835078a 100644
+--- a/drivers/net/ethernet/cadence/macb_main.c
++++ b/drivers/net/ethernet/cadence/macb_main.c
+@@ -5070,6 +5070,9 @@ static int __maybe_unused macb_suspend(struct device *dev)
+ 	unsigned int q;
+ 	int err;
+ 
++	if (!device_may_wakeup(&bp->dev->dev))
++		phy_exit(bp->sgmii_phy);
++
+ 	if (!netif_running(netdev))
+ 		return 0;
+ 
+@@ -5130,7 +5133,6 @@ static int __maybe_unused macb_suspend(struct device *dev)
+ 	if (!(bp->wol & MACB_WOL_ENABLED)) {
+ 		rtnl_lock();
+ 		phylink_stop(bp->phylink);
+-		phy_exit(bp->sgmii_phy);
+ 		rtnl_unlock();
+ 		spin_lock_irqsave(&bp->lock, flags);
+ 		macb_reset_hw(bp);
+@@ -5160,6 +5162,9 @@ static int __maybe_unused macb_resume(struct device *dev)
+ 	unsigned int q;
+ 	int err;
+ 
++	if (!device_may_wakeup(&bp->dev->dev))
++		phy_init(bp->sgmii_phy);
++
+ 	if (!netif_running(netdev))
+ 		return 0;
+ 
+@@ -5220,8 +5225,6 @@ static int __maybe_unused macb_resume(struct device *dev)
+ 	macb_set_rx_mode(netdev);
+ 	macb_restore_features(bp);
+ 	rtnl_lock();
+-	if (!device_may_wakeup(&bp->dev->dev))
+-		phy_init(bp->sgmii_phy);
+ 
+ 	phylink_start(bp->phylink);
+ 	rtnl_unlock();
 -- 
 2.40.1
 
