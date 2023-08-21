@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 84EF97832B3
-	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:22:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 09F1478327A
+	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:22:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229991AbjHUT66 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 21 Aug 2023 15:58:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49828 "EHLO
+        id S230344AbjHUUIn (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 21 Aug 2023 16:08:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55232 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229944AbjHUT65 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 15:58:57 -0400
+        with ESMTP id S230345AbjHUUIm (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 16:08:42 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69D2F11C
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 12:58:52 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC062E4
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 13:08:40 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id EBB11646E8
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 19:58:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F20B0C433C9;
-        Mon, 21 Aug 2023 19:58:50 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 82E1264A37
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 20:08:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91CCCC433C7;
+        Mon, 21 Aug 2023 20:08:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692647931;
-        bh=4c6RfHxoiVXLH7umeRV9xFgCuMrIHXXhTH9bHfcqCao=;
+        s=korg; t=1692648519;
+        bh=1s+T4O6btMWMuitz2HmEYp/IGnRxfm+4Mxk1n7+MNMY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rkNwh3ZAVYk1Oz0VY5RMX22h8qJ/crHiH6lqXOWDo+jqyJ+JzRckQy5F5RbkgPIcT
-         rfG7j6TOpYh/eDNZGswEvQNG3aSoQZyVVLMPF8lQSYO8AqMPXKEV0t+MShjMbXzk2L
-         M9NtUBucm8su4O6T5wbItVsCVmvMC1P508ISbUa4=
+        b=xooiVgJ6TDxxIbiA/CXMW11TuyskeT3HS6T6J2o8nZTgBMNVRyQQQaiRf8Zy+Cu2r
+         K9m8oF6y8vCrE/v1Ok4Qa7P6ZvqxMCUfQaMjJjlRfBDvvi1bOgxgdQAxsOCM0OA3/+
+         7Hf4bCioSheZhcHccR4ptP9g9DQpRrXRuoahmTz0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, David Spickett <David.Spickett@arm.com>,
-        Mark Brown <broonie@kernel.org>,
-        Catalin Marinas <catalin.marinas@arm.com>
-Subject: [PATCH 6.1 188/194] arm64/ptrace: Ensure that SME is set up for target when writing SSVE state
+        patches@lists.linux.dev, Helge Deller <deller@gmx.de>,
+        Sam James <sam@gentoo.org>
+Subject: [PATCH 6.4 204/234] parisc: Fix CONFIG_TLB_PTLOCK to work with lightweight spinlock checks
 Date:   Mon, 21 Aug 2023 21:42:47 +0200
-Message-ID: <20230821194130.959015509@linuxfoundation.org>
+Message-ID: <20230821194137.884034072@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230821194122.695845670@linuxfoundation.org>
-References: <20230821194122.695845670@linuxfoundation.org>
+In-Reply-To: <20230821194128.754601642@linuxfoundation.org>
+References: <20230821194128.754601642@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,116 +53,219 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Mark Brown <broonie@kernel.org>
+From: Helge Deller <deller@gmx.de>
 
-commit 5d0a8d2fba50e9c07cde4aad7fba28c008b07a5b upstream.
+commit 7a894c87374771f3cfb1b8e5453fbe03f1fb8135 upstream.
 
-When we use NT_ARM_SSVE to either enable streaming mode or change the
-vector length for a process we do not currently do anything to ensure that
-there is storage allocated for the SME specific register state.  If the
-task had not previously used SME or we changed the vector length then
-the task will not have had TIF_SME set or backing storage for ZA/ZT
-allocated, resulting in inconsistent register sizes when saving state
-and spurious traps which flush the newly set register state.
+For the TLB_PTLOCK checks we used an optimization to store the spc
+register into the spinlock to unlock it. This optimization works as
+long as the lightweight spinlock checks (CONFIG_LIGHTWEIGHT_SPINLOCK_CHECK)
+aren't enabled, because they really check if the lock word is zero or
+__ARCH_SPIN_LOCK_UNLOCKED_VAL and abort with a kernel crash
+("Spinlock was trashed") otherwise.
 
-We should set TIF_SME to disable traps and ensure that storage is
-allocated for ZA and ZT if it is not already allocated.  This requires
-modifying sme_alloc() to make the flush of any existing register state
-optional so we don't disturb existing state for ZA and ZT.
+Drop that optimization to make it possible to activate both checks
+at the same time.
 
-Fixes: e12310a0d30f ("arm64/sme: Implement ptrace support for streaming mode SVE registers")
-Reported-by: David Spickett <David.Spickett@arm.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Cc: <stable@vger.kernel.org> # 5.19.x
-Link: https://lore.kernel.org/r/20230810-arm64-fix-ptrace-race-v1-1-a5361fad2bd6@kernel.org
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Noticed-by: Sam James <sam@gentoo.org>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Tested-by: Sam James <sam@gentoo.org>
+Cc: stable@vger.kernel.org # v6.4+
+Fixes: 15e64ef6520e ("parisc: Add lightweight spinlock checks")
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/include/asm/fpsimd.h |    4 ++--
- arch/arm64/kernel/fpsimd.c      |    6 +++---
- arch/arm64/kernel/ptrace.c      |    9 ++++++++-
- arch/arm64/kernel/signal.c      |    2 +-
- 4 files changed, 14 insertions(+), 7 deletions(-)
+ arch/parisc/kernel/entry.S | 47 +++++++++++++++++++-------------------
+ 1 file changed, 23 insertions(+), 24 deletions(-)
 
---- a/arch/arm64/include/asm/fpsimd.h
-+++ b/arch/arm64/include/asm/fpsimd.h
-@@ -339,7 +339,7 @@ static inline int sme_max_virtualisable_
- 	return vec_max_virtualisable_vl(ARM64_VEC_SME);
- }
+diff --git a/arch/parisc/kernel/entry.S b/arch/parisc/kernel/entry.S
+index 0e5ebfe8d9d2..ae03b8679696 100644
+--- a/arch/parisc/kernel/entry.S
++++ b/arch/parisc/kernel/entry.S
+@@ -25,6 +25,7 @@
+ #include <asm/traps.h>
+ #include <asm/thread_info.h>
+ #include <asm/alternative.h>
++#include <asm/spinlock_types.h>
  
--extern void sme_alloc(struct task_struct *task);
-+extern void sme_alloc(struct task_struct *task, bool flush);
- extern unsigned int sme_get_vl(void);
- extern int sme_set_current_vl(unsigned long arg);
- extern int sme_get_current_vl(void);
-@@ -365,7 +365,7 @@ static inline void sme_smstart_sm(void)
- static inline void sme_smstop_sm(void) { }
- static inline void sme_smstop(void) { }
+ #include <linux/linkage.h>
+ #include <linux/pgtable.h>
+@@ -406,7 +407,7 @@
+ 	LDREG		0(\ptp),\pte
+ 	bb,<,n		\pte,_PAGE_PRESENT_BIT,3f
+ 	b		\fault
+-	stw		\spc,0(\tmp)
++	stw		\tmp1,0(\tmp)
+ 99:	ALTERNATIVE(98b, 99b, ALT_COND_NO_SMP, INSN_NOP)
+ #endif
+ 2:	LDREG		0(\ptp),\pte
+@@ -415,24 +416,22 @@
+ 	.endm
  
--static inline void sme_alloc(struct task_struct *task) { }
-+static inline void sme_alloc(struct task_struct *task, bool flush) { }
- static inline void sme_setup(void) { }
- static inline unsigned int sme_get_vl(void) { return 0; }
- static inline int sme_max_vl(void) { return 0; }
---- a/arch/arm64/kernel/fpsimd.c
-+++ b/arch/arm64/kernel/fpsimd.c
-@@ -1239,9 +1239,9 @@ void fpsimd_release_task(struct task_str
-  * the interest of testability and predictability, the architecture
-  * guarantees that when ZA is enabled it will be zeroed.
-  */
--void sme_alloc(struct task_struct *task)
-+void sme_alloc(struct task_struct *task, bool flush)
- {
--	if (task->thread.za_state) {
-+	if (task->thread.za_state && flush) {
- 		memset(task->thread.za_state, 0, za_state_size(task));
- 		return;
- 	}
-@@ -1460,7 +1460,7 @@ void do_sme_acc(unsigned long esr, struc
- 	}
+ 	/* Release page_table_lock without reloading lock address.
+-	   Note that the values in the register spc are limited to
+-	   NR_SPACE_IDS (262144). Thus, the stw instruction always
+-	   stores a nonzero value even when register spc is 64 bits.
+ 	   We use an ordered store to ensure all prior accesses are
+ 	   performed prior to releasing the lock. */
+-	.macro		ptl_unlock0	spc,tmp
++	.macro		ptl_unlock0	spc,tmp,tmp2
+ #ifdef CONFIG_TLB_PTLOCK
+-98:	or,COND(=)	%r0,\spc,%r0
+-	stw,ma		\spc,0(\tmp)
++98:	ldi		__ARCH_SPIN_LOCK_UNLOCKED_VAL, \tmp2
++	or,COND(=)	%r0,\spc,%r0
++	stw,ma		\tmp2,0(\tmp)
+ 99:	ALTERNATIVE(98b, 99b, ALT_COND_NO_SMP, INSN_NOP)
+ #endif
+ 	.endm
  
- 	sve_alloc(current, false);
--	sme_alloc(current);
-+	sme_alloc(current, true);
- 	if (!current->thread.sve_state || !current->thread.za_state) {
- 		force_sig(SIGKILL);
- 		return;
---- a/arch/arm64/kernel/ptrace.c
-+++ b/arch/arm64/kernel/ptrace.c
-@@ -886,6 +886,13 @@ static int sve_set_common(struct task_st
- 			break;
- 		case ARM64_VEC_SME:
- 			target->thread.svcr |= SVCR_SM_MASK;
-+
-+			/*
-+			 * Disable traps and ensure there is SME storage but
-+			 * preserve any currently set values in ZA/ZT.
-+			 */
-+			sme_alloc(target, false);
-+			set_tsk_thread_flag(target, TIF_SME);
- 			break;
- 		default:
- 			WARN_ON_ONCE(1);
-@@ -1107,7 +1114,7 @@ static int za_set(struct task_struct *ta
- 	}
+ 	/* Release page_table_lock. */
+-	.macro		ptl_unlock1	spc,tmp
++	.macro		ptl_unlock1	spc,tmp,tmp2
+ #ifdef CONFIG_TLB_PTLOCK
+ 98:	get_ptl		\tmp
+-	ptl_unlock0	\spc,\tmp
++	ptl_unlock0	\spc,\tmp,\tmp2
+ 99:	ALTERNATIVE(98b, 99b, ALT_COND_NO_SMP, INSN_NOP)
+ #endif
+ 	.endm
+@@ -1125,7 +1124,7 @@ dtlb_miss_20w:
+ 	
+ 	idtlbt          pte,prot
  
- 	/* Allocate/reinit ZA storage */
--	sme_alloc(target);
-+	sme_alloc(target, true);
- 	if (!target->thread.za_state) {
- 		ret = -ENOMEM;
- 		goto out;
---- a/arch/arm64/kernel/signal.c
-+++ b/arch/arm64/kernel/signal.c
-@@ -430,7 +430,7 @@ static int restore_za_context(struct use
- 	fpsimd_flush_task_state(current);
- 	/* From now, fpsimd_thread_switch() won't touch thread.sve_state */
+-	ptl_unlock1	spc,t0
++	ptl_unlock1	spc,t0,t1
+ 	rfir
+ 	nop
  
--	sme_alloc(current);
-+	sme_alloc(current, true);
- 	if (!current->thread.za_state) {
- 		current->thread.svcr &= ~SVCR_ZA_MASK;
- 		clear_thread_flag(TIF_SME);
+@@ -1151,7 +1150,7 @@ nadtlb_miss_20w:
+ 
+ 	idtlbt          pte,prot
+ 
+-	ptl_unlock1	spc,t0
++	ptl_unlock1	spc,t0,t1
+ 	rfir
+ 	nop
+ 
+@@ -1185,7 +1184,7 @@ dtlb_miss_11:
+ 
+ 	mtsp		t1, %sr1	/* Restore sr1 */
+ 
+-	ptl_unlock1	spc,t0
++	ptl_unlock1	spc,t0,t1
+ 	rfir
+ 	nop
+ 
+@@ -1218,7 +1217,7 @@ nadtlb_miss_11:
+ 
+ 	mtsp		t1, %sr1	/* Restore sr1 */
+ 
+-	ptl_unlock1	spc,t0
++	ptl_unlock1	spc,t0,t1
+ 	rfir
+ 	nop
+ 
+@@ -1247,7 +1246,7 @@ dtlb_miss_20:
+ 
+ 	idtlbt          pte,prot
+ 
+-	ptl_unlock1	spc,t0
++	ptl_unlock1	spc,t0,t1
+ 	rfir
+ 	nop
+ 
+@@ -1275,7 +1274,7 @@ nadtlb_miss_20:
+ 	
+ 	idtlbt		pte,prot
+ 
+-	ptl_unlock1	spc,t0
++	ptl_unlock1	spc,t0,t1
+ 	rfir
+ 	nop
+ 
+@@ -1320,7 +1319,7 @@ itlb_miss_20w:
+ 	
+ 	iitlbt          pte,prot
+ 
+-	ptl_unlock1	spc,t0
++	ptl_unlock1	spc,t0,t1
+ 	rfir
+ 	nop
+ 
+@@ -1344,7 +1343,7 @@ naitlb_miss_20w:
+ 
+ 	iitlbt          pte,prot
+ 
+-	ptl_unlock1	spc,t0
++	ptl_unlock1	spc,t0,t1
+ 	rfir
+ 	nop
+ 
+@@ -1378,7 +1377,7 @@ itlb_miss_11:
+ 
+ 	mtsp		t1, %sr1	/* Restore sr1 */
+ 
+-	ptl_unlock1	spc,t0
++	ptl_unlock1	spc,t0,t1
+ 	rfir
+ 	nop
+ 
+@@ -1402,7 +1401,7 @@ naitlb_miss_11:
+ 
+ 	mtsp		t1, %sr1	/* Restore sr1 */
+ 
+-	ptl_unlock1	spc,t0
++	ptl_unlock1	spc,t0,t1
+ 	rfir
+ 	nop
+ 
+@@ -1432,7 +1431,7 @@ itlb_miss_20:
+ 
+ 	iitlbt          pte,prot
+ 
+-	ptl_unlock1	spc,t0
++	ptl_unlock1	spc,t0,t1
+ 	rfir
+ 	nop
+ 
+@@ -1452,7 +1451,7 @@ naitlb_miss_20:
+ 
+ 	iitlbt          pte,prot
+ 
+-	ptl_unlock1	spc,t0
++	ptl_unlock1	spc,t0,t1
+ 	rfir
+ 	nop
+ 
+@@ -1482,7 +1481,7 @@ dbit_trap_20w:
+ 		
+ 	idtlbt          pte,prot
+ 
+-	ptl_unlock0	spc,t0
++	ptl_unlock0	spc,t0,t1
+ 	rfir
+ 	nop
+ #else
+@@ -1508,7 +1507,7 @@ dbit_trap_11:
+ 
+ 	mtsp            t1, %sr1     /* Restore sr1 */
+ 
+-	ptl_unlock0	spc,t0
++	ptl_unlock0	spc,t0,t1
+ 	rfir
+ 	nop
+ 
+@@ -1528,7 +1527,7 @@ dbit_trap_20:
+ 	
+ 	idtlbt		pte,prot
+ 
+-	ptl_unlock0	spc,t0
++	ptl_unlock0	spc,t0,t1
+ 	rfir
+ 	nop
+ #endif
+-- 
+2.41.0
+
 
 
