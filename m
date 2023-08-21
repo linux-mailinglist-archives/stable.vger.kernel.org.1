@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9BB2E7831C1
-	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:21:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D9AC07832DE
+	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:22:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229868AbjHUT45 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 21 Aug 2023 15:56:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36966 "EHLO
+        id S230304AbjHUUID (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 21 Aug 2023 16:08:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50876 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229869AbjHUT44 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 15:56:56 -0400
+        with ESMTP id S230308AbjHUUIC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 16:08:02 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C9341FB
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 12:56:54 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 96C5CDF
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 13:08:01 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5D95C64625
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 19:56:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C6CBC433C8;
-        Mon, 21 Aug 2023 19:56:53 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2DB82649CF
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 20:08:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13A38C433C8;
+        Mon, 21 Aug 2023 20:07:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692647813;
-        bh=QW7zRVwCjzQAVUPL0SSz0nOOhoT0O1hoYQ2wqhlP4Fg=;
+        s=korg; t=1692648480;
+        bh=cuco2N02EsBYwTikwDz7fT3Y1pKcP3ilbDOHV0Sxcao=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=xeiD+o1EjkRnPAh3Vy3TuIrSi1XiyhEcptQDXfQy0jZY1BCTP823eAz5w52AbF9pc
-         eVsBQg1kbDMzDnh90H20eY+Okykr65e6wh5vDapNqErye3b2lfake+aKkyw3cCKt2B
-         cncnxsQrBhDcKjozgdQfasXNCciSqFEukpvJ4yzk=
+        b=JxBaCE+YgLsgPMtICVetMhqsxW67m09NcQXN7g2aV/YrQ/69A619K+kYPMdao13y/
+         NSDYsWhtIDFcRjVR+Y4cPXNGQOqxz/GCutiJUmzfi9hOhj+QiMKXCcphGerkZlNHQJ
+         CoQgQ8a4jMLdPJPTl+YVbV8OxZ6hs23izHO9YyiU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zev Weiss <zev@bewilderbeest.net>,
-        Joel Stanley <joel@jms.id.au>, Arnd Bergmann <arnd@arndb.de>,
+        patches@lists.linux.dev, Pablo Neira Ayuso <pablo@netfilter.org>,
+        Florian Westphal <fw@strlen.de>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 147/194] soc: aspeed: uart-routing: Use __sysfs_match_string
+Subject: [PATCH 6.4 163/234] netfilter: nf_tables: GC transaction race with netns dismantle
 Date:   Mon, 21 Aug 2023 21:42:06 +0200
-Message-ID: <20230821194129.180115574@linuxfoundation.org>
+Message-ID: <20230821194136.031787985@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230821194122.695845670@linuxfoundation.org>
-References: <20230821194122.695845670@linuxfoundation.org>
+In-Reply-To: <20230821194128.754601642@linuxfoundation.org>
+References: <20230821194128.754601642@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,41 +54,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Zev Weiss <zev@bewilderbeest.net>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit e4ad279ae345413d900d791f2f618d0a1cd0d791 ]
+[ Upstream commit 02c6c24402bf1c1e986899c14ba22a10b510916b ]
 
-The existing use of match_string() caused it to reject 'echo foo' due
-to the implicitly appended newline, which was somewhat ergonomically
-awkward and inconsistent with typical sysfs behavior.  Using the
-__sysfs_* variant instead provides more convenient and consistent
-linefeed-agnostic behavior.
+Use maybe_get_net() since GC workqueue might race with netns exit path.
 
-Signed-off-by: Zev Weiss <zev@bewilderbeest.net>
-Fixes: c6807970c3bc ("soc: aspeed: Add UART routing support")
-Reviewed-by: Joel Stanley <joel@jms.id.au>
-Link: https://lore.kernel.org/r/20230628083735.19946-2-zev@bewilderbeest.net
-Signed-off-by: Joel Stanley <joel@jms.id.au>
-Link: https://lore.kernel.org/r/20230810122941.231085-1-joel@jms.id.au
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Fixes: 5f68718b34a5 ("netfilter: nf_tables: GC transaction API to avoid race with control plane")
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/aspeed/aspeed-uart-routing.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/netfilter/nf_tables_api.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/soc/aspeed/aspeed-uart-routing.c b/drivers/soc/aspeed/aspeed-uart-routing.c
-index ef8b24fd18518..59123e1f27acb 100644
---- a/drivers/soc/aspeed/aspeed-uart-routing.c
-+++ b/drivers/soc/aspeed/aspeed-uart-routing.c
-@@ -524,7 +524,7 @@ static ssize_t aspeed_uart_routing_store(struct device *dev,
- 	struct aspeed_uart_routing_selector *sel = to_routing_selector(attr);
- 	int val;
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index dcf3ed3d5af9d..b280b151a9e98 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -9495,9 +9495,14 @@ struct nft_trans_gc *nft_trans_gc_alloc(struct nft_set *set,
+ 	if (!trans)
+ 		return NULL;
  
--	val = match_string(sel->options, -1, buf);
-+	val = __sysfs_match_string(sel->options, -1, buf);
- 	if (val < 0) {
- 		dev_err(dev, "invalid value \"%s\"\n", buf);
- 		return -EINVAL;
++	trans->net = maybe_get_net(net);
++	if (!trans->net) {
++		kfree(trans);
++		return NULL;
++	}
++
+ 	refcount_inc(&set->refs);
+ 	trans->set = set;
+-	trans->net = get_net(net);
+ 	trans->seq = gc_seq;
+ 
+ 	return trans;
 -- 
 2.40.1
 
