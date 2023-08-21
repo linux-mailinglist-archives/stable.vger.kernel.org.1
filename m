@@ -2,182 +2,278 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8E9F778292B
-	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 14:33:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7D473782948
+	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 14:39:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233363AbjHUMdx (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 21 Aug 2023 08:33:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59940 "EHLO
+        id S233656AbjHUMjg (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 21 Aug 2023 08:39:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33338 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234982AbjHUMdt (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 08:33:49 -0400
-Received: from mail-wr1-x431.google.com (mail-wr1-x431.google.com [IPv6:2a00:1450:4864:20::431])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 137EBF9;
-        Mon, 21 Aug 2023 05:33:44 -0700 (PDT)
-Received: by mail-wr1-x431.google.com with SMTP id ffacd0b85a97d-31ae6bf91a9so2408833f8f.2;
-        Mon, 21 Aug 2023 05:33:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1692621223; x=1693226023;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=s3HgJkRyuOgTx4bEfnEWuZ5n/XqsWxChCuiASKyLNMA=;
-        b=pRoenO3reqjH9GyQWza97sTt8mNIXpVInHRqt36XOXYaDfo2yQtE8HDiRc/P8pDajI
-         Hi10HhZx2U2WkCCfAsr1+pbjgFRI3oP8IAMx5+TPFcSnC8ph4E9bl64OEu3hS0xko/xV
-         /Bn9fyLVBPIcJD2gldmya9CwFIAWhY4T/xUgGztbVLg5z7haABuQsbkUqJVU8fD9w8Sq
-         gp7M8+/qOpWsi2uceQU+1X10fdFFIKANFuUAu8RsczT9H9RvurRIKSe8hgjbh++y/YYq
-         IrD29yAnjhqo927PJjiplk0IpN9djvNe9t7YD8kDjaC1lY9iJm//XEdOHA/zHBXlGRRj
-         DNZA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692621223; x=1693226023;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=s3HgJkRyuOgTx4bEfnEWuZ5n/XqsWxChCuiASKyLNMA=;
-        b=TI4R0twLeG7Oh/4VQiEAzVuNnvI1rqrEqQ2ZXcbIw5X/6nzApIBuegy/u6/hEFOfaU
-         ydES3xvRhr/7gEGUwt/FpiDBYcgnJ5c9TOawaGqP9vg0RWbEvv6dAOgqNHFf4Z23fmMs
-         GUZFFmga1W51KQsUsh9JqZHreZ2QHNBwvfdmeaEgW1WxyxTBFnqFYj6kneCwEz464tmD
-         ODp5KeWdAvqtMw0kXJjKomUQI9TUhGAKN+8zf0297w58b778YPDYPVIzkOriyQsTzE2j
-         zpMpfjfqnpuxciismlWkx91JviyfP7P4FL8CoDXXTSZHBy3erWB/skvSx3d6w0gQQ3gJ
-         NmJQ==
-X-Gm-Message-State: AOJu0YzraoiWLrLgTgwHnNQ3m0YHyo8OLTgFNLvxHeBynJSTIwieq4Qp
-        Yj19CjxlBcWhMXqPUBhIWV0=
-X-Google-Smtp-Source: AGHT+IHIP4wOHbycg4BtDdQ/IfKgJ/Js/QxGr9jLwuNJmlXq/4xyqcIUWNMXj/hv+gepTxCMbMvDEQ==
-X-Received: by 2002:a5d:452c:0:b0:317:ddd3:1aed with SMTP id j12-20020a5d452c000000b00317ddd31aedmr3810227wra.68.1692621223176;
-        Mon, 21 Aug 2023 05:33:43 -0700 (PDT)
-Received: from [192.168.1.95] (host-176-36-0-241.b024.la.net.ua. [176.36.0.241])
-        by smtp.gmail.com with ESMTPSA id lw26-20020a170906bcda00b00993a37aebc5sm6390383ejb.50.2023.08.21.05.33.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 21 Aug 2023 05:33:42 -0700 (PDT)
-Message-ID: <6e048371123eae0f89b58581a043b1a3de36f7f3.camel@gmail.com>
-Subject: Re: [PATCH bpf-next 1/2] bpf: Fix issue in verifying allow_ptr_leaks
-From:   Eduard Zingerman <eddyz87@gmail.com>
-To:     Yafang Shao <laoar.shao@gmail.com>, ast@kernel.org,
-        daniel@iogearbox.net, john.fastabend@gmail.com, andrii@kernel.org,
-        martin.lau@linux.dev, song@kernel.org, yonghong.song@linux.dev,
-        kpsingh@kernel.org, sdf@google.com, haoluo@google.com,
-        jolsa@kernel.org
-Cc:     bpf@vger.kernel.org,
-        Alexei Starovoitov <alexei.starovoitov@gmail.com>,
-        stable@vger.kernel.org
-Date:   Mon, 21 Aug 2023 15:33:41 +0300
-In-Reply-To: <20230818083920.3771-2-laoar.shao@gmail.com>
-References: <20230818083920.3771-1-laoar.shao@gmail.com>
-         <20230818083920.3771-2-laoar.shao@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.44.4-0ubuntu1 
+        with ESMTP id S232895AbjHUMjf (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 08:39:35 -0400
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id BF9C891;
+        Mon, 21 Aug 2023 05:39:32 -0700 (PDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3DC792F4;
+        Mon, 21 Aug 2023 05:40:13 -0700 (PDT)
+Received: from [10.57.3.137] (unknown [10.57.3.137])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C6A3D3F762;
+        Mon, 21 Aug 2023 05:39:27 -0700 (PDT)
+Message-ID: <6d7a7ecc-1364-5cbe-0485-01d693dbdc6c@arm.com>
+Date:   Mon, 21 Aug 2023 13:39:11 +0100
 MIME-Version: 1.0
-X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (Windows NT 10.0; rv:102.0) Gecko/20100101
+ Thunderbird/102.14.0
+Subject: Re: [PATCH 5.17 127/298] driver core: Fix wait_for_device_probe() &
+ deferred_probe_timeout interaction
+Content-Language: en-GB
+To:     Shreeya Patel <shreeya.patel@collabora.com>,
+        Saravana Kannan <saravanak@google.com>
+Cc:     Geert Uytterhoeven <geert+renesas@glider.be>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org, John Stultz <jstultz@google.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Alexey Kuznetsov <kuznet@ms2.inr.ac.ru>,
+        Hideaki YOSHIFUJI <yoshfuji@linux-ipv6.org>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Rob Herring <robh@kernel.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Naresh Kamboju <naresh.kamboju@linaro.org>,
+        Basil Eljuse <Basil.Eljuse@arm.com>,
+        Ferry Toth <fntoth@gmail.com>, Arnd Bergmann <arnd@arndb.de>,
+        Anders Roxell <anders.roxell@linaro.org>,
+        linux-pm@vger.kernel.org, Nathan Chancellor <nathan@kernel.org>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Sasha Levin <sashal@kernel.org>, linux-kernel@vger.kernel.org,
+        "gustavo.padovan@collabora.com" <gustavo.padovan@collabora.com>,
+        =?UTF-8?Q?Ricardo_Ca=c3=b1uelo_Navarro?= 
+        <ricardo.canuelo@collabora.com>,
+        Guillaume Charles Tucker <guillaume.tucker@collabora.com>,
+        usama.anjum@collabora.com, kernelci@lists.linux.dev
+References: <20220613094924.913340374@linuxfoundation.org>
+ <20220613094928.793712131@linuxfoundation.org>
+ <6283c4b1-2513-207d-4ed6-fdabf3f3880e@collabora.com>
+ <2023081619-slapping-congrats-8e85@gregkh>
+ <471bf84d-9d58-befc-8224-359a62e29786@collabora.com>
+ <CAGETcx-NVoN7b8XCV09ouof81XxZk4wtGhEcqcFAt6Gs=JWKdw@mail.gmail.com>
+ <d8f8ddf6-8063-fb3a-7dad-4064a47c5fe8@collabora.com>
+ <CAGETcx-DUm417mM-Nmyqj-e_rKUw69m=rTe5R6_Vxd_rsKMmGg@mail.gmail.com>
+ <97b06c78-da3c-d8ab-ca72-ff37b9976f2a@collabora.com>
+From:   Robin Murphy <robin.murphy@arm.com>
+In-Reply-To: <97b06c78-da3c-d8ab-ca72-ff37b9976f2a@collabora.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-5.3 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Fri, 2023-08-18 at 08:39 +0000, Yafang Shao wrote:
-> After we converted the capabilities of our networking-bpf program from
-> cap_sys_admin to cap_net_admin+cap_bpf, our networking-bpf program
-> failed to start. Because it failed the bpf verifier, and the error log
-> is "R3 pointer comparison prohibited".
->=20
-> A simple reproducer as follows,
->=20
-> SEC("cls-ingress")
-> int ingress(struct __sk_buff *skb)
-> {
-> 	struct iphdr *iph =3D (void *)(long)skb->data + sizeof(struct ethhdr);
->=20
-> 	if ((long)(iph + 1) > (long)skb->data_end)
-> 		return TC_ACT_STOLEN;
-> 	return TC_ACT_OK;
-> }
->=20
-> Per discussion with Yonghong and Alexei [1], comparison of two packet
-> pointers is not a pointer leak. This patch fixes it.
->=20
-> Our local kernel is 6.1.y and we expect this fix to be backported to
-> 6.1.y, so stable is CCed.
->=20
-> [1]. https://lore.kernel.org/bpf/CAADnVQ+Nmspr7Si+pxWn8zkE7hX-7s93ugwC+94=
-aXSy4uQ9vBg@mail.gmail.com/
->=20
-> Suggested-by: Yonghong Song <yonghong.song@linux.dev>
-> Suggested-by: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-> Signed-off-by: Yafang Shao <laoar.shao@gmail.com>
-> Cc: stable@vger.kernel.org
-> ---
->  kernel/bpf/verifier.c | 17 +++++++++--------
->  1 file changed, 9 insertions(+), 8 deletions(-)
->=20
-> diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-> index 4ccca1f..b6b60cd 100644
-> --- a/kernel/bpf/verifier.c
-> +++ b/kernel/bpf/verifier.c
-> @@ -14047,6 +14047,12 @@ static int check_cond_jmp_op(struct bpf_verifier=
-_env *env,
->  		return -EINVAL;
->  	}
-> =20
-> +	/* check src2 operand */
-> +	err =3D check_reg_arg(env, insn->dst_reg, SRC_OP);
-> +	if (err)
-> +		return err;
-> +
-> +	dst_reg =3D &regs[insn->dst_reg];
->  	if (BPF_SRC(insn->code) =3D=3D BPF_X) {
->  		if (insn->imm !=3D 0) {
->  			verbose(env, "BPF_JMP/JMP32 uses reserved fields\n");
-> @@ -14058,12 +14064,13 @@ static int check_cond_jmp_op(struct bpf_verifie=
-r_env *env,
->  		if (err)
->  			return err;
-> =20
-> -		if (is_pointer_value(env, insn->src_reg)) {
-> +		src_reg =3D &regs[insn->src_reg];
-> +		if (!(reg_is_pkt_pointer_any(dst_reg) && reg_is_pkt_pointer_any(src_re=
-g)) &&
-> +		    is_pointer_value(env, insn->src_reg)) {
->  			verbose(env, "R%d pointer comparison prohibited\n",
->  				insn->src_reg);
->  			return -EACCES;
->  		}
-> -		src_reg =3D &regs[insn->src_reg];
+On 2023-08-21 12:35, Shreeya Patel wrote:
+> 
+> On 19/08/23 01:49, Saravana Kannan wrote:
+>> On Thu, Aug 17, 2023 at 4:13 PM Shreeya Patel
+>> <shreeya.patel@collabora.com> wrote:
+>>> Hi Geert, Saravana,
+>>>
+>>> On 18/08/23 00:03, Saravana Kannan wrote:
+>>>> On Thu, Aug 17, 2023 at 4:37 AM Shreeya Patel
+>>>> <shreeya.patel@collabora.com> wrote:
+>>>>> Hi Greg,
+>>>>>
+>>>>> On 16/08/23 20:33, Greg Kroah-Hartman wrote:
+>>>>>> On Wed, Aug 16, 2023 at 03:09:27PM +0530, Shreeya Patel wrote:
+>>>>>>> On 13/06/22 15:40, Greg Kroah-Hartman wrote:
+>>>>>>>> From: Saravana Kannan<saravanak@google.com>
+>>>>>>>>
+>>>>>>>> [ Upstream commit 5ee76c256e928455212ab759c51d198fedbe7523 ]
+>>>>>>>>
+>>>>>>>> Mounting NFS rootfs was timing out when deferred_probe_timeout was
+>>>>>>>> non-zero [1].  This was because ip_auto_config() initcall times out
+>>>>>>>> waiting for the network interfaces to show up when
+>>>>>>>> deferred_probe_timeout was non-zero. While ip_auto_config() calls
+>>>>>>>> wait_for_device_probe() to make sure any currently running deferred
+>>>>>>>> probe work or asynchronous probe finishes, that wasn't 
+>>>>>>>> sufficient to
+>>>>>>>> account for devices being deferred until deferred_probe_timeout.
+>>>>>>>>
+>>>>>>>> Commit 35a672363ab3 ("driver core: Ensure 
+>>>>>>>> wait_for_device_probe() waits
+>>>>>>>> until the deferred_probe_timeout fires") tried to fix that by 
+>>>>>>>> making
+>>>>>>>> sure wait_for_device_probe() waits for deferred_probe_timeout to 
+>>>>>>>> expire
+>>>>>>>> before returning.
+>>>>>>>>
+>>>>>>>> However, if wait_for_device_probe() is called from the 
+>>>>>>>> kernel_init()
+>>>>>>>> context:
+>>>>>>>>
+>>>>>>>> - Before deferred_probe_initcall() [2], it causes the boot 
+>>>>>>>> process to
+>>>>>>>>       hang due to a deadlock.
+>>>>>>>>
+>>>>>>>> - After deferred_probe_initcall() [3], it blocks kernel_init() from
+>>>>>>>>       continuing till deferred_probe_timeout expires and beats 
+>>>>>>>> the point of
+>>>>>>>>       deferred_probe_timeout that's trying to wait for userspace 
+>>>>>>>> to load
+>>>>>>>>       modules.
+>>>>>>>>
+>>>>>>>> Neither of this is good. So revert the changes to
+>>>>>>>> wait_for_device_probe().
+>>>>>>>>
+>>>>>>>> [1] 
+>>>>>>>> -https://lore.kernel.org/lkml/TYAPR01MB45443DF63B9EF29054F7C41FD8C60@TYAPR01MB4544.jpnprd01.prod.outlook.com/
+>>>>>>>> [2] 
+>>>>>>>> -https://lore.kernel.org/lkml/YowHNo4sBjr9ijZr@dev-arch.thelio-3990X/
+>>>>>>>> [3] -https://lore.kernel.org/lkml/Yo3WvGnNk3LvLb7R@linutronix.de/
+>>>>>>> Hi Saravana, Greg,
+>>>>>>>
+>>>>>>>
+>>>>>>> KernelCI found this patch causes the 
+>>>>>>> baseline.bootrr.deferred-probe-empty test to fail on r8a77960-ulcb,
+>>>>>>> see the following details for more information.
+>>>>>>>
+>>>>>>> KernelCI dashboard link:
+>>>>>>> https://linux.kernelci.org/test/plan/id/64d2a6be8c1a8435e535b264/
+>>>>>>>
+>>>>>>> Error messages from the logs :-
+>>>>>>>
+>>>>>>> + UUID=11236495_1.5.2.4.5
+>>>>>>> + set +x
+>>>>>>> + export 
+>>>>>>> 'PATH=/opt/bootrr/libexec/bootrr/helpers:/lava-11236495/1/../bin:/sbin:/usr/sbin:/bin:/usr/bin'
+>>>>>>> + cd /opt/bootrr/libexec/bootrr
+>>>>>>> + sh helpers/bootrr-auto
+>>>>>>> e6800000.ethernet
+>>>>>>> e6700000.dma-controller
+>>>>>>> e7300000.dma-controller
+>>>>>>> e7310000.dma-controller
+>>>>>>> ec700000.dma-controller
+>>>>>>> ec720000.dma-controller
+>>>>>>> fea20000.vsp
+>>>>>>> feb00000.display
+>>>>>>> fea28000.vsp
+>>>>>>> fea30000.vsp
+>>>>>>> fe9a0000.vsp
+>>>>>>> fe9af000.fcp
+>>>>>>> fea27000.fcp
+>>>>>>> fea2f000.fcp
+>>>>>>> fea37000.fcp
+>>>>>>> sound
+>>>>>>> ee100000.mmc
+>>>>>>> ee140000.mmc
+>>>>>>> ec500000.sound
+>>>>>>> /lava-11236495/1/../bin/lava-test-case
+>>>>>>> <8>[   17.476741] <LAVA_SIGNAL_TESTCASE 
+>>>>>>> TEST_CASE_ID=deferred-probe-empty RESULT=fail>
+>>>>>>>
+>>>>>>> Test case failing :-
+>>>>>>> Baseline Bootrr deferred-probe-empty test 
+>>>>>>> -https://github.com/kernelci/bootrr/blob/main/helpers/bootrr-generic-tests
+>>>>>>>
+>>>>>>> Regression Reproduced :-
+>>>>>>>
+>>>>>>> Lava job after reverting the commit 5ee76c256e92
+>>>>>>> https://lava.collabora.dev/scheduler/job/11292890
+>>>>>>>
+>>>>>>>
+>>>>>>> Bisection report from KernelCI can be found at the bottom of the 
+>>>>>>> email.
+>>>>>>>
+>>>>>>> Thanks,
+>>>>>>> Shreeya Patel
+>>>>>>>
+>>>>>>> #regzbot introduced: 5ee76c256e92
+>>>>>>> #regzbot title: KernelCI: Multiple devices deferring on 
+>>>>>>> r8a77960-ulcb
+>>>>>>>
+>>>>>>> ---------------------------------------------------------------------------------------------------------------------------------------------------
+>>>>>>>
+>>>>>>> * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * **
+>>>>>>> * If you do send a fix, please include this trailer: *
+>>>>>>> * Reported-by: "kernelci.org bot" <bot@...> *
+>>>>>>> * *
+>>>>>>> * Hope this helps! *
+>>>>>>> * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+>>>>>>>
+>>>>>>> stable-rc/linux-5.10.y bisection: 
+>>>>>>> baseline.bootrr.deferred-probe-empty on
+>>>>>>> r8a77960-ulcb
+>>>>>> You are testing 5.10.y, yet the subject says 5.17?
+>>>>>>
+>>>>>> Which is it here?
+>>>>> Sorry, I accidentally used the lore link for 5.17 while reporting this
+>>>>> issue,
+>>>>> but this test does fail on all the stable releases from 5.10 onwards.
+>>>>>
+>>>>> stable 5.15 :-
+>>>>> https://linux.kernelci.org/test/case/id/64dd156a5ac58d0cf335b1ea/
+>>>>> mainline :-
+>>>>> https://linux.kernelci.org/test/case/id/64dc13d55cb51357a135b209/
+>>>>>
+>>>> Shreeya, can you try the patch Geert suggested and let us know if it
+>>>> helps? If not, then I can try to take a closer look.
+>>> I tried to test the kernel with 9be4cbd09da8 but it didn't change the
+>>> result.
+>>> https://lava.collabora.dev/scheduler/job/11311615
+>>>
+>>> Also, I am not sure if this can change things but just FYI, KernelCI
+>>> adds some kernel parameters when running these tests and one of the
+>>> parameter is deferred_probe_timeout=60.
+>> Ah this is good to know.
+>>
+>>> You can check this in the definition details given in the Lava job. I
+>>> also tried to remove this parameter and rerun the test but again I got
+>>> the same result.
+>> How long does the test wait after boot before checking for the
+>> deferred devices list?
+>>
+> 
+> AFAIK, script for running the tests is immediately ran after the boot 
+> process is complete so there is no wait time.
 
-I tested this change and it seem to work as intended. Was worried a
-bit that there are three places in this function where such checks are
-applied:
-1. upon entry for BPF_X case (this one): checks if dst_reg/src_reg are
-   pointers to packet or packet end or packet meta;
-2. when attempting to predict branch: prediction would be triggered
-   only when dst/src is packet/packet_end (or vice-versa);
-3. when prediction failed and both branches have to be visited
-   (`try_match_pkt_pointers`): dst/src have to be packet/packet_end or
-   meta/packet-start (or vice versa).
-  =20
-Check (1) is more permissive than (2) or (3) but either (2) or (3)
-would be applied before exit, so there is no contradiction.
+Regardless of what the kernel is doing, it seems like a fundamentally 
+dumb test to specifically ask deferred probe to wait for up to a minute 
+then complain that it hasn't finished after 11 seconds :/
 
-Acked-by: Eduard Zingerman <eddyz87@gmail.com>
+If anything, it seems plausible that the "regression" might actually be 
+the correct behaviour, and it was wrong before. I can't manage to pull 
+up a boot log for a pre-5.10 kernel since all the async stuff on the 
+KernelCI dashboard always just times out for me with a helpful "Error 
+while loading data from the server (error code: 0)", but what would be 
+interesting is whether those devices on the list are expected to 
+successfully probe anyway - the mainline log below also shows other 
+stuff failing to probe and CPUs failing to come online, so it's clearly 
+not a very happy platform to begin with.
 
->  	} else {
->  		if (insn->src_reg !=3D BPF_REG_0) {
->  			verbose(env, "BPF_JMP/JMP32 uses reserved fields\n");
-> @@ -14071,12 +14078,6 @@ static int check_cond_jmp_op(struct bpf_verifier=
-_env *env,
->  		}
->  	}
-> =20
-> -	/* check src2 operand */
-> -	err =3D check_reg_arg(env, insn->dst_reg, SRC_OP);
-> -	if (err)
-> -		return err;
-> -
-> -	dst_reg =3D &regs[insn->dst_reg];
->  	is_jmp32 =3D BPF_CLASS(insn->code) =3D=3D BPF_JMP32;
-> =20
->  	if (BPF_SRC(insn->code) =3D=3D BPF_K) {
+Robin.
 
+>>> I will try to add 9be4cbd09da8 to mainline kernel and see what results I
+>>> get.
+>> Now I'm confused. What do you mean by mainline? Are you saying the tip
+>> of tree of Linus's tree is also hitting this issue?
+> 
+> 
+> KernelCI runs tests on different kernel branches and trees, we also have 
+> this same test running on mainline tree.
+> Following is the link to the dashboard for it and as you can see, it 
+> does fail there too.
+> 
+> 
+> https://linux.kernelci.org/test/case/id/64dc13d55cb51357a135b209/
+> 
+> 
+>> -Saravana
+>>
