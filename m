@@ -2,52 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8F7E07832DD
-	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:22:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8865B7832A3
+	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:22:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230347AbjHUUIw (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 21 Aug 2023 16:08:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59506 "EHLO
+        id S230026AbjHUT71 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 21 Aug 2023 15:59:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40734 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230349AbjHUUIv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 16:08:51 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B79D131
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 13:08:49 -0700 (PDT)
+        with ESMTP id S230015AbjHUT70 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 15:59:26 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1184C183
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 12:59:20 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BEBD564A4B
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 20:08:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEEDEC433C8;
-        Mon, 21 Aug 2023 20:08:47 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E708164712
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 19:59:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F08D9C433C7;
+        Mon, 21 Aug 2023 19:59:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692648528;
-        bh=U+X3YHCDMSfutFfxTGuVSrLKdrjus8sxmRLfeDDWRo0=;
+        s=korg; t=1692647959;
+        bh=9uXSArX/wMQHY5M39yUQ5eNMegUNNCd5y+IJ0LCWyV4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=snB/ekYsgFtGmRsP6/Wh0uUgmdkq27I22zLuSZ8iQFi7HcXQzYJBx3GGCloTT6Nwz
-         GZheeSfoyTzUAS2Vsyn/0XeZssOvZRCi8A+cEZo1C8xgBCl4df8tLDzgy0A/78kOnC
-         8d+RstGbHEWEeMY8FVpDPqdjeU1DEWYYeIgoPxVA=
+        b=Ru+4aMtF26tY3H+wGqH5prW5ae6l2RdE9jTtPxZPoq9bDXt44HzRBuybuzL+RyTMq
+         VcXFglucI0hLXnZUW8mjKm2Q7vstjF2sQR1L0azK03sUVMQj0EMSbTLZ6Ou9AkZZGA
+         yDoozjo5NWEiSyNL+6Uv+AWeGNrkIrJg4IcNLKbk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Martin Fuzzey <martin.fuzzey@flowbird.group>,
-        Benjamin Bara <benjamin.bara@skidata.com>,
-        Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.4 207/234] regulator: da9063: better fix null deref with partial DT
-Date:   Mon, 21 Aug 2023 21:42:50 +0200
-Message-ID: <20230821194138.014575590@linuxfoundation.org>
+        patches@lists.linux.dev, Karol Herbst <kherbst@redhat.com>,
+        Lyude Paul <lyude@redhat.com>
+Subject: [PATCH 6.1 192/194] drm/nouveau/disp: fix use-after-free in error handling of nouveau_connector_create
+Date:   Mon, 21 Aug 2023 21:42:51 +0200
+Message-ID: <20230821194131.144428893@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230821194128.754601642@linuxfoundation.org>
-References: <20230821194128.754601642@linuxfoundation.org>
+In-Reply-To: <20230821194122.695845670@linuxfoundation.org>
+References: <20230821194122.695845670@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -55,62 +53,50 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Martin Fuzzey <martin.fuzzey@flowbird.group>
+From: Karol Herbst <kherbst@redhat.com>
 
-commit 30c694fd4a99fbbc4115d180156ca01b60953371 upstream.
+commit 1b254b791d7b7dea6e8adc887fbbd51746d8bb27 upstream.
 
-Two versions of the original patch were sent but V1 was merged instead
-of V2 due to a mistake.
+We can't simply free the connector after calling drm_connector_init on it.
+We need to clean up the drm side first.
 
-So update to V2.
+It might not fix all regressions from commit 2b5d1c29f6c4
+("drm/nouveau/disp: PIOR DP uses GPIO for HPD, not PMGR AUX interrupts"),
+but at least it fixes a memory corruption in error handling related to
+that commit.
 
-The advantage of V2 is that it completely avoids dereferencing the pointer,
-even just to take the address, which may fix problems with some compilers.
-Both versions work on my gcc 9.4 but use the safer one.
-
-Fixes: 98e2dd5f7a8b ("regulator: da9063: fix null pointer deref with partial DT config")
-Signed-off-by: Martin Fuzzey <martin.fuzzey@flowbird.group>
-Tested-by: Benjamin Bara <benjamin.bara@skidata.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20230804083514.1887124-1-martin.fuzzey@flowbird.group
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Link: https://lore.kernel.org/lkml/20230806213107.GFZNARG6moWpFuSJ9W@fat_crate.local/
+Fixes: 95983aea8003 ("drm/nouveau/disp: add connector class")
+Signed-off-by: Karol Herbst <kherbst@redhat.com>
+Reviewed-by: Lyude Paul <lyude@redhat.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230814144933.3956959-1-kherbst@redhat.com
+Signed-off-by: Karol Herbst <kherbst@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/regulator/da9063-regulator.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/nouveau/nouveau_connector.c |    8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/regulator/da9063-regulator.c b/drivers/regulator/da9063-regulator.c
-index dfd5ec9f75c9..a0621665a6d2 100644
---- a/drivers/regulator/da9063-regulator.c
-+++ b/drivers/regulator/da9063-regulator.c
-@@ -778,9 +778,6 @@ static int da9063_check_xvp_constraints(struct regulator_config *config)
- 	const struct notification_limit *uv_l = &constr->under_voltage_limits;
- 	const struct notification_limit *ov_l = &constr->over_voltage_limits;
+--- a/drivers/gpu/drm/nouveau/nouveau_connector.c
++++ b/drivers/gpu/drm/nouveau/nouveau_connector.c
+@@ -1407,8 +1407,7 @@ nouveau_connector_create(struct drm_devi
+ 		ret = nvif_conn_ctor(&disp->disp, nv_connector->base.name, nv_connector->index,
+ 				     &nv_connector->conn);
+ 		if (ret) {
+-			kfree(nv_connector);
+-			return ERR_PTR(ret);
++			goto drm_conn_err;
+ 		}
+ 	}
  
--	if (!config->init_data) /* No config in DT, pointers will be invalid */
--		return 0;
--
- 	/* make sure that only one severity is used to clarify if unchanged, enabled or disabled */
- 	if ((!!uv_l->prot + !!uv_l->err + !!uv_l->warn) > 1) {
- 		dev_err(config->dev, "%s: at most one voltage monitoring severity allowed!\n",
-@@ -1031,9 +1028,12 @@ static int da9063_regulator_probe(struct platform_device *pdev)
- 			config.of_node = da9063_reg_matches[id].of_node;
- 		config.regmap = da9063->regmap;
+@@ -1470,4 +1469,9 @@ nouveau_connector_create(struct drm_devi
  
--		ret = da9063_check_xvp_constraints(&config);
--		if (ret)
--			return ret;
-+		/* Checking constraints requires init_data from DT. */
-+		if (config.init_data) {
-+			ret = da9063_check_xvp_constraints(&config);
-+			if (ret)
-+				return ret;
-+		}
- 
- 		regl->rdev = devm_regulator_register(&pdev->dev, &regl->desc,
- 						     &config);
--- 
-2.41.0
-
+ 	drm_connector_register(connector);
+ 	return connector;
++
++drm_conn_err:
++	drm_connector_cleanup(connector);
++	kfree(nv_connector);
++	return ERR_PTR(ret);
+ }
 
 
