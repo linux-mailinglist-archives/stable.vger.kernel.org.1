@@ -2,120 +2,187 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 83175782713
-	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 12:29:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6B43E7827D5
+	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 13:25:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234699AbjHUK3n (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 21 Aug 2023 06:29:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55074 "EHLO
+        id S229967AbjHULZ2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 21 Aug 2023 07:25:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50330 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234698AbjHUK3m (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 06:29:42 -0400
-Received: from mail-yb1-xb34.google.com (mail-yb1-xb34.google.com [IPv6:2607:f8b0:4864:20::b34])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C0BFD3
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 03:29:40 -0700 (PDT)
-Received: by mail-yb1-xb34.google.com with SMTP id 3f1490d57ef6-d6fcffce486so3081493276.3
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 03:29:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1692613779; x=1693218579;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=HClNkkt1LPNSP32CQjmEgSvFflcpDxIkOOxKyLAh2QA=;
-        b=UcrEdBjt5NDCsNnQMqLMtShcldwpYPw6Qaw3sLm8h2W1ugwrxDq1eA1ZRO2sXOdW+l
-         FLX3BoMAU65JlVrdi7L/5WKTS/ijHmBmnzLEE8YXbKg5xpto2dKcuZJ/grBA1N+d933C
-         nHFgvknea0t7vVBQxHGrRGQbO3b7mttnkITuD6WAVGcFcGBQsDcqDoioSDmwKeO9QhHJ
-         XpCGNYIyIGkLfUaTTsdX6PsolR1/JGI0yaSdvq218wApvlalFLrs2vaItuyATBTLeeTY
-         xuezyOhGw7Ucne08ZpplzxxOCy83lzwxoo/9CNOOECdAcWvH8GZqv5sZPRY+SIIRsB9F
-         t2lg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692613779; x=1693218579;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=HClNkkt1LPNSP32CQjmEgSvFflcpDxIkOOxKyLAh2QA=;
-        b=czwv2jMc+UEYceV4bLUKsu66uyJ3abBCufPtMoP/Js5Lx4TLV1wz+XoncXGfCRbkKp
-         hkXxy7GeLjZ/g5YyXhHRLY+IAeHHj2x3M7AspEz9B8YPz6umovcf+mp56vGwP74fE31d
-         8PtWcIervudhSFd+/ouAZ1+IiLwDneFiwlPvD52kNRPbg0z4d65WHCLm079KhsukG+or
-         5hSdgk80e0wauMW1Y4hhABxlMbh/QgqnclMxyv6EDv0/bJIh2xiYePE+AihfuXMRRx5U
-         sRvpJni4tAhpzGlF3DUTU1m8gq6/i4rMhAU2tFWoQ0Pdiqa0wI/b6fxhh0V6TjpTFUdM
-         lsHg==
-X-Gm-Message-State: AOJu0YxD3kF3TX0NKwBfq2XxPadBwdHuGsMFQjLYhxtrBCOAveuKW223
-        tVi165gFPooguQlNKYBKX2QtqAm5mgZkBB3BdkG7sA==
-X-Google-Smtp-Source: AGHT+IElbpEXRCwCzwUjY67gH5o/HQteT8vWYdkfiv68uy64ksJ8qaKJ1LJHiNAKZvyM4n6ARgb33Tczj1IITBeA8zg=
-X-Received: by 2002:a25:938c:0:b0:d62:796e:241f with SMTP id
- a12-20020a25938c000000b00d62796e241fmr6812080ybm.7.1692613779665; Mon, 21 Aug
- 2023 03:29:39 -0700 (PDT)
+        with ESMTP id S232052AbjHULZ1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 07:25:27 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D1821E4
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 04:25:25 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6674C60AE9
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 11:25:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C374C433C7;
+        Mon, 21 Aug 2023 11:25:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1692617124;
+        bh=Nf3ySHBFa/hwmJnQ1QzVVOkfzr+Yd8csuFudInmpxRI=;
+        h=Subject:To:Cc:From:Date:From;
+        b=Bt7ylWEClwS63rRlexWj9ZkQ6kkUCYuJezdex2Lal7sZPnH9umnmV237rz0UUfJtC
+         luOMblTOmsY5bJRMJLzj64PomUIMzHNS0jAivaqHkL46zpewJkklg/Bb7i5i2jKTuj
+         8I4oIQb8epyTgRsRBnGLpZyglxZ/LElAxM20uGmQ=
+Subject: FAILED: patch "[PATCH] riscv: Handle zicsr/zifencei issue between gcc and binutils" failed to apply to 5.15-stable tree
+To:     xingmingzheng@iscas.ac.cn, conor.dooley@microchip.com,
+        guoren@kernel.org, palmer@rivosinc.com, stable@vger.kernel.org
+Cc:     <stable@vger.kernel.org>
+From:   <gregkh@linuxfoundation.org>
+Date:   Mon, 21 Aug 2023 13:25:22 +0200
+Message-ID: <2023082121-founder-chrome-72a6@gregkh>
 MIME-Version: 1.0
-References: <20230818144850.1439-1-mario.limonciello@amd.com>
-In-Reply-To: <20230818144850.1439-1-mario.limonciello@amd.com>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Mon, 21 Aug 2023 12:29:28 +0200
-Message-ID: <CACRpkdaM820GMVyViKKkvFHfgAnNt2f3DvoZbC9HT1d7FBPBXg@mail.gmail.com>
-Subject: Re: [PATCH] pinctrl: amd: Mask wake bits on probe again
-To:     Mario Limonciello <mario.limonciello@amd.com>
-Cc:     Basavaraj.Natikar@amd.com, Shyam-sundar.S-k@amd.com,
-        linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Sachi King <nakato@nakato.io>, stable@vger.kernel.org,
-        Thorsten Leemhuis <regressions@leemhuis.info>,
-        Shubhra Prakash Nandi <email2shubhra@gmail.com>,
-        Carsten Hatger <xmb8dsv4@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Fri, Aug 18, 2023 at 4:49=E2=80=AFPM Mario Limonciello
-<mario.limonciello@amd.com> wrote:
 
-> Shubhra reports that their laptop is heating up over s2idle. Even though
-> it's getting into the deepest state, it appears to be having spurious
-> wakeup events.
->
-> While debugging a tangential issue with the RTC Carsten reports that rece=
-nt
-> 6.1.y based kernel face a similar problem.
->
-> Looking at acpidump and GPIO register comparisons these spurious wakeup
-> events are from the GPIO associated with the I2C touchpad on both laptops
-> and occur even when the touchpad is not marked as a wake source by the
-> kernel.
->
-> This means that the boot firmware has programmed these bits and because
-> Linux didn't touch them lead to spurious wakeup events from that GPIO.
->
-> To fix this issue, restore most of the code that previously would clear a=
-ll
-> the bits associated with wakeup sources. This will allow the kernel to on=
-ly
-> program the wake up sources that are necessary.
->
-> This is similar to what was done previously; but only the wake bits are
-> cleared by default instead of interrupts and wake bits.  If any other
-> problems are reported then it may make sense to clear interrupts again to=
-o.
->
-> Cc: Sachi King <nakato@nakato.io>
-> Cc: stable@vger.kernel.org
-> Cc: Thorsten Leemhuis <regressions@leemhuis.info>
-> Fixes: 65f6c7c91cb2 ("pinctrl: amd: Revert "pinctrl: amd: disable and mas=
-k interrupts on probe"")
-> Reported-by: "Shubhra Prakash Nandi" <email2shubhra@gmail.com>
-> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=3D217754
-> Reported-by: "Carsten Hatger" <xmb8dsv4@gmail.com>
-> Link: https://bugzilla.kernel.org/show_bug.cgi?id=3D217626#c28
-> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+The patch below does not apply to the 5.15-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-Patch applied for fixes so we get some rotation in linux-next.
+To reproduce the conflict and resubmit, you may use the following commands:
 
-Thanks for looking into this Mario!
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git checkout FETCH_HEAD
+git cherry-pick -x ca09f772cccaeec4cd05a21528c37a260aa2dd2c
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023082121-founder-chrome-72a6@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
-Yours,
-Linus Walleij
+Possible dependencies:
+
+ca09f772ccca ("riscv: Handle zicsr/zifencei issue between gcc and binutils")
+e89c2e815e76 ("riscv: Handle zicsr/zifencei issues between clang and binutils")
+aae538cd03bc ("riscv: fix detection of toolchain Zihintpause support")
+8eb060e10185 ("arch/riscv: add Zihintpause support")
+1631ba1259d6 ("riscv: Add support for non-coherent devices using zicbom extension")
+73448ae6204f ("RISC-V: Some Svpbmt fixes and cleanups")
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From ca09f772cccaeec4cd05a21528c37a260aa2dd2c Mon Sep 17 00:00:00 2001
+From: Mingzheng Xing <xingmingzheng@iscas.ac.cn>
+Date: Thu, 10 Aug 2023 00:56:48 +0800
+Subject: [PATCH] riscv: Handle zicsr/zifencei issue between gcc and binutils
+
+Binutils-2.38 and GCC-12.1.0 bumped[0][1] the default ISA spec to the newer
+20191213 version which moves some instructions from the I extension to the
+Zicsr and Zifencei extensions. So if one of the binutils and GCC exceeds
+that version, we should explicitly specifying Zicsr and Zifencei via -march
+to cope with the new changes. but this only occurs when binutils >= 2.36
+and GCC >= 11.1.0. It's a different story when binutils < 2.36.
+
+binutils-2.36 supports the Zifencei extension[2] and splits Zifencei and
+Zicsr from I[3]. GCC-11.1.0 is particular[4] because it add support Zicsr
+and Zifencei extension for -march. binutils-2.35 does not support the
+Zifencei extension, and does not need to specify Zicsr and Zifencei when
+working with GCC >= 12.1.0.
+
+To make our lives easier, let's relax the check to binutils >= 2.36 in
+CONFIG_TOOLCHAIN_NEEDS_EXPLICIT_ZICSR_ZIFENCEI. For the other two cases,
+where clang < 17 or GCC < 11.1.0, we will deal with them in
+CONFIG_TOOLCHAIN_NEEDS_OLD_ISA_SPEC.
+
+For more information, please refer to:
+commit 6df2a016c0c8 ("riscv: fix build with binutils 2.38")
+commit e89c2e815e76 ("riscv: Handle zicsr/zifencei issues between clang and binutils")
+
+Link: https://sourceware.org/git/?p=binutils-gdb.git;a=commit;h=aed44286efa8ae8717a77d94b51ac3614e2ca6dc [0]
+Link: https://gcc.gnu.org/git/?p=gcc.git;a=commit;h=98416dbb0a62579d4a7a4a76bab51b5b52fec2cd [1]
+Link: https://sourceware.org/git/?p=binutils-gdb.git;a=commit;h=5a1b31e1e1cee6e9f1c92abff59cdcfff0dddf30 [2]
+Link: https://sourceware.org/git/?p=binutils-gdb.git;a=commit;h=729a53530e86972d1143553a415db34e6e01d5d2 [3]
+Link: https://gcc.gnu.org/git/?p=gcc.git;a=commit;h=b03be74bad08c382da47e048007a78fa3fb4ef49 [4]
+Link: https://lore.kernel.org/all/20230308220842.1231003-1-conor@kernel.org
+Link: https://lore.kernel.org/all/20230223220546.52879-1-conor@kernel.org
+Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
+Acked-by: Guo Ren <guoren@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Mingzheng Xing <xingmingzheng@iscas.ac.cn>
+Link: https://lore.kernel.org/r/20230809165648.21071-1-xingmingzheng@iscas.ac.cn
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+
+diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
+index 4c07b9189c86..10e7a7ad175a 100644
+--- a/arch/riscv/Kconfig
++++ b/arch/riscv/Kconfig
+@@ -570,24 +570,30 @@ config TOOLCHAIN_HAS_ZIHINTPAUSE
+ config TOOLCHAIN_NEEDS_EXPLICIT_ZICSR_ZIFENCEI
+ 	def_bool y
+ 	# https://sourceware.org/git/?p=binutils-gdb.git;a=commit;h=aed44286efa8ae8717a77d94b51ac3614e2ca6dc
+-	depends on AS_IS_GNU && AS_VERSION >= 23800
++	# https://gcc.gnu.org/git/?p=gcc.git;a=commit;h=98416dbb0a62579d4a7a4a76bab51b5b52fec2cd
++	depends on AS_IS_GNU && AS_VERSION >= 23600
+ 	help
+-	  Newer binutils versions default to ISA spec version 20191213 which
+-	  moves some instructions from the I extension to the Zicsr and Zifencei
+-	  extensions.
++	  Binutils-2.38 and GCC-12.1.0 bumped the default ISA spec to the newer
++	  20191213 version, which moves some instructions from the I extension to
++	  the Zicsr and Zifencei extensions. This requires explicitly specifying
++	  Zicsr and Zifencei when binutils >= 2.38 or GCC >= 12.1.0. Zicsr
++	  and Zifencei are supported in binutils from version 2.36 onwards.
++	  To make life easier, and avoid forcing toolchains that default to a
++	  newer ISA spec to version 2.2, relax the check to binutils >= 2.36.
++	  For clang < 17 or GCC < 11.1.0, for which this is not possible, this is
++	  dealt with in CONFIG_TOOLCHAIN_NEEDS_OLD_ISA_SPEC.
+ 
+ config TOOLCHAIN_NEEDS_OLD_ISA_SPEC
+ 	def_bool y
+ 	depends on TOOLCHAIN_NEEDS_EXPLICIT_ZICSR_ZIFENCEI
+ 	# https://github.com/llvm/llvm-project/commit/22e199e6afb1263c943c0c0d4498694e15bf8a16
+-	depends on CC_IS_CLANG && CLANG_VERSION < 170000
++	# https://gcc.gnu.org/git/?p=gcc.git;a=commit;h=b03be74bad08c382da47e048007a78fa3fb4ef49
++	depends on (CC_IS_CLANG && CLANG_VERSION < 170000) || (CC_IS_GCC && GCC_VERSION < 110100)
+ 	help
+-	  Certain versions of clang do not support zicsr and zifencei via -march
+-	  but newer versions of binutils require it for the reasons noted in the
+-	  help text of CONFIG_TOOLCHAIN_NEEDS_EXPLICIT_ZICSR_ZIFENCEI. This
+-	  option causes an older ISA spec compatible with these older versions
+-	  of clang to be passed to GAS, which has the same result as passing zicsr
+-	  and zifencei to -march.
++	  Certain versions of clang and GCC do not support zicsr and zifencei via
++	  -march. This option causes an older ISA spec compatible with these older
++	  versions of clang and GCC to be passed to GAS, which has the same result
++	  as passing zicsr and zifencei to -march.
+ 
+ config FPU
+ 	bool "FPU support"
+diff --git a/arch/riscv/kernel/compat_vdso/Makefile b/arch/riscv/kernel/compat_vdso/Makefile
+index 189345773e7e..b86e5e2c3aea 100644
+--- a/arch/riscv/kernel/compat_vdso/Makefile
++++ b/arch/riscv/kernel/compat_vdso/Makefile
+@@ -11,7 +11,13 @@ compat_vdso-syms += flush_icache
+ COMPAT_CC := $(CC)
+ COMPAT_LD := $(LD)
+ 
+-COMPAT_CC_FLAGS := -march=rv32g -mabi=ilp32
++# binutils 2.35 does not support the zifencei extension, but in the ISA
++# spec 20191213, G stands for IMAFD_ZICSR_ZIFENCEI.
++ifdef CONFIG_TOOLCHAIN_NEEDS_EXPLICIT_ZICSR_ZIFENCEI
++	COMPAT_CC_FLAGS := -march=rv32g -mabi=ilp32
++else
++	COMPAT_CC_FLAGS := -march=rv32imafd -mabi=ilp32
++endif
+ COMPAT_LD_FLAGS := -melf32lriscv
+ 
+ # Disable attributes, as they're useless and break the build.
+
