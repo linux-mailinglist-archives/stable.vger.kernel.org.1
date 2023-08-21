@@ -2,43 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9DD7C783216
-	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:21:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 925EE7831CB
+	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:21:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229875AbjHUT5R (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 21 Aug 2023 15:57:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45318 "EHLO
+        id S229882AbjHUT5V (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 21 Aug 2023 15:57:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49810 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229882AbjHUT5Q (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 15:57:16 -0400
+        with ESMTP id S229886AbjHUT5V (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 15:57:21 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B5EB10E
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 12:57:14 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 13F9ED3
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 12:57:20 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1F1B264641
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 19:57:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 310F3C433C8;
-        Mon, 21 Aug 2023 19:57:13 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9E7F364659
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 19:57:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEE15C433C7;
+        Mon, 21 Aug 2023 19:57:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692647833;
-        bh=Ts7MD2nmsTmRTuy6bd/7b+rO+iYOveb0OO+NMHAJPSg=;
+        s=korg; t=1692647839;
+        bh=QZHtQzG5N9ZAWZJO9WZWG6oYF4ylwsYrCsCkGHCpSQM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=0hI8KB6AmKFOXodV4F/fg2y22wPSYjMfbXKkiei+OjK3yGrNR90BYV1IOX3cbiVGo
-         5IJTznUVjxROwaqPaW4BkjgWkTdR69x9TPdHbpRzSgMKNHqSwULMm5lyoVsHCXmhMq
-         Bo8bNV3FlJk2Fai8iWGTYLd4rhG45Jp1hblMEEe0=
+        b=aDTN1voo4I07jQUy0phRLbX29f+mqKHtzQEhoe728fXIE4nEKKO5IEpddO75O8Obn
+         oebDbn7qsyk47L4u+o3DVo//KQGCoyVwpwXavLrtK5F9548CUzrSMYQGkYrHWUbreD
+         573OvUPY5E1p+i2GaDaA7JMiSfW8k1oAvHniYhgM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Conor Dooley <conor.dooley@microchip.com>,
-        Guo Ren <guoren@kernel.org>,
-        Mingzheng Xing <xingmingzheng@iscas.ac.cn>,
-        Palmer Dabbelt <palmer@rivosinc.com>
-Subject: [PATCH 6.1 154/194] riscv: Handle zicsr/zifencei issue between gcc and binutils
-Date:   Mon, 21 Aug 2023 21:42:13 +0200
-Message-ID: <20230821194129.481225086@linuxfoundation.org>
+        patches@lists.linux.dev, Andrew Melnychenko <andrew@daynix.com>,
+        Hawkins Jiawei <yin31149@gmail.com>,
+        Jason Wang <jasowang@redhat.com>,
+        =?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
+        "Michael S. Tsirkin" <mst@redhat.com>,
+        Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+Subject: [PATCH 6.1 155/194] virtio-net: Zero max_tx_vq field for VIRTIO_NET_CTRL_MQ_HASH_CONFIG case
+Date:   Mon, 21 Aug 2023 21:42:14 +0200
+Message-ID: <20230821194129.513901395@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230821194122.695845670@linuxfoundation.org>
 References: <20230821194122.695845670@linuxfoundation.org>
@@ -55,111 +57,52 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Mingzheng Xing <xingmingzheng@iscas.ac.cn>
+From: Hawkins Jiawei <yin31149@gmail.com>
 
-commit ca09f772cccaeec4cd05a21528c37a260aa2dd2c upstream.
+commit 2c507ce90e02cd78d00fd4b0fe26c8641873c13f upstream.
 
-Binutils-2.38 and GCC-12.1.0 bumped[0][1] the default ISA spec to the newer
-20191213 version which moves some instructions from the I extension to the
-Zicsr and Zifencei extensions. So if one of the binutils and GCC exceeds
-that version, we should explicitly specifying Zicsr and Zifencei via -march
-to cope with the new changes. but this only occurs when binutils >= 2.36
-and GCC >= 11.1.0. It's a different story when binutils < 2.36.
+Kernel uses `struct virtio_net_ctrl_rss` to save command-specific-data
+for both the VIRTIO_NET_CTRL_MQ_HASH_CONFIG and
+VIRTIO_NET_CTRL_MQ_RSS_CONFIG commands.
 
-binutils-2.36 supports the Zifencei extension[2] and splits Zifencei and
-Zicsr from I[3]. GCC-11.1.0 is particular[4] because it add support Zicsr
-and Zifencei extension for -march. binutils-2.35 does not support the
-Zifencei extension, and does not need to specify Zicsr and Zifencei when
-working with GCC >= 12.1.0.
+According to the VirtIO standard, "Field reserved MUST contain zeroes.
+It is defined to make the structure to match the layout of
+virtio_net_rss_config structure, defined in 5.1.6.5.7.".
 
-To make our lives easier, let's relax the check to binutils >= 2.36 in
-CONFIG_TOOLCHAIN_NEEDS_EXPLICIT_ZICSR_ZIFENCEI. For the other two cases,
-where clang < 17 or GCC < 11.1.0, we will deal with them in
-CONFIG_TOOLCHAIN_NEEDS_OLD_ISA_SPEC.
+Yet for the VIRTIO_NET_CTRL_MQ_HASH_CONFIG command case, the `max_tx_vq`
+field in struct virtio_net_ctrl_rss, which corresponds to the
+`reserved` field in struct virtio_net_hash_config, is not zeroed,
+thereby violating the VirtIO standard.
 
-For more information, please refer to:
-commit 6df2a016c0c8 ("riscv: fix build with binutils 2.38")
-commit e89c2e815e76 ("riscv: Handle zicsr/zifencei issues between clang and binutils")
+This patch solves this problem by zeroing this field in
+virtnet_init_default_rss().
 
-Link: https://sourceware.org/git/?p=binutils-gdb.git;a=commit;h=aed44286efa8ae8717a77d94b51ac3614e2ca6dc [0]
-Link: https://gcc.gnu.org/git/?p=gcc.git;a=commit;h=98416dbb0a62579d4a7a4a76bab51b5b52fec2cd [1]
-Link: https://sourceware.org/git/?p=binutils-gdb.git;a=commit;h=5a1b31e1e1cee6e9f1c92abff59cdcfff0dddf30 [2]
-Link: https://sourceware.org/git/?p=binutils-gdb.git;a=commit;h=729a53530e86972d1143553a415db34e6e01d5d2 [3]
-Link: https://gcc.gnu.org/git/?p=gcc.git;a=commit;h=b03be74bad08c382da47e048007a78fa3fb4ef49 [4]
-Link: https://lore.kernel.org/all/20230308220842.1231003-1-conor@kernel.org
-Link: https://lore.kernel.org/all/20230223220546.52879-1-conor@kernel.org
-Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
-Acked-by: Guo Ren <guoren@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Mingzheng Xing <xingmingzheng@iscas.ac.cn>
-Link: https://lore.kernel.org/r/20230809165648.21071-1-xingmingzheng@iscas.ac.cn
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Cc: Andrew Melnychenko <andrew@daynix.com>
+Cc: stable@vger.kernel.org
+Fixes: c7114b1249fa ("drivers/net/virtio_net: Added basic RSS support.")
+Signed-off-by: Hawkins Jiawei <yin31149@gmail.com>
+Acked-by: Jason Wang <jasowang@redhat.com>
+Acked-by: Eugenio Pérez <eperezma@redhat.com>
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Message-Id: <20230810110405.25558-1-yin31149@gmail.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Reviewed-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+Acked-by: Jason Wang <jasowang@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/riscv/Kconfig                     |   28 +++++++++++++++++-----------
- arch/riscv/kernel/compat_vdso/Makefile |    8 +++++++-
- 2 files changed, 24 insertions(+), 12 deletions(-)
+ drivers/net/virtio_net.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/riscv/Kconfig
-+++ b/arch/riscv/Kconfig
-@@ -447,24 +447,30 @@ config TOOLCHAIN_HAS_ZIHINTPAUSE
- config TOOLCHAIN_NEEDS_EXPLICIT_ZICSR_ZIFENCEI
- 	def_bool y
- 	# https://sourceware.org/git/?p=binutils-gdb.git;a=commit;h=aed44286efa8ae8717a77d94b51ac3614e2ca6dc
--	depends on AS_IS_GNU && AS_VERSION >= 23800
-+	# https://gcc.gnu.org/git/?p=gcc.git;a=commit;h=98416dbb0a62579d4a7a4a76bab51b5b52fec2cd
-+	depends on AS_IS_GNU && AS_VERSION >= 23600
- 	help
--	  Newer binutils versions default to ISA spec version 20191213 which
--	  moves some instructions from the I extension to the Zicsr and Zifencei
--	  extensions.
-+	  Binutils-2.38 and GCC-12.1.0 bumped the default ISA spec to the newer
-+	  20191213 version, which moves some instructions from the I extension to
-+	  the Zicsr and Zifencei extensions. This requires explicitly specifying
-+	  Zicsr and Zifencei when binutils >= 2.38 or GCC >= 12.1.0. Zicsr
-+	  and Zifencei are supported in binutils from version 2.36 onwards.
-+	  To make life easier, and avoid forcing toolchains that default to a
-+	  newer ISA spec to version 2.2, relax the check to binutils >= 2.36.
-+	  For clang < 17 or GCC < 11.1.0, for which this is not possible, this is
-+	  dealt with in CONFIG_TOOLCHAIN_NEEDS_OLD_ISA_SPEC.
+--- a/drivers/net/virtio_net.c
++++ b/drivers/net/virtio_net.c
+@@ -2504,7 +2504,7 @@ static void virtnet_init_default_rss(str
+ 		vi->ctrl->rss.indirection_table[i] = indir_val;
+ 	}
  
- config TOOLCHAIN_NEEDS_OLD_ISA_SPEC
- 	def_bool y
- 	depends on TOOLCHAIN_NEEDS_EXPLICIT_ZICSR_ZIFENCEI
- 	# https://github.com/llvm/llvm-project/commit/22e199e6afb1263c943c0c0d4498694e15bf8a16
--	depends on CC_IS_CLANG && CLANG_VERSION < 170000
-+	# https://gcc.gnu.org/git/?p=gcc.git;a=commit;h=b03be74bad08c382da47e048007a78fa3fb4ef49
-+	depends on (CC_IS_CLANG && CLANG_VERSION < 170000) || (CC_IS_GCC && GCC_VERSION < 110100)
- 	help
--	  Certain versions of clang do not support zicsr and zifencei via -march
--	  but newer versions of binutils require it for the reasons noted in the
--	  help text of CONFIG_TOOLCHAIN_NEEDS_EXPLICIT_ZICSR_ZIFENCEI. This
--	  option causes an older ISA spec compatible with these older versions
--	  of clang to be passed to GAS, which has the same result as passing zicsr
--	  and zifencei to -march.
-+	  Certain versions of clang and GCC do not support zicsr and zifencei via
-+	  -march. This option causes an older ISA spec compatible with these older
-+	  versions of clang and GCC to be passed to GAS, which has the same result
-+	  as passing zicsr and zifencei to -march.
+-	vi->ctrl->rss.max_tx_vq = vi->curr_queue_pairs;
++	vi->ctrl->rss.max_tx_vq = vi->has_rss ? vi->curr_queue_pairs : 0;
+ 	vi->ctrl->rss.hash_key_length = vi->rss_key_size;
  
- config FPU
- 	bool "FPU support"
---- a/arch/riscv/kernel/compat_vdso/Makefile
-+++ b/arch/riscv/kernel/compat_vdso/Makefile
-@@ -11,7 +11,13 @@ compat_vdso-syms += flush_icache
- COMPAT_CC := $(CC)
- COMPAT_LD := $(LD)
- 
--COMPAT_CC_FLAGS := -march=rv32g -mabi=ilp32
-+# binutils 2.35 does not support the zifencei extension, but in the ISA
-+# spec 20191213, G stands for IMAFD_ZICSR_ZIFENCEI.
-+ifdef CONFIG_TOOLCHAIN_NEEDS_EXPLICIT_ZICSR_ZIFENCEI
-+	COMPAT_CC_FLAGS := -march=rv32g -mabi=ilp32
-+else
-+	COMPAT_CC_FLAGS := -march=rv32imafd -mabi=ilp32
-+endif
- COMPAT_LD_FLAGS := -melf32lriscv
- 
- # Disable attributes, as they're useless and break the build.
+ 	netdev_rss_key_fill(vi->ctrl->rss.key, vi->rss_key_size);
 
 
