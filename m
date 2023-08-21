@@ -2,51 +2,55 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 91A8A782EA6
-	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 18:43:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8B7CE782EAC
+	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 18:44:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236706AbjHUQnj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 21 Aug 2023 12:43:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42466 "EHLO
+        id S232910AbjHUQo0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 21 Aug 2023 12:44:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47556 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234963AbjHUQnj (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 12:43:39 -0400
+        with ESMTP id S233521AbjHUQoZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 12:44:25 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 91196CC;
-        Mon, 21 Aug 2023 09:43:37 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C564CC
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 09:44:24 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2D56B63E47;
-        Mon, 21 Aug 2023 16:43:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10DEDC433C7;
-        Mon, 21 Aug 2023 16:43:35 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BE4EC63EDD
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 16:44:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FF49C433C7;
+        Mon, 21 Aug 2023 16:44:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692636216;
-        bh=xDZnf01gvSZEJKEIZ7/1mNK5Ti1NMwtcvcRje7Aoek8=;
+        s=korg; t=1692636263;
+        bh=LlrlqT5YFbaVq7QjCCWPiC/vKgnJUso9K3vZdLYpSrQ=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=k+Plp/JpmxdvaW6NG5+wCJ1yJqgd08tcvU+FIsZZ7a5Bgg3HQjkDVaSax27i2DbgZ
-         ibp043nQzh0XFBkNDEvwaOvazwDyNUh9tpvqIq+SMXfVy5kh4TPRhrsKOfoe4rapN8
-         No6EBxcXqI4sY8A4vuAFp8wr3FauwsHUuRP5V7tg=
-Date:   Mon, 21 Aug 2023 18:43:33 +0200
+        b=ybRr39jV8vAJlQlMVP1ogmL+zehfOZcFpu9ASwI247gPAz+lGOtvrJ9yiJ2HT6GB8
+         vnplHA6UHU27663KPl6RS44kGk70wTAlT2TLFpm0FUZNYjHSy+UAhLbbnWnu8z3HpK
+         +w2ltuxxj06WyHzx6mxPz7jZHBYkK03FbidtcRIQ=
+Date:   Mon, 21 Aug 2023 18:44:20 +0200
 From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Cc:     stable@vger.kernel.org, vegard.nossum@oracle.com,
-        Namjae Jeon <linkinjeon@kernel.org>,
-        Yuezhang Mo <Yuezhang.Mo@sony.com>,
-        Maxim Suhanov <dfirblog@gmail.com>,
-        Sungjong Seo <sj1557.seo@samsung.com>,
-        Sasha Levin <sashal@kernel.org>, linux-fsdevel@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 5.15.y] exfat: check if filename entries exceeds max
- filename length
-Message-ID: <2023082122-remold-emission-a564@gregkh>
-References: <20230819075337.3270182-1-harshit.m.mogalapalli@oracle.com>
+To:     Jaroslav Kysela <perex@perex.cz>
+Cc:     ALSA development <alsa-devel@alsa-project.org>,
+        stable@vger.kernel.org,
+        Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
+        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+        Rander Wang <rander.wang@intel.com>,
+        =?iso-8859-1?Q?P=E9ter?= Ujfalusi 
+        <peter.ujfalusi@linux.intel.com>,
+        Guennadi Liakhovetski <guennadi.liakhovetski@linux.intel.com>,
+        Bard Liao <yung-chuan.liao@linux.intel.com>,
+        Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH] [6.4.y] ASoC: SOF: intel: hda: Clean up link DMA for
+ IPC3 during stop
+Message-ID: <2023082110-stumble-founding-148d@gregkh>
+References: <20230821122209.20139-1-perex@perex.cz>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20230819075337.3270182-1-harshit.m.mogalapalli@oracle.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20230821122209.20139-1-perex@perex.cz>
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -56,33 +60,36 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Sat, Aug 19, 2023 at 12:53:37AM -0700, Harshit Mogalapalli wrote:
-> From: Namjae Jeon <linkinjeon@kernel.org>
+On Mon, Aug 21, 2023 at 02:22:09PM +0200, Jaroslav Kysela wrote:
+> From: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
 > 
-> [ Upstream commit d42334578eba1390859012ebb91e1e556d51db49 ]
+> commit 90219f1bd273055f1dc1d7bdc0965755b992c045 upstream.
 > 
-> exfat_extract_uni_name copies characters from a given file name entry into
-> the 'uniname' variable. This variable is actually defined on the stack of
-> the exfat_readdir() function. According to the definition of
-> the 'exfat_uni_name' type, the file name should be limited 255 characters
-> (+ null teminator space), but the exfat_get_uniname_from_ext_entry()
-> function can write more characters because there is no check if filename
-> entries exceeds max filename length. This patch add the check not to copy
-> filename characters when exceeding max filename length.
+> With IPC3, we reset hw_params during the stop trigger, so we should also
+> clean up the link DMA during the stop trigger.
 > 
-> Cc: stable@vger.kernel.org
-> Cc: Yuezhang Mo <Yuezhang.Mo@sony.com>
-> Reported-by: Maxim Suhanov <dfirblog@gmail.com>
-> Reviewed-by: Sungjong Seo <sj1557.seo@samsung.com>
-> Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
-> [Harshit: backport to 5.15.y]
-> Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-> ---
-> The conflict resolved patch for 6.1.y applies cleanly to 5.15.y as
-> well.
-> Note: This fix is already present in 5.10.y but missing in 5.15.y
+> Cc: <stable@vger.kernel.org> # 6.4.x
+> Fixes: 1bf83fa6654c ("ASoC: SOF: Intel: hda-dai: Do not perform DMA cleanup during stop")
+> Closes: https://github.com/thesofproject/linux/issues/4455
+> Closes: https://github.com/thesofproject/linux/issues/4482
+> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217673
+> Signed-off-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
+> Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+> Reviewed-by: Rander Wang <rander.wang@intel.com>
+> Reviewed-by: Péter Ujfalusi <peter.ujfalusi@linux.intel.com>
+> Reviewed-by: Guennadi Liakhovetski <guennadi.liakhovetski@linux.intel.com>
+> Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
+> Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+> Link: https://lore.kernel.org/r/20230808110627.32375-1-peter.ujfalusi@linux.intel.com
+> Signed-off-by: Mark Brown <broonie@kernel.org>
+> 
+> Note that many recent Intel based laptops are affected.
+> 
+> Added missing code for 6.4 kernels to keep the fix simple not depending
+> on the other changes. This commit is present in 6.5 tree already.
+> 
+> Signed-off-by: Jaroslav Kysela <perex@perex.cz>
 
-Thanks for catching this, now queued up.
+Now queued up, thanks.
 
 greg k-h
