@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D63FF7831CF
-	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:21:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 98B92783264
+	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:22:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229491AbjHUTxP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 21 Aug 2023 15:53:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39490 "EHLO
+        id S230132AbjHUUBs (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 21 Aug 2023 16:01:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60170 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229481AbjHUTxO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 15:53:14 -0400
+        with ESMTP id S230133AbjHUUBr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 16:01:47 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D43FFFA
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 12:53:12 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 37DBB129
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 13:01:46 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6C2DC6447D
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 19:53:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D0DDC433C8;
-        Mon, 21 Aug 2023 19:53:11 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C2CA9647C7
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 20:01:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB598C433C8;
+        Mon, 21 Aug 2023 20:01:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692647591;
-        bh=tH5WkVriW+GmItmyf8xUaX+z8EvvHKrMH+P0VXxS1zc=;
+        s=korg; t=1692648105;
+        bh=NmoTW0J84GvS2IUU+fe+3NMZHdfB4Ej9FUDZW83GHag=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=FL8AeFrntlYeUiGCgDa026ihhpIi+hchytNKCXHAYYKNUZdg/PgD1ZDyIJp5nUnIn
-         Mr7A0B4HJM8VSbejhj0t/4zv+Imh7Q9DTOk29ddvmTX57OglmAB0jGHYRfvckF7bG9
-         FdKs+R6hIPHgM8KEOewerCtyDdsNYz/R8SekURkU=
+        b=wAEvnPTFUYgd3sEeudsdUtjA82Sp8MUfvuvgy/ZnwVaGt7VxW4vwFfnY01az91Jz0
+         g7YjiAI600S4SUE1pg5TF6zjfbM4ba6nEFJSIbmlsfUa6D354LRBlNFyPcDgiRbyjI
+         Pj3813dNX2FxQEUciyniJRh3VSKrGTzTgxEP1s8M=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        "Paulo Alcantara (SUSE)" <pc@manguebit.com>,
-        Steve French <stfrench@microsoft.com>,
+        patches@lists.linux.dev, Li Jun <jun.li@nxp.com>,
+        Xu Yang <xu.yang_2@nxp.com>,
+        Peter Chen <peter.chen@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 039/194] smb: client: fix warning in cifs_smb3_do_mount()
-Date:   Mon, 21 Aug 2023 21:40:18 +0200
-Message-ID: <20230821194124.517326898@linuxfoundation.org>
+Subject: [PATCH 6.4 056/234] usb: chipidea: imx: turn off vbus comparator when suspend
+Date:   Mon, 21 Aug 2023 21:40:19 +0200
+Message-ID: <20230821194131.234841263@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230821194122.695845670@linuxfoundation.org>
-References: <20230821194122.695845670@linuxfoundation.org>
+In-Reply-To: <20230821194128.754601642@linuxfoundation.org>
+References: <20230821194128.754601642@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,86 +55,115 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Paulo Alcantara <pc@manguebit.com>
+From: Xu Yang <xu.yang_2@nxp.com>
 
-[ Upstream commit 12c30f33cc6769bf411088a2872843c4f9ea32f9 ]
+[ Upstream commit 0ac37fbdad7087bbcbbe246a602c248ccfd954ea ]
 
-This fixes the following warning reported by kernel test robot
+As we use bvalid for vbus wakeup source, to save power when
+suspend, turn off the vbus comparator for imx7d and imx8mm.
 
-  fs/smb/client/cifsfs.c:982 cifs_smb3_do_mount() warn: possible
-  memory leak of 'cifs_sb'
+Below is this bit description from RM of iMX8MM
+"VBUS Valid Comparator Enable:
 
-Link: https://lore.kernel.org/all/202306170124.CtQqzf0I-lkp@intel.com/
-Signed-off-by: Paulo Alcantara (SUSE) <pc@manguebit.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+This signal controls the USB OTG PHY VBUS Valid comparator which
+indicates whether the voltage on the USB_OTG*_VBUS pin is below
+the VBUS Valid threshold. The VBUS Valid threshold is nominally
+4.75V on this USB PHY. The VBUS Valid threshold can be adjusted
+using the USBNC_OTGn_PHY_CFG1[OTGTUNE0] bit field. Status of the
+VBUS Valid comparator, when it is enabled, is reported on the
+USBNC_OTGn_PHY_STATUS[VBUS_VLD] bit.
+When OTGDISABLE0 (USBNC_USB_OTGx_PHY_CFG2[10])is set to 1'b0 and
+DRVVBUS0 is set to 1'b1, the Bandgap circuitry and VBUS Valid
+comparator are powered, even in Suspend or Sleep mode.
+DRVVBUS0 should be reset to 1'b0 when the internal VBUS Valid comparator
+is not required, to reduce quiescent current in Suspend or Sleep mode.
+ - 0 The VBUS Valid comparator is disabled
+  - 1 The VBUS Valid comparator is enabled"
+
+Signed-off-by: Li Jun <jun.li@nxp.com>
+Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+Acked-by: Peter Chen <peter.chen@kernel.org>
+Message-ID: <20230517081907.3410465-2-xu.yang_2@nxp.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/cifsfs.c | 28 ++++++++++------------------
- 1 file changed, 10 insertions(+), 18 deletions(-)
+ drivers/usb/chipidea/usbmisc_imx.c | 35 ++++++++++++++++++++++++++++++
+ 1 file changed, 35 insertions(+)
 
-diff --git a/fs/smb/client/cifsfs.c b/fs/smb/client/cifsfs.c
-index 078df1e2dd18a..18d66497c42d1 100644
---- a/fs/smb/client/cifsfs.c
-+++ b/fs/smb/client/cifsfs.c
-@@ -883,11 +883,11 @@ struct dentry *
- cifs_smb3_do_mount(struct file_system_type *fs_type,
- 	      int flags, struct smb3_fs_context *old_ctx)
- {
--	int rc;
--	struct super_block *sb = NULL;
--	struct cifs_sb_info *cifs_sb = NULL;
- 	struct cifs_mnt_data mnt_data;
-+	struct cifs_sb_info *cifs_sb;
-+	struct super_block *sb;
- 	struct dentry *root;
-+	int rc;
+diff --git a/drivers/usb/chipidea/usbmisc_imx.c b/drivers/usb/chipidea/usbmisc_imx.c
+index c57c1a71a5132..0938e274ba3a8 100644
+--- a/drivers/usb/chipidea/usbmisc_imx.c
++++ b/drivers/usb/chipidea/usbmisc_imx.c
+@@ -152,6 +152,7 @@ struct usbmisc_ops {
+ 	int (*charger_detection)(struct imx_usbmisc_data *data);
+ 	/* It's called when system resume from usb power lost */
+ 	int (*power_lost_check)(struct imx_usbmisc_data *data);
++	void (*vbus_comparator_on)(struct imx_usbmisc_data *data, bool on);
+ };
  
- 	/*
- 	 * Prints in Kernel / CIFS log the attempted mount operation
-@@ -898,11 +898,9 @@ cifs_smb3_do_mount(struct file_system_type *fs_type,
- 	else
- 		cifs_info("Attempting to mount %s\n", old_ctx->UNC);
- 
--	cifs_sb = kzalloc(sizeof(struct cifs_sb_info), GFP_KERNEL);
--	if (cifs_sb == NULL) {
--		root = ERR_PTR(-ENOMEM);
--		goto out;
--	}
-+	cifs_sb = kzalloc(sizeof(*cifs_sb), GFP_KERNEL);
-+	if (!cifs_sb)
-+		return ERR_PTR(-ENOMEM);
- 
- 	cifs_sb->ctx = kzalloc(sizeof(struct smb3_fs_context), GFP_KERNEL);
- 	if (!cifs_sb->ctx) {
-@@ -945,10 +943,8 @@ cifs_smb3_do_mount(struct file_system_type *fs_type,
- 
- 	sb = sget(fs_type, cifs_match_super, cifs_set_super, flags, &mnt_data);
- 	if (IS_ERR(sb)) {
--		root = ERR_CAST(sb);
- 		cifs_umount(cifs_sb);
--		cifs_sb = NULL;
--		goto out;
-+		return ERR_CAST(sb);
- 	}
- 
- 	if (sb->s_root) {
-@@ -979,13 +975,9 @@ cifs_smb3_do_mount(struct file_system_type *fs_type,
- 	deactivate_locked_super(sb);
- 	return root;
- out:
--	if (cifs_sb) {
--		if (!sb || IS_ERR(sb)) {  /* otherwise kill_sb will handle */
--			kfree(cifs_sb->prepath);
--			smb3_cleanup_fs_context(cifs_sb->ctx);
--			kfree(cifs_sb);
--		}
--	}
-+	kfree(cifs_sb->prepath);
-+	smb3_cleanup_fs_context(cifs_sb->ctx);
-+	kfree(cifs_sb);
- 	return root;
+ struct imx_usbmisc {
+@@ -875,6 +876,33 @@ static int imx7d_charger_detection(struct imx_usbmisc_data *data)
+ 	return ret;
  }
  
++static void usbmisc_imx7d_vbus_comparator_on(struct imx_usbmisc_data *data,
++					     bool on)
++{
++	unsigned long flags;
++	struct imx_usbmisc *usbmisc = dev_get_drvdata(data->dev);
++	u32 val;
++
++	if (data->hsic)
++		return;
++
++	spin_lock_irqsave(&usbmisc->lock, flags);
++	/*
++	 * Disable VBUS valid comparator when in suspend mode,
++	 * when OTG is disabled and DRVVBUS0 is asserted case
++	 * the Bandgap circuitry and VBUS Valid comparator are
++	 * still powered, even in Suspend or Sleep mode.
++	 */
++	val = readl(usbmisc->base + MX7D_USB_OTG_PHY_CFG2);
++	if (on)
++		val |= MX7D_USB_OTG_PHY_CFG2_DRVVBUS0;
++	else
++		val &= ~MX7D_USB_OTG_PHY_CFG2_DRVVBUS0;
++
++	writel(val, usbmisc->base + MX7D_USB_OTG_PHY_CFG2);
++	spin_unlock_irqrestore(&usbmisc->lock, flags);
++}
++
+ static int usbmisc_imx7ulp_init(struct imx_usbmisc_data *data)
+ {
+ 	struct imx_usbmisc *usbmisc = dev_get_drvdata(data->dev);
+@@ -1018,6 +1046,7 @@ static const struct usbmisc_ops imx7d_usbmisc_ops = {
+ 	.set_wakeup = usbmisc_imx7d_set_wakeup,
+ 	.charger_detection = imx7d_charger_detection,
+ 	.power_lost_check = usbmisc_imx7d_power_lost_check,
++	.vbus_comparator_on = usbmisc_imx7d_vbus_comparator_on,
+ };
+ 
+ static const struct usbmisc_ops imx7ulp_usbmisc_ops = {
+@@ -1132,6 +1161,9 @@ int imx_usbmisc_suspend(struct imx_usbmisc_data *data, bool wakeup)
+ 
+ 	usbmisc = dev_get_drvdata(data->dev);
+ 
++	if (usbmisc->ops->vbus_comparator_on)
++		usbmisc->ops->vbus_comparator_on(data, false);
++
+ 	if (wakeup && usbmisc->ops->set_wakeup)
+ 		ret = usbmisc->ops->set_wakeup(data, true);
+ 	if (ret) {
+@@ -1185,6 +1217,9 @@ int imx_usbmisc_resume(struct imx_usbmisc_data *data, bool wakeup)
+ 		goto hsic_set_clk_fail;
+ 	}
+ 
++	if (usbmisc->ops->vbus_comparator_on)
++		usbmisc->ops->vbus_comparator_on(data, true);
++
+ 	return 0;
+ 
+ hsic_set_clk_fail:
 -- 
 2.40.1
 
