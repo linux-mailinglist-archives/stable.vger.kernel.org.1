@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7E1FF783305
-	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:22:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 66CBC78323C
+	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:21:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230213AbjHUUEx (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 21 Aug 2023 16:04:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41378 "EHLO
+        id S229731AbjHUTzA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 21 Aug 2023 15:55:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35144 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230217AbjHUUEw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 16:04:52 -0400
+        with ESMTP id S229732AbjHUTzA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 15:55:00 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B499DE3
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 13:04:50 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 07FDAFA
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 12:54:56 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4AAB3648E3
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 20:04:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58030C433C8;
-        Mon, 21 Aug 2023 20:04:49 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 919106458E
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 19:54:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0A58C433C8;
+        Mon, 21 Aug 2023 19:54:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692648289;
-        bh=aB3kEMDtCkTkPvotAwUWNN5+fRZCXq3IuE5i7s+0OTo=;
+        s=korg; t=1692647695;
+        bh=N0Sm5C3CyWYTVHpMrVwth7L0Uk3+9DKC+c4KbGBEL/M=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=qKUSsIIuUtJiSnkvU8F0E+cll0khF0N1ov8G67+8lpypiT1ig6v4SAhUMAqNhDWeu
-         l4biaBTFlohebD96w6gM0fOr16ekzhxKyO/OImQk6ABmclxX6YvmnW4kHCAz5LZZ1+
-         zFuTDy5yYCxaCKvZk6pZQ1UUgmijCYjr2hL7e14Q=
+        b=Pl2pxYvV22oj7F7C85Yq/MHPR/M5KbYtJURjX0fH7cLPrhLBCK+zRhxnEf0QzHbqj
+         +I2V8jvIsI1QZqTOhJIWoMIs8W/KPmf/NY2eV6AqJIykDEd75POpZn+HMRY+udtZvP
+         OZ2gsfwDyDnAGnWtDAy0fmzbfJf0zwAUW0SU/iUM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        "Borislav Petkov (AMD)" <bp@alien8.de>
-Subject: [PATCH 6.4 121/234] x86/cpu: Cleanup the untrain mess
-Date:   Mon, 21 Aug 2023 21:41:24 +0200
-Message-ID: <20230821194134.172641025@linuxfoundation.org>
+        patches@lists.linux.dev, Lin Ma <linma@zju.edu.cn>,
+        Steffen Klassert <steffen.klassert@secunet.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 106/194] net: xfrm: Amend XFRMA_SEC_CTX nla_policy structure
+Date:   Mon, 21 Aug 2023 21:41:25 +0200
+Message-ID: <20230821194127.341966540@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230821194128.754601642@linuxfoundation.org>
-References: <20230821194128.754601642@linuxfoundation.org>
+In-Reply-To: <20230821194122.695845670@linuxfoundation.org>
+References: <20230821194122.695845670@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,109 +54,62 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Peter Zijlstra <peterz@infradead.org>
+From: Lin Ma <linma@zju.edu.cn>
 
-commit e7c25c441e9e0fa75b4c83e0b26306b702cfe90d upstream.
+[ Upstream commit d1e0e61d617ba17aa516db707aa871387566bbf7 ]
 
-Since there can only be one active return_thunk, there only needs be
-one (matching) untrain_ret. It fundamentally doesn't make sense to
-allow multiple untrain_ret at the same time.
+According to all consumers code of attrs[XFRMA_SEC_CTX], like
 
-Fold all the 3 different untrain methods into a single (temporary)
-helper stub.
+* verify_sec_ctx_len(), convert to xfrm_user_sec_ctx*
+* xfrm_state_construct(), call security_xfrm_state_alloc whose prototype
+is int security_xfrm_state_alloc(.., struct xfrm_user_sec_ctx *sec_ctx);
+* copy_from_user_sec_ctx(), convert to xfrm_user_sec_ctx *
+...
 
-Fixes: fb3bd914b3ec ("x86/srso: Add a Speculative RAS Overflow mitigation")
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20230814121149.042774962@infradead.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+It seems that the expected parsing result for XFRMA_SEC_CTX should be
+structure xfrm_user_sec_ctx, and the current xfrm_sec_ctx is confusing
+and misleading (Luckily, they happen to have same size 8 bytes).
+
+This commit amend the policy structure to xfrm_user_sec_ctx to avoid
+ambiguity.
+
+Fixes: cf5cb79f6946 ("[XFRM] netlink: Establish an attribute policy")
+Signed-off-by: Lin Ma <linma@zju.edu.cn>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/nospec-branch.h |   19 +++++--------------
- arch/x86/kernel/cpu/bugs.c           |    1 +
- arch/x86/lib/retpoline.S             |    7 +++++++
- 3 files changed, 13 insertions(+), 14 deletions(-)
+ net/xfrm/xfrm_compat.c | 2 +-
+ net/xfrm/xfrm_user.c   | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
---- a/arch/x86/include/asm/nospec-branch.h
-+++ b/arch/x86/include/asm/nospec-branch.h
-@@ -268,9 +268,9 @@
- .endm
- 
- #ifdef CONFIG_CPU_UNRET_ENTRY
--#define CALL_ZEN_UNTRAIN_RET	"call retbleed_untrain_ret"
-+#define CALL_UNTRAIN_RET	"call entry_untrain_ret"
- #else
--#define CALL_ZEN_UNTRAIN_RET	""
-+#define CALL_UNTRAIN_RET	""
- #endif
- 
- /*
-@@ -289,15 +289,10 @@
- 	defined(CONFIG_CALL_DEPTH_TRACKING) || defined(CONFIG_CPU_SRSO)
- 	VALIDATE_UNRET_END
- 	ALTERNATIVE_3 "",						\
--		      CALL_ZEN_UNTRAIN_RET, X86_FEATURE_UNRET,		\
-+		      CALL_UNTRAIN_RET, X86_FEATURE_UNRET,		\
- 		      "call entry_ibpb", X86_FEATURE_ENTRY_IBPB,	\
- 		      __stringify(RESET_CALL_DEPTH), X86_FEATURE_CALL_DEPTH
- #endif
--
--#ifdef CONFIG_CPU_SRSO
--	ALTERNATIVE_2 "", "call srso_untrain_ret", X86_FEATURE_SRSO, \
--			  "call srso_alias_untrain_ret", X86_FEATURE_SRSO_ALIAS
--#endif
- .endm
- 
- .macro UNTRAIN_RET_FROM_CALL
-@@ -305,15 +300,10 @@
- 	defined(CONFIG_CALL_DEPTH_TRACKING)
- 	VALIDATE_UNRET_END
- 	ALTERNATIVE_3 "",						\
--		      CALL_ZEN_UNTRAIN_RET, X86_FEATURE_UNRET,		\
-+		      CALL_UNTRAIN_RET, X86_FEATURE_UNRET,		\
- 		      "call entry_ibpb", X86_FEATURE_ENTRY_IBPB,	\
- 		      __stringify(RESET_CALL_DEPTH_FROM_CALL), X86_FEATURE_CALL_DEPTH
- #endif
--
--#ifdef CONFIG_CPU_SRSO
--	ALTERNATIVE_2 "", "call srso_untrain_ret", X86_FEATURE_SRSO, \
--			  "call srso_alias_untrain_ret", X86_FEATURE_SRSO_ALIAS
--#endif
- .endm
- 
- 
-@@ -351,6 +341,7 @@ extern void retbleed_untrain_ret(void);
- extern void srso_untrain_ret(void);
- extern void srso_alias_untrain_ret(void);
- 
-+extern void entry_untrain_ret(void);
- extern void entry_ibpb(void);
- 
- extern void (*x86_return_thunk)(void);
---- a/arch/x86/kernel/cpu/bugs.c
-+++ b/arch/x86/kernel/cpu/bugs.c
-@@ -2458,6 +2458,7 @@ static void __init srso_select_mitigatio
- 			 * like ftrace, static_call, etc.
- 			 */
- 			setup_force_cpu_cap(X86_FEATURE_RETHUNK);
-+			setup_force_cpu_cap(X86_FEATURE_UNRET);
- 
- 			if (boot_cpu_data.x86 == 0x19) {
- 				setup_force_cpu_cap(X86_FEATURE_SRSO_ALIAS);
---- a/arch/x86/lib/retpoline.S
-+++ b/arch/x86/lib/retpoline.S
-@@ -290,6 +290,13 @@ SYM_CODE_START(srso_return_thunk)
- 	ud2
- SYM_CODE_END(srso_return_thunk)
- 
-+SYM_FUNC_START(entry_untrain_ret)
-+	ALTERNATIVE_2 "jmp retbleed_untrain_ret", \
-+		      "jmp srso_untrain_ret", X86_FEATURE_SRSO, \
-+		      "jmp srso_alias_untrain_ret", X86_FEATURE_SRSO_ALIAS
-+SYM_FUNC_END(entry_untrain_ret)
-+__EXPORT_THUNK(entry_untrain_ret)
-+
- SYM_CODE_START(__x86_return_thunk)
- 	UNWIND_HINT_FUNC
- 	ANNOTATE_NOENDBR
+diff --git a/net/xfrm/xfrm_compat.c b/net/xfrm/xfrm_compat.c
+index 8cbf45a8bcdc2..655fe4ff86212 100644
+--- a/net/xfrm/xfrm_compat.c
++++ b/net/xfrm/xfrm_compat.c
+@@ -108,7 +108,7 @@ static const struct nla_policy compat_policy[XFRMA_MAX+1] = {
+ 	[XFRMA_ALG_COMP]	= { .len = sizeof(struct xfrm_algo) },
+ 	[XFRMA_ENCAP]		= { .len = sizeof(struct xfrm_encap_tmpl) },
+ 	[XFRMA_TMPL]		= { .len = sizeof(struct xfrm_user_tmpl) },
+-	[XFRMA_SEC_CTX]		= { .len = sizeof(struct xfrm_sec_ctx) },
++	[XFRMA_SEC_CTX]		= { .len = sizeof(struct xfrm_user_sec_ctx) },
+ 	[XFRMA_LTIME_VAL]	= { .len = sizeof(struct xfrm_lifetime_cur) },
+ 	[XFRMA_REPLAY_VAL]	= { .len = sizeof(struct xfrm_replay_state) },
+ 	[XFRMA_REPLAY_THRESH]	= { .type = NLA_U32 },
+diff --git a/net/xfrm/xfrm_user.c b/net/xfrm/xfrm_user.c
+index 3e32fe99a6818..c6803318ac63e 100644
+--- a/net/xfrm/xfrm_user.c
++++ b/net/xfrm/xfrm_user.c
+@@ -2969,7 +2969,7 @@ const struct nla_policy xfrma_policy[XFRMA_MAX+1] = {
+ 	[XFRMA_ALG_COMP]	= { .len = sizeof(struct xfrm_algo) },
+ 	[XFRMA_ENCAP]		= { .len = sizeof(struct xfrm_encap_tmpl) },
+ 	[XFRMA_TMPL]		= { .len = sizeof(struct xfrm_user_tmpl) },
+-	[XFRMA_SEC_CTX]		= { .len = sizeof(struct xfrm_sec_ctx) },
++	[XFRMA_SEC_CTX]		= { .len = sizeof(struct xfrm_user_sec_ctx) },
+ 	[XFRMA_LTIME_VAL]	= { .len = sizeof(struct xfrm_lifetime_cur) },
+ 	[XFRMA_REPLAY_VAL]	= { .len = sizeof(struct xfrm_replay_state) },
+ 	[XFRMA_REPLAY_THRESH]	= { .type = NLA_U32 },
+-- 
+2.40.1
+
 
 
