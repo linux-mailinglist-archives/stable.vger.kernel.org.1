@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 697727832A9
-	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:22:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 71E7C783382
+	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:23:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230204AbjHUUEc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 21 Aug 2023 16:04:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33480 "EHLO
+        id S229814AbjHUT4J (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 21 Aug 2023 15:56:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52670 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230200AbjHUUEc (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 16:04:32 -0400
+        with ESMTP id S229813AbjHUT4I (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 15:56:08 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0568BA8
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 13:04:31 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0136AFD
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 12:56:03 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8FE0C648C5
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 20:04:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F741C433C7;
-        Mon, 21 Aug 2023 20:04:29 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 30D26645E0
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 19:56:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38E41C433C7;
+        Mon, 21 Aug 2023 19:56:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692648270;
-        bh=3dYGAnblenh4Y2E+cwX51+O6lBE64mmpDobJP0Efh9k=;
+        s=korg; t=1692647762;
+        bh=qq5Fe3PXGVT+HhHRFpzx37gR/MWWTTvFI4NUp0DsI2M=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=oMPqxwdPFR2XArX0y4oeLZci9mPWp7+x35G+d9O8kKtvUaBxQYI8lnG5PdhngcXe8
-         JMy0KOHkhMjX84y3PaiagK1qhgXL6E8S8kbRd69bgo51guM1GkBZzGZMo9OUBidt6e
-         5y9uW0dmVgBCGljG6fr/sNLMgN9W2+Sm47u5ExcI=
+        b=jRFg7bCj9zBpYYfYDN8nANcX+b6kSfPVZqaNZVILAGLuBvor/z67rYJxgeiHw69u/
+         orhAtMGPiLMjuns0hJed/XI5xGJ6EB6/6B78A8DyYiZkYXOtuNcHM8Ouh/5XVeqjdV
+         YSICZ+XOv5La3JG23nfhKulBlOjsYQrQczepdZIo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        "Borislav Petkov (AMD)" <bp@alien8.de>
-Subject: [PATCH 6.4 115/234] x86/cpu: Fix up srso_safe_ret() and __x86_return_thunk()
-Date:   Mon, 21 Aug 2023 21:41:18 +0200
-Message-ID: <20230821194133.907852017@linuxfoundation.org>
+        patches@lists.linux.dev, Filipe Manana <fdmanana@suse.com>,
+        Josef Bacik <josef@toxicpanda.com>,
+        David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.1 100/194] btrfs: fix incorrect splitting in btrfs_drop_extent_map_range
+Date:   Mon, 21 Aug 2023 21:41:19 +0200
+Message-ID: <20230821194127.083161731@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230821194128.754601642@linuxfoundation.org>
-References: <20230821194128.754601642@linuxfoundation.org>
+In-Reply-To: <20230821194122.695845670@linuxfoundation.org>
+References: <20230821194122.695845670@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,48 +54,98 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Peter Zijlstra <peterz@infradead.org>
+From: Josef Bacik <josef@toxicpanda.com>
 
-commit af023ef335f13c8b579298fc432daeef609a9e60 upstream.
+commit c962098ca4af146f2625ed64399926a098752c9c upstream.
 
-  vmlinux.o: warning: objtool: srso_untrain_ret() falls through to next function __x86_return_skl()
-  vmlinux.o: warning: objtool: __x86_return_thunk() falls through to next function __x86_return_skl()
+In production we were seeing a variety of WARN_ON()'s in the extent_map
+code, specifically in btrfs_drop_extent_map_range() when we have to call
+add_extent_mapping() for our second split.
 
-This is because these functions (can) end with CALL, which objtool
-does not consider a terminating instruction. Therefore, replace the
-INT3 instruction (which is a non-fatal trap) with UD2 (which is a
-fatal-trap).
+Consider the following extent map layout
 
-This indicates execution will not continue past this point.
+	PINNED
+	[0 16K)  [32K, 48K)
 
-Fixes: fb3bd914b3ec ("x86/srso: Add a Speculative RAS Overflow mitigation")
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20230814121148.637802730@infradead.org
+and then we call btrfs_drop_extent_map_range for [0, 36K), with
+skip_pinned == true.  The initial loop will have
+
+	start = 0
+	end = 36K
+	len = 36K
+
+we will find the [0, 16k) extent, but since we are pinned we will skip
+it, which has this code
+
+	start = em_end;
+	if (end != (u64)-1)
+		len = start + len - em_end;
+
+em_end here is 16K, so now the values are
+
+	start = 16K
+	len = 16K + 36K - 16K = 36K
+
+len should instead be 20K.  This is a problem when we find the next
+extent at [32K, 48K), we need to split this extent to leave [36K, 48k),
+however the code for the split looks like this
+
+	split->start = start + len;
+	split->len = em_end - (start + len);
+
+In this case we have
+
+	em_end = 48K
+	split->start = 16K + 36K       // this should be 16K + 20K
+	split->len = 48K - (16K + 36K) // this overflows as 16K + 36K is 52K
+
+and now we have an invalid extent_map in the tree that potentially
+overlaps other entries in the extent map.  Even in the non-overlapping
+case we will have split->start set improperly, which will cause problems
+with any block related calculations.
+
+We don't actually need len in this loop, we can simply use end as our
+end point, and only adjust start up when we find a pinned extent we need
+to skip.
+
+Adjust the logic to do this, which keeps us from inserting an invalid
+extent map.
+
+We only skip_pinned in the relocation case, so this is relatively rare,
+except in the case where you are running relocation a lot, which can
+happen with auto relocation on.
+
+Fixes: 55ef68990029 ("Btrfs: Fix btrfs_drop_extent_cache for skip pinned case")
+CC: stable@vger.kernel.org # 4.14+
+Reviewed-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/lib/retpoline.S |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/btrfs/extent_map.c |    6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
---- a/arch/x86/lib/retpoline.S
-+++ b/arch/x86/lib/retpoline.S
-@@ -259,7 +259,7 @@ SYM_INNER_LABEL(srso_safe_ret, SYM_L_GLO
- 	int3
- 	lfence
- 	call srso_safe_ret
--	int3
-+	ud2
- SYM_CODE_END(srso_safe_ret)
- SYM_FUNC_END(srso_untrain_ret)
- __EXPORT_THUNK(srso_untrain_ret)
-@@ -269,7 +269,7 @@ SYM_CODE_START(__x86_return_thunk)
- 	ANNOTATE_NOENDBR
- 	ALTERNATIVE_2 "jmp __ret", "call srso_safe_ret", X86_FEATURE_SRSO, \
- 			"call srso_safe_ret_alias", X86_FEATURE_SRSO_ALIAS
--	int3
-+	ud2
- SYM_CODE_END(__x86_return_thunk)
- EXPORT_SYMBOL(__x86_return_thunk)
+--- a/fs/btrfs/extent_map.c
++++ b/fs/btrfs/extent_map.c
+@@ -784,8 +784,6 @@ void btrfs_drop_extent_map_range(struct
  
+ 		if (skip_pinned && test_bit(EXTENT_FLAG_PINNED, &em->flags)) {
+ 			start = em_end;
+-			if (end != (u64)-1)
+-				len = start + len - em_end;
+ 			goto next;
+ 		}
+ 
+@@ -853,8 +851,8 @@ void btrfs_drop_extent_map_range(struct
+ 				if (!split)
+ 					goto remove_em;
+ 			}
+-			split->start = start + len;
+-			split->len = em_end - (start + len);
++			split->start = end;
++			split->len = em_end - end;
+ 			split->block_start = em->block_start;
+ 			split->flags = flags;
+ 			split->compress_type = em->compress_type;
 
 
