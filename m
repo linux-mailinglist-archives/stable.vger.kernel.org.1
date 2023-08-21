@@ -2,50 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CED8B7831F9
-	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:21:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4896F78337B
+	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:23:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229694AbjHUTyc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 21 Aug 2023 15:54:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34098 "EHLO
+        id S230176AbjHUUDG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 21 Aug 2023 16:03:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60188 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229619AbjHUTyc (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 15:54:32 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A3733EE
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 12:54:30 -0700 (PDT)
+        with ESMTP id S230172AbjHUUDG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 16:03:06 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3631DE4
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 13:03:04 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4292E6456D
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 19:54:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CFDAC433C8;
-        Mon, 21 Aug 2023 19:54:29 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C1DA464847
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 20:03:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF228C433C8;
+        Mon, 21 Aug 2023 20:03:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692647669;
-        bh=JVeZ3shbsFCgAKtEpvT0OoBXu4cw1OaG4miPlIiW6KQ=;
+        s=korg; t=1692648183;
+        bh=8W4g0dxsKrQ+4u4lNj5bJs/cVCB9s+uga3zfYCz65uQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=syl2q+GTbtx50RfOEnTvtT5BPxHgzCZ4SkdbPL5nBRbDU1oqqh48gx0cCbE25dlJ8
-         VdvqqFWlPmTRLQMfAxp1k0kz4UPKsGHzYwXFrHd2gHaQ7XwyXaZNyJFCos+bacXltB
-         nxBpqHZqWyIT1blkxuXo8sPeOSFh9YeLURJ5pcZo=
+        b=zRUdnUSbMyg/OHZneut0tZueT5X379fvmmtu5TO3Ft+W4tSp6WEorwJ93I28K+6DN
+         Ri8rSoleFOs8WMFStnMchdIT1h0Fs6uvhLK/gKq13Lr/hMPR7rgC8CIYJOtYmMmi4t
+         Fn+a8wouvifUgZriI3tYDbngNTiGdkNWc3mTtPLE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, "Luke D. Jones" <luke@ljones.dev>,
-        Takashi Iwai <tiwai@suse.de>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 068/194] ALSA: hda/realtek: Add quirk for ASUS ROG GZ301V
+        patches@lists.linux.dev, Filipe Manana <fdmanana@suse.com>,
+        David Sterba <dsterba@suse.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 084/234] btrfs: fix use-after-free of new block group that became unused
 Date:   Mon, 21 Aug 2023 21:40:47 +0200
-Message-ID: <20230821194125.772935774@linuxfoundation.org>
+Message-ID: <20230821194132.478299929@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230821194122.695845670@linuxfoundation.org>
-References: <20230821194122.695845670@linuxfoundation.org>
+In-Reply-To: <20230821194128.754601642@linuxfoundation.org>
+References: <20230821194128.754601642@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -53,36 +54,171 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Luke D. Jones <luke@ljones.dev>
+From: Filipe Manana <fdmanana@suse.com>
 
-[ Upstream commit 5251605f4d297a0eb5d3b7f39f9dcee9e4d0115a ]
+[ Upstream commit 0657b20c5a76c938612f8409735a8830d257866e ]
 
-Adds the required quirk to enable the Cirrus amp and correct pins
-on the ASUS ROG GZ301V series which uses an SPI connected Cirrus amp.
+If a task creates a new block group and that block group becomes unused
+before we finish its creation, at btrfs_create_pending_block_groups(),
+then when btrfs_mark_bg_unused() is called against the block group, we
+assume that the block group is currently in the list of block groups to
+reclaim, and we move it out of the list of new block groups and into the
+list of unused block groups. This has two consequences:
 
-While this works if the related _DSD properties are made available, these
-aren't included in the ACPI of these laptops (yet).
+1) We move it out of the list of new block groups associated to the
+   current transaction. So the block group creation is not finished and
+   if we attempt to delete the bg because it's unused, we will not find
+   the block group item in the extent tree (or the new block group tree),
+   its device extent items in the device tree etc, resulting in the
+   deletion to fail due to the missing items;
 
-Signed-off-by: Luke D. Jones <luke@ljones.dev>
-Link: https://lore.kernel.org/r/20230706223323.30871-2-luke@ljones.dev
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+2) We don't increment the reference count on the block group when we
+   move it to the list of unused block groups, because we assumed the
+   block group was on the list of block groups to reclaim, and in that
+   case it already has the correct reference count. However the block
+   group was on the list of new block groups, in which case no extra
+   reference was taken because it's local to the current task. This
+   later results in doing an extra reference count decrement when
+   removing the block group from the unused list, eventually leading the
+   reference count to 0.
+
+This second case was caught when running generic/297 from fstests, which
+produced the following assertion failure and stack trace:
+
+  [589.559] assertion failed: refcount_read(&block_group->refs) == 1, in fs/btrfs/block-group.c:4299
+  [589.559] ------------[ cut here ]------------
+  [589.559] kernel BUG at fs/btrfs/block-group.c:4299!
+  [589.560] invalid opcode: 0000 [#1] PREEMPT SMP PTI
+  [589.560] CPU: 8 PID: 2819134 Comm: umount Tainted: G        W          6.4.0-rc6-btrfs-next-134+ #1
+  [589.560] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.2-0-gea1b7a073390-prebuilt.qemu.org 04/01/2014
+  [589.560] RIP: 0010:btrfs_free_block_groups+0x449/0x4a0 [btrfs]
+  [589.561] Code: 68 62 da c0 (...)
+  [589.561] RSP: 0018:ffffa55a8c3b3d98 EFLAGS: 00010246
+  [589.561] RAX: 0000000000000058 RBX: ffff8f030d7f2000 RCX: 0000000000000000
+  [589.562] RDX: 0000000000000000 RSI: ffffffff953f0878 RDI: 00000000ffffffff
+  [589.562] RBP: ffff8f030d7f2088 R08: 0000000000000000 R09: ffffa55a8c3b3c50
+  [589.562] R10: 0000000000000001 R11: 0000000000000001 R12: ffff8f05850b4c00
+  [589.562] R13: ffff8f030d7f2090 R14: ffff8f05850b4cd8 R15: dead000000000100
+  [589.563] FS:  00007f497fd2e840(0000) GS:ffff8f09dfc00000(0000) knlGS:0000000000000000
+  [589.563] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+  [589.563] CR2: 00007f497ff8ec10 CR3: 0000000271472006 CR4: 0000000000370ee0
+  [589.563] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+  [589.564] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+  [589.564] Call Trace:
+  [589.564]  <TASK>
+  [589.565]  ? __die_body+0x1b/0x60
+  [589.565]  ? die+0x39/0x60
+  [589.565]  ? do_trap+0xeb/0x110
+  [589.565]  ? btrfs_free_block_groups+0x449/0x4a0 [btrfs]
+  [589.566]  ? do_error_trap+0x6a/0x90
+  [589.566]  ? btrfs_free_block_groups+0x449/0x4a0 [btrfs]
+  [589.566]  ? exc_invalid_op+0x4e/0x70
+  [589.566]  ? btrfs_free_block_groups+0x449/0x4a0 [btrfs]
+  [589.567]  ? asm_exc_invalid_op+0x16/0x20
+  [589.567]  ? btrfs_free_block_groups+0x449/0x4a0 [btrfs]
+  [589.567]  ? btrfs_free_block_groups+0x449/0x4a0 [btrfs]
+  [589.567]  close_ctree+0x35d/0x560 [btrfs]
+  [589.568]  ? fsnotify_sb_delete+0x13e/0x1d0
+  [589.568]  ? dispose_list+0x3a/0x50
+  [589.568]  ? evict_inodes+0x151/0x1a0
+  [589.568]  generic_shutdown_super+0x73/0x1a0
+  [589.569]  kill_anon_super+0x14/0x30
+  [589.569]  btrfs_kill_super+0x12/0x20 [btrfs]
+  [589.569]  deactivate_locked_super+0x2e/0x70
+  [589.569]  cleanup_mnt+0x104/0x160
+  [589.570]  task_work_run+0x56/0x90
+  [589.570]  exit_to_user_mode_prepare+0x160/0x170
+  [589.570]  syscall_exit_to_user_mode+0x22/0x50
+  [589.570]  ? __x64_sys_umount+0x12/0x20
+  [589.571]  do_syscall_64+0x48/0x90
+  [589.571]  entry_SYSCALL_64_after_hwframe+0x72/0xdc
+  [589.571] RIP: 0033:0x7f497ff0a567
+  [589.571] Code: af 98 0e (...)
+  [589.572] RSP: 002b:00007ffc98347358 EFLAGS: 00000246 ORIG_RAX: 00000000000000a6
+  [589.572] RAX: 0000000000000000 RBX: 00007f49800b8264 RCX: 00007f497ff0a567
+  [589.572] RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000557f558abfa0
+  [589.573] RBP: 0000557f558a6ba0 R08: 0000000000000000 R09: 00007ffc98346100
+  [589.573] R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+  [589.573] R13: 0000557f558abfa0 R14: 0000557f558a6cb0 R15: 0000557f558a6dd0
+  [589.573]  </TASK>
+  [589.574] Modules linked in: dm_snapshot dm_thin_pool (...)
+  [589.576] ---[ end trace 0000000000000000 ]---
+
+Fix this by adding a runtime flag to the block group to tell that the
+block group is still in the list of new block groups, and therefore it
+should not be moved to the list of unused block groups, at
+btrfs_mark_bg_unused(), until the flag is cleared, when we finish the
+creation of the block group at btrfs_create_pending_block_groups().
+
+Fixes: a9f189716cf1 ("btrfs: move out now unused BG from the reclaim list")
+CC: stable@vger.kernel.org # 5.15+
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/btrfs/block-group.c | 13 +++++++++++--
+ fs/btrfs/block-group.h |  5 +++++
+ 2 files changed, 16 insertions(+), 2 deletions(-)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index b0cee0a361bfb..526ec8cae9437 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -9621,6 +9621,7 @@ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x1043, 0x1473, "ASUS GU604V", ALC285_FIXUP_ASUS_HEADSET_MIC),
- 	SND_PCI_QUIRK(0x1043, 0x1483, "ASUS GU603V", ALC285_FIXUP_ASUS_HEADSET_MIC),
- 	SND_PCI_QUIRK(0x1043, 0x1517, "Asus Zenbook UX31A", ALC269VB_FIXUP_ASUS_ZENBOOK_UX31A),
-+	SND_PCI_QUIRK(0x1043, 0x1573, "ASUS GZ301V", ALC285_FIXUP_ASUS_HEADSET_MIC),
- 	SND_PCI_QUIRK(0x1043, 0x1662, "ASUS GV301QH", ALC294_FIXUP_ASUS_DUAL_SPK),
- 	SND_PCI_QUIRK(0x1043, 0x1683, "ASUS UM3402YAR", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x1043, 0x16b2, "ASUS GU603", ALC289_FIXUP_ASUS_GA401),
+diff --git a/fs/btrfs/block-group.c b/fs/btrfs/block-group.c
+index 78d57f1efe1d0..a250afa655d5c 100644
+--- a/fs/btrfs/block-group.c
++++ b/fs/btrfs/block-group.c
+@@ -1665,13 +1665,14 @@ void btrfs_mark_bg_unused(struct btrfs_block_group *bg)
+ {
+ 	struct btrfs_fs_info *fs_info = bg->fs_info;
+ 
+-	trace_btrfs_add_unused_block_group(bg);
+ 	spin_lock(&fs_info->unused_bgs_lock);
+ 	if (list_empty(&bg->bg_list)) {
+ 		btrfs_get_block_group(bg);
++		trace_btrfs_add_unused_block_group(bg);
+ 		list_add_tail(&bg->bg_list, &fs_info->unused_bgs);
+-	} else {
++	} else if (!test_bit(BLOCK_GROUP_FLAG_NEW, &bg->runtime_flags)) {
+ 		/* Pull out the block group from the reclaim_bgs list. */
++		trace_btrfs_add_unused_block_group(bg);
+ 		list_move_tail(&bg->bg_list, &fs_info->unused_bgs);
+ 	}
+ 	spin_unlock(&fs_info->unused_bgs_lock);
+@@ -2696,6 +2697,7 @@ void btrfs_create_pending_block_groups(struct btrfs_trans_handle *trans)
+ next:
+ 		btrfs_delayed_refs_rsv_release(fs_info, 1);
+ 		list_del_init(&block_group->bg_list);
++		clear_bit(BLOCK_GROUP_FLAG_NEW, &block_group->runtime_flags);
+ 	}
+ 	btrfs_trans_release_chunk_metadata(trans);
+ }
+@@ -2735,6 +2737,13 @@ struct btrfs_block_group *btrfs_make_block_group(struct btrfs_trans_handle *tran
+ 	if (!cache)
+ 		return ERR_PTR(-ENOMEM);
+ 
++	/*
++	 * Mark it as new before adding it to the rbtree of block groups or any
++	 * list, so that no other task finds it and calls btrfs_mark_bg_unused()
++	 * before the new flag is set.
++	 */
++	set_bit(BLOCK_GROUP_FLAG_NEW, &cache->runtime_flags);
++
+ 	cache->length = size;
+ 	set_free_space_tree_thresholds(cache);
+ 	cache->flags = type;
+diff --git a/fs/btrfs/block-group.h b/fs/btrfs/block-group.h
+index 471f591db7c0c..0852f6c101f82 100644
+--- a/fs/btrfs/block-group.h
++++ b/fs/btrfs/block-group.h
+@@ -70,6 +70,11 @@ enum btrfs_block_group_flags {
+ 	BLOCK_GROUP_FLAG_NEEDS_FREE_SPACE,
+ 	/* Indicate that the block group is placed on a sequential zone */
+ 	BLOCK_GROUP_FLAG_SEQUENTIAL_ZONE,
++	/*
++	 * Indicate that block group is in the list of new block groups of a
++	 * transaction.
++	 */
++	BLOCK_GROUP_FLAG_NEW,
+ };
+ 
+ enum btrfs_caching_type {
 -- 
 2.40.1
 
