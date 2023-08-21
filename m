@@ -2,138 +2,271 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 679C17835DE
-	for <lists+stable@lfdr.de>; Tue, 22 Aug 2023 00:42:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 517597835E7
+	for <lists+stable@lfdr.de>; Tue, 22 Aug 2023 00:44:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229862AbjHUWmN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 21 Aug 2023 18:42:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32910 "EHLO
+        id S231594AbjHUWos (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 21 Aug 2023 18:44:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58902 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229445AbjHUWmM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 18:42:12 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A42711C;
-        Mon, 21 Aug 2023 15:42:11 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9D41860B61;
-        Mon, 21 Aug 2023 22:42:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA9A8C433C8;
-        Mon, 21 Aug 2023 22:42:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1692657730;
-        bh=wnGPBph7Q+YS0lgZNbdSI4MH/lKrnH8xevzYsEDK9DY=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:From;
-        b=F+iESIhKAuiC0AqtVgOkNdPVExHLcRC88dW2Tq0nf4rmxSin0vO5NMsvLMyqjvEMv
-         Nducytwp7mnf5M8IqMoWaSla0kXQRfcCa8cTLR0dnZE2Qjcl4dNY6iy4jHt3GtqkZE
-         8D/o7xdFLUdvGhAlXsyYD1SR18p8x4edIsWnRaa8+/z85KLldpWYhq4K+B6g2Eb6D6
-         FQhOhMPy+FuU88VZ3UJ+2T46uj0OD1iEnu1HHhaayPtvPMRVq5Uxvz0vDblYLvX7tw
-         bmKuKSb0q0PDZZMrLmOYaviaLISUND7l4gcntVqj1Hu07XERZ9o0QpxetKd6kyC8Qr
-         zj3BTHdYy1TeQ==
-Date:   Mon, 21 Aug 2023 17:42:07 -0500
-From:   Bjorn Helgaas <helgaas@kernel.org>
-To:     Mario Limonciello <mario.limonciello@amd.com>
-Cc:     Mika Westerberg <mika.westerberg@linux.intel.com>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org, Iain Lane <iain@orangesquash.org.uk>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Kuppuswamy Sathyanarayanan 
-        <sathyanarayanan.kuppuswamy@linux.intel.com>,
-        stable@vger.kernel.org
-Subject: Re: [PATCH v14.a 1/1] PCI: Only put Intel PCIe ports >= 2015 into D3
-Message-ID: <20230821224207.GA369432@bhelgaas>
+        with ESMTP id S229445AbjHUWor (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 18:44:47 -0400
+Received: from mail-pg1-x535.google.com (mail-pg1-x535.google.com [IPv6:2607:f8b0:4864:20::535])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A3F4911C
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 15:44:45 -0700 (PDT)
+Received: by mail-pg1-x535.google.com with SMTP id 41be03b00d2f7-53482b44007so2150536a12.2
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 15:44:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernelci-org.20221208.gappssmtp.com; s=20221208; t=1692657885; x=1693262685;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=uW1ozgE5WRmKqk6nijFaX2Pd1dn64B6LcelWfeADfaE=;
+        b=Ui7Ap573L2L5TU+ztOlplv6kPVW3dcg7PEWO1FyOK4w+AgDOJBfDcAvbBYKMLAYWUd
+         ZPBcop2ccaZIBOuoe7RGcjOz27WpCSsHw60lsVEWKyVgh8twDXuNbjSm06d4pLRg5L18
+         Vq6aFP1QrNpTm6PiHcYw9ndMquHi8715R7UrkLnUtRqqoJEs1NIpOekWIuGKlJctVkgr
+         zLZyOm+CLUFLl71oqkslrxc4r6GiAHlOKtTsZVV5evHHdtamZnZBsrdWCXhXEVtCI175
+         XSvLJzuL5BXtVqu5fY3KGhwPBl0zKt7m0xyRHuVo+xynogIU7gx7/2RmhoQwcjVLVSfJ
+         KSQQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1692657885; x=1693262685;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=uW1ozgE5WRmKqk6nijFaX2Pd1dn64B6LcelWfeADfaE=;
+        b=LVpYlyrIfdSCJE7YEKy8XD/3uN35qsrsW4evG3IVwkq0aTOce79vaj1ZTmqZxpR/9M
+         kXjrQNibuUf/YMO2HMET4aJ9X2m12Fn8HuDI5JKmi9OnotHnV6q9ApYTh9iNkYBG+Cv7
+         nH6znUZg4Hv/Ij/CEVdVSU/+5H6QAN89KUIHdpaX4WF2fYnhpLkuQmw4ajxYj0goLPSS
+         gn/RgTgBINlXfq7vcgVIcXaI93dlCO3jInednopTgW12QGNz+Dz9lOkp7DZZJV2TyQMD
+         LxW6OS45Vr3yYscOOV5VU5iAUl98dwlco46pMFpx5QGCzftiu9xLcvh0raUcJKPlkU7D
+         cxuQ==
+X-Gm-Message-State: AOJu0YxwAIhwQmTQhPaHnBoomM02ropEBCN7LA6waGkolTG6VjmXayMZ
+        kBQyah7gnhsvyQreZAUkwumy6TrHacF5L7W1bHX6xg==
+X-Google-Smtp-Source: AGHT+IGPSvjsBM9R7tGEfEMm96RJ81dywsja1ibEYl3Yp6cyuHN5Wl5dBnEotVXfsjOvkiRFbQ5zNA==
+X-Received: by 2002:a05:6a21:6d88:b0:13e:fbee:a5d1 with SMTP id wl8-20020a056a216d8800b0013efbeea5d1mr6507696pzb.37.1692657884714;
+        Mon, 21 Aug 2023 15:44:44 -0700 (PDT)
+Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
+        by smtp.gmail.com with ESMTPSA id ff18-20020a056a002f5200b0068703879d3esm6590348pfb.113.2023.08.21.15.44.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 21 Aug 2023 15:44:44 -0700 (PDT)
+Message-ID: <64e3e8dc.050a0220.4b8ca.d50f@mx.google.com>
+Date:   Mon, 21 Aug 2023 15:44:44 -0700 (PDT)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230818193932.27187-1-mario.limonciello@amd.com>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+X-Kernelci-Report-Type: build
+X-Kernelci-Kernel: v4.14.323-40-gd4d51e77b58d
+X-Kernelci-Branch: linux-4.14.y
+X-Kernelci-Tree: stable-rc
+Subject: stable-rc/linux-4.14.y build: 16 builds: 0 failed, 16 passed,
+ 21 warnings (v4.14.323-40-gd4d51e77b58d)
+To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+        kernelci-results@groups.io
+From:   "kernelci.org bot" <bot@kernelci.org>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Fri, Aug 18, 2023 at 02:39:32PM -0500, Mario Limonciello wrote:
-> commit 9d26d3a8f1b0 ("PCI: Put PCIe ports into D3 during suspend")
-> changed pci_bridge_d3_possible() so that any vendor's PCIe ports
-> from modern machines (>=2015) are allowed to be put into D3.
-> 
-> Iain reports that USB devices can't be used to wake a Lenovo Z13
-> from suspend. This is because the PCIe root port has been put
-> into D3 and AMD's platform can't handle USB devices waking in this
-> case.
-> 
-> This behavior is only reported on Linux. Comparing the behavior
-> on Windows and Linux, Windows doesn't put the root ports into D3.
-> 
-> To fix the issue without regressing existing Intel systems,
-> limit the >=2015 check to only apply to Intel PCIe ports.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 9d26d3a8f1b0 ("PCI: Put PCIe ports into D3 during suspend")
-> Reported-by: Iain Lane <iain@orangesquash.org.uk>
-> Closes: https://forums.lenovo.com/t5/Ubuntu/Z13-can-t-resume-from-suspend-with-external-USB-keyboard/m-p/5217121
-> Reviewed-by:Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-> ---
-> In v14 this series has been split into 3 parts.
->  part A: Immediate fix for AMD issue.
->  part B: LPS0 export improvements
->  part C: Long term solution for all vendors
-> v13->v14:
->  * Reword the comment
->  * add tag
-> v12->v13:
->  * New patch
-> ---
->  drivers/pci/pci.c | 11 ++++++++---
->  1 file changed, 8 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-> index 60230da957e0c..bfdad2eb36d13 100644
-> --- a/drivers/pci/pci.c
-> +++ b/drivers/pci/pci.c
-> @@ -3037,10 +3037,15 @@ bool pci_bridge_d3_possible(struct pci_dev *bridge)
->  			return false;
->  
->  		/*
-> -		 * It should be safe to put PCIe ports from 2015 or newer
-> -		 * to D3.
-> +		 * Allow Intel PCIe ports from 2015 onward to go into D3 to
-> +		 * achieve additional energy conservation on some platforms.
-> +		 *
-> +		 * This is only set for Intel PCIe ports as it causes problems
-> +		 * on both AMD Rembrandt and Phoenix platforms where USB keyboards
-> +		 * can not be used to wake the system from suspend.
->  		 */
-> -		if (dmi_get_bios_year() >= 2015)
-> +		if (bridge->vendor == PCI_VENDOR_ID_INTEL &&
-> +		    dmi_get_bios_year() >= 2015)
->  			return true;
+stable-rc/linux-4.14.y build: 16 builds: 0 failed, 16 passed, 21 warnings (=
+v4.14.323-40-gd4d51e77b58d)
 
-Hmm.  I'm really not a fan of checks like this that aren't connected
-to an actual property of the platform.  The Intel Vendor ID tells us
-nothing about what the actual problem is, which makes it really hard
-to maintain in the future.  It's also very AMD- and Intel-centric,
-when this code is ostensibly arch-agnostic, so this potentially
-regresses ARM64, RISC-V, powerpc, etc.
+Full Build Summary: https://kernelci.org/build/stable-rc/branch/linux-4.14.=
+y/kernel/v4.14.323-40-gd4d51e77b58d/
 
-It's bad enough that we check for 2015.  A BIOS security update to a
-2014 platform will break things, even though the update has nothing to
-do with D3.  We're stuck with that one, and it's old enough that maybe
-it won't bite us any more, but I hate to add more.
+Tree: stable-rc
+Branch: linux-4.14.y
+Git Describe: v4.14.323-40-gd4d51e77b58d
+Git Commit: d4d51e77b58d0c75103d4df5558535d0059ef324
+Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
+e-rc.git
+Built: 6 unique architectures
 
-The list of conditions in pci_bridge_d3_possible() is a pretty good
-clue that we don't really know what we're doing, and all we can do is
-find configurations that happen to work.  
+Warnings Detected:
 
-I don't have any better suggestions, other than that this should be
-described somehow via ACPI (and not in vendor-specific stuff like
-PNP0D80).
+arc:
 
-Bjorn
+arm64:
+
+arm:
+
+i386:
+    allnoconfig (gcc-10): 3 warnings
+    i386_defconfig (gcc-10): 3 warnings
+    tinyconfig (gcc-10): 3 warnings
+
+mips:
+
+x86_64:
+    allnoconfig (gcc-10): 3 warnings
+    tinyconfig (gcc-10): 3 warnings
+    x86_64_defconfig (gcc-10): 3 warnings
+    x86_64_defconfig+x86-chromebook (gcc-10): 3 warnings
+
+
+Warnings summary:
+
+    7    ld: warning: creating DT_TEXTREL in a PIE
+    4    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in rea=
+d-only section `.head.text'
+    4    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h=
+' differs from latest kernel version at 'arch/x86/include/asm/insn.h'
+    3    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in rea=
+d-only section `.head.text'
+    3    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic su=
+ffix given and no register operands; using default for `btr'
+
+Section mismatches summary:
+
+    3    WARNING: modpost: Found 1 section mismatch(es).
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
+
+Detailed per-defconfig build reports:
+
+---------------------------------------------------------------------------=
+-----
+32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
+tion mismatches
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 sectio=
+n mismatches
+
+Warnings:
+    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
+fers from latest kernel version at 'arch/x86/include/asm/insn.h'
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 section =
+mismatches
+
+Warnings:
+    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic suffix =
+given and no register operands; using default for `btr'
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+Section mismatches:
+    WARNING: modpost: Found 1 section mismatch(es).
+
+---------------------------------------------------------------------------=
+-----
+defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warn=
+ings, 0 section mismatches
+
+Section mismatches:
+    WARNING: modpost: Found 1 section mismatch(es).
+
+---------------------------------------------------------------------------=
+-----
+haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
+ section mismatches
+
+---------------------------------------------------------------------------=
+-----
+i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 secti=
+on mismatches
+
+Warnings:
+    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic suffix =
+given and no register operands; using default for `btr'
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+Section mismatches:
+    WARNING: modpost: Found 1 section mismatch(es).
+
+---------------------------------------------------------------------------=
+-----
+multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 section m=
+ismatches
+
+Warnings:
+    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic suffix =
+given and no register operands; using default for `btr'
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 section=
+ mismatches
+
+Warnings:
+    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
+fers from latest kernel version at 'arch/x86/include/asm/insn.h'
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 s=
+ection mismatches
+
+Warnings:
+    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
+fers from latest kernel version at 'arch/x86/include/asm/insn.h'
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig+x86-chromebook (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, =
+3 warnings, 0 section mismatches
+
+Warnings:
+    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
+fers from latest kernel version at 'arch/x86/include/asm/insn.h'
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---
+For more info write to <info@kernelci.org>
