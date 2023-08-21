@@ -2,209 +2,162 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E7D627823B3
-	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 08:28:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6AAB3782418
+	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 09:02:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230316AbjHUG2v (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 21 Aug 2023 02:28:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40096 "EHLO
+        id S232326AbjHUHC0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 21 Aug 2023 03:02:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60082 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229644AbjHUG2u (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 02:28:50 -0400
-Received: from mail.avm.de (mail.avm.de [212.42.244.120])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A3E9A2
-        for <stable@vger.kernel.org>; Sun, 20 Aug 2023 23:28:47 -0700 (PDT)
-Received: from mail-notes.avm.de (mail-notes.avm.de [172.16.0.1])
-        by mail.avm.de (Postfix) with ESMTP;
-        Mon, 21 Aug 2023 08:28:43 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=avm.de; s=mail;
-        t=1692599324; bh=KNR99+O0uR/XieId5VErLIBpmCA9SVzJG7G/6ns31qQ=;
-        h=In-Reply-To:References:Subject:From:To:Cc:Date:From;
-        b=xEQo9FiwLMtJKleG2zIk7HjbcyH8BiFU2CPWUANAajNbcVBxn0Y0pRb7b6hl7k2yb
-         sNd5O1l3kUFVQFoJ0+psj2Rbh0YbLHmsQPm3HtR1dgLRnXpUnPqLnLMZw67RzHU/C9
-         D3HIpSeZP6QfXS3ohIrA6Z3jIl+qKmaS6h3OmmG0=
+        with ESMTP id S229666AbjHUHCZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 03:02:25 -0400
+Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26189AC
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 00:02:20 -0700 (PDT)
+X-UUID: a95c60ba3ff011ee9cb5633481061a41-20230821
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+        h=Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=v8kDqv6AkJ6UholcGA/45hlSYaNcsteRMuCVmOL2Nxw=;
+        b=jU8Njn8cAV80fQWdBAlfXlHnAQzL/fxl/3+O7pPom96bUeQm7oJY2O3amUCCXeXBqf0FqM0XtjejOvMMO4Uno31/uZn0nENA6MGQNd3LEq35hYdbk+lDqzVS7W/IMR7QOCO7rYjoJNxv5s+adlVGB46d/HSf+5yoFMVGn6yDBAY=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.31,REQID:116c3de1-03be-4e2e-8270-6c9fe944a762,IP:0,U
+        RL:0,TC:0,Content:-25,EDM:0,RT:0,SF:95,FILE:0,BULK:0,RULE:Release_Ham,ACTI
+        ON:release,TS:70
+X-CID-INFO: VERSION:1.1.31,REQID:116c3de1-03be-4e2e-8270-6c9fe944a762,IP:0,URL
+        :0,TC:0,Content:-25,EDM:0,RT:0,SF:95,FILE:0,BULK:0,RULE:Spam_GS981B3D,ACTI
+        ON:quarantine,TS:70
+X-CID-META: VersionHash:0ad78a4,CLOUDID:2e928f1f-33fd-4aaa-bb43-d3fd68d9d5ae,B
+        ulkID:230821150216VU3SQVBK,BulkQuantity:0,Recheck:0,SF:29|28|17|19|48,TC:n
+        il,Content:0,EDM:-3,IP:nil,URL:1,File:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OS
+        I:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0
+X-CID-BVR: 0
+X-CID-BAS: 0,_,0,_
+X-CID-FACTOR: TF_CID_SPAM_FAS,TF_CID_SPAM_FSD,TF_CID_SPAM_ULS,TF_CID_SPAM_SNR,
+        TF_CID_SPAM_SDM,TF_CID_SPAM_ASC
+X-UUID: a95c60ba3ff011ee9cb5633481061a41-20230821
+Received: from mtkmbs14n1.mediatek.inc [(172.21.101.75)] by mailgw01.mediatek.com
+        (envelope-from <andrew.yang@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+        with ESMTP id 1417253466; Mon, 21 Aug 2023 15:02:16 +0800
+Received: from mtkmbs13n1.mediatek.inc (172.21.101.193) by
+ mtkmbs10n1.mediatek.inc (172.21.101.34) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.26; Mon, 21 Aug 2023 15:02:14 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
+ mtkmbs13n1.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.1118.26 via Frontend Transport; Mon, 21 Aug 2023 15:02:14 +0800
+From:   Andrew Yang <andrew.yang@mediatek.com>
+To:     <stable@vger.kernel.org>
+CC:     <wsd_upstream@mediatek.com>, <casper.li@mediatek.com>,
+        Andrew Yang <andrew.yang@mediatek.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Minchan Kim <minchan@kernel.org>,
+        "Sebastian Andrzej Siewior" <bigeasy@linutronix.de>,
+        Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.1.y] zsmalloc: fix races between modifications of fullness and isolated
+Date:   Mon, 21 Aug 2023 15:02:10 +0800
+Message-ID: <20230821070210.13607-1-andrew.yang@mediatek.com>
+X-Mailer: git-send-email 2.18.0
+In-Reply-To: <2023081217-gender-font-a356@gregkh>
+References: <2023081217-gender-font-a356@gregkh>
 MIME-Version: 1.0
-Sensitivity: 
-Importance: Normal
-X-Priority: 3 (Normal)
-In-Reply-To: <2023081752-giddily-anytime-237e@gregkh>
-References: <2023081752-giddily-anytime-237e@gregkh>,
-        <OF964B0E9A.174E142D-ONC1258A0E.0032FEAA-C1258A0E.00337FA7@avm.de>
-Subject: Re: proc_lseek backport request
-From:   t.martitz@avm.de
-To:     "Greg KH" <gregkh@linuxfoundation.org>
-Cc:     stable@vger.kernel.org, "Al Viro" <viro@zeniv.linux.org.uk>
-Date:   Mon, 21 Aug 2023 08:28:44 +0200
-Message-ID: <OF38330399.317AA8E2-ONC1258A12.00239743-C1258A12.00239746@avm.de>
-X-Mailer: Lotus Domino Web Server Release 12.0.2FP2 July 12, 2023
-X-MIMETrack: Serialize by http on ANIS1/AVM(Release 12.0.2FP2|July 12, 2023) at
- 21.08.2023 08:28:44,
-        Serialize complete at 21.08.2023 08:28:44,
-        Serialize by Router on ANIS1/AVM(Release 12.0.2FP2|July 12, 2023) at
- 21.08.2023 08:28:44
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-purgate-ID: 149429::1692599323-58FDFDF9-74CC2ACA/0/0
-X-purgate-type: clean
-X-purgate-size: 4979
-X-purgate-Ad: Categorized by eleven eXpurgate (R) http://www.eleven.de
-X-purgate: This mail is considered clean (visit http://www.eleven.de for further information)
-X-purgate: clean
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-MTK:  N
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
+        UNPARSEABLE_RELAY autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hello,
+We encountered many kernel exceptions of VM_BUG_ON(zspage->isolated ==
+0) in dec_zspage_isolation() and BUG_ON(!pages[1]) in zs_unmap_object()
+lately.  This issue only occurs when migration and reclamation occur at
+the same time.
 
-(posting again as plain text, excuse me if you already
-received the malformed HTML mail.)
+With our memory stress test, we can reproduce this issue several times
+a day.  We have no idea why no one else encountered this issue.  BTW,
+we switched to the new kernel version with this defect a few months
+ago.
 
------"Greg KH" <gregkh@linuxfoundation.org> schrieb: -----
+Since fullness and isolated share the same unsigned int, modifications of
+them should be protected by the same lock.
 
+[andrew.yang@mediatek.com: move comment]
+Link: https://lkml.kernel.org/r/20230727062910.6337-1-andrew.yang@mediatek.com
+Link: https://lkml.kernel.org/r/20230721063705.11455-1-andrew.yang@mediatek.com
+Fixes: c4549b871102 ("zsmalloc: remove zspage isolation for migration")
+Signed-off-by: Andrew Yang <andrew.yang@mediatek.com>
+Reviewed-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Cc: Matthias Brugger <matthias.bgg@gmail.com>
+Cc: Minchan Kim <minchan@kernel.org>
+Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+(cherry picked from commit 4b5d1e47b69426c0f7491d97d73ad0152d02d437)
+---
+ mm/zsmalloc.c | 14 +++++++++-----
+ 1 file changed, 9 insertions(+), 5 deletions(-)
 
->An: t.martitz@avm.de
->Von: "Greg KH" <gregkh@linuxfoundation.org>
->Datum: 17.08.2023 16:43
->Kopie: stable@vger.kernel.org, "Al Viro" <viro@zeniv.linux.org.uk>
->Betreff: Re: proc=5Flseek backport request
->
->On Thu, Aug 17, 2023 at 11:22:30AM +0200, t.martitz@avm.de wrote:
->> Dear stable team,
->>
->> I'm asking that
->>
->> commit 3f61631d47f1 ("take care to handle NULL ->proc=5Flseek()")
->>
->> gets backported to the stable and LTS kernels down to 5.10.
->>
->> Background:
->> We are in the process of upgrading our kernels. One target kernel
->> is based on 5.15 LTS.
->>
->> Here we found that, if proc file drivers do not implement
->proc=5Flseek,
->> user space crashes easily, because various library routines
->internally
->> perform lseek(2). The crash happens in proc=5Freg=5Fllseek, where it
->> wants to jump to a NULL pointer.
->>
->> We could, arguably, fix these drivers to use ".proc=5Flseek =3D
->no=5Fllseek".
->> But this doesn't seem like a worthwhile path forward, considering
->that
->> latest Linux kernels (including 6.1 LTS) allow proc=5Flseek =3D=3D NULL
->again
->> and *remove* no=5Flseek. Essentially, on HEAD, it's best practice to
->leave
->> proc=5Flseek =3D=3D NULL.
->> Therefore, I ask that the above procfs fix gets backported so that
->our
->> drivers can work across all kernel versions, including latest 6.x.
->
->For obvious technical, and legal reasons, we can not take kernel
->changes
->only for out-of-tree kernel modules, you know this :)
->
->So sorry, no, we should not backport this change because as-is, all
->in-tree code works just fine, right?
+diff --git a/mm/zsmalloc.c b/mm/zsmalloc.c
+index d03941cace2c..aa1cb03ad72c 100644
+--- a/mm/zsmalloc.c
++++ b/mm/zsmalloc.c
+@@ -1821,6 +1821,7 @@ static void replace_sub_page(struct size_class *class, struct zspage *zspage,
+ 
+ static bool zs_page_isolate(struct page *page, isolate_mode_t mode)
+ {
++	struct size_class *class;
+ 	struct zspage *zspage;
+ 
+ 	/*
+@@ -1831,9 +1832,10 @@ static bool zs_page_isolate(struct page *page, isolate_mode_t mode)
+ 	VM_BUG_ON_PAGE(PageIsolated(page), page);
+ 
+ 	zspage = get_zspage(page);
+-	migrate_write_lock(zspage);
++	class = zspage_class(zspage->pool, zspage);
++	spin_lock(&class->lock);
+ 	inc_zspage_isolation(zspage);
+-	migrate_write_unlock(zspage);
++	spin_unlock(&class->lock);
+ 
+ 	return true;
+ }
+@@ -1909,8 +1911,8 @@ static int zs_page_migrate(struct page *newpage, struct page *page,
+ 	 * it's okay to release migration_lock.
+ 	 */
+ 	write_unlock(&pool->migrate_lock);
+-	spin_unlock(&class->lock);
+ 	dec_zspage_isolation(zspage);
++	spin_unlock(&class->lock);
+ 	migrate_write_unlock(zspage);
+ 
+ 	get_page(newpage);
+@@ -1927,15 +1929,17 @@ static int zs_page_migrate(struct page *newpage, struct page *page,
+ 
+ static void zs_page_putback(struct page *page)
+ {
++	struct size_class *class;
+ 	struct zspage *zspage;
+ 
+ 	VM_BUG_ON_PAGE(!PageMovable(page), page);
+ 	VM_BUG_ON_PAGE(!PageIsolated(page), page);
+ 
+ 	zspage = get_zspage(page);
+-	migrate_write_lock(zspage);
++	class = zspage_class(zspage->pool, zspage);
++	spin_lock(&class->lock);
+ 	dec_zspage_isolation(zspage);
+-	migrate_write_unlock(zspage);
++	spin_unlock(&class->lock);
+ }
+ 
+ static const struct movable_operations zsmalloc_mops = {
+-- 
+2.18.0
 
-The kernel is constantly being changed to support out-of-tree modules,
-be it kbuild changes or new EXPORT=5FSYMBOLs (all in-tree modules
-can use EXPORT=5FSYMBOL=5FGPLs right?).
-
-Granted, such changes are typically not backported to stable (probably,
-haven't checked). I had hoped that you'd be less strict if we talk about a
-patch that's already in mainline.
-
-But well, we'll cherry-pick this in our tree then and move on.
-I won't argue about this particular patch further.
-
-
->
->Attempting to keep kernel code outside of the kernel tree is, on
->purpose, very expensive in time and resources. The very simple way
->to
->solve this is to get your drivers merged properly into the mainline
->kernel tree.
->
->Have you submitted your drivers and had them rejected?
-
-Most drivers affected by the above patch are delivered to us by
-chip vendors that we cannot post publicly without their consent. It's
-also not our job to get their crappy code (and it's a lot of that!) to a
-state that meets your quality standards. We can and do ask for mainline
-drivers but our influence is limited.
-
-Also, would driver code for chips that aren't publicly available any useful=
- for you?
-
-There is also some in-house code affected but that "drivers" don't usually
-drive hardware but simply provide F!OS-specific proc interfaces (F!OS
-is the name of the firmware that runs on our devices). These are just
-software, often device or vendor specific, and not suitable for the wider
-kernel community. Also we don't have the resources to get our code
-top-notch for potential mainline inclusion (although it's usually better
-than the vendor code we receive).
-
-On the positive side, we do realize that mainlining things can be a net win=
- for us
-long term and we have started an internal process that allows us to selecti=
-vely
-mainline portions of our in-house code, but it's limited by resources and
-therefore a slow process. See [1] for example.
-
-[1] https://lore.kernel.org/all/20230619071444.14625-1-jnixdorf-oss@avm.de/
-
->
->Have you taken advantage of the projects that are willing to take
->out-of-tree drivers and get them merged upstream properly for free?
-
-I don't know about any such project. Interesting to hear they exist! Who ar=
-e they?
-
->
->Is there anything else preventing your code from being accepted into
->the
->upstream kernel tree that we can help with?
-
-
-Thanks for the offer. I don't think you can help much. We need to get more
-resources internally for mainlining but we can barely keep up with maintain=
-ing
-our code base for our devices currently.
-
-Best regards,
-Thomas Martitz
-
-
->
->thanks,
->
->greg k-h
->
->
->
->>
->> I checked that this commit applies and works as expected on a board
->that
->> runs Linux 5.15, and the observed crash goes away.
->>
->> Furthermore, I investigated that the fix applies to older LTS
->kernels, down
->> to 5.10. The lseek(2) path uses vfs=5Fllseek() which checks for
->FMODE=5FLSEEK. This
->> has been like that forever since the initial git import. However,
->5.4 LTS and
->> older kernels do not have "struct proc=5Fops".
->>
->> Thank you in advance.
->>
->> Best regards,
->> Thomas Martitz
->
