@@ -2,50 +2,54 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8101B78320B
-	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:21:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 761CA783239
+	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:21:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230030AbjHUT7U (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 21 Aug 2023 15:59:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36274 "EHLO
+        id S230290AbjHUUHS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 21 Aug 2023 16:07:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45360 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230023AbjHUT7U (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 15:59:20 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 748D3128
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 12:59:14 -0700 (PDT)
+        with ESMTP id S230292AbjHUUHS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 16:07:18 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EADB7A8
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 13:07:16 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 56BE664703
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 19:59:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63C3FC433C7;
-        Mon, 21 Aug 2023 19:59:13 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8194964998
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 20:07:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69F05C433C7;
+        Mon, 21 Aug 2023 20:07:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692647953;
-        bh=7a8AK98anMFfua3NLL8RUEamcE2sPD8UDE4T5o3pr8k=;
+        s=korg; t=1692648435;
+        bh=uzlnNqGnx8FeAVZGbYGkTuzoNAkGYYuTZCLj/Dhrq3w=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=o1SkIJXyfaPzh5hx/c1zQDVIWfGlv53+CHZR3gHDe38Ma/T62Iz0QYNRkoHSgfh4L
-         o75lNEKArVbi/345N9tru7CLuF7UOo78CpqTPpWWvcAEKMA8sNMbIoWGRUaSYGqeey
-         uCl6HLSuj002EA5iwET+z9eah+5xvLwtrFJ31Lyc=
+        b=DaURMkk1NUI+vbtIYd6wkWOGbd0A9HFGbAzn6hxsILKUNy9VejLTKllzLWsERUOSl
+         ftQRFeZLiKFD/RZVv9EP7ipqtgP/MVopEV32mlKXApgun88XTDqnejILVTONjBvfRh
+         j/IZZLJjkoHdbSu51xJHlQkMyv7EftkOF7lFLNrA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yang Yingliang <yangyingliang@huawei.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.1 158/194] mmc: wbsd: fix double mmc_free_host() in wbsd_init()
+        patches@lists.linux.dev,
+        Pieter Jansen van Vuuren <pieter.jansen-van-vuuren@amd.com>,
+        Martin Habets <habetsm.xilinx@gmail.com>,
+        Edward Cree <ecree.xilinx@gmail.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 174/234] sfc: dont unregister flow_indr if it was never registered
 Date:   Mon, 21 Aug 2023 21:42:17 +0200
-Message-ID: <20230821194129.655817446@linuxfoundation.org>
+Message-ID: <20230821194136.527123594@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230821194122.695845670@linuxfoundation.org>
-References: <20230821194122.695845670@linuxfoundation.org>
+In-Reply-To: <20230821194128.754601642@linuxfoundation.org>
+References: <20230821194128.754601642@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -53,33 +57,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Yang Yingliang <yangyingliang@huawei.com>
+From: Edward Cree <ecree.xilinx@gmail.com>
 
-commit d83035433701919ac6db15f7737cbf554c36c1a6 upstream.
+[ Upstream commit fa165e1949976704500a442faeef8d9596faee76 ]
 
-mmc_free_host() has already be called in wbsd_free_mmc(),
-remove the mmc_free_host() in error path in wbsd_init().
+In efx_init_tc(), move the setting of efx->tc->up after the
+ flow_indr_dev_register() call, so that if it fails, efx_fini_tc()
+ won't call flow_indr_dev_unregister().
 
-Fixes: dc5b9b50fc9d ("mmc: wbsd: fix return value check of mmc_add_host()")
-Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20230807124443.3431366-1-yangyingliang@huawei.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 5b2e12d51bd8 ("sfc: bind indirect blocks for TC offload on EF100")
+Suggested-by: Pieter Jansen van Vuuren <pieter.jansen-van-vuuren@amd.com>
+Reviewed-by: Martin Habets <habetsm.xilinx@gmail.com>
+Signed-off-by: Edward Cree <ecree.xilinx@gmail.com>
+Link: https://lore.kernel.org/r/a81284d7013aba74005277bd81104e4cfbea3f6f.1692114888.git.ecree.xilinx@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/wbsd.c |    2 --
- 1 file changed, 2 deletions(-)
+ drivers/net/ethernet/sfc/tc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/mmc/host/wbsd.c
-+++ b/drivers/mmc/host/wbsd.c
-@@ -1705,8 +1705,6 @@ static int wbsd_init(struct device *dev,
+diff --git a/drivers/net/ethernet/sfc/tc.c b/drivers/net/ethernet/sfc/tc.c
+index 54c5719031f9e..6c8dfe0a64824 100644
+--- a/drivers/net/ethernet/sfc/tc.c
++++ b/drivers/net/ethernet/sfc/tc.c
+@@ -1460,10 +1460,10 @@ int efx_init_tc(struct efx_nic *efx)
+ 	rc = efx_tc_configure_fallback_acts_reps(efx);
+ 	if (rc)
+ 		return rc;
+-	efx->tc->up = true;
+ 	rc = flow_indr_dev_register(efx_tc_indr_setup_cb, efx);
+ 	if (rc)
+ 		return rc;
++	efx->tc->up = true;
+ 	return 0;
+ }
  
- 		wbsd_release_resources(host);
- 		wbsd_free_mmc(dev);
--
--		mmc_free_host(mmc);
- 		return ret;
- 	}
- 
+-- 
+2.40.1
+
 
 
