@@ -2,52 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B39FF78357A
-	for <lists+stable@lfdr.de>; Tue, 22 Aug 2023 00:20:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8354578357C
+	for <lists+stable@lfdr.de>; Tue, 22 Aug 2023 00:20:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230392AbjHUWU2 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 21 Aug 2023 18:20:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60080 "EHLO
+        id S231235AbjHUWU3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 21 Aug 2023 18:20:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60084 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229650AbjHUWU1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 18:20:27 -0400
-Received: from mail-wm1-x329.google.com (mail-wm1-x329.google.com [IPv6:2a00:1450:4864:20::329])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4260FE4
+        with ESMTP id S229554AbjHUWU2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 18:20:28 -0400
+Received: from mail-wm1-x32e.google.com (mail-wm1-x32e.google.com [IPv6:2a00:1450:4864:20::32e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B78EB130
         for <stable@vger.kernel.org>; Mon, 21 Aug 2023 15:20:22 -0700 (PDT)
-Received: by mail-wm1-x329.google.com with SMTP id 5b1f17b1804b1-3fe4cdb72b9so36832305e9.0
+Received: by mail-wm1-x32e.google.com with SMTP id 5b1f17b1804b1-3fef56f7223so7360005e9.3
         for <stable@vger.kernel.org>; Mon, 21 Aug 2023 15:20:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=layalina-io.20221208.gappssmtp.com; s=20221208; t=1692656421; x=1693261221;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=VcwuxIDWqi7zySJDkuXgYqXHdkQMVuMBWMZbaaDC588=;
-        b=qPwDksHT/apYM4Jvja9KqlHNLBgDkFxR+Em5jcqWkunkVhGcI4z9bDHRikk613dh2d
-         c1WmiFB+ntsqeuWHUTFAFxyOylUclWW9vrHIq/uWinYw/hZAWWSzeOyFf9iFpsUJNdRb
-         F4B5seudrovo7mAiGhBbgeQe+dQu2eTagkhE4cYqsVsd2/4GX9/KaX3rAPZsytFLOcxC
-         oLRsoOjx+yFbiIU9BDEgCeFgUjpFXVXAQazWJXK9spiFb5zT1Dib7bADStWbIBcEmyDC
-         PeX7L0vheQGnkVCD3hQDF1lLUaDYLeQyRy9eKjs2FPocnq9CR1+sQXc8jaFfu6zHYgrr
-         yB7w==
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=OGGulz8Xs9VGIJsh2Gg1EO/IDYOGhZjqwi+HXfBv8GA=;
+        b=FBr8hsVZUyCDzPHYEf5mMiSSLRqgKLX1EYON2WMn/vRtRI2B2klIQgNYSR+hQeZ5WO
+         VEkAesn4ov+TvdOjlA/l7SOLVbEUtSruWRJkEYWZQrR+vv3QmmhphbP4HUylTTUyVoHo
+         ikpAdF+Gx82kToB7LJp03Mej1idR2XpVaVLnC34kLerw2JI1rO9xsOp0QowJC84pKUPQ
+         pDYZu8GU5e8lnZ3/i0tVP77t4lEFIQp84qYA3tfWjGmZneWYh1EWjWyzOeXkuyngUw3/
+         5M6Qm0vKWhHb5jrMREYMcSqZjEXI5puMwoRPk9OxIbl0XTPmBXEbW1XHc+88JFf0QXB0
+         /vxw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20221208; t=1692656421; x=1693261221;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=VcwuxIDWqi7zySJDkuXgYqXHdkQMVuMBWMZbaaDC588=;
-        b=aBv+Hs4UaMIVrwA0UvumHHN41ZDPIny7dWiNRKAbYy4A4R7cSEVhV3T2Xyq/8wQr3b
-         WU89JLwzfEAB5Eo1pnS3kjl7T5IvAVKQC5fyfRLNZyYceOmPZa5CJe2ZZTPig3ym9mFu
-         I8mNbxhgV7xFfn3qvS12bKZa+WCdq3QC1Ir7JtLhlkCvi2G8i714Cpcg/XscHTrQDIfF
-         +5zw8PGmatC3sdpy/hWKYrYF0gsAD+ZFF0pAzvmYb2FbMGBIOqrWnBOdt6OZsFEIuduS
-         whHxYz0VkPhn523hgQdFFeFDX3pi0qnzgN7oxxTjnPeFgyNdTduAB1QspMWc2OsSOm48
-         Qbhg==
-X-Gm-Message-State: AOJu0YzfBxPzai4BJhKSYufbx8h6oLs0i8LKl5/sdjmnyADleh8CuykF
-        yPcuXc1uw1aOyw2w7DuWXJd+RA869Fq+AQHZ2Yc=
-X-Google-Smtp-Source: AGHT+IGTmg9P0/0JLewO6rbawb4B/lo1LE5wo9T9du6XptLW/jnw2XjgqAteccXME15yR5c2e8fEXQ==
-X-Received: by 2002:a7b:cb88:0:b0:3fe:24df:4180 with SMTP id m8-20020a7bcb88000000b003fe24df4180mr5972002wmi.13.1692656420386;
-        Mon, 21 Aug 2023 15:20:20 -0700 (PDT)
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=OGGulz8Xs9VGIJsh2Gg1EO/IDYOGhZjqwi+HXfBv8GA=;
+        b=bEBynHkHBklbbMiz7pXx9PbAkg2hpmvha5Wac2VfkW0DVMBLBzqcWBNnFMqtVosOzo
+         BxImklf2ADFu4yRVW5umuPqNBPyfEon+tXd8UGlC9HegI8RIjOGrhlXsjqzSgMae8Au7
+         RbNuettNA7WGvB0Wv6G5fnWvVLxGmMjIVQs/IOhR7OJIapEE4noyVdbvwkqVUEbStGSU
+         vltjsLQzLl2dLSRcqOHs+RDUsjWkqMuO50w7a6ynDJzxWh1rdBZayfjSzQ8zQGZ8qy0+
+         OnndWeIxH1/HaCzLvd4VyrXHwRmhksQbr0+SfbFO5E72Ji41zzj0iKNoecYKWWXhNFiU
+         DhTA==
+X-Gm-Message-State: AOJu0Yx9oQpBF+BrxoSd7DekQNoPhbBVT7+PF4arjLOqWQgWXAk/ilpD
+        H1v447b2A3M2TZO/sa81W8b+oRr1zM5MIV3BkSY=
+X-Google-Smtp-Source: AGHT+IHpf1bgg9D4wRey2I8bxhP8ECfcpt/gVPFSFZ2pM8DF9wttV9D+MospCMe2HTqqga+l1No1Ag==
+X-Received: by 2002:a1c:7508:0:b0:3fe:dd91:b5b6 with SMTP id o8-20020a1c7508000000b003fedd91b5b6mr6085684wmc.25.1692656421239;
+        Mon, 21 Aug 2023 15:20:21 -0700 (PDT)
 Received: from airbuntu.. (host109-151-228-137.range109-151.btcentralplus.com. [109.151.228.137])
-        by smtp.gmail.com with ESMTPSA id hn40-20020a05600ca3a800b003fe61c33df5sm17751154wmb.3.2023.08.21.15.20.19
+        by smtp.gmail.com with ESMTPSA id hn40-20020a05600ca3a800b003fe61c33df5sm17751154wmb.3.2023.08.21.15.20.20
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 21 Aug 2023 15:20:19 -0700 (PDT)
+        Mon, 21 Aug 2023 15:20:20 -0700 (PDT)
 From:   Qais Yousef <qyousef@layalina.io>
 To:     stable@vger.kernel.org
 Cc:     Juri Lelli <juri.lelli@redhat.com>,
@@ -58,10 +59,12 @@ Cc:     Juri Lelli <juri.lelli@redhat.com>,
         Ingo Molnar <mingo@kernel.org>, Hao Luo <haoluo@google.com>,
         John Stultz <jstultz@google.com>, cgroups@vger.kernel.org,
         linux-kernel@vger.kernel.org, Qais Yousef <qyousef@layalina.io>
-Subject: [PATCH 0/6] Backport rework of deadline bandwidth restoration for 6.4.y
-Date:   Mon, 21 Aug 2023 23:19:50 +0100
-Message-Id: <20230821221956.698117-1-qyousef@layalina.io>
+Subject: [PATCH 1/6] cgroup/cpuset: Rename functions dealing with DEADLINE accounting
+Date:   Mon, 21 Aug 2023 23:19:51 +0100
+Message-Id: <20230821221956.698117-2-qyousef@layalina.io>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20230821221956.698117-1-qyousef@layalina.io>
+References: <20230821221956.698117-1-qyousef@layalina.io>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -73,45 +76,67 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-This is a backport of the series that fixes the way deadline bandwidth
-restoration is done which is causing noticeable delay on resume path. It also
-converts the cpuset lock back into a mutex which some users on Android too.
-I lack the details but AFAIU the read/write semaphore was slower on high
-contention.
+From: Juri Lelli <juri.lelli@redhat.com>
 
-Compile tested against some randconfig for different archs. Only boot tested on
-x86 qemu.
+commit ad3a557daf6915296a43ef97a3e9c48e076c9dd8 upstream.
 
-Based on v6.4.11
+rebuild_root_domains() and update_tasks_root_domain() have neutral
+names, but actually deal with DEADLINE bandwidth accounting.
 
-Original series:
+Rename them to use 'dl_' prefix so that intent is more clear.
 
-	https://lore.kernel.org/lkml/20230508075854.17215-1-juri.lelli@redhat.com/
+No functional change.
 
-Thanks!
+Suggested-by: Qais Yousef (Google) <qyousef@layalina.io>
+Signed-off-by: Juri Lelli <juri.lelli@redhat.com>
+Reviewed-by: Waiman Long <longman@redhat.com>
+Signed-off-by: Tejun Heo <tj@kernel.org>
+(cherry picked from commit ad3a557daf6915296a43ef97a3e9c48e076c9dd8)
+Signed-off-by: Qais Yousef (Google) <qyousef@layalina.io>
+---
+ kernel/cgroup/cpuset.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---
-Qais Yousef
-
-Dietmar Eggemann (2):
-  sched/deadline: Create DL BW alloc, free & check overflow interface
-  cgroup/cpuset: Free DL BW in case can_attach() fails
-
-Juri Lelli (4):
-  cgroup/cpuset: Rename functions dealing with DEADLINE accounting
-  sched/cpuset: Bring back cpuset_mutex
-  sched/cpuset: Keep track of SCHED_DEADLINE task in cpusets
-  cgroup/cpuset: Iterate only if DEADLINE tasks are present
-
- include/linux/cpuset.h  |  12 +-
- include/linux/sched.h   |   4 +-
- kernel/cgroup/cgroup.c  |   4 +
- kernel/cgroup/cpuset.c  | 244 ++++++++++++++++++++++++++--------------
- kernel/sched/core.c     |  41 +++----
- kernel/sched/deadline.c |  67 ++++++++---
- kernel/sched/sched.h    |   2 +-
- 7 files changed, 246 insertions(+), 128 deletions(-)
-
+diff --git a/kernel/cgroup/cpuset.c b/kernel/cgroup/cpuset.c
+index e4ca2dd2b764..428ab46291e2 100644
+--- a/kernel/cgroup/cpuset.c
++++ b/kernel/cgroup/cpuset.c
+@@ -1066,7 +1066,7 @@ static int generate_sched_domains(cpumask_var_t **domains,
+ 	return ndoms;
+ }
+ 
+-static void update_tasks_root_domain(struct cpuset *cs)
++static void dl_update_tasks_root_domain(struct cpuset *cs)
+ {
+ 	struct css_task_iter it;
+ 	struct task_struct *task;
+@@ -1079,7 +1079,7 @@ static void update_tasks_root_domain(struct cpuset *cs)
+ 	css_task_iter_end(&it);
+ }
+ 
+-static void rebuild_root_domains(void)
++static void dl_rebuild_rd_accounting(void)
+ {
+ 	struct cpuset *cs = NULL;
+ 	struct cgroup_subsys_state *pos_css;
+@@ -1107,7 +1107,7 @@ static void rebuild_root_domains(void)
+ 
+ 		rcu_read_unlock();
+ 
+-		update_tasks_root_domain(cs);
++		dl_update_tasks_root_domain(cs);
+ 
+ 		rcu_read_lock();
+ 		css_put(&cs->css);
+@@ -1121,7 +1121,7 @@ partition_and_rebuild_sched_domains(int ndoms_new, cpumask_var_t doms_new[],
+ {
+ 	mutex_lock(&sched_domains_mutex);
+ 	partition_sched_domains_locked(ndoms_new, doms_new, dattr_new);
+-	rebuild_root_domains();
++	dl_rebuild_rd_accounting();
+ 	mutex_unlock(&sched_domains_mutex);
+ }
+ 
 -- 
 2.34.1
 
