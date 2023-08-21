@@ -2,42 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B09D8783376
-	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:23:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C990B78324E
+	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:21:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229710AbjHUTyo (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 21 Aug 2023 15:54:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54872 "EHLO
+        id S229476AbjHUTxU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 21 Aug 2023 15:53:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39536 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229619AbjHUTyn (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 15:54:43 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F462FA
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 12:54:42 -0700 (PDT)
+        with ESMTP id S229514AbjHUTxT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 15:53:19 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 49727FA
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 12:53:18 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9BA8964579
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 19:54:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82AD1C433C9;
-        Mon, 21 Aug 2023 19:54:40 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DBC0D6447D
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 19:53:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED0F8C433C8;
+        Mon, 21 Aug 2023 19:53:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692647681;
-        bh=hxLfyn0pQUNRfI3j8a/PWMJVgOTjKQvg6wZeNvfzlTI=;
+        s=korg; t=1692647597;
+        bh=vsevAjzeEs68uQgUS842kKKvazz2Dxege4TpMoOL+TM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=yd7WsCuVR5jejgCpDbslD7GLbOJTaZCIWb73vLWhXSNq6y7WXE2fBaVEVLaD0DHsa
-         kpR0lfJ0ygPtJZEcIo/vXJbJ5tkGHfu+EgHPCLYOPh0bd9G1wTxXkmp18g+x8AZNmB
-         86JdDq/Y+3d0l0i3ZGRajSmR22xjt5cfCcRTkJ0E=
+        b=FjXQnok0FAjfmSpMg2rD1ji3otaHKa7IavlIUEmJRhKr4MbNaI1wCIbohprQr7IGN
+         8SFLGACUxsQrgm9UR5XAvfgtK6ETLAE5gKSokudnU4AgPshdtWffTJnGoDc50U8QIU
+         jlfMPlEF0rrqFMDstqorT5s/sZefxfET8u5sGNRI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jia-Ju Bai <baijiaju@buaa.edu.cn>,
+        patches@lists.linux.dev,
         Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 062/194] fs: ntfs3: Fix possible null-pointer dereferences in mi_read()
-Date:   Mon, 21 Aug 2023 21:40:41 +0200
-Message-ID: <20230821194125.495349092@linuxfoundation.org>
+Subject: [PATCH 6.1 063/194] fs/ntfs3: Mark ntfs dirty when on-disk struct is corrupted
+Date:   Mon, 21 Aug 2023 21:40:42 +0200
+Message-ID: <20230821194125.541308461@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230821194122.695845670@linuxfoundation.org>
 References: <20230821194122.695845670@linuxfoundation.org>
@@ -45,8 +45,8 @@ User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -54,60 +54,79 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jia-Ju Bai <baijiaju@buaa.edu.cn>
+From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 
-[ Upstream commit 97498cd610c0d030a7bd49a7efad974790661162 ]
+[ Upstream commit e0f363a98830e8d7d70fbaf91c07ae0b7c57aafe ]
 
-In a previous commit 2681631c2973 ("fs/ntfs3: Add null pointer check to
-attr_load_runs_vcn"), ni can be NULL in attr_load_runs_vcn(), and thus it
-should be checked before being used.
-
-However, in the call stack of this commit, mft_ni in mi_read() is
-aliased with ni in attr_load_runs_vcn(), and it is also used in
-mi_read() at two places:
-
-mi_read()
-  rw_lock = &mft_ni->file.run_lock -> No check
-  attr_load_runs_vcn(mft_ni, ...)
-    ni (namely mft_ni) is checked in the previous commit
-  attr_load_runs_vcn(..., &mft_ni->file.run) -> No check
-
-Thus, to avoid possible null-pointer dereferences, the related checks
-should be added.
-
-These bugs are reported by a static analysis tool implemented by myself,
-and they are found by extending a known bug fixed in the previous commit.
-Thus, they could be theoretical bugs.
-
-Signed-off-by: Jia-Ju Bai <baijiaju@buaa.edu.cn>
 Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ntfs3/record.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/ntfs3/fsntfs.c  | 2 +-
+ fs/ntfs3/index.c   | 6 ++++++
+ fs/ntfs3/ntfs_fs.h | 2 ++
+ fs/ntfs3/record.c  | 6 ++++++
+ 4 files changed, 15 insertions(+), 1 deletion(-)
 
+diff --git a/fs/ntfs3/fsntfs.c b/fs/ntfs3/fsntfs.c
+index b6e22bcb929ba..829b62d3bb889 100644
+--- a/fs/ntfs3/fsntfs.c
++++ b/fs/ntfs3/fsntfs.c
+@@ -154,7 +154,7 @@ int ntfs_fix_post_read(struct NTFS_RECORD_HEADER *rhdr, size_t bytes,
+ 	/* Check errors. */
+ 	if ((fo & 1) || fo + fn * sizeof(short) > SECTOR_SIZE || !fn-- ||
+ 	    fn * SECTOR_SIZE > bytes) {
+-		return -EINVAL; /* Native chkntfs returns ok! */
++		return -E_NTFS_CORRUPT;
+ 	}
+ 
+ 	/* Get fixup pointer. */
+diff --git a/fs/ntfs3/index.c b/fs/ntfs3/index.c
+index 9e9a9ffd92958..495cfb37962fa 100644
+--- a/fs/ntfs3/index.c
++++ b/fs/ntfs3/index.c
+@@ -1103,6 +1103,12 @@ int indx_read(struct ntfs_index *indx, struct ntfs_inode *ni, CLST vbn,
+ 	*node = in;
+ 
+ out:
++	if (err == -E_NTFS_CORRUPT) {
++		ntfs_inode_err(&ni->vfs_inode, "directory corrupted");
++		ntfs_set_state(ni->mi.sbi, NTFS_DIRTY_ERROR);
++		err = -EINVAL;
++	}
++
+ 	if (ib != in->index)
+ 		kfree(ib);
+ 
+diff --git a/fs/ntfs3/ntfs_fs.h b/fs/ntfs3/ntfs_fs.h
+index 24227b2e1b2b0..8c9abaf139e67 100644
+--- a/fs/ntfs3/ntfs_fs.h
++++ b/fs/ntfs3/ntfs_fs.h
+@@ -53,6 +53,8 @@ enum utf16_endian;
+ #define E_NTFS_NONRESIDENT		556
+ /* NTFS specific error code about punch hole. */
+ #define E_NTFS_NOTALIGNED		557
++/* NTFS specific error code when on-disk struct is corrupted. */
++#define E_NTFS_CORRUPT			558
+ 
+ 
+ /* sbi->flags */
 diff --git a/fs/ntfs3/record.c b/fs/ntfs3/record.c
-index af1e4b364ea8e..07037ec773ac8 100644
+index 07037ec773ac8..ba336c7280b85 100644
 --- a/fs/ntfs3/record.c
 +++ b/fs/ntfs3/record.c
-@@ -124,7 +124,7 @@ int mi_read(struct mft_inode *mi, bool is_mft)
- 	struct rw_semaphore *rw_lock = NULL;
+@@ -180,6 +180,12 @@ int mi_read(struct mft_inode *mi, bool is_mft)
+ 	return 0;
  
- 	if (is_mounted(sbi)) {
--		if (!is_mft) {
-+		if (!is_mft && mft_ni) {
- 			rw_lock = &mft_ni->file.run_lock;
- 			down_read(rw_lock);
- 		}
-@@ -148,7 +148,7 @@ int mi_read(struct mft_inode *mi, bool is_mft)
- 		ni_lock(mft_ni);
- 		down_write(rw_lock);
- 	}
--	err = attr_load_runs_vcn(mft_ni, ATTR_DATA, NULL, 0, &mft_ni->file.run,
-+	err = attr_load_runs_vcn(mft_ni, ATTR_DATA, NULL, 0, run,
- 				 vbo >> sbi->cluster_bits);
- 	if (rw_lock) {
- 		up_write(rw_lock);
+ out:
++	if (err == -E_NTFS_CORRUPT) {
++		ntfs_err(sbi->sb, "mft corrupted");
++		ntfs_set_state(sbi, NTFS_DIRTY_ERROR);
++		err = -EINVAL;
++	}
++
+ 	return err;
+ }
+ 
 -- 
 2.40.1
 
