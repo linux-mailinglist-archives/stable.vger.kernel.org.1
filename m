@@ -2,94 +2,86 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8B7CE782EAC
-	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 18:44:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AD80B782EAF
+	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 18:45:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232910AbjHUQo0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 21 Aug 2023 12:44:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47556 "EHLO
+        id S234363AbjHUQpW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 21 Aug 2023 12:45:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51098 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233521AbjHUQoZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 12:44:25 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C564CC
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 09:44:24 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BE4EC63EDD
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 16:44:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FF49C433C7;
-        Mon, 21 Aug 2023 16:44:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692636263;
-        bh=LlrlqT5YFbaVq7QjCCWPiC/vKgnJUso9K3vZdLYpSrQ=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=ybRr39jV8vAJlQlMVP1ogmL+zehfOZcFpu9ASwI247gPAz+lGOtvrJ9yiJ2HT6GB8
-         vnplHA6UHU27663KPl6RS44kGk70wTAlT2TLFpm0FUZNYjHSy+UAhLbbnWnu8z3HpK
-         +w2ltuxxj06WyHzx6mxPz7jZHBYkK03FbidtcRIQ=
-Date:   Mon, 21 Aug 2023 18:44:20 +0200
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Jaroslav Kysela <perex@perex.cz>
-Cc:     ALSA development <alsa-devel@alsa-project.org>,
-        stable@vger.kernel.org,
-        Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
-        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-        Rander Wang <rander.wang@intel.com>,
-        =?iso-8859-1?Q?P=E9ter?= Ujfalusi 
-        <peter.ujfalusi@linux.intel.com>,
-        Guennadi Liakhovetski <guennadi.liakhovetski@linux.intel.com>,
-        Bard Liao <yung-chuan.liao@linux.intel.com>,
-        Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH] [6.4.y] ASoC: SOF: intel: hda: Clean up link DMA for
- IPC3 during stop
-Message-ID: <2023082110-stumble-founding-148d@gregkh>
-References: <20230821122209.20139-1-perex@perex.cz>
+        with ESMTP id S232912AbjHUQpV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 12:45:21 -0400
+Received: from mail-pl1-x636.google.com (mail-pl1-x636.google.com [IPv6:2607:f8b0:4864:20::636])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E68EACC;
+        Mon, 21 Aug 2023 09:45:19 -0700 (PDT)
+Received: by mail-pl1-x636.google.com with SMTP id d9443c01a7336-1bf078d5f33so27361845ad.3;
+        Mon, 21 Aug 2023 09:45:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1692636319; x=1693241119;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=NdM56TQugKolVtnM2vEBlZtwTSJbtDlseuSS2vjAiNU=;
+        b=XLiBAsc1D8k9fk5Nqbc/co6XUtWiAXl3AFWSCbrw8cwf3OvXMxnqiFslUIvmK8NyXN
+         uDVHyghAWy+dO3nPPtBJepy9Wn6MYyPg+bMVSfx5VJkplCoy4NwqeMYWbp8dUzEWBPzA
+         O5qQBW/qz6YrELx0gGwB+WtwOwo99A4gxcWjHWqZ7NlASbELgVxS3J1olhCaLuw0/Bms
+         lTIqKA5D65JU7b/Ex8INBKUdh0yQOfBtChTTbswgWFsz+nsh6+eFnbhfiXOrX0incVAJ
+         7NthDaVEae3jRn0z1+EBRAaLmTr9NcWR4Qi3wJN0z2P6I9RWbIZneknUAfEpb/WLbBEh
+         tNrg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1692636319; x=1693241119;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=NdM56TQugKolVtnM2vEBlZtwTSJbtDlseuSS2vjAiNU=;
+        b=da/6gePj6cHh7Jw3DCjndwG8EiPZnZgSbIW+lvX+cz4+aNY5V5W/vcUH+7v4pvQowX
+         5wbLxAvkzEFk8kPOSx9C+JT/gg9XNo6WPgd8ARk13hXg/17bFRuysm7K2qy4+OtoXA5a
+         AETuORetNc63paZ7CBx8SpArmSkU3okSHqt5WNhcxdShGMtobhb/Gh7b0a1uAt/XV1bn
+         D9Y8kYAidxKR6BntUxOqW5JVp8LpMILNnl8DpZ0CWTgVsD7OkjTj7/DL/xlZWJfK3UGG
+         q2f9ycS7AJVHBqpjgrFOox2sf/cYAgtwtc3aHIG2V2eq1yHLRa/MVV5CGdZ9vA/BZoDK
+         H24g==
+X-Gm-Message-State: AOJu0YxjM5IK4LuLUWFDfO8P1m+A3MDsejzAoAp61JbTeUUntVHOM3Ce
+        smrlJzPp1aaFrj2codm9OVV533JDYAnOBA==
+X-Google-Smtp-Source: AGHT+IHP+eJce60nwuTZdhY6fkcRYe7A8x1KzzfzpRnwTBKR3XZ0ZVNPt8aKjaosjl07R3zDcS7mQA==
+X-Received: by 2002:a17:902:e54f:b0:1bc:61d6:5fcc with SMTP id n15-20020a170902e54f00b001bc61d65fccmr9007318plf.51.1692636319132;
+        Mon, 21 Aug 2023 09:45:19 -0700 (PDT)
+Received: from localhost.localdomain ([103.14.183.220])
+        by smtp.gmail.com with ESMTPSA id m15-20020a170902bb8f00b001b89466a5f4sm3809019pls.105.2023.08.21.09.45.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 21 Aug 2023 09:45:18 -0700 (PDT)
+From:   Mighty <bavishimithil@gmail.com>
+To:     linus.walleij@linaro.org
+Cc:     bavishimithil@gmail.com, jic23@kernel.org, lars@metafoo.de,
+        liambeguin@gmail.com, linux-iio@vger.kernel.org, peda@axentia.se,
+        stable@vger.kernel.org
+Subject: Re: [PATCH] iio: afe: rescale: Fix logic bug
+Date:   Mon, 21 Aug 2023 22:15:09 +0530
+Message-Id: <20230821164509.45-1-bavishimithil@gmail.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <CACRpkdah22hgM6VruErJedWM7apAuO7BGdFeSz4Hz0c2Nx3kjg@mail.gmail.com>
+References: <CACRpkdah22hgM6VruErJedWM7apAuO7BGdFeSz4Hz0c2Nx3kjg@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230821122209.20139-1-perex@perex.cz>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, Aug 21, 2023 at 02:22:09PM +0200, Jaroslav Kysela wrote:
-> From: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
-> 
-> commit 90219f1bd273055f1dc1d7bdc0965755b992c045 upstream.
-> 
-> With IPC3, we reset hw_params during the stop trigger, so we should also
-> clean up the link DMA during the stop trigger.
-> 
-> Cc: <stable@vger.kernel.org> # 6.4.x
-> Fixes: 1bf83fa6654c ("ASoC: SOF: Intel: hda-dai: Do not perform DMA cleanup during stop")
-> Closes: https://github.com/thesofproject/linux/issues/4455
-> Closes: https://github.com/thesofproject/linux/issues/4482
-> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217673
-> Signed-off-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
-> Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-> Reviewed-by: Rander Wang <rander.wang@intel.com>
-> Reviewed-by: Péter Ujfalusi <peter.ujfalusi@linux.intel.com>
-> Reviewed-by: Guennadi Liakhovetski <guennadi.liakhovetski@linux.intel.com>
-> Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-> Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
-> Link: https://lore.kernel.org/r/20230808110627.32375-1-peter.ujfalusi@linux.intel.com
-> Signed-off-by: Mark Brown <broonie@kernel.org>
-> 
-> Note that many recent Intel based laptops are affected.
-> 
-> Added missing code for 6.4 kernels to keep the fix simple not depending
-> on the other changes. This commit is present in 6.5 tree already.
-> 
-> Signed-off-by: Jaroslav Kysela <perex@perex.cz>
+> How does it break it?
+>
+> It's a change to the AFE rescaler driver so it can't really "break"
+> twl6030-gpadc.
 
-Now queued up, thanks.
+Not necessarily the gpadc, but it breaks my current-sense-shunt which requires an adc channel for it to work, since the iio-rescale driver wont recognise the channel (as it only is IIO_CHAN_INFO_RAW, so the && breaks)
 
-greg k-h
+> Isn't the complete picture involving some device tree using the prescaler
+> etc?
+
+I'm not sure I understand that, could you explain it, maybe with some example as well?
+
+Mithil
