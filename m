@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C6DED78328D
-	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:22:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9DD7C783216
+	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:21:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230286AbjHUUHE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 21 Aug 2023 16:07:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53704 "EHLO
+        id S229875AbjHUT5R (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 21 Aug 2023 15:57:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45318 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230283AbjHUUHE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 16:07:04 -0400
+        with ESMTP id S229882AbjHUT5Q (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 15:57:16 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6DE8E3
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 13:07:02 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B5EB10E
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 12:57:14 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5C0BB6498A
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 20:07:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67DB2C433C8;
-        Mon, 21 Aug 2023 20:07:01 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1F1B264641
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 19:57:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 310F3C433C8;
+        Mon, 21 Aug 2023 19:57:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692648421;
-        bh=/vPbDGYMzZ85BVDSSmFTHH4UXOF7Sf+LHKkwZNZe18Q=;
+        s=korg; t=1692647833;
+        bh=Ts7MD2nmsTmRTuy6bd/7b+rO+iYOveb0OO+NMHAJPSg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jX2NNjR9P1m8HEY1X2mw+Fe9QKJNbtt11xE/s/rBs8Tz6/n7J6IUg1v2LcpeitIX4
-         93hd1idSk8sUYd6Vgm1y+LqgEyzZ8/M/k6y7cadXsXE18+F5e4B3IrMS3A3E+QWzA/
-         evSdGDbOWOQg/eFGaEYG6M8My0kaW5AthN/Ea9Eg=
+        b=0hI8KB6AmKFOXodV4F/fg2y22wPSYjMfbXKkiei+OjK3yGrNR90BYV1IOX3cbiVGo
+         5IJTznUVjxROwaqPaW4BkjgWkTdR69x9TPdHbpRzSgMKNHqSwULMm5lyoVsHCXmhMq
+         Bo8bNV3FlJk2Fai8iWGTYLd4rhG45Jp1hblMEEe0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dragos Tatulea <dtatulea@nvidia.com>,
-        Tariq Toukan <tariqt@nvidia.com>,
-        Saeed Mahameed <saeedm@nvidia.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 170/234] net/mlx5e: XDP, Fix fifo overrun on XDP_REDIRECT
+        patches@lists.linux.dev, Conor Dooley <conor.dooley@microchip.com>,
+        Guo Ren <guoren@kernel.org>,
+        Mingzheng Xing <xingmingzheng@iscas.ac.cn>,
+        Palmer Dabbelt <palmer@rivosinc.com>
+Subject: [PATCH 6.1 154/194] riscv: Handle zicsr/zifencei issue between gcc and binutils
 Date:   Mon, 21 Aug 2023 21:42:13 +0200
-Message-ID: <20230821194136.358490395@linuxfoundation.org>
+Message-ID: <20230821194129.481225086@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230821194128.754601642@linuxfoundation.org>
-References: <20230821194128.754601642@linuxfoundation.org>
+In-Reply-To: <20230821194122.695845670@linuxfoundation.org>
+References: <20230821194122.695845670@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,70 +55,111 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Dragos Tatulea <dtatulea@nvidia.com>
+From: Mingzheng Xing <xingmingzheng@iscas.ac.cn>
 
-[ Upstream commit 34a79876d9f77e971115236bcf7b5d14a8ecf542 ]
+commit ca09f772cccaeec4cd05a21528c37a260aa2dd2c upstream.
 
-Before this fix, running high rate traffic through XDP_REDIRECT
-with multibuf could overrun the fifo used to release the
-xdp frames after tx completion. This resulted in corrupted data
-being consumed on the free side.
+Binutils-2.38 and GCC-12.1.0 bumped[0][1] the default ISA spec to the newer
+20191213 version which moves some instructions from the I extension to the
+Zicsr and Zifencei extensions. So if one of the binutils and GCC exceeds
+that version, we should explicitly specifying Zicsr and Zifencei via -march
+to cope with the new changes. but this only occurs when binutils >= 2.36
+and GCC >= 11.1.0. It's a different story when binutils < 2.36.
 
-The culplirt was a miscalculation of the fifo size: the maximum ratio
-between fifo entries / data segments was incorrect. This ratio serves to
-calculate the max fifo size for a full sq where each packet uses the
-worst case number of entries in the fifo.
+binutils-2.36 supports the Zifencei extension[2] and splits Zifencei and
+Zicsr from I[3]. GCC-11.1.0 is particular[4] because it add support Zicsr
+and Zifencei extension for -march. binutils-2.35 does not support the
+Zifencei extension, and does not need to specify Zicsr and Zifencei when
+working with GCC >= 12.1.0.
 
-This patch fixes the formula and names the constant. It also makes sure
-that future values will use a power of 2 number of entries for the fifo
-mask to work.
+To make our lives easier, let's relax the check to binutils >= 2.36 in
+CONFIG_TOOLCHAIN_NEEDS_EXPLICIT_ZICSR_ZIFENCEI. For the other two cases,
+where clang < 17 or GCC < 11.1.0, we will deal with them in
+CONFIG_TOOLCHAIN_NEEDS_OLD_ISA_SPEC.
 
-Signed-off-by: Dragos Tatulea <dtatulea@nvidia.com>
-Fixes: 3f734b8c594b ("net/mlx5e: XDP, Use multiple single-entry objects in xdpi_fifo")
-Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+For more information, please refer to:
+commit 6df2a016c0c8 ("riscv: fix build with binutils 2.38")
+commit e89c2e815e76 ("riscv: Handle zicsr/zifencei issues between clang and binutils")
+
+Link: https://sourceware.org/git/?p=binutils-gdb.git;a=commit;h=aed44286efa8ae8717a77d94b51ac3614e2ca6dc [0]
+Link: https://gcc.gnu.org/git/?p=gcc.git;a=commit;h=98416dbb0a62579d4a7a4a76bab51b5b52fec2cd [1]
+Link: https://sourceware.org/git/?p=binutils-gdb.git;a=commit;h=5a1b31e1e1cee6e9f1c92abff59cdcfff0dddf30 [2]
+Link: https://sourceware.org/git/?p=binutils-gdb.git;a=commit;h=729a53530e86972d1143553a415db34e6e01d5d2 [3]
+Link: https://gcc.gnu.org/git/?p=gcc.git;a=commit;h=b03be74bad08c382da47e048007a78fa3fb4ef49 [4]
+Link: https://lore.kernel.org/all/20230308220842.1231003-1-conor@kernel.org
+Link: https://lore.kernel.org/all/20230223220546.52879-1-conor@kernel.org
+Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
+Acked-by: Guo Ren <guoren@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Mingzheng Xing <xingmingzheng@iscas.ac.cn>
+Link: https://lore.kernel.org/r/20230809165648.21071-1-xingmingzheng@iscas.ac.cn
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en/xdp.h  | 2 ++
- drivers/net/ethernet/mellanox/mlx5/core/en_main.c | 8 +++++---
- 2 files changed, 7 insertions(+), 3 deletions(-)
+ arch/riscv/Kconfig                     |   28 +++++++++++++++++-----------
+ arch/riscv/kernel/compat_vdso/Makefile |    8 +++++++-
+ 2 files changed, 24 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/xdp.h b/drivers/net/ethernet/mellanox/mlx5/core/en/xdp.h
-index 9e8e6184f9e43..ecfe93a479da8 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en/xdp.h
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en/xdp.h
-@@ -84,6 +84,8 @@ enum mlx5e_xdp_xmit_mode {
-  * MLX5E_XDP_XMIT_MODE_XSK:
-  *    none.
-  */
-+#define MLX5E_XDP_FIFO_ENTRIES2DS_MAX_RATIO 4
-+
- union mlx5e_xdp_info {
- 	enum mlx5e_xdp_xmit_mode mode;
- 	union {
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-index 7e6d0489854e3..975c82df345cd 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-@@ -1298,11 +1298,13 @@ static int mlx5e_alloc_xdpsq_fifo(struct mlx5e_xdpsq *sq, int numa)
- {
- 	struct mlx5e_xdp_info_fifo *xdpi_fifo = &sq->db.xdpi_fifo;
- 	int wq_sz        = mlx5_wq_cyc_get_size(&sq->wq);
--	int entries = wq_sz * MLX5_SEND_WQEBB_NUM_DS * 2; /* upper bound for maximum num of
--							   * entries of all xmit_modes.
--							   */
-+	int entries;
- 	size_t size;
+--- a/arch/riscv/Kconfig
++++ b/arch/riscv/Kconfig
+@@ -447,24 +447,30 @@ config TOOLCHAIN_HAS_ZIHINTPAUSE
+ config TOOLCHAIN_NEEDS_EXPLICIT_ZICSR_ZIFENCEI
+ 	def_bool y
+ 	# https://sourceware.org/git/?p=binutils-gdb.git;a=commit;h=aed44286efa8ae8717a77d94b51ac3614e2ca6dc
+-	depends on AS_IS_GNU && AS_VERSION >= 23800
++	# https://gcc.gnu.org/git/?p=gcc.git;a=commit;h=98416dbb0a62579d4a7a4a76bab51b5b52fec2cd
++	depends on AS_IS_GNU && AS_VERSION >= 23600
+ 	help
+-	  Newer binutils versions default to ISA spec version 20191213 which
+-	  moves some instructions from the I extension to the Zicsr and Zifencei
+-	  extensions.
++	  Binutils-2.38 and GCC-12.1.0 bumped the default ISA spec to the newer
++	  20191213 version, which moves some instructions from the I extension to
++	  the Zicsr and Zifencei extensions. This requires explicitly specifying
++	  Zicsr and Zifencei when binutils >= 2.38 or GCC >= 12.1.0. Zicsr
++	  and Zifencei are supported in binutils from version 2.36 onwards.
++	  To make life easier, and avoid forcing toolchains that default to a
++	  newer ISA spec to version 2.2, relax the check to binutils >= 2.36.
++	  For clang < 17 or GCC < 11.1.0, for which this is not possible, this is
++	  dealt with in CONFIG_TOOLCHAIN_NEEDS_OLD_ISA_SPEC.
  
-+	/* upper bound for maximum num of entries of all xmit_modes. */
-+	entries = roundup_pow_of_two(wq_sz * MLX5_SEND_WQEBB_NUM_DS *
-+				     MLX5E_XDP_FIFO_ENTRIES2DS_MAX_RATIO);
-+
- 	size = array_size(sizeof(*xdpi_fifo->xi), entries);
- 	xdpi_fifo->xi = kvzalloc_node(size, GFP_KERNEL, numa);
- 	if (!xdpi_fifo->xi)
--- 
-2.40.1
-
+ config TOOLCHAIN_NEEDS_OLD_ISA_SPEC
+ 	def_bool y
+ 	depends on TOOLCHAIN_NEEDS_EXPLICIT_ZICSR_ZIFENCEI
+ 	# https://github.com/llvm/llvm-project/commit/22e199e6afb1263c943c0c0d4498694e15bf8a16
+-	depends on CC_IS_CLANG && CLANG_VERSION < 170000
++	# https://gcc.gnu.org/git/?p=gcc.git;a=commit;h=b03be74bad08c382da47e048007a78fa3fb4ef49
++	depends on (CC_IS_CLANG && CLANG_VERSION < 170000) || (CC_IS_GCC && GCC_VERSION < 110100)
+ 	help
+-	  Certain versions of clang do not support zicsr and zifencei via -march
+-	  but newer versions of binutils require it for the reasons noted in the
+-	  help text of CONFIG_TOOLCHAIN_NEEDS_EXPLICIT_ZICSR_ZIFENCEI. This
+-	  option causes an older ISA spec compatible with these older versions
+-	  of clang to be passed to GAS, which has the same result as passing zicsr
+-	  and zifencei to -march.
++	  Certain versions of clang and GCC do not support zicsr and zifencei via
++	  -march. This option causes an older ISA spec compatible with these older
++	  versions of clang and GCC to be passed to GAS, which has the same result
++	  as passing zicsr and zifencei to -march.
+ 
+ config FPU
+ 	bool "FPU support"
+--- a/arch/riscv/kernel/compat_vdso/Makefile
++++ b/arch/riscv/kernel/compat_vdso/Makefile
+@@ -11,7 +11,13 @@ compat_vdso-syms += flush_icache
+ COMPAT_CC := $(CC)
+ COMPAT_LD := $(LD)
+ 
+-COMPAT_CC_FLAGS := -march=rv32g -mabi=ilp32
++# binutils 2.35 does not support the zifencei extension, but in the ISA
++# spec 20191213, G stands for IMAFD_ZICSR_ZIFENCEI.
++ifdef CONFIG_TOOLCHAIN_NEEDS_EXPLICIT_ZICSR_ZIFENCEI
++	COMPAT_CC_FLAGS := -march=rv32g -mabi=ilp32
++else
++	COMPAT_CC_FLAGS := -march=rv32imafd -mabi=ilp32
++endif
+ COMPAT_LD_FLAGS := -melf32lriscv
+ 
+ # Disable attributes, as they're useless and break the build.
 
 
