@@ -2,52 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B8D7B783309
-	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:22:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 544847831FA
+	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:21:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230263AbjHUUGZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 21 Aug 2023 16:06:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33044 "EHLO
+        id S229755AbjHUTzO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 21 Aug 2023 15:55:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54258 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230262AbjHUUGZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 16:06:25 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6870A8
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 13:06:23 -0700 (PDT)
+        with ESMTP id S229744AbjHUTzO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 15:55:14 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ECABFFA
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 12:55:09 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4CE9764952
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 20:06:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 337FCC433C9;
-        Mon, 21 Aug 2023 20:06:22 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8B2B2645AA
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 19:55:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96BAFC433C7;
+        Mon, 21 Aug 2023 19:55:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692648382;
-        bh=4qRBRVle7PYvp1Slnup5hpdPb89bzoCdm7URh1lZVLo=;
+        s=korg; t=1692647709;
+        bh=8xxxQfbgoXBKVx1RjgHDkM8YYRxXFEyIYiNGiIdYxvE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=YMdKLmfZnFIgID76gFCTxE7fFozSOob1kTdKN0c7jCyFIYduTrWo0wuNxYRb1zpFt
-         OmQlOdpJlzMH3wZH0KWLX3OpaiH7db2flhMsD9Z1Bqn/fln0Kp+RvKL43tHsXy44Y7
-         NQNBbG3BHoC2P1Vq4PEpnYYjyFhxK9Q6u6QWmxSM=
+        b=EfYZB5bLeVUmUipOvn9F7AANC+YsOeW2zu4Fg3Ua5L6nppDl2qSsaZ8tVHucG3InJ
+         +Bd5N5eBDNrq3yOJTCSjUZFAQpYL2Sy7DNNoqC25ruG+QPjlP74pDDRvjS5/LXkkdl
+         KGsV0gnqXL1/cbjrIZzv7XonLWGGCYt+lX4irtMw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Srikanth Aithal <sraithal@amd.com>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Sean Christopherson <seanjc@google.com>,
-        "Borislav Petkov (AMD)" <bp@alien8.de>
-Subject: [PATCH 6.4 126/234] x86/retpoline: Dont clobber RFLAGS during srso_safe_ret()
-Date:   Mon, 21 Aug 2023 21:41:29 +0200
-Message-ID: <20230821194134.402173982@linuxfoundation.org>
+        patches@lists.linux.dev, Lin Ma <linma@zju.edu.cn>,
+        Simon Horman <simon.horman@corigine.com>,
+        Leon Romanovsky <leonro@nvidia.com>,
+        Steffen Klassert <steffen.klassert@secunet.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 111/194] xfrm: add forgotten nla_policy for XFRMA_MTIMER_THRESH
+Date:   Mon, 21 Aug 2023 21:41:30 +0200
+Message-ID: <20230821194127.582025506@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230821194128.754601642@linuxfoundation.org>
-References: <20230821194128.754601642@linuxfoundation.org>
+In-Reply-To: <20230821194122.695845670@linuxfoundation.org>
+References: <20230821194122.695845670@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -55,111 +56,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Sean Christopherson <seanjc@google.com>
+From: Lin Ma <linma@zju.edu.cn>
 
-commit ba5ca5e5e6a1d55923e88b4a83da452166f5560e upstream.
+[ Upstream commit 5e2424708da7207087934c5c75211e8584d553a0 ]
 
-Use LEA instead of ADD when adjusting %rsp in srso_safe_ret{,_alias}()
-so as to avoid clobbering flags.  Drop one of the INT3 instructions to
-account for the LEA consuming one more byte than the ADD.
+The previous commit 4e484b3e969b ("xfrm: rate limit SA mapping change
+message to user space") added one additional attribute named
+XFRMA_MTIMER_THRESH and described its type at compat_policy
+(net/xfrm/xfrm_compat.c).
 
-KVM's emulator makes indirect calls into a jump table of sorts, where
-the destination of each call is a small blob of code that performs fast
-emulation by executing the target instruction with fixed operands.
+However, the author forgot to also describe the nla_policy at
+xfrma_policy (net/xfrm/xfrm_user.c). Hence, this suppose NLA_U32 (4
+bytes) value can be faked as empty (0 bytes) by a malicious user, which
+leads to 4 bytes overflow read and heap information leak when parsing
+nlattrs.
 
-E.g. to emulate ADC, fastop() invokes adcb_al_dl():
+To exploit this, one malicious user can spray the SLUB objects and then
+leverage this 4 bytes OOB read to leak the heap data into
+x->mapping_maxage (see xfrm_update_ae_params(...)), and leak it to
+userspace via copy_to_user_state_extra(...).
 
-  adcb_al_dl:
-    <+0>:  adc    %dl,%al
-    <+2>:  jmp    <__x86_return_thunk>
+The above bug is assigned CVE-2023-3773. To fix it, this commit just
+completes the nla_policy description for XFRMA_MTIMER_THRESH, which
+enforces the length check and avoids such OOB read.
 
-A major motivation for doing fast emulation is to leverage the CPU to
-handle consumption and manipulation of arithmetic flags, i.e. RFLAGS is
-both an input and output to the target of the call.  fastop() collects
-the RFLAGS result by pushing RFLAGS onto the stack and popping them back
-into a variable (held in %rdi in this case):
-
-  asm("push %[flags]; popf; " CALL_NOSPEC " ; pushf; pop %[flags]\n"
-
-  <+71>: mov    0xc0(%r8),%rdx
-  <+78>: mov    0x100(%r8),%rcx
-  <+85>: push   %rdi
-  <+86>: popf
-  <+87>: call   *%rsi
-  <+89>: nop
-  <+90>: nop
-  <+91>: nop
-  <+92>: pushf
-  <+93>: pop    %rdi
-
-and then propagating the arithmetic flags into the vCPU's emulator state:
-
-  ctxt->eflags = (ctxt->eflags & ~EFLAGS_MASK) | (flags & EFLAGS_MASK);
-
-  <+64>:  and    $0xfffffffffffff72a,%r9
-  <+94>:  and    $0x8d5,%edi
-  <+109>: or     %rdi,%r9
-  <+122>: mov    %r9,0x10(%r8)
-
-The failures can be most easily reproduced by running the "emulator"
-test in KVM-Unit-Tests.
-
-If you're feeling a bit of deja vu, see commit b63f20a778c8
-("x86/retpoline: Don't clobber RFLAGS during CALL_NOSPEC on i386").
-
-In addition, this breaks booting of clang-compiled guest on
-a gcc-compiled host where the host contains the %rsp-modifying SRSO
-mitigations.
-
-  [ bp: Massage commit message, extend, remove addresses. ]
-
-Fixes: fb3bd914b3ec ("x86/srso: Add a Speculative RAS Overflow mitigation")
-Closes: https://lore.kernel.org/all/de474347-122d-54cd-eabf-9dcc95ab9eae@amd.com
-Reported-by: Srikanth Aithal <sraithal@amd.com>
-Reported-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Tested-by: Nathan Chancellor <nathan@kernel.org>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/20230810013334.GA5354@dev-arch.thelio-3990X/
-Link: https://lore.kernel.org/r/20230811155255.250835-1-seanjc@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 4e484b3e969b ("xfrm: rate limit SA mapping change message to user space")
+Signed-off-by: Lin Ma <linma@zju.edu.cn>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/lib/retpoline.S |    7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ net/xfrm/xfrm_user.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/arch/x86/lib/retpoline.S
-+++ b/arch/x86/lib/retpoline.S
-@@ -170,7 +170,7 @@ SYM_FUNC_END(srso_alias_untrain_ret)
- #endif
+diff --git a/net/xfrm/xfrm_user.c b/net/xfrm/xfrm_user.c
+index 9fc1da47d02e0..d042ca01211fa 100644
+--- a/net/xfrm/xfrm_user.c
++++ b/net/xfrm/xfrm_user.c
+@@ -2989,6 +2989,7 @@ const struct nla_policy xfrma_policy[XFRMA_MAX+1] = {
+ 	[XFRMA_SET_MARK]	= { .type = NLA_U32 },
+ 	[XFRMA_SET_MARK_MASK]	= { .type = NLA_U32 },
+ 	[XFRMA_IF_ID]		= { .type = NLA_U32 },
++	[XFRMA_MTIMER_THRESH]   = { .type = NLA_U32 },
+ };
+ EXPORT_SYMBOL_GPL(xfrma_policy);
  
- SYM_START(srso_alias_safe_ret, SYM_L_GLOBAL, SYM_A_NONE)
--	add $8, %_ASM_SP
-+	lea 8(%_ASM_SP), %_ASM_SP
- 	UNWIND_HINT_FUNC
- 	ANNOTATE_UNRET_SAFE
- 	ret
-@@ -270,7 +270,7 @@ __EXPORT_THUNK(retbleed_untrain_ret)
-  * SRSO untraining sequence for Zen1/2, similar to retbleed_untrain_ret()
-  * above. On kernel entry, srso_untrain_ret() is executed which is a
-  *
-- * movabs $0xccccccc308c48348,%rax
-+ * movabs $0xccccc30824648d48,%rax
-  *
-  * and when the return thunk executes the inner label srso_safe_ret()
-  * later, it is a stack manipulation and a RET which is mispredicted and
-@@ -289,11 +289,10 @@ SYM_START(srso_untrain_ret, SYM_L_GLOBAL
-  * the stack.
-  */
- SYM_INNER_LABEL(srso_safe_ret, SYM_L_GLOBAL)
--	add $8, %_ASM_SP
-+	lea 8(%_ASM_SP), %_ASM_SP
- 	ret
- 	int3
- 	int3
--	int3
- 	/* end of movabs */
- 	lfence
- 	call srso_safe_ret
+-- 
+2.40.1
+
 
 
