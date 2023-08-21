@@ -2,47 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 20A0678326C
-	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:22:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EE075783349
+	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:23:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230177AbjHUUDW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 21 Aug 2023 16:03:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56022 "EHLO
+        id S229553AbjHUTwZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 21 Aug 2023 15:52:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42872 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230185AbjHUUDW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 16:03:22 -0400
+        with ESMTP id S229521AbjHUTwY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 15:52:24 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD3C3E4
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 13:03:20 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E8897185
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 12:52:10 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 63E9F6485F
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 20:03:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F81CC433C7;
-        Mon, 21 Aug 2023 20:03:19 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7E44064497
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 19:52:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A3E9C433C7;
+        Mon, 21 Aug 2023 19:52:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692648199;
-        bh=yN4jA6qeCAQHi+iVZZsIBQa5UK13ee8OgGN9MAI2eIg=;
+        s=korg; t=1692647529;
+        bh=i+7mmWPWmYF1vqEShqUd815EtSpuHHBhCoeNzzUAy8I=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=PJChXBs1U0wkd7Klh8BotnSkFJWOdH+3SKKHCo5uIwaLamtHaH8Qts5vsS+dCEWhF
-         gr5IqENCipMb4igOSdG6BvXUj+SIb7QY+fPrFFS0jaWmAZOxZCYr6NRMQYng/Y1oVa
-         LGiJJKfbSAPTof4vQJMiWpnjM8erV26+spDwxrlo=
+        b=VfnfHLLb81aAIjg9TMFMnejWjoYhofe1HO08zxV/+6B0Y8LwNNz55KiJpx8th9Tqn
+         xgl3mTYmxZRt7qJTqcH0cpJtnJ+pj75KMjIExxNsBPgANEKPzaeV/8KqSV5sJW4pPl
+         ist2cKYCQbHh89esWqYNdnQ3qiWGj8ClIT5m+Jr4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Yuechao Zhao <yuechao.zhao@advantech.com.cn>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Wim Van Sebroeck <wim@linux-watchdog.org>,
+        patches@lists.linux.dev, Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        Yunfei Dong <yunfei.dong@mediatek.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 063/234] watchdog: sp5100_tco: support Hygon FCH/SCH (Server Controller Hub)
+Subject: [PATCH 6.1 047/194] media: platform: mediatek: vpu: fix NULL ptr dereference
 Date:   Mon, 21 Aug 2023 21:40:26 +0200
-Message-ID: <20230821194131.556495076@linuxfoundation.org>
+Message-ID: <20230821194124.873682207@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230821194128.754601642@linuxfoundation.org>
-References: <20230821194128.754601642@linuxfoundation.org>
+In-Reply-To: <20230821194122.695845670@linuxfoundation.org>
+References: <20230821194122.695845670@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,44 +55,48 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Yuechao Zhao <yuechao.zhao@advantech.com.cn>
+From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 
-[ Upstream commit 009637de1f65cff452ad49554d1e8ef9fda99e43 ]
+[ Upstream commit 3df55cd773e8603b623425cc97b05e542854ad27 ]
 
-Add PCI_VENDOR_ID_HYGON(Hygon vendor id [0x1d94]) in this driver
+If pdev is NULL, then it is still dereferenced.
 
-Signed-off-by: Yuechao Zhao <yuechao.zhao@advantech.com.cn>
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-Link: https://lkml.kernel.org/r/20230612031907.796461-1-a345351830@gmail.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
+This fixes this smatch warning:
+
+drivers/media/platform/mediatek/vpu/mtk_vpu.c:570 vpu_load_firmware() warn: address of NULL pointer 'pdev'
+
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Cc: Yunfei Dong <yunfei.dong@mediatek.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/watchdog/sp5100_tco.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/media/platform/mediatek/vpu/mtk_vpu.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/watchdog/sp5100_tco.c b/drivers/watchdog/sp5100_tco.c
-index 14f8d8d90920f..2bd3dc25cb030 100644
---- a/drivers/watchdog/sp5100_tco.c
-+++ b/drivers/watchdog/sp5100_tco.c
-@@ -96,7 +96,7 @@ static enum tco_reg_layout tco_reg_layout(struct pci_dev *dev)
- 	    sp5100_tco_pci->device == PCI_DEVICE_ID_AMD_KERNCZ_SMBUS &&
- 	    sp5100_tco_pci->revision >= AMD_ZEN_SMBUS_PCI_REV) {
- 		return efch_mmio;
--	} else if (dev->vendor == PCI_VENDOR_ID_AMD &&
-+	} else if ((dev->vendor == PCI_VENDOR_ID_AMD || dev->vendor == PCI_VENDOR_ID_HYGON) &&
- 	    ((dev->device == PCI_DEVICE_ID_AMD_HUDSON2_SMBUS &&
- 	     dev->revision >= 0x41) ||
- 	    (dev->device == PCI_DEVICE_ID_AMD_KERNCZ_SMBUS &&
-@@ -579,6 +579,8 @@ static const struct pci_device_id sp5100_tco_pci_tbl[] = {
- 	  PCI_ANY_ID, },
- 	{ PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_KERNCZ_SMBUS, PCI_ANY_ID,
- 	  PCI_ANY_ID, },
-+	{ PCI_VENDOR_ID_HYGON, PCI_DEVICE_ID_AMD_KERNCZ_SMBUS, PCI_ANY_ID,
-+	  PCI_ANY_ID, },
- 	{ 0, },			/* End of list */
- };
- MODULE_DEVICE_TABLE(pci, sp5100_tco_pci_tbl);
+diff --git a/drivers/media/platform/mediatek/vpu/mtk_vpu.c b/drivers/media/platform/mediatek/vpu/mtk_vpu.c
+index 47b684b92f817..6beab9e86a22a 100644
+--- a/drivers/media/platform/mediatek/vpu/mtk_vpu.c
++++ b/drivers/media/platform/mediatek/vpu/mtk_vpu.c
+@@ -562,15 +562,17 @@ static int load_requested_vpu(struct mtk_vpu *vpu,
+ int vpu_load_firmware(struct platform_device *pdev)
+ {
+ 	struct mtk_vpu *vpu;
+-	struct device *dev = &pdev->dev;
++	struct device *dev;
+ 	struct vpu_run *run;
+ 	int ret;
+ 
+ 	if (!pdev) {
+-		dev_err(dev, "VPU platform device is invalid\n");
++		pr_err("VPU platform device is invalid\n");
+ 		return -EINVAL;
+ 	}
+ 
++	dev = &pdev->dev;
++
+ 	vpu = platform_get_drvdata(pdev);
+ 	run = &vpu->run;
+ 
 -- 
 2.40.1
 
