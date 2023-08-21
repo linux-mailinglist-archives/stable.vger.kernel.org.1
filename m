@@ -2,51 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 66CBC78323C
-	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:21:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 497B57831CA
+	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:21:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229731AbjHUTzA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 21 Aug 2023 15:55:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35144 "EHLO
+        id S230269AbjHUUGn (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 21 Aug 2023 16:06:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45638 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229732AbjHUTzA (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 15:55:00 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 07FDAFA
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 12:54:56 -0700 (PDT)
+        with ESMTP id S230265AbjHUUGm (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 16:06:42 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5347BA8
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 13:06:40 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 919106458E
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 19:54:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0A58C433C8;
-        Mon, 21 Aug 2023 19:54:54 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E49886496B
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 20:06:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE2AFC433C7;
+        Mon, 21 Aug 2023 20:06:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692647695;
-        bh=N0Sm5C3CyWYTVHpMrVwth7L0Uk3+9DKC+c4KbGBEL/M=;
+        s=korg; t=1692648399;
+        bh=gcpeXCVN4v5KSyPFNjK/zLCOh1Hfq76lAt5te4I//14=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Pl2pxYvV22oj7F7C85Yq/MHPR/M5KbYtJURjX0fH7cLPrhLBCK+zRhxnEf0QzHbqj
-         +I2V8jvIsI1QZqTOhJIWoMIs8W/KPmf/NY2eV6AqJIykDEd75POpZn+HMRY+udtZvP
-         OZ2gsfwDyDnAGnWtDAy0fmzbfJf0zwAUW0SU/iUM=
+        b=s3sFylJa6Q9RegMJaSVuOg8r05YY+cdy3nA8WNTFcA+1sS4l3VTjB3qVRB55Wbc3G
+         gS1BJgYzBQ/XW2bD6u6UzrBLHTm7JZrHwdgtasBJ+pbVdPmIJ+eQT66sPaaECv9jpu
+         G2uKXz3qtqi84LdyN55+D84VsfCBQMT0VjaB9qXk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Lin Ma <linma@zju.edu.cn>,
-        Steffen Klassert <steffen.klassert@secunet.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 106/194] net: xfrm: Amend XFRMA_SEC_CTX nla_policy structure
+        patches@lists.linux.dev,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        "Borislav Petkov (AMD)" <bp@alien8.de>
+Subject: [PATCH 6.4 122/234] x86/cpu/kvm: Provide UNTRAIN_RET_VM
 Date:   Mon, 21 Aug 2023 21:41:25 +0200
-Message-ID: <20230821194127.341966540@linuxfoundation.org>
+Message-ID: <20230821194134.225398028@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230821194122.695845670@linuxfoundation.org>
-References: <20230821194122.695845670@linuxfoundation.org>
+In-Reply-To: <20230821194128.754601642@linuxfoundation.org>
+References: <20230821194128.754601642@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -54,62 +54,96 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Lin Ma <linma@zju.edu.cn>
+From: Peter Zijlstra <peterz@infradead.org>
 
-[ Upstream commit d1e0e61d617ba17aa516db707aa871387566bbf7 ]
+commit 864bcaa38ee44ec6c0e43f79c2d2997b977e26b2 upstream.
 
-According to all consumers code of attrs[XFRMA_SEC_CTX], like
+Similar to how it doesn't make sense to have UNTRAIN_RET have two
+untrain calls, it also doesn't make sense for VMEXIT to have an extra
+IBPB call.
 
-* verify_sec_ctx_len(), convert to xfrm_user_sec_ctx*
-* xfrm_state_construct(), call security_xfrm_state_alloc whose prototype
-is int security_xfrm_state_alloc(.., struct xfrm_user_sec_ctx *sec_ctx);
-* copy_from_user_sec_ctx(), convert to xfrm_user_sec_ctx *
-...
+This cures VMEXIT doing potentially unret+IBPB or double IBPB.
+Also, the (SEV) VMEXIT case seems to have been overlooked.
 
-It seems that the expected parsing result for XFRMA_SEC_CTX should be
-structure xfrm_user_sec_ctx, and the current xfrm_sec_ctx is confusing
-and misleading (Luckily, they happen to have same size 8 bytes).
+Redefine the meaning of the synthetic IBPB flags to:
 
-This commit amend the policy structure to xfrm_user_sec_ctx to avoid
-ambiguity.
+ - ENTRY_IBPB     -- issue IBPB on entry  (was: entry + VMEXIT)
+ - IBPB_ON_VMEXIT -- issue IBPB on VMEXIT
 
-Fixes: cf5cb79f6946 ("[XFRM] netlink: Establish an attribute policy")
-Signed-off-by: Lin Ma <linma@zju.edu.cn>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+And have 'retbleed=ibpb' set *BOTH* feature flags to ensure it retains
+the previous behaviour and issues IBPB on entry+VMEXIT.
+
+The new 'srso=ibpb_vmexit' option only sets IBPB_ON_VMEXIT.
+
+Create UNTRAIN_RET_VM specifically for the VMEXIT case, and have that
+check IBPB_ON_VMEXIT.
+
+All this avoids having the VMEXIT case having to check both ENTRY_IBPB
+and IBPB_ON_VMEXIT and simplifies the alternatives.
+
+Fixes: fb3bd914b3ec ("x86/srso: Add a Speculative RAS Overflow mitigation")
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/r/20230814121149.109557833@infradead.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/xfrm/xfrm_compat.c | 2 +-
- net/xfrm/xfrm_user.c   | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ arch/x86/include/asm/nospec-branch.h |   11 +++++++++++
+ arch/x86/kernel/cpu/bugs.c           |    1 +
+ arch/x86/kvm/svm/vmenter.S           |    7 ++-----
+ 3 files changed, 14 insertions(+), 5 deletions(-)
 
-diff --git a/net/xfrm/xfrm_compat.c b/net/xfrm/xfrm_compat.c
-index 8cbf45a8bcdc2..655fe4ff86212 100644
---- a/net/xfrm/xfrm_compat.c
-+++ b/net/xfrm/xfrm_compat.c
-@@ -108,7 +108,7 @@ static const struct nla_policy compat_policy[XFRMA_MAX+1] = {
- 	[XFRMA_ALG_COMP]	= { .len = sizeof(struct xfrm_algo) },
- 	[XFRMA_ENCAP]		= { .len = sizeof(struct xfrm_encap_tmpl) },
- 	[XFRMA_TMPL]		= { .len = sizeof(struct xfrm_user_tmpl) },
--	[XFRMA_SEC_CTX]		= { .len = sizeof(struct xfrm_sec_ctx) },
-+	[XFRMA_SEC_CTX]		= { .len = sizeof(struct xfrm_user_sec_ctx) },
- 	[XFRMA_LTIME_VAL]	= { .len = sizeof(struct xfrm_lifetime_cur) },
- 	[XFRMA_REPLAY_VAL]	= { .len = sizeof(struct xfrm_replay_state) },
- 	[XFRMA_REPLAY_THRESH]	= { .type = NLA_U32 },
-diff --git a/net/xfrm/xfrm_user.c b/net/xfrm/xfrm_user.c
-index 3e32fe99a6818..c6803318ac63e 100644
---- a/net/xfrm/xfrm_user.c
-+++ b/net/xfrm/xfrm_user.c
-@@ -2969,7 +2969,7 @@ const struct nla_policy xfrma_policy[XFRMA_MAX+1] = {
- 	[XFRMA_ALG_COMP]	= { .len = sizeof(struct xfrm_algo) },
- 	[XFRMA_ENCAP]		= { .len = sizeof(struct xfrm_encap_tmpl) },
- 	[XFRMA_TMPL]		= { .len = sizeof(struct xfrm_user_tmpl) },
--	[XFRMA_SEC_CTX]		= { .len = sizeof(struct xfrm_sec_ctx) },
-+	[XFRMA_SEC_CTX]		= { .len = sizeof(struct xfrm_user_sec_ctx) },
- 	[XFRMA_LTIME_VAL]	= { .len = sizeof(struct xfrm_lifetime_cur) },
- 	[XFRMA_REPLAY_VAL]	= { .len = sizeof(struct xfrm_replay_state) },
- 	[XFRMA_REPLAY_THRESH]	= { .type = NLA_U32 },
--- 
-2.40.1
-
+--- a/arch/x86/include/asm/nospec-branch.h
++++ b/arch/x86/include/asm/nospec-branch.h
+@@ -295,6 +295,17 @@
+ #endif
+ .endm
+ 
++.macro UNTRAIN_RET_VM
++#if defined(CONFIG_CPU_UNRET_ENTRY) || defined(CONFIG_CPU_IBPB_ENTRY) || \
++	defined(CONFIG_CALL_DEPTH_TRACKING) || defined(CONFIG_CPU_SRSO)
++	VALIDATE_UNRET_END
++	ALTERNATIVE_3 "",						\
++		      CALL_UNTRAIN_RET, X86_FEATURE_UNRET,		\
++		      "call entry_ibpb", X86_FEATURE_IBPB_ON_VMEXIT,	\
++		      __stringify(RESET_CALL_DEPTH), X86_FEATURE_CALL_DEPTH
++#endif
++.endm
++
+ .macro UNTRAIN_RET_FROM_CALL
+ #if defined(CONFIG_CPU_UNRET_ENTRY) || defined(CONFIG_CPU_IBPB_ENTRY) || \
+ 	defined(CONFIG_CALL_DEPTH_TRACKING)
+--- a/arch/x86/kernel/cpu/bugs.c
++++ b/arch/x86/kernel/cpu/bugs.c
+@@ -1054,6 +1054,7 @@ do_cmd_auto:
+ 
+ 	case RETBLEED_MITIGATION_IBPB:
+ 		setup_force_cpu_cap(X86_FEATURE_ENTRY_IBPB);
++		setup_force_cpu_cap(X86_FEATURE_IBPB_ON_VMEXIT);
+ 		mitigate_smt = true;
+ 		break;
+ 
+--- a/arch/x86/kvm/svm/vmenter.S
++++ b/arch/x86/kvm/svm/vmenter.S
+@@ -222,10 +222,7 @@ SYM_FUNC_START(__svm_vcpu_run)
+ 	 * because interrupt handlers won't sanitize 'ret' if the return is
+ 	 * from the kernel.
+ 	 */
+-	UNTRAIN_RET
+-
+-	/* SRSO */
+-	ALTERNATIVE "", "call entry_ibpb", X86_FEATURE_IBPB_ON_VMEXIT
++	UNTRAIN_RET_VM
+ 
+ 	/*
+ 	 * Clear all general purpose registers except RSP and RAX to prevent
+@@ -362,7 +359,7 @@ SYM_FUNC_START(__svm_sev_es_vcpu_run)
+ 	 * because interrupt handlers won't sanitize RET if the return is
+ 	 * from the kernel.
+ 	 */
+-	UNTRAIN_RET
++	UNTRAIN_RET_VM
+ 
+ 	/* "Pop" @spec_ctrl_intercepted.  */
+ 	pop %_ASM_BX
 
 
