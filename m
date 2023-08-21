@@ -2,52 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 85C207832D6
-	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:22:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A5549783348
+	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:23:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229947AbjHUT6q (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 21 Aug 2023 15:58:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60452 "EHLO
+        id S230341AbjHUUIe (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 21 Aug 2023 16:08:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38676 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229942AbjHUT6p (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 15:58:45 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1045012A
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 12:58:44 -0700 (PDT)
+        with ESMTP id S230338AbjHUUId (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 16:08:33 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9D5BCE3
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 13:08:32 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9AC5B646E0
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 19:58:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86B6FC433C9;
-        Mon, 21 Aug 2023 19:58:42 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3B2C764A30
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 20:08:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41C02C433C7;
+        Mon, 21 Aug 2023 20:08:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692647923;
-        bh=PSzzHcLbiJRPJ8XMHvqia7Gwh0KcHTTH6tmKWeVToR8=;
+        s=korg; t=1692648511;
+        bh=w20upPI+GRTnehckrJ+6LEogiLyn7qQz5dnJ9dmFY0E=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=o77nvT/DGiojimg+2cEWRvRVsBdggkg2VUpBh5pZ9G+TavyKmudNFA5i0i7KFHs5l
-         lPFraQZh9GIrLOOnsErgtcouSnmSZoX5iELBMjjhxZgj3gKd1IcEsJc4JvKWy9hUEP
-         COX1QRVoXFwtcIr+D3bDn1bschAGg/vLjIIDaOWg=
+        b=h2sYTzwTTCllTo7+yIdsPJ1Pm7200kVDekjUFZM+tbBUkC+7l0Vay5w260j2Gt3vf
+         oSHdNlWcy9rfqcK8JhaAJZ2l+Fjktx1KOMjfsRiM6SdUwdY5+ejcCdcaTlD+IvQGqw
+         00kMzKskxwh70JGQqJvnx32BPa0lO0sS/uAronmQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        "Borislav Petkov (AMD)" <bp@alien8.de>,
-        Josh Poimboeuf <jpoimboe@kernel.org>
-Subject: [PATCH 6.1 186/194] objtool/x86: Fixup frame-pointer vs rethunk
+        patches@lists.linux.dev, dengxiang <dengxiang@nfschina.com>,
+        Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.4 202/234] ALSA: usb-audio: Add support for Mythware XA001AU capture and playback interfaces.
 Date:   Mon, 21 Aug 2023 21:42:45 +0200
-Message-ID: <20230821194130.871689629@linuxfoundation.org>
+Message-ID: <20230821194137.783214475@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230821194122.695845670@linuxfoundation.org>
-References: <20230821194122.695845670@linuxfoundation.org>
+In-Reply-To: <20230821194128.754601642@linuxfoundation.org>
+References: <20230821194128.754601642@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -55,62 +53,58 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Peter Zijlstra <peterz@infradead.org>
+From: dengxiang <dengxiang@nfschina.com>
 
-commit dbf46008775516f7f25c95b7760041c286299783 upstream.
+commit 788449ae57f4273111b779bbcaad552b67f517d5 upstream.
 
-For stack-validation of a frame-pointer build, objtool validates that
-every CALL instruction is preceded by a frame-setup. The new SRSO
-return thunks violate this with their RSB stuffing trickery.
+This patch adds a USB quirk for Mythware XA001AU USB interface.
 
-Extend the __fentry__ exception to also cover the embedded_insn case
-used for this. This cures:
-
-  vmlinux.o: warning: objtool: srso_untrain_ret+0xd: call without frame pointer save/setup
-
-Fixes: 4ae68b26c3ab ("objtool/x86: Fix SRSO mess")
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Acked-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Link: https://lore.kernel.org/r/20230816115921.GH980931@hirez.programming.kicks-ass.net
+Signed-off-by: dengxiang <dengxiang@nfschina.com>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/20230803024437.370069-1-dengxiang@nfschina.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/objtool/check.c |   17 +++++++++++------
- 1 file changed, 11 insertions(+), 6 deletions(-)
+ sound/usb/quirks-table.h |   29 +++++++++++++++++++++++++++++
+ 1 file changed, 29 insertions(+)
 
---- a/tools/objtool/check.c
-+++ b/tools/objtool/check.c
-@@ -2450,12 +2450,17 @@ static int decode_sections(struct objtoo
- 	return 0;
- }
- 
--static bool is_fentry_call(struct instruction *insn)
-+static bool is_special_call(struct instruction *insn)
- {
--	if (insn->type == INSN_CALL &&
--	    insn->call_dest &&
--	    insn->call_dest->fentry)
--		return true;
-+	if (insn->type == INSN_CALL) {
-+		struct symbol *dest = insn->call_dest;
-+
-+		if (!dest)
-+			return false;
-+
-+		if (dest->fentry)
-+			return true;
+--- a/sound/usb/quirks-table.h
++++ b/sound/usb/quirks-table.h
+@@ -4507,6 +4507,35 @@ YAMAHA_DEVICE(0x7010, "UB99"),
+ 		}
+ 	}
+ },
++{
++	/* Advanced modes of the Mythware XA001AU.
++	 * For the standard mode, Mythware XA001AU has ID ffad:a001
++	 */
++	USB_DEVICE_VENDOR_SPEC(0xffad, 0xa001),
++	.driver_info = (unsigned long) &(const struct snd_usb_audio_quirk) {
++		.vendor_name = "Mythware",
++		.product_name = "XA001AU",
++		.ifnum = QUIRK_ANY_INTERFACE,
++		.type = QUIRK_COMPOSITE,
++		.data = (const struct snd_usb_audio_quirk[]) {
++			{
++				.ifnum = 0,
++				.type = QUIRK_IGNORE_INTERFACE,
++			},
++			{
++				.ifnum = 1,
++				.type = QUIRK_AUDIO_STANDARD_INTERFACE,
++			},
++			{
++				.ifnum = 2,
++				.type = QUIRK_AUDIO_STANDARD_INTERFACE,
++			},
++			{
++				.ifnum = -1
++			}
++		}
 +	}
++},
  
- 	return false;
- }
-@@ -3448,7 +3453,7 @@ static int validate_branch(struct objtoo
- 			if (ret)
- 				return ret;
- 
--			if (opts.stackval && func && !is_fentry_call(insn) &&
-+			if (opts.stackval && func && !is_special_call(insn) &&
- 			    !has_valid_stack_frame(&state)) {
- 				WARN_FUNC("call without frame pointer save/setup",
- 					  sec, insn->offset);
+ #undef USB_DEVICE_VENDOR_SPEC
+ #undef USB_AUDIO_DEVICE
 
 
