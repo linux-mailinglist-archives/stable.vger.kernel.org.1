@@ -2,45 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 26F9178321E
-	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:21:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 74BAB783296
+	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:22:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229591AbjHUUCM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 21 Aug 2023 16:02:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48360 "EHLO
+        id S230139AbjHUUCN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 21 Aug 2023 16:02:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48414 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230138AbjHUUCM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 16:02:12 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D03C12C
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 13:02:08 -0700 (PDT)
+        with ESMTP id S230138AbjHUUCN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 16:02:13 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E22BE4
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 13:02:11 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1C346647F3
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 20:02:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BDBBC433C8;
-        Mon, 21 Aug 2023 20:02:07 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CA82C647F5
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 20:02:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC056C433C8;
+        Mon, 21 Aug 2023 20:02:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692648127;
-        bh=JXO/TYkCF6WLEdDwoIchcqc9RFlzlJuWCwq5kXNoC0Y=;
+        s=korg; t=1692648130;
+        bh=SXB83HQhxpf7telpAlLDH6P/xAHGUXhEla0Od3Ibjwg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=HZPGyQADWz4HTVVTVOEi3ImKMhhKSkWAXUlmKxBGe2agaHsz+1JDsIKMl9GV9Mzpb
-         5T0YoL3J9EU+h7pfhOIC6DXderir4YCrRnR0rjxeG34739lNo0kyfw+zt/ClqXLTA2
-         NJ09H5xKtBFxQD7RBurBA2pf3f2xoaGhcK9SNJVw=
+        b=kaZg4mAj4MMigKzj2/VuoUydEab9mxmw9YmOTlcieeWTuXE3d0fORSAinCAhupVle
+         tLDmN4y/8ufvdNaIwYjmQtj5IlZFuMjQ4ZDYiDtLRsHoRJHkZ9Mvzet4FwxNrVr852
+         Pgjcp2l9y/kS/krk35JbGHYh6HtS41WyuH6C3RJs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Nevenko Stupar <nevenko.stupar@amd.com>,
-        Jun Lei <jun.lei@amd.com>, Tom Chung <chiahsuan.chung@amd.com>,
-        Alvin Lee <alvin.lee2@amd.com>,
-        Daniel Wheeler <daniel.wheeler@amd.com>,
+        patches@lists.linux.dev, Lang Yu <Lang.Yu@amd.com>,
+        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
         Alex Deucher <alexander.deucher@amd.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 035/234] drm/amd/display: Apply 60us prefetch for DCFCLK <= 300Mhz
-Date:   Mon, 21 Aug 2023 21:39:58 +0200
-Message-ID: <20230821194130.278360643@linuxfoundation.org>
+Subject: [PATCH 6.4 036/234] drm/amdgpu: unmap and remove csa_va properly
+Date:   Mon, 21 Aug 2023 21:39:59 +0200
+Message-ID: <20230821194130.317772396@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230821194128.754601642@linuxfoundation.org>
 References: <20230821194128.754601642@linuxfoundation.org>
@@ -48,8 +46,8 @@ User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -57,64 +55,122 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Alvin Lee <alvin.lee2@amd.com>
+From: Lang Yu <Lang.Yu@amd.com>
 
-[ Upstream commit 7e60ab4eb3e4ba2adac46d737fdbbc5732bebd58 ]
+[ Upstream commit 5daff15cd013422bc6d1efcfe82b586800025384 ]
 
-[Description]
-- Previously we wanted to apply extra 60us of prefetch for min DCFCLK
-  (200Mhz), but DCFCLK can be calculated to be 201Mhz which underflows
-  also without the extra prefetch
-- Instead, apply the the extra 60us prefetch for any DCFCLK freq <=
-  300Mhz
+Root PD BO should be reserved before unmap and remove
+a bo_va from VM otherwise lockdep will complain.
 
-Reviewed-by: Nevenko Stupar <nevenko.stupar@amd.com>
-Reviewed-by: Jun Lei <jun.lei@amd.com>
-Acked-by: Tom Chung <chiahsuan.chung@amd.com>
-Signed-off-by: Alvin Lee <alvin.lee2@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+v2: check fpriv->csa_va is not NULL instead of amdgpu_mcbp (christian)
+
+[14616.936827] WARNING: CPU: 6 PID: 1711 at drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c:1762 amdgpu_vm_bo_del+0x399/0x3f0 [amdgpu]
+[14616.937096] Call Trace:
+[14616.937097]  <TASK>
+[14616.937102]  amdgpu_driver_postclose_kms+0x249/0x2f0 [amdgpu]
+[14616.937187]  drm_file_free+0x1d6/0x300 [drm]
+[14616.937207]  drm_close_helper.isra.0+0x62/0x70 [drm]
+[14616.937220]  drm_release+0x5e/0x100 [drm]
+[14616.937234]  __fput+0x9f/0x280
+[14616.937239]  ____fput+0xe/0x20
+[14616.937241]  task_work_run+0x61/0x90
+[14616.937246]  exit_to_user_mode_prepare+0x215/0x220
+[14616.937251]  syscall_exit_to_user_mode+0x2a/0x60
+[14616.937254]  do_syscall_64+0x48/0x90
+[14616.937257]  entry_SYSCALL_64_after_hwframe+0x63/0xcd
+
+Signed-off-by: Lang Yu <Lang.Yu@amd.com>
+Acked-by: Christian König <christian.koenig@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../gpu/drm/amd/display/dc/dml/dcn32/display_mode_vba_32.c    | 4 ++--
- .../gpu/drm/amd/display/dc/dml/dcn32/display_mode_vba_32.h    | 2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_csa.c | 38 +++++++++++++++++++++++++
+ drivers/gpu/drm/amd/amdgpu/amdgpu_csa.h |  3 ++
+ drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c | 10 +++----
+ 3 files changed, 46 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn32/display_mode_vba_32.c b/drivers/gpu/drm/amd/display/dc/dml/dcn32/display_mode_vba_32.c
-index d75248b6cae99..9a5150e96017a 100644
---- a/drivers/gpu/drm/amd/display/dc/dml/dcn32/display_mode_vba_32.c
-+++ b/drivers/gpu/drm/amd/display/dc/dml/dcn32/display_mode_vba_32.c
-@@ -811,7 +811,7 @@ static void DISPCLKDPPCLKDCFCLKDeepSleepPrefetchParametersWatermarksAndPerforman
- 					v->SwathHeightC[k],
- 					TWait,
- 					(v->DRAMSpeedPerState[mode_lib->vba.VoltageLevel] <= MEM_STROBE_FREQ_MHZ ||
--						v->DCFCLKPerState[mode_lib->vba.VoltageLevel] <= MIN_DCFCLK_FREQ_MHZ) ?
-+						v->DCFCLKPerState[mode_lib->vba.VoltageLevel] <= DCFCLK_FREQ_EXTRA_PREFETCH_REQ_MHZ) ?
- 							mode_lib->vba.ip.min_prefetch_in_strobe_us : 0,
- 					/* Output */
- 					&v->DSTXAfterScaler[k],
-@@ -3311,7 +3311,7 @@ void dml32_ModeSupportAndSystemConfigurationFull(struct display_mode_lib *mode_l
- 							v->swath_width_chroma_ub_this_state[k],
- 							v->SwathHeightYThisState[k],
- 							v->SwathHeightCThisState[k], v->TWait,
--							(v->DRAMSpeedPerState[i] <= MEM_STROBE_FREQ_MHZ || v->DCFCLKState[i][j] <= MIN_DCFCLK_FREQ_MHZ) ?
-+							(v->DRAMSpeedPerState[i] <= MEM_STROBE_FREQ_MHZ || v->DCFCLKState[i][j] <= DCFCLK_FREQ_EXTRA_PREFETCH_REQ_MHZ) ?
- 									mode_lib->vba.ip.min_prefetch_in_strobe_us : 0,
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_csa.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_csa.c
+index c6d4d41c4393e..23d054526e7c7 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_csa.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_csa.c
+@@ -106,3 +106,41 @@ int amdgpu_map_static_csa(struct amdgpu_device *adev, struct amdgpu_vm *vm,
+ 	ttm_eu_backoff_reservation(&ticket, &list);
+ 	return 0;
+ }
++
++int amdgpu_unmap_static_csa(struct amdgpu_device *adev, struct amdgpu_vm *vm,
++			    struct amdgpu_bo *bo, struct amdgpu_bo_va *bo_va,
++			    uint64_t csa_addr)
++{
++	struct ww_acquire_ctx ticket;
++	struct list_head list;
++	struct amdgpu_bo_list_entry pd;
++	struct ttm_validate_buffer csa_tv;
++	int r;
++
++	INIT_LIST_HEAD(&list);
++	INIT_LIST_HEAD(&csa_tv.head);
++	csa_tv.bo = &bo->tbo;
++	csa_tv.num_shared = 1;
++
++	list_add(&csa_tv.head, &list);
++	amdgpu_vm_get_pd_bo(vm, &list, &pd);
++
++	r = ttm_eu_reserve_buffers(&ticket, &list, true, NULL);
++	if (r) {
++		DRM_ERROR("failed to reserve CSA,PD BOs: err=%d\n", r);
++		return r;
++	}
++
++	r = amdgpu_vm_bo_unmap(adev, bo_va, csa_addr);
++	if (r) {
++		DRM_ERROR("failed to do bo_unmap on static CSA, err=%d\n", r);
++		ttm_eu_backoff_reservation(&ticket, &list);
++		return r;
++	}
++
++	amdgpu_vm_bo_del(adev, bo_va);
++
++	ttm_eu_backoff_reservation(&ticket, &list);
++
++	return 0;
++}
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_csa.h b/drivers/gpu/drm/amd/amdgpu/amdgpu_csa.h
+index 524b4437a0217..7dfc1f2012ebf 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_csa.h
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_csa.h
+@@ -34,6 +34,9 @@ int amdgpu_allocate_static_csa(struct amdgpu_device *adev, struct amdgpu_bo **bo
+ int amdgpu_map_static_csa(struct amdgpu_device *adev, struct amdgpu_vm *vm,
+ 			  struct amdgpu_bo *bo, struct amdgpu_bo_va **bo_va,
+ 			  uint64_t csa_addr, uint32_t size);
++int amdgpu_unmap_static_csa(struct amdgpu_device *adev, struct amdgpu_vm *vm,
++			    struct amdgpu_bo *bo, struct amdgpu_bo_va *bo_va,
++			    uint64_t csa_addr);
+ void amdgpu_free_static_csa(struct amdgpu_bo **bo);
  
- 							/* Output */
-diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn32/display_mode_vba_32.h b/drivers/gpu/drm/amd/display/dc/dml/dcn32/display_mode_vba_32.h
-index d98e36a9a09cc..c4745d63039bb 100644
---- a/drivers/gpu/drm/amd/display/dc/dml/dcn32/display_mode_vba_32.h
-+++ b/drivers/gpu/drm/amd/display/dc/dml/dcn32/display_mode_vba_32.h
-@@ -53,7 +53,7 @@
- #define BPP_BLENDED_PIPE 0xffffffff
+ #endif
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c
+index 0efb38539d70c..724e80c192973 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c
+@@ -1284,12 +1284,12 @@ void amdgpu_driver_postclose_kms(struct drm_device *dev,
+ 	if (amdgpu_device_ip_get_ip_block(adev, AMD_IP_BLOCK_TYPE_VCE) != NULL)
+ 		amdgpu_vce_free_handles(adev, file_priv);
  
- #define MEM_STROBE_FREQ_MHZ 1600
--#define MIN_DCFCLK_FREQ_MHZ 200
-+#define DCFCLK_FREQ_EXTRA_PREFETCH_REQ_MHZ 300
- #define MEM_STROBE_MAX_DELIVERY_TIME_US 60.0
+-	if (amdgpu_mcbp) {
+-		/* TODO: how to handle reserve failure */
+-		BUG_ON(amdgpu_bo_reserve(adev->virt.csa_obj, true));
+-		amdgpu_vm_bo_del(adev, fpriv->csa_va);
++	if (fpriv->csa_va) {
++		uint64_t csa_addr = amdgpu_csa_vaddr(adev) & AMDGPU_GMC_HOLE_MASK;
++
++		WARN_ON(amdgpu_unmap_static_csa(adev, &fpriv->vm, adev->virt.csa_obj,
++						fpriv->csa_va, csa_addr));
+ 		fpriv->csa_va = NULL;
+-		amdgpu_bo_unreserve(adev->virt.csa_obj);
+ 	}
  
- struct display_mode_lib;
+ 	pasid = fpriv->vm.pasid;
 -- 
 2.40.1
 
