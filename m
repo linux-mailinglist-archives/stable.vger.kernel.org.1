@@ -2,51 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D9AC07832DE
-	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:22:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9D279783230
+	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:21:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230304AbjHUUID (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 21 Aug 2023 16:08:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50876 "EHLO
+        id S229844AbjHUT47 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 21 Aug 2023 15:56:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37008 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230308AbjHUUIC (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 16:08:02 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 96C5CDF
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 13:08:01 -0700 (PDT)
+        with ESMTP id S229865AbjHUT47 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 15:56:59 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A1F2EE
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 12:56:57 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2DB82649CF
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 20:08:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13A38C433C8;
-        Mon, 21 Aug 2023 20:07:59 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1925F6461A
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 19:56:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28DA3C433C7;
+        Mon, 21 Aug 2023 19:56:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692648480;
-        bh=cuco2N02EsBYwTikwDz7fT3Y1pKcP3ilbDOHV0Sxcao=;
+        s=korg; t=1692647816;
+        bh=6pqmm8jqOqfxen75NH+tVBsm7a1n6zaAlPEIKgYbxKE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=JxBaCE+YgLsgPMtICVetMhqsxW67m09NcQXN7g2aV/YrQ/69A619K+kYPMdao13y/
-         NSDYsWhtIDFcRjVR+Y4cPXNGQOqxz/GCutiJUmzfi9hOhj+QiMKXCcphGerkZlNHQJ
-         CoQgQ8a4jMLdPJPTl+YVbV8OxZ6hs23izHO9YyiU=
+        b=jmqshaqBvAVQHS+F2VH3Bk7l8FWYE0Dn36jw8hFDOrEOr0v6ce4lyf87QNLwf/j7S
+         fWaJnOg6F3wQW1WHGx1dcT+DdpOBrqozbajsSrgYuNV3IFD0+XzoIhl74xw9L3qI0q
+         E4J/0W/c0aHhJlphtAdo2Kth4ve5HyRHuDrleFsk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Pablo Neira Ayuso <pablo@netfilter.org>,
-        Florian Westphal <fw@strlen.de>,
+        patches@lists.linux.dev, Jiasheng Jiang <jiasheng@iscas.ac.cn>,
+        Joel Stanley <joel@jms.id.au>, Arnd Bergmann <arnd@arndb.de>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 163/234] netfilter: nf_tables: GC transaction race with netns dismantle
-Date:   Mon, 21 Aug 2023 21:42:06 +0200
-Message-ID: <20230821194136.031787985@linuxfoundation.org>
+Subject: [PATCH 6.1 148/194] soc: aspeed: socinfo: Add kfree for kstrdup
+Date:   Mon, 21 Aug 2023 21:42:07 +0200
+Message-ID: <20230821194129.221611923@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230821194128.754601642@linuxfoundation.org>
-References: <20230821194128.754601642@linuxfoundation.org>
+In-Reply-To: <20230821194122.695845670@linuxfoundation.org>
+References: <20230821194122.695845670@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -54,40 +54,35 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Jiasheng Jiang <jiasheng@iscas.ac.cn>
 
-[ Upstream commit 02c6c24402bf1c1e986899c14ba22a10b510916b ]
+[ Upstream commit 6e6d847a8ce18ab2fbec4f579f682486a82d2c6b ]
 
-Use maybe_get_net() since GC workqueue might race with netns exit path.
+Add kfree() in the later error handling in order to avoid memory leak.
 
-Fixes: 5f68718b34a5 ("netfilter: nf_tables: GC transaction API to avoid race with control plane")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Florian Westphal <fw@strlen.de>
+Fixes: e0218dca5787 ("soc: aspeed: Add soc info driver")
+Signed-off-by: Jiasheng Jiang <jiasheng@iscas.ac.cn>
+Link: https://lore.kernel.org/r/20230707021625.7727-1-jiasheng@iscas.ac.cn
+Signed-off-by: Joel Stanley <joel@jms.id.au>
+Link: https://lore.kernel.org/r/20230810123104.231167-1-joel@jms.id.au
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_tables_api.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/soc/aspeed/aspeed-socinfo.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index dcf3ed3d5af9d..b280b151a9e98 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -9495,9 +9495,14 @@ struct nft_trans_gc *nft_trans_gc_alloc(struct nft_set *set,
- 	if (!trans)
- 		return NULL;
+diff --git a/drivers/soc/aspeed/aspeed-socinfo.c b/drivers/soc/aspeed/aspeed-socinfo.c
+index 1ca140356a084..3f759121dc00a 100644
+--- a/drivers/soc/aspeed/aspeed-socinfo.c
++++ b/drivers/soc/aspeed/aspeed-socinfo.c
+@@ -137,6 +137,7 @@ static int __init aspeed_socinfo_init(void)
  
-+	trans->net = maybe_get_net(net);
-+	if (!trans->net) {
-+		kfree(trans);
-+		return NULL;
-+	}
-+
- 	refcount_inc(&set->refs);
- 	trans->set = set;
--	trans->net = get_net(net);
- 	trans->seq = gc_seq;
- 
- 	return trans;
+ 	soc_dev = soc_device_register(attrs);
+ 	if (IS_ERR(soc_dev)) {
++		kfree(attrs->machine);
+ 		kfree(attrs->soc_id);
+ 		kfree(attrs->serial_number);
+ 		kfree(attrs);
 -- 
 2.40.1
 
