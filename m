@@ -2,47 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 39B7778332D
-	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:23:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0B76E7832F8
+	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:22:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230274AbjHUUG7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 21 Aug 2023 16:06:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54698 "EHLO
+        id S229878AbjHUT5M (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 21 Aug 2023 15:57:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45208 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230273AbjHUUG6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 16:06:58 -0400
+        with ESMTP id S229875AbjHUT5M (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 15:57:12 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2873FDF
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 13:06:57 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1A654D3
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 12:57:09 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BC09564983
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 20:06:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC537C433C7;
-        Mon, 21 Aug 2023 20:06:55 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A327C6464D
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 19:57:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9F15C433C8;
+        Mon, 21 Aug 2023 19:57:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692648416;
-        bh=W0khI8sjnjKE0kabBNw9JkXiuxXzoqsG9WbTcbN1TA4=;
+        s=korg; t=1692647828;
+        bh=w20upPI+GRTnehckrJ+6LEogiLyn7qQz5dnJ9dmFY0E=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=RdjZE0OBq2DcjNbWJa88EXUNkATLT0YDhbghhkNGuAiTaQ6C+jkDRivgCjlduxP3s
-         10iE6eWZMc2v1LWV2WMcYOeS6DGeC90vqE9yrgZO+2403EAkUw+BuU4TWQEZmuQ9+k
-         rjRWZ2idgg+PsKj/oupOE5yzoptzzFWw5f9PsWCA=
+        b=P9VE5q4IiN5E+Pj9oaLefyQa++MydGFB59heZ3Xar0szUeHjw5NAE6l/yx69tEEPg
+         dFQepyBjlsUY41DhXX+jH3d0hdLHYOgvZjKsOljMSplT55eNyGbi0Z2fPk5f5R6TwX
+         o8NTfKp3y0op4qrq5f22fkmA3v9qEMgm6apUklSQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Piotr Gardocki <piotrx.gardocki@intel.com>,
-        Rafal Romanowski <rafal.romanowski@intel.com>,
-        Tony Nguyen <anthony.l.nguyen@intel.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 168/234] iavf: fix FDIR rule fields masks validation
+        patches@lists.linux.dev, dengxiang <dengxiang@nfschina.com>,
+        Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.1 152/194] ALSA: usb-audio: Add support for Mythware XA001AU capture and playback interfaces.
 Date:   Mon, 21 Aug 2023 21:42:11 +0200
-Message-ID: <20230821194136.261296563@linuxfoundation.org>
+Message-ID: <20230821194129.402000843@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230821194128.754601642@linuxfoundation.org>
-References: <20230821194128.754601642@linuxfoundation.org>
+In-Reply-To: <20230821194122.695845670@linuxfoundation.org>
+References: <20230821194122.695845670@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,209 +53,58 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Piotr Gardocki <piotrx.gardocki@intel.com>
+From: dengxiang <dengxiang@nfschina.com>
 
-[ Upstream commit 751969e5b1196821ef78f0aa664a8a97c92c9057 ]
+commit 788449ae57f4273111b779bbcaad552b67f517d5 upstream.
 
-Return an error if a field's mask is neither full nor empty. When a mask
-is only partial the field is not being used for rule programming but it
-gives a wrong impression it is used. Fix by returning an error on any
-partial mask to make it clear they are not supported.
-The ip_ver assignment is moved earlier in code to allow using it in
-iavf_validate_fdir_fltr_masks.
+This patch adds a USB quirk for Mythware XA001AU USB interface.
 
-Fixes: 527691bf0682 ("iavf: Support IPv4 Flow Director filters")
-Fixes: e90cbc257a6f ("iavf: Support IPv6 Flow Director filters")
-Signed-off-by: Piotr Gardocki <piotrx.gardocki@intel.com>
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: dengxiang <dengxiang@nfschina.com>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/20230803024437.370069-1-dengxiang@nfschina.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../net/ethernet/intel/iavf/iavf_ethtool.c    | 10 +++
- drivers/net/ethernet/intel/iavf/iavf_fdir.c   | 77 ++++++++++++++++++-
- drivers/net/ethernet/intel/iavf/iavf_fdir.h   |  2 +
- 3 files changed, 85 insertions(+), 4 deletions(-)
+ sound/usb/quirks-table.h |   29 +++++++++++++++++++++++++++++
+ 1 file changed, 29 insertions(+)
 
-diff --git a/drivers/net/ethernet/intel/iavf/iavf_ethtool.c b/drivers/net/ethernet/intel/iavf/iavf_ethtool.c
-index 460ca561819a9..a34303ad057d0 100644
---- a/drivers/net/ethernet/intel/iavf/iavf_ethtool.c
-+++ b/drivers/net/ethernet/intel/iavf/iavf_ethtool.c
-@@ -1289,6 +1289,7 @@ iavf_add_fdir_fltr_info(struct iavf_adapter *adapter, struct ethtool_rx_flow_spe
- 		fltr->ip_mask.src_port = fsp->m_u.tcp_ip4_spec.psrc;
- 		fltr->ip_mask.dst_port = fsp->m_u.tcp_ip4_spec.pdst;
- 		fltr->ip_mask.tos = fsp->m_u.tcp_ip4_spec.tos;
-+		fltr->ip_ver = 4;
- 		break;
- 	case AH_V4_FLOW:
- 	case ESP_V4_FLOW:
-@@ -1300,6 +1301,7 @@ iavf_add_fdir_fltr_info(struct iavf_adapter *adapter, struct ethtool_rx_flow_spe
- 		fltr->ip_mask.v4_addrs.dst_ip = fsp->m_u.ah_ip4_spec.ip4dst;
- 		fltr->ip_mask.spi = fsp->m_u.ah_ip4_spec.spi;
- 		fltr->ip_mask.tos = fsp->m_u.ah_ip4_spec.tos;
-+		fltr->ip_ver = 4;
- 		break;
- 	case IPV4_USER_FLOW:
- 		fltr->ip_data.v4_addrs.src_ip = fsp->h_u.usr_ip4_spec.ip4src;
-@@ -1312,6 +1314,7 @@ iavf_add_fdir_fltr_info(struct iavf_adapter *adapter, struct ethtool_rx_flow_spe
- 		fltr->ip_mask.l4_header = fsp->m_u.usr_ip4_spec.l4_4_bytes;
- 		fltr->ip_mask.tos = fsp->m_u.usr_ip4_spec.tos;
- 		fltr->ip_mask.proto = fsp->m_u.usr_ip4_spec.proto;
-+		fltr->ip_ver = 4;
- 		break;
- 	case TCP_V6_FLOW:
- 	case UDP_V6_FLOW:
-@@ -1330,6 +1333,7 @@ iavf_add_fdir_fltr_info(struct iavf_adapter *adapter, struct ethtool_rx_flow_spe
- 		fltr->ip_mask.src_port = fsp->m_u.tcp_ip6_spec.psrc;
- 		fltr->ip_mask.dst_port = fsp->m_u.tcp_ip6_spec.pdst;
- 		fltr->ip_mask.tclass = fsp->m_u.tcp_ip6_spec.tclass;
-+		fltr->ip_ver = 6;
- 		break;
- 	case AH_V6_FLOW:
- 	case ESP_V6_FLOW:
-@@ -1345,6 +1349,7 @@ iavf_add_fdir_fltr_info(struct iavf_adapter *adapter, struct ethtool_rx_flow_spe
- 		       sizeof(struct in6_addr));
- 		fltr->ip_mask.spi = fsp->m_u.ah_ip6_spec.spi;
- 		fltr->ip_mask.tclass = fsp->m_u.ah_ip6_spec.tclass;
-+		fltr->ip_ver = 6;
- 		break;
- 	case IPV6_USER_FLOW:
- 		memcpy(&fltr->ip_data.v6_addrs.src_ip, fsp->h_u.usr_ip6_spec.ip6src,
-@@ -1361,6 +1366,7 @@ iavf_add_fdir_fltr_info(struct iavf_adapter *adapter, struct ethtool_rx_flow_spe
- 		fltr->ip_mask.l4_header = fsp->m_u.usr_ip6_spec.l4_4_bytes;
- 		fltr->ip_mask.tclass = fsp->m_u.usr_ip6_spec.tclass;
- 		fltr->ip_mask.proto = fsp->m_u.usr_ip6_spec.l4_proto;
-+		fltr->ip_ver = 6;
- 		break;
- 	case ETHER_FLOW:
- 		fltr->eth_data.etype = fsp->h_u.ether_spec.h_proto;
-@@ -1371,6 +1377,10 @@ iavf_add_fdir_fltr_info(struct iavf_adapter *adapter, struct ethtool_rx_flow_spe
- 		return -EINVAL;
+--- a/sound/usb/quirks-table.h
++++ b/sound/usb/quirks-table.h
+@@ -4507,6 +4507,35 @@ YAMAHA_DEVICE(0x7010, "UB99"),
+ 		}
  	}
- 
-+	err = iavf_validate_fdir_fltr_masks(adapter, fltr);
-+	if (err)
-+		return err;
-+
- 	if (iavf_fdir_is_dup_fltr(adapter, fltr))
- 		return -EEXIST;
- 
-diff --git a/drivers/net/ethernet/intel/iavf/iavf_fdir.c b/drivers/net/ethernet/intel/iavf/iavf_fdir.c
-index 505e82ebafe47..03e774bd2a5b4 100644
---- a/drivers/net/ethernet/intel/iavf/iavf_fdir.c
-+++ b/drivers/net/ethernet/intel/iavf/iavf_fdir.c
-@@ -18,6 +18,79 @@ static const struct in6_addr ipv6_addr_full_mask = {
- 	}
- };
- 
-+static const struct in6_addr ipv6_addr_zero_mask = {
-+	.in6_u = {
-+		.u6_addr8 = {
-+			0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+ },
++{
++	/* Advanced modes of the Mythware XA001AU.
++	 * For the standard mode, Mythware XA001AU has ID ffad:a001
++	 */
++	USB_DEVICE_VENDOR_SPEC(0xffad, 0xa001),
++	.driver_info = (unsigned long) &(const struct snd_usb_audio_quirk) {
++		.vendor_name = "Mythware",
++		.product_name = "XA001AU",
++		.ifnum = QUIRK_ANY_INTERFACE,
++		.type = QUIRK_COMPOSITE,
++		.data = (const struct snd_usb_audio_quirk[]) {
++			{
++				.ifnum = 0,
++				.type = QUIRK_IGNORE_INTERFACE,
++			},
++			{
++				.ifnum = 1,
++				.type = QUIRK_AUDIO_STANDARD_INTERFACE,
++			},
++			{
++				.ifnum = 2,
++				.type = QUIRK_AUDIO_STANDARD_INTERFACE,
++			},
++			{
++				.ifnum = -1
++			}
 +		}
 +	}
-+};
-+
-+/**
-+ * iavf_validate_fdir_fltr_masks - validate Flow Director filter fields masks
-+ * @adapter: pointer to the VF adapter structure
-+ * @fltr: Flow Director filter data structure
-+ *
-+ * Returns 0 if all masks of packet fields are either full or empty. Returns
-+ * error on at least one partial mask.
-+ */
-+int iavf_validate_fdir_fltr_masks(struct iavf_adapter *adapter,
-+				  struct iavf_fdir_fltr *fltr)
-+{
-+	if (fltr->eth_mask.etype && fltr->eth_mask.etype != htons(U16_MAX))
-+		goto partial_mask;
-+
-+	if (fltr->ip_ver == 4) {
-+		if (fltr->ip_mask.v4_addrs.src_ip &&
-+		    fltr->ip_mask.v4_addrs.src_ip != htonl(U32_MAX))
-+			goto partial_mask;
-+
-+		if (fltr->ip_mask.v4_addrs.dst_ip &&
-+		    fltr->ip_mask.v4_addrs.dst_ip != htonl(U32_MAX))
-+			goto partial_mask;
-+
-+		if (fltr->ip_mask.tos && fltr->ip_mask.tos != U8_MAX)
-+			goto partial_mask;
-+	} else if (fltr->ip_ver == 6) {
-+		if (memcmp(&fltr->ip_mask.v6_addrs.src_ip, &ipv6_addr_zero_mask,
-+			   sizeof(struct in6_addr)) &&
-+		    memcmp(&fltr->ip_mask.v6_addrs.src_ip, &ipv6_addr_full_mask,
-+			   sizeof(struct in6_addr)))
-+			goto partial_mask;
-+
-+		if (memcmp(&fltr->ip_mask.v6_addrs.dst_ip, &ipv6_addr_zero_mask,
-+			   sizeof(struct in6_addr)) &&
-+		    memcmp(&fltr->ip_mask.v6_addrs.dst_ip, &ipv6_addr_full_mask,
-+			   sizeof(struct in6_addr)))
-+			goto partial_mask;
-+
-+		if (fltr->ip_mask.tclass && fltr->ip_mask.tclass != U8_MAX)
-+			goto partial_mask;
-+	}
-+
-+	if (fltr->ip_mask.proto && fltr->ip_mask.proto != U8_MAX)
-+		goto partial_mask;
-+
-+	if (fltr->ip_mask.src_port && fltr->ip_mask.src_port != htons(U16_MAX))
-+		goto partial_mask;
-+
-+	if (fltr->ip_mask.dst_port && fltr->ip_mask.dst_port != htons(U16_MAX))
-+		goto partial_mask;
-+
-+	if (fltr->ip_mask.spi && fltr->ip_mask.spi != htonl(U32_MAX))
-+		goto partial_mask;
-+
-+	if (fltr->ip_mask.l4_header &&
-+	    fltr->ip_mask.l4_header != htonl(U32_MAX))
-+		goto partial_mask;
-+
-+	return 0;
-+
-+partial_mask:
-+	dev_err(&adapter->pdev->dev, "Failed to add Flow Director filter, partial masks are not supported\n");
-+	return -EOPNOTSUPP;
-+}
-+
- /**
-  * iavf_pkt_udp_no_pay_len - the length of UDP packet without payload
-  * @fltr: Flow Director filter data structure
-@@ -263,8 +336,6 @@ iavf_fill_fdir_ip4_hdr(struct iavf_fdir_fltr *fltr,
- 		VIRTCHNL_ADD_PROTO_HDR_FIELD_BIT(hdr, IPV4, DST);
- 	}
++},
  
--	fltr->ip_ver = 4;
--
- 	return 0;
- }
- 
-@@ -309,8 +380,6 @@ iavf_fill_fdir_ip6_hdr(struct iavf_fdir_fltr *fltr,
- 		VIRTCHNL_ADD_PROTO_HDR_FIELD_BIT(hdr, IPV6, DST);
- 	}
- 
--	fltr->ip_ver = 6;
--
- 	return 0;
- }
- 
-diff --git a/drivers/net/ethernet/intel/iavf/iavf_fdir.h b/drivers/net/ethernet/intel/iavf/iavf_fdir.h
-index 33c55c366315b..9eb9f73f6adf3 100644
---- a/drivers/net/ethernet/intel/iavf/iavf_fdir.h
-+++ b/drivers/net/ethernet/intel/iavf/iavf_fdir.h
-@@ -110,6 +110,8 @@ struct iavf_fdir_fltr {
- 	struct virtchnl_fdir_add vc_add_msg;
- };
- 
-+int iavf_validate_fdir_fltr_masks(struct iavf_adapter *adapter,
-+				  struct iavf_fdir_fltr *fltr);
- int iavf_fill_fdir_add_msg(struct iavf_adapter *adapter, struct iavf_fdir_fltr *fltr);
- void iavf_print_fdir_fltr(struct iavf_adapter *adapter, struct iavf_fdir_fltr *fltr);
- bool iavf_fdir_is_dup_fltr(struct iavf_adapter *adapter, struct iavf_fdir_fltr *fltr);
--- 
-2.40.1
-
+ #undef USB_DEVICE_VENDOR_SPEC
+ #undef USB_AUDIO_DEVICE
 
 
