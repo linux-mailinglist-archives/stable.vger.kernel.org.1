@@ -2,42 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0B3A07832BE
-	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:22:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C70F9783306
+	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:22:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229661AbjHUTyP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 21 Aug 2023 15:54:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47216 "EHLO
+        id S229669AbjHUTyS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 21 Aug 2023 15:54:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47238 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229619AbjHUTyP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 15:54:15 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 01AD6EE
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 12:54:14 -0700 (PDT)
+        with ESMTP id S229619AbjHUTyS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 15:54:18 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C4060EE
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 12:54:16 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9446564559
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 19:54:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7578BC433C8;
-        Mon, 21 Aug 2023 19:54:12 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5A53064559
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 19:54:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C611C433C7;
+        Mon, 21 Aug 2023 19:54:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692647653;
-        bh=XxEp7jAuiCfYzzgVGvN9php2593EJmAcvg8pChy4cMo=;
+        s=korg; t=1692647655;
+        bh=ZG6CXfQVPEcgKf8Q6ZsnrJBeMAokzq6ZEH4Kn6F8oOY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=yJfIyy1uogMbj/GoUFcjehLTSZyTaGZPNFas8p7t7JJjdtMRVVGitGDGcxCOVfQSP
-         Dyjn5Wj6k4lGfzdm4r0J0WA4yQNlm2kbesxAcIlaB1kvZ9IrZA9av61ohZlhPbX8kI
-         bquBVd6AxP4L2g158OBAg1ueNUL8Br/BzsYzNtuE=
+        b=b+7Zvs0Ore/+2xkJHoPNdgqdAZTUszfiqOKMa7enyq04iAYy95mvaAmsAnMurpSeS
+         2uFkKckl2ZBl3vYdVZs/GvrEspnTh2hGy6/jCp3rOYGfrPAD1rhVU6qbSFMrzKBaDz
+         w3ORTEDLpupGVgtUFr+3SvmMxepGaHy+b+99aNsU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yicong Yang <yangyicong@hisilicon.com>,
+        patches@lists.linux.dev, Parker Newman <pnewman@connecttech.com>,
         Andi Shyti <andi.shyti@kernel.org>,
-        Wolfram Sang <wsa@kernel.org>
-Subject: [PATCH 6.1 090/194] i2c: hisi: Only handle the interrupt of the drivers transfer
-Date:   Mon, 21 Aug 2023 21:41:09 +0200
-Message-ID: <20230821194126.688607959@linuxfoundation.org>
+        Akhil R <akhilrajeev@nvidia.com>, Wolfram Sang <wsa@kernel.org>
+Subject: [PATCH 6.1 091/194] i2c: tegra: Fix i2c-tegra DMA config option processing
+Date:   Mon, 21 Aug 2023 21:41:10 +0200
+Message-ID: <20230821194126.733991792@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230821194122.695845670@linuxfoundation.org>
 References: <20230821194122.695845670@linuxfoundation.org>
@@ -45,8 +45,8 @@ User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -54,41 +54,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Yicong Yang <yangyicong@hisilicon.com>
+From: Parker Newman <pnewman@connecttech.com>
 
-commit fff67c1b17ee093947bdcbac6f64d072e644159a upstream.
+commit 27ec43c77b5db780a56fc3a6d6de6bf2f74614f7 upstream.
 
-The controller may be shared with other port, for example the firmware.
-Handle the interrupt from other sources will cause crash since some
-data are not initialized. So only handle the interrupt of the driver's
-transfer and discard others.
+Tegra processors prior to Tegra186 used APB DMA for I2C requiring
+CONFIG_TEGRA20_APB_DMA=y while Tegra186 and later use GPC DMA requiring
+CONFIG_TEGRA186_GPC_DMA=y.
 
-Fixes: d62fbdb99a85 ("i2c: add support for HiSilicon I2C controller")
-Signed-off-by: Yicong Yang <yangyicong@hisilicon.com>
-Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
-Link: https://lore.kernel.org/r/20230801124625.63587-1-yangyicong@huawei.com
+The check for if the processor uses APB DMA is inverted and so the wrong
+DMA config options are checked.
+
+This means if CONFIG_TEGRA20_APB_DMA=y but CONFIG_TEGRA186_GPC_DMA=n
+with a Tegra186 or later processor the driver will incorrectly think DMA is
+enabled and attempt to request DMA channels that will never be availible,
+leaving the driver in a perpetual EPROBE_DEFER state.
+
+Fixes: 48cb6356fae1 ("i2c: tegra: Add GPCDMA support")
+Signed-off-by: Parker Newman <pnewman@connecttech.com>
+Acked-by: Andi Shyti <andi.shyti@kernel.org>
+Acked-by: Akhil R <akhilrajeev@nvidia.com>
+Link: https://lore.kernel.org/r/fcfcf9b3-c8c4-9b34-2ff8-cd60a3d490bd@connecttech.com
 Signed-off-by: Wolfram Sang <wsa@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i2c/busses/i2c-hisi.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/i2c/busses/i2c-tegra.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/i2c/busses/i2c-hisi.c
-+++ b/drivers/i2c/busses/i2c-hisi.c
-@@ -328,6 +328,14 @@ static irqreturn_t hisi_i2c_irq(int irq,
- 	struct hisi_i2c_controller *ctlr = context;
- 	u32 int_stat;
+--- a/drivers/i2c/busses/i2c-tegra.c
++++ b/drivers/i2c/busses/i2c-tegra.c
+@@ -449,7 +449,7 @@ static int tegra_i2c_init_dma(struct teg
+ 	if (i2c_dev->is_vi)
+ 		return 0;
  
-+	/*
-+	 * Don't handle the interrupt if cltr->completion is NULL. We may
-+	 * reach here because the interrupt is spurious or the transfer is
-+	 * started by another port (e.g. firmware) rather than us.
-+	 */
-+	if (!ctlr->completion)
-+		return IRQ_NONE;
-+
- 	int_stat = readl(ctlr->iobase + HISI_I2C_INT_MSTAT);
- 	hisi_i2c_clear_int(ctlr, int_stat);
- 	if (!(int_stat & HISI_I2C_INT_ALL))
+-	if (!i2c_dev->hw->has_apb_dma) {
++	if (i2c_dev->hw->has_apb_dma) {
+ 		if (!IS_ENABLED(CONFIG_TEGRA20_APB_DMA)) {
+ 			dev_dbg(i2c_dev->dev, "APB DMA support not enabled\n");
+ 			return 0;
 
 
