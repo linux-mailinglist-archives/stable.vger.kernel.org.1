@@ -2,48 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 970A278320F
-	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:21:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F25F783377
+	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:23:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230181AbjHUUDU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 21 Aug 2023 16:03:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57954 "EHLO
+        id S229461AbjHUTx1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 21 Aug 2023 15:53:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59718 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230177AbjHUUDT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 16:03:19 -0400
+        with ESMTP id S229512AbjHUTx0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 15:53:26 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F1790E3
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 13:03:17 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB7AA10E
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 12:53:23 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 880C964859
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 20:03:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97DDCC433C7;
-        Mon, 21 Aug 2023 20:03:16 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7156B644F5
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 19:53:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 823FEC433C8;
+        Mon, 21 Aug 2023 19:53:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692648197;
-        bh=0nR+7BRlzOPo7HjiT8tZI7bNwX7bph8AKmeAw3XfxcE=;
+        s=korg; t=1692647602;
+        bh=xb15YU+UnxaFmzkueO6wJMxzwIyHV668S+6DjS6ZQzM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=XhP9Rt4bm9/gdL83DzryRPxIwZXKeQiW6cjG9I5WHMZ0b39B1L9Gnvxmw4BaYDChI
-         ZwinqKrjed50t4XJfy+xB1qievdxY8zXyTDFlO/zBGcBLFSKr/WhohOlhAohV8Cldv
-         v1JCS8vxzsuEabFEZ5ZX88DB+MpPc0ppmGogxjRY=
+        b=RFZdPkOe4kWVwu+XigLthdUB1ynJHPeCiy5zt9mZa74CKPsm9ztjAoiVVx+qRIxhQ
+         ICjkUeK7Deig+hUwZtDGKvzN5P3U97N/Z7JTSKGcM9uaLtUhHqur0oIizVmpauSAx7
+         bMq3jjhgEqT9B1l3AgPdsemY3ZdREuk6FsXN2pWI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dragos Tatulea <dtatulea@nvidia.com>,
-        =?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
-        Gal Pressman <gal@nvidia.com>,
-        "Michael S. Tsirkin" <mst@redhat.com>,
-        Jason Wang <jasowang@redhat.com>,
+        patches@lists.linux.dev,
+        Aurabindo Pillai <aurabindo.pillai@amd.com>,
+        hersen wu <hersenxs.wu@amd.com>,
+        Bhawanpreet Lakha <Bhawanpreet.Lakha@amd.com>,
+        Daniel Wheeler <daniel.wheeler@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 089/234] vdpa/mlx5: Fix mr->initialized semantics
+Subject: [PATCH 6.1 073/194] drm/amd/display: save restore hdcp state when display is unplugged from mst hub
 Date:   Mon, 21 Aug 2023 21:40:52 +0200
-Message-ID: <20230821194132.725209979@linuxfoundation.org>
+Message-ID: <20230821194125.993370513@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230821194128.754601642@linuxfoundation.org>
-References: <20230821194128.754601642@linuxfoundation.org>
+In-Reply-To: <20230821194122.695845670@linuxfoundation.org>
+References: <20230821194122.695845670@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,182 +58,144 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Dragos Tatulea <dtatulea@nvidia.com>
+From: hersen wu <hersenxs.wu@amd.com>
 
-[ Upstream commit 9ee811009ad8f87982b69e61d07447d12233ad01 ]
+[ Upstream commit 82986fd631fa04bcedaefe11a6b3767601cbe84f ]
 
-The mr->initialized flag is shared between the control vq and data vq
-part of the mr init/uninit. But if the control vq and data vq get placed
-in different ASIDs, it can happen that initializing the control vq will
-prevent the data vq mr from being initialized.
+[Why]
+connector hdcp properties are lost after display is
+unplgged from mst hub. connector is destroyed with
+dm_dp_mst_connector_destroy. when display is plugged
+back, hdcp is not desired and it wouldnt be enabled.
 
-This patch consolidates the control and data vq init parts into their
-own init functions. The mr->initialized will now be used for the data vq
-only. The control vq currently doesn't need a flag.
+[How]
+save hdcp properties into hdcp_work within
+amdgpu_dm_atomic_commit_tail. If the same display is
+plugged back with same display index, its hdcp
+properties will be retrieved from hdcp_work within
+dm_dp_mst_get_modes.
 
-The uninitializing part is also taken care of: mlx5_vdpa_destroy_mr got
-split into data and control vq functions which are now also ASID aware.
-
-Fixes: 8fcd20c30704 ("vdpa/mlx5: Support different address spaces for control and data")
-Signed-off-by: Dragos Tatulea <dtatulea@nvidia.com>
-Reviewed-by: Eugenio Pérez <eperezma@redhat.com>
-Reviewed-by: Gal Pressman <gal@nvidia.com>
-Message-Id: <20230802171231.11001-3-dtatulea@nvidia.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Acked-by: Jason Wang <jasowang@redhat.com>
+Acked-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Signed-off-by: hersen wu <hersenxs.wu@amd.com>
+Reviewed-by: Bhawanpreet Lakha <Bhawanpreet.Lakha@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Stable-dep-of: cdff36a0217a ("drm/amd/display: fix access hdcp_workqueue assert")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/vdpa/mlx5/core/mlx5_vdpa.h |  1 +
- drivers/vdpa/mlx5/core/mr.c        | 97 +++++++++++++++++++++---------
- 2 files changed, 71 insertions(+), 27 deletions(-)
+ .../gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 24 ++++++++++++++++-
+ .../amd/display/amdgpu_dm/amdgpu_dm_hdcp.h    | 14 ++++++++++
+ .../display/amdgpu_dm/amdgpu_dm_mst_types.c   | 26 +++++++++++++++++++
+ 3 files changed, 63 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/vdpa/mlx5/core/mlx5_vdpa.h b/drivers/vdpa/mlx5/core/mlx5_vdpa.h
-index 25fc4120b618d..a0420be5059f4 100644
---- a/drivers/vdpa/mlx5/core/mlx5_vdpa.h
-+++ b/drivers/vdpa/mlx5/core/mlx5_vdpa.h
-@@ -31,6 +31,7 @@ struct mlx5_vdpa_mr {
- 	struct list_head head;
- 	unsigned long num_directs;
- 	unsigned long num_klms;
-+	/* state of dvq mr */
- 	bool initialized;
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+index 9f718b98da1f7..bdc6f90b3adb5 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -8350,11 +8350,33 @@ static void amdgpu_dm_atomic_commit_tail(struct drm_atomic_state *state)
+ 			continue;
+ 		}
  
- 	/* serialize mkey creation and destruction */
-diff --git a/drivers/vdpa/mlx5/core/mr.c b/drivers/vdpa/mlx5/core/mr.c
-index 03e5432297912..4ae14a248a4bc 100644
---- a/drivers/vdpa/mlx5/core/mr.c
-+++ b/drivers/vdpa/mlx5/core/mr.c
-@@ -489,60 +489,103 @@ static void destroy_user_mr(struct mlx5_vdpa_dev *mvdev, struct mlx5_vdpa_mr *mr
+-		if (is_content_protection_different(new_con_state, old_con_state, connector, adev->dm.hdcp_workqueue))
++		if (is_content_protection_different(new_con_state, old_con_state, connector, adev->dm.hdcp_workqueue)) {
++			/* when display is unplugged from mst hub, connctor will
++			 * be destroyed within dm_dp_mst_connector_destroy. connector
++			 * hdcp perperties, like type, undesired, desired, enabled,
++			 * will be lost. So, save hdcp properties into hdcp_work within
++			 * amdgpu_dm_atomic_commit_tail. if the same display is
++			 * plugged back with same display index, its hdcp properties
++			 * will be retrieved from hdcp_work within dm_dp_mst_get_modes
++			 */
++
++			if (aconnector->dc_link && aconnector->dc_sink &&
++				aconnector->dc_link->type == dc_connection_mst_branch) {
++				struct hdcp_workqueue *hdcp_work = adev->dm.hdcp_workqueue;
++				struct hdcp_workqueue *hdcp_w =
++					&hdcp_work[aconnector->dc_link->link_index];
++
++				hdcp_w->hdcp_content_type[connector->index] =
++					new_con_state->hdcp_content_type;
++				hdcp_w->content_protection[connector->index] =
++					new_con_state->content_protection;
++			}
++
+ 			hdcp_update_display(
+ 				adev->dm.hdcp_workqueue, aconnector->dc_link->link_index, aconnector,
+ 				new_con_state->hdcp_content_type,
+ 				new_con_state->content_protection == DRM_MODE_CONTENT_PROTECTION_DESIRED);
++    }
  	}
- }
+ #endif
  
--void mlx5_vdpa_destroy_mr(struct mlx5_vdpa_dev *mvdev)
-+static void _mlx5_vdpa_destroy_cvq_mr(struct mlx5_vdpa_dev *mvdev, unsigned int asid)
-+{
-+	if (mvdev->group2asid[MLX5_VDPA_CVQ_GROUP] != asid)
-+		return;
-+
-+	prune_iotlb(mvdev);
-+}
-+
-+static void _mlx5_vdpa_destroy_dvq_mr(struct mlx5_vdpa_dev *mvdev, unsigned int asid)
- {
- 	struct mlx5_vdpa_mr *mr = &mvdev->mr;
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_hdcp.h b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_hdcp.h
+index 09294ff122fea..bbbf7d0eff82f 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_hdcp.h
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_hdcp.h
+@@ -52,6 +52,20 @@ struct hdcp_workqueue {
+ 	struct mod_hdcp_link link;
  
--	mutex_lock(&mr->mkey_mtx);
-+	if (mvdev->group2asid[MLX5_VDPA_DATAVQ_GROUP] != asid)
-+		return;
+ 	enum mod_hdcp_encryption_status encryption_status;
 +
- 	if (!mr->initialized)
--		goto out;
-+		return;
++	/* when display is unplugged from mst hub, connctor will be
++	 * destroyed within dm_dp_mst_connector_destroy. connector
++	 * hdcp perperties, like type, undesired, desired, enabled,
++	 * will be lost. So, save hdcp properties into hdcp_work within
++	 * amdgpu_dm_atomic_commit_tail. if the same display is
++	 * plugged back with same display index, its hdcp properties
++	 * will be retrieved from hdcp_work within dm_dp_mst_get_modes
++	 */
++	/* un-desired, desired, enabled */
++	unsigned int content_protection[AMDGPU_DM_MAX_DISPLAY_INDEX];
++	/* hdcp1.x, hdcp2.x */
++	unsigned int hdcp_content_type[AMDGPU_DM_MAX_DISPLAY_INDEX];
++
+ 	uint8_t max_link;
  
--	prune_iotlb(mvdev);
- 	if (mr->user_mr)
- 		destroy_user_mr(mvdev, mr);
- 	else
- 		destroy_dma_mr(mvdev, mr);
+ 	uint8_t *srm;
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
+index d07e1053b36b3..9884dd78c652c 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
+@@ -32,6 +32,10 @@
+ #include "amdgpu_dm.h"
+ #include "amdgpu_dm_mst_types.h"
  
- 	mr->initialized = false;
--out:
-+}
++#ifdef CONFIG_DRM_AMD_DC_HDCP
++#include "amdgpu_dm_hdcp.h"
++#endif
 +
-+static void mlx5_vdpa_destroy_mr_asid(struct mlx5_vdpa_dev *mvdev, unsigned int asid)
-+{
-+	struct mlx5_vdpa_mr *mr = &mvdev->mr;
-+
-+	mutex_lock(&mr->mkey_mtx);
-+
-+	_mlx5_vdpa_destroy_dvq_mr(mvdev, asid);
-+	_mlx5_vdpa_destroy_cvq_mr(mvdev, asid);
-+
- 	mutex_unlock(&mr->mkey_mtx);
- }
+ #include "dc.h"
+ #include "dm_helpers.h"
  
--static int _mlx5_vdpa_create_mr(struct mlx5_vdpa_dev *mvdev,
--				struct vhost_iotlb *iotlb, unsigned int asid)
-+void mlx5_vdpa_destroy_mr(struct mlx5_vdpa_dev *mvdev)
-+{
-+	mlx5_vdpa_destroy_mr_asid(mvdev, mvdev->group2asid[MLX5_VDPA_CVQ_GROUP]);
-+	mlx5_vdpa_destroy_mr_asid(mvdev, mvdev->group2asid[MLX5_VDPA_DATAVQ_GROUP]);
-+}
-+
-+static int _mlx5_vdpa_create_cvq_mr(struct mlx5_vdpa_dev *mvdev,
-+				    struct vhost_iotlb *iotlb,
-+				    unsigned int asid)
-+{
-+	if (mvdev->group2asid[MLX5_VDPA_CVQ_GROUP] != asid)
-+		return 0;
-+
-+	return dup_iotlb(mvdev, iotlb);
-+}
-+
-+static int _mlx5_vdpa_create_dvq_mr(struct mlx5_vdpa_dev *mvdev,
-+				    struct vhost_iotlb *iotlb,
-+				    unsigned int asid)
- {
- 	struct mlx5_vdpa_mr *mr = &mvdev->mr;
- 	int err;
+@@ -363,6 +367,28 @@ static int dm_dp_mst_get_modes(struct drm_connector *connector)
+ 		/* dc_link_add_remote_sink returns a new reference */
+ 		aconnector->dc_sink = dc_sink;
  
--	if (mr->initialized)
-+	if (mvdev->group2asid[MLX5_VDPA_DATAVQ_GROUP] != asid)
- 		return 0;
- 
--	if (mvdev->group2asid[MLX5_VDPA_DATAVQ_GROUP] == asid) {
--		if (iotlb)
--			err = create_user_mr(mvdev, iotlb);
--		else
--			err = create_dma_mr(mvdev, mr);
-+	if (mr->initialized)
-+		return 0;
- 
--		if (err)
--			return err;
--	}
-+	if (iotlb)
-+		err = create_user_mr(mvdev, iotlb);
-+	else
-+		err = create_dma_mr(mvdev, mr);
- 
--	if (mvdev->group2asid[MLX5_VDPA_CVQ_GROUP] == asid) {
--		err = dup_iotlb(mvdev, iotlb);
--		if (err)
--			goto out_err;
--	}
-+	if (err)
-+		return err;
- 
- 	mr->initialized = true;
++		/* when display is unplugged from mst hub, connctor will be
++		 * destroyed within dm_dp_mst_connector_destroy. connector
++		 * hdcp perperties, like type, undesired, desired, enabled,
++		 * will be lost. So, save hdcp properties into hdcp_work within
++		 * amdgpu_dm_atomic_commit_tail. if the same display is
++		 * plugged back with same display index, its hdcp properties
++		 * will be retrieved from hdcp_work within dm_dp_mst_get_modes
++		 */
++#ifdef CONFIG_DRM_AMD_DC_HDCP
++		if (aconnector->dc_sink && connector->state) {
++			struct drm_device *dev = connector->dev;
++			struct amdgpu_device *adev = drm_to_adev(dev);
++			struct hdcp_workqueue *hdcp_work = adev->dm.hdcp_workqueue;
++			struct hdcp_workqueue *hdcp_w = &hdcp_work[aconnector->dc_link->link_index];
 +
-+	return 0;
-+}
++			connector->state->hdcp_content_type =
++			hdcp_w->hdcp_content_type[connector->index];
++			connector->state->content_protection =
++			hdcp_w->content_protection[connector->index];
++		}
++#endif
 +
-+static int _mlx5_vdpa_create_mr(struct mlx5_vdpa_dev *mvdev,
-+				struct vhost_iotlb *iotlb, unsigned int asid)
-+{
-+	int err;
-+
-+	err = _mlx5_vdpa_create_dvq_mr(mvdev, iotlb, asid);
-+	if (err)
-+		return err;
-+
-+	err = _mlx5_vdpa_create_cvq_mr(mvdev, iotlb, asid);
-+	if (err)
-+		goto out_err;
-+
- 	return 0;
- 
- out_err:
--	if (mvdev->group2asid[MLX5_VDPA_DATAVQ_GROUP] == asid) {
--		if (iotlb)
--			destroy_user_mr(mvdev, mr);
--		else
--			destroy_dma_mr(mvdev, mr);
--	}
-+	_mlx5_vdpa_destroy_dvq_mr(mvdev, asid);
- 
- 	return err;
- }
+ 		if (aconnector->dc_sink) {
+ 			amdgpu_dm_update_freesync_caps(
+ 					connector, aconnector->edid);
 -- 
 2.40.1
 
