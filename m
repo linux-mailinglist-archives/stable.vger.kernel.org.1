@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 46506783259
-	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:21:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B54D4783279
+	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:22:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230292AbjHUUHV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 21 Aug 2023 16:07:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53458 "EHLO
+        id S229898AbjHUT5v (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 21 Aug 2023 15:57:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48458 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230293AbjHUUHV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 16:07:21 -0400
+        with ESMTP id S229643AbjHUT5u (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 15:57:50 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6B2411C
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 13:07:19 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 384B8129
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 12:57:48 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 53F88649A1
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 20:07:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62AE4C433C7;
-        Mon, 21 Aug 2023 20:07:18 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C60D064689
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 19:57:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF467C433C7;
+        Mon, 21 Aug 2023 19:57:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692648438;
-        bh=4QnqED9HyCmTPU9FpVcVZEjLMg3SGtTLBBbUlIDLS4g=;
+        s=korg; t=1692647867;
+        bh=zeK/ysJgb6ZniSTJBeu7TX3T/ZMG36DFOfxcEtkvRtI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=lhMZhmJhAm344UyQ3gYymKZhK/o3MVfWQZ5BhZKcdSFXHm3Fnj7M1HK24zNNJbdZ8
-         DRx0i0LRLMoWms5SjndL5l/ki7p8jfcUXNNFYSErZSecb0YENctKaaRzgjv+ZnMhzv
-         1yfKeKDGeECSf6CWFqCMgTPavHu3XugSqyTSxcrA=
+        b=Erl/8ZiiJpmuXZMJJdn3rqsZH5KhgsnLN4qb4lg5vR0KRzr9zKRj5xdeAFwJpKNvp
+         /AvwUSsy3h7gqe/GwKQhZ85ckxltCZg2XKlL+9jNUSPwaCV0R5JiOW/5r9pOibT11J
+         A7DjqK0AkhsqZAroNHbt0AibMNlvgXKw8qlhHe8c=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Martin Habets <habetsm.xilinx@gmail.com>,
-        Edward Cree <ecree.xilinx@gmail.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 175/234] sfc: dont fail probe if MAE/TC setup fails
+        patches@lists.linux.dev, Yibin Ding <yibin.ding@unisoc.com>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.1 159/194] mmc: block: Fix in_flight[issue_type] value error
 Date:   Mon, 21 Aug 2023 21:42:18 +0200
-Message-ID: <20230821194136.579148912@linuxfoundation.org>
+Message-ID: <20230821194129.694433724@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230821194128.754601642@linuxfoundation.org>
-References: <20230821194128.754601642@linuxfoundation.org>
+In-Reply-To: <20230821194122.695845670@linuxfoundation.org>
+References: <20230821194122.695845670@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,39 +54,75 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Edward Cree <ecree.xilinx@gmail.com>
+From: Yibin Ding <yibin.ding@unisoc.com>
 
-[ Upstream commit 54c9016eb8eda55952a195b071359cd13f50ed9b ]
+commit 4b430d4ac99750ee2ae2f893f1055c7af1ec3dc5 upstream.
 
-Existing comment in the source explains why we don't want efx_init_tc()
- failure to be fatal.  Cited commit erroneously consolidated failure
- paths causing the probe to be failed in this case.
+For a completed request, after the mmc_blk_mq_complete_rq(mq, req)
+function is executed, the bitmap_tags corresponding to the
+request will be cleared, that is, the request will be regarded as
+idle. If the request is acquired by a different type of process at
+this time, the issue_type of the request may change. It further
+caused the value of mq->in_flight[issue_type] to be abnormal,
+and a large number of requests could not be sent.
 
-Fixes: 7e056e2360d9 ("sfc: obtain device mac address based on firmware handle for ef100")
-Reviewed-by: Martin Habets <habetsm.xilinx@gmail.com>
-Signed-off-by: Edward Cree <ecree.xilinx@gmail.com>
-Link: https://lore.kernel.org/r/aa7f589dd6028bd1ad49f0a85f37ab33c09b2b45.1692114888.git.ecree.xilinx@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+p1:					      p2:
+mmc_blk_mq_complete_rq
+  blk_mq_free_request
+					      blk_mq_get_request
+					        blk_mq_rq_ctx_init
+mmc_blk_mq_dec_in_flight
+  mmc_issue_type(mq, req)
+
+This strategy can ensure the consistency of issue_type
+before and after executing mmc_blk_mq_complete_rq.
+
+Fixes: 81196976ed94 ("mmc: block: Add blk-mq support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Yibin Ding <yibin.ding@unisoc.com>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Link: https://lore.kernel.org/r/20230802023023.1318134-1-yunlong.xing@unisoc.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/sfc/ef100_nic.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/mmc/core/block.c |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/sfc/ef100_nic.c b/drivers/net/ethernet/sfc/ef100_nic.c
-index 7adde9639c8ab..35d8e9811998d 100644
---- a/drivers/net/ethernet/sfc/ef100_nic.c
-+++ b/drivers/net/ethernet/sfc/ef100_nic.c
-@@ -1194,7 +1194,7 @@ int ef100_probe_netdev_pf(struct efx_nic *efx)
- 		net_dev->features |= NETIF_F_HW_TC;
- 		efx->fixed_features |= NETIF_F_HW_TC;
- 	}
--	return rc;
-+	return 0;
+--- a/drivers/mmc/core/block.c
++++ b/drivers/mmc/core/block.c
+@@ -2097,14 +2097,14 @@ static void mmc_blk_mq_poll_completion(s
+ 	mmc_blk_urgent_bkops(mq, mqrq);
  }
  
- int ef100_probe_vf(struct efx_nic *efx)
--- 
-2.40.1
-
+-static void mmc_blk_mq_dec_in_flight(struct mmc_queue *mq, struct request *req)
++static void mmc_blk_mq_dec_in_flight(struct mmc_queue *mq, enum mmc_issue_type issue_type)
+ {
+ 	unsigned long flags;
+ 	bool put_card;
+ 
+ 	spin_lock_irqsave(&mq->lock, flags);
+ 
+-	mq->in_flight[mmc_issue_type(mq, req)] -= 1;
++	mq->in_flight[issue_type] -= 1;
+ 
+ 	put_card = (mmc_tot_in_flight(mq) == 0);
+ 
+@@ -2117,6 +2117,7 @@ static void mmc_blk_mq_dec_in_flight(str
+ static void mmc_blk_mq_post_req(struct mmc_queue *mq, struct request *req,
+ 				bool can_sleep)
+ {
++	enum mmc_issue_type issue_type = mmc_issue_type(mq, req);
+ 	struct mmc_queue_req *mqrq = req_to_mmc_queue_req(req);
+ 	struct mmc_request *mrq = &mqrq->brq.mrq;
+ 	struct mmc_host *host = mq->card->host;
+@@ -2136,7 +2137,7 @@ static void mmc_blk_mq_post_req(struct m
+ 			blk_mq_complete_request(req);
+ 	}
+ 
+-	mmc_blk_mq_dec_in_flight(mq, req);
++	mmc_blk_mq_dec_in_flight(mq, issue_type);
+ }
+ 
+ void mmc_blk_mq_recovery(struct mmc_queue *mq)
 
 
