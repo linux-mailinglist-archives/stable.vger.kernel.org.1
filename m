@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 19FCE783277
-	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:22:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 38B7D7832DF
+	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:22:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230006AbjHUUEN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 21 Aug 2023 16:04:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44786 "EHLO
+        id S229619AbjHUTyq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 21 Aug 2023 15:54:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54958 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229518AbjHUUEM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 16:04:12 -0400
+        with ESMTP id S229727AbjHUTyq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 15:54:46 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A176E4
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 13:04:11 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CCC33FA
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 12:54:44 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E9ECD648AC
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 20:04:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0467CC433C8;
-        Mon, 21 Aug 2023 20:04:09 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6B0AA6457A
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 19:54:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7545DC433C7;
+        Mon, 21 Aug 2023 19:54:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692648250;
-        bh=nclExWFw676E372srVWbZDntFQeSIr4NcdixgvUy2WE=;
+        s=korg; t=1692647683;
+        bh=FczYBzczb6PQCSzO5uywPJwqlkJX5PTn+4lftX16+6A=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=aednq+6E7Lx9D9TJk6fLuT4xSuJOpKMAVQXYoGJ5QlWWZRtxWiesa9qtnLSPyaYNr
-         27ZOQxKsVHdYBy0NhVSHoLblM0rNmGkY6vqqZQD9hysUcfm01y9Dz9Y/CA4T1TEeNl
-         F3geljQvJt1SBMRcSkcb0r0XeygzNFVoh7bSq4JY=
+        b=pkSShjSiQ2B2kZXWhltITQDFD96U3//3Pzfv0oEz6f0od4k6sUQMUqss+YY1dhAsl
+         prEVaM04RThbJEABiSFkD+XZ7gF+u2mPPlhZXFZSfhYpzehZ/2fdi78yf5zCtFQzBO
+         xgclRFWOKTKMa/bOFMaVvtXXUHoS93TXTFeXY7BQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, xiaoshoukui <xiaoshoukui@ruijie.com.cn>,
-        David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.4 109/234] btrfs: fix BUG_ON condition in btrfs_cancel_balance
-Date:   Mon, 21 Aug 2023 21:41:12 +0200
-Message-ID: <20230821194133.632548069@linuxfoundation.org>
+        patches@lists.linux.dev, Lin Ma <linma@zju.edu.cn>,
+        "Michael S. Tsirkin" <mst@redhat.com>
+Subject: [PATCH 6.1 094/194] vdpa: Add features attr to vdpa_nl_policy for nlattr length check
+Date:   Mon, 21 Aug 2023 21:41:13 +0200
+Message-ID: <20230821194126.845944056@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230821194128.754601642@linuxfoundation.org>
-References: <20230821194128.754601642@linuxfoundation.org>
+In-Reply-To: <20230821194122.695845670@linuxfoundation.org>
+References: <20230821194122.695845670@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,64 +53,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: xiaoshoukui <xiaoshoukui@gmail.com>
+From: Lin Ma <linma@zju.edu.cn>
 
-commit 29eefa6d0d07e185f7bfe9576f91e6dba98189c2 upstream.
+commit 79c8651587504ba263d2fd67fd4406240fb21f69 upstream.
 
-Pausing and canceling balance can race to interrupt balance lead to BUG_ON
-panic in btrfs_cancel_balance. The BUG_ON condition in btrfs_cancel_balance
-does not take this race scenario into account.
+The vdpa_nl_policy structure is used to validate the nlattr when parsing
+the incoming nlmsg. It will ensure the attribute being described produces
+a valid nlattr pointer in info->attrs before entering into each handler
+in vdpa_nl_ops.
 
-However, the race condition has no other side effects. We can fix that.
+That is to say, the missing part in vdpa_nl_policy may lead to illegal
+nlattr after parsing, which could lead to OOB read just like CVE-2023-3773.
 
-Reproducing it with panic trace like this:
+This patch adds the missing nla_policy for vdpa features attr to avoid
+such bugs.
 
-  kernel BUG at fs/btrfs/volumes.c:4618!
-  RIP: 0010:btrfs_cancel_balance+0x5cf/0x6a0
-  Call Trace:
-   <TASK>
-   ? do_nanosleep+0x60/0x120
-   ? hrtimer_nanosleep+0xb7/0x1a0
-   ? sched_core_clone_cookie+0x70/0x70
-   btrfs_ioctl_balance_ctl+0x55/0x70
-   btrfs_ioctl+0xa46/0xd20
-   __x64_sys_ioctl+0x7d/0xa0
-   do_syscall_64+0x38/0x80
-   entry_SYSCALL_64_after_hwframe+0x63/0xcd
-
-  Race scenario as follows:
-  > mutex_unlock(&fs_info->balance_mutex);
-  > --------------------
-  > .......issue pause and cancel req in another thread
-  > --------------------
-  > ret = __btrfs_balance(fs_info);
-  >
-  > mutex_lock(&fs_info->balance_mutex);
-  > if (ret == -ECANCELED && atomic_read(&fs_info->balance_pause_req)) {
-  >         btrfs_info(fs_info, "balance: paused");
-  >         btrfs_exclop_balance(fs_info, BTRFS_EXCLOP_BALANCE_PAUSED);
-  > }
-
-CC: stable@vger.kernel.org # 4.19+
-Signed-off-by: xiaoshoukui <xiaoshoukui@ruijie.com.cn>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Fixes: 90fea5a800c3 ("vdpa: device feature provisioning")
+Signed-off-by: Lin Ma <linma@zju.edu.cn>
+Cc: stable@vger.kernel.org
+Message-Id: <20230727175757.73988-3-dtatulea@nvidia.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/volumes.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/vdpa/vdpa.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/fs/btrfs/volumes.c
-+++ b/fs/btrfs/volumes.c
-@@ -4631,8 +4631,7 @@ int btrfs_cancel_balance(struct btrfs_fs
- 		}
- 	}
+--- a/drivers/vdpa/vdpa.c
++++ b/drivers/vdpa/vdpa.c
+@@ -1174,6 +1174,7 @@ static const struct nla_policy vdpa_nl_p
+ 	[VDPA_ATTR_DEV_NET_CFG_MACADDR] = NLA_POLICY_ETH_ADDR,
+ 	/* virtio spec 1.1 section 5.1.4.1 for valid MTU range */
+ 	[VDPA_ATTR_DEV_NET_CFG_MTU] = NLA_POLICY_MIN(NLA_U16, 68),
++	[VDPA_ATTR_DEV_FEATURES] = { .type = NLA_U64 },
+ };
  
--	BUG_ON(fs_info->balance_ctl ||
--		test_bit(BTRFS_FS_BALANCE_RUNNING, &fs_info->flags));
-+	ASSERT(!test_bit(BTRFS_FS_BALANCE_RUNNING, &fs_info->flags));
- 	atomic_dec(&fs_info->balance_cancel_req);
- 	mutex_unlock(&fs_info->balance_mutex);
- 	return 0;
+ static const struct genl_ops vdpa_nl_ops[] = {
 
 
