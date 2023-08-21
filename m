@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0D08E78319B
-	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 21:52:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 21CE8783116
+	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 21:51:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229543AbjHUTvr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 21 Aug 2023 15:51:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41294 "EHLO
+        id S229534AbjHUTub (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 21 Aug 2023 15:50:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52450 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229527AbjHUTvr (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 15:51:47 -0400
+        with ESMTP id S229445AbjHUTu2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 15:50:28 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C8EC010B
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 12:51:42 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 301A718F
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 12:50:27 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 63C646444C
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 19:51:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73A05C433C7;
-        Mon, 21 Aug 2023 19:51:41 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BEF73617C5
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 19:50:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEB95C433C7;
+        Mon, 21 Aug 2023 19:50:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692647501;
-        bh=Xjpf5DvFv4dZ/Pw7d2+9vRkwgkTeqWtjqsNkwDMhOP4=;
+        s=korg; t=1692647426;
+        bh=KeKRwhBb59dhlk2SSnGiZOHA/OnkogCz+mELpz7890o=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Hlzuyp8r5HK6bfzuIpA9/KqbdBrV3zhfBVeKe2GZjBCP6r2mnor2kfXuF12uFaiTG
-         vA+xkLf7NuSMO1P8ZUov7fNyGsnzZivJc7DWfWlABEDO3voK3QZVXU3H3idyOgZE/U
-         SFeTolR562I1DLLE/WhaShMA7Abiiq9862Gpu1Us=
+        b=ja4du1e+QlCTQcC+xPYFajyuaG03YK4ZUmdmho6XsAdRfO0WMrCx0qd6VqTq5BFMX
+         5LuV4AVYgpfiMghywvr356EqD+Tow9i7EmOUNlOttKqqJR3IGvw3v/UmRUXcvTFybl
+         upM/OwMBJ8Ad79nz84Hyvtnbji5p9t+wmqE1FGGg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jan Karcher <jaka@linux.ibm.com>,
-        Wenjia Zhang <wenjia@linux.ibm.com>,
-        Tony Lu <tonylu@linux.alibaba.com>,
-        Gerd Bayer <gbayer@linux.ibm.com>,
+        patches@lists.linux.dev,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        Andrew Lunn <andrew@lunn.ch>,
         "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 009/194] net/smc: Fix setsockopt and sysctl to specify same buffer size again
-Date:   Mon, 21 Aug 2023 21:39:48 +0200
-Message-ID: <20230821194123.133785398@linuxfoundation.org>
+Subject: [PATCH 6.1 010/194] net: phy: at803x: Use devm_regulator_get_enable_optional()
+Date:   Mon, 21 Aug 2023 21:39:49 +0200
+Message-ID: <20230821194123.179792006@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230821194122.695845670@linuxfoundation.org>
 References: <20230821194122.695845670@linuxfoundation.org>
@@ -57,234 +56,159 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Gerd Bayer <gbayer@linux.ibm.com>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit 833bac7ec392bf75053c8a4fa4c36d4148dac77d ]
+[ Upstream commit 988e8d90b3dc482637532e61bc2d58bfc4af5167 ]
 
-Commit 0227f058aa29 ("net/smc: Unbind r/w buffer size from clcsock
-and make them tunable") introduced the net.smc.rmem and net.smc.wmem
-sysctls to specify the size of buffers to be used for SMC type
-connections. This created a regression for users that specified the
-buffer size via setsockopt() as the effective buffer size was now
-doubled.
+Use devm_regulator_get_enable_optional() instead of hand writing it. It
+saves some line of code.
 
-Re-introduce the division by 2 in the SMC buffer create code and level
-this out by duplicating the net.smc.[rw]mem values used for initializing
-sk_rcvbuf/sk_sndbuf at socket creation time. This gives users of both
-methods (setsockopt or sysctl) the effective buffer size that they
-expect.
-
-Initialize net.smc.[rw]mem from its own constant of 64kB, respectively.
-Internal performance tests show that this value is a good compromise
-between throughput/latency and memory consumption. Also, this decouples
-it from any tuning that was done to net.ipv4.tcp_[rw]mem[1] before the
-module for SMC protocol was loaded. Check that no more than INT_MAX / 2
-is assigned to net.smc.[rw]mem, in order to avoid any overflow condition
-when that is doubled for use in sk_sndbuf or sk_rcvbuf.
-
-While at it, drop the confusing sk_buf_size variable from
-__smc_buf_create and name "compressed" buffer size variables more
-consistently.
-
-Background:
-
-Before the commit mentioned above, SMC's buffer allocator in
-__smc_buf_create() always used half of the sockets' sk_rcvbuf/sk_sndbuf
-value as initial value to search for appropriate buffers. If the search
-resorted to using a bigger buffer when all buffers of the specified
-size were busy, the duplicate of the used effective buffer size is
-stored back to sk_rcvbuf/sk_sndbuf.
-
-When available, buffers of exactly the size that a user had specified as
-input to setsockopt() were used, despite setsockopt()'s documentation in
-"man 7 socket" talking of a mandatory duplication:
-
-[...]
-       SO_SNDBUF
-              Sets  or  gets the maximum socket send buffer in bytes.
-              The kernel doubles this value (to allow space for book‐
-              keeping  overhead)  when it is set using setsockopt(2),
-              and this doubled value is  returned  by  getsockopt(2).
-              The     default     value     is     set     by     the
-              /proc/sys/net/core/wmem_default file  and  the  maximum
-              allowed value is set by the /proc/sys/net/core/wmem_max
-              file.  The minimum (doubled) value for this  option  is
-              2048.
-[...]
-
-Fixes: 0227f058aa29 ("net/smc: Unbind r/w buffer size from clcsock and make them tunable")
-Co-developed-by: Jan Karcher <jaka@linux.ibm.com>
-Signed-off-by: Jan Karcher <jaka@linux.ibm.com>
-Reviewed-by: Wenjia Zhang <wenjia@linux.ibm.com>
-Reviewed-by: Tony Lu <tonylu@linux.alibaba.com>
-Signed-off-by: Gerd Bayer <gbayer@linux.ibm.com>
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: e58f30246c35 ("net: phy: at803x: fix the wol setting functions")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/smc/af_smc.c     |  4 ++--
- net/smc/smc.h        |  2 +-
- net/smc/smc_clc.c    |  4 ++--
- net/smc/smc_core.c   | 25 ++++++++++++-------------
- net/smc/smc_sysctl.c | 10 ++++++++--
- 5 files changed, 25 insertions(+), 20 deletions(-)
+ drivers/net/phy/at803x.c | 44 +++++++---------------------------------
+ 1 file changed, 7 insertions(+), 37 deletions(-)
 
-diff --git a/net/smc/af_smc.c b/net/smc/af_smc.c
-index 5712a5297bd01..84219c5121bc2 100644
---- a/net/smc/af_smc.c
-+++ b/net/smc/af_smc.c
-@@ -379,8 +379,8 @@ static struct sock *smc_sock_alloc(struct net *net, struct socket *sock,
- 	sk->sk_state = SMC_INIT;
- 	sk->sk_destruct = smc_destruct;
- 	sk->sk_protocol = protocol;
--	WRITE_ONCE(sk->sk_sndbuf, READ_ONCE(net->smc.sysctl_wmem));
--	WRITE_ONCE(sk->sk_rcvbuf, READ_ONCE(net->smc.sysctl_rmem));
-+	WRITE_ONCE(sk->sk_sndbuf, 2 * READ_ONCE(net->smc.sysctl_wmem));
-+	WRITE_ONCE(sk->sk_rcvbuf, 2 * READ_ONCE(net->smc.sysctl_rmem));
- 	smc = smc_sk(sk);
- 	INIT_WORK(&smc->tcp_listen_work, smc_tcp_listen_work);
- 	INIT_WORK(&smc->connect_work, smc_connect_work);
-diff --git a/net/smc/smc.h b/net/smc/smc.h
-index 5ed765ea0c731..1d36720fc019c 100644
---- a/net/smc/smc.h
-+++ b/net/smc/smc.h
-@@ -161,7 +161,7 @@ struct smc_connection {
- 
- 	struct smc_buf_desc	*sndbuf_desc;	/* send buffer descriptor */
- 	struct smc_buf_desc	*rmb_desc;	/* RMBE descriptor */
--	int			rmbe_size_short;/* compressed notation */
-+	int                     rmbe_size_comp; /* compressed notation */
- 	int			rmbe_update_limit;
- 						/* lower limit for consumer
- 						 * cursor update
-diff --git a/net/smc/smc_clc.c b/net/smc/smc_clc.c
-index dfb9797f7bc63..9b8999e2afca5 100644
---- a/net/smc/smc_clc.c
-+++ b/net/smc/smc_clc.c
-@@ -1002,7 +1002,7 @@ static int smc_clc_send_confirm_accept(struct smc_sock *smc,
- 		clc->hdr.typev1 = SMC_TYPE_D;
- 		clc->d0.gid = conn->lgr->smcd->local_gid;
- 		clc->d0.token = conn->rmb_desc->token;
--		clc->d0.dmbe_size = conn->rmbe_size_short;
-+		clc->d0.dmbe_size = conn->rmbe_size_comp;
- 		clc->d0.dmbe_idx = 0;
- 		memcpy(&clc->d0.linkid, conn->lgr->id, SMC_LGR_ID_SIZE);
- 		if (version == SMC_V1) {
-@@ -1045,7 +1045,7 @@ static int smc_clc_send_confirm_accept(struct smc_sock *smc,
- 			clc->r0.qp_mtu = min(link->path_mtu, link->peer_mtu);
- 			break;
- 		}
--		clc->r0.rmbe_size = conn->rmbe_size_short;
-+		clc->r0.rmbe_size = conn->rmbe_size_comp;
- 		clc->r0.rmb_dma_addr = conn->rmb_desc->is_vm ?
- 			cpu_to_be64((uintptr_t)conn->rmb_desc->cpu_addr) :
- 			cpu_to_be64((u64)sg_dma_address
-diff --git a/net/smc/smc_core.c b/net/smc/smc_core.c
-index f793101e0ecc3..c676d92af7b7d 100644
---- a/net/smc/smc_core.c
-+++ b/net/smc/smc_core.c
-@@ -2305,31 +2305,30 @@ static int __smc_buf_create(struct smc_sock *smc, bool is_smcd, bool is_rmb)
- 	struct smc_connection *conn = &smc->conn;
- 	struct smc_link_group *lgr = conn->lgr;
- 	struct list_head *buf_list;
--	int bufsize, bufsize_short;
-+	int bufsize, bufsize_comp;
- 	struct rw_semaphore *lock;	/* lock buffer list */
- 	bool is_dgraded = false;
--	int sk_buf_size;
- 
- 	if (is_rmb)
- 		/* use socket recv buffer size (w/o overhead) as start value */
--		sk_buf_size = smc->sk.sk_rcvbuf;
-+		bufsize = smc->sk.sk_rcvbuf / 2;
- 	else
- 		/* use socket send buffer size (w/o overhead) as start value */
--		sk_buf_size = smc->sk.sk_sndbuf;
-+		bufsize = smc->sk.sk_sndbuf / 2;
- 
--	for (bufsize_short = smc_compress_bufsize(sk_buf_size, is_smcd, is_rmb);
--	     bufsize_short >= 0; bufsize_short--) {
-+	for (bufsize_comp = smc_compress_bufsize(bufsize, is_smcd, is_rmb);
-+	     bufsize_comp >= 0; bufsize_comp--) {
- 		if (is_rmb) {
- 			lock = &lgr->rmbs_lock;
--			buf_list = &lgr->rmbs[bufsize_short];
-+			buf_list = &lgr->rmbs[bufsize_comp];
- 		} else {
- 			lock = &lgr->sndbufs_lock;
--			buf_list = &lgr->sndbufs[bufsize_short];
-+			buf_list = &lgr->sndbufs[bufsize_comp];
- 		}
--		bufsize = smc_uncompress_bufsize(bufsize_short);
-+		bufsize = smc_uncompress_bufsize(bufsize_comp);
- 
- 		/* check for reusable slot in the link group */
--		buf_desc = smc_buf_get_slot(bufsize_short, lock, buf_list);
-+		buf_desc = smc_buf_get_slot(bufsize_comp, lock, buf_list);
- 		if (buf_desc) {
- 			buf_desc->is_dma_need_sync = 0;
- 			SMC_STAT_RMB_SIZE(smc, is_smcd, is_rmb, bufsize);
-@@ -2373,8 +2372,8 @@ static int __smc_buf_create(struct smc_sock *smc, bool is_smcd, bool is_rmb)
- 
- 	if (is_rmb) {
- 		conn->rmb_desc = buf_desc;
--		conn->rmbe_size_short = bufsize_short;
--		smc->sk.sk_rcvbuf = bufsize;
-+		conn->rmbe_size_comp = bufsize_comp;
-+		smc->sk.sk_rcvbuf = bufsize * 2;
- 		atomic_set(&conn->bytes_to_rcv, 0);
- 		conn->rmbe_update_limit =
- 			smc_rmb_wnd_update_limit(buf_desc->len);
-@@ -2382,7 +2381,7 @@ static int __smc_buf_create(struct smc_sock *smc, bool is_smcd, bool is_rmb)
- 			smc_ism_set_conn(conn); /* map RMB/smcd_dev to conn */
- 	} else {
- 		conn->sndbuf_desc = buf_desc;
--		smc->sk.sk_sndbuf = bufsize;
-+		smc->sk.sk_sndbuf = bufsize * 2;
- 		atomic_set(&conn->sndbuf_space, bufsize);
- 	}
- 	return 0;
-diff --git a/net/smc/smc_sysctl.c b/net/smc/smc_sysctl.c
-index b6f79fabb9d3f..0b2a957ca5f5f 100644
---- a/net/smc/smc_sysctl.c
-+++ b/net/smc/smc_sysctl.c
-@@ -21,6 +21,10 @@
- 
- static int min_sndbuf = SMC_BUF_MIN_SIZE;
- static int min_rcvbuf = SMC_BUF_MIN_SIZE;
-+static int max_sndbuf = INT_MAX / 2;
-+static int max_rcvbuf = INT_MAX / 2;
-+static const int net_smc_wmem_init = (64 * 1024);
-+static const int net_smc_rmem_init = (64 * 1024);
- 
- static struct ctl_table smc_table[] = {
- 	{
-@@ -53,6 +57,7 @@ static struct ctl_table smc_table[] = {
- 		.mode		= 0644,
- 		.proc_handler	= proc_dointvec_minmax,
- 		.extra1		= &min_sndbuf,
-+		.extra2		= &max_sndbuf,
- 	},
- 	{
- 		.procname	= "rmem",
-@@ -61,6 +66,7 @@ static struct ctl_table smc_table[] = {
- 		.mode		= 0644,
- 		.proc_handler	= proc_dointvec_minmax,
- 		.extra1		= &min_rcvbuf,
-+		.extra2		= &max_rcvbuf,
- 	},
- 	{  }
+diff --git a/drivers/net/phy/at803x.c b/drivers/net/phy/at803x.c
+index 61824a463df85..e351fa8b84b7d 100644
+--- a/drivers/net/phy/at803x.c
++++ b/drivers/net/phy/at803x.c
+@@ -305,7 +305,6 @@ struct at803x_priv {
+ 	bool is_1000basex;
+ 	struct regulator_dev *vddio_rdev;
+ 	struct regulator_dev *vddh_rdev;
+-	struct regulator *vddio;
+ 	u64 stats[ARRAY_SIZE(at803x_hw_stats)];
  };
-@@ -88,8 +94,8 @@ int __net_init smc_sysctl_net_init(struct net *net)
- 	net->smc.sysctl_autocorking_size = SMC_AUTOCORKING_DEFAULT_SIZE;
- 	net->smc.sysctl_smcr_buf_type = SMCR_PHYS_CONT_BUFS;
- 	net->smc.sysctl_smcr_testlink_time = SMC_LLC_TESTLINK_DEFAULT_TIME;
--	WRITE_ONCE(net->smc.sysctl_wmem, READ_ONCE(net->ipv4.sysctl_tcp_wmem[1]));
--	WRITE_ONCE(net->smc.sysctl_rmem, READ_ONCE(net->ipv4.sysctl_tcp_rmem[1]));
-+	WRITE_ONCE(net->smc.sysctl_wmem, net_smc_wmem_init);
-+	WRITE_ONCE(net->smc.sysctl_rmem, net_smc_rmem_init);
+ 
+@@ -825,11 +824,11 @@ static int at803x_parse_dt(struct phy_device *phydev)
+ 		if (ret < 0)
+ 			return ret;
+ 
+-		priv->vddio = devm_regulator_get_optional(&phydev->mdio.dev,
+-							  "vddio");
+-		if (IS_ERR(priv->vddio)) {
++		ret = devm_regulator_get_enable_optional(&phydev->mdio.dev,
++							 "vddio");
++		if (ret) {
+ 			phydev_err(phydev, "failed to get VDDIO regulator\n");
+-			return PTR_ERR(priv->vddio);
++			return ret;
+ 		}
+ 
+ 		/* Only AR8031/8033 support 1000Base-X for SFP modules */
+@@ -857,12 +856,6 @@ static int at803x_probe(struct phy_device *phydev)
+ 	if (ret)
+ 		return ret;
+ 
+-	if (priv->vddio) {
+-		ret = regulator_enable(priv->vddio);
+-		if (ret < 0)
+-			return ret;
+-	}
+-
+ 	if (phydev->drv->phy_id == ATH8031_PHY_ID) {
+ 		int ccr = phy_read(phydev, AT803X_REG_CHIP_CONFIG);
+ 		int mode_cfg;
+@@ -870,10 +863,8 @@ static int at803x_probe(struct phy_device *phydev)
+ 			.wolopts = 0,
+ 		};
+ 
+-		if (ccr < 0) {
+-			ret = ccr;
+-			goto err;
+-		}
++		if (ccr < 0)
++			return ccr;
+ 		mode_cfg = ccr & AT803X_MODE_CFG_MASK;
+ 
+ 		switch (mode_cfg) {
+@@ -891,25 +882,11 @@ static int at803x_probe(struct phy_device *phydev)
+ 		ret = at803x_set_wol(phydev, &wol);
+ 		if (ret < 0) {
+ 			phydev_err(phydev, "failed to disable WOL on probe: %d\n", ret);
+-			goto err;
++			return ret;
+ 		}
+ 	}
  
  	return 0;
+-
+-err:
+-	if (priv->vddio)
+-		regulator_disable(priv->vddio);
+-
+-	return ret;
+-}
+-
+-static void at803x_remove(struct phy_device *phydev)
+-{
+-	struct at803x_priv *priv = phydev->priv;
+-
+-	if (priv->vddio)
+-		regulator_disable(priv->vddio);
+ }
  
+ static int at803x_get_features(struct phy_device *phydev)
+@@ -2022,7 +1999,6 @@ static struct phy_driver at803x_driver[] = {
+ 	.name			= "Qualcomm Atheros AR8035",
+ 	.flags			= PHY_POLL_CABLE_TEST,
+ 	.probe			= at803x_probe,
+-	.remove			= at803x_remove,
+ 	.config_aneg		= at803x_config_aneg,
+ 	.config_init		= at803x_config_init,
+ 	.soft_reset		= genphy_soft_reset,
+@@ -2044,7 +2020,6 @@ static struct phy_driver at803x_driver[] = {
+ 	.name			= "Qualcomm Atheros AR8030",
+ 	.phy_id_mask		= AT8030_PHY_ID_MASK,
+ 	.probe			= at803x_probe,
+-	.remove			= at803x_remove,
+ 	.config_init		= at803x_config_init,
+ 	.link_change_notify	= at803x_link_change_notify,
+ 	.set_wol		= at803x_set_wol,
+@@ -2060,7 +2035,6 @@ static struct phy_driver at803x_driver[] = {
+ 	.name			= "Qualcomm Atheros AR8031/AR8033",
+ 	.flags			= PHY_POLL_CABLE_TEST,
+ 	.probe			= at803x_probe,
+-	.remove			= at803x_remove,
+ 	.config_init		= at803x_config_init,
+ 	.config_aneg		= at803x_config_aneg,
+ 	.soft_reset		= genphy_soft_reset,
+@@ -2083,7 +2057,6 @@ static struct phy_driver at803x_driver[] = {
+ 	PHY_ID_MATCH_EXACT(ATH8032_PHY_ID),
+ 	.name			= "Qualcomm Atheros AR8032",
+ 	.probe			= at803x_probe,
+-	.remove			= at803x_remove,
+ 	.flags			= PHY_POLL_CABLE_TEST,
+ 	.config_init		= at803x_config_init,
+ 	.link_change_notify	= at803x_link_change_notify,
+@@ -2099,7 +2072,6 @@ static struct phy_driver at803x_driver[] = {
+ 	PHY_ID_MATCH_EXACT(ATH9331_PHY_ID),
+ 	.name			= "Qualcomm Atheros AR9331 built-in PHY",
+ 	.probe			= at803x_probe,
+-	.remove			= at803x_remove,
+ 	.suspend		= at803x_suspend,
+ 	.resume			= at803x_resume,
+ 	.flags			= PHY_POLL_CABLE_TEST,
+@@ -2116,7 +2088,6 @@ static struct phy_driver at803x_driver[] = {
+ 	PHY_ID_MATCH_EXACT(QCA9561_PHY_ID),
+ 	.name			= "Qualcomm Atheros QCA9561 built-in PHY",
+ 	.probe			= at803x_probe,
+-	.remove			= at803x_remove,
+ 	.suspend		= at803x_suspend,
+ 	.resume			= at803x_resume,
+ 	.flags			= PHY_POLL_CABLE_TEST,
+@@ -2182,7 +2153,6 @@ static struct phy_driver at803x_driver[] = {
+ 	.name			= "Qualcomm QCA8081",
+ 	.flags			= PHY_POLL_CABLE_TEST,
+ 	.probe			= at803x_probe,
+-	.remove			= at803x_remove,
+ 	.config_intr		= at803x_config_intr,
+ 	.handle_interrupt	= at803x_handle_interrupt,
+ 	.get_tunable		= at803x_get_tunable,
 -- 
 2.40.1
 
