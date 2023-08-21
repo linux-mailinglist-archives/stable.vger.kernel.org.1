@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5168F782D6A
-	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 17:38:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 05E56782E0B
+	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 18:16:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231156AbjHUPi5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 21 Aug 2023 11:38:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60874 "EHLO
+        id S235016AbjHUQQa (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 21 Aug 2023 12:16:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38352 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231559AbjHUPi5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 11:38:57 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8DB97F0
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 08:38:55 -0700 (PDT)
+        with ESMTP id S233397AbjHUQQa (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 12:16:30 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE67BA8
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 09:16:28 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2124E63C48
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 15:38:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E1A0C433C8;
-        Mon, 21 Aug 2023 15:38:54 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8B9C8613EA
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 16:16:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AFBEC433C7;
+        Mon, 21 Aug 2023 16:16:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692632334;
-        bh=EIVHLKjDf2F473rs4IXzb0oXoq1DFaKeJ9i0GZptSGU=;
+        s=korg; t=1692634588;
+        bh=GAhB9ATDBTLixCS7r9F7lYtkWg2M8bOfVJgbmkaGTiQ=;
         h=Subject:To:Cc:From:Date:From;
-        b=2hRKPV6RM4iZObb8HbUEMY08cohP16GvyczmsuGkVO+rIti77nQXw+zWgHHh4wHTs
-         8kMOtYnDYcUawafaV4R8AbvidhRHYchM1PsnyAA4TEDWwDmLxEgAFHG7yYjVHAuMhJ
-         pX3yUxnjbMz4/oDfiXMCT3yMzhSjwmW/QvuvQ4wY=
-Subject: FAILED: patch "[PATCH] objtool/x86: Fix SRSO mess" failed to apply to 5.10-stable tree
+        b=b98yQdTFMc+z1aUROHKxCEOnoMdDN6MQPJmylAj6PRurcgWnWMpWPe/55Wn/fWzLl
+         BZYtSNsllAxeFX3YKJO4ytm9lWo/Nk987rtlF4H8vAXENaJ33vy05kWeppcpu5qr6K
+         gosE+UtUHclX0I+TD+quHVDEJi29+uYNTTkJQBuQ=
+Subject: FAILED: patch "[PATCH] x86/cpu/kvm: Provide UNTRAIN_RET_VM" failed to apply to 6.1-stable tree
 To:     peterz@infradead.org, bp@alien8.de
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Mon, 21 Aug 2023 17:38:42 +0200
-Message-ID: <2023082142-halves-kinship-fcc3@gregkh>
+Date:   Mon, 21 Aug 2023 18:16:25 +0200
+Message-ID: <2023082125-untainted-putdown-eba5@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -48,25 +48,27 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
-git cherry-pick -x 4ae68b26c3ab5a82aa271e6e9fc9b1a06e1d6b40
+git cherry-pick -x 864bcaa38ee44ec6c0e43f79c2d2997b977e26b2
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023082142-halves-kinship-fcc3@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023082125-untainted-putdown-eba5@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
-4ae68b26c3ab ("objtool/x86: Fix SRSO mess")
+864bcaa38ee4 ("x86/cpu/kvm: Provide UNTRAIN_RET_VM")
+d893832d0e1e ("x86/srso: Add IBPB on VMEXIT")
+233d6f68b98d ("x86/srso: Add IBPB")
 fb3bd914b3ec ("x86/srso: Add a Speculative RAS Overflow mitigation")
-6f612579be9d ("Merge tag 'objtool-core-2023-06-27' of git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip")
+941d77c77339 ("Merge tag 'x86_cpu_for_v6.5' of git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip")
 
 thanks,
 
@@ -74,153 +76,96 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 4ae68b26c3ab5a82aa271e6e9fc9b1a06e1d6b40 Mon Sep 17 00:00:00 2001
+From 864bcaa38ee44ec6c0e43f79c2d2997b977e26b2 Mon Sep 17 00:00:00 2001
 From: Peter Zijlstra <peterz@infradead.org>
-Date: Mon, 14 Aug 2023 13:44:29 +0200
-Subject: [PATCH] objtool/x86: Fix SRSO mess
+Date: Mon, 14 Aug 2023 13:44:35 +0200
+Subject: [PATCH] x86/cpu/kvm: Provide UNTRAIN_RET_VM
 
-Objtool --rethunk does two things:
+Similar to how it doesn't make sense to have UNTRAIN_RET have two
+untrain calls, it also doesn't make sense for VMEXIT to have an extra
+IBPB call.
 
- - it collects all (tail) call's of __x86_return_thunk and places them
-   into .return_sites. These are typically compiler generated, but
-   RET also emits this same.
+This cures VMEXIT doing potentially unret+IBPB or double IBPB.
+Also, the (SEV) VMEXIT case seems to have been overlooked.
 
- - it fudges the validation of the __x86_return_thunk symbol; because
-   this symbol is inside another instruction, it can't actually find
-   the instruction pointed to by the symbol offset and gets upset.
+Redefine the meaning of the synthetic IBPB flags to:
 
-Because these two things pertained to the same symbol, there was no
-pressing need to separate these two separate things.
+ - ENTRY_IBPB     -- issue IBPB on entry  (was: entry + VMEXIT)
+ - IBPB_ON_VMEXIT -- issue IBPB on VMEXIT
 
-However, alas, along comes SRSO and more crazy things to deal with
-appeared.
+And have 'retbleed=ibpb' set *BOTH* feature flags to ensure it retains
+the previous behaviour and issues IBPB on entry+VMEXIT.
 
-The SRSO patch itself added the following symbol names to identify as
-rethunk:
+The new 'srso=ibpb_vmexit' option only sets IBPB_ON_VMEXIT.
 
-  'srso_untrain_ret', 'srso_safe_ret' and '__ret'
+Create UNTRAIN_RET_VM specifically for the VMEXIT case, and have that
+check IBPB_ON_VMEXIT.
 
-Where '__ret' is the old retbleed return thunk, 'srso_safe_ret' is a
-new similarly embedded return thunk, and 'srso_untrain_ret' is
-completely unrelated to anything the above does (and was only included
-because of that INT3 vs UD2 issue fixed previous).
-
-Clear things up by adding a second category for the embedded instruction
-thing.
+All this avoids having the VMEXIT case having to check both ENTRY_IBPB
+and IBPB_ON_VMEXIT and simplifies the alternatives.
 
 Fixes: fb3bd914b3ec ("x86/srso: Add a Speculative RAS Overflow mitigation")
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20230814121148.704502245@infradead.org
+Link: https://lore.kernel.org/r/20230814121149.109557833@infradead.org
 
-diff --git a/tools/objtool/arch/x86/decode.c b/tools/objtool/arch/x86/decode.c
-index 2d51fa8da9e8..cba8a7be040e 100644
---- a/tools/objtool/arch/x86/decode.c
-+++ b/tools/objtool/arch/x86/decode.c
-@@ -824,8 +824,11 @@ bool arch_is_retpoline(struct symbol *sym)
+diff --git a/arch/x86/include/asm/nospec-branch.h b/arch/x86/include/asm/nospec-branch.h
+index 5285c8e93dff..c55cc243592e 100644
+--- a/arch/x86/include/asm/nospec-branch.h
++++ b/arch/x86/include/asm/nospec-branch.h
+@@ -299,6 +299,17 @@
+ #endif
+ .endm
  
- bool arch_is_rethunk(struct symbol *sym)
- {
--	return !strcmp(sym->name, "__x86_return_thunk") ||
--	       !strcmp(sym->name, "srso_untrain_ret") ||
--	       !strcmp(sym->name, "srso_safe_ret") ||
--	       !strcmp(sym->name, "__ret");
-+	return !strcmp(sym->name, "__x86_return_thunk");
-+}
++.macro UNTRAIN_RET_VM
++#if defined(CONFIG_CPU_UNRET_ENTRY) || defined(CONFIG_CPU_IBPB_ENTRY) || \
++	defined(CONFIG_CALL_DEPTH_TRACKING) || defined(CONFIG_CPU_SRSO)
++	VALIDATE_UNRET_END
++	ALTERNATIVE_3 "",						\
++		      CALL_UNTRAIN_RET, X86_FEATURE_UNRET,		\
++		      "call entry_ibpb", X86_FEATURE_IBPB_ON_VMEXIT,	\
++		      __stringify(RESET_CALL_DEPTH), X86_FEATURE_CALL_DEPTH
++#endif
++.endm
 +
-+bool arch_is_embedded_insn(struct symbol *sym)
-+{
-+	return !strcmp(sym->name, "__ret") ||
-+	       !strcmp(sym->name, "srso_safe_ret");
- }
-diff --git a/tools/objtool/check.c b/tools/objtool/check.c
-index e2ee10ce7703..191656ee9fbc 100644
---- a/tools/objtool/check.c
-+++ b/tools/objtool/check.c
-@@ -455,7 +455,7 @@ static int decode_instructions(struct objtool_file *file)
- 				return -1;
- 			}
+ .macro UNTRAIN_RET_FROM_CALL
+ #if defined(CONFIG_CPU_UNRET_ENTRY) || defined(CONFIG_CPU_IBPB_ENTRY) || \
+ 	defined(CONFIG_CALL_DEPTH_TRACKING)
+diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
+index 6f3e19527286..9026e3fe9f6c 100644
+--- a/arch/x86/kernel/cpu/bugs.c
++++ b/arch/x86/kernel/cpu/bugs.c
+@@ -1054,6 +1054,7 @@ static void __init retbleed_select_mitigation(void)
  
--			if (func->return_thunk || func->alias != func)
-+			if (func->embedded_insn || func->alias != func)
- 				continue;
+ 	case RETBLEED_MITIGATION_IBPB:
+ 		setup_force_cpu_cap(X86_FEATURE_ENTRY_IBPB);
++		setup_force_cpu_cap(X86_FEATURE_IBPB_ON_VMEXIT);
+ 		mitigate_smt = true;
+ 		break;
  
- 			if (!find_insn(file, sec, func->offset)) {
-@@ -1288,16 +1288,33 @@ static int add_ignore_alternatives(struct objtool_file *file)
- 	return 0;
- }
+diff --git a/arch/x86/kvm/svm/vmenter.S b/arch/x86/kvm/svm/vmenter.S
+index 265452fc9ebe..ef2ebabb059c 100644
+--- a/arch/x86/kvm/svm/vmenter.S
++++ b/arch/x86/kvm/svm/vmenter.S
+@@ -222,10 +222,7 @@ SYM_FUNC_START(__svm_vcpu_run)
+ 	 * because interrupt handlers won't sanitize 'ret' if the return is
+ 	 * from the kernel.
+ 	 */
+-	UNTRAIN_RET
+-
+-	/* SRSO */
+-	ALTERNATIVE "", "call entry_ibpb", X86_FEATURE_IBPB_ON_VMEXIT
++	UNTRAIN_RET_VM
  
-+/*
-+ * Symbols that replace INSN_CALL_DYNAMIC, every (tail) call to such a symbol
-+ * will be added to the .retpoline_sites section.
-+ */
- __weak bool arch_is_retpoline(struct symbol *sym)
- {
- 	return false;
- }
+ 	/*
+ 	 * Clear all general purpose registers except RSP and RAX to prevent
+@@ -362,7 +359,7 @@ SYM_FUNC_START(__svm_sev_es_vcpu_run)
+ 	 * because interrupt handlers won't sanitize RET if the return is
+ 	 * from the kernel.
+ 	 */
+-	UNTRAIN_RET
++	UNTRAIN_RET_VM
  
-+/*
-+ * Symbols that replace INSN_RETURN, every (tail) call to such a symbol
-+ * will be added to the .return_sites section.
-+ */
- __weak bool arch_is_rethunk(struct symbol *sym)
- {
- 	return false;
- }
- 
-+/*
-+ * Symbols that are embedded inside other instructions, because sometimes crazy
-+ * code exists. These are mostly ignored for validation purposes.
-+ */
-+__weak bool arch_is_embedded_insn(struct symbol *sym)
-+{
-+	return false;
-+}
-+
- static struct reloc *insn_reloc(struct objtool_file *file, struct instruction *insn)
- {
- 	struct reloc *reloc;
-@@ -1583,7 +1600,7 @@ static int add_jump_destinations(struct objtool_file *file)
- 			 * middle of another instruction.  Objtool only
- 			 * knows about the outer instruction.
- 			 */
--			if (sym && sym->return_thunk) {
-+			if (sym && sym->embedded_insn) {
- 				add_return_call(file, insn, false);
- 				continue;
- 			}
-@@ -2502,6 +2519,9 @@ static int classify_symbols(struct objtool_file *file)
- 		if (arch_is_rethunk(func))
- 			func->return_thunk = true;
- 
-+		if (arch_is_embedded_insn(func))
-+			func->embedded_insn = true;
-+
- 		if (arch_ftrace_match(func->name))
- 			func->fentry = true;
- 
-diff --git a/tools/objtool/include/objtool/arch.h b/tools/objtool/include/objtool/arch.h
-index 2b6d2ce4f9a5..0b303eba660e 100644
---- a/tools/objtool/include/objtool/arch.h
-+++ b/tools/objtool/include/objtool/arch.h
-@@ -90,6 +90,7 @@ int arch_decode_hint_reg(u8 sp_reg, int *base);
- 
- bool arch_is_retpoline(struct symbol *sym);
- bool arch_is_rethunk(struct symbol *sym);
-+bool arch_is_embedded_insn(struct symbol *sym);
- 
- int arch_rewrite_retpolines(struct objtool_file *file);
- 
-diff --git a/tools/objtool/include/objtool/elf.h b/tools/objtool/include/objtool/elf.h
-index c532d70864dc..9f71e988eca4 100644
---- a/tools/objtool/include/objtool/elf.h
-+++ b/tools/objtool/include/objtool/elf.h
-@@ -66,6 +66,7 @@ struct symbol {
- 	u8 fentry            : 1;
- 	u8 profiling_func    : 1;
- 	u8 warned	     : 1;
-+	u8 embedded_insn     : 1;
- 	struct list_head pv_target;
- 	struct reloc *relocs;
- };
+ 	/* "Pop" @spec_ctrl_intercepted.  */
+ 	pop %_ASM_BX
 
