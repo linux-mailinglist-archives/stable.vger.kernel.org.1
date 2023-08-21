@@ -2,117 +2,103 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3065C7830D1
-	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 21:13:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CC63878316C
+	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 21:51:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229875AbjHUTNI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 21 Aug 2023 15:13:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49760 "EHLO
+        id S229748AbjHUTVq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 21 Aug 2023 15:21:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47082 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229869AbjHUTNH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 15:13:07 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D3F44E48;
-        Mon, 21 Aug 2023 12:12:59 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 722DC63A1A;
-        Mon, 21 Aug 2023 19:12:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95652C433C8;
-        Mon, 21 Aug 2023 19:12:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1692645178;
-        bh=OOZ4kFfEqbg85LKt+jWFAAcHUoGmUO/aZufE4dL7PEw=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:From;
-        b=BHuUivl6+HAwmJnI+mMIejsRhIAqOV+IeMIteekVUPdu51rGqJOihfDqrVly55315
-         Uq3knRP9sn8+UBW+5qkLefayRIJz5XJsNB6puUHe6PLtBa2vnQtgIdyVXVRs2vjxGu
-         f1+F3RSV7mDp6N+faLdEhmhZeg8/WpLVhnykRg0Hb6HjIYvoZfO8NjUcKXfIrHGh3X
-         y/s4W6cAaMryAXuYZqEkLZ3udYwbmufJyj4LlcU3vm0uUgm97DnFaGyDbdI2PmYIle
-         mGzEYnKMR5yaFYDIF3W+S72RxuU9hHu8LvgkpoTjBGUVRovZ2wx3Rjwh4mpdclx6FT
-         1qhdSUD+JoUoQ==
-Date:   Mon, 21 Aug 2023 14:12:56 -0500
-From:   Bjorn Helgaas <helgaas@kernel.org>
-To:     "Deucher, Alexander" <Alexander.Deucher@amd.com>
-Cc:     Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-        "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Rob Herring <robh@kernel.org>,
-        Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        Lukas Wunner <lukas@wunner.de>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        "Koenig, Christian" <Christian.Koenig@amd.com>,
-        "Pan, Xinhui" <Xinhui.Pan@amd.com>,
-        David Airlie <airlied@gmail.com>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        "amd-gfx@lists.freedesktop.org" <amd-gfx@lists.freedesktop.org>,
-        "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Dean Luick <dean.luick@cornelisnetworks.com>,
-        Jonas =?iso-8859-1?Q?Dre=DFler?= <verdre@v0yd.nl>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: [PATCH v5 06/11] drm/radeon: Use RMW accessors for changing
- LNKCTL
-Message-ID: <20230821191256.GA365126@bhelgaas>
+        with ESMTP id S229643AbjHUTVq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 15:21:46 -0400
+Received: from mail-wm1-x32e.google.com (mail-wm1-x32e.google.com [IPv6:2a00:1450:4864:20::32e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 96579E4
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 12:21:44 -0700 (PDT)
+Received: by mail-wm1-x32e.google.com with SMTP id 5b1f17b1804b1-3fe12baec61so37219445e9.2
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 12:21:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1692645703; x=1693250503;
+        h=content-transfer-encoding:in-reply-to:references:cc:to:from
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=QCgpyh71dVt3W3LBFrSznrNheB+BKG7vXO+g/h59Vfc=;
+        b=q2Cr+sIDmW2TTnw7X/GxBw0ZusZ19EFQny+eoBahzn2hR6bo37fVbmUp8X/SQ9JcXu
+         CM7QTDMtC1H1uqp8BNy7Vz9li32ppteoshl0MB/x8u7M5vk3Ssf9Y5GHRUZrECHmI7Sq
+         rS4pVvEyyeAVhAQID6gINSvr4K+jLs0h6Nhwvw7O3dsk6yyKzpBnmghw1sB02B7xfF7o
+         w6SbIDVWzQypOC7bjnhJKLHkfMbpHLIA4uJ7MuYRLnDQSE5WzkbMtESioaumV8p/R3Tg
+         m3nIrjdhazQinntet08cNYrY5/MJwjiwr0aNu1+duNs88U/jn7YI8rEwDP35Yy8Vsiy3
+         ar4w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1692645703; x=1693250503;
+        h=content-transfer-encoding:in-reply-to:references:cc:to:from
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=QCgpyh71dVt3W3LBFrSznrNheB+BKG7vXO+g/h59Vfc=;
+        b=I28MgPhAt9xT7AERjjYLdp29xnzKB7UFzuGMh6GzqKLCzZevpZwtGkSLNqpBcsu7Uj
+         8iUERNrAvNEuPOC45ImfU11FnCgxsaEBGLuC2VMo+cyQNL+Fro871LAnvVmy8Xmk67B/
+         NmIrsLy59mOA7EnGJFGID5NehflfIRTrV9L5/KYj6mzwAtShEIxm0HCR6VRX2FllLDfk
+         ez7M0t+b/kTEqzxubbqLB31waq8arRanaS2zG1ineV9bLBWKFOmfPy76hByPKBGFircp
+         16Zwqdk5bcMHxjJ6nysI2XRQkm386wiC8Cb7FpP3zGmhY6xfAX6ittMbag68HgnNHo1p
+         k9zA==
+X-Gm-Message-State: AOJu0YzA1wmEVjJW+J4g9Gx+LAwULKEkSaVRYn8d37eBj2VOPiCcdxRB
+        PbY3Qw5inWzqxXtEgcoeWJss7Q==
+X-Google-Smtp-Source: AGHT+IEeHrhLcTtWt5ccBkDBQjNiNxgflDdO+OEzPBkSgZYtHn11r69zWafIqMU7rFG7sivnyoxF1A==
+X-Received: by 2002:a5d:4389:0:b0:306:46c4:d313 with SMTP id i9-20020a5d4389000000b0030646c4d313mr4773914wrq.28.1692645703084;
+        Mon, 21 Aug 2023 12:21:43 -0700 (PDT)
+Received: from [192.168.0.162] (188-141-3-169.dynamic.upc.ie. [188.141.3.169])
+        by smtp.gmail.com with ESMTPSA id e1-20020adfe7c1000000b0031b2c01f342sm7499797wrn.87.2023.08.21.12.21.41
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 21 Aug 2023 12:21:42 -0700 (PDT)
+Message-ID: <9447f63a-50a2-d699-606b-b32d16aaa56a@linaro.org>
+Date:   Mon, 21 Aug 2023 20:21:41 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.8.0
+Subject: Re: [PATCH v0 8/9] media: qcom: camss: Fix set CSI2_RX_CFG1_VC_MODE
+ when VC is greater than 3
+Content-Language: en-US
+From:   Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+To:     Hans Verkuil <hverkuil-cisco@xs4all.nl>, rfoss@kernel.org,
+        todor.too@gmail.com, agross@kernel.org, andersson@kernel.org,
+        konrad.dybcio@linaro.org, mchehab@kernel.org,
+        sakari.ailus@linux.intel.com, andrey.konovalov@linaro.org
+Cc:     linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20230814141007.3721197-1-bryan.odonoghue@linaro.org>
+ <20230814141007.3721197-9-bryan.odonoghue@linaro.org>
+ <edd4bf9b-0e1b-883c-1a4d-50f4102c3924@xs4all.nl>
+ <62859b0e-cfee-f094-2ae9-bf0e243e2929@linaro.org>
+In-Reply-To: <62859b0e-cfee-f094-2ae9-bf0e243e2929@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <BL1PR12MB5144FF7542426AB3B4C66082F71BA@BL1PR12MB5144.namprd12.prod.outlook.com>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-5.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Fri, Aug 18, 2023 at 04:12:57PM +0000, Deucher, Alexander wrote:
-> > -----Original Message-----
-> > From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-> > Sent: Monday, July 17, 2023 8:05 AM
-> > To: linux-pci@vger.kernel.org; Bjorn Helgaas <bhelgaas@google.com>; Lorenzo
-> > Pieralisi <lorenzo.pieralisi@arm.com>; Rob Herring <robh@kernel.org>;
-> > Krzysztof Wilczyński <kw@linux.com>; Emmanuel Grumbach
-> > <emmanuel.grumbach@intel.com>; Rafael J . Wysocki <rafael@kernel.org>;
-> > Heiner Kallweit <hkallweit1@gmail.com>; Lukas Wunner <lukas@wunner.de>;
-> > Andy Shevchenko <andriy.shevchenko@linux.intel.com>; Deucher, Alexander
-> > <Alexander.Deucher@amd.com>; Koenig, Christian
-> > <Christian.Koenig@amd.com>; Pan, Xinhui <Xinhui.Pan@amd.com>; David
-> > Airlie <airlied@gmail.com>; Daniel Vetter <daniel@ffwll.ch>; amd-
-> > gfx@lists.freedesktop.org; dri-devel@lists.freedesktop.org; linux-
-> > kernel@vger.kernel.org
-> > Cc: Dean Luick <dean.luick@cornelisnetworks.com>; Jonas Dreßler
-> > <verdre@v0yd.nl>; Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>;
-> > stable@vger.kernel.org
-> > Subject: [PATCH v5 06/11] drm/radeon: Use RMW accessors for changing
-> > LNKCTL
-> >
-> > Don't assume that only the driver would be accessing LNKCTL. ASPM policy
-> > changes can trigger write to LNKCTL outside of driver's control.
-> > And in the case of upstream bridge, the driver does not even own the device
-> > it's changing the registers for.
-> >
-> > Use RMW capability accessors which do proper locking to avoid losing
-> > concurrent updates to the register value.
-> >
-> > Fixes: 8a7cd27679d0 ("drm/radeon/cik: add support for pcie gen1/2/3
-> > switching")
-> > Fixes: b9d305dfb66c ("drm/radeon: implement pcie gen2/3 support for SI")
-> > Suggested-by: Lukas Wunner <lukas@wunner.de>
-> > Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-> > Cc: stable@vger.kernel.org
+On 21/08/2023 19:51, Bryan O'Donoghue wrote:
+> On 21/08/2023 10:53, Hans Verkuil wrote:
+>> +        u8 dt_id = vc * 4;
 > 
-> For this and the amdgpu patch:
-> Acked-by: Alex Deucher <alexander.deucher@amd.com>
-> I'm not sure if this is stable material however.  Is there some issue today?
+> You're right.
+> 
+> dt_id = vc is wrong but so is dt_id = vc * 4.
+> 
+> I'll post a fix for the dt_id as a separate patch.
+> 
+> ---
+> bod
 
-Added your ack, thanks!  I dropped the stable tag on the whole series.
+No wait.. dt_id = vc is _fine_
 
-Bjorn
+I'll add a patch to document what this does since the provenance of the 
+changes for this value are undocumented and confusing even to me, with 
+access to the documentation for it.
+
+---
+bod
