@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 58AD5783324
-	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:22:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 678FA783250
+	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:21:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229520AbjHUTwV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 21 Aug 2023 15:52:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42782 "EHLO
+        id S230144AbjHUUCw (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 21 Aug 2023 16:02:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53884 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229506AbjHUTwU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 15:52:20 -0400
+        with ESMTP id S230153AbjHUUCv (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 16:02:51 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 381CC127
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 12:52:08 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 49FDBE3
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 13:02:50 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C248F64483
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 19:52:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D22EDC433C8;
-        Mon, 21 Aug 2023 19:52:06 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D47E26482E
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 20:02:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E406AC433C7;
+        Mon, 21 Aug 2023 20:02:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692647527;
-        bh=b/O4cFu4h1BNYvcxVUMhwtPAOLTfT4j7dk+kusv3rwY=;
+        s=korg; t=1692648169;
+        bh=dEuxq1ERzATKTbv3N4kuA6T8WYtzyJRaAtcsjEbj8Rs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=SXNvkLDfUCXd+ouZgihBjHyw/WQpyQtMETGexeEknXdyPY+uNM84hqkwdRt/HRupn
-         C3Cpj6dsTwlKGQM4U8KHWqFvAE6Kp1mQJkRZHTrRgu9kmVK113I6XDe1zGOpr0/NUg
-         xCZ3+UjYvNDm/iCqN/1NjuLv/m3yJjyUlP51OypI=
+        b=lzEV/vmcvDeGdcPuz1SPDMPH3lfXw/ZMVGV5G0iNz9ZEU4c4rfDdnz3qC/4TvartJ
+         YPrufBIsFXQoC8XdP84Dy4QcU+/qku+uBKI777NeRa8ovSPBB4e80xDTAjjULUbpMb
+         9oPGje4u6d9NfwP5WwQ/XsyLQiCQdQgTv5ecAouw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Avichal Rakesh <arakesh@google.com>,
+        patches@lists.linux.dev, Zhang Shurong <zhang_shurong@foxmail.com>,
+        Takashi Sakamoto <o-takashi@sakamocchi.jp>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 046/194] usb: gadget: uvc: queue empty isoc requests if no video buffer is available
+Subject: [PATCH 6.4 062/234] firewire: net: fix use after free in fwnet_finish_incoming_packet()
 Date:   Mon, 21 Aug 2023 21:40:25 +0200
-Message-ID: <20230821194124.825456073@linuxfoundation.org>
+Message-ID: <20230821194131.508073304@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230821194122.695845670@linuxfoundation.org>
-References: <20230821194122.695845670@linuxfoundation.org>
+In-Reply-To: <20230821194128.754601642@linuxfoundation.org>
+References: <20230821194128.754601642@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,103 +54,51 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Avichal Rakesh <arakesh@google.com>
+From: Zhang Shurong <zhang_shurong@foxmail.com>
 
-[ Upstream commit c3ff12a92bd7072170978b8b41c2fa41b038139a ]
+[ Upstream commit 3ff256751a2853e1ffaa36958ff933ccc98c6cb5 ]
 
-ISOC transfers expect a certain cadence of requests being queued. Not
-keeping up with the expected rate of requests results in missed ISOC
-transfers (EXDEV). The application layer may or may not produce video
-frames to match this expectation, so uvc gadget driver must handle cases
-where the application is not queuing up buffers fast enough to fulfill
-ISOC requirements.
+The netif_rx() function frees the skb so we can't dereference it to
+save the skb->len.
 
-Currently, uvc gadget driver waits for new video buffer to become available
-before queuing up usb requests. With this patch the gadget driver queues up
-0 length usb requests whenever there are no video buffers available. The
-USB controller's complete callback is used as the limiter for how quickly
-the 0 length packets will be queued. Video buffers are still queued as
-soon as they become available.
-
-Link: https://lore.kernel.org/CAMHf4WKbi6KBPQztj9FA4kPvESc1fVKrC8G73-cs6tTeQby9=w@mail.gmail.com/
-Signed-off-by: Avichal Rakesh <arakesh@google.com>
-Link: https://lore.kernel.org/r/20230508231103.1621375-1-arakesh@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Zhang Shurong <zhang_shurong@foxmail.com>
+Link: https://lore.kernel.org/r/tencent_3B3D24B66ED66A6BB73CC0E63C6A14E45109@qq.com
+Signed-off-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/function/uvc_video.c | 32 ++++++++++++++++++-------
- 1 file changed, 24 insertions(+), 8 deletions(-)
+ drivers/firewire/net.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/usb/gadget/function/uvc_video.c b/drivers/usb/gadget/function/uvc_video.c
-index dd1c6b2ca7c6f..e81865978299c 100644
---- a/drivers/usb/gadget/function/uvc_video.c
-+++ b/drivers/usb/gadget/function/uvc_video.c
-@@ -386,6 +386,9 @@ static void uvcg_video_pump(struct work_struct *work)
- 	struct uvc_buffer *buf;
- 	unsigned long flags;
- 	int ret;
-+	bool buf_int;
-+	/* video->max_payload_size is only set when using bulk transfer */
-+	bool is_bulk = video->max_payload_size;
+diff --git a/drivers/firewire/net.c b/drivers/firewire/net.c
+index 538bd677c254a..7a4d1a478e33e 100644
+--- a/drivers/firewire/net.c
++++ b/drivers/firewire/net.c
+@@ -479,7 +479,7 @@ static int fwnet_finish_incoming_packet(struct net_device *net,
+ 					struct sk_buff *skb, u16 source_node_id,
+ 					bool is_broadcast, u16 ether_type)
+ {
+-	int status;
++	int status, len;
  
- 	while (video->ep->enabled) {
- 		/*
-@@ -408,20 +411,35 @@ static void uvcg_video_pump(struct work_struct *work)
- 		 */
- 		spin_lock_irqsave(&queue->irqlock, flags);
- 		buf = uvcg_queue_head(queue);
--		if (buf == NULL) {
-+
-+		if (buf != NULL) {
-+			video->encode(req, video, buf);
-+			/* Always interrupt for the last request of a video buffer */
-+			buf_int = buf->state == UVC_BUF_STATE_DONE;
-+		} else if (!(queue->flags & UVC_QUEUE_DISCONNECTED) && !is_bulk) {
-+			/*
-+			 * No video buffer available; the queue is still connected and
-+			 * we're traferring over ISOC. Queue a 0 length request to
-+			 * prevent missed ISOC transfers.
-+			 */
-+			req->length = 0;
-+			buf_int = false;
-+		} else {
-+			/*
-+			 * Either queue has been disconnected or no video buffer
-+			 * available to bulk transfer. Either way, stop processing
-+			 * further.
-+			 */
- 			spin_unlock_irqrestore(&queue->irqlock, flags);
- 			break;
+ 	switch (ether_type) {
+ 	case ETH_P_ARP:
+@@ -533,13 +533,15 @@ static int fwnet_finish_incoming_packet(struct net_device *net,
  		}
- 
--		video->encode(req, video, buf);
--
- 		/*
- 		 * With usb3 we have more requests. This will decrease the
- 		 * interrupt load to a quarter but also catches the corner
- 		 * cases, which needs to be handled.
- 		 */
--		if (list_empty(&video->req_free) ||
--		    buf->state == UVC_BUF_STATE_DONE ||
-+		if (list_empty(&video->req_free) || buf_int ||
- 		    !(video->req_int_count %
- 		       DIV_ROUND_UP(video->uvc_num_requests, 4))) {
- 			video->req_int_count = 0;
-@@ -441,8 +459,7 @@ static void uvcg_video_pump(struct work_struct *work)
- 
- 		/* Endpoint now owns the request */
- 		req = NULL;
--		if (buf->state != UVC_BUF_STATE_DONE)
--			video->req_int_count++;
-+		video->req_int_count++;
+ 		skb->protocol = protocol;
+ 	}
++
++	len = skb->len;
+ 	status = netif_rx(skb);
+ 	if (status == NET_RX_DROP) {
+ 		net->stats.rx_errors++;
+ 		net->stats.rx_dropped++;
+ 	} else {
+ 		net->stats.rx_packets++;
+-		net->stats.rx_bytes += skb->len;
++		net->stats.rx_bytes += len;
  	}
  
- 	if (!req)
-@@ -527,4 +544,3 @@ int uvcg_video_init(struct uvc_video *video, struct uvc_device *uvc)
- 			V4L2_BUF_TYPE_VIDEO_OUTPUT, &video->mutex);
  	return 0;
- }
--
 -- 
 2.40.1
 
