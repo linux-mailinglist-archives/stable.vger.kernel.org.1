@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2DAD7783367
-	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:23:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9A22378330F
+	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:22:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230077AbjHUT7m (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 21 Aug 2023 15:59:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38748 "EHLO
+        id S230094AbjHUT7p (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 21 Aug 2023 15:59:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38814 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230101AbjHUT7l (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 15:59:41 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ACD9D13E
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 12:59:39 -0700 (PDT)
+        with ESMTP id S230091AbjHUT7o (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 15:59:44 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 52C6012C
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 12:59:42 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 42BB96473B
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 19:59:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E943C433C8;
-        Mon, 21 Aug 2023 19:59:38 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E621664728
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 19:59:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02BC8C433C8;
+        Mon, 21 Aug 2023 19:59:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692647978;
-        bh=ZIE7zOx0GHv0hQkxgREce3wo+HF0KjOgRtBQnV/dNsE=;
+        s=korg; t=1692647981;
+        bh=L+mTf/1+qJx1s5szTWHPFSNXECVQcE1MRLfqz8by02M=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=VDc3ujHITCFs+00ieO0WmJlneLdWsAR3WA/5za8hUNZyHYrDb+pyYXtIAwAsQiYkd
-         0QxQmwBrW8s/l9RxJOk6ftyWsQq9muz8AzUyOIqSFdTvyhOpdkG+lWlaKSyVLw5AYJ
-         Ahb9r397mA/QThFyJdTdapieWtSfHQI/umkwYIUk=
+        b=rZ6D7YITNNG6BJj5+rCcYMuiQGp7kQ7BUlzpoNxyeowBm/caF1/HfiX/H7TWaSMqM
+         lSmCABlzuTaAKHyZfqeyiTJR4dAJHIICv5jqxB2hkUXWp1HCcsspDbPEquxmupGx2I
+         Xb0V7wBXX3jChBKHkXaB2QKlaUAeh4NGTSiSY0nU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Bjorn Helgaas <helgaas@kernel.org>,
-        Sumit Gupta <sumitg@nvidia.com>,
-        Lorenzo Pieralisi <lpieralisi@kernel.org>,
-        Thierry Reding <treding@nvidia.com>,
+        patches@lists.linux.dev,
+        Simon Trimmer <simont@opensource.cirrus.com>,
+        Richard Fitzgerald <rf@opensource.cirrus.com>,
+        Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 012/234] PCI: tegra194: Fix possible array out of bounds access
-Date:   Mon, 21 Aug 2023 21:39:35 +0200
-Message-ID: <20230821194129.281713056@linuxfoundation.org>
+Subject: [PATCH 6.4 013/234] ASoC: cs35l56: Move DSP part string generation so that it is done only once
+Date:   Mon, 21 Aug 2023 21:39:36 +0200
+Message-ID: <20230821194129.336957572@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230821194128.754601642@linuxfoundation.org>
 References: <20230821194128.754601642@linuxfoundation.org>
@@ -47,8 +47,8 @@ User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -56,64 +56,57 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Sumit Gupta <sumitg@nvidia.com>
+From: Simon Trimmer <simont@opensource.cirrus.com>
 
-[ Upstream commit 205b3d02d57ce6dce96f6d2b9c230f56a9bf9817 ]
+[ Upstream commit 608f1b0dbddec6b2fd766c10bcce2b651995e936 ]
 
-Add check to fix the possible array out of bounds violation by
-making speed equal to GEN1_CORE_CLK_FREQ when its value is more
-than the size of "pcie_gen_freq" array. This array has size of
-four but possible speed (CLS) values are from "0 to 0xF". So,
-"speed - 1" values are "-1 to 0xE".
+Each time we go through dsp_work() it does a devm_kasprintf() to
+allocate memory to hold the part name string. It's not strictly a memory
+leak because devm will free it all if the driver is removed. But we keep
+allocating more and more memory to hold the same string.
 
-Suggested-by: Bjorn Helgaas <helgaas@kernel.org>
-Signed-off-by: Sumit Gupta <sumitg@nvidia.com>
-Link: https://lore.kernel.org/lkml/72b9168b-d4d6-4312-32ea-69358df2f2d0@nvidia.com/
-Acked-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
-Signed-off-by: Thierry Reding <treding@nvidia.com>
+Move the allocation so that it is performed after the version and
+secured state information is gathered and handle allocation errors.
+
+Signed-off-by: Simon Trimmer <simont@opensource.cirrus.com>
+Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
+Link: https://lore.kernel.org/r/Message-Id: <20230518150250.1121006-2-rf@opensource.cirrus.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/dwc/pcie-tegra194.c | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+ sound/soc/codecs/cs35l56.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/pci/controller/dwc/pcie-tegra194.c b/drivers/pci/controller/dwc/pcie-tegra194.c
-index 09825b4a075e5..e6eec85480ca9 100644
---- a/drivers/pci/controller/dwc/pcie-tegra194.c
-+++ b/drivers/pci/controller/dwc/pcie-tegra194.c
-@@ -223,6 +223,7 @@
- #define EP_STATE_ENABLED	1
+diff --git a/sound/soc/codecs/cs35l56.c b/sound/soc/codecs/cs35l56.c
+index e0d2b9bb23262..f3fee448d759e 100644
+--- a/sound/soc/codecs/cs35l56.c
++++ b/sound/soc/codecs/cs35l56.c
+@@ -834,12 +834,6 @@ static void cs35l56_dsp_work(struct work_struct *work)
+ 	if (!cs35l56->init_done)
+ 		return;
  
- static const unsigned int pcie_gen_freq[] = {
-+	GEN1_CORE_CLK_FREQ,	/* PCI_EXP_LNKSTA_CLS == 0; undefined */
- 	GEN1_CORE_CLK_FREQ,
- 	GEN2_CORE_CLK_FREQ,
- 	GEN3_CORE_CLK_FREQ,
-@@ -459,7 +460,11 @@ static irqreturn_t tegra_pcie_ep_irq_thread(int irq, void *arg)
+-	cs35l56->dsp.part = devm_kasprintf(cs35l56->dev, GFP_KERNEL, "cs35l56%s-%02x",
+-					   cs35l56->secured ? "s" : "", cs35l56->rev);
+-
+-	if (!cs35l56->dsp.part)
+-		return;
+-
+ 	pm_runtime_get_sync(cs35l56->dev);
  
- 	speed = dw_pcie_readw_dbi(pci, pcie->pcie_cap_base + PCI_EXP_LNKSTA) &
- 		PCI_EXP_LNKSTA_CLS;
--	clk_set_rate(pcie->core_clk, pcie_gen_freq[speed - 1]);
+ 	/*
+@@ -1505,6 +1499,12 @@ int cs35l56_init(struct cs35l56_private *cs35l56)
+ 	dev_info(cs35l56->dev, "Cirrus Logic CS35L56%s Rev %02X OTP%d\n",
+ 		 cs35l56->secured ? "s" : "", cs35l56->rev, otpid);
+ 
++	/* Populate the DSP information with the revision and security state */
++	cs35l56->dsp.part = devm_kasprintf(cs35l56->dev, GFP_KERNEL, "cs35l56%s-%02x",
++					   cs35l56->secured ? "s" : "", cs35l56->rev);
++	if (!cs35l56->dsp.part)
++		return -ENOMEM;
 +
-+	if (speed >= ARRAY_SIZE(pcie_gen_freq))
-+		speed = 0;
-+
-+	clk_set_rate(pcie->core_clk, pcie_gen_freq[speed]);
- 
- 	if (pcie->of_data->has_ltr_req_fix)
- 		return IRQ_HANDLED;
-@@ -1020,7 +1025,11 @@ static int tegra_pcie_dw_start_link(struct dw_pcie *pci)
- 
- 	speed = dw_pcie_readw_dbi(pci, pcie->pcie_cap_base + PCI_EXP_LNKSTA) &
- 		PCI_EXP_LNKSTA_CLS;
--	clk_set_rate(pcie->core_clk, pcie_gen_freq[speed - 1]);
-+
-+	if (speed >= ARRAY_SIZE(pcie_gen_freq))
-+		speed = 0;
-+
-+	clk_set_rate(pcie->core_clk, pcie_gen_freq[speed]);
- 
- 	tegra_pcie_enable_interrupts(pp);
- 
+ 	/* Wake source and *_BLOCKED interrupts default to unmasked, so mask them */
+ 	regmap_write(cs35l56->regmap, CS35L56_IRQ1_MASK_20, 0xffffffff);
+ 	regmap_update_bits(cs35l56->regmap, CS35L56_IRQ1_MASK_1,
 -- 
 2.40.1
 
