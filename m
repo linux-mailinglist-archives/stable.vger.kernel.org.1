@@ -2,131 +2,161 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CAEF3783021
-	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 20:17:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 53DFD783045
+	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 20:32:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237134AbjHUSRl convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+stable@lfdr.de>); Mon, 21 Aug 2023 14:17:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53732 "EHLO
+        id S229625AbjHUScV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 21 Aug 2023 14:32:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34350 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237151AbjHUSRl (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 14:17:41 -0400
-Received: from mail-oo1-f53.google.com (mail-oo1-f53.google.com [209.85.161.53])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9223B126;
-        Mon, 21 Aug 2023 11:17:32 -0700 (PDT)
-Received: by mail-oo1-f53.google.com with SMTP id 006d021491bc7-570b3ebb3faso149266eaf.0;
-        Mon, 21 Aug 2023 11:17:32 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692641852; x=1693246652;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=U915soG4Cn1Yj7ytPNls916oVCFFMGSgVOAvevB8apo=;
-        b=g+X1yCroxdTfGL7bIHi9QQxRdXHe53tzWNmpBXsa1Tu+tTJ1mkzVjyY6ZxRFqIOFZt
-         CZdFLrIDM2qUPV2PpVXa3rs/ccpHeAqVrQi15qogs0kDT78KdtipwWQq0IuoibIq/OSO
-         OE5myJTFvaI3HdeK2BgOv4Kgkq4tadqDN3HeEzd9Y449C42NgxMuYSi6hRH3iyGer9eH
-         fvCo509y9O1Fzu6QtfslSGNRbJMndO+54yVvg7b8zFN4Lvm9pMgoM2jKh+cvep0HTeKN
-         dLgKf21JlsLPvNf8vJR+1xBKS14hS+d/7K1cfL12BaH1Ih+Us3+KnY8l1QMEB9LoT5QM
-         y0KA==
-X-Gm-Message-State: AOJu0YxxUN6E/GzmykNtPXXNs1j95Ut/DnBpROHy+MHXDnLcMxezaX21
-        0IYHokfPuPGmKNzFqext5n1Isc1sUygCI4u/10I=
-X-Google-Smtp-Source: AGHT+IF+9Ah1rcdUWpT8kNAKyrdk+gBugPzYZRvqtM1UtgRsr+ffGm5/ww1QsbsEzCL1ZQrSZC9tWQoVUcXipOdNqEo=
-X-Received: by 2002:a4a:e741:0:b0:56e:94ed:c098 with SMTP id
- n1-20020a4ae741000000b0056e94edc098mr6975400oov.0.1692641851710; Mon, 21 Aug
- 2023 11:17:31 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230818193932.27187-1-mario.limonciello@amd.com>
-In-Reply-To: <20230818193932.27187-1-mario.limonciello@amd.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Mon, 21 Aug 2023 20:17:16 +0200
-Message-ID: <CAJZ5v0gwFKHLtd9rqNAe5ozgp_EWi3A158VukcX0oA4LBPBfOQ@mail.gmail.com>
-Subject: Re: [PATCH v14.a 1/1] PCI: Only put Intel PCIe ports >= 2015 into D3
-To:     Mario Limonciello <mario.limonciello@amd.com>
-Cc:     Mika Westerberg <mika.westerberg@linux.intel.com>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Bjorn Helgaas <helgaas@kernel.org>, linux-pci@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-        Iain Lane <iain@orangesquash.org.uk>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Kuppuswamy Sathyanarayanan 
-        <sathyanarayanan.kuppuswamy@linux.intel.com>,
-        stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+        with ESMTP id S229556AbjHUScV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 14:32:21 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12E492B62;
+        Mon, 21 Aug 2023 11:32:07 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9471F61499;
+        Mon, 21 Aug 2023 18:32:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF5E9C433C8;
+        Mon, 21 Aug 2023 18:32:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+        s=korg; t=1692642726;
+        bh=Rx6YDTC7jbMH0oll6Z0X5njt0HLW+NfPV8bcHLqKB50=;
+        h=Date:To:From:Subject:From;
+        b=Ur+F6WuwF0RVUhefnp6snVB6FjuphlRcYeOanz8Whq+GN99tWlx3XcFRW67RY11sx
+         dexfOc37gIKw12JNgpzGrRsfqFcH+pcAORB9MrnsdfrUDS0AZzXNiWG2qv1e2LSFmC
+         JRQ+58kiP9R9bXUhp+wuO1mUSSKaBn7xefbnbl0E=
+Date:   Mon, 21 Aug 2023 11:32:05 -0700
+To:     mm-commits@vger.kernel.org, stable@vger.kernel.org,
+        Liam.Howlett@oracle.com, akpm@linux-foundation.org
+From:   Andrew Morton <akpm@linux-foundation.org>
+Subject: + maple_tree-disable-mas_wr_append-when-other-readers-are-possible.patch added to mm-hotfixes-unstable branch
+Message-Id: <20230821183205.DF5E9C433C8@smtp.kernel.org>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Fri, Aug 18, 2023 at 9:40 PM Mario Limonciello
-<mario.limonciello@amd.com> wrote:
->
-> commit 9d26d3a8f1b0 ("PCI: Put PCIe ports into D3 during suspend")
-> changed pci_bridge_d3_possible() so that any vendor's PCIe ports
-> from modern machines (>=2015) are allowed to be put into D3.
->
-> Iain reports that USB devices can't be used to wake a Lenovo Z13
-> from suspend. This is because the PCIe root port has been put
-> into D3 and AMD's platform can't handle USB devices waking in this
-> case.
->
-> This behavior is only reported on Linux. Comparing the behavior
-> on Windows and Linux, Windows doesn't put the root ports into D3.
->
-> To fix the issue without regressing existing Intel systems,
-> limit the >=2015 check to only apply to Intel PCIe ports.
->
-> Cc: stable@vger.kernel.org
-> Fixes: 9d26d3a8f1b0 ("PCI: Put PCIe ports into D3 during suspend")
-> Reported-by: Iain Lane <iain@orangesquash.org.uk>
-> Closes: https://forums.lenovo.com/t5/Ubuntu/Z13-can-t-resume-from-suspend-with-external-USB-keyboard/m-p/5217121
-> Reviewed-by:Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
 
-Acked-by: Rafael J. Wysocki <rafael@kernel.org>
+The patch titled
+     Subject: maple_tree: disable mas_wr_append() when other readers are possible
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     maple_tree-disable-mas_wr_append-when-other-readers-are-possible.patch
 
-> ---
-> In v14 this series has been split into 3 parts.
->  part A: Immediate fix for AMD issue.
->  part B: LPS0 export improvements
->  part C: Long term solution for all vendors
-> v13->v14:
->  * Reword the comment
->  * add tag
-> v12->v13:
->  * New patch
-> ---
->  drivers/pci/pci.c | 11 ++++++++---
->  1 file changed, 8 insertions(+), 3 deletions(-)
->
-> diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-> index 60230da957e0c..bfdad2eb36d13 100644
-> --- a/drivers/pci/pci.c
-> +++ b/drivers/pci/pci.c
-> @@ -3037,10 +3037,15 @@ bool pci_bridge_d3_possible(struct pci_dev *bridge)
->                         return false;
->
->                 /*
-> -                * It should be safe to put PCIe ports from 2015 or newer
-> -                * to D3.
-> +                * Allow Intel PCIe ports from 2015 onward to go into D3 to
-> +                * achieve additional energy conservation on some platforms.
-> +                *
-> +                * This is only set for Intel PCIe ports as it causes problems
-> +                * on both AMD Rembrandt and Phoenix platforms where USB keyboards
-> +                * can not be used to wake the system from suspend.
->                  */
-> -               if (dmi_get_bios_year() >= 2015)
-> +               if (bridge->vendor == PCI_VENDOR_ID_INTEL &&
-> +                   dmi_get_bios_year() >= 2015)
->                         return true;
->                 break;
->         }
-> --
-> 2.34.1
->
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/maple_tree-disable-mas_wr_append-when-other-readers-are-possible.patch
+
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+Subject: maple_tree: disable mas_wr_append() when other readers are possible
+Date: Fri, 18 Aug 2023 20:43:55 -0400
+
+The current implementation of append may cause duplicate data and/or
+incorrect ranges to be returned to a reader during an update.  Although
+this has not been reported or seen, disable the append write operation
+while the tree is in rcu mode out of an abundance of caution.
+
+During the analysis of the mas_next_slot() the following was
+artificially created by separating the writer and reader code:
+
+Writer:                                 reader:
+mas_wr_append
+    set end pivot
+    updates end metata
+    Detects write to last slot
+    last slot write is to start of slot
+    store current contents in slot
+    overwrite old end pivot
+                                        mas_next_slot():
+                                                read end metadata
+                                                read old end pivot
+                                                return with incorrect range
+    store new value
+
+Alternatively:
+
+Writer:                                 reader:
+mas_wr_append
+    set end pivot
+    updates end metata
+    Detects write to last slot
+    last lost write to end of slot
+    store value
+                                        mas_next_slot():
+                                                read end metadata
+                                                read old end pivot
+                                                read new end pivot
+                                                return with incorrect range
+    set old end pivot
+
+There may be other accesses that are not safe since we are now updating
+both metadata and pointers, so disabling append if there could be rcu
+readers is the safest action.
+
+Link: https://lkml.kernel.org/r/20230819004356.1454718-2-Liam.Howlett@oracle.com
+Fixes: 54a611b60590 ("Maple Tree: add new data structure")
+Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ lib/maple_tree.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
+
+--- a/lib/maple_tree.c~maple_tree-disable-mas_wr_append-when-other-readers-are-possible
++++ a/lib/maple_tree.c
+@@ -4265,6 +4265,10 @@ static inline unsigned char mas_wr_new_e
+  * mas_wr_append: Attempt to append
+  * @wr_mas: the maple write state
+  *
++ * This is currently unsafe in rcu mode since the end of the node may be cached
++ * by readers while the node contents may be updated which could result in
++ * inaccurate information.
++ *
+  * Return: True if appended, false otherwise
+  */
+ static inline bool mas_wr_append(struct ma_wr_state *wr_mas)
+@@ -4274,6 +4278,9 @@ static inline bool mas_wr_append(struct
+ 	struct ma_state *mas = wr_mas->mas;
+ 	unsigned char node_pivots = mt_pivots[wr_mas->type];
+ 
++	if (mt_in_rcu(mas->tree))
++		return false;
++
+ 	if (mas->offset != wr_mas->node_end)
+ 		return false;
+ 
+_
+
+Patches currently in -mm which might be from Liam.Howlett@oracle.com are
+
+maple_tree-disable-mas_wr_append-when-other-readers-are-possible.patch
+maple_tree-add-hex-output-to-maple_arange64-dump.patch
+maple_tree-reorder-replacement-of-nodes-to-avoid-live-lock.patch
+maple_tree-introduce-mas_put_in_tree.patch
+maple_tree-introduce-mas_tree_parent-definition.patch
+maple_tree-change-mas_adopt_children-parent-usage.patch
+maple_tree-replace-data-before-marking-dead-in-split-and-spanning-store.patch
+
