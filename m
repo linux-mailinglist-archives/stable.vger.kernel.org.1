@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 089497832CE
-	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:22:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AF571783355
+	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:23:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230185AbjHUUDZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 21 Aug 2023 16:03:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56084 "EHLO
+        id S230239AbjHUUFO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 21 Aug 2023 16:05:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48508 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230184AbjHUUDZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 16:03:25 -0400
+        with ESMTP id S230245AbjHUUFN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 16:05:13 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9AFF0DF
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 13:03:23 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B68CD137
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 13:05:10 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3A65E64865
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 20:03:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48B74C433C8;
-        Mon, 21 Aug 2023 20:03:22 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5632C648FC
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 20:05:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67737C433C7;
+        Mon, 21 Aug 2023 20:05:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692648202;
-        bh=mVVRXhi8pSi4tM/8sPW1Zu8yz2by0J5hc1cHVplP3tg=;
+        s=korg; t=1692648309;
+        bh=KI5Z3AUjxG6zC8s5ncD7Sqllh4UZAiGOE9keJPjbYyc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=nyrvjyf/38/420+FWMQFSqKoFQw9yigaSzT/yfIEkEdThKsvXoeLHPrOnFEeufITK
-         zxtAnzrpHuBp1JPWjKG4Nzr52pwto/seoG8w7nbR1eU/HWi+eSrZUwhXzEn9wJkuLf
-         2W7j3+zZPqKHl+K3ZyjSkY/n8tpZ3bjQgkIRz7Fo=
+        b=BMfdGcYsz3wXOkL+aXQvsa/YyYj1agqeRQiEmyHROH5qMu7SDqDgrX9EAQ6daMK7L
+         zFDFY3wW7krNQ0KPu7zSajilAFWDHsGUV5GYmhx9ouCvL7Ju4xQ8YlIjJXoEKOWm4b
+         UzICy8WsTxsqnFVMQBR/9kUyCDwQEPS2Dgi6Yuto=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        =?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
-        Gal Pressman <gal@nvidia.com>,
-        "Michael S. Tsirkin" <mst@redhat.com>,
-        Jason Wang <jasowang@redhat.com>,
+        patches@lists.linux.dev, Bharath SM <bharathsm@microsoft.com>,
+        Shyam Prasad N <sprasad@microsoft.com>,
+        "Paulo Alcantara (SUSE)" <pc@manguebit.com>,
+        Steve French <stfrench@microsoft.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 090/234] vdpa/mlx5: Delete control vq iotlb in destroy_mr only when necessary
-Date:   Mon, 21 Aug 2023 21:40:53 +0200
-Message-ID: <20230821194132.774705463@linuxfoundation.org>
+Subject: [PATCH 6.4 091/234] cifs: fix potential oops in cifs_oplock_break
+Date:   Mon, 21 Aug 2023 21:40:54 +0200
+Message-ID: <20230821194132.825278331@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230821194128.754601642@linuxfoundation.org>
 References: <20230821194128.754601642@linuxfoundation.org>
@@ -57,77 +56,106 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Eugenio Pérez <eperezma@redhat.com>
+From: Steve French <stfrench@microsoft.com>
 
-[ Upstream commit ad03a0f44cdb97b46e5c84ed353dac9b8ae2c276 ]
+[ Upstream commit e8f5f849ffce24490eb9449e98312b66c0dba76f ]
 
-mlx5_vdpa_destroy_mr can be called from .set_map with data ASID after
-the control virtqueue ASID iotlb has been populated. The control vq
-iotlb must not be cleared, since it will not be populated again.
+With deferred close we can have closes that race with lease breaks,
+and so with the current checks for whether to send the lease response,
+oplock_response(), this can mean that an unmount (kill_sb) can occur
+just before we were checking if the tcon->ses is valid.  See below:
 
-So call the ASID aware destroy function which makes sure that the
-right vq resource is destroyed.
+[Fri Aug  4 04:12:50 2023] RIP: 0010:cifs_oplock_break+0x1f7/0x5b0 [cifs]
+[Fri Aug  4 04:12:50 2023] Code: 7d a8 48 8b 7d c0 c0 e9 02 48 89 45 b8 41 89 cf e8 3e f5 ff ff 4c 89 f7 41 83 e7 01 e8 82 b3 03 f2 49 8b 45 50 48 85 c0 74 5e <48> 83 78 60 00 74 57 45 84 ff 75 52 48 8b 43 98 48 83 eb 68 48 39
+[Fri Aug  4 04:12:50 2023] RSP: 0018:ffffb30607ddbdf8 EFLAGS: 00010206
+[Fri Aug  4 04:12:50 2023] RAX: 632d223d32612022 RBX: ffff97136944b1e0 RCX: 0000000080100009
+[Fri Aug  4 04:12:50 2023] RDX: 0000000000000001 RSI: 0000000080100009 RDI: ffff97136944b188
+[Fri Aug  4 04:12:50 2023] RBP: ffffb30607ddbe58 R08: 0000000000000001 R09: ffffffffc08e0900
+[Fri Aug  4 04:12:50 2023] R10: 0000000000000001 R11: 000000000000000f R12: ffff97136944b138
+[Fri Aug  4 04:12:50 2023] R13: ffff97149147c000 R14: ffff97136944b188 R15: 0000000000000000
+[Fri Aug  4 04:12:50 2023] FS:  0000000000000000(0000) GS:ffff9714f7c00000(0000) knlGS:0000000000000000
+[Fri Aug  4 04:12:50 2023] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[Fri Aug  4 04:12:50 2023] CR2: 00007fd8de9c7590 CR3: 000000011228e000 CR4: 0000000000350ef0
+[Fri Aug  4 04:12:50 2023] Call Trace:
+[Fri Aug  4 04:12:50 2023]  <TASK>
+[Fri Aug  4 04:12:50 2023]  process_one_work+0x225/0x3d0
+[Fri Aug  4 04:12:50 2023]  worker_thread+0x4d/0x3e0
+[Fri Aug  4 04:12:50 2023]  ? process_one_work+0x3d0/0x3d0
+[Fri Aug  4 04:12:50 2023]  kthread+0x12a/0x150
+[Fri Aug  4 04:12:50 2023]  ? set_kthread_struct+0x50/0x50
+[Fri Aug  4 04:12:50 2023]  ret_from_fork+0x22/0x30
+[Fri Aug  4 04:12:50 2023]  </TASK>
 
-Fixes: 8fcd20c30704 ("vdpa/mlx5: Support different address spaces for control and data")
-Signed-off-by: Eugenio Pérez <eperezma@redhat.com>
-Reviewed-by: Gal Pressman <gal@nvidia.com>
-Message-Id: <20230802171231.11001-5-dtatulea@nvidia.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Acked-by: Jason Wang <jasowang@redhat.com>
+To fix this change the ordering of the checks before sending the oplock_response
+to first check if the openFileList is empty.
+
+Fixes: da787d5b7498 ("SMB3: Do not send lease break acknowledgment if all file handles have been closed")
+Suggested-by: Bharath SM <bharathsm@microsoft.com>
+Reviewed-by: Bharath SM <bharathsm@microsoft.com>
+Reviewed-by: Shyam Prasad N <sprasad@microsoft.com>
+Signed-off-by: Paulo Alcantara (SUSE) <pc@manguebit.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/vdpa/mlx5/core/mlx5_vdpa.h | 1 +
- drivers/vdpa/mlx5/core/mr.c        | 2 +-
- drivers/vdpa/mlx5/net/mlx5_vnet.c  | 4 ++--
- 3 files changed, 4 insertions(+), 3 deletions(-)
+ fs/smb/client/file.c | 23 ++++++++++++++++-------
+ 1 file changed, 16 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/vdpa/mlx5/core/mlx5_vdpa.h b/drivers/vdpa/mlx5/core/mlx5_vdpa.h
-index a0420be5059f4..b53420e874acb 100644
---- a/drivers/vdpa/mlx5/core/mlx5_vdpa.h
-+++ b/drivers/vdpa/mlx5/core/mlx5_vdpa.h
-@@ -122,6 +122,7 @@ int mlx5_vdpa_handle_set_map(struct mlx5_vdpa_dev *mvdev, struct vhost_iotlb *io
- int mlx5_vdpa_create_mr(struct mlx5_vdpa_dev *mvdev, struct vhost_iotlb *iotlb,
- 			unsigned int asid);
- void mlx5_vdpa_destroy_mr(struct mlx5_vdpa_dev *mvdev);
-+void mlx5_vdpa_destroy_mr_asid(struct mlx5_vdpa_dev *mvdev, unsigned int asid);
+diff --git a/fs/smb/client/file.c b/fs/smb/client/file.c
+index d554bca7e07eb..4e9d26d4404ab 100644
+--- a/fs/smb/client/file.c
++++ b/fs/smb/client/file.c
+@@ -4878,9 +4878,11 @@ void cifs_oplock_break(struct work_struct *work)
+ 	struct cifsFileInfo *cfile = container_of(work, struct cifsFileInfo,
+ 						  oplock_break);
+ 	struct inode *inode = d_inode(cfile->dentry);
++	struct cifs_sb_info *cifs_sb = CIFS_SB(inode->i_sb);
+ 	struct cifsInodeInfo *cinode = CIFS_I(inode);
+-	struct cifs_tcon *tcon = tlink_tcon(cfile->tlink);
+-	struct TCP_Server_Info *server = tcon->ses->server;
++	struct cifs_tcon *tcon;
++	struct TCP_Server_Info *server;
++	struct tcon_link *tlink;
+ 	int rc = 0;
+ 	bool purge_cache = false, oplock_break_cancelled;
+ 	__u64 persistent_fid, volatile_fid;
+@@ -4889,6 +4891,12 @@ void cifs_oplock_break(struct work_struct *work)
+ 	wait_on_bit(&cinode->flags, CIFS_INODE_PENDING_WRITERS,
+ 			TASK_UNINTERRUPTIBLE);
  
- #define mlx5_vdpa_warn(__dev, format, ...)                                                         \
- 	dev_warn((__dev)->mdev->device, "%s:%d:(pid %d) warning: " format, __func__, __LINE__,     \
-diff --git a/drivers/vdpa/mlx5/core/mr.c b/drivers/vdpa/mlx5/core/mr.c
-index 4ae14a248a4bc..5a1971fcd87b1 100644
---- a/drivers/vdpa/mlx5/core/mr.c
-+++ b/drivers/vdpa/mlx5/core/mr.c
-@@ -515,7 +515,7 @@ static void _mlx5_vdpa_destroy_dvq_mr(struct mlx5_vdpa_dev *mvdev, unsigned int
- 	mr->initialized = false;
++	tlink = cifs_sb_tlink(cifs_sb);
++	if (IS_ERR(tlink))
++		goto out;
++	tcon = tlink_tcon(tlink);
++	server = tcon->ses->server;
++
+ 	server->ops->downgrade_oplock(server, cinode, cfile->oplock_level,
+ 				      cfile->oplock_epoch, &purge_cache);
+ 
+@@ -4938,18 +4946,19 @@ void cifs_oplock_break(struct work_struct *work)
+ 	/*
+ 	 * MS-SMB2 3.2.5.19.1 and 3.2.5.19.2 (and MS-CIFS 3.2.5.42) do not require
+ 	 * an acknowledgment to be sent when the file has already been closed.
+-	 * check for server null, since can race with kill_sb calling tree disconnect.
+ 	 */
+ 	spin_lock(&cinode->open_file_lock);
+-	if (tcon->ses && tcon->ses->server && !oplock_break_cancelled &&
+-					!list_empty(&cinode->openFileList)) {
++	/* check list empty since can race with kill_sb calling tree disconnect */
++	if (!oplock_break_cancelled && !list_empty(&cinode->openFileList)) {
+ 		spin_unlock(&cinode->open_file_lock);
+-		rc = tcon->ses->server->ops->oplock_response(tcon, persistent_fid,
+-						volatile_fid, net_fid, cinode);
++		rc = server->ops->oplock_response(tcon, persistent_fid,
++						  volatile_fid, net_fid, cinode);
+ 		cifs_dbg(FYI, "Oplock release rc = %d\n", rc);
+ 	} else
+ 		spin_unlock(&cinode->open_file_lock);
+ 
++	cifs_put_tlink(tlink);
++out:
+ 	cifs_done_oplock_break(cinode);
  }
  
--static void mlx5_vdpa_destroy_mr_asid(struct mlx5_vdpa_dev *mvdev, unsigned int asid)
-+void mlx5_vdpa_destroy_mr_asid(struct mlx5_vdpa_dev *mvdev, unsigned int asid)
- {
- 	struct mlx5_vdpa_mr *mr = &mvdev->mr;
- 
-diff --git a/drivers/vdpa/mlx5/net/mlx5_vnet.c b/drivers/vdpa/mlx5/net/mlx5_vnet.c
-index 279ac6a558d29..f18a9301ab94e 100644
---- a/drivers/vdpa/mlx5/net/mlx5_vnet.c
-+++ b/drivers/vdpa/mlx5/net/mlx5_vnet.c
-@@ -2564,7 +2564,7 @@ static int mlx5_vdpa_change_map(struct mlx5_vdpa_dev *mvdev,
- 		goto err_mr;
- 
- 	teardown_driver(ndev);
--	mlx5_vdpa_destroy_mr(mvdev);
-+	mlx5_vdpa_destroy_mr_asid(mvdev, asid);
- 	err = mlx5_vdpa_create_mr(mvdev, iotlb, asid);
- 	if (err)
- 		goto err_mr;
-@@ -2580,7 +2580,7 @@ static int mlx5_vdpa_change_map(struct mlx5_vdpa_dev *mvdev,
- 	return 0;
- 
- err_setup:
--	mlx5_vdpa_destroy_mr(mvdev);
-+	mlx5_vdpa_destroy_mr_asid(mvdev, asid);
- err_mr:
- 	return err;
- }
 -- 
 2.40.1
 
