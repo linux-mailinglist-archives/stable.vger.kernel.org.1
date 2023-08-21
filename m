@@ -2,138 +2,92 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F05797830B3
-	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 21:13:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4D250783077
+	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 20:53:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229693AbjHUTBU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 21 Aug 2023 15:01:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51298 "EHLO
+        id S229522AbjHUSxa (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 21 Aug 2023 14:53:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35266 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229691AbjHUTBT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 15:01:19 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 333D535A0
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 12:00:57 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E6FA163B36
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 18:50:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F24E7C433C8;
-        Mon, 21 Aug 2023 18:50:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692643847;
-        bh=IfYWJxugv3t/t26QbkZA93BJb25wZGjH8tR/dNwpIQ4=;
-        h=Subject:To:Cc:From:Date:From;
-        b=X5BLfuIg7DaiEtgl0NBwFZ8k5UlT0Z2TtxjFlqtxppTq8oIXqzBJlqN0KtTH2naBx
-         kMDbtUXlaAwjjurYQ8Qm8WzRhncHXhsKa/b3KV7xEMdwJ2EvgFlEXcpKauOv1RFApC
-         o/oGrntPeTVFFfkm7Av7mLygTg081f7d8dXaaUlA=
-Subject: FAILED: patch "[PATCH] net: phy: broadcom: stub c45 read/write for 54810" failed to apply to 4.14-stable tree
-To:     justin.chen@broadcom.com, florian.fainelli@broadcom.com,
-        kuba@kernel.org
-Cc:     <stable@vger.kernel.org>
-From:   <gregkh@linuxfoundation.org>
-Date:   Mon, 21 Aug 2023 20:50:34 +0200
-Message-ID: <2023082134-chain-tubular-c681@gregkh>
+        with ESMTP id S229513AbjHUSx3 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 14:53:29 -0400
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 74A6149C2
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 11:53:24 -0700 (PDT)
+Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-313e742a787so2244234f8f.1
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 11:53:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1692643921; x=1693248721;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=zCtenRCjXXMg5T6uzuSAM+POnJmMfnMhSwDV8nofr7M=;
+        b=iVERGBgjqfA46CdXTSzrqZEX8b3lJrt02ilp+nvqeCCzs9suPzxQrFDFE+JTYqzoZl
+         4JKR4Ud877MnlFzqLNsFeyWZftJIazb5XCvSXmMhxt5GK1BZs2vf8g7DttbDRCPvBs0Y
+         VkbxcIPnQorhIuSzlkoT8IkbSSF1M4pGqI2MW6LlQb9WrUWfebzYilzgvPsyOGKCh7i/
+         NvT2SrktOPoQhtqGCccKXMXndXTNzGVoYO3NfOlLvoSKHTBgdAiwKvPJ31gGQgZxPo+h
+         xbjSG6NM6EpaqZjlkHIZad2rprdGkYyGmdiMr/u19FhV/ULmo1ChIsJdNS5DXMhhkWuQ
+         6zcw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1692643921; x=1693248721;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=zCtenRCjXXMg5T6uzuSAM+POnJmMfnMhSwDV8nofr7M=;
+        b=PdaAK2rlgiAx4ovgJ6f3G4uZmAYB435ODI5gjfwtRGmSL2saXMMWEiPbMwDRO3M6pS
+         9+mkdAeM646oyhZFDgaOfu8EsTYBjgtt6lk0wJufrkqiX1bWMyp+X77wLUSXohAKew43
+         LaHKgx7PaD2Ext8kTojMZmpXfcr41V9w+vLGFexvIv8npvqVWy44+8rzufpWDDp/SO15
+         JQlBMkzJagJQgdBOjuggM5npZnvHthYt0SMM5h5f7LrDmwewfmOu8nj5K71tlXWwQVsE
+         n6ZNhysM7bzZal6rfQPjN25MldcrJEq63h626gnh7z1jnrFjjvavlE1UXxD0iuU54byZ
+         BqNg==
+X-Gm-Message-State: AOJu0YzgMSkGDt1uwc/k+DHQ1rSff65flER1wtgqjbiosr9Vrjc3vj6T
+        pbmbp9vK+TWOpdwF5JsZizdvbA==
+X-Google-Smtp-Source: AGHT+IEIBL5BILI0Pd6OWt114UByKQoedPY/3p8aG6w/uJFzgAGbmiKQooOd5z2oKWcFGRNX4goGEQ==
+X-Received: by 2002:adf:f74b:0:b0:319:7c17:4c65 with SMTP id z11-20020adff74b000000b003197c174c65mr7259307wrp.12.1692643921096;
+        Mon, 21 Aug 2023 11:52:01 -0700 (PDT)
+Received: from [192.168.0.162] (188-141-3-169.dynamic.upc.ie. [188.141.3.169])
+        by smtp.gmail.com with ESMTPSA id p6-20020a5d68c6000000b00317c742ca9asm13494807wrw.43.2023.08.21.11.51.59
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 21 Aug 2023 11:52:00 -0700 (PDT)
+Message-ID: <62859b0e-cfee-f094-2ae9-bf0e243e2929@linaro.org>
+Date:   Mon, 21 Aug 2023 19:51:59 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.8.0
+Subject: Re: [PATCH v0 8/9] media: qcom: camss: Fix set CSI2_RX_CFG1_VC_MODE
+ when VC is greater than 3
+Content-Language: en-US
+To:     Hans Verkuil <hverkuil-cisco@xs4all.nl>, rfoss@kernel.org,
+        todor.too@gmail.com, agross@kernel.org, andersson@kernel.org,
+        konrad.dybcio@linaro.org, mchehab@kernel.org,
+        sakari.ailus@linux.intel.com, andrey.konovalov@linaro.org
+Cc:     linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20230814141007.3721197-1-bryan.odonoghue@linaro.org>
+ <20230814141007.3721197-9-bryan.odonoghue@linaro.org>
+ <edd4bf9b-0e1b-883c-1a4d-50f4102c3924@xs4all.nl>
+From:   Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+In-Reply-To: <edd4bf9b-0e1b-883c-1a4d-50f4102c3924@xs4all.nl>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-5.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+On 21/08/2023 10:53, Hans Verkuil wrote:
+> +		u8 dt_id = vc * 4;
 
-The patch below does not apply to the 4.14-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+You're right.
 
-To reproduce the conflict and resubmit, you may use the following commands:
+dt_id = vc is wrong but so is dt_id = vc * 4.
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
-git checkout FETCH_HEAD
-git cherry-pick -x 096516d092d54604d590827d05b1022c8f326639
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023082134-chain-tubular-c681@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
+I'll post a fix for the dt_id as a separate patch.
 
-Possible dependencies:
-
-096516d092d5 ("net: phy: broadcom: stub c45 read/write for 54810")
-5a32fcdb1e68 ("net: phy: broadcom: Add statistics for all Gigabit PHYs")
-1e2e61af1996 ("net: phy: broadcom: remove BCM5482 1000Base-BX support")
-15772e4ddf3f ("net: phy: broadcom: remove use of ack_interrupt()")
-4567d5c3eb9b ("net: phy: broadcom: implement generic .handle_interrupt() callback")
-b0ed0bbfb304 ("net: phy: broadcom: add support for BCM54811 PHY")
-9d42205036d4 ("net: phy: bcm54140: Make a bunch of functions static")
-6937602ed3f9 ("net: phy: add Broadcom BCM54140 support")
-123aff2a789c ("net: phy: broadcom: Add support for BCM53125 internal PHYs")
-fe26821fa614 ("net: phy: broadcom: Wire suspend/resume for BCM54810")
-0ececcfc9267 ("net: phy: broadcom: Allow BCM54810 to use bcm54xx_adjust_rxrefclk()")
-75f4d8d10e01 ("net: phy: add Broadcom BCM84881 PHY driver")
-b9bcb95315fe ("net: phy: broadcom: add 1000Base-X support for BCM54616S")
-283da99af1d8 ("net: phy: broadcom: Add genphy_suspend and genphy_resume for BCM5464")
-dcdecdcfe1fc ("net: phy: switch drivers to use dynamic feature detection")
-5c3407abb338 ("net: phy: meson-gxl: add g12a support")
-356d71e00d27 ("Merge git://git.kernel.org/pub/scm/linux/kernel/git/davem/net")
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 096516d092d54604d590827d05b1022c8f326639 Mon Sep 17 00:00:00 2001
-From: Justin Chen <justin.chen@broadcom.com>
-Date: Sat, 12 Aug 2023 21:41:47 -0700
-Subject: [PATCH] net: phy: broadcom: stub c45 read/write for 54810
-
-The 54810 does not support c45. The mmd_phy_indirect accesses return
-arbirtary values leading to odd behavior like saying it supports EEE
-when it doesn't. We also see that reading/writing these non-existent
-MMD registers leads to phy instability in some cases.
-
-Fixes: b14995ac2527 ("net: phy: broadcom: Add BCM54810 PHY entry")
-Signed-off-by: Justin Chen <justin.chen@broadcom.com>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Link: https://lore.kernel.org/r/1691901708-28650-1-git-send-email-justin.chen@broadcom.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-
-diff --git a/drivers/net/phy/broadcom.c b/drivers/net/phy/broadcom.c
-index 59cae0d808aa..04b2e6eeb195 100644
---- a/drivers/net/phy/broadcom.c
-+++ b/drivers/net/phy/broadcom.c
-@@ -542,6 +542,17 @@ static int bcm54xx_resume(struct phy_device *phydev)
- 	return bcm54xx_config_init(phydev);
- }
- 
-+static int bcm54810_read_mmd(struct phy_device *phydev, int devnum, u16 regnum)
-+{
-+	return -EOPNOTSUPP;
-+}
-+
-+static int bcm54810_write_mmd(struct phy_device *phydev, int devnum, u16 regnum,
-+			      u16 val)
-+{
-+	return -EOPNOTSUPP;
-+}
-+
- static int bcm54811_config_init(struct phy_device *phydev)
- {
- 	int err, reg;
-@@ -1103,6 +1114,8 @@ static struct phy_driver broadcom_drivers[] = {
- 	.get_strings	= bcm_phy_get_strings,
- 	.get_stats	= bcm54xx_get_stats,
- 	.probe		= bcm54xx_phy_probe,
-+	.read_mmd	= bcm54810_read_mmd,
-+	.write_mmd	= bcm54810_write_mmd,
- 	.config_init    = bcm54xx_config_init,
- 	.config_aneg    = bcm5481_config_aneg,
- 	.config_intr    = bcm_phy_config_intr,
-
+---
+bod
