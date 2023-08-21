@@ -2,46 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 23BA378335A
-	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:23:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 447227831FD
+	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:21:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229834AbjHUT4e (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 21 Aug 2023 15:56:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48596 "EHLO
+        id S230302AbjHUUHq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 21 Aug 2023 16:07:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57420 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229832AbjHUT4d (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 15:56:33 -0400
+        with ESMTP id S230299AbjHUUHq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 16:07:46 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0DD29FB
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 12:56:32 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 96521E3
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 13:07:44 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 97AED6460F
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 19:56:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5098C433C8;
-        Mon, 21 Aug 2023 19:56:30 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2C06B649BF
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 20:07:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38219C433C8;
+        Mon, 21 Aug 2023 20:07:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692647791;
-        bh=TIFmacErtkdGo8Q6ZjqysLcFmM67zi5bmtSzjFEbY4M=;
+        s=korg; t=1692648463;
+        bh=bDeBIluEu48zdvXuNIrsdh7FPBbB03Jw7qi4wWWp7ho=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=faKwDxbd6VYoG2IiJzof1e3W9bXm65L+TE2LeDqapfXnGuBY0Ay36uEjB2G7l/cee
-         m0TYzSVu7qJYNqljFutFe4R8KdfwUyiY2F2ve+xfze3eswTWxeCpT2448wLvG8zM72
-         7NGbV6GUajBBMcXbUVPx35vL8DKhkFHI2TeqhE7U=
+        b=PZM+7FSixvntfy1sBoUqbh1nDoetOlcdjB42KF3yQRtlVqo6fpJoN1nfPIA1y1gws
+         5NOCgrSnopetnXWqWWiVGgw2BIYx4GIfOBCzxzDremycuWzAFKwfGhvGb+cEYdGZ2N
+         /8aD+uHjhs5A5LgTJU2UVAzIHE8PXZ57qXXChG7w=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Andrej Picej <andrej.picej@norik.com>,
-        =?UTF-8?q?Stefan=20Riedm=C3=BCller?= <s.riedmueller@phytec.de>,
-        Shawn Guo <shawnguo@kernel.org>,
+        patches@lists.linux.dev, Florian Westphal <fw@strlen.de>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 140/194] ARM: dts: imx6: phytec: fix RTC interrupt level
-Date:   Mon, 21 Aug 2023 21:41:59 +0200
-Message-ID: <20230821194128.845707097@linuxfoundation.org>
+Subject: [PATCH 6.4 157/234] netfilter: nf_tables: fix false-positive lockdep splat
+Date:   Mon, 21 Aug 2023 21:42:00 +0200
+Message-ID: <20230821194135.765219349@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230821194122.695845670@linuxfoundation.org>
-References: <20230821194122.695845670@linuxfoundation.org>
+In-Reply-To: <20230821194128.754601642@linuxfoundation.org>
+References: <20230821194128.754601642@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,39 +53,68 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Andrej Picej <andrej.picej@norik.com>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit 762b700982a1e0f562184363f19860c3b9bdd0bf ]
+[ Upstream commit b9f052dc68f69dac89fe1e24693354c033daa091 ]
 
-RTC interrupt level should be set to "LOW". This was revealed by the
-introduction of commit:
+->abort invocation may cause splat on debug kernels:
 
-  f181987ef477 ("rtc: m41t80: use IRQ flags obtained from fwnode")
+WARNING: suspicious RCU usage
+net/netfilter/nft_set_pipapo.c:1697 suspicious rcu_dereference_check() usage!
+[..]
+rcu_scheduler_active = 2, debug_locks = 1
+1 lock held by nft/133554: [..] (nft_net->commit_mutex){+.+.}-{3:3}, at: nf_tables_valid_genid
+[..]
+ lockdep_rcu_suspicious+0x1ad/0x260
+ nft_pipapo_abort+0x145/0x180
+ __nf_tables_abort+0x5359/0x63d0
+ nf_tables_abort+0x24/0x40
+ nfnetlink_rcv+0x1a0a/0x22c0
+ netlink_unicast+0x73c/0x900
+ netlink_sendmsg+0x7f0/0xc20
+ ____sys_sendmsg+0x48d/0x760
 
-which changed the way IRQ type is obtained.
+Transaction mutex is held, so parallel updates are not possible.
+Switch to _protected and check mutex is held for lockdep enabled builds.
 
-Signed-off-by: Andrej Picej <andrej.picej@norik.com>
-Reviewed-by: Stefan Riedmüller <s.riedmueller@phytec.de>
-Fixes: 800d595151bb ("ARM: dts: imx6: Add initial support for phyBOARD-Mira")
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Fixes: 212ed75dc5fb ("netfilter: nf_tables: integrate pipapo into commit protocol")
+Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/imx6qdl-phytec-mira.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/netfilter/nft_set_pipapo.c | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm/boot/dts/imx6qdl-phytec-mira.dtsi b/arch/arm/boot/dts/imx6qdl-phytec-mira.dtsi
-index 1a599c294ab86..1ca4d219609f6 100644
---- a/arch/arm/boot/dts/imx6qdl-phytec-mira.dtsi
-+++ b/arch/arm/boot/dts/imx6qdl-phytec-mira.dtsi
-@@ -182,7 +182,7 @@
- 		pinctrl-0 = <&pinctrl_rtc_int>;
- 		reg = <0x68>;
- 		interrupt-parent = <&gpio7>;
--		interrupts = <8 IRQ_TYPE_LEVEL_HIGH>;
-+		interrupts = <8 IRQ_TYPE_LEVEL_LOW>;
- 		status = "disabled";
- 	};
- };
+diff --git a/net/netfilter/nft_set_pipapo.c b/net/netfilter/nft_set_pipapo.c
+index 92b108e3000eb..3b5c3919fff9c 100644
+--- a/net/netfilter/nft_set_pipapo.c
++++ b/net/netfilter/nft_set_pipapo.c
+@@ -1698,6 +1698,17 @@ static void nft_pipapo_commit(const struct nft_set *set)
+ 	priv->clone = new_clone;
+ }
+ 
++static bool nft_pipapo_transaction_mutex_held(const struct nft_set *set)
++{
++#ifdef CONFIG_PROVE_LOCKING
++	const struct net *net = read_pnet(&set->net);
++
++	return lockdep_is_held(&nft_pernet(net)->commit_mutex);
++#else
++	return true;
++#endif
++}
++
+ static void nft_pipapo_abort(const struct nft_set *set)
+ {
+ 	struct nft_pipapo *priv = nft_set_priv(set);
+@@ -1706,7 +1717,7 @@ static void nft_pipapo_abort(const struct nft_set *set)
+ 	if (!priv->dirty)
+ 		return;
+ 
+-	m = rcu_dereference(priv->match);
++	m = rcu_dereference_protected(priv->match, nft_pipapo_transaction_mutex_held(set));
+ 
+ 	new_clone = pipapo_clone(m);
+ 	if (IS_ERR(new_clone))
 -- 
 2.40.1
 
