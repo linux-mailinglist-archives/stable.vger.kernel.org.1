@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2B48A783304
-	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:22:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6CC0F783385
+	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:23:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230323AbjHUUIO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 21 Aug 2023 16:08:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50900 "EHLO
+        id S230340AbjHUUIT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 21 Aug 2023 16:08:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60100 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230325AbjHUUIL (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 16:08:11 -0400
+        with ESMTP id S230322AbjHUUIN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 16:08:13 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 640B9136;
-        Mon, 21 Aug 2023 13:08:10 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 34631DF;
+        Mon, 21 Aug 2023 13:08:11 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id EE8F7649DE;
-        Mon, 21 Aug 2023 20:08:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51E6DC433CA;
-        Mon, 21 Aug 2023 20:08:09 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 14943649ED;
+        Mon, 21 Aug 2023 20:08:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BDFDC433CB;
+        Mon, 21 Aug 2023 20:08:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-        s=korg; t=1692648489;
-        bh=pv1GDTTLRWiIAOyUOoCjCozQSc41+3ARBtwu03wA7UE=;
+        s=korg; t=1692648490;
+        bh=GUMi4IVP5qz7tAVxeR5rxU+5/wC9QGykAubKPk3z9fk=;
         h=Date:To:From:Subject:From;
-        b=OH1J2tB3Ovi49KRY82kLeAxrFBs7mfz6oNJL9g3JzLCYX/qvOtYdsPzwwdaeYdOXX
-         PBZOP5uWSXS8HRzwkKjDtLTEV7SRxY/6dPIapOCEbuBgLcUPKbeWVoTgBWP7qUtW+U
-         7GuWQEKPL9dsrIoo9EjLz9/ll339mG5Vt6rokIMY=
-Date:   Mon, 21 Aug 2023 13:08:08 -0700
+        b=i2dWwnTnrgcoGLhzGxNruUTw0dXUIKV2To5vE1edv51Q9pdbCtg2aA5ZtooWmdZAf
+         jthqnS5B5dKc9p884v9shOu3uX/GE7LWJKKF7CeeZ9axV08ergWvl+L4o7hTane+jR
+         XT5z8ZolBA/Ar4UdcnW9+bjV4ELpJIQVyODWK420=
+Date:   Mon, 21 Aug 2023 13:08:09 -0700
 To:     mm-commits@vger.kernel.org, stable@vger.kernel.org,
-        raghavendra.kt@amd.com, jhubbard@nvidia.com, jgg@nvidia.com,
-        david@redhat.com, ayush.jain3@amd.com, akpm@linux-foundation.org
+        palmer@rivosinc.com, hch@lst.de, dylan@andestech.com,
+        alexghiti@rivosinc.com, akpm@linux-foundation.org
 From:   Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] selftests-mm-foll_longterm-need-to-be-updated-to-0x100.patch removed from -mm tree
-Message-Id: <20230821200809.51E6DC433CA@smtp.kernel.org>
+Subject: [merged mm-hotfixes-stable] mm-add-a-call-to-flush_cache_vmap-in-vmap_pfn.patch removed from -mm tree
+Message-Id: <20230821200810.6BDFDC433CB@smtp.kernel.org>
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
         SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -47,96 +47,66 @@ X-Mailing-List: stable@vger.kernel.org
 
 
 The quilt patch titled
-     Subject: selftests/mm: FOLL_LONGTERM need to be updated to 0x100
+     Subject: mm: add a call to flush_cache_vmap() in vmap_pfn()
 has been removed from the -mm tree.  Its filename was
-     selftests-mm-foll_longterm-need-to-be-updated-to-0x100.patch
+     mm-add-a-call-to-flush_cache_vmap-in-vmap_pfn.patch
 
 This patch was dropped because it was merged into the mm-hotfixes-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: Ayush Jain <ayush.jain3@amd.com>
-Subject: selftests/mm: FOLL_LONGTERM need to be updated to 0x100
-Date: Tue, 8 Aug 2023 07:43:47 -0500
+From: Alexandre Ghiti <alexghiti@rivosinc.com>
+Subject: mm: add a call to flush_cache_vmap() in vmap_pfn()
+Date: Wed, 9 Aug 2023 18:46:33 +0200
 
-After commit 2c2241081f7d ("mm/gup: move private gup FOLL_ flags to
-internal.h") FOLL_LONGTERM flag value got updated from 0x10000 to 0x100 at
-include/linux/mm_types.h.
+flush_cache_vmap() must be called after new vmalloc mappings are installed
+in the page table in order to allow architectures to make sure the new
+mapping is visible.
 
-As hmm.hmm_device_private.hmm_gup_test uses FOLL_LONGTERM Updating same
-here as well.
+It could lead to a panic since on some architectures (like powerpc),
+the page table walker could see the wrong pte value and trigger a
+spurious page fault that can not be resolved (see commit f1cb8f9beba8
+("powerpc/64s/radix: avoid ptesync after set_pte and
+ptep_set_access_flags")).
 
-Before this change test goes in an infinite assert loop in
-hmm.hmm_device_private.hmm_gup_test
-==========================================================
- RUN           hmm.hmm_device_private.hmm_gup_test ...
-hmm-tests.c:1962:hmm_gup_test:Expected HMM_DMIRROR_PROT_WRITE..
-..(2) == m[2] (34)
-hmm-tests.c:157:hmm_gup_test:Expected ret (-1) == 0 (0)
-hmm-tests.c:157:hmm_gup_test:Expected ret (-1) == 0 (0)
-...
-==========================================================
+But actually the patch is aiming at riscv: the riscv specification
+allows the caching of invalid entries in the TLB, and since we recently
+removed the vmalloc page fault handling, we now need to emit a tlb
+shootdown whenever a new vmalloc mapping is emitted
+(https://lore.kernel.org/linux-riscv/20230725132246.817726-1-alexghiti@rivosinc.com/).
+That's a temporary solution, there are ways to avoid that :)
 
- Call Trace:
- <TASK>
- ? sched_clock+0xd/0x20
- ? __lock_acquire.constprop.0+0x120/0x6c0
- ? ktime_get+0x2c/0xd0
- ? sched_clock+0xd/0x20
- ? local_clock+0x12/0xd0
- ? lock_release+0x26e/0x3b0
- pin_user_pages_fast+0x4c/0x70
- gup_test_ioctl+0x4ff/0xbb0
- ? gup_test_ioctl+0x68c/0xbb0
- __x64_sys_ioctl+0x99/0xd0
- do_syscall_64+0x60/0x90
- ? syscall_exit_to_user_mode+0x2a/0x50
- ? do_syscall_64+0x6d/0x90
- ? syscall_exit_to_user_mode+0x2a/0x50
- ? do_syscall_64+0x6d/0x90
- ? irqentry_exit_to_user_mode+0xd/0x20
- ? irqentry_exit+0x3f/0x50
- ? exc_page_fault+0x96/0x200
- entry_SYSCALL_64_after_hwframe+0x72/0xdc
- RIP: 0033:0x7f6aaa31aaff
-
-After this change test is able to pass successfully.
-
-Link: https://lkml.kernel.org/r/20230808124347.79163-1-ayush.jain3@amd.com
-Fixes: 2c2241081f7d ("mm/gup: move private gup FOLL_ flags to internal.h")
-Signed-off-by: Ayush Jain <ayush.jain3@amd.com>
-Reviewed-by: Raghavendra K T <raghavendra.kt@amd.com>
-Reviewed-by: John Hubbard <jhubbard@nvidia.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Cc: Jason Gunthorpe <jgg@nvidia.com>
+Link: https://lkml.kernel.org/r/20230809164633.1556126-1-alexghiti@rivosinc.com
+Fixes: 3e9a9e256b1e ("mm: add a vmap_pfn function")
+Reported-by: Dylan Jhong <dylan@andestech.com>
+Closes: https://lore.kernel.org/linux-riscv/ZMytNY2J8iyjbPPy@atctrx.andestech.com/
+Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Palmer Dabbelt <palmer@rivosinc.com>
+Acked-by: Palmer Dabbelt <palmer@rivosinc.com>
+Reviewed-by: Dylan Jhong <dylan@andestech.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- tools/testing/selftests/mm/hmm-tests.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ mm/vmalloc.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/tools/testing/selftests/mm/hmm-tests.c~selftests-mm-foll_longterm-need-to-be-updated-to-0x100
-+++ a/tools/testing/selftests/mm/hmm-tests.c
-@@ -57,9 +57,14 @@ enum {
- 
- #define ALIGN(x, a) (((x) + (a - 1)) & (~((a) - 1)))
- /* Just the flags we need, copied from mm.h: */
+--- a/mm/vmalloc.c~mm-add-a-call-to-flush_cache_vmap-in-vmap_pfn
++++ a/mm/vmalloc.c
+@@ -2979,6 +2979,10 @@ void *vmap_pfn(unsigned long *pfns, unsi
+ 		free_vm_area(area);
+ 		return NULL;
+ 	}
 +
-+#ifndef FOLL_WRITE
- #define FOLL_WRITE	0x01	/* check pte is writable */
--#define FOLL_LONGTERM   0x10000 /* mapping lifetime is indefinite */
-+#endif
- 
-+#ifndef FOLL_LONGTERM
-+#define FOLL_LONGTERM   0x100 /* mapping lifetime is indefinite */
-+#endif
- FIXTURE(hmm)
- {
- 	int		fd;
++	flush_cache_vmap((unsigned long)area->addr,
++			 (unsigned long)area->addr + count * PAGE_SIZE);
++
+ 	return area->addr;
+ }
+ EXPORT_SYMBOL_GPL(vmap_pfn);
 _
 
-Patches currently in -mm which might be from ayush.jain3@amd.com are
+Patches currently in -mm which might be from alexghiti@rivosinc.com are
 
-selftests-mm-add-ksm_merge_time-tests.patch
 
