@@ -2,53 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 834A67831CE
-	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:21:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7284A783331
+	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:23:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229824AbjHUT4W (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 21 Aug 2023 15:56:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52656 "EHLO
+        id S230261AbjHUUGT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 21 Aug 2023 16:06:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53468 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229817AbjHUT4V (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 15:56:21 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 86677EE
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 12:56:20 -0700 (PDT)
+        with ESMTP id S230260AbjHUUGT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 16:06:19 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0137FA8
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 13:06:18 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1C93D645E7
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 19:56:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 278ABC433C8;
-        Mon, 21 Aug 2023 19:56:18 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 934356494F
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 20:06:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1CB4C433CA;
+        Mon, 21 Aug 2023 20:06:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692647779;
-        bh=NEME7E1ourTDwz3y+WD8qpXGO1SmIVIKPm2nlR2Sgug=;
+        s=korg; t=1692648377;
+        bh=ssKlJnTABAjpqIuwDCywPavouhxTUo+/w8ya1mq2tLg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=FtY6Ep0xw5GTUK6fvEAI0CraR6sEa89y+4jg0Km2Mr3zPpvr65hEI6pYzCoAJNOYL
-         Z1lnfD59d0BZtO53DcxPM67O0UIwg48ujVeVIsj2/86lfbiRzqxe5iwABus+5gHjb/
-         vCfv84OiqaFn1wLxCCdggbklaJa3otkYtz01VKDY=
+        b=sYAlpFX8N4j+lbH8Un7DE+D8dHLU/rxg7bG7kvQof1mJHXbEmlFDKOvsHSzhAXQbu
+         KShNIxoEM3/CvpOxrTGhqm+0pJe1Wp1keuuxzqSY1gdGm0xqPSJvl2fvIBENi2Bj6n
+         w8jJZJCYSfJNH/CfrxZsqkWMCJ0MSOMjH4XXqyW8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>,
+        patches@lists.linux.dev, Michal Schmidt <mschmidt@redhat.com>,
+        Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 136/194] arm64: dts: qcom: qrb5165-rb5: fix thermal zone conflict
+Subject: [PATCH 6.4 152/234] octeon_ep: cancel ctrl_mbox_task after intr_poll_task
 Date:   Mon, 21 Aug 2023 21:41:55 +0200
-Message-ID: <20230821194128.661271004@linuxfoundation.org>
+Message-ID: <20230821194135.548090239@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230821194122.695845670@linuxfoundation.org>
-References: <20230821194122.695845670@linuxfoundation.org>
+In-Reply-To: <20230821194128.754601642@linuxfoundation.org>
+References: <20230821194128.754601642@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -56,43 +54,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Michal Schmidt <mschmidt@redhat.com>
 
-[ Upstream commit 798f1df86e5709b7b6aedf493cc04c7fedbf544a ]
+[ Upstream commit 607a7a45cdf38c1901e0d81e4e00a2a88786330a ]
 
-The commit 3a786086c6f8 ("arm64: dts: qcom: Add missing "-thermal"
-suffix for thermal zones") renamed the thermal zone in the pm8150l.dtsi
-file to comply with the schema. However this resulted in a clash with
-the RB5 board file, which already contained the pm8150l-thermal zone for
-the on-board sensor. This resulted in the board file definition
-overriding the thermal zone defined in the PMIC include file (and thus
-the on-die PMIC temp alarm was not probing at all).
+intr_poll_task may queue ctrl_mbox_task. The function
+octep_poll_non_ioq_interrupts_cn93_pf does this.
 
-Rename the thermal zone in qcom/qrb5165-rb5.dts to remove this override.
+When removing the driver and canceling these two works, cancel
+ctrl_mbox_task last to guarantee it does not run anymore.
 
-Fixes: 3a786086c6f8 ("arm64: dts: qcom: Add missing "-thermal" suffix for thermal zones")
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20230613131224.666668-1-dmitry.baryshkov@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: 24d4333233b3 ("octeon_ep: poll for control messages")
+Signed-off-by: Michal Schmidt <mschmidt@redhat.com>
+Link: https://lore.kernel.org/r/20230810150114.107765-4-mschmidt@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/qrb5165-rb5.dts | 2 +-
+ drivers/net/ethernet/marvell/octeon_ep/octep_main.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/qrb5165-rb5.dts b/arch/arm64/boot/dts/qcom/qrb5165-rb5.dts
-index bf8077a1cf9a7..9731a7c63d53b 100644
---- a/arch/arm64/boot/dts/qcom/qrb5165-rb5.dts
-+++ b/arch/arm64/boot/dts/qcom/qrb5165-rb5.dts
-@@ -121,7 +121,7 @@
- 			};
- 		};
+diff --git a/drivers/net/ethernet/marvell/octeon_ep/octep_main.c b/drivers/net/ethernet/marvell/octeon_ep/octep_main.c
+index d8066bff5f7b1..ab69b6d625094 100644
+--- a/drivers/net/ethernet/marvell/octeon_ep/octep_main.c
++++ b/drivers/net/ethernet/marvell/octeon_ep/octep_main.c
+@@ -1200,7 +1200,6 @@ static void octep_remove(struct pci_dev *pdev)
+ 	if (!oct)
+ 		return;
  
--		pm8150l-thermal {
-+		pm8150l-pcb-thermal {
- 			polling-delay-passive = <0>;
- 			polling-delay = <0>;
- 			thermal-sensors = <&pm8150l_adc_tm 1>;
+-	cancel_work_sync(&oct->ctrl_mbox_task);
+ 	netdev = oct->netdev;
+ 	if (netdev->reg_state == NETREG_REGISTERED)
+ 		unregister_netdev(netdev);
+@@ -1208,6 +1207,7 @@ static void octep_remove(struct pci_dev *pdev)
+ 	cancel_work_sync(&oct->tx_timeout_task);
+ 	oct->poll_non_ioq_intr = false;
+ 	cancel_delayed_work_sync(&oct->intr_poll_task);
++	cancel_work_sync(&oct->ctrl_mbox_task);
+ 	octep_device_cleanup(oct);
+ 	pci_release_mem_regions(pdev);
+ 	free_netdev(netdev);
 -- 
 2.40.1
 
