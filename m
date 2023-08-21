@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A673D783226
-	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:21:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8F7E07832DD
+	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:22:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230023AbjHUT7Y (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 21 Aug 2023 15:59:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40658 "EHLO
+        id S230347AbjHUUIw (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 21 Aug 2023 16:08:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59506 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230026AbjHUT7Y (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 15:59:24 -0400
+        with ESMTP id S230349AbjHUUIv (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 16:08:51 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D0BE1A1
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 12:59:17 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B79D131
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 13:08:49 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2DC9D64709
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 19:59:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36CF3C433C8;
-        Mon, 21 Aug 2023 19:59:16 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BEBD564A4B
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 20:08:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEEDEC433C8;
+        Mon, 21 Aug 2023 20:08:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692647956;
-        bh=qoQKkHo0xHKvvXkcnaS6VFgAgweaBUFBxN87qYTMK4g=;
+        s=korg; t=1692648528;
+        bh=U+X3YHCDMSfutFfxTGuVSrLKdrjus8sxmRLfeDDWRo0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=XNLPm1ZUyJ1Z9fpeYJ/GA5cEr4BxTmSNRdDebxp94gp8xqd/jcwcYQc6DoXRAzdSD
-         LUllkGuQ5ENfGTWuyggZvaonk2Jt0PKvMc8F4ay6/kDNyvsx5Lh1tEn9jAj1CLqEz+
-         OG85h9C21++KUdCl1xrmRwj+5UeQVZQ+QLrpyb8g=
+        b=snB/ekYsgFtGmRsP6/Wh0uUgmdkq27I22zLuSZ8iQFi7HcXQzYJBx3GGCloTT6Nwz
+         GZheeSfoyTzUAS2Vsyn/0XeZssOvZRCi8A+cEZo1C8xgBCl4df8tLDzgy0A/78kOnC
+         8d+RstGbHEWEeMY8FVpDPqdjeU1DEWYYeIgoPxVA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Bing-Jhong Billy Jheng <billy@starlabs.sg>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Kuniyuki Iwashima <kuniyu@amazon.com>
-Subject: [PATCH 6.1 191/194] af_unix: Fix null-ptr-deref in unix_stream_sendpage().
+        Martin Fuzzey <martin.fuzzey@flowbird.group>,
+        Benjamin Bara <benjamin.bara@skidata.com>,
+        Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.4 207/234] regulator: da9063: better fix null deref with partial DT
 Date:   Mon, 21 Aug 2023 21:42:50 +0200
-Message-ID: <20230821194131.100708859@linuxfoundation.org>
+Message-ID: <20230821194138.014575590@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230821194122.695845670@linuxfoundation.org>
-References: <20230821194122.695845670@linuxfoundation.org>
+In-Reply-To: <20230821194128.754601642@linuxfoundation.org>
+References: <20230821194128.754601642@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,134 +55,62 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Martin Fuzzey <martin.fuzzey@flowbird.group>
 
-Bing-Jhong Billy Jheng reported null-ptr-deref in unix_stream_sendpage()
-with detailed analysis and a nice repro.
+commit 30c694fd4a99fbbc4115d180156ca01b60953371 upstream.
 
-unix_stream_sendpage() tries to add data to the last skb in the peer's
-recv queue without locking the queue.
+Two versions of the original patch were sent but V1 was merged instead
+of V2 due to a mistake.
 
-If the peer's FD is passed to another socket and the socket's FD is
-passed to the peer, there is a loop between them.  If we close both
-sockets without receiving FD, the sockets will be cleaned up by garbage
-collection.
+So update to V2.
 
-The garbage collection iterates such sockets and unlinks skb with
-FD from the socket's receive queue under the queue's lock.
+The advantage of V2 is that it completely avoids dereferencing the pointer,
+even just to take the address, which may fix problems with some compilers.
+Both versions work on my gcc 9.4 but use the safer one.
 
-So, there is a race where unix_stream_sendpage() could access an skb
-locklessly that is being released by garbage collection, resulting in
-use-after-free.
-
-To avoid the issue, unix_stream_sendpage() must lock the peer's recv
-queue.
-
-Note the issue does not exist in 6.5+ thanks to the recent sendpage()
-refactoring.
-
-This patch is originally written by Linus Torvalds.
-
-BUG: unable to handle page fault for address: ffff988004dd6870
-PF: supervisor read access in kernel mode
-PF: error_code(0x0000) - not-present page
-PGD 0 P4D 0
-PREEMPT SMP PTI
-CPU: 4 PID: 297 Comm: garbage_uaf Not tainted 6.1.46 #1
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.0-0-gd239552ce722-prebuilt.qemu.org 04/01/2014
-RIP: 0010:kmem_cache_alloc_node+0xa2/0x1e0
-Code: c0 0f 84 32 01 00 00 41 83 fd ff 74 10 48 8b 00 48 c1 e8 3a 41 39 c5 0f 85 1c 01 00 00 41 8b 44 24 28 49 8b 3c 24 48 8d 4a 40 <49> 8b 1c 06 4c 89 f0 65 48 0f c7 0f 0f 94 c0 84 c0 74 a1 41 8b 44
-RSP: 0018:ffffc9000079fac0 EFLAGS: 00000246
-RAX: 0000000000000070 RBX: 0000000000000005 RCX: 000000000001a284
-RDX: 000000000001a244 RSI: 0000000000400cc0 RDI: 000000000002eee0
-RBP: 0000000000400cc0 R08: 0000000000400cc0 R09: 0000000000000003
-R10: 0000000000000001 R11: 0000000000000000 R12: ffff888003970f00
-R13: 00000000ffffffff R14: ffff988004dd6800 R15: 00000000000000e8
-FS:  00007f174d6f3600(0000) GS:ffff88807db00000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: ffff988004dd6870 CR3: 00000000092be000 CR4: 00000000007506e0
-PKRU: 55555554
-Call Trace:
- <TASK>
- ? __die_body.cold+0x1a/0x1f
- ? page_fault_oops+0xa9/0x1e0
- ? fixup_exception+0x1d/0x310
- ? exc_page_fault+0xa8/0x150
- ? asm_exc_page_fault+0x22/0x30
- ? kmem_cache_alloc_node+0xa2/0x1e0
- ? __alloc_skb+0x16c/0x1e0
- __alloc_skb+0x16c/0x1e0
- alloc_skb_with_frags+0x48/0x1e0
- sock_alloc_send_pskb+0x234/0x270
- unix_stream_sendmsg+0x1f5/0x690
- sock_sendmsg+0x5d/0x60
- ____sys_sendmsg+0x210/0x260
- ___sys_sendmsg+0x83/0xd0
- ? kmem_cache_alloc+0xc6/0x1c0
- ? avc_disable+0x20/0x20
- ? percpu_counter_add_batch+0x53/0xc0
- ? alloc_empty_file+0x5d/0xb0
- ? alloc_file+0x91/0x170
- ? alloc_file_pseudo+0x94/0x100
- ? __fget_light+0x9f/0x120
- __sys_sendmsg+0x54/0xa0
- do_syscall_64+0x3b/0x90
- entry_SYSCALL_64_after_hwframe+0x69/0xd3
-RIP: 0033:0x7f174d639a7d
-Code: 28 89 54 24 1c 48 89 74 24 10 89 7c 24 08 e8 8a c1 f4 ff 8b 54 24 1c 48 8b 74 24 10 41 89 c0 8b 7c 24 08 b8 2e 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 33 44 89 c7 48 89 44 24 08 e8 de c1 f4 ff 48
-RSP: 002b:00007ffcb563ea50 EFLAGS: 00000293 ORIG_RAX: 000000000000002e
-RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007f174d639a7d
-RDX: 0000000000000000 RSI: 00007ffcb563eab0 RDI: 0000000000000007
-RBP: 00007ffcb563eb10 R08: 0000000000000000 R09: 00000000ffffffff
-R10: 00000000004040a0 R11: 0000000000000293 R12: 00007ffcb563ec28
-R13: 0000000000401398 R14: 0000000000403e00 R15: 00007f174d72c000
- </TASK>
-
-Fixes: 869e7c62486e ("net: af_unix: implement stream sendpage support")
-Reported-by: Bing-Jhong Billy Jheng <billy@starlabs.sg>
-Reviewed-by: Bing-Jhong Billy Jheng <billy@starlabs.sg>
-Co-developed-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Fixes: 98e2dd5f7a8b ("regulator: da9063: fix null pointer deref with partial DT config")
+Signed-off-by: Martin Fuzzey <martin.fuzzey@flowbird.group>
+Tested-by: Benjamin Bara <benjamin.bara@skidata.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20230804083514.1887124-1-martin.fuzzey@flowbird.group
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/unix/af_unix.c |    9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ drivers/regulator/da9063-regulator.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
---- a/net/unix/af_unix.c
-+++ b/net/unix/af_unix.c
-@@ -2290,6 +2290,7 @@ static ssize_t unix_stream_sendpage(stru
+diff --git a/drivers/regulator/da9063-regulator.c b/drivers/regulator/da9063-regulator.c
+index dfd5ec9f75c9..a0621665a6d2 100644
+--- a/drivers/regulator/da9063-regulator.c
++++ b/drivers/regulator/da9063-regulator.c
+@@ -778,9 +778,6 @@ static int da9063_check_xvp_constraints(struct regulator_config *config)
+ 	const struct notification_limit *uv_l = &constr->under_voltage_limits;
+ 	const struct notification_limit *ov_l = &constr->over_voltage_limits;
  
- 	if (false) {
- alloc_skb:
-+		spin_unlock(&other->sk_receive_queue.lock);
- 		unix_state_unlock(other);
- 		mutex_unlock(&unix_sk(other)->iolock);
- 		newskb = sock_alloc_send_pskb(sk, 0, 0, flags & MSG_DONTWAIT,
-@@ -2329,6 +2330,7 @@ alloc_skb:
- 		init_scm = false;
- 	}
+-	if (!config->init_data) /* No config in DT, pointers will be invalid */
+-		return 0;
+-
+ 	/* make sure that only one severity is used to clarify if unchanged, enabled or disabled */
+ 	if ((!!uv_l->prot + !!uv_l->err + !!uv_l->warn) > 1) {
+ 		dev_err(config->dev, "%s: at most one voltage monitoring severity allowed!\n",
+@@ -1031,9 +1028,12 @@ static int da9063_regulator_probe(struct platform_device *pdev)
+ 			config.of_node = da9063_reg_matches[id].of_node;
+ 		config.regmap = da9063->regmap;
  
-+	spin_lock(&other->sk_receive_queue.lock);
- 	skb = skb_peek_tail(&other->sk_receive_queue);
- 	if (tail && tail == skb) {
- 		skb = newskb;
-@@ -2359,14 +2361,11 @@ alloc_skb:
- 	refcount_add(size, &sk->sk_wmem_alloc);
+-		ret = da9063_check_xvp_constraints(&config);
+-		if (ret)
+-			return ret;
++		/* Checking constraints requires init_data from DT. */
++		if (config.init_data) {
++			ret = da9063_check_xvp_constraints(&config);
++			if (ret)
++				return ret;
++		}
  
- 	if (newskb) {
--		err = unix_scm_to_skb(&scm, skb, false);
--		if (err)
--			goto err_state_unlock;
--		spin_lock(&other->sk_receive_queue.lock);
-+		unix_scm_to_skb(&scm, skb, false);
- 		__skb_queue_tail(&other->sk_receive_queue, newskb);
--		spin_unlock(&other->sk_receive_queue.lock);
- 	}
- 
-+	spin_unlock(&other->sk_receive_queue.lock);
- 	unix_state_unlock(other);
- 	mutex_unlock(&unix_sk(other)->iolock);
- 
+ 		regl->rdev = devm_regulator_register(&pdev->dev, &regl->desc,
+ 						     &config);
+-- 
+2.41.0
+
 
 
