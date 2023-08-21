@@ -2,51 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B46CF783345
-	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:23:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A6BA27832EA
+	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:22:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229929AbjHUT6O (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 21 Aug 2023 15:58:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41298 "EHLO
+        id S230289AbjHUUJc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 21 Aug 2023 16:09:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51286 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229918AbjHUT6N (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 15:58:13 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 93A66130
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 12:58:10 -0700 (PDT)
+        with ESMTP id S230368AbjHUUJc (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 16:09:32 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BE414132
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 13:09:25 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 22BA8646A5
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 19:58:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3158BC433C7;
-        Mon, 21 Aug 2023 19:58:09 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5DD8064A75
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 20:09:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E86AC433C7;
+        Mon, 21 Aug 2023 20:09:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692647889;
-        bh=u/pao4YBnKqtDvOQjiCAh/ojzQMYfgEkexng0fR5Avg=;
+        s=korg; t=1692648564;
+        bh=JoQBrU1dpDR8Ailph7uRwIdobolGQZcOg8MMoE7sTpw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ugaKI5KMGRkZA0wpxIli0bjSNs89s9r9wNqeXoJJX/O3MrY6Tkum1yjoTt+Z7SPgR
-         x6gLkGZSd/bzQQRjWMomo79aKGvxdtSCPHLTdgjH9atNwP0k7PZcuPw4q/apELhTgJ
-         YbGfjcCVs+YdVQuoXucZxr31FTt2ED4XyUZocRgA=
+        b=c2xe+uxmlXVDBdsa/sCSJEULLV6wWrRiSOEfY+xJSDPWfDcU3Xr+U+Im2+ttycKgd
+         b/3NvDEEBdbg2Q8t7XjumLoQy+HJxPeGnu0iRYVPWTDFU5uJxJi4zJXu4VvsrybXaA
+         t3kggNVQLPm9uQ+Tieol1sMtUSVpru1kRMIK3Uao=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        "Borislav Petkov (AMD)" <bp@alien8.de>
-Subject: [PATCH 6.1 175/194] x86/alternative: Make custom return thunk unconditional
+        patches@lists.linux.dev, Zhang Shurong <zhang_shurong@foxmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 191/234] ASoC: rt5665: add missed regulator_bulk_disable
 Date:   Mon, 21 Aug 2023 21:42:34 +0200
-Message-ID: <20230821194130.411698652@linuxfoundation.org>
+Message-ID: <20230821194137.272646849@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230821194122.695845670@linuxfoundation.org>
-References: <20230821194122.695845670@linuxfoundation.org>
+In-Reply-To: <20230821194128.754601642@linuxfoundation.org>
+References: <20230821194128.754601642@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -54,51 +54,38 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Peter Zijlstra <peterz@infradead.org>
+From: Zhang Shurong <zhang_shurong@foxmail.com>
 
-commit 095b8303f3835c68ac4a8b6d754ca1c3b6230711 upstream.
+[ Upstream commit c163108e706909570f8aa9aa5bcf6806e2b4c98c ]
 
-There is infrastructure to rewrite return thunks to point to any
-random thunk one desires, unwrap that from CALL_THUNKS, which up to
-now was the sole user of that.
+The driver forgets to call regulator_bulk_disable()
 
-  [ bp: Make the thunks visible on 32-bit and add ifdeffery for the
-    32-bit builds. ]
+Add the missed call to fix it.
 
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20230814121148.775293785@infradead.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 33ada14a26c8 ("ASoC: add rt5665 codec driver")
+Signed-off-by: Zhang Shurong <zhang_shurong@foxmail.com>
+Link: https://lore.kernel.org/r/tencent_A560D01E3E0A00A85A12F137E4B5205B3508@qq.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/nospec-branch.h |    5 +++++
- arch/x86/kernel/cpu/bugs.c           |    2 ++
- 2 files changed, 7 insertions(+)
+ sound/soc/codecs/rt5665.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/arch/x86/include/asm/nospec-branch.h
-+++ b/arch/x86/include/asm/nospec-branch.h
-@@ -210,7 +210,12 @@
- typedef u8 retpoline_thunk_t[RETPOLINE_THUNK_SIZE];
- extern retpoline_thunk_t __x86_indirect_thunk_array[];
+diff --git a/sound/soc/codecs/rt5665.c b/sound/soc/codecs/rt5665.c
+index 17afaef85c77a..382bdbcf7b59b 100644
+--- a/sound/soc/codecs/rt5665.c
++++ b/sound/soc/codecs/rt5665.c
+@@ -4472,6 +4472,8 @@ static void rt5665_remove(struct snd_soc_component *component)
+ 	struct rt5665_priv *rt5665 = snd_soc_component_get_drvdata(component);
  
-+#ifdef CONFIG_RETHUNK
- extern void __x86_return_thunk(void);
-+#else
-+static inline void __x86_return_thunk(void) {}
-+#endif
+ 	regmap_write(rt5665->regmap, RT5665_RESET, 0);
 +
- extern void zen_untrain_ret(void);
- extern void srso_untrain_ret(void);
- extern void srso_untrain_ret_alias(void);
---- a/arch/x86/kernel/cpu/bugs.c
-+++ b/arch/x86/kernel/cpu/bugs.c
-@@ -62,6 +62,8 @@ EXPORT_SYMBOL_GPL(x86_pred_cmd);
++	regulator_bulk_disable(ARRAY_SIZE(rt5665->supplies), rt5665->supplies);
+ }
  
- static DEFINE_MUTEX(spec_ctrl_mutex);
- 
-+void (*x86_return_thunk)(void) __ro_after_init = &__x86_return_thunk;
-+
- /* Update SPEC_CTRL MSR and its cached copy unconditionally */
- static void update_spec_ctrl(u64 val)
- {
+ #ifdef CONFIG_PM
+-- 
+2.40.1
+
 
 
