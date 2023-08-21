@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 71E7C783382
-	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:23:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 78F887832D9
+	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:22:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229814AbjHUT4J (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 21 Aug 2023 15:56:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52670 "EHLO
+        id S230209AbjHUUEg (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 21 Aug 2023 16:04:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33492 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229813AbjHUT4I (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 15:56:08 -0400
+        with ESMTP id S230200AbjHUUEf (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 16:04:35 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0136AFD
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 12:56:03 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7CCFE4
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 13:04:33 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 30D26645E0
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 19:56:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38E41C433C7;
-        Mon, 21 Aug 2023 19:56:02 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 50A03648D2
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 20:04:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62D98C433C9;
+        Mon, 21 Aug 2023 20:04:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692647762;
-        bh=qq5Fe3PXGVT+HhHRFpzx37gR/MWWTTvFI4NUp0DsI2M=;
+        s=korg; t=1692648272;
+        bh=tbPOFRQnVRKgnQioqoDQrlwzfdqEEKvQbEDlMcAQWgk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jRFg7bCj9zBpYYfYDN8nANcX+b6kSfPVZqaNZVILAGLuBvor/z67rYJxgeiHw69u/
-         orhAtMGPiLMjuns0hJed/XI5xGJ6EB6/6B78A8DyYiZkYXOtuNcHM8Ouh/5XVeqjdV
-         YSICZ+XOv5La3JG23nfhKulBlOjsYQrQczepdZIo=
+        b=gje8fydlKW7EIdKGSvX+5PW+QADQW1mbC8kWBnQhZ3DjuZ2Whpg0RL7vxZYnlwQcT
+         KtRyRBqA8BsuVOcoVdXAHReNibJEqDjfDeF/ckVwQhKRPr+8MLuOiyf0ssdXlYfzwp
+         3U4Bf7ckvjGP4Dxk2YvhxuY/tPXrpQuh5Z2ZT0ko=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Filipe Manana <fdmanana@suse.com>,
-        Josef Bacik <josef@toxicpanda.com>,
-        David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.1 100/194] btrfs: fix incorrect splitting in btrfs_drop_extent_map_range
+        patches@lists.linux.dev,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        "Borislav Petkov (AMD)" <bp@alien8.de>
+Subject: [PATCH 6.4 116/234] objtool/x86: Fix SRSO mess
 Date:   Mon, 21 Aug 2023 21:41:19 +0200
-Message-ID: <20230821194127.083161731@linuxfoundation.org>
+Message-ID: <20230821194133.962830484@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230821194122.695845670@linuxfoundation.org>
-References: <20230821194122.695845670@linuxfoundation.org>
+In-Reply-To: <20230821194128.754601642@linuxfoundation.org>
+References: <20230821194128.754601642@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,98 +54,152 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Josef Bacik <josef@toxicpanda.com>
+From: Peter Zijlstra <peterz@infradead.org>
 
-commit c962098ca4af146f2625ed64399926a098752c9c upstream.
+commit 4ae68b26c3ab5a82aa271e6e9fc9b1a06e1d6b40 upstream.
 
-In production we were seeing a variety of WARN_ON()'s in the extent_map
-code, specifically in btrfs_drop_extent_map_range() when we have to call
-add_extent_mapping() for our second split.
+Objtool --rethunk does two things:
 
-Consider the following extent map layout
+ - it collects all (tail) call's of __x86_return_thunk and places them
+   into .return_sites. These are typically compiler generated, but
+   RET also emits this same.
 
-	PINNED
-	[0 16K)  [32K, 48K)
+ - it fudges the validation of the __x86_return_thunk symbol; because
+   this symbol is inside another instruction, it can't actually find
+   the instruction pointed to by the symbol offset and gets upset.
 
-and then we call btrfs_drop_extent_map_range for [0, 36K), with
-skip_pinned == true.  The initial loop will have
+Because these two things pertained to the same symbol, there was no
+pressing need to separate these two separate things.
 
-	start = 0
-	end = 36K
-	len = 36K
+However, alas, along comes SRSO and more crazy things to deal with
+appeared.
 
-we will find the [0, 16k) extent, but since we are pinned we will skip
-it, which has this code
+The SRSO patch itself added the following symbol names to identify as
+rethunk:
 
-	start = em_end;
-	if (end != (u64)-1)
-		len = start + len - em_end;
+  'srso_untrain_ret', 'srso_safe_ret' and '__ret'
 
-em_end here is 16K, so now the values are
+Where '__ret' is the old retbleed return thunk, 'srso_safe_ret' is a
+new similarly embedded return thunk, and 'srso_untrain_ret' is
+completely unrelated to anything the above does (and was only included
+because of that INT3 vs UD2 issue fixed previous).
 
-	start = 16K
-	len = 16K + 36K - 16K = 36K
+Clear things up by adding a second category for the embedded instruction
+thing.
 
-len should instead be 20K.  This is a problem when we find the next
-extent at [32K, 48K), we need to split this extent to leave [36K, 48k),
-however the code for the split looks like this
-
-	split->start = start + len;
-	split->len = em_end - (start + len);
-
-In this case we have
-
-	em_end = 48K
-	split->start = 16K + 36K       // this should be 16K + 20K
-	split->len = 48K - (16K + 36K) // this overflows as 16K + 36K is 52K
-
-and now we have an invalid extent_map in the tree that potentially
-overlaps other entries in the extent map.  Even in the non-overlapping
-case we will have split->start set improperly, which will cause problems
-with any block related calculations.
-
-We don't actually need len in this loop, we can simply use end as our
-end point, and only adjust start up when we find a pinned extent we need
-to skip.
-
-Adjust the logic to do this, which keeps us from inserting an invalid
-extent map.
-
-We only skip_pinned in the relocation case, so this is relatively rare,
-except in the case where you are running relocation a lot, which can
-happen with auto relocation on.
-
-Fixes: 55ef68990029 ("Btrfs: Fix btrfs_drop_extent_cache for skip pinned case")
-CC: stable@vger.kernel.org # 4.14+
-Reviewed-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Fixes: fb3bd914b3ec ("x86/srso: Add a Speculative RAS Overflow mitigation")
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/r/20230814121148.704502245@infradead.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/extent_map.c |    6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ tools/objtool/arch/x86/decode.c      |   11 +++++++----
+ tools/objtool/check.c                |   24 ++++++++++++++++++++++--
+ tools/objtool/include/objtool/arch.h |    1 +
+ tools/objtool/include/objtool/elf.h  |    1 +
+ 4 files changed, 31 insertions(+), 6 deletions(-)
 
---- a/fs/btrfs/extent_map.c
-+++ b/fs/btrfs/extent_map.c
-@@ -784,8 +784,6 @@ void btrfs_drop_extent_map_range(struct
+--- a/tools/objtool/arch/x86/decode.c
++++ b/tools/objtool/arch/x86/decode.c
+@@ -824,8 +824,11 @@ bool arch_is_retpoline(struct symbol *sy
  
- 		if (skip_pinned && test_bit(EXTENT_FLAG_PINNED, &em->flags)) {
- 			start = em_end;
--			if (end != (u64)-1)
--				len = start + len - em_end;
- 			goto next;
- 		}
- 
-@@ -853,8 +851,8 @@ void btrfs_drop_extent_map_range(struct
- 				if (!split)
- 					goto remove_em;
+ bool arch_is_rethunk(struct symbol *sym)
+ {
+-	return !strcmp(sym->name, "__x86_return_thunk") ||
+-	       !strcmp(sym->name, "srso_untrain_ret") ||
+-	       !strcmp(sym->name, "srso_safe_ret") ||
+-	       !strcmp(sym->name, "__ret");
++	return !strcmp(sym->name, "__x86_return_thunk");
++}
++
++bool arch_is_embedded_insn(struct symbol *sym)
++{
++	return !strcmp(sym->name, "__ret") ||
++	       !strcmp(sym->name, "srso_safe_ret");
+ }
+--- a/tools/objtool/check.c
++++ b/tools/objtool/check.c
+@@ -495,7 +495,7 @@ static int decode_instructions(struct ob
+ 				return -1;
  			}
--			split->start = start + len;
--			split->len = em_end - (start + len);
-+			split->start = end;
-+			split->len = em_end - end;
- 			split->block_start = em->block_start;
- 			split->flags = flags;
- 			split->compress_type = em->compress_type;
+ 
+-			if (func->return_thunk || func->alias != func)
++			if (func->embedded_insn || func->alias != func)
+ 				continue;
+ 
+ 			if (!find_insn(file, sec, func->offset)) {
+@@ -1346,16 +1346,33 @@ static int add_ignore_alternatives(struc
+ 	return 0;
+ }
+ 
++/*
++ * Symbols that replace INSN_CALL_DYNAMIC, every (tail) call to such a symbol
++ * will be added to the .retpoline_sites section.
++ */
+ __weak bool arch_is_retpoline(struct symbol *sym)
+ {
+ 	return false;
+ }
+ 
++/*
++ * Symbols that replace INSN_RETURN, every (tail) call to such a symbol
++ * will be added to the .return_sites section.
++ */
+ __weak bool arch_is_rethunk(struct symbol *sym)
+ {
+ 	return false;
+ }
+ 
++/*
++ * Symbols that are embedded inside other instructions, because sometimes crazy
++ * code exists. These are mostly ignored for validation purposes.
++ */
++__weak bool arch_is_embedded_insn(struct symbol *sym)
++{
++	return false;
++}
++
+ static struct reloc *insn_reloc(struct objtool_file *file, struct instruction *insn)
+ {
+ 	struct reloc *reloc;
+@@ -1645,7 +1662,7 @@ static int add_jump_destinations(struct
+ 			 * middle of another instruction.  Objtool only
+ 			 * knows about the outer instruction.
+ 			 */
+-			if (sym && sym->return_thunk) {
++			if (sym && sym->embedded_insn) {
+ 				add_return_call(file, insn, false);
+ 				continue;
+ 			}
+@@ -2550,6 +2567,9 @@ static int classify_symbols(struct objto
+ 		if (arch_is_rethunk(func))
+ 			func->return_thunk = true;
+ 
++		if (arch_is_embedded_insn(func))
++			func->embedded_insn = true;
++
+ 		if (arch_ftrace_match(func->name))
+ 			func->fentry = true;
+ 
+--- a/tools/objtool/include/objtool/arch.h
++++ b/tools/objtool/include/objtool/arch.h
+@@ -90,6 +90,7 @@ int arch_decode_hint_reg(u8 sp_reg, int
+ 
+ bool arch_is_retpoline(struct symbol *sym);
+ bool arch_is_rethunk(struct symbol *sym);
++bool arch_is_embedded_insn(struct symbol *sym);
+ 
+ int arch_rewrite_retpolines(struct objtool_file *file);
+ 
+--- a/tools/objtool/include/objtool/elf.h
++++ b/tools/objtool/include/objtool/elf.h
+@@ -61,6 +61,7 @@ struct symbol {
+ 	u8 return_thunk      : 1;
+ 	u8 fentry            : 1;
+ 	u8 profiling_func    : 1;
++	u8 embedded_insn     : 1;
+ 	struct list_head pv_target;
+ 	struct list_head reloc_list;
+ };
 
 
