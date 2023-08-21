@@ -2,47 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DE72978334C
-	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:23:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B46CF783345
+	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:23:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230370AbjHUUJ2 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 21 Aug 2023 16:09:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47110 "EHLO
+        id S229929AbjHUT6O (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 21 Aug 2023 15:58:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41298 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230368AbjHUUJ2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 16:09:28 -0400
+        with ESMTP id S229918AbjHUT6N (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 15:58:13 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB316136
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 13:09:22 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 93A66130
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 12:58:10 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 51D2064A82
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 20:09:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CE4BC433C7;
-        Mon, 21 Aug 2023 20:09:21 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 22BA8646A5
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 19:58:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3158BC433C7;
+        Mon, 21 Aug 2023 19:58:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692648561;
-        bh=IfaGbjKO/TlcVO0Lx+W+rPKRkL4X2MDdA2vUvtm2ygY=;
+        s=korg; t=1692647889;
+        bh=u/pao4YBnKqtDvOQjiCAh/ojzQMYfgEkexng0fR5Avg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=bFLn+MJo6sn2BcclpcQ+TPF5cP5u6rOFIzNkOKQIn8HbobF6iPxTmddnxvoKwWweL
-         rModA+TBXKD3tqrrfuGYYqTem/1YYyys5UdWr+uP86UNISYAjAUtPpq27Ariq2A+zS
-         17PJ0f0nLz0YRdpYtwEvdw9GO11Hj5LLCK/FC9ek=
+        b=ugaKI5KMGRkZA0wpxIli0bjSNs89s9r9wNqeXoJJX/O3MrY6Tkum1yjoTt+Z7SPgR
+         x6gLkGZSd/bzQQRjWMomo79aKGvxdtSCPHLTdgjH9atNwP0k7PZcuPw4q/apELhTgJ
+         YbGfjcCVs+YdVQuoXucZxr31FTt2ED4XyUZocRgA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Alexander Stein <alexander.stein@ew.tq-group.com>,
-        Peng Fan <peng.fan@nxp.com>, Jacky Bai <ping.bai@nxp.com>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 190/234] arm64: dts: imx93: Fix anatop node size
-Date:   Mon, 21 Aug 2023 21:42:33 +0200
-Message-ID: <20230821194137.232911188@linuxfoundation.org>
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        "Borislav Petkov (AMD)" <bp@alien8.de>
+Subject: [PATCH 6.1 175/194] x86/alternative: Make custom return thunk unconditional
+Date:   Mon, 21 Aug 2023 21:42:34 +0200
+Message-ID: <20230821194130.411698652@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230821194128.754601642@linuxfoundation.org>
-References: <20230821194128.754601642@linuxfoundation.org>
+In-Reply-To: <20230821194122.695845670@linuxfoundation.org>
+References: <20230821194122.695845670@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,43 +54,51 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
+From: Peter Zijlstra <peterz@infradead.org>
 
-[ Upstream commit 78e869dd8b2ba19765ac9b05cdea3e432d1dc188 ]
+commit 095b8303f3835c68ac4a8b6d754ca1c3b6230711 upstream.
 
-Although the memory map of i.MX93 reference manual rev. 2 claims that
-analog top has start address of 0x44480000 and end address of 0x4448ffff,
-this overlaps with TMU memory area starting at 0x44482000, as stated in
-section 73.6.1.
-As PLL configuration registers start at addresses up to 0x44481400, as used
-by clk-imx93, reduce the anatop size to 0x2000, so exclude the TMU area
-but keep all PLL registers inside.
+There is infrastructure to rewrite return thunks to point to any
+random thunk one desires, unwrap that from CALL_THUNKS, which up to
+now was the sole user of that.
 
-Fixes: ec8b5b5058ea ("arm64: dts: freescale: Add i.MX93 dtsi support")
-Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-Reviewed-by: Peng Fan <peng.fan@nxp.com>
-Reviewed-by: Jacky Bai <ping.bai@nxp.com>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  [ bp: Make the thunks visible on 32-bit and add ifdeffery for the
+    32-bit builds. ]
+
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/r/20230814121148.775293785@infradead.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/freescale/imx93.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/include/asm/nospec-branch.h |    5 +++++
+ arch/x86/kernel/cpu/bugs.c           |    2 ++
+ 2 files changed, 7 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx93.dtsi b/arch/arm64/boot/dts/freescale/imx93.dtsi
-index e8d49660ac85b..c0f49fedaf9ea 100644
---- a/arch/arm64/boot/dts/freescale/imx93.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx93.dtsi
-@@ -306,7 +306,7 @@
+--- a/arch/x86/include/asm/nospec-branch.h
++++ b/arch/x86/include/asm/nospec-branch.h
+@@ -210,7 +210,12 @@
+ typedef u8 retpoline_thunk_t[RETPOLINE_THUNK_SIZE];
+ extern retpoline_thunk_t __x86_indirect_thunk_array[];
  
- 			anatop: anatop@44480000 {
- 				compatible = "fsl,imx93-anatop", "syscon";
--				reg = <0x44480000 0x10000>;
-+				reg = <0x44480000 0x2000>;
- 			};
++#ifdef CONFIG_RETHUNK
+ extern void __x86_return_thunk(void);
++#else
++static inline void __x86_return_thunk(void) {}
++#endif
++
+ extern void zen_untrain_ret(void);
+ extern void srso_untrain_ret(void);
+ extern void srso_untrain_ret_alias(void);
+--- a/arch/x86/kernel/cpu/bugs.c
++++ b/arch/x86/kernel/cpu/bugs.c
+@@ -62,6 +62,8 @@ EXPORT_SYMBOL_GPL(x86_pred_cmd);
  
- 			adc1: adc@44530000 {
--- 
-2.40.1
-
+ static DEFINE_MUTEX(spec_ctrl_mutex);
+ 
++void (*x86_return_thunk)(void) __ro_after_init = &__x86_return_thunk;
++
+ /* Update SPEC_CTRL MSR and its cached copy unconditionally */
+ static void update_spec_ctrl(u64 val)
+ {
 
 
