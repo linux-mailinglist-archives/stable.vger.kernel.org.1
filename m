@@ -2,41 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 144C87831E3
-	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:21:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D1470783272
+	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:22:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230352AbjHUUJC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 21 Aug 2023 16:09:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48098 "EHLO
+        id S230350AbjHUUJF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 21 Aug 2023 16:09:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48200 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230350AbjHUUJB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 16:09:01 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4DB9FDF
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 13:09:00 -0700 (PDT)
+        with ESMTP id S230357AbjHUUJE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 16:09:04 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2BCDB129
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 13:09:03 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E190C64A5D
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 20:08:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF98BC433C8;
-        Mon, 21 Aug 2023 20:08:58 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B871664A62
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 20:09:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8DC2C433C7;
+        Mon, 21 Aug 2023 20:09:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692648539;
-        bh=+1HAN5myfBu/T1grATkD4KwhI3E6gBZVNKZdlFTtLv8=;
+        s=korg; t=1692648542;
+        bh=O32kj4yH/B2k7Rwj56EJ6QAMxyK5Qa8KPE147Fj8FEw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=odCRWvv8bTKOTNELtnw5qDcdCNLc2lA0OnkDkKzdxM4mjUS2DgdS0L7v16jzVmVyA
-         Lywzen2wNum96fj628NQoW6axleJkAfhDbfa93RQJuyDg0+yyaQDx7xr78/IBG90iE
-         7Lquh8evOK+5ibmtLOsU19XnK+eCFEnLgjTRsEhU=
+        b=SUUDmVLc8j6uxXuRHBSEseq6Km11SzZlTFZkUSCz2NGnnDhR0MXA50QGniQLv+0On
+         g6zEw8+kQuMbTrevzcgB5fWogMaRjsvn3kCO8tCjyHdyblhjb0p72RI5dhIQgOZe3Z
+         lbpgPKREZgKhpKPV1W8CzOEqkmlygT/tDetR9qdM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Mark Brown <broonie@kernel.org>,
-        Catalin Marinas <catalin.marinas@arm.com>
-Subject: [PATCH 6.4 211/234] arm64/ptrace: Ensure that the task sees ZT writes on first use
-Date:   Mon, 21 Aug 2023 21:42:54 +0200
-Message-ID: <20230821194138.191055135@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Sweet Tea Dorminy <sweettea-kernel@dorminy.me>,
+        Eric Biggers <ebiggers@google.com>,
+        Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.4 212/234] blk-crypto: dynamically allocate fallback profile
+Date:   Mon, 21 Aug 2023 21:42:55 +0200
+Message-ID: <20230821194138.244732182@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230821194128.754601642@linuxfoundation.org>
 References: <20230821194128.754601642@linuxfoundation.org>
@@ -44,8 +46,8 @@ User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -53,59 +55,129 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Mark Brown <broonie@kernel.org>
+From: Sweet Tea Dorminy <sweettea-kernel@dorminy.me>
 
-commit 2f43f549cd0b3164ea0345e59aa3958c0d243383 upstream.
+commit c984ff1423ae9f70b1f28ce811856db0d9c99021 upstream.
 
-When the value of ZT is set via ptrace we don't disable traps for SME.
-This means that when a the task has never used SME before then the value
-set via ptrace will never be seen by the target task since it will
-trigger a SME access trap which will flush the register state.
+blk_crypto_profile_init() calls lockdep_register_key(), which warns and
+does not register if the provided memory is a static object.
+blk-crypto-fallback currently has a static blk_crypto_profile and calls
+blk_crypto_profile_init() thereupon, resulting in the warning and
+failure to register.
 
-Disable SME traps when setting ZT, this means we also need to allocate
-storage for SVE if it is not already allocated, for the benefit of
-streaming SVE.
+Fortunately it is simple enough to use a dynamically allocated profile
+and make lockdep function correctly.
 
-Fixes: f90b529bcbe5 ("arm64/sme: Implement ZT0 ptrace support")
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Cc: <stable@vger.kernel.org> # 6.3.x
-Link: https://lore.kernel.org/r/20230816-arm64-zt-ptrace-first-use-v2-1-00aa82847e28@kernel.org
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Fixes: 2fb48d88e77f ("blk-crypto: use dynamic lock class for blk_crypto_profile::lock")
+Cc: stable@vger.kernel.org
+Signed-off-by: Sweet Tea Dorminy <sweettea-kernel@dorminy.me>
+Reviewed-by: Eric Biggers <ebiggers@google.com>
+Link: https://lore.kernel.org/r/20230817141615.15387-1-sweettea-kernel@dorminy.me
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/kernel/ptrace.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ block/blk-crypto-fallback.c |   36 +++++++++++++++++++++++-------------
+ 1 file changed, 23 insertions(+), 13 deletions(-)
 
-diff --git a/arch/arm64/kernel/ptrace.c b/arch/arm64/kernel/ptrace.c
-index a31af7a1abe3..187aa2b175b4 100644
---- a/arch/arm64/kernel/ptrace.c
-+++ b/arch/arm64/kernel/ptrace.c
-@@ -1177,6 +1177,11 @@ static int zt_set(struct task_struct *target,
- 	if (!system_supports_sme2())
- 		return -EINVAL;
+--- a/block/blk-crypto-fallback.c
++++ b/block/blk-crypto-fallback.c
+@@ -78,7 +78,7 @@ static struct blk_crypto_fallback_keyslo
+ 	struct crypto_skcipher *tfms[BLK_ENCRYPTION_MODE_MAX];
+ } *blk_crypto_keyslots;
  
-+	/* Ensure SVE storage in case this is first use of SME */
-+	sve_alloc(target, false);
-+	if (!target->thread.sve_state)
-+		return -ENOMEM;
-+
- 	if (!thread_za_enabled(&target->thread)) {
- 		sme_alloc(target, true);
- 		if (!target->thread.sme_state)
-@@ -1186,8 +1191,10 @@ static int zt_set(struct task_struct *target,
- 	ret = user_regset_copyin(&pos, &count, &kbuf, &ubuf,
- 				 thread_zt_state(&target->thread),
- 				 0, ZT_SIG_REG_BYTES);
--	if (ret == 0)
-+	if (ret == 0) {
- 		target->thread.svcr |= SVCR_ZA_MASK;
-+		set_tsk_thread_flag(target, TIF_SME);
+-static struct blk_crypto_profile blk_crypto_fallback_profile;
++static struct blk_crypto_profile *blk_crypto_fallback_profile;
+ static struct workqueue_struct *blk_crypto_wq;
+ static mempool_t *blk_crypto_bounce_page_pool;
+ static struct bio_set crypto_bio_split;
+@@ -292,7 +292,7 @@ static bool blk_crypto_fallback_encrypt_
+ 	 * Get a blk-crypto-fallback keyslot that contains a crypto_skcipher for
+ 	 * this bio's algorithm and key.
+ 	 */
+-	blk_st = blk_crypto_get_keyslot(&blk_crypto_fallback_profile,
++	blk_st = blk_crypto_get_keyslot(blk_crypto_fallback_profile,
+ 					bc->bc_key, &slot);
+ 	if (blk_st != BLK_STS_OK) {
+ 		src_bio->bi_status = blk_st;
+@@ -395,7 +395,7 @@ static void blk_crypto_fallback_decrypt_
+ 	 * Get a blk-crypto-fallback keyslot that contains a crypto_skcipher for
+ 	 * this bio's algorithm and key.
+ 	 */
+-	blk_st = blk_crypto_get_keyslot(&blk_crypto_fallback_profile,
++	blk_st = blk_crypto_get_keyslot(blk_crypto_fallback_profile,
+ 					bc->bc_key, &slot);
+ 	if (blk_st != BLK_STS_OK) {
+ 		bio->bi_status = blk_st;
+@@ -499,7 +499,7 @@ bool blk_crypto_fallback_bio_prep(struct
+ 		return false;
+ 	}
+ 
+-	if (!__blk_crypto_cfg_supported(&blk_crypto_fallback_profile,
++	if (!__blk_crypto_cfg_supported(blk_crypto_fallback_profile,
+ 					&bc->bc_key->crypto_cfg)) {
+ 		bio->bi_status = BLK_STS_NOTSUPP;
+ 		return false;
+@@ -526,7 +526,7 @@ bool blk_crypto_fallback_bio_prep(struct
+ 
+ int blk_crypto_fallback_evict_key(const struct blk_crypto_key *key)
+ {
+-	return __blk_crypto_evict_key(&blk_crypto_fallback_profile, key);
++	return __blk_crypto_evict_key(blk_crypto_fallback_profile, key);
+ }
+ 
+ static bool blk_crypto_fallback_inited;
+@@ -534,7 +534,6 @@ static int blk_crypto_fallback_init(void
+ {
+ 	int i;
+ 	int err;
+-	struct blk_crypto_profile *profile = &blk_crypto_fallback_profile;
+ 
+ 	if (blk_crypto_fallback_inited)
+ 		return 0;
+@@ -545,18 +544,27 @@ static int blk_crypto_fallback_init(void
+ 	if (err)
+ 		goto out;
+ 
+-	err = blk_crypto_profile_init(profile, blk_crypto_num_keyslots);
+-	if (err)
++	/* Dynamic allocation is needed because of lockdep_register_key(). */
++	blk_crypto_fallback_profile =
++		kzalloc(sizeof(*blk_crypto_fallback_profile), GFP_KERNEL);
++	if (!blk_crypto_fallback_profile) {
++		err = -ENOMEM;
+ 		goto fail_free_bioset;
 +	}
++
++	err = blk_crypto_profile_init(blk_crypto_fallback_profile,
++				      blk_crypto_num_keyslots);
++	if (err)
++		goto fail_free_profile;
+ 	err = -ENOMEM;
  
- 	fpsimd_flush_task_state(target);
+-	profile->ll_ops = blk_crypto_fallback_ll_ops;
+-	profile->max_dun_bytes_supported = BLK_CRYPTO_MAX_IV_SIZE;
++	blk_crypto_fallback_profile->ll_ops = blk_crypto_fallback_ll_ops;
++	blk_crypto_fallback_profile->max_dun_bytes_supported = BLK_CRYPTO_MAX_IV_SIZE;
  
--- 
-2.41.0
-
+ 	/* All blk-crypto modes have a crypto API fallback. */
+ 	for (i = 0; i < BLK_ENCRYPTION_MODE_MAX; i++)
+-		profile->modes_supported[i] = 0xFFFFFFFF;
+-	profile->modes_supported[BLK_ENCRYPTION_MODE_INVALID] = 0;
++		blk_crypto_fallback_profile->modes_supported[i] = 0xFFFFFFFF;
++	blk_crypto_fallback_profile->modes_supported[BLK_ENCRYPTION_MODE_INVALID] = 0;
+ 
+ 	blk_crypto_wq = alloc_workqueue("blk_crypto_wq",
+ 					WQ_UNBOUND | WQ_HIGHPRI |
+@@ -597,7 +605,9 @@ fail_free_keyslots:
+ fail_free_wq:
+ 	destroy_workqueue(blk_crypto_wq);
+ fail_destroy_profile:
+-	blk_crypto_profile_destroy(profile);
++	blk_crypto_profile_destroy(blk_crypto_fallback_profile);
++fail_free_profile:
++	kfree(blk_crypto_fallback_profile);
+ fail_free_bioset:
+ 	bioset_exit(&crypto_bio_split);
+ out:
 
 
