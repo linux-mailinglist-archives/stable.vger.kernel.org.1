@@ -2,50 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AFCA278335F
-	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:23:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5528778329C
+	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:22:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229865AbjHUT5D (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 21 Aug 2023 15:57:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49302 "EHLO
+        id S230271AbjHUUGx (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 21 Aug 2023 16:06:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54576 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229872AbjHUT5D (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 15:57:03 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 48702FA
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 12:57:00 -0700 (PDT)
+        with ESMTP id S230273AbjHUUGw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 16:06:52 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 72887E3
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 13:06:51 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D290664639
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 19:56:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DED44C433C7;
-        Mon, 21 Aug 2023 19:56:58 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 122616496A
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 20:06:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22A7AC433C7;
+        Mon, 21 Aug 2023 20:06:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692647819;
-        bh=YkXt/uxdhqGudtrZQ6zKD6rcsUbTMgKt7hIp3CYYKJg=;
+        s=korg; t=1692648410;
+        bh=ylcf7xCOFcZ9a79OP+JpHb/JkeS/qnUtEm0dMjTehuk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=qHWg7kn9UraZNYXNtirjNVAk2PDN3nLJ+A7SRgM8RBzHo2HSo2mRPeQVBLyIJFKct
-         sfVC9gESOJq+qSzJXaPILEnLYRyp/9Sl0iJSXrGKqMASleg+9WaQJa+Hqk8T3w1fnE
-         c62JIeVYrdzekfkQBBKl+ipJ5Qr8Dxok4q4/5bsY=
+        b=lEen3J6K8Yih4+MQPSm98oq8e+Oo0FJtuu+x2OYL0YIiy7Ir7F7kORgcjn4wmY409
+         nbnKMKid23TKnnI68JbtWoHEivuCEyXDHwXnw//Yv1WrMa5PXOcM0mFy1GPFLo9r4N
+         zK+U3huhdockDJphpUqD/W0bCNX03SOIY9cu3JfA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Kailang Yang <kailang@realtek.com>,
-        Takashi Iwai <tiwai@suse.de>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 149/194] ALSA: hda/realtek - Remodified 3k pull low procedure
-Date:   Mon, 21 Aug 2023 21:42:08 +0200
-Message-ID: <20230821194129.273424732@linuxfoundation.org>
+        patches@lists.linux.dev, Ido Schimmel <idosch@idosch.org>,
+        Ziyang Xuan <william.xuanziyang@huawei.com>,
+        Simon Horman <horms@kernel.org>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 166/234] team: Fix incorrect deletion of ETH_P_8021AD protocol vid from slaves
+Date:   Mon, 21 Aug 2023 21:42:09 +0200
+Message-ID: <20230821194136.173502257@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230821194122.695845670@linuxfoundation.org>
-References: <20230821194122.695845670@linuxfoundation.org>
+In-Reply-To: <20230821194128.754601642@linuxfoundation.org>
+References: <20230821194128.754601642@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -53,61 +56,52 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Kailang Yang <kailang@realtek.com>
+From: Ziyang Xuan <william.xuanziyang@huawei.com>
 
-[ Upstream commit 46cdff2369cbdf8d78081a22526e77bd1323f563 ]
+[ Upstream commit dafcbce07136d799edc4c67f04f9fd69ff1eac1f ]
 
-Set spec->en_3kpull_low default to true.
-Then fillback ALC236 and ALC257 to false.
+Similar to commit 01f4fd270870 ("bonding: Fix incorrect deletion of
+ETH_P_8021AD protocol vid from slaves"), we can trigger BUG_ON(!vlan_info)
+in unregister_vlan_dev() with the following testcase:
 
-Additional note: this addresses a regression caused by the previous
-fix 69ea4c9d02b7 ("ALSA: hda/realtek - remove 3k pull low procedure").
-The previous workaround was applied too widely without necessity,
-which resulted in the pop noise at PM again.  This patch corrects the
-condition and restores the old behavior for the devices that don't
-suffer from the original problem.
+  # ip netns add ns1
+  # ip netns exec ns1 ip link add team1 type team
+  # ip netns exec ns1 ip link add team_slave type veth peer veth2
+  # ip netns exec ns1 ip link set team_slave master team1
+  # ip netns exec ns1 ip link add link team_slave name team_slave.10 type vlan id 10 protocol 802.1ad
+  # ip netns exec ns1 ip link add link team1 name team1.10 type vlan id 10 protocol 802.1ad
+  # ip netns exec ns1 ip link set team_slave nomaster
+  # ip netns del ns1
 
-Fixes: 69ea4c9d02b7 ("ALSA: hda/realtek - remove 3k pull low procedure")
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=217732
-Link: https://lore.kernel.org/r/01e212a538fc407ca6edd10b81ff7b05@realtek.com
-Signed-off-by: Kailang Yang <kailang@realtek.com>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Add S-VLAN tag related features support to team driver. So the team driver
+will always propagate the VLAN info to its slaves.
+
+Fixes: 8ad227ff89a7 ("net: vlan: add 802.1ad support")
+Suggested-by: Ido Schimmel <idosch@idosch.org>
+Signed-off-by: Ziyang Xuan <william.xuanziyang@huawei.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/20230814032301.2804971-1-william.xuanziyang@huawei.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/net/team/team.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index de6bd8a9871cf..aa475154c582f 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -10620,6 +10620,7 @@ static int patch_alc269(struct hda_codec *codec)
- 	spec = codec->spec;
- 	spec->gen.shared_mic_vref_pin = 0x18;
- 	codec->power_save_node = 0;
-+	spec->en_3kpull_low = true;
+diff --git a/drivers/net/team/team.c b/drivers/net/team/team.c
+index d3dc22509ea58..382756c3fb837 100644
+--- a/drivers/net/team/team.c
++++ b/drivers/net/team/team.c
+@@ -2200,7 +2200,9 @@ static void team_setup(struct net_device *dev)
  
- #ifdef CONFIG_PM
- 	codec->patch_ops.suspend = alc269_suspend;
-@@ -10702,14 +10703,16 @@ static int patch_alc269(struct hda_codec *codec)
- 		spec->shutup = alc256_shutup;
- 		spec->init_hook = alc256_init;
- 		spec->gen.mixer_nid = 0; /* ALC256 does not have any loopback mixer path */
--		if (codec->bus->pci->vendor == PCI_VENDOR_ID_AMD)
--			spec->en_3kpull_low = true;
-+		if (codec->core.vendor_id == 0x10ec0236 &&
-+		    codec->bus->pci->vendor != PCI_VENDOR_ID_AMD)
-+			spec->en_3kpull_low = false;
- 		break;
- 	case 0x10ec0257:
- 		spec->codec_variant = ALC269_TYPE_ALC257;
- 		spec->shutup = alc256_shutup;
- 		spec->init_hook = alc256_init;
- 		spec->gen.mixer_nid = 0;
-+		spec->en_3kpull_low = false;
- 		break;
- 	case 0x10ec0215:
- 	case 0x10ec0245:
+ 	dev->hw_features = TEAM_VLAN_FEATURES |
+ 			   NETIF_F_HW_VLAN_CTAG_RX |
+-			   NETIF_F_HW_VLAN_CTAG_FILTER;
++			   NETIF_F_HW_VLAN_CTAG_FILTER |
++			   NETIF_F_HW_VLAN_STAG_RX |
++			   NETIF_F_HW_VLAN_STAG_FILTER;
+ 
+ 	dev->hw_features |= NETIF_F_GSO_ENCAP_ALL;
+ 	dev->features |= dev->hw_features;
 -- 
 2.40.1
 
