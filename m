@@ -2,50 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9C54E783500
-	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 23:53:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6A666783504
+	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 23:54:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230387AbjHUVxy (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 21 Aug 2023 17:53:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40416 "EHLO
+        id S231135AbjHUVyT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 21 Aug 2023 17:54:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53220 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230266AbjHUVxy (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 17:53:54 -0400
-Received: from mail-pf1-x42d.google.com (mail-pf1-x42d.google.com [IPv6:2607:f8b0:4864:20::42d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A1E6013D
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 14:53:52 -0700 (PDT)
-Received: by mail-pf1-x42d.google.com with SMTP id d2e1a72fcca58-68a410316a2so1031126b3a.0
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 14:53:52 -0700 (PDT)
+        with ESMTP id S230266AbjHUVyT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 17:54:19 -0400
+Received: from mail-pl1-x62c.google.com (mail-pl1-x62c.google.com [IPv6:2607:f8b0:4864:20::62c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A57E185
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 14:54:15 -0700 (PDT)
+Received: by mail-pl1-x62c.google.com with SMTP id d9443c01a7336-1bf48546ccfso17721875ad.2
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 14:54:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1692654832; x=1693259632;
+        d=broadcom.com; s=google; t=1692654854; x=1693259654;
         h=mime-version:references:in-reply-to:message-id:date:subject:cc:to
          :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=WFcw8A8Ji+3hvjrwQDEX1jrqB1IOTmzd2JMOWPjY+PI=;
-        b=D3MwPbGnieb2VNgHhJG/dUygHen6mfqY1OQSgLfZFC/9RJsjKGxyin84N/EnXPql99
-         McWYrPugx8pEhpvI0ziJ+OceTXyZgBoKNymfss3Vp9rq9LuyKXxtTACKlO/miRrPst4M
-         VmszrjpZNVq/u5tJ4j/+Kk2Wc6zNDfokvpQGU=
+        bh=g9nkvIcbyN5bbdjpE8YvnPHwcJYB/6iwYY4DWEyPy0U=;
+        b=TRk8y7HimkRGZrvNtPA41uTtKTwXIoBd6I03iTvpIGrOW09p9sOEBXrP89HrH9ZLxw
+         cZlqCStPyaeIqHogkGH8YFREG1F6piMYLc5GXAeG/BncWi1crwH1+M5ziYA01CCLQF0P
+         L3J9D8Aj4cdPuUHtMQ9jQlTmDKp/DhB05LdJQ=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692654832; x=1693259632;
+        d=1e100.net; s=20221208; t=1692654854; x=1693259654;
         h=mime-version:references:in-reply-to:message-id:date:subject:cc:to
          :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=WFcw8A8Ji+3hvjrwQDEX1jrqB1IOTmzd2JMOWPjY+PI=;
-        b=chqV1cuHHq2vEhVEQ/9lx1EOUvy83xSmbdV3WNQFS4W546bGaO0F6L5YVZ9kCy5tkj
-         kaTuzfxYQ3ZZdXFt+lPWHHfQo11soYcVGObl3iqMF2JrkDmqHpxAcauv1Me5BWWb+Jct
-         fy+o+XGlNlpOqIJdxjXbCLMlo36jIEGuNdbRIo72eu9YoogCmiD0T1Pgdrh4rOVPw3Pq
-         YfmOuBiaP+FEtUqY/9pRXnIbmHZc4pQwzFnMFdJuiDjjt1HHlQWNJwjNvYO0LYYZ/rnm
-         OfB0IMc46YiuiltLRSmCsadeAkt90Z0Opm0yhRekJV83WuiNht+8ud0mE8I/Wna2Bv8R
-         DwpQ==
-X-Gm-Message-State: AOJu0YxT/2x/MY+wW97KE5tH4zoCQS6uoe7hR6SBt1UrrD3kcNtgAtlm
-        msO/54wrU+l9E1i58ARfZD/8wtaH/EWEUhqOy9tFH9DTUuK5jZsRi3s+NT97HOr81gcnD8oUZ+U
-        tfmLN0wHVmrWMK0SJqOzEAYPbhwF2TiUaxc3LWHF2UO6Kn2oTb2KLDWdmxdhynak0ZjNTYJHf+x
-        Iddfe2ANeqXA==
-X-Google-Smtp-Source: AGHT+IFF9NQu4s+2wsWcjkY9usJ/s1YOa8+RxH/KvQiBxc/agIr/sKP5Kxc0TbplCHnaWFiECp54Lg==
-X-Received: by 2002:a05:6a00:234a:b0:689:eed5:609b with SMTP id j10-20020a056a00234a00b00689eed5609bmr6584215pfj.27.1692654831582;
-        Mon, 21 Aug 2023 14:53:51 -0700 (PDT)
+        bh=g9nkvIcbyN5bbdjpE8YvnPHwcJYB/6iwYY4DWEyPy0U=;
+        b=IxxIyW13nULAaJ84A1dQUNPwmuI/vEyQVXNiEZeEGvJWXJSMp5vUQ22nrs1UwulAkD
+         /wJNhwORnbyL6UljS4pyvaxXp1DbLvyih3oATXINrWV740cZJvr5I2OcRQ0c1WRdrH+p
+         bHoFqsZtk4AUlAlCVQbx+GwbUz+lcRMMbsjzvnKkKfXl7+45HyBRUTPQg5slTmvHL1CM
+         05jexN6GpoxAzSO5RpxOjxbKRNAR09e7pIZfdTJU1Tf3xFReiM1fLHp+wFOMmVgXx+24
+         ChM5e5K4Tv8f9UE0v5W6b/Vh5ODv3uogHBkfbyttIyMzESmbaTBpo5mbbfEUhyHchDCY
+         RbSg==
+X-Gm-Message-State: AOJu0YzZe8hgWr3VFR5F0XzFdWA0ix6jEfcMxOMwsEAKYj8bgtbB8Zz/
+        0Lq5XnQn7FKM3Wtph33H1ig8BSuT2bLggshSFYJ3tk1vm9XxJ2nL6nebGIutguovEubo25Mxhos
+        rPTc0QfLkr47HcOfFSdkrxheE4+l2sV6iI4FxpBcV+CcTUqbzvXyWhNaY4dtSI+cSvGxCINBXMG
+        ycJ6ICfGPvhA==
+X-Google-Smtp-Source: AGHT+IHh9ty2CycuUXpwEMLBU6aXGOZVQkATtihtpRrC5tv87ckbu2bHDsjEx/325B+xJRlVLd7iRw==
+X-Received: by 2002:a17:903:278f:b0:1b8:c1f:fcfc with SMTP id jw15-20020a170903278f00b001b80c1ffcfcmr4911565plb.11.1692654854316;
+        Mon, 21 Aug 2023 14:54:14 -0700 (PDT)
 Received: from fainelli-desktop.igp.broadcom.net ([192.19.223.252])
-        by smtp.gmail.com with ESMTPSA id d5-20020aa78685000000b00689f8dc26c2sm1698956pfo.133.2023.08.21.14.53.50
+        by smtp.gmail.com with ESMTPSA id t24-20020a1709028c9800b001bb1f0605b2sm7487455plo.214.2023.08.21.14.54.12
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 21 Aug 2023 14:53:51 -0700 (PDT)
+        Mon, 21 Aug 2023 14:54:13 -0700 (PDT)
 From:   Florian Fainelli <florian.fainelli@broadcom.com>
 To:     stable@vger.kernel.org
 Cc:     Justin Chen <justin.chen@broadcom.com>,
@@ -63,15 +63,15 @@ Cc:     Justin Chen <justin.chen@broadcom.com>,
         linux-kernel@vger.kernel.org (open list),
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH stable 4.19] net: phy: broadcom: stub c45 read/write for 54810
-Date:   Mon, 21 Aug 2023 14:53:47 -0700
-Message-Id: <20230821215348.3123487-1-florian.fainelli@broadcom.com>
+Subject: [PATCH stable 4.14] net: phy: broadcom: stub c45 read/write for 54810
+Date:   Mon, 21 Aug 2023 14:54:10 -0700
+Message-Id: <20230821215410.3123513-1-florian.fainelli@broadcom.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <2023082133-mashing-flick-3a50@gregkh>
-References: <2023082133-mashing-flick-3a50@gregkh>
+In-Reply-To: <2023082134-chain-tubular-c681@gregkh>
+References: <2023082134-chain-tubular-c681@gregkh>
 MIME-Version: 1.0
 Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-        boundary="000000000000fe3306060375e9ec"
+        boundary="000000000000581f22060375eb02"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
@@ -82,7 +82,7 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
---000000000000fe3306060375e9ec
+--000000000000581f22060375eb02
 Content-Transfer-Encoding: 8bit
 
 From: Justin Chen <justin.chen@broadcom.com>
@@ -99,17 +99,17 @@ Signed-off-by: Justin Chen <justin.chen@broadcom.com>
 Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
 Link: https://lore.kernel.org/r/1691901708-28650-1-git-send-email-justin.chen@broadcom.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[florian: resolved conflicts in 4.19]
+[florian: resolved conflicts in 4.14]
 Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
 ---
  drivers/net/phy/broadcom.c | 13 +++++++++++++
  1 file changed, 13 insertions(+)
 
 diff --git a/drivers/net/phy/broadcom.c b/drivers/net/phy/broadcom.c
-index 94622d119abc..49fb62d02a76 100644
+index 97e017a54eb5..2fbb1277b3a8 100644
 --- a/drivers/net/phy/broadcom.c
 +++ b/drivers/net/phy/broadcom.c
-@@ -421,6 +421,17 @@ static int bcm5482_read_status(struct phy_device *phydev)
+@@ -403,6 +403,17 @@ static int bcm5482_read_status(struct phy_device *phydev)
  	return err;
  }
  
@@ -127,7 +127,7 @@ index 94622d119abc..49fb62d02a76 100644
  static int bcm5481_config_aneg(struct phy_device *phydev)
  {
  	struct device_node *np = phydev->mdio.dev.of_node;
-@@ -684,6 +695,8 @@ static struct phy_driver broadcom_drivers[] = {
+@@ -650,6 +661,8 @@ static struct phy_driver broadcom_drivers[] = {
  	.name           = "Broadcom BCM54810",
  	.features       = PHY_GBIT_FEATURES,
  	.flags          = PHY_HAS_INTERRUPT,
@@ -135,12 +135,12 @@ index 94622d119abc..49fb62d02a76 100644
 +	.write_mmd	= bcm54810_write_mmd,
  	.config_init    = bcm54xx_config_init,
  	.config_aneg    = bcm5481_config_aneg,
- 	.ack_interrupt  = bcm_phy_ack_intr,
+ 	.read_status    = genphy_read_status,
 -- 
 2.34.1
 
 
---000000000000fe3306060375e9ec
+--000000000000581f22060375eb02
 Content-Type: application/pkcs7-signature; name="smime.p7s"
 Content-Transfer-Encoding: base64
 Content-Disposition: attachment; filename="smime.p7s"
@@ -211,14 +211,14 @@ kNGap1mHJ+JngGzZCz+dDiHRQKGpXLxkHX0BvEDZLW6LGOJ83ImrW38YMOo3ZYnCYNHA9qDOakiw
 NxADYvcRBA0ySL6sZpj8BIIhWiXiuusuBmt2Mak2eEv0xDbovE6Z6hYyl/ZnRadbgK/ClgbY3w+O
 AfUXEZ0xggJtMIICaQIBATBrMFsxCzAJBgNVBAYTAkJFMRkwFwYDVQQKExBHbG9iYWxTaWduIG52
 LXNhMTEwLwYDVQQDEyhHbG9iYWxTaWduIEdDQyBSMyBQZXJzb25hbFNpZ24gMiBDQSAyMDIwAgwT
-/D/YSkVckoN0L+QwDQYJYIZIAWUDBAIBBQCggdQwLwYJKoZIhvcNAQkEMSIEIJF0/piwLZ5wJKWq
-b2w4KL3JgCmBKmVToGrcXN2moea/MBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcN
-AQkFMQ8XDTIzMDgyMTIxNTM1MlowaQYJKoZIhvcNAQkPMVwwWjALBglghkgBZQMEASowCwYJYIZI
+/D/YSkVckoN0L+QwDQYJYIZIAWUDBAIBBQCggdQwLwYJKoZIhvcNAQkEMSIEIDiVOz1DqtzYVMcq
+A1j8G5RwhjQkTStHPDWetRMIUnHfMBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcN
+AQkFMQ8XDTIzMDgyMTIxNTQxNFowaQYJKoZIhvcNAQkPMVwwWjALBglghkgBZQMEASowCwYJYIZI
 AWUDBAEWMAsGCWCGSAFlAwQBAjAKBggqhkiG9w0DBzALBgkqhkiG9w0BAQowCwYJKoZIhvcNAQEH
-MAsGCWCGSAFlAwQCATANBgkqhkiG9w0BAQEFAASCAQDr/X4wQMahoK1TQcEzBN7Es6pWwQwdp5OZ
-llY4WwW/ET7JEWvNwDOcGvf5IU+9P9nBccfBO1zhPjVVAnRsJrPQLhmDF70+ogSHXkNwvQ3mLRTb
-j3lK7ABxO7o1KtmHHYgqU/AEDJpWISQaaZc7cKBjtve64xf7hzlypwCnqx5iWXLx7wfBhiXCznt1
-ecfIhZl/uBJ9UqHXbPXZtWJT57vc0074zvqMKHeO6mn/2y6M0W/+zNf+vOiEYX/+QgYD+kpNfhUT
-v2a14NhwnPlTr/6MxneRHCp5e0wjCVVr4JF1lCW5e6nkqx+OkOS0DU2yBgD1uR1YmOKywTLzhn85
-oVfU
---000000000000fe3306060375e9ec--
+MAsGCWCGSAFlAwQCATANBgkqhkiG9w0BAQEFAASCAQDeqgwLW2qYPYn8eK9Q2Tc/hVKwXPnA0osg
+CgAoRtQyxfYZgDYOOwINFWAHsg8ZvYJ+MCTuArXUD3uXbCea/gLJ6UqlxCYjov9E4j5nf2EKSFF+
+4xNejFZ36TNZwNyW1Pwqe5iHw4TEJIei+m7Fr48De9QtHan3n7wFiKqfAOe1dJlxAsQEuEEvUNnR
+8Hwl6/vIs1DvhpHiy93Te9yP6O5wDAjTHtVeuYOw7pd6VuuWJRtt5Q8GusLqjhGp5T+4HgbpXAWA
+PCt7/D6V0jercIF0lsrw1Tg2qamfZoRbSzcNuKITADB1UpyCU2a73eGhskkd4AfdG8f893nQRCIk
+popa
+--000000000000581f22060375eb02--
