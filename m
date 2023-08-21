@@ -2,47 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4D90078336B
-	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:23:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A0A13783379
+	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:23:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229680AbjHUTwu (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 21 Aug 2023 15:52:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51014 "EHLO
+        id S230142AbjHUUCh (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 21 Aug 2023 16:02:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56954 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229667AbjHUTwu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 15:52:50 -0400
+        with ESMTP id S230144AbjHUUCe (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 16:02:34 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A415127
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 12:52:44 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71BF5123
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 13:02:33 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2C7AE644BE
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 19:52:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E525C433C7;
-        Mon, 21 Aug 2023 19:52:43 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 02C936480A
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 20:02:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1624BC433C7;
+        Mon, 21 Aug 2023 20:02:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692647563;
-        bh=vKyQ+AZoQ+qSywjdfSuB90jJrIlZ5oWkJvriPVoQBXQ=;
+        s=korg; t=1692648152;
+        bh=cRTc8eRyLHrtCb90g9KlXfs0GJ+1q7rJi62JBEFsFQA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=BVIdBvNBkjYPDsM844tnL8Y51SsKdPiPIs6nFZfrh1SFSD5ClB0yatw8PhwW+4my6
-         xQliw3BLVFc83h2KTFM8YisGKzTisUcz4/3tpIsW8k0ozbPc8/d7Yq5pqotOwmJahH
-         NrUINtOzeChbl+V8dA12UIkiiOdVjAfNRIBOt9gA=
+        b=H1X1SInKiSb7YMp5AWPE5Tr0BEGfJ/ij/aCvn27+yH+u8sF27ikh8r4JpyFxKGvWR
+         76rHL1+xKSzRL9ZPSMAVzNkQXNfFbVvfeN7i5i/OUWgEAFACN1EnbHznFEeIEHxxzk
+         41nolz4zbPhzOGMoQFzVUtcm6xy6NxjbMexvrfiM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Matthew Anderson <ruinairas1992@gmail.com>,
-        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-        Jakub Kicinski <kuba@kernel.org>,
+        patches@lists.linux.dev, BassCheck <bass@buaa.edu.cn>,
+        Tuo Li <islituo@gmail.com>, Takashi Iwai <tiwai@suse.de>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 058/194] Bluetooth: btusb: Add MT7922 bluetooth ID for the Asus Ally
+Subject: [PATCH 6.4 074/234] ALSA: hda: fix a possible null-pointer dereference due to data race in snd_hdac_regmap_sync()
 Date:   Mon, 21 Aug 2023 21:40:37 +0200
-Message-ID: <20230821194125.320695793@linuxfoundation.org>
+Message-ID: <20230821194132.050231426@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230821194122.695845670@linuxfoundation.org>
-References: <20230821194122.695845670@linuxfoundation.org>
+In-Reply-To: <20230821194128.754601642@linuxfoundation.org>
+References: <20230821194128.754601642@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,35 +54,59 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Matthew Anderson <ruinairas1992@gmail.com>
+From: Tuo Li <islituo@gmail.com>
 
-[ Upstream commit fa01eba11f0e57c767a5eab5291c7a01407a00be ]
+[ Upstream commit 1f4a08fed450db87fbb5ff5105354158bdbe1a22 ]
 
-Adding the device ID from the Asus Ally gets the bluetooth working
-on the device.
+The variable codec->regmap is often protected by the lock
+codec->regmap_lock when is accessed. However, it is accessed without
+holding the lock when is accessed in snd_hdac_regmap_sync():
 
-Signed-off-by: Matthew Anderson <ruinairas1992@gmail.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+  if (codec->regmap)
+
+In my opinion, this may be a harmful race, because if codec->regmap is
+set to NULL right after the condition is checked, a null-pointer
+dereference can occur in the called function regcache_sync():
+
+  map->lock(map->lock_arg); --> Line 360 in drivers/base/regmap/regcache.c
+
+To fix this possible null-pointer dereference caused by data race, the
+mutex_lock coverage is extended to protect the if statement as well as the
+function call to regcache_sync().
+
+[ Note: the lack of the regmap_lock itself is harmless for the current
+  codec driver implementations, as snd_hdac_regmap_sync() is only for
+  PM runtime resume that is prohibited during the codec probe.
+  But the change makes the whole code more consistent, so it's merged
+  as is -- tiwai ]
+
+Reported-by: BassCheck <bass@buaa.edu.cn>
+Signed-off-by: Tuo Li <islituo@gmail.com>
+Link: https://lore.kernel.org/r/20230703031016.1184711-1-islituo@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/btusb.c | 3 +++
- 1 file changed, 3 insertions(+)
+ sound/hda/hdac_regmap.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
-index faad19b396d50..d6f405763c56f 100644
---- a/drivers/bluetooth/btusb.c
-+++ b/drivers/bluetooth/btusb.c
-@@ -600,6 +600,9 @@ static const struct usb_device_id blacklist_table[] = {
- 	{ USB_DEVICE(0x0489, 0xe0d9), .driver_info = BTUSB_MEDIATEK |
- 						     BTUSB_WIDEBAND_SPEECH |
- 						     BTUSB_VALID_LE_STATES },
-+	{ USB_DEVICE(0x0489, 0xe0f5), .driver_info = BTUSB_MEDIATEK |
-+						     BTUSB_WIDEBAND_SPEECH |
-+						     BTUSB_VALID_LE_STATES },
- 	{ USB_DEVICE(0x13d3, 0x3568), .driver_info = BTUSB_MEDIATEK |
- 						     BTUSB_WIDEBAND_SPEECH |
- 						     BTUSB_VALID_LE_STATES },
+diff --git a/sound/hda/hdac_regmap.c b/sound/hda/hdac_regmap.c
+index fe3587547cfec..39610a15bcc98 100644
+--- a/sound/hda/hdac_regmap.c
++++ b/sound/hda/hdac_regmap.c
+@@ -597,10 +597,9 @@ EXPORT_SYMBOL_GPL(snd_hdac_regmap_update_raw_once);
+  */
+ void snd_hdac_regmap_sync(struct hdac_device *codec)
+ {
+-	if (codec->regmap) {
+-		mutex_lock(&codec->regmap_lock);
++	mutex_lock(&codec->regmap_lock);
++	if (codec->regmap)
+ 		regcache_sync(codec->regmap);
+-		mutex_unlock(&codec->regmap_lock);
+-	}
++	mutex_unlock(&codec->regmap_lock);
+ }
+ EXPORT_SYMBOL_GPL(snd_hdac_regmap_sync);
 -- 
 2.40.1
 
