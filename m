@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 79A8D78282D
-	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 13:48:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4EFBF78282E
+	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 13:48:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232398AbjHULsD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 21 Aug 2023 07:48:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38338 "EHLO
+        id S232452AbjHULsH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 21 Aug 2023 07:48:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38424 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232923AbjHULsD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 07:48:03 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 55EC310E
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 04:47:37 -0700 (PDT)
+        with ESMTP id S232840AbjHULsG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 07:48:06 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9DB1F119
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 04:47:43 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E9B436321E
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 11:47:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC372C433C8;
-        Mon, 21 Aug 2023 11:47:33 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6426463201
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 11:47:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25C40C433C9;
+        Mon, 21 Aug 2023 11:47:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692618454;
-        bh=3clqMfpoSOxWvy/Fb4SJ7Q6B5udWmAgyE3rO8TbDOus=;
+        s=korg; t=1692618462;
+        bh=lQPR+zxA7m0nEVKtXqJlpO4tl/LnNBFCkjmahJJY6eg=;
         h=Subject:To:Cc:From:Date:From;
-        b=sDVOFAPfTMAGUHlNmGEFsT2vsxbA/TS/VaYHw2tvJit9/fXkhFv4R6jZgtmLE6QRA
-         CBzcbSCGEajipKA/Jg0JtrKd0vxLM4el8CI9G7Ujk7zujarWh9xyw7pAf+VHStIo6l
-         R/nSOirrw65Owd1FXv65qFf4QtnKYP7w1/aORzz0=
-Subject: FAILED: patch "[PATCH] drm/qxl: fix UAF on handle creation" failed to apply to 4.19-stable tree
+        b=UA7DnK598yOplHLtFtH62FWbUQcOKAgcO/bNTftKEtjiPqJgAX8VdIVqhrmBW0XAS
+         yxOPUOP3iAFcsmLUpRwIImXeqkwdUNXrX++RIKqvmtwOp+e/Su7O/097BPcc+k3sLs
+         qtrTDPL0aTONgz++AhGUNON3DTEOMgoBrF9RBg8w=
+Subject: FAILED: patch "[PATCH] drm/qxl: fix UAF on handle creation" failed to apply to 4.14-stable tree
 To:     wander@redhat.com, airlied@redhat.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Mon, 21 Aug 2023 13:47:31 +0200
-Message-ID: <2023082131-humorous-moonbeam-70d6@gregkh>
+Date:   Mon, 21 Aug 2023 13:47:36 +0200
+Message-ID: <2023082136-escapist-shell-3d59@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-3.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,HEXHASH_WORD,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=no
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -49,19 +49,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 4.19-stable tree.
+The patch below does not apply to the 4.14-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
 git checkout FETCH_HEAD
 git cherry-pick -x c611589b4259ed63b9b77be6872b1ce07ec0ac16
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023082131-humorous-moonbeam-70d6@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023082136-escapist-shell-3d59@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
 
 Possible dependencies:
 
@@ -80,6 +80,11 @@ f3bc22f04d44 ("drm/qxl: use QXL_GEM_DOMAIN_SURFACE for dumb gem objects")
 1b000494978d ("drm/qxl: Use 'unsigned int' instead of 'usigned'")
 408799eb4ad4 ("drm/qxl: Add line after variable declarations")
 bf8744e40cd6 ("qxl: refactor to use drm_fb_helper_fbdev_setup")
+cc4e44d51569 ("qxl: drop dummy functions")
+a6d3c4d79822 ("qxl: hook monitors_config updates into crtc, not encoder.")
+998010bfae6e ("qxl: move qxl_send_monitors_config()")
+735581a0a13c ("qxl: remove qxl_io_log()")
+2793c1d77aa8 ("drm/qxl: Replace drm_gem_object_reference/unreference() with _get/put()")
 
 thanks,
 
