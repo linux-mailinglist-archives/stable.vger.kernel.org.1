@@ -2,45 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8C7F3782836
-	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 13:48:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 53D74782857
+	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 13:56:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232592AbjHULs7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 21 Aug 2023 07:48:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40142 "EHLO
+        id S229833AbjHUL4W (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 21 Aug 2023 07:56:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49128 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232003AbjHULs5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 07:48:57 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6DC9A8F
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 04:48:55 -0700 (PDT)
+        with ESMTP id S233734AbjHUL4V (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 07:56:21 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D13BAC7
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 04:56:12 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id EFDA163257
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 11:48:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC1B3C433C8;
-        Mon, 21 Aug 2023 11:48:53 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6CA3D63077
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 11:56:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68B0DC433C8;
+        Mon, 21 Aug 2023 11:56:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692618534;
-        bh=Wk+cNXSfGeCto2/7MbwS+IY4Xf1WE+V01DVjbTYkgEg=;
+        s=korg; t=1692618971;
+        bh=xoZnc3W7lGQDLAPxztx+RPyIOL39rnFKYpozA9wRch4=;
         h=Subject:To:Cc:From:Date:From;
-        b=FiwXn7/I0gh2PriFifPYecdxqFxqkZMtUT6n0zpKgl0F6NYXMm+iZf8x/JeVeJ8XJ
-         WKx/wKqW5aU9pcRg4Tv63MwN7yWnKtFQnBPf+Y3DSjtqjJatdo6KmIH0ONQn70xzr5
-         Qy4mnE/ZcctCBl7yZSP1nFEK6ZIm1FHXXm5lno48=
-Subject: FAILED: patch "[PATCH] drm/amd/pm: disallow the fan setting if there is no fan on" failed to apply to 6.1-stable tree
-To:     kenneth.feng@amd.com, alexander.deucher@amd.com, lijo.lazar@amd.com
+        b=Cgl6KM8uZJwtRWSp0y/ThNoYRdn1+E7jQ80N0IVjyP5UPhrDEbldKRfNlHjJV5gCd
+         MDF7/w0/WFvSZhmUwYGahua6d3DQokPpXHInKdFvq3af620dai+YKBnnnpL3cd9aP4
+         /UNBINSkpb6M9x6hxx4f8/vZIh0O630guGDoSQn8=
+Subject: FAILED: patch "[PATCH] drm/amdgpu: skip fence GFX interrupts disable/enable for S0ix" failed to apply to 5.15-stable tree
+To:     Tim.Huang@amd.com, alexander.deucher@amd.com,
+        mario.limonciello@amd.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Mon, 21 Aug 2023 13:48:43 +0200
-Message-ID: <2023082143-underage-slain-d7a5@gregkh>
+Date:   Mon, 21 Aug 2023 13:56:09 +0200
+Message-ID: <2023082108-wham-accent-52a6@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -48,30 +50,24 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x b6360a5ec31d160d58c1a64387b323b556cedca8
+git cherry-pick -x f1740b1ab2703b2a057da7cf33b03297e0381aa0
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023082143-underage-slain-d7a5@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023082108-wham-accent-52a6@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
-b6360a5ec31d ("drm/amd/pm: disallow the fan setting if there is no fan on smu 13.0.0")
-61319b8e3b58 ("drm/amd/pm: disable the SMU13 OD feature support temporarily")
-8f4f5f0b901a ("drm/amd/pm: fulfill SMU13 OD settings init and restore")
-f6c0cd55fed8 ("drm/amd/pm: Enable ecc_info table support for smu v13_0_10")
-1794f6a9535b ("drm/amd/pm: enable GPO dynamic control support for SMU13.0.0")
-48aa62f07467 ("drm/amd/pm: Enable bad memory page/channel recording support for smu v13_0_0")
-8ae5a38c8cb3 ("drm/amd/pm: enable runpm support over BACO for SMU13.0.0")
-60cfad329ab8 ("drm/amd/pm: enable mode1 reset on smu_v13_0_10")
+f1740b1ab270 ("drm/amdgpu: skip fence GFX interrupts disable/enable for S0ix")
+3083b1007d4b ("drm/amdgpu: skip disabling fence driver src_irqs when device is unplugged")
 
 thanks,
 
@@ -79,41 +75,93 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From b6360a5ec31d160d58c1a64387b323b556cedca8 Mon Sep 17 00:00:00 2001
-From: Kenneth Feng <kenneth.feng@amd.com>
-Date: Wed, 9 Aug 2023 18:06:05 +0800
-Subject: [PATCH] drm/amd/pm: disallow the fan setting if there is no fan on
- smu 13.0.0
+From f1740b1ab2703b2a057da7cf33b03297e0381aa0 Mon Sep 17 00:00:00 2001
+From: Tim Huang <Tim.Huang@amd.com>
+Date: Mon, 14 Aug 2023 15:13:04 +0800
+Subject: [PATCH] drm/amdgpu: skip fence GFX interrupts disable/enable for S0ix
 
-drm/amd/pm: disallow the fan setting if there is no fan on smu 13.0.0
-V2: depend on pm.no_fan to check
+GFX v11.0.1 reported fence fallback timer expired issue on
+SDMA and GFX rings after S0ix resume. This is generated by
+EOP interrupts are disabled when S0ix suspend but fails to
+re-enable when resume because of the GFX is in GFXOFF.
 
-Signed-off-by: Kenneth Feng <kenneth.feng@amd.com>
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Reviewed-by: Lijo Lazar <lijo.lazar@amd.com>
+[  203.349571] [drm] Fence fallback timer expired on ring sdma0
+[  203.349572] [drm] Fence fallback timer expired on ring gfx_0.0.0
+[  203.861635] [drm] Fence fallback timer expired on ring gfx_0.0.0
+
+For S0ix, GFX is in GFXOFF state, avoid to touch the GFX registers
+to configure the fence driver interrupts for rings that belong to GFX.
+The interrupts configuration will be restored by GFXOFF exit.
+
+Signed-off-by: Tim Huang <Tim.Huang@amd.com>
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Cc: stable@vger.kernel.org
 
-diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c
-index fddcd834bcec..0fb6be11a0cc 100644
---- a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c
-@@ -331,6 +331,7 @@ static int smu_v13_0_0_check_powerplay_table(struct smu_context *smu)
- 	struct smu_13_0_0_powerplay_table *powerplay_table =
- 		table_context->power_play_table;
- 	struct smu_baco_context *smu_baco = &smu->smu_baco;
-+	PPTable_t *pptable = smu->smu_table.driver_pptable;
- #if 0
- 	PPTable_t *pptable = smu->smu_table.driver_pptable;
- 	const OverDriveLimits_t * const overdrive_upperlimits =
-@@ -371,6 +372,9 @@ static int smu_v13_0_0_check_powerplay_table(struct smu_context *smu)
- 	table_context->thermal_controller_type =
- 		powerplay_table->thermal_controller_type;
- 
-+	smu->adev->pm.no_fan =
-+		!(pptable->SkuTable.FeaturesToRun[0] & (1 << FEATURE_FAN_CONTROL_BIT));
-+
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_fence.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_fence.c
+index c694b41f6461..7537f5aa76f0 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_fence.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_fence.c
+@@ -551,6 +551,41 @@ int amdgpu_fence_driver_sw_init(struct amdgpu_device *adev)
  	return 0;
  }
  
++/**
++ * amdgpu_fence_need_ring_interrupt_restore - helper function to check whether
++ * fence driver interrupts need to be restored.
++ *
++ * @ring: ring that to be checked
++ *
++ * Interrupts for rings that belong to GFX IP don't need to be restored
++ * when the target power state is s0ix.
++ *
++ * Return true if need to restore interrupts, false otherwise.
++ */
++static bool amdgpu_fence_need_ring_interrupt_restore(struct amdgpu_ring *ring)
++{
++	struct amdgpu_device *adev = ring->adev;
++	bool is_gfx_power_domain = false;
++
++	switch (ring->funcs->type) {
++	case AMDGPU_RING_TYPE_SDMA:
++	/* SDMA 5.x+ is part of GFX power domain so it's covered by GFXOFF */
++		if (adev->ip_versions[SDMA0_HWIP][0] >= IP_VERSION(5, 0, 0))
++			is_gfx_power_domain = true;
++		break;
++	case AMDGPU_RING_TYPE_GFX:
++	case AMDGPU_RING_TYPE_COMPUTE:
++	case AMDGPU_RING_TYPE_KIQ:
++	case AMDGPU_RING_TYPE_MES:
++		is_gfx_power_domain = true;
++		break;
++	default:
++		break;
++	}
++
++	return !(adev->in_s0ix && is_gfx_power_domain);
++}
++
+ /**
+  * amdgpu_fence_driver_hw_fini - tear down the fence driver
+  * for all possible rings.
+@@ -579,7 +614,8 @@ void amdgpu_fence_driver_hw_fini(struct amdgpu_device *adev)
+ 			amdgpu_fence_driver_force_completion(ring);
+ 
+ 		if (!drm_dev_is_unplugged(adev_to_drm(adev)) &&
+-		    ring->fence_drv.irq_src)
++		    ring->fence_drv.irq_src &&
++		    amdgpu_fence_need_ring_interrupt_restore(ring))
+ 			amdgpu_irq_put(adev, ring->fence_drv.irq_src,
+ 				       ring->fence_drv.irq_type);
+ 
+@@ -655,7 +691,8 @@ void amdgpu_fence_driver_hw_init(struct amdgpu_device *adev)
+ 			continue;
+ 
+ 		/* enable the interrupt */
+-		if (ring->fence_drv.irq_src)
++		if (ring->fence_drv.irq_src &&
++		    amdgpu_fence_need_ring_interrupt_restore(ring))
+ 			amdgpu_irq_get(adev, ring->fence_drv.irq_src,
+ 				       ring->fence_drv.irq_type);
+ 	}
 
