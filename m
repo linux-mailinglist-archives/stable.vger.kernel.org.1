@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E60AF783231
-	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:21:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D15187832D7
+	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:22:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230346AbjHUUIq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 21 Aug 2023 16:08:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55240 "EHLO
+        id S229944AbjHUT7A (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 21 Aug 2023 15:59:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49962 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230345AbjHUUIq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 16:08:46 -0400
+        with ESMTP id S229968AbjHUT7A (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 15:59:00 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A22D512F
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 13:08:43 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2774C137
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 12:58:55 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 41F6064A42
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 20:08:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51383C433C8;
-        Mon, 21 Aug 2023 20:08:42 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B87D1646E7
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 19:58:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C11B5C433C7;
+        Mon, 21 Aug 2023 19:58:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692648522;
-        bh=g+eZnS2dw4LoAitJG0XbA6dcgGAjlzYo073BXq6S4uI=;
+        s=korg; t=1692647934;
+        bh=Bb+U5ns+c5a7SS3T51Vj10gLvqxcwfu7RDrB18KHDWw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=qkfEyPU9h3Y5WDILmDAYsYe9DQoeWnP/9DSBbQrsdjQNlC7Gs69UwjiiTxZqo961+
-         nCgXepPJOm1Ohe2Xp52iop+D0jB8OYl4W8USHUImk4Q7naZZl4I/BQbP+5WS4F21SS
-         DPy2iXpqqhSbivBV1QrCNI4DdHY96jVqB069Ujm8=
+        b=Nz8D5HVRoRa7wSka/KO3R+VN5KIUxahd+ro7Q1+xlgLWRDfzt8pa9dvSNaHZZnObt
+         km38dG6DzXlE4NwH3dPmv9xZcyzDy3Ul26WLwoFUj9wEPNg8IlTlwzlfRKotMd/PFW
+         nl5KwRCXi059EEAh4AjZsUBbIz7uWbOP9kxIkhho=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Conor Dooley <conor.dooley@microchip.com>,
-        Guo Ren <guoren@kernel.org>,
-        Mingzheng Xing <xingmingzheng@iscas.ac.cn>,
-        Palmer Dabbelt <palmer@rivosinc.com>
-Subject: [PATCH 6.4 205/234] riscv: Handle zicsr/zifencei issue between gcc and binutils
+        patches@lists.linux.dev, Tim Huang <Tim.Huang@amd.com>,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.1 189/194] drm/amd/pm: skip the RLC stop when S0i3 suspend for SMU v13.0.4/11
 Date:   Mon, 21 Aug 2023 21:42:48 +0200
-Message-ID: <20230821194137.925821400@linuxfoundation.org>
+Message-ID: <20230821194131.006772996@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230821194128.754601642@linuxfoundation.org>
-References: <20230821194128.754601642@linuxfoundation.org>
+In-Reply-To: <20230821194122.695845670@linuxfoundation.org>
+References: <20230821194122.695845670@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,111 +54,34 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Mingzheng Xing <xingmingzheng@iscas.ac.cn>
+From: Tim Huang <Tim.Huang@amd.com>
 
-commit ca09f772cccaeec4cd05a21528c37a260aa2dd2c upstream.
+commit 730d44e1fa306a20746ad4a85da550662aed9daa upstream.
 
-Binutils-2.38 and GCC-12.1.0 bumped[0][1] the default ISA spec to the newer
-20191213 version which moves some instructions from the I extension to the
-Zicsr and Zifencei extensions. So if one of the binutils and GCC exceeds
-that version, we should explicitly specifying Zicsr and Zifencei via -march
-to cope with the new changes. but this only occurs when binutils >= 2.36
-and GCC >= 11.1.0. It's a different story when binutils < 2.36.
+For SMU v13.0.4/11, driver does not need to stop RLC for S0i3,
+the firmwares will handle that properly.
 
-binutils-2.36 supports the Zifencei extension[2] and splits Zifencei and
-Zicsr from I[3]. GCC-11.1.0 is particular[4] because it add support Zicsr
-and Zifencei extension for -march. binutils-2.35 does not support the
-Zifencei extension, and does not need to specify Zicsr and Zifencei when
-working with GCC >= 12.1.0.
-
-To make our lives easier, let's relax the check to binutils >= 2.36 in
-CONFIG_TOOLCHAIN_NEEDS_EXPLICIT_ZICSR_ZIFENCEI. For the other two cases,
-where clang < 17 or GCC < 11.1.0, we will deal with them in
-CONFIG_TOOLCHAIN_NEEDS_OLD_ISA_SPEC.
-
-For more information, please refer to:
-commit 6df2a016c0c8 ("riscv: fix build with binutils 2.38")
-commit e89c2e815e76 ("riscv: Handle zicsr/zifencei issues between clang and binutils")
-
-Link: https://sourceware.org/git/?p=binutils-gdb.git;a=commit;h=aed44286efa8ae8717a77d94b51ac3614e2ca6dc [0]
-Link: https://gcc.gnu.org/git/?p=gcc.git;a=commit;h=98416dbb0a62579d4a7a4a76bab51b5b52fec2cd [1]
-Link: https://sourceware.org/git/?p=binutils-gdb.git;a=commit;h=5a1b31e1e1cee6e9f1c92abff59cdcfff0dddf30 [2]
-Link: https://sourceware.org/git/?p=binutils-gdb.git;a=commit;h=729a53530e86972d1143553a415db34e6e01d5d2 [3]
-Link: https://gcc.gnu.org/git/?p=gcc.git;a=commit;h=b03be74bad08c382da47e048007a78fa3fb4ef49 [4]
-Link: https://lore.kernel.org/all/20230308220842.1231003-1-conor@kernel.org
-Link: https://lore.kernel.org/all/20230223220546.52879-1-conor@kernel.org
-Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
-Acked-by: Guo Ren <guoren@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Mingzheng Xing <xingmingzheng@iscas.ac.cn>
-Link: https://lore.kernel.org/r/20230809165648.21071-1-xingmingzheng@iscas.ac.cn
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Signed-off-by: Tim Huang <Tim.Huang@amd.com>
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/riscv/Kconfig                     |   28 +++++++++++++++++-----------
- arch/riscv/kernel/compat_vdso/Makefile |    8 +++++++-
- 2 files changed, 24 insertions(+), 12 deletions(-)
+ drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/arch/riscv/Kconfig
-+++ b/arch/riscv/Kconfig
-@@ -525,24 +525,30 @@ config TOOLCHAIN_HAS_ZIHINTPAUSE
- config TOOLCHAIN_NEEDS_EXPLICIT_ZICSR_ZIFENCEI
- 	def_bool y
- 	# https://sourceware.org/git/?p=binutils-gdb.git;a=commit;h=aed44286efa8ae8717a77d94b51ac3614e2ca6dc
--	depends on AS_IS_GNU && AS_VERSION >= 23800
-+	# https://gcc.gnu.org/git/?p=gcc.git;a=commit;h=98416dbb0a62579d4a7a4a76bab51b5b52fec2cd
-+	depends on AS_IS_GNU && AS_VERSION >= 23600
- 	help
--	  Newer binutils versions default to ISA spec version 20191213 which
--	  moves some instructions from the I extension to the Zicsr and Zifencei
--	  extensions.
-+	  Binutils-2.38 and GCC-12.1.0 bumped the default ISA spec to the newer
-+	  20191213 version, which moves some instructions from the I extension to
-+	  the Zicsr and Zifencei extensions. This requires explicitly specifying
-+	  Zicsr and Zifencei when binutils >= 2.38 or GCC >= 12.1.0. Zicsr
-+	  and Zifencei are supported in binutils from version 2.36 onwards.
-+	  To make life easier, and avoid forcing toolchains that default to a
-+	  newer ISA spec to version 2.2, relax the check to binutils >= 2.36.
-+	  For clang < 17 or GCC < 11.1.0, for which this is not possible, this is
-+	  dealt with in CONFIG_TOOLCHAIN_NEEDS_OLD_ISA_SPEC.
+--- a/drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c
+@@ -1562,9 +1562,9 @@ static int smu_disable_dpms(struct smu_c
  
- config TOOLCHAIN_NEEDS_OLD_ISA_SPEC
- 	def_bool y
- 	depends on TOOLCHAIN_NEEDS_EXPLICIT_ZICSR_ZIFENCEI
- 	# https://github.com/llvm/llvm-project/commit/22e199e6afb1263c943c0c0d4498694e15bf8a16
--	depends on CC_IS_CLANG && CLANG_VERSION < 170000
-+	# https://gcc.gnu.org/git/?p=gcc.git;a=commit;h=b03be74bad08c382da47e048007a78fa3fb4ef49
-+	depends on (CC_IS_CLANG && CLANG_VERSION < 170000) || (CC_IS_GCC && GCC_VERSION < 110100)
- 	help
--	  Certain versions of clang do not support zicsr and zifencei via -march
--	  but newer versions of binutils require it for the reasons noted in the
--	  help text of CONFIG_TOOLCHAIN_NEEDS_EXPLICIT_ZICSR_ZIFENCEI. This
--	  option causes an older ISA spec compatible with these older versions
--	  of clang to be passed to GAS, which has the same result as passing zicsr
--	  and zifencei to -march.
-+	  Certain versions of clang and GCC do not support zicsr and zifencei via
-+	  -march. This option causes an older ISA spec compatible with these older
-+	  versions of clang and GCC to be passed to GAS, which has the same result
-+	  as passing zicsr and zifencei to -march.
- 
- config FPU
- 	bool "FPU support"
---- a/arch/riscv/kernel/compat_vdso/Makefile
-+++ b/arch/riscv/kernel/compat_vdso/Makefile
-@@ -11,7 +11,13 @@ compat_vdso-syms += flush_icache
- COMPAT_CC := $(CC)
- COMPAT_LD := $(LD)
- 
--COMPAT_CC_FLAGS := -march=rv32g -mabi=ilp32
-+# binutils 2.35 does not support the zifencei extension, but in the ISA
-+# spec 20191213, G stands for IMAFD_ZICSR_ZIFENCEI.
-+ifdef CONFIG_TOOLCHAIN_NEEDS_EXPLICIT_ZICSR_ZIFENCEI
-+	COMPAT_CC_FLAGS := -march=rv32g -mabi=ilp32
-+else
-+	COMPAT_CC_FLAGS := -march=rv32imafd -mabi=ilp32
-+endif
- COMPAT_LD_FLAGS := -melf32lriscv
- 
- # Disable attributes, as they're useless and break the build.
+ 	/*
+ 	 * For SMU 13.0.4/11, PMFW will handle the features disablement properly
+-	 * for gpu reset case. Driver involvement is unnecessary.
++	 * for gpu reset and S0i3 cases. Driver involvement is unnecessary.
+ 	 */
+-	if (amdgpu_in_reset(adev)) {
++	if (amdgpu_in_reset(adev) || adev->in_s0ix) {
+ 		switch (adev->ip_versions[MP1_HWIP][0]) {
+ 		case IP_VERSION(13, 0, 4):
+ 		case IP_VERSION(13, 0, 11):
 
 
