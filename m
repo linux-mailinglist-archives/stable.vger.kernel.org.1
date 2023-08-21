@@ -2,51 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5083F7832F6
-	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:22:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E54F77831CC
+	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:21:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230225AbjHUUFH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 21 Aug 2023 16:05:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48366 "EHLO
+        id S229599AbjHUTx4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 21 Aug 2023 15:53:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52704 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230228AbjHUUFH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 16:05:07 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33C9212B
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 13:05:05 -0700 (PDT)
+        with ESMTP id S229592AbjHUTx4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 15:53:56 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 30F2EFA
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 12:53:54 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BE7C1648FC
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 20:05:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE9E5C433C8;
-        Mon, 21 Aug 2023 20:05:03 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B696064519
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 19:53:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9051C433C8;
+        Mon, 21 Aug 2023 19:53:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692648304;
-        bh=Ehj+YB1Xx/kpz/MM8UxwD0MqeU6/1HeWd1zNbeST88c=;
+        s=korg; t=1692647633;
+        bh=R0e5z66l+/IULNLIwqgZK+u4c8ow2X71RKc3V/6uNC4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=bORyo/tAL7l0wIaIXK2uhD1p9pAKQMA+/QYoIk6ANoPYeGpaP+OLvXCUOKTQmwFdf
-         o6Mp5YaTxVBhQQyWFseGbv/yCASxf4s/cMQVhEegKVt14upo8Oqbs2ZcaFidqWrWal
-         CBvL4g7+purK5lcWOw2rR+7B3t2EE0+NMa+n3vIw=
+        b=eMsNzkhns7oIeFUyXD4zyU3dCKg/pWUkKSjsTsXjHL6V6QDKNd9hZdvzS9m4vj5Fg
+         TK8Bl4oaPdMuPFXYJMd7S5BmyfqppB1XxxYk90ROB7v0PKLJl5OMQOETDJNvfM22WM
+         jjaUISbQ9QWqGEw5fdBHZmPNpEIcRzZMzpPQrx2Y=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Nathan Lynch <nathanl@linux.ibm.com>,
-        Kees Cook <keescook@chromium.org>,
-        Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH 6.4 099/234] powerpc/rtas_flash: allow user copy to flash block cache objects
+        patches@lists.linux.dev, Filipe Manana <fdmanana@suse.com>,
+        David Sterba <dsterba@suse.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 083/194] btrfs: fix use-after-free of new block group that became unused
 Date:   Mon, 21 Aug 2023 21:41:02 +0200
-Message-ID: <20230821194133.188420725@linuxfoundation.org>
+Message-ID: <20230821194126.409205630@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230821194128.754601642@linuxfoundation.org>
-References: <20230821194128.754601642@linuxfoundation.org>
+In-Reply-To: <20230821194122.695845670@linuxfoundation.org>
+References: <20230821194122.695845670@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -54,68 +54,173 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Nathan Lynch <nathanl@linux.ibm.com>
+From: Filipe Manana <fdmanana@suse.com>
 
-commit 4f3175979e62de3b929bfa54a0db4b87d36257a7 upstream.
+[ Upstream commit 0657b20c5a76c938612f8409735a8830d257866e ]
 
-With hardened usercopy enabled (CONFIG_HARDENED_USERCOPY=y), using the
-/proc/powerpc/rtas/firmware_update interface to prepare a system
-firmware update yields a BUG():
+If a task creates a new block group and that block group becomes unused
+before we finish its creation, at btrfs_create_pending_block_groups(),
+then when btrfs_mark_bg_unused() is called against the block group, we
+assume that the block group is currently in the list of block groups to
+reclaim, and we move it out of the list of new block groups and into the
+list of unused block groups. This has two consequences:
 
-  kernel BUG at mm/usercopy.c:102!
-  Oops: Exception in kernel mode, sig: 5 [#1]
-  LE PAGE_SIZE=64K MMU=Hash SMP NR_CPUS=2048 NUMA pSeries
-  Modules linked in:
-  CPU: 0 PID: 2232 Comm: dd Not tainted 6.5.0-rc3+ #2
-  Hardware name: IBM,8408-E8E POWER8E (raw) 0x4b0201 0xf000004 of:IBM,FW860.50 (SV860_146) hv:phyp pSeries
-  NIP:  c0000000005991d0 LR: c0000000005991cc CTR: 0000000000000000
-  REGS: c0000000148c76a0 TRAP: 0700   Not tainted  (6.5.0-rc3+)
-  MSR:  8000000000029033 <SF,EE,ME,IR,DR,RI,LE>  CR: 24002242  XER: 0000000c
-  CFAR: c0000000001fbd34 IRQMASK: 0
-  [ ... GPRs omitted ... ]
-  NIP usercopy_abort+0xa0/0xb0
-  LR  usercopy_abort+0x9c/0xb0
-  Call Trace:
-    usercopy_abort+0x9c/0xb0 (unreliable)
-    __check_heap_object+0x1b4/0x1d0
-    __check_object_size+0x2d0/0x380
-    rtas_flash_write+0xe4/0x250
-    proc_reg_write+0xfc/0x160
-    vfs_write+0xfc/0x4e0
-    ksys_write+0x90/0x160
-    system_call_exception+0x178/0x320
-    system_call_common+0x160/0x2c4
+1) We move it out of the list of new block groups associated to the
+   current transaction. So the block group creation is not finished and
+   if we attempt to delete the bg because it's unused, we will not find
+   the block group item in the extent tree (or the new block group tree),
+   its device extent items in the device tree etc, resulting in the
+   deletion to fail due to the missing items;
 
-The blocks of the firmware image are copied directly from user memory
-to objects allocated from flash_block_cache, so flash_block_cache must
-be created using kmem_cache_create_usercopy() to mark it safe for user
-access.
+2) We don't increment the reference count on the block group when we
+   move it to the list of unused block groups, because we assumed the
+   block group was on the list of block groups to reclaim, and in that
+   case it already has the correct reference count. However the block
+   group was on the list of new block groups, in which case no extra
+   reference was taken because it's local to the current task. This
+   later results in doing an extra reference count decrement when
+   removing the block group from the unused list, eventually leading the
+   reference count to 0.
 
-Fixes: 6d07d1cd300f ("usercopy: Restrict non-usercopy caches to size 0")
-Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
-Reviewed-by: Kees Cook <keescook@chromium.org>
-[mpe: Trim and indent oops]
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20230810-rtas-flash-vs-hardened-usercopy-v2-1-dcf63793a938@linux.ibm.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This second case was caught when running generic/297 from fstests, which
+produced the following assertion failure and stack trace:
+
+  [589.559] assertion failed: refcount_read(&block_group->refs) == 1, in fs/btrfs/block-group.c:4299
+  [589.559] ------------[ cut here ]------------
+  [589.559] kernel BUG at fs/btrfs/block-group.c:4299!
+  [589.560] invalid opcode: 0000 [#1] PREEMPT SMP PTI
+  [589.560] CPU: 8 PID: 2819134 Comm: umount Tainted: G        W          6.4.0-rc6-btrfs-next-134+ #1
+  [589.560] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.2-0-gea1b7a073390-prebuilt.qemu.org 04/01/2014
+  [589.560] RIP: 0010:btrfs_free_block_groups+0x449/0x4a0 [btrfs]
+  [589.561] Code: 68 62 da c0 (...)
+  [589.561] RSP: 0018:ffffa55a8c3b3d98 EFLAGS: 00010246
+  [589.561] RAX: 0000000000000058 RBX: ffff8f030d7f2000 RCX: 0000000000000000
+  [589.562] RDX: 0000000000000000 RSI: ffffffff953f0878 RDI: 00000000ffffffff
+  [589.562] RBP: ffff8f030d7f2088 R08: 0000000000000000 R09: ffffa55a8c3b3c50
+  [589.562] R10: 0000000000000001 R11: 0000000000000001 R12: ffff8f05850b4c00
+  [589.562] R13: ffff8f030d7f2090 R14: ffff8f05850b4cd8 R15: dead000000000100
+  [589.563] FS:  00007f497fd2e840(0000) GS:ffff8f09dfc00000(0000) knlGS:0000000000000000
+  [589.563] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+  [589.563] CR2: 00007f497ff8ec10 CR3: 0000000271472006 CR4: 0000000000370ee0
+  [589.563] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+  [589.564] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+  [589.564] Call Trace:
+  [589.564]  <TASK>
+  [589.565]  ? __die_body+0x1b/0x60
+  [589.565]  ? die+0x39/0x60
+  [589.565]  ? do_trap+0xeb/0x110
+  [589.565]  ? btrfs_free_block_groups+0x449/0x4a0 [btrfs]
+  [589.566]  ? do_error_trap+0x6a/0x90
+  [589.566]  ? btrfs_free_block_groups+0x449/0x4a0 [btrfs]
+  [589.566]  ? exc_invalid_op+0x4e/0x70
+  [589.566]  ? btrfs_free_block_groups+0x449/0x4a0 [btrfs]
+  [589.567]  ? asm_exc_invalid_op+0x16/0x20
+  [589.567]  ? btrfs_free_block_groups+0x449/0x4a0 [btrfs]
+  [589.567]  ? btrfs_free_block_groups+0x449/0x4a0 [btrfs]
+  [589.567]  close_ctree+0x35d/0x560 [btrfs]
+  [589.568]  ? fsnotify_sb_delete+0x13e/0x1d0
+  [589.568]  ? dispose_list+0x3a/0x50
+  [589.568]  ? evict_inodes+0x151/0x1a0
+  [589.568]  generic_shutdown_super+0x73/0x1a0
+  [589.569]  kill_anon_super+0x14/0x30
+  [589.569]  btrfs_kill_super+0x12/0x20 [btrfs]
+  [589.569]  deactivate_locked_super+0x2e/0x70
+  [589.569]  cleanup_mnt+0x104/0x160
+  [589.570]  task_work_run+0x56/0x90
+  [589.570]  exit_to_user_mode_prepare+0x160/0x170
+  [589.570]  syscall_exit_to_user_mode+0x22/0x50
+  [589.570]  ? __x64_sys_umount+0x12/0x20
+  [589.571]  do_syscall_64+0x48/0x90
+  [589.571]  entry_SYSCALL_64_after_hwframe+0x72/0xdc
+  [589.571] RIP: 0033:0x7f497ff0a567
+  [589.571] Code: af 98 0e (...)
+  [589.572] RSP: 002b:00007ffc98347358 EFLAGS: 00000246 ORIG_RAX: 00000000000000a6
+  [589.572] RAX: 0000000000000000 RBX: 00007f49800b8264 RCX: 00007f497ff0a567
+  [589.572] RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000557f558abfa0
+  [589.573] RBP: 0000557f558a6ba0 R08: 0000000000000000 R09: 00007ffc98346100
+  [589.573] R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+  [589.573] R13: 0000557f558abfa0 R14: 0000557f558a6cb0 R15: 0000557f558a6dd0
+  [589.573]  </TASK>
+  [589.574] Modules linked in: dm_snapshot dm_thin_pool (...)
+  [589.576] ---[ end trace 0000000000000000 ]---
+
+Fix this by adding a runtime flag to the block group to tell that the
+block group is still in the list of new block groups, and therefore it
+should not be moved to the list of unused block groups, at
+btrfs_mark_bg_unused(), until the flag is cleared, when we finish the
+creation of the block group at btrfs_create_pending_block_groups().
+
+Fixes: a9f189716cf1 ("btrfs: move out now unused BG from the reclaim list")
+CC: stable@vger.kernel.org # 5.15+
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kernel/rtas_flash.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ fs/btrfs/block-group.c | 13 +++++++++++--
+ fs/btrfs/block-group.h |  5 +++++
+ 2 files changed, 16 insertions(+), 2 deletions(-)
 
---- a/arch/powerpc/kernel/rtas_flash.c
-+++ b/arch/powerpc/kernel/rtas_flash.c
-@@ -709,9 +709,9 @@ static int __init rtas_flash_init(void)
- 	if (!rtas_validate_flash_data.buf)
- 		return -ENOMEM;
+diff --git a/fs/btrfs/block-group.c b/fs/btrfs/block-group.c
+index a726b532b5277..08017b180a10d 100644
+--- a/fs/btrfs/block-group.c
++++ b/fs/btrfs/block-group.c
+@@ -1528,13 +1528,14 @@ void btrfs_mark_bg_unused(struct btrfs_block_group *bg)
+ {
+ 	struct btrfs_fs_info *fs_info = bg->fs_info;
  
--	flash_block_cache = kmem_cache_create("rtas_flash_cache",
--					      RTAS_BLK_SIZE, RTAS_BLK_SIZE, 0,
--					      NULL);
-+	flash_block_cache = kmem_cache_create_usercopy("rtas_flash_cache",
-+						       RTAS_BLK_SIZE, RTAS_BLK_SIZE,
-+						       0, 0, RTAS_BLK_SIZE, NULL);
- 	if (!flash_block_cache) {
- 		printk(KERN_ERR "%s: failed to create block cache\n",
- 				__func__);
+-	trace_btrfs_add_unused_block_group(bg);
+ 	spin_lock(&fs_info->unused_bgs_lock);
+ 	if (list_empty(&bg->bg_list)) {
+ 		btrfs_get_block_group(bg);
++		trace_btrfs_add_unused_block_group(bg);
+ 		list_add_tail(&bg->bg_list, &fs_info->unused_bgs);
+-	} else {
++	} else if (!test_bit(BLOCK_GROUP_FLAG_NEW, &bg->runtime_flags)) {
+ 		/* Pull out the block group from the reclaim_bgs list. */
++		trace_btrfs_add_unused_block_group(bg);
+ 		list_move_tail(&bg->bg_list, &fs_info->unused_bgs);
+ 	}
+ 	spin_unlock(&fs_info->unused_bgs_lock);
+@@ -2496,6 +2497,7 @@ void btrfs_create_pending_block_groups(struct btrfs_trans_handle *trans)
+ next:
+ 		btrfs_delayed_refs_rsv_release(fs_info, 1);
+ 		list_del_init(&block_group->bg_list);
++		clear_bit(BLOCK_GROUP_FLAG_NEW, &block_group->runtime_flags);
+ 	}
+ 	btrfs_trans_release_chunk_metadata(trans);
+ }
+@@ -2535,6 +2537,13 @@ struct btrfs_block_group *btrfs_make_block_group(struct btrfs_trans_handle *tran
+ 	if (!cache)
+ 		return ERR_PTR(-ENOMEM);
+ 
++	/*
++	 * Mark it as new before adding it to the rbtree of block groups or any
++	 * list, so that no other task finds it and calls btrfs_mark_bg_unused()
++	 * before the new flag is set.
++	 */
++	set_bit(BLOCK_GROUP_FLAG_NEW, &cache->runtime_flags);
++
+ 	cache->length = size;
+ 	set_free_space_tree_thresholds(cache);
+ 	cache->used = bytes_used;
+diff --git a/fs/btrfs/block-group.h b/fs/btrfs/block-group.h
+index fb4f4901350bd..47a2dcbfee255 100644
+--- a/fs/btrfs/block-group.h
++++ b/fs/btrfs/block-group.h
+@@ -59,6 +59,11 @@ enum btrfs_block_group_flags {
+ 	BLOCK_GROUP_FLAG_NEEDS_FREE_SPACE,
+ 	/* Indicate that the block group is placed on a sequential zone */
+ 	BLOCK_GROUP_FLAG_SEQUENTIAL_ZONE,
++	/*
++	 * Indicate that block group is in the list of new block groups of a
++	 * transaction.
++	 */
++	BLOCK_GROUP_FLAG_NEW,
+ };
+ 
+ enum btrfs_caching_type {
+-- 
+2.40.1
+
 
 
