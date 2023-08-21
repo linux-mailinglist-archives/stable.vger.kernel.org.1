@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4409B78333A
-	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:23:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B09D8783376
+	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:23:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230157AbjHUUCq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 21 Aug 2023 16:02:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58880 "EHLO
+        id S229710AbjHUTyo (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 21 Aug 2023 15:54:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54872 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230144AbjHUUCq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 16:02:46 -0400
+        with ESMTP id S229619AbjHUTyn (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 15:54:43 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF4D5129
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 13:02:44 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F462FA
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 12:54:42 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 635F564828
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 20:02:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70225C433C9;
-        Mon, 21 Aug 2023 20:02:43 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9BA8964579
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 19:54:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82AD1C433C9;
+        Mon, 21 Aug 2023 19:54:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692648163;
-        bh=adNeTA6UCBMGs89uy7+1mM07DmILyAIlGVuqun5oPU8=;
+        s=korg; t=1692647681;
+        bh=hxLfyn0pQUNRfI3j8a/PWMJVgOTjKQvg6wZeNvfzlTI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=EEGe0yub1R+jGRvPlGWa6XOzCXPorUWTgBZ1P5LZxxd1Yk1lNl47DO4NvR6Qz8uM+
-         MOI/Eizs/wczS8dPE49koMSeSSJcUuitA90XC0yM29DEiOGmK0LKEu6c+GB8TURxaz
-         OXXvVP+UA5Wchyvemx2jbfFTGDSOtrnDr/Qg6yTQ=
+        b=yd7WsCuVR5jejgCpDbslD7GLbOJTaZCIWb73vLWhXSNq6y7WXE2fBaVEVLaD0DHsa
+         kpR0lfJ0ygPtJZEcIo/vXJbJ5tkGHfu+EgHPCLYOPh0bd9G1wTxXkmp18g+x8AZNmB
+         86JdDq/Y+3d0l0i3ZGRajSmR22xjt5cfCcRTkJ0E=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, "Luke D. Jones" <luke@ljones.dev>,
-        Takashi Iwai <tiwai@suse.de>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 078/234] ALSA: hda/realtek: Add quirk for ASUS ROG G614Jx
+        patches@lists.linux.dev, Jia-Ju Bai <baijiaju@buaa.edu.cn>,
+        Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 062/194] fs: ntfs3: Fix possible null-pointer dereferences in mi_read()
 Date:   Mon, 21 Aug 2023 21:40:41 +0200
-Message-ID: <20230821194132.210392132@linuxfoundation.org>
+Message-ID: <20230821194125.495349092@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230821194128.754601642@linuxfoundation.org>
-References: <20230821194128.754601642@linuxfoundation.org>
+In-Reply-To: <20230821194122.695845670@linuxfoundation.org>
+References: <20230821194122.695845670@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,36 +54,60 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Luke D. Jones <luke@ljones.dev>
+From: Jia-Ju Bai <baijiaju@buaa.edu.cn>
 
-[ Upstream commit 33d7c9c3bf70ed91191a2bedbbc03783b824b5de ]
+[ Upstream commit 97498cd610c0d030a7bd49a7efad974790661162 ]
 
-Adds the required quirk to enable the Cirrus amp and correct pins
-on the ASUS ROG G614J series which uses an SPI connected Cirrus amp.
+In a previous commit 2681631c2973 ("fs/ntfs3: Add null pointer check to
+attr_load_runs_vcn"), ni can be NULL in attr_load_runs_vcn(), and thus it
+should be checked before being used.
 
-While this works if the related _DSD properties are made available, these
-aren't included in the ACPI of these laptops (yet).
+However, in the call stack of this commit, mft_ni in mi_read() is
+aliased with ni in attr_load_runs_vcn(), and it is also used in
+mi_read() at two places:
 
-Signed-off-by: Luke D. Jones <luke@ljones.dev>
-Link: https://lore.kernel.org/r/20230704044619.19343-5-luke@ljones.dev
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+mi_read()
+  rw_lock = &mft_ni->file.run_lock -> No check
+  attr_load_runs_vcn(mft_ni, ...)
+    ni (namely mft_ni) is checked in the previous commit
+  attr_load_runs_vcn(..., &mft_ni->file.run) -> No check
+
+Thus, to avoid possible null-pointer dereferences, the related checks
+should be added.
+
+These bugs are reported by a static analysis tool implemented by myself,
+and they are found by extending a known bug fixed in the previous commit.
+Thus, they could be theoretical bugs.
+
+Signed-off-by: Jia-Ju Bai <baijiaju@buaa.edu.cn>
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/ntfs3/record.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index 1d0f43017f255..9278362e4edb2 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -9657,6 +9657,7 @@ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x1043, 0x1c23, "Asus X55U", ALC269_FIXUP_LIMIT_INT_MIC_BOOST),
- 	SND_PCI_QUIRK(0x1043, 0x1c62, "ASUS GU603", ALC289_FIXUP_ASUS_GA401),
- 	SND_PCI_QUIRK(0x1043, 0x1c92, "ASUS ROG Strix G15", ALC285_FIXUP_ASUS_G533Z_PINS),
-+	SND_PCI_QUIRK(0x1043, 0x1c9f, "ASUS G614JI", ALC285_FIXUP_ASUS_HEADSET_MIC),
- 	SND_PCI_QUIRK(0x1043, 0x1caf, "ASUS G634JYR/JZR", ALC285_FIXUP_ASUS_SPI_REAR_SPEAKERS),
- 	SND_PCI_QUIRK(0x1043, 0x1ccd, "ASUS X555UB", ALC256_FIXUP_ASUS_MIC),
- 	SND_PCI_QUIRK(0x1043, 0x1d1f, "ASUS ROG Strix G17 2023 (G713PV)", ALC287_FIXUP_CS35L41_I2C_2),
+diff --git a/fs/ntfs3/record.c b/fs/ntfs3/record.c
+index af1e4b364ea8e..07037ec773ac8 100644
+--- a/fs/ntfs3/record.c
++++ b/fs/ntfs3/record.c
+@@ -124,7 +124,7 @@ int mi_read(struct mft_inode *mi, bool is_mft)
+ 	struct rw_semaphore *rw_lock = NULL;
+ 
+ 	if (is_mounted(sbi)) {
+-		if (!is_mft) {
++		if (!is_mft && mft_ni) {
+ 			rw_lock = &mft_ni->file.run_lock;
+ 			down_read(rw_lock);
+ 		}
+@@ -148,7 +148,7 @@ int mi_read(struct mft_inode *mi, bool is_mft)
+ 		ni_lock(mft_ni);
+ 		down_write(rw_lock);
+ 	}
+-	err = attr_load_runs_vcn(mft_ni, ATTR_DATA, NULL, 0, &mft_ni->file.run,
++	err = attr_load_runs_vcn(mft_ni, ATTR_DATA, NULL, 0, run,
+ 				 vbo >> sbi->cluster_bits);
+ 	if (rw_lock) {
+ 		up_write(rw_lock);
 -- 
 2.40.1
 
