@@ -2,53 +2,55 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AF571783355
-	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:23:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 402AF783266
+	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:22:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230239AbjHUUFO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 21 Aug 2023 16:05:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48508 "EHLO
+        id S229514AbjHUTxb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 21 Aug 2023 15:53:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55412 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230245AbjHUUFN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 16:05:13 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B68CD137
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 13:05:10 -0700 (PDT)
+        with ESMTP id S229475AbjHUTxb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 15:53:31 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6756410F
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 12:53:29 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5632C648FC
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 20:05:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67737C433C7;
-        Mon, 21 Aug 2023 20:05:09 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E8331644FF
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 19:53:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06A8CC433C8;
+        Mon, 21 Aug 2023 19:53:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692648309;
-        bh=KI5Z3AUjxG6zC8s5ncD7Sqllh4UZAiGOE9keJPjbYyc=;
+        s=korg; t=1692647608;
+        bh=B77pQH4kCd+5X3F9uUrfzJJLzLSM30YZslTRqE1feFk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=BMfdGcYsz3wXOkL+aXQvsa/YyYj1agqeRQiEmyHROH5qMu7SDqDgrX9EAQ6daMK7L
-         zFDFY3wW7krNQ0KPu7zSajilAFWDHsGUV5GYmhx9ouCvL7Ju4xQ8YlIjJXoEKOWm4b
-         UzICy8WsTxsqnFVMQBR/9kUyCDwQEPS2Dgi6Yuto=
+        b=Vt8/Y1uhlDCkysO0TEjhISHnfMOjrc8lsfy68GmdfM76OoEGFCCM2+VuZ1f9GP54C
+         HMKeTucMDjhJi+M19NUgB15bfT/f2/WrTcx7GBHx7t/YVnVwnH6MHMKaEFk1UUsbwE
+         sd1lfBguF3ZpDlO2W7cQPmU1fA0vBNgJQTtBfHV4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Bharath SM <bharathsm@microsoft.com>,
-        Shyam Prasad N <sprasad@microsoft.com>,
-        "Paulo Alcantara (SUSE)" <pc@manguebit.com>,
-        Steve French <stfrench@microsoft.com>,
+        patches@lists.linux.dev,
+        Bhawanpreet Lakha <Bhawanpreet.Lakha@amd.com>,
+        Qingqing Zhuo <qingqing.zhuo@amd.com>,
+        Hersen Wu <hersenxs.wu@amd.com>,
+        Daniel Wheeler <daniel.wheeler@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 091/234] cifs: fix potential oops in cifs_oplock_break
+Subject: [PATCH 6.1 075/194] drm/amd/display: fix access hdcp_workqueue assert
 Date:   Mon, 21 Aug 2023 21:40:54 +0200
-Message-ID: <20230821194132.825278331@linuxfoundation.org>
+Message-ID: <20230821194126.064176183@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230821194128.754601642@linuxfoundation.org>
-References: <20230821194128.754601642@linuxfoundation.org>
+In-Reply-To: <20230821194122.695845670@linuxfoundation.org>
+References: <20230821194122.695845670@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -56,105 +58,78 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Steve French <stfrench@microsoft.com>
+From: Hersen Wu <hersenxs.wu@amd.com>
 
-[ Upstream commit e8f5f849ffce24490eb9449e98312b66c0dba76f ]
+[ Upstream commit cdff36a0217aadf5cbc167893ad1c0da869619cb ]
 
-With deferred close we can have closes that race with lease breaks,
-and so with the current checks for whether to send the lease response,
-oplock_response(), this can mean that an unmount (kill_sb) can occur
-just before we were checking if the tcon->ses is valid.  See below:
+[Why] hdcp are enabled for asics from raven. for old asics
+which hdcp are not enabled, hdcp_workqueue are null. some
+access to hdcp work queue are not guarded with pointer check.
 
-[Fri Aug  4 04:12:50 2023] RIP: 0010:cifs_oplock_break+0x1f7/0x5b0 [cifs]
-[Fri Aug  4 04:12:50 2023] Code: 7d a8 48 8b 7d c0 c0 e9 02 48 89 45 b8 41 89 cf e8 3e f5 ff ff 4c 89 f7 41 83 e7 01 e8 82 b3 03 f2 49 8b 45 50 48 85 c0 74 5e <48> 83 78 60 00 74 57 45 84 ff 75 52 48 8b 43 98 48 83 eb 68 48 39
-[Fri Aug  4 04:12:50 2023] RSP: 0018:ffffb30607ddbdf8 EFLAGS: 00010206
-[Fri Aug  4 04:12:50 2023] RAX: 632d223d32612022 RBX: ffff97136944b1e0 RCX: 0000000080100009
-[Fri Aug  4 04:12:50 2023] RDX: 0000000000000001 RSI: 0000000080100009 RDI: ffff97136944b188
-[Fri Aug  4 04:12:50 2023] RBP: ffffb30607ddbe58 R08: 0000000000000001 R09: ffffffffc08e0900
-[Fri Aug  4 04:12:50 2023] R10: 0000000000000001 R11: 000000000000000f R12: ffff97136944b138
-[Fri Aug  4 04:12:50 2023] R13: ffff97149147c000 R14: ffff97136944b188 R15: 0000000000000000
-[Fri Aug  4 04:12:50 2023] FS:  0000000000000000(0000) GS:ffff9714f7c00000(0000) knlGS:0000000000000000
-[Fri Aug  4 04:12:50 2023] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[Fri Aug  4 04:12:50 2023] CR2: 00007fd8de9c7590 CR3: 000000011228e000 CR4: 0000000000350ef0
-[Fri Aug  4 04:12:50 2023] Call Trace:
-[Fri Aug  4 04:12:50 2023]  <TASK>
-[Fri Aug  4 04:12:50 2023]  process_one_work+0x225/0x3d0
-[Fri Aug  4 04:12:50 2023]  worker_thread+0x4d/0x3e0
-[Fri Aug  4 04:12:50 2023]  ? process_one_work+0x3d0/0x3d0
-[Fri Aug  4 04:12:50 2023]  kthread+0x12a/0x150
-[Fri Aug  4 04:12:50 2023]  ? set_kthread_struct+0x50/0x50
-[Fri Aug  4 04:12:50 2023]  ret_from_fork+0x22/0x30
-[Fri Aug  4 04:12:50 2023]  </TASK>
+[How] add hdcp_workqueue pointer check before access workqueue.
 
-To fix this change the ordering of the checks before sending the oplock_response
-to first check if the openFileList is empty.
-
-Fixes: da787d5b7498 ("SMB3: Do not send lease break acknowledgment if all file handles have been closed")
-Suggested-by: Bharath SM <bharathsm@microsoft.com>
-Reviewed-by: Bharath SM <bharathsm@microsoft.com>
-Reviewed-by: Shyam Prasad N <sprasad@microsoft.com>
-Signed-off-by: Paulo Alcantara (SUSE) <pc@manguebit.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Reviewed-by: Bhawanpreet Lakha <Bhawanpreet.Lakha@amd.com>
+Acked-by: Qingqing Zhuo <qingqing.zhuo@amd.com>
+Signed-off-by: Hersen Wu <hersenxs.wu@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/file.c | 23 ++++++++++++++++-------
- 1 file changed, 16 insertions(+), 7 deletions(-)
+ .../gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c    |  6 ++++++
+ .../amd/display/amdgpu_dm/amdgpu_dm_mst_types.c  | 16 ++++++++++------
+ 2 files changed, 16 insertions(+), 6 deletions(-)
 
-diff --git a/fs/smb/client/file.c b/fs/smb/client/file.c
-index d554bca7e07eb..4e9d26d4404ab 100644
---- a/fs/smb/client/file.c
-+++ b/fs/smb/client/file.c
-@@ -4878,9 +4878,11 @@ void cifs_oplock_break(struct work_struct *work)
- 	struct cifsFileInfo *cfile = container_of(work, struct cifsFileInfo,
- 						  oplock_break);
- 	struct inode *inode = d_inode(cfile->dentry);
-+	struct cifs_sb_info *cifs_sb = CIFS_SB(inode->i_sb);
- 	struct cifsInodeInfo *cinode = CIFS_I(inode);
--	struct cifs_tcon *tcon = tlink_tcon(cfile->tlink);
--	struct TCP_Server_Info *server = tcon->ses->server;
-+	struct cifs_tcon *tcon;
-+	struct TCP_Server_Info *server;
-+	struct tcon_link *tlink;
- 	int rc = 0;
- 	bool purge_cache = false, oplock_break_cancelled;
- 	__u64 persistent_fid, volatile_fid;
-@@ -4889,6 +4891,12 @@ void cifs_oplock_break(struct work_struct *work)
- 	wait_on_bit(&cinode->flags, CIFS_INODE_PENDING_WRITERS,
- 			TASK_UNINTERRUPTIBLE);
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+index aa0ea28a86f02..249b269e2cc53 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -8372,6 +8372,9 @@ static void amdgpu_dm_atomic_commit_tail(struct drm_atomic_state *state)
+ 		struct amdgpu_crtc *acrtc = to_amdgpu_crtc(dm_new_con_state->base.crtc);
+ 		struct amdgpu_dm_connector *aconnector = to_amdgpu_dm_connector(connector);
  
-+	tlink = cifs_sb_tlink(cifs_sb);
-+	if (IS_ERR(tlink))
-+		goto out;
-+	tcon = tlink_tcon(tlink);
-+	server = tcon->ses->server;
++		if (!adev->dm.hdcp_workqueue)
++			continue;
 +
- 	server->ops->downgrade_oplock(server, cinode, cfile->oplock_level,
- 				      cfile->oplock_epoch, &purge_cache);
+ 		pr_debug("[HDCP_DM] -------------- i : %x ----------\n", i);
  
-@@ -4938,18 +4946,19 @@ void cifs_oplock_break(struct work_struct *work)
- 	/*
- 	 * MS-SMB2 3.2.5.19.1 and 3.2.5.19.2 (and MS-CIFS 3.2.5.42) do not require
- 	 * an acknowledgment to be sent when the file has already been closed.
--	 * check for server null, since can race with kill_sb calling tree disconnect.
- 	 */
- 	spin_lock(&cinode->open_file_lock);
--	if (tcon->ses && tcon->ses->server && !oplock_break_cancelled &&
--					!list_empty(&cinode->openFileList)) {
-+	/* check list empty since can race with kill_sb calling tree disconnect */
-+	if (!oplock_break_cancelled && !list_empty(&cinode->openFileList)) {
- 		spin_unlock(&cinode->open_file_lock);
--		rc = tcon->ses->server->ops->oplock_response(tcon, persistent_fid,
--						volatile_fid, net_fid, cinode);
-+		rc = server->ops->oplock_response(tcon, persistent_fid,
-+						  volatile_fid, net_fid, cinode);
- 		cifs_dbg(FYI, "Oplock release rc = %d\n", rc);
- 	} else
- 		spin_unlock(&cinode->open_file_lock);
+ 		if (!connector)
+@@ -8420,6 +8423,9 @@ static void amdgpu_dm_atomic_commit_tail(struct drm_atomic_state *state)
+ 		struct amdgpu_crtc *acrtc = to_amdgpu_crtc(dm_new_con_state->base.crtc);
+ 		struct amdgpu_dm_connector *aconnector = to_amdgpu_dm_connector(connector);
  
-+	cifs_put_tlink(tlink);
-+out:
- 	cifs_done_oplock_break(cinode);
- }
++		if (!adev->dm.hdcp_workqueue)
++			continue;
++
+ 		new_crtc_state = NULL;
+ 		old_crtc_state = NULL;
+ 
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
+index 9884dd78c652c..a9ddff774a978 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
+@@ -379,13 +379,17 @@ static int dm_dp_mst_get_modes(struct drm_connector *connector)
+ 		if (aconnector->dc_sink && connector->state) {
+ 			struct drm_device *dev = connector->dev;
+ 			struct amdgpu_device *adev = drm_to_adev(dev);
+-			struct hdcp_workqueue *hdcp_work = adev->dm.hdcp_workqueue;
+-			struct hdcp_workqueue *hdcp_w = &hdcp_work[aconnector->dc_link->link_index];
+ 
+-			connector->state->hdcp_content_type =
+-			hdcp_w->hdcp_content_type[connector->index];
+-			connector->state->content_protection =
+-			hdcp_w->content_protection[connector->index];
++			if (adev->dm.hdcp_workqueue) {
++				struct hdcp_workqueue *hdcp_work = adev->dm.hdcp_workqueue;
++				struct hdcp_workqueue *hdcp_w =
++					&hdcp_work[aconnector->dc_link->link_index];
++
++				connector->state->hdcp_content_type =
++				hdcp_w->hdcp_content_type[connector->index];
++				connector->state->content_protection =
++				hdcp_w->content_protection[connector->index];
++			}
+ 		}
+ #endif
  
 -- 
 2.40.1
