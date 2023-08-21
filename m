@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5563578309A
-	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 21:12:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8218A78308E
+	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 21:12:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229697AbjHUTBh (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 21 Aug 2023 15:01:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38640 "EHLO
+        id S229677AbjHUTA4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 21 Aug 2023 15:00:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52480 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229676AbjHUTBg (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 15:01:36 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 59C4B2128
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 12:01:10 -0700 (PDT)
+        with ESMTP id S229676AbjHUTAz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 15:00:55 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D54493A92
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 12:00:27 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6A1AA61C27
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 18:50:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7468FC433C7;
-        Mon, 21 Aug 2023 18:50:35 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 369346391F
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 18:50:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44D87C433C8;
+        Mon, 21 Aug 2023 18:50:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692643835;
-        bh=BFDZ73ab/I273tY/C7Luv6czjchgW7z+fzViBPjS8kA=;
+        s=korg; t=1692643844;
+        bh=EcUJlsjy43fB0iKqMFytoD2luDGYWxJ5fz9TabOK30w=;
         h=Subject:To:Cc:From:Date:From;
-        b=rZH/ReXaVJDyogPTi9olxbS9Wm9NTKqog0uOUjqFGN92BYrlEwAk9wh87DNNq7OoA
-         0PhPw7l9DdWhb8nfWeXfIaJleRq5E79dez1azdhktkFBPeb5au/WpTURtCXTptn36G
-         Tzp6e9RGrFGwIqjzoLNB7V7rWWnFvpLIxuIM3rGY=
-Subject: FAILED: patch "[PATCH] net: phy: broadcom: stub c45 read/write for 54810" failed to apply to 5.4-stable tree
+        b=x/7KNo0biENF2hbm77ri6HXUKp5/ct2SkhVJGm2EnZwfhogTr2g+wXKuUnFrBhEti
+         ORIoVmsplMgQYKydw/cefQBqbpeRw83taJ/RYg+5kBvo490QVRo0fnuuK6tNyCGebt
+         aMkIuWXfOa9hs7Ffy+ifrDRTaTIGy9gmF0dGdM/s=
+Subject: FAILED: patch "[PATCH] net: phy: broadcom: stub c45 read/write for 54810" failed to apply to 4.19-stable tree
 To:     justin.chen@broadcom.com, florian.fainelli@broadcom.com,
         kuba@kernel.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Mon, 21 Aug 2023 20:50:32 +0200
-Message-ID: <2023082132-jaundice-applaud-eb72@gregkh>
+Date:   Mon, 21 Aug 2023 20:50:33 +0200
+Message-ID: <2023082133-mashing-flick-3a50@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -49,19 +49,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 4.19-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
 git checkout FETCH_HEAD
 git cherry-pick -x 096516d092d54604d590827d05b1022c8f326639
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023082132-jaundice-applaud-eb72@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023082133-mashing-flick-3a50@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
 
 Possible dependencies:
 
@@ -78,6 +78,10 @@ fe26821fa614 ("net: phy: broadcom: Wire suspend/resume for BCM54810")
 0ececcfc9267 ("net: phy: broadcom: Allow BCM54810 to use bcm54xx_adjust_rxrefclk()")
 75f4d8d10e01 ("net: phy: add Broadcom BCM84881 PHY driver")
 b9bcb95315fe ("net: phy: broadcom: add 1000Base-X support for BCM54616S")
+283da99af1d8 ("net: phy: broadcom: Add genphy_suspend and genphy_resume for BCM5464")
+dcdecdcfe1fc ("net: phy: switch drivers to use dynamic feature detection")
+5c3407abb338 ("net: phy: meson-gxl: add g12a support")
+356d71e00d27 ("Merge git://git.kernel.org/pub/scm/linux/kernel/git/davem/net")
 
 thanks,
 
