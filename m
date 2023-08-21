@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D3A93783313
-	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:22:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 444407832C2
+	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:22:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230266AbjHUUGd (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 21 Aug 2023 16:06:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52304 "EHLO
+        id S229765AbjHUTzY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 21 Aug 2023 15:55:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54364 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230265AbjHUUGd (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 16:06:33 -0400
+        with ESMTP id S229793AbjHUTzX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 15:55:23 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F275FA8
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 13:06:31 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 47A9AEE
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 12:55:21 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 91C8064962
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 20:06:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2B79C433C8;
-        Mon, 21 Aug 2023 20:06:30 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CF77E645B2
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 19:55:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E24BDC433C9;
+        Mon, 21 Aug 2023 19:55:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692648391;
-        bh=aGadGLzXfiq6rzxiz0zYBf/QAR2s3KmdqXCBM1lWAXU=;
+        s=korg; t=1692647720;
+        bh=tBSM+B5fXAEkLBefmnCUPzA49dHFtnjSAUpKJDmvuHs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=mBAzOIY7i6s6lVs4yEVzKtuZyP+pD6iPk1eOARk+AkdfJP0P38+rKo5ZVBxAiruiO
-         IFoEh1nETFLPu073Vd5cfvNJEQAn5qqQJ6Xm9Advz+KJ3YYRRkHRLabiePQ2gjDpT7
-         kMjc37DCWTIJoi96jhRMOIovHhphfJVNM0fYFb8E=
+        b=TcaE8d6cv6B4Tj6P884bu/oyv8pHQx3ND5tRbO1hYDsXumUAIKUlIeXNQQDtHQC8E
+         a1cI56XoL8a1BZSvXRwHwIwG/GJuhwHFAq03v8oCws/6T+0/KohNuvAck+XqeViMXr
+         bKsH7cPk0GOiQ4qjEt/vm2nJuYL3kTkjDdhW3js4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Petr Pavlu <petr.pavlu@suse.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Nathan Chancellor <nathan@kernel.org>,
-        "Borislav Petkov (AMD)" <bp@alien8.de>
-Subject: [PATCH 6.4 129/234] x86/retpoline,kprobes: Fix position of thunk sections with CONFIG_LTO_CLANG
-Date:   Mon, 21 Aug 2023 21:41:32 +0200
-Message-ID: <20230821194134.542686421@linuxfoundation.org>
+        patches@lists.linux.dev, Xiang Yang <xiangyang3@huawei.com>,
+        Vladimir Oltean <olteanv@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 114/194] net: pcs: Add missing put_device call in miic_create
+Date:   Mon, 21 Aug 2023 21:41:33 +0200
+Message-ID: <20230821194127.704489207@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230821194128.754601642@linuxfoundation.org>
-References: <20230821194128.754601642@linuxfoundation.org>
+In-Reply-To: <20230821194122.695845670@linuxfoundation.org>
+References: <20230821194122.695845670@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,131 +55,52 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Petr Pavlu <petr.pavlu@suse.com>
+From: Xiang Yang <xiangyang3@huawei.com>
 
-commit 79cd2a11224eab86d6673fe8a11d2046ae9d2757 upstream.
+[ Upstream commit 829c6524d6729d05a82575dbcc16f99be5ee843d ]
 
-The linker script arch/x86/kernel/vmlinux.lds.S matches the thunk
-sections ".text.__x86.*" from arch/x86/lib/retpoline.S as follows:
+The reference of pdev->dev is taken by of_find_device_by_node, so
+it should be released when not need anymore.
 
-  .text {
-    [...]
-    TEXT_TEXT
-    [...]
-    __indirect_thunk_start = .;
-    *(.text.__x86.*)
-    __indirect_thunk_end = .;
-    [...]
-  }
-
-Macro TEXT_TEXT references TEXT_MAIN which normally expands to only
-".text". However, with CONFIG_LTO_CLANG, TEXT_MAIN becomes
-".text .text.[0-9a-zA-Z_]*" which wrongly matches also the thunk
-sections. The output layout is then different than expected. For
-instance, the currently defined range [__indirect_thunk_start,
-__indirect_thunk_end] becomes empty.
-
-Prevent the problem by using ".." as the first separator, for example,
-".text..__x86.indirect_thunk". This pattern is utilized by other
-explicit section names which start with one of the standard prefixes,
-such as ".text" or ".data", and that need to be individually selected in
-the linker script.
-
-  [ nathan: Fix conflicts with SRSO and fold in fix issue brought up by
-    Andrew Cooper in post-review:
-    https://lore.kernel.org/20230803230323.1478869-1-andrew.cooper3@citrix.com ]
-
-Fixes: dc5723b02e52 ("kbuild: add support for Clang LTO")
-Signed-off-by: Petr Pavlu <petr.pavlu@suse.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20230711091952.27944-2-petr.pavlu@suse.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 7dc54d3b8d91 ("net: pcs: add Renesas MII converter driver")
+Signed-off-by: Xiang Yang <xiangyang3@huawei.com>
+Reviewed-by: Vladimir Oltean <olteanv@gmail.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/vmlinux.lds.S |    8 ++++----
- arch/x86/lib/retpoline.S      |    8 ++++----
- tools/objtool/check.c         |    2 +-
- 3 files changed, 9 insertions(+), 9 deletions(-)
+ drivers/net/pcs/pcs-rzn1-miic.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
---- a/arch/x86/kernel/vmlinux.lds.S
-+++ b/arch/x86/kernel/vmlinux.lds.S
-@@ -134,15 +134,15 @@ SECTIONS
- 		SOFTIRQENTRY_TEXT
- #ifdef CONFIG_RETPOLINE
- 		__indirect_thunk_start = .;
--		*(.text.__x86.indirect_thunk)
--		*(.text.__x86.return_thunk)
-+		*(.text..__x86.indirect_thunk)
-+		*(.text..__x86.return_thunk)
- 		__indirect_thunk_end = .;
- #endif
- 		STATIC_CALL_TEXT
+diff --git a/drivers/net/pcs/pcs-rzn1-miic.c b/drivers/net/pcs/pcs-rzn1-miic.c
+index c1424119e8212..847ab37f13671 100644
+--- a/drivers/net/pcs/pcs-rzn1-miic.c
++++ b/drivers/net/pcs/pcs-rzn1-miic.c
+@@ -317,15 +317,21 @@ struct phylink_pcs *miic_create(struct device *dev, struct device_node *np)
  
- 		ALIGN_ENTRY_TEXT_BEGIN
- #ifdef CONFIG_CPU_SRSO
--		*(.text.__x86.rethunk_untrain)
-+		*(.text..__x86.rethunk_untrain)
- #endif
+ 	pdev = of_find_device_by_node(pcs_np);
+ 	of_node_put(pcs_np);
+-	if (!pdev || !platform_get_drvdata(pdev))
++	if (!pdev || !platform_get_drvdata(pdev)) {
++		if (pdev)
++			put_device(&pdev->dev);
+ 		return ERR_PTR(-EPROBE_DEFER);
++	}
  
- 		ENTRY_TEXT
-@@ -153,7 +153,7 @@ SECTIONS
- 		 * definition.
- 		 */
- 		. = srso_alias_untrain_ret | (1 << 2) | (1 << 8) | (1 << 14) | (1 << 20);
--		*(.text.__x86.rethunk_safe)
-+		*(.text..__x86.rethunk_safe)
- #endif
- 		ALIGN_ENTRY_TEXT_END
- 		*(.gnu.warning)
---- a/arch/x86/lib/retpoline.S
-+++ b/arch/x86/lib/retpoline.S
-@@ -13,7 +13,7 @@
- #include <asm/frame.h>
- #include <asm/nops.h>
+ 	miic_port = kzalloc(sizeof(*miic_port), GFP_KERNEL);
+-	if (!miic_port)
++	if (!miic_port) {
++		put_device(&pdev->dev);
+ 		return ERR_PTR(-ENOMEM);
++	}
  
--	.section .text.__x86.indirect_thunk
-+	.section .text..__x86.indirect_thunk
+ 	miic = platform_get_drvdata(pdev);
+ 	device_link_add(dev, miic->dev, DL_FLAG_AUTOREMOVE_CONSUMER);
++	put_device(&pdev->dev);
  
- 
- .macro POLINE reg
-@@ -148,7 +148,7 @@ SYM_CODE_END(__x86_indirect_jump_thunk_a
-  * As a result, srso_alias_safe_ret() becomes a safe return.
-  */
- #ifdef CONFIG_CPU_SRSO
--	.section .text.__x86.rethunk_untrain
-+	.section .text..__x86.rethunk_untrain
- 
- SYM_START(srso_alias_untrain_ret, SYM_L_GLOBAL, SYM_A_NONE)
- 	UNWIND_HINT_FUNC
-@@ -159,7 +159,7 @@ SYM_START(srso_alias_untrain_ret, SYM_L_
- SYM_FUNC_END(srso_alias_untrain_ret)
- __EXPORT_THUNK(srso_alias_untrain_ret)
- 
--	.section .text.__x86.rethunk_safe
-+	.section .text..__x86.rethunk_safe
- #else
- /* dummy definition for alternatives */
- SYM_START(srso_alias_untrain_ret, SYM_L_GLOBAL, SYM_A_NONE)
-@@ -177,7 +177,7 @@ SYM_START(srso_alias_safe_ret, SYM_L_GLO
- 	int3
- SYM_FUNC_END(srso_alias_safe_ret)
- 
--	.section .text.__x86.return_thunk
-+	.section .text..__x86.return_thunk
- 
- SYM_CODE_START(srso_alias_return_thunk)
- 	UNWIND_HINT_FUNC
---- a/tools/objtool/check.c
-+++ b/tools/objtool/check.c
-@@ -429,7 +429,7 @@ static int decode_instructions(struct ob
- 		if (!strcmp(sec->name, ".noinstr.text") ||
- 		    !strcmp(sec->name, ".entry.text") ||
- 		    !strcmp(sec->name, ".cpuidle.text") ||
--		    !strncmp(sec->name, ".text.__x86.", 12))
-+		    !strncmp(sec->name, ".text..__x86.", 13))
- 			sec->noinstr = true;
- 
- 		/*
+ 	miic_port->miic = miic;
+ 	miic_port->port = port - 1;
+-- 
+2.40.1
+
 
 
