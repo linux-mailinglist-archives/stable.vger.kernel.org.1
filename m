@@ -2,50 +2,54 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 944F27832B0
-	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:22:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A7F3C78329D
+	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:22:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230197AbjHUUDx (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 21 Aug 2023 16:03:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47784 "EHLO
+        id S229592AbjHUTyF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 21 Aug 2023 15:54:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59434 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229938AbjHUUDx (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 16:03:53 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B3F84DF
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 13:03:51 -0700 (PDT)
+        with ESMTP id S229629AbjHUTyE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 15:54:04 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C7CE1EE
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 12:54:02 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5250D6487A
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 20:03:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 638C4C433C8;
-        Mon, 21 Aug 2023 20:03:50 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5DB9B64548
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 19:54:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A838C433C8;
+        Mon, 21 Aug 2023 19:54:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692648230;
-        bh=S25ZaS0IS0BJ8eMGSuxTyoHD/A9Lln6xZyKXTHjAZyU=;
+        s=korg; t=1692647641;
+        bh=e3rYZd+4wzYBIlhgNFT/+/Wf9tZq1DaXhREG3wtJ9cE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=bmuDbbD7KrsFKkRPLty2tHpa1xKm2byjcTj9g2yRkQyuZt0MrtMe8yWblBa615N8E
-         DbS+EfXu7s91+8oiuzEE6qLLi8IByGybIlCOMxT1+sXtLIFyxnmCQZYD6fluupwMqk
-         HauUbHz4nN24X6aWygCHNbCQl6xF4/eMMJBE5DdI=
+        b=1vYXSBp1/56ouZ03dqnF0nJtNunkMnR/D8qLzJIr3nIpo4JYSMPIdkFbzWFLP0HQQ
+         zVZ94RAMJfkkxr2D4OQYAHmJv1rfYWSo5Z58r6Mzc/Nv0hFuIfNm7wR8LrLOOfIak7
+         JPcNIpsAWDP+VY0a3Srxc7wIzikSxxvHleSnM7Oo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Lin Ma <linma@zju.edu.cn>,
-        "Michael S. Tsirkin" <mst@redhat.com>
-Subject: [PATCH 6.4 102/234] vdpa: Add max vqp attr to vdpa_nl_policy for nlattr length check
+        patches@lists.linux.dev, Dragos Tatulea <dtatulea@nvidia.com>,
+        =?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
+        Gal Pressman <gal@nvidia.com>,
+        "Michael S. Tsirkin" <mst@redhat.com>,
+        Jason Wang <jasowang@redhat.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 086/194] vdpa/mlx5: Fix mr->initialized semantics
 Date:   Mon, 21 Aug 2023 21:41:05 +0200
-Message-ID: <20230821194133.325140939@linuxfoundation.org>
+Message-ID: <20230821194126.531155454@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230821194128.754601642@linuxfoundation.org>
-References: <20230821194128.754601642@linuxfoundation.org>
+In-Reply-To: <20230821194122.695845670@linuxfoundation.org>
+References: <20230821194122.695845670@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -53,40 +57,185 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Lin Ma <linma@zju.edu.cn>
+From: Dragos Tatulea <dtatulea@nvidia.com>
 
-commit 5d6ba607d6cb5c58a4ddf33381e18c83dbb4098f upstream.
+[ Upstream commit 9ee811009ad8f87982b69e61d07447d12233ad01 ]
 
-The vdpa_nl_policy structure is used to validate the nlattr when parsing
-the incoming nlmsg. It will ensure the attribute being described produces
-a valid nlattr pointer in info->attrs before entering into each handler
-in vdpa_nl_ops.
+The mr->initialized flag is shared between the control vq and data vq
+part of the mr init/uninit. But if the control vq and data vq get placed
+in different ASIDs, it can happen that initializing the control vq will
+prevent the data vq mr from being initialized.
 
-That is to say, the missing part in vdpa_nl_policy may lead to illegal
-nlattr after parsing, which could lead to OOB read just like CVE-2023-3773.
+This patch consolidates the control and data vq init parts into their
+own init functions. The mr->initialized will now be used for the data vq
+only. The control vq currently doesn't need a flag.
 
-This patch adds the missing nla_policy for vdpa max vqp attr to avoid
-such bugs.
+The uninitializing part is also taken care of: mlx5_vdpa_destroy_mr got
+split into data and control vq functions which are now also ASID aware.
 
-Fixes: ad69dd0bf26b ("vdpa: Introduce query of device config layout")
-Signed-off-by: Lin Ma <linma@zju.edu.cn>
-Cc: stable@vger.kernel.org
-Message-Id: <20230727175757.73988-7-dtatulea@nvidia.com>
+Fixes: 8fcd20c30704 ("vdpa/mlx5: Support different address spaces for control and data")
+Signed-off-by: Dragos Tatulea <dtatulea@nvidia.com>
+Reviewed-by: Eugenio Pérez <eperezma@redhat.com>
+Reviewed-by: Gal Pressman <gal@nvidia.com>
+Message-Id: <20230802171231.11001-3-dtatulea@nvidia.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Acked-by: Jason Wang <jasowang@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/vdpa/vdpa.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/vdpa/mlx5/core/mlx5_vdpa.h |  1 +
+ drivers/vdpa/mlx5/core/mr.c        | 97 +++++++++++++++++++++---------
+ 2 files changed, 71 insertions(+), 27 deletions(-)
 
---- a/drivers/vdpa/vdpa.c
-+++ b/drivers/vdpa/vdpa.c
-@@ -1247,6 +1247,7 @@ static const struct nla_policy vdpa_nl_p
- 	[VDPA_ATTR_MGMTDEV_DEV_NAME] = { .type = NLA_STRING },
- 	[VDPA_ATTR_DEV_NAME] = { .type = NLA_STRING },
- 	[VDPA_ATTR_DEV_NET_CFG_MACADDR] = NLA_POLICY_ETH_ADDR,
-+	[VDPA_ATTR_DEV_NET_CFG_MAX_VQP] = { .type = NLA_U16 },
- 	/* virtio spec 1.1 section 5.1.4.1 for valid MTU range */
- 	[VDPA_ATTR_DEV_NET_CFG_MTU] = NLA_POLICY_MIN(NLA_U16, 68),
- 	[VDPA_ATTR_DEV_QUEUE_INDEX] = { .type = NLA_U32 },
+diff --git a/drivers/vdpa/mlx5/core/mlx5_vdpa.h b/drivers/vdpa/mlx5/core/mlx5_vdpa.h
+index 25fc4120b618d..a0420be5059f4 100644
+--- a/drivers/vdpa/mlx5/core/mlx5_vdpa.h
++++ b/drivers/vdpa/mlx5/core/mlx5_vdpa.h
+@@ -31,6 +31,7 @@ struct mlx5_vdpa_mr {
+ 	struct list_head head;
+ 	unsigned long num_directs;
+ 	unsigned long num_klms;
++	/* state of dvq mr */
+ 	bool initialized;
+ 
+ 	/* serialize mkey creation and destruction */
+diff --git a/drivers/vdpa/mlx5/core/mr.c b/drivers/vdpa/mlx5/core/mr.c
+index a4d7ee2339fa5..b3609867d5676 100644
+--- a/drivers/vdpa/mlx5/core/mr.c
++++ b/drivers/vdpa/mlx5/core/mr.c
+@@ -491,15 +491,24 @@ static void destroy_user_mr(struct mlx5_vdpa_dev *mvdev, struct mlx5_vdpa_mr *mr
+ 	}
+ }
+ 
+-void mlx5_vdpa_destroy_mr(struct mlx5_vdpa_dev *mvdev)
++static void _mlx5_vdpa_destroy_cvq_mr(struct mlx5_vdpa_dev *mvdev, unsigned int asid)
++{
++	if (mvdev->group2asid[MLX5_VDPA_CVQ_GROUP] != asid)
++		return;
++
++	prune_iotlb(mvdev);
++}
++
++static void _mlx5_vdpa_destroy_dvq_mr(struct mlx5_vdpa_dev *mvdev, unsigned int asid)
+ {
+ 	struct mlx5_vdpa_mr *mr = &mvdev->mr;
+ 
+-	mutex_lock(&mr->mkey_mtx);
++	if (mvdev->group2asid[MLX5_VDPA_DATAVQ_GROUP] != asid)
++		return;
++
+ 	if (!mr->initialized)
+-		goto out;
++		return;
+ 
+-	prune_iotlb(mvdev);
+ 	if (mr->user_mr)
+ 		destroy_user_mr(mvdev, mr);
+ 	else
+@@ -507,45 +516,79 @@ void mlx5_vdpa_destroy_mr(struct mlx5_vdpa_dev *mvdev)
+ 
+ 	memset(mr, 0, sizeof(*mr));
+ 	mr->initialized = false;
+-out:
++}
++
++static void mlx5_vdpa_destroy_mr_asid(struct mlx5_vdpa_dev *mvdev, unsigned int asid)
++{
++	struct mlx5_vdpa_mr *mr = &mvdev->mr;
++
++	mutex_lock(&mr->mkey_mtx);
++
++	_mlx5_vdpa_destroy_dvq_mr(mvdev, asid);
++	_mlx5_vdpa_destroy_cvq_mr(mvdev, asid);
++
+ 	mutex_unlock(&mr->mkey_mtx);
+ }
+ 
+-static int _mlx5_vdpa_create_mr(struct mlx5_vdpa_dev *mvdev,
+-				struct vhost_iotlb *iotlb, unsigned int asid)
++void mlx5_vdpa_destroy_mr(struct mlx5_vdpa_dev *mvdev)
++{
++	mlx5_vdpa_destroy_mr_asid(mvdev, mvdev->group2asid[MLX5_VDPA_CVQ_GROUP]);
++	mlx5_vdpa_destroy_mr_asid(mvdev, mvdev->group2asid[MLX5_VDPA_DATAVQ_GROUP]);
++}
++
++static int _mlx5_vdpa_create_cvq_mr(struct mlx5_vdpa_dev *mvdev,
++				    struct vhost_iotlb *iotlb,
++				    unsigned int asid)
++{
++	if (mvdev->group2asid[MLX5_VDPA_CVQ_GROUP] != asid)
++		return 0;
++
++	return dup_iotlb(mvdev, iotlb);
++}
++
++static int _mlx5_vdpa_create_dvq_mr(struct mlx5_vdpa_dev *mvdev,
++				    struct vhost_iotlb *iotlb,
++				    unsigned int asid)
+ {
+ 	struct mlx5_vdpa_mr *mr = &mvdev->mr;
+ 	int err;
+ 
+-	if (mr->initialized)
++	if (mvdev->group2asid[MLX5_VDPA_DATAVQ_GROUP] != asid)
+ 		return 0;
+ 
+-	if (mvdev->group2asid[MLX5_VDPA_DATAVQ_GROUP] == asid) {
+-		if (iotlb)
+-			err = create_user_mr(mvdev, iotlb);
+-		else
+-			err = create_dma_mr(mvdev, mr);
++	if (mr->initialized)
++		return 0;
+ 
+-		if (err)
+-			return err;
+-	}
++	if (iotlb)
++		err = create_user_mr(mvdev, iotlb);
++	else
++		err = create_dma_mr(mvdev, mr);
+ 
+-	if (mvdev->group2asid[MLX5_VDPA_CVQ_GROUP] == asid) {
+-		err = dup_iotlb(mvdev, iotlb);
+-		if (err)
+-			goto out_err;
+-	}
++	if (err)
++		return err;
+ 
+ 	mr->initialized = true;
++
++	return 0;
++}
++
++static int _mlx5_vdpa_create_mr(struct mlx5_vdpa_dev *mvdev,
++				struct vhost_iotlb *iotlb, unsigned int asid)
++{
++	int err;
++
++	err = _mlx5_vdpa_create_dvq_mr(mvdev, iotlb, asid);
++	if (err)
++		return err;
++
++	err = _mlx5_vdpa_create_cvq_mr(mvdev, iotlb, asid);
++	if (err)
++		goto out_err;
++
+ 	return 0;
+ 
+ out_err:
+-	if (mvdev->group2asid[MLX5_VDPA_DATAVQ_GROUP] == asid) {
+-		if (iotlb)
+-			destroy_user_mr(mvdev, mr);
+-		else
+-			destroy_dma_mr(mvdev, mr);
+-	}
++	_mlx5_vdpa_destroy_dvq_mr(mvdev, asid);
+ 
+ 	return err;
+ }
+-- 
+2.40.1
+
 
 
