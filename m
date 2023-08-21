@@ -2,166 +2,128 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 53D74782857
-	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 13:56:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6256D78285E
+	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 13:57:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229833AbjHUL4W (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 21 Aug 2023 07:56:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49128 "EHLO
+        id S234031AbjHUL5E (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 21 Aug 2023 07:57:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35824 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233734AbjHUL4V (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 07:56:21 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D13BAC7
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 04:56:12 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6CA3D63077
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 11:56:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68B0DC433C8;
-        Mon, 21 Aug 2023 11:56:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692618971;
-        bh=xoZnc3W7lGQDLAPxztx+RPyIOL39rnFKYpozA9wRch4=;
-        h=Subject:To:Cc:From:Date:From;
-        b=Cgl6KM8uZJwtRWSp0y/ThNoYRdn1+E7jQ80N0IVjyP5UPhrDEbldKRfNlHjJV5gCd
-         MDF7/w0/WFvSZhmUwYGahua6d3DQokPpXHInKdFvq3af620dai+YKBnnnpL3cd9aP4
-         /UNBINSkpb6M9x6hxx4f8/vZIh0O630guGDoSQn8=
-Subject: FAILED: patch "[PATCH] drm/amdgpu: skip fence GFX interrupts disable/enable for S0ix" failed to apply to 5.15-stable tree
-To:     Tim.Huang@amd.com, alexander.deucher@amd.com,
-        mario.limonciello@amd.com
-Cc:     <stable@vger.kernel.org>
-From:   <gregkh@linuxfoundation.org>
-Date:   Mon, 21 Aug 2023 13:56:09 +0200
-Message-ID: <2023082108-wham-accent-52a6@gregkh>
+        with ESMTP id S234041AbjHUL5D (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 07:57:03 -0400
+Received: from mail-lf1-x131.google.com (mail-lf1-x131.google.com [IPv6:2a00:1450:4864:20::131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 72CA1D3
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 04:57:01 -0700 (PDT)
+Received: by mail-lf1-x131.google.com with SMTP id 2adb3069b0e04-50078e52537so1948617e87.1
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 04:57:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1692619020; x=1693223820;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=fTe8WhjRtDtvKnWUy8DQUNNiHCly37L9aOxfVWfr51I=;
+        b=XF7BVjGw4rayXAII/RwNEc0RYR/qTaKbatZCOC8m1yillv73HuEt1VDgLR/3UvlgPM
+         trG01vienb53PUZ3OKewXqP6w6obD7RlvsPrx/X2K+UiLz6we42bhtsPnUeDSr6AOAxa
+         qNcN/xhSqekNVpy1OdUlBDsTvifbA3vbkogy03DFyiQSYFg7+Ip/r+PjtK2QM3eJ/pLR
+         IBoBPaUtKYjuJxLb/BtyMqeoWecUJFGdSlljPGNjL4aSc5nOYlY4BrJKNnw2gQHiyhYI
+         5cP0pSBlrAJE3ciqrxGcD7qIMm4ygGqvQf/hU/56SxBBO1Ih34LY/9csXllYY63AjDu2
+         7/gQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1692619020; x=1693223820;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=fTe8WhjRtDtvKnWUy8DQUNNiHCly37L9aOxfVWfr51I=;
+        b=SztjATlhzM/YrBO0mBBjJahkwEF3flCX2Q2+i6nydEqwBQSsan9GA6ezdI5qKeGl+J
+         M4OUFxes/zIUejFYTDKn/ZDokrNBdXT6rA7zVVi2WHOqNcywvN2NSuWJ5volGKQOT84a
+         kT/EdnRGRibz3PmYa9Du5Nz90YAAeXvRgslWAzPs37yWQSE+F7WmW0D2MW4W8EjodLoq
+         fBvNdyuZNQOSLE285jRXa8NA1W9YpjkBckPT0AMc9u5wRnyH1ubHq0pHc04zNC8GglzF
+         OMXkY6EeU4jLwlD56qsiYNjPdCFjrV8qiScc76mZUx4F+dfmS6j6VYWNTi5F6dLzM2jy
+         +0Mg==
+X-Gm-Message-State: AOJu0YxHchDI1Of3AGoFYScmeN6gTMR8p2h9knNDxcDB5m77izQsNI+3
+        EUqYeaMbMKUX0CpMgMa3Cp3RiA==
+X-Google-Smtp-Source: AGHT+IG0T2AjDHN5OsFOZSB3biLx14nIVjHc9Jc5o9uNqCi2+5w0B4twWxLtoP6QfozGZyP02ebPXA==
+X-Received: by 2002:a19:7111:0:b0:4f7:6775:2a66 with SMTP id m17-20020a197111000000b004f767752a66mr3729911lfc.53.1692619019522;
+        Mon, 21 Aug 2023 04:56:59 -0700 (PDT)
+Received: from [192.168.1.101] (abyk181.neoplus.adsl.tpnet.pl. [83.9.30.181])
+        by smtp.gmail.com with ESMTPSA id z7-20020a19f707000000b004fe1e0ded25sm1721276lfe.184.2023.08.21.04.56.58
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 21 Aug 2023 04:56:58 -0700 (PDT)
+Message-ID: <1f7f00c4-e671-49a7-9cd6-b0cc25b6042c@linaro.org>
+Date:   Mon, 21 Aug 2023 13:56:57 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v0 7/9] media: qcom: camss: Fix invalid clock enable bit
+ disjunction
+Content-Language: en-US
+To:     Bryan O'Donoghue <bryan.odonoghue@linaro.org>, rfoss@kernel.org,
+        todor.too@gmail.com, agross@kernel.org, andersson@kernel.org,
+        mchehab@kernel.org, hverkuil-cisco@xs4all.nl,
+        sakari.ailus@linux.intel.com, andrey.konovalov@linaro.org
+Cc:     linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20230814141007.3721197-1-bryan.odonoghue@linaro.org>
+ <20230814141007.3721197-8-bryan.odonoghue@linaro.org>
+From:   Konrad Dybcio <konrad.dybcio@linaro.org>
+Autocrypt: addr=konrad.dybcio@linaro.org; keydata=
+ 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
+ izWDgYvmBE8=
+In-Reply-To: <20230814141007.3721197-8-bryan.odonoghue@linaro.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+On 14.08.2023 16:10, Bryan O'Donoghue wrote:
+> define CSIPHY_3PH_CMN_CSI_COMMON_CTRL5_CLK_ENABLE BIT(7)
+> 
+> disjunction for gen2 ? BIT(7) : is a nop we are setting the same bit
+> either way.
+> 
+> Fixes: 4abb21309fda ("media: camss: csiphy: Move to hardcode CSI Clock Lane number")
+> Cc: stable@vger.kernel.org
+"eeeh"
 
-The patch below does not apply to the 5.15-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+> Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+> ---
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
 
-To reproduce the conflict and resubmit, you may use the following commands:
-
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
-git checkout FETCH_HEAD
-git cherry-pick -x f1740b1ab2703b2a057da7cf33b03297e0381aa0
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023082108-wham-accent-52a6@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
-
-Possible dependencies:
-
-f1740b1ab270 ("drm/amdgpu: skip fence GFX interrupts disable/enable for S0ix")
-3083b1007d4b ("drm/amdgpu: skip disabling fence driver src_irqs when device is unplugged")
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From f1740b1ab2703b2a057da7cf33b03297e0381aa0 Mon Sep 17 00:00:00 2001
-From: Tim Huang <Tim.Huang@amd.com>
-Date: Mon, 14 Aug 2023 15:13:04 +0800
-Subject: [PATCH] drm/amdgpu: skip fence GFX interrupts disable/enable for S0ix
-
-GFX v11.0.1 reported fence fallback timer expired issue on
-SDMA and GFX rings after S0ix resume. This is generated by
-EOP interrupts are disabled when S0ix suspend but fails to
-re-enable when resume because of the GFX is in GFXOFF.
-
-[  203.349571] [drm] Fence fallback timer expired on ring sdma0
-[  203.349572] [drm] Fence fallback timer expired on ring gfx_0.0.0
-[  203.861635] [drm] Fence fallback timer expired on ring gfx_0.0.0
-
-For S0ix, GFX is in GFXOFF state, avoid to touch the GFX registers
-to configure the fence driver interrupts for rings that belong to GFX.
-The interrupts configuration will be restored by GFXOFF exit.
-
-Signed-off-by: Tim Huang <Tim.Huang@amd.com>
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
-
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_fence.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_fence.c
-index c694b41f6461..7537f5aa76f0 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_fence.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_fence.c
-@@ -551,6 +551,41 @@ int amdgpu_fence_driver_sw_init(struct amdgpu_device *adev)
- 	return 0;
- }
- 
-+/**
-+ * amdgpu_fence_need_ring_interrupt_restore - helper function to check whether
-+ * fence driver interrupts need to be restored.
-+ *
-+ * @ring: ring that to be checked
-+ *
-+ * Interrupts for rings that belong to GFX IP don't need to be restored
-+ * when the target power state is s0ix.
-+ *
-+ * Return true if need to restore interrupts, false otherwise.
-+ */
-+static bool amdgpu_fence_need_ring_interrupt_restore(struct amdgpu_ring *ring)
-+{
-+	struct amdgpu_device *adev = ring->adev;
-+	bool is_gfx_power_domain = false;
-+
-+	switch (ring->funcs->type) {
-+	case AMDGPU_RING_TYPE_SDMA:
-+	/* SDMA 5.x+ is part of GFX power domain so it's covered by GFXOFF */
-+		if (adev->ip_versions[SDMA0_HWIP][0] >= IP_VERSION(5, 0, 0))
-+			is_gfx_power_domain = true;
-+		break;
-+	case AMDGPU_RING_TYPE_GFX:
-+	case AMDGPU_RING_TYPE_COMPUTE:
-+	case AMDGPU_RING_TYPE_KIQ:
-+	case AMDGPU_RING_TYPE_MES:
-+		is_gfx_power_domain = true;
-+		break;
-+	default:
-+		break;
-+	}
-+
-+	return !(adev->in_s0ix && is_gfx_power_domain);
-+}
-+
- /**
-  * amdgpu_fence_driver_hw_fini - tear down the fence driver
-  * for all possible rings.
-@@ -579,7 +614,8 @@ void amdgpu_fence_driver_hw_fini(struct amdgpu_device *adev)
- 			amdgpu_fence_driver_force_completion(ring);
- 
- 		if (!drm_dev_is_unplugged(adev_to_drm(adev)) &&
--		    ring->fence_drv.irq_src)
-+		    ring->fence_drv.irq_src &&
-+		    amdgpu_fence_need_ring_interrupt_restore(ring))
- 			amdgpu_irq_put(adev, ring->fence_drv.irq_src,
- 				       ring->fence_drv.irq_type);
- 
-@@ -655,7 +691,8 @@ void amdgpu_fence_driver_hw_init(struct amdgpu_device *adev)
- 			continue;
- 
- 		/* enable the interrupt */
--		if (ring->fence_drv.irq_src)
-+		if (ring->fence_drv.irq_src &&
-+		    amdgpu_fence_need_ring_interrupt_restore(ring))
- 			amdgpu_irq_get(adev, ring->fence_drv.irq_src,
- 				       ring->fence_drv.irq_type);
- 	}
-
+Konrad
