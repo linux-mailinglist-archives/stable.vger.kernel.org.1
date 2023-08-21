@@ -2,47 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5528778329C
-	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:22:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 429E278327E
+	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:22:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230271AbjHUUGx (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 21 Aug 2023 16:06:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54576 "EHLO
+        id S229872AbjHUT5I (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 21 Aug 2023 15:57:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49440 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230273AbjHUUGw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 16:06:52 -0400
+        with ESMTP id S229869AbjHUT5H (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 15:57:07 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 72887E3
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 13:06:51 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5047112F
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 12:57:03 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 122616496A
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 20:06:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22A7AC433C7;
-        Mon, 21 Aug 2023 20:06:49 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E413764641
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 19:57:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4E4CC433C7;
+        Mon, 21 Aug 2023 19:57:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692648410;
-        bh=ylcf7xCOFcZ9a79OP+JpHb/JkeS/qnUtEm0dMjTehuk=;
+        s=korg; t=1692647822;
+        bh=7GGK7IRq82SBo4ZQw2yxJoW78BVywWtAdDasAcc2YFI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=lEen3J6K8Yih4+MQPSm98oq8e+Oo0FJtuu+x2OYL0YIiy7Ir7F7kORgcjn4wmY409
-         nbnKMKid23TKnnI68JbtWoHEivuCEyXDHwXnw//Yv1WrMa5PXOcM0mFy1GPFLo9r4N
-         zK+U3huhdockDJphpUqD/W0bCNX03SOIY9cu3JfA=
+        b=ljTVq00XTku25T6V7KUv3vlqMSWMEMBttaUz/9nT6ppxAF54CWiZqsSIJSDNcSjVD
+         /x0VeLNZQQTRj8/n8/2vhXl4Rry9bgZ0+npzHCsjh5Qr+9s7FyjslnRU56Hj2rMkre
+         K9eWE1m2hxz9eD5xMHJFH9u3ruvyl0oIaVT104Rw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ido Schimmel <idosch@idosch.org>,
-        Ziyang Xuan <william.xuanziyang@huawei.com>,
-        Simon Horman <horms@kernel.org>,
-        Jakub Kicinski <kuba@kernel.org>,
+        patches@lists.linux.dev, Bo YU <tsu.yubo@gmail.com>,
+        Aurelien Jarno <aurelien@aurel32.net>,
+        Alexandre Ghiti <alexghiti@rivosinc.com>,
+        =?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@rivosinc.com>,
+        Palmer Dabbelt <palmer@rivosinc.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 166/234] team: Fix incorrect deletion of ETH_P_8021AD protocol vid from slaves
+Subject: [PATCH 6.1 150/194] riscv: uaccess: Return the number of bytes effectively not copied
 Date:   Mon, 21 Aug 2023 21:42:09 +0200
-Message-ID: <20230821194136.173502257@linuxfoundation.org>
+Message-ID: <20230821194129.325291681@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230821194128.754601642@linuxfoundation.org>
-References: <20230821194128.754601642@linuxfoundation.org>
+In-Reply-To: <20230821194122.695845670@linuxfoundation.org>
+References: <20230821194122.695845670@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,52 +57,86 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ziyang Xuan <william.xuanziyang@huawei.com>
+From: Alexandre Ghiti <alexghiti@rivosinc.com>
 
-[ Upstream commit dafcbce07136d799edc4c67f04f9fd69ff1eac1f ]
+[ Upstream commit 4b05b993900dd3eba0fc83ef5c5ddc7d65d786c6 ]
 
-Similar to commit 01f4fd270870 ("bonding: Fix incorrect deletion of
-ETH_P_8021AD protocol vid from slaves"), we can trigger BUG_ON(!vlan_info)
-in unregister_vlan_dev() with the following testcase:
+It was reported that the riscv kernel hangs while executing the test
+in [1].
 
-  # ip netns add ns1
-  # ip netns exec ns1 ip link add team1 type team
-  # ip netns exec ns1 ip link add team_slave type veth peer veth2
-  # ip netns exec ns1 ip link set team_slave master team1
-  # ip netns exec ns1 ip link add link team_slave name team_slave.10 type vlan id 10 protocol 802.1ad
-  # ip netns exec ns1 ip link add link team1 name team1.10 type vlan id 10 protocol 802.1ad
-  # ip netns exec ns1 ip link set team_slave nomaster
-  # ip netns del ns1
+Indeed, the test hangs when trying to write a buffer to a file. The
+problem is that the riscv implementation of raw_copy_from_user() does not
+return the correct number of bytes not written when an exception happens
+and is fixed up, instead it always returns the initial size to copy,
+even if some bytes were actually copied.
 
-Add S-VLAN tag related features support to team driver. So the team driver
-will always propagate the VLAN info to its slaves.
+generic_perform_write() pre-faults the user pages and bails out if nothing
+can be written, otherwise it will access the userspace buffer: here the
+riscv implementation keeps returning it was not able to copy any byte
+though the pre-faulting indicates otherwise. So generic_perform_write()
+keeps retrying to access the user memory and ends up in an infinite
+loop.
 
-Fixes: 8ad227ff89a7 ("net: vlan: add 802.1ad support")
-Suggested-by: Ido Schimmel <idosch@idosch.org>
-Signed-off-by: Ziyang Xuan <william.xuanziyang@huawei.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20230814032301.2804971-1-william.xuanziyang@huawei.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Note that before the commit mentioned in [1] that introduced this
+regression, it worked because generic_perform_write() would bail out if
+only one byte could not be written.
+
+So fix this by returning the number of bytes effectively not written in
+__asm_copy_[to|from]_user() and __clear_user(), as it is expected.
+
+Link: https://lore.kernel.org/linux-riscv/20230309151841.bomov6hq3ybyp42a@debian/ [1]
+Fixes: ebcbd75e3962 ("riscv: Fix the bug in memory access fixup code")
+Reported-by: Bo YU <tsu.yubo@gmail.com>
+Closes: https://lore.kernel.org/linux-riscv/20230309151841.bomov6hq3ybyp42a@debian/#t
+Reported-by: Aurelien Jarno <aurelien@aurel32.net>
+Closes: https://lore.kernel.org/linux-riscv/ZNOnCakhwIeue3yr@aurel32.net/
+Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Reviewed-by: Björn Töpel <bjorn@rivosinc.com>
+Tested-by: Aurelien Jarno <aurelien@aurel32.net>
+Reviewed-by: Aurelien Jarno <aurelien@aurel32.net>
+Link: https://lore.kernel.org/r/20230811150604.1621784-1-alexghiti@rivosinc.com
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/team/team.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/riscv/lib/uaccess.S | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/team/team.c b/drivers/net/team/team.c
-index d3dc22509ea58..382756c3fb837 100644
---- a/drivers/net/team/team.c
-+++ b/drivers/net/team/team.c
-@@ -2200,7 +2200,9 @@ static void team_setup(struct net_device *dev)
+diff --git a/arch/riscv/lib/uaccess.S b/arch/riscv/lib/uaccess.S
+index ec486e5369d9b..09b47ebacf2e8 100644
+--- a/arch/riscv/lib/uaccess.S
++++ b/arch/riscv/lib/uaccess.S
+@@ -17,8 +17,11 @@ ENTRY(__asm_copy_from_user)
+ 	li t6, SR_SUM
+ 	csrs CSR_STATUS, t6
  
- 	dev->hw_features = TEAM_VLAN_FEATURES |
- 			   NETIF_F_HW_VLAN_CTAG_RX |
--			   NETIF_F_HW_VLAN_CTAG_FILTER;
-+			   NETIF_F_HW_VLAN_CTAG_FILTER |
-+			   NETIF_F_HW_VLAN_STAG_RX |
-+			   NETIF_F_HW_VLAN_STAG_FILTER;
+-	/* Save for return value */
+-	mv	t5, a2
++	/*
++	 * Save the terminal address which will be used to compute the number
++	 * of bytes copied in case of a fixup exception.
++	 */
++	add	t5, a0, a2
  
- 	dev->hw_features |= NETIF_F_GSO_ENCAP_ALL;
- 	dev->features |= dev->hw_features;
+ 	/*
+ 	 * Register allocation for code below:
+@@ -176,7 +179,7 @@ ENTRY(__asm_copy_from_user)
+ 10:
+ 	/* Disable access to user memory */
+ 	csrc CSR_STATUS, t6
+-	mv a0, t5
++	sub a0, t5, a0
+ 	ret
+ ENDPROC(__asm_copy_to_user)
+ ENDPROC(__asm_copy_from_user)
+@@ -228,7 +231,7 @@ ENTRY(__clear_user)
+ 11:
+ 	/* Disable access to user memory */
+ 	csrc CSR_STATUS, t6
+-	mv a0, a1
++	sub a0, a3, a0
+ 	ret
+ ENDPROC(__clear_user)
+ EXPORT_SYMBOL(__clear_user)
 -- 
 2.40.1
 
