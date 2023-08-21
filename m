@@ -2,44 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9CB9A7832C0
-	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:22:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2672D7832A5
+	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:22:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230264AbjHUUG2 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 21 Aug 2023 16:06:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33076 "EHLO
+        id S229738AbjHUTzP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 21 Aug 2023 15:55:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54286 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230262AbjHUUG1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 16:06:27 -0400
+        with ESMTP id S229763AbjHUTzP (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 15:55:15 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80D51A8
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 13:06:26 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE62610B
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 12:55:12 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 17BD064952
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 20:06:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A0A5C433C7;
-        Mon, 21 Aug 2023 20:06:24 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 62AF664596
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 19:55:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FBEFC433C8;
+        Mon, 21 Aug 2023 19:55:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692648385;
-        bh=6th6LfthIn3IlT5iCdpNktpEtzyPbwTmBGzjyMyhn18=;
+        s=korg; t=1692647711;
+        bh=baEKYuGNA04bZe8BVW2C4ZyFkyRLTl9Gqgeow+Fnk6E=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=xkvDwEbdUytxtZdNOCI0KP4XnOuXK0KBoEnLn43+OaETov6Uew1kfir5ok6zhwsw1
-         i0SIK3Q4fZU83VE+36W4h3ddzas2p6y1H4RZc2C1aSpFVov4fsScZNtDBYQpUIZjNS
-         S8sFQ7AqOzK3ifTEcLIwLtSpFeAoBc1qmzubpb2E=
+        b=WCSvrldNSAgwfnOXNkUMxND4VBSl7UjsuDsDqx7p8EUPIUPWDNtNBKGzwrTeOWmyi
+         RilpQU+x3RLCrkG/mxVX8uS8+MzlDEIWyIesW8bh6uRjYffBFQIwZAtAkvgDig2Jm9
+         mPTnvMR/RGtSLHck3XLthyKfMTP9IzbcBX9M14bA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, "Borislav Petkov (AMD)" <bp@alien8.de>,
-        stable@kernel.org
-Subject: [PATCH 6.4 127/234] x86/CPU/AMD: Fix the DIV(0) initial fix attempt
-Date:   Mon, 21 Aug 2023 21:41:30 +0200
-Message-ID: <20230821194134.453983732@linuxfoundation.org>
+        patches@lists.linux.dev, Laurent Vivier <lvivier@redhat.com>,
+        "Michael S. Tsirkin" <mst@redhat.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 112/194] virtio_net: notify MAC address change on device initialization
+Date:   Mon, 21 Aug 2023 21:41:31 +0200
+Message-ID: <20230821194127.627186260@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230821194128.754601642@linuxfoundation.org>
-References: <20230821194128.754601642@linuxfoundation.org>
+In-Reply-To: <20230821194122.695845670@linuxfoundation.org>
+References: <20230821194122.695845670@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,73 +55,72 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Borislav Petkov (AMD) <bp@alien8.de>
+From: Laurent Vivier <lvivier@redhat.com>
 
-commit f58d6fbcb7c848b7f2469be339bc571f2e9d245b upstream.
+[ Upstream commit 9f62d221a4b0aa6a8d2a18053a0ca349c025297c ]
 
-Initially, it was thought that doing an innocuous division in the #DE
-handler would take care to prevent any leaking of old data from the
-divider but by the time the fault is raised, the speculation has already
-advanced too far and such data could already have been used by younger
-operations.
+In virtnet_probe(), if the device doesn't provide a MAC address the
+driver assigns a random one.
+As we modify the MAC address we need to notify the device to allow it
+to update all the related information.
 
-Therefore, do the innocuous division on every exit to userspace so that
-userspace doesn't see any potentially old data from integer divisions in
-kernel space.
+The problem can be seen with vDPA and mlx5_vdpa driver as it doesn't
+assign a MAC address by default. The virtio_net device uses a random
+MAC address (we can see it with "ip link"), but we can't ping a net
+namespace from another one using the virtio-vdpa device because the
+new MAC address has not been provided to the hardware:
+RX packets are dropped since they don't go through the receive filters,
+TX packets go through unaffected.
 
-Do the same before VMRUN too, to protect host data from leaking into the
-guest too.
-
-Fixes: 77245f1c3c64 ("x86/CPU/AMD: Do not leak quotient data after a division by 0")
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Cc: <stable@kernel.org>
-Link: https://lore.kernel.org/r/20230811213824.10025-1-bp@alien8.de
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Laurent Vivier <lvivier@redhat.com>
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 51b813176f09 ("virtio-net: set queues after driver_ok")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/entry-common.h |    1 +
- arch/x86/kernel/cpu/amd.c           |    1 +
- arch/x86/kernel/traps.c             |    2 --
- arch/x86/kvm/svm/svm.c              |    2 ++
- 4 files changed, 4 insertions(+), 2 deletions(-)
+ drivers/net/virtio_net.c | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
 
---- a/arch/x86/include/asm/entry-common.h
-+++ b/arch/x86/include/asm/entry-common.h
-@@ -92,6 +92,7 @@ static inline void arch_exit_to_user_mod
- static __always_inline void arch_exit_to_user_mode(void)
- {
- 	mds_user_clear_cpu_buffers();
-+	amd_clear_divider();
- }
- #define arch_exit_to_user_mode arch_exit_to_user_mode
+diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
+index 075d5d42f5eb6..b7a4df4bab817 100644
+--- a/drivers/net/virtio_net.c
++++ b/drivers/net/virtio_net.c
+@@ -3825,6 +3825,8 @@ static int virtnet_probe(struct virtio_device *vdev)
+ 		eth_hw_addr_set(dev, addr);
+ 	} else {
+ 		eth_hw_addr_random(dev);
++		dev_info(&vdev->dev, "Assigned random MAC address %pM\n",
++			 dev->dev_addr);
+ 	}
  
---- a/arch/x86/kernel/cpu/amd.c
-+++ b/arch/x86/kernel/cpu/amd.c
-@@ -1329,3 +1329,4 @@ void noinstr amd_clear_divider(void)
- 	asm volatile(ALTERNATIVE("", "div %2\n\t", X86_BUG_DIV0)
- 		     :: "a" (0), "d" (0), "r" (1));
- }
-+EXPORT_SYMBOL_GPL(amd_clear_divider);
---- a/arch/x86/kernel/traps.c
-+++ b/arch/x86/kernel/traps.c
-@@ -206,8 +206,6 @@ DEFINE_IDTENTRY(exc_divide_error)
- {
- 	do_error_trap(regs, 0, "divide error", X86_TRAP_DE, SIGFPE,
- 		      FPE_INTDIV, error_get_trap_addr(regs));
--
--	amd_clear_divider();
- }
+ 	/* Set up our device-specific information */
+@@ -3954,6 +3956,24 @@ static int virtnet_probe(struct virtio_device *vdev)
  
- DEFINE_IDTENTRY(exc_overflow)
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -4034,6 +4034,8 @@ static noinstr void svm_vcpu_enter_exit(
+ 	virtio_device_ready(vdev);
  
- 	guest_state_enter_irqoff();
- 
-+	amd_clear_divider();
++	/* a random MAC address has been assigned, notify the device.
++	 * We don't fail probe if VIRTIO_NET_F_CTRL_MAC_ADDR is not there
++	 * because many devices work fine without getting MAC explicitly
++	 */
++	if (!virtio_has_feature(vdev, VIRTIO_NET_F_MAC) &&
++	    virtio_has_feature(vi->vdev, VIRTIO_NET_F_CTRL_MAC_ADDR)) {
++		struct scatterlist sg;
 +
- 	if (sev_es_guest(vcpu->kvm))
- 		__svm_sev_es_vcpu_run(svm, spec_ctrl_intercepted);
- 	else
++		sg_init_one(&sg, dev->dev_addr, dev->addr_len);
++		if (!virtnet_send_command(vi, VIRTIO_NET_CTRL_MAC,
++					  VIRTIO_NET_CTRL_MAC_ADDR_SET, &sg)) {
++			pr_debug("virtio_net: setting MAC address failed\n");
++			rtnl_unlock();
++			err = -EINVAL;
++			goto free_unregister_netdev;
++		}
++	}
++
+ 	rtnl_unlock();
+ 
+ 	err = virtnet_cpu_notif_add(vi);
+-- 
+2.40.1
+
 
 
