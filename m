@@ -2,50 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EF413783227
-	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:21:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C21F97832A7
+	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:22:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229690AbjHUTyZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 21 Aug 2023 15:54:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58866 "EHLO
+        id S229938AbjHUUEK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 21 Aug 2023 16:04:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44786 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229619AbjHUTyZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 15:54:25 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 59FAD113
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 12:54:22 -0700 (PDT)
+        with ESMTP id S229518AbjHUUEK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 16:04:10 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A2A5A8
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 13:04:08 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E3DD164567
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 19:54:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED4FFC433C9;
-        Mon, 21 Aug 2023 19:54:20 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1874B648AA
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 20:04:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CD5BC433CD;
+        Mon, 21 Aug 2023 20:04:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692647661;
-        bh=BnfRMvWGj+yOLG3+t50I5FPVEgAalNskJrrEnB1BRGI=;
+        s=korg; t=1692648247;
+        bh=tbCZWwafjFvySFG3syUOe9ZIWKW3errZdyJkfXQxQ3I=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=RrQNWHbIm65G8JPDSksWiwHl0r6G+rMjqCoQWAlNFqHqUMvZR/jFPxfYM5W6tJiRO
-         n48R8hmuyzIfGKWNOULwupb29YpEB5dmwAOlS++xB3DwGBUgd03nRoQtd6qqrc4iFW
-         4aFdvnDId2PDKqaAuvuWn6cFoo0PFaBj+lRyVZaY=
+        b=F/6ZKCdgMOIxk9hohlQfoiCZbrIIhsa/2kzV6a5xCE07IbAEydt+uRqCRlFJOHBpY
+         x7Lrzy805mCrhy12v7yMB1xAN2Z9MvzUgDIYRhelBKBJ0OLUFK4f7DTm4Xup7psML+
+         J1HptqIqbgtepbArA4ZkV36R0v0Pg6slM77je3Eo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yuanjun Gong <ruc_gongyuanjun@163.com>,
-        Helge Deller <deller@gmx.de>
-Subject: [PATCH 6.1 092/194] fbdev: mmp: fix value check in mmphw_probe()
+        patches@lists.linux.dev, Filipe Manana <fdmanana@suse.com>,
+        Josef Bacik <josef@toxicpanda.com>,
+        David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.4 108/234] btrfs: fix incorrect splitting in btrfs_drop_extent_map_range
 Date:   Mon, 21 Aug 2023 21:41:11 +0200
-Message-ID: <20230821194126.766924209@linuxfoundation.org>
+Message-ID: <20230821194133.592626340@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230821194122.695845670@linuxfoundation.org>
-References: <20230821194122.695845670@linuxfoundation.org>
+In-Reply-To: <20230821194128.754601642@linuxfoundation.org>
+References: <20230821194128.754601642@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -53,34 +54,98 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Yuanjun Gong <ruc_gongyuanjun@163.com>
+From: Josef Bacik <josef@toxicpanda.com>
 
-commit 0872b2c0abc0e84ac82472959c8e14e35277549c upstream.
+commit c962098ca4af146f2625ed64399926a098752c9c upstream.
 
-in mmphw_probe(), check the return value of clk_prepare_enable()
-and return the error code if clk_prepare_enable() returns an
-unexpected value.
+In production we were seeing a variety of WARN_ON()'s in the extent_map
+code, specifically in btrfs_drop_extent_map_range() when we have to call
+add_extent_mapping() for our second split.
 
-Fixes: d63028c38905 ("video: mmp display controller support")
-Signed-off-by: Yuanjun Gong <ruc_gongyuanjun@163.com>
-Signed-off-by: Helge Deller <deller@gmx.de>
+Consider the following extent map layout
+
+	PINNED
+	[0 16K)  [32K, 48K)
+
+and then we call btrfs_drop_extent_map_range for [0, 36K), with
+skip_pinned == true.  The initial loop will have
+
+	start = 0
+	end = 36K
+	len = 36K
+
+we will find the [0, 16k) extent, but since we are pinned we will skip
+it, which has this code
+
+	start = em_end;
+	if (end != (u64)-1)
+		len = start + len - em_end;
+
+em_end here is 16K, so now the values are
+
+	start = 16K
+	len = 16K + 36K - 16K = 36K
+
+len should instead be 20K.  This is a problem when we find the next
+extent at [32K, 48K), we need to split this extent to leave [36K, 48k),
+however the code for the split looks like this
+
+	split->start = start + len;
+	split->len = em_end - (start + len);
+
+In this case we have
+
+	em_end = 48K
+	split->start = 16K + 36K       // this should be 16K + 20K
+	split->len = 48K - (16K + 36K) // this overflows as 16K + 36K is 52K
+
+and now we have an invalid extent_map in the tree that potentially
+overlaps other entries in the extent map.  Even in the non-overlapping
+case we will have split->start set improperly, which will cause problems
+with any block related calculations.
+
+We don't actually need len in this loop, we can simply use end as our
+end point, and only adjust start up when we find a pinned extent we need
+to skip.
+
+Adjust the logic to do this, which keeps us from inserting an invalid
+extent map.
+
+We only skip_pinned in the relocation case, so this is relatively rare,
+except in the case where you are running relocation a lot, which can
+happen with auto relocation on.
+
+Fixes: 55ef68990029 ("Btrfs: Fix btrfs_drop_extent_cache for skip pinned case")
+CC: stable@vger.kernel.org # 4.14+
+Reviewed-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/video/fbdev/mmp/hw/mmp_ctrl.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ fs/btrfs/extent_map.c |    6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
---- a/drivers/video/fbdev/mmp/hw/mmp_ctrl.c
-+++ b/drivers/video/fbdev/mmp/hw/mmp_ctrl.c
-@@ -519,7 +519,9 @@ static int mmphw_probe(struct platform_d
- 			      "unable to get clk %s\n", mi->clk_name);
- 		goto failed;
- 	}
--	clk_prepare_enable(ctrl->clk);
-+	ret = clk_prepare_enable(ctrl->clk);
-+	if (ret)
-+		goto failed;
+--- a/fs/btrfs/extent_map.c
++++ b/fs/btrfs/extent_map.c
+@@ -758,8 +758,6 @@ void btrfs_drop_extent_map_range(struct
  
- 	/* init global regs */
- 	ctrl_set_default(ctrl);
+ 		if (skip_pinned && test_bit(EXTENT_FLAG_PINNED, &em->flags)) {
+ 			start = em_end;
+-			if (end != (u64)-1)
+-				len = start + len - em_end;
+ 			goto next;
+ 		}
+ 
+@@ -827,8 +825,8 @@ void btrfs_drop_extent_map_range(struct
+ 				if (!split)
+ 					goto remove_em;
+ 			}
+-			split->start = start + len;
+-			split->len = em_end - (start + len);
++			split->start = end;
++			split->len = em_end - end;
+ 			split->block_start = em->block_start;
+ 			split->flags = flags;
+ 			split->compress_type = em->compress_type;
 
 
