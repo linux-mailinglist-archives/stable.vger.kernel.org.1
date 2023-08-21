@@ -2,50 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 09596783346
-	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:23:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 535CF783337
+	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:23:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230152AbjHUUCk (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 21 Aug 2023 16:02:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57054 "EHLO
+        id S229684AbjHUTwz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 21 Aug 2023 15:52:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50438 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230144AbjHUUCk (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 16:02:40 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0BEEDF
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 13:02:38 -0700 (PDT)
+        with ESMTP id S229686AbjHUTwy (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 15:52:54 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1FCDCFA
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 12:52:53 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8EB2064817
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 20:02:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A320AC433C7;
-        Mon, 21 Aug 2023 20:02:37 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id AA52B644D8
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 19:52:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4BA1C433C8;
+        Mon, 21 Aug 2023 19:52:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692648158;
-        bh=b7DlLVyvqdHaDpheZN7k+h5Be6bQq4hIIlAWSM4F/jg=;
+        s=korg; t=1692647572;
+        bh=077d/9/KwwkvQ1xJT56OkjbvkYZrhOwAa9U6FZ7YrnM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=DLreUvV6MqdeXbyx7cXo8K5pQZbcZjxE2T6shJXXXcIE4eDTVj5OTeBgsIb5u9eT8
-         /xyIiWVsxYm/vTT/9f5P3+UNHuFxhHtPfoTLK+SKFZJA9Vjd3ChdZcA2LVMXi2G5O+
-         nSe6cryUB0kXa3AreHlKZUfJXbF8Yb7WU0DnABmg=
+        b=1p51S+eMC2TdwSbc5vd1eMZj0A/4wdvxWcKM1+rdBwR2WDEwJUPPCblCNyQe7p1gM
+         +QvxVke2B/T9tVtxWE9RWhhp0oFQgXbaqv2vlGQMQCp4YeoSI/2r4HtCt/Fmue0t3Y
+         H3hTP6FDkp+8yab15riMslKXFTCUDTBdLSHjJxFg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, "Luke D. Jones" <luke@ljones.dev>,
-        Takashi Iwai <tiwai@suse.de>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 076/234] ALSA: hda/realtek: Add quirk for ASUS ROG GA402X
+        patches@lists.linux.dev, shanzhulig <shanzhulig@gmail.com>,
+        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 060/194] drm/amdgpu: Fix potential fence use-after-free v2
 Date:   Mon, 21 Aug 2023 21:40:39 +0200
-Message-ID: <20230821194132.129611499@linuxfoundation.org>
+Message-ID: <20230821194125.414125992@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230821194128.754601642@linuxfoundation.org>
-References: <20230821194128.754601642@linuxfoundation.org>
+In-Reply-To: <20230821194122.695845670@linuxfoundation.org>
+References: <20230821194122.695845670@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -53,36 +55,47 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Luke D. Jones <luke@ljones.dev>
+From: shanzhulig <shanzhulig@gmail.com>
 
-[ Upstream commit 9abc77fb144fe916fd2f592dc4b8c7bade02e58a ]
+[ Upstream commit 2e54154b9f27262efd0cb4f903cc7d5ad1fe9628 ]
 
-Adds the required quirk to enable the Cirrus amp and correct pins
-on the ASUS ROG GA402X series which uses an I2C connected Cirrus amp.
+fence Decrements the reference count before exiting.
+Avoid Race Vulnerabilities for fence use-after-free.
 
-While this works if the related _DSD properties are made available, these
-aren't included in the ACPI of these laptops (yet).
+v2 (chk): actually fix the use after free and not just move it.
 
-Signed-off-by: Luke D. Jones <luke@ljones.dev>
-Link: https://lore.kernel.org/r/20230704044619.19343-3-luke@ljones.dev
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: shanzhulig <shanzhulig@gmail.com>
+Signed-off-by: Christian König <christian.koenig@amd.com>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index f36cbf22c29db..2e0c822d1b5d0 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -9617,6 +9617,7 @@ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x1043, 0x13b0, "ASUS Z550SA", ALC256_FIXUP_ASUS_MIC),
- 	SND_PCI_QUIRK(0x1043, 0x1427, "Asus Zenbook UX31E", ALC269VB_FIXUP_ASUS_ZENBOOK),
- 	SND_PCI_QUIRK(0x1043, 0x1433, "ASUS GX650P", ALC285_FIXUP_ASUS_I2C_HEADSET_MIC),
-+	SND_PCI_QUIRK(0x1043, 0x1463, "Asus GA402X", ALC285_FIXUP_ASUS_I2C_HEADSET_MIC),
- 	SND_PCI_QUIRK(0x1043, 0x1473, "ASUS GU604V", ALC285_FIXUP_ASUS_HEADSET_MIC),
- 	SND_PCI_QUIRK(0x1043, 0x1483, "ASUS GU603V", ALC285_FIXUP_ASUS_HEADSET_MIC),
- 	SND_PCI_QUIRK(0x1043, 0x1493, "ASUS GV601V", ALC285_FIXUP_ASUS_HEADSET_MIC),
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c
+index 6d3d01c5f0a28..02a112d00d413 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c
+@@ -1607,15 +1607,15 @@ static int amdgpu_cs_wait_all_fences(struct amdgpu_device *adev,
+ 			continue;
+ 
+ 		r = dma_fence_wait_timeout(fence, true, timeout);
++		if (r > 0 && fence->error)
++			r = fence->error;
++
+ 		dma_fence_put(fence);
+ 		if (r < 0)
+ 			return r;
+ 
+ 		if (r == 0)
+ 			break;
+-
+-		if (fence->error)
+-			return fence->error;
+ 	}
+ 
+ 	memset(wait, 0, sizeof(*wait));
 -- 
 2.40.1
 
