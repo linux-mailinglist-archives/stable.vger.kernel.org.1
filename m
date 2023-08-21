@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0BB16783214
-	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:21:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D348E783202
+	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:21:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230306AbjHUUIA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 21 Aug 2023 16:08:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50872 "EHLO
+        id S229863AbjHUT4x (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 21 Aug 2023 15:56:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36802 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230308AbjHUUIA (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 16:08:00 -0400
+        with ESMTP id S229844AbjHUT4x (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 15:56:53 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97D98DF
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 13:07:58 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12439FB
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 12:56:52 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2C3D4649D7
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 20:07:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B7BCC433CA;
-        Mon, 21 Aug 2023 20:07:57 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9D92A6462B
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 19:56:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFA79C433C8;
+        Mon, 21 Aug 2023 19:56:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692648477;
-        bh=G66MI6JS9dSDVjzblE0svARDvtPBND99v4JDyHagpdw=;
+        s=korg; t=1692647811;
+        bh=60z+KgrsJRFNwV0CI4u0omyb4GhJXz33yJRSLX5vuNc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Y85ORZTwBhNAeuCeXMc9rpVt0KxXxrDevdsYCExhT65rYIhc4pluz0Ws6Ld7EZD2o
-         jwAFrCTMcpIokn+3V8uDkUqGvSRuzaW1IThvzLrt1fZWm3WS1XMch5eLpe2gXvq1hX
-         FZwWibf6hyGVeQRX0hGQLSZLendxoURfeF70nE/k=
+        b=H876kz3Gd15wwNG+v57VQIMNjJj68wtOdFXH7/XpF91GmUkof8x5xEyY6AudeQ8mY
+         sYIzplHDGW1nTvrt+1bBB3kCG1QwsUwB6dW6AwX1qoaw7Cfaf8+Jtvs++XBzDEiERu
+         nPzjYsaPuYRfJ+9m8Pv/t2BPHU2b8GHixHCdlRpY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Pablo Neira Ayuso <pablo@netfilter.org>,
-        Florian Westphal <fw@strlen.de>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 162/234] netfilter: nf_tables: fix GC transaction races with netns and netlink event exit path
+        patches@lists.linux.dev,
+        Stefan Binding <sbinding@opensource.cirrus.com>,
+        Takashi Iwai <tiwai@suse.de>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 146/194] ALSA: hda/realtek: Add quirks for HP G11 Laptops
 Date:   Mon, 21 Aug 2023 21:42:05 +0200
-Message-ID: <20230821194135.976164302@linuxfoundation.org>
+Message-ID: <20230821194129.131482893@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230821194128.754601642@linuxfoundation.org>
-References: <20230821194128.754601642@linuxfoundation.org>
+In-Reply-To: <20230821194122.695845670@linuxfoundation.org>
+References: <20230821194122.695845670@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,117 +54,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Stefan Binding <sbinding@opensource.cirrus.com>
 
-[ Upstream commit 6a33d8b73dfac0a41f3877894b38082bd0c9a5bc ]
+[ Upstream commit fb8cce69e5e56eedb35fc4d77b2f099860965859 ]
 
-Netlink event path is missing a synchronization point with GC
-transactions. Add GC sequence number update to netns release path and
-netlink event path, any GC transaction losing race will be discarded.
+These HP G11 laptops use Realtek HDA codec combined with
+2xCS35L41 Amplifiers using SPI or I2C with External Boost.
 
-Fixes: 5f68718b34a5 ("netfilter: nf_tables: GC transaction API to avoid race with control plane")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Florian Westphal <fw@strlen.de>
+Laptop 103c8c26 has been removed as this has been replaced
+by this new series of laptops.
+
+Fixes: 3e10f6ca76c4 ("ALSA: hda/realtek: Add quirk for HP EliteBook G10 laptops")
+Signed-off-by: Stefan Binding <sbinding@opensource.cirrus.com>
+Link: https://lore.kernel.org/r/20230809142957.675933-2-sbinding@opensource.cirrus.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_tables_api.c | 36 +++++++++++++++++++++++++++++++----
- 1 file changed, 32 insertions(+), 4 deletions(-)
+ sound/pci/hda/patch_realtek.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index 803b24eb9da99..dcf3ed3d5af9d 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -9753,6 +9753,22 @@ static void nft_set_commit_update(struct list_head *set_update_list)
- 	}
- }
- 
-+static unsigned int nft_gc_seq_begin(struct nftables_pernet *nft_net)
-+{
-+	unsigned int gc_seq;
-+
-+	/* Bump gc counter, it becomes odd, this is the busy mark. */
-+	gc_seq = READ_ONCE(nft_net->gc_seq);
-+	WRITE_ONCE(nft_net->gc_seq, ++gc_seq);
-+
-+	return gc_seq;
-+}
-+
-+static void nft_gc_seq_end(struct nftables_pernet *nft_net, unsigned int gc_seq)
-+{
-+	WRITE_ONCE(nft_net->gc_seq, ++gc_seq);
-+}
-+
- static int nf_tables_commit(struct net *net, struct sk_buff *skb)
- {
- 	struct nftables_pernet *nft_net = nft_pernet(net);
-@@ -9838,9 +9854,7 @@ static int nf_tables_commit(struct net *net, struct sk_buff *skb)
- 
- 	WRITE_ONCE(nft_net->base_seq, base_seq);
- 
--	/* Bump gc counter, it becomes odd, this is the busy mark. */
--	gc_seq = READ_ONCE(nft_net->gc_seq);
--	WRITE_ONCE(nft_net->gc_seq, ++gc_seq);
-+	gc_seq = nft_gc_seq_begin(nft_net);
- 
- 	/* step 3. Start new generation, rules_gen_X now in use. */
- 	net->nft.gencursor = nft_gencursor_next(net);
-@@ -10050,7 +10064,7 @@ static int nf_tables_commit(struct net *net, struct sk_buff *skb)
- 	nf_tables_gen_notify(net, skb, NFT_MSG_NEWGEN);
- 	nf_tables_commit_audit_log(&adl, nft_net->base_seq);
- 
--	WRITE_ONCE(nft_net->gc_seq, ++gc_seq);
-+	nft_gc_seq_end(nft_net, gc_seq);
- 	nf_tables_commit_release(net);
- 
- 	return 0;
-@@ -11051,6 +11065,7 @@ static int nft_rcv_nl_event(struct notifier_block *this, unsigned long event,
- 	struct net *net = n->net;
- 	unsigned int deleted;
- 	bool restart = false;
-+	unsigned int gc_seq;
- 
- 	if (event != NETLINK_URELEASE || n->protocol != NETLINK_NETFILTER)
- 		return NOTIFY_DONE;
-@@ -11058,6 +11073,9 @@ static int nft_rcv_nl_event(struct notifier_block *this, unsigned long event,
- 	nft_net = nft_pernet(net);
- 	deleted = 0;
- 	mutex_lock(&nft_net->commit_mutex);
-+
-+	gc_seq = nft_gc_seq_begin(nft_net);
-+
- 	if (!list_empty(&nf_tables_destroy_list))
- 		rcu_barrier();
- again:
-@@ -11080,6 +11098,8 @@ static int nft_rcv_nl_event(struct notifier_block *this, unsigned long event,
- 		if (restart)
- 			goto again;
- 	}
-+	nft_gc_seq_end(nft_net, gc_seq);
-+
- 	mutex_unlock(&nft_net->commit_mutex);
- 
- 	return NOTIFY_DONE;
-@@ -11117,12 +11137,20 @@ static void __net_exit nf_tables_pre_exit_net(struct net *net)
- static void __net_exit nf_tables_exit_net(struct net *net)
- {
- 	struct nftables_pernet *nft_net = nft_pernet(net);
-+	unsigned int gc_seq;
- 
- 	mutex_lock(&nft_net->commit_mutex);
-+
-+	gc_seq = nft_gc_seq_begin(nft_net);
-+
- 	if (!list_empty(&nft_net->commit_list) ||
- 	    !list_empty(&nft_net->module_list))
- 		__nf_tables_abort(net, NFNL_ABORT_NONE);
-+
- 	__nft_release_tables(net);
-+
-+	nft_gc_seq_end(nft_net, gc_seq);
-+
- 	mutex_unlock(&nft_net->commit_mutex);
- 	WARN_ON_ONCE(!list_empty(&nft_net->tables));
- 	WARN_ON_ONCE(!list_empty(&nft_net->module_list));
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index 526ec8cae9437..de6bd8a9871cf 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -9596,7 +9596,13 @@ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x103c, 0x8b96, "HP", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
+ 	SND_PCI_QUIRK(0x103c, 0x8b97, "HP", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
+ 	SND_PCI_QUIRK(0x103c, 0x8bf0, "HP", ALC236_FIXUP_HP_GPIO_LED),
+-	SND_PCI_QUIRK(0x103c, 0x8c26, "HP HP EliteBook 800G11", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
++	SND_PCI_QUIRK(0x103c, 0x8c46, "HP EliteBook 830 G11", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
++	SND_PCI_QUIRK(0x103c, 0x8c47, "HP EliteBook 840 G11", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
++	SND_PCI_QUIRK(0x103c, 0x8c48, "HP EliteBook 860 G11", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
++	SND_PCI_QUIRK(0x103c, 0x8c49, "HP Elite x360 830 2-in-1 G11", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
++	SND_PCI_QUIRK(0x103c, 0x8c70, "HP EliteBook 835 G11", ALC287_FIXUP_CS35L41_I2C_2_HP_GPIO_LED),
++	SND_PCI_QUIRK(0x103c, 0x8c71, "HP EliteBook 845 G11", ALC287_FIXUP_CS35L41_I2C_2_HP_GPIO_LED),
++	SND_PCI_QUIRK(0x103c, 0x8c72, "HP EliteBook 865 G11", ALC287_FIXUP_CS35L41_I2C_2_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x1043, 0x103e, "ASUS X540SA", ALC256_FIXUP_ASUS_MIC),
+ 	SND_PCI_QUIRK(0x1043, 0x103f, "ASUS TX300", ALC282_FIXUP_ASUS_TX300),
+ 	SND_PCI_QUIRK(0x1043, 0x106d, "Asus K53BE", ALC269_FIXUP_LIMIT_INT_MIC_BOOST),
 -- 
 2.40.1
 
