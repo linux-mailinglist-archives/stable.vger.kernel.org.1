@@ -2,110 +2,116 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2642678350F
-	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 23:59:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B39FF78357A
+	for <lists+stable@lfdr.de>; Tue, 22 Aug 2023 00:20:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231199AbjHUV67 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 21 Aug 2023 17:58:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50410 "EHLO
+        id S230392AbjHUWU2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 21 Aug 2023 18:20:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60080 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230300AbjHUV67 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 17:58:59 -0400
-Received: from mail-wm1-x32b.google.com (mail-wm1-x32b.google.com [IPv6:2a00:1450:4864:20::32b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A111C133
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 14:58:56 -0700 (PDT)
-Received: by mail-wm1-x32b.google.com with SMTP id 5b1f17b1804b1-3fef34c33d6so10534905e9.3
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 14:58:56 -0700 (PDT)
+        with ESMTP id S229650AbjHUWU1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 18:20:27 -0400
+Received: from mail-wm1-x329.google.com (mail-wm1-x329.google.com [IPv6:2a00:1450:4864:20::329])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4260FE4
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 15:20:22 -0700 (PDT)
+Received: by mail-wm1-x329.google.com with SMTP id 5b1f17b1804b1-3fe4cdb72b9so36832305e9.0
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 15:20:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=layalina-io.20221208.gappssmtp.com; s=20221208; t=1692655135; x=1693259935;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=xZx0If7VnJ4j8LySOPTnKHBC3HYJ+LY29Fzf9AdSRdo=;
-        b=wwE+i55gac9vrq6+Vw6RsJhUsFXlx1hfF862zikhtnEQO122lP7ycLTxuaXnV6FdBc
-         6hLlGZ9VL9ImHF1uHd83GrfUrCnfGjaDG1dHm/NepAvZFiJCzRhc3QqWvKzbMvwDm3mJ
-         UxPNbwVVuDzYmMex5oDV8RGD4Cz9iKYvUTr5dC8PT327GIb3uBu43Igh8AHPNf4nyf1D
-         xofx1990g1JHr6+6wzB10SGBnVxfIRsEUslUxt9hDo9UOuyrSKsTVefZVMfM6bpwRd4T
-         uJ6brI4WIcPlE+iv+NFeQlTc/iQ4iPwrW69GMkcVmplNNRz6XWo3maGaKuSSaiAqdl4g
-         KKpw==
+        d=layalina-io.20221208.gappssmtp.com; s=20221208; t=1692656421; x=1693261221;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=VcwuxIDWqi7zySJDkuXgYqXHdkQMVuMBWMZbaaDC588=;
+        b=qPwDksHT/apYM4Jvja9KqlHNLBgDkFxR+Em5jcqWkunkVhGcI4z9bDHRikk613dh2d
+         c1WmiFB+ntsqeuWHUTFAFxyOylUclWW9vrHIq/uWinYw/hZAWWSzeOyFf9iFpsUJNdRb
+         F4B5seudrovo7mAiGhBbgeQe+dQu2eTagkhE4cYqsVsd2/4GX9/KaX3rAPZsytFLOcxC
+         oLRsoOjx+yFbiIU9BDEgCeFgUjpFXVXAQazWJXK9spiFb5zT1Dib7bADStWbIBcEmyDC
+         PeX7L0vheQGnkVCD3hQDF1lLUaDYLeQyRy9eKjs2FPocnq9CR1+sQXc8jaFfu6zHYgrr
+         yB7w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692655135; x=1693259935;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=xZx0If7VnJ4j8LySOPTnKHBC3HYJ+LY29Fzf9AdSRdo=;
-        b=Hxc+4KPy+FP/w0eVifOFIWS1MK7oHvaQ54CpIBMJpvfxwNjKD3+HGSv31ofhkzuaiM
-         MpxmxLBC7NUp+Zr5kHKXbzyWb1tK97+jhfmftFqeDyCne7IbPVlrkd7bZOpoqrKMYoig
-         Wy/ybZqnePRKre7+IclE1M+BMcHy9084PNDwyPjlqdGUvZQ+V2JsVKyNvKuh64mZU7f2
-         OLt8bS7p6+U8lTYnlfnkplYGm9oadOpFIzWO43kFgFnjGVqUoP5ItUOzTj5gKuuliLIb
-         Fcn2GV/qKe7EJHPMQywSKtMYXdMcHq2HumYhuRQBRTIH1SbKEWbDg+IrVtnKhwtlyN5N
-         W+6A==
-X-Gm-Message-State: AOJu0YwlQSCtWv2TIApLlZY8HIVSUyx2o3+dX6pElt3d5PHvPkh9cTok
-        u890KhVAjf1pQ/KDeBM5OB3mtw==
-X-Google-Smtp-Source: AGHT+IGqaJ0z3qsZS7fHqemlFDnbowpWoGIAo1Ej0l0pZFtCvg4vwqJnBNbf6iQM4cfHiGp9kjfspg==
-X-Received: by 2002:a05:600c:3b16:b0:3fe:5802:676a with SMTP id m22-20020a05600c3b1600b003fe5802676amr6048491wms.4.1692655135016;
-        Mon, 21 Aug 2023 14:58:55 -0700 (PDT)
-Received: from airbuntu (host109-151-228-137.range109-151.btcentralplus.com. [109.151.228.137])
-        by smtp.gmail.com with ESMTPSA id z9-20020adfe549000000b0031762e89f94sm13694168wrm.117.2023.08.21.14.58.53
+        d=1e100.net; s=20221208; t=1692656421; x=1693261221;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=VcwuxIDWqi7zySJDkuXgYqXHdkQMVuMBWMZbaaDC588=;
+        b=aBv+Hs4UaMIVrwA0UvumHHN41ZDPIny7dWiNRKAbYy4A4R7cSEVhV3T2Xyq/8wQr3b
+         WU89JLwzfEAB5Eo1pnS3kjl7T5IvAVKQC5fyfRLNZyYceOmPZa5CJe2ZZTPig3ym9mFu
+         I8mNbxhgV7xFfn3qvS12bKZa+WCdq3QC1Ir7JtLhlkCvi2G8i714Cpcg/XscHTrQDIfF
+         +5zw8PGmatC3sdpy/hWKYrYF0gsAD+ZFF0pAzvmYb2FbMGBIOqrWnBOdt6OZsFEIuduS
+         whHxYz0VkPhn523hgQdFFeFDX3pi0qnzgN7oxxTjnPeFgyNdTduAB1QspMWc2OsSOm48
+         Qbhg==
+X-Gm-Message-State: AOJu0YzfBxPzai4BJhKSYufbx8h6oLs0i8LKl5/sdjmnyADleh8CuykF
+        yPcuXc1uw1aOyw2w7DuWXJd+RA869Fq+AQHZ2Yc=
+X-Google-Smtp-Source: AGHT+IGTmg9P0/0JLewO6rbawb4B/lo1LE5wo9T9du6XptLW/jnw2XjgqAteccXME15yR5c2e8fEXQ==
+X-Received: by 2002:a7b:cb88:0:b0:3fe:24df:4180 with SMTP id m8-20020a7bcb88000000b003fe24df4180mr5972002wmi.13.1692656420386;
+        Mon, 21 Aug 2023 15:20:20 -0700 (PDT)
+Received: from airbuntu.. (host109-151-228-137.range109-151.btcentralplus.com. [109.151.228.137])
+        by smtp.gmail.com with ESMTPSA id hn40-20020a05600ca3a800b003fe61c33df5sm17751154wmb.3.2023.08.21.15.20.19
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 21 Aug 2023 14:58:54 -0700 (PDT)
-Date:   Mon, 21 Aug 2023 22:58:52 +0100
+        Mon, 21 Aug 2023 15:20:19 -0700 (PDT)
 From:   Qais Yousef <qyousef@layalina.io>
-To:     Greg KH <gregkh@linuxfoundation.org>
-Cc:     stable@vger.kernel.org, Juri Lelli <juri.lelli@redhat.com>,
+To:     stable@vger.kernel.org
+Cc:     Juri Lelli <juri.lelli@redhat.com>,
         Waiman Long <longman@redhat.com>, Tejun Heo <tj@kernel.org>,
         Dietmar Eggemann <dietmar.eggemann@arm.com>,
         Peter Zijlstra <peterz@infradead.org>,
         Vincent Guittot <vincent.guittot@linaro.org>,
         Ingo Molnar <mingo@kernel.org>, Hao Luo <haoluo@google.com>,
         John Stultz <jstultz@google.com>, cgroups@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 0/6] Backport rework of deadline bandwidth restoration
- for 6.1.y
-Message-ID: <20230821215852.qc5e6cqjbkgob6nf@airbuntu>
-References: <20230820152417.518806-1-qyousef@layalina.io>
- <2023082140-dreaded-hemstitch-84b9@gregkh>
+        linux-kernel@vger.kernel.org, Qais Yousef <qyousef@layalina.io>
+Subject: [PATCH 0/6] Backport rework of deadline bandwidth restoration for 6.4.y
+Date:   Mon, 21 Aug 2023 23:19:50 +0100
+Message-Id: <20230821221956.698117-1-qyousef@layalina.io>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <2023082140-dreaded-hemstitch-84b9@gregkh>
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS
-        autolearn=unavailable autolearn_force=no version=3.4.6
+        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 08/21/23 15:26, Greg KH wrote:
-> On Sun, Aug 20, 2023 at 04:24:11PM +0100, Qais Yousef wrote:
-> > This is a backport of the series that fixes the way deadline bandwidth
-> > restoration is done which is causing noticeable delay on resume path. It also
-> > converts the cpuset lock back into a mutex which some users on Android too.
-> > I lack the details but AFAIU the read/write semaphore was slower on high
-> > contention.
-> > 
-> > Compile tested against some randconfig for different archs and tested against
-> > android14-6.1 GKI kernel.
-> > 
-> > My testing is limited to resume path only; and general phone usage to make sure
-> > nothing falls apart. Would be good to have some deadline specific testing done
-> > too.
-> > 
-> > Based on v6.1.46
-> 
-> I can't take these for only some branches, as you know.  Any reason why
-> you didn't also do 6.4.y?
+This is a backport of the series that fixes the way deadline bandwidth
+restoration is done which is causing noticeable delay on resume path. It also
+converts the cpuset lock back into a mutex which some users on Android too.
+I lack the details but AFAIU the read/write semaphore was slower on high
+contention.
 
-Beside being tunneled visioned towards LTS only, nope.
+Compile tested against some randconfig for different archs. Only boot tested on
+x86 qemu.
 
-They apply cleanly on 6.4.y and preparing the patches now. I'm not sure I can
-run any tests on 6.4.y though except maybe boot test on qemu.
+Based on v6.4.11
 
-Waiting for compile tests to finish and will post shortly.
+Original series:
 
+	https://lore.kernel.org/lkml/20230508075854.17215-1-juri.lelli@redhat.com/
 
 Thanks!
 
 --
 Qais Yousef
+
+Dietmar Eggemann (2):
+  sched/deadline: Create DL BW alloc, free & check overflow interface
+  cgroup/cpuset: Free DL BW in case can_attach() fails
+
+Juri Lelli (4):
+  cgroup/cpuset: Rename functions dealing with DEADLINE accounting
+  sched/cpuset: Bring back cpuset_mutex
+  sched/cpuset: Keep track of SCHED_DEADLINE task in cpusets
+  cgroup/cpuset: Iterate only if DEADLINE tasks are present
+
+ include/linux/cpuset.h  |  12 +-
+ include/linux/sched.h   |   4 +-
+ kernel/cgroup/cgroup.c  |   4 +
+ kernel/cgroup/cpuset.c  | 244 ++++++++++++++++++++++++++--------------
+ kernel/sched/core.c     |  41 +++----
+ kernel/sched/deadline.c |  67 ++++++++---
+ kernel/sched/sched.h    |   2 +-
+ 7 files changed, 246 insertions(+), 128 deletions(-)
+
+-- 
+2.34.1
+
