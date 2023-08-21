@@ -2,46 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5DEBE7832E9
-	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:22:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5FB927832F3
+	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:22:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229889AbjHUT51 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 21 Aug 2023 15:57:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49900 "EHLO
+        id S230273AbjHUUHN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 21 Aug 2023 16:07:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45244 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229886AbjHUT51 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 15:57:27 -0400
+        with ESMTP id S230283AbjHUUHN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 16:07:13 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 892A4D3
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 12:57:25 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4051FDF
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 13:07:11 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1F2BF64668
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 19:57:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C45BC433C7;
-        Mon, 21 Aug 2023 19:57:24 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CA6286498C
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 20:07:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBA0EC433C8;
+        Mon, 21 Aug 2023 20:07:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692647844;
-        bh=rh09D86xD7Ddke+7V2Fls3/0QZ6DaspZN9EIg7Ph8ws=;
+        s=korg; t=1692648430;
+        bh=XbzX8xN4+p8IfBw6hwn1GFfuWCGkABF8yHFSCMfHPCc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ppXt/uSL1NQGoN3M0cQ59fDmHVgVWoA6TUOHpTaqn3Pu2OH3iw/pUlulXgeJ21aBN
-         AWh0tuYrLgUDQC2on8QZVaMqd07ocaUFXRvdKq9A6FsBBv/yDu7/sjOmhy/DBiR3Hn
-         eAMN8k8SuUL2AVVCSG2e9mb4GvwwekY1a59B706g=
+        b=Avs0HlUpWqHfd8Ck1QSu79inVXxn6S2EKsBZk/8bLaAyIg0dYdnP6CednItv4LRoI
+         t1X+J5DUiZ22sLYthtrSSMF15+3FFFmMdu/eS095dZHcW/DqjhhRBCXGz81+VEvvPD
+         aWb/M9m46iSn0DQobWXICcS4wBxX11PY0kEKAzSQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Sweet Tea Dorminy <sweettea-kernel@dorminy.me>,
-        Eric Biggers <ebiggers@google.com>,
-        Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.1 157/194] blk-crypto: dynamically allocate fallback profile
+        Pieter Jansen van Vuuren <pieter.jansen-van-vuuren@amd.com>,
+        Edward Cree <ecree.xilinx@gmail.com>,
+        Simon Horman <simon.horman@corigine.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 173/234] sfc: add fallback action-set-lists for TC offload
 Date:   Mon, 21 Aug 2023 21:42:16 +0200
-Message-ID: <20230821194129.608176928@linuxfoundation.org>
+Message-ID: <20230821194136.483562509@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230821194122.695845670@linuxfoundation.org>
-References: <20230821194122.695845670@linuxfoundation.org>
+In-Reply-To: <20230821194128.754601642@linuxfoundation.org>
+References: <20230821194128.754601642@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,134 +57,170 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Sweet Tea Dorminy <sweettea-kernel@dorminy.me>
+From: Edward Cree <ecree.xilinx@gmail.com>
 
-commit c984ff1423ae9f70b1f28ce811856db0d9c99021 upstream.
+[ Upstream commit e16ca7fb9ffb0d51ddf01e450a1043ea65b5be3f ]
 
-blk_crypto_profile_init() calls lockdep_register_key(), which warns and
-does not register if the provided memory is a static object.
-blk-crypto-fallback currently has a static blk_crypto_profile and calls
-blk_crypto_profile_init() thereupon, resulting in the warning and
-failure to register.
+When offloading a TC encap action, the action information for the
+ hardware might not be "ready": if there's currently no neighbour entry
+ available for the destination address, we can't construct the Ethernet
+ header to prepend to the packet.  In this case, we still offload the
+ flow rule, but with its action-set-list ID pointing at a "fallback"
+ action which simply delivers the packet to its default destination (as
+ though no flow rule had matched), thus allowing software TC to handle
+ it.  Later, when we receive a neighbouring update that allows us to
+ construct the encap header, the rule will become "ready" and we will
+ update its action-set-list ID in hardware to point at the actual
+ offloaded actions.
+This patch sets up these fallback ASLs, but does not yet use them.
 
-Fortunately it is simple enough to use a dynamically allocated profile
-and make lockdep function correctly.
-
-Fixes: 2fb48d88e77f ("blk-crypto: use dynamic lock class for blk_crypto_profile::lock")
-Cc: stable@vger.kernel.org
-Signed-off-by: Sweet Tea Dorminy <sweettea-kernel@dorminy.me>
-Reviewed-by: Eric Biggers <ebiggers@google.com>
-Link: https://lore.kernel.org/r/20230817141615.15387-1-sweettea-kernel@dorminy.me
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Pieter Jansen van Vuuren <pieter.jansen-van-vuuren@amd.com>
+Signed-off-by: Edward Cree <ecree.xilinx@gmail.com>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: fa165e194997 ("sfc: don't unregister flow_indr if it was never registered")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/blk-crypto-fallback.c | 36 +++++++++++++++++++++++-------------
- 1 file changed, 23 insertions(+), 13 deletions(-)
+ drivers/net/ethernet/sfc/tc.c | 68 +++++++++++++++++++++++++++++++++++
+ drivers/net/ethernet/sfc/tc.h |  9 +++++
+ 2 files changed, 77 insertions(+)
 
-diff --git a/block/blk-crypto-fallback.c b/block/blk-crypto-fallback.c
-index ad9844c5b40c..e6468eab2681 100644
---- a/block/blk-crypto-fallback.c
-+++ b/block/blk-crypto-fallback.c
-@@ -78,7 +78,7 @@ static struct blk_crypto_fallback_keyslot {
- 	struct crypto_skcipher *tfms[BLK_ENCRYPTION_MODE_MAX];
- } *blk_crypto_keyslots;
- 
--static struct blk_crypto_profile blk_crypto_fallback_profile;
-+static struct blk_crypto_profile *blk_crypto_fallback_profile;
- static struct workqueue_struct *blk_crypto_wq;
- static mempool_t *blk_crypto_bounce_page_pool;
- static struct bio_set crypto_bio_split;
-@@ -292,7 +292,7 @@ static bool blk_crypto_fallback_encrypt_bio(struct bio **bio_ptr)
- 	 * Get a blk-crypto-fallback keyslot that contains a crypto_skcipher for
- 	 * this bio's algorithm and key.
- 	 */
--	blk_st = blk_crypto_get_keyslot(&blk_crypto_fallback_profile,
-+	blk_st = blk_crypto_get_keyslot(blk_crypto_fallback_profile,
- 					bc->bc_key, &slot);
- 	if (blk_st != BLK_STS_OK) {
- 		src_bio->bi_status = blk_st;
-@@ -395,7 +395,7 @@ static void blk_crypto_fallback_decrypt_bio(struct work_struct *work)
- 	 * Get a blk-crypto-fallback keyslot that contains a crypto_skcipher for
- 	 * this bio's algorithm and key.
- 	 */
--	blk_st = blk_crypto_get_keyslot(&blk_crypto_fallback_profile,
-+	blk_st = blk_crypto_get_keyslot(blk_crypto_fallback_profile,
- 					bc->bc_key, &slot);
- 	if (blk_st != BLK_STS_OK) {
- 		bio->bi_status = blk_st;
-@@ -499,7 +499,7 @@ bool blk_crypto_fallback_bio_prep(struct bio **bio_ptr)
- 		return false;
- 	}
- 
--	if (!__blk_crypto_cfg_supported(&blk_crypto_fallback_profile,
-+	if (!__blk_crypto_cfg_supported(blk_crypto_fallback_profile,
- 					&bc->bc_key->crypto_cfg)) {
- 		bio->bi_status = BLK_STS_NOTSUPP;
- 		return false;
-@@ -526,7 +526,7 @@ bool blk_crypto_fallback_bio_prep(struct bio **bio_ptr)
- 
- int blk_crypto_fallback_evict_key(const struct blk_crypto_key *key)
- {
--	return __blk_crypto_evict_key(&blk_crypto_fallback_profile, key);
-+	return __blk_crypto_evict_key(blk_crypto_fallback_profile, key);
+diff --git a/drivers/net/ethernet/sfc/tc.c b/drivers/net/ethernet/sfc/tc.c
+index d7827ab3761f9..54c5719031f9e 100644
+--- a/drivers/net/ethernet/sfc/tc.c
++++ b/drivers/net/ethernet/sfc/tc.c
+@@ -1310,6 +1310,58 @@ void efx_tc_deconfigure_default_rule(struct efx_nic *efx,
+ 	rule->fw_id = MC_CMD_MAE_ACTION_RULE_INSERT_OUT_ACTION_RULE_ID_NULL;
  }
  
- static bool blk_crypto_fallback_inited;
-@@ -534,7 +534,6 @@ static int blk_crypto_fallback_init(void)
- {
- 	int i;
- 	int err;
--	struct blk_crypto_profile *profile = &blk_crypto_fallback_profile;
- 
- 	if (blk_crypto_fallback_inited)
- 		return 0;
-@@ -545,18 +544,27 @@ static int blk_crypto_fallback_init(void)
- 	if (err)
- 		goto out;
- 
--	err = blk_crypto_profile_init(profile, blk_crypto_num_keyslots);
--	if (err)
-+	/* Dynamic allocation is needed because of lockdep_register_key(). */
-+	blk_crypto_fallback_profile =
-+		kzalloc(sizeof(*blk_crypto_fallback_profile), GFP_KERNEL);
-+	if (!blk_crypto_fallback_profile) {
-+		err = -ENOMEM;
- 		goto fail_free_bioset;
-+	}
++static int efx_tc_configure_fallback_acts(struct efx_nic *efx, u32 eg_port,
++					  struct efx_tc_action_set_list *acts)
++{
++	struct efx_tc_action_set *act;
++	int rc;
 +
-+	err = blk_crypto_profile_init(blk_crypto_fallback_profile,
-+				      blk_crypto_num_keyslots);
-+	if (err)
-+		goto fail_free_profile;
- 	err = -ENOMEM;
++	act = kzalloc(sizeof(*act), GFP_KERNEL);
++	if (!act)
++		return -ENOMEM;
++	act->deliver = 1;
++	act->dest_mport = eg_port;
++	rc = efx_mae_alloc_action_set(efx, act);
++	if (rc)
++		goto fail1;
++	EFX_WARN_ON_PARANOID(!list_empty(&acts->list));
++	list_add_tail(&act->list, &acts->list);
++	rc = efx_mae_alloc_action_set_list(efx, acts);
++	if (rc)
++		goto fail2;
++	return 0;
++fail2:
++	list_del(&act->list);
++	efx_mae_free_action_set(efx, act->fw_id);
++fail1:
++	kfree(act);
++	return rc;
++}
++
++static int efx_tc_configure_fallback_acts_pf(struct efx_nic *efx)
++{
++	struct efx_tc_action_set_list *acts = &efx->tc->facts.pf;
++	u32 eg_port;
++
++	efx_mae_mport_uplink(efx, &eg_port);
++	return efx_tc_configure_fallback_acts(efx, eg_port, acts);
++}
++
++static int efx_tc_configure_fallback_acts_reps(struct efx_nic *efx)
++{
++	struct efx_tc_action_set_list *acts = &efx->tc->facts.reps;
++	u32 eg_port;
++
++	efx_mae_mport_mport(efx, efx->tc->reps_mport_id, &eg_port);
++	return efx_tc_configure_fallback_acts(efx, eg_port, acts);
++}
++
++static void efx_tc_deconfigure_fallback_acts(struct efx_nic *efx,
++					     struct efx_tc_action_set_list *acts)
++{
++	efx_tc_free_action_set_list(efx, acts, true);
++}
++
+ static int efx_tc_configure_rep_mport(struct efx_nic *efx)
+ {
+ 	u32 rep_mport_label;
+@@ -1400,6 +1452,12 @@ int efx_init_tc(struct efx_nic *efx)
+ 	if (rc)
+ 		return rc;
+ 	rc = efx_tc_configure_rep_mport(efx);
++	if (rc)
++		return rc;
++	rc = efx_tc_configure_fallback_acts_pf(efx);
++	if (rc)
++		return rc;
++	rc = efx_tc_configure_fallback_acts_reps(efx);
+ 	if (rc)
+ 		return rc;
+ 	efx->tc->up = true;
+@@ -1419,6 +1477,8 @@ void efx_fini_tc(struct efx_nic *efx)
+ 	efx_tc_deconfigure_rep_mport(efx);
+ 	efx_tc_deconfigure_default_rule(efx, &efx->tc->dflt.pf);
+ 	efx_tc_deconfigure_default_rule(efx, &efx->tc->dflt.wire);
++	efx_tc_deconfigure_fallback_acts(efx, &efx->tc->facts.pf);
++	efx_tc_deconfigure_fallback_acts(efx, &efx->tc->facts.reps);
+ 	efx->tc->up = false;
+ }
  
--	profile->ll_ops = blk_crypto_fallback_ll_ops;
--	profile->max_dun_bytes_supported = BLK_CRYPTO_MAX_IV_SIZE;
-+	blk_crypto_fallback_profile->ll_ops = blk_crypto_fallback_ll_ops;
-+	blk_crypto_fallback_profile->max_dun_bytes_supported = BLK_CRYPTO_MAX_IV_SIZE;
+@@ -1483,6 +1543,10 @@ int efx_init_struct_tc(struct efx_nic *efx)
+ 	efx->tc->dflt.pf.fw_id = MC_CMD_MAE_ACTION_RULE_INSERT_OUT_ACTION_RULE_ID_NULL;
+ 	INIT_LIST_HEAD(&efx->tc->dflt.wire.acts.list);
+ 	efx->tc->dflt.wire.fw_id = MC_CMD_MAE_ACTION_RULE_INSERT_OUT_ACTION_RULE_ID_NULL;
++	INIT_LIST_HEAD(&efx->tc->facts.pf.list);
++	efx->tc->facts.pf.fw_id = MC_CMD_MAE_ACTION_SET_ALLOC_OUT_ACTION_SET_ID_NULL;
++	INIT_LIST_HEAD(&efx->tc->facts.reps.list);
++	efx->tc->facts.reps.fw_id = MC_CMD_MAE_ACTION_SET_ALLOC_OUT_ACTION_SET_ID_NULL;
+ 	efx->extra_channel_type[EFX_EXTRA_CHANNEL_TC] = &efx_tc_channel_type;
+ 	return 0;
+ fail_match_action_ht:
+@@ -1508,6 +1572,10 @@ void efx_fini_struct_tc(struct efx_nic *efx)
+ 			     MC_CMD_MAE_ACTION_RULE_INSERT_OUT_ACTION_RULE_ID_NULL);
+ 	EFX_WARN_ON_PARANOID(efx->tc->dflt.wire.fw_id !=
+ 			     MC_CMD_MAE_ACTION_RULE_INSERT_OUT_ACTION_RULE_ID_NULL);
++	EFX_WARN_ON_PARANOID(efx->tc->facts.pf.fw_id !=
++			     MC_CMD_MAE_ACTION_SET_LIST_ALLOC_OUT_ACTION_SET_LIST_ID_NULL);
++	EFX_WARN_ON_PARANOID(efx->tc->facts.reps.fw_id !=
++			     MC_CMD_MAE_ACTION_SET_LIST_ALLOC_OUT_ACTION_SET_LIST_ID_NULL);
+ 	rhashtable_free_and_destroy(&efx->tc->match_action_ht, efx_tc_flow_free,
+ 				    efx);
+ 	rhashtable_free_and_destroy(&efx->tc->encap_match_ht,
+diff --git a/drivers/net/ethernet/sfc/tc.h b/drivers/net/ethernet/sfc/tc.h
+index 04cced6a2d39f..2b6782e9c7226 100644
+--- a/drivers/net/ethernet/sfc/tc.h
++++ b/drivers/net/ethernet/sfc/tc.h
+@@ -133,6 +133,11 @@ enum efx_tc_rule_prios {
+  *	%EFX_TC_PRIO_DFLT.  Named by *ingress* port
+  * @dflt.pf: rule for traffic ingressing from PF (egresses to wire)
+  * @dflt.wire: rule for traffic ingressing from wire (egresses to PF)
++ * @facts: Fallback action-set-lists for unready rules.  Named by *egress* port
++ * @facts.pf: action-set-list for unready rules on PF netdev, hence applying to
++ *	traffic from wire, and egressing to PF
++ * @facts.reps: action-set-list for unready rules on representors, hence
++ *	applying to traffic from representees, and egressing to the reps mport
+  * @up: have TC datastructures been set up?
+  */
+ struct efx_tc_state {
+@@ -153,6 +158,10 @@ struct efx_tc_state {
+ 		struct efx_tc_flow_rule pf;
+ 		struct efx_tc_flow_rule wire;
+ 	} dflt;
++	struct {
++		struct efx_tc_action_set_list pf;
++		struct efx_tc_action_set_list reps;
++	} facts;
+ 	bool up;
+ };
  
- 	/* All blk-crypto modes have a crypto API fallback. */
- 	for (i = 0; i < BLK_ENCRYPTION_MODE_MAX; i++)
--		profile->modes_supported[i] = 0xFFFFFFFF;
--	profile->modes_supported[BLK_ENCRYPTION_MODE_INVALID] = 0;
-+		blk_crypto_fallback_profile->modes_supported[i] = 0xFFFFFFFF;
-+	blk_crypto_fallback_profile->modes_supported[BLK_ENCRYPTION_MODE_INVALID] = 0;
- 
- 	blk_crypto_wq = alloc_workqueue("blk_crypto_wq",
- 					WQ_UNBOUND | WQ_HIGHPRI |
-@@ -597,7 +605,9 @@ static int blk_crypto_fallback_init(void)
- fail_free_wq:
- 	destroy_workqueue(blk_crypto_wq);
- fail_destroy_profile:
--	blk_crypto_profile_destroy(profile);
-+	blk_crypto_profile_destroy(blk_crypto_fallback_profile);
-+fail_free_profile:
-+	kfree(blk_crypto_fallback_profile);
- fail_free_bioset:
- 	bioset_exit(&crypto_bio_split);
- out:
 -- 
-2.41.0
+2.40.1
 
 
 
