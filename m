@@ -2,50 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4FD6D783263
-	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:22:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0DC3B783356
+	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:23:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230193AbjHUUDv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 21 Aug 2023 16:03:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35344 "EHLO
+        id S229616AbjHUTyB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 21 Aug 2023 15:54:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59324 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230189AbjHUUDu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 16:03:50 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08139DF
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 13:03:49 -0700 (PDT)
+        with ESMTP id S229592AbjHUTyB (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 15:54:01 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DDA3EFA
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 12:53:59 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8DC536487C
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 20:03:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93320C433C7;
-        Mon, 21 Aug 2023 20:03:47 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7D1606453B
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 19:53:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8860CC433C8;
+        Mon, 21 Aug 2023 19:53:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692648228;
-        bh=HyjCIrWwlRMrvk9h78kLY8b27RD8dbrbvSWE4JRBcaE=;
+        s=korg; t=1692647638;
+        bh=dSaRez5M8vk01g6Q5wIkMeyrpF/zL5mIDqFYlx/DBqw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=vmzHvf6KAyNXd+ZetT4ahrs+JJ7fglBRNZkuJyJRe1VzXjnOh2gw0FKeeec+9+ZAJ
-         gzEXXw15ntBR/xgzqeDQr09hZNhH7iCNhujO7YBwMglnjr3qzttR+3MevYc/5jU7wO
-         k0tBITsa2pLQyQsw9biqZr60qXH2AaUk1WxnGjh0=
+        b=bONK+1PggmH94J0z9hXFEh5uQfnoFiMGSUUxcfMfckoG7KXySQmRjYUtaLBFYgtLU
+         IEqWwkzyURwGVld2OZ3two+7F/UTeCCVVWcUSEvSRyQpJMWAmHPcvcd5FIpgCb8Gkc
+         sescsUknfDq5+cIxls9FhZaxkAniAHQc86HEY8EU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Lin Ma <linma@zju.edu.cn>,
-        stable@vger.kernelorg, "Michael S. Tsirkin" <mst@redhat.com>
-Subject: [PATCH 6.4 101/234] vdpa: Add queue index attr to vdpa_nl_policy for nlattr length check
+        patches@lists.linux.dev, xieyongji@bytedance.com,
+        Jason Wang <jasowang@redhat.com>,
+        Maxime Coquelin <maxime.coquelin@redhat.com>,
+        "Michael S. Tsirkin" <mst@redhat.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 085/194] vduse: Use proper spinlock for IRQ injection
 Date:   Mon, 21 Aug 2023 21:41:04 +0200
-Message-ID: <20230821194133.272284647@linuxfoundation.org>
+Message-ID: <20230821194126.494846320@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230821194128.754601642@linuxfoundation.org>
-References: <20230821194128.754601642@linuxfoundation.org>
+In-Reply-To: <20230821194122.695845670@linuxfoundation.org>
+References: <20230821194122.695845670@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -53,40 +56,64 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Lin Ma <linma@zju.edu.cn>
+From: Maxime Coquelin <maxime.coquelin@redhat.com>
 
-commit b3003e1b54e057f5f3124e437b80c3bef26ed3fe upstream.
+[ Upstream commit 7ca26efb09a1543fddb29308ea3b63b66cb5d3ee ]
 
-The vdpa_nl_policy structure is used to validate the nlattr when parsing
-the incoming nlmsg. It will ensure the attribute being described produces
-a valid nlattr pointer in info->attrs before entering into each handler
-in vdpa_nl_ops.
+The IRQ injection work used spin_lock_irq() to protect the
+scheduling of the softirq, but spin_lock_bh() should be
+used.
 
-That is to say, the missing part in vdpa_nl_policy may lead to illegal
-nlattr after parsing, which could lead to OOB read just like CVE-2023-3773.
+With spin_lock_irq(), we noticed delay of more than 6
+seconds between the time a NAPI polling work is scheduled
+and the time it is executed.
 
-This patch adds the missing nla_policy for vdpa queue index attr to avoid
-such bugs.
+Fixes: c8a6153b6c59 ("vduse: Introduce VDUSE - vDPA Device in Userspace")
+Cc: xieyongji@bytedance.com
 
-Fixes: 13b00b135665 ("vdpa: Add support for querying vendor statistics")
-Signed-off-by: Lin Ma <linma@zju.edu.cn>
-Cc: stable@vger.kernelorg
-Message-Id: <20230727175757.73988-5-dtatulea@nvidia.com>
+Suggested-by: Jason Wang <jasowang@redhat.com>
+Signed-off-by: Maxime Coquelin <maxime.coquelin@redhat.com>
+Message-Id: <20230705114505.63274-1-maxime.coquelin@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Acked-by: Jason Wang <jasowang@redhat.com>
+Reviewed-by: Xie Yongji <xieyongji@bytedance.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/vdpa/vdpa.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/vdpa/vdpa_user/vduse_dev.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/vdpa/vdpa.c
-+++ b/drivers/vdpa/vdpa.c
-@@ -1249,6 +1249,7 @@ static const struct nla_policy vdpa_nl_p
- 	[VDPA_ATTR_DEV_NET_CFG_MACADDR] = NLA_POLICY_ETH_ADDR,
- 	/* virtio spec 1.1 section 5.1.4.1 for valid MTU range */
- 	[VDPA_ATTR_DEV_NET_CFG_MTU] = NLA_POLICY_MIN(NLA_U16, 68),
-+	[VDPA_ATTR_DEV_QUEUE_INDEX] = { .type = NLA_U32 },
- 	[VDPA_ATTR_DEV_FEATURES] = { .type = NLA_U64 },
- };
+diff --git a/drivers/vdpa/vdpa_user/vduse_dev.c b/drivers/vdpa/vdpa_user/vduse_dev.c
+index 72f924ec4658d..edcd74cc4c0f7 100644
+--- a/drivers/vdpa/vdpa_user/vduse_dev.c
++++ b/drivers/vdpa/vdpa_user/vduse_dev.c
+@@ -899,10 +899,10 @@ static void vduse_dev_irq_inject(struct work_struct *work)
+ {
+ 	struct vduse_dev *dev = container_of(work, struct vduse_dev, inject);
  
+-	spin_lock_irq(&dev->irq_lock);
++	spin_lock_bh(&dev->irq_lock);
+ 	if (dev->config_cb.callback)
+ 		dev->config_cb.callback(dev->config_cb.private);
+-	spin_unlock_irq(&dev->irq_lock);
++	spin_unlock_bh(&dev->irq_lock);
+ }
+ 
+ static void vduse_vq_irq_inject(struct work_struct *work)
+@@ -910,10 +910,10 @@ static void vduse_vq_irq_inject(struct work_struct *work)
+ 	struct vduse_virtqueue *vq = container_of(work,
+ 					struct vduse_virtqueue, inject);
+ 
+-	spin_lock_irq(&vq->irq_lock);
++	spin_lock_bh(&vq->irq_lock);
+ 	if (vq->ready && vq->cb.callback)
+ 		vq->cb.callback(vq->cb.private);
+-	spin_unlock_irq(&vq->irq_lock);
++	spin_unlock_bh(&vq->irq_lock);
+ }
+ 
+ static int vduse_dev_queue_irq_work(struct vduse_dev *dev,
+-- 
+2.40.1
+
 
 
