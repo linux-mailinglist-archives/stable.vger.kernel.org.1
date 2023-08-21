@@ -2,53 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D6516783303
-	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:22:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5841F783253
+	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:21:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229697AbjHUTyf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 21 Aug 2023 15:54:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34124 "EHLO
+        id S230182AbjHUUDM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 21 Aug 2023 16:03:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57776 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229619AbjHUTye (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 15:54:34 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 610D2EE
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 12:54:33 -0700 (PDT)
+        with ESMTP id S230181AbjHUUDL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 16:03:11 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A8C0FE4
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 13:03:09 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id F339764571
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 19:54:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CBE8C433C8;
-        Mon, 21 Aug 2023 19:54:31 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3F9AF647D9
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 20:03:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FF38C433C7;
+        Mon, 21 Aug 2023 20:03:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692647672;
-        bh=vkgMhk5pL7GGu6vV+78air3bWNRQYu/zusD/HonXuBc=;
+        s=korg; t=1692648188;
+        bh=/zhDAk95nE3tQYSpQs71BMmCfmR8QFKViPDzcvFvLhE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=qQ/MRAB5qhQ2+VE1srgVzUH0yXwa18DXz5uV625Ve5r1yeziAThrCncjEbmakf4C7
-         PDVUSLBv2FF6tbyQ9lIxL+DJ5CigyJDDDlHCeBwlMnZ4FXuAathmkHk6mnn4hYirNh
-         Fb2QQ9wi7S2Wg55Oj7q8KxgSjNEELYXDO52GM9fo=
+        b=rpKRq/dmDBOX+FFLwVUyU/6ePJU+a8L6d/Pxmo0m2n2nke/RpbwHWzKPmXBUHDc6L
+         RzwgjjmmRffr0KlNr6wIrJ51oZ2TEfOWEnlDyrh6ndbGhyOqh/VEU+uV7Pahc54Yx8
+         43lqS1dFzfIZ62ZsN+E3ntMt4y6/VotbqCjiSKiY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Benjamin Gray <bgray@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        "Michael S. Tsirkin" <mst@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 069/194] powerpc/kasan: Disable KCOV in KASAN code
-Date:   Mon, 21 Aug 2023 21:40:48 +0200
-Message-ID: <20230821194125.815802783@linuxfoundation.org>
+Subject: [PATCH 6.4 086/234] virtio-mmio: dont break lifecycle of vm_dev
+Date:   Mon, 21 Aug 2023 21:40:49 +0200
+Message-ID: <20230821194132.578499041@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230821194122.695845670@linuxfoundation.org>
-References: <20230821194122.695845670@linuxfoundation.org>
+In-Reply-To: <20230821194128.754601642@linuxfoundation.org>
+References: <20230821194128.754601642@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -56,38 +55,58 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Benjamin Gray <bgray@linux.ibm.com>
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
-[ Upstream commit ccb381e1af1ace292153c88eb1fffa5683d16a20 ]
+[ Upstream commit 55c91fedd03d7b9cf0c5199b2eb12b9b8e95281a ]
 
-As per the generic KASAN code in mm/kasan, disable KCOV with
-KCOV_INSTRUMENT := n in the makefile.
+vm_dev has a separate lifecycle because it has a 'struct device'
+embedded. Thus, having a release callback for it is correct.
 
-This fixes a ppc64 boot hang when KCOV and KASAN are enabled.
-kasan_early_init() gets called before a PACA is initialised, but the
-KCOV hook expects a valid PACA.
+Allocating the vm_dev struct with devres totally breaks this protection,
+though. Instead of waiting for the vm_dev release callback, the memory
+is freed when the platform_device is removed. Resulting in a
+use-after-free when finally the callback is to be called.
 
-Suggested-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Signed-off-by: Benjamin Gray <bgray@linux.ibm.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20230710044143.146840-1-bgray@linux.ibm.com
+To easily see the problem, compile the kernel with
+CONFIG_DEBUG_KOBJECT_RELEASE and unbind with sysfs.
+
+The fix is easy, don't use devres in this case.
+
+Found during my research about object lifetime problems.
+
+Fixes: 7eb781b1bbb7 ("virtio_mmio: add cleanup for virtio_mmio_probe")
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Message-Id: <20230629120526.7184-1-wsa+renesas@sang-engineering.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/mm/kasan/Makefile | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/virtio/virtio_mmio.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/arch/powerpc/mm/kasan/Makefile b/arch/powerpc/mm/kasan/Makefile
-index 699eeffd9f551..f9522fd70b2f3 100644
---- a/arch/powerpc/mm/kasan/Makefile
-+++ b/arch/powerpc/mm/kasan/Makefile
-@@ -1,6 +1,7 @@
- # SPDX-License-Identifier: GPL-2.0
+diff --git a/drivers/virtio/virtio_mmio.c b/drivers/virtio/virtio_mmio.c
+index a46a4a29e9295..97760f6112959 100644
+--- a/drivers/virtio/virtio_mmio.c
++++ b/drivers/virtio/virtio_mmio.c
+@@ -607,9 +607,8 @@ static void virtio_mmio_release_dev(struct device *_d)
+ 	struct virtio_device *vdev =
+ 			container_of(_d, struct virtio_device, dev);
+ 	struct virtio_mmio_device *vm_dev = to_virtio_mmio_device(vdev);
+-	struct platform_device *pdev = vm_dev->pdev;
  
- KASAN_SANITIZE := n
-+KCOV_INSTRUMENT := n
+-	devm_kfree(&pdev->dev, vm_dev);
++	kfree(vm_dev);
+ }
  
- obj-$(CONFIG_PPC32)		+= init_32.o
- obj-$(CONFIG_PPC_8xx)		+= 8xx.o
+ /* Platform device */
+@@ -620,7 +619,7 @@ static int virtio_mmio_probe(struct platform_device *pdev)
+ 	unsigned long magic;
+ 	int rc;
+ 
+-	vm_dev = devm_kzalloc(&pdev->dev, sizeof(*vm_dev), GFP_KERNEL);
++	vm_dev = kzalloc(sizeof(*vm_dev), GFP_KERNEL);
+ 	if (!vm_dev)
+ 		return -ENOMEM;
+ 
 -- 
 2.40.1
 
