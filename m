@@ -2,51 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0C7B678329B
-	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:22:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4874A783242
+	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:21:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229648AbjHUTws (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 21 Aug 2023 15:52:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50908 "EHLO
+        id S230143AbjHUUCY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 21 Aug 2023 16:02:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60388 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229656AbjHUTwr (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 15:52:47 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70183113
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 12:52:33 -0700 (PDT)
+        with ESMTP id S230148AbjHUUCY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 16:02:24 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4ADDF123
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 13:02:22 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0EB216447A
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 19:52:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB21FC433C8;
-        Mon, 21 Aug 2023 19:52:31 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D4C9864806
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 20:02:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE2CBC433C7;
+        Mon, 21 Aug 2023 20:02:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692647552;
-        bh=32BLOo+jraNMI1GTEVf8OEWKY+bMqyqyuOX2YRfJnw8=;
+        s=korg; t=1692648141;
+        bh=Um7W+5SmD1TJXucZNnoSICvBOWPkGurB8aG04NjCGGE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=IfSuNcWYyyTfqpcWEI0ciBsvI76O1z22C0eeiPTFkAj04VtMYoqkdkEqo8YXY8oey
-         pboy/TduoJM+7Jouk5BW1mM2cmt0e76/47YVvdWt9lslGXw1AgP+87a1yQOcLQhA3c
-         QT3PG9ZrcWjxfNNlY7hmMou984ny0xO2ezsRhcyA=
+        b=UWUrhAlDfFQGlpEqbYtXJunJJARTZqP0EHuj1urUgjhjSh6eyfszUpo+SpivIgPzE
+         S55ud/eFIhXR3DOeubb05t1dv3a6heK2/toNl34FD//zokbkguAMYGXyRLcW/js50M
+         cpzAO9OSE8DP3jjTGuDYUzNxI20Z7uqnX7WBcatM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Gil Fine <gil.fine@linux.intel.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        patches@lists.linux.dev, Jia-Ju Bai <baijiaju@buaa.edu.cn>,
+        Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 054/194] thunderbolt: Limit Intel Barlow Ridge USB3 bandwidth
+Subject: [PATCH 6.4 070/234] fs: ntfs3: Fix possible null-pointer dereferences in mi_read()
 Date:   Mon, 21 Aug 2023 21:40:33 +0200
-Message-ID: <20230821194125.162949531@linuxfoundation.org>
+Message-ID: <20230821194131.855984480@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230821194122.695845670@linuxfoundation.org>
-References: <20230821194122.695845670@linuxfoundation.org>
+In-Reply-To: <20230821194128.754601642@linuxfoundation.org>
+References: <20230821194128.754601642@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -54,54 +54,60 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Mika Westerberg <mika.westerberg@linux.intel.com>
+From: Jia-Ju Bai <baijiaju@buaa.edu.cn>
 
-[ Upstream commit f2bfa944080dcbb8eb56259dfd2c07204cbee17e ]
+[ Upstream commit 97498cd610c0d030a7bd49a7efad974790661162 ]
 
-Intel Barlow Ridge discrete USB4 host router has the same limitation as
-the previous generations so make sure the USB3 bandwidth limitation
-quirk is applied to Barlow Ridge too.
+In a previous commit 2681631c2973 ("fs/ntfs3: Add null pointer check to
+attr_load_runs_vcn"), ni can be NULL in attr_load_runs_vcn(), and thus it
+should be checked before being used.
 
-Signed-off-by: Gil Fine <gil.fine@linux.intel.com>
-Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+However, in the call stack of this commit, mft_ni in mi_read() is
+aliased with ni in attr_load_runs_vcn(), and it is also used in
+mi_read() at two places:
+
+mi_read()
+  rw_lock = &mft_ni->file.run_lock -> No check
+  attr_load_runs_vcn(mft_ni, ...)
+    ni (namely mft_ni) is checked in the previous commit
+  attr_load_runs_vcn(..., &mft_ni->file.run) -> No check
+
+Thus, to avoid possible null-pointer dereferences, the related checks
+should be added.
+
+These bugs are reported by a static analysis tool implemented by myself,
+and they are found by extending a known bug fixed in the previous commit.
+Thus, they could be theoretical bugs.
+
+Signed-off-by: Jia-Ju Bai <baijiaju@buaa.edu.cn>
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/thunderbolt/nhi.h    | 2 ++
- drivers/thunderbolt/quirks.c | 8 ++++++++
- 2 files changed, 10 insertions(+)
+ fs/ntfs3/record.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/thunderbolt/nhi.h b/drivers/thunderbolt/nhi.h
-index c15a0c46c9cff..0f029ce758825 100644
---- a/drivers/thunderbolt/nhi.h
-+++ b/drivers/thunderbolt/nhi.h
-@@ -77,6 +77,8 @@ extern const struct tb_nhi_ops icl_nhi_ops;
- #define PCI_DEVICE_ID_INTEL_ADL_NHI1			0x466d
- #define PCI_DEVICE_ID_INTEL_BARLOW_RIDGE_HOST_80G_NHI	0x5781
- #define PCI_DEVICE_ID_INTEL_BARLOW_RIDGE_HOST_40G_NHI	0x5784
-+#define PCI_DEVICE_ID_INTEL_BARLOW_RIDGE_HUB_80G_BRIDGE 0x5786
-+#define PCI_DEVICE_ID_INTEL_BARLOW_RIDGE_HUB_40G_BRIDGE 0x57a4
- #define PCI_DEVICE_ID_INTEL_MTL_M_NHI0			0x7eb2
- #define PCI_DEVICE_ID_INTEL_MTL_P_NHI0			0x7ec2
- #define PCI_DEVICE_ID_INTEL_MTL_P_NHI1			0x7ec3
-diff --git a/drivers/thunderbolt/quirks.c b/drivers/thunderbolt/quirks.c
-index 1157b8869bcca..8c2ee431fcde8 100644
---- a/drivers/thunderbolt/quirks.c
-+++ b/drivers/thunderbolt/quirks.c
-@@ -74,6 +74,14 @@ static const struct tb_quirk tb_quirks[] = {
- 		  quirk_usb3_maximum_bandwidth },
- 	{ 0x8087, PCI_DEVICE_ID_INTEL_MTL_P_NHI1, 0x0000, 0x0000,
- 		  quirk_usb3_maximum_bandwidth },
-+	{ 0x8087, PCI_DEVICE_ID_INTEL_BARLOW_RIDGE_HOST_80G_NHI, 0x0000, 0x0000,
-+		  quirk_usb3_maximum_bandwidth },
-+	{ 0x8087, PCI_DEVICE_ID_INTEL_BARLOW_RIDGE_HOST_40G_NHI, 0x0000, 0x0000,
-+		  quirk_usb3_maximum_bandwidth },
-+	{ 0x8087, PCI_DEVICE_ID_INTEL_BARLOW_RIDGE_HUB_80G_BRIDGE, 0x0000, 0x0000,
-+		  quirk_usb3_maximum_bandwidth },
-+	{ 0x8087, PCI_DEVICE_ID_INTEL_BARLOW_RIDGE_HUB_40G_BRIDGE, 0x0000, 0x0000,
-+		  quirk_usb3_maximum_bandwidth },
- 	/*
- 	 * CLx is not supported on AMD USB4 Yellow Carp and Pink Sardine platforms.
- 	 */
+diff --git a/fs/ntfs3/record.c b/fs/ntfs3/record.c
+index 2a281cead2bcc..7060f784c2d72 100644
+--- a/fs/ntfs3/record.c
++++ b/fs/ntfs3/record.c
+@@ -124,7 +124,7 @@ int mi_read(struct mft_inode *mi, bool is_mft)
+ 	struct rw_semaphore *rw_lock = NULL;
+ 
+ 	if (is_mounted(sbi)) {
+-		if (!is_mft) {
++		if (!is_mft && mft_ni) {
+ 			rw_lock = &mft_ni->file.run_lock;
+ 			down_read(rw_lock);
+ 		}
+@@ -148,7 +148,7 @@ int mi_read(struct mft_inode *mi, bool is_mft)
+ 		ni_lock(mft_ni);
+ 		down_write(rw_lock);
+ 	}
+-	err = attr_load_runs_vcn(mft_ni, ATTR_DATA, NULL, 0, &mft_ni->file.run,
++	err = attr_load_runs_vcn(mft_ni, ATTR_DATA, NULL, 0, run,
+ 				 vbo >> sbi->cluster_bits);
+ 	if (rw_lock) {
+ 		up_write(rw_lock);
 -- 
 2.40.1
 
