@@ -2,51 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 13F3F78325C
-	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:21:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C7571783297
+	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:22:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229682AbjHUTyV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 21 Aug 2023 15:54:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58794 "EHLO
+        id S230153AbjHUUC7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 21 Aug 2023 16:02:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54170 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229619AbjHUTyU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 15:54:20 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 85DEC10E
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 12:54:19 -0700 (PDT)
+        with ESMTP id S230173AbjHUUC6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 16:02:58 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DCC80130
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 13:02:55 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 240D264564
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 19:54:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CFFAC433C9;
-        Mon, 21 Aug 2023 19:54:18 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7389764835
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 20:02:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85550C433C9;
+        Mon, 21 Aug 2023 20:02:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692647658;
-        bh=cRTc8eRyLHrtCb90g9KlXfs0GJ+1q7rJi62JBEFsFQA=;
+        s=korg; t=1692648174;
+        bh=GUiklTs5EbrskVh/1+4hyjgR3kk+L1B6IqtmbfKde9Y=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=E5CgGYs5IDJtaTcPCjYGkF72ID/0Ew/XMrmEb2v2C9tuoJyuYPloMqEKF5gpEbfz9
-         KDR0//VwOlQF0NbQT/1Sj1THujenBOJSK2eyZleE6BHbMCHNq00BdDttjJsWj/XBJ8
-         XWoB03gVjnvo4wXjcuntGI9QMCNLDY6ExD5aQgdY=
+        b=IV+lRR/WWMIIB++O/r+yN5OUaus5R6LjUj9SV7fImJ82UMM9XTcbB84/AR4ZEa8Bx
+         NX/FNNwq8KD1dAjsRr01XvtCE7XpxYkg9K3l/akxGF9VjHYLDhq/lGOp0NzLKTD06t
+         elSDSbT5A53CIY542uRIIXfGoQX8nlUSdl7h6+o4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, BassCheck <bass@buaa.edu.cn>,
-        Tuo Li <islituo@gmail.com>, Takashi Iwai <tiwai@suse.de>,
+        patches@lists.linux.dev,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 065/194] ALSA: hda: fix a possible null-pointer dereference due to data race in snd_hdac_regmap_sync()
+Subject: [PATCH 6.4 081/234] Bluetooth: MGMT: Use correct address for memcpy()
 Date:   Mon, 21 Aug 2023 21:40:44 +0200
-Message-ID: <20230821194125.627003512@linuxfoundation.org>
+Message-ID: <20230821194132.341754174@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230821194122.695845670@linuxfoundation.org>
-References: <20230821194122.695845670@linuxfoundation.org>
+In-Reply-To: <20230821194128.754601642@linuxfoundation.org>
+References: <20230821194128.754601642@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -54,59 +55,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Tuo Li <islituo@gmail.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit 1f4a08fed450db87fbb5ff5105354158bdbe1a22 ]
+[ Upstream commit d1f0a9816f5fbc1316355ec1aa4ddfb9b624cca5 ]
 
-The variable codec->regmap is often protected by the lock
-codec->regmap_lock when is accessed. However, it is accessed without
-holding the lock when is accessed in snd_hdac_regmap_sync():
+In function ‘fortify_memcpy_chk’,
+    inlined from ‘get_conn_info_complete’ at net/bluetooth/mgmt.c:7281:2:
+include/linux/fortify-string.h:592:25: error: call to
+‘__read_overflow2_field’ declared with attribute warning: detected read
+beyond size of field (2nd parameter); maybe use struct_group()?
+[-Werror=attribute-warning]
+  592 |                         __read_overflow2_field(q_size_field, size);
+      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+cc1: all warnings being treated as errors
 
-  if (codec->regmap)
+This is due to the wrong member is used for memcpy(). Use correct one.
 
-In my opinion, this may be a harmful race, because if codec->regmap is
-set to NULL right after the condition is checked, a null-pointer
-dereference can occur in the called function regcache_sync():
-
-  map->lock(map->lock_arg); --> Line 360 in drivers/base/regmap/regcache.c
-
-To fix this possible null-pointer dereference caused by data race, the
-mutex_lock coverage is extended to protect the if statement as well as the
-function call to regcache_sync().
-
-[ Note: the lack of the regmap_lock itself is harmless for the current
-  codec driver implementations, as snd_hdac_regmap_sync() is only for
-  PM runtime resume that is prohibited during the codec probe.
-  But the change makes the whole code more consistent, so it's merged
-  as is -- tiwai ]
-
-Reported-by: BassCheck <bass@buaa.edu.cn>
-Signed-off-by: Tuo Li <islituo@gmail.com>
-Link: https://lore.kernel.org/r/20230703031016.1184711-1-islituo@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/hda/hdac_regmap.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ net/bluetooth/mgmt.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/hda/hdac_regmap.c b/sound/hda/hdac_regmap.c
-index fe3587547cfec..39610a15bcc98 100644
---- a/sound/hda/hdac_regmap.c
-+++ b/sound/hda/hdac_regmap.c
-@@ -597,10 +597,9 @@ EXPORT_SYMBOL_GPL(snd_hdac_regmap_update_raw_once);
-  */
- void snd_hdac_regmap_sync(struct hdac_device *codec)
- {
--	if (codec->regmap) {
--		mutex_lock(&codec->regmap_lock);
-+	mutex_lock(&codec->regmap_lock);
-+	if (codec->regmap)
- 		regcache_sync(codec->regmap);
--		mutex_unlock(&codec->regmap_lock);
--	}
-+	mutex_unlock(&codec->regmap_lock);
- }
- EXPORT_SYMBOL_GPL(snd_hdac_regmap_sync);
+diff --git a/net/bluetooth/mgmt.c b/net/bluetooth/mgmt.c
+index 1e07d0f289723..d4498037fadc6 100644
+--- a/net/bluetooth/mgmt.c
++++ b/net/bluetooth/mgmt.c
+@@ -7285,7 +7285,7 @@ static void get_conn_info_complete(struct hci_dev *hdev, void *data, int err)
+ 
+ 	bt_dev_dbg(hdev, "err %d", err);
+ 
+-	memcpy(&rp.addr, &cp->addr.bdaddr, sizeof(rp.addr));
++	memcpy(&rp.addr, &cp->addr, sizeof(rp.addr));
+ 
+ 	status = mgmt_status(err);
+ 	if (status == MGMT_STATUS_SUCCESS) {
 -- 
 2.40.1
 
