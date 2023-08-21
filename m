@@ -2,52 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5CFDE783388
-	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:23:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0D81E78330A
+	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:22:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229511AbjHUTxR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 21 Aug 2023 15:53:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39508 "EHLO
+        id S229977AbjHUUB0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 21 Aug 2023 16:01:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32802 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229481AbjHUTxR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 15:53:17 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F2A2EE
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 12:53:15 -0700 (PDT)
+        with ESMTP id S229978AbjHUUBZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 16:01:25 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B62512C
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 13:01:18 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3257B644F5
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 19:53:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DE9EC433C7;
-        Mon, 21 Aug 2023 19:53:14 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 228FA647A9
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 20:01:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08960C433C8;
+        Mon, 21 Aug 2023 20:01:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692647594;
-        bh=ErWUxBFRYBwgi5LFB2OADU2sJaz0VO2puo1+XpykQq0=;
+        s=korg; t=1692648077;
+        bh=gqyS9+Et9HrnTElIM4gGIzXrxOxAu0t880LTgOoSUSc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=yr9+Nh658KQKt7NT2s5K4ycnG6VJF5cGWA+HaHCEFjm9PP5fRsFTBMPOjUdNQPf4P
-         qVI3i11QsyJZLitTbA9j8kg0t6WSudK48VUWf61gtNyGXNs5jAKszglw59N9X+5ylR
-         LMBFasp9LzCZJwawpLCJDNKJPgtqqbmbZnBIfFgs=
+        b=G0pTiJqJ0ZKw/dPiePRN3ve315w9dsYqJuwsDPjLXK4Ii0XRRlvUEs2valE+JC3Wq
+         ZR5dNf4vjpAtx9R7MfFfNb53XjxrT7hXt20e+ssGLbabNAfVV42mdhD/9CXPHmZBny
+         UTutslgAMcGIKk3KQFIaqgybSx3GpeStAKAzw5no=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jerry Snitselaar <jsnitsel@redhat.com>,
-        Alejandro Jimenez <alejandro.j.jimenez@oracle.com>,
-        Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
-        Joerg Roedel <jroedel@suse.de>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 030/194] iommu/amd: Introduce Disable IRTE Caching Support
-Date:   Mon, 21 Aug 2023 21:40:09 +0200
-Message-ID: <20230821194124.128047591@linuxfoundation.org>
+        patches@lists.linux.dev, Lu Hongfei <luhongfei@vivo.com>,
+        Lee Jones <lee@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 047/234] led: qcom-lpg: Fix resource leaks in for_each_available_child_of_node() loops
+Date:   Mon, 21 Aug 2023 21:40:10 +0200
+Message-ID: <20230821194130.815216471@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230821194122.695845670@linuxfoundation.org>
-References: <20230821194122.695845670@linuxfoundation.org>
+In-Reply-To: <20230821194128.754601642@linuxfoundation.org>
+References: <20230821194128.754601642@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -55,163 +53,48 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
+From: Lu Hongfei <luhongfei@vivo.com>
 
-[ Upstream commit 66419036f68a838c00cbccacd6cb2e99da6e5710 ]
+[ Upstream commit 8f38f8fa7261819eb7d4fb369dc3bfab72259033 ]
 
-An Interrupt Remapping Table (IRT) stores interrupt remapping configuration
-for each device. In a normal operation, the AMD IOMMU caches the table
-to optimize subsequent data accesses. This requires the IOMMU driver to
-invalidate IRT whenever it updates the table. The invalidation process
-includes issuing an INVALIDATE_INTERRUPT_TABLE command following by
-a COMPLETION_WAIT command.
+Ensure child node references are decremented properly in the error path.
 
-However, there are cases in which the IRT is updated at a high rate.
-For example, for IOMMU AVIC, the IRTE[IsRun] bit is updated on every
-vcpu scheduling (i.e. amd_iommu_update_ga()). On system with large
-amount of vcpus and VFIO PCI pass-through devices, the invalidation
-process could potentially become a performance bottleneck.
-
-Introducing a new kernel boot option:
-
-    amd_iommu=irtcachedis
-
-which disables IRTE caching by setting the IRTCachedis bit in each IOMMU
-Control register, and bypass the IRT invalidation process.
-
-Reviewed-by: Jerry Snitselaar <jsnitsel@redhat.com>
-Co-developed-by: Alejandro Jimenez <alejandro.j.jimenez@oracle.com>
-Signed-off-by: Alejandro Jimenez <alejandro.j.jimenez@oracle.com>
-Signed-off-by: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
-Link: https://lore.kernel.org/r/20230530141137.14376-4-suravee.suthikulpanit@amd.com
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
+Signed-off-by: Lu Hongfei <luhongfei@vivo.com>
+Link: https://lore.kernel.org/r/20230525111705.3055-1-luhongfei@vivo.com
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../admin-guide/kernel-parameters.txt         |  1 +
- drivers/iommu/amd/amd_iommu_types.h           |  4 +++
- drivers/iommu/amd/init.c                      | 36 +++++++++++++++++++
- 3 files changed, 41 insertions(+)
+ drivers/leds/rgb/leds-qcom-lpg.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index 286be425f3bfa..882b6198dd0d1 100644
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -323,6 +323,7 @@
- 				       option with care.
- 			pgtbl_v1     - Use v1 page table for DMA-API (Default).
- 			pgtbl_v2     - Use v2 page table for DMA-API.
-+			irtcachedis  - Disable Interrupt Remapping Table (IRT) caching.
+diff --git a/drivers/leds/rgb/leds-qcom-lpg.c b/drivers/leds/rgb/leds-qcom-lpg.c
+index 1c849814a4917..212df2e3d3502 100644
+--- a/drivers/leds/rgb/leds-qcom-lpg.c
++++ b/drivers/leds/rgb/leds-qcom-lpg.c
+@@ -1173,8 +1173,10 @@ static int lpg_add_led(struct lpg *lpg, struct device_node *np)
+ 		i = 0;
+ 		for_each_available_child_of_node(np, child) {
+ 			ret = lpg_parse_channel(lpg, child, &led->channels[i]);
+-			if (ret < 0)
++			if (ret < 0) {
++				of_node_put(child);
+ 				return ret;
++			}
  
- 	amd_iommu_dump=	[HW,X86-64]
- 			Enable AMD IOMMU driver option to dump the ACPI table
-diff --git a/drivers/iommu/amd/amd_iommu_types.h b/drivers/iommu/amd/amd_iommu_types.h
-index 5ecc17240eff5..f5e9377b55212 100644
---- a/drivers/iommu/amd/amd_iommu_types.h
-+++ b/drivers/iommu/amd/amd_iommu_types.h
-@@ -172,6 +172,7 @@
- #define CONTROL_GAINT_EN	29
- #define CONTROL_XT_EN		50
- #define CONTROL_INTCAPXT_EN	51
-+#define CONTROL_IRTCACHEDIS	59
- #define CONTROL_SNPAVIC_EN	61
+ 			info[i].color_index = led->channels[i]->color;
+ 			info[i].intensity = 0;
+@@ -1352,8 +1354,10 @@ static int lpg_probe(struct platform_device *pdev)
  
- #define CTRL_INV_TO_MASK	(7 << CONTROL_INV_TIMEOUT)
-@@ -708,6 +709,9 @@ struct amd_iommu {
- 	/* if one, we need to send a completion wait command */
- 	bool need_sync;
+ 	for_each_available_child_of_node(pdev->dev.of_node, np) {
+ 		ret = lpg_add_led(lpg, np);
+-		if (ret)
++		if (ret) {
++			of_node_put(np);
+ 			return ret;
++		}
+ 	}
  
-+	/* true if disable irte caching */
-+	bool irtcachedis_enabled;
-+
- 	/* Handle for IOMMU core code */
- 	struct iommu_device iommu;
- 
-diff --git a/drivers/iommu/amd/init.c b/drivers/iommu/amd/init.c
-index b0af8b5967e0d..f6e64c9858021 100644
---- a/drivers/iommu/amd/init.c
-+++ b/drivers/iommu/amd/init.c
-@@ -160,6 +160,7 @@ static int amd_iommu_xt_mode = IRQ_REMAP_XAPIC_MODE;
- static bool amd_iommu_detected;
- static bool amd_iommu_disabled __initdata;
- static bool amd_iommu_force_enable __initdata;
-+static bool amd_iommu_irtcachedis;
- static int amd_iommu_target_ivhd_type;
- 
- /* Global EFR and EFR2 registers */
-@@ -477,6 +478,9 @@ static void iommu_disable(struct amd_iommu *iommu)
- 
- 	/* Disable IOMMU hardware itself */
- 	iommu_feature_disable(iommu, CONTROL_IOMMU_EN);
-+
-+	/* Clear IRTE cache disabling bit */
-+	iommu_feature_disable(iommu, CONTROL_IRTCACHEDIS);
- }
- 
- /*
-@@ -2700,6 +2704,33 @@ static void iommu_enable_ga(struct amd_iommu *iommu)
- #endif
- }
- 
-+static void iommu_disable_irtcachedis(struct amd_iommu *iommu)
-+{
-+	iommu_feature_disable(iommu, CONTROL_IRTCACHEDIS);
-+}
-+
-+static void iommu_enable_irtcachedis(struct amd_iommu *iommu)
-+{
-+	u64 ctrl;
-+
-+	if (!amd_iommu_irtcachedis)
-+		return;
-+
-+	/*
-+	 * Note:
-+	 * The support for IRTCacheDis feature is dertermined by
-+	 * checking if the bit is writable.
-+	 */
-+	iommu_feature_enable(iommu, CONTROL_IRTCACHEDIS);
-+	ctrl = readq(iommu->mmio_base +  MMIO_CONTROL_OFFSET);
-+	ctrl &= (1ULL << CONTROL_IRTCACHEDIS);
-+	if (ctrl)
-+		iommu->irtcachedis_enabled = true;
-+	pr_info("iommu%d (%#06x) : IRT cache is %s\n",
-+		iommu->index, iommu->devid,
-+		iommu->irtcachedis_enabled ? "disabled" : "enabled");
-+}
-+
- static void early_enable_iommu(struct amd_iommu *iommu)
- {
- 	iommu_disable(iommu);
-@@ -2710,6 +2741,7 @@ static void early_enable_iommu(struct amd_iommu *iommu)
- 	iommu_set_exclusion_range(iommu);
- 	iommu_enable_ga(iommu);
- 	iommu_enable_xt(iommu);
-+	iommu_enable_irtcachedis(iommu);
- 	iommu_enable(iommu);
- 	iommu_flush_all_caches(iommu);
- }
-@@ -2760,10 +2792,12 @@ static void early_enable_iommus(void)
- 		for_each_iommu(iommu) {
- 			iommu_disable_command_buffer(iommu);
- 			iommu_disable_event_buffer(iommu);
-+			iommu_disable_irtcachedis(iommu);
- 			iommu_enable_command_buffer(iommu);
- 			iommu_enable_event_buffer(iommu);
- 			iommu_enable_ga(iommu);
- 			iommu_enable_xt(iommu);
-+			iommu_enable_irtcachedis(iommu);
- 			iommu_set_device_table(iommu);
- 			iommu_flush_all_caches(iommu);
- 		}
-@@ -3411,6 +3445,8 @@ static int __init parse_amd_iommu_options(char *str)
- 			amd_iommu_pgtable = AMD_IOMMU_V1;
- 		} else if (strncmp(str, "pgtbl_v2", 8) == 0) {
- 			amd_iommu_pgtable = AMD_IOMMU_V2;
-+		} else if (strncmp(str, "irtcachedis", 11) == 0) {
-+			amd_iommu_irtcachedis = true;
- 		} else {
- 			pr_notice("Unknown option - '%s'\n", str);
- 		}
+ 	for (i = 0; i < lpg->num_channels; i++)
 -- 
 2.40.1
 
