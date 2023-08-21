@@ -2,48 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 925EE7831CB
-	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:21:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2552B78328E
+	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:22:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229882AbjHUT5V (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 21 Aug 2023 15:57:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49810 "EHLO
+        id S230282AbjHUUHH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 21 Aug 2023 16:07:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53742 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229886AbjHUT5V (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 15:57:21 -0400
+        with ESMTP id S230273AbjHUUHH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 16:07:07 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 13F9ED3
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 12:57:20 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 93B5DE3
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 13:07:05 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9E7F364659
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 19:57:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEE15C433C7;
-        Mon, 21 Aug 2023 19:57:18 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1B2536498A
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 20:07:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B5D8C433C8;
+        Mon, 21 Aug 2023 20:07:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692647839;
-        bh=QZHtQzG5N9ZAWZJO9WZWG6oYF4ylwsYrCsCkGHCpSQM=;
+        s=korg; t=1692648424;
+        bh=5dWc136PhNTrxIOgiPKFzKuX0x/urX5tSHxG2z62rDc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=aDTN1voo4I07jQUy0phRLbX29f+mqKHtzQEhoe728fXIE4nEKKO5IEpddO75O8Obn
-         oebDbn7qsyk47L4u+o3DVo//KQGCoyVwpwXavLrtK5F9548CUzrSMYQGkYrHWUbreD
-         573OvUPY5E1p+i2GaDaA7JMiSfW8k1oAvHniYhgM=
+        b=pgeSO0TMzMtmm6DQZxiUgGNPCCohgDGGT4xum7+UoXb3vI4bZJ9s69JWG5ospFb2Q
+         nqXWBb5Klf0ZAQkBiM9KvpxKFu91CnVjiLqy5gx1G6zJ9qQUwkrKg2UQSjhExc1eE0
+         IqfKbNrmOQsMV8XJRHW6e0DQv7mIybUuCFWgshEw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Andrew Melnychenko <andrew@daynix.com>,
-        Hawkins Jiawei <yin31149@gmail.com>,
-        Jason Wang <jasowang@redhat.com>,
-        =?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
-        "Michael S. Tsirkin" <mst@redhat.com>,
-        Xuan Zhuo <xuanzhuo@linux.alibaba.com>
-Subject: [PATCH 6.1 155/194] virtio-net: Zero max_tx_vq field for VIRTIO_NET_CTRL_MQ_HASH_CONFIG case
+        patches@lists.linux.dev, Karol Herbst <kherbst@redhat.com>,
+        Lyude Paul <lyude@redhat.com>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 171/234] drm/nouveau/disp: fix use-after-free in error handling of nouveau_connector_create
 Date:   Mon, 21 Aug 2023 21:42:14 +0200
-Message-ID: <20230821194129.513901395@linuxfoundation.org>
+Message-ID: <20230821194136.393887865@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230821194122.695845670@linuxfoundation.org>
-References: <20230821194122.695845670@linuxfoundation.org>
+In-Reply-To: <20230821194128.754601642@linuxfoundation.org>
+References: <20230821194128.754601642@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,52 +53,64 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Hawkins Jiawei <yin31149@gmail.com>
+From: Karol Herbst <kherbst@redhat.com>
 
-commit 2c507ce90e02cd78d00fd4b0fe26c8641873c13f upstream.
+[ Upstream commit 1b254b791d7b7dea6e8adc887fbbd51746d8bb27 ]
 
-Kernel uses `struct virtio_net_ctrl_rss` to save command-specific-data
-for both the VIRTIO_NET_CTRL_MQ_HASH_CONFIG and
-VIRTIO_NET_CTRL_MQ_RSS_CONFIG commands.
+We can't simply free the connector after calling drm_connector_init on it.
+We need to clean up the drm side first.
 
-According to the VirtIO standard, "Field reserved MUST contain zeroes.
-It is defined to make the structure to match the layout of
-virtio_net_rss_config structure, defined in 5.1.6.5.7.".
+It might not fix all regressions from commit 2b5d1c29f6c4
+("drm/nouveau/disp: PIOR DP uses GPIO for HPD, not PMGR AUX interrupts"),
+but at least it fixes a memory corruption in error handling related to
+that commit.
 
-Yet for the VIRTIO_NET_CTRL_MQ_HASH_CONFIG command case, the `max_tx_vq`
-field in struct virtio_net_ctrl_rss, which corresponds to the
-`reserved` field in struct virtio_net_hash_config, is not zeroed,
-thereby violating the VirtIO standard.
-
-This patch solves this problem by zeroing this field in
-virtnet_init_default_rss().
-
-Cc: Andrew Melnychenko <andrew@daynix.com>
-Cc: stable@vger.kernel.org
-Fixes: c7114b1249fa ("drivers/net/virtio_net: Added basic RSS support.")
-Signed-off-by: Hawkins Jiawei <yin31149@gmail.com>
-Acked-by: Jason Wang <jasowang@redhat.com>
-Acked-by: Eugenio Pérez <eperezma@redhat.com>
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
-Message-Id: <20230810110405.25558-1-yin31149@gmail.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Reviewed-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
-Acked-by: Jason Wang <jasowang@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/lkml/20230806213107.GFZNARG6moWpFuSJ9W@fat_crate.local/
+Fixes: 95983aea8003 ("drm/nouveau/disp: add connector class")
+Signed-off-by: Karol Herbst <kherbst@redhat.com>
+Reviewed-by: Lyude Paul <lyude@redhat.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230814144933.3956959-1-kherbst@redhat.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/virtio_net.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/nouveau/nouveau_connector.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
---- a/drivers/net/virtio_net.c
-+++ b/drivers/net/virtio_net.c
-@@ -2504,7 +2504,7 @@ static void virtnet_init_default_rss(str
- 		vi->ctrl->rss.indirection_table[i] = indir_val;
+diff --git a/drivers/gpu/drm/nouveau/nouveau_connector.c b/drivers/gpu/drm/nouveau/nouveau_connector.c
+index a2e0033e8a260..622f6eb9a8bfd 100644
+--- a/drivers/gpu/drm/nouveau/nouveau_connector.c
++++ b/drivers/gpu/drm/nouveau/nouveau_connector.c
+@@ -1408,8 +1408,7 @@ nouveau_connector_create(struct drm_device *dev,
+ 		ret = nvif_conn_ctor(&disp->disp, nv_connector->base.name, nv_connector->index,
+ 				     &nv_connector->conn);
+ 		if (ret) {
+-			kfree(nv_connector);
+-			return ERR_PTR(ret);
++			goto drm_conn_err;
+ 		}
+ 
+ 		ret = nvif_conn_event_ctor(&nv_connector->conn, "kmsHotplug",
+@@ -1426,8 +1425,7 @@ nouveau_connector_create(struct drm_device *dev,
+ 			if (ret) {
+ 				nvif_event_dtor(&nv_connector->hpd);
+ 				nvif_conn_dtor(&nv_connector->conn);
+-				kfree(nv_connector);
+-				return ERR_PTR(ret);
++				goto drm_conn_err;
+ 			}
+ 		}
  	}
+@@ -1475,4 +1473,9 @@ nouveau_connector_create(struct drm_device *dev,
  
--	vi->ctrl->rss.max_tx_vq = vi->curr_queue_pairs;
-+	vi->ctrl->rss.max_tx_vq = vi->has_rss ? vi->curr_queue_pairs : 0;
- 	vi->ctrl->rss.hash_key_length = vi->rss_key_size;
- 
- 	netdev_rss_key_fill(vi->ctrl->rss.key, vi->rss_key_size);
+ 	drm_connector_register(connector);
+ 	return connector;
++
++drm_conn_err:
++	drm_connector_cleanup(connector);
++	kfree(nv_connector);
++	return ERR_PTR(ret);
+ }
+-- 
+2.40.1
+
 
 
