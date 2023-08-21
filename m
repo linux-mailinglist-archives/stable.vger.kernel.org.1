@@ -2,55 +2,54 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DD7BA7832B1
-	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:22:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 089497832CE
+	for <lists+stable@lfdr.de>; Mon, 21 Aug 2023 22:22:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229512AbjHUTx3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 21 Aug 2023 15:53:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59742 "EHLO
+        id S230185AbjHUUDZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 21 Aug 2023 16:03:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56084 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229475AbjHUTx2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 15:53:28 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A5E59EE
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 12:53:26 -0700 (PDT)
+        with ESMTP id S230184AbjHUUDZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 21 Aug 2023 16:03:25 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9AFF0DF
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 13:03:23 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 39FB264505
-        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 19:53:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45938C433C7;
-        Mon, 21 Aug 2023 19:53:25 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3A65E64865
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 20:03:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48B74C433C8;
+        Mon, 21 Aug 2023 20:03:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692647605;
-        bh=bL8iG0IP0R8Zbp4pP8snhLe49IfvZZTUEAmlbYKDkBo=;
+        s=korg; t=1692648202;
+        bh=mVVRXhi8pSi4tM/8sPW1Zu8yz2by0J5hc1cHVplP3tg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=xcjRTEnijhrjqZttRyX7JivaUqv9/Cao1JnYmhgQ7eUD+oF5mW+FFW2MHNjQ5pnau
-         67iRmIanCBvxTSLUgiKDUhGL+ZQQ+AqNjg4XW2lMNyBtaas/o6VhQl5ndWibmUVcDx
-         O7le+PyAKxTkN077KgDNrVDzaK+6ZQ7bTw04WPUI=
+        b=nyrvjyf/38/420+FWMQFSqKoFQw9yigaSzT/yfIEkEdThKsvXoeLHPrOnFEeufITK
+         zxtAnzrpHuBp1JPWjKG4Nzr52pwto/seoG8w7nbR1eU/HWi+eSrZUwhXzEn9wJkuLf
+         2W7j3+zZPqKHl+K3ZyjSkY/n8tpZ3bjQgkIRz7Fo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Aurabindo Pillai <aurabindo.pillai@amd.com>,
-        hersen wu <hersenxs.wu@amd.com>,
-        Bhawanpreet Lakha <Bhawanpreet.Lakha@amd.com>,
-        Daniel Wheeler <daniel.wheeler@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
+        =?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
+        Gal Pressman <gal@nvidia.com>,
+        "Michael S. Tsirkin" <mst@redhat.com>,
+        Jason Wang <jasowang@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 074/194] drm/amd/display: phase3 mst hdcp for multiple displays
+Subject: [PATCH 6.4 090/234] vdpa/mlx5: Delete control vq iotlb in destroy_mr only when necessary
 Date:   Mon, 21 Aug 2023 21:40:53 +0200
-Message-ID: <20230821194126.025392686@linuxfoundation.org>
+Message-ID: <20230821194132.774705463@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230821194122.695845670@linuxfoundation.org>
-References: <20230821194122.695845670@linuxfoundation.org>
+In-Reply-To: <20230821194128.754601642@linuxfoundation.org>
+References: <20230821194128.754601642@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -58,308 +57,77 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: hersen wu <hersenxs.wu@amd.com>
+From: Eugenio Pérez <eperezma@redhat.com>
 
-[ Upstream commit e8fd3eeb5e8711af39b00642da06474e52f4780c ]
+[ Upstream commit ad03a0f44cdb97b46e5c84ed353dac9b8ae2c276 ]
 
-[Why]
-multiple display hdcp are enabled within event_property_validate,
-event_property_update by looping all displays on mst hub. when
-one of display on mst hub in unplugged or disabled, hdcp are
-disabled for all displays on mst hub within hdcp_reset_display
-by looping all displays of mst link. for displays still active,
-their encryption status are off. kernel driver will not run hdcp
-authentication again. therefore, hdcp are not enabled automatically.
+mlx5_vdpa_destroy_mr can be called from .set_map with data ASID after
+the control virtqueue ASID iotlb has been populated. The control vq
+iotlb must not be cleared, since it will not be populated again.
 
-[How]
-within is_content_protection_different, check drm_crtc_state changes
-of all displays on mst hub, if need, triger hdcp_update_display to
-re-run hdcp authentication.
+So call the ASID aware destroy function which makes sure that the
+right vq resource is destroyed.
 
-Acked-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Signed-off-by: hersen wu <hersenxs.wu@amd.com>
-Reviewed-by: Bhawanpreet Lakha <Bhawanpreet.Lakha@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Stable-dep-of: cdff36a0217a ("drm/amd/display: fix access hdcp_workqueue assert")
+Fixes: 8fcd20c30704 ("vdpa/mlx5: Support different address spaces for control and data")
+Signed-off-by: Eugenio Pérez <eperezma@redhat.com>
+Reviewed-by: Gal Pressman <gal@nvidia.com>
+Message-Id: <20230802171231.11001-5-dtatulea@nvidia.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Acked-by: Jason Wang <jasowang@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 183 ++++++++++++++----
- 1 file changed, 141 insertions(+), 42 deletions(-)
+ drivers/vdpa/mlx5/core/mlx5_vdpa.h | 1 +
+ drivers/vdpa/mlx5/core/mr.c        | 2 +-
+ drivers/vdpa/mlx5/net/mlx5_vnet.c  | 4 ++--
+ 3 files changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-index bdc6f90b3adb5..aa0ea28a86f02 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -7397,27 +7397,55 @@ is_scaling_state_different(const struct dm_connector_state *dm_state,
+diff --git a/drivers/vdpa/mlx5/core/mlx5_vdpa.h b/drivers/vdpa/mlx5/core/mlx5_vdpa.h
+index a0420be5059f4..b53420e874acb 100644
+--- a/drivers/vdpa/mlx5/core/mlx5_vdpa.h
++++ b/drivers/vdpa/mlx5/core/mlx5_vdpa.h
+@@ -122,6 +122,7 @@ int mlx5_vdpa_handle_set_map(struct mlx5_vdpa_dev *mvdev, struct vhost_iotlb *io
+ int mlx5_vdpa_create_mr(struct mlx5_vdpa_dev *mvdev, struct vhost_iotlb *iotlb,
+ 			unsigned int asid);
+ void mlx5_vdpa_destroy_mr(struct mlx5_vdpa_dev *mvdev);
++void mlx5_vdpa_destroy_mr_asid(struct mlx5_vdpa_dev *mvdev, unsigned int asid);
+ 
+ #define mlx5_vdpa_warn(__dev, format, ...)                                                         \
+ 	dev_warn((__dev)->mdev->device, "%s:%d:(pid %d) warning: " format, __func__, __LINE__,     \
+diff --git a/drivers/vdpa/mlx5/core/mr.c b/drivers/vdpa/mlx5/core/mr.c
+index 4ae14a248a4bc..5a1971fcd87b1 100644
+--- a/drivers/vdpa/mlx5/core/mr.c
++++ b/drivers/vdpa/mlx5/core/mr.c
+@@ -515,7 +515,7 @@ static void _mlx5_vdpa_destroy_dvq_mr(struct mlx5_vdpa_dev *mvdev, unsigned int
+ 	mr->initialized = false;
  }
  
- #ifdef CONFIG_DRM_AMD_DC_HDCP
--static bool is_content_protection_different(struct drm_connector_state *state,
--					    const struct drm_connector_state *old_state,
--					    const struct drm_connector *connector, struct hdcp_workqueue *hdcp_w)
-+static bool is_content_protection_different(struct drm_crtc_state *new_crtc_state,
-+					    struct drm_crtc_state *old_crtc_state,
-+					    struct drm_connector_state *new_conn_state,
-+					    struct drm_connector_state *old_conn_state,
-+					    const struct drm_connector *connector,
-+					    struct hdcp_workqueue *hdcp_w)
+-static void mlx5_vdpa_destroy_mr_asid(struct mlx5_vdpa_dev *mvdev, unsigned int asid)
++void mlx5_vdpa_destroy_mr_asid(struct mlx5_vdpa_dev *mvdev, unsigned int asid)
  {
- 	struct amdgpu_dm_connector *aconnector = to_amdgpu_dm_connector(connector);
- 	struct dm_connector_state *dm_con_state = to_dm_connector_state(connector->state);
+ 	struct mlx5_vdpa_mr *mr = &mvdev->mr;
  
--	/* Handle: Type0/1 change */
--	if (old_state->hdcp_content_type != state->hdcp_content_type &&
--	    state->content_protection != DRM_MODE_CONTENT_PROTECTION_UNDESIRED) {
--		state->content_protection = DRM_MODE_CONTENT_PROTECTION_DESIRED;
-+	pr_debug("[HDCP_DM] connector->index: %x connect_status: %x dpms: %x\n",
-+		connector->index, connector->status, connector->dpms);
-+	pr_debug("[HDCP_DM] state protection old: %x new: %x\n",
-+		old_conn_state->content_protection, new_conn_state->content_protection);
-+
-+	if (old_crtc_state)
-+		pr_debug("[HDCP_DM] old crtc en: %x a: %x m: %x a-chg: %x c-chg: %x\n",
-+		old_crtc_state->enable,
-+		old_crtc_state->active,
-+		old_crtc_state->mode_changed,
-+		old_crtc_state->active_changed,
-+		old_crtc_state->connectors_changed);
-+
-+	if (new_crtc_state)
-+		pr_debug("[HDCP_DM] NEW crtc en: %x a: %x m: %x a-chg: %x c-chg: %x\n",
-+		new_crtc_state->enable,
-+		new_crtc_state->active,
-+		new_crtc_state->mode_changed,
-+		new_crtc_state->active_changed,
-+		new_crtc_state->connectors_changed);
-+
-+	/* hdcp content type change */
-+	if (old_conn_state->hdcp_content_type != new_conn_state->hdcp_content_type &&
-+	    new_conn_state->content_protection != DRM_MODE_CONTENT_PROTECTION_UNDESIRED) {
-+		new_conn_state->content_protection = DRM_MODE_CONTENT_PROTECTION_DESIRED;
-+		pr_debug("[HDCP_DM] Type0/1 change %s :true\n", __func__);
- 		return true;
- 	}
+diff --git a/drivers/vdpa/mlx5/net/mlx5_vnet.c b/drivers/vdpa/mlx5/net/mlx5_vnet.c
+index 279ac6a558d29..f18a9301ab94e 100644
+--- a/drivers/vdpa/mlx5/net/mlx5_vnet.c
++++ b/drivers/vdpa/mlx5/net/mlx5_vnet.c
+@@ -2564,7 +2564,7 @@ static int mlx5_vdpa_change_map(struct mlx5_vdpa_dev *mvdev,
+ 		goto err_mr;
  
--	/* CP is being re enabled, ignore this
--	 *
--	 * Handles:	ENABLED -> DESIRED
--	 */
--	if (old_state->content_protection == DRM_MODE_CONTENT_PROTECTION_ENABLED &&
--	    state->content_protection == DRM_MODE_CONTENT_PROTECTION_DESIRED) {
--		state->content_protection = DRM_MODE_CONTENT_PROTECTION_ENABLED;
-+	/* CP is being re enabled, ignore this */
-+	if (old_conn_state->content_protection == DRM_MODE_CONTENT_PROTECTION_ENABLED &&
-+	    new_conn_state->content_protection == DRM_MODE_CONTENT_PROTECTION_DESIRED) {
-+		if (new_crtc_state && new_crtc_state->mode_changed) {
-+			new_conn_state->content_protection = DRM_MODE_CONTENT_PROTECTION_DESIRED;
-+			pr_debug("[HDCP_DM] ENABLED->DESIRED & mode_changed %s :true\n", __func__);
-+			return true;
-+		};
-+		new_conn_state->content_protection = DRM_MODE_CONTENT_PROTECTION_ENABLED;
-+		pr_debug("[HDCP_DM] ENABLED -> DESIRED %s :false\n", __func__);
- 		return false;
- 	}
+ 	teardown_driver(ndev);
+-	mlx5_vdpa_destroy_mr(mvdev);
++	mlx5_vdpa_destroy_mr_asid(mvdev, asid);
+ 	err = mlx5_vdpa_create_mr(mvdev, iotlb, asid);
+ 	if (err)
+ 		goto err_mr;
+@@ -2580,7 +2580,7 @@ static int mlx5_vdpa_change_map(struct mlx5_vdpa_dev *mvdev,
+ 	return 0;
  
-@@ -7425,9 +7453,9 @@ static bool is_content_protection_different(struct drm_connector_state *state,
- 	 *
- 	 * Handles:	UNDESIRED -> ENABLED
- 	 */
--	if (old_state->content_protection == DRM_MODE_CONTENT_PROTECTION_UNDESIRED &&
--	    state->content_protection == DRM_MODE_CONTENT_PROTECTION_ENABLED)
--		state->content_protection = DRM_MODE_CONTENT_PROTECTION_DESIRED;
-+	if (old_conn_state->content_protection == DRM_MODE_CONTENT_PROTECTION_UNDESIRED &&
-+	    new_conn_state->content_protection == DRM_MODE_CONTENT_PROTECTION_ENABLED)
-+		new_conn_state->content_protection = DRM_MODE_CONTENT_PROTECTION_DESIRED;
- 
- 	/* Stream removed and re-enabled
- 	 *
-@@ -7437,10 +7465,12 @@ static bool is_content_protection_different(struct drm_connector_state *state,
- 	 *
- 	 * Handles:	DESIRED -> DESIRED (Special case)
- 	 */
--	if (!(old_state->crtc && old_state->crtc->enabled) &&
--		state->crtc && state->crtc->enabled &&
-+	if (!(old_conn_state->crtc && old_conn_state->crtc->enabled) &&
-+		new_conn_state->crtc && new_conn_state->crtc->enabled &&
- 		connector->state->content_protection == DRM_MODE_CONTENT_PROTECTION_DESIRED) {
- 		dm_con_state->update_hdcp = false;
-+		pr_debug("[HDCP_DM] DESIRED->DESIRED (Stream removed and re-enabled) %s :true\n",
-+			__func__);
- 		return true;
- 	}
- 
-@@ -7452,35 +7482,42 @@ static bool is_content_protection_different(struct drm_connector_state *state,
- 	 *
- 	 * Handles:	DESIRED -> DESIRED (Special case)
- 	 */
--	if (dm_con_state->update_hdcp && state->content_protection == DRM_MODE_CONTENT_PROTECTION_DESIRED &&
--	    connector->dpms == DRM_MODE_DPMS_ON && aconnector->dc_sink != NULL) {
-+	if (dm_con_state->update_hdcp &&
-+	new_conn_state->content_protection == DRM_MODE_CONTENT_PROTECTION_DESIRED &&
-+	connector->dpms == DRM_MODE_DPMS_ON && aconnector->dc_sink != NULL) {
- 		dm_con_state->update_hdcp = false;
-+		pr_debug("[HDCP_DM] DESIRED->DESIRED (Hot-plug, headless s3, dpms) %s :true\n",
-+			__func__);
- 		return true;
- 	}
- 
--	/*
--	 * Handles:	UNDESIRED -> UNDESIRED
--	 *		DESIRED -> DESIRED
--	 *		ENABLED -> ENABLED
--	 */
--	if (old_state->content_protection == state->content_protection)
-+	if (old_conn_state->content_protection == new_conn_state->content_protection) {
-+		if (new_conn_state->content_protection >= DRM_MODE_CONTENT_PROTECTION_DESIRED) {
-+			if (new_crtc_state && new_crtc_state->mode_changed) {
-+				pr_debug("[HDCP_DM] DESIRED->DESIRED or ENABLE->ENABLE mode_change %s :true\n",
-+					__func__);
-+				return true;
-+			};
-+			pr_debug("[HDCP_DM] DESIRED->DESIRED & ENABLE->ENABLE %s :false\n",
-+				__func__);
-+			return false;
-+		};
-+
-+		pr_debug("[HDCP_DM] UNDESIRED->UNDESIRED %s :false\n", __func__);
- 		return false;
-+	}
- 
--	/*
--	 * Handles:	UNDESIRED -> DESIRED
--	 *		DESIRED -> UNDESIRED
--	 *		ENABLED -> UNDESIRED
--	 */
--	if (state->content_protection != DRM_MODE_CONTENT_PROTECTION_ENABLED)
-+	if (new_conn_state->content_protection != DRM_MODE_CONTENT_PROTECTION_ENABLED) {
-+		pr_debug("[HDCP_DM] UNDESIRED->DESIRED or DESIRED->UNDESIRED or ENABLED->UNDESIRED %s :true\n",
-+			__func__);
- 		return true;
-+	}
- 
--	/*
--	 * Handles:	DESIRED -> ENABLED
--	 */
-+	pr_debug("[HDCP_DM] DESIRED->ENABLED %s :false\n", __func__);
- 	return false;
+ err_setup:
+-	mlx5_vdpa_destroy_mr(mvdev);
++	mlx5_vdpa_destroy_mr_asid(mvdev, asid);
+ err_mr:
+ 	return err;
  }
--
- #endif
-+
- static void remove_stream(struct amdgpu_device *adev,
- 			  struct amdgpu_crtc *acrtc,
- 			  struct dc_stream_state *stream)
-@@ -8330,15 +8367,66 @@ static void amdgpu_dm_atomic_commit_tail(struct drm_atomic_state *state)
- 		}
- 	}
- #ifdef CONFIG_DRM_AMD_DC_HDCP
-+	for_each_oldnew_connector_in_state(state, connector, old_con_state, new_con_state, i) {
-+		struct dm_connector_state *dm_new_con_state = to_dm_connector_state(new_con_state);
-+		struct amdgpu_crtc *acrtc = to_amdgpu_crtc(dm_new_con_state->base.crtc);
-+		struct amdgpu_dm_connector *aconnector = to_amdgpu_dm_connector(connector);
-+
-+		pr_debug("[HDCP_DM] -------------- i : %x ----------\n", i);
-+
-+		if (!connector)
-+			continue;
-+
-+		pr_debug("[HDCP_DM] connector->index: %x connect_status: %x dpms: %x\n",
-+			connector->index, connector->status, connector->dpms);
-+		pr_debug("[HDCP_DM] state protection old: %x new: %x\n",
-+			old_con_state->content_protection, new_con_state->content_protection);
-+
-+		if (aconnector->dc_sink) {
-+			if (aconnector->dc_sink->sink_signal != SIGNAL_TYPE_VIRTUAL &&
-+				aconnector->dc_sink->sink_signal != SIGNAL_TYPE_NONE) {
-+				pr_debug("[HDCP_DM] pipe_ctx dispname=%s\n",
-+				aconnector->dc_sink->edid_caps.display_name);
-+			}
-+		}
-+
-+		new_crtc_state = NULL;
-+		old_crtc_state = NULL;
-+
-+		if (acrtc) {
-+			new_crtc_state = drm_atomic_get_new_crtc_state(state, &acrtc->base);
-+			old_crtc_state = drm_atomic_get_old_crtc_state(state, &acrtc->base);
-+		}
-+
-+		if (old_crtc_state)
-+			pr_debug("old crtc en: %x a: %x m: %x a-chg: %x c-chg: %x\n",
-+			old_crtc_state->enable,
-+			old_crtc_state->active,
-+			old_crtc_state->mode_changed,
-+			old_crtc_state->active_changed,
-+			old_crtc_state->connectors_changed);
-+
-+		if (new_crtc_state)
-+			pr_debug("NEW crtc en: %x a: %x m: %x a-chg: %x c-chg: %x\n",
-+			new_crtc_state->enable,
-+			new_crtc_state->active,
-+			new_crtc_state->mode_changed,
-+			new_crtc_state->active_changed,
-+			new_crtc_state->connectors_changed);
-+	}
-+
- 	for_each_oldnew_connector_in_state(state, connector, old_con_state, new_con_state, i) {
- 		struct dm_connector_state *dm_new_con_state = to_dm_connector_state(new_con_state);
- 		struct amdgpu_crtc *acrtc = to_amdgpu_crtc(dm_new_con_state->base.crtc);
- 		struct amdgpu_dm_connector *aconnector = to_amdgpu_dm_connector(connector);
- 
- 		new_crtc_state = NULL;
-+		old_crtc_state = NULL;
- 
--		if (acrtc)
-+		if (acrtc) {
- 			new_crtc_state = drm_atomic_get_new_crtc_state(state, &acrtc->base);
-+			old_crtc_state = drm_atomic_get_old_crtc_state(state, &acrtc->base);
-+		}
- 
- 		dm_new_crtc_state = to_dm_crtc_state(new_crtc_state);
- 
-@@ -8350,7 +8438,8 @@ static void amdgpu_dm_atomic_commit_tail(struct drm_atomic_state *state)
- 			continue;
- 		}
- 
--		if (is_content_protection_different(new_con_state, old_con_state, connector, adev->dm.hdcp_workqueue)) {
-+		if (is_content_protection_different(new_crtc_state, old_crtc_state, new_con_state,
-+											old_con_state, connector, adev->dm.hdcp_workqueue)) {
- 			/* when display is unplugged from mst hub, connctor will
- 			 * be destroyed within dm_dp_mst_connector_destroy. connector
- 			 * hdcp perperties, like type, undesired, desired, enabled,
-@@ -8360,6 +8449,11 @@ static void amdgpu_dm_atomic_commit_tail(struct drm_atomic_state *state)
- 			 * will be retrieved from hdcp_work within dm_dp_mst_get_modes
- 			 */
- 
-+			bool enable_encryption = false;
-+
-+			if (new_con_state->content_protection == DRM_MODE_CONTENT_PROTECTION_DESIRED)
-+				enable_encryption = true;
-+
- 			if (aconnector->dc_link && aconnector->dc_sink &&
- 				aconnector->dc_link->type == dc_connection_mst_branch) {
- 				struct hdcp_workqueue *hdcp_work = adev->dm.hdcp_workqueue;
-@@ -8372,11 +8466,16 @@ static void amdgpu_dm_atomic_commit_tail(struct drm_atomic_state *state)
- 					new_con_state->content_protection;
- 			}
- 
-+			if (new_crtc_state && new_crtc_state->mode_changed &&
-+				new_con_state->content_protection >= DRM_MODE_CONTENT_PROTECTION_DESIRED)
-+				enable_encryption = true;
-+
-+			DRM_INFO("[HDCP_DM] hdcp_update_display enable_encryption = %x\n", enable_encryption);
-+
- 			hdcp_update_display(
- 				adev->dm.hdcp_workqueue, aconnector->dc_link->link_index, aconnector,
--				new_con_state->hdcp_content_type,
--				new_con_state->content_protection == DRM_MODE_CONTENT_PROTECTION_DESIRED);
--    }
-+				new_con_state->hdcp_content_type, enable_encryption);
-+		}
- 	}
- #endif
- 
 -- 
 2.40.1
 
