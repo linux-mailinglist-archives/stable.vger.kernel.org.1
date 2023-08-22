@@ -2,173 +2,98 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E5395784873
-	for <lists+stable@lfdr.de>; Tue, 22 Aug 2023 19:36:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 18A867849D9
+	for <lists+stable@lfdr.de>; Tue, 22 Aug 2023 21:03:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229708AbjHVRgB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 22 Aug 2023 13:36:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58448 "EHLO
+        id S229993AbjHVTDT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 22 Aug 2023 15:03:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34178 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229599AbjHVRgA (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 22 Aug 2023 13:36:00 -0400
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2067.outbound.protection.outlook.com [40.107.237.67])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD5606D5CA;
-        Tue, 22 Aug 2023 10:35:57 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=IeryVAyumu7wFVuTuymN5sNy10HieC8e4hv5CJRQc1XIMyds0evWlRSElh4E9ctuYL+dgN9gPIGFH+bt6yMv/i5msWXYkUVrKKJ3Hr2eUf8Vie61IJaAca5p5ztpLYcXYzSBxql5+lUzRrD9un8/0kkmFhEcT18sfA+1KkthbfCnt4V7EjBSj9JWVxxsd0r0u1nPUDc5ZQIB1bgQIQPbJ25HKlPey4LLlQadVvU84bUgWGPUEZEGa8CaocuKXwa4j9JL2XjadIO9irK6NB8Gs4pz6tbRdPV0pv0WfcPt+rvxlDD3P+r5JmjSa0KomhymYqAE2oHw3gLBhTgcRVZH2g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=o23fC0Wia3kV6z8KEDFYbSrzdOvG+XfeOpbNyGOM/hs=;
- b=NwE93TcDQuKQXq+qIYdZHLo5CvAOsmKEY4EnbmlwerJAnyTTgTKnUqtp4tPXpZZNksqf+TlmBlNgrV6nRQSZ5pPS36eWTTJ9kw/nAYpYuOw/7pyCsIu0q3nA2JNc/afxvXFPpJgpvuLfmPWaX87BY1lewYi4jWgT+PnRVKz5qqwn9S6swTDD9wsxpOSEuXlI8qD54SCEDAFY2+J0XMOSn2QslercFJWcWQXgxiDcpXYXu0tP4bESPwmwMvYGWIyVeFxkgDjJYTO7dJhB/8Best5O44rgNBON3y+LhQFNN2h9MHLAC2j1hqg0793Tkk5tbEVedwWHZH4+b5HIy5Q+Cw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=o23fC0Wia3kV6z8KEDFYbSrzdOvG+XfeOpbNyGOM/hs=;
- b=wC8H9Q8EGpltrBusVm6pvDJqYFf5h/+7lhRZj1FDMDOIm5xf3Py8iPv1MpthlzR75aOPMDvmJoS+begIRxz+VJ+DYr1ijQ5MyHFVaIzA4ebvP76wyP1UgJhur9E55HatgxUd+fRbe6nC3N/JmI5a8WcWtYPrSgKicIJ35z5i7Jk=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from CO6PR12MB5427.namprd12.prod.outlook.com (2603:10b6:5:358::13)
- by PH7PR12MB8795.namprd12.prod.outlook.com (2603:10b6:510:275::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6699.24; Tue, 22 Aug
- 2023 17:35:55 +0000
-Received: from CO6PR12MB5427.namprd12.prod.outlook.com
- ([fe80::236b:d4e2:6fbf:6c2b]) by CO6PR12MB5427.namprd12.prod.outlook.com
- ([fe80::236b:d4e2:6fbf:6c2b%5]) with mapi id 15.20.6699.025; Tue, 22 Aug 2023
- 17:35:55 +0000
-Message-ID: <2d7e2d96-69a8-4e7d-b914-8780343344ff@amd.com>
-Date:   Tue, 22 Aug 2023 13:35:49 -0400
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] drm/amd/display: register edp_backlight_control() for
- DCN301
-To:     Hamza Mahfooz <hamza.mahfooz@amd.com>,
-        amd-gfx@lists.freedesktop.org
-Cc:     stable@vger.kernel.org, Swapnil Patel <swapnil.patel@amd.com>,
-        Leo Li <sunpeng.li@amd.com>,
-        Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
-        "Pan, Xinhui" <Xinhui.Pan@amd.com>,
-        David Airlie <airlied@gmail.com>,
-        Daniel Vetter <daniel@ffwll.ch>, Jun Lei <jun.lei@amd.com>,
-        Wayne Lin <wayne.lin@amd.com>,
-        Wenjing Liu <wenjing.liu@amd.com>,
-        Aurabindo Pillai <aurabindo.pillai@amd.com>,
-        "Leo (Hanghong) Ma" <hanghong.ma@amd.com>,
-        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org
-References: <20230822170343.137958-1-hamza.mahfooz@amd.com>
-Content-Language: en-US
-From:   Harry Wentland <harry.wentland@amd.com>
-In-Reply-To: <20230822170343.137958-1-hamza.mahfooz@amd.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: YQBPR0101CA0280.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:c01:68::29) To CO6PR12MB5427.namprd12.prod.outlook.com
- (2603:10b6:5:358::13)
+        with ESMTP id S229989AbjHVTDS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 22 Aug 2023 15:03:18 -0400
+Received: from mail-wr1-x42a.google.com (mail-wr1-x42a.google.com [IPv6:2a00:1450:4864:20::42a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D4B8137
+        for <stable@vger.kernel.org>; Tue, 22 Aug 2023 12:03:16 -0700 (PDT)
+Received: by mail-wr1-x42a.google.com with SMTP id ffacd0b85a97d-31c5cac3ae2so1576146f8f.3
+        for <stable@vger.kernel.org>; Tue, 22 Aug 2023 12:03:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1692730995; x=1693335795;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=4y/tYkdfMEnG/r7NsnV0Qpgrj3K7aEmUSWBwjIvA288=;
+        b=gH30mBjXx/T4x3/bbNoWtSwhINjghjbmI9J3A/nzdQk7ADWBsYoMeGxaOkWrgRZh5q
+         LXfOR16LnDy6vToem6yQuHi7J7YgaF8bmiLd4CW35bHRCdISaZNllbLfixZzZWC0yaLw
+         f8dueIJtEmh44GDIQOm4Pgz1c2Dc6yJ9mAk7SmtDi00s/I+6XfruxLK0XFJU/84qEeO3
+         hV8v1ooSZ11Wfp3TEHrWGdCmOP4/7LyEHPp8XTgF+q8XkRyY4h5hcpG5ApwChl3eNp7i
+         RPjlIu5ZDtx3lu2/304BpDKhcaTPucOpbhkbWZQRkzFKTzJZ7as16zN4t/sn0WPhUOQT
+         FDXA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1692730995; x=1693335795;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=4y/tYkdfMEnG/r7NsnV0Qpgrj3K7aEmUSWBwjIvA288=;
+        b=kx+1yzO001Y4L3h9cyWHeKumqt55wY47cmJK0Vm1JroJ+qbYbOkIGnA6bLT52Fn2m6
+         +58VUE801dpsUqSBxvq7dmeEBJQFl4ZXebR6A72ZImgzdHPo/c+XEkfebsgBQw398CjT
+         D6kNcVGXu3Wnsj8lDSj32YJcSFhsJ1a3G2BXpsxTtXlMyHm7GgfxhRXojBMjApnqydyT
+         hio8MWn6WNuzwb3dbHmPhoLN/4+A4/LkCOLSAppnctSyFtdSttLYdVqVPaJjYfOvvhRv
+         6LZ0tG1DahaY1SNUSDgIkxqG/U9qz3rWXa1rckPpYMHF38h0LOHYZFkA+3791QZ0l6WJ
+         wOBg==
+X-Gm-Message-State: AOJu0Yz3J0i5qfPrPAZH9fUvYVN/VJSObEfU/MUiBR0hmkUBxhAUJkxh
+        TPfWbhRfwe+tSnNkfW+cyJTeZg==
+X-Google-Smtp-Source: AGHT+IFHh+2nHJ5TWX9xOp6UY9xKwnPv1pEu9bofMmPzz2hsGeObe/yNVv85n8wutMxEIwnFylCjTg==
+X-Received: by 2002:adf:db4c:0:b0:317:6314:96e2 with SMTP id f12-20020adfdb4c000000b00317631496e2mr8986014wrj.14.1692730994912;
+        Tue, 22 Aug 2023 12:03:14 -0700 (PDT)
+Received: from [192.168.0.162] (188-141-3-169.dynamic.upc.ie. [188.141.3.169])
+        by smtp.gmail.com with ESMTPSA id i14-20020a5d630e000000b0031980783d78sm16577518wru.54.2023.08.22.12.03.13
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 22 Aug 2023 12:03:14 -0700 (PDT)
+Message-ID: <b5b3a8a6-c54d-c503-db76-c8c38942b3b0@linaro.org>
+Date:   Tue, 22 Aug 2023 20:03:13 +0100
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CO6PR12MB5427:EE_|PH7PR12MB8795:EE_
-X-MS-Office365-Filtering-Correlation-Id: b90e3551-f1ed-4051-695a-08dba3363cfa
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: cHtWTZPTMrx3igfc5L8FxSVp0QEBKa0zccaA1z9wFfurjLA7VUzt4d/iLJZkHcwlWIZaDKdOb2OJZeuyJ4EFr7JrZXb40+w3jH8adrD8OOkBAOCx6XHRNaQb0bMDPzTBLE4sKg0PGr31y/GOEC7T4btHbtCP61P5ZewU585wqabjD+DQ4+Di5HZOH7yU7Ju4HNvDpPEd9t4rPLTGl/ckAHEjYiQm71yRKZR/9yc6lV2lvCrtG0CCzznkDyKsiiTvTkP0vzVuyH0UfjwRMtFdqomDVxHQtIYUwBmMFFqShN8KqpM/IJb9ufEEslTNQ2QI9TKPoBDAa8wopcIEYAIIhDQTWw+EZBzC99e/n1j42YALlPHlrZXkqMTx40gJrB5nRldkTcUNdLWbVsYzUwoh4Vom9ABLEy6+Rr5jBSVBILz7r04xEdc5fcTmOjnZ+M2SeFa6KgExChTVWww5geNjZ4+qD9aLIWZjZ9JzJdCjbeMcF1wsMVGENjMF/nzIIBkWPlg3WbWbQQ8wXh60FyGvEKBC3ACi8o/fnApnt/i/6hqhJh4XEGKmvflHFYQ4uCVrTGilUqSTPu9RmvBEfvyanvxEu8dTzZWD4to8eh01rPsKnprbOlIctZIkbdwkZLCIWjYF/t0V2cLl9AZDWzS3nQ==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CO6PR12MB5427.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(346002)(376002)(366004)(136003)(396003)(39860400002)(451199024)(186009)(1800799009)(2906002)(38100700002)(6506007)(53546011)(6486002)(83380400001)(5660300002)(44832011)(26005)(31696002)(31686004)(86362001)(8676002)(2616005)(8936002)(4326008)(966005)(316002)(66946007)(6512007)(54906003)(66556008)(66476007)(478600001)(6666004)(36756003)(41300700001)(45980500001)(43740500002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?M1QycGVYcFdzekJpOXRnSURmMVVwaGZkRWg1SXUwZm56bTM5OXFHejk0MEZO?=
- =?utf-8?B?UUpWUjJ1YzUreVpHVFd3N1g2MCt0NWQvdlZsaXJDSXIzbmFzMUpzRFVmSlJZ?=
- =?utf-8?B?TGJndWJ4ZkRvQ3ZMTG9yWWZ2dW5TNEFYaE52U1NPa1B5cE1oVmQ5WDl4b2VF?=
- =?utf-8?B?b1NmVHlucUlsRzlxTVNlZ2Z0SnRJS0ZVamJPaVRiKyttWk9VQStjeHdsS29z?=
- =?utf-8?B?K0IwN05TSEIzMWZubnd6SDQ3bTVhNVpmVFMzUTJKdmR1dlhjS2xWa282Y0xy?=
- =?utf-8?B?WjZpTUl2YmVHUitjTnRNR0NMNHJFYW1DR29RMWxoeFNiL24rU1J5T2QzTlEw?=
- =?utf-8?B?MldJS0xVcytaY0Yva0RPeldGUytYeTl3a0FQQ3VoUFFZeU10UEp6M2xXQzNj?=
- =?utf-8?B?QVRZWFEyL3FzR3J0d09jb0cxWFdvMXpURnU0NkFQMXpJRmFwak1VenNmei9V?=
- =?utf-8?B?dWxkS09VK3dDK3JTeVZIcUt0QWVON3AxZkRsRlhFcWNFQmZRTUpGTVE0clYy?=
- =?utf-8?B?eGIxZjJFaFF1MjRTeEhmZmxKUzVMOFF4aU1RTTJ0SFRLOHdlOEJWbko0OHJE?=
- =?utf-8?B?dnd0eUlSc3RJelNFUUg2RzhhUlhBeGFQa1NUcUh3S041RDQzbkpjemhHaUhk?=
- =?utf-8?B?Rm1yMC8yUTlKbzNHVEdqNTRoQTJEZ3Yzdk1CZzJZbFZnQnRVbk9pWllRNTM0?=
- =?utf-8?B?ZmRVTWVJZ1IveTQxZTd6bER6Ryt2WjBZb0VsWWJhdDFoVmRDS2g2eHBrZWow?=
- =?utf-8?B?RmpBbFMxbjNNRXdzOFcwQlQ3VFBHdjlzOHVZOGdXZlA1OUpiaDc3dzJLYlBR?=
- =?utf-8?B?YkZTOU9DQllsWC9TZ3dxOUY3ZFZsSmdnSHdvQy9ETVNKTFpDaWZ4UkNHbHdn?=
- =?utf-8?B?Qm96YlF5WUEwNFZoUDUwQXpYNTd0R29XQ0RvMUVEY211ZExGcUdoSUh4RnA2?=
- =?utf-8?B?MytmVE5aVTNKVEtkVVF2TCtsZG9YK0NHMDczL1BaQk02Ry91c3docWNRY2hi?=
- =?utf-8?B?eHdtSll3bTMwT2dha3hTaXgwUUVvNSsvdVN1ZGR0UnBoUnlzMUlvMHNyTmdI?=
- =?utf-8?B?cWdQUm1ISVAremhQM09oVUFtRFVWclNGaitjdTdERTAzV0F4Wnk1VER1TzFJ?=
- =?utf-8?B?V3NvUVU4alJtbGhyR3h4TzNFUnQxZWpUZmQxbVhkWHQ3SGQ2UFFWUFpKeEJa?=
- =?utf-8?B?c0hQUXFacEdPaWlOTExlb0k0Yk9uT0s0cEx1aHNxNCtwN3QwQWhyQzNqaVJy?=
- =?utf-8?B?NzVMSVBJeWJOZkxDcE5DMXEzMytVbWZ0dVBUVmFyUzVPRFp6S001NVBETm5p?=
- =?utf-8?B?SUltUzVzMTlmU3lGc1c0Ym0wYmQ1TktZTzRIVWpLUk9vYWU5TnROQXQ0UGY5?=
- =?utf-8?B?QmRBSHZOTU9QNlluRjB1N3dIbENObjEwK2w1UHEvTURhTFk0RG1pVCtQblBv?=
- =?utf-8?B?VU1VaTJrRWRBWWVsWFdIYVZVcE4xZDg4SEdxTlR1UVYxYzFoaHVtRDBOR3hV?=
- =?utf-8?B?alFsMEdJMWljTTU1Nkd6UVk1eTFpdFpYdWpWNHpBelJqWWdVeEthUFUxVEs5?=
- =?utf-8?B?WTBPTnk0ZHZRMzljcDZ1dExqdTJyN2hKdWNwN0FqRlpCLys4bGdKNFYvK1M0?=
- =?utf-8?B?RWwrbEFxd1g0S3JPd0VDRzJnZXBaZ2pubG5QQlE5dlBlQWxRYjVkWTBDM0ds?=
- =?utf-8?B?RHhZejBDT2hvZzNFY3B3amJEakVJbnFFTmN1QnBGQTc2emNraFdRaWtKekFh?=
- =?utf-8?B?MGM2cHdzZGM5MUpwK0JmNWUzdE9QVGlpZVRoMDgxT0VRS1hKbEY4bmU2SE91?=
- =?utf-8?B?alE5d241ampZdSt4TFFPeU8rWGhVQzZ1UStsT2NKQ3BXYjNVQmJlWm13T0Zv?=
- =?utf-8?B?T3dCcXNoR2Z0bVVHNCtLZm92S0VzOG5INGc3U3ZlUlorb0c1N09pYXBlVE9n?=
- =?utf-8?B?WiszR1VJdmJZUjB1cTVSeE5rVnViWng1T0Z6c09xMHhhSHZCRkFPc3RWTm8w?=
- =?utf-8?B?SjdRVjREVndIWVFzNENzME4vUTVLYjFrTDRJNnp1V3dFYjd2VzRoR2MyYkNa?=
- =?utf-8?B?cTIxajVOM2lvV0xZTU5pM1JMVGI1QzgySEF1NzFsYm91Rng1RDhFN3F5RmxQ?=
- =?utf-8?Q?+gc+so7XtwcMhyP9esB/v4d9s?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b90e3551-f1ed-4051-695a-08dba3363cfa
-X-MS-Exchange-CrossTenant-AuthSource: CO6PR12MB5427.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Aug 2023 17:35:55.2049
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: tT1RnLcVtYTGnJoPisWra8roBvKh5Wujo4X2s9YfdMnqc6COjqBn75I5BLdCPvXfZNVC+H5DbhVbyGTTq7OoYw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB8795
-X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.8.0
+Subject: Re: [PATCH v1 8/9] media: qcom: camss: Fix set CSI2_RX_CFG1_VC_MODE
+ when VC is greater than 3
+Content-Language: en-US
+To:     Konrad Dybcio <konrad.dybcio@linaro.org>, rfoss@kernel.org,
+        todor.too@gmail.com, agross@kernel.org, andersson@kernel.org,
+        mchehab@kernel.org, hverkuil-cisco@xs4all.nl,
+        laurent.pinchart@ideasonboard.com, sakari.ailus@linux.intel.com,
+        andrey.konovalov@linaro.org
+Cc:     linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20230822161620.1915110-1-bryan.odonoghue@linaro.org>
+ <20230822161620.1915110-9-bryan.odonoghue@linaro.org>
+ <5c917927-92ed-4139-a69f-95761ec63c83@linaro.org>
+From:   Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+In-Reply-To: <5c917927-92ed-4139-a69f-95761ec63c83@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-3.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+On 22/08/2023 17:32, Konrad Dybcio wrote:
+>>   	val = 1 << CSI2_RX_CFG1_PACKET_ECC_CORRECTION_EN;
+>> +	if (vc > 3)
+> I hope you don't pull your hair out, but I think GENMASK(1,0) could be
 
 
-On 2023-08-22 13:03, Hamza Mahfooz wrote:
-> As made mention of in commit 099303e9a9bd ("drm/amd/display: eDP
-> intermittent black screen during PnP"), we need to turn off the
-> display's backlight before powering off an eDP display. Not doing so
-> will result in undefined behaviour according to the eDP spec. So, set
-> DCN301's edp_backlight_control() function pointer to
-> dce110_edp_backlight_control().
-> 
-> Cc: stable@vger.kernel.org
-> Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2765
-> Fixes: 9c75891feef0 ("drm/amd/display: rework recent update PHY state commit")
-> Suggested-by: Swapnil Patel <swapnil.patel@amd.com>
-> Signed-off-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
+I generally dislike the pattern of 1 << value in this code but, it's not 
+something I'm proposing to solve at this time.
 
-Reviewed-by: Harry Wentland <harry.wentland@amd.com>
+> in order here with a comment about the bitlength requirements
 
-Harry
+Not parsing the bitlength requirements comment, whatdoyoumean ?
 
-> ---
->  drivers/gpu/drm/amd/display/dc/dcn301/dcn301_init.c | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/drivers/gpu/drm/amd/display/dc/dcn301/dcn301_init.c b/drivers/gpu/drm/amd/display/dc/dcn301/dcn301_init.c
-> index 257df8660b4c..61205cdbe2d5 100644
-> --- a/drivers/gpu/drm/amd/display/dc/dcn301/dcn301_init.c
-> +++ b/drivers/gpu/drm/amd/display/dc/dcn301/dcn301_init.c
-> @@ -75,6 +75,7 @@ static const struct hw_sequencer_funcs dcn301_funcs = {
->  	.get_hw_state = dcn10_get_hw_state,
->  	.clear_status_bits = dcn10_clear_status_bits,
->  	.wait_for_mpcc_disconnect = dcn10_wait_for_mpcc_disconnect,
-> +	.edp_backlight_control = dce110_edp_backlight_control,
->  	.edp_power_control = dce110_edp_power_control,
->  	.edp_wait_for_hpd_ready = dce110_edp_wait_for_hpd_ready,
->  	.set_cursor_position = dcn10_set_cursor_position,
+---
+bod
 
