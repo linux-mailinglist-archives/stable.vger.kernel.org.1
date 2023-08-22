@@ -2,47 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4B178783F66
-	for <lists+stable@lfdr.de>; Tue, 22 Aug 2023 13:37:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CF680783F6E
+	for <lists+stable@lfdr.de>; Tue, 22 Aug 2023 13:37:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235027AbjHVLh1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 22 Aug 2023 07:37:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39232 "EHLO
+        id S235051AbjHVLhe (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 22 Aug 2023 07:37:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36442 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235038AbjHVLhZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 22 Aug 2023 07:37:25 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 799FEE51;
-        Tue, 22 Aug 2023 04:36:58 -0700 (PDT)
+        with ESMTP id S235043AbjHVLhe (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 22 Aug 2023 07:37:34 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D6CFE4B;
+        Tue, 22 Aug 2023 04:37:09 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 598C7628A7;
-        Tue, 22 Aug 2023 11:36:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9840BC433CD;
-        Tue, 22 Aug 2023 11:36:00 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1B86F6212D;
+        Tue, 22 Aug 2023 11:36:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D89CC433C7;
+        Tue, 22 Aug 2023 11:36:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1692704161;
-        bh=Ym6qa0ZO8dJoVvGDoxNGVPBBoiW4ul0ekcw4PYRjNXQ=;
+        s=k20201202; t=1692704171;
+        bh=ZkOI0vHAbL8yg8J/lSkhogxr/YsGHIdzDmCBNEPtcnM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=r99IO3WissmJ3wmcuks7x6Vfl5dZD61jM6tT92aVUK4BceSwSQg+heSaOwab0P0/a
-         BKtp1bx0C92xcLXDx1CQwaBJAj2mM31gNME+yZa7us7MjIHzvyFeGhlQm87KjBv5lh
-         ckidKztJZryJxKFLf23VMXMM1KeGI4Kehn7K7NeePrz6H1waFhddYqCW8SL0LtDLvn
-         Yzi53tIv0UABmI8VoyUcgxPNhTlvYF5FKLyFxYPQHrWxqKMXZisNGux+aZ6YZjkpVa
-         TslKlXLL8OsTCAcpc3ND2JWH/tzj7aq0R+Si25AbPke0j5029JZyhpYtxW9n2KHfNy
-         UlUjPrObmTA2w==
+        b=Vy1vDjE45VHXuXThIHIuW3N3Wu275zYIFjRNd0vebDOjjcTfdBKlOC8dYC8gw4/rJ
+         0yrNs6HYFmmWyqcIdM6IApyHO7HPV+tZF/AvnlA2PgQhfsJaBpvCttY9XCp9G5z+bg
+         d+oUWpwsAu33TeuAoqsqpMLAijpNYGfWjda46363FaL+JGSYG3miCF/vCPe6MELeZU
+         Rpr4yjRm8mvVTvdNnsocMkKRHnh4n0fB/4Pc+LPn3Iv1Xhjk90fn4Nd3C3oBHWzSf5
+         8whEZPvX191zMb3q0DWnY31kyTVQ0QU2FixUzJKCJXRNopeYvmQlawf1CI0oCanZy5
+         Fke6CV/v7K0CA==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Chengfeng Ye <dg573847474@gmail.com>,
-        Manish Rangankar <mrangankar@marvell.com>,
-        "Martin K . Petersen" <martin.petersen@oracle.com>,
-        Sasha Levin <sashal@kernel.org>, njavali@marvell.com,
-        GR-QLogic-Storage-Upstream@marvell.com, jejb@linux.ibm.com,
-        linux-scsi@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.4 04/11] scsi: qedi: Fix potential deadlock on &qedi_percpu->p_work_lock
-Date:   Tue, 22 Aug 2023 07:35:46 -0400
-Message-Id: <20230822113553.3551206-4-sashal@kernel.org>
+Cc:     Jian Shen <shenjian15@huawei.com>,
+        Peiyang Wang <wangpeiyang1@huawei.com>,
+        Jijie Shao <shaojijie@huawei.com>,
+        Leon Romanovsky <leonro@nvidia.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Sasha Levin <sashal@kernel.org>, yisen.zhuang@huawei.com,
+        salil.mehta@huawei.com, davem@davemloft.net, edumazet@google.com,
+        pabeni@redhat.com, huangguangbin2@huawei.com, lanhao@huawei.com,
+        wangjie125@huawei.com, chenhao418@huawei.com,
+        netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.4 05/11] net: hns3: restore user pause configure when disable autoneg
+Date:   Tue, 22 Aug 2023 07:35:47 -0400
+Message-Id: <20230822113553.3551206-5-sashal@kernel.org>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230822113553.3551206-1-sashal@kernel.org>
 References: <20230822113553.3551206-1-sashal@kernel.org>
@@ -61,65 +65,68 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Chengfeng Ye <dg573847474@gmail.com>
+From: Jian Shen <shenjian15@huawei.com>
 
-[ Upstream commit dd64f80587190265ca8a0f4be6c64c2fda6d3ac2 ]
+[ Upstream commit 15159ec0c831b565820c2de05114ea1b4cf07681 ]
 
-As &qedi_percpu->p_work_lock is acquired by hard IRQ qedi_msix_handler(),
-other acquisitions of the same lock under process context should disable
-IRQ, otherwise deadlock could happen if the IRQ preempts the execution
-while the lock is held in process context on the same CPU.
+Restore the mac pause state to user configuration when autoneg is disabled
 
-qedi_cpu_offline() is one such function which acquires the lock in process
-context.
-
-[Deadlock Scenario]
-qedi_cpu_offline()
-    ->spin_lock(&p->p_work_lock)
-        <irq>
-        ->qedi_msix_handler()
-        ->edi_process_completions()
-        ->spin_lock_irqsave(&p->p_work_lock, flags); (deadlock here)
-
-This flaw was found by an experimental static analysis tool I am developing
-for IRQ-related deadlocks.
-
-The tentative patch fix the potential deadlock by spin_lock_irqsave()
-under process context.
-
-Signed-off-by: Chengfeng Ye <dg573847474@gmail.com>
-Link: https://lore.kernel.org/r/20230726125655.4197-1-dg573847474@gmail.com
-Acked-by: Manish Rangankar <mrangankar@marvell.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Jian Shen <shenjian15@huawei.com>
+Signed-off-by: Peiyang Wang <wangpeiyang1@huawei.com>
+Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
+Link: https://lore.kernel.org/r/20230807113452.474224-2-shaojijie@huawei.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/qedi/qedi_main.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c | 5 ++++-
+ drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_tm.c   | 2 +-
+ drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_tm.h   | 1 +
+ 3 files changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/scsi/qedi/qedi_main.c b/drivers/scsi/qedi/qedi_main.c
-index ef62dbbc1868e..1106d26113888 100644
---- a/drivers/scsi/qedi/qedi_main.c
-+++ b/drivers/scsi/qedi/qedi_main.c
-@@ -1977,8 +1977,9 @@ static int qedi_cpu_offline(unsigned int cpu)
- 	struct qedi_percpu_s *p = this_cpu_ptr(&qedi_percpu);
- 	struct qedi_work *work, *tmp;
- 	struct task_struct *thread;
-+	unsigned long flags;
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
+index c3e94598f3983..0876890798ba4 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
+@@ -10936,9 +10936,12 @@ int hclge_cfg_flowctrl(struct hclge_dev *hdev)
+ 	u32 rx_pause, tx_pause;
+ 	u8 flowctl;
  
--	spin_lock_bh(&p->p_work_lock);
-+	spin_lock_irqsave(&p->p_work_lock, flags);
- 	thread = p->iothread;
- 	p->iothread = NULL;
+-	if (!phydev->link || !phydev->autoneg)
++	if (!phydev->link)
+ 		return 0;
  
-@@ -1989,7 +1990,7 @@ static int qedi_cpu_offline(unsigned int cpu)
- 			kfree(work);
- 	}
++	if (!phydev->autoneg)
++		return hclge_mac_pause_setup_hw(hdev);
++
+ 	local_advertising = linkmode_adv_to_lcl_adv_t(phydev->advertising);
  
--	spin_unlock_bh(&p->p_work_lock);
-+	spin_unlock_irqrestore(&p->p_work_lock, flags);
- 	if (thread)
- 		kthread_stop(thread);
+ 	if (phydev->pause)
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_tm.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_tm.c
+index 150f146fa24fb..8b40c6b4ee53e 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_tm.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_tm.c
+@@ -1549,7 +1549,7 @@ static int hclge_bp_setup_hw(struct hclge_dev *hdev, u8 tc)
  	return 0;
+ }
+ 
+-static int hclge_mac_pause_setup_hw(struct hclge_dev *hdev)
++int hclge_mac_pause_setup_hw(struct hclge_dev *hdev)
+ {
+ 	bool tx_en, rx_en;
+ 
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_tm.h b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_tm.h
+index dd6f1fd486cf2..251e808456208 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_tm.h
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_tm.h
+@@ -242,6 +242,7 @@ int hclge_pfc_pause_en_cfg(struct hclge_dev *hdev, u8 tx_rx_bitmap,
+ 			   u8 pfc_bitmap);
+ int hclge_mac_pause_en_cfg(struct hclge_dev *hdev, bool tx, bool rx);
+ int hclge_pause_addr_cfg(struct hclge_dev *hdev, const u8 *mac_addr);
++int hclge_mac_pause_setup_hw(struct hclge_dev *hdev);
+ void hclge_pfc_rx_stats_get(struct hclge_dev *hdev, u64 *stats);
+ void hclge_pfc_tx_stats_get(struct hclge_dev *hdev, u64 *stats);
+ int hclge_tm_qs_shaper_cfg(struct hclge_vport *vport, int max_tx_rate);
 -- 
 2.40.1
 
