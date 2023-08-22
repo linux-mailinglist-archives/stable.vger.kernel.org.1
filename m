@@ -2,41 +2,72 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0414F783E3A
-	for <lists+stable@lfdr.de>; Tue, 22 Aug 2023 12:47:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 63D61783E5E
+	for <lists+stable@lfdr.de>; Tue, 22 Aug 2023 12:55:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231248AbjHVKrA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 22 Aug 2023 06:47:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48952 "EHLO
+        id S233280AbjHVKzh (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 22 Aug 2023 06:55:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32814 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230219AbjHVKq7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 22 Aug 2023 06:46:59 -0400
-Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80BC4E53;
-        Tue, 22 Aug 2023 03:46:23 -0700 (PDT)
-Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-        id E932E1C0013; Tue, 22 Aug 2023 12:46:21 +0200 (CEST)
-Date:   Tue, 22 Aug 2023 12:46:21 +0200
-From:   Pavel Machek <pavel@denx.de>
-To:     Sasha Levin <sashal@kernel.org>
-Cc:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        Winston Wen <wentao@uniontech.com>,
-        Stephen Rothwell <sfr@canb.auug.org.au>,
-        Paulo Alcantara <pc@manguebit.com>,
-        Christian Brauner <brauner@kernel.org>,
-        Steve French <stfrench@microsoft.com>
-Subject: Re: [PATCH AUTOSEL 4.14 7/9] fs/nls: make load_nls() take a const
- parameter
-Message-ID: <ZOSR/YOFU66otZmO@duo.ucw.cz>
-References: <20230813161427.1089101-1-sashal@kernel.org>
- <20230813161427.1089101-7-sashal@kernel.org>
+        with ESMTP id S230219AbjHVKzg (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 22 Aug 2023 06:55:36 -0400
+Received: from mail-ua1-x92b.google.com (mail-ua1-x92b.google.com [IPv6:2607:f8b0:4864:20::92b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 87037198
+        for <stable@vger.kernel.org>; Tue, 22 Aug 2023 03:55:34 -0700 (PDT)
+Received: by mail-ua1-x92b.google.com with SMTP id a1e0cc1a2514c-76d846a4b85so1437082241.1
+        for <stable@vger.kernel.org>; Tue, 22 Aug 2023 03:55:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1692701733; x=1693306533;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=gZMqQg+WqkFqVJ7xaGvwvq6OH3n+pw7uOTJ04+AOO/Q=;
+        b=ZfFG+rgg4zpMViPqU7vYL8qWi3C2R7TUzw0DarIEfNnAgTVJw6K80AUqVcvSZTvNWg
+         evkJfRDmIrRQJP15ATdlQIT9SLCyWOVKPZ0S2L3bHa14d5VGP4pzbhtJYYyYy+WKC1cx
+         PnRFqoVJoFw2bwLeq7ogfzrcgLd9ycp0X0xeTCwPdkn7ROCQjHNCZT+0fiwyfk26+UJF
+         dTHUZBUTG7Ug5zaFOfyK1hXvZ5FWUNZvlViVPrJJFdmKm0IPuLfm88HIj7J9bJ76v3Fe
+         no70Umd0uhZIEChtwR6F23b7Fo0XDfPefeI04LPRF9dU8xIyqHQm3gNy2tLdp4AWzgho
+         nrVQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1692701733; x=1693306533;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=gZMqQg+WqkFqVJ7xaGvwvq6OH3n+pw7uOTJ04+AOO/Q=;
+        b=dhjpoQucrDSNb7Be9N7UAAZ+mNPW5QSbml66TEIZJudSlfN+wsoGVhJlki7V/eSREz
+         XZ5AJOENVcPyVi/RUggScHfPZu9B7sg7v7yOr6J3lMcAK2sr3axDhKOBr2BfkJ6MzLw5
+         4WziiIhkvr9ZMsAU02l48/vtuuHxWBEZ0Ivv2VHzpeFFviV16M+ml0lZDDdoiqjlLDVi
+         iSMntciKeRvp0f65uUnNmcpPcYWdSL3nFQZaE1pVY2pw2kJ7w5o5cE+EJcL8FDwLB0jp
+         8/N0xH5FipZ1ZzUuefpUW2VivMvQ26fnOe4ReqvLjmVzjR2G+TgM6Kq6hRhu2kHSBymd
+         5msA==
+X-Gm-Message-State: AOJu0YyMASwRbcgRPL/wurGOYPGc5Ul/AGLMr65VRxIsfmvpybxwt5rw
+        X8f52h1oaSpo2QulIJYiF0L6xMeoFLgSYgibP1qv3A==
+X-Google-Smtp-Source: AGHT+IEFhM0p81jw/VTueQS9XS+WUVCmo+vBGgPkXZmupnTOLkBZmVBb0pFqkBj6e1Tew4KZrQk+awkp2Bi/XERwNqE=
+X-Received: by 2002:a05:6102:2852:b0:443:51a7:b63d with SMTP id
+ az18-20020a056102285200b0044351a7b63dmr7557710vsb.23.1692701733568; Tue, 22
+ Aug 2023 03:55:33 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="GWCY4bT1ife+cbF1"
-Content-Disposition: inline
-In-Reply-To: <20230813161427.1089101-7-sashal@kernel.org>
-X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_PASS,SPF_NEUTRAL autolearn=no
+References: <20230821194122.695845670@linuxfoundation.org>
+In-Reply-To: <20230821194122.695845670@linuxfoundation.org>
+From:   Naresh Kamboju <naresh.kamboju@linaro.org>
+Date:   Tue, 22 Aug 2023 16:25:22 +0530
+Message-ID: <CA+G9fYvkBSb-i_6unB3bRLwRibVtZ3snYDe_gG+bsZehu3Hv3w@mail.gmail.com>
+Subject: Re: [PATCH 6.1 000/194] 6.1.47-rc1 review
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Paul E. McKenney" <paulmck@kernel.org>,
+        Borislav Petkov <bp@alien8.de>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+        jonathanh@nvidia.com, f.fainelli@gmail.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+        conor@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -44,52 +75,191 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+On Tue, 22 Aug 2023 at 01:21, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.1.47 release.
+> There are 194 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Wed, 23 Aug 2023 19:40:45 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
+6.1.47-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-6.1.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
---GWCY4bT1ife+cbF1
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Results from Linaro=E2=80=99s test farm.
+No regressions on arm64, arm, x86_64, and i386.
 
-On Sun 2023-08-13 12:14:25, Sasha Levin wrote:
-> From: Winston Wen <wentao@uniontech.com>
->=20
-> [ Upstream commit c1ed39ec116272935528ca9b348b8ee79b0791da ]
->=20
-> load_nls() take a char * parameter, use it to find nls module in list or
-> construct the module name to load it.
->=20
-> This change make load_nls() take a const parameter, so we don't need do
-> some cast like this:
->=20
->         ses->local_nls =3D load_nls((char *)ctx->local_nls->charset);
+Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
 
-Nice cleanup, but should not be in stable.
 
-Best regards,
-								Pavel
-						=09
-> Suggested-by: Stephen Rothwell <sfr@canb.auug.org.au>
-> Signed-off-by: Winston Wen <wentao@uniontech.com>
-> Reviewed-by: Paulo Alcantara <pc@manguebit.com>
-> Reviewed-by: Christian Brauner <brauner@kernel.org>
-> Signed-off-by: Steve French <stfrench@microsoft.com>
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
-> ---
->  fs/nls/nls_base.c   | 4 ++--
->  include/linux/nls.h | 2 +-
+NOTE:
+Kernel warnings noticed on x86_64 while booting the kernel.
+Paul E. McKenney reported this last week [1] and discussions email
+thread provided here.
 
---=20
-DENX Software Engineering GmbH,        Managing Director: Erika Unter
-HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
+ [1] https://lore.kernel.org/lkml/4dc3d0ec-b827-4bce-8927-cfa5d837fd03@paul=
+mck-laptop/T/
 
---GWCY4bT1ife+cbF1
-Content-Type: application/pgp-signature; name="signature.asc"
 
------BEGIN PGP SIGNATURE-----
+------------[ cut here ]------------
+[    1.395392] missing return thunk: __ret+0x5/0x7e-__ret+0x0/0x7e: e9
+f6 ff ff ff
+[    1.395399] WARNING: CPU: 0 PID: 0 at
+arch/x86/kernel/alternative.c:574 apply_returns+0x1c0/0x3d0
+[    1.397391] Modules linked in:
+[    1.398392] CPU: 0 PID: 0 Comm: swapper/0 Not tainted 6.1.47-rc1 #1
+[    1.399391] Hardware name: Supermicro SYS-5019S-ML/X11SSH-F, BIOS
+2.5 11/26/2020
+[    1.400392] RIP: 0010:apply_returns+0x1c0/0x3d0
 
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZOSR/QAKCRAw5/Bqldv6
-8m9VAJ9P4ZQyBauDhqOmIY3yV+VR9+KCYQCdEibt47CzAfH4lIAZ1XJurGJNkfU=
-=4FCP
------END PGP SIGNATURE-----
 
---GWCY4bT1ife+cbF1--
+
+## Build
+* kernel: 6.1.47-rc1
+* git: https://gitlab.com/Linaro/lkft/mirrors/stable/linux-stable-rc
+* git branch: linux-6.1.y
+* git commit: 5165f4e9738c48a220a13b073c6ccc24824aeb74
+* git describe: v6.1.46-195-g5165f4e9738c
+* test details:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.1.y/build/v6.1.4=
+6-195-g5165f4e9738c
+
+## Test Regressions (compared to v6.1.46)
+
+## Metric Regressions (compared to v6.1.46)
+
+## Test Fixes (compared to v6.1.46)
+
+## Metric Fixes (compared to v6.1.46)
+
+## Test result summary
+total: 150677, pass: 127511, fail: 4079, skip: 18915, xfail: 172
+
+## Build Summary
+* arc: 5 total, 5 passed, 0 failed
+* arm: 147 total, 145 passed, 2 failed
+* arm64: 49 total, 46 passed, 3 failed
+* i386: 39 total, 37 passed, 2 failed
+* mips: 30 total, 28 passed, 2 failed
+* parisc: 3 total, 3 passed, 0 failed
+* powerpc: 36 total, 34 passed, 2 failed
+* riscv: 16 total, 13 passed, 3 failed
+* s390: 16 total, 14 passed, 2 failed
+* sh: 14 total, 12 passed, 2 failed
+* sparc: 8 total, 8 passed, 0 failed
+* x86_64: 46 total, 44 passed, 2 failed
+
+## Test suites summary
+* boot
+* kselftest-android
+* kselftest-arm64
+* kselftest-breakpoints
+* kselftest-capabilities
+* kselftest-cgroup
+* kselftest-clone3
+* kselftest-core
+* kselftest-cpu-hotplug
+* kselftest-cpufreq
+* kselftest-drivers-dma-buf
+* kselftest-efivarfs
+* kselftest-exec
+* kselftest-filesystems
+* kselftest-filesystems-binderfs
+* kselftest-filesystems-epoll
+* kselftest-firmware
+* kselftest-fpu
+* kselftest-ftrace
+* kselftest-futex
+* kselftest-gpio
+* kselftest-intel_pstate
+* kselftest-ipc
+* kselftest-ir
+* kselftest-kcmp
+* kselftest-kexec
+* kselftest-kvm
+* kselftest-lib
+* kselftest-membarrier
+* kselftest-memfd
+* kselftest-memory-hotplug
+* kselftest-mincore
+* kselftest-mount
+* kselftest-mqueue
+* kselftest-net
+* kselftest-net-forwarding
+* kselftest-net-mptcp
+* kselftest-netfilter
+* kselftest-nsfs
+* kselftest-openat2
+* kselftest-pid_namespace
+* kselftest-pidfd
+* kselftest-proc
+* kselftest-pstore
+* kselftest-ptrace
+* kselftest-rseq
+* kselftest-rtc
+* kselftest-seccomp
+* kselftest-sigaltstack
+* kselftest-size
+* kselftest-splice
+* kselftest-static_keys
+* kselftest-sync
+* kselftest-sysctl
+* kselftest-tc-testing
+* kselftest-timens
+* kselftest-tmpfs
+* kselftest-tpm2
+* kselftest-user_events
+* kselftest-vDSO
+* kselftest-watchdog
+* kselftest-x86
+* kunit
+* kvm-unit-tests
+* libgpiod
+* log-parser-boot
+* log-parser-test
+* ltp-cap_bounds
+* ltp-commands
+* ltp-containers
+* ltp-controllers
+* ltp-cpuhotplug
+* ltp-crypto
+* ltp-cve
+* ltp-dio
+* ltp-fcntl-locktests
+* ltp-filecaps
+* ltp-fs
+* ltp-fs_bind
+* ltp-fs_perms_simple
+* ltp-fsx
+* ltp-hugetlb
+* ltp-io
+* ltp-ipc
+* ltp-math
+* ltp-mm
+* ltp-nptl
+* ltp-pty
+* ltp-sched
+* ltp-securebits
+* ltp-smoke
+* ltp-syscalls
+* ltp-tracing
+* network-basic-tests
+* perf
+* rcutorture
+* v4l2-compliance
+
+--
+Linaro LKFT
+https://lkft.linaro.org
