@@ -2,162 +2,209 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 79399784BFE
-	for <lists+stable@lfdr.de>; Tue, 22 Aug 2023 23:29:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 23FE0784CAE
+	for <lists+stable@lfdr.de>; Wed, 23 Aug 2023 00:07:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231272AbjHVV3O (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 22 Aug 2023 17:29:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37036 "EHLO
+        id S231537AbjHVWHW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 22 Aug 2023 18:07:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60724 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231199AbjHVV3N (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 22 Aug 2023 17:29:13 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 00A30CF3
-        for <stable@vger.kernel.org>; Tue, 22 Aug 2023 14:28:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1692739705;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=KJIRzp140S4A9gJM0yxefcyxkEewcwkrzrbp9iHGj4s=;
-        b=PlvXz2qg4kBEiX0fyTR1kIcfI5icrVtmYN8Byl4dvDyx9IcGIDie4C3RMUnqtz8OenZQSg
-        vWCUH8ODU/5t/X2l7lrhHKL99WwOLK6nVWyBgkug6ke9KRp2CG0d5DcQ0g3TMNgOeia/Q7
-        E013233+jVdRF6pnl2Qf891PY9A+xzQ=
-Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
- [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-597-fmeAjJX1NzG0PJVDAN_2RA-1; Tue, 22 Aug 2023 17:28:23 -0400
-X-MC-Unique: fmeAjJX1NzG0PJVDAN_2RA-1
-Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-76d97f2e4baso525916585a.3
-        for <stable@vger.kernel.org>; Tue, 22 Aug 2023 14:28:23 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692739703; x=1693344503;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=KJIRzp140S4A9gJM0yxefcyxkEewcwkrzrbp9iHGj4s=;
-        b=C+yjaqAgKgMtHweGVCpHEQoxUBmbhXpU1XQD8TZ5b/f0tO16f7+8NZg3nUTPoAeVgv
-         B7U1jFFGHGr2P8oj0v0VU5xhmfZ1M4i8zG6I+rPdMSCyi5Kgwj8Q5tQmo0bufO46AEV2
-         WYawpXhW2gzppKcTOZve2tvcUvliS4jnFc/grXYQaWvLbDTtJuVZZFPOJlJUrz1FsE3+
-         mZW+32G76fUMri9BySrYNIWTJ1HAlSjzMXqThiRCwLtmVQEgUF0LG3pzYKCHsSUFBtQy
-         e8JkMVxnc603doZ53dj+jCqu4SBt4OjISJXF7BYWgq3Sr3+4ffbM+DkmFl8sMgSrtFz/
-         jzLw==
-X-Gm-Message-State: AOJu0YyUyDKc0BX7cucEzbxwWif+izXKwL1RljRnWYcM+GbnaBB7wuiB
-        EVKmYicWTqLbG9h4MzI82tKsUn+nTFA3bVvGE6dNqT0vp1D2rzTImpwUDPSpqqrFmQ2idwYXSth
-        XuR8F+u2mt0cXFuPg
-X-Received: by 2002:a05:622a:191:b0:410:443:221a with SMTP id s17-20020a05622a019100b004100443221amr13760006qtw.1.1692739703270;
-        Tue, 22 Aug 2023 14:28:23 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEE5pLXawKyyf/r7BStTu9VgH3N5jMnxDo3xdPUd6SDwQX9epXapbs9Md5/ogJTTsWK/tc7dw==
-X-Received: by 2002:a05:622a:191:b0:410:443:221a with SMTP id s17-20020a05622a019100b004100443221amr13759993qtw.1.1692739703023;
-        Tue, 22 Aug 2023 14:28:23 -0700 (PDT)
-Received: from localhost (ip98-179-76-75.ph.ph.cox.net. [98.179.76.75])
-        by smtp.gmail.com with ESMTPSA id o10-20020ac872ca000000b004108fe9697asm2222555qtp.61.2023.08.22.14.28.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 22 Aug 2023 14:28:22 -0700 (PDT)
-Date:   Tue, 22 Aug 2023 14:28:21 -0700
-From:   Jerry Snitselaar <jsnitsel@redhat.com>
-To:     Jarkko Sakkinen <jarkko@kernel.org>
-Cc:     linux-sgx@vger.kernel.org, stable@vger.kernel.org,
-        Todd Brandt <todd.e.brandt@intel.com>,
-        Peter Huewe <peterhuewe@gmx.de>,
-        Jason Gunthorpe <jgg@ziepe.ca>,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        linux-integrity@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] tpm: Enable hwrng only for Pluton on AMD CPUs
-Message-ID: <ubwdpgalqja6c3ggp4rjapqhts7m3pxgrdvm7ytwxitaasbjhd@32tbbipd2vfn>
-References: <20230822203912.2256229-1-jarkko@kernel.org>
+        with ESMTP id S229555AbjHVWHW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 22 Aug 2023 18:07:22 -0400
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 6CEDF1B9;
+        Tue, 22 Aug 2023 15:07:19 -0700 (PDT)
+Received: from UbuntuVM-18.efytirfs5hsengjwslc1ligxab.xx.internal.cloudapp.net (unknown [20.72.208.6])
+        by linux.microsoft.com (Postfix) with ESMTPSA id 8811A2126CD6;
+        Tue, 22 Aug 2023 15:07:18 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 8811A2126CD6
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+        s=default; t=1692742038;
+        bh=ccvcmxKiUzDpgLMe6MY0JLVApyZVXWCFreGvGxxSy8k=;
+        h=From:To:Cc:Subject:Date:From;
+        b=qCLXJOqaVbypJI1xgc0o9bQjz5O56c9z6O2uibHeeA+p9OA4FCJ69VapxdCFTKGm9
+         Uh0HR62602PgPemQQz/zxRmxXxeGackiUuCJyJEShXwDyXK5Hc1lvqqAH0dtdJb7GP
+         88V5SlfLGiar6rv/3h/3yB0JHnXi1idcxOaKIYJ8=
+From:   Hardik Garg <hargar@linux.microsoft.com>
+To:     stable@vger.kernel.org
+Cc:     Shuah Khan <shuah@kernel.org>, Hangbin Liu <liuhangbin@gmail.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
+        netdev@vger.kernel.org, bjorn@kernel.org
+Subject: [PATCH 6.1] selftests/net: mv bpf/nat6to4.c to net folder
+Date:   Tue, 22 Aug 2023 22:07:10 +0000
+Message-Id: <20230822220710.3992-1-hargar@linux.microsoft.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230822203912.2256229-1-jarkko@kernel.org>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED autolearn=unavailable
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-17.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_BLOCKED,
+        RCVD_IN_SBL,SPF_HELO_PASS,SPF_PASS,URIBL_BLOCKED,USER_IN_DEF_DKIM_WL,
+        USER_IN_DEF_SPF_WL autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, Aug 22, 2023 at 11:39:12PM +0300, Jarkko Sakkinen wrote:
-> The vendor check introduced by commit 554b841d4703 ("tpm: Disable RNG for
-> all AMD fTPMs") doesn't work properly on a number of Intel fTPMs.  On the
-> reported systems the TPM doesn't reply at bootup and returns back the
-> command code. This makes the TPM fail probe.
-> 
-> Since only Microsoft Pluton is the only known combination of AMD CPU and
-> fTPM from other vendor, disable hwrng otherwise. In order to make sysadmin
-> aware of this, print also info message to the klog.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 554b841d4703 ("tpm: Disable RNG for all AMD fTPMs")
-> Reported-by: Todd Brandt <todd.e.brandt@intel.com>
-> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217804
-> Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
-> ---
-> v2:
-> * CONFIG_X86
+From: Hangbin Liu <liuhangbin@gmail.com>
 
-Did you mean to wrap the crb_acpi_add chunk with CONFIG_X86?
+commit 3c107f36db06 ("selftests/net: mv bpf/nat6to4.c to net folder")
+backport this v6.4 commit to v6.1 to fix this error:
+error: unable to open output file 'linux/kselftest/net/bpf/nat6to4.o':
+'No such file or directory'
 
-> * Removed "Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>"
-> * Removed "Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>"
-> ---
->  drivers/char/tpm/tpm_crb.c | 31 ++++++-------------------------
->  1 file changed, 6 insertions(+), 25 deletions(-)
-> 
-> diff --git a/drivers/char/tpm/tpm_crb.c b/drivers/char/tpm/tpm_crb.c
-> index 65ff4d2fbe8d..28448bfd4062 100644
-> --- a/drivers/char/tpm/tpm_crb.c
-> +++ b/drivers/char/tpm/tpm_crb.c
-> @@ -463,28 +463,6 @@ static bool crb_req_canceled(struct tpm_chip *chip, u8 status)
->  	return (cancel & CRB_CANCEL_INVOKE) == CRB_CANCEL_INVOKE;
->  }
->  
-> -static int crb_check_flags(struct tpm_chip *chip)
-> -{
-> -	u32 val;
-> -	int ret;
-> -
-> -	ret = crb_request_locality(chip, 0);
-> -	if (ret)
-> -		return ret;
-> -
-> -	ret = tpm2_get_tpm_pt(chip, TPM2_PT_MANUFACTURER, &val, NULL);
-> -	if (ret)
-> -		goto release;
-> -
-> -	if (val == 0x414D4400U /* AMD */)
-> -		chip->flags |= TPM_CHIP_FLAG_HWRNG_DISABLED;
-> -
-> -release:
-> -	crb_relinquish_locality(chip, 0);
-> -
-> -	return ret;
-> -}
-> -
->  static const struct tpm_class_ops tpm_crb = {
->  	.flags = TPM_OPS_AUTO_STARTUP,
->  	.status = crb_status,
-> @@ -827,9 +805,12 @@ static int crb_acpi_add(struct acpi_device *device)
->  	if (rc)
->  		goto out;
->  
-> -	rc = crb_check_flags(chip);
-> -	if (rc)
-> -		goto out;
-> +	/* A quirk for https://www.amd.com/en/support/kb/faq/pa-410 */
-> +	if (boot_cpu_data.x86_vendor == X86_VENDOR_AMD &&
-> +	    priv->sm != ACPI_TPM2_COMMAND_BUFFER_WITH_PLUTON) {
-> +		dev_info(dev, "Disabling hwrng\n");
-> +		chip->flags |= TPM_CHIP_FLAG_HWRNG_DISABLED;
-> +	}
->  
->  	rc = tpm_chip_register(chip);
->  
-> -- 
-> 2.39.2
-> 
+There are some issues with the bpf/nat6to4.c building.
+
+1. It use TEST_CUSTOM_PROGS, which will add the nat6to4.o to
+   kselftest-list file and run by common run_tests.
+2. When building the test via `make -C tools/testing/selftests/
+   TARGETS="net"`, the nat6to4.o will be build in selftests/net/bpf/
+   folder. But in test udpgro_frglist.sh it refers to ../bpf/nat6to4.o.
+   The correct path should be ./bpf/nat6to4.o.
+3. If building the test via `make -C tools/testing/selftests/ TARGETS="net"
+   install`. The nat6to4.o will be installed to kselftest_install/net/
+   folder. Then the udpgro_frglist.sh should refer to ./nat6to4.o.
+
+To fix the confusing test path, let's just move the nat6to4.c to net folder
+and build it as TEST_GEN_FILES.
+
+Fixes: edae34a3ed92 ("selftests net: add UDP GRO fraglist + bpf self-tests")
+Tested-by: Björn Töpel <bjorn@kernel.org>
+Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
+Link: https://lore.kernel.org/r/20230118020927.3971864-1-liuhangbin@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Hardik Garg <hargar@linux.microsoft.com>
+---
+ tools/testing/selftests/net/Makefile          | 50 ++++++++++++++++++-
+ tools/testing/selftests/net/bpf/Makefile      | 14 ------
+ .../testing/selftests/net/{bpf => }/nat6to4.c |  0
+ tools/testing/selftests/net/udpgro_frglist.sh |  8 +--
+ 4 files changed, 52 insertions(+), 20 deletions(-)
+ delete mode 100644 tools/testing/selftests/net/bpf/Makefile
+ rename tools/testing/selftests/net/{bpf => }/nat6to4.c (100%)
+
+diff --git a/tools/testing/selftests/net/Makefile b/tools/testing/selftests/net/Makefile
+index 69c58362c0ed..48d1a68be1d5 100644
+--- a/tools/testing/selftests/net/Makefile
++++ b/tools/testing/selftests/net/Makefile
+@@ -71,14 +71,60 @@ TEST_GEN_FILES += bind_bhash
+ TEST_GEN_PROGS += sk_bind_sendto_listen
+ TEST_GEN_PROGS += sk_connect_zero_addr
+ TEST_PROGS += test_ingress_egress_chaining.sh
++TEST_GEN_FILES += nat6to4.o
+ 
+ TEST_FILES := settings
+ 
+ include ../lib.mk
+ 
+-include bpf/Makefile
+-
+ $(OUTPUT)/reuseport_bpf_numa: LDLIBS += -lnuma
+ $(OUTPUT)/tcp_mmap: LDLIBS += -lpthread
+ $(OUTPUT)/tcp_inq: LDLIBS += -lpthread
+ $(OUTPUT)/bind_bhash: LDLIBS += -lpthread
++
++# Rules to generate bpf obj nat6to4.o
++CLANG ?= clang
++SCRATCH_DIR := $(OUTPUT)/tools
++BUILD_DIR := $(SCRATCH_DIR)/build
++BPFDIR := $(abspath ../../../lib/bpf)
++APIDIR := $(abspath ../../../include/uapi)
++
++CCINCLUDE += -I../bpf
++CCINCLUDE += -I../../../../usr/include/
++CCINCLUDE += -I$(SCRATCH_DIR)/include
++
++BPFOBJ := $(BUILD_DIR)/libbpf/libbpf.a
++
++MAKE_DIRS := $(BUILD_DIR)/libbpf
++$(MAKE_DIRS):
++	mkdir -p $@
++
++# Get Clang's default includes on this system, as opposed to those seen by
++# '-target bpf'. This fixes "missing" files on some architectures/distros,
++# such as asm/byteorder.h, asm/socket.h, asm/sockios.h, sys/cdefs.h etc.
++#
++# Use '-idirafter': Don't interfere with include mechanics except where the
++# build would have failed anyways.
++define get_sys_includes
++$(shell $(1) $(2) -v -E - </dev/null 2>&1 \
++	| sed -n '/<...> search starts here:/,/End of search list./{ s| \(/.*\)|-idirafter \1|p }') \
++$(shell $(1) $(2) -dM -E - </dev/null | grep '__riscv_xlen ' | awk '{printf("-D__riscv_xlen=%d -D__BITS_PER_LONG=%d", $$3, $$3)}')
++endef
++
++ifneq ($(CROSS_COMPILE),)
++CLANG_TARGET_ARCH = --target=$(notdir $(CROSS_COMPILE:%-=%))
++endif
++
++CLANG_SYS_INCLUDES = $(call get_sys_includes,$(CLANG),$(CLANG_TARGET_ARCH))
++
++$(OUTPUT)/nat6to4.o: nat6to4.c $(BPFOBJ) | $(MAKE_DIRS)
++	$(CLANG) -O2 -target bpf -c $< $(CCINCLUDE) $(CLANG_SYS_INCLUDES) -o $@
++
++$(BPFOBJ): $(wildcard $(BPFDIR)/*.[ch] $(BPFDIR)/Makefile)		       \
++	   $(APIDIR)/linux/bpf.h					       \
++	   | $(BUILD_DIR)/libbpf
++	$(MAKE) $(submake_extras) -C $(BPFDIR) OUTPUT=$(BUILD_DIR)/libbpf/     \
++		    EXTRA_CFLAGS='-g -O0'				       \
++		    DESTDIR=$(SCRATCH_DIR) prefix= all install_headers
++
++EXTRA_CLEAN := $(SCRATCH_DIR)
+diff --git a/tools/testing/selftests/net/bpf/Makefile b/tools/testing/selftests/net/bpf/Makefile
+deleted file mode 100644
+index 8ccaf8732eb2..000000000000
+--- a/tools/testing/selftests/net/bpf/Makefile
++++ /dev/null
+@@ -1,14 +0,0 @@
+-# SPDX-License-Identifier: GPL-2.0
+-
+-CLANG ?= clang
+-CCINCLUDE += -I../../bpf
+-CCINCLUDE += -I../../../../lib
+-CCINCLUDE += -I../../../../../usr/include/
+-
+-TEST_CUSTOM_PROGS = $(OUTPUT)/bpf/nat6to4.o
+-all: $(TEST_CUSTOM_PROGS)
+-
+-$(OUTPUT)/%.o: %.c
+-	$(CLANG) -O2 -target bpf -c $< $(CCINCLUDE) -o $@
+-
+-EXTRA_CLEAN := $(TEST_CUSTOM_PROGS)
+diff --git a/tools/testing/selftests/net/bpf/nat6to4.c b/tools/testing/selftests/net/nat6to4.c
+similarity index 100%
+rename from tools/testing/selftests/net/bpf/nat6to4.c
+rename to tools/testing/selftests/net/nat6to4.c
+diff --git a/tools/testing/selftests/net/udpgro_frglist.sh b/tools/testing/selftests/net/udpgro_frglist.sh
+index c9c4b9d65839..0a6359bed0b9 100755
+--- a/tools/testing/selftests/net/udpgro_frglist.sh
++++ b/tools/testing/selftests/net/udpgro_frglist.sh
+@@ -40,8 +40,8 @@ run_one() {
+ 
+ 	ip -n "${PEER_NS}" link set veth1 xdp object ${BPF_FILE} section xdp
+ 	tc -n "${PEER_NS}" qdisc add dev veth1 clsact
+-	tc -n "${PEER_NS}" filter add dev veth1 ingress prio 4 protocol ipv6 bpf object-file ../bpf/nat6to4.o section schedcls/ingress6/nat_6  direct-action
+-	tc -n "${PEER_NS}" filter add dev veth1 egress prio 4 protocol ip bpf object-file ../bpf/nat6to4.o section schedcls/egress4/snat4 direct-action
++	tc -n "${PEER_NS}" filter add dev veth1 ingress prio 4 protocol ipv6 bpf object-file nat6to4.o section schedcls/ingress6/nat_6  direct-action
++	tc -n "${PEER_NS}" filter add dev veth1 egress prio 4 protocol ip bpf object-file nat6to4.o section schedcls/egress4/snat4 direct-action
+         echo ${rx_args}
+ 	ip netns exec "${PEER_NS}" ./udpgso_bench_rx ${rx_args} -r &
+ 
+@@ -88,8 +88,8 @@ if [ ! -f ${BPF_FILE} ]; then
+ 	exit -1
+ fi
+ 
+-if [ ! -f bpf/nat6to4.o ]; then
+-	echo "Missing nat6to4 helper. Build bpfnat6to4.o selftest first"
++if [ ! -f nat6to4.o ]; then
++	echo "Missing nat6to4 helper. Build bpf nat6to4.o selftest first"
+ 	exit -1
+ fi
+ 
+-- 
+2.33.8
 
