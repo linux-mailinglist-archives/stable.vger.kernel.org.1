@@ -2,225 +2,220 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D33B2784CBC
-	for <lists+stable@lfdr.de>; Wed, 23 Aug 2023 00:14:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 513BA784CF6
+	for <lists+stable@lfdr.de>; Wed, 23 Aug 2023 00:45:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231557AbjHVWOJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 22 Aug 2023 18:14:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60042 "EHLO
+        id S231571AbjHVWpy (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 22 Aug 2023 18:45:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51928 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231555AbjHVWOI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 22 Aug 2023 18:14:08 -0400
-Received: from mail-pl1-x62b.google.com (mail-pl1-x62b.google.com [IPv6:2607:f8b0:4864:20::62b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CEECACD0;
-        Tue, 22 Aug 2023 15:14:06 -0700 (PDT)
-Received: by mail-pl1-x62b.google.com with SMTP id d9443c01a7336-1bee82fad0fso32537825ad.2;
-        Tue, 22 Aug 2023 15:14:06 -0700 (PDT)
+        with ESMTP id S229519AbjHVWpx (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 22 Aug 2023 18:45:53 -0400
+Received: from mail-qv1-xf2a.google.com (mail-qv1-xf2a.google.com [IPv6:2607:f8b0:4864:20::f2a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C4DEFCDD
+        for <stable@vger.kernel.org>; Tue, 22 Aug 2023 15:45:51 -0700 (PDT)
+Received: by mail-qv1-xf2a.google.com with SMTP id 6a1803df08f44-64b3504144cso28659426d6.2
+        for <stable@vger.kernel.org>; Tue, 22 Aug 2023 15:45:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1692742446; x=1693347246;
-        h=references:in-reply-to:message-id:date:subject:cc:to:from:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=AUC9eoO5UIo46oFX1a6+lAn1zuPwqHuYWfvH8tGdhi8=;
-        b=GaLfBs1I36f+HHrYGOisKuHtm3CDyZhSwuB4VY680WmQL75KJop8NDDaCwGhnM8dKZ
-         zDcswSMUWkTFQMqLbHldmKje+9dfUZr0GM4FFpBXzn7Wu+IFXKzM2bhkMSV8goswU5zB
-         A1hjkrNNyfkz/E6WIbU5TCJtAxxx8VPyj1QTvYVKdtiM8cni7yDYoyVg5uvZ23sRaSXm
-         +nz+D0j4rANiy5FbDpgOWxeknqlYXoerSgikUKicZ9j7lLTGvjKT+9+w+MLmjZugOqmN
-         KqIbiWQss7cd+3qdjydIRFmtLLNlSnBQMXLNCh0iLhjAe2ZutY9NT4ar05j+rzoBAcgA
-         t5wg==
+        d=chromium.org; s=google; t=1692744351; x=1693349151;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=IA+F9ijfpdDdMdFFKNzTJ+HhXSTDp2+LPFf3LSuVukc=;
+        b=MZmfQU/jF6hti+j8QBpEKlF4/1F4b+iSStWbr2ZoCz6SSGNdQeD68dNaIX1JnISuVz
+         5VSa57ZNlt+IZelO4/UCkawz9J0W/USJEp3jhiBT+V8buguwF54PJX1LJR+EmS8kjrOI
+         PWbRwknIVX3y+aZFGygj/fXwc3KV0wUJvEQBk=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692742446; x=1693347246;
-        h=references:in-reply-to:message-id:date:subject:cc:to:from
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=AUC9eoO5UIo46oFX1a6+lAn1zuPwqHuYWfvH8tGdhi8=;
-        b=IaenhR16OW+Ujs530vkTVJesEllrqBHbeTKTLS3e5Hy9w3x9pQeLMj9jZ5v6BpeokF
-         ZCqwtEXYoD8ydHsnwu2OfodlVP0Eqd2CjMtThHb4TIibxMcZGhNoT6LtGPCrsKVOpvQ8
-         HOYusLpen5IT5cBaz0fYHOG3TmD+TeNdhj//M5ofgxq+vQ55yAN4/hKb0uu9CVPG464M
-         RV8hwVGgSeAFockMrv1TBUhGI/Uu8AiQyUTA6CBL5Cg0EE5CGwJsiZQCT7QeBWn+YxTe
-         r8KHTAieUQvN4vluP9yK4h7ZUUhHSkNf4xeMfsHOLI8BqxSGWQIFhnrbK2Spzzq+Yden
-         gLFg==
-X-Gm-Message-State: AOJu0Yy6DTnpsg4CyvOJGMshz/ngn9aTNyIe9pQw3iV5L9I1WT9MlB3H
-        xEj3oUt7fwOxGtte3Tmhk7Q=
-X-Google-Smtp-Source: AGHT+IF6Cm7CnJgHT+j9s7B01elvFwccNEtEgEKoIPZT929hMukEg43eA6M8SwhaW9dk6E2OBJjV2A==
-X-Received: by 2002:a17:902:6b48:b0:1bf:7d3b:4405 with SMTP id g8-20020a1709026b4800b001bf7d3b4405mr6065901plt.14.1692742446184;
-        Tue, 22 Aug 2023 15:14:06 -0700 (PDT)
-Received: from xplor.waratah.dyndns.org (125-236-136-221-fibre.sparkbb.co.nz. [125.236.136.221])
-        by smtp.gmail.com with ESMTPSA id t7-20020a170902bc4700b001beef2c9bffsm9450990plz.85.2023.08.22.15.14.05
+        d=1e100.net; s=20221208; t=1692744351; x=1693349151;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=IA+F9ijfpdDdMdFFKNzTJ+HhXSTDp2+LPFf3LSuVukc=;
+        b=enHo0EwdWhyZZ1p2EckCSk/2AeeO3Y9ex7DNFZ+ULO11rJRQQjj20LBhymKANHPh1z
+         yTOmCayvVQIMabc2486V0est6By5260NX/ItDj7lFfxvwbq0wHOOaZTmJwbYvhj7mzkW
+         Jxc/chOwzIGxXa69asb2BBd1TNVPFVYslrQ6OZYJRxkD45jPOu1YBGWxCViZGd7j4jDF
+         3FF59VZ/rad16VO5mqOvt1kMhOM3Zk1J4G6Piiod7xwBlBN4NNH7HlsJUW71v8/GxIEm
+         rU0MJyAQ/eta+DEpDY4UFO5sEAw6KAfjr5Vslps+mK1HAyPLg+nyCOVA/eqXj5TJc23L
+         X9WQ==
+X-Gm-Message-State: AOJu0Yxy8GUKo9ps+4vhLbU+3JqN4ZUcFjaR6XKV/ElsuxlLE1P1UzY/
+        ZDPjwNYJVUOV0nRXOFxD8yxDvQ==
+X-Google-Smtp-Source: AGHT+IHjE45w2hhTJuEBWNipjgPO63SVpzysUBrY5TQ77WJroBOdxkSOhmVHywFsmr+Xq8LpQcQ5WA==
+X-Received: by 2002:a0c:dc12:0:b0:64b:fdf0:48a3 with SMTP id s18-20020a0cdc12000000b0064bfdf048a3mr11731188qvk.10.1692744350854;
+        Tue, 22 Aug 2023 15:45:50 -0700 (PDT)
+Received: from trappist.c.googlers.com.com (150.254.86.34.bc.googleusercontent.com. [34.86.254.150])
+        by smtp.gmail.com with ESMTPSA id g16-20020a05620a109000b0076ceb5eb309sm3532667qkk.74.2023.08.22.15.45.50
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 22 Aug 2023 15:14:05 -0700 (PDT)
-Received: by xplor.waratah.dyndns.org (Postfix, from userid 1000)
-        id 1F822360446; Wed, 23 Aug 2023 10:14:02 +1200 (NZST)
-From:   Michael Schmitz <schmitzmic@gmail.com>
-To:     sergei.shtylyov@gmail.com, dlemoal@kernel.org,
-        linux-ide@vger.kernel.org, linux-m68k@vger.kernel.org
-Cc:     will@sowerbutts.com, rz@linux-m68k.org, geert@linux-m68k.org,
-        Michael Schmitz <schmitzmic@gmail.com>, stable@vger.kernel.org,
-        Finn Thain <fthain@linux-m68k.org>
-Subject: [PATCH v4 1/2] ata: pata_falcon: fix IO base selection for Q40
-Date:   Wed, 23 Aug 2023 10:13:58 +1200
-Message-Id: <20230822221359.31024-2-schmitzmic@gmail.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20230822221359.31024-1-schmitzmic@gmail.com>
-References: <20230822221359.31024-1-schmitzmic@gmail.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        Tue, 22 Aug 2023 15:45:50 -0700 (PDT)
+From:   Sven van Ashbrook <svenva@chromium.org>
+To:     LKML <linux-kernel@vger.kernel.org>, ulf.hansson@linaro.org,
+        adrian.hunter@intel.com
+Cc:     SeanHY.chen@genesyslogic.com.tw, jason.lai@genesyslogic.com.tw,
+        jasonlai.genesyslogic@gmail.com, greg.tu@genesyslogic.com.tw,
+        linux-mmc@vger.kernel.org, Renius Chen <reniuschengl@gmail.com>,
+        ben.chuang@genesyslogic.com.tw, skardach@google.com,
+        victor.shih@genesyslogic.com.tw, stable@vger.kernel.org,
+        Sven van Ashbrook <svenva@chromium.org>
+Subject: [PATCH v1] mmc: sdhci-pci-gli: fix LPM negotiation so x86/S0ix SoCs can suspend
+Date:   Tue, 22 Aug 2023 22:45:37 +0000
+Message-ID: <20230822224536.v1.1.I7ed1ca09797be2dd76ca914c57d88b32d24dac88@changeid>
+X-Mailer: git-send-email 2.42.0.rc1.204.g551eb34607-goog
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-With commit 44b1fbc0f5f3 ("m68k/q40: Replace q40ide driver
-with pata_falcon and falconide"), the Q40 IDE driver was
-replaced by pata_falcon.c.
+To improve the r/w performance of GL9763E, the current driver inhibits LPM
+negotiation while the device is active.
 
-Both IO and memory resources were defined for the Q40 IDE
-platform device, but definition of the IDE register addresses
-was modeled after the Falcon case, both in use of the memory
-resources and in including register shift and byte vs. word
-offset in the address.
+This prevents a large number of SoCs from suspending, notably x86 systems
+which use S0ix as the suspend mechanism:
+1. Userspace initiates s2idle suspend (e.g. via writing to
+   /sys/power/state)
+2. This switches the runtime_pm device state to active, which disables
+   LPM negotiation, then calls the "regular" suspend callback
+3. With LPM negotiation disabled, the bus cannot enter low-power state
+4. On a large number of SoCs, if the bus not in a low-power state, S0ix
+   cannot be entered, which in turn prevents the SoC from entering
+   suspend.
 
-This was correct for the Falcon case, which does not apply
-any address translation to the register addresses. In the
-Q40 case, all of device base address, byte access offset
-and register shift is included in the platform specific
-ISA access translation (in asm/mm_io.h).
+Fix by re-enabling LPM negotiation in the device's suspend callback.
 
-As a consequence, such address translation gets applied
-twice, and register addresses are mangled.
-
-Use the device base address from the platform IO resource
-for Q40 (the IO address translation will then add the correct
-ISA window base address and byte access offset), with register
-shift 1. Use MMIO base address and register shift 2 as before
-for Falcon.
-
-Encode PIO_OFFSET into IO port addresses for all registers
-for Q40 except the data transfer register. Encode the MMIO
-offset there (pata_falcon_data_xfer() directly uses raw IO
-with no address translation).
-
-Reported-by: William R Sowerbutts <will@sowerbutts.com>
-Closes: https://lore.kernel.org/r/CAMuHMdUU62jjunJh9cqSqHT87B0H0A4udOOPs=WN7WZKpcagVA@mail.gmail.com
-Link: https://lore.kernel.org/r/CAMuHMdUU62jjunJh9cqSqHT87B0H0A4udOOPs=WN7WZKpcagVA@mail.gmail.com
-Fixes: 44b1fbc0f5f3 ("m68k/q40: Replace q40ide driver with pata_falcon and falconide")
+Suggested-by: Stanislaw Kardach <skardach@google.com>
+Fixes: f9e5b33934ce ("mmc: host: Improve I/O read/write performance for GL9763E")
 Cc: stable@vger.kernel.org
-Cc: Finn Thain <fthain@linux-m68k.org>
-Cc: Geert Uytterhoeven <geert@linux-m68k.org>
-Tested-by: William R Sowerbutts <will@sowerbutts.com>
-Signed-off-by: Michael Schmitz <schmitzmic@gmail.com>
-Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
-
+Signed-off-by: Sven van Ashbrook <svenva@chromium.org>
 ---
 
-Changes from v3:
+ drivers/mmc/host/sdhci-pci-gli.c | 96 +++++++++++++++++++-------------
+ 1 file changed, 58 insertions(+), 38 deletions(-)
 
-Sergey Shtylyov:
-- change use of reg_scale to reg_shift
-
-Geert Uytterhoeven:
-- factor out ata_port_desc() from platform specific code
-
-Changes from v2:
-
-Finn Thain:
-- add back stable Cc:
-
-Changes from v1:
-
-Damien Le Moal:
-- change patch title
-- drop stable backport tag
-
-Changes from RFC v3:
-
-- split off byte swap option into separate patch
-
-Geert Uytterhoeven:
-- review comments
-
-Changes from RFC v2:
-- add driver parameter 'data_swap' as bit mask for drives to swap
-
-Changes from RFC v1:
-
-Finn Thain:
-- take care to supply IO address suitable for ioread8/iowrite8
-- use MMIO address for data transfer
----
- drivers/ata/pata_falcon.c | 50 +++++++++++++++++++++++----------------
- 1 file changed, 29 insertions(+), 21 deletions(-)
-
-diff --git a/drivers/ata/pata_falcon.c b/drivers/ata/pata_falcon.c
-index 996516e64f13..3841ea200bcb 100644
---- a/drivers/ata/pata_falcon.c
-+++ b/drivers/ata/pata_falcon.c
-@@ -123,8 +123,8 @@ static int __init pata_falcon_init_one(struct platform_device *pdev)
- 	struct resource *base_res, *ctl_res, *irq_res;
- 	struct ata_host *host;
- 	struct ata_port *ap;
--	void __iomem *base;
--	int irq = 0;
-+	void __iomem *base, *ctl_base;
-+	int irq = 0, io_offset = 1, reg_shift = 2; /* Falcon defaults */
+diff --git a/drivers/mmc/host/sdhci-pci-gli.c b/drivers/mmc/host/sdhci-pci-gli.c
+index 1792665c9494a..bc148276cc001 100644
+--- a/drivers/mmc/host/sdhci-pci-gli.c
++++ b/drivers/mmc/host/sdhci-pci-gli.c
+@@ -745,42 +745,6 @@ static u32 sdhci_gl9750_readl(struct sdhci_host *host, int reg)
+ 	return value;
+ }
  
- 	dev_info(&pdev->dev, "Atari Falcon and Q40/Q60 PATA controller\n");
- 
-@@ -165,26 +165,34 @@ static int __init pata_falcon_init_one(struct platform_device *pdev)
- 	ap->pio_mask = ATA_PIO4;
- 	ap->flags |= ATA_FLAG_SLAVE_POSS | ATA_FLAG_NO_IORDY;
- 
--	base = (void __iomem *)base_mem_res->start;
- 	/* N.B. this assumes data_addr will be used for word-sized I/O only */
--	ap->ioaddr.data_addr		= base + 0 + 0 * 4;
--	ap->ioaddr.error_addr		= base + 1 + 1 * 4;
--	ap->ioaddr.feature_addr		= base + 1 + 1 * 4;
--	ap->ioaddr.nsect_addr		= base + 1 + 2 * 4;
--	ap->ioaddr.lbal_addr		= base + 1 + 3 * 4;
--	ap->ioaddr.lbam_addr		= base + 1 + 4 * 4;
--	ap->ioaddr.lbah_addr		= base + 1 + 5 * 4;
--	ap->ioaddr.device_addr		= base + 1 + 6 * 4;
--	ap->ioaddr.status_addr		= base + 1 + 7 * 4;
--	ap->ioaddr.command_addr		= base + 1 + 7 * 4;
+-#ifdef CONFIG_PM_SLEEP
+-static int sdhci_pci_gli_resume(struct sdhci_pci_chip *chip)
+-{
+-	struct sdhci_pci_slot *slot = chip->slots[0];
 -
--	base = (void __iomem *)ctl_mem_res->start;
--	ap->ioaddr.altstatus_addr	= base + 1;
--	ap->ioaddr.ctl_addr		= base + 1;
+-	pci_free_irq_vectors(slot->chip->pdev);
+-	gli_pcie_enable_msi(slot);
 -
--	ata_port_desc(ap, "cmd 0x%lx ctl 0x%lx",
--		      (unsigned long)base_mem_res->start,
--		      (unsigned long)ctl_mem_res->start);
-+	ap->ioaddr.data_addr = (void __iomem *)base_mem_res->start;
-+
-+	if (base_res) {		/* only Q40 has IO resources */
-+		io_offset = 0x10000;
-+		reg_shift = 0;
-+		base = (void __iomem *)base_res->start;
-+		ctl_base = (void __iomem *)ctl_res->start;
-+	} else {
-+		base = (void __iomem *)base_mem_res->start;
-+		ctl_base = (void __iomem *)ctl_mem_res->start;
-+	}
-+
-+	ap->ioaddr.error_addr	= base + io_offset + (1 << reg_shift);
-+	ap->ioaddr.feature_addr	= base + io_offset + (1 << reg_shift);
-+	ap->ioaddr.nsect_addr	= base + io_offset + (2 << reg_shift);
-+	ap->ioaddr.lbal_addr	= base + io_offset + (3 << reg_shift);
-+	ap->ioaddr.lbam_addr	= base + io_offset + (4 << reg_shift);
-+	ap->ioaddr.lbah_addr	= base + io_offset + (5 << reg_shift);
-+	ap->ioaddr.device_addr	= base + io_offset + (6 << reg_shift);
-+	ap->ioaddr.status_addr	= base + io_offset + (7 << reg_shift);
-+	ap->ioaddr.command_addr	= base + io_offset + (7 << reg_shift);
-+
-+	ap->ioaddr.altstatus_addr	= ctl_base + io_offset;
-+	ap->ioaddr.ctl_addr		= ctl_base + io_offset;
-+
-+	ata_port_desc(ap, "cmd %px ctl %px data %pa",
-+		      base, ctl_base, &ap->ioaddr.data_addr);
+-	return sdhci_pci_resume_host(chip);
+-}
+-
+-static int sdhci_cqhci_gli_resume(struct sdhci_pci_chip *chip)
+-{
+-	struct sdhci_pci_slot *slot = chip->slots[0];
+-	int ret;
+-
+-	ret = sdhci_pci_gli_resume(chip);
+-	if (ret)
+-		return ret;
+-
+-	return cqhci_resume(slot->host->mmc);
+-}
+-
+-static int sdhci_cqhci_gli_suspend(struct sdhci_pci_chip *chip)
+-{
+-	struct sdhci_pci_slot *slot = chip->slots[0];
+-	int ret;
+-
+-	ret = cqhci_suspend(slot->host->mmc);
+-	if (ret)
+-		return ret;
+-
+-	return sdhci_suspend_host(slot->host);
+-}
+-#endif
+-
+ static void gl9763e_hs400_enhanced_strobe(struct mmc_host *mmc,
+ 					  struct mmc_ios *ios)
+ {
+@@ -1029,6 +993,62 @@ static int gl9763e_runtime_resume(struct sdhci_pci_chip *chip)
+ }
+ #endif
  
- 	irq_res = platform_get_resource(pdev, IORESOURCE_IRQ, 0);
- 	if (irq_res && irq_res->start > 0) {
++#ifdef CONFIG_PM_SLEEP
++static int sdhci_pci_gli_resume(struct sdhci_pci_chip *chip)
++{
++	struct sdhci_pci_slot *slot = chip->slots[0];
++
++	pci_free_irq_vectors(slot->chip->pdev);
++	gli_pcie_enable_msi(slot);
++
++	return sdhci_pci_resume_host(chip);
++}
++
++static int gl9763e_resume(struct sdhci_pci_chip *chip)
++{
++	struct sdhci_pci_slot *slot = chip->slots[0];
++	int ret;
++
++	ret = sdhci_pci_gli_resume(chip);
++	if (ret)
++		return ret;
++
++	ret = cqhci_resume(slot->host->mmc);
++	if (ret)
++		return ret;
++
++	/* Disable LPM negotiation to bring device back in sync
++	 * with its runtime_pm state.
++	 */
++	gl9763e_set_low_power_negotiation(slot, false);
++
++	return 0;
++}
++
++static int gl9763e_suspend(struct sdhci_pci_chip *chip)
++{
++	struct sdhci_pci_slot *slot = chip->slots[0];
++	int ret;
++
++	ret = cqhci_suspend(slot->host->mmc);
++	if (ret)
++		return ret;
++
++	ret = sdhci_suspend_host(slot->host);
++	if (ret)
++		return ret;
++
++	/* Certain SoCs can suspend only with the bus in low-
++	 * power state, notably x86 SoCs when using S0ix.
++	 * Re-enable LPM negotiation to allow entering L1 state
++	 * and entering system suspend.
++	 */
++	gl9763e_set_low_power_negotiation(slot, true);
++
++	return 0;
++}
++#endif
++
+ static int gli_probe_slot_gl9763e(struct sdhci_pci_slot *slot)
+ {
+ 	struct pci_dev *pdev = slot->chip->pdev;
+@@ -1113,8 +1133,8 @@ const struct sdhci_pci_fixes sdhci_gl9763e = {
+ 	.probe_slot	= gli_probe_slot_gl9763e,
+ 	.ops            = &sdhci_gl9763e_ops,
+ #ifdef CONFIG_PM_SLEEP
+-	.resume		= sdhci_cqhci_gli_resume,
+-	.suspend	= sdhci_cqhci_gli_suspend,
++	.resume		= gl9763e_resume,
++	.suspend	= gl9763e_suspend,
+ #endif
+ #ifdef CONFIG_PM
+ 	.runtime_suspend = gl9763e_runtime_suspend,
 -- 
-2.17.1
+2.42.0.rc1.204.g551eb34607-goog
 
