@@ -2,69 +2,101 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E6FDD7840E9
-	for <lists+stable@lfdr.de>; Tue, 22 Aug 2023 14:38:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0764B7841CE
+	for <lists+stable@lfdr.de>; Tue, 22 Aug 2023 15:17:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229777AbjHVMiO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 22 Aug 2023 08:38:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49458 "EHLO
+        id S234161AbjHVNRr (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 22 Aug 2023 09:17:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35708 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229525AbjHVMiN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 22 Aug 2023 08:38:13 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 788EA196;
-        Tue, 22 Aug 2023 05:38:12 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        with ESMTP id S232281AbjHVNRq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 22 Aug 2023 09:17:46 -0400
+X-Greylist: delayed 375 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 22 Aug 2023 06:17:41 PDT
+Received: from postout2.mail.lrz.de (postout2.mail.lrz.de [IPv6:2001:4ca0:0:103::81bb:ff8a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A1AA18B;
+        Tue, 22 Aug 2023 06:17:41 -0700 (PDT)
+Received: from lxmhs52.srv.lrz.de (localhost [127.0.0.1])
+        by postout2.mail.lrz.de (Postfix) with ESMTP id 4RVV952pW7zyX2;
+        Tue, 22 Aug 2023 15:11:21 +0200 (CEST)
+Authentication-Results: postout.lrz.de (amavisd-new); dkim=pass (2048-bit key)
+        reason="pass (just generated, assumed good)" header.d=tum.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=tum.de; h=
+        in-reply-to:content-disposition:content-type:content-type
+        :mime-version:references:message-id:subject:subject:from:from
+        :date:date:received:received; s=tu-postout21; t=1692709880; bh=7
+        MXBSA2oPcu+//EHHLMQozjXroTKi4+sBWXdNVXS71k=; b=LuuD/tm2rdPtMca1x
+        wTO32C1Z3C9GMBu1lGwVBUmIO23Q5WaEQsQCY3fHPGbyxh6XF33OvTiYUDoahGvc
+        5FXeYL4z9IhePrSHrqiO6cnFGAVLTSTxwcKydMKeCPzAtko1pGvNWJZu51O7PWYp
+        94aT9sIgkGIaTtUzt/ylqmSBS3ZMBaD+s5R2voTxyhyWnk3dcSIh0zHnth01z+ei
+        3nOsADb9eR4FHgh82BjOPxrsbiK4XORiDH3v4Gpj0QMUWzQUz4p5W5eY7JCCC7Jv
+        vkC/b2ukIDnqzo+9d4gYP2edHff3PfGYCTbsYGCQ0px1NHUftLyQFaNY+l4FxYKi
+        zVn+w==
+X-Virus-Scanned: by amavisd-new at lrz.de in lxmhs52.srv.lrz.de
+X-Spam-Score: -2.871
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
+Received: from postout2.mail.lrz.de ([127.0.0.1])
+        by lxmhs52.srv.lrz.de (lxmhs52.srv.lrz.de [127.0.0.1]) (amavisd-new, port 20024)
+        with LMTP id DfRD1ZXrXZAS; Tue, 22 Aug 2023 15:11:20 +0200 (CEST)
+Received: from r2-d2.localdomain (unknown [IPv6:2001:4ca0:0:f293:2e93:503c:b2ad:193b])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0CFBC615BE;
-        Tue, 22 Aug 2023 12:38:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA661C433C8;
-        Tue, 22 Aug 2023 12:38:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692707891;
-        bh=Zgls8mquklkoOzDorcp2aKAcyrdPbOZyAYNdvU/uPis=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=A2AO5nToyYcEsaAwLXznbuD5uFB25F7VFLfvwfg4+SHeJzUq4NrPFTrmzPx3JWUH+
-         ElP0ARg9Wra0zx9YgAuQVLrB3ElIhmxVDDaYAVFzjbi++5xLDk8iLSvKAdDnn3+Gn3
-         FEZB6fL8r9drcNLWFza/zvycr9bhR5fzpMEatfAY=
-Date:   Tue, 22 Aug 2023 14:38:08 +0200
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     RD Babiera <rdbabiera@google.com>
-Cc:     linux@roeck-us.net, heikki.krogerus@linux.intel.com,
-        kyletso@google.com, badhri@google.com, linux-usb@vger.kernel.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2] usb: typec: tcpm: set initial svdm version based on
- pd revision
-Message-ID: <2023082231-strode-pretty-f5a3@gregkh>
-References: <20230731165926.1815338-1-rdbabiera@google.com>
- <CALzBnUFH=eQmhdpkt5_czKsZ22=u6yDoZZ0TX4eJkHGbjLANAw@mail.gmail.com>
+        (Client did not present a certificate)
+        by postout2.mail.lrz.de (Postfix) with ESMTPSA id 4RVV933VvKzyV6;
+        Tue, 22 Aug 2023 15:11:19 +0200 (CEST)
+Date:   Tue, 22 Aug 2023 15:11:18 +0200
+From:   Andrei Rabusov <a.rabusov@tum.de>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+        jonathanh@nvidia.com, f.fainelli@gmail.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+        conor@kernel.org
+Subject: Re: [PATCH 6.4 000/234] 6.4.12-rc1 review
+Message-ID: <ZOSz9vvKd9FNHr_u@r2-d2.localdomain>
+References: <20230821194128.754601642@linuxfoundation.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CALzBnUFH=eQmhdpkt5_czKsZ22=u6yDoZZ0TX4eJkHGbjLANAw@mail.gmail.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <20230821194128.754601642@linuxfoundation.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, Aug 21, 2023 at 10:09:14AM -0700, RD Babiera wrote:
-> Hello,
+On Mon, Aug 21, 2023 at 09:39:23PM +0200, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.4.12 release.
+> There are 234 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 > 
-> Just wanted to ping this patch for review in case it got lost/forgotten about.
+> Responses should be made by Wed, 23 Aug 2023 19:40:45 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.4.12-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.4.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-What patch?
+6.4.12-rc1 configures, compiles, runs, and passes most of the tests with
+my custom config for Lenovo Thinkpad X220 (x86_64). Here is a short log:
 
-And note, people were on vacation.  If can, to help your patch get to
-the front of the review queue, please review other typec patches on the
-mailing list.
+system-manufacturer               LENOVO
+system-product-name              4291EM4
+bios-release-date             06/21/2018
+bios-version            8DET76WW (1.46 )
+kernel                        6.4.12-rc1
+selftest result                  570/652
 
-thanks,
-
-greg k-h
+Tested-by: Andrei Rabusov <andrei@rabusov.de>
