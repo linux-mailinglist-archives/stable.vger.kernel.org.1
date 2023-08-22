@@ -2,202 +2,439 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E7BF07838AD
-	for <lists+stable@lfdr.de>; Tue, 22 Aug 2023 06:03:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 63CB178397E
+	for <lists+stable@lfdr.de>; Tue, 22 Aug 2023 07:50:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232521AbjHVEDQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 22 Aug 2023 00:03:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51304 "EHLO
+        id S232837AbjHVFuO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 22 Aug 2023 01:50:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33618 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231326AbjHVEDP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 22 Aug 2023 00:03:15 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ACF57196;
-        Mon, 21 Aug 2023 21:03:05 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 350A062F3D;
-        Tue, 22 Aug 2023 04:03:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4DA7C433C8;
-        Tue, 22 Aug 2023 04:03:00 +0000 (UTC)
-From:   Huacai Chen <chenhuacai@loongson.cn>
-To:     "Paul E . McKenney" <paulmck@kernel.org>,
-        Frederic Weisbecker <frederic@kernel.org>,
-        Neeraj Upadhyay <quic_neeraju@quicinc.com>,
-        Joel Fernandes <joel@joelfernandes.org>,
-        Josh Triplett <josh@joshtriplett.org>,
-        Boqun Feng <boqun.feng@gmail.com>,
-        Thomas Gleixner <tglx@linutronix.de>
-Cc:     Steven Rostedt <rostedt@goodmis.org>,
-        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-        Lai Jiangshan <jiangshanlai@gmail.com>,
-        Zqiang <qiang.zhang1211@gmail.com>,
-        Sergey Senozhatsky <senozhatsky@chromium.org>,
-        chenhuacai@kernel.org, rcu@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Huacai Chen <chenhuacai@loongson.cn>,
-        stable@vger.kernel.org, Binbin Zhou <zhoubinbin@loongson.cn>
-Subject: [PATCH V3] rcu: Update jiffies locally in rcu_cpu_stall_reset()
-Date:   Tue, 22 Aug 2023 12:02:48 +0800
-Message-Id: <20230822040248.329442-1-chenhuacai@loongson.cn>
-X-Mailer: git-send-email 2.39.3
+        with ESMTP id S231657AbjHVFuN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 22 Aug 2023 01:50:13 -0400
+Received: from mail-pf1-x42f.google.com (mail-pf1-x42f.google.com [IPv6:2607:f8b0:4864:20::42f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 11841133
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 22:50:11 -0700 (PDT)
+Received: by mail-pf1-x42f.google.com with SMTP id d2e1a72fcca58-68a40d8557eso1332144b3a.1
+        for <stable@vger.kernel.org>; Mon, 21 Aug 2023 22:50:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernelci-org.20221208.gappssmtp.com; s=20221208; t=1692683410; x=1693288210;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=+UNx1PeSdMDFNmnkbuCI8hRY+J6VokQj5ehHLimVckc=;
+        b=bkOCQKAWxGLR1b+PeTdJ7fhaX8AiImOVry7qjoKa+f/5WoqpQo8b2yXQGvD50Npc08
+         Onm0wcs8xjrWFVrSzh83bkIsO6bK6+sCSRQWaYTv+X+wBdhEGqbSuJ5kjRskuQjB9W6v
+         4hXn4NMuKBjSDwXzyLFFeAjUAX4VEHC+zkuaGuUVSQWF/lNewt/YG7IRGReB+nMyBUuj
+         7VG2L6JT2ANg+CVZmgIouBAmgfcoWaden8xTRmpBhshfg3XuuU+lGIGNJuq5CCg4mq3z
+         cgv4cbQ//wRpmjer5Tp8arWhzvQzSX0xMeO7gKHZbf4bb+Uz+oGuZVEefi7y/etIZAQ7
+         OOzA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1692683410; x=1693288210;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=+UNx1PeSdMDFNmnkbuCI8hRY+J6VokQj5ehHLimVckc=;
+        b=PfVPB9dcmo4/3uRXtfzRG+Nbh1pSqITA/R6TrLyZDikzfg97ytRWvKlWSQhEtotRXA
+         yoN9IwiX2i7OBRLZHBDwWmVw0qgoa+rKQGeQgv0sW0FWCsY1YQzraVUjTwOHkTdkD3/X
+         svqRRTgVCIuBg/sTnuniZFCp5Wiy6Zu0S1leaKyDlgvsjPtcg0O3ktVg8/iXDhLClDt5
+         22atMfkxpKwj6GryOXYLfVSDQuOiK4X28wqKRDq1Sqo0z+xYNciuBcy5RSrHrfT3tq87
+         8U2RthvZoxrlB+MEDnVyNoiMeiriZ4VBWu46fP1ocWa8pXizjpqrp3TXQSEdcXergz1x
+         +T6Q==
+X-Gm-Message-State: AOJu0Yzjiee80Q1pXir7tIggoucjgcPLlnJpDVKYROL5Z2lu2OBpFmp2
+        c/9ZaOPXtWTgzIug1YILNusIZ1SFLH9wQptORQXaRQ==
+X-Google-Smtp-Source: AGHT+IG2zx5reQyvlRsoVoGhpMS9sWNz7geR5hRXKcoz/Yjbwra2G7FAal7C1BHj/MFU2aau+iLIQg==
+X-Received: by 2002:a05:6a00:a1f:b0:68a:6149:71cb with SMTP id p31-20020a056a000a1f00b0068a614971cbmr4048967pfh.5.1692683410031;
+        Mon, 21 Aug 2023 22:50:10 -0700 (PDT)
+Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
+        by smtp.gmail.com with ESMTPSA id a2-20020aa780c2000000b00688214cff65sm7034358pfn.44.2023.08.21.22.50.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 21 Aug 2023 22:50:09 -0700 (PDT)
+Message-ID: <64e44c91.a70a0220.767da.cece@mx.google.com>
+Date:   Mon, 21 Aug 2023 22:50:09 -0700 (PDT)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-3.0 required=5.0 tests=BAYES_00,
-        HEADER_FROM_DIFFERENT_DOMAINS,HEXHASH_WORD,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+X-Kernelci-Report-Type: test
+X-Kernelci-Kernel: v5.15.127-138-gfc9952e796d10
+X-Kernelci-Branch: linux-5.15.y
+X-Kernelci-Tree: stable-rc
+Subject: stable-rc/linux-5.15.y baseline: 89 runs,
+ 6 regressions (v5.15.127-138-gfc9952e796d10)
+To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+        kernelci-results@groups.io
+From:   "kernelci.org bot" <bot@kernelci.org>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-The KGDB initial breakpoint gets an rcu stall warning after commit
-a80be428fbc1f1f3bc9ed924 ("rcu: Do not disable GP stall detection in
-rcu_cpu_stall_reset()").
+stable-rc/linux-5.15.y baseline: 89 runs, 6 regressions (v5.15.127-138-gfc9=
+952e796d10)
 
-[   53.452051] rcu: INFO: rcu_preempt self-detected stall on CPU
-[   53.487950] rcu:     3-...0: (1 ticks this GP) idle=0e2c/1/0x4000000000000000 softirq=375/375 fqs=8
-[   53.528243] rcu:     (t=12297 jiffies g=-995 q=1 ncpus=4)
-[   53.564840] CPU: 3 PID: 1 Comm: swapper/0 Not tainted 6.5.0-rc2+ #4848
-[   53.603005] Hardware name: Loongson Loongson-3A5000-HV-7A2000-1w-V0.1-CRB/Loongson-LS3A5000-7A2000-1w-CRB-V1.21, BIOS Loongson-UDK2018-V2.0.05099-beta8 08
-[   53.682062] pc 9000000000332100 ra 90000000003320f4 tp 90000001000a0000 sp 90000001000a3710
-[   53.724934] a0 9000000001d4b488 a1 0000000000000000 a2 0000000000000001 a3 0000000000000000
-[   53.768179] a4 9000000001d526c8 a5 90000001000a38f0 a6 000000000000002c a7 0000000000000000
-[   53.810751] t0 00000000000002b0 t1 0000000000000004 t2 900000000131c9c0 t3 fffffffffffffffa
-[   53.853249] t4 0000000000000080 t5 90000001002ac190 t6 0000000000000004 t7 9000000001912d58
-[   53.895684] t8 0000000000000000 u0 90000000013141a0 s9 0000000000000028 s0 9000000001d512f0
-[   53.937633] s1 9000000001d51278 s2 90000001000a3798 s3 90000000019fc410 s4 9000000001d4b488
-[   53.979486] s5 9000000001d512f0 s6 90000000013141a0 s7 0000000000000078 s8 9000000001d4b450
-[   54.021175]    ra: 90000000003320f4 kgdb_cpu_enter+0x534/0x640
-[   54.060150]   ERA: 9000000000332100 kgdb_cpu_enter+0x540/0x640
-[   54.098347]  CRMD: 000000b0 (PLV0 -IE -DA +PG DACF=CC DACM=CC -WE)
-[   54.136621]  PRMD: 0000000c (PPLV0 +PIE +PWE)
-[   54.172192]  EUEN: 00000000 (-FPE -SXE -ASXE -BTE)
-[   54.207838]  ECFG: 00071c1c (LIE=2-4,10-12 VS=7)
-[   54.242503] ESTAT: 00000800 [INT] (IS=11 ECode=0 EsubCode=0)
-[   54.277996]  PRID: 0014c011 (Loongson-64bit, Loongson-3A5000-HV)
-[   54.313544] CPU: 3 PID: 1 Comm: swapper/0 Not tainted 6.5.0-rc2+ #4848
-[   54.430170] Stack : 0072617764726148 0000000000000000 9000000000223504 90000001000a0000
-[   54.472308]         9000000100073a90 9000000100073a98 0000000000000000 9000000100073bd8
-[   54.514413]         9000000100073bd0 9000000100073bd0 9000000100073a00 0000000000000001
-[   54.556018]         0000000000000001 9000000100073a98 99828271f24e961a 90000001002810c0
-[   54.596924]         0000000000000001 0000000000010003 0000000000000000 0000000000000001
-[   54.637115]         ffff8000337cdb80 0000000000000001 0000000006360000 900000000131c9c0
-[   54.677049]         0000000000000000 0000000000000000 90000000017b4c98 9000000001912000
-[   54.716394]         9000000001912f68 9000000001913000 9000000001912f70 00000000000002b0
-[   54.754880]         90000000014a8840 0000000000000000 900000000022351c 0000000000000000
-[   54.792372]         00000000000002b0 000000000000000c 0000000000000000 0000000000071c1c
-[   54.829302]         ...
-[   54.859163] Call Trace:
-[   54.859165] [<900000000022351c>] show_stack+0x5c/0x180
-[   54.918298] [<90000000012f6100>] dump_stack_lvl+0x60/0x88
-[   54.949251] [<90000000012dd5d8>] rcu_dump_cpu_stacks+0xf0/0x148
-[   54.981116] [<90000000002d2fb8>] rcu_sched_clock_irq+0xb78/0xe60
-[   55.012744] [<90000000002e47cc>] update_process_times+0x6c/0xc0
-[   55.044169] [<90000000002f65d4>] tick_sched_timer+0x54/0x100
-[   55.075488] [<90000000002e5174>] __hrtimer_run_queues+0x154/0x240
-[   55.107347] [<90000000002e6288>] hrtimer_interrupt+0x108/0x2a0
-[   55.139112] [<9000000000226418>] constant_timer_interrupt+0x38/0x60
-[   55.170749] [<90000000002b3010>] __handle_irq_event_percpu+0x50/0x160
-[   55.203141] [<90000000002b3138>] handle_irq_event_percpu+0x18/0x80
-[   55.235064] [<90000000002b9d54>] handle_percpu_irq+0x54/0xa0
-[   55.266241] [<90000000002b2168>] generic_handle_domain_irq+0x28/0x40
-[   55.298466] [<9000000000aba95c>] handle_cpu_irq+0x5c/0xa0
-[   55.329749] [<90000000012f7270>] handle_loongarch_irq+0x30/0x60
-[   55.361476] [<90000000012f733c>] do_vint+0x9c/0x100
-[   55.391737] [<9000000000332100>] kgdb_cpu_enter+0x540/0x640
-[   55.422440] [<9000000000332b64>] kgdb_handle_exception+0x104/0x180
-[   55.452911] [<9000000000232478>] kgdb_loongarch_notify+0x38/0xa0
-[   55.481964] [<900000000026b4d4>] notify_die+0x94/0x100
-[   55.509184] [<90000000012f685c>] do_bp+0x21c/0x340
-[   55.562475] [<90000000003315b8>] kgdb_compiled_break+0x0/0x28
-[   55.590319] [<9000000000332e80>] kgdb_register_io_module+0x160/0x1c0
-[   55.618901] [<9000000000c0f514>] configure_kgdboc+0x154/0x1c0
-[   55.647034] [<9000000000c0f5e0>] kgdboc_probe+0x60/0x80
-[   55.674647] [<9000000000c96da8>] platform_probe+0x68/0x100
-[   55.702613] [<9000000000c938e0>] really_probe+0xc0/0x340
-[   55.730528] [<9000000000c93be4>] __driver_probe_device+0x84/0x140
-[   55.759615] [<9000000000c93cdc>] driver_probe_device+0x3c/0x120
-[   55.787990] [<9000000000c93e8c>] __device_attach_driver+0xcc/0x160
-[   55.817145] [<9000000000c91290>] bus_for_each_drv+0x90/0x100
-[   55.845654] [<9000000000c94328>] __device_attach+0xa8/0x1a0
-[   55.874145] [<9000000000c925f0>] bus_probe_device+0xb0/0xe0
-[   55.902572] [<9000000000c8ec7c>] device_add+0x65c/0x860
-[   55.930635] [<9000000000c96704>] platform_device_add+0x124/0x2c0
-[   55.959669] [<9000000001452b38>] init_kgdboc+0x58/0xa0
-[   55.987677] [<900000000022015c>] do_one_initcall+0x7c/0x1e0
-[   56.016134] [<9000000001420f1c>] kernel_init_freeable+0x22c/0x2a0
-[   56.045128] [<90000000012f923c>] kernel_init+0x20/0x124
+Regressions Summary
+-------------------
 
-Currently rcu_cpu_stall_reset() set rcu_state.jiffies_stall to one check
-period later, i.e. jiffies + rcu_jiffies_till_stall_check(). But jiffies
-is only updated in the timer interrupt, so when kgdb_cpu_enter() begins
-to run there may already be nearly one rcu check period after jiffies.
-Since all interrupts are disabled during kgdb_cpu_enter(), jiffies will
-not be updated. When kgdb_cpu_enter() returns, rcu_state.jiffies_stall
-maybe already gets timeout.
+platform           | arch  | lab           | compiler | defconfig          =
+ | regressions
+-------------------+-------+---------------+----------+--------------------=
+-+------------
+beagle-xm          | arm   | lab-baylibre  | gcc-10   | omap2plus_defconfig=
+ | 1          =
 
-We can set rcu_state.jiffies_stall to two rcu check periods later, e.g.
-jiffies + (rcu_jiffies_till_stall_check() * 2) in rcu_cpu_stall_reset()
-to avoid this problem. But this isn't a complete solution because kgdb
-may take a very long time in irq disabled context.
+cubietruck         | arm   | lab-baylibre  | gcc-10   | multi_v7_defconfig =
+ | 1          =
 
-Instead, update jiffies at the beginning of rcu_cpu_stall_reset() can
-solve all kinds of problems [1]. But this causes a new problem because
-updating jiffies is not NMI safe while rcu_cpu_stall_reset() may be used
-in NMI context.
+fsl-ls2088a-rdb    | arm64 | lab-nxp       | gcc-10   | defconfig          =
+ | 1          =
 
-So we don't update the global jiffies, but only add the time 'delta' to
-jiffies locally at the beginning of rcu_cpu_stall_reset() which has the
-same effect.
+fsl-lx2160a-rdb    | arm64 | lab-nxp       | gcc-10   | defconfig          =
+ | 1          =
 
-[1] https://lore.kernel.org/rcu/20230814020045.51950-1-chenhuacai@loongson.cn/T/#t
+r8a779m1-ulcb      | arm64 | lab-collabora | gcc-10   | defconfig          =
+ | 1          =
 
-Cc: stable@vger.kernel.org
-Fixes: a80be428fbc1f1f3bc9ed924 ("rcu: Do not disable GP stall detection in rcu_cpu_stall_reset()")
-Reported-off-by: Binbin Zhou <zhoubinbin@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
----
-V2: Use NMI safe functions.
-V3: Add comments to explain why.
+sun50i-h6-pine-h64 | arm64 | lab-collabora | gcc-10   | defconfig          =
+ | 1          =
 
- kernel/rcu/tree_stall.h | 17 ++++++++++++++++-
- 1 file changed, 16 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/rcu/tree_stall.h b/kernel/rcu/tree_stall.h
-index b10b8349bb2a..e4e53113d062 100644
---- a/kernel/rcu/tree_stall.h
-+++ b/kernel/rcu/tree_stall.h
-@@ -150,11 +150,26 @@ static void panic_on_rcu_stall(void)
-  * rcu_cpu_stall_reset - restart stall-warning timeout for current grace period
-  *
-  * The caller must disable hard irqs.
-+ *
-+ * The jiffies updating may be delayed for a very long time due to tickless and
-+ * irq disabled, especially in the KGDB case, so we need to add the delayed time
-+ * (delta) to rcu_state.jiffies_stall.
-+ *
-+ * This function may be called in NMI context, so we cannot use ktime_get_ns()
-+ * and ktime_get_coarse_ns(). Instead, we use their inaccurate but safe friends
-+ * ktime_get_mono_fast_ns() and ktime_get_seconds() which will cause rcu_state.
-+ * jiffies_stall to be a little large than expected (harmless and safer).
-  */
- void rcu_cpu_stall_reset(void)
- {
-+	u64 curr, last, delta;
-+
-+	curr = ktime_get_mono_fast_ns();
-+	last = ktime_get_seconds() * NSEC_PER_SEC;
-+	delta = nsecs_to_jiffies(curr - last);
-+
- 	WRITE_ONCE(rcu_state.jiffies_stall,
--		   jiffies + rcu_jiffies_till_stall_check());
-+		   jiffies + delta + rcu_jiffies_till_stall_check());
- }
- 
- //////////////////////////////////////////////////////////////////////////////
--- 
-2.39.3
+  Details:  https://kernelci.org/test/job/stable-rc/branch/linux-5.15.y/ker=
+nel/v5.15.127-138-gfc9952e796d10/plan/baseline/
 
+  Test:     baseline
+  Tree:     stable-rc
+  Branch:   linux-5.15.y
+  Describe: v5.15.127-138-gfc9952e796d10
+  URL:      https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-st=
+able-rc.git
+  SHA:      fc9952e796d10f995ee74ab63b7f990fec0d8eca =
+
+
+
+Test Regressions
+---------------- =
+
+
+
+platform           | arch  | lab           | compiler | defconfig          =
+ | regressions
+-------------------+-------+---------------+----------+--------------------=
+-+------------
+beagle-xm          | arm   | lab-baylibre  | gcc-10   | omap2plus_defconfig=
+ | 1          =
+
+
+  Details:     https://kernelci.org/test/plan/id/64e41bde11327b4ee8dc95d9
+
+  Results:     0 PASS, 1 FAIL, 0 SKIP
+  Full config: omap2plus_defconfig
+  Compiler:    gcc-10 (arm-linux-gnueabihf-gcc (Debian 10.2.1-6) 10.2.1 202=
+10110)
+  Plain log:   https://storage.kernelci.org//stable-rc/linux-5.15.y/v5.15.1=
+27-138-gfc9952e796d10/arm/omap2plus_defconfig/gcc-10/lab-baylibre/baseline-=
+beagle-xm.txt
+  HTML log:    https://storage.kernelci.org//stable-rc/linux-5.15.y/v5.15.1=
+27-138-gfc9952e796d10/arm/omap2plus_defconfig/gcc-10/lab-baylibre/baseline-=
+beagle-xm.html
+  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
+t-baseline/20230623.0/armel/rootfs.cpio.gz =
+
+
+
+  * baseline.login: https://kernelci.org/test/case/id/64e41bde11327b4ee8dc9=
+5da
+        failing since 27 days (last pass: v5.15.120, first fail: v5.15.122-=
+79-g3bef1500d246a) =
+
+ =
+
+
+
+platform           | arch  | lab           | compiler | defconfig          =
+ | regressions
+-------------------+-------+---------------+----------+--------------------=
+-+------------
+cubietruck         | arm   | lab-baylibre  | gcc-10   | multi_v7_defconfig =
+ | 1          =
+
+
+  Details:     https://kernelci.org/test/plan/id/64e41bb9c6e59a1b43dc95cd
+
+  Results:     5 PASS, 1 FAIL, 1 SKIP
+  Full config: multi_v7_defconfig
+  Compiler:    gcc-10 (arm-linux-gnueabihf-gcc (Debian 10.2.1-6) 10.2.1 202=
+10110)
+  Plain log:   https://storage.kernelci.org//stable-rc/linux-5.15.y/v5.15.1=
+27-138-gfc9952e796d10/arm/multi_v7_defconfig/gcc-10/lab-baylibre/baseline-c=
+ubietruck.txt
+  HTML log:    https://storage.kernelci.org//stable-rc/linux-5.15.y/v5.15.1=
+27-138-gfc9952e796d10/arm/multi_v7_defconfig/gcc-10/lab-baylibre/baseline-c=
+ubietruck.html
+  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
+t-baseline/20230623.0/armel/rootfs.cpio.gz =
+
+
+
+  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
+/64e41bb9c6e59a1b43dc95d2
+        failing since 216 days (last pass: v5.15.82-124-gd731c63c25d1, firs=
+t fail: v5.15.87-101-g5bcc318cb4cd)
+
+    2023-08-22T02:21:30.645367  + set +x<8>[    9.957520] <LAVA_SIGNAL_ENDR=
+UN 0_dmesg 3744863_1.5.2.4.1>
+    2023-08-22T02:21:30.645583  =
+
+    2023-08-22T02:21:30.751977  / # #
+    2023-08-22T02:21:30.853514  export SHELL=3D/bin/sh
+    2023-08-22T02:21:30.854383  #
+    2023-08-22T02:21:30.956422  / # export SHELL=3D/bin/sh. /lava-3744863/e=
+nvironment
+    2023-08-22T02:21:30.957281  =
+
+    2023-08-22T02:21:31.059104  / # . /lava-3744863/environment/lava-374486=
+3/bin/lava-test-runner /lava-3744863/1
+    2023-08-22T02:21:31.059721  =
+
+    2023-08-22T02:21:31.064685  / # /lava-3744863/bin/lava-test-runner /lav=
+a-3744863/1 =
+
+    ... (12 line(s) more)  =
+
+ =
+
+
+
+platform           | arch  | lab           | compiler | defconfig          =
+ | regressions
+-------------------+-------+---------------+----------+--------------------=
+-+------------
+fsl-ls2088a-rdb    | arm64 | lab-nxp       | gcc-10   | defconfig          =
+ | 1          =
+
+
+  Details:     https://kernelci.org/test/plan/id/64e41bb5a9a9efb028dc95f2
+
+  Results:     5 PASS, 1 FAIL, 1 SKIP
+  Full config: defconfig
+  Compiler:    gcc-10 (aarch64-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210=
+110)
+  Plain log:   https://storage.kernelci.org//stable-rc/linux-5.15.y/v5.15.1=
+27-138-gfc9952e796d10/arm64/defconfig/gcc-10/lab-nxp/baseline-fsl-ls2088a-r=
+db.txt
+  HTML log:    https://storage.kernelci.org//stable-rc/linux-5.15.y/v5.15.1=
+27-138-gfc9952e796d10/arm64/defconfig/gcc-10/lab-nxp/baseline-fsl-ls2088a-r=
+db.html
+  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
+t-baseline/20230623.0/arm64/rootfs.cpio.gz =
+
+
+
+  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
+/64e41bb5a9a9efb028dc95f5
+        failing since 38 days (last pass: v5.15.67, first fail: v5.15.119-1=
+6-g66130849c020f)
+
+    2023-08-22T02:21:20.782475  + [   15.400373] <LAVA_SIGNAL_ENDRUN 0_dmes=
+g 1244649_1.5.2.4.1>
+    2023-08-22T02:21:20.782744  set +x
+    2023-08-22T02:21:20.887659  =
+
+    2023-08-22T02:21:20.988459  / # #export SHELL=3D/bin/sh
+    2023-08-22T02:21:20.988869  =
+
+    2023-08-22T02:21:21.089817  / # export SHELL=3D/bin/sh. /lava-1244649/e=
+nvironment
+    2023-08-22T02:21:21.090220  =
+
+    2023-08-22T02:21:21.191197  / # . /lava-1244649/environment/lava-124464=
+9/bin/lava-test-runner /lava-1244649/1
+    2023-08-22T02:21:21.191866  =
+
+    2023-08-22T02:21:21.195911  / # /lava-1244649/bin/lava-test-runner /lav=
+a-1244649/1 =
+
+    ... (12 line(s) more)  =
+
+ =
+
+
+
+platform           | arch  | lab           | compiler | defconfig          =
+ | regressions
+-------------------+-------+---------------+----------+--------------------=
+-+------------
+fsl-lx2160a-rdb    | arm64 | lab-nxp       | gcc-10   | defconfig          =
+ | 1          =
+
+
+  Details:     https://kernelci.org/test/plan/id/64e41ba1a9a9efb028dc95e0
+
+  Results:     5 PASS, 1 FAIL, 1 SKIP
+  Full config: defconfig
+  Compiler:    gcc-10 (aarch64-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210=
+110)
+  Plain log:   https://storage.kernelci.org//stable-rc/linux-5.15.y/v5.15.1=
+27-138-gfc9952e796d10/arm64/defconfig/gcc-10/lab-nxp/baseline-fsl-lx2160a-r=
+db.txt
+  HTML log:    https://storage.kernelci.org//stable-rc/linux-5.15.y/v5.15.1=
+27-138-gfc9952e796d10/arm64/defconfig/gcc-10/lab-nxp/baseline-fsl-lx2160a-r=
+db.html
+  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
+t-baseline/20230623.0/arm64/rootfs.cpio.gz =
+
+
+
+  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
+/64e41ba1a9a9efb028dc95e3
+        failing since 171 days (last pass: v5.15.79, first fail: v5.15.98)
+
+    2023-08-22T02:21:09.138502  [   11.258348] <LAVA_SIGNAL_ENDRUN 0_dmesg =
+1244648_1.5.2.4.1>
+    2023-08-22T02:21:09.241365  =
+
+    2023-08-22T02:21:09.342098  / # #export SHELL=3D/bin/sh
+    2023-08-22T02:21:09.342391  =
+
+    2023-08-22T02:21:09.443017  / # export SHELL=3D/bin/sh. /lava-1244648/e=
+nvironment
+    2023-08-22T02:21:09.443301  =
+
+    2023-08-22T02:21:09.543921  / # . /lava-1244648/environment/lava-124464=
+8/bin/lava-test-runner /lava-1244648/1
+    2023-08-22T02:21:09.544336  =
+
+    2023-08-22T02:21:09.548298  / # /lava-1244648/bin/lava-test-runner /lav=
+a-1244648/1
+    2023-08-22T02:21:09.564255  + export 'TESTRUN_ID=3D1_bootrr' =
+
+    ... (11 line(s) more)  =
+
+ =
+
+
+
+platform           | arch  | lab           | compiler | defconfig          =
+ | regressions
+-------------------+-------+---------------+----------+--------------------=
+-+------------
+r8a779m1-ulcb      | arm64 | lab-collabora | gcc-10   | defconfig          =
+ | 1          =
+
+
+  Details:     https://kernelci.org/test/plan/id/64e41b6ab24aee9981dc965b
+
+  Results:     5 PASS, 1 FAIL, 1 SKIP
+  Full config: defconfig
+  Compiler:    gcc-10 (aarch64-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210=
+110)
+  Plain log:   https://storage.kernelci.org//stable-rc/linux-5.15.y/v5.15.1=
+27-138-gfc9952e796d10/arm64/defconfig/gcc-10/lab-collabora/baseline-r8a779m=
+1-ulcb.txt
+  HTML log:    https://storage.kernelci.org//stable-rc/linux-5.15.y/v5.15.1=
+27-138-gfc9952e796d10/arm64/defconfig/gcc-10/lab-collabora/baseline-r8a779m=
+1-ulcb.html
+  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
+t-baseline/20230623.0/arm64/rootfs.cpio.gz =
+
+
+
+  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
+/64e41b6ab24aee9981dc9660
+        failing since 33 days (last pass: v5.15.120-274-g478387c57e172, fir=
+st fail: v5.15.120)
+
+    2023-08-22T02:20:08.510546  / # #
+
+    2023-08-22T02:20:09.590267  export SHELL=3D/bin/sh
+
+    2023-08-22T02:20:09.592181  #
+
+    2023-08-22T02:20:11.082124  / # export SHELL=3D/bin/sh. /lava-11328309/=
+environment
+
+    2023-08-22T02:20:11.084061  =
+
+
+    2023-08-22T02:20:13.806740  / # . /lava-11328309/environment/lava-11328=
+309/bin/lava-test-runner /lava-11328309/1
+
+    2023-08-22T02:20:13.808872  =
+
+
+    2023-08-22T02:20:13.820057  / # /lava-11328309/bin/lava-test-runner /la=
+va-11328309/1
+
+    2023-08-22T02:20:13.879344  + export 'TESTRUN_ID=3D1_bootrr'
+
+    2023-08-22T02:20:13.879776  + cd /lava-113283<8>[   25.499670] <LAVA_SI=
+GNAL_STARTRUN 1_bootrr 11328309_1.5.2.4.5>
+ =
+
+    ... (38 line(s) more)  =
+
+ =
+
+
+
+platform           | arch  | lab           | compiler | defconfig          =
+ | regressions
+-------------------+-------+---------------+----------+--------------------=
+-+------------
+sun50i-h6-pine-h64 | arm64 | lab-collabora | gcc-10   | defconfig          =
+ | 1          =
+
+
+  Details:     https://kernelci.org/test/plan/id/64e41b3930c259c86fdc95f6
+
+  Results:     5 PASS, 1 FAIL, 1 SKIP
+  Full config: defconfig
+  Compiler:    gcc-10 (aarch64-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210=
+110)
+  Plain log:   https://storage.kernelci.org//stable-rc/linux-5.15.y/v5.15.1=
+27-138-gfc9952e796d10/arm64/defconfig/gcc-10/lab-collabora/baseline-sun50i-=
+h6-pine-h64.txt
+  HTML log:    https://storage.kernelci.org//stable-rc/linux-5.15.y/v5.15.1=
+27-138-gfc9952e796d10/arm64/defconfig/gcc-10/lab-collabora/baseline-sun50i-=
+h6-pine-h64.html
+  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
+t-baseline/20230623.0/arm64/rootfs.cpio.gz =
+
+
+
+  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
+/64e41b3930c259c86fdc95fb
+        failing since 33 days (last pass: v5.15.120-274-g478387c57e172, fir=
+st fail: v5.15.120)
+
+    2023-08-22T02:21:02.335152  / # #
+
+    2023-08-22T02:21:02.437293  export SHELL=3D/bin/sh
+
+    2023-08-22T02:21:02.438041  #
+
+    2023-08-22T02:21:02.539439  / # export SHELL=3D/bin/sh. /lava-11328319/=
+environment
+
+    2023-08-22T02:21:02.540182  =
+
+
+    2023-08-22T02:21:02.641756  / # . /lava-11328319/environment/lava-11328=
+319/bin/lava-test-runner /lava-11328319/1
+
+    2023-08-22T02:21:02.642917  =
+
+
+    2023-08-22T02:21:02.644209  / # /lava-11328319/bin/lava-test-runner /la=
+va-11328319/1
+
+    2023-08-22T02:21:02.685506  + export 'TESTRUN_ID=3D1_bootrr'
+
+    2023-08-22T02:21:02.718074  + cd /lava-1132831<8>[   16.747241] <LAVA_S=
+IGNAL_STARTRUN 1_bootrr 11328319_1.5.2.4.5>
+ =
+
+    ... (10 line(s) more)  =
+
+ =20
