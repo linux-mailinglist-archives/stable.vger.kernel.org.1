@@ -2,90 +2,98 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8EDE2784029
-	for <lists+stable@lfdr.de>; Tue, 22 Aug 2023 13:54:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CD0E27840C0
+	for <lists+stable@lfdr.de>; Tue, 22 Aug 2023 14:27:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232097AbjHVLyY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 22 Aug 2023 07:54:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41864 "EHLO
+        id S235084AbjHVM1i (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 22 Aug 2023 08:27:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36478 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235507AbjHVLyX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 22 Aug 2023 07:54:23 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.126])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D3BD7E66;
-        Tue, 22 Aug 2023 04:54:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1692705242; x=1724241242;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=mcfp8eqaoM3pY02/1gNm55E8T7e3wQ+83xT+JBpXKCI=;
-  b=ADm2eefeLrpIi0wUhsrDL41prMX25AvQHCMpgsz3GOdyE3bBbHzU6vt2
-   1vT+47ukMKbNV4xkVeMEQ5NsKe89ayl+GMTvD5kYO5MCLTwekXSsLYeXa
-   rGh2d7Ma+2aWFFkgySxQNC5vfuGpYXzABXBvt/eVu07wpj6+2qlFdVNcz
-   VuCMwQKuUU34sY49DrUDJc8fW15QEd8XlVo7Qc++CzWUNtCUnFfJea7ej
-   wALgPfyH+e8Hcy2LO53ex+HOXfzT9SEMHOgm5DW7PZHwyYDO/FsWohMmi
-   T2sAiHDUGP+/bozv7rz6gofethzwLp3rJC05bA7+tevCfxiH+Xdqo0ITb
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10809"; a="358847881"
-X-IronPort-AV: E=Sophos;i="6.01,192,1684825200"; 
-   d="scan'208";a="358847881"
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Aug 2023 04:51:47 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10809"; a="801645548"
-X-IronPort-AV: E=Sophos;i="6.01,192,1684825200"; 
-   d="scan'208";a="801645548"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga008.fm.intel.com with ESMTP; 22 Aug 2023 04:51:44 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1qYPvC-008tPh-2e;
-        Tue, 22 Aug 2023 14:51:42 +0300
-Date:   Tue, 22 Aug 2023 14:51:42 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Mika Westerberg <mika.westerberg@linux.intel.com>
-Cc:     Raag Jadav <raag.jadav@intel.com>, linus.walleij@linaro.org,
-        linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        mallikarjunappa.sangannavar@intel.com, pandith.n@intel.com,
-        stable@vger.kernel.org
-Subject: Re: [PATCH v2] pinctrl: cherryview: fix address_space_handler()
- argument
-Message-ID: <ZOShTk4se2dWDN4X@smile.fi.intel.com>
-References: <20230822072340.8783-1-raag.jadav@intel.com>
- <20230822112034.GN3465@black.fi.intel.com>
+        with ESMTP id S235053AbjHVLhf (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 22 Aug 2023 07:37:35 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 95D6EE64;
+        Tue, 22 Aug 2023 04:37:10 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 248F4628A9;
+        Tue, 22 Aug 2023 11:36:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9235AC433AB;
+        Tue, 22 Aug 2023 11:36:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1692704177;
+        bh=KGzA8e5TbOUnA/aIvY9F/XX3axielzyfdFWEv5FHyjo=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=Sb/OOC2fsPa4zkxAqLB/7mcZNIY5CoTPTy/urwGS8/XBkc7akS9zfY8pC+oHMiqYe
+         EoU9goqytMcorFLbGrXLy1+2kyEbXVhWf0CMcYs8G9TkpF+cCxTId/y4lQqEPB1Qil
+         yItxrBXNukkD6mjwlFo2AC5IxQ9oRCURr2StBaxX5K+CNf/vslSCh6To9cpHQtp6fg
+         C7iBa6h9GsOXR+KjAgP1o8Ng12av2IeHIDkaJ8bo23wmLX9kF3yAKPfaEOEui/InwA
+         oxRYBo3rixz9uTp5zz5M9ZbR9ugiRaoVtfJTJZWZyf71h0GolDBa0Pjhlkw152z8S0
+         4RCXqFO5lOYjw==
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Tim Huang <Tim.Huang@amd.com>,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        Sasha Levin <sashal@kernel.org>, evan.quan@amd.com,
+        christian.koenig@amd.com, Xinhui.Pan@amd.com, airlied@gmail.com,
+        daniel@ffwll.ch, Hawking.Zhang@amd.com, kenneth.feng@amd.com,
+        lijo.lazar@amd.com, Kun.Liu2@amd.com, trix@redhat.com,
+        amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org
+Subject: [PATCH AUTOSEL 6.4 07/11] drm/amd/pm: skip the RLC stop when S0i3 suspend for SMU v13.0.4/11
+Date:   Tue, 22 Aug 2023 07:35:49 -0400
+Message-Id: <20230822113553.3551206-7-sashal@kernel.org>
+X-Mailer: git-send-email 2.40.1
+In-Reply-To: <20230822113553.3551206-1-sashal@kernel.org>
+References: <20230822113553.3551206-1-sashal@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230822112034.GN3465@black.fi.intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.4.11
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, Aug 22, 2023 at 02:20:34PM +0300, Mika Westerberg wrote:
-> On Tue, Aug 22, 2023 at 12:53:40PM +0530, Raag Jadav wrote:
-> > First argument of acpi_*_address_space_handler() APIs is acpi_handle of
-> > the device, which is incorrectly passed in driver ->remove() path here.
-> > Fix it by passing the appropriate argument and while at it, make both
-> > API calls consistent using ACPI_HANDLE().
-> > 
-> > Fixes: a0b028597d59 ("pinctrl: cherryview: Add support for GMMR GPIO opregion")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Raag Jadav <raag.jadav@intel.com>
-> 
-> Acked-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+From: Tim Huang <Tim.Huang@amd.com>
 
-Pushed to my review and testing queue, thanks!
+[ Upstream commit 730d44e1fa306a20746ad4a85da550662aed9daa ]
 
+For SMU v13.0.4/11, driver does not need to stop RLC for S0i3,
+the firmwares will handle that properly.
+
+Signed-off-by: Tim Huang <Tim.Huang@amd.com>
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c b/drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c
+index ea03e8d9a3f6c..818379276a582 100644
+--- a/drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c
+@@ -1573,9 +1573,9 @@ static int smu_disable_dpms(struct smu_context *smu)
+ 
+ 	/*
+ 	 * For SMU 13.0.4/11, PMFW will handle the features disablement properly
+-	 * for gpu reset case. Driver involvement is unnecessary.
++	 * for gpu reset and S0i3 cases. Driver involvement is unnecessary.
+ 	 */
+-	if (amdgpu_in_reset(adev)) {
++	if (amdgpu_in_reset(adev) || adev->in_s0ix) {
+ 		switch (adev->ip_versions[MP1_HWIP][0]) {
+ 		case IP_VERSION(13, 0, 4):
+ 		case IP_VERSION(13, 0, 11):
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.40.1
 
