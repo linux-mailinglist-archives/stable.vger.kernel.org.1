@@ -2,88 +2,119 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5F78E783B3B
-	for <lists+stable@lfdr.de>; Tue, 22 Aug 2023 09:55:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 67315783B42
+	for <lists+stable@lfdr.de>; Tue, 22 Aug 2023 09:57:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233571AbjHVHzq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 22 Aug 2023 03:55:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57140 "EHLO
+        id S233581AbjHVH5o (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 22 Aug 2023 03:57:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57086 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233572AbjHVHzp (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 22 Aug 2023 03:55:45 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F77D19B
-        for <stable@vger.kernel.org>; Tue, 22 Aug 2023 00:55:44 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B3E10616CE
-        for <stable@vger.kernel.org>; Tue, 22 Aug 2023 07:55:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A98EC433C7;
-        Tue, 22 Aug 2023 07:55:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1692690943;
-        bh=HgS4yGKAG70Gf+ddyrfQ4yCXJvgfhzVcU5cE2sHvA9I=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=ZmeH0c00ZEtMrTSee7G6WcrDoSDkz6l1EhgHWG8XYQCpb3JTyzQv5iTt3GMmc76ne
-         i1F1KiRzfGGdgIs8m48wRn1si931WnDn7FDAkX18fj4/FPytTfgkvyE5l0ukjG/kV0
-         gGc3eOCKJeYdBy7Rz4o/jnBDaaVk4Aa0Bl3WdmeR+BpAL6Oqbiz/Uj8jk10qAw0D9t
-         VSsqXjYuXo6W1yUW1evsW1CJT0tckM3QDcfBijXoD41oZkCaYW1iKIzO6RdYoblcUN
-         BIvXBy3xB6d8jQXDNahmfXhNId5AEdPJMyOoo103N3Uv6aNDWlWGpWk9gUDsuwEezH
-         0IWLP+fv7l51Q==
-Date:   Tue, 22 Aug 2023 09:55:39 +0200
-From:   Simon Horman <horms@kernel.org>
-To:     Sven Eckelmann <sven@narfation.org>
-Cc:     "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        b.a.t.m.a.n@lists.open-mesh.org, netdev@vger.kernel.org,
-        stable@vger.kernel.org,
-        syzbot+f8812454d9b3ac00d282@syzkaller.appspotmail.com
-Subject: Re: [PATCH net] batman-adv: Hold rtnl lock during MTU update via
- netlink
-Message-ID: <20230822075539.GU2711035@kernel.org>
-References: <20230821-batadv-missing-mtu-rtnl-lock-v1-1-1c5a7bfe861e@narfation.org>
+        with ESMTP id S233609AbjHVH5m (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 22 Aug 2023 03:57:42 -0400
+X-Greylist: delayed 90 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 22 Aug 2023 00:57:39 PDT
+Received: from omta034.useast.a.cloudfilter.net (omta034.useast.a.cloudfilter.net [44.202.169.33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D47E312C
+        for <stable@vger.kernel.org>; Tue, 22 Aug 2023 00:57:39 -0700 (PDT)
+Received: from eig-obgw-6003a.ext.cloudfilter.net ([10.0.30.151])
+        by cmsmtp with ESMTP
+        id Y9UrqecWYez0CYMEzqv8rK; Tue, 22 Aug 2023 07:55:53 +0000
+Received: from box5620.bluehost.com ([162.241.219.59])
+        by cmsmtp with ESMTPS
+        id YMFDqSg4y6MlDYMFEqE4rm; Tue, 22 Aug 2023 07:56:08 +0000
+X-Authority-Analysis: v=2.4 cv=HpNlpmfS c=1 sm=1 tr=0 ts=64e46a18
+ a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
+ a=OWjo9vPv0XrRhIrVQ50Ab3nP57M=:19 a=dLZJa+xiwSxG16/P+YVxDGlgEgI=:19
+ a=IkcTkHD0fZMA:10 a=UttIx32zK-AA:10 a=-Ou01B_BuAIA:10 a=VwQbUJbxAAAA:8
+ a=HaFmDPmJAAAA:8 a=EQwu3T12zX-_ASVHoRwA:9 a=QEXdDO2ut3YA:10
+ a=AjGcO6oz07-iQ99wixmX:22 a=nmWuMzfKamIsx3l42hEX:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
+        s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Date:
+        Message-ID:From:In-Reply-To:References:Cc:To:Subject:Sender:Reply-To:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=H7+HYOErNMxVNmb4FYKHuiMVtBoeYXHep00xSz+JHho=; b=RVtiiA831CbuYK7EtJUSMqi+JF
+        MFOur2OU0uDo52qhctGGiWN32sRF063JmqaX9nfWlyNMMKs2ZTxtgFL3uoaY0TcOtcvuWjmM86qGL
+        Jk2CZOhAqP8+5SUIYi5QJ9yOdOn1h4aUT3eacnXC3TxQ2LDk1YuuZC90HP31KHL2alfCYCcsvQE/K
+        Fb27x8nMNK1VWJ//VIs/Fs5ruIRx5sklnmRfzra5AF4pByvLhf5VweAQXk6YM8WcAcGYmVosaYYwz
+        On/VttS4tIixcg011pTCy0hh4EMXKBBO6MhorFrktN2m0eiYqm6gWXYi71jmsbVqt/luMIjv4LfHd
+        j9tfhABA==;
+Received: from c-73-162-232-9.hsd1.ca.comcast.net ([73.162.232.9]:52638 helo=[10.0.1.47])
+        by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+        (Exim 4.96)
+        (envelope-from <re@w6rz.net>)
+        id 1qYMFB-000UXM-1B;
+        Tue, 22 Aug 2023 01:56:05 -0600
+Subject: Re: [PATCH 6.4 000/234] 6.4.12-rc1 review
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org
+Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+        torvalds@linux-foundation.org, akpm@linux-foundation.org,
+        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
+References: <20230821194128.754601642@linuxfoundation.org>
+In-Reply-To: <20230821194128.754601642@linuxfoundation.org>
+From:   Ron Economos <re@w6rz.net>
+Message-ID: <d4baed15-d37a-0234-329b-c3b0f9aeecdb@w6rz.net>
+Date:   Tue, 22 Aug 2023 00:55:59 -0700
+User-Agent: Mozilla/5.0 (X11; Linux armv7l; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230821-batadv-missing-mtu-rtnl-lock-v1-1-1c5a7bfe861e@narfation.org>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - box5620.bluehost.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - w6rz.net
+X-BWhitelist: no
+X-Source-IP: 73.162.232.9
+X-Source-L: No
+X-Exim-ID: 1qYMFB-000UXM-1B
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: c-73-162-232-9.hsd1.ca.comcast.net ([10.0.1.47]) [73.162.232.9]:52638
+X-Source-Auth: re@w6rz.net
+X-Email-Count: 2
+X-Org:  HG=bhshared;ORG=bluehost;
+X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfPdWMIw9Zn8DE8ghDb6a8mShhaUa4JRYqJy5vEy0lC83L+8lsvPOde5N2tw9ryQsLRg3F+kcA6L1o2+Ejf8OwCGV+ZXafOJAV5bQ/nXfO3ZcOCeZ5cty
+ kwF/BzvrZ2jguUwxVFi5u5vlLE++/fSdqUpa1Ex0FFgAo3gQtHpU010sUU04M21Irt4kaL5DMHQoJA==
+X-Spam-Status: No, score=-3.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, Aug 21, 2023 at 09:48:48PM +0200, Sven Eckelmann wrote:
-> The automatic recalculation of the maximum allowed MTU is usually triggered
-> by code sections which are already rtnl lock protected by callers outside
-> of batman-adv. But when the fragmentation setting is changed via
-> batman-adv's own batadv genl family, then the rtnl lock is not yet taken.
-> 
-> But dev_set_mtu requires that the caller holds the rtnl lock because it
-> uses netdevice notifiers. And this code will then fail the check for this
-> lock:
-> 
->   RTNL: assertion failed at net/core/dev.c (1953)
-> 
-> Cc: stable@vger.kernel.org
-> Reported-by: syzbot+f8812454d9b3ac00d282@syzkaller.appspotmail.com
-> Fixes: c6a953cce8d0 ("batman-adv: Trigger events for auto adjusted MTU")
-> Signed-off-by: Sven Eckelmann <sven@narfation.org>
+On 8/21/23 12:39 PM, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.4.12 release.
+> There are 234 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Wed, 23 Aug 2023 19:40:45 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.4.12-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.4.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-Reviewed-by: Simon Horman <horms@kernel.org>
+Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
 
-> ---
-> This problem was just identified by syzbot [1]. I hope it is ok to directly
-> send this patch to netdev instead of creating a single-patch PR from
-> the batadv/net branch. If you still prefer a PR then we can also prepare
-> it.
-> 
-> [1] https://lore.kernel.org/r/0000000000009bbb4b0603717cde@google.com
+Tested-by: Ron Economos <re@w6rz.net>
 
-...
