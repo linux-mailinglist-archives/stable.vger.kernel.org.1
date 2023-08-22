@@ -2,101 +2,114 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0764B7841CE
-	for <lists+stable@lfdr.de>; Tue, 22 Aug 2023 15:17:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DF3947841E6
+	for <lists+stable@lfdr.de>; Tue, 22 Aug 2023 15:22:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234161AbjHVNRr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 22 Aug 2023 09:17:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35708 "EHLO
+        id S236074AbjHVNW1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 22 Aug 2023 09:22:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42044 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232281AbjHVNRq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 22 Aug 2023 09:17:46 -0400
-X-Greylist: delayed 375 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 22 Aug 2023 06:17:41 PDT
-Received: from postout2.mail.lrz.de (postout2.mail.lrz.de [IPv6:2001:4ca0:0:103::81bb:ff8a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A1AA18B;
-        Tue, 22 Aug 2023 06:17:41 -0700 (PDT)
-Received: from lxmhs52.srv.lrz.de (localhost [127.0.0.1])
-        by postout2.mail.lrz.de (Postfix) with ESMTP id 4RVV952pW7zyX2;
-        Tue, 22 Aug 2023 15:11:21 +0200 (CEST)
-Authentication-Results: postout.lrz.de (amavisd-new); dkim=pass (2048-bit key)
-        reason="pass (just generated, assumed good)" header.d=tum.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=tum.de; h=
-        in-reply-to:content-disposition:content-type:content-type
-        :mime-version:references:message-id:subject:subject:from:from
-        :date:date:received:received; s=tu-postout21; t=1692709880; bh=7
-        MXBSA2oPcu+//EHHLMQozjXroTKi4+sBWXdNVXS71k=; b=LuuD/tm2rdPtMca1x
-        wTO32C1Z3C9GMBu1lGwVBUmIO23Q5WaEQsQCY3fHPGbyxh6XF33OvTiYUDoahGvc
-        5FXeYL4z9IhePrSHrqiO6cnFGAVLTSTxwcKydMKeCPzAtko1pGvNWJZu51O7PWYp
-        94aT9sIgkGIaTtUzt/ylqmSBS3ZMBaD+s5R2voTxyhyWnk3dcSIh0zHnth01z+ei
-        3nOsADb9eR4FHgh82BjOPxrsbiK4XORiDH3v4Gpj0QMUWzQUz4p5W5eY7JCCC7Jv
-        vkC/b2ukIDnqzo+9d4gYP2edHff3PfGYCTbsYGCQ0px1NHUftLyQFaNY+l4FxYKi
-        zVn+w==
-X-Virus-Scanned: by amavisd-new at lrz.de in lxmhs52.srv.lrz.de
-X-Spam-Score: -2.871
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
-Received: from postout2.mail.lrz.de ([127.0.0.1])
-        by lxmhs52.srv.lrz.de (lxmhs52.srv.lrz.de [127.0.0.1]) (amavisd-new, port 20024)
-        with LMTP id DfRD1ZXrXZAS; Tue, 22 Aug 2023 15:11:20 +0200 (CEST)
-Received: from r2-d2.localdomain (unknown [IPv6:2001:4ca0:0:f293:2e93:503c:b2ad:193b])
+        with ESMTP id S234984AbjHVNW1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 22 Aug 2023 09:22:27 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E0F8B18B;
+        Tue, 22 Aug 2023 06:22:25 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (Client did not present a certificate)
-        by postout2.mail.lrz.de (Postfix) with ESMTPSA id 4RVV933VvKzyV6;
-        Tue, 22 Aug 2023 15:11:19 +0200 (CEST)
-Date:   Tue, 22 Aug 2023 15:11:18 +0200
-From:   Andrei Rabusov <a.rabusov@tum.de>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-        jonathanh@nvidia.com, f.fainelli@gmail.com,
-        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-        conor@kernel.org
-Subject: Re: [PATCH 6.4 000/234] 6.4.12-rc1 review
-Message-ID: <ZOSz9vvKd9FNHr_u@r2-d2.localdomain>
-References: <20230821194128.754601642@linuxfoundation.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230821194128.754601642@linuxfoundation.org>
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7CB9862274;
+        Tue, 22 Aug 2023 13:22:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32749C43142;
+        Tue, 22 Aug 2023 13:22:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1692710544;
+        bh=8f1xuEvwUyr4BzbIAvQIfSMXVJQby2xz/NDa3h2g9HE=;
+        h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+        b=JhIJXRloUMZX1/B6p6lWe+IsPQjLswHXXgg8kpeO2YVkOVjmN3YIpYFZk9atGpiye
+         37DrG45RXIp/1mxVUqCBcR9w3EKThIyelrWpGnRFp9qUChBvatHmQrwf5pr6jhK2Pt
+         ECHqlTHdjkCsbfYAntga7/AlbccjbWawfNX30GK2CrE3024puGWfvvPDkWG4bpUZ2f
+         d8mUWK7WsZRXZrY18+jNQHDc2eoZF1d+jiTxVUc0mIwEJyuVBKmlRMQ1RMzxF9MVy5
+         mFgBGS0x56oEjqzTTH6yY9kharuDnUU83wE1av52jJaS/MaZVx7HzHYiXckkCCdez0
+         smK94fTqhfQ5g==
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date:   Tue, 22 Aug 2023 16:22:21 +0300
+Message-Id: <CUZ3T3G99JG2.29X1G67HRO9QT@suppilovahvero>
+Cc:     <linux-integrity@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <stable@vger.kernel.org>, "Todd Brandt" <todd.e.brandt@intel.com>,
+        "Patrick Steinhardt" <ps@pks.im>, "Ronan Pigott" <ronan@rjp.ie>,
+        "Raymond Jay Golo" <rjgolo@gmail.com>
+Subject: Re: [PATCH v2] tpm: Don't make vendor check required for probe
+From:   "Jarkko Sakkinen" <jarkko@kernel.org>
+To:     "Mario Limonciello" <mario.limonciello@amd.com>
+X-Mailer: aerc 0.14.0
+References: <20230821140230.1168-1-mario.limonciello@amd.com>
+In-Reply-To: <20230821140230.1168-1-mario.limonciello@amd.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, Aug 21, 2023 at 09:39:23PM +0200, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.4.12 release.
-> There are 234 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Wed, 23 Aug 2023 19:40:45 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.4.12-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.4.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
+On Mon Aug 21, 2023 at 5:02 PM EEST, Mario Limonciello wrote:
+> The vendor check introduced by commit 554b841d4703 ("tpm: Disable RNG for
+> all AMD fTPMs") doesn't work properly on a number of Intel fTPMs.  On the
+> reported systems the TPM doesn't reply at bootup and returns back the
+> command code. This makes the TPM fail probe.
+>
+> As this isn't crucial for anything but AMD fTPM and AMD fTPM works, check
+> the chip vendor and if it's not AMD don't run the checks.
+>
+> Cc: stable@vger.kernel.org
+> Fixes: 554b841d4703 ("tpm: Disable RNG for all AMD fTPMs")
+> Reported-by: Todd Brandt <todd.e.brandt@intel.com>
+> Reported-by: Patrick Steinhardt <ps@pks.im>
+> Reported-by: Ronan Pigott <ronan@rjp.ie>
+> Reported-by: Raymond Jay Golo <rjgolo@gmail.com>
+> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=3D217804
+> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+> ---
+> v1->v2:
+>  * Check x86 vendor for AMD
+> ---
+>  drivers/char/tpm/tpm_crb.c | 7 ++++++-
+>  1 file changed, 6 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/char/tpm/tpm_crb.c b/drivers/char/tpm/tpm_crb.c
+> index 9eb1a18590123..7faf670201ccc 100644
+> --- a/drivers/char/tpm/tpm_crb.c
+> +++ b/drivers/char/tpm/tpm_crb.c
+> @@ -465,8 +465,12 @@ static bool crb_req_canceled(struct tpm_chip *chip, =
+u8 status)
+> =20
+>  static int crb_check_flags(struct tpm_chip *chip)
+>  {
+> +	int ret =3D 0;
+> +#ifdef CONFIG_X86
+>  	u32 val;
+> -	int ret;
+> +
+> +	if (boot_cpu_data.x86_vendor !=3D X86_VENDOR_AMD)
+> +		return ret;
+> =20
+>  	ret =3D crb_request_locality(chip, 0);
+>  	if (ret)
+> @@ -481,6 +485,7 @@ static int crb_check_flags(struct tpm_chip *chip)
+> =20
+>  release:
+>  	crb_relinquish_locality(chip, 0);
+> +#endif
 
-6.4.12-rc1 configures, compiles, runs, and passes most of the tests with
-my custom config for Lenovo Thinkpad X220 (x86_64). Here is a short log:
+Looks much better but the main question here is that is this combination
+possible:
 
-system-manufacturer               LENOVO
-system-product-name              4291EM4
-bios-release-date             06/21/2018
-bios-version            8DET76WW (1.46 )
-kernel                        6.4.12-rc1
-selftest result                  570/652
+1. AMD CPU
+2. Non-AMD fTPM (i.e. manufacturer property differs)
 
-Tested-by: Andrei Rabusov <andrei@rabusov.de>
+BR, Jarkko
