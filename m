@@ -2,107 +2,115 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CDB88783AD2
-	for <lists+stable@lfdr.de>; Tue, 22 Aug 2023 09:27:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C0211783AD5
+	for <lists+stable@lfdr.de>; Tue, 22 Aug 2023 09:27:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229787AbjHVH14 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 22 Aug 2023 03:27:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50914 "EHLO
+        id S230291AbjHVH15 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 22 Aug 2023 03:27:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50910 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233142AbjHVH1t (ORCPT
+        with ESMTP id S233092AbjHVH1t (ORCPT
         <rfc822;stable@vger.kernel.org>); Tue, 22 Aug 2023 03:27:49 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.24])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D1CEE133;
-        Tue, 22 Aug 2023 00:27:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1692689264; x=1724225264;
-  h=from:to:cc:subject:date:message-id;
-  bh=bpf4SKdwRPcbz0UwMeMNuyan9Jo3cwQxDYxRkC1tqhw=;
-  b=ZSheP9o2vWNqvKNofX+5fjN4fn1+RRAyxyGx6X8Fns8c6Wq0nGgdDlpz
-   oc6AfJlAidYtiOS8I1rJ70OfJ4wT2X7bidfYWqA5KBEoer2ACmLbCKTqM
-   YUAjU3CYHd75VRPu+rxvTiZQx6JCsrvHa5F37X2lNV6MoEID5onrbGf8G
-   quu8C03r2xtKjj7odMvODI1ljWaTiJnm5BobLMPlbzTrnbrWyMuo62mXe
-   0LjLWbVgSVJz1VyNZkHfayA/FLjVzjag+mQTA3SbVM5LEdu0E5y0Mc8nT
-   uLSYBLZpkm4tgO9FPOP1ECuSyh7wKoZbZhtGLIZODfKIbRjahEPATeyRA
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10809"; a="376538405"
-X-IronPort-AV: E=Sophos;i="6.01,192,1684825200"; 
-   d="scan'208";a="376538405"
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Aug 2023 00:24:08 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10809"; a="685941229"
-X-IronPort-AV: E=Sophos;i="6.01,192,1684825200"; 
-   d="scan'208";a="685941229"
-Received: from inlubt0316.iind.intel.com ([10.191.20.213])
-  by orsmga003.jf.intel.com with ESMTP; 22 Aug 2023 00:24:04 -0700
-From:   Raag Jadav <raag.jadav@intel.com>
-To:     linus.walleij@linaro.org, mika.westerberg@linux.intel.com,
-        andriy.shevchenko@linux.intel.com
-Cc:     linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        mallikarjunappa.sangannavar@intel.com, pandith.n@intel.com,
-        Raag Jadav <raag.jadav@intel.com>, stable@vger.kernel.org
-Subject: [PATCH v2] pinctrl: cherryview: fix address_space_handler() argument
-Date:   Tue, 22 Aug 2023 12:53:40 +0530
-Message-Id: <20230822072340.8783-1-raag.jadav@intel.com>
-X-Mailer: git-send-email 2.17.1
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+Received: from mail-pf1-x432.google.com (mail-pf1-x432.google.com [IPv6:2607:f8b0:4864:20::432])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 23009132;
+        Tue, 22 Aug 2023 00:27:42 -0700 (PDT)
+Received: by mail-pf1-x432.google.com with SMTP id d2e1a72fcca58-68a3082c771so1647369b3a.0;
+        Tue, 22 Aug 2023 00:27:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1692689261; x=1693294061;
+        h=content-transfer-encoding:in-reply-to:mime-version:user-agent:date
+         :message-id:from:cc:references:to:subject:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=5OTbjyPhWofsS3uxKEauMLS7RlGyzuvbf/K2kko+lhc=;
+        b=aPBBGiRGxcMbUgeWBPhGL7I0qlUtDoAqJdpzJHk91WNWjDoNiNahtuMhtyds/ph2H0
+         UBgtIT1j7Ex/bDCJx50zyls7ODCR6veHDrwDbZreuLEnfJTrFVppD7bdwYnMvcsaTifd
+         JYGxylc5kFA4RkHUQ7bdv5/JGVaaduOEcbbOOBCCGrjXtbJadj08XcPnB/CYQ0ri+Kwy
+         5HW2ktYFbK9Fjb2g082YvwL4oXEEVvxsItQ423kESXP4j83BMVRG4Ba1qCczD3J5Az7o
+         DD5YPvzE4K5eD1vr42p25d47LZ69QaMoPJEjaI93LBE0WPI7M17u6z/pEHUdGqGB9TjS
+         BTKQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1692689261; x=1693294061;
+        h=content-transfer-encoding:in-reply-to:mime-version:user-agent:date
+         :message-id:from:cc:references:to:subject:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=5OTbjyPhWofsS3uxKEauMLS7RlGyzuvbf/K2kko+lhc=;
+        b=aSiaZy96S9Gg1zhy5mx8ZMn4ROTncjLOB6C09wQfYseXdVm2oMy0Q0LanN/ybod8k9
+         OM/YV+r7GTLp6nATYwyhbVhtckLLgVKt41cuuOfuX/Wc7JEtv5SQR/PXOQQti5BVeCd6
+         VkWznpR0tXdF2rS0nuO6OIrAzWDxSKfm7T/MH1FhZcmLcqyRjKNYW0tAJcTWcySbCkld
+         lxkwpsT1Wx2MIT4oASucPZprsDHceBdqQTkavYguLy9GNg3m+IVE+mRn41woMHZajBl7
+         eytahf4mvHPw/fQgCUqvmViUw1KoM0eKYMIcbISmeNuMd1w6/54e2qh7UVHqHuOXX/hh
+         EedA==
+X-Gm-Message-State: AOJu0YxO2pMOsk/L4XvipMWGk9dGA0wvfJOhWoOJa1Fy4tcvINFDT7aL
+        dfh+FgNKtom7pKHiA3o2Rbg=
+X-Google-Smtp-Source: AGHT+IH36Gyo+XxQL33GMRQKjYjkpRuzSDJhgbApsWGJG9HysRW3FaKcGG0iGaShVGyXLjAI0q8O1w==
+X-Received: by 2002:a05:6a20:1615:b0:13d:71f4:fd8a with SMTP id l21-20020a056a20161500b0013d71f4fd8amr11807099pzj.13.1692689261476;
+        Tue, 22 Aug 2023 00:27:41 -0700 (PDT)
+Received: from [10.1.1.24] (125-236-136-221-fibre.sparkbb.co.nz. [125.236.136.221])
+        by smtp.gmail.com with ESMTPSA id e9-20020aa78249000000b00688435a9915sm7188566pfn.189.2023.08.22.00.27.36
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 22 Aug 2023 00:27:40 -0700 (PDT)
+Subject: Re: [PATCH v3 1/2] ata: pata_falcon: fix IO base selection for Q40
+To:     Geert Uytterhoeven <geert@linux-m68k.org>
+References: <20230818234903.9226-1-schmitzmic@gmail.com>
+ <20230818234903.9226-2-schmitzmic@gmail.com>
+ <CAMuHMdUdqRZcwHnWCb0SJ34JM3BqEyejsgWajwsbe_F+6xZMjg@mail.gmail.com>
+ <07f8a1f9-e145-2b0a-61f0-ac5fe5a8fa58@gmail.com>
+ <CAMuHMdWNm7RdZcTa5EaWaFZ4NhPi75y8i31C2dkzJ5Hc4rtSJA@mail.gmail.com>
+Cc:     dlemoal@kernel.org, linux-ide@vger.kernel.org,
+        linux-m68k@vger.kernel.org, will@sowerbutts.com, rz@linux-m68k.org,
+        stable@vger.kernel.org, Finn Thain <fthain@linux-m68k.org>
+From:   Michael Schmitz <schmitzmic@gmail.com>
+Message-ID: <aabc6bd8-6407-3fa3-c620-69b290b3108c@gmail.com>
+Date:   Tue, 22 Aug 2023 19:27:34 +1200
+User-Agent: Mozilla/5.0 (X11; Linux ppc; rv:45.0) Gecko/20100101
+ Icedove/45.4.0
+MIME-Version: 1.0
+In-Reply-To: <CAMuHMdWNm7RdZcTa5EaWaFZ4NhPi75y8i31C2dkzJ5Hc4rtSJA@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-3.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-First argument of acpi_*_address_space_handler() APIs is acpi_handle of
-the device, which is incorrectly passed in driver ->remove() path here.
-Fix it by passing the appropriate argument and while at it, make both
-API calls consistent using ACPI_HANDLE().
+Hi Geert,
 
-Fixes: a0b028597d59 ("pinctrl: cherryview: Add support for GMMR GPIO opregion")
-Cc: stable@vger.kernel.org
-Signed-off-by: Raag Jadav <raag.jadav@intel.com>
----
-Changes since v1:
-- Update subject and commit message
+Am 22.08.2023 um 19:05 schrieb Geert Uytterhoeven:
+>>>> +       if (base_res) {         /* only Q40 has IO resources */
+>>>> +               io_offset = 0x10000;
+>>>> +               reg_scale = 1;
+>>>> +               base = (void __iomem *)base_res->start;
+>>>> +               ctl_base = (void __iomem *)ctl_res->start;
+>>>> +
+>>>> +               ata_port_desc(ap, "cmd %pa ctl %pa",
+>>>> +                             &base_res->start,
+>>>> +                             &ctl_res->start);
+>>> This can be  moved outside the else, using %px to format base and
+>>> ctl_base.
+>>
+>> Right - do we need some additional message spelling out what address Q40
+>> uses for data transfers? (Redundant for Falcon, of course ...)
+>>
+>> Though that could be handled outside the else, too:
+>>
+>> ata_port_desc(ap, "cmd %px ctl %px data %pa",
+>>                base, ctl_base, &ap->ioaddr.data_addr);
+>
+> I guess that wouldn't hurt.
 
- drivers/pinctrl/intel/pinctrl-cherryview.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+Done - I'll send out v4 tomorrow.
 
-diff --git a/drivers/pinctrl/intel/pinctrl-cherryview.c b/drivers/pinctrl/intel/pinctrl-cherryview.c
-index 7ffe4dafeebb..2bb574cf01d9 100644
---- a/drivers/pinctrl/intel/pinctrl-cherryview.c
-+++ b/drivers/pinctrl/intel/pinctrl-cherryview.c
-@@ -1650,7 +1650,6 @@ static int chv_pinctrl_probe(struct platform_device *pdev)
- 	struct intel_community_context *cctx;
- 	struct intel_community *community;
- 	struct device *dev = &pdev->dev;
--	struct acpi_device *adev = ACPI_COMPANION(dev);
- 	struct intel_pinctrl *pctrl;
- 	acpi_status status;
- 	unsigned int i;
-@@ -1718,7 +1717,7 @@ static int chv_pinctrl_probe(struct platform_device *pdev)
- 	if (ret)
- 		return ret;
- 
--	status = acpi_install_address_space_handler(adev->handle,
-+	status = acpi_install_address_space_handler(ACPI_HANDLE(dev),
- 					community->acpi_space_id,
- 					chv_pinctrl_mmio_access_handler,
- 					NULL, pctrl);
-@@ -1735,7 +1734,7 @@ static int chv_pinctrl_remove(struct platform_device *pdev)
- 	struct intel_pinctrl *pctrl = platform_get_drvdata(pdev);
- 	const struct intel_community *community = &pctrl->communities[0];
- 
--	acpi_remove_address_space_handler(ACPI_COMPANION(&pdev->dev),
-+	acpi_remove_address_space_handler(ACPI_HANDLE(&pdev->dev),
- 					  community->acpi_space_id,
- 					  chv_pinctrl_mmio_access_handler);
- 
--- 
-2.17.1
+Cheers,
 
+	Michael
+
+>
+> Gr{oetje,eeting}s,
+>
+>                         Geert
+>
