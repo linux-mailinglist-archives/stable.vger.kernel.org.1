@@ -2,111 +2,87 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8180E783DD7
-	for <lists+stable@lfdr.de>; Tue, 22 Aug 2023 12:27:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 17A72783DEA
+	for <lists+stable@lfdr.de>; Tue, 22 Aug 2023 12:29:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233552AbjHVK11 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 22 Aug 2023 06:27:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51924 "EHLO
+        id S234104AbjHVK3k (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 22 Aug 2023 06:29:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42834 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233554AbjHVK11 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 22 Aug 2023 06:27:27 -0400
-Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 04F79CC8;
-        Tue, 22 Aug 2023 03:27:23 -0700 (PDT)
-Received: from [192.168.10.12] (unknown [39.45.215.81])
-        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        with ESMTP id S232556AbjHVK3j (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 22 Aug 2023 06:29:39 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79410E51;
+        Tue, 22 Aug 2023 03:29:08 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        (Authenticated sender: usama.anjum)
-        by madras.collabora.co.uk (Postfix) with ESMTPSA id AE4FD6607215;
-        Tue, 22 Aug 2023 11:27:19 +0100 (BST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1692700042;
-        bh=2DBcZcOC3jRRssDkdf7QwArSMcaYykvUqxjA+hZileU=;
-        h=Date:Cc:Subject:To:References:From:In-Reply-To:From;
-        b=Wn1oBb7N4ywT0/KiEWpkGF11gZ0GBXnPSlboUu9e7wICvdsVWI1tin1HHK5HoeHRC
-         HyZ5kzANcQ51kt06kU886Ke3OzVPqsXIntnzhAm/32TR/YoGbnhuLl8DofIUZLdEpN
-         wfgbNrr4pG95nnp1oB5t7fsugtJlMmY9CKHYNZLETsTFo+HWSzjQXK+itVBhHkaZDW
-         vuGn2IP5Xkbk7X47q+I1tc+WIKapJhVnY9s6EtMV+ij4EEumBcynvks2+TZgWfOSMq
-         hVa0/3FuKhZ4Vx+pGDRaFkJuwDwuNHvgb+4yAwaGQbs2rchSpp3pmyOkWS9Dd4olbf
-         7KPXgZW+OAXoQ==
-Message-ID: <1786e05a-300a-4259-be1e-2cc54db9c16b@collabora.com>
-Date:   Tue, 22 Aug 2023 15:27:15 +0500
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1259A65134;
+        Tue, 22 Aug 2023 10:29:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAC36C433C7;
+        Tue, 22 Aug 2023 10:29:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1692700147;
+        bh=IvGfBZV/2Fq02VPlpwX47hDqBBEMCLHL/8A28vWDXUc=;
+        h=From:To:Cc:Subject:Date:From;
+        b=uqwRdGXrLVVBzIrINCLqNlhho2l5dOyRLX1h/2OMPF3QFkA+7uotHE76sAa8VIjYF
+         k+fhy01JNfiBFQ44lEw50tXOhL0YrJ4yLdtUEAxBPf3IktZr0ZlHHPODFVar1aziel
+         6RAyn4VX8VBpS8NgDz0+9S9X07mvyZiZrw/l0+QPZp82mbFJrWdaLBiSh+B+cp/JkM
+         CBkVX7MpUB/q6pV1EIiqOoJNRElangAk5sKwHkFj6jNTZAFe031xrgJw+8pUewD0PN
+         W1Jrn0Hu2smyWzlHqy4t8r4oA0hzgqG1LHyxnpWiB6AbxLlIe46kIFbrp3sPey0iv/
+         j66lhtnxaN+Jg==
+From:   Jarkko Sakkinen <jarkko@kernel.org>
+To:     linux-sgx@vger.kernel.org
+Cc:     Jarkko Sakkinen <jarkko@kernel.org>, stable@vger.kernel.org,
+        kernel test robot <lkp@intel.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
+        Jethro Beekman <jethro@fortanix.com>,
+        Serge Ayoun <serge.ayoun@intel.com>,
+        Sean Christopherson <seanjc@google.com>,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] x86/sgx: Describe the parameters of sgx_calc_section_metric()
+Date:   Tue, 22 Aug 2023 13:28:53 +0300
+Message-Id: <20230822102853.15078-1-jarkko@kernel.org>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Cc:     Muhammad Usama Anjum <usama.anjum@collabora.com>,
-        Jiri Slaby <jirislaby@kernel.org>, Ingo Molnar <mingo@elte.hu>,
-        kernel@collabora.com, stable@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org
-Subject: Re: [PATCH v2 RESEND] tty/sysrq: replace smp_processor_id() with
- get_cpu()
-Content-Language: en-US
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-References: <20230822090112.2601273-1-usama.anjum@collabora.com>
- <2023082259-blazer-charity-b58f@gregkh>
-From:   Muhammad Usama Anjum <usama.anjum@collabora.com>
-In-Reply-To: <2023082259-blazer-charity-b58f@gregkh>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 8/22/23 2:15 PM, Greg Kroah-Hartman wrote:
-> On Tue, Aug 22, 2023 at 02:01:11PM +0500, Muhammad Usama Anjum wrote:
->> The smp_processor_id() shouldn't be called from preemptible code.
->> Instead use get_cpu() and put_cpu() which disables preemption in
->> addition to getting the processor id. This fixes the following bug:
->>
->> [  119.143590] sysrq: Show backtrace of all active CPUs
->> [  119.143902] BUG: using smp_processor_id() in preemptible [00000000] code: bash/873
->> [  119.144586] caller is debug_smp_processor_id+0x20/0x30
->> [  119.144827] CPU: 6 PID: 873 Comm: bash Not tainted 5.10.124-dirty #3
->> [  119.144861] Hardware name: QEMU QEMU Virtual Machine, BIOS 2023.05-1 07/22/2023
->> [  119.145053] Call trace:
->> [  119.145093]  dump_backtrace+0x0/0x1a0
->> [  119.145122]  show_stack+0x18/0x70
->> [  119.145141]  dump_stack+0xc4/0x11c
->> [  119.145159]  check_preemption_disabled+0x100/0x110
->> [  119.145175]  debug_smp_processor_id+0x20/0x30
->> [  119.145195]  sysrq_handle_showallcpus+0x20/0xc0
->> [  119.145211]  __handle_sysrq+0x8c/0x1a0
->> [  119.145227]  write_sysrq_trigger+0x94/0x12c
->> [  119.145247]  proc_reg_write+0xa8/0xe4
->> [  119.145266]  vfs_write+0xec/0x280
->> [  119.145282]  ksys_write+0x6c/0x100
->> [  119.145298]  __arm64_sys_write+0x20/0x30
->> [  119.145315]  el0_svc_common.constprop.0+0x78/0x1e4
->> [  119.145332]  do_el0_svc+0x24/0x8c
->> [  119.145348]  el0_svc+0x10/0x20
->> [  119.145364]  el0_sync_handler+0x134/0x140
->> [  119.145381]  el0_sync+0x180/0x1c0
->>
->> Cc: stable@vger.kernel.org
->> Fixes: 47cab6a722d4 ("debug lockups: Improve lockup detection, fix generic arch fallback")
->> Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
->> ---
->> Changes since v1:
->> - Add "Cc: stable@vger.kernel.org" tag
->> ---
-> 
-> This is not a resend, it is a new version, v3.  Otherwise I would be
-> confused with the original v2 which is different than this one...
-Sorry, didn't relaize this. I've sent this as v3:
-https://lore.kernel.org/all/20230822102606.2821311-1-usama.anjum@collabora.com
+Cc: stable@vger.kernel.org # v5.11+
+Fixes: e7e0545299d8 ("x86/sgx: Initialize metadata for Enclave Page Cache (EPC) sections")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202308221542.11UpkVfp-lkp@intel.com/
+Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+---
+ arch/x86/kernel/cpu/sgx/main.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-> 
-> thanks,
-> 
-> greg k-h
-
+diff --git a/arch/x86/kernel/cpu/sgx/main.c b/arch/x86/kernel/cpu/sgx/main.c
+index 166692f2d501..388350b8f5e3 100644
+--- a/arch/x86/kernel/cpu/sgx/main.c
++++ b/arch/x86/kernel/cpu/sgx/main.c
+@@ -732,6 +732,10 @@ int arch_memory_failure(unsigned long pfn, int flags)
+ }
+ 
+ /**
++ * sgx_calc_section_metric() - Calculate an EPC section metric
++ * @low:	low 32-bit word from CPUID:0x12:{2, ...}
++ * @high:	high 32-bit word from CPUID:0x12:{2, ...}
++ *
+  * A section metric is concatenated in a way that @low bits 12-31 define the
+  * bits 12-31 of the metric and @high bits 0-19 define the bits 32-51 of the
+  * metric.
 -- 
-BR,
-Muhammad Usama Anjum
+2.39.2
+
