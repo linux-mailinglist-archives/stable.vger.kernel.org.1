@@ -2,159 +2,106 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C39E8784B18
-	for <lists+stable@lfdr.de>; Tue, 22 Aug 2023 22:06:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 41A7F784B51
+	for <lists+stable@lfdr.de>; Tue, 22 Aug 2023 22:23:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230405AbjHVUGs (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 22 Aug 2023 16:06:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57228 "EHLO
+        id S229893AbjHVUXs (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 22 Aug 2023 16:23:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37610 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229725AbjHVUGq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 22 Aug 2023 16:06:46 -0400
-Received: from mail-wr1-x434.google.com (mail-wr1-x434.google.com [IPv6:2a00:1450:4864:20::434])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1BB94E75
-        for <stable@vger.kernel.org>; Tue, 22 Aug 2023 13:06:42 -0700 (PDT)
-Received: by mail-wr1-x434.google.com with SMTP id ffacd0b85a97d-3159d5e409dso3765455f8f.0
-        for <stable@vger.kernel.org>; Tue, 22 Aug 2023 13:06:41 -0700 (PDT)
+        with ESMTP id S229516AbjHVUXr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 22 Aug 2023 16:23:47 -0400
+Received: from mail-oa1-x35.google.com (mail-oa1-x35.google.com [IPv6:2001:4860:4864:20::35])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6059E50;
+        Tue, 22 Aug 2023 13:23:35 -0700 (PDT)
+Received: by mail-oa1-x35.google.com with SMTP id 586e51a60fabf-1c11d53221cso3180377fac.2;
+        Tue, 22 Aug 2023 13:23:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1692734800; x=1693339600;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=UAm2r4m1EsTebzRY6t5OCpWP0E5Jb808dwyNgpcqVGI=;
-        b=PSpyLKJkZsmjOaDV9/+40p9ylHE22PrHUvkC6h41HCisKyae4G3h7j+AWMNfXR6vC/
-         nWvFlYfl+7g6F1x561z5W1LtCKcuUf+/tuXTkndVtH+S5HUSRSTPuFHZJbQRQ7Iw53S9
-         3/ovHJzsXZD8twSSw+hwz1eJS6+WWsIdghIEJENpsRDz7jwoFp3LpG0nh8yBOCKHHIWq
-         KbI/yaKoz/jJd2XoYxTZ6XLgfuebaiQiAOTcshaxjtF+VIGS2JsEA/9y7a0zJ4U2bwk2
-         atopykC7K5jvITxeIhB0T/KjLK5pfGJPwqsyHc/sxhM9TcLJ2kmRZ66ABJFIRz2Dny38
-         Klfg==
+        d=gmail.com; s=20221208; t=1692735815; x=1693340615;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=jqi3CURD1i8JRUxuB5MEXSey4Yu1NRacqMjmHXpb1qA=;
+        b=aSXkQr2s1RA5cBAyhs8eZgXQWhEROgEBM1yN6Ve2691jUCUqbRIqt24CHWtZdWN9nv
+         oEP/l6SIlZLzCy6JFtBKllAi0H8u5IZEDwdfyasmUeldWda3Y7cIGn2ldfoRck39fcZj
+         AgUxglBO88vB7pFCug3egYT7c2FKX3eCM9sENBv/VjiKm8hyr7kLRuVWHTY6+81uuJAn
+         J5r2kJ+7Jygi2TPWMSajEl9XHe/31i3lggdvO37mLhWbfKX42yU8k+xC4OQxQgO/Q+ha
+         Vd0ULCrP7ophvNZw4jeJvKsJcA24uVw4jtYtlPy5ENJENGu8It1W4f98spTTCTQRdv+S
+         W4kA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692734800; x=1693339600;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=UAm2r4m1EsTebzRY6t5OCpWP0E5Jb808dwyNgpcqVGI=;
-        b=J5MrEt6H/AZA6DpHGv2wnf50Tupy0zJXpxjJcWxPyGXJpcQTzK0nwSyObDQ/IN/JhK
-         cCsbTs8IpShAnbzLD71BgU6iKnlbHfHS+XAljA01rHmvWOkiuQaOKaiJZoHTqNdAdiOs
-         qZzgIRyfFiWnSN/qdNING6WE1FadWymOo9SzqzQVXRc1hyy0gu0iIz0+7h35ao8IRIq8
-         1ksXoWFNmlJB0Bz1Te3+FZrkcM92skTUw6UmutH/RCsUjwBIO6ip5CGmPEvtbX9NbAQk
-         IDcX3ZJ3BZJ+/kwqnm7P0Bf/fP0tEGorn7JrXJnjoHVD086mB6ks0xoLZzwPbbrV55Tj
-         C5QA==
-X-Gm-Message-State: AOJu0YxZatIGsJgoF04NNa1ZfBxj8Ita54raFyS/FM+s1BIrKwHxWBni
-        YpKANivvMQKEqi8L1zj6hNDdZw==
-X-Google-Smtp-Source: AGHT+IEXLXT5j7wtHf6axm9zDVMSAFBwgemk0FFwLcAXvuWJE4A95oQcoZk9OJnz11WXuv5wU1VDlQ==
-X-Received: by 2002:adf:ea0a:0:b0:319:7ec8:53ba with SMTP id q10-20020adfea0a000000b003197ec853bamr11616267wrm.14.1692734800568;
-        Tue, 22 Aug 2023 13:06:40 -0700 (PDT)
-Received: from sagittarius-a.chello.ie (188-141-3-169.dynamic.upc.ie. [188.141.3.169])
-        by smtp.gmail.com with ESMTPSA id y12-20020adfee0c000000b0031aeca90e1fsm12873690wrn.70.2023.08.22.13.06.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 22 Aug 2023 13:06:39 -0700 (PDT)
-From:   Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-To:     rfoss@kernel.org, todor.too@gmail.com, bryan.odonoghue@linaro.org,
-        agross@kernel.org, andersson@kernel.org, konrad.dybcio@linaro.org,
-        mchehab@kernel.org, hverkuil-cisco@xs4all.nl,
-        laurent.pinchart@ideasonboard.com, sakari.ailus@linux.intel.com,
-        andrey.konovalov@linaro.org
-Cc:     linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: [PATCH v2 9/9] media: qcom: camss: Fix csid-gen2 for test pattern generator
-Date:   Tue, 22 Aug 2023 21:06:26 +0100
-Message-ID: <20230822200626.1931129-10-bryan.odonoghue@linaro.org>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230822200626.1931129-1-bryan.odonoghue@linaro.org>
-References: <20230822200626.1931129-1-bryan.odonoghue@linaro.org>
+        d=1e100.net; s=20221208; t=1692735815; x=1693340615;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=jqi3CURD1i8JRUxuB5MEXSey4Yu1NRacqMjmHXpb1qA=;
+        b=Dyx8LCYsQjSEEEcQlKu7z7tEuAwXvPL8EVuDKJ9fMPZ07BzUTEPI8/CloaxcNVCslM
+         AAQxoVOVowNX+73dXnw3YAoil6cgi7txwlLVzc1/1WOnX4IToZ2w27Ve7iNWgs0HJEmk
+         sni7AZCdyXLHHcFuflJce5Ma7GFqJ+il9K18T1TUboYnxwR6f6AbSnHKzUKvtzCJJriN
+         Ia4+HJ2ZtwcnNZ6X6Jbo5a6WXVwpAtblE8tQCqwYOKuBrfnbjkhqArFc6TI2P3eKgGrJ
+         doV+UNdksrRynXFQr/rZckts30FlrKoWM6L5sHMwRLsm6KCzZ1ZDu5qopuJ+jB/pwa3M
+         gLXg==
+X-Gm-Message-State: AOJu0Yz+TZ3+r3PxZatgZsOSgZ7XaX+vdsW9kZ7X7KmWJnECHpdQoFTT
+        maG6LDnMqJzjjnL0j5LW7L0=
+X-Google-Smtp-Source: AGHT+IG/FGtyCP48fro2CrnwocGv7TDALAy+pryH74Z/aT+ZSu5UWrreZjVZYosdOw/Z/3FYMNZ/pw==
+X-Received: by 2002:a05:6870:2188:b0:19f:6711:8e0a with SMTP id l8-20020a056870218800b0019f67118e0amr13111471oae.32.1692735815183;
+        Tue, 22 Aug 2023 13:23:35 -0700 (PDT)
+Received: from [10.67.48.245] ([192.19.223.252])
+        by smtp.googlemail.com with ESMTPSA id b5-20020a0cf045000000b0063cfe9adb2csm3293671qvl.108.2023.08.22.13.23.20
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 22 Aug 2023 13:23:34 -0700 (PDT)
+Message-ID: <2333b38a-fe55-7972-0418-c5946dcda672@gmail.com>
+Date:   Tue, 22 Aug 2023 13:23:13 -0700
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH 6.1 000/194] 6.1.47-rc1 review
+Content-Language: en-US
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org
+Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+        torvalds@linux-foundation.org, akpm@linux-foundation.org,
+        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+        conor@kernel.org
+References: <20230821194122.695845670@linuxfoundation.org>
+From:   Florian Fainelli <f.fainelli@gmail.com>
+In-Reply-To: <20230821194122.695845670@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-3.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Andrey Konovalov <andrey.konovalov@linaro.org>
+On 8/21/23 12:39, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.1.47 release.
+> There are 194 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Wed, 23 Aug 2023 19:40:45 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.47-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-In the current driver csid Test Pattern Generator (TPG) doesn't work.
-This change:
-- fixes writing frame width and height values into CSID_TPG_DT_n_CFG_0
-- fixes the shift by one between test_pattern control value and the
-  actual pattern.
-- drops fixed VC of 0x0a which testing showed prohibited some test
-  patterns in the CSID to produce output.
-So that TPG starts working, but with the below limitations:
-- only test_pattern=9 works as it should
-- test_pattern=8 and test_pattern=7 produce black frame (all zeroes)
-- the rest of test_pattern's don't work (yavta doesn't get the data)
-- regardless of the CFA pattern set by 'media-ctl -V' the actual pixel
-  order is always the same (RGGB for any RAW8 or RAW10P format in
-  4608x2592 resolution).
+On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
+BMIPS_GENERIC:
 
-Tested with:
-
-RAW10P format, VC0:
- media-ctl -V '"msm_csid0":0[fmt:SRGGB10/4608x2592 field:none]'
- media-ctl -V '"msm_vfe0_rdi0":0[fmt:SRGGB10/4608x2592 field:none]'
- media-ctl -l '"msm_csid0":1->"msm_vfe0_rdi0":0[1]'
- v4l2-ctl -d /dev/v4l-subdev6 -c test_pattern=9
- yavta -B capture-mplane --capture=3 -n 3 -f SRGGB10P -s 4608x2592 /dev/video0
-
-RAW10P format, VC1:
- media-ctl -V '"msm_csid0":2[fmt:SRGGB10/4608x2592 field:none]'
- media-ctl -V '"msm_vfe0_rdi1":0[fmt:SRGGB10/4608x2592 field:none]'
- media-ctl -l '"msm_csid0":2->"msm_vfe0_rdi1":0[1]'
- v4l2-ctl -d /dev/v4l-subdev6 -c test_pattern=9
- yavta -B capture-mplane --capture=3 -n 3 -f SRGGB10P -s 4608x2592 /dev/video1
-
-RAW8 format, VC0:
- media-ctl --reset
- media-ctl -V '"msm_csid0":0[fmt:SRGGB8/4608x2592 field:none]'
- media-ctl -V '"msm_vfe0_rdi0":0[fmt:SRGGB8/4608x2592 field:none]'
- media-ctl -l '"msm_csid0":1->"msm_vfe0_rdi0":0[1]'
- yavta -B capture-mplane --capture=3 -n 3 -f SRGGB8 -s 4608x2592 /dev/video0
-
-Fixes: eebe6d00e9bf ("media: camss: Add support for CSID hardware version Titan 170")
-Cc: stable@vger.kernel.org
-Signed-off-by: Andrey Konovalov <andrey.konovalov@linaro.org>
-Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
----
- drivers/media/platform/qcom/camss/camss-csid-gen2.c | 9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/media/platform/qcom/camss/camss-csid-gen2.c b/drivers/media/platform/qcom/camss/camss-csid-gen2.c
-index 140c584bfb8b1..6ba2b10326444 100644
---- a/drivers/media/platform/qcom/camss/camss-csid-gen2.c
-+++ b/drivers/media/platform/qcom/camss/camss-csid-gen2.c
-@@ -355,9 +355,6 @@ static void __csid_configure_stream(struct csid_device *csid, u8 enable, u8 vc)
- 		u8 dt_id = vc;
- 
- 		if (tg->enabled) {
--			/* Config Test Generator */
--			vc = 0xa;
--
- 			/* configure one DT, infinite frames */
- 			val = vc << TPG_VC_CFG0_VC_NUM;
- 			val |= INTELEAVING_MODE_ONE_SHOT << TPG_VC_CFG0_LINE_INTERLEAVING_MODE;
-@@ -370,14 +367,14 @@ static void __csid_configure_stream(struct csid_device *csid, u8 enable, u8 vc)
- 
- 			writel_relaxed(0x12345678, csid->base + CSID_TPG_LFSR_SEED);
- 
--			val = input_format->height & 0x1fff << TPG_DT_n_CFG_0_FRAME_HEIGHT;
--			val |= input_format->width & 0x1fff << TPG_DT_n_CFG_0_FRAME_WIDTH;
-+			val = (input_format->height & 0x1fff) << TPG_DT_n_CFG_0_FRAME_HEIGHT;
-+			val |= (input_format->width & 0x1fff) << TPG_DT_n_CFG_0_FRAME_WIDTH;
- 			writel_relaxed(val, csid->base + CSID_TPG_DT_n_CFG_0(0));
- 
- 			val = format->data_type << TPG_DT_n_CFG_1_DATA_TYPE;
- 			writel_relaxed(val, csid->base + CSID_TPG_DT_n_CFG_1(0));
- 
--			val = tg->mode << TPG_DT_n_CFG_2_PAYLOAD_MODE;
-+			val = (tg->mode - 1) << TPG_DT_n_CFG_2_PAYLOAD_MODE;
- 			val |= 0xBE << TPG_DT_n_CFG_2_USER_SPECIFIED_PAYLOAD;
- 			val |= format->decode_format << TPG_DT_n_CFG_2_ENCODE_FORMAT;
- 			writel_relaxed(val, csid->base + CSID_TPG_DT_n_CFG_2(0));
+Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
 -- 
-2.41.0
+Florian
 
