@@ -2,115 +2,118 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B4074784D38
-	for <lists+stable@lfdr.de>; Wed, 23 Aug 2023 01:16:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C7735784D88
+	for <lists+stable@lfdr.de>; Wed, 23 Aug 2023 01:57:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231130AbjHVXQJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 22 Aug 2023 19:16:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59598 "EHLO
+        id S230355AbjHVX5h (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 22 Aug 2023 19:57:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48242 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230519AbjHVXQJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 22 Aug 2023 19:16:09 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C0904CE9;
-        Tue, 22 Aug 2023 16:16:07 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 55F5861530;
-        Tue, 22 Aug 2023 23:16:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 020D2C433C8;
-        Tue, 22 Aug 2023 23:16:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1692746166;
-        bh=jvom6YRY9DFH5+a0nubub9bkoGzaeU6lyAMRBFbF8eU=;
-        h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-        b=B6KzT4i0p19Ms4aXFI1rXalaTg+n7KRzghhFzyPugaK7L59ByhEdMZXTmP426BVNU
-         oqPzuv4v5BpMsccm/OlzRj5fatrKlFoi7Qezuwq9d8coYjZ7owstgW6Sg1CgvePLHA
-         8Qz6/tWimb/vgDSUXSyY9fcOwWKzTyDziQg+l2TETXMMfmlqwWOU37ufCu1pJKE/2N
-         eIlr9iTQ4WHNFTFJNThxQYNYS9aU3Rzx45jFZsdV/FeVWa7yNgqMQRuTqGh8P1lyvT
-         MGn2T/V/9ylyBSG44igWuvzNdntUNdZspLG48dhsrkzAMjR4AAw4BYilQvBgkh6nOV
-         1U6Cp4dpAGung==
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date:   Wed, 23 Aug 2023 02:16:02 +0300
-Message-Id: <CUZGFNUNLO3W.1669MKELG1XIL@suppilovahvero>
-Cc:     <linux-sgx@vger.kernel.org>, <stable@vger.kernel.org>,
-        "Todd Brandt" <todd.e.brandt@intel.com>,
-        "Peter Huewe" <peterhuewe@gmx.de>,
-        "Jason Gunthorpe" <jgg@ziepe.ca>,
-        "Mario Limonciello" <mario.limonciello@amd.com>,
-        <linux-integrity@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2] tpm: Enable hwrng only for Pluton on AMD CPUs
-From:   "Jarkko Sakkinen" <jarkko@kernel.org>
-To:     "Jerry Snitselaar" <jsnitsel@redhat.com>
-X-Mailer: aerc 0.14.0
-References: <20230822203912.2256229-1-jarkko@kernel.org>
- <ubwdpgalqja6c3ggp4rjapqhts7m3pxgrdvm7ytwxitaasbjhd@32tbbipd2vfn>
-In-Reply-To: <ubwdpgalqja6c3ggp4rjapqhts7m3pxgrdvm7ytwxitaasbjhd@32tbbipd2vfn>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+        with ESMTP id S229635AbjHVX5h (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 22 Aug 2023 19:57:37 -0400
+Received: from omta34.uswest2.a.cloudfilter.net (omta34.uswest2.a.cloudfilter.net [35.89.44.33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58252CFE
+        for <stable@vger.kernel.org>; Tue, 22 Aug 2023 16:57:35 -0700 (PDT)
+Received: from eig-obgw-5002a.ext.cloudfilter.net ([10.0.29.215])
+        by cmsmtp with ESMTP
+        id YQZiqL7ScOzKlYbEDq98ZM; Tue, 22 Aug 2023 23:56:05 +0000
+Received: from box5620.bluehost.com ([162.241.219.59])
+        by cmsmtp with ESMTPS
+        id YbECqgcrDxrRoYbECqbuzj; Tue, 22 Aug 2023 23:56:04 +0000
+X-Authority-Analysis: v=2.4 cv=WZcf1mtX c=1 sm=1 tr=0 ts=64e54b14
+ a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
+ a=OWjo9vPv0XrRhIrVQ50Ab3nP57M=:19 a=dLZJa+xiwSxG16/P+YVxDGlgEgI=:19
+ a=IkcTkHD0fZMA:10 a=UttIx32zK-AA:10 a=-Ou01B_BuAIA:10 a=VwQbUJbxAAAA:8
+ a=HaFmDPmJAAAA:8 a=EQwu3T12zX-_ASVHoRwA:9 a=QEXdDO2ut3YA:10
+ a=AjGcO6oz07-iQ99wixmX:22 a=nmWuMzfKamIsx3l42hEX:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
+        s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Date:
+        Message-ID:From:In-Reply-To:References:Cc:To:Subject:Sender:Reply-To:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=sHXcsrcQ2JX7PaJS3xNaWPJAISzumo8tG3P7erCaBfI=; b=Umscmz2J1uDsZ0JCtM72gWzEDo
+        b5rSRI3K/GkdBEDbVtGo626Ksn2M/bBklkIUiArBVIcNZcWkDEl4Nq3nrRjgvj3Tn1faEuIFCC9KH
+        h5xYpKjCsFaHTHDUUk6V4VdC0hTCWWoT7RbM7s7qLUFny2Ez9mCfl+v0BxRpzNIj56Ho9anLPqfYC
+        +DnozoHT/MiOn02+wyNQfpKIzIGNxoPzNw+YcQzBLuPXdfxKSznQZjMbzflTF7bja+h6ZwOO8NOrl
+        4lI/qK1Nl2/coqQjxdYMglNchIOaJygDJX3mV2qIAgSGNX5vBKPBRnJByMMjhgefsTOIq+Yt6HdyA
+        CxbXguVw==;
+Received: from c-73-162-232-9.hsd1.ca.comcast.net ([73.162.232.9]:52760 helo=[10.0.1.47])
+        by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+        (Exim 4.96)
+        (envelope-from <re@w6rz.net>)
+        id 1qYbEA-0020jC-0A;
+        Tue, 22 Aug 2023 17:56:02 -0600
+Subject: Re: [PATCH 6.1 000/194] 6.1.47-rc1 review
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org
+Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+        torvalds@linux-foundation.org, akpm@linux-foundation.org,
+        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
+References: <20230821194122.695845670@linuxfoundation.org>
+In-Reply-To: <20230821194122.695845670@linuxfoundation.org>
+From:   Ron Economos <re@w6rz.net>
+Message-ID: <65a9032d-6083-cb4d-78db-9d4e77292fd6@w6rz.net>
+Date:   Tue, 22 Aug 2023 16:55:59 -0700
+User-Agent: Mozilla/5.0 (X11; Linux armv7l; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - box5620.bluehost.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - w6rz.net
+X-BWhitelist: no
+X-Source-IP: 73.162.232.9
+X-Source-L: No
+X-Exim-ID: 1qYbEA-0020jC-0A
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: c-73-162-232-9.hsd1.ca.comcast.net ([10.0.1.47]) [73.162.232.9]:52760
+X-Source-Auth: re@w6rz.net
+X-Email-Count: 2
+X-Org:  HG=bhshared;ORG=bluehost;
+X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfJmGE6D/XdNhkjPQZBRJUngufzKqghJDRJTzbIBqlgBr7+8qvUZKMYqeyB+LK9ewDXsAQbBs2gq9li/OVDhDkjj/Z69qvXqaTQ0aYIi7k97ADdipxLWC
+ GxNjwNEh3EGoAeKaUJZCj3GBSQSeySU4MqbrR9Lllsdf+QCrJz5lQ+TR2qu9CdMZ38Onoyzhh15MBw==
+X-Spam-Status: No, score=-3.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed Aug 23, 2023 at 12:28 AM EEST, Jerry Snitselaar wrote:
-> On Tue, Aug 22, 2023 at 11:39:12PM +0300, Jarkko Sakkinen wrote:
-> > The vendor check introduced by commit 554b841d4703 ("tpm: Disable RNG f=
-or
-> > all AMD fTPMs") doesn't work properly on a number of Intel fTPMs.  On t=
-he
-> > reported systems the TPM doesn't reply at bootup and returns back the
-> > command code. This makes the TPM fail probe.
-> >=20
-> > Since only Microsoft Pluton is the only known combination of AMD CPU an=
-d
-> > fTPM from other vendor, disable hwrng otherwise. In order to make sysad=
-min
-> > aware of this, print also info message to the klog.
-> >=20
-> > Cc: stable@vger.kernel.org
-> > Fixes: 554b841d4703 ("tpm: Disable RNG for all AMD fTPMs")
-> > Reported-by: Todd Brandt <todd.e.brandt@intel.com>
-> > Closes: https://bugzilla.kernel.org/show_bug.cgi?id=3D217804
-> > Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
-> > ---
-> > v2:
-> > * CONFIG_X86
+On 8/21/23 12:39 PM, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.1.47 release.
+> There are 194 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 >
-> Did you mean to wrap the crb_acpi_add chunk with CONFIG_X86?
+> Responses should be made by Wed, 23 Aug 2023 19:40:45 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.47-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-Yup :-/
+Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
 
-$ git diff
-diff --git a/drivers/char/tpm/tpm_crb.c b/drivers/char/tpm/tpm_crb.c
-index 28448bfd4062..ea085b14ab7c 100644
---- a/drivers/char/tpm/tpm_crb.c
-+++ b/drivers/char/tpm/tpm_crb.c
-@@ -805,12 +805,14 @@ static int crb_acpi_add(struct acpi_device *device)
-        if (rc)
-                goto out;
+Tested-by: Ron Economos <re@w6rz.net>
 
-+#ifdef CONFIG_X86
-        /* A quirk for https://www.amd.com/en/support/kb/faq/pa-410 */
-        if (boot_cpu_data.x86_vendor =3D=3D X86_VENDOR_AMD &&
-            priv->sm !=3D ACPI_TPM2_COMMAND_BUFFER_WITH_PLUTON) {
-                dev_info(dev, "Disabling hwrng\n");
-                chip->flags |=3D TPM_CHIP_FLAG_HWRNG_DISABLED;
-        }
-+#endif /* CONFIG_X86 */
-
-        rc =3D tpm_chip_register(chip);
-
-[also linux-sgx leaked by mistake to my git-send-email command line]
-
-I sent a new one:
-https://lkml.org/lkml/2023/8/22/1288
-
-BR, Jarkko
