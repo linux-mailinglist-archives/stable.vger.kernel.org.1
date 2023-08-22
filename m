@@ -2,53 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4717C783EF6
-	for <lists+stable@lfdr.de>; Tue, 22 Aug 2023 13:32:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6081F783F29
+	for <lists+stable@lfdr.de>; Tue, 22 Aug 2023 13:33:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234869AbjHVLcX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 22 Aug 2023 07:32:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49892 "EHLO
+        id S232271AbjHVLds (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 22 Aug 2023 07:33:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60042 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234862AbjHVLcW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 22 Aug 2023 07:32:22 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 94312CE7;
-        Tue, 22 Aug 2023 04:32:04 -0700 (PDT)
+        with ESMTP id S234968AbjHVLdr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 22 Aug 2023 07:33:47 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 646F1E4F;
+        Tue, 22 Aug 2023 04:33:26 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 59EE265286;
-        Tue, 22 Aug 2023 11:31:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA598C433C7;
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7FD4665291;
         Tue, 22 Aug 2023 11:31:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1692703914;
-        bh=ztcJ1CN4cWHcEnGXHXCyGiTRo9NclIPqHiohb6JvUTU=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=mA9ZNhOCf9VKnInkT427v4vrHQHRNtN9U+hE0sgG+9ICJWq0SzYSAnPx8Ay5xdRuL
-         QiB9FvW87JbQZ3ZmtUDXWi1cJ5momn8FYs0JEnpPLA+hOzSQH+d+Lxa9HhUdAP4qSo
-         erApMzpkWGxfMqPhBBHQkh5ujaypEFVndZZUv14Jrt1JRrjrObf/ANhqih1DrzXF2x
-         hJRBaOOtbz94O1U4BSttnxyWFjIy7JSaXmIrlqndkinwbdgMGBUceUEyYXljw8Cdvo
-         zVZz/1zg+lkpDtXpJ4Z5ylXXKIMv+IF1PqDPfPFp4GhJ2lS49CTmuokWQAZgyM7B+q
-         2keAGgAyigG6Q==
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Benjamin Gray <bgray@linux.ibm.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Sasha Levin <sashal@kernel.org>, linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH AUTOSEL 6.1 9/9] powerpc/powermac: Use early_* IO variants in via_calibrate_decr()
-Date:   Tue, 22 Aug 2023 07:31:30 -0400
-Message-Id: <20230822113130.3550050-9-sashal@kernel.org>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230822113130.3550050-1-sashal@kernel.org>
-References: <20230822113130.3550050-1-sashal@kernel.org>
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50EDFC433C8;
+        Tue, 22 Aug 2023 11:31:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1692703912;
+        bh=a3FKI5fLWw6BMBXM2pVAbx96bPD8OCs7OUQB2nqubdc=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=oVfzJYXQP6luoOZKSlrGfn0HaDGWydhomAmU3svbyp3PtAhFvcE7c3uqgktj87Zww
+         4ppWLWULdFxpz/IdTNvxP7AxhPMDmKSHCkdE9uv6l0E1sb4/cR9YZUBmF5Jdh18b8N
+         iZPBKiNIubPjAIBVXvtBrFxEesu+ev+RGJ0yso08=
+Date:   Tue, 22 Aug 2023 13:31:49 +0200
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Pavel Machek <pavel@denx.de>
+Cc:     Sasha Levin <sashal@kernel.org>, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org, Ahmad Fatoum <a.fatoum@pengutronix.de>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+        rafael@kernel.org, linux-pm@vger.kernel.org
+Subject: Re: [PATCH AUTOSEL 6.4 18/54] thermal: core: constify params in
+ thermal_zone_device_register
+Message-ID: <2023082232-anaerobic-smashing-42d3@gregkh>
+References: <20230813154934.1067569-1-sashal@kernel.org>
+ <20230813154934.1067569-18-sashal@kernel.org>
+ <ZOSRPJxpVfCiyUWb@duo.ucw.cz>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.1.46
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZOSRPJxpVfCiyUWb@duo.ucw.cz>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
@@ -59,67 +57,32 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Benjamin Gray <bgray@linux.ibm.com>
+On Tue, Aug 22, 2023 at 12:43:08PM +0200, Pavel Machek wrote:
+> Hi!
+> 
+> > [ Upstream commit 80ddce5f2dbd0e83eadc9f9d373439180d599fe5 ]
+> > 
+> > Since commit 3d439b1a2ad3 ("thermal/core: Alloc-copy-free the thermal zone
+> > parameters structure"), thermal_zone_device_register() allocates a copy
+> > of the tzp argument and callers need not explicitly manage its lifetime.
+> > 
+> > This means the function no longer cares about the parameter being
+> > mutable, so constify it.
+> > 
+> > No functional change.
+> 
+> Not a bugfix, should not be in stable.
+> 
+> 3d439b1a2ad3 ("thermal/core: Alloc-copy-free the thermal zone
+> parameters structure") is not in 6.1, so this is not correct patch for
+> 6.1.
+> 
+> Why was this selected for AUTOSEL? Can you make sure patches marked
+> "No functional change." are not selected in future?
 
-[ Upstream commit 86582e6189dd8f9f52c25d46c70fe5d111da6345 ]
+No, because sometimes they are needed in later patches.  And marking
+things const is good :)
 
-On a powermac platform, via the call path:
+thanks,
 
-  start_kernel()
-    time_init()
-      ppc_md.calibrate_decr() (pmac_calibrate_decr)
-        via_calibrate_decr()
-
-ioremap() and iounmap() are called. The unmap can enable interrupts
-unexpectedly (cond_resched() in vunmap_pmd_range()), which causes a
-warning later in the boot sequence in start_kernel().
-
-Use the early_* variants of these IO functions to prevent this.
-
-The issue is pre-existing, but is surfaced by commit 721255b9826b
-("genirq: Use a maple tree for interrupt descriptor management").
-
-Signed-off-by: Benjamin Gray <bgray@linux.ibm.com>
-Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20230706010816.72682-1-bgray@linux.ibm.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- arch/powerpc/platforms/powermac/time.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/arch/powerpc/platforms/powermac/time.c b/arch/powerpc/platforms/powermac/time.c
-index 4c5790aff1b54..8633891b7aa58 100644
---- a/arch/powerpc/platforms/powermac/time.c
-+++ b/arch/powerpc/platforms/powermac/time.c
-@@ -26,8 +26,8 @@
- #include <linux/rtc.h>
- #include <linux/of_address.h>
- 
-+#include <asm/early_ioremap.h>
- #include <asm/sections.h>
--#include <asm/io.h>
- #include <asm/machdep.h>
- #include <asm/time.h>
- #include <asm/nvram.h>
-@@ -182,7 +182,7 @@ static int __init via_calibrate_decr(void)
- 		return 0;
- 	}
- 	of_node_put(vias);
--	via = ioremap(rsrc.start, resource_size(&rsrc));
-+	via = early_ioremap(rsrc.start, resource_size(&rsrc));
- 	if (via == NULL) {
- 		printk(KERN_ERR "Failed to map VIA for timer calibration !\n");
- 		return 0;
-@@ -207,7 +207,7 @@ static int __init via_calibrate_decr(void)
- 
- 	ppc_tb_freq = (dstart - dend) * 100 / 6;
- 
--	iounmap(via);
-+	early_iounmap((void *)via, resource_size(&rsrc));
- 
- 	return 1;
- }
--- 
-2.40.1
-
+greg k-h
