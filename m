@@ -2,156 +2,135 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 844DA7844E5
-	for <lists+stable@lfdr.de>; Tue, 22 Aug 2023 17:02:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 05DDB78456F
+	for <lists+stable@lfdr.de>; Tue, 22 Aug 2023 17:27:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234027AbjHVPCV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 22 Aug 2023 11:02:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49118 "EHLO
+        id S233532AbjHVP1I (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 22 Aug 2023 11:27:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40198 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229463AbjHVPCV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 22 Aug 2023 11:02:21 -0400
-Received: from mg.ssi.bg (mg.ssi.bg [193.238.174.37])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1F20F137
-        for <stable@vger.kernel.org>; Tue, 22 Aug 2023 08:02:18 -0700 (PDT)
-Received: from mg.bb.i.ssi.bg (localhost [127.0.0.1])
-        by mg.bb.i.ssi.bg (Proxmox) with ESMTP id 431181ABFF;
-        Tue, 22 Aug 2023 18:02:15 +0300 (EEST)
-Received: from ink.ssi.bg (ink.ssi.bg [193.238.174.40])
-        by mg.bb.i.ssi.bg (Proxmox) with ESMTPS id 27A171ABFA;
-        Tue, 22 Aug 2023 18:02:15 +0300 (EEST)
-Received: from ja.ssi.bg (unknown [213.16.62.126])
-        by ink.ssi.bg (Postfix) with ESMTPSA id 9DBB93C0440;
-        Tue, 22 Aug 2023 18:02:14 +0300 (EEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=ssi.bg; s=ink;
-        t=1692716535; bh=MNqlv6MVmUWGVc2QBhKbwcDl2XXwpMhMb38ji0Wc76s=;
-        h=Date:From:To:cc:Subject:In-Reply-To:References;
-        b=cgGBp8h/EzOgdx+XmLvyUyA/97LLMZ+hGaNtxy431SGm3xh5V8iKdPbfFXgi+gamv
-         VFQ/uNl7yxBgGpSUXOo/zBMAZ0yvOfaM8N+qpDLEnl4bPBHlDY87fJ10wYT+2mV5jG
-         JtAUviCvIhkdnPRLwV+D5Tg7gWS4gDb2cueZA+q8=
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-        by ja.ssi.bg (8.17.1/8.17.1) with ESMTP id 37MF25Ul064698;
-        Tue, 22 Aug 2023 18:02:06 +0300
-Date:   Tue, 22 Aug 2023 18:02:05 +0300 (EEST)
-From:   Julian Anastasov <ja@ssi.bg>
-To:     gregkh@linuxfoundation.org
-cc:     sishuai.system@gmail.com, fw@strlen.de, horms@kernel.org,
-        stable@vger.kernel.org
-Subject: Re: FAILED: patch "[PATCH] ipvs: fix racy memcpy in proc_do_sync_threshold"
- failed to apply to 4.19-stable tree
-In-Reply-To: <2023082114-remix-cable-0852@gregkh>
-Message-ID: <ae0ee8d4-eec4-d0b7-29a0-f3cf1ccb69f5@ssi.bg>
-References: <2023082114-remix-cable-0852@gregkh>
+        with ESMTP id S232678AbjHVP1I (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 22 Aug 2023 11:27:08 -0400
+Received: from mail-wm1-x334.google.com (mail-wm1-x334.google.com [IPv6:2a00:1450:4864:20::334])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 254311B0;
+        Tue, 22 Aug 2023 08:27:06 -0700 (PDT)
+Received: by mail-wm1-x334.google.com with SMTP id 5b1f17b1804b1-3fef56f7223so14557885e9.3;
+        Tue, 22 Aug 2023 08:27:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1692718024; x=1693322824;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:sender
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=P8Gu3e55JmS9M6j7VGf0BGDN5maX8MZT1jBCyJ1KpJs=;
+        b=pTS5glFP09xWkddToRrsvw+rzji+JZnjxa/vXdk6ubi1lRuxH7pU3SAek6mu4kfyX7
+         NoBwTFX9hkU3AtN7X+p887Z3xoDwu/Hns1wxrS08Ixhox9mA1BOpU23XxAU3tzNV7lHO
+         52xd6+JParNxxT1zFLgBVu+NmOs6N9DtaUTmil7UBpWknQbM4ZqciGLo4UElvurwhG+a
+         fc49p18gEc2PwyIcojYpmaiLFJjf+YhtPrIL49CIa8y4RnFiXU+EyFPauNKow4NNjX1l
+         Xx46IUt49eqEh/NusZQn934tksJlhqkgZMoDSWvwitGxCvYINv+vnS17WkLeN4uyZx4W
+         rpOA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1692718024; x=1693322824;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:sender
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=P8Gu3e55JmS9M6j7VGf0BGDN5maX8MZT1jBCyJ1KpJs=;
+        b=Wu5UlMFbgaxfEicYqZv9vNlOa/l4owYJLSB4go6xDfuWQh2QlRMhq0qVBuTdISsCsF
+         Z0wJ62ngCTTRnzz42CwsJlUEDqCuawkvq1RmJzJ48rbxmuL6IAz6ATqkhME9Df8M7ZXU
+         CY1Fq92IqLdZxstr/vYuFlGz8opI15SC5WvmbxPaDUfMw6McCOfHwbuBp3vpWt1DL4O7
+         ETVy9svMFdeWV9IaF1MKqyYyuRiY4AB3lfqf2g/2rvEfhPIbFDLHEdQnqqyTfxRaPRLw
+         0Z6iupNJM6eEHioHb7tiDfcrl7R/4fqtlviVsy1ha3nRBw4OgtqS2nP9QawxJ4p1P5XP
+         YFjg==
+X-Gm-Message-State: AOJu0YwwrDYCYvGUWPkP5QfPbYHhj9pt0X5M6HrYe5soIwXSJTTkX/dq
+        ZYvO6LoP8Xuw2hGMQckeatc=
+X-Google-Smtp-Source: AGHT+IGyrQGqEFG9EGxeiNZupgIw8uPE0bXsgKS9m9DzgYCB57XrzUgOv60079WGh4qOE2pgnuBMYg==
+X-Received: by 2002:adf:fed1:0:b0:319:7421:fde with SMTP id q17-20020adffed1000000b0031974210fdemr7888446wrs.32.1692718024302;
+        Tue, 22 Aug 2023 08:27:04 -0700 (PDT)
+Received: from eldamar.lan (c-82-192-242-114.customer.ggaweb.ch. [82.192.242.114])
+        by smtp.gmail.com with ESMTPSA id c10-20020adffb4a000000b00317a29af4b2sm16022296wrs.68.2023.08.22.08.27.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 22 Aug 2023 08:27:03 -0700 (PDT)
+Sender: Salvatore Bonaccorso <salvatore.bonaccorso@gmail.com>
+Received: by eldamar.lan (Postfix, from userid 1000)
+        id A90CABE2DE0; Tue, 22 Aug 2023 17:27:02 +0200 (CEST)
+Date:   Tue, 22 Aug 2023 17:27:02 +0200
+From:   Salvatore Bonaccorso <carnil@debian.org>
+To:     Naresh Kamboju <naresh.kamboju@linaro.org>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Paul E. McKenney" <paulmck@kernel.org>,
+        Borislav Petkov <bp@alien8.de>, stable@vger.kernel.org,
+        patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+        torvalds@linux-foundation.org, akpm@linux-foundation.org,
+        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
+        Peter Zijlstra <peterz@infradead.org>
+Subject: Re: [PATCH 6.1 000/194] 6.1.47-rc1 review
+Message-ID: <ZOTTxsW5IGhOO8IW@eldamar.lan>
+References: <20230821194122.695845670@linuxfoundation.org>
+ <CA+G9fYvkBSb-i_6unB3bRLwRibVtZ3snYDe_gG+bsZehu3Hv3w@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CA+G9fYvkBSb-i_6unB3bRLwRibVtZ3snYDe_gG+bsZehu3Hv3w@mail.gmail.com>
+X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
+        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+Hi,
 
-	Hello,
+[Adding Peter Zijlstra to CC]
 
-On Mon, 21 Aug 2023, gregkh@linuxfoundation.org wrote:
+On Tue, Aug 22, 2023 at 04:25:22PM +0530, Naresh Kamboju wrote:
+> On Tue, 22 Aug 2023 at 01:21, Greg Kroah-Hartman
+> <gregkh@linuxfoundation.org> wrote:
+> >
+> > This is the start of the stable review cycle for the 6.1.47 release.
+> > There are 194 patches in this series, all will be posted as a response
+> > to this one.  If anyone has any issues with these being applied, please
+> > let me know.
+> >
+> > Responses should be made by Wed, 23 Aug 2023 19:40:45 +0000.
+> > Anything received after that time might be too late.
+> >
+> > The whole patch series can be found in one patch at:
+> >         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.47-rc1.gz
+> > or in the git tree and branch at:
+> >         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
+> > and the diffstat can be found below.
+> >
+> > thanks,
+> >
+> > greg k-h
+> 
+> Results from Linaro’s test farm.
+> No regressions on arm64, arm, x86_64, and i386.
+> 
+> Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
+> 
+> 
+> NOTE:
+> Kernel warnings noticed on x86_64 while booting the kernel.
+> Paul E. McKenney reported this last week [1] and discussions email
+> thread provided here.
+> 
+>  [1] https://lore.kernel.org/lkml/4dc3d0ec-b827-4bce-8927-cfa5d837fd03@paulmck-laptop/T/
 
-> 
-> The patch below does not apply to the 4.19-stable tree.
-> If someone wants it applied there, or to any other stable or longterm
-> tree, then please email the backport, including the original git commit
-> id to <stable@vger.kernel.org>.
-> 
-> To reproduce the conflict and resubmit, you may use the following commands:
-> 
-> git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
-> git checkout FETCH_HEAD
-> git cherry-pick -x 5310760af1d4fbea1452bfc77db5f9a680f7ae47
-> # <resolve conflicts, build, test, etc.>
-> git commit -s
-> git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023082114-remix-cable-0852@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
-> 
-> Possible dependencies:
-> 
-> 5310760af1d4 ("ipvs: fix racy memcpy in proc_do_sync_threshold")
-> 1b90af292e71 ("ipvs: Improve robustness to the ipvs sysctl")
+Seeing the same warning for the 6.1.47-rc1, which is missing
+4ae68b26c3ab ("objtool/x86: Fix SRSO mess"). Unfortunately the commit
+will not apply cleanly to 6.1.y. 
 
-	It can happen only if we backport the other mentioned
-commit 1b90af292e71 which needs changing SYSCTL_ZERO/SYSCTL_ONE
-to zero/one and then 5310760af1d4 will apply as-is to both 4.14 and
-4.19. Should I send backport for 1b90af292e71, it is even more
-useful as a fix than 5310760af1d4?
+I guess we need at least as well dbcdbdfdf137 ("objtool: Rework
+instruction -> symbol mapping"), but not sure this is enough.
 
-> thanks,
-> 
-> greg k-h
-> 
-> ------------------ original commit in Linus's tree ------------------
-> 
-> >From 5310760af1d4fbea1452bfc77db5f9a680f7ae47 Mon Sep 17 00:00:00 2001
-> From: Sishuai Gong <sishuai.system@gmail.com>
-> Date: Thu, 10 Aug 2023 15:12:42 -0400
-> Subject: [PATCH] ipvs: fix racy memcpy in proc_do_sync_threshold
-> 
-> When two threads run proc_do_sync_threshold() in parallel,
-> data races could happen between the two memcpy():
-> 
-> Thread-1			Thread-2
-> memcpy(val, valp, sizeof(val));
-> 				memcpy(valp, val, sizeof(val));
-> 
-> This race might mess up the (struct ctl_table *) table->data,
-> so we add a mutex lock to serialize them.
-> 
-> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-> Link: https://lore.kernel.org/netdev/B6988E90-0A1E-4B85-BF26-2DAF6D482433@gmail.com/
-> Signed-off-by: Sishuai Gong <sishuai.system@gmail.com>
-> Acked-by: Simon Horman <horms@kernel.org>
-> Acked-by: Julian Anastasov <ja@ssi.bg>
-> Signed-off-by: Florian Westphal <fw@strlen.de>
-> 
-> diff --git a/net/netfilter/ipvs/ip_vs_ctl.c b/net/netfilter/ipvs/ip_vs_ctl.c
-> index 62606fb44d02..4bb0d90eca1c 100644
-> --- a/net/netfilter/ipvs/ip_vs_ctl.c
-> +++ b/net/netfilter/ipvs/ip_vs_ctl.c
-> @@ -1876,6 +1876,7 @@ static int
->  proc_do_sync_threshold(struct ctl_table *table, int write,
->  		       void *buffer, size_t *lenp, loff_t *ppos)
->  {
-> +	struct netns_ipvs *ipvs = table->extra2;
->  	int *valp = table->data;
->  	int val[2];
->  	int rc;
-> @@ -1885,6 +1886,7 @@ proc_do_sync_threshold(struct ctl_table *table, int write,
->  		.mode = table->mode,
->  	};
->  
-> +	mutex_lock(&ipvs->sync_mutex);
->  	memcpy(val, valp, sizeof(val));
->  	rc = proc_dointvec(&tmp, write, buffer, lenp, ppos);
->  	if (write) {
-> @@ -1894,6 +1896,7 @@ proc_do_sync_threshold(struct ctl_table *table, int write,
->  		else
->  			memcpy(valp, val, sizeof(val));
->  	}
-> +	mutex_unlock(&ipvs->sync_mutex);
->  	return rc;
->  }
->  
-> @@ -4321,6 +4324,7 @@ static int __net_init ip_vs_control_net_init_sysctl(struct netns_ipvs *ipvs)
->  	ipvs->sysctl_sync_threshold[0] = DEFAULT_SYNC_THRESHOLD;
->  	ipvs->sysctl_sync_threshold[1] = DEFAULT_SYNC_PERIOD;
->  	tbl[idx].data = &ipvs->sysctl_sync_threshold;
-> +	tbl[idx].extra2 = ipvs;
->  	tbl[idx++].maxlen = sizeof(ipvs->sysctl_sync_threshold);
->  	ipvs->sysctl_sync_refresh_period = DEFAULT_SYNC_REFRESH_PERIOD;
->  	tbl[idx++].data = &ipvs->sysctl_sync_refresh_period;
+Peter, is this correct?
 
-Regards
-
---
-Julian Anastasov <ja@ssi.bg>
-
+Regards,
+Salvatore
