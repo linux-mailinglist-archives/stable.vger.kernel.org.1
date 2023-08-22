@@ -2,85 +2,98 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7F090784414
-	for <lists+stable@lfdr.de>; Tue, 22 Aug 2023 16:27:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 10243784430
+	for <lists+stable@lfdr.de>; Tue, 22 Aug 2023 16:29:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232532AbjHVO1M (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 22 Aug 2023 10:27:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53458 "EHLO
+        id S236717AbjHVO3l (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 22 Aug 2023 10:29:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41696 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234042AbjHVO1M (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 22 Aug 2023 10:27:12 -0400
-X-Greylist: delayed 91 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 22 Aug 2023 07:26:57 PDT
-Received: from omta039.useast.a.cloudfilter.net (omta039.useast.a.cloudfilter.net [44.202.169.38])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C608BCD5
-        for <stable@vger.kernel.org>; Tue, 22 Aug 2023 07:26:57 -0700 (PDT)
-Received: from eig-obgw-5002a.ext.cloudfilter.net ([10.0.29.215])
-        by cmsmtp with ESMTP
-        id YQZjqeM8PyYOwYSJyqn9jO; Tue, 22 Aug 2023 14:25:26 +0000
-Received: from box5484.bluehost.com ([162.241.217.129])
-        by cmsmtp with ESMTPS
-        id YSJuqNRh6xrRoYSJuqIbsy; Tue, 22 Aug 2023 14:25:22 +0000
-X-Authority-Analysis: v=2.4 cv=WZcf1mtX c=1 sm=1 tr=0 ts=64e4c555
- a=t0zcrqVKj+tNC2OLw53Q9Q==:117 a=rXCxylCSB2vJERMQ6d9g1A==:17
- a=kj9zAlcOel0A:10 a=UttIx32zK-AA:10 a=IzJHCQ4mk_oA:10
- a=dLxlUzZ3dF9Fo-OgvZ4A:9 a=CjuIK1q_8ugA:10 a=4RKSVA-rzY8A:10
- a=IrTR32ZjrQkd91-nm_XT:22
-Received: from box5484.bluehost.com ([162.241.217.129]:24760)
-        by box5484.bluehost.com with esmtpa (Exim 4.96)
-        (envelope-from <ken@soulsuphiltonhead.com>)
-        id 1qYSJc-002qML-0N;
-        Tue, 22 Aug 2023 08:25:04 -0600
-Received: from reverse.rain.network ([41.216.203.125])
- by www.soulsuphiltonhead.com
- with HTTP (HTTP/1.1 POST); Tue, 22 Aug 2023 08:24:56 -0600
+        with ESMTP id S236713AbjHVO3k (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 22 Aug 2023 10:29:40 -0400
+Received: from mail-oi1-x22a.google.com (mail-oi1-x22a.google.com [IPv6:2607:f8b0:4864:20::22a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C40FFB
+        for <stable@vger.kernel.org>; Tue, 22 Aug 2023 07:29:35 -0700 (PDT)
+Received: by mail-oi1-x22a.google.com with SMTP id 5614622812f47-3a80e665410so3420518b6e.2
+        for <stable@vger.kernel.org>; Tue, 22 Aug 2023 07:29:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linuxtx.org; s=google; t=1692714575; x=1693319375;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=RtMM8v6IiohW/f8NheBJDCq6aKcUIgznS7UeM1fX+Ks=;
+        b=TP4D3Gg/s3Nu/iV0bul6JqS5eOId5CCRuj9en/E6QOFSWBbdGEnjXqbJ1+4Kwk3Q/8
+         svU3daBbGqraMawAPMZVR3/CGtBeUsmQFR3ZG35n8TeGDJ5RPDTNIwCHfjL2cg2DHkAp
+         rgGS6S1OFjEz32NHfM9mEFLshsG4KNrxWu6vY=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1692714575; x=1693319375;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=RtMM8v6IiohW/f8NheBJDCq6aKcUIgznS7UeM1fX+Ks=;
+        b=QF4NYng67J/JWUL5pwvf4WqSwlt8QUjvmhDmRudul6NfRRiFWhm0qE6AkotdlDNmcJ
+         r2qoZqPiNlSjMzL8B1twM33lmllpRwinCQxwELE2DeBzZf4PrS5WNIEfFaZiFnGeuG9A
+         lfSbMqjyKyil4J8EICSx7Mo/Hp/uvvJn7pKQZEAlcQZ3ZnTQnK1/JKLFlS0R+R34enKE
+         +PmjQ71dwaVIVnGIPulIEMr8ZRM3kXQ+FMS6LUVHsYXFiDoXIgR8xU198SbtaNJqNfKJ
+         B42/UiWnAtk/CC/Td72NbCM5FjdUnxsuw7gizE6zydV5Fnqdfjmp00n6nhf64ek1ARot
+         VV1g==
+X-Gm-Message-State: AOJu0YxiOMe86mQ/0KOHAY5xjLpu1w3wPmNVzMpzylUwdOit5DZtx3gF
+        MI9SVOmGOt57IU15VmcH8B53zg==
+X-Google-Smtp-Source: AGHT+IHWqqF3x5jjHnTZkfTQ6SWx9wWvhUOtZbXGP18FUv0qrYrp/FYm+MMAcFCMlICmGXXRP8sAkA==
+X-Received: by 2002:a54:4490:0:b0:3a4:a87:bea1 with SMTP id v16-20020a544490000000b003a40a87bea1mr11526966oiv.21.1692714574893;
+        Tue, 22 Aug 2023 07:29:34 -0700 (PDT)
+Received: from fedora64.linuxtx.org ([99.47.93.78])
+        by smtp.gmail.com with ESMTPSA id bk15-20020a0568081a0f00b003a48ed3564bsm4807348oib.50.2023.08.22.07.29.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 22 Aug 2023 07:29:34 -0700 (PDT)
+Sender: Justin Forbes <jmforbes@linuxtx.org>
+Date:   Tue, 22 Aug 2023 09:29:32 -0500
+From:   Justin Forbes <jforbes@fedoraproject.org>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+        jonathanh@nvidia.com, f.fainelli@gmail.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+        conor@kernel.org
+Subject: Re: [PATCH 6.4 000/234] 6.4.12-rc1 review
+Message-ID: <ZOTGTCrdlCklrtyS@fedora64.linuxtx.org>
+References: <20230821194128.754601642@linuxfoundation.org>
 MIME-Version: 1.0
-Date:   Tue, 22 Aug 2023 08:24:56 -0600
-From:   "Fred Fedir k." <ken@soulsuphiltonhead.com>
-To:     undisclosed-recipients:;
-Subject: From Anita.
-Reply-To: anitaanderson1122@proton.me
-Mail-Reply-To: anitaanderson1122@proton.me
-User-Agent: Roundcube Webmail/1.6.0
-Message-ID: <8541e03c022e2451739e934105b13ba5@soulsuphiltonhead.com>
-X-Sender: ken@soulsuphiltonhead.com
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - box5484.bluehost.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - soulsuphiltonhead.com
-X-BWhitelist: no
-X-Source-IP: 162.241.217.129
-X-Source-L: No
-X-Exim-ID: 1qYSJc-002qML-0N
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: box5484.bluehost.com [162.241.217.129]:24760
-X-Source-Auth: ken@soulsuphiltonhead.com
-X-Email-Count: 120
-X-Org:  HG=bhshared;ORG=bluehost;
-X-Source-Cap: aml2YXlvZ2E7aml2YXlvZ2E7Ym94NTQ4NC5ibHVlaG9zdC5jb20=
-X-Local-Domain: yes
-X-CMAE-Envelope: MS4xfJngBN7mXEC5fabCO34KiYB/vnP6hZ+uTo/bMT3nTLZOtoHbkIIfdL8Z6HUW1NkeStOdhzCQ1CQhdpqhjmlC0ScUxhQKsgVIS/PATCz7f28pKP5hSfKY
- Jn2Fzy3tKW+QxvWyBbGdI9xn65k734Rbl1UZt/g/0Hh0v5nYikHluOdhOyJWBDaXdtwnSpu+9DLbIaR1U7Bp5sejOISqMpjzOJY=
-X-Spam-Status: No, score=0.8 required=5.0 tests=BAYES_50,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230821194128.754601642@linuxfoundation.org>
+X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hello
+On Mon, Aug 21, 2023 at 09:39:23PM +0200, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.4.12 release.
+> There are 234 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Wed, 23 Aug 2023 19:40:45 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.4.12-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.4.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-I need your services in a confidential matter regarding fund. I have all 
-the details relating to the funds. Please get back to me through my 
-email with your response if you are willing to work with me.
+Tested rc1 against the Fedora build system (aarch64, ppc64le, s390x,
+x86_64), and boot tested x86_64. No regressions noted.
 
-Best regards.
-Anita Anderson
-anitaanderson1122@proton.me
+Tested-by: Justin M. Forbes <jforbes@fedoraproject.org>
